@@ -89,29 +89,23 @@ defineOgImageComponent('Default')
       </search>
     </header>
 
-    <!-- Minimal quick links -->
+    <!-- Popular packages -->
     <nav
-      aria-label="Quick links"
+      aria-label="Popular packages"
       class="pb-20 text-center animate-fade-in animate-fill-both"
       style="animation-delay: 0.3s"
     >
-      <ul class="flex items-center justify-center gap-8 list-none m-0 p-0">
-        <li class="list-none">
+      <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
+        <li
+          v-for="pkg in ['nuxt', 'vue', 'react', 'svelte', 'vite', 'next', 'astro', 'typescript']"
+          :key="pkg"
+        >
           <NuxtLink
-            to="/search"
+            :to="`/package/${pkg}`"
             class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
           >
             <span class="w-1 h-1 rounded-full bg-fg-subtle group-hover:bg-fg transition-colors duration-200" />
-            browse all
-          </NuxtLink>
-        </li>
-        <li>
-          <NuxtLink
-            to="/package/nuxt"
-            class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
-          >
-            <span class="w-1 h-1 rounded-full bg-fg-subtle group-hover:bg-fg transition-colors duration-200" />
-            example: nuxt
+            {{ pkg }}
           </NuxtLink>
         </li>
       </ul>
