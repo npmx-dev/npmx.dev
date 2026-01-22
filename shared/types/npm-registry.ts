@@ -41,6 +41,31 @@ export interface NpmSearchResult {
   }
 }
 
+/**
+ * Trusted publisher info from search API
+ * Present when package was published via OIDC (e.g., GitHub Actions)
+ */
+export interface NpmSearchTrustedPublisher {
+  /** OIDC provider identifier (e.g., "github", "gitlab") */
+  id: string
+  /** OIDC config ID */
+  oidcConfigId?: string
+}
+
+/**
+ * Publisher info with optional trusted publisher and actor details
+ */
+export interface NpmSearchPublisher extends NpmPerson {
+  /** Trusted publisher info (present if published via OIDC) */
+  trustedPublisher?: NpmSearchTrustedPublisher
+  /** Actor who triggered the publish (for trusted publishing) */
+  actor?: {
+    name: string
+    type: 'user' | 'team'
+    email?: string
+  }
+}
+
 export interface NpmSearchPackage {
   name: string
   scope?: string
@@ -55,7 +80,7 @@ export interface NpmSearchPackage {
     bugs?: string
   }
   author?: NpmPerson
-  publisher?: NpmPerson
+  publisher?: NpmSearchPublisher
   maintainers?: NpmPerson[]
 }
 
@@ -66,6 +91,39 @@ export interface NpmSearchScore {
     popularity: number
     maintenance: number
   }
+}
+
+/**
+ * Attestations/provenance info on package version dist
+ * Present when package was published with provenance
+ * Note: Not covered by @npm/types
+ */
+export interface NpmVersionAttestations {
+  /** URL to fetch full attestation details */
+  url: string
+  /** Provenance info */
+  provenance: {
+    /** SLSA predicate type URL */
+    predicateType: string
+  }
+}
+
+/**
+ * Extended dist info that may include attestations
+ * The base PackumentVersion.dist doesn't include attestations
+ */
+export interface NpmVersionDist {
+  shasum: string
+  tarball: string
+  integrity?: string
+  fileCount?: number
+  unpackedSize?: number
+  signatures?: Array<{
+    keyid: string
+    sig: string
+  }>
+  /** Attestations/provenance (present if published with provenance) */
+  attestations?: NpmVersionAttestations
 }
 
 /**

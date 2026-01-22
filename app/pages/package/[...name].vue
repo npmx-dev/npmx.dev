@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PackumentVersion } from '#shared/types'
+import type { PackumentVersion, NpmVersionDist } from '#shared/types'
 
 const route = useRoute('package-name')
 
@@ -124,6 +124,14 @@ function getDependencyCount(version: PackumentVersion | null): number {
   return Object.keys(version.dependencies).length
 }
 
+// Check if a version has provenance/attestations
+// The dist object may have attestations that aren't in the base type
+function hasProvenance(version: PackumentVersion | null): boolean {
+  if (!version?.dist) return false
+  const dist = version.dist as NpmVersionDist
+  return !!dist.attestations
+}
+
 // Package manager install commands
 const packageManagers = [
   { id: 'npm', label: 'npm', action: 'install' },
@@ -229,16 +237,26 @@ defineOgImageComponent('Package', {
             <h1 class="font-mono text-2xl sm:text-3xl font-medium">
               {{ pkg.name }}
             </h1>
-            <span
+            <a
               v-if="displayVersion"
-              class="shrink-0 px-3 py-1 font-mono text-sm bg-bg-muted border border-border rounded-md"
+              :href="hasProvenance(displayVersion) ? `https://www.npmjs.com/package/${pkg.name}/v/${displayVersion.version}#provenance` : undefined"
+              :target="hasProvenance(displayVersion) ? '_blank' : undefined"
+              :rel="hasProvenance(displayVersion) ? 'noopener noreferrer' : undefined"
+              class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 font-mono text-sm bg-bg-muted border border-border rounded-md transition-colors duration-200"
+              :class="hasProvenance(displayVersion) ? 'hover:border-border-hover cursor-pointer' : 'cursor-default'"
+              :title="hasProvenance(displayVersion) ? 'Verified provenance' : undefined"
             >
               v{{ displayVersion.version }}
               <span
                 v-if="requestedVersion && latestVersion && displayVersion.version !== latestVersion.version"
                 class="text-fg-subtle"
               >(not latest)</span>
-            </span>
+              <span
+                v-if="hasProvenance(displayVersion)"
+                class="i-solar-shield-check-outline w-4 h-4 text-fg-muted"
+                aria-label="Verified provenance"
+              />
+            </a>
           </div>
           <!-- Fixed height description container to prevent CLS -->
           <div
@@ -479,7 +497,7 @@ defineOgImageComponent('Package', {
             </div>
             <div class="flex items-center gap-2 px-4 pt-3 pb-4">
               <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-              <code class="font-mono text-sm"><ClientOnly><span class="text-fg">{{ selectedPMLabel }}</span> <span class="text-fg-muted">{{ selectedPMAction }}</span><span
+              <code class="font-mono text-sm"><ClientOnly><span class="text-fg">{{ selectedPMLabel }}</span> <span class="text-fg-muted">{{ selectedPMAction }}</span> <span
                 v-if="selectedPM !== 'deno'"
                 class="text-fg-muted"
               > {{ pkg.name }}</span><span
@@ -609,11 +627,11 @@ defineOgImageComponent('Package', {
               <div
                 v-for="version in sortedVersions.slice(0, 10)"
                 :key="version"
-                class="flex items-center justify-between py-1.5 text-sm"
+                class="flex items-center justify-between py-1.5 text-sm gap-2"
               >
                 <NuxtLink
                   :to="`/package/${pkg.name}/v/${version}`"
-                  class="font-mono text-fg-muted hover:text-fg transition-colors duration-200"
+                  class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 min-w-0"
                 >
                   {{ version }}
                   <span
@@ -621,13 +639,21 @@ defineOgImageComponent('Package', {
                     class="ml-1 text-xs text-fg-subtle"
                   >(latest)</span>
                 </NuxtLink>
-                <time
-                  v-if="pkg.time[version]"
-                  :datetime="pkg.time[version]"
-                  class="text-xs text-fg-subtle"
-                >
-                  {{ formatDate(pkg.time[version]) }}
-                </time>
+                <div class="flex items-center gap-2 shrink-0">
+                  <time
+                    v-if="pkg.time[version]"
+                    :datetime="pkg.time[version]"
+                    class="text-xs text-fg-subtle"
+                  >
+                    {{ formatDate(pkg.time[version]) }}
+                  </time>
+                  <ProvenanceBadge
+                    v-if="pkg.versions[version] && hasProvenance(pkg.versions[version])"
+                    :package-name="pkg.name"
+                    :version="version"
+                    compact
+                  />
+                </div>
               </div>
             </div>
           </section>
@@ -648,11 +674,13 @@ defineOgImageComponent('Package', {
                 :href="`https://npmgraph.js.org/?q=${pkg.name}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="link-subtle"
+                class="link-subtle text-fg-subtle"
                 aria-label="View dependency graph"
                 title="View dependency graph"
               >
-                <span class="i-carbon-network-3 w-4 h-4 inline-block" />
+                <span class="text-xs uppercase tracking-wider">
+                  Graph
+                </span>
               </a>
             </div>
             <ul class="space-y-1 list-none m-0 p-0">

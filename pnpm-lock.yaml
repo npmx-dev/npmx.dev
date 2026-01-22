@@ -56,6 +56,9 @@ importers:
       '@iconify-json/carbon':
         specifier: ^1.2.18
         version: 1.2.18
+      '@iconify-json/solar':
+        specifier: ^1.2.5
+        version: 1.2.5
       '@npm/types':
         specifier: ^2.1.0
         version: 2.1.0
@@ -1199,6 +1202,9 @@ packages:
   '@iconify-json/carbon@1.2.18':
     resolution: {integrity: sha512-Grb13E6r/RqTEV4Sqd/BQR2FUt57U2WLuticJ5H8JbTdHLop1LmdePu3EJJA3Xi8DcWRbD6OnC133hKfOwlgtg==}
 
+  '@iconify-json/solar@1.2.5':
+    resolution: {integrity: sha512-WMAiNwchU8zhfrySww6KQBRIBbsQ6SvgIu2yA+CHGyMima/0KQwT5MXogrZPJGoQF+1Ye3Qj6K+1CiyNn3YkoA==}
+
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
@@ -1583,19 +1589,19 @@ packages:
     engines: {node: '>=18.12.0'}
 
   '@nuxt/kit@https://pkg.pr.new/nuxt/nuxt/@nuxt/kit@d842786':
-    resolution: {integrity: sha512-sBQJ504FWqIPyNJVERqjBmSOSCh1cbry5aHW5Ivd5afW+5Oq7bqGTuOK0oCsN/7JAtyKgoX6U3zuqNhkNBzzfA==, tarball: https://pkg.pr.new/nuxt/nuxt/@nuxt/kit@d842786}
+    resolution: {tarball: https://pkg.pr.new/nuxt/nuxt/@nuxt/kit@d842786}
     version: 4.2.2
     engines: {node: '>=18.12.0'}
 
   '@nuxt/nitro-server@https://pkg.pr.new/nuxt/nuxt/@nuxt/nitro-server@d842786':
-    resolution: {integrity: sha512-De/Bd3o0xQoSvr300oRZWsrJs1skIoqH1gtrs7JfGbNCQF6MHwHcMmDk4I/bveKjWSY+42NVc4Gw6eJqy6aKfQ==, tarball: https://pkg.pr.new/nuxt/nuxt/@nuxt/nitro-server@d842786}
+    resolution: {tarball: https://pkg.pr.new/nuxt/nuxt/@nuxt/nitro-server@d842786}
     version: 4.2.2
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       nuxt: ^4.2.2
 
   '@nuxt/schema@https://pkg.pr.new/nuxt/nuxt/@nuxt/schema@d842786':
-    resolution: {integrity: sha512-Nl4+H2r/KOkW4Mo/Nod0osbN0Cv4b+cpBN09SbQTxWCDPlUPCMEd9H+eMZCeKPQF6W0aK3eR6QOSsFQDn3oY2w==, tarball: https://pkg.pr.new/nuxt/nuxt/@nuxt/schema@d842786}
+    resolution: {tarball: https://pkg.pr.new/nuxt/nuxt/@nuxt/schema@d842786}
     version: 4.2.2
     engines: {node: ^14.18.0 || >=16.10.0}
 
@@ -1665,7 +1671,7 @@ packages:
         optional: true
 
   '@nuxt/vite-builder@https://pkg.pr.new/nuxt/nuxt/@nuxt/vite-builder@d842786':
-    resolution: {integrity: sha512-Os3TWNh+S8nPUn1JdsNe3eBa83NnUwWVBUi6g1AhHgewJS/+ackHzDfyu1mXHeOdi1eV6UxESnZSyPAKQl5lnQ==, tarball: https://pkg.pr.new/nuxt/nuxt/@nuxt/vite-builder@d842786}
+    resolution: {tarball: https://pkg.pr.new/nuxt/nuxt/@nuxt/vite-builder@d842786}
     version: 4.2.2
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
@@ -8302,6 +8308,10 @@ snapshots:
   '@humanwhocodes/retry@0.4.3': {}
 
   '@iconify-json/carbon@1.2.18':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/solar@1.2.5':
     dependencies:
       '@iconify/types': 2.0.0
 

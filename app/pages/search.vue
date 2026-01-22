@@ -320,12 +320,21 @@ defineOgImageComponent('Default', {
                   <h2 class="font-mono text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all">
                     {{ result.package.name }}
                   </h2>
-                  <span
-                    v-if="result.package.version"
-                    class="font-mono text-xs text-fg-subtle shrink-0"
-                  >
-                    v{{ result.package.version }}
-                  </span>
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <span
+                      v-if="result.package.version"
+                      class="font-mono text-xs text-fg-subtle"
+                    >
+                      v{{ result.package.version }}
+                    </span>
+                    <ProvenanceBadge
+                      v-if="result.package.publisher?.trustedPublisher"
+                      :provider="result.package.publisher.trustedPublisher.id"
+                      :package-name="result.package.name"
+                      :version="result.package.version"
+                      compact
+                    />
+                  </div>
                 </header>
 
                 <p
