@@ -35,7 +35,7 @@
     "perfect-debounce": "^2.1.0",
     "shiki": "^3.21.0",
     "unplugin-vue-router": "^0.19.2",
-    "vue": "3.5.26"
+    "vue": "3.5.27"
   },
   "devDependencies": {
     "@iconify-json/carbon": "^1.2.18",
