@@ -52,6 +52,20 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-04-03',
 
+  nitro: {
+    externals: {
+      // Inline shiki modules to avoid module resolution issues on Vercel
+      inline: [
+        'shiki',
+        '@shikijs/langs',
+        '@shikijs/themes',
+        '@shikijs/types',
+        '@shikijs/engine-javascript',
+        '@shikijs/core',
+      ],
+    },
+  },
+
   eslint: {
     config: {
       stylistic: true,
