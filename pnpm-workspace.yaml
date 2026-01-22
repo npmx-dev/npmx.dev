@@ -1,0 +1,9 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - unrs-resolver
+
+onlyBuiltDependencies:
+  - sharp
+  - simple-git-hooks
+

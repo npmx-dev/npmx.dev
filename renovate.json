@@ -1,0 +1,7 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "prCreation": "immediate",
+  "extends": [
+    "github>danielroe/renovate"
+  ]
+}
