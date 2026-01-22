@@ -1,5 +1,12 @@
 export default defineNuxtConfig({
   modules: [
+    function (_, nuxt) {
+      if (nuxt.options._prepare) {
+        nuxt.options.pwa ||= {}
+        nuxt.options.pwa.pwaAssets ||= {}
+        nuxt.options.pwa.pwaAssets.disabled = true
+      }
+    },
     '@unocss/nuxt',
     '@nuxt/eslint',
     '@nuxtjs/html-validator',
