@@ -497,13 +497,13 @@ defineOgImageComponent('Package', {
             </div>
             <div class="flex items-center gap-2 px-4 pt-3 pb-4">
               <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-              <code class="font-mono text-sm"><ClientOnly><span class="text-fg">{{ selectedPMLabel }}</span> <span class="text-fg-muted">{{ selectedPMAction }}</span> <span
+              <code class="font-mono text-sm"><ClientOnly><span class="text-fg">{{ selectedPMLabel }}</span> <span class="text-fg-muted">{{ selectedPMAction }}</span>&nbsp;<span
                 v-if="selectedPM !== 'deno'"
                 class="text-fg-muted"
               > {{ pkg.name }}</span><span
                 v-else
                 class="text-fg-muted"
-              >{{ pkg.name }}</span><template #fallback><span class="text-fg">npm</span> <span class="text-fg-muted">install {{ pkg.name }}</span></template></ClientOnly></code>
+              >{{ pkg.name }}</span><template #fallback><span class="text-fg">npm</span>&nbsp;<span class="text-fg-muted">install {{ pkg.name }}</span></template></ClientOnly></code>
             </div>
           </div>
           <button
