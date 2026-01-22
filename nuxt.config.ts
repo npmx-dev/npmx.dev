@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     function (_, nuxt) {
       nuxt.hook('modules:done', () => {
         nuxt.hook('nitro:build:before', (nitro) => {
-          nitro.options.ssrRoutes = nitro.options.ssrRoutes?.map(r => r.replace('/~', '/'))
+          nitro.options.ssrRoutes = []
         })
       })
     },
