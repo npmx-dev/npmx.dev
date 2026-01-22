@@ -31,7 +31,7 @@
     "@nuxtjs/html-validator": "^2.1.0",
     "@shikijs/langs": "^3.21.0",
     "@shikijs/themes": "^3.21.0",
-    "nuxt": "https://pkg.pr.new/nuxt@8d4f9ba",
+    "nuxt": "https://pkg.pr.new/nuxt@d842786",
     "nuxt-og-image": "^5.1.13",
     "perfect-debounce": "^2.1.0",
     "sanitize-html": "^2.17.0",
