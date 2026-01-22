@@ -5,7 +5,6 @@ export default defineNuxtConfig({
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
     '@nuxt/fonts',
-    '@nuxt/image',
     'nuxt-og-image',
     '@nuxt/test-utils',
     '@vite-pwa/nuxt',
@@ -35,6 +34,10 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/**': { isr: 60 },
     '/search': { isr: false, cache: false },
+    '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
+    '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
+    '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
+    '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
   },
 
   future: {
@@ -47,6 +50,12 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: '2024-04-03',
+
+  nitro: {
+    externals: {
+      inline: ['isomorphic-dompurify'],
+    },
+  },
 
   eslint: {
     config: {
