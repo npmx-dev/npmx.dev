@@ -7,6 +7,11 @@ export default defineNuxtConfig({
         nuxt.options.pwa.pwaAssets.disabled = true
       }
     },
+    function (_, nuxt) {
+      nuxt.hook('nitro:build:before', (nitro) => {
+        nitro.options.ssrRoutes = nitro.options.ssrRoutes.map(r => r.replace('/~', '/'))
+      })
+    },
     '@unocss/nuxt',
     '@nuxt/eslint',
     '@nuxtjs/html-validator',
@@ -49,7 +54,6 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    payloadExtraction: true,
     viewTransition: true,
     typedPages: true,
   },
