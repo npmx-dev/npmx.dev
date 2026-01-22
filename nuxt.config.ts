@@ -1,5 +1,6 @@
 export default defineNuxtConfig({
   modules: [
+    '@unocss/nuxt',
     '@nuxt/eslint',
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
@@ -43,6 +44,19 @@ export default defineNuxtConfig({
     config: {
       stylistic: true,
     },
+  },
+
+  fonts: {
+    families: [
+      {
+        name: 'Inter',
+        weights: ['400', '500', '600'],
+      },
+      {
+        name: 'JetBrains Mono',
+        weights: ['400', '500'],
+      },
+    ],
   },
 
   htmlValidator: {

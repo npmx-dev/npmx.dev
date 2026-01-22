@@ -32,13 +32,16 @@
     "@nuxtjs/html-validator": "^2.1.0",
     "nuxt": "^4.2.2",
     "nuxt-og-image": "^5.1.13",
+    "shiki": "^3.21.0",
     "unplugin-vue-router": "^0.19.2",
     "vue": "3.5.26"
   },
   "devDependencies": {
+    "@iconify-json/carbon": "^1.2.18",
     "@npm/types": "^2.1.0",
     "@nuxt/test-utils": "3.23.0",
     "@playwright/test": "1.57.0",
+    "@unocss/nuxt": "^66.6.0",
     "@vitest/browser-playwright": "^4.0.17",
     "@vitest/coverage-v8": "^4.0.17",
     "@vue/test-utils": "2.4.6",
@@ -51,6 +54,7 @@
     "playwright-core": "^1.57.0",
     "simple-git-hooks": "2.13.1",
     "typescript": "5.9.3",
+    "unocss": "^66.6.0",
     "vitest": "^4.0.17",
     "vue-tsc": "3.2.2"
   },

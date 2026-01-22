@@ -81,6 +81,76 @@ function getDependencyCount(version: PackumentVersion | null): number {
   return Object.keys(version.dependencies).length
 }
 
+// Package manager install commands
+const packageManagers = [
+  { id: 'npm', label: 'npm', action: 'install' },
+  { id: 'pnpm', label: 'pnpm', action: 'add' },
+  { id: 'yarn', label: 'yarn', action: 'add' },
+  { id: 'bun', label: 'bun', action: 'add' },
+  { id: 'deno', label: 'deno', action: 'add npm:' },
+] as const
+
+type PackageManagerId = typeof packageManagers[number]['id']
+
+// Persist preference in localStorage
+const selectedPM = ref<PackageManagerId>('npm')
+
+onMounted(() => {
+  const stored = localStorage.getItem('npmx-pm')
+  if (stored && packageManagers.some(pm => pm.id === stored)) {
+    selectedPM.value = stored as PackageManagerId
+  }
+})
+
+watch(selectedPM, (value) => {
+  localStorage.setItem('npmx-pm', value)
+})
+
+const currentPM = computed(() => packageManagers.find(p => p.id === selectedPM.value) || packageManagers[0])
+const selectedPMLabel = computed(() => currentPM.value.label)
+const selectedPMAction = computed(() => currentPM.value.action)
+
+const installCommand = computed(() => {
+  if (!pkg.value) return ''
+  const pm = currentPM.value
+  // deno uses "add npm:package" format
+  if (pm.id === 'deno') {
+    return `${pm.label} ${pm.action}${pkg.value.name}`
+  }
+  return `${pm.label} ${pm.action} ${pkg.value.name}`
+})
+
+// Copy install command
+const copied = ref(false)
+async function copyInstallCommand() {
+  if (!installCommand.value) return
+  await navigator.clipboard.writeText(installCommand.value)
+  copied.value = true
+  setTimeout(() => copied.value = false, 2000)
+}
+
+// Expandable description
+const descriptionExpanded = ref(false)
+const descriptionRef = ref<HTMLParagraphElement>()
+const descriptionOverflows = ref(false)
+
+// Check if description overflows on mount/update
+function checkDescriptionOverflow() {
+  if (descriptionRef.value) {
+    // Compare scrollHeight to the fixed container height (3 lines ~= 72px)
+    descriptionOverflows.value = descriptionRef.value.scrollHeight > 72
+  }
+}
+
+watch(() => pkg.value?.description, () => {
+  descriptionExpanded.value = false
+  nextTick(checkDescriptionOverflow)
+})
+
+onMounted(() => {
+  nextTick(checkDescriptionOverflow)
+})
+
 useSeoMeta({
   title: () => pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx',
   description: () => pkg.value?.description ?? '',
@@ -88,211 +158,419 @@ useSeoMeta({
 </script>
 
 <template>
-  <main>
+  <main class="container py-8 sm:py-12">
     <PackageSkeleton v-if="status === 'pending'" />
 
-    <article v-else-if="status === 'success' && pkg">
-      <header>
-        <h1>{{ pkg.name }}</h1>
-        <p v-if="pkg.description">
-          {{ pkg.description }}
-        </p>
-
-        <dl>
-          <div v-if="latestVersion">
-            <dt>Version</dt>
-            <dd>{{ latestVersion.version }}</dd>
+    <article
+      v-else-if="status === 'success' && pkg"
+      class="animate-fade-in"
+    >
+      <!-- Package header -->
+      <header class="mb-8 pb-8 border-b border-border">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+          <div class="flex-1 min-w-0">
+            <h1 class="font-mono text-2xl sm:text-3xl font-medium mb-2">
+              {{ pkg.name }}
+            </h1>
+            <!-- Fixed height description container to prevent CLS -->
+            <div class="relative max-w-2xl min-h-[4.5rem]">
+              <p
+                v-if="pkg.description"
+                ref="descriptionRef"
+                class="text-fg-muted text-base m-0 overflow-hidden"
+                :class="descriptionExpanded ? '' : 'max-h-[4.5rem]'"
+              >
+                {{ pkg.description }}
+              </p>
+              <p
+                v-else
+                class="text-fg-subtle text-base m-0 italic"
+              >
+                No description provided
+              </p>
+              <!-- Fade overlay with show more button - only when collapsed and overflowing -->
+              <div
+                v-if="pkg.description && descriptionOverflows && !descriptionExpanded"
+                class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
+              >
+                <button
+                  type="button"
+                  class="font-mono text-xs text-fg-muted hover:text-fg bg-bg px-1 transition-colors duration-200"
+                  @click="descriptionExpanded = true"
+                >
+                  show more
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div v-if="pkg.license">
-            <dt>License</dt>
-            <dd>{{ pkg.license }}</dd>
+          <!-- Version badge -->
+          <span
+            v-if="latestVersion"
+            class="shrink-0 px-3 py-1 font-mono text-sm bg-bg-muted border border-border rounded-md"
+          >
+            v{{ latestVersion.version }}
+          </span>
+        </div>
+
+        <!-- Stats grid -->
+        <dl class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mt-6">
+          <div
+            v-if="pkg.license"
+            class="space-y-1"
+          >
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              License
+            </dt>
+            <dd class="font-mono text-sm text-fg">
+              {{ pkg.license }}
+            </dd>
           </div>
 
-          <div v-if="downloads">
-            <dt>Weekly Downloads</dt>
-            <dd>{{ formatNumber(downloads.downloads) }}</dd>
+          <div
+            v-if="downloads"
+            class="space-y-1"
+          >
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              Weekly
+            </dt>
+            <dd class="font-mono text-sm text-fg">
+              {{ formatNumber(downloads.downloads) }}
+            </dd>
           </div>
 
-          <div v-if="latestVersion?.dist?.unpackedSize">
-            <dt>Unpacked Size</dt>
-            <dd>{{ formatBytes(latestVersion.dist.unpackedSize) }}</dd>
+          <div
+            v-if="latestVersion?.dist?.unpackedSize"
+            class="space-y-1"
+          >
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              Size
+            </dt>
+            <dd class="font-mono text-sm text-fg">
+              {{ formatBytes(latestVersion.dist.unpackedSize) }}
+            </dd>
           </div>
 
-          <div v-if="getDependencyCount(latestVersion) > 0">
-            <dt>Dependencies</dt>
-            <dd>{{ getDependencyCount(latestVersion) }}</dd>
+          <div
+            v-if="getDependencyCount(latestVersion) > 0"
+            class="space-y-1"
+          >
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              Deps
+            </dt>
+            <dd class="font-mono text-sm text-fg">
+              {{ getDependencyCount(latestVersion) }}
+            </dd>
           </div>
 
-          <div v-if="pkg.time?.modified">
-            <dt>Last Published</dt>
-            <dd>
+          <div
+            v-if="pkg.time?.modified"
+            class="space-y-1 col-span-2"
+          >
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              Updated
+            </dt>
+            <dd class="font-mono text-sm text-fg">
               <time :datetime="pkg.time.modified">{{ formatDate(pkg.time.modified) }}</time>
             </dd>
           </div>
         </dl>
 
-        <nav aria-label="Package links">
-          <ul>
+        <!-- Links -->
+        <nav
+          aria-label="Package links"
+          class="mt-6"
+        >
+          <ul class="flex flex-wrap items-center gap-4 list-none m-0 p-0">
             <li v-if="repositoryUrl">
               <a
                 :href="repositoryUrl"
                 rel="noopener noreferrer"
-              >Repository</a>
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-logo-github w-4 h-4" />
+                repo
+              </a>
             </li>
             <li v-if="homepageUrl">
               <a
                 :href="homepageUrl"
                 rel="noopener noreferrer"
-              >Homepage</a>
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-link w-4 h-4" />
+                homepage
+              </a>
             </li>
             <li v-if="latestVersion?.bugs?.url">
               <a
                 :href="latestVersion.bugs.url"
                 rel="noopener noreferrer"
-              >Issues</a>
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-warning w-4 h-4" />
+                issues
+              </a>
             </li>
             <li>
               <a
                 :href="`https://www.npmjs.com/package/${pkg.name}`"
                 rel="noopener noreferrer"
-              >npmjs.com</a>
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-cube w-4 h-4" />
+                npm
+              </a>
             </li>
           </ul>
         </nav>
       </header>
 
-      <section aria-labelledby="install-heading">
-        <h2 id="install-heading">
-          Install
-        </h2>
-        <pre><code>npm install {{ pkg.name }}</code></pre>
-      </section>
-
+      <!-- Install command with package manager selector -->
       <section
-        v-if="pkg.maintainers?.length"
-        aria-labelledby="maintainers-heading"
+        aria-labelledby="install-heading"
+        class="mb-8"
       >
-        <h2 id="maintainers-heading">
-          Maintainers
-        </h2>
-        <ul>
-          <li
-            v-for="maintainer in pkg.maintainers"
-            :key="maintainer.name ?? maintainer.email"
+        <div class="flex items-center justify-between mb-3">
+          <h2
+            id="install-heading"
+            class="text-xs text-fg-subtle uppercase tracking-wider"
           >
-            <a
-              v-if="maintainer.name"
-              :href="`https://www.npmjs.com/~${maintainer.name}`"
-              rel="noopener noreferrer"
-            >
-              {{ maintainer.name }}
-            </a>
-            <span v-else>{{ maintainer.email }}</span>
-          </li>
-        </ul>
-      </section>
-
-      <section
-        v-if="latestVersion?.keywords?.length"
-        aria-labelledby="keywords-heading"
-      >
-        <h2 id="keywords-heading">
-          Keywords
-        </h2>
-        <ul>
-          <li
-            v-for="keyword in latestVersion.keywords"
-            :key="keyword"
+            Install
+          </h2>
+          <!-- Package manager tabs -->
+          <div
+            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border rounded-md"
+            role="tablist"
+            aria-label="Package manager"
           >
-            <NuxtLink :to="`/search?q=keywords:${encodeURIComponent(keyword)}`">
-              {{ keyword }}
-            </NuxtLink>
-          </li>
-        </ul>
+            <ClientOnly>
+              <button
+                v-for="pm in packageManagers"
+                :key="pm.id"
+                role="tab"
+                :aria-selected="selectedPM === pm.id"
+                class="px-2 py-1 font-mono text-xs rounded transition-all duration-150"
+                :class="selectedPM === pm.id
+                  ? 'bg-bg-elevated text-fg'
+                  : 'text-fg-subtle hover:text-fg-muted'"
+                @click="selectedPM = pm.id"
+              >
+                {{ pm.label }}
+              </button>
+              <template #fallback>
+                <span
+                  v-for="pm in packageManagers"
+                  :key="pm.id"
+                  class="px-2 py-1 font-mono text-xs rounded"
+                  :class="pm.id === 'npm' ? 'bg-bg-elevated text-fg' : 'text-fg-subtle'"
+                >
+                  {{ pm.label }}
+                </span>
+              </template>
+            </ClientOnly>
+          </div>
+        </div>
+        <div class="relative group">
+          <!-- Syntax highlighted install command -->
+          <pre class="code-block"><code><span class="line"><ClientOnly><span class="text-syntax-fn">{{ selectedPMLabel }}</span><span class="text-syntax-str"> {{ selectedPMAction }}</span><span
+            v-if="selectedPM !== 'deno'"
+            class="text-syntax-str"
+          > {{ pkg.name }}</span><span
+            v-else
+            class="text-syntax-str"
+          >{{ pkg.name }}</span><template #fallback><span class="text-syntax-fn">npm</span><span class="text-syntax-str"> install</span><span class="text-syntax-str"> {{ pkg.name }}</span></template></ClientOnly></span></code></pre>
+          <button
+            class="absolute top-3 right-3 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-elevated border border-border rounded transition-all duration-200 hover:(text-fg border-border-hover) active:scale-95"
+            @click="copyInstallCommand"
+          >
+            <ClientOnly>
+              {{ copied ? 'copied!' : 'copy' }}
+              <template #fallback>
+                copy
+              </template>
+            </ClientOnly>
+          </button>
+        </div>
       </section>
 
-      <section
-        v-if="sortedVersions.length"
-        aria-labelledby="versions-heading"
-      >
-        <h2 id="versions-heading">
-          Versions
-        </h2>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">
-                Version
-              </th>
-              <th scope="col">
-                Published
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="version in sortedVersions"
-              :key="version"
+      <!-- Two column layout for sidebar content -->
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Main content (README) -->
+        <div class="lg:col-span-2 order-2 lg:order-1 min-w-0">
+          <section aria-labelledby="readme-heading">
+            <h2
+              id="readme-heading"
+              class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
             >
-              <td>
-                <NuxtLink :to="`/package/${pkg.name}/v/${version}`">
-                  {{ version }}
+              Readme
+            </h2>
+            <!-- eslint-disable-next-line vue/no-v-html -- HTML is sanitized server-side -->
+            <div
+              v-if="readmeData?.html"
+              class="readme-content prose prose-invert max-w-none"
+              v-html="readmeData.html"
+            />
+            <p
+              v-else
+              class="text-fg-subtle italic"
+            >
+              No README available.
+              <a
+                v-if="repositoryUrl"
+                :href="repositoryUrl"
+                rel="noopener noreferrer"
+                class="link"
+              >View on GitHub</a>
+            </p>
+          </section>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="order-1 lg:order-2 space-y-8">
+          <!-- Maintainers -->
+          <section
+            v-if="pkg.maintainers?.length"
+            aria-labelledby="maintainers-heading"
+          >
+            <h2
+              id="maintainers-heading"
+              class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
+            >
+              Maintainers
+            </h2>
+            <ul class="space-y-2 list-none m-0 p-0">
+              <li
+                v-for="maintainer in pkg.maintainers.slice(0, 5)"
+                :key="maintainer.name ?? maintainer.email"
+              >
+                <a
+                  v-if="maintainer.name"
+                  :href="`https://www.npmjs.com/~${maintainer.name}`"
+                  rel="noopener noreferrer"
+                  class="link-subtle font-mono text-sm"
+                >
+                  @{{ maintainer.name }}
+                </a>
+                <span
+                  v-else
+                  class="font-mono text-sm text-fg-muted"
+                >{{ maintainer.email }}</span>
+              </li>
+            </ul>
+          </section>
+
+          <!-- Keywords -->
+          <section
+            v-if="latestVersion?.keywords?.length"
+            aria-labelledby="keywords-heading"
+          >
+            <h2
+              id="keywords-heading"
+              class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
+            >
+              Keywords
+            </h2>
+            <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
+              <li
+                v-for="keyword in latestVersion.keywords.slice(0, 15)"
+                :key="keyword"
+              >
+                <NuxtLink
+                  :to="`/search?q=keywords:${encodeURIComponent(keyword)}`"
+                  class="tag"
+                >
+                  {{ keyword }}
                 </NuxtLink>
-                <span v-if="pkg['dist-tags']?.latest === version"> (latest)</span>
-              </td>
-              <td>
+              </li>
+            </ul>
+          </section>
+
+          <!-- Versions -->
+          <section
+            v-if="sortedVersions.length"
+            aria-labelledby="versions-heading"
+          >
+            <h2
+              id="versions-heading"
+              class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
+            >
+              Versions
+            </h2>
+            <div class="space-y-1">
+              <div
+                v-for="version in sortedVersions.slice(0, 10)"
+                :key="version"
+                class="flex items-center justify-between py-1.5 text-sm"
+              >
+                <NuxtLink
+                  :to="`/package/${pkg.name}/v/${version}`"
+                  class="font-mono text-fg-muted hover:text-fg transition-colors duration-200"
+                >
+                  {{ version }}
+                  <span
+                    v-if="pkg['dist-tags']?.latest === version"
+                    class="ml-1 text-xs text-fg-subtle"
+                  >(latest)</span>
+                </NuxtLink>
                 <time
                   v-if="pkg.time[version]"
                   :datetime="pkg.time[version]"
+                  class="text-xs text-fg-subtle"
                 >
                   {{ formatDate(pkg.time[version]) }}
                 </time>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+              </div>
+            </div>
+          </section>
 
-      <section
-        v-if="latestVersion?.dependencies && Object.keys(latestVersion.dependencies).length > 0"
-        aria-labelledby="dependencies-heading"
-      >
-        <h2 id="dependencies-heading">
-          Dependencies
-        </h2>
-        <ul>
-          <li
-            v-for="(version, dep) in latestVersion.dependencies"
-            :key="dep"
+          <!-- Dependencies -->
+          <section
+            v-if="latestVersion?.dependencies && Object.keys(latestVersion.dependencies).length > 0"
+            aria-labelledby="dependencies-heading"
           >
-            <NuxtLink :to="`/package/${dep}`">
-              {{ dep }}
-            </NuxtLink>
-            <span>{{ version }}</span>
-          </li>
-        </ul>
-      </section>
-
-      <section
-        v-if="readmeData?.html"
-        aria-labelledby="readme-heading"
-      >
-        <h2 id="readme-heading">
-          Readme
-        </h2>
-        <!-- eslint-disable-next-line vue/no-v-html -- HTML is sanitized server-side -->
-        <div v-html="readmeData.html" />
-      </section>
+            <h2
+              id="dependencies-heading"
+              class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
+            >
+              Dependencies ({{ Object.keys(latestVersion.dependencies).length }})
+            </h2>
+            <ul class="space-y-1 list-none m-0 p-0">
+              <li
+                v-for="(version, dep) in Object.fromEntries(Object.entries(latestVersion.dependencies).slice(0, 10))"
+                :key="dep"
+                class="flex items-center justify-between py-1 text-sm"
+              >
+                <NuxtLink
+                  :to="`/package/${dep}`"
+                  class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate mr-2"
+                >
+                  {{ dep }}
+                </NuxtLink>
+                <span class="font-mono text-xs text-fg-subtle shrink-0">{{ version }}</span>
+              </li>
+            </ul>
+          </section>
+        </aside>
+      </div>
     </article>
 
+    <!-- Error state -->
     <div
       v-else-if="status === 'error'"
       role="alert"
+      class="py-20 text-center"
     >
-      <h1>Package Not Found</h1>
-      <p>{{ error?.message ?? 'The package could not be found.' }}</p>
-      <NuxtLink to="/">
+      <h1 class="font-mono text-2xl font-medium mb-4">
+        Package Not Found
+      </h1>
+      <p class="text-fg-muted mb-8">
+        {{ error?.message ?? 'The package could not be found.' }}
+      </p>
+      <NuxtLink
+        to="/"
+        class="btn"
+      >
         Go back home
       </NuxtLink>
     </div>

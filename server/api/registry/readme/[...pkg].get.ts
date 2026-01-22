@@ -1,3 +1,23 @@
+async function fetchReadmeFromJsdelivr(packageName: string): Promise<string | null> {
+  // Try common README filenames
+  const filenames = ['README.md', 'readme.md', 'Readme.md', 'README', 'readme']
+
+  for (const filename of filenames) {
+    try {
+      const url = `https://cdn.jsdelivr.net/npm/${packageName}/${filename}`
+      const response = await fetch(url)
+      if (response.ok) {
+        return await response.text()
+      }
+    }
+    catch {
+      // Try next filename
+    }
+  }
+
+  return null
+}
+
 export default defineCachedEventHandler(
   async (event) => {
     const pkg = getRouterParam(event, 'pkg')
@@ -10,11 +30,18 @@ export default defineCachedEventHandler(
     try {
       const packageData = await fetchNpmPackage(packageName)
 
-      if (!packageData.readme || packageData.readme === 'ERROR: No README data found!') {
+      let readmeContent = packageData.readme
+
+      // If no README in packument, try fetching from jsdelivr (package tarball)
+      if (!readmeContent || readmeContent === 'ERROR: No README data found!') {
+        readmeContent = await fetchReadmeFromJsdelivr(packageName) ?? undefined
+      }
+
+      if (!readmeContent) {
         return { html: '' }
       }
 
-      const html = renderReadmeHtml(packageData.readme, packageName)
+      const html = await renderReadmeHtml(readmeContent, packageName)
       return { html }
     }
     catch (error) {

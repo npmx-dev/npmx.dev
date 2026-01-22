@@ -7,38 +7,410 @@ useHead({
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col bg-bg text-fg">
     <a
       href="#main-content"
       class="skip-link"
     >Skip to main content</a>
-    <header>
-      <nav aria-label="Main navigation">
+
+    <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
+      <nav
+        aria-label="Main navigation"
+        class="container h-14 flex items-center justify-between"
+      >
         <NuxtLink
           to="/"
           aria-label="npmx home"
+          class="font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
         >
-          npmx
+          <span class="opacity-50">./</span>npmx
         </NuxtLink>
-        <ul>
-          <li>
-            <NuxtLink to="/search">
-              Search
+
+        <ul class="flex items-center gap-6">
+          <li class="flex">
+            <NuxtLink
+              to="/search"
+              class="link-subtle font-mono text-sm inline-flex items-center"
+            >
+              search
             </NuxtLink>
+          </li>
+          <li class="flex">
+            <a
+              href="https://github.com/danielroe/npmx.dev"
+              rel="noopener noreferrer"
+              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+            >
+              <span class="i-carbon-logo-github w-4 h-4" />
+              <span class="hidden sm:inline">github</span>
+            </a>
           </li>
         </ul>
       </nav>
     </header>
-    <div id="main-content">
+
+    <div
+      id="main-content"
+      class="flex-1"
+    >
       <NuxtPage />
     </div>
-    <footer>
-      <p>
-        <a
-          href="https://github.com/danielroe/npmx.dev"
-          rel="noopener noreferrer"
-        >Source on GitHub</a>
-      </p>
+
+    <footer class="border-t border-border mt-auto">
+      <div class="container py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-fg-subtle text-sm">
+        <p class="font-mono m-0">
+          a better npm browser
+        </p>
+        <div class="flex items-center gap-6">
+          <a
+            href="https://github.com/danielroe/npmx.dev"
+            rel="noopener noreferrer"
+            class="link-subtle font-mono text-xs"
+          >
+            source
+          </a>
+          <span class="text-border">|</span>
+          <a
+            href="https://roe.dev"
+            rel="noopener noreferrer"
+            class="link-subtle font-mono text-xs"
+          >
+            @danielroe
+          </a>
+        </div>
+      </div>
     </footer>
   </div>
 </template>
+
+<style>
+/* Base reset and defaults */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background-color: #0a0a0a;
+  color: #fafafa;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+}
+
+/* Default link styling for accessibility on dark background */
+a {
+  color: #fafafa;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: #404040;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+a:hover {
+  color: #ffffff;
+  text-decoration-color: #a1a1a1;
+}
+
+a:focus-visible {
+  outline: 2px solid rgba(250, 250, 250, 0.2);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Reset dd margin (browser default is margin-left: 40px) */
+dd {
+  margin: 0;
+}
+
+/* Reset button styles */
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: 0.5rem 1rem;
+  background: #fafafa;
+  color: #0a0a0a;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  z-index: 100;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* README prose styling */
+.readme-content {
+  color: #a1a1a1;
+  line-height: 1.75;
+  /* Prevent horizontal overflow on mobile */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  /* Contain all children */
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* README headings - styled by visual level (data-level), not semantic level */
+.readme-content h3,
+.readme-content h4,
+.readme-content h5,
+.readme-content h6 {
+  color: #fafafa;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+/* Visual styling based on original README heading level */
+.readme-content [data-level="1"] { font-size: 1.5rem; }
+.readme-content [data-level="2"] { font-size: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid #262626; }
+.readme-content [data-level="3"] { font-size: 1.125rem; }
+.readme-content [data-level="4"] { font-size: 1rem; }
+.readme-content [data-level="5"] { font-size: 0.925rem; }
+.readme-content [data-level="6"] { font-size: 0.875rem; }
+
+.readme-content p {
+  margin-bottom: 1rem;
+}
+
+.readme-content a {
+  color: #fafafa;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: #404040;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.readme-content a:hover {
+  text-decoration-color: #fafafa;
+}
+
+.readme-content code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875em;
+  background: #1a1a1a;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  border: 1px solid #262626;
+}
+
+/* Code blocks - including Shiki output */
+.readme-content pre,
+.readme-content .shiki {
+  background: #111111 !important;
+  border: 1px solid #262626;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  /* Fix horizontal overflow */
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.readme-content pre code,
+.readme-content .shiki code {
+  background: transparent !important;
+  border: none;
+  padding: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  color: #fafafa;
+  /* Prevent code from forcing width */
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.readme-content ul,
+.readme-content ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.readme-content li {
+  margin-bottom: 0.5rem;
+}
+
+.readme-content li::marker {
+  color: #404040;
+}
+
+.readme-content blockquote {
+  border-left: 2px solid #262626;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: #666666;
+  font-style: italic;
+}
+
+/* GitHub-style callouts/alerts */
+.readme-content blockquote[data-callout] {
+  border-left-width: 3px;
+  border-radius: 6px;
+  padding: 1rem 1rem 1rem 1.25rem;
+  background: #111111;
+  font-style: normal;
+  color: #a1a1a1;
+}
+
+.readme-content blockquote[data-callout]::before {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.readme-content blockquote[data-callout] > p:first-child {
+  margin-top: 0;
+}
+
+.readme-content blockquote[data-callout] > p:last-child {
+  margin-bottom: 0;
+}
+
+/* Note - blue */
+.readme-content blockquote[data-callout="note"] {
+  border-left-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+}
+.readme-content blockquote[data-callout="note"]::before {
+  content: "Note";
+  color: #3b82f6;
+}
+
+/* Tip - green */
+.readme-content blockquote[data-callout="tip"] {
+  border-left-color: #22c55e;
+  background: rgba(34, 197, 94, 0.05);
+}
+.readme-content blockquote[data-callout="tip"]::before {
+  content: "Tip";
+  color: #22c55e;
+}
+
+/* Important - purple */
+.readme-content blockquote[data-callout="important"] {
+  border-left-color: #a855f7;
+  background: rgba(168, 85, 247, 0.05);
+}
+.readme-content blockquote[data-callout="important"]::before {
+  content: "Important";
+  color: #a855f7;
+}
+
+/* Warning - yellow/orange */
+.readme-content blockquote[data-callout="warning"] {
+  border-left-color: #eab308;
+  background: rgba(234, 179, 8, 0.05);
+}
+.readme-content blockquote[data-callout="warning"]::before {
+  content: "Warning";
+  color: #eab308;
+}
+
+/* Caution - red */
+.readme-content blockquote[data-callout="caution"] {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+.readme-content blockquote[data-callout="caution"]::before {
+  content: "Caution";
+  color: #ef4444;
+}
+
+/* Table wrapper for horizontal scroll on mobile */
+.readme-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+
+.readme-content th,
+.readme-content td {
+  border: 1px solid #262626;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.readme-content th {
+  background: #111111;
+  color: #fafafa;
+  font-weight: 500;
+}
+
+.readme-content tr:hover {
+  background: #111111;
+}
+
+.readme-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.readme-content hr {
+  border: none;
+  border-top: 1px solid #262626;
+  margin: 2rem 0;
+}
+
+/* Badge images inline */
+.readme-content p > a > img,
+.readme-content p > img {
+  display: inline-block;
+  margin: 0 0.25rem 0.25rem 0;
+  border-radius: 4px;
+}
+</style>
