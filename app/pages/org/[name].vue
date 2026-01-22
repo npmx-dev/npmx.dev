@@ -1,29 +1,35 @@
 <script setup lang="ts">
 import { formatNumber } from '#imports'
 
-const route = useRoute('~username')
+const route = useRoute('org-name')
 
-const username = computed(() => route.params.username)
+const orgName = computed(() => route.params.name)
 
-// Search for packages by this maintainer
-const searchQuery = computed(() => `maintainer:${username.value}`)
+// Search for packages in this org's scope (@orgname/*)
+const searchQuery = computed(() => `@${orgName.value}`)
 
 const { data: results, status, error } = useNpmSearch(searchQuery, { size: 250 })
 
-// Sort packages by downloads/popularity (searchScore is a good proxy)
-const sortedPackages = computed(() => {
+// Filter to only include packages that are actually in this scope
+// (search may return packages that just mention the org name)
+const scopedPackages = computed(() => {
   if (!results.value?.objects) return []
-  return [...results.value.objects].sort((a, b) => b.searchScore - a.searchScore)
+  const scopePrefix = `@${orgName.value}/`
+  return results.value.objects
+    .filter(obj => obj.package.name.startsWith(scopePrefix))
+    .sort((a, b) => b.searchScore - a.searchScore)
 })
 
+const packageCount = computed(() => scopedPackages.value.length)
+
 useSeoMeta({
-  title: () => `@${username.value} - npmx`,
-  description: () => `npm packages maintained by ${username.value}`,
+  title: () => `@${orgName.value} - npmx`,
+  description: () => `npm packages published by the ${orgName.value} organization`,
 })
 
 defineOgImageComponent('Default', {
-  title: () => `@${username.value}`,
-  description: () => results.value ? `${results.value.total} packages` : 'npm user profile',
+  title: () => `@${orgName.value}`,
+  description: () => scopedPackages.value.length ? `${scopedPackages.value.length} packages` : 'npm organization',
 })
 </script>
 
@@ -32,30 +38,30 @@ defineOgImageComponent('Default', {
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex items-center gap-4 mb-4">
-        <!-- Avatar placeholder -->
+        <!-- Org avatar placeholder -->
         <div
-          class="w-16 h-16 rounded-full bg-bg-muted border border-border flex items-center justify-center"
+          class="w-16 h-16 rounded-lg bg-bg-muted border border-border flex items-center justify-center"
           aria-hidden="true"
         >
-          <span class="text-2xl text-fg-subtle font-mono">{{ username.charAt(0).toUpperCase() }}</span>
+          <span class="text-2xl text-fg-subtle font-mono">{{ orgName.charAt(0).toUpperCase() }}</span>
         </div>
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">
-            @{{ username }}
+            @{{ orgName }}
           </h1>
           <p
-            v-if="results?.total"
+            v-if="status === 'success'"
             class="text-fg-muted text-sm mt-1"
           >
-            {{ formatNumber(results.total) }} public package{{ results.total === 1 ? '' : 's' }}
+            {{ formatNumber(packageCount) }} public package{{ packageCount === 1 ? '' : 's' }}
           </p>
         </div>
       </div>
 
-      <!-- Link to npmjs.com profile -->
+      <!-- Link to npmjs.com org page -->
       <nav aria-label="External links">
         <a
-          :href="`https://www.npmjs.com/~${username}`"
+          :href="`https://www.npmjs.com/org/${orgName}`"
           target="_blank"
           rel="noopener noreferrer"
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
@@ -79,7 +85,7 @@ defineOgImageComponent('Default', {
       class="py-12 text-center"
     >
       <p class="text-fg-muted mb-4">
-        {{ error?.message ?? 'Failed to load user packages' }}
+        {{ error?.message ?? 'Failed to load organization packages' }}
       </p>
       <NuxtLink
         to="/"
@@ -91,27 +97,27 @@ defineOgImageComponent('Default', {
 
     <!-- Empty state -->
     <div
-      v-else-if="results && results.total === 0"
+      v-else-if="packageCount === 0"
       class="py-12 text-center"
     >
       <p class="text-fg-muted font-mono">
-        No public packages found for <span class="text-fg">@{{ username }}</span>
+        No public packages found for <span class="text-fg">@{{ orgName }}</span>
       </p>
       <p class="text-fg-subtle text-sm mt-2">
-        This user may not exist or has no public packages.
+        This organization may not exist or has no public packages.
       </p>
     </div>
 
     <!-- Package list -->
     <section
-      v-else-if="results && sortedPackages.length > 0"
-      aria-label="User packages"
+      v-else-if="scopedPackages.length > 0"
+      aria-label="Organization packages"
     >
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
         Packages
       </h2>
 
-      <PackageList :results="sortedPackages" />
+      <PackageList :results="scopedPackages" />
     </section>
   </main>
 </template>
