@@ -1,3 +1,7 @@
+packages:
+  - '.'
+  - 'cli'
+
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
@@ -7,3 +11,4 @@ onlyBuiltDependencies:
   - sharp
   - simple-git-hooks
 
+ignoreWorkspaceRootCheck: true

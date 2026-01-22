@@ -1,0 +1,38 @@
+{
+  "name": "@npmx/connector",
+  "version": "0.0.1",
+  "description": "Local connector for npmx.dev - enables authenticated npm operations from the web UI",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "npmx-connector": "./dist/cli.mjs"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "citty": "^0.1.6",
+    "consola": "^3.2.3",
+    "defu": "^6.1.4",
+    "h3": "^1.14.0",
+    "listhen": "^1.9.0",
+    "ofetch": "^1.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.0",
+    "unbuild": "^3.5.0"
+  }
+}

@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
@@ -9,25 +8,43 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     '@nuxt/test-utils',
   ],
+
   devtools: { enabled: true },
+
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
     },
   },
+
+  vue: {
+    compilerOptions: {
+      isCustomElement: tag => tag === 'search',
+    },
+  },
+
+  site: {
+    url: 'https://npmx.dev',
+    name: 'npmx',
+    description: 'A fast, accessible npm package browser for power users',
+  },
+
   future: {
     compatibilityVersion: 4,
   },
+
   experimental: {
     typedPages: true,
   },
+
   compatibilityDate: '2024-04-03',
+
   eslint: {
     config: {
       stylistic: true,
     },
   },
-  // Ensure that any HTML validation errors are treated as build errors
+
   htmlValidator: {
     failOnError: true,
   },

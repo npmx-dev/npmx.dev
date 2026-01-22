@@ -36,14 +36,18 @@
     "vue": "3.5.26"
   },
   "devDependencies": {
+    "@npm/types": "^2.1.0",
     "@nuxt/test-utils": "3.23.0",
     "@playwright/test": "1.57.0",
     "@vitest/browser-playwright": "^4.0.17",
     "@vitest/coverage-v8": "^4.0.17",
     "@vue/test-utils": "2.4.6",
+    "dompurify": "^3.3.1",
     "eslint": "9.39.2",
     "happy-dom": "20.3.4",
+    "isomorphic-dompurify": "^2.35.0",
     "lint-staged": "16.2.7",
+    "marked": "^17.0.1",
     "playwright-core": "^1.57.0",
     "simple-git-hooks": "2.13.1",
     "typescript": "5.9.3",
