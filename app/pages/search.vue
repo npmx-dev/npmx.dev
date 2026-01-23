@@ -276,7 +276,7 @@ defineOgImageComponent('Default', {
         </p>
 
         <p
-          v-else
+          v-else-if="status !== 'pending'"
           role="status"
           class="text-fg-muted py-12 text-center font-mono"
         >
