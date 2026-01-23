@@ -69,7 +69,7 @@ function encodePackageName(name: string): string {
 export function usePackage(name: MaybeRefOrGetter<string>) {
   const registry = useNpmRegistry()
 
-  return useAsyncData(
+  return useLazyAsyncData(
     () => `package:${toValue(name)}`,
     () => registry.fetchPackage(toValue(name)),
   )
@@ -81,7 +81,7 @@ export function usePackageDownloads(
 ) {
   const registry = useNpmRegistry()
 
-  return useAsyncData(
+  return useLazyAsyncData(
     () => `downloads:${toValue(name)}:${toValue(period)}`,
     () => registry.fetchDownloads(toValue(name), toValue(period)),
   )
@@ -99,7 +99,7 @@ export function useNpmSearch(
   const registry = useNpmRegistry()
   let lastSearch: NpmSearchResponse | undefined = undefined
 
-  return useAsyncData(
+  return useLazyAsyncData(
     () => `search:${toValue(query)}:${JSON.stringify(toValue(options))}`,
     async () => {
       const q = toValue(query)
