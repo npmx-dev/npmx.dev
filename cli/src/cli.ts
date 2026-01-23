@@ -2,9 +2,9 @@
 import { defineCommand, runMain } from 'citty'
 import { listen } from 'listhen'
 import { toNodeListener } from 'h3'
-import { createConnectorApp, generateToken, CONNECTOR_VERSION } from './server'
-import { getNpmUser } from './npm-client'
-import { initLogger, showToken, logInfo, showAuthRequired } from './logger'
+import { createConnectorApp, generateToken, CONNECTOR_VERSION } from './server.ts'
+import { getNpmUser } from './npm-client.ts'
+import { initLogger, showToken, logInfo, showAuthRequired } from './logger.ts'
 
 const DEFAULT_PORT = 31415
 

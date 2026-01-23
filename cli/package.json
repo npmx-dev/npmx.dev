@@ -18,8 +18,8 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "dev": "tsx src/cli.ts",
-    "typecheck": "tsc --noEmit"
+    "dev": "node --experimental-strip-types src/cli.ts",
+    "test:types": "tsc --noEmit"
   },
   "dependencies": {
     "@clack/prompts": "1.0.0-alpha.9",
@@ -32,8 +32,7 @@
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
-    "@types/node": "^25.0.10",
-    "tsx": "^4.21.0",
+    "@types/node": "^24.10.9",
     "typescript": "^5.9.3",
     "unbuild": "^3.6.1"
   }

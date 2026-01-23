@@ -20,13 +20,12 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 
 ## Features
 
-- **Dark mode by default** - Easy on the eyes, no toggle needed
-- **Package browsing** - Fast search, package details, READMEs, versions, dependencies
-- **Dependencies view** - Shows regular dependencies and peer dependencies (with optional badges)
-- **User profiles** - View any npm user's public packages at `/~username`
-- **Organization pages** - Browse org packages at `/org/orgname`
-- **Provenance indicators** - Verified build indicators for packages with npm provenance
-- **Admin features** - Org/team management, package access controls via local connector
+- **Dark mode by default** - easier on the eyes
+- **Package browsing** - fast search, package details, READMEs, versions, dependencies
+- **User profiles** - view any npm user's public packages at `/~username`
+- **Organization pages** - browse org packages at `/org/orgname`
+- **Provenance indicators** - verified build indicators for packages with npm provenance
+- **Admin features** - org/team management, package access controls via local connector (coming soon)
 
 ### URL Compatibility
 
@@ -41,15 +40,13 @@ npmx.dev supports npm permalink patterns:
 | `/~<username>` | [`/~sindresorhus`](https://npmx.dev/~sindresorhus) |
 | `/org/<name>` | [`/org/nuxt`](https://npmx.dev/org/nuxt) |
 
-**Coming soon** (with local connector): `/package/<name>/access`, `/package/<name>/collaborators`, `/settings/*`
-
 ## Tech Stack
 
-- [Nuxt 4](https://nuxt.com/) - Vue framework
-- [Nitro](https://nuxt.com/docs/guide/concepts/server-engine) - Server engine with API routes
-- [UnoCSS](https://unocss.dev/) - Atomic CSS engine
-- [nuxt-og-image](https://github.com/nuxt-modules/og-image) - Dynamic OG images
-- [npm Registry API](https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md) - Package data
+- [Nuxt 4](https://nuxt.com/)
+- [Nitro](https://nuxt.com/docs/guide/concepts/server-engine)
+- [UnoCSS](https://unocss.dev/)
+- [nuxt-og-image](https://github.com/nuxt-modules/og-image)
+- [npm Registry API](https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md)
 
 ## Try it out locally
 
@@ -85,6 +82,21 @@ pnpm test:browser
 # type check
 pnpm test:types
 ```
+
+### Local Connector (CLI)
+
+The `cli/` workspace contains a local connector that enables authenticated npm operations from the web UI. It runs on your machine and uses your existing npm credentials.
+
+```bash
+# run the connector in dev mode
+pnpm --filter @npmx/connector dev
+
+# or build and run the production version
+pnpm --filter @npmx/connector build
+node cli/dist/cli.mjs
+```
+
+The connector will check your npm authentication, generate a connection token, and listen for requests from npmx.dev.
 
 ## License
 

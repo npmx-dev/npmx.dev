@@ -8,7 +8,7 @@ import type {
   PendingOperation,
   OperationType,
   ApiResponse,
-} from './types'
+} from './types.ts'
 import {
   getNpmUser,
   orgAddUser,
@@ -26,7 +26,7 @@ import {
   ownerAdd,
   ownerRemove,
   type NpmExecResult,
-} from './npm-client'
+} from './npm-client.ts'
 
 // Read version from package.json
 const __dirname = dirname(fileURLToPath(import.meta.url))
