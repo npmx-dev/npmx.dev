@@ -1,5 +1,35 @@
+const CACHE_VERSION = 2
+
 // Maximum file size to fetch and highlight (500KB)
 const MAX_FILE_SIZE = 500 * 1024
+
+// Languages that benefit from import linking
+const IMPORT_LANGUAGES = new Set([
+  'javascript', 'typescript', 'jsx', 'tsx',
+  'vue', 'svelte', 'astro',
+])
+
+interface PackageJson {
+  dependencies?: Record<string, string>
+  devDependencies?: Record<string, string>
+  peerDependencies?: Record<string, string>
+  optionalDependencies?: Record<string, string>
+}
+
+/**
+ * Fetch package.json from jsDelivr to get dependency info
+ */
+async function fetchPackageJson(packageName: string, version: string): Promise<PackageJson | null> {
+  try {
+    const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/package.json`
+    const response = await fetch(url)
+    if (!response.ok) return null
+    return await response.json() as PackageJson
+  }
+  catch {
+    return null
+  }
+}
 
 /**
  * Fetch file content from jsDelivr CDN.
@@ -73,7 +103,45 @@ export default defineCachedEventHandler(
     try {
       const content = await fetchFileContent(packageName, version, filePath)
       const language = getLanguageFromPath(filePath)
-      const html = await highlightCode(content, language)
+
+      // For JS/TS files, resolve dependency versions and relative imports for linking
+      let dependencies: Record<string, { version: string }> | undefined
+      let resolveRelative: ((specifier: string) => string | null) | undefined
+
+      if (IMPORT_LANGUAGES.has(language)) {
+        // Fetch package.json and file tree in parallel
+        const [pkgJson, fileTreeResponse] = await Promise.all([
+          fetchPackageJson(packageName, version),
+          getPackageFileTree(packageName, version).catch(() => null),
+        ])
+
+        // Resolve npm dependency versions
+        if (pkgJson) {
+          // Merge all dependency types
+          const allDeps: Record<string, string> = {
+            ...pkgJson.dependencies,
+            ...pkgJson.peerDependencies,
+            ...pkgJson.optionalDependencies,
+            // Note: excluding devDependencies as they're less likely to be imported in dist files
+          }
+
+          if (Object.keys(allDeps).length > 0) {
+            const resolved: Record<string, string> = await resolveDependencyVersions(allDeps)
+            dependencies = {}
+            for (const [name, ver] of Object.entries(resolved)) {
+              dependencies[name] = { version: ver }
+            }
+          }
+        }
+
+        // Create resolver for relative imports
+        if (fileTreeResponse) {
+          const files = flattenFileTree(fileTreeResponse.tree)
+          resolveRelative = createImportResolver(files, filePath, packageName, version)
+        }
+      }
+
+      const html = await highlightCode(content, language, { dependencies, resolveRelative })
 
       return {
         package: packageName,
@@ -96,7 +164,7 @@ export default defineCachedEventHandler(
     maxAge: 60 * 60, // Cache for 1 hour (files don't change for a given version)
     getKey: (event) => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `file:${pkg}`
+      return `file:v${CACHE_VERSION}:${pkg}`
     },
   },
 )

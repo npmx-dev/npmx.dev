@@ -125,10 +125,24 @@ watch(
   transition: background-color 0.1s;
 }
 
-/* Highlighted lines in code content */
+/* Highlighted lines in code content - extend full width with negative margin */
 .code-content :deep(.line.highlighted) {
   background: rgb(234 179 8 / 0.2); /* yellow-500/20 */
   margin: 0 -1rem;
   padding: 0 1rem;
+}
+
+/* Clickable import links */
+.code-content :deep(.import-link) {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.15s;
+  cursor: pointer;
+}
+
+.code-content :deep(.import-link:hover) {
+  text-decoration-color: currentColor;
 }
 </style>
