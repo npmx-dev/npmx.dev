@@ -1,6 +1,6 @@
 # npmx.dev
 
-> A fast, modern npm package browser for power users.
+> A fast, modern browser for the npm registry for power users.
 
 <p align="center">
   <a href="https://npmx.dev/">
