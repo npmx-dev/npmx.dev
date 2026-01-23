@@ -13,7 +13,7 @@ withDefaults(defineProps<{
 <template>
   <div
     class="h-full w-full flex flex-col justify-center items-center bg-[#0a0a0a] text-[#fafafa]"
-    style="font-family: 'JetBrains Mono'"
+    style="font-family: 'Geist Mono'"
   >
     <h1 class="text-6xl font-medium tracking-tight">
       {{ name }}

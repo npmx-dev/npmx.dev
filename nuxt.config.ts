@@ -90,7 +90,7 @@ export default defineNuxtConfig({
         global: true,
       },
       {
-        name: 'JetBrains Mono',
+        name: 'Geist Mono',
         weights: ['400', '500'],
         global: true,
       },

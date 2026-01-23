@@ -14,7 +14,7 @@ export default defineConfig({
   ],
   theme: {
     font: {
-      mono: '\'JetBrains Mono\', monospace',
+      mono: '\'Geist Mono\', monospace',
       sans: '\'Geist\', system-ui, -apple-system, sans-serif',
     },
     colors: {
