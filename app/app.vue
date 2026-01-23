@@ -56,48 +56,7 @@ onUnmounted(() => {
       class="skip-link font-mono"
     >Skip to main content</a>
 
-    <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
-      <nav
-        aria-label="Main navigation"
-        class="container h-14 flex items-center justify-between"
-      >
-        <NuxtLink
-          v-show="!isHomepage"
-          to="/"
-          aria-label="npmx home"
-          class="header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
-        >
-          <span class="text-fg-subtle"><span style="letter-spacing: -0.2em;">.</span>/</span>npmx
-        </NuxtLink>
-        <!-- Spacer when logo is hidden on homepage -->
-        <span
-          v-show="isHomepage"
-          class="w-1"
-        />
-
-        <ul class="flex items-center gap-4 sm:gap-6">
-          <li class="flex">
-            <NuxtLink
-              to="/search"
-              class="link-subtle font-mono text-sm inline-flex items-center gap-2"
-            >
-              search
-              <kbd class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded">/</kbd>
-            </NuxtLink>
-          </li>
-          <li class="flex">
-            <ClientOnly>
-              <ConnectorStatus />
-              <template #fallback>
-                <div class="w-8 h-8 flex items-center justify-center">
-                  <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-                </div>
-              </template>
-            </ClientOnly>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <AppHeader :show-logo="!isHomepage" />
 
     <div
       id="main-content"
@@ -106,30 +65,7 @@ onUnmounted(() => {
       <NuxtPage />
     </div>
 
-    <footer class="border-t border-border mt-auto">
-      <div class="container py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-fg-subtle text-sm">
-        <p class="font-mono m-0">
-          a better npm browser
-        </p>
-        <div class="flex items-center gap-6">
-          <a
-            href="https://github.com/danielroe/npmx.dev"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs"
-          >
-            source
-          </a>
-          <span class="text-border">|</span>
-          <a
-            href="https://roe.dev"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs"
-          >
-            @danielroe
-          </a>
-        </div>
-      </div>
-    </footer>
+    <AppFooter />
   </div>
 </template>
 

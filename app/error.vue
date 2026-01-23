@@ -27,40 +27,7 @@ useHead({
 
 <template>
   <div class="min-h-screen flex flex-col bg-bg text-fg">
-    <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
-      <nav
-        aria-label="Main navigation"
-        class="container h-14 flex items-center justify-between"
-      >
-        <a
-          href="/"
-          class="header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
-        >
-          <span class="text-fg-subtle">./</span>npmx
-        </a>
-
-        <ul class="flex items-center gap-6 list-none m-0 p-0">
-          <li class="flex">
-            <a
-              href="/search"
-              class="link-subtle font-mono text-sm inline-flex items-center"
-            >
-              search
-            </a>
-          </li>
-          <li class="flex">
-            <a
-              href="https://github.com/danielroe/npmx.dev"
-              rel="noopener noreferrer"
-              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-            >
-              <span class="i-carbon-logo-github w-4 h-4" />
-              <span class="hidden sm:inline">github</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <AppHeader :show-connector="false" />
 
     <main class="flex-1 container flex flex-col items-center justify-center py-20 text-center">
       <p class="font-mono text-8xl sm:text-9xl font-medium text-fg-subtle mb-4">
@@ -87,29 +54,6 @@ useHead({
       </button>
     </main>
 
-    <footer class="border-t border-border mt-auto">
-      <div class="container py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-fg-subtle text-sm">
-        <p class="font-mono m-0">
-          a better npm browser
-        </p>
-        <div class="flex items-center gap-6">
-          <a
-            href="https://github.com/danielroe/npmx.dev"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs"
-          >
-            source
-          </a>
-          <span class="text-border">|</span>
-          <a
-            href="https://roe.dev"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs"
-          >
-            @danielroe
-          </a>
-        </div>
-      </div>
-    </footer>
+    <AppFooter />
   </div>
 </template>
