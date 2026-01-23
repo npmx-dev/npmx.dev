@@ -1,5 +1,8 @@
 import crypto from 'node:crypto'
-import { createApp, createRouter, eventHandler, readBody, getQuery, createError, getHeader } from 'h3'
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+import { createApp, createRouter, eventHandler, readBody, getQuery, createError, getHeader, setResponseHeaders, getRouterParam } from 'h3'
 import type {
   ConnectorState,
   PendingOperation,
@@ -10,16 +13,36 @@ import {
   getNpmUser,
   orgAddUser,
   orgRemoveUser,
+  orgListUsers,
   teamCreate,
   teamDestroy,
   teamAddUser,
   teamRemoveUser,
+  teamListTeams,
+  teamListUsers,
   accessGrant,
   accessRevoke,
+  accessListCollaborators,
   ownerAdd,
   ownerRemove,
   type NpmExecResult,
 } from './npm-client'
+
+// Read version from package.json
+const __dirname = dirname(fileURLToPath(import.meta.url))
+function getConnectorVersion(): string {
+  try {
+    const pkgPath = join(__dirname, '..', 'package.json')
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
+    return pkg.version || '0.0.0'
+  }
+  catch {
+    // Fallback if package.json can't be read (e.g., in bundled builds)
+    return '0.0.0'
+  }
+}
+
+export const CONNECTOR_VERSION = getConnectorVersion()
 
 function generateToken(): string {
   return crypto.randomBytes(16).toString('hex')
@@ -37,11 +60,27 @@ export function createConnectorApp(expectedToken: string) {
       npmUser: null,
     },
     operations: [],
-    otp: null,
   }
 
-  const app = createApp()
+  const app = createApp({
+    onRequest(event) {
+      // CORS headers for browser connections
+      setResponseHeaders(event, {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      })
+    },
+  })
   const router = createRouter()
+
+  // Handle CORS preflight requests
+  router.options(
+    '/**',
+    eventHandler(() => {
+      return null
+    }),
+  )
 
   function validateToken(authHeader: string | null | undefined): boolean {
     if (!authHeader) return false
@@ -84,7 +123,6 @@ export function createConnectorApp(expectedToken: string) {
         data: {
           npmUser: state.session.npmUser,
           operations: state.operations,
-          hasOtp: !!state.otp,
         },
       } as ApiResponse
     }),
@@ -164,21 +202,6 @@ export function createConnectorApp(expectedToken: string) {
   )
 
   router.post(
-    '/otp',
-    eventHandler(async (event) => {
-      const auth = getHeader(event, 'authorization')
-      if (!validateToken(auth)) {
-        throw createError({ statusCode: 401, message: 'Unauthorized' })
-      }
-
-      const body = await readBody(event)
-      state.otp = body?.otp ?? null
-
-      return { success: true } as ApiResponse
-    }),
-  )
-
-  router.post(
     '/approve',
     eventHandler(async (event) => {
       const auth = getHeader(event, 'authorization')
@@ -228,6 +251,37 @@ export function createConnectorApp(expectedToken: string) {
   )
 
   router.post(
+    '/retry',
+    eventHandler(async (event) => {
+      const auth = getHeader(event, 'authorization')
+      if (!validateToken(auth)) {
+        throw createError({ statusCode: 401, message: 'Unauthorized' })
+      }
+
+      const query = getQuery(event)
+      const id = query.id as string
+
+      const operation = state.operations.find(op => op.id === id)
+      if (!operation) {
+        throw createError({ statusCode: 404, message: 'Operation not found' })
+      }
+
+      if (operation.status !== 'failed') {
+        throw createError({ statusCode: 400, message: 'Only failed operations can be retried' })
+      }
+
+      // Reset the operation for retry
+      operation.status = 'approved'
+      operation.result = undefined
+
+      return {
+        success: true,
+        data: operation,
+      } as ApiResponse
+    }),
+  )
+
+  router.post(
     '/execute',
     eventHandler(async (event) => {
       const auth = getHeader(event, 'authorization')
@@ -235,22 +289,76 @@ export function createConnectorApp(expectedToken: string) {
         throw createError({ statusCode: 401, message: 'Unauthorized' })
       }
 
+      // OTP can be passed directly in the request body for this execution
+      const body = await readBody(event)
+      const otp = body?.otp as string | undefined
+
       const approvedOps = state.operations.filter(op => op.status === 'approved')
       const results: Array<{ id: string, result: NpmExecResult }> = []
+      let otpRequired = false
+      const completedIds = new Set<string>()
+      const failedIds = new Set<string>()
 
-      for (const op of approvedOps) {
-        op.status = 'running'
+      // Execute operations in waves, respecting dependencies
+      // Each wave contains operations whose dependencies are satisfied
+      while (true) {
+        // Find operations ready to run (no pending dependencies)
+        const readyOps = approvedOps.filter((op) => {
+          // Already processed
+          if (completedIds.has(op.id) || failedIds.has(op.id)) return false
+          // No dependency - ready
+          if (!op.dependsOn) return true
+          // Dependency completed successfully - ready
+          if (completedIds.has(op.dependsOn)) return true
+          // Dependency failed - skip this one too
+          if (failedIds.has(op.dependsOn)) {
+            op.status = 'failed'
+            op.result = { stdout: '', stderr: 'Skipped: dependency failed', exitCode: 1 }
+            failedIds.add(op.id)
+            results.push({ id: op.id, result: op.result })
+            return false
+          }
+          // Dependency still pending - not ready
+          return false
+        })
 
-        const result = await executeOperation(op, state.otp ?? undefined)
-        op.result = result
-        op.status = result.exitCode === 0 ? 'completed' : 'failed'
+        // No more operations to run
+        if (readyOps.length === 0) break
 
-        results.push({ id: op.id, result })
+        // If we've hit an OTP error and no OTP was provided, stop
+        if (otpRequired && !otp) break
+
+        // Execute ready operations in parallel
+        const runningOps = readyOps.map(async (op) => {
+          op.status = 'running'
+          const result = await executeOperation(op, otp)
+          op.result = result
+          op.status = result.exitCode === 0 ? 'completed' : 'failed'
+
+          if (result.exitCode === 0) {
+            completedIds.add(op.id)
+          }
+          else {
+            failedIds.add(op.id)
+          }
+
+          // Track if OTP is needed
+          if (result.requiresOtp) {
+            otpRequired = true
+          }
+
+          results.push({ id: op.id, result })
+        })
+
+        await Promise.all(runningOps)
       }
 
       return {
         success: true,
-        data: results,
+        data: {
+          results,
+          otpRequired,
+        },
       } as ApiResponse
     }),
   )
@@ -297,6 +405,162 @@ export function createConnectorApp(expectedToken: string) {
         success: true,
         data: { removed },
       } as ApiResponse
+    }),
+  )
+
+  // List endpoints (read-only data fetching)
+
+  router.get(
+    '/org/:org/users',
+    eventHandler(async (event) => {
+      const auth = getHeader(event, 'authorization')
+      if (!validateToken(auth)) {
+        throw createError({ statusCode: 401, message: 'Unauthorized' })
+      }
+
+      const org = getRouterParam(event, 'org')
+      if (!org) {
+        throw createError({ statusCode: 400, message: 'Org name required' })
+      }
+
+      const result = await orgListUsers(org)
+      if (result.exitCode !== 0) {
+        return {
+          success: false,
+          error: result.stderr || 'Failed to list org users',
+        } as ApiResponse
+      }
+
+      try {
+        const users = JSON.parse(result.stdout) as Record<string, 'developer' | 'admin' | 'owner'>
+        return {
+          success: true,
+          data: users,
+        } as ApiResponse
+      }
+      catch {
+        return {
+          success: false,
+          error: 'Failed to parse org users',
+        } as ApiResponse
+      }
+    }),
+  )
+
+  router.get(
+    '/org/:org/teams',
+    eventHandler(async (event) => {
+      const auth = getHeader(event, 'authorization')
+      if (!validateToken(auth)) {
+        throw createError({ statusCode: 401, message: 'Unauthorized' })
+      }
+
+      const org = getRouterParam(event, 'org')
+      if (!org) {
+        throw createError({ statusCode: 400, message: 'Org name required' })
+      }
+
+      const result = await teamListTeams(org)
+      if (result.exitCode !== 0) {
+        return {
+          success: false,
+          error: result.stderr || 'Failed to list teams',
+        } as ApiResponse
+      }
+
+      try {
+        const teams = JSON.parse(result.stdout) as string[]
+        return {
+          success: true,
+          data: teams,
+        } as ApiResponse
+      }
+      catch {
+        return {
+          success: false,
+          error: 'Failed to parse teams',
+        } as ApiResponse
+      }
+    }),
+  )
+
+  router.get(
+    '/team/:scopeTeam/users',
+    eventHandler(async (event) => {
+      const auth = getHeader(event, 'authorization')
+      if (!validateToken(auth)) {
+        throw createError({ statusCode: 401, message: 'Unauthorized' })
+      }
+
+      const scopeTeamRaw = getRouterParam(event, 'scopeTeam')
+      if (!scopeTeamRaw) {
+        throw createError({ statusCode: 400, message: 'Team name required' })
+      }
+
+      // Decode the team name (handles encoded colons like nuxt%3Adevelopers)
+      const scopeTeam = decodeURIComponent(scopeTeamRaw)
+
+      const result = await teamListUsers(scopeTeam)
+      if (result.exitCode !== 0) {
+        return {
+          success: false,
+          error: result.stderr || 'Failed to list team users',
+        } as ApiResponse
+      }
+
+      try {
+        const users = JSON.parse(result.stdout) as string[]
+        return {
+          success: true,
+          data: users,
+        } as ApiResponse
+      }
+      catch {
+        return {
+          success: false,
+          error: 'Failed to parse team users',
+        } as ApiResponse
+      }
+    }),
+  )
+
+  router.get(
+    '/package/:pkg/collaborators',
+    eventHandler(async (event) => {
+      const auth = getHeader(event, 'authorization')
+      if (!validateToken(auth)) {
+        throw createError({ statusCode: 401, message: 'Unauthorized' })
+      }
+
+      const pkg = getRouterParam(event, 'pkg')
+      if (!pkg) {
+        throw createError({ statusCode: 400, message: 'Package name required' })
+      }
+
+      // Decode the package name (handles scoped packages like @nuxt%2Fkit)
+      const decodedPkg = decodeURIComponent(pkg)
+
+      const result = await accessListCollaborators(decodedPkg)
+      if (result.exitCode !== 0) {
+        return {
+          success: false,
+          error: result.stderr || 'Failed to list collaborators',
+        } as ApiResponse
+      }
+
+      try {
+        const collaborators = JSON.parse(result.stdout) as Record<string, 'read-only' | 'read-write'>
+        return {
+          success: true,
+          data: collaborators,
+        } as ApiResponse
+      }
+      catch {
+        return {
+          success: false,
+          error: 'Failed to parse collaborators',
+        } as ApiResponse
+      }
     }),
   )
 

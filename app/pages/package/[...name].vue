@@ -563,37 +563,16 @@ defineOgImageComponent('Package', {
 
         <!-- Sidebar -->
         <aside class="order-1 lg:order-2 space-y-8">
-          <!-- Maintainers -->
-          <section
-            v-if="pkg.maintainers?.length"
-            aria-labelledby="maintainers-heading"
-          >
-            <h2
-              id="maintainers-heading"
-              class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
-            >
-              Maintainers
-            </h2>
-            <ul class="space-y-2 list-none m-0 p-0">
-              <li
-                v-for="maintainer in pkg.maintainers.slice(0, 5)"
-                :key="maintainer.name ?? maintainer.email"
-              >
-                <NuxtLink
-                  v-if="maintainer.name"
-                  :to="{ name: '~username', params: { username: maintainer.name } }"
-                  rel="noopener noreferrer"
-                  class="link-subtle font-mono text-sm"
-                >
-                  @{{ maintainer.name }}
-                </NuxtLink>
-                <span
-                  v-else
-                  class="font-mono text-sm text-fg-muted"
-                >{{ maintainer.email }}</span>
-              </li>
-            </ul>
-          </section>
+          <!-- Maintainers (with admin actions when connected) -->
+          <PackageMaintainers
+            :package-name="pkg.name"
+            :maintainers="pkg.maintainers"
+          />
+
+          <!-- Team access controls (for scoped packages when connected) -->
+          <ClientOnly>
+            <PackageAccessControls :package-name="pkg.name" />
+          </ClientOnly>
 
           <!-- Keywords -->
           <section

@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 import { defineCommand, runMain } from 'citty'
-import consola from 'consola'
 import { listen } from 'listhen'
 import { toNodeListener } from 'h3'
-import { createConnectorApp, generateToken } from './server'
+import { createConnectorApp, generateToken, CONNECTOR_VERSION } from './server'
+import { initLogger, showToken, logInfo } from './logger'
 
 const DEFAULT_PORT = 31415
 
 const main = defineCommand({
   meta: {
     name: 'npmx-connector',
-    version: '0.0.1',
+    version: CONNECTOR_VERSION,
     description: 'Local connector for npmx.dev',
   },
   args: {
@@ -24,20 +24,8 @@ const main = defineCommand({
     const port = Number.parseInt(args.port as string, 10) || DEFAULT_PORT
     const token = generateToken()
 
-    consola.box({
-      title: 'npmx connector',
-      message: [
-        '',
-        'Paste this token in the npmx.dev web UI to connect:',
-        '',
-        `  ${token}`,
-        '',
-        `Server running at http://localhost:${port}`,
-        '',
-        'Press Ctrl+C to stop',
-        '',
-      ].join('\n'),
-    })
+    initLogger()
+    showToken(token, port)
 
     const app = createConnectorApp(token)
 
@@ -46,6 +34,8 @@ const main = defineCommand({
       hostname: '127.0.0.1',
       showURL: false,
     })
+
+    logInfo('Waiting for connection... (Press Ctrl+C to stop)')
   },
 })
 

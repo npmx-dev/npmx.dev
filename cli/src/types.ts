@@ -30,6 +30,14 @@ export type OperationStatus
     | 'failed'
     | 'cancelled'
 
+export interface OperationResult {
+  stdout: string
+  stderr: string
+  exitCode: number
+  /** True if the operation failed due to missing/invalid OTP */
+  requiresOtp?: boolean
+}
+
 export interface PendingOperation {
   id: string
   type: OperationType
@@ -38,17 +46,14 @@ export interface PendingOperation {
   command: string
   status: OperationStatus
   createdAt: number
-  result?: {
-    stdout: string
-    stderr: string
-    exitCode: number
-  }
+  result?: OperationResult
+  /** ID of operation this depends on (must complete successfully first) */
+  dependsOn?: string
 }
 
 export interface ConnectorState {
   session: ConnectorSession
   operations: PendingOperation[]
-  otp: string | null
 }
 
 export interface ApiResponse<T = unknown> {

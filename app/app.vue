@@ -75,7 +75,7 @@ onUnmounted(() => {
           class="w-1"
         />
 
-        <ul class="flex items-center gap-6">
+        <ul class="flex items-center gap-4 sm:gap-6">
           <li class="flex">
             <NuxtLink
               to="/search"
@@ -94,6 +94,11 @@ onUnmounted(() => {
               <span class="i-carbon-logo-github w-4 h-4" />
               <span class="hidden sm:inline">github</span>
             </a>
+          </li>
+          <li class="flex">
+            <ClientOnly>
+              <ConnectorStatus />
+            </ClientOnly>
           </li>
         </ul>
       </nav>

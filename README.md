@@ -20,10 +20,13 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better npm package brows
 
 ## Features
 
+- **Dark mode by default** - Easy on the eyes, no toggle needed
 - **Package browsing** - Fast search, package details, READMEs, versions, dependencies
+- **Dependencies view** - Shows regular dependencies and peer dependencies (with optional badges)
 - **User profiles** - View any npm user's public packages at `/~username`
 - **Organization pages** - Browse org packages at `/org/orgname`
 - **Provenance indicators** - Verified build indicators for packages with npm provenance
+- **Admin features** - Org/team management, package access controls via local connector
 
 ### URL Compatibility
 

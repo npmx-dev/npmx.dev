@@ -31,6 +31,8 @@
     "@nuxtjs/html-validator": "^2.1.0",
     "@shikijs/langs": "^3.21.0",
     "@shikijs/themes": "^3.21.0",
+    "@vueuse/core": "^14.1.0",
+    "@vueuse/nuxt": "14.1.0",
     "nuxt": "^4.3.0",
     "nuxt-og-image": "^5.1.13",
     "perfect-debounce": "^2.1.0",

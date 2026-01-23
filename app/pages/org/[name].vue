@@ -5,6 +5,8 @@ const route = useRoute('org-name')
 
 const orgName = computed(() => route.params.name)
 
+const { isConnected } = useConnector()
+
 // Search for packages in this org's scope (@orgname/*)
 const searchQuery = computed(() => `@${orgName.value}`)
 
@@ -21,6 +23,8 @@ const scopedPackages = computed(() => {
 })
 
 const packageCount = computed(() => scopedPackages.value.length)
+
+const activeTab = ref<'members' | 'teams'>('members')
 
 useSeoMeta({
   title: () => `@${orgName.value} - npmx`,
@@ -71,6 +75,49 @@ defineOgImageComponent('Default', {
         </a>
       </nav>
     </header>
+
+    <!-- Admin panels (when connected) -->
+    <ClientOnly>
+      <section
+        v-if="isConnected"
+        class="mb-8"
+        aria-label="Organization management"
+      >
+        <!-- Tab buttons -->
+        <div class="flex items-center gap-1 mb-4">
+          <button
+            type="button"
+            class="px-4 py-2 font-mono text-sm rounded-t-lg transition-colors duration-200"
+            :class="activeTab === 'members'
+              ? 'bg-bg-subtle text-fg border border-border border-b-0'
+              : 'text-fg-muted hover:text-fg'"
+            @click="activeTab = 'members'"
+          >
+            Members
+          </button>
+          <button
+            type="button"
+            class="px-4 py-2 font-mono text-sm rounded-t-lg transition-colors duration-200"
+            :class="activeTab === 'teams'
+              ? 'bg-bg-subtle text-fg border border-border border-b-0'
+              : 'text-fg-muted hover:text-fg'"
+            @click="activeTab = 'teams'"
+          >
+            Teams
+          </button>
+        </div>
+
+        <!-- Tab content -->
+        <OrgMembersPanel
+          v-if="activeTab === 'members'"
+          :org-name="orgName"
+        />
+        <OrgTeamsPanel
+          v-else
+          :org-name="orgName"
+        />
+      </section>
+    </ClientOnly>
 
     <!-- Loading state -->
     <LoadingSpinner

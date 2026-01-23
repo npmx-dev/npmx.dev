@@ -1,5 +1,6 @@
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
+import { logCommand, logSuccess, logError } from './logger'
 
 const execAsync = promisify(exec)
 
@@ -7,11 +8,33 @@ export interface NpmExecResult {
   stdout: string
   stderr: string
   exitCode: number
+  /** True if the operation failed due to missing/invalid OTP */
+  requiresOtp?: boolean
+}
+
+function detectOtpRequired(stderr: string): boolean {
+  const otpPatterns = [
+    'EOTP',
+    'one-time password',
+    'This operation requires a one-time password',
+    '--otp=<code>',
+    'OTP',
+  ]
+  const lowerStderr = stderr.toLowerCase()
+  return otpPatterns.some(pattern => lowerStderr.includes(pattern.toLowerCase()))
+}
+
+function filterNpmWarnings(stderr: string): string {
+  return stderr
+    .split('\n')
+    .filter(line => !line.startsWith('npm warn'))
+    .join('\n')
+    .trim()
 }
 
 export async function execNpm(
   args: string[],
-  options: { otp?: string } = {},
+  options: { otp?: string, silent?: boolean } = {},
 ): Promise<NpmExecResult> {
   const cmd = ['npm', ...args]
 
@@ -19,25 +42,57 @@ export async function execNpm(
     cmd.push('--otp', options.otp)
   }
 
+  // Log the command being run (hide OTP value for security)
+  if (!options.silent) {
+    const displayCmd = options.otp
+      ? ['npm', ...args, '--otp', '******'].join(' ')
+      : cmd.join(' ')
+    logCommand(displayCmd)
+  }
+
   try {
     const { stdout, stderr } = await execAsync(cmd.join(' '), {
       timeout: 60000,
       env: { ...process.env, FORCE_COLOR: '0' },
     })
-    return { stdout: stdout.trim(), stderr: stderr.trim(), exitCode: 0 }
+
+    if (!options.silent) {
+      logSuccess('Done')
+    }
+
+    return {
+      stdout: stdout.trim(),
+      stderr: filterNpmWarnings(stderr),
+      exitCode: 0,
+    }
   }
   catch (error) {
     const err = error as { stdout?: string, stderr?: string, code?: number }
+    const stderr = err.stderr?.trim() ?? String(error)
+    const requiresOtp = detectOtpRequired(stderr)
+
+    if (!options.silent) {
+      if (requiresOtp) {
+        logError('OTP required')
+      }
+      else {
+        logError(filterNpmWarnings(stderr).split('\n')[0] || 'Command failed')
+      }
+    }
+
     return {
       stdout: err.stdout?.trim() ?? '',
-      stderr: err.stderr?.trim() ?? String(error),
+      stderr: requiresOtp
+        ? 'This operation requires a one-time password (OTP).'
+        : filterNpmWarnings(stderr),
       exitCode: err.code ?? 1,
+      requiresOtp,
     }
   }
 }
 
 export async function getNpmUser(): Promise<string | null> {
-  const result = await execNpm(['whoami'])
+  const result = await execNpm(['whoami'], { silent: true })
   if (result.exitCode === 0 && result.stdout) {
     return result.stdout
   }
@@ -122,4 +177,22 @@ export async function ownerRemove(
   otp?: string,
 ): Promise<NpmExecResult> {
   return execNpm(['owner', 'rm', user, pkg], { otp })
+}
+
+// List functions (for reading data) - silent since they're not user-triggered operations
+
+export async function orgListUsers(org: string): Promise<NpmExecResult> {
+  return execNpm(['org', 'ls', org, '--json'], { silent: true })
+}
+
+export async function teamListTeams(org: string): Promise<NpmExecResult> {
+  return execNpm(['team', 'ls', org, '--json'], { silent: true })
+}
+
+export async function teamListUsers(scopeTeam: string): Promise<NpmExecResult> {
+  return execNpm(['team', 'ls', scopeTeam, '--json'], { silent: true })
+}
+
+export async function accessListCollaborators(pkg: string): Promise<NpmExecResult> {
+  return execNpm(['access', 'list', 'collaborators', pkg, '--json'], { silent: true })
 }
