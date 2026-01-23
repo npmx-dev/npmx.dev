@@ -1,0 +1,554 @@
+<script setup lang="ts">
+import type { PackageFileTree, PackageFileTreeResponse, PackageFileContentResponse } from '#shared/types'
+
+const route = useRoute('package-code-path')
+const router = useRouter()
+
+// Parse package name, version, and file path from URL
+// Patterns:
+//   /package/code/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0", filePath: null (show tree)
+//   /package/code/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0", filePath: "src/index.ts"
+//   /package/code/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0", filePath: null
+const parsedRoute = computed(() => {
+  const segments = Array.isArray(route.params.path)
+    ? route.params.path
+    : [route.params.path ?? '']
+
+  // Find the /v/ separator for version
+  const vIndex = segments.indexOf('v')
+  if (vIndex === -1 || vIndex >= segments.length - 1) {
+    // No version specified - redirect or error
+    return {
+      packageName: segments.join('/'),
+      version: null as string | null,
+      filePath: null as string | null,
+    }
+  }
+
+  const packageName = segments.slice(0, vIndex).join('/')
+  const afterVersion = segments.slice(vIndex + 1)
+  const version = afterVersion[0] ?? null
+  const filePath = afterVersion.length > 1 ? afterVersion.slice(1).join('/') : null
+
+  return { packageName, version, filePath }
+})
+
+const packageName = computed(() => parsedRoute.value.packageName)
+const version = computed(() => parsedRoute.value.version)
+const filePath = computed(() => parsedRoute.value.filePath)
+
+// Fetch package data for version list
+const { data: pkg } = usePackage(packageName)
+
+// Get available versions sorted by dist-tags first, then by semver
+const availableVersions = computed(() => {
+  if (!pkg.value) return []
+
+  const distTags = pkg.value['dist-tags'] ?? {}
+  const allVersions = Object.keys(pkg.value.versions)
+
+  // Get dist-tag versions first (latest, next, beta, etc.)
+  const taggedVersions = new Set(Object.values(distTags))
+  const taggedList = Object.entries(distTags)
+    .map(([tag, ver]) => ({ version: ver, tag }))
+
+  // Get other versions (not in dist-tags), sorted by semver descending
+  const otherVersions = allVersions
+    .filter(v => !taggedVersions.has(v))
+    .sort((a, b) => {
+      // Simple semver comparison (major.minor.patch)
+      const partsA = a.split('.').map(p => parseInt(p, 10) || 0)
+      const partsB = b.split('.').map(p => parseInt(p, 10) || 0)
+      for (let i = 0; i < 3; i++) {
+        const diff = (partsB[i] ?? 0) - (partsA[i] ?? 0)
+        if (diff !== 0) return diff
+      }
+      return 0
+    })
+    .slice(0, 20) // Limit to 20 most recent
+    .map(v => ({ version: v, tag: undefined as string | undefined }))
+
+  return [...taggedList, ...otherVersions]
+})
+
+// Version switch handler
+function switchVersion(newVersion: string) {
+  const newPath = filePath.value
+    ? `/package/code/${packageName.value}/v/${newVersion}/${filePath.value}`
+    : `/package/code/${packageName.value}/v/${newVersion}`
+  router.push(newPath)
+}
+
+// Fetch file tree
+const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
+  () => `/api/registry/files/${packageName.value}/v/${version.value}`,
+  {
+    watch: [packageName, version],
+    immediate: !!version.value,
+  },
+)
+
+// Determine what to show based on the current path
+// Note: This needs fileTree to be loaded first
+const currentNode = computed(() => {
+  if (!fileTree.value?.tree || !filePath.value) return null
+
+  const parts = filePath.value.split('/')
+  let current: PackageFileTree[] | undefined = fileTree.value.tree
+
+  for (const part of parts) {
+    const found: PackageFileTree | undefined = current?.find(n => n.name === part)
+    if (!found) return null
+    if (found.type === 'file') return found
+    current = found.children
+  }
+
+  return null
+})
+
+const isViewingFile = computed(() => currentNode.value?.type === 'file')
+
+// Maximum file size we'll try to load (500KB) - must match server
+const MAX_FILE_SIZE = 500 * 1024
+const isFileTooLarge = computed(() => {
+  const size = currentNode.value?.size
+  return size !== undefined && size > MAX_FILE_SIZE
+})
+
+// Fetch file content when a file is selected (and not too large)
+const fileContentUrl = computed(() => {
+  // Don't fetch if no file path, file tree not loaded, or file is too large
+  if (!filePath.value || !fileTree.value || isFileTooLarge.value) {
+    return null
+  }
+  return `/api/registry/file/${packageName.value}/v/${version.value}/${filePath.value}`
+})
+
+const { data: fileContent, status: fileStatus } = useFetch<PackageFileContentResponse>(
+  () => fileContentUrl.value!,
+  {
+    watch: [fileContentUrl],
+    immediate: !!fileContentUrl.value,
+  },
+)
+
+// Track hash manually since we update it via history API to avoid scroll
+const currentHash = ref('')
+
+// Initialize from route and listen for popstate (back/forward)
+onMounted(() => {
+  currentHash.value = window.location.hash
+  window.addEventListener('popstate', () => {
+    currentHash.value = window.location.hash
+  })
+})
+
+// Also sync when route changes (e.g., navigating to a different file)
+watch(() => route.hash, (hash) => {
+  currentHash.value = hash
+})
+
+// Line number handling from hash
+const selectedLines = computed(() => {
+  const hash = currentHash.value
+  if (!hash) return null
+
+  // Parse #L10 or #L10-L20
+  const match = hash.match(/^#L(\d+)(?:-L(\d+))?$/)
+  if (!match) return null
+
+  const start = parseInt(match[1] ?? '0', 10)
+  const end = match[2] ? parseInt(match[2], 10) : start
+
+  return { start, end }
+})
+
+// Scroll to selected line only on initial load or file change (not on click)
+const shouldScrollOnHashChange = ref(true)
+
+function scrollToLine() {
+  if (!shouldScrollOnHashChange.value) return
+  if (!selectedLines.value) return
+  const lineEl = document.getElementById(`L${selectedLines.value.start}`)
+  if (lineEl) {
+    lineEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+}
+
+// Scroll on file content load (initial or file change)
+watch(fileContent, () => {
+  shouldScrollOnHashChange.value = true
+  nextTick(scrollToLine)
+})
+
+// Build breadcrumb path segments
+const breadcrumbs = computed(() => {
+  const parts = filePath.value?.split('/').filter(Boolean) ?? []
+  const result: { name: string, path: string }[] = []
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i]
+    if (part) {
+      result.push({
+        name: part,
+        path: parts.slice(0, i + 1).join('/'),
+      })
+    }
+  }
+
+  return result
+})
+
+// Navigation helper - build URL for a path
+function getCodeUrl(path?: string): string {
+  const base = `/package/code/${packageName.value}/v/${version.value}`
+  return path ? `${base}/${path}` : base
+}
+
+// Extract org name from scoped package
+const orgName = computed(() => {
+  const name = packageName.value
+  if (!name.startsWith('@')) return null
+  const match = name.match(/^@([^/]+)\//)
+  return match ? match[1] : null
+})
+
+// Format file size
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} kB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+// Line number click handler - update URL hash without scrolling
+function handleLineClick(lineNum: number, event: MouseEvent) {
+  let newHash: string
+  if (event.shiftKey && selectedLines.value) {
+    // Shift+click: select range
+    const start = Math.min(selectedLines.value.start, lineNum)
+    const end = Math.max(selectedLines.value.end, lineNum)
+    newHash = `#L${start}-L${end}`
+  }
+  else {
+    // Single click: select line
+    newHash = `#L${lineNum}`
+  }
+
+  // Don't scroll when user clicks - only scroll on initial load
+  shouldScrollOnHashChange.value = false
+
+  // Update URL without triggering scroll - use history API directly
+  const url = new URL(window.location.href)
+  url.hash = newHash
+  window.history.replaceState(history.state, '', url.toString())
+
+  // Update our reactive hash tracker
+  currentHash.value = newHash
+}
+
+// Copy link to current line(s)
+async function copyPermalink() {
+  const url = new URL(window.location.href)
+  await navigator.clipboard.writeText(url.toString())
+}
+
+useSeoMeta({
+  title: () => {
+    if (filePath.value) {
+      return `${filePath.value} - ${packageName.value}@${version.value} - npmx`
+    }
+    return `Code - ${packageName.value}@${version.value} - npmx`
+  },
+  description: () => `Browse source code for ${packageName.value}@${version.value}`,
+})
+</script>
+
+<template>
+  <main class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="border-b border-border bg-bg sticky top-0 z-10">
+      <div class="container py-4">
+        <!-- Package info and navigation -->
+        <div class="flex items-center gap-2 mb-3 flex-wrap">
+          <NuxtLink
+            :to="`/package/${packageName}${version ? `/v/${version}` : ''}`"
+            class="font-mono text-lg font-medium hover:text-fg transition-colors"
+          >
+            <span
+              v-if="orgName"
+              class="text-fg-muted"
+            >@{{ orgName }}/</span>{{ orgName ? packageName.replace(`@${orgName}/`, '') : packageName }}
+          </NuxtLink>
+          <!-- Version selector -->
+          <div
+            v-if="version && availableVersions.length > 0"
+            class="relative"
+          >
+            <select
+              :value="version"
+              class="appearance-none pl-2 pr-6 py-0.5 font-mono text-sm bg-bg-muted border border-border rounded cursor-pointer hover:border-border-hover transition-colors"
+              @change="switchVersion(($event.target as HTMLSelectElement).value)"
+            >
+              <option
+                v-for="v in availableVersions"
+                :key="v.version"
+                :value="v.version"
+              >
+                v{{ v.version }}{{ v.tag ? ` (${v.tag})` : '' }}
+              </option>
+            </select>
+            <span class="i-carbon-chevron-down w-3 h-3 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none text-fg-muted" />
+          </div>
+          <span
+            v-else-if="version"
+            class="px-2 py-0.5 font-mono text-sm bg-bg-muted border border-border rounded"
+          >
+            v{{ version }}
+          </span>
+          <span class="text-fg-subtle">/</span>
+          <span class="font-mono text-sm text-fg-muted">code</span>
+        </div>
+
+        <!-- Breadcrumb navigation -->
+        <nav
+          v-if="filePath"
+          aria-label="File path"
+          class="flex items-center gap-1 font-mono text-sm overflow-x-auto"
+        >
+          <NuxtLink
+            :to="getCodeUrl()"
+            class="text-fg-muted hover:text-fg transition-colors shrink-0"
+          >
+            root
+          </NuxtLink>
+          <template
+            v-for="(crumb, i) in breadcrumbs"
+            :key="crumb.path"
+          >
+            <span class="text-fg-subtle">/</span>
+            <NuxtLink
+              v-if="i < breadcrumbs.length - 1"
+              :to="getCodeUrl(crumb.path)"
+              class="text-fg-muted hover:text-fg transition-colors"
+            >
+              {{ crumb.name }}
+            </NuxtLink>
+            <span
+              v-else
+              class="text-fg"
+            >{{ crumb.name }}</span>
+          </template>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Error: no version -->
+    <div
+      v-if="!version"
+      class="container py-20 text-center"
+    >
+      <p class="text-fg-muted mb-4">
+        Version is required to browse code
+      </p>
+      <NuxtLink
+        :to="`/package/${packageName}`"
+        class="btn"
+      >
+        Go to package
+      </NuxtLink>
+    </div>
+
+    <!-- Loading state -->
+    <div
+      v-else-if="treeStatus === 'pending'"
+      class="container py-20 text-center"
+    >
+      <div class="i-svg-spinners-ring-resize w-8 h-8 mx-auto text-fg-muted" />
+      <p class="mt-4 text-fg-muted">
+        Loading file tree...
+      </p>
+    </div>
+
+    <!-- Error state -->
+    <div
+      v-else-if="treeStatus === 'error'"
+      class="container py-20 text-center"
+      role="alert"
+    >
+      <p class="text-fg-muted mb-4">
+        Failed to load files for this package version
+      </p>
+      <NuxtLink
+        :to="`/package/${packageName}${version ? `/v/${version}` : ''}`"
+        class="btn"
+      >
+        Back to package
+      </NuxtLink>
+    </div>
+
+    <!-- Main content: file tree + file viewer -->
+    <div
+      v-else-if="fileTree"
+      class="flex-1 flex min-h-0"
+    >
+      <!-- File tree sidebar -->
+      <aside class="w-64 lg:w-72 border-r border-border overflow-y-auto shrink-0 hidden md:block bg-bg-subtle">
+        <CodeFileTree
+          :tree="fileTree.tree"
+          :current-path="filePath ?? ''"
+          :base-url="getCodeUrl()"
+        />
+      </aside>
+
+      <!-- File content / Directory listing -->
+      <div class="flex-1 overflow-auto min-w-0">
+        <!-- File viewer -->
+        <template v-if="isViewingFile && fileContent">
+          <div class="sticky top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between">
+            <div class="flex items-center gap-3 text-sm">
+              <span class="text-fg-muted">{{ fileContent.lines }} lines</span>
+              <span
+                v-if="currentNode?.size"
+                class="text-fg-subtle"
+              >{{ formatBytes(currentNode.size) }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                v-if="selectedLines"
+                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors"
+                @click="copyPermalink"
+              >
+                Copy link
+              </button>
+              <a
+                :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1"
+              >
+                Raw
+                <span class="i-carbon-launch w-3 h-3" />
+              </a>
+            </div>
+          </div>
+          <CodeViewer
+            :html="fileContent.html"
+            :lines="fileContent.lines"
+            :selected-lines="selectedLines"
+            @line-click="handleLineClick"
+          />
+        </template>
+
+        <!-- File too large warning -->
+        <div
+          v-else-if="isViewingFile && isFileTooLarge"
+          class="py-20 text-center"
+        >
+          <div class="i-carbon-document w-12 h-12 mx-auto text-fg-subtle mb-4" />
+          <p class="text-fg-muted mb-2">
+            File too large to preview
+          </p>
+          <p class="text-fg-subtle text-sm mb-4">
+            {{ formatBytes(currentNode?.size ?? 0) }} exceeds the 500KB limit for syntax highlighting
+          </p>
+          <a
+            :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn inline-flex items-center gap-2"
+          >
+            View raw file
+            <span class="i-carbon-launch w-4 h-4" />
+          </a>
+        </div>
+
+        <!-- Loading file content -->
+        <div
+          v-else-if="filePath && fileStatus === 'pending'"
+          class="flex min-h-full"
+          aria-busy="true"
+          aria-label="Loading file content"
+        >
+          <!-- Fake line numbers column -->
+          <div class="shrink-0 bg-bg-subtle border-r border-border w-14 py-0">
+            <div
+              v-for="n in 20"
+              :key="n"
+              class="px-3 h-6 flex items-center justify-end"
+            >
+              <span class="skeleton w-4 h-3 rounded-sm" />
+            </div>
+          </div>
+          <!-- Fake code content -->
+          <div class="flex-1 p-4 space-y-1.5">
+            <div class="skeleton h-4 w-32 rounded-sm" />
+            <div class="skeleton h-4 w-48 rounded-sm" />
+            <div class="skeleton h-4 w-24 rounded-sm" />
+            <div class="h-4" />
+            <div class="skeleton h-4 w-64 rounded-sm" />
+            <div class="skeleton h-4 w-56 rounded-sm" />
+            <div class="skeleton h-4 w-40 rounded-sm" />
+            <div class="skeleton h-4 w-72 rounded-sm" />
+            <div class="h-4" />
+            <div class="skeleton h-4 w-36 rounded-sm" />
+            <div class="skeleton h-4 w-52 rounded-sm" />
+            <div class="skeleton h-4 w-44 rounded-sm" />
+            <div class="skeleton h-4 w-28 rounded-sm" />
+            <div class="h-4" />
+            <div class="skeleton h-4 w-60 rounded-sm" />
+            <div class="skeleton h-4 w-48 rounded-sm" />
+            <div class="skeleton h-4 w-32 rounded-sm" />
+            <div class="skeleton h-4 w-56 rounded-sm" />
+            <div class="skeleton h-4 w-40 rounded-sm" />
+            <div class="skeleton h-4 w-24 rounded-sm" />
+          </div>
+        </div>
+
+        <!-- Error loading file -->
+        <div
+          v-else-if="filePath && fileStatus === 'error'"
+          class="py-20 text-center"
+          role="alert"
+        >
+          <div class="i-carbon-warning-alt w-8 h-8 mx-auto text-fg-subtle mb-4" />
+          <p class="text-fg-muted mb-2">
+            Failed to load file
+          </p>
+          <p class="text-fg-subtle text-sm mb-4">
+            The file may be too large or unavailable
+          </p>
+          <a
+            :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn inline-flex items-center gap-2"
+          >
+            View raw file
+            <span class="i-carbon-launch w-4 h-4" />
+          </a>
+        </div>
+
+        <!-- Directory listing (when no file selected or viewing a directory) -->
+        <template v-else>
+          <CodeDirectoryListing
+            :tree="fileTree.tree"
+            :current-path="filePath ?? ''"
+            :base-url="getCodeUrl()"
+          />
+        </template>
+      </div>
+    </div>
+
+    <!-- Mobile file tree toggle -->
+    <ClientOnly>
+      <Teleport to="body">
+        <CodeMobileTreeDrawer
+          v-if="fileTree"
+          :tree="fileTree.tree"
+          :current-path="filePath ?? ''"
+          :base-url="getCodeUrl()"
+        />
+      </Teleport>
+    </ClientOnly>
+  </main>
+</template>

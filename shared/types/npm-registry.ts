@@ -218,3 +218,75 @@ export interface NpmTrustedPublisher {
   project?: string
   ciConfigPath?: string
 }
+
+/**
+ * jsDelivr API Types
+ * Used for package file browsing
+ */
+
+/**
+ * Response from jsDelivr package API (nested structure)
+ * GET https://data.jsdelivr.com/v1/packages/npm/{package}@{version}
+ */
+export interface JsDelivrPackageResponse {
+  type: 'npm'
+  name: string
+  version: string
+  /** Default entry point file */
+  default: string | null
+  /** Nested file tree */
+  files: JsDelivrFileNode[]
+}
+
+/**
+ * A file or directory node from jsDelivr API
+ */
+export interface JsDelivrFileNode {
+  type: 'file' | 'directory'
+  name: string
+  /** File hash (only for files) */
+  hash?: string
+  /** File size in bytes (only for files) */
+  size?: number
+  /** Child nodes (only for directories) */
+  files?: JsDelivrFileNode[]
+}
+
+/**
+ * Tree node for package file browser
+ */
+export interface PackageFileTree {
+  /** File or directory name */
+  name: string
+  /** Full path from package root */
+  path: string
+  /** Node type */
+  type: 'file' | 'directory'
+  /** File size in bytes (only for files) */
+  size?: number
+  /** Child nodes (only for directories) */
+  children?: PackageFileTree[]
+}
+
+/**
+ * Response from file tree API
+ */
+export interface PackageFileTreeResponse {
+  package: string
+  version: string
+  default?: string
+  tree: PackageFileTree[]
+}
+
+/**
+ * Response from file content API
+ */
+export interface PackageFileContentResponse {
+  package: string
+  version: string
+  path: string
+  language: string
+  content: string
+  html: string
+  lines: number
+}

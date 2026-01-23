@@ -437,6 +437,15 @@ defineOgImageComponent('Package', {
                 size
               </a>
             </li>
+            <li v-if="displayVersion">
+              <NuxtLink
+                :to="`/package/code/${pkg.name}/v/${displayVersion.version}`"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-code w-4 h-4" />
+                code
+              </NuxtLink>
+            </li>
           </ul>
         </nav>
       </header>
@@ -509,12 +518,7 @@ defineOgImageComponent('Package', {
             class="absolute top-3 right-3 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-all duration-200 hover:(text-fg border-border-hover) active:scale-95"
             @click="copyInstallCommand"
           >
-            <ClientOnly>
-              {{ copied ? 'copied!' : 'copy' }}
-              <template #fallback>
-                copy
-              </template>
-            </ClientOnly>
+            {{ copied ? 'copied!' : 'copy' }}
           </button>
         </div>
       </section>
