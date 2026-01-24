@@ -611,21 +611,21 @@ defineOgImageComponent('Package', {
               Compatibility
             </h2>
             <dl class="space-y-2">
-              <div
-                v-if="displayVersion.engines.node"
-                class="flex items-center justify-between gap-4 py-1"
-              >
+              <div v-if="displayVersion.engines.node" class="flex justify-between gap-4 py-1">
                 <dt class="text-fg-muted text-sm shrink-0">node</dt>
-                <dd class="font-mono text-sm text-fg truncate" :title="displayVersion.engines.node">
+                <dd
+                  class="font-mono text-sm text-fg text-right"
+                  :title="displayVersion.engines.node"
+                >
                   {{ displayVersion.engines.node }}
                 </dd>
               </div>
-              <div
-                v-if="displayVersion.engines.npm"
-                class="flex items-center justify-between gap-4 py-1"
-              >
+              <div v-if="displayVersion.engines.npm" class="flex justify-between gap-4 py-1">
                 <dt class="text-fg-muted text-sm shrink-0">npm</dt>
-                <dd class="font-mono text-sm text-fg truncate" :title="displayVersion.engines.npm">
+                <dd
+                  class="font-mono text-sm text-fg text-right"
+                  :title="displayVersion.engines.npm"
+                >
                   {{ displayVersion.engines.npm }}
                 </dd>
               </div>
