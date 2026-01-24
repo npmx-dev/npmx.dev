@@ -95,15 +95,17 @@ const currentNode = computed(() => {
 
   const parts = filePath.value.split('/')
   let current: PackageFileTree[] | undefined = fileTree.value.tree
+  let lastFound: PackageFileTree | null = null
 
   for (const part of parts) {
     const found: PackageFileTree | undefined = current?.find(n => n.name === part)
     if (!found) return null
+    lastFound = found
     if (found.type === 'file') return found
     current = found.children
   }
 
-  return null
+  return lastFound
 })
 
 const isViewingFile = computed(() => currentNode.value?.type === 'file')
@@ -117,8 +119,8 @@ const isFileTooLarge = computed(() => {
 
 // Fetch file content when a file is selected (and not too large)
 const fileContentUrl = computed(() => {
-  // Don't fetch if no file path, file tree not loaded, or file is too large
-  if (!filePath.value || !fileTree.value || isFileTooLarge.value) {
+  // Don't fetch if no file path, file tree not loaded, file is too large, or it's a directory
+  if (!filePath.value || !fileTree.value || isFileTooLarge.value || !isViewingFile.value) {
     return null
   }
   return `/api/registry/file/${packageName.value}/v/${version.value}/${filePath.value}`
