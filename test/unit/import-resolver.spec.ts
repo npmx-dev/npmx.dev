@@ -41,6 +41,20 @@ describe('resolveRelativeImport', () => {
     expect(resolved?.path).toBe('dist/utils.js')
   })
 
+  it('resolves a relative import with extension priority for TS files', () => {
+    const files = new Set<string>(['src/utils.ts', 'src/utils.js'])
+    const resolved = resolveRelativeImport('./utils', 'src/index.ts', files)
+
+    expect(resolved?.path).toBe('src/utils.ts')
+  })
+
+  it('resolves a relative import to .d.ts when source is a declaration file', () => {
+    const files = new Set<string>(['dist/types.d.ts', 'dist/types.ts'])
+    const resolved = resolveRelativeImport('./types', 'dist/index.d.ts', files)
+
+    expect(resolved?.path).toBe('dist/types.d.ts')
+  })
+
   it('resolves directory imports to index files', () => {
     const files = new Set<string>(['dist/components/index.js'])
     const resolved = resolveRelativeImport('./components', 'dist/index.js', files)
@@ -53,6 +67,13 @@ describe('resolveRelativeImport', () => {
     const resolved = resolveRelativeImport('../shared/helpers', 'dist/pages/home.js', files)
 
     expect(resolved?.path).toBe('dist/shared/helpers.js')
+  })
+
+  it('returns null when the path would go above the package root', () => {
+    const files = new Set<string>(['dist/index.js'])
+    const resolved = resolveRelativeImport('../../outside', 'dist/index.js', files)
+
+    expect(resolved).toBeNull()
   })
 
   it('returns null for non-relative imports', () => {
