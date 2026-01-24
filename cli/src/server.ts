@@ -10,9 +10,12 @@ import {
   getQuery,
   createError,
   getHeader,
+  getRequestHeader,
   setResponseHeaders,
   getRouterParam,
 } from 'h3'
+
+const ALLOWED_ORIGINS = new Set(['https://npmx.dev', 'http://localhost:3000'])
 import type { ConnectorState, PendingOperation, OperationType, ApiResponse } from './types.ts'
 import {
   getNpmUser,
@@ -66,14 +69,23 @@ export function createConnectorApp(expectedToken: string) {
     operations: [],
   }
 
-  const app = createApp({
-    onRequest(event) {
-      // CORS headers for browser connections
+  function setCorsHeaders(event: Parameters<typeof setResponseHeaders>[0]) {
+    const origin = getRequestHeader(event, 'origin')
+    if (origin && ALLOWED_ORIGINS.has(origin)) {
       setResponseHeaders(event, {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': origin,
         'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       })
+    }
+  }
+
+  const app = createApp({
+    onRequest(event) {
+      setCorsHeaders(event)
+    },
+    onBeforeResponse(event) {
+      setCorsHeaders(event)
     },
   })
   const router = createRouter()
@@ -81,9 +93,7 @@ export function createConnectorApp(expectedToken: string) {
   // Handle CORS preflight requests
   router.options(
     '/**',
-    eventHandler(() => {
-      return null
-    }),
+    eventHandler(() => ''),
   )
 
   function validateToken(authHeader: string | null | undefined): boolean {
