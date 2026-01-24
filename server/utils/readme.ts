@@ -1,6 +1,13 @@
 import { marked, type Tokens } from 'marked'
 import sanitizeHtml from 'sanitize-html'
-import { hasProtocol } from 'ufo'
+import { hasProtocol, withoutTrailingSlash } from 'ufo'
+
+export interface RepositoryInfo {
+  /** GitHub raw base URL (e.g., https://raw.githubusercontent.com/owner/repo/HEAD) */
+  rawBaseUrl?: string
+  /** Subdirectory within repo where package lives (e.g., packages/ai) */
+  directory?: string
+}
 
 // only allow h3-h6 since we shift README headings down by 2 levels
 // (page h1 = package name, h2 = "Readme" section, so README h1 → h3)
@@ -63,7 +70,46 @@ const ALLOWED_ATTR: Record<string, string[]> = {
 // GitHub-style callout types
 // Format: > [!NOTE], > [!TIP], > [!IMPORTANT], > [!WARNING], > [!CAUTION]
 
-function resolveUrl(url: string, packageName: string): string {
+/**
+ * Parse repository field from package.json into GitHub raw URL base.
+ * Supports both full objects and shorthand strings.
+ */
+export function parseRepositoryInfo(
+  repository?: { type?: string; url?: string; directory?: string } | string,
+): RepositoryInfo | undefined {
+  if (!repository) return undefined
+
+  let url: string | undefined
+  let directory: string | undefined
+
+  if (typeof repository === 'string') {
+    url = repository
+  } else {
+    url = repository.url
+    directory = repository.directory
+  }
+
+  if (!url) return undefined
+
+  // Parse GitHub URL: git+https://github.com/owner/repo.git or https://github.com/owner/repo
+  const githubMatch = url.match(/github\.com[/:]([^/]+)\/([^/.]+)(?:\.git)?/)
+  if (!githubMatch?.[1] || !githubMatch[2]) return undefined
+
+  const owner = githubMatch[1]
+  const repo = githubMatch[2]
+
+  return {
+    rawBaseUrl: `https://raw.githubusercontent.com/${owner}/${repo}/HEAD`,
+    directory: directory ? withoutTrailingSlash(directory) : undefined,
+  }
+}
+
+/**
+ * Resolve a relative URL to an absolute URL.
+ * If repository info is available, resolve to GitHub raw URLs.
+ * Otherwise, fall back to jsdelivr CDN.
+ */
+function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   if (!url) return url
   if (url.startsWith('#')) {
     return url
@@ -71,15 +117,44 @@ function resolveUrl(url: string, packageName: string): string {
   if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')) {
     return url
   }
-  // Relative URLs → jsdelivr CDN
+
+  // Prefer GitHub raw URLs when repository info is available
+  // This handles assets that exist in the repo but not in the npm tarball
+  if (repoInfo?.rawBaseUrl) {
+    // Normalize the relative path (remove leading ./)
+    let relativePath = url.replace(/^\.\//, '')
+
+    // If package is in a subdirectory, resolve relative paths from there
+    // e.g., for packages/ai with ./assets/hero.gif → packages/ai/assets/hero.gif
+    // but for ../../.github/assets/banner.jpg → resolve relative to subdirectory
+    if (repoInfo.directory) {
+      // Split directory into parts for relative path resolution
+      const dirParts = repoInfo.directory.split('/').filter(Boolean)
+
+      // Handle ../ navigation
+      while (relativePath.startsWith('../')) {
+        relativePath = relativePath.slice(3)
+        dirParts.pop()
+      }
+
+      // Reconstruct the path
+      if (dirParts.length > 0) {
+        relativePath = `${dirParts.join('/')}/${relativePath}`
+      }
+    }
+
+    return `${repoInfo.rawBaseUrl}/${relativePath}`
+  }
+
+  // Fallback: relative URLs → jsdelivr CDN (may 404 if asset not in npm tarball)
   return `https://cdn.jsdelivr.net/npm/${packageName}/${url.replace(/^\.\//, '')}`
 }
 
 // Convert GitHub blob URLs to raw URLs for images
 // e.g. https://github.com/nuxt/nuxt/blob/main/.github/assets/banner.svg
 //   → https://github.com/nuxt/nuxt/raw/main/.github/assets/banner.svg
-function resolveImageUrl(url: string, packageName: string): string {
-  const resolved = resolveUrl(url, packageName)
+function resolveImageUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
+  const resolved = resolveUrl(url, packageName, repoInfo)
   // GitHub blob → raw
   if (resolved.includes('github.com') && resolved.includes('/blob/')) {
     return resolved.replace('/blob/', '/raw/')
@@ -87,7 +162,11 @@ function resolveImageUrl(url: string, packageName: string): string {
   return resolved
 }
 
-export async function renderReadmeHtml(content: string, packageName: string): Promise<string> {
+export async function renderReadmeHtml(
+  content: string,
+  packageName: string,
+  repoInfo?: RepositoryInfo,
+): Promise<string> {
   if (!content) return ''
 
   const shiki = await getShikiHighlighter()
@@ -127,7 +206,7 @@ export async function renderReadmeHtml(content: string, packageName: string): Pr
 
   // Resolve image URLs (with GitHub blob → raw conversion)
   renderer.image = ({ href, title, text }: Tokens.Image) => {
-    const resolvedHref = resolveImageUrl(href, packageName)
+    const resolvedHref = resolveImageUrl(href, packageName, repoInfo)
     const titleAttr = title ? ` title="${title}"` : ''
     const altAttr = text ? ` alt="${text}"` : ''
     return `<img src="${resolvedHref}"${altAttr}${titleAttr}>`
@@ -135,7 +214,7 @@ export async function renderReadmeHtml(content: string, packageName: string): Pr
 
   // Resolve link URLs and add security attributes
   renderer.link = function ({ href, title, tokens }: Tokens.Link) {
-    const resolvedHref = resolveUrl(href, packageName)
+    const resolvedHref = resolveUrl(href, packageName, repoInfo)
     const text = this.parser.parseInline(tokens)
     const titleAttr = title ? ` title="${title}"` : ''
 
@@ -169,11 +248,11 @@ export async function renderReadmeHtml(content: string, packageName: string): Pr
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: ALLOWED_ATTR,
     allowedSchemes: ['http', 'https', 'mailto'],
-    // Transform img src URLs (GitHub blob → raw, relative → jsdelivr)
+    // Transform img src URLs (GitHub blob → raw, relative → GitHub raw)
     transformTags: {
       img: (tagName, attribs) => {
         if (attribs.src) {
-          attribs.src = resolveImageUrl(attribs.src, packageName)
+          attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)
         }
         return { tagName, attribs }
       },
