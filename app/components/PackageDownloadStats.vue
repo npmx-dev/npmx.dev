@@ -42,7 +42,7 @@ const config = computed(() => ({
       color: '#6A6A6A',
       pulse: {
         show: true,
-        loop: true, // runs only once if true
+        loop: true, // runs only once if false
         radius: 2,
         color: '#8A8A8A',
         easing: 'ease-in-out',
