@@ -131,13 +131,17 @@ watch(
 .code-content :deep(.import-link) {
   color: inherit;
   text-decoration: underline;
-  text-decoration-color: transparent;
+  text-decoration-style: dotted;
+  text-decoration-color: rgba(158, 203, 255, 0.5); /* syntax.str with transparency */
   text-underline-offset: 2px;
-  transition: text-decoration-color 0.15s;
+  transition:
+    text-decoration-color 0.15s,
+    text-decoration-style 0.15s;
   cursor: pointer;
 }
 
 .code-content :deep(.import-link:hover) {
-  text-decoration-color: currentColor;
+  text-decoration-style: solid;
+  text-decoration-color: #9ecbff; /* syntax.str - light blue */
 }
 </style>
