@@ -13,6 +13,9 @@ importers:
 
   .:
     dependencies:
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.67
+        version: 1.2.67
       '@iconify-json/vscode-icons':
         specifier: ^1.2.40
         version: 1.2.40
@@ -161,9 +164,9 @@ importers:
       defu:
         specifier: ^6.1.4
         version: 6.1.4
-      h3:
-        specifier: ^2.0.1-rc.11
-        version: 2.0.1-rc.11
+      h3-next:
+        specifier: npm:h3@^2.0.1-rc.11
+        version: h3@2.0.1-rc.11
       ofetch:
         specifier: ^1.5.1
         version: 1.5.1
@@ -1224,6 +1227,9 @@ packages:
 
   '@iconify-json/carbon@1.2.18':
     resolution: {integrity: sha512-Grb13E6r/RqTEV4Sqd/BQR2FUt57U2WLuticJ5H8JbTdHLop1LmdePu3EJJA3Xi8DcWRbD6OnC133hKfOwlgtg==}
+
+  '@iconify-json/simple-icons@1.2.67':
+    resolution: {integrity: sha512-RGJRwlxyup54L1UDAjCshy3ckX5zcvYIU74YLSnUgHGvqh6B4mvksbGNHAIEp7dZQ6cM13RZVT5KC07CmnFNew==}
 
   '@iconify-json/solar@1.2.5':
     resolution: {integrity: sha512-WMAiNwchU8zhfrySww6KQBRIBbsQ6SvgIu2yA+CHGyMima/0KQwT5MXogrZPJGoQF+1Ye3Qj6K+1CiyNn3YkoA==}
@@ -8100,6 +8106,10 @@ snapshots:
     optional: true
 
   '@iconify-json/carbon@1.2.18':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/simple-icons@1.2.67':
     dependencies:
       '@iconify/types': 2.0.0
 

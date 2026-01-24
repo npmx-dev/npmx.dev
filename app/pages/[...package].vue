@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { joinURL } from 'ufo'
 import type { PackumentVersion, NpmVersionDist } from '#shared/types'
+import type { JsrPackageInfo } from '#shared/types/jsr'
 
 definePageMeta({
   name: 'package',
@@ -58,6 +59,13 @@ const { data: readmeData } = useLazyFetch<{ html: string }>(
   },
   { default: () => ({ html: '' }) },
 )
+
+// Check if package exists on JSR (only for scoped packages)
+const { data: jsrInfo } = useLazyFetch<JsrPackageInfo>(() => `/api/jsr/${packageName.value}`, {
+  default: () => ({ exists: false }),
+  // Only fetch for scoped packages (JSR requirement)
+  immediate: computed(() => packageName.value.startsWith('@')).value,
+})
 
 // Get the version to display (requested or latest)
 const displayVersion = computed(() => {
@@ -143,18 +151,7 @@ function hasProvenance(version: PackumentVersion | null): boolean {
   return !!dist.attestations
 }
 
-// Package manager install commands
-const packageManagers = [
-  { id: 'npm', label: 'npm', action: 'install' },
-  { id: 'pnpm', label: 'pnpm', action: 'add' },
-  { id: 'yarn', label: 'yarn', action: 'add' },
-  { id: 'bun', label: 'bun', action: 'add' },
-  { id: 'deno', label: 'deno', action: 'add npm:' },
-] as const
-
-type PackageManagerId = (typeof packageManagers)[number]['id']
-
-// Persist preference in localStorage
+// Persist package manager preference in localStorage
 const selectedPM = ref<PackageManagerId>('npm')
 
 onMounted(() => {
@@ -168,24 +165,24 @@ watch(selectedPM, value => {
   localStorage.setItem('npmx-pm', value)
 })
 
-const currentPM = computed(
-  () => packageManagers.find(p => p.id === selectedPM.value) || packageManagers[0],
-)
-const selectedPMLabel = computed(() => currentPM.value.label)
-const selectedPMAction = computed(() => currentPM.value.action)
+const installCommandParts = computed(() => {
+  if (!pkg.value) return []
+  return getInstallCommandParts({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    version: requestedVersion.value,
+    jsrInfo: jsrInfo.value,
+  })
+})
 
 const installCommand = computed(() => {
   if (!pkg.value) return ''
-  const pm = currentPM.value
-  let command = `${pm.label} ${pm.action} ${pkg.value.name}`
-  // deno uses "add npm:package" format
-  if (pm.id === 'deno') {
-    command = `${pm.label} ${pm.action}${pkg.value.name}`
-  }
-  if (requestedVersion.value) {
-    command += `@${requestedVersion.value}`
-  }
-  return command
+  return getInstallCommand({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    version: requestedVersion.value,
+    jsrInfo: jsrInfo.value,
+  })
 })
 
 // Copy install command
@@ -415,6 +412,18 @@ defineOgImageComponent('Package', {
                 npm
               </a>
             </li>
+            <li v-if="jsrInfo?.exists && jsrInfo.url">
+              <a
+                :href="jsrInfo.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+                title="Also available on JSR"
+              >
+                <span class="i-simple-icons-jsr w-4 h-4" />
+                jsr
+              </a>
+            </li>
             <li>
               <a
                 :href="`https://socket.dev/npm/package/${pkg.name}/overview/${displayVersion?.version ?? 'latest'}`"
@@ -517,16 +526,14 @@ defineOgImageComponent('Package', {
               <span class="text-fg-subtle font-mono text-sm select-none">$</span>
               <code class="font-mono text-sm"
                 ><ClientOnly
-                  ><span class="text-fg">{{ selectedPMLabel }}</span
-                  >&nbsp;<span class="text-fg-muted">{{ selectedPMAction }}</span
-                  ><span v-if="selectedPM !== 'deno'" class="text-fg-muted"
-                    >&nbsp;{{ pkg.name }}</span
-                  ><span v-else class="text-fg-muted">{{ pkg.name }}</span
-                  ><span v-if="requestedVersion" class="text-fg-muted">@{{ requestedVersion }}</span
+                  ><span
+                    v-for="(part, i) in installCommandParts"
+                    :key="i"
+                    :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                    >{{ i > 0 ? ' ' : '' }}{{ part }}</span
                   ><template #fallback
-                    ><span class="text-fg">npm</span>&nbsp;<span class="text-fg-muted"
-                      >install&nbsp;{{ pkg.name }}</span
-                    ></template
+                    ><span class="text-fg">npm</span
+                    ><span class="text-fg-muted"> install {{ pkg.name }}</span></template
                   ></ClientOnly
                 ></code
               >

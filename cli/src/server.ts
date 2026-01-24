@@ -1,6 +1,6 @@
 import crypto from 'node:crypto'
-import { H3, HTTPError, handleCors, type H3Event } from 'h3'
-import type { CorsOptions } from 'h3'
+import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
+import type { CorsOptions } from 'h3-next'
 
 import type { ConnectorState, PendingOperation, OperationType, ApiResponse } from './types.ts'
 import {
