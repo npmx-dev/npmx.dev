@@ -55,6 +55,34 @@ describe('resolveRelativeImport', () => {
     expect(resolved?.path).toBe('dist/types.d.ts')
   })
 
+  it('resolves a relative import with extension priority for MTS files', () => {
+    const files = new Set<string>(['src/utils.mts', 'src/utils.mjs', 'src/utils.ts'])
+    const resolved = resolveRelativeImport('./utils', 'src/index.mts', files)
+
+    expect(resolved?.path).toBe('src/utils.mts')
+  })
+
+  it('resolves a relative import with extension priority for MJS files', () => {
+    const files = new Set<string>(['dist/utils.mjs', 'dist/utils.js'])
+    const resolved = resolveRelativeImport('./utils', 'dist/index.mjs', files)
+
+    expect(resolved?.path).toBe('dist/utils.mjs')
+  })
+
+  it('resolves a relative import with extension priority for CTS files', () => {
+    const files = new Set<string>(['src/utils.cts', 'src/utils.cjs', 'src/utils.ts'])
+    const resolved = resolveRelativeImport('./utils', 'src/index.cts', files)
+
+    expect(resolved?.path).toBe('src/utils.cts')
+  })
+
+  it('resolves a relative import with extension priority for CJS files', () => {
+    const files = new Set<string>(['dist/utils.cjs', 'dist/utils.js'])
+    const resolved = resolveRelativeImport('./utils', 'dist/index.cjs', files)
+
+    expect(resolved?.path).toBe('dist/utils.cjs')
+  })
+
   it('resolves directory imports to index files', () => {
     const files = new Set<string>(['dist/components/index.js'])
     const resolved = resolveRelativeImport('./components', 'dist/index.js', files)
