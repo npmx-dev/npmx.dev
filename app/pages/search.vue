@@ -8,10 +8,20 @@ const router = useRouter()
 // Local input value (updates immediately as user types)
 const inputValue = ref((route.query.q as string) ?? '')
 
-// Debounced URL update
+// Debounced URL update for search query
 const updateUrlQuery = debounce((value: string) => {
   router.replace({ query: { q: value || undefined } })
 }, 250)
+
+// Debounced URL update for page (less aggressive to avoid too many URL changes)
+const updateUrlPage = debounce((page: number) => {
+  router.replace({
+    query: {
+      ...route.query,
+      page: page > 1 ? page : undefined,
+    },
+  })
+}, 500)
 
 // Watch input and debounce URL updates
 watch(inputValue, value => {
@@ -49,22 +59,18 @@ onMounted(() => {
 const pageSize = 20
 const loadedPages = ref(1)
 const isLoadingMore = ref(false)
-const loadMoreTrigger = ref<HTMLElement>()
 
-// Get initial page from URL (for hard reload persistence)
+// Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
   const p = Number.parseInt(route.query.page as string, 10)
   return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 
-// Track if we need to scroll to restored position
-const needsScrollRestore = ref(false)
-
 // Initialize loaded pages from URL on mount
 onMounted(() => {
   if (initialPage.value > 1) {
+    // Load enough pages to show the initial page
     loadedPages.value = initialPage.value
-    needsScrollRestore.value = true
   }
   // Focus search input
   searchInputRef.value?.focus()
@@ -87,30 +93,6 @@ watch([results, query], ([newResults, newQuery]) => {
     previousQuery.value = newQuery
   }
 })
-
-// Reference to the results list for scroll restoration
-const resultsListRef = ref<HTMLOListElement>()
-
-// Scroll to restored position once results are loaded
-watch(
-  [results, status, () => needsScrollRestore.value],
-  ([newResults, newStatus, shouldScroll]) => {
-    if (shouldScroll && newStatus === 'success' && newResults && newResults.objects.length > 0) {
-      needsScrollRestore.value = false
-      // Scroll to the first item of the target page
-      nextTick(() => {
-        const targetItemIndex = (initialPage.value - 1) * pageSize
-        const listItems = resultsListRef.value?.children
-        if (listItems && listItems[targetItemIndex]) {
-          listItems[targetItemIndex].scrollIntoView({
-            behavior: 'instant',
-            block: 'start',
-          })
-        }
-      })
-    }
-  },
-)
 
 // Determine if we should show previous results while loading
 // (when new query is a continuation of the old one)
@@ -147,20 +129,12 @@ const hasMore = computed(() => {
   return loadedPages.value < totalPages.value
 })
 
-// Load more when trigger becomes visible
+// Load more when triggered by infinite scroll
 function loadMore() {
   if (isLoadingMore.value || !hasMore.value) return
 
   isLoadingMore.value = true
   loadedPages.value++
-
-  // Update URL with current page count for reload persistence
-  router.replace({
-    query: {
-      ...route.query,
-      page: loadedPages.value > 1 ? loadedPages.value : undefined,
-    },
-  })
 
   // Reset loading state after data updates
   nextTick(() => {
@@ -168,23 +142,10 @@ function loadMore() {
   })
 }
 
-// Intersection observer for infinite scroll
-onMounted(() => {
-  if (!loadMoreTrigger.value) return
-
-  const observer = new IntersectionObserver(
-    entries => {
-      if (entries[0]?.isIntersecting && hasMore.value && status.value !== 'pending') {
-        loadMore()
-      }
-    },
-    { rootMargin: '200px' },
-  )
-
-  observer.observe(loadMoreTrigger.value)
-
-  onUnmounted(() => observer.disconnect())
-})
+// Update URL when page changes from scrolling
+function handlePageChange(page: number) {
+  updateUrlPage(page)
+}
 
 // Reset pages when query changes
 watch(query, () => {
@@ -203,105 +164,92 @@ defineOgImageComponent('Default', {
 </script>
 
 <template>
-  <main class="container py-8 sm:py-12 overflow-x-hidden">
-    <header class="mb-8">
-      <h1 class="font-mono text-2xl sm:text-3xl font-medium mb-6">search</h1>
+  <main class="overflow-x-hidden">
+    <!-- Sticky search header - positioned below AppHeader (h-14 = 56px) -->
+    <header class="sticky top-14 z-40 bg-bg/95 backdrop-blur-sm border-b border-border">
+      <div class="container py-4">
+        <h1 class="font-mono text-xl sm:text-2xl font-medium mb-4">search</h1>
 
-      <search>
-        <form role="search" class="relative" @submit.prevent>
-          <label for="search-input" class="sr-only">Search npm packages</label>
+        <search>
+          <form role="search" class="relative" @submit.prevent>
+            <label for="search-input" class="sr-only">Search npm packages</label>
 
-          <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
-            <!-- Subtle glow effect -->
-            <div
-              class="absolute -inset-px rounded-lg bg-gradient-to-r from-fg/0 via-fg/5 to-fg/0 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
-            />
-
-            <div class="search-box relative flex items-center">
-              <span
-                class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-fg-muted"
-              >
-                /
-              </span>
-              <input
-                id="search-input"
-                ref="searchInputRef"
-                v-model="inputValue"
-                type="search"
-                name="q"
-                placeholder="search packages..."
-                autocomplete="off"
-                class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-4 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-all duration-300 focus:(border-border-hover outline-none) appearance-none"
-                @focus="isSearchFocused = true"
-                @blur="isSearchFocused = false"
+            <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
+              <!-- Subtle glow effect -->
+              <div
+                class="absolute -inset-px rounded-lg bg-gradient-to-r from-fg/0 via-fg/5 to-fg/0 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
               />
-              <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
-              <button type="submit" class="sr-only">Search</button>
+
+              <div class="search-box relative flex items-center">
+                <span
+                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-fg-muted"
+                >
+                  /
+                </span>
+                <input
+                  id="search-input"
+                  ref="searchInputRef"
+                  v-model="inputValue"
+                  type="search"
+                  name="q"
+                  placeholder="search packages..."
+                  autocomplete="off"
+                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-4 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-all duration-300 focus:(border-border-hover outline-none) appearance-none"
+                  @focus="isSearchFocused = true"
+                  @blur="isSearchFocused = false"
+                />
+                <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
+                <button type="submit" class="sr-only">Search</button>
+              </div>
             </div>
-          </div>
-        </form>
-      </search>
+          </form>
+        </search>
+      </div>
     </header>
 
-    <section v-if="query" aria-label="Search results">
-      <!-- Initial loading (only after user interaction, not during view transition) -->
-      <LoadingSpinner v-if="showSearching" text="Searching..." />
+    <!-- Results area with container padding -->
+    <div class="container py-6">
+      <section v-if="query" aria-label="Search results">
+        <!-- Initial loading (only after user interaction, not during view transition) -->
+        <LoadingSpinner v-if="showSearching" text="Searching..." />
 
-      <div v-else-if="visibleResults">
-        <p
-          v-if="visibleResults.total > 0"
-          role="status"
-          class="text-fg-muted text-sm mb-6 font-mono"
-        >
-          Found <span class="text-fg">{{ formatNumber(visibleResults.total) }}</span> packages
-          <span v-if="status === 'pending'" class="text-fg-subtle">(updating...)</span>
-        </p>
-
-        <p
-          v-else-if="status !== 'pending'"
-          role="status"
-          class="text-fg-muted py-12 text-center font-mono"
-        >
-          No packages found for "<span class="text-fg">{{ query }}</span
-          >"
-        </p>
-
-        <ol
-          v-if="visibleResults.objects.length > 0"
-          ref="resultsListRef"
-          class="space-y-3 list-none m-0 p-0"
-        >
-          <li
-            v-for="(result, index) in visibleResults.objects"
-            :key="result.package.name"
-            class="animate-fade-in animate-fill-both"
-            :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
-          >
-            <PackageCard :result="result" heading-level="h2" show-publisher />
-          </li>
-        </ol>
-
-        <!-- Infinite scroll trigger -->
-        <div ref="loadMoreTrigger" class="py-8 flex items-center justify-center">
-          <div
-            v-if="isLoadingMore || (status === 'pending' && loadedPages > 1)"
-            class="flex items-center gap-3 text-fg-muted font-mono text-sm"
-          >
-            <span class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full animate-spin" />
-            Loading more...
-          </div>
+        <div v-else-if="visibleResults">
           <p
-            v-else-if="!hasMore && visibleResults.objects.length > 0"
-            class="text-fg-subtle font-mono text-sm"
+            v-if="visibleResults.total > 0"
+            role="status"
+            class="text-fg-muted text-sm mb-6 font-mono"
           >
-            End of results
+            Found <span class="text-fg">{{ formatNumber(visibleResults.total) }}</span> packages
+            <span v-if="status === 'pending'" class="text-fg-subtle">(updating...)</span>
           </p>
-        </div>
-      </div>
-    </section>
 
-    <section v-else class="py-20 text-center">
-      <p class="text-fg-subtle font-mono text-sm">Start typing to search packages</p>
-    </section>
+          <p
+            v-else-if="status !== 'pending'"
+            role="status"
+            class="text-fg-muted py-12 text-center font-mono"
+          >
+            No packages found for "<span class="text-fg">{{ query }}</span
+            >"
+          </p>
+
+          <PackageList
+            v-if="visibleResults.objects.length > 0"
+            :results="visibleResults.objects"
+            heading-level="h2"
+            show-publisher
+            :has-more="hasMore"
+            :is-loading="isLoadingMore || (status === 'pending' && loadedPages > 1)"
+            :page-size="pageSize"
+            :initial-page="initialPage"
+            @load-more="loadMore"
+            @page-change="handlePageChange"
+          />
+        </div>
+      </section>
+
+      <section v-else class="py-20 text-center">
+        <p class="text-fg-subtle font-mono text-sm">Start typing to search packages</p>
+      </section>
+    </div>
   </main>
 </template>

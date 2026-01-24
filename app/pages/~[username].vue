@@ -1,19 +1,86 @@
 <script setup lang="ts">
 import { formatNumber } from '#imports'
+import { debounce } from 'perfect-debounce'
 
 const route = useRoute('~username')
+const router = useRouter()
 
 const username = computed(() => route.params.username)
+
+// Infinite scroll state
+const pageSize = 50
+const loadedPages = ref(1)
+const isLoadingMore = ref(false)
+
+// Get initial page from URL (for scroll restoration on reload)
+const initialPage = computed(() => {
+  const p = Number.parseInt(route.query.page as string, 10)
+  return Number.isNaN(p) ? 1 : Math.max(1, p)
+})
+
+// Debounced URL update for page
+const updateUrlPage = debounce((page: number) => {
+  router.replace({
+    query: {
+      ...route.query,
+      page: page > 1 ? page : undefined,
+    },
+  })
+}, 500)
 
 // Search for packages by this maintainer
 const searchQuery = computed(() => `maintainer:${username.value}`)
 
-const { data: results, status, error } = useNpmSearch(searchQuery, { size: 250 })
+const {
+  data: results,
+  status,
+  error,
+} = useNpmSearch(searchQuery, () => ({
+  size: pageSize * loadedPages.value,
+}))
+
+// Initialize loaded pages from URL on mount
+onMounted(() => {
+  if (initialPage.value > 1) {
+    loadedPages.value = initialPage.value
+  }
+})
 
 // Sort packages by downloads/popularity (searchScore is a good proxy)
 const sortedPackages = computed(() => {
   if (!results.value?.objects) return []
   return [...results.value.objects].sort((a, b) => b.searchScore - a.searchScore)
+})
+
+// Check if there are potentially more results
+const hasMore = computed(() => {
+  if (!results.value) return false
+  // npm search API returns max 250 results, but we paginate for faster initial load
+  return (
+    results.value.objects.length >= pageSize * loadedPages.value &&
+    loadedPages.value * pageSize < 250
+  )
+})
+
+function loadMore() {
+  if (isLoadingMore.value || !hasMore.value) return
+
+  isLoadingMore.value = true
+  loadedPages.value++
+
+  nextTick(() => {
+    isLoadingMore.value = false
+  })
+}
+
+// Update URL when page changes from scrolling
+function handlePageChange(page: number) {
+  updateUrlPage(page)
+}
+
+// Reset pagination when username changes
+watch(username, () => {
+  loadedPages.value = 1
 })
 
 useSeoMeta({
@@ -64,7 +131,7 @@ defineOgImageComponent('Default', {
     </header>
 
     <!-- Loading state -->
-    <LoadingSpinner v-if="status === 'pending'" text="Loading packages..." />
+    <LoadingSpinner v-if="status === 'pending' && loadedPages === 1" text="Loading packages..." />
 
     <!-- Error state -->
     <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">
@@ -86,7 +153,15 @@ defineOgImageComponent('Default', {
     <section v-else-if="results && sortedPackages.length > 0" aria-label="User packages">
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">Packages</h2>
 
-      <PackageList :results="sortedPackages" />
+      <PackageList
+        :results="sortedPackages"
+        :has-more="hasMore"
+        :is-loading="isLoadingMore || (status === 'pending' && loadedPages > 1)"
+        :page-size="pageSize"
+        :initial-page="initialPage"
+        @load-more="loadMore"
+        @page-change="handlePageChange"
+      />
     </section>
   </main>
 </template>
