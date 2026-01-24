@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
 import { logCommand, logSuccess, logError } from './logger.ts'
