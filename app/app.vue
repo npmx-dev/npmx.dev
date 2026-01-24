@@ -450,7 +450,13 @@ input[type='search']::-webkit-search-results-decoration {
   view-transition-name: site-logo;
 }
 
-/* Customize the view transition animations */
+/* Disable the default fade transition on page navigation */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* Customize the view transition animations for specific elements */
 ::view-transition-old(search-box),
 ::view-transition-new(search-box),
 ::view-transition-old(site-logo),
