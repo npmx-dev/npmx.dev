@@ -40,6 +40,17 @@ const config = computed(() => ({
     },
     line: {
       color: '#6A6A6A',
+      pulse: {
+        show: true,
+        loop: true, // runs only once if true
+        radius: 2,
+        color: '#8A8A8A',
+        easing: 'ease-in-out',
+        trail: {
+          show: true,
+          length: 6,
+        },
+      },
     },
     plot: {
       radius: 6,
