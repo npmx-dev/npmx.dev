@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import process from 'node:process'
 import { spawn } from 'node:child_process'
+import * as p from '@clack/prompts'
 import { defineCommand, runMain } from 'citty'
 import { listen } from 'listhen'
 import { toNodeListener } from 'h3'
 import { createConnectorApp, generateToken, CONNECTOR_VERSION } from './server.ts'
 import { getNpmUser } from './npm-client.ts'
-import { initLogger, showToken, logInfo, logWarning } from './logger.ts'
+import { initLogger, showToken, logInfo, logWarning, logError } from './logger.ts'
 
 const DEFAULT_PORT = 31415
 
@@ -45,13 +46,24 @@ const main = defineCommand({
 
     initLogger()
 
+    // Warning message and accept prompt
+    logWarning('This allows npmx to access your npm cli and any authenticated contexts.')
+    const accept = await p.confirm({
+      message: 'Do you accept?',
+      initialValue: false,
+    })
+
+    if (!accept || p.isCancel(accept)) {
+      logError('Connector setup cancelled.')
+      process.exit(0)
+    }
+
     // Check npm authentication before starting
     logInfo('Checking npm authentication...')
     let npmUser = await getNpmUser()
 
     if (!npmUser) {
       logWarning('Not logged in to npm. Starting npm login...')
-      logWarning('This allows npmx to access your npm cli and any authenticated contexts.')
       // oxlint-disable-next-line no-console -- deliberate spacing
       console.log()
 
