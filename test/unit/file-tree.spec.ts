@@ -4,6 +4,30 @@ import { convertToFileTree, fetchFileTree, getPackageFileTree } from '../../serv
 
 const getChildren = (node?: PackageFileTree): PackageFileTree[] => node?.children ?? []
 
+const mockFetchOk = <T>(body: T) => {
+  const fetchMock = vi.fn().mockResolvedValue({
+    ok: true,
+    json: async () => body,
+  })
+  vi.stubGlobal('fetch', fetchMock)
+  return fetchMock
+}
+
+const mockFetchError = (status: number) => {
+  const fetchMock = vi.fn().mockResolvedValue({
+    ok: false,
+    status,
+  })
+  vi.stubGlobal('fetch', fetchMock)
+  return fetchMock
+}
+
+const mockCreateError = () => {
+  const createErrorMock = vi.fn((opts: { statusCode: number; message: string }) => opts)
+  vi.stubGlobal('createError', createErrorMock)
+  return createErrorMock
+}
+
 describe('convertToFileTree', () => {
   it('converts jsDelivr nodes to a sorted tree with directories first', () => {
     const input: JsDelivrFileNode[] = [
@@ -72,6 +96,20 @@ describe('convertToFileTree', () => {
     const empty: PackageFileTree[] = []
     expect(tree).toEqual(empty)
   })
+
+  it('handles directories without a files property', () => {
+    const input: JsDelivrFileNode[] = [
+      {
+        type: 'directory',
+        name: 'src',
+      },
+    ]
+
+    const tree = convertToFileTree(input)
+
+    expect(tree[0]?.type).toBe('directory')
+    expect(tree[0]?.children).toEqual([])
+  })
 })
 
 describe('fetchFileTree', () => {
@@ -84,12 +122,7 @@ describe('fetchFileTree', () => {
       files: [],
     }
 
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => body,
-    })
-
-    vi.stubGlobal('fetch', fetchMock)
+    mockFetchOk(body)
 
     try {
       const result = await fetchFileTree('pkg', '1.0.0')
@@ -100,15 +133,8 @@ describe('fetchFileTree', () => {
   })
 
   it('throws a 404 error when package is not found', async () => {
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 404,
-    })
-
-    const createErrorMock = vi.fn((opts: { statusCode: number; message: string }) => opts)
-
-    vi.stubGlobal('fetch', fetchMock)
-    vi.stubGlobal('createError', createErrorMock)
+    mockFetchError(404)
+    mockCreateError()
 
     try {
       await expect(fetchFileTree('pkg', '1.0.0')).rejects.toMatchObject({ statusCode: 404 })
@@ -118,15 +144,8 @@ describe('fetchFileTree', () => {
   })
 
   it('throws a 502 error for non-404 failures', async () => {
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 500,
-    })
-
-    const createErrorMock = vi.fn((opts: { statusCode: number; message: string }) => opts)
-
-    vi.stubGlobal('fetch', fetchMock)
-    vi.stubGlobal('createError', createErrorMock)
+    mockFetchError(500)
+    mockCreateError()
 
     try {
       await expect(fetchFileTree('pkg', '1.0.0')).rejects.toMatchObject({ statusCode: 502 })
@@ -152,12 +171,7 @@ describe('getPackageFileTree', () => {
       ],
     }
 
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => body,
-    })
-
-    vi.stubGlobal('fetch', fetchMock)
+    mockFetchOk(body)
 
     try {
       const result = await getPackageFileTree('pkg', '1.0.0')
@@ -166,6 +180,24 @@ describe('getPackageFileTree', () => {
       expect(result.default).toBe('index.js')
       expect(result.tree[0]?.path).toBe('src')
       expect(result.tree[0]?.children?.[0]?.path).toBe('src/index.js')
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('returns undefined when default is missing', async () => {
+    const body = {
+      type: 'npm',
+      name: 'pkg',
+      version: '1.0.0',
+      files: [],
+    }
+
+    mockFetchOk(body)
+
+    try {
+      const result = await getPackageFileTree('pkg', '1.0.0')
+      expect(result.default).toBeUndefined()
     } finally {
       vi.unstubAllGlobals()
     }

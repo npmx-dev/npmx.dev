@@ -31,6 +31,23 @@ describe('flattenFileTree', () => {
     expect(files.has('dist/utils/format.js')).toBe(true)
     expect(files.has('dist/utils')).toBe(false)
   })
+
+  it('returns an empty set for an empty tree', () => {
+    const files = flattenFileTree([])
+    expect(files.size).toBe(0)
+  })
+
+  it('includes root-level files', () => {
+    const tree: PackageFileTree[] = [
+      { name: 'index.js', path: 'index.js', type: 'file', size: 5 },
+      { name: 'cli.js', path: 'cli.js', type: 'file', size: 3 },
+    ]
+
+    const files = flattenFileTree(tree)
+
+    expect(files.has('index.js')).toBe(true)
+    expect(files.has('cli.js')).toBe(true)
+  })
 })
 
 describe('resolveRelativeImport', () => {
@@ -53,6 +70,20 @@ describe('resolveRelativeImport', () => {
     const resolved = resolveRelativeImport('./types', 'dist/index.d.ts', files)
 
     expect(resolved?.path).toBe('dist/types.d.ts')
+  })
+
+  it('resolves an exact extension match', () => {
+    const files = new Set<string>(['src/utils.ts', 'src/utils.js'])
+    const resolved = resolveRelativeImport('./utils.ts', 'src/index.ts', files)
+
+    expect(resolved?.path).toBe('src/utils.ts')
+  })
+
+  it('resolves a quoted specifier', () => {
+    const files = new Set<string>(['dist/utils.js'])
+    const resolved = resolveRelativeImport("'./utils'", 'dist/index.js', files)
+
+    expect(resolved?.path).toBe('dist/utils.js')
   })
 
   it('resolves a relative import with extension priority for MTS files', () => {
@@ -127,5 +158,23 @@ describe('createImportResolver', () => {
     const url = resolver('./utils')
 
     expect(url).toBe('/code/pkg-name/v/1.2.3/dist/utils.js')
+  })
+
+  it('returns null when the import cannot be resolved', () => {
+    const files = new Set<string>(['dist/utils.js'])
+    const resolver = createImportResolver(files, 'dist/index.js', 'pkg-name', '1.2.3')
+
+    const url = resolver('./missing')
+
+    expect(url).toBeNull()
+  })
+
+  it('handles scoped package names in URLs', () => {
+    const files = new Set<string>(['dist/utils.js'])
+    const resolver = createImportResolver(files, 'dist/index.js', '@scope/pkg', '1.2.3')
+
+    const url = resolver('./utils')
+
+    expect(url).toBe('/code/@scope/pkg/v/1.2.3/dist/utils.js')
   })
 })
