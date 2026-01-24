@@ -212,7 +212,7 @@ export function createImportResolver(
   return (specifier: string) => {
     const resolved = resolveRelativeImport(specifier, currentFile, files)
     if (resolved) {
-      return `/package/code/${packageName}/v/${version}/${resolved.path}`
+      return `/code/${packageName}/v/${version}/${resolved.path}`
     }
     return null
   }

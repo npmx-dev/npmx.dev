@@ -23,7 +23,7 @@ function formatDate(dateStr: string): string {
 <template>
   <article class="group card-interactive">
     <NuxtLink
-      :to="`/package/${result.package.name}`"
+      :to="{ name: 'package', params: { package: result.package.name.split('/') } }"
       :prefetch-on="prefetch ? 'visibility' : 'interaction'"
       class="block focus:outline-none decoration-none"
     >
@@ -78,7 +78,7 @@ function formatDate(dateStr: string): string {
     >
       <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword">
         <NuxtLink
-          :to="`/search?q=keywords:${encodeURIComponent(keyword)}`"
+          :to="{ name: 'search', query: { q: `keywords:${keyword}` } }"
           class="tag decoration-none"
         >
           {{ keyword }}

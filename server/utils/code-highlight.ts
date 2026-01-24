@@ -184,10 +184,10 @@ function linkifyImports(html: string, options?: LinkifyOptions): string {
     const dep = dependencies?.[packageName]
     if (dep) {
       // Link to code browser with resolved version
-      return `/package/code/${packageName}/v/${dep.version}`
+      return `/code/${packageName}/v/${dep.version}`
     }
     // Fall back to package page if not a known dependency
-    return `/package/${packageName}`
+    return `/${packageName}`
   }
 
   // Match: from keyword span followed by string span containing module specifier

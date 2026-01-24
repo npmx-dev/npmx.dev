@@ -107,4 +107,10 @@ export default defineNuxtConfig({
       background_color: '#0a0a0a',
     },
   },
+
+  vite: {
+    optimizeDeps: {
+      include: ['@vueuse/core', 'vue-data-ui/vue-ui-sparkline'],
+    },
+  },
 })

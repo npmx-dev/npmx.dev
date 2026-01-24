@@ -2,16 +2,21 @@
 import { joinURL } from 'ufo'
 import type { PackumentVersion, NpmVersionDist } from '#shared/types'
 
-const route = useRoute('package-name')
+definePageMeta({
+  name: 'package',
+  alias: ['/package/:package(.*)*'],
+})
+
+const route = useRoute('package')
 
 // Parse package name and optional version from URL
 // Patterns:
-//   /package/nuxt → packageName: "nuxt", requestedVersion: null
-//   /package/nuxt/v/4.2.0 → packageName: "nuxt", requestedVersion: "4.2.0"
-//   /package/@nuxt/kit → packageName: "@nuxt/kit", requestedVersion: null
-//   /package/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
+//   /nuxt → packageName: "nuxt", requestedVersion: null
+//   /nuxt/v/4.2.0 → packageName: "nuxt", requestedVersion: "4.2.0"
+//   /@nuxt/kit → packageName: "@nuxt/kit", requestedVersion: null
+//   /@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
 const parsedRoute = computed(() => {
-  const segments = Array.isArray(route.params.name) ? route.params.name : [route.params.name ?? '']
+  const segments = route.params.package || []
 
   // Find the /v/ separator for version
   const vIndex = segments.indexOf('v')
@@ -220,6 +225,16 @@ onMounted(() => {
   nextTick(checkDescriptionOverflow)
 })
 
+// Canonical URL for this package page
+const canonicalUrl = computed(() => {
+  const base = `https://npmx.dev/${packageName.value}`
+  return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
+})
+
+useHead({
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+})
+
 useSeoMeta({
   title: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
   description: () => pkg.value?.description ?? '',
@@ -246,7 +261,7 @@ defineOgImageComponent('Package', {
             <h1 class="font-mono text-2xl sm:text-3xl font-medium">
               <NuxtLink
                 v-if="orgName"
-                :to="`/org/${orgName}`"
+                :to="{ name: 'org', params: { org: orgName } }"
                 class="text-fg-muted hover:text-fg transition-colors duration-200"
                 >@{{ orgName }}</NuxtLink
               ><span v-if="orgName">/</span
@@ -432,7 +447,10 @@ defineOgImageComponent('Package', {
             </li>
             <li v-if="displayVersion">
               <NuxtLink
-                :to="`/package/code/${pkg.name}/v/${displayVersion.version}`"
+                :to="{
+                  name: 'code',
+                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
+                }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
                 <span class="i-carbon-code w-4 h-4" />
@@ -560,7 +578,7 @@ defineOgImageComponent('Package', {
             </h2>
             <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
               <li v-for="keyword in displayVersion.keywords.slice(0, 15)" :key="keyword">
-                <NuxtLink :to="`/search?q=keywords:${encodeURIComponent(keyword)}`" class="tag">
+                <NuxtLink :to="{ name: 'search', query: { q: `keywords:${keyword}` } }" class="tag">
                   {{ keyword }}
                 </NuxtLink>
               </li>

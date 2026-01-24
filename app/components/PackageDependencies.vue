@@ -71,7 +71,7 @@ function truncateVersion(version: string, maxLength = 20): string {
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
           <NuxtLink
-            :to="`/package/${dep}`"
+            :to="{ name: 'package', params: { package: dep.split('/') } }"
             class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0"
           >
             {{ dep }}
@@ -111,7 +111,7 @@ function truncateVersion(version: string, maxLength = 20): string {
         >
           <div class="flex items-center gap-2 min-w-0">
             <NuxtLink
-              :to="`/package/${peer.name}`"
+              :to="{ name: 'package', params: { package: peer.name.split('/') } }"
               class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate"
             >
               {{ peer.name }}

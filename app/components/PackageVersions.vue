@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PackumentVersion, PackageVersionInfo } from '#shared/types'
+import type { RouteLocationRaw } from 'vue-router'
 
 const props = defineProps<{
   packageName: string
@@ -54,6 +55,14 @@ function compareVersions(a: string, b: string): number {
   if (vb.prerelease) return 1
 
   return 0
+}
+
+// Build route object for package version link
+function versionRoute(version: string): RouteLocationRaw {
+  return {
+    name: 'package',
+    params: { package: [...props.packageName.split('/'), 'v', version] },
+  }
 }
 
 // Get prerelease channel or empty string for stable
@@ -333,7 +342,7 @@ function formatDate(dateStr: string): string {
           <div class="flex-1 flex items-center justify-between py-1.5 text-sm gap-2 min-w-0">
             <div class="flex items-center gap-2 min-w-0">
               <NuxtLink
-                :to="`/package/${packageName}/v/${row.primaryVersion.version}`"
+                :to="versionRoute(row.primaryVersion.version)"
                 class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate"
               >
                 {{ row.primaryVersion.version }}
@@ -374,7 +383,7 @@ function formatDate(dateStr: string): string {
           >
             <div class="flex items-center gap-2 min-w-0">
               <NuxtLink
-                :to="`/package/${packageName}/v/${v.version}`"
+                :to="versionRoute(v.version)"
                 class="font-mono text-xs text-fg-subtle hover:text-fg-muted transition-colors duration-200 truncate"
               >
                 {{ v.version }}
@@ -452,10 +461,11 @@ function formatDate(dateStr: string): string {
               <div v-else class="flex items-center gap-2 py-1">
                 <span class="w-3" />
                 <NuxtLink
-                  :to="`/package/${packageName}/v/${group.versions[0]?.version}`"
+                  v-if="group.versions[0]"
+                  :to="versionRoute(group.versions[0].version)"
                   class="font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200"
                 >
-                  {{ group.versions[0]?.version }}
+                  {{ group.versions[0].version }}
                 </NuxtLink>
                 <span
                   v-if="group.versions[0]?.tag"
@@ -474,7 +484,7 @@ function formatDate(dateStr: string): string {
                 >
                   <div class="flex items-center gap-2 min-w-0">
                     <NuxtLink
-                      :to="`/package/${packageName}/v/${v.version}`"
+                      :to="versionRoute(v.version)"
                       class="font-mono text-xs text-fg-subtle hover:text-fg-muted transition-colors duration-200 truncate"
                     >
                       {{ v.version }}

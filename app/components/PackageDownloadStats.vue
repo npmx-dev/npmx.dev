@@ -24,6 +24,9 @@ const config = computed(() => ({
   theme: 'dark', // enforced dark mode for now
   style: {
     backgroundColor: 'transparent',
+    animation: {
+      show: false,
+    },
     area: {
       color: '#6A6A6A',
       useGradient: false,

@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { formatNumber } from '#imports'
 
-const route = useRoute('org-name')
+definePageMeta({
+  name: 'org',
+  alias: ['/org/:org()'],
+})
 
-const orgName = computed(() => route.params.name)
+const route = useRoute('org')
+
+const orgName = computed(() => route.params.org)
 
 const { isConnected } = useConnector()
 
@@ -25,6 +30,13 @@ const scopedPackages = computed(() => {
 const packageCount = computed(() => scopedPackages.value.length)
 
 const activeTab = ref<'members' | 'teams'>('members')
+
+// Canonical URL for this org page
+const canonicalUrl = computed(() => `https://npmx.dev/@${orgName.value}`)
+
+useHead({
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+})
 
 useSeoMeta({
   title: () => `@${orgName.value} - npmx`,

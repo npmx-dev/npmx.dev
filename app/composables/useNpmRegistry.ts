@@ -171,7 +171,14 @@ export function usePackageWeeklyDownloadEvolution(
     async () => {
       const packageName = toValue(name)
       const { weeks = 12, endDate } = toValue(options) ?? {}
-      const end = endDate ? new Date(`${endDate}T00:00:00.000Z`) : new Date()
+
+      const today = new Date()
+      const yesterday = new Date(
+        Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1),
+      )
+
+      const end = endDate ? new Date(`${endDate}T00:00:00.000Z`) : yesterday
+
       const start = addDays(end, -(weeks * 7) + 1)
       const startIso = toIsoDateString(start)
       const endIso = toIsoDateString(end)

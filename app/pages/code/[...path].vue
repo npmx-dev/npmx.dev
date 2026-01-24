@@ -5,16 +5,21 @@ import type {
   PackageFileContentResponse,
 } from '#shared/types'
 
-const route = useRoute('package-code-path')
+definePageMeta({
+  name: 'code',
+  alias: ['/package/code/:path(.*)*'],
+})
+
+const route = useRoute('code')
 const router = useRouter()
 
 // Parse package name, version, and file path from URL
 // Patterns:
-//   /package/code/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0", filePath: null (show tree)
-//   /package/code/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0", filePath: "src/index.ts"
-//   /package/code/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0", filePath: null
+//   /code/nuxt/v/4.2.0 → packageName: "nuxt", version: "4.2.0", filePath: null (show tree)
+//   /code/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0", filePath: "src/index.ts"
+//   /code/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0", filePath: null
 const parsedRoute = computed(() => {
-  const segments = Array.isArray(route.params.path) ? route.params.path : [route.params.path ?? '']
+  const segments = route.params.path || []
 
   // Find the /v/ separator for version
   const vIndex = segments.indexOf('v')
@@ -75,8 +80,8 @@ const availableVersions = computed(() => {
 // Version switch handler
 function switchVersion(newVersion: string) {
   const newPath = filePath.value
-    ? `/package/code/${packageName.value}/v/${newVersion}/${filePath.value}`
-    : `/package/code/${packageName.value}/v/${newVersion}`
+    ? `/code/${packageName.value}/v/${newVersion}/${filePath.value}`
+    : `/code/${packageName.value}/v/${newVersion}`
   router.push(newPath)
 }
 
@@ -96,15 +101,17 @@ const currentNode = computed(() => {
 
   const parts = filePath.value.split('/')
   let current: PackageFileTree[] | undefined = fileTree.value.tree
+  let lastFound: PackageFileTree | null = null
 
   for (const part of parts) {
     const found: PackageFileTree | undefined = current?.find(n => n.name === part)
     if (!found) return null
+    lastFound = found
     if (found.type === 'file') return found
     current = found.children
   }
 
-  return null
+  return lastFound
 })
 
 const isViewingFile = computed(() => currentNode.value?.type === 'file')
@@ -118,8 +125,8 @@ const isFileTooLarge = computed(() => {
 
 // Fetch file content when a file is selected (and not too large)
 const fileContentUrl = computed(() => {
-  // Don't fetch if no file path, file tree not loaded, or file is too large
-  if (!filePath.value || !fileTree.value || isFileTooLarge.value) {
+  // Don't fetch if no file path, file tree not loaded, file is too large, or it's a directory
+  if (!filePath.value || !fileTree.value || isFileTooLarge.value || !isViewingFile.value) {
     return null
   }
   return `/api/registry/file/${packageName.value}/v/${version.value}/${filePath.value}`
@@ -205,7 +212,7 @@ const breadcrumbs = computed(() => {
 
 // Navigation helper - build URL for a path
 function getCodeUrl(path?: string): string {
-  const base = `/package/code/${packageName.value}/v/${version.value}`
+  const base = `/code/${packageName.value}/v/${version.value}`
   return path ? `${base}/${path}` : base
 }
 
@@ -216,6 +223,15 @@ const orgName = computed(() => {
   const match = name.match(/^@([^/]+)\//)
   return match ? match[1] : null
 })
+
+// Build route object for package link (with optional version)
+function packageRoute(ver?: string | null) {
+  const segments = packageName.value.split('/')
+  if (ver) {
+    segments.push('v', ver)
+  }
+  return { name: 'package' as const, params: { package: segments } }
+}
 
 // Format file size
 function formatBytes(bytes: number): string {
@@ -255,6 +271,19 @@ async function copyPermalink() {
   await navigator.clipboard.writeText(url.toString())
 }
 
+// Canonical URL for this code page
+const canonicalUrl = computed(() => {
+  let url = `https://npmx.dev/code/${packageName.value}/v/${version.value}`
+  if (filePath.value) {
+    url += `/${filePath.value}`
+  }
+  return url
+})
+
+useHead({
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+})
+
 useSeoMeta({
   title: () => {
     if (filePath.value) {
@@ -274,7 +303,7 @@ useSeoMeta({
         <!-- Package info and navigation -->
         <div class="flex items-center gap-2 mb-3 flex-wrap">
           <NuxtLink
-            :to="`/package/${packageName}${version ? `/v/${version}` : ''}`"
+            :to="packageRoute(version)"
             class="font-mono text-lg font-medium hover:text-fg transition-colors"
           >
             <span v-if="orgName" class="text-fg-muted">@{{ orgName }}/</span
@@ -335,7 +364,7 @@ useSeoMeta({
     <!-- Error: no version -->
     <div v-if="!version" class="container py-20 text-center">
       <p class="text-fg-muted mb-4">Version is required to browse code</p>
-      <NuxtLink :to="`/package/${packageName}`" class="btn"> Go to package </NuxtLink>
+      <NuxtLink :to="packageRoute()" class="btn"> Go to package </NuxtLink>
     </div>
 
     <!-- Loading state -->
@@ -347,9 +376,7 @@ useSeoMeta({
     <!-- Error state -->
     <div v-else-if="treeStatus === 'error'" class="container py-20 text-center" role="alert">
       <p class="text-fg-muted mb-4">Failed to load files for this package version</p>
-      <NuxtLink :to="`/package/${packageName}${version ? `/v/${version}` : ''}`" class="btn">
-        Back to package
-      </NuxtLink>
+      <NuxtLink :to="packageRoute(version)" class="btn"> Back to package </NuxtLink>
     </div>
 
     <!-- Main content: file tree + file viewer -->
