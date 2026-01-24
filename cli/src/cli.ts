@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 import process from 'node:process'
 import { spawn } from 'node:child_process'
+import * as p from '@clack/prompts'
+import pc from 'picocolors'
 import { defineCommand, runMain } from 'citty'
 import { listen } from 'listhen'
 import { toNodeListener } from 'h3'
 import { createConnectorApp, generateToken, CONNECTOR_VERSION } from './server.ts'
 import { getNpmUser } from './npm-client.ts'
-import { initLogger, showToken, logInfo, logWarning } from './logger.ts'
+import { initLogger, showToken, logInfo, logWarning, logError } from './logger.ts'
 
 const DEFAULT_PORT = 31415
 
@@ -44,6 +46,20 @@ const main = defineCommand({
     const port = Number.parseInt(args.port as string, 10) || DEFAULT_PORT
 
     initLogger()
+
+    // Warning message and accept prompt
+    logWarning(
+      `This allows ${pc.underline('npmx.dev')} to access your npm cli and any authenticated contexts.`,
+    )
+    const accept = await p.confirm({
+      message: 'Do you accept?',
+      initialValue: true,
+    })
+
+    if (!accept || p.isCancel(accept)) {
+      logError('Connector setup cancelled.')
+      process.exit(0)
+    }
 
     // Check npm authentication before starting
     logInfo('Checking npm authentication...')
