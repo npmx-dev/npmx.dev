@@ -157,7 +157,8 @@ const packageManagers = [
   { id: 'pnpm', label: 'pnpm', action: 'add' },
   { id: 'yarn', label: 'yarn', action: 'add' },
   { id: 'bun', label: 'bun', action: 'add' },
-  { id: 'deno', label: 'deno', action: 'add npm:' },
+  { id: 'deno', label: 'deno', action: 'add' },
+  { id: 'jsr', label: 'jsr', action: 'add' },
 ] as const
 
 type PackageManagerId = (typeof packageManagers)[number]['id']
@@ -182,18 +183,35 @@ const currentPM = computed(
 const selectedPMLabel = computed(() => currentPM.value.label)
 const selectedPMAction = computed(() => currentPM.value.action)
 
+// Get the package specifier for the current package manager
+const packageSpecifier = computed(() => {
+  if (!pkg.value) return ''
+  const pm = currentPM.value
+
+  if (pm.id === 'deno') {
+    // deno add npm:package
+    return `npm:${pkg.value.name}`
+  }
+
+  if (pm.id === 'jsr') {
+    if (jsrInfo.value?.exists && jsrInfo.value.scope && jsrInfo.value.name) {
+      // Native JSR package: @scope/name
+      return `@${jsrInfo.value.scope}/${jsrInfo.value.name}`
+    }
+    // npm compatibility: npm:package
+    return `npm:${pkg.value.name}`
+  }
+
+  // Standard package managers
+  return pkg.value.name
+})
+
 const installCommand = computed(() => {
   if (!pkg.value) return ''
   const pm = currentPM.value
-  let command = `${pm.label} ${pm.action} ${pkg.value.name}`
-  // deno uses "add npm:package" format
-  if (pm.id === 'deno') {
-    command = `${pm.label} ${pm.action}${pkg.value.name}`
-  }
-  if (requestedVersion.value) {
-    command += `@${requestedVersion.value}`
-  }
-  return command
+  const spec = packageSpecifier.value
+  const version = requestedVersion.value ? `@${requestedVersion.value}` : ''
+  return `${pm.label} ${pm.action} ${spec}${version}`
 })
 
 // Copy install command
@@ -539,9 +557,7 @@ defineOgImageComponent('Package', {
                 ><ClientOnly
                   ><span class="text-fg">{{ selectedPMLabel }}</span
                   >&nbsp;<span class="text-fg-muted">{{ selectedPMAction }}</span
-                  ><span v-if="selectedPM !== 'deno'" class="text-fg-muted"
-                    >&nbsp;{{ pkg.name }}</span
-                  ><span v-else class="text-fg-muted">{{ pkg.name }}</span
+                  >&nbsp;<span class="text-fg-muted">{{ packageSpecifier }}</span
                   ><span v-if="requestedVersion" class="text-fg-muted">@{{ requestedVersion }}</span
                   ><template #fallback
                     ><span class="text-fg">npm</span>&nbsp;<span class="text-fg-muted"
