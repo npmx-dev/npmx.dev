@@ -431,8 +431,8 @@ defineOgImageComponent('Package', {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-security w-4 h-4" />
-                security
+                <span class="i-simple-icons-socketdotio w-4 h-4" />
+                socket.dev
               </a>
             </li>
             <li>
@@ -472,6 +472,13 @@ defineOgImageComponent('Package', {
           </ul>
         </nav>
       </header>
+
+      <!-- Security vulnerabilities warning -->
+      <PackageVulnerabilities
+        v-if="displayVersion"
+        :package-name="pkg.name"
+        :version="displayVersion.version"
+      />
 
       <!-- Install command with package manager selector -->
       <section aria-labelledby="install-heading" class="mb-8">
