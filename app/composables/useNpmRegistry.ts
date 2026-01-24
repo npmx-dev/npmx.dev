@@ -145,7 +145,7 @@ type NpmDownloadsRangeResponse = {
   start: string
   end: string
   package: string
-  downloads: Array<{ day: string, downloads: number }>
+  downloads: Array<{ day: string; downloads: number }>
 }
 
 async function fetchNpmDownloadsRange(
@@ -154,7 +154,9 @@ async function fetchNpmDownloadsRange(
   end: string,
 ): Promise<NpmDownloadsRangeResponse> {
   const encodedName = encodePackageName(packageName)
-  return await $fetch<NpmDownloadsRangeResponse>(`${NPM_API}/downloads/range/${start}:${end}/${encodedName}`)
+  return await $fetch<NpmDownloadsRangeResponse>(
+    `${NPM_API}/downloads/range/${start}:${end}/${encodedName}`,
+  )
 }
 
 export function usePackageWeeklyDownloadEvolution(
@@ -180,7 +182,11 @@ export function usePackageWeeklyDownloadEvolution(
   )
 }
 
-const emptySearchResponse = { objects: [], total: 0, time: new Date().toISOString() } satisfies NpmSearchResponse
+const emptySearchResponse = {
+  objects: [],
+  total: 0,
+  time: new Date().toISOString(),
+} satisfies NpmSearchResponse
 
 export function useNpmSearch(
   query: MaybeRefOrGetter<string>,

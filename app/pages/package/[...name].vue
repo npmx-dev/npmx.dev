@@ -568,9 +568,7 @@ defineOgImageComponent('Package', {
           </section>
 
           <!-- Donwload stats -->
-          <PackageDownloadStats
-            :downloads="weeklyDownloads"
-          />
+          <PackageDownloadStats :downloads="weeklyDownloads" />
 
           <section
             v-if="

@@ -11,10 +11,10 @@ export function chunkIntoWeeks<T>(items: T[], weekSize = 7): T[][] {
 }
 
 export function buildWeeklyEvolutionFromDaily(
-  daily: Array<{ day: string, downloads: number }>,
-): Array<{ weekStart: string, weekEnd: string, downloads: number }> {
+  daily: Array<{ day: string; downloads: number }>,
+): Array<{ weekStart: string; weekEnd: string; downloads: number }> {
   const weeks = chunkIntoWeeks(daily, 7)
-  return weeks.map((weekDays) => {
+  return weeks.map(weekDays => {
     const weekStart = weekDays[0]?.day ?? ''
     const weekEnd = weekDays[weekDays.length - 1]?.day ?? ''
     const downloads = sum(weekDays.map(d => d.downloads))
