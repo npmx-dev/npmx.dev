@@ -9,7 +9,8 @@
   "rules": {
     "no-console": "warn",
     "no-await-in-loop": "off",
-    "unicorn/no-array-sort": "off"
+    "unicorn/no-array-sort": "off",
+    "no-restricted-globals": "error"
   },
   "ignorePatterns": [
     ".output/**",

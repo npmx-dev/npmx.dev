@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import process from 'node:process'
 import { spawn } from 'node:child_process'
 import { defineCommand, runMain } from 'citty'
 import { listen } from 'listhen'
