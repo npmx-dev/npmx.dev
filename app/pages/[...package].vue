@@ -164,6 +164,7 @@ const PROVIDER_ICONS: Record<string, string> = {
   gitea: 'i-simple-icons-gitea',
   gitee: 'i-simple-icons-gitee',
   sourcehut: 'i-simple-icons-sourcehut',
+  tangled: 'i-custom-tangled',
 }
 
 const repoProviderIcon = computed(() => {
@@ -451,6 +452,7 @@ defineOgImageComponent('Package', {
                   class="i-solar-eye-scan-outline w-3.5 h-3.5 inline-block"
                   aria-hidden="true"
                 />
+                <span class="sr-only">Inspect dependency tree</span>
               </a>
             </dd>
           </div>
@@ -568,7 +570,7 @@ defineOgImageComponent('Package', {
                 jsr
               </a>
             </li>
-            <li class="flex-grow">
+            <li class="sm:flex-grow">
               <a
                 :href="`https://socket.dev/npm/package/${pkg.name}/overview/${displayVersion?.version ?? 'latest'}`"
                 target="_blank"
@@ -670,6 +672,7 @@ defineOgImageComponent('Package', {
             </div>
           </div>
           <button
+            type="button"
             class="absolute top-3 right-3 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             @click="copyInstallCommand"
           >

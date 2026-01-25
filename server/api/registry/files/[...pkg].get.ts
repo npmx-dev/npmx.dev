@@ -1,4 +1,7 @@
+import * as v from 'valibot'
+import { PackageVersionQuerySchema } from '#shared/schemas/package'
 import type { PackageFileTreeResponse } from '#shared/types'
+import { CACHE_MAX_AGE_ONE_YEAR, ERROR_FILE_LIST_FETCH_FAILED } from '#shared/utils/constants'
 
 /**
  * Returns the file tree for a package version.
@@ -9,27 +12,18 @@ import type { PackageFileTreeResponse } from '#shared/types'
  */
 export default defineCachedEventHandler(
   async event => {
-    const segments = getRouterParam(event, 'pkg')?.split('/') ?? []
-    if (segments.length === 0) {
-      throw createError({ statusCode: 400, message: 'Package name and version are required' })
-    }
-
     // Parse package name and version from URL segments
     // Patterns: [pkg, 'v', version] or [@scope, pkg, 'v', version]
-    const vIndex = segments.indexOf('v')
-    if (vIndex === -1 || vIndex >= segments.length - 1) {
-      throw createError({ statusCode: 400, message: 'Version is required (use /v/{version})' })
-    }
+    const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
 
-    const packageName = segments.slice(0, vIndex).join('/')
-    const version = segments.slice(vIndex + 1).join('/')
-
-    if (!packageName || !version) {
-      throw createError({ statusCode: 400, message: 'Package name and version are required' })
-    }
-    assertValidPackageName(packageName)
+    const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
     try {
+      const { packageName, version } = v.parse(PackageVersionQuerySchema, {
+        packageName: rawPackageName,
+        version: rawVersion,
+      })
+
       const jsDelivrData = await fetchFileTree(packageName, version)
       const tree = convertToFileTree(jsDelivrData.files)
 
@@ -39,19 +33,20 @@ export default defineCachedEventHandler(
         default: jsDelivrData.default ?? undefined,
         tree,
       } satisfies PackageFileTreeResponse
-    } catch (error) {
-      if (error && typeof error === 'object' && 'statusCode' in error) {
-        throw error
-      }
-      throw createError({ statusCode: 502, message: 'Failed to fetch file list' })
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: ERROR_FILE_LIST_FETCH_FAILED,
+      })
     }
   },
   {
     // Files for a specific version never change - cache permanently
-    maxAge: 60 * 60 * 24 * 365, // 1 year
+    maxAge: CACHE_MAX_AGE_ONE_YEAR, // 1 year
+    swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `files:${pkg}`
+      return `files:v1:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )

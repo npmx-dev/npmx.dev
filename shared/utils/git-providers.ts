@@ -8,6 +8,7 @@ export type ProviderId =
   | 'codeberg'
   | 'sourcehut'
   | 'gitee'
+  | 'tangled'
 
 export interface RepoRef {
   provider: ProviderId
@@ -149,6 +150,27 @@ const providers: ProviderConfig[] = [
       `https://git.sr.ht/${ref.owner}/${ref.repo}/blob/${branch}`,
   },
   {
+    id: 'tangled',
+    matchHost: host =>
+      host === 'tangled.sh' ||
+      host === 'www.tangled.sh' ||
+      host === 'tangled.org' ||
+      host === 'www.tangled.org',
+    parsePath: parts => {
+      if (parts.length < 2) return null
+      // Tangled uses owner/repo format (owner is a domain-like identifier, e.g., nonbinary.computer)
+      const owner = decodeURIComponent(parts[0] ?? '').trim()
+      const repo = decodeURIComponent(parts[1] ?? '')
+        .trim()
+        .replace(/\.git$/i, '')
+      if (!owner || !repo) return null
+      return { owner, repo }
+    },
+    getRawBaseUrl: (ref, branch = 'main') =>
+      `https://tangled.sh/${ref.owner}/${ref.repo}/raw/branch/${branch}`,
+    blobToRaw: url => url.replace('/blob/', '/raw/branch/'),
+  },
+  {
     id: 'gitea',
     matchHost: host => {
       // Match common Gitea/Forgejo hosting patterns
@@ -169,6 +191,8 @@ const providers: ProviderConfig[] = [
         'gitee.com',
         'sr.ht',
         'git.sr.ht',
+        'tangled.sh',
+        'tangled.org',
         ...GITLAB_HOSTS,
       ]
       if (skipHosts.some(h => host === h || host.endsWith(`.${h}`))) return false

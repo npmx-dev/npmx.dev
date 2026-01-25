@@ -1,3 +1,10 @@
+import * as v from 'valibot'
+import { PackageFileQuerySchema } from '#shared/schemas/package'
+import {
+  CACHE_MAX_AGE_ONE_YEAR,
+  ERROR_PACKAGE_VERSION_AND_FILE_FAILED,
+} from '#shared/utils/constants'
+
 const CACHE_VERSION = 2
 
 // Maximum file size to fetch and highlight (500KB)
@@ -50,7 +57,10 @@ async function fetchFileContent(
     if (response.status === 404) {
       throw createError({ statusCode: 404, message: 'File not found' })
     }
-    throw createError({ statusCode: 502, message: 'Failed to fetch file from jsDelivr' })
+    throw createError({
+      statusCode: 502,
+      message: 'Failed to fetch file from jsDelivr',
+    })
   }
 
   // Check content-length header if available
@@ -84,38 +94,33 @@ async function fetchFileContent(
  */
 export default defineCachedEventHandler(
   async event => {
-    const segments = getRouterParam(event, 'pkg')?.split('/') ?? []
-    if (segments.length === 0) {
+    // Parse: [pkg, 'v', version, ...filePath] or [@scope, pkg, 'v', version, ...filePath]
+    const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
+
+    const { rawPackageName, rawVersion: fullPathAfterV } = parsePackageParams(pkgParamSegments)
+
+    // Since version AND path route are required, we split the remainder
+    // fullPathAfterV => "1.2.3/dist/index.mjs"
+    const versionSegments = fullPathAfterV?.split('/') ?? []
+
+    if (versionSegments.length < 2) {
       throw createError({
         statusCode: 400,
-        message: 'Package name, version, and file path are required',
+        message: ERROR_PACKAGE_VERSION_AND_FILE_FAILED,
       })
     }
-
-    // Parse: [pkg, 'v', version, ...filePath] or [@scope, pkg, 'v', version, ...filePath]
-    const vIndex = segments.indexOf('v')
-    if (vIndex === -1 || vIndex >= segments.length - 2) {
-      throw createError({ statusCode: 400, message: 'Version and file path are required' })
-    }
-
-    const packageName = segments.slice(0, vIndex).join('/')
-    // Find where version ends (next segment after 'v') and file path begins
-    // Version could be like "1.2.3" or "1.2.3-beta.1"
-    const versionAndPath = segments.slice(vIndex + 1)
 
     // The version is the first segment after 'v', and everything else is the file path
-    const version = versionAndPath[0]
-    const filePath = versionAndPath.slice(1).join('/')
-
-    if (!packageName || !version || !filePath) {
-      throw createError({
-        statusCode: 400,
-        message: 'Package name, version, and file path are required',
-      })
-    }
-    assertValidPackageName(packageName)
+    const rawVersion = versionSegments[0]
+    const rawFilePath = versionSegments.slice(1).join('/')
 
     try {
+      const { packageName, version, filePath } = v.parse(PackageFileQuerySchema, {
+        packageName: rawPackageName,
+        version: rawVersion,
+        filePath: rawFilePath,
+      })
+
       const content = await fetchFileContent(packageName, version, filePath)
       const language = getLanguageFromPath(filePath)
 
@@ -156,7 +161,10 @@ export default defineCachedEventHandler(
         }
       }
 
-      const html = await highlightCode(content, language, { dependencies, resolveRelative })
+      const html = await highlightCode(content, language, {
+        dependencies,
+        resolveRelative,
+      })
 
       return {
         package: packageName,
@@ -167,19 +175,19 @@ export default defineCachedEventHandler(
         html,
         lines: content.split('\n').length,
       }
-    } catch (error) {
-      if (error && typeof error === 'object' && 'statusCode' in error) {
-        throw error
-      }
-      throw createError({ statusCode: 502, message: 'Failed to fetch file content' })
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: 'Failed to fetch file content',
+      })
     }
   },
   {
     // File content for a specific version never changes - cache permanently
-    maxAge: 60 * 60 * 24 * 365, // 1 year
+    maxAge: CACHE_MAX_AGE_ONE_YEAR, // 1 year
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `file:v${CACHE_VERSION}:${pkg}`
+      return `file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )

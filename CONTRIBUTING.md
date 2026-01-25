@@ -110,6 +110,59 @@ The connector will check your npm authentication, generate a connection token, a
 - We care about good types &ndash; never cast things to `any` 💪
 - Validate rather than just assert
 
+### Server API patterns
+
+#### Input validation with Valibot
+
+Use Valibot schemas from `#shared/schemas/` to validate API inputs. This ensures type safety and provides consistent error messages:
+
+```typescript
+import * as v from 'valibot'
+import { PackageRouteParamsSchema } from '#shared/schemas/package'
+
+// In your handler:
+const { packageName, version } = v.parse(PackageRouteParamsSchema, {
+  packageName: rawPackageName,
+  version: rawVersion,
+})
+```
+
+#### Error handling with `handleApiError`
+
+Use the `handleApiError` utility for consistent error handling in API routes. It re-throws H3 errors (like 404s) and wraps other errors with a fallback message:
+
+```typescript
+import { ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
+
+try {
+  // API logic...
+} catch (error: unknown) {
+  handleApiError(error, {
+    statusCode: 502,
+    message: ERROR_NPM_FETCH_FAILED,
+  })
+}
+```
+
+#### URL parameter parsing with `parsePackageParams`
+
+Use `parsePackageParams` to extract package name and version from URL segments:
+
+```typescript
+const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
+const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
+```
+
+This handles patterns like `/pkg`, `/pkg/v/1.0.0`, `/@scope/pkg`, and `/@scope/pkg/v/1.0.0`.
+
+#### Constants
+
+Define error messages and other string constants in `#shared/utils/constants.ts` to ensure consistency across the codebase:
+
+```typescript
+export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
+```
+
 ### Import order
 
 1. Type imports first (`import type { ... }`)

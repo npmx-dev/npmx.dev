@@ -1,3 +1,7 @@
+import * as v from 'valibot'
+import { PackageRouteParamsSchema } from '#shared/schemas/package'
+import { CACHE_MAX_AGE_ONE_HOUR, ERROR_CALC_INSTALL_SIZE_FAILED } from '#shared/utils/constants'
+
 /**
  * GET /api/registry/install-size/:name or /api/registry/install-size/:name/v/:version
  *
@@ -6,68 +10,45 @@
  */
 export default defineCachedEventHandler(
   async event => {
-    const pkgParam = getRouterParam(event, 'pkg')
-    if (!pkgParam) {
-      throw createError({ statusCode: 400, message: 'Package name is required' })
-    }
-
     // Parse package name and optional version from path segments
     // Supports: /install-size/lodash, /install-size/lodash/v/4.17.21, /install-size/@scope/name, /install-size/@scope/name/v/1.0.0
-    const segments = pkgParam.split('/')
-    let packageName: string
-    let requestedVersion: string | undefined
+    const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
 
-    if (segments[0]?.startsWith('@')) {
-      // Scoped package: @scope/name or @scope/name/v/version
-      if (segments.length < 2) {
-        throw createError({ statusCode: 400, message: 'Invalid scoped package name' })
-      }
-      packageName = `@${segments[0]?.slice(1)}/${segments[1]}`
-      if (segments[2] === 'v' && segments[3]) {
-        requestedVersion = segments[3]
-      }
-    } else {
-      // Unscoped package: name or name/v/version
-      packageName = segments[0] ?? ''
-      if (segments[1] === 'v' && segments[2]) {
-        requestedVersion = segments[2]
-      }
-    }
+    const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
-    if (!packageName) {
-      throw createError({ statusCode: 400, message: 'Package name is required' })
-    }
-    assertValidPackageName(packageName)
+    try {
+      const { packageName, version: requestedVersion } = v.parse(PackageRouteParamsSchema, {
+        packageName: rawPackageName,
+        version: rawVersion,
+      })
 
-    // If no version specified, resolve to latest
-    let version = requestedVersion
-    if (!version) {
-      try {
+      // If no version specified, resolve to latest
+      let version = requestedVersion
+      if (!version) {
         const packument = await fetchNpmPackage(packageName)
         version = packument['dist-tags']?.latest
         if (!version) {
-          throw createError({ statusCode: 404, message: 'No latest version found' })
+          throw createError({
+            statusCode: 404,
+            message: 'No latest version found',
+          })
         }
-      } catch (error) {
-        if (error && typeof error === 'object' && 'statusCode' in error) {
-          throw error
-        }
-        throw createError({ statusCode: 502, message: 'Failed to fetch package info' })
       }
-    }
 
-    try {
       return await calculateInstallSize(packageName, version)
-    } catch (error) {
-      if (error && typeof error === 'object' && 'statusCode' in error) {
-        throw error
-      }
-      throw createError({ statusCode: 502, message: 'Failed to calculate install size' })
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: ERROR_CALC_INSTALL_SIZE_FAILED,
+      })
     }
   },
   {
-    maxAge: 60 * 60, // 1 hour
+    maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
-    getKey: event => getRouterParam(event, 'pkg') ?? '',
+    getKey: event => {
+      const pkg = getRouterParam(event, 'pkg') ?? ''
+      return `install-size:v1:${pkg.replace(/\/+$/, '').trim()}`
+    },
   },
 )

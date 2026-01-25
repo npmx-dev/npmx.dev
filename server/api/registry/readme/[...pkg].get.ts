@@ -1,3 +1,11 @@
+import * as v from 'valibot'
+import { PackageRouteParamsSchema } from '#shared/schemas/package'
+import {
+  CACHE_MAX_AGE_ONE_HOUR,
+  NPM_MISSING_README_SENTINEL,
+  ERROR_NPM_FETCH_FAILED,
+} from '#shared/utils/constants'
+
 /**
  * Fetch README from jsdelivr CDN for a specific package version.
  * Falls back through common README filenames.
@@ -35,30 +43,19 @@ async function fetchReadmeFromJsdelivr(
  */
 export default defineCachedEventHandler(
   async event => {
-    const segments = getRouterParam(event, 'pkg')?.split('/') ?? []
-    if (segments.length === 0) {
-      throw createError({ statusCode: 400, message: 'Package name is required' })
-    }
-
     // Parse package name and optional version from URL segments
     // Patterns: [pkg] or [pkg, 'v', version] or [@scope, pkg] or [@scope, pkg, 'v', version]
-    let packageName: string
-    let version: string | undefined
+    const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
 
-    const vIndex = segments.indexOf('v')
-    if (vIndex !== -1 && vIndex < segments.length - 1) {
-      packageName = segments.slice(0, vIndex).join('/')
-      version = segments.slice(vIndex + 1).join('/')
-    } else {
-      packageName = segments.join('/')
-    }
-
-    if (!packageName) {
-      throw createError({ statusCode: 400, message: 'Package name is required' })
-    }
-    assertValidPackageName(packageName)
+    const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
     try {
+      // 1. Validate
+      const { packageName, version } = v.parse(PackageRouteParamsSchema, {
+        packageName: rawPackageName,
+        version: rawVersion,
+      })
+
       const packageData = await fetchNpmPackage(packageName)
 
       let readmeContent: string | undefined
@@ -75,7 +72,7 @@ export default defineCachedEventHandler(
       }
 
       // If no README in packument, try fetching from jsdelivr (package tarball)
-      if (!readmeContent || readmeContent === 'ERROR: No README data found!') {
+      if (!readmeContent || readmeContent === NPM_MISSING_README_SENTINEL) {
         readmeContent = (await fetchReadmeFromJsdelivr(packageName, version)) ?? undefined
       }
 
@@ -87,19 +84,19 @@ export default defineCachedEventHandler(
       const repoInfo = parseRepositoryInfo(packageData.repository)
 
       return await renderReadmeHtml(readmeContent, packageName, repoInfo)
-    } catch (error) {
-      if (error && typeof error === 'object' && 'statusCode' in error) {
-        throw error
-      }
-      throw createError({ statusCode: 502, message: 'Failed to fetch package from npm registry' })
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: ERROR_NPM_FETCH_FAILED,
+      })
     }
   },
   {
-    maxAge: 60 * 60, // 1 hour
+    maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `readme:v2:${pkg}`
+      return `readme:v3:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )

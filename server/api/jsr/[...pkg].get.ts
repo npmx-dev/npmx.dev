@@ -1,3 +1,6 @@
+import * as v from 'valibot'
+import { PackageNameSchema } from '#shared/schemas/package'
+import { CACHE_MAX_AGE_ONE_HOUR, ERROR_JSR_FETCH_FAILED } from '#shared/utils/constants'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 
 /**
@@ -11,17 +14,25 @@ import type { JsrPackageInfo } from '#shared/types/jsr'
 export default defineCachedEventHandler<Promise<JsrPackageInfo>>(
   async event => {
     const pkgPath = getRouterParam(event, 'pkg')
-    if (!pkgPath) {
-      throw createError({ statusCode: 400, message: 'Package name is required' })
-    }
-    assertValidPackageName(pkgPath)
 
-    return await fetchJsrPackageInfo(pkgPath)
+    try {
+      const packageName = v.parse(PackageNameSchema, pkgPath)
+
+      return await fetchJsrPackageInfo(packageName)
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: ERROR_JSR_FETCH_FAILED,
+      })
+    }
   },
   {
-    maxAge: 60 * 60, // 1 hour
+    maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
     name: 'api-jsr-package',
-    getKey: event => getRouterParam(event, 'pkg') ?? '',
+    getKey: event => {
+      const pkg = getRouterParam(event, 'pkg') ?? ''
+      return `jsr:v1:${pkg.replace(/\/+$/, '').trim()}`
+    },
   },
 )

@@ -1,24 +1,28 @@
+import * as v from 'valibot'
+import { PackageNameSchema } from '#shared/schemas/package'
+import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
+
 export default defineCachedEventHandler(
   async event => {
-    const pkg = getRouterParam(event, 'pkg')
-    if (!pkg) {
-      throw createError({ statusCode: 400, message: 'Package name is required' })
-    }
-
-    assertValidPackageName(pkg)
-
     try {
-      return await fetchNpmPackage(pkg)
-    } catch (error) {
-      if (error && typeof error === 'object' && 'statusCode' in error) {
-        throw error
-      }
-      throw createError({ statusCode: 502, message: 'Failed to fetch package from npm registry' })
+      const pkg = getRouterParam(event, 'pkg')
+
+      const packageName = v.parse(PackageNameSchema, pkg)
+
+      return await fetchNpmPackage(packageName)
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: ERROR_NPM_FETCH_FAILED,
+      })
     }
   },
   {
-    maxAge: 60 * 60, // 1 hour
+    maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
-    getKey: event => getRouterParam(event, 'pkg') ?? '',
+    getKey: event => {
+      const pkg = getRouterParam(event, 'pkg') ?? ''
+      return `packument:v1:${pkg.replace(/\/+$/, '').trim()}`
+    },
   },
 )

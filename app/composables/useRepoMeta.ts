@@ -466,6 +466,56 @@ const sourcehutAdapter: ProviderAdapter = {
   },
 }
 
+const tangledAdapter: ProviderAdapter = {
+  id: 'tangled',
+
+  parse(url) {
+    const host = url.hostname.toLowerCase()
+    if (
+      host !== 'tangled.sh' &&
+      host !== 'www.tangled.sh' &&
+      host !== 'tangled.org' &&
+      host !== 'www.tangled.org'
+    ) {
+      return null
+    }
+
+    const parts = url.pathname.split('/').filter(Boolean)
+    if (parts.length < 2) return null
+
+    // Tangled uses owner/repo format (owner is a domain-like identifier)
+    const owner = decodeURIComponent(parts[0] ?? '').trim()
+    const repo = decodeURIComponent(parts[1] ?? '')
+      .trim()
+      .replace(/\.git$/i, '')
+
+    if (!owner || !repo) return null
+
+    return { provider: 'tangled', owner, repo }
+  },
+
+  links(ref) {
+    const base = `https://tangled.sh/${ref.owner}/${ref.repo}`
+    return {
+      repo: base,
+      stars: base, // Tangled shows stars on the repo page
+      forks: `${base}/fork`,
+    }
+  },
+
+  async fetchMeta(_ref, links) {
+    // Tangled doesn't have a public API for repo stats yet
+    // Just return basic info without fetching
+    return {
+      provider: 'tangled',
+      url: links.repo,
+      stars: 0,
+      forks: 0,
+      links,
+    }
+  },
+}
+
 // Order matters: more specific adapters should come before generic ones
 const providers: readonly ProviderAdapter[] = [
   githubAdapter,
@@ -474,6 +524,7 @@ const providers: readonly ProviderAdapter[] = [
   codebergAdapter,
   giteeAdapter,
   sourcehutAdapter,
+  tangledAdapter,
   giteaAdapter, // Generic Gitea adapter last as fallback for self-hosted instances
 ] as const
 

@@ -165,4 +165,55 @@ describe('parseRepositoryInfo', () => {
       })
     })
   })
+
+  describe('Tangled support', () => {
+    it('parses Tangled URL with tangled.org domain', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://tangled.org/nonbinary.computer/weaver',
+      })
+      expect(result).toMatchObject({
+        provider: 'tangled',
+        owner: 'nonbinary.computer',
+        repo: 'weaver',
+        rawBaseUrl: 'https://tangled.sh/nonbinary.computer/weaver/raw/branch/main',
+      })
+    })
+
+    it('parses Tangled URL with tangled.sh domain', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://tangled.sh/pds.ls/pdsls',
+      })
+      expect(result).toMatchObject({
+        provider: 'tangled',
+        owner: 'pds.ls',
+        repo: 'pdsls',
+        rawBaseUrl: 'https://tangled.sh/pds.ls/pdsls/raw/branch/main',
+      })
+    })
+
+    it('parses Tangled URL with .git suffix', () => {
+      const result = parseRepositoryInfo({
+        type: 'git',
+        url: 'https://tangled.org/owner/repo.git',
+      })
+      expect(result).toMatchObject({
+        provider: 'tangled',
+        owner: 'owner',
+        repo: 'repo',
+      })
+    })
+
+    it('parses Tangled URL with directory (monorepo)', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://tangled.org/tangled.org/core',
+        directory: 'packages/web',
+      })
+      expect(result).toMatchObject({
+        provider: 'tangled',
+        owner: 'tangled.org',
+        repo: 'core',
+        directory: 'packages/web',
+      })
+    })
+  })
 })
