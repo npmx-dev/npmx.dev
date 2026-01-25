@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
+
 const route = useRoute()
 const router = useRouter()
 
@@ -38,13 +40,9 @@ function handleGlobalKeydown(e: KeyboardEvent) {
   }
 }
 
-onMounted(() => {
-  document.addEventListener('keydown', handleGlobalKeydown)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleGlobalKeydown)
-})
+if (import.meta.client) {
+  useEventListener(document, 'keydown', handleGlobalKeydown)
+}
 </script>
 
 <template>
