@@ -79,7 +79,7 @@ const config = computed(() => ({
       </div>
       <div class="w-full overflow-hidden">
         <ClientOnly>
-          <VueUiSparkline class="max-w-full" :dataset :config />
+          <VueUiSparkline class="w-full max-w-xs" :dataset :config />
           <template #fallback>
             <!-- Skeleton matching sparkline layout: title row + chart with data label -->
             <div class="min-h-[100px]">
@@ -121,9 +121,5 @@ const config = computed(() => ({
   font-family:
     Geist Mono,
     monospace !important;
-}
-.vue-ui-sparkline,
-.vue-ui-sparkline svg {
-  max-width: 100% !important;
 }
 </style>

@@ -566,7 +566,7 @@ defineOgImageComponent('Package', {
 
       <!-- Install command with package manager selector -->
       <section aria-labelledby="install-heading" class="mb-8">
-        <div class="flex items-center justify-between mb-3">
+        <div class="flex flex-wrap items-center justify-between mb-3">
           <h2 id="install-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             Install
           </h2>
