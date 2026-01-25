@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { joinURL } from 'ufo'
-import type { PackumentVersion, NpmVersionDist } from '#shared/types'
+import type { PackumentVersion, NpmVersionDist, ReadmeResponse } from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
 
@@ -56,13 +56,13 @@ const { data: downloads } = usePackageDownloads(packageName, 'last-week')
 const { data: weeklyDownloads } = usePackageWeeklyDownloadEvolution(packageName, { weeks: 52 })
 
 // Fetch README for specific version if requested, otherwise latest
-const { data: readmeData } = useLazyFetch<{ html: string }>(
+const { data: readmeData } = useLazyFetch<ReadmeResponse>(
   () => {
     const base = `/api/registry/readme/${packageName.value}`
     const version = requestedVersion.value
     return version ? `${base}/v/${version}` : base
   },
-  { default: () => ({ html: '' }) },
+  { default: () => ({ html: '', playgroundLinks: [] }) },
 )
 
 // Check if package exists on JSR (only for scoped packages)
@@ -421,11 +421,12 @@ defineOgImageComponent('Package', {
             </dd>
           </div>
 
-          <div v-if="getDependencyCount(displayVersion) > 0" class="space-y-1">
+          <div class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">Deps</dt>
             <dd class="font-mono text-sm text-fg flex items-baseline justify-start gap-2">
               {{ getDependencyCount(displayVersion) }}
               <a
+                v-if="getDependencyCount(displayVersion) > 0"
                 :href="`https://npmgraph.js.org/?q=${pkg.name}`"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -476,8 +477,8 @@ defineOgImageComponent('Package', {
           </div>
 
           <div v-if="pkg.time?.modified" class="space-y-1">
-            <dt class="text-xs text-fg-subtle uppercase tracking-wider">Updated</dt>
-            <dd class="font-mono text-sm text-fg">
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider sm:text-right">Updated</dt>
+            <dd class="font-mono text-sm text-fg sm:text-right">
               <NuxtTime :datetime="pkg.time.modified" date-style="medium" />
             </dd>
           </div>
@@ -702,8 +703,14 @@ defineOgImageComponent('Package', {
             </ul>
           </section>
 
-          <!-- Donwload stats -->
+          <!-- Download stats -->
           <PackageDownloadStats :downloads="weeklyDownloads" />
+
+          <!-- Playground links -->
+          <PackagePlaygrounds
+            v-if="readmeData?.playgroundLinks?.length"
+            :links="readmeData.playgroundLinks"
+          />
 
           <section
             v-if="

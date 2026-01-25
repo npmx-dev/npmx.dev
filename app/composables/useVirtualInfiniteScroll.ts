@@ -5,7 +5,10 @@ export interface WindowVirtualizerHandle {
   readonly viewportSize: number
   findItemIndex: (offset: number) => number
   getItemOffset: (index: number) => number
-  scrollToIndex: (index: number, opts?: { align?: 'start' | 'center' | 'end' }) => void
+  scrollToIndex: (
+    index: number,
+    opts?: { align?: 'start' | 'center' | 'end'; smooth?: boolean },
+  ) => void
 }
 
 export interface UseVirtualInfiniteScrollOptions {

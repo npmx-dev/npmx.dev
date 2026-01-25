@@ -79,13 +79,13 @@ importers:
         version: 3.13.2(vue@3.5.27(typescript@5.9.3))
     devDependencies:
       '@iconify-json/carbon':
-        specifier: ^1.2.18
+        specifier: 1.2.18
         version: 1.2.18
       '@iconify-json/solar':
-        specifier: ^1.2.5
+        specifier: 1.2.5
         version: 1.2.5
       '@npm/types':
-        specifier: ^2.1.0
+        specifier: 2.1.0
         version: 2.1.0
       '@nuxt/test-utils':
         specifier: https://pkg.pr.new/@nuxt/test-utils@1499a48
@@ -94,25 +94,25 @@ importers:
         specifier: 1.57.0
         version: 1.57.0
       '@types/sanitize-html':
-        specifier: ^2.16.0
+        specifier: 2.16.0
         version: 2.16.0
       '@types/semver':
-        specifier: ^7.7.1
+        specifier: 7.7.1
         version: 7.7.1
       '@types/validate-npm-package-name':
-        specifier: ^4.0.2
+        specifier: 4.0.2
         version: 4.0.2
       '@unocss/nuxt':
-        specifier: ^66.6.0
+        specifier: 66.6.0
         version: 66.6.0(magicast@0.5.1)(postcss@8.5.6)(vite@8.0.0-beta.10(@types/node@25.0.10)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(webpack@5.104.1(esbuild@0.27.2))
       '@unocss/preset-wind4':
-        specifier: ^66.6.0
+        specifier: 66.6.0
         version: 66.6.0
       '@vite-pwa/assets-generator':
-        specifier: ^1.0.2
+        specifier: 1.0.2
         version: 1.0.2
       '@vite-pwa/nuxt':
-        specifier: ^1.1.0
+        specifier: 1.1.0
         version: 1.1.0(@vite-pwa/assets-generator@1.0.2)(magicast@0.5.1)(vite@8.0.0-beta.10(@types/node@25.0.10)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))(workbox-build@7.4.0)(workbox-window@7.4.0)
       '@vitest/browser-playwright':
         specifier: ^4.0.18
@@ -130,28 +130,28 @@ importers:
         specifier: 16.2.7
         version: 16.2.7
       marked:
-        specifier: ^17.0.1
+        specifier: 17.0.1
         version: 17.0.1
       oxfmt:
-        specifier: ^0.26.0
+        specifier: 0.26.0
         version: 0.26.0
       oxlint:
         specifier: ^1.41.0
         version: 1.41.0
       playwright-core:
-        specifier: ^1.57.0
+        specifier: 1.57.0
         version: 1.57.0
       simple-git-hooks:
         specifier: 2.13.1
         version: 2.13.1
       std-env:
-        specifier: ^3.10.0
+        specifier: 3.10.0
         version: 3.10.0
       typescript:
         specifier: 5.9.3
         version: 5.9.3
       unocss:
-        specifier: ^66.6.0
+        specifier: 66.6.0
         version: 66.6.0(@unocss/webpack@66.6.0(webpack@5.104.1(esbuild@0.27.2)))(postcss@8.5.6)(vite@8.0.0-beta.10(@types/node@25.0.10)(esbuild@0.27.2)(jiti@2.6.1)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2))
       vitest:
         specifier: ^4.0.18
@@ -191,16 +191,16 @@ importers:
         version: 7.0.2
     devDependencies:
       '@types/node':
-        specifier: ^24.10.9
+        specifier: 24.10.9
         version: 24.10.9
       '@types/validate-npm-package-name':
-        specifier: ^4.0.2
+        specifier: 4.0.2
         version: 4.0.2
       tsdown:
-        specifier: ^0.20.1
+        specifier: 0.20.1
         version: 0.20.1(typescript@5.9.3)(vue-tsc@3.2.2(typescript@5.9.3))
       typescript:
-        specifier: ^5.9.3
+        specifier: 5.9.3
         version: 5.9.3
 
 packages:

@@ -1,6 +1,6 @@
 # npmx.dev
 
-> A fast, modern browser for the npm registry for power users.
+> A fast, modern browser for the npm registry.
 
 <p align="center">
   <a href="https://npmx.dev/">
@@ -12,33 +12,103 @@
 
 ## Vision
 
-The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the npm registry - fast, accessible, and designed for power users.
+The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the npm registry &ndash; fast, modern, and accessible. We don't aim to replace the [npmjs.com](https://www.npmjs.com/) registry, just provide a better UI and DX.
 
-- **Speed first** - Insanely fast searching, filtering, and navigation.
-- **URL compatible** - Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
-- **Provenance aware** - See at a glance which packages have verified build provenance.
+- **Speed first** &ndash; Layout shift, flakiness, slowness is The Worst. Fast searching, filtering, and navigation.
+- **URL compatible** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
+- **Simplicity** &ndash; No noise, cluttered display, or confusing UI. If in doubt: choose simplicity.
 
 ## Features
 
-- **Dark mode by default** - easier on the eyes
-- **Package browsing** - fast search, package details, READMEs, versions, dependencies
-- **User profiles** - view any npm user's public packages at `/~username`
-- **Organization pages** - browse org packages at `/org/orgname`
-- **Provenance indicators** - verified build indicators for packages with npm provenance
-- **Admin features** - org/team management, package access controls via local connector (coming soon)
+### Package browsing
 
-### URL compatibility
+- **Dark mode by default** &ndash; easier on the eyes
+- **Fast search** &ndash; quick package search with instant results
+- **Package details** &ndash; READMEs, versions, dependencies, and metadata
+- **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines
+- **Provenance indicators** &ndash; verified build badges for packages with npm provenance
+- **JSR availability** &ndash; see if scoped packages are also available on JSR
+- **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types, and engine constraints
+- **Outdated dependency indicators** &ndash; visual cues showing which dependencies are behind
+- **Vulnerability warnings** &ndash; security advisories from the OSV database
+- **Download statistics** &ndash; weekly download counts with sparkline charts
+- **Install size** &ndash; total install size including dependencies
+- **Playground links** &ndash; quick access to StackBlitz, CodeSandbox, and other demo environments from READMEs
+- **Infinite search** &ndash; auto-load additional search pages as you scroll
+- **Keyboard navigation** &ndash; press `/` to focus search, arrow keys to navigate results, Enter to select
+- **Claim new packages** &ndash; register new package names directly from search results (via local connector)
 
-npmx.dev supports npm permalink patterns:
+### User & org pages
 
-| Pattern                       | Example                                                        |
-| ----------------------------- | -------------------------------------------------------------- |
-| `/package/<name>`             | [`/package/nuxt`](https://npmx.dev/package/nuxt)               |
-| `/package/@scope/name`        | [`/package/@nuxt/kit`](https://npmx.dev/package/@nuxt/kit)     |
-| `/package/<name>/v/<version>` | [`/package/vue/v/3.4.0`](https://npmx.dev/package/vue/v/3.4.0) |
-| `/search?q=<query>`           | [`/search?q=vue`](https://npmx.dev/search?q=vue)               |
-| `/~<username>`                | [`/~sindresorhus`](https://npmx.dev/~sindresorhus)             |
-| `/org/<name>`                 | [`/org/nuxt`](https://npmx.dev/org/nuxt)                       |
+- **User profiles** &ndash; view any npm user's public packages at `/~username`
+- **Organization pages** &ndash; browse org packages at `/@orgname`
+- **Search, filter & sort** &ndash; find packages within user/org lists
+- **Infinite scroll** &ndash; paginated lists that load as you scroll
+
+### Comparison with npmjs.com
+
+| Feature                        | npmjs.com | npmx.dev |
+| ------------------------------ | :-------: | :------: |
+| Package search                 |    ✅     |    ✅    |
+| Package details & README       |    ✅     |    ✅    |
+| Version history                |    ✅     |    ✅    |
+| Dependencies list              |    ✅     |    ✅    |
+| User profiles                  |    ✅     |    ✅    |
+| Organization pages             |    ✅     |    ✅    |
+| Provenance indicators          |    ✅     |    ✅    |
+| Code browser                   |    ✅     |    ✅    |
+| Dark mode                      |    ❌     |    ✅    |
+| Outdated dependency warnings   |    ❌     |    ✅    |
+| Module format badges (ESM/CJS) |    ❌     |    ✅    |
+| TypeScript types indicator     |    ✅     |    ✅    |
+| Install size calculation       |    ❌     |    ✅    |
+| JSR cross-reference            |    ❌     |    ✅    |
+| Vulnerability warnings         |    ✅     |    ✅    |
+| Download charts                |    ✅     |    ✅    |
+| Playground links               |    ❌     |    ✅    |
+| Keyboard navigation            |    ❌     |    ✅    |
+| Dependents list                |    ✅     |    🚧    |
+| Package admin (access/owners)  |    ✅     |    🚧    |
+| Org/team management            |    ✅     |    🚧    |
+| 2FA/account settings           |    ✅     |    ❌    |
+| Claim new package names        |    ✅     |    ✅    |
+
+🚧 = coming soon
+
+## URL structure
+
+### npm compatibility
+
+npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev` or `xnpmjs.com` and it works:
+
+| npm URL                         | npmx.dev equivalent                                                    |
+| ------------------------------- | ---------------------------------------------------------------------- |
+| `npmjs.com/package/nuxt`        | [`npmx.dev/package/nuxt`](https://npmx.dev/package/nuxt)               |
+| `npmjs.com/package/@nuxt/kit`   | [`npmx.dev/package/@nuxt/kit`](https://npmx.dev/package/@nuxt/kit)     |
+| `npmjs.com/package/vue/v/3.4.0` | [`npmx.dev/package/vue/v/3.4.0`](https://npmx.dev/package/vue/v/3.4.0) |
+| `npmjs.com/search?q=vue`        | [`npmx.dev/search?q=vue`](https://npmx.dev/search?q=vue)               |
+| `npmjs.com/~sindresorhus`       | [`npmx.dev/~sindresorhus`](https://npmx.dev/~sindresorhus)             |
+| `npmjs.com/org/nuxt`            | [`npmx.dev/org/nuxt`](https://npmx.dev/org/nuxt)                       |
+
+> [!TIP]
+> Want automatic redirects? Try the [npmx-replace browser extension](https://github.com/tylersayshi/npmx-replace-extension).
+
+#### Not yet supported
+
+- `/package/<name>/access` &ndash; package access settings
+- `/package/<name>/dependents` &ndash; dependent packages list
+- `/settings/*` &ndash; account settings pages
+
+### Simpler URLs
+
+npmx.dev also supports shorter, cleaner URLs:
+
+| Pattern        | Example                                            |
+| -------------- | -------------------------------------------------- |
+| `/<package>`   | [`/nuxt`](https://npmx.dev/nuxt)                   |
+| `/@scope/name` | [`/@nuxt/kit`](https://npmx.dev/@nuxt/kit)         |
+| `/@org`        | [`/@nuxt`](https://npmx.dev/@nuxt)                 |
+| `/~username`   | [`/~sindresorhus`](https://npmx.dev/~sindresorhus) |
 
 ## Tech stack
 
@@ -48,59 +118,17 @@ npmx.dev supports npm permalink patterns:
 - [nuxt-og-image](https://github.com/nuxt-modules/og-image)
 - [npm Registry API](https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md)
 
-## Try it out locally
+## Contributing
 
-I'd welcome contributions &ndash; please do feel free to poke around and improve things. Here's how you can get going locally.
-
-### Setup
-
-```bash
-# install dependencies
-corepack enable
-pnpm install
-
-# serve in dev mode, with hot reload at localhost:3000
-pnpm dev
-
-# build for production
-pnpm build
-
-# preview in production mode
-pnpm preview
-```
-
-### Testing
-
-```bash
-# run all tests
-pnpm test
-
-# run unit tests
-pnpm test:unit
-
-# run e2e tests
-pnpm test:browser
-
-# type check
-pnpm test:types
-```
-
-### Local connector (CLI)
-
-The `cli/` workspace contains a local connector that enables authenticated npm operations from the web UI. It runs on your machine and uses your existing npm credentials.
-
-```bash
-# run the connector from the root of the repository
-pnpm npmx-connector
-```
-
-The connector will check your npm authentication, generate a connection token, and listen for requests from npmx.dev.
+I'd welcome contributions &ndash; please do feel free to poke around and improve things. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get up and running!
 
 ## Related projects
 
-- [JSR](https://jsr.io/) - The open-source package registry for modern JavaScript and TypeScript
-- [npm-userscript](https://github.com/bluwy/npm-userscript) - Browser userscript with various improvements and fixes for npmjs.com
-- [npm-alt](https://npm.willow.sh/) - An alternative npm package browser
+- [npmx-replace-extension](https://github.com/tylersayshi/npmx-replace-extension) &ndash; Browser extension to redirect npmjs.com to npmx.dev
+- [JSR](https://jsr.io/) &ndash; The open-source package registry for modern JavaScript and TypeScript
+- [npm-userscript](https://github.com/bluwy/npm-userscript) &ndash; Browser userscript with various improvements and fixes for npmjs.com
+- [npm-alt](https://npm.willow.sh/) &ndash; An alternative npm package browser
+- [npkg.lorypelli.dev](https://npkg.lorypelli.dev/) &ndash; An alternative frontend to npm made with as little client-side JavaScript as possible
 
 If you're building something cool, let me know! 🙏
 

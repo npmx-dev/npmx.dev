@@ -43,7 +43,7 @@ withDefaults(
         </li>
         <li v-else class="flex">
           <a
-            href="https://github.com/danielroe/npmx.dev"
+            href="https://github.com/npmx-dev/npmx.dev"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
           >

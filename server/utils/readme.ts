@@ -1,6 +1,98 @@
 import { marked, type Tokens } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol, withoutTrailingSlash } from 'ufo'
+import type { ReadmeResponse } from '#shared/types/readme.js'
+
+/**
+ * Playground provider configuration
+ */
+interface PlaygroundProvider {
+  id: string // Provider identifier
+  name: string
+  domains: string[] // Associated domains
+  icon?: string // Provider icon name
+}
+
+/**
+ * Known playground/demo providers
+ */
+const PLAYGROUND_PROVIDERS: PlaygroundProvider[] = [
+  {
+    id: 'stackblitz',
+    name: 'StackBlitz',
+    domains: ['stackblitz.com', 'stackblitz.io'],
+    icon: 'stackblitz',
+  },
+  {
+    id: 'codesandbox',
+    name: 'CodeSandbox',
+    domains: ['codesandbox.io', 'githubbox.com', 'csb.app'],
+    icon: 'codesandbox',
+  },
+  {
+    id: 'codepen',
+    name: 'CodePen',
+    domains: ['codepen.io'],
+    icon: 'codepen',
+  },
+  {
+    id: 'jsfiddle',
+    name: 'JSFiddle',
+    domains: ['jsfiddle.net'],
+    icon: 'jsfiddle',
+  },
+  {
+    id: 'replit',
+    name: 'Replit',
+    domains: ['repl.it', 'replit.com'],
+    icon: 'replit',
+  },
+  {
+    id: 'gitpod',
+    name: 'Gitpod',
+    domains: ['gitpod.io'],
+    icon: 'gitpod',
+  },
+  {
+    id: 'vue-playground',
+    name: 'Vue Playground',
+    domains: ['play.vuejs.org', 'sfc.vuejs.org'],
+    icon: 'vue',
+  },
+  {
+    id: 'nuxt-new',
+    name: 'Nuxt Starter',
+    domains: ['nuxt.new'],
+    icon: 'nuxt',
+  },
+  {
+    id: 'vite-new',
+    name: 'Vite Starter',
+    domains: ['vite.new'],
+    icon: 'vite',
+  },
+]
+
+/**
+ * Check if a URL is a playground link and return provider info
+ */
+function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
+  try {
+    const parsed = new URL(url)
+    const hostname = parsed.hostname.toLowerCase()
+
+    for (const provider of PLAYGROUND_PROVIDERS) {
+      for (const domain of provider.domains) {
+        if (hostname === domain || hostname.endsWith(`.${domain}`)) {
+          return provider
+        }
+      }
+    }
+  } catch {
+    // Invalid URL
+  }
+  return null
+}
 
 export interface RepositoryInfo {
   /** GitHub raw base URL (e.g., https://raw.githubusercontent.com/owner/repo/HEAD) */
@@ -166,11 +258,15 @@ export async function renderReadmeHtml(
   content: string,
   packageName: string,
   repoInfo?: RepositoryInfo,
-): Promise<string> {
-  if (!content) return ''
+): Promise<ReadmeResponse> {
+  if (!content) return { html: '', playgroundLinks: [] }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
+
+  // Collect playground links during parsing
+  const collectedLinks: PlaygroundLink[] = []
+  const seenUrls = new Set<string>()
 
   // Shift heading levels down by 2 for semantic correctness
   // Page h1 = package name, h2 = "Readme" section heading
@@ -212,7 +308,7 @@ export async function renderReadmeHtml(
     return `<img src="${resolvedHref}"${altAttr}${titleAttr}>`
   }
 
-  // Resolve link URLs and add security attributes
+  // Resolve link URLs, add security attributes, and collect playground links
   renderer.link = function ({ href, title, tokens }: Tokens.Link) {
     const resolvedHref = resolveUrl(href, packageName, repoInfo)
     const text = this.parser.parseInline(tokens)
@@ -221,6 +317,22 @@ export async function renderReadmeHtml(
     const isExternal = resolvedHref.startsWith('http://') || resolvedHref.startsWith('https://')
     const relAttr = isExternal ? ' rel="nofollow noreferrer noopener"' : ''
     const targetAttr = isExternal ? ' target="_blank"' : ''
+
+    // Check if this is a playground link
+    const provider = matchPlaygroundProvider(resolvedHref)
+    if (provider && !seenUrls.has(resolvedHref)) {
+      seenUrls.add(resolvedHref)
+
+      // Extract label from link text (strip HTML tags for plain text)
+      const plainText = text.replace(/<[^>]*>/g, '').trim()
+
+      collectedLinks.push({
+        url: resolvedHref,
+        provider: provider.id,
+        providerName: provider.name,
+        label: plainText || title || provider.name,
+      })
+    }
 
     return `<a href="${resolvedHref}"${titleAttr}${relAttr}${targetAttr}>${text}</a>`
   }
@@ -267,5 +379,8 @@ export async function renderReadmeHtml(
     },
   })
 
-  return sanitized
+  return {
+    html: sanitized,
+    playgroundLinks: collectedLinks,
+  }
 }

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "chat.npmx.dev"
+        }
+      ],
+      "destination": "https://discord.gg/NHwgTgAFVV"
+    }
+  ]
+}

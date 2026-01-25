@@ -1,5 +1,3 @@
-import { parseRepositoryInfo } from '#server/utils/readme'
-
 /**
  * Fetch README from jsdelivr CDN for a specific package version.
  * Falls back through common README filenames.
@@ -82,14 +80,13 @@ export default defineCachedEventHandler(
       }
 
       if (!readmeContent) {
-        return { html: '' }
+        return { html: '', playgroundLinks: [] }
       }
 
       // Parse repository info for resolving relative URLs to GitHub
       const repoInfo = parseRepositoryInfo(packageData.repository)
 
-      const html = await renderReadmeHtml(readmeContent, packageName, repoInfo)
-      return { html }
+      return await renderReadmeHtml(readmeContent, packageName, repoInfo)
     } catch (error) {
       if (error && typeof error === 'object' && 'statusCode' in error) {
         throw error
@@ -102,7 +99,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `readme:${pkg}`
+      return `readme:v2:${pkg}`
     },
   },
 )

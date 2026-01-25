@@ -18,6 +18,8 @@ const props = defineProps<{
   pageSize?: number
   /** Initial page to scroll to (1-indexed) */
   initialPage?: number
+  /** Selected result index (for keyboard navigation) */
+  selectedIndex?: number
 }>()
 
 const emit = defineEmits<{
@@ -25,6 +27,8 @@ const emit = defineEmits<{
   loadMore: []
   /** Emitted when the visible page changes */
   pageChange: [page: number]
+  /** Emitted when a result is hovered/focused */
+  select: [index: number]
 }>()
 
 // Reference to WindowVirtualizer for infinite scroll detection
@@ -78,6 +82,14 @@ watch(
     }
   },
 )
+
+function scrollToIndex(index: number, smooth = true) {
+  listRef.value?.scrollToIndex(index, { align: 'center', smooth })
+}
+
+defineExpose({
+  scrollToIndex,
+})
 </script>
 
 <template>
@@ -97,8 +109,11 @@ watch(
             :result="item as NpmSearchResult"
             :heading-level="headingLevel"
             :show-publisher="showPublisher"
+            :selected="index === (selectedIndex ?? -1)"
+            :index="index"
             class="animate-fade-in animate-fill-both"
             :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+            @focus="emit('select', $event)"
           />
         </div>
       </template>

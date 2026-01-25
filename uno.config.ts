@@ -49,6 +49,18 @@ export default defineConfig({
         kw: '#f97583', // keyword - red/pink
         comment: '#6a737d', // comment - gray
       },
+      // Playground provider brand colors
+      provider: {
+        stackblitz: '#1389FD',
+        codesandbox: '#FFCC00',
+        codepen: '#47CF73',
+        replit: '#F26207',
+        gitpod: '#FFAE33',
+        vue: '#4FC08D',
+        nuxt: '#00DC82',
+        vite: '#646CFF',
+        jsfiddle: '#0084FF',
+      },
     },
     animation: {
       keyframes: {
