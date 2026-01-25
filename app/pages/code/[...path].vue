@@ -339,16 +339,17 @@ useSeoMeta({
 
         <!-- Breadcrumb navigation -->
         <nav
-          v-if="filePath"
           aria-label="File path"
           class="flex items-center gap-1 font-mono text-sm overflow-x-auto"
         >
           <NuxtLink
+            v-if="filePath"
             :to="getCodeUrl()"
             class="text-fg-muted hover:text-fg transition-colors shrink-0"
           >
             root
           </NuxtLink>
+          <span v-else class="text-fg shrink-0">root</span>
           <template v-for="(crumb, i) in breadcrumbs" :key="crumb.path">
             <span class="text-fg-subtle">/</span>
             <NuxtLink
