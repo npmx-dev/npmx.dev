@@ -123,6 +123,7 @@ I'd welcome contributions &ndash; please do feel free to poke around and improve
 - [JSR](https://jsr.io/) &ndash; The open-source package registry for modern JavaScript and TypeScript
 - [npm-userscript](https://github.com/bluwy/npm-userscript) &ndash; Browser userscript with various improvements and fixes for npmjs.com
 - [npm-alt](https://npm.willow.sh/) &ndash; An alternative npm package browser
+- [npkg.lorypelli.dev](https://npkg.lorypelli.dev/) &ndash; An alternative frontend to npm made with as little client-side JavaScript as possible
 
 If you're building something cool, let me know! 🙏
 
