@@ -282,80 +282,81 @@ defineOgImageComponent('Package', {
       <!-- Package header -->
       <header class="mb-8 pb-8 border-b border-border">
         <div class="mb-4">
-          <div class="flex flex-row justify-between">
-            <!-- Package name and version -->
-            <div class="flex items-start gap-2 mb-1.5 sm:gap-3 sm:mb-2 flex-wrap min-w-0">
-              <h1
-                class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
-                :title="pkg.name"
-              >
-                <NuxtLink
-                  v-if="orgName"
-                  :to="{ name: 'org', params: { org: orgName } }"
-                  class="text-fg-muted hover:text-fg transition-colors duration-200"
-                  >@{{ orgName }}</NuxtLink
-                ><span v-if="orgName">/</span
-                >{{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
-              </h1>
-              <a
-                v-if="displayVersion"
-                :href="
-                  hasProvenance(displayVersion)
-                    ? `https://www.npmjs.com/package/${pkg.name}/v/${displayVersion.version}#provenance`
-                    : undefined
+          <!-- Package name and version -->
+          <div class="flex items-center gap-2 mb-1.5 sm:gap-3 sm:mb-2 flex-wrap min-w-0">
+            <h1
+              class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
+              :title="pkg.name"
+            >
+              <NuxtLink
+                v-if="orgName"
+                :to="{ name: 'org', params: { org: orgName } }"
+                class="text-fg-muted hover:text-fg transition-colors duration-200"
+                >@{{ orgName }}</NuxtLink
+              ><span v-if="orgName">/</span
+              >{{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
+            </h1>
+            <a
+              v-if="displayVersion"
+              :href="
+                hasProvenance(displayVersion)
+                  ? `https://www.npmjs.com/package/${pkg.name}/v/${displayVersion.version}#provenance`
+                  : undefined
+              "
+              :target="hasProvenance(displayVersion) ? '_blank' : undefined"
+              :rel="hasProvenance(displayVersion) ? 'noopener noreferrer' : undefined"
+              class="inline-flex items-center gap-1.5 px-3 py-1 font-mono text-sm bg-bg-muted border border-border rounded-md transition-colors duration-200 max-w-full shrink-0"
+              :class="
+                hasProvenance(displayVersion)
+                  ? 'hover:border-border-hover cursor-pointer'
+                  : 'cursor-default'
+              "
+              :title="`v${displayVersion.version}`"
+            >
+              <span class="truncate max-w-24 sm:max-w-32 md:max-w-48">
+                v{{ displayVersion.version }}
+              </span>
+              <span
+                v-if="
+                  requestedVersion &&
+                  latestVersion &&
+                  displayVersion.version !== latestVersion.version
                 "
-                :target="hasProvenance(displayVersion) ? '_blank' : undefined"
-                :rel="hasProvenance(displayVersion) ? 'noopener noreferrer' : undefined"
-                class="inline-flex items-center gap-1.5 px-3 py-1 font-mono text-sm bg-bg-muted border border-border rounded-md transition-colors duration-200 max-w-full shrink-0"
-                :class="
-                  hasProvenance(displayVersion)
-                    ? 'hover:border-border-hover cursor-pointer'
-                    : 'cursor-default'
-                "
-                :title="`v${displayVersion.version}`"
+                class="text-fg-subtle shrink-0"
+                >(not latest)</span
               >
-                <span class="truncate max-w-24 sm:max-w-32 md:max-w-48">
-                  v{{ displayVersion.version }}
-                </span>
-                <span
-                  v-if="
-                    requestedVersion &&
-                    latestVersion &&
-                    displayVersion.version !== latestVersion.version
-                  "
-                  class="text-fg-subtle shrink-0"
-                  >(not latest)</span
-                >
-                <span
-                  v-if="hasProvenance(displayVersion)"
-                  class="i-solar-shield-check-outline w-4 h-4 text-fg-muted shrink-0"
-                  aria-label="Verified provenance"
-                />
-              </a>
+              <span
+                v-if="hasProvenance(displayVersion)"
+                class="i-solar-shield-check-outline w-4 h-4 text-fg-muted shrink-0"
+                aria-label="Verified provenance"
+              />
+            </a>
 
-              <!-- Package metrics (module format, types) -->
-              <ClientOnly>
-                <PackageMetricsBadges
-                  v-if="displayVersion"
-                  :package-name="pkg.name"
-                  :version="displayVersion.version"
-                />
-                <template #fallback>
-                  <ul class="flex items-center gap-1.5">
-                    <li class="skeleton w-8 h-5 rounded" />
-                    <li class="skeleton w-12 h-5 rounded" />
-                  </ul>
-                </template>
-              </ClientOnly>
-            </div>
+            <!-- Package metrics (module format, types) -->
+            <ClientOnly>
+              <PackageMetricsBadges
+                v-if="displayVersion"
+                :package-name="pkg.name"
+                :version="displayVersion.version"
+              />
+              <template #fallback>
+                <ul class="flex items-center gap-1.5">
+                  <li class="skeleton w-8 h-5 rounded" />
+                  <li class="skeleton w-12 h-5 rounded" />
+                </ul>
+              </template>
+            </ClientOnly>
+
             <a
               :href="`https://www.npmjs.com/package/${pkg.name}`"
               target="_blank"
               rel="noopener noreferrer"
-              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0"
+              title="View on npm"
             >
-              <span class="i-carbon-cube w-4 h-4" aria-hidden="true" />
-              npm
+              <span class="i-carbon-logo-npm w-4 h-4" aria-hidden="true" />
+              <span class="hidden sm:inline">npm</span>
+              <span class="sr-only sm:hidden">View on npm</span>
             </a>
           </div>
 
