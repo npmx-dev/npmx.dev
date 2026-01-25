@@ -1,0 +1,17 @@
+{
+  "name": "deno-doc-prototype",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Prototype for @deno/doc integration to generate TypeScript documentation",
+  "scripts": {
+    "test": "node --experimental-strip-types src/test.ts",
+    "test:bun": "bun src/test.ts"
+  },
+  "dependencies": {
+    "@deno/doc": "npm:@jsr/deno__doc@^0.189.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

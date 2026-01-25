@@ -1,6 +1,7 @@
 packages:
   - '.'
   - 'cli'
+  - 'prototypes/*'
 
 ignoredBuiltDependencies:
   - '@parcel/watcher'
