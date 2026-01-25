@@ -47,6 +47,67 @@ watch(
 const isSearchFocused = ref(false)
 const searchInputRef = ref<HTMLInputElement>()
 
+const selectedIndex = ref(0)
+const packageListRef = useTemplateRef('packageListRef')
+
+const resultCount = computed(() => visibleResults.value?.objects.length ?? 0)
+
+function clampIndex(next: number) {
+  if (resultCount.value <= 0) return 0
+  return Math.max(0, Math.min(resultCount.value - 1, next))
+}
+
+function scrollToSelectedResult() {
+  // Use virtualizer's scrollToIndex to ensure the item is rendered and visible
+  packageListRef.value?.scrollToIndex(selectedIndex.value)
+}
+
+function focusSelectedResult() {
+  // First ensure the item is rendered by scrolling to it
+  scrollToSelectedResult()
+  // Then focus it after a tick to allow rendering
+  nextTick(() => {
+    const el = document.querySelector<HTMLElement>(`[data-result-index="${selectedIndex.value}"]`)
+    el?.focus()
+  })
+}
+
+function handleResultsKeydown(e: KeyboardEvent) {
+  if (resultCount.value <= 0) return
+
+  const isFromInput = (e.target as HTMLElement).tagName === 'INPUT'
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    selectedIndex.value = clampIndex(selectedIndex.value + 1)
+    // Only move focus if already in results, not when typing in search input
+    if (isFromInput) {
+      scrollToSelectedResult()
+    } else {
+      focusSelectedResult()
+    }
+    return
+  }
+
+  if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    selectedIndex.value = clampIndex(selectedIndex.value - 1)
+    if (isFromInput) {
+      scrollToSelectedResult()
+    } else {
+      focusSelectedResult()
+    }
+    return
+  }
+
+  if (e.key === 'Enter') {
+    const el = document.querySelector<HTMLElement>(`[data-result-index="${selectedIndex.value}"]`)
+    if (!el) return
+    e.preventDefault()
+    el.click()
+  }
+}
+
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = ref(false)
 onMounted(() => {
@@ -148,10 +209,20 @@ function handlePageChange(page: number) {
   updateUrlPage(page)
 }
 
+function handleSelect(index: number) {
+  if (index < 0) return
+  selectedIndex.value = clampIndex(index)
+}
+
 // Reset pages when query changes
 watch(query, () => {
   loadedPages.value = 1
   hasInteracted.value = true
+})
+
+// Reset selection when query changes (new search)
+watch(query, () => {
+  selectedIndex.value = 0
 })
 
 // Check if current query could be a valid package name
@@ -299,6 +370,7 @@ defineOgImageComponent('Default', {
                   class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-4 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:(border-border-hover outline-none) appearance-none"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
+                  @keydown="handleResultsKeydown"
                 />
                 <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
                 <button type="submit" class="sr-only">Search</button>
@@ -311,7 +383,7 @@ defineOgImageComponent('Default', {
 
     <!-- Results area with container padding -->
     <div class="container pt-20 pb-6">
-      <section v-if="query" aria-label="Search results">
+      <section v-if="query" aria-label="Search results" @keydown="handleResultsKeydown">
         <!-- Initial loading (only after user interaction, not during view transition) -->
         <LoadingSpinner v-if="showSearching" text="Searching…" />
 
@@ -370,7 +442,9 @@ defineOgImageComponent('Default', {
 
           <PackageList
             v-if="visibleResults.objects.length > 0"
+            ref="packageListRef"
             :results="visibleResults.objects"
+            :selected-index="selectedIndex"
             heading-level="h2"
             show-publisher
             :has-more="hasMore"
@@ -379,6 +453,7 @@ defineOgImageComponent('Default', {
             :initial-page="initialPage"
             @load-more="loadMore"
             @page-change="handlePageChange"
+            @select="handleSelect"
           />
         </div>
       </section>

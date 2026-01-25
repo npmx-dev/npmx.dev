@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
+
 const route = useRoute()
 const router = useRouter()
 
@@ -12,9 +14,12 @@ useHead({
 
 // Global keyboard shortcut: "/" focuses search or navigates to search page
 function handleGlobalKeydown(e: KeyboardEvent) {
-  // Ignore if user is typing in an input, textarea, or contenteditable
   const target = e.target as HTMLElement
-  if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+
+  const isEditableTarget =
+    target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
+
+  if (isEditableTarget) {
     return
   }
 
@@ -28,20 +33,16 @@ function handleGlobalKeydown(e: KeyboardEvent) {
 
     if (searchInput) {
       searchInput.focus()
-    } else {
-      // Navigate to search page
-      router.push('/search')
+      return
     }
+
+    router.push('/search')
   }
 }
 
-onMounted(() => {
-  document.addEventListener('keydown', handleGlobalKeydown)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleGlobalKeydown)
-})
+if (import.meta.client) {
+  useEventListener(document, 'keydown', handleGlobalKeydown)
+}
 </script>
 
 <template>
