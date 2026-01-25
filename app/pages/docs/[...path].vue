@@ -49,9 +49,11 @@ const docsUrl = computed(() => {
   return `/api/registry/docs/${packageName.value}/v/${resolvedVersion.value}`
 })
 
+const shouldFetch = computed(() => !!docsUrl.value)
+
 const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(() => docsUrl.value!, {
   watch: [docsUrl],
-  immediate: computed(() => !!docsUrl.value).value,
+  immediate: shouldFetch.value,
   default: () => ({
     package: packageName.value,
     version: resolvedVersion.value ?? '',
@@ -78,9 +80,9 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 </script>
 
 <template>
-  <div class="min-h-screen">
-    <!-- Sticky header - positioned below AppHeader (57px) -->
-    <header class="sticky top-[57px] z-10 bg-bg/95 backdrop-blur border-b border-border">
+  <div class="docs-page min-h-screen">
+    <!-- Sticky header - positioned below AppHeader -->
+    <header class="docs-header sticky z-10 bg-bg/95 backdrop-blur border-b border-border">
       <div class="px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex items-center justify-between gap-4">
           <div class="flex items-center gap-3 min-w-0">
@@ -110,7 +112,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
         v-if="docsData?.toc && !showEmptyState"
         class="hidden lg:block w-64 xl:w-72 shrink-0 border-r border-border"
       >
-        <div class="sticky top-[114px] h-[calc(100vh-114px)] overflow-y-auto p-4">
+        <div class="docs-sidebar sticky overflow-y-auto p-4">
           <h2 class="text-xs font-semibold text-fg-subtle uppercase tracking-wider mb-4">
             Contents
           </h2>
@@ -154,6 +156,22 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 </template>
 
 <style>
+/* Layout constants - must match AppHeader height */
+.docs-page {
+  --app-header-height: 57px;
+  --docs-header-height: 57px;
+  --combined-header-height: calc(var(--app-header-height) + var(--docs-header-height));
+}
+
+.docs-header {
+  top: var(--app-header-height);
+}
+
+.docs-sidebar {
+  top: var(--combined-header-height);
+  height: calc(100vh - var(--combined-header-height));
+}
+
 /* Table of contents styles */
 .toc-content ul {
   @apply space-y-1;
@@ -188,8 +206,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 .docs-content .docs-section-title {
   @apply text-lg font-semibold text-fg mb-8 pb-3 pt-4 border-b border-border;
   @apply sticky bg-bg z-[2];
-  /* Stick below both headers: AppHeader (57px) + docs header (~57px) = 114px */
-  top: 114px;
+  top: var(--combined-header-height);
 }
 
 /* Individual symbol articles */
