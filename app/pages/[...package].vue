@@ -496,7 +496,8 @@ defineOgImageComponent('Package', {
               >
                 <span class="i-carbon-logo-github w-4 h-4" aria-hidden="true" />
                 <span v-if="repoMeta">
-                  {{ formatCompactNumber(stars, { decimals: 1 }) }} stars
+                  {{ formatCompactNumber(stars, { decimals: 1 }) }}
+                  {{ stars === 1 ? 'star' : 'stars' }}
                 </span>
                 <span v-else>repo</span>
               </a>
@@ -532,7 +533,10 @@ defineOgImageComponent('Package', {
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
                 <span class="i-carbon-fork w-4 h-4" aria-hidden="true" />
-                <span>{{ formatCompactNumber(forks, { decimals: 1 }) }} forks</span>
+                <span>
+                  {{ formatCompactNumber(forks, { decimals: 1 }) }}
+                  {{ forks === 1 ? 'fork' : 'forks' }}
+                </span>
               </a>
             </li>
 
