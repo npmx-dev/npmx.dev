@@ -20,11 +20,9 @@ defineOgImageComponent('Default')
 </script>
 
 <template>
-  <main class="container">
-    <!-- Hero section with dramatic vertical centering -->
-    <header
-      class="min-h-[calc(100vh-12rem)] flex flex-col items-center justify-center text-center py-20"
-    >
+  <main class="container min-h-screen flex flex-col">
+    <!-- Hero section with vertical centering -->
+    <header class="flex-1 flex flex-col items-center justify-center text-center py-20">
       <!-- Animated title -->
       <h1
         class="font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 animate-fade-in animate-fill-both"

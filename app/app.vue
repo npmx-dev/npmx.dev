@@ -50,15 +50,17 @@ onUnmounted(() => {
 
     <AppHeader :show-logo="!isHomepage" />
 
-    <div id="main-content" class="flex-1">
+    <div id="main-content" class="flex-1 flex flex-col">
       <NuxtPage />
     </div>
 
     <AppFooter />
+
+    <ScrollToTop />
   </div>
 </template>
 
-<style>
+<style lang="postcss">
 /* Base reset and defaults */
 *,
 *::before,
@@ -77,6 +79,7 @@ body {
   background-color: #0a0a0a;
   color: #fafafa;
   line-height: 1.6;
+  padding-bottom: var(--footer-height, 0);
 }
 
 /* Default link styling for accessibility on dark background */
