@@ -73,3 +73,25 @@ jobs:
 
       - name: 🖥️ Test project (browser)
         run: pnpm test:browser
+
+  a11y:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - run: corepack enable
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 🏗️ Build project
+        run: pnpm build
+
+      - name: ♿ Accessibility audit (Lighthouse)
+        run: pnpx @lhci/cli autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
