@@ -2,11 +2,11 @@ import type { JsrPackageInfo } from '#shared/types/jsr'
 
 export const packageManagers = [
   { id: 'npm', label: 'npm', action: 'install', execute: 'npx' },
-  { id: 'pnpm', label: 'pnpm', action: 'add', execute: 'pnpx' },
+  { id: 'pnpm', label: 'pnpm', action: 'add', execute: 'pnpm dlx' },
   { id: 'yarn', label: 'yarn', action: 'add', execute: 'yarn dlx' },
   { id: 'bun', label: 'bun', action: 'add', execute: 'bunx' },
   { id: 'deno', label: 'deno', action: 'add', execute: 'deno run' },
-  { id: 'vlt', label: 'vlt', action: 'install', execute: 'vlx' },
+  { id: 'vlt', label: 'vlt', action: 'install', execute: 'vlt x' },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']
