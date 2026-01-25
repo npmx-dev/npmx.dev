@@ -250,12 +250,18 @@ export function useNpmSearch(
 /**
  * Fetch all package names in an npm organization
  * Uses the /-/org/{org}/package endpoint
+ * Returns empty array if org doesn't exist or has no packages
  */
 async function fetchOrgPackageNames(orgName: string): Promise<string[]> {
-  const data = await $fetch<Record<string, string>>(
-    `${NPM_REGISTRY}/-/org/${encodeURIComponent(orgName)}/package`,
-  )
-  return Object.keys(data)
+  try {
+    const data = await $fetch<Record<string, string>>(
+      `${NPM_REGISTRY}/-/org/${encodeURIComponent(orgName)}/package`,
+    )
+    return Object.keys(data)
+  } catch {
+    // Org doesn't exist or has no packages
+    return []
+  }
 }
 
 /**
