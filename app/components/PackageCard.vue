@@ -10,14 +10,6 @@ defineProps<{
   showPublisher?: boolean
   prefetch?: boolean
 }>()
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
 </script>
 
 <template>
@@ -68,7 +60,12 @@ function formatDate(dateStr: string): string {
           <div v-if="result.package.date" class="flex items-center gap-1.5">
             <dt class="sr-only">Updated</dt>
             <dd>
-              <time :datetime="result.package.date">{{ formatDate(result.package.date) }}</time>
+              <NuxtTime
+                :datetime="result.package.date"
+                year="numeric"
+                month="short"
+                day="numeric"
+              />
             </dd>
           </div>
         </dl>

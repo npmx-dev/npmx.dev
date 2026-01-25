@@ -9,6 +9,7 @@ const username = computed(() => route.params.username)
 
 // Infinite scroll state
 const pageSize = 50
+const maxResults = 250 // npm API hard limit
 const loadedPages = ref(1)
 const isLoadingMore = ref(false)
 
@@ -18,25 +19,55 @@ const initialPage = computed(() => {
   return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 
-// Debounced URL update for page
-const updateUrlPage = debounce((page: number) => {
+// Debounced URL update for page and filter/sort
+const updateUrl = debounce((updates: { page?: number; filter?: string; sort?: string }) => {
   router.replace({
     query: {
       ...route.query,
-      page: page > 1 ? page : undefined,
+      page: updates.page && updates.page > 1 ? updates.page : undefined,
+      q: updates.filter || undefined,
+      sort: updates.sort && updates.sort !== 'downloads' ? updates.sort : undefined,
     },
   })
-}, 500)
+}, 300)
+
+type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
+
+// Filter and sort state (from URL)
+const filterText = ref((route.query.q as string) ?? '')
+const sortOption = ref<SortOption>((route.query.sort as SortOption) || 'downloads')
+
+// Track if we've loaded all results (one-way flag, doesn't reset)
+// Initialize to true if URL already has filter/sort params
+const hasLoadedAll = ref(
+  Boolean(route.query.q) || (route.query.sort && route.query.sort !== 'downloads'),
+)
+
+// Update URL when filter/sort changes (debounced)
+const debouncedUpdateUrl = debounce((filter: string, sort: string) => {
+  updateUrl({ filter, sort })
+}, 300)
+
+watch([filterText, sortOption], ([filter, sort]) => {
+  // Once user interacts with filter/sort, load all results
+  if (!hasLoadedAll.value && (filter !== '' || sort !== 'downloads')) {
+    hasLoadedAll.value = true
+  }
+  debouncedUpdateUrl(filter, sort)
+})
 
 // Search for packages by this maintainer
 const searchQuery = computed(() => `maintainer:${username.value}`)
+
+// Request size: load all if user has interacted with filter/sort, otherwise paginate
+const requestSize = computed(() => (hasLoadedAll.value ? maxResults : pageSize * loadedPages.value))
 
 const {
   data: results,
   status,
   error,
 } = useNpmSearch(searchQuery, () => ({
-  size: pageSize * loadedPages.value,
+  size: requestSize.value,
 }))
 
 // Initialize loaded pages from URL on mount
@@ -46,19 +77,61 @@ onMounted(() => {
   }
 })
 
-// Sort packages by downloads/popularity (searchScore is a good proxy)
-const sortedPackages = computed(() => {
-  if (!results.value?.objects) return []
-  return [...results.value.objects].sort((a, b) => b.searchScore - a.searchScore)
+// Get the base packages list
+const packages = computed(() => results.value?.objects ?? [])
+
+const packageCount = computed(() => packages.value.length)
+
+// Apply client-side filter and sort
+const filteredAndSortedPackages = computed(() => {
+  let pkgs = [...packages.value]
+
+  // Apply text filter
+  if (filterText.value) {
+    const search = filterText.value.toLowerCase()
+    pkgs = pkgs.filter(
+      pkg =>
+        pkg.package.name.toLowerCase().includes(search) ||
+        pkg.package.description?.toLowerCase().includes(search),
+    )
+  }
+
+  // Apply sort
+  switch (sortOption.value) {
+    case 'updated':
+      pkgs.sort((a, b) => {
+        const dateA = a.updated || a.package.date || ''
+        const dateB = b.updated || b.package.date || ''
+        return dateB.localeCompare(dateA)
+      })
+      break
+    case 'name-asc':
+      pkgs.sort((a, b) => a.package.name.localeCompare(b.package.name))
+      break
+    case 'name-desc':
+      pkgs.sort((a, b) => b.package.name.localeCompare(a.package.name))
+      break
+    case 'downloads':
+    default:
+      pkgs.sort((a, b) => (b.downloads?.weekly ?? 0) - (a.downloads?.weekly ?? 0))
+      break
+  }
+
+  return pkgs
 })
+
+const filteredCount = computed(() => filteredAndSortedPackages.value.length)
 
 // Check if there are potentially more results
 const hasMore = computed(() => {
   if (!results.value) return false
+  // Don't show "load more" when we've already loaded all
+  if (hasLoadedAll.value) return false
+
   // npm search API returns max 250 results, but we paginate for faster initial load
   return (
     results.value.objects.length >= pageSize * loadedPages.value &&
-    loadedPages.value * pageSize < 250
+    loadedPages.value * pageSize < maxResults
   )
 })
 
@@ -75,12 +148,15 @@ function loadMore() {
 
 // Update URL when page changes from scrolling
 function handlePageChange(page: number) {
-  updateUrlPage(page)
+  updateUrl({ page, filter: filterText.value, sort: sortOption.value })
 }
 
-// Reset pagination when username changes
+// Reset state when username changes
 watch(username, () => {
   loadedPages.value = 1
+  filterText.value = ''
+  sortOption.value = 'downloads'
+  hasLoadedAll.value = false
 })
 
 useSeoMeta({
@@ -150,11 +226,30 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Package list -->
-    <section v-else-if="results && sortedPackages.length > 0" aria-label="User packages">
+    <section v-else-if="results && packages.length > 0" aria-label="User packages">
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">Packages</h2>
 
+      <!-- Filter and sort controls -->
+      <PackageListControls
+        v-model:filter="filterText"
+        v-model:sort="sortOption"
+        :placeholder="`Filter ${packageCount} packages...`"
+        :total-count="packageCount"
+        :filtered-count="filteredCount"
+      />
+
+      <!-- No results after filtering -->
+      <p
+        v-if="filteredAndSortedPackages.length === 0"
+        class="text-fg-muted py-8 text-center font-mono"
+      >
+        No packages match "<span class="text-fg">{{ filterText }}</span
+        >"
+      </p>
+
       <PackageList
-        :results="sortedPackages"
+        v-else
+        :results="filteredAndSortedPackages"
         :has-more="hasMore"
         :is-loading="isLoadingMore || (status === 'pending' && loadedPages > 1)"
         :page-size="pageSize"

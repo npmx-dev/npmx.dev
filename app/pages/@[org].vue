@@ -14,86 +14,78 @@ const orgName = computed(() => route.params.org)
 
 const { isConnected } = useConnector()
 
-// Infinite scroll state
-const pageSize = 50
-const loadedPages = ref(1)
-const isLoadingMore = ref(false)
-
-// Get initial page from URL (for scroll restoration on reload)
-const initialPage = computed(() => {
-  const p = Number.parseInt(route.query.page as string, 10)
-  return Number.isNaN(p) ? 1 : Math.max(1, p)
-})
-
-// Debounced URL update for page
-const updateUrlPage = debounce((page: number) => {
+// Debounced URL update for filter/sort
+const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
   router.replace({
     query: {
       ...route.query,
-      page: page > 1 ? page : undefined,
+      q: updates.filter || undefined,
+      sort: updates.sort && updates.sort !== 'downloads' ? updates.sort : undefined,
     },
   })
-}, 500)
+}, 300)
 
-// Search for packages in this org's scope (@orgname/*)
-const searchQuery = computed(() => `@${orgName.value}`)
+type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
 
-const {
-  data: results,
-  status,
-  error,
-} = useNpmSearch(searchQuery, () => ({
-  size: pageSize * loadedPages.value,
-}))
+// Filter and sort state (from URL)
+const filterText = ref((route.query.q as string) ?? '')
+const sortOption = ref<SortOption>((route.query.sort as SortOption) || 'downloads')
 
-// Initialize loaded pages from URL on mount
-onMounted(() => {
-  if (initialPage.value > 1) {
-    loadedPages.value = initialPage.value
+// Update URL when filter/sort changes (debounced)
+watch([filterText, sortOption], ([filter, sort]) => {
+  updateUrl({ filter, sort })
+})
+
+// Fetch all packages in this org using the org packages API
+const { data: results, status, error } = useOrgPackages(orgName)
+
+const packages = computed(() => results.value?.objects ?? [])
+const packageCount = computed(() => packages.value.length)
+
+// Apply client-side filter and sort
+const filteredAndSortedPackages = computed(() => {
+  let pkgs = [...packages.value]
+
+  // Apply text filter
+  if (filterText.value) {
+    const search = filterText.value.toLowerCase()
+    pkgs = pkgs.filter(
+      pkg =>
+        pkg.package.name.toLowerCase().includes(search) ||
+        pkg.package.description?.toLowerCase().includes(search),
+    )
   }
+
+  // Apply sort
+  switch (sortOption.value) {
+    case 'updated':
+      pkgs.sort((a, b) => {
+        const dateA = a.updated || a.package.date || ''
+        const dateB = b.updated || b.package.date || ''
+        return dateB.localeCompare(dateA)
+      })
+      break
+    case 'name-asc':
+      pkgs.sort((a, b) => a.package.name.localeCompare(b.package.name))
+      break
+    case 'name-desc':
+      pkgs.sort((a, b) => b.package.name.localeCompare(a.package.name))
+      break
+    case 'downloads':
+    default:
+      pkgs.sort((a, b) => (b.downloads?.weekly ?? 0) - (a.downloads?.weekly ?? 0))
+      break
+  }
+
+  return pkgs
 })
 
-// Filter to only include packages that are actually in this scope
-// (search may return packages that just mention the org name)
-const scopedPackages = computed(() => {
-  if (!results.value?.objects) return []
-  const scopePrefix = `@${orgName.value}/`
-  return results.value.objects
-    .filter(obj => obj.package.name.startsWith(scopePrefix))
-    .sort((a, b) => b.searchScore - a.searchScore)
-})
+const filteredCount = computed(() => filteredAndSortedPackages.value.length)
 
-const packageCount = computed(() => scopedPackages.value.length)
-
-// Check if there are potentially more results
-const hasMore = computed(() => {
-  if (!results.value) return false
-  // npm search API returns max 250 results, but we paginate for faster initial load
-  return (
-    results.value.objects.length >= pageSize * loadedPages.value &&
-    loadedPages.value * pageSize < 250
-  )
-})
-
-function loadMore() {
-  if (isLoadingMore.value || !hasMore.value) return
-
-  isLoadingMore.value = true
-  loadedPages.value++
-
-  nextTick(() => {
-    isLoadingMore.value = false
-  })
-}
-
-// Update URL when page changes from scrolling
-function handlePageChange(page: number) {
-  updateUrlPage(page)
-}
-
-// Reset pagination when org changes
+// Reset state when org changes
 watch(orgName, () => {
-  loadedPages.value = 1
+  filterText.value = ''
+  sortOption.value = 'downloads'
 })
 
 const activeTab = ref<'members' | 'teams'>('members')
@@ -112,8 +104,7 @@ useSeoMeta({
 
 defineOgImageComponent('Default', {
   title: () => `@${orgName.value}`,
-  description: () =>
-    scopedPackages.value.length ? `${scopedPackages.value.length} packages` : 'npm organization',
+  description: () => (packageCount.value ? `${packageCount.value} packages` : 'npm organization'),
 })
 </script>
 
@@ -191,7 +182,7 @@ defineOgImageComponent('Default', {
     </ClientOnly>
 
     <!-- Loading state -->
-    <LoadingSpinner v-if="status === 'pending' && loadedPages === 1" text="Loading packages..." />
+    <LoadingSpinner v-if="status === 'pending'" text="Loading packages..." />
 
     <!-- Error state -->
     <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">
@@ -212,18 +203,28 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Package list -->
-    <section v-else-if="scopedPackages.length > 0" aria-label="Organization packages">
+    <section v-else-if="packages.length > 0" aria-label="Organization packages">
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">Packages</h2>
 
-      <PackageList
-        :results="scopedPackages"
-        :has-more="hasMore"
-        :is-loading="isLoadingMore || (status === 'pending' && loadedPages > 1)"
-        :page-size="pageSize"
-        :initial-page="initialPage"
-        @load-more="loadMore"
-        @page-change="handlePageChange"
+      <!-- Filter and sort controls -->
+      <PackageListControls
+        v-model:filter="filterText"
+        v-model:sort="sortOption"
+        :placeholder="`Filter ${packageCount} packages...`"
+        :total-count="packageCount"
+        :filtered-count="filteredCount"
       />
+
+      <!-- No results after filtering -->
+      <p
+        v-if="filteredAndSortedPackages.length === 0"
+        class="text-fg-muted py-8 text-center font-mono"
+      >
+        No packages match "<span class="text-fg">{{ filterText }}</span
+        >"
+      </p>
+
+      <PackageList v-else :results="filteredAndSortedPackages" />
     </section>
   </main>
 </template>

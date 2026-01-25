@@ -3,7 +3,9 @@ import type {
   PackumentVersion,
   SlimPackument,
   NpmSearchResponse,
+  NpmSearchResult,
   NpmDownloadCount,
+  NpmPerson,
 } from '#shared/types'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
@@ -214,5 +216,113 @@ export function useNpmSearch(
       return (lastSearch = await searchNpmPackages(q, toValue(options)))
     },
     { default: () => lastSearch || emptySearchResponse },
+  )
+}
+
+/**
+ * Fetch all package names in an npm organization
+ * Uses the /-/org/{org}/package endpoint
+ */
+async function fetchOrgPackageNames(orgName: string): Promise<string[]> {
+  const data = await $fetch<Record<string, string>>(
+    `${NPM_REGISTRY}/-/org/${encodeURIComponent(orgName)}/package`,
+  )
+  return Object.keys(data)
+}
+
+/**
+ * Minimal packument data needed for package cards
+ */
+interface MinimalPackument {
+  'name': string
+  'description'?: string
+  'dist-tags': Record<string, string>
+  'time': Record<string, string>
+  'maintainers'?: NpmPerson[]
+}
+
+/**
+ * Fetch minimal packument data for a single package
+ */
+async function fetchMinimalPackument(name: string): Promise<MinimalPackument | null> {
+  try {
+    const encoded = encodePackageName(name)
+    return await $fetch<MinimalPackument>(`${NPM_REGISTRY}/${encoded}`, {
+      // Only fetch the fields we need using Accept header
+      // Note: npm registry doesn't support field filtering, so we get full packument
+      // but we only use what we need
+    })
+  } catch {
+    // Package might not exist or be private
+    return null
+  }
+}
+
+/**
+ * Convert packument to search result format for display
+ */
+function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
+  const latestVersion = pkg['dist-tags'].latest || Object.values(pkg['dist-tags'])[0] || ''
+  const modified = pkg.time.modified || pkg.time[latestVersion] || ''
+
+  return {
+    package: {
+      name: pkg.name,
+      version: latestVersion,
+      description: pkg.description,
+      date: pkg.time[latestVersion] || modified,
+      links: {
+        npm: `https://www.npmjs.com/package/${pkg.name}`,
+      },
+      maintainers: pkg.maintainers,
+    },
+    score: { final: 0, detail: { quality: 0, popularity: 0, maintenance: 0 } },
+    searchScore: 0,
+    updated: modified,
+  }
+}
+
+/**
+ * Fetch all packages for an npm organization
+ * Returns search-result-like objects for compatibility with PackageList
+ */
+export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
+  return useLazyAsyncData(
+    () => `org-packages:${toValue(orgName)}`,
+    async () => {
+      const org = toValue(orgName)
+      if (!org) {
+        return emptySearchResponse
+      }
+
+      // Get all package names in the org
+      const packageNames = await fetchOrgPackageNames(org)
+
+      if (packageNames.length === 0) {
+        return emptySearchResponse
+      }
+
+      // Fetch packuments in parallel (with concurrency limit)
+      const concurrency = 10
+      const results: NpmSearchResult[] = []
+
+      for (let i = 0; i < packageNames.length; i += concurrency) {
+        const batch = packageNames.slice(i, i + concurrency)
+        const packuments = await Promise.all(batch.map(name => fetchMinimalPackument(name)))
+
+        for (const pkg of packuments) {
+          if (pkg) {
+            results.push(packumentToSearchResult(pkg))
+          }
+        }
+      }
+
+      return {
+        objects: results,
+        total: results.length,
+        time: new Date().toISOString(),
+      } satisfies NpmSearchResponse
+    },
+    { default: () => emptySearchResponse },
   )
 }

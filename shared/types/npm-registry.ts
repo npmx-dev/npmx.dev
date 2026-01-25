@@ -76,9 +76,18 @@ export interface NpmSearchResult {
   package: NpmSearchPackage
   score: NpmSearchScore
   searchScore: number
+  /** Download counts (weekly/monthly) */
+  downloads?: {
+    weekly?: number
+    monthly?: number
+  }
+  /** Number of dependents */
+  dependents?: string
+  /** Last updated timestamp (ISO 8601) */
+  updated?: string
   flags?: {
     unstable?: boolean
-    insecure?: boolean
+    insecure?: number
   }
 }
 
