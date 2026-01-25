@@ -8,10 +8,10 @@ Thank you for your interest in contributing! ❤️ This document provides guide
 
 ## Goals
 
-We want to create 'a fast, modern browser for the npm registry for power users.' This means, among other things:
+We want to create 'a fast, modern browser for the npm registry.' This means, among other things:
 
 - We don't aim to replace the [npmjs.com](https://www.npmjs.com/) registry, just provide a better UI and DX.
-- Layout shift, flakiness, slowness is The Worst. We need to continually iterate to create the most performant, best DX for power users.
+- Layout shift, flakiness, slowness is The Worst. We need to continually iterate to create the most performant, best DX possible.
 - We want to provide information in the best way. We don't want noise, cluttered display, or confusing UI. If in doubt: choose simplicity.
 
 ## Getting started

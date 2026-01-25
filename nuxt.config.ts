@@ -33,7 +33,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://npmx.dev',
     name: 'npmx',
-    description: 'A fast, accessible npm package browser for power users',
+    description: 'A fast, modern browser for the npm registry',
   },
 
   routeRules: {
@@ -102,7 +102,7 @@ export default defineNuxtConfig({
     manifest: {
       name: 'npmx',
       short_name: 'npmx',
-      description: 'A fast, accessible npm package browser for power users',
+      description: 'A fast, modern browser for the npm registry',
       theme_color: '#0a0a0a',
       background_color: '#0a0a0a',
     },
