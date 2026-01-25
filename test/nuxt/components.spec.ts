@@ -68,6 +68,18 @@ import CodeViewer from '~/components/CodeViewer.vue'
 import CodeDirectoryListing from '~/components/CodeDirectoryListing.vue'
 import CodeFileTree from '~/components/CodeFileTree.vue'
 import UserCombobox from '~/components/UserCombobox.vue'
+import ConnectorModal from '~/components/ConnectorModal.vue'
+import ConnectorStatusServer from '~/components/ConnectorStatus.server.vue'
+import ConnectorStatusClient from '~/components/ConnectorStatus.client.vue'
+import ClaimPackageModal from '~/components/ClaimPackageModal.vue'
+import OperationsQueue from '~/components/OperationsQueue.vue'
+import PackageList from '~/components/PackageList.vue'
+import PackageMetricsBadges from '~/components/PackageMetricsBadges.vue'
+import PackageVulnerabilities from '~/components/PackageVulnerabilities.vue'
+import PackageAccessControls from '~/components/PackageAccessControls.vue'
+import OrgMembersPanel from '~/components/OrgMembersPanel.vue'
+import OrgTeamsPanel from '~/components/OrgTeamsPanel.vue'
+import CodeMobileTreeDrawer from '~/components/CodeMobileTreeDrawer.vue'
 
 describe('component accessibility audits', () => {
   describe('AppHeader', () => {
@@ -559,6 +571,228 @@ describe('component accessibility audits', () => {
           suggestions: ['user1', 'user2'],
           disabled: true,
           label: 'Select a user',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ConnectorModal', () => {
+    it('should have no accessibility violations when closed', async () => {
+      const component = await mountSuspended(ConnectorModal, {
+        props: { open: false },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when open (disconnected)', async () => {
+      const component = await mountSuspended(ConnectorModal, {
+        props: { open: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ConnectorStatus.server', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ConnectorStatusServer)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ConnectorStatus.client', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ConnectorStatusClient)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ClaimPackageModal', () => {
+    it('should have no accessibility violations when closed', async () => {
+      const component = await mountSuspended(ClaimPackageModal, {
+        props: {
+          packageName: 'test-package',
+          open: false,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when open', async () => {
+      const component = await mountSuspended(ClaimPackageModal, {
+        props: {
+          packageName: 'test-package',
+          open: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('OperationsQueue', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(OperationsQueue)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageList', () => {
+    const mockResults = [
+      {
+        package: {
+          name: 'vue',
+          version: '3.5.0',
+          description: 'The progressive JavaScript framework',
+          date: '2024-01-15T00:00:00.000Z',
+          keywords: ['framework'],
+          links: {},
+          publisher: { username: 'yyx990803' },
+        },
+        score: { final: 0.9, detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 } },
+        searchScore: 100000,
+      },
+      {
+        package: {
+          name: 'react',
+          version: '18.2.0',
+          description: 'React is a JavaScript library for building user interfaces.',
+          date: '2024-01-10T00:00:00.000Z',
+          keywords: ['react'],
+          links: {},
+          publisher: { username: 'fb' },
+        },
+        score: { final: 0.9, detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 } },
+        searchScore: 90000,
+      },
+    ]
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageList, {
+        props: { results: mockResults },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with empty results', async () => {
+      const component = await mountSuspended(PackageList, {
+        props: { results: [] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when loading', async () => {
+      const component = await mountSuspended(PackageList, {
+        props: {
+          results: mockResults,
+          isLoading: true,
+          hasMore: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageMetricsBadges', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageMetricsBadges, {
+        props: { packageName: 'vue' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with version', async () => {
+      const component = await mountSuspended(PackageMetricsBadges, {
+        props: {
+          packageName: 'vue',
+          version: '3.5.0',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageVulnerabilities', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageVulnerabilities, {
+        props: {
+          packageName: 'lodash',
+          version: '4.17.21',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageAccessControls', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageAccessControls, {
+        props: { packageName: '@nuxt/kit' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for unscoped package', async () => {
+      // Unscoped packages don't show the access controls section
+      const component = await mountSuspended(PackageAccessControls, {
+        props: { packageName: 'vue' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('OrgMembersPanel', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(OrgMembersPanel, {
+        props: { orgName: 'nuxt' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('OrgTeamsPanel', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(OrgTeamsPanel, {
+        props: { orgName: 'nuxt' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CodeMobileTreeDrawer', () => {
+    const mockTree = [
+      {
+        name: 'src',
+        type: 'directory' as const,
+        path: 'src',
+        children: [{ name: 'index.ts', type: 'file' as const, path: 'src/index.ts' }],
+      },
+      { name: 'package.json', type: 'file' as const, path: 'package.json' },
+    ]
+
+    it('should have no accessibility violations when closed', async () => {
+      const component = await mountSuspended(CodeMobileTreeDrawer, {
+        props: {
+          tree: mockTree,
+          currentPath: '',
+          baseUrl: '/code/vue',
         },
       })
       const results = await runAxe(component)
