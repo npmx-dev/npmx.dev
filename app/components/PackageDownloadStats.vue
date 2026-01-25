@@ -75,9 +75,7 @@ const config = computed(() => ({
     <!-- Download stats -->
     <section>
       <div class="flex items-center justify-between mb-3">
-        <h2 id="dependencies-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-          Weekly Downloads
-        </h2>
+        <h2 class="text-xs text-fg-subtle uppercase tracking-wider">Weekly Downloads</h2>
       </div>
       <div class="w-full overflow-hidden">
         <ClientOnly>

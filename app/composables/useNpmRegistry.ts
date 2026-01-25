@@ -6,14 +6,38 @@ import type {
   NpmSearchResult,
   NpmDownloadCount,
   NpmPerson,
+  PackageVersionInfo,
 } from '#shared/types'
+import type { ReleaseType } from 'semver'
+import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
+import { compareVersions } from '~/utils/versions'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
 
+// Cache for packument fetches to avoid duplicate requests across components
+const packumentCache = new Map<string, Promise<Packument | null>>()
+
+/**
+ * Fetch a package's full packument data.
+ * Uses caching to avoid duplicate requests.
+ */
 async function fetchNpmPackage(name: string): Promise<Packument> {
   const encodedName = encodePackageName(name)
   return await $fetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
+}
+
+/**
+ * Fetch a package's packument with caching (returns null on error).
+ * This is useful for batch operations where some packages might not exist.
+ */
+async function fetchCachedPackument(name: string): Promise<Packument | null> {
+  const cached = packumentCache.get(name)
+  if (cached) return cached
+
+  const promise = fetchNpmPackage(name).catch(() => null)
+  packumentCache.set(name, promise)
+  return promise
 }
 
 async function searchNpmPackages(
@@ -45,7 +69,11 @@ async function fetchNpmDownloads(
   return await $fetch<NpmDownloadCount>(`${NPM_API}/downloads/point/${period}/${encodedName}`)
 }
 
-function encodePackageName(name: string): string {
+/**
+ * Encode a package name for use in npm registry URLs.
+ * Handles scoped packages (e.g., @scope/name -> @scope%2Fname).
+ */
+export function encodePackageName(name: string): string {
   if (name.startsWith('@')) {
     return `@${encodeURIComponent(name.slice(1))}`
   }
@@ -222,12 +250,18 @@ export function useNpmSearch(
 /**
  * Fetch all package names in an npm organization
  * Uses the /-/org/{org}/package endpoint
+ * Returns empty array if org doesn't exist or has no packages
  */
 async function fetchOrgPackageNames(orgName: string): Promise<string[]> {
-  const data = await $fetch<Record<string, string>>(
-    `${NPM_REGISTRY}/-/org/${encodeURIComponent(orgName)}/package`,
-  )
-  return Object.keys(data)
+  try {
+    const data = await $fetch<Record<string, string>>(
+      `${NPM_REGISTRY}/-/org/${encodeURIComponent(orgName)}/package`,
+    )
+    return Object.keys(data)
+  } catch {
+    // Org doesn't exist or has no packages
+    return []
+  }
 }
 
 /**
@@ -325,4 +359,199 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
     },
     { default: () => emptySearchResponse },
   )
+}
+
+// ============================================================================
+// Package Versions
+// ============================================================================
+
+// Cache for full version lists
+const allVersionsCache = new Map<string, Promise<PackageVersionInfo[]>>()
+
+/**
+ * Fetch all versions of a package from the npm registry.
+ * Returns version info sorted by version (newest first).
+ * Results are cached to avoid duplicate requests.
+ */
+export async function fetchAllPackageVersions(packageName: string): Promise<PackageVersionInfo[]> {
+  const cached = allVersionsCache.get(packageName)
+  if (cached) return cached
+
+  const promise = (async () => {
+    const encodedName = encodePackageName(packageName)
+    const data = await $fetch<{ versions: Record<string, unknown>; time: Record<string, string> }>(
+      `${NPM_REGISTRY}/${encodedName}`,
+    )
+
+    return Object.keys(data.versions)
+      .filter(v => data.time[v])
+      .map(version => ({
+        version,
+        time: data.time[version],
+        hasProvenance: false, // Would need to check dist.attestations for each version
+      }))
+      .sort((a, b) => compareVersions(b.version, a.version))
+  })()
+
+  allVersionsCache.set(packageName, promise)
+  return promise
+}
+
+// ============================================================================
+// Outdated Dependencies
+// ============================================================================
+
+/** Information about an outdated dependency */
+export interface OutdatedDependencyInfo {
+  /** The resolved version that satisfies the constraint */
+  resolved: string
+  /** The latest available version */
+  latest: string
+  /** How many major versions behind */
+  majorsBehind: number
+  /** How many minor versions behind (when same major) */
+  minorsBehind: number
+  /** The type of version difference */
+  diffType: ReleaseType | null
+}
+
+/**
+ * Check if a version constraint explicitly includes a prerelease tag.
+ * e.g., "^1.0.0-alpha" or ">=2.0.0-beta.1" include prereleases
+ */
+function constraintIncludesPrerelease(constraint: string): boolean {
+  return (
+    /-(alpha|beta|rc|next|canary|dev|preview|pre|experimental)/i.test(constraint) ||
+    /-\d/.test(constraint)
+  )
+}
+
+/**
+ * Check if a constraint is a non-semver value (git URL, file path, etc.)
+ */
+function isNonSemverConstraint(constraint: string): boolean {
+  return (
+    constraint.startsWith('git') ||
+    constraint.startsWith('http') ||
+    constraint.startsWith('file:') ||
+    constraint.startsWith('npm:') ||
+    constraint.startsWith('link:') ||
+    constraint.startsWith('workspace:') ||
+    constraint.includes('/')
+  )
+}
+
+/**
+ * Check if a dependency is outdated.
+ * Returns null if up-to-date or if we can't determine.
+ *
+ * A dependency is only considered "outdated" if the resolved version
+ * is older than the latest version. If the resolved version is newer
+ * (e.g., using ^2.0.0-rc when latest is 1.x), it's not outdated.
+ */
+async function checkDependencyOutdated(
+  packageName: string,
+  constraint: string,
+): Promise<OutdatedDependencyInfo | null> {
+  if (isNonSemverConstraint(constraint)) {
+    return null
+  }
+
+  const packument = await fetchCachedPackument(packageName)
+  if (!packument) return null
+
+  let versions = Object.keys(packument.versions)
+  const includesPrerelease = constraintIncludesPrerelease(constraint)
+
+  if (!includesPrerelease) {
+    versions = versions.filter(v => !prerelease(v))
+  }
+
+  const resolved = maxSatisfying(versions, constraint)
+  if (!resolved) return null
+
+  const latestTag = packument['dist-tags']?.latest
+  if (!latestTag || resolved === latestTag) return null
+
+  // If resolved version is newer than latest, not outdated
+  // (e.g., using ^2.0.0-rc when latest is 1.x)
+  if (gt(resolved, latestTag)) {
+    return null
+  }
+
+  const diffType = diff(resolved, latestTag)
+  const majorsBehind = major(latestTag) - major(resolved)
+  const minorsBehind = majorsBehind === 0 ? minor(latestTag) - minor(resolved) : 0
+
+  return {
+    resolved,
+    latest: latestTag,
+    majorsBehind,
+    minorsBehind,
+    diffType,
+  }
+}
+
+/**
+ * Composable to check for outdated dependencies.
+ * Returns a reactive map of dependency name to outdated info.
+ */
+export function useOutdatedDependencies(
+  dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
+) {
+  const outdated = ref<Record<string, OutdatedDependencyInfo>>({})
+
+  async function fetchOutdatedInfo(deps: Record<string, string> | undefined) {
+    if (!deps || Object.keys(deps).length === 0) {
+      outdated.value = {}
+      return
+    }
+
+    const results: Record<string, OutdatedDependencyInfo> = {}
+    const entries = Object.entries(deps)
+    const batchSize = 5
+
+    for (let i = 0; i < entries.length; i += batchSize) {
+      const batch = entries.slice(i, i + batchSize)
+      const batchResults = await Promise.all(
+        batch.map(async ([name, constraint]) => {
+          const info = await checkDependencyOutdated(name, constraint)
+          return [name, info] as const
+        }),
+      )
+
+      for (const [name, info] of batchResults) {
+        if (info) {
+          results[name] = info
+        }
+      }
+    }
+
+    outdated.value = results
+  }
+
+  watch(
+    () => toValue(dependencies),
+    deps => {
+      fetchOutdatedInfo(deps)
+    },
+    { immediate: true },
+  )
+
+  return outdated
+}
+
+/**
+ * Get tooltip text for an outdated dependency
+ */
+export function getOutdatedTooltip(info: OutdatedDependencyInfo): string {
+  if (info.majorsBehind > 0) {
+    const s = info.majorsBehind === 1 ? '' : 's'
+    return `${info.majorsBehind} major version${s} behind (latest: ${info.latest})`
+  }
+  if (info.minorsBehind > 0) {
+    const s = info.minorsBehind === 1 ? '' : 's'
+    return `${info.minorsBehind} minor version${s} behind (latest: ${info.latest})`
+  }
+  return `Patch update available (latest: ${info.latest})`
 }

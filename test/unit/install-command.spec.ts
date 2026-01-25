@@ -31,7 +31,7 @@ describe('install command generation', () => {
         ['yarn', 'lodash'],
         ['bun', 'lodash'],
         ['deno', 'npm:lodash'],
-        ['jsr', 'npm:lodash'],
+        ['vlt', 'lodash'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -49,8 +49,8 @@ describe('install command generation', () => {
         ['pnpm', '@trpc/server'],
         ['yarn', '@trpc/server'],
         ['bun', '@trpc/server'],
-        ['deno', 'npm:@trpc/server'],
-        ['jsr', '@trpc/server'], // Native JSR specifier
+        ['deno', 'jsr:@trpc/server'], // Native JSR specifier preferred
+        ['vlt', '@trpc/server'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -68,8 +68,8 @@ describe('install command generation', () => {
         ['pnpm', '@vue/shared'],
         ['yarn', '@vue/shared'],
         ['bun', '@vue/shared'],
-        ['deno', 'npm:@vue/shared'],
-        ['jsr', 'npm:@vue/shared'], // Falls back to npm: compat
+        ['deno', 'npm:@vue/shared'], // Falls back to npm: compat
+        ['vlt', '@vue/shared'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getPackageSpecifier({
@@ -90,7 +90,7 @@ describe('install command generation', () => {
         ['yarn', 'yarn add lodash'],
         ['bun', 'bun add lodash'],
         ['deno', 'deno add npm:lodash'],
-        ['jsr', 'jsr add npm:lodash'],
+        ['vlt', 'vlt install lodash'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -109,7 +109,7 @@ describe('install command generation', () => {
         ['yarn', 'yarn add lodash@4.17.21'],
         ['bun', 'bun add lodash@4.17.21'],
         ['deno', 'deno add npm:lodash@4.17.21'],
-        ['jsr', 'jsr add npm:lodash@4.17.21'],
+        ['vlt', 'vlt install lodash@4.17.21'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -128,8 +128,8 @@ describe('install command generation', () => {
         ['pnpm', 'pnpm add @trpc/server'],
         ['yarn', 'yarn add @trpc/server'],
         ['bun', 'bun add @trpc/server'],
-        ['deno', 'deno add npm:@trpc/server'],
-        ['jsr', 'jsr add @trpc/server'], // Native JSR
+        ['deno', 'deno add jsr:@trpc/server'], // Native JSR preferred
+        ['vlt', 'vlt install @trpc/server'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -147,8 +147,8 @@ describe('install command generation', () => {
         ['pnpm', 'pnpm add @trpc/server@10.0.0'],
         ['yarn', 'yarn add @trpc/server@10.0.0'],
         ['bun', 'bun add @trpc/server@10.0.0'],
-        ['deno', 'deno add npm:@trpc/server@10.0.0'],
-        ['jsr', 'jsr add @trpc/server@10.0.0'], // Native JSR with version
+        ['deno', 'deno add jsr:@trpc/server@10.0.0'], // Native JSR with version
+        ['vlt', 'vlt install @trpc/server@10.0.0'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -167,8 +167,8 @@ describe('install command generation', () => {
         ['pnpm', 'pnpm add @vue/shared'],
         ['yarn', 'yarn add @vue/shared'],
         ['bun', 'bun add @vue/shared'],
-        ['deno', 'deno add npm:@vue/shared'],
-        ['jsr', 'jsr add npm:@vue/shared'], // Falls back to npm: compat
+        ['deno', 'deno add npm:@vue/shared'], // Falls back to npm: compat
+        ['vlt', 'vlt install @vue/shared'],
       ] as const)('%s → %s', (pm, expected) => {
         expect(
           getInstallCommand({
@@ -201,31 +201,31 @@ describe('install command generation', () => {
       expect(parts).toEqual(['npm', 'install', 'lodash@4.17.21'])
     })
 
-    it('returns correct parts for deno with npm: prefix', () => {
+    it('returns correct parts for deno with jsr: prefix when available', () => {
       const parts = getInstallCommandParts({
         packageName: '@trpc/server',
         packageManager: 'deno',
         jsrInfo: jsrAvailable,
       })
-      expect(parts).toEqual(['deno', 'add', 'npm:@trpc/server'])
+      expect(parts).toEqual(['deno', 'add', 'jsr:@trpc/server'])
     })
 
-    it('returns correct parts for jsr with native package', () => {
-      const parts = getInstallCommandParts({
-        packageName: '@trpc/server',
-        packageManager: 'jsr',
-        jsrInfo: jsrAvailable,
-      })
-      expect(parts).toEqual(['jsr', 'add', '@trpc/server'])
-    })
-
-    it('returns correct parts for jsr with npm compat', () => {
+    it('returns correct parts for deno with npm: prefix when not on JSR', () => {
       const parts = getInstallCommandParts({
         packageName: 'lodash',
-        packageManager: 'jsr',
+        packageManager: 'deno',
         jsrInfo: jsrNotAvailable,
       })
-      expect(parts).toEqual(['jsr', 'add', 'npm:lodash'])
+      expect(parts).toEqual(['deno', 'add', 'npm:lodash'])
+    })
+
+    it('returns correct parts for vlt', () => {
+      const parts = getInstallCommandParts({
+        packageName: 'lodash',
+        packageManager: 'vlt',
+        jsrInfo: jsrNotAvailable,
+      })
+      expect(parts).toEqual(['vlt', 'install', 'lodash'])
     })
 
     it('joined parts match getInstallCommand output', () => {
@@ -242,27 +242,27 @@ describe('install command generation', () => {
   })
 
   describe('edge cases', () => {
-    it('handles null jsrInfo same as not available', () => {
+    it('handles null jsrInfo same as not available for deno', () => {
       expect(
         getPackageSpecifier({
           packageName: 'lodash',
-          packageManager: 'jsr',
+          packageManager: 'deno',
           jsrInfo: null,
         }),
       ).toBe('npm:lodash')
     })
 
-    it('handles undefined jsrInfo same as not available', () => {
+    it('handles undefined jsrInfo same as not available for deno', () => {
       expect(
         getPackageSpecifier({
           packageName: 'lodash',
-          packageManager: 'jsr',
+          packageManager: 'deno',
           jsrInfo: undefined,
         }),
       ).toBe('npm:lodash')
     })
 
-    it('handles jsrInfo with exists:true but missing scope/name', () => {
+    it('handles jsrInfo with exists:true but missing scope/name for deno', () => {
       const partialJsr: JsrPackageInfo = {
         exists: true,
         // Missing scope and name
@@ -270,7 +270,7 @@ describe('install command generation', () => {
       expect(
         getPackageSpecifier({
           packageName: '@foo/bar',
-          packageManager: 'jsr',
+          packageManager: 'deno',
           jsrInfo: partialJsr,
         }),
       ).toBe('npm:@foo/bar')

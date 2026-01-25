@@ -80,7 +80,11 @@ interface InstallSizeResult {
   totalSize: number
   dependencyCount: number
 }
-const { data: installSize, status: installSizeStatus } = useLazyFetch<InstallSizeResult | null>(
+const {
+  data: installSize,
+  status: installSizeStatus,
+  execute: fetchInstallSize,
+} = useLazyFetch<InstallSizeResult | null>(
   () => {
     const base = `/api/registry/install-size/${packageName.value}`
     const version = requestedVersion.value
@@ -88,8 +92,10 @@ const { data: installSize, status: installSizeStatus } = useLazyFetch<InstallSiz
   },
   {
     server: false,
+    immediate: false,
   },
 )
+onMounted(() => fetchInstallSize())
 
 const sizeTooltip = computed(() => {
   const chunks = [
@@ -333,6 +339,21 @@ defineOgImageComponent('Package', {
                 aria-label="Verified provenance"
               />
             </a>
+
+            <!-- Package metrics (module format, types) -->
+            <ClientOnly>
+              <PackageMetricsBadges
+                v-if="displayVersion"
+                :package-name="pkg.name"
+                :version="displayVersion.version"
+              />
+              <template #fallback>
+                <ul class="flex items-center gap-1.5">
+                  <li class="skeleton w-8 h-5 rounded" />
+                  <li class="skeleton w-12 h-5 rounded" />
+                </ul>
+              </template>
+            </ClientOnly>
           </div>
           <!-- Fixed height description container to prevent CLS -->
           <div ref="descriptionRef" class="relative max-w-2xl min-h-[4.5rem]">
@@ -507,7 +528,7 @@ defineOgImageComponent('Package', {
                 jsr
               </a>
             </li>
-            <li>
+            <li class="flex-grow">
               <a
                 :href="`https://socket.dev/npm/package/${pkg.name}/overview/${displayVersion?.version ?? 'latest'}`"
                 target="_blank"

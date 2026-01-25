@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useOutdatedDependencies, getOutdatedTooltip } from '~/composables/useNpmRegistry'
+import type { OutdatedDependencyInfo } from '~/composables/useNpmRegistry'
+
 const props = defineProps<{
   packageName: string
   dependencies?: Record<string, string>
@@ -6,6 +9,23 @@ const props = defineProps<{
   peerDependenciesMeta?: Record<string, { optional?: boolean }>
   optionalDependencies?: Record<string, string>
 }>()
+
+// Fetch outdated info for dependencies
+const outdatedDeps = useOutdatedDependencies(() => props.dependencies)
+
+/**
+ * Get CSS class for a dependency version based on outdated status
+ */
+function getVersionClass(info: OutdatedDependencyInfo | undefined): string {
+  if (!info) return 'text-fg-subtle'
+
+  // Red for major versions behind
+  if (info.majorsBehind > 0) return 'text-red-500 cursor-help'
+  // Orange for minor versions behind
+  if (info.minorsBehind > 0) return 'text-orange-500 cursor-help'
+  // Yellow for patch versions behind
+  return 'text-yellow-500 cursor-help'
+}
 
 // Expanded state for each section
 const depsExpanded = ref(false)
@@ -61,11 +81,26 @@ const sortedOptionalDependencies = computed(() => {
           >
             {{ dep }}
           </NuxtLink>
-          <span
-            class="font-mono text-xs text-fg-subtle max-w-[50%] text-right truncate"
-            :title="version"
-          >
-            {{ version }}
+          <span class="flex items-center gap-1">
+            <span
+              v-if="outdatedDeps[dep]"
+              class="shrink-0"
+              :class="getVersionClass(outdatedDeps[dep])"
+              :title="getOutdatedTooltip(outdatedDeps[dep])"
+              aria-hidden="true"
+            >
+              <span class="i-carbon-warning-alt w-3 h-3" />
+            </span>
+            <span
+              class="font-mono text-xs text-right truncate"
+              :class="getVersionClass(outdatedDeps[dep])"
+              :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep]) : version"
+            >
+              {{ version }}
+            </span>
+            <span v-if="outdatedDeps[dep]" class="sr-only">
+              ({{ getOutdatedTooltip(outdatedDeps[dep]) }})
+            </span>
           </span>
         </li>
       </ul>

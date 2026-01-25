@@ -8,6 +8,7 @@ import {
   getPrereleaseChannel,
   parseVersion,
 } from '~/utils/versions'
+import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
 
 const props = defineProps<{
   packageName: string
@@ -107,18 +108,12 @@ const otherMajorGroups = ref<
 >([])
 const otherVersionsLoading = ref(false)
 
-// Cached full version list
+// Cached full version list (local to component instance)
 const allVersionsCache = ref<PackageVersionInfo[] | null>(null)
 const loadingVersions = ref(false)
 const hasLoadedAll = ref(false)
 
-// npm registry packument type (simplified)
-interface NpmPackument {
-  versions: Record<string, unknown>
-  time: Record<string, string>
-}
-
-// Load all versions directly from npm registry
+// Load all versions using shared function
 async function loadAllVersions(): Promise<PackageVersionInfo[]> {
   if (allVersionsCache.value) return allVersionsCache.value
 
@@ -136,23 +131,7 @@ async function loadAllVersions(): Promise<PackageVersionInfo[]> {
 
   loadingVersions.value = true
   try {
-    // Fetch directly from npm registry
-    const encodedName = props.packageName.startsWith('@')
-      ? `@${encodeURIComponent(props.packageName.slice(1))}`
-      : encodeURIComponent(props.packageName)
-
-    const data = await $fetch<NpmPackument>(`https://registry.npmjs.org/${encodedName}`)
-
-    // Convert to our format
-    const versions: PackageVersionInfo[] = Object.keys(data.versions)
-      .filter(v => data.time[v])
-      .map(version => ({
-        version,
-        time: data.time[version],
-        hasProvenance: false,
-      }))
-      .sort((a, b) => compareVersions(b.version, a.version))
-
+    const versions = await fetchAllPackageVersions(props.packageName)
     allVersionsCache.value = versions
     hasLoadedAll.value = true
     return versions
@@ -290,14 +269,6 @@ function toggleMajorGroup(index: number) {
 function getTagVersions(tag: string): VersionDisplay[] {
   return tagVersions.value.get(tag) ?? []
 }
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
-}
 </script>
 
 <template>
@@ -341,13 +312,14 @@ function formatDate(dateStr: string): string {
                 {{ row.primaryVersion.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
-                <time
+                <NuxtTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
+                  year="numeric"
+                  month="short"
+                  day="numeric"
                   class="text-xs text-fg-subtle"
-                >
-                  {{ formatDate(row.primaryVersion.time) }}
-                </time>
+                />
                 <ProvenanceBadge
                   v-if="row.primaryVersion.hasProvenance"
                   :package-name="packageName"
@@ -384,9 +356,14 @@ function formatDate(dateStr: string): string {
                 {{ v.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
-                <time v-if="v.time" :datetime="v.time" class="text-[10px] text-fg-subtle">
-                  {{ formatDate(v.time) }}
-                </time>
+                <NuxtTime
+                  v-if="v.time"
+                  :datetime="v.time"
+                  class="text-[10px] text-fg-subtle"
+                  year="numeric"
+                  month="short"
+                  day="numeric"
+                />
                 <ProvenanceBadge
                   v-if="v.hasProvenance"
                   :package-name="packageName"
@@ -451,13 +428,14 @@ function formatDate(dateStr: string): string {
                 {{ row.primaryVersion.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
-                <time
+                <NuxtTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
                   class="text-[10px] text-fg-subtle"
-                >
-                  {{ formatDate(row.primaryVersion.time) }}
-                </time>
+                  year="numeric"
+                  month="short"
+                  day="numeric"
+                />
               </div>
             </div>
             <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
@@ -543,9 +521,14 @@ function formatDate(dateStr: string): string {
                       {{ v.version }}
                     </NuxtLink>
                     <div class="flex items-center gap-2 shrink-0">
-                      <time v-if="v.time" :datetime="v.time" class="text-[10px] text-fg-subtle">
-                        {{ formatDate(v.time) }}
-                      </time>
+                      <NuxtTime
+                        v-if="v.time"
+                        :datetime="v.time"
+                        class="text-[10px] text-fg-subtle"
+                        year="numeric"
+                        month="short"
+                        day="numeric"
+                      />
                       <ProvenanceBadge
                         v-if="v.hasProvenance"
                         :package-name="packageName"

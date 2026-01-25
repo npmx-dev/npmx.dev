@@ -6,7 +6,7 @@ export const packageManagers = [
   { id: 'yarn', label: 'yarn', action: 'add' },
   { id: 'bun', label: 'bun', action: 'add' },
   { id: 'deno', label: 'deno', action: 'add' },
-  { id: 'jsr', label: 'jsr', action: 'add' },
+  { id: 'vlt', label: 'vlt', action: 'install' },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']
@@ -20,26 +20,21 @@ export interface InstallCommandOptions {
 
 /**
  * Get the package specifier for a given package manager.
- * Handles npm: prefix for deno and jsr (when not native).
+ * Handles jsr: prefix for deno (when available on JSR).
  */
 export function getPackageSpecifier(options: InstallCommandOptions): string {
   const { packageName, packageManager, jsrInfo } = options
 
   if (packageManager === 'deno') {
-    // deno add npm:package
-    return `npm:${packageName}`
-  }
-
-  if (packageManager === 'jsr') {
     if (jsrInfo?.exists && jsrInfo.scope && jsrInfo.name) {
-      // Native JSR package: @scope/name
-      return `@${jsrInfo.scope}/${jsrInfo.name}`
+      // Native JSR package: jsr:@scope/name
+      return `jsr:@${jsrInfo.scope}/${jsrInfo.name}`
     }
     // npm compatibility: npm:package
     return `npm:${packageName}`
   }
 
-  // Standard package managers (npm, pnpm, yarn, bun)
+  // Standard package managers (npm, pnpm, yarn, bun, vlt)
   return packageName
 }
 
