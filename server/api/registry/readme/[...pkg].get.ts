@@ -2,7 +2,7 @@ import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import {
   CACHE_MAX_AGE_ONE_HOUR,
-  ERROR_README_FETCH_FAILED,
+  NPM_MISSING_README_SENTINEL,
   ERROR_NPM_FETCH_FAILED,
 } from '#shared/utils/constants'
 
@@ -72,7 +72,7 @@ export default defineCachedEventHandler(
       }
 
       // If no README in packument, try fetching from jsdelivr (package tarball)
-      if (!readmeContent || readmeContent === ERROR_README_FETCH_FAILED) {
+      if (!readmeContent || readmeContent === NPM_MISSING_README_SENTINEL) {
         readmeContent = (await fetchReadmeFromJsdelivr(packageName, version)) ?? undefined
       }
 
