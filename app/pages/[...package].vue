@@ -514,7 +514,7 @@ defineOgImageComponent('Package', {
                 jsr
               </a>
             </li>
-            <li>
+            <li class="flex-grow">
               <a
                 :href="`https://socket.dev/npm/package/${pkg.name}/overview/${displayVersion?.version ?? 'latest'}`"
                 target="_blank"
