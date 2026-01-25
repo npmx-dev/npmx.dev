@@ -129,6 +129,9 @@ importers:
       '@vue/test-utils':
         specifier: 2.4.6
         version: 2.4.6
+      axe-core:
+        specifier: ^4.11.1
+        version: 4.11.1
       happy-dom:
         specifier: 20.3.5
         version: 20.3.5

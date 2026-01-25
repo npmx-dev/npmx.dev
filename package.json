@@ -66,6 +66,7 @@
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
     "@vue/test-utils": "2.4.6",
+    "axe-core": "^4.11.1",
     "happy-dom": "20.3.5",
     "lint-staged": "16.2.7",
     "marked": "17.0.1",
