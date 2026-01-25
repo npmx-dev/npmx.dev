@@ -19,14 +19,17 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <article class="group card-interactive" :class="{ 'bg-bg-muted border-border-hover': selected }">
+  <article
+    class="group card-interactive scroll-mt-48 scroll-mb-6"
+    :class="{ 'bg-bg-muted border-border-hover': selected }"
+  >
     <NuxtLink
       :to="{ name: 'package', params: { package: result.package.name.split('/') } }"
       :prefetch-on="prefetch ? 'visibility' : 'interaction'"
-      class="block focus:outline-none decoration-none"
+      class="block focus:outline-none decoration-none scroll-mt-48 scroll-mb-6"
       :data-result-index="index"
-      @focus="emit('focus', index)"
-      @mouseenter="emit('focus', index)"
+      @focus="index != null && emit('focus', index)"
+      @mouseenter="index != null && emit('focus', index)"
     >
       <header class="flex items-start justify-between gap-4 mb-2">
         <component

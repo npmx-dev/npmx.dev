@@ -48,6 +48,7 @@ const isSearchFocused = ref(false)
 const searchInputRef = ref<HTMLInputElement>()
 
 const selectedIndex = ref(0)
+const packageListRef = useTemplateRef('packageListRef')
 
 const resultCount = computed(() => visibleResults.value?.objects.length ?? 0)
 
@@ -56,25 +57,46 @@ function clampIndex(next: number) {
   return Math.max(0, Math.min(resultCount.value - 1, next))
 }
 
+function scrollToSelectedResult() {
+  // Use virtualizer's scrollToIndex to ensure the item is rendered and visible
+  packageListRef.value?.scrollToIndex(selectedIndex.value)
+}
+
 function focusSelectedResult() {
-  const el = document.querySelector<HTMLElement>(`[data-result-index="${selectedIndex.value}"]`)
-  el?.focus()
+  // First ensure the item is rendered by scrolling to it
+  scrollToSelectedResult()
+  // Then focus it after a tick to allow rendering
+  nextTick(() => {
+    const el = document.querySelector<HTMLElement>(`[data-result-index="${selectedIndex.value}"]`)
+    el?.focus()
+  })
 }
 
 function handleResultsKeydown(e: KeyboardEvent) {
   if (resultCount.value <= 0) return
 
+  const isFromInput = (e.target as HTMLElement).tagName === 'INPUT'
+
   if (e.key === 'ArrowDown') {
     e.preventDefault()
     selectedIndex.value = clampIndex(selectedIndex.value + 1)
-    focusSelectedResult()
+    // Only move focus if already in results, not when typing in search input
+    if (isFromInput) {
+      scrollToSelectedResult()
+    } else {
+      focusSelectedResult()
+    }
     return
   }
 
   if (e.key === 'ArrowUp') {
     e.preventDefault()
     selectedIndex.value = clampIndex(selectedIndex.value - 1)
-    focusSelectedResult()
+    if (isFromInput) {
+      scrollToSelectedResult()
+    } else {
+      focusSelectedResult()
+    }
     return
   }
 
@@ -198,13 +220,10 @@ watch(query, () => {
   hasInteracted.value = true
 })
 
-watch(
-  () => visibleResults.value?.objects,
-  objects => {
-    if (!objects?.length) return
-    selectedIndex.value = 0
-  },
-)
+// Reset selection when query changes (new search)
+watch(query, () => {
+  selectedIndex.value = 0
+})
 
 // Check if current query could be a valid package name
 const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim()))
@@ -423,6 +442,7 @@ defineOgImageComponent('Default', {
 
           <PackageList
             v-if="visibleResults.objects.length > 0"
+            ref="packageListRef"
             :results="visibleResults.objects"
             :selected-index="selectedIndex"
             heading-level="h2"

@@ -82,6 +82,14 @@ watch(
     }
   },
 )
+
+function scrollToIndex(index: number, smooth = true) {
+  listRef.value?.scrollToIndex(index, { align: 'center', smooth })
+}
+
+defineExpose({
+  scrollToIndex,
+})
 </script>
 
 <template>

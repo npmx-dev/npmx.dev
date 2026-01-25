@@ -17,7 +17,11 @@ function handleGlobalKeydown(e: KeyboardEvent) {
   const isEditableTarget =
     target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
 
-  if (e.key === '/' && !target.isContentEditable) {
+  if (isEditableTarget) {
+    return
+  }
+
+  if (e.key === '/') {
     e.preventDefault()
 
     // Try to find and focus search input on current page
@@ -31,11 +35,6 @@ function handleGlobalKeydown(e: KeyboardEvent) {
     }
 
     router.push('/search')
-    return
-  }
-
-  if (isEditableTarget) {
-    return
   }
 }
 
