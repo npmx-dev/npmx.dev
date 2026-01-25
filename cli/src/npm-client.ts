@@ -1,6 +1,9 @@
 import process from 'node:process'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
+import { mkdtemp, writeFile, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import validateNpmPackageName from 'validate-npm-package-name'
 import { logCommand, logSuccess, logError } from './logger.ts'
 
@@ -285,4 +288,106 @@ export async function teamListUsers(scopeTeam: string): Promise<NpmExecResult> {
 export async function accessListCollaborators(pkg: string): Promise<NpmExecResult> {
   validatePackageName(pkg)
   return execNpm(['access', 'list', 'collaborators', pkg, '--json'], { silent: true })
+}
+
+/**
+ * Initialize and publish a new package to claim the name.
+ * Creates a minimal package.json in a temp directory and publishes it.
+ * @param name Package name to claim
+ * @param author npm username of the publisher (for author field)
+ * @param otp Optional OTP for 2FA
+ */
+export async function packageInit(
+  name: string,
+  author?: string,
+  otp?: string,
+): Promise<NpmExecResult> {
+  validatePackageName(name)
+
+  // Create a temporary directory
+  const tempDir = await mkdtemp(join(tmpdir(), 'npmx-init-'))
+
+  try {
+    // Determine access type based on whether it's a scoped package
+    const isScoped = name.startsWith('@')
+    const access = isScoped ? 'public' : undefined
+
+    // Create minimal package.json
+    const packageJson = {
+      name,
+      version: '0.0.0',
+      description: `Placeholder for ${name}`,
+      main: 'index.js',
+      scripts: {},
+      keywords: [],
+      author: author ? `${author} (https://www.npmjs.com/~${author})` : '',
+      license: 'UNLICENSED',
+      private: false,
+      ...(access && { publishConfig: { access } }),
+    }
+
+    await writeFile(join(tempDir, 'package.json'), JSON.stringify(packageJson, null, 2))
+
+    // Create empty index.js
+    await writeFile(join(tempDir, 'index.js'), '// Placeholder\n')
+
+    // Build npm publish args
+    const args = ['publish']
+    if (access) {
+      args.push('--access', access)
+    }
+
+    // Run npm publish from the temp directory
+    const npmArgs = otp ? [...args, '--otp', otp] : args
+
+    // Log the command being run (hide OTP value for security)
+    const displayCmd = otp ? `npm ${args.join(' ')} --otp ******` : `npm ${args.join(' ')}`
+    logCommand(`${displayCmd} (in temp dir for ${name})`)
+
+    try {
+      const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
+        timeout: 60000,
+        cwd: tempDir,
+        env: { ...process.env, FORCE_COLOR: '0' },
+      })
+
+      logSuccess(`Published ${name}@0.0.0`)
+
+      return {
+        stdout: stdout.trim(),
+        stderr: filterNpmWarnings(stderr),
+        exitCode: 0,
+      }
+    } catch (error) {
+      const err = error as { stdout?: string; stderr?: string; code?: number }
+      const stderr = err.stderr?.trim() ?? String(error)
+      const requiresOtp = detectOtpRequired(stderr)
+      const authFailure = detectAuthFailure(stderr)
+
+      if (requiresOtp) {
+        logError('OTP required')
+      } else if (authFailure) {
+        logError('Authentication required - please run "npm login" and restart the connector')
+      } else {
+        logError(filterNpmWarnings(stderr).split('\n')[0] || 'Command failed')
+      }
+
+      return {
+        stdout: err.stdout?.trim() ?? '',
+        stderr: requiresOtp
+          ? 'This operation requires a one-time password (OTP).'
+          : authFailure
+            ? 'Authentication failed. Please run "npm login" and restart the connector.'
+            : filterNpmWarnings(stderr),
+        exitCode: err.code ?? 1,
+        requiresOtp,
+        authFailure,
+      }
+    }
+  } finally {
+    // Clean up temp directory
+    await rm(tempDir, { recursive: true, force: true }).catch(() => {
+      // Ignore cleanup errors
+    })
+  }
 }

@@ -21,6 +21,7 @@ export type OperationType =
   | 'access:revoke'
   | 'owner:add'
   | 'owner:rm'
+  | 'package:init'
 
 export type OperationStatus =
   | 'pending'
