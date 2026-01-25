@@ -28,6 +28,7 @@
   "dependencies": {
     "@iconify-json/simple-icons": "^1.2.67",
     "@iconify-json/vscode-icons": "^1.2.40",
+    "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "^0.13.0",
     "@nuxt/scripts": "^0.13.2",
     "@nuxtjs/html-validator": "^2.1.0",

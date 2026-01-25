@@ -206,8 +206,20 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
   if (url.startsWith('#')) {
     return url
   }
-  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')) {
-    return url
+  if (hasProtocol(url, { acceptRelative: true })) {
+    try {
+      const parsed = new URL(url, 'https://example.com')
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return url
+      }
+    } catch {
+      // Invalid URL, fall through to resolve as relative
+    }
+    // return protocol-relative URLs (//example.com) as-is
+    if (url.startsWith('//')) {
+      return url
+    }
+    // for non-HTTP protocols (javascript:, data:, etc.), don't return, treat as relative
   }
 
   // Prefer GitHub raw URLs when repository info is available

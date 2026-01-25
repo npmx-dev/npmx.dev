@@ -5,11 +5,10 @@ export default defineCachedEventHandler(
       throw createError({ statusCode: 400, message: 'Package name is required' })
     }
 
-    const packageName = pkg.replace(/\//g, '/')
-    assertValidPackageName(packageName)
+    assertValidPackageName(pkg)
 
     try {
-      return await fetchNpmPackage(packageName)
+      return await fetchNpmPackage(pkg)
     } catch (error) {
       if (error && typeof error === 'object' && 'statusCode' in error) {
         throw error

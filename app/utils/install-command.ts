@@ -1,12 +1,12 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
 
 export const packageManagers = [
-  { id: 'npm', label: 'npm', action: 'install' },
-  { id: 'pnpm', label: 'pnpm', action: 'add' },
-  { id: 'yarn', label: 'yarn', action: 'add' },
-  { id: 'bun', label: 'bun', action: 'add' },
-  { id: 'deno', label: 'deno', action: 'add' },
-  { id: 'vlt', label: 'vlt', action: 'install' },
+  { id: 'npm', label: 'npm', action: 'install', execute: 'npx' },
+  { id: 'pnpm', label: 'pnpm', action: 'add', execute: 'pnpm dlx' },
+  { id: 'yarn', label: 'yarn', action: 'add', execute: 'yarn dlx' },
+  { id: 'bun', label: 'bun', action: 'add', execute: 'bunx' },
+  { id: 'deno', label: 'deno', action: 'add', execute: 'deno run' },
+  { id: 'vlt', label: 'vlt', action: 'install', execute: 'vlt x' },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']
@@ -58,4 +58,14 @@ export function getInstallCommandParts(options: InstallCommandOptions): string[]
   const version = options.version ? `@${options.version}` : ''
 
   return [pm.label, pm.action, `${spec}${version}`]
+}
+
+export function getExecuteCommand(options: InstallCommandOptions): string {
+  return getExecuteCommandParts(options).join(' ')
+}
+
+export function getExecuteCommandParts(options: InstallCommandOptions): string[] {
+  const pm = packageManagers.find(p => p.id === options.packageManager)
+  if (!pm) return []
+  return [pm.execute, getPackageSpecifier(options)]
 }

@@ -6,6 +6,7 @@ const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disco
 
 const tokenInput = ref('')
 const portInput = ref('31415')
+const copied = ref(false)
 
 async function handleConnect() {
   const port = Number.parseInt(portInput.value, 10) || 31415
@@ -19,6 +20,27 @@ async function handleConnect() {
 function handleDisconnect() {
   disconnect()
 }
+
+function copyCommand() {
+  let command = executeNpmxConnectorCommand.value
+  if (portInput.value !== '31415') {
+    command += ` --port ${portInput.value}`
+  }
+  navigator.clipboard.writeText(command)
+  copied.value = true
+  setTimeout(() => {
+    copied.value = false
+  }, 2000)
+}
+
+const selectedPM = useSelectedPackageManager()
+
+const executeNpmxConnectorCommand = computed(() => {
+  return getExecuteCommand({
+    packageName: 'npmx-connector',
+    packageManager: selectedPM.value,
+  })
+})
 
 // Reset form when modal opens
 watch(open, isOpen => {
@@ -103,9 +125,24 @@ watch(open, isOpen => {
                 Run the connector on your machine to enable admin features:
               </p>
 
-              <div class="p-3 bg-[#0d0d0d] border border-border rounded-lg font-mono text-sm">
+              <div
+                class="flex items-center p-3 bg-[#0d0d0d] border border-border rounded-lg font-mono text-sm"
+              >
                 <span class="text-fg-subtle">$</span>
-                <span class="text-fg ml-2">npx&nbsp;npmx-connector</span>
+                <span class="text-fg ml-2">{{ executeNpmxConnectorCommand }}</span>
+                <button
+                  type="button"
+                  :aria-label="copied ? 'Copied' : 'Copy command'"
+                  class="ml-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                  @click="copyCommand"
+                >
+                  <span v-if="!copied" class="i-carbon-copy block w-5 h-5" aria-hidden="true" />
+                  <span
+                    v-else
+                    class="i-carbon-checkmark block w-5 h-5 text-green-500"
+                    aria-hidden="true"
+                  />
+                </button>
               </div>
 
               <p class="text-sm text-fg-muted">Then paste the token shown in your terminal:</p>
