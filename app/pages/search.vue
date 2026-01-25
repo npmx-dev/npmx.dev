@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { formatNumber } from '#imports'
 import { debounce } from 'perfect-debounce'
+import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 
 const route = useRoute()
 const router = useRouter()
@@ -153,6 +154,107 @@ watch(query, () => {
   hasInteracted.value = true
 })
 
+// Check if current query could be a valid package name
+const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim()))
+
+// Check if package name is available (doesn't exist on npm)
+const packageAvailability = ref<{ name: string; available: boolean } | null>(null)
+
+// Debounced check for package availability
+const checkAvailability = debounce(async (name: string) => {
+  if (!isValidNewPackageName(name)) {
+    packageAvailability.value = null
+    return
+  }
+
+  try {
+    const exists = await checkPackageExists(name)
+    // Only update if this is still the current query
+    if (name === query.value.trim()) {
+      packageAvailability.value = { name, available: !exists }
+    }
+  } catch {
+    packageAvailability.value = null
+  }
+}, 300)
+
+// Trigger availability check when query changes
+watch(
+  query,
+  q => {
+    const trimmed = q.trim()
+    if (isValidNewPackageName(trimmed)) {
+      checkAvailability(trimmed)
+    } else {
+      packageAvailability.value = null
+    }
+  },
+  { immediate: true },
+)
+
+// Get connector state
+const { isConnected, npmUser, listOrgUsers } = useConnector()
+
+// Check if this is a scoped package and extract scope
+const packageScope = computed(() => {
+  const q = query.value.trim()
+  if (!q.startsWith('@')) return null
+  const match = q.match(/^@([^/]+)\//)
+  return match ? match[1] : null
+})
+
+// Track org membership for scoped packages
+const orgMembership = ref<Record<string, boolean>>({})
+
+// Check org membership when scope changes
+watch(
+  [packageScope, isConnected, npmUser],
+  async ([scope, connected, user]) => {
+    if (!scope || !connected || !user) return
+    // Skip if already checked
+    if (scope in orgMembership.value) return
+
+    try {
+      const users = await listOrgUsers(scope)
+      // Check if current user is in the org's user list
+      if (users && user in users) {
+        orgMembership.value[scope] = true
+      } else {
+        orgMembership.value[scope] = false
+      }
+    } catch {
+      orgMembership.value[scope] = false
+    }
+  },
+  { immediate: true },
+)
+
+// Check if user can publish to scope (either their username or an org they're a member of)
+const canPublishToScope = computed(() => {
+  const scope = packageScope.value
+  if (!scope) return true // Unscoped package
+  if (!npmUser.value) return false
+  // Can publish if scope matches username
+  if (scope.toLowerCase() === npmUser.value.toLowerCase()) return true
+  // Can publish if user is a member of the org
+  return orgMembership.value[scope] === true
+})
+
+// Show claim prompt when valid name, available, connected, and has permission
+const showClaimPrompt = computed(() => {
+  return (
+    isConnected.value &&
+    isValidPackageName.value &&
+    packageAvailability.value?.available === true &&
+    packageAvailability.value.name === query.value.trim() &&
+    canPublishToScope.value &&
+    status.value !== 'pending'
+  )
+})
+
+// Modal state for claiming a package
+const claimModalOpen = ref(false)
+
 useSeoMeta({
   title: () => (query.value ? `Search: ${query.value} - npmx` : 'Search Packages - npmx'),
 })
@@ -208,12 +310,33 @@ defineOgImageComponent('Default', {
     </header>
 
     <!-- Results area with container padding -->
-    <div class="container py-6">
+    <div class="container pt-20 pb-6">
       <section v-if="query" aria-label="Search results">
         <!-- Initial loading (only after user interaction, not during view transition) -->
         <LoadingSpinner v-if="showSearching" text="Searching..." />
 
         <div v-else-if="visibleResults">
+          <!-- Claim prompt - shown at top when valid name but no exact match -->
+          <div
+            v-if="showClaimPrompt && visibleResults.total > 0"
+            class="mb-6 p-4 bg-bg-subtle border border-border rounded-lg flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4"
+          >
+            <div class="flex-1 min-w-0">
+              <p class="font-mono text-sm text-fg">
+                "<span class="text-fg font-medium">{{ query }}</span
+                >" is not taken
+              </p>
+              <p class="text-xs text-fg-muted mt-0.5">Claim this package name on npm</p>
+            </div>
+            <button
+              type="button"
+              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              @click="claimModalOpen = true"
+            >
+              Claim "{{ query }}"
+            </button>
+          </div>
+
           <p
             v-if="visibleResults.total > 0"
             role="status"
@@ -223,14 +346,27 @@ defineOgImageComponent('Default', {
             <span v-if="status === 'pending'" class="text-fg-subtle">(updating...)</span>
           </p>
 
-          <p
-            v-else-if="status !== 'pending'"
-            role="status"
-            class="text-fg-muted py-12 text-center font-mono"
-          >
-            No packages found for "<span class="text-fg">{{ query }}</span
-            >"
-          </p>
+          <!-- No results found -->
+          <div v-else-if="status !== 'pending'" role="status" class="py-12 text-center">
+            <p class="text-fg-muted font-mono mb-6">
+              No packages found for "<span class="text-fg">{{ query }}</span
+              >"
+            </p>
+
+            <!-- Offer to claim the package name if it's valid -->
+            <div v-if="showClaimPrompt" class="max-w-md mx-auto">
+              <div class="p-4 bg-bg-subtle border border-border rounded-lg">
+                <p class="text-sm text-fg-muted mb-3">Want to claim this package name?</p>
+                <button
+                  type="button"
+                  class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  @click="claimModalOpen = true"
+                >
+                  Claim "{{ query }}"
+                </button>
+              </div>
+            </div>
+          </div>
 
           <PackageList
             v-if="visibleResults.objects.length > 0"
@@ -251,5 +387,8 @@ defineOgImageComponent('Default', {
         <p class="text-fg-subtle font-mono text-sm">Start typing to search packages</p>
       </section>
     </div>
+
+    <!-- Claim package modal -->
+    <ClaimPackageModal v-model:open="claimModalOpen" :package-name="query" />
   </main>
 </template>
