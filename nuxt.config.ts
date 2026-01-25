@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
+    '@nuxt/a11y',
     '@nuxt/fonts',
     'nuxt-og-image',
     '@nuxt/test-utils',
