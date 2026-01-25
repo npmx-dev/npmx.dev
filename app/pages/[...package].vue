@@ -407,11 +407,12 @@ defineOgImageComponent('Package', {
             </dd>
           </div>
 
-          <div v-if="getDependencyCount(displayVersion) > 0" class="space-y-1">
+          <div class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">Deps</dt>
             <dd class="font-mono text-sm text-fg flex items-baseline justify-start gap-2">
               {{ getDependencyCount(displayVersion) }}
               <a
+                v-if="getDependencyCount(displayVersion) > 0"
                 :href="`https://npmgraph.js.org/?q=${pkg.name}`"
                 target="_blank"
                 rel="noopener noreferrer"
