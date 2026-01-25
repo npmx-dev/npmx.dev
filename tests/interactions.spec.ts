@@ -18,9 +18,11 @@ test.describe('Search Pages', () => {
     await expect(page).toHaveURL(/\/vue/)
 
     await page.goBack()
+    // Wait for search page to be ready
+    await expect(page).toHaveURL(/\/search/)
+    await expect(page.locator('text=/found \\d+/i')).toBeVisible()
     // Search input is autofocused on mount
     await expect(searchInput).toBeFocused()
-    await expect(page.locator('text=/found \\d+/i')).toBeVisible()
 
     // ArrowDown changes visual selection but keeps focus in input
     await page.keyboard.press('ArrowDown')
