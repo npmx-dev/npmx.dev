@@ -1,0 +1,108 @@
+<script setup lang="ts">
+const props = defineProps<{
+  packageName: string
+  installScripts: {
+    scripts: ('preinstall' | 'install' | 'postinstall')[]
+    content?: Record<string, string>
+    npxDependencies: Record<string, string>
+  }
+}>()
+
+const outdatedNpxDeps = useOutdatedDependencies(() => props.installScripts.npxDependencies)
+const hasNpxDeps = computed(() => Object.keys(props.installScripts.npxDependencies).length > 0)
+const sortedNpxDeps = computed(() => {
+  return Object.entries(props.installScripts.npxDependencies).sort(([a], [b]) => a.localeCompare(b))
+})
+
+const isExpanded = ref(false)
+</script>
+
+<template>
+  <section aria-labelledby="install-scripts-heading">
+    <h2
+      id="install-scripts-heading"
+      class="text-xs text-fg-subtle uppercase tracking-wider mb-3 flex items-center gap-2"
+    >
+      <span class="i-carbon-warning-alt w-3 h-3 text-yellow-500" aria-hidden="true" />
+      Install Scripts
+    </h2>
+
+    <!-- Script list: name as label, content below -->
+    <dl class="space-y-2 m-0">
+      <div v-for="scriptName in installScripts.scripts" :key="scriptName">
+        <dt class="font-mono text-xs text-fg-muted">{{ scriptName }}</dt>
+        <dd
+          tabindex="0"
+          class="font-mono text-sm text-fg-subtle m-0 truncate focus:whitespace-normal focus:overflow-visible cursor-help rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          :title="installScripts.content?.[scriptName]"
+        >
+          {{ installScripts.content?.[scriptName] || '(script)' }}
+        </dd>
+      </div>
+    </dl>
+
+    <!-- npx packages (expandable) -->
+    <div v-if="hasNpxDeps" class="mt-3">
+      <button
+        type="button"
+        class="flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+        :aria-expanded="isExpanded"
+        aria-controls="npx-packages-details"
+        @click="isExpanded = !isExpanded"
+      >
+        <span
+          class="i-carbon-chevron-right w-3 h-3 transition-transform duration-200"
+          :class="{ 'rotate-90': isExpanded }"
+          aria-hidden="true"
+        />
+        {{ sortedNpxDeps.length }} npx package{{ sortedNpxDeps.length !== 1 ? 's' : '' }}
+      </button>
+
+      <ul
+        v-show="isExpanded"
+        id="npx-packages-details"
+        class="mt-2 space-y-1 list-none m-0 p-0 pl-4"
+      >
+        <li
+          v-for="[dep, version] in sortedNpxDeps"
+          :key="dep"
+          class="flex items-center justify-between py-0.5 text-sm gap-2"
+        >
+          <NuxtLink
+            :to="{ name: 'package', params: { package: dep.split('/') } }"
+            class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0"
+          >
+            {{ dep }}
+          </NuxtLink>
+          <span class="flex items-center gap-1">
+            <span
+              v-if="
+                outdatedNpxDeps[dep] &&
+                outdatedNpxDeps[dep].resolved !== outdatedNpxDeps[dep].latest
+              "
+              class="shrink-0"
+              :class="getVersionClass(outdatedNpxDeps[dep])"
+              :title="getOutdatedTooltip(outdatedNpxDeps[dep])"
+              aria-hidden="true"
+            >
+              <span class="i-carbon-warning-alt w-3 h-3 block" />
+            </span>
+            <span
+              class="font-mono text-xs text-right truncate"
+              :class="getVersionClass(outdatedNpxDeps[dep])"
+              :title="
+                outdatedNpxDeps[dep]
+                  ? outdatedNpxDeps[dep].resolved === outdatedNpxDeps[dep].latest
+                    ? `currently ${outdatedNpxDeps[dep].latest}`
+                    : getOutdatedTooltip(outdatedNpxDeps[dep])
+                  : version
+              "
+            >
+              {{ version }}
+            </span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</template>

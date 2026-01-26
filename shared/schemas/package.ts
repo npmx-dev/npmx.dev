@@ -36,6 +36,15 @@ export const FilePathSchema = v.pipe(
 )
 
 /**
+ * Schema for search queries, limits length to guard against DoS attacks
+ */
+export const SearchQuerySchema = v.pipe(
+  v.string(),
+  v.trim(),
+  v.maxLength(100, 'Search query is too long'),
+)
+
+/**
  * Schema for package fetching where version is not required
  */
 export const PackageRouteParamsSchema = v.object({

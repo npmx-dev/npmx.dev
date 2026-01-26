@@ -30,12 +30,15 @@ withDefaults(
           <NuxtLink
             to="/search"
             class="link-subtle font-mono text-sm inline-flex items-center gap-2"
+            aria-keyshortcuts="/"
           >
             search
             <kbd
               class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
-              >/</kbd
+              aria-hidden="true"
             >
+              /
+            </kbd>
           </NuxtLink>
         </li>
         <li v-if="showConnector" class="flex">

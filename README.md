@@ -29,15 +29,18 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 - **Provenance indicators** &ndash; verified build badges for packages with npm provenance
 - **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, and Sourcehut
 - **JSR availability** &ndash; see if scoped packages are also available on JSR
-- **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types, and engine constraints
+- **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types (with `@types/*` links), and engine constraints
 - **Outdated dependency indicators** &ndash; visual cues showing which dependencies are behind
 - **Vulnerability warnings** &ndash; security advisories from the OSV database
 - **Download statistics** &ndash; weekly download counts with sparkline charts
-- **Install size** &ndash; total install size including dependencies
+- **Install size** &ndash; total install size (including transitive dependencies)
 - **Playground links** &ndash; quick access to StackBlitz, CodeSandbox, and other demo environments from READMEs
 - **Infinite search** &ndash; auto-load additional search pages as you scroll
-- **Keyboard navigation** &ndash; press `/` to focus search, arrow keys to navigate results, Enter to select
+- **Keyboard navigation** &ndash; press `/` to focus search, `.` to open code viewer, arrow keys to navigate results
+- **Deprecation notices** &ndash; clear warnings for deprecated packages and versions
+- **Version range resolution** &ndash; dependency ranges (e.g., `^1.0.0`) resolve to actual installed versions
 - **Claim new packages** &ndash; register new package names directly from search results (via local connector)
+- **Clickable version tags** &ndash; navigate directly to any version from the versions list
 
 ### User & org pages
 
@@ -65,10 +68,12 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 | Install size calculation       |    ❌     |    ✅    |
 | JSR cross-reference            |    ❌     |    ✅    |
 | Vulnerability warnings         |    ✅     |    ✅    |
+| Deprecation notices            |    ✅     |    ✅    |
 | Download charts                |    ✅     |    ✅    |
 | Playground links               |    ❌     |    ✅    |
 | Keyboard navigation            |    ❌     |    ✅    |
 | Multi-provider repo support    |    ❌     |    ✅    |
+| Version range resolution       |    ❌     |    ✅    |
 | Dependents list                |    ✅     |    🚧    |
 | Package admin (access/owners)  |    ✅     |    🚧    |
 | Org/team management            |    ✅     |    🚧    |
@@ -105,12 +110,13 @@ npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev
 
 npmx.dev also supports shorter, cleaner URLs:
 
-| Pattern        | Example                                            |
-| -------------- | -------------------------------------------------- |
-| `/<package>`   | [`/nuxt`](https://npmx.dev/nuxt)                   |
-| `/@scope/name` | [`/@nuxt/kit`](https://npmx.dev/@nuxt/kit)         |
-| `/@org`        | [`/@nuxt`](https://npmx.dev/@nuxt)                 |
-| `/~username`   | [`/~sindresorhus`](https://npmx.dev/~sindresorhus) |
+| Pattern            | Example                                            |
+| ------------------ | -------------------------------------------------- |
+| `/<package>`       | [`/nuxt`](https://npmx.dev/nuxt)                   |
+| `/<pkg>@<version>` | [`/vue@3.4.0`](https://npmx.dev/vue@3.4.0)         |
+| `/@scope/name`     | [`/@nuxt/kit`](https://npmx.dev/@nuxt/kit)         |
+| `/@org`            | [`/@nuxt`](https://npmx.dev/@nuxt)                 |
+| `/~username`       | [`/~sindresorhus`](https://npmx.dev/~sindresorhus) |
 
 ## Tech stack
 
@@ -122,7 +128,7 @@ npmx.dev also supports shorter, cleaner URLs:
 
 ## Contributing
 
-I'd welcome contributions &ndash; please do feel free to poke around and improve things. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get up and running!
+We welcome contributions &ndash; please do feel free to poke around and improve things. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get up and running!
 
 ## Related projects
 
@@ -132,7 +138,7 @@ I'd welcome contributions &ndash; please do feel free to poke around and improve
 - [npm-alt](https://npm.willow.sh/) &ndash; An alternative npm package browser
 - [npkg.lorypelli.dev](https://npkg.lorypelli.dev/) &ndash; An alternative frontend to npm made with as little client-side JavaScript as possible
 
-If you're building something cool, let me know! 🙏
+If you're building something cool, let us know! 🙏
 
 ## License
 

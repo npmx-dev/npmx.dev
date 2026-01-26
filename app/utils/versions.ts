@@ -1,6 +1,19 @@
+import { valid } from 'semver'
+
 /**
  * Utilities for handling npm package versions and dist-tags
  */
+
+/**
+ * Check if a version string is an exact semver version.
+ * Returns true for "1.2.3", "1.0.0-beta.1", etc.
+ * Returns false for ranges like "^1.2.3", ">=1.0.0", tags like "latest", etc.
+ * @param version - The version string to check
+ * @returns true if the version is an exact semver version
+ */
+export function isExactVersion(version: string): boolean {
+  return valid(version) !== null
+}
 
 /** Parsed semver version components */
 export interface ParsedVersion {

@@ -26,6 +26,7 @@ interface VersionDisplay {
   time?: string
   tags?: string[]
   hasProvenance: boolean
+  deprecated?: string
 }
 
 // Check if a version has provenance/attestations
@@ -86,16 +87,32 @@ const allTagRows = computed(() => {
         time: props.time[version],
         tags,
         hasProvenance: hasProvenance(versionData),
+        deprecated: versionData?.deprecated,
       } as VersionDisplay,
     }))
     .sort((a, b) => compareVersions(b.primaryVersion.version, a.primaryVersion.version))
 })
 
-// Visible tag rows (limited to MAX_VISIBLE_TAGS)
-const visibleTagRows = computed(() => allTagRows.value.slice(0, MAX_VISIBLE_TAGS))
+// Check if the whole package is deprecated (latest version is deprecated)
+const isPackageDeprecated = computed(() => {
+  const latestVersion = props.distTags.latest
+  if (!latestVersion) return false
+  return !!props.versions[latestVersion]?.deprecated
+})
 
-// Hidden tag rows (overflow beyond MAX_VISIBLE_TAGS) - shown in "Other versions"
-const hiddenTagRows = computed(() => allTagRows.value.slice(MAX_VISIBLE_TAGS))
+// Visible tag rows: limited to MAX_VISIBLE_TAGS
+// If package is NOT deprecated, filter out deprecated tags from visible list
+const visibleTagRows = computed(() => {
+  const rows = isPackageDeprecated.value
+    ? allTagRows.value
+    : allTagRows.value.filter(row => !row.primaryVersion.deprecated)
+  return rows.slice(0, MAX_VISIBLE_TAGS)
+})
+
+// Hidden tag rows (all other tags) - shown in "Other versions"
+const hiddenTagRows = computed(() =>
+  allTagRows.value.filter(row => !visibleTagRows.value.includes(row)),
+)
 
 // Client-side state for expansion and loaded versions
 const expandedTags = ref<Set<string>>(new Set())
@@ -166,6 +183,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
         time: v.time,
         tags: versionToTags.value.get(v.version),
         hasProvenance: v.hasProvenance,
+        deprecated: v.deprecated,
       }))
 
     tagVersions.value.set(row.tag, channelVersions)
@@ -190,6 +208,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
       time: v.time,
       tags: versionToTags.value.get(v.version),
       hasProvenance: v.hasProvenance,
+      deprecated: v.deprecated,
     })
   }
 
@@ -306,8 +325,17 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(row.primaryVersion.version)"
-                class="font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 truncate"
-                :title="row.primaryVersion.version"
+                class="font-mono text-sm transition-colors duration-200 truncate"
+                :class="
+                  row.primaryVersion.deprecated
+                    ? 'text-red-400 hover:text-red-300'
+                    : 'text-fg-muted hover:text-fg'
+                "
+                :title="
+                  row.primaryVersion.deprecated
+                    ? `${row.primaryVersion.version} (deprecated)`
+                    : row.primaryVersion.version
+                "
               >
                 {{ row.primaryVersion.version }}
               </NuxtLink>
@@ -350,8 +378,13 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(v.version)"
-                class="font-mono text-xs text-fg-subtle hover:text-fg-muted transition-colors duration-200 truncate"
-                :title="v.version"
+                class="font-mono text-xs transition-colors duration-200 truncate"
+                :class="
+                  v.deprecated
+                    ? 'text-red-400 hover:text-red-300'
+                    : 'text-fg-subtle hover:text-fg-muted'
+                "
+                :title="v.deprecated ? `${v.version} (deprecated)` : v.version"
               >
                 {{ v.version }}
               </NuxtLink>
@@ -422,8 +455,17 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(row.primaryVersion.version)"
-                class="font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 truncate"
-                :title="row.primaryVersion.version"
+                class="font-mono text-xs transition-colors duration-200 truncate"
+                :class="
+                  row.primaryVersion.deprecated
+                    ? 'text-red-400 hover:text-red-300'
+                    : 'text-fg-muted hover:text-fg'
+                "
+                :title="
+                  row.primaryVersion.deprecated
+                    ? `${row.primaryVersion.version} (deprecated)`
+                    : row.primaryVersion.version
+                "
               >
                 {{ row.primaryVersion.version }}
               </NuxtLink>
@@ -467,7 +509,10 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     class="w-3 h-3 transition-transform duration-200 text-fg-subtle"
                     :class="group.expanded ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'"
                   />
-                  <span class="font-mono text-xs text-fg-muted truncate">
+                  <span
+                    class="font-mono text-xs truncate"
+                    :class="group.versions[0]?.deprecated ? 'text-red-400' : 'text-fg-muted'"
+                  >
                     {{ group.versions[0]?.version }}
                   </span>
                 </div>
@@ -492,8 +537,17 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   <NuxtLink
                     v-if="group.versions[0]"
                     :to="versionRoute(group.versions[0].version)"
-                    class="font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 truncate"
-                    :title="group.versions[0].version"
+                    class="font-mono text-xs transition-colors duration-200 truncate"
+                    :class="
+                      group.versions[0].deprecated
+                        ? 'text-red-400 hover:text-red-300'
+                        : 'text-fg-muted hover:text-fg'
+                    "
+                    :title="
+                      group.versions[0].deprecated
+                        ? `${group.versions[0].version} (deprecated)`
+                        : group.versions[0].version
+                    "
                   >
                     {{ group.versions[0].version }}
                   </NuxtLink>
@@ -515,8 +569,13 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   <div class="flex items-center justify-between gap-2">
                     <NuxtLink
                       :to="versionRoute(v.version)"
-                      class="font-mono text-xs text-fg-subtle hover:text-fg-muted transition-colors duration-200 truncate"
-                      :title="v.version"
+                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      :class="
+                        v.deprecated
+                          ? 'text-red-400 hover:text-red-300'
+                          : 'text-fg-subtle hover:text-fg-muted'
+                      "
+                      :title="v.deprecated ? `${v.version} (deprecated)` : v.version"
                     >
                       {{ v.version }}
                     </NuxtLink>
