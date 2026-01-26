@@ -14,7 +14,15 @@ async function fetchReadmeFromJsdelivr(
   packageName: string,
   version?: string,
 ): Promise<string | null> {
-  const filenames = ['README.md', 'readme.md', 'Readme.md', 'README', 'readme']
+  const filenames = [
+    'README.md',
+    'readme.md',
+    'Readme.md',
+    'README',
+    'readme',
+    'README.markdown',
+    'readme.markdown',
+  ]
   const versionSuffix = version ? `@${version}` : ''
 
   for (const filename of filenames) {
