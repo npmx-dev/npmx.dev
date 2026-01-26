@@ -80,7 +80,11 @@ export default defineCachedEventHandler(
       }
 
       // If no README in packument, try fetching from jsdelivr (package tarball)
-      if (!readmeContent || readmeContent === NPM_MISSING_README_SENTINEL) {
+      if (
+        !readmeContent ||
+        readmeContent === NPM_MISSING_README_SENTINEL ||
+        !readmeFilenameMatchesLocale(packageData.readmeFilename)
+      ) {
         readmeContent = (await fetchReadmeFromJsdelivr(packageName, version)) ?? undefined
       }
 
@@ -108,3 +112,21 @@ export default defineCachedEventHandler(
     },
   },
 )
+
+function readmeFilenameMatchesLocale(filename: string | undefined): boolean {
+  if (!filename) {
+    return false
+  }
+
+  const filenames = [
+    'README.md',
+    'readme.md',
+    'Readme.md',
+    'README',
+    'readme',
+    'README.markdown',
+    'readme.markdown',
+  ]
+
+  return filenames.includes(filename) || filename.includes(navigator.language)
+}
