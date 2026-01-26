@@ -74,11 +74,11 @@ describe('executable detection and run commands', () => {
   describe('getRunCommandParts', () => {
     it.each([
       ['npm', ['npx', 'eslint']],
-      ['pnpm', ['pnpm dlx', 'eslint']],
-      ['yarn', ['yarn dlx', 'eslint']],
+      ['pnpm', ['pnpm', 'dlx', 'eslint']],
+      ['yarn', ['yarn', 'dlx', 'eslint']],
       ['bun', ['bunx', 'eslint']],
-      ['deno', ['deno run', 'npm:eslint']],
-      ['vlt', ['vlt x', 'eslint']],
+      ['deno', ['deno', 'run', 'npm:eslint']],
+      ['vlt', ['vlt', 'x', 'eslint']],
     ] as const)('%s → %s', (pm, expected) => {
       expect(
         getRunCommandParts({

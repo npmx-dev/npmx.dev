@@ -63,17 +63,20 @@ export interface RunCommandOptions {
 
 /**
  * Generate run command as an array of parts.
- * For example: ["npx", "eslint"] or ["bunx", "tsc"]
+ * First element is the package manager label (e.g., "pnpm"), rest are arguments.
+ * For example: ["pnpm", "dlx", "nuxt"] or ["npx", "eslint"]
  */
 export function getRunCommandParts(options: RunCommandOptions): string[] {
   const pm = packageManagers.find(p => p.id === options.packageManager)
   if (!pm) return []
 
   const spec = getPackageSpecifier(options)
+  // Split execute command (e.g., "pnpm dlx" -> ["pnpm", "dlx"])
+  const executeParts = pm.execute.split(' ')
 
   // For deno, always use the package specifier
   if (options.packageManager === 'deno') {
-    return [pm.execute, spec]
+    return [...executeParts, spec]
   }
 
   // For npx/bunx/pnpm dlx/yarn dlx/vlt x, the command name is what gets executed
@@ -86,13 +89,13 @@ export function getRunCommandParts(options: RunCommandOptions): string[] {
       : options.packageName
     // If command matches base package name, use the package spec
     if (options.command === baseName) {
-      return [pm.execute, spec]
+      return [...executeParts, spec]
     }
     // Otherwise use the command name directly (e.g., npx tsc, not npx typescript/tsc)
-    return [pm.execute, options.command]
+    return [...executeParts, options.command]
   }
 
-  return [pm.execute, spec]
+  return [...executeParts, spec]
 }
 
 /**
