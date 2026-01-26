@@ -47,6 +47,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
+    '/opensearch.xml': { isr: true },
     '/**': { isr: 60 },
     '/package/**': { isr: 60 },
     '/search': { isr: false, cache: false },
