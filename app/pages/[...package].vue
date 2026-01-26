@@ -17,6 +17,8 @@ const route = useRoute('package')
 //   /nuxt/v/4.2.0 → packageName: "nuxt", requestedVersion: "4.2.0"
 //   /@nuxt/kit → packageName: "@nuxt/kit", requestedVersion: null
 //   /@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
+//   /axios@1.13.3 → packageName: "axios", requestedVersion: "1.13.3"
+//   /@nuxt/kit@1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
 const parsedRoute = computed(() => {
   const segments = route.params.package || []
 
@@ -29,8 +31,19 @@ const parsedRoute = computed(() => {
     }
   }
 
+  // Parse @ versioned package
+  const fullPath = segments.join('/')
+  const versionMatch = fullPath.match(/^(@[^/]+\/[^/]+|[^/]+)@([^/]+)$/)
+  if (versionMatch) {
+    const [, packageName, requestedVersion] = versionMatch as [string, string, string]
+    return {
+      packageName,
+      requestedVersion,
+    }
+  }
+
   return {
-    packageName: segments.join('/'),
+    packageName: fullPath,
     requestedVersion: null as string | null,
   }
 })
