@@ -48,8 +48,7 @@
     "validate-npm-package-name": "^7.0.2",
     "virtua": "^0.48.3",
     "vue": "3.5.27",
-    "vue-data-ui": "^3.13.2",
-    "typedoc": "^0.28.16"
+    "vue-data-ui": "^3.13.2"
   },
   "devDependencies": {
     "@iconify-json/carbon": "1.2.18",
