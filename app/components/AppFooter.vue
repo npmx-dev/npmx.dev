@@ -97,19 +97,25 @@ onUnmounted(() => {
         <p class="text-xs text-fg-muted m-0 sm:hidden">not affiliated with npm, Inc.</p>
         <div class="flex items-center gap-4 sm:gap-6">
           <a
-            href="https://github.com/npmx-dev/npmx.dev"
+            href="https://repo.npmx.dev"
             rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
+            class="link-subtle font-mono text-xs min-h-11 min-w- flex items-center"
           >
             source
           </a>
-          <span class="text-border">|</span>
           <a
-            href="https://roe.dev"
+            href="https://social.npmx.dev"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
           >
-            @danielroe
+            social
+          </a>
+          <a
+            href="https://chat.npmx.dev"
+            rel="noopener noreferrer"
+            class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
+          >
+            chat
           </a>
         </div>
       </div>
