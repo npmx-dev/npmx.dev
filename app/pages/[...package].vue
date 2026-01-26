@@ -154,7 +154,7 @@ const repositoryUrl = computed(() => {
   return url
 })
 
-const { meta: repoMeta, repoRef, stars, forks, forksLink } = useRepoMeta(repositoryUrl)
+const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
 
 const PROVIDER_ICONS: Record<string, string> = {
   github: 'i-carbon-logo-github',
@@ -513,11 +513,21 @@ defineOgImageComponent('Package', {
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
                 <span class="w-4 h-4" :class="repoProviderIcon" aria-hidden="true" />
-                <span v-if="repoMeta && stars">
-                  {{ formatCompactNumber(stars, { decimals: 1 }) }}
-                  {{ stars === 1 ? 'star' : 'stars' }}
+                <span v-if="repoRef">
+                  {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
                 </span>
                 <span v-else>repo</span>
+              </a>
+            </li>
+            <li v-if="repositoryUrl && repoMeta && starsLink">
+              <a
+                :href="starsLink"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="w-4 h-4 i-carbon-star" aria-hidden="true" />
+                {{ formatCompactNumber(stars, { decimals: 1 }) }}
               </a>
             </li>
             <li v-if="homepageUrl">
