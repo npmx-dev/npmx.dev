@@ -10,8 +10,6 @@ import type {
 } from '#shared/types'
 import type { ReleaseType } from 'semver'
 import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
-import { compareVersions, isExactVersion } from '~/utils/versions'
-import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -556,7 +554,7 @@ async function checkDependencyOutdated(
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
 ) {
-  const outdated = ref<Record<string, OutdatedDependencyInfo>>({})
+  const outdated = shallowRef<Record<string, OutdatedDependencyInfo>>({})
 
   async function fetchOutdatedInfo(deps: Record<string, string> | undefined) {
     if (!deps || Object.keys(deps).length === 0) {

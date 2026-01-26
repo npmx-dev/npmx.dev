@@ -9,7 +9,7 @@ const emit = defineEmits<{
   lineClick: [lineNum: number, event: MouseEvent]
 }>()
 
-const codeRef = ref<HTMLElement>()
+const codeRef = useTemplateRef('codeRef')
 
 // Generate line numbers array
 const lineNumbers = computed(() => {

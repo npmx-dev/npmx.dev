@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { NpmSearchResult } from '#shared/types'
-
 defineProps<{
   /** The search result object containing package data */
   result: NpmSearchResult

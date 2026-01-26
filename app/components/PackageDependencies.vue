@@ -11,9 +11,9 @@ const props = defineProps<{
 const outdatedDeps = useOutdatedDependencies(() => props.dependencies)
 
 // Expanded state for each section
-const depsExpanded = ref(false)
-const peerDepsExpanded = ref(false)
-const optionalDepsExpanded = ref(false)
+const depsExpanded = shallowRef(false)
+const peerDepsExpanded = shallowRef(false)
+const optionalDepsExpanded = shallowRef(false)
 
 // Sort dependencies alphabetically
 const sortedDependencies = computed(() => {

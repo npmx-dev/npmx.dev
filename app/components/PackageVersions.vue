@@ -119,16 +119,16 @@ const expandedTags = ref<Set<string>>(new Set())
 const tagVersions = ref<Map<string, VersionDisplay[]>>(new Map())
 const loadingTags = ref<Set<string>>(new Set())
 
-const otherVersionsExpanded = ref(false)
-const otherMajorGroups = ref<
+const otherVersionsExpanded = shallowRef(false)
+const otherMajorGroups = shallowRef<
   Array<{ major: number; versions: VersionDisplay[]; expanded: boolean }>
 >([])
-const otherVersionsLoading = ref(false)
+const otherVersionsLoading = shallowRef(false)
 
 // Cached full version list (local to component instance)
-const allVersionsCache = ref<PackageVersionInfo[] | null>(null)
-const loadingVersions = ref(false)
-const hasLoadedAll = ref(false)
+const allVersionsCache = shallowRef<PackageVersionInfo[] | null>(null)
+const loadingVersions = shallowRef(false)
+const hasLoadedAll = shallowRef(false)
 
 // Load all versions using shared function
 async function loadAllVersions(): Promise<PackageVersionInfo[]> {

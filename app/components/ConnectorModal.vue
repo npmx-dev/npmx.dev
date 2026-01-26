@@ -4,9 +4,9 @@ const open = defineModel<boolean>('open', { default: false })
 const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disconnect } =
   useConnector()
 
-const tokenInput = ref('')
-const portInput = ref('31415')
-const copied = ref(false)
+const tokenInput = shallowRef('')
+const portInput = shallowRef('31415')
+const copied = shallowRef(false)
 
 async function handleConnect() {
   const port = Number.parseInt(portInput.value, 10) || 31415

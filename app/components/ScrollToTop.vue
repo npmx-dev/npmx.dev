@@ -7,9 +7,11 @@ const excludedRoutes = new Set(['index', 'code'])
 const isActive = computed(() => !excludedRoutes.has(route.name as string))
 
 const isMounted = useMounted()
-const isVisible = ref(false)
+const isVisible = shallowRef(false)
 const scrollThreshold = 300
-const supportsScrollStateQueries = ref(false)
+const supportsScrollStateQueries = useSupported(() => {
+  return isMounted.value && CSS.supports('container-type', 'scroll-state')
+})
 
 function onScroll() {
   if (!supportsScrollStateQueries.value) {
@@ -25,9 +27,6 @@ function scrollToTop() {
 useEventListener('scroll', onScroll, { passive: true })
 
 onMounted(() => {
-  // Feature detect CSS scroll-state container queries (Chrome 133+)
-  supportsScrollStateQueries.value = CSS.supports('container-type', 'scroll-state')
-
   onScroll()
 })
 </script>

@@ -2,8 +2,8 @@
 const { isConnected, isConnecting, npmUser, error, activeOperations, hasPendingOperations } =
   useConnector()
 
-const showModal = ref(false)
-const showTooltip = ref(false)
+const showModal = shallowRef(false)
+const showTooltip = shallowRef(false)
 
 const statusText = computed(() => {
   if (isConnecting.value) return 'connecting…'

@@ -14,7 +14,7 @@ const sortedNpxDeps = computed(() => {
   return Object.entries(props.installScripts.npxDependencies).sort(([a], [b]) => a.localeCompare(b))
 })
 
-const isExpanded = ref(false)
+const isExpanded = shallowRef(false)
 </script>
 
 <template>
