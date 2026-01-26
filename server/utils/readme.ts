@@ -272,10 +272,12 @@ export async function renderReadmeHtml(
     // Use Shiki if language is loaded, otherwise fall back to plain
     if (loadedLangs.includes(language as never)) {
       try {
-        return shiki.codeToHtml(text, {
+        const html = shiki.codeToHtml(text, {
           lang: language,
           theme: 'github-dark',
         })
+        // Shiki doesn't encode > in text content (e.g., arrow functions)
+        return escapeRawGt(html)
       } catch {
         // Fall back to plain code block
       }
