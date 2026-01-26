@@ -23,25 +23,25 @@ const emit = defineEmits<{
     class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
     :class="{ 'bg-bg-muted border-border-hover': selected }"
   >
-    <div class="flex justify-between items-end gap-8">
+    <div class="mb-2">
+      <component
+        :is="headingLevel ?? 'h3'"
+        class="font-mono text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
+      >
+        <NuxtLink
+          :to="{ name: 'package', params: { package: result.package.name.split('/') } }"
+          :prefetch-on="prefetch ? 'visibility' : 'interaction'"
+          class="focus:outline-none decoration-none scroll-mt-48 scroll-mb-6 after:content-[''] after:absolute after:inset-0"
+          :data-result-index="index"
+          @focus="index != null && emit('focus', index)"
+          @mouseenter="index != null && emit('focus', index)"
+        >
+          {{ result.package.name }}
+        </NuxtLink>
+      </component>
+    </div>
+    <div class="flex justify-between items-start gap-8">
       <div>
-        <div class="flex items-center gap-2 mb-2">
-          <component
-            :is="headingLevel ?? 'h3'"
-            class="font-mono text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
-          >
-            <NuxtLink
-              :to="{ name: 'package', params: { package: result.package.name.split('/') } }"
-              :prefetch-on="prefetch ? 'visibility' : 'interaction'"
-              class="focus:outline-none decoration-none scroll-mt-48 scroll-mb-6 after:content-[''] after:absolute after:inset-0"
-              :data-result-index="index"
-              @focus="index != null && emit('focus', index)"
-              @mouseenter="index != null && emit('focus', index)"
-            >
-              {{ result.package.name }}
-            </NuxtLink>
-          </component>
-        </div>
         <p v-if="result.package.description" class="text-fg-muted text-sm line-clamp-2 mb-3">
           <MarkdownText :text="result.package.description" />
         </p>
