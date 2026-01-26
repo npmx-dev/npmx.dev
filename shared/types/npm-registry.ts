@@ -6,6 +6,8 @@
  * @see https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md
  */
 
+import type { PackumentVersion } from '@npm/types'
+
 // Re-export official npm types for packument/manifest
 export type {
   Packument,
@@ -14,6 +16,18 @@ export type {
   ManifestVersion,
   PackageJSON,
 } from '@npm/types'
+
+/** Install scripts info (preinstall, install, postinstall) */
+export interface InstallScriptsInfo {
+  scripts: ('preinstall' | 'install' | 'postinstall')[]
+  content: Record<string, string>
+  npxDependencies: Record<string, string>
+}
+
+/** PackumentVersion with additional install scripts info */
+export type SlimPackumentVersion = PackumentVersion & {
+  installScripts?: InstallScriptsInfo
+}
 
 /**
  * Slimmed down Packument for client-side use.
@@ -38,16 +52,7 @@ export interface SlimPackument {
   'repository'?: { type?: string; url?: string; directory?: string }
   'bugs'?: { url?: string; email?: string }
   /** Only includes dist-tag versions (with installScripts info added per version) */
-  'versions': Record<
-    string,
-    import('@npm/types').PackumentVersion & {
-      /** Install scripts info (preinstall, install, postinstall) */
-      installScripts?: {
-        scripts: ('preinstall' | 'install' | 'postinstall')[]
-        npxDependencies: Record<string, string>
-      }
-    }
-  >
+  'versions': Record<string, SlimPackumentVersion>
 }
 
 /**
