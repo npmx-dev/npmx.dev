@@ -140,13 +140,8 @@ const emit = defineEmits<{
       aria-label="Keywords"
       class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0"
     >
-      <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword">
-        <NuxtLink
-          :to="{ name: 'search', query: { q: `keywords:${keyword}` } }"
-          class="tag decoration-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:outline-none"
-        >
-          {{ keyword }}
-        </NuxtLink>
+      <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword" class="tag">
+        {{ keyword }}
       </li>
     </ul>
   </article>
