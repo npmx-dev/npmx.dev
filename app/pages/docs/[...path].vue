@@ -67,7 +67,7 @@ const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
       version: resolvedVersion.value ?? '',
       html: '',
       toc: null,
-      status: 'missing',
+      status: 'missing' as const,
       message: 'Docs are not available for this version.',
     }),
   },
