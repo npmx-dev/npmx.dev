@@ -26,7 +26,7 @@ const emit = defineEmits<{
     <div class="mb-2">
       <component
         :is="headingLevel ?? 'h3'"
-        class="font-mono text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
+        class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
       >
         <NuxtLink
           :to="{ name: 'package', params: { package: result.package.name.split('/') } }"
@@ -40,9 +40,12 @@ const emit = defineEmits<{
         </NuxtLink>
       </component>
     </div>
-    <div class="flex justify-between items-start gap-8">
+    <div class="flex justify-between items-start gap-4 sm:gap-8">
       <div>
-        <p v-if="result.package.description" class="text-fg-muted text-sm line-clamp-2 mb-3">
+        <p
+          v-if="result.package.description"
+          class="text-fg-muted text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-3"
+        >
           <MarkdownText :text="result.package.description" />
         </p>
         <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-fg-subtle">
@@ -81,6 +84,7 @@ const emit = defineEmits<{
               :provider="result.package.publisher.trustedPublisher.id"
               :package-name="result.package.name"
               :version="result.package.version"
+              :linked="false"
               compact
             />
           </div>
@@ -100,7 +104,7 @@ const emit = defineEmits<{
     <ul
       v-if="result.package.keywords?.length"
       aria-label="Keywords"
-      class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0"
+      class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0"
     >
       <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword">
         <NuxtLink

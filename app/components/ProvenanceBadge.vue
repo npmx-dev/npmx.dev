@@ -8,6 +8,8 @@ defineProps<{
   version?: string
   /** Whether to show as compact (icon only) or full (with text) */
   compact?: boolean
+  /** Whether to render as a link (defaults to true when packageName and version are provided) */
+  linked?: boolean
 }>()
 
 const providerLabels: Record<string, string> = {
@@ -18,7 +20,7 @@ const providerLabels: Record<string, string> = {
 
 <template>
   <a
-    v-if="packageName && version"
+    v-if="packageName && version && linked !== false"
     :href="`https://www.npmjs.com/package/${packageName}/v/${version}#provenance`"
     target="_blank"
     rel="noopener noreferrer"
