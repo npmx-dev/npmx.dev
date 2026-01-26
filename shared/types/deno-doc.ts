@@ -2,7 +2,11 @@
  * Types for deno doc JSON output.
  *
  * These types represent the structure of the JSON output from `deno doc --json`.
- * See: https://deno.land/x/deno_doc
+ * In an ideal world, we'd generate these or implement our own AST / parser.
+ * That might be an endgame, but there's a lot of value in using deno's implementation, too.
+ * Well trodden ground and all that.
+ *
+ * @see: https://deno.land/x/deno_doc
  */
 
 /** JSDoc tag from deno doc output */

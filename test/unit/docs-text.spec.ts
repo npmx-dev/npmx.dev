@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import {
-  escapeHtml,
-  parseJsDocLinks,
-  renderMarkdown,
-  type SymbolLookup,
-} from '../../server/utils/docs'
+import { escapeHtml, parseJsDocLinks, renderMarkdown } from '../../server/utils/docs/text'
+import type { SymbolLookup } from '../../server/utils/docs/types'
 
 describe('escapeHtml', () => {
   it('should escape < and >', () => {
@@ -21,8 +17,9 @@ describe('escapeHtml', () => {
   })
 
   it('should handle multiple special characters', () => {
-    expect(escapeHtml('<a href="test?a=1&b=2">'))
-      .toBe('&lt;a href=&quot;test?a=1&amp;b=2&quot;&gt;')
+    expect(escapeHtml('<a href="test?a=1&b=2">')).toBe(
+      '&lt;a href=&quot;test?a=1&amp;b=2&quot;&gt;',
+    )
   })
 
   it('should return empty string for empty input', () => {

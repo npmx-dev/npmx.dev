@@ -46,9 +46,12 @@ describe('escapeRawGt', () => {
   })
 
   it('should handle nested spans (Shiki output structure)', () => {
-    const input = '<span class="line"><span style="color:#F97583">const</span><span> x = () =></span><span> 5</span></span>'
+    const input =
+      '<span class="line"><span style="color:#F97583">const</span><span> x = () =></span><span> 5</span></span>'
     const output = escapeRawGt(input)
-    expect(output).toBe('<span class="line"><span style="color:#F97583">const</span><span> x = () =&gt;</span><span> 5</span></span>')
+    expect(output).toBe(
+      '<span class="line"><span style="color:#F97583">const</span><span> x = () =&gt;</span><span> 5</span></span>',
+    )
   })
 
   it('should handle >= operator', () => {

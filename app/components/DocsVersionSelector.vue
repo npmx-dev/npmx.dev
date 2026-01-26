@@ -112,7 +112,11 @@ function handleKeydown(event: KeyboardEvent) {
               v-for="tag in tags"
               :key="tag"
               class="text-[10px] px-1.5 py-0.5 rounded font-sans font-medium"
-              :class="tag === 'latest' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-bg-muted text-fg-subtle'"
+              :class="
+                tag === 'latest'
+                  ? 'bg-emerald-500/10 text-emerald-400'
+                  : 'bg-bg-muted text-fg-subtle'
+              "
             >
               {{ tag }}
             </span>

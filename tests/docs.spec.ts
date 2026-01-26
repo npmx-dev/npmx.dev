@@ -91,13 +91,13 @@ test.describe('API Documentation Pages', () => {
 
     // Header should always show the package name
     await expect(page.locator('header').getByText('is-odd')).toBeVisible()
-    
+
     // Page should be in one of two states:
     // 1. Shows "not available" / error message
     // 2. Shows actual docs content (if types were found)
     const errorState = page.locator('text=/not available|could not generate/i')
     const docsContent = page.locator('.docs-content')
-    
+
     // One of these should be visible
     await expect(errorState.or(docsContent)).toBeVisible()
   })

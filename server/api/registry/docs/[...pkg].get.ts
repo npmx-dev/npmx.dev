@@ -4,7 +4,7 @@ import { assertValidPackageName, parsePackageParam } from '#shared/utils/npm'
 import { generateDocsWithDeno } from '#server/utils/docs'
 
 export default defineCachedEventHandler(
-  async (event) => {
+  async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
       throw createError({ statusCode: 400, message: 'Package name is required' })
@@ -48,7 +48,7 @@ export default defineCachedEventHandler(
   {
     maxAge: 60 * 60, // 1 hour cache
     swr: true,
-    getKey: (event) => {
+    getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `docs:v5:${pkg}`
     },

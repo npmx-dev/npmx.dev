@@ -74,14 +74,14 @@ export async function generateDocsWithWasm(
   version: string,
 ): Promise<DocsGenerationResult | null> {
   const typesUrl = await getTypesUrl(packageName, version)
-  
+
   if (!typesUrl) {
     return null
   }
 
-  const nodes = await doc(typesUrl, {
+  const nodes = (await doc(typesUrl, {
     resolve: createResolver(),
-  }) as DenoDocNode[]
+  })) as DenoDocNode[]
 
   if (!nodes || nodes.length === 0) {
     return null

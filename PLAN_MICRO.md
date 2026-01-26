@@ -48,74 +48,62 @@ docs-api/
 ```typescript
 #!/usr/bin/env deno run --allow-net --allow-env
 
-import { doc } from "jsr:@deno/doc";
+import { doc } from 'jsr:@deno/doc'
 
 interface GenerateRequest {
-  package: string;
-  version: string;
+  package: string
+  version: string
 }
 
 function validateAuth(req: Request): boolean {
-  const authHeader = req.headers.get("Authorization");
-  const expectedToken = Deno.env.get("API_SECRET");
-  if (!expectedToken) return true;
-  return authHeader === `Bearer ${expectedToken}`;
+  const authHeader = req.headers.get('Authorization')
+  const expectedToken = Deno.env.get('API_SECRET')
+  if (!expectedToken) return true
+  return authHeader === `Bearer ${expectedToken}`
 }
 
 export default async function handler(req: Request): Promise<Response> {
   const headers = {
-    "Access-Control-Allow-Origin": "https://npmx.dev",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Content-Type": "application/json",
-  };
-
-  if (req.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers });
+    'Access-Control-Allow-Origin': 'https://npmx.dev',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Content-Type': 'application/json',
   }
 
-  if (req.method !== "POST") {
-    return new Response(
-      JSON.stringify({ error: "method_not_allowed" }),
-      { status: 405, headers }
-    );
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers })
+  }
+
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'method_not_allowed' }), { status: 405, headers })
   }
 
   if (!validateAuth(req)) {
-    return new Response(
-      JSON.stringify({ error: "unauthorized" }),
-      { status: 401, headers }
-    );
+    return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401, headers })
   }
 
   try {
-    const body: GenerateRequest = await req.json();
-    
+    const body: GenerateRequest = await req.json()
+
     if (!body.package || !body.version) {
-      return new Response(
-        JSON.stringify({ error: "bad_request" }),
-        { status: 400, headers }
-      );
+      return new Response(JSON.stringify({ error: 'bad_request' }), { status: 400, headers })
     }
 
-    const specifier = `https://esm.sh/${body.package}@${body.version}?target=deno`;
-    const nodes = await doc(specifier);
-    
-    return new Response(JSON.stringify({ nodes }), { status: 200, headers });
+    const specifier = `https://esm.sh/${body.package}@${body.version}?target=deno`
+    const nodes = await doc(specifier)
+
+    return new Response(JSON.stringify({ nodes }), { status: 200, headers })
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    
-    if (message.includes("Could not find")) {
-      return new Response(
-        JSON.stringify({ error: "not_found" }),
-        { status: 404, headers }
-      );
+    const message = error instanceof Error ? error.message : 'Unknown error'
+
+    if (message.includes('Could not find')) {
+      return new Response(JSON.stringify({ error: 'not_found' }), { status: 404, headers })
     }
-    
-    return new Response(
-      JSON.stringify({ error: "generation_failed", message }),
-      { status: 500, headers }
-    );
+
+    return new Response(JSON.stringify({ error: 'generation_failed', message }), {
+      status: 500,
+      headers,
+    })
   }
 }
 ```
@@ -139,7 +127,7 @@ async function runDenoDoc(packageName: string, version: string): Promise<DenoDoc
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
   }
-  
+
   if (DOCS_API_SECRET) {
     headers['Authorization'] = `Bearer ${DOCS_API_SECRET}`
   }
@@ -158,7 +146,7 @@ async function runDenoDoc(packageName: string, version: string): Promise<DenoDoc
     throw new Error(`Docs API error: ${error.message}`)
   }
 
-  return await response.json() as DenoDocResult
+  return (await response.json()) as DenoDocResult
 }
 
 export async function generateDocsWithDeno(
@@ -186,6 +174,7 @@ export async function generateDocsWithDeno(
 #### Remove Unused Code
 
 Delete from `server/utils/docs.ts`:
+
 - `execFileAsync` import
 - `DENO_DOC_TIMEOUT_MS`, `DENO_DOC_MAX_BUFFER` constants
 - `denoCheckPromise`, `isDenoInstalled()`, `verifyDenoInstalled()`
@@ -198,7 +187,7 @@ Keep subprocess as fallback for local dev:
 
 ```typescript
 async function runDenoDoc(packageName: string, version: string): Promise<DenoDocResult> {
-  if (process.dev && await isDenoInstalled()) {
+  if (process.dev && (await isDenoInstalled())) {
     return runLocalDenoDoc(packageName, version)
   }
   return runRemoteDenoDoc(packageName, version)
