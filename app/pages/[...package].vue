@@ -5,6 +5,7 @@ import { assertValidPackageName } from '#shared/utils/npm'
 import { onKeyStroke } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
+import { getExecutableInfo, getRunCommandParts, getRunCommand } from '~/utils/run-command'
 
 definePageMeta({
   name: 'package',
@@ -231,6 +232,58 @@ const {
   copied,
   copyInstallCommand,
 } = useInstallCommand(packageName, requestedVersion, jsrInfo, typesPackageName)
+
+// Executable detection for run command
+const executableInfo = computed(() => {
+  if (!displayVersion.value || !pkg.value) return null
+  return getExecutableInfo(pkg.value.name, displayVersion.value.bin)
+})
+
+// Run command expanded state (for packages with multiple bin commands)
+const runExpanded = ref(false)
+
+// Run command parts for a specific command
+function getRunParts(command?: string) {
+  if (!pkg.value) return []
+  return getRunCommandParts({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    jsrInfo: jsrInfo.value,
+    command,
+  })
+}
+
+// Primary run command parts
+const runCommandParts = computed(() => {
+  if (!executableInfo.value?.hasExecutable) return []
+  return getRunParts(executableInfo.value.primaryCommand)
+})
+
+// Full run command string for copying
+function getFullRunCommand(command?: string) {
+  if (!pkg.value) return ''
+  return getRunCommand({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    jsrInfo: jsrInfo.value,
+    command,
+  })
+}
+
+// Copy run command
+const runCopied = ref(false)
+const runCopiedCommand = ref<string | null>(null)
+async function copyRunCommand(command?: string) {
+  const cmd = getFullRunCommand(command)
+  if (!cmd) return
+  await navigator.clipboard.writeText(cmd)
+  runCopied.value = true
+  runCopiedCommand.value = command || null
+  setTimeout(() => {
+    runCopied.value = false
+    runCopiedCommand.value = null
+  }, 2000)
+}
 
 // Expandable description
 const descriptionExpanded = ref(false)
@@ -759,6 +812,101 @@ defineOgImageComponent('Package', {
             @click="copyInstallCommand"
           >
             <span aria-live="polite">{{ copied ? $t('common.copied') : $t('common.copy') }}</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Run command section - only shown for packages with executables -->
+      <section v-if="executableInfo?.hasExecutable" aria-labelledby="run-heading" class="mb-8">
+        <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">Run</h2>
+        <div class="relative group">
+          <div class="bg-[#0d0d0d] border border-border rounded-lg overflow-hidden">
+            <!-- Terminal chrome with interactive green button for multiple commands -->
+            <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+              <ClientOnly>
+                <button
+                  v-if="executableInfo.commands.length > 1"
+                  type="button"
+                  class="w-2.5 h-2.5 rounded-full transition-colors cursor-pointer"
+                  :class="runExpanded ? 'bg-green-400' : 'bg-green-500 hover:bg-green-400'"
+                  :title="
+                    runExpanded
+                      ? 'Show less'
+                      : `Show all ${executableInfo.commands.length} commands`
+                  "
+                  :aria-expanded="runExpanded"
+                  @click="runExpanded = !runExpanded"
+                />
+                <span v-else class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+                <template #fallback>
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+                </template>
+              </ClientOnly>
+            </div>
+
+            <!-- Primary command (always shown) -->
+            <div
+              class="flex items-center gap-2 px-3 pt-2 sm:px-4 sm:pt-3"
+              :class="runExpanded ? 'pb-2' : 'pb-3 sm:pb-4'"
+            >
+              <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+              <code class="font-mono text-sm flex-1"
+                ><ClientOnly
+                  ><span
+                    v-for="(part, i) in runCommandParts"
+                    :key="i"
+                    :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                    >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+                  ><template #fallback
+                    ><span class="text-fg">npx</span>{{ ' '
+                    }}<span class="text-fg-muted">{{
+                      executableInfo?.primaryCommand
+                    }}</span></template
+                  ></ClientOnly
+                ></code
+              >
+            </div>
+
+            <!-- Additional commands (shown when expanded) -->
+            <ClientOnly>
+              <template v-if="runExpanded && executableInfo.commands.length > 1">
+                <div
+                  v-for="cmd in executableInfo.commands.slice(1)"
+                  :key="cmd"
+                  class="flex items-center gap-2 px-3 py-2 sm:px-4 border-t border-border/50 group/cmd"
+                >
+                  <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+                  <code class="font-mono text-sm flex-1"
+                    ><span
+                      v-for="(part, i) in getRunParts(cmd)"
+                      :key="i"
+                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+                    ></code
+                  >
+                  <button
+                    type="button"
+                    class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/cmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                    @click="copyRunCommand(cmd)"
+                  >
+                    {{ runCopied && runCopiedCommand === cmd ? 'copied!' : 'copy' }}
+                  </button>
+                </div>
+              </template>
+            </ClientOnly>
+          </div>
+          <button
+            type="button"
+            class="absolute top-3 right-3 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            @click="copyRunCommand(executableInfo?.primaryCommand)"
+          >
+            {{
+              runCopied && runCopiedCommand === (executableInfo?.primaryCommand || null)
+                ? 'copied!'
+                : 'copy'
+            }}
           </button>
         </div>
       </section>
