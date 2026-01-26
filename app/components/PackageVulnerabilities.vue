@@ -123,7 +123,7 @@ const severityBadgeColors: Record<OsvSeverityLevel, string> = {
 }
 
 // Expand/collapse state
-const isExpanded = ref(false)
+const isExpanded = shallowRef(false)
 
 // Get highest severity for banner color
 const highestSeverity = computed<OsvSeverityLevel>(() => {

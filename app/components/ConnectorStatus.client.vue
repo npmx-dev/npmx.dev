@@ -1,9 +1,16 @@
 <script setup lang="ts">
-const { isConnected, isConnecting, npmUser, error, activeOperations, hasPendingOperations } =
-  useConnector()
+const {
+  isConnected,
+  isConnecting,
+  npmUser,
+  avatar,
+  error,
+  activeOperations,
+  hasPendingOperations,
+} = useConnector()
 
-const showModal = ref(false)
-const showTooltip = ref(false)
+const showModal = shallowRef(false)
+const showTooltip = shallowRef(false)
 
 const statusText = computed(() => {
   if (isConnecting.value) return 'connecting…'
@@ -41,8 +48,16 @@ const ariaLabel = computed(() => {
       @focus="showTooltip = true"
       @blur="showTooltip = false"
     >
-      <!-- Status dot -->
+      <!-- Avatar (when connected with avatar) -->
+      <img
+        v-if="isConnected && avatar"
+        :src="avatar"
+        :alt="`${npmUser}'s avatar`"
+        class="w-6 h-6 rounded-full"
+      />
+      <!-- Status dot (when not connected or no avatar) -->
       <span
+        v-else
         class="w-2.5 h-2.5 rounded-full transition-colors duration-200"
         :class="statusColor"
         aria-hidden="true"

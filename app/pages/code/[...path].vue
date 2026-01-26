@@ -139,13 +139,11 @@ const { data: fileContent, status: fileStatus } = useFetch<PackageFileContentRes
 // Track hash manually since we update it via history API to avoid scroll
 const currentHash = ref('')
 
-// Initialize from route and listen for popstate (back/forward)
 onMounted(() => {
   currentHash.value = window.location.hash
-  window.addEventListener('popstate', () => {
-    currentHash.value = window.location.hash
-  })
 })
+
+useEventListener('popstate', () => (currentHash.value = window.location.hash))
 
 // Also sync when route changes (e.g., navigating to a different file)
 watch(

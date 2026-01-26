@@ -1,9 +1,5 @@
-import {
-  parseRepoUrl,
-  GITLAB_HOSTS,
-  type ProviderId,
-  type RepoRef,
-} from '#shared/utils/git-providers'
+import type { ProviderId, RepoRef } from '#shared/utils/git-providers'
+import { parseRepoUrl, GITLAB_HOSTS } from '#shared/utils/git-providers'
 
 export type RepoMetaLinks = {
   repo: string

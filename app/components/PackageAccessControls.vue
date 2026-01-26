@@ -23,17 +23,17 @@ const orgName = computed(() => {
 })
 
 // Data
-const collaborators = ref<Record<string, 'read-only' | 'read-write'>>({})
-const teams = ref<string[]>([])
-const isLoadingCollaborators = ref(false)
-const isLoadingTeams = ref(false)
-const error = ref<string | null>(null)
+const collaborators = shallowRef<Record<string, 'read-only' | 'read-write'>>({})
+const teams = shallowRef<string[]>([])
+const isLoadingCollaborators = shallowRef(false)
+const isLoadingTeams = shallowRef(false)
+const error = shallowRef<string | null>(null)
 
 // Grant access form
-const showGrantAccess = ref(false)
-const selectedTeam = ref('')
-const permission = ref<'read-only' | 'read-write'>('read-only')
-const isGranting = ref(false)
+const showGrantAccess = shallowRef(false)
+const selectedTeam = shallowRef('')
+const permission = shallowRef<'read-only' | 'read-write'>('read-only')
+const isGranting = shallowRef(false)
 
 // Computed collaborator list with type detection
 const collaboratorList = computed(() => {
@@ -136,10 +136,10 @@ async function handleRevokeAccess(collaboratorName: string) {
   await addOperation(operation)
 }
 
-// Load on mount when connected
+// Reload when package changes
 watch(
-  isConnected,
-  connected => {
+  () => [isConnected.value, props.packageName, lastExecutionTime.value],
+  ([connected]) => {
     if (connected && orgName.value) {
       loadCollaborators()
       loadTeams()
@@ -147,25 +147,6 @@ watch(
   },
   { immediate: true },
 )
-
-// Reload when package changes
-watch(
-  () => props.packageName,
-  () => {
-    if (isConnected.value && orgName.value) {
-      loadCollaborators()
-      loadTeams()
-    }
-  },
-)
-
-// Refresh data when operations complete
-watch(lastExecutionTime, () => {
-  if (isConnected.value && orgName.value) {
-    loadCollaborators()
-    loadTeams()
-  }
-})
 </script>
 
 <template>

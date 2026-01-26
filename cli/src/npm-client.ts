@@ -1,3 +1,4 @@
+import crypto from 'node:crypto'
 import process from 'node:process'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
@@ -182,6 +183,40 @@ export async function getNpmUser(): Promise<string | null> {
     return result.stdout
   }
   return null
+}
+
+/**
+ * Gets the user's avatar as a base64 data URL from Gravatar.
+ * Returns null if the user's email cannot be retrieved or avatar fetch fails.
+ */
+export async function getNpmAvatar(): Promise<string | null> {
+  const result = await execNpm(['profile', 'get', 'email', '--json'], { silent: true })
+  if (result.exitCode !== 0 || !result.stdout) {
+    return null
+  }
+
+  try {
+    const parsed = JSON.parse(result.stdout) as { email?: string }
+    if (!parsed.email) {
+      return null
+    }
+
+    const email = parsed.email.trim().toLowerCase()
+    const hash = crypto.createHash('md5').update(email).digest('hex')
+    const gravatarUrl = `https://www.gravatar.com/avatar/${hash}?s=64&d=retro`
+
+    const response = await fetch(gravatarUrl)
+    if (!response.ok) {
+      return null
+    }
+
+    const contentType = response.headers.get('content-type') || 'image/png'
+    const buffer = await response.arrayBuffer()
+    const base64 = Buffer.from(buffer).toString('base64')
+    return `data:${contentType};base64,${base64}`
+  } catch {
+    return null
+  }
 }
 
 export async function orgAddUser(

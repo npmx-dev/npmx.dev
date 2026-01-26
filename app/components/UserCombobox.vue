@@ -15,11 +15,10 @@ const emit = defineEmits<{
   select: [username: string, isInSuggestions: boolean]
 }>()
 
-const inputValue = ref('')
-const isOpen = ref(false)
-const highlightedIndex = ref(-1)
-const inputRef = ref<HTMLInputElement | null>(null)
-const listRef = ref<HTMLUListElement | null>(null)
+const inputValue = shallowRef('')
+const isOpen = shallowRef(false)
+const highlightedIndex = shallowRef(-1)
+const listRef = useTemplateRef('listRef')
 
 // Generate unique ID for accessibility
 const inputId = useId()
@@ -134,10 +133,7 @@ watch(highlightedIndex, index => {
 })
 
 // Check for reduced motion preference
-const prefersReducedMotion = ref(false)
-onMounted(() => {
-  prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-})
+const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
 </script>
 
 <template>
@@ -145,7 +141,6 @@ onMounted(() => {
     <label v-if="label" :for="inputId" class="sr-only">{{ label }}</label>
     <input
       :id="inputId"
-      ref="inputRef"
       v-model="inputValue"
       type="text"
       :placeholder="placeholder ?? 'username…'"

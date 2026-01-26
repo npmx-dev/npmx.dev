@@ -21,8 +21,8 @@ const {
   refreshState,
 } = useConnector()
 
-const isExecuting = ref(false)
-const otpInput = ref('')
+const isExecuting = shallowRef(false)
+const otpInput = shallowRef('')
 
 /** Check if any active operation needs OTP */
 const hasOtpFailures = computed(() =>

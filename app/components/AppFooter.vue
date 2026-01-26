@@ -1,13 +1,15 @@
 <script setup lang="ts">
-const isMounted = ref(false)
-const isVisible = ref(false)
-const isScrollable = ref(true)
-const lastScrollY = ref(0)
-const footerRef = ref<HTMLElement>()
+const isMounted = shallowRef(false)
+const isVisible = shallowRef(false)
+const isScrollable = shallowRef(true)
+const lastScrollY = shallowRef(0)
+const footerRef = useTemplateRef('footerRef')
 
 // Check if CSS scroll-state container queries are supported
 // Once this becomes baseline, we can remove the JS scroll handling entirely
-const supportsScrollStateQueries = ref(false)
+const supportsScrollStateQueries = useSupported(() => {
+  return isMounted.value && CSS.supports('container-type', 'scroll-state')
+})
 
 function checkScrollable() {
   return document.documentElement.scrollHeight > window.innerHeight
@@ -48,11 +50,10 @@ function onResize() {
   updateFooterPadding()
 }
 
-onMounted(() => {
-  // Feature detect CSS scroll-state container queries (Chrome 133+)
-  // @see https://developer.mozilla.org/en-US/docs/Web/CSS/@container#scroll-state_container_descriptors
-  supportsScrollStateQueries.value = CSS.supports('container-type', 'scroll-state')
+useEventListener('scroll', onScroll, { passive: true })
+useEventListener('resize', onResize, { passive: true })
 
+onMounted(() => {
   nextTick(() => {
     lastScrollY.value = window.scrollY
     isScrollable.value = checkScrollable()
@@ -60,14 +61,6 @@ onMounted(() => {
     // Only apply dynamic classes after mount to avoid hydration mismatch
     isMounted.value = true
   })
-
-  window.addEventListener('scroll', onScroll, { passive: true })
-  window.addEventListener('resize', onResize, { passive: true })
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
-  window.removeEventListener('resize', onResize)
 })
 </script>
 

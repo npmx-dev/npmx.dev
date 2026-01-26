@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
 import type { PlaygroundLink } from '#shared/types'
 
 const props = defineProps<{
@@ -41,10 +40,10 @@ function getColor(provider: string): string {
 }
 
 // Dropdown state
-const isOpen = ref(false)
-const dropdownRef = ref<HTMLElement>()
-const menuRef = ref<HTMLElement>()
-const focusedIndex = ref(-1)
+const isOpen = shallowRef(false)
+const dropdownRef = useTemplateRef('dropdownRef')
+const menuRef = useTemplateRef('menuRef')
+const focusedIndex = shallowRef(-1)
 
 onClickOutside(dropdownRef, () => {
   isOpen.value = false

@@ -7,7 +7,7 @@ defineProps<{
   baseUrl: string
 }>()
 
-const isOpen = ref(false)
+const isOpen = shallowRef(false)
 
 // Close drawer on navigation
 const route = useRoute()

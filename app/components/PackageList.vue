@@ -32,7 +32,7 @@ const emit = defineEmits<{
 }>()
 
 // Reference to WindowVirtualizer for infinite scroll detection
-const listRef = ref<WindowVirtualizerHandle>()
+const listRef = useTemplateRef<WindowVirtualizerHandle>('listRef')
 
 // Set up infinite scroll if hasMore is provided
 const hasMore = computed(() => props.hasMore ?? false)
@@ -52,7 +52,7 @@ const { handleScroll, scrollToPage } = useVirtualInfiniteScroll({
 })
 
 // Scroll to initial page once list is ready and has items
-const hasScrolledToInitial = ref(false)
+const hasScrolledToInitial = shallowRef(false)
 
 watch(
   [() => props.results.length, () => props.initialPage, listRef],

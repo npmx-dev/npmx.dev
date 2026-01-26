@@ -6,6 +6,7 @@ import type { ConnectorState, PendingOperation, OperationType, ApiResponse } fro
 import { logDebug, logError } from './logger.ts'
 import {
   getNpmUser,
+  getNpmAvatar,
   orgAddUser,
   orgRemoveUser,
   orgListUsers,
@@ -50,6 +51,7 @@ export function createConnectorApp(expectedToken: string) {
       token: expectedToken,
       connectedAt: 0,
       npmUser: null,
+      avatar: null,
     },
     operations: [],
   }
@@ -76,14 +78,16 @@ export function createConnectorApp(expectedToken: string) {
       throw new HTTPError({ statusCode: 401, message: 'Invalid token' })
     }
 
-    const npmUser = await getNpmUser()
+    const [npmUser, avatar] = await Promise.all([getNpmUser(), getNpmAvatar()])
     state.session.connectedAt = Date.now()
     state.session.npmUser = npmUser
+    state.session.avatar = avatar
 
     return {
       success: true,
       data: {
         npmUser,
+        avatar,
         connectedAt: state.session.connectedAt,
       },
     } as ApiResponse
@@ -99,6 +103,7 @@ export function createConnectorApp(expectedToken: string) {
       success: true,
       data: {
         npmUser: state.session.npmUser,
+        avatar: state.session.avatar,
         operations: state.operations,
       },
     } as ApiResponse

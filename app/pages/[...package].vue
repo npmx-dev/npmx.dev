@@ -483,13 +483,13 @@ defineOgImageComponent('Package', {
           <div v-if="pkg.license" class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">License</dt>
             <dd class="font-mono text-sm text-fg">
-              {{ pkg.license }}
+              <LicenseDisplay :license="pkg.license" />
             </dd>
           </div>
 
           <div v-if="downloads" class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">Weekly</dt>
-            <dd class="font-mono text-sm text-fg flex items-baseline justify-start gap-2">
+            <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
               {{ formatNumber(downloads.downloads) }}
               <a
                 :href="`https://npm.chart.dev/${pkg.name}`"
@@ -506,7 +506,7 @@ defineOgImageComponent('Package', {
 
           <div class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">Deps</dt>
-            <dd class="font-mono text-sm text-fg flex items-baseline justify-start gap-2">
+            <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
               {{ getDependencyCount(displayVersion) }}
               <a
                 v-if="getDependencyCount(displayVersion) > 0"
@@ -577,7 +577,11 @@ defineOgImageComponent('Package', {
           <div v-if="pkg.time?.modified" class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider sm:text-right">Updated</dt>
             <dd class="font-mono text-sm text-fg sm:text-right">
-              <NuxtTime :datetime="pkg.time.modified" date-style="medium" />
+              <NuxtTime
+                :datetime="pkg.time.modified"
+                :title="pkg.time.modified"
+                date-style="medium"
+              />
             </dd>
           </div>
         </dl>

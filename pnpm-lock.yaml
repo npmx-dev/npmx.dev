@@ -153,6 +153,9 @@ importers:
       simple-git-hooks:
         specifier: 2.13.1
         version: 2.13.1
+      spdx-license-list:
+        specifier: ^6.11.0
+        version: 6.11.0
       std-env:
         specifier: 3.10.0
         version: 3.10.0
@@ -5935,6 +5938,10 @@ packages:
 
   space-separated-tokens@2.0.2:
     resolution: {integrity: sha512-PEGlAwrG8yXGXRjW32fGbg66JAlOAwbObuqVoJpv/mRgoWDQfgH1wDPvtzWyUSNAXBGSk8h755YDbbcEy3SH2Q==}
+
+  spdx-license-list@6.11.0:
+    resolution: {integrity: sha512-p5ICd51dSnh7zIMtPgbB9ShBg3HMT77OeI6WVhrFFvxa5KIFYNcqxD4joAE+n1zZ7wlJdEkrOMwC75JUMMmsJA==}
+    engines: {node: '>=8'}
 
   speakingurl@14.0.1:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
@@ -13550,6 +13557,8 @@ snapshots:
   sourcemap-codec@1.4.8: {}
 
   space-separated-tokens@2.0.2: {}
+
+  spdx-license-list@6.11.0: {}
 
   speakingurl@14.0.1: {}
 

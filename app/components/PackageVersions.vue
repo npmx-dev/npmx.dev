@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PackumentVersion, PackageVersionInfo } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
+import { compare } from 'semver'
 import {
   buildVersionToTagsMap,
-  compareVersions,
   filterExcludedTags,
   getPrereleaseChannel,
   parseVersion,
@@ -90,7 +90,7 @@ const allTagRows = computed(() => {
         deprecated: versionData?.deprecated,
       } as VersionDisplay,
     }))
-    .sort((a, b) => compareVersions(b.primaryVersion.version, a.primaryVersion.version))
+    .sort((a, b) => compare(b.primaryVersion.version, a.primaryVersion.version))
 })
 
 // Check if the whole package is deprecated (latest version is deprecated)
@@ -119,16 +119,16 @@ const expandedTags = ref<Set<string>>(new Set())
 const tagVersions = ref<Map<string, VersionDisplay[]>>(new Map())
 const loadingTags = ref<Set<string>>(new Set())
 
-const otherVersionsExpanded = ref(false)
-const otherMajorGroups = ref<
+const otherVersionsExpanded = shallowRef(false)
+const otherMajorGroups = shallowRef<
   Array<{ major: number; versions: VersionDisplay[]; expanded: boolean }>
 >([])
-const otherVersionsLoading = ref(false)
+const otherVersionsLoading = shallowRef(false)
 
 // Cached full version list (local to component instance)
-const allVersionsCache = ref<PackageVersionInfo[] | null>(null)
-const loadingVersions = ref(false)
-const hasLoadedAll = ref(false)
+const allVersionsCache = shallowRef<PackageVersionInfo[] | null>(null)
+const loadingVersions = shallowRef(false)
+const hasLoadedAll = shallowRef(false)
 
 // Load all versions using shared function
 async function loadAllVersions(): Promise<PackageVersionInfo[]> {
@@ -177,7 +177,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
         const vChannel = getPrereleaseChannel(v.version)
         return vParsed.major === tagParsed.major && vChannel === tagChannel
       })
-      .sort((a, b) => compareVersions(b.version, a.version))
+      .sort((a, b) => compare(b.version, a.version))
       .map(v => ({
         version: v.version,
         time: v.time,
@@ -214,7 +214,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
 
   // Sort within each major
   for (const versions of byMajor.values()) {
-    versions.sort((a, b) => compareVersions(b.version, a.version))
+    versions.sort((a, b) => compare(b.version, a.version))
   }
 
   // Build major groups sorted by major descending
@@ -346,6 +346,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <NuxtTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
+                  :title="row.primaryVersion.time"
                   year="numeric"
                   month="short"
                   day="numeric"
@@ -395,6 +396,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <NuxtTime
                   v-if="v.time"
                   :datetime="v.time"
+                  :title="v.time"
                   class="text-[10px] text-fg-subtle"
                   year="numeric"
                   month="short"
@@ -476,6 +478,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <NuxtTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
+                  :title="row.primaryVersion.time"
                   class="text-[10px] text-fg-subtle"
                   year="numeric"
                   month="short"
@@ -586,6 +589,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       <NuxtTime
                         v-if="v.time"
                         :datetime="v.time"
+                        :title="v.time"
                         class="text-[10px] text-fg-subtle"
                         year="numeric"
                         month="short"

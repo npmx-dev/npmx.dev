@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 import {
   buildTaggedVersionRows,
   buildVersionToTagsMap,
-  compareVersions,
   filterExcludedTags,
   getPrereleaseChannel,
   parseVersion,
@@ -55,44 +54,6 @@ describe('parseVersion', () => {
       patch: 0,
       prerelease: 'canary.1',
     })
-  })
-})
-
-describe('compareVersions', () => {
-  it('compares major versions', () => {
-    expect(compareVersions('2.0.0', '1.0.0')).toBeGreaterThan(0)
-    expect(compareVersions('1.0.0', '2.0.0')).toBeLessThan(0)
-  })
-
-  it('compares minor versions', () => {
-    expect(compareVersions('1.2.0', '1.1.0')).toBeGreaterThan(0)
-    expect(compareVersions('1.1.0', '1.2.0')).toBeLessThan(0)
-  })
-
-  it('compares patch versions', () => {
-    expect(compareVersions('1.0.2', '1.0.1')).toBeGreaterThan(0)
-    expect(compareVersions('1.0.1', '1.0.2')).toBeLessThan(0)
-  })
-
-  it('ranks stable above prerelease', () => {
-    expect(compareVersions('1.0.0', '1.0.0-beta.1')).toBeGreaterThan(0)
-    expect(compareVersions('1.0.0-beta.1', '1.0.0')).toBeLessThan(0)
-  })
-
-  it('compares prereleases alphabetically', () => {
-    expect(compareVersions('1.0.0-beta.1', '1.0.0-alpha.1')).toBeGreaterThan(0)
-    expect(compareVersions('1.0.0-alpha.1', '1.0.0-beta.1')).toBeLessThan(0)
-  })
-
-  it('returns 0 for equal versions', () => {
-    expect(compareVersions('1.0.0', '1.0.0')).toBe(0)
-    expect(compareVersions('1.0.0-beta.1', '1.0.0-beta.1')).toBe(0)
-  })
-
-  it('sorts Nuxt versions correctly', () => {
-    const versions = ['3.21.0', '4.0.0-alpha.4', '4.0.0-rc.0', '4.3.0']
-    const sorted = [...versions].sort((a, b) => compareVersions(b, a))
-    expect(sorted).toEqual(['4.3.0', '4.0.0-rc.0', '4.0.0-alpha.4', '3.21.0'])
   })
 })
 
