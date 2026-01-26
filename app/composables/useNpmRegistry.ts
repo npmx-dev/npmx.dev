@@ -386,7 +386,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         const packuments = await Promise.all(batch.map(name => fetchMinimalPackument(name)))
 
         for (const pkg of packuments) {
-          // Filter out any unpublished packages (non-existant dist-tags)
+          // Filter out any unpublished packages (missing dist-tags)
           if (pkg && pkg['dist-tags']) {
             results.push(packumentToSearchResult(pkg))
           }
