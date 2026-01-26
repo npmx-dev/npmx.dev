@@ -58,6 +58,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    entryImportMap: false,
     viteEnvironmentApi: true,
     viewTransition: true,
     typedPages: true,
