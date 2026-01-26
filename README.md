@@ -18,6 +18,18 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 - **URL compatible** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
 - **Simplicity** &ndash; No noise, cluttered display, or confusing UI. If in doubt: choose simplicity.
 
+## Shortcuts
+
+> [!IMPORTANT]  
+> We're keeping the website, repository, and our discord community low profile until the browser is polished enough. We'll do formal announcement at that point. Please avoid sharing the website or the invite link to discord in social media in a direct way. The repo is public, so people that care about the project can easily find it and join us. Anyone that wants to help is more than welcomed to [join us in Discord](https://chat.npm.dev). If you know others that would be interested, please invite them too!
+
+- [chat.npmx.dev](https://chat.npmx.dev) - Discord Server
+- [social.npmx.dev](https://social.npmx.dev) - Bluesky Profile
+- [repo.npmx.dev](https://repo.npmx.dev) - GitHub Repository
+- [issues.npmx.dev](https://issues.npmx.dev) - GitHub Issues
+- [coc.npmx.dev](https://coc.npmx.dev) - Code of Conduct
+- [contributing.npmx.dev](https://contributing.npmx.dev) - Contributing Guide
+
 ## Features
 
 ### Package browsing
