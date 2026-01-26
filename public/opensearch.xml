@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>npm</ShortName>
+  <Description>Search npm packages on npmx.dev</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/svg+xml">https://npmx.dev/favicon.svg</Image>
+  <Url type="text/html" template="https://npmx.dev/search?q={searchTerms}"/>
+  <Url type="application/x-suggestions+json" template="https://npmx.dev/api/opensearch/suggestions?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://npmx.dev/opensearch.xml"/>
+</OpenSearchDescription>

@@ -22,6 +22,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
+      link: [
+        {
+          rel: 'search',
+          type: 'application/opensearchdescription+xml',
+          title: 'npm',
+          href: '/opensearch.xml',
+        },
+      ],
     },
   },
 
