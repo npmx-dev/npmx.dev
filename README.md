@@ -122,7 +122,7 @@ npmx.dev also supports shorter, cleaner URLs:
 
 ## Contributing
 
-I'd welcome contributions &ndash; please do feel free to poke around and improve things. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get up and running!
+We welcome contributions &ndash; please do feel free to poke around and improve things. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get up and running!
 
 ## Related projects
 
@@ -132,7 +132,7 @@ I'd welcome contributions &ndash; please do feel free to poke around and improve
 - [npm-alt](https://npm.willow.sh/) &ndash; An alternative npm package browser
 - [npkg.lorypelli.dev](https://npkg.lorypelli.dev/) &ndash; An alternative frontend to npm made with as little client-side JavaScript as possible
 
-If you're building something cool, let me know! 🙏
+If you're building something cool, let us know! 🙏
 
 ## License
 
