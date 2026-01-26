@@ -83,9 +83,9 @@ onUnmounted(() => {
         : // JS-controlled: fixed position, hidden by default, transition only after mount
           isScrollable
           ? [
-              'fixed bottom-0 left-0 right-0 z-40 translate-y-full',
+              'fixed bottom-0 left-0 right-0 z-40',
               isMounted && 'transition-transform duration-300 ease-out',
-              isVisible && 'translate-y-0',
+              isVisible ? 'translate-y-0' : 'translate-y-full',
             ]
           : 'mt-auto',
     ]"
