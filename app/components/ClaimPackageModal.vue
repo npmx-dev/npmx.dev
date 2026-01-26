@@ -19,12 +19,12 @@ const {
 } = useConnector()
 
 // Fetch name availability when modal opens
-const checkResult = ref<CheckNameResult | null>(null)
+const checkResult = shallowRef<CheckNameResult | null>(null)
 
-const isChecking = ref(false)
-const isPublishing = ref(false)
-const publishError = ref<string | null>(null)
-const publishSuccess = ref(false)
+const isChecking = shallowRef(false)
+const isPublishing = shallowRef(false)
+const publishError = shallowRef<string | null>(null)
+const publishSuccess = shallowRef(false)
 
 async function checkAvailability() {
   isChecking.value = true
@@ -125,7 +125,7 @@ const previewPackageJson = computed(() => {
   }
 })
 
-const connectorModalOpen = ref(false)
+const connectorModalOpen = shallowRef(false)
 </script>
 
 <template>

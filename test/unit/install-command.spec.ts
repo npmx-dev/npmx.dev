@@ -3,6 +3,8 @@ import {
   getInstallCommand,
   getInstallCommandParts,
   getPackageSpecifier,
+  getExecuteCommand,
+  getExecuteCommandParts,
 } from '../../app/utils/install-command'
 import type { JsrPackageInfo } from '../../shared/types/jsr'
 
@@ -280,6 +282,46 @@ describe('install command generation', () => {
       const parts = getInstallCommandParts({
         packageName: 'lodash',
         packageManager: 'invalid' as any,
+      })
+      expect(parts).toEqual([])
+    })
+  })
+
+  describe('getExecuteCommand', () => {
+    it('returns correct execute command for npm', () => {
+      const command = getExecuteCommand({
+        packageName: 'esbuild',
+        packageManager: 'npm',
+        jsrInfo: jsrNotAvailable,
+      })
+      expect(command).toBe('npx esbuild')
+    })
+
+    it('returns package manager specific execute command', () => {
+      const command = getExecuteCommand({
+        packageName: 'esbuild',
+        packageManager: 'pnpm',
+        jsrInfo: jsrNotAvailable,
+      })
+      expect(command).toBe('pnpm dlx esbuild')
+    })
+  })
+
+  describe('getExecuteCommandParts', () => {
+    it('returns correct parts for npm', () => {
+      const parts = getExecuteCommandParts({
+        packageName: 'esbuild',
+        packageManager: 'npm',
+        jsrInfo: jsrNotAvailable,
+      })
+      expect(parts).toEqual(['npx', 'esbuild'])
+    })
+
+    it('returns empty for unknown package manager', () => {
+      const parts = getExecuteCommandParts({
+        packageName: 'esbuild',
+        packageManager: 'unknown' as never,
+        jsrInfo: jsrNotAvailable,
       })
       expect(parts).toEqual([])
     })

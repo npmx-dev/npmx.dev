@@ -15,9 +15,9 @@ const {
   listTeamUsers,
 } = useConnector()
 
-const showAddOwner = ref(false)
-const newOwnerUsername = ref('')
-const isAdding = ref(false)
+const showAddOwner = shallowRef(false)
+const newOwnerUsername = shallowRef('')
+const isAdding = shallowRef(false)
 
 // Show admin controls when connected (let npm CLI handle permission errors)
 const canManageOwners = computed(() => isConnected.value)
@@ -30,9 +30,9 @@ const orgName = computed(() => {
 })
 
 // Access data: who has access and via what
-const collaborators = ref<Record<string, 'read-only' | 'read-write'>>({})
+const collaborators = shallowRef<Record<string, 'read-only' | 'read-write'>>({})
 const teamMembers = ref<Record<string, string[]>>({}) // team -> members
-const isLoadingAccess = ref(false)
+const isLoadingAccess = shallowRef(false)
 
 // Compute access source for each maintainer
 const maintainerAccess = computed(() => {
@@ -142,7 +142,7 @@ async function handleRemoveOwner(username: string) {
 
 // Load access info when connected and for scoped packages
 watch(
-  [isConnected, () => props.packageName],
+  [isConnected, () => props.packageName, lastExecutionTime],
   ([connected]) => {
     if (connected && orgName.value) {
       loadAccessInfo()
@@ -150,13 +150,6 @@ watch(
   },
   { immediate: true },
 )
-
-// Refresh data when operations complete
-watch(lastExecutionTime, () => {
-  if (isConnected.value && orgName.value) {
-    loadAccessInfo()
-  }
-})
 </script>
 
 <template>

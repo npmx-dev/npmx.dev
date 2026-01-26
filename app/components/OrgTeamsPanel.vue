@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NewOperation } from '~/composables/useConnector'
+import { buildScopeTeam } from '~/utils/npm'
 
 const props = defineProps<{
   orgName: string
@@ -16,32 +17,32 @@ const {
 } = useConnector()
 
 // Teams data
-const teams = ref<string[]>([])
+const teams = shallowRef<string[]>([])
 const teamUsers = ref<Record<string, string[]>>({})
-const isLoadingTeams = ref(false)
+const isLoadingTeams = shallowRef(false)
 const isLoadingUsers = ref<Record<string, boolean>>({})
-const error = ref<string | null>(null)
+const error = shallowRef<string | null>(null)
 
 // Org members (to check if user needs to be added to org first)
-const orgMembers = ref<Record<string, 'developer' | 'admin' | 'owner'>>({})
+const orgMembers = shallowRef<Record<string, 'developer' | 'admin' | 'owner'>>({})
 
 // Search/filter
-const searchQuery = ref('')
-const sortBy = ref<'name' | 'members'>('name')
-const sortOrder = ref<'asc' | 'desc'>('asc')
+const searchQuery = shallowRef('')
+const sortBy = shallowRef<'name' | 'members'>('name')
+const sortOrder = shallowRef<'asc' | 'desc'>('asc')
 
 // Expanded teams (to show members)
 const expandedTeams = ref<Set<string>>(new Set())
 
 // Create team form
-const showCreateTeam = ref(false)
-const newTeamName = ref('')
-const isCreatingTeam = ref(false)
+const showCreateTeam = shallowRef(false)
+const newTeamName = shallowRef('')
+const isCreatingTeam = shallowRef(false)
 
 // Add user form (per team)
-const showAddUserFor = ref<string | null>(null)
-const newUserUsername = ref('')
-const isAddingUser = ref(false)
+const showAddUserFor = shallowRef<string | null>(null)
+const newUserUsername = shallowRef('')
+const isAddingUser = shallowRef(false)
 
 // Filtered and sorted teams
 const filteredTeams = computed(() => {
@@ -103,7 +104,7 @@ async function loadTeamUsers(teamName: string) {
   isLoadingUsers.value[teamName] = true
 
   try {
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
     const result = await listTeamUsers(scopeTeam)
     if (result) {
       teamUsers.value[teamName] = result
@@ -135,7 +136,7 @@ async function handleCreateTeam() {
   isCreatingTeam.value = true
   try {
     const teamName = newTeamName.value.trim()
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
     const operation: NewOperation = {
       type: 'team:create',
       params: { scopeTeam },
@@ -153,7 +154,7 @@ async function handleCreateTeam() {
 
 // Destroy team
 async function handleDestroyTeam(teamName: string) {
-  const scopeTeam = `${props.orgName}:${teamName}`
+  const scopeTeam = buildScopeTeam(props.orgName, teamName)
   const operation: NewOperation = {
     type: 'team:destroy',
     params: { scopeTeam },
@@ -171,7 +172,7 @@ async function handleAddUser(teamName: string) {
   isAddingUser.value = true
   try {
     const username = newUserUsername.value.trim().replace(/^@/, '')
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
 
     let dependsOnId: string | undefined
 
@@ -213,7 +214,7 @@ async function handleAddUser(teamName: string) {
 
 // Remove user from team
 async function handleRemoveUser(teamName: string, username: string) {
-  const scopeTeam = `${props.orgName}:${teamName}`
+  const scopeTeam = buildScopeTeam(props.orgName, teamName)
   const operation: NewOperation = {
     type: 'team:rm-user',
     params: { scopeTeam, user: username },

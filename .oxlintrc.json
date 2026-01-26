@@ -10,7 +10,8 @@
     "no-console": "warn",
     "no-await-in-loop": "off",
     "unicorn/no-array-sort": "off",
-    "no-restricted-globals": "error"
+    "no-restricted-globals": "error",
+    "typescript/consistent-type-imports": "error"
   },
   "ignorePatterns": [
     ".output/**",

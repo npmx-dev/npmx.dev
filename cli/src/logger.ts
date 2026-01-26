@@ -1,5 +1,6 @@
 import * as p from '@clack/prompts'
 import pc from 'picocolors'
+import { createDebug } from 'obug'
 
 let isInitialized = false
 
@@ -46,6 +47,11 @@ export function logWarning(message: string): void {
 export function logInfo(message: string): void {
   p.log.info(message)
 }
+
+/**
+ * Log a debug message with `obug` (minimal fork of `debug`)
+ */
+export const logDebug = createDebug('npmx-connector')
 
 /**
  * Log a message (generic)

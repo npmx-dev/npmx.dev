@@ -1,5 +1,4 @@
 import type { PendingOperation, OperationStatus, OperationType } from '../../cli/src/types'
-import { createSharedComposable } from '@vueuse/core'
 
 export interface NewOperation {
   type: OperationType

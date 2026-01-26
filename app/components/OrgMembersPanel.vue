@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NewOperation } from '~/composables/useConnector'
+import { buildScopeTeam } from '~/utils/npm'
 
 const props = defineProps<{
   orgName: string
@@ -20,27 +21,27 @@ const {
 } = useConnector()
 
 // Members data: { username: role }
-const members = ref<Record<string, 'developer' | 'admin' | 'owner'>>({})
-const isLoading = ref(false)
-const error = ref<string | null>(null)
+const members = shallowRef<Record<string, 'developer' | 'admin' | 'owner'>>({})
+const isLoading = shallowRef(false)
+const error = shallowRef<string | null>(null)
 
 // Team membership data: { teamName: [members] }
 const teamMembers = ref<Record<string, string[]>>({})
-const isLoadingTeams = ref(false)
+const isLoadingTeams = shallowRef(false)
 
 // Search/filter
-const searchQuery = ref('')
-const filterRole = ref<'all' | 'developer' | 'admin' | 'owner'>('all')
-const filterTeam = ref<string | null>(null)
-const sortBy = ref<'name' | 'role'>('name')
-const sortOrder = ref<'asc' | 'desc'>('asc')
+const searchQuery = shallowRef('')
+const filterRole = shallowRef<'all' | 'developer' | 'admin' | 'owner'>('all')
+const filterTeam = shallowRef<string | null>(null)
+const sortBy = shallowRef<'name' | 'role'>('name')
+const sortOrder = shallowRef<'asc' | 'desc'>('asc')
 
 // Add member form
-const showAddMember = ref(false)
-const newUsername = ref('')
-const newRole = ref<'developer' | 'admin' | 'owner'>('developer')
-const newTeam = ref<string>('') // Empty string means "developers" (default)
-const isAddingMember = ref(false)
+const showAddMember = shallowRef(false)
+const newUsername = shallowRef('')
+const newRole = shallowRef<'developer' | 'admin' | 'owner'>('developer')
+const newTeam = shallowRef<string>('') // Empty string means "developers" (default)
+const isAddingMember = shallowRef(false)
 
 // Role priority for sorting
 const rolePriority = { owner: 0, admin: 1, developer: 2 }
@@ -144,10 +145,10 @@ async function loadTeamMemberships() {
   try {
     const teamsResult = await listOrgTeams(props.orgName)
     if (teamsResult) {
-      // Teams come as "org:team" format
+      // Teams come as "org:team" format from npm, need @scope:team for API calls
       const teamPromises = teamsResult.map(async (fullTeamName: string) => {
         const teamName = fullTeamName.replace(`${props.orgName}:`, '')
-        const membersResult = await listTeamUsers(fullTeamName)
+        const membersResult = await listTeamUsers(buildScopeTeam(props.orgName, teamName))
         if (membersResult) {
           teamMembers.value[teamName] = membersResult
         }
@@ -183,7 +184,7 @@ async function handleAddMember() {
     // Second operation: add user to team (if a team is selected)
     // This depends on the org operation completing first
     if (newTeam.value && addedOrgOp) {
-      const scopeTeam = `${props.orgName}:${newTeam.value}`
+      const scopeTeam = buildScopeTeam(props.orgName, newTeam.value)
       const teamOperation: NewOperation = {
         type: 'team:add-user',
         params: {

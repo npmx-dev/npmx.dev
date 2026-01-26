@@ -3,6 +3,7 @@ import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
 import type { CorsOptions } from 'h3-next'
 
 import type { ConnectorState, PendingOperation, OperationType, ApiResponse } from './types.ts'
+import { logDebug, logError } from './logger.ts'
 import {
   getNpmUser,
   orgAddUser,
@@ -20,6 +21,7 @@ import {
   ownerAdd,
   ownerRemove,
   packageInit,
+  validateScopeTeam,
   type NpmExecResult,
 } from './npm-client.ts'
 
@@ -37,7 +39,7 @@ function generateOperationId(): string {
 }
 
 const corsOptions: CorsOptions = {
-  origin: ['https://npmx.dev', 'http://localhost:3000'],
+  origin: ['https://npmx.dev', /^http:\/\/localhost:\d+$/],
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
 }
@@ -446,6 +448,17 @@ export function createConnectorApp(expectedToken: string) {
 
     // Decode the team name (handles encoded colons like nuxt%3Adevelopers)
     const scopeTeam = decodeURIComponent(scopeTeamRaw)
+
+    try {
+      validateScopeTeam(scopeTeam)
+    } catch (err) {
+      logError('scope:team validation failed')
+      logDebug(err, { scopeTeamRaw, scopeTeam })
+      throw new HTTPError({
+        statusCode: 400,
+        message: `Invalid scope:team format: ${scopeTeam}. Expected @scope:team`,
+      })
+    }
 
     const result = await teamListUsers(scopeTeam)
     if (result.exitCode !== 0) {

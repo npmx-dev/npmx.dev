@@ -1,13 +1,15 @@
 <script setup lang="ts">
-const isMounted = ref(false)
-const isVisible = ref(false)
-const isScrollable = ref(true)
-const lastScrollY = ref(0)
-const footerRef = ref<HTMLElement>()
+const isMounted = shallowRef(false)
+const isVisible = shallowRef(false)
+const isScrollable = shallowRef(true)
+const lastScrollY = shallowRef(0)
+const footerRef = useTemplateRef('footerRef')
 
 // Check if CSS scroll-state container queries are supported
 // Once this becomes baseline, we can remove the JS scroll handling entirely
-const supportsScrollStateQueries = ref(false)
+const supportsScrollStateQueries = useSupported(() => {
+  return isMounted.value && CSS.supports('container-type', 'scroll-state')
+})
 
 function checkScrollable() {
   return document.documentElement.scrollHeight > window.innerHeight
@@ -48,11 +50,10 @@ function onResize() {
   updateFooterPadding()
 }
 
-onMounted(() => {
-  // Feature detect CSS scroll-state container queries (Chrome 133+)
-  // @see https://developer.mozilla.org/en-US/docs/Web/CSS/@container#scroll-state_container_descriptors
-  supportsScrollStateQueries.value = CSS.supports('container-type', 'scroll-state')
+useEventListener('scroll', onScroll, { passive: true })
+useEventListener('resize', onResize, { passive: true })
 
+onMounted(() => {
   nextTick(() => {
     lastScrollY.value = window.scrollY
     isScrollable.value = checkScrollable()
@@ -60,14 +61,6 @@ onMounted(() => {
     // Only apply dynamic classes after mount to avoid hydration mismatch
     isMounted.value = true
   })
-
-  window.addEventListener('scroll', onScroll, { passive: true })
-  window.addEventListener('resize', onResize, { passive: true })
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
-  window.removeEventListener('resize', onResize)
 })
 </script>
 
@@ -83,9 +76,9 @@ onUnmounted(() => {
         : // JS-controlled: fixed position, hidden by default, transition only after mount
           isScrollable
           ? [
-              'fixed bottom-0 left-0 right-0 z-40 translate-y-full',
+              'fixed bottom-0 left-0 right-0 z-40',
               isMounted && 'transition-transform duration-300 ease-out',
-              isVisible && 'translate-y-0',
+              isVisible ? 'translate-y-0' : 'translate-y-full',
             ]
           : 'mt-auto',
     ]"
@@ -97,19 +90,25 @@ onUnmounted(() => {
         <p class="text-xs text-fg-muted m-0 sm:hidden">not affiliated with npm, Inc.</p>
         <div class="flex items-center gap-4 sm:gap-6">
           <a
-            href="https://github.com/npmx-dev/npmx.dev"
+            href="https://repo.npmx.dev"
             rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
+            class="link-subtle font-mono text-xs min-h-11 min-w- flex items-center"
           >
             source
           </a>
-          <span class="text-border">|</span>
           <a
-            href="https://roe.dev"
+            href="https://social.npmx.dev"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
           >
-            @danielroe
+            social
+          </a>
+          <a
+            href="https://chat.npmx.dev"
+            rel="noopener noreferrer"
+            class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
+          >
+            chat
           </a>
         </div>
       </div>

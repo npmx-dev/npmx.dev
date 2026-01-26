@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     '@nuxt/test-utils',
     '@vite-pwa/nuxt',
+    '@vueuse/nuxt',
   ],
 
   css: ['vue-data-ui/style.css'],
@@ -24,6 +25,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
+      link: [
+        {
+          rel: 'search',
+          type: 'application/opensearchdescription+xml',
+          title: 'npm',
+          href: '/opensearch.xml',
+        },
+      ],
     },
   },
 
@@ -41,6 +50,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
+    '/opensearch.xml': { isr: true },
     '/**': { isr: 60 },
     '/package/**': { isr: 60 },
     '/search': { isr: false, cache: false },
@@ -51,6 +61,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    entryImportMap: false,
     viteEnvironmentApi: true,
     viewTransition: true,
     typedPages: true,

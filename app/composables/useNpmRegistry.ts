@@ -9,8 +9,9 @@ import type {
   PackageVersionInfo,
 } from '#shared/types'
 import type { ReleaseType } from 'semver'
-import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
-import { compareVersions } from '~/utils/versions'
+import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
+import { isExactVersion } from '~/utils/versions'
+import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -113,14 +114,21 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
     includedVersions.add(requestedVersion)
   }
 
-  // Build filtered versions object
+  // Build filtered versions object with install scripts info per version
   const filteredVersions: Record<string, PackumentVersion> = {}
   for (const v of includedVersions) {
     const version = pkg.versions[v]
     if (version) {
-      // Strip readme and scripts from each version to reduce size
-      const { readme: _readme, scripts: _scripts, ...slimVersion } = version
-      filteredVersions[v] = slimVersion as PackumentVersion
+      // Strip readme from each version, extract install scripts info
+      const { readme: _readme, scripts, ...slimVersion } = version
+
+      // Extract install scripts info (which scripts exist + npx deps)
+      const installScripts = scripts ? extractInstallScriptsInfo(scripts) : null
+
+      filteredVersions[v] = {
+        ...slimVersion,
+        installScripts: installScripts ?? undefined,
+      } as PackumentVersion
     }
   }
 
@@ -154,11 +162,40 @@ export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
 ) {
-  return useLazyAsyncData(
+  const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
     () =>
       fetchNpmPackage(toValue(name)).then(r => transformPackument(r, toValue(requestedVersion))),
   )
+
+  // Resolve requestedVersion to an exact version
+  // Handles: exact versions, dist-tags (latest, next), and semver ranges (^4.2, >=1.0.0)
+  const resolvedVersion = computed(() => {
+    const pkg = asyncData.data.value
+    const reqVer = toValue(requestedVersion)
+    if (!pkg || !reqVer) return null
+
+    // 1. Check if it's already an exact version in pkg.versions
+    if (isExactVersion(reqVer) && pkg.versions[reqVer]) {
+      return reqVer
+    }
+
+    // 2. Check if it's a dist-tag (latest, next, beta, etc.)
+    const tagVersion = pkg['dist-tags']?.[reqVer]
+    if (tagVersion) {
+      return tagVersion
+    }
+
+    // 3. Try to resolve as a semver range
+    const versions = Object.keys(pkg.versions)
+    const resolved = maxSatisfying(versions, reqVer)
+    return resolved
+  })
+
+  return {
+    ...asyncData,
+    resolvedVersion,
+  }
 }
 
 export function usePackageDownloads(
@@ -240,7 +277,8 @@ async function fetchOrgPackageNames(orgName: string): Promise<string[]> {
 interface MinimalPackument {
   'name': string
   'description'?: string
-  'dist-tags': Record<string, string>
+  // `dist-tags` can be missing in some later unpublished packages
+  'dist-tags'?: Record<string, string>
   'time': Record<string, string>
   'maintainers'?: NpmPerson[]
 }
@@ -266,7 +304,10 @@ async function fetchMinimalPackument(name: string): Promise<MinimalPackument | n
  * Convert packument to search result format for display
  */
 function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
-  const latestVersion = pkg['dist-tags'].latest || Object.values(pkg['dist-tags'])[0] || ''
+  let latestVersion = ''
+  if (pkg['dist-tags']) {
+    latestVersion = pkg['dist-tags'].latest || Object.values(pkg['dist-tags'])[0] || ''
+  }
   const modified = pkg.time.modified || pkg.time[latestVersion] || ''
 
   return {
@@ -315,7 +356,8 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         const packuments = await Promise.all(batch.map(name => fetchMinimalPackument(name)))
 
         for (const pkg of packuments) {
-          if (pkg) {
+          // Filter out any unpublished packages (missing dist-tags)
+          if (pkg && pkg['dist-tags']) {
             results.push(packumentToSearchResult(pkg))
           }
         }
@@ -349,18 +391,20 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
 
   const promise = (async () => {
     const encodedName = encodePackageName(packageName)
-    const data = await $fetch<{ versions: Record<string, unknown>; time: Record<string, string> }>(
-      `${NPM_REGISTRY}/${encodedName}`,
-    )
+    const data = await $fetch<{
+      versions: Record<string, { deprecated?: string }>
+      time: Record<string, string>
+    }>(`${NPM_REGISTRY}/${encodedName}`)
 
-    return Object.keys(data.versions)
-      .filter(v => data.time[v])
-      .map(version => ({
+    return Object.entries(data.versions)
+      .filter(([v]) => data.time[v])
+      .map(([version, versionData]) => ({
         version,
         time: data.time[version],
         hasProvenance: false, // Would need to check dist.attestations for each version
+        deprecated: versionData.deprecated,
       }))
-      .sort((a, b) => compareVersions(b.version, a.version))
+      .sort((a, b) => compare(b.version, a.version))
   })()
 
   allVersionsCache.set(packageName, promise)
@@ -430,6 +474,20 @@ async function checkDependencyOutdated(
   const packument = await fetchCachedPackument(packageName)
   if (!packument) return null
 
+  const latestTag = packument['dist-tags']?.latest
+  if (!latestTag) return null
+
+  // Handle "latest" constraint specially - return info with current version
+  if (constraint === 'latest') {
+    return {
+      resolved: latestTag,
+      latest: latestTag,
+      majorsBehind: 0,
+      minorsBehind: 0,
+      diffType: null,
+    }
+  }
+
   let versions = Object.keys(packument.versions)
   const includesPrerelease = constraintIncludesPrerelease(constraint)
 
@@ -440,8 +498,7 @@ async function checkDependencyOutdated(
   const resolved = maxSatisfying(versions, constraint)
   if (!resolved) return null
 
-  const latestTag = packument['dist-tags']?.latest
-  if (!latestTag || resolved === latestTag) return null
+  if (resolved === latestTag) return null
 
   // If resolved version is newer than latest, not outdated
   // (e.g., using ^2.0.0-rc when latest is 1.x)
@@ -469,7 +526,7 @@ async function checkDependencyOutdated(
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
 ) {
-  const outdated = ref<Record<string, OutdatedDependencyInfo>>({})
+  const outdated = shallowRef<Record<string, OutdatedDependencyInfo>>({})
 
   async function fetchOutdatedInfo(deps: Record<string, string> | undefined) {
     if (!deps || Object.keys(deps).length === 0) {
@@ -524,4 +581,21 @@ export function getOutdatedTooltip(info: OutdatedDependencyInfo): string {
     return `${info.minorsBehind} minor version${s} behind (latest: ${info.latest})`
   }
   return `Patch update available (latest: ${info.latest})`
+}
+
+/**
+ * Get CSS class for a dependency version based on outdated status
+ */
+export function getVersionClass(info: OutdatedDependencyInfo | undefined): string {
+  if (!info) return 'text-fg-subtle'
+  // Green for up-to-date (e.g. "latest" constraint)
+  if (info.majorsBehind === 0 && info.minorsBehind === 0 && info.resolved === info.latest) {
+    return 'text-green-500 cursor-help'
+  }
+  // Red for major versions behind
+  if (info.majorsBehind > 0) return 'text-red-500 cursor-help'
+  // Orange for minor versions behind
+  if (info.minorsBehind > 0) return 'text-orange-500 cursor-help'
+  // Yellow for patch versions behind
+  return 'text-yellow-500 cursor-help'
 }
