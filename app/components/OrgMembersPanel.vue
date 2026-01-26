@@ -21,27 +21,27 @@ const {
 } = useConnector()
 
 // Members data: { username: role }
-const members = ref<Record<string, 'developer' | 'admin' | 'owner'>>({})
-const isLoading = ref(false)
-const error = ref<string | null>(null)
+const members = shallowRef<Record<string, 'developer' | 'admin' | 'owner'>>({})
+const isLoading = shallowRef(false)
+const error = shallowRef<string | null>(null)
 
 // Team membership data: { teamName: [members] }
 const teamMembers = ref<Record<string, string[]>>({})
-const isLoadingTeams = ref(false)
+const isLoadingTeams = shallowRef(false)
 
 // Search/filter
-const searchQuery = ref('')
-const filterRole = ref<'all' | 'developer' | 'admin' | 'owner'>('all')
-const filterTeam = ref<string | null>(null)
-const sortBy = ref<'name' | 'role'>('name')
-const sortOrder = ref<'asc' | 'desc'>('asc')
+const searchQuery = shallowRef('')
+const filterRole = shallowRef<'all' | 'developer' | 'admin' | 'owner'>('all')
+const filterTeam = shallowRef<string | null>(null)
+const sortBy = shallowRef<'name' | 'role'>('name')
+const sortOrder = shallowRef<'asc' | 'desc'>('asc')
 
 // Add member form
-const showAddMember = ref(false)
-const newUsername = ref('')
-const newRole = ref<'developer' | 'admin' | 'owner'>('developer')
-const newTeam = ref<string>('') // Empty string means "developers" (default)
-const isAddingMember = ref(false)
+const showAddMember = shallowRef(false)
+const newUsername = shallowRef('')
+const newRole = shallowRef<'developer' | 'admin' | 'owner'>('developer')
+const newTeam = shallowRef<string>('') // Empty string means "developers" (default)
+const isAddingMember = shallowRef(false)
 
 // Role priority for sorting
 const rolePriority = { owner: 0, admin: 1, developer: 2 }
