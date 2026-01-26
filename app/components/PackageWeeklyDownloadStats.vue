@@ -1,82 +1,92 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, watch } from 'vue'
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 
-const props = defineProps<{
-  downloads?: Array<{
-    downloads: number | null
-    weekStart: string
-    weekEnd: string
-  }>
+const { packageName } = defineProps<{
+  packageName: string
 }>()
 
+const showModal = ref(false)
+
+const { data: packument } = usePackage(() => packageName)
+const createdIso = computed(() => packument.value?.time?.created ?? null)
+
+const { fetchPackageDownloadEvolution } = useCharts()
+
+const weeklyDownloads = ref<WeeklyDownloadPoint[]>([])
+
+async function loadWeeklyDownloads() {
+  if (!import.meta.client) return
+
+  try {
+    const result = await fetchPackageDownloadEvolution(
+      () => packageName,
+      () => createdIso.value,
+      () => ({ granularity: 'week' as const, weeks: 52 }),
+    )
+    weeklyDownloads.value = (result as WeeklyDownloadPoint[]) ?? []
+  } catch {
+    weeklyDownloads.value = []
+  }
+}
+
+onMounted(() => {
+  loadWeeklyDownloads()
+})
+
+watch(
+  () => packageName,
+  () => loadWeeklyDownloads(),
+)
+
 const dataset = computed(() =>
-  props.downloads?.map(d => ({
+  weeklyDownloads.value.map(d => ({
     value: d?.downloads ?? 0,
     period: `${d.weekStart ?? '-'} to ${d.weekEnd ?? '-'}`,
   })),
 )
 
-const lastDatapoint = computed(() => {
-  return (dataset.value || []).at(-1)?.period ?? ''
-})
+const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
 const config = computed(() => ({
-  theme: 'dark', // enforced dark mode for now
+  theme: 'dark',
   style: {
     backgroundColor: 'transparent',
-    animation: {
-      show: false,
-    },
-    area: {
-      color: '#6A6A6A',
-      useGradient: false,
-      opacity: 10,
-    },
-    dataLabel: {
-      offsetX: -10,
-      fontSize: 28,
-      bold: false,
-      color: '#FAFAFA',
-    },
+    animation: { show: false },
+    area: { color: '#6A6A6A', useGradient: false, opacity: 10 },
+    dataLabel: { offsetX: -10, fontSize: 28, bold: false, color: '#FAFAFA' },
     line: {
       color: '#6A6A6A',
       pulse: {
         show: true,
-        loop: true, // runs only once if false
+        loop: true,
         radius: 2,
         color: '#8A8A8A',
         easing: 'ease-in-out',
-        trail: {
-          show: true,
-          length: 6,
-        },
+        trail: { show: true, length: 6 },
       },
     },
-    plot: {
-      radius: 6,
-      stroke: '#FAFAFA',
-    },
-    title: {
-      text: lastDatapoint.value,
-      fontSize: 12,
-      color: '#8A8A8A',
-      bold: false,
-    },
-    verticalIndicator: {
-      strokeDasharray: 0,
-      color: '#FAFAFA',
-    },
+    plot: { radius: 6, stroke: '#FAFAFA' },
+    title: { text: lastDatapoint.value, fontSize: 12, color: '#8A8A8A', bold: false },
+    verticalIndicator: { strokeDasharray: 0, color: '#FAFAFA' },
   },
 }))
 </script>
 
 <template>
   <div class="space-y-8">
-    <!-- Download stats -->
     <section>
       <div class="flex items-center justify-between mb-3">
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider">Weekly Downloads</h2>
+        <a
+          @click="showModal = true"
+          class="cursor-pointer link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0 self-center"
+          title="Analyze downloads"
+        >
+          <span class="i-carbon-data-analytics w-4 h-4" />
+        </a>
       </div>
+
       <div class="w-full overflow-hidden">
         <ClientOnly>
           <VueUiSparkline class="w-full max-w-xs" :dataset :config />
@@ -109,17 +119,15 @@ const config = computed(() => ({
       </div>
     </section>
   </div>
-</template>
 
-<style>
-/** Overrides */
-.vue-ui-sparkline-title span {
-  padding: 0 !important;
-  letter-spacing: 0.04rem;
-}
-.vue-ui-sparkline text {
-  font-family:
-    Geist Mono,
-    monospace !important;
-}
-</style>
+  <ChartModal v-model:open="showModal">
+    <template #title>Downloads</template>
+
+    <PackageDownloadAnalytics
+      :weeklyDownloads="weeklyDownloads"
+      :inModal="true"
+      :packageName="packageName"
+      :createdIso="createdIso"
+    />
+  </ChartModal>
+</template>
