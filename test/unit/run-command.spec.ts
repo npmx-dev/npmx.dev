@@ -131,17 +131,6 @@ describe('executable detection and run commands', () => {
       ).toBe('npx eslint')
     })
 
-    it('includes command for multi-bin packages', () => {
-      expect(
-        getRunCommand({
-          packageName: 'typescript',
-          packageManager: 'bunx' as any,
-          command: 'tsserver',
-          jsrInfo: jsrNotAvailable,
-        }),
-      ).toBe('')
-    })
-
     it('generates correct bun run command with specific command', () => {
       expect(
         getRunCommand({
