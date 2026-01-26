@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { PackumentVersion, PackageVersionInfo } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
+import { compare } from 'semver'
 import {
   buildVersionToTagsMap,
-  compareVersions,
   filterExcludedTags,
   getPrereleaseChannel,
   parseVersion,
@@ -90,7 +90,7 @@ const allTagRows = computed(() => {
         deprecated: versionData?.deprecated,
       } as VersionDisplay,
     }))
-    .sort((a, b) => compareVersions(b.primaryVersion.version, a.primaryVersion.version))
+    .sort((a, b) => compare(b.primaryVersion.version, a.primaryVersion.version))
 })
 
 // Check if the whole package is deprecated (latest version is deprecated)
@@ -177,7 +177,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
         const vChannel = getPrereleaseChannel(v.version)
         return vParsed.major === tagParsed.major && vChannel === tagChannel
       })
-      .sort((a, b) => compareVersions(b.version, a.version))
+      .sort((a, b) => compare(b.version, a.version))
       .map(v => ({
         version: v.version,
         time: v.time,
@@ -214,7 +214,7 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
 
   // Sort within each major
   for (const versions of byMajor.values()) {
-    versions.sort((a, b) => compareVersions(b.version, a.version))
+    versions.sort((a, b) => compare(b.version, a.version))
   }
 
   // Build major groups sorted by major descending

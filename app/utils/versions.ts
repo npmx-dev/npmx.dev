@@ -40,17 +40,6 @@ export function parseVersion(version: string): ParsedVersion {
 }
 
 /**
- * Compare two semver versions for sorting
- * Returns positive if a > b, negative if a < b, 0 if equal
- * @param a - First version string
- * @param b - Second version string
- * @returns Comparison result for sorting
- */
-export function compareVersions(a: string, b: string): number {
-  return compare(a, b)
-}
-
-/**
  * Extract the prerelease channel from a version string
  * @param version - The version string (e.g., "1.0.0-beta.1")
  * @returns The channel name (e.g., "beta") or empty string for stable versions
@@ -133,7 +122,7 @@ export function buildTaggedVersionRows(distTags: Record<string, string>): Tagged
       tags,
       version,
     }))
-    .sort((a, b) => compareVersions(b.version, a.version))
+    .sort((a, b) => compare(b.version, a.version))
 }
 
 /**
