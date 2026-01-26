@@ -71,8 +71,7 @@ export function mergeOverloads(nodes: DenoDocNode[]): MergedSymbol[] {
     const existing = byKey.get(key)
     if (existing) {
       existing.push(node)
-    }
-    else {
+    } else {
       byKey.set(key, [node])
     }
   }
@@ -107,7 +106,7 @@ export function groupMergedByKind(symbols: MergedSymbol[]): Record<string, Merge
   const grouped: Record<string, MergedSymbol[]> = {}
 
   for (const sym of symbols) {
-    const kindGroup = grouped[sym.kind] ??= []
+    const kindGroup = (grouped[sym.kind] ??= [])
     kindGroup.push(sym)
   }
 

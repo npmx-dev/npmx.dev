@@ -109,8 +109,7 @@ function createLoader(): (
         headers,
         content,
       }
-    }
-    catch {
+    } catch {
       clearTimeout(timeoutId)
       return undefined
     }
@@ -162,8 +161,7 @@ async function getTypesUrl(packageName: string, version: string): Promise<string
     })
     clearTimeout(timeoutId)
     return response.headers.get('x-typescript-types')
-  }
-  catch {
+  } catch {
     clearTimeout(timeoutId)
     return null
   }

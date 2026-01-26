@@ -52,7 +52,10 @@ const KIND_TITLES: Record<string, string> = {
 /**
  * Render all documentation nodes as HTML.
  */
-export async function renderDocNodes(symbols: MergedSymbol[], symbolLookup: SymbolLookup): Promise<string> {
+export async function renderDocNodes(
+  symbols: MergedSymbol[],
+  symbolLookup: SymbolLookup,
+): Promise<string> {
   const grouped = groupMergedByKind(symbols)
   const sections: string[] = []
 
@@ -92,7 +95,10 @@ async function renderKindSection(
 /**
  * Render a merged symbol (with all its overloads).
  */
-async function renderMergedSymbol(symbol: MergedSymbol, symbolLookup: SymbolLookup): Promise<string> {
+async function renderMergedSymbol(
+  symbol: MergedSymbol,
+  symbolLookup: SymbolLookup,
+): Promise<string> {
   const primaryNode = symbol.nodes[0]
   if (!primaryNode) return '' // Safety check - should never happen
 
@@ -104,7 +110,9 @@ async function renderMergedSymbol(symbol: MergedSymbol, symbolLookup: SymbolLook
 
   // Header
   lines.push(`<header class="docs-symbol-header">`)
-  lines.push(`<a href="#${id}" class="docs-anchor" aria-label="Link to ${escapeHtml(symbol.name)}">#</a>`)
+  lines.push(
+    `<a href="#${id}" class="docs-anchor" aria-label="Link to ${escapeHtml(symbol.name)}">#</a>`,
+  )
   lines.push(`<h3 class="docs-symbol-name">${escapeHtml(symbol.name)}</h3>`)
   lines.push(`<span class="docs-badge docs-badge--${symbol.kind}">${symbol.kind}</span>`)
   if (primaryNode.functionDef?.isAsync) {
@@ -146,11 +154,9 @@ async function renderMergedSymbol(symbol: MergedSymbol, symbolLookup: SymbolLook
   // Type-specific members
   if (symbol.kind === 'class' && primaryNode.classDef) {
     lines.push(renderClassMembers(primaryNode.classDef))
-  }
-  else if (symbol.kind === 'interface' && primaryNode.interfaceDef) {
+  } else if (symbol.kind === 'interface' && primaryNode.interfaceDef) {
     lines.push(renderInterfaceMembers(primaryNode.interfaceDef))
-  }
-  else if (symbol.kind === 'enum' && primaryNode.enumDef) {
+  } else if (symbol.kind === 'enum' && primaryNode.enumDef) {
     lines.push(renderEnumMembers(primaryNode.enumDef))
   }
 
@@ -187,7 +193,9 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
     lines.push(`<h4>Parameters</h4>`)
     lines.push(`<dl>`)
     for (const param of params) {
-      lines.push(`<dt><code>${escapeHtml(param.name || '')}${param.optional ? '?' : ''}</code></dt>`)
+      lines.push(
+        `<dt><code>${escapeHtml(param.name || '')}${param.optional ? '?' : ''}</code></dt>`,
+      )
       if (param.doc) {
         lines.push(`<dd>${parseJsDocLinks(param.doc, symbolLookup)}</dd>`)
       }
@@ -269,7 +277,9 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
       const modStr = modifiers.length > 0 ? `${modifiers.join(' ')} ` : ''
       const type = formatType(prop.tsType)
       const opt = prop.optional ? '?' : ''
-      lines.push(`<dt><code>${escapeHtml(modStr)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`)
+      lines.push(
+        `<dt><code>${escapeHtml(modStr)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`,
+      )
       if (prop.jsDoc?.doc) {
         lines.push(`<dd>${escapeHtml(prop.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
       }
@@ -286,7 +296,9 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
       const params = method.functionDef?.params?.map(p => formatParam(p)).join(', ') || ''
       const ret = formatType(method.functionDef?.returnType) || 'void'
       const staticStr = method.isStatic ? 'static ' : ''
-      lines.push(`<dt><code>${escapeHtml(staticStr)}${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`)
+      lines.push(
+        `<dt><code>${escapeHtml(staticStr)}${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
+      )
       if (method.jsDoc?.doc) {
         lines.push(`<dd>${escapeHtml(method.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
       }
@@ -313,7 +325,9 @@ function renderInterfaceMembers(def: NonNullable<DenoDocNode['interfaceDef']>): 
       const type = formatType(prop.tsType)
       const opt = prop.optional ? '?' : ''
       const ro = prop.readonly ? 'readonly ' : ''
-      lines.push(`<dt><code>${escapeHtml(ro)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`)
+      lines.push(
+        `<dt><code>${escapeHtml(ro)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`,
+      )
       if (prop.jsDoc?.doc) {
         lines.push(`<dd>${escapeHtml(prop.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
       }
@@ -329,7 +343,9 @@ function renderInterfaceMembers(def: NonNullable<DenoDocNode['interfaceDef']>): 
     for (const method of methods) {
       const params = method.params?.map(p => formatParam(p)).join(', ') || ''
       const ret = formatType(method.returnType) || 'void'
-      lines.push(`<dt><code>${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`)
+      lines.push(
+        `<dt><code>${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
+      )
       if (method.jsDoc?.doc) {
         lines.push(`<dd>${escapeHtml(method.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
       }
@@ -382,13 +398,17 @@ export function renderToc(symbols: MergedSymbol[]): string {
 
     const title = KIND_TITLES[kind] || kind
     lines.push(`<li>`)
-    lines.push(`<a href="#section-${kind}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`)
+    lines.push(
+      `<a href="#section-${kind}" class="font-semibold text-fg-muted hover:text-fg block mb-1">${title} <span class="text-fg-subtle font-normal">(${kindSymbols.length})</span></a>`,
+    )
 
     const showSymbols = kindSymbols.slice(0, MAX_TOC_ITEMS_PER_KIND)
     lines.push(`<ul class="pl-3 space-y-0.5 border-l border-border/50">`)
     for (const symbol of showSymbols) {
       const id = createSymbolId(symbol.kind, symbol.name)
-      lines.push(`<li><a href="#${id}" class="text-fg-subtle hover:text-fg font-mono text-xs block py-0.5 truncate">${escapeHtml(symbol.name)}</a></li>`)
+      lines.push(
+        `<li><a href="#${id}" class="text-fg-subtle hover:text-fg font-mono text-xs block py-0.5 truncate">${escapeHtml(symbol.name)}</a></li>`,
+      )
     }
     if (kindSymbols.length > MAX_TOC_ITEMS_PER_KIND) {
       const remaining = kindSymbols.length - MAX_TOC_ITEMS_PER_KIND
