@@ -372,7 +372,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
         <!-- Expanded versions -->
         <div
           v-if="expandedTags.has(row.tag) && getTagVersions(row.tag).length > 1"
-          class="ml-4 pl-2 border-l border-border space-y-0.5"
+          class="ml-4 pl-2 border-l border-border space-y-0.5 max-h-80 overflow-y-auto pr-2"
         >
           <div v-for="v in getTagVersions(row.tag).slice(1)" :key="v.version" class="py-1">
             <div class="flex items-center justify-between gap-2">
@@ -449,156 +449,113 @@ function getTagVersions(tag: string): VersionDisplay[] {
         </button>
 
         <!-- Expanded other versions -->
-        <div v-if="otherVersionsExpanded" class="ml-4 pl-2 border-l border-border space-y-0.5">
-          <!-- Hidden tag rows (overflow from visible tags) -->
-          <div v-for="row in hiddenTagRows" :key="row.id" class="py-1">
-            <div class="flex items-center justify-between gap-2">
-              <NuxtLink
-                :to="versionRoute(row.primaryVersion.version)"
-                class="font-mono text-xs transition-colors duration-200 truncate"
-                :class="
-                  row.primaryVersion.deprecated
-                    ? 'text-red-400 hover:text-red-300'
-                    : 'text-fg-muted hover:text-fg'
-                "
-                :title="
-                  row.primaryVersion.deprecated
-                    ? `${row.primaryVersion.version} (deprecated)`
-                    : row.primaryVersion.version
-                "
-              >
-                {{ row.primaryVersion.version }}
-              </NuxtLink>
-              <div class="flex items-center gap-2 shrink-0">
-                <NuxtTime
-                  v-if="row.primaryVersion.time"
-                  :datetime="row.primaryVersion.time"
-                  class="text-[10px] text-fg-subtle"
-                  year="numeric"
-                  month="short"
-                  day="numeric"
-                />
-              </div>
-            </div>
-            <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
-              <span
-                v-for="tag in row.tags"
-                :key="tag"
-                class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
-                :title="tag"
-              >
-                {{ tag }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Major version groups (untagged versions) -->
-          <template v-if="otherMajorGroups.length > 0">
-            <div v-for="(group, groupIndex) in otherMajorGroups" :key="group.major">
-              <!-- Major group header -->
-              <button
-                v-if="group.versions.length > 1"
-                type="button"
-                class="w-full text-left py-1"
-                :aria-expanded="group.expanded"
-                :title="group.versions[0]?.version"
-                @click="toggleMajorGroup(groupIndex)"
-              >
-                <div class="flex items-center gap-2">
-                  <span
-                    class="w-3 h-3 transition-transform duration-200 text-fg-subtle"
-                    :class="group.expanded ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'"
-                  />
-                  <span
-                    class="font-mono text-xs truncate"
-                    :class="group.versions[0]?.deprecated ? 'text-red-400' : 'text-fg-muted'"
-                  >
-                    {{ group.versions[0]?.version }}
-                  </span>
-                </div>
-                <div
-                  v-if="group.versions[0]?.tags?.length"
-                  class="flex items-center gap-1 ml-5 flex-wrap"
+        <div v-if="otherVersionsExpanded" class="ml-4 pl-2 border-l border-border">
+          <div class="space-y-0.5 max-h-96 overflow-y-auto pr-2">
+            <!-- Hidden tag rows (overflow from visible tags) -->
+            <div v-for="row in hiddenTagRows" :key="row.id" class="py-1">
+              <div class="flex items-center justify-between gap-2">
+                <NuxtLink
+                  :to="versionRoute(row.primaryVersion.version)"
+                  class="font-mono text-xs transition-colors duration-200 truncate"
+                  :class="
+                    row.primaryVersion.deprecated
+                      ? 'text-red-400 hover:text-red-300'
+                      : 'text-fg-muted hover:text-fg'
+                  "
+                  :title="
+                    row.primaryVersion.deprecated
+                      ? `${row.primaryVersion.version} (deprecated)`
+                      : row.primaryVersion.version
+                  "
                 >
-                  <span
-                    v-for="tag in group.versions[0].tags"
-                    :key="tag"
-                    class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
-                    :title="tag"
-                  >
-                    {{ tag }}
-                  </span>
-                </div>
-              </button>
-              <!-- Single version (no expand needed) -->
-              <div v-else class="py-1">
-                <div class="flex items-center gap-2">
-                  <span class="w-3" />
-                  <NuxtLink
-                    v-if="group.versions[0]"
-                    :to="versionRoute(group.versions[0].version)"
-                    class="font-mono text-xs transition-colors duration-200 truncate"
-                    :class="
-                      group.versions[0].deprecated
-                        ? 'text-red-400 hover:text-red-300'
-                        : 'text-fg-muted hover:text-fg'
-                    "
-                    :title="
-                      group.versions[0].deprecated
-                        ? `${group.versions[0].version} (deprecated)`
-                        : group.versions[0].version
-                    "
-                  >
-                    {{ group.versions[0].version }}
-                  </NuxtLink>
-                </div>
-                <div v-if="group.versions[0]?.tags?.length" class="flex items-center gap-1 ml-5">
-                  <span
-                    v-for="tag in group.versions[0].tags"
-                    :key="tag"
-                    class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide"
-                  >
-                    {{ tag }}
-                  </span>
+                  {{ row.primaryVersion.version }}
+                </NuxtLink>
+                <div class="flex items-center gap-2 shrink-0">
+                  <NuxtTime
+                    v-if="row.primaryVersion.time"
+                    :datetime="row.primaryVersion.time"
+                    class="text-[10px] text-fg-subtle"
+                    year="numeric"
+                    month="short"
+                    day="numeric"
+                  />
                 </div>
               </div>
+              <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
+                <span
+                  v-for="tag in row.tags"
+                  :key="tag"
+                  class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
+                  :title="tag"
+                >
+                  {{ tag }}
+                </span>
+              </div>
+            </div>
 
-              <!-- Major group versions -->
-              <div v-if="group.expanded && group.versions.length > 1" class="ml-5 space-y-0.5">
-                <div v-for="v in group.versions.slice(1)" :key="v.version" class="py-1">
-                  <div class="flex items-center justify-between gap-2">
+            <!-- Major version groups (untagged versions) -->
+            <template v-if="otherMajorGroups.length > 0">
+              <div v-for="(group, groupIndex) in otherMajorGroups" :key="group.major">
+                <!-- Major group header -->
+                <button
+                  v-if="group.versions.length > 1"
+                  type="button"
+                  class="w-full text-left py-1"
+                  :aria-expanded="group.expanded"
+                  :title="group.versions[0]?.version"
+                  @click="toggleMajorGroup(groupIndex)"
+                >
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="w-3 h-3 transition-transform duration-200 text-fg-subtle"
+                      :class="group.expanded ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'"
+                    />
+                    <span
+                      class="font-mono text-xs truncate"
+                      :class="group.versions[0]?.deprecated ? 'text-red-400' : 'text-fg-muted'"
+                    >
+                      {{ group.versions[0]?.version }}
+                    </span>
+                  </div>
+                  <div
+                    v-if="group.versions[0]?.tags?.length"
+                    class="flex items-center gap-1 ml-5 flex-wrap"
+                  >
+                    <span
+                      v-for="tag in group.versions[0].tags"
+                      :key="tag"
+                      class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
+                      :title="tag"
+                    >
+                      {{ tag }}
+                    </span>
+                  </div>
+                </button>
+                <!-- Single version (no expand needed) -->
+                <div v-else class="py-1">
+                  <div class="flex items-center gap-2">
+                    <span class="w-3" />
                     <NuxtLink
-                      :to="versionRoute(v.version)"
+                      v-if="group.versions[0]"
+                      :to="versionRoute(group.versions[0].version)"
                       class="font-mono text-xs transition-colors duration-200 truncate"
                       :class="
-                        v.deprecated
+                        group.versions[0].deprecated
                           ? 'text-red-400 hover:text-red-300'
-                          : 'text-fg-subtle hover:text-fg-muted'
+                          : 'text-fg-muted hover:text-fg'
                       "
-                      :title="v.deprecated ? `${v.version} (deprecated)` : v.version"
+                      :title="
+                        group.versions[0].deprecated
+                          ? `${group.versions[0].version} (deprecated)`
+                          : group.versions[0].version
+                      "
                     >
-                      {{ v.version }}
+                      {{ group.versions[0].version }}
                     </NuxtLink>
-                    <div class="flex items-center gap-2 shrink-0">
-                      <NuxtTime
-                        v-if="v.time"
-                        :datetime="v.time"
-                        class="text-[10px] text-fg-subtle"
-                        year="numeric"
-                        month="short"
-                        day="numeric"
-                      />
-                      <ProvenanceBadge
-                        v-if="v.hasProvenance"
-                        :package-name="packageName"
-                        :version="v.version"
-                        compact
-                      />
-                    </div>
                   </div>
-                  <div v-if="v.tags?.length" class="flex items-center gap-1 mt-0.5">
+                  <div v-if="group.versions[0]?.tags?.length" class="flex items-center gap-1 ml-5">
                     <span
-                      v-for="tag in v.tags"
+                      v-for="tag in group.versions[0].tags"
                       :key="tag"
                       class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide"
                     >
@@ -606,14 +563,59 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     </span>
                   </div>
                 </div>
+
+                <!-- Major group versions -->
+                <div v-if="group.expanded && group.versions.length > 1" class="ml-5 space-y-0.5">
+                  <div v-for="v in group.versions.slice(1)" :key="v.version" class="py-1">
+                    <div class="flex items-center justify-between gap-2">
+                      <NuxtLink
+                        :to="versionRoute(v.version)"
+                        class="font-mono text-xs transition-colors duration-200 truncate"
+                        :class="
+                          v.deprecated
+                            ? 'text-red-400 hover:text-red-300'
+                            : 'text-fg-subtle hover:text-fg-muted'
+                        "
+                        :title="v.deprecated ? `${v.version} (deprecated)` : v.version"
+                      >
+                        {{ v.version }}
+                      </NuxtLink>
+                      <div class="flex items-center gap-2 shrink-0">
+                        <NuxtTime
+                          v-if="v.time"
+                          :datetime="v.time"
+                          class="text-[10px] text-fg-subtle"
+                          year="numeric"
+                          month="short"
+                          day="numeric"
+                        />
+                        <ProvenanceBadge
+                          v-if="v.hasProvenance"
+                          :package-name="packageName"
+                          :version="v.version"
+                          compact
+                        />
+                      </div>
+                    </div>
+                    <div v-if="v.tags?.length" class="flex items-center gap-1 mt-0.5">
+                      <span
+                        v-for="tag in v.tags"
+                        :key="tag"
+                        class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide"
+                      >
+                        {{ tag }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </template>
+            <div
+              v-else-if="hasLoadedAll && hiddenTagRows.length === 0"
+              class="py-1 text-xs text-fg-subtle"
+            >
+              All versions are covered by tags above
             </div>
-          </template>
-          <div
-            v-else-if="hasLoadedAll && hiddenTagRows.length === 0"
-            class="py-1 text-xs text-fg-subtle"
-          >
-            All versions are covered by tags above
           </div>
         </div>
       </div>
