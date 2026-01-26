@@ -52,40 +52,42 @@ const showFilteredCount = computed(() => {
     <!-- Filter input -->
     <div class="flex-1 relative">
       <label for="package-filter" class="sr-only">Filter packages</label>
-      <span
-        class="absolute left-3 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
+      <div
+        class="absolute h-full w-10 flex items-center justify-center text-fg-subtle pointer-events-none"
         aria-hidden="true"
       >
-        <span class="i-carbon-search inline-block w-4 h-4" />
-      </span>
+        <div class="i-carbon-search inline-block w-4 h-4" />
+      </div>
       <input
         id="package-filter"
         v-model="filterValue"
         type="search"
         :placeholder="placeholder ?? 'Filter packages...'"
         autocomplete="off"
-        class="w-full bg-bg-subtle border border-border rounded-lg pl-9 pr-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:(border-border-hover outline-none)"
+        class="w-full bg-bg-subtle border border-border rounded-lg pl-10 pr-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:(border-border-hover outline-none)"
       />
     </div>
 
     <!-- Sort select -->
-    <div class="relative shrink-0">
+    <div class="relative shrink-0 flex">
       <label for="package-sort" class="sr-only">Sort packages</label>
-      <select
-        id="package-sort"
-        v-model="sortValue"
-        class="appearance-none bg-bg-subtle border border-border rounded-lg pl-3 pr-8 py-2 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
-      >
-        <option v-for="option in sortOptions" :key="option.value" :value="option.value">
-          {{ option.label }}
-        </option>
-      </select>
-      <span
-        class="absolute right-3 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
-        aria-hidden="true"
-      >
-        <span class="i-carbon-chevron-down w-4 h-4" />
-      </span>
+      <div class="relative">
+        <select
+          id="package-sort"
+          v-model="sortValue"
+          class="appearance-none bg-bg-subtle border border-border rounded-lg pl-3 pr-8 py-2 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
+        >
+          <option v-for="option in sortOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+        <div
+          class="absolute right-3 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
+          aria-hidden="true"
+        >
+          <div class="i-carbon-chevron-down w-4 h-4" />
+        </div>
+      </div>
     </div>
   </div>
 

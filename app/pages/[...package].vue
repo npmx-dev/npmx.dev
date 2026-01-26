@@ -20,6 +20,8 @@ const router = useRouter()
 //   /nuxt/v/4.2.0 → packageName: "nuxt", requestedVersion: "4.2.0"
 //   /@nuxt/kit → packageName: "@nuxt/kit", requestedVersion: null
 //   /@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
+//   /axios@1.13.3 → packageName: "axios", requestedVersion: "1.13.3"
+//   /@nuxt/kit@1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
 const parsedRoute = computed(() => {
   const segments = route.params.package || []
 
@@ -32,8 +34,19 @@ const parsedRoute = computed(() => {
     }
   }
 
+  // Parse @ versioned package
+  const fullPath = segments.join('/')
+  const versionMatch = fullPath.match(/^(@[^/]+\/[^/]+|[^/]+)@([^/]+)$/)
+  if (versionMatch) {
+    const [, packageName, requestedVersion] = versionMatch as [string, string, string]
+    return {
+      packageName,
+      requestedVersion,
+    }
+  }
+
   return {
-    packageName: segments.join('/'),
+    packageName: fullPath,
     requestedVersion: null as string | null,
   }
 })
@@ -53,7 +66,7 @@ const orgName = computed(() => {
   return match ? match[1] : null
 })
 
-const { data: pkg, status, error } = usePackage(packageName, requestedVersion)
+const { data: pkg, status, error, resolvedVersion } = usePackage(packageName, requestedVersion)
 
 const { data: downloads } = usePackageDownloads(packageName, 'last-week')
 const { data: weeklyDownloads } = usePackageWeeklyDownloadEvolution(packageName, { weeks: 52 })
@@ -112,15 +125,16 @@ const sizeTooltip = computed(() => {
   return chunks.filter(Boolean).join('\n')
 })
 
-// Get the version to display (requested or latest)
+// Get the version to display (resolved version or latest)
 const displayVersion = computed(() => {
   if (!pkg.value) return null
 
-  const reqVer = requestedVersion.value
-  if (reqVer && pkg.value.versions[reqVer]) {
-    return pkg.value.versions[reqVer]
+  // Use resolved version if available
+  if (resolvedVersion.value) {
+    return pkg.value.versions[resolvedVersion.value] ?? null
   }
 
+  // Fallback to latest
   const latestTag = pkg.value['dist-tags']?.latest
   if (!latestTag) return null
   return pkg.value.versions[latestTag] ?? null
@@ -132,6 +146,20 @@ const latestVersion = computed(() => {
   const latestTag = pkg.value['dist-tags']?.latest
   if (!latestTag) return null
   return pkg.value.versions[latestTag] ?? null
+})
+
+const deprecationNotice = computed(() => {
+  if (!displayVersion.value?.deprecated) return null
+
+  const isLatestDeprecated = !!latestVersion.value?.deprecated
+
+  // If latest is deprecated, show "package deprecated"
+  if (isLatestDeprecated) {
+    return { type: 'package' as const, message: displayVersion.value.deprecated }
+  }
+
+  // Otherwise show "version deprecated"
+  return { type: 'version' as const, message: displayVersion.value.deprecated }
 })
 
 const hasDependencies = computed(() => {
@@ -157,7 +185,7 @@ const repositoryUrl = computed(() => {
   return url
 })
 
-const { meta: repoMeta, repoRef, stars, forks, forksLink } = useRepoMeta(repositoryUrl)
+const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
 
 const PROVIDER_ICONS: Record<string, string> = {
   github: 'i-carbon-logo-github',
@@ -301,7 +329,7 @@ defineOgImageComponent('Package', {
 </script>
 
 <template>
-  <main class="container py-8 sm:py-12 overflow-hidden">
+  <main class="container py-8 sm:py-12 overflow-hidden w-full">
     <PackageSkeleton v-if="status === 'pending'" />
 
     <article v-else-if="status === 'success' && pkg" class="animate-fade-in min-w-0">
@@ -326,21 +354,33 @@ defineOgImageComponent('Package', {
               v-if="displayVersion"
               class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0"
             >
+              <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
+              <template v-if="resolvedVersion !== requestedVersion">
+                <span class="font-mono text-fg-muted text-sm">{{ requestedVersion }}</span>
+                <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+              </template>
+
+              <NuxtLink
+                v-if="resolvedVersion !== requestedVersion"
+                :to="`/${pkg.name}/v/${displayVersion.version}`"
+                title="View permalink for this version"
+                >{{ displayVersion.version }}</NuxtLink
+              >
+              <span v-else>v{{ displayVersion.version }}</span>
+
               <a
                 v-if="hasProvenance(displayVersion)"
                 :href="`https://www.npmjs.com/package/${pkg.name}/v/${displayVersion.version}#provenance`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-fg-muted hover:text-fg-muted/80 transition-colors duration-200"
+                class="inline-flex items-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200"
                 title="Verified provenance"
               >
-                v{{ displayVersion.version }}
                 <span
                   class="i-solar-shield-check-outline w-3.5 h-3.5 shrink-0"
                   aria-hidden="true"
                 />
               </a>
-              <span v-else>v{{ displayVersion.version }}</span>
               <span
                 v-if="
                   requestedVersion &&
@@ -405,6 +445,23 @@ defineOgImageComponent('Package', {
               </button>
             </div>
           </div>
+        </div>
+
+        <div
+          v-if="deprecationNotice"
+          class="border border-red-400 bg-red-400/10 rounded-lg px-3 py-2 text-base text-red-400"
+        >
+          <h2 class="font-medium mb-2">
+            {{
+              deprecationNotice.type === 'package'
+                ? 'This package has been deprecated.'
+                : 'This version has been deprecated.'
+            }}
+          </h2>
+          <p v-if="deprecationNotice.message" class="text-base m-0">
+            <MarkdownText :text="deprecationNotice.message" />
+          </p>
+          <p v-else class="text-base m-0 italic">No reason provided</p>
         </div>
 
         <!-- Stats grid -->
@@ -522,11 +579,21 @@ defineOgImageComponent('Package', {
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
                 <span class="w-4 h-4" :class="repoProviderIcon" aria-hidden="true" />
-                <span v-if="repoMeta && stars">
-                  {{ formatCompactNumber(stars, { decimals: 1 }) }}
-                  {{ stars === 1 ? 'star' : 'stars' }}
+                <span v-if="repoRef">
+                  {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
                 </span>
                 <span v-else>repo</span>
+              </a>
+            </li>
+            <li v-if="repositoryUrl && repoMeta && starsLink">
+              <a
+                :href="starsLink"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="w-4 h-4 i-carbon-star" aria-hidden="true" />
+                {{ formatCompactNumber(stars, { decimals: 1 }) }}
               </a>
             </li>
             <li v-if="homepageUrl">
