@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NewOperation } from '~/composables/useConnector'
+import { buildScopeTeam } from '~/utils/npm'
 
 const props = defineProps<{
   orgName: string
@@ -103,7 +104,7 @@ async function loadTeamUsers(teamName: string) {
   isLoadingUsers.value[teamName] = true
 
   try {
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
     const result = await listTeamUsers(scopeTeam)
     if (result) {
       teamUsers.value[teamName] = result
@@ -135,7 +136,7 @@ async function handleCreateTeam() {
   isCreatingTeam.value = true
   try {
     const teamName = newTeamName.value.trim()
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
     const operation: NewOperation = {
       type: 'team:create',
       params: { scopeTeam },
@@ -153,7 +154,7 @@ async function handleCreateTeam() {
 
 // Destroy team
 async function handleDestroyTeam(teamName: string) {
-  const scopeTeam = `${props.orgName}:${teamName}`
+  const scopeTeam = buildScopeTeam(props.orgName, teamName)
   const operation: NewOperation = {
     type: 'team:destroy',
     params: { scopeTeam },
@@ -171,7 +172,7 @@ async function handleAddUser(teamName: string) {
   isAddingUser.value = true
   try {
     const username = newUserUsername.value.trim().replace(/^@/, '')
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
 
     let dependsOnId: string | undefined
 
@@ -213,7 +214,7 @@ async function handleAddUser(teamName: string) {
 
 // Remove user from team
 async function handleRemoveUser(teamName: string, username: string) {
-  const scopeTeam = `${props.orgName}:${teamName}`
+  const scopeTeam = buildScopeTeam(props.orgName, teamName)
   const operation: NewOperation = {
     type: 'team:rm-user',
     params: { scopeTeam, user: username },

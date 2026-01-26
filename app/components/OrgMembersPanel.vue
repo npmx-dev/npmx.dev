@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NewOperation } from '~/composables/useConnector'
+import { buildScopeTeam } from '~/utils/npm'
 
 const props = defineProps<{
   orgName: string
@@ -144,10 +145,10 @@ async function loadTeamMemberships() {
   try {
     const teamsResult = await listOrgTeams(props.orgName)
     if (teamsResult) {
-      // Teams come as "org:team" format
+      // Teams come as "org:team" format from npm, need @scope:team for API calls
       const teamPromises = teamsResult.map(async (fullTeamName: string) => {
         const teamName = fullTeamName.replace(`${props.orgName}:`, '')
-        const membersResult = await listTeamUsers(fullTeamName)
+        const membersResult = await listTeamUsers(buildScopeTeam(props.orgName, teamName))
         if (membersResult) {
           teamMembers.value[teamName] = membersResult
         }
@@ -183,7 +184,7 @@ async function handleAddMember() {
     // Second operation: add user to team (if a team is selected)
     // This depends on the org operation completing first
     if (newTeam.value && addedOrgOp) {
-      const scopeTeam = `${props.orgName}:${newTeam.value}`
+      const scopeTeam = buildScopeTeam(props.orgName, newTeam.value)
       const teamOperation: NewOperation = {
         type: 'team:add-user',
         params: {

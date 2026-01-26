@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NewOperation } from '~/composables/useConnector'
+import { buildScopeTeam } from '~/utils/npm'
 
 const props = defineProps<{
   packageName: string
@@ -96,7 +97,7 @@ async function handleGrantAccess() {
 
   isGranting.value = true
   try {
-    const scopeTeam = `${orgName.value}:${selectedTeam.value}`
+    const scopeTeam = buildScopeTeam(orgName.value, selectedTeam.value)
     const operation: NewOperation = {
       type: 'access:grant',
       params: {
