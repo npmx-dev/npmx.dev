@@ -9,6 +9,11 @@ describe('buildScopeTeam', () => {
     expect(buildScopeTeam('nuxt', 'core')).toBe('@nuxt:core')
   })
 
+  it('strips existing @ prefix from orgName', () => {
+    expect(buildScopeTeam('@netlify', 'developers')).toBe('@netlify:developers')
+    expect(buildScopeTeam('@nuxt', 'core')).toBe('@nuxt:core')
+  })
+
   it('produces format accepted by validateScopeTeam', () => {
     expect(() => validateScopeTeam(buildScopeTeam('netlify', 'developers'))).not.toThrow()
     expect(() => validateScopeTeam(buildScopeTeam('nuxt', 'core'))).not.toThrow()
