@@ -489,7 +489,7 @@ defineOgImageComponent('Package', {
 
           <div v-if="downloads" class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">Weekly</dt>
-            <dd class="font-mono text-sm text-fg flex items-baseline justify-start gap-2">
+            <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
               {{ formatNumber(downloads.downloads) }}
               <a
                 :href="`https://npm.chart.dev/${pkg.name}`"
@@ -506,7 +506,7 @@ defineOgImageComponent('Package', {
 
           <div class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">Deps</dt>
-            <dd class="font-mono text-sm text-fg flex items-baseline justify-start gap-2">
+            <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
               {{ getDependencyCount(displayVersion) }}
               <a
                 v-if="getDependencyCount(displayVersion) > 0"

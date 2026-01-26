@@ -195,6 +195,10 @@ button {
   margin-top: 2rem;
   margin-bottom: 1rem;
   line-height: 1.3;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 /* Visual styling based on original README heading level */
