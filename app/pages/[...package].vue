@@ -387,7 +387,7 @@ defineOgImageComponent('Package', {
                 :href="`https://www.npmjs.com/package/${pkg.name}/v/${displayVersion.version}#provenance`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200"
+                class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
                 title="Verified provenance"
               >
                 <span

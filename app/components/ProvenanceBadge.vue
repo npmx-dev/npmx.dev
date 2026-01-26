@@ -22,7 +22,7 @@ const providerLabels: Record<string, string> = {
     :href="`https://www.npmjs.com/package/${packageName}/v/${version}#provenance`"
     target="_blank"
     rel="noopener noreferrer"
-    class="inline-flex items-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200"
+    class="inline-flex items-center justify-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
     :title="
       provider
         ? `Verified: published via ${providerLabels[provider] ?? provider}`
