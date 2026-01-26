@@ -21,7 +21,7 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 ## Shortcuts
 
 > [!IMPORTANT]  
-> We're keeping the website, repository, and our discord community low profile until the browser is polished enough. We'll do formal announcement at that point. Please avoid sharing the website or the invite link to discord in social media in a direct way. The repo is public, so people that care about the project can easily find it and join us. Anyone that wants to help is more than welcomed to [join us in Discord](https://chat.npm.dev). If you know others that would be interested, please invite them too!
+> We're keeping the website, repository, and our discord community low-profile until the browser is polished enough. We'll do a formal announcement at that point. Please avoid sharing the website or the invite link to discord on social media directly. The repo is public, so people who care about the project can easily find it and join us. Anyone who wants to help is more than welcome to [join the community](https://chat.npm.dev). If you know others who would be interested, please invite them too!
 
 - [chat.npmx.dev](https://chat.npmx.dev) - Discord Server
 - [social.npmx.dev](https://social.npmx.dev) - Bluesky Profile
