@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import {
-  escapeHtml,
-  parseJsDocLinks,
-  renderMarkdown,
-  type SymbolLookup,
-} from '../../server/utils/docs'
+import { escapeHtml, parseJsDocLinks, renderMarkdown } from '../../server/utils/docs/text'
+import type { SymbolLookup } from '../../server/utils/docs/types'
 
 describe('escapeHtml', () => {
   it('should escape < and >', () => {
