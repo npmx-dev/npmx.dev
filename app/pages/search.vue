@@ -370,18 +370,22 @@ defineOgImageComponent('Default', {
                   autocomplete="off"
                   autocorrect="off"
                   spellcheck="false"
-                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-4 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:(border-border-hover outline-none) appearance-none"
+                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:(border-border-hover outline-none) appearance-none"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
                   @keydown="handleResultsKeydown"
                 />
+                <button
+                  v-show="inputValue"
+                  type="button"
+                  class="absolute right-3 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                  aria-label="Clear search"
+                  @click="inputValue = ''"
+                >
+                  <span class="i-carbon-close-large block w-3.5 h-3.5" aria-hidden="true" />
+                </button>
                 <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
                 <button type="submit" class="sr-only">Search</button>
-                <span
-                  v-show="inputValue"
-                  @click="inputValue = ''"
-                  class="i-solar-close-circle-linear w-3.5 h-3.5 cursor-pointer -ml-5"
-                />
               </div>
             </div>
           </form>
