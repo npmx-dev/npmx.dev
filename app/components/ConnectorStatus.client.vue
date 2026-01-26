@@ -12,9 +12,8 @@ const {
 const showModal = shallowRef(false)
 const showTooltip = shallowRef(false)
 
-const statusText = computed(() => {
+const tooltipText = computed(() => {
   if (isConnecting.value) return 'connecting…'
-  if (isConnected.value && npmUser.value) return `connected as @${npmUser.value}`
   if (isConnected.value) return 'connected'
   return 'connect local CLI'
 })
@@ -37,7 +36,16 @@ const ariaLabel = computed(() => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative flex items-center gap-2">
+    <!-- Username link (when connected) -->
+    <NuxtLink
+      v-if="isConnected && npmUser"
+      :to="`/~${npmUser}`"
+      class="link-subtle font-mono text-sm hidden sm:inline"
+    >
+      @{{ npmUser }}
+    </NuxtLink>
+
     <button
       type="button"
       class="relative flex items-center justify-center w-8 h-8 rounded-md transition-colors duration-200 hover:bg-bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
@@ -85,7 +93,7 @@ const ariaLabel = computed(() => {
         role="tooltip"
         class="absolute right-0 top-full mt-2 px-2 py-1 font-mono text-xs text-fg bg-bg-elevated border border-border rounded shadow-lg whitespace-nowrap z-50"
       >
-        {{ statusText }}
+        {{ tooltipText }}
       </div>
     </Transition>
 

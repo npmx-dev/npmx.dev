@@ -350,6 +350,19 @@ export const useConnector = createSharedComposable(function useConnector() {
     return response?.success ? (response.data ?? null) : null
   }
 
+  async function listUserPackages(): Promise<Record<string, 'read-write' | 'read-only'> | null> {
+    const response =
+      await connectorFetch<ApiResponse<Record<string, 'read-write' | 'read-only'>>>(
+        '/user/packages',
+      )
+    return response?.success ? (response.data ?? null) : null
+  }
+
+  async function listUserOrgs(): Promise<string[] | null> {
+    const response = await connectorFetch<ApiResponse<string[]>>('/user/orgs')
+    return response?.success ? (response.data ?? null) : null
+  }
+
   // Computed helpers for operations
   const pendingOperations = computed(() =>
     state.value.operations.filter(op => op.status === 'pending'),
@@ -427,6 +440,8 @@ export const useConnector = createSharedComposable(function useConnector() {
     listOrgTeams,
     listTeamUsers,
     listPackageCollaborators,
+    listUserPackages,
+    listUserOrgs,
   }
 })
 

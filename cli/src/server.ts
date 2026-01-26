@@ -23,6 +23,7 @@ import {
   ownerAdd,
   ownerRemove,
   packageInit,
+  listUserPackages,
   type NpmExecResult,
 } from './npm-client.ts'
 import {
@@ -234,7 +235,10 @@ export function createConnectorApp(expectedToken: string) {
     }
 
     if (operation.status !== 'pending') {
-      throw new HTTPError({ statusCode: 400, message: 'Operation is not pending' })
+      throw new HTTPError({
+        statusCode: 400,
+        message: 'Operation is not pending',
+      })
     }
 
     operation.status = 'approved'
@@ -282,7 +286,10 @@ export function createConnectorApp(expectedToken: string) {
     }
 
     if (operation.status !== 'failed') {
-      throw new HTTPError({ statusCode: 400, message: 'Only failed operations can be retried' })
+      throw new HTTPError({
+        statusCode: 400,
+        message: 'Only failed operations can be retried',
+      })
     }
 
     // Reset the operation for retry
@@ -337,7 +344,11 @@ export function createConnectorApp(expectedToken: string) {
         // Dependency failed - skip this one too
         if (failedIds.has(op.dependsOn)) {
           op.status = 'failed'
-          op.result = { stdout: '', stderr: 'Skipped: dependency failed', exitCode: 1 }
+          op.result = {
+            stdout: '',
+            stderr: 'Skipped: dependency failed',
+            exitCode: 1,
+          }
           failedIds.add(op.id)
           results.push({ id: op.id, result: op.result })
           return false
@@ -410,7 +421,10 @@ export function createConnectorApp(expectedToken: string) {
 
     const operation = state.operations[index]
     if (!operation || operation.status === 'running') {
-      throw new HTTPError({ statusCode: 400, message: 'Cannot cancel running operation' })
+      throw new HTTPError({
+        statusCode: 400,
+        message: 'Cannot cancel running operation',
+      })
     }
 
     state.operations.splice(index, 1)
@@ -586,6 +600,97 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: false,
         error: 'Failed to parse collaborators',
+      } as ApiResponse
+    }
+  })
+
+  // User-specific endpoints
+
+  app.get('/user/packages', async event => {
+    const auth = event.req.headers.get('authorization')
+    if (!validateToken(auth)) {
+      throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
+    }
+
+    const npmUser = state.session.npmUser
+    if (!npmUser) {
+      return {
+        success: false,
+        error: 'Not logged in to npm',
+      } as ApiResponse
+    }
+
+    const result = await listUserPackages(npmUser)
+    if (result.exitCode !== 0) {
+      return {
+        success: false,
+        error: result.stderr || 'Failed to list user packages',
+      } as ApiResponse
+    }
+
+    try {
+      // npm access list packages returns { "packageName": "read-write" | "read-only" }
+      const packages = JSON.parse(result.stdout) as Record<string, 'read-write' | 'read-only'>
+      return {
+        success: true,
+        data: packages,
+      } as ApiResponse
+    } catch {
+      return {
+        success: false,
+        error: 'Failed to parse user packages',
+      } as ApiResponse
+    }
+  })
+
+  app.get('/user/orgs', async event => {
+    const auth = event.req.headers.get('authorization')
+    if (!validateToken(auth)) {
+      throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
+    }
+
+    const npmUser = state.session.npmUser
+    if (!npmUser) {
+      return {
+        success: false,
+        error: 'Not logged in to npm',
+      } as ApiResponse
+    }
+
+    // Get user's packages and extract org names from scoped packages
+    const result = await listUserPackages(npmUser)
+    if (result.exitCode !== 0) {
+      return {
+        success: false,
+        error: result.stderr || 'Failed to list user packages',
+      } as ApiResponse
+    }
+
+    try {
+      const packages = JSON.parse(result.stdout) as Record<string, string>
+      const orgs = new Set<string>()
+
+      // Extract org names from scoped packages (e.g., @myorg/mypackage -> myorg)
+      for (const pkgName of Object.keys(packages)) {
+        if (pkgName.startsWith('@')) {
+          const match = pkgName.match(/^@([^/]+)\//)
+          if (match && match[1]) {
+            // Exclude the user's own scope (personal packages)
+            if (match[1].toLowerCase() !== npmUser.toLowerCase()) {
+              orgs.add(match[1])
+            }
+          }
+        }
+      }
+
+      return {
+        success: true,
+        data: Array.from(orgs).sort(),
+      } as ApiResponse
+    } catch {
+      return {
+        success: false,
+        error: 'Failed to parse user orgs',
       } as ApiResponse
     }
   })
