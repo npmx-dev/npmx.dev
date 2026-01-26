@@ -71,8 +71,11 @@ interface MergedSymbol {
   jsDoc?: DenoDocNode['jsDoc']
 }
 
-/** Map of symbol names to anchor IDs for cross-referencing */
-type SymbolLookup = Map<string, string>
+/**
+ * Map of symbol names to anchor IDs for cross-referencing.
+ * @internal Exported for testing
+ */
+export type SymbolLookup = Map<string, string>
 
 // =============================================================================
 // Main API
@@ -614,7 +617,7 @@ function renderToc(symbols: MergedSymbol[]): string {
   const grouped = groupMergedByKind(symbols)
   const lines: string[] = []
 
-  lines.push(`<nav class="toc text-sm">`)
+  lines.push(`<nav class="toc text-sm" aria-label="Table of contents">`)
   lines.push(`<ul class="space-y-3">`)
 
   for (const kind of KIND_DISPLAY_ORDER) {
@@ -769,8 +772,10 @@ function createSymbolId(kind: string, name: string): string {
  * - {@link https://example.com} - external URL
  * - {@link https://example.com Link Text} - external URL with label
  * - {@link SomeSymbol} - internal cross-reference
+ *
+ * @internal Exported for testing
  */
-function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): string {
+export function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): string {
   let result = escapeHtml(text)
 
   result = result.replace(/\{@link\s+([^\s}]+)(?:\s+([^}]+))?\}/g, (_, target, label) => {
@@ -796,14 +801,17 @@ function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): string {
 
 /**
  * Render simple markdown-like formatting.
+ * Uses <br> for line breaks to avoid nesting issues with inline elements.
+ *
+ * @internal Exported for testing
  */
-function renderMarkdown(text: string, symbolLookup: SymbolLookup): string {
+export function renderMarkdown(text: string, symbolLookup: SymbolLookup): string {
   let result = parseJsDocLinks(text, symbolLookup)
 
   result = result
     .replace(/`([^`]+)`/g, '<code class="docs-inline-code">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n\n/g, '</p><p class="mt-2">')
+    .replace(/\n\n+/g, '<br><br>')
     .replace(/\n/g, '<br>')
 
   return result
@@ -811,8 +819,10 @@ function renderMarkdown(text: string, symbolLookup: SymbolLookup): string {
 
 /**
  * Escape HTML special characters.
+ *
+ * @internal Exported for testing
  */
-function escapeHtml(text: string): string {
+export function escapeHtml(text: string): string {
   return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

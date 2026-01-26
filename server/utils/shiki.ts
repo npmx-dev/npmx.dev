@@ -55,10 +55,13 @@ export async function highlightCodeBlock(code: string, language: string): Promis
 
   if (loadedLangs.includes(language as never)) {
     try {
-      return shiki.codeToHtml(code, {
+      const html = shiki.codeToHtml(code, {
         lang: language,
         theme: 'github-dark',
       })
+      // Shiki doesn't encode > in text content (e.g., arrow functions =>)
+      // We need to encode them for HTML validation
+      return escapeRawGt(html)
     } catch {
       // Fall back to plain
     }
@@ -67,4 +70,21 @@ export async function highlightCodeBlock(code: string, language: string): Promis
   // Plain code block for unknown languages
   const escaped = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   return `<pre><code class="language-${language}">${escaped}</code></pre>\n`
+}
+
+/**
+ * Escape raw > characters in HTML text content.
+ * Shiki outputs > without encoding in constructs like arrow functions (=>).
+ * This replaces > that appear in text content (after >) but not inside tags.
+ *
+ * @internal Exported for testing
+ */
+export function escapeRawGt(html: string): string {
+  // Match > that appears after a closing tag or other > (i.e., in text content)
+  // Pattern: after </...> or after >, match any > that isn't starting a tag
+  return html.replace(/>([^<]*)/g, (match, textContent) => {
+    // Encode any > in the text content portion
+    const escapedText = textContent.replace(/>/g, '&gt;')
+    return `>${escapedText}`
+  })
 }
