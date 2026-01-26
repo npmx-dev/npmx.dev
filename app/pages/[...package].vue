@@ -50,7 +50,7 @@ const orgName = computed(() => {
   return match ? match[1] : null
 })
 
-const { data: pkg, status, error } = usePackage(packageName, requestedVersion)
+const { data: pkg, status, error, resolvedVersion } = usePackage(packageName, requestedVersion)
 
 const { data: downloads } = usePackageDownloads(packageName, 'last-week')
 const { data: weeklyDownloads } = usePackageWeeklyDownloadEvolution(packageName, { weeks: 52 })
@@ -109,15 +109,16 @@ const sizeTooltip = computed(() => {
   return chunks.filter(Boolean).join('\n')
 })
 
-// Get the version to display (requested or latest)
+// Get the version to display (resolved version or latest)
 const displayVersion = computed(() => {
   if (!pkg.value) return null
 
-  const reqVer = requestedVersion.value
-  if (reqVer && pkg.value.versions[reqVer]) {
-    return pkg.value.versions[reqVer]
+  // Use resolved version if available
+  if (resolvedVersion.value) {
+    return pkg.value.versions[resolvedVersion.value] ?? null
   }
 
+  // Fallback to latest
   const latestTag = pkg.value['dist-tags']?.latest
   if (!latestTag) return null
   return pkg.value.versions[latestTag] ?? null
@@ -331,21 +332,33 @@ defineOgImageComponent('Package', {
               v-if="displayVersion"
               class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0"
             >
+              <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
+              <template v-if="resolvedVersion !== requestedVersion">
+                <span class="font-mono text-fg-muted text-sm">{{ requestedVersion }}</span>
+                <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+              </template>
+
+              <NuxtLink
+                v-if="resolvedVersion !== requestedVersion"
+                :to="`/${pkg.name}/v/${displayVersion.version}`"
+                title="View permalink for this version"
+                >{{ displayVersion.version }}</NuxtLink
+              >
+              <span v-else>v{{ displayVersion.version }}</span>
+
               <a
                 v-if="hasProvenance(displayVersion)"
                 :href="`https://www.npmjs.com/package/${pkg.name}/v/${displayVersion.version}#provenance`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-fg-muted hover:text-fg-muted/80 transition-colors duration-200"
+                class="inline-flex items-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200"
                 title="Verified provenance"
               >
-                v{{ displayVersion.version }}
                 <span
                   class="i-solar-shield-check-outline w-3.5 h-3.5 shrink-0"
                   aria-hidden="true"
                 />
               </a>
-              <span v-else>v{{ displayVersion.version }}</span>
               <span
                 v-if="
                   requestedVersion &&

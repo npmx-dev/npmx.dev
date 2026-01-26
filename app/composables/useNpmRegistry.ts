@@ -10,7 +10,7 @@ import type {
 } from '#shared/types'
 import type { ReleaseType } from 'semver'
 import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
-import { compareVersions } from '~/utils/versions'
+import { compareVersions, isExactVersion } from '~/utils/versions'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -154,11 +154,40 @@ export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
 ) {
-  return useLazyAsyncData(
+  const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
     () =>
       fetchNpmPackage(toValue(name)).then(r => transformPackument(r, toValue(requestedVersion))),
   )
+
+  // Resolve requestedVersion to an exact version
+  // Handles: exact versions, dist-tags (latest, next), and semver ranges (^4.2, >=1.0.0)
+  const resolvedVersion = computed(() => {
+    const pkg = asyncData.data.value
+    const reqVer = toValue(requestedVersion)
+    if (!pkg || !reqVer) return null
+
+    // 1. Check if it's already an exact version in pkg.versions
+    if (isExactVersion(reqVer) && pkg.versions[reqVer]) {
+      return reqVer
+    }
+
+    // 2. Check if it's a dist-tag (latest, next, beta, etc.)
+    const tagVersion = pkg['dist-tags']?.[reqVer]
+    if (tagVersion) {
+      return tagVersion
+    }
+
+    // 3. Try to resolve as a semver range
+    const versions = Object.keys(pkg.versions)
+    const resolved = maxSatisfying(versions, reqVer)
+    return resolved
+  })
+
+  return {
+    ...asyncData,
+    resolvedVersion,
+  }
 }
 
 export function usePackageDownloads(
