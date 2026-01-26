@@ -346,6 +346,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <NuxtTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
+                  :title="row.primaryVersion.time"
                   year="numeric"
                   month="short"
                   day="numeric"
@@ -395,6 +396,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <NuxtTime
                   v-if="v.time"
                   :datetime="v.time"
+                  :title="v.time"
                   class="text-[10px] text-fg-subtle"
                   year="numeric"
                   month="short"
@@ -476,6 +478,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <NuxtTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
+                  :title="row.primaryVersion.time"
                   class="text-[10px] text-fg-subtle"
                   year="numeric"
                   month="short"
@@ -586,6 +589,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       <NuxtTime
                         v-if="v.time"
                         :datetime="v.time"
+                        :title="v.time"
                         class="text-[10px] text-fg-subtle"
                         year="numeric"
                         month="short"
