@@ -612,42 +612,43 @@ export function getOutdatedTooltip(info: OutdatedDependencyInfo): string {
 // Package Dependents
 // ============================================================================
 
+export interface DependentPackage {
+  name: string
+  downloads: number
+  description?: string
+  version?: string
+}
+
+export interface DependentsResponse {
+  dependents: DependentPackage[]
+  total: number
+}
+
+const emptyDependentsResponse: DependentsResponse = {
+  dependents: [],
+  total: 0,
+}
+
 /**
  * Fetch packages that depend on a given package (dependents).
- * Results are sorted by weekly download count (most downloaded first)
+ * Uses the e18e CouchDB mirror to get accurate dependency data.
+ * Results are sorted by download count (most downloaded first)
  * to help with security triage when vulnerabilities are discovered.
  */
-export function usePackageDependents(
-  packageName: MaybeRefOrGetter<string>,
-  options: MaybeRefOrGetter<{ size?: number }> = {},
-) {
+export function usePackageDependents(packageName: MaybeRefOrGetter<string>) {
   return useLazyAsyncData(
-    () => `dependents:${toValue(packageName)}:${JSON.stringify(toValue(options))}`,
+    () => `dependents:${toValue(packageName)}`,
     async () => {
       const name = toValue(packageName)
-      if (!name) return emptySearchResponse
+      if (!name) return emptyDependentsResponse
 
-      const { size = 50 } = toValue(options)
-
-      // Use the existing searchNpmPackages with depends-on: query
-      // This finds packages that have `name` as a dependency
-      const response = await searchNpmPackages(`depends-on:${name}`, { size })
-
-      // Sort by weekly downloads (descending) for security triage
-      const sortedObjects = [...response.objects].sort((a, b) => {
-        const aDownloads = a.downloads?.weekly ?? 0
-        const bDownloads = b.downloads?.weekly ?? 0
-        return bDownloads - aDownloads
-      })
-
-      return {
-        ...response,
-        objects: sortedObjects,
-      }
+      return await $fetch<DependentsResponse>(
+        `/api/registry/dependents/${encodeURIComponent(name)}`,
+      )
     },
     {
       server: false,
-      default: () => emptySearchResponse,
+      default: () => emptyDependentsResponse,
     },
   )
 }

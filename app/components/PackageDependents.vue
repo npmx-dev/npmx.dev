@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const { data, status } = usePackageDependents(() => props.packageName)
 
-const dependents = computed(() => data.value?.objects ?? [])
+const dependents = computed(() => data.value?.dependents ?? [])
 const total = computed(() => data.value?.total ?? 0)
 
 // Expanded state for showing all dependents
@@ -32,7 +32,7 @@ const showSection = computed(() => {
   <section v-if="showSection" aria-labelledby="dependents-heading">
     <h2 id="dependents-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
       Dependents
-      <span v-if="status === 'success' && total > 0">({{ total.toLocaleString() }})</span>
+      <span v-if="status === 'success' && total > 0">(top {{ total.toLocaleString() }})</span>
     </h2>
 
     <!-- Loading state -->
@@ -51,22 +51,22 @@ const showSection = computed(() => {
     >
       <li
         v-for="dependent in visibleDependents"
-        :key="dependent.package.name"
+        :key="dependent.name"
         class="flex items-center justify-between py-1 text-sm gap-2"
       >
         <NuxtLink
-          :to="{ name: 'package', params: { package: dependent.package.name.split('/') } }"
+          :to="{ name: 'package', params: { package: dependent.name.split('/') } }"
           class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0"
         >
-          {{ dependent.package.name }}
+          {{ dependent.name }}
         </NuxtLink>
         <span
-          v-if="dependent.downloads?.weekly"
+          v-if="dependent.downloads"
           class="font-mono text-xs text-fg-subtle shrink-0 flex items-center gap-1"
-          :title="`${dependent.downloads.weekly.toLocaleString()} weekly downloads`"
+          :title="`${dependent.downloads.toLocaleString()} downloads`"
         >
           <span class="i-carbon-download w-3 h-3" aria-hidden="true" />
-          {{ formatCompactNumber(dependent.downloads.weekly, { decimals: 1 }) }}
+          {{ formatCompactNumber(dependent.downloads, { decimals: 1 }) }}
         </span>
       </li>
     </ul>
