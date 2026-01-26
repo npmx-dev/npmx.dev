@@ -74,6 +74,7 @@ const FILENAME_MAP: Record<string, string> = {
   'CHANGELOG.md': 'markdown',
   'README': 'markdown',
   'README.md': 'markdown',
+  'README.markdown': 'markdown',
 }
 
 /**
