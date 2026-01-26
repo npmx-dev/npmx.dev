@@ -9,7 +9,9 @@ import type {
   PackageVersionInfo,
 } from '#shared/types'
 import type { ReleaseType } from 'semver'
-import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
+import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
+import { isExactVersion } from '~/utils/versions'
+import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -432,7 +434,7 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
         hasProvenance: false, // Would need to check dist.attestations for each version
         deprecated: versionData.deprecated,
       }))
-      .sort((a, b) => compareVersions(b.version, a.version))
+      .sort((a, b) => compare(b.version, a.version))
   })()
 
   allVersionsCache.set(packageName, promise)
