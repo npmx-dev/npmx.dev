@@ -1,26 +1,69 @@
 # Plan: WASM-based Documentation Generation
 
-> **Status**: Alternative approach. See PLAN_MICRO.md for recommended approach.
+> **Status**: ✅ Working! Uses official `@deno/doc` v0.189.1 with patches for Node.js compatibility.
 
-Replace the `deno doc` subprocess with `tsdoc-extractor`, a WASM build of `deno_doc` for Node.js.
+## Summary
 
-## Package
+Successfully replaced the `deno doc` subprocess with WASM-based documentation generation that runs directly in Node.js/Vercel serverless, using the official `@deno/doc` package from JSR.
 
-- **npm**: `tsdoc-extractor`
-- **Size**: 2.8MB WASM + ~25KB JS
-- **Last updated**: July 2023
-- **Output**: Same JSON format as `deno doc --json`
+## Package Used
 
-## Test Results
+- **Package**: `@deno/doc` (JSR - official Deno package)
+- **Version**: 0.189.1 (latest, Jan 2026)
+- **WASM size**: 4.7MB
+- **Install**: `pnpm install jsr:@deno/doc`
 
+## Compatibility Issues & Fixes
+
+We encountered three issues when running `@deno/doc` in Node.js. All were resolved with a single patch file.
+
+### Issue 1: Invalid JavaScript exports ✅ Fixed
+
+```js
+// In mod.js - this is invalid JS, only works in Deno
+export * from './types.d.ts'
+export * from './html_types.d.ts'
 ```
-ufo@1.5.0:  58 nodes (works)
-vue@3.5.0:   4 nodes (re-exports not followed - WASM limitation)
+
+**Fix**: Patch removes these lines.
+
+### Issue 2: WASM loader doesn't support Node.js ✅ Fixed
+
+```js
+// Original code throws error for Node.js + file:// URLs
+if (isFile && typeof Deno !== 'object') {
+  throw new Error('Loading local files are not supported in this environment')
+}
 ```
+
+**Fix**: Patch adds Node.js fs support:
+
+```js
+if (isNode && isFile) {
+  const { readFileSync } = await import('node:fs')
+  const { fileURLToPath } = await import('node:url')
+  const wasmCode = readFileSync(fileURLToPath(url))
+  return WebAssembly.instantiate(decompress ? decompress(wasmCode) : wasmCode, imports)
+}
+```
+
+### Issue 3: Bundler rewrites WASM paths ✅ Fixed
+
+When Nitro inlines the package, `import.meta.url` gets rewritten and WASM path becomes invalid.
+
+**Fix**: Don't inline `@deno/doc` in Nitro config - let it load from `node_modules/`:
+
+```ts
+// nuxt.config.ts - do NOT add @deno/doc to nitro.externals.inline
+```
+
+## Patch File
+
+All fixes are in `patches/@jsr__deno__doc@0.189.1.patch` (managed by pnpm).
 
 ## Key Finding
 
-esm.sh serves types URL in the `x-typescript-types` header, not at the main URL:
+esm.sh serves types URL in the `x-typescript-types` header:
 
 ```bash
 $ curl -sI 'https://esm.sh/ufo@1.5.0' | grep x-typescript-types
@@ -30,81 +73,41 @@ x-typescript-types: https://esm.sh/ufo@1.5.0/dist/index.d.ts
 ## Architecture
 
 ```
-Current:  [Request] -> [subprocess: deno doc --json] -> [parse JSON]
-New:      [Request] -> [fetch types] -> [tsdoc-extractor WASM] -> [parse JSON]
+[Request] -> [fetch x-typescript-types header] -> [@deno/doc WASM] -> [HTML]
 ```
 
-## Implementation
+## Files Changed
 
-### 1. Install
+- `server/utils/docs.ts` - Uses `@deno/doc` with custom loader/resolver
+- `server/utils/docs-text.ts` - Extracted text utilities
+- `patches/@jsr__deno__doc@0.189.1.patch` - Node.js compatibility patch
 
-```bash
-pnpm add tsdoc-extractor
-```
+## Verified Working
 
-### 2. Create `server/utils/docs-wasm.ts`
-
-```typescript
-import { doc, defaultResolver } from 'tsdoc-extractor'
-import type { DenoDocNode, DocsGenerationResult } from '#shared/types/deno-doc'
-
-async function getTypesUrl(packageName: string, version: string): Promise<string | null> {
-  const url = `https://esm.sh/${packageName}@${version}`
-  const response = await fetch(url, { method: 'HEAD' })
-  return response.headers.get('x-typescript-types')
-}
-
-function createResolver() {
-  return (specifier: string, referrer: string): string => {
-    if (specifier.startsWith('.')) {
-      return new URL(specifier, referrer).toString()
-    }
-    if (specifier.startsWith('https://esm.sh/')) {
-      return specifier
-    }
-    if (!specifier.startsWith('http')) {
-      return `https://esm.sh/${specifier}`
-    }
-    return defaultResolver(specifier, referrer)
-  }
-}
-
-export async function generateDocsWithWasm(
-  packageName: string,
-  version: string,
-): Promise<DocsGenerationResult | null> {
-  const typesUrl = await getTypesUrl(packageName, version)
-  
-  if (!typesUrl) {
-    return null
-  }
-
-  const nodes = await doc(typesUrl, {
-    resolve: createResolver(),
-  }) as DenoDocNode[]
-
-  if (!nodes || nodes.length === 0) {
-    return null
-  }
-
-  const flattenedNodes = flattenNamespaces(nodes)
-  const mergedSymbols = mergeOverloads(flattenedNodes)
-  const symbolLookup = buildSymbolLookup(flattenedNodes)
-
-  const html = await renderDocNodes(mergedSymbols, symbolLookup)
-  const toc = renderToc(mergedSymbols)
-
-  return { html, toc, nodes: flattenedNodes }
-}
-```
-
-## Limitations
-
-- **WASM from 2023**: Known issues with `export *` re-exports
-- **Rebuild requires Rust**: Need wasm-pack and deno_doc source to update
+- ✅ `ufo@1.5.0` - Generates full docs
+- ✅ `react@19.0.0` - Large package, generates full docs
+- ✅ All 361 tests pass
+- ✅ Dev server runs without errors
 
 ## Pros/Cons
 
-**Pros**: No external dependency, single deployment, faster cold starts
+**Pros**:
 
-**Cons**: Old WASM with known issues, complex packages may fail, 2.8MB bundle increase
+- Single deployment (no microservice)
+- Uses official, maintained `@deno/doc` (latest version)
+- In-process, no network latency
+- 4.7MB WASM loaded once, cached
+
+**Cons**:
+
+- Requires patch for Node.js compatibility (may need updates per version)
+- 4.7MB added to server bundle
+- Patch maintenance burden
+
+## Alternative: Microservice Approach
+
+See `PLAN_MICRO.md` for the microservice approach that runs actual Deno in a separate Vercel project. That approach:
+
+- Requires no patches
+- Has network latency
+- Requires managing two deployments

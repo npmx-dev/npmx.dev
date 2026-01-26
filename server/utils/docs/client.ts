@@ -1,88 +1,170 @@
 /**
- * Deno Integration
+ * Deno Integration (WASM)
  *
- * Functions for running deno doc and processing its output.
- * This is the layer that differs between microservice and WASM implementations.
+ * Uses @deno/doc (WASM build of deno_doc) for documentation generation.
+ * This runs entirely in Node.js without requiring a Deno subprocess.
  *
  * @module server/utils/docs/client
  */
 
-import { execFile } from 'node:child_process'
-import { promisify } from 'node:util'
-import type { DenoDocResult } from '#shared/types/deno-doc'
-
-const execFileAsync = promisify(execFile)
+import { doc } from '@deno/doc'
+import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
 
 // =============================================================================
 // Configuration
 // =============================================================================
 
-/** Timeout for deno doc command in milliseconds (2 minutes) */
-const DENO_DOC_TIMEOUT_MS = 2 * 60 * 1000
-
-/** Maximum buffer size for deno doc output (50MB for large packages like React) */
-const DENO_DOC_MAX_BUFFER = 50 * 1024 * 1024
+/** Timeout for fetching modules in milliseconds */
+const FETCH_TIMEOUT_MS = 30 * 1000
 
 // =============================================================================
-// Deno Integration
+// Main Export
 // =============================================================================
 
-/** Cached promise for deno availability check - computed once on first access */
-let denoCheckPromise: Promise<boolean> | null = null
-
 /**
- * Check if deno is installed (cached after first check).
+ * Get documentation nodes for a package using @deno/doc WASM.
  */
-async function isDenoInstalled(): Promise<boolean> {
-  if (!denoCheckPromise) {
-    denoCheckPromise = execFileAsync('deno', ['--version'], { timeout: 5000 })
-      .then(() => true)
-      .catch(() => false)
+export async function getDocNodes(packageName: string, version: string): Promise<DenoDocResult> {
+  // Get types URL from esm.sh header
+  const typesUrl = await getTypesUrl(packageName, version)
+
+  if (!typesUrl) {
+    return { version: 1, nodes: [] }
   }
-  return denoCheckPromise
+
+  // Generate docs using @deno/doc WASM
+  const result = await doc([typesUrl], {
+    load: createLoader(),
+    resolve: createResolver(),
+  })
+
+  // Collect all nodes from all specifiers
+  const allNodes: DenoDocNode[] = []
+  for (const nodes of Object.values(result)) {
+    allNodes.push(...(nodes as DenoDocNode[]))
+  }
+
+  return { version: 1, nodes: allNodes }
+}
+
+// =============================================================================
+// Module Loading
+// =============================================================================
+
+/** Load response for the doc() function */
+interface LoadResponse {
+  kind: 'module'
+  specifier: string
+  headers?: Record<string, string>
+  content: string
 }
 
 /**
- * Verify that deno is installed and available.
- * @throws {Error} If deno is not installed
+ * Create a custom module loader for @deno/doc.
+ *
+ * Fetches modules from URLs using fetch(), with proper timeout handling.
  */
-export async function verifyDenoInstalled(): Promise<void> {
-  const available = await isDenoInstalled()
-  if (!available) {
-    throw new Error('Deno is not installed. Please install Deno to generate API documentation: https://deno.land')
-  }
-}
+function createLoader(): (
+  specifier: string,
+  isDynamic?: boolean,
+  cacheSetting?: string,
+  checksum?: string,
+) => Promise<LoadResponse | undefined> {
+  return async (
+    specifier: string,
+    _isDynamic?: boolean,
+    _cacheSetting?: string,
+    _checksum?: string,
+  ) => {
+    const url = new URL(specifier)
 
-/**
- * Build esm.sh URL for a package that deno doc can process.
- */
-export function buildEsmShUrl(packageName: string, version: string): string {
-  return `https://esm.sh/${packageName}@${version}?target=deno`
-}
-
-/**
- * Run deno doc and parse the JSON output.
- */
-export async function runDenoDoc(specifier: string): Promise<DenoDocResult> {
-  try {
-    const { stdout } = await execFileAsync(
-      'deno',
-      ['doc', '--json', specifier],
-      {
-        maxBuffer: DENO_DOC_MAX_BUFFER,
-        timeout: DENO_DOC_TIMEOUT_MS,
-      },
-    )
-
-    return JSON.parse(stdout) as DenoDocResult
-  }
-  catch (error) {
-    if (error instanceof Error) {
-      if (error.message.includes('ETIMEDOUT') || error.message.includes('timed out')) {
-        throw new Error(`Deno doc timed out after ${DENO_DOC_TIMEOUT_MS / 1000}s - package may be too large`)
-      }
-      throw new Error(`Deno doc failed: ${error.message}`)
+    // Only handle http/https URLs
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return undefined
     }
-    throw new Error('Deno doc failed with unknown error')
+
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+
+    try {
+      const response = await fetch(url.toString(), {
+        redirect: 'follow',
+        signal: controller.signal,
+      })
+      clearTimeout(timeoutId)
+
+      if (response.status !== 200) {
+        return undefined
+      }
+
+      const content = await response.text()
+      const headers: Record<string, string> = {}
+      for (const [key, value] of response.headers) {
+        headers[key.toLowerCase()] = value
+      }
+
+      return {
+        kind: 'module',
+        specifier: response.url,
+        headers,
+        content,
+      }
+    }
+    catch {
+      clearTimeout(timeoutId)
+      return undefined
+    }
+  }
+}
+
+/**
+ * Create a module resolver for @deno/doc.
+ *
+ * Handles resolving relative imports and esm.sh redirects.
+ */
+function createResolver(): (specifier: string, referrer: string) => string {
+  return (specifier: string, referrer: string) => {
+    // Handle relative imports
+    if (specifier.startsWith('.') || specifier.startsWith('/')) {
+      return new URL(specifier, referrer).toString()
+    }
+
+    // Handle bare specifiers - resolve through esm.sh
+    if (!specifier.startsWith('http://') && !specifier.startsWith('https://')) {
+      // Try to resolve bare specifier relative to esm.sh base
+      const baseUrl = new URL(referrer)
+      if (baseUrl.hostname === 'esm.sh') {
+        return `https://esm.sh/${specifier}`
+      }
+    }
+
+    return specifier
+  }
+}
+
+/**
+ * Get the TypeScript types URL from esm.sh's x-typescript-types header.
+ *
+ * esm.sh serves types URL in the `x-typescript-types` header, not at the main URL.
+ * Example: curl -sI 'https://esm.sh/ufo@1.5.0' returns header:
+ *   x-typescript-types: https://esm.sh/ufo@1.5.0/dist/index.d.ts
+ */
+async function getTypesUrl(packageName: string, version: string): Promise<string | null> {
+  const url = `https://esm.sh/${packageName}@${version}`
+
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+
+  try {
+    const response = await fetch(url, {
+      method: 'HEAD',
+      signal: controller.signal,
+    })
+    clearTimeout(timeoutId)
+    return response.headers.get('x-typescript-types')
+  }
+  catch {
+    clearTimeout(timeoutId)
+    return null
   }
 }

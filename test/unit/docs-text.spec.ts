@@ -17,8 +17,9 @@ describe('escapeHtml', () => {
   })
 
   it('should handle multiple special characters', () => {
-    expect(escapeHtml('<a href="test?a=1&b=2">'))
-      .toBe('&lt;a href=&quot;test?a=1&amp;b=2&quot;&gt;')
+    expect(escapeHtml('<a href="test?a=1&b=2">')).toBe(
+      '&lt;a href=&quot;test?a=1&amp;b=2&quot;&gt;',
+    )
   })
 
   it('should return empty string for empty input', () => {

@@ -93,7 +93,10 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
     <h1 class="sr-only">{{ packageName }} API Documentation</h1>
 
     <!-- Sticky header - positioned below AppHeader -->
-    <header aria-label="Package documentation header" class="docs-header sticky z-10 bg-bg/95 backdrop-blur border-b border-border">
+    <header
+      aria-label="Package documentation header"
+      class="docs-header sticky z-10 bg-bg/95 backdrop-blur border-b border-border"
+    >
       <div class="px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex items-center justify-between gap-4">
           <div class="flex items-center gap-3 min-w-0">
@@ -116,7 +119,9 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
             </span>
           </div>
           <div class="flex items-center gap-3 shrink-0">
-            <span class="text-xs px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+            <span
+              class="text-xs px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+            >
               API Docs
             </span>
           </div>
@@ -257,14 +262,30 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
   @apply text-xs px-2 py-0.5 rounded-full font-medium;
 }
 
-.docs-content .docs-badge--function { @apply bg-blue-500/15 text-blue-400; }
-.docs-content .docs-badge--class { @apply bg-amber-500/15 text-amber-400; }
-.docs-content .docs-badge--interface { @apply bg-emerald-500/15 text-emerald-400; }
-.docs-content .docs-badge--typeAlias { @apply bg-violet-500/15 text-violet-400; }
-.docs-content .docs-badge--variable { @apply bg-orange-500/15 text-orange-400; }
-.docs-content .docs-badge--enum { @apply bg-pink-500/15 text-pink-400; }
-.docs-content .docs-badge--namespace { @apply bg-cyan-500/15 text-cyan-400; }
-.docs-content .docs-badge--async { @apply bg-purple-500/15 text-purple-400; }
+.docs-content .docs-badge--function {
+  @apply bg-blue-500/15 text-blue-400;
+}
+.docs-content .docs-badge--class {
+  @apply bg-amber-500/15 text-amber-400;
+}
+.docs-content .docs-badge--interface {
+  @apply bg-emerald-500/15 text-emerald-400;
+}
+.docs-content .docs-badge--typeAlias {
+  @apply bg-violet-500/15 text-violet-400;
+}
+.docs-content .docs-badge--variable {
+  @apply bg-orange-500/15 text-orange-400;
+}
+.docs-content .docs-badge--enum {
+  @apply bg-pink-500/15 text-pink-400;
+}
+.docs-content .docs-badge--namespace {
+  @apply bg-cyan-500/15 text-cyan-400;
+}
+.docs-content .docs-badge--async {
+  @apply bg-purple-500/15 text-purple-400;
+}
 
 /* Signature code block - now uses Shiki */
 .docs-content .docs-signature {

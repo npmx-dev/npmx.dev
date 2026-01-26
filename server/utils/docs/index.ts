@@ -1,27 +1,27 @@
 /**
  * API Documentation Generator
  *
- * Generates TypeScript API documentation for npm packages using `deno doc`.
+ * Generates TypeScript API documentation for npm packages.
  * Uses esm.sh to resolve package types, which handles @types/* packages automatically.
+ * Uses @deno/doc (WASM build of deno_doc) for documentation generation.
  *
  * @module server/utils/docs
  */
 
 import type { DocsGenerationResult } from '#shared/types/deno-doc'
-import { buildEsmShUrl, runDenoDoc, verifyDenoInstalled } from './client'
+import { getDocNodes } from './client'
 import { buildSymbolLookup, flattenNamespaces, mergeOverloads } from './processing'
 import { renderDocNodes, renderToc } from './render'
 
 /**
  * Generate API documentation for an npm package.
  *
- * Uses `deno doc --json` with esm.sh URLs to extract TypeScript type information
- * and JSDoc comments, then renders them as HTML.
+ * Uses @deno/doc (WASM build of deno_doc) with esm.sh URLs to extract
+ * TypeScript type information and JSDoc comments, then renders them as HTML.
  *
  * @param packageName - The npm package name (e.g., "react", "@types/lodash")
  * @param version - The package version (e.g., "18.2.0")
  * @returns Generated documentation or null if no types are available
- * @throws {Error} If deno is not installed or the command fails
  *
  * @example
  * ```ts
@@ -35,11 +35,8 @@ export async function generateDocsWithDeno(
   packageName: string,
   version: string,
 ): Promise<DocsGenerationResult | null> {
-  // Verify deno is available
-  await verifyDenoInstalled()
-
-  const url = buildEsmShUrl(packageName, version)
-  const result = await runDenoDoc(url)
+  // Get doc nodes using @deno/doc WASM
+  const result = await getDocNodes(packageName, version)
 
   if (!result.nodes || result.nodes.length === 0) {
     return null

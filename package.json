@@ -26,6 +26,7 @@
     "test:unit": "vitest --project unit"
   },
   "dependencies": {
+    "@deno/doc": "jsr:^0.189.1",
     "@iconify-json/simple-icons": "^1.2.67",
     "@iconify-json/vscode-icons": "^1.2.40",
     "@nuxt/a11y": "1.0.0-alpha.1",
@@ -93,6 +94,9 @@
           "estree-walker": "^3.0.3"
         }
       }
+    },
+    "patchedDependencies": {
+      "@jsr/deno__doc@0.189.1": "patches/@jsr__deno__doc@0.189.1.patch"
     }
   },
   "simple-git-hooks": {

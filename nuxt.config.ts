@@ -74,6 +74,7 @@ export default defineNuxtConfig({
         '@shikijs/types',
         '@shikijs/engine-javascript',
         '@shikijs/core',
+        // Note: @deno/doc is NOT inlined - it needs to load WASM from node_modules
       ],
     },
   },

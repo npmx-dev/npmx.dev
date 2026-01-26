@@ -12,7 +12,10 @@ withDefaults(
 </script>
 
 <template>
-  <header aria-label="Site header" class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
+  <header
+    aria-label="Site header"
+    class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border"
+  >
     <nav aria-label="Main navigation" class="container h-14 flex items-center justify-between">
       <NuxtLink
         v-if="showLogo"
