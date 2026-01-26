@@ -34,12 +34,16 @@ function parseMarkdown(text: string): string {
   // Strikethrough: ~~text~~
   html = html.replace(/~~(.+?)~~/g, '<del>$1</del>')
 
-  // Links: [text](url) - only allow http, https, mailto
+  // Links: [text](url) - only allow https, mailto
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, text, url) => {
     const decodedUrl = url.replace(/&amp;/g, '&')
-    if (/^(https?:|mailto:)/i.test(decodedUrl)) {
-      return `<a href="${decodedUrl}" rel="nofollow noreferrer noopener" target="_blank">${text}</a>`
-    }
+    try {
+      const parsed = new URL(decodedUrl)
+      if (['https:', 'mailto:'].includes(parsed.protocol)) {
+        const safeUrl = decodedUrl.replace(/"/g, '&quot;')
+        return `<a href="${safeUrl}" rel="nofollow noreferrer noopener" target="_blank">${text}</a>`
+      }
+    } catch {}
     return `${text} (${url})`
   })
 
