@@ -23,7 +23,7 @@ const emit = defineEmits<{
     class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
     :class="{ 'bg-bg-muted border-border-hover': selected }"
   >
-    <div class="mb-2">
+    <div class="mb-2 flex items-baseline justify-between gap-2">
       <component
         :is="headingLevel ?? 'h3'"
         class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
@@ -39,6 +39,24 @@ const emit = defineEmits<{
           {{ result.package.name }}
         </NuxtLink>
       </component>
+      <!-- Mobile: version next to package name -->
+      <div class="sm:hidden text-fg-subtle flex items-center gap-1.5 shrink-0">
+        <span
+          v-if="result.package.version"
+          class="font-mono text-xs truncate max-w-20"
+          :title="result.package.version"
+        >
+          v{{ result.package.version }}
+        </span>
+        <ProvenanceBadge
+          v-if="result.package.publisher?.trustedPublisher"
+          :provider="result.package.publisher.trustedPublisher.id"
+          :package-name="result.package.name"
+          :version="result.package.version"
+          :linked="false"
+          compact
+        />
+      </div>
     </div>
     <div class="flex justify-between items-start gap-4 sm:gap-8">
       <div class="min-w-0">
@@ -70,12 +88,26 @@ const emit = defineEmits<{
             </div>
           </dl>
         </div>
+        <!-- Mobile: downloads on separate row -->
+        <dl
+          v-if="result.downloads?.weekly"
+          class="sm:hidden flex items-center gap-4 mt-2 text-xs text-fg-subtle m-0"
+        >
+          <div class="flex items-center gap-1.5">
+            <dt class="sr-only">Weekly downloads</dt>
+            <dd class="flex items-center gap-1.5">
+              <span class="i-carbon-chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+              <span class="font-mono">{{ formatNumber(result.downloads.weekly) }}/w</span>
+            </dd>
+          </div>
+        </dl>
       </div>
-      <div class="flex flex-col gap-2 shrink-0">
+      <!-- Desktop: version and downloads on right side -->
+      <div class="hidden sm:flex flex-col gap-2 shrink-0">
         <div class="text-fg-subtle flex items-start gap-2 justify-end">
           <span
             v-if="result.package.version"
-            class="font-mono text-xs truncate max-w-20 sm:max-w-32"
+            class="font-mono text-xs truncate max-w-32"
             :title="result.package.version"
           >
             v{{ result.package.version }}
