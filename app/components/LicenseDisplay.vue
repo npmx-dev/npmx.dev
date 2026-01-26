@@ -28,7 +28,7 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
     </template>
     <span
       v-if="hasAnyValidLicense"
-      class="i-carbon-scales w-3.5 h-3.5 text-fg-subtle flex-shrink-0"
+      class="i-carbon-scales w-3.5 h-3.5 text-fg-subtle flex-shrink-0 inline-block self-center"
       aria-hidden="true"
     />
   </span>
