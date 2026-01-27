@@ -8,4 +8,7 @@ export default defineAppConfig({
       x: '@npmx_dev',
     },
   },
+  llms: {
+    domain: 'https://docs.npmx.dev',
+  },
 })
