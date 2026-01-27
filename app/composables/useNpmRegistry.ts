@@ -8,6 +8,11 @@ import type {
   NpmPerson,
   PackageVersionInfo,
 } from '#shared/types'
+import {
+  liteClient as algoliasearch,
+  type LiteClient,
+  type SearchResponse,
+} from 'algoliasearch/lite'
 import type { ReleaseType } from 'semver'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
 import { isExactVersion } from '~/utils/versions'
@@ -41,15 +46,177 @@ async function fetchCachedPackument(name: string): Promise<Packument | null> {
   return promise
 }
 
+const ALGOLIA_SEARCH = true
+let searchClient: LiteClient
+if (ALGOLIA_SEARCH) {
+  searchClient = algoliasearch('OFCNCOG2CU', 'f54e21fa3a2a0160595bb058179bfb1e')
+}
+
+type SearchOptions = {
+  size?: number
+  from?: number
+  quality?: number
+  popularity?: number
+  maintenance?: number
+}
+
+interface Owner {
+  name: string
+  email?: string
+  avatar?: string
+  link?: string
+}
+
+interface Repo {
+  url: string
+  host: string
+  user: string
+  project: string
+  path: string
+  head?: string
+  branch?: string
+}
+
+interface GithubRepo {
+  user: string
+  project: string
+  path: string
+  head: string
+}
+
+type TsType =
+  | {
+      ts: 'definitely-typed'
+      definitelyTyped: string
+    }
+  | {
+      ts: 'included' | false | { possible: true }
+    }
+
+type ModuleType = 'cjs' | 'esm' | 'none' | 'unknown'
+
+type StyleType = string | 'none'
+
+type ComputedMeta = {
+  computedKeywords: string[]
+  computedMetadata: Record<string, unknown>
+}
+
+type GetUser = {
+  name: string
+  email?: string
+}
+
+type AlgoliaSearchResult = {
+  objectID: string
+  rev: string
+  name: string
+  downloadsLast30Days: number
+  downloadsRatio: number
+  humanDownloadsLast30Days: string
+  jsDelivrHits: number
+  popular: boolean
+  version: string
+  versions: Record<string, string>
+  tags: Record<string, string>
+  description: string | null
+  dependencies: Record<string, string>
+  devDependencies: Record<string, string>
+  originalAuthor?: GetUser
+  repository: Repo | null
+  githubRepo: GithubRepo | null
+  gitHead: string | null
+  readme: string
+  owner: Owner | null
+  deprecated: boolean | string
+  isDeprecated: boolean
+  deprecatedReason: string | null
+  isSecurityHeld: boolean
+  homepage: string | null
+  license: string | null
+  keywords: string[]
+  computedKeywords: ComputedMeta['computedKeywords']
+  computedMetadata: ComputedMeta['computedMetadata']
+  created: number
+  modified: number
+  lastPublisher: Owner | null
+  owners: Owner[]
+  bin: Record<string, string>
+  dependents: number
+  types: TsType
+  moduleTypes: ModuleType[]
+  styleTypes: StyleType[]
+  humanDependents: string
+  changelogFilename: string | null
+  lastCrawl: string
+  _revision: number
+  _searchInternal: {
+    alternativeNames: string[]
+    popularAlternativeNames: string[]
+  }
+}
+
 async function searchNpmPackages(
   query: string,
-  options: {
-    size?: number
-    from?: number
-    quality?: number
-    popularity?: number
-    maintenance?: number
-  } = {},
+  options: SearchOptions = {},
+): Promise<NpmSearchResponse> {
+  if (ALGOLIA_SEARCH) {
+    return searchClient
+      .search([
+        {
+          indexName: 'npm-search',
+          params: {
+            query,
+            hitsPerPage: options.size || 20,
+            page: options.from ? Math.floor(options.from / (options.size || 20)) : 0,
+            filters: '',
+            analyticsTags: ['npmx.dev'],
+          },
+        },
+      ])
+      .then(({ results }) => {
+        const response = results[0] as SearchResponse<AlgoliaSearchResult>
+        return {
+          objects: response.hits.map<NpmSearchResult>(hit => ({
+            package: {
+              name: hit.name,
+              version: hit.version,
+              description: hit.description || '',
+              date: new Date(hit.modified).toISOString(),
+              links: {
+                npm: `https://www.npmjs.com/package/${hit.name}`,
+                homepage: hit.homepage || undefined,
+                repository: hit.repository?.url || undefined,
+              },
+              maintainers: hit.owners
+                ? hit.owners.map(owner => ({
+                    name: owner.name,
+                    email: owner.email,
+                  }))
+                : [],
+            },
+            score: {
+              final: 0,
+              detail: {
+                quality: hit.popular ? 1 : 0,
+                popularity: hit.downloadsRatio,
+                maintenance: 0,
+              },
+            },
+            searchScore: 0,
+            updated: new Date(hit.modified).toISOString(),
+          })),
+          total: response.nbHits!,
+          time: new Date().toISOString(),
+        }
+      })
+  }
+  return await searchNpmPackagesViaRegistry(query, options)
+}
+
+async function searchNpmPackagesViaRegistry(
+  query: string,
+  options: SearchOptions,
 ): Promise<NpmSearchResponse> {
   const params = new URLSearchParams()
   params.set('text', query)

@@ -26,7 +26,8 @@
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
     "want_to_claim": "Want to claim this package name?",
-    "start_typing": "Start typing to search packages"
+    "start_typing": "Start typing to search packages",
+    "algolia_disclaimer": "Search powered by Algolia"
   },
   "nav": {
     "popular_packages": "Popular packages",

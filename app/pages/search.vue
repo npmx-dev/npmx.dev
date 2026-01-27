@@ -139,8 +139,9 @@ onMounted(() => {
   searchInputRef.value?.focus()
 })
 
+const ALGOLIA = true
 // fetch all pages up to current
-const { data: results, status } = useNpmSearch(query, () => ({
+const { data: results, status } = useNpmSearch(ALGOLIA ? inputValue : query, () => ({
   size: pageSize * loadedPages.value,
   from: 0,
 }))
@@ -387,7 +388,9 @@ defineOgImageComponent('Default', {
                   <span class="i-carbon-close-large block w-3.5 h-3.5" aria-hidden="true" />
                 </button>
                 <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
-                <button type="submit" class="sr-only">{{ t('search.button') }}</button>
+                <button type="submit" class="sr-only">
+                  {{ t('search.button') }}
+                </button>
               </div>
             </div>
           </form>
@@ -411,7 +414,9 @@ defineOgImageComponent('Default', {
               <p class="font-mono text-sm text-fg">
                 {{ t('search.not_taken', { name: query }) }}
               </p>
-              <p class="text-xs text-fg-muted mt-0.5">{{ t('search.claim_prompt') }}</p>
+              <p class="text-xs text-fg-muted mt-0.5">
+                {{ t('search.claim_prompt') }}
+              </p>
             </div>
             <button
               type="button"
@@ -425,12 +430,28 @@ defineOgImageComponent('Default', {
           <p
             v-if="visibleResults.total > 0"
             role="status"
-            class="text-fg-muted text-sm mb-6 font-mono"
+            class="text-fg-muted text-sm mb-6 font-mono flex flex-wrap items-center gap-x-2 gap-y-1"
           >
-            {{ t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
-            <span v-if="status === 'pending'" class="text-fg-subtle">{{
-              t('search.updating')
-            }}</span>
+            <span>
+              {{
+                t('search.found_packages', {
+                  count: formatNumber(visibleResults.total),
+                })
+              }}
+              <span v-if="status === 'pending' && !ALGOLIA" class="text-fg-subtle">{{
+                t('search.updating')
+              }}</span>
+            </span>
+            <span v-if="ALGOLIA">
+              <a
+                href="https://www.algolia.com/developers"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="underline hover:text-fg text-xs align-middle ml-2"
+              >
+                {{ t('search.algolia_disclaimer') }}
+              </a>
+            </span>
           </p>
 
           <!-- No results found -->
@@ -442,7 +463,9 @@ defineOgImageComponent('Default', {
             <!-- Offer to claim the package name if it's valid -->
             <div v-if="showClaimPrompt" class="max-w-md mx-auto">
               <div class="p-4 bg-bg-subtle border border-border rounded-lg">
-                <p class="text-sm text-fg-muted mb-3">{{ t('search.want_to_claim') }}</p>
+                <p class="text-sm text-fg-muted mb-3">
+                  {{ t('search.want_to_claim') }}
+                </p>
                 <button
                   type="button"
                   class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
@@ -473,7 +496,9 @@ defineOgImageComponent('Default', {
       </section>
 
       <section v-else class="py-20 text-center">
-        <p class="text-fg-subtle font-mono text-sm">{{ t('search.start_typing') }}</p>
+        <p class="text-fg-subtle font-mono text-sm">
+          {{ t('search.start_typing') }}
+        </p>
       </section>
     </div>
 
