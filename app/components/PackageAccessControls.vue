@@ -164,7 +164,7 @@ watch(
       >
         <span
           class="i-carbon-renew block w-3.5 h-3.5"
-          :class="{ 'animate-spin': isLoadingCollaborators }"
+          :class="{ 'motion-safe:animate-spin': isLoadingCollaborators }"
           aria-hidden="true"
         />
       </button>

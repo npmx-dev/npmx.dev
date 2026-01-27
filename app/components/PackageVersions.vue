@@ -317,7 +317,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
           >
             <span
               v-if="loadingTags.has(row.tag)"
-              class="i-carbon-rotate-180 w-3 h-3 animate-spin"
+              class="i-carbon-rotate-180 w-3 h-3 motion-safe:animate-spin"
+              data-testid="loading-spinner"
               aria-hidden="true"
             />
             <span
@@ -457,7 +458,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
           >
             <span
               v-if="otherVersionsLoading"
-              class="i-carbon-rotate-180 w-3 h-3 animate-spin"
+              class="i-carbon-rotate-180 w-3 h-3 motion-safe:animate-spin"
+              data-testid="loading-spinner"
               aria-hidden="true"
             />
             <span

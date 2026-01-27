@@ -401,7 +401,7 @@ defineOgImageComponent('Package', {
   <main class="container py-8 sm:py-12 overflow-hidden w-full">
     <PackageSkeleton v-if="status === 'pending'" />
 
-    <article v-else-if="status === 'success' && pkg" class="animate-fade-in min-w-0">
+    <article v-else-if="status === 'success' && pkg" class="motion-safe:animate-fade-in min-w-0">
       <!-- Package header -->
       <header class="mb-8 pb-8 border-b border-border">
         <div class="mb-4">
@@ -627,7 +627,7 @@ defineOgImageComponent('Package', {
                 class="inline-flex items-center gap-1 text-fg-subtle"
               >
                 <span
-                  class="i-carbon-circle-dash w-3 h-3 animate-spin motion-reduce:animate-none"
+                  class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
                   aria-hidden="true"
                 />
               </span>

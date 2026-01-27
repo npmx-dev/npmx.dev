@@ -3,7 +3,11 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <article aria-busy="true" :aria-label="t('package.skeleton.loading')" class="animate-fade-in">
+  <article
+    aria-busy="true"
+    :aria-label="t('package.skeleton.loading')"
+    class="motion-safe:animate-fade-in"
+  >
     <!-- Package header - matches header in [...name].vue -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
