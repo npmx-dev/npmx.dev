@@ -108,6 +108,10 @@ const isQueryContinuation = computed(() => {
   return previous && current.startsWith(previous)
 })
 
+const resultsMatchQuery = computed(() => {
+  return previousQuery.value === query.value
+})
+
 // Show cached results while loading if it's a continuation query
 const rawVisibleResults = computed(() => {
   if (status.value === 'pending' && isQueryContinuation.value && cachedResults.value) {
@@ -553,7 +557,10 @@ watch(unifiedSelectedIndex, unified => {
 watch(
   [visibleResults, validatedSuggestions, exactMatchType],
   () => {
-    if (userHasNavigated.value) return
+    if (userHasNavigated.value) {
+      unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value)
+      return
+    }
 
     if (exactMatchType.value === 'package') {
       // Find the exact match package index
@@ -649,6 +656,8 @@ function handleResultsKeydown(e: KeyboardEvent) {
   }
 
   if (e.key === 'Enter') {
+    if (!resultsMatchQuery.value) return
+
     const suggIdx = toSuggestionIndex(unifiedSelectedIndex.value)
     const pkgIdx = toPackageIndex(unifiedSelectedIndex.value)
 
