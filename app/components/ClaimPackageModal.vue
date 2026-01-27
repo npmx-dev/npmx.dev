@@ -8,8 +8,6 @@ const props = defineProps<{
 
 const open = defineModel<boolean>('open', { default: false })
 
-const { t } = useI18n()
-
 const {
   isConnected,
   state,
@@ -34,7 +32,7 @@ async function checkAvailability() {
   try {
     checkResult.value = await checkPackageName(props.packageName)
   } catch (err) {
-    publishError.value = err instanceof Error ? err.message : t('claim.modal.failed_to_check')
+    publishError.value = err instanceof Error ? err.message : $t('claim.modal.failed_to_check')
   } finally {
     isChecking.value = false
   }
@@ -84,7 +82,7 @@ async function handleClaim() {
       connectorModalOpen.value = true
     }
   } catch (err) {
-    publishError.value = err instanceof Error ? err.message : t('claim.modal.failed_to_claim')
+    publishError.value = err instanceof Error ? err.message : $t('claim.modal.failed_to_claim')
   } finally {
     isPublishing.value = false
   }
@@ -171,7 +169,7 @@ const connectorModalOpen = shallowRef(false)
 
             <!-- Loading state -->
             <div v-if="isChecking" class="py-8 text-center">
-              <LoadingSpinner :text="t('claim.modal.checking')" />
+              <LoadingSpinner :text="$t('claim.modal.checking')" />
             </div>
 
             <!-- Success state -->

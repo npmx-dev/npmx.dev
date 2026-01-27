@@ -2,7 +2,6 @@
 import { formatNumber } from '#imports'
 import { debounce } from 'perfect-debounce'
 
-const { t } = useI18n()
 const route = useRoute('~username')
 const router = useRouter()
 
@@ -188,7 +187,7 @@ defineOgImageComponent('Default', {
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">@{{ username }}</h1>
           <p v-if="results?.total" class="text-fg-muted text-sm mt-1">
-            {{ t('org.public_packages', { count: formatNumber(results.total) }, results.total) }}
+            {{ $t('org.public_packages', { count: formatNumber(results.total) }, results.total) }}
           </p>
         </div>
       </div>
@@ -202,7 +201,7 @@ defineOgImageComponent('Default', {
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
         >
           <span class="i-carbon-cube w-4 h-4" />
-          {{ t('common.view_on_npm') }}
+          {{ $t('common.view_on_npm') }}
         </a>
       </nav>
     </header>
@@ -210,36 +209,36 @@ defineOgImageComponent('Default', {
     <!-- Loading state -->
     <LoadingSpinner
       v-if="status === 'pending' && loadedPages === 1"
-      :text="t('common.loading_packages')"
+      :text="$t('common.loading_packages')"
     />
 
     <!-- Error state -->
     <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">
       <p class="text-fg-muted mb-4">
-        {{ error?.message ?? t('user.page.failed_to_load') }}
+        {{ error?.message ?? $t('user.page.failed_to_load') }}
       </p>
-      <NuxtLink to="/" class="btn">{{ t('common.go_back_home') }}</NuxtLink>
+      <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
 
     <!-- Empty state -->
     <div v-else-if="results && results.total === 0" class="py-12 text-center">
       <p class="text-fg-muted font-mono">
-        {{ t('user.page.no_packages') }} <span class="text-fg">@{{ username }}</span>
+        {{ $t('user.page.no_packages') }} <span class="text-fg">@{{ username }}</span>
       </p>
-      <p class="text-fg-subtle text-sm mt-2">{{ t('user.page.no_packages_hint') }}</p>
+      <p class="text-fg-subtle text-sm mt-2">{{ $t('user.page.no_packages_hint') }}</p>
     </div>
 
     <!-- Package list -->
     <section v-else-if="results && packages.length > 0" aria-label="User packages">
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-        {{ t('user.page.packages_title') }}
+        {{ $t('user.page.packages_title') }}
       </h2>
 
       <!-- Filter and sort controls -->
       <PackageListControls
         v-model:filter="filterText"
         v-model:sort="sortOption"
-        :placeholder="t('user.page.filter_placeholder', { count: packageCount })"
+        :placeholder="$t('user.page.filter_placeholder', { count: packageCount })"
         :total-count="packageCount"
         :filtered-count="filteredCount"
       />
@@ -249,7 +248,7 @@ defineOgImageComponent('Default', {
         v-if="filteredAndSortedPackages.length === 0"
         class="text-fg-muted py-8 text-center font-mono"
       >
-        {{ t('user.page.no_match', { query: filterText }) }}
+        {{ $t('user.page.no_match', { query: filterText }) }}
       </p>
 
       <PackageList

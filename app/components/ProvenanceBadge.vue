@@ -12,8 +12,6 @@ const props = defineProps<{
   linked?: boolean
 }>()
 
-const { t } = useI18n()
-
 const providerLabels: Record<string, string> = {
   github: 'GitHub Actions',
   gitlab: 'GitLab CI',
@@ -21,10 +19,10 @@ const providerLabels: Record<string, string> = {
 
 const title = computed(() =>
   props.provider
-    ? t('badges.provenance.verified_via', {
+    ? $t('badges.provenance.verified_via', {
         provider: providerLabels[props.provider] ?? props.provider,
       })
-    : t('badges.provenance.verified_title'),
+    : $t('badges.provenance.verified_title'),
 )
 </script>
 
@@ -42,7 +40,7 @@ const title = computed(() =>
       :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
     />
     <span v-if="!compact" class="sr-only sm:not-sr-only">{{
-      t('badges.provenance.verified')
+      $t('badges.provenance.verified')
     }}</span>
   </a>
   <span
@@ -55,7 +53,7 @@ const title = computed(() =>
       :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
     />
     <span v-if="!compact" class="sr-only sm:not-sr-only">{{
-      t('badges.provenance.verified')
+      $t('badges.provenance.verified')
     }}</span>
   </span>
 </template>

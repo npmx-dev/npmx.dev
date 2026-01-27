@@ -16,3 +16,13 @@ export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
 export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
+
+// Theming
+export const ACCENT_COLORS = {
+  rose: '#e9aeba',
+  amber: '#fbbf24',
+  emerald: '#34d399',
+  sky: '#38bdf8',
+  violet: '#a78bfa',
+  coral: '#fb7185',
+} as const

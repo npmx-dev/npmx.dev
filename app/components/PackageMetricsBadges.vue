@@ -25,19 +25,17 @@ const moduleFormatLabel = computed(() => {
   }
 })
 
-const { t } = useI18n()
-
 const moduleFormatTooltip = computed(() => {
   if (!analysis.value) return ''
   switch (analysis.value.moduleFormat) {
     case 'esm':
-      return t('package.metrics.esm')
+      return $t('package.metrics.esm')
     case 'cjs':
-      return t('package.metrics.cjs')
+      return $t('package.metrics.cjs')
     case 'dual':
-      return t('package.metrics.dual')
+      return $t('package.metrics.dual')
     default:
-      return t('package.metrics.unknown_format')
+      return $t('package.metrics.unknown_format')
   }
 })
 
@@ -50,9 +48,9 @@ const typesTooltip = computed(() => {
   if (!analysis.value) return ''
   switch (analysis.value.types?.kind) {
     case 'included':
-      return t('package.metrics.ts_included')
+      return $t('package.metrics.ts_included')
     case '@types':
-      return t('package.metrics.types_from', { package: analysis.value.types.packageName })
+      return $t('package.metrics.types_from', { package: analysis.value.types.packageName })
     default:
       return ''
   }

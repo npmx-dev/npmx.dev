@@ -122,36 +122,6 @@ function mergeDailyPoints(
     .map(([day, downloads]) => ({ day, downloads }))
 }
 
-function getIsoWeekStartDateFromWeekKey(weekKey: string): Date | null {
-  const match = /^(\d{4})-W(\d{2})$/.exec(weekKey)
-  if (!match) return null
-
-  const year = Number(match[1])
-  const week = Number(match[2])
-
-  const januaryFourth = new Date(Date.UTC(year, 0, 4))
-  const januaryFourthIsoDay = januaryFourth.getUTCDay() || 7
-  const weekOneMonday = new Date(Date.UTC(year, 0, 4 - (januaryFourthIsoDay - 1)))
-
-  const weekMonday = new Date(weekOneMonday)
-  weekMonday.setUTCDate(weekOneMonday.getUTCDate() + (week - 1) * 7)
-  return weekMonday
-}
-
-function toIsoWeekKey(isoDay: string): string {
-  const date = new Date(`${isoDay}T00:00:00.000Z`)
-  const isoDayOfWeek = date.getUTCDay() || 7
-
-  const thursday = new Date(date)
-  thursday.setUTCDate(date.getUTCDate() + 4 - isoDayOfWeek)
-
-  const isoYear = thursday.getUTCFullYear()
-  const isoYearStart = new Date(Date.UTC(isoYear, 0, 1))
-  const weekNumber = Math.ceil(((+thursday - +isoYearStart) / 86400000 + 1) / 7)
-
-  return `${isoYear}-W${String(weekNumber).padStart(2, '0')}`
-}
-
 function buildDailyEvolutionFromDaily(
   daily: Array<{ day: string; downloads: number }>,
 ): DailyDownloadPoint[] {
@@ -161,30 +131,44 @@ function buildDailyEvolutionFromDaily(
     .map(item => ({ day: item.day, downloads: item.downloads }))
 }
 
-function buildWeeklyEvolutionFromDaily(
+function buildRollingWeeklyEvolutionFromDaily(
   daily: Array<{ day: string; downloads: number }>,
+  rangeStartIso: string,
+  rangeEndIso: string,
 ): WeeklyDownloadPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
-  const downloadsByWeekKey = new Map<string, number>()
+  const rangeStartDate = parseIsoDateOnly(rangeStartIso)
+  const rangeEndDate = parseIsoDateOnly(rangeEndIso)
+
+  const groupedByIndex = new Map<number, number>()
 
   for (const item of sorted) {
-    const weekKey = toIsoWeekKey(item.day)
-    downloadsByWeekKey.set(weekKey, (downloadsByWeekKey.get(weekKey) ?? 0) + item.downloads)
+    const itemDate = parseIsoDateOnly(item.day)
+    const dayOffset = Math.floor((itemDate.getTime() - rangeStartDate.getTime()) / 86400000)
+    if (dayOffset < 0) continue
+
+    const weekIndex = Math.floor(dayOffset / 7)
+    groupedByIndex.set(weekIndex, (groupedByIndex.get(weekIndex) ?? 0) + item.downloads)
   }
 
-  return Array.from(downloadsByWeekKey.entries())
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([weekKey, downloads]) => {
-      const weekStartDate = getIsoWeekStartDateFromWeekKey(weekKey)
-      if (!weekStartDate) return { weekKey, downloads, weekStart: '-', weekEnd: '-' }
-
+  return Array.from(groupedByIndex.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([weekIndex, downloads]) => {
+      const weekStartDate = addDays(rangeStartDate, weekIndex * 7)
       const weekEndDate = addDays(weekStartDate, 6)
 
+      // Clamp weekEnd to the actual data range end date
+      const clampedWeekEndDate =
+        weekEndDate.getTime() > rangeEndDate.getTime() ? rangeEndDate : weekEndDate
+
+      const weekStartIso = toIsoDateString(weekStartDate)
+      const weekEndIso = toIsoDateString(clampedWeekEndDate)
+
       return {
-        weekKey,
         downloads,
-        weekStart: toIsoDateString(weekStartDate),
-        weekEnd: toIsoDateString(weekEndDate),
+        weekKey: `${weekStartIso}_${weekEndIso}`,
+        weekStart: weekStartIso,
+        weekEnd: weekEndIso,
       }
     })
 }
@@ -341,6 +325,9 @@ export function useCharts() {
       )
     } else if (downloadEvolutionOptions.granularity === 'week') {
       const weekCount = downloadEvolutionOptions.weeks ?? 52
+
+      // Full rolling weeks ending on `end` (yesterday by default)
+      // Range length is exactly weekCount * 7 days (inclusive)
       start = addDays(end, -(weekCount * 7) + 1)
     } else {
       start = addDays(end, -30 + 1)
@@ -362,14 +349,14 @@ export function useCharts() {
 
     const { start, end } = resolveDateRange(resolvedOptions, resolvedCreatedIso)
 
-    const sortedDaily = await fetchDailyRangeChunked(
-      resolvedPackageName,
-      toIsoDateString(start),
-      toIsoDateString(end),
-    )
+    const startIso = toIsoDateString(start)
+    const endIso = toIsoDateString(end)
+
+    const sortedDaily = await fetchDailyRangeChunked(resolvedPackageName, startIso, endIso)
 
     if (resolvedOptions.granularity === 'day') return buildDailyEvolutionFromDaily(sortedDaily)
-    if (resolvedOptions.granularity === 'week') return buildWeeklyEvolutionFromDaily(sortedDaily)
+    if (resolvedOptions.granularity === 'week')
+      return buildRollingWeeklyEvolutionFromDaily(sortedDaily, startIso, endIso)
     if (resolvedOptions.granularity === 'month') return buildMonthlyEvolutionFromDaily(sortedDaily)
     return buildYearlyEvolutionFromDaily(sortedDaily)
   }

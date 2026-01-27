@@ -782,7 +782,7 @@ describe('PackageVersions', () => {
 
       // Should show loading spinner (animate-spin class)
       await vi.waitFor(() => {
-        expect(component.find('.animate-spin').exists()).toBe(true)
+        expect(component.find('[data-testid="loading-spinner"]').exists()).toBe(true)
       })
 
       // Resolve the promise to clean up
@@ -816,7 +816,7 @@ describe('PackageVersions', () => {
 
       // Should show loading spinner
       await vi.waitFor(() => {
-        expect(component.find('.animate-spin').exists()).toBe(true)
+        expect(component.find('[data-testid="loading-spinner"]').exists()).toBe(true)
       })
 
       // Resolve the promise to clean up

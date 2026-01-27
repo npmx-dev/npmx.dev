@@ -10,8 +10,6 @@ import {
 } from '~/utils/versions'
 import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
 
-const { t } = useI18n()
-
 const props = defineProps<{
   packageName: string
   versions: Record<string, PackumentVersion>
@@ -317,7 +315,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
           >
             <span
               v-if="loadingTags.has(row.tag)"
-              class="i-carbon-rotate-180 w-3 h-3 animate-spin"
+              class="i-carbon-rotate-180 w-3 h-3 motion-safe:animate-spin"
+              data-testid="loading-spinner"
               aria-hidden="true"
             />
             <span
@@ -344,7 +343,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :title="
                   row.primaryVersion.deprecated
-                    ? t('package.versions.deprecated_title', {
+                    ? $t('package.versions.deprecated_title', {
                         version: row.primaryVersion.version,
                       })
                     : row.primaryVersion.version
@@ -399,7 +398,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :title="
                   v.deprecated
-                    ? t('package.versions.deprecated_title', { version: v.version })
+                    ? $t('package.versions.deprecated_title', { version: v.version })
                     : v.version
                 "
               >
@@ -457,7 +456,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
           >
             <span
               v-if="otherVersionsLoading"
-              class="i-carbon-rotate-180 w-3 h-3 animate-spin"
+              class="i-carbon-rotate-180 w-3 h-3 motion-safe:animate-spin"
+              data-testid="loading-spinner"
               aria-hidden="true"
             />
             <span
@@ -490,7 +490,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :title="
                   row.primaryVersion.deprecated
-                    ? t('package.versions.deprecated_title', {
+                    ? $t('package.versions.deprecated_title', {
                         version: row.primaryVersion.version,
                       })
                     : row.primaryVersion.version
@@ -560,7 +560,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       "
                       :title="
                         group.versions[0]?.deprecated
-                          ? t('package.versions.deprecated_title', {
+                          ? $t('package.versions.deprecated_title', {
                               version: group.versions[0]?.version,
                             })
                           : group.versions[0]?.version
@@ -616,7 +616,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       "
                       :title="
                         group.versions[0]?.deprecated
-                          ? t('package.versions.deprecated_title', {
+                          ? $t('package.versions.deprecated_title', {
                               version: group.versions[0]?.version,
                             })
                           : group.versions[0]?.version
@@ -670,7 +670,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       "
                       :title="
                         v.deprecated
-                          ? t('package.versions.deprecated_title', { version: v.version })
+                          ? $t('package.versions.deprecated_title', { version: v.version })
                           : v.version
                       "
                     >
