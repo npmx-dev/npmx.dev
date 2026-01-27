@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   /** The search result object containing package data */
   result: NpmSearchResult
   /** Heading level for the package name (h2 for search, h3 for lists) */
@@ -9,7 +9,17 @@ defineProps<{
   prefetch?: boolean
   selected?: boolean
   index?: number
+  /** Search query for highlighting exact matches */
+  searchQuery?: string
 }>()
+
+/** Check if this package is an exact match for the search query */
+const isExactMatch = computed(() => {
+  if (!props.searchQuery) return false
+  const query = props.searchQuery.trim().toLowerCase()
+  const name = props.result.package.name.toLowerCase()
+  return query === name
+})
 
 const emit = defineEmits<{
   focus: [index: number]
@@ -19,8 +29,17 @@ const emit = defineEmits<{
 <template>
   <article
     class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
-    :class="{ 'bg-bg-muted border-border-hover': selected }"
+    :class="{
+      'bg-bg-muted border-border-hover': selected,
+      'border-accent/30 bg-accent/5': isExactMatch,
+    }"
   >
+    <!-- Glow effect for exact matches -->
+    <div
+      v-if="isExactMatch"
+      class="absolute -inset-px rounded-lg bg-gradient-to-r from-accent/0 via-accent/20 to-accent/0 opacity-100 blur-sm -z-1 pointer-events-none motion-reduce:opacity-50"
+      aria-hidden="true"
+    />
     <div class="mb-2 flex items-baseline justify-between gap-2">
       <component
         :is="headingLevel ?? 'h3'"
@@ -37,6 +56,13 @@ const emit = defineEmits<{
           {{ result.package.name }}
         </NuxtLink>
       </component>
+      <!-- Exact match badge -->
+      <span
+        v-if="isExactMatch"
+        class="shrink-0 text-xs px-1.5 py-0.5 rounded bg-accent/20 border border-accent/30 text-accent font-mono"
+      >
+        {{ $t('search.exact_match') }}
+      </span>
       <!-- Mobile: version next to package name -->
       <div class="sm:hidden text-fg-subtle flex items-center gap-1.5 shrink-0">
         <span

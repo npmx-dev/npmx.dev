@@ -26,7 +26,14 @@
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
     "want_to_claim": "Want to claim this package name?",
-    "start_typing": "Start typing to search packages"
+    "start_typing": "Start typing to search packages",
+    "exact_match": "exact",
+    "suggestion": {
+      "user": "user",
+      "org": "org",
+      "view_user_packages": "View packages by this user",
+      "view_org_packages": "View packages by this organization"
+    }
   },
   "nav": {
     "popular_packages": "Popular packages",
