@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { NpmVersionDist, PackumentVersion, ReadmeResponse } from '#shared/types'
+import { joinURL } from 'ufo'
+import type { PackumentVersion, NpmVersionDist, ReadmeResponse } from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
-import { onKeyStroke } from '@vueuse/core'
-import { joinURL } from 'ufo'
-import { areUrlsEquivalent } from '#shared/utils/url'
 
 definePageMeta({
   name: 'package',
@@ -12,8 +10,6 @@ definePageMeta({
 })
 
 const route = useRoute('package')
-
-const router = useRouter()
 
 // Parse package name and optional version from URL
 // Patterns:
@@ -206,15 +202,7 @@ const repoProviderIcon = computed(() => {
 })
 
 const homepageUrl = computed(() => {
-  const homepage = displayVersion.value?.homepage
-  if (!homepage) return null
-
-  // Don't show homepage if it's the same as the repository URL
-  if (repositoryUrl.value && areUrlsEquivalent(homepage, repositoryUrl.value)) {
-    return null
-  }
-
-  return homepage
+  return displayVersion.value?.homepage ?? null
 })
 
 function normalizeGitUrl(url: string): string {
@@ -321,17 +309,6 @@ useHead({
 useSeoMeta({
   title: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
   description: () => pkg.value?.description ?? '',
-})
-
-onKeyStroke('.', () => {
-  if (pkg.value && displayVersion.value) {
-    router.push({
-      name: 'code',
-      params: {
-        path: [pkg.value.name, 'v', displayVersion.value.version],
-      },
-    })
-  }
 })
 
 defineOgImageComponent('Package', {
@@ -679,15 +656,9 @@ defineOgImageComponent('Package', {
                   params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
                 }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-                aria-keyshortcuts="."
               >
+                <span class="i-carbon-code w-4 h-4" aria-hidden="true" />
                 code
-                <kbd
-                  class="hidden sm:inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                  aria-hidden="true"
-                >
-                  .
-                </kbd>
               </NuxtLink>
             </li>
           </ul>
