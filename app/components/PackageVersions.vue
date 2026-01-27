@@ -10,6 +10,8 @@ import {
 } from '~/utils/versions'
 import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
 
+const { t } = useI18n()
+
 const props = defineProps<{
   packageName: string
   versions: Record<string, PackumentVersion>
@@ -293,7 +295,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
 <template>
   <section v-if="allTagRows.length > 0" aria-labelledby="versions-heading" class="overflow-hidden">
     <h2 id="versions-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-      Versions
+      {{ $t('package.versions.title') }}
     </h2>
 
     <div class="space-y-0.5 min-w-0">
@@ -306,7 +308,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
             type="button"
             class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors"
             :aria-expanded="expandedTags.has(row.tag)"
-            :aria-label="expandedTags.has(row.tag) ? `Collapse ${row.tag}` : `Expand ${row.tag}`"
+            :aria-label="
+              expandedTags.has(row.tag)
+                ? $t('package.versions.collapse', { tag: row.tag })
+                : $t('package.versions.expand', { tag: row.tag })
+            "
             @click="expandTagRow(row.tag)"
           >
             <span
@@ -336,7 +342,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :title="
                   row.primaryVersion.deprecated
-                    ? `${row.primaryVersion.version} (deprecated)`
+                    ? t('package.versions.deprecated_title', {
+                        version: row.primaryVersion.version,
+                      })
                     : row.primaryVersion.version
                 "
               >
@@ -387,7 +395,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     ? 'text-red-400 hover:text-red-300'
                     : 'text-fg-subtle hover:text-fg-muted'
                 "
-                :title="v.deprecated ? `${v.version} (deprecated)` : v.version"
+                :title="
+                  v.deprecated
+                    ? t('package.versions.deprecated_title', { version: v.version })
+                    : v.version
+                "
               >
                 {{ v.version }}
               </NuxtLink>
@@ -444,9 +456,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
             />
           </span>
           <span class="text-xs text-fg-muted py-1.5">
-            Other versions
+            {{ $t('package.versions.other_versions') }}
             <span v-if="hiddenTagRows.length > 0" class="text-fg-subtle">
-              ({{ hiddenTagRows.length }} more tagged)
+              ({{ $t('package.versions.more_tagged', { count: hiddenTagRows.length }) }})
             </span>
           </span>
         </button>
@@ -466,7 +478,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :title="
                   row.primaryVersion.deprecated
-                    ? `${row.primaryVersion.version} (deprecated)`
+                    ? t('package.versions.deprecated_title', {
+                        version: row.primaryVersion.version,
+                      })
                     : row.primaryVersion.version
                 "
               >
@@ -552,7 +566,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     "
                     :title="
                       group.versions[0].deprecated
-                        ? `${group.versions[0].version} (deprecated)`
+                        ? t('package.versions.deprecated_title', {
+                            version: group.versions[0].version,
+                          })
                         : group.versions[0].version
                     "
                   >
@@ -585,7 +601,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           ? 'text-red-400 hover:text-red-300'
                           : 'text-fg-subtle hover:text-fg-muted'
                       "
-                      :title="v.deprecated ? `${v.version} (deprecated)` : v.version"
+                      :title="
+                        v.deprecated
+                          ? t('package.versions.deprecated_title', { version: v.version })
+                          : v.version
+                      "
                     >
                       {{ v.version }}
                     </NuxtLink>
@@ -623,7 +643,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
             v-else-if="hasLoadedAll && hiddenTagRows.length === 0"
             class="py-1 text-xs text-fg-subtle"
           >
-            All versions are covered by tags above
+            {{ $t('package.versions.all_covered') }}
           </div>
         </div>
       </div>

@@ -10,10 +10,10 @@ function handleSearch() {
   })
 }
 
+const { t } = useI18n()
 useSeoMeta({
-  title: 'npmx - Package Browser for the npm Registry',
-  description:
-    'A better browser for the npm registry. Search, browse, and explore packages with a modern interface.',
+  title: () => t('seo.home.title'),
+  description: () => t('seo.home.description'),
 })
 
 defineOgImageComponent('Default')
@@ -34,7 +34,7 @@ defineOgImageComponent('Default')
         class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 animate-slide-up animate-fill-both"
         style="animation-delay: 0.1s"
       >
-        a better browser for the npm registry
+        {{ $t('tagline') }}
       </p>
 
       <!-- Search form with micro-interactions -->
@@ -43,7 +43,9 @@ defineOgImageComponent('Default')
         style="animation-delay: 0.2s"
       >
         <form role="search" class="relative" @submit.prevent="handleSearch">
-          <label for="home-search" class="sr-only">Search npm packages</label>
+          <label for="home-search" class="sr-only">
+            {{ $t('search.label') }}
+          </label>
 
           <!-- Search input with glow effect on focus -->
           <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
@@ -64,7 +66,7 @@ defineOgImageComponent('Default')
                 v-model="searchQuery"
                 type="search"
                 name="q"
-                placeholder="search packages..."
+                :placeholder="$t('search.placeholder')"
                 autocomplete="off"
                 class="w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-all duration-300 focus:(border-border-hover outline-none)"
                 @input="handleSearch"
@@ -76,7 +78,7 @@ defineOgImageComponent('Default')
                 type="submit"
                 class="absolute right-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 active:scale-95"
               >
-                search
+                {{ $t('search.button') }}
               </button>
             </div>
           </div>
@@ -86,7 +88,7 @@ defineOgImageComponent('Default')
 
     <!-- Popular packages -->
     <nav
-      aria-label="Popular packages"
+      :aria-label="$t('nav.popular_packages')"
       class="pb-20 text-center animate-fade-in animate-fill-both"
       style="animation-delay: 0.3s"
     >

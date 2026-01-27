@@ -110,7 +110,7 @@ function focusMenuItem(index: number) {
 <template>
   <section v-if="links.length > 0" aria-labelledby="playgrounds-heading">
     <h2 id="playgrounds-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-      Try it out
+      {{ $t('package.playgrounds.title') }}
     </h2>
 
     <div ref="dropdownRef" class="relative">
@@ -142,7 +142,9 @@ function focusMenuItem(index: number) {
       >
         <span class="flex items-center gap-2">
           <span class="i-carbon-play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
-          <span class="text-fg-muted">choose playground ({{ links.length }})</span>
+          <span class="text-fg-muted"
+            >{{ $t('package.playgrounds.choose') }} ({{ links.length }})</span
+          >
         </span>
         <span
           class="i-carbon-chevron-down w-3 h-3 text-fg-subtle transition-transform duration-200 motion-reduce:transition-none"
