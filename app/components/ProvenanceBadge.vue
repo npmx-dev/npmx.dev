@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   /** Provider ID (e.g., "github", "gitlab") */
   provider?: string
   /** Package name for linking to npmjs.com provenance page */
@@ -12,10 +12,20 @@ defineProps<{
   linked?: boolean
 }>()
 
+const { t } = useI18n()
+
 const providerLabels: Record<string, string> = {
   github: 'GitHub Actions',
   gitlab: 'GitLab CI',
 }
+
+const title = computed(() =>
+  props.provider
+    ? t('badges.provenance.verified_via', {
+        provider: providerLabels[props.provider] ?? props.provider,
+      })
+    : t('badges.provenance.verified_title'),
+)
 </script>
 
 <template>
@@ -25,31 +35,27 @@ const providerLabels: Record<string, string> = {
     target="_blank"
     rel="noopener noreferrer"
     class="inline-flex items-center justify-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
-    :title="
-      provider
-        ? `Verified: published via ${providerLabels[provider] ?? provider}`
-        : 'Verified provenance'
-    "
+    :title="title"
   >
     <span
       class="i-solar-shield-check-outline shrink-0"
       :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
     />
-    <span v-if="!compact" class="sr-only sm:not-sr-only">verified</span>
+    <span v-if="!compact" class="sr-only sm:not-sr-only">{{
+      t('badges.provenance.verified')
+    }}</span>
   </a>
   <span
     v-else
     class="inline-flex items-center gap-1 text-xs font-mono text-fg-muted"
-    :title="
-      provider
-        ? `Verified: published via ${providerLabels[provider] ?? provider}`
-        : 'Verified provenance'
-    "
+    :title="title"
   >
     <span
       class="i-solar-shield-check-outline shrink-0"
       :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
     />
-    <span v-if="!compact" class="sr-only sm:not-sr-only">verified</span>
+    <span v-if="!compact" class="sr-only sm:not-sr-only">{{
+      t('badges.provenance.verified')
+    }}</span>
   </span>
 </template>

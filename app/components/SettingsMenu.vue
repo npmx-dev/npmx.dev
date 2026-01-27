@@ -2,6 +2,11 @@
 import { onKeyStroke, onClickOutside } from '@vueuse/core'
 
 const { settings } = useSettings()
+const { locale, locales, setLocale } = useI18n()
+
+const availableLocales = computed(() =>
+  locales.value.map(l => (typeof l === 'string' ? { code: l, name: l } : l)),
+)
 
 const isOpen = ref(false)
 const menuRef = useTemplateRef('menuRef')
@@ -127,6 +132,36 @@ onKeyStroke(',', e => {
               />
             </span>
           </button>
+
+          <!-- Language selector -->
+          <div class="pt-2 mt-2 border-t border-border">
+            <div class="px-2 py-1">
+              <label for="language-select" class="text-xs text-fg-subtle uppercase tracking-wider">
+                {{ $t('settings.language') }}
+              </label>
+            </div>
+            <div class="px-2 py-1">
+              <select
+                id="language-select"
+                :value="locale"
+                class="w-full bg-bg-muted border border-border rounded-md px-2 py-1.5 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-fg/50 cursor-pointer"
+                @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
+              >
+                <option v-for="loc in availableLocales" :key="loc.code" :value="loc.code">
+                  {{ loc.name }}
+                </option>
+              </select>
+            </div>
+            <a
+              href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center gap-1.5 px-2 py-1.5 text-xs text-fg-muted hover:text-fg transition-colors"
+            >
+              <span class="i-carbon-translate w-3.5 h-3.5" aria-hidden="true" />
+              {{ $t('settings.help_translate') }}
+            </a>
+          </div>
         </div>
       </div>
     </Transition>

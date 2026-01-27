@@ -25,17 +25,19 @@ const moduleFormatLabel = computed(() => {
   }
 })
 
+const { t } = useI18n()
+
 const moduleFormatTooltip = computed(() => {
   if (!analysis.value) return ''
   switch (analysis.value.moduleFormat) {
     case 'esm':
-      return 'ES Modules only'
+      return t('package.metrics.esm')
     case 'cjs':
-      return 'CommonJS only'
+      return t('package.metrics.cjs')
     case 'dual':
-      return 'Supports both CommonJS and ES Modules'
+      return t('package.metrics.dual')
     default:
-      return 'Unknown module format'
+      return t('package.metrics.unknown_format')
   }
 })
 
@@ -48,9 +50,9 @@ const typesTooltip = computed(() => {
   if (!analysis.value) return ''
   switch (analysis.value.types?.kind) {
     case 'included':
-      return 'TypeScript types included'
+      return t('package.metrics.ts_included')
     case '@types':
-      return `Types from ${analysis.value.types.packageName}`
+      return t('package.metrics.types_from', { package: analysis.value.types.packageName })
     default:
       return ''
   }

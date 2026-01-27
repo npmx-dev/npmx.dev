@@ -5,6 +5,8 @@ import type {
   PackageFileContentResponse,
 } from '#shared/types'
 
+const { t } = useI18n()
+
 definePageMeta({
   name: 'code',
   alias: ['/package/code/:path(.*)*'],
@@ -306,7 +308,7 @@ useSeoMeta({
           </NuxtLink>
           <!-- Version selector -->
           <div v-if="version && availableVersions.length > 0" class="relative shrink-0">
-            <label for="version-select" class="sr-only">Select version</label>
+            <label for="version-select" class="sr-only">{{ t('code.select_version') }}</label>
             <select
               id="version-select"
               :value="version"
@@ -343,9 +345,9 @@ useSeoMeta({
             :to="getCodeUrl()"
             class="text-fg-muted hover:text-fg transition-colors shrink-0"
           >
-            root
+            {{ t('code.root') }}
           </NuxtLink>
-          <span v-else class="text-fg shrink-0">root</span>
+          <span v-else class="text-fg shrink-0">{{ t('code.root') }}</span>
           <template v-for="(crumb, i) in breadcrumbs" :key="crumb.path">
             <span class="text-fg-subtle">/</span>
             <NuxtLink
@@ -363,20 +365,20 @@ useSeoMeta({
 
     <!-- Error: no version -->
     <div v-if="!version" class="container py-20 text-center">
-      <p class="text-fg-muted mb-4">Version is required to browse code</p>
-      <NuxtLink :to="packageRoute()" class="btn"> Go to package </NuxtLink>
+      <p class="text-fg-muted mb-4">{{ t('code.version_required') }}</p>
+      <NuxtLink :to="packageRoute()" class="btn">{{ t('code.go_to_package') }}</NuxtLink>
     </div>
 
     <!-- Loading state -->
     <div v-else-if="treeStatus === 'pending'" class="container py-20 text-center">
       <div class="i-svg-spinners-ring-resize w-8 h-8 mx-auto text-fg-muted" />
-      <p class="mt-4 text-fg-muted">Loading file tree...</p>
+      <p class="mt-4 text-fg-muted">{{ t('code.loading_tree') }}</p>
     </div>
 
     <!-- Error state -->
     <div v-else-if="treeStatus === 'error'" class="container py-20 text-center" role="alert">
-      <p class="text-fg-muted mb-4">Failed to load files for this package version</p>
-      <NuxtLink :to="packageRoute(version)" class="btn"> Back to package </NuxtLink>
+      <p class="text-fg-muted mb-4">{{ t('code.failed_to_load_tree') }}</p>
+      <NuxtLink :to="packageRoute(version)" class="btn">{{ t('code.back_to_package') }}</NuxtLink>
     </div>
 
     <!-- Main content: file tree + file viewer -->
@@ -414,7 +416,7 @@ useSeoMeta({
                 class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors"
                 @click="copyPermalink"
               >
-                Copy link
+                {{ t('code.copy_link') }}
               </button>
               <a
                 :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
@@ -422,7 +424,7 @@ useSeoMeta({
                 rel="noopener noreferrer"
                 class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1"
               >
-                Raw
+                {{ t('code.raw') }}
                 <span class="i-carbon-launch w-3 h-3" />
               </a>
             </div>
@@ -438,10 +440,9 @@ useSeoMeta({
         <!-- File too large warning -->
         <div v-else-if="isViewingFile && isFileTooLarge" class="py-20 text-center">
           <div class="i-carbon-document w-12 h-12 mx-auto text-fg-subtle mb-4" />
-          <p class="text-fg-muted mb-2">File too large to preview</p>
+          <p class="text-fg-muted mb-2">{{ t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
-            {{ formatBytes(currentNode?.size ?? 0) }} exceeds the 500KB limit for syntax
-            highlighting
+            {{ t('code.file_size_warning', { size: formatBytes(currentNode?.size ?? 0) }) }}
           </p>
           <a
             :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
@@ -449,7 +450,7 @@ useSeoMeta({
             rel="noopener noreferrer"
             class="btn inline-flex items-center gap-2"
           >
-            View raw file
+            {{ t('code.view_raw') }}
             <span class="i-carbon-launch w-4 h-4" />
           </a>
         </div>
@@ -459,7 +460,7 @@ useSeoMeta({
           v-else-if="filePath && fileStatus === 'pending'"
           class="flex min-h-full"
           aria-busy="true"
-          aria-label="Loading file content"
+          :aria-label="t('common.loading')"
         >
           <!-- Fake line numbers column -->
           <div class="shrink-0 bg-bg-subtle border-r border-border w-14 py-0">
@@ -495,15 +496,15 @@ useSeoMeta({
         <!-- Error loading file -->
         <div v-else-if="filePath && fileStatus === 'error'" class="py-20 text-center" role="alert">
           <div class="i-carbon-warning-alt w-8 h-8 mx-auto text-fg-subtle mb-4" />
-          <p class="text-fg-muted mb-2">Failed to load file</p>
-          <p class="text-fg-subtle text-sm mb-4">The file may be too large or unavailable</p>
+          <p class="text-fg-muted mb-2">{{ t('code.failed_to_load') }}</p>
+          <p class="text-fg-subtle text-sm mb-4">{{ t('code.unavailable_hint') }}</p>
           <a
             :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
             target="_blank"
             rel="noopener noreferrer"
             class="btn inline-flex items-center gap-2"
           >
-            View raw file
+            {{ t('code.view_raw') }}
             <span class="i-carbon-launch w-4 h-4" />
           </a>
         </div>

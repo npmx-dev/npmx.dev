@@ -48,15 +48,15 @@ function formatBytes(bytes: number): string {
   <div class="directory-listing">
     <!-- Empty state -->
     <div v-if="currentContents.length === 0" class="py-20 text-center text-fg-muted">
-      <p>No files in this directory</p>
+      <p>{{ $t('code.no_files') }}</p>
     </div>
 
     <!-- File list -->
     <table v-else class="w-full">
       <thead class="sr-only">
         <tr>
-          <th>Name</th>
-          <th>Size</th>
+          <th>{{ $t('code.table.name') }}</th>
+          <th>{{ $t('code.table.size') }}</th>
         </tr>
       </thead>
       <tbody>
