@@ -89,9 +89,8 @@ if (import.meta.client) {
   --border-subtle: oklch(0.239 0 0);
   --border-hover: oklch(0.371 0 0);
 
-  /* user selected accent */
-  --accent: oklch(1 0 0);
-  --accent-muted: oklch(0.922 0 0);
+  --accent: var(--accent-color, oklch(1 0 0));
+  --accent-muted: var(--accent-color, oklch(0.922 0 0));
 
   --syntax-fn: oklch(0.727 0.137 299.149);
   --syntax-str: oklch(0.829 0.088 252.458);
@@ -113,8 +112,8 @@ if (import.meta.client) {
   --border-subtle: oklch(0.922 0 0);
   --border-hover: oklch(0.715 0 0);
 
-  --accent: oklch(0.145 0 0);
-  --accent-muted: oklch(0.205 0 0);
+  --accent: var(--accent-color, oklch(0.145 0 0));
+  --accent-muted: var(--accent-color, oklch(0.205 0 0));
 
   --syntax-fn: oklch(0.502 0.188 294.988);
   --syntax-str: oklch(0.54 0.191 257.481);
