@@ -354,6 +354,25 @@ export async function renderReadmeHtml(
         }
         return { tagName, attribs }
       },
+      source: (tagName, attribs) => {
+        if (attribs.src) {
+          attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)
+        }
+        if (attribs.srcset) {
+          attribs.srcset = attribs.srcset
+            .split(',')
+            .map(entry => {
+              const parts = entry.trim().split(/\s+/)
+              const url = parts[0]
+              if (!url) return entry.trim()
+              const descriptor = parts[1]
+              const resolvedUrl = resolveImageUrl(url, packageName, repoInfo)
+              return descriptor ? `${resolvedUrl} ${descriptor}` : resolvedUrl
+            })
+            .join(', ')
+        }
+        return { tagName, attribs }
+      },
       a: (tagName, attribs) => {
         // Add security attributes for external links
         if (attribs.href && hasProtocol(attribs.href, { acceptRelative: true })) {
