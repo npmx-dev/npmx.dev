@@ -1,5 +1,11 @@
 <script setup lang="ts">
 const open = defineModel<boolean>('open', { default: false })
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') {
+    open.value = false
+  }
+}
 </script>
 
 <template>
@@ -10,7 +16,11 @@ const open = defineModel<boolean>('open', { default: false })
       enter-from-class="opacity-0"
       leave-to-class="opacity-0"
     >
-      <div v-if="open" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div
+        v-if="open"
+        class="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4"
+        @keydown="handleKeydown"
+      >
         <!-- Backdrop -->
         <button
           type="button"
@@ -20,14 +30,14 @@ const open = defineModel<boolean>('open', { default: false })
         />
 
         <div
-          class="relative w-full bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain max-w-3xl"
+          class="relative w-full h-full sm:h-auto bg-bg sm:border sm:border-border sm:rounded-lg shadow-xl sm:max-h-[90vh] overflow-y-auto overscroll-contain sm:max-w-3xl"
           role="dialog"
           aria-modal="true"
-          aria-labelledby="package-download-stats"
+          aria-labelledby="chart-modal-title"
         >
-          <div class="p-6">
-            <div class="flex items-center justify-between mb-6">
-              <h2 id="package-download-stats" class="font-mono text-lg font-medium">
+          <div class="p-4 sm:p-6">
+            <div class="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 id="chart-modal-title" class="font-mono text-lg font-medium">
                 <slot name="title" />
               </h2>
               <button
@@ -39,7 +49,7 @@ const open = defineModel<boolean>('open', { default: false })
                 <span class="i-carbon-close block w-5 h-5" aria-hidden="true" />
               </button>
             </div>
-            <div class="flex items-center font-mono text-sm">
+            <div class="font-mono text-sm">
               <slot />
             </div>
           </div>

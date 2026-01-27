@@ -4,6 +4,8 @@ import type { VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn } from '@vueuse/core'
 
+const { t } = useI18n()
+
 const {
   weeklyDownloads,
   inModal = false,
@@ -195,7 +197,7 @@ function initDateRangeFallbackClient() {
 }
 
 watch(
-  () => weeklyDownloads,
+  () => weeklyDownloads?.length,
   () => {
     initDateRangeFromWeekly()
     initDateRangeFallbackClient()
@@ -323,6 +325,9 @@ async function load() {
 
     evolution.value = (result as EvolutionData) ?? []
     displayedGranularity.value = selectedGranularity.value
+  } catch {
+    if (currentToken !== requestToken) return
+    evolution.value = []
   } finally {
     if (currentToken === requestToken) {
       pending.value = false
@@ -393,7 +398,7 @@ const config = computed(() => ({
     grid: {
       labels: {
         axis: {
-          yLabel: `${selectedGranularity.value} downloads`,
+          yLabel: t('package.downloads.y_axis_label', { granularity: selectedGranularity.value }),
           xLabel: packageName,
           yLabelOffsetX: 12,
           fontSize: 24,
@@ -453,141 +458,170 @@ const config = computed(() => ({
 
 <template>
   <div class="w-full relative">
-    <div class="w-full mb-2 flex flex-col gap-2">
-      <div class="w-full grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-2">
-        <div class="flex gap-2">
-          <!-- Granularity -->
-          <div class="flex flex-col gap-1">
-            <label
-              for="granularity"
-              class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
+    <div class="w-full mb-4 flex flex-col gap-3">
+      <!-- Mobile: stack vertically, Desktop: horizontal -->
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-2 sm:items-end">
+        <!-- Granularity -->
+        <div class="flex flex-col gap-1 sm:shrink-0">
+          <label
+            for="granularity"
+            class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
+          >
+            {{ t('package.downloads.granularity') }}
+          </label>
+
+          <div
+            class="flex items-center px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
+          >
+            <select
+              id="granularity"
+              v-model="selectedGranularity"
+              class="w-full bg-transparent font-mono text-sm text-fg outline-none"
             >
-              Granularity
-            </label>
-
-            <div
-              class="flex items-center px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
-            >
-              <select
-                id="granularity"
-                v-model="selectedGranularity"
-                class="w-full bg-transparent font-mono text-sm text-fg outline-none"
-              >
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Date range inputs -->
-          <div class="grid grid-cols-2 gap-2">
-            <div class="flex flex-col gap-1">
-              <label
-                for="startDate"
-                class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
-              >
-                Start
-              </label>
-              <div
-                class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
-              >
-                <span class="i-carbon-calendar w-4 h-4 text-fg-subtle" aria-hidden="true" />
-                <input
-                  id="startDate"
-                  v-model="startDate"
-                  type="date"
-                  class="w-full bg-transparent font-mono text-sm text-fg outline-none [color-scheme:dark]"
-                />
-              </div>
-            </div>
-
-            <div class="flex flex-col gap-1">
-              <label
-                for="endDate"
-                class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
-              >
-                End
-              </label>
-              <div
-                class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
-              >
-                <span class="i-carbon-calendar w-4 h-4 text-fg-subtle" aria-hidden="true" />
-                <input
-                  id="endDate"
-                  v-model="endDate"
-                  type="date"
-                  class="w-full bg-transparent font-mono text-sm text-fg outline-none [color-scheme:dark]"
-                />
-              </div>
-            </div>
-          </div>
-          <!-- Reset -->
-          <div class="flex flex-col gap-1">
-            <!-- spacer label to align with others -->
-            <div class="font-mono tracking-wide uppercase invisible">Reset</div>
-
-            <button
-              v-if="showResetButton"
-              type="button"
-              title="Reset date range"
-              class="flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-              @click="
-                () => {
-                  hasUserEditedDates = false
-                  startDate = ''
-                  endDate = ''
-                  initDateRangeFromWeekly()
-                  initDateRangeFallbackClient()
-                }
-              "
-            >
-              <span class="i-carbon-reset w-5 h-5 inline-block" />
-            </button>
+              <option value="daily">{{ t('package.downloads.granularity_daily') }}</option>
+              <option value="weekly">{{ t('package.downloads.granularity_weekly') }}</option>
+              <option value="monthly">{{ t('package.downloads.granularity_monthly') }}</option>
+              <option value="yearly">{{ t('package.downloads.granularity_yearly') }}</option>
+            </select>
           </div>
         </div>
+
+        <!-- Date range inputs -->
+        <div class="grid grid-cols-2 gap-2 flex-1">
+          <div class="flex flex-col gap-1">
+            <label
+              for="startDate"
+              class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
+            >
+              {{ t('package.downloads.start_date') }}
+            </label>
+            <div
+              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
+            >
+              <span class="i-carbon-calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
+              <input
+                id="startDate"
+                v-model="startDate"
+                type="date"
+                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:dark]"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label
+              for="endDate"
+              class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
+            >
+              {{ t('package.downloads.end_date') }}
+            </label>
+            <div
+              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
+            >
+              <span class="i-carbon-calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
+              <input
+                id="endDate"
+                v-model="endDate"
+                type="date"
+                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:dark]"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Reset button -->
+        <button
+          v-if="showResetButton"
+          type="button"
+          aria-label="Reset date range"
+          class="self-end flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 sm:mb-0"
+          @click="
+            () => {
+              hasUserEditedDates = false
+              startDate = ''
+              endDate = ''
+              initDateRangeFromWeekly()
+              initDateRangeFallbackClient()
+            }
+          "
+        >
+          <span class="i-carbon-reset w-5 h-5 inline-block" aria-hidden="true" />
+        </button>
       </div>
     </div>
 
-    <ClientOnly v-if="inModal">
+    <ClientOnly v-if="inModal && chartData.dataset">
       <VueUiXy :dataset="chartData.dataset" :config="config">
         <template #menuIcon="{ isOpen }">
-          <span class="i-carbon-close w-6 h-6" v-if="isOpen" />
-          <span class="i-carbon-overflow-menu-vertical w-6 h-6" v-else />
+          <span v-if="isOpen" class="i-carbon-close w-6 h-6" aria-hidden="true" />
+          <span v-else class="i-carbon-overflow-menu-vertical w-6 h-6" aria-hidden="true" />
         </template>
         <template #optionCsv>
-          <span class="i-carbon-csv w-6 h-6 text-fg-subtle" style="pointer-events: none" />
+          <span
+            class="i-carbon-csv w-6 h-6 text-fg-subtle"
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
         </template>
         <template #optionImg>
-          <span class="i-carbon-png w-6 h-6 text-fg-subtle" style="pointer-events: none" />
+          <span
+            class="i-carbon-png w-6 h-6 text-fg-subtle"
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
         </template>
         <template #optionSvg>
-          <span class="i-carbon-svg w-6 h-6 text-fg-subtle" style="pointer-events: none" />
+          <span
+            class="i-carbon-svg w-6 h-6 text-fg-subtle"
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
         </template>
 
         <template #annotator-action-close>
-          <span class="i-carbon-close w-6 h-6 text-fg-subtle" style="pointer-events: none" />
+          <span
+            class="i-carbon-close w-6 h-6 text-fg-subtle"
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
         </template>
         <template #annotator-action-color="{ color }">
-          <span class="i-carbon-color-palette w-6 h-6" :style="{ color }" />
+          <span class="i-carbon-color-palette w-6 h-6" :style="{ color }" aria-hidden="true" />
         </template>
-        <template #annotator-action-undo="{ disabled }">
-          <span class="i-carbon-undo w-6 h-6 text-fg-subtle" style="pointer-events: none" />
+        <template #annotator-action-undo>
+          <span
+            class="i-carbon-undo w-6 h-6 text-fg-subtle"
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
         </template>
-        <template #annotator-action-redo="{ disabled }">
-          <span class="i-carbon-redo w-6 h-6 text-fg-subtle" style="pointer-events: none" />
+        <template #annotator-action-redo>
+          <span
+            class="i-carbon-redo w-6 h-6 text-fg-subtle"
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
         </template>
-        <template #annotator-action-delete="{ disabled }">
-          <span class="i-carbon-trash-can w-6 h-6 text-fg-subtle" style="pointer-events: none" />
+        <template #annotator-action-delete>
+          <span
+            class="i-carbon-trash-can w-6 h-6 text-fg-subtle"
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
         </template>
         <template #optionAnnotator="{ isAnnotator }">
           <span
+            v-if="isAnnotator"
             class="i-carbon-edit-off w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
-            v-if="isAnnotator"
+            aria-hidden="true"
           />
-          <span class="i-carbon-edit w-6 h-6 text-fg-subtle" style="pointer-events: none" v-else />
+          <span
+            v-else
+            class="i-carbon-edit w-6 h-6 text-fg-subtle"
+            style="pointer-events: none"
+            aria-hidden="true"
+          />
         </template>
       </VueUiXy>
       <template #fallback>
@@ -595,11 +629,21 @@ const config = computed(() => ({
       </template>
     </ClientOnly>
 
+    <!-- Empty state when no chart data -->
+    <div
+      v-if="inModal && !chartData.dataset && !pending"
+      class="min-h-[260px] flex items-center justify-center text-fg-subtle font-mono text-sm"
+    >
+      {{ t('package.downloads.no_data') }}
+    </div>
+
     <div
       v-if="pending"
+      role="status"
+      aria-live="polite"
       class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-fg-subtle font-mono bg-bg/70 backdrop-blur px-3 py-2 rounded-md border border-border"
     >
-      Loading…
+      {{ t('package.downloads.loading') }}
     </div>
   </div>
 </template>
