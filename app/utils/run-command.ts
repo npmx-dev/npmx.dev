@@ -3,6 +3,50 @@ import { getPackageSpecifier, packageManagers } from './install-command'
 import type { PackageManagerId } from './install-command'
 
 /**
+ * Metadata needed to determine if a package is binary-only.
+ */
+export interface PackageMetadata {
+  name: string
+  bin?: string | Record<string, string>
+  main?: string
+  module?: unknown
+  exports?: unknown
+}
+
+/**
+ * Determine if a package is "binary-only" (executable without library entry points).
+ * Binary-only packages should show execute commands without install commands.
+ *
+ * A package is binary-only if:
+ * - Name starts with "create-" (e.g., create-vite)
+ * - Scoped name contains "/create-" (e.g., @vue/create-app)
+ * - Has bin field but no main, module, or exports fields
+ */
+export function isBinaryOnlyPackage(pkg: PackageMetadata): boolean {
+  const baseName = pkg.name.startsWith('@') ? pkg.name.split('/')[1] : pkg.name
+
+  // Check create-* patterns
+  if (baseName?.startsWith('create-') || pkg.name.includes('/create-')) {
+    return true
+  }
+
+  // Has bin but no entry points
+  const hasBin =
+    pkg.bin !== undefined && (typeof pkg.bin === 'string' || Object.keys(pkg.bin).length > 0)
+  const hasEntryPoint = !!pkg.main || !!pkg.module || !!pkg.exports
+
+  return hasBin && !hasEntryPoint
+}
+
+/**
+ * Check if a package uses the create-* naming convention.
+ */
+export function isCreatePackage(packageName: string): boolean {
+  const baseName = packageName.startsWith('@') ? packageName.split('/')[1] : packageName
+  return baseName?.startsWith('create-') || packageName.includes('/create-') || false
+}
+
+/**
  * Information about executable commands provided by a package.
  */
 export interface ExecutableInfo {
@@ -59,30 +103,32 @@ export interface RunCommandOptions {
   jsrInfo?: JsrPackageInfo | null
   /** Specific command to run (for packages with multiple bin entries) */
   command?: string
+  /** Whether this is a binary-only package (affects which execute command to use) */
+  isBinaryOnly?: boolean
 }
 
 /**
  * Generate run command as an array of parts.
  * First element is the package manager label (e.g., "pnpm"), rest are arguments.
- * For example: ["pnpm", "dlx", "nuxt"] or ["npx", "eslint"]
+ * For example: ["pnpm", "exec", "eslint"] or ["pnpm", "dlx", "create-vite"]
  */
 export function getRunCommandParts(options: RunCommandOptions): string[] {
   const pm = packageManagers.find(p => p.id === options.packageManager)
   if (!pm) return []
 
   const spec = getPackageSpecifier(options)
-  // Split execute command (e.g., "pnpm dlx" -> ["pnpm", "dlx"])
-  const executeParts = pm.execute.split(' ')
+
+  // Choose execute command based on package type
+  const executeCmd = options.isBinaryOnly ? pm.executeRemote : pm.executeLocal
+  const executeParts = executeCmd.split(' ')
 
   // For deno, always use the package specifier
   if (options.packageManager === 'deno') {
     return [...executeParts, spec]
   }
 
-  // For npx/bunx/pnpm dlx/yarn dlx/vlt x, the command name is what gets executed
-  // e.g., `npx tsc` runs the tsc command from typescript package
-  // If the command matches the package name (like eslint), use the package spec
-  // Otherwise, use the command name directly (like tsc for typescript)
+  // For local execute with specific command name different from package name
+  // e.g., `pnpm exec tsc` for typescript package
   if (options.command && options.command !== options.packageName) {
     const baseName = options.packageName.startsWith('@')
       ? options.packageName.split('/')[1]
@@ -91,7 +137,7 @@ export function getRunCommandParts(options: RunCommandOptions): string[] {
     if (options.command === baseName) {
       return [...executeParts, spec]
     }
-    // Otherwise use the command name directly (e.g., npx tsc, not npx typescript/tsc)
+    // Otherwise use the command name directly
     return [...executeParts, options.command]
   }
 

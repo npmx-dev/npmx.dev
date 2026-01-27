@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { getExecutableInfo, getRunCommand, getRunCommandParts } from '../../app/utils/run-command'
+import {
+  getExecutableInfo,
+  getRunCommand,
+  getRunCommandParts,
+  isBinaryOnlyPackage,
+  isCreatePackage,
+} from '../../app/utils/run-command'
 import type { JsrPackageInfo } from '../../shared/types/jsr'
 
 describe('executable detection and run commands', () => {
@@ -72,19 +78,39 @@ describe('executable detection and run commands', () => {
   })
 
   describe('getRunCommandParts', () => {
+    // Default behavior uses local execute (for installed packages)
     it.each([
       ['npm', ['npx', 'eslint']],
-      ['pnpm', ['pnpm', 'dlx', 'eslint']],
-      ['yarn', ['yarn', 'dlx', 'eslint']],
+      ['pnpm', ['pnpm', 'exec', 'eslint']],
+      ['yarn', ['yarn', 'eslint']],
       ['bun', ['bunx', 'eslint']],
       ['deno', ['deno', 'run', 'npm:eslint']],
       ['vlt', ['vlt', 'x', 'eslint']],
-    ] as const)('%s → %s', (pm, expected) => {
+    ] as const)('%s (local) → %s', (pm, expected) => {
       expect(
         getRunCommandParts({
           packageName: 'eslint',
           packageManager: pm,
           jsrInfo: jsrNotAvailable,
+        }),
+      ).toEqual(expected)
+    })
+
+    // Binary-only packages use remote execute (download & run)
+    it.each([
+      ['npm', ['npx', 'create-vite']],
+      ['pnpm', ['pnpm', 'dlx', 'create-vite']],
+      ['yarn', ['yarn', 'dlx', 'create-vite']],
+      ['bun', ['bunx', 'create-vite']],
+      ['deno', ['deno', 'run', 'npm:create-vite']],
+      ['vlt', ['vlt', 'x', 'create-vite']],
+    ] as const)('%s (remote) → %s', (pm, expected) => {
+      expect(
+        getRunCommandParts({
+          packageName: 'create-vite',
+          packageManager: pm,
+          jsrInfo: jsrNotAvailable,
+          isBinaryOnly: true,
         }),
       ).toEqual(expected)
     })
@@ -151,6 +177,73 @@ describe('executable detection and run commands', () => {
       const parts = getRunCommandParts(options)
       const command = getRunCommand(options)
       expect(parts.join(' ')).toBe(command)
+    })
+  })
+
+  describe('isBinaryOnlyPackage', () => {
+    it('returns true for create-* packages', () => {
+      expect(isBinaryOnlyPackage({ name: 'create-vite' })).toBe(true)
+      expect(isBinaryOnlyPackage({ name: 'create-next-app' })).toBe(true)
+    })
+
+    it('returns true for scoped create packages', () => {
+      expect(isBinaryOnlyPackage({ name: '@vue/create-app' })).toBe(true)
+      expect(isBinaryOnlyPackage({ name: '@scope/create-something' })).toBe(true)
+    })
+
+    it('returns true for packages with bin but no entry points', () => {
+      expect(
+        isBinaryOnlyPackage({
+          name: 'degit',
+          bin: { degit: './bin.js' },
+        }),
+      ).toBe(true)
+    })
+
+    it('returns false for packages with bin AND entry points', () => {
+      expect(
+        isBinaryOnlyPackage({
+          name: 'eslint',
+          bin: { eslint: './bin/eslint.js' },
+          main: './lib/api.js',
+        }),
+      ).toBe(false)
+    })
+
+    it('returns false for packages with exports', () => {
+      expect(
+        isBinaryOnlyPackage({
+          name: 'some-package',
+          bin: { cmd: './bin.js' },
+          exports: { '.': './index.js' },
+        }),
+      ).toBe(false)
+    })
+
+    it('returns false for packages without bin', () => {
+      expect(
+        isBinaryOnlyPackage({
+          name: 'lodash',
+          main: './lodash.js',
+        }),
+      ).toBe(false)
+    })
+  })
+
+  describe('isCreatePackage', () => {
+    it('returns true for create-* packages', () => {
+      expect(isCreatePackage('create-vite')).toBe(true)
+      expect(isCreatePackage('create-next-app')).toBe(true)
+    })
+
+    it('returns true for scoped create packages', () => {
+      expect(isCreatePackage('@vue/create-app')).toBe(true)
+    })
+
+    it('returns false for regular packages', () => {
+      expect(isCreatePackage('eslint')).toBe(false)
+      expect(isCreatePackage('lodash')).toBe(false)
+      expect(isCreatePackage('@scope/utils')).toBe(false)
     })
   })
 })

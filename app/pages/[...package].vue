@@ -2,7 +2,14 @@
 import type { NpmVersionDist, PackumentVersion, ReadmeResponse } from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
-import { getExecutableInfo, getRunCommandParts, getRunCommand } from '~/utils/run-command'
+import {
+  getExecutableInfo,
+  getRunCommandParts,
+  getRunCommand,
+  isBinaryOnlyPackage,
+  isCreatePackage,
+} from '~/utils/run-command'
+import { getExecuteCommandParts, getExecuteCommand } from '~/utils/install-command'
 import { onKeyStroke } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
@@ -287,10 +294,25 @@ const executableInfo = computed(() => {
   return getExecutableInfo(pkg.value.name, displayVersion.value.bin)
 })
 
-// Run command expanded state (for packages with multiple bin commands)
-const runExpanded = ref(false)
+// Detect if package is binary-only (show only execute commands, no install)
+const isBinaryOnly = computed(() => {
+  if (!displayVersion.value || !pkg.value) return false
+  return isBinaryOnlyPackage({
+    name: pkg.value.name,
+    bin: displayVersion.value.bin,
+    main: displayVersion.value.main,
+    module: displayVersion.value.module,
+    exports: displayVersion.value.exports,
+  })
+})
 
-// Run command parts for a specific command
+// Detect if package uses create-* naming convention
+const isCreatePkg = computed(() => {
+  if (!pkg.value) return false
+  return isCreatePackage(pkg.value.name)
+})
+
+// Run command parts for a specific command (local execute after install)
 function getRunParts(command?: string) {
   if (!pkg.value) return []
   return getRunCommandParts({
@@ -298,7 +320,41 @@ function getRunParts(command?: string) {
     packageManager: selectedPM.value,
     jsrInfo: jsrInfo.value,
     command,
+    isBinaryOnly: false, // Local execute
   })
+}
+
+// Execute command parts for binary-only packages (remote execute)
+const executeCommandParts = computed(() => {
+  if (!pkg.value) return []
+  return getExecuteCommandParts({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    jsrInfo: jsrInfo.value,
+    isBinaryOnly: true,
+    isCreatePackage: isCreatePkg.value,
+  })
+})
+
+// Full execute command string for copying
+const executeCommand = computed(() => {
+  if (!pkg.value) return ''
+  return getExecuteCommand({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    jsrInfo: jsrInfo.value,
+    isBinaryOnly: true,
+    isCreatePackage: isCreatePkg.value,
+  })
+})
+
+// Copy execute command (for binary-only packages)
+const executeCopied = ref(false)
+async function copyExecuteCommand() {
+  if (!executeCommand.value) return
+  await navigator.clipboard.writeText(executeCommand.value)
+  executeCopied.value = true
+  setTimeout(() => (executeCopied.value = false), 2000)
 }
 
 // Primary run command parts
@@ -754,8 +810,85 @@ defineOgImageComponent('Package', {
         :version="displayVersion.version"
       />
 
-      <!-- Install command with package manager selector -->
-      <section aria-labelledby="install-heading" class="mb-8">
+      <!-- Binary-only packages: Show only execute command (no install) -->
+      <section v-if="isBinaryOnly" aria-labelledby="run-heading" class="mb-8">
+        <div class="flex flex-wrap items-center justify-between mb-3">
+          <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">Run</h2>
+          <!-- Package manager tabs -->
+          <div
+            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border rounded-md"
+            role="tablist"
+            aria-label="Package manager"
+          >
+            <ClientOnly>
+              <button
+                v-for="pm in packageManagers"
+                :key="pm.id"
+                role="tab"
+                :aria-selected="selectedPM === pm.id"
+                class="px-2 py-1 font-mono text-xs rounded transition-all duration-150"
+                :class="
+                  selectedPM === pm.id
+                    ? 'bg-bg-elevated text-fg'
+                    : 'text-fg-subtle hover:text-fg-muted'
+                "
+                @click="selectedPM = pm.id"
+              >
+                {{ pm.label }}
+              </button>
+              <template #fallback>
+                <span
+                  v-for="pm in packageManagers"
+                  :key="pm.id"
+                  class="px-2 py-1 font-mono text-xs rounded"
+                  :class="pm.id === 'npm' ? 'bg-bg-elevated text-fg' : 'text-fg-subtle'"
+                >
+                  {{ pm.label }}
+                </span>
+              </template>
+            </ClientOnly>
+          </div>
+        </div>
+        <div class="relative group">
+          <!-- Terminal-style execute command -->
+          <div class="bg-[#0d0d0d] border border-border rounded-lg overflow-hidden">
+            <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+            </div>
+            <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
+              <!-- Execute command -->
+              <div class="flex items-center gap-2 group/executecmd">
+                <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+                <code class="font-mono text-sm"
+                  ><ClientOnly
+                    ><span
+                      v-for="(part, i) in executeCommandParts"
+                      :key="i"
+                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+                    ><template #fallback
+                      ><span class="text-fg">npx</span
+                      ><span class="text-fg-muted"> {{ pkg.name }}</span></template
+                    ></ClientOnly
+                  ></code
+                >
+                <button
+                  type="button"
+                  class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/executecmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  @click.stop="copyExecuteCommand"
+                >
+                  {{ executeCopied ? 'copied!' : 'copy' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Regular packages: Install command with optional run command -->
+      <section v-else aria-labelledby="install-heading" class="mb-8">
         <div class="flex flex-wrap items-center justify-between mb-3">
           <h2 id="install-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             Install
@@ -829,13 +962,11 @@ defineOgImageComponent('Package', {
                 </button>
               </div>
 
-              <!-- Run commands (only if package has executables) -->
+              <!-- Run command (only if package has executables) -->
               <template v-if="executableInfo?.hasExecutable">
                 <!-- Comment line -->
                 <div class="flex items-center gap-2 pt-1">
-                  <span class="text-fg-subtle/50 font-mono text-sm select-none"
-                    ># Run {{ executableInfo.commands.length > 1 ? 'commands' : 'command' }}</span
-                  >
+                  <span class="text-fg-subtle/50 font-mono text-sm select-none"># Run locally</span>
                 </div>
 
                 <!-- Primary run command -->
@@ -848,14 +979,6 @@ defineOgImageComponent('Package', {
                         :key="i"
                         :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
                         >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                      ><button
-                        v-if="!runExpanded && executableInfo.commands.length > 1"
-                        type="button"
-                        class="text-fg-muted hover:underline cursor-pointer ml-1"
-                        :aria-expanded="runExpanded"
-                        @click="runExpanded = true"
-                      >
-                        (+{{ executableInfo.commands.length - 1 }} more)</button
                       ><template #fallback
                         ><span class="text-fg">npx</span>{{ ' '
                         }}<span class="text-fg-muted">{{
@@ -876,44 +999,6 @@ defineOgImageComponent('Package', {
                     }}
                   </button>
                 </div>
-
-                <!-- Additional commands (shown when expanded) -->
-                <ClientOnly>
-                  <template v-if="runExpanded && executableInfo.commands.length > 1">
-                    <div
-                      v-for="cmd in executableInfo.commands.filter(
-                        c => c !== executableInfo.primaryCommand,
-                      )"
-                      :key="cmd"
-                      class="flex items-center gap-2 group/runcmd"
-                    >
-                      <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                      <code class="font-mono text-sm"
-                        ><span
-                          v-for="(part, i) in getRunParts(cmd)"
-                          :key="i"
-                          :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                          >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                        ></code
-                      >
-                      <button
-                        type="button"
-                        class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                        @click.stop="copyRunCommand(cmd)"
-                      >
-                        {{ runCopied && runCopiedCommand === cmd ? 'copied!' : 'copy' }}
-                      </button>
-                    </div>
-                    <!-- Collapse button -->
-                    <button
-                      type="button"
-                      class="text-fg-muted hover:underline cursor-pointer font-mono text-sm pl-5"
-                      @click="runExpanded = false"
-                    >
-                      (show less)
-                    </button>
-                  </template>
-                </ClientOnly>
               </template>
             </div>
           </div>
