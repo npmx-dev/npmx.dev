@@ -98,6 +98,14 @@
       "copy_command": "复制安装命令",
       "view_types": "查看 {package}"
     },
+    "create": {
+      "title": "创建新项目",
+      "copy_command": "复制创建命令"
+    },
+    "run": {
+      "title": "运行",
+      "locally": "本地运行"
+    },
     "readme": {
       "title": "Readme",
       "no_readme": "没有可用的 README。",

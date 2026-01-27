@@ -1,4 +1,5 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
+import { getCreateShortName } from '#shared/utils/package-analysis'
 
 export const packageManagers = [
   {
@@ -119,39 +120,13 @@ export function getExecuteCommandParts(options: ExecuteCommandOptions): string[]
 
   // For create-* packages, use the shorthand create command
   if (options.isCreatePackage) {
-    const createName = extractCreateName(options.packageName)
-    if (createName) {
-      return [...pm.create.split(' '), createName]
+    const shortName = getCreateShortName(options.packageName)
+    if (shortName !== options.packageName) {
+      return [...pm.create.split(' '), shortName]
     }
   }
 
   // Choose remote or local execute based on package type
   const executeCmd = options.isBinaryOnly ? pm.executeRemote : pm.executeLocal
   return [...executeCmd.split(' '), getPackageSpecifier(options)]
-}
-
-/**
- * Extract the short name from a create-* package.
- * e.g., "create-vite" -> "vite", "@vue/create-app" -> "vue"
- */
-function extractCreateName(packageName: string): string | null {
-  // Handle scoped packages: @scope/create-foo -> foo
-  if (packageName.startsWith('@')) {
-    const parts = packageName.split('/')
-    const baseName = parts[1]
-    if (baseName?.startsWith('create-')) {
-      return baseName.slice('create-'.length)
-    }
-    // Handle @vue/create-app style (scope as the name)
-    if (baseName?.startsWith('create')) {
-      return parts[0]!.slice(1) // Remove @ from scope
-    }
-  }
-
-  // Handle unscoped: create-foo -> foo
-  if (packageName.startsWith('create-')) {
-    return packageName.slice('create-'.length)
-  }
-
-  return null
 }

@@ -110,6 +110,14 @@
       "copy_command": "Copy install command",
       "view_types": "View {package}"
     },
+    "create": {
+      "title": "Create new project",
+      "copy_command": "Copy create command"
+    },
+    "run": {
+      "title": "Run",
+      "locally": "Run locally"
+    },
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
