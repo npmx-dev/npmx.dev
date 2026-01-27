@@ -215,7 +215,7 @@ type NpmDownloadsRangeResponse = {
   downloads: Array<{ day: string; downloads: number }>
 }
 
-async function fetchNpmDownloadsRange(
+export async function fetchNpmDownloadsRange(
   packageName: string,
   start: string,
   end: string,
@@ -223,36 +223,6 @@ async function fetchNpmDownloadsRange(
   const encodedName = encodePackageName(packageName)
   return await $fetch<NpmDownloadsRangeResponse>(
     `${NPM_API}/downloads/range/${start}:${end}/${encodedName}`,
-  )
-}
-
-export function usePackageWeeklyDownloadEvolution(
-  name: MaybeRefOrGetter<string>,
-  options: MaybeRefOrGetter<{
-    weeks?: number
-    endDate?: string
-  }> = {},
-) {
-  return useLazyAsyncData(
-    () => `downloads-weekly-evolution:${toValue(name)}:${JSON.stringify(toValue(options))}`,
-    async () => {
-      const packageName = toValue(name)
-      const { weeks = 12, endDate } = toValue(options) ?? {}
-
-      const today = new Date()
-      const yesterday = new Date(
-        Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1),
-      )
-
-      const end = endDate ? new Date(`${endDate}T00:00:00.000Z`) : yesterday
-
-      const start = addDays(end, -(weeks * 7) + 1)
-      const startIso = toIsoDateString(start)
-      const endIso = toIsoDateString(end)
-      const range = await fetchNpmDownloadsRange(packageName, startIso, endIso)
-      const sortedDaily = [...range.downloads].sort((a, b) => a.day.localeCompare(b.day))
-      return buildWeeklyEvolutionFromDaily(sortedDaily)
-    },
   )
 }
 

@@ -154,7 +154,19 @@
     },
     "downloads": {
       "title": "Weekly Downloads",
-      "date_range": "{start} to {end}"
+      "date_range": "{start} to {end}",
+      "analyze": "Analyze downloads",
+      "modal_title": "Downloads",
+      "granularity": "Granularity",
+      "granularity_daily": "Daily",
+      "granularity_weekly": "Weekly",
+      "granularity_monthly": "Monthly",
+      "granularity_yearly": "Yearly",
+      "start_date": "Start",
+      "end_date": "End",
+      "no_data": "No download data available",
+      "loading": "Loading...",
+      "y_axis_label": "{granularity} downloads"
     },
     "install_scripts": {
       "title": "Install Scripts",

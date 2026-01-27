@@ -33,6 +33,8 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
   ],
 
+  css: ['vue-data-ui/style.css'],
+
   devtools: { enabled: true },
 
   app: {
@@ -140,6 +142,7 @@ export default defineNuxtConfig({
       include: [
         '@vueuse/core',
         'vue-data-ui/vue-ui-sparkline',
+        'vue-data-ui/vue-ui-xy',
         'virtua/vue',
         'semver',
         'validate-npm-package-name',
