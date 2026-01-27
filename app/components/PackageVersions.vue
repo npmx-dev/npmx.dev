@@ -436,7 +436,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
           <span
             class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors"
           >
-            <span v-if="otherVersionsLoading" class="i-carbon-rotate w-3 h-3 animate-spin" />
+            <span v-if="otherVersionsLoading" class="i-carbon-rotate-180 w-3 h-3 animate-spin" />
             <span
               v-else
               class="w-3 h-3 transition-transform duration-200"

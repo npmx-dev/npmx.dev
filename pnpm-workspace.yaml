@@ -2,6 +2,16 @@ packages:
   - '.'
   - 'cli'
 
+overrides:
+  sharp: 0.34.5
+  vite: npm:@voidzero-dev/vite-plus-core@latest
+  vitest: npm:@voidzero-dev/vite-plus-test@latest
+
+packageExtensions:
+  '@nuxt/scripts':
+    dependencies:
+      'estree-walker': '^3.0.3'
+
 ignoredBuiltDependencies:
   - '@parcel/watcher'
   - esbuild

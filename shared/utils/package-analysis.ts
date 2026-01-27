@@ -6,7 +6,7 @@ export type ModuleFormat = 'esm' | 'cjs' | 'dual' | 'unknown'
 
 export type TypesStatus =
   | { kind: 'included' }
-  | { kind: '@types'; packageName: string }
+  | { kind: '@types'; packageName: string; deprecated?: string }
   | { kind: 'none' }
 
 export interface PackageAnalysis {
@@ -170,11 +170,19 @@ function mergeExportsAnalysis(target: ExportsAnalysis, source: ExportsAnalysis):
 }
 
 /**
+ * Options for @types package info
+ */
+export interface TypesPackageInfo {
+  packageName: string
+  deprecated?: string
+}
+
+/**
  * Detect TypeScript types status for a package
  */
 export function detectTypesStatus(
   pkg: ExtendedPackageJson,
-  typesPackageName?: string,
+  typesPackageInfo?: TypesPackageInfo,
 ): TypesStatus {
   // Check for built-in types
   if (pkg.types || pkg.typings) {
@@ -190,8 +198,12 @@ export function detectTypesStatus(
   }
 
   // Check for @types package
-  if (typesPackageName) {
-    return { kind: '@types', packageName: typesPackageName }
+  if (typesPackageInfo) {
+    return {
+      kind: '@types',
+      packageName: typesPackageInfo.packageName,
+      deprecated: typesPackageInfo.deprecated,
+    }
   }
 
   return { kind: 'none' }
@@ -230,16 +242,22 @@ export function getTypesPackageName(packageName: string): string {
 }
 
 /**
+ * Options for package analysis
+ */
+export interface AnalyzePackageOptions {
+  typesPackage?: TypesPackageInfo
+}
+
+/**
  * Analyze a package and return structured analysis
  */
 export function analyzePackage(
   pkg: ExtendedPackageJson,
-  options?: { typesPackageExists?: boolean },
+  options?: AnalyzePackageOptions,
 ): PackageAnalysis {
   const moduleFormat = detectModuleFormat(pkg)
 
-  const typesPackageName = pkg.name ? getTypesPackageName(pkg.name) : undefined
-  const types = detectTypesStatus(pkg, options?.typesPackageExists ? typesPackageName : undefined)
+  const types = detectTypesStatus(pkg, options?.typesPackage)
 
   return {
     moduleFormat,

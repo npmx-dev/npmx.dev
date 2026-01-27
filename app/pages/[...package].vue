@@ -250,6 +250,23 @@ function hasProvenance(version: PackumentVersion | null): boolean {
 }
 
 const selectedPM = useSelectedPackageManager()
+const { settings } = useSettings()
+
+// Fetch package analysis for @types info
+const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
+
+// Get @types package name if available (non-deprecated)
+const typesPackageName = computed(() => {
+  if (!packageAnalysis.value) return null
+  if (packageAnalysis.value.types.kind !== '@types') return null
+  if (packageAnalysis.value.types.deprecated) return null
+  return packageAnalysis.value.types.packageName
+})
+
+// Check if we should show @types in install command
+const showTypesInInstall = computed(() => {
+  return settings.value.includeTypesInInstall && typesPackageName.value
+})
 
 const installCommandParts = computed(() => {
   if (!pkg.value) return []
@@ -271,11 +288,48 @@ const installCommand = computed(() => {
   })
 })
 
+// Get the dev dependency flag for the selected package manager
+function getDevFlag(pmId: string): string {
+  // bun uses lowercase -d, all others use -D
+  return pmId === 'bun' ? '-d' : '-D'
+}
+
+// @types install command parts (for display)
+const typesInstallCommandParts = computed(() => {
+  if (!typesPackageName.value) return []
+  const pm = packageManagers.find(p => p.id === selectedPM.value)
+  if (!pm) return []
+
+  const devFlag = getDevFlag(selectedPM.value)
+  const pkgSpec =
+    selectedPM.value === 'deno' ? `npm:${typesPackageName.value}` : typesPackageName.value
+
+  return [pm.label, pm.action, devFlag, pkgSpec]
+})
+
+// Full install command including @types (for copying)
+const fullInstallCommand = computed(() => {
+  if (!installCommand.value) return ''
+  if (!showTypesInInstall.value || !typesPackageName.value) {
+    return installCommand.value
+  }
+
+  const pm = packageManagers.find(p => p.id === selectedPM.value)
+  if (!pm) return installCommand.value
+
+  const devFlag = getDevFlag(selectedPM.value)
+  const pkgSpec =
+    selectedPM.value === 'deno' ? `npm:${typesPackageName.value}` : typesPackageName.value
+
+  // Use semicolon to separate commands
+  return `${installCommand.value}; ${pm.label} ${pm.action} ${devFlag} ${pkgSpec}`
+})
+
 // Copy install command
 const copied = ref(false)
 async function copyInstallCommand() {
-  if (!installCommand.value) return
-  await navigator.clipboard.writeText(installCommand.value)
+  if (!fullInstallCommand.value) return
+  await navigator.clipboard.writeText(fullInstallCommand.value)
   copied.value = true
   setTimeout(() => (copied.value = false), 2000)
 }
@@ -453,6 +507,7 @@ defineOgImageComponent('Package', {
               <button
                 type="button"
                 class="font-mono text-xs text-fg-muted hover:text-fg bg-bg px-1 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                aria-label="Show full description"
                 @click="descriptionExpanded = true"
               >
                 show more
@@ -719,7 +774,7 @@ defineOgImageComponent('Package', {
                 :key="pm.id"
                 role="tab"
                 :aria-selected="selectedPM === pm.id"
-                class="px-2 py-1 font-mono text-xs rounded transition-all duration-150"
+                class="px-2 py-1 font-mono text-xs rounded transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 :class="
                   selectedPM === pm.id
                     ? 'bg-bg-elevated text-fg'
@@ -750,29 +805,54 @@ defineOgImageComponent('Package', {
               <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
               <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
             </div>
-            <div class="flex items-center gap-2 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4">
-              <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-              <code class="font-mono text-sm"
-                ><ClientOnly
+            <div class="space-y-1 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4">
+              <!-- Main package install -->
+              <div class="flex items-center gap-2">
+                <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+                <code class="font-mono text-sm"
+                  ><ClientOnly
+                    ><span
+                      v-for="(part, i) in installCommandParts"
+                      :key="i"
+                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+                    ><template #fallback
+                      ><span class="text-fg">npm</span
+                      ><span class="text-fg-muted"> install {{ pkg.name }}</span></template
+                    ></ClientOnly
+                  ></code
+                >
+              </div>
+              <!-- @types package install (when enabled) -->
+              <div v-if="showTypesInInstall" class="flex items-center gap-2">
+                <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+                <code class="font-mono text-sm"
                   ><span
-                    v-for="(part, i) in installCommandParts"
+                    v-for="(part, i) in typesInstallCommandParts"
                     :key="i"
                     :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
                     >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                  ><template #fallback
-                    ><span class="text-fg">npm</span
-                    ><span class="text-fg-muted"> install {{ pkg.name }}</span></template
-                  ></ClientOnly
-                ></code
-              >
+                  ></code
+                >
+                <NuxtLink
+                  v-if="typesPackageName"
+                  :to="`/${typesPackageName}`"
+                  class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                  title="View @types package"
+                >
+                  <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+                  <span class="sr-only">View {{ typesPackageName }}</span>
+                </NuxtLink>
+              </div>
             </div>
           </div>
           <button
             type="button"
             class="absolute top-3 right-3 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            aria-label="Copy install command"
             @click="copyInstallCommand"
           >
-            {{ copied ? 'copied!' : 'copy' }}
+            <span aria-live="polite">{{ copied ? 'copied!' : 'copy' }}</span>
           </button>
         </div>
       </section>

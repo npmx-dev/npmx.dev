@@ -7,10 +7,13 @@ import { useLocalStorage } from '@vueuse/core'
 export interface AppSettings {
   /** Display dates as relative (e.g., "3 days ago") instead of absolute */
   relativeDates: boolean
+  /** Include @types/* package in install command for packages without built-in types */
+  includeTypesInInstall: boolean
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
   relativeDates: false,
+  includeTypesInInstall: true,
 }
 
 const STORAGE_KEY = 'npmx-settings'

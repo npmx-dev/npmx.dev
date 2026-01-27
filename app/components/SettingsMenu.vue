@@ -43,7 +43,7 @@ onKeyStroke(',', e => {
     <button
       ref="triggerRef"
       type="button"
-      class="link-subtle font-mono text-sm inline-flex items-center justify-center gap-2"
+      class="link-subtle font-mono text-sm inline-flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
       :aria-expanded="isOpen"
       aria-haspopup="menu"
       aria-label="Settings"
@@ -81,34 +81,52 @@ onKeyStroke(',', e => {
 
         <div class="p-2 space-y-1">
           <!-- Relative dates toggle -->
-          <div
-            class="flex items-center justify-between gap-3 px-2 py-2 rounded-md hover:bg-bg-muted transition-[background-color] duration-150 cursor-pointer"
+          <button
+            type="button"
+            class="w-full flex items-center justify-between gap-3 px-2 py-2 rounded-md hover:bg-bg-muted transition-[background-color] duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            role="menuitemcheckbox"
+            :aria-checked="settings.relativeDates"
             @click="settings.relativeDates = !settings.relativeDates"
           >
-            <label
-              :id="`settings-relative-dates-label`"
-              class="text-sm text-fg cursor-pointer select-none"
-            >
-              Relative dates
-            </label>
-            <button
-              type="button"
-              role="switch"
-              :aria-checked="settings.relativeDates"
-              aria-labelledby="settings-relative-dates-label"
-              class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-[background-color] duration-200 ease-in-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            <span class="text-sm text-fg select-none">Relative dates</span>
+            <span
+              class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border-2 border-transparent transition-[background-color] duration-200 ease-in-out motion-reduce:transition-none"
               :class="settings.relativeDates ? 'bg-fg' : 'bg-bg-subtle'"
-              @click.stop="settings.relativeDates = !settings.relativeDates"
+              aria-hidden="true"
             >
               <span
-                aria-hidden="true"
                 class="pointer-events-none inline-block h-4 w-4 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
                 :class="
                   settings.relativeDates ? 'translate-x-4 bg-bg' : 'translate-x-0 bg-fg-muted'
                 "
               />
-            </button>
-          </div>
+            </span>
+          </button>
+
+          <!-- Include @types in install toggle -->
+          <button
+            type="button"
+            class="w-full flex items-center justify-between gap-3 px-2 py-2 rounded-md hover:bg-bg-muted transition-[background-color] duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            role="menuitemcheckbox"
+            :aria-checked="settings.includeTypesInInstall"
+            @click="settings.includeTypesInInstall = !settings.includeTypesInInstall"
+          >
+            <span class="text-sm text-fg select-none">Include @types in install</span>
+            <span
+              class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border-2 border-transparent transition-[background-color] duration-200 ease-in-out motion-reduce:transition-none"
+              :class="settings.includeTypesInInstall ? 'bg-fg' : 'bg-bg-subtle'"
+              aria-hidden="true"
+            >
+              <span
+                class="pointer-events-none inline-block h-4 w-4 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
+                :class="
+                  settings.includeTypesInInstall
+                    ? 'translate-x-4 bg-bg'
+                    : 'translate-x-0 bg-fg-muted'
+                "
+              />
+            </span>
+          </button>
         </div>
       </div>
     </Transition>

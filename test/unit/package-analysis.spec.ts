@@ -114,9 +114,19 @@ describe('detectTypesStatus', () => {
   })
 
   it('detects @types package when provided', () => {
-    expect(detectTypesStatus({}, '@types/lodash')).toEqual({
+    expect(detectTypesStatus({}, { packageName: '@types/lodash' })).toEqual({
       kind: '@types',
       packageName: '@types/lodash',
+    })
+  })
+
+  it('includes deprecation info in @types detection', () => {
+    expect(
+      detectTypesStatus({}, { packageName: '@types/lodash', deprecated: 'Now included in lodash' }),
+    ).toEqual({
+      kind: '@types',
+      packageName: '@types/lodash',
+      deprecated: 'Now included in lodash',
     })
   })
 
@@ -213,12 +223,25 @@ describe('analyzePackage', () => {
     expect(result.engines).toEqual({ node: '>=18', npm: '>=9' })
   })
 
-  it('detects @types package when typesPackageExists is true', () => {
+  it('detects @types package when typesPackage info is provided', () => {
     const result = analyzePackage(
       { name: 'express', main: 'index.js' },
-      { typesPackageExists: true },
+      { typesPackage: { packageName: '@types/express' } },
     )
 
     expect(result.types).toEqual({ kind: '@types', packageName: '@types/express' })
+  })
+
+  it('includes deprecation info for @types package', () => {
+    const result = analyzePackage(
+      { name: 'express', main: 'index.js' },
+      { typesPackage: { packageName: '@types/express', deprecated: 'Use included types instead' } },
+    )
+
+    expect(result.types).toEqual({
+      kind: '@types',
+      packageName: '@types/express',
+      deprecated: 'Use included types instead',
+    })
   })
 })
