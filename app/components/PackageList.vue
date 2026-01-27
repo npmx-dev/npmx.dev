@@ -111,7 +111,7 @@ defineExpose({
             :show-publisher="showPublisher"
             :selected="index === (selectedIndex ?? -1)"
             :index="index"
-            class="animate-fade-in animate-fill-both"
+            class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
             :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
             @focus="emit('select', $event)"
           />
@@ -122,7 +122,9 @@ defineExpose({
     <!-- Loading indicator -->
     <div v-if="isLoading" class="py-4 flex items-center justify-center">
       <div class="flex items-center gap-3 text-fg-muted font-mono text-sm">
-        <span class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full animate-spin" />
+        <span
+          class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full motion-safe:animate-spin"
+        />
         {{ $t('common.loading_more') }}
       </div>
     </div>

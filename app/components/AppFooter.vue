@@ -137,7 +137,12 @@ onMounted(() => {
     z-index: 40;
     /* Hidden by default (translated off-screen) */
     transform: translateY(100%);
-    transition: transform 0.3s ease-out;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .footer-scroll-state {
+      transition: transform 0.3s ease-out;
+    }
   }
 
   /* Show footer when user can scroll up (meaning they've scrolled down) */

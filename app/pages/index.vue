@@ -25,13 +25,13 @@ defineOgImageComponent('Default')
     <header class="flex-1 flex flex-col items-center justify-center text-center py-20">
       <!-- Animated title -->
       <h1
-        class="font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 animate-fade-in animate-fill-both"
+        class="font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
       >
         <span class="text-fg-subtle"><span style="letter-spacing: -0.2em">.</span>/</span>npmx
       </h1>
 
       <p
-        class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 animate-slide-up animate-fill-both"
+        class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 motion-safe:animate-slide-up motion-safe:animate-fill-both"
         style="animation-delay: 0.1s"
       >
         {{ $t('tagline') }}
@@ -39,7 +39,7 @@ defineOgImageComponent('Default')
 
       <!-- Search form with micro-interactions -->
       <search
-        class="w-full max-w-xl animate-slide-up animate-fill-both"
+        class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
         style="animation-delay: 0.2s"
       >
         <form role="search" class="relative" @submit.prevent="handleSearch">
@@ -90,7 +90,7 @@ defineOgImageComponent('Default')
     <!-- Popular packages -->
     <nav
       :aria-label="$t('nav.popular_packages')"
-      class="pb-20 text-center animate-fade-in animate-fill-both"
+      class="pb-20 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
       style="animation-delay: 0.3s"
     >
       <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">

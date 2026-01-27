@@ -309,7 +309,7 @@ watch(lastExecutionTime, () => {
       >
         <span
           class="i-carbon-renew block w-4 h-4"
-          :class="{ 'animate-spin': isLoading || isLoadingTeams }"
+          :class="{ 'motion-safe:animate-spin': isLoading || isLoadingTeams }"
           aria-hidden="true"
         />
       </button>
