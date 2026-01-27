@@ -5,10 +5,12 @@ export type ProviderId =
   | 'gitlab'
   | 'bitbucket'
   | 'gitea'
+  | 'forgejo'
   | 'codeberg'
   | 'sourcehut'
   | 'gitee'
   | 'tangled'
+  | 'radicle'
 
 export interface RepoRef {
   provider: ProviderId
@@ -171,18 +173,52 @@ const providers: ProviderConfig[] = [
     blobToRaw: url => url.replace('/blob/', '/raw/branch/'),
   },
   {
+    id: 'radicle',
+    matchHost: host =>
+      host === 'radicle.at' || host === 'app.radicle.at' || host === 'seed.radicle.at',
+    parsePath: parts => {
+      // Radicle URLs: app.radicle.at/nodes/seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT
+      // We extract the rad:... identifier as the "repo" with no owner
+      const path = parts.join('/')
+      const radMatch = path.match(/rad:[a-zA-Z0-9]+/)
+      if (!radMatch?.[0]) return null
+      // Use empty owner, store full rad: ID as repo
+      return { owner: '', repo: radMatch[0] }
+    },
+    getRawBaseUrl: (ref, branch = 'HEAD') =>
+      `https://seed.radicle.at/api/v1/projects/${ref.repo}/blob/${branch}`,
+  },
+  {
+    id: 'forgejo',
+    matchHost: host => {
+      // Match explicit Forgejo instances
+      const forgejoPatterns = [/^forgejo\./i, /\.forgejo\./i]
+      // Known Forgejo instances
+      const knownInstances = ['next.forgejo.org', 'try.next.forgejo.org']
+      if (knownInstances.some(h => host === h)) return true
+      return forgejoPatterns.some(p => p.test(host))
+    },
+    parsePath: parts => {
+      if (parts.length < 2) return null
+      const owner = decodeURIComponent(parts[0] ?? '').trim()
+      const repo = decodeURIComponent(parts[1] ?? '')
+        .trim()
+        .replace(/\.git$/i, '')
+      if (!owner || !repo) return null
+      return { owner, repo }
+    },
+    getRawBaseUrl: (ref, branch = 'HEAD') => {
+      const host = ref.host ?? 'codeberg.org'
+      return `https://${host}/${ref.owner}/${ref.repo}/raw/branch/${branch === 'HEAD' ? 'main' : branch}`
+    },
+    blobToRaw: url => url.replace('/src/', '/raw/'),
+  },
+  {
     id: 'gitea',
     matchHost: host => {
-      // Match common Gitea/Forgejo hosting patterns
-      const giteaPatterns = [
-        /^git\./i,
-        /^gitea\./i,
-        /^forgejo\./i,
-        /^code\./i,
-        /^src\./i,
-        /gitea\.io$/i,
-      ]
-      // Skip known providers
+      // Match common Gitea hosting patterns (Forgejo has its own adapter)
+      const giteaPatterns = [/^git\./i, /^gitea\./i, /^code\./i, /^src\./i, /gitea\.io$/i]
+      // Skip known providers (including Forgejo patterns)
       const skipHosts = [
         'github.com',
         'gitlab.com',
@@ -193,9 +229,13 @@ const providers: ProviderConfig[] = [
         'git.sr.ht',
         'tangled.sh',
         'tangled.org',
+        'next.forgejo.org',
+        'try.next.forgejo.org',
         ...GITLAB_HOSTS,
       ]
       if (skipHosts.some(h => host === h || host.endsWith(`.${h}`))) return false
+      // Skip Forgejo patterns
+      if (/^forgejo\./i.test(host) || /\.forgejo\./i.test(host)) return false
       return giteaPatterns.some(p => p.test(host))
     },
     parsePath: parts => {
@@ -225,7 +265,19 @@ export function normalizeGitUrl(input: string): string | null {
 
   const normalized = raw.replace(/^git\+/, '')
 
+  // Handle ssh:// URLs by converting to https://
+  if (/^ssh:\/\//i.test(normalized)) {
+    try {
+      const url = new URL(normalized)
+      const path = url.pathname.replace(/^\/*/, '')
+      return `https://${url.hostname}/${path}`
+    } catch {
+      // Fall through to SCP handling
+    }
+  }
+
   if (!/^https?:\/\//i.test(normalized)) {
+    // Handle SCP-style URLs: git@host:path
     const scp = normalized.match(/^(?:git@)?([^:/]+):(.+)$/i)
     if (scp?.[1] && scp?.[2]) {
       const host = scp[1]
@@ -250,11 +302,12 @@ export function parseRepoUrl(input: string): RepoRef | null {
       if (!provider.matchHost(host)) continue
       const parsed = provider.parsePath(parts)
       if (parsed) {
+        const needsHost = ['gitlab', 'gitea', 'forgejo', 'radicle'].includes(provider.id)
         return {
           provider: provider.id,
           owner: parsed.owner,
           repo: parsed.repo,
-          host: provider.id === 'gitlab' || provider.id === 'gitea' ? host : undefined,
+          host: needsHost ? host : undefined,
         }
       }
     }

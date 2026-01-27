@@ -73,6 +73,19 @@ type GiteeRepoResponse = {
   watchers_count?: number
 }
 
+/** Radicle API response for project details */
+type RadicleProjectResponse = {
+  id: string
+  name: string
+  description?: string
+  defaultBranch?: string
+  head?: string
+  seeding?: number
+  delegates?: Array<{ id: string; alias?: string }>
+  patches?: { open: number; draft: number; archived: number; merged: number }
+  issues?: { open: number; closed: number }
+}
+
 type ProviderAdapter = {
   id: ProviderId
   parse(url: URL): RepoRef | null
@@ -538,7 +551,7 @@ const tangledAdapter: ProviderAdapter = {
   },
 
   links(ref) {
-    const base = `https://tangled.sh/${ref.owner}/${ref.repo}`
+    const base = `https://tangled.org/${ref.owner}/${ref.repo}`
     return {
       repo: base,
       stars: base, // Tangled shows stars on the repo page
@@ -546,14 +559,152 @@ const tangledAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(_cachedFetch, _ref, links) {
-    // Tangled doesn't have a public API for repo stats yet
-    // Just return basic info without fetching
+  async fetchMeta(cachedFetch, ref, links) {
+    // Tangled doesn't have a public JSON API, but we can scrape the star count
+    // from the HTML page (it's in the hx-post URL as countHint=N)
+    try {
+      const html = await cachedFetch<string>(
+        `https://tangled.org/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx', 'Accept': 'text/html' } },
+        REPO_META_TTL,
+      )
+      // Extract star count from: hx-post="/star?subject=...&countHint=23"
+      const starMatch = html.match(/countHint=(\d+)/)
+      const stars = starMatch?.[1] ? parseInt(starMatch[1], 10) : 0
+
+      return {
+        provider: 'tangled',
+        url: links.repo,
+        stars,
+        forks: 0, // Tangled doesn't expose fork count
+        links,
+      }
+    } catch {
+      return {
+        provider: 'tangled',
+        url: links.repo,
+        stars: 0,
+        forks: 0,
+        links,
+      }
+    }
+  },
+}
+
+const radicleAdapter: ProviderAdapter = {
+  id: 'radicle',
+
+  parse(url) {
+    const host = url.hostname.toLowerCase()
+    if (host !== 'radicle.at' && host !== 'app.radicle.at' && host !== 'seed.radicle.at') {
+      return null
+    }
+
+    // Radicle URLs: app.radicle.at/nodes/seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT
+    const path = url.pathname
+    const radMatch = path.match(/rad:[a-zA-Z0-9]+/)
+    if (!radMatch?.[0]) return null
+
+    // Use empty owner, store full rad: ID as repo
+    return { provider: 'radicle', owner: '', repo: radMatch[0], host }
+  },
+
+  links(ref) {
+    const base = `https://app.radicle.at/nodes/seed.radicle.at/${ref.repo}`
     return {
-      provider: 'tangled',
+      repo: base,
+      stars: base, // Radicle doesn't have stars, shows seeding count
+      forks: base,
+    }
+  },
+
+  async fetchMeta(cachedFetch, ref, links) {
+    let res: RadicleProjectResponse | null = null
+    try {
+      res = await cachedFetch<RadicleProjectResponse>(
+        `https://seed.radicle.at/api/v1/projects/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
+
+    if (!res) return null
+
+    return {
+      provider: 'radicle',
       url: links.repo,
-      stars: 0,
-      forks: 0,
+      // Use seeding count as a proxy for "stars" (number of nodes hosting this repo)
+      stars: res.seeding ?? 0,
+      forks: 0, // Radicle doesn't have forks in the traditional sense
+      description: res.description ?? null,
+      defaultBranch: res.defaultBranch,
+      links,
+    }
+  },
+}
+
+const forgejoAdapter: ProviderAdapter = {
+  id: 'forgejo',
+
+  parse(url) {
+    const host = url.hostname.toLowerCase()
+
+    // Match explicit Forgejo instances
+    const forgejoPatterns = [/^forgejo\./i, /\.forgejo\./i]
+    const knownInstances = ['next.forgejo.org', 'try.next.forgejo.org']
+
+    const isMatch = knownInstances.some(h => host === h) || forgejoPatterns.some(p => p.test(host))
+    if (!isMatch) return null
+
+    const parts = url.pathname.split('/').filter(Boolean)
+    if (parts.length < 2) return null
+
+    const owner = decodeURIComponent(parts[0] ?? '').trim()
+    const repo = decodeURIComponent(parts[1] ?? '')
+      .trim()
+      .replace(/\.git$/i, '')
+
+    if (!owner || !repo) return null
+
+    return { provider: 'forgejo', owner, repo, host }
+  },
+
+  links(ref) {
+    const base = `https://${ref.host}/${ref.owner}/${ref.repo}`
+    return {
+      repo: base,
+      stars: base,
+      forks: `${base}/forks`,
+      watchers: base,
+    }
+  },
+
+  async fetchMeta(cachedFetch, ref, links) {
+    if (!ref.host) return null
+
+    let res: GiteaRepoResponse | null = null
+    try {
+      res = await cachedFetch<GiteaRepoResponse>(
+        `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
+
+    if (!res) return null
+
+    return {
+      provider: 'forgejo',
+      url: links.repo,
+      stars: res.stars_count ?? 0,
+      forks: res.forks_count ?? 0,
+      watchers: res.watchers_count ?? 0,
+      description: res.description ?? null,
+      defaultBranch: res.default_branch,
       links,
     }
   },
@@ -568,6 +719,8 @@ const providers: readonly ProviderAdapter[] = [
   giteeAdapter,
   sourcehutAdapter,
   tangledAdapter,
+  radicleAdapter,
+  forgejoAdapter,
   giteaAdapter, // Generic Gitea adapter last as fallback for self-hosted instances
 ] as const
 

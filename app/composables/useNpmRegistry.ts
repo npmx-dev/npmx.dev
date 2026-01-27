@@ -114,43 +114,37 @@ export function usePackage(
 ) {
   const cachedFetch = useCachedFetch()
 
-  const asyncData = useLazyAsyncData(
+  return useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
     async () => {
       const encodedName = encodePackageName(toValue(name))
-      const pkg = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
-      return transformPackument(pkg, toValue(requestedVersion))
+      const r = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
+      const reqVer = toValue(requestedVersion)
+      const pkg = transformPackument(r, reqVer)
+      const resolvedVersion = getResolvedVersion(pkg, reqVer)
+      return { ...pkg, resolvedVersion }
     },
   )
+}
 
-  // Resolve requestedVersion to an exact version
-  // Handles: exact versions, dist-tags (latest, next), and semver ranges (^4.2, >=1.0.0)
-  const resolvedVersion = computed(() => {
-    const pkg = asyncData.data.value
-    const reqVer = toValue(requestedVersion)
-    if (!pkg || !reqVer) return null
+function getResolvedVersion(pkg: SlimPackument, reqVer?: string | null): string | null {
+  if (!pkg || !reqVer) return null
 
-    // 1. Check if it's already an exact version in pkg.versions
-    if (isExactVersion(reqVer) && pkg.versions[reqVer]) {
-      return reqVer
-    }
-
-    // 2. Check if it's a dist-tag (latest, next, beta, etc.)
-    const tagVersion = pkg['dist-tags']?.[reqVer]
-    if (tagVersion) {
-      return tagVersion
-    }
-
-    // 3. Try to resolve as a semver range
-    const versions = Object.keys(pkg.versions)
-    const resolved = maxSatisfying(versions, reqVer)
-    return resolved
-  })
-
-  return {
-    ...asyncData,
-    resolvedVersion,
+  // 1. Check if it's already an exact version in pkg.versions
+  if (isExactVersion(reqVer) && pkg.versions[reqVer]) {
+    return reqVer
   }
+
+  // 2. Check if it's a dist-tag (latest, next, beta, etc.)
+  const tagVersion = pkg['dist-tags']?.[reqVer]
+  if (tagVersion) {
+    return tagVersion
+  }
+
+  // 3. Try to resolve as a semver range
+  const versions = Object.keys(pkg.versions)
+  const resolved = maxSatisfying(versions, reqVer)
+  return resolved
 }
 
 export function usePackageDownloads(

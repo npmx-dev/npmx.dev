@@ -11,63 +11,13 @@ definePageMeta({
   alias: ['/package/:package(.*)*'],
 })
 
-const route = useRoute('package')
-
 const router = useRouter()
 
-// Parse package name and optional version from URL
-// Patterns:
-//   /nuxt → packageName: "nuxt", requestedVersion: null
-//   /nuxt/v/4.2.0 → packageName: "nuxt", requestedVersion: "4.2.0"
-//   /@nuxt/kit → packageName: "@nuxt/kit", requestedVersion: null
-//   /@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
-//   /axios@1.13.3 → packageName: "axios", requestedVersion: "1.13.3"
-//   /@nuxt/kit@1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
-const parsedRoute = computed(() => {
-  const segments = route.params.package || []
-
-  // Find the /v/ separator for version
-  const vIndex = segments.indexOf('v')
-  if (vIndex !== -1 && vIndex < segments.length - 1) {
-    return {
-      packageName: segments.slice(0, vIndex).join('/'),
-      requestedVersion: segments.slice(vIndex + 1).join('/'),
-    }
-  }
-
-  // Parse @ versioned package
-  const fullPath = segments.join('/')
-  const versionMatch = fullPath.match(/^(@[^/]+\/[^/]+|[^/]+)@([^/]+)$/)
-  if (versionMatch) {
-    const [, packageName, requestedVersion] = versionMatch as [string, string, string]
-    return {
-      packageName,
-      requestedVersion,
-    }
-  }
-
-  return {
-    packageName: fullPath,
-    requestedVersion: null as string | null,
-  }
-})
-
-const packageName = computed(() => parsedRoute.value.packageName)
-const requestedVersion = computed(() => parsedRoute.value.requestedVersion)
+const { packageName, requestedVersion, orgName } = usePackageRoute()
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
-
-// Extract org name from scoped package (e.g., "@nuxt/kit" -> "nuxt")
-const orgName = computed(() => {
-  const name = packageName.value
-  if (!name.startsWith('@')) return null
-  const match = name.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
-
-const { data: pkg, status, error, resolvedVersion } = usePackage(packageName, requestedVersion)
 
 const { data: downloads } = usePackageDownloads(packageName, 'last-week')
 
@@ -113,17 +63,10 @@ const {
 )
 onMounted(() => fetchInstallSize())
 
-const sizeTooltip = computed(() => {
-  const chunks = [
-    displayVersion.value &&
-      displayVersion.value.dist.unpackedSize &&
-      `${formatBytes(displayVersion.value.dist.unpackedSize)} unpacked size (this package)`,
-    installSize.value &&
-      installSize.value.dependencyCount &&
-      `${formatBytes(installSize.value.totalSize)} total unpacked size (including all ${installSize.value.dependencyCount} dependencies for linux-x64)`,
-  ]
-  return chunks.filter(Boolean).join('\n')
-})
+const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
+
+const { data: pkg, status, error } = await usePackage(packageName, requestedVersion)
+const resolvedVersion = computed(() => pkg.value?.resolvedVersion ?? null)
 
 // Get the version to display (resolved version or latest)
 const displayVersion = computed(() => {
@@ -162,6 +105,18 @@ const deprecationNotice = computed(() => {
   return { type: 'version' as const, message: displayVersion.value.deprecated }
 })
 
+const sizeTooltip = computed(() => {
+  const chunks = [
+    displayVersion.value &&
+      displayVersion.value.dist.unpackedSize &&
+      `${formatBytes(displayVersion.value.dist.unpackedSize)} unpacked size (this package)`,
+    installSize.value &&
+      installSize.value.dependencyCount &&
+      `${formatBytes(installSize.value.totalSize)} total unpacked size (including all ${installSize.value.dependencyCount} dependencies for linux-x64)`,
+  ]
+  return chunks.filter(Boolean).join('\n')
+})
+
 const hasDependencies = computed(() => {
   if (!displayVersion.value) return false
   const deps = displayVersion.value.dependencies
@@ -193,9 +148,11 @@ const PROVIDER_ICONS: Record<string, string> = {
   bitbucket: 'i-simple-icons-bitbucket',
   codeberg: 'i-simple-icons-codeberg',
   gitea: 'i-simple-icons-gitea',
+  forgejo: 'i-simple-icons-forgejo',
   gitee: 'i-simple-icons-gitee',
   sourcehut: 'i-simple-icons-sourcehut',
   tangled: 'i-custom-tangled',
+  radicle: 'i-carbon-network-3', // Radicle is a P2P network, using network icon
 }
 
 const repoProviderIcon = computed(() => {
@@ -258,12 +215,6 @@ function hasProvenance(version: PackumentVersion | null): boolean {
   return !!dist.attestations
 }
 
-const selectedPM = useSelectedPackageManager()
-const { settings } = useSettings()
-
-// Fetch package analysis for @types info
-const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
-
 // Get @types package name if available (non-deprecated)
 const typesPackageName = computed(() => {
   if (!packageAnalysis.value) return null
@@ -272,76 +223,14 @@ const typesPackageName = computed(() => {
   return packageAnalysis.value.types.packageName
 })
 
-// Check if we should show @types in install command
-const showTypesInInstall = computed(() => {
-  return settings.value.includeTypesInInstall && typesPackageName.value
-})
-
-const installCommandParts = computed(() => {
-  if (!pkg.value) return []
-  return getInstallCommandParts({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    version: requestedVersion.value,
-    jsrInfo: jsrInfo.value,
-  })
-})
-
-const installCommand = computed(() => {
-  if (!pkg.value) return ''
-  return getInstallCommand({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    version: requestedVersion.value,
-    jsrInfo: jsrInfo.value,
-  })
-})
-
-// Get the dev dependency flag for the selected package manager
-function getDevFlag(pmId: string): string {
-  // bun uses lowercase -d, all others use -D
-  return pmId === 'bun' ? '-d' : '-D'
-}
-
-// @types install command parts (for display)
-const typesInstallCommandParts = computed(() => {
-  if (!typesPackageName.value) return []
-  const pm = packageManagers.find(p => p.id === selectedPM.value)
-  if (!pm) return []
-
-  const devFlag = getDevFlag(selectedPM.value)
-  const pkgSpec =
-    selectedPM.value === 'deno' ? `npm:${typesPackageName.value}` : typesPackageName.value
-
-  return [pm.label, pm.action, devFlag, pkgSpec]
-})
-
-// Full install command including @types (for copying)
-const fullInstallCommand = computed(() => {
-  if (!installCommand.value) return ''
-  if (!showTypesInInstall.value || !typesPackageName.value) {
-    return installCommand.value
-  }
-
-  const pm = packageManagers.find(p => p.id === selectedPM.value)
-  if (!pm) return installCommand.value
-
-  const devFlag = getDevFlag(selectedPM.value)
-  const pkgSpec =
-    selectedPM.value === 'deno' ? `npm:${typesPackageName.value}` : typesPackageName.value
-
-  // Use semicolon to separate commands
-  return `${installCommand.value}; ${pm.label} ${pm.action} ${devFlag} ${pkgSpec}`
-})
-
-// Copy install command
-const copied = ref(false)
-async function copyInstallCommand() {
-  if (!fullInstallCommand.value) return
-  await navigator.clipboard.writeText(fullInstallCommand.value)
-  copied.value = true
-  setTimeout(() => (copied.value = false), 2000)
-}
+const {
+  selectedPM,
+  installCommandParts,
+  typesInstallCommandParts,
+  showTypesInInstall,
+  copied,
+  copyInstallCommand,
+} = useInstallCommand(packageName, requestedVersion, jsrInfo, typesPackageName)
 
 // Expandable description
 const descriptionExpanded = ref(false)
