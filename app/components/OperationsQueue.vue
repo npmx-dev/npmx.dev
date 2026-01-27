@@ -125,7 +125,7 @@ onUnmounted(() => {
     <!-- Header -->
     <div class="flex items-center justify-between">
       <h3 class="font-mono text-sm font-medium text-fg">
-        Operations Queue
+        {{ $t('operations.queue.title') }}
         <span v-if="hasActiveOperations" class="text-fg-muted"
           >({{ activeOperations.length }})</span
         >
@@ -135,15 +135,15 @@ onUnmounted(() => {
           v-if="hasOperations"
           type="button"
           class="px-2 py-1 font-mono text-xs text-fg-muted hover:text-fg bg-bg-subtle border border-border rounded transition-colors duration-200 hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-          aria-label="Clear all operations"
+          :aria-label="$t('operations.queue.clear_all')"
           @click="handleClearAll"
         >
-          clear all
+          {{ $t('operations.queue.clear_all') }}
         </button>
         <button
           type="button"
           class="p-1 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-          aria-label="Refresh operations"
+          :aria-label="$t('operations.queue.refresh')"
           @click="refreshState"
         >
           <span class="i-carbon-renew block w-4 h-4" aria-hidden="true" />
@@ -153,12 +153,16 @@ onUnmounted(() => {
 
     <!-- Empty state -->
     <div v-if="!hasActiveOperations && !hasCompletedOperations" class="py-8 text-center">
-      <p class="font-mono text-sm text-fg-subtle">No operations queued</p>
-      <p class="font-mono text-xs text-fg-subtle mt-1">Add operations from package or org pages</p>
+      <p class="font-mono text-sm text-fg-subtle">{{ $t('operations.queue.empty') }}</p>
+      <p class="font-mono text-xs text-fg-subtle mt-1">{{ $t('operations.queue.empty_hint') }}</p>
     </div>
 
     <!-- Active operations list -->
-    <ul v-if="hasActiveOperations" class="space-y-2" aria-label="Active operations">
+    <ul
+      v-if="hasActiveOperations"
+      class="space-y-2"
+      :aria-label="$t('operations.queue.active_label')"
+    >
       <li
         v-for="op in activeOperations"
         :key="op.id"
@@ -189,7 +193,7 @@ onUnmounted(() => {
             v-if="op.result?.requiresOtp && op.status === 'failed'"
             class="mt-1 text-xs text-amber-400"
           >
-            OTP required
+            {{ $t('operations.queue.otp_required') }}
           </p>
           <!-- Result output for completed/failed -->
           <div
@@ -211,7 +215,7 @@ onUnmounted(() => {
             v-if="op.status === 'pending'"
             type="button"
             class="p-1 text-fg-muted hover:text-green-400 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            aria-label="Approve operation"
+            :aria-label="$t('operations.queue.approve_operation')"
             @click="approveOperation(op.id)"
           >
             <span class="i-carbon-checkmark block w-4 h-4" aria-hidden="true" />
@@ -220,7 +224,7 @@ onUnmounted(() => {
             v-if="op.status !== 'running'"
             type="button"
             class="p-1 text-fg-muted hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            aria-label="Remove operation"
+            :aria-label="$t('operations.queue.remove_operation')"
             @click="removeOperation(op.id)"
           >
             <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
@@ -237,10 +241,12 @@ onUnmounted(() => {
     >
       <div class="flex items-center gap-2 mb-2">
         <span class="i-carbon-locked block w-4 h-4 text-amber-400 shrink-0" aria-hidden="true" />
-        <span class="font-mono text-sm text-amber-400"> Enter OTP to continue </span>
+        <span class="font-mono text-sm text-amber-400">
+          {{ $t('operations.queue.otp_prompt') }}
+        </span>
       </div>
       <form class="flex items-center gap-2" @submit.prevent="handleRetryWithOtp">
-        <label for="otp-input" class="sr-only">One-time password</label>
+        <label for="otp-input" class="sr-only">{{ $t('operations.queue.otp_label') }}</label>
         <input
           id="otp-input"
           v-model="otpInput"
@@ -248,7 +254,7 @@ onUnmounted(() => {
           name="otp-code"
           inputmode="numeric"
           pattern="[0-9]*"
-          placeholder="Enter OTP code…"
+          :placeholder="$t('operations.queue.otp_placeholder')"
           autocomplete="one-time-code"
           spellcheck="false"
           class="flex-1 px-3 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
@@ -258,7 +264,7 @@ onUnmounted(() => {
           :disabled="!otpInput.trim() || isExecuting"
           class="px-3 py-1.5 font-mono text-xs text-bg bg-amber-500 rounded transition-all duration-200 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50"
         >
-          {{ isExecuting ? 'Retrying…' : 'Retry with OTP' }}
+          {{ isExecuting ? $t('operations.queue.retrying') : $t('operations.queue.retry_otp') }}
         </button>
       </form>
     </div>
@@ -271,7 +277,7 @@ onUnmounted(() => {
         class="flex-1 px-4 py-2 font-mono text-sm text-fg bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="handleApproveAll"
       >
-        Approve All ({{ pendingOperations.length }})
+        {{ $t('operations.queue.approve_all') }} ({{ pendingOperations.length }})
       </button>
       <button
         v-if="hasApprovedOperations && !hasOtpFailures"
@@ -280,7 +286,11 @@ onUnmounted(() => {
         class="flex-1 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         @click="handleExecute()"
       >
-        {{ isExecuting ? 'Executing…' : `Execute (${approvedOperations.length})` }}
+        {{
+          isExecuting
+            ? $t('operations.queue.executing')
+            : `${$t('operations.queue.execute')} (${approvedOperations.length})`
+        }}
       </button>
     </div>
 
@@ -293,9 +303,9 @@ onUnmounted(() => {
           class="i-carbon-chevron-right block w-3 h-3 transition-transform duration-200 [[open]>&]:rotate-90"
           aria-hidden="true"
         />
-        Log ({{ completedOperations.length }})
+        {{ $t('operations.queue.log') }} ({{ completedOperations.length }})
       </summary>
-      <ul class="mt-2 space-y-1" aria-label="Completed operations log">
+      <ul class="mt-2 space-y-1" :aria-label="$t('operations.queue.log_label')">
         <li
           v-for="op in completedOperations"
           :key="op.id"
@@ -323,7 +333,7 @@ onUnmounted(() => {
           <button
             type="button"
             class="p-0.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            aria-label="Remove from log"
+            :aria-label="$t('operations.queue.remove_from_log')"
             @click="removeOperation(op.id)"
           >
             <span class="i-carbon-close block w-3 h-3" aria-hidden="true" />

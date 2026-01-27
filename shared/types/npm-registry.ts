@@ -147,6 +147,7 @@ export interface NpmSearchPackage {
   author?: NpmPerson
   publisher?: NpmSearchPublisher
   maintainers?: NpmPerson[]
+  license?: string
 }
 
 export interface NpmSearchScore {

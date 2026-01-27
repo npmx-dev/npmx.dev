@@ -2,6 +2,8 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 
+const { t } = useI18n()
+
 const { packageName } = defineProps<{
   packageName: string
 }>()
@@ -42,7 +44,7 @@ watch(
 const dataset = computed(() =>
   weeklyDownloads.value.map(d => ({
     value: d?.downloads ?? 0,
-    period: `${d.weekStart ?? '-'} to ${d.weekEnd ?? '-'}`,
+    period: t('package.downloads.date_range', { start: d.weekStart ?? '-', end: d.weekEnd ?? '-' }),
   })),
 )
 
@@ -77,11 +79,13 @@ const config = computed(() => ({
   <div class="space-y-8">
     <section>
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider">Weekly Downloads</h2>
+        <h2 class="text-xs text-fg-subtle uppercase tracking-wider">
+          {{ $t('package.downloads.title') }}
+        </h2>
         <a
           @click="showModal = true"
           class="cursor-pointer link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0 self-center"
-          title="Analyze downloads"
+          :title="t('package.downloads.analyze')"
         >
           <span class="i-carbon-data-analytics w-4 h-4" />
         </a>

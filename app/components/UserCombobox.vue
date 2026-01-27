@@ -143,7 +143,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
       :id="inputId"
       v-model="inputValue"
       type="text"
-      :placeholder="placeholder ?? 'username…'"
+      :placeholder="placeholder ?? $t('user.combobox.default_placeholder')"
       :disabled="disabled"
       autocomplete="off"
       spellcheck="false"
@@ -176,7 +176,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
         :id="listboxId"
         ref="listRef"
         role="listbox"
-        :aria-label="label ?? 'User suggestions'"
+        :aria-label="label ?? $t('user.combobox.suggestions_label')"
         class="absolute z-50 w-full mt-1 py-1 bg-bg-elevated border border-border rounded shadow-lg max-h-48 overflow-y-auto"
       >
         <!-- Suggestions from org -->
@@ -209,8 +209,12 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
             class="i-carbon-information w-3 h-3 inline-block mr-1 align-middle"
             aria-hidden="true"
           />
-          Press Enter to add @{{ inputValue.trim().replace(/^@/, '') }}
-          <span class="text-amber-400">(will also add to org)</span>
+          {{
+            $t('user.combobox.press_enter_to_add', {
+              username: inputValue.trim().replace(/^@/, ''),
+            })
+          }}
+          <span class="text-amber-400">{{ $t('user.combobox.add_to_org_hint') }}</span>
         </li>
       </ul>
     </Transition>

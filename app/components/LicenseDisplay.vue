@@ -19,7 +19,7 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
         target="_blank"
         rel="noopener noreferrer"
         class="link-subtle"
-        title="View license text on SPDX"
+        :title="$t('package.license.view_spdx')"
       >
         {{ token.value }}
       </a>
