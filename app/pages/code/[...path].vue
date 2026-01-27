@@ -47,43 +47,11 @@ const filePath = computed(() => parsedRoute.value.filePath)
 // Fetch package data for version list
 const { data: pkg } = usePackage(packageName)
 
-// Get available versions sorted by dist-tags first, then by semver
-const availableVersions = computed(() => {
-  if (!pkg.value) return []
-
-  const distTags = pkg.value['dist-tags'] ?? {}
-  const allVersions = Object.keys(pkg.value.versions)
-
-  // Get dist-tag versions first (latest, next, beta, etc.)
-  const taggedVersions = new Set(Object.values(distTags))
-  const taggedList = Object.entries(distTags).map(([tag, ver]) => ({ version: ver, tag }))
-
-  // Get other versions (not in dist-tags), sorted by semver descending
-  const otherVersions = allVersions
-    .filter(v => !taggedVersions.has(v))
-    .sort((a, b) => {
-      // Simple semver comparison (major.minor.patch)
-      const partsA = a.split('.').map(p => parseInt(p, 10) || 0)
-      const partsB = b.split('.').map(p => parseInt(p, 10) || 0)
-      for (let i = 0; i < 3; i++) {
-        const diff = (partsB[i] ?? 0) - (partsA[i] ?? 0)
-        if (diff !== 0) return diff
-      }
-      return 0
-    })
-    .slice(0, 20) // Limit to 20 most recent
-    .map(v => ({ version: v, tag: undefined as string | undefined }))
-
-  return [...taggedList, ...otherVersions]
+// URL pattern for version selector - includes file path if present
+const versionUrlPattern = computed(() => {
+  const base = `/code/${packageName.value}/v/{version}`
+  return filePath.value ? `${base}/${filePath.value}` : base
 })
-
-// Version switch handler
-function switchVersion(newVersion: string) {
-  const newPath = filePath.value
-    ? `/code/${packageName.value}/v/${newVersion}/${filePath.value}`
-    : `/code/${packageName.value}/v/${newVersion}`
-  router.push(newPath)
-}
 
 // Fetch file tree
 const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
@@ -305,23 +273,14 @@ useSeoMeta({
             >{{ orgName ? packageName.replace(`@${orgName}/`, '') : packageName }}
           </NuxtLink>
           <!-- Version selector -->
-          <div v-if="version && availableVersions.length > 0" class="relative shrink-0">
-            <label for="version-select" class="sr-only">{{ $t('code.select_version') }}</label>
-            <select
-              id="version-select"
-              :value="version"
-              :title="`v${version}`"
-              class="appearance-none pl-2 pr-6 py-0.5 font-mono text-sm bg-bg-muted border border-border rounded cursor-pointer hover:border-border-hover transition-colors max-w-32 sm:max-w-48 truncate"
-              @change="switchVersion(($event.target as HTMLSelectElement).value)"
-            >
-              <option v-for="v in availableVersions" :key="v.version" :value="v.version">
-                v{{ v.version }}{{ v.tag ? ` (${v.tag})` : '' }}
-              </option>
-            </select>
-            <span
-              class="i-carbon-chevron-down w-3 h-3 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none text-fg-muted"
-            />
-          </div>
+          <VersionSelector
+            v-if="version && pkg?.versions && pkg?.['dist-tags']"
+            :package-name="packageName"
+            :current-version="version"
+            :versions="pkg.versions"
+            :dist-tags="pkg['dist-tags']"
+            :url-pattern="versionUrlPattern"
+          />
           <span
             v-else-if="version"
             class="px-2 py-0.5 font-mono text-sm bg-bg-muted border border-border rounded truncate max-w-32 sm:max-w-48"

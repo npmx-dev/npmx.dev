@@ -107,12 +107,13 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
             >
               {{ packageName }}
             </NuxtLink>
-            <DocsVersionSelector
+            <VersionSelector
               v-if="resolvedVersion && pkg?.versions && pkg?.['dist-tags']"
               :package-name="packageName"
               :current-version="resolvedVersion"
               :versions="pkg.versions"
               :dist-tags="pkg['dist-tags']"
+              :url-pattern="`/docs/${packageName}/v/{version}`"
             />
             <span v-else-if="resolvedVersion" class="text-fg-subtle font-mono text-sm shrink-0">
               {{ resolvedVersion }}
