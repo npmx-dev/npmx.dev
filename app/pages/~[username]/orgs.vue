@@ -39,7 +39,9 @@ async function loadOrgDetails(org: OrgInfo) {
   try {
     const users = await listOrgUsers(org.name)
     if (users && npmUser.value) {
-      org.role = users[npmUser.value] ?? null
+      const lowerUser = npmUser.value.toLowerCase()
+      const entry = Object.entries(users).find(([k]) => k.toLowerCase() === lowerUser)
+      org.role = entry?.[1] ?? null
     }
   } catch {
     org.role = null
