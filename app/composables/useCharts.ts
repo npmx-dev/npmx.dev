@@ -134,9 +134,11 @@ function buildDailyEvolutionFromDaily(
 function buildRollingWeeklyEvolutionFromDaily(
   daily: Array<{ day: string; downloads: number }>,
   rangeStartIso: string,
+  rangeEndIso: string,
 ): WeeklyDownloadPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
   const rangeStartDate = parseIsoDateOnly(rangeStartIso)
+  const rangeEndDate = parseIsoDateOnly(rangeEndIso)
 
   const groupedByIndex = new Map<number, number>()
 
@@ -155,8 +157,12 @@ function buildRollingWeeklyEvolutionFromDaily(
       const weekStartDate = addDays(rangeStartDate, weekIndex * 7)
       const weekEndDate = addDays(weekStartDate, 6)
 
+      // Clamp weekEnd to the actual data range end date
+      const clampedWeekEndDate =
+        weekEndDate.getTime() > rangeEndDate.getTime() ? rangeEndDate : weekEndDate
+
       const weekStartIso = toIsoDateString(weekStartDate)
-      const weekEndIso = toIsoDateString(weekEndDate)
+      const weekEndIso = toIsoDateString(clampedWeekEndDate)
 
       return {
         downloads,
@@ -350,7 +356,7 @@ export function useCharts() {
 
     if (resolvedOptions.granularity === 'day') return buildDailyEvolutionFromDaily(sortedDaily)
     if (resolvedOptions.granularity === 'week')
-      return buildRollingWeeklyEvolutionFromDaily(sortedDaily, startIso)
+      return buildRollingWeeklyEvolutionFromDaily(sortedDaily, startIso, endIso)
     if (resolvedOptions.granularity === 'month') return buildMonthlyEvolutionFromDaily(sortedDaily)
     return buildYearlyEvolutionFromDaily(sortedDaily)
   }
