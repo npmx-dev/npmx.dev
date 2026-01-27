@@ -3,12 +3,14 @@ import { useEventListener } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
+const { settings } = useSettings()
 
 const isHomepage = computed(() => route.path === '/')
+const theme = settings.value.theme === 'dark' ? 'dark' : 'light'
 
 useHead({
   htmlAttrs: {
-    'data-theme': 'light',
+    'data-theme': 'dark',
   },
   titleTemplate: titleChunk => {
     return titleChunk ? titleChunk : 'npmx - Better npm Package Browser'
@@ -73,19 +75,23 @@ if (import.meta.client) {
 }
 
 :root[data-theme='dark'] {
+  /* background colors */
   --bg: oklch(0.145 0 0);
   --bg-subtle: oklch(0.178 0 0);
   --bg-muted: oklch(0.218 0 0);
   --bg-elevated: oklch(0.252 0 0);
 
+  /* text colors */
   --fg: oklch(0.985 0 0);
   --fg-muted: oklch(0.709 0 0);
   --fg-subtle: oklch(0.633 0 0);
 
+  /* border, seperator colors */
   --border: oklch(0.269 0 0);
   --border-subtle: oklch(0.239 0 0);
   --border-hover: oklch(0.371 0 0);
 
+  /* user selected accent */
   --accent: oklch(1 0 0);
   --accent-muted: oklch(0.922 0 0);
 

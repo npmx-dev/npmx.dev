@@ -113,7 +113,7 @@ onKeyStroke(',', e => {
           <!-- Include @types in install toggle -->
           <button
             type="button"
-            class="w-full flex items-center justify-between gap-3 px-2 py-2 rounded-md hover:bg-bg-muted transition-[background-color] duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inset-shadow"
+            class="w-full flex items-center justify-between gap-3 px-2 py-2 rounded-md hover:bg-bg-muted transition-[background-color] duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             role="menuitemcheckbox"
             :aria-checked="settings.includeTypesInInstall"
             @click="settings.includeTypesInInstall = !settings.includeTypesInInstall"

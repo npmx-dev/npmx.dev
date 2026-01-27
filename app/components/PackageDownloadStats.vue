@@ -30,23 +30,24 @@ const config = computed(() => ({
       show: false,
     },
     area: {
-      color: '#6A6A6A',
       useGradient: false,
+      // here css variable doesn't seem to work here
+      color: '#6A6A6A',
       opacity: 10,
     },
     dataLabel: {
       offsetX: -10,
       fontSize: 28,
       bold: false,
-      color: '#FAFAFA',
+      color: 'var(--fg)',
     },
     line: {
-      color: '#6A6A6A',
+      color: 'var(--fg-subtle)',
       pulse: {
         show: true,
         loop: true, // runs only once if false
         radius: 2,
-        color: '#8A8A8A',
+        color: 'var(--fg-muted)',
         easing: 'ease-in-out',
         trail: {
           show: true,
@@ -56,17 +57,17 @@ const config = computed(() => ({
     },
     plot: {
       radius: 6,
-      stroke: '#FAFAFA',
+      stroke: 'var(--fg)',
     },
     title: {
       text: lastDatapoint.value,
       fontSize: 12,
-      color: '#8A8A8A',
+      color: 'var(--fg)',
       bold: false,
     },
     verticalIndicator: {
       strokeDasharray: 0,
-      color: '#FAFAFA',
+      color: 'var(--fg-muted)',
     },
   },
 }))

@@ -9,11 +9,14 @@ export interface AppSettings {
   relativeDates: boolean
   /** Include @types/* package in install command for packages without built-in types */
   includeTypesInInstall: boolean
+  /** Theme of site, default dark */
+  theme: 'dark' | 'light'
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
   relativeDates: false,
   includeTypesInInstall: true,
+  theme: 'dark',
 }
 
 const STORAGE_KEY = 'npmx-settings'
