@@ -3,7 +3,6 @@ import { formatNumber } from '#imports'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 
-const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -346,7 +345,7 @@ defineOgImageComponent('Default', {
 
         <search>
           <form role="search" class="relative" @submit.prevent>
-            <label for="search-input" class="sr-only">{{ t('search.label') }}</label>
+            <label for="search-input" class="sr-only">{{ $t('search.label') }}</label>
 
             <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
               <!-- Subtle glow effect -->
@@ -367,7 +366,7 @@ defineOgImageComponent('Default', {
                   v-model="inputValue"
                   type="search"
                   name="q"
-                  :placeholder="t('search.placeholder')"
+                  :placeholder="$t('search.placeholder')"
                   autocapitalize="off"
                   autocomplete="off"
                   autocorrect="off"
@@ -381,13 +380,13 @@ defineOgImageComponent('Default', {
                   v-show="inputValue"
                   type="button"
                   class="absolute right-3 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                  :aria-label="t('search.clear')"
+                  :aria-label="$t('search.clear')"
                   @click="inputValue = ''"
                 >
                   <span class="i-carbon-close-large block w-3.5 h-3.5" aria-hidden="true" />
                 </button>
                 <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
-                <button type="submit" class="sr-only">{{ t('search.button') }}</button>
+                <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
               </div>
             </div>
           </form>
@@ -399,7 +398,7 @@ defineOgImageComponent('Default', {
     <div class="container pt-20 pb-6">
       <section v-if="query" aria-label="Search results" @keydown="handleResultsKeydown">
         <!-- Initial loading (only after user interaction, not during view transition) -->
-        <LoadingSpinner v-if="showSearching" :text="t('search.searching')" />
+        <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
         <div v-else-if="visibleResults">
           <!-- Claim prompt - shown at top when valid name but no exact match -->
@@ -409,16 +408,16 @@ defineOgImageComponent('Default', {
           >
             <div class="flex-1 min-w-0">
               <p class="font-mono text-sm text-fg">
-                {{ t('search.not_taken', { name: query }) }}
+                {{ $t('search.not_taken', { name: query }) }}
               </p>
-              <p class="text-xs text-fg-muted mt-0.5">{{ t('search.claim_prompt') }}</p>
+              <p class="text-xs text-fg-muted mt-0.5">{{ $t('search.claim_prompt') }}</p>
             </div>
             <button
               type="button"
               class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               @click="claimModalOpen = true"
             >
-              {{ t('search.claim_button', { name: query }) }}
+              {{ $t('search.claim_button', { name: query }) }}
             </button>
           </div>
 
@@ -427,28 +426,28 @@ defineOgImageComponent('Default', {
             role="status"
             class="text-fg-muted text-sm mb-6 font-mono"
           >
-            {{ t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
+            {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
             <span v-if="status === 'pending'" class="text-fg-subtle">{{
-              t('search.updating')
+              $t('search.updating')
             }}</span>
           </p>
 
           <!-- No results found -->
           <div v-else-if="status !== 'pending'" role="status" class="py-12 text-center">
             <p class="text-fg-muted font-mono mb-6">
-              {{ t('search.no_results', { query }) }}
+              {{ $t('search.no_results', { query }) }}
             </p>
 
             <!-- Offer to claim the package name if it's valid -->
             <div v-if="showClaimPrompt" class="max-w-md mx-auto">
               <div class="p-4 bg-bg-subtle border border-border rounded-lg">
-                <p class="text-sm text-fg-muted mb-3">{{ t('search.want_to_claim') }}</p>
+                <p class="text-sm text-fg-muted mb-3">{{ $t('search.want_to_claim') }}</p>
                 <button
                   type="button"
                   class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                   @click="claimModalOpen = true"
                 >
-                  {{ t('search.claim_button', { name: query }) }}
+                  {{ $t('search.claim_button', { name: query }) }}
                 </button>
               </div>
             </div>
@@ -473,7 +472,7 @@ defineOgImageComponent('Default', {
       </section>
 
       <section v-else class="py-20 text-center">
-        <p class="text-fg-subtle font-mono text-sm">{{ t('search.start_typing') }}</p>
+        <p class="text-fg-subtle font-mono text-sm">{{ $t('search.start_typing') }}</p>
       </section>
     </div>
 

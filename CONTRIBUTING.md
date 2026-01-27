@@ -214,7 +214,7 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 
 ### Approach
 
-- All user-facing strings should use translation keys via `$t()` in templates or `t()` in script
+- All user-facing strings should use translation keys via `$t()` in templates and script
 - Translation files live in `i18n/locales/` (e.g., `en.json`)
 - We use the `no_prefix` strategy (no `/en/` or `/fr/` in URLs)
 - Locale preference is stored in cookies and respected on subsequent visits
@@ -233,8 +233,9 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
    Or in script:
 
    ```typescript
-   const { t } = useI18n()
-   const message = t('my.translation.key')
+   <script setup lang="ts">
+   const message = computed(() => $t('my.translation.key'))
+   </script>
    ```
 
 3. For dynamic values, use interpolation:

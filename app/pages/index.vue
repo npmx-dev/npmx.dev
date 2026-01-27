@@ -10,10 +10,9 @@ function handleSearch() {
   })
 }
 
-const { t } = useI18n()
 useSeoMeta({
-  title: () => t('seo.home.title'),
-  description: () => t('seo.home.description'),
+  title: () => $t('seo.home.title'),
+  description: () => $t('seo.home.description'),
 })
 
 defineOgImageComponent('Default')

@@ -92,12 +92,10 @@ function getVulnerabilityUrl(vuln: OsvVulnerability): string {
   return `https://osv.dev/vulnerability/${vuln.id}`
 }
 
-const { t } = useI18n()
-
 function toVulnerabilitySummary(vuln: OsvVulnerability): VulnerabilitySummary {
   return {
     id: vuln.id,
-    summary: vuln.summary || t('package.vulnerabilities.no_description'),
+    summary: vuln.summary || $t('package.vulnerabilities.no_description'),
     severity: getSeverityLevel(vuln),
     aliases: vuln.aliases || [],
     url: getVulnerabilityUrl(vuln),
@@ -142,11 +140,11 @@ const summaryText = computed(() => {
   const counts = vulnData.value.counts
   const parts: string[] = []
   if (counts.critical > 0)
-    parts.push(`${counts.critical} ${t('package.vulnerabilities.severity.critical')}`)
-  if (counts.high > 0) parts.push(`${counts.high} ${t('package.vulnerabilities.severity.high')}`)
+    parts.push(`${counts.critical} ${$t('package.vulnerabilities.severity.critical')}`)
+  if (counts.high > 0) parts.push(`${counts.high} ${$t('package.vulnerabilities.severity.high')}`)
   if (counts.moderate > 0)
-    parts.push(`${counts.moderate} ${t('package.vulnerabilities.severity.moderate')}`)
-  if (counts.low > 0) parts.push(`${counts.low} ${t('package.vulnerabilities.severity.low')}`)
+    parts.push(`${counts.moderate} ${$t('package.vulnerabilities.severity.moderate')}`)
+  if (counts.low > 0) parts.push(`${counts.low} ${$t('package.vulnerabilities.severity.low')}`)
   return parts.join(', ')
 })
 </script>

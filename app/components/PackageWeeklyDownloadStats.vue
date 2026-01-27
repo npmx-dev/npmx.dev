@@ -6,7 +6,6 @@ const { packageName } = defineProps<{
   packageName: string
 }>()
 
-const { t } = useI18n()
 const showModal = ref(false)
 
 const { data: packument } = usePackage(() => packageName)
@@ -43,7 +42,10 @@ watch(
 const dataset = computed(() =>
   weeklyDownloads.value.map(d => ({
     value: d?.downloads ?? 0,
-    period: t('package.downloads.date_range', { start: d.weekStart ?? '-', end: d.weekEnd ?? '-' }),
+    period: $t('package.downloads.date_range', {
+      start: d.weekStart ?? '-',
+      end: d.weekEnd ?? '-',
+    }),
   })),
 )
 
@@ -85,10 +87,10 @@ const config = computed(() => ({
           type="button"
           @click="showModal = true"
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-          :title="t('package.downloads.analyze')"
+          :title="$t('package.downloads.analyze')"
         >
           <span class="i-carbon-data-analytics w-4 h-4" aria-hidden="true" />
-          <span class="sr-only">{{ t('package.downloads.analyze') }}</span>
+          <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
         </button>
       </div>
 

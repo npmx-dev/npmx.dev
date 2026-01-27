@@ -1,11 +1,9 @@
-<script setup lang="ts">
-const { t } = useI18n()
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <article
     aria-busy="true"
-    :aria-label="t('package.skeleton.loading')"
+    :aria-label="$t('package.skeleton.loading')"
     class="motion-safe:animate-fade-in"
   >
     <!-- Package header - matches header in [...name].vue -->
@@ -35,7 +33,7 @@ const { t } = useI18n()
         <!-- License -->
         <div class="space-y-1">
           <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ t('package.skeleton.license') }}
+            {{ $t('package.skeleton.license') }}
           </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-12" />
@@ -45,7 +43,7 @@ const { t } = useI18n()
         <!-- Weekly -->
         <div class="space-y-1">
           <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ t('package.skeleton.weekly') }}
+            {{ $t('package.skeleton.weekly') }}
           </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-20" />
@@ -55,7 +53,7 @@ const { t } = useI18n()
         <!-- Size -->
         <div class="space-y-1">
           <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ t('package.skeleton.size') }}
+            {{ $t('package.skeleton.size') }}
           </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-16" />
@@ -65,7 +63,7 @@ const { t } = useI18n()
         <!-- Deps -->
         <div class="space-y-1">
           <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ t('package.skeleton.deps') }}
+            {{ $t('package.skeleton.deps') }}
           </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-8" />
@@ -75,7 +73,7 @@ const { t } = useI18n()
         <!-- Updated -->
         <div class="space-y-1 col-span-2">
           <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ t('package.skeleton.updated') }}
+            {{ $t('package.skeleton.updated') }}
           </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-28" />
@@ -108,7 +106,7 @@ const { t } = useI18n()
         id="install-heading-skeleton"
         class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
       >
-        {{ t('package.skeleton.install') }}
+        {{ $t('package.skeleton.install') }}
       </h2>
       <!-- code-block with relative positioning for copy button -->
       <div class="relative">
@@ -128,7 +126,7 @@ const { t } = useI18n()
             id="readme-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
           >
-            {{ t('package.skeleton.readme') }}
+            {{ $t('package.skeleton.readme') }}
           </h2>
           <!-- Simulated README content -->
           <div class="space-y-4">
@@ -159,7 +157,7 @@ const { t } = useI18n()
             id="maintainers-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
           >
-            {{ t('package.skeleton.maintainers') }}
+            {{ $t('package.skeleton.maintainers') }}
           </h2>
           <ul class="space-y-2 list-none m-0 p-0">
             <li>
@@ -177,7 +175,7 @@ const { t } = useI18n()
             id="keywords-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
           >
-            {{ t('package.skeleton.keywords') }}
+            {{ $t('package.skeleton.keywords') }}
           </h2>
           <!-- flex flex-wrap gap-1.5 -->
           <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
@@ -196,7 +194,7 @@ const { t } = useI18n()
             id="versions-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
           >
-            {{ t('package.skeleton.versions') }}
+            {{ $t('package.skeleton.versions') }}
           </h2>
           <!-- space-y-1, each row: flex items-center justify-between py-1.5 text-sm -->
           <div class="space-y-1">
@@ -229,7 +227,7 @@ const { t } = useI18n()
             id="dependencies-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
           >
-            {{ t('package.skeleton.dependencies') }}
+            {{ $t('package.skeleton.dependencies') }}
           </h2>
           <!-- space-y-1, each: flex items-center justify-between py-1 text-sm -->
           <ul class="space-y-1 list-none m-0 p-0">

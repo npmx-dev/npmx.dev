@@ -8,8 +8,6 @@ const props = defineProps<{
   }
 }>()
 
-const { t } = useI18n()
-
 const outdatedNpxDeps = useOutdatedDependencies(() => props.installScripts.npxDependencies)
 const hasNpxDeps = computed(() => Object.keys(props.installScripts.npxDependencies).length > 0)
 const sortedNpxDeps = computed(() => {
@@ -58,7 +56,7 @@ const isExpanded = shallowRef(false)
           aria-hidden="true"
         />
         {{
-          t(
+          $t(
             'package.install_scripts.npx_packages',
             { count: sortedNpxDeps.length },
             sortedNpxDeps.length,
@@ -101,7 +99,7 @@ const isExpanded = shallowRef(false)
               :title="
                 outdatedNpxDeps[dep]
                   ? outdatedNpxDeps[dep].resolved === outdatedNpxDeps[dep].latest
-                    ? t('package.install_scripts.currently', {
+                    ? $t('package.install_scripts.currently', {
                         version: outdatedNpxDeps[dep].latest,
                       })
                     : getOutdatedTooltip(outdatedNpxDeps[dep])

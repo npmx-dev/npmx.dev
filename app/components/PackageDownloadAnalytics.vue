@@ -4,8 +4,6 @@ import type { VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn } from '@vueuse/core'
 
-const { t } = useI18n()
-
 const {
   weeklyDownloads,
   inModal = false,
@@ -398,7 +396,7 @@ const config = computed(() => ({
     grid: {
       labels: {
         axis: {
-          yLabel: t('package.downloads.y_axis_label', { granularity: selectedGranularity.value }),
+          yLabel: $t('package.downloads.y_axis_label', { granularity: selectedGranularity.value }),
           xLabel: packageName,
           yLabelOffsetX: 12,
           fontSize: 24,
@@ -469,7 +467,7 @@ const config = computed(() => ({
             for="granularity"
             class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
           >
-            {{ t('package.downloads.granularity') }}
+            {{ $t('package.downloads.granularity') }}
           </label>
 
           <div
@@ -480,10 +478,10 @@ const config = computed(() => ({
               v-model="selectedGranularity"
               class="w-full bg-transparent font-mono text-sm text-fg outline-none"
             >
-              <option value="daily">{{ t('package.downloads.granularity_daily') }}</option>
-              <option value="weekly">{{ t('package.downloads.granularity_weekly') }}</option>
-              <option value="monthly">{{ t('package.downloads.granularity_monthly') }}</option>
-              <option value="yearly">{{ t('package.downloads.granularity_yearly') }}</option>
+              <option value="daily">{{ $t('package.downloads.granularity_daily') }}</option>
+              <option value="weekly">{{ $t('package.downloads.granularity_weekly') }}</option>
+              <option value="monthly">{{ $t('package.downloads.granularity_monthly') }}</option>
+              <option value="yearly">{{ $t('package.downloads.granularity_yearly') }}</option>
             </select>
           </div>
         </div>
@@ -495,7 +493,7 @@ const config = computed(() => ({
               for="startDate"
               class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
             >
-              {{ t('package.downloads.start_date') }}
+              {{ $t('package.downloads.start_date') }}
             </label>
             <div
               class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
@@ -515,7 +513,7 @@ const config = computed(() => ({
               for="endDate"
               class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
             >
-              {{ t('package.downloads.end_date') }}
+              {{ $t('package.downloads.end_date') }}
             </label>
             <div
               class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
@@ -636,7 +634,7 @@ const config = computed(() => ({
       v-if="inModal && !chartData.dataset && !pending"
       class="min-h-[260px] flex items-center justify-center text-fg-subtle font-mono text-sm"
     >
-      {{ t('package.downloads.no_data') }}
+      {{ $t('package.downloads.no_data') }}
     </div>
 
     <div
@@ -645,7 +643,7 @@ const config = computed(() => ({
       aria-live="polite"
       class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-fg-subtle font-mono bg-bg/70 backdrop-blur px-3 py-2 rounded-md border border-border"
     >
-      {{ t('package.downloads.loading') }}
+      {{ $t('package.downloads.loading') }}
     </div>
   </div>
 </template>

@@ -3,7 +3,6 @@ const props = defineProps<{
   username: string
 }>()
 
-const { t } = useI18n()
 const { listUserPackages } = useConnector()
 
 const isOpen = ref(false)
@@ -23,11 +22,11 @@ async function loadPackages() {
       // Sort alphabetically and take top 10
       packages.value = Object.keys(pkgMap).sort().slice(0, 10)
     } else {
-      error.value = t('header.packages_dropdown.error')
+      error.value = $t('header.packages_dropdown.error')
     }
     hasLoaded.value = true
   } catch {
-    error.value = t('header.packages_dropdown.error')
+    error.value = $t('header.packages_dropdown.error')
   } finally {
     isLoading.value = false
   }
@@ -62,7 +61,7 @@ function handleKeydown(event: KeyboardEvent) {
       :to="`/~${username}`"
       class="link-subtle font-mono text-sm inline-flex items-center gap-1"
     >
-      {{ t('header.packages') }}
+      {{ $t('header.packages') }}
       <span
         class="i-carbon-chevron-down w-3 h-3 transition-transform duration-200"
         :class="{ 'rotate-180': isOpen }"
@@ -80,16 +79,16 @@ function handleKeydown(event: KeyboardEvent) {
         <div class="bg-bg-elevated border border-border rounded-lg shadow-lg overflow-hidden">
           <div class="px-3 py-2 border-b border-border">
             <span class="font-mono text-xs text-fg-subtle">{{
-              t('header.packages_dropdown.title')
+              $t('header.packages_dropdown.title')
             }}</span>
           </div>
 
           <div v-if="isLoading" class="px-3 py-4 text-center">
-            <span class="text-fg-muted text-sm">{{ t('header.packages_dropdown.loading') }}</span>
+            <span class="text-fg-muted text-sm">{{ $t('header.packages_dropdown.loading') }}</span>
           </div>
 
           <div v-else-if="error" class="px-3 py-4 text-center">
-            <span class="text-fg-muted text-sm">{{ t('header.packages_dropdown.error') }}</span>
+            <span class="text-fg-muted text-sm">{{ $t('header.packages_dropdown.error') }}</span>
           </div>
 
           <ul v-else-if="packages.length > 0" class="py-1 max-h-80 overflow-y-auto">
@@ -104,7 +103,7 @@ function handleKeydown(event: KeyboardEvent) {
           </ul>
 
           <div v-else class="px-3 py-4 text-center">
-            <span class="text-fg-muted text-sm">{{ t('header.packages_dropdown.empty') }}</span>
+            <span class="text-fg-muted text-sm">{{ $t('header.packages_dropdown.empty') }}</span>
           </div>
 
           <div class="px-3 py-2 border-t border-border">
@@ -112,7 +111,7 @@ function handleKeydown(event: KeyboardEvent) {
               :to="`/~${username}`"
               class="link-subtle font-mono text-xs inline-flex items-center gap-1"
             >
-              {{ t('header.packages_dropdown.view_all') }}
+              {{ $t('header.packages_dropdown.view_all') }}
               <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
             </NuxtLink>
           </div>

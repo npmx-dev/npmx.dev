@@ -12,12 +12,10 @@ const {
 const showModal = shallowRef(false)
 const showTooltip = shallowRef(false)
 
-const { t } = useI18n()
-
 const tooltipText = computed(() => {
-  if (isConnecting.value) return t('connector.status.connecting')
-  if (isConnected.value) return t('connector.status.connected')
-  return t('connector.status.connect_cli')
+  if (isConnecting.value) return $t('connector.status.connecting')
+  if (isConnected.value) return $t('connector.status.connected')
+  return $t('connector.status.connect_cli')
 })
 
 const statusColor = computed(() => {
@@ -31,9 +29,9 @@ const operationCount = computed(() => activeOperations.value.length)
 
 const ariaLabel = computed(() => {
   if (error.value) return error.value
-  if (isConnecting.value) return t('connector.status.aria_connecting')
-  if (isConnected.value) return t('connector.status.aria_connected')
-  return t('connector.status.aria_click_to_connect')
+  if (isConnecting.value) return $t('connector.status.aria_connecting')
+  if (isConnected.value) return $t('connector.status.aria_connected')
+  return $t('connector.status.aria_click_to_connect')
 })
 </script>
 
@@ -62,7 +60,7 @@ const ariaLabel = computed(() => {
       <img
         v-if="isConnected && avatar"
         :src="avatar"
-        :alt="t('connector.status.avatar_alt', { user: npmUser })"
+        :alt="$t('connector.status.avatar_alt', { user: npmUser })"
         width="24"
         height="24"
         class="w-6 h-6 rounded-full"
