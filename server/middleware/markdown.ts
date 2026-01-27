@@ -149,7 +149,7 @@ async function handleMarkdownRequest(packagePath: string): Promise<string> {
     targetVersion = packageData['dist-tags']?.latest
   }
 
-  if (!targetVersion || !packageData.versions[targetVersion]) {
+  if (!targetVersion) {
     throw createError({
       statusCode: 404,
       statusMessage: 'Package version not found',
@@ -157,6 +157,12 @@ async function handleMarkdownRequest(packagePath: string): Promise<string> {
   }
 
   const versionData = packageData.versions[targetVersion]
+  if (!versionData) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Package version not found',
+    })
+  }
 
   let readmeContent: string | undefined
 

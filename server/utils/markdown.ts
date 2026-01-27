@@ -2,7 +2,7 @@ import type { Packument, PackumentVersion } from '#shared/types'
 import type { RepositoryInfo } from '#shared/utils/git-providers'
 import { joinURL } from 'ufo'
 
-const SPARKLINE_CHARS = [' ', '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█']
+const SPARKLINE_CHARS = [' ', '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'] as const
 const MAX_README_SIZE = 500 * 1024 // 500KB, matching MAX_FILE_SIZE in file API
 
 export function generateSparkline(data: number[]): string {
@@ -247,9 +247,11 @@ export function generatePackageMarkdown(options: PackageMarkdownOptions): string
     lines.push('## Maintainers')
     lines.push('')
     for (const maintainer of pkg.maintainers.slice(0, 10)) {
-      const name = maintainer.name || maintainer.username || 'Unknown'
-      if (maintainer.username) {
-        lines.push(`- [${name}](https://www.npmjs.com/~${maintainer.username})`)
+      // npm API returns username but @npm/types Contact doesn't include it
+      const username = (maintainer as { username?: string }).username
+      const name = maintainer.name || username || 'Unknown'
+      if (username) {
+        lines.push(`- [${name}](https://www.npmjs.com/~${username})`)
       } else {
         lines.push(`- ${name}`)
       }
