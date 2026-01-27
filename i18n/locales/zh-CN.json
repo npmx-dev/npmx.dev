@@ -122,7 +122,7 @@
       "other_versions": "其他版本",
       "more_tagged": "{count}个更多标签",
       "all_covered": "所有版本均已包含于上方标签中。",
-      "deprecated_title": "{version} （已弃用）"
+      "deprecated_title": "{version}（已弃用）"
     },
     "dependencies": {
       "title": "依赖（{count}个）",
@@ -133,12 +133,12 @@
     "peer_dependencies": {
       "title": "对等依赖（{count}个）",
       "list_label": "包对等依赖",
-      "show_all": "显示全部{count}个对等依赖"
+      "show_all": "显示全部 {count} 个对等依赖"
     },
     "optional_dependencies": {
       "title": "可选依赖（{count}个）",
       "list_label": "包可选依赖",
-      "show_all": "显示全部{count}个可选依赖"
+      "show_all": "显示全部 {count} 个可选依赖"
     },
     "maintainers": {
       "title": "维护者",
@@ -271,7 +271,7 @@
       "run_hint": "在您的机器上运行连接器以启用管理功能。",
       "copy_command": "复制命令",
       "copied": "已复制",
-      "paste_token": "然后将令牌粘贴如下连接：",
+      "paste_token": "再在下方粘贴令牌以连接：",
       "token_label": "令牌",
       "token_placeholder": "粘贴令牌...",
       "advanced": "高级选项",
@@ -287,9 +287,9 @@
       "title": "操作队列",
       "clear_all": "清除所有",
       "refresh": "刷新操作",
-      "empty": "没有操作排队",
+      "empty": "没有排队中的操作",
       "empty_hint": "从包或组织页面添加操作",
-      "active_label": "活动操作",
+      "active_label": "运行中的操作",
       "otp_required": "需要 OTP",
       "otp_prompt": "输入 OTP 继续",
       "otp_placeholder": "输入 OTP 代码...",
@@ -302,7 +302,7 @@
       "execute": "执行",
       "executing": "执行中...",
       "log": "日志",
-      "log_label": "已完成操作日志",
+      "log_label": "已完成的操作日志",
       "remove_from_log": "从日志中移除"
     }
   },
