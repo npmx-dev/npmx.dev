@@ -31,8 +31,7 @@ const config = computed(() => ({
     },
     area: {
       useGradient: false,
-      // here css variable doesn't seem to work here
-      color: '#6A6A6A',
+      color: 'oklch(0.5243 0 0)', // css variable doesn't seem to work here
       opacity: 10,
     },
     dataLabel: {
