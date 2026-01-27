@@ -18,6 +18,7 @@
     "placeholder": "search packages...",
     "button": "search",
     "clear": "Clear search",
+    "searching": "Searching...",
     "found_packages": "Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
@@ -117,7 +118,8 @@
       "expand": "Expand {tag}",
       "other_versions": "Other versions",
       "more_tagged": "{count} more tagged",
-      "all_covered": "All versions are covered by tags above"
+      "all_covered": "All versions are covered by tags above",
+      "deprecated_title": "{version} (deprecated)"
     },
     "dependencies": {
       "title": "Dependencies ({count})",
@@ -148,7 +150,8 @@
       "add_owner": "+ Add owner"
     },
     "downloads": {
-      "title": "Weekly Downloads"
+      "title": "Weekly Downloads",
+      "date_range": "{start} to {end}"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -354,7 +357,10 @@
       "no_packages": "No public packages found for",
       "no_packages_hint": "This organization may not exist or has no public packages.",
       "failed_to_load": "Failed to load organization packages",
-      "no_match": "No packages match \"{query}\""
+      "no_match": "No packages match \"{query}\"",
+      "not_found": "Organization not found",
+      "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm",
+      "filter_placeholder": "Filter {count} packages..."
     }
   },
   "user": {
@@ -369,7 +375,8 @@
       "no_packages": "No public packages found for",
       "no_packages_hint": "This user may not exist or has no public packages.",
       "failed_to_load": "Failed to load user packages",
-      "no_match": "No packages match \"{query}\""
+      "no_match": "No packages match \"{query}\"",
+      "filter_placeholder": "Filter {count} packages..."
     }
   },
   "claim": {
@@ -405,6 +412,7 @@
     "no_files": "No files in this directory",
     "select_version": "Select version",
     "root": "root",
+    "lines": "{count} lines",
     "toggle_tree": "Toggle file tree",
     "close_tree": "Close file tree",
     "copy_link": "Copy link",

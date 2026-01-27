@@ -399,7 +399,7 @@ defineOgImageComponent('Default', {
     <div class="container pt-20 pb-6">
       <section v-if="query" aria-label="Search results" @keydown="handleResultsKeydown">
         <!-- Initial loading (only after user interaction, not during view transition) -->
-        <LoadingSpinner v-if="showSearching" text="Searching…" />
+        <LoadingSpinner v-if="showSearching" :text="t('search.searching')" />
 
         <div v-else-if="visibleResults">
           <!-- Claim prompt - shown at top when valid name but no exact match -->

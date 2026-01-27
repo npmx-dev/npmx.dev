@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 
+const { t } = useI18n()
+
 const props = defineProps<{
   downloads?: Array<{
     downloads: number | null
@@ -12,7 +14,7 @@ const props = defineProps<{
 const dataset = computed(() =>
   props.downloads?.map(d => ({
     value: d?.downloads ?? 0,
-    period: `${d.weekStart ?? '-'} to ${d.weekEnd ?? '-'}`,
+    period: t('package.downloads.date_range', { start: d.weekStart ?? '-', end: d.weekEnd ?? '-' }),
   })),
 )
 

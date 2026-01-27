@@ -433,7 +433,7 @@ defineOgImageComponent('Package', {
               <NuxtLink
                 v-if="resolvedVersion !== requestedVersion"
                 :to="`/${pkg.name}/v/${displayVersion.version}`"
-                title="View permalink for this version"
+                :title="t('package.view_permalink')"
                 >{{ displayVersion.version }}</NuxtLink
               >
               <span v-else>v{{ displayVersion.version }}</span>
@@ -444,7 +444,7 @@ defineOgImageComponent('Package', {
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
-                title="Verified provenance"
+                :title="t('package.verified_provenance')"
               >
                 <span
                   class="i-solar-shield-check-outline w-3.5 h-3.5 shrink-0"
@@ -483,11 +483,11 @@ defineOgImageComponent('Package', {
               target="_blank"
               rel="noopener noreferrer"
               class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0 self-center"
-              title="View on npm"
+              :title="t('common.view_on_npm')"
             >
               <span class="i-carbon-logo-npm w-4 h-4" aria-hidden="true" />
               <span class="hidden sm:inline">npm</span>
-              <span class="sr-only sm:hidden">View on npm</span>
+              <span class="sr-only sm:hidden">{{ t('common.view_on_npm') }}</span>
             </a>
           </div>
 
@@ -850,7 +850,7 @@ defineOgImageComponent('Package', {
                   v-if="typesPackageName"
                   :to="`/${typesPackageName}`"
                   class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                  title="View @types package"
+                  :title="t('package.install.view_types', { package: typesPackageName })"
                 >
                   <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
                   <span class="sr-only">View {{ typesPackageName }}</span>

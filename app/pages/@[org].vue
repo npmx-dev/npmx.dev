@@ -44,8 +44,8 @@ const { data: results, status, error } = await useOrgPackages(orgName)
 if (status.value === 'error' && error.value?.statusCode === 404) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Organization not found',
-    message: `The organization "@${orgName.value}" does not exist on npm`,
+    statusMessage: t('org.page.not_found'),
+    message: t('org.page.not_found_message', { name: orgName.value }),
   })
 }
 
@@ -222,7 +222,7 @@ defineOgImageComponent('Default', {
       <PackageListControls
         v-model:filter="filterText"
         v-model:sort="sortOption"
-        :placeholder="`Filter ${packageCount} packages...`"
+        :placeholder="t('org.page.filter_placeholder', { count: packageCount })"
         :total-count="packageCount"
         :filtered-count="filteredCount"
       />

@@ -404,7 +404,7 @@ useSeoMeta({
             class="sticky top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between"
           >
             <div class="flex items-center gap-3 text-sm">
-              <span class="text-fg-muted">{{ fileContent.lines }} lines</span>
+              <span class="text-fg-muted">{{ t('code.lines', { count: fileContent.lines }) }}</span>
               <span v-if="currentNode?.size" class="text-fg-subtle">{{
                 formatBytes(currentNode.size)
               }}</span>

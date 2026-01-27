@@ -10,6 +10,8 @@ import {
 } from '~/utils/versions'
 import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
 
+const { t } = useI18n()
+
 const props = defineProps<{
   packageName: string
   versions: Record<string, PackumentVersion>
@@ -340,7 +342,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :title="
                   row.primaryVersion.deprecated
-                    ? `${row.primaryVersion.version} (deprecated)`
+                    ? t('package.versions.deprecated_title', {
+                        version: row.primaryVersion.version,
+                      })
                     : row.primaryVersion.version
                 "
               >
@@ -391,7 +395,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     ? 'text-red-400 hover:text-red-300'
                     : 'text-fg-subtle hover:text-fg-muted'
                 "
-                :title="v.deprecated ? `${v.version} (deprecated)` : v.version"
+                :title="
+                  v.deprecated
+                    ? t('package.versions.deprecated_title', { version: v.version })
+                    : v.version
+                "
               >
                 {{ v.version }}
               </NuxtLink>
@@ -470,7 +478,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :title="
                   row.primaryVersion.deprecated
-                    ? `${row.primaryVersion.version} (deprecated)`
+                    ? t('package.versions.deprecated_title', {
+                        version: row.primaryVersion.version,
+                      })
                     : row.primaryVersion.version
                 "
               >
@@ -556,7 +566,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     "
                     :title="
                       group.versions[0].deprecated
-                        ? `${group.versions[0].version} (deprecated)`
+                        ? t('package.versions.deprecated_title', {
+                            version: group.versions[0].version,
+                          })
                         : group.versions[0].version
                     "
                   >
@@ -589,7 +601,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           ? 'text-red-400 hover:text-red-300'
                           : 'text-fg-subtle hover:text-fg-muted'
                       "
-                      :title="v.deprecated ? `${v.version} (deprecated)` : v.version"
+                      :title="
+                        v.deprecated
+                          ? t('package.versions.deprecated_title', { version: v.version })
+                          : v.version
+                      "
                     >
                       {{ v.version }}
                     </NuxtLink>
