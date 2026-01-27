@@ -337,7 +337,7 @@ async function copyInstallCommand() {
 
 // Expandable description
 const descriptionExpanded = ref(false)
-const descriptionRef = ref<HTMLDivElement>()
+const descriptionRef = useTemplateRef('descriptionRef')
 const descriptionOverflows = ref(false)
 
 // Check if description overflows on mount/update

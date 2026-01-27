@@ -46,7 +46,7 @@ watch(
 
 // For glow effect
 const isSearchFocused = ref(false)
-const searchInputRef = ref<HTMLInputElement>()
+const searchInputRef = useTemplateRef('searchInputRef')
 
 const selectedIndex = ref(0)
 const packageListRef = useTemplateRef('packageListRef')
