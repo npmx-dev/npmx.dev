@@ -268,6 +268,9 @@ export async function highlightCode(
         theme: 'github-dark',
       })
 
+      // Shiki doesn't encode > in text content (e.g., arrow functions)
+      html = escapeRawGt(html)
+
       // Make import statements clickable for JS/TS languages
       if (IMPORT_LANGUAGES.has(language)) {
         html = linkifyImports(html, {

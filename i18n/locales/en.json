@@ -101,7 +101,8 @@
       "issues": "issues",
       "forks": "fork | forks",
       "jsr": "jsr",
-      "code": "code"
+      "code": "code",
+      "docs": "docs"
     },
     "install": {
       "title": "Install",
