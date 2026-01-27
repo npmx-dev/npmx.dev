@@ -60,7 +60,7 @@ const ariaLabel = computed(() => {
       <img
         v-if="isConnected && avatar"
         :src="avatar"
-        :alt="t('connector.status.avatar_alt', { user: npmUser })"
+        :alt="$t('connector.status.avatar_alt', { user: npmUser })"
         width="24"
         height="24"
         class="w-6 h-6 rounded-full"
