@@ -5,10 +5,10 @@ const props = defineProps<{
   error: NuxtError
 }>()
 
-const statusCode = computed(() => props.error.statusCode || 500)
-const statusMessage = computed(() => {
-  if (props.error.statusMessage) return props.error.statusMessage
-  switch (statusCode.value) {
+const status = computed(() => props.error.status || 500)
+const statusText = computed(() => {
+  if (props.error.statusText) return props.error.statusText
+  switch (status.value) {
     case 404:
       return 'Page not found'
     case 500:
@@ -25,7 +25,7 @@ function handleError() {
 }
 
 useHead({
-  title: `${statusCode.value} - ${statusMessage.value}`,
+  title: `${status.value} - ${statusText.value}`,
 })
 </script>
 
@@ -35,15 +35,15 @@ useHead({
 
     <main class="flex-1 container flex flex-col items-center justify-center py-20 text-center">
       <p class="font-mono text-8xl sm:text-9xl font-medium text-fg-subtle mb-4">
-        {{ statusCode }}
+        {{ status }}
       </p>
 
       <h1 class="font-mono text-2xl sm:text-3xl font-medium mb-4">
-        {{ statusMessage }}
+        {{ statusText }}
       </h1>
 
       <p
-        v-if="error.message && error.message !== statusMessage"
+        v-if="error.message && error.message !== statusText"
         class="text-fg-muted text-base max-w-md mb-8"
       >
         {{ error.message }}

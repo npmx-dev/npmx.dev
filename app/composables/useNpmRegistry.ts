@@ -287,7 +287,8 @@ export function useNpmSearch(
 /**
  * Fetch all package names in an npm organization
  * Uses the /-/org/{org}/package endpoint
- * Returns empty array if org doesn't exist or has no packages
+ * Throws error with statusCode 404 if org doesn't exist
+ * Returns empty array if org exists but has no packages
  */
 async function fetchOrgPackageNames(orgName: string): Promise<string[]> {
   try {
@@ -295,8 +296,16 @@ async function fetchOrgPackageNames(orgName: string): Promise<string[]> {
       `${NPM_REGISTRY}/-/org/${encodeURIComponent(orgName)}/package`,
     )
     return Object.keys(data)
-  } catch {
-    // Org doesn't exist or has no packages
+  } catch (err) {
+    // Check if this is a 404 (org not found)
+    if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Organization not found',
+        message: `The organization "@${orgName}" does not exist on npm`,
+      })
+    }
+    // For other errors (network, etc.), return empty array to be safe
     return []
   }
 }

@@ -37,7 +37,15 @@ watch([filterText, sortOption], ([filter, sort]) => {
 })
 
 // Fetch all packages in this org using the org packages API
-const { data: results, status, error } = useOrgPackages(orgName)
+const { data: results, status, error } = await useOrgPackages(orgName)
+
+if (status.value === 'error' && error.value?.statusCode === 404) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Organization not found',
+    message: `The organization "@${orgName.value}" does not exist on npm`,
+  })
+}
 
 const packages = computed(() => results.value?.objects ?? [])
 const packageCount = computed(() => packages.value.length)
