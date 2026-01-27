@@ -167,10 +167,23 @@ async function searchNpmPackages(
           indexName: 'npm-search',
           params: {
             query,
-            hitsPerPage: options.size || 20,
-            page: options.from ? Math.floor(options.from / (options.size || 20)) : 0,
+            offset: options.from,
+            length: options.size,
             filters: '',
             analyticsTags: ['npmx.dev'],
+            attributesToRetrieve: [
+              'name',
+              'version',
+              'description',
+              'modified',
+              'homepage',
+              'repository',
+              'owners',
+              'downloadsRatio',
+              'popular',
+            ],
+            // TODO: actually use this in PackageCard, but requires the splitting and re-joining logic as in InstantSearch and conditional based on ALGOLIA boolean
+            attributesToHighlight: ['name', 'description'],
           },
         },
       ])
