@@ -31,9 +31,17 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
+    '@nuxtjs/color-mode',
   ],
 
-  css: ['vue-data-ui/style.css'],
+  colorMode: {
+    preference: 'system',
+    fallback: 'dark',
+    dataValue: 'theme',
+    storageKey: 'npmx-color-mode',
+  },
+
+  css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
   devtools: { enabled: true },
 

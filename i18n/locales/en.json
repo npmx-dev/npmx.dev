@@ -26,7 +26,14 @@
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
     "want_to_claim": "Want to claim this package name?",
-    "start_typing": "Start typing to search packages"
+    "start_typing": "Start typing to search packages",
+    "exact_match": "exact",
+    "suggestion": {
+      "user": "user",
+      "org": "org",
+      "view_user_packages": "View packages by this user",
+      "view_org_packages": "View packages by this organization"
+    }
   },
   "nav": {
     "popular_packages": "Popular packages",
@@ -36,6 +43,10 @@
   "settings": {
     "relative_dates": "Relative dates",
     "include_types": "Include {'@'}types in install",
+    "theme": "Theme",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "theme_system": "System",
     "language": "Language",
     "help_translate": "Help translate npmx"
   },
@@ -111,7 +122,8 @@
       "publisher": "Publisher",
       "updated": "Updated",
       "weekly_downloads": "Weekly downloads",
-      "keywords": "Keywords"
+      "keywords": "Keywords",
+      "license": "License"
     },
     "versions": {
       "title": "Versions",

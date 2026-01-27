@@ -20,6 +20,8 @@ const props = defineProps<{
   initialPage?: number
   /** Selected result index (for keyboard navigation) */
   selectedIndex?: number
+  /** Search query for highlighting exact matches */
+  searchQuery?: string
 }>()
 
 const emit = defineEmits<{
@@ -111,6 +113,7 @@ defineExpose({
             :show-publisher="showPublisher"
             :selected="index === (selectedIndex ?? -1)"
             :index="index"
+            :search-query="searchQuery"
             class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
             :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
             @focus="emit('select', $event)"

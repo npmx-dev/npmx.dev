@@ -11,6 +11,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "lint": "vite lint && vite fmt --check",
     "lint:fix": "vite lint --fix && vite fmt",
     "generate": "nuxt generate",
@@ -32,6 +33,7 @@
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "^0.13.0",
     "@nuxt/scripts": "^0.13.2",
+    "@nuxtjs/color-mode": "^4.0.0",
     "@nuxtjs/html-validator": "^2.1.0",
     "@nuxtjs/i18n": "10.2.1",
     "@shikijs/langs": "^3.21.0",

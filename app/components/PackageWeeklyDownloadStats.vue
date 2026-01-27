@@ -56,22 +56,45 @@ const config = computed(() => ({
   style: {
     backgroundColor: 'transparent',
     animation: { show: false },
-    area: { color: '#6A6A6A', useGradient: false, opacity: 10 },
-    dataLabel: { offsetX: -10, fontSize: 28, bold: false, color: '#FAFAFA' },
+    area: {
+      color: 'oklch(0.5243 0 0)', // css variable doesn't seem to work here
+      useGradient: false,
+      opacity: 10,
+    },
+    dataLabel: {
+      offsetX: -10,
+      fontSize: 28,
+      bold: false,
+      color: 'var(--fg)',
+    },
     line: {
-      color: '#6A6A6A',
+      color: 'var(--fg-subtle)',
       pulse: {
         show: true,
-        loop: true,
+        loop: true, // runs only once if false
         radius: 2,
-        color: '#8A8A8A',
+        color: 'var(--fg-muted)',
         easing: 'ease-in-out',
-        trail: { show: true, length: 6 },
+        trail: {
+          show: true,
+          length: 6,
+        },
       },
     },
-    plot: { radius: 6, stroke: '#FAFAFA' },
-    title: { text: lastDatapoint.value, fontSize: 12, color: '#8A8A8A', bold: false },
-    verticalIndicator: { strokeDasharray: 0, color: '#FAFAFA' },
+    plot: {
+      radius: 6,
+      stroke: 'var(--fg)',
+    },
+    title: {
+      text: lastDatapoint.value,
+      fontSize: 12,
+      color: 'var(--fg)',
+      bold: false,
+    },
+    verticalIndicator: {
+      strokeDasharray: 0,
+      color: 'var(--fg-muted)',
+    },
   },
 }))
 </script>

@@ -792,7 +792,7 @@ defineOgImageComponent('Package', {
           </h2>
           <!-- Package manager tabs -->
           <div
-            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border rounded-md"
+            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md"
             role="tablist"
             :aria-label="$t('package.install.pm_label')"
           >
@@ -802,11 +802,11 @@ defineOgImageComponent('Package', {
                 :key="pm.id"
                 role="tab"
                 :aria-selected="selectedPM === pm.id"
-                class="px-2 py-1 font-mono text-xs rounded transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                class="px-2 py-1 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 :class="
                   selectedPM === pm.id
-                    ? 'bg-bg-elevated text-fg'
-                    : 'text-fg-subtle hover:text-fg-muted'
+                    ? 'bg-bg shadow text-fg border-border'
+                    : 'text-fg-subtle hover:text-fg  border-transparent'
                 "
                 @click="selectedPM = pm.id"
               >
@@ -827,11 +827,11 @@ defineOgImageComponent('Package', {
         </div>
         <div class="relative group">
           <!-- Terminal-style install command -->
-          <div class="bg-[#0d0d0d] border border-border rounded-lg overflow-hidden">
+          <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
             <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
-              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
-              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
             </div>
             <div class="space-y-1 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4">
               <!-- Main package install -->
