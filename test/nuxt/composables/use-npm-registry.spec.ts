@@ -25,7 +25,9 @@ describe('usePackageDownloads', () => {
       expect(status.value).toBe('success')
     })
 
-    expect(fetchSpy).toHaveBeenCalledWith('https://api.npmjs.org/downloads/point/last-week/vue')
+    // Check that fetch was called with the correct URL (first argument)
+    expect(fetchSpy).toHaveBeenCalled()
+    expect(fetchSpy.mock.calls[0]?.[0]).toBe('https://api.npmjs.org/downloads/point/last-week/vue')
     expect(data.value?.downloads).toBe(1234567)
   })
 
@@ -36,7 +38,9 @@ describe('usePackageDownloads', () => {
       expect(status.value).toBe('success')
     })
 
-    expect(fetchSpy).toHaveBeenCalledWith('https://api.npmjs.org/downloads/point/last-month/vue')
+    // Check that fetch was called with the correct URL (first argument)
+    expect(fetchSpy).toHaveBeenCalled()
+    expect(fetchSpy.mock.calls[0]?.[0]).toBe('https://api.npmjs.org/downloads/point/last-month/vue')
   })
 
   it('should encode scoped package names', async () => {
@@ -48,7 +52,9 @@ describe('usePackageDownloads', () => {
       expect(status.value).toBe('success')
     })
 
-    expect(fetchSpy).toHaveBeenCalledWith(
+    // Check that fetch was called with the correct URL (first argument)
+    expect(fetchSpy).toHaveBeenCalled()
+    expect(fetchSpy.mock.calls[0]?.[0]).toBe(
       'https://api.npmjs.org/downloads/point/last-week/@vue%2Fcore',
     )
   })

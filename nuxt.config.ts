@@ -78,6 +78,14 @@ export default defineNuxtConfig({
         '@shikijs/core',
       ],
     },
+    // Storage configuration for local development
+    // In production (Vercel), this is overridden by modules/cache.ts
+    storage: {
+      'fetch-cache': {
+        driver: 'fsLite',
+        base: './.cache/fetch',
+      },
+    },
   },
 
   fonts: {
