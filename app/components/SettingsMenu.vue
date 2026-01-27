@@ -3,6 +3,7 @@ import { onKeyStroke, onClickOutside } from '@vueuse/core'
 
 const { settings } = useSettings()
 const { locale, locales, setLocale } = useI18n()
+const colorMode = useColorMode()
 
 const availableLocales = computed(() =>
   locales.value.map(l => (typeof l === 'string' ? { code: l, name: l } : l)),
@@ -137,6 +138,32 @@ onKeyStroke(',', e => {
               />
             </span>
           </button>
+
+          <!-- Theme selector -->
+          <div class="pt-2 mt-2 border-t border-border">
+            <div class="px-2 py-1">
+              <label for="theme-select" class="text-xs text-fg-subtle uppercase tracking-wider">
+                {{ $t('settings.theme') }}
+              </label>
+            </div>
+            <div class="px-2 py-1">
+              <select
+                id="theme-select"
+                :value="colorMode.preference"
+                class="w-full bg-bg-muted border border-border rounded-md px-2 py-1.5 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-fg/50 cursor-pointer"
+                @change="
+                  colorMode.preference = ($event.target as HTMLSelectElement).value as
+                    | 'light'
+                    | 'dark'
+                    | 'system'
+                "
+              >
+                <option value="system">{{ $t('settings.theme_system') }}</option>
+                <option value="light">{{ $t('settings.theme_light') }}</option>
+                <option value="dark">{{ $t('settings.theme_dark') }}</option>
+              </select>
+            </div>
+          </div>
 
           <!-- Language selector -->
           <div class="pt-2 mt-2 border-t border-border">

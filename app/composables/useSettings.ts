@@ -14,14 +14,11 @@ export interface AppSettings {
   includeTypesInInstall: boolean
   /** Accent color theme */
   accentColorId: AccentColorId | null
-  /** Theme of site, default dark */
-  theme: 'dark' | 'light'
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
   relativeDates: false,
   includeTypesInInstall: true,
-  theme: 'dark',
   accentColorId: null,
 }
 

@@ -43,6 +43,10 @@
   "settings": {
     "relative_dates": "Relative dates",
     "include_types": "Include {'@'}types in install",
+    "theme": "Theme",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "theme_system": "System",
     "language": "Language",
     "help_translate": "Help translate npmx"
   },

@@ -3,18 +3,13 @@ import { useEventListener } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
-const { settings } = useSettings()
 
 // Initialize accent color before hydration to prevent flash
 initAccentOnPrehydrate()
 
 const isHomepage = computed(() => route.path === '/')
-const theme = settings.value.theme === 'dark' ? 'dark' : 'light'
 
 useHead({
-  htmlAttrs: {
-    'data-theme': 'dark',
-  },
   titleTemplate: titleChunk => {
     return titleChunk ? titleChunk : 'npmx - Better npm Package Browser'
   },
