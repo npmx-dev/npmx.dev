@@ -617,4 +617,9 @@ const config = computed(() => ({
 .vue-ui-pen-and-paper-action:hover {
   background: #2a2a2a !important;
 }
+
+.vue-data-ui-zoom {
+  max-width: 500px;
+  margin: 0 auto;
+}
 </style>
