@@ -24,7 +24,7 @@ const { isConnected, npmUser } = useConnector()
           :aria-label="$t('header.home')"
           class="header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
         >
-          <span class="text-fg-subtle"><span style="letter-spacing: -0.2em">.</span>/</span>npmx
+          <span class="text-accent"><span class="-tracking-0.2em">.</span>/</span>npmx
         </NuxtLink>
         <!-- Spacer when logo is hidden -->
         <span v-else class="w-1" />
