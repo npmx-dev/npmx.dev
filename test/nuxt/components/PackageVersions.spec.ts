@@ -624,6 +624,136 @@ describe('PackageVersions', () => {
         expect(text.includes('1.1.0') || component.findAll('button').length > 2).toBe(true)
       })
     })
+
+    it('shows DateTime for major group versions', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Should have DateTime components for both the main version and other versions
+        const dateTimeComponents = component.findAllComponents({ name: 'DateTime' })
+        expect(dateTimeComponents.length).toBeGreaterThan(1)
+      })
+    })
+
+    it('shows ProvenanceBadge for major group versions with provenance', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: true },
+        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: true },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0', { hasProvenance: true }),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Should have ProvenanceBadge components for versions with provenance
+        const provenanceBadges = component.findAllComponents({ name: 'ProvenanceBadge' })
+        expect(provenanceBadges.length).toBeGreaterThan(1)
+      })
+    })
+
+    it('renders major group header as clickable link', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.1.0', time: '2024-01-10T12:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Find the major group header - should be a link (NuxtLink renders as <a>)
+        const links = component.findAll('a')
+        const majorGroupLink = links.find(l => l.text() === '1.1.0')
+        expect(majorGroupLink?.exists()).toBe(true)
+      })
+    })
+
+    it('shows DateTime and ProvenanceBadge for single version in major group', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '2.0.0', time: '2024-01-15T12:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-05T12:00:00.000Z', hasProvenance: true },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '2.0.0': createVersion('2.0.0'),
+          },
+          distTags: { latest: '2.0.0' },
+          time: { '2.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Expand "Other versions"
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      await otherVersionsButton!.trigger('click')
+
+      await vi.waitFor(() => {
+        // Single version group (1.0.0) should still have DateTime
+        const dateTimeComponents = component.findAllComponents({ name: 'DateTime' })
+        expect(dateTimeComponents.length).toBeGreaterThan(1)
+
+        // And ProvenanceBadge for the version with provenance
+        const provenanceBadges = component.findAllComponents({ name: 'ProvenanceBadge' })
+        expect(provenanceBadges.length).toBeGreaterThan(0)
+      })
+    })
   })
 
   describe('loading states', () => {
@@ -745,6 +875,61 @@ describe('PackageVersions', () => {
       const expandButton = component.find('button[aria-label]')
       expect(expandButton.exists()).toBe(true)
       expect(expandButton.attributes('aria-label')).toMatch(/Expand|Collapse/)
+    })
+
+    it('other versions button has aria-label', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const otherVersionsButton = component
+        .findAll('button')
+        .find(btn => btn.text().includes('Other versions'))
+
+      expect(otherVersionsButton?.attributes('aria-label')).toMatch(/Expand other versions/)
+    })
+
+    it('expand buttons have visible focus states', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      const expandButton = component.find('button[aria-expanded]')
+      expect(expandButton.classes().some(c => c.includes('focus-visible'))).toBe(true)
+    })
+
+    it('icons have aria-hidden attribute', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '1.0.0': createVersion('1.0.0'),
+          },
+          distTags: { latest: '1.0.0' },
+          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
+        },
+      })
+
+      // Find chevron icons inside buttons
+      const chevronIcons = component.findAll('button span.i-carbon-chevron-right')
+      expect(chevronIcons.length).toBeGreaterThan(0)
+      for (const icon of chevronIcons) {
+        expect(icon.attributes('aria-hidden')).toBe('true')
+      }
     })
   })
 
