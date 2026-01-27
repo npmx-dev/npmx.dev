@@ -743,18 +743,7 @@ defineOgImageComponent('Package', {
                 {{ $t('package.links.docs') }}
               </NuxtLink>
             </li>
-            <li class="sm:flex-grow">
-              <a
-                :href="`https://socket.dev/npm/package/${pkg.name}/overview/${displayVersion?.version ?? 'latest'}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-simple-icons-socket w-4 h-4" aria-hidden="true" />
-                {{ $t('package.links.socket') }}
-              </a>
-            </li>
-            <li v-if="displayVersion">
+            <li v-if="displayVersion" class="sm:ml-auto">
               <NuxtLink
                 :to="{
                   name: 'code',
