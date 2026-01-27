@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n()
 const route = useRoute('~username-orgs')
 
 const username = computed(() => route.params.username)
@@ -72,10 +73,10 @@ async function loadOrgs() {
       // Load details for each org in parallel
       await Promise.all(orgs.value.map(org => loadOrgDetails(org)))
     } else {
-      error.value = 'Failed to load organizations'
+      error.value = t('header.orgs_dropdown.error')
     }
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Failed to load organizations'
+    error.value = e instanceof Error ? e.message : t('header.orgs_dropdown.error')
   } finally {
     isLoading.value = false
   }
@@ -119,7 +120,7 @@ useSeoMeta({
         </div>
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">@{{ username }}</h1>
-          <p class="text-fg-muted text-sm mt-1">Organizations</p>
+          <p class="text-fg-muted text-sm mt-1">{{ t('user.orgs_page.title') }}</p>
         </div>
       </div>
 
@@ -130,7 +131,7 @@ useSeoMeta({
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
         >
           <span class="i-carbon-arrow-left w-4 h-4" aria-hidden="true" />
-          Back to profile
+          {{ t('user.orgs_page.back_to_profile') }}
         </NuxtLink>
       </nav>
     </header>
@@ -138,40 +139,43 @@ useSeoMeta({
     <!-- Not connected state -->
     <ClientOnly>
       <div v-if="!isConnected" class="py-12 text-center">
-        <p class="text-fg-muted mb-4">Connect the local CLI to view your organizations.</p>
+        <p class="text-fg-muted mb-4">{{ t('user.orgs_page.connect_required') }}</p>
         <p class="text-fg-subtle text-sm">
-          Run <code class="font-mono bg-bg-subtle px-1.5 py-0.5 rounded">npx @npmx.dev/cli</code> to
-          get started.
+          {{ t('user.orgs_page.connect_hint_prefix') }}
+          <code class="font-mono bg-bg-subtle px-1.5 py-0.5 rounded">npx @npmx.dev/cli</code>
+          {{ t('user.orgs_page.connect_hint_suffix') }}
         </p>
       </div>
 
       <!-- Not own profile state -->
       <div v-else-if="!isOwnProfile" class="py-12 text-center">
-        <p class="text-fg-muted">You can only view your own organizations.</p>
-        <NuxtLink :to="`/~${npmUser}/orgs`" class="btn mt-4">View your organizations</NuxtLink>
+        <p class="text-fg-muted">{{ t('user.orgs_page.own_orgs_only') }}</p>
+        <NuxtLink :to="`/~${npmUser}/orgs`" class="btn mt-4">{{
+          t('user.orgs_page.view_your_orgs')
+        }}</NuxtLink>
       </div>
 
       <!-- Loading state -->
-      <LoadingSpinner v-else-if="isLoading" text="Loading organizations..." />
+      <LoadingSpinner v-else-if="isLoading" :text="t('user.orgs_page.loading')" />
 
       <!-- Error state -->
       <div v-else-if="error" role="alert" class="py-12 text-center">
         <p class="text-fg-muted mb-4">{{ error }}</p>
-        <button type="button" class="btn" @click="loadOrgs">Try again</button>
+        <button type="button" class="btn" @click="loadOrgs">{{ t('common.try_again') }}</button>
       </div>
 
       <!-- Empty state -->
       <div v-else-if="orgs.length === 0" class="py-12 text-center">
-        <p class="text-fg-muted">No organizations found.</p>
+        <p class="text-fg-muted">{{ t('user.orgs_page.empty') }}</p>
         <p class="text-fg-subtle text-sm mt-2">
-          Organizations are detected from your scoped packages.
+          {{ t('user.orgs_page.empty_hint') }}
         </p>
       </div>
 
       <!-- Orgs list -->
-      <section v-else aria-label="Organizations">
+      <section v-else :aria-label="t('user.orgs_page.title')">
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-          {{ orgs.length }} Organization{{ orgs.length === 1 ? '' : 's' }}
+          {{ t('user.orgs_page.count', { count: orgs.length }, orgs.length) }}
         </h2>
 
         <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -212,7 +216,13 @@ useSeoMeta({
                 <div class="flex items-center gap-1.5">
                   <span class="i-carbon-cube w-4 h-4" aria-hidden="true" />
                   <span v-if="org.packageCount !== null">
-                    {{ org.packageCount }} package{{ org.packageCount === 1 ? '' : 's' }}
+                    {{
+                      t(
+                        'user.orgs_page.packages_count',
+                        { count: org.packageCount },
+                        org.packageCount,
+                      )
+                    }}
                   </span>
                   <span v-else-if="org.isLoadingDetails" class="skeleton inline-block h-4 w-20" />
                   <span v-else class="text-fg-subtle">—</span>

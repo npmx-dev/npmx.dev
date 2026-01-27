@@ -63,7 +63,7 @@ watch(open, isOpen => {
         <button
           type="button"
           class="absolute inset-0 bg-black/60 cursor-default"
-          aria-label="Close modal"
+          :aria-label="$t('connector.modal.close_modal')"
           @click="open = false"
         />
 
@@ -78,12 +78,12 @@ watch(open, isOpen => {
           <div class="p-6">
             <div class="flex items-center justify-between mb-6">
               <h2 id="connector-modal-title" class="font-mono text-lg font-medium">
-                Local Connector
+                {{ $t('connector.modal.title') }}
               </h2>
               <button
                 type="button"
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                aria-label="Close"
+                :aria-label="$t('connector.modal.close')"
                 @click="open = false"
               >
                 <span class="i-carbon-close block w-5 h-5" aria-hidden="true" />
@@ -95,9 +95,9 @@ watch(open, isOpen => {
               <div class="flex items-center gap-3 p-4 bg-bg-subtle border border-border rounded-lg">
                 <span class="w-3 h-3 rounded-full bg-green-500" aria-hidden="true" />
                 <div>
-                  <p class="font-mono text-sm text-fg">Connected</p>
+                  <p class="font-mono text-sm text-fg">{{ $t('connector.modal.connected') }}</p>
                   <p v-if="npmUser" class="font-mono text-xs text-fg-muted">
-                    Logged in as @{{ npmUser }}
+                    {{ $t('connector.modal.logged_in_as', { user: npmUser }) }}
                   </p>
                 </div>
               </div>
@@ -106,8 +106,7 @@ watch(open, isOpen => {
               <OperationsQueue />
 
               <div v-if="!hasOperations" class="text-sm text-fg-muted">
-                You can now manage packages, organizations, and teams through the npmx.dev
-                interface.
+                {{ $t('connector.modal.connected_hint') }}
               </div>
 
               <button
@@ -115,14 +114,14 @@ watch(open, isOpen => {
                 class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 @click="handleDisconnect"
               >
-                Disconnect
+                {{ $t('connector.modal.disconnect') }}
               </button>
             </div>
 
             <!-- Disconnected state -->
             <form v-else class="space-y-4" @submit.prevent="handleConnect">
               <p class="text-sm text-fg-muted">
-                Run the connector on your machine to enable admin features:
+                {{ $t('connector.modal.run_hint') }}
               </p>
 
               <div
@@ -132,7 +131,9 @@ watch(open, isOpen => {
                 <span class="text-fg ml-2">{{ executeNpmxConnectorCommand }}</span>
                 <button
                   type="button"
-                  :aria-label="copied ? 'Copied' : 'Copy command'"
+                  :aria-label="
+                    copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
+                  "
                   class="ml-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
                   @click="copyCommand"
                 >
@@ -145,7 +146,7 @@ watch(open, isOpen => {
                 </button>
               </div>
 
-              <p class="text-sm text-fg-muted">Then paste the token shown in your terminal:</p>
+              <p class="text-sm text-fg-muted">{{ $t('connector.modal.paste_token') }}</p>
 
               <div class="space-y-3">
                 <div>
@@ -153,14 +154,14 @@ watch(open, isOpen => {
                     for="connector-token"
                     class="block text-xs text-fg-subtle uppercase tracking-wider mb-1.5"
                   >
-                    Token
+                    {{ $t('connector.modal.token_label') }}
                   </label>
                   <input
                     id="connector-token"
                     v-model="tokenInput"
                     type="password"
                     name="connector-token"
-                    placeholder="paste token here…"
+                    :placeholder="$t('connector.modal.token_placeholder')"
                     autocomplete="off"
                     spellcheck="false"
                     class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
@@ -171,14 +172,14 @@ watch(open, isOpen => {
                   <summary
                     class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200"
                   >
-                    Advanced options
+                    {{ $t('connector.modal.advanced') }}
                   </summary>
                   <div class="mt-3">
                     <label
                       for="connector-port"
                       class="block text-xs text-fg-subtle uppercase tracking-wider mb-1.5"
                     >
-                      Port
+                      {{ $t('connector.modal.port_label') }}
                     </label>
                     <input
                       id="connector-port"
@@ -207,9 +208,11 @@ watch(open, isOpen => {
                 role="alert"
                 class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
               >
-                <p class="font-mono text-sm text-fg font-bold">WARNING</p>
+                <p class="font-mono text-sm text-fg font-bold">
+                  {{ $t('connector.modal.warning') }}
+                </p>
                 <p class="text-sm text-fg-muted">
-                  This allows npmx to access your npm cli and any authenticated contexts.
+                  {{ $t('connector.modal.warning_text') }}
                 </p>
               </div>
 
@@ -218,7 +221,9 @@ watch(open, isOpen => {
                 :disabled="!tokenInput.trim() || isConnecting"
                 class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
               >
-                {{ isConnecting ? 'Connecting…' : 'Connect' }}
+                {{
+                  isConnecting ? $t('connector.modal.connecting') : $t('connector.modal.connect')
+                }}
               </button>
             </form>
           </div>
