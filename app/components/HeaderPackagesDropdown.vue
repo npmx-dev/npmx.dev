@@ -9,18 +9,24 @@ const isOpen = ref(false)
 const isLoading = ref(false)
 const packages = ref<string[]>([])
 const hasLoaded = ref(false)
+const error = ref<string | null>(null)
 
 async function loadPackages() {
   if (hasLoaded.value || isLoading.value) return
 
   isLoading.value = true
+  error.value = null
   try {
     const pkgMap = await listUserPackages()
     if (pkgMap) {
       // Sort alphabetically and take top 10
       packages.value = Object.keys(pkgMap).sort().slice(0, 10)
+    } else {
+      error.value = 'Failed to load packages'
     }
     hasLoaded.value = true
+  } catch {
+    error.value = 'Failed to load packages'
   } finally {
     isLoading.value = false
   }
@@ -78,6 +84,10 @@ function handleKeydown(event: KeyboardEvent) {
 
         <div v-if="isLoading" class="px-3 py-4 text-center">
           <span class="text-fg-muted text-sm">Loading...</span>
+        </div>
+
+        <div v-else-if="error" class="px-3 py-4 text-center">
+          <span class="text-fg-muted text-sm">{{ error }}</span>
         </div>
 
         <ul v-else-if="packages.length > 0" class="py-1 max-h-80 overflow-y-auto">

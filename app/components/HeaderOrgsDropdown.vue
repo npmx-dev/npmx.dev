@@ -9,18 +9,24 @@ const isOpen = ref(false)
 const isLoading = ref(false)
 const orgs = ref<string[]>([])
 const hasLoaded = ref(false)
+const error = ref<string | null>(null)
 
 async function loadOrgs() {
   if (hasLoaded.value || isLoading.value) return
 
   isLoading.value = true
+  error.value = null
   try {
     const orgList = await listUserOrgs()
     if (orgList) {
       // Already sorted alphabetically by server, take top 10
       orgs.value = orgList.slice(0, 10)
+    } else {
+      error.value = 'Failed to load organizations'
     }
     hasLoaded.value = true
+  } catch {
+    error.value = 'Failed to load organizations'
   } finally {
     isLoading.value = false
   }
@@ -78,6 +84,10 @@ function handleKeydown(event: KeyboardEvent) {
 
         <div v-if="isLoading" class="px-3 py-4 text-center">
           <span class="text-fg-muted text-sm">Loading...</span>
+        </div>
+
+        <div v-else-if="error" class="px-3 py-4 text-center">
+          <span class="text-fg-muted text-sm">{{ error }}</span>
         </div>
 
         <ul v-else-if="orgs.length > 0" class="py-1 max-h-80 overflow-y-auto">
