@@ -15,9 +15,9 @@ const {
   listTeamUsers,
 } = useConnector()
 
-const showAddOwner = ref(false)
-const newOwnerUsername = ref('')
-const isAdding = ref(false)
+const showAddOwner = shallowRef(false)
+const newOwnerUsername = shallowRef('')
+const isAdding = shallowRef(false)
 
 // Show admin controls when connected (let npm CLI handle permission errors)
 const canManageOwners = computed(() => isConnected.value)
@@ -30,9 +30,9 @@ const orgName = computed(() => {
 })
 
 // Access data: who has access and via what
-const collaborators = ref<Record<string, 'read-only' | 'read-write'>>({})
+const collaborators = shallowRef<Record<string, 'read-only' | 'read-write'>>({})
 const teamMembers = ref<Record<string, string[]>>({}) // team -> members
-const isLoadingAccess = ref(false)
+const isLoadingAccess = shallowRef(false)
 
 // Compute access source for each maintainer
 const maintainerAccess = computed(() => {
@@ -142,7 +142,7 @@ async function handleRemoveOwner(username: string) {
 
 // Load access info when connected and for scoped packages
 watch(
-  [isConnected, () => props.packageName],
+  [isConnected, () => props.packageName, lastExecutionTime],
   ([connected]) => {
     if (connected && orgName.value) {
       loadAccessInfo()
@@ -150,21 +150,14 @@ watch(
   },
   { immediate: true },
 )
-
-// Refresh data when operations complete
-watch(lastExecutionTime, () => {
-  if (isConnected.value && orgName.value) {
-    loadAccessInfo()
-  }
-})
 </script>
 
 <template>
   <section v-if="maintainers?.length" aria-labelledby="maintainers-heading">
     <h2 id="maintainers-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-      Maintainers
+      {{ $t('package.maintainers.title') }}
     </h2>
-    <ul class="space-y-2 list-none m-0 p-0" aria-label="Package maintainers">
+    <ul class="space-y-2 list-none m-0 p-0" :aria-label="$t('package.maintainers.list_label')">
       <li
         v-for="maintainer in maintainerAccess.slice(0, canManageOwners ? undefined : 5)"
         :key="maintainer.name ?? maintainer.email"
@@ -185,12 +178,12 @@ watch(lastExecutionTime, () => {
             v-if="isConnected && maintainer.accessVia?.length && !isLoadingAccess"
             class="text-xs text-fg-subtle truncate"
           >
-            via {{ maintainer.accessVia.join(', ') }}
+            {{ $t('package.maintainers.via', { teams: maintainer.accessVia.join(', ') }) }}
           </span>
           <span
             v-if="canManageOwners && maintainer.name === npmUser"
             class="text-xs text-fg-subtle shrink-0"
-            >(you)</span
+            >{{ $t('package.maintainers.you') }}</span
           >
         </div>
 
@@ -199,7 +192,7 @@ watch(lastExecutionTime, () => {
           v-if="canManageOwners && maintainer.name && maintainer.name !== npmUser"
           type="button"
           class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 shrink-0 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-          :aria-label="`Remove ${maintainer.name} as owner`"
+          :aria-label="$t('package.maintainers.remove_owner', { name: maintainer.name })"
           @click="handleRemoveOwner(maintainer.name)"
         >
           <span class="i-carbon-close block w-3.5 h-3.5" aria-hidden="true" />
@@ -211,13 +204,15 @@ watch(lastExecutionTime, () => {
     <div v-if="canManageOwners" class="mt-3">
       <div v-if="showAddOwner">
         <form class="flex items-center gap-2" @submit.prevent="handleAddOwner">
-          <label for="add-owner-username" class="sr-only">Username to add as owner</label>
+          <label for="add-owner-username" class="sr-only">{{
+            $t('package.maintainers.username_to_add')
+          }}</label>
           <input
             id="add-owner-username"
             v-model="newOwnerUsername"
             type="text"
             name="add-owner-username"
-            placeholder="username…"
+            :placeholder="$t('package.maintainers.username_placeholder')"
             autocomplete="off"
             spellcheck="false"
             class="flex-1 px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
@@ -227,12 +222,12 @@ watch(lastExecutionTime, () => {
             :disabled="!newOwnerUsername.trim() || isAdding"
             class="px-2 py-1 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
           >
-            {{ isAdding ? '…' : 'add' }}
+            {{ isAdding ? '…' : $t('package.maintainers.add_button') }}
           </button>
           <button
             type="button"
             class="p-1 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            aria-label="Cancel adding owner"
+            :aria-label="$t('package.maintainers.cancel_add')"
             @click="showAddOwner = false"
           >
             <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
@@ -245,7 +240,7 @@ watch(lastExecutionTime, () => {
         class="w-full px-3 py-1.5 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="showAddOwner = true"
       >
-        + Add owner
+        {{ $t('package.maintainers.add_owner') }}
       </button>
     </div>
   </section>

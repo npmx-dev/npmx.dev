@@ -1,13 +1,15 @@
 <script setup lang="ts">
-const isMounted = ref(false)
-const isVisible = ref(false)
-const isScrollable = ref(true)
-const lastScrollY = ref(0)
-const footerRef = ref<HTMLElement>()
+const isMounted = shallowRef(false)
+const isVisible = shallowRef(false)
+const isScrollable = shallowRef(true)
+const lastScrollY = shallowRef(0)
+const footerRef = useTemplateRef('footerRef')
 
 // Check if CSS scroll-state container queries are supported
 // Once this becomes baseline, we can remove the JS scroll handling entirely
-const supportsScrollStateQueries = ref(false)
+const supportsScrollStateQueries = useSupported(() => {
+  return isMounted.value && CSS.supports('container-type', 'scroll-state')
+})
 
 function checkScrollable() {
   return document.documentElement.scrollHeight > window.innerHeight
@@ -48,11 +50,10 @@ function onResize() {
   updateFooterPadding()
 }
 
-onMounted(() => {
-  // Feature detect CSS scroll-state container queries (Chrome 133+)
-  // @see https://developer.mozilla.org/en-US/docs/Web/CSS/@container#scroll-state_container_descriptors
-  supportsScrollStateQueries.value = CSS.supports('container-type', 'scroll-state')
+useEventListener('scroll', onScroll, { passive: true })
+useEventListener('resize', onResize, { passive: true })
 
+onMounted(() => {
   nextTick(() => {
     lastScrollY.value = window.scrollY
     isScrollable.value = checkScrollable()
@@ -60,14 +61,6 @@ onMounted(() => {
     // Only apply dynamic classes after mount to avoid hydration mismatch
     isMounted.value = true
   })
-
-  window.addEventListener('scroll', onScroll, { passive: true })
-  window.addEventListener('resize', onResize, { passive: true })
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
-  window.removeEventListener('resize', onResize)
 })
 </script>
 
@@ -92,35 +85,35 @@ onUnmounted(() => {
   >
     <div class="container py-2 sm:py-6 flex flex-col gap-1 sm:gap-3 text-fg-subtle text-sm">
       <div class="flex flex-row items-center justify-between gap-2 sm:gap-4">
-        <p class="font-mono m-0 hidden sm:block">a better browser for the npm registry</p>
+        <p class="font-mono m-0 hidden sm:block">{{ $t('tagline') }}</p>
         <!-- On mobile, show disclaimer here instead of tagline -->
-        <p class="text-xs text-fg-muted m-0 sm:hidden">not affiliated with npm, Inc.</p>
+        <p class="text-xs text-fg-muted m-0 sm:hidden">{{ $t('non_affiliation_disclaimer') }}</p>
         <div class="flex items-center gap-4 sm:gap-6">
           <a
             href="https://repo.npmx.dev"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-xs min-h-11 min-w- flex items-center"
           >
-            source
+            {{ $t('footer.source') }}
           </a>
           <a
             href="https://social.npmx.dev"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
           >
-            social
+            {{ $t('footer.social') }}
           </a>
           <a
             href="https://chat.npmx.dev"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
           >
-            chat
+            {{ $t('footer.chat') }}
           </a>
         </div>
       </div>
       <p class="text-xs text-fg-muted text-center sm:text-left m-0 hidden sm:block">
-        npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.
+        {{ $t('trademark_disclaimer') }}
       </p>
     </div>
   </footer>
@@ -144,7 +137,12 @@ onUnmounted(() => {
     z-index: 40;
     /* Hidden by default (translated off-screen) */
     transform: translateY(100%);
-    transition: transform 0.3s ease-out;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .footer-scroll-state {
+      transition: transform 0.3s ease-out;
+    }
   }
 
   /* Show footer when user can scroll up (meaning they've scrolled down) */

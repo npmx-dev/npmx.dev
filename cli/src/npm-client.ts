@@ -1,27 +1,25 @@
+import crypto from 'node:crypto'
 import process from 'node:process'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { mkdtemp, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import validateNpmPackageName from 'validate-npm-package-name'
+import * as v from 'valibot'
+import { PackageNameSchema, UsernameSchema, OrgNameSchema, ScopeTeamSchema } from './schemas.ts'
 import { logCommand, logSuccess, logError } from './logger.ts'
 
 const execFileAsync = promisify(execFile)
-
-// Validation pattern for npm usernames/org names
-// These follow similar rules: lowercase alphanumeric with hyphens, can't start/end with hyphen
-const NPM_USERNAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/i
 
 /**
  * Validates an npm package name using the official npm validation package
  * @throws Error if the name is invalid
  */
 export function validatePackageName(name: string): void {
-  const result = validateNpmPackageName(name)
-  if (!result.validForNewPackages && !result.validForOldPackages) {
-    const errors = result.errors || result.warnings || ['Invalid package name']
-    throw new Error(`Invalid package name "${name}": ${errors.join(', ')}`)
+  const result = v.safeParse(PackageNameSchema, name)
+  if (!result.success) {
+    const message = result.issues[0]?.message || 'Invalid package name'
+    throw new Error(`Invalid package name "${name}": ${message}`)
   }
 }
 
@@ -30,7 +28,8 @@ export function validatePackageName(name: string): void {
  * @throws Error if the username is invalid
  */
 export function validateUsername(name: string): void {
-  if (!name || name.length > 50 || !NPM_USERNAME_RE.test(name)) {
+  const result = v.safeParse(UsernameSchema, name)
+  if (!result.success) {
     throw new Error(`Invalid username: ${name}`)
   }
 }
@@ -40,7 +39,8 @@ export function validateUsername(name: string): void {
  * @throws Error if the org name is invalid
  */
 export function validateOrgName(name: string): void {
-  if (!name || name.length > 50 || !NPM_USERNAME_RE.test(name)) {
+  const result = v.safeParse(OrgNameSchema, name)
+  if (!result.success) {
     throw new Error(`Invalid org name: ${name}`)
   }
 }
@@ -50,20 +50,9 @@ export function validateOrgName(name: string): void {
  * @throws Error if the scope:team is invalid
  */
 export function validateScopeTeam(scopeTeam: string): void {
-  if (!scopeTeam || scopeTeam.length > 100) {
-    throw new Error(`Invalid scope:team: ${scopeTeam}`)
-  }
-  // Format: @scope:team
-  const match = scopeTeam.match(/^@([^:]+):(.+)$/)
-  if (!match) {
-    throw new Error(`Invalid scope:team format: ${scopeTeam}`)
-  }
-  const [, scope, team] = match
-  if (!scope || !NPM_USERNAME_RE.test(scope)) {
-    throw new Error(`Invalid scope in scope:team: ${scopeTeam}`)
-  }
-  if (!team || !NPM_USERNAME_RE.test(team)) {
-    throw new Error(`Invalid team name in scope:team: ${scopeTeam}`)
+  const result = v.safeParse(ScopeTeamSchema, scopeTeam)
+  if (!result.success) {
+    throw new Error(`Invalid scope:team format: ${scopeTeam}. Expected @scope:team`)
   }
 }
 
@@ -184,6 +173,40 @@ export async function getNpmUser(): Promise<string | null> {
   return null
 }
 
+/**
+ * Gets the user's avatar as a base64 data URL from Gravatar.
+ * Returns null if the user's email cannot be retrieved or avatar fetch fails.
+ */
+export async function getNpmAvatar(): Promise<string | null> {
+  const result = await execNpm(['profile', 'get', 'email', '--json'], { silent: true })
+  if (result.exitCode !== 0 || !result.stdout) {
+    return null
+  }
+
+  try {
+    const parsed = JSON.parse(result.stdout) as { email?: string }
+    if (!parsed.email) {
+      return null
+    }
+
+    const email = parsed.email.trim().toLowerCase()
+    const hash = crypto.createHash('md5').update(email).digest('hex')
+    const gravatarUrl = `https://www.gravatar.com/avatar/${hash}?s=64&d=retro`
+
+    const response = await fetch(gravatarUrl)
+    if (!response.ok) {
+      return null
+    }
+
+    const contentType = response.headers.get('content-type') || 'image/png'
+    const buffer = await response.arrayBuffer()
+    const base64 = Buffer.from(buffer).toString('base64')
+    return `data:${contentType};base64,${base64}`
+  } catch {
+    return null
+  }
+}
+
 export async function orgAddUser(
   org: string,
   user: string,
@@ -288,6 +311,16 @@ export async function teamListUsers(scopeTeam: string): Promise<NpmExecResult> {
 export async function accessListCollaborators(pkg: string): Promise<NpmExecResult> {
   validatePackageName(pkg)
   return execNpm(['access', 'list', 'collaborators', pkg, '--json'], { silent: true })
+}
+
+/**
+ * Lists all packages that a user has access to publish.
+ * Uses `npm access list packages @{user} --json`
+ * Returns a map of package name to permission level
+ */
+export async function listUserPackages(user: string): Promise<NpmExecResult> {
+  validateUsername(user)
+  return execNpm(['access', 'list', 'packages', `@${user}`, '--json'], { silent: true })
 }
 
 /**

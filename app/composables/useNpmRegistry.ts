@@ -9,8 +9,8 @@ import type {
   PackageVersionInfo,
 } from '#shared/types'
 import type { ReleaseType } from 'semver'
-import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
-import { compareVersions, isExactVersion } from '~/utils/versions'
+import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
+import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
@@ -215,7 +215,7 @@ type NpmDownloadsRangeResponse = {
   downloads: Array<{ day: string; downloads: number }>
 }
 
-async function fetchNpmDownloadsRange(
+export async function fetchNpmDownloadsRange(
   packageName: string,
   start: string,
   end: string,
@@ -223,36 +223,6 @@ async function fetchNpmDownloadsRange(
   const encodedName = encodePackageName(packageName)
   return await $fetch<NpmDownloadsRangeResponse>(
     `${NPM_API}/downloads/range/${start}:${end}/${encodedName}`,
-  )
-}
-
-export function usePackageWeeklyDownloadEvolution(
-  name: MaybeRefOrGetter<string>,
-  options: MaybeRefOrGetter<{
-    weeks?: number
-    endDate?: string
-  }> = {},
-) {
-  return useLazyAsyncData(
-    () => `downloads-weekly-evolution:${toValue(name)}:${JSON.stringify(toValue(options))}`,
-    async () => {
-      const packageName = toValue(name)
-      const { weeks = 12, endDate } = toValue(options) ?? {}
-
-      const today = new Date()
-      const yesterday = new Date(
-        Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1),
-      )
-
-      const end = endDate ? new Date(`${endDate}T00:00:00.000Z`) : yesterday
-
-      const start = addDays(end, -(weeks * 7) + 1)
-      const startIso = toIsoDateString(start)
-      const endIso = toIsoDateString(end)
-      const range = await fetchNpmDownloadsRange(packageName, startIso, endIso)
-      const sortedDaily = [...range.downloads].sort((a, b) => a.day.localeCompare(b.day))
-      return buildWeeklyEvolutionFromDaily(sortedDaily)
-    },
   )
 }
 
@@ -287,7 +257,8 @@ export function useNpmSearch(
 /**
  * Fetch all package names in an npm organization
  * Uses the /-/org/{org}/package endpoint
- * Returns empty array if org doesn't exist or has no packages
+ * Throws error with statusCode 404 if org doesn't exist
+ * Returns empty array if org exists but has no packages
  */
 async function fetchOrgPackageNames(orgName: string): Promise<string[]> {
   try {
@@ -295,8 +266,16 @@ async function fetchOrgPackageNames(orgName: string): Promise<string[]> {
       `${NPM_REGISTRY}/-/org/${encodeURIComponent(orgName)}/package`,
     )
     return Object.keys(data)
-  } catch {
-    // Org doesn't exist or has no packages
+  } catch (err) {
+    // Check if this is a 404 (org not found)
+    if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Organization not found',
+        message: `The organization "@${orgName}" does not exist on npm`,
+      })
+    }
+    // For other errors (network, etc.), return empty array to be safe
     return []
   }
 }
@@ -434,7 +413,7 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
         hasProvenance: false, // Would need to check dist.attestations for each version
         deprecated: versionData.deprecated,
       }))
-      .sort((a, b) => compareVersions(b.version, a.version))
+      .sort((a, b) => compare(b.version, a.version))
   })()
 
   allVersionsCache.set(packageName, promise)
@@ -556,7 +535,7 @@ async function checkDependencyOutdated(
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
 ) {
-  const outdated = ref<Record<string, OutdatedDependencyInfo>>({})
+  const outdated = shallowRef<Record<string, OutdatedDependencyInfo>>({})
 
   async function fetchOutdatedInfo(deps: Record<string, string> | undefined) {
     if (!deps || Object.keys(deps).length === 0) {

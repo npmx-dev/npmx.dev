@@ -4,6 +4,9 @@ import { useEventListener } from '@vueuse/core'
 const route = useRoute()
 const router = useRouter()
 
+// Initialize accent color before hydration to prevent flash
+initAccentOnPrehydrate()
+
 const isHomepage = computed(() => route.path === '/')
 
 useHead({
@@ -195,6 +198,10 @@ button {
   margin-top: 2rem;
   margin-bottom: 1rem;
   line-height: 1.3;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 /* Visual styling based on original README heading level */

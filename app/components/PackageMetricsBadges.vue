@@ -1,30 +1,14 @@
 <script setup lang="ts">
-import type { ModuleFormat, TypesStatus } from '#shared/utils/package-analysis'
+import { NuxtLink } from '#components'
 
 const props = defineProps<{
   packageName: string
   version?: string
 }>()
 
-interface PackageAnalysisResponse {
-  package: string
-  version: string
-  moduleFormat: ModuleFormat
-  types: TypesStatus
-  engines?: {
-    node?: string
-    npm?: string
-  }
-}
-
-const { data: analysis, status } = useLazyFetch<PackageAnalysisResponse>(
-  () => {
-    const base = `/api/registry/analysis/${props.packageName}`
-    return props.version ? `${base}/v/${props.version}` : base
-  },
-  {
-    server: false, // Client-side only to avoid blocking initial render
-  },
+const { data: analysis } = usePackageAnalysis(
+  () => props.packageName,
+  () => props.version,
 )
 
 const moduleFormatLabel = computed(() => {
@@ -41,17 +25,19 @@ const moduleFormatLabel = computed(() => {
   }
 })
 
+const { t } = useI18n()
+
 const moduleFormatTooltip = computed(() => {
   if (!analysis.value) return ''
   switch (analysis.value.moduleFormat) {
     case 'esm':
-      return 'ES Modules only'
+      return t('package.metrics.esm')
     case 'cjs':
-      return 'CommonJS only'
+      return t('package.metrics.cjs')
     case 'dual':
-      return 'Supports both CommonJS and ES Modules'
+      return t('package.metrics.dual')
     default:
-      return 'Unknown module format'
+      return t('package.metrics.unknown_format')
   }
 })
 
@@ -64,9 +50,9 @@ const typesTooltip = computed(() => {
   if (!analysis.value) return ''
   switch (analysis.value.types?.kind) {
     case 'included':
-      return 'TypeScript types included'
+      return t('package.metrics.ts_included')
     case '@types':
-      return `Types from ${analysis.value.types.packageName}`
+      return t('package.metrics.types_from', { package: analysis.value.types.packageName })
     default:
       return ''
   }
@@ -86,10 +72,14 @@ const typesHref = computed(() => {
     <!-- TypeScript types -->
     <li v-if="hasTypes">
       <component
-        :is="typesHref ? 'NuxtLink' : 'span'"
+        :is="typesHref ? NuxtLink : 'span'"
         :to="typesHref"
         class="inline-flex items-center px-1.5 py-0.5 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200"
-        :class="typesHref ? 'hover:text-fg hover:border-border-hover' : ''"
+        :class="
+          typesHref
+            ? 'hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50'
+            : ''
+        "
         :title="typesTooltip"
       >
         TS

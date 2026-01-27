@@ -23,7 +23,7 @@ export default defineConfig({
       await defineVitestProject({
         test: {
           name: 'nuxt',
-          include: ['test/nuxt/*.{test,spec}.ts'],
+          include: ['test/nuxt/**/*.{test,spec}.ts'],
           environment: 'nuxt',
           environmentOptions: {
             nuxt: {
@@ -53,6 +53,11 @@ export default defineConfig({
       exclude: [
         '**/node_modules/**',
         'cli/**',
+        'app/utils/versions.ts',
+        'app/utils/package-name.ts',
+        'shared/utils/git-providers.ts',
+        'shared/utils/spdx.ts',
+        'shared/utils/url.ts',
         'server/utils/readme.ts',
         'server/utils/code-highlight.ts',
         'server/utils/npm.ts',

@@ -10,6 +10,8 @@ const emit = defineEmits<{
   'select-team': [teamName: string]
 }>()
 
+const { t } = useI18n()
+
 const {
   isConnected,
   lastExecutionTime,
@@ -21,27 +23,27 @@ const {
 } = useConnector()
 
 // Members data: { username: role }
-const members = ref<Record<string, 'developer' | 'admin' | 'owner'>>({})
-const isLoading = ref(false)
-const error = ref<string | null>(null)
+const members = shallowRef<Record<string, 'developer' | 'admin' | 'owner'>>({})
+const isLoading = shallowRef(false)
+const error = shallowRef<string | null>(null)
 
 // Team membership data: { teamName: [members] }
 const teamMembers = ref<Record<string, string[]>>({})
-const isLoadingTeams = ref(false)
+const isLoadingTeams = shallowRef(false)
 
 // Search/filter
-const searchQuery = ref('')
-const filterRole = ref<'all' | 'developer' | 'admin' | 'owner'>('all')
-const filterTeam = ref<string | null>(null)
-const sortBy = ref<'name' | 'role'>('name')
-const sortOrder = ref<'asc' | 'desc'>('asc')
+const searchQuery = shallowRef('')
+const filterRole = shallowRef<'all' | 'developer' | 'admin' | 'owner'>('all')
+const filterTeam = shallowRef<string | null>(null)
+const sortBy = shallowRef<'name' | 'role'>('name')
+const sortOrder = shallowRef<'asc' | 'desc'>('asc')
 
 // Add member form
-const showAddMember = ref(false)
-const newUsername = ref('')
-const newRole = ref<'developer' | 'admin' | 'owner'>('developer')
-const newTeam = ref<string>('') // Empty string means "developers" (default)
-const isAddingMember = ref(false)
+const showAddMember = shallowRef(false)
+const newUsername = shallowRef('')
+const newRole = shallowRef<'developer' | 'admin' | 'owner'>('developer')
+const newTeam = shallowRef<string>('') // Empty string means "developers" (default)
+const isAddingMember = shallowRef(false)
 
 // Role priority for sorting
 const rolePriority = { owner: 0, admin: 1, developer: 2 }
@@ -295,19 +297,19 @@ watch(lastExecutionTime, () => {
     <div class="flex items-center justify-between p-4 border-b border-border">
       <h2 id="members-heading" class="font-mono text-sm font-medium flex items-center gap-2">
         <span class="i-carbon-user-multiple w-4 h-4 text-fg-muted" aria-hidden="true" />
-        Members
+        {{ $t('org.members.title') }}
         <span v-if="memberList.length > 0" class="text-fg-muted">({{ memberList.length }})</span>
       </h2>
       <button
         type="button"
         class="p-1.5 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-        aria-label="Refresh members"
+        :aria-label="$t('org.members.refresh')"
         :disabled="isLoading"
         @click="refreshData"
       >
         <span
           class="i-carbon-renew block w-4 h-4"
-          :class="{ 'animate-spin': isLoading || isLoadingTeams }"
+          :class="{ 'motion-safe:animate-spin': isLoading || isLoadingTeams }"
           aria-hidden="true"
         />
       </button>
@@ -320,18 +322,22 @@ watch(lastExecutionTime, () => {
           class="absolute left-2 top-1/2 -translate-y-1/2 i-carbon-search w-3.5 h-3.5 text-fg-subtle"
           aria-hidden="true"
         />
-        <label for="members-search" class="sr-only">Filter members</label>
+        <label for="members-search" class="sr-only">{{ $t('org.members.filter_label') }}</label>
         <input
           id="members-search"
           v-model="searchQuery"
           type="search"
           name="members-search"
-          placeholder="Filter members…"
+          :placeholder="$t('org.members.filter_placeholder')"
           autocomplete="off"
           class="w-full pl-7 pr-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         />
       </div>
-      <div class="flex items-center gap-1" role="group" aria-label="Filter by role">
+      <div
+        class="flex items-center gap-1"
+        role="group"
+        :aria-label="$t('org.members.filter_by_role')"
+      >
         <button
           v-for="role in ['all', 'owner', 'admin', 'developer'] as const"
           :key="role"
@@ -341,26 +347,30 @@ watch(lastExecutionTime, () => {
           :aria-pressed="filterRole === role"
           @click="filterRole = role"
         >
-          {{ role }}
+          {{ t(`org.members.role.${role}`) }}
           <span v-if="role !== 'all'" class="text-fg-subtle">({{ roleCounts[role] }})</span>
         </button>
       </div>
       <!-- Team filter -->
       <div v-if="teamNames.length > 0">
-        <label for="team-filter" class="sr-only">Filter by team</label>
+        <label for="team-filter" class="sr-only">{{ $t('org.members.filter_by_team') }}</label>
         <select
           id="team-filter"
           v-model="filterTeam"
           name="team-filter"
           class="px-2 py-1 font-mono text-xs bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         >
-          <option :value="null">all teams</option>
+          <option :value="null">{{ $t('org.members.all_teams') }}</option>
           <option v-for="team in teamNames" :key="team" :value="team">
             {{ team }}
           </option>
         </select>
       </div>
-      <div class="flex items-center gap-1 text-xs" role="group" aria-label="Sort by">
+      <div
+        class="flex items-center gap-1 text-xs"
+        role="group"
+        :aria-label="$t('org.members.sort_by')"
+      >
         <button
           type="button"
           class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
@@ -368,7 +378,7 @@ watch(lastExecutionTime, () => {
           :aria-pressed="sortBy === 'name'"
           @click="toggleSort('name')"
         >
-          name
+          {{ $t('common.sort.name') }}
           <span v-if="sortBy === 'name'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
         </button>
         <button
@@ -378,7 +388,7 @@ watch(lastExecutionTime, () => {
           :aria-pressed="sortBy === 'role'"
           @click="toggleSort('role')"
         >
-          role
+          {{ $t('common.sort.role') }}
           <span v-if="sortBy === 'role'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
         </button>
       </div>
@@ -387,10 +397,10 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoading && memberList.length === 0" class="p-8 text-center">
       <span
-        class="i-carbon-rotate block w-5 h-5 text-fg-muted animate-spin mx-auto"
+        class="i-carbon-rotate-180 block w-5 h-5 text-fg-muted animate-spin mx-auto"
         aria-hidden="true"
       />
-      <p class="font-mono text-sm text-fg-muted mt-2">Loading members…</p>
+      <p class="font-mono text-sm text-fg-muted mt-2">{{ $t('org.members.loading') }}</p>
     </div>
 
     <!-- Error state -->
@@ -403,20 +413,20 @@ watch(lastExecutionTime, () => {
         class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="loadMembers"
       >
-        Try again
+        {{ $t('common.try_again') }}
       </button>
     </div>
 
     <!-- Empty state -->
     <div v-else-if="memberList.length === 0" class="p-8 text-center">
-      <p class="font-mono text-sm text-fg-muted">No members found</p>
+      <p class="font-mono text-sm text-fg-muted">{{ $t('org.members.no_members') }}</p>
     </div>
 
     <!-- Members list -->
     <ul
       v-else
       class="divide-y divide-border max-h-[400px] overflow-y-auto"
-      aria-label="Organization members"
+      :aria-label="$t('org.members.list_label')"
     >
       <li
         v-for="member in filteredMembers"
@@ -440,9 +450,9 @@ watch(lastExecutionTime, () => {
           </div>
           <div class="flex items-center gap-1">
             <!-- Role selector -->
-            <label :for="`role-${member.name}`" class="sr-only"
-              >Change role for {{ member.name }}</label
-            >
+            <label :for="`role-${member.name}`" class="sr-only">{{
+              $t('org.members.change_role_for', { name: member.name })
+            }}</label>
             <select
               :id="`role-${member.name}`"
               :value="member.role"
@@ -455,15 +465,15 @@ watch(lastExecutionTime, () => {
                 )
               "
             >
-              <option value="developer">developer</option>
-              <option value="admin">admin</option>
-              <option value="owner">owner</option>
+              <option value="developer">{{ t('org.members.role.developer') }}</option>
+              <option value="admin">{{ t('org.members.role.admin') }}</option>
+              <option value="owner">{{ t('org.members.role.owner') }}</option>
             </select>
             <!-- Remove button -->
             <button
               type="button"
               class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-              :aria-label="`Remove ${member.name} from org`"
+              :aria-label="$t('org.members.remove_from_org', { name: member.name })"
               @click="handleRemoveMember(member.name)"
             >
               <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
@@ -477,7 +487,7 @@ watch(lastExecutionTime, () => {
             :key="team"
             type="button"
             class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted border border-border rounded hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            :aria-label="`View ${team} team`"
+            :aria-label="$t('org.members.view_team', { team })"
             @click="handleTeamClick(team)"
           >
             {{ team }}
@@ -488,45 +498,47 @@ watch(lastExecutionTime, () => {
 
     <!-- No results -->
     <div v-if="memberList.length > 0 && filteredMembers.length === 0" class="p-4 text-center">
-      <p class="font-mono text-sm text-fg-muted">No members match your filters</p>
+      <p class="font-mono text-sm text-fg-muted">{{ $t('org.members.no_match') }}</p>
     </div>
 
     <!-- Add member -->
     <div class="p-3 border-t border-border">
       <div v-if="showAddMember">
         <form class="space-y-2" @submit.prevent="handleAddMember">
-          <label for="new-member-username" class="sr-only">Username</label>
+          <label for="new-member-username" class="sr-only">{{
+            $t('org.members.username_label')
+          }}</label>
           <input
             id="new-member-username"
             v-model="newUsername"
             type="text"
             name="new-member-username"
-            placeholder="username…"
+            :placeholder="$t('org.members.username_placeholder')"
             autocomplete="off"
             spellcheck="false"
             class="w-full px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
           />
           <div class="flex items-center gap-2">
-            <label for="new-member-role" class="sr-only">Role</label>
+            <label for="new-member-role" class="sr-only">{{ $t('org.members.role_label') }}</label>
             <select
               id="new-member-role"
               v-model="newRole"
               name="new-member-role"
               class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             >
-              <option value="developer">developer</option>
-              <option value="admin">admin</option>
-              <option value="owner">owner</option>
+              <option value="developer">{{ t('org.members.role.developer') }}</option>
+              <option value="admin">{{ t('org.members.role.admin') }}</option>
+              <option value="owner">{{ t('org.members.role.owner') }}</option>
             </select>
             <!-- Team selection -->
-            <label for="new-member-team" class="sr-only">Team</label>
+            <label for="new-member-team" class="sr-only">{{ $t('org.members.team_label') }}</label>
             <select
               id="new-member-team"
               v-model="newTeam"
               name="new-member-team"
               class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             >
-              <option value="">no team</option>
+              <option value="">{{ $t('org.members.no_team') }}</option>
               <option v-for="team in teamNames" :key="team" :value="team">
                 {{ team }}
               </option>
@@ -536,12 +548,12 @@ watch(lastExecutionTime, () => {
               :disabled="!newUsername.trim() || isAddingMember"
               class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             >
-              {{ isAddingMember ? '…' : 'add' }}
+              {{ isAddingMember ? '…' : $t('org.members.add_button') }}
             </button>
             <button
               type="button"
               class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-              aria-label="Cancel adding member"
+              :aria-label="$t('org.members.cancel_add')"
               @click="showAddMember = false"
             >
               <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
@@ -555,7 +567,7 @@ watch(lastExecutionTime, () => {
         class="w-full px-3 py-2 font-mono text-sm text-fg-muted bg-bg border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="showAddMember = true"
       >
-        + Add member
+        {{ $t('org.members.add_member') }}
       </button>
     </div>
   </section>

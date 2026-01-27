@@ -1,5 +1,4 @@
 import type { PendingOperation, OperationStatus, OperationType } from '../../cli/src/types'
-import { createSharedComposable } from '@vueuse/core'
 
 export interface NewOperation {
   type: OperationType
@@ -23,6 +22,8 @@ export interface ConnectorState {
   connecting: boolean
   /** The npm username if connected and authenticated */
   npmUser: string | null
+  /** Base64 data URL of the user's avatar */
+  avatar: string | null
   /** Pending operations queue */
   operations: PendingOperation[]
   /** Last connection error message */
@@ -35,6 +36,7 @@ interface ConnectResponse {
   success: boolean
   data?: {
     npmUser: string | null
+    avatar: string | null
     connectedAt: number
   }
   error?: string
@@ -44,6 +46,7 @@ interface StateResponse {
   success: boolean
   data?: {
     npmUser: string | null
+    avatar: string | null
     operations: PendingOperation[]
   }
   error?: string
@@ -61,6 +64,7 @@ export const useConnector = createSharedComposable(function useConnector() {
     connected: false,
     connecting: false,
     npmUser: null,
+    avatar: null,
     operations: [],
     error: null,
     lastExecutionTime: null,
@@ -116,6 +120,7 @@ export const useConnector = createSharedComposable(function useConnector() {
 
         state.value.connected = true
         state.value.npmUser = response.data.npmUser
+        state.value.avatar = response.data.avatar
         state.value.error = null
 
         // Fetch full state after connecting
@@ -156,6 +161,7 @@ export const useConnector = createSharedComposable(function useConnector() {
       connected: false,
       connecting: false,
       npmUser: null,
+      avatar: null,
       operations: [],
       error: null,
       lastExecutionTime: null,
@@ -175,6 +181,7 @@ export const useConnector = createSharedComposable(function useConnector() {
 
       if (response.success && response.data) {
         state.value.npmUser = response.data.npmUser
+        state.value.avatar = response.data.avatar
         state.value.operations = response.data.operations
         state.value.connected = true
       }
@@ -343,6 +350,19 @@ export const useConnector = createSharedComposable(function useConnector() {
     return response?.success ? (response.data ?? null) : null
   }
 
+  async function listUserPackages(): Promise<Record<string, 'read-write' | 'read-only'> | null> {
+    const response =
+      await connectorFetch<ApiResponse<Record<string, 'read-write' | 'read-only'>>>(
+        '/user/packages',
+      )
+    return response?.success ? (response.data ?? null) : null
+  }
+
+  async function listUserOrgs(): Promise<string[] | null> {
+    const response = await connectorFetch<ApiResponse<string[]>>('/user/orgs')
+    return response?.success ? (response.data ?? null) : null
+  }
+
   // Computed helpers for operations
   const pendingOperations = computed(() =>
     state.value.operations.filter(op => op.status === 'pending'),
@@ -381,6 +401,7 @@ export const useConnector = createSharedComposable(function useConnector() {
     isConnected: computed(() => state.value.connected),
     isConnecting: computed(() => state.value.connecting),
     npmUser: computed(() => state.value.npmUser),
+    avatar: computed(() => state.value.avatar),
     error: computed(() => state.value.error),
     /** Timestamp of last execution completion (watch this to refresh data) */
     lastExecutionTime: computed(() => state.value.lastExecutionTime),
@@ -419,6 +440,8 @@ export const useConnector = createSharedComposable(function useConnector() {
     listOrgTeams,
     listTeamUsers,
     listPackageCollaborators,
+    listUserPackages,
+    listUserOrgs,
   }
 })
 

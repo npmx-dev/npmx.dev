@@ -7,6 +7,20 @@ export default defineNuxtConfig({
         nuxt.options.pwa.pwaAssets.disabled = true
       }
     },
+    // Workaround for Nuxt 4.3.0 regression: https://github.com/nuxt/nuxt/issues/34140
+    // shared-imports.d.ts pulls in app composables during type-checking of shared context,
+    // but the shared context doesn't have access to auto-import globals.
+    // TODO: Remove when Nuxt fixes this upstream
+    function (_, nuxt) {
+      nuxt.hook('prepare:types', ({ sharedReferences }) => {
+        const idx = sharedReferences.findIndex(
+          ref => 'path' in ref && ref.path.endsWith('shared-imports.d.ts'),
+        )
+        if (idx !== -1) {
+          sharedReferences.splice(idx, 1)
+        }
+      })
+    },
     '@unocss/nuxt',
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
@@ -15,7 +29,11 @@ export default defineNuxtConfig({
     'nuxt-og-image',
     '@nuxt/test-utils',
     '@vite-pwa/nuxt',
+    '@vueuse/nuxt',
+    '@nuxtjs/i18n',
   ],
+
+  css: ['vue-data-ui/style.css'],
 
   devtools: { enabled: true },
 
@@ -58,6 +76,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
+    entryImportMap: false,
     viteEnvironmentApi: true,
     viewTransition: true,
     typedPages: true,
@@ -123,10 +142,22 @@ export default defineNuxtConfig({
       include: [
         '@vueuse/core',
         'vue-data-ui/vue-ui-sparkline',
+        'vue-data-ui/vue-ui-xy',
         'virtua/vue',
         'semver',
         'validate-npm-package-name',
       ],
     },
+  },
+
+  i18n: {
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: false,
+    langDir: 'locales',
+    locales: [
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
+      { code: 'zh-CN', language: 'zh-CN', name: '简体中文', file: 'zh-CN.json' },
+    ],
   },
 })

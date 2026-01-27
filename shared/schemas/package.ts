@@ -3,6 +3,7 @@ import validateNpmPackageName from 'validate-npm-package-name'
 
 /**
  * Enforces only valid NPM package names
+ * Accepts both new and legacy package name formats
  * Leverages 'validate-npm-package-name'
  */
 export const PackageNameSchema = v.pipe(

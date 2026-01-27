@@ -7,7 +7,7 @@ defineProps<{
   baseUrl: string
 }>()
 
-const isOpen = ref(false)
+const isOpen = shallowRef(false)
 
 // Close drawer on navigation
 const route = useRoute()
@@ -38,7 +38,7 @@ onUnmounted(() => {
   <button
     type="button"
     class="md:hidden fixed bottom-4 right-4 z-40 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors"
-    aria-label="Toggle file tree"
+    :aria-label="$t('code.toggle_tree')"
     @click="isOpen = !isOpen"
   >
     <span class="w-5 h-5" :class="isOpen ? 'i-carbon-close' : 'i-carbon-folder'" />
@@ -72,11 +72,11 @@ onUnmounted(() => {
       <div
         class="sticky top-0 bg-bg-subtle border-b border-border px-4 py-3 flex items-center justify-between"
       >
-        <span class="font-mono text-sm text-fg-muted">Files</span>
+        <span class="font-mono text-sm text-fg-muted">{{ $t('code.files_label') }}</span>
         <button
           type="button"
           class="text-fg-muted hover:text-fg transition-colors"
-          aria-label="Close file tree"
+          :aria-label="$t('code.close_tree')"
           @click="isOpen = false"
         >
           <span class="i-carbon-close w-5 h-5" />

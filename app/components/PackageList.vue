@@ -32,7 +32,7 @@ const emit = defineEmits<{
 }>()
 
 // Reference to WindowVirtualizer for infinite scroll detection
-const listRef = ref<WindowVirtualizerHandle>()
+const listRef = useTemplateRef<WindowVirtualizerHandle>('listRef')
 
 // Set up infinite scroll if hasMore is provided
 const hasMore = computed(() => props.hasMore ?? false)
@@ -52,7 +52,7 @@ const { handleScroll, scrollToPage } = useVirtualInfiniteScroll({
 })
 
 // Scroll to initial page once list is ready and has items
-const hasScrolledToInitial = ref(false)
+const hasScrolledToInitial = shallowRef(false)
 
 watch(
   [() => props.results.length, () => props.initialPage, listRef],
@@ -111,7 +111,7 @@ defineExpose({
             :show-publisher="showPublisher"
             :selected="index === (selectedIndex ?? -1)"
             :index="index"
-            class="animate-fade-in animate-fill-both"
+            class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
             :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
             @focus="emit('select', $event)"
           />
@@ -122,8 +122,10 @@ defineExpose({
     <!-- Loading indicator -->
     <div v-if="isLoading" class="py-4 flex items-center justify-center">
       <div class="flex items-center gap-3 text-fg-muted font-mono text-sm">
-        <span class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full animate-spin" />
-        Loading more...
+        <span
+          class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full motion-safe:animate-spin"
+        />
+        {{ $t('common.loading_more') }}
       </div>
     </div>
 
@@ -132,7 +134,7 @@ defineExpose({
       v-else-if="!hasMore && results.length > 0"
       class="py-4 text-center text-fg-subtle font-mono text-sm"
     >
-      End of results
+      {{ $t('common.end_of_results') }}
     </p>
   </div>
 </template>

@@ -3,6 +3,7 @@ import { formatNumber } from '#imports'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -45,7 +46,7 @@ watch(
 
 // For glow effect
 const isSearchFocused = ref(false)
-const searchInputRef = ref<HTMLInputElement>()
+const searchInputRef = useTemplateRef('searchInputRef')
 
 const selectedIndex = ref(0)
 const packageListRef = useTemplateRef('packageListRef')
@@ -345,7 +346,7 @@ defineOgImageComponent('Default', {
 
         <search>
           <form role="search" class="relative" @submit.prevent>
-            <label for="search-input" class="sr-only">Search npm packages</label>
+            <label for="search-input" class="sr-only">{{ t('search.label') }}</label>
 
             <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
               <!-- Subtle glow effect -->
@@ -355,7 +356,7 @@ defineOgImageComponent('Default', {
 
               <div class="search-box relative flex items-center">
                 <span
-                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-fg-muted"
+                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-accent"
                   aria-hidden="true"
                 >
                   /
@@ -366,12 +367,12 @@ defineOgImageComponent('Default', {
                   v-model="inputValue"
                   type="search"
                   name="q"
-                  placeholder="search packages…"
+                  :placeholder="t('search.placeholder')"
                   autocapitalize="off"
                   autocomplete="off"
                   autocorrect="off"
                   spellcheck="false"
-                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-border-hover focus-visible:outline-none appearance-none"
+                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-accent focus-visible:outline-none appearance-none"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
                   @keydown="handleResultsKeydown"
@@ -380,13 +381,13 @@ defineOgImageComponent('Default', {
                   v-show="inputValue"
                   type="button"
                   class="absolute right-3 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                  aria-label="Clear search"
+                  :aria-label="t('search.clear')"
                   @click="inputValue = ''"
                 >
                   <span class="i-carbon-close-large block w-3.5 h-3.5" aria-hidden="true" />
                 </button>
                 <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
-                <button type="submit" class="sr-only">Search</button>
+                <button type="submit" class="sr-only">{{ t('search.button') }}</button>
               </div>
             </div>
           </form>
@@ -398,7 +399,7 @@ defineOgImageComponent('Default', {
     <div class="container pt-20 pb-6">
       <section v-if="query" aria-label="Search results" @keydown="handleResultsKeydown">
         <!-- Initial loading (only after user interaction, not during view transition) -->
-        <LoadingSpinner v-if="showSearching" text="Searching…" />
+        <LoadingSpinner v-if="showSearching" :text="t('search.searching')" />
 
         <div v-else-if="visibleResults">
           <!-- Claim prompt - shown at top when valid name but no exact match -->
@@ -408,17 +409,16 @@ defineOgImageComponent('Default', {
           >
             <div class="flex-1 min-w-0">
               <p class="font-mono text-sm text-fg">
-                "<span class="text-fg font-medium">{{ query }}</span
-                >" is not taken
+                {{ t('search.not_taken', { name: query }) }}
               </p>
-              <p class="text-xs text-fg-muted mt-0.5">Claim this package name on npm</p>
+              <p class="text-xs text-fg-muted mt-0.5">{{ t('search.claim_prompt') }}</p>
             </div>
             <button
               type="button"
-              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               @click="claimModalOpen = true"
             >
-              Claim "{{ query }}"
+              {{ t('search.claim_button', { name: query }) }}
             </button>
           </div>
 
@@ -427,27 +427,28 @@ defineOgImageComponent('Default', {
             role="status"
             class="text-fg-muted text-sm mb-6 font-mono"
           >
-            Found <span class="text-fg">{{ formatNumber(visibleResults.total) }}</span> packages
-            <span v-if="status === 'pending'" class="text-fg-subtle">(updating…)</span>
+            {{ t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
+            <span v-if="status === 'pending'" class="text-fg-subtle">{{
+              t('search.updating')
+            }}</span>
           </p>
 
           <!-- No results found -->
           <div v-else-if="status !== 'pending'" role="status" class="py-12 text-center">
             <p class="text-fg-muted font-mono mb-6">
-              No packages found for "<span class="text-fg">{{ query }}</span
-              >"
+              {{ t('search.no_results', { query }) }}
             </p>
 
             <!-- Offer to claim the package name if it's valid -->
             <div v-if="showClaimPrompt" class="max-w-md mx-auto">
               <div class="p-4 bg-bg-subtle border border-border rounded-lg">
-                <p class="text-sm text-fg-muted mb-3">Want to claim this package name?</p>
+                <p class="text-sm text-fg-muted mb-3">{{ t('search.want_to_claim') }}</p>
                 <button
                   type="button"
                   class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                   @click="claimModalOpen = true"
                 >
-                  Claim "{{ query }}"
+                  {{ t('search.claim_button', { name: query }) }}
                 </button>
               </div>
             </div>
@@ -472,7 +473,7 @@ defineOgImageComponent('Default', {
       </section>
 
       <section v-else class="py-20 text-center">
-        <p class="text-fg-subtle font-mono text-sm">Start typing to search packages</p>
+        <p class="text-fg-subtle font-mono text-sm">{{ t('search.start_typing') }}</p>
       </section>
     </div>
 

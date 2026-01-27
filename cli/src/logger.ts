@@ -63,8 +63,8 @@ export function logMessage(message: string): void {
 /**
  * Show the connection token in a nice box
  */
-export function showToken(token: string, port: number): void {
-  const connectUrl = `https://npmx.dev/?token=${token}&port=${port}`
+export function showToken(token: string, port: number, frontendUrl: string): void {
+  const connectUrl = `${frontendUrl}?token=${token}&port=${port}`
 
   p.note(
     [

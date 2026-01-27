@@ -1,4 +1,5 @@
-export function formatNumber(num: number): string {
+export function formatNumber(num: number, _locale?: string): string {
+  // TODO: Support different locales (needs care to ensure hydration works correctly)
   return new Intl.NumberFormat('en-US').format(num)
 }
 

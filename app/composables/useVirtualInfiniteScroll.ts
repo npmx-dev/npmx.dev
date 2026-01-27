@@ -13,7 +13,7 @@ export interface WindowVirtualizerHandle {
 
 export interface UseVirtualInfiniteScrollOptions {
   /** Reference to the WindowVirtualizer component */
-  listRef: Ref<WindowVirtualizerHandle | undefined>
+  listRef: Ref<WindowVirtualizerHandle | null>
   /** Current item count */
   itemCount: Ref<number>
   /** Whether there are more items to load */
@@ -48,10 +48,10 @@ export function useVirtualInfiniteScroll(options: UseVirtualInfiniteScrollOption
   } = options
 
   // Track last fetched count to prevent duplicate fetches
-  const fetchedCountRef = ref(-1)
+  const fetchedCountRef = shallowRef(-1)
 
   // Track current page to avoid unnecessary updates
-  const currentPage = ref(1)
+  const currentPage = shallowRef(1)
 
   function handleScroll() {
     const list = listRef.value

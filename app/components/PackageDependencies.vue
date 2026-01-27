@@ -11,9 +11,9 @@ const props = defineProps<{
 const outdatedDeps = useOutdatedDependencies(() => props.dependencies)
 
 // Expanded state for each section
-const depsExpanded = ref(false)
-const peerDepsExpanded = ref(false)
-const optionalDepsExpanded = ref(false)
+const depsExpanded = shallowRef(false)
+const peerDepsExpanded = shallowRef(false)
+const optionalDepsExpanded = shallowRef(false)
 
 // Sort dependencies alphabetically
 const sortedDependencies = computed(() => {
@@ -50,9 +50,9 @@ const sortedOptionalDependencies = computed(() => {
     <!-- Dependencies -->
     <section v-if="sortedDependencies.length > 0" aria-labelledby="dependencies-heading">
       <h2 id="dependencies-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-        Dependencies ({{ sortedDependencies.length }})
+        {{ $t('package.dependencies.title', { count: sortedDependencies.length }) }}
       </h2>
-      <ul class="space-y-1 list-none m-0 p-0" aria-label="Package dependencies">
+      <ul class="space-y-1 list-none m-0 p-0" :aria-label="$t('package.dependencies.list_label')">
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
@@ -94,7 +94,7 @@ const sortedOptionalDependencies = computed(() => {
         class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="depsExpanded = true"
       >
-        show all {{ sortedDependencies.length }} deps
+        {{ $t('package.dependencies.show_all', { count: sortedDependencies.length }) }}
       </button>
     </section>
 
@@ -104,9 +104,12 @@ const sortedOptionalDependencies = computed(() => {
         id="peer-dependencies-heading"
         class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
       >
-        Peer Dependencies ({{ sortedPeerDependencies.length }})
+        {{ $t('package.peer_dependencies.title', { count: sortedPeerDependencies.length }) }}
       </h2>
-      <ul class="space-y-1 list-none m-0 p-0" aria-label="Package peer dependencies">
+      <ul
+        class="space-y-1 list-none m-0 p-0"
+        :aria-label="$t('package.peer_dependencies.list_label')"
+      >
         <li
           v-for="peer in sortedPeerDependencies.slice(0, peerDepsExpanded ? undefined : 10)"
           :key="peer.name"
@@ -122,9 +125,9 @@ const sortedOptionalDependencies = computed(() => {
             <span
               v-if="peer.optional"
               class="px-1 py-0.5 font-mono text-[10px] text-fg-subtle bg-bg-muted border border-border rounded shrink-0"
-              title="Optional peer dependency"
+              :title="$t('package.dependencies.optional')"
             >
-              optional
+              {{ $t('package.dependencies.optional') }}
             </span>
           </div>
           <NuxtLink
@@ -145,7 +148,7 @@ const sortedOptionalDependencies = computed(() => {
         class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="peerDepsExpanded = true"
       >
-        show all {{ sortedPeerDependencies.length }} peer deps
+        {{ $t('package.peer_dependencies.show_all', { count: sortedPeerDependencies.length }) }}
       </button>
     </section>
 
@@ -158,9 +161,14 @@ const sortedOptionalDependencies = computed(() => {
         id="optional-dependencies-heading"
         class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
       >
-        Optional Dependencies ({{ sortedOptionalDependencies.length }})
+        {{
+          $t('package.optional_dependencies.title', { count: sortedOptionalDependencies.length })
+        }}
       </h2>
-      <ul class="space-y-1 list-none m-0 p-0" aria-label="Package optional dependencies">
+      <ul
+        class="space-y-1 list-none m-0 p-0"
+        :aria-label="$t('package.optional_dependencies.list_label')"
+      >
         <li
           v-for="[dep, version] in sortedOptionalDependencies.slice(
             0,
@@ -190,7 +198,9 @@ const sortedOptionalDependencies = computed(() => {
         class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="optionalDepsExpanded = true"
       >
-        show all {{ sortedOptionalDependencies.length }} optional deps
+        {{
+          $t('package.optional_dependencies.show_all', { count: sortedOptionalDependencies.length })
+        }}
       </button>
     </section>
   </div>

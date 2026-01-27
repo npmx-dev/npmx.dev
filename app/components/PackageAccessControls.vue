@@ -23,17 +23,17 @@ const orgName = computed(() => {
 })
 
 // Data
-const collaborators = ref<Record<string, 'read-only' | 'read-write'>>({})
-const teams = ref<string[]>([])
-const isLoadingCollaborators = ref(false)
-const isLoadingTeams = ref(false)
-const error = ref<string | null>(null)
+const collaborators = shallowRef<Record<string, 'read-only' | 'read-write'>>({})
+const teams = shallowRef<string[]>([])
+const isLoadingCollaborators = shallowRef(false)
+const isLoadingTeams = shallowRef(false)
+const error = shallowRef<string | null>(null)
 
 // Grant access form
-const showGrantAccess = ref(false)
-const selectedTeam = ref('')
-const permission = ref<'read-only' | 'read-write'>('read-only')
-const isGranting = ref(false)
+const showGrantAccess = shallowRef(false)
+const selectedTeam = shallowRef('')
+const permission = shallowRef<'read-only' | 'read-write'>('read-only')
+const isGranting = shallowRef(false)
 
 // Computed collaborator list with type detection
 const collaboratorList = computed(() => {
@@ -136,10 +136,10 @@ async function handleRevokeAccess(collaboratorName: string) {
   await addOperation(operation)
 }
 
-// Load on mount when connected
+// Reload when package changes
 watch(
-  isConnected,
-  connected => {
+  () => [isConnected.value, props.packageName, lastExecutionTime.value],
+  ([connected]) => {
     if (connected && orgName.value) {
       loadCollaborators()
       loadTeams()
@@ -147,43 +147,24 @@ watch(
   },
   { immediate: true },
 )
-
-// Reload when package changes
-watch(
-  () => props.packageName,
-  () => {
-    if (isConnected.value && orgName.value) {
-      loadCollaborators()
-      loadTeams()
-    }
-  },
-)
-
-// Refresh data when operations complete
-watch(lastExecutionTime, () => {
-  if (isConnected.value && orgName.value) {
-    loadCollaborators()
-    loadTeams()
-  }
-})
 </script>
 
 <template>
   <section v-if="isConnected && orgName" aria-labelledby="access-heading">
     <div class="flex items-center justify-between mb-3">
       <h2 id="access-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-        Team Access
+        {{ $t('package.access.title') }}
       </h2>
       <button
         type="button"
         class="p-1 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-        aria-label="Refresh team access"
+        :aria-label="$t('package.access.refresh')"
         :disabled="isLoadingCollaborators"
         @click="loadCollaborators"
       >
         <span
           class="i-carbon-renew block w-3.5 h-3.5"
-          :class="{ 'animate-spin': isLoadingCollaborators }"
+          :class="{ 'motion-safe:animate-spin': isLoadingCollaborators }"
           aria-hidden="true"
         />
       </button>
@@ -192,7 +173,7 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoadingCollaborators && collaboratorList.length === 0" class="py-4 text-center">
       <span
-        class="i-carbon-rotate block w-4 h-4 text-fg-muted animate-spin mx-auto"
+        class="i-carbon-rotate-180 block w-4 h-4 text-fg-muted animate-spin mx-auto"
         aria-hidden="true"
       />
     </div>
@@ -203,7 +184,11 @@ watch(lastExecutionTime, () => {
     </div>
 
     <!-- Collaborators list -->
-    <ul v-if="collaboratorList.length > 0" class="space-y-1 mb-3" aria-label="Team access list">
+    <ul
+      v-if="collaboratorList.length > 0"
+      class="space-y-1 mb-3"
+      :aria-label="$t('package.access.list_label')"
+    >
       <li
         v-for="collab in collaboratorList"
         :key="collab.name"
@@ -231,7 +216,9 @@ watch(lastExecutionTime, () => {
                 : 'bg-fg-subtle/20 text-fg-muted'
             "
           >
-            {{ collab.permission === 'read-write' ? 'rw' : 'ro' }}
+            {{
+              collab.permission === 'read-write' ? $t('package.access.rw') : $t('package.access.ro')
+            }}
           </span>
         </div>
         <!-- Only show revoke for teams (users are managed via owners) -->
@@ -239,24 +226,26 @@ watch(lastExecutionTime, () => {
           v-if="collab.isTeam"
           type="button"
           class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 shrink-0 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-          :aria-label="`Revoke ${collab.displayName} access`"
+          :aria-label="$t('package.access.revoke_access', { name: collab.displayName })"
           @click="handleRevokeAccess(collab.name)"
         >
           <span class="i-carbon-close block w-3.5 h-3.5" aria-hidden="true" />
         </button>
-        <span v-else class="text-xs text-fg-subtle"> owner </span>
+        <span v-else class="text-xs text-fg-subtle"> {{ $t('package.access.owner') }} </span>
       </li>
     </ul>
 
     <p v-else-if="!isLoadingCollaborators && !error" class="text-xs text-fg-subtle mb-3">
-      No team access configured
+      {{ $t('package.access.no_access') }}
     </p>
 
     <!-- Grant access form -->
     <div v-if="showGrantAccess">
       <form class="space-y-2" @submit.prevent="handleGrantAccess">
         <div class="flex items-center gap-2">
-          <label for="grant-team-select" class="sr-only">Select team</label>
+          <label for="grant-team-select" class="sr-only">{{
+            $t('package.access.select_team_label')
+          }}</label>
           <select
             id="grant-team-select"
             v-model="selectedTeam"
@@ -265,7 +254,11 @@ watch(lastExecutionTime, () => {
             :disabled="isLoadingTeams"
           >
             <option value="" disabled>
-              {{ isLoadingTeams ? 'Loading teams…' : 'Select team' }}
+              {{
+                isLoadingTeams
+                  ? $t('package.access.loading_teams')
+                  : $t('package.access.select_team')
+              }}
             </option>
             <option v-for="team in teams" :key="team" :value="team">
               {{ orgName }}:{{ team }}
@@ -273,27 +266,29 @@ watch(lastExecutionTime, () => {
           </select>
         </div>
         <div class="flex items-center gap-2">
-          <label for="grant-permission-select" class="sr-only">Permission level</label>
+          <label for="grant-permission-select" class="sr-only">{{
+            $t('package.access.permission_label')
+          }}</label>
           <select
             id="grant-permission-select"
             v-model="permission"
             name="grant-permission"
             class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
           >
-            <option value="read-only">read-only</option>
-            <option value="read-write">read-write</option>
+            <option value="read-only">{{ $t('package.access.permission.read_only') }}</option>
+            <option value="read-write">{{ $t('package.access.permission.read_write') }}</option>
           </select>
           <button
             type="submit"
             :disabled="!selectedTeam || isGranting"
             class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
           >
-            {{ isGranting ? '…' : 'grant' }}
+            {{ isGranting ? '…' : $t('package.access.grant_button') }}
           </button>
           <button
             type="button"
             class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            aria-label="Cancel granting access"
+            :aria-label="$t('package.access.cancel_grant')"
             @click="showGrantAccess = false"
           >
             <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
@@ -307,7 +302,7 @@ watch(lastExecutionTime, () => {
       class="w-full px-3 py-1.5 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
       @click="showGrantAccess = true"
     >
-      + Grant team access
+      {{ $t('package.access.grant_access') }}
     </button>
   </section>
 </template>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
 import type { PlaygroundLink } from '#shared/types'
 
 const props = defineProps<{
@@ -41,10 +40,10 @@ function getColor(provider: string): string {
 }
 
 // Dropdown state
-const isOpen = ref(false)
-const dropdownRef = ref<HTMLElement>()
-const menuRef = ref<HTMLElement>()
-const focusedIndex = ref(-1)
+const isOpen = shallowRef(false)
+const dropdownRef = useTemplateRef('dropdownRef')
+const menuRef = useTemplateRef('menuRef')
+const focusedIndex = shallowRef(-1)
 
 onClickOutside(dropdownRef, () => {
   isOpen.value = false
@@ -111,7 +110,7 @@ function focusMenuItem(index: number) {
 <template>
   <section v-if="links.length > 0" aria-labelledby="playgrounds-heading">
     <h2 id="playgrounds-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-      Try it out
+      {{ $t('package.playgrounds.title') }}
     </h2>
 
     <div ref="dropdownRef" class="relative">
@@ -143,7 +142,9 @@ function focusMenuItem(index: number) {
       >
         <span class="flex items-center gap-2">
           <span class="i-carbon-play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
-          <span class="text-fg-muted">choose playground ({{ links.length }})</span>
+          <span class="text-fg-muted"
+            >{{ $t('package.playgrounds.choose') }} ({{ links.length }})</span
+          >
         </span>
         <span
           class="i-carbon-chevron-down w-3 h-3 text-fg-subtle transition-transform duration-200 motion-reduce:transition-none"

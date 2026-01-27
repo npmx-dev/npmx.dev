@@ -8,13 +8,15 @@ const props = defineProps<{
   }
 }>()
 
+const { t } = useI18n()
+
 const outdatedNpxDeps = useOutdatedDependencies(() => props.installScripts.npxDependencies)
 const hasNpxDeps = computed(() => Object.keys(props.installScripts.npxDependencies).length > 0)
 const sortedNpxDeps = computed(() => {
   return Object.entries(props.installScripts.npxDependencies).sort(([a], [b]) => a.localeCompare(b))
 })
 
-const isExpanded = ref(false)
+const isExpanded = shallowRef(false)
 </script>
 
 <template>
@@ -24,7 +26,7 @@ const isExpanded = ref(false)
       class="text-xs text-fg-subtle uppercase tracking-wider mb-3 flex items-center gap-2"
     >
       <span class="i-carbon-warning-alt w-3 h-3 text-yellow-500" aria-hidden="true" />
-      Install Scripts
+      {{ $t('package.install_scripts.title') }}
     </h2>
 
     <!-- Script list: name as label, content below -->
@@ -36,7 +38,7 @@ const isExpanded = ref(false)
           class="font-mono text-sm text-fg-subtle m-0 truncate focus:whitespace-normal focus:overflow-visible cursor-help rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
           :title="installScripts.content?.[scriptName]"
         >
-          {{ installScripts.content?.[scriptName] || '(script)' }}
+          {{ installScripts.content?.[scriptName] || $t('package.install_scripts.script_label') }}
         </dd>
       </div>
     </dl>
@@ -55,7 +57,13 @@ const isExpanded = ref(false)
           :class="{ 'rotate-90': isExpanded }"
           aria-hidden="true"
         />
-        {{ sortedNpxDeps.length }} npx package{{ sortedNpxDeps.length !== 1 ? 's' : '' }}
+        {{
+          t(
+            'package.install_scripts.npx_packages',
+            { count: sortedNpxDeps.length },
+            sortedNpxDeps.length,
+          )
+        }}
       </button>
 
       <ul
@@ -93,7 +101,9 @@ const isExpanded = ref(false)
               :title="
                 outdatedNpxDeps[dep]
                   ? outdatedNpxDeps[dep].resolved === outdatedNpxDeps[dep].latest
-                    ? `currently ${outdatedNpxDeps[dep].latest}`
+                    ? t('package.install_scripts.currently', {
+                        version: outdatedNpxDeps[dep].latest,
+                      })
                     : getOutdatedTooltip(outdatedNpxDeps[dep])
                   : version
               "
