@@ -173,7 +173,7 @@ watch(
     <!-- Loading state -->
     <div v-if="isLoadingCollaborators && collaboratorList.length === 0" class="py-4 text-center">
       <span
-        class="i-carbon-rotate block w-4 h-4 text-fg-muted animate-spin mx-auto"
+        class="i-carbon-rotate-180 block w-4 h-4 text-fg-muted animate-spin mx-auto"
         aria-hidden="true"
       />
     </div>

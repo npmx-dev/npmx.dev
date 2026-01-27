@@ -387,7 +387,7 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoading && memberList.length === 0" class="p-8 text-center">
       <span
-        class="i-carbon-rotate block w-5 h-5 text-fg-muted animate-spin mx-auto"
+        class="i-carbon-rotate-180 block w-5 h-5 text-fg-muted animate-spin mx-auto"
         aria-hidden="true"
       />
       <p class="font-mono text-sm text-fg-muted mt-2">Loading members…</p>

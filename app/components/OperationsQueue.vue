@@ -92,7 +92,7 @@ function getStatusIcon(status: string): string {
     case 'approved':
       return 'i-carbon-checkmark'
     case 'running':
-      return 'i-carbon-rotate'
+      return 'i-carbon-rotate-180'
     case 'completed':
       return 'i-carbon-checkmark-filled'
     case 'failed':
