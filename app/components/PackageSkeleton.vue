@@ -1,5 +1,9 @@
+<script setup lang="ts">
+const { t } = useI18n()
+</script>
+
 <template>
-  <article aria-busy="true" aria-label="Loading package details" class="animate-fade-in">
+  <article aria-busy="true" :aria-label="t('package.skeleton.loading')" class="animate-fade-in">
     <!-- Package header - matches header in [...name].vue -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
@@ -26,7 +30,9 @@
       <dl class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mt-6">
         <!-- License -->
         <div class="space-y-1">
-          <dt class="text-xs text-fg-subtle uppercase tracking-wider">License</dt>
+          <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+            {{ t('package.skeleton.license') }}
+          </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-12" />
           </dd>
@@ -34,7 +40,9 @@
 
         <!-- Weekly -->
         <div class="space-y-1">
-          <dt class="text-xs text-fg-subtle uppercase tracking-wider">Weekly</dt>
+          <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+            {{ t('package.skeleton.weekly') }}
+          </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-20" />
           </dd>
@@ -42,7 +50,9 @@
 
         <!-- Size -->
         <div class="space-y-1">
-          <dt class="text-xs text-fg-subtle uppercase tracking-wider">Size</dt>
+          <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+            {{ t('package.skeleton.size') }}
+          </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-16" />
           </dd>
@@ -50,7 +60,9 @@
 
         <!-- Deps -->
         <div class="space-y-1">
-          <dt class="text-xs text-fg-subtle uppercase tracking-wider">Deps</dt>
+          <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+            {{ t('package.skeleton.deps') }}
+          </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-8" />
           </dd>
@@ -58,7 +70,9 @@
 
         <!-- Updated -->
         <div class="space-y-1 col-span-2">
-          <dt class="text-xs text-fg-subtle uppercase tracking-wider">Updated</dt>
+          <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+            {{ t('package.skeleton.updated') }}
+          </dt>
           <dd class="font-mono text-sm">
             <span class="skeleton inline-block h-5 w-28" />
           </dd>
@@ -90,7 +104,7 @@
         id="install-heading-skeleton"
         class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
       >
-        Install
+        {{ t('package.skeleton.install') }}
       </h2>
       <!-- code-block with relative positioning for copy button -->
       <div class="relative">
@@ -110,7 +124,7 @@
             id="readme-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
           >
-            Readme
+            {{ t('package.skeleton.readme') }}
           </h2>
           <!-- Simulated README content -->
           <div class="space-y-4">
@@ -141,7 +155,7 @@
             id="maintainers-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
           >
-            Maintainers
+            {{ t('package.skeleton.maintainers') }}
           </h2>
           <ul class="space-y-2 list-none m-0 p-0">
             <li>
@@ -159,7 +173,7 @@
             id="keywords-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
           >
-            Keywords
+            {{ t('package.skeleton.keywords') }}
           </h2>
           <!-- flex flex-wrap gap-1.5 -->
           <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
@@ -178,7 +192,7 @@
             id="versions-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
           >
-            Versions
+            {{ t('package.skeleton.versions') }}
           </h2>
           <!-- space-y-1, each row: flex items-center justify-between py-1.5 text-sm -->
           <div class="space-y-1">
@@ -211,7 +225,7 @@
             id="dependencies-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
           >
-            Dependencies
+            {{ t('package.skeleton.dependencies') }}
           </h2>
           <!-- space-y-1, each: flex items-center justify-between py-1 text-sm -->
           <ul class="space-y-1 list-none m-0 p-0">

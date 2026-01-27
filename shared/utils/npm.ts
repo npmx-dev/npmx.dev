@@ -1,3 +1,4 @@
+import { createError } from 'h3'
 import validatePackageName from 'validate-npm-package-name'
 
 /**

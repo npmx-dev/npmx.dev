@@ -314,6 +314,16 @@ export async function accessListCollaborators(pkg: string): Promise<NpmExecResul
 }
 
 /**
+ * Lists all packages that a user has access to publish.
+ * Uses `npm access list packages @{user} --json`
+ * Returns a map of package name to permission level
+ */
+export async function listUserPackages(user: string): Promise<NpmExecResult> {
+  validateUsername(user)
+  return execNpm(['access', 'list', 'packages', `@${user}`, '--json'], { silent: true })
+}
+
+/**
  * Initialize and publish a new package to claim the name.
  * Creates a minimal package.json in a temp directory and publishes it.
  * @param name Package name to claim

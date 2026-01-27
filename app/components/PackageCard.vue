@@ -70,11 +70,11 @@ const emit = defineEmits<{
               v-if="showPublisher && result.package.publisher?.username"
               class="flex items-center gap-1.5"
             >
-              <dt class="sr-only">Publisher</dt>
+              <dt class="sr-only">{{ $t('package.card.publisher') }}</dt>
               <dd class="font-mono">@{{ result.package.publisher.username }}</dd>
             </div>
             <div v-if="result.package.date" class="flex items-center gap-1.5">
-              <dt class="sr-only">Updated</dt>
+              <dt class="sr-only">{{ $t('package.card.updated') }}</dt>
               <dd>
                 <DateTime
                   :datetime="result.package.date"
@@ -84,6 +84,10 @@ const emit = defineEmits<{
                 />
               </dd>
             </div>
+            <div v-if="result.package.license" class="flex items-center gap-1.5">
+              <dt class="sr-only">License</dt>
+              <dd>{{ result.package.license }}</dd>
+            </div>
           </dl>
         </div>
         <!-- Mobile: downloads on separate row -->
@@ -92,7 +96,7 @@ const emit = defineEmits<{
           class="sm:hidden flex items-center gap-4 mt-2 text-xs text-fg-subtle m-0"
         >
           <div class="flex items-center gap-1.5">
-            <dt class="sr-only">Weekly downloads</dt>
+            <dt class="sr-only">{{ $t('package.card.weekly_downloads') }}</dt>
             <dd class="flex items-center gap-1.5">
               <span class="i-carbon-chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
               <span class="font-mono">{{ formatNumber(result.downloads.weekly) }}/w</span>
@@ -129,7 +133,7 @@ const emit = defineEmits<{
         >
           <span class="i-carbon-chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
           <span class="font-mono text-xs">
-            {{ formatNumber(result.downloads.weekly) }} / week
+            {{ formatNumber(result.downloads.weekly) }} {{ $t('common.per_week') }}
           </span>
         </div>
       </div>
@@ -137,7 +141,7 @@ const emit = defineEmits<{
 
     <ul
       v-if="result.package.keywords?.length"
-      aria-label="Keywords"
+      :aria-label="$t('package.card.keywords')"
       class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0"
     >
       <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword" class="tag">

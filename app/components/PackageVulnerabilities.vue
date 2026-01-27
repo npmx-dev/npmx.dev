@@ -92,10 +92,12 @@ function getVulnerabilityUrl(vuln: OsvVulnerability): string {
   return `https://osv.dev/vulnerability/${vuln.id}`
 }
 
+const { t } = useI18n()
+
 function toVulnerabilitySummary(vuln: OsvVulnerability): VulnerabilitySummary {
   return {
     id: vuln.id,
-    summary: vuln.summary || 'No description available',
+    summary: vuln.summary || t('package.vulnerabilities.no_description'),
     severity: getSeverityLevel(vuln),
     aliases: vuln.aliases || [],
     url: getVulnerabilityUrl(vuln),
@@ -139,10 +141,12 @@ const highestSeverity = computed<OsvSeverityLevel>(() => {
 const summaryText = computed(() => {
   const counts = vulnData.value.counts
   const parts: string[] = []
-  if (counts.critical > 0) parts.push(`${counts.critical} critical`)
-  if (counts.high > 0) parts.push(`${counts.high} high`)
-  if (counts.moderate > 0) parts.push(`${counts.moderate} moderate`)
-  if (counts.low > 0) parts.push(`${counts.low} low`)
+  if (counts.critical > 0)
+    parts.push(`${counts.critical} ${t('package.vulnerabilities.severity.critical')}`)
+  if (counts.high > 0) parts.push(`${counts.high} ${t('package.vulnerabilities.severity.high')}`)
+  if (counts.moderate > 0)
+    parts.push(`${counts.moderate} ${t('package.vulnerabilities.severity.moderate')}`)
+  if (counts.low > 0) parts.push(`${counts.low} ${t('package.vulnerabilities.severity.low')}`)
   return parts.join(', ')
 })
 </script>
@@ -166,8 +170,13 @@ const summaryText = computed(() => {
         <div class="flex items-center gap-2 min-w-0">
           <span class="i-carbon-warning-alt w-4 h-4 shrink-0" aria-hidden="true" />
           <span class="font-mono text-sm font-medium truncate">
-            {{ vulnData.counts.total }}
-            {{ vulnData.counts.total === 1 ? 'vulnerability' : 'vulnerabilities' }} found
+            {{
+              $t(
+                'package.vulnerabilities.found',
+                { count: vulnData.counts.total },
+                vulnData.counts.total,
+              )
+            }}
           </span>
         </div>
         <div class="flex items-center gap-2 shrink-0">
@@ -228,7 +237,7 @@ const summaryText = computed(() => {
                 target="_blank"
                 rel="noopener noreferrer"
                 class="shrink-0 p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                aria-label="View vulnerability details"
+                :aria-label="$t('package.vulnerabilities.view_details')"
               >
                 <span class="i-carbon-launch w-3.5 h-3.5" aria-hidden="true" />
               </a>
