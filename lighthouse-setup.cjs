@@ -7,7 +7,7 @@
  */
 
 /** @param {import('puppeteer').Browser} browser */
-export default async function setup(browser, { url }) {
+module.exports = async function setup(browser, { url }) {
   const colorMode = process.env.LIGHTHOUSE_COLOR_MODE || 'dark'
   const page = await browser.newPage()
 

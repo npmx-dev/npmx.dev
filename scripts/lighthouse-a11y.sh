@@ -2,7 +2,7 @@
 # Run Lighthouse accessibility tests in both light and dark mode
 #
 # This script runs lhci autorun twice, once for each color mode.
-# The LIGHTHOUSE_COLOR_MODE env var is read by lighthouse-setup.js
+# The LIGHTHOUSE_COLOR_MODE env var is read by lighthouse-setup.cjs
 # to set the appropriate theme before each audit.
 
 set -e
