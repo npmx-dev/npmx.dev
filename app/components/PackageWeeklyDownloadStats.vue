@@ -82,13 +82,15 @@ const config = computed(() => ({
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider">
           {{ $t('package.downloads.title') }}
         </h2>
-        <a
+        <button
+          type="button"
           @click="showModal = true"
-          class="cursor-pointer link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0 self-center"
+          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
           :title="t('package.downloads.analyze')"
         >
-          <span class="i-carbon-data-analytics w-4 h-4" />
-        </a>
+          <span class="i-carbon-data-analytics w-4 h-4" aria-hidden="true" />
+          <span class="sr-only">{{ t('package.downloads.analyze') }}</span>
+        </button>
       </div>
 
       <div class="w-full overflow-hidden">

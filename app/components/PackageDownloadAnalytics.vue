@@ -323,6 +323,9 @@ async function load() {
 
     evolution.value = (result as EvolutionData) ?? []
     displayedGranularity.value = selectedGranularity.value
+  } catch {
+    if (currentToken !== requestToken) return
+    evolution.value = []
   } finally {
     if (currentToken === requestToken) {
       pending.value = false
