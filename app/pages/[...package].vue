@@ -334,6 +334,68 @@ async function copyInstallCommand() {
   setTimeout(() => (copied.value = false), 2000)
 }
 
+// Copy for AI context
+const copiedForAI = ref(false)
+const aiContextText = computed(() => {
+  if (!pkg.value || !displayVersion.value) return ''
+
+  const parts: string[] = []
+
+  // Package header
+  parts.push(`# ${pkg.value.name}@${displayVersion.value.version}`)
+  parts.push('')
+
+  // Description
+  if (pkg.value.description) {
+    parts.push(`> ${pkg.value.description}`)
+    parts.push('')
+  }
+
+  // Key info
+  parts.push('## Package Info')
+  parts.push(`- **Install:** \`${installCommand.value}\``)
+  if (pkg.value.license) parts.push(`- **License:** ${pkg.value.license}`)
+  if (repositoryUrl.value) parts.push(`- **Repository:** ${repositoryUrl.value}`)
+  if (homepageUrl.value) parts.push(`- **Homepage:** ${homepageUrl.value}`)
+  parts.push('')
+
+  // Dependencies summary
+  // const depCount = getDependencyCount(displayVersion.value)
+  // if (depCount > 0) {
+  //   parts.push(`## Dependencies (${depCount})`)
+  //   const deps = displayVersion.value.dependencies
+  //   if (deps) {
+  //     parts.push(Object.entries(deps).map(([name, version]) => `- ${name}: ${version}`).join('\n'))
+  //   }
+  //   parts.push('')
+  // }
+
+  // README content (extract text from HTML)
+  if (readmeData.value?.html) {
+    parts.push('## README')
+    parts.push('')
+    // Convert HTML to plain text (client-side only)
+    if (import.meta.client) {
+      const tempDiv = document.createElement('div')
+      tempDiv.innerHTML = readmeData.value.html
+      // Get text content, preserving some structure
+      const textContent = tempDiv.innerText || tempDiv.textContent || ''
+      parts.push(textContent.trim())
+    } else {
+      parts.push('[README content available - copy from browser]')
+    }
+  }
+
+  return parts.join('\n')
+})
+
+async function copyForAI() {
+  if (!aiContextText.value) return
+  await navigator.clipboard.writeText(aiContextText.value)
+  copiedForAI.value = true
+  setTimeout(() => (copiedForAI.value = false), 2000)
+}
+
 // Expandable description
 const descriptionExpanded = ref(false)
 const descriptionRef = ref<HTMLDivElement>()
@@ -489,33 +551,47 @@ defineOgImageComponent('Package', {
             </a>
           </div>
 
-          <!-- Fixed height description container to prevent CLS -->
-          <div ref="descriptionRef" class="relative max-w-2xl min-h-[4.5rem]">
-            <p
-              v-if="pkg.description"
-              class="text-fg-muted text-base m-0 overflow-hidden"
-              :class="descriptionExpanded ? '' : 'max-h-[4.5rem]'"
-            >
-              <MarkdownText :text="pkg.description" />
-            </p>
-            <p v-else class="text-fg-subtle text-base m-0 italic">No description provided</p>
-            <!-- Fade overlay with show more button - only when collapsed and overflowing -->
-            <div
-              v-if="pkg.description && descriptionOverflows && !descriptionExpanded"
-              class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
-            >
+          <!-- Description with Copy for AI button on right (desktop only) -->
+          <div class="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
+            <!-- Fixed height description container to prevent CLS -->
+            <div ref="descriptionRef" class="relative flex-1 min-h-[4.5rem]">
+              <p
+                v-if="pkg.description"
+                class="text-fg-muted text-base m-0 overflow-hidden"
+                :class="descriptionExpanded ? '' : 'max-h-[4.5rem]'"
+              >
+                <MarkdownText :text="pkg.description" />
+              </p>
+              <p v-else class="text-fg-subtle text-base m-0 italic">No description provided</p>
+              <!-- Fade overlay with show more button - only when collapsed and overflowing -->
+              <div
+                v-if="pkg.description && descriptionOverflows && !descriptionExpanded"
+                class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
+              >
+                <button
+                  type="button"
+                  class="font-mono text-xs text-fg-muted hover:text-fg bg-bg px-1 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  aria-label="Show full description"
+                  @click="descriptionExpanded = true"
+                >
+                  show more
+                </button>
+              </div>
+            </div>
+            <!-- Copy for AI button (hidden on mobile, visible on desktop) -->
+            <ClientOnly>
               <button
                 type="button"
-                class="font-mono text-xs text-fg-muted hover:text-fg bg-bg px-1 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                aria-label="Show full description"
-                @click="descriptionExpanded = true"
+                class="btn shrink-0 gap-2 min-w-32 hidden sm:inline-flex"
+                title="Copy package info and README for AI context"
+                @click="copyForAI"
               >
-                show more
+                <span class="i-carbon-machine-learning w-4 h-4" aria-hidden="true" />
+                <span aria-live="polite">{{ copiedForAI ? 'copied!' : 'copy for ai' }}</span>
               </button>
-            </div>
+            </ClientOnly>
           </div>
         </div>
-
         <div
           v-if="deprecationNotice"
           class="border border-red-400 bg-red-400/10 rounded-lg px-3 py-2 text-base text-red-400"
@@ -809,8 +885,8 @@ defineOgImageComponent('Package', {
               <!-- Main package install -->
               <div class="flex items-center gap-2">
                 <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                <code class="font-mono text-sm"
-                  ><ClientOnly
+                <code class="font-mono text-sm">
+                  <ClientOnly
                     ><span
                       v-for="(part, i) in installCommandParts"
                       :key="i"
@@ -820,8 +896,8 @@ defineOgImageComponent('Package', {
                       ><span class="text-fg">npm</span
                       ><span class="text-fg-muted"> install {{ pkg.name }}</span></template
                     ></ClientOnly
-                  ></code
-                >
+                  >
+                </code>
               </div>
               <!-- @types package install (when enabled) -->
               <div v-if="showTypesInInstall" class="flex items-center gap-2">
@@ -862,9 +938,22 @@ defineOgImageComponent('Package', {
         <!-- Main content (README) -->
         <div class="lg:col-span-2 order-2 lg:order-1 min-w-0">
           <section aria-labelledby="readme-heading">
-            <h2 id="readme-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-              Readme
-            </h2>
+            <div class="flex items-center justify-between mb-4">
+              <h2 id="readme-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
+                Readme
+              </h2>
+              <ClientOnly>
+                <button
+                  type="button"
+                  class="btn-ghost gap-1.5 text-xs"
+                  title="Copy package info and README for AI context"
+                  @click="copyForAI"
+                >
+                  <span class="i-carbon-machine-learning w-3.5 h-3.5" aria-hidden="true" />
+                  <span aria-live="polite">{{ copiedForAI ? 'copied!' : 'copy for ai' }}</span>
+                </button>
+              </ClientOnly>
+            </div>
             <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
             <div
               v-if="readmeData?.html"
