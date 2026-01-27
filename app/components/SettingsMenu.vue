@@ -39,7 +39,8 @@ onKeyStroke(',', e => {
     return
   }
   e.preventDefault()
-  toggle()
+  triggerRef.value?.focus()
+  triggerRef.value?.click()
 })
 </script>
 
