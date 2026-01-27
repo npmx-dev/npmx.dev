@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import { compareVersions } from '~/utils/versions'
+import { compare } from 'semver'
 
 const props = defineProps<{
   packageName: string
@@ -24,7 +24,7 @@ const MAX_VERSIONS = 10
 /** Safe version comparison that falls back to string comparison on error */
 function safeCompareVersions(a: string, b: string): number {
   try {
-    return compareVersions(a, b)
+    return compare(a, b)
   } catch {
     return a.localeCompare(b)
   }

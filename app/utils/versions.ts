@@ -5,14 +5,6 @@ import { compare, valid } from 'semver'
  */
 
 /**
- * Compare two version strings for sorting
- * @param a - First version string
- * @param b - Second version string
- * @returns -1 if a < b, 0 if a == b, 1 if a > b
- */
-export const compareVersions = compare
-
-/**
  * Check if a version string is an exact semver version.
  * Returns true for "1.2.3", "1.0.0-beta.1", etc.
  * Returns false for ranges like "^1.2.3", ">=1.0.0", tags like "latest", etc.
