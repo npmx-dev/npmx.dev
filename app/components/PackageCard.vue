@@ -84,6 +84,10 @@ const emit = defineEmits<{
                 />
               </dd>
             </div>
+            <div v-if="result.package.license" class="flex items-center gap-1.5">
+              <dt class="sr-only">License</dt>
+              <dd>{{ result.package.license }}</dd>
+            </div>
           </dl>
         </div>
         <!-- Mobile: downloads on separate row -->

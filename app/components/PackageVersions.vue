@@ -120,9 +120,8 @@ const tagVersions = ref<Map<string, VersionDisplay[]>>(new Map())
 const loadingTags = ref<Set<string>>(new Set())
 
 const otherVersionsExpanded = shallowRef(false)
-const otherMajorGroups = shallowRef<
-  Array<{ major: number; versions: VersionDisplay[]; expanded: boolean }>
->([])
+const expandedMajorGroups = ref<Set<number>>(new Set())
+const otherMajorGroups = shallowRef<Array<{ major: number; versions: VersionDisplay[] }>>([])
 const otherVersionsLoading = shallowRef(false)
 
 // Cached full version list (local to component instance)
@@ -222,8 +221,8 @@ function processLoadedVersions(allVersions: PackageVersionInfo[]) {
   otherMajorGroups.value = sortedMajors.map(major => ({
     major,
     versions: byMajor.get(major)!,
-    expanded: false,
   }))
+  expandedMajorGroups.value.clear()
 }
 
 // Expand a tag row
@@ -277,10 +276,11 @@ async function expandOtherVersions() {
 }
 
 // Toggle a major group
-function toggleMajorGroup(index: number) {
-  const group = otherMajorGroups.value[index]
-  if (group) {
-    group.expanded = !group.expanded
+function toggleMajorGroup(major: number) {
+  if (expandedMajorGroups.value.has(major)) {
+    expandedMajorGroups.value.delete(major)
+  } else {
+    expandedMajorGroups.value.add(major)
   }
 }
 
@@ -497,20 +497,24 @@ function getTagVersions(tag: string): VersionDisplay[] {
 
           <!-- Major version groups (untagged versions) -->
           <template v-if="otherMajorGroups.length > 0">
-            <div v-for="(group, groupIndex) in otherMajorGroups" :key="group.major">
+            <div v-for="group in otherMajorGroups" :key="group.major">
               <!-- Major group header -->
               <button
                 v-if="group.versions.length > 1"
                 type="button"
                 class="w-full text-left py-1"
-                :aria-expanded="group.expanded"
+                :aria-expanded="expandedMajorGroups.has(group.major)"
                 :title="group.versions[0]?.version"
-                @click="toggleMajorGroup(groupIndex)"
+                @click="toggleMajorGroup(group.major)"
               >
                 <div class="flex items-center gap-2">
                   <span
                     class="w-3 h-3 transition-transform duration-200 text-fg-subtle"
-                    :class="group.expanded ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'"
+                    :class="
+                      expandedMajorGroups.has(group.major)
+                        ? 'i-carbon-chevron-down'
+                        : 'i-carbon-chevron-right'
+                    "
                   />
                   <span
                     class="font-mono text-xs truncate"
@@ -567,7 +571,10 @@ function getTagVersions(tag: string): VersionDisplay[] {
               </div>
 
               <!-- Major group versions -->
-              <div v-if="group.expanded && group.versions.length > 1" class="ml-5 space-y-0.5">
+              <div
+                v-if="expandedMajorGroups.has(group.major) && group.versions.length > 1"
+                class="ml-5 space-y-0.5"
+              >
                 <div v-for="v in group.versions.slice(1)" :key="v.version" class="py-1">
                   <div class="flex items-center justify-between gap-2">
                     <NuxtLink

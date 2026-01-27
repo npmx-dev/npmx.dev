@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "dev": "node --experimental-strip-types src/cli.ts",
+    "dev": "NPMX_CLI_DEV=true node --experimental-strip-types src/cli.ts",
     "test:types": "tsc --noEmit"
   },
   "dependencies": {
