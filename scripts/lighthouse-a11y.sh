@@ -8,11 +8,11 @@
 set -e
 
 echo "🌙 Running Lighthouse accessibility audit (dark mode)..."
-LIGHTHOUSE_COLOR_MODE=dark pnpx @lhci/cli autorun
+LIGHTHOUSE_COLOR_MODE=dark pnpx @lhci/cli autorun --upload.githubStatusContextSuffix="/dark"
 
 echo ""
 echo "☀️  Running Lighthouse accessibility audit (light mode)..."
-LIGHTHOUSE_COLOR_MODE=light pnpx @lhci/cli autorun
+LIGHTHOUSE_COLOR_MODE=light pnpx @lhci/cli autorun --upload.githubStatusContextSuffix="/light"
 
 echo ""
 echo "✅ Accessibility audits completed for both color modes"
