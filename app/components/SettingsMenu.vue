@@ -116,7 +116,9 @@ onKeyStroke(',', e => {
             :aria-checked="settings.includeTypesInInstall"
             @click="settings.includeTypesInInstall = !settings.includeTypesInInstall"
           >
-            <span class="text-sm text-fg select-none">{{ $t('settings.include_types') }}</span>
+            <span class="text-sm text-fg select-none text-left">{{
+              $t('settings.include_types')
+            }}</span>
             <span
               class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border-2 border-transparent transition-[background-color] duration-200 ease-in-out motion-reduce:transition-none"
               :class="settings.includeTypesInInstall ? 'bg-fg' : 'bg-bg-subtle'"
