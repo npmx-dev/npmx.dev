@@ -77,8 +77,17 @@ export default defineNitroPlugin(nitroApp => {
     const method = options.method || 'GET'
     const cacheKey = generateFetchCacheKey(url, method, options.body)
 
-    // Try to get cached response
-    const cached = await storage.getItem<CachedFetchEntry<T>>(cacheKey)
+    // Try to get cached response (with error handling for storage failures)
+    let cached: CachedFetchEntry<T> | null = null
+    try {
+      cached = await storage.getItem<CachedFetchEntry<T>>(cacheKey)
+    } catch (error) {
+      // Storage read failed (e.g., ENOENT on misconfigured storage)
+      // Log and continue without cache
+      if (import.meta.dev) {
+        console.warn(`[fetch-cache] Storage read failed for ${url}:`, error)
+      }
+    }
 
     if (cached) {
       if (!isCacheEntryStale(cached)) {
@@ -126,14 +135,23 @@ export default defineNitroPlugin(nitroApp => {
     }
 
     const data = (await $fetch(url, options as Parameters<typeof $fetch>[1])) as T
-    const entry: CachedFetchEntry<T> = {
-      data,
-      status: 200,
-      headers: {},
-      cachedAt: Date.now(),
-      ttl,
+
+    // Try to cache the response (non-blocking, with error handling)
+    try {
+      const entry: CachedFetchEntry<T> = {
+        data,
+        status: 200,
+        headers: {},
+        cachedAt: Date.now(),
+        ttl,
+      }
+      await storage.setItem(cacheKey, entry)
+    } catch (error) {
+      // Storage write failed - log but don't fail the request
+      if (import.meta.dev) {
+        console.warn(`[fetch-cache] Storage write failed for ${url}:`, error)
+      }
     }
-    await storage.setItem(cacheKey, entry)
 
     return data
   }

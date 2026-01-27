@@ -18,14 +18,14 @@ export default defineNuxtModule({
 
       // Main cache storage (for defineCachedFunction, etc.)
       nitroConfig.storage.cache = {
-        driver: 'vercel-runtime-cache',
         ...nitroConfig.storage.cache,
+        driver: 'vercel-runtime-cache',
       }
 
       // Fetch cache storage (for SWR fetch caching)
       nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
-        driver: 'vercel-runtime-cache',
         ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
+        driver: 'vercel-runtime-cache',
       }
     })
   },
