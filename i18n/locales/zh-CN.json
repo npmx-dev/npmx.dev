@@ -21,7 +21,7 @@
     "searching": "搜索中...",
     "found_packages": "找到 {count} 个包",
     "updating": "（更新中...）",
-    "no_results": "没有找到包：\"{query}\"",
+    "no_results": "未找到与 \"{query}\" 匹配的包",
     "not_taken": "{name} 尚未被占用",
     "claim_prompt": "在 npm 上获取",
     "claim_button": "获取 \"{name}\"",
@@ -29,7 +29,7 @@
     "start_typing": "输入以搜索软件包"
   },
   "nav": {
-    "popular_packages": "流行的包",
+    "popular_packages": "热门软件包",
     "search": "搜索",
     "settings": "设置"
   },
@@ -70,8 +70,8 @@
     "verified_provenance": "已验证的来源",
     "view_permalink": "查看这个版本的链接",
     "deprecation": {
-      "package": "这个包已经被废弃。",
-      "version": "这个版本已经被废弃。",
+      "package": "这个包已经被弃用。",
+      "version": "这个版本已经被弃用。",
       "no_reason": "没有提供原因"
     },
     "stats": {
@@ -87,7 +87,7 @@
     "links": {
       "repo": "仓库",
       "homepage": "主页",
-      "issues": "缺陷",
+      "issues": "议题",
       "forks": "复刻",
       "jsr": "jsr",
       "code": "代码"
@@ -108,7 +108,7 @@
     "card": {
       "publisher": "发布者",
       "updated": "更新",
-      "weekly_downloads": "每周下载",
+      "weekly_downloads": "每周下载量",
       "keywords": "关键词"
     },
     "versions": {
@@ -145,15 +145,15 @@
       "list_label": "包维护者",
       "you": "（你）",
       "via": "来自 {teams}",
-      "remove_owner": "移除 {name} 为所有者",
-      "username_to_add": "要添加为所有者的用户名",
+      "remove_owner": "移除 {name} 为拥有者",
+      "username_to_add": "要添加为拥有者的用户名",
       "username_placeholder": "用户名...",
       "add_button": "添加",
-      "cancel_add": "取消添加所有者",
-      "add_owner": "+ 添加所有者"
+      "cancel_add": "取消添加拥有者",
+      "add_owner": "+ 添加拥有者"
     },
     "downloads": {
-      "title": "每周下载",
+      "title": "每周下载量",
       "date_range": "{start} 到 {end}",
       "analyze": "分析下载量",
       "modal_title": "下载量",
@@ -166,7 +166,7 @@
       "end_date": "结束",
       "no_data": "没有下载数据",
       "loading": "加载中...",
-      "y_axis_label": "{granularity} 下载"
+      "y_axis_label": "{granularity} 下载量"
     },
     "install_scripts": {
       "title": "安装脚本",
@@ -205,7 +205,7 @@
       "title": "团队权限",
       "refresh": "刷新团队权限",
       "list_label": "团队权限列表",
-      "owner": "所有者",
+      "owner": "拥有者",
       "rw": "读写（rw）",
       "ro": "只读（ro）",
       "revoke_access": "撤销 {name} 的访问权限",
@@ -220,7 +220,7 @@
       },
       "grant_button": "授权",
       "cancel_grant": "取消授权",
-      "grant_access": "+ 授权团队访问"
+      "grant_access": "+ 授予团队权限"
     },
     "list": {
       "filter_label": "筛选包",
@@ -337,7 +337,7 @@
       "title": "成员",
       "refresh": "刷新成员",
       "filter_label": "筛选成员",
-      "filter_placeholder": "筛选成员中...",
+      "filter_placeholder": "筛选成员...",
       "filter_by_role": "按角色筛选",
       "filter_by_team": "按团队筛选",
       "all_teams": "所有团队",
@@ -356,7 +356,7 @@
         "all": "所有",
         "developer": "开发者",
         "admin": "管理员",
-        "owner": "所有者"
+        "owner": "拥有者"
       },
       "team_label": "团队",
       "no_team": "没有团队",
@@ -403,7 +403,7 @@
       "view_your_orgs": "查看你的组织",
       "loading": "加载组织中...",
       "empty": "未找到组织。",
-      "empty_hint": "已从你的范围包中检测到组织。",
+      "empty_hint": "已根据您限定范围的包名中检测到组织。",
       "count": "{count} 个组织",
       "packages_count": "{count} 个包"
     }
