@@ -13,6 +13,41 @@ const createdIso = computed(() => packument.value?.time?.created ?? null)
 
 const { fetchPackageDownloadEvolution } = useCharts()
 
+const { accentColors, selectedAccentColor } = useAccentColor()
+
+const colorMode = useColorMode()
+
+const resolvedMode = ref<'light' | 'dark'>('light')
+
+onMounted(() => {
+  resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
+})
+
+watch(
+  () => colorMode.value,
+  value => {
+    resolvedMode.value = value === 'dark' ? 'dark' : 'light'
+  },
+  { flush: 'sync' },
+)
+
+const isDarkMode = computed(() => resolvedMode.value === 'dark')
+
+const accentColorValueById = computed<Record<string, string>>(() => {
+  const map: Record<string, string> = {}
+  for (const item of accentColors) {
+    map[item.id] = item.value
+  }
+  return map
+})
+
+const accent = computed(() => {
+  const id = selectedAccentColor.value
+  return id ? (oklchToHex(accentColorValueById.value[id]!) ?? '#8A8A8A') : '#8A8A8A'
+})
+
+const pulseColor = computed(() => (selectedAccentColor.value ? accent.value : '#8A8A8A'))
+
 const weeklyDownloads = ref<WeeklyDownloadPoint[]>([])
 
 async function loadWeeklyDownloads() {
@@ -51,52 +86,55 @@ const dataset = computed(() =>
 
 const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
-const config = computed(() => ({
-  theme: 'dark',
-  style: {
-    backgroundColor: 'transparent',
-    animation: { show: false },
-    area: {
-      color: 'oklch(0.5243 0 0)', // css variable doesn't seem to work here
-      useGradient: false,
-      opacity: 10,
-    },
-    dataLabel: {
-      offsetX: -10,
-      fontSize: 28,
-      bold: false,
-      color: 'var(--fg)',
-    },
-    line: {
-      color: 'var(--fg-subtle)',
-      pulse: {
-        show: true,
-        loop: true, // runs only once if false
-        radius: 2,
-        color: 'var(--fg-muted)',
-        easing: 'ease-in-out',
-        trail: {
+// oklh or css variables are not supported by vue-data-ui (for now)
+const config = computed(() => {
+  return {
+    theme: 'dark',
+    style: {
+      backgroundColor: 'transparent',
+      animation: { show: false },
+      area: {
+        color: '#6A6A6A',
+        useGradient: false,
+        opacity: 10,
+      },
+      dataLabel: {
+        offsetX: -10,
+        fontSize: 28,
+        bold: false,
+        color: isDarkMode.value ? '#8a8a8a' : '#696969',
+      },
+      line: {
+        color: '#696969',
+        pulse: {
           show: true,
-          length: 6,
+          loop: true, // runs only once if false
+          radius: 2,
+          color: pulseColor.value,
+          easing: 'ease-in-out',
+          trail: {
+            show: true,
+            length: 6,
+          },
         },
       },
+      plot: {
+        radius: 6,
+        stroke: isDarkMode.value ? '#FAFAFA' : '#0A0A0A',
+      },
+      title: {
+        text: lastDatapoint.value,
+        fontSize: 12,
+        color: '#8a8a8a',
+        bold: false,
+      },
+      verticalIndicator: {
+        strokeDasharray: 0,
+        color: isDarkMode.value ? '#FAFAFA' : '#525252',
+      },
     },
-    plot: {
-      radius: 6,
-      stroke: 'var(--fg)',
-    },
-    title: {
-      text: lastDatapoint.value,
-      fontSize: 12,
-      color: 'var(--fg)',
-      bold: false,
-    },
-    verticalIndicator: {
-      strokeDasharray: 0,
-      color: 'var(--fg-muted)',
-    },
-  },
-}))
+  }
+})
 </script>
 
 <template>
