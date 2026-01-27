@@ -11,11 +11,11 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "lint": "vite lint && vite fmt --check",
     "lint:fix": "vite lint --fix && vite fmt",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
-    "docs:dev": "pnpm run --filter npmx-docs dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare && simple-git-hooks",
     "test": "vite test",
