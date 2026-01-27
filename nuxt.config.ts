@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@vite-pwa/nuxt',
     '@vueuse/nuxt',
+    '@nuxtjs/i18n',
   ],
 
   devtools: { enabled: true },
@@ -130,5 +131,11 @@ export default defineNuxtConfig({
         'validate-npm-package-name',
       ],
     },
+  },
+
+  i18n: {
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    locales: [{ code: 'en', name: 'English', file: 'en.json' }],
   },
 })

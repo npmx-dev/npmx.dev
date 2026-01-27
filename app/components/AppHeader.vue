@@ -32,7 +32,7 @@ withDefaults(
             class="link-subtle font-mono text-sm inline-flex items-center gap-2"
             aria-keyshortcuts="/"
           >
-            search
+            {{ $t('nav.search') }}
             <kbd
               class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
               aria-hidden="true"

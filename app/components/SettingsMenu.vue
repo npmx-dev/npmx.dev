@@ -46,12 +46,12 @@ onKeyStroke(',', e => {
       class="link-subtle font-mono text-sm inline-flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
       :aria-expanded="isOpen"
       aria-haspopup="menu"
-      aria-label="Settings"
+      :aria-label="$t('nav.settings')"
       aria-keyshortcuts=","
       @click="toggle"
     >
       <span class="i-carbon-settings w-4 h-4 sm:hidden" aria-hidden="true" />
-      <span class="hidden sm:inline">settings</span>
+      <span class="hidden sm:inline">{{ $t('nav.settings') }}</span>
       <kbd
         class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
         aria-hidden="true"
@@ -76,7 +76,7 @@ onKeyStroke(',', e => {
         class="absolute right-0 top-full mt-2 w-64 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 overflow-hidden"
       >
         <div class="px-3 py-2 border-b border-border">
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider">Settings</h2>
+          <h2 class="text-xs text-fg-subtle uppercase tracking-wider">{{ $t('nav.settings') }}</h2>
         </div>
 
         <div class="p-2 space-y-1">
@@ -88,7 +88,7 @@ onKeyStroke(',', e => {
             :aria-checked="settings.relativeDates"
             @click="settings.relativeDates = !settings.relativeDates"
           >
-            <span class="text-sm text-fg select-none">Relative dates</span>
+            <span class="text-sm text-fg select-none">{{ $t('settings.relative_dates') }}</span>
             <span
               class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border-2 border-transparent transition-[background-color] duration-200 ease-in-out motion-reduce:transition-none"
               :class="settings.relativeDates ? 'bg-fg' : 'bg-bg-subtle'"
@@ -111,7 +111,7 @@ onKeyStroke(',', e => {
             :aria-checked="settings.includeTypesInInstall"
             @click="settings.includeTypesInInstall = !settings.includeTypesInInstall"
           >
-            <span class="text-sm text-fg select-none">Include @types in install</span>
+            <span class="text-sm text-fg select-none">{{ $t('settings.include_types') }}</span>
             <span
               class="relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border-2 border-transparent transition-[background-color] duration-200 ease-in-out motion-reduce:transition-none"
               :class="settings.includeTypesInInstall ? 'bg-fg' : 'bg-bg-subtle'"
