@@ -214,11 +214,9 @@ describe('useInstallCommand', () => {
     })
 
     it('should only include main command when @types disabled via settings', () => {
-      // Pre-set the settings to disable types
-      localStorage.setItem(
-        'npmx-settings',
-        JSON.stringify({ relativeDates: false, includeTypesInInstall: false }),
-      )
+      // Get settings and disable includeTypesInInstall directly
+      const { settings } = useSettings()
+      settings.value.includeTypesInInstall = false
 
       const { fullInstallCommand, showTypesInInstall } = useInstallCommand(
         'express',

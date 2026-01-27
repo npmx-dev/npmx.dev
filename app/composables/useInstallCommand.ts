@@ -15,7 +15,7 @@ export function useInstallCommand(
 
   // Check if we should show @types in install command
   const showTypesInInstall = computed(() => {
-    return settings.value.includeTypesInInstall && toValue(typesPackageName)
+    return settings.value.includeTypesInInstall && !!toValue(typesPackageName)
   })
 
   const installCommandParts = computed(() => {
