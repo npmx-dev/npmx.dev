@@ -517,6 +517,7 @@ const totalSelectableCount = computed(() => suggestionCount.value + resultCount.
 
 /** Unified selected index: negative for suggestions, 0+ for packages */
 const unifiedSelectedIndex = ref(0)
+const userHasNavigated = ref(false)
 
 /** Convert unified index to suggestion index (0-based) or null */
 function toSuggestionIndex(unified: number): number | null {
@@ -552,6 +553,8 @@ watch(unifiedSelectedIndex, unified => {
 watch(
   [visibleResults, validatedSuggestions, exactMatchType],
   () => {
+    if (userHasNavigated.value) return
+
     if (exactMatchType.value === 'package') {
       // Find the exact match package index
       const q = query.value.trim().toLowerCase()
@@ -584,8 +587,9 @@ watch(
   { immediate: true },
 )
 
-// Reset selection when query changes
+// Reset selection and navigation flag when query changes
 watch(query, () => {
+  userHasNavigated.value = false
   // Will be re-initialized by the watch above when results load
   unifiedSelectedIndex.value = 0
 })
@@ -622,6 +626,7 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
   if (e.key === 'ArrowDown') {
     e.preventDefault()
+    userHasNavigated.value = true
     unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value + 1)
     if (isFromInput) {
       scrollToSelectedItem()
@@ -633,6 +638,7 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
   if (e.key === 'ArrowUp') {
     e.preventDefault()
+    userHasNavigated.value = true
     unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value - 1)
     if (isFromInput) {
       scrollToSelectedItem()
