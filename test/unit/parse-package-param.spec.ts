@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parsePackageParam } from '../../shared/utils/npm'
+import { parsePackageParam } from '../../shared/utils/parse-package-param'
 
 describe('parsePackageParam', () => {
   describe('unscoped packages', () => {

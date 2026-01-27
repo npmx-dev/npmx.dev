@@ -97,6 +97,14 @@ export default defineNuxtConfig({
         '@shikijs/engine-javascript',
         '@shikijs/core',
       ],
+      external: ['@deno/doc'],
+    },
+    rollupConfig: {
+      output: {
+        paths: {
+          '@deno/doc': '@jsr/deno__doc',
+        },
+      },
     },
   },
 
