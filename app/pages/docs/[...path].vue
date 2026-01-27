@@ -318,8 +318,29 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
   @apply text-sm text-fg-muted leading-relaxed mb-5;
 }
 
+/* Inline code in descriptions */
 .docs-content .docs-description code {
   @apply bg-bg-muted px-1.5 py-0.5 rounded text-xs font-mono;
+}
+
+/*
+ * Fenced code blocks in descriptions use a subtle left-border style.
+ *
+ * Design rationale: We use two visual styles for code examples:
+ * 1. Boxed style (bg + border + padding) - for formal @example JSDoc tags
+ *    and function signatures. These are intentional, structured sections.
+ * 2. Left-border style (blockquote-like) - for inline code in descriptions.
+ *    These are illustrative/casual and shouldn't compete with the signature.
+ */
+.docs-content .docs-description .shiki {
+  @apply text-sm pl-4 py-3 my-4 border-l-2 border-border;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.docs-content .docs-description .shiki code {
+  @apply text-sm bg-transparent p-0;
+  white-space: pre-wrap;
 }
 
 /* Deprecation warning */
@@ -370,7 +391,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
   @apply text-sm text-fg-muted m-0;
 }
 
-/* Example code blocks - now uses Shiki */
+/* Example code blocks from @example JSDoc tags - boxed style (see design rationale above) */
 .docs-content .docs-examples .shiki {
   @apply text-sm bg-bg-muted border border-border/50 p-4 rounded-lg overflow-x-auto mb-3;
 }

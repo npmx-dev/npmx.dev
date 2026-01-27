@@ -6,7 +6,19 @@
  * @module server/utils/docs/text
  */
 
+import { highlightCodeBlock } from '../shiki'
 import type { SymbolLookup } from './types'
+
+/**
+ * Strip ANSI escape codes from text.
+ * Deno doc output may contain terminal color codes that need to be removed.
+ */
+const ESC = String.fromCharCode(27)
+const ANSI_PATTERN = new RegExp(`${ESC}\\[[0-9;]*m`, 'g')
+
+export function stripAnsi(text: string): string {
+  return text.replace(ANSI_PATTERN, '')
+}
 
 /**
  * Escape HTML special characters.
@@ -82,17 +94,38 @@ export function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): strin
 /**
  * Render simple markdown-like formatting.
  * Uses <br> for line breaks to avoid nesting issues with inline elements.
+ * Fenced code blocks (```) are syntax-highlighted with Shiki.
  *
  * @internal Exported for testing
  */
-export function renderMarkdown(text: string, symbolLookup: SymbolLookup): string {
-  let result = parseJsDocLinks(text, symbolLookup)
+export async function renderMarkdown(text: string, symbolLookup: SymbolLookup): Promise<string> {
+  // Extract fenced code blocks FIRST (before any HTML escaping)
+  // Pattern handles:
+  // - Optional whitespace before/after language identifier
+  // - \r\n, \n, or \r line endings
+  const codeBlockData: Array<{ lang: string, code: string }> = []
+  let result = text.replace(/```[ \t]*(\w*)[ \t]*(?:\r\n|\r|\n)([\s\S]*?)(?:\r\n|\r|\n)?```/g, (_, lang, code) => {
+    const index = codeBlockData.length
+    codeBlockData.push({ lang: lang || 'text', code: code.trim() })
+    return `__CODE_BLOCK_${index}__`
+  })
 
+  // Now process the rest (JSDoc links, HTML escaping, etc.)
+  result = parseJsDocLinks(result, symbolLookup)
+
+  // Handle inline code (single backticks) - won't interfere with fenced blocks
   result = result
     .replace(/`([^`]+)`/g, '<code class="docs-inline-code">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/\n\n+/g, '<br><br>')
     .replace(/\n/g, '<br>')
+
+  // Highlight and restore code blocks
+  for (let i = 0; i < codeBlockData.length; i++) {
+    const { lang, code } = codeBlockData[i]!
+    const highlighted = await highlightCodeBlock(code, lang)
+    result = result.replace(`__CODE_BLOCK_${i}__`, highlighted)
+  }
 
   return result
 }

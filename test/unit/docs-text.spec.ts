@@ -1,6 +1,41 @@
 import { describe, expect, it } from 'vitest'
-import { escapeHtml, parseJsDocLinks, renderMarkdown } from '../../server/utils/docs/text'
+import { escapeHtml, parseJsDocLinks, renderMarkdown, stripAnsi } from '../../server/utils/docs/text'
 import type { SymbolLookup } from '../../server/utils/docs/types'
+
+describe('stripAnsi', () => {
+  it('should strip basic color codes', () => {
+    const ESC = String.fromCharCode(27)
+    const input = `${ESC}[0m${ESC}[38;5;12mhello${ESC}[0m`
+    expect(stripAnsi(input)).toBe('hello')
+  })
+
+  it('should strip multiple ANSI codes', () => {
+    const ESC = String.fromCharCode(27)
+    const input = `${ESC}[31mred${ESC}[0m and ${ESC}[32mgreen${ESC}[0m`
+    expect(stripAnsi(input)).toBe('red and green')
+  })
+
+  it('should handle text without ANSI codes', () => {
+    expect(stripAnsi('plain text')).toBe('plain text')
+  })
+
+  it('should handle empty string', () => {
+    expect(stripAnsi('')).toBe('')
+  })
+
+  it('should strip 256-color codes', () => {
+    const ESC = String.fromCharCode(27)
+    const input = `${ESC}[38;5;196mtext${ESC}[0m`
+    expect(stripAnsi(input)).toBe('text')
+  })
+
+  it('should handle type predicates from deno_doc', () => {
+    // Real example: "object is ReactElement<P>" with ANSI codes
+    const ESC = String.fromCharCode(27)
+    const input = `object is ReactElement${ESC}[0m${ESC}[38;5;12m<${ESC}[0mP${ESC}[38;5;12m>${ESC}[0m`
+    expect(stripAnsi(input)).toBe('object is ReactElement<P>')
+  })
+})
 
 describe('escapeHtml', () => {
   it('should escape < and >', () => {
@@ -89,55 +124,127 @@ describe('parseJsDocLinks', () => {
 describe('renderMarkdown', () => {
   const emptyLookup: SymbolLookup = new Map()
 
-  it('should convert inline code', () => {
-    const result = renderMarkdown('Use `foo()` here', emptyLookup)
+  it('should convert inline code', async () => {
+    const result = await renderMarkdown('Use `foo()` here', emptyLookup)
     expect(result).toContain('<code class="docs-inline-code">foo()</code>')
   })
 
-  it('should escape HTML inside inline code', () => {
-    const result = renderMarkdown('Use `Array<T>` here', emptyLookup)
+  it('should escape HTML inside inline code', async () => {
+    const result = await renderMarkdown('Use `Array<T>` here', emptyLookup)
     expect(result).toContain('&lt;T&gt;')
     expect(result).not.toContain('<T>')
   })
 
-  it('should convert bold text', () => {
-    const result = renderMarkdown('This is **important**', emptyLookup)
+  it('should convert bold text', async () => {
+    const result = await renderMarkdown('This is **important**', emptyLookup)
     expect(result).toContain('<strong>important</strong>')
   })
 
-  it('should convert single newlines to <br>', () => {
-    const result = renderMarkdown('line 1\nline 2', emptyLookup)
+  it('should convert single newlines to <br>', async () => {
+    const result = await renderMarkdown('line 1\nline 2', emptyLookup)
     expect(result).toBe('line 1<br>line 2')
   })
 
-  it('should convert double newlines to <br><br>', () => {
-    const result = renderMarkdown('paragraph 1\n\nparagraph 2', emptyLookup)
+  it('should convert double newlines to <br><br>', async () => {
+    const result = await renderMarkdown('paragraph 1\n\nparagraph 2', emptyLookup)
     expect(result).toBe('paragraph 1<br><br>paragraph 2')
   })
 
-  it('should handle multiple formatting in same text', () => {
-    const result = renderMarkdown('Use `foo()` for **important** tasks', emptyLookup)
+  it('should handle multiple formatting in same text', async () => {
+    const result = await renderMarkdown('Use `foo()` for **important** tasks', emptyLookup)
     expect(result).toContain('<code class="docs-inline-code">foo()</code>')
     expect(result).toContain('<strong>important</strong>')
   })
 
-  it('should process {@link} tags', () => {
+  it('should process {@link} tags', async () => {
     const lookup: SymbolLookup = new Map([['MyFunc', 'function-MyFunc']])
-    const result = renderMarkdown('See {@link MyFunc} for details', lookup)
+    const result = await renderMarkdown('See {@link MyFunc} for details', lookup)
     expect(result).toContain('href="#function-MyFunc"')
   })
 
-  it('should escape HTML in regular text', () => {
-    const result = renderMarkdown('Returns <T> or null', emptyLookup)
+  it('should escape HTML in regular text', async () => {
+    const result = await renderMarkdown('Returns <T> or null', emptyLookup)
     expect(result).toContain('&lt;T&gt;')
   })
 
-  it('should handle empty string', () => {
-    expect(renderMarkdown('', emptyLookup)).toBe('')
+  it('should handle empty string', async () => {
+    expect(await renderMarkdown('', emptyLookup)).toBe('')
   })
 
-  it('should handle text with only whitespace', () => {
-    const result = renderMarkdown('  \n  ', emptyLookup)
+  it('should handle text with only whitespace', async () => {
+    const result = await renderMarkdown('  \n  ', emptyLookup)
     expect(result).toBe('  <br>  ')
+  })
+
+  it('should syntax highlight fenced code blocks with Shiki', async () => {
+    const input = '```ts\nconst x = 1;\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    // Shiki outputs use class="shiki" and have syntax highlighting spans
+    expect(result).toContain('shiki')
+    expect(result).toContain('const')
+    expect(result).not.toContain('```')
+  })
+
+  it('should handle fenced code blocks with CRLF line endings', async () => {
+    const input = '```ts\r\nconst x = 1;\r\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    expect(result).toContain('shiki')
+    expect(result).toContain('const')
+    expect(result).not.toContain('```')
+  })
+
+  it('should handle fenced code blocks with CR line endings', async () => {
+    const input = '```ts\rconst x = 1;\r```'
+    const result = await renderMarkdown(input, emptyLookup)
+    expect(result).toContain('shiki')
+    expect(result).toContain('const')
+    expect(result).not.toContain('```')
+  })
+
+  it('should handle fenced code blocks without language', async () => {
+    const input = '```\nconst x = 1;\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    // Falls back to plain code block for unknown language
+    expect(result).toContain('<pre>')
+    expect(result).toContain('const x = 1;')
+  })
+
+  it('should handle fenced code blocks with trailing whitespace after language', async () => {
+    const input = '```ts  \nconst x = 1;\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    expect(result).toContain('shiki')
+    expect(result).toContain('const')
+  })
+
+  it('should handle fenced code blocks with space before language', async () => {
+    const input = '``` js\nconst x = 1;\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    expect(result).toContain('shiki')
+    expect(result).toContain('const')
+    expect(result).not.toContain('```')
+  })
+
+  it('should escape HTML inside fenced code blocks', async () => {
+    const input = '```ts\nconst arr: Array<string> = [];\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    // Shiki escapes < as &#x3C; (hex entity)
+    expect(result).toContain('&#x3C;')
+    // The raw < character shouldn't appear outside of HTML tags
+    expect(result).not.toMatch(/<string>/)
+  })
+
+  it('should handle multiple fenced code blocks', async () => {
+    const input = '```ts\nconst a = 1\n```\n\nSome text\n\n```js\nconst b = 2\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    expect(result).toContain('Some text')
+    // Both code blocks should be highlighted
+    expect((result.match(/shiki/g) || []).length).toBe(2)
+  })
+
+  it('should not confuse inline code with fenced code blocks', async () => {
+    const input = 'Use `code` inline and:\n```ts\nblock code\n```'
+    const result = await renderMarkdown(input, emptyLookup)
+    expect(result).toContain('<code class="docs-inline-code">code</code>')
+    expect(result).toContain('shiki')
   })
 })

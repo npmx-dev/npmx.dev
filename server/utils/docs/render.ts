@@ -143,7 +143,7 @@ async function renderMergedSymbol(
   // Description
   if (symbol.jsDoc?.doc) {
     const description = symbol.jsDoc.doc.trim()
-    lines.push(`<div class="docs-description">${renderMarkdown(description, symbolLookup)}</div>`)
+    lines.push(`<div class="docs-description">${await renderMarkdown(description, symbolLookup)}</div>`)
   }
 
   // JSDoc tags

@@ -1,6 +1,7 @@
 import type { DocsResponse } from '#shared/types'
 import { fetchNpmPackage } from '#server/utils/npm'
-import { assertValidPackageName, parsePackageParam } from '#shared/utils/npm'
+import { assertValidPackageName } from '#shared/utils/npm'
+import { parsePackageParam } from '#shared/utils/parse-package-param'
 import { generateDocsWithDeno } from '#server/utils/docs'
 
 export default defineCachedEventHandler(

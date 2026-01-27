@@ -55,10 +55,12 @@ export async function highlightCodeBlock(code: string, language: string): Promis
 
   if (loadedLangs.includes(language as never)) {
     try {
-      const html = shiki.codeToHtml(code, {
+      let html = shiki.codeToHtml(code, {
         lang: language,
         theme: 'github-dark',
       })
+      // Remove inline style from <pre> tag so CSS can control appearance
+      html = html.replace(/<pre([^>]*)\s+style="[^"]*"/, '<pre$1')
       // Shiki doesn't encode > in text content (e.g., arrow functions =>)
       // We need to encode them for HTML validation
       return escapeRawGt(html)

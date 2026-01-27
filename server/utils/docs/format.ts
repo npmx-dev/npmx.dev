@@ -7,7 +7,7 @@
  */
 
 import type { DenoDocNode, FunctionParam, TsType } from '#shared/types/deno-doc'
-import { cleanSymbolName } from './text'
+import { cleanSymbolName, stripAnsi } from './text'
 
 /**
  * Generate a TypeScript signature string for a node.
@@ -72,7 +72,8 @@ export function formatParam(param: FunctionParam): string {
 export function formatType(type?: TsType): string {
   if (!type) return ''
 
-  if (type.repr) return type.repr
+  // Strip ANSI codes from repr (deno doc may include terminal colors since it's built for that)
+  if (type.repr) return stripAnsi(type.repr)
 
   if (type.kind === 'keyword' && type.keyword) {
     return type.keyword
@@ -91,5 +92,5 @@ export function formatType(type?: TsType): string {
     return type.union.map(t => formatType(t)).join(' | ')
   }
 
-  return type.repr || 'unknown'
+  return type.repr ? stripAnsi(type.repr) : 'unknown'
 }
