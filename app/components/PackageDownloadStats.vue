@@ -1,73 +1,46 @@
 <script setup lang="ts">
-import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
-
 const props = defineProps<{
   downloads?: Array<{
-    downloads: number | null
+    downloads: number
     weekStart: string
     weekEnd: string
   }>
 }>()
 
-const dataset = computed(() =>
-  props.downloads?.map(d => ({
-    value: d?.downloads ?? 0,
-    period: `${d.weekStart ?? '-'} to ${d.weekEnd ?? '-'}`,
-  })),
+const dataset = computed(
+  () =>
+    props.downloads?.map(({ downloads, weekStart, weekEnd }) => ({
+      value: downloads,
+      period: `${weekStart} to ${weekEnd}`,
+    })) ?? [],
 )
 
-const lastDatapoint = computed(() => {
-  return (dataset.value || []).at(-1)?.period ?? ''
-})
+const width = 200
+const height = 60
 
-const config = computed(() => ({
-  theme: 'dark', // enforced dark mode for now
-  style: {
-    backgroundColor: 'transparent',
-    animation: {
-      show: false,
+const range = computed(() =>
+  dataset.value.reduce(
+    (accumulator, { value }) => {
+      accumulator.max = Math.max(accumulator.max, value)
+      accumulator.min = Math.min(accumulator.min, value)
+      return accumulator
     },
-    area: {
-      color: '#6A6A6A',
-      useGradient: false,
-      opacity: 10,
-    },
-    dataLabel: {
-      offsetX: -10,
-      fontSize: 28,
-      bold: false,
-      color: '#FAFAFA',
-    },
-    line: {
-      color: '#6A6A6A',
-      pulse: {
-        show: true,
-        loop: true, // runs only once if false
-        radius: 2,
-        color: '#8A8A8A',
-        easing: 'ease-in-out',
-        trail: {
-          show: true,
-          length: 6,
-        },
-      },
-    },
-    plot: {
-      radius: 6,
-      stroke: '#FAFAFA',
-    },
-    title: {
-      text: lastDatapoint.value,
-      fontSize: 12,
-      color: '#8A8A8A',
-      bold: false,
-    },
-    verticalIndicator: {
-      strokeDasharray: 0,
-      color: '#FAFAFA',
-    },
-  },
-}))
+    { min: Infinity, max: 0 },
+  ),
+)
+
+const d = computed(() =>
+  [
+    'M-2,60',
+    ...dataset.value.map(
+      ({ value }, index, { length }) =>
+        `L${Math.round((width * index) / length)},${height - Math.round(((height - 2) * value) / (range.value.max - range.value.min))}`,
+    ),
+    'H242',
+    'V62',
+    'H0',
+  ].join(' '),
+)
 </script>
 
 <template>
@@ -78,34 +51,13 @@ const config = computed(() => ({
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider">Weekly Downloads</h2>
       </div>
       <div class="w-full overflow-hidden">
-        <ClientOnly>
-          <VueUiSparkline class="w-full max-w-xs" :dataset :config />
-          <template #fallback>
-            <!-- Skeleton matching sparkline layout: title row + chart with data label -->
-            <div class="min-h-[100px]">
-              <!-- Title row: date range (24px height) -->
-              <div class="h-6 flex items-center pl-3">
-                <span class="skeleton h-3 w-36" />
-              </div>
-              <!-- Chart area: data label left, sparkline right -->
-              <div class="aspect-[500/80] flex items-center">
-                <!-- Data label (covers ~42% width) -->
-                <div class="w-[42%] flex items-center pl-0.5">
-                  <span class="skeleton h-7 w-24" />
-                </div>
-                <!-- Sparkline area (~58% width) -->
-                <div class="flex-1 flex items-end gap-0.5 h-4/5 pr-3">
-                  <span
-                    v-for="i in 16"
-                    :key="i"
-                    class="skeleton flex-1 rounded-sm"
-                    :style="{ height: `${25 + ((i * 7) % 50)}%` }"
-                  />
-                </div>
-              </div>
-            </div>
-          </template>
-        </ClientOnly>
+        <div class="flex justify-between items-end">
+          <h3>{{ dataset.at(-1)?.value ?? '-' }}</h3>
+          <svg view-box="0 0 {width} 60" :width height="60">
+            <path :d stroke="#6A6A6A" fill="#121212" stroke-width="2" />
+          </svg>
+        </div>
+        <h4 class="text-fg-subtle">{{ dataset.at(-1)?.period ?? '-' }}</h4>
       </div>
     </section>
   </div>
