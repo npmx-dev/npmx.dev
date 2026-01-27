@@ -27,7 +27,7 @@ defineOgImageComponent('Default')
       <h1
         class="font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 animate-fade-in animate-fill-both"
       >
-        <span class="text-fg-subtle"><span style="letter-spacing: -0.2em">.</span>/</span>npmx
+        <span class="text-accent"><span class="-tracking-0.2em">.</span>/</span>npmx
       </h1>
 
       <p
@@ -56,7 +56,7 @@ defineOgImageComponent('Default')
 
             <div class="search-box relative flex items-center">
               <span
-                class="absolute left-4 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 group-focus-within:text-fg-muted z-1"
+                class="absolute left-4 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 group-focus-within:text-accent z-1"
               >
                 /
               </span>
@@ -69,7 +69,7 @@ defineOgImageComponent('Default')
                 :placeholder="$t('search.placeholder')"
                 autocomplete="off"
                 autofocus
-                class="w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-all duration-300 focus:(border-border-hover outline-none)"
+                class="w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-all duration-300 focus:(border-accent outline-none)"
                 @input="handleSearch"
                 @focus="isSearchFocused = true"
                 @blur="isSearchFocused = false"
@@ -103,7 +103,7 @@ defineOgImageComponent('Default')
             class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
           >
             <span
-              class="w-1 h-1 rounded-full bg-fg-subtle group-hover:bg-fg transition-colors duration-200"
+              class="w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
             />
             {{ pkg }}
           </NuxtLink>

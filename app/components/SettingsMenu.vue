@@ -163,6 +163,10 @@ onKeyStroke(',', e => {
             </a>
           </div>
         </div>
+
+        <div class="p-3 border-t border-border">
+          <AccentColorPicker />
+        </div>
       </div>
     </Transition>
   </div>

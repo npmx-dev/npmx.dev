@@ -46,6 +46,12 @@ export default defineNuxtConfig({
           href: '/opensearch.xml',
         },
       ],
+      script: [
+        {
+          innerHTML: `(function(){var c={rose:'#e9aeba',amber:'#fbbf24',emerald:'#34d399',sky:'#38bdf8',violet:'#a78bfa',coral:'#fb7185'};var s=localStorage.getItem('npmx-accent');document.documentElement.style.setProperty('--accent-color',s&&c[s]||'#666666')})()`,
+          type: 'text/javascript',
+        },
+      ],
     },
   },
 

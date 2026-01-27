@@ -356,7 +356,7 @@ defineOgImageComponent('Default', {
 
               <div class="search-box relative flex items-center">
                 <span
-                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-fg-muted"
+                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-accent"
                   aria-hidden="true"
                 >
                   /
@@ -372,7 +372,7 @@ defineOgImageComponent('Default', {
                   autocomplete="off"
                   autocorrect="off"
                   spellcheck="false"
-                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-border-hover focus-visible:outline-none appearance-none"
+                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-accent focus-visible:outline-none appearance-none"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
                   @keydown="handleResultsKeydown"
