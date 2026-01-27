@@ -11,10 +11,18 @@ overrides:
 
 packageExtensionsChecksum: sha256-MLpDvxkp40Q0pRGkcNzUeHJyjDQFfGfxm/iGkXRnXJg=
 
+patchedDependencies:
+  '@jsr/deno__doc@0.189.1':
+    hash: 24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832
+    path: patches/@jsr__deno__doc@0.189.1.patch
+
 importers:
 
   .:
     dependencies:
+      '@deno/doc':
+        specifier: jsr:^0.189.1
+        version: '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)'
       '@iconify-json/simple-icons':
         specifier: ^1.2.67
         version: 1.2.68
@@ -1530,6 +1538,36 @@ packages:
 
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
+
+  '@jsr/deno__cache-dir@0.25.0':
+    resolution: {integrity: sha512-J5/kPR8sc+dsRyE8rnLPhqay7B4XgBmkv7QaeIV41sGibszQjIb8b599LssN1YWBbqPLakPRMVobg5u6LheWfg==, tarball: https://npm.jsr.io/~/11/@jsr/deno__cache-dir/0.25.0.tgz}
+
+  '@jsr/deno__doc@0.189.1':
+    resolution: {integrity: sha512-GtlJz3nGX1zF+XBG5pEPYdRbo5feyP3eM1+zsEqFqjfvT/nfRdjyGNogEs4yd+DW8cD7tQceRd2vypDhG1X7kA==, tarball: https://npm.jsr.io/~/11/@jsr/deno__doc/0.189.1.tgz}
+
+  '@jsr/deno__graph@0.100.1':
+    resolution: {integrity: sha512-mPemftpdwtz8fo+RNKujjXKpDQRcj5E0nOcxeNiDGLRzqQk/Q69IcGM4ruZGX+0xhTNNSLc8Uu3W4ynIDfTR6g==, tarball: https://npm.jsr.io/~/11/@jsr/deno__graph/0.100.1.tgz}
+
+  '@jsr/deno__graph@0.86.9':
+    resolution: {integrity: sha512-+qrrma5/bL+hcG20mfaEeC8SLopqoyd1RjcKFMRu++3SAXyrTKuvuIjBJCn/NyN7X+kV+QrJG67BCHX38Rzw+g==, tarball: https://npm.jsr.io/~/11/@jsr/deno__graph/0.86.9.tgz}
+
+  '@jsr/std__bytes@1.0.6':
+    resolution: {integrity: sha512-St6yKggjFGhxS52IFLJWvkchRFbAKg2Xh8UxA4S1EGz7GJ2Ui+ssDDldj/w2c8vCxvl6qgR0HaYbKeFJNqujmA==, tarball: https://npm.jsr.io/~/11/@jsr/std__bytes/1.0.6.tgz}
+
+  '@jsr/std__fmt@1.0.9':
+    resolution: {integrity: sha512-YFJJMozmORj2K91c5J9opWeh0VUwrd+Mwb7Pr0FkVCAKVLu2UhT4LyvJqWiyUT+eF+MdfqQ9F7RtQj4bXn9Smw==, tarball: https://npm.jsr.io/~/11/@jsr/std__fmt/1.0.9.tgz}
+
+  '@jsr/std__fs@1.0.22':
+    resolution: {integrity: sha512-PvDtgT25IqhFEX2LjQI0aTz/Wg61jCtJ8l19fE9MUSvSmtw57Kzr6sM7GcCsSrsZEdQ7wjLfXvvhy8irta4Zww==, tarball: https://npm.jsr.io/~/11/@jsr/std__fs/1.0.22.tgz}
+
+  '@jsr/std__internal@1.0.12':
+    resolution: {integrity: sha512-6xReMW9p+paJgqoFRpOE2nogJFvzPfaLHLIlyADYjKMUcwDyjKZxryIbgcU+gxiTygn8yCjld1HoI0ET4/iZeA==, tarball: https://npm.jsr.io/~/11/@jsr/std__internal/1.0.12.tgz}
+
+  '@jsr/std__io@0.225.2':
+    resolution: {integrity: sha512-QNImMbao6pKXvV4xpFkY2zviZi1r+1KpYzgMqaa2gHDPZhXQqlia/Og+VqMxxfAr8Pw6BF3tw/hSw3LrWWTRmA==, tarball: https://npm.jsr.io/~/11/@jsr/std__io/0.225.2.tgz}
+
+  '@jsr/std__path@1.1.4':
+    resolution: {integrity: sha512-SK4u9H6NVTfolhPdlvdYXfNFefy1W04AEHWJydryYbk+xqzNiVmr5o7TLJLJFqwHXuwMRhwrn+mcYeUfS0YFaA==, tarball: https://npm.jsr.io/~/11/@jsr/std__path/1.1.4.tgz}
 
   '@kwsites/file-exists@1.1.1':
     resolution: {integrity: sha512-m9/5YGR18lIwxSFDwfE3oA7bWuq9kdau6ugN4H2rJeyhFQZcG9AgSHkQtSD15a8WvTgfz9aikZMrKPHvbpqFiw==}
@@ -10176,6 +10214,42 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
   '@jsdevtools/ono@7.1.3': {}
+
+  '@jsr/deno__cache-dir@0.25.0':
+    dependencies:
+      '@jsr/deno__graph': 0.86.9
+      '@jsr/std__fmt': 1.0.9
+      '@jsr/std__fs': 1.0.22
+      '@jsr/std__io': 0.225.2
+      '@jsr/std__path': 1.1.4
+
+  '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)':
+    dependencies:
+      '@jsr/deno__cache-dir': 0.25.0
+      '@jsr/deno__graph': 0.100.1
+
+  '@jsr/deno__graph@0.100.1': {}
+
+  '@jsr/deno__graph@0.86.9': {}
+
+  '@jsr/std__bytes@1.0.6': {}
+
+  '@jsr/std__fmt@1.0.9': {}
+
+  '@jsr/std__fs@1.0.22':
+    dependencies:
+      '@jsr/std__internal': 1.0.12
+      '@jsr/std__path': 1.1.4
+
+  '@jsr/std__internal@1.0.12': {}
+
+  '@jsr/std__io@0.225.2':
+    dependencies:
+      '@jsr/std__bytes': 1.0.6
+
+  '@jsr/std__path@1.1.4':
+    dependencies:
+      '@jsr/std__internal': 1.0.12
 
   '@kwsites/file-exists@1.1.1':
     dependencies:

@@ -216,6 +216,16 @@ const homepageUrl = computed(() => {
   return homepage
 })
 
+// Docs URL: use our generated API docs
+const docsLink = computed(() => {
+  if (!displayVersion.value) return null
+
+  return {
+    name: 'docs' as const,
+    params: { path: [...pkg.value!.name.split('/'), 'v', displayVersion.value.version] },
+  }
+})
+
 function normalizeGitUrl(url: string): string {
   return url
     .replace(/^git\+/, '')
@@ -723,6 +733,15 @@ defineOgImageComponent('Package', {
                 <span class="i-simple-icons-jsr w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.jsr') }}
               </a>
+            </li>
+            <li v-if="docsLink">
+              <NuxtLink
+                :to="docsLink"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-document w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.docs') }}
+              </NuxtLink>
             </li>
             <li v-if="displayVersion" class="sm:ml-auto">
               <NuxtLink

@@ -93,6 +93,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
 
   nitro: {
+    experimental: {
+      wasm: true,
+    },
     externals: {
       inline: [
         'shiki',
@@ -102,6 +105,14 @@ export default defineNuxtConfig({
         '@shikijs/engine-javascript',
         '@shikijs/core',
       ],
+      external: ['@deno/doc'],
+    },
+    rollupConfig: {
+      output: {
+        paths: {
+          '@deno/doc': '@jsr/deno__doc',
+        },
+      },
     },
     // Storage configuration for local development
     // In production (Vercel), this is overridden by modules/cache.ts
