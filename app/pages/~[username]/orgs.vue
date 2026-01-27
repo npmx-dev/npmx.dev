@@ -102,7 +102,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="container py-8 sm:py-12">
+  <main class="container py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex items-center gap-4 mb-4">
