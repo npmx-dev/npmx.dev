@@ -16,13 +16,9 @@ module.exports = async function setup(browser, { url }) {
     localStorage.setItem('npmx-color-mode', mode)
   }, colorMode)
 
-  await page.goto(url, { waitUntil: 'networkidle0' })
+  // Navigate and wait for DOM only - Lighthouse will do its own full load
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 })
 
-  // Also set the data-theme attribute directly to ensure the mode is applied
-  await page.evaluate(mode => {
-    document.documentElement.setAttribute('data-theme', mode)
-  }, colorMode)
-
-  // Close the page - Lighthouse will open its own
+  // Close the page - Lighthouse will open its own with localStorage already set
   await page.close()
 }
