@@ -47,8 +47,8 @@ export default defineConfig({
         hover: '#404040',
       },
       accent: {
-        DEFAULT: '#ffffff',
-        muted: '#e5e5e5',
+        DEFAULT: 'var(--accent-color, #666666)',
+        fallback: '#666666',
       },
       // Syntax highlighting colors (inspired by GitHub Dark)
       syntax: {
