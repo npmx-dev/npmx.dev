@@ -68,6 +68,7 @@ defineOgImageComponent('Default')
                 name="q"
                 :placeholder="$t('search.placeholder')"
                 autocomplete="off"
+                autofocus
                 class="w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-all duration-300 focus:(border-border-hover outline-none)"
                 @input="handleSearch"
                 @focus="isSearchFocused = true"

@@ -306,7 +306,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
           <button
             v-if="getTagVersions(row.tag).length > 1 || !hasLoadedAll"
             type="button"
-            class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors"
+            class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg-muted focus-visible:ring-offset-1 focus-visible:ring-offset-bg rounded-sm"
             :aria-expanded="expandedTags.has(row.tag)"
             :aria-label="
               expandedTags.has(row.tag)
@@ -318,6 +318,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <span
               v-if="loadingTags.has(row.tag)"
               class="i-carbon-rotate-180 w-3 h-3 animate-spin"
+              aria-hidden="true"
             />
             <span
               v-else
@@ -325,6 +326,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               :class="
                 expandedTags.has(row.tag) ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'
               "
+              aria-hidden="true"
             />
           </button>
           <span v-else class="w-4" />
@@ -441,18 +443,28 @@ function getTagVersions(tag: string): VersionDisplay[] {
       <div class="pt-1">
         <button
           type="button"
-          class="flex items-center gap-2 text-left"
+          class="flex items-center gap-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg-muted focus-visible:ring-offset-1 focus-visible:ring-offset-bg rounded-sm"
           :aria-expanded="otherVersionsExpanded"
+          :aria-label="
+            otherVersionsExpanded
+              ? $t('package.versions.collapse_other')
+              : $t('package.versions.expand_other')
+          "
           @click="expandOtherVersions"
         >
           <span
             class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors"
           >
-            <span v-if="otherVersionsLoading" class="i-carbon-rotate-180 w-3 h-3 animate-spin" />
+            <span
+              v-if="otherVersionsLoading"
+              class="i-carbon-rotate-180 w-3 h-3 animate-spin"
+              aria-hidden="true"
+            />
             <span
               v-else
               class="w-3 h-3 transition-transform duration-200"
               :class="otherVersionsExpanded ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'"
+              aria-hidden="true"
             />
           </span>
           <span class="text-xs text-fg-muted py-1.5">
@@ -513,29 +525,66 @@ function getTagVersions(tag: string): VersionDisplay[] {
           <template v-if="otherMajorGroups.length > 0">
             <div v-for="group in otherMajorGroups" :key="group.major">
               <!-- Major group header -->
-              <button
-                v-if="group.versions.length > 1"
-                type="button"
-                class="w-full text-left py-1"
-                :aria-expanded="expandedMajorGroups.has(group.major)"
-                :title="group.versions[0]?.version"
-                @click="toggleMajorGroup(group.major)"
-              >
-                <div class="flex items-center gap-2">
-                  <span
-                    class="w-3 h-3 transition-transform duration-200 text-fg-subtle"
-                    :class="
-                      expandedMajorGroups.has(group.major)
-                        ? 'i-carbon-chevron-down'
-                        : 'i-carbon-chevron-right'
-                    "
-                  />
-                  <span
-                    class="font-mono text-xs truncate"
-                    :class="group.versions[0]?.deprecated ? 'text-red-400' : 'text-fg-muted'"
-                  >
-                    {{ group.versions[0]?.version }}
-                  </span>
+              <div v-if="group.versions.length > 1" class="py-1">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <button
+                      type="button"
+                      class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg-muted focus-visible:ring-offset-1 focus-visible:ring-offset-bg rounded-sm"
+                      :aria-expanded="expandedMajorGroups.has(group.major)"
+                      :aria-label="
+                        expandedMajorGroups.has(group.major)
+                          ? $t('package.versions.collapse_major', { major: group.major })
+                          : $t('package.versions.expand_major', { major: group.major })
+                      "
+                      @click="toggleMajorGroup(group.major)"
+                    >
+                      <span
+                        class="w-3 h-3 transition-transform duration-200"
+                        :class="
+                          expandedMajorGroups.has(group.major)
+                            ? 'i-carbon-chevron-down'
+                            : 'i-carbon-chevron-right'
+                        "
+                        aria-hidden="true"
+                      />
+                    </button>
+                    <NuxtLink
+                      v-if="group.versions[0]?.version"
+                      :to="versionRoute(group.versions[0]?.version)"
+                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      :class="
+                        group.versions[0]?.deprecated
+                          ? 'text-red-400 hover:text-red-300'
+                          : 'text-fg-muted hover:text-fg'
+                      "
+                      :title="
+                        group.versions[0]?.deprecated
+                          ? t('package.versions.deprecated_title', {
+                              version: group.versions[0]?.version,
+                            })
+                          : group.versions[0]?.version
+                      "
+                    >
+                      {{ group.versions[0]?.version }}
+                    </NuxtLink>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <DateTime
+                      v-if="group.versions[0]?.time"
+                      :datetime="group.versions[0]?.time"
+                      class="text-[10px] text-fg-subtle"
+                      year="numeric"
+                      month="short"
+                      day="numeric"
+                    />
+                    <ProvenanceBadge
+                      v-if="group.versions[0]?.hasProvenance"
+                      :package-name="packageName"
+                      :version="group.versions[0]?.version"
+                      compact
+                    />
+                  </div>
                 </div>
                 <div
                   v-if="group.versions[0]?.tags?.length"
@@ -550,30 +599,48 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     {{ tag }}
                   </span>
                 </div>
-              </button>
+              </div>
               <!-- Single version (no expand needed) -->
               <div v-else class="py-1">
-                <div class="flex items-center gap-2">
-                  <span class="w-3" />
-                  <NuxtLink
-                    v-if="group.versions[0]"
-                    :to="versionRoute(group.versions[0].version)"
-                    class="font-mono text-xs transition-colors duration-200 truncate"
-                    :class="
-                      group.versions[0].deprecated
-                        ? 'text-red-400 hover:text-red-300'
-                        : 'text-fg-muted hover:text-fg'
-                    "
-                    :title="
-                      group.versions[0].deprecated
-                        ? t('package.versions.deprecated_title', {
-                            version: group.versions[0].version,
-                          })
-                        : group.versions[0].version
-                    "
-                  >
-                    {{ group.versions[0].version }}
-                  </NuxtLink>
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-4 shrink-0" />
+                    <NuxtLink
+                      v-if="group.versions[0]?.version"
+                      :to="versionRoute(group.versions[0]?.version)"
+                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      :class="
+                        group.versions[0]?.deprecated
+                          ? 'text-red-400 hover:text-red-300'
+                          : 'text-fg-muted hover:text-fg'
+                      "
+                      :title="
+                        group.versions[0]?.deprecated
+                          ? t('package.versions.deprecated_title', {
+                              version: group.versions[0]?.version,
+                            })
+                          : group.versions[0]?.version
+                      "
+                    >
+                      {{ group.versions[0]?.version }}
+                    </NuxtLink>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <DateTime
+                      v-if="group.versions[0]?.time"
+                      :datetime="group.versions[0]?.time"
+                      class="text-[10px] text-fg-subtle"
+                      year="numeric"
+                      month="short"
+                      day="numeric"
+                    />
+                    <ProvenanceBadge
+                      v-if="group.versions[0]?.hasProvenance"
+                      :package-name="packageName"
+                      :version="group.versions[0]?.version"
+                      compact
+                    />
+                  </div>
                 </div>
                 <div v-if="group.versions[0]?.tags?.length" class="flex items-center gap-1 ml-5">
                   <span
@@ -589,7 +656,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <!-- Major group versions -->
               <div
                 v-if="expandedMajorGroups.has(group.major) && group.versions.length > 1"
-                class="ml-5 space-y-0.5"
+                class="ml-6 space-y-0.5"
               >
                 <div v-for="v in group.versions.slice(1)" :key="v.version" class="py-1">
                   <div class="flex items-center justify-between gap-2">
