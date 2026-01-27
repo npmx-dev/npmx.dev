@@ -131,3 +131,16 @@ const config = computed(() => ({
     />
   </ChartModal>
 </template>
+
+<style>
+/** Overrides */
+.vue-ui-sparkline-title span {
+  padding: 0 !important;
+  letter-spacing: 0.04rem;
+}
+.vue-ui-sparkline text {
+  font-family:
+    Geist Mono,
+    monospace !important;
+}
+</style>
