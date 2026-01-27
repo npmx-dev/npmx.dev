@@ -19,6 +19,8 @@ const emit = defineEmits<{
   'update:sort': [value: SortOption]
 }>()
 
+const { t } = useI18n()
+
 const filterValue = computed({
   get: () => props.filter,
   set: value => emit('update:filter', value),
@@ -29,12 +31,15 @@ const sortValue = computed({
   set: value => emit('update:sort', value),
 })
 
-const sortOptions = [
-  { value: 'downloads', label: 'Most downloaded' },
-  { value: 'updated', label: 'Recently updated' },
-  { value: 'name-asc', label: 'Name (A-Z)' },
-  { value: 'name-desc', label: 'Name (Z-A)' },
-] as const
+const sortOptions = computed(
+  () =>
+    [
+      { value: 'downloads', label: t('package.sort.downloads') },
+      { value: 'updated', label: t('package.sort.updated') },
+      { value: 'name-asc', label: t('package.sort.name_asc') },
+      { value: 'name-desc', label: t('package.sort.name_desc') },
+    ] as const,
+)
 
 // Show filter count when filtering is active
 const showFilteredCount = computed(() => {
@@ -51,7 +56,7 @@ const showFilteredCount = computed(() => {
   <div class="flex flex-col sm:flex-row gap-3 mb-6">
     <!-- Filter input -->
     <div class="flex-1 relative">
-      <label for="package-filter" class="sr-only">Filter packages</label>
+      <label for="package-filter" class="sr-only">{{ $t('package.list.filter_label') }}</label>
       <div
         class="absolute h-full w-10 flex items-center justify-center text-fg-subtle pointer-events-none"
         aria-hidden="true"
@@ -62,7 +67,7 @@ const showFilteredCount = computed(() => {
         id="package-filter"
         v-model="filterValue"
         type="search"
-        :placeholder="placeholder ?? 'Filter packages...'"
+        :placeholder="placeholder ?? t('package.list.filter_placeholder')"
         autocomplete="off"
         class="w-full bg-bg-subtle border border-border rounded-lg pl-10 pr-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:(border-border-hover outline-none)"
       />
@@ -70,7 +75,7 @@ const showFilteredCount = computed(() => {
 
     <!-- Sort select -->
     <div class="relative shrink-0 flex">
-      <label for="package-sort" class="sr-only">Sort packages</label>
+      <label for="package-sort" class="sr-only">{{ $t('package.list.sort_label') }}</label>
       <div class="relative">
         <select
           id="package-sort"
@@ -93,6 +98,6 @@ const showFilteredCount = computed(() => {
 
   <!-- Filtered count indicator -->
   <p v-if="showFilteredCount" class="text-fg-subtle text-xs font-mono mb-4">
-    Showing {{ filteredCount }} of {{ totalCount }} packages
+    {{ $t('package.list.showing_count', { filtered: filteredCount, total: totalCount }) }}
   </p>
 </template>

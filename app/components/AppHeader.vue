@@ -21,7 +21,7 @@ const { isConnected, npmUser } = useConnector()
         <NuxtLink
           v-if="showLogo"
           to="/"
-          aria-label="npmx home"
+          :aria-label="$t('header.home')"
           class="header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
         >
           <span class="text-fg-subtle"><span style="letter-spacing: -0.2em">.</span>/</span>npmx
@@ -38,7 +38,7 @@ const { isConnected, npmUser } = useConnector()
             class="link-subtle font-mono text-sm inline-flex items-center gap-2"
             aria-keyshortcuts="/"
           >
-            search
+            {{ $t('nav.search') }}
             <kbd
               class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
               aria-hidden="true"
@@ -74,7 +74,7 @@ const { isConnected, npmUser } = useConnector()
           target="_blank"
           rel="noopener noreferrer"
           class="link-subtle"
-          aria-label="GitHub repository"
+          :aria-label="$t('header.github')"
         >
           <span class="i-carbon-logo-github w-5 h-5" aria-hidden="true" />
         </a>

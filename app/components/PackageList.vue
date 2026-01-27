@@ -123,7 +123,7 @@ defineExpose({
     <div v-if="isLoading" class="py-4 flex items-center justify-center">
       <div class="flex items-center gap-3 text-fg-muted font-mono text-sm">
         <span class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full animate-spin" />
-        Loading more...
+        {{ $t('common.loading_more') }}
       </div>
     </div>
 
@@ -132,7 +132,7 @@ defineExpose({
       v-else-if="!hasMore && results.length > 0"
       class="py-4 text-center text-fg-subtle font-mono text-sm"
     >
-      End of results
+      {{ $t('common.end_of_results') }}
     </p>
   </div>
 </template>

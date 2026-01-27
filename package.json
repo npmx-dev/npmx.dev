@@ -32,6 +32,7 @@
     "@nuxt/fonts": "^0.13.0",
     "@nuxt/scripts": "^0.13.2",
     "@nuxtjs/html-validator": "^2.1.0",
+    "@nuxtjs/i18n": "10.2.1",
     "@shikijs/langs": "^3.21.0",
     "@shikijs/themes": "^3.21.0",
     "@vueuse/core": "^14.1.0",

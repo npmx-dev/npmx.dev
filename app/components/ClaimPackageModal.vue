@@ -8,6 +8,8 @@ const props = defineProps<{
 
 const open = defineModel<boolean>('open', { default: false })
 
+const { t } = useI18n()
+
 const {
   isConnected,
   state,
@@ -32,7 +34,7 @@ async function checkAvailability() {
   try {
     checkResult.value = await checkPackageName(props.packageName)
   } catch (err) {
-    publishError.value = err instanceof Error ? err.message : 'Failed to check name availability'
+    publishError.value = err instanceof Error ? err.message : t('claim.modal.failed_to_check')
   } finally {
     isChecking.value = false
   }
@@ -82,7 +84,7 @@ async function handleClaim() {
       connectorModalOpen.value = true
     }
   } catch (err) {
-    publishError.value = err instanceof Error ? err.message : 'Failed to claim package'
+    publishError.value = err instanceof Error ? err.message : t('claim.modal.failed_to_claim')
   } finally {
     isPublishing.value = false
   }
@@ -141,7 +143,7 @@ const connectorModalOpen = shallowRef(false)
         <button
           type="button"
           class="absolute inset-0 bg-black/60 cursor-default"
-          aria-label="Close modal"
+          :aria-label="$t('claim.modal.close_modal')"
           @click="open = false"
         />
 
@@ -155,12 +157,12 @@ const connectorModalOpen = shallowRef(false)
           <div class="p-6">
             <div class="flex items-center justify-between mb-6">
               <h2 id="claim-modal-title" class="font-mono text-lg font-medium">
-                Claim Package Name
+                {{ $t('claim.modal.title') }}
               </h2>
               <button
                 type="button"
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                aria-label="Close"
+                :aria-label="$t('claim.modal.close')"
                 @click="open = false"
               >
                 <span class="i-carbon-close block w-5 h-5" aria-hidden="true" />
@@ -169,7 +171,7 @@ const connectorModalOpen = shallowRef(false)
 
             <!-- Loading state -->
             <div v-if="isChecking" class="py-8 text-center">
-              <LoadingSpinner text="Checking availability…" />
+              <LoadingSpinner :text="t('claim.modal.checking')" />
             </div>
 
             <!-- Success state -->
@@ -179,16 +181,15 @@ const connectorModalOpen = shallowRef(false)
               >
                 <span class="i-carbon-checkmark-filled text-green-500 w-6 h-6" aria-hidden="true" />
                 <div>
-                  <p class="font-mono text-sm text-fg">Package claimed!</p>
+                  <p class="font-mono text-sm text-fg">{{ $t('claim.modal.success') }}</p>
                   <p class="text-xs text-fg-muted">
-                    {{ packageName }}@0.0.0 has been published to npm.
+                    {{ $t('claim.modal.success_detail', { name: packageName }) }}
                   </p>
                 </div>
               </div>
 
               <p class="text-sm text-fg-muted">
-                You can now publish new versions to this package using
-                <code class="font-mono bg-bg-subtle px-1 rounded">npm publish</code>.
+                {{ $t('claim.modal.success_hint') }}
               </p>
 
               <div class="flex gap-3">
@@ -197,14 +198,14 @@ const connectorModalOpen = shallowRef(false)
                   class="flex-1 px-4 py-2 font-mono text-sm text-center text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                   @click="open = false"
                 >
-                  View Package
+                  {{ $t('claim.modal.view_package') }}
                 </NuxtLink>
                 <button
                   type="button"
                   class="flex-1 px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                   @click="open = false"
                 >
-                  Close
+                  {{ $t('claim.modal.close') }}
                 </button>
               </div>
             </div>
@@ -222,7 +223,7 @@ const connectorModalOpen = shallowRef(false)
                 class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
                 role="alert"
               >
-                <p class="font-medium mb-1">Invalid package name:</p>
+                <p class="font-medium mb-1">{{ $t('claim.modal.invalid_name') }}</p>
                 <ul class="list-disc list-inside space-y-1">
                   <li v-for="err in checkResult.validationErrors" :key="err">{{ err }}</li>
                 </ul>
@@ -234,7 +235,7 @@ const connectorModalOpen = shallowRef(false)
                 class="p-3 text-sm text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 rounded-md"
                 role="alert"
               >
-                <p class="font-medium mb-1">Warnings:</p>
+                <p class="font-medium mb-1">{{ $t('common.warnings') }}</p>
                 <ul class="list-disc list-inside space-y-1">
                   <li v-for="warn in checkResult.validationWarnings" :key="warn">{{ warn }}</li>
                 </ul>
@@ -250,7 +251,7 @@ const connectorModalOpen = shallowRef(false)
                     class="i-carbon-checkmark-filled text-green-500 w-5 h-5"
                     aria-hidden="true"
                   />
-                  <p class="font-mono text-sm text-fg">This name is available!</p>
+                  <p class="font-mono text-sm text-fg">{{ $t('claim.modal.available') }}</p>
                 </div>
 
                 <div
@@ -258,7 +259,7 @@ const connectorModalOpen = shallowRef(false)
                   class="flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-lg"
                 >
                   <span class="i-carbon-close-filled text-red-500 w-5 h-5" aria-hidden="true" />
-                  <p class="font-mono text-sm text-fg">This name is already taken.</p>
+                  <p class="font-mono text-sm text-fg">{{ $t('claim.modal.taken') }}</p>
                 </div>
               </div>
 
@@ -277,9 +278,9 @@ const connectorModalOpen = shallowRef(false)
                     class="text-sm font-medium mb-3"
                   >
                     <span v-if="hasDangerousSimilarPackages">
-                      Similar packages exist - npm may reject this name:
+                      {{ $t('claim.modal.similar_warning') }}
                     </span>
-                    <span v-else> Related packages: </span>
+                    <span v-else>{{ $t('claim.modal.related') }}</span>
                   </p>
                   <ul class="space-y-2">
                     <li
@@ -331,13 +332,14 @@ const connectorModalOpen = shallowRef(false)
                   v-if="!isScoped"
                   class="p-3 text-sm text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 rounded-md"
                 >
-                  <p class="font-medium mb-1">Consider using a scoped package instead</p>
+                  <p class="font-medium mb-1">{{ $t('claim.modal.scope_warning_title') }}</p>
                   <p class="text-xs text-yellow-400/80">
-                    Unscoped package names are a shared resource. Only claim a name if you intend to
-                    publish and maintain a package. For personal or organizational projects, use a
-                    scoped name like
-                    <code class="font-mono">@{{ npmUser || 'username' }}/{{ packageName }}</code
-                    >.
+                    {{
+                      $t('claim.modal.scope_warning_text', {
+                        username: npmUser || 'username',
+                        name: packageName,
+                      })
+                    }}
                   </p>
                 </div>
 
@@ -346,21 +348,21 @@ const connectorModalOpen = shallowRef(false)
                   <div
                     class="p-3 text-sm text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 rounded-md"
                   >
-                    <p>Connect to the local connector to claim this package name.</p>
+                    <p>{{ $t('claim.modal.connect_required') }}</p>
                   </div>
                   <button
                     type="button"
                     class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                     @click="connectorModalOpen = true"
                   >
-                    Connect to Connector
+                    {{ $t('claim.modal.connect_button') }}
                   </button>
                 </div>
 
                 <!-- Claim button -->
                 <div v-else class="space-y-3">
                   <p class="text-sm text-fg-muted">
-                    This will publish a minimal placeholder package.
+                    {{ $t('claim.modal.publish_hint') }}
                   </p>
 
                   <!-- Expandable package.json preview -->
@@ -368,7 +370,7 @@ const connectorModalOpen = shallowRef(false)
                     <summary
                       class="px-3 py-2 text-sm text-fg-muted bg-bg-subtle cursor-pointer hover:text-fg transition-colors select-none"
                     >
-                      Preview package.json
+                      {{ $t('claim.modal.preview_json') }}
                     </summary>
                     <pre class="p-3 text-xs font-mono text-fg-muted bg-[#0d0d0d] overflow-x-auto">{{
                       JSON.stringify(previewPackageJson, null, 2)
@@ -381,7 +383,9 @@ const connectorModalOpen = shallowRef(false)
                     class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                     @click="handleClaim"
                   >
-                    {{ isPublishing ? 'Publishing…' : 'Claim Package Name' }}
+                    {{
+                      isPublishing ? $t('claim.modal.publishing') : $t('claim.modal.claim_button')
+                    }}
                   </button>
                 </div>
               </div>
@@ -393,7 +397,7 @@ const connectorModalOpen = shallowRef(false)
                 class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 @click="open = false"
               >
-                Close
+                {{ $t('claim.modal.close') }}
               </button>
             </div>
 
@@ -410,7 +414,7 @@ const connectorModalOpen = shallowRef(false)
                 class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 @click="checkAvailability"
               >
-                Retry
+                {{ $t('claim.modal.retry') }}
               </button>
             </div>
           </div>
