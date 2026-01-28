@@ -206,6 +206,11 @@
     "vulnerabilities": {
       "no_description": "No description available",
       "found": "{count} vulnerability found | {count} vulnerabilities found",
+      "deps_found": "{count} vulnerability found | {count} vulnerabilities found",
+      "deps_affected": "{count} dependency affected | {count} dependencies affected",
+      "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",
+      "scanning_tree": "Scanning dependency tree for vulnerabilities...",
+      "show_all_packages": "show all {count} affected packages",
       "no_summary": "No summary",
       "view_details": "View vulnerability details",
       "severity": {

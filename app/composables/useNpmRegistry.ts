@@ -31,6 +31,20 @@ export function encodePackageName(name: string): string {
   return encodeURIComponent(name)
 }
 
+/**
+ * Fetch a package's packument with caching (returns null on error).
+ * This is useful for batch operations where some packages might not exist.
+ */
+export async function fetchCachedPackument(name: string): Promise<Packument | null> {
+  const cached = packumentCache.get(name)
+  if (cached) return cached
+
+  const encodedName = encodePackageName(name)
+  const promise = $fetch<Packument>(`${NPM_REGISTRY}/${encodedName}`).catch(() => null)
+  packumentCache.set(name, promise)
+  return promise
+}
+
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { SEVERITY_LEVELS } from '~~/shared/types'
-import { SEVERITY_COLORS } from '~~/shared/utils/severity'
+import { useVulnerabilityTree } from '~/composables/useVulnerabilityTree'
+import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
 
 const props = defineProps<{
   packageName: string
+  version: string
   dependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
   peerDependenciesMeta?: Record<string, { optional?: boolean }>
@@ -13,8 +14,17 @@ const props = defineProps<{
 // Fetch outdated info for dependencies
 const outdatedDeps = useOutdatedDependencies(() => props.dependencies)
 
-// Fetch vulnerability info for dependencies
-const vulnerableDeps = useVulnerableDependencies(() => props.dependencies)
+// Get vulnerability info from shared cache (already fetched by PackageVulnerabilityTree)
+const { data: vulnTree } = useVulnerabilityTree(
+  () => props.packageName,
+  () => props.version,
+)
+
+// Check if a dependency has vulnerabilities (only direct deps)
+function getVulnerableDepInfo(depName: string) {
+  if (!vulnTree.value) return null
+  return vulnTree.value.vulnerablePackages.find(p => p.name === depName && p.depth === 'direct')
+}
 
 // Expanded state for each section
 const depsExpanded = shallowRef(false)
@@ -49,68 +59,10 @@ const sortedOptionalDependencies = computed(() => {
   if (!props.optionalDependencies) return []
   return Object.entries(props.optionalDependencies).sort(([a], [b]) => a.localeCompare(b))
 })
-
-// Vulnerability summary for banner
-const vulnerabilitySummary = computed(() => {
-  const deps = Object.values(vulnerableDeps.value)
-  if (deps.length === 0) return null
-
-  const counts = { critical: 0, high: 0, moderate: 0, low: 0 }
-  let total = 0
-
-  for (const info of deps) {
-    if (!info?.counts) continue
-    total += info.counts.total || 0
-    for (const s of SEVERITY_LEVELS) counts[s] += info.counts[s] || 0
-  }
-
-  const severity = SEVERITY_LEVELS.find(s => counts[s] > 0) || 'low'
-
-  return { affectedDeps: deps.length, totalVulns: total, severity, counts }
-})
-
-const vulnBreakdownText = computed(() => {
-  if (!vulnerabilitySummary.value) return ''
-  const { counts } = vulnerabilitySummary.value
-  return SEVERITY_LEVELS.filter(s => counts[s])
-    .map(s => `${counts[s]} ${$t(`package.vulnerabilities.severity.${s}`)}`)
-    .join(', ')
-})
 </script>
 
 <template>
   <div class="space-y-8">
-    <!-- Vulnerability warning banner -->
-    <div
-      v-if="vulnerabilitySummary"
-      role="alert"
-      class="rounded-lg border px-4 py-3 cursor-help"
-      :class="SEVERITY_COLORS[vulnerabilitySummary.severity]"
-      :title="
-        $t(
-          'package.vulnerabilities.deps_affected',
-          { count: vulnerabilitySummary.affectedDeps },
-          vulnerabilitySummary.affectedDeps,
-        )
-      "
-    >
-      <div class="flex items-center gap-2">
-        <span class="i-carbon-security w-4 h-4 shrink-0 self-start mt-0.5" aria-hidden="true" />
-        <div>
-          <div class="font-mono text-sm">
-            {{
-              $t(
-                'package.vulnerabilities.deps_found',
-                { count: vulnerabilitySummary.totalVulns },
-                vulnerabilitySummary.totalVulns,
-              )
-            }}
-          </div>
-          <div class="font-mono text-xs opacity-70">{{ vulnBreakdownText }}</div>
-        </div>
-      </div>
-    </div>
-
     <!-- Dependencies -->
     <section v-if="sortedDependencies.length > 0" aria-labelledby="dependencies-heading">
       <h2 id="dependencies-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
@@ -139,14 +91,14 @@ const vulnBreakdownText = computed(() => {
               <span class="i-carbon-warning-alt w-3 h-3 block" />
             </span>
             <NuxtLink
-              v-if="vulnerableDeps[dep]?.version"
+              v-if="getVulnerableDepInfo(dep)"
               :to="{
                 name: 'package',
-                params: { package: [...dep.split('/'), 'v', vulnerableDeps[dep].version] },
+                params: { package: [...dep.split('/'), 'v', getVulnerableDepInfo(dep)!.version] },
               }"
               class="shrink-0"
-              :class="getVulnerabilitySeverityClass(vulnerableDeps[dep])"
-              :title="getVulnerabilityTooltip(vulnerableDeps[dep])"
+              :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
+              :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
             >
               <span class="i-carbon-security w-3 h-3 block" aria-hidden="true" />
               <span class="sr-only">View vulnerabilities</span>
@@ -162,8 +114,8 @@ const vulnBreakdownText = computed(() => {
             <span v-if="outdatedDeps[dep]" class="sr-only">
               ({{ getOutdatedTooltip(outdatedDeps[dep]) }})
             </span>
-            <span v-if="vulnerableDeps[dep]" class="sr-only">
-              ({{ getVulnerabilityTooltip(vulnerableDeps[dep]) }})
+            <span v-if="getVulnerableDepInfo(dep)" class="sr-only">
+              ({{ getVulnerableDepInfo(dep)!.counts.total }} vulnerabilities)
             </span>
           </span>
         </li>

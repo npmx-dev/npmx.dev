@@ -298,10 +298,7 @@ defineOgImageComponent('Package', {
   <main class="container py-8 xl:py-12">
     <PackageSkeleton v-if="status === 'pending'" />
 
-    <article
-      v-else-if="status === 'success' && pkg"
-      class="package-page motion-safe:animate-fade-in"
-    >
+    <div v-else-if="status === 'success' && pkg" class="package-page motion-safe:animate-fade-in">
       <!-- Package header -->
       <header class="area-header pb-8 border-b border-border">
         <div class="mb-4">
@@ -658,14 +655,6 @@ defineOgImageComponent('Package', {
         </nav>
       </header>
 
-      <!-- Security vulnerabilities warning -->
-      <PackageVulnerabilities
-        v-if="displayVersion"
-        :package-name="pkg.name"
-        :version="displayVersion.version"
-        class="area-vulns"
-      />
-
       <!-- Install command with package manager selector -->
       <section aria-labelledby="install-heading" class="area-install">
         <div class="flex flex-wrap items-center justify-between mb-3">
@@ -815,6 +804,15 @@ defineOgImageComponent('Package', {
           <!-- Download stats -->
           <PackageWeeklyDownloadStats :packageName />
 
+          <!-- Dependency Tree Vulnerabilities -->
+          <ClientOnly>
+            <PackageVulnerabilityTree
+              v-if="displayVersion"
+              :package-name="pkg.name"
+              :version="displayVersion.version"
+            />
+          </ClientOnly>
+
           <!-- Playground links -->
           <PackagePlaygrounds
             v-if="readmeData?.playgroundLinks?.length"
@@ -873,16 +871,17 @@ defineOgImageComponent('Package', {
 
           <!-- Dependencies -->
           <PackageDependencies
-            v-if="hasDependencies"
+            v-if="hasDependencies && displayVersion"
             :package-name="pkg.name"
-            :dependencies="displayVersion?.dependencies"
-            :peer-dependencies="displayVersion?.peerDependencies"
-            :peer-dependencies-meta="displayVersion?.peerDependenciesMeta"
-            :optional-dependencies="displayVersion?.optionalDependencies"
+            :version="displayVersion.version"
+            :dependencies="displayVersion.dependencies"
+            :peer-dependencies="displayVersion.peerDependencies"
+            :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
+            :optional-dependencies="displayVersion.optionalDependencies"
           />
         </aside>
       </div>
-    </article>
+    </div>
 
     <!-- Error state -->
     <div

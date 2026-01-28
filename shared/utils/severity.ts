@@ -5,10 +5,10 @@ import { SEVERITY_LEVELS } from '../types'
  * Color classes for severity levels (banner style)
  */
 export const SEVERITY_COLORS: Record<OsvSeverityLevel, string> = {
-  critical: 'text-red-400 bg-red-500/10 border-red-500/30',
-  high: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
-  moderate: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
-  low: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
+  critical: 'text-red-300 bg-red-500/15 border-red-500/40',
+  high: 'text-red-400 bg-red-500/10 border-red-500/30',
+  moderate: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
+  low: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
   unknown: 'text-fg-muted bg-bg-subtle border-border',
 }
 
