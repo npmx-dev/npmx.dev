@@ -48,7 +48,8 @@
     "theme": "主题",
     "theme_dark": "深色",
     "theme_light": "浅色",
-    "theme_system": "跟随系统"
+    "theme_system": "跟随系统",
+    "accent_colors": "强调色"
   },
   "common": {
     "loading": "加载中...",
@@ -233,8 +234,7 @@
       },
       "grant_button": "授权",
       "cancel_grant": "取消授权",
-      "grant_access": "+ 授予团队权限",
-      "caricando_teams": ""
+      "grant_access": "+ 授予团队权限"
     },
     "list": {
       "filter_label": "筛选包",
