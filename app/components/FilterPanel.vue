@@ -171,7 +171,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
     <!-- Collapsed header -->
     <button
       type="button"
-      class="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-bg-muted transition-colors duration-200"
+      class="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
       :aria-expanded="isExpanded"
       @click="isExpanded = !isExpanded"
     >
@@ -208,7 +208,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
                 v-for="option in SEARCH_SCOPE_OPTIONS"
                 :key="option.value"
                 type="button"
-                class="px-2 py-0.5 text-xs font-mono rounded-sm transition-colors duration-200"
+                class="px-2 py-0.5 text-xs font-mono rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
                 :class="
                   filters.searchScope === option.value
                     ? 'bg-bg-muted text-fg'
@@ -227,6 +227,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             type="text"
             :value="filters.text"
             :placeholder="searchPlaceholder"
+            autocomplete="off"
             class="input-base"
             @input="handleTextInput"
           />
@@ -248,7 +249,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               type="button"
               role="radio"
               :aria-checked="filters.downloadRange === range.value"
-              class="tag transition-colors duration-200"
+              class="tag transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
               :class="filters.downloadRange === range.value ? 'bg-fg text-bg border-fg' : ''"
               @click="emit('update:downloadRange', range.value)"
             >
@@ -273,7 +274,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               type="button"
               role="radio"
               :aria-checked="filters.updatedWithin === option.value"
-              class="tag transition-colors duration-200"
+              class="tag transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
               :class="filters.updatedWithin === option.value ? 'bg-fg text-bg border-fg' : ''"
               @click="emit('update:updatedWithin', option.value)"
             >
@@ -298,7 +299,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               role="radio"
               disabled
               :aria-checked="filters.security === option.value"
-              class="tag transition-colors duration-200 opacity-50 cursor-not-allowed"
+              class="tag transition-colors duration-200 opacity-50 cursor-not-allowed focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
               :class="filters.security === option.value ? 'bg-fg text-bg border-fg' : ''"
             >
               {{ $t(getSecurityLabelKey(option.value)) }}
@@ -317,7 +318,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               :key="keyword"
               type="button"
               :aria-pressed="filters.keywords.includes(keyword)"
-              class="tag text-xs transition-colors duration-200"
+              class="tag text-xs transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
               :class="filters.keywords.includes(keyword) ? 'bg-fg text-bg border-fg' : ''"
               @click="emit('toggleKeyword', keyword)"
             >
@@ -326,7 +327,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             <button
               v-if="hasMoreKeywords"
               type="button"
-              class="text-xs text-fg-subtle self-center font-mono hover:text-fg transition-colors duration-200"
+              class="text-xs text-fg-subtle self-center font-mono hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
               @click="showAllKeywords = true"
             >
               {{ $t('filters.more_keywords', { count: (availableKeywords?.length ?? 0) - 20 }) }}
@@ -341,7 +342,10 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
 <style scoped>
 .expand-enter-active,
 .expand-leave-active {
-  transition: all 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    max-height 0.2s ease,
+    padding 0.2s ease;
   overflow: hidden;
 }
 

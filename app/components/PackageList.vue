@@ -162,7 +162,7 @@ defineExpose({
               :selected="index === (selectedIndex ?? -1)"
               :index="index"
               :search-query="searchQuery"
-              class="animate-fade-in animate-fill-both"
+              class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
               :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
               @focus="emit('select', $event)"
             />

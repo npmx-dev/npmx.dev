@@ -78,7 +78,7 @@ function handleReset() {
     <button
       ref="buttonRef"
       type="button"
-      class="btn-ghost inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-md hover:border-border-hover"
+      class="btn-ghost inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-md hover:border-border-hover focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       :aria-controls="menuId"
@@ -140,7 +140,7 @@ function handleReset() {
           <div class="border-t border-border py-1">
             <button
               type="button"
-              class="w-full px-3 py-2 text-left text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200"
+              class="w-full px-3 py-2 text-left text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
               @click="handleReset"
             >
               {{ $t('filters.columns.reset') }}

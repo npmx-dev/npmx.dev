@@ -134,7 +134,7 @@ function getSortKeyLabelKey(key: SortKey): string {
             <select
               id="sort-select"
               :value="currentSort.key"
-              class="appearance-none bg-bg-subtle border border-border rounded-md pl-3 pr-8 py-1.5 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
+              class="appearance-none bg-bg-subtle border border-border rounded-md pl-3 pr-8 py-1.5 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg focus-visible:outline-none"
               @change="handleSortKeyChange"
             >
               <option
@@ -158,7 +158,7 @@ function getSortKeyLabelKey(key: SortKey): string {
           <!-- Sort direction toggle -->
           <button
             type="button"
-            class="p-1.5 rounded border border-border bg-bg-subtle text-fg-muted hover:text-fg hover:border-border-hover transition-colors duration-200"
+            class="p-1.5 rounded border border-border bg-bg-subtle text-fg-muted hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             :aria-label="$t('filters.sort.toggle_direction')"
             :title="
               currentSort.direction === 'asc'

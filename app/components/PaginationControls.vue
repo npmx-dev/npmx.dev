@@ -105,7 +105,7 @@ function handlePageSizeChange(event: Event) {
       >
         <button
           type="button"
-          class="px-2.5 py-1 text-xs font-mono rounded-sm transition-colors duration-200"
+          class="px-2.5 py-1 text-xs font-mono rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
           :class="mode === 'infinite' ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="mode === 'infinite'"
           @click="emit('update:mode', 'infinite')"
@@ -114,7 +114,7 @@ function handlePageSizeChange(event: Event) {
         </button>
         <button
           type="button"
-          class="px-2.5 py-1 text-xs font-mono rounded-sm transition-colors duration-200"
+          class="px-2.5 py-1 text-xs font-mono rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
           :class="mode === 'paginated' ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="mode === 'paginated'"
           @click="emit('update:mode', 'paginated')"
@@ -129,7 +129,7 @@ function handlePageSizeChange(event: Event) {
         <select
           id="page-size"
           :value="pageSize"
-          class="appearance-none bg-bg-subtle border border-border rounded-md pl-3 pr-8 py-1 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
+          class="appearance-none bg-bg-subtle border border-border rounded-md pl-3 pr-8 py-1 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg focus-visible:outline-none"
           @change="handlePageSizeChange"
         >
           <option v-for="size in PAGE_SIZE_OPTIONS" :key="size" :value="size">
@@ -167,7 +167,7 @@ function handlePageSizeChange(event: Event) {
         <!-- Previous button -->
         <button
           type="button"
-          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200"
+          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
           :disabled="!canGoPrev"
           :aria-label="$t('filters.pagination.previous')"
           @click="goPrev"
@@ -177,11 +177,11 @@ function handlePageSizeChange(event: Event) {
 
         <!-- Page numbers -->
         <template v-for="(page, idx) in visiblePages" :key="idx">
-          <span v-if="page === 'ellipsis'" class="px-2 text-fg-subtle font-mono"> ... </span>
+          <span v-if="page === 'ellipsis'" class="px-2 text-fg-subtle font-mono">…</span>
           <button
             v-else
             type="button"
-            class="min-w-[32px] h-8 px-2 font-mono text-sm rounded transition-colors duration-200"
+            class="min-w-[32px] h-8 px-2 font-mono text-sm rounded transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
             :class="
               page === currentPage
                 ? 'bg-fg text-bg'
@@ -197,7 +197,7 @@ function handlePageSizeChange(event: Event) {
         <!-- Next button -->
         <button
           type="button"
-          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200"
+          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
           :disabled="!canGoNext"
           :aria-label="$t('filters.pagination.next')"
           @click="goNext"

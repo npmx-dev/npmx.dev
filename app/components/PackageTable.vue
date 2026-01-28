@@ -122,7 +122,8 @@ function getColumnLabelKey(id: ColumnId): string {
                 : undefined
             "
             :tabindex="isSortable('name') ? 0 : undefined"
-            :role="isSortable('name') ? 'columnheader button' : 'columnheader'"
+            role="columnheader"
+            class="focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none"
             @click="toggleSort('name')"
             @keydown.enter="toggleSort('name')"
             @keydown.space.prevent="toggleSort('name')"
@@ -173,7 +174,8 @@ function getColumnLabelKey(id: ColumnId): string {
                 : undefined
             "
             :tabindex="isSortable('downloads') ? 0 : undefined"
-            :role="isSortable('downloads') ? 'columnheader button' : 'columnheader'"
+            role="columnheader"
+            class="focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none"
             @click="toggleSort('downloads')"
             @keydown.enter="toggleSort('downloads')"
             @keydown.space.prevent="toggleSort('downloads')"
@@ -207,7 +209,8 @@ function getColumnLabelKey(id: ColumnId): string {
                 : undefined
             "
             :tabindex="isSortable('updated') ? 0 : undefined"
-            :role="isSortable('updated') ? 'columnheader button' : 'columnheader'"
+            role="columnheader"
+            class="focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none"
             @click="toggleSort('updated')"
             @keydown.enter="toggleSort('updated')"
             @keydown.space.prevent="toggleSort('updated')"

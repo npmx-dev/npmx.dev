@@ -29,14 +29,22 @@ function formatDate(dateStr?: string): string {
   const date = new Date(dateStr)
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+  const diffSeconds = Math.floor(diffMs / 1000)
+  const diffMinutes = Math.floor(diffSeconds / 60)
+  const diffHours = Math.floor(diffMinutes / 60)
+  const diffDays = Math.floor(diffHours / 24)
+  const diffWeeks = Math.floor(diffDays / 7)
+  const diffMonths = Math.floor(diffDays / 30)
+  const diffYears = Math.floor(diffDays / 365)
 
-  if (diffDays === 0) return 'Today'
-  if (diffDays === 1) return 'Yesterday'
-  if (diffDays < 7) return `${diffDays}d ago`
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`
-  if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo ago`
-  return `${Math.floor(diffDays / 365)}y ago`
+  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' })
+
+  if (diffDays === 0) return rtf.format(0, 'day')
+  if (diffDays === 1) return rtf.format(-1, 'day')
+  if (diffDays < 7) return rtf.format(-diffDays, 'day')
+  if (diffDays < 30) return rtf.format(-diffWeeks, 'week')
+  if (diffDays < 365) return rtf.format(-diffMonths, 'month')
+  return rtf.format(-diffYears, 'year')
 }
 
 function formatScore(value?: number): string {
@@ -58,7 +66,7 @@ const allMaintainersText = computed(() => {
 
 <template>
   <tr
-    class="border-b border-border hover:bg-bg-muted transition-colors duration-200"
+    class="border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none"
     :class="{ 'bg-bg-muted': selected }"
     tabindex="0"
     @focus="emit('focus')"
@@ -131,7 +139,7 @@ const allMaintainersText = computed(() => {
           v-for="keyword in pkg.keywords.slice(0, 3)"
           :key="keyword"
           type="button"
-          class="tag text-xs hover:bg-fg hover:text-bg hover:border-fg transition-colors duration-200"
+          class="tag text-xs hover:bg-fg hover:text-bg hover:border-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"
         >
@@ -179,10 +187,12 @@ const allMaintainersText = computed(() => {
     <!-- Security -->
     <td v-if="isColumnVisible('security')" class="py-2 px-3">
       <span v-if="result.flags?.insecure" class="text-syntax-kw">
-        <span class="i-carbon-warning w-4 h-4" :aria-label="$t('filters.table.security_warning')" />
+        <span class="i-carbon-warning w-4 h-4" aria-hidden="true" />
+        <span class="sr-only">{{ $t('filters.table.security_warning') }}</span>
       </span>
       <span v-else-if="result.flags !== undefined" class="text-provider-nuxt">
-        <span class="i-carbon-checkmark w-4 h-4" :aria-label="$t('filters.table.secure')" />
+        <span class="i-carbon-checkmark w-4 h-4" aria-hidden="true" />
+        <span class="sr-only">{{ $t('filters.table.secure') }}</span>
       </span>
       <span v-else class="text-fg-subtle"> - </span>
     </td>
