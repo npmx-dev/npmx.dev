@@ -5,13 +5,15 @@ packages:
 
 overrides:
   sharp: 0.34.5
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
+  vite: '^8.0.0-beta.10'
 
 packageExtensions:
   '@nuxt/scripts':
     dependencies:
       'estree-walker': '^3.0.3'
+
+patchedDependencies:
+  '@jsr/deno__doc@0.189.1': 'patches/@jsr__deno__doc@0.189.1.patch'
 
 ignoredBuiltDependencies:
   - '@parcel/watcher'

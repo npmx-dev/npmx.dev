@@ -12,19 +12,19 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
-    "lint": "vite lint && vite fmt --check",
-    "lint:fix": "vite lint --fix && vite fmt",
+    "lint": "oxlint && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt .",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare && simple-git-hooks",
-    "test": "vite test",
+    "test": "vitest",
     "test:browser": "playwright test",
     "test:browser:ui": "playwright test --ui",
     "test:browser:update": "playwright test --update-snapshots",
-    "test:nuxt": "vite test --project nuxt",
+    "test:nuxt": "vitest --project nuxt",
     "test:types": "nuxt prepare && vue-tsc -b --noEmit && pnpm --filter npmx-connector test:types",
-    "test:unit": "vite test --project unit"
+    "test:unit": "vitest --project unit"
   },
   "dependencies": {
     "@deno/doc": "jsr:^0.189.1",
@@ -70,36 +70,31 @@
     "@vite-pwa/nuxt": "1.1.0",
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
-    "@voidzero-dev/vite-plus-core": "latest",
     "@vue/test-utils": "2.4.6",
     "axe-core": "^4.11.1",
     "happy-dom": "20.3.5",
     "lint-staged": "16.2.7",
     "marked": "17.0.1",
+    "oxfmt": "0.27.0",
+    "oxlint": "^1.42.0",
     "playwright-core": "1.57.0",
     "simple-git-hooks": "2.13.1",
     "spdx-license-list": "^6.11.0",
     "std-env": "3.10.0",
     "typescript": "5.9.3",
     "unocss": "66.6.0",
-    "vite-plus": "latest",
-    "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
+    "vitest": "^4.0.18",
     "vue-tsc": "3.2.2"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@jsr/deno__doc@0.189.1": "patches/@jsr__deno__doc@0.189.1.patch"
-    }
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "*.{js,ts,mjs,cjs,vue}": [
-      "vite lint --fix"
+      "oxlint --fix"
     ],
     "*.{js,ts,mjs,cjs,vue,json,md,html,css}": [
-      "vite fmt"
+      "oxfmt"
     ]
   },
   "packageManager": "pnpm@10.28.1"
