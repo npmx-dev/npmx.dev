@@ -126,6 +126,7 @@
     },
     "versions": {
       "title": "Versions",
+      "anchor_link": "Link to versions section",
       "collapse": "Collapse {tag}",
       "expand": "Expand {tag}",
       "collapse_other": "Collapse other versions",
@@ -139,12 +140,14 @@
     },
     "dependencies": {
       "title": "Dependencies ({count})",
+      "anchor_link": "Link to dependencies section",
       "list_label": "Package dependencies",
       "show_all": "show all {count} deps",
       "optional": "optional"
     },
     "peer_dependencies": {
       "title": "Peer Dependencies ({count})",
+      "anchor_link": "Link to peer dependencies section",
       "list_label": "Package peer dependencies",
       "show_all": "show all {count} peer deps"
     },
@@ -155,6 +158,7 @@
     },
     "maintainers": {
       "title": "Maintainers",
+      "anchor_link": "Link to maintainers section",
       "list_label": "Package maintainers",
       "you": "(you)",
       "via": "via {teams}",

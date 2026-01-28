@@ -319,6 +319,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
       <a
         href="#versions"
         class="opacity-0 group-hover:opacity-100 text-fg-subtle hover:text-fg-muted transition-opacity duration-200 no-underline"
+        :aria-label="$t('package.versions.anchor_link')"
       >
         <span class="i-carbon-link w-3 h-3 block" aria-hidden="true" />
       </a>
