@@ -36,6 +36,10 @@
   "settings": {
     "relative_dates": "相对时间",
     "include_types": "在安装时包含 {'@'}types",
+    "theme": "主题",
+    "theme_light": "明亮",
+    "theme_dark": "暗黑",
+    "theme_system": "跟随系统",
     "language": "语言",
     "help_translate": "帮助翻译 npmx"
   },
