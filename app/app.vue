@@ -17,7 +17,7 @@ useHead({
   },
 })
 
-const localeMap = (locales.value as LocaleObject[]).reduce(
+const localeMap = locales.value.reduce(
   (acc, l) => {
     acc[l.code!] = l.dir ?? 'ltr'
     return acc
