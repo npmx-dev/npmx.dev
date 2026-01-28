@@ -9,6 +9,7 @@
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
+    "docs": "docs",
     "source": "source",
     "social": "social",
     "chat": "chat"
