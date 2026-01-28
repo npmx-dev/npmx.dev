@@ -99,8 +99,8 @@ importers:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-data-ui:
-        specifier: ^3.13.4
-        version: 3.13.4(vue@3.5.27(typescript@5.9.3))
+        specifier: ^3.13.5
+        version: 3.13.5(vue@3.5.27(typescript@5.9.3))
     devDependencies:
       '@iconify-json/carbon':
         specifier: 1.2.18
@@ -8658,8 +8658,8 @@ packages:
   vue-component-type-helpers@3.2.4:
     resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
-  vue-data-ui@3.13.4:
-    resolution: {integrity: sha512-EM9Uq2FbRZNyOzTJ7Tkcn5bBifEmoggXYBAzgKNAiXhWT/5XCph34Dab3jgYHLkH4JQG/+43mWax/BxgWN8D9w==}
+  vue-data-ui@3.13.5:
+    resolution: {integrity: sha512-RBdhoKAlraMoTU3ls7tRy9UCusNwBCvN9w0wF2R0Jwy/AX7cAejlfDDMKE4SN/Th/4ox2eFIZSCZ/CRco3nOxw==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -19010,7 +19010,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.4: {}
 
-  vue-data-ui@3.13.4(vue@3.5.27(typescript@5.9.3)):
+  vue-data-ui@3.13.5(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
 
