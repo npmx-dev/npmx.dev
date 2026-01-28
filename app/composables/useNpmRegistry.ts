@@ -239,15 +239,15 @@ export function useNpmSearch(
   let lastSearch: NpmSearchResponse | undefined = undefined
 
   return useLazyAsyncData(
-    () => `search:${toValue(query)}:${JSON.stringify(toValue(options))}`,
+    () => `search:${toValue(query).trim().toLowerCase()}:${JSON.stringify(toValue(options))}`,
     async () => {
-      const q = toValue(query)
-      if (!q.trim()) {
+      const q = toValue(query).trim().toLowerCase()
+      if (!q) {
         return Promise.resolve(emptySearchResponse)
       }
 
       const params = new URLSearchParams()
-      params.set('text', q.toLowerCase())
+      params.set('text', q)
       const opts = toValue(options)
       if (opts.size) params.set('size', String(opts.size))
       if (opts.from) params.set('from', String(opts.from))
