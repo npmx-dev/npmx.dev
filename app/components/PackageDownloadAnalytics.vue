@@ -50,6 +50,35 @@ const accent = computed(() => {
   return id ? (oklchToHex(accentColorValueById.value[id]!) ?? '#8A8A8A') : '#8A8A8A'
 })
 
+const mobileBreakpointWidth = 640
+const isMobile = ref(false)
+
+let resizeObserver: ResizeObserver | null = null
+
+function updateIsMobileFromWidth(width: number) {
+  isMobile.value = width < mobileBreakpointWidth
+}
+
+onMounted(() => {
+  if (!import.meta.client) return
+
+  updateIsMobileFromWidth(window.innerWidth)
+
+  resizeObserver = new ResizeObserver(entries => {
+    const entry = entries[0]
+    if (!entry) return
+    updateIsMobileFromWidth(entry.contentRect.width)
+  })
+
+  resizeObserver.observe(document.documentElement)
+})
+
+onBeforeUnmount(() => {
+  if (!resizeObserver) return
+  resizeObserver.disconnect()
+  resizeObserver = null
+})
+
 type ChartTimeGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
 type EvolutionData =
   | DailyDownloadPoint[]
@@ -417,6 +446,7 @@ const formatter = ({ value }: { value: number }) => formatCompactNumber(value, {
 const config = computed(() => ({
   theme: isDarkMode.value ? 'dark' : 'default',
   chart: {
+    height: isMobile.value ? 850 : 600,
     userOptions: {
       buttons: {
         pdf: false,
