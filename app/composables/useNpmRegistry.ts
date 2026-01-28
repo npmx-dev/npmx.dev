@@ -369,7 +369,7 @@ function packumentToSearchResult(pkg: MinimalPackument, weeklyDownloads?: number
     score: { final: 0, detail: { quality: 0, popularity: 0, maintenance: 0 } },
     searchScore: 0,
     downloads: weeklyDownloads !== undefined ? { weekly: weeklyDownloads } : undefined,
-    updated: modified,
+    updated: pkg.time[latestVersion] || modified,
   }
 }
 
