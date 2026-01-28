@@ -10,7 +10,7 @@ const availableLocales = computed(() =>
 
 <template>
   <main class="container py-8 sm:py-12 w-full">
-    <div class="space-y-1 p-4 rounded-lg">
+    <div class="space-y-1 p-4 rounded-lg bg-bg-muted border border-border">
       <button
         type="button"
         class="w-full flex items-center justify-between gap-3 px-2 py-2 rounded-md hover:bg-bg-muted transition-[background-color] duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
