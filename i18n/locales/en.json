@@ -48,7 +48,8 @@
     "theme_dark": "Dark",
     "theme_system": "System",
     "language": "Language",
-    "help_translate": "Help translate npmx"
+    "help_translate": "Help translate npmx",
+    "accent_colors": "Accent colors"
   },
   "common": {
     "loading": "Loading...",
