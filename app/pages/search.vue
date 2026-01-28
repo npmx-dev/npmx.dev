@@ -45,9 +45,7 @@ watch(
 
 // For glow effect
 const searchInputRef = useTemplateRef('searchInputRef')
-const { focused: isSearchFocused } = useFocus(searchInputRef, {
-  initialValue: true,
-})
+const { focused: isSearchFocused } = useFocus(searchInputRef)
 
 const selectedIndex = ref(0)
 const packageListRef = useTemplateRef('packageListRef')
@@ -729,6 +727,7 @@ defineOgImageComponent('Default', {
                   type="search"
                   name="q"
                   :placeholder="$t('search.placeholder')"
+                  autofocus
                   autocapitalize="off"
                   autocomplete="off"
                   autocorrect="off"
