@@ -81,13 +81,14 @@ export function getExecutableInfo(
 
   // Object format: keys are command names
   const commands = Object.keys(bin)
-  if (commands.length === 0) {
+  const firstCommand = commands[0]
+  if (!firstCommand) {
     return { primaryCommand: '', commands: [], hasExecutable: false }
   }
 
   // Prefer command matching package name if it exists, otherwise use first
   const baseName = packageName.startsWith('@') ? packageName.split('/')[1] : packageName
-  const primaryCommand = commands.includes(baseName) ? baseName : commands[0]
+  const primaryCommand = baseName && commands.includes(baseName) ? baseName : firstCommand
 
   return {
     primaryCommand,
