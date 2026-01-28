@@ -261,6 +261,8 @@ describe('useInstallCommand', () => {
 
   describe('copyInstallCommand', () => {
     it('should copy command to clipboard and set copied state', async () => {
+      vi.useFakeTimers()
+
       const { copyInstallCommand, copied, fullInstallCommand } = useInstallCommand(
         'vue',
         null,
@@ -276,9 +278,11 @@ describe('useInstallCommand', () => {
       // useClipboard sets copied to true after successful copy
       expect(copied.value).toBe(true)
 
-      // Wait for the timeout to reset copied (copiedDuring: 2000)
-      await new Promise(resolve => setTimeout(resolve, 2100))
+      // Advance timers to reset copied (copiedDuring: 2000)
+      await vi.advanceTimersByTimeAsync(2100)
       expect(copied.value).toBe(false)
+
+      vi.useRealTimers()
     })
 
     it('should not copy when command is empty', async () => {

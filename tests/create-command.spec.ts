@@ -111,9 +111,7 @@ test.describe('Create Command', () => {
       const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
       expect(clipboardContent).toMatch(/create vite/i)
 
-      // After timeout, should revert to "copy"
-      await page.waitForTimeout(2500)
-      await expect(copyButton).toContainText(/copy/i)
+      await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
       await expect(copyButton).not.toContainText(/copied/i)
     })
   })
@@ -162,9 +160,7 @@ test.describe('Create Command', () => {
       const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
       expect(clipboardContent).toMatch(/install lodash|add lodash/i)
 
-      // After timeout, should revert to "copy"
-      await page.waitForTimeout(2500)
-      await expect(copyButton).toContainText(/copy/i)
+      await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
       await expect(copyButton).not.toContainText(/copied/i)
     })
   })

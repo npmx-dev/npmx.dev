@@ -105,16 +105,11 @@ test.describe('API Documentation Pages', () => {
 
 test.describe('Version Selector', () => {
   test('version selector dropdown shows versions', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
+    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
-    // Find and click the version selector button
+    // Find and click the version selector button (wait for it to be visible)
     const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })
-
-    // Skip if version selector not present (data might not be loaded)
-    if (!(await versionButton.isVisible())) {
-      test.skip()
-      return
-    }
+    await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()
 
@@ -128,16 +123,11 @@ test.describe('Version Selector', () => {
   })
 
   test('selecting a version navigates to that version', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
+    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
-    // Find and click the version selector button
+    // Find and click the version selector button (wait for it to be visible)
     const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })
-
-    // Skip if version selector not present
-    if (!(await versionButton.isVisible())) {
-      test.skip()
-      return
-    }
+    await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()
 
@@ -167,14 +157,11 @@ test.describe('Version Selector', () => {
   })
 
   test('escape key closes version dropdown', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
+    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
+    // Wait for version button to be visible
     const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })
-
-    if (!(await versionButton.isVisible())) {
-      test.skip()
-      return
-    }
+    await expect(versionButton).toBeVisible({ timeout: 10000 })
 
     await versionButton.click()
 
