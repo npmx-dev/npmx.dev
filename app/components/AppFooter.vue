@@ -90,6 +90,14 @@ onMounted(() => {
         <p class="text-xs text-fg-muted m-0 sm:hidden">{{ $t('non_affiliation_disclaimer') }}</p>
         <div class="flex items-center gap-4 sm:gap-6">
           <a
+            href="https://docs.npmx.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-subtle font-mono text-xs min-h-11 min-w- flex items-center"
+          >
+            {{ $t('footer.docs') }}
+          </a>
+          <a
             href="https://repo.npmx.dev"
             target="_blank"
             rel="noopener noreferrer"

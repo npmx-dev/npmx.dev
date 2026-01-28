@@ -9,6 +9,7 @@
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
+    "docs": "docs",
     "source": "source",
     "social": "social",
     "chat": "chat"
@@ -48,7 +49,8 @@
     "theme_dark": "Dark",
     "theme_system": "System",
     "language": "Language",
-    "help_translate": "Help translate npmx"
+    "help_translate": "Help translate npmx",
+    "accent_colors": "Accent colors"
   },
   "common": {
     "loading": "Loading...",
@@ -102,7 +104,8 @@
       "forks": "fork | forks",
       "jsr": "jsr",
       "code": "code",
-      "docs": "docs"
+      "docs": "docs",
+      "fund": "fund"
     },
     "install": {
       "title": "Install",
@@ -276,7 +279,6 @@
     "modal": {
       "title": "Local Connector",
       "close_modal": "Close modal",
-      "close": "Close",
       "connected": "Connected",
       "logged_in_as": "Logged in as {'@'}{user}",
       "connected_hint": "You can now manage packages and organizations from the web UI.",
@@ -425,7 +427,6 @@
     "modal": {
       "title": "Claim Package Name",
       "close_modal": "Close modal",
-      "close": "Close",
       "success": "Package claimed!",
       "success_detail": "{name}{'@'}0.0.0 has been published to npm.",
       "success_hint": "You can now publish new versions to this package using npm publish.",
@@ -443,7 +444,6 @@
       "preview_json": "Preview package.json",
       "claim_button": "Claim Package Name",
       "publishing": "Publishing...",
-      "retry": "Retry",
       "checking": "Checking availability...",
       "failed_to_check": "Failed to check name availability",
       "failed_to_claim": "Failed to claim package"

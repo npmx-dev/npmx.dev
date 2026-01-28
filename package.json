@@ -53,11 +53,12 @@
     "validate-npm-package-name": "^7.0.2",
     "virtua": "^0.48.3",
     "vue": "3.5.27",
-    "vue-data-ui": "^3.13.4"
+    "vue-data-ui": "^3.13.5"
   },
   "devDependencies": {
     "@iconify-json/carbon": "1.2.18",
     "@iconify-json/solar": "1.2.5",
+    "@iconify-json/svg-spinners": "^1.2.4",
     "@npm/types": "2.1.0",
     "@nuxt/test-utils": "https://pkg.pr.new/@nuxt/test-utils@1499a48",
     "@playwright/test": "1.57.0",
@@ -93,7 +94,7 @@
     "*.{js,ts,mjs,cjs,vue}": [
       "oxlint --fix"
     ],
-    "*.{js,ts,mjs,cjs,vue,json,md,html,css}": [
+    "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
       "oxfmt"
     ]
   },

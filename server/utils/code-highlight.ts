@@ -265,7 +265,8 @@ export async function highlightCode(
     try {
       let html = shiki.codeToHtml(code, {
         lang: language,
-        theme: 'github-dark',
+        themes: { light: 'github-light', dark: 'github-dark' },
+        defaultColor: 'dark',
       })
 
       // Shiki doesn't encode > in text content (e.g., arrow functions)

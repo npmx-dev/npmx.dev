@@ -82,9 +82,12 @@ describe('PackageVersions', () => {
         },
       })
 
-      const link = component.find('a')
-      expect(link.exists()).toBe(true)
-      expect(link.text()).toBe('2.0.0')
+      // Find version links (exclude anchor links that start with #)
+      const versionLinks = component
+        .findAll('a')
+        .filter(a => !a.attributes('href')?.startsWith('#'))
+      expect(versionLinks.length).toBeGreaterThan(0)
+      expect(versionLinks[0]?.text()).toBe('2.0.0')
     })
 
     it('renders scoped package version links correctly', async () => {
@@ -99,9 +102,12 @@ describe('PackageVersions', () => {
         },
       })
 
-      const link = component.find('a')
-      expect(link.exists()).toBe(true)
-      expect(link.text()).toBe('1.0.0')
+      // Find version links (exclude anchor links that start with #)
+      const versionLinks = component
+        .findAll('a')
+        .filter(a => !a.attributes('href')?.startsWith('#'))
+      expect(versionLinks.length).toBeGreaterThan(0)
+      expect(versionLinks[0]?.text()).toBe('1.0.0')
     })
   })
 
@@ -190,8 +196,11 @@ describe('PackageVersions', () => {
         },
       })
 
-      const links = component.findAll('a')
-      const versions = links.map(l => l.text())
+      // Find version links (exclude anchor links that start with #)
+      const versionLinks = component
+        .findAll('a')
+        .filter(a => !a.attributes('href')?.startsWith('#'))
+      const versions = versionLinks.map(l => l.text())
       // Should be sorted by version descending
       expect(versions[0]).toBe('2.0.0')
     })
@@ -210,8 +219,12 @@ describe('PackageVersions', () => {
         },
       })
 
-      const link = component.find('a')
-      expect(link.classes()).toContain('text-red-400')
+      // Find version links (exclude anchor links that start with #)
+      const versionLinks = component
+        .findAll('a')
+        .filter(a => !a.attributes('href')?.startsWith('#'))
+      expect(versionLinks.length).toBeGreaterThan(0)
+      expect(versionLinks[0]?.classes()).toContain('text-red-400')
     })
 
     it('shows deprecated version in title attribute', async () => {
@@ -226,8 +239,12 @@ describe('PackageVersions', () => {
         },
       })
 
-      const link = component.find('a')
-      expect(link.attributes('title')).toContain('deprecated')
+      // Find version links (exclude anchor links that start with #)
+      const versionLinks = component
+        .findAll('a')
+        .filter(a => !a.attributes('href')?.startsWith('#'))
+      expect(versionLinks.length).toBeGreaterThan(0)
+      expect(versionLinks[0]?.attributes('title')).toContain('deprecated')
     })
 
     it('filters deprecated tags from visible list when package is not deprecated', async () => {
@@ -552,9 +569,10 @@ describe('PackageVersions', () => {
         },
       })
 
-      // Count visible version links (excluding "Other versions" section)
-      // The first set of links before the "Other versions" button
-      const visibleLinks = component.findAll('a')
+      // Count visible version links (excluding anchor links that start with #)
+      const visibleLinks = component
+        .findAll('a')
+        .filter(a => !a.attributes('href')?.startsWith('#'))
       // Should have max 10 visible links in the main section
       expect(visibleLinks.length).toBeLessThanOrEqual(10)
     })

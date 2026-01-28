@@ -83,7 +83,7 @@ watch(open, isOpen => {
               <button
                 type="button"
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                :aria-label="$t('connector.modal.close')"
+                :aria-label="$t('common.close')"
                 @click="open = false"
               >
                 <span class="i-carbon-close block w-5 h-5" aria-hidden="true" />

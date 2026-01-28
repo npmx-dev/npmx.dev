@@ -5,7 +5,7 @@ const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
 </script>
 
 <template>
-  <div role="listbox" aria-label="Accent colors" class="flex items-center justify-between">
+  <div role="listbox" aria-label="Accent colors" class="flex items-center gap-4">
     <button
       v-for="color in accentColors"
       :key="color.id"

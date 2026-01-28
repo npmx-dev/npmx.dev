@@ -17,6 +17,7 @@ export default defineConfig({
   presets: [
     presetWind4(),
     presetIcons({
+      warn: true,
       scale: 1.2,
       collections: {
         custom: customIcons,

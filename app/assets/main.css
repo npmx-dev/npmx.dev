@@ -157,6 +157,16 @@ button {
   top: 0;
 }
 
+/* Shiki theme colors */
+html.light .shiki,
+html.light .shiki span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
 /* README prose styling */
 .readme-content {
   color: var(--fg-muted);
@@ -238,7 +248,7 @@ button {
 .readme-content pre,
 .readme-content .shiki {
   background: oklch(0.145 0 0) !important;
-  border: 1px solid oklch(0.2686 0 0);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 1rem;
   overflow-x: auto;

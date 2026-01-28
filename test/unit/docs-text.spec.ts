@@ -242,8 +242,8 @@ describe('renderMarkdown', () => {
     const input = '```ts\nconst a = 1\n```\n\nSome text\n\n```js\nconst b = 2\n```'
     const result = await renderMarkdown(input, emptyLookup)
     expect(result).toContain('Some text')
-    // Both code blocks should be highlighted
-    expect((result.match(/shiki/g) || []).length).toBe(2)
+    // Both code blocks should be highlighted, search for `shiki` class
+    expect((result.match(/["\s]shiki["\s]/g) || []).length).toBe(2)
   })
 
   it('should not confuse inline code with fenced code blocks', async () => {

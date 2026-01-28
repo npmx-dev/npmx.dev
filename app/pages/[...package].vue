@@ -183,6 +183,15 @@ const docsLink = computed(() => {
   }
 })
 
+const fundingUrl = computed(() => {
+  let funding = displayVersion.value?.funding
+  if (Array.isArray(funding)) funding = funding[0]
+
+  if (!funding) return null
+
+  return typeof funding === 'string' ? funding : funding.url
+})
+
 function normalizeGitUrl(url: string): string {
   return url
     .replace(/^git\+/, '')
@@ -300,7 +309,7 @@ defineOgImageComponent('Package', {
 
     <article
       v-else-if="status === 'success' && pkg"
-      class="package-page motion-safe:animate-fade-in"
+      class="package-page motion-safe:animate-fade-in overflow-x-hidden"
     >
       <!-- Package header -->
       <header class="area-header pb-8 border-b border-border">
@@ -635,6 +644,15 @@ defineOgImageComponent('Package', {
                 {{ $t('package.links.docs') }}
               </NuxtLink>
             </li>
+            <li v-if="fundingUrl">
+              <NuxtLink
+                :to="fundingUrl"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-favorite w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.fund') }}
+              </NuxtLink>
+            </li>
             <li v-if="displayVersion" class="sm:ml-auto">
               <NuxtLink
                 :to="{
@@ -667,14 +685,23 @@ defineOgImageComponent('Package', {
       />
 
       <!-- Install command with package manager selector -->
-      <section aria-labelledby="install-heading" class="area-install">
+      <section id="install" aria-labelledby="install-heading" class="area-install scroll-mt-20">
         <div class="flex flex-wrap items-center justify-between mb-3">
-          <h2 id="install-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ $t('package.install.title') }}
+          <h2 id="install-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
+            <a
+              href="#install"
+              class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+            >
+              {{ $t('package.install.title') }}
+              <span
+                class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                aria-hidden="true"
+              />
+            </a>
           </h2>
           <!-- Package manager tabs -->
           <div
-            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md"
+            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
             role="tablist"
             :aria-label="$t('package.install.pm_label')"
           >
@@ -716,11 +743,11 @@ defineOgImageComponent('Package', {
               <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
               <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
             </div>
-            <div class="space-y-1 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4">
+            <div class="space-y-1 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto">
               <!-- Main package install -->
-              <div class="flex items-center gap-2">
-                <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                <code class="font-mono text-sm"
+              <div class="flex items-center gap-2 min-w-0">
+                <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+                <code class="font-mono text-sm min-w-0"
                   ><ClientOnly
                     ><span
                       v-for="(part, i) in installCommandParts"
@@ -735,9 +762,9 @@ defineOgImageComponent('Package', {
                 >
               </div>
               <!-- @types package install (when enabled) -->
-              <div v-if="showTypesInInstall" class="flex items-center gap-2">
-                <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                <code class="font-mono text-sm"
+              <div v-if="showTypesInInstall" class="flex items-center gap-2 min-w-0">
+                <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+                <code class="font-mono text-sm min-w-0"
                   ><span
                     v-for="(part, i) in typesInstallCommandParts"
                     :key="i"
@@ -769,9 +796,22 @@ defineOgImageComponent('Package', {
       </section>
 
       <!-- README -->
-      <section aria-labelledby="readme-heading" class="area-readme min-w-0">
-        <h2 id="readme-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-          {{ $t('package.readme.title') }}
+      <section
+        id="readme"
+        aria-labelledby="readme-heading"
+        class="area-readme min-w-0 scroll-mt-20"
+      >
+        <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <a
+            href="#readme"
+            class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+          >
+            {{ $t('package.readme.title') }}
+            <span
+              class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              aria-hidden="true"
+            />
+          </a>
         </h2>
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
         <div
@@ -799,9 +839,26 @@ defineOgImageComponent('Package', {
           </ClientOnly>
 
           <!-- Keywords -->
-          <section v-if="displayVersion?.keywords?.length" aria-labelledby="keywords-heading">
-            <h2 id="keywords-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-              {{ $t('package.keywords_title') }}
+          <section
+            id="keywords"
+            v-if="displayVersion?.keywords?.length"
+            aria-labelledby="keywords-heading"
+            class="scroll-mt-20"
+          >
+            <h2
+              id="keywords-heading"
+              class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
+            >
+              <a
+                href="#keywords"
+                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+              >
+                {{ $t('package.keywords_title') }}
+                <span
+                  class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  aria-hidden="true"
+                />
+              </a>
             </h2>
             <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
               <li v-for="keyword in displayVersion.keywords.slice(0, 15)" :key="keyword">
@@ -822,16 +879,27 @@ defineOgImageComponent('Package', {
           />
 
           <section
+            id="compatibility"
             v-if="
               displayVersion?.engines && (displayVersion.engines.node || displayVersion.engines.npm)
             "
             aria-labelledby="compatibility-heading"
+            class="scroll-mt-20"
           >
             <h2
               id="compatibility-heading"
-              class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
+              class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
             >
-              {{ $t('package.compatibility') }}
+              <a
+                href="#compatibility"
+                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+              >
+                {{ $t('package.compatibility') }}
+                <span
+                  class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  aria-hidden="true"
+                />
+              </a>
             </h2>
             <dl class="space-y-2">
               <div v-if="displayVersion.engines.node" class="flex justify-between gap-4 py-1">
@@ -905,7 +973,7 @@ defineOgImageComponent('Package', {
   gap: 2rem;
 
   /* Mobile: single column, sidebar above readme */
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
     'header'
     'install'
@@ -952,5 +1020,37 @@ defineOgImageComponent('Package', {
 }
 .area-sidebar {
   grid-area: sidebar;
+}
+
+/* Improve package name wrapping for narrow screens */
+.area-header h1 {
+  overflow-wrap: anywhere;
+}
+
+/* Ensure description text wraps properly */
+.area-header p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Allow install command text to break on narrow screens */
+.area-install code {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* Ensure all text content wraps on narrow screens */
+.package-page {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Ensure all children respect max-width */
+.package-page > * {
+  max-width: 100%;
+  min-width: 0;
 }
 </style>

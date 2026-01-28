@@ -6,7 +6,7 @@ let highlighter: HighlighterCore | null = null
 export async function getShikiHighlighter(): Promise<HighlighterCore> {
   if (!highlighter) {
     highlighter = await createHighlighterCore({
-      themes: [import('@shikijs/themes/github-dark')],
+      themes: [import('@shikijs/themes/github-dark'), import('@shikijs/themes/github-light')],
       langs: [
         // Core web languages
         import('@shikijs/langs/javascript'),
@@ -66,7 +66,8 @@ export function highlightCodeSync(shiki: HighlighterCore, code: string, language
     try {
       let html = shiki.codeToHtml(code, {
         lang: language,
-        theme: 'github-dark',
+        themes: { light: 'github-light', dark: 'github-dark' },
+        defaultColor: 'dark',
       })
       // Remove inline style from <pre> tag so CSS can control appearance
       html = html.replace(/<pre([^>]*)\s+style="[^"]*"/, '<pre$1')
