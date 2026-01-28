@@ -27,6 +27,7 @@ function formatDownloads(count?: number): string {
 function formatDate(dateStr?: string): string {
   if (!dateStr) return '-'
   const date = new Date(dateStr)
+  if (Number.isNaN(date.getTime())) return '-'
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()
   const diffSeconds = Math.floor(diffMs / 1000)

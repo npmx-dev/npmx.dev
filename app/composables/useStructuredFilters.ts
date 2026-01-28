@@ -226,9 +226,9 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
 
   function matchesKeywords(pkg: NpmSearchResult, keywords: string[]): boolean {
     if (keywords.length === 0) return true
-    const pkgKeywords = pkg.package.keywords ?? []
-    // AND logic: package must have ALL selected keywords
-    return keywords.every(k => pkgKeywords.includes(k))
+    const pkgKeywords = new Set((pkg.package.keywords ?? []).map(k => k.toLowerCase()))
+    // AND logic: package must have ALL selected keywords (case-insensitive)
+    return keywords.every(k => pkgKeywords.has(k.toLowerCase()))
   }
 
   function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolean {
