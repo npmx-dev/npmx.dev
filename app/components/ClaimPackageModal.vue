@@ -370,7 +370,7 @@ const connectorModalOpen = shallowRef(false)
                     >
                       {{ $t('claim.modal.preview_json') }}
                     </summary>
-                    <pre class="p-3 text-xs font-mono text-fg-muted bg-[#0d0d0d] overflow-x-auto">{{
+                    <pre class="p-3 text-xs font-mono text-fg-muted bg-bg-muted overflow-x-auto">{{
                       JSON.stringify(previewPackageJson, null, 2)
                     }}</pre>
                   </details>

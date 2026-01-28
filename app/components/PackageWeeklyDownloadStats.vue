@@ -202,6 +202,19 @@ const config = computed(() => {
       :packageName="packageName"
       :createdIso="createdIso"
     />
+
+    <template #after="{ close }">
+      <div class="sm:hidden flex justify-center">
+        <button
+          type="button"
+          @click="close"
+          class="w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors"
+          :aria-label="$t('common.close')"
+        >
+          <span class="w-5 h-5 i-carbon-close" />
+        </button>
+      </div>
+    </template>
   </ChartModal>
 </template>
 

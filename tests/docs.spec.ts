@@ -141,25 +141,29 @@ test.describe('Version Selector', () => {
 
     await versionButton.click()
 
-    // Find a different version and click it
-    const differentVersion = page.locator('[role="option"]').filter({ hasNotText: '1.6.3' }).first()
+    // Find a version link that's not the current version by checking the href
+    const versionLinks = page.locator('[role="option"] a[href*="/docs/ufo/v/"]')
+    const count = await versionLinks.count()
+
+    // Find first link that doesn't point to 1.6.3
+    let targetHref: string | null = null
+    for (let i = 0; i < count; i++) {
+      const href = await versionLinks.nth(i).getAttribute('href')
+      if (href && !href.includes('/v/1.6.3')) {
+        targetHref = href
+        await versionLinks.nth(i).click()
+        break
+      }
+    }
 
     // Skip if no other versions available
-    if (!(await differentVersion.isVisible())) {
+    if (!targetHref) {
       test.skip()
       return
     }
 
-    const versionText = await differentVersion.textContent()
-    await differentVersion.click()
-
-    // URL should change to the new version
-    if (versionText) {
-      const versionMatch = versionText.match(/\d+\.\d+\.\d+/)
-      if (versionMatch) {
-        await expect(page).toHaveURL(new RegExp(`/docs/ufo/v/${versionMatch[0]}`))
-      }
-    }
+    // URL should match the href we clicked
+    await expect(page).toHaveURL(new RegExp(targetHref.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
   })
 
   test('escape key closes version dropdown', async ({ page, goto }) => {
