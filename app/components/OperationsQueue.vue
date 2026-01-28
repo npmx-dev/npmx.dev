@@ -103,19 +103,14 @@ function getStatusIcon(status: string): string {
 }
 
 // Auto-refresh while executing
-let refreshInterval: ReturnType<typeof setInterval> | null = null
+const { pause: pauseRefresh, resume: resumeRefresh } = useIntervalFn(() => refreshState(), 1000, {
+  immediate: false,
+})
 watch(isExecuting, executing => {
   if (executing) {
-    refreshInterval = setInterval(() => refreshState(), 1000)
-  } else if (refreshInterval) {
-    clearInterval(refreshInterval)
-    refreshInterval = null
-  }
-})
-
-onUnmounted(() => {
-  if (refreshInterval) {
-    clearInterval(refreshInterval)
+    resumeRefresh()
+  } else {
+    pauseRefresh()
   }
 })
 </script>
