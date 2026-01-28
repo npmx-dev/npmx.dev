@@ -31,31 +31,31 @@ export default defineConfig({
     colors: {
       // Minimal black & white palette with subtle grays
       bg: {
-        DEFAULT: '#0a0a0a',
-        subtle: '#111111',
-        muted: '#1a1a1a',
-        elevated: '#222222',
+        DEFAULT: 'var(--bg)',
+        subtle: 'var(--bg-subtle)',
+        muted: 'var(--bg-muted)',
+        elevated: 'var(--bg-elevated)',
       },
       fg: {
-        DEFAULT: '#fafafa',
-        muted: '#a1a1a1',
-        subtle: '#8A8A8A',
+        DEFAULT: 'var(--fg)',
+        muted: 'var(--fg-muted)',
+        subtle: 'var(--fg-subtle)',
       },
       border: {
-        DEFAULT: '#262626',
-        subtle: '#1f1f1f',
-        hover: '#404040',
+        DEFAULT: 'var(--border)',
+        subtle: 'var(--border-subtle)',
+        hover: 'var(--border-hover)',
       },
       accent: {
-        DEFAULT: 'var(--accent-color, #666666)',
-        fallback: '#666666',
+        DEFAULT: 'var(--accent)',
+        fallback: 'var(--accent-muted)',
       },
       // Syntax highlighting colors (inspired by GitHub Dark)
       syntax: {
-        fn: '#b392f0', // function/command - purple
-        str: '#9ecbff', // string/argument - light blue
-        kw: '#f97583', // keyword - red/pink
-        comment: '#6a737d', // comment - gray
+        fn: 'var(--syntax-fn)',
+        str: 'var(--syntax-str)',
+        kw: 'var(--syntax-kw)',
+        comment: 'var(--syntax-comment)',
       },
       // Playground provider brand colors
       provider: {
@@ -101,7 +101,7 @@ export default defineConfig({
     ['container', 'max-w-4xl mx-auto px-4 sm:px-6'],
 
     // Focus states - subtle but accessible
-    ['focus-ring', 'outline-none focus-visible:(ring-2 ring-fg/20 ring-offset-2 ring-offset-bg)'],
+    ['focus-ring', 'outline-none focus-visible:(ring-2 ring-fg/10 ring-offset-2)'],
 
     // Buttons
     [
@@ -121,7 +121,10 @@ export default defineConfig({
     ['link-subtle', 'text-fg-muted hover:text-fg transition-colors duration-200 focus-ring'],
 
     // Cards
-    ['card', 'bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 transition-all duration-200'],
+    [
+      'card',
+      'bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 transition-[border-color,background-color] duration-200',
+    ],
     ['card-interactive', 'card hover:(border-border-hover bg-bg-muted) cursor-pointer'],
 
     // Form elements

@@ -11,6 +11,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "lint": "vite lint && vite fmt --check",
     "lint:fix": "vite lint --fix && vite fmt",
     "generate": "nuxt generate",
@@ -26,11 +27,13 @@
     "test:unit": "vite test --project unit"
   },
   "dependencies": {
+    "@deno/doc": "jsr:^0.189.1",
     "@iconify-json/simple-icons": "^1.2.67",
     "@iconify-json/vscode-icons": "^1.2.40",
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "^0.13.0",
     "@nuxt/scripts": "^0.13.2",
+    "@nuxtjs/color-mode": "^4.0.0",
     "@nuxtjs/html-validator": "^2.1.0",
     "@nuxtjs/i18n": "10.2.1",
     "@shikijs/langs": "^3.21.0",
@@ -82,6 +85,11 @@
     "vite-plus": "latest",
     "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
     "vue-tsc": "3.2.2"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@jsr/deno__doc@0.189.1": "patches/@jsr__deno__doc@0.189.1.patch"
+    }
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

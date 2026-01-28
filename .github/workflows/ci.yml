@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - main
+  merge_group:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -91,7 +94,7 @@ jobs:
       - name: 🏗️ Build project
         run: pnpm build
 
-      - name: ♿ Accessibility audit (Lighthouse)
-        run: pnpx @lhci/cli autorun
+      - name: ♿ Accessibility audit (Lighthouse - dark & light mode)
+        run: ./scripts/lighthouse-a11y.sh
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}

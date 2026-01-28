@@ -91,6 +91,7 @@ onMounted(() => {
         <div class="flex items-center gap-4 sm:gap-6">
           <a
             href="https://repo.npmx.dev"
+            target="_blank"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-xs min-h-11 min-w- flex items-center"
           >
@@ -98,6 +99,7 @@ onMounted(() => {
           </a>
           <a
             href="https://social.npmx.dev"
+            target="_blank"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
           >
@@ -105,6 +107,7 @@ onMounted(() => {
           </a>
           <a
             href="https://chat.npmx.dev"
+            target="_blank"
             rel="noopener noreferrer"
             class="link-subtle font-mono text-xs min-h-11 min-w-11 flex items-center"
           >

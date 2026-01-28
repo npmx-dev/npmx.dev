@@ -216,4 +216,68 @@ describe('parseRepositoryInfo', () => {
       })
     })
   })
+
+  describe('Radicle support', () => {
+    it('parses Radicle URL from app.radicle.at', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://app.radicle.at/nodes/seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT',
+      })
+      expect(result).toMatchObject({
+        provider: 'radicle',
+        owner: '',
+        repo: 'rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT',
+        host: 'app.radicle.at',
+      })
+    })
+
+    it('parses Radicle URL from seed.radicle.at', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT',
+      })
+      expect(result).toMatchObject({
+        provider: 'radicle',
+        owner: '',
+        repo: 'rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT',
+        host: 'seed.radicle.at',
+      })
+    })
+  })
+
+  describe('Forgejo support', () => {
+    it('parses Forgejo URL from forgejo subdomain', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://forgejo.example.com/owner/repo',
+      })
+      expect(result).toMatchObject({
+        provider: 'forgejo',
+        owner: 'owner',
+        repo: 'repo',
+        host: 'forgejo.example.com',
+      })
+    })
+
+    it('parses Forgejo URL from next.forgejo.org', () => {
+      const result = parseRepositoryInfo({
+        url: 'https://next.forgejo.org/forgejo/forgejo',
+      })
+      expect(result).toMatchObject({
+        provider: 'forgejo',
+        owner: 'forgejo',
+        repo: 'forgejo',
+        host: 'next.forgejo.org',
+      })
+    })
+
+    it('parses Forgejo URL with .git suffix', () => {
+      const result = parseRepositoryInfo({
+        url: 'git+ssh://git@forgejo.myserver.com/user/project.git',
+      })
+      expect(result).toMatchObject({
+        provider: 'forgejo',
+        owner: 'user',
+        repo: 'project',
+        host: 'forgejo.myserver.com',
+      })
+    })
+  })
 })

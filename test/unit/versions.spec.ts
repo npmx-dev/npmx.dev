@@ -4,6 +4,9 @@ import {
   buildVersionToTagsMap,
   filterExcludedTags,
   getPrereleaseChannel,
+  getVersionGroupKey,
+  getVersionGroupLabel,
+  isSameVersionGroup,
   parseVersion,
   sortTags,
 } from '../../app/utils/versions'
@@ -303,5 +306,84 @@ describe('filterExcludedTags', () => {
 
   it('handles non-matching exclusions', () => {
     expect(filterExcludedTags(['beta', 'rc'], ['latest'])).toEqual(['beta', 'rc'])
+  })
+})
+
+describe('getVersionGroupKey', () => {
+  it('groups 1.x+ versions by major only', () => {
+    expect(getVersionGroupKey('1.0.0')).toBe('1')
+    expect(getVersionGroupKey('1.5.3')).toBe('1')
+    expect(getVersionGroupKey('2.0.0')).toBe('2')
+    expect(getVersionGroupKey('10.5.2')).toBe('10')
+  })
+
+  it('groups 0.x versions by major.minor', () => {
+    expect(getVersionGroupKey('0.1.0')).toBe('0.1')
+    expect(getVersionGroupKey('0.1.5')).toBe('0.1')
+    expect(getVersionGroupKey('0.9.0')).toBe('0.9')
+    expect(getVersionGroupKey('0.9.3')).toBe('0.9')
+    expect(getVersionGroupKey('0.10.0')).toBe('0.10')
+    expect(getVersionGroupKey('0.10.5')).toBe('0.10')
+  })
+
+  it('handles prerelease versions', () => {
+    expect(getVersionGroupKey('1.0.0-beta.1')).toBe('1')
+    expect(getVersionGroupKey('0.5.0-alpha.1')).toBe('0.5')
+  })
+})
+
+describe('getVersionGroupLabel', () => {
+  it('formats 1.x+ group keys', () => {
+    expect(getVersionGroupLabel('1')).toBe('1.x')
+    expect(getVersionGroupLabel('2')).toBe('2.x')
+    expect(getVersionGroupLabel('10')).toBe('10.x')
+  })
+
+  it('formats 0.x group keys', () => {
+    expect(getVersionGroupLabel('0.1')).toBe('0.1.x')
+    expect(getVersionGroupLabel('0.9')).toBe('0.9.x')
+    expect(getVersionGroupLabel('0.10')).toBe('0.10.x')
+  })
+})
+
+describe('isSameVersionGroup', () => {
+  it('groups 1.x+ versions by major', () => {
+    expect(isSameVersionGroup('1.0.0', '1.5.3')).toBe(true)
+    expect(isSameVersionGroup('1.0.0', '1.99.99')).toBe(true)
+    expect(isSameVersionGroup('2.0.0', '2.1.0')).toBe(true)
+  })
+
+  it('separates different major versions', () => {
+    expect(isSameVersionGroup('1.0.0', '2.0.0')).toBe(false)
+    expect(isSameVersionGroup('1.5.3', '2.0.0')).toBe(false)
+  })
+
+  it('groups 0.x versions by major.minor', () => {
+    expect(isSameVersionGroup('0.1.0', '0.1.5')).toBe(true)
+    expect(isSameVersionGroup('0.9.0', '0.9.3')).toBe(true)
+    expect(isSameVersionGroup('0.10.0', '0.10.5')).toBe(true)
+  })
+
+  it('separates different 0.x minor versions', () => {
+    // This is the key test: 0.9.x should NOT be grouped with 0.10.x
+    expect(isSameVersionGroup('0.9.0', '0.10.0')).toBe(false)
+    expect(isSameVersionGroup('0.9.3', '0.10.5')).toBe(false)
+    expect(isSameVersionGroup('0.1.0', '0.2.0')).toBe(false)
+  })
+
+  it('separates 0.x from 1.x', () => {
+    expect(isSameVersionGroup('0.9.0', '1.0.0')).toBe(false)
+    expect(isSameVersionGroup('0.99.99', '1.0.0')).toBe(false)
+  })
+
+  it('handles prerelease versions in 1.x+', () => {
+    expect(isSameVersionGroup('1.0.0-beta.1', '1.0.0')).toBe(true)
+    expect(isSameVersionGroup('1.0.0-alpha.1', '1.5.0')).toBe(true)
+  })
+
+  it('handles prerelease versions in 0.x', () => {
+    expect(isSameVersionGroup('0.5.0-beta.1', '0.5.0')).toBe(true)
+    expect(isSameVersionGroup('0.5.0-alpha.1', '0.5.3')).toBe(true)
+    expect(isSameVersionGroup('0.5.0-beta.1', '0.6.0')).toBe(false)
   })
 })

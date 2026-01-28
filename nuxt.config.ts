@@ -31,9 +31,17 @@ export default defineNuxtConfig({
     '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
+    '@nuxtjs/color-mode',
   ],
 
-  css: ['vue-data-ui/style.css'],
+  colorMode: {
+    preference: 'system',
+    fallback: 'dark',
+    dataValue: 'theme',
+    storageKey: 'npmx-color-mode',
+  },
+
+  css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
   devtools: { enabled: true },
 
@@ -85,6 +93,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
 
   nitro: {
+    experimental: {
+      wasm: true,
+    },
     externals: {
       inline: [
         'shiki',
@@ -94,6 +105,14 @@ export default defineNuxtConfig({
         '@shikijs/engine-javascript',
         '@shikijs/core',
       ],
+      external: ['@deno/doc'],
+    },
+    rollupConfig: {
+      output: {
+        paths: {
+          '@deno/doc': '@jsr/deno__doc',
+        },
+      },
     },
     // Storage configuration for local development
     // In production (Vercel), this is overridden by modules/cache.ts
@@ -167,6 +186,7 @@ export default defineNuxtConfig({
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
       { code: 'fr', language: 'fr-FR', name: 'Français', file: 'fr.json' },
       { code: 'zh-CN', language: 'zh-CN', name: '简体中文', file: 'zh-CN.json' },
+      { code: 'it', language: 'it', name: 'Italiano', file: 'it.json' },
     ],
   },
 })

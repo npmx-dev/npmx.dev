@@ -90,12 +90,12 @@ export function initAccentOnPrehydrate() {
   // Colors must be hardcoded since ACCENT_COLORS can't be referenced.
   onPrehydrate(() => {
     const colors: Record<AccentColorId, string> = {
-      rose: '#e9aeba',
-      amber: '#fbbf24',
-      emerald: '#34d399',
-      sky: '#38bdf8',
-      violet: '#a78bfa',
-      coral: '#fb7185',
+      rose: 'oklch(0.797 0.084 11.056)',
+      amber: 'oklch(0.828 0.165 84.429)',
+      emerald: 'oklch(0.792 0.153 166.95)',
+      sky: 'oklch(0.787 0.128 230.318)',
+      violet: 'oklch(0.714 0.148 286.067)',
+      coral: 'oklch(0.704 0.177 14.75)',
     }
     const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
     const color = settings.accentColorId ? colors[settings.accentColorId as AccentColorId] : null

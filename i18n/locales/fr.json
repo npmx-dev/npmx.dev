@@ -26,7 +26,14 @@
     "claim_prompt": "Réserver ce nom de paquet sur npm",
     "claim_button": "Réserver « {name} »",
     "want_to_claim": "Vous souhaitez réserver ce nom de paquet ?",
-    "start_typing": "Commencez à taper pour rechercher des paquets"
+    "start_typing": "Commencez à taper pour rechercher des paquets",
+    "exact_match": "exact",
+    "suggestion": {
+      "user": "utilisateur",
+      "org": "organisation",
+      "view_user_packages": "Voir les paquets de cet utilisateur",
+      "view_org_packages": "Voir les paquets de cette organisation"
+    }
   },
   "nav": {
     "popular_packages": "Paquets populaires",
@@ -36,6 +43,10 @@
   "settings": {
     "relative_dates": "Dates relatives",
     "include_types": "Inclure {'@'}types à la commande d'installation",
+    "theme": "Thème",
+    "theme_light": "Clair",
+    "theme_dark": "Sombre",
+    "theme_system": "Système",
     "language": "Langue de l'interface",
     "help_translate": "Aidez à traduire npmx"
   },
@@ -90,7 +101,8 @@
       "issues": "issues",
       "forks": "fork | forks",
       "jsr": "jsr",
-      "code": "code"
+      "code": "code",
+      "docs": "docs"
     },
     "install": {
       "title": "Installer",
@@ -109,7 +121,8 @@
       "publisher": "Éditeur",
       "updated": "Mis à jour",
       "weekly_downloads": "Téléchargements hebdomadaires",
-      "keywords": "Mots-clés"
+      "keywords": "Mots-clés",
+      "license": "Licence"
     },
     "versions": {
       "title": "Versions",

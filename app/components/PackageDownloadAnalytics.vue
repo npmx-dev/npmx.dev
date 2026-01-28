@@ -16,6 +16,40 @@ const {
   createdIso: string | null
 }>()
 
+const { accentColors, selectedAccentColor } = useAccentColor()
+const colorMode = useColorMode()
+
+const resolvedMode = ref<'light' | 'dark'>('light')
+
+onMounted(() => {
+  resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
+})
+
+watch(
+  () => colorMode.value,
+  value => {
+    resolvedMode.value = value === 'dark' ? 'dark' : 'light'
+  },
+  { flush: 'sync' },
+)
+
+const isDarkMode = computed(() => resolvedMode.value === 'dark')
+
+// oklh or css variables are not supported by vue-data-ui (for now)
+
+const accentColorValueById = computed<Record<string, string>>(() => {
+  const map: Record<string, string> = {}
+  for (const item of accentColors) {
+    map[item.id] = item.value
+  }
+  return map
+})
+
+const accent = computed(() => {
+  const id = selectedAccentColor.value
+  return id ? (oklchToHex(accentColorValueById.value[id]!) ?? '#8A8A8A') : '#8A8A8A'
+})
+
 type ChartTimeGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
 type EvolutionData =
   | DailyDownloadPoint[]
@@ -81,7 +115,7 @@ function formatXyDataset(
           name: packageName,
           type: 'line',
           series: dataset.map(d => d.downloads),
-          color: '#8A8A8A',
+          color: accent.value,
         },
       ],
       dates: dataset.map(d => `${d.weekStart}\nto ${d.weekEnd}`),
@@ -94,7 +128,7 @@ function formatXyDataset(
           name: packageName,
           type: 'line',
           series: dataset.map(d => d.downloads),
-          color: '#8A8A8A',
+          color: accent.value,
         },
       ],
       dates: dataset.map(d => d.day),
@@ -107,7 +141,7 @@ function formatXyDataset(
           name: packageName,
           type: 'line',
           series: dataset.map(d => d.downloads),
-          color: '#8A8A8A',
+          color: accent.value,
         },
       ],
       dates: dataset.map(d => d.month),
@@ -120,7 +154,7 @@ function formatXyDataset(
           name: packageName,
           type: 'line',
           series: dataset.map(d => d.downloads),
-          color: '#8A8A8A',
+          color: accent.value,
         },
       ],
       dates: dataset.map(d => d.year),
@@ -381,7 +415,7 @@ const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: string
 const formatter = ({ value }: { value: number }) => formatCompactNumber(value, { decimals: 1 })
 
 const config = computed(() => ({
-  theme: 'dark',
+  theme: isDarkMode.value ? 'dark' : 'default',
   chart: {
     userOptions: {
       buttons: {
@@ -392,8 +426,9 @@ const config = computed(() => ({
         tooltip: false,
       },
     },
-    backgroundColor: '#0A0A0A', // current default dark mode theme,
+    backgroundColor: isDarkMode.value ? '#0A0A0A' : '#FFFFFF',
     grid: {
+      stroke: isDarkMode.value ? '#4A4A4A' : '#a3a3a3',
       labels: {
         axis: {
           yLabel: $t('package.downloads.y_axis_label', { granularity: selectedGranularity.value }),
@@ -419,7 +454,7 @@ const config = computed(() => ({
       show: false, // As long as a single package is displayed
     },
     tooltip: {
-      borderColor: '#2A2A2A',
+      borderColor: 'transparent',
       backdropFilter: false,
       backgroundColor: 'transparent',
       customFormat: ({
@@ -431,7 +466,7 @@ const config = computed(() => ({
       }) => {
         if (!datapoint) return ''
         const displayValue = formatter({ value: datapoint[0]?.value ?? 0 })
-        return `<div class="flex flex-col font-mono text-xs p-3 bg-[#0A0A0A]/10 backdrop-blur-md">
+        return `<div class="flex flex-col font-mono text-xs p-3 border border-border rounded-md bg-white/10 dark:bg-[#0A0A0A]/10 backdrop-blur-md">
           <span class="text-fg-subtle">${chartData.value?.dates[absoluteIndex]}</span>
           <span class="text-xl">${displayValue}</span>
         </div>
@@ -439,15 +474,17 @@ const config = computed(() => ({
       },
     },
     zoom: {
-      highlightColor: '#2A2A2A',
+      highlightColor: isDarkMode.value ? '#2A2A2A' : '#E1E5E8',
       minimap: {
         show: true,
         lineColor: '#FAFAFA',
-        selectedColorOpacity: 0.1,
-        frameColor: '#3A3A3A',
+        selectedColor: accent.value,
+        selectedColorOpacity: 0.06,
+        frameColor: isDarkMode.value ? '#3A3A3A' : '#a3a3a3',
       },
       preview: {
-        fill: '#FAFAFA05',
+        fill: accent.value + 10,
+        stroke: accent.value + 60,
         strokeWidth: 1,
         strokeDasharray: 3,
       },
@@ -471,12 +508,12 @@ const config = computed(() => ({
           </label>
 
           <div
-            class="flex items-center px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
+            class="flex items-center px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
           >
             <select
               id="granularity"
               v-model="selectedGranularity"
-              class="w-full bg-transparent font-mono text-sm text-fg outline-none"
+              class="w-full bg-transparent font-mono text-sm text-fg outline-none appearance-none"
             >
               <option value="daily">{{ $t('package.downloads.granularity_daily') }}</option>
               <option value="weekly">{{ $t('package.downloads.granularity_weekly') }}</option>
@@ -496,7 +533,7 @@ const config = computed(() => ({
               {{ $t('package.downloads.start_date') }}
             </label>
             <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
+              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
             >
               <span class="i-carbon-calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
               <input
@@ -516,7 +553,7 @@ const config = computed(() => ({
               {{ $t('package.downloads.end_date') }}
             </label>
             <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-fg/50)"
+              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
             >
               <span class="i-carbon-calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
               <input
@@ -650,16 +687,17 @@ const config = computed(() => ({
 
 <style>
 .vue-ui-pen-and-paper-actions {
-  background: #1a1a1a !important;
+  background: var(--bg-elevated) !important;
 }
 
 .vue-ui-pen-and-paper-action {
-  background: #1a1a1a !important;
+  background: var(--bg-elevated) !important;
   border: none !important;
 }
 
 .vue-ui-pen-and-paper-action:hover {
-  background: #2a2a2a !important;
+  background: var(--bg-elevated) !important;
+  box-shadow: none !important;
 }
 
 .vue-data-ui-zoom {

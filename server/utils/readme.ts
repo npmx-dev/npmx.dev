@@ -3,6 +3,7 @@ import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
 import type { ReadmeResponse } from '#shared/types/readme'
 import { convertBlobToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import { highlightCodeSync } from './shiki'
 
 /**
  * Playground provider configuration
@@ -266,24 +267,7 @@ export async function renderReadmeHtml(
 
   // Syntax highlighting for code blocks (uses shared highlighter)
   renderer.code = ({ text, lang }: Tokens.Code) => {
-    const language = lang || 'text'
-    const loadedLangs = shiki.getLoadedLanguages()
-
-    // Use Shiki if language is loaded, otherwise fall back to plain
-    if (loadedLangs.includes(language as never)) {
-      try {
-        return shiki.codeToHtml(text, {
-          lang: language,
-          theme: 'github-dark',
-        })
-      } catch {
-        // Fall back to plain code block
-      }
-    }
-
-    // Plain code block for unknown languages
-    const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    return `<pre><code class="language-${language}">${escaped}</code></pre>\n`
+    return highlightCodeSync(shiki, text, lang || 'text')
   }
 
   // Resolve image URLs (with GitHub blob → raw conversion)
@@ -351,6 +335,25 @@ export async function renderReadmeHtml(
       img: (tagName, attribs) => {
         if (attribs.src) {
           attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)
+        }
+        return { tagName, attribs }
+      },
+      source: (tagName, attribs) => {
+        if (attribs.src) {
+          attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)
+        }
+        if (attribs.srcset) {
+          attribs.srcset = attribs.srcset
+            .split(',')
+            .map(entry => {
+              const parts = entry.trim().split(/\s+/)
+              const url = parts[0]
+              if (!url) return entry.trim()
+              const descriptor = parts[1]
+              const resolvedUrl = resolveImageUrl(url, packageName, repoInfo)
+              return descriptor ? `${resolvedUrl} ${descriptor}` : resolvedUrl
+            })
+            .join(', ')
         }
         return { tagName, attribs }
       },

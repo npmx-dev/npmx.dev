@@ -39,7 +39,7 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 - **Package details** &ndash; READMEs, versions, dependencies, and metadata
 - **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines
 - **Provenance indicators** &ndash; verified build badges for packages with npm provenance
-- **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, and Sourcehut
+- **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, Sourcehut, Forgejo, Gitea, Radicle, and Tangled
 - **JSR availability** &ndash; see if scoped packages are also available on JSR
 - **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types (with `@types/*` links), and engine constraints
 - **Outdated dependency indicators** &ndash; visual cues showing which dependencies are behind
