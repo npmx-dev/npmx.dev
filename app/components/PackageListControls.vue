@@ -66,7 +66,7 @@ const showFilteredCount = computed(() => {
         v-model="filterValue"
         type="search"
         :placeholder="placeholder ?? $t('package.list.filter_placeholder')"
-        autocomplete="off"
+        v-bind="noCorrect"
         class="w-full bg-bg-subtle border border-border rounded-lg pl-10 pr-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:(border-border-hover outline-none)"
       />
     </div>

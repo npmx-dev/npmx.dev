@@ -9,6 +9,8 @@
   "non_affiliation_disclaimer": "non affiliato con npm, Inc.",
   "trademark_disclaimer": "npm è un marchio registrato da npm, Inc. Questo sito non è affiliato con npm, Inc.",
   "footer": {
+    "about": "info",
+    "docs": "docs",
     "source": "codice",
     "social": "social",
     "chat": "chat"
@@ -31,7 +33,8 @@
   "nav": {
     "popular_packages": "Pacchetti popolari",
     "search": "cerca",
-    "settings": "impostazioni"
+    "settings": "impostazioni",
+    "back": "Indietro"
   },
   "settings": {
     "relative_dates": "Date relative",
@@ -93,8 +96,8 @@
       "jsr": "jsr",
       "code": "codice"
     },
-    "install": {
-      "title": "Installa",
+    "get_started": {
+      "title": "Inizia",
       "pm_label": "Gestore di pacchetti",
       "copy_command": "Copia comando di installazione",
       "view_types": "Vedi {package}"
@@ -484,6 +487,51 @@
     "jsr": {
       "title": "disponibile anche su JSR",
       "label": "jsr"
+    }
+  },
+  "about": {
+    "title": "Info",
+    "heading": "info",
+    "meta_description": "npmx è un browser veloce e moderno per il registro npm. Una migliore UX/DX per esplorare i pacchetti npm.",
+    "back_home": "torna alla home",
+    "what_we_are": {
+      "title": "Cosa siamo",
+      "better_ux_dx": "migliore UX/DX",
+      "admin_ui": "interfaccia di amministrazione",
+      "description": "npmx è una {betterUxDx} per il registro npm e i suoi strumenti. Forniamo un'interfaccia veloce e moderna per esplorare i pacchetti, con funzionalità come la modalità scura, la navigazione da tastiera, la visualizzazione del codice e connessioni a registri alternativi come {jsr}.",
+      "admin_description": "Miriamo anche a fornire una migliore {adminUi} per gestire i tuoi pacchetti, team e organizzazioni — tutto dal browser, alimentato dalla tua CLI npm locale."
+    },
+    "what_we_are_not": {
+      "title": "Cosa non siamo",
+      "not_package_manager": "Non un gestore di pacchetti.",
+      "not_registry": "Non un registro.",
+      "registry_description": "Non ospitiamo pacchetti. Siamo solo un modo migliore per esplorarli.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Ci sono",
+        "people": "già",
+        "building": "persone",
+        "really": "che creano",
+        "cool": "davvero",
+        "package": "fantastici",
+        "managers": "gestori di pacchetti"
+      }
+    },
+    "vision": {
+      "title": "Visione",
+      "speed_first": "Velocità prima di tutto",
+      "speed_first_description": "I cambiamenti di layout, l'instabilità e la lentezza sono il peggio. Vogliamo che tutto sia veloce, che si tratti di ricerca, filtro o navigazione.",
+      "url_compatible": "Compatibile con gli URL",
+      "url_compatible_description": "Sostituisci {npmjs} con {npmx} in qualsiasi URL e dovrebbe funzionare, fornendo le stesse informazioni con un'esperienza migliore.",
+      "simplicity": "Semplicità",
+      "simplicity_description": "Niente rumore, display disordinato o interfaccia confusa."
+    },
+    "open_source": {
+      "title": "Open source",
+      "description": "npmx è completamente open source. Dai un'occhiata al {github}, unisciti alla {discord}, o seguici su {bluesky}.",
+      "github": "codice sorgente su GitHub",
+      "discord": "community su Discord",
+      "bluesky": "Bluesky"
     }
   },
   "header": {

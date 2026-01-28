@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const router = useRouter()
 const { settings } = useSettings()
 const { locale, locales, setLocale } = useI18n()
 const colorMode = useColorMode()
@@ -7,6 +8,10 @@ const availableLocales = computed(() =>
   locales.value.map(l => (typeof l === 'string' ? { code: l, name: l } : l)),
 )
 
+function goBack() {
+  router.back()
+}
+
 useSeoMeta({
   title: 'Settings - npmx',
 })
@@ -14,6 +19,16 @@ useSeoMeta({
 
 <template>
   <main class="container py-8 sm:py-12 w-full">
+    <!-- Back button -->
+    <button
+      type="button"
+      class="inline-flex items-center gap-2 mb-6 text-sm text-fg-muted hover:text-fg transition-colors duration-150 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+      @click="goBack"
+    >
+      <span class="i-carbon-arrow-left w-4 h-4" aria-hidden="true" />
+      {{ $t('nav.back') }}
+    </button>
+
     <div class="space-y-1 p-4 rounded-lg bg-bg-muted border border-border">
       <button
         type="button"

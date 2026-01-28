@@ -76,7 +76,6 @@ body {
   background-color: var(--bg);
   color: var(--fg);
   line-height: 1.6;
-  padding-bottom: var(--footer-height, 0);
 }
 
 /* Default link styling for accessibility on dark background */
@@ -247,7 +246,6 @@ html.light .shiki span {
 /* Code blocks - including Shiki output */
 .readme-content pre,
 .readme-content .shiki {
-  background: oklch(0.145 0 0) !important;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 1rem;

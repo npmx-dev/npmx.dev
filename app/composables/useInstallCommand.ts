@@ -76,13 +76,11 @@ export function useInstallCommand(
   })
 
   // Copy state
-  const copied = ref(false)
+  const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
   async function copyInstallCommand() {
     if (!fullInstallCommand.value) return
-    await navigator.clipboard.writeText(fullInstallCommand.value)
-    copied.value = true
-    setTimeout(() => (copied.value = false), 2000)
+    await copy(fullInstallCommand.value)
   }
 
   return {
