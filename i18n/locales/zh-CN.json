@@ -538,15 +538,6 @@
         "package": "棒的",
         "managers": "包管理器"
       }
-    },
-    "vision": {
-      "title": "愿景",
-      "speed_first": "速度优先",
-      "speed_first_description": "布局偏移、不稳定和缓慢是最糟糕的。无论是搜索、筛选还是导航，我们都希望一切都快速。",
-      "url_compatible": "URL 兼容",
-      "url_compatible_description": "将任何 URL 中的 {npmjs} 替换为 {npmx}，它应该可以工作，提供相同的信息和更好的体验。",
-      "simplicity": "简洁",
-      "simplicity_description": "没有噪音、杂乱的显示或令人困惑的界面。"
     }
   },
   "header": {

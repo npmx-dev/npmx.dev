@@ -522,15 +522,6 @@
         "package": "Paketmanager",
         "managers": "bauen"
       }
-    },
-    "vision": {
-      "title": "Vision",
-      "speed_first": "Geschwindigkeit zuerst",
-      "speed_first_description": "Layout-Shift, Flakiness und Langsamkeit sind das Schlimmste. Wir wollen, dass alles schnell ist, ob Suchen, Filtern oder Navigieren.",
-      "url_compatible": "URL-kompatibel",
-      "url_compatible_description": "Ersetze {npmjs} durch {npmx} in jeder URL und es sollte funktionieren und die gleichen Informationen mit besserer Erfahrung bieten.",
-      "simplicity": "Einfachheit",
-      "simplicity_description": "Kein Rauschen, überladene Anzeige oder verwirrende UI."
     }
   },
   "header": {

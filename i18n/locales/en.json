@@ -539,18 +539,9 @@
         "managers": "package managers"
       }
     },
-    "vision": {
-      "title": "Vision",
-      "speed_first": "Speed first",
-      "speed_first_description": "Layout shift, flakiness, and slowness is The Worst. We want everything to be fast, whether searching, filtering, or navigating.",
-      "url_compatible": "URL compatible",
-      "url_compatible_description": "Replace {npmjs} with {npmx} in any URL and it should work, providing the same information with a better experience.",
-      "simplicity": "Simplicity",
-      "simplicity_description": "No noise, cluttered display, or confusing UI."
-    },
     "contributors": {
       "title": "Contributors",
-      "description": "npmx is built by an amazing community of contributors.",
+      "description": "npmx is fully open source, built by an amazing community of contributors.",
       "loading": "Loading contributors...",
       "error": "Failed to load contributors",
       "view_profile": "View {name}'s GitHub profile"
@@ -559,17 +550,17 @@
       "title": "Get involved",
       "contribute": {
         "title": "Contribute",
-        "description": "Help us build a better npm experience. Check out our GitHub repo to get started.",
+        "description": "Help us build a better npm experience.",
         "cta": "View on GitHub"
       },
       "community": {
         "title": "Join the community",
-        "description": "Chat with other developers, ask questions, and share ideas on Discord.",
+        "description": "Chat, ask questions, and share ideas.",
         "cta": "Join Discord"
       },
       "follow": {
         "title": "Stay updated",
-        "description": "Follow us on Bluesky for the latest news, updates, and tips.",
+        "description": "Find out the latest on npmx.",
         "cta": "Follow on Bluesky"
       }
     }

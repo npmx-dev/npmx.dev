@@ -23,8 +23,8 @@ export const fetchPackument = defineCachedFunction(
 
       return await $fetch<Packument>(`https://registry.npmjs.org/${encodedName}`)
     } catch (error) {
-      // oxlint-disable-next-line no-console -- log npm registry failures for debugging
       if (import.meta.dev) {
+        // oxlint-disable-next-line no-console -- log npm registry failures for debugging
         console.warn(`[dep-resolver] Failed to fetch packument for ${name}:`, error)
       }
       return null

@@ -538,15 +538,6 @@
         "package": "fantastici",
         "managers": "gestori di pacchetti"
       }
-    },
-    "vision": {
-      "title": "Visione",
-      "speed_first": "Velocità prima di tutto",
-      "speed_first_description": "I cambiamenti di layout, l'instabilità e la lentezza sono il peggio. Vogliamo che tutto sia veloce, che si tratti di ricerca, filtro o navigazione.",
-      "url_compatible": "Compatibile con gli URL",
-      "url_compatible_description": "Sostituisci {npmjs} con {npmx} in qualsiasi URL e dovrebbe funzionare, fornendo le stesse informazioni con un'esperienza migliore.",
-      "simplicity": "Semplicità",
-      "simplicity_description": "Niente rumore, display disordinato o interfaccia confusa."
     }
   },
   "header": {
