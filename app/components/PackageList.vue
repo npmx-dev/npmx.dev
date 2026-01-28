@@ -3,6 +3,9 @@ import type { NpmSearchResult } from '#shared/types'
 import type { WindowVirtualizerHandle } from '~/composables/useVirtualInfiniteScroll'
 import { WindowVirtualizer } from 'virtua/vue'
 
+/** Number of items to render statically during SSR */
+const SSR_COUNT = 20
+
 const props = defineProps<{
   /** List of search results to display */
   results: NpmSearchResult[]
@@ -96,31 +99,52 @@ defineExpose({
 
 <template>
   <div>
-    <WindowVirtualizer
-      ref="listRef"
-      :data="results"
-      :item-size="140"
-      as="ol"
-      item="li"
-      class="list-none m-0 p-0"
-      @scroll="handleScroll"
-    >
-      <template #default="{ item, index }">
-        <div class="pb-4">
-          <PackageCard
-            :result="item as NpmSearchResult"
-            :heading-level="headingLevel"
-            :show-publisher="showPublisher"
-            :selected="index === (selectedIndex ?? -1)"
-            :index="index"
-            :search-query="searchQuery"
-            class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
-            :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
-            @focus="emit('select', $event)"
-          />
-        </div>
+    <!-- SSR: Render static list for first page, replaced by virtual list on client -->
+    <ClientOnly>
+      <WindowVirtualizer
+        ref="listRef"
+        :data="results"
+        :item-size="140"
+        as="ol"
+        item="li"
+        class="list-none m-0 p-0"
+        @scroll="handleScroll"
+      >
+        <template #default="{ item, index }">
+          <div class="pb-4">
+            <PackageCard
+              :result="item as NpmSearchResult"
+              :heading-level="headingLevel"
+              :show-publisher="showPublisher"
+              :selected="index === (selectedIndex ?? -1)"
+              :index="index"
+              :search-query="searchQuery"
+              class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
+              :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+              @focus="emit('select', $event)"
+            />
+          </div>
+        </template>
+      </WindowVirtualizer>
+
+      <!-- SSR fallback: static list of first page results -->
+      <template #fallback>
+        <ol class="list-none m-0 p-0">
+          <li v-for="(item, index) in results.slice(0, SSR_COUNT)" :key="item.package.name">
+            <div class="pb-4">
+              <PackageCard
+                :result="item"
+                :heading-level="headingLevel"
+                :show-publisher="showPublisher"
+                :selected="index === (selectedIndex ?? -1)"
+                :index="index"
+                :search-query="searchQuery"
+              />
+            </div>
+          </li>
+        </ol>
       </template>
-    </WindowVirtualizer>
+    </ClientOnly>
 
     <!-- Loading indicator -->
     <div v-if="isLoading" class="py-4 flex items-center justify-center">
