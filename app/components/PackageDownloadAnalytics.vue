@@ -474,6 +474,7 @@ const config = computed(() => ({
       },
     },
     zoom: {
+      maxWidth: 500,
       highlightColor: isDarkMode.value ? '#2A2A2A' : '#E1E5E8',
       minimap: {
         show: true,
@@ -698,10 +699,5 @@ const config = computed(() => ({
 .vue-ui-pen-and-paper-action:hover {
   background: var(--bg-elevated) !important;
   box-shadow: none !important;
-}
-
-.vue-data-ui-zoom {
-  max-width: 500px;
-  margin: 0 auto;
 }
 </style>
