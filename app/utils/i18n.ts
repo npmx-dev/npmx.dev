@@ -1,7 +1,9 @@
 import { useI18n as useOriginalI18n } from 'vue-i18n'
 
 export function useI18n() {
-  const { t, d, n, ...rest } = useOriginalI18n()
+  const i18n = useOriginalI18n()
+
+  const { t, d, n, ...rest } = i18n
 
   return {
     ...rest,
@@ -13,6 +15,6 @@ export function useI18n() {
 
 export function wrapI18n<T extends (...args: any[]) => any>(t: T): T {
   return <T>((...args: any[]) => {
-    return isHydrated.value ? t(...args) : ''
+    return import.meta.server ? t(...args) : isHydrated.value ? t(...args) : ''
   })
 }
