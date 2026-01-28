@@ -6,7 +6,7 @@ const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disco
 
 const tokenInput = shallowRef('')
 const portInput = shallowRef('31415')
-const copied = shallowRef(false)
+const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
 async function handleConnect() {
   const port = Number.parseInt(portInput.value, 10) || 31415
@@ -26,11 +26,7 @@ function copyCommand() {
   if (portInput.value !== '31415') {
     command += ` --port ${portInput.value}`
   }
-  navigator.clipboard.writeText(command)
-  copied.value = true
-  setTimeout(() => {
-    copied.value = false
-  }, 2000)
+  copy(command)
 }
 
 const selectedPM = useSelectedPackageManager()

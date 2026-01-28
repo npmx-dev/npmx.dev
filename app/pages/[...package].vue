@@ -293,7 +293,7 @@ const executeCommand = computed(() => {
 })
 
 // Copy execute command (for binary-only packages)
-const { copied: executeCopied, copy: copyExecute } = useCopyToClipboard()
+const { copied: executeCopied, copy: copyExecute } = useClipboard({ copiedDuring: 2000 })
 const copyExecuteCommand = () => copyExecute(executeCommand.value)
 
 // Get associated create-* package info (e.g., vite -> create-vite)
@@ -334,7 +334,7 @@ const createCommand = computed(() => {
 })
 
 // Copy create command
-const { copied: createCopied, copy: copyCreate } = useCopyToClipboard()
+const { copied: createCopied, copy: copyCreate } = useClipboard({ copiedDuring: 2000 })
 const copyCreateCommand = () => copyCreate(createCommand.value)
 
 // Primary run command parts
@@ -355,7 +355,7 @@ function getFullRunCommand(command?: string) {
 }
 
 // Copy run command
-const { copied: runCopied, copy: copyRun } = useCopyToClipboard()
+const { copied: runCopied, copy: copyRun } = useClipboard({ copiedDuring: 2000 })
 const copyRunCommand = (command?: string) => copyRun(getFullRunCommand(command))
 
 // Expandable description
