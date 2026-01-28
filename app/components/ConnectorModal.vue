@@ -6,7 +6,7 @@ const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disco
 
 const tokenInput = shallowRef('')
 const portInput = shallowRef('31415')
-const copied = shallowRef(false)
+const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
 async function handleConnect() {
   const port = Number.parseInt(portInput.value, 10) || 31415
@@ -26,11 +26,7 @@ function copyCommand() {
   if (portInput.value !== '31415') {
     command += ` --port ${portInput.value}`
   }
-  navigator.clipboard.writeText(command)
-  copied.value = true
-  setTimeout(() => {
-    copied.value = false
-  }, 2000)
+  copy(command)
 }
 
 const selectedPM = useSelectedPackageManager()
@@ -83,7 +79,7 @@ watch(open, isOpen => {
               <button
                 type="button"
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                :aria-label="$t('connector.modal.close')"
+                :aria-label="$t('common.close')"
                 @click="open = false"
               >
                 <span class="i-carbon-close block w-5 h-5" aria-hidden="true" />
@@ -162,8 +158,7 @@ watch(open, isOpen => {
                     type="password"
                     name="connector-token"
                     :placeholder="$t('connector.modal.token_placeholder')"
-                    autocomplete="off"
-                    spellcheck="false"
+                    v-bind="noCorrect"
                     class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                   />
                 </div>

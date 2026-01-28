@@ -1,4 +1,5 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
+import { getCreateShortName } from '#shared/utils/package-analysis'
 
 // @unocss-include
 export const packageManagers = [
@@ -6,32 +7,56 @@ export const packageManagers = [
     id: 'npm',
     label: 'npm',
     action: 'install',
-    execute: 'npx',
+    executeLocal: 'npx',
+    executeRemote: 'npx',
+    create: 'npm create',
     icon: 'i-simple-icons:npm',
   },
   {
     id: 'pnpm',
     label: 'pnpm',
     action: 'add',
-    execute: 'pnpm dlx',
+    executeLocal: 'pnpm exec',
+    executeRemote: 'pnpm dlx',
+    create: 'pnpm create',
     icon: 'i-simple-icons:pnpm',
   },
   {
     id: 'yarn',
     label: 'yarn',
     action: 'add',
-    execute: 'yarn dlx',
+    executeLocal: 'yarn',
+    executeRemote: 'yarn dlx',
+    create: 'yarn create',
     icon: 'i-simple-icons:yarn',
   },
-  { id: 'bun', label: 'bun', action: 'add', execute: 'bunx', icon: 'i-simple-icons:bun' },
+  {
+    id: 'bun',
+    label: 'bun',
+    action: 'add',
+    executeLocal: 'bunx',
+    executeRemote: 'bunx',
+    create: 'bun create',
+    icon: 'i-simple-icons:bun',
+  },
   {
     id: 'deno',
     label: 'deno',
     action: 'add',
-    execute: 'deno run',
+    executeLocal: 'deno run',
+    executeRemote: 'deno run',
+    create: 'deno run',
     icon: 'i-simple-icons:deno',
   },
-  { id: 'vlt', label: 'vlt', action: 'install', execute: 'vlt x', icon: 'i-custom-vlt' },
+  {
+    id: 'vlt',
+    label: 'vlt',
+    action: 'install',
+    executeLocal: 'vlt x',
+    executeRemote: 'vlt x',
+    create: 'vlt x',
+    icon: 'i-custom-vlt',
+  },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']
@@ -85,12 +110,30 @@ export function getInstallCommandParts(options: InstallCommandOptions): string[]
   return [pm.label, pm.action, `${spec}${version}`]
 }
 
-export function getExecuteCommand(options: InstallCommandOptions): string {
+export interface ExecuteCommandOptions extends InstallCommandOptions {
+  /** Whether this is a binary-only package (download & run vs local run) */
+  isBinaryOnly?: boolean
+  /** Whether this is a create-* package (uses shorthand create command) */
+  isCreatePackage?: boolean
+}
+
+export function getExecuteCommand(options: ExecuteCommandOptions): string {
   return getExecuteCommandParts(options).join(' ')
 }
 
-export function getExecuteCommandParts(options: InstallCommandOptions): string[] {
+export function getExecuteCommandParts(options: ExecuteCommandOptions): string[] {
   const pm = packageManagers.find(p => p.id === options.packageManager)
   if (!pm) return []
-  return [pm.execute, getPackageSpecifier(options)]
+
+  // For create-* packages, use the shorthand create command
+  if (options.isCreatePackage) {
+    const shortName = getCreateShortName(options.packageName)
+    if (shortName !== options.packageName) {
+      return [...pm.create.split(' '), shortName]
+    }
+  }
+
+  // Choose remote or local execute based on package type
+  const executeCmd = options.isBinaryOnly ? pm.executeRemote : pm.executeLocal
+  return [...executeCmd.split(' '), getPackageSpecifier(options)]
 }

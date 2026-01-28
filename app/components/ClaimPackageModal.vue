@@ -160,7 +160,7 @@ const connectorModalOpen = shallowRef(false)
               <button
                 type="button"
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                :aria-label="$t('claim.modal.close')"
+                :aria-label="$t('common.close')"
                 @click="open = false"
               >
                 <span class="i-carbon-close block w-5 h-5" aria-hidden="true" />
@@ -203,7 +203,7 @@ const connectorModalOpen = shallowRef(false)
                   class="flex-1 px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                   @click="open = false"
                 >
-                  {{ $t('claim.modal.close') }}
+                  {{ $t('common.close') }}
                 </button>
               </div>
             </div>
@@ -395,7 +395,7 @@ const connectorModalOpen = shallowRef(false)
                 class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 @click="open = false"
               >
-                {{ $t('claim.modal.close') }}
+                {{ $t('common.close') }}
               </button>
             </div>
 
@@ -412,7 +412,7 @@ const connectorModalOpen = shallowRef(false)
                 class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 @click="checkAvailability"
               >
-                {{ $t('claim.modal.retry') }}
+                {{ $t('common.retry') }}
               </button>
             </div>
           </div>

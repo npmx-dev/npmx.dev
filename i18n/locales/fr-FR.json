@@ -276,7 +276,6 @@
     "modal": {
       "title": "Connecteur local",
       "close_modal": "Fermer la fenêtre",
-      "close": "Fermer",
       "connected": "Connecté·e",
       "logged_in_as": "Connecté·e en tant que {'@'}{user}",
       "connected_hint": "Vous pouvez maintenant gérer les paquets et les organisations depuis l'interface web.",
@@ -425,7 +424,6 @@
     "modal": {
       "title": "Réserver un nom de paquet",
       "close_modal": "Fermer la fenêtre",
-      "close": "Fermer",
       "success": "Paquet réservé !",
       "success_detail": "{name}{'@'}0.0.0 a été publié sur npm.",
       "success_hint": "Vous pouvez maintenant publier de nouvelles versions de ce paquet avec npm publish.",
@@ -443,7 +441,6 @@
       "preview_json": "Aperçu du package.json",
       "claim_button": "Réserver le nom de paquet",
       "publishing": "Publication...",
-      "retry": "Réessayer",
       "checking": "Vérification de la disponibilité...",
       "failed_to_check": "Échec de la vérification de la disponibilité du nom",
       "failed_to_claim": "Échec de la réservation du paquet"

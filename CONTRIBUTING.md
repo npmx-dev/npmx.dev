@@ -365,13 +365,27 @@ Make sure to read about [Playwright best practices](https://playwright.dev/docs/
 4. ensure CI checks pass (lint, type check, tests)
 5. request review from maintainers
 
-### Commit messages
+### Commit messages and PR titles
 
-Write clear, concise commit messages that explain the "why" behind changes:
+Write clear, concise PR titles that explain the "why" behind changes.
+
+We use [Conventional Commits](https://www.conventionalcommits.org/). Since we squash on merge, the PR title becomes the commit message in `main`, so it's important to get it right.
+
+Format: `type(scope): description`
+
+**Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+
+**Scopes (optional):** `docs`, `i18n`, `deps`
+
+**Examples:**
 
 - `fix: resolve search pagination issue`
 - `feat: add package version comparison`
-- `docs: update installation instructions`
+- `fix(i18n): update French translations`
+- `chore(deps): update vite to v6`
+
+> [!NOTE]
+> The subject must start with a lowercase letter. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
 
 ## Pre-commit hooks
 

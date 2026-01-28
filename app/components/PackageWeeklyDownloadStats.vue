@@ -144,10 +144,19 @@ const config = computed(() => {
 
 <template>
   <div class="space-y-8">
-    <section>
+    <section id="downloads" class="scroll-mt-20">
       <div class="flex items-center justify-between mb-3">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider">
-          {{ $t('package.downloads.title') }}
+        <h2 class="group text-xs text-fg-subtle uppercase tracking-wider">
+          <a
+            href="#downloads"
+            class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+          >
+            {{ $t('package.downloads.title') }}
+            <span
+              class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              aria-hidden="true"
+            />
+          </a>
         </h2>
         <button
           type="button"
@@ -211,7 +220,7 @@ const config = computed(() => {
           class="w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors"
           :aria-label="$t('common.close')"
         >
-          <span class="w-5 h-5 i-carbon-close" />
+          <span class="w-5 h-5 i-carbon-close" aria-hidden="true" />
         </button>
       </div>
     </template>

@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "nuxt build",
+    "build:lunaria": "node --experimental-transform-types ./lunaria/lunaria.ts",
     "dev": "nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "lint": "vite lint && vite fmt --check",
@@ -31,6 +32,7 @@
     "@iconify-json/simple-icons": "^1.2.67",
     "@iconify-json/vscode-icons": "^1.2.40",
     "@intlify/core-base": "^11.1.12",
+    "@lunariajs/core": "https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3",
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "^0.13.0",
     "@nuxt/scripts": "^0.13.2",
@@ -89,11 +91,6 @@
     "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
     "vue-tsc": "3.2.2"
   },
-  "pnpm": {
-    "patchedDependencies": {
-      "@jsr/deno__doc@0.189.1": "patches/@jsr__deno__doc@0.189.1.patch"
-    }
-  },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
@@ -101,7 +98,7 @@
     "*.{js,ts,mjs,cjs,vue}": [
       "vite lint --fix"
     ],
-    "*.{js,ts,mjs,cjs,vue,json,md,html,css}": [
+    "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
       "vite fmt"
     ]
   },

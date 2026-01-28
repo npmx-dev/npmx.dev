@@ -113,6 +113,14 @@
       "copy_command": "Copy install command",
       "view_types": "View {package}"
     },
+    "create": {
+      "title": "Create new project",
+      "copy_command": "Copy create command"
+    },
+    "run": {
+      "title": "Run",
+      "locally": "Run locally"
+    },
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
@@ -279,7 +287,6 @@
     "modal": {
       "title": "Local Connector",
       "close_modal": "Close modal",
-      "close": "Close",
       "connected": "Connected",
       "logged_in_as": "Logged in as {'@'}{user}",
       "connected_hint": "You can now manage packages and organizations from the web UI.",
@@ -428,7 +435,6 @@
     "modal": {
       "title": "Claim Package Name",
       "close_modal": "Close modal",
-      "close": "Close",
       "success": "Package claimed!",
       "success_detail": "{name}{'@'}0.0.0 has been published to npm.",
       "success_hint": "You can now publish new versions to this package using npm publish.",
@@ -446,7 +452,6 @@
       "preview_json": "Preview package.json",
       "claim_button": "Claim Package Name",
       "publishing": "Publishing...",
-      "retry": "Retry",
       "checking": "Checking availability...",
       "failed_to_check": "Failed to check name availability",
       "failed_to_claim": "Failed to claim package"
