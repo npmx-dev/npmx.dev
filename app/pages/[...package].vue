@@ -975,7 +975,7 @@ defineOgImageComponent('Package', {
               <template v-if="executableInfo?.hasExecutable">
                 <!-- Comment line -->
                 <div class="flex items-center gap-2 pt-1">
-                  <span class="text-fg-subtle/50 font-mono text-sm select-none"
+                  <span class="text-fg-subtle font-mono text-sm select-none"
                     ># {{ $t('package.run.locally') }}</span
                   >
                 </div>
@@ -1012,7 +1012,7 @@ defineOgImageComponent('Package', {
               <template v-if="createPackageInfo">
                 <!-- Comment line -->
                 <div class="flex items-center gap-2 pt-1">
-                  <span class="text-fg-subtle/50 font-mono text-sm select-none"
+                  <span class="text-fg-subtle font-mono text-sm select-none"
                     ># {{ $t('package.create.title') }}</span
                   >
                 </div>
