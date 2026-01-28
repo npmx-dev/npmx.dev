@@ -29,6 +29,8 @@ const props = withDefaults(
   },
 )
 
+const { locale } = useI18n()
+
 const relativeDates = useRelativeDates()
 
 // Compute the title - always show full date for accessibility
@@ -41,7 +43,13 @@ const titleValue = computed(() => {
 
 <template>
   <ClientOnly>
-    <NuxtTime v-if="relativeDates" :datetime="datetime" :title="titleValue" relative />
+    <NuxtTime
+      v-if="relativeDates"
+      :datetime="datetime"
+      :title="titleValue"
+      relative
+      :locale="locale"
+    />
     <NuxtTime
       v-else
       :datetime="datetime"
@@ -50,6 +58,7 @@ const titleValue = computed(() => {
       :year="year"
       :month="month"
       :day="day"
+      :locale="locale"
     />
     <template #fallback>
       <NuxtTime
@@ -59,6 +68,7 @@ const titleValue = computed(() => {
         :year="year"
         :month="month"
         :day="day"
+        :locale="locale"
       />
     </template>
   </ClientOnly>
