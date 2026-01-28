@@ -295,12 +295,15 @@ defineOgImageComponent('Package', {
 </script>
 
 <template>
-  <main class="container py-8 sm:py-12 overflow-hidden w-full">
-    <PackageSkeleton v-if="status === 'pending'" />
+  <main class="package-page container">
+    <PackageSkeleton v-if="status === 'pending'" class="col-span-full row-span-full" />
 
-    <article v-else-if="status === 'success' && pkg" class="motion-safe:animate-fade-in min-w-0">
+    <article
+      v-else-if="status === 'success' && pkg"
+      class="motion-safe:animate-fade-in contents animate-fade-in"
+    >
       <!-- Package header -->
-      <header class="mb-8 pb-8 border-b border-border">
+      <header class="area-header pb-8 border-b border-border">
         <div class="mb-4">
           <!-- Package name and version -->
           <div class="flex items-baseline gap-2 mb-1.5 sm:gap-3 sm:mb-2 flex-wrap min-w-0">
@@ -660,10 +663,11 @@ defineOgImageComponent('Package', {
         v-if="displayVersion"
         :package-name="pkg.name"
         :version="displayVersion.version"
+        class="area-vulns"
       />
 
       <!-- Install command with package manager selector -->
-      <section aria-labelledby="install-heading" class="mb-8">
+      <section aria-labelledby="install-heading" class="area-install">
         <div class="flex flex-wrap items-center justify-between mb-3">
           <h2 id="install-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             {{ $t('package.install.title') }}
@@ -763,35 +767,28 @@ defineOgImageComponent('Package', {
         </div>
       </section>
 
-      <!-- Two column layout for sidebar content -->
-      <div class="grid lg:grid-cols-3 gap-8">
-        <!-- Main content (README) -->
-        <div class="lg:col-span-2 order-2 lg:order-1 min-w-0">
-          <section aria-labelledby="readme-heading">
-            <h2 id="readme-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-              {{ $t('package.readme.title') }}
-            </h2>
-            <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-            <div
-              v-if="readmeData?.html"
-              class="readme-content prose prose-invert max-w-none"
-              v-html="readmeData.html"
-            />
-            <p v-else class="text-fg-subtle italic">
-              {{ $t('package.readme.no_readme') }}
-              <a
-                v-if="repositoryUrl"
-                :href="repositoryUrl"
-                rel="noopener noreferrer"
-                class="link"
-                >{{ $t('package.readme.view_on_github') }}</a
-              >
-            </p>
-          </section>
-        </div>
+      <!-- README -->
+      <section aria-labelledby="readme-heading" class="area-readme min-w-0">
+        <h2 id="readme-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          {{ $t('package.readme.title') }}
+        </h2>
+        <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
+        <div
+          v-if="readmeData?.html"
+          class="readme-content prose prose-invert max-w-70ch"
+          v-html="readmeData.html"
+        />
+        <p v-else class="text-fg-subtle italic">
+          {{ $t('package.readme.no_readme') }}
+          <a v-if="repositoryUrl" :href="repositoryUrl" rel="noopener noreferrer" class="link">{{
+            $t('package.readme.view_on_github')
+          }}</a>
+        </p>
+      </section>
 
+      <div class="area-sidebar">
         <!-- Sidebar -->
-        <div class="order-1 lg:order-2 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
+        <aside class="sticky top-20 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 
@@ -882,12 +879,16 @@ defineOgImageComponent('Package', {
             :peer-dependencies-meta="displayVersion?.peerDependenciesMeta"
             :optional-dependencies="displayVersion?.optionalDependencies"
           />
-        </div>
+        </aside>
       </div>
     </article>
 
     <!-- Error state -->
-    <div v-else-if="status === 'error'" role="alert" class="py-20 text-center">
+    <div
+      v-else-if="status === 'error'"
+      role="alert"
+      class="col-span-full flex flex-col items-center py-20 text-center"
+    >
       <h1 class="font-mono text-2xl font-medium mb-4">{{ $t('package.not_found') }}</h1>
       <p class="text-fg-muted mb-8">
         {{ error?.message ?? $t('package.not_found_message') }}
@@ -896,3 +897,61 @@ defineOgImageComponent('Package', {
     </div>
   </main>
 </template>
+
+<style scoped>
+.package-page {
+  display: grid;
+  padding: 2rem 1rem;
+  gap: 2rem;
+
+  /* Mobile: single column, sidebar above readme */
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'header'
+    'install'
+    'vulns'
+    'sidebar'
+    'readme';
+}
+
+/* Tablet/medium: header/install/vulns full width, readme+sidebar side by side */
+@media (min-width: 1024px) {
+  .package-page {
+    padding: 3rem 1.5rem;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      'header  header'
+      'install install'
+      'vulns   vulns'
+      'readme  sidebar';
+  }
+}
+
+/* Desktop: floating sidebar alongside all content */
+@media (min-width: 1280px) {
+  .package-page {
+    grid-template-columns: 1fr 320px;
+    grid-template-areas:
+      'header  sidebar'
+      'install sidebar'
+      'vulns   sidebar'
+      'readme  sidebar';
+  }
+}
+
+.area-header {
+  grid-area: header;
+}
+.area-install {
+  grid-area: install;
+}
+.area-vulns {
+  grid-area: vulns;
+}
+.area-readme {
+  grid-area: readme;
+}
+.area-sidebar {
+  grid-area: sidebar;
+}
+</style>
