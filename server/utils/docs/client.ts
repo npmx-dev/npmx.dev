@@ -17,23 +17,29 @@ import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
 /** Timeout for fetching modules in milliseconds */
 const FETCH_TIMEOUT_MS = 30 * 1000
 
+/** Maximum number of subpath exports to process (prevents runaway on huge packages) */
+const MAX_SUBPATH_EXPORTS = 10
+
 // =============================================================================
 // Main Export
 // =============================================================================
 
 /**
  * Get documentation nodes for a package using @deno/doc WASM.
+ *
+ * This function fetches types for all subpath exports (e.g., `nuxt`, `nuxt/app`, `nuxt/kit`)
+ * to provide comprehensive documentation for packages with multiple entry points.
  */
 export async function getDocNodes(packageName: string, version: string): Promise<DenoDocResult> {
-  // Get types URL from esm.sh header
-  const typesUrl = await getTypesUrl(packageName, version)
+  // Get all types URLs from package exports
+  const typesUrls = await getAllTypesUrls(packageName, version)
 
-  if (!typesUrl) {
+  if (typesUrls.length === 0) {
     return { version: 1, nodes: [] }
   }
 
-  // Generate docs using @deno/doc WASM
-  const result = await doc([typesUrl], {
+  // Generate docs using @deno/doc WASM for all entry points
+  const result = await doc(typesUrls, {
     load: createLoader(),
     resolve: createResolver(),
   })
@@ -45,6 +51,90 @@ export async function getDocNodes(packageName: string, version: string): Promise
   }
 
   return { version: 1, nodes: allNodes }
+}
+
+// =============================================================================
+// Types URL Discovery
+// =============================================================================
+
+/**
+ * Get all TypeScript types URLs for a package, including subpath exports.
+ *
+ * 1. Fetches package.json from npm registry to discover exports
+ * 2. For each subpath with types, queries esm.sh for the types URL
+ * 3. Returns all discovered types URLs
+ */
+async function getAllTypesUrls(packageName: string, version: string): Promise<string[]> {
+  // First, try the main entry point
+  const mainTypesUrl = await getTypesUrl(packageName, version)
+
+  // Fetch package exports to discover subpaths
+  const subpathTypesUrls = await getSubpathTypesUrls(packageName, version)
+
+  // Combine and deduplicate
+  const allUrls = new Set<string>()
+  if (mainTypesUrl) allUrls.add(mainTypesUrl)
+  for (const url of subpathTypesUrls) {
+    allUrls.add(url)
+  }
+
+  return [...allUrls]
+}
+
+/**
+ * Fetch package.json exports and get types URLs for each subpath.
+ */
+async function getSubpathTypesUrls(packageName: string, version: string): Promise<string[]> {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+
+  try {
+    // Fetch package.json from npm registry
+    const response = await fetch(`https://registry.npmjs.org/${packageName}/${version}`, {
+      signal: controller.signal,
+    })
+    clearTimeout(timeoutId)
+
+    if (!response.ok) return []
+
+    const pkgJson = await response.json()
+    const exports = pkgJson.exports
+
+    // No exports field or simple string export
+    if (!exports || typeof exports !== 'object') return []
+
+    // Find subpaths with types
+    const subpathsWithTypes: string[] = []
+    for (const [subpath, config] of Object.entries(exports)) {
+      // Skip the main entry (already handled) and non-object configs
+      if (subpath === '.' || typeof config !== 'object' || config === null) continue
+      // Skip package.json export
+      if (subpath === './package.json') continue
+
+      const exportConfig = config as Record<string, unknown>
+      if (exportConfig.types && typeof exportConfig.types === 'string') {
+        subpathsWithTypes.push(subpath)
+      }
+    }
+
+    // Limit to prevent runaway on huge packages
+    const limitedSubpaths = subpathsWithTypes.slice(0, MAX_SUBPATH_EXPORTS)
+
+    // Fetch types URLs for each subpath in parallel
+    const typesUrls = await Promise.all(
+      limitedSubpaths.map(async subpath => {
+        // Convert ./app to /app for esm.sh URL
+        // esm.sh format: https://esm.sh/nuxt@3.15.4/app (not nuxt/app@3.15.4)
+        const esmSubpath = subpath.startsWith('./') ? subpath.slice(1) : subpath
+        return getTypesUrlForSubpath(packageName, version, esmSubpath)
+      }),
+    )
+
+    return typesUrls.filter((url): url is string => url !== null)
+  } catch {
+    clearTimeout(timeoutId)
+    return []
+  }
 }
 
 // =============================================================================
@@ -154,8 +244,26 @@ function createResolver(): (specifier: string, referrer: string) => string {
  *   x-typescript-types: https://esm.sh/ufo@1.5.0/dist/index.d.ts
  */
 async function getTypesUrl(packageName: string, version: string): Promise<string | null> {
-  const url = `https://esm.sh/${packageName}@${version}`
+  return fetchTypesHeader(`https://esm.sh/${packageName}@${version}`)
+}
 
+/**
+ * Get types URL for a package subpath.
+ * Example: getTypesUrlForSubpath('nuxt', '3.15.4', '/app')
+ *   → fetches https://esm.sh/nuxt@3.15.4/app
+ */
+async function getTypesUrlForSubpath(
+  packageName: string,
+  version: string,
+  subpath: string,
+): Promise<string | null> {
+  return fetchTypesHeader(`https://esm.sh/${packageName}@${version}${subpath}`)
+}
+
+/**
+ * Fetch the x-typescript-types header from an esm.sh URL.
+ */
+async function fetchTypesHeader(url: string): Promise<string | null> {
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
 
