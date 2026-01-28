@@ -2,7 +2,7 @@
 import { ref, computed, shallowRef, watch } from 'vue'
 import type { VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import { useDebounceFn } from '@vueuse/core'
+import { useDebounceFn, useElementSize } from '@vueuse/core'
 
 const {
   weeklyDownloads,
@@ -18,8 +18,10 @@ const {
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 const colorMode = useColorMode()
-
 const resolvedMode = ref<'light' | 'dark'>('light')
+const rootEl = shallowRef<HTMLElement | null>(null)
+
+const { width } = useElementSize(rootEl)
 
 onMounted(() => {
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
@@ -48,6 +50,16 @@ const accentColorValueById = computed<Record<string, string>>(() => {
 const accent = computed(() => {
   const id = selectedAccentColor.value
   return id ? (oklchToHex(accentColorValueById.value[id]!) ?? '#8A8A8A') : '#8A8A8A'
+})
+
+const mobileBreakpointWidth = 640
+
+const isMobile = computed(() => {
+  return width.value > 0 && width.value < mobileBreakpointWidth
+})
+
+onMounted(() => {
+  rootEl.value = document.documentElement
 })
 
 type ChartTimeGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
@@ -425,6 +437,7 @@ const loadFile = (link: string, filename: string) => {
 const config = computed(() => ({
   theme: isDarkMode.value ? 'dark' : 'default',
   chart: {
+    height: isMobile.value ? 850 : 600,
     userOptions: {
       buttons: {
         pdf: false,
@@ -498,6 +511,7 @@ const config = computed(() => ({
       },
     },
     zoom: {
+      maxWidth: 500,
       highlightColor: isDarkMode.value ? '#2A2A2A' : '#E1E5E8',
       minimap: {
         show: true,
@@ -722,10 +736,5 @@ const config = computed(() => ({
 .vue-ui-pen-and-paper-action:hover {
   background: var(--bg-elevated) !important;
   box-shadow: none !important;
-}
-
-.vue-data-ui-zoom {
-  max-width: 500px;
-  margin: 0 auto;
 }
 </style>

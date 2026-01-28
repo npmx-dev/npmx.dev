@@ -89,7 +89,8 @@ const { data: results, status } = useNpmSearch(query, () => ({
 }))
 
 // Keep track of previous results to show while loading
-const previousQuery = ref('')
+// Use useState so the value persists from SSR to client hydration
+const previousQuery = useState('search-previous-query', () => query.value)
 const cachedResults = ref(results.value)
 
 // Update cached results smartly
