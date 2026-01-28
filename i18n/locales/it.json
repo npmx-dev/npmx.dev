@@ -37,7 +37,8 @@
     "relative_dates": "Date relative",
     "include_types": "Includi {'@'}types durante l'installazione",
     "language": "Lingua",
-    "help_translate": "Aiuta a tradurre npmx"
+    "help_translate": "Aiuta a tradurre npmx",
+    "accent_colors": "Colori di accento"
   },
   "common": {
     "loading": "Caricando...",

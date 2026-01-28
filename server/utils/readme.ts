@@ -151,7 +151,7 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   code: ['class'],
   pre: ['class', 'style'],
   span: ['class', 'style'],
-  div: ['class', 'style'],
+  div: ['class', 'style', 'align'],
 }
 
 // GitHub-style callout types

@@ -25,6 +25,7 @@ export default defineConfig({
           name: 'nuxt',
           include: ['test/nuxt/**/*.{test,spec}.ts'],
           environment: 'nuxt',
+          setupFiles: ['./test/nuxt/setup.ts'],
           environmentOptions: {
             nuxt: {
               rootDir: fileURLToPath(new URL('.', import.meta.url)),
@@ -59,6 +60,7 @@ export default defineConfig({
         'shared/utils/spdx.ts',
         'shared/utils/url.ts',
         'server/utils/readme.ts',
+        'server/utils/docs/text.ts',
         'server/utils/code-highlight.ts',
         'server/utils/npm.ts',
         'server/utils/shiki.ts',

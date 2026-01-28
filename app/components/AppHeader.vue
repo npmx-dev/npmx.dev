@@ -11,6 +11,18 @@ withDefaults(
 )
 
 const { isConnected, npmUser } = useConnector()
+
+const router = useRouter()
+onKeyStroke(',', e => {
+  // Don't trigger if user is typing in an input
+  const target = e.target as HTMLElement
+  if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+    return
+  }
+
+  e.preventDefault()
+  router.push('/settings')
+})
 </script>
 
 <template>
@@ -64,9 +76,19 @@ const { isConnected, npmUser } = useConnector()
 
       <!-- Right: User status + GitHub -->
       <div class="flex-shrink-0 flex items-center gap-6">
-        <ClientOnly>
-          <SettingsMenu />
-        </ClientOnly>
+        <NuxtLink
+          to="/settings"
+          class="link-subtle font-mono text-sm inline-flex items-center gap-2"
+          aria-keyshortcuts=","
+        >
+          {{ $t('nav.settings') }}
+          <kbd
+            class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
+            aria-hidden="true"
+          >
+            ,
+          </kbd>
+        </NuxtLink>
 
         <div v-if="showConnector">
           <ConnectorStatus />
