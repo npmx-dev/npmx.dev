@@ -1,9 +1,13 @@
 <script setup lang="ts">
 const open = defineModel<boolean>('open', { default: false })
 
+function close() {
+  open.value = false
+}
+
 function handleKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
-    open.value = false
+    close()
   }
 }
 </script>
@@ -53,6 +57,8 @@ function handleKeydown(event: KeyboardEvent) {
               <slot />
             </div>
           </div>
+
+          <slot name="after" v-bind="{ close }" />
         </div>
       </div>
     </Transition>
