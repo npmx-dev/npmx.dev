@@ -32,6 +32,7 @@
     "@iconify-json/simple-icons": "^1.2.67",
     "@iconify-json/vscode-icons": "^1.2.40",
     "@intlify/core-base": "^11.1.12",
+    "@intlify/shared": "^11.2.8",
     "@lunariajs/core": "https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3",
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "^0.13.0",

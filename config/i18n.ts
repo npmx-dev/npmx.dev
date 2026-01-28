@@ -294,8 +294,6 @@ function buildLocales() {
 
 export const currentLocales = buildLocales()
 
-console.log(currentLocales)
-
 export const datetimeFormats = Object.values(currentLocales).reduce((acc, data) => {
   const dateTimeFormats = data.dateTimeFormats
   if (dateTimeFormats) {

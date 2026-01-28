@@ -1,4 +1,5 @@
 import { defineConfig } from '@lunariajs/core/config'
+import { locales } from './lunaria/prepare-json-files.ts'
 
 export default defineConfig({
   repository: {
@@ -6,26 +7,13 @@ export default defineConfig({
   },
   sourceLocale: {
     label: 'English',
-    lang: 'en',
+    lang: 'en-US',
   },
-  locales: [
-    {
-      label: 'Français',
-      lang: 'fr',
-    },
-    {
-      label: 'Italiano',
-      lang: 'it',
-    },
-    {
-      label: '简体中文',
-      lang: 'zh-CN',
-    },
-  ],
+  locales,
   files: [
     {
-      include: ['i18n/locales/en.json'],
-      pattern: 'i18n/locales/@lang.json',
+      include: ['lunaria-json-files/en-US.json'],
+      pattern: 'lunaria-json-files/@lang.json',
       type: 'dictionary',
     },
   ],
