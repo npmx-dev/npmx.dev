@@ -1,0 +1,35 @@
+name: Lunaria
+
+on:
+  # Trigger the workflow every time a pull request is opened or synchronized at the target `main` branch
+  pull_request_target:
+    types: [opened, synchronize]
+
+# Automatically cancel in-progress actions on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+# Allow this job to clone the repository and comment on the pull request
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lunaria-overview:
+    name: Generate Lunaria Overview
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          # Necessary for Lunaria to work properly
+          # Makes the action clone the entire git history
+          fetch-depth: 0
+
+      - name: Install Tools & Dependencies
+        uses: ./.github/actions/install
+
+      - name: Generate Lunaria Overview
+        uses: lunariajs/action@v1-prerelease

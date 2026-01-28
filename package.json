@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "nuxt build",
+    "build:lunaria": "node --experimental-transform-types ./lunaria/lunaria.ts",
     "dev": "nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "lint": "vite lint && vite fmt --check",
@@ -30,6 +31,7 @@
     "@deno/doc": "jsr:^0.189.1",
     "@iconify-json/simple-icons": "^1.2.67",
     "@iconify-json/vscode-icons": "^1.2.40",
+    "@lunariajs/core": "https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3",
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "^0.13.0",
     "@nuxt/scripts": "^0.13.2",
