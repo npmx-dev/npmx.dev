@@ -2,7 +2,7 @@
 import { ref, computed, shallowRef, watch } from 'vue'
 import type { VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import { useDebounceFn } from '@vueuse/core'
+import { useDebounceFn, useElementSize } from '@vueuse/core'
 
 const {
   weeklyDownloads,
@@ -18,8 +18,10 @@ const {
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 const colorMode = useColorMode()
-
 const resolvedMode = ref<'light' | 'dark'>('light')
+const rootEl = shallowRef<HTMLElement | null>(null)
+
+const { width } = useElementSize(rootEl)
 
 onMounted(() => {
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
@@ -51,32 +53,13 @@ const accent = computed(() => {
 })
 
 const mobileBreakpointWidth = 640
-const isMobile = ref(false)
 
-let resizeObserver: ResizeObserver | null = null
-
-function updateIsMobileFromWidth(width: number) {
-  isMobile.value = width < mobileBreakpointWidth
-}
-
-onMounted(() => {
-  if (!import.meta.client) return
-
-  updateIsMobileFromWidth(window.innerWidth)
-
-  resizeObserver = new ResizeObserver(entries => {
-    const entry = entries[0]
-    if (!entry) return
-    updateIsMobileFromWidth(entry.contentRect.width)
-  })
-
-  resizeObserver.observe(document.documentElement)
+const isMobile = computed(() => {
+  return width.value > 0 && width.value < mobileBreakpointWidth
 })
 
-onBeforeUnmount(() => {
-  if (!resizeObserver) return
-  resizeObserver.disconnect()
-  resizeObserver = null
+onMounted(() => {
+  rootEl.value = document.documentElement
 })
 
 type ChartTimeGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
