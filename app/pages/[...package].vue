@@ -769,7 +769,7 @@ defineOgImageComponent('Package', {
       </section>
 
       <!-- README -->
-      <section aria-labelledby="readme-heading" class="area-readme min-w-0">
+      <section id="readme" aria-labelledby="readme-heading" class="area-readme min-w-0">
         <h2 id="readme-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
           {{ $t('package.readme.title') }}
         </h2>
