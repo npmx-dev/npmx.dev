@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { formatNumber } from '#imports'
+import type { FilterChip, SortOption } from '~~/shared/types/preferences'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 
 const route = useRoute()
 const router = useRouter()
+
+// Preferences (persisted to localStorage)
+const {
+  viewMode,
+  paginationMode,
+  pageSize: preferredPageSize,
+  columns,
+  toggleColumn,
+  resetColumns,
+} = usePackageListPreferences()
 
 // Local input value (updates immediately as user types)
 const inputValue = ref((route.query.q as string) ?? '')
@@ -49,8 +60,6 @@ const searchInputRef = useTemplateRef('searchInputRef')
 
 const selectedIndex = ref(0)
 const packageListRef = useTemplateRef('packageListRef')
-
-const resultCount = computed(() => visibleResults.value?.objects.length ?? 0)
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = ref(false)
@@ -146,6 +155,59 @@ const visibleResults = computed(() => {
     objects: reordered,
   }
 })
+
+// Use structured filters for client-side refinement of search results
+const resultsArray = computed(() => visibleResults.value?.objects ?? [])
+
+const {
+  filters,
+  sortOption,
+  sortedPackages,
+  availableKeywords,
+  activeFilters,
+  setTextFilter,
+  setSearchScope,
+  setDownloadRange,
+  setSecurity,
+  setUpdatedWithin,
+  toggleKeyword,
+  clearFilter,
+  clearAllFilters,
+  setSort,
+} = useStructuredFilters({
+  packages: resultsArray,
+  initialSort: 'score', // Default to search relevance (combined score)
+})
+
+// Client-side filtered/sorted results for display
+const displayResults = computed(() => {
+  // Only apply client-side filtering if filters are active
+  const hasActiveClientFilters =
+    filters.value.downloadRange !== 'any' ||
+    filters.value.keywords.length > 0 ||
+    filters.value.security !== 'all' ||
+    filters.value.updatedWithin !== 'any'
+
+  // Don't apply text filter here as that's the main search query
+  if (!hasActiveClientFilters && sortOption.value === 'score') {
+    // Return original server-sorted results
+    return resultsArray.value
+  }
+
+  return sortedPackages.value
+})
+
+const resultCount = computed(() => displayResults.value.length)
+
+// Handle filter chip removal
+function handleClearFilter(chip: FilterChip) {
+  clearFilter(chip)
+}
+
+// Handle sort change from table
+function handleSortChange(option: SortOption) {
+  setSort(option)
+}
 
 // Should we show the loading spinner?
 const showSearching = computed(() => {
@@ -799,16 +861,39 @@ defineOgImageComponent('Default', {
             </button>
           </div>
 
-          <p
-            v-if="visibleResults.total > 0"
-            role="status"
-            class="text-fg-muted text-sm mb-6 font-mono"
-          >
-            {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
-            <span v-if="status === 'pending'" class="text-fg-subtle">{{
-              $t('search.updating')
-            }}</span>
-          </p>
+          <!-- Enhanced toolbar -->
+          <div v-if="visibleResults.total > 0" class="mb-6">
+            <PackageListToolbar
+              :filters="filters"
+              :sort-option="sortOption"
+              :view-mode="viewMode"
+              :columns="columns"
+              :pagination-mode="paginationMode"
+              :page-size="preferredPageSize"
+              :total-count="visibleResults.total"
+              :filtered-count="displayResults.length"
+              :available-keywords="availableKeywords"
+              :active-filters="activeFilters"
+              @update:view-mode="viewMode = $event"
+              @update:sort-option="setSort"
+              @toggle-column="toggleColumn"
+              @reset-columns="resetColumns"
+              @clear-filter="handleClearFilter"
+              @clear-all-filters="clearAllFilters"
+              @update:text="setTextFilter"
+              @update:search-scope="setSearchScope"
+              @update:download-range="setDownloadRange"
+              @update:security="setSecurity"
+              @update:updated-within="setUpdatedWithin"
+              @toggle-keyword="toggleKeyword"
+            />
+            <p role="status" class="text-fg-muted text-sm mt-4 font-mono">
+              {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
+              <span v-if="status === 'pending'" class="text-fg-subtle">{{
+                $t('search.updating')
+              }}</span>
+            </p>
+          </div>
 
           <!-- No results found -->
           <div v-else-if="status !== 'pending'" role="status" class="py-12">
@@ -849,9 +934,9 @@ defineOgImageComponent('Default', {
           </div>
 
           <PackageList
-            v-if="visibleResults.objects.length > 0"
+            v-if="displayResults.length > 0"
             ref="packageListRef"
-            :results="visibleResults.objects"
+            :results="displayResults"
             :selected-index="selectedIndex"
             :search-query="query"
             heading-level="h2"
@@ -860,9 +945,14 @@ defineOgImageComponent('Default', {
             :is-loading="isLoadingMore || (status === 'pending' && loadedPages > 1)"
             :page-size="pageSize"
             :initial-page="initialPage"
+            :view-mode="viewMode"
+            :columns="columns"
+            :sort-option="sortOption"
             @load-more="loadMore"
             @page-change="handlePageChange"
             @select="handlePackageSelect"
+            @update:sort-option="handleSortChange"
+            @click-keyword="toggleKeyword"
           />
         </div>
       </section>

@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { NpmSearchResult } from '#shared/types'
 import type { WindowVirtualizerHandle } from '~/composables/useVirtualInfiniteScroll'
+import type {
+  ColumnConfig,
+  PaginationMode,
+  SortOption,
+  ViewMode,
+} from '~~/shared/types/preferences'
+import { DEFAULT_COLUMNS } from '~~/shared/types/preferences'
 import { WindowVirtualizer } from 'virtua/vue'
 
 const props = defineProps<{
@@ -22,19 +29,49 @@ const props = defineProps<{
   selectedIndex?: number
   /** Search query for highlighting exact matches */
   searchQuery?: string
+  /** View mode: cards or table */
+  viewMode?: ViewMode
+  /** Column configuration for table view */
+  columns?: ColumnConfig[]
+  /** Sort option for table header sorting */
+  sortOption?: SortOption
+  /** Pagination mode: infinite or paginated */
+  paginationMode?: PaginationMode
+  /** Current page (1-indexed) for paginated mode */
+  currentPage?: number
 }>()
 
 const emit = defineEmits<{
   /** Emitted when scrolled near the bottom and more items should be loaded */
-  loadMore: []
+  'loadMore': []
   /** Emitted when the visible page changes */
-  pageChange: [page: number]
+  'pageChange': [page: number]
   /** Emitted when a result is hovered/focused */
-  select: [index: number]
+  'select': [index: number]
+  /** Emitted when sort option changes (table view) */
+  'update:sortOption': [option: SortOption]
+  /** Emitted when a keyword is clicked */
+  'clickKeyword': [keyword: string]
 }>()
 
 // Reference to WindowVirtualizer for infinite scroll detection
 const listRef = useTemplateRef<WindowVirtualizerHandle>('listRef')
+
+// View mode and columns
+const viewMode = computed(() => props.viewMode ?? 'cards')
+const columns = computed(() => props.columns ?? DEFAULT_COLUMNS)
+const paginationMode = computed(() => props.paginationMode ?? 'infinite')
+const currentPage = computed(() => props.currentPage ?? 1)
+
+// Compute paginated results for paginated mode
+const displayedResults = computed(() => {
+  if (paginationMode.value === 'infinite') {
+    return props.results
+  }
+  const start = (currentPage.value - 1) * pageSize.value
+  const end = start + pageSize.value
+  return props.results.slice(start, end)
+})
 
 // Set up infinite scroll if hasMore is provided
 const hasMore = computed(() => props.hasMore ?? false)
@@ -96,19 +133,55 @@ defineExpose({
 
 <template>
   <div>
-    <WindowVirtualizer
-      ref="listRef"
-      :data="results"
-      :item-size="140"
-      as="ol"
-      item="li"
-      class="list-none m-0 p-0"
-      @scroll="handleScroll"
-    >
-      <template #default="{ item, index }">
-        <div class="pb-4">
+    <!-- Table View -->
+    <template v-if="viewMode === 'table'">
+      <PackageTable
+        :results="displayedResults"
+        :columns="columns"
+        :sort-option="sortOption"
+        :selected-index="selectedIndex"
+        :is-loading="isLoading"
+        @update:sort-option="emit('update:sortOption', $event)"
+        @select="emit('select', $event)"
+        @click-keyword="emit('clickKeyword', $event)"
+      />
+    </template>
+
+    <!-- Card View with Infinite Scroll -->
+    <template v-else-if="paginationMode === 'infinite'">
+      <WindowVirtualizer
+        ref="listRef"
+        :data="results"
+        :item-size="140"
+        as="ol"
+        item="li"
+        class="list-none m-0 p-0"
+        @scroll="handleScroll"
+      >
+        <template #default="{ item, index }">
+          <div class="pb-4">
+            <PackageCard
+              :result="item as NpmSearchResult"
+              :heading-level="headingLevel"
+              :show-publisher="showPublisher"
+              :selected="index === (selectedIndex ?? -1)"
+              :index="index"
+              :search-query="searchQuery"
+              class="animate-fade-in animate-fill-both"
+              :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+              @focus="emit('select', $event)"
+            />
+          </div>
+        </template>
+      </WindowVirtualizer>
+    </template>
+
+    <!-- Card View with Pagination -->
+    <template v-else>
+      <ol class="list-none m-0 p-0">
+        <li v-for="(item, index) in displayedResults" :key="item.package.name" class="pb-4">
           <PackageCard
-            :result="item as NpmSearchResult"
+            :result="item"
             :heading-level="headingLevel"
             :show-publisher="showPublisher"
             :selected="index === (selectedIndex ?? -1)"
@@ -118,12 +191,28 @@ defineExpose({
             :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
             @focus="emit('select', $event)"
           />
-        </div>
-      </template>
-    </WindowVirtualizer>
+        </li>
+      </ol>
+    </template>
 
-    <!-- Loading indicator -->
-    <div v-if="isLoading" class="py-4 flex items-center justify-center">
+    <!-- Initial loading state (card view only - table has its own skeleton) -->
+    <div
+      v-if="isLoading && results.length === 0 && viewMode !== 'table'"
+      class="py-12 flex items-center justify-center"
+    >
+      <div class="flex items-center gap-3 text-fg-muted font-mono text-sm">
+        <span
+          class="w-5 h-5 border-2 border-fg-subtle border-t-fg rounded-full motion-safe:animate-spin"
+        />
+        {{ $t('common.loading') }}
+      </div>
+    </div>
+
+    <!-- Loading more indicator (infinite scroll mode only) -->
+    <div
+      v-else-if="isLoading && paginationMode === 'infinite'"
+      class="py-4 flex items-center justify-center"
+    >
       <div class="flex items-center gap-3 text-fg-muted font-mono text-sm">
         <span
           class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full motion-safe:animate-spin"
@@ -132,12 +221,20 @@ defineExpose({
       </div>
     </div>
 
-    <!-- End of results -->
+    <!-- End of results (infinite scroll mode only) -->
     <p
-      v-else-if="!hasMore && results.length > 0"
+      v-else-if="!hasMore && results.length > 0 && paginationMode === 'infinite'"
       class="py-4 text-center text-fg-subtle font-mono text-sm"
     >
       {{ $t('common.end_of_results') }}
+    </p>
+
+    <!-- Empty state (card view only - table has its own) -->
+    <p
+      v-if="results.length === 0 && !isLoading && viewMode !== 'table'"
+      class="py-12 text-center text-fg-subtle font-mono text-sm"
+    >
+      No packages found
     </p>
   </div>
 </template>

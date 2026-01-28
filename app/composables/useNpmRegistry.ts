@@ -21,6 +21,74 @@ const NPM_API = 'https://api.npmjs.org'
 const packumentCache = new Map<string, Promise<Packument | null>>()
 
 /**
+ * Fetch downloads for multiple packages.
+ * Returns a map of package name -> weekly downloads.
+ * Uses bulk API for unscoped packages, parallel individual requests for scoped.
+ * Note: npm bulk downloads API does not support scoped packages.
+ */
+async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, number>> {
+  const downloads = new Map<string, number>()
+  if (packageNames.length === 0) return downloads
+
+  // Separate scoped and unscoped packages
+  const scopedPackages = packageNames.filter(n => n.startsWith('@'))
+  const unscopedPackages = packageNames.filter(n => !n.startsWith('@'))
+
+  // Fetch unscoped packages via bulk API (max 128 per request)
+  const bulkPromises: Promise<void>[] = []
+  const chunkSize = 100
+  for (let i = 0; i < unscopedPackages.length; i += chunkSize) {
+    const chunk = unscopedPackages.slice(i, i + chunkSize)
+    bulkPromises.push(
+      (async () => {
+        try {
+          const response = await $fetch<Record<string, { downloads: number } | null>>(
+            `${NPM_API}/downloads/point/last-week/${chunk.join(',')}`,
+          )
+          for (const [name, data] of Object.entries(response)) {
+            if (data?.downloads !== undefined) {
+              downloads.set(name, data.downloads)
+            }
+          }
+        } catch {
+          // Ignore errors - downloads are optional
+        }
+      })(),
+    )
+  }
+
+  // Fetch scoped packages in parallel batches (concurrency limit to avoid overwhelming the API)
+  // Use Promise.allSettled to not fail on individual errors
+  const scopedBatchSize = 20 // Concurrent requests per batch
+  for (let i = 0; i < scopedPackages.length; i += scopedBatchSize) {
+    const batch = scopedPackages.slice(i, i + scopedBatchSize)
+    bulkPromises.push(
+      (async () => {
+        const results = await Promise.allSettled(
+          batch.map(async name => {
+            const encoded = encodePackageName(name)
+            const data = await $fetch<{ downloads: number }>(
+              `${NPM_API}/downloads/point/last-week/${encoded}`,
+            )
+            return { name, downloads: data.downloads }
+          }),
+        )
+        for (const result of results) {
+          if (result.status === 'fulfilled' && result.value.downloads !== undefined) {
+            downloads.set(result.value.name, result.value.downloads)
+          }
+        }
+      })(),
+    )
+  }
+
+  // Wait for all fetches to complete
+  await Promise.all(bulkPromises)
+
+  return downloads
+}
+
+/**
  * Encode a package name for use in npm registry URLs.
  * Handles scoped packages (e.g., @scope/name -> @scope%2Fname).
  */
@@ -269,6 +337,7 @@ export function useNpmSearch(
 interface MinimalPackument {
   'name': string
   'description'?: string
+  'keywords'?: string[]
   // `dist-tags` can be missing in some later unpublished packages
   'dist-tags'?: Record<string, string>
   'time': Record<string, string>
@@ -278,7 +347,7 @@ interface MinimalPackument {
 /**
  * Convert packument to search result format for display
  */
-function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
+function packumentToSearchResult(pkg: MinimalPackument, weeklyDownloads?: number): NpmSearchResult {
   let latestVersion = ''
   if (pkg['dist-tags']) {
     latestVersion = pkg['dist-tags'].latest || Object.values(pkg['dist-tags'])[0] || ''
@@ -290,6 +359,7 @@ function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
       name: pkg.name,
       version: latestVersion,
       description: pkg.description,
+      keywords: pkg.keywords,
       date: pkg.time[latestVersion] || modified,
       links: {
         npm: `https://www.npmjs.com/package/${pkg.name}`,
@@ -298,6 +368,7 @@ function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
     },
     score: { final: 0, detail: { quality: 0, popularity: 0, maintenance: 0 } },
     searchScore: 0,
+    downloads: weeklyDownloads !== undefined ? { weekly: weeklyDownloads } : undefined,
     updated: modified,
   }
 }
@@ -341,30 +412,41 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         return emptySearchResponse
       }
 
-      // Fetch packuments in parallel (with concurrency limit)
-      const concurrency = 10
-      const results: NpmSearchResult[] = []
-
-      for (let i = 0; i < packageNames.length; i += concurrency) {
-        const batch = packageNames.slice(i, i + concurrency)
-        const packuments = await Promise.all(
-          batch.map(async name => {
-            try {
-              const encoded = encodePackageName(name)
-              return await cachedFetch<MinimalPackument>(`${NPM_REGISTRY}/${encoded}`)
-            } catch {
-              return null
+      // Fetch packuments and downloads in parallel
+      const [packuments, downloads] = await Promise.all([
+        // Fetch packuments in parallel (with concurrency limit)
+        (async () => {
+          const concurrency = 10
+          const results: MinimalPackument[] = []
+          for (let i = 0; i < packageNames.length; i += concurrency) {
+            const batch = packageNames.slice(i, i + concurrency)
+            const batchResults = await Promise.all(
+              batch.map(async name => {
+                try {
+                  const encoded = encodePackageName(name)
+                  return await cachedFetch<MinimalPackument>(`${NPM_REGISTRY}/${encoded}`)
+                } catch {
+                  return null
+                }
+              }),
+            )
+            for (const pkg of batchResults) {
+              // Filter out any unpublished packages (missing dist-tags)
+              if (pkg && pkg['dist-tags']) {
+                results.push(pkg)
+              }
             }
-          }),
-        )
-
-        for (const pkg of packuments) {
-          // Filter out any unpublished packages (missing dist-tags)
-          if (pkg && pkg['dist-tags']) {
-            results.push(packumentToSearchResult(pkg))
           }
-        }
-      }
+          return results
+        })(),
+        // Fetch downloads in bulk
+        fetchBulkDownloads(packageNames),
+      ])
+
+      // Convert to search results with download data
+      const results: NpmSearchResult[] = packuments.map(pkg =>
+        packumentToSearchResult(pkg, downloads.get(pkg.name)),
+      )
 
       return {
         objects: results,

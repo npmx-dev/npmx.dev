@@ -1,0 +1,204 @@
+<script setup lang="ts">
+import type {
+  ColumnConfig,
+  ColumnId,
+  DownloadRange,
+  FilterChip,
+  PageSize,
+  PaginationMode,
+  SearchScope,
+  SecurityFilter,
+  SortKey,
+  SortOption,
+  StructuredFilters,
+  UpdatedWithin,
+  ViewMode,
+} from '~~/shared/types/preferences'
+import {
+  buildSortOption,
+  parseSortOption,
+  SORT_KEYS,
+  toggleDirection,
+} from '~~/shared/types/preferences'
+
+const props = defineProps<{
+  filters: StructuredFilters
+  sortOption: SortOption
+  viewMode: ViewMode
+  columns: ColumnConfig[]
+  paginationMode: PaginationMode
+  pageSize: PageSize
+  totalCount: number
+  filteredCount: number
+  availableKeywords?: string[]
+  activeFilters: FilterChip[]
+}>()
+
+const emit = defineEmits<{
+  'update:filters': [filters: StructuredFilters]
+  'update:sortOption': [option: SortOption]
+  'update:viewMode': [mode: ViewMode]
+  'update:paginationMode': [mode: PaginationMode]
+  'update:pageSize': [size: PageSize]
+  'toggleColumn': [columnId: ColumnId]
+  'resetColumns': []
+  'clearFilter': [chip: FilterChip]
+  'clearAllFilters': []
+  'update:text': [value: string]
+  'update:searchScope': [value: SearchScope]
+  'update:downloadRange': [value: DownloadRange]
+  'update:security': [value: SecurityFilter]
+  'update:updatedWithin': [value: UpdatedWithin]
+  'toggleKeyword': [keyword: string]
+}>()
+
+const viewMode = computed({
+  get: () => props.viewMode,
+  set: (value: ViewMode) => emit('update:viewMode', value),
+})
+
+const showingFiltered = computed(() => props.filteredCount !== props.totalCount)
+
+const { t } = useI18n()
+
+// Parse current sort option into key and direction
+const currentSort = computed(() => parseSortOption(props.sortOption))
+
+// Handle sort key change from dropdown
+function handleSortKeyChange(event: Event) {
+  const target = event.target as HTMLSelectElement
+  const newKey = target.value as SortKey
+  const config = SORT_KEYS.find(k => k.key === newKey)
+  const direction = config?.defaultDirection ?? 'desc'
+  emit('update:sortOption', buildSortOption(newKey, direction))
+}
+
+// Toggle sort direction
+function handleToggleDirection() {
+  const { key, direction } = currentSort.value
+  emit('update:sortOption', buildSortOption(key, toggleDirection(direction)))
+}
+
+// Map sort key to i18n key
+const sortKeyLabelKey: Record<string, string> = {
+  'downloads-week': 'filters.sort.downloads_week',
+  'downloads-day': 'filters.sort.downloads_day',
+  'downloads-month': 'filters.sort.downloads_month',
+  'downloads-year': 'filters.sort.downloads_year',
+  'updated': 'filters.sort.updated',
+  'name': 'filters.sort.name',
+  'quality': 'filters.sort.quality',
+  'popularity': 'filters.sort.popularity',
+  'maintenance': 'filters.sort.maintenance',
+  'score': 'filters.sort.score',
+}
+</script>
+
+<template>
+  <div class="space-y-3 mb-6">
+    <!-- Main toolbar row -->
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+      <!-- Count display -->
+      <div class="text-sm font-mono text-fg-muted">
+        <template v-if="showingFiltered">
+          {{
+            $t('filters.count.showing_filtered', {
+              filtered: filteredCount.toLocaleString(),
+              total: totalCount.toLocaleString(),
+            })
+          }}
+        </template>
+        <template v-else>
+          {{ $t('filters.count.showing_all', { total: totalCount.toLocaleString() }) }}
+        </template>
+      </div>
+
+      <div class="flex-1" />
+
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Column picker (table view only) -->
+        <ColumnPicker
+          v-if="viewMode === 'table'"
+          :columns="columns"
+          @toggle="emit('toggleColumn', $event)"
+          @reset="emit('resetColumns')"
+        />
+
+        <!-- Sort controls -->
+        <div class="flex items-center gap-1 shrink-0">
+          <!-- Sort key dropdown -->
+          <div class="relative">
+            <label for="sort-select" class="sr-only">{{ $t('filters.sort.label') }}</label>
+            <select
+              id="sort-select"
+              :value="currentSort.key"
+              class="appearance-none bg-bg-subtle border border-border rounded-md pl-3 pr-8 py-1.5 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
+              @change="handleSortKeyChange"
+            >
+              <option
+                v-for="keyConfig in SORT_KEYS"
+                :key="keyConfig.key"
+                :value="keyConfig.key"
+                :disabled="keyConfig.disabled"
+              >
+                {{ $t(sortKeyLabelKey[keyConfig.key])
+                }}{{ keyConfig.disabled ? ` (${$t('filters.columns.coming_soon')})` : '' }}
+              </option>
+            </select>
+            <div
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
+              aria-hidden="true"
+            >
+              <span class="i-carbon-chevron-down w-4 h-4" />
+            </div>
+          </div>
+
+          <!-- Sort direction toggle -->
+          <button
+            type="button"
+            class="p-1.5 rounded border border-border bg-bg-subtle text-fg-muted hover:text-fg hover:border-border-hover transition-colors duration-200"
+            :aria-label="$t('filters.sort.toggle_direction')"
+            :title="
+              currentSort.direction === 'asc'
+                ? $t('filters.sort.ascending')
+                : $t('filters.sort.descending')
+            "
+            @click="handleToggleDirection"
+          >
+            <span
+              class="w-4 h-4 block transition-transform duration-200"
+              :class="
+                currentSort.direction === 'asc'
+                  ? 'i-carbon-sort-ascending'
+                  : 'i-carbon-sort-descending'
+              "
+              aria-hidden="true"
+            />
+          </button>
+        </div>
+
+        <!-- View mode toggle -->
+        <ViewModeToggle v-model="viewMode" />
+      </div>
+    </div>
+
+    <!-- Filter panel -->
+    <FilterPanel
+      :filters="filters"
+      :available-keywords="availableKeywords"
+      @update:text="emit('update:text', $event)"
+      @update:search-scope="emit('update:searchScope', $event)"
+      @update:download-range="emit('update:downloadRange', $event)"
+      @update:security="emit('update:security', $event)"
+      @update:updated-within="emit('update:updatedWithin', $event)"
+      @toggle-keyword="emit('toggleKeyword', $event)"
+    />
+
+    <!-- Active filter chips -->
+    <FilterChips
+      :chips="activeFilters"
+      @remove="emit('clearFilter', $event)"
+      @clear-all="emit('clearAllFilters')"
+    />
+  </div>
+</template>
