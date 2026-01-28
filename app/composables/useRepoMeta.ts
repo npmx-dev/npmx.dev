@@ -86,6 +86,20 @@ type RadicleProjectResponse = {
   issues?: { open: number; closed: number }
 }
 
+/** microcosm's constellation API response for /links/all to get tangled.org  stats */
+type ConstellationAllLinksResponse = {
+  links: Record<
+    string,
+    Record<
+      string,
+      {
+        records: number
+        distinct_dids: number
+      }
+    >
+  >
+}
+
 type ProviderAdapter = {
   id: ProviderId
   parse(url: URL): RepoRef | null
@@ -568,15 +582,35 @@ const tangledAdapter: ProviderAdapter = {
         { headers: { 'User-Agent': 'npmx', 'Accept': 'text/html' } },
         REPO_META_TTL,
       )
+      // Extracts the at-uri used in atproto
+      const atUriMatch = html.match(/data-star-subject-at="([^"]+)"/)
       // Extract star count from: hx-post="/star?subject=...&countHint=23"
       const starMatch = html.match(/countHint=(\d+)/)
-      const stars = starMatch?.[1] ? parseInt(starMatch[1], 10) : 0
+      //We'll set the stars from tangled's repo page and may override it with constellation if successful
+      let stars = starMatch?.[1] ? parseInt(starMatch[1], 10) : 0
+      let forks = 0
+      const atUri = atUriMatch?.[1]
+
+      if (atUriMatch) {
+        try {
+          //Get counts of records that reference this repo in the atmosphere using constellation
+          const allLinks = await cachedFetch<ConstellationAllLinksResponse>(
+            `https://constellation.microcosm.blue/links/all?target=${atUri}`,
+            { headers: { 'User-Agent': 'npmx' } },
+            REPO_META_TTL,
+          )
+          stars = allLinks.links['sh.tangled.feed.star']?.['.subject']?.distinct_dids ?? stars
+          forks = allLinks.links['sh.tangled.repo']?.['.source']?.distinct_dids ?? stars
+        } catch {
+          //failing silently since this is just an enhancement to the information already showing
+        }
+      }
 
       return {
         provider: 'tangled',
         url: links.repo,
         stars,
-        forks: 0, // Tangled doesn't expose fork count
+        forks,
         links,
       }
     } catch {
