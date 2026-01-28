@@ -198,7 +198,7 @@ onUnmounted(() => {
           <!-- Result output for completed/failed -->
           <div
             v-else-if="op.result && (op.status === 'completed' || op.status === 'failed')"
-            class="mt-2 p-2 bg-[#0d0d0d] border border-border rounded text-xs font-mono"
+            class="mt-2 p-2 bg-bg-muted border border-border rounded text-xs font-mono"
           >
             <pre v-if="op.result.stdout" class="text-fg-muted whitespace-pre-wrap">{{
               op.result.stdout

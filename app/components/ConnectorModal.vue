@@ -125,7 +125,7 @@ watch(open, isOpen => {
               </p>
 
               <div
-                class="flex items-center p-3 bg-[#0d0d0d] border border-border rounded-lg font-mono text-sm"
+                class="flex items-center p-3 bg-bg-muted border border-border rounded-lg font-mono text-sm"
               >
                 <span class="text-fg-subtle">$</span>
                 <span class="text-fg ml-2">{{ executeNpmxConnectorCommand }}</span>

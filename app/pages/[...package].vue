@@ -680,7 +680,7 @@ defineOgImageComponent('Package', {
                 :key="pm.id"
                 role="tab"
                 :aria-selected="selectedPM === pm.id"
-                class="px-2 py-1 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                class="px-2 py-1 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
                 :class="
                   selectedPM === pm.id
                     ? 'bg-bg shadow text-fg border-border'
@@ -688,6 +688,7 @@ defineOgImageComponent('Package', {
                 "
                 @click="selectedPM = pm.id"
               >
+                <span class="inline-block h-3 w-3" :class="pm.icon" aria-hidden="true" />
                 {{ pm.label }}
               </button>
               <template #fallback>

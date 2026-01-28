@@ -1,12 +1,37 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
 
+// @unocss-include
 export const packageManagers = [
-  { id: 'npm', label: 'npm', action: 'install', execute: 'npx' },
-  { id: 'pnpm', label: 'pnpm', action: 'add', execute: 'pnpm dlx' },
-  { id: 'yarn', label: 'yarn', action: 'add', execute: 'yarn dlx' },
-  { id: 'bun', label: 'bun', action: 'add', execute: 'bunx' },
-  { id: 'deno', label: 'deno', action: 'add', execute: 'deno run' },
-  { id: 'vlt', label: 'vlt', action: 'install', execute: 'vlt x' },
+  {
+    id: 'npm',
+    label: 'npm',
+    action: 'install',
+    execute: 'npx',
+    icon: 'i-simple-icons:npm',
+  },
+  {
+    id: 'pnpm',
+    label: 'pnpm',
+    action: 'add',
+    execute: 'pnpm dlx',
+    icon: 'i-simple-icons:pnpm',
+  },
+  {
+    id: 'yarn',
+    label: 'yarn',
+    action: 'add',
+    execute: 'yarn dlx',
+    icon: 'i-simple-icons:yarn',
+  },
+  { id: 'bun', label: 'bun', action: 'add', execute: 'bunx', icon: 'i-simple-icons:bun' },
+  {
+    id: 'deno',
+    label: 'deno',
+    action: 'add',
+    execute: 'deno run',
+    icon: 'i-simple-icons:deno',
+  },
+  { id: 'vlt', label: 'vlt', action: 'install', execute: 'vlt x', icon: 'i-custom-vlt' },
 ] as const
 
 export type PackageManagerId = (typeof packageManagers)[number]['id']

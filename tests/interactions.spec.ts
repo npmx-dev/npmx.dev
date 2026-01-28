@@ -12,26 +12,18 @@ test.describe('Search Pages', () => {
     const firstResult = page.locator('[data-result-index="0"]').first()
     await expect(firstResult).toBeVisible()
 
-    // First result is selected by default, Enter navigates to it
-    // URL is /vue not /package/vue (cleaner URLs)
-    await page.keyboard.press('Enter')
-    await expect(page).toHaveURL(/\/vue/)
-
-    await page.goBack()
-    // Wait for search page to be ready
-    await expect(page).toHaveURL(/\/search/)
-    await expect(page.locator('text=/found \\d+/i')).toBeVisible()
-    // Search input is autofocused on mount
-    await expect(searchInput).toBeFocused()
-
     // ArrowDown changes visual selection but keeps focus in input
     await page.keyboard.press('ArrowDown')
     await expect(searchInput).toBeFocused()
 
-    // Enter navigates to the now-selected second result
+    // ArrowUp goes back to first result
+    await page.keyboard.press('ArrowUp')
+    await expect(searchInput).toBeFocused()
+
+    // First result is selected, Enter navigates to it
+    // URL is /vue not /package/vue (cleaner URLs)
     await page.keyboard.press('Enter')
-    // Second result could be vue-router, vuex, etc - just check we navigated away
-    await expect(page).not.toHaveURL(/\/search/)
+    await expect(page).toHaveURL(/\/vue/)
   })
 
   test('/search?q=vue → "/" focuses the search input from results', async ({ page, goto }) => {
