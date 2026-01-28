@@ -25,9 +25,13 @@ export default defineCachedEventHandler(
       throw createError({ statusCode: 404, message: 'No latest version found' })
     }
 
+    // Extract exports from the already-fetched packument to avoid redundant fetch
+    const versionData = packument.versions?.[version]
+    const exports = versionData?.exports as Record<string, unknown> | undefined
+
     let generated
     try {
-      generated = await generateDocsWithDeno(packageName, version)
+      generated = await generateDocsWithDeno(packageName, version, exports)
     } catch (error) {
       console.error(`Doc generation failed for ${packageName}@${version}:`, error)
       return {

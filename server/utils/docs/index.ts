@@ -34,9 +34,10 @@ import { renderDocNodes, renderToc } from './render'
 export async function generateDocsWithDeno(
   packageName: string,
   version: string,
+  exports?: Record<string, unknown>,
 ): Promise<DocsGenerationResult | null> {
   // Get doc nodes using @deno/doc WASM
-  const result = await getDocNodes(packageName, version)
+  const result = await getDocNodes(packageName, version, exports)
 
   if (!result.nodes || result.nodes.length === 0) {
     return null
