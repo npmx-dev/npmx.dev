@@ -19,7 +19,7 @@ const searchQuery = ref('')
 const isSearchFocused = ref(false)
 
 const showSearchBar = computed(() => {
-  return route.name === 'search' || route.name === 'index'
+  return route.name !== 'search' && route.name !== 'index'
 })
 
 async function handleSearchInput() {
@@ -67,7 +67,7 @@ onKeyStroke(',', e => {
       <div class="flex-1 flex items-center justify-center gap-4 sm:gap-6">
         <!-- Search bar (shown on all pages except home and search) -->
         <search v-if="showSearchBar" class="hidden sm:block flex-1 max-w-md">
-          <form role="search" class="relative" @submit.prevent="handleSearchInput">
+          <form role="search" method="GET" action="/search" class="relative">
             <label for="header-search" class="sr-only">
               {{ $t('search.label') }}
             </label>
