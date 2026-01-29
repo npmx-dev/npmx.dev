@@ -943,7 +943,7 @@ describe('PackageVersions', () => {
       })
 
       // Find chevron icons inside buttons
-      const chevronIcons = component.findAll('button span.i-carbon-chevron-right')
+      const chevronIcons = component.findAll('button span.i-carbon\\:chevron-right')
       expect(chevronIcons.length).toBeGreaterThan(0)
       for (const icon of chevronIcons) {
         expect(icon.attributes('aria-hidden')).toBe('true')

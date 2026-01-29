@@ -70,7 +70,7 @@ function formatBytes(bytes: number): string {
               :to="parentPath ? `${baseUrl}/${parentPath}` : baseUrl"
               class="flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors"
             >
-              <span class="i-carbon-folder w-4 h-4 text-yellow-600" />
+              <span class="i-carbon:folder w-4 h-4 text-yellow-600" />
               <span>..</span>
             </NuxtLink>
           </td>
@@ -91,13 +91,13 @@ function formatBytes(bytes: number): string {
             >
               <span
                 v-if="node.type === 'directory'"
-                class="i-carbon-folder w-4 h-4 text-yellow-600"
+                class="i-carbon:folder w-4 h-4 text-yellow-600"
               />
               <span v-else class="w-4 h-4" :class="getFileIcon(node.name)" />
               <span>{{ node.name }}</span>
             </NuxtLink>
           </td>
-          <td class="py-2 px-4 text-right font-mono text-xs text-fg-subtle">
+          <td class="py-2 px-4 text-end font-mono text-xs text-fg-subtle">
             <span v-if="node.type === 'file' && node.size">
               {{ formatBytes(node.size) }}
             </span>
