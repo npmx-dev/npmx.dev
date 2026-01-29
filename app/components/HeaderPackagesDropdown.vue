@@ -75,7 +75,7 @@ function handleKeydown(event: KeyboardEvent) {
       enter-from-class="opacity-0 translate-y-1"
       leave-to-class="opacity-0 translate-y-1"
     >
-      <div v-if="isOpen" class="absolute right-0 top-full pt-2 w-64 z-50">
+      <div v-if="isOpen" class="absolute inset-ie-0 top-full pt-2 w-64 z-50">
         <div class="bg-bg-elevated border border-border rounded-lg shadow-lg overflow-hidden">
           <div class="px-3 py-2 border-b border-border">
             <span class="font-mono text-xs text-fg-subtle">{{
@@ -112,7 +112,7 @@ function handleKeydown(event: KeyboardEvent) {
               class="link-subtle font-mono text-xs inline-flex items-center gap-1"
             >
               {{ $t('header.packages_dropdown.view_all') }}
-              <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+              <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
             </NuxtLink>
           </div>
         </div>

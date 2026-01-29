@@ -494,6 +494,112 @@
       "label": "jsr"
     }
   },
+  "filters": {
+    "title": "Filtres",
+    "search": "Recherche",
+    "search_scope": "Portée de la recherche",
+    "search_placeholder_name": "Filtrer par nom de paquet...",
+    "search_placeholder_description": "Filtrer par description...",
+    "search_placeholder_keywords": "Filtrer par mots-clés...",
+    "search_placeholder_all": "Rechercher ou utiliser name: desc: kw:",
+    "scope_name": "Nom",
+    "scope_name_description": "Rechercher uniquement les noms de paquets",
+    "scope_description": "Description",
+    "scope_description_description": "Rechercher uniquement les descriptions",
+    "scope_keywords": "Mots-clés",
+    "scope_keywords_description": "Rechercher uniquement les mots-clés",
+    "scope_all": "Tout",
+    "scope_all_description": "Rechercher tous les champs, supporte les opérateurs name: desc: kw:",
+    "weekly_downloads": "Téléchargements hebdomadaires",
+    "updated_within": "Mis à jour d'ici",
+    "security": "Sécurité",
+    "keywords": "Mots-clés",
+    "more_keywords": "+{count} de plus",
+    "clear_all": "Tout effacer",
+    "remove_filter": "Supprimer le filtre {label}",
+    "download_range": {
+      "any": "Tous",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "N'importe quand",
+      "week": "Semaine passée",
+      "month": "Mois passé",
+      "quarter": "3 derniers mois",
+      "year": "Année passée"
+    },
+    "security_options": {
+      "all": "Tous les paquets",
+      "secure": "Sans avertissements",
+      "insecure": "Avec avertissements"
+    },
+    "sort": {
+      "label": "Trier les paquets",
+      "toggle_direction": "Inverser l'ordre",
+      "ascending": "Croissant",
+      "descending": "Décroissant",
+      "relevance": "Pertinence",
+      "downloads_week": "Téléch./sem",
+      "downloads_day": "Téléch./jour",
+      "downloads_month": "Téléch./mois",
+      "downloads_year": "Téléch./an",
+      "updated": "Dern. mise à jour",
+      "name": "Nom",
+      "quality": "Qualité",
+      "popularity": "Popularité",
+      "maintenance": "Maintenance",
+      "score": "Score"
+    },
+    "columns": {
+      "title": "Colonnes",
+      "show": "Afficher les colonnes",
+      "reset": "Réinitialiser",
+      "coming_soon": "Bientôt disponible",
+      "name": "Nom",
+      "version": "Version",
+      "description": "Description",
+      "downloads": "Téléch./sem",
+      "updated": "Dern. mise à jour",
+      "maintainers": "Mainteneurs",
+      "keywords": "Mots-clés",
+      "quality_score": "Score de qualité",
+      "popularity_score": "Score de popularité",
+      "maintenance_score": "Score de maintenance",
+      "combined_score": "Score combiné",
+      "security": "Sécurité"
+    },
+    "view_mode": {
+      "label": "Mode d'affichage",
+      "cards": "Vue carte",
+      "table": "Vue tableau"
+    },
+    "pagination": {
+      "mode_label": "Mode de pagination",
+      "infinite": "Infini",
+      "paginated": "Paginé",
+      "items_per_page": "Éléments par page",
+      "per_page": "{count} / page",
+      "all_yolo": "Tout (YOLO)",
+      "showing": "{start}-{end} sur {total}",
+      "previous": "Page précédente",
+      "next": "Page suivante",
+      "nav_label": "Pagination"
+    },
+    "count": {
+      "showing_filtered": "{filtered} sur {total} paquets",
+      "showing_all": "{total} paquets",
+      "showing_paginated": "{pageSize} sur {total} paquets"
+    },
+    "table": {
+      "security_warning": "Avertissement de sécurité",
+      "secure": "Sécurisé",
+      "no_packages": "Aucun paquet trouvé"
+    }
+  },
   "about": {
     "title": "À propos",
     "heading": "à propos",

@@ -1,11 +1,14 @@
 import type { AxeResults, RunOptions } from 'axe-core'
 import type { VueWrapper } from '@vue/test-utils'
+import type { ColumnConfig, FilterChip } from '#shared/types/preferences'
 import 'axe-core'
 import { afterEach, describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 
 // axe-core is a UMD module that exposes itself as window.axe in the browser
-declare const axe: { run: (context: Element, options?: RunOptions) => Promise<AxeResults> }
+declare const axe: {
+  run: (context: Element, options?: RunOptions) => Promise<AxeResults>
+}
 
 // Track mounted containers for cleanup
 const mountedContainers: HTMLElement[] = []
@@ -81,6 +84,14 @@ import PackageAccessControls from '~/components/PackageAccessControls.vue'
 import OrgMembersPanel from '~/components/OrgMembersPanel.vue'
 import OrgTeamsPanel from '~/components/OrgTeamsPanel.vue'
 import CodeMobileTreeDrawer from '~/components/CodeMobileTreeDrawer.vue'
+import ColumnPicker from '~/components/ColumnPicker.vue'
+import FilterChips from '~/components/FilterChips.vue'
+import FilterPanel from '~/components/FilterPanel.vue'
+import PackageListToolbar from '~/components/PackageListToolbar.vue'
+import PackageTable from '~/components/PackageTable.vue'
+import PackageTableRow from '~/components/PackageTableRow.vue'
+import PaginationControls from '~/components/PaginationControls.vue'
+import ViewModeToggle from '~/components/ViewModeToggle.vue'
 import PackageVulnerabilityTree from '~/components/PackageVulnerabilityTree.vue'
 import DependencyPathPopup from '~/components/DependencyPathPopup.vue'
 
@@ -346,9 +357,24 @@ describe('component accessibility audits', () => {
 
   describe('PackageDownloadAnalytics', () => {
     const mockWeeklyDownloads = [
-      { downloads: 1000, weekKey: '2024-W01', weekStart: '2024-01-01', weekEnd: '2024-01-07' },
-      { downloads: 1200, weekKey: '2024-W02', weekStart: '2024-01-08', weekEnd: '2024-01-14' },
-      { downloads: 1500, weekKey: '2024-W03', weekStart: '2024-01-15', weekEnd: '2024-01-21' },
+      {
+        downloads: 1000,
+        weekKey: '2024-W01',
+        weekStart: '2024-01-01',
+        weekEnd: '2024-01-07',
+      },
+      {
+        downloads: 1200,
+        weekKey: '2024-W02',
+        weekStart: '2024-01-08',
+        weekEnd: '2024-01-14',
+      },
+      {
+        downloads: 1500,
+        weekKey: '2024-W03',
+        weekStart: '2024-01-15',
+        weekEnd: '2024-01-21',
+      },
     ]
 
     it('should have no accessibility violations (non-modal)', async () => {
@@ -584,7 +610,12 @@ describe('component accessibility audits', () => {
     const mockTree = [
       { name: 'src', type: 'directory' as const, path: 'src', children: [] },
       { name: 'index.js', type: 'file' as const, path: 'index.js', size: 1024 },
-      { name: 'package.json', type: 'file' as const, path: 'package.json', size: 512 },
+      {
+        name: 'package.json',
+        type: 'file' as const,
+        path: 'package.json',
+        size: 512,
+      },
     ]
 
     it('should have no accessibility violations', async () => {
@@ -751,7 +782,10 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: { final: 0.9, detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 } },
+        score: {
+          final: 0.9,
+          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
+        },
         searchScore: 100000,
       },
       {
@@ -764,7 +798,10 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'fb' },
         },
-        score: { final: 0.9, detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 } },
+        score: {
+          final: 0.9,
+          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
+        },
         searchScore: 90000,
       },
     ]
@@ -876,6 +913,332 @@ describe('component accessibility audits', () => {
           currentPath: '',
           baseUrl: '/code/vue',
         },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ColumnPicker', () => {
+    const mockColumns: ColumnConfig[] = [
+      { id: 'name', label: 'Name', visible: true, sortable: true },
+      { id: 'version', label: 'Version', visible: true, sortable: false },
+      { id: 'downloads', label: 'Downloads', visible: false, sortable: true },
+    ]
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ColumnPicker, {
+        props: { columns: mockColumns },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('FilterChips', () => {
+    it('should have no accessibility violations with chips', async () => {
+      const chips: FilterChip[] = [
+        { id: 'text', type: 'text', label: 'Search', value: 'react' },
+        { id: 'keyword', type: 'keywords', label: 'Keyword', value: 'hooks' },
+      ]
+      const component = await mountSuspended(FilterChips, {
+        props: { chips },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with empty chips', async () => {
+      const component = await mountSuspended(FilterChips, {
+        props: { chips: [] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('FilterPanel', () => {
+    const defaultFilters = {
+      text: '',
+      searchScope: 'name' as const,
+      downloadRange: 'any' as const,
+      updatedWithin: 'any' as const,
+      security: 'all' as const,
+      keywords: [],
+    }
+
+    it('should have no accessibility violations (collapsed)', async () => {
+      const component = await mountSuspended(FilterPanel, {
+        props: { filters: defaultFilters },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with active filters', async () => {
+      const component = await mountSuspended(FilterPanel, {
+        props: {
+          filters: {
+            ...defaultFilters,
+            text: 'react',
+            keywords: ['hooks'],
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageListToolbar', () => {
+    const defaultFilters = {
+      text: '',
+      searchScope: 'name' as const,
+      downloadRange: 'any' as const,
+      updatedWithin: 'any' as const,
+      security: 'all' as const,
+      keywords: [],
+    }
+
+    const mockColumns: ColumnConfig[] = [
+      { id: 'name', label: 'Name', visible: true, sortable: true },
+      { id: 'version', label: 'Version', visible: true, sortable: false },
+    ]
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageListToolbar, {
+        props: {
+          filters: defaultFilters,
+          sortOption: 'downloads-week-desc',
+          viewMode: 'cards',
+          columns: mockColumns,
+          paginationMode: 'infinite',
+          pageSize: 25,
+          totalCount: 100,
+          filteredCount: 100,
+          activeFilters: [],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in search context', async () => {
+      const component = await mountSuspended(PackageListToolbar, {
+        props: {
+          filters: defaultFilters,
+          sortOption: 'relevance-desc',
+          viewMode: 'cards',
+          columns: mockColumns,
+          paginationMode: 'infinite',
+          pageSize: 25,
+          totalCount: 100,
+          filteredCount: 100,
+          activeFilters: [],
+          searchContext: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should total package count in paginated mode', async () => {
+      const component = await mountSuspended(PackageListToolbar, {
+        props: {
+          filters: defaultFilters,
+          sortOption: 'downloads-week-desc',
+          viewMode: 'table',
+          columns: mockColumns,
+          paginationMode: 'paginated',
+          pageSize: 25,
+          totalCount: 9544,
+          filteredCount: 9544,
+          activeFilters: [],
+        },
+      })
+
+      const html = component.html()
+      expect(html).toContain('25 of 9,544')
+    })
+  })
+
+  describe('PackageTable', () => {
+    const mockResults = [
+      {
+        package: {
+          name: 'vue',
+          version: '3.5.0',
+          description: 'The progressive JavaScript framework',
+          date: '2024-01-15T00:00:00.000Z',
+          keywords: ['framework'],
+          links: {},
+          publisher: { username: 'yyx990803' },
+        },
+        score: {
+          final: 0.9,
+          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
+        },
+        searchScore: 100000,
+      },
+    ]
+
+    const mockColumns: ColumnConfig[] = [
+      { id: 'name', label: 'Name', visible: true, sortable: true },
+      { id: 'version', label: 'Version', visible: true, sortable: false },
+      {
+        id: 'description',
+        label: 'Description',
+        visible: true,
+        sortable: false,
+      },
+      { id: 'downloads', label: 'Downloads', visible: true, sortable: true },
+    ]
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageTable, {
+        props: {
+          results: mockResults,
+          columns: mockColumns,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with empty results', async () => {
+      const component = await mountSuspended(PackageTable, {
+        props: {
+          results: [],
+          columns: mockColumns,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when loading', async () => {
+      const component = await mountSuspended(PackageTable, {
+        props: {
+          results: [],
+          columns: mockColumns,
+          isLoading: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageTableRow', () => {
+    const mockResult = {
+      package: {
+        name: 'lodash',
+        version: '4.17.21',
+        description: 'A modern JavaScript utility library',
+        date: '2024-01-01T00:00:00.000Z',
+        keywords: ['utility', 'modules'],
+        links: {},
+        publisher: { username: 'jdalton' },
+        maintainers: [{ username: 'jdalton', email: 'test@test.com' }],
+      },
+      downloads: { weekly: 50000000 },
+      updated: '2024-01-01T00:00:00.000Z',
+      score: {
+        final: 0.95,
+        detail: { quality: 0.95, popularity: 0.99, maintenance: 0.9 },
+      },
+      searchScore: 99999,
+    }
+
+    const mockColumns: ColumnConfig[] = [
+      { id: 'name', label: 'Name', visible: true, sortable: true },
+      { id: 'version', label: 'Version', visible: true, sortable: false },
+      {
+        id: 'description',
+        label: 'Description',
+        visible: true,
+        sortable: false,
+      },
+    ]
+
+    it('should have no accessibility violations', async () => {
+      // PackageTableRow needs to be wrapped in a table structure
+      const component = await mountSuspended(PackageTableRow, {
+        props: {
+          result: mockResult,
+          columns: mockColumns,
+        },
+        global: {
+          stubs: {
+            // Wrap in proper table structure for accessibility
+          },
+        },
+        attachTo: (() => {
+          const table = document.createElement('table')
+          const tbody = document.createElement('tbody')
+          table.appendChild(tbody)
+          document.body.appendChild(table)
+          return tbody
+        })(),
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PaginationControls', () => {
+    it('should have no accessibility violations in infinite mode', async () => {
+      const component = await mountSuspended(PaginationControls, {
+        props: {
+          mode: 'infinite',
+          pageSize: 25,
+          currentPage: 1,
+          totalItems: 100,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in paginated mode', async () => {
+      const component = await mountSuspended(PaginationControls, {
+        props: {
+          mode: 'paginated',
+          pageSize: 25,
+          currentPage: 1,
+          totalItems: 100,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with multiple pages', async () => {
+      const component = await mountSuspended(PaginationControls, {
+        props: {
+          mode: 'paginated',
+          pageSize: 10,
+          currentPage: 5,
+          totalItems: 200,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ViewModeToggle', () => {
+    it('should have no accessibility violations in cards mode', async () => {
+      const component = await mountSuspended(ViewModeToggle, {
+        props: { modelValue: 'cards' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in table mode', async () => {
+      const component = await mountSuspended(ViewModeToggle, {
+        props: { modelValue: 'table' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

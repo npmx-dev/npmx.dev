@@ -52,8 +52,11 @@ onKeyStroke(',', e => {
 
 <template>
   <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
-    <nav :aria-label="$t('nav.main_navigation')" class="container h-14 flex items-center">
-      <!-- Left: Logo -->
+    <nav
+      :aria-label="$t('nav.main_navigation')"
+      class="container h-14 flex items-center justify-start"
+    >
+      <!-- Start: Logo -->
       <div class="flex-shrink-0">
         <NuxtLink
           v-if="showLogo"
@@ -79,7 +82,7 @@ onKeyStroke(',', e => {
             <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
               <div class="search-box relative flex items-center">
                 <span
-                  class="absolute left-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none group-focus-within:text-accent z-1"
+                  class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none group-focus-within:text-accent z-1"
                 >
                   /
                 </span>
@@ -91,7 +94,7 @@ onKeyStroke(',', e => {
                   name="q"
                   :placeholder="$t('search.placeholder')"
                   v-bind="noCorrect"
-                  class="w-full bg-bg-subtle border border-border rounded-md pl-7 pr-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+                  class="w-full bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
                   @input="handleSearchInput"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
@@ -115,8 +118,8 @@ onKeyStroke(',', e => {
         </ul>
       </div>
 
-      <!-- Right: User status + GitHub -->
-      <div class="flex-shrink-0 flex items-center gap-4 sm:gap-6 ml-auto sm:ml-0">
+      <!-- End: User status + GitHub -->
+      <div class="flex-shrink-0 flex items-center gap-4 sm:gap-6 ms-auto sm:ms-0">
         <NuxtLink
           to="/about"
           class="sm:hidden link-subtle font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"

@@ -46,15 +46,37 @@
     "back": "戻る"
   },
   "settings": {
+    "title": "設定",
+    "tagline": "npmxの体験をカスタマイズ",
+    "meta_description": "テーマ、言語、表示設定でnpmx.devの体験をカスタマイズします。",
+    "sections": {
+      "appearance": "外観",
+      "display": "表示",
+      "language": "言語"
+    },
     "relative_dates": "日付を相対表記",
+    "relative_dates_description": "完全な日付の代わりに「3日前」のように表示します",
     "include_types": "インストール時に {'@'}types を含める",
+    "include_types_description": "型定義のないパッケージのインストールコマンドに {'@'}types パッケージを追加します",
+    "hide_platform_packages": "検索でプラットフォーム固有のパッケージを非表示",
+    "hide_platform_packages_description": "検索結果から {'@'}esbuild/linux-x64 のようなネイティブバイナリパッケージを非表示にします",
     "theme": "テーマ",
     "theme_light": "ライト",
     "theme_dark": "ダーク",
     "theme_system": "システム",
     "language": "言語",
     "help_translate": "npmxの翻訳に協力する",
-    "accent_colors": "アクセントカラー"
+    "accent_colors": "アクセントカラー",
+    "clear_accent": "アクセントカラーをクリア",
+    "translation_progress": "翻訳の進捗状況"
+  },
+  "i18n": {
+    "missing_keys": "{count} 件の未翻訳 | {count} 件の未翻訳",
+    "copy_keys": "キーをコピー",
+    "show_more_keys": "他 {count} 件を表示...",
+    "contribute_hint": "不足しているキーを追加して翻訳の改善にご協力ください。",
+    "edit_on_github": "GitHubで編集",
+    "view_guide": "翻訳ガイド"
   },
   "common": {
     "loading": "読み込み中...",
@@ -96,11 +118,10 @@
     },
     "stats": {
       "license": "ライセンス",
-      "weekly": "週間",
       "deps": "依存関係",
       "install_size": "インストールサイズ",
+      "vulns": "脆弱性",
       "updated": "最終更新",
-      "view_download_trends": "ダウンロード傾向を表示",
       "view_dependency_graph": "依存関係グラフを表示",
       "inspect_dependency_tree": "依存関係ツリーを検査"
     },
@@ -108,7 +129,6 @@
       "repo": "リポジトリ",
       "homepage": "ホームページ",
       "issues": "issues",
-      "forks": "フォーク",
       "jsr": "jsr",
       "code": "コード",
       "docs": "ドキュメント",
@@ -204,7 +224,9 @@
       "end_date": "終了日",
       "no_data": "ダウンロードデータはありません",
       "loading": "読み込み中...",
-      "y_axis_label": "{granularity} ダウンロード数"
+      "y_axis_label": "{granularity} ダウンロード数",
+      "download_file": "{fileType} をダウンロード",
+      "toggle_annotator": "アノテーターを切り替え"
     },
     "install_scripts": {
       "title": "インストールスクリプト",
@@ -545,7 +567,7 @@
         "already": "すでに",
         "people": "素晴らしい",
         "building": "パッケージ",
-        "really": "マネージャー",
+        "really": "マネージャーを",
         "cool": "作っている",
         "package": "人たちが",
         "managers": "存在します"

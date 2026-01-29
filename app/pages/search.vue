@@ -1,11 +1,22 @@
 <script setup lang="ts">
 import { formatNumber } from '#imports'
+import type { FilterChip, SortOption } from '#shared/types/preferences'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
 
 const route = useRoute()
 const router = useRouter()
+
+// Preferences (persisted to localStorage)
+const {
+  viewMode,
+  paginationMode,
+  pageSize: preferredPageSize,
+  columns,
+  toggleColumn,
+  resetColumns,
+} = usePackageListPreferences()
 
 // Local input value (updates immediately as user types)
 const inputValue = ref((route.query.q as string) ?? '')
@@ -51,8 +62,6 @@ const { focused: isSearchFocused } = useFocus(searchInputRef)
 const selectedIndex = ref(0)
 const packageListRef = useTemplateRef('packageListRef')
 
-const resultCount = computed(() => visibleResults.value?.objects.length ?? 0)
-
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = ref(false)
 onMounted(() => {
@@ -64,10 +73,16 @@ onMounted(() => {
   }, 300)
 })
 
-// Infinite scroll state
-const pageSize = 20
-const loadedPages = ref(1)
-const isLoadingMore = ref(false)
+// Infinite scroll / pagination state
+const pageSize = 25
+const currentPage = ref(1)
+
+// Calculate how many results we need based on current page and preferred page size
+const requestedSize = computed(() => {
+  const numericPrefSize = preferredPageSize.value === 'all' ? 250 : preferredPageSize.value
+  // Always fetch at least enough for the current page
+  return Math.max(pageSize, currentPage.value * numericPrefSize)
+})
 
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
@@ -75,52 +90,44 @@ const initialPage = computed(() => {
   return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 
-// Initialize loaded pages from URL on mount
+// Initialize current page from URL on mount
 onMounted(() => {
   if (initialPage.value > 1) {
-    // Load enough pages to show the initial page
-    loadedPages.value = initialPage.value
+    currentPage.value = initialPage.value
   }
 })
 
-// fetch all pages up to current
-const { data: results, status } = useNpmSearch(query, () => ({
-  size: pageSize * loadedPages.value,
-  from: 0,
+// Use incremental search with client-side caching
+const {
+  data: results,
+  status,
+  isLoadingMore,
+  hasMore,
+  fetchMore,
+} = useNpmSearch(query, () => ({
+  size: requestedSize.value,
+  incremental: true,
 }))
 
-// Keep track of previous results to show while loading
-// Use useState so the value persists from SSR to client hydration
+// Track previous query for UI continuity
 const previousQuery = useState('search-previous-query', () => query.value)
-const cachedResults = ref(results.value)
 
-// Update cached results smartly
-watch([results, query], ([newResults, newQuery]) => {
-  if (newResults) {
-    cachedResults.value = newResults
-    previousQuery.value = newQuery
-  }
-})
-
-// Determine if we should show previous results while loading
-// (when new query is a continuation of the old one)
-const isQueryContinuation = computed(() => {
-  const current = query.value.toLowerCase()
-  const previous = previousQuery.value.toLowerCase()
-  return previous && current.startsWith(previous)
-})
+// Update previous query when results change
+watch(
+  () => results.value,
+  newResults => {
+    if (newResults && newResults.objects.length > 0) {
+      previousQuery.value = query.value
+    }
+  },
+)
 
 const resultsMatchQuery = computed(() => {
   return previousQuery.value === query.value
 })
 
-// Show cached results while loading if it's a continuation query
-const rawVisibleResults = computed(() => {
-  if (status.value === 'pending' && isQueryContinuation.value && cachedResults.value) {
-    return cachedResults.value
-  }
-  return results.value
-})
+// Results to display (directly from incremental search)
+const rawVisibleResults = computed(() => results.value)
 
 // Settings for platform package filtering
 const { settings } = useSettings()
@@ -164,14 +171,59 @@ const visibleResults = computed(() => {
   }
 })
 
+// Use structured filters for client-side refinement of search results
+const resultsArray = computed(() => visibleResults.value?.objects ?? [])
+
+// Minimal structured filters usage for search context (no client-side filtering)
+const {
+  filters,
+  sortOption,
+  sortedPackages,
+  availableKeywords,
+  activeFilters,
+  setTextFilter,
+  setSearchScope,
+  setDownloadRange,
+  setSecurity,
+  setUpdatedWithin,
+  toggleKeyword,
+  clearFilter,
+  clearAllFilters,
+  setSort,
+} = useStructuredFilters({
+  packages: resultsArray,
+  initialSort: 'relevance-desc', // Default to search relevance
+})
+
+// Client-side filtered/sorted results for display
+// In search context, we always use server order (relevance) - no client-side filtering
+const displayResults = computed(() => {
+  // When using relevance sort, return original server-sorted results
+  if (sortOption.value === 'relevance-desc' || sortOption.value === 'relevance-asc') {
+    return resultsArray.value
+  }
+
+  return sortedPackages.value
+})
+
+const resultCount = computed(() => displayResults.value.length)
+
+// Handle filter chip removal
+function handleClearFilter(chip: FilterChip) {
+  clearFilter(chip)
+}
+
+// Handle sort change from table
+function handleSortChange(option: SortOption) {
+  setSort(option)
+}
+
 // Should we show the loading spinner?
 const showSearching = computed(() => {
   // Don't show during initial page load (view transition)
   if (!hasInteracted.value) return false
-  // Don't show if we're displaying cached results
-  if (status.value === 'pending' && isQueryContinuation.value && cachedResults.value) return false
-  // Show if pending on first page
-  return status.value === 'pending' && loadedPages.value === 1
+  // Show if pending and no results yet
+  return status.value === 'pending' && displayResults.value.length === 0
 })
 
 const totalPages = computed(() => {
@@ -179,21 +231,12 @@ const totalPages = computed(() => {
   return Math.ceil(visibleResults.value.total / pageSize)
 })
 
-const hasMore = computed(() => {
-  return loadedPages.value < totalPages.value
-})
-
 // Load more when triggered by infinite scroll
-function loadMore() {
+async function loadMore() {
   if (isLoadingMore.value || !hasMore.value) return
-
-  isLoadingMore.value = true
-  loadedPages.value++
-
-  // Reset loading state after data updates
-  nextTick(() => {
-    isLoadingMore.value = false
-  })
+  // Increase requested size to trigger fetch
+  currentPage.value++
+  await fetchMore(requestedSize.value)
 }
 
 // Update URL when page changes from scrolling
@@ -201,9 +244,9 @@ function handlePageChange(page: number) {
   updateUrlPage(page)
 }
 
-// Reset pages when query changes
+// Reset page when query changes
 watch(query, () => {
-  loadedPages.value = 1
+  currentPage.value = 1
   hasInteracted.value = true
 })
 
@@ -812,16 +855,56 @@ defineOgImageComponent('Default', {
             </button>
           </div>
 
-          <p
-            v-if="visibleResults.total > 0"
-            role="status"
-            class="text-fg-muted text-sm mb-6 font-mono"
-          >
-            {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
-            <span v-if="status === 'pending'" class="text-fg-subtle">{{
-              $t('search.updating')
-            }}</span>
-          </p>
+          <!-- Enhanced toolbar -->
+          <div v-if="visibleResults.total > 0" class="mb-6">
+            <PackageListToolbar
+              :filters="filters"
+              v-model:sort-option="sortOption"
+              v-model:view-mode="viewMode"
+              :columns="columns"
+              v-model:pagination-mode="paginationMode"
+              v-model:page-size="preferredPageSize"
+              :total-count="visibleResults.total"
+              :filtered-count="displayResults.length"
+              :available-keywords="availableKeywords"
+              :active-filters="activeFilters"
+              search-context
+              @toggle-column="toggleColumn"
+              @reset-columns="resetColumns"
+              @clear-filter="handleClearFilter"
+              @clear-all-filters="clearAllFilters"
+              @update:text="setTextFilter"
+              @update:search-scope="setSearchScope"
+              @update:download-range="setDownloadRange"
+              @update:security="setSecurity"
+              @update:updated-within="setUpdatedWithin"
+              @toggle-keyword="toggleKeyword"
+            />
+            <!-- Show "Found X packages" (infinite scroll mode only) -->
+            <p
+              v-if="viewMode === 'cards' && paginationMode === 'infinite'"
+              role="status"
+              class="text-fg-muted text-sm mt-4 font-mono"
+            >
+              {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
+              <span v-if="status === 'pending'" class="text-fg-subtle">{{
+                $t('search.updating')
+              }}</span>
+            </p>
+            <!-- Show "x of y packages" (paginated/table mode only) -->
+            <p
+              v-if="viewMode === 'table' || paginationMode === 'paginated'"
+              role="status"
+              class="text-fg-muted text-sm mt-4 font-mono"
+            >
+              {{
+                $t('filters.count.showing_paginated', {
+                  pageSize: preferredPageSize === 'all' ? visibleResults.total : preferredPageSize,
+                  total: visibleResults.total.toLocaleString(),
+                })
+              }}
+            </p>
+          </div>
 
           <!-- No results found -->
           <div v-else-if="status !== 'pending'" role="status" class="py-12">
@@ -862,20 +945,36 @@ defineOgImageComponent('Default', {
           </div>
 
           <PackageList
-            v-if="visibleResults.objects.length > 0"
+            v-if="displayResults.length > 0"
             ref="packageListRef"
-            :results="visibleResults.objects"
+            :results="displayResults"
             :selected-index="selectedIndex"
             :search-query="query"
             heading-level="h2"
             show-publisher
             :has-more="hasMore"
-            :is-loading="isLoadingMore || (status === 'pending' && loadedPages > 1)"
-            :page-size="pageSize"
+            :is-loading="isLoadingMore"
+            :page-size="preferredPageSize"
             :initial-page="initialPage"
+            :view-mode="viewMode"
+            :columns="columns"
+            v-model:sort-option="sortOption"
+            :pagination-mode="paginationMode"
+            :current-page="currentPage"
             @load-more="loadMore"
             @page-change="handlePageChange"
             @select="handlePackageSelect"
+            @click-keyword="toggleKeyword"
+          />
+
+          <!-- Pagination controls -->
+          <PaginationControls
+            v-if="displayResults.length > 0"
+            v-model:mode="paginationMode"
+            v-model:page-size="preferredPageSize"
+            v-model:current-page="currentPage"
+            :total-items="visibleResults?.total ?? displayResults.length"
+            :view-mode="viewMode"
           />
         </div>
       </section>

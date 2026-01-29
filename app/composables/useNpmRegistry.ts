@@ -21,6 +21,74 @@ const NPM_API = 'https://api.npmjs.org'
 const packumentCache = new Map<string, Promise<Packument | null>>()
 
 /**
+ * Fetch downloads for multiple packages.
+ * Returns a map of package name -> weekly downloads.
+ * Uses bulk API for unscoped packages, parallel individual requests for scoped.
+ * Note: npm bulk downloads API does not support scoped packages.
+ */
+async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, number>> {
+  const downloads = new Map<string, number>()
+  if (packageNames.length === 0) return downloads
+
+  // Separate scoped and unscoped packages
+  const scopedPackages = packageNames.filter(n => n.startsWith('@'))
+  const unscopedPackages = packageNames.filter(n => !n.startsWith('@'))
+
+  // Fetch unscoped packages via bulk API (max 128 per request)
+  const bulkPromises: Promise<void>[] = []
+  const chunkSize = 100
+  for (let i = 0; i < unscopedPackages.length; i += chunkSize) {
+    const chunk = unscopedPackages.slice(i, i + chunkSize)
+    bulkPromises.push(
+      (async () => {
+        try {
+          const response = await $fetch<Record<string, { downloads: number } | null>>(
+            `${NPM_API}/downloads/point/last-week/${chunk.join(',')}`,
+          )
+          for (const [name, data] of Object.entries(response)) {
+            if (data?.downloads !== undefined) {
+              downloads.set(name, data.downloads)
+            }
+          }
+        } catch {
+          // Ignore errors - downloads are optional
+        }
+      })(),
+    )
+  }
+
+  // Fetch scoped packages in parallel batches (concurrency limit to avoid overwhelming the API)
+  // Use Promise.allSettled to not fail on individual errors
+  const scopedBatchSize = 20 // Concurrent requests per batch
+  for (let i = 0; i < scopedPackages.length; i += scopedBatchSize) {
+    const batch = scopedPackages.slice(i, i + scopedBatchSize)
+    bulkPromises.push(
+      (async () => {
+        const results = await Promise.allSettled(
+          batch.map(async name => {
+            const encoded = encodePackageName(name)
+            const data = await $fetch<{ downloads: number }>(
+              `${NPM_API}/downloads/point/last-week/${encoded}`,
+            )
+            return { name, downloads: data.downloads }
+          }),
+        )
+        for (const result of results) {
+          if (result.status === 'fulfilled' && result.value.downloads !== undefined) {
+            downloads.set(result.value.name, result.value.downloads)
+          }
+        }
+      })(),
+    )
+  }
+
+  // Wait for all fetches to complete
+  await Promise.all(bulkPromises)
+
+  return downloads
+}
+
+/**
  * Encode a package name for use in npm registry URLs.
  * Handles scoped packages (e.g., @scope/name -> @scope%2Fname).
  */
@@ -195,40 +263,173 @@ const emptySearchResponse = {
   time: new Date().toISOString(),
 } satisfies NpmSearchResponse
 
+export interface NpmSearchOptions {
+  /** Number of results to fetch */
+  size?: number
+}
+
 /** @public */
 export function useNpmSearch(
   query: MaybeRefOrGetter<string>,
-  options: MaybeRefOrGetter<{
-    size?: number
-    from?: number
-  }> = {},
+  options: MaybeRefOrGetter<NpmSearchOptions> = {},
 ) {
   const cachedFetch = useCachedFetch()
+  // Client-side cache
+  const cache = shallowRef<{
+    query: string
+    objects: NpmSearchResult[]
+    total: number
+  } | null>(null)
+
+  const isLoadingMore = ref(false)
+
+  // Standard (non-incremental) search implementation
   let lastSearch: NpmSearchResponse | undefined = undefined
 
-  return useLazyAsyncData(
-    () => `search:${toValue(query)}:${JSON.stringify(toValue(options))}`,
+  const asyncData = useLazyAsyncData(
+    `search:incremental:${toValue(query)}`,
     async () => {
       const q = toValue(query)
       if (!q.trim()) {
-        return Promise.resolve(emptySearchResponse)
+        return emptySearchResponse
       }
+
+      const opts = toValue(options)
+
+      // This only runs for initial load or query changes
+      // Reset cache for new query
+      cache.value = null
 
       const params = new URLSearchParams()
       params.set('text', q)
-      const opts = toValue(options)
-      if (opts.size) params.set('size', String(opts.size))
-      if (opts.from) params.set('from', String(opts.from))
+      // Use requested size for initial fetch
+      params.set('size', String(opts.size ?? 25))
 
-      // Note: Search results have a short TTL (1 minute) since they change frequently
-      return (lastSearch = await cachedFetch<NpmSearchResponse>(
+      const response = await cachedFetch<NpmSearchResponse>(
         `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
         {},
-        60, // 1 minute TTL for search results
-      ))
+        60,
+      )
+
+      cache.value = {
+        query: q,
+        objects: response.objects,
+        total: response.total,
+      }
+
+      return response
     },
     { default: () => lastSearch || emptySearchResponse },
   )
+
+  // Fetch more results incrementally (only used in incremental mode)
+  async function fetchMore(targetSize: number): Promise<void> {
+    const q = toValue(query).trim()
+    if (!q) {
+      cache.value = null
+      return
+    }
+
+    // If query changed, reset cache (shouldn't happen, but safety check)
+    if (cache.value && cache.value.query !== q) {
+      cache.value = null
+      await asyncData.refresh()
+      return
+    }
+
+    const currentCount = cache.value?.objects.length ?? 0
+    const total = cache.value?.total ?? Infinity
+
+    // Already have enough or no more to fetch
+    if (currentCount >= targetSize || currentCount >= total) {
+      return
+    }
+
+    isLoadingMore.value = true
+
+    try {
+      // Fetch from where we left off - calculate size needed
+      const from = currentCount
+      const size = Math.min(targetSize - currentCount, total - currentCount)
+
+      const params = new URLSearchParams()
+      params.set('text', q)
+      params.set('size', String(size))
+      params.set('from', String(from))
+
+      const response = await cachedFetch<NpmSearchResponse>(
+        `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
+        {},
+        60,
+      )
+
+      // Update cache
+      if (cache.value && cache.value.query === q) {
+        cache.value = {
+          query: q,
+          objects: [...cache.value.objects, ...response.objects],
+          total: response.total,
+        }
+      } else {
+        cache.value = {
+          query: q,
+          objects: response.objects,
+          total: response.total,
+        }
+      }
+
+      // If we still need more, fetch again recursively
+      if (
+        cache.value.objects.length < targetSize &&
+        cache.value.objects.length < cache.value.total
+      ) {
+        await fetchMore(targetSize)
+      }
+    } finally {
+      isLoadingMore.value = false
+    }
+  }
+
+  // Watch for size increases in incremental mode
+  watch(
+    () => toValue(options).size,
+    async (newSize, oldSize) => {
+      if (!newSize) return
+      if (oldSize && newSize > oldSize && toValue(query).trim()) {
+        await fetchMore(newSize)
+      }
+    },
+  )
+
+  // Computed data that uses cache in incremental mode
+  const data = computed<NpmSearchResponse | null>(() => {
+    if (cache.value) {
+      return {
+        objects: cache.value.objects,
+        total: cache.value.total,
+        time: new Date().toISOString(),
+      }
+    }
+    return asyncData.data.value
+  })
+
+  // Whether there are more results available on the server (incremental mode only)
+  const hasMore = computed(() => {
+    if (!cache.value) return true
+    return cache.value.objects.length < cache.value.total
+  })
+
+  return {
+    ...asyncData,
+    /** Reactive search results (uses cache in incremental mode) */
+    data,
+    /** Whether currently loading more results (incremental mode only) */
+    isLoadingMore,
+    /** Whether there are more results available (incremental mode only) */
+    hasMore,
+    /** Manually fetch more results up to target size (incremental mode only) */
+    fetchMore,
+  }
 }
 
 /**
@@ -237,6 +438,7 @@ export function useNpmSearch(
 interface MinimalPackument {
   'name': string
   'description'?: string
+  'keywords'?: string[]
   // `dist-tags` can be missing in some later unpublished packages
   'dist-tags'?: Record<string, string>
   'time': Record<string, string>
@@ -246,7 +448,7 @@ interface MinimalPackument {
 /**
  * Convert packument to search result format for display
  */
-function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
+function packumentToSearchResult(pkg: MinimalPackument, weeklyDownloads?: number): NpmSearchResult {
   let latestVersion = ''
   if (pkg['dist-tags']) {
     latestVersion = pkg['dist-tags'].latest || Object.values(pkg['dist-tags'])[0] || ''
@@ -258,6 +460,7 @@ function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
       name: pkg.name,
       version: latestVersion,
       description: pkg.description,
+      keywords: pkg.keywords,
       date: pkg.time[latestVersion] || modified,
       links: {
         npm: `https://www.npmjs.com/package/${pkg.name}`,
@@ -266,7 +469,8 @@ function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
     },
     score: { final: 0, detail: { quality: 0, popularity: 0, maintenance: 0 } },
     searchScore: 0,
-    updated: modified,
+    downloads: weeklyDownloads !== undefined ? { weekly: weeklyDownloads } : undefined,
+    updated: pkg.time[latestVersion] || modified,
   }
 }
 
@@ -310,30 +514,41 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         return emptySearchResponse
       }
 
-      // Fetch packuments in parallel (with concurrency limit)
-      const concurrency = 10
-      const results: NpmSearchResult[] = []
-
-      for (let i = 0; i < packageNames.length; i += concurrency) {
-        const batch = packageNames.slice(i, i + concurrency)
-        const packuments = await Promise.all(
-          batch.map(async name => {
-            try {
-              const encoded = encodePackageName(name)
-              return await cachedFetch<MinimalPackument>(`${NPM_REGISTRY}/${encoded}`)
-            } catch {
-              return null
+      // Fetch packuments and downloads in parallel
+      const [packuments, downloads] = await Promise.all([
+        // Fetch packuments in parallel (with concurrency limit)
+        (async () => {
+          const concurrency = 10
+          const results: MinimalPackument[] = []
+          for (let i = 0; i < packageNames.length; i += concurrency) {
+            const batch = packageNames.slice(i, i + concurrency)
+            const batchResults = await Promise.all(
+              batch.map(async name => {
+                try {
+                  const encoded = encodePackageName(name)
+                  return await cachedFetch<MinimalPackument>(`${NPM_REGISTRY}/${encoded}`)
+                } catch {
+                  return null
+                }
+              }),
+            )
+            for (const pkg of batchResults) {
+              // Filter out any unpublished packages (missing dist-tags)
+              if (pkg && pkg['dist-tags']) {
+                results.push(pkg)
+              }
             }
-          }),
-        )
-
-        for (const pkg of packuments) {
-          // Filter out any unpublished packages (missing dist-tags)
-          if (pkg && pkg['dist-tags']) {
-            results.push(packumentToSearchResult(pkg))
           }
-        }
-      }
+          return results
+        })(),
+        // Fetch downloads in bulk
+        fetchBulkDownloads(packageNames),
+      ])
+
+      // Convert to search results with download data
+      const results: NpmSearchResult[] = packuments.map(pkg =>
+        packumentToSearchResult(pkg, downloads.get(pkg.name)),
+      )
 
       return {
         objects: results,

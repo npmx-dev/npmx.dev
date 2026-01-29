@@ -545,6 +545,112 @@
       "label": "jsr"
     }
   },
+  "filters": {
+    "title": "Filters",
+    "search": "Search",
+    "search_scope": "Search scope",
+    "search_placeholder_name": "Filter by package name...",
+    "search_placeholder_description": "Filter by description...",
+    "search_placeholder_keywords": "Filter by keywords...",
+    "search_placeholder_all": "Search all or use name: desc: kw:",
+    "scope_name": "Name",
+    "scope_name_description": "Search package names only",
+    "scope_description": "Description",
+    "scope_description_description": "Search descriptions only",
+    "scope_keywords": "Keywords",
+    "scope_keywords_description": "Search keywords only",
+    "scope_all": "All",
+    "scope_all_description": "Search all fields, supports name: desc: kw: operators",
+    "weekly_downloads": "Weekly downloads",
+    "updated_within": "Updated within",
+    "security": "Security",
+    "keywords": "Keywords",
+    "more_keywords": "+{count} more",
+    "clear_all": "Clear all",
+    "remove_filter": "Remove {label} filter",
+    "download_range": {
+      "any": "Any",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Any time",
+      "week": "Past week",
+      "month": "Past month",
+      "quarter": "Past 3 months",
+      "year": "Past year"
+    },
+    "security_options": {
+      "all": "All packages",
+      "secure": "Without warnings",
+      "insecure": "With warnings"
+    },
+    "sort": {
+      "label": "Sort packages",
+      "toggle_direction": "Toggle sort direction",
+      "ascending": "Ascending",
+      "descending": "Descending",
+      "relevance": "Relevance",
+      "downloads_week": "Downloads/wk",
+      "downloads_day": "Downloads/day",
+      "downloads_month": "Downloads/mo",
+      "downloads_year": "Downloads/yr",
+      "updated": "Last Updated",
+      "name": "Name",
+      "quality": "Quality",
+      "popularity": "Popularity",
+      "maintenance": "Maintenance",
+      "score": "Score"
+    },
+    "columns": {
+      "title": "Columns",
+      "show": "Show columns",
+      "reset": "Reset to defaults",
+      "coming_soon": "Coming soon",
+      "name": "Name",
+      "version": "Version",
+      "description": "Description",
+      "downloads": "Downloads/wk",
+      "updated": "Last Updated",
+      "maintainers": "Maintainers",
+      "keywords": "Keywords",
+      "quality_score": "Quality score",
+      "popularity_score": "Popularity score",
+      "maintenance_score": "Maintenance score",
+      "combined_score": "Combined score",
+      "security": "Security"
+    },
+    "view_mode": {
+      "label": "View mode",
+      "cards": "Card view",
+      "table": "Table view"
+    },
+    "pagination": {
+      "mode_label": "Pagination mode",
+      "infinite": "Infinite",
+      "paginated": "Paginated",
+      "items_per_page": "Items per page",
+      "per_page": "{count} / page",
+      "all_yolo": "All (YOLO)",
+      "showing": "{start}-{end} of {total}",
+      "previous": "Previous page",
+      "next": "Next page",
+      "nav_label": "Pagination"
+    },
+    "count": {
+      "showing_filtered": "{filtered} of {total} packages",
+      "showing_all": "{total} packages",
+      "showing_paginated": "{pageSize} of {total} packages"
+    },
+    "table": {
+      "security_warning": "Security warning",
+      "secure": "Secure",
+      "no_packages": "No packages found"
+    }
+  },
   "about": {
     "title": "About",
     "heading": "about",
