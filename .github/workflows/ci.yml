@@ -27,7 +27,7 @@ jobs:
           cache: pnpm
 
       - name: 📦 Install dependencies
-        run: pnpm install --ignore-scripts
+        run: pnpm install
 
       - name: 🔠 Lint project
         run: pnpm lint
@@ -44,7 +44,7 @@ jobs:
           cache: pnpm
 
       - name: 📦 Install dependencies
-        run: pnpm install --ignore-scripts
+        run: pnpm install
 
       - name: 🌐 Install browser
         run: pnpm playwright install
@@ -72,7 +72,7 @@ jobs:
           cache: pnpm
 
       - name: 📦 Install dependencies
-        run: pnpm install --ignore-scripts
+        run: pnpm install
 
       - name: 🖥️ Test project (browser)
         run: pnpm test:browser
@@ -89,7 +89,7 @@ jobs:
           cache: pnpm
 
       - name: 📦 Install dependencies
-        run: pnpm install --ignore-scripts
+        run: pnpm install
 
       - name: 🏗️ Build project
         run: pnpm build
@@ -111,7 +111,7 @@ jobs:
           cache: pnpm
 
       - name: 📦 Install dependencies
-        run: pnpm install --ignore-scripts
+        run: pnpm install
 
       - name: 🔍 Check for unused code
         run: pnpm knip:production
