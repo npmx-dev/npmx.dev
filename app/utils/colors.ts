@@ -121,10 +121,17 @@ export function lightenOklch(
     throw new Error('Invalid OKLCH color format')
   }
 
-  let lightness = Number.parseFloat(lightnessText)
+  let lightness = lightnessText.endsWith('%')
+    ? Number.parseFloat(lightnessText) / 100
+    : Number.parseFloat(lightnessText)
   let chroma = Number.parseFloat(chromaText)
   const hue = Number.parseFloat(hueText)
-  const alpha = alphaText === undefined ? null : Number.parseFloat(alphaText)
+  const alpha =
+    alphaText === undefined
+      ? null
+      : alphaText.endsWith('%')
+        ? Number.parseFloat(alphaText) / 100
+        : Number.parseFloat(alphaText)
 
   const clampedFactor = Math.min(Math.max(factor, 0), 1)
   lightness = lightness + (1 - lightness) * clampedFactor
