@@ -101,13 +101,11 @@ test.describe('npmjs.com URL Compatibility', () => {
       await expect(page.getByRole('heading', { name: 'Packages' })).toBeVisible()
     })
 
-    test('/org/nonexistent-org-12345 → empty org handling', async ({ page, goto }) => {
+    test('/org/nonexistent-org-12345 → 404 handling', async ({ page, goto }) => {
       await goto('/org/nonexistent-org-12345', { waitUntil: 'domcontentloaded' })
 
-      // Should show org name in header
-      await expect(page.locator('h1')).toContainText('@nonexistent-org-12345')
-      // Should show empty state message
-      await expect(page.getByText('No public packages found for')).toBeVisible()
+      // Should show 404 error page
+      await expect(page.locator('h1')).toContainText('Organization not found')
     })
   })
 

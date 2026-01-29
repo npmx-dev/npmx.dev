@@ -96,20 +96,20 @@ describe('validateScopeTeam', () => {
   })
 
   it('rejects scope:team with shell injection in scope', () => {
-    expect(() => validateScopeTeam('@org;rm:team')).toThrow('Invalid scope in scope:team')
-    expect(() => validateScopeTeam('@$(whoami):team')).toThrow('Invalid scope in scope:team')
+    expect(() => validateScopeTeam('@org;rm:team')).toThrow('Invalid scope:team format')
+    expect(() => validateScopeTeam('@$(whoami):team')).toThrow('Invalid scope:team format')
   })
 
   it('rejects scope:team with shell injection in team', () => {
-    expect(() => validateScopeTeam('@org:team;rm')).toThrow('Invalid team name in scope:team')
-    expect(() => validateScopeTeam('@org:$(whoami)')).toThrow('Invalid team name in scope:team')
+    expect(() => validateScopeTeam('@org:team;rm')).toThrow('Invalid scope:team format')
+    expect(() => validateScopeTeam('@org:$(whoami)')).toThrow('Invalid scope:team format')
   })
 
   it('rejects scope or team starting/ending with hyphen', () => {
-    expect(() => validateScopeTeam('@-org:team')).toThrow('Invalid scope in scope:team')
-    expect(() => validateScopeTeam('@org-:team')).toThrow('Invalid scope in scope:team')
-    expect(() => validateScopeTeam('@org:-team')).toThrow('Invalid team name in scope:team')
-    expect(() => validateScopeTeam('@org:team-')).toThrow('Invalid team name in scope:team')
+    expect(() => validateScopeTeam('@-org:team')).toThrow('Invalid scope:team format')
+    expect(() => validateScopeTeam('@org-:team')).toThrow('Invalid scope:team format')
+    expect(() => validateScopeTeam('@org:-team')).toThrow('Invalid scope:team format')
+    expect(() => validateScopeTeam('@org:team-')).toThrow('Invalid scope:team format')
   })
 })
 

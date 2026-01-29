@@ -9,14 +9,28 @@
 </p>
 
 - [👉 &nbsp;Check it out](https://npmx.dev/)
+- [📖 &nbsp;About npmx](https://npmx.dev/about)
 
 ## Vision
 
-The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the npm registry &ndash; fast, modern, and accessible. We don't aim to replace the [npmjs.com](https://www.npmjs.com/) registry, just provide a better UI and DX.
+The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the npm registry &ndash; fast, modern, and accessible. We don't aim to replace the [npmjs.com](https://www.npmjs.com/) registry, just provide a better UI, DX, and admin experience.
 
 - **Speed first** &ndash; Layout shift, flakiness, slowness is The Worst. Fast searching, filtering, and navigation.
 - **URL compatible** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
 - **Simplicity** &ndash; No noise, cluttered display, or confusing UI. If in doubt: choose simplicity.
+- **Admin UI** &ndash; Manage your packages, teams, and organizations from the browser, powered by your local npm CLI.
+
+## Shortcuts
+
+> [!IMPORTANT]  
+> We're keeping the website, repository, and our discord community low-profile until the browser is polished enough. We'll do a formal announcement at that point. Please avoid sharing the website or the invite link to discord on social media directly. The repo is public, so people who care about the project can easily find it and join us. Anyone who wants to help is more than welcome to [join the community](https://chat.npmx.dev). If you know others who would be interested, please invite them too!
+
+- [chat.npmx.dev](https://chat.npmx.dev) - Discord Server
+- [social.npmx.dev](https://social.npmx.dev) - Bluesky Profile
+- [repo.npmx.dev](https://repo.npmx.dev) - GitHub Repository
+- [issues.npmx.dev](https://issues.npmx.dev) - GitHub Issues
+- [coc.npmx.dev](https://coc.npmx.dev) - Code of Conduct
+- [contributing.npmx.dev](https://contributing.npmx.dev) - Contributing Guide
 
 ## Features
 
@@ -27,7 +41,7 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 - **Package details** &ndash; READMEs, versions, dependencies, and metadata
 - **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines
 - **Provenance indicators** &ndash; verified build badges for packages with npm provenance
-- **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, and Sourcehut
+- **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, Sourcehut, Forgejo, Gitea, Radicle, and Tangled
 - **JSR availability** &ndash; see if scoped packages are also available on JSR
 - **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types (with `@types/*` links), and engine constraints
 - **Outdated dependency indicators** &ndash; visual cues showing which dependencies are behind

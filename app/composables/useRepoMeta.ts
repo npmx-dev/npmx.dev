@@ -1,9 +1,9 @@
-import {
-  parseRepoUrl,
-  GITLAB_HOSTS,
-  type ProviderId,
-  type RepoRef,
-} from '#shared/utils/git-providers'
+import type { ProviderId, RepoRef } from '#shared/utils/git-providers'
+import { parseRepoUrl, GITLAB_HOSTS } from '#shared/utils/git-providers'
+import type { CachedFetchFunction } from '~/composables/useCachedFetch'
+
+// TTL for git repo metadata (10 minutes - repo stats don't change frequently)
+const REPO_META_TTL = 60 * 10
 
 export type RepoMetaLinks = {
   repo: string
@@ -73,11 +73,42 @@ type GiteeRepoResponse = {
   watchers_count?: number
 }
 
+/** Radicle API response for project details */
+type RadicleProjectResponse = {
+  id: string
+  name: string
+  description?: string
+  defaultBranch?: string
+  head?: string
+  seeding?: number
+  delegates?: Array<{ id: string; alias?: string }>
+  patches?: { open: number; draft: number; archived: number; merged: number }
+  issues?: { open: number; closed: number }
+}
+
+/** microcosm's constellation API response for /links/all to get tangled.org  stats */
+type ConstellationAllLinksResponse = {
+  links: Record<
+    string,
+    Record<
+      string,
+      {
+        records: number
+        distinct_dids: number
+      }
+    >
+  >
+}
+
 type ProviderAdapter = {
   id: ProviderId
   parse(url: URL): RepoRef | null
   links(ref: RepoRef): RepoMetaLinks
-  fetchMeta(ref: RepoRef, links: RepoMetaLinks): Promise<RepoMeta | null>
+  fetchMeta(
+    cachedFetch: CachedFetchFunction,
+    ref: RepoRef,
+    links: RepoMetaLinks,
+  ): Promise<RepoMeta | null>
 }
 
 const githubAdapter: ProviderAdapter = {
@@ -110,11 +141,18 @@ const githubAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(ref, links) {
+  async fetchMeta(cachedFetch, ref, links) {
     // Using UNGH to avoid API limitations of the Github API
-    const res = await $fetch<UnghRepoResponse>(`https://ungh.cc/repos/${ref.owner}/${ref.repo}`, {
-      headers: { 'User-Agent': 'npmx' },
-    }).catch(() => null)
+    let res: UnghRepoResponse | null = null
+    try {
+      res = await cachedFetch<UnghRepoResponse>(
+        `https://ungh.cc/repos/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
 
     const repo = res?.repo
     if (!repo) return null
@@ -167,13 +205,19 @@ const gitlabAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(ref, links) {
+  async fetchMeta(cachedFetch, ref, links) {
     const baseHost = ref.host ?? 'gitlab.com'
     const projectPath = encodeURIComponent(`${ref.owner}/${ref.repo}`)
-    const res = await $fetch<GitLabProjectResponse>(
-      `https://${baseHost}/api/v4/projects/${projectPath}`,
-      { headers: { 'User-Agent': 'npmx' } },
-    ).catch(() => null)
+    let res: GitLabProjectResponse | null = null
+    try {
+      res = await cachedFetch<GitLabProjectResponse>(
+        `https://${baseHost}/api/v4/projects/${projectPath}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
 
     if (!res) return null
 
@@ -218,11 +262,17 @@ const bitbucketAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(ref, links) {
-    const res = await $fetch<BitbucketRepoResponse>(
-      `https://api.bitbucket.org/2.0/repositories/${ref.owner}/${ref.repo}`,
-      { headers: { 'User-Agent': 'npmx' } },
-    ).catch(() => null)
+  async fetchMeta(cachedFetch, ref, links) {
+    let res: BitbucketRepoResponse | null = null
+    try {
+      res = await cachedFetch<BitbucketRepoResponse>(
+        `https://api.bitbucket.org/2.0/repositories/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
 
     if (!res) return null
 
@@ -269,11 +319,17 @@ const codebergAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(ref, links) {
-    const res = await $fetch<GiteaRepoResponse>(
-      `https://codeberg.org/api/v1/repos/${ref.owner}/${ref.repo}`,
-      { headers: { 'User-Agent': 'npmx' } },
-    ).catch(() => null)
+  async fetchMeta(cachedFetch, ref, links) {
+    let res: GiteaRepoResponse | null = null
+    try {
+      res = await cachedFetch<GiteaRepoResponse>(
+        `https://codeberg.org/api/v1/repos/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
 
     if (!res) return null
 
@@ -320,11 +376,17 @@ const giteeAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(ref, links) {
-    const res = await $fetch<GiteeRepoResponse>(
-      `https://gitee.com/api/v5/repos/${ref.owner}/${ref.repo}`,
-      { headers: { 'User-Agent': 'npmx' } },
-    ).catch(() => null)
+  async fetchMeta(cachedFetch, ref, links) {
+    let res: GiteeRepoResponse | null = null
+    try {
+      res = await cachedFetch<GiteeRepoResponse>(
+        `https://gitee.com/api/v5/repos/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
 
     if (!res) return null
 
@@ -400,13 +462,21 @@ const giteaAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(ref, links) {
+  async fetchMeta(cachedFetch, ref, links) {
     if (!ref.host) return null
 
-    const res = await $fetch<GiteaRepoResponse>(
-      `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}`,
-      { headers: { 'User-Agent': 'npmx' } },
-    ).catch(() => null)
+    // Note: Generic Gitea instances may not be in the allowlist,
+    // so caching may not apply for self-hosted instances
+    let res: GiteaRepoResponse | null = null
+    try {
+      res = await cachedFetch<GiteaRepoResponse>(
+        `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
 
     if (!res) return null
 
@@ -453,7 +523,7 @@ const sourcehutAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(_ref, links) {
+  async fetchMeta(_cachedFetch, _ref, links) {
     // Sourcehut doesn't have a public API for repo stats
     // Just return basic info without fetching
     return {
@@ -495,7 +565,7 @@ const tangledAdapter: ProviderAdapter = {
   },
 
   links(ref) {
-    const base = `https://tangled.sh/${ref.owner}/${ref.repo}`
+    const base = `https://tangled.org/${ref.owner}/${ref.repo}`
     return {
       repo: base,
       stars: base, // Tangled shows stars on the repo page
@@ -503,14 +573,172 @@ const tangledAdapter: ProviderAdapter = {
     }
   },
 
-  async fetchMeta(_ref, links) {
-    // Tangled doesn't have a public API for repo stats yet
-    // Just return basic info without fetching
+  async fetchMeta(cachedFetch, ref, links) {
+    // Tangled doesn't have a public JSON API, but we can scrape the star count
+    // from the HTML page (it's in the hx-post URL as countHint=N)
+    try {
+      const html = await cachedFetch<string>(
+        `https://tangled.org/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx', 'Accept': 'text/html' } },
+        REPO_META_TTL,
+      )
+      // Extracts the at-uri used in atproto
+      const atUriMatch = html.match(/data-star-subject-at="([^"]+)"/)
+      // Extract star count from: hx-post="/star?subject=...&countHint=23"
+      const starMatch = html.match(/countHint=(\d+)/)
+      //We'll set the stars from tangled's repo page and may override it with constellation if successful
+      let stars = starMatch?.[1] ? parseInt(starMatch[1], 10) : 0
+      let forks = 0
+      const atUri = atUriMatch?.[1]
+
+      if (atUriMatch) {
+        try {
+          //Get counts of records that reference this repo in the atmosphere using constellation
+          const allLinks = await cachedFetch<ConstellationAllLinksResponse>(
+            `https://constellation.microcosm.blue/links/all?target=${atUri}`,
+            { headers: { 'User-Agent': 'npmx' } },
+            REPO_META_TTL,
+          )
+          stars = allLinks.links['sh.tangled.feed.star']?.['.subject']?.distinct_dids ?? stars
+          forks = allLinks.links['sh.tangled.repo']?.['.source']?.distinct_dids ?? stars
+        } catch {
+          //failing silently since this is just an enhancement to the information already showing
+        }
+      }
+
+      return {
+        provider: 'tangled',
+        url: links.repo,
+        stars,
+        forks,
+        links,
+      }
+    } catch {
+      return {
+        provider: 'tangled',
+        url: links.repo,
+        stars: 0,
+        forks: 0,
+        links,
+      }
+    }
+  },
+}
+
+const radicleAdapter: ProviderAdapter = {
+  id: 'radicle',
+
+  parse(url) {
+    const host = url.hostname.toLowerCase()
+    if (host !== 'radicle.at' && host !== 'app.radicle.at' && host !== 'seed.radicle.at') {
+      return null
+    }
+
+    // Radicle URLs: app.radicle.at/nodes/seed.radicle.at/rad:z3nP4yT1PE3m1PxLEzr173sZtJVnT
+    const path = url.pathname
+    const radMatch = path.match(/rad:[a-zA-Z0-9]+/)
+    if (!radMatch?.[0]) return null
+
+    // Use empty owner, store full rad: ID as repo
+    return { provider: 'radicle', owner: '', repo: radMatch[0], host }
+  },
+
+  links(ref) {
+    const base = `https://app.radicle.at/nodes/seed.radicle.at/${ref.repo}`
     return {
-      provider: 'tangled',
+      repo: base,
+      stars: base, // Radicle doesn't have stars, shows seeding count
+      forks: base,
+    }
+  },
+
+  async fetchMeta(cachedFetch, ref, links) {
+    let res: RadicleProjectResponse | null = null
+    try {
+      res = await cachedFetch<RadicleProjectResponse>(
+        `https://seed.radicle.at/api/v1/projects/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
+
+    if (!res) return null
+
+    return {
+      provider: 'radicle',
       url: links.repo,
-      stars: 0,
-      forks: 0,
+      // Use seeding count as a proxy for "stars" (number of nodes hosting this repo)
+      stars: res.seeding ?? 0,
+      forks: 0, // Radicle doesn't have forks in the traditional sense
+      description: res.description ?? null,
+      defaultBranch: res.defaultBranch,
+      links,
+    }
+  },
+}
+
+const forgejoAdapter: ProviderAdapter = {
+  id: 'forgejo',
+
+  parse(url) {
+    const host = url.hostname.toLowerCase()
+
+    // Match explicit Forgejo instances
+    const forgejoPatterns = [/^forgejo\./i, /\.forgejo\./i]
+    const knownInstances = ['next.forgejo.org', 'try.next.forgejo.org']
+
+    const isMatch = knownInstances.some(h => host === h) || forgejoPatterns.some(p => p.test(host))
+    if (!isMatch) return null
+
+    const parts = url.pathname.split('/').filter(Boolean)
+    if (parts.length < 2) return null
+
+    const owner = decodeURIComponent(parts[0] ?? '').trim()
+    const repo = decodeURIComponent(parts[1] ?? '')
+      .trim()
+      .replace(/\.git$/i, '')
+
+    if (!owner || !repo) return null
+
+    return { provider: 'forgejo', owner, repo, host }
+  },
+
+  links(ref) {
+    const base = `https://${ref.host}/${ref.owner}/${ref.repo}`
+    return {
+      repo: base,
+      stars: base,
+      forks: `${base}/forks`,
+      watchers: base,
+    }
+  },
+
+  async fetchMeta(cachedFetch, ref, links) {
+    if (!ref.host) return null
+
+    let res: GiteaRepoResponse | null = null
+    try {
+      res = await cachedFetch<GiteaRepoResponse>(
+        `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}`,
+        { headers: { 'User-Agent': 'npmx' } },
+        REPO_META_TTL,
+      )
+    } catch {
+      return null
+    }
+
+    if (!res) return null
+
+    return {
+      provider: 'forgejo',
+      url: links.repo,
+      stars: res.stars_count ?? 0,
+      forks: res.forks_count ?? 0,
+      watchers: res.watchers_count ?? 0,
+      description: res.description ?? null,
+      defaultBranch: res.default_branch,
       links,
     }
   },
@@ -525,20 +753,17 @@ const providers: readonly ProviderAdapter[] = [
   giteeAdapter,
   sourcehutAdapter,
   tangledAdapter,
+  radicleAdapter,
+  forgejoAdapter,
   giteaAdapter, // Generic Gitea adapter last as fallback for self-hosted instances
 ] as const
 
 const parseRepoFromUrl = parseRepoUrl
 
-async function fetchRepoMeta(ref: RepoRef): Promise<RepoMeta | null> {
-  const adapter = providers.find(provider => provider.id === ref.provider)
-  if (!adapter) return null
-
-  const links = adapter.links(ref)
-  return await adapter.fetchMeta(ref, links)
-}
-
 export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | undefined>) {
+  // Get cachedFetch in setup context (outside async handler)
+  const cachedFetch = useCachedFetch()
+
   const repoRef = computed(() => {
     const url = toValue(repositoryUrl)
     if (!url) return null
@@ -553,7 +778,12 @@ export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | unde
     async () => {
       const ref = repoRef.value
       if (!ref) return null
-      return await fetchRepoMeta(ref)
+
+      const adapter = providers.find(provider => provider.id === ref.provider)
+      if (!adapter) return null
+
+      const links = adapter.links(ref)
+      return await adapter.fetchMeta(cachedFetch, ref, links)
     },
   )
 

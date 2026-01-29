@@ -7,6 +7,8 @@ export interface ConnectorSession {
   token: string
   connectedAt: number
   npmUser: string | null
+  /** Base64 data URL of the user's avatar */
+  avatar: string | null
 }
 
 export type OperationType =

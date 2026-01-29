@@ -18,33 +18,18 @@ function isNodeActive(node: PackageFileTree): boolean {
   return false
 }
 
-// State for expanded directories
-const expandedDirs = ref<Set<string>>(new Set())
+const { toggleDir, isExpanded, autoExpandAncestors } = useFileTreeState(props.baseUrl)
 
 // Auto-expand directories in the current path
 watch(
   () => props.currentPath,
   path => {
-    if (!path) return
-    const parts = path.split('/')
-    for (let i = 1; i <= parts.length; i++) {
-      expandedDirs.value.add(parts.slice(0, i).join('/'))
+    if (path) {
+      autoExpandAncestors(path)
     }
   },
   { immediate: true },
 )
-
-function toggleDir(path: string) {
-  if (expandedDirs.value.has(path)) {
-    expandedDirs.value.delete(path)
-  } else {
-    expandedDirs.value.add(path)
-  }
-}
-
-function isExpanded(path: string): boolean {
-  return expandedDirs.value.has(path)
-}
 </script>
 
 <template>

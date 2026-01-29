@@ -1,4 +1,4 @@
-import { valid } from 'semver'
+import { compare, valid } from 'semver'
 
 /**
  * Utilities for handling npm package versions and dist-tags
@@ -37,29 +37,6 @@ export function parseVersion(version: string): ParsedVersion {
     patch: Number(match[3]),
     prerelease: match[4] ?? '',
   }
-}
-
-/**
- * Compare two semver versions for sorting
- * Returns positive if a > b, negative if a < b, 0 if equal
- * @param a - First version string
- * @param b - Second version string
- * @returns Comparison result for sorting
- */
-export function compareVersions(a: string, b: string): number {
-  const va = parseVersion(a)
-  const vb = parseVersion(b)
-
-  if (va.major !== vb.major) return va.major - vb.major
-  if (va.minor !== vb.minor) return va.minor - vb.minor
-  if (va.patch !== vb.patch) return va.patch - vb.patch
-
-  // Stable versions (no prerelease) are greater than prereleases
-  if (va.prerelease && vb.prerelease) return va.prerelease.localeCompare(vb.prerelease)
-  if (va.prerelease) return -1
-  if (vb.prerelease) return 1
-
-  return 0
 }
 
 /**
@@ -145,7 +122,7 @@ export function buildTaggedVersionRows(distTags: Record<string, string>): Tagged
       tags,
       version,
     }))
-    .sort((a, b) => compareVersions(b.version, a.version))
+    .sort((a, b) => compare(b.version, a.version))
 }
 
 /**
@@ -158,4 +135,47 @@ export function buildTaggedVersionRows(distTags: Record<string, string>): Tagged
 export function filterExcludedTags(tags: string[], excludeTags: string[]): string[] {
   const excludeSet = new Set(excludeTags)
   return tags.filter(tag => !excludeSet.has(tag))
+}
+
+/**
+ * Get a grouping key for a version that handles 0.x versions specially.
+ *
+ * Per semver spec, versions below 1.0.0 can have breaking changes in minor bumps,
+ * so 0.9.x should be in a separate group from 0.10.x.
+ *
+ * @param version - The version string (e.g., "0.9.3", "1.2.3")
+ * @returns A grouping key string (e.g., "0.9", "1")
+ */
+export function getVersionGroupKey(version: string): string {
+  const parsed = parseVersion(version)
+  if (parsed.major === 0) {
+    // For 0.x versions, group by major.minor
+    return `0.${parsed.minor}`
+  }
+  // For 1.x+, group by major only
+  return String(parsed.major)
+}
+
+/**
+ * Get a display label for a version group key.
+ *
+ * @param groupKey - The group key from getVersionGroupKey()
+ * @returns A display label (e.g., "0.9.x", "1.x")
+ */
+export function getVersionGroupLabel(groupKey: string): string {
+  return `${groupKey}.x`
+}
+
+/**
+ * Check if two versions belong to the same version group.
+ *
+ * For versions >= 1.0.0, same major = same group.
+ * For versions < 1.0.0, same major.minor = same group.
+ *
+ * @param versionA - First version string
+ * @param versionB - Second version string
+ * @returns true if both versions are in the same group
+ */
+export function isSameVersionGroup(versionA: string, versionB: string): boolean {
+  return getVersionGroupKey(versionA) === getVersionGroupKey(versionB)
 }

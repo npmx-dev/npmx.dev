@@ -11,66 +11,15 @@ definePageMeta({
   alias: ['/package/:package(.*)*'],
 })
 
-const route = useRoute('package')
-
 const router = useRouter()
 
-// Parse package name and optional version from URL
-// Patterns:
-//   /nuxt → packageName: "nuxt", requestedVersion: null
-//   /nuxt/v/4.2.0 → packageName: "nuxt", requestedVersion: "4.2.0"
-//   /@nuxt/kit → packageName: "@nuxt/kit", requestedVersion: null
-//   /@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
-//   /axios@1.13.3 → packageName: "axios", requestedVersion: "1.13.3"
-//   /@nuxt/kit@1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
-const parsedRoute = computed(() => {
-  const segments = route.params.package || []
-
-  // Find the /v/ separator for version
-  const vIndex = segments.indexOf('v')
-  if (vIndex !== -1 && vIndex < segments.length - 1) {
-    return {
-      packageName: segments.slice(0, vIndex).join('/'),
-      requestedVersion: segments.slice(vIndex + 1).join('/'),
-    }
-  }
-
-  // Parse @ versioned package
-  const fullPath = segments.join('/')
-  const versionMatch = fullPath.match(/^(@[^/]+\/[^/]+|[^/]+)@([^/]+)$/)
-  if (versionMatch) {
-    const [, packageName, requestedVersion] = versionMatch as [string, string, string]
-    return {
-      packageName,
-      requestedVersion,
-    }
-  }
-
-  return {
-    packageName: fullPath,
-    requestedVersion: null as string | null,
-  }
-})
-
-const packageName = computed(() => parsedRoute.value.packageName)
-const requestedVersion = computed(() => parsedRoute.value.requestedVersion)
+const { packageName, requestedVersion, orgName } = usePackageRoute()
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
 
-// Extract org name from scoped package (e.g., "@nuxt/kit" -> "nuxt")
-const orgName = computed(() => {
-  const name = packageName.value
-  if (!name.startsWith('@')) return null
-  const match = name.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
-
-const { data: pkg, status, error, resolvedVersion } = usePackage(packageName, requestedVersion)
-
 const { data: downloads } = usePackageDownloads(packageName, 'last-week')
-const { data: weeklyDownloads } = usePackageWeeklyDownloadEvolution(packageName, { weeks: 52 })
 
 // Fetch README for specific version if requested, otherwise latest
 const { data: readmeData } = useLazyFetch<ReadmeResponse>(
@@ -114,17 +63,10 @@ const {
 )
 onMounted(() => fetchInstallSize())
 
-const sizeTooltip = computed(() => {
-  const chunks = [
-    displayVersion.value &&
-      displayVersion.value.dist.unpackedSize &&
-      `${formatBytes(displayVersion.value.dist.unpackedSize)} unpacked size (this package)`,
-    installSize.value &&
-      installSize.value.dependencyCount &&
-      `${formatBytes(installSize.value.totalSize)} total unpacked size (including all ${installSize.value.dependencyCount} dependencies for linux-x64)`,
-  ]
-  return chunks.filter(Boolean).join('\n')
-})
+const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
+
+const { data: pkg, status, error } = await usePackage(packageName, requestedVersion)
+const resolvedVersion = computed(() => pkg.value?.resolvedVersion ?? null)
 
 // Get the version to display (resolved version or latest)
 const displayVersion = computed(() => {
@@ -163,6 +105,18 @@ const deprecationNotice = computed(() => {
   return { type: 'version' as const, message: displayVersion.value.deprecated }
 })
 
+const sizeTooltip = computed(() => {
+  const chunks = [
+    displayVersion.value &&
+      displayVersion.value.dist.unpackedSize &&
+      `${formatBytes(displayVersion.value.dist.unpackedSize)} unpacked size (this package)`,
+    installSize.value &&
+      installSize.value.dependencyCount &&
+      `${formatBytes(installSize.value.totalSize)} total unpacked size (including all ${installSize.value.dependencyCount} dependencies for linux-x64)`,
+  ]
+  return chunks.filter(Boolean).join('\n')
+})
+
 const hasDependencies = computed(() => {
   if (!displayVersion.value) return false
   const deps = displayVersion.value.dependencies
@@ -194,9 +148,11 @@ const PROVIDER_ICONS: Record<string, string> = {
   bitbucket: 'i-simple-icons-bitbucket',
   codeberg: 'i-simple-icons-codeberg',
   gitea: 'i-simple-icons-gitea',
+  forgejo: 'i-simple-icons-forgejo',
   gitee: 'i-simple-icons-gitee',
   sourcehut: 'i-simple-icons-sourcehut',
   tangled: 'i-custom-tangled',
+  radicle: 'i-carbon-network-3', // Radicle is a P2P network, using network icon
 }
 
 const repoProviderIcon = computed(() => {
@@ -215,6 +171,25 @@ const homepageUrl = computed(() => {
   }
 
   return homepage
+})
+
+// Docs URL: use our generated API docs
+const docsLink = computed(() => {
+  if (!displayVersion.value) return null
+
+  return {
+    name: 'docs' as const,
+    params: { path: [...pkg.value!.name.split('/'), 'v', displayVersion.value.version] },
+  }
+})
+
+const fundingUrl = computed(() => {
+  let funding = displayVersion.value?.funding
+  if (Array.isArray(funding)) funding = funding[0]
+
+  if (!funding) return null
+
+  return typeof funding === 'string' ? funding : funding.url
 })
 
 function normalizeGitUrl(url: string): string {
@@ -249,40 +224,152 @@ function hasProvenance(version: PackumentVersion | null): boolean {
   return !!dist.attestations
 }
 
-const selectedPM = useSelectedPackageManager()
+// Get @types package name if available (non-deprecated)
+const typesPackageName = computed(() => {
+  if (!packageAnalysis.value) return null
+  if (packageAnalysis.value.types.kind !== '@types') return null
+  if (packageAnalysis.value.types.deprecated) return null
+  return packageAnalysis.value.types.packageName
+})
 
-const installCommandParts = computed(() => {
+const {
+  selectedPM,
+  installCommandParts,
+  typesInstallCommandParts,
+  showTypesInInstall,
+  copied,
+  copyInstallCommand,
+} = useInstallCommand(packageName, requestedVersion, jsrInfo, typesPackageName)
+
+// Executable detection for run command
+const executableInfo = computed(() => {
+  if (!displayVersion.value || !pkg.value) return null
+  return getExecutableInfo(pkg.value.name, displayVersion.value.bin)
+})
+
+// Detect if package is binary-only (show only execute commands, no install)
+const isBinaryOnly = computed(() => {
+  if (!displayVersion.value || !pkg.value) return false
+  return isBinaryOnlyPackage({
+    name: pkg.value.name,
+    bin: displayVersion.value.bin,
+    main: displayVersion.value.main,
+    module: displayVersion.value.module,
+    exports: displayVersion.value.exports,
+  })
+})
+
+// Detect if package uses create-* naming convention
+const isCreatePkg = computed(() => {
+  if (!pkg.value) return false
+  return isCreatePackage(pkg.value.name)
+})
+
+// Run command parts for a specific command (local execute after install)
+function getRunParts(command?: string) {
   if (!pkg.value) return []
-  return getInstallCommandParts({
+  return getRunCommandParts({
     packageName: pkg.value.name,
     packageManager: selectedPM.value,
-    version: requestedVersion.value,
     jsrInfo: jsrInfo.value,
+    command,
+    isBinaryOnly: false, // Local execute
   })
-})
-
-const installCommand = computed(() => {
-  if (!pkg.value) return ''
-  return getInstallCommand({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    version: requestedVersion.value,
-    jsrInfo: jsrInfo.value,
-  })
-})
-
-// Copy install command
-const copied = ref(false)
-async function copyInstallCommand() {
-  if (!installCommand.value) return
-  await navigator.clipboard.writeText(installCommand.value)
-  copied.value = true
-  setTimeout(() => (copied.value = false), 2000)
 }
+
+// Execute command parts for binary-only packages (remote execute)
+const executeCommandParts = computed(() => {
+  if (!pkg.value) return []
+  return getExecuteCommandParts({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    jsrInfo: jsrInfo.value,
+    isBinaryOnly: true,
+    isCreatePackage: isCreatePkg.value,
+  })
+})
+
+// Full execute command string for copying
+const executeCommand = computed(() => {
+  if (!pkg.value) return ''
+  return getExecuteCommand({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    jsrInfo: jsrInfo.value,
+    isBinaryOnly: true,
+    isCreatePackage: isCreatePkg.value,
+  })
+})
+
+// Copy execute command (for binary-only packages)
+const { copied: executeCopied, copy: copyExecute } = useClipboard({ copiedDuring: 2000 })
+const copyExecuteCommand = () => copyExecute(executeCommand.value)
+
+// Get associated create-* package info (e.g., vite -> create-vite)
+const createPackageInfo = computed(() => {
+  if (!packageAnalysis.value?.createPackage) return null
+  // Don't show if deprecated
+  if (packageAnalysis.value.createPackage.deprecated) return null
+  return packageAnalysis.value.createPackage
+})
+
+// Create command parts for associated create-* package
+const createCommandParts = computed(() => {
+  if (!createPackageInfo.value) return []
+  const pm = packageManagers.find(p => p.id === selectedPM.value)
+  if (!pm) return []
+
+  // Extract short name: create-vite -> vite
+  const createPkgName = createPackageInfo.value.packageName
+  let shortName: string
+  if (createPkgName.startsWith('@')) {
+    // @scope/create-foo -> foo
+    const slashIndex = createPkgName.indexOf('/')
+    const name = createPkgName.slice(slashIndex + 1)
+    shortName = name.startsWith('create-') ? name.slice('create-'.length) : name
+  } else {
+    // create-vite -> vite
+    shortName = createPkgName.startsWith('create-')
+      ? createPkgName.slice('create-'.length)
+      : createPkgName
+  }
+
+  return [...pm.create.split(' '), shortName]
+})
+
+// Full create command string for copying
+const createCommand = computed(() => {
+  return createCommandParts.value.join(' ')
+})
+
+// Copy create command
+const { copied: createCopied, copy: copyCreate } = useClipboard({ copiedDuring: 2000 })
+const copyCreateCommand = () => copyCreate(createCommand.value)
+
+// Primary run command parts
+const runCommandParts = computed(() => {
+  if (!executableInfo.value?.hasExecutable) return []
+  return getRunParts(executableInfo.value.primaryCommand)
+})
+
+// Full run command string for copying
+function getFullRunCommand(command?: string) {
+  if (!pkg.value) return ''
+  return getRunCommand({
+    packageName: pkg.value.name,
+    packageManager: selectedPM.value,
+    jsrInfo: jsrInfo.value,
+    command,
+  })
+}
+
+// Copy run command
+const { copied: runCopied, copy: copyRun } = useClipboard({ copiedDuring: 2000 })
+const copyRunCommand = (command?: string) => copyRun(getFullRunCommand(command))
 
 // Expandable description
 const descriptionExpanded = ref(false)
-const descriptionRef = ref<HTMLDivElement>()
+const descriptionRef = useTemplateRef('descriptionRef')
 const descriptionOverflows = ref(false)
 
 // Check if description overflows on mount/update
@@ -334,6 +421,12 @@ onKeyStroke('.', () => {
   }
 })
 
+onKeyStroke('d', () => {
+  if (docsLink.value) {
+    router.push(docsLink.value)
+  }
+})
+
 defineOgImageComponent('Package', {
   name: () => pkg.value?.name ?? 'Package',
   version: () => displayVersion.value?.version ?? '',
@@ -343,12 +436,15 @@ defineOgImageComponent('Package', {
 </script>
 
 <template>
-  <main class="container py-8 sm:py-12 overflow-hidden w-full">
+  <main class="container py-8 xl:py-12">
     <PackageSkeleton v-if="status === 'pending'" />
 
-    <article v-else-if="status === 'success' && pkg" class="animate-fade-in min-w-0">
+    <article
+      v-else-if="status === 'success' && pkg"
+      class="package-page motion-safe:animate-fade-in"
+    >
       <!-- Package header -->
-      <header class="mb-8 pb-8 border-b border-border">
+      <header class="area-header border-b border-border">
         <div class="mb-4">
           <!-- Package name and version -->
           <div class="flex items-baseline gap-2 mb-1.5 sm:gap-3 sm:mb-2 flex-wrap min-w-0">
@@ -377,7 +473,7 @@ defineOgImageComponent('Package', {
               <NuxtLink
                 v-if="resolvedVersion !== requestedVersion"
                 :to="`/${pkg.name}/v/${displayVersion.version}`"
-                title="View permalink for this version"
+                :title="$t('package.view_permalink')"
                 >{{ displayVersion.version }}</NuxtLink
               >
               <span v-else>v{{ displayVersion.version }}</span>
@@ -388,7 +484,7 @@ defineOgImageComponent('Package', {
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
-                title="Verified provenance"
+                :title="$t('package.verified_provenance')"
               >
                 <span
                   class="i-solar-shield-check-outline w-3.5 h-3.5 shrink-0"
@@ -402,7 +498,7 @@ defineOgImageComponent('Package', {
                   displayVersion.version !== latestVersion.version
                 "
                 class="text-fg-subtle text-sm shrink-0"
-                >(not latest)</span
+                >{{ $t('package.not_latest') }}</span
               >
             </span>
 
@@ -412,27 +508,55 @@ defineOgImageComponent('Package', {
                 v-if="displayVersion"
                 :package-name="pkg.name"
                 :version="displayVersion.version"
-                class="self-center ml-1 sm:ml-2"
+                class="self-baseline ml-1 sm:ml-2"
               />
               <template #fallback>
-                <ul class="flex items-center gap-1.5 self-center ml-1 sm:ml-2">
+                <ul class="flex items-center gap-1.5 self-baseline ml-1 sm:ml-2">
                   <li class="skeleton w-8 h-5 rounded" />
                   <li class="skeleton w-12 h-5 rounded" />
                 </ul>
               </template>
             </ClientOnly>
 
-            <a
-              :href="`https://www.npmjs.com/package/${pkg.name}`"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0 self-center"
-              title="View on npm"
+            <!-- Internal navigation: Docs + Code (hidden on mobile, shown in external links instead) -->
+            <nav
+              v-if="displayVersion"
+              aria-label="Package navigation"
+              class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ml-auto self-center"
             >
-              <span class="i-carbon-logo-npm w-4 h-4" aria-hidden="true" />
-              <span class="hidden sm:inline">npm</span>
-              <span class="sr-only sm:hidden">View on npm</span>
-            </a>
+              <NuxtLink
+                v-if="docsLink"
+                :to="docsLink"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                aria-keyshortcuts="d"
+              >
+                <span class="i-carbon-document w-3 h-3" aria-hidden="true" />
+                {{ $t('package.links.docs') }}
+                <kbd
+                  class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                  aria-hidden="true"
+                >
+                  d
+                </kbd>
+              </NuxtLink>
+              <NuxtLink
+                :to="{
+                  name: 'code',
+                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
+                }"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                aria-keyshortcuts="."
+              >
+                <span class="i-carbon-code w-3 h-3" aria-hidden="true" />
+                {{ $t('package.links.code') }}
+                <kbd
+                  class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                  aria-hidden="true"
+                >
+                  .
+                </kbd>
+              </NuxtLink>
+            </nav>
           </div>
 
           <!-- Fixed height description container to prevent CLS -->
@@ -444,7 +568,9 @@ defineOgImageComponent('Package', {
             >
               <MarkdownText :text="pkg.description" />
             </p>
-            <p v-else class="text-fg-subtle text-base m-0 italic">No description provided</p>
+            <p v-else class="text-fg-subtle text-base m-0 italic">
+              {{ $t('package.no_description') }}
+            </p>
             <!-- Fade overlay with show more button - only when collapsed and overflowing -->
             <div
               v-if="pkg.description && descriptionOverflows && !descriptionExpanded"
@@ -453,12 +579,132 @@ defineOgImageComponent('Package', {
               <button
                 type="button"
                 class="font-mono text-xs text-fg-muted hover:text-fg bg-bg px-1 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                :aria-label="$t('package.show_full_description')"
                 @click="descriptionExpanded = true"
               >
-                show more
+                {{ $t('common.show_more') }}
               </button>
             </div>
           </div>
+
+          <!-- External links -->
+          <ul class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3">
+            <li v-if="repositoryUrl">
+              <a
+                :href="repositoryUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="w-4 h-4" :class="repoProviderIcon" aria-hidden="true" />
+                <span v-if="repoRef">
+                  {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
+                </span>
+                <span v-else>{{ $t('package.links.repo') }}</span>
+              </a>
+            </li>
+            <li v-if="repositoryUrl && repoMeta && starsLink">
+              <a
+                :href="starsLink"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="w-4 h-4 i-carbon-star" aria-hidden="true" />
+                {{ formatCompactNumber(stars, { decimals: 1 }) }}
+              </a>
+            </li>
+            <li v-if="forks && forksLink">
+              <a
+                :href="forksLink"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-fork w-4 h-4" aria-hidden="true" />
+                {{ formatCompactNumber(forks, { decimals: 1 }) }}
+              </a>
+            </li>
+            <li v-if="homepageUrl">
+              <a
+                :href="homepageUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-link w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.homepage') }}
+              </a>
+            </li>
+            <li v-if="displayVersion?.bugs?.url">
+              <a
+                :href="displayVersion.bugs.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-warning w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.issues') }}
+              </a>
+            </li>
+            <li>
+              <a
+                :href="`https://www.npmjs.com/package/${pkg.name}`"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+                :title="$t('common.view_on_npm')"
+              >
+                <span class="i-carbon-logo-npm w-4 h-4" aria-hidden="true" />
+                npm
+              </a>
+            </li>
+            <li v-if="jsrInfo?.exists && jsrInfo.url">
+              <a
+                :href="jsrInfo.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+                :title="$t('badges.jsr.title')"
+              >
+                <span class="i-simple-icons-jsr w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.jsr') }}
+              </a>
+            </li>
+            <li v-if="fundingUrl">
+              <a
+                :href="fundingUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-favorite w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.fund') }}
+              </a>
+            </li>
+            <!-- Mobile-only: Docs + Code links -->
+            <li v-if="docsLink && displayVersion" class="sm:hidden">
+              <NuxtLink
+                :to="docsLink"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-document w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.docs') }}
+              </NuxtLink>
+            </li>
+            <li v-if="displayVersion" class="sm:hidden">
+              <NuxtLink
+                :to="{
+                  name: 'code',
+                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
+                }"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-code w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.code') }}
+              </NuxtLink>
+            </li>
+          </ul>
         </div>
 
         <div
@@ -468,45 +714,34 @@ defineOgImageComponent('Package', {
           <h2 class="font-medium mb-2">
             {{
               deprecationNotice.type === 'package'
-                ? 'This package has been deprecated.'
-                : 'This version has been deprecated.'
+                ? $t('package.deprecation.package')
+                : $t('package.deprecation.version')
             }}
           </h2>
           <p v-if="deprecationNotice.message" class="text-base m-0">
             <MarkdownText :text="deprecationNotice.message" />
           </p>
-          <p v-else class="text-base m-0 italic">No reason provided</p>
+          <p v-else class="text-base m-0 italic">{{ $t('package.deprecation.no_reason') }}</p>
         </div>
 
         <!-- Stats grid -->
-        <dl class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 mt-4 sm:mt-6">
+        <dl
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
+        >
           <div v-if="pkg.license" class="space-y-1">
-            <dt class="text-xs text-fg-subtle uppercase tracking-wider">License</dt>
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              {{ $t('package.stats.license') }}
+            </dt>
             <dd class="font-mono text-sm text-fg">
-              {{ pkg.license }}
-            </dd>
-          </div>
-
-          <div v-if="downloads" class="space-y-1">
-            <dt class="text-xs text-fg-subtle uppercase tracking-wider">Weekly</dt>
-            <dd class="font-mono text-sm text-fg flex items-baseline justify-start gap-2">
-              {{ formatNumber(downloads.downloads) }}
-              <a
-                :href="`https://npm.chart.dev/${pkg.name}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
-                title="View download trends"
-              >
-                <span class="i-carbon-chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
-                <span class="sr-only">View download trends</span>
-              </a>
+              <LicenseDisplay :license="pkg.license" />
             </dd>
           </div>
 
           <div class="space-y-1">
-            <dt class="text-xs text-fg-subtle uppercase tracking-wider">Deps</dt>
-            <dd class="font-mono text-sm text-fg flex items-baseline justify-start gap-2">
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              {{ $t('package.stats.deps') }}
+            </dt>
+            <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
               {{ getDependencyCount(displayVersion) }}
               <a
                 v-if="getDependencyCount(displayVersion) > 0"
@@ -514,10 +749,10 @@ defineOgImageComponent('Package', {
                 target="_blank"
                 rel="noopener noreferrer"
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
-                title="View dependency graph"
+                :title="$t('package.stats.view_dependency_graph')"
               >
                 <span class="i-carbon-network-3 w-3.5 h-3.5 inline-block" aria-hidden="true" />
-                <span class="sr-only">View dependency graph</span>
+                <span class="sr-only">{{ $t('package.stats.view_dependency_graph') }}</span>
               </a>
 
               <a
@@ -526,20 +761,20 @@ defineOgImageComponent('Package', {
                 target="_blank"
                 rel="noopener noreferrer"
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
-                title="Inspect dependency tree on node-modules.dev"
+                :title="$t('package.stats.inspect_dependency_tree')"
               >
                 <span
                   class="i-solar-eye-scan-outline w-3.5 h-3.5 inline-block"
                   aria-hidden="true"
                 />
-                <span class="sr-only">Inspect dependency tree</span>
+                <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
               </a>
             </dd>
           </div>
 
-          <div class="space-y-1 sm:col-span-2">
+          <div class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
-              Install Size
+              {{ $t('package.stats.install_size') }}
               <span
                 class="i-carbon-information w-3 h-3 text-fg-subtle"
                 aria-hidden="true"
@@ -563,7 +798,7 @@ defineOgImageComponent('Package', {
                 class="inline-flex items-center gap-1 text-fg-subtle"
               >
                 <span
-                  class="i-carbon-circle-dash w-3 h-3 animate-spin motion-reduce:animate-none"
+                  class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
                   aria-hidden="true"
                 />
               </span>
@@ -575,123 +810,14 @@ defineOgImageComponent('Package', {
           </div>
 
           <div v-if="pkg.time?.modified" class="space-y-1">
-            <dt class="text-xs text-fg-subtle uppercase tracking-wider sm:text-right">Updated</dt>
-            <dd class="font-mono text-sm text-fg sm:text-right">
-              <NuxtTime :datetime="pkg.time.modified" date-style="medium" />
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              {{ $t('package.stats.updated') }}
+            </dt>
+            <dd class="font-mono text-sm text-fg">
+              <DateTime :datetime="pkg.time.modified" date-style="medium" />
             </dd>
           </div>
         </dl>
-
-        <!-- Links -->
-        <nav aria-label="Package links" class="mt-6">
-          <ul class="flex flex-wrap items-center gap-3 sm:gap-4 list-none m-0 p-0">
-            <li v-if="repositoryUrl">
-              <a
-                :href="repositoryUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="w-4 h-4" :class="repoProviderIcon" aria-hidden="true" />
-                <span v-if="repoRef">
-                  {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
-                </span>
-                <span v-else>repo</span>
-              </a>
-            </li>
-            <li v-if="repositoryUrl && repoMeta && starsLink">
-              <a
-                :href="starsLink"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="w-4 h-4 i-carbon-star" aria-hidden="true" />
-                {{ formatCompactNumber(stars, { decimals: 1 }) }}
-              </a>
-            </li>
-            <li v-if="homepageUrl">
-              <a
-                :href="homepageUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon-link w-4 h-4" aria-hidden="true" />
-                homepage
-              </a>
-            </li>
-            <li v-if="displayVersion?.bugs?.url">
-              <a
-                :href="displayVersion.bugs.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon-warning w-4 h-4" aria-hidden="true" />
-                issues
-              </a>
-            </li>
-
-            <li v-if="forks && forksLink">
-              <a
-                :href="forksLink"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon-fork w-4 h-4" aria-hidden="true" />
-                <span>
-                  {{ formatCompactNumber(forks, { decimals: 1 }) }}
-                  {{ forks === 1 ? 'fork' : 'forks' }}
-                </span>
-              </a>
-            </li>
-
-            <li v-if="jsrInfo?.exists && jsrInfo.url">
-              <a
-                :href="jsrInfo.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-                title="Also available on JSR"
-              >
-                <span class="i-simple-icons-jsr w-4 h-4" aria-hidden="true" />
-                jsr
-              </a>
-            </li>
-            <li class="sm:flex-grow">
-              <a
-                :href="`https://socket.dev/npm/package/${pkg.name}/overview/${displayVersion?.version ?? 'latest'}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-simple-icons-socket w-4 h-4" aria-hidden="true" />
-                socket.dev
-              </a>
-            </li>
-
-            <li v-if="displayVersion">
-              <NuxtLink
-                :to="{
-                  name: 'code',
-                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
-                }"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-                aria-keyshortcuts="."
-              >
-                code
-                <kbd
-                  class="hidden sm:inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                  aria-hidden="true"
-                >
-                  .
-                </kbd>
-              </NuxtLink>
-            </li>
-          </ul>
-        </nav>
       </header>
 
       <!-- Security vulnerabilities warning -->
@@ -699,109 +825,316 @@ defineOgImageComponent('Package', {
         v-if="displayVersion"
         :package-name="pkg.name"
         :version="displayVersion.version"
+        class="area-vulns"
       />
 
-      <!-- Install command with package manager selector -->
-      <section aria-labelledby="install-heading" class="mb-8">
+      <!-- Binary-only packages: Show only execute command (no install) -->
+      <section v-if="isBinaryOnly" aria-labelledby="run-heading" class="area-install scroll-mt-20">
         <div class="flex flex-wrap items-center justify-between mb-3">
-          <h2 id="install-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-            Install
-          </h2>
+          <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">Run</h2>
           <!-- Package manager tabs -->
           <div
-            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border rounded-md"
+            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md"
             role="tablist"
             aria-label="Package manager"
           >
-            <ClientOnly>
-              <button
-                v-for="pm in packageManagers"
-                :key="pm.id"
-                role="tab"
-                :aria-selected="selectedPM === pm.id"
-                class="px-2 py-1 font-mono text-xs rounded transition-all duration-150"
-                :class="
-                  selectedPM === pm.id
-                    ? 'bg-bg-elevated text-fg'
-                    : 'text-fg-subtle hover:text-fg-muted'
-                "
-                @click="selectedPM = pm.id"
-              >
-                {{ pm.label }}
-              </button>
-              <template #fallback>
-                <span
-                  v-for="pm in packageManagers"
-                  :key="pm.id"
-                  class="px-2 py-1 font-mono text-xs rounded"
-                  :class="pm.id === 'npm' ? 'bg-bg-elevated text-fg' : 'text-fg-subtle'"
+            <button
+              v-for="pm in packageManagers"
+              :key="pm.id"
+              role="tab"
+              :aria-selected="selectedPM === pm.id"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              :class="
+                selectedPM === pm.id
+                  ? 'bg-bg shadow text-fg border-border'
+                  : 'text-fg-subtle hover:text-fg border-transparent'
+              "
+              @click="selectedPM = pm.id"
+            >
+              <span class="inline-block h-3 w-3" :class="pm.icon" aria-hidden="true" />
+              {{ pm.label }}
+            </button>
+          </div>
+        </div>
+        <div class="relative group">
+          <!-- Terminal-style execute command -->
+          <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
+            <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+            </div>
+            <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
+              <!-- Execute command -->
+              <div class="flex items-center gap-2 group/executecmd">
+                <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+                <code class="font-mono text-sm"
+                  ><ClientOnly
+                    ><span
+                      v-for="(part, i) in executeCommandParts"
+                      :key="i"
+                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+                    ><template #fallback
+                      ><span class="text-fg">npx</span
+                      ><span class="text-fg-muted"> {{ pkg.name }}</span></template
+                    ></ClientOnly
+                  ></code
                 >
-                  {{ pm.label }}
-                </span>
-              </template>
-            </ClientOnly>
+                <button
+                  type="button"
+                  class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/executecmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  @click.stop="copyExecuteCommand"
+                >
+                  {{ executeCopied ? 'copied!' : 'copy' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Regular packages: Install command with optional run command -->
+      <section
+        v-else
+        id="get-started"
+        aria-labelledby="get-started-heading"
+        class="area-install scroll-mt-20"
+      >
+        <div class="flex flex-wrap items-center justify-between mb-3">
+          <h2
+            id="get-started-heading"
+            class="group text-xs text-fg-subtle uppercase tracking-wider"
+          >
+            <a
+              href="#get-started"
+              class="inline-flex items-center gap-1.5 py-1 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+            >
+              {{ $t('package.get_started.title') }}
+              <span
+                class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                aria-hidden="true"
+              />
+            </a>
+          </h2>
+          <!-- Package manager tabs -->
+          <div
+            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
+            role="tablist"
+            :aria-label="$t('package.get_started.pm_label')"
+          >
+            <button
+              v-for="pm in packageManagers"
+              :key="pm.id"
+              role="tab"
+              :aria-selected="selectedPM === pm.id"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              :class="
+                selectedPM === pm.id
+                  ? 'bg-bg shadow text-fg border-border'
+                  : 'text-fg-subtle hover:text-fg border-transparent'
+              "
+              @click="selectedPM = pm.id"
+            >
+              <span class="inline-block h-3 w-3" :class="pm.icon" aria-hidden="true" />
+              {{ pm.label }}
+            </button>
           </div>
         </div>
         <div class="relative group">
           <!-- Terminal-style install command -->
-          <div class="bg-[#0d0d0d] border border-border rounded-lg overflow-hidden">
+          <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
             <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
-              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
-              <span class="w-2.5 h-2.5 rounded-full bg-[#333]" />
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
             </div>
-            <div class="flex items-center gap-2 px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4">
-              <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-              <code class="font-mono text-sm"
-                ><ClientOnly
+            <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1 overflow-x-auto">
+              <!-- Install command -->
+              <div class="flex items-center gap-2 group/installcmd min-w-0">
+                <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+                <code class="font-mono text-sm min-w-0"
+                  ><ClientOnly
+                    ><span
+                      v-for="(part, i) in installCommandParts"
+                      :key="i"
+                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+                    ><template #fallback
+                      ><span class="text-fg">npm</span
+                      ><span class="text-fg-muted"> install {{ pkg.name }}</span></template
+                    ></ClientOnly
+                  ></code
+                >
+                <button
+                  type="button"
+                  class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  :aria-label="$t('package.get_started.copy_command')"
+                  @click.stop="copyInstallCommand"
+                >
+                  <span aria-live="polite">{{
+                    copied ? $t('common.copied') : $t('common.copy')
+                  }}</span>
+                </button>
+              </div>
+
+              <!-- @types package install (when enabled) -->
+              <div v-if="showTypesInInstall" class="flex items-center gap-2 min-w-0">
+                <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+                <code class="font-mono text-sm min-w-0"
                   ><span
-                    v-for="(part, i) in installCommandParts"
+                    v-for="(part, i) in typesInstallCommandParts"
                     :key="i"
                     :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
                     >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                  ><template #fallback
-                    ><span class="text-fg">npm</span
-                    ><span class="text-fg-muted"> install {{ pkg.name }}</span></template
-                  ></ClientOnly
-                ></code
-              >
+                  ></code
+                >
+                <NuxtLink
+                  v-if="typesPackageName"
+                  :to="`/${typesPackageName}`"
+                  class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                  :title="$t('package.get_started.view_types', { package: typesPackageName })"
+                >
+                  <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+                  <span class="sr-only">View {{ typesPackageName }}</span>
+                </NuxtLink>
+              </div>
+
+              <!-- Run command (only if package has executables) -->
+              <template v-if="executableInfo?.hasExecutable">
+                <!-- Comment line -->
+                <div class="flex items-center gap-2 pt-1">
+                  <span class="text-fg-subtle font-mono text-sm select-none"
+                    ># {{ $t('package.run.locally') }}</span
+                  >
+                </div>
+
+                <!-- Primary run command -->
+                <div class="flex items-center gap-2 group/runcmd">
+                  <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+                  <code class="font-mono text-sm"
+                    ><ClientOnly
+                      ><span
+                        v-for="(part, i) in runCommandParts"
+                        :key="i"
+                        :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                        >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+                      ><template #fallback
+                        ><span class="text-fg">npx</span>{{ ' '
+                        }}<span class="text-fg-muted">{{
+                          executableInfo?.primaryCommand
+                        }}</span></template
+                      ></ClientOnly
+                    ></code
+                  >
+                  <button
+                    type="button"
+                    class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                    @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
+                  >
+                    {{ runCopied ? $t('common.copied') : $t('common.copy') }}
+                  </button>
+                </div>
+              </template>
+
+              <!-- Create command (for packages with associated create-* package) -->
+              <template v-if="createPackageInfo">
+                <!-- Comment line -->
+                <div class="flex items-center gap-2 pt-1">
+                  <span class="text-fg-subtle font-mono text-sm select-none"
+                    ># {{ $t('package.create.title') }}</span
+                  >
+                </div>
+
+                <!-- Create command -->
+                <div class="flex items-center gap-2 group/createcmd">
+                  <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+                  <code class="font-mono text-sm"
+                    ><ClientOnly
+                      ><span
+                        v-for="(part, i) in createCommandParts"
+                        :key="i"
+                        :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                        >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+                      ><template #fallback
+                        ><span class="text-fg">npm</span
+                        ><span class="text-fg-muted">
+                          create {{ createPackageInfo.packageName.replace('create-', '') }}</span
+                        ></template
+                      ></ClientOnly
+                    ></code
+                  >
+                  <button
+                    type="button"
+                    class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                    :aria-label="$t('package.create.copy_command')"
+                    @click.stop="copyCreateCommand"
+                  >
+                    <span aria-live="polite">{{
+                      createCopied ? $t('common.copied') : $t('common.copy')
+                    }}</span>
+                  </button>
+                  <NuxtLink
+                    :to="`/${createPackageInfo.packageName}`"
+                    class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                    :title="`View ${createPackageInfo.packageName}`"
+                  >
+                    <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+                    <span class="sr-only">View {{ createPackageInfo.packageName }}</span>
+                  </NuxtLink>
+                </div>
+              </template>
             </div>
           </div>
-          <button
-            type="button"
-            class="absolute top-3 right-3 px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            @click="copyInstallCommand"
-          >
-            {{ copied ? 'copied!' : 'copy' }}
-          </button>
         </div>
       </section>
 
-      <!-- Two column layout for sidebar content -->
-      <div class="grid lg:grid-cols-3 gap-8">
-        <!-- Main content (README) -->
-        <div class="lg:col-span-2 order-2 lg:order-1 min-w-0">
-          <section aria-labelledby="readme-heading">
-            <h2 id="readme-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-              Readme
-            </h2>
-            <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-            <div
-              v-if="readmeData?.html"
-              class="readme-content prose prose-invert max-w-none"
-              v-html="readmeData.html"
-            />
-            <p v-else class="text-fg-subtle italic">
-              No README available.
-              <a v-if="repositoryUrl" :href="repositoryUrl" rel="noopener noreferrer" class="link"
-                >View on GitHub</a
-              >
-            </p>
-          </section>
-        </div>
+      <!-- Vulnerability scan - full width -->
+      <div class="area-vulns">
+        <ClientOnly>
+          <PackageVulnerabilityTree
+            v-if="displayVersion"
+            :package-name="pkg.name"
+            :version="displayVersion.version"
+          />
+        </ClientOnly>
+      </div>
 
+      <!-- README -->
+      <section
+        id="readme"
+        aria-labelledby="readme-heading"
+        class="area-readme min-w-0 scroll-mt-20"
+      >
+        <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <a
+            href="#readme"
+            class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+          >
+            {{ $t('package.readme.title') }}
+            <span
+              class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              aria-hidden="true"
+            />
+          </a>
+        </h2>
+        <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
+        <div
+          v-if="readmeData?.html"
+          class="readme-content prose prose-invert max-w-[70ch]"
+          v-html="readmeData.html"
+        />
+        <p v-else class="text-fg-subtle italic">
+          {{ $t('package.readme.no_readme') }}
+          <a v-if="repositoryUrl" :href="repositoryUrl" rel="noopener noreferrer" class="link">{{
+            $t('package.readme.view_on_github')
+          }}</a>
+        </p>
+      </section>
+
+      <div class="area-sidebar">
         <!-- Sidebar -->
-        <div class="order-1 lg:order-2 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
+        <aside class="sticky top-20 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 
@@ -811,9 +1144,26 @@ defineOgImageComponent('Package', {
           </ClientOnly>
 
           <!-- Keywords -->
-          <section v-if="displayVersion?.keywords?.length" aria-labelledby="keywords-heading">
-            <h2 id="keywords-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-              Keywords
+          <section
+            id="keywords"
+            v-if="displayVersion?.keywords?.length"
+            aria-labelledby="keywords-heading"
+            class="scroll-mt-20"
+          >
+            <h2
+              id="keywords-heading"
+              class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
+            >
+              <a
+                href="#keywords"
+                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+              >
+                {{ $t('package.keywords_title') }}
+                <span
+                  class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  aria-hidden="true"
+                />
+              </a>
             </h2>
             <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
               <li v-for="keyword in displayVersion.keywords.slice(0, 15)" :key="keyword">
@@ -825,7 +1175,7 @@ defineOgImageComponent('Package', {
           </section>
 
           <!-- Download stats -->
-          <PackageDownloadStats :downloads="weeklyDownloads" />
+          <PackageWeeklyDownloadStats :packageName />
 
           <!-- Playground links -->
           <PackagePlaygrounds
@@ -834,16 +1184,27 @@ defineOgImageComponent('Package', {
           />
 
           <section
+            id="compatibility"
             v-if="
               displayVersion?.engines && (displayVersion.engines.node || displayVersion.engines.npm)
             "
             aria-labelledby="compatibility-heading"
+            class="scroll-mt-20"
           >
             <h2
               id="compatibility-heading"
-              class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
+              class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
             >
-              Compatibility
+              <a
+                href="#compatibility"
+                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+              >
+                {{ $t('package.compatibility') }}
+                <span
+                  class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  aria-hidden="true"
+                />
+              </a>
             </h2>
             <dl class="space-y-2">
               <div v-if="displayVersion.engines.node" class="flex justify-between gap-4 py-1">
@@ -885,24 +1246,121 @@ defineOgImageComponent('Package', {
 
           <!-- Dependencies -->
           <PackageDependencies
-            v-if="hasDependencies"
+            v-if="hasDependencies && displayVersion"
             :package-name="pkg.name"
-            :dependencies="displayVersion?.dependencies"
-            :peer-dependencies="displayVersion?.peerDependencies"
-            :peer-dependencies-meta="displayVersion?.peerDependenciesMeta"
-            :optional-dependencies="displayVersion?.optionalDependencies"
+            :version="displayVersion.version"
+            :dependencies="displayVersion.dependencies"
+            :peer-dependencies="displayVersion.peerDependencies"
+            :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
+            :optional-dependencies="displayVersion.optionalDependencies"
           />
-        </div>
+        </aside>
       </div>
     </article>
 
     <!-- Error state -->
-    <div v-else-if="status === 'error'" role="alert" class="py-20 text-center">
-      <h1 class="font-mono text-2xl font-medium mb-4">Package Not Found</h1>
+    <div
+      v-else-if="status === 'error'"
+      role="alert"
+      class="flex flex-col items-center py-20 text-center"
+    >
+      <h1 class="font-mono text-2xl font-medium mb-4">{{ $t('package.not_found') }}</h1>
       <p class="text-fg-muted mb-8">
-        {{ error?.message ?? 'The package could not be found.' }}
+        {{ error?.message ?? $t('package.not_found_message') }}
       </p>
-      <NuxtLink to="/" class="btn"> Go back home </NuxtLink>
+      <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
   </main>
 </template>
+
+<style scoped>
+.package-page {
+  display: grid;
+  gap: 2rem;
+
+  /* Mobile: single column, sidebar above readme */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'header'
+    'install'
+    'vulns'
+    'sidebar'
+    'readme';
+}
+
+/* Tablet/medium: header/install/vulns full width, readme+sidebar side by side */
+@media (min-width: 1024px) {
+  .package-page {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+      'header  header'
+      'install install'
+      'vulns   vulns'
+      'readme  sidebar';
+  }
+}
+
+/* Desktop: floating sidebar alongside all content */
+@media (min-width: 1280px) {
+  .package-page {
+    grid-template-columns: 1fr 20rem;
+    grid-template-areas:
+      'header  sidebar'
+      'install sidebar'
+      'vulns   sidebar'
+      'readme  sidebar';
+  }
+}
+
+.area-header {
+  grid-area: header;
+  overflow-x: hidden;
+}
+.area-install {
+  grid-area: install;
+  overflow-x: hidden;
+}
+.area-vulns {
+  grid-area: vulns;
+  overflow-x: hidden;
+}
+.area-readme {
+  grid-area: readme;
+  overflow-x: hidden;
+}
+.area-sidebar {
+  grid-area: sidebar;
+}
+
+/* Improve package name wrapping for narrow screens */
+.area-header h1 {
+  overflow-wrap: anywhere;
+}
+
+/* Ensure description text wraps properly */
+.area-header p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Allow install command text to break on narrow screens */
+.area-install code {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* Ensure all text content wraps on narrow screens */
+.package-page {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Ensure all children respect max-width */
+.package-page > * {
+  max-width: 100%;
+  min-width: 0;
+}
+</style>

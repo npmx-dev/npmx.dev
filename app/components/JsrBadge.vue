@@ -13,13 +13,13 @@ defineProps<{
     target="_blank"
     rel="noopener noreferrer"
     class="inline-flex items-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200"
-    title="also available on JSR"
+    :title="$t('badges.jsr.title')"
   >
     <span
       class="i-simple-icons-jsr shrink-0"
       :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
       aria-hidden="true"
     />
-    <span v-if="!compact" class="sr-only sm:not-sr-only">jsr</span>
+    <span v-if="!compact" class="sr-only sm:not-sr-only">{{ $t('badges.jsr.label') }}</span>
   </a>
 </template>

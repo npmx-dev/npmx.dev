@@ -45,68 +45,12 @@ watch(
 
 // For glow effect
 const isSearchFocused = ref(false)
-const searchInputRef = ref<HTMLInputElement>()
+const searchInputRef = useTemplateRef('searchInputRef')
 
 const selectedIndex = ref(0)
 const packageListRef = useTemplateRef('packageListRef')
 
 const resultCount = computed(() => visibleResults.value?.objects.length ?? 0)
-
-function clampIndex(next: number) {
-  if (resultCount.value <= 0) return 0
-  return Math.max(0, Math.min(resultCount.value - 1, next))
-}
-
-function scrollToSelectedResult() {
-  // Use virtualizer's scrollToIndex to ensure the item is rendered and visible
-  packageListRef.value?.scrollToIndex(selectedIndex.value)
-}
-
-function focusSelectedResult() {
-  // First ensure the item is rendered by scrolling to it
-  scrollToSelectedResult()
-  // Then focus it after a tick to allow rendering
-  nextTick(() => {
-    const el = document.querySelector<HTMLElement>(`[data-result-index="${selectedIndex.value}"]`)
-    el?.focus()
-  })
-}
-
-function handleResultsKeydown(e: KeyboardEvent) {
-  if (resultCount.value <= 0) return
-
-  const isFromInput = (e.target as HTMLElement).tagName === 'INPUT'
-
-  if (e.key === 'ArrowDown') {
-    e.preventDefault()
-    selectedIndex.value = clampIndex(selectedIndex.value + 1)
-    // Only move focus if already in results, not when typing in search input
-    if (isFromInput) {
-      scrollToSelectedResult()
-    } else {
-      focusSelectedResult()
-    }
-    return
-  }
-
-  if (e.key === 'ArrowUp') {
-    e.preventDefault()
-    selectedIndex.value = clampIndex(selectedIndex.value - 1)
-    if (isFromInput) {
-      scrollToSelectedResult()
-    } else {
-      focusSelectedResult()
-    }
-    return
-  }
-
-  if (e.key === 'Enter') {
-    const el = document.querySelector<HTMLElement>(`[data-result-index="${selectedIndex.value}"]`)
-    if (!el) return
-    e.preventDefault()
-    el.click()
-  }
-}
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = ref(false)
@@ -145,7 +89,8 @@ const { data: results, status } = useNpmSearch(query, () => ({
 }))
 
 // Keep track of previous results to show while loading
-const previousQuery = ref('')
+// Use useState so the value persists from SSR to client hydration
+const previousQuery = useState('search-previous-query', () => query.value)
 const cachedResults = ref(results.value)
 
 // Update cached results smartly
@@ -164,12 +109,43 @@ const isQueryContinuation = computed(() => {
   return previous && current.startsWith(previous)
 })
 
+const resultsMatchQuery = computed(() => {
+  return previousQuery.value === query.value
+})
+
 // Show cached results while loading if it's a continuation query
-const visibleResults = computed(() => {
+const rawVisibleResults = computed(() => {
   if (status.value === 'pending' && isQueryContinuation.value && cachedResults.value) {
     return cachedResults.value
   }
   return results.value
+})
+
+/**
+ * Reorder results to put exact package name match at the top
+ */
+const visibleResults = computed(() => {
+  const raw = rawVisibleResults.value
+  if (!raw) return raw
+
+  const q = query.value.trim().toLowerCase()
+  if (!q) return raw
+
+  // Find exact match index
+  const exactIdx = raw.objects.findIndex(r => r.package.name.toLowerCase() === q)
+  if (exactIdx <= 0) return raw // Already at top or not found
+
+  // Move exact match to top
+  const reordered = [...raw.objects]
+  const [exactMatch] = reordered.splice(exactIdx, 1)
+  if (exactMatch) {
+    reordered.unshift(exactMatch)
+  }
+
+  return {
+    ...raw,
+    objects: reordered,
+  }
 })
 
 // Should we show the loading spinner?
@@ -207,11 +183,6 @@ function loadMore() {
 // Update URL when page changes from scrolling
 function handlePageChange(page: number) {
   updateUrlPage(page)
-}
-
-function handleSelect(index: number) {
-  if (index < 0) return
-  selectedIndex.value = clampIndex(index)
 }
 
 // Reset pages when query changes
@@ -326,6 +297,397 @@ const showClaimPrompt = computed(() => {
 // Modal state for claiming a package
 const claimModalOpen = ref(false)
 
+/**
+ * Check if a string is a valid npm username/org name
+ * npm usernames: 1-214 characters, lowercase, alphanumeric, hyphen, underscore
+ * Must not start with hyphen or underscore
+ */
+function isValidNpmName(name: string): boolean {
+  if (!name || name.length === 0 || name.length > 214) return false
+  // Must start with alphanumeric
+  if (!/^[a-z0-9]/i.test(name)) return false
+  // Can contain alphanumeric, hyphen, underscore
+  return /^[a-z0-9_-]+$/i.test(name)
+}
+
+/** Validated user/org suggestion */
+interface ValidatedSuggestion {
+  type: 'user' | 'org'
+  name: string
+  exists: boolean
+}
+
+/** Cache for existence checks to avoid repeated API calls */
+const existenceCache = ref<Record<string, boolean | 'pending'>>({})
+
+const NPM_REGISTRY = 'https://registry.npmjs.org'
+
+interface NpmSearchResponse {
+  total: number
+  objects: Array<{ package: { name: string } }>
+}
+
+/**
+ * Check if an org exists by searching for packages with @orgname scope
+ * Uses the search API which has CORS enabled
+ */
+async function checkOrgExists(name: string): Promise<boolean> {
+  const cacheKey = `org:${name.toLowerCase()}`
+  if (cacheKey in existenceCache.value) {
+    const cached = existenceCache.value[cacheKey]
+    return cached === true
+  }
+  existenceCache.value[cacheKey] = 'pending'
+  try {
+    // Search for packages in the @org scope
+    const response = await $fetch<NpmSearchResponse>(`${NPM_REGISTRY}/-/v1/search`, {
+      query: { text: `@${name}`, size: 5 },
+    })
+    // Verify at least one result actually starts with @orgname/
+    const scopePrefix = `@${name.toLowerCase()}/`
+    const exists = response.objects.some(obj =>
+      obj.package.name.toLowerCase().startsWith(scopePrefix),
+    )
+    existenceCache.value[cacheKey] = exists
+    return exists
+  } catch {
+    existenceCache.value[cacheKey] = false
+    return false
+  }
+}
+
+/**
+ * Check if a user exists by searching for packages they maintain
+ * Uses the search API which has CORS enabled
+ */
+async function checkUserExists(name: string): Promise<boolean> {
+  const cacheKey = `user:${name.toLowerCase()}`
+  if (cacheKey in existenceCache.value) {
+    const cached = existenceCache.value[cacheKey]
+    return cached === true
+  }
+  existenceCache.value[cacheKey] = 'pending'
+  try {
+    const response = await $fetch<{ total: number }>(`${NPM_REGISTRY}/-/v1/search`, {
+      query: { text: `maintainer:${name}`, size: 1 },
+    })
+    const exists = response.total > 0
+    existenceCache.value[cacheKey] = exists
+    return exists
+  } catch {
+    existenceCache.value[cacheKey] = false
+    return false
+  }
+}
+
+/**
+ * Parse the search query to extract potential user/org name
+ */
+interface ParsedQuery {
+  type: 'user' | 'org' | 'both' | null
+  name: string
+}
+
+const parsedQuery = computed<ParsedQuery>(() => {
+  const q = query.value.trim()
+  if (!q) return { type: null, name: '' }
+
+  // Query starts with ~ - explicit user search
+  if (q.startsWith('~')) {
+    const name = q.slice(1)
+    if (isValidNpmName(name)) {
+      return { type: 'user', name }
+    }
+    return { type: null, name: '' }
+  }
+
+  // Query starts with @ - org search (without slash)
+  if (q.startsWith('@')) {
+    // If it contains a slash, it's a scoped package search
+    if (q.includes('/')) return { type: null, name: '' }
+    const name = q.slice(1)
+    if (isValidNpmName(name)) {
+      return { type: 'org', name }
+    }
+    return { type: null, name: '' }
+  }
+
+  // Plain query - could be user, org, or package
+  if (isValidNpmName(q)) {
+    return { type: 'both', name: q }
+  }
+
+  return { type: null, name: '' }
+})
+
+/** Validated suggestions (only those that exist) */
+const validatedSuggestions = ref<ValidatedSuggestion[]>([])
+const suggestionsLoading = ref(false)
+
+/** Debounced function to validate suggestions */
+const validateSuggestions = debounce(async (parsed: ParsedQuery) => {
+  if (!parsed.type || !parsed.name) {
+    validatedSuggestions.value = []
+    return
+  }
+
+  suggestionsLoading.value = true
+  const suggestions: ValidatedSuggestion[] = []
+
+  try {
+    if (parsed.type === 'user') {
+      const exists = await checkUserExists(parsed.name)
+      if (exists) {
+        suggestions.push({ type: 'user', name: parsed.name, exists: true })
+      }
+    } else if (parsed.type === 'org') {
+      const exists = await checkOrgExists(parsed.name)
+      if (exists) {
+        suggestions.push({ type: 'org', name: parsed.name, exists: true })
+      }
+    } else if (parsed.type === 'both') {
+      // Check both in parallel
+      const [orgExists, userExists] = await Promise.all([
+        checkOrgExists(parsed.name),
+        checkUserExists(parsed.name),
+      ])
+      // Org first (more common)
+      if (orgExists) {
+        suggestions.push({ type: 'org', name: parsed.name, exists: true })
+      }
+      if (userExists) {
+        suggestions.push({ type: 'user', name: parsed.name, exists: true })
+      }
+    }
+  } finally {
+    suggestionsLoading.value = false
+  }
+
+  validatedSuggestions.value = suggestions
+}, 200)
+
+// Validate suggestions when query changes
+watch(
+  parsedQuery,
+  parsed => {
+    validateSuggestions(parsed)
+  },
+  { immediate: true },
+)
+
+/** Check if there's an exact package match in results */
+const hasExactPackageMatch = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  if (!q || !visibleResults.value) return false
+  return visibleResults.value.objects.some(r => r.package.name.toLowerCase() === q)
+})
+
+/** Check if query is an exact org match (e.g., @nuxt matches org nuxt) */
+const isExactOrgQuery = computed(() => {
+  const q = query.value.trim()
+  if (!q.startsWith('@') || q.includes('/')) return false
+  const orgName = q.slice(1).toLowerCase()
+  return validatedSuggestions.value.some(
+    s => s.type === 'org' && s.name.toLowerCase() === orgName && s.exists,
+  )
+})
+
+/** Determine which item should be highlighted as exact match */
+const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
+  // Package match takes priority
+  if (hasExactPackageMatch.value) return 'package'
+  // Then org match for @org queries
+  if (isExactOrgQuery.value) return 'org'
+  // Could extend to user matches for ~user queries
+  const q = query.value.trim()
+  if (q.startsWith('~')) {
+    const userName = q.slice(1).toLowerCase()
+    if (
+      validatedSuggestions.value.some(
+        s => s.type === 'user' && s.name.toLowerCase() === userName && s.exists,
+      )
+    ) {
+      return 'user'
+    }
+  }
+  return null
+})
+
+/**
+ * Selection uses negative indices for suggestions, positive for packages
+ * -2 = first suggestion, -1 = second suggestion, 0+ = package indices
+ */
+const suggestionCount = computed(() => validatedSuggestions.value.length)
+const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
+
+/** Unified selected index: negative for suggestions, 0+ for packages */
+const unifiedSelectedIndex = ref(0)
+const userHasNavigated = ref(false)
+
+/** Convert unified index to suggestion index (0-based) or null */
+function toSuggestionIndex(unified: number): number | null {
+  if (unified < 0 && unified >= -suggestionCount.value) {
+    return suggestionCount.value + unified
+  }
+  return null
+}
+
+/** Convert unified index to package index or null */
+function toPackageIndex(unified: number): number | null {
+  if (unified >= 0 && unified < resultCount.value) {
+    return unified
+  }
+  return null
+}
+
+/** Clamp unified index to valid range */
+function clampUnifiedIndex(next: number): number {
+  const min = -suggestionCount.value
+  const max = Math.max(0, resultCount.value - 1)
+  if (totalSelectableCount.value <= 0) return 0
+  return Math.max(min, Math.min(max, next))
+}
+
+// Keep legacy selectedIndex in sync for PackageList
+watch(unifiedSelectedIndex, unified => {
+  const pkgIndex = toPackageIndex(unified)
+  selectedIndex.value = pkgIndex ?? -1
+})
+
+// Initialize selection to exact match when results load
+watch(
+  [visibleResults, validatedSuggestions, exactMatchType],
+  () => {
+    if (userHasNavigated.value) {
+      unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value)
+      return
+    }
+
+    if (exactMatchType.value === 'package') {
+      // Find the exact match package index
+      const q = query.value.trim().toLowerCase()
+      const idx =
+        visibleResults.value?.objects.findIndex(r => r.package.name.toLowerCase() === q) ?? -1
+      if (idx >= 0) {
+        unifiedSelectedIndex.value = idx
+        return
+      }
+    }
+    if (exactMatchType.value === 'org') {
+      // Select the org suggestion
+      const orgIdx = validatedSuggestions.value.findIndex(s => s.type === 'org')
+      if (orgIdx >= 0) {
+        unifiedSelectedIndex.value = -(suggestionCount.value - orgIdx)
+        return
+      }
+    }
+    if (exactMatchType.value === 'user') {
+      // Select the user suggestion
+      const userIdx = validatedSuggestions.value.findIndex(s => s.type === 'user')
+      if (userIdx >= 0) {
+        unifiedSelectedIndex.value = -(suggestionCount.value - userIdx)
+        return
+      }
+    }
+    // Default to first item (first suggestion if any, else first package)
+    unifiedSelectedIndex.value = suggestionCount.value > 0 ? -suggestionCount.value : 0
+  },
+  { immediate: true },
+)
+
+// Reset selection and navigation flag when query changes
+watch(query, () => {
+  userHasNavigated.value = false
+  // Will be re-initialized by the watch above when results load
+  unifiedSelectedIndex.value = 0
+})
+
+function scrollToSelectedItem() {
+  const pkgIndex = toPackageIndex(unifiedSelectedIndex.value)
+  if (pkgIndex !== null) {
+    packageListRef.value?.scrollToIndex(pkgIndex)
+  }
+}
+
+function focusSelectedItem() {
+  const suggIdx = toSuggestionIndex(unifiedSelectedIndex.value)
+  const pkgIdx = toPackageIndex(unifiedSelectedIndex.value)
+
+  nextTick(() => {
+    if (suggIdx !== null) {
+      const el = document.querySelector<HTMLElement>(`[data-suggestion-index="${suggIdx}"]`)
+      el?.focus()
+    } else if (pkgIdx !== null) {
+      scrollToSelectedItem()
+      nextTick(() => {
+        const el = document.querySelector<HTMLElement>(`[data-result-index="${pkgIdx}"]`)
+        el?.focus()
+      })
+    }
+  })
+}
+
+function handleResultsKeydown(e: KeyboardEvent) {
+  if (totalSelectableCount.value <= 0) return
+
+  const isFromInput = (e.target as HTMLElement).tagName === 'INPUT'
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    userHasNavigated.value = true
+    unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value + 1)
+    if (isFromInput) {
+      scrollToSelectedItem()
+    } else {
+      focusSelectedItem()
+    }
+    return
+  }
+
+  if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    userHasNavigated.value = true
+    unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value - 1)
+    if (isFromInput) {
+      scrollToSelectedItem()
+    } else {
+      focusSelectedItem()
+    }
+    return
+  }
+
+  if (e.key === 'Enter') {
+    if (!resultsMatchQuery.value) return
+
+    const suggIdx = toSuggestionIndex(unifiedSelectedIndex.value)
+    const pkgIdx = toPackageIndex(unifiedSelectedIndex.value)
+
+    if (suggIdx !== null) {
+      const el = document.querySelector<HTMLElement>(`[data-suggestion-index="${suggIdx}"]`)
+      if (el) {
+        e.preventDefault()
+        el.click()
+      }
+    } else if (pkgIdx !== null) {
+      const el = document.querySelector<HTMLElement>(`[data-result-index="${pkgIdx}"]`)
+      if (el) {
+        e.preventDefault()
+        el.click()
+      }
+    }
+  }
+}
+
+function handleSuggestionSelect(index: number) {
+  // Convert suggestion index to unified index
+  unifiedSelectedIndex.value = -(suggestionCount.value - index)
+}
+
+function handlePackageSelect(index: number) {
+  if (index < 0) return
+  unifiedSelectedIndex.value = index
+}
+
 useSeoMeta({
   title: () => (query.value ? `Search: ${query.value} - npmx` : 'Search Packages - npmx'),
 })
@@ -340,12 +702,12 @@ defineOgImageComponent('Default', {
   <main class="overflow-x-hidden">
     <!-- Sticky search header - positioned below AppHeader (h-14 = 56px) -->
     <header class="sticky top-14 z-40 bg-bg/95 backdrop-blur-sm border-b border-border">
-      <div class="container py-4">
+      <div class="container-sm py-4">
         <h1 class="font-mono text-xl sm:text-2xl font-medium mb-4">search</h1>
 
         <search>
-          <form role="search" class="relative" @submit.prevent>
-            <label for="search-input" class="sr-only">Search npm packages</label>
+          <form role="search" method="GET" action="/search" class="relative" @submit.prevent>
+            <label for="search-input" class="sr-only">{{ $t('search.label') }}</label>
 
             <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
               <!-- Subtle glow effect -->
@@ -355,7 +717,7 @@ defineOgImageComponent('Default', {
 
               <div class="search-box relative flex items-center">
                 <span
-                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-fg-muted"
+                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-accent"
                   aria-hidden="true"
                 >
                   /
@@ -366,12 +728,9 @@ defineOgImageComponent('Default', {
                   v-model="inputValue"
                   type="search"
                   name="q"
-                  placeholder="search packages…"
-                  autocapitalize="off"
-                  autocomplete="off"
-                  autocorrect="off"
-                  spellcheck="false"
-                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-border-hover focus-visible:outline-none appearance-none"
+                  :placeholder="$t('search.placeholder')"
+                  v-bind="noCorrect"
+                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-accent focus-visible:outline-none appearance-none"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
                   @keydown="handleResultsKeydown"
@@ -380,13 +739,13 @@ defineOgImageComponent('Default', {
                   v-show="inputValue"
                   type="button"
                   class="absolute right-3 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                  aria-label="Clear search"
+                  :aria-label="$t('search.clear')"
                   @click="inputValue = ''"
                 >
                   <span class="i-carbon-close-large block w-3.5 h-3.5" aria-hidden="true" />
                 </button>
                 <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
-                <button type="submit" class="sr-only">Search</button>
+                <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
               </div>
             </div>
           </form>
@@ -395,12 +754,29 @@ defineOgImageComponent('Default', {
     </header>
 
     <!-- Results area with container padding -->
-    <div class="container pt-20 pb-6">
+    <div class="container-sm pt-20 pb-6">
       <section v-if="query" aria-label="Search results" @keydown="handleResultsKeydown">
         <!-- Initial loading (only after user interaction, not during view transition) -->
-        <LoadingSpinner v-if="showSearching" text="Searching…" />
+        <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
         <div v-else-if="visibleResults">
+          <!-- User/Org search suggestions -->
+          <div v-if="validatedSuggestions.length > 0" class="mb-6 space-y-3">
+            <SearchSuggestionCard
+              v-for="(suggestion, idx) in validatedSuggestions"
+              :key="`${suggestion.type}-${suggestion.name}`"
+              :type="suggestion.type"
+              :name="suggestion.name"
+              :index="idx"
+              :selected="toSuggestionIndex(unifiedSelectedIndex) === idx"
+              :is-exact-match="
+                (exactMatchType === 'org' && suggestion.type === 'org') ||
+                (exactMatchType === 'user' && suggestion.type === 'user')
+              "
+              @focus="handleSuggestionSelect"
+            />
+          </div>
+
           <!-- Claim prompt - shown at top when valid name but no exact match -->
           <div
             v-if="showClaimPrompt && visibleResults.total > 0"
@@ -408,17 +784,16 @@ defineOgImageComponent('Default', {
           >
             <div class="flex-1 min-w-0">
               <p class="font-mono text-sm text-fg">
-                "<span class="text-fg font-medium">{{ query }}</span
-                >" is not taken
+                {{ $t('search.not_taken', { name: query }) }}
               </p>
-              <p class="text-xs text-fg-muted mt-0.5">Claim this package name on npm</p>
+              <p class="text-xs text-fg-muted mt-0.5">{{ $t('search.claim_prompt') }}</p>
             </div>
             <button
               type="button"
-              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               @click="claimModalOpen = true"
             >
-              Claim "{{ query }}"
+              {{ $t('search.claim_button', { name: query }) }}
             </button>
           </div>
 
@@ -427,27 +802,45 @@ defineOgImageComponent('Default', {
             role="status"
             class="text-fg-muted text-sm mb-6 font-mono"
           >
-            Found <span class="text-fg">{{ formatNumber(visibleResults.total) }}</span> packages
-            <span v-if="status === 'pending'" class="text-fg-subtle">(updating…)</span>
+            {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
+            <span v-if="status === 'pending'" class="text-fg-subtle">{{
+              $t('search.updating')
+            }}</span>
           </p>
 
           <!-- No results found -->
-          <div v-else-if="status !== 'pending'" role="status" class="py-12 text-center">
-            <p class="text-fg-muted font-mono mb-6">
-              No packages found for "<span class="text-fg">{{ query }}</span
-              >"
+          <div v-else-if="status !== 'pending'" role="status" class="py-12">
+            <p class="text-fg-muted font-mono mb-6 text-center">
+              {{ $t('search.no_results', { query }) }}
             </p>
 
+            <!-- User/Org suggestions when no packages found -->
+            <div v-if="validatedSuggestions.length > 0" class="max-w-md mx-auto mb-6 space-y-3">
+              <SearchSuggestionCard
+                v-for="(suggestion, idx) in validatedSuggestions"
+                :key="`${suggestion.type}-${suggestion.name}`"
+                :type="suggestion.type"
+                :name="suggestion.name"
+                :index="idx"
+                :selected="toSuggestionIndex(unifiedSelectedIndex) === idx"
+                :is-exact-match="
+                  (exactMatchType === 'org' && suggestion.type === 'org') ||
+                  (exactMatchType === 'user' && suggestion.type === 'user')
+                "
+                @focus="handleSuggestionSelect"
+              />
+            </div>
+
             <!-- Offer to claim the package name if it's valid -->
-            <div v-if="showClaimPrompt" class="max-w-md mx-auto">
+            <div v-if="showClaimPrompt" class="max-w-md mx-auto text-center">
               <div class="p-4 bg-bg-subtle border border-border rounded-lg">
-                <p class="text-sm text-fg-muted mb-3">Want to claim this package name?</p>
+                <p class="text-sm text-fg-muted mb-3">{{ $t('search.want_to_claim') }}</p>
                 <button
                   type="button"
                   class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                   @click="claimModalOpen = true"
                 >
-                  Claim "{{ query }}"
+                  {{ $t('search.claim_button', { name: query }) }}
                 </button>
               </div>
             </div>
@@ -458,6 +851,7 @@ defineOgImageComponent('Default', {
             ref="packageListRef"
             :results="visibleResults.objects"
             :selected-index="selectedIndex"
+            :search-query="query"
             heading-level="h2"
             show-publisher
             :has-more="hasMore"
@@ -466,13 +860,13 @@ defineOgImageComponent('Default', {
             :initial-page="initialPage"
             @load-more="loadMore"
             @page-change="handlePageChange"
-            @select="handleSelect"
+            @select="handlePackageSelect"
           />
         </div>
       </section>
 
       <section v-else class="py-20 text-center">
-        <p class="text-fg-subtle font-mono text-sm">Start typing to search packages</p>
+        <p class="text-fg-subtle font-mono text-sm">{{ $t('search.start_typing') }}</p>
       </section>
     </div>
 

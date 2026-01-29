@@ -3,6 +3,8 @@ import {
   analyzePackage,
   detectModuleFormat,
   detectTypesStatus,
+  getCreatePackageName,
+  getCreateShortName,
   getTypesPackageName,
   hasBuiltInTypes,
 } from '../../shared/utils/package-analysis'
@@ -114,9 +116,19 @@ describe('detectTypesStatus', () => {
   })
 
   it('detects @types package when provided', () => {
-    expect(detectTypesStatus({}, '@types/lodash')).toEqual({
+    expect(detectTypesStatus({}, { packageName: '@types/lodash' })).toEqual({
       kind: '@types',
       packageName: '@types/lodash',
+    })
+  })
+
+  it('includes deprecation info in @types detection', () => {
+    expect(
+      detectTypesStatus({}, { packageName: '@types/lodash', deprecated: 'Now included in lodash' }),
+    ).toEqual({
+      kind: '@types',
+      packageName: '@types/lodash',
+      deprecated: 'Now included in lodash',
     })
   })
 
@@ -213,12 +225,86 @@ describe('analyzePackage', () => {
     expect(result.engines).toEqual({ node: '>=18', npm: '>=9' })
   })
 
-  it('detects @types package when typesPackageExists is true', () => {
+  it('detects @types package when typesPackage info is provided', () => {
     const result = analyzePackage(
       { name: 'express', main: 'index.js' },
-      { typesPackageExists: true },
+      { typesPackage: { packageName: '@types/express' } },
     )
 
     expect(result.types).toEqual({ kind: '@types', packageName: '@types/express' })
+  })
+
+  it('includes deprecation info for @types package', () => {
+    const result = analyzePackage(
+      { name: 'express', main: 'index.js' },
+      { typesPackage: { packageName: '@types/express', deprecated: 'Use included types instead' } },
+    )
+
+    expect(result.types).toEqual({
+      kind: '@types',
+      packageName: '@types/express',
+      deprecated: 'Use included types instead',
+    })
+  })
+
+  it('includes createPackage when provided', () => {
+    const result = analyzePackage(
+      { name: 'vite', main: 'index.js' },
+      { createPackage: { packageName: 'create-vite' } },
+    )
+
+    expect(result.createPackage).toEqual({ packageName: 'create-vite' })
+  })
+
+  it('includes deprecation info for createPackage', () => {
+    const result = analyzePackage(
+      { name: 'foo', main: 'index.js' },
+      { createPackage: { packageName: 'create-foo', deprecated: 'Use different tool' } },
+    )
+
+    expect(result.createPackage).toEqual({
+      packageName: 'create-foo',
+      deprecated: 'Use different tool',
+    })
+  })
+})
+
+describe('getCreatePackageName', () => {
+  it('handles unscoped package', () => {
+    expect(getCreatePackageName('vite')).toBe('create-vite')
+  })
+
+  it('handles scoped package', () => {
+    expect(getCreatePackageName('@nuxt/app')).toBe('@nuxt/create-app')
+  })
+
+  it('handles single-word package', () => {
+    expect(getCreatePackageName('next')).toBe('create-next')
+  })
+
+  it('handles hyphenated package', () => {
+    expect(getCreatePackageName('solid-js')).toBe('create-solid-js')
+  })
+})
+
+describe('getCreateShortName', () => {
+  it('extracts name from unscoped create-* package', () => {
+    expect(getCreateShortName('create-vite')).toBe('vite')
+  })
+
+  it('extracts name from scoped create-* package', () => {
+    expect(getCreateShortName('@vue/create-app')).toBe('app')
+  })
+
+  it('returns full name if not a create-* package', () => {
+    expect(getCreateShortName('vite')).toBe('vite')
+  })
+
+  it('handles scoped package without create- prefix', () => {
+    expect(getCreateShortName('@scope/foo')).toBe('foo')
+  })
+
+  it('extracts name from create-next-app style packages', () => {
+    expect(getCreateShortName('create-next-app')).toBe('next-app')
   })
 })

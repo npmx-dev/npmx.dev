@@ -10,36 +10,43 @@
   },
   "scripts": {
     "build": "nuxt build",
+    "build:lunaria": "node --experimental-transform-types ./lunaria/lunaria.ts",
     "dev": "nuxt dev",
-    "lint": "oxlint && oxfmt --check .",
-    "lint:fix": "oxlint --fix && oxfmt .",
+    "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
+    "lint": "vite lint && vite fmt --check",
+    "lint:fix": "vite lint --fix && vite fmt",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare && simple-git-hooks",
-    "test": "vitest",
+    "test": "vite test",
     "test:browser": "playwright test",
     "test:browser:ui": "playwright test --ui",
     "test:browser:update": "playwright test --update-snapshots",
-    "test:nuxt": "vitest --project nuxt",
+    "test:nuxt": "vite test --project nuxt",
     "test:types": "nuxt prepare && vue-tsc -b --noEmit && pnpm --filter npmx-connector test:types",
-    "test:unit": "vitest --project unit"
+    "test:unit": "vite test --project unit"
   },
   "dependencies": {
     "@atproto/api": "^0.18.17",
     "@atproto/oauth-client-node": "^0.3.15",
+    "@deno/doc": "jsr:^0.189.1",
     "@iconify-json/simple-icons": "^1.2.67",
     "@iconify-json/vscode-icons": "^1.2.40",
+    "@lunariajs/core": "https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3",
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "^0.13.0",
     "@nuxt/scripts": "^0.13.2",
+    "@nuxtjs/color-mode": "^4.0.0",
     "@nuxtjs/html-validator": "^2.1.0",
+    "@nuxtjs/i18n": "10.2.1",
     "@shikijs/langs": "^3.21.0",
     "@shikijs/themes": "^3.21.0",
     "@vueuse/core": "^14.1.0",
     "@vueuse/nuxt": "14.1.0",
     "nuxt": "^4.3.0",
     "nuxt-og-image": "^5.1.13",
+    "ohash": "^2.0.11",
     "perfect-debounce": "^2.1.0",
     "sanitize-html": "^2.17.0",
     "semver": "^7.7.3",
@@ -50,11 +57,13 @@
     "validate-npm-package-name": "^7.0.2",
     "virtua": "^0.48.3",
     "vue": "3.5.27",
-    "vue-data-ui": "^3.13.2"
+    "vue-data-ui": "^3.13.5"
   },
   "devDependencies": {
     "@iconify-json/carbon": "1.2.18",
+    "@iconify-json/lucide": "^1.2.87",
     "@iconify-json/solar": "1.2.5",
+    "@iconify-json/svg-spinners": "^1.2.4",
     "@npm/types": "2.1.0",
     "@nuxt/test-utils": "https://pkg.pr.new/@nuxt/test-utils@1499a48",
     "@playwright/test": "1.57.0",
@@ -67,45 +76,31 @@
     "@vite-pwa/nuxt": "1.1.0",
     "@vitest/browser-playwright": "^4.0.18",
     "@vitest/coverage-v8": "^4.0.18",
+    "@voidzero-dev/vite-plus-core": "latest",
     "@vue/test-utils": "2.4.6",
     "axe-core": "^4.11.1",
     "happy-dom": "20.3.5",
     "lint-staged": "16.2.7",
     "marked": "17.0.1",
-    "oxfmt": "0.26.0",
-    "oxlint": "^1.41.0",
     "playwright-core": "1.57.0",
     "simple-git-hooks": "2.13.1",
+    "spdx-license-list": "^6.11.0",
     "std-env": "3.10.0",
     "typescript": "5.9.3",
     "unocss": "66.6.0",
-    "vitest": "^4.0.18",
+    "vite-plus": "latest",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@latest",
     "vue-tsc": "3.2.2"
-  },
-  "resolutions": {
-    "vite": "^8.0.0-beta.10"
-  },
-  "pnpm": {
-    "overrides": {
-      "sharp": "0.34.5"
-    },
-    "packageExtensions": {
-      "@nuxt/scripts": {
-        "dependencies": {
-          "estree-walker": "^3.0.3"
-        }
-      }
-    }
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "*.{js,ts,mjs,cjs,vue}": [
-      "oxlint --fix"
+      "vite lint --fix"
     ],
-    "*.{js,ts,mjs,cjs,vue,json,md,html,css}": [
-      "oxfmt"
+    "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
+      "vite fmt"
     ]
   },
   "packageManager": "pnpm@10.28.1"

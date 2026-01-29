@@ -3,6 +3,8 @@ import {
   getInstallCommand,
   getInstallCommandParts,
   getPackageSpecifier,
+  getExecuteCommand,
+  getExecuteCommandParts,
 } from '../../app/utils/install-command'
 import type { JsrPackageInfo } from '../../shared/types/jsr'
 
@@ -282,6 +284,109 @@ describe('install command generation', () => {
         packageManager: 'invalid' as any,
       })
       expect(parts).toEqual([])
+    })
+  })
+
+  describe('getExecuteCommandParts', () => {
+    describe('local execute (isBinaryOnly: false)', () => {
+      it.each([
+        ['npm', ['npx', 'eslint']],
+        ['pnpm', ['pnpm', 'exec', 'eslint']],
+        ['yarn', ['yarn', 'eslint']],
+        ['bun', ['bunx', 'eslint']],
+        ['deno', ['deno', 'run', 'npm:eslint']],
+        ['vlt', ['vlt', 'x', 'eslint']],
+      ] as const)('%s → %s', (pm, expected) => {
+        expect(
+          getExecuteCommandParts({
+            packageName: 'eslint',
+            packageManager: pm,
+            isBinaryOnly: false,
+          }),
+        ).toEqual(expected)
+      })
+    })
+
+    describe('remote execute (isBinaryOnly: true)', () => {
+      it.each([
+        ['npm', ['npx', 'degit']],
+        ['pnpm', ['pnpm', 'dlx', 'degit']],
+        ['yarn', ['yarn', 'dlx', 'degit']],
+        ['bun', ['bunx', 'degit']],
+        ['deno', ['deno', 'run', 'npm:degit']],
+        ['vlt', ['vlt', 'x', 'degit']],
+      ] as const)('%s → %s', (pm, expected) => {
+        expect(
+          getExecuteCommandParts({
+            packageName: 'degit',
+            packageManager: pm,
+            isBinaryOnly: true,
+          }),
+        ).toEqual(expected)
+      })
+    })
+
+    describe('create-* packages (isCreatePackage: true)', () => {
+      it.each([
+        ['npm', ['npm', 'create', 'vite']],
+        ['pnpm', ['pnpm', 'create', 'vite']],
+        ['yarn', ['yarn', 'create', 'vite']],
+        ['bun', ['bun', 'create', 'vite']],
+        ['deno', ['deno', 'run', 'vite']],
+        ['vlt', ['vlt', 'x', 'vite']],
+      ] as const)('%s → %s', (pm, expected) => {
+        expect(
+          getExecuteCommandParts({
+            packageName: 'create-vite',
+            packageManager: pm,
+            isCreatePackage: true,
+          }),
+        ).toEqual(expected)
+      })
+    })
+
+    describe('scoped create-* packages', () => {
+      it('handles @scope/create-app pattern', () => {
+        expect(
+          getExecuteCommandParts({
+            packageName: '@vue/create-app',
+            packageManager: 'npm',
+            isCreatePackage: true,
+          }),
+        ).toEqual(['npm', 'create', 'app'])
+      })
+    })
+  })
+
+  describe('getExecuteCommand', () => {
+    it('generates full execute command string for local execute', () => {
+      expect(
+        getExecuteCommand({
+          packageName: 'eslint',
+          packageManager: 'pnpm',
+          isBinaryOnly: false,
+        }),
+      ).toBe('pnpm exec eslint')
+    })
+
+    it('generates full execute command string for remote execute', () => {
+      expect(
+        getExecuteCommand({
+          packageName: 'degit',
+          packageManager: 'pnpm',
+          isBinaryOnly: true,
+        }),
+      ).toBe('pnpm dlx degit')
+    })
+
+    it('generates create command for create-* packages', () => {
+      expect(
+        getExecuteCommand({
+          packageName: 'create-vite',
+          packageManager: 'pnpm',
+          isCreatePackage: true,
+        }),
+      ).toBe('pnpm create vite')
     })
   })
 })

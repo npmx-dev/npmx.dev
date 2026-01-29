@@ -1,10 +1,13 @@
 import crypto from 'node:crypto'
 import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
 import type { CorsOptions } from 'h3-next'
+import * as v from 'valibot'
 
-import type { ConnectorState, PendingOperation, OperationType, ApiResponse } from './types.ts'
+import type { ConnectorState, PendingOperation, ApiResponse } from './types.ts'
+import { logDebug, logError } from './logger.ts'
 import {
   getNpmUser,
+  getNpmAvatar,
   orgAddUser,
   orgRemoveUser,
   orgListUsers,
@@ -20,8 +23,21 @@ import {
   ownerAdd,
   ownerRemove,
   packageInit,
+  listUserPackages,
   type NpmExecResult,
 } from './npm-client.ts'
+import {
+  ConnectBodySchema,
+  ExecuteBodySchema,
+  CreateOperationBodySchema,
+  BatchOperationsBodySchema,
+  OrgNameSchema,
+  ScopeTeamSchema,
+  PackageNameSchema,
+  OperationIdSchema,
+  safeParse,
+  validateOperationParams,
+} from './schemas.ts'
 
 // Read version from package.json
 import pkg from '../package.json' with { type: 'json' }
@@ -48,6 +64,7 @@ export function createConnectorApp(expectedToken: string) {
       token: expectedToken,
       connectedAt: 0,
       npmUser: null,
+      avatar: null,
     },
     operations: [],
   }
@@ -69,19 +86,26 @@ export function createConnectorApp(expectedToken: string) {
   }
 
   app.post('/connect', async (event: H3Event) => {
-    const body = (await event.req.json()) as { token?: string }
-    if (body?.token !== expectedToken) {
+    const rawBody = await event.req.json()
+    const parsed = safeParse(ConnectBodySchema, rawBody)
+    if (!parsed.success) {
+      throw new HTTPError({ statusCode: 400, message: parsed.error })
+    }
+
+    if (parsed.data.token !== expectedToken) {
       throw new HTTPError({ statusCode: 401, message: 'Invalid token' })
     }
 
-    const npmUser = await getNpmUser()
+    const [npmUser, avatar] = await Promise.all([getNpmUser(), getNpmAvatar()])
     state.session.connectedAt = Date.now()
     state.session.npmUser = npmUser
+    state.session.avatar = avatar
 
     return {
       success: true,
       data: {
         npmUser,
+        avatar,
         connectedAt: state.session.connectedAt,
       },
     } as ApiResponse
@@ -97,6 +121,7 @@ export function createConnectorApp(expectedToken: string) {
       success: true,
       data: {
         npmUser: state.session.npmUser,
+        avatar: state.session.avatar,
         operations: state.operations,
       },
     } as ApiResponse
@@ -108,13 +133,21 @@ export function createConnectorApp(expectedToken: string) {
       throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
     }
 
-    const body = (await event.req.json()) as {
-      type: OperationType
-      params: Record<string, string>
-      description: string
-      command: string
+    const rawBody = await event.req.json()
+    const parsed = safeParse(CreateOperationBodySchema, rawBody)
+    if (!parsed.success) {
+      throw new HTTPError({ statusCode: 400, message: parsed.error })
     }
-    const { type, params, description, command } = body
+
+    const { type, params, description, command } = parsed.data
+
+    // Validate params based on operation type
+    try {
+      validateOperationParams(type, params)
+    } catch (err) {
+      const message = err instanceof v.ValiError ? err.issues[0]?.message : String(err)
+      throw new HTTPError({ statusCode: 400, message: `Invalid params: ${message}` })
+    }
 
     const operation: PendingOperation = {
       id: generateOperationId(),
@@ -140,15 +173,29 @@ export function createConnectorApp(expectedToken: string) {
       throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
     }
 
-    const operations = (await event.req.json()) as Array<{
-      type: OperationType
-      params: Record<string, string>
-      description: string
-      command: string
-    }>
+    const rawBody = await event.req.json()
+    const parsed = safeParse(BatchOperationsBodySchema, rawBody)
+    if (!parsed.success) {
+      throw new HTTPError({ statusCode: 400, message: parsed.error })
+    }
+
+    // Validate each operation's params
+    for (let i = 0; i < parsed.data.length; i++) {
+      const op = parsed.data[i]
+      if (!op) continue
+      try {
+        validateOperationParams(op.type, op.params)
+      } catch (err) {
+        const message = err instanceof v.ValiError ? err.issues[0]?.message : String(err)
+        throw new HTTPError({
+          statusCode: 400,
+          message: `Operation ${i}: Invalid params: ${message}`,
+        })
+      }
+    }
 
     const created: PendingOperation[] = []
-    for (const op of operations) {
+    for (const op of parsed.data) {
       const operation: PendingOperation = {
         id: generateOperationId(),
         type: op.type,
@@ -177,13 +224,21 @@ export function createConnectorApp(expectedToken: string) {
     const url = new URL(event.req.url)
     const id = url.searchParams.get('id')
 
-    const operation = state.operations.find(op => op.id === id)
+    const idValidation = safeParse(OperationIdSchema, id)
+    if (!idValidation.success) {
+      throw new HTTPError({ statusCode: 400, message: idValidation.error })
+    }
+
+    const operation = state.operations.find(op => op.id === idValidation.data)
     if (!operation) {
       throw new HTTPError({ statusCode: 404, message: 'Operation not found' })
     }
 
     if (operation.status !== 'pending') {
-      throw new HTTPError({ statusCode: 400, message: 'Operation is not pending' })
+      throw new HTTPError({
+        statusCode: 400,
+        message: 'Operation is not pending',
+      })
     }
 
     operation.status = 'approved'
@@ -220,13 +275,21 @@ export function createConnectorApp(expectedToken: string) {
     const url = new URL(event.req.url)
     const id = url.searchParams.get('id')
 
-    const operation = state.operations.find(op => op.id === id)
+    const idValidation = safeParse(OperationIdSchema, id)
+    if (!idValidation.success) {
+      throw new HTTPError({ statusCode: 400, message: idValidation.error })
+    }
+
+    const operation = state.operations.find(op => op.id === idValidation.data)
     if (!operation) {
       throw new HTTPError({ statusCode: 404, message: 'Operation not found' })
     }
 
     if (operation.status !== 'failed') {
-      throw new HTTPError({ statusCode: 400, message: 'Only failed operations can be retried' })
+      throw new HTTPError({
+        statusCode: 400,
+        message: 'Only failed operations can be retried',
+      })
     }
 
     // Reset the operation for retry
@@ -248,10 +311,17 @@ export function createConnectorApp(expectedToken: string) {
     // OTP can be passed directly in the request body for this execution
     let otp: string | undefined
     try {
-      const body = (await event.req.json()) as { otp?: string } | null
-      otp = body?.otp
-    } catch {
-      // Empty body is fine - no OTP provided
+      const rawBody = await event.req.json()
+      if (rawBody) {
+        const parsed = safeParse(ExecuteBodySchema, rawBody)
+        if (!parsed.success) {
+          throw new HTTPError({ statusCode: 400, message: parsed.error })
+        }
+        otp = parsed.data.otp
+      }
+    } catch (err) {
+      // Re-throw HTTPError, ignore JSON parse errors (empty body is fine)
+      if (err instanceof HTTPError) throw err
     }
 
     const approvedOps = state.operations.filter(op => op.status === 'approved')
@@ -274,7 +344,11 @@ export function createConnectorApp(expectedToken: string) {
         // Dependency failed - skip this one too
         if (failedIds.has(op.dependsOn)) {
           op.status = 'failed'
-          op.result = { stdout: '', stderr: 'Skipped: dependency failed', exitCode: 1 }
+          op.result = {
+            stdout: '',
+            stderr: 'Skipped: dependency failed',
+            exitCode: 1,
+          }
           failedIds.add(op.id)
           results.push({ id: op.id, result: op.result })
           return false
@@ -335,14 +409,22 @@ export function createConnectorApp(expectedToken: string) {
     const url = new URL(event.req.url)
     const id = url.searchParams.get('id')
 
-    const index = state.operations.findIndex(op => op.id === id)
+    const idValidation = safeParse(OperationIdSchema, id)
+    if (!idValidation.success) {
+      throw new HTTPError({ statusCode: 400, message: idValidation.error })
+    }
+
+    const index = state.operations.findIndex(op => op.id === idValidation.data)
     if (index === -1) {
       throw new HTTPError({ statusCode: 404, message: 'Operation not found' })
     }
 
     const operation = state.operations[index]
     if (!operation || operation.status === 'running') {
-      throw new HTTPError({ statusCode: 400, message: 'Cannot cancel running operation' })
+      throw new HTTPError({
+        statusCode: 400,
+        message: 'Cannot cancel running operation',
+      })
     }
 
     state.operations.splice(index, 1)
@@ -373,12 +455,13 @@ export function createConnectorApp(expectedToken: string) {
       throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
     }
 
-    const org = event.context.params?.org
-    if (!org) {
-      throw new HTTPError({ statusCode: 400, message: 'Org name required' })
+    const orgRaw = event.context.params?.org
+    const orgValidation = safeParse(OrgNameSchema, orgRaw)
+    if (!orgValidation.success) {
+      throw new HTTPError({ statusCode: 400, message: orgValidation.error })
     }
 
-    const result = await orgListUsers(org)
+    const result = await orgListUsers(orgValidation.data)
     if (result.exitCode !== 0) {
       return {
         success: false,
@@ -406,12 +489,13 @@ export function createConnectorApp(expectedToken: string) {
       throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
     }
 
-    const org = event.context.params?.org
-    if (!org) {
-      throw new HTTPError({ statusCode: 400, message: 'Org name required' })
+    const orgRaw = event.context.params?.org
+    const orgValidation = safeParse(OrgNameSchema, orgRaw)
+    if (!orgValidation.success) {
+      throw new HTTPError({ statusCode: 400, message: orgValidation.error })
     }
 
-    const result = await teamListTeams(org)
+    const result = await teamListTeams(orgValidation.data)
     if (result.exitCode !== 0) {
       return {
         success: false,
@@ -447,6 +531,16 @@ export function createConnectorApp(expectedToken: string) {
     // Decode the team name (handles encoded colons like nuxt%3Adevelopers)
     const scopeTeam = decodeURIComponent(scopeTeamRaw)
 
+    const validationResult = safeParse(ScopeTeamSchema, scopeTeam)
+    if (!validationResult.success) {
+      logError('scope:team validation failed')
+      logDebug(validationResult.error, { scopeTeamRaw, scopeTeam })
+      throw new HTTPError({
+        statusCode: 400,
+        message: `Invalid scope:team format: ${scopeTeam}. Expected @scope:team`,
+      })
+    }
+
     const result = await teamListUsers(scopeTeam)
     if (result.exitCode !== 0) {
       return {
@@ -475,15 +569,20 @@ export function createConnectorApp(expectedToken: string) {
       throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
     }
 
-    const pkg = event.context.params?.pkg
-    if (!pkg) {
+    const pkgRaw = event.context.params?.pkg
+    if (!pkgRaw) {
       throw new HTTPError({ statusCode: 400, message: 'Package name required' })
     }
 
     // Decode the package name (handles scoped packages like @nuxt%2Fkit)
-    const decodedPkg = decodeURIComponent(pkg)
+    const decodedPkg = decodeURIComponent(pkgRaw)
 
-    const result = await accessListCollaborators(decodedPkg)
+    const pkgValidation = safeParse(PackageNameSchema, decodedPkg)
+    if (!pkgValidation.success) {
+      throw new HTTPError({ statusCode: 400, message: pkgValidation.error })
+    }
+
+    const result = await accessListCollaborators(pkgValidation.data)
     if (result.exitCode !== 0) {
       return {
         success: false,
@@ -501,6 +600,97 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: false,
         error: 'Failed to parse collaborators',
+      } as ApiResponse
+    }
+  })
+
+  // User-specific endpoints
+
+  app.get('/user/packages', async event => {
+    const auth = event.req.headers.get('authorization')
+    if (!validateToken(auth)) {
+      throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
+    }
+
+    const npmUser = state.session.npmUser
+    if (!npmUser) {
+      return {
+        success: false,
+        error: 'Not logged in to npm',
+      } as ApiResponse
+    }
+
+    const result = await listUserPackages(npmUser)
+    if (result.exitCode !== 0) {
+      return {
+        success: false,
+        error: result.stderr || 'Failed to list user packages',
+      } as ApiResponse
+    }
+
+    try {
+      // npm access list packages returns { "packageName": "read-write" | "read-only" }
+      const packages = JSON.parse(result.stdout) as Record<string, 'read-write' | 'read-only'>
+      return {
+        success: true,
+        data: packages,
+      } as ApiResponse
+    } catch {
+      return {
+        success: false,
+        error: 'Failed to parse user packages',
+      } as ApiResponse
+    }
+  })
+
+  app.get('/user/orgs', async event => {
+    const auth = event.req.headers.get('authorization')
+    if (!validateToken(auth)) {
+      throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
+    }
+
+    const npmUser = state.session.npmUser
+    if (!npmUser) {
+      return {
+        success: false,
+        error: 'Not logged in to npm',
+      } as ApiResponse
+    }
+
+    // Get user's packages and extract org names from scoped packages
+    const result = await listUserPackages(npmUser)
+    if (result.exitCode !== 0) {
+      return {
+        success: false,
+        error: result.stderr || 'Failed to list user packages',
+      } as ApiResponse
+    }
+
+    try {
+      const packages = JSON.parse(result.stdout) as Record<string, string>
+      const orgs = new Set<string>()
+
+      // Extract org names from scoped packages (e.g., @myorg/mypackage -> myorg)
+      for (const pkgName of Object.keys(packages)) {
+        if (pkgName.startsWith('@')) {
+          const match = pkgName.match(/^@([^/]+)\//)
+          if (match && match[1]) {
+            // Exclude the user's own scope (personal packages)
+            if (match[1].toLowerCase() !== npmUser.toLowerCase()) {
+              orgs.add(match[1])
+            }
+          }
+        }
+      }
+
+      return {
+        success: true,
+        data: Array.from(orgs).sort(),
+      } as ApiResponse
+    } catch {
+      return {
+        success: false,
+        error: 'Failed to parse user orgs',
       } as ApiResponse
     }
   })

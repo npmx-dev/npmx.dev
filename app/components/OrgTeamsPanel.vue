@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NewOperation } from '~/composables/useConnector'
+import { buildScopeTeam } from '~/utils/npm'
 
 const props = defineProps<{
   orgName: string
@@ -16,32 +17,32 @@ const {
 } = useConnector()
 
 // Teams data
-const teams = ref<string[]>([])
+const teams = shallowRef<string[]>([])
 const teamUsers = ref<Record<string, string[]>>({})
-const isLoadingTeams = ref(false)
+const isLoadingTeams = shallowRef(false)
 const isLoadingUsers = ref<Record<string, boolean>>({})
-const error = ref<string | null>(null)
+const error = shallowRef<string | null>(null)
 
 // Org members (to check if user needs to be added to org first)
-const orgMembers = ref<Record<string, 'developer' | 'admin' | 'owner'>>({})
+const orgMembers = shallowRef<Record<string, 'developer' | 'admin' | 'owner'>>({})
 
 // Search/filter
-const searchQuery = ref('')
-const sortBy = ref<'name' | 'members'>('name')
-const sortOrder = ref<'asc' | 'desc'>('asc')
+const searchQuery = shallowRef('')
+const sortBy = shallowRef<'name' | 'members'>('name')
+const sortOrder = shallowRef<'asc' | 'desc'>('asc')
 
 // Expanded teams (to show members)
 const expandedTeams = ref<Set<string>>(new Set())
 
 // Create team form
-const showCreateTeam = ref(false)
-const newTeamName = ref('')
-const isCreatingTeam = ref(false)
+const showCreateTeam = shallowRef(false)
+const newTeamName = shallowRef('')
+const isCreatingTeam = shallowRef(false)
 
 // Add user form (per team)
-const showAddUserFor = ref<string | null>(null)
-const newUserUsername = ref('')
-const isAddingUser = ref(false)
+const showAddUserFor = shallowRef<string | null>(null)
+const newUserUsername = shallowRef('')
+const isAddingUser = shallowRef(false)
 
 // Filtered and sorted teams
 const filteredTeams = computed(() => {
@@ -103,7 +104,7 @@ async function loadTeamUsers(teamName: string) {
   isLoadingUsers.value[teamName] = true
 
   try {
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
     const result = await listTeamUsers(scopeTeam)
     if (result) {
       teamUsers.value[teamName] = result
@@ -135,7 +136,7 @@ async function handleCreateTeam() {
   isCreatingTeam.value = true
   try {
     const teamName = newTeamName.value.trim()
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
     const operation: NewOperation = {
       type: 'team:create',
       params: { scopeTeam },
@@ -153,7 +154,7 @@ async function handleCreateTeam() {
 
 // Destroy team
 async function handleDestroyTeam(teamName: string) {
-  const scopeTeam = `${props.orgName}:${teamName}`
+  const scopeTeam = buildScopeTeam(props.orgName, teamName)
   const operation: NewOperation = {
     type: 'team:destroy',
     params: { scopeTeam },
@@ -171,7 +172,7 @@ async function handleAddUser(teamName: string) {
   isAddingUser.value = true
   try {
     const username = newUserUsername.value.trim().replace(/^@/, '')
-    const scopeTeam = `${props.orgName}:${teamName}`
+    const scopeTeam = buildScopeTeam(props.orgName, teamName)
 
     let dependsOnId: string | undefined
 
@@ -213,7 +214,7 @@ async function handleAddUser(teamName: string) {
 
 // Remove user from team
 async function handleRemoveUser(teamName: string, username: string) {
-  const scopeTeam = `${props.orgName}:${teamName}`
+  const scopeTeam = buildScopeTeam(props.orgName, teamName)
   const operation: NewOperation = {
     type: 'team:rm-user',
     params: { scopeTeam, user: username },
@@ -263,13 +264,13 @@ watch(lastExecutionTime, () => {
     <div class="flex items-center justify-between p-4 border-b border-border">
       <h2 id="teams-heading" class="font-mono text-sm font-medium flex items-center gap-2">
         <span class="i-carbon-group w-4 h-4 text-fg-muted" aria-hidden="true" />
-        Teams
+        {{ $t('org.teams.title') }}
         <span v-if="teams.length > 0" class="text-fg-muted">({{ teams.length }})</span>
       </h2>
       <button
         type="button"
         class="p-1.5 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-        aria-label="Refresh teams"
+        :aria-label="$t('org.teams.refresh')"
         :disabled="isLoadingTeams"
         @click="loadTeams"
       >
@@ -288,18 +289,22 @@ watch(lastExecutionTime, () => {
           class="absolute left-2 top-1/2 -translate-y-1/2 i-carbon-search w-3.5 h-3.5 text-fg-subtle"
           aria-hidden="true"
         />
-        <label for="teams-search" class="sr-only">Filter teams</label>
+        <label for="teams-search" class="sr-only">{{ $t('org.teams.filter_label') }}</label>
         <input
           id="teams-search"
           v-model="searchQuery"
           type="search"
           name="teams-search"
-          placeholder="Filter teams…"
-          autocomplete="off"
+          :placeholder="$t('org.teams.filter_placeholder')"
+          v-bind="noCorrect"
           class="w-full pl-7 pr-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         />
       </div>
-      <div class="flex items-center gap-1 text-xs" role="group" aria-label="Sort by">
+      <div
+        class="flex items-center gap-1 text-xs"
+        role="group"
+        :aria-label="$t('org.teams.sort_by')"
+      >
         <button
           type="button"
           class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
@@ -307,7 +312,7 @@ watch(lastExecutionTime, () => {
           :aria-pressed="sortBy === 'name'"
           @click="toggleSort('name')"
         >
-          name
+          {{ $t('common.sort.name') }}
           <span v-if="sortBy === 'name'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
         </button>
         <button
@@ -317,7 +322,7 @@ watch(lastExecutionTime, () => {
           :aria-pressed="sortBy === 'members'"
           @click="toggleSort('members')"
         >
-          members
+          {{ $t('common.sort.members') }}
           <span v-if="sortBy === 'members'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
         </button>
       </div>
@@ -326,10 +331,10 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoadingTeams && teams.length === 0" class="p-8 text-center">
       <span
-        class="i-carbon-rotate block w-5 h-5 text-fg-muted animate-spin mx-auto"
+        class="i-carbon-rotate-180 block w-5 h-5 text-fg-muted motion-safe:animate-spin mx-auto"
         aria-hidden="true"
       />
-      <p class="font-mono text-sm text-fg-muted mt-2">Loading teams…</p>
+      <p class="font-mono text-sm text-fg-muted mt-2">{{ $t('org.teams.loading') }}</p>
     </div>
 
     <!-- Error state -->
@@ -342,17 +347,17 @@ watch(lastExecutionTime, () => {
         class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="loadTeams"
       >
-        Try again
+        {{ $t('common.try_again') }}
       </button>
     </div>
 
     <!-- Empty state -->
     <div v-else-if="teams.length === 0" class="p-8 text-center">
-      <p class="font-mono text-sm text-fg-muted">No teams found</p>
+      <p class="font-mono text-sm text-fg-muted">{{ $t('org.teams.no_teams') }}</p>
     </div>
 
     <!-- Teams list -->
-    <ul v-else class="divide-y divide-border" aria-label="Organization teams">
+    <ul v-else class="divide-y divide-border" :aria-label="$t('org.teams.list_label')">
       <li v-for="teamName in filteredTeams" :key="teamName" class="bg-bg">
         <!-- Team header -->
         <div
@@ -375,20 +380,24 @@ watch(lastExecutionTime, () => {
             />
             <span class="font-mono text-sm text-fg">{{ teamName }}</span>
             <span v-if="teamUsers[teamName]" class="font-mono text-xs text-fg-subtle">
-              ({{ teamUsers[teamName].length }} member{{
-                teamUsers[teamName].length === 1 ? '' : 's'
+              ({{
+                $t(
+                  'org.teams.member_count',
+                  { count: teamUsers[teamName].length },
+                  teamUsers[teamName].length,
+                )
               }})
             </span>
             <span
               v-if="isLoadingUsers[teamName]"
-              class="i-carbon-rotate w-3 h-3 text-fg-muted animate-spin"
+              class="i-carbon-rotate-180 w-3 h-3 text-fg-muted motion-safe:animate-spin"
               aria-hidden="true"
             />
           </button>
           <button
             type="button"
             class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            :aria-label="`Delete team ${teamName}`"
+            :aria-label="$t('org.teams.delete_team', { name: teamName })"
             @click.stop="handleDestroyTeam(teamName)"
           >
             <span class="i-carbon-trash-can block w-4 h-4" aria-hidden="true" />
@@ -405,7 +414,7 @@ watch(lastExecutionTime, () => {
           <ul
             v-if="teamUsers[teamName]?.length"
             class="space-y-1 mb-2"
-            :aria-label="`Members of ${teamName}`"
+            :aria-label="$t('org.teams.members_of', { team: teamName })"
           >
             <li
               v-for="user in teamUsers[teamName]"
@@ -421,7 +430,7 @@ watch(lastExecutionTime, () => {
               <button
                 type="button"
                 class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                :aria-label="`Remove ${user} from team`"
+                :aria-label="$t('org.teams.remove_user', { user })"
                 @click="handleRemoveUser(teamName, user)"
               >
                 <span class="i-carbon-close block w-3.5 h-3.5" aria-hidden="true" />
@@ -429,23 +438,22 @@ watch(lastExecutionTime, () => {
             </li>
           </ul>
           <p v-else-if="!isLoadingUsers[teamName]" class="font-mono text-xs text-fg-subtle py-1">
-            No members
+            {{ $t('org.teams.no_members') }}
           </p>
 
           <!-- Add user form -->
           <div v-if="showAddUserFor === teamName" class="mt-2">
             <form class="flex items-center gap-2" @submit.prevent="handleAddUser(teamName)">
-              <label :for="`add-user-${teamName}`" class="sr-only"
-                >Username to add to {{ teamName }}</label
-              >
+              <label :for="`add-user-${teamName}`" class="sr-only">{{
+                $t('org.teams.username_to_add', { team: teamName })
+              }}</label>
               <input
                 :id="`add-user-${teamName}`"
                 v-model="newUserUsername"
                 type="text"
                 :name="`add-user-${teamName}`"
-                placeholder="username…"
-                autocomplete="off"
-                spellcheck="false"
+                :placeholder="$t('org.teams.username_placeholder')"
+                v-bind="noCorrect"
                 class="flex-1 px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               />
               <button
@@ -453,12 +461,12 @@ watch(lastExecutionTime, () => {
                 :disabled="!newUserUsername.trim() || isAddingUser"
                 class="px-2 py-1 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               >
-                {{ isAddingUser ? '…' : 'add' }}
+                {{ isAddingUser ? '…' : $t('org.teams.add_button') }}
               </button>
               <button
                 type="button"
                 class="p-1 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                aria-label="Cancel adding user"
+                :aria-label="$t('org.teams.cancel_add_user')"
                 @click="showAddUserFor = null"
               >
                 <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
@@ -471,7 +479,7 @@ watch(lastExecutionTime, () => {
             class="mt-2 px-2 py-1 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             @click="showAddUserFor = teamName"
           >
-            + Add member
+            {{ $t('org.teams.add_member') }}
           </button>
         </div>
       </li>
@@ -479,7 +487,9 @@ watch(lastExecutionTime, () => {
 
     <!-- No results -->
     <div v-if="teams.length > 0 && filteredTeams.length === 0" class="p-4 text-center">
-      <p class="font-mono text-sm text-fg-muted">No teams match "{{ searchQuery }}"</p>
+      <p class="font-mono text-sm text-fg-muted">
+        {{ $t('org.teams.no_match', { query: searchQuery }) }}
+      </p>
     </div>
 
     <!-- Create team -->
@@ -492,15 +502,14 @@ watch(lastExecutionTime, () => {
             >
               {{ orgName }}:
             </span>
-            <label for="new-team-name" class="sr-only">Team name</label>
+            <label for="new-team-name" class="sr-only">{{ $t('org.teams.team_name_label') }}</label>
             <input
               id="new-team-name"
               v-model="newTeamName"
               type="text"
               name="new-team-name"
-              placeholder="team-name…"
-              autocomplete="off"
-              spellcheck="false"
+              :placeholder="$t('org.teams.team_name_placeholder')"
+              v-bind="noCorrect"
               class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded-r text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             />
           </div>
@@ -509,12 +518,12 @@ watch(lastExecutionTime, () => {
             :disabled="!newTeamName.trim() || isCreatingTeam"
             class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
           >
-            {{ isCreatingTeam ? '…' : 'create' }}
+            {{ isCreatingTeam ? '…' : $t('org.teams.create_button') }}
           </button>
           <button
             type="button"
             class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-            aria-label="Cancel creating team"
+            :aria-label="$t('org.teams.cancel_create')"
             @click="showCreateTeam = false"
           >
             <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
@@ -527,7 +536,7 @@ watch(lastExecutionTime, () => {
         class="w-full px-3 py-2 font-mono text-sm text-fg-muted bg-bg border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="showCreateTeam = true"
       >
-        + Create team
+        {{ $t('org.teams.create_team') }}
       </button>
     </div>
   </section>

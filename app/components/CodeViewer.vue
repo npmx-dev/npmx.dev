@@ -9,7 +9,7 @@ const emit = defineEmits<{
   lineClick: [lineNum: number, event: MouseEvent]
 }>()
 
-const codeRef = ref<HTMLElement>()
+const codeRef = useTemplateRef('codeRef')
 
 // Generate line numbers array
 const lineNumbers = computed(() => {
@@ -82,7 +82,7 @@ watch(
     <!-- Code content -->
     <div class="code-content flex-1 overflow-x-auto min-w-0">
       <!-- eslint-disable vue/no-v-html -- HTML is generated server-side by Shiki -->
-      <div ref="codeRef" class="code-lines" v-html="html" />
+      <div ref="codeRef" class="code-lines w-fit" v-html="html" />
       <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>

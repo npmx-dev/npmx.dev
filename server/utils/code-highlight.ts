@@ -74,6 +74,7 @@ const FILENAME_MAP: Record<string, string> = {
   'CHANGELOG.md': 'markdown',
   'README': 'markdown',
   'README.md': 'markdown',
+  'README.markdown': 'markdown',
 }
 
 /**
@@ -264,8 +265,12 @@ export async function highlightCode(
     try {
       let html = shiki.codeToHtml(code, {
         lang: language,
-        theme: 'github-dark',
+        themes: { light: 'github-light', dark: 'github-dark' },
+        defaultColor: 'dark',
       })
+
+      // Shiki doesn't encode > in text content (e.g., arrow functions)
+      html = escapeRawGt(html)
 
       // Make import statements clickable for JS/TS languages
       if (IMPORT_LANGUAGES.has(language)) {

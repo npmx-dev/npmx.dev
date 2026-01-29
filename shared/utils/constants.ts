@@ -1,4 +1,5 @@
 // Duration
+export const CACHE_MAX_AGE_ONE_MINUTE = 60
 export const CACHE_MAX_AGE_ONE_HOUR = 60 * 60
 export const CACHE_MAX_AGE_ONE_DAY = 60 * 60 * 24
 export const CACHE_MAX_AGE_ONE_YEAR = 60 * 60 * 24 * 365
@@ -14,3 +15,14 @@ export const ERROR_CALC_INSTALL_SIZE_FAILED = 'Failed to calculate install size.
 export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
+export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
+
+// Theming
+export const ACCENT_COLORS = {
+  rose: 'oklch(0.797 0.084 11.056)',
+  amber: 'oklch(0.828 0.165 84.429)',
+  emerald: 'oklch(0.792 0.153 166.95)',
+  sky: 'oklch(0.787 0.128 230.318)',
+  violet: 'oklch(0.714 0.148 286.067)',
+  coral: 'oklch(0.704 0.177 14.75)',
+} as const

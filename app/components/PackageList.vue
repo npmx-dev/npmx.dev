@@ -3,6 +3,9 @@ import type { NpmSearchResult } from '#shared/types'
 import type { WindowVirtualizerHandle } from '~/composables/useVirtualInfiniteScroll'
 import { WindowVirtualizer } from 'virtua/vue'
 
+/** Number of items to render statically during SSR */
+const SSR_COUNT = 20
+
 const props = defineProps<{
   /** List of search results to display */
   results: NpmSearchResult[]
@@ -20,6 +23,8 @@ const props = defineProps<{
   initialPage?: number
   /** Selected result index (for keyboard navigation) */
   selectedIndex?: number
+  /** Search query for highlighting exact matches */
+  searchQuery?: string
 }>()
 
 const emit = defineEmits<{
@@ -32,7 +37,7 @@ const emit = defineEmits<{
 }>()
 
 // Reference to WindowVirtualizer for infinite scroll detection
-const listRef = ref<WindowVirtualizerHandle>()
+const listRef = useTemplateRef<WindowVirtualizerHandle>('listRef')
 
 // Set up infinite scroll if hasMore is provided
 const hasMore = computed(() => props.hasMore ?? false)
@@ -52,7 +57,7 @@ const { handleScroll, scrollToPage } = useVirtualInfiniteScroll({
 })
 
 // Scroll to initial page once list is ready and has items
-const hasScrolledToInitial = ref(false)
+const hasScrolledToInitial = shallowRef(false)
 
 watch(
   [() => props.results.length, () => props.initialPage, listRef],
@@ -94,36 +99,60 @@ defineExpose({
 
 <template>
   <div>
-    <WindowVirtualizer
-      ref="listRef"
-      :data="results"
-      :item-size="140"
-      as="ol"
-      item="li"
-      class="list-none m-0 p-0"
-      @scroll="handleScroll"
-    >
-      <template #default="{ item, index }">
-        <div class="pb-4">
-          <PackageCard
-            :result="item as NpmSearchResult"
-            :heading-level="headingLevel"
-            :show-publisher="showPublisher"
-            :selected="index === (selectedIndex ?? -1)"
-            :index="index"
-            class="animate-fade-in animate-fill-both"
-            :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
-            @focus="emit('select', $event)"
-          />
-        </div>
+    <!-- SSR: Render static list for first page, replaced by virtual list on client -->
+    <ClientOnly>
+      <WindowVirtualizer
+        ref="listRef"
+        :data="results"
+        :item-size="140"
+        as="ol"
+        item="li"
+        class="list-none m-0 p-0"
+        @scroll="handleScroll"
+      >
+        <template #default="{ item, index }">
+          <div class="pb-4">
+            <PackageCard
+              :result="item as NpmSearchResult"
+              :heading-level="headingLevel"
+              :show-publisher="showPublisher"
+              :selected="index === (selectedIndex ?? -1)"
+              :index="index"
+              :search-query="searchQuery"
+              class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
+              :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+              @focus="emit('select', $event)"
+            />
+          </div>
+        </template>
+      </WindowVirtualizer>
+
+      <!-- SSR fallback: static list of first page results -->
+      <template #fallback>
+        <ol class="list-none m-0 p-0">
+          <li v-for="(item, index) in results.slice(0, SSR_COUNT)" :key="item.package.name">
+            <div class="pb-4">
+              <PackageCard
+                :result="item"
+                :heading-level="headingLevel"
+                :show-publisher="showPublisher"
+                :selected="index === (selectedIndex ?? -1)"
+                :index="index"
+                :search-query="searchQuery"
+              />
+            </div>
+          </li>
+        </ol>
       </template>
-    </WindowVirtualizer>
+    </ClientOnly>
 
     <!-- Loading indicator -->
     <div v-if="isLoading" class="py-4 flex items-center justify-center">
       <div class="flex items-center gap-3 text-fg-muted font-mono text-sm">
-        <span class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full animate-spin" />
-        Loading more...
+        <span
+          class="w-4 h-4 border-2 border-fg-subtle border-t-fg rounded-full motion-safe:animate-spin"
+        />
+        {{ $t('common.loading_more') }}
       </div>
     </div>
 
@@ -132,7 +161,7 @@ defineExpose({
       v-else-if="!hasMore && results.length > 0"
       class="py-4 text-center text-fg-subtle font-mono text-sm"
     >
-      End of results
+      {{ $t('common.end_of_results') }}
     </p>
   </div>
 </template>

@@ -6,7 +6,7 @@ export type ModuleFormat = 'esm' | 'cjs' | 'dual' | 'unknown'
 
 export type TypesStatus =
   | { kind: 'included' }
-  | { kind: '@types'; packageName: string }
+  | { kind: '@types'; packageName: string; deprecated?: string }
   | { kind: 'none' }
 
 export interface PackageAnalysis {
@@ -16,6 +16,8 @@ export interface PackageAnalysis {
     node?: string
     npm?: string
   }
+  /** Associated create-* package if it exists */
+  createPackage?: CreatePackageInfo
 }
 
 /**
@@ -35,6 +37,10 @@ export interface ExtendedPackageJson {
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
+  /** npm maintainers (returned by registry API) */
+  maintainers?: Array<{ name: string; email?: string }>
+  /** Repository info (returned by registry API) */
+  repository?: { url?: string; type?: string; directory?: string }
 }
 
 export type PackageExports = string | null | { [key: string]: PackageExports } | PackageExports[]
@@ -169,12 +175,57 @@ function mergeExportsAnalysis(target: ExportsAnalysis, source: ExportsAnalysis):
   target.hasTypes = target.hasTypes || source.hasTypes
 }
 
+/** Info about a related package (@types or create-*) */
+export interface RelatedPackageInfo {
+  packageName: string
+  deprecated?: string
+}
+
+export type TypesPackageInfo = RelatedPackageInfo
+export type CreatePackageInfo = RelatedPackageInfo
+
+/**
+ * Get the create-* package name for a given package.
+ * e.g., "vite" -> "create-vite", "@scope/foo" -> "@scope/create-foo"
+ */
+export function getCreatePackageName(packageName: string): string {
+  if (packageName.startsWith('@')) {
+    // Scoped package: @scope/name -> @scope/create-name
+    const slashIndex = packageName.indexOf('/')
+    const scope = packageName.slice(0, slashIndex)
+    const name = packageName.slice(slashIndex + 1)
+    return `${scope}/create-${name}`
+  }
+  return `create-${packageName}`
+}
+
+/**
+ * Extract the short name from a create-* package for display.
+ * e.g., "create-vite" -> "vite", "@scope/create-foo" -> "foo"
+ */
+export function getCreateShortName(createPackageName: string): string {
+  if (createPackageName.startsWith('@')) {
+    // @scope/create-foo -> foo
+    const slashIndex = createPackageName.indexOf('/')
+    const name = createPackageName.slice(slashIndex + 1)
+    if (name.startsWith('create-')) {
+      return name.slice('create-'.length)
+    }
+    return name
+  }
+  // create-vite -> vite
+  if (createPackageName.startsWith('create-')) {
+    return createPackageName.slice('create-'.length)
+  }
+  return createPackageName
+}
+
 /**
  * Detect TypeScript types status for a package
  */
 export function detectTypesStatus(
   pkg: ExtendedPackageJson,
-  typesPackageName?: string,
+  typesPackageInfo?: TypesPackageInfo,
 ): TypesStatus {
   // Check for built-in types
   if (pkg.types || pkg.typings) {
@@ -190,8 +241,12 @@ export function detectTypesStatus(
   }
 
   // Check for @types package
-  if (typesPackageName) {
-    return { kind: '@types', packageName: typesPackageName }
+  if (typesPackageInfo) {
+    return {
+      kind: '@types',
+      packageName: typesPackageInfo.packageName,
+      deprecated: typesPackageInfo.deprecated,
+    }
   }
 
   return { kind: 'none' }
@@ -230,16 +285,23 @@ export function getTypesPackageName(packageName: string): string {
 }
 
 /**
+ * Options for package analysis
+ */
+export interface AnalyzePackageOptions {
+  typesPackage?: TypesPackageInfo
+  createPackage?: CreatePackageInfo
+}
+
+/**
  * Analyze a package and return structured analysis
  */
 export function analyzePackage(
   pkg: ExtendedPackageJson,
-  options?: { typesPackageExists?: boolean },
+  options?: AnalyzePackageOptions,
 ): PackageAnalysis {
   const moduleFormat = detectModuleFormat(pkg)
 
-  const typesPackageName = pkg.name ? getTypesPackageName(pkg.name) : undefined
-  const types = detectTypesStatus(pkg, options?.typesPackageExists ? typesPackageName : undefined)
+  const types = detectTypesStatus(pkg, options?.typesPackage)
 
   return {
     moduleFormat,
@@ -250,5 +312,6 @@ export function analyzePackage(
           npm: pkg.engines.npm,
         }
       : undefined,
+    createPackage: options?.createPackage,
   }
 }

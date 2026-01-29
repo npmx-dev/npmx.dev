@@ -37,7 +37,15 @@ watch([filterText, sortOption], ([filter, sort]) => {
 })
 
 // Fetch all packages in this org using the org packages API
-const { data: results, status, error } = useOrgPackages(orgName)
+const { data: results, status, error } = await useOrgPackages(orgName)
+
+if (status.value === 'error' && error.value?.statusCode === 404) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: $t('org.page.not_found'),
+    message: $t('org.page.not_found_message', { name: orgName.value }),
+  })
+}
 
 const packages = computed(() => results.value?.objects ?? [])
 const packageCount = computed(() => packages.value.length)
@@ -125,7 +133,7 @@ defineOgImageComponent('Default', {
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">@{{ orgName }}</h1>
           <p v-if="status === 'success'" class="text-fg-muted text-sm mt-1">
-            {{ formatNumber(packageCount) }} public package{{ packageCount === 1 ? '' : 's' }}
+            {{ $t('org.public_packages', { count: formatNumber(packageCount) }, packageCount) }}
           </p>
         </div>
       </div>
@@ -139,7 +147,7 @@ defineOgImageComponent('Default', {
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
         >
           <span class="i-carbon-cube w-4 h-4" />
-          view on npm
+          {{ $t('common.view_on_npm') }}
         </a>
       </nav>
     </header>
@@ -159,7 +167,7 @@ defineOgImageComponent('Default', {
             "
             @click="activeTab = 'members'"
           >
-            Members
+            {{ $t('org.page.members_tab') }}
           </button>
           <button
             type="button"
@@ -171,7 +179,7 @@ defineOgImageComponent('Default', {
             "
             @click="activeTab = 'teams'"
           >
-            Teams
+            {{ $t('org.page.teams_tab') }}
           </button>
         </div>
 
@@ -182,35 +190,37 @@ defineOgImageComponent('Default', {
     </ClientOnly>
 
     <!-- Loading state -->
-    <LoadingSpinner v-if="status === 'pending'" text="Loading packages..." />
+    <LoadingSpinner v-if="status === 'pending'" :text="$t('common.loading_packages')" />
 
     <!-- Error state -->
     <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">
       <p class="text-fg-muted mb-4">
-        {{ error?.message ?? 'Failed to load organization packages' }}
+        {{ error?.message ?? $t('org.page.failed_to_load') }}
       </p>
-      <NuxtLink to="/" class="btn"> Go back home </NuxtLink>
+      <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
 
     <!-- Empty state -->
     <div v-else-if="packageCount === 0" class="py-12 text-center">
       <p class="text-fg-muted font-mono">
-        No public packages found for <span class="text-fg">@{{ orgName }}</span>
+        {{ $t('org.page.no_packages') }} <span class="text-fg">@{{ orgName }}</span>
       </p>
       <p class="text-fg-subtle text-sm mt-2">
-        This organization may not exist or has no public packages.
+        {{ $t('org.page.no_packages_hint') }}
       </p>
     </div>
 
     <!-- Package list -->
-    <section v-else-if="packages.length > 0" aria-label="Organization packages">
-      <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">Packages</h2>
+    <section v-else-if="packages.length > 0" :aria-label="$t('org.page.packages_title')">
+      <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+        {{ $t('org.page.packages_title') }}
+      </h2>
 
       <!-- Filter and sort controls -->
       <PackageListControls
         v-model:filter="filterText"
         v-model:sort="sortOption"
-        :placeholder="`Filter ${packageCount} packages...`"
+        :placeholder="$t('org.page.filter_placeholder', { count: packageCount })"
         :total-count="packageCount"
         :filtered-count="filteredCount"
       />
@@ -220,8 +230,7 @@ defineOgImageComponent('Default', {
         v-if="filteredAndSortedPackages.length === 0"
         class="text-fg-muted py-8 text-center font-mono"
       >
-        No packages match "<span class="text-fg">{{ filterText }}</span
-        >"
+        {{ $t('org.page.no_match', { query: filterText }) }}
       </p>
 
       <PackageList v-else :results="filteredAndSortedPackages" />

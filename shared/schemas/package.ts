@@ -3,6 +3,7 @@ import validateNpmPackageName from 'validate-npm-package-name'
 
 /**
  * Enforces only valid NPM package names
+ * Accepts both new and legacy package name formats
  * Leverages 'validate-npm-package-name'
  */
 export const PackageNameSchema = v.pipe(
@@ -33,6 +34,15 @@ export const FilePathSchema = v.pipe(
   v.nonEmpty('File path is required'),
   v.check(input => !input.includes('..'), 'Invalid path: directory traversal not allowed'),
   v.check(input => !input.startsWith('/'), 'Invalid path: must be relative to package root'),
+)
+
+/**
+ * Schema for search queries, limits length to guard against DoS attacks
+ */
+export const SearchQuerySchema = v.pipe(
+  v.string(),
+  v.trim(),
+  v.maxLength(100, 'Search query is too long'),
 )
 
 /**

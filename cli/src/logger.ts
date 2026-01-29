@@ -1,5 +1,6 @@
 import * as p from '@clack/prompts'
 import pc from 'picocolors'
+import { createDebug } from 'obug'
 
 let isInitialized = false
 
@@ -48,6 +49,11 @@ export function logInfo(message: string): void {
 }
 
 /**
+ * Log a debug message with `obug` (minimal fork of `debug`)
+ */
+export const logDebug = createDebug('npmx-connector')
+
+/**
  * Log a message (generic)
  */
 export function logMessage(message: string): void {
@@ -57,8 +63,8 @@ export function logMessage(message: string): void {
 /**
  * Show the connection token in a nice box
  */
-export function showToken(token: string, port: number): void {
-  const connectUrl = `https://npmx.dev/?token=${token}&port=${port}`
+export function showToken(token: string, port: number, frontendUrl: string): void {
+  const connectUrl = `${frontendUrl}?token=${token}&port=${port}`
 
   p.note(
     [

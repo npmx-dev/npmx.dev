@@ -1,0 +1,522 @@
+/* Base reset and defaults */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root[data-theme='dark'] {
+  /* background colors */
+  --bg: oklch(0.145 0 0);
+  --bg-subtle: oklch(0.178 0 0);
+  --bg-muted: oklch(0.218 0 0);
+  --bg-elevated: oklch(0.252 0 0);
+
+  /* text colors */
+  --fg: oklch(0.985 0 0);
+  --fg-muted: oklch(0.709 0 0);
+  --fg-subtle: oklch(0.633 0 0);
+
+  /* border, seperator colors */
+  --border: oklch(0.269 0 0);
+  --border-subtle: oklch(0.239 0 0);
+  --border-hover: oklch(0.371 0 0);
+
+  --accent: var(--accent-color, oklch(1 0 0));
+  --accent-muted: var(--accent-color, oklch(0.922 0 0));
+
+  --syntax-fn: oklch(0.727 0.137 299.149);
+  --syntax-str: oklch(0.829 0.088 252.458);
+  --syntax-kw: oklch(0.721 0.162 15.494);
+  --syntax-comment: oklch(0.551 0.019 250.976);
+}
+
+:root[data-theme='light'] {
+  --bg: oklch(1 0 0);
+  --bg-subtle: oklch(0.979 0.001 286.375);
+  --bg-muted: oklch(0.955 0 0);
+  --bg-elevated: oklch(0.94 0 0);
+
+  --fg: oklch(0.145 0 0);
+  --fg-muted: oklch(0.439 0 0);
+  --fg-subtle: oklch(0.52 0 0);
+
+  --border: oklch(0.8514 0 0);
+  --border-subtle: oklch(0.922 0 0);
+  --border-hover: oklch(0.715 0 0);
+
+  --accent: var(--accent-color, oklch(0.145 0 0));
+  --accent-muted: var(--accent-color, oklch(0.205 0 0));
+
+  --syntax-fn: oklch(0.502 0.188 294.988);
+  --syntax-str: oklch(0.54 0.191 257.481);
+  --syntax-kw: oklch(0.588 0.193 20.469);
+  --syntax-comment: oklch(0.551 0.019 250.976);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* Offset for fixed header - otherwise anchor headers are cutted */
+}
+
+/* Disable smooth scrolling if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/*
+ * Enable CSS scroll-state container queries for the document
+ * This allows the footer to query the scroll state using pure CSS
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/@container#scroll-state_container_descriptors
+ */
+@supports (container-type: scroll-state) {
+  html {
+    container-type: scroll-state;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+}
+
+/* Default link styling for accessibility on dark background */
+a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--fg-subtle);
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--border);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Reset dd margin (browser default is margin-left: 40px) */
+dd {
+  margin: 0;
+}
+
+/* Reset button styles */
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--fg-muted);
+  color: var(--bg-subtle);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: 0.5rem 1rem;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.875rem;
+  z-index: 100;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Shiki theme colors */
+html.light .shiki,
+html.light .shiki span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
+/* README prose styling */
+.readme-content {
+  color: var(--fg-muted);
+  line-height: 1.75;
+  /* Prevent horizontal overflow on mobile */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  /* Contain all children */
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* README headings - styled by visual level (data-level), not semantic level */
+.readme-content h3,
+.readme-content h4,
+.readme-content h5,
+.readme-content h6 {
+  color: var(--fg);
+  @apply font-mono;
+  font-weight: 500;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+/* Visual styling based on original README heading level */
+.readme-content [data-level='1'] {
+  font-size: 1.5rem;
+}
+.readme-content [data-level='2'] {
+  font-size: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.readme-content [data-level='3'] {
+  font-size: 1.125rem;
+}
+.readme-content [data-level='4'] {
+  font-size: 1rem;
+}
+.readme-content [data-level='5'] {
+  font-size: 0.925rem;
+}
+.readme-content [data-level='6'] {
+  font-size: 0.875rem;
+}
+
+.readme-content p {
+  margin-bottom: 1rem;
+}
+
+.readme-content a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--fg-subtle);
+  transition: text-decoration-color 0.2s ease;
+}
+
+.readme-content a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.readme-content code {
+  @apply font-mono;
+  font-size: 0.875em;
+  background: var(--bg-muted);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* Code blocks - including Shiki output */
+.readme-content pre,
+.readme-content .shiki {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  /* Fix horizontal overflow */
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.readme-content pre code,
+.readme-content .shiki code {
+  background: transparent !important;
+  border: none;
+  padding: 0;
+  @apply font-mono;
+  font-size: 0.875rem;
+  color: var(--fg);
+  /* Prevent code from forcing width */
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+.readme-content ul,
+.readme-content ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.readme-content ul {
+  list-style-type: disc;
+}
+
+.readme-content ol {
+  list-style-type: decimal;
+}
+
+.readme-content li {
+  margin-bottom: 0.5rem;
+  display: list-item;
+}
+
+.readme-content li::marker {
+  color: var(--border-hover);
+}
+
+.readme-content blockquote {
+  border-left: 2px solid var(--border);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--fg-subtle);
+  font-style: italic;
+}
+
+/* GitHub-style callouts/alerts */
+.readme-content blockquote[data-callout] {
+  border-left-width: 3px;
+  padding: 1rem 1rem 1rem 1.25rem;
+  background: var(--bg-subtle);
+  font-style: normal;
+  color: var(--fg-subtle);
+  position: relative;
+}
+
+.readme-content blockquote[data-callout]::before {
+  display: block;
+  @apply font-mono;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.readme-content blockquote[data-callout]::after {
+  content: '';
+  width: 1.25rem;
+  height: 1.25rem;
+  position: absolute;
+  top: 1rem;
+}
+
+.readme-content blockquote[data-callout] > p:first-child {
+  margin-top: 0;
+}
+
+.readme-content blockquote[data-callout] > p:last-child {
+  margin-bottom: 0;
+}
+
+/* Note - blue */
+.readme-content blockquote[data-callout='note'] {
+  border-left-color: var(--syntax-str);
+  background: rgba(59, 130, 246, 0.05);
+}
+.readme-content blockquote[data-callout='note']::before {
+  content: 'Note';
+  color: #3b82f6;
+}
+.readme-content blockquote[data-callout='note']::after {
+  background-color: #3b82f6;
+  -webkit-mask: icon('i-lucide-info') no-repeat;
+  mask: icon('i-lucide-info') no-repeat;
+}
+
+/* Tip - green */
+.readme-content blockquote[data-callout='tip'] {
+  border-left-color: #22c55e;
+  background: rgba(34, 197, 94, 0.05);
+}
+.readme-content blockquote[data-callout='tip']::before {
+  content: 'Tip';
+  color: #22c55e;
+}
+.readme-content blockquote[data-callout='tip']::after {
+  background-color: #22c55e;
+  -webkit-mask: icon('i-lucide-lightbulb') no-repeat;
+  mask: icon('i-lucide-lightbulb') no-repeat;
+}
+
+/* Important - purple */
+.readme-content blockquote[data-callout='important'] {
+  border-left-color: var(--syntax-fn);
+  background: rgba(168, 85, 247, 0.05);
+}
+.readme-content blockquote[data-callout='important']::before {
+  content: 'Important';
+  color: var(--syntax-fn);
+}
+.readme-content blockquote[data-callout='important']::after {
+  background-color: var(--syntax-fn);
+  -webkit-mask: icon('i-lucide-pin') no-repeat;
+  mask: icon('i-lucide-pin') no-repeat;
+}
+
+/* Warning - yellow/orange */
+.readme-content blockquote[data-callout='warning'] {
+  border-left-color: #eab308;
+  background: rgba(234, 179, 8, 0.05);
+}
+.readme-content blockquote[data-callout='warning']::before {
+  content: 'Warning';
+  color: #eab308;
+}
+.readme-content blockquote[data-callout='warning']::after {
+  background-color: #eab308;
+  -webkit-mask: icon('i-lucide-triangle-alert') no-repeat;
+  mask: icon('i-lucide-triangle-alert') no-repeat;
+}
+
+/* Caution - red */
+.readme-content blockquote[data-callout='caution'] {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+.readme-content blockquote[data-callout='caution']::before {
+  content: 'Caution';
+  color: #ef4444;
+}
+.readme-content blockquote[data-callout='caution']::after {
+  background-color: #ef4444;
+  -webkit-mask: icon('i-lucide-circle-alert') no-repeat;
+  mask: icon('i-lucide-circle-alert') no-repeat;
+}
+
+/* Table wrapper for horizontal scroll on mobile */
+.readme-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+
+.readme-content th,
+.readme-content td {
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.readme-content th {
+  background: var(--bg-subtle);
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.readme-content tr:hover {
+  background: var(--bg-subtle);
+}
+
+.readme-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.readme-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Badge images inline */
+.readme-content p > a > img,
+.readme-content p > img {
+  display: inline-block;
+  margin: 0 0.25rem 0.25rem 0;
+  border-radius: 4px;
+}
+
+/* Inline code in package descriptions */
+p > span > code,
+.line-clamp-2 code {
+  @apply font-mono;
+  font-size: 0.85em;
+  background: var(--bg-muted);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+
+/* View transition for search box (includes / and input) */
+.search-box {
+  view-transition-name: search-box;
+}
+
+/* Safari search input fixes */
+input[type='search'] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* View transition for logo (hero -> header) */
+.hero-logo,
+.header-logo {
+  view-transition-name: site-logo;
+}
+
+/* Disable the default fade transition on page navigation */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* Customize the view transition animations for specific elements */
+::view-transition-old(search-box),
+::view-transition-new(search-box),
+::view-transition-old(site-logo),
+::view-transition-new(site-logo) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -23,8 +23,9 @@ export default defineConfig({
       await defineVitestProject({
         test: {
           name: 'nuxt',
-          include: ['test/nuxt/*.{test,spec}.ts'],
+          include: ['test/nuxt/**/*.{test,spec}.ts'],
           environment: 'nuxt',
+          setupFiles: ['./test/nuxt/setup.ts'],
           environmentOptions: {
             nuxt: {
               rootDir: fileURLToPath(new URL('.', import.meta.url)),
@@ -53,7 +54,13 @@ export default defineConfig({
       exclude: [
         '**/node_modules/**',
         'cli/**',
+        'app/utils/versions.ts',
+        'app/utils/package-name.ts',
+        'shared/utils/git-providers.ts',
+        'shared/utils/spdx.ts',
+        'shared/utils/url.ts',
         'server/utils/readme.ts',
+        'server/utils/docs/text.ts',
         'server/utils/code-highlight.ts',
         'server/utils/npm.ts',
         'server/utils/shiki.ts',

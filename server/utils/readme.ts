@@ -3,6 +3,7 @@ import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
 import type { ReadmeResponse } from '#shared/types/readme'
 import { convertBlobToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import { highlightCodeSync } from './shiki'
 
 /**
  * Playground provider configuration
@@ -150,11 +151,30 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   code: ['class'],
   pre: ['class', 'style'],
   span: ['class', 'style'],
-  div: ['class', 'style'],
+  div: ['class', 'style', 'align'],
 }
 
 // GitHub-style callout types
 // Format: > [!NOTE], > [!TIP], > [!IMPORTANT], > [!WARNING], > [!CAUTION]
+
+/**
+ * Generate a GitHub-style slug from heading text.
+ * - Convert to lowercase
+ * - Remove HTML tags
+ * - Replace spaces with hyphens
+ * - Remove special characters (keep alphanumeric, hyphens, underscores)
+ * - Collapse multiple hyphens
+ */
+function slugify(text: string): string {
+  return text
+    .replace(/<[^>]*>/g, '') // Strip HTML tags
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Spaces to hyphens
+    .replace(/[^\w\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff-]/g, '') // Keep alphanumeric, CJK, hyphens
+    .replace(/-+/g, '-') // Collapse multiple hyphens
+    .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
+}
 
 /**
  * Resolve a relative URL to an absolute URL.
@@ -164,7 +184,8 @@ const ALLOWED_ATTR: Record<string, string[]> = {
 function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   if (!url) return url
   if (url.startsWith('#')) {
-    return url
+    // Prefix anchor links to match heading IDs (avoids collision with page IDs)
+    return `#user-content-${url.slice(1)}`
   }
   if (hasProtocol(url, { acceptRelative: true })) {
     try {
@@ -239,6 +260,9 @@ export async function renderReadmeHtml(
   const collectedLinks: PlaygroundLink[] = []
   const seenUrls = new Set<string>()
 
+  // Track used heading slugs to handle duplicates (GitHub-style: foo, foo-1, foo-2)
+  const usedSlugs = new Map<string, number>()
+
   // Track heading hierarchy to ensure sequential order for accessibility
   // Page h1 = package name, h2 = "Readme" section heading
   // So README starts at h3, and we ensure no levels are skipped
@@ -261,29 +285,26 @@ export async function renderReadmeHtml(
 
     lastSemanticLevel = semanticLevel
     const text = this.parser.parseInline(tokens)
-    return `<h${semanticLevel} data-level="${depth}">${text}</h${semanticLevel}>\n`
+
+    // Generate GitHub-style slug for anchor links
+    let slug = slugify(text)
+    if (!slug) slug = 'heading' // Fallback for empty headings
+
+    // Handle duplicate slugs (GitHub-style: foo, foo-1, foo-2)
+    const count = usedSlugs.get(slug) ?? 0
+    usedSlugs.set(slug, count + 1)
+    const uniqueSlug = count === 0 ? slug : `${slug}-${count}`
+
+    // Prefix with 'user-content-' to avoid collisions with page IDs
+    // (e.g., #install, #dependencies, #versions are used by the package page)
+    const id = `user-content-${uniqueSlug}`
+
+    return `<h${semanticLevel} id="${id}" data-level="${depth}">${text}</h${semanticLevel}>\n`
   }
 
   // Syntax highlighting for code blocks (uses shared highlighter)
   renderer.code = ({ text, lang }: Tokens.Code) => {
-    const language = lang || 'text'
-    const loadedLangs = shiki.getLoadedLanguages()
-
-    // Use Shiki if language is loaded, otherwise fall back to plain
-    if (loadedLangs.includes(language as never)) {
-      try {
-        return shiki.codeToHtml(text, {
-          lang: language,
-          theme: 'github-dark',
-        })
-      } catch {
-        // Fall back to plain code block
-      }
-    }
-
-    // Plain code block for unknown languages
-    const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    return `<pre><code class="language-${language}">${escaped}</code></pre>\n`
+    return highlightCodeSync(shiki, text, lang || 'text')
   }
 
   // Resolve image URLs (with GitHub blob → raw conversion)
@@ -351,6 +372,25 @@ export async function renderReadmeHtml(
       img: (tagName, attribs) => {
         if (attribs.src) {
           attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)
+        }
+        return { tagName, attribs }
+      },
+      source: (tagName, attribs) => {
+        if (attribs.src) {
+          attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)
+        }
+        if (attribs.srcset) {
+          attribs.srcset = attribs.srcset
+            .split(',')
+            .map(entry => {
+              const parts = entry.trim().split(/\s+/)
+              const url = parts[0]
+              if (!url) return entry.trim()
+              const descriptor = parts[1]
+              const resolvedUrl = resolveImageUrl(url, packageName, repoInfo)
+              return descriptor ? `${resolvedUrl} ${descriptor}` : resolvedUrl
+            })
+            .join(', ')
         }
         return { tagName, attribs }
       },

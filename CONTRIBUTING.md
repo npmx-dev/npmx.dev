@@ -208,6 +208,90 @@ const props = defineProps<{
 
 Ideally, extract utilities into separate files so they can be unit tested. 🙏
 
+## Localization (i18n)
+
+npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization. We aim to make the UI accessible to users in their preferred language.
+
+### Approach
+
+- All user-facing strings should use translation keys via `$t()` in templates and script
+- Translation files live in `i18n/locales/` (e.g., `en.json`)
+- We use the `no_prefix` strategy (no `/en/` or `/fr/` in URLs)
+- Locale preference is stored in cookies and respected on subsequent visits
+
+### Adding translations
+
+1. Add your translation key to `i18n/locales/en.json` first (English is the source of truth)
+2. Use the key in your component:
+
+   ```vue
+   <template>
+     <p>{{ $t('my.translation.key') }}</p>
+   </template>
+   ```
+
+   Or in script:
+
+   ```typescript
+   <script setup lang="ts">
+   const message = computed(() => $t('my.translation.key'))
+   </script>
+   ```
+
+3. For dynamic values, use interpolation:
+
+   ```json
+   { "greeting": "Hello, {name}!" }
+   ```
+
+   ```vue
+   <p>{{ $t('greeting', { name: userName }) }}</p>
+   ```
+
+### Translation key conventions
+
+- Use dot notation for hierarchy: `section.subsection.key`
+- Keep keys descriptive but concise
+- Group related keys together
+- Use `common.*` for shared strings (loading, retry, close, etc.)
+- Use component-specific prefixes: `package.card.*`, `settings.*`, `nav.*`
+
+### Using i18n-ally (recommended)
+
+We recommend the [i18n-ally](https://marketplace.visualstudio.com/items?itemName=lokalise.i18n-ally) VSCode extension for a better development experience:
+
+- Inline translation previews in your code
+- Auto-completion for translation keys
+- Missing translation detection
+- Easy navigation to translation files
+
+The extension is included in our workspace recommendations, so VSCode should prompt you to install it.
+
+### Adding a new locale
+
+1. Create a new JSON file in `i18n/locales/` (e.g., `fr.json`)
+2. Add the locale to `nuxt.config.ts`:
+
+   ```typescript
+   i18n: {
+     locales: [
+       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
+       { code: 'fr', language: 'fr-FR', name: 'Francais', file: 'fr.json' },
+     ],
+   }
+   ```
+
+3. Translate all keys from `en.json`
+
+### Formatting with locale
+
+When formatting numbers or dates that should respect the user's locale, pass the locale:
+
+```typescript
+const { locale } = useI18n()
+const formatted = formatNumber(12345, locale.value) // "12,345" in en-US
+```
+
 ## Testing
 
 ### Unit tests
@@ -281,13 +365,27 @@ Make sure to read about [Playwright best practices](https://playwright.dev/docs/
 4. ensure CI checks pass (lint, type check, tests)
 5. request review from maintainers
 
-### Commit messages
+### Commit messages and PR titles
 
-Write clear, concise commit messages that explain the "why" behind changes:
+Write clear, concise PR titles that explain the "why" behind changes.
+
+We use [Conventional Commits](https://www.conventionalcommits.org/). Since we squash on merge, the PR title becomes the commit message in `main`, so it's important to get it right.
+
+Format: `type(scope): description`
+
+**Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+
+**Scopes (optional):** `docs`, `i18n`, `deps`
+
+**Examples:**
 
 - `fix: resolve search pagination issue`
 - `feat: add package version comparison`
-- `docs: update installation instructions`
+- `fix(i18n): update French translations`
+- `chore(deps): update vite to v6`
+
+> [!NOTE]
+> The subject must start with a lowercase letter. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
 
 ## Pre-commit hooks
 

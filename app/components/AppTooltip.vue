@@ -6,7 +6,7 @@ const props = defineProps<{
   position?: 'top' | 'bottom' | 'left' | 'right'
 }>()
 
-const isVisible = ref(false)
+const isVisible = shallowRef(false)
 const tooltipId = useId()
 
 const positionClasses: Record<string, string> = {

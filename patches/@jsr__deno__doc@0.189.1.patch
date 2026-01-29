@@ -1,0 +1,43 @@
+diff --git a/deno_doc_wasm.generated.js b/deno_doc_wasm.generated.js
+index 12add85709ae8a235058c751c397893693f52a6a..da235f2e0ce35b9fc012a51495a15c84d024e434 100755
+--- a/deno_doc_wasm.generated.js
++++ b/deno_doc_wasm.generated.js
+@@ -1012,13 +1012,18 @@ class WasmBuildLoader {
+ 
+     // make file urls work in Node via dnt
+     const isNode = globalThis.process?.versions?.node != null;
+-    if (isFile && typeof Deno !== "object") {
+-      throw new Error(
+-        "Loading local files are not supported in this environment",
++    if (isNode && isFile) {
++      // Use Node.js fs module to read the file (patched for Node.js support)
++      const { readFileSync } = await import("node:fs");
++      const { fileURLToPath } = await import("node:url");
++      const wasmCode = readFileSync(fileURLToPath(url));
++      return WebAssembly.instantiate(
++        decompress ? decompress(wasmCode) : wasmCode,
++        imports,
+       );
+     }
+-    if (isNode && isFile) {
+-      // the deno global will be shimmed by dnt
++    if (isFile && typeof Deno === "object") {
++      // Deno environment
+       const wasmCode = await Deno.readFile(url);
+       return WebAssembly.instantiate(
+         decompress ? decompress(wasmCode) : wasmCode,
+diff --git a/mod.js b/mod.js
+index f9d9de1349c2bb575b29138a5fc54654e92c4a47..025ecdb580b52160f709b32bb5db9ecf481e70ce 100755
+--- a/mod.js
++++ b/mod.js
+@@ -1,8 +1,8 @@
+ // Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+ import { instantiate } from "./deno_doc_wasm.generated.js";
+ import { createCache } from "@jsr/deno__cache-dir";
+-export * from "./types.d.ts";
+-export * from "./html_types.d.ts";
++// Removed: export * from "./types.d.ts"; (incompatible with Node.js/Rollup)
++// Removed: export * from "./html_types.d.ts"; (incompatible with Node.js/Rollup)
+ const encoder = new TextEncoder();
+ /**
+  * Generate asynchronously an array of documentation nodes for the supplied
