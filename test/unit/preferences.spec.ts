@@ -18,6 +18,8 @@ describe('parseSortOption', () => {
     ['name-desc', 'name', 'desc'],
     ['quality-desc', 'quality', 'desc'],
     ['score-asc', 'score', 'asc'],
+    ['relevance-desc', 'relevance', 'desc'],
+    ['relevance-asc', 'relevance', 'asc'],
   ])('parses "%s" to key="%s" direction="%s"', (option, expectedKey, expectedDirection) => {
     const result = parseSortOption(option)
     expect(result.key).toBe(expectedKey)
@@ -44,6 +46,7 @@ describe('buildSortOption', () => {
     ['updated', 'desc', 'updated-desc'],
     ['name', 'asc', 'name-asc'],
     ['quality', 'desc', 'quality-desc'],
+    ['relevance', 'desc', 'relevance-desc'],
   ])('builds "%s" + "%s" to "%s"', (key, direction, expected) => {
     expect(buildSortOption(key, direction)).toBe(expected)
   })
@@ -71,6 +74,8 @@ describe('parseSortOption and buildSortOption roundtrip', () => {
     'popularity-asc',
     'maintenance-desc',
     'score-asc',
+    'relevance-desc',
+    'relevance-asc',
   ])('roundtrips "%s" correctly', option => {
     const { key, direction } = parseSortOption(option)
     expect(buildSortOption(key, direction)).toBe(option)

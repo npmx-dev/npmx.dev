@@ -32,6 +32,8 @@ const props = defineProps<{
   filteredCount: number
   availableKeywords?: string[]
   activeFilters: FilterChip[]
+  /** When true, shows search-specific UI (relevance sort, no filters) */
+  searchContext?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -62,6 +64,21 @@ const showingFiltered = computed(() => props.filteredCount !== props.totalCount)
 // Parse current sort option into key and direction
 const currentSort = computed(() => parseSortOption(props.sortOption))
 
+// Get available sort keys based on context
+const availableSortKeys = computed(() => {
+  if (props.searchContext) {
+    // In search context: show relevance (enabled) and others (disabled)
+    return SORT_KEYS.filter(k => !k.searchOnly || k.key === 'relevance').map(k =>
+      Object.assign({}, k, {
+        disabled: k.key !== 'relevance',
+        disabledReason: k.key !== 'relevance' ? 'Coming soon' : undefined,
+      }),
+    )
+  }
+  // In org/user context: hide search-only sorts
+  return SORT_KEYS.filter(k => !k.searchOnly)
+})
+
 // Handle sort key change from dropdown
 function handleSortKeyChange(event: Event) {
   const target = event.target as HTMLSelectElement
@@ -79,6 +96,7 @@ function handleToggleDirection() {
 
 // Map sort key to i18n key
 const sortKeyLabelKeys: Record<SortKey, string> = {
+  'relevance': 'filters.sort.relevance',
   'downloads-week': 'filters.sort.downloads_week',
   'downloads-day': 'filters.sort.downloads_day',
   'downloads-month': 'filters.sort.downloads_month',
@@ -100,8 +118,11 @@ function getSortKeyLabelKey(key: SortKey): string {
   <div class="space-y-3 mb-6">
     <!-- Main toolbar row -->
     <div class="flex flex-col sm:flex-row sm:items-center gap-3">
-      <!-- Count display -->
-      <div class="text-sm font-mono text-fg-muted">
+      <!-- Count display (infinite scroll mode only) -->
+      <div
+        v-if="viewMode === 'cards' && paginationMode === 'infinite' && !searchContext"
+        class="text-sm font-mono text-fg-muted"
+      >
         <template v-if="showingFiltered">
           {{
             $t('filters.count.showing_filtered', {
@@ -113,6 +134,19 @@ function getSortKeyLabelKey(key: SortKey): string {
         <template v-else>
           {{ $t('filters.count.showing_all', { total: totalCount.toLocaleString() }) }}
         </template>
+      </div>
+
+      <!-- Count display (paginated/table mode only) -->
+      <div
+        v-if="(viewMode === 'table' || paginationMode === 'paginated') && !searchContext"
+        class="text-sm font-mono text-fg-muted"
+      >
+        {{
+          $t('filters.count.showing_paginated', {
+            pageSize: pageSize === 'all' ? filteredCount : pageSize,
+            total: filteredCount.toLocaleString(),
+          })
+        }}
       </div>
 
       <div class="flex-1" />
@@ -138,7 +172,7 @@ function getSortKeyLabelKey(key: SortKey): string {
               @change="handleSortKeyChange"
             >
               <option
-                v-for="keyConfig in SORT_KEYS"
+                v-for="keyConfig in availableSortKeys"
                 :key="keyConfig.key"
                 :value="keyConfig.key"
                 :disabled="keyConfig.disabled"
@@ -184,8 +218,9 @@ function getSortKeyLabelKey(key: SortKey): string {
       </div>
     </div>
 
-    <!-- Filter panel -->
+    <!-- Filter panel (hidden in search context) -->
     <FilterPanel
+      v-if="!searchContext"
       :filters="filters"
       :available-keywords="availableKeywords"
       @update:text="emit('update:text', $event)"
@@ -196,8 +231,9 @@ function getSortKeyLabelKey(key: SortKey): string {
       @toggle-keyword="emit('toggleKeyword', $event)"
     />
 
-    <!-- Active filter chips -->
+    <!-- Active filter chips (hidden in search context) -->
     <FilterChips
+      v-if="!searchContext"
       :chips="activeFilters"
       @remove="emit('clearFilter', $event)"
       @clear-all="emit('clearAllFilters')"

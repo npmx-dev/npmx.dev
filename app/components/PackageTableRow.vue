@@ -17,35 +17,14 @@ const emit = defineEmits<{
 const pkg = computed(() => props.result.package)
 const score = computed(() => props.result.score)
 
+// Get the best available date: prefer result.updated (from packument), fall back to package.date
+const updatedDate = computed(() => props.result.updated ?? props.result.package.date)
+
 function formatDownloads(count?: number): string {
   if (count === undefined) return '-'
   if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`
   if (count >= 1_000) return `${(count / 1_000).toFixed(1)}K`
   return count.toString()
-}
-
-function formatDate(dateStr?: string): string {
-  if (!dateStr) return '-'
-  const date = new Date(dateStr)
-  if (Number.isNaN(date.getTime())) return '-'
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffSeconds = Math.floor(diffMs / 1000)
-  const diffMinutes = Math.floor(diffSeconds / 60)
-  const diffHours = Math.floor(diffMinutes / 60)
-  const diffDays = Math.floor(diffHours / 24)
-  const diffWeeks = Math.floor(diffDays / 7)
-  const diffMonths = Math.floor(diffDays / 30)
-  const diffYears = Math.floor(diffDays / 365)
-
-  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' })
-
-  if (diffDays === 0) return rtf.format(0, 'day')
-  if (diffDays === 1) return rtf.format(-1, 'day')
-  if (diffDays < 7) return rtf.format(-diffDays, 'day')
-  if (diffDays < 30) return rtf.format(-diffWeeks, 'week')
-  if (diffDays < 365) return rtf.format(-diffMonths, 'month')
-  return rtf.format(-diffYears, 'year')
 }
 
 function formatScore(value?: number): string {
@@ -105,7 +84,14 @@ const allMaintainersText = computed(() => {
 
     <!-- Updated -->
     <td v-if="isColumnVisible('updated')" class="py-2 px-3 font-mono text-xs text-fg-muted">
-      {{ formatDate(result.updated ?? pkg.date) }}
+      <DateTime
+        v-if="updatedDate"
+        :datetime="updatedDate"
+        year="numeric"
+        month="short"
+        day="numeric"
+      />
+      <span v-else>-</span>
     </td>
 
     <!-- Maintainers -->

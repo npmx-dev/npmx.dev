@@ -271,6 +271,7 @@ defineOgImageComponent('Default', {
           :page-size="pageSize"
           :current-page="currentPage"
           :total-items="sortedPackages.length"
+          :view-mode="viewMode"
           @update:mode="paginationMode = $event"
           @update:page-size="pageSize = $event"
           @update:current-page="currentPage = $event"

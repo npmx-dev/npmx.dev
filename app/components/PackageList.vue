@@ -58,12 +58,19 @@ const listRef = useTemplateRef<WindowVirtualizerHandle>('listRef')
 // View mode and columns
 const viewMode = computed(() => props.viewMode ?? 'cards')
 const columns = computed(() => props.columns ?? DEFAULT_COLUMNS)
-const paginationMode = computed(() => props.paginationMode ?? 'infinite')
+// Table view forces pagination mode (no virtualization for tables)
+const paginationMode = computed(() =>
+  viewMode.value === 'table' ? 'paginated' : (props.paginationMode ?? 'infinite'),
+)
 const currentPage = computed(() => props.currentPage ?? 1)
 
 // Compute paginated results for paginated mode
 const displayedResults = computed(() => {
   if (paginationMode.value === 'infinite') {
+    return props.results
+  }
+  // 'all' page size means show everything (YOLO)
+  if (pageSize.value === 'all') {
     return props.results
   }
   const start = (currentPage.value - 1) * pageSize.value

@@ -541,6 +541,7 @@
       "toggle_direction": "Inverser l'ordre",
       "ascending": "Croissant",
       "descending": "Décroissant",
+      "relevance": "Pertinence",
       "downloads_week": "Téléch./sem",
       "downloads_day": "Téléch./jour",
       "downloads_month": "Téléch./mois",
@@ -580,6 +581,8 @@
       "infinite": "Infini",
       "paginated": "Paginé",
       "items_per_page": "Éléments par page",
+      "per_page": "{count} / page",
+      "all_yolo": "Tout (YOLO)",
       "showing": "{start}-{end} sur {total}",
       "previous": "Page précédente",
       "next": "Page suivante",
@@ -587,7 +590,8 @@
     },
     "count": {
       "showing_filtered": "{filtered} sur {total} paquets",
-      "showing_all": "{total} paquets"
+      "showing_all": "{total} paquets",
+      "showing_paginated": "{pageSize} sur {total} paquets"
     },
     "table": {
       "security_warning": "Avertissement de sécurité",

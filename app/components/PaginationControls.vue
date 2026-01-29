@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PageSize, PaginationMode } from '#shared/types/preferences'
+import type { PageSize, PaginationMode, ViewMode } from '#shared/types/preferences'
 import { PAGE_SIZE_OPTIONS } from '#shared/types/preferences'
 
 const props = defineProps<{
@@ -7,7 +7,17 @@ const props = defineProps<{
   pageSize: PageSize
   currentPage: number
   totalItems: number
+  /** When in table view, force pagination mode (no infinite scroll for tables) */
+  viewMode?: ViewMode
 }>()
+
+// Whether we should show pagination controls (table view always uses pagination)
+const shouldShowControls = computed(() => props.viewMode === 'table' || props.mode === 'paginated')
+
+// Table view forces pagination mode, otherwise use the provided mode
+const effectiveMode = computed<PaginationMode>(() =>
+  shouldShowControls.value ? 'paginated' : 'infinite',
+)
 
 const emit = defineEmits<{
   'update:mode': [mode: PaginationMode]
@@ -15,13 +25,26 @@ const emit = defineEmits<{
   'update:currentPage': [page: number]
 }>()
 
-const totalPages = computed(() => Math.ceil(props.totalItems / props.pageSize))
-
-const startItem = computed(() =>
-  props.totalItems === 0 ? 0 : (props.currentPage - 1) * props.pageSize + 1,
+// When 'all' is selected, there's only 1 page with everything
+const isShowingAll = computed(() => props.pageSize === 'all')
+const effectivePageSize = computed(() => (isShowingAll.value ? props.totalItems : props.pageSize))
+const totalPages = computed(() =>
+  isShowingAll.value ? 1 : Math.ceil(props.totalItems / (props.pageSize as number)),
 )
 
-const endItem = computed(() => Math.min(props.currentPage * props.pageSize, props.totalItems))
+// Whether to show the mode toggle (hidden in table view since table always uses pagination)
+const showModeToggle = computed(() => props.viewMode !== 'table')
+
+const startItem = computed(() => {
+  if (props.totalItems === 0) return 0
+  if (isShowingAll.value) return 1
+  return (props.currentPage - 1) * (props.pageSize as number) + 1
+})
+
+const endItem = computed(() => {
+  if (isShowingAll.value) return props.totalItems
+  return Math.min(props.currentPage * (props.pageSize as number), props.totalItems)
+})
 
 const canGoPrev = computed(() => props.currentPage > 1)
 const canGoNext = computed(() => props.currentPage < totalPages.value)
@@ -86,7 +109,9 @@ const visiblePages = computed(() => {
 
 function handlePageSizeChange(event: Event) {
   const target = event.target as HTMLSelectElement
-  const newSize = Number(target.value) as PageSize
+  const value = target.value
+  // Handle 'all' as a special string value, otherwise parse as number
+  const newSize = (value === 'all' ? 'all' : Number(value)) as PageSize
   emit('update:pageSize', newSize)
   // Reset to page 1 when changing page size
   emit('update:currentPage', 1)
@@ -94,11 +119,16 @@ function handlePageSizeChange(event: Event) {
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center justify-between gap-4 py-4 border-t border-border mt-6">
+  <!-- Only show when in paginated mode (table view or explicit paginated mode) -->
+  <div
+    v-if="shouldShowControls"
+    class="flex flex-wrap items-center justify-between gap-4 py-4 border-t border-border mt-6"
+  >
     <!-- Left: Mode toggle and page size -->
     <div class="flex items-center gap-4">
-      <!-- Pagination mode toggle -->
+      <!-- Pagination mode toggle (hidden in table view - tables always use pagination) -->
       <div
+        v-if="showModeToggle"
         class="inline-flex rounded-md border border-border p-0.5 bg-bg-subtle"
         role="group"
         :aria-label="$t('filters.pagination.mode_label')"
@@ -123,8 +153,8 @@ function handlePageSizeChange(event: Event) {
         </button>
       </div>
 
-      <!-- Page size (paginated mode only) -->
-      <div v-if="mode === 'paginated'" class="relative shrink-0">
+      <!-- Page size (shown when paginated or table view) -->
+      <div v-if="effectiveMode === 'paginated'" class="relative shrink-0">
         <label for="page-size" class="sr-only">{{ $t('filters.pagination.items_per_page') }}</label>
         <select
           id="page-size"
@@ -133,7 +163,11 @@ function handlePageSizeChange(event: Event) {
           @change="handlePageSizeChange"
         >
           <option v-for="size in PAGE_SIZE_OPTIONS" :key="size" :value="size">
-            {{ size }}
+            {{
+              size === 'all'
+                ? $t('filters.pagination.all_yolo')
+                : $t('filters.pagination.per_page', { count: size })
+            }}
           </option>
         </select>
         <div
@@ -146,7 +180,7 @@ function handlePageSizeChange(event: Event) {
     </div>
 
     <!-- Right: Page info and navigation (paginated mode only) -->
-    <div v-if="mode === 'paginated' && totalItems > 0" class="flex items-center gap-4">
+    <div v-if="effectiveMode === 'paginated'" class="flex items-center gap-4">
       <!-- Showing X-Y of Z -->
       <span class="text-sm font-mono text-fg-muted">
         {{

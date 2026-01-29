@@ -316,6 +316,22 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[1]!.package.name).toBe('mid')
       expect(sortedPackages.value[2]!.package.name).toBe('old')
     })
+
+    it('relevance sort preserves original order', () => {
+      const packages = ref([
+        createPackage({ name: 'first', downloads: 100 }),
+        createPackage({ name: 'second', downloads: 1000 }),
+        createPackage({ name: 'third', downloads: 500 }),
+      ])
+
+      const { sortedPackages, setSort } = useStructuredFilters({ packages })
+      setSort('relevance-desc')
+
+      // Relevance should preserve the original order from the server
+      expect(sortedPackages.value[0]!.package.name).toBe('first')
+      expect(sortedPackages.value[1]!.package.name).toBe('second')
+      expect(sortedPackages.value[2]!.package.name).toBe('third')
+    })
   })
 
   describe('clearing filters', () => {

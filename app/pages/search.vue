@@ -75,6 +75,9 @@ const pageSize = 20
 const loadedPages = ref(1)
 const isLoadingMore = ref(false)
 
+// Pagination state for table view
+const currentPage = ref(1)
+
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
   const p = Number.parseInt(route.query.page as string, 10)
@@ -160,6 +163,7 @@ const visibleResults = computed(() => {
 // Use structured filters for client-side refinement of search results
 const resultsArray = computed(() => visibleResults.value?.objects ?? [])
 
+// Minimal structured filters usage for search context (no client-side filtering)
 const {
   filters,
   sortOption,
@@ -177,22 +181,14 @@ const {
   setSort,
 } = useStructuredFilters({
   packages: resultsArray,
-  initialSort: 'score-desc', // Default to search relevance (combined score)
+  initialSort: 'relevance-desc', // Default to search relevance
 })
 
 // Client-side filtered/sorted results for display
+// In search context, we always use server order (relevance) - no client-side filtering
 const displayResults = computed(() => {
-  // Check if any client-side filters are active (including text filter from filter panel)
-  const hasActiveClientFilters =
-    filters.value.text !== '' ||
-    filters.value.downloadRange !== 'any' ||
-    filters.value.keywords.length > 0 ||
-    filters.value.security !== 'all' ||
-    filters.value.updatedWithin !== 'any'
-
-  // When using default score sort (search relevance) and no client filters,
-  // return original server-sorted results to preserve search ranking
-  if (!hasActiveClientFilters && sortOption.value === 'score-desc') {
+  // When using relevance sort, return original server-sorted results
+  if (sortOption.value === 'relevance-desc' || sortOption.value === 'relevance-asc') {
     return resultsArray.value
   }
 
@@ -251,6 +247,7 @@ function handlePageChange(page: number) {
 // Reset pages when query changes
 watch(query, () => {
   loadedPages.value = 1
+  currentPage.value = 1
   hasInteracted.value = true
 })
 
@@ -873,6 +870,7 @@ defineOgImageComponent('Default', {
               :filtered-count="displayResults.length"
               :available-keywords="availableKeywords"
               :active-filters="activeFilters"
+              search-context
               @update:view-mode="viewMode = $event"
               @update:sort-option="setSort"
               @toggle-column="toggleColumn"
@@ -886,11 +884,29 @@ defineOgImageComponent('Default', {
               @update:updated-within="setUpdatedWithin"
               @toggle-keyword="toggleKeyword"
             />
-            <p role="status" class="text-fg-muted text-sm mt-4 font-mono">
+            <!-- Show "Found X packages" (infinite scroll mode only) -->
+            <p
+              v-if="viewMode === 'cards' && paginationMode === 'infinite'"
+              role="status"
+              class="text-fg-muted text-sm mt-4 font-mono"
+            >
               {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
               <span v-if="status === 'pending'" class="text-fg-subtle">{{
                 $t('search.updating')
               }}</span>
+            </p>
+            <!-- Show "x of y packages" (paginated/table mode only) -->
+            <p
+              v-if="viewMode === 'table' || paginationMode === 'paginated'"
+              role="status"
+              class="text-fg-muted text-sm mt-4 font-mono"
+            >
+              {{
+                $t('filters.count.showing_paginated', {
+                  pageSize: preferredPageSize === 'all' ? displayResults.length : preferredPageSize,
+                  total: displayResults.length.toLocaleString(),
+                })
+              }}
             </p>
           </div>
 
@@ -947,11 +963,26 @@ defineOgImageComponent('Default', {
             :view-mode="viewMode"
             :columns="columns"
             :sort-option="sortOption"
+            :pagination-mode="paginationMode"
+            :current-page="currentPage"
             @load-more="loadMore"
             @page-change="handlePageChange"
             @select="handlePackageSelect"
             @update:sort-option="handleSortChange"
             @click-keyword="toggleKeyword"
+          />
+
+          <!-- Pagination controls -->
+          <PaginationControls
+            v-if="displayResults.length > 0"
+            :mode="paginationMode"
+            :page-size="preferredPageSize"
+            :current-page="currentPage"
+            :total-items="displayResults.length"
+            :view-mode="viewMode"
+            @update:mode="paginationMode = $event"
+            @update:page-size="preferredPageSize = $event"
+            @update:current-page="currentPage = $event"
           />
         </div>
       </section>

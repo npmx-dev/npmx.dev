@@ -114,6 +114,22 @@ interface UseStructuredFiltersOptions {
   initialSort?: SortOption
 }
 
+// Pure filter predicates (no closure dependencies)
+function matchesKeywords(pkg: NpmSearchResult, keywords: string[]): boolean {
+  if (keywords.length === 0) return true
+  const pkgKeywords = new Set((pkg.package.keywords ?? []).map(k => k.toLowerCase()))
+  // AND logic: package must have ALL selected keywords (case-insensitive)
+  return keywords.every(k => pkgKeywords.has(k.toLowerCase()))
+}
+
+function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolean {
+  if (security === 'all') return true
+  const hasWarnings = (pkg.flags?.insecure ?? 0) > 0
+  if (security === 'secure') return !hasWarnings
+  if (security === 'warnings') return hasWarnings
+  return true
+}
+
 /**
  * Composable for structured filtering and sorting of package lists
  */
@@ -224,21 +240,6 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
     return true
   }
 
-  function matchesKeywords(pkg: NpmSearchResult, keywords: string[]): boolean {
-    if (keywords.length === 0) return true
-    const pkgKeywords = new Set((pkg.package.keywords ?? []).map(k => k.toLowerCase()))
-    // AND logic: package must have ALL selected keywords (case-insensitive)
-    return keywords.every(k => pkgKeywords.has(k.toLowerCase()))
-  }
-
-  function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolean {
-    if (security === 'all') return true
-    const hasWarnings = (pkg.flags?.insecure ?? 0) > 0
-    if (security === 'secure') return !hasWarnings
-    if (security === 'warnings') return hasWarnings
-    return true
-  }
-
   function matchesUpdatedWithin(pkg: NpmSearchResult, within: UpdatedWithin): boolean {
     if (within === 'any') return true
     const config = UPDATED_WITHIN_OPTIONS.find(o => o.value === within)
@@ -297,6 +298,10 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         break
       case 'score':
         diff = (a.score?.final ?? 0) - (b.score?.final ?? 0)
+        break
+      case 'relevance':
+        // Relevance preserves server order (already sorted by search relevance)
+        diff = 0
         break
       default:
         diff = 0

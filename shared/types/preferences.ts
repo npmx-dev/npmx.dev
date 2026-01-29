@@ -107,6 +107,7 @@ export type SortKey =
   | 'popularity'
   | 'maintenance'
   | 'score'
+  | 'relevance'
 
 export type SortDirection = 'asc' | 'desc'
 
@@ -132,6 +133,8 @@ export type SortOption =
   | 'maintenance-asc'
   | 'score-desc'
   | 'score-asc'
+  | 'relevance-desc'
+  | 'relevance-asc'
 
 export interface SortKeyConfig {
   key: SortKey
@@ -142,9 +145,12 @@ export interface SortKeyConfig {
   disabled?: boolean
   /** Reason for being disabled, shown in UI */
   disabledReason?: string
+  /** Only show this sort option in search context */
+  searchOnly?: boolean
 }
 
 export const SORT_KEYS: SortKeyConfig[] = [
+  { key: 'relevance', label: 'Relevance', defaultDirection: 'desc', searchOnly: true },
   { key: 'downloads-week', label: 'Downloads/wk', defaultDirection: 'desc' },
   {
     key: 'downloads-day',
@@ -201,6 +207,7 @@ export const SORT_KEYS: SortKeyConfig[] = [
 
 /** All valid sort keys for validation */
 const VALID_SORT_KEYS = new Set<SortKey>([
+  'relevance',
   'downloads-week',
   'downloads-day',
   'downloads-month',
@@ -326,7 +333,7 @@ export const DEFAULT_FILTERS: StructuredFilters = {
 // Pagination modes
 export type PaginationMode = 'infinite' | 'paginated'
 
-export const PAGE_SIZE_OPTIONS = [10, 25, 50, 100] as const
+export const PAGE_SIZE_OPTIONS = [10, 25, 50, 100, 'all'] as const
 export type PageSize = (typeof PAGE_SIZE_OPTIONS)[number]
 
 // Complete preferences state

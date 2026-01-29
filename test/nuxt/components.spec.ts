@@ -994,6 +994,25 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
+
+    it('should have no accessibility violations in search context', async () => {
+      const component = await mountSuspended(PackageListToolbar, {
+        props: {
+          filters: defaultFilters,
+          sortOption: 'relevance-desc',
+          viewMode: 'cards',
+          columns: mockColumns,
+          paginationMode: 'infinite',
+          pageSize: 25,
+          totalCount: 100,
+          filteredCount: 100,
+          activeFilters: [],
+          searchContext: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
   })
 
   describe('PackageTable', () => {
