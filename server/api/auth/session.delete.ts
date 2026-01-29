@@ -3,8 +3,8 @@ export default defineEventHandler(async event => {
     password: process.env.NUXT_SESSION_PASSWORD as string,
   })
 
-  //TODO clear out the oauth agent
-
+  let oauthSession = await event.context.getOAuthSession()
+  await oauthSession?.signOut()
   await session.clear()
 
   return 'Session cleared'
