@@ -41,6 +41,8 @@ const packageName = computed(() => parsedRoute.value.packageName)
 const fromVersion = computed(() => parsedRoute.value.range?.from ?? '')
 const toVersion = computed(() => parsedRoute.value.range?.to ?? '')
 
+const router = useRouter()
+const initializedFromQuery = ref(false)
 const { data: pkg } = usePackage(packageName)
 
 const { data: compare, status: compareStatus } = useFetch<CompareResponse>(
@@ -67,6 +69,31 @@ const filteredChanges = computed(() => {
   if (fileFilter.value === 'all') return allChanges.value
   return allChanges.value.filter(f => f.type === fileFilter.value)
 })
+
+// Sync selection with ?file= query for shareable links
+watch(
+  () => route.query.file,
+  filePath => {
+    if (initializedFromQuery.value || !filePath || !compare.value) return
+    const match = allChanges.value.find(f => f.path === filePath)
+    if (match) {
+      selectedFile.value = match
+      initializedFromQuery.value = true
+    }
+  },
+  { immediate: true },
+)
+
+watch(
+  selectedFile,
+  file => {
+    const query = { ...route.query }
+    if (file?.path) query.file = file.path
+    else delete query.file
+    router.replace({ query })
+  },
+  { deep: false },
+)
 
 const groupedDeps = computed(() => {
   if (!compare.value?.dependencyChanges) return new Map()
