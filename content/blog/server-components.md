@@ -9,4 +9,4 @@ draft: false
 
 # Server components
 
-Here is some server component razzle dazzle.
+Here is some server component razzle dazzle. Hello there!
