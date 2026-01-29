@@ -49,12 +49,7 @@ defineOgImageComponent('Default')
         class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
         style="animation-delay: 0.2s"
       >
-        <form
-          method="GET"
-          action="/search"
-          class="relative"
-          @submit.prevent="handleSearch"
-        >
+        <form method="GET" action="/search" class="relative" @submit.prevent="handleSearch">
           <label for="home-search" class="sr-only">
             {{ $t('search.label') }}
           </label>

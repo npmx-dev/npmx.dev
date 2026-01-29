@@ -74,12 +74,7 @@ onKeyStroke(',', e => {
       <div class="flex-1 flex items-center justify-center gap-4 sm:gap-6">
         <!-- Search bar (shown on all pages except home and search) -->
         <search v-if="showSearchBar" class="hidden sm:block flex-1 max-w-md">
-          <form
-            method="GET"
-            action="/search"
-            class="relative"
-            @submit.prevent="handleSearchInput"
-          >
+          <form method="GET" action="/search" class="relative" @submit.prevent="handleSearchInput">
             <label for="header-search" class="sr-only">
               {{ $t('search.label') }}
             </label>
