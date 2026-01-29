@@ -51,9 +51,7 @@ onKeyStroke(',', e => {
 </script>
 
 <template>
-  <header
-    class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border"
-  >
+  <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
     <nav :aria-label="$t('nav.main_navigation')" class="container h-14 flex items-center">
       <!-- Left: Logo -->
       <div class="flex-shrink-0">
