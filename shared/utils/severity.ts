@@ -25,6 +25,7 @@ export const SEVERITY_TEXT_COLORS: Record<OsvSeverityLevel, string> = {
 
 /**
  * Badge color classes for severity levels
+ * @public
  */
 export const SEVERITY_BADGE_COLORS: Record<OsvSeverityLevel, string> = {
   critical: 'bg-bg-muted border border-border text-fg',
