@@ -87,30 +87,3 @@ export function useCssVariables(
 
   return { colors }
 }
-
-/**
- * Convenience wrapper around `useCssVariables` for reading a single CSS variable.
- *
- * Resolves the effective value of the CSS custom property via `getComputedStyle`
- * and exposes it as a reactive computed ref.
- *
- * @example
- * ```ts
- * const { value: fgSubtle } = useCssVariable('--fgSubtle');
- * ```
- *
- * @param variableName - CSS variable name (must include the leading `--`)
- * @param options - Same options as `useCssVariables`
- *
- * @returns An object containing a reactive `value` computed ref
- */
-export function useCssVariable(
-  variableName: string,
-  options: UseCssVariableOptions = {},
-): { value: ComputedRef<string> } {
-  const { colors } = useCssVariables([variableName], options)
-
-  return {
-    value: computed(() => colors.value[toCamelCase(variableName)] ?? ''),
-  }
-}
