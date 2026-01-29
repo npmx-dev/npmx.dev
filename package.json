@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@iconify-json/carbon": "1.2.18",
+    "@iconify-json/lucide": "^1.2.87",
     "@iconify-json/solar": "1.2.5",
     "@iconify-json/svg-spinners": "^1.2.4",
     "@npm/types": "2.1.0",

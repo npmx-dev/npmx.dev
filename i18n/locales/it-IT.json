@@ -204,14 +204,6 @@
       "title": "Provalo",
       "choose": "sciegli il playground"
     },
-    "metrics": {
-      "esm": "solo ES Modules",
-      "cjs": "solo CommonJS",
-      "dual": "Supporto per entrambi CommonJS e ES Modules",
-      "unknown_format": "Formato modulo sconosciuto",
-      "ts_included": "TypeScript types incluso",
-      "types_from": "Types da {package}"
-    },
     "license": {
       "view_spdx": "Vedi il testo della licenza su SPDX"
     },

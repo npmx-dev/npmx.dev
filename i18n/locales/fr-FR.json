@@ -194,14 +194,6 @@
       "title": "Essayer",
       "choose": "choisir un playground"
     },
-    "metrics": {
-      "esm": "ES Modules uniquement",
-      "cjs": "CommonJS uniquement",
-      "dual": "Supporte CommonJS et ES Modules",
-      "unknown_format": "Format de module inconnu",
-      "ts_included": "Types TypeScript inclus",
-      "types_from": "Types depuis {package}"
-    },
     "license": {
       "view_spdx": "Voir le texte de la licence sur SPDX"
     },
