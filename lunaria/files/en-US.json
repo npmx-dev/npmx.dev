@@ -56,7 +56,16 @@
     "language": "Language",
     "help_translate": "Help translate npmx",
     "accent_colors": "Accent colors",
-    "clear_accent": "Clear accent color"
+    "clear_accent": "Clear accent color",
+    "translation_progress": "Translation progress"
+  },
+  "i18n": {
+    "missing_keys": "{count} missing translation | {count} missing translations",
+    "copy_keys": "Copy keys",
+    "show_more_keys": "Show {count} more...",
+    "contribute_hint": "Help improve this translation by adding the missing keys.",
+    "edit_on_github": "Edit on GitHub",
+    "view_guide": "Translation guide"
   },
   "common": {
     "loading": "Loading...",
