@@ -203,7 +203,6 @@ defineOgImageComponent('Default', {
           </div>
         </section>
 
-        <!-- LANGUAGE Section -->
         <section>
           <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('settings.sections.language') }}
@@ -214,16 +213,22 @@ defineOgImageComponent('Default', {
               <label for="language-select" class="block text-sm text-fg font-medium">
                 {{ $t('settings.language') }}
               </label>
-              <select
-                id="language-select"
-                :value="locale"
-                class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 cursor-pointer"
-                @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
-              >
-                <option v-for="loc in availableLocales" :key="loc.code" :value="loc.code">
-                  {{ loc.name }}
-                </option>
-              </select>
+
+              <ClientOnly>
+                <select
+                  id="language-select"
+                  :value="locale"
+                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 cursor-pointer"
+                  @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
+                >
+                  <option v-for="loc in availableLocales" :key="loc.code" :value="loc.code">
+                    {{ loc.name }}
+                  </option>
+                </select>
+                <template #fallback>
+                  <span class="skeleton block w-48 h-8" />
+                </template>
+              </ClientOnly>
             </div>
 
             <!-- Translation helper for non-source locales -->

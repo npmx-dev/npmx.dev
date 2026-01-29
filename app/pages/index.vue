@@ -14,7 +14,8 @@ const debouncedNavigate = debounce(() => {
 }, 250)
 
 function handleSearch() {
-  debouncedNavigate()
+  // If input is empty, navigate immediately (no need to debounce)
+  return searchQuery.value.trim() ? debouncedNavigate() : router.push('/search')
 }
 
 useSeoMeta({

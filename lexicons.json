@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "lexicons": ["site.standard.document"],
+  "resolutions": {
+    "com.atproto.repo.strongRef": {
+      "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.repo.strongRef",
+      "cid": "bafyreifrkdbnkvfjujntdaeigolnrjj3srrs53tfixjhmacclps72qlov4"
+    },
+    "site.standard.document": {
+      "uri": "at://did:plc:re3ebnp5v7ffagz6rb6xfei4/com.atproto.lexicon.schema/site.standard.document",
+      "cid": "bafyreigdukg62hmel4jbdvghdsoaphslhrdktmahzdyokomuka6yejetwa"
+    }
+  }
+}

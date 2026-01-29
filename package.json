@@ -21,7 +21,8 @@
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare && simple-git-hooks",
+    "postinstall": "nuxt prepare && simple-git-hooks && pnpm generate:lexicons",
+    "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
     "test:browser": "playwright test",
     "test:browser:ui": "playwright test --ui",
@@ -31,6 +32,7 @@
     "test:unit": "vite test --project unit"
   },
   "dependencies": {
+    "@atproto/lex": "^0.0.13",
     "@deno/doc": "jsr:^0.189.1",
     "@iconify-json/simple-icons": "^1.2.67",
     "@iconify-json/vscode-icons": "^1.2.40",

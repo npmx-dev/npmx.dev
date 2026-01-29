@@ -27,9 +27,17 @@ export default defineNuxtModule({
     if (!isCI || !existsSync(lunariaDistPath)) {
       mkdirSync(lunariaDistPath, { recursive: true })
       nuxt.hook('nitro:build:before', async () => {
-        execSync('node --experimental-transform-types ./lunaria/lunaria.ts', {
-          cwd: nuxt.options.rootDir,
-        })
+        try {
+          execSync('node --experimental-transform-types ./lunaria/lunaria.ts', {
+            cwd: nuxt.options.rootDir,
+          })
+        } catch (e) {
+          // do not throw when building for staging
+          const env = process.env.VERCEL_ENV
+          if (!isCI || (env && env === 'production')) {
+            throw e
+          }
+        }
       })
     }
   },
