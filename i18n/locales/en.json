@@ -120,7 +120,7 @@
       "title": "Heads up! You might not need this dependency.",
       "native": "This can be replaced with {replacement}, available since Node {nodeVersion}.",
       "simple": "{replacement} instead.",
-      "documented": "This package is pretty heavy, you should consider alternatives.",
+      "documented": "The community has flagged this package as having more performant alternatives.",
       "none": "This package is never needed.",
       "learn_more": "Learn more",
       "mdn": "MDN"
