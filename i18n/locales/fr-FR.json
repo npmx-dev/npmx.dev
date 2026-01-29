@@ -24,6 +24,7 @@
     "found_packages": "{count} paquets trouvés",
     "updating": "(mise à jour...)",
     "no_results": "Aucun paquet trouvé pour « {query} »",
+    "results": "Résultats de recherche",
     "not_taken": "{name} n'est pas pris",
     "claim_prompt": "Réserver ce nom de paquet sur npm",
     "claim_button": "Réserver « {name} »",
@@ -38,20 +39,44 @@
     }
   },
   "nav": {
+    "main_navigation": "Barre de navigation",
     "popular_packages": "Paquets populaires",
     "search": "recherche",
     "settings": "paramètres",
     "back": "Retour"
   },
   "settings": {
+    "title": "paramètres",
+    "tagline": "personnalisez votre expérience npmx",
+    "meta_description": "Personnalisez votre expérience npmx.dev avec votre thème, langage et préférences d'affichage.",
+    "sections": {
+      "appearance": "Apparence",
+      "display": "Affichage",
+      "language": "Langue"
+    },
     "relative_dates": "Dates relatives",
+    "relative_dates_description": "Afficher « il y a 3 jours » au lieu des dates complètes",
     "include_types": "Inclure {'@'}types à la commande d'installation",
+    "include_types_description": "Inclure les paquets {'@'}types à la commande d'installation pour les paquets non typés",
+    "hide_platform_packages": "Masquer les paquets spécifiques à la plateforme dans la recherche",
+    "hide_platform_packages_description": "Masquer les paquets binaires natifs comme {'@'}esbuild/linux-x64 des résultats",
     "theme": "Thème",
     "theme_light": "Clair",
     "theme_dark": "Sombre",
     "theme_system": "Système",
     "language": "Langue de l'interface",
-    "help_translate": "Aidez à traduire npmx"
+    "help_translate": "Aidez à traduire npmx",
+    "accent_colors": "Couleurs d'accentuation",
+    "clear_accent": "Supprimer la couleur d'accentuation",
+    "translation_progress": "Progression de la traduction"
+  },
+  "i18n": {
+    "missing_keys": "{count} traduction manquante | {count} traductions manquantes",
+    "copy_keys": "Copier les noms",
+    "show_more_keys": "Afficher {count} de plus...",
+    "contribute_hint": "Aidez à améliorer cette traduction en ajoutant les entrées manquantes.",
+    "edit_on_github": "Modifier sur GitHub",
+    "view_guide": "Guide de traduction"
   },
   "common": {
     "loading": "Chargement...",
@@ -63,6 +88,8 @@
     "retry": "Réessayer",
     "copy": "copier",
     "copied": "copié !",
+    "skip_link": "Passer au contenu principal",
+    "close_modal": "Fermer la fenêtre",
     "show_more": "afficher plus",
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
@@ -83,6 +110,7 @@
     "not_latest": "(pas la dernière)",
     "verified_provenance": "Provenance vérifiée",
     "view_permalink": "Voir le lien permanent pour cette version",
+    "navigation": "Navigation du paquet",
     "deprecation": {
       "package": "Ce paquet a été déprécié.",
       "version": "Cette version a été dépréciée.",
@@ -91,7 +119,8 @@
     "stats": {
       "license": "Licence",
       "deps": "Dépendances",
-      "install_size": "Taille d'installation",
+      "install_size": "Taille d'install.",
+      "vulns": "Vulnérabilités",
       "updated": "Mis à jour",
       "view_dependency_graph": "Voir le graphe de dépendances",
       "inspect_dependency_tree": "Inspecter l'arbre de dépendances"
@@ -102,13 +131,26 @@
       "issues": "issues",
       "jsr": "jsr",
       "code": "code",
-      "docs": "docs"
+      "docs": "docs",
+      "fund": "donner"
+    },
+    "docs": {
+      "not_available": "Documentation non disponible",
+      "not_available_detail": "Nous n'avons pas pu générer la documentation pour cette version."
     },
     "get_started": {
       "title": "Commencer",
       "pm_label": "Gestionnaire de paquets",
       "copy_command": "Copier la commande d'installation",
       "view_types": "Voir {package}"
+    },
+    "create": {
+      "title": "Créer un nouveau projet",
+      "copy_command": "Copier la commande de création"
+    },
+    "run": {
+      "title": "Exécuter",
+      "locally": "Exécuter localement"
     },
     "readme": {
       "title": "Readme",
@@ -141,7 +183,8 @@
       "title": "Dépendances ({count})",
       "list_label": "Dépendances du paquet",
       "show_all": "afficher les {count} dépendances",
-      "optional": "optionnelle"
+      "optional": "optionnelle",
+      "view_vulnerabilities": "Voir les vulnérabilités"
     },
     "peer_dependencies": {
       "title": "Dépendances peer ({count})",
@@ -194,6 +237,14 @@
     "playgrounds": {
       "title": "Essayer",
       "choose": "choisir un playground"
+    },
+    "metrics": {
+      "esm": "ES Modules supportés",
+      "cjs": "CommonJS supporté",
+      "no_esm": "Pas de support des ES Modules",
+      "types_included": "Types inclus",
+      "types_available": "Types disponibles via {package}",
+      "no_types": "Pas de types TypeScript"
     },
     "license": {
       "view_spdx": "Voir le texte de la licence sur SPDX"
@@ -626,6 +677,31 @@
         "cool": "de vraiment",
         "package": "super",
         "managers": "gestionnaires de paquets"
+      }
+    },
+    "contributors": {
+      "title": "Contributeurs",
+      "description": "npmx est entièrement open source, construit par une incroyable communauté de contributeurs. Rejoignez-nous et construisons l'expérience de navigation pour npm dont nous avons toujours rêvés, ensemble.",
+      "loading": "Chargement des contributeurs...",
+      "error": "Échec du chargement des contributeurs",
+      "view_profile": "Voir le profil GitHub de {name}"
+    },
+    "get_involved": {
+      "title": "Participer",
+      "contribute": {
+        "title": "Contribuer",
+        "description": "Aidez-nous à créer une meilleure expérience npm.",
+        "cta": "Voir sur GitHub"
+      },
+      "community": {
+        "title": "Rejoindre la communauté",
+        "description": "Discutez, posez des questions et partagez des idées.",
+        "cta": "Joindre le Discord"
+      },
+      "follow": {
+        "title": "Rester à jour",
+        "description": "Découvrez les dernières nouveautés de npmx.",
+        "cta": "Suivre sur Bluesky"
       }
     }
   },
