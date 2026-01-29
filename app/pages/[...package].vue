@@ -521,7 +521,7 @@ defineOgImageComponent('Package', {
             <!-- Internal navigation: Docs + Code (hidden on mobile, shown in external links instead) -->
             <nav
               v-if="displayVersion"
-              aria-label="Package navigation"
+              :aria-label="$t('package.navigation')"
               class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ml-auto self-center"
             >
               <NuxtLink
@@ -831,7 +831,9 @@ defineOgImageComponent('Package', {
       <!-- Binary-only packages: Show only execute command (no install) -->
       <section v-if="isBinaryOnly" aria-labelledby="run-heading" class="area-install scroll-mt-20">
         <div class="flex flex-wrap items-center justify-between mb-3">
-          <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">Run</h2>
+          <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
+            {{ $t('package.run.title') }}
+          </h2>
           <!-- Package manager tabs -->
           <div
             class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md"

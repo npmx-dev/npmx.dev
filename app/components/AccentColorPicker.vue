@@ -5,7 +5,7 @@ const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
 </script>
 
 <template>
-  <div role="listbox" aria-label="Accent colors" class="flex items-center gap-4">
+  <div role="listbox" :aria-label="$t('settings.accent_colors')" class="flex items-center gap-4">
     <button
       v-for="color in accentColors"
       :key="color.id"
@@ -19,7 +19,7 @@ const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
     />
     <button
       type="button"
-      aria-label="Clear accent color"
+      :aria-label="$t('settings.clear_accent')"
       class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 focus-ring flex items-center justify-center bg-accent-fallback"
       @click="setAccentColor(null)"
     >

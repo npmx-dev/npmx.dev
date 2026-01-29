@@ -9,6 +9,7 @@
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
+    "site_footer": "Site footer",
     "about": "about",
     "docs": "docs",
     "source": "source",
@@ -24,6 +25,7 @@
     "found_packages": "Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
+    "results": "Search results",
     "not_taken": "{name} is not taken",
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
@@ -38,6 +40,7 @@
     }
   },
   "nav": {
+    "main_navigation": "Main navigation",
     "popular_packages": "Popular packages",
     "search": "search",
     "settings": "settings",
@@ -52,7 +55,8 @@
     "theme_system": "System",
     "language": "Language",
     "help_translate": "Help translate npmx",
-    "accent_colors": "Accent colors"
+    "accent_colors": "Accent colors",
+    "clear_accent": "Clear accent color"
   },
   "common": {
     "loading": "Loading...",
@@ -64,6 +68,8 @@
     "retry": "Retry",
     "copy": "copy",
     "copied": "copied!",
+    "skip_link": "Skip to main content",
+    "close_modal": "Close modal",
     "show_more": "show more",
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
@@ -84,6 +90,7 @@
     "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
+    "navigation": "Package navigation",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -108,6 +115,10 @@
       "code": "code",
       "docs": "docs",
       "fund": "fund"
+    },
+    "docs": {
+      "not_available": "Docs not available",
+      "not_available_detail": "We could not generate docs for this version."
     },
     "get_started": {
       "title": "Get started",
@@ -154,7 +165,8 @@
       "title": "Dependencies ({count})",
       "list_label": "Package dependencies",
       "show_all": "show all {count} deps",
-      "optional": "optional"
+      "optional": "optional",
+      "view_vulnerabilities": "View vulnerabilities"
     },
     "peer_dependencies": {
       "title": "Peer Dependencies ({count})",
@@ -566,6 +578,7 @@
     }
   },
   "header": {
+    "site_header": "Site header",
     "home": "npmx home",
     "github": "GitHub",
     "packages": "packages",

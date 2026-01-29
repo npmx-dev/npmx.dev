@@ -156,9 +156,9 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 
         <div v-else-if="showEmptyState" class="p-6 sm:p-8 lg:p-12">
           <div class="max-w-xl rounded-lg border border-border bg-bg-muted p-6">
-            <h2 class="font-mono text-lg mb-2">Docs not available</h2>
+            <h2 class="font-mono text-lg mb-2">{{ $t('package.docs.not_available') }}</h2>
             <p class="text-fg-subtle text-sm">
-              {{ docsData?.message ?? 'We could not generate docs for this version.' }}
+              {{ docsData?.message ?? $t('package.docs.not_available_detail') }}
             </p>
             <div class="flex gap-4 mt-4">
               <NuxtLink

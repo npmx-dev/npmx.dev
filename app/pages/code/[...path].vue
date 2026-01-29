@@ -295,7 +295,7 @@ useSeoMeta({
 
         <!-- Breadcrumb navigation -->
         <nav
-          aria-label="File path"
+          :aria-label="$t('code.file_path')"
           class="flex items-center gap-1 font-mono text-sm overflow-x-auto"
         >
           <NuxtLink

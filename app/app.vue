@@ -50,7 +50,7 @@ if (import.meta.client) {
 
 <template>
   <div class="min-h-screen flex flex-col bg-bg text-fg">
-    <a href="#main-content" class="skip-link font-mono">Skip to main content</a>
+    <a href="#main-content" class="skip-link font-mono">{{ $t('common.skip_link') }}</a>
 
     <AppHeader :show-logo="!isHomepage" />
 

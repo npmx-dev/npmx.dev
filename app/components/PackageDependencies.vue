@@ -118,7 +118,7 @@ const sortedOptionalDependencies = computed(() => {
               :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
             >
               <span class="i-carbon-security w-3 h-3 block" aria-hidden="true" />
-              <span class="sr-only">View vulnerabilities</span>
+              <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
             </NuxtLink>
             <NuxtLink
               :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"

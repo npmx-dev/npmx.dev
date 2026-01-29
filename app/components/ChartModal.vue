@@ -29,7 +29,7 @@ function handleKeydown(event: KeyboardEvent) {
         <button
           type="button"
           class="absolute inset-0 bg-black/60 cursor-default"
-          aria-label="Close modal"
+          :aria-label="$t('common.close_modal')"
           @click="open = false"
         />
 
@@ -47,7 +47,7 @@ function handleKeydown(event: KeyboardEvent) {
               <button
                 type="button"
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                aria-label="Close"
+                :aria-label="$t('common.close')"
                 @click="open = false"
               >
                 <span class="i-carbon-close block w-5 h-5" aria-hidden="true" />

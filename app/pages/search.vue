@@ -703,7 +703,7 @@ defineOgImageComponent('Default', {
     <!-- Sticky search header - positioned below AppHeader (h-14 = 56px) -->
     <header class="sticky top-14 z-40 bg-bg/95 backdrop-blur-sm border-b border-border">
       <div class="container-sm py-4">
-        <h1 class="font-mono text-xl sm:text-2xl font-medium mb-4">search</h1>
+        <h1 class="font-mono text-xl sm:text-2xl font-medium mb-4">{{ $t('nav.search') }}</h1>
 
         <search>
           <form role="search" method="GET" action="/search" class="relative" @submit.prevent>
@@ -755,7 +755,7 @@ defineOgImageComponent('Default', {
 
     <!-- Results area with container padding -->
     <div class="container-sm pt-20 pb-6">
-      <section v-if="query" aria-label="Search results" @keydown="handleResultsKeydown">
+      <section v-if="query" :aria-label="$t('search.results')" @keydown="handleResultsKeydown">
         <!-- Initial loading (only after user interaction, not during view transition) -->
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
