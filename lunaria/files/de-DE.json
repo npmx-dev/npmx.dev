@@ -203,14 +203,6 @@
       "title": "Ausprobieren",
       "choose": "Playground wählen"
     },
-    "metrics": {
-      "esm": "Nur ES-Module",
-      "cjs": "Nur CommonJS",
-      "dual": "Unterstützt CommonJS und ES-Module",
-      "unknown_format": "Unbekanntes Modulformat",
-      "ts_included": "TypeScript-Typen enthalten",
-      "types_from": "Typen von {package}"
-    },
     "license": {
       "view_spdx": "Lizenztext auf SPDX ansehen"
     },

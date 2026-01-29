@@ -205,12 +205,12 @@
       "choose": "choose playground"
     },
     "metrics": {
-      "esm": "ES Modules only",
-      "cjs": "CommonJS only",
-      "dual": "Supports both CommonJS and ES Modules",
-      "unknown_format": "Unknown module format",
-      "ts_included": "TypeScript types included",
-      "types_from": "Types from {package}"
+      "esm": "ES Modules supported",
+      "cjs": "CommonJS supported",
+      "no_esm": "No ES Modules support",
+      "types_included": "Types included",
+      "types_available": "Types available via {package}",
+      "no_types": "No TypeScript types"
     },
     "license": {
       "view_spdx": "View license text on SPDX"

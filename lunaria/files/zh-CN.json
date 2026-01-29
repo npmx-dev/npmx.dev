@@ -204,14 +204,6 @@
       "title": "试一试",
       "choose": "选择 Playground"
     },
-    "metrics": {
-      "esm": "只支持 ES Modules",
-      "cjs": "只支持 CommonJS",
-      "dual": "同时支持 CommonJS 和 ES Modules",
-      "unknown_format": "未知模块格式",
-      "ts_included": "包含 TypeScript 类型",
-      "types_from": "类型来自 {package}"
-    },
     "license": {
       "view_spdx": "在 SPDX 上查看许可证文本"
     },
