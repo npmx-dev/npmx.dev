@@ -71,6 +71,25 @@ export const PackageFileQuerySchema = v.object({
 })
 
 /**
+ * Schema for version comparison (from...to range)
+ */
+export const PackageCompareQuerySchema = v.object({
+  packageName: PackageNameSchema,
+  fromVersion: VersionSchema,
+  toVersion: VersionSchema,
+})
+
+/**
+ * Schema for file diff between versions
+ */
+export const PackageFileDiffQuerySchema = v.object({
+  packageName: PackageNameSchema,
+  fromVersion: VersionSchema,
+  toVersion: VersionSchema,
+  filePath: FilePathSchema,
+})
+
+/**
  * Automatically infer types for routes
  * Usage - prefer this over manually defining interfaces
  * @public
@@ -80,3 +99,7 @@ export type PackageRouteParams = v.InferOutput<typeof PackageRouteParamsSchema>
 export type PackageVersionQuery = v.InferOutput<typeof PackageVersionQuerySchema>
 /** @public */
 export type PackageFileQuery = v.InferOutput<typeof PackageFileQuerySchema>
+/** @public */
+export type PackageCompareQuery = v.InferOutput<typeof PackageCompareQuerySchema>
+/** @public */
+export type PackageFileDiffQuery = v.InferOutput<typeof PackageFileDiffQuerySchema>

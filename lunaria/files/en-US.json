@@ -617,5 +617,29 @@
       "empty": "No organizations found",
       "view_all": "View all"
     }
+  },
+  "compare": {
+    "title": "Compare Versions",
+    "from": "From",
+    "to": "To",
+    "comparing": "Comparing versions...",
+    "invalid_url": "Invalid comparison URL. Use format: /compare/package/v/from...to",
+    "failed": "Failed to compare versions",
+    "files_added": "Files added",
+    "files_removed": "Files removed",
+    "files_modified": "Files modified",
+    "deps_changed": "Deps changed",
+    "dependency_changes": "Dependency Changes",
+    "file_changes": "File Changes",
+    "files_count": "{count} files",
+    "no_file_changes": "No file changes detected",
+    "no_content_changes": "No content changes detected",
+    "loading_diff": "Loading diff...",
+    "failed_to_load_diff": "Failed to load diff",
+    "view_file": "View file",
+    "view_in_browser": "View in code browser",
+    "close_diff": "Close diff",
+    "lines_hidden": "{count} lines hidden",
+    "compare_versions": "Compare versions"
   }
 }

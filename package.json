@@ -46,6 +46,7 @@
     "@shikijs/themes": "^3.21.0",
     "@vueuse/core": "^14.1.0",
     "@vueuse/nuxt": "14.1.0",
+    "diff": "^8.0.3",
     "nuxt": "^4.3.0",
     "nuxt-og-image": "^5.1.13",
     "ohash": "^2.0.11",
