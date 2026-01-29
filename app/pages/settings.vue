@@ -8,28 +8,8 @@ const availableLocales = computed(() =>
   locales.value.map(l => (typeof l === 'string' ? { code: l, name: l } : l)),
 )
 
-/**
- * Check if it's safe to navigate back (previous page was same origin).
- * Uses document.referrer to verify the user came from this site.
- */
-function canGoBack(): boolean {
-  if (import.meta.server) return false
-  if (window.history.length <= 1) return false
-  const referrer = document.referrer
-  if (!referrer) return false
-  try {
-    return new URL(referrer).origin === window.location.origin
-  } catch {
-    return false
-  }
-}
-
 function goBack() {
-  if (canGoBack()) {
-    router.back()
-  } else {
-    router.push('/')
-  }
+  router.back()
 }
 
 onKeyStroke('Escape', e => {
