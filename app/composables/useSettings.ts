@@ -14,12 +14,15 @@ export interface AppSettings {
   includeTypesInInstall: boolean
   /** Accent color theme */
   accentColorId: AccentColorId | null
+  /** Hide platform-specific packages (e.g., @scope/pkg-linux-x64) from search results */
+  hidePlatformPackages: boolean
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
   relativeDates: false,
   includeTypesInInstall: true,
   accentColorId: null,
+  hidePlatformPackages: true,
 }
 
 const STORAGE_KEY = 'npmx-settings'

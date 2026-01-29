@@ -163,6 +163,43 @@ defineOgImageComponent('Default', {
                 {{ $t('settings.include_types_description') }}
               </p>
             </div>
+
+            <!-- Divider -->
+            <div class="border-t border-border" />
+
+            <!-- Hide platform-specific packages toggle -->
+            <div class="space-y-2">
+              <button
+                type="button"
+                class="w-full flex items-center justify-between gap-4 group"
+                role="switch"
+                :aria-checked="settings.hidePlatformPackages"
+                @click="settings.hidePlatformPackages = !settings.hidePlatformPackages"
+              >
+                <span class="text-sm text-fg font-medium text-left">
+                  {{ $t('settings.hide_platform_packages') }}
+                </span>
+                <span
+                  class="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out motion-reduce:transition-none shadow-sm cursor-pointer"
+                  :class="
+                    settings.hidePlatformPackages ? 'bg-accent' : 'bg-bg border border-border'
+                  "
+                  aria-hidden="true"
+                >
+                  <span
+                    class="pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
+                    :class="
+                      settings.hidePlatformPackages
+                        ? 'translate-x-5 bg-bg'
+                        : 'translate-x-0 bg-fg-muted'
+                    "
+                  />
+                </span>
+              </button>
+              <p class="text-sm text-fg-muted">
+                {{ $t('settings.hide_platform_packages_description') }}
+              </p>
+            </div>
           </div>
         </section>
 
