@@ -59,7 +59,7 @@ const showFilteredCount = computed(() => {
         class="absolute h-full w-10 flex items-center justify-center text-fg-subtle pointer-events-none"
         aria-hidden="true"
       >
-        <div class="i-carbon-search inline-block w-4 h-4" />
+        <div class="i-carbon:search inline-block w-4 h-4" />
       </div>
       <input
         id="package-filter"
@@ -67,7 +67,7 @@ const showFilteredCount = computed(() => {
         type="search"
         :placeholder="placeholder ?? $t('package.list.filter_placeholder')"
         v-bind="noCorrect"
-        class="w-full bg-bg-subtle border border-border rounded-lg pl-10 pr-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:(border-border-hover outline-none)"
+        class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:(border-border-hover outline-none)"
       />
     </div>
 
@@ -78,17 +78,17 @@ const showFilteredCount = computed(() => {
         <select
           id="package-sort"
           v-model="sortValue"
-          class="appearance-none bg-bg-subtle border border-border rounded-lg pl-3 pr-8 py-2 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
+          class="appearance-none bg-bg-subtle border border-border rounded-lg ps-3 pe-8 py-2 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
         >
           <option v-for="option in sortOptions" :key="option.value" :value="option.value">
             {{ option.label }}
           </option>
         </select>
         <div
-          class="absolute right-3 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
+          class="absolute inset-ie-3 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
           aria-hidden="true"
         >
-          <div class="i-carbon-chevron-down w-4 h-4" />
+          <div class="i-carbon:chevron-down w-4 h-4" />
         </div>
       </div>
     </div>

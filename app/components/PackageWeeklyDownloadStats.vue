@@ -178,7 +178,7 @@ const config = computed(() => {
           >
             {{ $t('package.downloads.title') }}
             <span
-              class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
               aria-hidden="true"
             />
           </a>
@@ -186,10 +186,10 @@ const config = computed(() => {
         <button
           type="button"
           @click="showModal = true"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ml-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ms-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
           :title="$t('package.downloads.analyze')"
         >
-          <span class="i-carbon-data-analytics w-4 h-4" aria-hidden="true" />
+          <span class="i-carbon:data-analytics w-4 h-4" aria-hidden="true" />
           <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
         </button>
       </div>
@@ -201,17 +201,17 @@ const config = computed(() => {
             <!-- Skeleton matching sparkline layout: title row + chart with data label -->
             <div class="min-h-[100px]">
               <!-- Title row: date range (24px height) -->
-              <div class="h-6 flex items-center pl-3">
+              <div class="h-6 flex items-center ps-3">
                 <span class="skeleton h-3 w-36" />
               </div>
               <!-- Chart area: data label left, sparkline right -->
               <div class="aspect-[500/80] flex items-center">
                 <!-- Data label (covers ~42% width) -->
-                <div class="w-[42%] flex items-center pl-0.5">
+                <div class="w-[42%] flex items-center ps-0.5">
                   <span class="skeleton h-7 w-24" />
                 </div>
                 <!-- Sparkline area (~58% width) -->
-                <div class="flex-1 flex items-end gap-0.5 h-4/5 pr-3">
+                <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
                   <span
                     v-for="i in 16"
                     :key="i"
@@ -245,7 +245,7 @@ const config = computed(() => {
           class="w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors"
           :aria-label="$t('common.close')"
         >
-          <span class="w-5 h-5 i-carbon-close" aria-hidden="true" />
+          <span class="w-5 h-5 i-carbon:close" aria-hidden="true" />
         </button>
       </div>
     </template>

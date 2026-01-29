@@ -242,7 +242,7 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 ### Approach
 
 - All user-facing strings should use translation keys via `$t()` in templates and script
-- Translation files live in `i18n/locales/` (e.g., `en-US.json`)
+- Translation files live in [`i18n/locales/`](i18n/locales) (e.g., `en-US.json`)
 - We use the `no_prefix` strategy (no `/en-US/` or `/fr-FR/` in URLs)
 - Locale preference is stored in cookies and respected on subsequent visits
 

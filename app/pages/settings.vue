@@ -42,7 +42,7 @@ defineOgImageComponent('Default', {
             class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 shrink-0"
             @click="router.back()"
           >
-            <span class="i-carbon-arrow-left w-4 h-4" aria-hidden="true" />
+            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
           </button>
         </div>
@@ -106,7 +106,7 @@ defineOgImageComponent('Default', {
                 :aria-checked="settings.relativeDates"
                 @click="settings.relativeDates = !settings.relativeDates"
               >
-                <span class="text-sm text-fg font-medium text-left">
+                <span class="text-sm text-fg font-medium text-start">
                   {{ $t('settings.relative_dates') }}
                 </span>
                 <span
@@ -116,9 +116,7 @@ defineOgImageComponent('Default', {
                 >
                   <span
                     class="pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-                    :class="
-                      settings.relativeDates ? 'translate-x-5 bg-bg' : 'translate-x-0 bg-fg-muted'
-                    "
+                    :class="settings.relativeDates ? 'bg-bg' : 'bg-fg-muted'"
                   />
                 </span>
               </button>
@@ -139,7 +137,7 @@ defineOgImageComponent('Default', {
                 :aria-checked="settings.includeTypesInInstall"
                 @click="settings.includeTypesInInstall = !settings.includeTypesInInstall"
               >
-                <span class="text-sm text-fg font-medium text-left">
+                <span class="text-sm text-fg font-medium text-start">
                   {{ $t('settings.include_types') }}
                 </span>
                 <span
@@ -151,11 +149,7 @@ defineOgImageComponent('Default', {
                 >
                   <span
                     class="pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-                    :class="
-                      settings.includeTypesInInstall
-                        ? 'translate-x-5 bg-bg'
-                        : 'translate-x-0 bg-fg-muted'
-                    "
+                    :class="settings.includeTypesInInstall ? 'bg-bg' : 'bg-fg-muted'"
                   />
                 </span>
               </button>
@@ -176,7 +170,7 @@ defineOgImageComponent('Default', {
                 :aria-checked="settings.hidePlatformPackages"
                 @click="settings.hidePlatformPackages = !settings.hidePlatformPackages"
               >
-                <span class="text-sm text-fg font-medium text-left">
+                <span class="text-sm text-fg font-medium text-start">
                   {{ $t('settings.hide_platform_packages') }}
                 </span>
                 <span
@@ -188,11 +182,7 @@ defineOgImageComponent('Default', {
                 >
                   <span
                     class="pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-                    :class="
-                      settings.hidePlatformPackages
-                        ? 'translate-x-5 bg-bg'
-                        : 'translate-x-0 bg-fg-muted'
-                    "
+                    :class="settings.hidePlatformPackages ? 'bg-bg' : 'bg-fg-muted'"
                   />
                 </span>
               </button>
@@ -246,7 +236,7 @@ defineOgImageComponent('Default', {
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
               >
-                <span class="i-carbon-logo-github w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:logo-github w-4 h-4" aria-hidden="true" />
                 {{ $t('settings.help_translate') }}
               </a>
             </template>
@@ -256,3 +246,15 @@ defineOgImageComponent('Default', {
     </article>
   </main>
 </template>
+
+<style scoped>
+button[aria-checked='false'] > span:last-of-type > span {
+  translate: 0;
+}
+button[aria-checked='true'] > span:last-of-type > span {
+  translate: calc(100%);
+}
+html[dir='rtl'] button[aria-checked='true'] > span:last-of-type > span {
+  translate: calc(-100%);
+}
+</style>

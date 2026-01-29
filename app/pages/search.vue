@@ -776,7 +776,7 @@ defineOgImageComponent('Default', {
 
               <div class="search-box relative flex items-center">
                 <span
-                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-accent"
+                  class="absolute inset-is-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-accent"
                   aria-hidden="true"
                 >
                   /
@@ -790,17 +790,17 @@ defineOgImageComponent('Default', {
                   :placeholder="$t('search.placeholder')"
                   v-bind="noCorrect"
                   autofocus
-                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-accent focus-visible:outline-none appearance-none"
+                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-accent focus-visible:outline-none appearance-none"
                   @keydown="handleResultsKeydown"
                 />
                 <button
                   v-show="inputValue"
                   type="button"
-                  class="absolute right-3 p-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                  class="absolute inset-ie-3 p-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
                   :aria-label="$t('search.clear')"
                   @click="inputValue = ''"
                 >
-                  <span class="i-carbon-close-large block w-3.5 h-3.5" aria-hidden="true" />
+                  <span class="i-carbon:close-large block w-3.5 h-3.5" aria-hidden="true" />
                 </button>
                 <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
                 <button type="submit" class="sr-only">{{ $t('search.button') }}</button>

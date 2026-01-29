@@ -1,5 +1,7 @@
 /**
- * OSV (Open Source Vulnerabilities) API types
+ * Dependency Analysis Types
+ * Types for vulnerability scanning (via OSV API) and deprecated package detection.
+ *
  * @see https://google.github.io/osv.dev/api/
  */
 
@@ -108,7 +110,21 @@ export interface PackageVulnerabilityInfo {
 }
 
 /**
- * Result of vulnerability tree analysis
+ * Deprecated package info in the dependency tree
+ */
+export interface DeprecatedPackageInfo {
+  name: string
+  version: string
+  /** Depth in dependency tree: root (0), direct (1), transitive (2+) */
+  depth: DependencyDepth
+  /** Dependency path from root package */
+  path: string[]
+  /** Deprecation message */
+  message: string
+}
+
+/**
+ * Result of dependency tree analysis
  */
 export interface VulnerabilityTreeResult {
   /** Root package name */
@@ -117,6 +133,8 @@ export interface VulnerabilityTreeResult {
   version: string
   /** All packages with vulnerabilities in the tree */
   vulnerablePackages: PackageVulnerabilityInfo[]
+  /** All deprecated packages in the tree */
+  deprecatedPackages: DeprecatedPackageInfo[]
   /** Total packages analyzed */
   totalPackages: number
   /** Number of packages that could not be checked (OSV query failed) */

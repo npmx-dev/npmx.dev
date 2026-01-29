@@ -85,13 +85,13 @@ const displayVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
-// Fetch vulnerability tree (lazy, client-side)
-// This is the same composable used by PackageVulnerabilityTree
+// Fetch dependency analysis (lazy, client-side)
+// This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
 const {
   data: vulnTree,
   status: vulnTreeStatus,
   fetch: fetchVulnTree,
-} = useVulnerabilityTree(packageName, () => displayVersion.value?.version ?? '')
+} = useDependencyAnalysis(packageName, () => displayVersion.value?.version ?? '')
 onMounted(() => {
   // Fetch vulnerability tree once displayVersion is available
   if (displayVersion.value) {
@@ -183,22 +183,22 @@ const repositoryUrl = computed(() => {
 const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
 
 const PROVIDER_ICONS: Record<string, string> = {
-  github: 'i-carbon-logo-github',
-  gitlab: 'i-simple-icons-gitlab',
-  bitbucket: 'i-simple-icons-bitbucket',
-  codeberg: 'i-simple-icons-codeberg',
-  gitea: 'i-simple-icons-gitea',
-  forgejo: 'i-simple-icons-forgejo',
-  gitee: 'i-simple-icons-gitee',
-  sourcehut: 'i-simple-icons-sourcehut',
-  tangled: 'i-custom-tangled',
-  radicle: 'i-carbon-network-3', // Radicle is a P2P network, using network icon
+  github: 'i-carbon:logo-github',
+  gitlab: 'i-simple-icons:gitlab',
+  bitbucket: 'i-simple-icons:bitbucket',
+  codeberg: 'i-simple-icons:codeberg',
+  gitea: 'i-simple-icons:gitea',
+  forgejo: 'i-simple-icons:forgejo',
+  gitee: 'i-simple-icons:gitee',
+  sourcehut: 'i-simple-icons:sourcehut',
+  tangled: 'i-custom:tangled',
+  radicle: 'i-carbon:network-3', // Radicle is a P2P network, using network icon
 }
 
 const repoProviderIcon = computed(() => {
   const provider = repoRef.value?.provider
-  if (!provider) return 'i-carbon-logo-github'
-  return PROVIDER_ICONS[provider] ?? 'i-carbon-code'
+  if (!provider) return 'i-carbon:logo-github'
+  return PROVIDER_ICONS[provider] ?? 'i-carbon:code'
 })
 
 const homepageUrl = computed(() => {
@@ -525,7 +525,7 @@ function handleClick(event: MouseEvent) {
               <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
               <template v-if="resolvedVersion !== requestedVersion">
                 <span class="font-mono text-fg-muted text-sm">{{ requestedVersion }}</span>
-                <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+                <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
               </template>
 
               <NuxtLink
@@ -545,7 +545,7 @@ function handleClick(event: MouseEvent) {
                 :title="$t('package.verified_provenance')"
               >
                 <span
-                  class="i-solar-shield-check-outline w-3.5 h-3.5 shrink-0"
+                  class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0"
                   aria-hidden="true"
                 />
               </a>
@@ -566,10 +566,10 @@ function handleClick(event: MouseEvent) {
                 v-if="displayVersion"
                 :package-name="pkg.name"
                 :version="displayVersion.version"
-                class="self-baseline ml-1 sm:ml-2"
+                class="self-baseline ms-1 sm:ms-2"
               />
               <template #fallback>
-                <ul class="flex items-center gap-1.5 self-baseline ml-1 sm:ml-2">
+                <ul class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
                   <li class="skeleton w-8 h-5 rounded" />
                   <li class="skeleton w-12 h-5 rounded" />
                 </ul>
@@ -580,7 +580,7 @@ function handleClick(event: MouseEvent) {
             <nav
               v-if="displayVersion"
               :aria-label="$t('package.navigation')"
-              class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ml-auto self-center"
+              class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
             >
               <NuxtLink
                 v-if="docsLink"
@@ -588,7 +588,7 @@ function handleClick(event: MouseEvent) {
                 class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
                 aria-keyshortcuts="d"
               >
-                <span class="i-carbon-document w-3 h-3" aria-hidden="true" />
+                <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
                 {{ $t('package.links.docs') }}
                 <kbd
                   class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
@@ -605,7 +605,7 @@ function handleClick(event: MouseEvent) {
                 class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
                 aria-keyshortcuts="."
               >
-                <span class="i-carbon-code w-3 h-3" aria-hidden="true" />
+                <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
                 {{ $t('package.links.code') }}
                 <kbd
                   class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
@@ -632,7 +632,7 @@ function handleClick(event: MouseEvent) {
             <!-- Fade overlay with show more button - only when collapsed and overflowing -->
             <div
               v-if="pkg.description && descriptionOverflows && !descriptionExpanded"
-              class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
+              class="absolute bottom-0 inside-is-0 inside-ie-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
             >
               <button
                 type="button"
@@ -668,7 +668,7 @@ function handleClick(event: MouseEvent) {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="w-4 h-4 i-carbon-star" aria-hidden="true" />
+                <span class="w-4 h-4 i-carbon:star" aria-hidden="true" />
                 {{ formatCompactNumber(stars, { decimals: 1 }) }}
               </a>
             </li>
@@ -679,7 +679,7 @@ function handleClick(event: MouseEvent) {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-fork w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:fork w-4 h-4" aria-hidden="true" />
                 {{ formatCompactNumber(forks, { decimals: 1 }) }}
               </a>
             </li>
@@ -690,7 +690,7 @@ function handleClick(event: MouseEvent) {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-link w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:link w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.homepage') }}
               </a>
             </li>
@@ -701,7 +701,7 @@ function handleClick(event: MouseEvent) {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-warning w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:warning w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.issues') }}
               </a>
             </li>
@@ -713,7 +713,7 @@ function handleClick(event: MouseEvent) {
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
                 :title="$t('common.view_on_npm')"
               >
-                <span class="i-carbon-logo-npm w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
                 npm
               </a>
             </li>
@@ -725,7 +725,7 @@ function handleClick(event: MouseEvent) {
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
                 :title="$t('badges.jsr.title')"
               >
-                <span class="i-simple-icons-jsr w-4 h-4" aria-hidden="true" />
+                <span class="i-simple-icons:jsr w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.jsr') }}
               </a>
             </li>
@@ -736,7 +736,7 @@ function handleClick(event: MouseEvent) {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-favorite w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:favorite w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.fund') }}
               </a>
             </li>
@@ -746,7 +746,7 @@ function handleClick(event: MouseEvent) {
                 :to="docsLink"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-document w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:document w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.docs') }}
               </NuxtLink>
             </li>
@@ -758,7 +758,7 @@ function handleClick(event: MouseEvent) {
                 }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-code w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:code w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.code') }}
               </NuxtLink>
             </li>
@@ -814,7 +814,7 @@ function handleClick(event: MouseEvent) {
                   class="inline-flex items-center gap-1 text-fg-subtle"
                 >
                   <span
-                    class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
                     aria-hidden="true"
                   />
                 </span>
@@ -833,7 +833,7 @@ function handleClick(event: MouseEvent) {
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
                 :title="$t('package.stats.view_dependency_graph')"
               >
-                <span class="i-carbon-network-3 w-3.5 h-3.5 inline-block" aria-hidden="true" />
+                <span class="i-carbon:network-3 w-3.5 h-3.5 inline-block" aria-hidden="true" />
                 <span class="sr-only">{{ $t('package.stats.view_dependency_graph') }}</span>
               </a>
 
@@ -846,7 +846,7 @@ function handleClick(event: MouseEvent) {
                 :title="$t('package.stats.inspect_dependency_tree')"
               >
                 <span
-                  class="i-solar-eye-scan-outline w-3.5 h-3.5 inline-block"
+                  class="i-solar:eye-scan-outline w-3.5 h-3.5 inline-block"
                   aria-hidden="true"
                 />
                 <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
@@ -858,7 +858,7 @@ function handleClick(event: MouseEvent) {
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
               <span
-                class="i-carbon-information w-3 h-3 text-fg-subtle"
+                class="i-carbon:information w-3 h-3 text-fg-subtle"
                 aria-hidden="true"
                 :title="sizeTooltip"
               />
@@ -880,7 +880,7 @@ function handleClick(event: MouseEvent) {
                 class="inline-flex items-center gap-1 text-fg-subtle"
               >
                 <span
-                  class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                  class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
                   aria-hidden="true"
                 />
               </span>
@@ -903,14 +903,14 @@ function handleClick(event: MouseEvent) {
                   class="inline-flex items-center gap-1 text-fg-subtle"
                 >
                   <span
-                    class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
                     aria-hidden="true"
                   />
                 </span>
                 <span v-else-if="vulnTreeStatus === 'success'">
                   <span v-if="hasVulnerabilities" class="text-amber-500">{{ vulnCount }}</span>
                   <span v-else class="inline-flex items-center gap-1 text-fg-muted">
-                    <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
+                    <span class="i-carbon:checkmark w-3 h-3" aria-hidden="true" />
                     0
                   </span>
                 </span>
@@ -1024,7 +1024,7 @@ function handleClick(event: MouseEvent) {
             >
               {{ $t('package.get_started.title') }}
               <span
-                class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 aria-hidden="true"
               />
             </a>
@@ -1107,7 +1107,10 @@ function handleClick(event: MouseEvent) {
                   class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
                   :title="$t('package.get_started.view_types', { package: typesPackageName })"
                 >
-                  <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+                  <span
+                    class="i-carbon:arrow-right rtl-flip w-3 h-3 inline-block align-middle"
+                    aria-hidden="true"
+                  />
                   <span class="sr-only">View {{ typesPackageName }}</span>
                 </NuxtLink>
               </div>
@@ -1191,7 +1194,7 @@ function handleClick(event: MouseEvent) {
                     class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
                     :title="`View ${createPackageInfo.packageName}`"
                   >
-                    <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+                    <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
                     <span class="sr-only">View {{ createPackageInfo.packageName }}</span>
                   </NuxtLink>
                 </div>
@@ -1209,6 +1212,12 @@ function handleClick(event: MouseEvent) {
             :package-name="pkg.name"
             :version="displayVersion.version"
           />
+          <PackageDeprecatedTree
+            v-if="displayVersion"
+            :package-name="pkg.name"
+            :version="displayVersion.version"
+            class="mt-3"
+          />
         </ClientOnly>
       </div>
 
@@ -1225,7 +1234,7 @@ function handleClick(event: MouseEvent) {
           >
             {{ $t('package.readme.title') }}
             <span
-              class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
               aria-hidden="true"
             />
           </a>
@@ -1273,7 +1282,7 @@ function handleClick(event: MouseEvent) {
               >
                 {{ $t('package.keywords_title') }}
                 <span
-                  class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   aria-hidden="true"
                 />
               </a>
@@ -1314,7 +1323,7 @@ function handleClick(event: MouseEvent) {
               >
                 {{ $t('package.compatibility') }}
                 <span
-                  class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   aria-hidden="true"
                 />
               </a>
