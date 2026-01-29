@@ -85,7 +85,7 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
     name: 'English',
   },
   {
-    code: 'ar',
+    code: 'ar-EG',
     file: 'ar.json',
     name: 'العربية',
     dir: 'rtl',
