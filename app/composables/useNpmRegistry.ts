@@ -409,7 +409,7 @@ export interface OutdatedDependencyInfo {
  * Check if a version constraint explicitly includes a prerelease tag.
  * e.g., "^1.0.0-alpha" or ">=2.0.0-beta.1" include prereleases
  */
-function constraintIncludesPrerelease(constraint: string): boolean {
+export function constraintIncludesPrerelease(constraint: string): boolean {
   return (
     /-(alpha|beta|rc|next|canary|dev|preview|pre|experimental)/i.test(constraint) ||
     /-\d/.test(constraint)
@@ -419,7 +419,7 @@ function constraintIncludesPrerelease(constraint: string): boolean {
 /**
  * Check if a constraint is a non-semver value (git URL, file path, etc.)
  */
-function isNonSemverConstraint(constraint: string): boolean {
+export function isNonSemverConstraint(constraint: string): boolean {
   return (
     constraint.startsWith('git') ||
     constraint.startsWith('http') ||

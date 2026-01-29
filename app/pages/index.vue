@@ -41,7 +41,13 @@ defineOgImageComponent('Default')
         class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
         style="animation-delay: 0.2s"
       >
-        <form role="search" class="relative" @submit.prevent="handleSearch">
+        <form
+          role="search"
+          method="GET"
+          action="/search"
+          class="relative"
+          @submit.prevent="handleSearch"
+        >
           <label for="home-search" class="sr-only">
             {{ $t('search.label') }}
           </label>
@@ -68,7 +74,8 @@ defineOgImageComponent('Default')
                 :placeholder="$t('search.placeholder')"
                 v-bind="noCorrect"
                 autofocus
-                class="w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-all duration-300 focus:(border-accent outline-none)"
+                class="w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+                autocomplete="off"
                 @input="handleSearch"
                 @focus="isSearchFocused = true"
                 @blur="isSearchFocused = false"
@@ -76,7 +83,7 @@ defineOgImageComponent('Default')
 
               <button
                 type="submit"
-                class="absolute right-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 active:scale-95"
+                class="absolute right-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               >
                 {{ $t('search.button') }}
               </button>
@@ -89,7 +96,7 @@ defineOgImageComponent('Default')
     <!-- Popular packages -->
     <nav
       :aria-label="$t('nav.popular_packages')"
-      class="pb-20 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
+      class="pt-4 pb-36 sm:pb-40 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
       style="animation-delay: 0.3s"
     >
       <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">

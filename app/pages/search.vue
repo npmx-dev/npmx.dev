@@ -706,7 +706,7 @@ defineOgImageComponent('Default', {
         <h1 class="font-mono text-xl sm:text-2xl font-medium mb-4">search</h1>
 
         <search>
-          <form role="search" class="relative" @submit.prevent>
+          <form role="search" method="GET" action="/search" class="relative" @submit.prevent>
             <label for="search-input" class="sr-only">{{ $t('search.label') }}</label>
 
             <div class="relative group" :class="{ 'is-focused': isSearchFocused }">

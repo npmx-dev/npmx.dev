@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { useVulnerabilityTree } from '~/composables/useVulnerabilityTree'
+import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
+
 const props = defineProps<{
   packageName: string
+  version: string
   dependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
   peerDependenciesMeta?: Record<string, { optional?: boolean }>
@@ -9,6 +13,18 @@ const props = defineProps<{
 
 // Fetch outdated info for dependencies
 const outdatedDeps = useOutdatedDependencies(() => props.dependencies)
+
+// Get vulnerability info from shared cache (already fetched by PackageVulnerabilityTree)
+const { data: vulnTree } = useVulnerabilityTree(
+  () => props.packageName,
+  () => props.version,
+)
+
+// Check if a dependency has vulnerabilities (only direct deps)
+function getVulnerableDepInfo(depName: string) {
+  if (!vulnTree.value) return null
+  return vulnTree.value.vulnerablePackages.find(p => p.name === depName && p.depth === 'direct')
+}
 
 // Expanded state for each section
 const depsExpanded = shallowRef(false)
@@ -92,6 +108,19 @@ const sortedOptionalDependencies = computed(() => {
               <span class="i-carbon-warning-alt w-3 h-3 block" />
             </span>
             <NuxtLink
+              v-if="getVulnerableDepInfo(dep)"
+              :to="{
+                name: 'package',
+                params: { package: [...dep.split('/'), 'v', getVulnerableDepInfo(dep)!.version] },
+              }"
+              class="shrink-0"
+              :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
+              :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
+            >
+              <span class="i-carbon-security w-3 h-3 block" aria-hidden="true" />
+              <span class="sr-only">View vulnerabilities</span>
+            </NuxtLink>
+            <NuxtLink
               :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"
               class="font-mono text-xs text-right truncate"
               :class="getVersionClass(outdatedDeps[dep])"
@@ -101,6 +130,9 @@ const sortedOptionalDependencies = computed(() => {
             </NuxtLink>
             <span v-if="outdatedDeps[dep]" class="sr-only">
               ({{ getOutdatedTooltip(outdatedDeps[dep]) }})
+            </span>
+            <span v-if="getVulnerableDepInfo(dep)" class="sr-only">
+              ({{ getVulnerableDepInfo(dep)!.counts.total }} vulnerabilities)
             </span>
           </span>
         </li>

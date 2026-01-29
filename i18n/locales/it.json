@@ -9,6 +9,8 @@
   "non_affiliation_disclaimer": "non affiliato con npm, Inc.",
   "trademark_disclaimer": "npm è un marchio registrato da npm, Inc. Questo sito non è affiliato con npm, Inc.",
   "footer": {
+    "about": "info",
+    "docs": "docs",
     "source": "codice",
     "social": "social",
     "chat": "chat"
@@ -26,16 +28,28 @@
     "claim_prompt": "Ottieni il nome di questo pacchetto su npm",
     "claim_button": "Ottieni \"{name}\"",
     "want_to_claim": "Vuoi ottenere il nome di questo pacchetto?",
-    "start_typing": "Inizia a scrivere per cercare i pacchetti"
+    "start_typing": "Inizia a scrivere per cercare i pacchetti",
+    "exact_match": "esatto",
+    "suggestion": {
+      "user": "utente",
+      "org": "organizzazione",
+      "view_user_packages": "Vedi pacchetti di questo utente",
+      "view_org_packages": "Vedi pacchetti di questa organizzazione"
+    }
   },
   "nav": {
     "popular_packages": "Pacchetti popolari",
     "search": "cerca",
-    "settings": "impostazioni"
+    "settings": "impostazioni",
+    "back": "Indietro"
   },
   "settings": {
     "relative_dates": "Date relative",
     "include_types": "Includi {'@'}types durante l'installazione",
+    "theme": "Tema",
+    "theme_light": "Chiaro",
+    "theme_dark": "Scuro",
+    "theme_system": "Sistema",
     "language": "Lingua",
     "help_translate": "Aiuta a tradurre npmx",
     "accent_colors": "Colori di accento"
@@ -91,13 +105,23 @@
       "issues": "issues",
       "forks": "fork | forks",
       "jsr": "jsr",
-      "code": "codice"
+      "code": "codice",
+      "docs": "documenti",
+      "fund": "finanzia"
     },
-    "install": {
-      "title": "Installa",
+    "get_started": {
+      "title": "Inizia",
       "pm_label": "Gestore di pacchetti",
       "copy_command": "Copia comando di installazione",
       "view_types": "Vedi {package}"
+    },
+    "create": {
+      "title": "Crea nuovo progetto",
+      "copy_command": "Copia crea comando"
+    },
+    "run": {
+      "title": "Esegui",
+      "locally": "Esegui localmente"
     },
     "readme": {
       "title": "Readme",
@@ -110,7 +134,8 @@
       "publisher": "Autore",
       "updated": "Aggiornato",
       "weekly_downloads": "Download settimanali",
-      "keywords": "Keywords"
+      "keywords": "Keywords",
+      "license": "Licenza"
     },
     "versions": {
       "title": "Versioni",
@@ -179,22 +204,29 @@
       "title": "Provalo",
       "choose": "sciegli il playground"
     },
-    "metrics": {
-      "esm": "solo ES Modules",
-      "cjs": "solo CommonJS",
-      "dual": "Supporto per entrambi CommonJS e ES Modules",
-      "unknown_format": "Formato modulo sconosciuto",
-      "ts_included": "TypeScript types incluso",
-      "types_from": "Types da {package}"
-    },
     "license": {
       "view_spdx": "Vedi il testo della licenza su SPDX"
     },
     "vulnerabilities": {
       "no_description": "Nessuna descrizione disponibile",
-      "found": "{count} vulnerabilità trovate",
+      "found": "{count} vulnerabilità trovata | {count} vulnerabilità trovate",
+      "deps_found": "{count} vulnerabilità trovata | {count} vulnerabilità trovate",
+      "deps_affected": "{count} dipendenza interessata | {count} dipendenze interessate",
+      "tree_found": "{vulns} vulnerabilità in {packages}/{total} pacchetti | {vulns} vulnerabilità in {packages}/{total} pacchetti",
+      "scanning_tree": "Scansione dell'albero delle dipendenze...",
+      "show_all_packages": "mostra tutti i {count} pacchetti interessati",
       "no_summary": "Nessun riassunto",
       "view_details": "Vedi dettagli sulle vulnerabilitá",
+      "path": "percorso",
+      "more": "+{count} altri",
+      "packages_failed": "{count} pacchetto non ha potuto essere verificato | {count} pacchetti non hanno potuto essere verificati",
+      "no_known": "Nessuna vulnerabilità nota in {count} pacchetti",
+      "scan_failed": "Impossibile analizzare le vulnerabilità",
+      "depth": {
+        "root": "Questo pacchetto",
+        "direct": "Dipendenza diretta",
+        "transitive": "Dipendenza transitiva (indiretta)"
+      },
       "severity": {
         "critical": "critica",
         "high": "alta",
@@ -469,6 +501,35 @@
     "jsr": {
       "title": "disponibile anche su JSR",
       "label": "jsr"
+    }
+  },
+  "about": {
+    "title": "Info",
+    "heading": "info",
+    "meta_description": "npmx è un browser veloce e moderno per il registro npm. Una migliore UX/DX per esplorare i pacchetti npm.",
+    "back_home": "torna alla home",
+    "what_we_are": {
+      "title": "Cosa siamo",
+      "better_ux_dx": "migliore UX/DX",
+      "admin_ui": "interfaccia di amministrazione",
+      "description": "npmx è una {betterUxDx} per il registro npm e i suoi strumenti. Forniamo un'interfaccia veloce e moderna per esplorare i pacchetti, con funzionalità come la modalità scura, la navigazione da tastiera, la visualizzazione del codice e connessioni a registri alternativi come {jsr}.",
+      "admin_description": "Miriamo anche a fornire una migliore {adminUi} per gestire i tuoi pacchetti, team e organizzazioni — tutto dal browser, alimentato dalla tua CLI npm locale."
+    },
+    "what_we_are_not": {
+      "title": "Cosa non siamo",
+      "not_package_manager": "Non un gestore di pacchetti.",
+      "not_registry": "Non un registro.",
+      "registry_description": "Non ospitiamo pacchetti. Siamo solo un modo migliore per esplorarli.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Ci sono",
+        "people": "già",
+        "building": "persone",
+        "really": "che creano",
+        "cool": "davvero",
+        "package": "fantastici",
+        "managers": "gestori di pacchetti"
+      }
     }
   },
   "header": {
