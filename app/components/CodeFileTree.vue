@@ -39,21 +39,21 @@ watch(
       <template v-if="node.type === 'directory'">
         <button
           type="button"
-          class="w-full flex items-center gap-1.5 py-1.5 px-3 text-left font-mono text-sm transition-colors hover:bg-bg-muted"
+          class="w-full flex items-center gap-1.5 py-1.5 px-3 text-start font-mono text-sm transition-colors hover:bg-bg-muted"
           :class="isNodeActive(node) ? 'text-fg' : 'text-fg-muted'"
           :style="{ paddingLeft: `${depth * 12 + 12}px` }"
           @click="toggleDir(node.path)"
         >
           <span
             class="w-4 h-4 shrink-0 transition-transform"
-            :class="[isExpanded(node.path) ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right']"
+            :class="[isExpanded(node.path) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right']"
           />
           <span
             class="w-4 h-4 shrink-0"
             :class="
               isExpanded(node.path)
-                ? 'i-carbon-folder-open text-yellow-500'
-                : 'i-carbon-folder text-yellow-600'
+                ? 'i-carbon:folder-open text-yellow-500'
+                : 'i-carbon:folder text-yellow-600'
             "
           />
           <span class="truncate">{{ node.name }}</span>
