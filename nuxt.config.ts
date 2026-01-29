@@ -47,7 +47,6 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'en' },
       link: [
         {
           rel: 'search',
@@ -180,7 +179,12 @@ export default defineNuxtConfig({
   i18n: {
     defaultLocale: 'en',
     strategy: 'no_prefix',
-    detectBrowserLanguage: false,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'npmx-locale',
+      fallbackLocale: 'en-US',
+      alwaysRedirect: false,
+    },
     langDir: 'locales',
     locales: [
       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },

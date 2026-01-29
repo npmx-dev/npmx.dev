@@ -2,11 +2,17 @@
 const router = useRouter()
 const { settings } = useSettings()
 const { locale, locales, setLocale } = useI18n()
+const localeCookie = useCookie('npmx-locale')
 const colorMode = useColorMode()
 
 const availableLocales = computed(() =>
   locales.value.map(l => (typeof l === 'string' ? { code: l, name: l } : l)),
 )
+
+async function handleLocaleChange(nextLocale: typeof locale.value) {
+  localeCookie.value = nextLocale
+  await setLocale(nextLocale)
+}
 
 /**
  * Check if it's safe to navigate back (previous page was same origin).
@@ -144,7 +150,9 @@ useSeoMeta({
             id="language-select"
             :value="locale"
             class="w-full bg-bg-muted border border-border rounded-md px-2 py-1.5 text-sm text-fg focus:outline-none focus:ring-2 focus:ring-fg/50 cursor-pointer"
-            @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
+            @change="
+              handleLocaleChange(($event.target as HTMLSelectElement).value as typeof locale)
+            "
           >
             <option v-for="loc in availableLocales" :key="loc.code" :value="loc.code">
               {{ loc.name }}
