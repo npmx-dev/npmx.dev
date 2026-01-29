@@ -228,9 +228,10 @@ function handleLineClick(lineNum: number, event: MouseEvent) {
 }
 
 // Copy link to current line(s)
-async function copyPermalink() {
+const { copied: permalinkCopied, copy: copyPermalink } = useClipboard({ copiedDuring: 2000 })
+function copyPermalinkUrl() {
   const url = new URL(window.location.href)
-  await navigator.clipboard.writeText(url.toString())
+  copyPermalink(url.toString())
 }
 
 // Canonical URL for this code page
@@ -373,9 +374,9 @@ useSeoMeta({
                 v-if="selectedLines"
                 type="button"
                 class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors"
-                @click="copyPermalink"
+                @click="copyPermalinkUrl"
               >
-                {{ $t('code.copy_link') }}
+                {{ permalinkCopied ? $t('common.copied') : $t('code.copy_link') }}
               </button>
               <a
                 :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"

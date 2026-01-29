@@ -487,7 +487,9 @@ const config = computed(() => ({
       stroke: isDarkMode.value ? '#4A4A4A' : '#a3a3a3',
       labels: {
         axis: {
-          yLabel: $t('package.downloads.y_axis_label', { granularity: selectedGranularity.value }),
+          yLabel: $t('package.downloads.y_axis_label', {
+            granularity: $t(`package.downloads.granularity_${selectedGranularity.value}`),
+          }),
           xLabel: packageName,
           yLabelOffsetX: 12,
           fontSize: 24,

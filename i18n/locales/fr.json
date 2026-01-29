@@ -9,6 +9,8 @@
   "non_affiliation_disclaimer": "non affilié à npm, Inc.",
   "trademark_disclaimer": "npm est une marque déposée de npm, Inc. Ce site n'est pas affilié à npm, Inc.",
   "footer": {
+    "about": "à propos",
+    "docs": "docs",
     "source": "source",
     "social": "réseaux sociaux",
     "chat": "espace de discussion"
@@ -38,7 +40,8 @@
   "nav": {
     "popular_packages": "Paquets populaires",
     "search": "recherche",
-    "settings": "paramètres"
+    "settings": "paramètres",
+    "back": "Retour"
   },
   "settings": {
     "relative_dates": "Dates relatives",
@@ -104,8 +107,8 @@
       "code": "code",
       "docs": "docs"
     },
-    "install": {
-      "title": "Installer",
+    "get_started": {
+      "title": "Commencer",
       "pm_label": "Gestionnaire de paquets",
       "copy_command": "Copier la commande d'installation",
       "view_types": "Voir {package}"
@@ -191,22 +194,29 @@
       "title": "Essayer",
       "choose": "choisir un playground"
     },
-    "metrics": {
-      "esm": "ES Modules uniquement",
-      "cjs": "CommonJS uniquement",
-      "dual": "Supporte CommonJS et ES Modules",
-      "unknown_format": "Format de module inconnu",
-      "ts_included": "Types TypeScript inclus",
-      "types_from": "Types depuis {package}"
-    },
     "license": {
       "view_spdx": "Voir le texte de la licence sur SPDX"
     },
     "vulnerabilities": {
       "no_description": "Aucune description disponible",
       "found": "{count} vulnérabilité trouvée | {count} vulnérabilités trouvées",
+      "deps_found": "{count} vulnérabilité trouvée | {count} vulnérabilités trouvées",
+      "deps_affected": "{count} dépendance affectée | {count} dépendances affectées",
+      "tree_found": "{vulns} vulnérabilité dans {packages}/{total} paquets | {vulns} vulnérabilités dans {packages}/{total} paquets",
+      "scanning_tree": "Analyse de l'arbre des dépendances...",
+      "show_all_packages": "afficher les {count} paquets affectés",
       "no_summary": "Aucun résumé",
       "view_details": "Voir les détails de la vulnérabilité",
+      "path": "chemin",
+      "more": "+{count} de plus",
+      "packages_failed": "{count} paquet n'a pas pu être vérifié | {count} paquets n'ont pas pu être vérifiés",
+      "no_known": "Aucune vulnérabilité connue dans {count} paquets",
+      "scan_failed": "Impossible d'analyser les vulnérabilités",
+      "depth": {
+        "root": "Ce paquet",
+        "direct": "Dépendance directe",
+        "transitive": "Dépendance transitive (indirecte)"
+      },
       "severity": {
         "critical": "critique",
         "high": "élevée",
@@ -481,6 +491,35 @@
     "jsr": {
       "title": "aussi disponible sur JSR",
       "label": "jsr"
+    }
+  },
+  "about": {
+    "title": "À propos",
+    "heading": "à propos",
+    "meta_description": "npmx est un navigateur rapide et moderne pour le registre npm. Une meilleure UX/DX pour explorer les paquets npm.",
+    "back_home": "retour à l'accueil",
+    "what_we_are": {
+      "title": "Ce que nous sommes",
+      "better_ux_dx": "meilleure UX/DX",
+      "admin_ui": "interface d'administration",
+      "description": "npmx est une {betterUxDx} pour le registre npm et ses outils. Nous fournissons une interface rapide et moderne pour explorer les paquets, avec des fonctionnalités comme le mode sombre, la navigation au clavier, la visualisation du code, et des connexions à des registres alternatifs comme {jsr}.",
+      "admin_description": "Nous visons également à fournir une meilleure {adminUi} pour gérer vos paquets, équipes et organisations — le tout depuis le navigateur, alimenté par votre CLI npm local."
+    },
+    "what_we_are_not": {
+      "title": "Ce que nous ne sommes pas",
+      "not_package_manager": "Pas un gestionnaire de paquets.",
+      "not_registry": "Pas un registre.",
+      "registry_description": "Nous n'hébergeons pas de paquets. Nous sommes juste une meilleure façon de les parcourir.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Il y a",
+        "people": "déjà",
+        "building": "des gens",
+        "really": "qui créent",
+        "cool": "de vraiment",
+        "package": "super",
+        "managers": "gestionnaires de paquets"
+      }
     }
   },
   "header": {

@@ -58,6 +58,15 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* Offset for fixed header - otherwise anchor headers are cutted */
+}
+
+/* Disable smooth scrolling if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /*
@@ -76,7 +85,6 @@ body {
   background-color: var(--bg);
   color: var(--fg);
   line-height: 1.6;
-  padding-bottom: var(--footer-height, 0);
 }
 
 /* Default link styling for accessibility on dark background */
@@ -247,7 +255,6 @@ html.light .shiki span {
 /* Code blocks - including Shiki output */
 .readme-content pre,
 .readme-content .shiki {
-  background: oklch(0.145 0 0) !important;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 1rem;
@@ -310,6 +317,7 @@ html.light .shiki span {
   background: var(--bg-subtle);
   font-style: normal;
   color: var(--fg-subtle);
+  position: relative;
 }
 
 .readme-content blockquote[data-callout]::before {
@@ -320,6 +328,15 @@ html.light .shiki span {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.readme-content blockquote[data-callout]::after {
+  content: '';
+  width: 1.25rem;
+  height: 1.25rem;
+  position: absolute;
+  top: 1rem;
 }
 
 .readme-content blockquote[data-callout] > p:first-child {
@@ -339,6 +356,11 @@ html.light .shiki span {
   content: 'Note';
   color: #3b82f6;
 }
+.readme-content blockquote[data-callout='note']::after {
+  background-color: #3b82f6;
+  -webkit-mask: icon('i-lucide-info') no-repeat;
+  mask: icon('i-lucide-info') no-repeat;
+}
 
 /* Tip - green */
 .readme-content blockquote[data-callout='tip'] {
@@ -348,6 +370,11 @@ html.light .shiki span {
 .readme-content blockquote[data-callout='tip']::before {
   content: 'Tip';
   color: #22c55e;
+}
+.readme-content blockquote[data-callout='tip']::after {
+  background-color: #22c55e;
+  -webkit-mask: icon('i-lucide-lightbulb') no-repeat;
+  mask: icon('i-lucide-lightbulb') no-repeat;
 }
 
 /* Important - purple */
@@ -359,6 +386,11 @@ html.light .shiki span {
   content: 'Important';
   color: var(--syntax-fn);
 }
+.readme-content blockquote[data-callout='important']::after {
+  background-color: var(--syntax-fn);
+  -webkit-mask: icon('i-lucide-pin') no-repeat;
+  mask: icon('i-lucide-pin') no-repeat;
+}
 
 /* Warning - yellow/orange */
 .readme-content blockquote[data-callout='warning'] {
@@ -369,6 +401,11 @@ html.light .shiki span {
   content: 'Warning';
   color: #eab308;
 }
+.readme-content blockquote[data-callout='warning']::after {
+  background-color: #eab308;
+  -webkit-mask: icon('i-lucide-triangle-alert') no-repeat;
+  mask: icon('i-lucide-triangle-alert') no-repeat;
+}
 
 /* Caution - red */
 .readme-content blockquote[data-callout='caution'] {
@@ -378,6 +415,11 @@ html.light .shiki span {
 .readme-content blockquote[data-callout='caution']::before {
   content: 'Caution';
   color: #ef4444;
+}
+.readme-content blockquote[data-callout='caution']::after {
+  background-color: #ef4444;
+  -webkit-mask: icon('i-lucide-circle-alert') no-repeat;
+  mask: icon('i-lucide-circle-alert') no-repeat;
 }
 
 /* Table wrapper for horizontal scroll on mobile */

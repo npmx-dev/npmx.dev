@@ -9,14 +9,16 @@
 </p>
 
 - [👉 &nbsp;Check it out](https://npmx.dev/)
+- [📖 &nbsp;About npmx](https://npmx.dev/about)
 
 ## Vision
 
-The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the npm registry &ndash; fast, modern, and accessible. We don't aim to replace the [npmjs.com](https://www.npmjs.com/) registry, just provide a better UI and DX.
+The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the npm registry &ndash; fast, modern, and accessible. We don't aim to replace the [npmjs.com](https://www.npmjs.com/) registry, just provide a better UI, DX, and admin experience.
 
 - **Speed first** &ndash; Layout shift, flakiness, slowness is The Worst. Fast searching, filtering, and navigation.
 - **URL compatible** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
 - **Simplicity** &ndash; No noise, cluttered display, or confusing UI. If in doubt: choose simplicity.
+- **Admin UI** &ndash; Manage your packages, teams, and organizations from the browser, powered by your local npm CLI.
 
 ## Shortcuts
 

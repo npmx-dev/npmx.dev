@@ -296,7 +296,7 @@ watch(lastExecutionTime, () => {
           type="search"
           name="teams-search"
           :placeholder="$t('org.teams.filter_placeholder')"
-          autocomplete="off"
+          v-bind="noCorrect"
           class="w-full pl-7 pr-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         />
       </div>
@@ -453,8 +453,7 @@ watch(lastExecutionTime, () => {
                 type="text"
                 :name="`add-user-${teamName}`"
                 :placeholder="$t('org.teams.username_placeholder')"
-                autocomplete="off"
-                spellcheck="false"
+                v-bind="noCorrect"
                 class="flex-1 px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               />
               <button
@@ -510,8 +509,7 @@ watch(lastExecutionTime, () => {
               type="text"
               name="new-team-name"
               :placeholder="$t('org.teams.team_name_placeholder')"
-              autocomplete="off"
-              spellcheck="false"
+              v-bind="noCorrect"
               class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded-r text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             />
           </div>

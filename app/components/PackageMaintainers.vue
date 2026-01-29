@@ -227,8 +227,7 @@ watch(
             type="text"
             name="add-owner-username"
             :placeholder="$t('package.maintainers.username_placeholder')"
-            autocomplete="off"
-            spellcheck="false"
+            v-bind="noCorrect"
             class="flex-1 px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
           />
           <button

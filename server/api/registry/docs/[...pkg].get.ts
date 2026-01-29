@@ -29,6 +29,7 @@ export default defineCachedEventHandler(
     try {
       generated = await generateDocsWithDeno(packageName, version)
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(`Doc generation failed for ${packageName}@${version}:`, error)
       return {
         package: packageName,

@@ -7,7 +7,7 @@ const router = useRouter()
 // Initialize accent color before hydration to prevent flash
 initAccentOnPrehydrate()
 
-const isHomepage = computed(() => route.path === '/')
+const isHomepage = computed(() => route.name === 'index')
 
 useHead({
   titleTemplate: titleChunk => {

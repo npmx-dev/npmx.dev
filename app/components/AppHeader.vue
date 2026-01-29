@@ -13,6 +13,24 @@ withDefaults(
 const { isConnected, npmUser } = useConnector()
 
 const router = useRouter()
+const route = useRoute()
+
+const searchQuery = ref('')
+const isSearchFocused = ref(false)
+
+const showSearchBar = computed(() => {
+  return route.name !== 'search' && route.name !== 'index'
+})
+
+async function handleSearchInput() {
+  const query = searchQuery.value.trim()
+  await router.push({
+    name: 'search',
+    query: query ? { q: query } : undefined,
+  })
+  searchQuery.value = ''
+}
+
 onKeyStroke(',', e => {
   // Don't trigger if user is typing in an input
   const target = e.target as HTMLElement
@@ -45,40 +63,73 @@ onKeyStroke(',', e => {
         <span v-else class="w-1" />
       </div>
 
-      <!-- Center: Main nav items -->
-      <ul class="flex-1 flex items-center justify-center gap-4 sm:gap-6 list-none m-0 p-0">
-        <li class="flex items-center">
-          <NuxtLink
-            to="/search"
-            class="link-subtle font-mono text-sm inline-flex items-center gap-2"
-            aria-keyshortcuts="/"
+      <!-- Center: Search bar + nav items -->
+      <div class="flex-1 flex items-center justify-center gap-4 sm:gap-6">
+        <!-- Search bar (shown on all pages except home and search) -->
+        <search v-if="showSearchBar" class="hidden sm:block flex-1 max-w-md">
+          <form
+            role="search"
+            method="GET"
+            action="/search"
+            class="relative"
+            @submit.prevent="handleSearchInput"
           >
-            {{ $t('nav.search') }}
-            <kbd
-              class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
-              aria-hidden="true"
-            >
-              /
-            </kbd>
-          </NuxtLink>
-        </li>
+            <label for="header-search" class="sr-only">
+              {{ $t('search.label') }}
+            </label>
 
-        <!-- Packages dropdown (when connected) -->
-        <li v-if="isConnected && npmUser" class="flex items-center">
-          <HeaderPackagesDropdown :username="npmUser" />
-        </li>
+            <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
+              <div class="search-box relative flex items-center">
+                <span
+                  class="absolute left-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none group-focus-within:text-accent z-1"
+                >
+                  /
+                </span>
 
-        <!-- Orgs dropdown (when connected) -->
-        <li v-if="isConnected && npmUser" class="flex items-center">
-          <HeaderOrgsDropdown :username="npmUser" />
-        </li>
-      </ul>
+                <input
+                  id="header-search"
+                  v-model="searchQuery"
+                  type="search"
+                  name="q"
+                  :placeholder="$t('search.placeholder')"
+                  v-bind="noCorrect"
+                  class="w-full bg-bg-subtle border border-border rounded-md pl-7 pr-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+                  autocomplete="off"
+                  @input="handleSearchInput"
+                  @focus="isSearchFocused = true"
+                  @blur="isSearchFocused = false"
+                />
+                <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
+              </div>
+            </div>
+          </form>
+        </search>
+
+        <ul class="flex items-center gap-4 sm:gap-6 list-none m-0 p-0">
+          <!-- Packages dropdown (when connected) -->
+          <li v-if="isConnected && npmUser" class="flex items-center">
+            <HeaderPackagesDropdown :username="npmUser" />
+          </li>
+
+          <!-- Orgs dropdown (when connected) -->
+          <li v-if="isConnected && npmUser" class="flex items-center">
+            <HeaderOrgsDropdown :username="npmUser" />
+          </li>
+        </ul>
+      </div>
 
       <!-- Right: User status + GitHub -->
-      <div class="flex-shrink-0 flex items-center gap-6">
+      <div class="flex-shrink-0 flex items-center gap-4 sm:gap-6 ml-auto sm:ml-0">
+        <NuxtLink
+          to="/about"
+          class="sm:hidden link-subtle font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+        >
+          {{ $t('footer.about') }}
+        </NuxtLink>
+
         <NuxtLink
           to="/settings"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-2"
+          class="link-subtle font-mono text-sm inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
           aria-keyshortcuts=","
         >
           {{ $t('nav.settings') }}
@@ -90,19 +141,9 @@ onKeyStroke(',', e => {
           </kbd>
         </NuxtLink>
 
-        <div v-if="showConnector">
+        <div v-if="showConnector" class="hidden sm:block">
           <ConnectorStatus />
         </div>
-
-        <a
-          href="https://github.com/npmx-dev/npmx.dev"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link-subtle"
-          :aria-label="$t('header.github')"
-        >
-          <span class="i-carbon-logo-github w-5 h-5" aria-hidden="true" />
-        </a>
       </div>
     </nav>
   </header>

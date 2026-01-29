@@ -704,7 +704,7 @@ defineOgImageComponent('Default', {
         <h1 class="font-mono text-xl sm:text-2xl font-medium mb-4">search</h1>
 
         <search>
-          <form role="search" class="relative" @submit.prevent>
+          <form role="search" method="GET" action="/search" class="relative" @submit.prevent>
             <label for="search-input" class="sr-only">{{ $t('search.label') }}</label>
 
             <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
@@ -727,11 +727,8 @@ defineOgImageComponent('Default', {
                   type="search"
                   name="q"
                   :placeholder="$t('search.placeholder')"
+                  v-bind="noCorrect"
                   autofocus
-                  autocapitalize="off"
-                  autocomplete="off"
-                  autocorrect="off"
-                  spellcheck="false"
                   class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-accent focus-visible:outline-none appearance-none"
                   @keydown="handleResultsKeydown"
                 />

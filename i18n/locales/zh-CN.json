@@ -9,6 +9,8 @@
   "non_affiliation_disclaimer": "不与 npm, Inc. 有任何隶属关系",
   "trademark_disclaimer": "npm 是 npm, Inc. 的注册商标。本网站不与 npm, Inc. 有任何隶属关系。",
   "footer": {
+    "about": "关于",
+    "docs": "文档",
     "source": "源码",
     "social": "社媒",
     "chat": "聊天"
@@ -38,7 +40,8 @@
   "nav": {
     "popular_packages": "热门软件包",
     "search": "搜索",
-    "settings": "设置"
+    "settings": "设置",
+    "back": "返回"
   },
   "settings": {
     "relative_dates": "相对时间",
@@ -106,11 +109,19 @@
       "docs": "文档",
       "fund": "资助"
     },
-    "install": {
-      "title": "安装",
+    "get_started": {
+      "title": "开始使用",
       "pm_label": "包管理器",
       "copy_command": "复制安装命令",
       "view_types": "查看 {package}"
+    },
+    "create": {
+      "title": "创建新项目",
+      "copy_command": "复制创建命令"
+    },
+    "run": {
+      "title": "运行",
+      "locally": "本地运行"
     },
     "readme": {
       "title": "Readme",
@@ -193,22 +204,29 @@
       "title": "试一试",
       "choose": "选择 Playground"
     },
-    "metrics": {
-      "esm": "只支持 ES Modules",
-      "cjs": "只支持 CommonJS",
-      "dual": "同时支持 CommonJS 和 ES Modules",
-      "unknown_format": "未知模块格式",
-      "ts_included": "包含 TypeScript 类型",
-      "types_from": "类型来自 {package}"
-    },
     "license": {
       "view_spdx": "在 SPDX 上查看许可证文本"
     },
     "vulnerabilities": {
       "no_description": "没有可用的描述",
       "found": "{count} 个漏洞",
+      "deps_found": "{count} 个漏洞",
+      "deps_affected": "{count} 个受影响的依赖",
+      "tree_found": "在 {packages}/{total} 个包中发现 {vulns} 个漏洞",
+      "scanning_tree": "正在扫描依赖树...",
+      "show_all_packages": "显示全部 {count} 个受影响的包",
       "no_summary": "没有总结",
       "view_details": "查看漏洞详情",
+      "path": "路径",
+      "more": "+{count} 更多",
+      "packages_failed": "{count} 个包无法检查",
+      "no_known": "在 {count} 个包中未发现已知漏洞",
+      "scan_failed": "无法扫描漏洞",
+      "depth": {
+        "root": "此包",
+        "direct": "直接依赖",
+        "transitive": "间接依赖（传递性）"
+      },
       "severity": {
         "critical": "严重",
         "high": "高",
@@ -483,6 +501,35 @@
     "jsr": {
       "title": "也适用于 JSR",
       "label": "jsr"
+    }
+  },
+  "about": {
+    "title": "关于",
+    "heading": "关于",
+    "meta_description": "npmx 是一个快速、现代的 npm 仓库浏览器。为探索 npm 包提供更好的用户体验和开发者体验。",
+    "back_home": "返回首页",
+    "what_we_are": {
+      "title": "我们是什么",
+      "better_ux_dx": "更好的用户体验和开发者体验",
+      "admin_ui": "管理界面",
+      "description": "npmx 为 npm 包仓库及其工具提供{betterUxDx}。我们提供快速、现代的界面来探索包，具有深色模式、键盘导航、代码浏览以及与 {jsr} 等替代仓库的连接等功能。",
+      "admin_description": "我们还致力于提供更好的{adminUi}来管理您的包、团队和组织——全部在浏览器中完成，由您本地的 npm CLI 驱动。"
+    },
+    "what_we_are_not": {
+      "title": "我们不是什么",
+      "not_package_manager": "不是包管理器。",
+      "not_registry": "不是仓库。",
+      "registry_description": "我们不托管包。我们只是一种更好的浏览方式。",
+      "package_managers_exist": "{already}{people}{building}{really}{cool}{package}{managers}。",
+      "words": {
+        "already": "已经有",
+        "people": "很多",
+        "building": "人在",
+        "really": "开发",
+        "cool": "非常",
+        "package": "棒的",
+        "managers": "包管理器"
+      }
     }
   },
   "header": {
