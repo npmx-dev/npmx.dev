@@ -225,6 +225,11 @@
         "low": "faible"
       }
     },
+    "deprecated": {
+      "label": "Obsolète",
+      "tree_found": "{count} dépendance obsolète | {count} dépendances obsolètes",
+      "show_all": "afficher les {count} paquets obsolètes"
+    },
     "access": {
       "title": "Accès des équipes",
       "refresh": "Actualiser l'accès des équipes",

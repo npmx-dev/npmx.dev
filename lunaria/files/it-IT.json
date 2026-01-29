@@ -241,6 +241,11 @@
         "low": "bassa"
       }
     },
+    "deprecated": {
+      "label": "Deprecato",
+      "tree_found": "{count} dipendenza deprecata | {count} dipendenze deprecate",
+      "show_all": "mostra tutti i {count} pacchetti deprecati"
+    },
     "access": {
       "title": "Accesso Team",
       "refresh": "Aggiorna accesso team",
