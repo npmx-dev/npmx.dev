@@ -735,7 +735,7 @@ defineOgImageComponent('Default', {
                 <button
                   v-show="inputValue"
                   type="button"
-                  class="absolute right-3 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                  class="absolute right-3 p-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
                   :aria-label="$t('search.clear')"
                   @click="inputValue = ''"
                 >
