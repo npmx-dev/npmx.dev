@@ -41,6 +41,7 @@
         "@voidzero-dev/vite-plus-core",
         "h3",
         "ohash",
+        "unplugin-vue-router",
         "vue-router"
       ],
       "ignoreUnresolved": ["#components"]
