@@ -13,7 +13,16 @@ const debouncedNavigate = debounce(() => {
   })
 }, 250)
 
-function handleSearch() {
+function handleSearch(event?: Event) {
+  // If triggered by button click (not input), navigate immediately when empty
+  const isButtonClick = event?.type === 'click' || event?.type === 'submit'
+  const isEmpty = !searchQuery.value.trim()
+
+  if (isButtonClick && isEmpty) {
+    router.push('/search')
+    return
+  }
+
   debouncedNavigate()
 }
 
@@ -53,7 +62,7 @@ defineOgImageComponent('Default')
           method="GET"
           action="/search"
           class="relative"
-          @submit.prevent="handleSearch"
+          @submit.prevent="handleSearch($event)"
         >
           <label for="home-search" class="sr-only">
             {{ $t('search.label') }}
