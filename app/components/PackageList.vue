@@ -98,7 +98,7 @@ const { handleScroll, scrollToPage } = useVirtualInfiniteScroll({
   itemCount,
   hasMore,
   isLoading,
-  pageSize: numericPageSize.value,
+  pageSize: numericPageSize,
   threshold: 5,
   onLoadMore: () => emit('loadMore'),
   onPageChange: page => emit('pageChange', page),
@@ -212,7 +212,19 @@ defineExpose({
 
     <!-- Card View with Pagination -->
     <template v-else>
-      <ol class="list-none m-0 p-0">
+      <!-- Loading state when fetching page data -->
+      <div
+        v-if="isLoading && displayedResults.length === 0"
+        class="py-12 flex items-center justify-center"
+      >
+        <div class="flex items-center gap-3 text-fg-muted font-mono text-sm">
+          <span
+            class="w-5 h-5 border-2 border-fg-subtle border-t-fg rounded-full motion-safe:animate-spin"
+          />
+          {{ $t('common.loading') }}
+        </div>
+      </div>
+      <ol v-else class="list-none m-0 p-0">
         <li v-for="(item, index) in displayedResults" :key="item.package.name" class="pb-4">
           <PackageCard
             :result="item"

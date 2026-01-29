@@ -60,9 +60,23 @@ const {
 // Pagination state
 const currentPage = ref(1)
 
+// Calculate total pages
+const totalPages = computed(() => {
+  if (pageSize.value === 'all') return 1
+  const numericSize = typeof pageSize.value === 'number' ? pageSize.value : 25
+  return Math.ceil(sortedPackages.value.length / numericSize)
+})
+
 // Reset to page 1 when filters change
 watch([filters, sortOption], () => {
   currentPage.value = 1
+})
+
+// Clamp current page when total pages decreases (e.g., after filtering)
+watch(totalPages, newTotal => {
+  if (currentPage.value > newTotal && newTotal > 0) {
+    currentPage.value = newTotal
+  }
 })
 
 // Debounced URL update for filter/sort
