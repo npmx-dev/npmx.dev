@@ -241,6 +241,11 @@
         "low": "低"
       }
     },
+    "deprecated": {
+      "label": "已弃用",
+      "tree_found": "{count} 个已弃用的依赖",
+      "show_all": "显示全部 {count} 个已弃用的包"
+    },
     "access": {
       "title": "团队权限",
       "refresh": "刷新团队权限",

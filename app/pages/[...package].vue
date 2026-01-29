@@ -85,13 +85,13 @@ const displayVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
-// Fetch vulnerability tree (lazy, client-side)
-// This is the same composable used by PackageVulnerabilityTree
+// Fetch dependency analysis (lazy, client-side)
+// This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
 const {
   data: vulnTree,
   status: vulnTreeStatus,
   fetch: fetchVulnTree,
-} = useVulnerabilityTree(packageName, () => displayVersion.value?.version ?? '')
+} = useDependencyAnalysis(packageName, () => displayVersion.value?.version ?? '')
 onMounted(() => {
   // Fetch vulnerability tree once displayVersion is available
   if (displayVersion.value) {
@@ -1089,7 +1089,10 @@ defineOgImageComponent('Package', {
                   class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
                   :title="$t('package.get_started.view_types', { package: typesPackageName })"
                 >
-                  <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
+                  <span
+                    class="i-carbon:arrow-right rtl-flip w-3 h-3 inline-block align-middle"
+                    aria-hidden="true"
+                  />
                   <span class="sr-only">View {{ typesPackageName }}</span>
                 </NuxtLink>
               </div>
@@ -1190,6 +1193,12 @@ defineOgImageComponent('Package', {
             v-if="displayVersion"
             :package-name="pkg.name"
             :version="displayVersion.version"
+          />
+          <PackageDeprecatedTree
+            v-if="displayVersion"
+            :package-name="pkg.name"
+            :version="displayVersion.version"
+            class="mt-3"
           />
         </ClientOnly>
       </div>

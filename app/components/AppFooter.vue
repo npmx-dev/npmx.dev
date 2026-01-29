@@ -1,8 +1,10 @@
 <template>
   <footer class="border-t border-border mt-auto">
     <div class="container py-3 sm:py-8 flex flex-col gap-2 sm:gap-4 text-fg-subtle text-sm">
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-4">
-        <p class="font-mono m-0 hidden sm:block">{{ $t('tagline') }}</p>
+      <div
+        class="flex flex-col sm:flex-row items-center sm:items-baseline justify-between gap-2 sm:gap-4"
+      >
+        <p class="font-mono text-balance m-0 hidden sm:block">{{ $t('tagline') }}</p>
         <div class="flex items-center gap-3 sm:gap-6">
           <NuxtLink
             to="/about"

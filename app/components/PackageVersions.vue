@@ -363,7 +363,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(row.primaryVersion.version)"
-                class="font-mono text-sm transition-colors duration-200 truncate"
+                class="font-mono text-sm transition-colors duration-200 truncate inline-flex items-center gap-1"
                 :class="
                   row.primaryVersion.deprecated
                     ? 'text-red-400 hover:text-red-300'
@@ -377,6 +377,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     : row.primaryVersion.version
                 "
               >
+                <span
+                  v-if="row.primaryVersion.deprecated"
+                  class="i-carbon-warning-hex w-3.5 h-3.5 shrink-0"
+                  aria-hidden="true"
+                />
                 {{ row.primaryVersion.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
@@ -418,7 +423,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(v.version)"
-                class="font-mono text-xs transition-colors duration-200 truncate"
+                class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                 :class="
                   v.deprecated
                     ? 'text-red-400 hover:text-red-300'
@@ -430,6 +435,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     : v.version
                 "
               >
+                <span
+                  v-if="v.deprecated"
+                  class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                  aria-hidden="true"
+                />
                 {{ v.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
@@ -510,7 +520,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(row.primaryVersion.version)"
-                class="font-mono text-xs transition-colors duration-200 truncate"
+                class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                 :class="
                   row.primaryVersion.deprecated
                     ? 'text-red-400 hover:text-red-300'
@@ -524,6 +534,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     : row.primaryVersion.version
                 "
               >
+                <span
+                  v-if="row.primaryVersion.deprecated"
+                  class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                  aria-hidden="true"
+                />
                 {{ row.primaryVersion.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
@@ -580,7 +595,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <NuxtLink
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -594,6 +609,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           : group.versions[0]?.version
                       "
                     >
+                      <span
+                        v-if="group.versions[0]?.deprecated"
+                        class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                        aria-hidden="true"
+                      />
                       {{ group.versions[0]?.version }}
                     </NuxtLink>
                   </div>
@@ -636,7 +656,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <NuxtLink
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -650,6 +670,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           : group.versions[0]?.version
                       "
                     >
+                      <span
+                        v-if="group.versions[0]?.deprecated"
+                        class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                        aria-hidden="true"
+                      />
                       {{ group.versions[0]?.version }}
                     </NuxtLink>
                   </div>
@@ -690,7 +715,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   <div class="flex items-center justify-between gap-2">
                     <NuxtLink
                       :to="versionRoute(v.version)"
-                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         v.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -702,6 +727,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           : v.version
                       "
                     >
+                      <span
+                        v-if="v.deprecated"
+                        class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                        aria-hidden="true"
+                      />
                       {{ v.version }}
                     </NuxtLink>
                     <div class="flex items-center gap-2 shrink-0">
