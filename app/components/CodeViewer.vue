@@ -58,7 +58,7 @@ watch(
   <div class="code-viewer flex min-h-full">
     <!-- Line numbers column -->
     <div
-      class="line-numbers shrink-0 bg-bg-subtle border-r border-border text-right select-none"
+      class="line-numbers shrink-0 bg-bg-subtle border-ie border-border text-end select-none"
       aria-hidden="true"
     >
       <a
