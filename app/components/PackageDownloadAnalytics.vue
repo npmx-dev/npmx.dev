@@ -59,7 +59,9 @@ const accentColorValueById = computed<Record<string, string>>(() => {
 
 const accent = computed(() => {
   const id = selectedAccentColor.value
-  return id ? (accentColorValueById.value[id] ?? colors.value.fgSubtle) : colors.value.fgSubtle
+  return id
+    ? (accentColorValueById.value[id] ?? colors.value.fgSubtle ?? 'oklch(0.633 0 0)')
+    : (colors.value.fgSubtle ?? 'oklch(0.633 0 0)')
 })
 
 const mobileBreakpointWidth = 640
