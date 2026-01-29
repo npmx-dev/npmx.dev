@@ -91,11 +91,9 @@
     },
     "stats": {
       "license": "Licencia",
-      "weekly": "Semanal",
       "deps": "Deps",
       "install_size": "Tamaño de Instalación",
       "updated": "Actualizado",
-      "view_download_trends": "Ver tendencias de descarga",
       "view_dependency_graph": "Ver gráfico de dependencias",
       "inspect_dependency_tree": "Inspeccionar árbol de dependencias"
     },
@@ -103,7 +101,6 @@
       "repo": "repositorio",
       "homepage": "página principal",
       "issues": "issues",
-      "forks": "fork | forks",
       "jsr": "jsr",
       "code": "código",
       "docs": "documentación",
