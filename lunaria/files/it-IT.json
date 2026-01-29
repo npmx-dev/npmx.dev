@@ -24,6 +24,7 @@
     "found_packages": "Trovati {count} pacchetti",
     "updating": "(aggiornando...)",
     "no_results": "Nessun pacchetto trovato per \"{query}\"",
+    "results": "Risultati della ricerca",
     "not_taken": "{name} è disponibile",
     "claim_prompt": "Ottieni il nome di questo pacchetto su npm",
     "claim_button": "Ottieni \"{name}\"",
@@ -38,21 +39,44 @@
     }
   },
   "nav": {
+    "main_navigation": "Principale",
     "popular_packages": "Pacchetti popolari",
     "search": "cerca",
     "settings": "impostazioni",
     "back": "Indietro"
   },
   "settings": {
+    "title": "impostazioni",
+    "tagline": "personalizza la tua esperienza npmx",
+    "meta_description": "Personalizza la tua esperienza npmx.dev con tema, lingua e preferenze di visualizzazione.",
+    "sections": {
+      "appearance": "Aspetto",
+      "display": "Visualizzazione",
+      "language": "Lingua"
+    },
     "relative_dates": "Date relative",
+    "relative_dates_description": "Mostra \"3 giorni fa\" invece di date complete",
     "include_types": "Includi {'@'}types durante l'installazione",
+    "include_types_description": "Aggiungi il pacchetto {'@'}types al comando install per i pacchetti senza tipo",
+    "hide_platform_packages": "Nascondi pacchetti specifici della piattaforma nella ricerca",
+    "hide_platform_packages_description": "Nascondi i pacchetti binari nativi come {'@'}esbuild/linux-x64 dai risultati",
     "theme": "Tema",
     "theme_light": "Chiaro",
     "theme_dark": "Scuro",
     "theme_system": "Sistema",
     "language": "Lingua",
     "help_translate": "Aiuta a tradurre npmx",
-    "accent_colors": "Colori di accento"
+    "accent_colors": "Colori di accento",
+    "clear_accent": "Cancella colore di accento",
+    "translation_progress": "Progresso della traduzione"
+  },
+  "i18n": {
+    "missing_keys": "{count} chiave mancante | {count} chiavi mancanti",
+    "copy_keys": "Copia chiavi",
+    "show_more_keys": "Mostra {count} altri...",
+    "contribute_hint": "Aiuta a migliorare questa traduzione aggiungendo le chiavi mancanti.",
+    "edit_on_github": "Modifica su GitHub",
+    "view_guide": "Guida alla traduzione"
   },
   "common": {
     "loading": "Caricando...",
@@ -64,6 +88,8 @@
     "retry": "Riprova",
     "copy": "copia",
     "copied": "copiato!",
+    "skip_link": "Salta al contenuto principale",
+    "close_modal": "Chiudi",
     "show_more": "mostra di più",
     "warnings": "Avvisi:",
     "go_back_home": "Torna alla home",
@@ -84,6 +110,7 @@
     "not_latest": "(non recente)",
     "verified_provenance": "Provenienza verificata",
     "view_permalink": "Vedi il link permanente per questa versione",
+    "navigation": "Navigazione del pacchetto",
     "deprecation": {
       "package": "Questo pacchetto è stato deprecato.",
       "version": "Questa versione è stata deprecata.",
@@ -93,6 +120,7 @@
       "license": "Licenza",
       "deps": "Deps",
       "install_size": "Dimensioni di installazione",
+      "vulns": "Vulns",
       "updated": "Aggiornato",
       "view_dependency_graph": "Vedi il grafico delle dipendenze",
       "inspect_dependency_tree": "Ispeziona l'albero delle dipendenze"
@@ -125,6 +153,10 @@
       "no_readme": "Nessuno README disponibile.",
       "view_on_github": "Vedi su GitHub"
     },
+    "docs": {
+      "not_available": "Documenti non disponibili",
+      "not_available_detail": "Non abbiamo potuto generare i documenti per questa versione."
+    },
     "keywords_title": "Keywords",
     "compatibility": "Compatibilità",
     "card": {
@@ -151,7 +183,8 @@
       "title": "Dipendenze ({count})",
       "list_label": "Dipendenze del pacchetto",
       "show_all": "Mostra tutte le {count} dipendenze",
-      "optional": "opzionale"
+      "optional": "opzionale",
+      "view_vulnerabilities": "Visualizza vulnerabilità"
     },
     "peer_dependencies": {
       "title": "Dependenze peer ({count})",
@@ -191,7 +224,9 @@
       "end_date": "Fine",
       "no_data": "Nessuno dato da scaricare",
       "loading": "Caricando...",
-      "y_axis_label": "{granularity} downloads"
+      "y_axis_label": "{granularity} downloads",
+      "download_file": "Scarica {fileType}",
+      "toggle_annotator": "Attiva/disattiva annotatore"
     },
     "install_scripts": {
       "title": "Script di installazione",
@@ -419,10 +454,10 @@
   },
   "user": {
     "combobox": {
-      "add_to_org_hint": "(will also add to org)",
-      "press_enter_to_add": "Press Enter to add {'@'}{username}",
-      "default_placeholder": "username...",
-      "suggestions_label": "User suggestions"
+      "add_to_org_hint": "(verrà aggiunto anche all'org)",
+      "press_enter_to_add": "Premi Invio per aggiungere {'@'}{username}",
+      "default_placeholder": "nome utente...",
+      "suggestions_label": "Suggerimenti utente"
     },
     "page": {
       "packages_title": "Pacchetti",
@@ -499,6 +534,112 @@
       "size": "Dimensione"
     }
   },
+  "filters": {
+    "title": "Filtri",
+    "search": "Cerca",
+    "search_scope": "Cerca per scope",
+    "search_placeholder_name": "Filtra per nome del pacchetto...",
+    "search_placeholder_description": "Filtra per descrizione...",
+    "search_placeholder_keywords": "Filtra per keywords...",
+    "search_placeholder_all": "Cerca tutto o usa name: desc: kw:",
+    "scope_name": "Nome",
+    "scope_name_description": "Cerca solo i nomi dei pacchetti",
+    "scope_description": "Descrizione",
+    "scope_description_description": "Cerca solo le descrizioni",
+    "scope_keywords": "Keywords",
+    "scope_keywords_description": "Cerca solo le keywords",
+    "scope_all": "Tutto",
+    "scope_all_description": "Cerca tutti i campi, supporta gli operatori name: desc: kw:",
+    "weekly_downloads": "Download settimanali",
+    "updated_within": "Aggiornato entro",
+    "security": "Sicurezza",
+    "keywords": "Keywords",
+    "more_keywords": "+{count} altri",
+    "clear_all": "Cancella tutto",
+    "remove_filter": "Rimuovi filtro {label}",
+    "download_range": {
+      "any": "Qualsiasi",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Qualsiasi momento",
+      "week": "Ultima settimana",
+      "month": "Ultimo mese",
+      "quarter": "Ultimi 3 mesi",
+      "year": "Ultimo anno"
+    },
+    "security_options": {
+      "all": "Tutti i pacchetti",
+      "secure": "Senza avvisi",
+      "insecure": "Con avvisi"
+    },
+    "sort": {
+      "label": "Ordina pacchetti",
+      "toggle_direction": "Attiva/disattiva direzione ordinamento",
+      "ascending": "Crescente",
+      "descending": "Decrescente",
+      "relevance": "Rilevanza",
+      "downloads_week": "Download/sett",
+      "downloads_day": "Download/giorno",
+      "downloads_month": "Download/mese",
+      "downloads_year": "Download/anno",
+      "updated": "Ultimo aggiornamento",
+      "name": "Nome",
+      "quality": "Qualità",
+      "popularity": "Popolarità",
+      "maintenance": "Manutenzione",
+      "score": "Punteggio"
+    },
+    "columns": {
+      "title": "Colonne",
+      "show": "Mostra colonne",
+      "reset": "Ripristina predefiniti",
+      "coming_soon": "Prossimamente",
+      "name": "Nome",
+      "version": "Versione",
+      "description": "Descrizione",
+      "downloads": "Download/sett",
+      "updated": "Ultimo aggiornamento",
+      "maintainers": "Manutentori",
+      "keywords": "Keywords",
+      "quality_score": "Punteggio qualità",
+      "popularity_score": "Punteggio popolarità",
+      "maintenance_score": "Punteggio manutenzione",
+      "combined_score": "Punteggio combinato",
+      "security": "Sicurezza"
+    },
+    "view_mode": {
+      "label": "Modalità di vista",
+      "cards": "Vista scheda",
+      "table": "Vista tabella"
+    },
+    "pagination": {
+      "mode_label": "Modalità paginazione",
+      "infinite": "Infinita",
+      "paginated": "Paginata",
+      "items_per_page": "Elementi per pagina",
+      "per_page": "{count} / pagina",
+      "all_yolo": "Tutti (YOLO)",
+      "showing": "{start}-{end} di {total}",
+      "previous": "Pagina precedente",
+      "next": "Pagina seguente",
+      "nav_label": "Paginazione"
+    },
+    "count": {
+      "showing_filtered": "{filtered} di {total} pacchetti",
+      "showing_all": "{total} pacchetti",
+      "showing_paginated": "{pageSize} di {total} pacchetti"
+    },
+    "table": {
+      "security_warning": "Avviso di sicurezza",
+      "secure": "Sicuro",
+      "no_packages": "Nessun pacchetto trovato"
+    }
+  },
   "badges": {
     "provenance": {
       "verified": "verificato",
@@ -540,10 +681,10 @@
     },
     "contributors": {
       "title": "Collaboratori",
-      "description": "npmx è interamente open source, creato da una straordinaria comunità di collaboratori.",
+      "description": "npmx è interamente open source, creato da una straordinaria comunità di collaboratori. Unisciti a noi e costruiamo insieme l'esperienza di browsing npm che abbiamo sempre desiderato.",
       "loading": "Caricando collaboratori...",
       "error": "Caricamento dei collaboratori non riuscito",
-      "view_profile": "Vedi {name} profilo su GitHub"
+      "view_profile": "Vedi il profilo GitHub di {name}"
     },
     "get_involved": {
       "title": "Partecipa",
