@@ -163,7 +163,9 @@
       "username_placeholder": "nom d'utilisateur...",
       "add_button": "ajouter",
       "cancel_add": "Annuler l'ajout de propriétaire",
-      "add_owner": "+ Ajouter un propriétaire"
+      "add_owner": "+ Ajouter un propriétaire",
+      "show_more": "(afficher {count} de plus)",
+      "show_less": "(afficher moins)"
     },
     "downloads": {
       "title": "Téléchargements hebdomadaires",

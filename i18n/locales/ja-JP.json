@@ -186,7 +186,9 @@
       "username_placeholder": "ユーザー名...",
       "add_button": "追加",
       "cancel_add": "オーナーの追加をキャンセル",
-      "add_owner": "+ オーナーを追加"
+      "add_owner": "+ オーナーを追加",
+      "show_more": "（他 {count} 個を表示）",
+      "show_less": "（折りたたむ）"
     },
     "downloads": {
       "title": "週間ダウンロード数",

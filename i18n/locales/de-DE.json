@@ -203,7 +203,9 @@
       "username_placeholder": "Benutzername...",
       "add_button": "Hinzufügen",
       "cancel_add": "Owner-Hinzufügung abbrechen",
-      "add_owner": "+ Owner hinzufügen"
+      "add_owner": "+ Owner hinzufügen",
+      "show_more": "({count} weitere anzeigen)",
+      "show_less": "(weniger anzeigen)"
     },
     "downloads": {
       "title": "Wöchentliche Downloads",
