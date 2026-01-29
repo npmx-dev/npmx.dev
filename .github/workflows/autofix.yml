@@ -30,6 +30,9 @@ jobs:
       - name: 📦 Install browsers
         run: pnpm playwright install
 
+      - name: 🌍 Update lunaria data
+        run: pnpm build:lunaria
+
       - name: 🔠 Fix lint errors
         run: pnpm lint:fix
 
@@ -38,9 +41,6 @@ jobs:
 
       - name: 🏃 Update component test snapshots
         run: pnpm test:nuxt -u
-
-      - name: 🌍 Update lunaria data
-        run: pnpm build:lunaria
 
       - name: 🖥️ Update browser test snapshots
         run: pnpm test:browser --update-snapshots

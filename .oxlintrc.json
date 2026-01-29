@@ -23,7 +23,6 @@
     "node_modules/**",
     "coverage/**",
     "playwright-report/**",
-    "test-results/**",
-    "lunaria/files/**"
+    "test-results/**"
   ]
 }
