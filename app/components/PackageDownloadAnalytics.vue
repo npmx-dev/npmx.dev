@@ -470,7 +470,7 @@ const config = computed(() => {
         buttonTitles: {
           csv: $t('package.downloads.download_file', { fileType: 'CSV' }),
           img: $t('package.downloads.download_file', { fileType: 'PNG' }),
-          pdf: $t('package.downloads.download_file', { fileType: 'PDF' }),
+          svg: $t('package.downloads.download_file', { fileType: 'SVG' }),
           annotator: $t('package.downloads.toggle_annotator'),
         },
         callbacks: {
