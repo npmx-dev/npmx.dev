@@ -59,6 +59,8 @@
     "relative_dates_description": "Show \"3 days ago\" instead of full dates",
     "include_types": "Include {'@'}types in install",
     "include_types_description": "Add {'@'}types package to install commands for untyped packages",
+    "hide_platform_packages": "Hide platform-specific packages in search",
+    "hide_platform_packages_description": "Hide native binary packages like {'@'}esbuild/linux-x64 from results",
     "theme": "Theme",
     "theme_light": "Light",
     "theme_dark": "Dark",
@@ -220,7 +222,9 @@
       "end_date": "End",
       "no_data": "No download data available",
       "loading": "Loading...",
-      "y_axis_label": "{granularity} downloads"
+      "y_axis_label": "{granularity} downloads",
+      "download_file": "Download {fileType}",
+      "toggle_annotator": "Toggle annotator"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -569,7 +573,7 @@
     },
     "contributors": {
       "title": "Contributors",
-      "description": "npmx is fully open source, built by an amazing community of contributors.",
+      "description": "npmx is fully open source, built by an amazing community of contributors. Join us and let's build the npm browsing experience we always wanted, together.",
       "loading": "Loading contributors...",
       "error": "Failed to load contributors",
       "view_profile": "View {name}'s GitHub profile"

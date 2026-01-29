@@ -820,14 +820,6 @@ defineOgImageComponent('Package', {
         </dl>
       </header>
 
-      <!-- Security vulnerabilities warning -->
-      <PackageVulnerabilities
-        v-if="displayVersion"
-        :package-name="pkg.name"
-        :version="displayVersion.version"
-        class="area-vulns"
-      />
-
       <!-- Binary-only packages: Show only execute command (no install) -->
       <section v-if="isBinaryOnly" aria-labelledby="run-heading" class="area-install scroll-mt-20">
         <div class="flex flex-wrap items-center justify-between mb-3">

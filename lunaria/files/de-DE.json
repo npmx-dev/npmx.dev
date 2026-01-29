@@ -9,6 +9,7 @@
   "non_affiliation_disclaimer": "nicht verbunden mit npm, Inc.",
   "trademark_disclaimer": "npm ist eine eingetragene Marke von npm, Inc. Diese Seite ist nicht mit npm, Inc. verbunden.",
   "footer": {
+    "site_footer": "Fusszeile",
     "about": "über uns",
     "docs": "Doku",
     "source": "Quellcode",
@@ -16,6 +17,7 @@
     "chat": "Chat"
   },
   "search": {
+    "results": "Suchergebnisse",
     "label": "npm-Pakete durchsuchen",
     "placeholder": "Pakete suchen...",
     "button": "Suchen",
@@ -38,22 +40,46 @@
     }
   },
   "nav": {
+    "main_navigation": "Hauptnavigation",
+    "back": "Zurück",
     "popular_packages": "Beliebte Pakete",
     "search": "Suche",
     "settings": "Einstellungen"
   },
   "settings": {
+    "title": "Einstellungen",
+    "tagline": "Passe npmx an deine Vorlieben an",
+    "meta_description": "Einstellungen für npmx konfigurieren - Design, Sprache, Datumsformat und mehr anpassen",
+    "sections": {
+      "appearance": "Erscheinungsbild",
+      "display": "Anzeige",
+      "language": "Sprache"
+    },
     "relative_dates": "Relative Datumsangaben",
+    "relative_dates_description": "Zeige Daten relativ zur aktuellen Zeit an (z.B. 'vor 2 Tagen')",
     "include_types": "{'@'}types bei Installation einschließen",
+    "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Pakete) automatisch bei Installationsbefehlen einschließen",
     "theme": "Design",
     "theme_light": "Hell",
     "theme_dark": "Dunkel",
     "theme_system": "System",
     "language": "Sprache",
     "help_translate": "Hilf bei der Übersetzung von npmx",
-    "accent_colors": "Akzentfarben"
+    "accent_colors": "Akzentfarben",
+    "clear_accent": "Akzentfarbe zurücksetzen",
+    "translation_progress": "Übersetzungsfortschritt: {progress}%"
+  },
+  "i18n": {
+    "missing_keys": "{count} fehlende Übersetzung | {count} fehlende Übersetzungen",
+    "copy_keys": "Schlüssel kopieren",
+    "show_more_keys": "{count} weitere Schlüssel anzeigen",
+    "contribute_hint": "Hilf mit, npmx in deine Sprache zu übersetzen!",
+    "edit_on_github": "Auf GitHub bearbeiten",
+    "view_guide": "Übersetzungsleitfaden anzeigen"
   },
   "common": {
+    "skip_link": "Zum Hauptinhalt springen",
+    "close_modal": "Modal schließen",
     "loading": "Lädt...",
     "loading_more": "Lädt mehr...",
     "loading_packages": "Pakete werden geladen...",
@@ -76,6 +102,7 @@
     "scroll_to_top": "Nach oben scrollen"
   },
   "package": {
+    "navigation": "Paketnavigation",
     "not_found": "Paket nicht gefunden",
     "not_found_message": "Das Paket konnte nicht gefunden werden.",
     "no_description": "Keine Beschreibung vorhanden",
@@ -105,6 +132,10 @@
       "docs": "Doku",
       "fund": "Spenden"
     },
+    "docs": {
+      "not_available": "Dokumentation nicht verfügbar",
+      "not_available_detail": "Für dieses Paket ist keine Dokumentation verfügbar"
+    },
     "create": {
       "title": "Neues Projekt erstellen",
       "copy_command": "Erstellungsbefehl kopieren"
@@ -112,6 +143,12 @@
     "run": {
       "title": "Ausführen",
       "locally": "Lokal ausführen"
+    },
+    "get_started": {
+      "title": "Erste Schritte",
+      "pm_label": "Paketmanager",
+      "copy_command": "Installationsbefehl kopieren",
+      "view_types": "Typdefinitionen anzeigen"
     },
     "readme": {
       "title": "Readme",
@@ -144,7 +181,8 @@
       "title": "Abhängigkeiten ({count})",
       "list_label": "Paketabhängigkeiten",
       "show_all": "alle {count} Deps anzeigen",
-      "optional": "optional"
+      "optional": "optional",
+      "view_vulnerabilities": "Sicherheitslücken anzeigen"
     },
     "peer_dependencies": {
       "title": "Peer-Abhängigkeiten ({count})",
@@ -197,16 +235,39 @@
     "license": {
       "view_spdx": "Lizenztext auf SPDX ansehen"
     },
+    "metrics": {
+      "esm": "ESM",
+      "cjs": "CJS",
+      "no_esm": "Kein ESM",
+      "types_included": "Typen enthalten",
+      "types_available": "Typen verfügbar",
+      "no_types": "Keine Typen"
+    },
     "vulnerabilities": {
       "no_description": "Keine Beschreibung verfügbar",
       "found": "{count} Sicherheitslücke gefunden | {count} Sicherheitslücken gefunden",
       "no_summary": "Keine Zusammenfassung",
       "view_details": "Details zur Sicherheitslücke anzeigen",
+      "deps_found": "{count} Abhängigkeit mit Sicherheitslücken gefunden | {count} Abhängigkeiten mit Sicherheitslücken gefunden",
+      "deps_affected": "{count} betroffene Abhängigkeit | {count} betroffene Abhängigkeiten",
+      "tree_found": "{count} Sicherheitslücke im Abhängigkeitsbaum gefunden | {count} Sicherheitslücken im Abhängigkeitsbaum gefunden",
+      "scanning_tree": "Abhängigkeitsbaum wird gescannt...",
+      "show_all_packages": "Alle {count} Pakete anzeigen",
+      "path": "Pfad",
+      "more": "+{count} weitere",
+      "packages_failed": "Einige Pakete konnten nicht gescannt werden",
+      "no_known": "Keine bekannten Sicherheitslücken",
+      "scan_failed": "Scan fehlgeschlagen",
       "severity": {
         "critical": "kritisch",
         "high": "hoch",
         "moderate": "mittel",
         "low": "niedrig"
+      },
+      "depth": {
+        "root": "Root-Paket",
+        "direct": "Direkte Abhängigkeit",
+        "transitive": "Transitive Abhängigkeit"
       }
     },
     "access": {
@@ -505,9 +566,35 @@
         "package": "Paketmanager",
         "managers": "bauen"
       }
+    },
+    "contributors": {
+      "title": "Mitwirkende",
+      "description": "npmx wird von einer wachsenden Community von Mitwirkenden entwickelt",
+      "loading": "Mitwirkende werden geladen...",
+      "error": "Mitwirkende konnten nicht geladen werden",
+      "view_profile": "Profil von {name} anzeigen"
+    },
+    "get_involved": {
+      "title": "Mitmachen",
+      "contribute": {
+        "title": "Beitragen",
+        "description": "Hilf mit, npmx zu verbessern - melde Bugs, schlage Features vor oder trage Code bei",
+        "cta": "Auf GitHub beitragen"
+      },
+      "community": {
+        "title": "Community",
+        "description": "Tritt unserer Community bei, stelle Fragen und tausche dich mit anderen Nutzern aus",
+        "cta": "Community beitreten"
+      },
+      "follow": {
+        "title": "Folgen",
+        "description": "Bleib auf dem Laufenden über neue Features und Updates",
+        "cta": "Folgen"
+      }
     }
   },
   "header": {
+    "site_header": "Seitenkopf",
     "home": "npmx Startseite",
     "github": "GitHub",
     "packages": "Pakete",

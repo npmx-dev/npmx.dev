@@ -105,8 +105,8 @@ importers:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-data-ui:
-        specifier: ^3.13.5
-        version: 3.13.5(vue@3.5.27(typescript@5.9.3))
+        specifier: ^3.13.6
+        version: 3.13.6(vue@3.5.27(typescript@5.9.3))
     devDependencies:
       '@iconify-json/carbon':
         specifier: 1.2.18
@@ -1673,7 +1673,7 @@ packages:
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
 
   '@lunariajs/core@https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3':
-    resolution: {tarball: https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3}
+    resolution: {integrity: sha512-gjrzNz3XLFOUrDcmBxgaaF8Flh2yDpn8/RQyt+kyQen3sCjT04BnqJXLweper+xWyfvpOFK4Cqmy3wHvTyC1ww==, tarball: https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3}
     version: 0.1.1
     engines: {node: '>=18.17.0'}
 
@@ -9001,8 +9001,8 @@ packages:
   vue-component-type-helpers@3.2.4:
     resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
-  vue-data-ui@3.13.5:
-    resolution: {integrity: sha512-RBdhoKAlraMoTU3ls7tRy9UCusNwBCvN9w0wF2R0Jwy/AX7cAejlfDDMKE4SN/Th/4ox2eFIZSCZ/CRco3nOxw==}
+  vue-data-ui@3.13.6:
+    resolution: {integrity: sha512-cfyL9kP4bOpbby2wvgCJvsKyRv/5aQHw2+UZIZ5/Vm4lt7yZe41ZU9kMMryd911hC6vuYLUB88bcIGFg1toWAA==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -19746,7 +19746,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.4: {}
 
-  vue-data-ui@3.13.5(vue@3.5.27(typescript@5.9.3)):
+  vue-data-ui@3.13.6(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
 

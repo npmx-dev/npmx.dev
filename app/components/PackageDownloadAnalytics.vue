@@ -3,6 +3,8 @@ import { ref, computed, shallowRef, watch } from 'vue'
 import type { VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize } from '@vueuse/core'
+import { useCssVariables } from '../composables/useColors'
+import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '../utils/colors'
 
 const {
   weeklyDownloads,
@@ -24,8 +26,18 @@ const rootEl = shallowRef<HTMLElement | null>(null)
 const { width } = useElementSize(rootEl)
 
 onMounted(() => {
+  rootEl.value = document.documentElement
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
+
+const { colors } = useCssVariables(
+  ['--bg', '--bg-subtle', '--bg-elevated', '--fg-subtle', '--border', '--border-subtle'],
+  {
+    element: rootEl,
+    watchHtmlAttributes: true,
+    watchResize: false, // set to true only if a var changes color on resize
+  },
+)
 
 watch(
   () => colorMode.value,
@@ -49,17 +61,15 @@ const accentColorValueById = computed<Record<string, string>>(() => {
 
 const accent = computed(() => {
   const id = selectedAccentColor.value
-  return id ? (oklchToHex(accentColorValueById.value[id]!) ?? '#8A8A8A') : '#8A8A8A'
+  return id
+    ? (accentColorValueById.value[id] ?? colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK)
+    : (colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK)
 })
 
 const mobileBreakpointWidth = 640
 
 const isMobile = computed(() => {
   return width.value > 0 && width.value < mobileBreakpointWidth
-})
-
-onMounted(() => {
-  rootEl.value = document.documentElement
 })
 
 type ChartTimeGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
@@ -444,119 +454,127 @@ const loadFile = (link: string, filename: string) => {
   a.remove()
 }
 
-const config = computed(() => ({
-  theme: isDarkMode.value ? 'dark' : 'default',
-  chart: {
-    height: isMobile.value ? 850 : 600,
-    userOptions: {
-      buttons: {
-        pdf: false,
-        labels: false,
-        fullscreen: false,
-        table: false,
-        tooltip: false,
-      },
-      callbacks: {
-        img: ({ imageUri }: { imageUri: string }) => {
-          loadFile(
-            imageUri,
-            `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.png`,
-          )
+const config = computed(() => {
+  return {
+    theme: isDarkMode.value ? 'dark' : 'default',
+    chart: {
+      height: isMobile.value ? 850 : 600,
+      userOptions: {
+        buttons: {
+          pdf: false,
+          labels: false,
+          fullscreen: false,
+          table: false,
+          tooltip: false,
         },
-        csv: (csvStr: string) => {
-          const blob = new Blob([csvStr.replace('data:text/csv;charset=utf-8,', '')])
-          const url = URL.createObjectURL(blob)
-          loadFile(
-            url,
-            `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.csv`,
-          )
-          URL.revokeObjectURL(url)
+        buttonTitles: {
+          csv: $t('package.downloads.download_file', { fileType: 'CSV' }),
+          img: $t('package.downloads.download_file', { fileType: 'PNG' }),
+          svg: $t('package.downloads.download_file', { fileType: 'SVG' }),
+          annotator: $t('package.downloads.toggle_annotator'),
         },
-        svg: ({ blob }: { blob: Blob }) => {
-          const url = URL.createObjectURL(blob)
-          loadFile(
-            url,
-            `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.svg`,
-          )
-          URL.revokeObjectURL(url)
-        },
-      },
-    },
-    backgroundColor: isDarkMode.value ? '#0A0A0A' : '#FFFFFF',
-    grid: {
-      stroke: isDarkMode.value ? '#4A4A4A' : '#a3a3a3',
-      labels: {
-        axis: {
-          yLabel: $t('package.downloads.y_axis_label', {
-            granularity: $t(`package.downloads.granularity_${selectedGranularity.value}`),
-          }),
-          xLabel: packageName,
-          yLabelOffsetX: 12,
-          fontSize: 24,
-        },
-        xAxisLabels: {
-          values: chartData.value?.dates,
-          showOnlyAtModulo: true,
-          modulo: 12,
-        },
-        yAxis: {
-          formatter,
-          useNiceScale: true,
+        callbacks: {
+          img: ({ imageUri }: { imageUri: string }) => {
+            loadFile(
+              imageUri,
+              `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.png`,
+            )
+          },
+          csv: (csvStr: string) => {
+            const blob = new Blob([csvStr.replace('data:text/csv;charset=utf-8,', '')])
+            const url = URL.createObjectURL(blob)
+            loadFile(
+              url,
+              `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.csv`,
+            )
+            URL.revokeObjectURL(url)
+          },
+          svg: ({ blob }: { blob: Blob }) => {
+            const url = URL.createObjectURL(blob)
+            loadFile(
+              url,
+              `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.svg`,
+            )
+            URL.revokeObjectURL(url)
+          },
         },
       },
-    },
-    highlighter: {
-      useLine: true,
-    },
-    legend: {
-      show: false, // As long as a single package is displayed
-    },
-    tooltip: {
-      borderColor: 'transparent',
-      backdropFilter: false,
-      backgroundColor: 'transparent',
-      customFormat: ({
-        absoluteIndex,
-        datapoint,
-      }: {
-        absoluteIndex: number
-        datapoint: Record<string, any>
-      }) => {
-        if (!datapoint) return ''
-        const displayValue = formatter({ value: datapoint[0]?.value ?? 0 })
-        return `<div class="flex flex-col font-mono text-xs p-3 border border-border rounded-md bg-white/10 dark:bg-[#0A0A0A]/10 backdrop-blur-md">
+      backgroundColor: colors.value.bg,
+      grid: {
+        stroke: colors.value.border,
+        labels: {
+          axis: {
+            yLabel: $t('package.downloads.y_axis_label', {
+              granularity: $t(`package.downloads.granularity_${selectedGranularity.value}`),
+            }),
+            xLabel: packageName,
+            yLabelOffsetX: 12,
+            fontSize: 24,
+          },
+          xAxisLabels: {
+            values: chartData.value?.dates,
+            showOnlyAtModulo: true,
+            modulo: 12,
+          },
+          yAxis: {
+            formatter,
+            useNiceScale: true,
+          },
+        },
+      },
+      highlighter: {
+        useLine: true,
+      },
+      legend: {
+        show: false, // As long as a single package is displayed
+      },
+      tooltip: {
+        borderColor: 'transparent',
+        backdropFilter: false,
+        backgroundColor: 'transparent',
+        customFormat: ({
+          absoluteIndex,
+          datapoint,
+        }: {
+          absoluteIndex: number
+          datapoint: Record<string, any>
+        }) => {
+          if (!datapoint) return ''
+          const displayValue = formatter({ value: datapoint[0]?.value ?? 0 })
+          return `<div class="flex flex-col font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
           <span class="text-fg-subtle">${chartData.value?.dates[absoluteIndex]}</span>
           <span class="text-xl">${displayValue}</span>
         </div>
         `
+        },
+      },
+      zoom: {
+        maxWidth: 500,
+        customFormat:
+          displayedGranularity.value !== 'weekly'
+            ? undefined
+            : ({ absoluteIndex, side }: { absoluteIndex: number; side: 'left' | 'right' }) => {
+                const parts = extractDates(chartData.value.dates[absoluteIndex] ?? '')
+                return side === 'left' ? parts[0] : parts.at(-1)
+              },
+        highlightColor: colors.value.bgElevated,
+        minimap: {
+          show: true,
+          lineColor: '#FAFAFA',
+          selectedColor: accent.value,
+          selectedColorOpacity: 0.06,
+          frameColor: colors.value.border,
+        },
+        preview: {
+          fill: transparentizeOklch(accent.value, isDarkMode.value ? 0.95 : 0.92),
+          stroke: transparentizeOklch(accent.value, 0.5),
+          strokeWidth: 1,
+          strokeDasharray: 3,
+        },
       },
     },
-    zoom: {
-      maxWidth: 500,
-      customFormat:
-        displayedGranularity.value !== 'weekly'
-          ? undefined
-          : ({ absoluteIndex, side }: { absoluteIndex: number; side: 'left' | 'right' }) => {
-              const parts = extractDates(chartData.value.dates[absoluteIndex] ?? '')
-              return side === 'left' ? parts[0] : parts.at(-1)
-            },
-      highlightColor: isDarkMode.value ? '#2A2A2A' : '#E1E5E8',
-      minimap: {
-        show: true,
-        lineColor: '#FAFAFA',
-        selectedColor: accent.value,
-        selectedColorOpacity: 0.06,
-        frameColor: isDarkMode.value ? '#3A3A3A' : '#a3a3a3',
-      },
-      preview: {
-        fill: accent.value + 10,
-        stroke: accent.value + 60,
-        strokeWidth: 1,
-        strokeDasharray: 3,
-      },
-    },
-  },
-}))
+  }
+})
 </script>
 
 <template>

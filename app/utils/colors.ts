@@ -1,5 +1,11 @@
 // Vue Data UI does not support CSS vars nor OKLCH for now
 
+/**
+ * Default neutral OKLCH color used as fallback when CSS variables are unavailable (e.g., during SSR).
+ * This matches the dark mode value of --fg-subtle defined in main.css.
+ */
+export const OKLCH_NEUTRAL_FALLBACK = 'oklch(0.633 0 0)'
+
 /** Converts a 0-255 RGB component to a 2-digit hex string */
 const componentToHex = (value: number): string =>
   Math.round(Math.min(Math.max(0, value), 255))
@@ -81,4 +87,113 @@ export function oklchToHex(color: string | undefined | null): string | undefined
   const bRgb = -0.0041960863 * l_ - 0.7034186147 * m_ + 1.707614701 * s_
 
   return `#${linearToHex(linearToSrgb(r))}${linearToHex(linearToSrgb(g))}${linearToHex(linearToSrgb(bRgb))}`
+}
+
+/**
+ * Lighten an OKLCH color by a given factor.
+ *
+ * Works with strict TypeScript settings including `noUncheckedIndexedAccess`,
+ * where `match[n]` is typed as `string | undefined`.
+ *
+ * @param oklch - Color in the form "oklch(L C H)" or "oklch(L C H / A)"
+ * @param factor - Lightening force in range [0, 1]
+ * @returns Lightened OKLCH color string (0.5 = 50% lighter)
+ */
+export function lightenOklch(
+  oklch: string | null | undefined,
+  factor: number,
+): string | null | undefined {
+  if (oklch == null) {
+    return oklch
+  }
+
+  const input = oklch.trim()
+
+  const match = input.match(
+    /^oklch\(\s*([+-]?[\d.]+%?)\s+([+-]?[\d.]+)\s+([+-]?[\d.]+)(?:\s*\/\s*([+-]?[\d.]+%?))?\s*\)$/i,
+  )
+
+  if (!match) {
+    throw new Error('Invalid OKLCH color format')
+  }
+
+  const [, lightnessText, chromaText, hueText, alphaText] = match
+
+  if (lightnessText === undefined || chromaText === undefined || hueText === undefined) {
+    throw new Error('Invalid OKLCH color format')
+  }
+
+  let lightness = lightnessText.endsWith('%')
+    ? Number.parseFloat(lightnessText) / 100
+    : Number.parseFloat(lightnessText)
+  let chroma = Number.parseFloat(chromaText)
+  const hue = Number.parseFloat(hueText)
+  const alpha =
+    alphaText === undefined
+      ? null
+      : alphaText.endsWith('%')
+        ? Number.parseFloat(alphaText) / 100
+        : Number.parseFloat(alphaText)
+
+  const clampedFactor = Math.min(Math.max(factor, 0), 1)
+  lightness = lightness + (1 - lightness) * clampedFactor
+
+  // Reduce chroma slightly as lightness increases
+  chroma = chroma * (1 - clampedFactor * 0.3)
+
+  lightness = Math.min(Math.max(lightness, 0), 1)
+  chroma = Math.max(chroma, 0)
+
+  return alpha === null
+    ? `oklch(${lightness} ${chroma} ${hue})`
+    : `oklch(${lightness} ${chroma} ${hue} / ${alpha})`
+}
+
+/**
+ * Make an OKLCH color transparent by a given factor.
+ *
+ * @param oklch - Color in the form "oklch(L C H)" or "oklch(L C H / A)"
+ * @param factor - Transparency factor in range [0, 1]
+ * @returns OKLCH color string with adjusted alpha (0.5 = 50% transparency, 1 = fully transparent)
+ */
+export function transparentizeOklch(
+  oklch: string | null | undefined,
+  factor: number,
+  fallback = 'oklch(0 0 0 / 0)',
+): string {
+  if (oklch == null) return fallback
+
+  const input = oklch.trim()
+  if (!input) return fallback
+
+  const match = input.match(
+    /^oklch\(\s*([+-]?[\d.]+%?)\s+([+-]?[\d.]+)\s+([+-]?[\d.]+)(?:\s*\/\s*([+-]?[\d.]+%?))?\s*\)$/i,
+  )
+
+  if (!match) return fallback
+
+  const [, lightnessText, chromaText, hueText, alphaText] = match
+
+  if (lightnessText === undefined || chromaText === undefined || hueText === undefined) {
+    return fallback
+  }
+
+  const lightness = lightnessText.endsWith('%')
+    ? Math.min(Math.max(Number.parseFloat(lightnessText) / 100, 0), 1)
+    : Math.min(Math.max(Number.parseFloat(lightnessText), 0), 1)
+
+  const chroma = Math.max(0, Number.parseFloat(chromaText))
+  const hue = Number.parseFloat(hueText)
+
+  const originalAlpha =
+    alphaText === undefined
+      ? 1
+      : alphaText.endsWith('%')
+        ? Math.min(Math.max(Number.parseFloat(alphaText) / 100, 0), 1)
+        : Math.min(Math.max(Number.parseFloat(alphaText), 0), 1)
+
+  const clampedFactor = Math.min(Math.max(factor, 0), 1)
+  const alpha = Math.max(0, originalAlpha * (1 - clampedFactor))
+
+  return `oklch(${lightness} ${chroma} ${hue} / ${alpha})`
 }

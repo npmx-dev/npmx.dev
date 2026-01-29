@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
+import { useCssVariables } from '../composables/useColors'
+import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '../utils/colors'
 
 const { packageName } = defineProps<{
   packageName: string
@@ -19,7 +21,10 @@ const colorMode = useColorMode()
 
 const resolvedMode = ref<'light' | 'dark'>('light')
 
+const rootEl = shallowRef<HTMLElement | null>(null)
+
 onMounted(() => {
+  rootEl.value = document.documentElement
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
 
@@ -29,6 +34,24 @@ watch(
     resolvedMode.value = value === 'dark' ? 'dark' : 'light'
   },
   { flush: 'sync' },
+)
+
+const { colors } = useCssVariables(
+  [
+    '--bg',
+    '--fg',
+    '--bg-subtle',
+    '--bg-elevated',
+    '--border-hover',
+    '--fg-subtle',
+    '--border',
+    '--border-subtle',
+  ],
+  {
+    element: rootEl,
+    watchHtmlAttributes: true,
+    watchResize: false, // set to true only if a var changes color on resize
+  },
 )
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
@@ -43,14 +66,16 @@ const accentColorValueById = computed<Record<string, string>>(() => {
 
 const accent = computed(() => {
   const id = selectedAccentColor.value
-  return id ? (oklchToHex(accentColorValueById.value[id]!) ?? '#8A8A8A') : '#8A8A8A'
+  return id
+    ? (accentColorValueById.value[id] ?? colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK)
+    : (colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK)
 })
 
 const pulseColor = computed(() => {
   if (!selectedAccentColor.value) {
-    return isDarkMode.value ? '#BFBFBF' : '#E0E0E0'
+    return colors.value.fgSubtle
   }
-  return isDarkMode.value ? accent.value : lightenHex(accent.value, 0.5)
+  return isDarkMode.value ? accent.value : lightenOklch(accent.value, 0.5)
 })
 
 const weeklyDownloads = ref<WeeklyDownloadPoint[]>([])
@@ -99,7 +124,7 @@ const config = computed(() => {
       backgroundColor: 'transparent',
       animation: { show: false },
       area: {
-        color: '#6A6A6A',
+        color: colors.value.borderHover,
         useGradient: false,
         opacity: 10,
       },
@@ -107,10 +132,10 @@ const config = computed(() => {
         offsetX: -10,
         fontSize: 28,
         bold: false,
-        color: isDarkMode.value ? '#8a8a8a' : '#696969',
+        color: colors.value.fg,
       },
       line: {
-        color: isDarkMode.value ? '#4a4a4a' : '#525252',
+        color: colors.value.borderHover,
         pulse: {
           show: true,
           loop: true, // runs only once if false
@@ -125,17 +150,17 @@ const config = computed(() => {
       },
       plot: {
         radius: 6,
-        stroke: isDarkMode.value ? '#FAFAFA' : '#0A0A0A',
+        stroke: isDarkMode.value ? 'oklch(0.985 0 0)' : 'oklch(0.145 0 0)',
       },
       title: {
         text: lastDatapoint.value,
         fontSize: 12,
-        color: isDarkMode.value ? '#8a8a8a' : '#696969',
+        color: colors.value.fgSubtle,
         bold: false,
       },
       verticalIndicator: {
         strokeDasharray: 0,
-        color: isDarkMode.value ? '#FAFAFA' : '#525252',
+        color: isDarkMode.value ? 'oklch(0.985 0 0)' : colors.value.fgSubtle,
       },
     },
   }

@@ -2,6 +2,7 @@
 import { formatNumber } from '#imports'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
+import { isPlatformSpecificPackage } from '~/utils/platform-packages'
 
 const route = useRoute()
 const router = useRouter()
@@ -119,22 +120,37 @@ const rawVisibleResults = computed(() => {
   return results.value
 })
 
+// Settings for platform package filtering
+const { settings } = useSettings()
+
 /**
- * Reorder results to put exact package name match at the top
+ * Reorder results to put exact package name match at the top,
+ * and optionally filter out platform-specific packages.
  */
 const visibleResults = computed(() => {
   const raw = rawVisibleResults.value
   if (!raw) return raw
 
+  let objects = raw.objects
+
+  // Filter out platform-specific packages if setting is enabled
+  if (settings.value.hidePlatformPackages) {
+    objects = objects.filter(r => !isPlatformSpecificPackage(r.package.name))
+  }
+
   const q = query.value.trim().toLowerCase()
-  if (!q) return raw
+  if (!q) {
+    return objects === raw.objects ? raw : { ...raw, objects }
+  }
 
   // Find exact match index
-  const exactIdx = raw.objects.findIndex(r => r.package.name.toLowerCase() === q)
-  if (exactIdx <= 0) return raw // Already at top or not found
+  const exactIdx = objects.findIndex(r => r.package.name.toLowerCase() === q)
+  if (exactIdx <= 0) {
+    return objects === raw.objects ? raw : { ...raw, objects }
+  }
 
   // Move exact match to top
-  const reordered = [...raw.objects]
+  const reordered = [...objects]
   const [exactMatch] = reordered.splice(exactIdx, 1)
   if (exactMatch) {
     reordered.unshift(exactMatch)

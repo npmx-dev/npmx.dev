@@ -179,7 +179,9 @@
       "end_date": "Fin",
       "no_data": "Aucune donnée de téléchargement disponible",
       "loading": "Chargement...",
-      "y_axis_label": "Téléchargements {granularity}"
+      "y_axis_label": "Téléchargements {granularity}",
+      "download_file": "Télécharger {fileType}",
+      "toggle_annotator": "Afficher/Masquer l'annotateur"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
