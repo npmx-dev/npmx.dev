@@ -121,7 +121,7 @@
       "native": "This can be replaced with {replacement}, available since Node {nodeVersion}.",
       "simple": "{replacement} instead.",
       "documented": "The community has flagged this package as having more performant alternatives.",
-      "none": "This package is never needed.",
+      "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
       "mdn": "MDN"
     },
