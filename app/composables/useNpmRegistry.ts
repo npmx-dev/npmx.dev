@@ -287,7 +287,7 @@ export function useNpmSearch(
   let lastSearch: NpmSearchResponse | undefined = undefined
 
   const asyncData = useLazyAsyncData(
-    `search:incremental:${toValue(query)}`,
+    () => `search:incremental:${toValue(query)}`,
     async () => {
       const q = toValue(query)
       if (!q.trim()) {

@@ -1,3 +1,7 @@
 # todo remove
 User-agent: *
+Allow: /$
+Allow: /about$
+Allow: /search$
+Allow: /settings$
 Disallow: /

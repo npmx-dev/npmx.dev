@@ -77,7 +77,7 @@ const emit = defineEmits<{
       </div>
 
       <span
-        class="i-carbon-arrow-right w-4 h-4 text-fg-subtle group-hover:text-fg transition-colors shrink-0"
+        class="i-carbon:arrow-right rtl-flip w-4 h-4 text-fg-subtle group-hover:text-fg transition-colors shrink-0"
         aria-hidden="true"
       />
     </NuxtLink>

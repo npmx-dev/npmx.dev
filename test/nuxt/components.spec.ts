@@ -93,6 +93,7 @@ import PackageTableRow from '~/components/PackageTableRow.vue'
 import PaginationControls from '~/components/PaginationControls.vue'
 import ViewModeToggle from '~/components/ViewModeToggle.vue'
 import PackageVulnerabilityTree from '~/components/PackageVulnerabilityTree.vue'
+import PackageDeprecatedTree from '~/components/PackageDeprecatedTree.vue'
 import DependencyPathPopup from '~/components/DependencyPathPopup.vue'
 
 describe('component accessibility audits', () => {
@@ -1248,6 +1249,19 @@ describe('component accessibility audits', () => {
   describe('PackageVulnerabilityTree', () => {
     it('should have no accessibility violations in idle state', async () => {
       const component = await mountSuspended(PackageVulnerabilityTree, {
+        props: {
+          packageName: 'vue',
+          version: '3.5.0',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageDeprecatedTree', () => {
+    it('should have no accessibility violations in idle state', async () => {
+      const component = await mountSuspended(PackageDeprecatedTree, {
         props: {
           packageName: 'vue',
           version: '3.5.0',

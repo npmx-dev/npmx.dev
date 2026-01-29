@@ -5,7 +5,8 @@ import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
 /**
  * GET /api/registry/vulnerabilities/:name or /api/registry/vulnerabilities/:name/v/:version
  *
- * Analyze entire dependency tree for vulnerabilities.
+ * Analyze entire dependency tree for vulnerabilities and deprecated dependencies.
+ * I does not rename this endpoint for backward compatibility.
  */
 export default defineCachedEventHandler(
   async event => {
@@ -31,7 +32,7 @@ export default defineCachedEventHandler(
         }
       }
 
-      return await analyzeVulnerabilityTree(packageName, version)
+      return await analyzeDependencyTree(packageName, version)
     } catch (error: unknown) {
       handleApiError(error, {
         statusCode: 502,
