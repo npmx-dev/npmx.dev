@@ -205,7 +205,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
           aria-live="polite"
         >
           <span
-            class="i-carbon-information w-3 h-3 inline-block mr-1 align-middle"
+            class="i-carbon:information w-3 h-3 inline-block me-1 align-middle"
             aria-hidden="true"
           />
           {{

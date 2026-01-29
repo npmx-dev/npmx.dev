@@ -285,6 +285,11 @@
         "low": "low"
       }
     },
+    "deprecated": {
+      "label": "Deprecated",
+      "tree_found": "{count} deprecated dependency | {count} deprecated dependencies",
+      "show_all": "show all {count} deprecated packages"
+    },
     "access": {
       "title": "Team Access",
       "refresh": "Refresh team access",

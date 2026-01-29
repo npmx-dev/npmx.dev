@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVulnerabilityTree } from '~/composables/useVulnerabilityTree'
+import { useDependencyAnalysis } from '~/composables/useDependencyAnalysis'
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
 
 const props = defineProps<{
@@ -15,7 +15,7 @@ const props = defineProps<{
 const outdatedDeps = useOutdatedDependencies(() => props.dependencies)
 
 // Get vulnerability info from shared cache (already fetched by PackageVulnerabilityTree)
-const { data: vulnTree } = useVulnerabilityTree(
+const { data: vulnTree } = useDependencyAnalysis(
   () => props.packageName,
   () => props.version,
 )
@@ -24,6 +24,12 @@ const { data: vulnTree } = useVulnerabilityTree(
 function getVulnerableDepInfo(depName: string) {
   if (!vulnTree.value) return null
   return vulnTree.value.vulnerablePackages.find(p => p.name === depName && p.depth === 'direct')
+}
+
+// Check if a dependency is deprecated (only direct deps)
+function getDeprecatedDepInfo(depName: string) {
+  if (!vulnTree.value) return null
+  return vulnTree.value.deprecatedPackages.find(p => p.name === depName && p.depth === 'direct')
 }
 
 // Expanded state for each section
@@ -119,6 +125,18 @@ const sortedOptionalDependencies = computed(() => {
             >
               <span class="i-carbon-security w-3 h-3 block" aria-hidden="true" />
               <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
+            </NuxtLink>
+            <NuxtLink
+              v-if="getDeprecatedDepInfo(dep)"
+              :to="{
+                name: 'package',
+                params: { package: [...dep.split('/'), 'v', getDeprecatedDepInfo(dep)!.version] },
+              }"
+              class="shrink-0 text-purple-500"
+              :title="getDeprecatedDepInfo(dep)!.message"
+            >
+              <span class="i-carbon-warning-hex w-3 h-3 block" aria-hidden="true" />
+              <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </NuxtLink>
             <NuxtLink
               :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"
