@@ -132,7 +132,7 @@ useSeoMeta({
           </select>
         </div>
         <a
-          href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
+          href="https://i18n.npmx.dev"
           target="_blank"
           rel="noopener noreferrer"
           class="flex items-center gap-1.5 px-2 py-1.5 text-xs text-fg-muted hover:text-fg transition-colors"
