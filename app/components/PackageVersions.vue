@@ -498,7 +498,13 @@ function getTagVersions(tag: string): VersionDisplay[] {
           <span class="text-xs text-fg-muted py-1.5">
             {{ $t('package.versions.other_versions') }}
             <span v-if="hiddenTagRows.length > 0" class="text-fg-subtle">
-              ({{ $t('package.versions.more_tagged', { count: hiddenTagRows.length }) }})
+              ({{
+                $t(
+                  'package.versions.more_tagged',
+                  { count: hiddenTagRows.length },
+                  hiddenTagRows.length,
+                )
+              }})
             </span>
           </span>
         </button>
