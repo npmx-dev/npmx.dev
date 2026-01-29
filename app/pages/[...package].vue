@@ -508,10 +508,10 @@ defineOgImageComponent('Package', {
                 v-if="displayVersion"
                 :package-name="pkg.name"
                 :version="displayVersion.version"
-                class="self-center ml-1 sm:ml-2"
+                class="self-baseline ml-1 sm:ml-2"
               />
               <template #fallback>
-                <ul class="flex items-center gap-1.5 self-center ml-1 sm:ml-2">
+                <ul class="flex items-center gap-1.5 self-baseline ml-1 sm:ml-2">
                   <li class="skeleton w-8 h-5 rounded" />
                   <li class="skeleton w-12 h-5 rounded" />
                 </ul>

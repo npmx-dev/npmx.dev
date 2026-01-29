@@ -108,6 +108,9 @@ importers:
       '@iconify-json/carbon':
         specifier: 1.2.18
         version: 1.2.18
+      '@iconify-json/lucide':
+        specifier: ^1.2.87
+        version: 1.2.87
       '@iconify-json/solar':
         specifier: 1.2.5
         version: 1.2.5

@@ -194,14 +194,6 @@
       "title": "Essayer",
       "choose": "choisir un playground"
     },
-    "metrics": {
-      "esm": "ES Modules uniquement",
-      "cjs": "CommonJS uniquement",
-      "dual": "Supporte CommonJS et ES Modules",
-      "unknown_format": "Format de module inconnu",
-      "ts_included": "Types TypeScript inclus",
-      "types_from": "Types depuis {package}"
-    },
     "license": {
       "view_spdx": "Voir le texte de la licence sur SPDX"
     },
@@ -528,15 +520,6 @@
         "package": "super",
         "managers": "gestionnaires de paquets"
       }
-    },
-    "vision": {
-      "title": "Vision",
-      "speed_first": "La vitesse d'abord",
-      "speed_first_description": "Les décalages de mise en page, l'instabilité et la lenteur sont le pire. Nous voulons que tout soit rapide, que ce soit la recherche, le filtrage ou la navigation.",
-      "url_compatible": "Compatible avec les URL",
-      "url_compatible_description": "Remplacez {npmjs} par {npmx} dans n'importe quelle URL et cela devrait fonctionner, fournissant les mêmes informations avec une meilleure expérience.",
-      "simplicity": "Simplicité",
-      "simplicity_description": "Pas de bruit, d'affichage encombré ou d'interface confuse."
     }
   },
   "header": {

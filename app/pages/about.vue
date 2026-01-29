@@ -163,42 +163,6 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 
         <div>
           <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-            {{ $t('about.vision.title') }}
-          </h2>
-          <ul class="space-y-3 text-fg-muted list-none p-0">
-            <li class="flex items-start gap-3">
-              <span class="text-accent shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-current" />
-              <span>
-                <strong class="text-fg">{{ $t('about.vision.speed_first') }}</strong> &mdash;
-                {{ $t('about.vision.speed_first_description') }}
-              </span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-accent shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-current" />
-              <span>
-                <strong class="text-fg">{{ $t('about.vision.url_compatible') }}</strong> &mdash;
-                <i18n-t keypath="about.vision.url_compatible_description" tag="span">
-                  <template #npmjs>
-                    <code class="text-sm bg-bg-subtle px-1.5 py-0.5 rounded">npmjs.com</code>
-                  </template>
-                  <template #npmx>
-                    <code class="text-sm bg-bg-subtle px-1.5 py-0.5 rounded">npmx.dev</code>
-                  </template>
-                </i18n-t>
-              </span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-accent shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-current" />
-              <span>
-                <strong class="text-fg">{{ $t('about.vision.simplicity') }}</strong> &mdash;
-                {{ $t('about.vision.simplicity_description') }}
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('about.contributors.title') }}
           </h2>
           <p class="text-fg-muted leading-relaxed mb-6">
