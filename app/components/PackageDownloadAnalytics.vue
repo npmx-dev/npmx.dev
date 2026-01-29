@@ -467,6 +467,12 @@ const config = computed(() => {
           table: false,
           tooltip: false,
         },
+        buttonTitles: {
+          csv: $t('package.downloads.download_file', { fileType: 'CSV' }),
+          img: $t('package.downloads.download_file', { fileType: 'PNG' }),
+          pdf: $t('package.downloads.download_file', { fileType: 'PDF' }),
+          annotator: $t('package.downloads.toggle_annotator'),
+        },
         callbacks: {
           img: ({ imageUri }: { imageUri: string }) => {
             loadFile(
