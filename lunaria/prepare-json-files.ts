@@ -8,7 +8,7 @@ import { deepCopy } from '@intlify/shared'
 const destFolder = path.resolve('lunaria/files')
 const localesFolder = path.resolve('i18n/locales')
 
-const defaultLocale = currentLocales.find(l => l.code == 'en-US')!
+const defaultLocale = currentLocales.find(l => l.code === 'en-US')!
 export const sourceLocale = {
   label: defaultLocale.name,
   lang: defaultLocale.code,
