@@ -5,6 +5,13 @@ import { OAuthSessionStore, OAuthStateStore } from '#server/utils/atproto/storag
 import { SLINGSHOT_ENDPOINT } from '#shared/utils/constants'
 
 export default defineEventHandler(async event => {
+  if (!process.env.NUXT_SESSION_PASSWORD) {
+    throw createError({
+      status: 500,
+      message: 'NUXT_SESSION_PASSWORD not set',
+    })
+  }
+
   const query = getQuery(event)
   const clientMetadata = getOauthClientMetadata()
   const stateStore = new OAuthStateStore(event)
@@ -36,7 +43,7 @@ export default defineEventHandler(async event => {
   event.context.agent = agent
 
   const session = await useSession(event, {
-    password: process.env.NUXT_SESSION_PASSWORD as string,
+    password: process.env.NUXT_SESSION_PASSWORD,
   })
 
   const response = await fetch(
