@@ -1,0 +1,57 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "includeEntryExports": true,
+  "ignoreExportsUsedInFile": true,
+  "ignoreBinaries": ["simple-git-hooks", "lint-staged"],
+  "workspaces": {
+    ".": {
+      "entry": [
+        "scripts/*.sh",
+        "lunaria/**/*.ts!",
+        "modules/**/*.ts!",
+        "i18n/i18n.config.ts!",
+        "app/app.vue!",
+        "app/error.vue!",
+        "app/pages/**/*.vue!",
+        "app/middleware/**/*.ts!",
+        "app/composables/**/*.ts!",
+        "app/utils/**/*.ts!",
+        "app/plugins/**/*.ts!",
+        "app/components/**/*.vue!",
+        "server/utils/**/*.ts!",
+        "shared/**/*.ts!"
+      ],
+      "project": [
+        "app/**/*.{ts,vue}!",
+        "server/**/*.ts!",
+        "shared/**/*.ts!",
+        "test/**/*.ts",
+        "tests/**/*.ts",
+        "lunaria/**/*.ts",
+        "modules/**/*.ts!",
+        "i18n/**/*.ts!"
+      ],
+      "ignoreDependencies": [
+        "@iconify-json/carbon",
+        "@iconify-json/lucide",
+        "@iconify-json/simple-icons",
+        "@iconify-json/solar",
+        "@iconify-json/svg-spinners",
+        "@iconify-json/vscode-icons",
+        "@voidzero-dev/vite-plus-core",
+        "h3",
+        "ohash",
+        "unplugin-vue-router",
+        "vue-router"
+      ],
+      "ignoreUnresolved": ["#components"]
+    },
+    "cli": {
+      "project": ["src/**/*.ts!"]
+    },
+    "docs": {
+      "entry": ["app/app.config.ts"],
+      "ignoreDependencies": ["docus", "better-sqlite3", "nuxt"]
+    }
+  }
+}

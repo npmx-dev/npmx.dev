@@ -378,7 +378,8 @@ export const TitleParagraph = html`
 `
 
 /**
- * Build an SVG file showing a summary of each language’s translation progress.
+ * Build an SVG file showing a summary of each language's translation progress.
+ * @public
  */
 export const SvgSummary = (config: LunariaConfig, status: LunariaStatus): string => {
   const localeHeight = 56 // Each locale’s summary is 56px high.

@@ -14,6 +14,7 @@ export interface PackageAnalysisResponse {
 
 /**
  * Composable for fetching package analysis data (module format, types info, etc.)
+ * @public
  */
 export function usePackageAnalysis(
   packageName: MaybeRefOrGetter<string>,

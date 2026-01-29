@@ -320,6 +320,7 @@ export function parseRepoUrl(input: string): RepoRef | null {
 /**
  * Parse repository field from package.json into repository info.
  * Supports both full objects and shorthand strings.
+ * @public
  */
 export function parseRepositoryInfo(
   repository?: { type?: string; url?: string; directory?: string } | string,
@@ -351,6 +352,7 @@ export function parseRepositoryInfo(
   }
 }
 
+/** @public */
 export function getProviderConfig(providerId: ProviderId): ProviderConfig | undefined {
   return providers.find(p => p.id === providerId)
 }
@@ -363,6 +365,7 @@ export function convertBlobToRawUrl(url: string, providerId: ProviderId): string
   return url
 }
 
+/** @public */
 export function isKnownGitProvider(url: string): boolean {
   return parseRepoUrl(url) !== null
 }

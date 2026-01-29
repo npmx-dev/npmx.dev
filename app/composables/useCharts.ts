@@ -286,6 +286,7 @@ function getNpmPackageCreationDate(packument: PackumentLikeForTime): string | nu
   return versionDates[0] ?? null
 }
 
+/** @public */
 export function useCharts() {
   function resolveDateRange(
     downloadEvolutionOptions: PackageDownloadEvolutionOptions,

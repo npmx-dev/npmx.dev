@@ -46,6 +46,7 @@ export function useSettings() {
 /**
  * Composable for accessing just the relative dates setting.
  * Useful for components that only need to read this specific setting.
+ * @public
  */
 export function useRelativeDates() {
   const { settings } = useSettings()
@@ -84,6 +85,7 @@ export function useAccentColor() {
 /**
  * Applies accent color before hydration to prevent flash of default color.
  * Call this from app.vue to ensure accent color is applied on every page.
+ * @public
  */
 export function initAccentOnPrehydrate() {
   // Callback is stringified by Nuxt - external variables won't be available.

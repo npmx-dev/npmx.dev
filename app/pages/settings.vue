@@ -9,19 +9,17 @@ const availableLocales = computed(() =>
 )
 
 /**
- * Check if it's safe to navigate back (previous page was same origin).
- * Uses document.referrer to verify the user came from this site.
+ * Check if it's safe to navigate back.
+ * Uses the router's history state to verify there's a previous page in the SPA navigation history.
  */
 function canGoBack(): boolean {
   if (import.meta.server) return false
   if (window.history.length <= 1) return false
-  const referrer = document.referrer
-  if (!referrer) return false
-  try {
-    return new URL(referrer).origin === window.location.origin
-  } catch {
-    return false
-  }
+
+  // Check if we have a valid position in the history state
+  // This works correctly with client-side SPA navigation (unlike document.referrer)
+  const state = window.history.state as { position?: number } | null
+  return state?.position != null && state.position > 0
 }
 
 function goBack() {

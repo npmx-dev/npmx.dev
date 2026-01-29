@@ -69,6 +69,7 @@ export function convertToFileTree(
 /**
  * Fetch and convert file tree for a package version.
  * Returns the full response including tree and metadata.
+ * @public
  */
 export async function getPackageFileTree(
   packageName: string,
