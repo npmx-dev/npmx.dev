@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import type { NpmSearchResult } from '#shared/types'
 import type { WindowVirtualizerHandle } from '~/composables/useVirtualInfiniteScroll'
-import type { ColumnConfig, PaginationMode, SortOption, ViewMode } from '#shared/types/preferences'
+import type {
+  ColumnConfig,
+  PageSize,
+  PaginationMode,
+  SortOption,
+  ViewMode,
+} from '#shared/types/preferences'
 import { DEFAULT_COLUMNS } from '#shared/types/preferences'
 import { WindowVirtualizer } from 'virtua/vue'
 
@@ -20,7 +26,7 @@ const props = defineProps<{
   /** Whether currently loading more items */
   isLoading?: boolean
   /** Page size for tracking current page */
-  pageSize?: number
+  pageSize?: PageSize
   /** Initial page to scroll to (1-indexed) */
   initialPage?: number
   /** Selected result index (for keyboard navigation) */
