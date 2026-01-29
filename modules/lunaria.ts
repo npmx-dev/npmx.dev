@@ -1,6 +1,8 @@
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { execSync } from 'node:child_process'
 import { join } from 'node:path'
+import { existsSync, mkdirSync } from 'node:fs'
+import { isCI } from 'std-env'
 
 export default defineNuxtModule({
   meta: {
@@ -9,9 +11,11 @@ export default defineNuxtModule({
   setup() {
     const nuxt = useNuxt()
 
+    const lunariaDistPath = join(nuxt.options.rootDir, 'dist/lunaria/')
+
     nuxt.options.nitro.publicAssets ||= []
     nuxt.options.nitro.publicAssets.push({
-      dir: join(nuxt.options.rootDir, 'dist/lunaria/'),
+      dir: lunariaDistPath,
       baseURL: '/lunaria/',
       maxAge: 60 * 60 * 24, // 1 day
     })
@@ -20,10 +24,13 @@ export default defineNuxtModule({
       return
     }
 
-    nuxt.hook('nitro:build:before', async () => {
-      execSync('node --experimental-transform-types ./lunaria/lunaria.ts', {
-        cwd: nuxt.options.rootDir,
+    if (!isCI || !existsSync(lunariaDistPath)) {
+      mkdirSync(lunariaDistPath, { recursive: true })
+      nuxt.hook('nitro:build:before', async () => {
+        execSync('node --experimental-transform-types ./lunaria/lunaria.ts', {
+          cwd: nuxt.options.rootDir,
+        })
       })
-    })
+    }
   },
 })
