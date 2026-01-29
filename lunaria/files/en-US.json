@@ -59,6 +59,8 @@
     "relative_dates_description": "Show \"3 days ago\" instead of full dates",
     "include_types": "Include {'@'}types in install",
     "include_types_description": "Add {'@'}types package to install commands for untyped packages",
+    "hide_platform_packages": "Hide platform-specific packages in search",
+    "hide_platform_packages_description": "Hide native binary packages like {'@'}esbuild/linux-x64 from results",
     "theme": "Theme",
     "theme_light": "Light",
     "theme_dark": "Dark",
