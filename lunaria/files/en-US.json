@@ -9,7 +9,6 @@
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
-    "site_footer": "Site footer",
     "about": "about",
     "docs": "docs",
     "source": "source",
@@ -598,7 +597,6 @@
     }
   },
   "header": {
-    "site_header": "Site header",
     "home": "npmx home",
     "github": "GitHub",
     "packages": "packages",

@@ -52,7 +52,6 @@ onKeyStroke(',', e => {
 
 <template>
   <header
-    :aria-label="$t('header.site_header')"
     class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border"
   >
     <nav :aria-label="$t('nav.main_navigation')" class="container h-14 flex items-center">
