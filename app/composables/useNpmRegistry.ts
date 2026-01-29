@@ -268,7 +268,7 @@ export interface NpmSearchOptions {
   size?: number
 }
 
-/** public */
+/** @public */
 export function useNpmSearch(
   query: MaybeRefOrGetter<string>,
   options: MaybeRefOrGetter<NpmSearchOptions> = {},
