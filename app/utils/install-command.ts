@@ -90,6 +90,7 @@ export function getPackageSpecifier(options: InstallCommandOptions): string {
 
 /**
  * Generate the full install command for a package.
+ * @public
  */
 export function getInstallCommand(options: InstallCommandOptions): string {
   return getInstallCommandParts(options).join(' ')
@@ -117,6 +118,7 @@ export interface ExecuteCommandOptions extends InstallCommandOptions {
   isCreatePackage?: boolean
 }
 
+/** @public */
 export function getExecuteCommand(options: ExecuteCommandOptions): string {
   return getExecuteCommandParts(options).join(' ')
 }

@@ -38,6 +38,7 @@ function rgbToHex(r: number, g: number, b: number): string {
  * Used to create light tints of accent colors for better visibility in light mode.
  * @param hex - The hex color to lighten (e.g., "#ff0000")
  * @param factor - Lighten factor from 0 to 1 (0.5 = 50% lighter, mixed with white)
+ * @public
  */
 export function lightenHex(hex: string, factor: number = 0.5): string {
   const rgb = hexToRgb(hex)
@@ -48,6 +49,7 @@ export function lightenHex(hex: string, factor: number = 0.5): string {
   return rgbToHex(...lightened)
 }
 
+/** @public */
 export function oklchToHex(color: string | undefined | null): string | undefined | null {
   if (color == null) return color
 

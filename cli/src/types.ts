@@ -1,3 +1,4 @@
+/** @public */
 export interface ConnectorConfig {
   port: number
   host: string

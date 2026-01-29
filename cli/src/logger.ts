@@ -55,6 +55,7 @@ export const logDebug = createDebug('npmx-connector')
 
 /**
  * Log a message (generic)
+ * @public
  */
 export function logMessage(message: string): void {
   p.log.message(message)
@@ -78,6 +79,7 @@ export function showToken(token: string, port: number, frontendUrl: string): voi
 
 /**
  * Show outro message
+ * @public
  */
 export function showOutro(message: string): void {
   p.outro(message)
@@ -85,6 +87,7 @@ export function showOutro(message: string): void {
 
 /**
  * Create a spinner for async operations
+ * @public
  */
 export function createSpinner() {
   return p.spinner()

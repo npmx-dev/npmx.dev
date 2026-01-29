@@ -59,6 +59,7 @@ export const OrgNameSchema = v.pipe(
 
 /**
  * Validates a team name (without scope prefix)
+ * @public
  */
 export const TeamNameSchema = v.pipe(
   v.string(),
@@ -330,15 +331,27 @@ export function safeParse<T extends v.GenericSchema>(
 // Type Exports
 // ============================================================================
 
+/** @public */
 export type PackageName = v.InferOutput<typeof PackageNameSchema>
+/** @public */
 export type NewPackageName = v.InferOutput<typeof NewPackageNameSchema>
+/** @public */
 export type Username = v.InferOutput<typeof UsernameSchema>
+/** @public */
 export type OrgName = v.InferOutput<typeof OrgNameSchema>
+/** @public */
 export type ScopeTeam = v.InferOutput<typeof ScopeTeamSchema>
+/** @public */
 export type OrgRole = v.InferOutput<typeof OrgRoleSchema>
+/** @public */
 export type Permission = v.InferOutput<typeof PermissionSchema>
+/** @public */
 export type OperationType = v.InferOutput<typeof OperationTypeSchema>
+/** @public */
 export type OperationStatus = v.InferOutput<typeof OperationStatusSchema>
+/** @public */
 export type ConnectBody = v.InferOutput<typeof ConnectBodySchema>
+/** @public */
 export type ExecuteBody = v.InferOutput<typeof ExecuteBodySchema>
+/** @public */
 export type CreateOperationBody = v.InferOutput<typeof CreateOperationBodySchema>

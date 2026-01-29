@@ -1,8 +1,10 @@
+/** @public */
 export function formatNumber(num: number, _locale?: string): string {
   // TODO: Support different locales (needs care to ensure hydration works correctly)
   return new Intl.NumberFormat('en-US').format(num)
 }
 
+/** @public */
 export function toIsoDateString(date: Date): string {
   const year = date.getUTCFullYear()
   const month = String(date.getUTCMonth() + 1).padStart(2, '0')
@@ -10,6 +12,7 @@ export function toIsoDateString(date: Date): string {
   return `${year}-${month}-${day}`
 }
 
+/** @public */
 export function formatCompactNumber(
   value: number,
   options?: { decimals?: number; space?: boolean },

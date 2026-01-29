@@ -108,6 +108,7 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
   }
 }
 
+/** @public */
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
@@ -147,6 +148,7 @@ function getResolvedVersion(pkg: SlimPackument, reqVer?: string | null): string 
   return resolved
 }
 
+/** @public */
 export function usePackageDownloads(
   name: MaybeRefOrGetter<string>,
   period: MaybeRefOrGetter<'last-day' | 'last-week' | 'last-month' | 'last-year'> = 'last-week',
@@ -174,6 +176,7 @@ type NpmDownloadsRangeResponse = {
 /**
  * Fetch download range data from npm API.
  * Exported for external use (e.g., in components).
+ * @public
  */
 export async function fetchNpmDownloadsRange(
   packageName: string,
@@ -186,48 +189,13 @@ export async function fetchNpmDownloadsRange(
   )
 }
 
-export function usePackageWeeklyDownloadEvolution(
-  name: MaybeRefOrGetter<string>,
-  options: MaybeRefOrGetter<{
-    weeks?: number
-    endDate?: string
-  }> = {},
-) {
-  const cachedFetch = useCachedFetch()
-
-  return useLazyAsyncData(
-    () => `downloads-weekly-evolution:${toValue(name)}:${JSON.stringify(toValue(options))}`,
-    async () => {
-      const packageName = toValue(name)
-      const { weeks = 12, endDate } = toValue(options) ?? {}
-
-      const today = new Date()
-      const yesterday = new Date(
-        Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1),
-      )
-
-      const end = endDate ? new Date(`${endDate}T00:00:00.000Z`) : yesterday
-
-      const start = addDays(end, -(weeks * 7) + 1)
-      const startIso = toIsoDateString(start)
-      const endIso = toIsoDateString(end)
-
-      const encodedName = encodePackageName(packageName)
-      const range = await cachedFetch<NpmDownloadsRangeResponse>(
-        `${NPM_API}/downloads/range/${startIso}:${endIso}/${encodedName}`,
-      )
-      const sortedDaily = [...range.downloads].sort((a, b) => a.day.localeCompare(b.day))
-      return buildWeeklyEvolutionFromDaily(sortedDaily)
-    },
-  )
-}
-
 const emptySearchResponse = {
   objects: [],
   total: 0,
   time: new Date().toISOString(),
 } satisfies NpmSearchResponse
 
+/** @public */
 export function useNpmSearch(
   query: MaybeRefOrGetter<string>,
   options: MaybeRefOrGetter<{
@@ -305,6 +273,7 @@ function packumentToSearchResult(pkg: MinimalPackument): NpmSearchResult {
 /**
  * Fetch all packages for an npm organization
  * Returns search-result-like objects for compatibility with PackageList
+ * @public
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const cachedFetch = useCachedFetch()
@@ -416,35 +385,6 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
 
   allVersionsCache.set(packageName, promise)
   return promise
-}
-
-/**
- * Composable to fetch all versions of a package.
- * Uses SWR caching on the server.
- */
-export function useAllPackageVersions(packageName: MaybeRefOrGetter<string>) {
-  const cachedFetch = useCachedFetch()
-
-  return useLazyAsyncData(
-    () => `all-versions:${toValue(packageName)}`,
-    async () => {
-      const encodedName = encodePackageName(toValue(packageName))
-      const data = await cachedFetch<{
-        versions: Record<string, { deprecated?: string }>
-        time: Record<string, string>
-      }>(`${NPM_REGISTRY}/${encodedName}`)
-
-      return Object.entries(data.versions)
-        .filter(([v]) => data.time[v])
-        .map(([version, versionData]) => ({
-          version,
-          time: data.time[version],
-          hasProvenance: false, // Would need to check dist.attestations for each version
-          deprecated: versionData.deprecated,
-        }))
-        .sort((a, b) => compare(b.version, a.version)) as PackageVersionInfo[]
-    },
-  )
 }
 
 // ============================================================================
@@ -567,6 +507,7 @@ async function checkDependencyOutdated(
 /**
  * Composable to check for outdated dependencies.
  * Returns a reactive map of dependency name to outdated info.
+ * @public
  */
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
@@ -616,6 +557,7 @@ export function useOutdatedDependencies(
 
 /**
  * Get tooltip text for an outdated dependency
+ * @public
  */
 export function getOutdatedTooltip(info: OutdatedDependencyInfo): string {
   if (info.majorsBehind > 0) {
@@ -631,6 +573,7 @@ export function getOutdatedTooltip(info: OutdatedDependencyInfo): string {
 
 /**
  * Get CSS class for a dependency version based on outdated status
+ * @public
  */
 export function getVersionClass(info: OutdatedDependencyInfo | undefined): string {
   if (!info) return 'text-fg-subtle'

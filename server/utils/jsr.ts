@@ -14,6 +14,7 @@ const JSR_REGISTRY = 'https://jsr.io'
  *
  * @param npmPackageName - The npm package name (e.g., "@hono/hono")
  * @returns JsrPackageInfo with existence status and metadata
+ * @public
  */
 export const fetchJsrPackageInfo = defineCachedFunction(
   async (npmPackageName: string): Promise<JsrPackageInfo> => {
