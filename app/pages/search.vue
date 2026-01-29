@@ -903,8 +903,8 @@ defineOgImageComponent('Default', {
             >
               {{
                 $t('filters.count.showing_paginated', {
-                  pageSize: preferredPageSize === 'all' ? displayResults.length : preferredPageSize,
-                  total: displayResults.length.toLocaleString(),
+                  pageSize: preferredPageSize === 'all' ? visibleResults.total : preferredPageSize,
+                  total: visibleResults.total.toLocaleString(),
                 })
               }}
             </p>

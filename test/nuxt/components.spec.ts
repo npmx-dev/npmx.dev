@@ -6,7 +6,9 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 
 // axe-core is a UMD module that exposes itself as window.axe in the browser
-declare const axe: { run: (context: Element, options?: RunOptions) => Promise<AxeResults> }
+declare const axe: {
+  run: (context: Element, options?: RunOptions) => Promise<AxeResults>
+}
 
 // Track mounted containers for cleanup
 const mountedContainers: HTMLElement[] = []
@@ -355,9 +357,24 @@ describe('component accessibility audits', () => {
 
   describe('PackageDownloadAnalytics', () => {
     const mockWeeklyDownloads = [
-      { downloads: 1000, weekKey: '2024-W01', weekStart: '2024-01-01', weekEnd: '2024-01-07' },
-      { downloads: 1200, weekKey: '2024-W02', weekStart: '2024-01-08', weekEnd: '2024-01-14' },
-      { downloads: 1500, weekKey: '2024-W03', weekStart: '2024-01-15', weekEnd: '2024-01-21' },
+      {
+        downloads: 1000,
+        weekKey: '2024-W01',
+        weekStart: '2024-01-01',
+        weekEnd: '2024-01-07',
+      },
+      {
+        downloads: 1200,
+        weekKey: '2024-W02',
+        weekStart: '2024-01-08',
+        weekEnd: '2024-01-14',
+      },
+      {
+        downloads: 1500,
+        weekKey: '2024-W03',
+        weekStart: '2024-01-15',
+        weekEnd: '2024-01-21',
+      },
     ]
 
     it('should have no accessibility violations (non-modal)', async () => {
@@ -593,7 +610,12 @@ describe('component accessibility audits', () => {
     const mockTree = [
       { name: 'src', type: 'directory' as const, path: 'src', children: [] },
       { name: 'index.js', type: 'file' as const, path: 'index.js', size: 1024 },
-      { name: 'package.json', type: 'file' as const, path: 'package.json', size: 512 },
+      {
+        name: 'package.json',
+        type: 'file' as const,
+        path: 'package.json',
+        size: 512,
+      },
     ]
 
     it('should have no accessibility violations', async () => {
@@ -760,7 +782,10 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: { final: 0.9, detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 } },
+        score: {
+          final: 0.9,
+          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
+        },
         searchScore: 100000,
       },
       {
@@ -773,7 +798,10 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'fb' },
         },
-        score: { final: 0.9, detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 } },
+        score: {
+          final: 0.9,
+          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
+        },
         searchScore: 90000,
       },
     ]
@@ -1013,6 +1041,25 @@ describe('component accessibility audits', () => {
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
+
+    it('should total package count in paginated mode', async () => {
+      const component = await mountSuspended(PackageListToolbar, {
+        props: {
+          filters: defaultFilters,
+          sortOption: 'downloads-week-desc',
+          viewMode: 'table',
+          columns: mockColumns,
+          paginationMode: 'paginated',
+          pageSize: 25,
+          totalCount: 9544,
+          filteredCount: 9544,
+          activeFilters: [],
+        },
+      })
+
+      const html = component.html()
+      expect(html).toContain('25 of 9,544')
+    })
   })
 
   describe('PackageTable', () => {
@@ -1027,7 +1074,10 @@ describe('component accessibility audits', () => {
           links: {},
           publisher: { username: 'yyx990803' },
         },
-        score: { final: 0.9, detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 } },
+        score: {
+          final: 0.9,
+          detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 },
+        },
         searchScore: 100000,
       },
     ]
@@ -1035,7 +1085,12 @@ describe('component accessibility audits', () => {
     const mockColumns: ColumnConfig[] = [
       { id: 'name', label: 'Name', visible: true, sortable: true },
       { id: 'version', label: 'Version', visible: true, sortable: false },
-      { id: 'description', label: 'Description', visible: true, sortable: false },
+      {
+        id: 'description',
+        label: 'Description',
+        visible: true,
+        sortable: false,
+      },
       { id: 'downloads', label: 'Downloads', visible: true, sortable: true },
     ]
 
@@ -1088,14 +1143,22 @@ describe('component accessibility audits', () => {
       },
       downloads: { weekly: 50000000 },
       updated: '2024-01-01T00:00:00.000Z',
-      score: { final: 0.95, detail: { quality: 0.95, popularity: 0.99, maintenance: 0.9 } },
+      score: {
+        final: 0.95,
+        detail: { quality: 0.95, popularity: 0.99, maintenance: 0.9 },
+      },
       searchScore: 99999,
     }
 
     const mockColumns: ColumnConfig[] = [
       { id: 'name', label: 'Name', visible: true, sortable: true },
       { id: 'version', label: 'Version', visible: true, sortable: false },
-      { id: 'description', label: 'Description', visible: true, sortable: false },
+      {
+        id: 'description',
+        label: 'Description',
+        visible: true,
+        sortable: false,
+      },
     ]
 
     it('should have no accessibility violations', async () => {
