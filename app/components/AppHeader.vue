@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { debounce } from 'perfect-debounce'
+
 withDefaults(
   defineProps<{
     showLogo?: boolean
@@ -22,13 +24,17 @@ const showSearchBar = computed(() => {
   return route.name !== 'search' && route.name !== 'index'
 })
 
-async function handleSearchInput() {
+const debouncedNavigate = debounce(async () => {
   const query = searchQuery.value.trim()
   await router.push({
     name: 'search',
     query: query ? { q: query } : undefined,
   })
   searchQuery.value = ''
+}, 100)
+
+async function handleSearchInput() {
+  debouncedNavigate()
 }
 
 onKeyStroke(',', e => {

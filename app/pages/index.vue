@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { debounce } from 'perfect-debounce'
+
 const router = useRouter()
 const searchQuery = ref('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
 
-function handleSearch() {
+const debouncedNavigate = debounce(() => {
   router.push({
     path: '/search',
     query: searchQuery.value.trim() ? { q: searchQuery.value.trim() } : undefined,
   })
+}, 250)
+
+function handleSearch() {
+  debouncedNavigate()
 }
 
 useSeoMeta({
