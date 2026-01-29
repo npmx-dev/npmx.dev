@@ -210,7 +210,7 @@ Ideally, extract utilities into separate files so they can be unit tested. 🙏
 
 ## RTL Support
 
-Elk supports `right-to-left` languages, we need to make sure that the UI is working correctly in both directions.
+We support `right-to-left` languages, we need to make sure that the UI is working correctly in both directions.
 
 Simple approach used by most websites of relying on direction set in HTML element does not work because direction for various items, such as timeline, does not always match direction set in HTML.
 
