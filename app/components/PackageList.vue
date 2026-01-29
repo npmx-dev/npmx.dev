@@ -69,6 +69,9 @@ const paginationMode = computed(() =>
   viewMode.value === 'table' ? 'paginated' : (props.paginationMode ?? 'infinite'),
 )
 const currentPage = computed(() => props.currentPage ?? 1)
+const pageSize = computed(() => props.pageSize ?? 25)
+// Numeric page size for virtual scroll and arithmetic (when 'all' is selected, use 25 as default)
+const numericPageSize = computed(() => (pageSize.value === 'all' ? 25 : pageSize.value))
 
 // Compute paginated results for paginated mode
 const displayedResults = computed(() => {
@@ -79,8 +82,8 @@ const displayedResults = computed(() => {
   if (pageSize.value === 'all') {
     return props.results
   }
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
+  const start = (currentPage.value - 1) * numericPageSize.value
+  const end = start + numericPageSize.value
   return props.results.slice(start, end)
 })
 
@@ -88,14 +91,13 @@ const displayedResults = computed(() => {
 const hasMore = computed(() => props.hasMore ?? false)
 const isLoading = computed(() => props.isLoading ?? false)
 const itemCount = computed(() => props.results.length)
-const pageSize = computed(() => props.pageSize ?? 20)
 
 const { handleScroll, scrollToPage } = useVirtualInfiniteScroll({
   listRef,
   itemCount,
   hasMore,
   isLoading,
-  pageSize: pageSize.value,
+  pageSize: numericPageSize.value,
   threshold: 5,
   onLoadMore: () => emit('loadMore'),
   onPageChange: page => emit('pageChange', page),

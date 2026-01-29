@@ -71,7 +71,7 @@ onMounted(() => {
 })
 
 // Infinite scroll state
-const pageSize = 20
+const pageSize = 25
 const loadedPages = ref(1)
 const isLoadingMore = ref(false)
 
