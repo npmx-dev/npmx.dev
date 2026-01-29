@@ -394,7 +394,9 @@ useSeoMeta({
                 <option value="removed">Removed ({{ compare.stats.filesRemoved }})</option>
                 <option value="modified">Modified ({{ compare.stats.filesModified }})</option>
               </select>
-              <span class="i-carbon-chevron-right w-3.5 h-3.5 transition-transform group-open:rotate-90" />
+              <span
+                class="i-carbon-chevron-right w-3.5 h-3.5 transition-transform group-open:rotate-90"
+              />
             </span>
           </summary>
 
