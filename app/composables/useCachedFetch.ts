@@ -1,5 +1,3 @@
-import type { H3Event } from 'h3'
-
 /**
  * Type for the cachedFetch function attached to event context.
  */
@@ -32,6 +30,7 @@ export type CachedFetchFunction = <T = unknown>(
  *   )
  * }
  * ```
+ * @public
  */
 export function useCachedFetch(): CachedFetchFunction {
   // On client, return a function that just uses $fetch
@@ -60,31 +59,6 @@ export function useCachedFetch(): CachedFetchFunction {
 
   // Fallback: return a function that uses regular $fetch
   // (shouldn't happen in normal operation)
-  return async <T = unknown>(
-    url: string,
-    options: {
-      method?: string
-      body?: unknown
-      headers?: Record<string, string>
-    } = {},
-    _ttl?: number,
-  ): Promise<T> => {
-    return (await $fetch(url, options as Parameters<typeof $fetch>[1])) as T
-  }
-}
-
-/**
- * Create a cachedFetch function from an H3Event.
- * Useful when you have direct access to the event.
- */
-export function getCachedFetchFromEvent(event: H3Event | undefined): CachedFetchFunction {
-  const serverCachedFetch = event?.context?.cachedFetch
-
-  if (serverCachedFetch) {
-    return serverCachedFetch as CachedFetchFunction
-  }
-
-  // Fallback to regular $fetch
   return async <T = unknown>(
     url: string,
     options: {

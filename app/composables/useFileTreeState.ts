@@ -1,3 +1,4 @@
+/** @public */
 export function useFileTreeState(baseUrl: string) {
   const stateKey = computed(() => `npmx-file-tree${baseUrl}`)
 

@@ -10,6 +10,7 @@ export function chunkIntoWeeks<T>(items: T[], weekSize = 7): T[][] {
   return result
 }
 
+/** @public */
 export function buildWeeklyEvolutionFromDaily(
   daily: Array<{ day: string; downloads: number }>,
 ): Array<{ weekStart: string; weekEnd: string; downloads: number }> {
@@ -22,6 +23,7 @@ export function buildWeeklyEvolutionFromDaily(
   })
 }
 
+/** @public */
 export function addDays(date: Date, days: number): Date {
   const d = new Date(date)
   d.setUTCDate(d.getUTCDate() + days)

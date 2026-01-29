@@ -1,3 +1,5 @@
+import { currentLocales } from './config/i18n'
+
 export default defineNuxtConfig({
   modules: [
     function (_, nuxt) {
@@ -47,7 +49,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'en' },
+      htmlAttrs: { lang: 'en-US' },
       link: [
         {
           rel: 'search',
@@ -178,16 +180,10 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    defaultLocale: 'en',
+    locales: currentLocales,
+    defaultLocale: 'en-US',
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
     langDir: 'locales',
-    locales: [
-      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
-      { code: 'de', language: 'de-DE', name: 'Deutsch', file: 'de.json' },
-      { code: 'fr', language: 'fr-FR', name: 'Français', file: 'fr.json' },
-      { code: 'zh-CN', language: 'zh-CN', name: '简体中文', file: 'zh-CN.json' },
-      { code: 'it', language: 'it', name: 'Italiano', file: 'it.json' },
-    ],
   },
 })
