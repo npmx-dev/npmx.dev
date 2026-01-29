@@ -42,7 +42,8 @@ jobs:
       - name: 🏃 Update component test snapshots
         run: pnpm test:nuxt -u
 
-      - name: 🖥️ Update browser test snapshots
-        run: pnpm test:browser --update-snapshots
+      # TODO: re-enable when we have snapshots in browser tests
+      # - name: 🖥️ Update browser test snapshots
+      #   run: pnpm test:browser --update-snapshots
 
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27

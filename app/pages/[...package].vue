@@ -473,6 +473,24 @@ defineOgImageComponent('Package', {
   downloads: () => (downloads.value ? formatNumber(downloads.value.downloads) : ''),
   license: () => pkg.value?.license ?? '',
 })
+
+// We're using only @click because it catches touch events and enter hits
+function handleClick(event: MouseEvent) {
+  const target = (event?.target as HTMLElement | undefined)?.closest('a')
+  if (!target) return
+
+  const href = target.getAttribute('href')
+  if (!href) return
+
+  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
+  if (!match || !match[1]) return
+
+  const route = router.resolve(match[1])
+  if (route) {
+    event.preventDefault()
+    router.push(route)
+  }
+}
 </script>
 
 <template>
@@ -1089,7 +1107,10 @@ defineOgImageComponent('Package', {
                   class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
                   :title="$t('package.get_started.view_types', { package: typesPackageName })"
                 >
-                  <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
+                  <span
+                    class="i-carbon:arrow-right rtl-flip w-3 h-3 inline-block align-middle"
+                    aria-hidden="true"
+                  />
                   <span class="sr-only">View {{ typesPackageName }}</span>
                 </NuxtLink>
               </div>
@@ -1223,6 +1244,7 @@ defineOgImageComponent('Package', {
           v-if="readmeData?.html"
           class="readme-content prose prose-invert max-w-[70ch]"
           v-html="readmeData.html"
+          @click="handleClick"
         />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
