@@ -482,7 +482,7 @@ function handleClick(event: MouseEvent) {
   const href = target.getAttribute('href')
   if (!href) return
 
-  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)\/(.+)/)
+  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
   if (!match || !match[1]) return
 
   const route = router.resolve(match[1])
