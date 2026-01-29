@@ -83,6 +83,28 @@ const displayVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
+// Fetch vulnerability tree (lazy, client-side)
+// This is the same composable used by PackageVulnerabilityTree
+const {
+  data: vulnTree,
+  status: vulnTreeStatus,
+  fetch: fetchVulnTree,
+} = useVulnerabilityTree(packageName, () => displayVersion.value?.version ?? '')
+onMounted(() => {
+  // Fetch vulnerability tree once displayVersion is available
+  if (displayVersion.value) {
+    fetchVulnTree()
+  }
+})
+watch(
+  () => displayVersion.value?.version,
+  () => {
+    if (displayVersion.value) {
+      fetchVulnTree()
+    }
+  },
+)
+
 // Keep latestVersion for comparison (to show "(latest)" badge)
 const latestVersion = computed(() => {
   if (!pkg.value) return null
@@ -127,6 +149,22 @@ const hasDependencies = computed(() => {
     (peerDeps && Object.keys(peerDeps).length > 0) ||
     (optionalDeps && Object.keys(optionalDeps).length > 0)
   )
+})
+
+// Vulnerability count for the stats banner
+const vulnCount = computed(() => vulnTree.value?.totalCounts.total ?? 0)
+const hasVulnerabilities = computed(() => vulnCount.value > 0)
+
+// Total transitive dependencies count (from either vuln tree or install size)
+// Subtract 1 to exclude the root package itself
+const totalDepsCount = computed(() => {
+  if (vulnTree.value) {
+    return vulnTree.value.totalPackages - 1
+  }
+  if (installSize.value) {
+    return installSize.value.dependencyCount
+  }
+  return null
 })
 
 const repositoryUrl = computed(() => {
@@ -726,7 +764,7 @@ defineOgImageComponent('Package', {
 
         <!-- Stats grid -->
         <dl
-          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
+          class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
         >
           <div v-if="pkg.license" class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
@@ -742,7 +780,31 @@ defineOgImageComponent('Package', {
               {{ $t('package.stats.deps') }}
             </dt>
             <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
-              {{ getDependencyCount(displayVersion) }}
+              <!-- Direct deps (muted) -->
+              <span class="text-fg-muted">{{ getDependencyCount(displayVersion) }}</span>
+
+              <!-- Separator and total transitive deps -->
+              <span class="text-fg-subtle mx-1">/</span>
+
+              <ClientOnly>
+                <span
+                  v-if="
+                    vulnTreeStatus === 'pending' || (installSizeStatus === 'pending' && !vulnTree)
+                  "
+                  class="inline-flex items-center gap-1 text-fg-subtle"
+                >
+                  <span
+                    class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span v-else-if="totalDepsCount !== null">{{ totalDepsCount }}</span>
+                <span v-else class="text-fg-subtle">-</span>
+                <template #fallback>
+                  <span class="text-fg-subtle">-</span>
+                </template>
+              </ClientOnly>
+
               <a
                 v-if="getDependencyCount(displayVersion) > 0"
                 :href="`https://npmgraph.js.org/?q=${pkg.name}`"
@@ -808,6 +870,42 @@ defineOgImageComponent('Package', {
               <span v-else class="text-fg-subtle">-</span>
             </dd>
           </div>
+
+          <!-- Vulnerabilities count -->
+          <ClientOnly>
+            <div class="space-y-1">
+              <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+                {{ $t('package.stats.vulns') }}
+              </dt>
+              <dd class="font-mono text-sm text-fg">
+                <span
+                  v-if="vulnTreeStatus === 'pending' || vulnTreeStatus === 'idle'"
+                  class="inline-flex items-center gap-1 text-fg-subtle"
+                >
+                  <span
+                    class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span v-else-if="vulnTreeStatus === 'success'">
+                  <span v-if="hasVulnerabilities" class="text-amber-500">{{ vulnCount }}</span>
+                  <span v-else class="inline-flex items-center gap-1 text-fg-muted">
+                    <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
+                    0
+                  </span>
+                </span>
+                <span v-else class="text-fg-subtle">-</span>
+              </dd>
+            </div>
+            <template #fallback>
+              <div class="space-y-1">
+                <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+                  {{ $t('package.stats.vulns') }}
+                </dt>
+                <dd class="font-mono text-sm text-fg-subtle">-</dd>
+              </div>
+            </template>
+          </ClientOnly>
 
           <div v-if="pkg.time?.modified" class="space-y-1">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
