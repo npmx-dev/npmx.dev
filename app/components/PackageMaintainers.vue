@@ -25,7 +25,7 @@ const DEFAULT_VISIBLE_MAINTAINERS = 5
 // Show admin controls when connected (let npm CLI handle permission errors)
 const canManageOwners = computed(() => isConnected.value)
 
-// Computed for visible maintainers with show more/less support
+// Computed for visible maintainers with show more/fewer support
 const visibleMaintainers = computed(() => {
   if (canManageOwners.value || showAllMaintainers.value) {
     return maintainerAccess.value
@@ -195,7 +195,10 @@ watch(
         <div class="flex items-center gap-2 min-w-0">
           <NuxtLink
             v-if="maintainer.name"
-            :to="{ name: '~username', params: { username: maintainer.name } }"
+            :to="{
+              name: '~username',
+              params: { username: maintainer.name },
+            }"
             class="link-subtle font-mono text-sm shrink-0"
           >
             @{{ maintainer.name }}
@@ -207,7 +210,11 @@ watch(
             v-if="isConnected && maintainer.accessVia?.length && !isLoadingAccess"
             class="text-xs text-fg-subtle truncate"
           >
-            {{ $t('package.maintainers.via', { teams: maintainer.accessVia.join(', ') }) }}
+            {{
+              $t('package.maintainers.via', {
+                teams: maintainer.accessVia.join(', '),
+              })
+            }}
           </span>
           <span
             v-if="canManageOwners && maintainer.name === npmUser"
@@ -221,7 +228,11 @@ watch(
           v-if="canManageOwners && maintainer.name && maintainer.name !== npmUser"
           type="button"
           class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 shrink-0 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-          :aria-label="$t('package.maintainers.remove_owner', { name: maintainer.name })"
+          :aria-label="
+            $t('package.maintainers.remove_owner', {
+              name: maintainer.name,
+            })
+          "
           @click="handleRemoveOwner(maintainer.name)"
         >
           <span class="i-carbon-close block w-3.5 h-3.5" aria-hidden="true" />
@@ -239,7 +250,9 @@ watch(
       {{
         showAllMaintainers
           ? $t('package.maintainers.show_less')
-          : $t('package.maintainers.show_more', { count: hiddenMaintainersCount })
+          : $t('package.maintainers.show_more', {
+              count: hiddenMaintainersCount,
+            })
       }}
     </button>
 
