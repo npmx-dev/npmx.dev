@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { formatNumber } from '#imports'
+import type { FilterChip, SortOption } from '#shared/types/preferences'
 import { debounce } from 'perfect-debounce'
 
 definePageMeta({
@@ -13,28 +14,6 @@ const router = useRouter()
 const orgName = computed(() => route.params.org)
 
 const { isConnected } = useConnector()
-
-// Debounced URL update for filter/sort
-const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
-  router.replace({
-    query: {
-      ...route.query,
-      q: updates.filter || undefined,
-      sort: updates.sort && updates.sort !== 'downloads' ? updates.sort : undefined,
-    },
-  })
-}, 300)
-
-type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
-
-// Filter and sort state (from URL)
-const filterText = ref((route.query.q as string) ?? '')
-const sortOption = ref<SortOption>((route.query.sort as SortOption) || 'downloads')
-
-// Update URL when filter/sort changes (debounced)
-watch([filterText, sortOption], ([filter, sort]) => {
-  updateUrl({ filter, sort })
-})
 
 // Fetch all packages in this org using the org packages API
 const { data: results, status, error } = await useOrgPackages(orgName)
@@ -50,51 +29,90 @@ if (status.value === 'error' && error.value?.statusCode === 404) {
 const packages = computed(() => results.value?.objects ?? [])
 const packageCount = computed(() => packages.value.length)
 
-// Apply client-side filter and sort
-const filteredAndSortedPackages = computed(() => {
-  let pkgs = [...packages.value]
+// Preferences (persisted to localStorage)
+const { viewMode, paginationMode, pageSize, columns, toggleColumn, resetColumns } =
+  usePackageListPreferences()
 
-  // Apply text filter
-  if (filterText.value) {
-    const search = filterText.value.toLowerCase()
-    pkgs = pkgs.filter(
-      pkg =>
-        pkg.package.name.toLowerCase().includes(search) ||
-        pkg.package.description?.toLowerCase().includes(search),
-    )
-  }
-
-  // Apply sort
-  switch (sortOption.value) {
-    case 'updated':
-      pkgs.sort((a, b) => {
-        const dateA = a.updated || a.package.date || ''
-        const dateB = b.updated || b.package.date || ''
-        return dateB.localeCompare(dateA)
-      })
-      break
-    case 'name-asc':
-      pkgs.sort((a, b) => a.package.name.localeCompare(b.package.name))
-      break
-    case 'name-desc':
-      pkgs.sort((a, b) => b.package.name.localeCompare(a.package.name))
-      break
-    case 'downloads':
-    default:
-      pkgs.sort((a, b) => (b.downloads?.weekly ?? 0) - (a.downloads?.weekly ?? 0))
-      break
-  }
-
-  return pkgs
+// Structured filters and sorting
+const {
+  filters,
+  sortOption,
+  sortedPackages,
+  availableKeywords,
+  activeFilters,
+  setTextFilter,
+  setSearchScope,
+  setDownloadRange,
+  setSecurity,
+  setUpdatedWithin,
+  toggleKeyword,
+  clearFilter,
+  clearAllFilters,
+  setSort,
+} = useStructuredFilters({
+  packages,
+  initialFilters: {
+    text: (route.query.q as string) ?? '',
+  },
+  initialSort: (route.query.sort as SortOption) ?? 'updated-desc',
 })
 
-const filteredCount = computed(() => filteredAndSortedPackages.value.length)
+// Pagination state
+const currentPage = ref(1)
+
+// Calculate total pages
+const totalPages = computed(() => {
+  if (pageSize.value === 'all') return 1
+  const numericSize = typeof pageSize.value === 'number' ? pageSize.value : 25
+  return Math.ceil(sortedPackages.value.length / numericSize)
+})
+
+// Reset to page 1 when filters change
+watch([filters, sortOption], () => {
+  currentPage.value = 1
+})
+
+// Clamp current page when total pages decreases (e.g., after filtering)
+watch(totalPages, newTotal => {
+  if (currentPage.value > newTotal && newTotal > 0) {
+    currentPage.value = newTotal
+  }
+})
+
+// Debounced URL update for filter/sort
+const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
+  router.replace({
+    query: {
+      ...route.query,
+      q: updates.filter || undefined,
+      sort: updates.sort && updates.sort !== 'updated-desc' ? updates.sort : undefined,
+    },
+  })
+}, 300)
+
+// Update URL when filter/sort changes (debounced)
+watch([() => filters.value.text, sortOption], ([filter, sort]) => {
+  updateUrl({ filter, sort })
+})
+
+const filteredCount = computed(() => sortedPackages.value.length)
 
 // Reset state when org changes
 watch(orgName, () => {
-  filterText.value = ''
-  sortOption.value = 'downloads'
+  clearAllFilters()
+  setSort('updated-desc')
+  currentPage.value = 1
 })
+
+// Handle filter chip removal
+function handleClearFilter(chip: FilterChip) {
+  clearFilter(chip)
+}
+
+// Handle sort change from table
+function handleSortChange(option: SortOption) {
+  setSort(option)
+}
 
 const activeTab = ref<'members' | 'teams'>('members')
 
@@ -216,24 +234,57 @@ defineOgImageComponent('Default', {
         {{ $t('org.page.packages_title') }}
       </h2>
 
-      <!-- Filter and sort controls -->
-      <PackageListControls
-        v-model:filter="filterText"
-        v-model:sort="sortOption"
-        :placeholder="$t('org.page.filter_placeholder', { count: packageCount })"
+      <!-- Enhanced toolbar with filters -->
+      <PackageListToolbar
+        :filters="filters"
+        v-model:sort-option="sortOption"
+        v-model:view-mode="viewMode"
+        :columns="columns"
+        v-model:pagination-mode="paginationMode"
+        v-model:page-size="pageSize"
         :total-count="packageCount"
         :filtered-count="filteredCount"
+        :available-keywords="availableKeywords"
+        :active-filters="activeFilters"
+        @toggle-column="toggleColumn"
+        @reset-columns="resetColumns"
+        @clear-filter="handleClearFilter"
+        @clear-all-filters="clearAllFilters"
+        @update:text="setTextFilter"
+        @update:search-scope="setSearchScope"
+        @update:download-range="setDownloadRange"
+        @update:security="setSecurity"
+        @update:updated-within="setUpdatedWithin"
+        @toggle-keyword="toggleKeyword"
       />
 
       <!-- No results after filtering -->
-      <p
-        v-if="filteredAndSortedPackages.length === 0"
-        class="text-fg-muted py-8 text-center font-mono"
-      >
-        {{ $t('org.page.no_match', { query: filterText }) }}
+      <p v-if="sortedPackages.length === 0" class="text-fg-muted py-8 text-center font-mono">
+        {{ $t('org.page.no_match', { query: filters.text }) }}
       </p>
 
-      <PackageList v-else :results="filteredAndSortedPackages" />
+      <!-- Package list with view mode support -->
+      <template v-else>
+        <PackageList
+          :results="sortedPackages"
+          :view-mode="viewMode"
+          :columns="columns"
+          v-model:sort-option="sortOption"
+          :pagination-mode="paginationMode"
+          :page-size="pageSize"
+          :current-page="currentPage"
+          @click-keyword="toggleKeyword"
+        />
+
+        <!-- Pagination controls -->
+        <PaginationControls
+          v-model:mode="paginationMode"
+          v-model:page-size="pageSize"
+          v-model:current-page="currentPage"
+          :total-items="sortedPackages.length"
+          :view-mode="viewMode"
+        />
+      </template>
     </section>
   </main>
 </template>

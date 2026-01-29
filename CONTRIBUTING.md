@@ -189,6 +189,18 @@ import { hasProtocol } from 'ufo'
 | Constants        | SCREAMING_SNAKE_CASE     | `NPM_REGISTRY`, `ALLOWED_TAGS` |
 | Types/Interfaces | PascalCase               | `NpmSearchResponse`            |
 
+> [!TIP]
+> Exports in `app/composables/`, `app/utils/`, and `server/utils/` are auto-imported by Nuxt. To prevent [knip](https://knip.dev/) from flagging them as unused, add a `@public` JSDoc annotation:
+>
+> ```typescript
+> /**
+>  * @public
+>  */
+> export function myAutoImportedFunction() {
+>   // ...
+> }
+> ```
+
 ### Vue components
 
 - Use Composition API with `<script setup lang="ts">`

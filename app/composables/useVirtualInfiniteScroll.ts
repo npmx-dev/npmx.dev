@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { MaybeRefOrGetter, Ref } from 'vue'
 
 export interface WindowVirtualizerHandle {
   readonly scrollOffset: number
@@ -20,8 +20,8 @@ export interface UseVirtualInfiniteScrollOptions {
   hasMore: Ref<boolean>
   /** Whether currently loading */
   isLoading: Ref<boolean>
-  /** Page size for calculating current page */
-  pageSize: number
+  /** Page size for calculating current page (reactive) */
+  pageSize: MaybeRefOrGetter<number>
   /** Threshold in items before end to trigger load */
   threshold?: number
   /** Callback to load more items */
@@ -60,7 +60,8 @@ export function useVirtualInfiniteScroll(options: UseVirtualInfiniteScrollOption
 
     // Calculate current visible page based on first visible item
     const startIndex = list.findItemIndex(list.scrollOffset)
-    const newPage = Math.floor(startIndex / pageSize) + 1
+    const currentPageSize = toValue(pageSize)
+    const newPage = Math.floor(startIndex / currentPageSize) + 1
 
     if (newPage !== currentPage.value && onPageChange) {
       currentPage.value = newPage
@@ -92,7 +93,7 @@ export function useVirtualInfiniteScroll(options: UseVirtualInfiniteScrollOption
     const list = listRef.value
     if (!list || page < 1) return
 
-    const targetIndex = (page - 1) * pageSize
+    const targetIndex = (page - 1) * toValue(pageSize)
     list.scrollToIndex(targetIndex, { align: 'start' })
     currentPage.value = page
   }
