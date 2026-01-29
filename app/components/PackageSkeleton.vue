@@ -110,10 +110,10 @@
       </h2>
       <!-- code-block with relative positioning for copy button -->
       <div class="relative">
-        <div class="code-block pr-16">
+        <div class="code-block pe-16">
           <span class="skeleton inline-block h-5 w-52" />
         </div>
-        <span class="skeleton absolute top-3 right-3 h-6 w-12 rounded" />
+        <span class="skeleton absolute top-3 inset-ie-3 h-6 w-12 rounded" />
       </div>
     </section>
 

@@ -1,17 +1,18 @@
-import type { VulnerabilityTreeResult } from '#shared/types/osv'
+import type { VulnerabilityTreeResult } from '#shared/types/dependency-analysis'
 
 /**
- * Shared composable for vulnerability tree data.
+ * Shared composable for dependency analysis data (vulnerabilities, deprecated packages).
  * Fetches once and caches the result so multiple components can use it.
+ * Before: useVulnerabilityTree - but now we use this for both vulnerabilities and deprecated packages.
  */
-export function useVulnerabilityTree(
+export function useDependencyAnalysis(
   packageName: MaybeRefOrGetter<string>,
   version: MaybeRefOrGetter<string>,
 ) {
   // Build a stable key from the current values
   const name = toValue(packageName)
   const ver = toValue(version)
-  const key = `vuln-tree:v1:${name}@${ver}`
+  const key = `dep-analysis:v1:${name}@${ver}`
 
   // Use useState for SSR-safe caching across components
   const data = useState<VulnerabilityTreeResult | null>(key, () => null)
@@ -37,7 +38,7 @@ export function useVulnerabilityTree(
       data.value = result
       status.value = 'success'
     } catch (e) {
-      error.value = e instanceof Error ? e : new Error('Failed to fetch vulnerabilities')
+      error.value = e instanceof Error ? e : new Error('Failed to fetch dependency analysis')
       status.value = 'error'
     }
   }

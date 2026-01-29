@@ -281,6 +281,9 @@ html.light .shiki span {
   white-space: pre;
   word-break: normal;
   overflow-wrap: normal;
+  /* Makes unicode and ascii art work properly */
+  line-height: 1.25;
+  display: inline-block;
 }
 
 .readme-content ul,

@@ -1,6 +1,6 @@
 export * from './npm-registry'
 export * from './jsr'
-export * from './osv'
+export * from './dependency-analysis'
 export * from './readme'
 export * from './docs'
 export * from './deno-doc'
