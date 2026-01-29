@@ -80,6 +80,10 @@ html {
   }
 }
 
+html[dir='rtl'] .rtl-flip {
+  transform: scale(-1, 1);
+}
+
 body {
   margin: 0;
   background-color: var(--bg);
