@@ -24,6 +24,7 @@ export default defineEventHandler(async event => {
 
   if (!query.code) {
     const handle = query.handle?.toString()
+    const create = query.create?.toString()
 
     if (!handle) {
       throw createError({
@@ -32,7 +33,10 @@ export default defineEventHandler(async event => {
       })
     }
 
-    const redirectUrl = await atclient.authorize(handle, { scope })
+    const redirectUrl = await atclient.authorize(handle, {
+      scope,
+      prompt: create ? 'create' : undefined,
+    })
     return sendRedirect(event, redirectUrl.toString())
   }
 

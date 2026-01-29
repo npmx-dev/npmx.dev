@@ -5,6 +5,26 @@ const handleInput = ref('')
 
 const { user, logout } = await useAtproto()
 
+async function handleBlueskySignIn() {
+  await navigateTo(
+    {
+      path: '/api/auth/atproto',
+      query: { handle: 'https://bsky.social' },
+    },
+    { external: true },
+  )
+}
+
+async function handleCreateAccount() {
+  await navigateTo(
+    {
+      path: '/api/auth/atproto',
+      query: { handle: 'https://selfhosted.social', create: 'true' },
+    },
+    { external: true },
+  )
+}
+
 async function handleLogin() {
   if (handleInput.value) {
     await navigateTo(
@@ -74,7 +94,9 @@ async function handleLogin() {
 
             <!-- Disconnected state -->
             <form v-else class="space-y-4" @submit.prevent="handleLogin">
-              <p class="text-sm text-fg-muted">Login with your Atmosphere account</p>
+              <p class="text-sm text-fg-muted">
+                Login with your Atmosphere account. The same one as Bluesky, Blacksky, or tangled
+              </p>
 
               <div class="space-y-3">
                 <div>
@@ -82,7 +104,7 @@ async function handleLogin() {
                     for="handle-input"
                     class="block text-xs text-fg-subtle uppercase tracking-wider mb-1.5"
                   >
-                    Internet Handle
+                    Handle
                   </label>
                   <input
                     id="handle-input"
@@ -124,6 +146,27 @@ async function handleLogin() {
                 class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
               >
                 Login
+              </button>
+              <button
+                type="button"
+                @click="handleCreateAccount"
+                class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+              >
+                Create a new account
+              </button>
+              <hr />
+              <button
+                type="button"
+                @click="handleBlueskySignIn"
+                class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg flex items-center justify-center gap-2"
+              >
+                Sign in with Bluesky
+                <svg fill="none" viewBox="0 0 64 57" width="20" style="width: 20px">
+                  <path
+                    fill="#0F73FF"
+                    d="M13.873 3.805C21.21 9.332 29.103 20.537 32 26.55v15.882c0-.338-.13.044-.41.867-1.512 4.456-7.418 21.847-20.923 7.944-7.111-7.32-3.819-14.64 9.125-16.85-7.405 1.264-15.73-.825-18.014-9.015C1.12 23.022 0 8.51 0 6.55 0-3.268 8.579-.182 13.873 3.805ZM50.127 3.805C42.79 9.332 34.897 20.537 32 26.55v15.882c0-.338.13.044.41.867 1.512 4.456 7.418 21.847 20.923 7.944 7.111-7.32 3.819-14.64-9.125-16.85 7.405 1.264 15.73-.825 18.014-9.015C62.88 23.022 64 8.51 64 6.55c0-9.818-8.578-6.732-13.873-2.745Z"
+                  ></path>
+                </svg>
               </button>
             </form>
           </div>
