@@ -203,50 +203,52 @@ defineOgImageComponent('Default', {
           </div>
         </section>
 
-        <!-- LANGUAGE Section -->
-        <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-            {{ $t('settings.sections.language') }}
-          </h2>
-          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-4">
-            <!-- Language selector -->
-            <div class="space-y-2">
-              <label for="language-select" class="block text-sm text-fg font-medium">
-                {{ $t('settings.language') }}
-              </label>
-              <select
-                id="language-select"
-                :value="locale"
-                class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 cursor-pointer"
-                @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
-              >
-                <option v-for="loc in availableLocales" :key="loc.code" :value="loc.code">
-                  {{ loc.name }}
-                </option>
-              </select>
-            </div>
-
-            <!-- Translation helper for non-source locales -->
-            <template v-if="currentLocaleStatus && !isSourceLocale">
-              <div class="border-t border-border pt-4">
-                <TranslationHelper :status="currentLocaleStatus" />
+        <ClientOnly>
+          <!-- LANGUAGE Section -->
+          <section>
+            <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+              {{ $t('settings.sections.language') }}
+            </h2>
+            <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-4">
+              <!-- Language selector -->
+              <div class="space-y-2">
+                <label for="language-select" class="block text-sm text-fg font-medium">
+                  {{ $t('settings.language') }}
+                </label>
+                <select
+                  id="language-select"
+                  :value="locale"
+                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 cursor-pointer"
+                  @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
+                >
+                  <option v-for="loc in availableLocales" :key="loc.code" :value="loc.code">
+                    {{ loc.name }}
+                  </option>
+                </select>
               </div>
-            </template>
 
-            <!-- Simple help link for source locale -->
-            <template v-else>
-              <a
-                href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-              >
-                <span class="i-carbon-logo-github w-4 h-4" aria-hidden="true" />
-                {{ $t('settings.help_translate') }}
-              </a>
-            </template>
-          </div>
-        </section>
+              <!-- Translation helper for non-source locales -->
+              <template v-if="currentLocaleStatus && !isSourceLocale">
+                <div class="border-t border-border pt-4">
+                  <TranslationHelper :status="currentLocaleStatus" />
+                </div>
+              </template>
+
+              <!-- Simple help link for source locale -->
+              <template v-else>
+                <a
+                  href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                >
+                  <span class="i-carbon-logo-github w-4 h-4" aria-hidden="true" />
+                  {{ $t('settings.help_translate') }}
+                </a>
+              </template>
+            </div>
+          </section>
+        </ClientOnly>
       </div>
     </article>
   </main>
