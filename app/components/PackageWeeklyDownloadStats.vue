@@ -65,8 +65,8 @@ const accentColorValueById = computed<Record<string, string>>(() => {
 const accent = computed(() => {
   const id = selectedAccentColor.value
   return id
-    ? (accentColorValueById.value[id] ?? colors.value.fgSubtle ?? 'oklch(0.633 0 0)')
-    : (colors.value.fgSubtle ?? 'oklch(0.633 0 0)')
+    ? (accentColorValueById.value[id] ?? colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK)
+    : (colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK)
 })
 
 const pulseColor = computed(() => {

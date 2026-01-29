@@ -1,5 +1,11 @@
 // Vue Data UI does not support CSS vars nor OKLCH for now
 
+/**
+ * Default neutral OKLCH color used as fallback when CSS variables are unavailable (e.g., during SSR).
+ * This matches the dark mode value of --fg-subtle defined in main.css.
+ */
+export const OKLCH_NEUTRAL_FALLBACK = 'oklch(0.633 0 0)'
+
 /** Converts a 0-255 RGB component to a 2-digit hex string */
 const componentToHex = (value: number): string =>
   Math.round(Math.min(Math.max(0, value), 255))
