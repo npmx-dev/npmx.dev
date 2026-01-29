@@ -9,7 +9,6 @@
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
-    "site_footer": "Site footer",
     "about": "about",
     "docs": "docs",
     "source": "source",
@@ -40,7 +39,7 @@
     }
   },
   "nav": {
-    "main_navigation": "Main navigation",
+    "main_navigation": "Main",
     "popular_packages": "Popular packages",
     "search": "search",
     "settings": "settings",
@@ -121,6 +120,7 @@
       "license": "License",
       "deps": "Deps",
       "install_size": "Install Size",
+      "vulns": "Vulns",
       "updated": "Updated",
       "view_dependency_graph": "View dependency graph",
       "inspect_dependency_tree": "Inspect dependency tree"
@@ -206,7 +206,9 @@
       "username_placeholder": "username...",
       "add_button": "add",
       "cancel_add": "Cancel adding owner",
-      "add_owner": "+ Add owner"
+      "add_owner": "+ Add owner",
+      "show_more": "(show {count} more)",
+      "show_less": "(show fewer)"
     },
     "downloads": {
       "title": "Weekly Downloads",
@@ -704,7 +706,6 @@
     }
   },
   "header": {
-    "site_header": "Site header",
     "home": "npmx home",
     "github": "GitHub",
     "packages": "packages",

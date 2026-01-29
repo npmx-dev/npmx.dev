@@ -9,7 +9,6 @@
   "non_affiliation_disclaimer": "npm, Inc.とは関係ありません。",
   "trademark_disclaimer": "npmはnpm, Inc.の登録商標です。当サイトはnpm, Inc.とは関係ありません。",
   "footer": {
-    "site_footer": "サイトフッター",
     "about": "npmxについて",
     "docs": "ドキュメント",
     "source": "ソースコード",
@@ -40,7 +39,7 @@
     }
   },
   "nav": {
-    "main_navigation": "Main navigation",
+    "main_navigation": "Main",
     "popular_packages": "人気のパッケージ",
     "search": "検索",
     "settings": "設定",
@@ -187,7 +186,9 @@
       "username_placeholder": "ユーザー名...",
       "add_button": "追加",
       "cancel_add": "オーナーの追加をキャンセル",
-      "add_owner": "+ オーナーを追加"
+      "add_owner": "+ オーナーを追加",
+      "show_more": "（他 {count} 個を表示）",
+      "show_less": "（折りたたむ）"
     },
     "downloads": {
       "title": "週間ダウンロード数",

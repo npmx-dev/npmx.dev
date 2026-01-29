@@ -173,7 +173,9 @@
       "username_placeholder": "nome utente...",
       "add_button": "aggiungi",
       "cancel_add": "Cancella aggiunta proprietario",
-      "add_owner": "+ Aggiungi proprietario"
+      "add_owner": "+ Aggiungi proprietario",
+      "show_more": "(mostra altri {count})",
+      "show_less": "(mostra meno)"
     },
     "downloads": {
       "title": "Downloads settimanali",

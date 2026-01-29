@@ -9,7 +9,6 @@
   "non_affiliation_disclaimer": "nicht verbunden mit npm, Inc.",
   "trademark_disclaimer": "npm ist eine eingetragene Marke von npm, Inc. Diese Seite ist nicht mit npm, Inc. verbunden.",
   "footer": {
-    "site_footer": "Fusszeile",
     "about": "über uns",
     "docs": "Doku",
     "source": "Quellcode",
@@ -204,7 +203,9 @@
       "username_placeholder": "Benutzername...",
       "add_button": "Hinzufügen",
       "cancel_add": "Owner-Hinzufügung abbrechen",
-      "add_owner": "+ Owner hinzufügen"
+      "add_owner": "+ Owner hinzufügen",
+      "show_more": "({count} weitere anzeigen)",
+      "show_less": "(weniger anzeigen)"
     },
     "downloads": {
       "title": "Wöchentliche Downloads",
@@ -594,7 +595,6 @@
     }
   },
   "header": {
-    "site_header": "Seitenkopf",
     "home": "npmx Startseite",
     "github": "GitHub",
     "packages": "Pakete",

@@ -220,6 +220,21 @@ const props = defineProps<{
 
 Ideally, extract utilities into separate files so they can be unit tested. 🙏
 
+## RTL Support
+
+We support `right-to-left` languages, we need to make sure that the UI is working correctly in both directions.
+
+Simple approach used by most websites of relying on direction set in HTML element does not work because direction for various items, such as timeline, does not always match direction set in HTML.
+
+We've added some `UnoCSS` utilities styles to help you with that:
+
+- Do not use `left/right` padding and margin: for example `pl-1`. Use `padding-inline-start/end` instead. So `pl-1` should be `ps-1`, `pr-1` should be `pe-1`. The same rules apply to margin.
+- Do not use `rtl-` classes, such as `rtl-left-0`.
+- For icons that should be rotated for RTL, add `class="rtl-flip"`. This can only be used for icons outside of elements with `dir="auto"`.
+- For absolute positioned elements, don't use `left/right`: for example `left-0`. Use `inset-inline-start/end` instead. `UnoCSS` shortcuts are `inset-is` for `inset-inline-start` and `inset-ie` for `inset-inline-end`. Example: `left-0` should be replaced with `inset-is-0`.
+- If you need to change the border radius for an entire left or right side, use `border-inline-start/end`. `UnoCSS` shortcuts are `rounded-is` for left side, `rounded-ie` for right side. Example: `rounded-l-5` should be replaced with `rounded-ie-5`.
+- If you need to change the border radius for one corner, use `border-start-end-radius` and similar rules. `UnoCSS` shortcuts are `rounded` + top/bottom as either `-bs` (top) or `-be` (bottom) + left/right as either `-is` (left) or `-ie` (right). Example: `rounded-tl-0` should be replaced with `rounded-bs-is-0`.
+
 ## Localization (i18n)
 
 npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization. We aim to make the UI accessible to users in their preferred language.
@@ -227,13 +242,48 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 ### Approach
 
 - All user-facing strings should use translation keys via `$t()` in templates and script
-- Translation files live in `i18n/locales/` (e.g., `en.json`)
-- We use the `no_prefix` strategy (no `/en/` or `/fr/` in URLs)
+- Translation files live in `i18n/locales/` (e.g., `en-US.json`)
+- We use the `no_prefix` strategy (no `/en-US/` or `/fr-FR/` in URLs)
 - Locale preference is stored in cookies and respected on subsequent visits
+
+### Adding a new locale
+
+We are using localization using country variants (ISO-6391) via [multiple translation files](https://i18n.nuxtjs.org/docs/guide/lazy-load-translations#multiple-files-lazy-loading) to avoid repeating every key per country.
+
+The [config/i18n.ts](./config/i18n.ts) configuration file will be used to register the new locale:
+
+- `countryLocaleVariants` object will be used to register the country variants
+- `locales` object will be used to link the supported locales (country and single one)
+- `buildLocales` function will build the target locales
+
+To register a new locale:
+
+- for a single country, your JSON file should include the language and the country in the name (for example, `pl-PL.json`) and register the info at `locales` object
+- for multiple country variants, you need to add the default language JSON file (for example for Spanish, `es.json`) and one of the country variants (for example for Spanish for Spain, `es-ES.json`); register the language at `countryLocaleVariants` object adding the country variants with the JSON country file and register the language at `locales` object using the language JSON file (check how we register `es`, `es-ES` and `es-419` in [config/i18n.ts](./config/i18n.ts))
+
+The country file should contain will contain only the translations that differ from the language JSON file, Vue I18n will merge the messages for us.
+
+To add a new locale:
+
+1. Add a new file at [locales](./i18n/locales) folder with the language code as the filename.
+2. Copy [en](./i18n/locales/en.json) and translate the strings
+3. Add the language to the `locales` array in [config/i18n.ts](./config/i18n.ts), below `en` and `ar`:
+   - If your language has multiple country variants, add the generic one for language only (only if there are a lot of common entries, you can always add it as a new one)
+     - Add all country variants in [country variants object](./config/i18n.ts)
+     - Add all country variants files with empty `messages` object: `{}`
+     - Translate the strings in the generic language file
+     - Later, when anyone wants to add the corresponding translations for the country variant, just override any entry in the corresponding file: you can see an example with `es` variants.
+   - If the generic language already exists:
+     - If the translation doesn't differ from the generic language, then add the corresponding translations in the corresponding file
+     - If the translation differs from the generic language, then add the corresponding translations in the corresponding file and remove it from the country variants entry
+4. If the language is `right-to-left`, add `dir` option with `rtl` value, for example, for [ar](./config/i18n.ts)
+5. If the language requires special pluralization rules, add `pluralRule` callback option, for example, for [ar](./config/i18n.ts)
+
+Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization.html#custom-pluralization) for more info.
 
 ### Adding translations
 
-1. Add your translation key to `i18n/locales/en.json` first (English is the source of truth)
+1. Add your translation key to `i18n/locales/en.json` first (American English is the source of truth)
 2. Use the key in your component:
 
    ```vue
@@ -278,22 +328,6 @@ We recommend the [i18n-ally](https://marketplace.visualstudio.com/items?itemName
 - Easy navigation to translation files
 
 The extension is included in our workspace recommendations, so VSCode should prompt you to install it.
-
-### Adding a new locale
-
-1. Create a new JSON file in `i18n/locales/` (e.g., `fr.json`)
-2. Add the locale to `nuxt.config.ts`:
-
-   ```typescript
-   i18n: {
-     locales: [
-       { code: 'en', language: 'en-US', name: 'English', file: 'en.json' },
-       { code: 'fr', language: 'fr-FR', name: 'Francais', file: 'fr.json' },
-     ],
-   }
-   ```
-
-3. Translate all keys from `en.json`
 
 ### Formatting with locale
 

@@ -30,7 +30,8 @@ const debouncedNavigate = debounce(async () => {
     name: 'search',
     query: query ? { q: query } : undefined,
   })
-  searchQuery.value = ''
+  // allow time for the navigation to occur before resetting searchQuery
+  setTimeout(() => (searchQuery.value = ''), 1000)
 }, 100)
 
 async function handleSearchInput() {
@@ -50,10 +51,7 @@ onKeyStroke(',', e => {
 </script>
 
 <template>
-  <header
-    :aria-label="$t('header.site_header')"
-    class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border"
-  >
+  <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
     <nav :aria-label="$t('nav.main_navigation')" class="container h-14 flex items-center">
       <!-- Left: Logo -->
       <div class="flex-shrink-0">
@@ -73,13 +71,7 @@ onKeyStroke(',', e => {
       <div class="flex-1 flex items-center justify-center gap-4 sm:gap-6">
         <!-- Search bar (shown on all pages except home and search) -->
         <search v-if="showSearchBar" class="hidden sm:block flex-1 max-w-md">
-          <form
-            role="search"
-            method="GET"
-            action="/search"
-            class="relative"
-            @submit.prevent="handleSearchInput"
-          >
+          <form method="GET" action="/search" class="relative" @submit.prevent="handleSearchInput">
             <label for="header-search" class="sr-only">
               {{ $t('search.label') }}
             </label>
