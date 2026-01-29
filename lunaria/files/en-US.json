@@ -121,6 +121,7 @@
       "license": "License",
       "deps": "Deps",
       "install_size": "Install Size",
+      "vulns": "Vulns",
       "updated": "Updated",
       "view_dependency_graph": "View dependency graph",
       "inspect_dependency_tree": "Inspect dependency tree"
