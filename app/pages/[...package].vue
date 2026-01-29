@@ -13,6 +13,8 @@ definePageMeta({
 
 const router = useRouter()
 
+const isMounted = useMounted()
+
 const { packageName, requestedVersion, orgName } = usePackageRoute()
 
 if (import.meta.server) {
@@ -836,10 +838,10 @@ defineOgImageComponent('Package', {
               v-for="pm in packageManagers"
               :key="pm.id"
               role="tab"
-              :aria-selected="selectedPM === pm.id"
+              :aria-selected="isMounted && selectedPM === pm.id"
               class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
               :class="
-                selectedPM === pm.id
+                isMounted && selectedPM === pm.id
                   ? 'bg-bg shadow text-fg border-border'
                   : 'text-fg-subtle hover:text-fg border-transparent'
               "
@@ -921,10 +923,10 @@ defineOgImageComponent('Package', {
               v-for="pm in packageManagers"
               :key="pm.id"
               role="tab"
-              :aria-selected="selectedPM === pm.id"
+              :aria-selected="isMounted && selectedPM === pm.id"
               class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
               :class="
-                selectedPM === pm.id
+                isMounted && selectedPM === pm.id
                   ? 'bg-bg shadow text-fg border-border'
                   : 'text-fg-subtle hover:text-fg border-transparent'
               "
