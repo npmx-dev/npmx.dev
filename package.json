@@ -22,7 +22,6 @@
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "preview": "nuxt preview",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
-    "postinstall": "pnpm generate:lexicons && nuxt prepare && simple-git-hooks",
     "test": "vite test",
     "test:browser": "playwright test",
     "test:browser:ui": "playwright test --ui",

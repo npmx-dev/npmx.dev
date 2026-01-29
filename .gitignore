@@ -36,6 +36,3 @@ test-results/
 
 # Lighthouse
 .lighthouseci
-
-# Generated lexicon types
-shared/types/lexicons/
