@@ -27,11 +27,11 @@ watch(isOpen, open => (isLocked.value = open))
   <!-- Toggle button (mobile only) -->
   <button
     type="button"
-    class="md:hidden fixed bottom-4 right-4 z-40 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors"
+    class="md:hidden fixed bottom-4 inset-ie-4 z-40 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors"
     :aria-label="$t('code.toggle_tree')"
     @click="isOpen = !isOpen"
   >
-    <span class="w-5 h-5" :class="isOpen ? 'i-carbon-close' : 'i-carbon-folder'" />
+    <span class="w-5 h-5" :class="isOpen ? 'i-carbon:close' : 'i-carbon:folder'" />
   </button>
 
   <!-- Backdrop -->
@@ -57,19 +57,20 @@ watch(isOpen, open => (isLocked.value = open))
   >
     <aside
       v-if="isOpen"
-      class="md:hidden fixed inset-y-0 left-0 z-50 w-72 bg-bg-subtle border-r border-border overflow-y-auto"
+      class="md:hidden fixed inset-y-0 inset-is-0 z-50 w-72 bg-bg-subtle border-ie border-border overflow-y-auto"
     >
       <div
-        class="sticky top-0 bg-bg-subtle border-b border-border px-4 py-3 flex items-center justify-between"
+        class="sticky top-0 bg-bg-subtle border-b border-border px-4 py-3 flex items-center justify-start"
       >
         <span class="font-mono text-sm text-fg-muted">{{ $t('code.files_label') }}</span>
+        <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
         <button
           type="button"
           class="text-fg-muted hover:text-fg transition-colors"
           :aria-label="$t('code.close_tree')"
           @click="isOpen = false"
         >
-          <span class="i-carbon-close w-5 h-5" />
+          <span class="i-carbon:close w-5 h-5" />
         </button>
       </div>
       <CodeFileTree :tree="tree" :current-path="currentPath" :base-url="baseUrl" />

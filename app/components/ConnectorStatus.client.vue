@@ -75,7 +75,7 @@ const ariaLabel = computed(() => {
       <!-- Operation count badge (overlaid) -->
       <span
         v-if="isConnected && operationCount > 0"
-        class="absolute -top-0.5 -right-0.5 min-w-[1rem] h-4 px-1 flex items-center justify-center font-mono text-[10px] rounded-full"
+        class="absolute -top-0.5 -inset-ie-0.5 min-w-[1rem] h-4 px-1 flex items-center justify-center font-mono text-[10px] rounded-full"
         :class="hasPendingOperations ? 'bg-yellow-500 text-black' : 'bg-blue-500 text-white'"
         aria-hidden="true"
       >
@@ -93,7 +93,7 @@ const ariaLabel = computed(() => {
       <div
         v-if="showTooltip"
         role="tooltip"
-        class="absolute right-0 top-full mt-2 px-2 py-1 font-mono text-xs text-fg bg-bg-elevated border border-border rounded shadow-lg whitespace-nowrap z-50"
+        class="absolute inset-ie-0 top-full mt-2 px-2 py-1 font-mono text-xs text-fg bg-bg-elevated border border-border rounded shadow-lg whitespace-nowrap z-50"
       >
         {{ tooltipText }}
       </div>
