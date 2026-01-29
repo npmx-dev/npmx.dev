@@ -16,7 +16,7 @@ export default defineNuxtModule({
       maxAge: 60 * 60 * 24, // 1 day
     })
 
-    if (nuxt.options.dev || nuxt.options._prepare) {
+    if (nuxt.options.dev || nuxt.options._prepare || nuxt.options.test) {
       return
     }
 
