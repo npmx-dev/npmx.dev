@@ -80,3 +80,17 @@ export function isCacheEntryStale(entry: CachedFetchEntry): boolean {
   const expiresAt = entry.cachedAt + entry.ttl * 1000
   return now > expiresAt
 }
+
+/**
+ * Result returned by cachedFetch with staleness metadata.
+ * This allows consumers to know if the data came from stale cache
+ * and potentially trigger client-side revalidation.
+ */
+export interface CachedFetchResult<T> {
+  /** The response data */
+  data: T
+  /** Whether the data came from stale cache (past TTL) */
+  isStale: boolean
+  /** Unix timestamp when the data was cached, or null if fresh fetch */
+  cachedAt: number | null
+}

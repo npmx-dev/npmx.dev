@@ -183,17 +183,25 @@ export function usePackage(
 ) {
   const cachedFetch = useCachedFetch()
 
-  return useLazyAsyncData(
+  const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
     async () => {
       const encodedName = encodePackageName(toValue(name))
-      const r = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
+      const { data: r, isStale } = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
       const reqVer = toValue(requestedVersion)
       const pkg = transformPackument(r, reqVer)
       const resolvedVersion = getResolvedVersion(pkg, reqVer)
-      return { ...pkg, resolvedVersion }
+      return { ...pkg, resolvedVersion, isStale }
     },
   )
+
+  if (import.meta.client && asyncData.data.value?.isStale) {
+    onMounted(() => {
+      asyncData.refresh()
+    })
+  }
+
+  return asyncData
 }
 
 function getResolvedVersion(pkg: SlimPackument, reqVer?: string | null): string | null {
@@ -223,15 +231,24 @@ export function usePackageDownloads(
 ) {
   const cachedFetch = useCachedFetch()
 
-  return useLazyAsyncData(
+  const asyncData = useLazyAsyncData(
     () => `downloads:${toValue(name)}:${toValue(period)}`,
     async () => {
       const encodedName = encodePackageName(toValue(name))
-      return await cachedFetch<NpmDownloadCount>(
+      const { data, isStale } = await cachedFetch<NpmDownloadCount>(
         `${NPM_API}/downloads/point/${toValue(period)}/${encodedName}`,
       )
+      return { ...data, isStale }
     },
   )
+
+  if (import.meta.client && asyncData.data.value?.isStale) {
+    onMounted(() => {
+      asyncData.refresh()
+    })
+  }
+
+  return asyncData
 }
 
 type NpmDownloadsRangeResponse = {
@@ -260,6 +277,7 @@ export async function fetchNpmDownloadsRange(
 const emptySearchResponse = {
   objects: [],
   total: 0,
+  isStale: false,
   time: new Date().toISOString(),
 } satisfies NpmSearchResponse
 
@@ -305,7 +323,7 @@ export function useNpmSearch(
       // Use requested size for initial fetch
       params.set('size', String(opts.size ?? 25))
 
-      const response = await cachedFetch<NpmSearchResponse>(
+      const { data: response, isStale } = await cachedFetch<NpmSearchResponse>(
         `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
         {},
         60,
@@ -317,7 +335,7 @@ export function useNpmSearch(
         total: response.total,
       }
 
-      return response
+      return { ...response, isStale }
     },
     { default: () => lastSearch || emptySearchResponse },
   )
@@ -357,7 +375,7 @@ export function useNpmSearch(
       params.set('size', String(size))
       params.set('from', String(from))
 
-      const response = await cachedFetch<NpmSearchResponse>(
+      const { data: response } = await cachedFetch<NpmSearchResponse>(
         `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
         {},
         60,
@@ -405,6 +423,7 @@ export function useNpmSearch(
   const data = computed<NpmSearchResponse | null>(() => {
     if (cache.value) {
       return {
+        isStale: false,
         objects: cache.value.objects,
         total: cache.value.total,
         time: new Date().toISOString(),
@@ -412,6 +431,12 @@ export function useNpmSearch(
     }
     return asyncData.data.value
   })
+
+  if (import.meta.client && asyncData.data.value?.isStale) {
+    onMounted(() => {
+      asyncData.refresh()
+    })
+  }
 
   // Whether there are more results available on the server (incremental mode only)
   const hasMore = computed(() => {
@@ -482,7 +507,7 @@ function packumentToSearchResult(pkg: MinimalPackument, weeklyDownloads?: number
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const cachedFetch = useCachedFetch()
 
-  return useLazyAsyncData(
+  const asyncData = useLazyAsyncData(
     () => `org-packages:${toValue(orgName)}`,
     async () => {
       const org = toValue(orgName)
@@ -493,7 +518,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       // Get all package names in the org
       let packageNames: string[]
       try {
-        const data = await cachedFetch<Record<string, string>>(
+        const { data } = await cachedFetch<Record<string, string>>(
           `${NPM_REGISTRY}/-/org/${encodeURIComponent(org)}/package`,
         )
         packageNames = Object.keys(data)
@@ -526,7 +551,10 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
               batch.map(async name => {
                 try {
                   const encoded = encodePackageName(name)
-                  return await cachedFetch<MinimalPackument>(`${NPM_REGISTRY}/${encoded}`)
+                  const { data: pkg } = await cachedFetch<MinimalPackument>(
+                    `${NPM_REGISTRY}/${encoded}`,
+                  )
+                  return pkg
                 } catch {
                   return null
                 }
@@ -551,6 +579,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       )
 
       return {
+        isStale: false,
         objects: results,
         total: results.length,
         time: new Date().toISOString(),
@@ -558,6 +587,8 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
     },
     { default: () => emptySearchResponse },
   )
+
+  return asyncData
 }
 
 // ============================================================================
@@ -665,9 +696,9 @@ async function checkDependencyOutdated(
   if (cached) {
     packument = await cached
   } else {
-    const promise = cachedFetch<Packument>(
-      `${NPM_REGISTRY}/${encodePackageName(packageName)}`,
-    ).catch(() => null)
+    const promise = cachedFetch<Packument>(`${NPM_REGISTRY}/${encodePackageName(packageName)}`)
+      .then(({ data }) => data)
+      .catch(() => null)
     packumentCache.set(packageName, promise)
     packument = await promise
   }

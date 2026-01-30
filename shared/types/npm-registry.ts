@@ -83,6 +83,7 @@ export interface NpmPerson {
  * Note: Not covered by @npm/types (see https://github.com/npm/types/issues/28)
  */
 export interface NpmSearchResponse {
+  isStale: boolean
   objects: NpmSearchResult[]
   total: number
   time: string

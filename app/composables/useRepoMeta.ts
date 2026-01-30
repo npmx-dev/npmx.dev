@@ -145,11 +145,12 @@ const githubAdapter: ProviderAdapter = {
     // Using UNGH to avoid API limitations of the Github API
     let res: UnghRepoResponse | null = null
     try {
-      res = await cachedFetch<UnghRepoResponse>(
+      const { data } = await cachedFetch<UnghRepoResponse>(
         `https://ungh.cc/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx' } },
         REPO_META_TTL,
       )
+      res = data
     } catch {
       return null
     }
@@ -210,11 +211,12 @@ const gitlabAdapter: ProviderAdapter = {
     const projectPath = encodeURIComponent(`${ref.owner}/${ref.repo}`)
     let res: GitLabProjectResponse | null = null
     try {
-      res = await cachedFetch<GitLabProjectResponse>(
+      const { data } = await cachedFetch<GitLabProjectResponse>(
         `https://${baseHost}/api/v4/projects/${projectPath}`,
         { headers: { 'User-Agent': 'npmx' } },
         REPO_META_TTL,
       )
+      res = data
     } catch {
       return null
     }
@@ -265,11 +267,12 @@ const bitbucketAdapter: ProviderAdapter = {
   async fetchMeta(cachedFetch, ref, links) {
     let res: BitbucketRepoResponse | null = null
     try {
-      res = await cachedFetch<BitbucketRepoResponse>(
+      const { data } = await cachedFetch<BitbucketRepoResponse>(
         `https://api.bitbucket.org/2.0/repositories/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx' } },
         REPO_META_TTL,
       )
+      res = data
     } catch {
       return null
     }
@@ -322,11 +325,12 @@ const codebergAdapter: ProviderAdapter = {
   async fetchMeta(cachedFetch, ref, links) {
     let res: GiteaRepoResponse | null = null
     try {
-      res = await cachedFetch<GiteaRepoResponse>(
+      const { data } = await cachedFetch<GiteaRepoResponse>(
         `https://codeberg.org/api/v1/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx' } },
         REPO_META_TTL,
       )
+      res = data
     } catch {
       return null
     }
@@ -379,11 +383,12 @@ const giteeAdapter: ProviderAdapter = {
   async fetchMeta(cachedFetch, ref, links) {
     let res: GiteeRepoResponse | null = null
     try {
-      res = await cachedFetch<GiteeRepoResponse>(
+      const { data } = await cachedFetch<GiteeRepoResponse>(
         `https://gitee.com/api/v5/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx' } },
         REPO_META_TTL,
       )
+      res = data
     } catch {
       return null
     }
@@ -469,11 +474,12 @@ const giteaAdapter: ProviderAdapter = {
     // so caching may not apply for self-hosted instances
     let res: GiteaRepoResponse | null = null
     try {
-      res = await cachedFetch<GiteaRepoResponse>(
+      const { data } = await cachedFetch<GiteaRepoResponse>(
         `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx' } },
         REPO_META_TTL,
       )
+      res = data
     } catch {
       return null
     }
@@ -577,7 +583,7 @@ const tangledAdapter: ProviderAdapter = {
     // Tangled doesn't have a public JSON API, but we can scrape the star count
     // from the HTML page (it's in the hx-post URL as countHint=N)
     try {
-      const html = await cachedFetch<string>(
+      const { data: html } = await cachedFetch<string>(
         `https://tangled.org/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx', 'Accept': 'text/html' } },
         REPO_META_TTL,
@@ -594,7 +600,7 @@ const tangledAdapter: ProviderAdapter = {
       if (atUriMatch) {
         try {
           //Get counts of records that reference this repo in the atmosphere using constellation
-          const allLinks = await cachedFetch<ConstellationAllLinksResponse>(
+          const { data: allLinks } = await cachedFetch<ConstellationAllLinksResponse>(
             `https://constellation.microcosm.blue/links/all?target=${atUri}`,
             { headers: { 'User-Agent': 'npmx' } },
             REPO_META_TTL,
@@ -655,11 +661,12 @@ const radicleAdapter: ProviderAdapter = {
   async fetchMeta(cachedFetch, ref, links) {
     let res: RadicleProjectResponse | null = null
     try {
-      res = await cachedFetch<RadicleProjectResponse>(
+      const { data } = await cachedFetch<RadicleProjectResponse>(
         `https://seed.radicle.at/api/v1/projects/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx' } },
         REPO_META_TTL,
       )
+      res = data
     } catch {
       return null
     }
@@ -720,11 +727,12 @@ const forgejoAdapter: ProviderAdapter = {
 
     let res: GiteaRepoResponse | null = null
     try {
-      res = await cachedFetch<GiteaRepoResponse>(
+      const { data } = await cachedFetch<GiteaRepoResponse>(
         `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}`,
         { headers: { 'User-Agent': 'npmx' } },
         REPO_META_TTL,
       )
+      res = data
     } catch {
       return null
     }
