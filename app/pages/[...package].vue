@@ -937,7 +937,7 @@ function handleClick(event: MouseEvent) {
       </header>
 
       <!-- Binary-only packages: Show only execute command (no install) -->
-      <section v-if="isBinaryOnly" aria-labelledby="run-heading" class="area-install scroll-mt-20">
+      <section v-if="isBinaryOnly" class="area-install scroll-mt-20">
         <div class="flex flex-wrap items-center justify-between mb-3">
           <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             {{ $t('package.run.title') }}
@@ -1008,7 +1008,6 @@ function handleClick(event: MouseEvent) {
       <section
         v-else
         id="get-started"
-        aria-labelledby="get-started-heading"
         class="area-install scroll-mt-20"
       >
         <div class="flex flex-wrap items-center justify-between mb-3">
@@ -1224,7 +1223,6 @@ function handleClick(event: MouseEvent) {
       <!-- README -->
       <section
         id="readme"
-        aria-labelledby="readme-heading"
         class="area-readme min-w-0 scroll-mt-20"
       >
         <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-4">
@@ -1269,7 +1267,6 @@ function handleClick(event: MouseEvent) {
           <section
             id="keywords"
             v-if="displayVersion?.keywords?.length"
-            aria-labelledby="keywords-heading"
             class="scroll-mt-20"
           >
             <h2
@@ -1310,7 +1307,6 @@ function handleClick(event: MouseEvent) {
             v-if="
               displayVersion?.engines && (displayVersion.engines.node || displayVersion.engines.npm)
             "
-            aria-labelledby="compatibility-heading"
             class="scroll-mt-20"
           >
             <h2

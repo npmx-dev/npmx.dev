@@ -73,7 +73,6 @@ const sortedOptionalDependencies = computed(() => {
     <section
       id="dependencies"
       v-if="sortedDependencies.length > 0"
-      aria-labelledby="dependencies-heading"
       class="scroll-mt-20"
     >
       <h2
@@ -170,7 +169,6 @@ const sortedOptionalDependencies = computed(() => {
     <section
       id="peer-dependencies"
       v-if="sortedPeerDependencies.length > 0"
-      aria-labelledby="peer-dependencies-heading"
       class="scroll-mt-20"
     >
       <h2
@@ -239,7 +237,6 @@ const sortedOptionalDependencies = computed(() => {
     <section
       id="optional-dependencies"
       v-if="sortedOptionalDependencies.length > 0"
-      aria-labelledby="optional-dependencies-heading"
       class="scroll-mt-20"
     >
       <h2

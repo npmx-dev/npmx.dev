@@ -288,7 +288,6 @@ watch(lastExecutionTime, () => {
 <template>
   <section
     v-if="isConnected"
-    aria-labelledby="members-heading"
     class="bg-bg-subtle border border-border rounded-lg overflow-hidden"
   >
     <!-- Header -->

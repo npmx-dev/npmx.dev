@@ -171,7 +171,6 @@ watch(
   <section
     id="maintainers"
     v-if="maintainers?.length"
-    aria-labelledby="maintainers-heading"
     class="scroll-mt-20"
   >
     <h2 id="maintainers-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-3">

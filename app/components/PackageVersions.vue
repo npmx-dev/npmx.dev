@@ -308,7 +308,6 @@ function getTagVersions(tag: string): VersionDisplay[] {
   <section
     id="versions"
     v-if="allTagRows.length > 0"
-    aria-labelledby="versions-heading"
     class="overflow-hidden scroll-mt-20"
   >
     <h2 id="versions-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-3">
