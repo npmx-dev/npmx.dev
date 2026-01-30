@@ -44,7 +44,7 @@ function handleClearAll(event: Event) {
     >
       <span
         class="w-[1em] h-[1em] shrink-0"
-        :class="hasBookmarks ? 'i-carbon-bookmark-filled' : 'i-carbon-bookmark'"
+        :class="hasBookmarks ? 'i-carbon:bookmark-filled' : 'i-carbon:bookmark'"
         aria-hidden="true"
       />
       <span class="hidden sm:inline">{{ $t('header.bookmarks') }}</span>

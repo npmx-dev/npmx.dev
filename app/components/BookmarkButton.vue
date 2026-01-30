@@ -28,8 +28,8 @@ function handleClick() {
       class="block w-4 h-4 transition-colors duration-150"
       :class="
         isBookmarked
-          ? 'i-carbon-bookmark-filled text-accent'
-          : 'i-carbon-bookmark text-fg-subtle hover:text-fg'
+          ? 'i-carbon:bookmark-filled text-accent'
+          : 'i-carbon:bookmark text-fg-subtle hover:text-fg'
       "
       aria-hidden="true"
     />
