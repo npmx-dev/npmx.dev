@@ -76,7 +76,7 @@ test.describe('npmjs.com URL Compatibility', () => {
       await goto('/~sindresorhus', { waitUntil: 'domcontentloaded' })
 
       // Should show username
-      await expect(page.locator('h1')).toContainText('@sindresorhus')
+      await expect(page.locator('h1')).toContainText('~sindresorhus')
       // Should show packages heading (user has packages)
       await expect(page.getByRole('heading', { name: 'Packages' })).toBeVisible()
     })
