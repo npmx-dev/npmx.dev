@@ -216,7 +216,13 @@ defineOgImageComponent('Default', {
                   </option>
                 </select>
                 <template #fallback>
-                  <span class="skeleton block w-48 h-8" />
+                  <select
+                    id="language-select"
+                    disabled
+                    class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg opacity-50 cursor-wait"
+                  >
+                    <option>{{ $t('common.loading') }}</option>
+                  </select>
                 </template>
               </ClientOnly>
             </div>

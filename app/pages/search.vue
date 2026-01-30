@@ -886,7 +886,13 @@ defineOgImageComponent('Default', {
               role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
-              {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
+              {{
+                $t(
+                  'search.found_packages',
+                  { count: formatNumber(visibleResults.total) },
+                  visibleResults.total,
+                )
+              }}
               <span v-if="status === 'pending'" class="text-fg-subtle">{{
                 $t('search.updating')
               }}</span>

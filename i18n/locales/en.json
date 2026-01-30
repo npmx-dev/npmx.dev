@@ -21,7 +21,7 @@
     "button": "search",
     "clear": "Clear search",
     "searching": "Searching...",
-    "found_packages": "Found {count} packages",
+    "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "results": "Search results",
