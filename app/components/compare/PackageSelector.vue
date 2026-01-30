@@ -102,7 +102,7 @@ function handleBlur() {
           :aria-label="t('compare.selector.remove_package', { package: pkg })"
           @click="removePackage(pkg)"
         >
-          <span class="i-carbon-close block w-3.5 h-3.5" aria-hidden="true" />
+          <span class="i-carbon:close block w-3.5 h-3.5" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -110,8 +110,11 @@ function handleBlur() {
     <!-- Add package input -->
     <div v-if="packages.length < maxPackages" class="relative">
       <div class="relative">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-fg-subtle" aria-hidden="true">
-          <span class="i-carbon-search w-4 h-4" />
+        <span
+          class="absolute inset-is-3 top-1/2 -translate-y-1/2 text-fg-subtle"
+          aria-hidden="true"
+        >
+          <span class="i-carbon:search w-4 h-4" />
         </span>
         <input
           v-model="inputValue"
@@ -121,7 +124,7 @@ function handleBlur() {
               ? t('compare.selector.search_first')
               : t('compare.selector.search_add')
           "
-          class="w-full bg-bg-subtle border border-border rounded-lg pl-10 pr-4 py-2.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:outline-none"
+          class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:outline-none"
           aria-autocomplete="list"
           @focus="isInputFocused = true"
           @blur="handleBlur"
@@ -139,7 +142,7 @@ function handleBlur() {
       >
         <div
           v-if="isInputFocused && (filteredResults.length > 0 || isSearching)"
-          class="absolute top-full left-0 right-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+          class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
           <div v-if="isSearching" class="px-4 py-3 text-sm text-fg-muted">
             {{ t('compare.selector.searching') }}

@@ -425,7 +425,7 @@ function handleClick(event: MouseEvent) {
               class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
               aria-keyshortcuts="c"
             >
-              <span class="i-carbon-compare w-3 h-3" aria-hidden="true" />
+              <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
               {{ $t('package.links.compare') }}
               <kbd
                 class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
@@ -641,7 +641,7 @@ function handleClick(event: MouseEvent) {
                 :to="{ path: '/compare', query: { packages: pkg.name } }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-compare w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:compare w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.compare') }}
               </NuxtLink>
             </li>

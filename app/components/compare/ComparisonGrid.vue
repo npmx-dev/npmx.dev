@@ -68,13 +68,13 @@ defineProps<{
   text-align: center;
 }
 
-/* First header cell rounded top-left */
+/* First header cell rounded top-start */
 .comparison-header > .comparison-cell-header:first-of-type {
-  border-top-left-radius: 0.5rem;
+  border-start-start-radius: 0.5rem;
 }
 
-/* Last header cell rounded top-right */
+/* Last header cell rounded top-end */
 .comparison-header > .comparison-cell-header:last-of-type {
-  border-top-right-radius: 0.5rem;
+  border-start-end-radius: 0.5rem;
 }
 </style>

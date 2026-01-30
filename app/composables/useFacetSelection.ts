@@ -92,7 +92,7 @@ export function useFacetSelection(queryParam = 'facets') {
 
   // Deselect all facets globally (keeps first facet to ensure at least one)
   function deselectAll(): void {
-    selectedFacets.value = [DEFAULT_FACETS[0]]
+    selectedFacets.value = [DEFAULT_FACETS[0] as ComparisonFacet]
   }
 
   // Check if all facets are selected

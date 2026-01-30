@@ -137,7 +137,7 @@ useSeoMeta({
 
     <!-- Empty state -->
     <section v-else class="text-center py-16 border border-dashed border-border rounded-lg">
-      <div class="i-carbon-compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
+      <div class="i-carbon:compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
       <h2 class="font-mono text-lg text-fg-muted mb-2">{{ t('compare.packages.empty_title') }}</h2>
       <p class="text-sm text-fg-subtle max-w-md mx-auto">
         {{ t('compare.packages.empty_description') }}

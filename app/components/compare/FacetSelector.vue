@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ComparisonFacet } from '#shared/types'
 import { FACET_INFO, FACETS_BY_CATEGORY, CATEGORY_ORDER } from '#shared/types/comparison'
 
 const { t } = useI18n()
@@ -18,7 +19,7 @@ const {
 const facetsByCategory = computed(() => {
   const result: Record<
     string,
-    { facet: string; info: (typeof FACET_INFO)[keyof typeof FACET_INFO] }[]
+    { facet: ComparisonFacet; info: (typeof FACET_INFO)[ComparisonFacet] }[]
   > = {}
   for (const category of CATEGORY_ORDER) {
     result[category] = FACETS_BY_CATEGORY[category].map(facet => ({
@@ -31,14 +32,14 @@ const facetsByCategory = computed(() => {
 
 // Check if all non-comingSoon facets in a category are selected
 function isCategoryAllSelected(category: string): boolean {
-  const facets = facetsByCategory.value[category]
+  const facets = facetsByCategory.value[category] ?? []
   const selectableFacets = facets.filter(f => !f.info.comingSoon)
   return selectableFacets.length > 0 && selectableFacets.every(f => isFacetSelected(f.facet))
 }
 
 // Check if no facets in a category are selected
 function isCategoryNoneSelected(category: string): boolean {
-  const facets = facetsByCategory.value[category]
+  const facets = facetsByCategory.value[category] ?? []
   const selectableFacets = facets.filter(f => !f.info.comingSoon)
   return selectableFacets.length > 0 && selectableFacets.every(f => !isFacetSelected(f.facet))
 }
@@ -114,7 +115,7 @@ function isCategoryNoneSelected(category: string): boolean {
           <span
             v-if="!info.comingSoon"
             class="w-3 h-3"
-            :class="isFacetSelected(facet) ? 'i-carbon-checkmark' : 'i-carbon-add'"
+            :class="isFacetSelected(facet) ? 'i-carbon:checkmark' : 'i-carbon:add'"
             aria-hidden="true"
           />
           {{ info.label }}

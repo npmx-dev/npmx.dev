@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import FacetSelector from '~/components/compare/FacetSelector.vue'
+import type { ComparisonFacet } from '../../../../shared/types/comparison'
 import { CATEGORY_ORDER, FACET_INFO, FACETS_BY_CATEGORY } from '../../../../shared/types/comparison'
 
 // Mock useFacetSelection
@@ -88,7 +89,7 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      expect(component.find('.i-carbon-checkmark').exists()).toBe(true)
+      expect(component.find('.i-carbon\\:checkmark').exists()).toBe(true)
     })
 
     it('shows add icon for unselected facets', async () => {
@@ -97,7 +98,7 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      expect(component.find('.i-carbon-add').exists()).toBe(true)
+      expect(component.find('.i-carbon\\:add').exists()).toBe(true)
     })
 
     it('applies aria-pressed for selected state', async () => {
@@ -147,8 +148,8 @@ describe('FacetSelector', () => {
       const comingSoonButton = buttons.find(b => b.text().includes('Total Dependencies'))
 
       // Should not have checkmark or add icon
-      expect(comingSoonButton?.find('.i-carbon-checkmark').exists()).toBe(false)
-      expect(comingSoonButton?.find('.i-carbon-add').exists()).toBe(false)
+      expect(comingSoonButton?.find('.i-carbon\\:checkmark').exists()).toBe(false)
+      expect(comingSoonButton?.find('.i-carbon\\:add').exists()).toBe(false)
     })
 
     it('does not call toggleFacet when comingSoon facet is clicked', async () => {
@@ -168,8 +169,8 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       // Find the first 'all' button (for performance category)
-      const allButtons = component.findAll('button').filter(b => b.text() === 'all')
-      await allButtons[0].trigger('click')
+      const allButton = component.findAll('button').find(b => b.text() === 'all')
+      await allButton!.trigger('click')
 
       expect(mockSelectCategory).toHaveBeenCalledWith('performance')
     })
@@ -178,8 +179,8 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       // Find the first 'none' button (for performance category)
-      const noneButtons = component.findAll('button').filter(b => b.text() === 'none')
-      await noneButtons[0].trigger('click')
+      const noneButton = component.findAll('button').find(b => b.text() === 'none')
+      await noneButton!.trigger('click')
 
       expect(mockDeselectCategory).toHaveBeenCalledWith('performance')
     })
@@ -190,13 +191,15 @@ describe('FacetSelector', () => {
         f => !FACET_INFO[f].comingSoon,
       )
       mockSelectedFacets.value = performanceFacets
-      mockIsFacetSelected.mockImplementation((f: string) => performanceFacets.includes(f))
+      mockIsFacetSelected.mockImplementation((f: string) =>
+        performanceFacets.includes(f as ComparisonFacet),
+      )
 
       const component = await mountSuspended(FacetSelector)
 
-      const allButtons = component.findAll('button').filter(b => b.text() === 'all')
+      const allButton = component.findAll('button').find(b => b.text() === 'all')
       // First all button (performance) should be disabled
-      expect(allButtons[0].attributes('disabled')).toBeDefined()
+      expect(allButton!.attributes('disabled')).toBeDefined()
     })
 
     it('disables none button when no facets in category are selected', async () => {
@@ -206,9 +209,9 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      const noneButtons = component.findAll('button').filter(b => b.text() === 'none')
+      const noneButton = component.findAll('button').find(b => b.text() === 'none')
       // First none button (performance) should be disabled
-      expect(noneButtons[0].attributes('disabled')).toBeDefined()
+      expect(noneButton!.attributes('disabled')).toBeDefined()
     })
   })
 

@@ -64,11 +64,11 @@ function getDiffIcon(diff?: DiffResult | null): string {
   if (!diff) return ''
   switch (diff.direction) {
     case 'increase':
-      return 'i-carbon-arrow-up'
+      return 'i-carbon:arrow-up'
     case 'decrease':
-      return 'i-carbon-arrow-down'
+      return 'i-carbon:arrow-down'
     case 'changed':
-      return 'i-carbon-arrows-horizontal'
+      return 'i-carbon:arrows-horizontal'
     default:
       return ''
   }
@@ -85,7 +85,7 @@ function getDiffIcon(diff?: DiffResult | null): string {
       <span class="text-xs text-fg-muted uppercase tracking-wider">{{ label }}</span>
       <span
         v-if="description"
-        class="i-carbon-information w-3 h-3 text-fg-subtle"
+        class="i-carbon:information w-3 h-3 text-fg-subtle"
         aria-hidden="true"
       />
     </div>
@@ -99,7 +99,7 @@ function getDiffIcon(diff?: DiffResult | null): string {
       <!-- Background bar for numeric values -->
       <div
         v-if="showBar && value && getBarWidth(value) > 0"
-        class="absolute inset-y-1 left-1 bg-fg/5 rounded-sm transition-all duration-300"
+        class="absolute inset-y-1 inset-is-1 bg-fg/5 rounded-sm transition-all duration-300"
         :style="{ width: `calc(${getBarWidth(value)}% - 8px)` }"
         aria-hidden="true"
       />
@@ -107,7 +107,7 @@ function getDiffIcon(diff?: DiffResult | null): string {
       <!-- Loading state -->
       <template v-if="loading">
         <span
-          class="i-carbon-circle-dash w-4 h-4 text-fg-subtle motion-safe:animate-spin"
+          class="i-carbon:circle-dash w-4 h-4 text-fg-subtle motion-safe:animate-spin"
           aria-hidden="true"
         />
       </template>

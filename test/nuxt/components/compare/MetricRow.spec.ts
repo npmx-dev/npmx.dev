@@ -251,7 +251,7 @@ describe('MetricRow', () => {
             { raw: 100, display: '100', status: 'neutral' },
             { raw: 100, display: '100', status: 'neutral' },
           ],
-          diffs: [null, { direction: 'same', display: '0%', favorable: null }],
+          diffs: [null, { direction: 'same', display: '0%', favorable: undefined }],
         },
       })
       expect(component.find('.i-carbon-arrow-up').exists()).toBe(false)
