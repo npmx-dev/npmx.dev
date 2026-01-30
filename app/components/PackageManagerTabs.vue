@@ -1,5 +1,36 @@
 <script setup lang="ts">
 const selectedPM = useSelectedPackageManager()
+
+const tablistNavigationKeys = new Set(['ArrowRight', 'ArrowLeft', 'Home', 'End'])
+
+function onTabListKeydown(event: KeyboardEvent) {
+  if (!tablistNavigationKeys.has(event.key)) return
+  const tablist = event.currentTarget as HTMLElement | null
+  if (!tablist) return
+
+  const tabs = Array.from(tablist.querySelectorAll<HTMLElement>('[role="tab"]'))
+  const count = Math.min(tabs.length, packageManagers.length)
+  if (!count) return
+
+  event.preventDefault()
+
+  let activeIndex = packageManagers.findIndex(pm => pm.id === selectedPM.value)
+  if (activeIndex < 0) activeIndex = 0
+
+  let nextIndex = activeIndex
+  if (event.key === 'ArrowRight') nextIndex = (activeIndex + 1) % count
+  if (event.key === 'ArrowLeft') nextIndex = (activeIndex - 1 + count) % count
+  if (event.key === 'Home') nextIndex = 0
+  if (event.key === 'End') nextIndex = count - 1
+
+  const nextTab = tabs[nextIndex]
+  const nextId = packageManagers[nextIndex]?.id
+  if (nextId && nextId !== selectedPM.value) {
+    selectedPM.value = nextId
+  }
+
+  nextTick(() => nextTab?.focus())
+}
 </script>
 
 <template>
@@ -7,13 +38,18 @@ const selectedPM = useSelectedPackageManager()
     class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
     role="tablist"
     :aria-label="$t('package.get_started.pm_label')"
+    @keydown="onTabListKeydown"
   >
     <button
       v-for="pm in packageManagers"
       :key="pm.id"
+      :id="`pm-tab-${pm.id}`"
       role="tab"
       :data-pm-tab="pm.id"
       :aria-selected="selectedPM === pm.id"
+      :aria-controls="`pm-panel-${pm.id}`"
+      :tabindex="selectedPM === pm.id ? 0 : -1"
+      type="button"
       class="pm-tab px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5 hover:text-fg"
       @click="selectedPM = pm.id"
     >

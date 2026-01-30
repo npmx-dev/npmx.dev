@@ -49,8 +49,6 @@ watch(
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
-// oklh or css variables are not supported by vue-data-ui (for now)
-
 const accentColorValueById = computed<Record<string, string>>(() => {
   const map: Record<string, string> = {}
   for (const item of accentColors) {

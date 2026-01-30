@@ -537,6 +537,10 @@
     "table": {
       "name": "Nome",
       "size": "Dimensione"
+    },
+    "markdown_view_mode": {
+      "preview": "anteprima",
+      "code": "codice"
     }
   },
   "filters": {

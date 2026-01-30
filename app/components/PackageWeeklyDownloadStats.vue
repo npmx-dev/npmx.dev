@@ -116,10 +116,32 @@ const dataset = computed(() =>
 
 const lastDatapoint = computed(() => dataset.value.at(-1)?.period ?? '')
 
-// oklh or css variables are not supported by vue-data-ui (for now)
 const config = computed(() => {
   return {
     theme: 'dark',
+    /**
+     * The built-in skeleton loader kicks in when the component is mounted but the data is not yet ready.
+     * The configuration of the skeleton is customized for a seemless transition with the final state
+     */
+    skeletonConfig: {
+      style: {
+        backgroundColor: 'transparent',
+        dataLabel: {
+          show: true,
+          color: 'transparent',
+        },
+        area: {
+          color: colors.value.borderHover,
+          useGradient: false,
+          opacity: 10,
+        },
+        line: {
+          color: colors.value.borderHover,
+        },
+      },
+    },
+    // Same idea: initialize the line at zero, so it nicely transitions to the final dataset
+    skeletonDataset: Array.from({ length: 52 }, () => 0),
     style: {
       backgroundColor: 'transparent',
       animation: { show: false },
@@ -196,16 +218,21 @@ const config = computed(() => {
 
       <div class="w-full overflow-hidden">
         <ClientOnly>
-          <VueUiSparkline class="w-full max-w-xs" :dataset :config />
+          <VueUiSparkline class="w-full max-w-xs" :dataset :config>
+            <template #skeleton>
+              <!-- This empty div overrides the default built-in scanning animation on load -->
+              <div />
+            </template>
+          </VueUiSparkline>
           <template #fallback>
             <!-- Skeleton matching sparkline layout: title row + chart with data label -->
-            <div class="max-w-xs">
-              <!-- Title row: date range -->
-              <div class="h-5 flex items-center ps-3">
+            <div class="min-h-[75.195px]">
+              <!-- Title row: date range (24px height) -->
+              <div class="h-6 flex items-center ps-3">
                 <span class="skeleton h-3 w-36" />
               </div>
-              <!-- Chart area: data label left, sparkline right (h-[51px] matches rendered SVG) -->
-              <div class="h-[55px] flex items-center">
+              <!-- Chart area: data label left, sparkline right -->
+              <div class="aspect-[500/80] flex items-center">
                 <!-- Data label (covers ~42% width) -->
                 <div class="w-[42%] flex items-center ps-0.5">
                   <span class="skeleton h-7 w-24" />
