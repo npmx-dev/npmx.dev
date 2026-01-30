@@ -4,24 +4,27 @@ seo:
   description: A fast, modern browser for the npm registry
 ---
 
-::u-page-hero
----
+## ::u-page-hero
+
 title: npmx.dev
 description: A fast, modern browser for the npm registry. Speed first, URL compatible, and simple.
 links:
-  - label: Get Started
-    to: /getting-started/introduction
-    color: neutral
-    size: xl
-    trailingIcon: i-lucide-arrow-right
-  - label: View on GitHub
-    to: https://github.com/npmx-dev/npmx.dev
-    target: \_blank
-    color: neutral
-    size: xl
-    icon: i-simple-icons-github
-    variant: outline
+
+- label: Get Started
+  to: /getting-started/introduction
+  color: neutral
+  size: xl
+  trailingIcon: i-lucide-arrow-right
+- label: View on GitHub
+  to: https://github.com/npmx-dev/npmx.dev
+  target: \_blank
+  color: neutral
+  size: xl
+  icon: i-simple-icons-github
+  variant: outline
+
 ---
+
 ::
 
 ::u-page-section{title="What you can do"}
