@@ -12,7 +12,7 @@ test.describe('Create Command', () => {
       await expect(createCommandSection.locator('code')).toContainText(/create vite/i)
 
       // Link to create-vite should be present (uses sr-only text, so check attachment not visibility)
-      await expect(page.locator('a[href="/create-vite"]')).toBeAttached()
+      await expect(page.locator('a[href="/create-vite"]').first()).toBeAttached()
     })
 
     test('/next - should show create command (shared maintainer, same repo)', async ({
@@ -28,7 +28,7 @@ test.describe('Create Command', () => {
       await expect(createCommandSection.locator('code')).toContainText(/create next-app/i)
 
       // Link to create-next-app should be present (uses sr-only text, so check attachment not visibility)
-      await expect(page.locator('a[href="/create-next-app"]')).toBeAttached()
+      await expect(page.locator('a[href="/create-next-app"]').first()).toBeAttached()
     })
 
     test('/nuxt - should show create command (same maintainer, same org)', async ({
