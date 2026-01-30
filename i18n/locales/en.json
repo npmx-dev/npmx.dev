@@ -546,6 +546,10 @@
     "table": {
       "name": "Name",
       "size": "Size"
+    },
+    "markdown_view_mode": {
+      "preview": "preview",
+      "code": "code"
     }
   },
   "badges": {

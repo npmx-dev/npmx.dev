@@ -502,6 +502,10 @@
     "table": {
       "name": "名称",
       "size": "大小"
+    },
+    "markdown_view_mode": {
+      "preview": "预览",
+      "code": "代码"
     }
   },
   "badges": {

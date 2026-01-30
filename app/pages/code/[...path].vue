@@ -243,6 +243,20 @@ const canonicalUrl = computed(() => {
   return url
 })
 
+// Toggle markdown view mode
+const markdownViewModes = [
+  {
+    label: $t('code.markdown_view_mode.preview'),
+    icon: 'i-carbon-view',
+  },
+  {
+    label: $t('code.markdown_view_mode.code'),
+    icon: 'i-carbon-code',
+  },
+] as const
+
+const markdownViewMode = ref<(typeof markdownViewModes)[number]['label']>('preview')
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -359,15 +373,38 @@ useSeoMeta({
         <!-- File viewer -->
         <template v-if="isViewingFile && fileContent">
           <div
-            class="sticky top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between"
+            class="sticky z-10 top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between"
           >
-            <div class="flex items-center gap-3 text-sm">
-              <span class="text-fg-muted">{{
-                $t('code.lines', { count: fileContent.lines })
-              }}</span>
-              <span v-if="currentNode?.size" class="text-fg-subtle">{{
-                formatBytes(currentNode.size)
-              }}</span>
+            <div class="flex items-center gap-2">
+              <div
+                v-if="fileContent.markdownHtml"
+                class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
+                role="tablist"
+                aria-label="Markdown view mode selector"
+              >
+                <button
+                  v-for="mode in markdownViewModes"
+                  :key="mode.label"
+                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                  :class="
+                    markdownViewMode === mode.label
+                      ? 'bg-bg shadow text-fg border-border'
+                      : 'text-fg-subtle hover:text-fg border-transparent'
+                  "
+                  @click="markdownViewMode = mode.label"
+                >
+                  <span class="inline-block h-3 w-3" :class="mode.icon" aria-hidden="true" />
+                  {{ mode.label }}
+                </button>
+              </div>
+              <div class="flex items-center gap-3 text-sm">
+                <span class="text-fg-muted">{{
+                  $t('code.lines', { count: fileContent.lines })
+                }}</span>
+                <span v-if="currentNode?.size" class="text-fg-subtle">{{
+                  formatBytes(currentNode.size)
+                }}</span>
+              </div>
             </div>
             <div class="flex items-center gap-2">
               <button
@@ -389,7 +426,19 @@ useSeoMeta({
               </a>
             </div>
           </div>
+          <div
+            v-if="fileContent.markdownHtml"
+            v-show="markdownViewMode === 'preview'"
+            class="flex justify-center p-4"
+          >
+            <div
+              class="readme-content prose prose-invert max-w-[70ch]"
+              v-html="fileContent.markdownHtml.html"
+            ></div>
+          </div>
+
           <CodeViewer
+            v-show="!fileContent.markdownHtml || markdownViewMode === 'code'"
             :html="fileContent.html"
             :lines="fileContent.lines"
             :selected-lines="selectedLines"

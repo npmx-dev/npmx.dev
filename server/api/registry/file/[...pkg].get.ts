@@ -166,6 +166,13 @@ export default defineCachedEventHandler(
         resolveRelative,
       })
 
+      let markdownHtml: ReadmeResponse | undefined
+      if (language === 'markdown') {
+        const packageData = await fetchNpmPackage(rawPackageName)
+        const repoInfo = parseRepositoryInfo(packageData.repository)
+        markdownHtml = await renderReadmeHtml(content, rawPackageName, repoInfo)
+      }
+
       return {
         package: packageName,
         version,
@@ -174,6 +181,7 @@ export default defineCachedEventHandler(
         content,
         html,
         lines: content.split('\n').length,
+        markdownHtml,
       }
     } catch (error: unknown) {
       handleApiError(error, {
