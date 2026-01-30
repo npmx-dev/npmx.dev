@@ -93,7 +93,7 @@ function handleReset() {
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute right-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >
@@ -144,7 +144,7 @@ function handleReset() {
           <div class="border-t border-border py-1">
             <button
               type="button"
-              class="w-full px-3 py-2 text-left text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
+              class="w-full px-3 py-2 text-start text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
               @click="handleReset"
             >
               {{ $t('filters.columns.reset') }}

@@ -120,9 +120,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
             </span>
           </div>
           <div class="flex items-center gap-3 shrink-0">
-            <span
-              class="text-xs px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-            >
+            <span class="text-xs px-2 py-1 rounded badge-green border border-badge-green/50">
               API Docs
             </span>
           </div>
@@ -242,7 +240,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 }
 
 .docs-content .docs-symbol:target .docs-symbol-header {
-  @apply bg-amber-500/10 -mx-3 px-3 py-1 rounded-md;
+  @apply bg-badge-yellow/10 -mx-3 px-3 py-1 rounded-md;
 }
 
 /* Symbol header (name + badges) */
@@ -264,28 +262,28 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 }
 
 .docs-content .docs-badge--function {
-  @apply bg-blue-500/15 text-blue-400;
+  @apply badge-blue;
 }
 .docs-content .docs-badge--class {
-  @apply bg-amber-500/15 text-amber-400;
+  @apply badge-yellow;
 }
 .docs-content .docs-badge--interface {
-  @apply bg-emerald-500/15 text-emerald-400;
+  @apply badge-green;
 }
 .docs-content .docs-badge--typeAlias {
-  @apply bg-violet-500/15 text-violet-400;
+  @apply badge-indigo;
 }
 .docs-content .docs-badge--variable {
-  @apply bg-orange-500/15 text-orange-400;
+  @apply badge-orange;
 }
 .docs-content .docs-badge--enum {
-  @apply bg-pink-500/15 text-pink-400;
+  @apply badge-pink;
 }
 .docs-content .docs-badge--namespace {
-  @apply bg-cyan-500/15 text-cyan-400;
+  @apply badge-cyan;
 }
 .docs-content .docs-badge--async {
-  @apply bg-purple-500/15 text-purple-400;
+  @apply badge-purple;
 }
 
 /* Signature code block - now uses Shiki */
@@ -346,15 +344,15 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 
 /* Deprecation warning */
 .docs-content .docs-deprecated {
-  @apply bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 mb-5;
+  @apply bg-badge-orange/20 border border-badge-orange rounded-lg p-4 mb-5;
 }
 
 .docs-content .docs-deprecated strong {
-  @apply text-amber-400 text-sm;
+  @apply text-badge-orange text-sm;
 }
 
 .docs-content .docs-deprecated p {
-  @apply text-amber-300/80 text-sm mt-2 mb-0;
+  @apply text-badge-orange text-sm mt-2 mb-0;
 }
 
 /* Parameters, Returns, Examples, See Also sections */
@@ -407,12 +405,12 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 }
 
 .docs-content .docs-link {
-  @apply text-blue-400 hover:text-blue-300 underline underline-offset-2;
+  @apply text-badge-blue hover:text-badge-blue/80 underline underline-offset-2;
 }
 
 /* Symbol cross-reference links */
 .docs-content .docs-symbol-link {
-  @apply text-emerald-400 hover:text-emerald-300 underline underline-offset-2;
+  @apply text-badge-green hover:text-badge-green/80 underline underline-offset-2;
 }
 
 /* Unknown symbol references shown as code */

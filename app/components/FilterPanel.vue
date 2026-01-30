@@ -171,7 +171,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
     <!-- Collapsed header -->
     <button
       type="button"
-      class="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
+      class="w-full flex items-center gap-3 px-4 py-3 text-start hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
       :aria-expanded="isExpanded"
       @click="isExpanded = !isExpanded"
     >
@@ -183,7 +183,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
         {{ filterSummary }}
       </span>
       <span
-        class="i-carbon-chevron-down w-4 h-4 text-fg-subtle transition-transform duration-200 shrink-0 ml-auto"
+        class="i-carbon-chevron-down w-4 h-4 text-fg-subtle transition-transform duration-200 shrink-0 ms-auto"
         :class="{ 'rotate-180': isExpanded }"
         aria-hidden="true"
       />

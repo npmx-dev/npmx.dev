@@ -405,7 +405,7 @@ export function renderToc(symbols: MergedSymbol[]): string {
     )
 
     const showSymbols = kindSymbols.slice(0, MAX_TOC_ITEMS_PER_KIND)
-    lines.push(`<ul class="pl-3 space-y-0.5 border-l border-border/50">`)
+    lines.push(`<ul class="ps-3 space-y-0.5 border-is border-border/50">`)
     for (const symbol of showSymbols) {
       const id = createSymbolId(symbol.kind, symbol.name)
       lines.push(

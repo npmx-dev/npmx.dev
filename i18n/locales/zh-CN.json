@@ -12,22 +12,22 @@
     "about": "关于",
     "docs": "文档",
     "source": "源码",
-    "social": "社媒",
+    "social": "社交媒体",
     "chat": "聊天"
   },
   "search": {
     "label": "搜索 npm 包",
-    "placeholder": "搜索包...",
+    "placeholder": "搜索包…",
     "button": "搜索",
     "clear": "清除搜索",
-    "searching": "搜索中...",
+    "searching": "搜索中…",
     "found_packages": "共找到 {count} 个包",
-    "updating": "（更新中...）",
-    "no_results": "未找到匹配 \"{query}\" 的包",
+    "updating": "（更新中…）",
+    "no_results": "未找到匹配“{query}”的包",
     "results": "搜索结果",
     "not_taken": "{name} 尚未被占用",
     "claim_prompt": "在 npm 上声明",
-    "claim_button": "声明 \"{name}\"",
+    "claim_button": "声明“{name}”",
     "want_to_claim": "想要声明这个包名吗？",
     "start_typing": "输入以搜索软件包",
     "exact_match": "精确匹配",
@@ -55,7 +55,7 @@
       "language": "语言"
     },
     "relative_dates": "相对时间",
-    "relative_dates_description": "显示 \"3天前\" 而不是完整日期",
+    "relative_dates_description": "显示“3 天前”而不是完整日期",
     "include_types": "在安装时包含 {'@'}types",
     "include_types_description": "为未提供类型定义的包自动添加 {'@'}types 包到安装命令",
     "hide_platform_packages": "在搜索结果隐藏平台特定包",
@@ -72,28 +72,28 @@
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",
-    "copy_keys": "复制键",
-    "show_more_keys": "显示其它 {count} 条...",
+    "copy_keys": "拷贝键值",
+    "show_more_keys": "显示其它 {count} 条…",
     "contribute_hint": "补充缺失的键值以帮助改进翻译。",
     "edit_on_github": "在 GitHub 上编辑",
     "view_guide": "翻译指南"
   },
   "common": {
-    "loading": "加载中...",
-    "loading_more": "加载更多中...",
-    "loading_packages": "加载包中...",
+    "loading": "加载中…",
+    "loading_more": "加载更多中…",
+    "loading_packages": "加载包中…",
     "end_of_results": "没有更多结果",
     "try_again": "再试一次",
     "close": "关闭",
     "retry": "重试",
-    "copy": "复制",
-    "copied": "已复制！",
+    "copy": "拷贝",
+    "copied": "已拷贝！",
     "skip_link": "跳转到主界面",
     "close_modal": "关闭对话框",
     "show_more": "展示更多",
     "warnings": "警告：",
     "go_back_home": "返回首页",
-    "view_on_npm": "在npm上查看",
+    "view_on_npm": "在 npm 上查看",
     "per_week": "/ 周",
     "sort": {
       "name": "名称",
@@ -132,7 +132,11 @@
       "updated": "最近更新",
       "view_dependency_graph": "查看依赖图",
       "inspect_dependency_tree": "查看依赖树",
-      "vulns": "漏洞"
+      "vulns": "漏洞",
+      "size_tooltip": {
+        "unpacked": "未打包大小 (当前包)：{size}",
+        "total": "总未打包大小（包括 {count} 个依赖项）：{size}"
+      }
     },
     "links": {
       "repo": "仓库",
@@ -150,12 +154,12 @@
     "get_started": {
       "title": "开始使用",
       "pm_label": "包管理器",
-      "copy_command": "复制安装命令",
+      "copy_command": "拷贝安装命令",
       "view_types": "查看 {package}"
     },
     "create": {
       "title": "创建新项目",
-      "copy_command": "复制创建命令"
+      "copy_command": "拷贝创建命令"
     },
     "run": {
       "title": "运行",
@@ -184,24 +188,24 @@
       "collapse_major": "折叠主版本 {major}",
       "expand_major": "展开主版本 {major}",
       "other_versions": "其他版本",
-      "more_tagged": "{count}个更多标签",
+      "more_tagged": "还有 {count} 个标签",
       "all_covered": "所有版本均已包含于上方标签中。",
       "deprecated_title": "{version}（已弃用）"
     },
     "dependencies": {
-      "title": "依赖（{count}个）",
+      "title": "依赖（{count} 个）",
       "list_label": "包依赖",
       "show_all": "显示全部 {count} 个依赖",
       "optional": "可选",
       "view_vulnerabilities": "查看漏洞"
     },
     "peer_dependencies": {
-      "title": "对等依赖（{count}个）",
+      "title": "对等依赖（{count} 个）",
       "list_label": "包对等依赖",
       "show_all": "显示全部 {count} 个对等依赖"
     },
     "optional_dependencies": {
-      "title": "可选依赖（{count}个）",
+      "title": "可选依赖（{count} 个）",
       "list_label": "包可选依赖",
       "show_all": "显示全部 {count} 个可选依赖"
     },
@@ -212,7 +216,7 @@
       "via": "来自 {teams}",
       "remove_owner": "移除 {name} 为拥有者",
       "username_to_add": "要添加为拥有者的用户名",
-      "username_placeholder": "用户名...",
+      "username_placeholder": "用户名…",
       "add_button": "添加",
       "cancel_add": "取消添加拥有者",
       "add_owner": "+ 添加拥有者",
@@ -224,7 +228,7 @@
       "date_range": "{start} 到 {end}",
       "analyze": "分析下载量",
       "modal_title": "下载量",
-      "granularity": "粒度",
+      "granularity": "周期",
       "granularity_daily": "每日",
       "granularity_weekly": "每周",
       "granularity_monthly": "每月",
@@ -232,8 +236,8 @@
       "start_date": "开始",
       "end_date": "结束",
       "no_data": "没有下载数据",
-      "loading": "加载中...",
-      "y_axis_label": "{granularity} 下载量",
+      "loading": "加载中…",
+      "y_axis_label": "{granularity}下载量",
       "download_file": "下载 {fileType}",
       "toggle_annotator": "切换标注工具"
     },
@@ -264,7 +268,7 @@
       "deps_found": "{count} 个漏洞",
       "deps_affected": "{count} 个受影响的依赖",
       "tree_found": "在 {packages}/{total} 个包中发现 {vulns} 个漏洞",
-      "scanning_tree": "正在扫描依赖树...",
+      "scanning_tree": "正在扫描依赖树…",
       "show_all_packages": "显示全部 {count} 个受影响的包",
       "no_summary": "没有总结",
       "view_details": "查看漏洞详情",
@@ -300,7 +304,7 @@
       "revoke_access": "撤销 {name} 的访问权限",
       "no_access": "未配置团队权限",
       "select_team_label": "选择团队",
-      "loading_teams": "加载团队中...",
+      "loading_teams": "加载团队中…",
       "select_team": "选择团队",
       "permission_label": "权限级别",
       "permission": {
@@ -313,7 +317,7 @@
     },
     "list": {
       "filter_label": "筛选包",
-      "filter_placeholder": "筛选包...",
+      "filter_placeholder": "筛选包…",
       "sort_label": "排序包",
       "showing_count": "正在展示 {total} 中的 {filtered} 个包"
     },
@@ -340,7 +344,7 @@
   },
   "connector": {
     "status": {
-      "connecting": "连接中...",
+      "connecting": "连接中…",
       "connected_as": "已连接为 {'@'}{user}",
       "connected": "已连接",
       "connect_cli": "连接本地 CLI",
@@ -357,17 +361,17 @@
       "connected_hint": "现在您可以通过 Web UI 管理包和组织。",
       "disconnect": "断开连接",
       "run_hint": "在您的机器上运行连接器以启用管理功能。",
-      "copy_command": "复制命令",
-      "copied": "已复制",
+      "copy_command": "拷贝命令",
+      "copied": "已拷贝",
       "paste_token": "再在下方粘贴令牌以连接：",
       "token_label": "令牌",
-      "token_placeholder": "粘贴令牌...",
+      "token_placeholder": "粘贴令牌…",
       "advanced": "高级选项",
       "port_label": "端口",
       "warning": "警告",
       "warning_text": "这将允许 npmx 访问您的 npm CLI。请仅连接您信任的站点。",
       "connect": "连接",
-      "connecting": "连接中..."
+      "connecting": "连接中…"
     }
   },
   "operations": {
@@ -380,15 +384,15 @@
       "active_label": "运行中的操作",
       "otp_required": "需要 OTP",
       "otp_prompt": "输入 OTP 继续",
-      "otp_placeholder": "输入 OTP 代码...",
+      "otp_placeholder": "输入 OTP 代码…",
       "otp_label": "一次性密码",
       "retry_otp": "使用 OTP 重试",
-      "retrying": "重试中...",
+      "retrying": "重试中…",
       "approve_operation": "批准操作",
       "remove_operation": "移除操作",
       "approve_all": "批准所有",
       "execute": "执行",
-      "executing": "执行中...",
+      "executing": "执行中…",
       "log": "日志",
       "log_label": "已完成的操作日志",
       "remove_from_log": "从日志中移除"
@@ -399,9 +403,9 @@
       "title": "团队",
       "refresh": "刷新团队",
       "filter_label": "筛选团队",
-      "filter_placeholder": "筛选团队...",
+      "filter_placeholder": "筛选团队…",
       "sort_by": "按排序",
-      "loading": "加载团队...",
+      "loading": "加载团队…",
       "no_teams": "未找到团队",
       "list_label": "组织团队",
       "delete_team": "删除团队 {name}",
@@ -410,14 +414,14 @@
       "no_members": "没有成员",
       "remove_user": "从团队 {user} 中移除",
       "username_to_add": "要添加到 {team} 的用户名",
-      "username_placeholder": "用户名...",
+      "username_placeholder": "用户名…",
       "add_button": "添加",
       "cancel_add_user": "取消添加用户",
       "add_member": "+ 添加成员",
       "team_name_label": "团队名称",
-      "team_name_placeholder": "团队名称...",
+      "team_name_placeholder": "团队名称…",
       "create_button": "创建",
-      "no_match": "未找到匹配 \"{query}\" 的团队",
+      "no_match": "未找到匹配“{query}”的团队",
       "cancel_create": "取消创建团队",
       "create_team": "+ 创建团队"
     },
@@ -425,12 +429,12 @@
       "title": "成员",
       "refresh": "刷新成员",
       "filter_label": "筛选成员",
-      "filter_placeholder": "筛选成员...",
+      "filter_placeholder": "筛选成员…",
       "filter_by_role": "按角色筛选",
       "filter_by_team": "按团队筛选",
       "all_teams": "所有团队",
       "sort_by": "按排序",
-      "loading": "加载成员...",
+      "loading": "加载成员…",
       "no_members": "未找到成员",
       "list_label": "组织成员",
       "change_role_for": "更改 {name} 的角色",
@@ -438,7 +442,7 @@
       "view_team": "查看 {team} 团队",
       "no_match": "未找到匹配筛选条件的成员",
       "username_label": "用户名",
-      "username_placeholder": "用户名...",
+      "username_placeholder": "用户名…",
       "role_label": "角色",
       "role": {
         "all": "所有",
@@ -460,17 +464,17 @@
       "no_packages": "未找到公开包",
       "no_packages_hint": "这个组织可能不存在或没有公开包。",
       "failed_to_load": "加载组织包失败",
-      "no_match": "未找到匹配 \"{query}\" 的包",
+      "no_match": "未找到匹配“{query}”的包",
       "not_found": "未找到组织",
-      "not_found_message": "组织 \"{'@'}{name}\" 在 npm 上不存在",
-      "filter_placeholder": "筛选 {count} 个包..."
+      "not_found_message": "“{'@'}{name}” 组织在 npm 上不存在",
+      "filter_placeholder": "筛选 {count} 个包…"
     }
   },
   "user": {
     "combobox": {
       "add_to_org_hint": "（也会添加到组织）",
       "press_enter_to_add": "按 Enter 添加 {'@'}{username}",
-      "default_placeholder": "用户名...",
+      "default_placeholder": "用户名…",
       "suggestions_label": "用户建议"
     },
     "page": {
@@ -478,8 +482,8 @@
       "no_packages": "未找到公开包",
       "no_packages_hint": "这个用户可能不存在或没有公开包。",
       "failed_to_load": "加载用户包失败",
-      "no_match": "未找到匹配 \"{query}\" 的包",
-      "filter_placeholder": "筛选 {count} 个包..."
+      "no_match": "未找到匹配“{query}”的包",
+      "filter_placeholder": "筛选 {count} 个包…"
     },
     "orgs_page": {
       "title": "组织",
@@ -489,7 +493,7 @@
       "connect_hint_suffix": "以开始。",
       "own_orgs_only": "您只能查看自己的组织。",
       "view_your_orgs": "查看您的组织",
-      "loading": "加载组织中...",
+      "loading": "加载组织中…",
       "empty": "未找到组织。",
       "empty_hint": "已根据您限定范围的包名中检测到组织。",
       "count": "{count} 个组织",
@@ -516,8 +520,8 @@
       "publish_hint": "这将发布一个最小的占位符包。",
       "preview_json": "预览 package.json",
       "claim_button": "声明包名",
-      "publishing": "发布中...",
-      "checking": "检查可用性中...",
+      "publishing": "发布中…",
+      "checking": "检查可用性中…",
       "failed_to_check": "检查名称可用性失败",
       "failed_to_claim": "声明包名失败"
     }
@@ -530,7 +534,7 @@
     "lines": "{count} 行",
     "toggle_tree": "切换文件树",
     "close_tree": "关闭文件树",
-    "copy_link": "复制链接",
+    "copy_link": "拷贝链接",
     "raw": "原始文件",
     "view_raw": "查看原始文件",
     "file_too_large": "文件过大，无法预览",
@@ -540,7 +544,7 @@
     "unavailable_hint": "文件可能太大或不可用",
     "version_required": "需要版本来浏览代码",
     "go_to_package": "跳转到包",
-    "loading_tree": "加载文件树中...",
+    "loading_tree": "加载文件树中…",
     "failed_to_load_tree": "加载此包版本的文件失败",
     "back_to_package": "返回包",
     "table": {
@@ -567,9 +571,9 @@
     "title": "筛选",
     "search": "搜索",
     "search_scope": "搜索范围",
-    "search_placeholder_name": "通过包名搜索...",
-    "search_placeholder_description": "通过描述搜索...",
-    "search_placeholder_keywords": "通过关键词搜索...",
+    "search_placeholder_name": "通过包名搜索…",
+    "search_placeholder_description": "通过描述搜索…",
+    "search_placeholder_keywords": "通过关键词搜索…",
     "search_placeholder_all": "搜索全部或使用 name: desc: kw:",
     "scope_name": "名称",
     "scope_name_description": "只搜索包名",
@@ -649,11 +653,11 @@
     "pagination": {
       "mode_label": "分页模式",
       "infinite": "无限",
-      "paginated": "枫叶",
+      "paginated": "分页",
       "items_per_page": "每页显示",
       "per_page": "{count} / 页",
       "all_yolo": "全部（YOLO）",
-      "showing": "第{start}-{end}条，共{total}条",
+      "showing": "第 {start} - {end} 条，共 {total} 条",
       "previous": "上一页",
       "next": "下一页",
       "nav_label": "分页"
@@ -661,7 +665,7 @@
     "count": {
       "showing_filtered": "匹配 {filtered} 的 {total} 个包",
       "showing_all": "{total} 个包",
-      "showing_paginated": "已显示{pageSize}个, 共{total}个包"
+      "showing_paginated": "已显示 {pageSize} 个, 共 {total} 个包"
     },
     "table": {
       "no_packages": "安全性警告",
@@ -675,11 +679,11 @@
     "meta_description": "npmx 是一个快速、现代的 npm 仓库浏览器。为探索 npm 包提供更好的用户体验和开发者体验。",
     "back_home": "返回首页",
     "what_we_are": {
-      "title": "我们是什么",
+      "title": "我们在做什么",
       "better_ux_dx": "更好的用户体验和开发者体验",
       "admin_ui": "管理界面",
       "description": "npmx 为 npm 仓库及其工具链提供{betterUxDx}。我们提供快速、现代化的界面来探索 npm 包，支持深色模式、键盘导航、代码浏览以及与 {jsr} 等替代仓库连接等功能。",
-      "admin_description": "我们也致力于提供更好的{adminUi}，用于管理您的 npm 包、团队和组织——一切都在浏览器中完成，并由您本地的 npm CLI 驱动。"
+      "admin_description": "我们也致力于提供更好的{adminUi}，用于管理您的 npm 包、团队和组织⸺一切都在浏览器中完成，并由您本地的 npm CLI 驱动。"
     },
     "what_we_are_not": {
       "title": "我们不是什么",
@@ -700,7 +704,7 @@
     "contributors": {
       "title": "贡献者",
       "description": "npmx 是完全开源的，由令人惊叹的社区贡献者们共同构建。",
-      "loading": "正在加载贡献者...",
+      "loading": "正在加载贡献者…",
       "error": "无法加载贡献者",
       "view_profile": "查看 {name} 的 GitHub 个人资料"
     },
@@ -719,7 +723,7 @@
       "follow": {
         "title": "保持更新",
         "description": "了解 npmx 的最新动态。",
-        "cta": "在 BlueSky 上关注"
+        "cta": "在 Bluesky 上关注"
       }
     }
   },
@@ -729,7 +733,7 @@
     "packages": "包",
     "packages_dropdown": {
       "title": "您的包",
-      "loading": "加载中...",
+      "loading": "加载中…",
       "error": "加载包失败",
       "empty": "未找到包",
       "view_all": "查看全部"
@@ -737,7 +741,7 @@
     "orgs": "组织",
     "orgs_dropdown": {
       "title": "您的组织",
-      "loading": "加载中...",
+      "loading": "加载中…",
       "error": "加载组织失败",
       "empty": "未找到组织",
       "view_all": "查看全部"

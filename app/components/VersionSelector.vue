@@ -480,7 +480,7 @@ watch(
       <span>{{ currentVersion }}</span>
       <span
         v-if="currentVersion === latestVersion"
-        class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-sans font-medium"
+        class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium"
       >
         latest
       </span>
@@ -567,12 +567,8 @@ watch(
               <span
                 v-for="tag in group.primaryVersion.tags"
                 :key="tag"
-                class="text-[10px] px-1.5 py-0.5 rounded font-sans font-medium"
-                :class="
-                  tag === 'latest'
-                    ? 'bg-emerald-500/10 text-emerald-400'
-                    : 'bg-bg-muted text-fg-subtle'
-                "
+                class="text-xs px-1.5 py-0.5 rounded font-sans font-medium"
+                :class="tag === 'latest' ? 'badge-green' : 'badge-subtle'"
               >
                 {{ tag }}
               </span>

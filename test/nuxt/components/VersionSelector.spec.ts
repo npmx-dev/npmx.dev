@@ -509,9 +509,9 @@ describe('VersionSelector', () => {
       // Find the latest tag span
       const latestTags = component.findAll('span').filter(s => s.text() === 'latest')
       expect(latestTags.length).toBeGreaterThan(0)
-      // Should have emerald styling
-      const hasEmeraldStyling = latestTags.some(t => t.classes().some(c => c.includes('emerald')))
-      expect(hasEmeraldStyling).toBe(true)
+      // Should have green styling
+      const hasGreenStyling = latestTags.some(t => t.classes().some(c => c.includes('green')))
+      expect(hasGreenStyling).toBe(true)
     })
   })
 
