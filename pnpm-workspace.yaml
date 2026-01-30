@@ -3,6 +3,8 @@ packages:
   - 'cli'
   - 'docs'
 
+savePrefix: ''
+
 overrides:
   sharp: 0.34.5
   vite: npm:@voidzero-dev/vite-plus-core@latest
