@@ -106,7 +106,7 @@
         id="install-heading-skeleton"
         class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
       >
-        {{ $t('package.skeleton.install') }}
+        {{ $t('package.skeleton.get_started') }}
       </h2>
       <!-- code-block with relative positioning for copy button -->
       <div class="relative">

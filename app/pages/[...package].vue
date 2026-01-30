@@ -13,8 +13,6 @@ definePageMeta({
 
 const router = useRouter()
 
-const isMounted = useMounted()
-
 const { packageName, requestedVersion, orgName } = usePackageRoute()
 
 if (import.meta.server) {
@@ -273,15 +271,6 @@ const typesPackageName = computed(() => {
   return packageAnalysis.value.types.packageName
 })
 
-const {
-  selectedPM,
-  installCommandParts,
-  typesInstallCommandParts,
-  showTypesInInstall,
-  copied,
-  copyInstallCommand,
-} = useInstallCommand(packageName, requestedVersion, jsrInfo, typesPackageName)
-
 // Executable detection for run command
 const executableInfo = computed(() => {
   if (!displayVersion.value || !pkg.value) return null
@@ -306,46 +295,6 @@ const isCreatePkg = computed(() => {
   return isCreatePackage(pkg.value.name)
 })
 
-// Run command parts for a specific command (local execute after install)
-function getRunParts(command?: string) {
-  if (!pkg.value) return []
-  return getRunCommandParts({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    jsrInfo: jsrInfo.value,
-    command,
-    isBinaryOnly: false, // Local execute
-  })
-}
-
-// Execute command parts for binary-only packages (remote execute)
-const executeCommandParts = computed(() => {
-  if (!pkg.value) return []
-  return getExecuteCommandParts({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    jsrInfo: jsrInfo.value,
-    isBinaryOnly: true,
-    isCreatePackage: isCreatePkg.value,
-  })
-})
-
-// Full execute command string for copying
-const executeCommand = computed(() => {
-  if (!pkg.value) return ''
-  return getExecuteCommand({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    jsrInfo: jsrInfo.value,
-    isBinaryOnly: true,
-    isCreatePackage: isCreatePkg.value,
-  })
-})
-
-// Copy execute command (for binary-only packages)
-const { copied: executeCopied, copy: copyExecute } = useClipboard({ copiedDuring: 2000 })
-const copyExecuteCommand = () => copyExecute(executeCommand.value)
-
 // Get associated create-* package info (e.g., vite -> create-vite)
 const createPackageInfo = computed(() => {
   if (!packageAnalysis.value?.createPackage) return null
@@ -353,60 +302,6 @@ const createPackageInfo = computed(() => {
   if (packageAnalysis.value.createPackage.deprecated) return null
   return packageAnalysis.value.createPackage
 })
-
-// Create command parts for associated create-* package
-const createCommandParts = computed(() => {
-  if (!createPackageInfo.value) return []
-  const pm = packageManagers.find(p => p.id === selectedPM.value)
-  if (!pm) return []
-
-  // Extract short name: create-vite -> vite
-  const createPkgName = createPackageInfo.value.packageName
-  let shortName: string
-  if (createPkgName.startsWith('@')) {
-    // @scope/create-foo -> foo
-    const slashIndex = createPkgName.indexOf('/')
-    const name = createPkgName.slice(slashIndex + 1)
-    shortName = name.startsWith('create-') ? name.slice('create-'.length) : name
-  } else {
-    // create-vite -> vite
-    shortName = createPkgName.startsWith('create-')
-      ? createPkgName.slice('create-'.length)
-      : createPkgName
-  }
-
-  return [...pm.create.split(' '), shortName]
-})
-
-// Full create command string for copying
-const createCommand = computed(() => {
-  return createCommandParts.value.join(' ')
-})
-
-// Copy create command
-const { copied: createCopied, copy: copyCreate } = useClipboard({ copiedDuring: 2000 })
-const copyCreateCommand = () => copyCreate(createCommand.value)
-
-// Primary run command parts
-const runCommandParts = computed(() => {
-  if (!executableInfo.value?.hasExecutable) return []
-  return getRunParts(executableInfo.value.primaryCommand)
-})
-
-// Full run command string for copying
-function getFullRunCommand(command?: string) {
-  if (!pkg.value) return ''
-  return getRunCommand({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    jsrInfo: jsrInfo.value,
-    command,
-  })
-}
-
-// Copy run command
-const { copied: runCopied, copy: copyRun } = useClipboard({ copiedDuring: 2000 })
-const copyRunCommand = (command?: string) => copyRun(getFullRunCommand(command))
 
 // Expandable description
 const descriptionExpanded = ref(false)
@@ -943,65 +838,13 @@ function handleClick(event: MouseEvent) {
             {{ $t('package.run.title') }}
           </h2>
           <!-- Package manager tabs -->
-          <div
-            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md"
-            role="tablist"
-            aria-label="Package manager"
-          >
-            <button
-              v-for="pm in packageManagers"
-              :key="pm.id"
-              role="tab"
-              :aria-selected="isMounted && selectedPM === pm.id"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-              :class="
-                isMounted && selectedPM === pm.id
-                  ? 'bg-bg shadow text-fg border-border'
-                  : 'text-fg-subtle hover:text-fg border-transparent'
-              "
-              @click="selectedPM = pm.id"
-            >
-              <span class="inline-block h-3 w-3" :class="pm.icon" aria-hidden="true" />
-              {{ pm.label }}
-            </button>
-          </div>
+          <PackageManagerTabs />
         </div>
-        <div class="relative group">
-          <!-- Terminal-style execute command -->
-          <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
-            <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-            </div>
-            <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
-              <!-- Execute command -->
-              <div class="flex items-center gap-2 group/executecmd">
-                <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                <code class="font-mono text-sm"
-                  ><ClientOnly
-                    ><span
-                      v-for="(part, i) in executeCommandParts"
-                      :key="i"
-                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                    ><template #fallback
-                      ><span class="text-fg">npx</span
-                      ><span class="text-fg-muted"> {{ pkg.name }}</span></template
-                    ></ClientOnly
-                  ></code
-                >
-                <button
-                  type="button"
-                  class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/executecmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                  @click.stop="copyExecuteCommand"
-                >
-                  {{ executeCopied ? 'copied!' : 'copy' }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ExecuteCommandTerminal
+          :package-name="pkg.name"
+          :jsr-info="jsrInfo"
+          :is-create-package="isCreatePkg"
+        />
       </section>
 
       <!-- Regular packages: Install command with optional run command -->
@@ -1023,178 +866,16 @@ function handleClick(event: MouseEvent) {
             </a>
           </h2>
           <!-- Package manager tabs -->
-          <div
-            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
-            role="tablist"
-            :aria-label="$t('package.get_started.pm_label')"
-          >
-            <button
-              v-for="pm in packageManagers"
-              :key="pm.id"
-              role="tab"
-              :aria-selected="isMounted && selectedPM === pm.id"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-              :class="
-                isMounted && selectedPM === pm.id
-                  ? 'bg-bg shadow text-fg border-border'
-                  : 'text-fg-subtle hover:text-fg border-transparent'
-              "
-              @click="selectedPM = pm.id"
-            >
-              <span class="inline-block h-3 w-3" :class="pm.icon" aria-hidden="true" />
-              {{ pm.label }}
-            </button>
-          </div>
+          <PackageManagerTabs />
         </div>
-        <div class="relative group">
-          <!-- Terminal-style install command -->
-          <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
-            <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-            </div>
-            <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1 overflow-x-auto">
-              <!-- Install command -->
-              <div class="flex items-center gap-2 group/installcmd min-w-0">
-                <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-                <code class="font-mono text-sm min-w-0"
-                  ><ClientOnly
-                    ><span
-                      v-for="(part, i) in installCommandParts"
-                      :key="i"
-                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                    ><template #fallback
-                      ><span class="text-fg">npm</span
-                      ><span class="text-fg-muted"> install {{ pkg.name }}</span></template
-                    ></ClientOnly
-                  ></code
-                >
-                <button
-                  type="button"
-                  class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                  :aria-label="$t('package.get_started.copy_command')"
-                  @click.stop="copyInstallCommand"
-                >
-                  <span aria-live="polite">{{
-                    copied ? $t('common.copied') : $t('common.copy')
-                  }}</span>
-                </button>
-              </div>
-
-              <!-- @types package install (when enabled) -->
-              <div v-if="showTypesInInstall" class="flex items-center gap-2 min-w-0">
-                <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-                <code class="font-mono text-sm min-w-0"
-                  ><span
-                    v-for="(part, i) in typesInstallCommandParts"
-                    :key="i"
-                    :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                    >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                  ></code
-                >
-                <NuxtLink
-                  v-if="typesPackageName"
-                  :to="`/${typesPackageName}`"
-                  class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                  :title="$t('package.get_started.view_types', { package: typesPackageName })"
-                >
-                  <span
-                    class="i-carbon:arrow-right rtl-flip w-3 h-3 inline-block align-middle"
-                    aria-hidden="true"
-                  />
-                  <span class="sr-only">View {{ typesPackageName }}</span>
-                </NuxtLink>
-              </div>
-
-              <!-- Run command (only if package has executables) -->
-              <template v-if="executableInfo?.hasExecutable">
-                <!-- Comment line -->
-                <div class="flex items-center gap-2 pt-1">
-                  <span class="text-fg-subtle font-mono text-sm select-none"
-                    ># {{ $t('package.run.locally') }}</span
-                  >
-                </div>
-
-                <!-- Primary run command -->
-                <div class="flex items-center gap-2 group/runcmd">
-                  <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                  <code class="font-mono text-sm"
-                    ><ClientOnly
-                      ><span
-                        v-for="(part, i) in runCommandParts"
-                        :key="i"
-                        :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                        >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                      ><template #fallback
-                        ><span class="text-fg">npx</span>{{ ' '
-                        }}<span class="text-fg-muted">{{
-                          executableInfo?.primaryCommand
-                        }}</span></template
-                      ></ClientOnly
-                    ></code
-                  >
-                  <button
-                    type="button"
-                    class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                    @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
-                  >
-                    {{ runCopied ? $t('common.copied') : $t('common.copy') }}
-                  </button>
-                </div>
-              </template>
-
-              <!-- Create command (for packages with associated create-* package) -->
-              <template v-if="createPackageInfo">
-                <!-- Comment line -->
-                <div class="flex items-center gap-2 pt-1">
-                  <span class="text-fg-subtle font-mono text-sm select-none"
-                    ># {{ $t('package.create.title') }}</span
-                  >
-                </div>
-
-                <!-- Create command -->
-                <div class="flex items-center gap-2 group/createcmd">
-                  <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                  <code class="font-mono text-sm"
-                    ><ClientOnly
-                      ><span
-                        v-for="(part, i) in createCommandParts"
-                        :key="i"
-                        :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                        >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                      ><template #fallback
-                        ><span class="text-fg">npm</span
-                        ><span class="text-fg-muted">
-                          create {{ createPackageInfo.packageName.replace('create-', '') }}</span
-                        ></template
-                      ></ClientOnly
-                    ></code
-                  >
-                  <button
-                    type="button"
-                    class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                    :aria-label="$t('package.create.copy_command')"
-                    @click.stop="copyCreateCommand"
-                  >
-                    <span aria-live="polite">{{
-                      createCopied ? $t('common.copied') : $t('common.copy')
-                    }}</span>
-                  </button>
-                  <NuxtLink
-                    :to="`/${createPackageInfo.packageName}`"
-                    class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                    :title="`View ${createPackageInfo.packageName}`"
-                  >
-                    <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
-                    <span class="sr-only">View {{ createPackageInfo.packageName }}</span>
-                  </NuxtLink>
-                </div>
-              </template>
-            </div>
-          </div>
-        </div>
+        <InstallCommandTerminal
+          :package-name="pkg.name"
+          :requested-version="requestedVersion"
+          :jsr-info="jsrInfo"
+          :types-package-name="typesPackageName"
+          :executable-info="executableInfo"
+          :create-package-info="createPackageInfo"
+        />
       </section>
 
       <div class="area-vulns space-y-6">
