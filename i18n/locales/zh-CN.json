@@ -24,6 +24,7 @@
     "found_packages": "共找到 {count} 个包",
     "updating": "（更新中...）",
     "no_results": "未找到匹配 \"{query}\" 的包",
+    "results": "搜索结果",
     "not_taken": "{name} 尚未被占用",
     "claim_prompt": "在 npm 上声明",
     "claim_button": "声明 \"{name}\"",
@@ -41,18 +42,41 @@
     "popular_packages": "热门软件包",
     "search": "搜索",
     "settings": "设置",
-    "back": "返回"
+    "back": "返回",
+    "main_navigation": "主页"
   },
   "settings": {
+    "title": "设置",
+    "tagline": "自定义你的 npmx 体验",
+    "meta_description": "使用主题、语言和显示偏好来自定义你的 npmx.dev 使用体验。",
+    "sections": {
+      "appearance": "外观",
+      "display": "展示",
+      "language": "语言"
+    },
     "relative_dates": "相对时间",
+    "relative_dates_description": "显示“3天前”而不是完整时间",
     "include_types": "在安装时包含 {'@'}types",
-    "language": "语言",
-    "help_translate": "帮助翻译 npmx",
+    "include_types_description": "为未提供类型定义的包自动添加 {'@'}types 包到安装命令",
+    "hide_platform_packages": "隐藏指定平台的包",
+    "hide_platform_packages_description": "在结果中隐藏原生二进制包（例如 {'@'}esbuild/linux-x64）",
     "theme": "主题",
     "theme_dark": "深色",
     "theme_light": "浅色",
     "theme_system": "跟随系统",
-    "accent_colors": "强调色"
+    "language": "语言",
+    "help_translate": "帮助翻译 npmx",
+    "accent_colors": "强调色",
+    "clear_accent": "清除强调色",
+    "translation_progress": "翻译进度"
+  },
+  "i18n": {
+    "missing_keys": "{count} 个未翻译",
+    "copy_keys": "复制键",
+    "show_more_keys": "展示更多 {count} 个...",
+    "contribute_hint": "通过补充缺失的键来帮助改进翻译",
+    "edit_on_github": "在 GitHub 上编辑",
+    "view_guide": "翻译指南"
   },
   "common": {
     "loading": "加载中...",
@@ -64,6 +88,8 @@
     "retry": "重试",
     "copy": "复制",
     "copied": "已复制！",
+    "skip_link": "跳转到主界面",
+    "close_modal": "关闭对话框",
     "show_more": "展示更多",
     "warnings": "警告：",
     "go_back_home": "返回首页",
@@ -84,10 +110,20 @@
     "not_latest": "（不是最新）",
     "verified_provenance": "已验证的来源",
     "view_permalink": "查看这个版本的链接",
+    "navigation": "包导航",
     "deprecation": {
       "package": "这个包已经被弃用。",
       "version": "这个版本已经被弃用。",
       "no_reason": "没有提供原因"
+    },
+    "replacement": {
+      "title": "您可能不需要这个依赖。",
+      "native": "该功能自 Node.js {nodeVersion} 起已被内置，可直接使用 {replacement} 替代。",
+      "simple": "社区标记此包为冗余，建议替换为：{replacement}。",
+      "documented": "社区标记此包存在性能更优的替代方案",
+      "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
+      "learn_more": "了解更多",
+      "mdn": "MDN"
     },
     "stats": {
       "license": "许可证",
@@ -95,7 +131,8 @@
       "install_size": "安装大小",
       "updated": "最近更新",
       "view_dependency_graph": "查看依赖图",
-      "inspect_dependency_tree": "查看依赖树"
+      "inspect_dependency_tree": "查看依赖树",
+      "vulns": "漏洞"
     },
     "links": {
       "repo": "仓库",
@@ -105,6 +142,10 @@
       "code": "代码",
       "docs": "文档",
       "fund": "资助"
+    },
+    "docs": {
+      "not_available": "文档不可用",
+      "not_available_detail": "我们无法为此版本生成文档。"
     },
     "get_started": {
       "title": "开始使用",
@@ -151,7 +192,8 @@
       "title": "依赖（{count}个）",
       "list_label": "包依赖",
       "show_all": "显示全部 {count} 个依赖",
-      "optional": "可选"
+      "optional": "可选",
+      "view_vulnerabilities": "查看漏洞"
     },
     "peer_dependencies": {
       "title": "对等依赖（{count}个）",
@@ -191,7 +233,9 @@
       "end_date": "结束",
       "no_data": "没有下载数据",
       "loading": "加载中...",
-      "y_axis_label": "{granularity} 下载量"
+      "y_axis_label": "{granularity} 下载量",
+      "download_file": "下载 {fileType}",
+      "toggle_annotator": "切换标注工具"
     },
     "install_scripts": {
       "title": "安装脚本",
@@ -513,6 +557,112 @@
     "jsr": {
       "title": "也适用于 JSR",
       "label": "jsr"
+    }
+  },
+  "filters": {
+    "title": "筛选",
+    "search": "搜索",
+    "search_scope": "搜索范围",
+    "search_placeholder_name": "通过包名搜索...",
+    "search_placeholder_description": "通过描述搜索...",
+    "search_placeholder_keywords": "通过关键词搜索...",
+    "search_placeholder_all": "搜索全部或使用 name: desc: kw:",
+    "scope_name": "名称",
+    "scope_name_description": "只搜索包名",
+    "scope_description": "描述",
+    "scope_description_description": "只搜索描述",
+    "scope_keywords": "关键词",
+    "scope_keywords_description": "只搜索关键词",
+    "scope_all": "全部",
+    "scope_all_description": "搜索全部字段，支持 name: desc: kw: operators",
+    "weekly_downloads": "每周下载量",
+    "updated_within": "最近更新",
+    "security": "安全性",
+    "keywords": "关键词",
+    "more_keywords": "+ {count} 个更多",
+    "clear_all": "清除所有",
+    "remove_filter": "移除 {label} 筛选",
+    "download_range": {
+      "100_1k": "100 - 1K",
+      "10k_100k": "10K - 100K",
+      "1k_10k": "1K - 10K",
+      "any": "任意",
+      "gt100k": "> 100K",
+      "lt100": "< 100"
+    },
+    "updated": {
+      "any": "任意",
+      "week": "近一周",
+      "month": "近一个月",
+      "quarter": "近三个月",
+      "year": "近一年"
+    },
+    "security_options": {
+      "all": "所有包",
+      "insecure": "不带警告",
+      "secure": "带有警告"
+    },
+    "sort": {
+      "label": "排序包",
+      "toggle_direction": "切换排序方向",
+      "ascending": "升序",
+      "descending": "降序",
+      "relevance": "相关性",
+      "downloads_week": "每周下载量",
+      "downloads_day": "每日下载量",
+      "downloads_month": "每月下载量",
+      "downloads_year": "每年下载量",
+      "updated": "最近更新",
+      "name": "名称",
+      "quality": "质量评分",
+      "popularity": "受欢迎度",
+      "maintenance": "维护程度",
+      "score": "总分"
+    },
+    "columns": {
+      "title": "列",
+      "show": "展示列",
+      "reset": "重置为默认值",
+      "coming_soon": "敬请期待",
+      "name": "名称",
+      "version": "版本",
+      "description": "描述",
+      "downloads": "每周下载量",
+      "updated": "最近更新",
+      "maintainers": "维护者",
+      "keywords": "关键词",
+      "quality_score": "质量评分",
+      "popularity_score": "受欢迎度",
+      "maintenance_score": "维护程度",
+      "combined_score": "总分",
+      "security": "安全性"
+    },
+    "view_mode": {
+      "label": "视图模式",
+      "cards": "卡片视图",
+      "table": "表格视图"
+    },
+    "pagination": {
+      "mode_label": "分页模式",
+      "infinite": "无限",
+      "paginated": "枫叶",
+      "items_per_page": "每页显示",
+      "per_page": "{count} / 页",
+      "all_yolo": "全部（YOLO）",
+      "showing": "第{start}-{end}条，共{total}条",
+      "previous": "上一页",
+      "next": "下一页",
+      "nav_label": "分页"
+    },
+    "count": {
+      "showing_filtered": "匹配 {filtered} 的 {total} 个包",
+      "showing_all": "{total} 个包",
+      "showing_paginated": "已显示{pageSize}个, 共{total}个包"
+    },
+    "table": {
+      "no_packages": "安全性警告",
+      "secure": "安全",
+      "security_warning": "未找到包"
     }
   },
   "about": {
