@@ -1,15 +1,29 @@
 <script setup lang="ts">
+import type { Directions } from '@nuxtjs/i18n'
 import { useEventListener } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
+const { locale, locales } = useI18n()
 
 // Initialize accent color before hydration to prevent flash
 initAccentOnPrehydrate()
 
 const isHomepage = computed(() => route.name === 'index')
 
+const localeMap = locales.value.reduce(
+  (acc, l) => {
+    acc[l.code] = l.dir ?? 'ltr'
+    return acc
+  },
+  {} as Record<string, Directions>,
+)
+
 useHead({
+  htmlAttrs: {
+    lang: () => locale.value,
+    dir: () => localeMap[locale.value] ?? 'ltr',
+  },
   titleTemplate: titleChunk => {
     return titleChunk ? titleChunk : 'npmx - Better npm Package Browser'
   },

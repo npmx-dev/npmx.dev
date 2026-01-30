@@ -6,11 +6,10 @@ test.describe('Search Pages', () => {
 
     await expect(page.locator('text=/found \\d+/i')).toBeVisible()
 
-    const searchInput = page.locator('input[type="search"]')
-    await expect(searchInput).toBeFocused()
-
     const firstResult = page.locator('[data-result-index="0"]').first()
     await expect(firstResult).toBeVisible()
+
+    const searchInput = page.locator('input[type="search"]')
 
     // ArrowDown changes visual selection but keeps focus in input
     await page.keyboard.press('ArrowDown')
@@ -34,5 +33,18 @@ test.describe('Search Pages', () => {
     await page.locator('[data-result-index="0"]').first().focus()
     await page.keyboard.press('/')
     await expect(page.locator('input[type="search"]')).toBeFocused()
+  })
+
+  test('/settings → search, keeps focus on search input', async ({ page, goto }) => {
+    await goto('/settings', { waitUntil: 'domcontentloaded' })
+
+    const searchInput = page.locator('input[type="search"]')
+    await searchInput.fill('vue')
+
+    await page.waitForLoadState('domcontentloaded')
+
+    await expect(page.locator('text=/found \\d+/i')).toBeVisible()
+
+    await expect(searchInput).toBeFocused()
   })
 })
