@@ -45,7 +45,7 @@ defineProps<{
         {{ $t('package.provenance_section.view_build_summary') }}
       </a>
 
-      <dl class="space-y-3 m-0">
+      <dl class="space-y-3 m-0 mt-4">
         <div v-if="details.sourceCommitUrl" class="flex flex-col gap-0.5">
           <dt class="font-mono text-xs text-fg-muted m-0">
             {{ $t('package.provenance_section.source_commit') }}
