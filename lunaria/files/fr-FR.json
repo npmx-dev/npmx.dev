@@ -132,7 +132,9 @@
       "jsr": "jsr",
       "code": "code",
       "docs": "docs",
-      "fund": "donner"
+      "fund": "donner",
+      "compare": "comparer",
+      "compare_to": "comparer à..."
     },
     "docs": {
       "not_available": "Documentation non disponible",
@@ -728,6 +730,69 @@
       "error": "Échec du chargement des organisations",
       "empty": "Aucune organisation trouvée",
       "view_all": "Tout voir"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "Comparer les paquets",
+      "tagline": "Comparez les paquets npm côte à côte pour vous aider à choisir le bon.",
+      "meta_title": "Comparer {packages} - npmx",
+      "meta_title_empty": "Comparer les paquets - npmx",
+      "meta_description": "Comparaison côte à côte de {packages}",
+      "meta_description_empty": "Comparez les paquets npm côte à côte",
+      "section_packages": "Paquets",
+      "section_facets": "Facettes",
+      "section_comparison": "Comparaison",
+      "loading": "Chargement des données des paquets...",
+      "error": "Échec du chargement des données. Veuillez réessayer.",
+      "empty_title": "Sélectionnez des paquets à comparer",
+      "empty_description": "Recherchez et ajoutez au moins 2 paquets ci-dessus pour voir une comparaison côte à côte de leurs métriques."
+    },
+    "releases": {
+      "title": "Comparer les versions",
+      "breadcrumb_diff": "diff",
+      "tagline_prefix": "Voir ce qui a changé entre",
+      "tagline_separator": "et",
+      "meta_title": "{package} {v1} vs {v2} - npmx",
+      "meta_description": "Comparez les versions {v1} et {v2} de {package} - voyez ce qui a changé entre les versions",
+      "from_version": "De la version",
+      "to_version": "Vers la version",
+      "swap_versions": "Inverser les versions",
+      "section_changes": "Changements",
+      "section_file_changes": "Changements de fichiers",
+      "section_dependency_changes": "Changements de dépendances",
+      "loading": "Chargement des données de version...",
+      "error": "Échec du chargement des données de version. Vérifiez que les deux versions existent.",
+      "file_diff_title": "Visualiseur de différences de fichiers",
+      "file_diff_description": "Différence visuelle des fichiers du paquet entre les versions, montrant les fichiers ajoutés, supprimés et modifiés avec coloration syntaxique.",
+      "dep_diff_title": "Différence de dépendances",
+      "dep_diff_description": "Voyez quelles dépendances ont été ajoutées, supprimées ou mises à jour entre les versions, avec les changements de contraintes de version mis en évidence."
+    },
+    "selector": {
+      "search_first": "Rechercher un paquet...",
+      "search_add": "Ajouter un autre paquet...",
+      "searching": "Recherche...",
+      "remove_package": "Supprimer {package}",
+      "packages_selected": "{count}/{max} paquets sélectionnés.",
+      "add_hint": "Ajoutez au moins 2 paquets à comparer.",
+      "loading_versions": "Chargement des versions...",
+      "select_version": "Sélectionner une version"
+    },
+    "facets": {
+      "group_label": "Facettes de comparaison",
+      "all": "tout",
+      "none": "aucun",
+      "coming_soon": "Bientôt disponible",
+      "select_all": "Sélectionner toutes les facettes",
+      "deselect_all": "Désélectionner toutes les facettes",
+      "select_category": "Sélectionner toutes les facettes {category}",
+      "deselect_category": "Désélectionner toutes les facettes {category}",
+      "categories": {
+        "performance": "Performance",
+        "health": "Santé",
+        "compatibility": "Compatibilité",
+        "security": "Sécurité & Conformité"
+      }
     }
   }
 }

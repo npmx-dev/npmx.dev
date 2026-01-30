@@ -43,6 +43,7 @@
     "popular_packages": "Popular packages",
     "search": "search",
     "settings": "settings",
+    "compare": "compare",
     "back": "back"
   },
   "settings": {
@@ -141,7 +142,9 @@
       "jsr": "jsr",
       "code": "code",
       "docs": "docs",
-      "fund": "fund"
+      "fund": "fund",
+      "compare": "compare",
+      "compare_to": "compare to..."
     },
     "docs": {
       "not_available": "Docs not available",
@@ -737,6 +740,69 @@
       "error": "Failed to load organizations",
       "empty": "No organizations found",
       "view_all": "View all"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "Compare Packages",
+      "tagline": "Compare npm packages side-by-side to help you choose the right one.",
+      "meta_title": "Compare {packages} - npmx",
+      "meta_title_empty": "Compare Packages - npmx",
+      "meta_description": "Side-by-side comparison of {packages}",
+      "meta_description_empty": "Compare npm packages side-by-side",
+      "section_packages": "Packages",
+      "section_facets": "Facets",
+      "section_comparison": "Comparison",
+      "loading": "Loading package data...",
+      "error": "Failed to load package data. Please try again.",
+      "empty_title": "Select packages to compare",
+      "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics."
+    },
+    "releases": {
+      "title": "Compare Versions",
+      "breadcrumb_diff": "diff",
+      "tagline_prefix": "See what changed between",
+      "tagline_separator": "and",
+      "meta_title": "{package} {v1} vs {v2} - npmx",
+      "meta_description": "Compare versions {v1} and {v2} of {package} - see what changed between releases",
+      "from_version": "From version",
+      "to_version": "To version",
+      "swap_versions": "Swap versions",
+      "section_changes": "Changes",
+      "section_file_changes": "File Changes",
+      "section_dependency_changes": "Dependency Changes",
+      "loading": "Loading version data...",
+      "error": "Failed to load version data. Make sure both versions exist.",
+      "file_diff_title": "File Diff Viewer",
+      "file_diff_description": "Visual diff of package files between versions, showing added, removed, and modified files with syntax highlighting.",
+      "dep_diff_title": "Dependency Diff",
+      "dep_diff_description": "See which dependencies were added, removed, or updated between versions, with version constraint changes highlighted."
+    },
+    "selector": {
+      "search_first": "Search for a package...",
+      "search_add": "Add another package...",
+      "searching": "Searching...",
+      "remove_package": "Remove {package}",
+      "packages_selected": "{count}/{max} packages selected.",
+      "add_hint": "Add at least 2 packages to compare.",
+      "loading_versions": "Loading versions...",
+      "select_version": "Select version"
+    },
+    "facets": {
+      "group_label": "Comparison facets",
+      "all": "all",
+      "none": "none",
+      "coming_soon": "Coming soon",
+      "select_all": "Select all facets",
+      "deselect_all": "Deselect all facets",
+      "select_category": "Select all {category} facets",
+      "deselect_category": "Deselect all {category} facets",
+      "categories": {
+        "performance": "Performance",
+        "health": "Health",
+        "compatibility": "Compatibility",
+        "security": "Security & Compliance"
+      }
     }
   }
 }

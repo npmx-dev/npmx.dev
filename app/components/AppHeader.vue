@@ -78,6 +78,14 @@ onKeyStroke(',', e => {
         class="flex-shrink-0 flex items-center gap-4 sm:gap-6 ms-auto sm:ms-0"
       >
         <NuxtLink
+          to="/compare"
+          class="hidden sm:inline-flex link-subtle font-mono text-sm items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+        >
+          <span class="i-carbon-compare w-4 h-4" aria-hidden="true" />
+          {{ $t('nav.compare') }}
+        </NuxtLink>
+
+        <NuxtLink
           to="/about"
           class="sm:hidden link-subtle font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
         >

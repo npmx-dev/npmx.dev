@@ -49,6 +49,7 @@
     "@shikijs/themes": "^3.21.0",
     "@vueuse/core": "^14.1.0",
     "@vueuse/nuxt": "14.1.0",
+    "@vueuse/router": "^14.1.0",
     "module-replacements": "^2.11.0",
     "nuxt": "^4.3.0",
     "nuxt-og-image": "^5.1.13",
