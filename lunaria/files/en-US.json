@@ -170,6 +170,16 @@
       "no_readme": "No README available.",
       "view_on_github": "View on GitHub"
     },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "Built and signed on {provider}",
+      "view_build_summary": "View build summary",
+      "source_commit": "Source Commit",
+      "build_file": "Build File",
+      "public_ledger": "Public Ledger",
+      "transparency_log_entry": "Transparency log entry",
+      "view_more_details": "View more details"
+    },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
     "card": {
@@ -329,7 +339,7 @@
       "size": "Size",
       "deps": "Deps",
       "updated": "Updated",
-      "install": "Install",
+      "get_started": "Get started",
       "readme": "Readme",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
@@ -561,7 +571,8 @@
     "provenance": {
       "verified": "verified",
       "verified_title": "Verified provenance",
-      "verified_via": "Verified: published via {provider}"
+      "verified_via": "Verified: published via {provider}",
+      "view_more_details": "View more details"
     },
     "jsr": {
       "title": "also available on JSR",
