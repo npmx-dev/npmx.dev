@@ -7,12 +7,12 @@ test.describe('Create Command', () => {
 
       // Create command section should be visible (SSR)
       // Use specific container to avoid matching README code blocks
-      const createCommandSection = page.locator('.group\\/createcmd')
+      const createCommandSection = page.locator('.group\\/createcmd').first()
       await expect(createCommandSection).toBeVisible()
       await expect(createCommandSection.locator('code')).toContainText(/create vite/i)
 
       // Link to create-vite should be present (uses sr-only text, so check attachment not visibility)
-      await expect(page.locator('a[href="/create-vite"]')).toBeAttached()
+      await expect(page.locator('a[href="/create-vite"]').first()).toBeAttached()
     })
 
     test('/next - should show create command (shared maintainer, same repo)', async ({
@@ -23,12 +23,12 @@ test.describe('Create Command', () => {
 
       // Create command section should be visible (SSR)
       // Use specific container to avoid matching README code blocks
-      const createCommandSection = page.locator('.group\\/createcmd')
+      const createCommandSection = page.locator('.group\\/createcmd').first()
       await expect(createCommandSection).toBeVisible()
       await expect(createCommandSection.locator('code')).toContainText(/create next-app/i)
 
       // Link to create-next-app should be present (uses sr-only text, so check attachment not visibility)
-      await expect(page.locator('a[href="/create-next-app"]')).toBeAttached()
+      await expect(page.locator('a[href="/create-next-app"]').first()).toBeAttached()
     })
 
     test('/nuxt - should show create command (same maintainer, same org)', async ({
@@ -40,7 +40,7 @@ test.describe('Create Command', () => {
       // Create command section should be visible (SSR)
       // nuxt has create-nuxt package, so command is "npm create nuxt"
       // Use specific container to avoid matching README code blocks
-      const createCommandSection = page.locator('.group\\/createcmd')
+      const createCommandSection = page.locator('.group\\/createcmd').first()
       await expect(createCommandSection).toBeVisible()
       await expect(createCommandSection.locator('code')).toContainText(/create nuxt/i)
     })
@@ -55,7 +55,8 @@ test.describe('Create Command', () => {
       await expect(page.locator('h1').filter({ hasText: 'color' })).toBeVisible()
 
       // Create command section should NOT be visible (different maintainers)
-      const createCommandSection = page.locator('.group\\/createcmd')
+      // Use .first() for consistency, though none should exist
+      const createCommandSection = page.locator('.group\\/createcmd').first()
       await expect(createCommandSection).not.toBeVisible()
     })
 
@@ -69,7 +70,8 @@ test.describe('Create Command', () => {
       await expect(page.locator('h1').filter({ hasText: 'lodash' })).toBeVisible()
 
       // Create command section should NOT be visible (no create-lodash exists)
-      const createCommandSection = page.locator('.group\\/createcmd')
+      // Use .first() for consistency, though none should exist
+      const createCommandSection = page.locator('.group\\/createcmd').first()
       await expect(createCommandSection).not.toBeVisible()
     })
   })
@@ -83,7 +85,7 @@ test.describe('Create Command', () => {
       await expect(page.locator('h1')).toContainText('vite')
 
       // Find the create command container (wait longer for API response)
-      const createCommandContainer = page.locator('.group\\/createcmd')
+      const createCommandContainer = page.locator('.group\\/createcmd').first()
       await expect(createCommandContainer).toBeVisible({ timeout: 15000 })
 
       // Copy button should initially be hidden (opacity-0)
@@ -108,7 +110,7 @@ test.describe('Create Command', () => {
       await goto('/vite', { waitUntil: 'hydration' })
 
       // Find and hover over the create command container
-      const createCommandContainer = page.locator('.group\\/createcmd')
+      const createCommandContainer = page.locator('.group\\/createcmd').first()
       await createCommandContainer.hover()
 
       // Click the copy button
@@ -132,7 +134,7 @@ test.describe('Create Command', () => {
       await goto('/lodash', { waitUntil: 'hydration' })
 
       // Find the install command container
-      const installCommandContainer = page.locator('.group\\/installcmd')
+      const installCommandContainer = page.locator('.group\\/installcmd').first()
       await expect(installCommandContainer).toBeVisible()
 
       // Copy button should initially be hidden
@@ -157,7 +159,7 @@ test.describe('Create Command', () => {
       await goto('/lodash', { waitUntil: 'hydration' })
 
       // Find and hover over the install command container
-      const installCommandContainer = page.locator('.group\\/installcmd')
+      const installCommandContainer = page.locator('.group\\/installcmd').first()
       await installCommandContainer.hover()
 
       // Click the copy button

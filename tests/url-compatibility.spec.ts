@@ -76,7 +76,7 @@ test.describe('npmjs.com URL Compatibility', () => {
       await goto('/~sindresorhus', { waitUntil: 'domcontentloaded' })
 
       // Should show username
-      await expect(page.locator('h1')).toContainText('@sindresorhus')
+      await expect(page.locator('h1')).toContainText('~sindresorhus')
       // Should show packages heading (user has packages)
       await expect(page.getByRole('heading', { name: 'Packages' })).toBeVisible()
     })
@@ -85,7 +85,7 @@ test.describe('npmjs.com URL Compatibility', () => {
       await goto('/~nonexistent-user-12345', { waitUntil: 'domcontentloaded' })
 
       // Should show username in header
-      await expect(page.locator('h1')).toContainText('@nonexistent-user-12345')
+      await expect(page.locator('h1')).toContainText('~nonexistent-user-12345')
       // Should show empty state message
       await expect(page.getByText('No public packages found for')).toBeVisible()
     })

@@ -7,15 +7,15 @@ const props = defineProps<{
 
 // Map provider id to icon class
 const providerIcons: Record<string, string> = {
-  'stackblitz': 'i-simple-icons-stackblitz',
-  'codesandbox': 'i-simple-icons-codesandbox',
-  'codepen': 'i-simple-icons-codepen',
-  'replit': 'i-simple-icons-replit',
-  'gitpod': 'i-simple-icons-gitpod',
-  'vue-playground': 'i-simple-icons-vuedotjs',
-  'nuxt-new': 'i-simple-icons-nuxtdotjs',
-  'vite-new': 'i-simple-icons-vite',
-  'jsfiddle': 'i-carbon-code',
+  'stackblitz': 'i-simple-icons:stackblitz',
+  'codesandbox': 'i-simple-icons:codesandbox',
+  'codepen': 'i-simple-icons:codepen',
+  'replit': 'i-simple-icons:replit',
+  'gitpod': 'i-simple-icons:gitpod',
+  'vue-playground': 'i-simple-icons:vuedotjs',
+  'nuxt-new': 'i-simple-icons:nuxtdotjs',
+  'vite-new': 'i-simple-icons:vite',
+  'jsfiddle': 'i-carbon:code',
 }
 
 // Map provider id to color class
@@ -32,7 +32,7 @@ const providerColors: Record<string, string> = {
 }
 
 function getIcon(provider: string): string {
-  return providerIcons[provider] || 'i-carbon-play'
+  return providerIcons[provider] || 'i-carbon:play'
 }
 
 function getColor(provider: string): string {
@@ -108,7 +108,7 @@ function focusMenuItem(index: number) {
 </script>
 
 <template>
-  <section v-if="links.length > 0" aria-labelledby="playgrounds-heading">
+  <section v-if="links.length > 0">
     <h2 id="playgrounds-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
       {{ $t('package.playgrounds.title') }}
     </h2>
@@ -141,13 +141,13 @@ function focusMenuItem(index: number) {
         @keydown="handleKeydown"
       >
         <span class="flex items-center gap-2">
-          <span class="i-carbon-play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
+          <span class="i-carbon:play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
           <span class="text-fg-muted"
             >{{ $t('package.playgrounds.choose') }} ({{ links.length }})</span
           >
         </span>
         <span
-          class="i-carbon-chevron-down w-3 h-3 text-fg-subtle transition-transform duration-200 motion-reduce:transition-none"
+          class="i-carbon:chevron-down w-3 h-3 text-fg-subtle transition-transform duration-200 motion-reduce:transition-none"
           :class="{ 'rotate-180': isOpen }"
           aria-hidden="true"
         />
@@ -166,7 +166,7 @@ function focusMenuItem(index: number) {
           v-if="isOpen && hasMultipleLinks"
           ref="menuRef"
           role="menu"
-          class="absolute top-full left-0 right-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 py-1 overflow-visible"
+          class="absolute top-full inset-is-0 inset-ie-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 py-1 overflow-visible"
           @keydown="handleKeydown"
         >
           <AppTooltip v-for="link in links" :key="link.url" :text="link.providerName" class="block">

@@ -243,6 +243,22 @@ const canonicalUrl = computed(() => {
   return url
 })
 
+// Toggle markdown view mode
+const markdownViewModes = [
+  {
+    key: 'preview',
+    label: $t('code.markdown_view_mode.preview'),
+    icon: 'i-carbon-view',
+  },
+  {
+    key: 'code',
+    label: $t('code.markdown_view_mode.code'),
+    icon: 'i-carbon-code',
+  },
+] as const
+
+const markdownViewMode = ref<(typeof markdownViewModes)[number]['key']>('preview')
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -329,7 +345,7 @@ useSeoMeta({
 
     <!-- Loading state -->
     <div v-else-if="treeStatus === 'pending'" class="container py-20 text-center">
-      <div class="i-svg-spinners-ring-resize w-8 h-8 mx-auto text-fg-muted" />
+      <div class="i-svg-spinners:ring-resize w-8 h-8 mx-auto text-fg-muted" />
       <p class="mt-4 text-fg-muted">{{ $t('code.loading_tree') }}</p>
     </div>
 
@@ -343,7 +359,7 @@ useSeoMeta({
     <div v-else-if="fileTree" class="flex flex-1">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
-        class="w-64 lg:w-72 border-r border-border shrink-0 hidden md:block bg-bg-subtle sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
+        class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <CodeFileTree
           :tree="fileTree.tree"
@@ -359,15 +375,39 @@ useSeoMeta({
         <!-- File viewer -->
         <template v-if="isViewingFile && fileContent">
           <div
-            class="sticky top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between"
+            class="sticky z-10 top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between"
           >
-            <div class="flex items-center gap-3 text-sm">
-              <span class="text-fg-muted">{{
-                $t('code.lines', { count: fileContent.lines })
-              }}</span>
-              <span v-if="currentNode?.size" class="text-fg-subtle">{{
-                formatBytes(currentNode.size)
-              }}</span>
+            <div class="flex items-center gap-2">
+              <div
+                v-if="fileContent.markdownHtml"
+                class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
+                role="tablist"
+                aria-label="Markdown view mode selector"
+              >
+                <button
+                  v-for="mode in markdownViewModes"
+                  :key="mode.key"
+                  role="tab"
+                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                  :class="
+                    markdownViewMode === mode.key
+                      ? 'bg-bg shadow text-fg border-border'
+                      : 'text-fg-subtle hover:text-fg border-transparent'
+                  "
+                  @click="markdownViewMode = mode.key"
+                >
+                  <span class="inline-block h-3 w-3" :class="mode.icon" aria-hidden="true" />
+                  {{ mode.label }}
+                </button>
+              </div>
+              <div class="flex items-center gap-3 text-sm">
+                <span class="text-fg-muted">{{
+                  $t('code.lines', { count: fileContent.lines })
+                }}</span>
+                <span v-if="currentNode?.size" class="text-fg-subtle">{{
+                  formatBytes(currentNode.size)
+                }}</span>
+              </div>
             </div>
             <div class="flex items-center gap-2">
               <button
@@ -385,11 +425,23 @@ useSeoMeta({
                 class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1"
               >
                 {{ $t('code.raw') }}
-                <span class="i-carbon-launch w-3 h-3" />
+                <span class="i-carbon:launch w-3 h-3" />
               </a>
             </div>
           </div>
+          <div
+            v-if="fileContent.markdownHtml"
+            v-show="markdownViewMode === 'preview'"
+            class="flex justify-center p-4"
+          >
+            <div
+              class="readme-content prose prose-invert max-w-[70ch]"
+              v-html="fileContent.markdownHtml.html"
+            ></div>
+          </div>
+
           <CodeViewer
+            v-show="!fileContent.markdownHtml || markdownViewMode === 'code'"
             :html="fileContent.html"
             :lines="fileContent.lines"
             :selected-lines="selectedLines"
@@ -399,7 +451,7 @@ useSeoMeta({
 
         <!-- File too large warning -->
         <div v-else-if="isViewingFile && isFileTooLarge" class="py-20 text-center">
-          <div class="i-carbon-document w-12 h-12 mx-auto text-fg-subtle mb-4" />
+          <div class="i-carbon:document w-12 h-12 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
             {{ $t('code.file_size_warning', { size: formatBytes(currentNode?.size ?? 0) }) }}
@@ -411,7 +463,7 @@ useSeoMeta({
             class="btn inline-flex items-center gap-2"
           >
             {{ $t('code.view_raw') }}
-            <span class="i-carbon-launch w-4 h-4" />
+            <span class="i-carbon:launch w-4 h-4" />
           </a>
         </div>
 
@@ -423,7 +475,7 @@ useSeoMeta({
           :aria-label="$t('common.loading')"
         >
           <!-- Fake line numbers column -->
-          <div class="shrink-0 bg-bg-subtle border-r border-border w-14 py-0">
+          <div class="shrink-0 bg-bg-subtle border-ie border-border w-14 py-0">
             <div v-for="n in 20" :key="n" class="px-3 h-6 flex items-center justify-end">
               <span class="skeleton w-4 h-3 rounded-sm" />
             </div>
@@ -455,7 +507,7 @@ useSeoMeta({
 
         <!-- Error loading file -->
         <div v-else-if="filePath && fileStatus === 'error'" class="py-20 text-center" role="alert">
-          <div class="i-carbon-warning-alt w-8 h-8 mx-auto text-fg-subtle mb-4" />
+          <div class="i-carbon:warning-alt w-8 h-8 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.failed_to_load') }}</p>
           <p class="text-fg-subtle text-sm mb-4">{{ $t('code.unavailable_hint') }}</p>
           <a
@@ -465,7 +517,7 @@ useSeoMeta({
             class="btn inline-flex items-center gap-2"
           >
             {{ $t('code.view_raw') }}
-            <span class="i-carbon-launch w-4 h-4" />
+            <span class="i-carbon:launch w-4 h-4" />
           </a>
         </div>
 

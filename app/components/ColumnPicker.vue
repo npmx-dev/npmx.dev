@@ -93,7 +93,7 @@ function handleReset() {
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute right-0 mt-2 w-56 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >
@@ -109,7 +109,7 @@ function handleReset() {
             <label
               v-for="column in toggleableColumns"
               :key="column.id"
-              class="flex items-center px-3 py-2 transition-colors duration-200"
+              class="flex gap-2 items-center px-3 py-2 transition-colors duration-200"
               :class="
                 column.disabled
                   ? 'opacity-50 cursor-not-allowed'
@@ -124,23 +124,27 @@ function handleReset() {
                 class="w-4 h-4 accent-fg bg-bg-muted border-border rounded disabled:opacity-50"
                 @change="!column.disabled && emit('toggle', column.id)"
               />
-              <span class="ml-2 text-sm text-fg-muted font-mono flex-1">
+              <span class="text-sm text-fg-muted font-mono flex-1">
                 {{ getColumnLabel(column.id) }}
               </span>
-              <span
+              <AppTooltip
                 v-if="column.disabled"
                 :id="`${column.id}-disabled-reason`"
-                class="text-xs text-fg-subtle italic"
+                class="text-fg-subtle"
+                :text="$t('filters.columns.coming_soon')"
+                position="left"
               >
-                {{ $t('filters.columns.coming_soon') }}
-              </span>
+                <span class="size-4 flex justify-center items-center text-xs border rounded-full"
+                  >i</span
+                >
+              </AppTooltip>
             </label>
           </div>
 
           <div class="border-t border-border py-1">
             <button
               type="button"
-              class="w-full px-3 py-2 text-left text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
+              class="w-full px-3 py-2 text-start text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
               @click="handleReset"
             >
               {{ $t('filters.columns.reset') }}

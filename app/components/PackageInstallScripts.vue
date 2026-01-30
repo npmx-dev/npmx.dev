@@ -18,12 +18,12 @@ const isExpanded = shallowRef(false)
 </script>
 
 <template>
-  <section aria-labelledby="install-scripts-heading">
+  <section>
     <h2
       id="install-scripts-heading"
       class="text-xs text-fg-subtle uppercase tracking-wider mb-3 flex items-center gap-2"
     >
-      <span class="i-carbon-warning-alt w-3 h-3 text-yellow-500" aria-hidden="true" />
+      <span class="i-carbon:warning-alt w-3 h-3 text-yellow-500" aria-hidden="true" />
       {{ $t('package.install_scripts.title') }}
     </h2>
 
@@ -51,7 +51,7 @@ const isExpanded = shallowRef(false)
         @click="isExpanded = !isExpanded"
       >
         <span
-          class="i-carbon-chevron-right w-3 h-3 transition-transform duration-200"
+          class="i-carbon:chevron-right rtl-flip w-3 h-3 transition-transform duration-200"
           :class="{ 'rotate-90': isExpanded }"
           aria-hidden="true"
         />
@@ -67,7 +67,7 @@ const isExpanded = shallowRef(false)
       <ul
         v-show="isExpanded"
         id="npx-packages-details"
-        class="mt-2 space-y-1 list-none m-0 p-0 pl-4"
+        class="mt-2 space-y-1 list-none m-0 p-0 ps-4"
       >
         <li
           v-for="[dep, version] in sortedNpxDeps"
@@ -91,10 +91,10 @@ const isExpanded = shallowRef(false)
               :title="getOutdatedTooltip(outdatedNpxDeps[dep])"
               aria-hidden="true"
             >
-              <span class="i-carbon-warning-alt w-3 h-3 block" />
+              <span class="i-carbon:warning-alt w-3 h-3 block" />
             </span>
             <span
-              class="font-mono text-xs text-right truncate"
+              class="font-mono text-xs text-end truncate"
               :class="getVersionClass(outdatedNpxDeps[dep])"
               :title="
                 outdatedNpxDeps[dep]

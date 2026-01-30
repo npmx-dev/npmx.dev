@@ -111,6 +111,8 @@ export interface ResolvedPackage {
   depth?: DependencyDepth
   /** Dependency path from root (only when trackDepth is enabled) */
   path?: string[]
+  /** Deprecation message if the version is deprecated */
+  deprecated?: string
 }
 
 /**
@@ -170,6 +172,9 @@ export async function resolveDependencyTree(
             if (options.trackDepth) {
               pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
               pkg.path = currentPath
+            }
+            if (versionData.deprecated) {
+              pkg.deprecated = versionData.deprecated
             }
             resolved.set(key, pkg)
           }

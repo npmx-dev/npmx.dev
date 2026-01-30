@@ -77,7 +77,7 @@ const allMaintainersText = computed(() => {
     <!-- Downloads -->
     <td
       v-if="isColumnVisible('downloads')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-right tabular-nums"
+      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
     >
       {{ formatDownloads(result.downloads?.weekly) }}
     </td>
@@ -142,7 +142,7 @@ const allMaintainersText = computed(() => {
     <!-- Quality Score -->
     <td
       v-if="isColumnVisible('qualityScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-right tabular-nums"
+      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
     >
       {{ formatScore(score?.detail?.quality) }}
     </td>
@@ -150,7 +150,7 @@ const allMaintainersText = computed(() => {
     <!-- Popularity Score -->
     <td
       v-if="isColumnVisible('popularityScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-right tabular-nums"
+      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
     >
       {{ formatScore(score?.detail?.popularity) }}
     </td>
@@ -158,7 +158,7 @@ const allMaintainersText = computed(() => {
     <!-- Maintenance Score -->
     <td
       v-if="isColumnVisible('maintenanceScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-right tabular-nums"
+      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
     >
       {{ formatScore(score?.detail?.maintenance) }}
     </td>
@@ -166,7 +166,7 @@ const allMaintainersText = computed(() => {
     <!-- Combined Score -->
     <td
       v-if="isColumnVisible('combinedScore')"
-      class="py-2 px-3 font-mono text-xs text-fg-muted text-right tabular-nums"
+      class="py-2 px-3 font-mono text-xs text-fg-muted text-end tabular-nums"
     >
       {{ formatScore(score?.final) }}
     </td>

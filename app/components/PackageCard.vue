@@ -40,7 +40,7 @@ const emit = defineEmits<{
       class="absolute -inset-px rounded-lg bg-gradient-to-r from-accent/0 via-accent/20 to-accent/0 opacity-100 blur-sm -z-1 pointer-events-none motion-reduce:opacity-50"
       aria-hidden="true"
     />
-    <div class="mb-2 flex items-baseline justify-between gap-2">
+    <div class="mb-2 flex items-baseline justify-start gap-2">
       <component
         :is="headingLevel ?? 'h3'"
         class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
@@ -56,10 +56,11 @@ const emit = defineEmits<{
         >
         <span
           v-if="isExactMatch"
-          class="text-xs px-1.5 py-0.5 ml-2 rounded bg-bg-elevated border border-border-hover text-fg"
+          class="text-xs px-1.5 py-0.5 ms-2 rounded bg-bg-elevated border border-border-hover text-fg"
           >{{ $t('search.exact_match') }}</span
         >
       </component>
+      <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
       <!-- Mobile: version next to package name -->
       <div class="sm:hidden text-fg-subtle flex items-center gap-1.5 shrink-0">
         <span
@@ -79,7 +80,7 @@ const emit = defineEmits<{
         />
       </div>
     </div>
-    <div class="flex justify-between items-start gap-4 sm:gap-8">
+    <div class="flex justify-start items-start gap-4 sm:gap-8">
       <div class="min-w-0">
         <p
           v-if="result.package.description"
@@ -121,12 +122,13 @@ const emit = defineEmits<{
           <div class="flex items-center gap-1.5">
             <dt class="sr-only">{{ $t('package.card.weekly_downloads') }}</dt>
             <dd class="flex items-center gap-1.5">
-              <span class="i-carbon-chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+              <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
               <span class="font-mono">{{ formatNumber(result.downloads.weekly) }}/w</span>
             </dd>
           </div>
         </dl>
       </div>
+      <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
       <!-- Desktop: version and downloads on right side -->
       <div class="hidden sm:flex flex-col gap-2 shrink-0">
         <div class="text-fg-subtle flex items-start gap-2 justify-end">
@@ -154,7 +156,7 @@ const emit = defineEmits<{
           v-if="result.downloads?.weekly"
           class="text-fg-subtle gap-2 flex items-center justify-end"
         >
-          <span class="i-carbon-chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+          <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
           <span class="font-mono text-xs">
             {{ formatNumber(result.downloads.weekly) }} {{ $t('common.per_week') }}
           </span>

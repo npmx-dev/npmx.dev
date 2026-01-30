@@ -19,6 +19,7 @@
         "app/utils/**/*.ts!",
         "app/plugins/**/*.ts!",
         "app/components/**/*.vue!",
+        "config/**/*.ts!",
         "server/utils/**/*.ts!",
         "shared/**/*.ts!"
       ],

@@ -21,7 +21,7 @@
     "button": "search",
     "clear": "Clear search",
     "searching": "Searching...",
-    "found_packages": "Found {count} packages",
+    "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "results": "Search results",
@@ -110,11 +110,20 @@
     "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
-    "navigation": "Package navigation",
+    "navigation": "Package",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
       "no_reason": "No reason provided"
+    },
+    "replacement": {
+      "title": "You might not need this dependency.",
+      "native": "This can be replaced with {replacement}, available since Node {nodeVersion}.",
+      "simple": "The community has flagged this package as redundant, with the advice: {replacement}.",
+      "documented": "The community has flagged this package as having more performant alternatives.",
+      "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
+      "learn_more": "Learn more",
+      "mdn": "MDN"
     },
     "stats": {
       "license": "License",
@@ -123,7 +132,11 @@
       "vulns": "Vulns",
       "updated": "Updated",
       "view_dependency_graph": "View dependency graph",
-      "inspect_dependency_tree": "Inspect dependency tree"
+      "inspect_dependency_tree": "Inspect dependency tree",
+      "size_tooltip": {
+        "unpacked": "{size} unpacked size (this package)",
+        "total": "{size} total unpacked size (including all {count} dependencies for linux-x64)"
+      }
     },
     "links": {
       "repo": "repo",
@@ -275,6 +288,11 @@
         "moderate": "moderate",
         "low": "low"
       }
+    },
+    "deprecated": {
+      "label": "Deprecated",
+      "tree_found": "{count} deprecated dependency | {count} deprecated dependencies",
+      "show_all": "show all {count} deprecated packages"
     },
     "access": {
       "title": "Team Access",
@@ -532,6 +550,10 @@
     "table": {
       "name": "Name",
       "size": "Size"
+    },
+    "markdown_view_mode": {
+      "preview": "preview",
+      "code": "code"
     }
   },
   "badges": {

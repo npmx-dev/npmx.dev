@@ -22,13 +22,25 @@
   --border-subtle: oklch(0.239 0 0);
   --border-hover: oklch(0.371 0 0);
 
+  /* accent color, set by user from settings */
   --accent: var(--accent-color, oklch(1 0 0));
   --accent-muted: var(--accent-color, oklch(0.922 0 0));
 
+  /* syntax highlighting colors */
   --syntax-fn: oklch(0.727 0.137 299.149);
   --syntax-str: oklch(0.829 0.088 252.458);
   --syntax-kw: oklch(0.721 0.162 15.494);
   --syntax-comment: oklch(0.551 0.019 250.976);
+
+  /* badge colors for background & text */
+  --badge-orange: oklch(0.67 0.185 55);
+  --badge-yellow: oklch(0.588 0.183 91);
+  --badge-green: oklch(0.566 0.202 165);
+  --badge-cyan: oklch(0.571 0.181 210);
+  --badge-blue: oklch(0.579 0.191 252);
+  --badge-indigo: oklch(0.573 0.262 276.966);
+  --badge-purple: oklch(0.495 0.172 295);
+  --badge-pink: oklch(0.584 0.189 343);
 }
 
 :root[data-theme='light'] {
@@ -49,9 +61,18 @@
   --accent-muted: var(--accent-color, oklch(0.205 0 0));
 
   --syntax-fn: oklch(0.502 0.188 294.988);
-  --syntax-str: oklch(0.54 0.191 257.481);
+  --syntax-str: oklch(0.425 0.152 252);
   --syntax-kw: oklch(0.588 0.193 20.469);
   --syntax-comment: oklch(0.551 0.019 250.976);
+
+  --badge-blue: oklch(0.579 0.191 252);
+  --badge-yellow: oklch(0.588 0.183 91);
+  --badge-green: oklch(0.566 0.202 165);
+  --badge-indigo: oklch(0.457 0.24 277.023);
+  --badge-purple: oklch(0.495 0.172 295);
+  --badge-orange: oklch(0.67 0.185 55);
+  --badge-pink: oklch(0.584 0.189 343);
+  --badge-cyan: oklch(0.571 0.181 210);
 }
 
 html {
@@ -154,9 +175,9 @@ button {
 
 /* Skip link */
 .skip-link {
-  position: absolute;
+  position: fixed;
   top: -100%;
-  left: 0;
+  inset-inline-start: 0;
   padding: 0.5rem 1rem;
   background: var(--fg);
   color: var(--bg);
@@ -165,6 +186,10 @@ button {
   transition: top 0.2s ease;
 }
 
+.skip-link:hover {
+  color: var(--bg);
+  text-decoration: underline;
+}
 .skip-link:focus {
   top: 0;
 }
@@ -281,12 +306,15 @@ html.light .shiki span {
   white-space: pre;
   word-break: normal;
   overflow-wrap: normal;
+  /* Makes unicode and ascii art work properly */
+  line-height: 1.25;
+  display: inline-block;
 }
 
 .readme-content ul,
 .readme-content ol {
   margin: 1rem 0;
-  padding-left: 1.5rem;
+  padding-inline-start: 1.5rem;
 }
 
 .readme-content ul {
@@ -307,8 +335,8 @@ html.light .shiki span {
 }
 
 .readme-content blockquote {
-  border-left: 2px solid var(--border);
-  padding-left: 1rem;
+  border-inline-start: 2px solid var(--border);
+  padding-inline-start: 1rem;
   margin: 1.5rem 0;
   color: var(--fg-subtle);
   font-style: italic;
@@ -316,8 +344,9 @@ html.light .shiki span {
 
 /* GitHub-style callouts/alerts */
 .readme-content blockquote[data-callout] {
-  border-left-width: 3px;
-  padding: 1rem 1rem 1rem 1.25rem;
+  border-inline-start-width: 3px;
+  padding: 1rem;
+  padding-inline-start: 1.25rem;
   background: var(--bg-subtle);
   font-style: normal;
   color: var(--fg-subtle);
@@ -332,7 +361,7 @@ html.light .shiki span {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
-  padding-left: 1.5rem;
+  padding-inline-start: 1.5rem;
 }
 
 .readme-content blockquote[data-callout]::after {
@@ -353,7 +382,7 @@ html.light .shiki span {
 
 /* Note - blue */
 .readme-content blockquote[data-callout='note'] {
-  border-left-color: var(--syntax-str);
+  border-inline-start-color: var(--syntax-str);
   background: rgba(59, 130, 246, 0.05);
 }
 .readme-content blockquote[data-callout='note']::before {
@@ -368,7 +397,7 @@ html.light .shiki span {
 
 /* Tip - green */
 .readme-content blockquote[data-callout='tip'] {
-  border-left-color: #22c55e;
+  border-inline-start-color: #22c55e;
   background: rgba(34, 197, 94, 0.05);
 }
 .readme-content blockquote[data-callout='tip']::before {
@@ -383,7 +412,7 @@ html.light .shiki span {
 
 /* Important - purple */
 .readme-content blockquote[data-callout='important'] {
-  border-left-color: var(--syntax-fn);
+  border-inline-start-color: var(--syntax-fn);
   background: rgba(168, 85, 247, 0.05);
 }
 .readme-content blockquote[data-callout='important']::before {
@@ -398,7 +427,7 @@ html.light .shiki span {
 
 /* Warning - yellow/orange */
 .readme-content blockquote[data-callout='warning'] {
-  border-left-color: #eab308;
+  border-inline-start-color: #eab308;
   background: rgba(234, 179, 8, 0.05);
 }
 .readme-content blockquote[data-callout='warning']::before {
@@ -413,7 +442,7 @@ html.light .shiki span {
 
 /* Caution - red */
 .readme-content blockquote[data-callout='caution'] {
-  border-left-color: #ef4444;
+  border-inline-start-color: #ef4444;
   background: rgba(239, 68, 68, 0.05);
 }
 .readme-content blockquote[data-callout='caution']::before {
@@ -440,7 +469,7 @@ html.light .shiki span {
 .readme-content td {
   border: 1px solid var(--border);
   padding: 0.75rem 1rem;
-  text-align: left;
+  text-align: start;
 }
 
 .readme-content th {

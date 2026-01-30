@@ -13,9 +13,9 @@ definePageMeta({
 
 const router = useRouter()
 
-const isMounted = useMounted()
-
 const { packageName, requestedVersion, orgName } = usePackageRoute()
+const selectedPM = useSelectedPackageManager()
+const activePmId = computed(() => selectedPM.value ?? 'npm')
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
@@ -66,6 +66,7 @@ const {
 onMounted(() => fetchInstallSize())
 
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
+const { data: moduleReplacement } = useModuleReplacement(packageName)
 
 const { data: pkg, status, error } = await usePackage(packageName, requestedVersion)
 const resolvedVersion = computed(() => pkg.value?.resolvedVersion ?? null)
@@ -85,13 +86,13 @@ const displayVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
-// Fetch vulnerability tree (lazy, client-side)
-// This is the same composable used by PackageVulnerabilityTree
+// Fetch dependency analysis (lazy, client-side)
+// This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
 const {
   data: vulnTree,
   status: vulnTreeStatus,
   fetch: fetchVulnTree,
-} = useVulnerabilityTree(packageName, () => displayVersion.value?.version ?? '')
+} = useDependencyAnalysis(packageName, () => displayVersion.value?.version ?? '')
 onMounted(() => {
   // Fetch vulnerability tree once displayVersion is available
   if (displayVersion.value) {
@@ -133,10 +134,15 @@ const sizeTooltip = computed(() => {
   const chunks = [
     displayVersion.value &&
       displayVersion.value.dist.unpackedSize &&
-      `${formatBytes(displayVersion.value.dist.unpackedSize)} unpacked size (this package)`,
+      $t('package.stats.size_tooltip.unpacked', {
+        size: formatBytes(displayVersion.value.dist.unpackedSize),
+      }),
     installSize.value &&
       installSize.value.dependencyCount &&
-      `${formatBytes(installSize.value.totalSize)} total unpacked size (including all ${installSize.value.dependencyCount} dependencies for linux-x64)`,
+      $t('package.stats.size_tooltip.total', {
+        size: formatBytes(installSize.value.totalSize),
+        count: installSize.value.dependencyCount,
+      }),
   ]
   return chunks.filter(Boolean).join('\n')
 })
@@ -183,22 +189,22 @@ const repositoryUrl = computed(() => {
 const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
 
 const PROVIDER_ICONS: Record<string, string> = {
-  github: 'i-carbon-logo-github',
-  gitlab: 'i-simple-icons-gitlab',
-  bitbucket: 'i-simple-icons-bitbucket',
-  codeberg: 'i-simple-icons-codeberg',
-  gitea: 'i-simple-icons-gitea',
-  forgejo: 'i-simple-icons-forgejo',
-  gitee: 'i-simple-icons-gitee',
-  sourcehut: 'i-simple-icons-sourcehut',
-  tangled: 'i-custom-tangled',
-  radicle: 'i-carbon-network-3', // Radicle is a P2P network, using network icon
+  github: 'i-carbon:logo-github',
+  gitlab: 'i-simple-icons:gitlab',
+  bitbucket: 'i-simple-icons:bitbucket',
+  codeberg: 'i-simple-icons:codeberg',
+  gitea: 'i-simple-icons:gitea',
+  forgejo: 'i-simple-icons:forgejo',
+  gitee: 'i-simple-icons:gitee',
+  sourcehut: 'i-simple-icons:sourcehut',
+  tangled: 'i-custom:tangled',
+  radicle: 'i-carbon:network-3', // Radicle is a P2P network, using network icon
 }
 
 const repoProviderIcon = computed(() => {
   const provider = repoRef.value?.provider
-  if (!provider) return 'i-carbon-logo-github'
-  return PROVIDER_ICONS[provider] ?? 'i-carbon-code'
+  if (!provider) return 'i-carbon:logo-github'
+  return PROVIDER_ICONS[provider] ?? 'i-carbon:code'
 })
 
 const homepageUrl = computed(() => {
@@ -272,15 +278,6 @@ const typesPackageName = computed(() => {
   return packageAnalysis.value.types.packageName
 })
 
-const {
-  selectedPM,
-  installCommandParts,
-  typesInstallCommandParts,
-  showTypesInInstall,
-  copied,
-  copyInstallCommand,
-} = useInstallCommand(packageName, requestedVersion, jsrInfo, typesPackageName)
-
 // Executable detection for run command
 const executableInfo = computed(() => {
   if (!displayVersion.value || !pkg.value) return null
@@ -305,46 +302,6 @@ const isCreatePkg = computed(() => {
   return isCreatePackage(pkg.value.name)
 })
 
-// Run command parts for a specific command (local execute after install)
-function getRunParts(command?: string) {
-  if (!pkg.value) return []
-  return getRunCommandParts({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    jsrInfo: jsrInfo.value,
-    command,
-    isBinaryOnly: false, // Local execute
-  })
-}
-
-// Execute command parts for binary-only packages (remote execute)
-const executeCommandParts = computed(() => {
-  if (!pkg.value) return []
-  return getExecuteCommandParts({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    jsrInfo: jsrInfo.value,
-    isBinaryOnly: true,
-    isCreatePackage: isCreatePkg.value,
-  })
-})
-
-// Full execute command string for copying
-const executeCommand = computed(() => {
-  if (!pkg.value) return ''
-  return getExecuteCommand({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    jsrInfo: jsrInfo.value,
-    isBinaryOnly: true,
-    isCreatePackage: isCreatePkg.value,
-  })
-})
-
-// Copy execute command (for binary-only packages)
-const { copied: executeCopied, copy: copyExecute } = useClipboard({ copiedDuring: 2000 })
-const copyExecuteCommand = () => copyExecute(executeCommand.value)
-
 // Get associated create-* package info (e.g., vite -> create-vite)
 const createPackageInfo = computed(() => {
   if (!packageAnalysis.value?.createPackage) return null
@@ -352,60 +309,6 @@ const createPackageInfo = computed(() => {
   if (packageAnalysis.value.createPackage.deprecated) return null
   return packageAnalysis.value.createPackage
 })
-
-// Create command parts for associated create-* package
-const createCommandParts = computed(() => {
-  if (!createPackageInfo.value) return []
-  const pm = packageManagers.find(p => p.id === selectedPM.value)
-  if (!pm) return []
-
-  // Extract short name: create-vite -> vite
-  const createPkgName = createPackageInfo.value.packageName
-  let shortName: string
-  if (createPkgName.startsWith('@')) {
-    // @scope/create-foo -> foo
-    const slashIndex = createPkgName.indexOf('/')
-    const name = createPkgName.slice(slashIndex + 1)
-    shortName = name.startsWith('create-') ? name.slice('create-'.length) : name
-  } else {
-    // create-vite -> vite
-    shortName = createPkgName.startsWith('create-')
-      ? createPkgName.slice('create-'.length)
-      : createPkgName
-  }
-
-  return [...pm.create.split(' '), shortName]
-})
-
-// Full create command string for copying
-const createCommand = computed(() => {
-  return createCommandParts.value.join(' ')
-})
-
-// Copy create command
-const { copied: createCopied, copy: copyCreate } = useClipboard({ copiedDuring: 2000 })
-const copyCreateCommand = () => copyCreate(createCommand.value)
-
-// Primary run command parts
-const runCommandParts = computed(() => {
-  if (!executableInfo.value?.hasExecutable) return []
-  return getRunParts(executableInfo.value.primaryCommand)
-})
-
-// Full run command string for copying
-function getFullRunCommand(command?: string) {
-  if (!pkg.value) return ''
-  return getRunCommand({
-    packageName: pkg.value.name,
-    packageManager: selectedPM.value,
-    jsrInfo: jsrInfo.value,
-    command,
-  })
-}
-
-// Copy run command
-const { copied: runCopied, copy: copyRun } = useClipboard({ copiedDuring: 2000 })
-const copyRunCommand = (command?: string) => copyRun(getFullRunCommand(command))
 
 // Expandable description
 const descriptionExpanded = ref(false)
@@ -473,16 +376,31 @@ defineOgImageComponent('Package', {
   downloads: () => (downloads.value ? formatNumber(downloads.value.downloads) : ''),
   license: () => pkg.value?.license ?? '',
 })
+
+// We're using only @click because it catches touch events and enter hits
+function handleClick(event: MouseEvent) {
+  const target = (event?.target as HTMLElement | undefined)?.closest('a')
+  if (!target) return
+
+  const href = target.getAttribute('href')
+  if (!href) return
+
+  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
+  if (!match || !match[1]) return
+
+  const route = router.resolve(match[1])
+  if (route) {
+    event.preventDefault()
+    router.push(route)
+  }
+}
 </script>
 
 <template>
-  <main class="container py-8 xl:py-12">
+  <main class="container flex-1 py-8 xl:py-12">
     <PackageSkeleton v-if="status === 'pending'" />
 
-    <article
-      v-else-if="status === 'success' && pkg"
-      class="package-page motion-safe:animate-fade-in"
-    >
+    <article v-else-if="status === 'success' && pkg" class="package-page">
       <!-- Package header -->
       <header class="area-header border-b border-border">
         <div class="mb-4">
@@ -507,7 +425,7 @@ defineOgImageComponent('Package', {
               <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
               <template v-if="resolvedVersion !== requestedVersion">
                 <span class="font-mono text-fg-muted text-sm">{{ requestedVersion }}</span>
-                <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
+                <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
               </template>
 
               <NuxtLink
@@ -527,7 +445,7 @@ defineOgImageComponent('Package', {
                 :title="$t('package.verified_provenance')"
               >
                 <span
-                  class="i-solar-shield-check-outline w-3.5 h-3.5 shrink-0"
+                  class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0"
                   aria-hidden="true"
                 />
               </a>
@@ -548,10 +466,10 @@ defineOgImageComponent('Package', {
                 v-if="displayVersion"
                 :package-name="pkg.name"
                 :version="displayVersion.version"
-                class="self-baseline ml-1 sm:ml-2"
+                class="self-baseline ms-1 sm:ms-2"
               />
               <template #fallback>
-                <ul class="flex items-center gap-1.5 self-baseline ml-1 sm:ml-2">
+                <ul class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
                   <li class="skeleton w-8 h-5 rounded" />
                   <li class="skeleton w-12 h-5 rounded" />
                 </ul>
@@ -562,7 +480,7 @@ defineOgImageComponent('Package', {
             <nav
               v-if="displayVersion"
               :aria-label="$t('package.navigation')"
-              class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ml-auto self-center"
+              class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
             >
               <NuxtLink
                 v-if="docsLink"
@@ -570,7 +488,7 @@ defineOgImageComponent('Package', {
                 class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
                 aria-keyshortcuts="d"
               >
-                <span class="i-carbon-document w-3 h-3" aria-hidden="true" />
+                <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
                 {{ $t('package.links.docs') }}
                 <kbd
                   class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
@@ -587,7 +505,7 @@ defineOgImageComponent('Package', {
                 class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
                 aria-keyshortcuts="."
               >
-                <span class="i-carbon-code w-3 h-3" aria-hidden="true" />
+                <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
                 {{ $t('package.links.code') }}
                 <kbd
                   class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
@@ -614,7 +532,7 @@ defineOgImageComponent('Package', {
             <!-- Fade overlay with show more button - only when collapsed and overflowing -->
             <div
               v-if="pkg.description && descriptionOverflows && !descriptionExpanded"
-              class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
+              class="absolute bottom-0 inset-is-0 inset-ie-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
             >
               <button
                 type="button"
@@ -650,7 +568,7 @@ defineOgImageComponent('Package', {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="w-4 h-4 i-carbon-star" aria-hidden="true" />
+                <span class="w-4 h-4 i-carbon:star" aria-hidden="true" />
                 {{ formatCompactNumber(stars, { decimals: 1 }) }}
               </a>
             </li>
@@ -661,7 +579,7 @@ defineOgImageComponent('Package', {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-fork w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:fork w-4 h-4" aria-hidden="true" />
                 {{ formatCompactNumber(forks, { decimals: 1 }) }}
               </a>
             </li>
@@ -672,7 +590,7 @@ defineOgImageComponent('Package', {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-link w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:link w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.homepage') }}
               </a>
             </li>
@@ -683,7 +601,7 @@ defineOgImageComponent('Package', {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-warning w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:warning w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.issues') }}
               </a>
             </li>
@@ -695,7 +613,7 @@ defineOgImageComponent('Package', {
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
                 :title="$t('common.view_on_npm')"
               >
-                <span class="i-carbon-logo-npm w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
                 npm
               </a>
             </li>
@@ -707,7 +625,7 @@ defineOgImageComponent('Package', {
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
                 :title="$t('badges.jsr.title')"
               >
-                <span class="i-simple-icons-jsr w-4 h-4" aria-hidden="true" />
+                <span class="i-simple-icons:jsr w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.jsr') }}
               </a>
             </li>
@@ -718,7 +636,7 @@ defineOgImageComponent('Package', {
                 rel="noopener noreferrer"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-favorite w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:favorite w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.fund') }}
               </a>
             </li>
@@ -728,7 +646,7 @@ defineOgImageComponent('Package', {
                 :to="docsLink"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-document w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:document w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.docs') }}
               </NuxtLink>
             </li>
@@ -740,7 +658,7 @@ defineOgImageComponent('Package', {
                 }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
-                <span class="i-carbon-code w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:code w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.code') }}
               </NuxtLink>
             </li>
@@ -766,9 +684,9 @@ defineOgImageComponent('Package', {
 
         <!-- Stats grid -->
         <dl
-          class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
+          class="grid grid-cols-2 sm:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
         >
-          <div v-if="pkg.license" class="space-y-1">
+          <div v-if="pkg.license" class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
               {{ $t('package.stats.license') }}
             </dt>
@@ -777,7 +695,7 @@ defineOgImageComponent('Package', {
             </dd>
           </div>
 
-          <div class="space-y-1">
+          <div class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
               {{ $t('package.stats.deps') }}
             </dt>
@@ -796,7 +714,7 @@ defineOgImageComponent('Package', {
                   class="inline-flex items-center gap-1 text-fg-subtle"
                 >
                   <span
-                    class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
                     aria-hidden="true"
                   />
                 </span>
@@ -815,7 +733,7 @@ defineOgImageComponent('Package', {
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
                 :title="$t('package.stats.view_dependency_graph')"
               >
-                <span class="i-carbon-network-3 w-3.5 h-3.5 inline-block" aria-hidden="true" />
+                <span class="i-carbon:network-3 w-3.5 h-3.5 inline-block" aria-hidden="true" />
                 <span class="sr-only">{{ $t('package.stats.view_dependency_graph') }}</span>
               </a>
 
@@ -828,7 +746,7 @@ defineOgImageComponent('Package', {
                 :title="$t('package.stats.inspect_dependency_tree')"
               >
                 <span
-                  class="i-solar-eye-scan-outline w-3.5 h-3.5 inline-block"
+                  class="i-solar:eye-scan-outline w-3.5 h-3.5 inline-block"
                   aria-hidden="true"
                 />
                 <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
@@ -836,11 +754,11 @@ defineOgImageComponent('Package', {
             </dd>
           </div>
 
-          <div class="space-y-1">
+          <div class="space-y-1 sm:col-span-3">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
               <span
-                class="i-carbon-information w-3 h-3 text-fg-subtle"
+                class="i-carbon:information w-3 h-3 text-fg-subtle"
                 aria-hidden="true"
                 :title="sizeTooltip"
               />
@@ -862,7 +780,7 @@ defineOgImageComponent('Package', {
                 class="inline-flex items-center gap-1 text-fg-subtle"
               >
                 <span
-                  class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                  class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
                   aria-hidden="true"
                 />
               </span>
@@ -875,7 +793,7 @@ defineOgImageComponent('Package', {
 
           <!-- Vulnerabilities count -->
           <ClientOnly>
-            <div class="space-y-1">
+            <div class="space-y-1 sm:col-span-2">
               <dt class="text-xs text-fg-subtle uppercase tracking-wider">
                 {{ $t('package.stats.vulns') }}
               </dt>
@@ -885,14 +803,14 @@ defineOgImageComponent('Package', {
                   class="inline-flex items-center gap-1 text-fg-subtle"
                 >
                   <span
-                    class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
                     aria-hidden="true"
                   />
                 </span>
                 <span v-else-if="vulnTreeStatus === 'success'">
                   <span v-if="hasVulnerabilities" class="text-amber-500">{{ vulnCount }}</span>
                   <span v-else class="inline-flex items-center gap-1 text-fg-muted">
-                    <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
+                    <span class="i-carbon:checkmark w-3 h-3" aria-hidden="true" />
                     0
                   </span>
                 </span>
@@ -900,7 +818,7 @@ defineOgImageComponent('Package', {
               </dd>
             </div>
             <template #fallback>
-              <div class="space-y-1">
+              <div class="space-y-1 sm:col-span-2">
                 <dt class="text-xs text-fg-subtle uppercase tracking-wider">
                   {{ $t('package.stats.vulns') }}
                 </dt>
@@ -909,7 +827,7 @@ defineOgImageComponent('Package', {
             </template>
           </ClientOnly>
 
-          <div v-if="pkg.time?.modified" class="space-y-1">
+          <div v-if="pkg.time?.modified" class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
               {{ $t('package.stats.updated') }}
             </dt>
@@ -921,80 +839,29 @@ defineOgImageComponent('Package', {
       </header>
 
       <!-- Binary-only packages: Show only execute command (no install) -->
-      <section v-if="isBinaryOnly" aria-labelledby="run-heading" class="area-install scroll-mt-20">
+      <section v-if="isBinaryOnly" class="area-install scroll-mt-20">
         <div class="flex flex-wrap items-center justify-between mb-3">
           <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             {{ $t('package.run.title') }}
           </h2>
           <!-- Package manager tabs -->
-          <div
-            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md"
-            role="tablist"
-            aria-label="Package manager"
-          >
-            <button
-              v-for="pm in packageManagers"
-              :key="pm.id"
-              role="tab"
-              :aria-selected="isMounted && selectedPM === pm.id"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-              :class="
-                isMounted && selectedPM === pm.id
-                  ? 'bg-bg shadow text-fg border-border'
-                  : 'text-fg-subtle hover:text-fg border-transparent'
-              "
-              @click="selectedPM = pm.id"
-            >
-              <span class="inline-block h-3 w-3" :class="pm.icon" aria-hidden="true" />
-              {{ pm.label }}
-            </button>
-          </div>
+          <PackageManagerTabs />
         </div>
-        <div class="relative group">
-          <!-- Terminal-style execute command -->
-          <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
-            <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-            </div>
-            <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
-              <!-- Execute command -->
-              <div class="flex items-center gap-2 group/executecmd">
-                <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                <code class="font-mono text-sm"
-                  ><ClientOnly
-                    ><span
-                      v-for="(part, i) in executeCommandParts"
-                      :key="i"
-                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                    ><template #fallback
-                      ><span class="text-fg">npx</span
-                      ><span class="text-fg-muted"> {{ pkg.name }}</span></template
-                    ></ClientOnly
-                  ></code
-                >
-                <button
-                  type="button"
-                  class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/executecmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                  @click.stop="copyExecuteCommand"
-                >
-                  {{ executeCopied ? 'copied!' : 'copy' }}
-                </button>
-              </div>
-            </div>
-          </div>
+        <div
+          role="tabpanel"
+          :id="`pm-panel-${activePmId}`"
+          :aria-labelledby="`pm-tab-${activePmId}`"
+        >
+          <ExecuteCommandTerminal
+            :package-name="pkg.name"
+            :jsr-info="jsrInfo"
+            :is-create-package="isCreatePkg"
+          />
         </div>
       </section>
 
       <!-- Regular packages: Install command with optional run command -->
-      <section
-        v-else
-        id="get-started"
-        aria-labelledby="get-started-heading"
-        class="area-install scroll-mt-20"
-      >
+      <section v-else id="get-started" class="area-install scroll-mt-20">
         <div class="flex flex-wrap items-center justify-between mb-3">
           <h2
             id="get-started-heading"
@@ -1006,200 +873,51 @@ defineOgImageComponent('Package', {
             >
               {{ $t('package.get_started.title') }}
               <span
-                class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 aria-hidden="true"
               />
             </a>
           </h2>
           <!-- Package manager tabs -->
-          <div
-            class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md overflow-x-auto"
-            role="tablist"
-            :aria-label="$t('package.get_started.pm_label')"
-          >
-            <button
-              v-for="pm in packageManagers"
-              :key="pm.id"
-              role="tab"
-              :aria-selected="isMounted && selectedPM === pm.id"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-              :class="
-                isMounted && selectedPM === pm.id
-                  ? 'bg-bg shadow text-fg border-border'
-                  : 'text-fg-subtle hover:text-fg border-transparent'
-              "
-              @click="selectedPM = pm.id"
-            >
-              <span class="inline-block h-3 w-3" :class="pm.icon" aria-hidden="true" />
-              {{ pm.label }}
-            </button>
-          </div>
+          <PackageManagerTabs />
         </div>
-        <div class="relative group">
-          <!-- Terminal-style install command -->
-          <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
-            <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-              <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
-            </div>
-            <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1 overflow-x-auto">
-              <!-- Install command -->
-              <div class="flex items-center gap-2 group/installcmd min-w-0">
-                <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-                <code class="font-mono text-sm min-w-0"
-                  ><ClientOnly
-                    ><span
-                      v-for="(part, i) in installCommandParts"
-                      :key="i"
-                      :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                      >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                    ><template #fallback
-                      ><span class="text-fg">npm</span
-                      ><span class="text-fg-muted"> install {{ pkg.name }}</span></template
-                    ></ClientOnly
-                  ></code
-                >
-                <button
-                  type="button"
-                  class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                  :aria-label="$t('package.get_started.copy_command')"
-                  @click.stop="copyInstallCommand"
-                >
-                  <span aria-live="polite">{{
-                    copied ? $t('common.copied') : $t('common.copy')
-                  }}</span>
-                </button>
-              </div>
-
-              <!-- @types package install (when enabled) -->
-              <div v-if="showTypesInInstall" class="flex items-center gap-2 min-w-0">
-                <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-                <code class="font-mono text-sm min-w-0"
-                  ><span
-                    v-for="(part, i) in typesInstallCommandParts"
-                    :key="i"
-                    :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                    >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                  ></code
-                >
-                <NuxtLink
-                  v-if="typesPackageName"
-                  :to="`/${typesPackageName}`"
-                  class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                  :title="$t('package.get_started.view_types', { package: typesPackageName })"
-                >
-                  <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
-                  <span class="sr-only">View {{ typesPackageName }}</span>
-                </NuxtLink>
-              </div>
-
-              <!-- Run command (only if package has executables) -->
-              <template v-if="executableInfo?.hasExecutable">
-                <!-- Comment line -->
-                <div class="flex items-center gap-2 pt-1">
-                  <span class="text-fg-subtle font-mono text-sm select-none"
-                    ># {{ $t('package.run.locally') }}</span
-                  >
-                </div>
-
-                <!-- Primary run command -->
-                <div class="flex items-center gap-2 group/runcmd">
-                  <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                  <code class="font-mono text-sm"
-                    ><ClientOnly
-                      ><span
-                        v-for="(part, i) in runCommandParts"
-                        :key="i"
-                        :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                        >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                      ><template #fallback
-                        ><span class="text-fg">npx</span>{{ ' '
-                        }}<span class="text-fg-muted">{{
-                          executableInfo?.primaryCommand
-                        }}</span></template
-                      ></ClientOnly
-                    ></code
-                  >
-                  <button
-                    type="button"
-                    class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                    @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
-                  >
-                    {{ runCopied ? $t('common.copied') : $t('common.copy') }}
-                  </button>
-                </div>
-              </template>
-
-              <!-- Create command (for packages with associated create-* package) -->
-              <template v-if="createPackageInfo">
-                <!-- Comment line -->
-                <div class="flex items-center gap-2 pt-1">
-                  <span class="text-fg-subtle font-mono text-sm select-none"
-                    ># {{ $t('package.create.title') }}</span
-                  >
-                </div>
-
-                <!-- Create command -->
-                <div class="flex items-center gap-2 group/createcmd">
-                  <span class="text-fg-subtle font-mono text-sm select-none">$</span>
-                  <code class="font-mono text-sm"
-                    ><ClientOnly
-                      ><span
-                        v-for="(part, i) in createCommandParts"
-                        :key="i"
-                        :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
-                        >{{ i > 0 ? ' ' : '' }}{{ part }}</span
-                      ><template #fallback
-                        ><span class="text-fg">npm</span
-                        ><span class="text-fg-muted">
-                          create {{ createPackageInfo.packageName.replace('create-', '') }}</span
-                        ></template
-                      ></ClientOnly
-                    ></code
-                  >
-                  <button
-                    type="button"
-                    class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                    :aria-label="$t('package.create.copy_command')"
-                    @click.stop="copyCreateCommand"
-                  >
-                    <span aria-live="polite">{{
-                      createCopied ? $t('common.copied') : $t('common.copy')
-                    }}</span>
-                  </button>
-                  <NuxtLink
-                    :to="`/${createPackageInfo.packageName}`"
-                    class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                    :title="`View ${createPackageInfo.packageName}`"
-                  >
-                    <span class="i-carbon-arrow-right w-3 h-3" aria-hidden="true" />
-                    <span class="sr-only">View {{ createPackageInfo.packageName }}</span>
-                  </NuxtLink>
-                </div>
-              </template>
-            </div>
-          </div>
+        <div
+          role="tabpanel"
+          :id="`pm-panel-${activePmId}`"
+          :aria-labelledby="`pm-tab-${activePmId}`"
+        >
+          <InstallCommandTerminal
+            :package-name="pkg.name"
+            :requested-version="requestedVersion"
+            :jsr-info="jsrInfo"
+            :types-package-name="typesPackageName"
+            :executable-info="executableInfo"
+            :create-package-info="createPackageInfo"
+          />
         </div>
       </section>
 
-      <!-- Vulnerability scan - full width -->
-      <div class="area-vulns">
+      <div class="area-vulns space-y-6">
+        <!-- Bad package warning -->
+        <PackageReplacement v-if="moduleReplacement" :replacement="moduleReplacement" />
+        <!-- Vulnerability scan -->
         <ClientOnly>
           <PackageVulnerabilityTree
             v-if="displayVersion"
             :package-name="pkg.name"
             :version="displayVersion.version"
           />
+          <PackageDeprecatedTree
+            v-if="displayVersion"
+            :package-name="pkg.name"
+            :version="displayVersion.version"
+            class="mt-3"
+          />
         </ClientOnly>
       </div>
 
       <!-- README -->
-      <section
-        id="readme"
-        aria-labelledby="readme-heading"
-        class="area-readme min-w-0 scroll-mt-20"
-      >
+      <section id="readme" class="area-readme min-w-0 scroll-mt-20">
         <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-4">
           <a
             href="#readme"
@@ -1207,7 +925,7 @@ defineOgImageComponent('Package', {
           >
             {{ $t('package.readme.title') }}
             <span
-              class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
               aria-hidden="true"
             />
           </a>
@@ -1217,6 +935,7 @@ defineOgImageComponent('Package', {
           v-if="readmeData?.html"
           class="readme-content prose prose-invert max-w-[70ch]"
           v-html="readmeData.html"
+          @click="handleClick"
         />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
@@ -1238,12 +957,7 @@ defineOgImageComponent('Package', {
           </ClientOnly>
 
           <!-- Keywords -->
-          <section
-            id="keywords"
-            v-if="displayVersion?.keywords?.length"
-            aria-labelledby="keywords-heading"
-            class="scroll-mt-20"
-          >
+          <section id="keywords" v-if="displayVersion?.keywords?.length" class="scroll-mt-20">
             <h2
               id="keywords-heading"
               class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
@@ -1254,7 +968,7 @@ defineOgImageComponent('Package', {
               >
                 {{ $t('package.keywords_title') }}
                 <span
-                  class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   aria-hidden="true"
                 />
               </a>
@@ -1282,7 +996,6 @@ defineOgImageComponent('Package', {
             v-if="
               displayVersion?.engines && (displayVersion.engines.node || displayVersion.engines.npm)
             "
-            aria-labelledby="compatibility-heading"
             class="scroll-mt-20"
           >
             <h2
@@ -1295,7 +1008,7 @@ defineOgImageComponent('Package', {
               >
                 {{ $t('package.compatibility') }}
                 <span
-                  class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                  class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   aria-hidden="true"
                 />
               </a>
@@ -1303,19 +1016,13 @@ defineOgImageComponent('Package', {
             <dl class="space-y-2">
               <div v-if="displayVersion.engines.node" class="flex justify-between gap-4 py-1">
                 <dt class="text-fg-muted text-sm shrink-0">node</dt>
-                <dd
-                  class="font-mono text-sm text-fg text-right"
-                  :title="displayVersion.engines.node"
-                >
+                <dd class="font-mono text-sm text-fg text-end" :title="displayVersion.engines.node">
                   {{ displayVersion.engines.node }}
                 </dd>
               </div>
               <div v-if="displayVersion.engines.npm" class="flex justify-between gap-4 py-1">
                 <dt class="text-fg-muted text-sm shrink-0">npm</dt>
-                <dd
-                  class="font-mono text-sm text-fg text-right"
-                  :title="displayVersion.engines.npm"
-                >
+                <dd class="font-mono text-sm text-fg text-end" :title="displayVersion.engines.npm">
                   {{ displayVersion.engines.npm }}
                 </dd>
               </div>

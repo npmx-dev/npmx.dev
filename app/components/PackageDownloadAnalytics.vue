@@ -49,8 +49,6 @@ watch(
 
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
-// oklh or css variables are not supported by vue-data-ui (for now)
-
 const accentColorValueById = computed<Record<string, string>>(() => {
   const map: Record<string, string> = {}
   for (const item of accentColors) {
@@ -597,7 +595,7 @@ const config = computed(() => {
             <select
               id="granularity"
               v-model="selectedGranularity"
-              class="w-full bg-transparent font-mono text-sm text-fg outline-none appearance-none"
+              class="w-full bg-bg-subtle font-mono text-sm text-fg outline-none appearance-none"
             >
               <option value="daily">{{ $t('package.downloads.granularity_daily') }}</option>
               <option value="weekly">{{ $t('package.downloads.granularity_weekly') }}</option>
@@ -619,12 +617,12 @@ const config = computed(() => {
             <div
               class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
             >
-              <span class="i-carbon-calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
+              <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
               <input
                 id="startDate"
                 v-model="startDate"
                 type="date"
-                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:dark]"
+                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
           </div>
@@ -639,12 +637,12 @@ const config = computed(() => {
             <div
               class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
             >
-              <span class="i-carbon-calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
+              <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
               <input
                 id="endDate"
                 v-model="endDate"
                 type="date"
-                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:dark]"
+                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
           </div>
@@ -666,7 +664,7 @@ const config = computed(() => {
             }
           "
         >
-          <span class="i-carbon-reset w-5 h-5 inline-block" aria-hidden="true" />
+          <span class="i-carbon:reset w-5 h-5 inline-block" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -674,26 +672,26 @@ const config = computed(() => {
     <ClientOnly v-if="inModal && chartData.dataset">
       <VueUiXy :dataset="chartData.dataset" :config="config">
         <template #menuIcon="{ isOpen }">
-          <span v-if="isOpen" class="i-carbon-close w-6 h-6" aria-hidden="true" />
-          <span v-else class="i-carbon-overflow-menu-vertical w-6 h-6" aria-hidden="true" />
+          <span v-if="isOpen" class="i-carbon:close w-6 h-6" aria-hidden="true" />
+          <span v-else class="i-carbon:overflow-menu-vertical w-6 h-6" aria-hidden="true" />
         </template>
         <template #optionCsv>
           <span
-            class="i-carbon-csv w-6 h-6 text-fg-subtle"
+            class="i-carbon:csv w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
         </template>
         <template #optionImg>
           <span
-            class="i-carbon-png w-6 h-6 text-fg-subtle"
+            class="i-carbon:png w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
         </template>
         <template #optionSvg>
           <span
-            class="i-carbon-svg w-6 h-6 text-fg-subtle"
+            class="i-carbon:svg w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
@@ -701,31 +699,31 @@ const config = computed(() => {
 
         <template #annotator-action-close>
           <span
-            class="i-carbon-close w-6 h-6 text-fg-subtle"
+            class="i-carbon:close w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
         </template>
         <template #annotator-action-color="{ color }">
-          <span class="i-carbon-color-palette w-6 h-6" :style="{ color }" aria-hidden="true" />
+          <span class="i-carbon:color-palette w-6 h-6" :style="{ color }" aria-hidden="true" />
         </template>
         <template #annotator-action-undo>
           <span
-            class="i-carbon-undo w-6 h-6 text-fg-subtle"
+            class="i-carbon:undo w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
         </template>
         <template #annotator-action-redo>
           <span
-            class="i-carbon-redo w-6 h-6 text-fg-subtle"
+            class="i-carbon:redo w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
         </template>
         <template #annotator-action-delete>
           <span
-            class="i-carbon-trash-can w-6 h-6 text-fg-subtle"
+            class="i-carbon:trash-can w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
@@ -733,13 +731,13 @@ const config = computed(() => {
         <template #optionAnnotator="{ isAnnotator }">
           <span
             v-if="isAnnotator"
-            class="i-carbon-edit-off w-6 h-6 text-fg-subtle"
+            class="i-carbon:edit-off w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
           <span
             v-else
-            class="i-carbon-edit w-6 h-6 text-fg-subtle"
+            class="i-carbon:edit w-6 h-6 text-fg-subtle"
             style="pointer-events: none"
             aria-hidden="true"
           />
@@ -762,7 +760,7 @@ const config = computed(() => {
       v-if="pending"
       role="status"
       aria-live="polite"
-      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-fg-subtle font-mono bg-bg/70 backdrop-blur px-3 py-2 rounded-md border border-border"
+      class="absolute top-1/2 inset-is-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-fg-subtle font-mono bg-bg/70 backdrop-blur px-3 py-2 rounded-md border border-border"
     >
       {{ $t('package.downloads.loading') }}
     </div>

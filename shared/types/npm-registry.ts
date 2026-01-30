@@ -7,6 +7,7 @@
  */
 
 import type { PackumentVersion } from '@npm/types'
+import type { ReadmeResponse } from './readme'
 
 // Re-export official npm types for packument/manifest
 export type {
@@ -325,4 +326,5 @@ export interface PackageFileContentResponse {
   content: string
   html: string
   lines: number
+  markdownHtml?: ReadmeResponse
 }

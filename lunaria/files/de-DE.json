@@ -271,6 +271,11 @@
         "transitive": "Transitive Abhängigkeit"
       }
     },
+    "deprecated": {
+      "label": "Veraltet",
+      "tree_found": "{count} veraltete Abhängigkeit | {count} veraltete Abhängigkeiten",
+      "show_all": "alle {count} veralteten Pakete anzeigen"
+    },
     "access": {
       "title": "Team-Zugriff",
       "refresh": "Team-Zugriff aktualisieren",
@@ -527,6 +532,10 @@
     "table": {
       "name": "Name",
       "size": "Größe"
+    },
+    "markdown_view_mode": {
+      "preview": "Vorschau",
+      "code": "Code"
     }
   },
   "badges": {

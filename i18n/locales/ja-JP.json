@@ -276,6 +276,11 @@
         "low": "低"
       }
     },
+    "deprecated": {
+      "label": "非推奨",
+      "tree_found": "{count} 件の非推奨の依存関係",
+      "show_all": "{count} 件の非推奨パッケージをすべて表示"
+    },
     "access": {
       "title": "チームアクセス",
       "refresh": "チームアクセスを更新",
@@ -532,6 +537,10 @@
     "table": {
       "name": "名前",
       "size": "サイズ"
+    },
+    "markdown_view_mode": {
+      "preview": "プレビュー",
+      "code": "コード"
     }
   },
   "badges": {

@@ -21,7 +21,7 @@ const emit = defineEmits<{
         }}</span>
         <button
           type="button"
-          class="ml-0.5 hover:text-fg rounded-full p-0.5 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="ms-0.5 hover:text-fg rounded-full p-0.5 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
           :aria-label="$t('filters.remove_filter', { label: chip.label })"
           @click="emit('remove', chip)"
         >

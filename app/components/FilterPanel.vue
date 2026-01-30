@@ -171,7 +171,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
     <!-- Collapsed header -->
     <button
       type="button"
-      class="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
+      class="w-full flex items-center gap-3 px-4 py-3 text-start hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
       :aria-expanded="isExpanded"
       @click="isExpanded = !isExpanded"
     >
@@ -183,7 +183,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
         {{ filterSummary }}
       </span>
       <span
-        class="i-carbon-chevron-down w-4 h-4 text-fg-subtle transition-transform duration-200 shrink-0 ml-auto"
+        class="i-carbon-chevron-down w-4 h-4 text-fg-subtle transition-transform duration-200 shrink-0 ms-auto"
         :class="{ 'rotate-180': isExpanded }"
         aria-hidden="true"
       />
@@ -250,7 +250,11 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               role="radio"
               :aria-checked="filters.downloadRange === range.value"
               class="tag transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="filters.downloadRange === range.value ? 'bg-fg text-bg border-fg' : ''"
+              :class="
+                filters.downloadRange === range.value
+                  ? 'bg-fg text-bg border-fg hover:text-bg/50'
+                  : ''
+              "
               @click="emit('update:downloadRange', range.value)"
             >
               {{ $t(getDownloadRangeLabelKey(range.value)) }}
@@ -275,7 +279,11 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               role="radio"
               :aria-checked="filters.updatedWithin === option.value"
               class="tag transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="filters.updatedWithin === option.value ? 'bg-fg text-bg border-fg' : ''"
+              :class="
+                filters.updatedWithin === option.value
+                  ? 'bg-fg text-bg border-fg hover:text-bg/70'
+                  : ''
+              "
               @click="emit('update:updatedWithin', option.value)"
             >
               {{ $t(getUpdatedWithinLabelKey(option.value)) }}
@@ -300,7 +308,9 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               disabled
               :aria-checked="filters.security === option.value"
               class="tag transition-colors duration-200 opacity-50 cursor-not-allowed focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="filters.security === option.value ? 'bg-fg text-bg border-fg' : ''"
+              :class="
+                filters.security === option.value ? 'bg-fg text-bg border-fg hover:text-bg/70' : ''
+              "
             >
               {{ $t(getSecurityLabelKey(option.value)) }}
             </button>
@@ -319,7 +329,9 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               type="button"
               :aria-pressed="filters.keywords.includes(keyword)"
               class="tag text-xs transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="filters.keywords.includes(keyword) ? 'bg-fg text-bg border-fg' : ''"
+              :class="
+                filters.keywords.includes(keyword) ? 'bg-fg text-bg border-fg hover:text-bg/70' : ''
+              "
               @click="emit('toggleKeyword', keyword)"
             >
               {{ keyword }}
