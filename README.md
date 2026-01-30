@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://npmx.dev/">
-    <img width="1090" alt="Screenshot of npmx.dev showing the nuxt package" src="https://github.com/user-attachments/assets/229497a2-8491-461c-aa1d-fba981215340">
+    <img width="1090" alt="Screenshot of npmx.dev showing the nuxt package" src="https://github.com/user-attachments/assets/1a2a3205-0227-46dc-b1f9-48f9a65691d3">
   </a>
 </p>
 

@@ -14,6 +14,8 @@ definePageMeta({
 const router = useRouter()
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
+const selectedPM = useSelectedPackageManager()
+const activePmId = computed(() => selectedPM.value ?? 'npm')
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
@@ -845,11 +847,17 @@ function handleClick(event: MouseEvent) {
           <!-- Package manager tabs -->
           <PackageManagerTabs />
         </div>
-        <ExecuteCommandTerminal
-          :package-name="pkg.name"
-          :jsr-info="jsrInfo"
-          :is-create-package="isCreatePkg"
-        />
+        <div
+          role="tabpanel"
+          :id="`pm-panel-${activePmId}`"
+          :aria-labelledby="`pm-tab-${activePmId}`"
+        >
+          <ExecuteCommandTerminal
+            :package-name="pkg.name"
+            :jsr-info="jsrInfo"
+            :is-create-package="isCreatePkg"
+          />
+        </div>
       </section>
 
       <!-- Regular packages: Install command with optional run command -->
@@ -873,14 +881,20 @@ function handleClick(event: MouseEvent) {
           <!-- Package manager tabs -->
           <PackageManagerTabs />
         </div>
-        <InstallCommandTerminal
-          :package-name="pkg.name"
-          :requested-version="requestedVersion"
-          :jsr-info="jsrInfo"
-          :types-package-name="typesPackageName"
-          :executable-info="executableInfo"
-          :create-package-info="createPackageInfo"
-        />
+        <div
+          role="tabpanel"
+          :id="`pm-panel-${activePmId}`"
+          :aria-labelledby="`pm-tab-${activePmId}`"
+        >
+          <InstallCommandTerminal
+            :package-name="pkg.name"
+            :requested-version="requestedVersion"
+            :jsr-info="jsrInfo"
+            :types-package-name="typesPackageName"
+            :executable-info="executableInfo"
+            :create-package-info="createPackageInfo"
+          />
+        </div>
       </section>
 
       <div class="area-vulns space-y-6">
