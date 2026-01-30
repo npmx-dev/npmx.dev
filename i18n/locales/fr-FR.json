@@ -213,6 +213,7 @@
     "downloads": {
       "title": "Téléchargements hebdomadaires",
       "date_range": "{start} au {end}",
+      "date_range_multiline": "{start}\nau {end}",
       "analyze": "Analyser les téléchargements",
       "modal_title": "Téléchargements",
       "granularity": "Granularité",

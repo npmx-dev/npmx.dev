@@ -213,6 +213,7 @@
     "downloads": {
       "title": "週間ダウンロード数",
       "date_range": "{start} から {end}",
+      "date_range_multiline": "{start}\nから {end}",
       "analyze": "ダウンロード数を分析",
       "modal_title": "ダウンロード数",
       "granularity": "粒度",

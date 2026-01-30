@@ -226,6 +226,7 @@
     "downloads": {
       "title": "Weekly Downloads",
       "date_range": "{start} to {end}",
+      "date_range_multiline": "{start}\nto {end}",
       "analyze": "Analyze downloads",
       "modal_title": "Downloads",
       "granularity": "Granularity",
