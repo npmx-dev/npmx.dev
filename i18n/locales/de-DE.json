@@ -16,15 +16,15 @@
     "chat": "Chat"
   },
   "search": {
-    "results": "Suchergebnisse",
     "label": "npm-Pakete durchsuchen",
     "placeholder": "Pakete suchen...",
     "button": "Suchen",
     "clear": "Suche löschen",
     "searching": "Suche läuft...",
-    "found_packages": "{count} Pakete gefunden",
+    "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
+    "results": "Suchergebnisse",
     "not_taken": "{name} ist noch frei",
     "claim_prompt": "Diesen Paketnamen auf npm beanspruchen",
     "claim_button": "\"{name}\" beanspruchen",
@@ -114,13 +114,27 @@
       "version": "Diese Version ist veraltet.",
       "no_reason": "Kein Grund angegeben"
     },
+    "replacement": {
+      "title": "Du brauchst diese Abhängigkeit vielleicht nicht.",
+      "native": "Dies kann durch {replacement} ersetzt werden, verfügbar seit Node {nodeVersion}.",
+      "simple": "Die Community hat dieses Paket als überflüssig markiert und empfiehlt: {replacement}.",
+      "documented": "Die Community hat dieses Paket als eines mit leistungsstärkeren Alternativen markiert.",
+      "none": "Dieses Paket wurde als nicht mehr nötig markiert, und seine Funktionen sind wahrscheinlich in allen Engines von Haus aus verfügbar.",
+      "learn_more": "Mehr erfahren",
+      "mdn": "MDN"
+    },
     "stats": {
       "license": "Lizenz",
       "deps": "Deps",
       "install_size": "Installationsgröße",
+      "vulns": "Vulns",
       "updated": "Aktualisiert",
       "view_dependency_graph": "Abhängigkeitsgraph anzeigen",
-      "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen"
+      "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen",
+      "size_tooltip": {
+        "unpacked": "{size} Größe nach dem Auspacken (dieses Paket)",
+        "total": "{size} Gesamtgröße nach dem Entpacken (inklusive aller {count} Abhängigkeiten für Linux-x64)"
+      }
     },
     "links": {
       "repo": "Repo",
@@ -549,6 +563,112 @@
       "label": "JSR"
     }
   },
+  "filters": {
+    "title": "Filter",
+    "search": "Suche",
+    "search_scope": "Suchumfang",
+    "search_placeholder_name": "Nach Paketnamen filtern...",
+    "search_placeholder_description": "Nach Beschreibung filtern...",
+    "search_placeholder_keywords": "Nach Stichwörtern filtern...",
+    "search_placeholder_all": "Such nach allem oder verwende name: desc: kw:",
+    "scope_name": "Name",
+    "scope_name_description": "Nur nach Paketnamen suchen",
+    "scope_description": "Beschreibung",
+    "scope_description_description": "Nur nach Beschreibungen suchen",
+    "scope_keywords": "Stichwörter",
+    "scope_keywords_description": "Nur nach Stichwörtern suchen",
+    "scope_all": "Alles",
+    "scope_all_description": "Alle Felder durchsuchen, unterstützt name: desc: kw: Operatoren",
+    "weekly_downloads": "Wöchentliche Downloads",
+    "updated_within": "Aktualisiert innerhalb von",
+    "security": "Sicherheit",
+    "keywords": "Stichwörter",
+    "more_keywords": "+{count} mehr",
+    "clear_all": "Alles löschen",
+    "remove_filter": "Entferne den Filter {label}",
+    "download_range": {
+      "any": "Beliebig",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Jederzeit",
+      "week": "Letzte Woche",
+      "month": "Letztes Monat",
+      "quarter": "Letzten drei Monate",
+      "year": "Letztes Jahr"
+    },
+    "security_options": {
+      "all": "Alle Pakete",
+      "secure": "Ohne Warnungen",
+      "insecure": "Mit Warnungen"
+    },
+    "sort": {
+      "label": "Pakete sortieren",
+      "toggle_direction": "Sortierreihenfolge umschalten",
+      "ascending": "Aufsteigend",
+      "descending": "Absteigend",
+      "relevance": "Relevanz",
+      "downloads_week": "Downloads/Woche",
+      "downloads_day": "Downloads/Tag",
+      "downloads_month": "Downloads/Monat",
+      "downloads_year": "Downloads/Jahr",
+      "updated": "Zuletzt aktualisiert",
+      "name": "Name",
+      "quality": "Qualität",
+      "popularity": "Beliebtheit",
+      "maintenance": "Wartung",
+      "score": "Bewertung"
+    },
+    "columns": {
+      "title": "Spalten",
+      "show": "Spalten anzeigen",
+      "reset": "Auf Standardwerte zurücksetzen",
+      "coming_soon": "Bald verfügbar",
+      "name": "Name",
+      "version": "Version",
+      "description": "Beschreibung",
+      "downloads": "Downloads/Woche",
+      "updated": "Zuletzt aktualisiert",
+      "maintainers": "Maintainers",
+      "keywords": "Stichwörter",
+      "quality_score": "Qualitätsfaktor",
+      "popularity_score": "Beliebtheitswert",
+      "maintenance_score": "Wartungsbewertung",
+      "combined_score": "Kombinierte Bewertung",
+      "security": "Sicherheit"
+    },
+    "view_mode": {
+      "label": "Anzeigemodus",
+      "cards": "Kartenansicht",
+      "table": "Tabellenansicht"
+    },
+    "pagination": {
+      "mode_label": "Paginierungsmodus",
+      "infinite": "Unendlich",
+      "paginated": "Paginiert",
+      "items_per_page": "Elemente pro Seite",
+      "per_page": "{count} / Seite",
+      "all_yolo": "Alle (YOLO)",
+      "showing": "{start}-{end} von {total}",
+      "previous": "Vorherige Seite",
+      "next": "Nächste Seite",
+      "nav_label": "Paginierung"
+    },
+    "count": {
+      "showing_filtered": "{filtered} von {total} Paketen",
+      "showing_all": "{total} Pakete",
+      "showing_paginated": "{pageSize} von {total} Paketen"
+    },
+    "table": {
+      "security_warning": "Sicherheitswarnung",
+      "secure": "Sicher",
+      "no_packages": "Keine Pakete gefunden"
+    }
+  },
   "about": {
     "title": "Über uns",
     "heading": "Über uns",
@@ -579,7 +699,7 @@
     },
     "contributors": {
       "title": "Mitwirkende",
-      "description": "npmx wird von einer wachsenden Community von Mitwirkenden entwickelt",
+      "description": "npmx wird von einer wachsenden Community von Mitwirkenden entwickelt. Mach mit und lass uns gemeinsam das npm-Browsing-Erlebnis gestalten, das wir uns schon immer gewünscht haben.",
       "loading": "Mitwirkende werden geladen...",
       "error": "Mitwirkende konnten nicht geladen werden",
       "view_profile": "Profil von {name} anzeigen"
