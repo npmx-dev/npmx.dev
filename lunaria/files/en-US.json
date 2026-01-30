@@ -117,7 +117,7 @@
       "no_reason": "No reason provided"
     },
     "replacement": {
-      "title": "Heads up! You might not need this dependency.",
+      "title": "You might not need this dependency.",
       "native": "This can be replaced with {replacement}, available since Node {nodeVersion}.",
       "simple": "The community has flagged this package as redundant, with the advice: {replacement}.",
       "documented": "The community has flagged this package as having more performant alternatives.",
