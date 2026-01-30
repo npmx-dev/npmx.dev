@@ -222,6 +222,7 @@
     "downloads": {
       "title": "Загрузки за неделю",
       "date_range": "С {start} по {end}",
+      "date_range_multiline": "С {start}\nпо {end}",
       "analyze": "Анализировать загрузки",
       "modal_title": "Загрузки",
       "granularity": "Детализация",

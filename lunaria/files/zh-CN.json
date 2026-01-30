@@ -226,6 +226,7 @@
     "downloads": {
       "title": "每周下载量",
       "date_range": "{start} 到 {end}",
+      "date_range_multiline": "{start}\n到 {end}",
       "analyze": "分析下载量",
       "modal_title": "下载量",
       "granularity": "周期",
