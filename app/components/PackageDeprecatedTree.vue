@@ -43,11 +43,7 @@ function getDepthStyle(depth: DependencyDepth) {
 </script>
 
 <template>
-  <section
-    v-if="status === 'success' && hasDeprecated"
-    aria-labelledby="deprecated-tree-heading"
-    class="relative"
-  >
+  <section v-if="status === 'success' && hasDeprecated" class="relative">
     <div class="rounded-lg border overflow-hidden" :class="bannerColor">
       <!-- Header -->
       <button

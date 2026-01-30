@@ -18,7 +18,7 @@ const isExpanded = shallowRef(false)
 </script>
 
 <template>
-  <section aria-labelledby="install-scripts-heading">
+  <section>
     <h2
       id="install-scripts-heading"
       class="text-xs text-fg-subtle uppercase tracking-wider mb-3 flex items-center gap-2"

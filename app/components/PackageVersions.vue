@@ -305,12 +305,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
 </script>
 
 <template>
-  <section
-    id="versions"
-    v-if="allTagRows.length > 0"
-    aria-labelledby="versions-heading"
-    class="overflow-hidden scroll-mt-20"
-  >
+  <section id="versions" v-if="allTagRows.length > 0" class="overflow-hidden scroll-mt-20">
     <h2 id="versions-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-3">
       <a
         href="#versions"
@@ -508,7 +503,13 @@ function getTagVersions(tag: string): VersionDisplay[] {
           <span class="text-xs text-fg-muted py-1.5">
             {{ $t('package.versions.other_versions') }}
             <span v-if="hiddenTagRows.length > 0" class="text-fg-subtle">
-              ({{ $t('package.versions.more_tagged', { count: hiddenTagRows.length }) }})
+              ({{
+                $t(
+                  'package.versions.more_tagged',
+                  { count: hiddenTagRows.length },
+                  hiddenTagRows.length,
+                )
+              }})
             </span>
           </span>
         </button>

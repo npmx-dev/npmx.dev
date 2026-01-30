@@ -108,7 +108,7 @@ function focusMenuItem(index: number) {
 </script>
 
 <template>
-  <section v-if="links.length > 0" aria-labelledby="playgrounds-heading">
+  <section v-if="links.length > 0">
     <h2 id="playgrounds-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
       {{ $t('package.playgrounds.title') }}
     </h2>

@@ -51,26 +51,17 @@ const titleValue = computed(() => {
 </script>
 
 <template>
-  <ClientOnly>
-    <NuxtTime
-      v-if="relativeDates"
-      :datetime="datetime"
-      :title="titleValue"
-      relative
-      :locale="locale"
-    />
-    <NuxtTime
-      v-else
-      :datetime="datetime"
-      :title="titleValue"
-      :date-style="dateStyle"
-      :year="year"
-      :month="month"
-      :day="day"
-      :locale="locale"
-    />
-    <template #fallback>
+  <span>
+    <ClientOnly>
       <NuxtTime
+        v-if="relativeDates"
+        :datetime="datetime"
+        :title="titleValue"
+        relative
+        :locale="locale"
+      />
+      <NuxtTime
+        v-else
         :datetime="datetime"
         :title="titleValue"
         :date-style="dateStyle"
@@ -79,6 +70,17 @@ const titleValue = computed(() => {
         :day="day"
         :locale="locale"
       />
-    </template>
-  </ClientOnly>
+      <template #fallback>
+        <NuxtTime
+          :datetime="datetime"
+          :title="titleValue"
+          :date-style="dateStyle"
+          :year="year"
+          :month="month"
+          :day="day"
+          :locale="locale"
+        />
+      </template>
+    </ClientOnly>
+  </span>
 </template>

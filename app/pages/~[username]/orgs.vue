@@ -104,7 +104,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="container py-8 sm:py-12 w-full">
+  <main class="container flex-1 py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex items-center gap-4 mb-4">
@@ -124,9 +124,10 @@ useSeoMeta({
       </div>
 
       <!-- Back link -->
-      <nav aria-label="Navigation">
+      <nav aria-labelledby="back-to-profile">
         <NuxtLink
           :to="`/~${username}`"
+          id="back-to-profile"
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
         >
           <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
