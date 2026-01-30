@@ -46,15 +46,12 @@ onBeforeUnmount(clearCloseTimeout)
 <template>
   <div
     class="relative inline-flex"
-    :aria-expanded="isOpen"
-    :aria-haspopup="true"
-    :aria-controls="isOpen ? popoverId : undefined"
     @mouseenter="open"
     @mouseleave="close"
     @focusin="open"
     @focusout="close"
   >
-    <slot :popover-visible="isOpen" />
+    <slot :popover-visible="isOpen" :popover-id="popoverId" />
 
     <Transition
       enter-active-class="transition-opacity duration-150 motion-reduce:transition-none"
@@ -67,7 +64,7 @@ onBeforeUnmount(clearCloseTimeout)
         :id="popoverId"
         role="dialog"
         aria-modal="false"
-        class="absolute font-mono text-xs text-fg bg-bg-elevated border border-border rounded-lg shadow-lg z-[100] pointer-events-auto px-4 py-3 min-w-[14rem] max-w-[22rem] whitespace-normal"
+        class="absolute font-mono text-xs text-fg bg-bg-subtle border border-border rounded-lg shadow-lg z-[100] pointer-events-auto px-4 py-3 min-w-[14rem] max-w-[22rem] whitespace-normal"
         :class="panelPosition"
         @mouseenter="open"
         @mouseleave="close"
