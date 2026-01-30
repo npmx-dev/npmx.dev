@@ -58,6 +58,8 @@
     "relative_dates_description": "Zeige Daten relativ zur aktuellen Zeit an (z.B. 'vor 2 Tagen')",
     "include_types": "{'@'}types bei Installation einschließen",
     "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Pakete) automatisch bei Installationsbefehlen einschließen",
+    "hide_platform_packages": "Plattformspezifische Pakete in der Suche ausblenden",
+    "hide_platform_packages_description": "Native Binärpakete wie {'@'}esbuild/linux-x64 aus den Ergebnissen ausblenden",
     "theme": "Design",
     "theme_light": "Hell",
     "theme_dark": "Dunkel",
@@ -235,7 +237,9 @@
       "end_date": "Ende",
       "no_data": "Keine Download-Daten verfügbar",
       "loading": "Lädt...",
-      "y_axis_label": "{granularity} Downloads"
+      "y_axis_label": "{granularity} Downloads",
+      "download_file": "{fileType} herunterladen",
+      "toggle_annotator": "Kommentator umschalten"
     },
     "install_scripts": {
       "title": "Installationsskripte",
