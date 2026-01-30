@@ -78,7 +78,7 @@ describe('parseJsDocLinks', () => {
     const result = parseJsDocLinks('{@link https://example.com}', emptyLookup)
     expect(result).toContain('href="https://example.com"')
     expect(result).toContain('target="_blank"')
-    expect(result).toContain('rel="noopener"')
+    expect(result).toContain('rel="noreferrer"')
   })
 
   it('should handle external URLs with labels', () => {
