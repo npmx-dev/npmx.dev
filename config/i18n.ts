@@ -291,7 +291,7 @@ function buildLocales() {
           name: l.name,
           files: [data.file as string, `${l.code}.json`],
         }
-        lunariaJSONFiles[data.code] = l.country ? (data.file as string) : `${l.code}.json`
+        lunariaJSONFiles[l.code] = l.country ? (data.file as string) : `${l.code}.json`
         delete entry.file
         acc.push(entry)
       })

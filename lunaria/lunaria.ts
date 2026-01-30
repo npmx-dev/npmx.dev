@@ -62,7 +62,6 @@ const jsonStatus: I18nStatus = {
 
     const completedKeys = totalKeys - missingKeys.length
     const localeFilePath = `i18n/locales/${lunariaJSONFiles[locale.lang]!}.json`
-    console.log(localeFilePath)
 
     return {
       lang: locale.lang,
