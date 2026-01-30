@@ -70,11 +70,7 @@ const sortedOptionalDependencies = computed(() => {
 <template>
   <div class="space-y-8">
     <!-- Dependencies -->
-    <section
-      id="dependencies"
-      v-if="sortedDependencies.length > 0"
-      class="scroll-mt-20"
-    >
+    <section id="dependencies" v-if="sortedDependencies.length > 0" class="scroll-mt-20">
       <h2
         id="dependencies-heading"
         class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
@@ -166,11 +162,7 @@ const sortedOptionalDependencies = computed(() => {
     </section>
 
     <!-- Peer Dependencies -->
-    <section
-      id="peer-dependencies"
-      v-if="sortedPeerDependencies.length > 0"
-      class="scroll-mt-20"
-    >
+    <section id="peer-dependencies" v-if="sortedPeerDependencies.length > 0" class="scroll-mt-20">
       <h2
         id="peer-dependencies-heading"
         class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"

@@ -168,11 +168,7 @@ watch(
 </script>
 
 <template>
-  <section
-    id="maintainers"
-    v-if="maintainers?.length"
-    class="scroll-mt-20"
-  >
+  <section id="maintainers" v-if="maintainers?.length" class="scroll-mt-20">
     <h2 id="maintainers-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-3">
       <a
         href="#maintainers"

@@ -255,10 +255,7 @@ watch(lastExecutionTime, () => {
 </script>
 
 <template>
-  <section
-    v-if="isConnected"
-    class="bg-bg-subtle border border-border rounded-lg overflow-hidden"
-  >
+  <section v-if="isConnected" class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
     <!-- Header -->
     <div class="flex items-center justify-start p-4 border-b border-border">
       <h2 id="teams-heading" class="font-mono text-sm font-medium flex items-center gap-2">
