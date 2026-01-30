@@ -537,6 +537,10 @@
     "table": {
       "name": "名前",
       "size": "サイズ"
+    },
+    "markdown_view_mode": {
+      "preview": "プレビュー",
+      "code": "コード"
     }
   },
   "badges": {

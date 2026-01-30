@@ -532,6 +532,10 @@
     "table": {
       "name": "الاسم",
       "size": "الحجم"
+    },
+    "markdown_view_mode": {
+      "preview": "معاينة",
+      "code": "الكود"
     }
   },
   "badges": {
