@@ -184,7 +184,9 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
     lines.push(`<div class="docs-deprecated">`)
     lines.push(`<strong>Deprecated</strong>`)
     if (deprecated.doc) {
-      const renderedMessage = await renderMarkdown(deprecated.doc, symbolLookup)
+      // We remove new lines because they look weird when rendered into the deprecated block
+      // I think markdown is actually supposed to collapse single new lines automatically but this function doesn't do that so if that changes remove this
+      const renderedMessage = await renderMarkdown(deprecated.doc.replace(/\n/g, ' '), symbolLookup)
       lines.push(`<div class="docs-deprecated-message">${renderedMessage}</div>`)
     }
     lines.push(`</div>`)
