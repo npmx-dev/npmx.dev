@@ -1,7 +1,7 @@
 import { createLunaria } from '@lunariajs/core'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { Page } from './components.ts'
-import { prepareJsonFiles } from './prepare-json-files.ts'
+import { lunariaJSONFiles, prepareJsonFiles } from './prepare-json-files.ts'
 import type { I18nStatus } from '../shared/types/i18n-status.ts'
 
 await prepareJsonFiles()
@@ -61,7 +61,8 @@ const jsonStatus: I18nStatus = {
     }
 
     const completedKeys = totalKeys - missingKeys.length
-    const localeFilePath = `i18n/locales/${locale.lang}.json`
+    const localeFilePath = `i18n/locales/${lunariaJSONFiles[locale.lang]!}.json`
+    console.log(localeFilePath)
 
     return {
       lang: locale.lang,
