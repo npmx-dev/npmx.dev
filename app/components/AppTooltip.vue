@@ -10,10 +10,10 @@ const isVisible = shallowRef(false)
 const tooltipId = useId()
 
 const positionClasses: Record<string, string> = {
-  top: 'bottom-full left-1/2 -translate-x-1/2 mb-1',
-  bottom: 'top-full left-0 mt-1',
-  left: 'right-full top-1/2 -translate-y-1/2 mr-2',
-  right: 'left-full top-1/2 -translate-y-1/2 ml-2',
+  top: 'bottom-full inset-is-1/2 -translate-x-1/2 mb-1',
+  bottom: 'top-full inset-is-0 mt-1',
+  left: 'inset-ie-full top-1/2 -translate-y-1/2 me-2',
+  right: 'inset-is-full top-1/2 -translate-y-1/2 ms-2',
 }
 
 const tooltipPosition = computed(() => positionClasses[props.position || 'bottom'])

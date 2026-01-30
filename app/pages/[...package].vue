@@ -530,7 +530,7 @@ function handleClick(event: MouseEvent) {
             <!-- Fade overlay with show more button - only when collapsed and overflowing -->
             <div
               v-if="pkg.description && descriptionOverflows && !descriptionExpanded"
-              class="absolute bottom-0 inside-is-0 inside-ie-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
+              class="absolute bottom-0 inset-is-0 inset-ie-0 h-10 bg-gradient-to-t from-bg via-bg/90 to-transparent flex items-end justify-end"
             >
               <button
                 type="button"
@@ -1002,19 +1002,13 @@ function handleClick(event: MouseEvent) {
             <dl class="space-y-2">
               <div v-if="displayVersion.engines.node" class="flex justify-between gap-4 py-1">
                 <dt class="text-fg-muted text-sm shrink-0">node</dt>
-                <dd
-                  class="font-mono text-sm text-fg text-right"
-                  :title="displayVersion.engines.node"
-                >
+                <dd class="font-mono text-sm text-fg text-end" :title="displayVersion.engines.node">
                   {{ displayVersion.engines.node }}
                 </dd>
               </div>
               <div v-if="displayVersion.engines.npm" class="flex justify-between gap-4 py-1">
                 <dt class="text-fg-muted text-sm shrink-0">npm</dt>
-                <dd
-                  class="font-mono text-sm text-fg text-right"
-                  :title="displayVersion.engines.npm"
-                >
+                <dd class="font-mono text-sm text-fg text-end" :title="displayVersion.engines.npm">
                   {{ displayVersion.engines.npm }}
                 </dd>
               </div>

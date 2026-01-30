@@ -406,7 +406,7 @@ watch(lastExecutionTime, () => {
         <div
           v-if="expandedTeams.has(teamName)"
           :id="`team-${teamName}-members`"
-          class="pl-9 pr-3 pb-3"
+          class="ps-9 pe-3 pb-3"
         >
           <!-- Members list -->
           <ul
@@ -417,7 +417,7 @@ watch(lastExecutionTime, () => {
             <li
               v-for="user in teamUsers[teamName]"
               :key="user"
-              class="flex items-center justify-start py-1 pl-2 pr-1 rounded hover:bg-bg-subtle transition-colors duration-200"
+              class="flex items-center justify-start py-1 ps-2 pe-1 rounded hover:bg-bg-subtle transition-colors duration-200"
             >
               <NuxtLink
                 :to="{ name: '~username', params: { username: user } }"
@@ -497,7 +497,7 @@ watch(lastExecutionTime, () => {
         <form class="flex items-center gap-2" @submit.prevent="handleCreateTeam">
           <div class="flex-1 flex items-center">
             <span
-              class="px-2 py-1.5 font-mono text-sm text-fg-subtle bg-bg border border-r-0 border-border rounded-l"
+              class="px-2 py-1.5 font-mono text-sm text-fg-subtle bg-bg border border-ie-0 border-border rounded-is"
             >
               {{ orgName }}:
             </span>
@@ -509,7 +509,7 @@ watch(lastExecutionTime, () => {
               name="new-team-name"
               :placeholder="$t('org.teams.team_name_placeholder')"
               v-bind="noCorrect"
-              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded-r text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded-ie text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             />
           </div>
           <button

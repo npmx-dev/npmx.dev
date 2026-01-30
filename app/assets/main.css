@@ -156,18 +156,13 @@ button {
 .skip-link {
   position: fixed;
   top: -100%;
-  left: 0;
+  inset-inline-start: 0;
   padding: 0.5rem 1rem;
   background: var(--fg);
   color: var(--bg);
   font-size: 0.875rem;
   z-index: 100;
   transition: top 0.2s ease;
-}
-
-html[dir='rtl'] .skip-link {
-  left: unset;
-  right: 0;
 }
 
 .skip-link:hover {
@@ -298,7 +293,7 @@ html.light .shiki span {
 .readme-content ul,
 .readme-content ol {
   margin: 1rem 0;
-  padding-left: 1.5rem;
+  padding-inline-start: 1.5rem;
 }
 
 .readme-content ul {
@@ -319,8 +314,8 @@ html.light .shiki span {
 }
 
 .readme-content blockquote {
-  border-left: 2px solid var(--border);
-  padding-left: 1rem;
+  border-inline-start: 2px solid var(--border);
+  padding-inline-start: 1rem;
   margin: 1.5rem 0;
   color: var(--fg-subtle);
   font-style: italic;
@@ -328,8 +323,9 @@ html.light .shiki span {
 
 /* GitHub-style callouts/alerts */
 .readme-content blockquote[data-callout] {
-  border-left-width: 3px;
-  padding: 1rem 1rem 1rem 1.25rem;
+  border-inline-start-width: 3px;
+  padding: 1rem;
+  padding-inline-start: 1.25rem;
   background: var(--bg-subtle);
   font-style: normal;
   color: var(--fg-subtle);
@@ -344,7 +340,7 @@ html.light .shiki span {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.5rem;
-  padding-left: 1.5rem;
+  padding-inline-start: 1.5rem;
 }
 
 .readme-content blockquote[data-callout]::after {
@@ -365,7 +361,7 @@ html.light .shiki span {
 
 /* Note - blue */
 .readme-content blockquote[data-callout='note'] {
-  border-left-color: var(--syntax-str);
+  border-inline-start-color: var(--syntax-str);
   background: rgba(59, 130, 246, 0.05);
 }
 .readme-content blockquote[data-callout='note']::before {
@@ -380,7 +376,7 @@ html.light .shiki span {
 
 /* Tip - green */
 .readme-content blockquote[data-callout='tip'] {
-  border-left-color: #22c55e;
+  border-inline-start-color: #22c55e;
   background: rgba(34, 197, 94, 0.05);
 }
 .readme-content blockquote[data-callout='tip']::before {
@@ -395,7 +391,7 @@ html.light .shiki span {
 
 /* Important - purple */
 .readme-content blockquote[data-callout='important'] {
-  border-left-color: var(--syntax-fn);
+  border-inline-start-color: var(--syntax-fn);
   background: rgba(168, 85, 247, 0.05);
 }
 .readme-content blockquote[data-callout='important']::before {
@@ -410,7 +406,7 @@ html.light .shiki span {
 
 /* Warning - yellow/orange */
 .readme-content blockquote[data-callout='warning'] {
-  border-left-color: #eab308;
+  border-inline-start-color: #eab308;
   background: rgba(234, 179, 8, 0.05);
 }
 .readme-content blockquote[data-callout='warning']::before {
@@ -425,7 +421,7 @@ html.light .shiki span {
 
 /* Caution - red */
 .readme-content blockquote[data-callout='caution'] {
-  border-left-color: #ef4444;
+  border-inline-start-color: #ef4444;
   background: rgba(239, 68, 68, 0.05);
 }
 .readme-content blockquote[data-callout='caution']::before {
@@ -452,7 +448,7 @@ html.light .shiki span {
 .readme-content td {
   border: 1px solid var(--border);
   padding: 0.75rem 1rem;
-  text-align: left;
+  text-align: start;
 }
 
 .readme-content th {

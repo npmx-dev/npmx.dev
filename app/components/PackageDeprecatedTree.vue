@@ -24,15 +24,15 @@ const bannerColor = 'border-purple-600/40 bg-purple-500/10 text-purple-700 dark:
 // Styling for each depth level
 const depthStyles = {
   root: {
-    bg: 'bg-purple-500/5 border-l-2 border-l-purple-600',
+    bg: 'bg-purple-500/5 border-is-2 border-is-purple-600',
     text: 'text-fg',
   },
   direct: {
-    bg: 'bg-purple-500/5 border-l-2 border-l-purple-500',
+    bg: 'bg-purple-500/5 border-is-2 border-is-purple-500',
     text: 'text-fg-muted',
   },
   transitive: {
-    bg: 'bg-purple-500/5 border-l-2 border-l-purple-400',
+    bg: 'bg-purple-500/5 border-is-2 border-is-purple-400',
     text: 'text-fg-muted',
   },
 } as const
@@ -48,7 +48,7 @@ function getDepthStyle(depth: DependencyDepth) {
       <!-- Header -->
       <button
         type="button"
-        class="w-full flex items-center justify-between gap-3 px-4 py-3 text-left transition-colors duration-200 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-fg/50"
+        class="w-full flex items-center justify-between gap-3 px-4 py-3 text-start transition-colors duration-200 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-fg/50"
         :aria-expanded="isExpanded"
         aria-controls="deprecated-tree-details"
         @click="isExpanded = !isExpanded"

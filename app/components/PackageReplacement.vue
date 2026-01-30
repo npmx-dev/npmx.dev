@@ -51,7 +51,7 @@ const docPath = computed(() => {
         :href="mdnUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1 ml-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
+        class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
       >
         {{ $t('package.replacement.mdn') }}
         <span class="i-carbon-launch w-3 h-3" aria-hidden="true" />
@@ -61,7 +61,7 @@ const docPath = computed(() => {
         :href="docPath"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1 ml-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
+        class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
       >
         {{ $t('package.replacement.learn_more') }}
         <span class="i-carbon-launch w-3 h-3" aria-hidden="true" />
