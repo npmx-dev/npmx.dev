@@ -199,13 +199,13 @@ const config = computed(() => {
           <VueUiSparkline class="w-full max-w-xs" :dataset :config />
           <template #fallback>
             <!-- Skeleton matching sparkline layout: title row + chart with data label -->
-            <div class="min-h-[100px]">
-              <!-- Title row: date range (24px height) -->
-              <div class="h-6 flex items-center ps-3">
+            <div class="max-w-xs">
+              <!-- Title row: date range -->
+              <div class="h-5 flex items-center ps-3">
                 <span class="skeleton h-3 w-36" />
               </div>
-              <!-- Chart area: data label left, sparkline right -->
-              <div class="aspect-[500/80] flex items-center">
+              <!-- Chart area: data label left, sparkline right (h-[51px] matches rendered SVG) -->
+              <div class="h-[55px] flex items-center">
                 <!-- Data label (covers ~42% width) -->
                 <div class="w-[42%] flex items-center ps-0.5">
                   <span class="skeleton h-7 w-24" />

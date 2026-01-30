@@ -41,7 +41,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 </script>
 
 <template>
-  <main class="container py-12 sm:py-16 min-h-screen">
+  <main class="container flex-1 py-12 sm:py-16">
     <article class="max-w-2xl mx-auto">
       <header class="mb-12">
         <h1 class="font-mono text-3xl sm:text-4xl font-medium mb-4">{{ $t('about.heading') }}</h1>

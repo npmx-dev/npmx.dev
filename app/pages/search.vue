@@ -703,7 +703,7 @@ defineOgImageComponent('Default', {
 </script>
 
 <template>
-  <main class="overflow-x-hidden">
+  <main class="flex-1 overflow-x-hidden">
     <!-- Results area with container padding -->
     <div class="container-sm py-6">
       <section v-if="query" :aria-label="$t('search.results')">
@@ -779,7 +779,13 @@ defineOgImageComponent('Default', {
               role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
-              {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
+              {{
+                $t(
+                  'search.found_packages',
+                  { count: formatNumber(visibleResults.total) },
+                  visibleResults.total,
+                )
+              }}
               <span v-if="status === 'pending'" class="text-fg-subtle">{{
                 $t('search.updating')
               }}</span>

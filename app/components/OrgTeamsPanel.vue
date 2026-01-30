@@ -261,12 +261,13 @@ watch(lastExecutionTime, () => {
     class="bg-bg-subtle border border-border rounded-lg overflow-hidden"
   >
     <!-- Header -->
-    <div class="flex items-center justify-between p-4 border-b border-border">
+    <div class="flex items-center justify-start p-4 border-b border-border">
       <h2 id="teams-heading" class="font-mono text-sm font-medium flex items-center gap-2">
-        <span class="i-carbon-group w-4 h-4 text-fg-muted" aria-hidden="true" />
+        <span class="i-carbon:group w-4 h-4 text-fg-muted" aria-hidden="true" />
         {{ $t('org.teams.title') }}
         <span v-if="teams.length > 0" class="text-fg-muted">({{ teams.length }})</span>
       </h2>
+      <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
       <button
         type="button"
         class="p-1.5 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
@@ -275,7 +276,7 @@ watch(lastExecutionTime, () => {
         @click="loadTeams"
       >
         <span
-          class="i-carbon-renew block w-4 h-4"
+          class="i-carbon:renew block w-4 h-4"
           :class="{ 'animate-spin': isLoadingTeams }"
           aria-hidden="true"
         />
@@ -286,7 +287,7 @@ watch(lastExecutionTime, () => {
     <div class="flex items-center gap-2 p-3 border-b border-border bg-bg">
       <div class="flex-1 relative">
         <span
-          class="absolute left-2 top-1/2 -translate-y-1/2 i-carbon-search w-3.5 h-3.5 text-fg-subtle"
+          class="absolute inset-is-2 top-1/2 -translate-y-1/2 i-carbon:search w-3.5 h-3.5 text-fg-subtle"
           aria-hidden="true"
         />
         <label for="teams-search" class="sr-only">{{ $t('org.teams.filter_label') }}</label>
@@ -297,7 +298,7 @@ watch(lastExecutionTime, () => {
           name="teams-search"
           :placeholder="$t('org.teams.filter_placeholder')"
           v-bind="noCorrect"
-          class="w-full pl-7 pr-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="w-full ps-7 pe-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         />
       </div>
       <div
@@ -331,7 +332,7 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoadingTeams && teams.length === 0" class="p-8 text-center">
       <span
-        class="i-carbon-rotate-180 block w-5 h-5 text-fg-muted motion-safe:animate-spin mx-auto"
+        class="i-carbon:rotate-180 block w-5 h-5 text-fg-muted motion-safe:animate-spin mx-auto"
         aria-hidden="true"
       />
       <p class="font-mono text-sm text-fg-muted mt-2">{{ $t('org.teams.loading') }}</p>
@@ -361,19 +362,19 @@ watch(lastExecutionTime, () => {
       <li v-for="teamName in filteredTeams" :key="teamName" class="bg-bg">
         <!-- Team header -->
         <div
-          class="flex items-center justify-between p-3 hover:bg-bg-subtle transition-colors duration-200"
+          class="flex items-center justify-start p-3 hover:bg-bg-subtle transition-colors duration-200"
         >
           <button
             type="button"
-            class="flex-1 flex items-center gap-2 text-left rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="flex-1 flex items-center gap-2 text-start rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             :aria-expanded="expandedTeams.has(teamName)"
             :aria-controls="`team-${teamName}-members`"
             @click="toggleTeam(teamName)"
           >
             <span
-              class="w-4 h-4 transition-transform duration-200"
+              class="w-4 h-4 transition-transform duration-200 rtl-flip"
               :class="[
-                expandedTeams.has(teamName) ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right',
+                expandedTeams.has(teamName) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right',
                 'text-fg-muted',
               ]"
               aria-hidden="true"
@@ -390,17 +391,18 @@ watch(lastExecutionTime, () => {
             </span>
             <span
               v-if="isLoadingUsers[teamName]"
-              class="i-carbon-rotate-180 w-3 h-3 text-fg-muted motion-safe:animate-spin"
+              class="i-carbon:rotate-180 w-3 h-3 text-fg-muted motion-safe:animate-spin"
               aria-hidden="true"
             />
           </button>
+          <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
           <button
             type="button"
             class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
             :aria-label="$t('org.teams.delete_team', { name: teamName })"
             @click.stop="handleDestroyTeam(teamName)"
           >
-            <span class="i-carbon-trash-can block w-4 h-4" aria-hidden="true" />
+            <span class="i-carbon:trash-can block w-4 h-4" aria-hidden="true" />
           </button>
         </div>
 
@@ -419,7 +421,7 @@ watch(lastExecutionTime, () => {
             <li
               v-for="user in teamUsers[teamName]"
               :key="user"
-              class="flex items-center justify-between py-1 pl-2 pr-1 rounded hover:bg-bg-subtle transition-colors duration-200"
+              class="flex items-center justify-start py-1 pl-2 pr-1 rounded hover:bg-bg-subtle transition-colors duration-200"
             >
               <NuxtLink
                 :to="{ name: '~username', params: { username: user } }"
@@ -427,13 +429,14 @@ watch(lastExecutionTime, () => {
               >
                 @{{ user }}
               </NuxtLink>
+              <span class="font-mono text-sm text-fg">{{ teamName }}</span>
               <button
                 type="button"
                 class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 :aria-label="$t('org.teams.remove_user', { user })"
                 @click="handleRemoveUser(teamName, user)"
               >
-                <span class="i-carbon-close block w-3.5 h-3.5" aria-hidden="true" />
+                <span class="i-carbon:close block w-3.5 h-3.5" aria-hidden="true" />
               </button>
             </li>
           </ul>
@@ -469,7 +472,7 @@ watch(lastExecutionTime, () => {
                 :aria-label="$t('org.teams.cancel_add_user')"
                 @click="showAddUserFor = null"
               >
-                <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:close block w-4 h-4" aria-hidden="true" />
               </button>
             </form>
           </div>
@@ -526,7 +529,7 @@ watch(lastExecutionTime, () => {
             :aria-label="$t('org.teams.cancel_create')"
             @click="showCreateTeam = false"
           >
-            <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
+            <span class="i-carbon:close block w-4 h-4" aria-hidden="true" />
           </button>
         </form>
       </div>
