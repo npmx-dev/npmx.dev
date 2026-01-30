@@ -47,6 +47,7 @@
     "@vueuse/core": "^14.1.0",
     "@vueuse/nuxt": "14.1.0",
     "diff": "^8.0.3",
+    "motion-v": "^1.10.2",
     "nuxt": "^4.3.0",
     "nuxt-og-image": "^5.1.13",
     "ohash": "^2.0.11",
