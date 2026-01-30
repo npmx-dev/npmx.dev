@@ -124,9 +124,10 @@ useSeoMeta({
       </div>
 
       <!-- Back link -->
-      <nav aria-label="Navigation">
+      <nav aria-labelledby="back-to-profile">
         <NuxtLink
           :to="`/~${username}`"
+          id="back-to-profile"
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
         >
           <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />

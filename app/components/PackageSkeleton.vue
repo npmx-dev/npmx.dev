@@ -101,12 +101,12 @@
     </header>
 
     <!-- Install section: mb-8 -->
-    <section aria-labelledby="install-heading-skeleton" class="mb-8">
+    <section class="mb-8">
       <h2
         id="install-heading-skeleton"
         class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
       >
-        {{ $t('package.skeleton.install') }}
+        {{ $t('package.skeleton.get_started') }}
       </h2>
       <!-- code-block with relative positioning for copy button -->
       <div class="relative">
@@ -121,7 +121,7 @@
     <div class="grid lg:grid-cols-3 gap-8">
       <!-- Main content (README): lg:col-span-2 order-2 lg:order-1 -->
       <div class="lg:col-span-2 order-2 lg:order-1">
-        <section aria-labelledby="readme-heading-skeleton">
+        <section>
           <h2
             id="readme-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
@@ -152,7 +152,7 @@
       <!-- Sidebar: order-1 lg:order-2 space-y-8 -->
       <aside class="order-1 lg:order-2 space-y-8">
         <!-- Maintainers -->
-        <section aria-labelledby="maintainers-heading-skeleton">
+        <section>
           <h2
             id="maintainers-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
@@ -170,7 +170,7 @@
         </section>
 
         <!-- Keywords -->
-        <section aria-labelledby="keywords-heading-skeleton">
+        <section>
           <h2
             id="keywords-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
@@ -189,7 +189,7 @@
         </section>
 
         <!-- Versions -->
-        <section aria-labelledby="versions-heading-skeleton">
+        <section>
           <h2
             id="versions-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"
@@ -222,7 +222,7 @@
         </section>
 
         <!-- Dependencies -->
-        <section aria-labelledby="dependencies-heading-skeleton">
+        <section>
           <h2
             id="dependencies-heading-skeleton"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-3"

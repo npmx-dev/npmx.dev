@@ -154,7 +154,7 @@ button {
 
 /* Skip link */
 .skip-link {
-  position: absolute;
+  position: fixed;
   top: -100%;
   left: 0;
   padding: 0.5rem 1rem;
@@ -165,6 +165,15 @@ button {
   transition: top 0.2s ease;
 }
 
+html[dir='rtl'] .skip-link {
+  left: unset;
+  right: 0;
+}
+
+.skip-link:hover {
+  color: var(--bg);
+  text-decoration: underline;
+}
 .skip-link:focus {
   top: 0;
 }

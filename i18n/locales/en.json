@@ -110,7 +110,7 @@
     "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
-    "navigation": "Package navigation",
+    "navigation": "Package",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
