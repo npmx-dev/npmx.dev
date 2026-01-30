@@ -32,9 +32,11 @@ defineOgImageComponent('Default')
     <header class="flex-1 flex flex-col items-center justify-center text-center py-20">
       <!-- Animated title -->
       <h1
-        class="font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+        dir="ltr"
+        class="inline-flex items-center header-logo flex-gap1 font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
       >
-        <span class="text-accent"><span class="-tracking-0.2em">.</span>/</span>npmx
+        <img :alt="$t('alt_logo')" src="/favicon.svg" width="72" height="72" class="mt-4" />
+        <span>npmx</span>
       </h1>
 
       <p

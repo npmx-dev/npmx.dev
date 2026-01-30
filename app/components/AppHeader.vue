@@ -16,6 +16,7 @@ const { isConnected, npmUser } = useConnector()
 
 const router = useRouter()
 const route = useRoute()
+const buildInfo = useAppConfig().buildInfo
 
 const searchQuery = ref('')
 const isSearchFocused = ref(false)
@@ -58,14 +59,18 @@ onKeyStroke(',', e => {
     >
       <!-- Start: Logo -->
       <div class="flex-shrink-0">
-        <NuxtLink
-          v-if="showLogo"
-          to="/"
-          :aria-label="$t('header.home')"
-          class="header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
-        >
-          <span class="text-accent"><span class="-tracking-0.2em">.</span>/</span>npmx
-        </NuxtLink>
+        <div v-if="showLogo" class="">
+          <NuxtLink
+            to="/"
+            :aria-label="$t('header.home')"
+            dir="ltr"
+            class="inline-flex items-center flex-gap1 header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
+          >
+            <img :alt="$t('alt_logo')" src="/favicon.svg" width="24" height="24" />
+            <span>npmx</span>
+            <!--          <span class="text-accent"><span class="-tracking-0.2em">.</span>/</span>npmx-->
+          </NuxtLink>
+        </div>
         <!-- Spacer when logo is hidden -->
         <span v-else class="w-1" />
       </div>

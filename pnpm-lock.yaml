@@ -89,6 +89,9 @@ importers:
       shiki:
         specifier: ^3.21.0
         version: 3.21.0
+      simple-git:
+        specifier: ^3.30.0
+        version: 3.30.0
       ufo:
         specifier: ^1.6.3
         version: 1.6.3
@@ -129,6 +132,9 @@ importers:
       '@playwright/test':
         specifier: 1.57.0
         version: 1.57.0
+      '@types/node':
+        specifier: 24.10.9
+        version: 24.10.9
       '@types/sanitize-html':
         specifier: 2.16.0
         version: 2.16.0
