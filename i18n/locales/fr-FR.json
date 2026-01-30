@@ -133,8 +133,7 @@
       "code": "code",
       "docs": "docs",
       "fund": "donner",
-      "compare": "comparer",
-      "compare_to": "comparer à..."
+      "compare": "comparer..."
     },
     "docs": {
       "not_available": "Documentation non disponible",
