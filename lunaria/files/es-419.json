@@ -286,8 +286,6 @@
       "refresh": "Actualizar acceso de equipo",
       "list_label": "Lista de acceso de equipo",
       "owner": "propietario",
-      "rw": "le",
-      "ro": "sl",
       "revoke_access": "Revocar acceso de {name}",
       "no_access": "No hay acceso de equipo configurado",
       "select_team_label": "Seleccionar equipo",
