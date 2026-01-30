@@ -44,15 +44,37 @@
     "back": "返回"
   },
   "settings": {
+    "title": "设置",
+    "tagline": "定制你的 npmx 体验",
+    "meta_description": "通过主题、语言和显示偏好，定制你的 npmx.dev 体验。",
+    "sections": {
+      "appearance": "外观",
+      "display": "显示",
+      "language": "语言"
+    },
     "relative_dates": "相对时间",
+    "relative_dates_description": "显示 \"三天前\" 而不是完整日期",
     "include_types": "在安装时包含 {'@'}types",
-    "language": "语言",
-    "help_translate": "帮助翻译 npmx",
+    "include_types_description": "在未类型化的包的安装命令中添加 {'@'}types 包",
+    "hide_platform_packages": "在搜索结果中隐藏平台特定的包",
+    "hide_platform_packages_description": "从结果中隐藏诸如 {'@'}esbuild/linux-x64 之类的原生二进制包",
     "theme": "主题",
     "theme_dark": "深色",
     "theme_light": "浅色",
     "theme_system": "跟随系统",
-    "accent_colors": "强调色"
+    "language": "语言",
+    "help_translate": "帮助翻译 npmx",
+    "accent_colors": "强调色",
+    "clear_accent": "清除强调色",
+    "translation_progress": "翻译进度"
+  },
+  "i18n": {
+    "missing_keys": "{count} 项缺少翻译",
+    "copy_keys": "复制键",
+    "show_more_keys": "显示其它 {count} 条...",
+    "contribute_hint": "补充缺失的键值以帮助改进翻译。",
+    "edit_on_github": "在 GitHub 上编辑",
+    "view_guide": "翻译指南"
   },
   "common": {
     "loading": "加载中...",
