@@ -364,8 +364,16 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
   @apply text-badge-orange text-sm;
 }
 
-.docs-content .docs-deprecated p {
-  @apply text-badge-orange text-sm mt-2 mb-0;
+.docs-content .docs-deprecated-message {
+  @apply text-badge-orange text-sm mt-2;
+}
+
+.docs-content .docs-deprecated-message code {
+  @apply bg-badge-orange/20 text-badge-orange;
+}
+
+.docs-content .docs-deprecated-message .docs-link {
+  @apply text-badge-orange;
 }
 
 /* Parameters, Returns, Examples, See Also sections */
