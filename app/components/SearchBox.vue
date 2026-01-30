@@ -15,10 +15,20 @@ const emit = defineEmits(['blur', 'focus'])
 const router = useRouter()
 const route = useRoute()
 
+const searchInputRef = useTemplateRef('searchInputRef')
 const isSearchFocused = ref(false)
 
 const showSearchBar = computed(() => {
   return route.name !== 'index'
+})
+
+// Focus input when search bar becomes visible (e.g., when navigating from homepage)
+watch(showSearchBar, visible => {
+  if (visible) {
+    nextTick(() => {
+      searchInputRef.value?.focus()
+    })
+  }
 })
 
 // Local input value (updates immediately as user types)
@@ -84,7 +94,7 @@ function handleSearchFocus() {
 
           <input
             id="header-search"
-            autofocus
+            ref="searchInputRef"
             v-model="searchQuery"
             type="search"
             name="q"
