@@ -33,6 +33,10 @@ export const countryLocaleVariants: Record<string, (LocaleObjectData & { country
     // { code: 'ar-AE', name: 'Arabic (U.A.E.)' },
     // { code: 'ar-YE', name: 'Arabic (Yemen)' },
   ],
+  az: [
+    // az.json contains az-AZ translations
+    { country: true, code: 'az-AZ', name: 'Azərbaycanca' },
+  ],
   en: [
     // en.json contains en-US translations
     { country: true, code: 'en-US', name: 'English (US)' },
@@ -94,6 +98,11 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
       return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
     },
   } satisfies LocaleObjectData,
+  {
+    code: 'az',
+    file: 'az.json',
+    name: 'Azərbaycanca',
+  },
   /*{
     code: 'ckb',
     file: 'ckb.json',
