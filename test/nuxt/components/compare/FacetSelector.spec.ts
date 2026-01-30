@@ -129,7 +129,7 @@ describe('FacetSelector', () => {
 
       // totalDependencies is marked as comingSoon
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('Total Dependencies'))
+      const comingSoonButton = buttons.find(b => b.text().includes('# Total Deps'))
 
       expect(comingSoonButton?.attributes('disabled')).toBeDefined()
     })
@@ -137,7 +137,7 @@ describe('FacetSelector', () => {
     it('shows coming soon text for comingSoon facets', async () => {
       const component = await mountSuspended(FacetSelector)
 
-      expect(component.text()).toContain('coming soon')
+      expect(component.text().toLowerCase()).toContain('coming soon')
     })
 
     it('does not show checkmark/add icon for comingSoon facets', async () => {
@@ -145,7 +145,7 @@ describe('FacetSelector', () => {
 
       // Find the comingSoon button
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('Total Dependencies'))
+      const comingSoonButton = buttons.find(b => b.text().includes('# Total Deps'))
 
       // Should not have checkmark or add icon
       expect(comingSoonButton?.find('.i-carbon\\:checkmark').exists()).toBe(false)
@@ -156,7 +156,7 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('Total Dependencies'))
+      const comingSoonButton = buttons.find(b => b.text().includes('# Total Deps'))
       await comingSoonButton?.trigger('click')
 
       // toggleFacet should not have been called with totalDependencies
@@ -176,6 +176,10 @@ describe('FacetSelector', () => {
     })
 
     it('calls deselectCategory when none button is clicked', async () => {
+      // Select a performance facet so 'none' button is enabled
+      mockSelectedFacets.value = ['packageSize']
+      mockIsFacetSelected.mockImplementation((f: string) => f === 'packageSize')
+
       const component = await mountSuspended(FacetSelector)
 
       // Find the first 'none' button (for performance category)

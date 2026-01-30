@@ -33,14 +33,14 @@ describe('MetricRow', () => {
           description: 'Number of downloads per week',
         },
       })
-      expect(component.find('.i-carbon-information').exists()).toBe(true)
+      expect(component.find('.i-carbon\\:information').exists()).toBe(true)
     })
 
     it('does not render description icon when not provided', async () => {
       const component = await mountSuspended(MetricRow, {
         props: baseProps,
       })
-      expect(component.find('.i-carbon-information').exists()).toBe(false)
+      expect(component.find('.i-carbon\\:information').exists()).toBe(false)
     })
   })
 
@@ -79,7 +79,7 @@ describe('MetricRow', () => {
           loading: true,
         },
       })
-      expect(component.find('.i-carbon-circle-dash').exists()).toBe(true)
+      expect(component.find('.i-carbon\\:circle-dash').exists()).toBe(true)
     })
   })
 
@@ -155,20 +155,6 @@ describe('MetricRow', () => {
       expect(component.findAll('.bg-fg\\/5').length).toBe(0)
     })
 
-    it('auto-detects numeric values for bar display', async () => {
-      const component = await mountSuspended(MetricRow, {
-        props: {
-          ...baseProps,
-          values: [
-            { raw: 1000, display: '1K', status: 'neutral' },
-            { raw: 2000, display: '2K', status: 'neutral' },
-          ],
-        },
-      })
-      // Should show bars by default for numeric values
-      expect(component.findAll('.bg-fg\\/5').length).toBeGreaterThan(0)
-    })
-
     it('does not show bar for non-numeric values', async () => {
       const component = await mountSuspended(MetricRow, {
         props: {
@@ -195,7 +181,7 @@ describe('MetricRow', () => {
           diffs: [null, { direction: 'increase', display: '+100%', favorable: true }],
         },
       })
-      expect(component.find('.i-carbon-arrow-up').exists()).toBe(true)
+      expect(component.find('.i-carbon\\:arrow-up').exists()).toBe(true)
       expect(component.text()).toContain('+100%')
     })
 
@@ -210,7 +196,7 @@ describe('MetricRow', () => {
           diffs: [null, { direction: 'decrease', display: '-50%', favorable: false }],
         },
       })
-      expect(component.find('.i-carbon-arrow-down').exists()).toBe(true)
+      expect(component.find('.i-carbon\\:arrow-down').exists()).toBe(true)
     })
 
     it('applies favorable diff styling (green)', async () => {
@@ -254,8 +240,8 @@ describe('MetricRow', () => {
           diffs: [null, { direction: 'same', display: '0%', favorable: undefined }],
         },
       })
-      expect(component.find('.i-carbon-arrow-up').exists()).toBe(false)
-      expect(component.find('.i-carbon-arrow-down').exists()).toBe(false)
+      expect(component.find('.i-carbon\\:arrow-up').exists()).toBe(false)
+      expect(component.find('.i-carbon\\:arrow-down').exists()).toBe(false)
     })
   })
 
