@@ -246,16 +246,18 @@ const canonicalUrl = computed(() => {
 // Toggle markdown view mode
 const markdownViewModes = [
   {
+    key: 'preview',
     label: $t('code.markdown_view_mode.preview'),
     icon: 'i-carbon-view',
   },
   {
+    key: 'code',
     label: $t('code.markdown_view_mode.code'),
     icon: 'i-carbon-code',
   },
 ] as const
 
-const markdownViewMode = ref<(typeof markdownViewModes)[number]['label']>('preview')
+const markdownViewMode = ref<(typeof markdownViewModes)[number]['key']>('preview')
 
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
@@ -384,14 +386,14 @@ useSeoMeta({
               >
                 <button
                   v-for="mode in markdownViewModes"
-                  :key="mode.label"
+                  :key="mode.key"
                   class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
                   :class="
-                    markdownViewMode === mode.label
+                    markdownViewMode === mode.key
                       ? 'bg-bg shadow text-fg border-border'
                       : 'text-fg-subtle hover:text-fg border-transparent'
                   "
-                  @click="markdownViewMode = mode.label"
+                  @click="markdownViewMode = mode.key"
                 >
                   <span class="inline-block h-3 w-3" :class="mode.icon" aria-hidden="true" />
                   {{ mode.label }}
