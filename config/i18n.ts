@@ -177,7 +177,7 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       const name = new Intl.PluralRules('ru-RU').select(choice)
       return { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 3 }[name]
     },
-  } satisfies LocaleObjectData,
+  },
   {
     code: 'uk-UA',
     file: 'uk-UA.json',
@@ -188,7 +188,7 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       const name = new Intl.PluralRules('uk-UA').select(choice)
       return { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
     },
-  } satisfies LocaleObjectData,
+  },
   /*{
       code: 'ru-RU',
       file: 'ru-RU.json',
