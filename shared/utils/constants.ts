@@ -16,6 +16,7 @@ export const ERROR_CALC_INSTALL_SIZE_FAILED = 'Failed to calculate install size.
 export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
+export const ERROR_PROVENANCE_FETCH_FAILED = 'Failed to fetch provenance.'
 /** @public */
 export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
 
