@@ -4,7 +4,7 @@ seo:
   description: A fast, modern browser for the npm registry
 ---
 
-## ::u-page-hero
+::u-page-hero
 
 title: npmx.dev
 description: A fast, modern browser for the npm registry. Speed first, URL compatible, and simple.
