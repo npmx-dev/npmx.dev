@@ -110,7 +110,7 @@
     "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
-    "navigation": "Package navigation",
+    "navigation": "Package",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -132,7 +132,11 @@
       "vulns": "Vulns",
       "updated": "Updated",
       "view_dependency_graph": "View dependency graph",
-      "inspect_dependency_tree": "Inspect dependency tree"
+      "inspect_dependency_tree": "Inspect dependency tree",
+      "size_tooltip": {
+        "unpacked": "{size} unpacked size (this package)",
+        "total": "{size} total unpacked size (including all {count} dependencies for linux-x64)"
+      }
     },
     "links": {
       "repo": "repo",

@@ -3,8 +3,11 @@ import type { JsrPackageInfo } from '#shared/types/jsr'
 
 describe('useInstallCommand', () => {
   beforeEach(() => {
-    // Reset localStorage before each test
+    // Reset localStorage and package manager state before each test
     localStorage.clear()
+    // Reset the shared composable state to default 'npm'
+    const pm = useSelectedPackageManager()
+    pm.value = 'npm'
   })
 
   afterEach(() => {

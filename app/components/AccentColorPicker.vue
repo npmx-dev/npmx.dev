@@ -2,6 +2,17 @@
 import { useAccentColor } from '~/composables/useSettings'
 
 const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
+
+onPrehydrate(el => {
+  const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  const id = settings.accentColorId
+  if (id) {
+    const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
+    if (input) {
+      input.checked = true
+    }
+  }
+})
 </script>
 
 <template>

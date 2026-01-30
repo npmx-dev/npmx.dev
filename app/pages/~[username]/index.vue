@@ -223,7 +223,7 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Package list -->
-    <section v-else-if="results && packages.length > 0" aria-label="User packages">
+    <section v-else-if="results && packages.length > 0">
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
         {{ $t('user.page.packages_title') }}
       </h2>

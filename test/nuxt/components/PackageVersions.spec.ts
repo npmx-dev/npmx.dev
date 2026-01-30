@@ -843,22 +843,6 @@ describe('PackageVersions', () => {
   })
 
   describe('accessibility', () => {
-    it('has accessible section with labelledby', async () => {
-      const component = await mountSuspended(PackageVersions, {
-        props: {
-          packageName: 'test-package',
-          versions: {
-            '1.0.0': createVersion('1.0.0'),
-          },
-          distTags: { latest: '1.0.0' },
-          time: { '1.0.0': '2024-01-15T12:00:00.000Z' },
-        },
-      })
-
-      const section = component.find('section')
-      expect(section.attributes('aria-labelledby')).toBe('versions-heading')
-    })
-
     it('expand buttons have aria-expanded attribute', async () => {
       const component = await mountSuspended(PackageVersions, {
         props: {

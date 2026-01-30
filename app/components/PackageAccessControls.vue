@@ -150,7 +150,7 @@ watch(
 </script>
 
 <template>
-  <section v-if="isConnected && orgName" aria-labelledby="access-heading">
+  <section v-if="isConnected && orgName">
     <div class="flex items-center justify-between mb-3">
       <h2 id="access-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
         {{ $t('package.access.title') }}
