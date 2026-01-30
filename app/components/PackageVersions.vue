@@ -109,7 +109,14 @@ const visibleTagRows = computed(() => {
   const rows = isPackageDeprecated.value
     ? allTagRows.value
     : allTagRows.value.filter(row => !row.primaryVersion.deprecated)
-  return rows.slice(0, MAX_VISIBLE_TAGS)
+  const first = rows.slice(0, MAX_VISIBLE_TAGS)
+  const latestTagRow = rows.find(row => row.tag === 'latest')
+  // Ensure 'latest' tag is always included (at the end) if not already present
+  if (latestTagRow && !first.includes(latestTagRow)) {
+    first.pop()
+    first.push(latestTagRow)
+  }
+  return first
 })
 
 // Hidden tag rows (all other tags) - shown in "Other versions"
