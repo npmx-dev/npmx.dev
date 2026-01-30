@@ -1,5 +1,4 @@
 import type { DocsResponse } from '#shared/types'
-import { fetchNpmPackage } from '#server/utils/npm'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { parsePackageParam } from '#shared/utils/parse-package-param'
 import { generateDocsWithDeno } from '#server/utils/docs'
@@ -12,7 +11,7 @@ export default defineCachedEventHandler(
       throw createError({ statusCode: 404, message: 'Package name is required' })
     }
 
-    const { packageName, version: requestedVersion } = parsePackageParam(pkgParam)
+    const { packageName, version } = parsePackageParam(pkgParam)
 
     if (!packageName) {
       // TODO: throwing 404 rather than 400 as it's cacheable
@@ -20,11 +19,9 @@ export default defineCachedEventHandler(
     }
     assertValidPackageName(packageName)
 
-    const packument = await fetchNpmPackage(packageName)
-    const version = requestedVersion ?? packument['dist-tags']?.latest
-
     if (!version) {
-      throw createError({ statusCode: 404, message: 'No latest version found' })
+      // TODO: throwing 404 rather than 400 as it's cacheable
+      throw createError({ statusCode: 404, message: 'Package version is required' })
     }
 
     let generated

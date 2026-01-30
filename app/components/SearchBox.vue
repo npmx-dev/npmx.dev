@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
 
+const isMobile = useIsMobile()
+
 withDefaults(
   defineProps<{
     inputClass?: string
@@ -84,7 +86,7 @@ function handleSearchFocus() {
 
           <input
             id="header-search"
-            autofocus
+            :autofocus="!isMobile"
             v-model="searchQuery"
             type="search"
             name="q"

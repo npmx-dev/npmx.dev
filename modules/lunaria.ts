@@ -2,7 +2,7 @@ import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { execSync } from 'node:child_process'
 import { join } from 'node:path'
 import { existsSync, mkdirSync } from 'node:fs'
-import { isCI } from 'std-env'
+import { isCI, isTest } from 'std-env'
 
 export default defineNuxtModule({
   meta: {
@@ -20,7 +20,7 @@ export default defineNuxtModule({
       maxAge: 60 * 60 * 24, // 1 day
     })
 
-    if (nuxt.options.dev || nuxt.options._prepare || nuxt.options.test) {
+    if (nuxt.options.dev || nuxt.options._prepare || nuxt.options.test || isTest) {
       return
     }
 

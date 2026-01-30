@@ -6,6 +6,8 @@ const searchQuery = ref('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
 
+const isMobile = useIsMobile()
+
 const debouncedNavigate = debounce(() => {
   router.push({
     path: '/search',
@@ -76,7 +78,7 @@ defineOgImageComponent('Default')
                 name="q"
                 :placeholder="$t('search.placeholder')"
                 v-bind="noCorrect"
-                autofocus
+                :autofocus="!isMobile"
                 class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
                 @input="handleSearch"
               />

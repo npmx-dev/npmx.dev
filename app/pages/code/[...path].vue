@@ -11,7 +11,6 @@ definePageMeta({
 })
 
 const route = useRoute('code')
-const router = useRouter()
 
 // Parse package name, version, and file path from URL
 // Patterns:
