@@ -800,6 +800,7 @@ function handleClick(event: MouseEvent) {
           </h2>
           <!-- Package manager tabs -->
           <PackageManagerTabs />
+          <PackageManagerSelect />
         </div>
         <div
           role="tabpanel"
@@ -834,6 +835,7 @@ function handleClick(event: MouseEvent) {
           </h2>
           <!-- Package manager tabs -->
           <PackageManagerTabs />
+          <PackageManagerSelect />
         </div>
         <div
           role="tabpanel"
@@ -1071,18 +1073,22 @@ function handleClick(event: MouseEvent) {
   grid-area: header;
   overflow-x: hidden;
 }
+
 .area-install {
   grid-area: install;
   overflow-x: hidden;
 }
+
 .area-vulns {
   grid-area: vulns;
   overflow-x: hidden;
 }
+
 .area-readme {
   grid-area: readme;
   overflow-x: hidden;
 }
+
 .area-sidebar {
   grid-area: sidebar;
 }

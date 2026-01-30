@@ -125,21 +125,25 @@ watch(open, isOpen => {
               >
                 <span class="text-fg-subtle">$</span>
                 <span class="text-fg-subtle ms-2">{{ executeNpmxConnectorCommand }}</span>
-                <button
-                  type="button"
-                  :aria-label="
-                    copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
-                  "
-                  class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                  @click="copyCommand"
-                >
-                  <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
-                  <span
-                    v-else
-                    class="i-carbon:checkmark block w-5 h-5 text-green-500"
-                    aria-hidden="true"
-                  />
-                </button>
+                <div class="ml-auto flex items-center gap-2">
+                  <PackageManagerSelect />
+
+                  <button
+                    type="button"
+                    :aria-label="
+                      copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
+                    "
+                    class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                    @click="copyCommand"
+                  >
+                    <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
+                    <span
+                      v-else
+                      class="i-carbon:checkmark block w-5 h-5 text-green-500"
+                      aria-hidden="true"
+                    />
+                  </button>
+                </div>
               </div>
 
               <p class="text-sm text-fg-muted">{{ $t('connector.modal.paste_token') }}</p>
