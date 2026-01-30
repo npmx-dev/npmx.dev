@@ -53,7 +53,7 @@
       "language": "语言"
     },
     "relative_dates": "相对时间",
-    "relative_dates_description": "显示 \"三天前\" 而不是完整日期",
+    "relative_dates_description": "显示 \"3天前\" 而不是完整日期",
     "include_types": "在安装时包含 {'@'}types",
     "include_types_description": "在未类型化的包的安装命令中添加 {'@'}types 包",
     "hide_platform_packages": "在搜索结果中隐藏平台特定的包",
