@@ -88,7 +88,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 </script>
 
 <template>
-  <div class="docs-page min-h-screen">
+  <div class="docs-page flex-1 flex flex-col">
     <!-- Visually hidden h1 for accessibility -->
     <h1 class="sr-only">{{ packageName }} API Documentation</h1>
 
@@ -134,7 +134,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
       <!-- Sidebar TOC -->
       <aside
         v-if="docsData?.toc && !showEmptyState"
-        class="hidden lg:block w-64 xl:w-72 shrink-0 border-r border-border"
+        class="hidden lg:block w-64 xl:w-72 shrink-0 border-ie border-border"
       >
         <div class="docs-sidebar sticky overflow-y-auto p-4">
           <h2 class="text-xs font-semibold text-fg-subtle uppercase tracking-wider mb-4">
@@ -210,7 +210,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 }
 
 .toc-content > ul > li > ul {
-  @apply mt-2 pl-3 border-l border-border/50;
+  @apply mt-2 ps-3 border-is border-border/50;
 }
 
 .toc-content > ul > li > ul a {
@@ -325,16 +325,16 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 }
 
 /*
- * Fenced code blocks in descriptions use a subtle left-border style.
+ * Fenced code blocks in descriptions use a subtle start-border style.
  *
  * Design rationale: We use two visual styles for code examples:
  * 1. Boxed style (bg + border + padding) - for formal @example JSDoc tags
  *    and function signatures. These are intentional, structured sections.
- * 2. Left-border style (blockquote-like) - for inline code in descriptions.
+ * 2. Start-border style (blockquote-like) - for inline code in descriptions.
  *    These are illustrative/casual and shouldn't compete with the signature.
  */
 .docs-content .docs-description .shiki {
-  @apply text-sm pl-4 py-3 my-4 border-l-2 border-border;
+  @apply text-sm ps-4 py-3 my-4 border-is-2 border-border;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -384,7 +384,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 }
 
 .docs-content dd {
-  @apply text-sm text-fg-subtle ml-4 mb-3;
+  @apply text-sm text-fg-subtle ms-4 mb-3;
 }
 
 /* Returns paragraph */

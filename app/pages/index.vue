@@ -65,7 +65,7 @@ defineOgImageComponent('Default')
 
             <div class="search-box relative flex items-center">
               <span
-                class="absolute left-4 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 group-focus-within:text-accent z-1"
+                class="absolute inset-is-4 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 group-focus-within:text-accent z-1"
               >
                 /
               </span>
@@ -79,13 +79,13 @@ defineOgImageComponent('Default')
                 :placeholder="$t('search.placeholder')"
                 v-bind="noCorrect"
                 autofocus
-                class="w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+                class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
                 @input="handleSearch"
               />
 
               <button
                 type="submit"
-                class="absolute right-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                class="absolute inset-ie-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               >
                 {{ $t('search.button') }}
               </button>

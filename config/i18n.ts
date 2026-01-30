@@ -13,26 +13,26 @@ interface LocaleObjectData extends LocaleObject {
 }
 
 export const countryLocaleVariants: Record<string, (LocaleObjectData & { country?: boolean })[]> = {
-  /*ar: [
-      // ar.json contains ar-EG translations
-      // { code: 'ar-DZ', name: 'Arabic (Algeria)' },
-      // { code: 'ar-BH', name: 'Arabic (Bahrain)' },
-      { country: true, code: 'ar-EG', name: 'العربية' },
-      // { code: 'ar-EG', name: 'Arabic (Egypt)' },
-      // { code: 'ar-IQ', name: 'Arabic (Iraq)' },
-      // { code: 'ar-JO', name: 'Arabic (Jordan)' },
-      // { code: 'ar-KW', name: 'Arabic (Kuwait)' },
-      // { code: 'ar-LB', name: 'Arabic (Lebanon)' },
-      // { code: 'ar-LY', name: 'Arabic (Libya)' },
-      // { code: 'ar-MA', name: 'Arabic (Morocco)' },
-      // { code: 'ar-OM', name: 'Arabic (Oman)' },
-      // { code: 'ar-QA', name: 'Arabic (Qatar)' },
-      // { code: 'ar-SA', name: 'Arabic (Saudi Arabia)' },
-      // { code: 'ar-SY', name: 'Arabic (Syria)' },
-      // { code: 'ar-TN', name: 'Arabic (Tunisia)' },
-      // { code: 'ar-AE', name: 'Arabic (U.A.E.)' },
-      // { code: 'ar-YE', name: 'Arabic (Yemen)' },
-    ],*/
+  ar: [
+    // ar.json contains ar-EG translations
+    // { code: 'ar-DZ', name: 'Arabic (Algeria)' },
+    // { code: 'ar-BH', name: 'Arabic (Bahrain)' },
+    { country: true, code: 'ar-EG', name: 'العربية' },
+    // { code: 'ar-EG', name: 'Arabic (Egypt)' },
+    // { code: 'ar-IQ', name: 'Arabic (Iraq)' },
+    // { code: 'ar-JO', name: 'Arabic (Jordan)' },
+    // { code: 'ar-KW', name: 'Arabic (Kuwait)' },
+    // { code: 'ar-LB', name: 'Arabic (Lebanon)' },
+    // { code: 'ar-LY', name: 'Arabic (Libya)' },
+    // { code: 'ar-MA', name: 'Arabic (Morocco)' },
+    // { code: 'ar-OM', name: 'Arabic (Oman)' },
+    // { code: 'ar-QA', name: 'Arabic (Qatar)' },
+    // { code: 'ar-SA', name: 'Arabic (Saudi Arabia)' },
+    // { code: 'ar-SY', name: 'Arabic (Syria)' },
+    // { code: 'ar-TN', name: 'Arabic (Tunisia)' },
+    // { code: 'ar-AE', name: 'Arabic (U.A.E.)' },
+    // { code: 'ar-YE', name: 'Arabic (Yemen)' },
+  ],
   en: [
     // en.json contains en-US translations
     { country: true, code: 'en-US', name: 'English (US)' },
@@ -84,47 +84,46 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
     file: 'en.json',
     name: 'English',
   },
+  {
+    code: 'ar-EG',
+    file: 'ar.json',
+    name: 'العربية',
+    dir: 'rtl',
+    pluralRule: (choice: number) => {
+      const name = new Intl.PluralRules('ar-EG').select(choice)
+      return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
+    },
+  } satisfies LocaleObjectData,
   /*{
-      code: 'ar',
-      file: 'ar.json',
-      name: 'العربية',
-      dir: 'rtl',
-      pluralRule: (choice: number) => {
-        const name = new Intl.PluralRules('ar-EG').select(choice)
-        return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
-      },
-    } satisfies LocaleObjectData,
-    {
-      code: 'ckb',
-      file: 'ckb.json',
-      name: 'کوردیی ناوەندی',
-      dir: 'rtl',
-      pluralRule: (choice: number) => {
-        const name = new Intl.PluralRules('ckb').select(choice)
-        return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
-      },
-    } satisfies LocaleObjectData,
-    {
-      code: 'fa-IR',
-      file: 'fa-IR.json',
-      name: 'فارسی',
-      dir: 'rtl',
-      pluralRule: (choice: number) => {
-        const name = new Intl.PluralRules('fa-IR').select(choice)
-        return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
-      },
-    } satisfies LocaleObjectData,
-    {
-      code: 'ca',
-      file: 'ca.json',
-      name: 'Català',
+    code: 'ckb',
+    file: 'ckb.json',
+    name: 'کوردیی ناوەندی',
+    dir: 'rtl',
+    pluralRule: (choice: number) => {
+      const name = new Intl.PluralRules('ckb').select(choice)
+      return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
     },
-    {
-      code: 'el-GR',
-      file: 'el-GR.json',
-      name: 'Ελληνικά',
+  } satisfies LocaleObjectData,
+  {
+    code: 'fa-IR',
+    file: 'fa-IR.json',
+    name: 'فارسی',
+    dir: 'rtl',
+    pluralRule: (choice: number) => {
+      const name = new Intl.PluralRules('fa-IR').select(choice)
+      return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
     },
-    */
+  } satisfies LocaleObjectData,
+  {
+    code: 'ca',
+    file: 'ca.json',
+    name: 'Català',
+  },
+  {
+    code: 'el-GR',
+    file: 'el-GR.json',
+    name: 'Ελληνικά',
+  },*/
   {
     code: 'de-DE',
     file: 'de-DE.json',

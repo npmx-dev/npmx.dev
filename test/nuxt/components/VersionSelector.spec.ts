@@ -542,7 +542,7 @@ describe('VersionSelector', () => {
 
       // Should show loading spinner (motion-safe:animate-spin is applied)
       await vi.waitFor(() => {
-        const spinner = component.find('.i-carbon-rotate-180')
+        const spinner = component.find('.i-carbon\\:rotate-180')
         expect(spinner.exists()).toBe(true)
       })
 

@@ -485,7 +485,7 @@ watch(
         latest
       </span>
       <span
-        class="i-carbon-chevron-down w-3.5 h-3.5 transition-[transform] duration-200 motion-reduce:transition-none"
+        class="i-carbon:chevron-down w-3.5 h-3.5 transition-[transform] duration-200 motion-reduce:transition-none"
         :class="{ 'rotate-180': isOpen }"
         aria-hidden="true"
       />
@@ -507,7 +507,7 @@ watch(
         :aria-activedescendant="
           focusedIndex >= 0 ? `version-${flatItems[focusedIndex]?.version?.version}` : undefined
         "
-        class="absolute top-full left-0 mt-2 min-w-[220px] bg-bg-elevated border border-border rounded-lg shadow-lg z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
+        class="absolute top-full inset-is-0 mt-2 min-w-[220px] bg-bg-elevated border border-border rounded-lg shadow-lg z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
         @keydown="handleListboxKeydown"
       >
         <!-- Version groups -->
@@ -541,13 +541,13 @@ watch(
             >
               <span
                 v-if="group.isLoading"
-                class="i-carbon-rotate-180 w-3 h-3 motion-safe:animate-spin"
+                class="i-carbon:rotate-180 w-3 h-3 motion-safe:animate-spin"
                 aria-hidden="true"
               />
               <span
                 v-else
-                class="w-3 h-3 transition-transform duration-200"
-                :class="group.isExpanded ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'"
+                class="w-3 h-3 transition-transform duration-200 rtl-flip"
+                :class="group.isExpanded ? 'i:carbon:chevron-down' : 'i-carbon:chevron-right'"
                 aria-hidden="true"
               />
             </button>
@@ -582,7 +582,7 @@ watch(
           <!-- Expanded versions -->
           <div
             v-if="group.isExpanded && group.versions.length > 1"
-            class="ml-6 border-l border-border"
+            class="ms-6 border-is border-border"
           >
             <template v-for="(v, vIndex) in group.versions.slice(1)" :key="v.version">
               <NuxtLink
@@ -595,7 +595,7 @@ watch(
                   flatItems[focusedIndex]?.type === 'version' &&
                   flatItems[focusedIndex]?.version?.version === v.version
                 "
-                class="flex items-center justify-between gap-2 pl-4 pr-3 py-1.5 text-xs font-mono hover:bg-bg-muted transition-[color,background-color] focus-visible:outline-none"
+                class="flex items-center justify-between gap-2 ps-4 pe-3 py-1.5 text-xs font-mono hover:bg-bg-muted transition-[color,background-color] focus-visible:outline-none"
                 :class="[
                   v.isCurrent ? 'text-fg bg-bg-muted' : 'text-fg-subtle',
                   flatItems[focusedIndex]?.version?.version === v.version ? 'bg-bg-muted' : '',

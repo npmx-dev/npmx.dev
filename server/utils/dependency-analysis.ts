@@ -6,7 +6,8 @@ import type {
   DependencyDepth,
   PackageVulnerabilityInfo,
   VulnerabilityTreeResult,
-} from '#shared/types'
+  DeprecatedPackageInfo,
+} from '#shared/types/dependency-analysis'
 import { resolveDependencyTree } from './dependency-resolver'
 
 /** Result of a single OSV query */
@@ -67,7 +68,7 @@ async function queryOsv(
     return { status: 'ok', data: { name, version, depth, path, vulnerabilities, counts } }
   } catch (error) {
     // oxlint-disable-next-line no-console -- log OSV API failures for debugging
-    console.warn(`[vuln-tree] OSV query failed for ${name}@${version}:`, error)
+    console.warn(`[dep-analysis] OSV query failed for ${name}@${version}:`, error)
     return { status: 'error' }
   }
 }
@@ -108,16 +109,32 @@ function getSeverityLevel(vuln: OsvVulnerability): OsvSeverityLevel {
 }
 
 /**
- * Analyze entire dependency tree for vulnerabilities.
+ * Analyze entire dependency tree for vulnerabilities and deprecated packages.
  * @public
  */
-export const analyzeVulnerabilityTree = defineCachedFunction(
+export const analyzeDependencyTree = defineCachedFunction(
   async (name: string, version: string): Promise<VulnerabilityTreeResult> => {
     // Resolve all packages in the tree with depth tracking
     const resolved = await resolveDependencyTree(name, version, { trackDepth: true })
 
     // Convert to array for OSV querying
     const packages = [...resolved.values()]
+
+    // Collect deprecated packages (no API call needed - already in packument data)
+    const deprecatedPackages: DeprecatedPackageInfo[] = packages
+      .filter(pkg => pkg.deprecated)
+      .map(pkg => ({
+        name: pkg.name,
+        version: pkg.version,
+        depth: pkg.depth!,
+        path: pkg.path || [],
+        message: pkg.deprecated!,
+      }))
+      .sort((a, b) => {
+        // Sort by depth (root → direct → transitive)
+        const depthOrder: Record<DependencyDepth, number> = { root: 0, direct: 1, transitive: 2 }
+        return depthOrder[a.depth] - depthOrder[b.depth]
+      })
 
     // Query OSV for all packages in parallel batches
     const vulnerablePackages: PackageVulnerabilityInfo[] = []
@@ -163,7 +180,7 @@ export const analyzeVulnerabilityTree = defineCachedFunction(
     if (failedQueries > 0 && failedQueries > packages.length / 2) {
       // oxlint-disable-next-line no-console -- critical error logging
       console.error(
-        `[vuln-tree] Critical: ${failedQueries}/${packages.length} OSV queries failed for ${name}@${version}`,
+        `[dep-analysis] Critical: ${failedQueries}/${packages.length} OSV queries failed for ${name}@${version}`,
       )
     }
 
@@ -171,6 +188,7 @@ export const analyzeVulnerabilityTree = defineCachedFunction(
       package: name,
       version,
       vulnerablePackages,
+      deprecatedPackages,
       totalPackages: packages.length,
       failedQueries,
       totalCounts,
@@ -179,7 +197,7 @@ export const analyzeVulnerabilityTree = defineCachedFunction(
   {
     maxAge: 60 * 60,
     swr: true,
-    name: 'vulnerability-tree',
+    name: 'dependency-analysis',
     getKey: (name: string, version: string) => `v1:${name}@${version}`,
   },
 )

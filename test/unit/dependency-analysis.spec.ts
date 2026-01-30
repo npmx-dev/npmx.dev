@@ -5,7 +5,7 @@ vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
 vi.stubGlobal('$fetch', vi.fn())
 
 // Import module under test
-const { analyzeVulnerabilityTree } = await import('../../server/utils/vulnerability-tree')
+const { analyzeDependencyTree } = await import('../../server/utils/dependency-analysis')
 
 // Mock the dependency resolver
 vi.mock('../../server/utils/dependency-resolver', () => ({
@@ -14,12 +14,12 @@ vi.mock('../../server/utils/dependency-resolver', () => ({
 
 const { resolveDependencyTree } = await import('../../server/utils/dependency-resolver')
 
-describe('vulnerability-tree', () => {
+describe('dependency-analysis', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
-  describe('analyzeVulnerabilityTree', () => {
+  describe('analyzeDependencyTree', () => {
     it('returns empty result when no packages have vulnerabilities', async () => {
       const mockResolved = new Map([
         [
@@ -39,7 +39,7 @@ describe('vulnerability-tree', () => {
       // Mock OSV API returning no vulnerabilities
       vi.mocked($fetch).mockResolvedValue({ vulns: [] })
 
-      const result = await analyzeVulnerabilityTree('test-pkg', '1.0.0')
+      const result = await analyzeDependencyTree('test-pkg', '1.0.0')
 
       expect(result.package).toBe('test-pkg')
       expect(result.version).toBe('1.0.0')
@@ -81,7 +81,7 @@ describe('vulnerability-tree', () => {
         .mockResolvedValueOnce({ vulns: [] })
         .mockRejectedValueOnce(new Error('OSV API error'))
 
-      const result = await analyzeVulnerabilityTree('test-pkg', '1.0.0')
+      const result = await analyzeDependencyTree('test-pkg', '1.0.0')
 
       expect(result.failedQueries).toBe(1)
       expect(result.totalPackages).toBe(2)
@@ -113,7 +113,7 @@ describe('vulnerability-tree', () => {
         ],
       })
 
-      const result = await analyzeVulnerabilityTree('vuln-pkg', '1.0.0')
+      const result = await analyzeDependencyTree('vuln-pkg', '1.0.0')
 
       expect(result.vulnerablePackages).toHaveLength(1)
       expect(result.totalCounts).toEqual({ total: 4, critical: 1, high: 1, moderate: 1, low: 1 })
@@ -160,7 +160,7 @@ describe('vulnerability-tree', () => {
           ],
         }) // vuln-dep has vuln
 
-      const result = await analyzeVulnerabilityTree('root', '1.0.0')
+      const result = await analyzeDependencyTree('root', '1.0.0')
 
       expect(result.vulnerablePackages).toHaveLength(1)
       const vulnPkg = result.vulnerablePackages[0]
@@ -228,7 +228,7 @@ describe('vulnerability-tree', () => {
           ],
         })
 
-      const result = await analyzeVulnerabilityTree('root', '1.0.0')
+      const result = await analyzeDependencyTree('root', '1.0.0')
 
       expect(result.vulnerablePackages).toHaveLength(3)
       // Should be sorted: root first, then direct, then transitive
@@ -263,7 +263,7 @@ describe('vulnerability-tree', () => {
         ],
       })
 
-      const result = await analyzeVulnerabilityTree('pkg', '1.0.0')
+      const result = await analyzeDependencyTree('pkg', '1.0.0')
 
       expect(result.vulnerablePackages[0].vulnerabilities[0].url).toBe(
         'https://github.com/advisories/GHSA-xxxx-yyyy-zzzz',
@@ -297,7 +297,7 @@ describe('vulnerability-tree', () => {
         ],
       })
 
-      const result = await analyzeVulnerabilityTree('pkg', '1.0.0')
+      const result = await analyzeDependencyTree('pkg', '1.0.0')
 
       expect(result.vulnerablePackages[0].vulnerabilities[0].url).toBe(
         'https://nvd.nist.gov/vuln/detail/CVE-2024-12345',
@@ -326,7 +326,7 @@ describe('vulnerability-tree', () => {
         ],
       })
 
-      const result = await analyzeVulnerabilityTree('pkg', '1.0.0')
+      const result = await analyzeDependencyTree('pkg', '1.0.0')
 
       expect(result.vulnerablePackages[0].vulnerabilities[0].url).toBe(
         'https://osv.dev/vulnerability/PYSEC-2024-001',
@@ -362,12 +362,190 @@ describe('vulnerability-tree', () => {
         ],
       })
 
-      const result = await analyzeVulnerabilityTree('pkg', '1.0.0')
+      const result = await analyzeDependencyTree('pkg', '1.0.0')
 
       expect(result.totalCounts.critical).toBe(1)
       expect(result.totalCounts.high).toBe(1)
       expect(result.totalCounts.moderate).toBe(1)
       expect(result.totalCounts.low).toBe(1)
+    })
+
+    it('collects deprecated packages from the dependency tree', async () => {
+      const mockResolved = new Map([
+        [
+          'root@1.0.0',
+          {
+            name: 'root',
+            version: '1.0.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['root@1.0.0'],
+          },
+        ],
+        [
+          'deprecated-pkg@2.0.0',
+          {
+            name: 'deprecated-pkg',
+            version: '2.0.0',
+            size: 500,
+            optional: false,
+            depth: 'direct' as const,
+            path: ['root@1.0.0', 'deprecated-pkg@2.0.0'],
+            deprecated: 'This package is deprecated. Use new-pkg instead.',
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+      vi.mocked($fetch).mockResolvedValue({ vulns: [] })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(result.deprecatedPackages).toHaveLength(1)
+      expect(result.deprecatedPackages[0]).toEqual({
+        name: 'deprecated-pkg',
+        version: '2.0.0',
+        depth: 'direct',
+        path: ['root@1.0.0', 'deprecated-pkg@2.0.0'],
+        message: 'This package is deprecated. Use new-pkg instead.',
+      })
+    })
+
+    it('returns empty deprecatedPackages when none are deprecated', async () => {
+      const mockResolved = new Map([
+        [
+          'root@1.0.0',
+          {
+            name: 'root',
+            version: '1.0.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['root@1.0.0'],
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+      vi.mocked($fetch).mockResolvedValue({ vulns: [] })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(result.deprecatedPackages).toHaveLength(0)
+    })
+
+    it('sorts deprecated packages by depth (root → direct → transitive)', async () => {
+      const mockResolved = new Map([
+        [
+          'root@1.0.0',
+          {
+            name: 'root',
+            version: '1.0.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['root@1.0.0'],
+            deprecated: 'Root is deprecated',
+          },
+        ],
+        [
+          'transitive-dep@1.0.0',
+          {
+            name: 'transitive-dep',
+            version: '1.0.0',
+            size: 300,
+            optional: false,
+            depth: 'transitive' as const,
+            path: ['root@1.0.0', 'direct-dep@1.0.0', 'transitive-dep@1.0.0'],
+            deprecated: 'Transitive is deprecated',
+          },
+        ],
+        [
+          'direct-dep@1.0.0',
+          {
+            name: 'direct-dep',
+            version: '1.0.0',
+            size: 500,
+            optional: false,
+            depth: 'direct' as const,
+            path: ['root@1.0.0', 'direct-dep@1.0.0'],
+            deprecated: 'Direct is deprecated',
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+      vi.mocked($fetch).mockResolvedValue({ vulns: [] })
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(result.deprecatedPackages).toHaveLength(3)
+      expect(result.deprecatedPackages[0].name).toBe('root')
+      expect(result.deprecatedPackages[0].depth).toBe('root')
+      expect(result.deprecatedPackages[1].name).toBe('direct-dep')
+      expect(result.deprecatedPackages[1].depth).toBe('direct')
+      expect(result.deprecatedPackages[2].name).toBe('transitive-dep')
+      expect(result.deprecatedPackages[2].depth).toBe('transitive')
+    })
+
+    it('returns both vulnerabilities and deprecated packages together', async () => {
+      const mockResolved = new Map([
+        [
+          'root@1.0.0',
+          {
+            name: 'root',
+            version: '1.0.0',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['root@1.0.0'],
+          },
+        ],
+        [
+          'vuln-pkg@1.0.0',
+          {
+            name: 'vuln-pkg',
+            version: '1.0.0',
+            size: 500,
+            optional: false,
+            depth: 'direct' as const,
+            path: ['root@1.0.0', 'vuln-pkg@1.0.0'],
+          },
+        ],
+        [
+          'deprecated-pkg@1.0.0',
+          {
+            name: 'deprecated-pkg',
+            version: '1.0.0',
+            size: 300,
+            optional: false,
+            depth: 'direct' as const,
+            path: ['root@1.0.0', 'deprecated-pkg@1.0.0'],
+            deprecated: 'Use something else',
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // root and deprecated-pkg have no vulns, vuln-pkg has one
+      vi.mocked($fetch)
+        .mockResolvedValueOnce({ vulns: [] }) // root
+        .mockResolvedValueOnce({
+          vulns: [
+            {
+              id: 'GHSA-vuln',
+              summary: 'A vulnerability',
+              database_specific: { severity: 'HIGH' },
+            },
+          ],
+        }) // vuln-pkg
+        .mockResolvedValueOnce({ vulns: [] }) // deprecated-pkg
+
+      const result = await analyzeDependencyTree('root', '1.0.0')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      expect(result.vulnerablePackages[0].name).toBe('vuln-pkg')
+      expect(result.deprecatedPackages).toHaveLength(1)
+      expect(result.deprecatedPackages[0].name).toBe('deprecated-pkg')
+      expect(result.totalPackages).toBe(3)
     })
   })
 })

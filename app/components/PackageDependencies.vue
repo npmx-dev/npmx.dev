@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVulnerabilityTree } from '~/composables/useVulnerabilityTree'
+import { useDependencyAnalysis } from '~/composables/useDependencyAnalysis'
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
 
 const props = defineProps<{
@@ -15,7 +15,7 @@ const props = defineProps<{
 const outdatedDeps = useOutdatedDependencies(() => props.dependencies)
 
 // Get vulnerability info from shared cache (already fetched by PackageVulnerabilityTree)
-const { data: vulnTree } = useVulnerabilityTree(
+const { data: vulnTree } = useDependencyAnalysis(
   () => props.packageName,
   () => props.version,
 )
@@ -24,6 +24,12 @@ const { data: vulnTree } = useVulnerabilityTree(
 function getVulnerableDepInfo(depName: string) {
   if (!vulnTree.value) return null
   return vulnTree.value.vulnerablePackages.find(p => p.name === depName && p.depth === 'direct')
+}
+
+// Check if a dependency is deprecated (only direct deps)
+function getDeprecatedDepInfo(depName: string) {
+  if (!vulnTree.value) return null
+  return vulnTree.value.deprecatedPackages.find(p => p.name === depName && p.depth === 'direct')
 }
 
 // Expanded state for each section
@@ -80,7 +86,7 @@ const sortedOptionalDependencies = computed(() => {
         >
           {{ $t('package.dependencies.title', { count: sortedDependencies.length }) }}
           <span
-            class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             aria-hidden="true"
           />
         </a>
@@ -89,7 +95,7 @@ const sortedOptionalDependencies = computed(() => {
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
-          class="flex items-center justify-between py-1 text-sm gap-2"
+          class="flex items-center justify-start py-1 text-sm gap-2"
         >
           <NuxtLink
             :to="{ name: 'package', params: { package: dep.split('/') } }"
@@ -105,8 +111,9 @@ const sortedOptionalDependencies = computed(() => {
               :title="getOutdatedTooltip(outdatedDeps[dep])"
               aria-hidden="true"
             >
-              <span class="i-carbon-warning-alt w-3 h-3 block" />
+              <span class="i-carbon:warning-alt w-3 h-3 block" />
             </span>
+            <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
             <NuxtLink
               v-if="getVulnerableDepInfo(dep)"
               :to="{
@@ -117,12 +124,24 @@ const sortedOptionalDependencies = computed(() => {
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
               :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
             >
-              <span class="i-carbon-security w-3 h-3 block" aria-hidden="true" />
+              <span class="i-carbon:security w-3 h-3 block" aria-hidden="true" />
               <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
             </NuxtLink>
             <NuxtLink
+              v-if="getDeprecatedDepInfo(dep)"
+              :to="{
+                name: 'package',
+                params: { package: [...dep.split('/'), 'v', getDeprecatedDepInfo(dep)!.version] },
+              }"
+              class="shrink-0 text-purple-500"
+              :title="getDeprecatedDepInfo(dep)!.message"
+            >
+              <span class="i-carbon-warning-hex w-3 h-3 block" aria-hidden="true" />
+              <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
+            </NuxtLink>
+            <NuxtLink
               :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"
-              class="font-mono text-xs text-right truncate"
+              class="font-mono text-xs text-end truncate"
               :class="getVersionClass(outdatedDeps[dep])"
               :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep]) : version"
             >
@@ -164,7 +183,7 @@ const sortedOptionalDependencies = computed(() => {
         >
           {{ $t('package.peer_dependencies.title', { count: sortedPeerDependencies.length }) }}
           <span
-            class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             aria-hidden="true"
           />
         </a>
@@ -176,7 +195,7 @@ const sortedOptionalDependencies = computed(() => {
         <li
           v-for="peer in sortedPeerDependencies.slice(0, peerDepsExpanded ? undefined : 10)"
           :key="peer.name"
-          class="flex items-center justify-between py-1 text-sm gap-2"
+          class="flex items-center justify-start py-1 text-sm gap-2"
         >
           <div class="flex items-center gap-2 min-w-0">
             <NuxtLink
@@ -193,12 +212,13 @@ const sortedOptionalDependencies = computed(() => {
               {{ $t('package.dependencies.optional') }}
             </span>
           </div>
+          <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
           <NuxtLink
             :to="{
               name: 'package',
               params: { package: [...peer.name.split('/'), 'v', peer.version] },
             }"
-            class="font-mono text-xs text-fg-subtle max-w-[40%] text-right truncate"
+            class="font-mono text-xs text-fg-subtle max-w-[40%] text-end truncate"
             :title="peer.version"
           >
             {{ peer.version }}
@@ -234,7 +254,7 @@ const sortedOptionalDependencies = computed(() => {
             $t('package.optional_dependencies.title', { count: sortedOptionalDependencies.length })
           }}
           <span
-            class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             aria-hidden="true"
           />
         </a>
@@ -249,7 +269,7 @@ const sortedOptionalDependencies = computed(() => {
             optionalDepsExpanded ? undefined : 10,
           )"
           :key="dep"
-          class="flex items-center justify-between py-1 text-sm gap-2"
+          class="flex items-center justify-start py-1 text-sm gap-2"
         >
           <NuxtLink
             :to="{ name: 'package', params: { package: dep.split('/') } }"
@@ -257,9 +277,10 @@ const sortedOptionalDependencies = computed(() => {
           >
             {{ dep }}
           </NuxtLink>
+          <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
           <NuxtLink
             :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"
-            class="font-mono text-xs text-fg-subtle max-w-[50%] text-right truncate"
+            class="font-mono text-xs text-fg-subtle max-w-[50%] text-end truncate"
             :title="version"
           >
             {{ version }}

@@ -318,7 +318,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
       >
         {{ $t('package.versions.title') }}
         <span
-          class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
           aria-hidden="true"
         />
       </a>
@@ -343,15 +343,15 @@ function getTagVersions(tag: string): VersionDisplay[] {
           >
             <span
               v-if="loadingTags.has(row.tag)"
-              class="i-carbon-rotate-180 w-3 h-3 motion-safe:animate-spin"
+              class="i-carbon:rotate-180 w-3 h-3 motion-safe:animate-spin"
               data-testid="loading-spinner"
               aria-hidden="true"
             />
             <span
               v-else
-              class="w-3 h-3 transition-transform duration-200"
+              class="w-3 h-3 transition-transform duration-200 rtl-flip"
               :class="
-                expandedTags.has(row.tag) ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'
+                expandedTags.has(row.tag) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right'
               "
               aria-hidden="true"
             />
@@ -363,7 +363,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(row.primaryVersion.version)"
-                class="font-mono text-sm transition-colors duration-200 truncate"
+                class="font-mono text-sm transition-colors duration-200 truncate inline-flex items-center gap-1"
                 :class="
                   row.primaryVersion.deprecated
                     ? 'text-red-400 hover:text-red-300'
@@ -377,6 +377,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     : row.primaryVersion.version
                 "
               >
+                <span
+                  v-if="row.primaryVersion.deprecated"
+                  class="i-carbon-warning-hex w-3.5 h-3.5 shrink-0"
+                  aria-hidden="true"
+                />
                 {{ row.primaryVersion.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
@@ -412,13 +417,13 @@ function getTagVersions(tag: string): VersionDisplay[] {
         <!-- Expanded versions -->
         <div
           v-if="expandedTags.has(row.tag) && getTagVersions(row.tag).length > 1"
-          class="ml-4 pl-2 border-l border-border space-y-0.5"
+          class="ms-4 ps-2 border-is border-border space-y-0.5"
         >
           <div v-for="v in getTagVersions(row.tag).slice(1)" :key="v.version" class="py-1">
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(v.version)"
-                class="font-mono text-xs transition-colors duration-200 truncate"
+                class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                 :class="
                   v.deprecated
                     ? 'text-red-400 hover:text-red-300'
@@ -430,6 +435,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     : v.version
                 "
               >
+                <span
+                  v-if="v.deprecated"
+                  class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                  aria-hidden="true"
+                />
                 {{ v.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
@@ -470,7 +480,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
       <div class="pt-1">
         <button
           type="button"
-          class="flex items-center gap-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg-muted focus-visible:ring-offset-1 focus-visible:ring-offset-bg rounded-sm"
+          class="flex items-center gap-2 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg-muted focus-visible:ring-offset-1 focus-visible:ring-offset-bg rounded-sm"
           :aria-expanded="otherVersionsExpanded"
           :aria-label="
             otherVersionsExpanded
@@ -484,33 +494,39 @@ function getTagVersions(tag: string): VersionDisplay[] {
           >
             <span
               v-if="otherVersionsLoading"
-              class="i-carbon-rotate-180 w-3 h-3 motion-safe:animate-spin"
+              class="i-carbon:rotate-180 w-3 h-3 motion-safe:animate-spin"
               data-testid="loading-spinner"
               aria-hidden="true"
             />
             <span
               v-else
-              class="w-3 h-3 transition-transform duration-200"
-              :class="otherVersionsExpanded ? 'i-carbon-chevron-down' : 'i-carbon-chevron-right'"
+              class="w-3 h-3 transition-transform duration-200 rtl-flip"
+              :class="otherVersionsExpanded ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right'"
               aria-hidden="true"
             />
           </span>
           <span class="text-xs text-fg-muted py-1.5">
             {{ $t('package.versions.other_versions') }}
             <span v-if="hiddenTagRows.length > 0" class="text-fg-subtle">
-              ({{ $t('package.versions.more_tagged', { count: hiddenTagRows.length }) }})
+              ({{
+                $t(
+                  'package.versions.more_tagged',
+                  { count: hiddenTagRows.length },
+                  hiddenTagRows.length,
+                )
+              }})
             </span>
           </span>
         </button>
 
         <!-- Expanded other versions -->
-        <div v-if="otherVersionsExpanded" class="ml-4 pl-2 border-l border-border space-y-0.5">
+        <div v-if="otherVersionsExpanded" class="ms-4 ps-2 border-is border-border space-y-0.5">
           <!-- Hidden tag rows (overflow from visible tags) -->
           <div v-for="row in hiddenTagRows" :key="row.id" class="py-1">
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(row.primaryVersion.version)"
-                class="font-mono text-xs transition-colors duration-200 truncate"
+                class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                 :class="
                   row.primaryVersion.deprecated
                     ? 'text-red-400 hover:text-red-300'
@@ -524,6 +540,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     : row.primaryVersion.version
                 "
               >
+                <span
+                  v-if="row.primaryVersion.deprecated"
+                  class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                  aria-hidden="true"
+                />
                 {{ row.primaryVersion.version }}
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
@@ -568,11 +589,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       @click="toggleMajorGroup(group.groupKey)"
                     >
                       <span
-                        class="w-3 h-3 transition-transform duration-200"
+                        class="w-3 h-3 transition-transform duration-200 rtl-flip"
                         :class="
                           expandedMajorGroups.has(group.groupKey)
-                            ? 'i-carbon-chevron-down'
-                            : 'i-carbon-chevron-right'
+                            ? 'i-carbon:chevron-down'
+                            : 'i-carbon:chevron-right'
                         "
                         aria-hidden="true"
                       />
@@ -580,7 +601,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <NuxtLink
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -594,6 +615,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           : group.versions[0]?.version
                       "
                     >
+                      <span
+                        v-if="group.versions[0]?.deprecated"
+                        class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                        aria-hidden="true"
+                      />
                       {{ group.versions[0]?.version }}
                     </NuxtLink>
                   </div>
@@ -616,7 +642,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 </div>
                 <div
                   v-if="group.versions[0]?.tags?.length"
-                  class="flex items-center gap-1 ml-5 flex-wrap"
+                  class="flex items-center gap-1 ms-5 flex-wrap"
                 >
                   <span
                     v-for="tag in group.versions[0].tags"
@@ -636,7 +662,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <NuxtLink
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -650,6 +676,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           : group.versions[0]?.version
                       "
                     >
+                      <span
+                        v-if="group.versions[0]?.deprecated"
+                        class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                        aria-hidden="true"
+                      />
                       {{ group.versions[0]?.version }}
                     </NuxtLink>
                   </div>
@@ -670,7 +701,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     />
                   </div>
                 </div>
-                <div v-if="group.versions[0]?.tags?.length" class="flex items-center gap-1 ml-5">
+                <div v-if="group.versions[0]?.tags?.length" class="flex items-center gap-1 ms-5">
                   <span
                     v-for="tag in group.versions[0].tags"
                     :key="tag"
@@ -684,13 +715,13 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <!-- Version group versions -->
               <div
                 v-if="expandedMajorGroups.has(group.groupKey) && group.versions.length > 1"
-                class="ml-6 space-y-0.5"
+                class="ms-6 space-y-0.5"
               >
                 <div v-for="v in group.versions.slice(1)" :key="v.version" class="py-1">
                   <div class="flex items-center justify-between gap-2">
                     <NuxtLink
                       :to="versionRoute(v.version)"
-                      class="font-mono text-xs transition-colors duration-200 truncate"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         v.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -702,6 +733,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           : v.version
                       "
                     >
+                      <span
+                        v-if="v.deprecated"
+                        class="i-carbon-warning-hex w-3 h-3 shrink-0"
+                        aria-hidden="true"
+                      />
                       {{ v.version }}
                     </NuxtLink>
                     <div class="flex items-center gap-2 shrink-0">
