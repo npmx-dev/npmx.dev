@@ -2,7 +2,6 @@
 import { debounce } from 'perfect-debounce'
 
 const router = useRouter()
-const buildInfo = useAppConfig().buildInfo
 
 const searchQuery = ref('')
 const searchInputRef = useTemplateRef('searchInputRef')
@@ -43,39 +42,15 @@ defineOgImageComponent('Default')
           aria-hidden="true"
           :alt="$t('alt_logo')"
           src="/logo.svg"
+          width="48"
+          height="48"
           class="w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl"
         />
         <span class="pb-4">npmx</span>
       </h1>
 
-      <!-- Build info badge (moved below title) -->
-      <div
-        class="mb-8 font-mono text-xs text-fg-muted flex items-center justify-center gap-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
-        style="animation-delay: 0.05s"
-      >
-        <NuxtLink
-          v-if="buildInfo.env === 'release'"
-          external
-          :href="`https://github.com/npmx-dev/npmx.dev/tag/v${buildInfo.version}`"
-          target="_blank"
-          class="hover:text-fg transition-colors"
-        >
-          v{{ buildInfo.version }}
-        </NuxtLink>
-        <span v-else class="uppercase tracking-wider">{{ buildInfo.env }}</span>
-
-        <template v-if="buildInfo.commit && buildInfo.branch !== 'release'">
-          <span>&middot;</span>
-          <NuxtLink
-            external
-            :href="`https://github.com/npmx-dev/npmx.dev/commit/${buildInfo.commit}`"
-            target="_blank"
-            class="hover:text-fg transition-colors"
-          >
-            {{ buildInfo.shortCommit }}
-          </NuxtLink>
-        </template>
-      </div>
+      <!-- Build info badge -->
+      <BuildEnvironment />
 
       <p
         class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 motion-safe:animate-slide-up motion-safe:animate-fill-both"

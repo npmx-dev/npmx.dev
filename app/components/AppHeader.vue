@@ -52,6 +52,8 @@ onKeyStroke(',', e => {
               aria-hidden="true"
               :alt="$t('alt_logo')"
               src="/logo.svg"
+              width="96"
+              height="96"
               class="w-8 h-8 rounded-lg"
             />
             <span>npmx</span>
