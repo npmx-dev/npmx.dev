@@ -703,7 +703,7 @@ defineOgImageComponent('Default', {
 </script>
 
 <template>
-  <main class="flex-1 overflow-x-hidden">
+  <main class="flex-1" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
     <!-- Results area with container padding -->
     <div class="container-sm py-6">
       <section v-if="query" :aria-label="$t('search.results')">
