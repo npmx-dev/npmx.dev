@@ -88,7 +88,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 </script>
 
 <template>
-  <div class="docs-page min-h-screen">
+  <div class="docs-page flex-1 flex flex-col">
     <!-- Visually hidden h1 for accessibility -->
     <h1 class="sr-only">{{ packageName }} API Documentation</h1>
 

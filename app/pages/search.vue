@@ -758,7 +758,7 @@ defineOgImageComponent('Default', {
 </script>
 
 <template>
-  <main class="overflow-x-hidden">
+  <main class="flex-1 overflow-x-hidden">
     <!-- Sticky search header - positioned below AppHeader (h-14 = 56px) -->
     <header class="sticky top-14 z-40 bg-bg/95 backdrop-blur-sm border-b border-border">
       <div class="container-sm py-4">

@@ -29,6 +29,10 @@ useHead({
   },
 })
 
+if (import.meta.server) {
+  setJsonLd(createWebSiteSchema())
+}
+
 // Global keyboard shortcut: "/" focuses search or navigates to search page
 function handleGlobalKeydown(e: KeyboardEvent) {
   const target = e.target as HTMLElement

@@ -29,7 +29,7 @@ defineOgImageComponent('Default', {
 </script>
 
 <template>
-  <main class="container py-12 sm:py-16 min-h-screen w-full">
+  <main class="container flex-1 py-12 sm:py-16 w-full">
     <article class="max-w-2xl mx-auto">
       <!-- Header -->
       <header class="mb-12">

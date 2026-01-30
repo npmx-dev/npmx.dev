@@ -494,13 +494,10 @@ function handleClick(event: MouseEvent) {
 </script>
 
 <template>
-  <main class="container py-8 xl:py-12">
+  <main class="container flex-1 py-8 xl:py-12">
     <PackageSkeleton v-if="status === 'pending'" />
 
-    <article
-      v-else-if="status === 'success' && pkg"
-      class="package-page motion-safe:animate-fade-in"
-    >
+    <article v-else-if="status === 'success' && pkg" class="package-page">
       <!-- Package header -->
       <header class="area-header border-b border-border">
         <div class="mb-4">
@@ -784,9 +781,9 @@ function handleClick(event: MouseEvent) {
 
         <!-- Stats grid -->
         <dl
-          class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
+          class="grid grid-cols-2 sm:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
         >
-          <div v-if="pkg.license" class="space-y-1">
+          <div v-if="pkg.license" class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
               {{ $t('package.stats.license') }}
             </dt>
@@ -795,7 +792,7 @@ function handleClick(event: MouseEvent) {
             </dd>
           </div>
 
-          <div class="space-y-1">
+          <div class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
               {{ $t('package.stats.deps') }}
             </dt>
@@ -854,7 +851,7 @@ function handleClick(event: MouseEvent) {
             </dd>
           </div>
 
-          <div class="space-y-1">
+          <div class="space-y-1 sm:col-span-3">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
               <span
@@ -893,7 +890,7 @@ function handleClick(event: MouseEvent) {
 
           <!-- Vulnerabilities count -->
           <ClientOnly>
-            <div class="space-y-1">
+            <div class="space-y-1 sm:col-span-2">
               <dt class="text-xs text-fg-subtle uppercase tracking-wider">
                 {{ $t('package.stats.vulns') }}
               </dt>
@@ -918,7 +915,7 @@ function handleClick(event: MouseEvent) {
               </dd>
             </div>
             <template #fallback>
-              <div class="space-y-1">
+              <div class="space-y-1 sm:col-span-2">
                 <dt class="text-xs text-fg-subtle uppercase tracking-wider">
                   {{ $t('package.stats.vulns') }}
                 </dt>
@@ -927,7 +924,7 @@ function handleClick(event: MouseEvent) {
             </template>
           </ClientOnly>
 
-          <div v-if="pkg.time?.modified" class="space-y-1">
+          <div v-if="pkg.time?.modified" class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
               {{ $t('package.stats.updated') }}
             </dt>
