@@ -597,7 +597,7 @@ const config = computed(() => {
             <select
               id="granularity"
               v-model="selectedGranularity"
-              class="w-full bg-transparent font-mono text-sm text-fg outline-none appearance-none"
+              class="w-full bg-bg-subtle font-mono text-sm text-fg outline-none appearance-none"
             >
               <option value="daily">{{ $t('package.downloads.granularity_daily') }}</option>
               <option value="weekly">{{ $t('package.downloads.granularity_weekly') }}</option>
@@ -624,7 +624,7 @@ const config = computed(() => {
                 id="startDate"
                 v-model="startDate"
                 type="date"
-                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:dark]"
+                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
           </div>
@@ -644,7 +644,7 @@ const config = computed(() => {
                 id="endDate"
                 v-model="endDate"
                 type="date"
-                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:dark]"
+                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:light] dark:[color-scheme:dark]"
               />
             </div>
           </div>
