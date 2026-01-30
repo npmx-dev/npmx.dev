@@ -72,8 +72,8 @@ const filteredChanges = computed(() => {
 
 // Sync selection with ?file= query for shareable links
 watch(
-  () => route.query.file,
-  filePath => {
+  [() => route.query.file, compare],
+  ([filePath]) => {
     if (initializedFromQuery.value || !filePath || !compare.value) return
     const match = allChanges.value.find(f => f.path === filePath)
     if (match) {
