@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { FileDiffResponse, FileChange } from '#shared/types'
 import { createDiff, insertSkipBlocks, countDiffStats } from '#shared/utils/diff'
-// @ts-expect-error: (tasky): idk why this is type-erroring even if it has types? /shrug
 import { motion } from 'motion-v'
 
 const props = defineProps<{
@@ -68,6 +67,12 @@ async function fetchFileContent(version: string): Promise<string | null> {
     }
 
     return text
+  } catch (err) {
+    // Provide specific error message for timeout
+    if (err instanceof Error && err.name === 'AbortError') {
+      throw new Error(`Request timed out after ${DIFF_TIMEOUT / 1000}s`, { cause: err })
+    }
+    throw err
   } finally {
     clearTimeout(timeoutId)
   }
@@ -80,7 +85,10 @@ function computeDiff() {
   const oldContent = fromContent.value ?? ''
   const newContent = toContent.value ?? ''
 
-  // Determine type
+  // Determine diff type based on content availability
+  // Note: FileDiffResponse uses 'add'/'delete'/'modify' while FileChange uses
+  // 'added'/'removed'/'modified' - this is intentional to distinguish between
+  // the file-level change info (FileChange) and the diff content type (FileDiff)
   let type: FileDiffResponse['type'] = 'modify'
   if (fromContent.value === null && toContent.value !== null) type = 'add'
   else if (fromContent.value !== null && toContent.value === null) type = 'delete'

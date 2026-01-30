@@ -7,7 +7,6 @@ definePageMeta({
 })
 
 const route = useRoute('compare')
-const { t } = useI18n()
 
 // Parse package name and version range from URL
 // Patterns:
@@ -154,11 +153,6 @@ const fromVersionUrlPattern = computed(() => {
 const toVersionUrlPattern = computed(() => {
   return `/compare/${packageName.value}/v/${fromVersion.value}...{version}`
 })
-
-function getCodeUrl(version: string, path?: string): string {
-  const base = `/code/${packageName.value}/v/${version}`
-  return path ? `${base}/${path}` : base
-}
 
 function packageRoute(ver?: string | null) {
   const segments = packageName.value.split('/')
