@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { NpmVersionDist, PackumentVersion, ReadmeResponse } from '#shared/types'
+import type {
+  NpmVersionDist,
+  PackumentVersion,
+  ProvenanceDetails,
+  ReadmeResponse,
+} from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { onKeyStroke } from '@vueuse/core'
@@ -106,6 +111,33 @@ watch(
       fetchVulnTree()
     }
   },
+)
+
+// Fetch provenance details when the displayed version has attestations
+const {
+  data: provenanceData,
+  status: provenanceStatus,
+  execute: fetchProvenance,
+} = useLazyFetch<ProvenanceDetails | null>(
+  () => {
+    const v = displayVersion.value
+    if (!v || !hasProvenance(v)) return ''
+    return `/api/registry/provenance/${packageName.value}/v/${v.version}`
+  },
+  {
+    default: () => null,
+    server: false,
+    immediate: false,
+  },
+)
+watch(
+  () => [displayVersion.value?.version, hasProvenance(displayVersion.value)],
+  () => {
+    if (displayVersion.value && hasProvenance(displayVersion.value)) {
+      fetchProvenance()
+    }
+  },
+  { immediate: true },
 )
 
 // Keep latestVersion for comparison (to show "(latest)" badge)
@@ -408,19 +440,40 @@ function handleClick(event: MouseEvent) {
               >
               <span v-else>v{{ displayVersion.version }}</span>
 
-              <a
-                v-if="hasProvenance(displayVersion)"
-                :href="`https://www.npmjs.com/package/${pkg.name}/v/${displayVersion.version}#provenance`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
-                :title="$t('package.verified_provenance')"
-              >
-                <span
-                  class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0"
-                  aria-hidden="true"
-                />
-              </a>
+              <AppPopover v-if="hasProvenance(displayVersion)" position="bottom">
+                <template #content>
+                  <p class="flex items-center gap-2 text-fg m-0">
+                    <span
+                      class="i-solar-shield-check-outline w-3.5 h-3.5 shrink-0 text-emerald-500"
+                      aria-hidden="true"
+                    />
+                    <span>{{
+                      provenanceData
+                        ? $t('package.provenance_section.built_and_signed_on', {
+                            provider: provenanceData.providerLabel,
+                          })
+                        : $t('package.verified_provenance')
+                    }}</span>
+                  </p>
+                  <a href="#provenance" class="block mt-1.5 link font-medium">
+                    {{ $t('package.provenance_section.view_more_details') }}
+                  </a>
+                </template>
+                <template #default="{ popoverVisible }">
+                  <a
+                    :href="`https://www.npmjs.com/package/${pkg.name}/v/${displayVersion.version}#provenance`"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-emerald-500 transition-colors duration-200 min-w-6 min-h-6"
+                    :class="popoverVisible && 'text-emerald-500'"
+                  >
+                    <span
+                      class="i-solar-shield-check-outline w-3.5 h-3.5 shrink-0"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </template>
+              </AppPopover>
               <span
                 v-if="
                   requestedVersion &&
@@ -897,6 +950,27 @@ function handleClick(event: MouseEvent) {
             $t('package.readme.view_on_github')
           }}</a>
         </p>
+
+        <!-- Provenance details (when version has attestations) -->
+        <template v-if="hasProvenance(displayVersion)">
+          <div
+            v-if="provenanceStatus === 'pending'"
+            class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
+          >
+            <span
+              class="i-carbon-circle-dash w-4 h-4 motion-safe:animate-spin"
+              aria-hidden="true"
+            />
+            <span>{{ $t('package.provenance_section.title') }}…</span>
+          </div>
+          <PackageProvenanceSection
+            v-else-if="provenanceData"
+            :details="provenanceData"
+            :package-name="pkg.name"
+            :version="displayVersion?.version"
+            class="mt-8"
+          />
+        </template>
       </section>
 
       <div class="area-sidebar">
