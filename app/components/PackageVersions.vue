@@ -330,7 +330,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
       <!-- Dist-tag rows (limited to MAX_VISIBLE_TAGS) -->
       <div v-for="row in visibleTagRows" :key="row.id">
         <div
-          class="flex items-center gap-2 pr-2"
+          class="flex items-center gap-2 pe-2"
           :class="row.tag === 'latest' ? 'bg-bg-subtle rounded-lg' : ''"
         >
           <!-- Expand button (only if there are more versions to show) -->
@@ -424,7 +424,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
         <!-- Expanded versions -->
         <div
           v-if="expandedTags.has(row.tag) && getTagVersions(row.tag).length > 1"
-          class="ms-4 ps-2 border-is border-border space-y-0.5 pr-2"
+          class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
         >
           <div v-for="v in getTagVersions(row.tag).slice(1)" :key="v.version" class="py-1">
             <div class="flex items-center justify-between gap-2">
@@ -554,7 +554,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 />
                 {{ row.primaryVersion.version }}
               </NuxtLink>
-              <div class="flex items-center gap-2 shrink-0 pr-2">
+              <div class="flex items-center gap-2 shrink-0 pe-2">
                 <DateTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
@@ -630,7 +630,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       {{ group.versions[0]?.version }}
                     </NuxtLink>
                   </div>
-                  <div class="flex items-center gap-2 shrink-0 pr-2">
+                  <div class="flex items-center gap-2 shrink-0 pe-2">
                     <DateTime
                       v-if="group.versions[0]?.time"
                       :datetime="group.versions[0]?.time"
