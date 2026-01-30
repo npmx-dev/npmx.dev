@@ -15,7 +15,7 @@ const isExpanded = shallowRef(false)
 const showAll = shallowRef(false)
 
 const hasDeprecated = computed(
-  () => analysisData.value && analysisData.value.deprecatedPackages.length > 0,
+  () => analysisData.value?.deprecatedPackages && analysisData.value.deprecatedPackages.length > 0,
 )
 
 // Banner color - purple for deprecated
