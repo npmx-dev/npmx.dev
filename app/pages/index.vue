@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import { debounce } from 'perfect-debounce'
-
 const router = useRouter()
 const searchQuery = ref('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
 
-const debouncedNavigate = debounce(() => {
-  router.push({
-    path: '/search',
-    query: searchQuery.value.trim() ? { q: searchQuery.value.trim() } : undefined,
-  })
-}, 250)
-
 function handleSearch() {
-  // If input is empty, navigate immediately (no need to debounce)
-  return searchQuery.value.trim() ? debouncedNavigate() : router.push('/search')
+  router.push({
+    name: 'search',
+    query: {
+      q: searchQuery.value.trim(),
+    },
+  })
 }
 
 useSeoMeta({
@@ -78,7 +73,6 @@ defineOgImageComponent('Default')
                 v-bind="noCorrect"
                 autofocus
                 class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-                @input="handleSearch"
               />
 
               <button
