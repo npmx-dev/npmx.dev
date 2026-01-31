@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@atproto/api": "^0.18.17",
+    "@atcute/bluesky-richtext-segmenter": "3.0.0",
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
     "@deno/doc": "jsr:^0.189.1",

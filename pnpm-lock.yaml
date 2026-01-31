@@ -20,6 +20,9 @@ importers:
 
   .:
     dependencies:
+      '@atcute/bluesky-richtext-segmenter':
+        specifier: 3.0.0
+        version: 3.0.0
       '@atproto/api':
         specifier: ^0.18.17
         version: 0.18.20
@@ -315,6 +318,9 @@ packages:
     resolution: {integrity: sha512-60vepv88RwcJtSHrD6MjIL6Ta3SOYbgfnkHb+ppAVK+o9mXprRtulx7VlRl3lN3bbvysAfCS7WMVfhUYemB0IQ==}
     engines: {node: '>= 16'}
 
+  '@atcute/bluesky-richtext-segmenter@3.0.0':
+    resolution: {integrity: sha512-NhZTUKtFpeBBbILwAcxj5u4RobIoHOmGw3CAaaEFNebKYSvmTecrXJ7XufHw5DFOUdr8SiKXQVRQxGAxulMNWg==}
+
   '@atproto-labs/did-resolver@0.2.6':
     resolution: {integrity: sha512-2K1bC04nI2fmgNcvof+yA28IhGlpWn2JKYlPa7To9JTKI45FINCGkQSGiL2nyXlyzDJJ34fZ1aq6/IRFIOIiqg==}
 
@@ -346,9 +352,6 @@ packages:
 
   '@atproto/api@0.18.20':
     resolution: {integrity: sha512-BZYZkh2VJIFCXEnc/vzKwAwWjAQQTgbNJ8FBxpBK+z+KYh99O0uPCsRYKoCQsRrnkgrhzdU9+g2G+7zanTIGbw==}
-
-  '@atproto/common-web@0.4.14':
-    resolution: {integrity: sha512-rMU8Q+kpyPpirUS9OqT7aOD1hxKa+diem3vc7BA0lOkj0tU6wcAxegxmbPZ8JaOsR7SSYhP/jCt/5wbT4qqkuQ==}
 
   '@atproto/common-web@0.4.15':
     resolution: {integrity: sha512-A4l9gyqUNez8CjZp/Trypz/D3WIQsNj8dN05WR6+RoBbvwc9JhWjKPrm+WoVYc/F16RPdXHLkE3BEJlGIyYIiA==}
@@ -9567,6 +9570,8 @@ snapshots:
       '@types/json-schema': 7.0.15
       js-yaml: 4.1.1
 
+  '@atcute/bluesky-richtext-segmenter@3.0.0': {}
+
   '@atproto-labs/did-resolver@0.2.6':
     dependencies:
       '@atproto-labs/fetch': 0.2.3
@@ -9625,13 +9630,6 @@ snapshots:
       tlds: 1.261.0
       zod: 3.25.76
 
-  '@atproto/common-web@0.4.14':
-    dependencies:
-      '@atproto/lex-data': 0.0.9
-      '@atproto/lex-json': 0.0.9
-      '@atproto/syntax': 0.4.3
-      zod: 3.25.76
-
   '@atproto/common-web@0.4.15':
     dependencies:
       '@atproto/lex-data': 0.0.10
@@ -9641,7 +9639,7 @@ snapshots:
 
   '@atproto/common@0.5.9':
     dependencies:
-      '@atproto/common-web': 0.4.14
+      '@atproto/common-web': 0.4.15
       '@atproto/lex-cbor': 0.0.9
       '@atproto/lex-data': 0.0.9
       iso-datestring-validator: 2.2.2
@@ -9766,7 +9764,7 @@ snapshots:
 
   '@atproto/lexicon@0.6.1':
     dependencies:
-      '@atproto/common-web': 0.4.14
+      '@atproto/common-web': 0.4.15
       '@atproto/syntax': 0.4.3
       iso-datestring-validator: 2.2.2
       multiformats: 9.9.0
@@ -9809,7 +9807,7 @@ snapshots:
   '@atproto/repo@0.8.12':
     dependencies:
       '@atproto/common': 0.5.9
-      '@atproto/common-web': 0.4.14
+      '@atproto/common-web': 0.4.15
       '@atproto/crypto': 0.4.5
       '@atproto/lexicon': 0.6.1
       '@ipld/dag-cbor': 7.0.3
