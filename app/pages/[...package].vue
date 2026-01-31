@@ -448,7 +448,7 @@ function handleClick(event: MouseEvent) {
               </template>
             </ClientOnly>
 
-            <!-- Internal navigation: Docs + Code (hidden on mobile, shown in external links instead) -->
+            <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
             <nav
               v-if="displayVersion"
               :aria-label="$t('package.navigation')"
@@ -485,6 +485,14 @@ function handleClick(event: MouseEvent) {
                 >
                   .
                 </kbd>
+              </NuxtLink>
+              <NuxtLink
+                v-if="latestVersion && displayVersion.version !== latestVersion.version"
+                :to="`/compare/${pkg.name}/v/${displayVersion.version}...${latestVersion.version}`"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-compare w-3 h-3" aria-hidden="true" />
+                {{ $t('compare.compare_versions') }}
               </NuxtLink>
             </nav>
           </div>

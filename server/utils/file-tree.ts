@@ -50,6 +50,7 @@ export function convertToFileTree(
         name: node.name,
         path,
         type: 'file',
+        hash: node.hash,
         size: node.size,
       })
     }
