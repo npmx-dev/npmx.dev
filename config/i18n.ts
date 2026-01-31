@@ -134,11 +134,15 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'de-DE.json',
     name: 'Deutsch',
   },
-  /*{
-      code: 'hu-HU',
-      file: 'hu-HU.json',
-      name: 'Magyar',
-    },*/
+  {
+    code: 'hu-HU',
+    file: 'hu-HU.json',
+    name: 'Magyar',
+    pluralRule: (choice: number) => {
+      const name = new Intl.PluralRules('hu-HU').select(choice)
+      return { zero: 0, one: 0, two: 1, few: 1, many: 1, other: 1 }[name]
+    },
+  },
   {
     code: 'zh-CN',
     file: 'zh-CN.json',

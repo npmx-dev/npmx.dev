@@ -30,6 +30,19 @@ function expandMobileSearch() {
   })
 }
 
+watch(
+  isOnSearchPage,
+  visible => {
+    if (!visible) return
+
+    searchBoxRef.value?.focus()
+    nextTick(() => {
+      searchBoxRef.value?.focus()
+    })
+  },
+  { flush: 'sync' },
+)
+
 function handleSearchBlur() {
   showFullSearch.value = false
   // Collapse expanded search on mobile after blur (with delay for click handling)

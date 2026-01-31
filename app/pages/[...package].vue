@@ -936,7 +936,7 @@ function handleClick(event: MouseEvent) {
           </a>
         </h2>
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-        <div
+        <article
           v-if="readmeData?.html"
           class="readme-content prose prose-invert max-w-[70ch]"
           v-html="readmeData.html"
@@ -952,7 +952,7 @@ function handleClick(event: MouseEvent) {
 
       <div class="area-sidebar">
         <!-- Sidebar -->
-        <aside class="sticky top-20 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
+        <div class="sticky top-20 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 
@@ -1060,7 +1060,7 @@ function handleClick(event: MouseEvent) {
             :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
             :optional-dependencies="displayVersion.optionalDependencies"
           />
-        </aside>
+        </div>
       </div>
     </article>
 
