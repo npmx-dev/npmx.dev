@@ -276,11 +276,11 @@ function getCodeUrl(version: string): string {
           <!-- Dropdown menu -->
           <motion.div
             v-if="showOptions"
-            class="absolute right-0 top-full mt-2 z-20 p-4 bg-bg-elevated/40 backdrop-blur-sm border border-border shadow-2xl overflow-hidden"
-            :initial="{ width: 220, height: 110, borderRadius: 20 }"
+            class="absolute right-0 top-full mt-2 z-20 p-4 bg-bg-elevated border border-border shadow-2xl overflow-hidden"
+            :initial="{ width: 220, height: 100, borderRadius: 20 }"
             :animate="{
               width: mergeModifiedLines ? 400 : 220,
-              height: mergeModifiedLines ? 260 : 110,
+              height: mergeModifiedLines ? 220 : 100,
               borderRadius: mergeModifiedLines ? 14 : 20,
             }"
             :transition="{
@@ -320,7 +320,7 @@ function getCodeUrl(version: string): string {
                       v-for="mark in changeRatioMarks"
                       :key="`cr-${mark}`"
                       class="slider-mark"
-                      :style="{ left: `calc(${mark}% - 11px)` }"
+                      :style="{ left: `calc(${mark}% - 1.5px)` }"
                     />
                     <div class="slider-range" :style="{ width: `${changeRatioPercent}%` }" />
                   </div>
@@ -353,7 +353,7 @@ function getCodeUrl(version: string): string {
                       v-for="mark in diffDistanceMarks"
                       :key="`dd-${mark}`"
                       class="slider-mark"
-                      :style="{ left: `calc(${mark}% - 11px)` }"
+                      :style="{ left: `calc(${mark}% - 1.5px)` }"
                     />
                     <div class="slider-range" :style="{ width: `${diffDistancePercent}%` }" />
                   </div>
@@ -386,7 +386,7 @@ function getCodeUrl(version: string): string {
                       v-for="mark in charEditMarks"
                       :key="`ce-${mark}`"
                       class="slider-mark"
-                      :style="{ left: `calc(${mark}% - 11px)` }"
+                      :style="{ left: `calc(${mark}% - 1.5px)` }"
                     />
                     <div class="slider-range" :style="{ width: `${charEditPercent}%` }" />
                   </div>
@@ -481,21 +481,17 @@ function getCodeUrl(version: string): string {
   position: relative;
   display: flex;
   align-items: center;
-  height: 48px;
+  height: 36px;
   width: 100%;
   border: 1px solid var(--border);
   background: var(--bg-subtle);
-  border-radius: 12px;
+  border-radius: 6px;
   overflow: hidden;
   cursor: grab;
-  transition:
-    background-color 150ms ease,
-    border-color 150ms ease,
-    opacity 150ms ease;
+  transition: border-color 200ms ease;
 }
 
 .slider-shell:hover {
-  background: var(--bg-muted);
   border-color: var(--border-hover);
 }
 
@@ -514,27 +510,23 @@ function getCodeUrl(version: string): string {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 12px;
   pointer-events: none;
   z-index: 3;
 }
 
 .slider-label {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 400;
-  color: color-mix(in srgb, var(--fg) 30%, transparent);
-  letter-spacing: -0.01em;
-  transition: color 150ms ease;
-}
-
-.slider-shell:hover .slider-label {
   color: var(--fg);
+  letter-spacing: -0.01em;
+  transition: color 200ms ease;
 }
 
 .slider-value {
-  min-width: 32px;
+  min-width: 24px;
   text-align: right;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--fg);
 }
@@ -542,8 +534,8 @@ function getCodeUrl(version: string): string {
 .slider-track {
   position: absolute;
   inset: 0;
-  background: var(--bg-muted);
-  border-radius: 10px;
+  background: var(--bg-subtle);
+  border-radius: 5px;
   overflow: hidden;
   z-index: 1;
   pointer-events: none;
@@ -552,42 +544,23 @@ function getCodeUrl(version: string): string {
 .slider-mark {
   position: absolute;
   top: 50%;
-  width: 6px;
-  height: 6px;
+  width: 3px;
+  height: 3px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--fg) 20%, transparent);
+  background: var(--border);
   transform: translateY(-50%);
   pointer-events: none;
-  opacity: 0.9;
+  opacity: 0.6;
 }
 
 .slider-range {
   position: absolute;
   inset: 0 auto 0 0;
-  background: var(--bg-subtle);
-  border-radius: 10px;
-  transition:
-    width 150ms ease-out,
-    background-color 150ms ease-out;
+  background: var(--bg-muted);
+  border-radius: 5px;
+  transition: width 150ms ease-out;
   z-index: 2;
   pointer-events: none;
-}
-
-.slider-range::after {
-  content: '';
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  width: 2px;
-  height: 28px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--fg) 20%, transparent);
-  transform: translateY(-50%);
-  transition: background-color 150ms ease;
-}
-
-.slider-shell:hover .slider-range::after {
-  background: color-mix(in srgb, var(--fg) 50%, transparent);
 }
 
 .slider-input {
@@ -606,13 +579,13 @@ function getCodeUrl(version: string): string {
 
 .slider-input::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 32px;
-  width: 16px;
+  height: 24px;
+  width: 12px;
 }
 
 .slider-input::-moz-range-thumb {
-  height: 32px;
-  width: 16px;
+  height: 24px;
+  width: 12px;
   border: none;
   background: transparent;
 }
