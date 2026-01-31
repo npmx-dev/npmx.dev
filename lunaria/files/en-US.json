@@ -181,7 +181,8 @@
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
-      "view_on_github": "View on GitHub"
+      "view_on_github": "View on GitHub",
+      "toc_title": "Outline"
     },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
