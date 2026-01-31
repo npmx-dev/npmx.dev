@@ -180,7 +180,7 @@ defineOgImageComponent('Default', {
           >
             <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
             <span class="font-mono"
-              >{{ formatNumber(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
+              >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
             >
           </p>
         </div>
