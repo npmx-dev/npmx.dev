@@ -13,12 +13,7 @@ const debouncedNavigate = debounce(() => {
     path: '/search',
     query: searchQuery.value.trim() ? { q: searchQuery.value.trim() } : undefined,
   })
-  if (!isMobile.value) {
-    nextTick(() => {
-      document.getElementById('header-search')?.focus()
-    })
-  }
-}, 250)
+}, 500)
 
 function handleSearch() {
   // If input is empty, navigate immediately (no need to debounce)

@@ -70,6 +70,9 @@ watch(
     if (searchQuery.value !== value) {
       searchQuery.value = value
     }
+    nextTick(() => {
+      document.getElementById('header-search')?.focus()
+    })
   },
 )
 
