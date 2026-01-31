@@ -703,8 +703,7 @@ function handleClick(event: MouseEvent) {
 
         <!-- Stats grid -->
         <dl
-          class="grid grid-cols-2 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
-          :class="skillsData?.skills?.length ? 'sm:grid-cols-12' : 'sm:grid-cols-11'"
+          class="grid grid-cols-2 sm:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
         >
           <div v-if="pkg.license" class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
@@ -855,25 +854,6 @@ function handleClick(event: MouseEvent) {
               <DateTime :datetime="pkg.time.modified" date-style="medium" />
             </dd>
           </div>
-
-          <!-- Skills -->
-          <ClientOnly>
-            <div v-if="skillsData?.skills?.length" class="space-y-1 sm:col-span-1">
-              <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-                {{ $t('package.stats.skills', 'Skills') }}
-              </dt>
-              <dd class="font-mono text-sm text-fg">
-                <button
-                  type="button"
-                  class="inline-flex items-center gap-1 hover:text-fg-muted transition-colors"
-                  @click="skillsModalOpen = true"
-                >
-                  <span class="i-carbon:bot w-3.5 h-3.5" aria-hidden="true" />
-                  {{ skillsData.skills.length }}
-                </button>
-              </dd>
-            </div>
-          </ClientOnly>
         </dl>
 
         <!-- Skills Modal -->
@@ -1025,6 +1005,17 @@ function handleClick(event: MouseEvent) {
               </li>
             </ul>
           </section>
+
+          <!-- Agent Skills -->
+          <ClientOnly>
+            <PackageSkillsCard
+              v-if="skillsData?.skills?.length"
+              :skills="skillsData.skills"
+              :package-name="pkg.name"
+              :version="displayVersion?.version"
+              v-model:open="skillsModalOpen"
+            />
+          </ClientOnly>
 
           <!-- Download stats -->
           <PackageWeeklyDownloadStats :packageName />

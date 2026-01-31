@@ -138,13 +138,13 @@ function handleKeydown(event: KeyboardEvent) {
               </div>
             </div>
 
-            <!-- skills-npm: requires setup -->
+            <!-- skills-npm: compatible -->
             <div
               v-if="selectedMethod === 'skills-npm'"
               class="flex items-center justify-between gap-2 px-3 py-2.5 sm:px-4 bg-bg-subtle border border-border rounded-lg mb-5"
             >
               <span class="text-sm text-fg-muted"
-                >Requires <code class="font-mono text-fg">skills-npm</code> setup</span
+                >Compatible with <code class="font-mono text-fg">skills-npm</code></span
               >
               <a
                 href="/skills-npm"
@@ -166,9 +166,9 @@ function handleKeydown(event: KeyboardEvent) {
                 <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
               </div>
               <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto">
-                <div class="flex items-center gap-2 group/cmd">
-                  <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-                  <code class="font-mono text-sm"
+                <div class="flex flex-wrap items-start gap-x-2 gap-y-1 group/cmd">
+                  <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+                  <code class="font-mono text-sm break-all"
                     ><span class="text-fg">npx </span
                     ><span class="text-fg-muted"
                       >skills add {{ baseUrl }}/{{ packageName }}</span
@@ -189,7 +189,10 @@ function handleKeydown(event: KeyboardEvent) {
             </div>
 
             <!-- Skills list -->
-            <h3 class="text-xs text-fg-subtle uppercase tracking-wider mb-2">Available Skills</h3>
+            <div class="flex items-baseline justify-between gap-2 mb-2">
+              <h3 class="text-xs text-fg-subtle uppercase tracking-wider">Available Skills</h3>
+              <span class="text-xs text-fg-subtle/60">Click to expand</span>
+            </div>
             <ul class="space-y-0.5 list-none m-0 p-0">
               <li v-for="skill in skills" :key="skill.dirName">
                 <button
