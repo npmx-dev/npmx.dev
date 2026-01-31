@@ -1,23 +1,15 @@
 <script setup lang="ts">
-import { debounce } from 'perfect-debounce'
-
+const isMobile = useIsMobile()
 const router = useRouter()
 const searchQuery = shallowRef('')
-const searchInputRef = useTemplateRef('searchInputRef')
-const { focused: isSearchFocused } = useFocus(searchInputRef)
 
-const isMobile = useIsMobile()
-
-const debouncedNavigate = debounce(() => {
+function handleSubmit() {
   router.push({
-    path: '/search',
-    query: searchQuery.value.trim() ? { q: searchQuery.value.trim() } : undefined,
+    name: 'search',
+    query: {
+      q: searchQuery.value,
+    },
   })
-}, 250)
-
-function handleSearch() {
-  // If input is empty, navigate immediately (no need to debounce)
-  return searchQuery.value.trim() ? debouncedNavigate() : router.push('/search')
 }
 
 useSeoMeta({
@@ -64,13 +56,12 @@ defineOgImageComponent('Default', {
         class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
         style="animation-delay: 0.2s"
       >
-        <form method="GET" action="/search" class="relative" @submit.prevent="handleSearch">
+        <form method="GET" action="/search" class="relative" @submit.prevent="handleSubmit">
           <label for="home-search" class="sr-only">
             {{ $t('search.label') }}
           </label>
 
-          <!-- Search input with glow effect on focus -->
-          <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
+          <div class="relative group">
             <!-- Subtle glow effect -->
             <div
               class="absolute -inset-px rounded-lg bg-gradient-to-r from-fg/0 via-fg/5 to-fg/0 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
@@ -86,14 +77,13 @@ defineOgImageComponent('Default', {
               <input
                 id="home-search"
                 ref="searchInputRef"
-                v-model="searchQuery"
+                v-model.trim="searchQuery"
                 type="search"
                 name="q"
                 :placeholder="$t('search.placeholder')"
                 v-bind="noCorrect"
                 :autofocus="!isMobile"
                 class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-                @input="handleSearch"
               />
 
               <button
