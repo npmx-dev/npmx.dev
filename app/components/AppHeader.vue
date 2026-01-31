@@ -110,14 +110,14 @@ onKeyStroke(
 
       <!-- Center: Search bar + nav items -->
       <div
-        class="flex items-center justify-center md:gap-6"
-        :class="isSearchExpanded ? 'flex-1' : 'flex-1 hidden sm:flex'"
+        class="flex-1 flex items-center justify-center md:gap-6"
+        :class="{ 'hidden sm:flex': !isSearchExpanded }"
       >
         <!-- Search bar (hidden on mobile unless expanded) -->
         <SearchBox
           ref="searchBoxRef"
           :inputClass="isSearchExpanded ? 'w-full' : ''"
-          :class="isSearchExpanded ? 'flex-1' : 'flex-1 max-w-md'"
+          :class="{ 'max-w-md': !isSearchExpanded }"
           @focus="handleSearchFocus"
           @blur="handleSearchBlur"
         />
