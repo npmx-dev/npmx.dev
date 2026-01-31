@@ -95,6 +95,7 @@
     "go_back_home": "Retour à l'accueil",
     "view_on_npm": "voir sur npm",
     "per_week": "/ semaine",
+    "vanity_downloads_hint": "Métrique de vanité : aucun paquet affiché | Métrique de vanité : pour le paquet affiché | Métrique de vanité : somme des {count} paquets affichés",
     "sort": {
       "name": "nom",
       "role": "rôle",

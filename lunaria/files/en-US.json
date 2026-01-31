@@ -5,6 +5,9 @@
       "description": "A better browser for the npm registry. Search, browse, and explore packages with a modern interface."
     }
   },
+  "version": "Version",
+  "built_at": "built {0}",
+  "alt_logo": "npmx logo",
   "tagline": "a better browser for the npm registry",
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
@@ -95,6 +98,7 @@
     "go_back_home": "Go back home",
     "view_on_npm": "view on npm",
     "per_week": "/ week",
+    "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",
       "role": "role",
