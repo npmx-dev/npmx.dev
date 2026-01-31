@@ -329,6 +329,10 @@ useSeoMeta({
 onKeyStroke(
   '.',
   e => {
+    const target = e.target as HTMLElement
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      return
+    }
     if (pkg.value && displayVersion.value) {
       e.preventDefault()
       navigateTo({
@@ -345,6 +349,10 @@ onKeyStroke(
 onKeyStroke(
   'd',
   e => {
+    const target = e.target as HTMLElement
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      return
+    }
     if (docsLink.value) {
       e.preventDefault()
       navigateTo(docsLink.value)
@@ -353,7 +361,11 @@ onKeyStroke(
   { dedupe: true },
 )
 
-onKeyStroke('c', () => {
+onKeyStroke('c', e => {
+  const target = e.target as HTMLElement
+  if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+    return
+  }
   if (pkg.value) {
     router.push({ path: '/compare', query: { packages: pkg.value.name } })
   }
