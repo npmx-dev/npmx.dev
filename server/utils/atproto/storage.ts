@@ -35,7 +35,7 @@ export class OAuthStateStore implements NodeSavedStateStore {
   }
 
   async del() {
-    let stateKey = getCookie(this.event, this.cookieKey)
+    const stateKey = getCookie(this.event, this.cookieKey)
     deleteCookie(this.event, this.cookieKey)
     if (stateKey) {
       await this.storage.del(stateKey)
@@ -58,7 +58,7 @@ export class OAuthSessionStore implements NodeSavedSessionStore {
   async get(): Promise<NodeSavedSession | undefined> {
     const sessionKey = getCookie(this.event, this.cookieKey)
     if (!sessionKey) return
-    let result = await this.storage.getItem<NodeSavedSession>(sessionKey)
+    const result = await this.storage.getItem<NodeSavedSession>(sessionKey)
     if (!result) return
     return result
   }
@@ -73,7 +73,7 @@ export class OAuthSessionStore implements NodeSavedSessionStore {
   }
 
   async del() {
-    let sessionKey = getCookie(this.event, this.cookieKey)
+    const sessionKey = getCookie(this.event, this.cookieKey)
     if (sessionKey) {
       await this.storage.del(sessionKey)
     }
