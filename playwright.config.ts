@@ -6,7 +6,7 @@ import type { ConfigOptions } from '@nuxt/test-utils/playwright'
 const baseURL = 'http://localhost:5678'
 
 export default defineConfig<ConfigOptions>({
-  testDir: './tests',
+  testDir: './test/e2e',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

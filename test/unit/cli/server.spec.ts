@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createConnectorApp } from '../../cli/src/server.ts'
+import { createConnectorApp } from '../../../cli/src/server.ts'
 
 const TEST_TOKEN = 'test-token-123'
 

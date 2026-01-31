@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { PackumentVersion } from '../../shared/types'
+import type { PackumentVersion } from '../../../../shared/types'
 
 // Mock Nitro globals before importing the module
 vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
 vi.stubGlobal('$fetch', vi.fn())
 
 const { TARGET_PLATFORM, matchesPlatform, resolveVersion } =
-  await import('../../server/utils/dependency-resolver')
+  await import('../../../../server/utils/dependency-resolver')
 
 describe('dependency-resolver', () => {
   describe('TARGET_PLATFORM', () => {
