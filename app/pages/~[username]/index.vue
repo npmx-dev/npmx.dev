@@ -232,7 +232,7 @@ defineOgImageComponent('Default', {
       <PackageListControls
         v-model:filter="filterText"
         v-model:sort="sortOption"
-        :placeholder="$t('user.page.filter_placeholder', { count: packageCount })"
+        :placeholder="$t('user.page.filter_placeholder', { count: results.total })"
         :total-count="packageCount"
         :filtered-count="filteredCount"
       />
