@@ -13,6 +13,7 @@
     "build:lunaria": "node --experimental-transform-types ./lunaria/lunaria.ts",
     "dev": "nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
+    "i18n:check": "node scripts/compare-translations.js",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "knip:production": "knip --production",
