@@ -301,6 +301,14 @@ For example to check if all Japanese translation keys are up-to-date, run:
 pnpm i18n:check ja-JP
 ```
 
+To automatically add missing keys with English placeholders, use `--fix`:
+
+```bash
+pnpm i18n:check:fix fr-FR
+```
+
+This will add missing keys with `"EN TEXT TO REPLACE: {english text}"` as placeholder values, making it easier to see what needs translation.
+
 #### Country variants (advanced)
 
 Most languages only need a single locale file. Country variants are only needed when you want to support regional differences (e.g., `es-ES` for Spain vs `es-419` for Latin America).
