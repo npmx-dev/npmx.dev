@@ -72,11 +72,14 @@ onKeyStroke(',', e => {
         </ul>
       </div>
 
-      <!-- End: User status + GitHub -->
+      <!-- End: Bookmarks + Settings + Connector -->
       <div
         :class="{ 'hidden sm:flex': showFullSearch }"
         class="flex-shrink-0 flex items-center gap-4 sm:gap-6 ms-auto sm:ms-0"
       >
+        <ClientOnly>
+          <HeaderBookmarksDropdown />
+        </ClientOnly>
         <NuxtLink
           to="/about"
           class="sm:hidden link-subtle font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
