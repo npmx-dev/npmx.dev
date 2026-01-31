@@ -123,7 +123,8 @@
       "documented": "社区标记此包存在性能更优的替代方案",
       "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
-      "mdn": "MDN"
+      "mdn": "MDN",
+      "community": "社区"
     },
     "stats": {
       "license": "许可证",
@@ -190,14 +191,18 @@
       "other_versions": "其他版本",
       "more_tagged": "还有 {count} 个标签",
       "all_covered": "所有版本均已包含于上方标签中。",
-      "deprecated_title": "{version}（已弃用）"
+      "deprecated_title": "{version}（已弃用）",
+      "view_all": "查看全部 {count} 个版本"
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
       "list_label": "包依赖",
       "show_all": "显示全部 {count} 个依赖",
       "optional": "可选",
-      "view_vulnerabilities": "查看漏洞"
+      "view_vulnerabilities": "查看漏洞",
+      "outdated_major": "落后 {count} 个主要版本（最新：{latest}）",
+      "outdated_minor": "落后 {count} 个次要版本（最新：{latest}）",
+      "outdated_patch": "有可用的补丁更新（最新：{latest}）"
     },
     "peer_dependencies": {
       "title": "对等依赖（{count} 个）",
@@ -256,8 +261,9 @@
       "esm": "支持 ES Modules",
       "cjs": "支持 CommonJS",
       "no_esm": "不支持 ES Modules",
+      "types_label": "类型支持",
       "types_included": "包含类型",
-      "types_available": "通过 {package} 提供的类型",
+      "types_available": "通过 {package} 提供类型",
       "no_types": "没有 TypeScript 类型"
     },
     "license": {
@@ -328,6 +334,7 @@
       "weekly": "每周",
       "size": "大小",
       "deps": "依赖",
+      "get_started": "开始使用",
       "updated": "更新",
       "readme": "Readme",
       "maintainers": "维护者",
@@ -355,8 +362,8 @@
     },
     "modal": {
       "title": "本地连接器",
-      "close_modal": "关闭对话框",
       "connected": "已连接",
+      "connected_as_user": "已连接为 {'@'}{user}",
       "connected_hint": "现在您可以通过 Web UI 管理包和组织。",
       "disconnect": "断开连接",
       "run_hint": "在您的机器上运行连接器以启用管理功能。",
@@ -502,7 +509,6 @@
   "claim": {
     "modal": {
       "title": "声明包名",
-      "close_modal": "关闭对话框",
       "success": "包已声明！",
       "success_detail": "{name}{'@'}0.0.0 已发布到 npm。",
       "success_hint": "您现在可以使用 npm publish 发布新版本到这个包。",
@@ -724,6 +730,34 @@
         "description": "了解 npmx 的最新动态。",
         "cta": "在 Bluesky 上关注"
       }
+    }
+  },
+  "account_menu": {
+    "connect": "连接",
+    "account": "账户",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "管理包和组织",
+    "atmosphere_desc": "社交功能与数字身份",
+    "connect_npm_cli": "连接到 npm CLI",
+    "connect_atmosphere": "连接到 Atmosphere",
+    "connecting": "连接中…",
+    "ops": "ops",
+    "disconnect": "断开连接"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "已连接为 {'@'}{handle}",
+      "disconnect": "断开连接",
+      "connect_prompt": "使用 Atmosphere 账户登录",
+      "handle_label": "账户代码",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "连接",
+      "create_account": "创建一个新账户",
+      "connect_bluesky": "使用 Bluesky 账户登录",
+      "what_is_atmosphere": "什么是 Atmosphere 账户？",
+      "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账户登录所有兼容的应用。一旦创建账户，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。"
     }
   },
   "header": {

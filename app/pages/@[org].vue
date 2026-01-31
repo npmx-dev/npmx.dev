@@ -131,6 +131,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   title: () => `@${orgName.value}`,
   description: () => (packageCount.value ? `${packageCount.value} packages` : 'npm organization'),
+  primaryColor: '#60a5fa',
 })
 </script>
 

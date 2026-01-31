@@ -191,14 +191,18 @@
       "other_versions": "Weitere Versionen",
       "more_tagged": "{count} weitere getaggt",
       "all_covered": "Alle Versionen sind durch obige Tags abgedeckt",
-      "deprecated_title": "{version} (veraltet)"
+      "deprecated_title": "{version} (veraltet)",
+      "view_all": "{count} Version anzeigen | Alle {count} Versionen anzeigen"
     },
     "dependencies": {
       "title": "Abhängigkeiten ({count})",
       "list_label": "Paketabhängigkeiten",
       "show_all": "alle {count} Deps anzeigen",
       "optional": "optional",
-      "view_vulnerabilities": "Sicherheitslücken anzeigen"
+      "view_vulnerabilities": "Sicherheitslücken anzeigen",
+      "outdated_major": "{count} Hauptversion zurück (neueste: {latest}) | {count} Hauptversionen zurück (neueste: {latest})",
+      "outdated_minor": "{count} Nebenversion zurück (neueste: {latest}) | {count} Nebenversionen zurück (neueste: {latest})",
+      "outdated_patch": "Patch-Update verfügbar (aktuellste Version: {latest})"
     },
     "peer_dependencies": {
       "title": "Peer-Abhängigkeiten ({count})",
@@ -260,6 +264,7 @@
       "esm": "ESM",
       "cjs": "CJS",
       "no_esm": "Kein ESM",
+      "types_label": "Typen",
       "types_included": "Typen enthalten",
       "types_available": "Typen verfügbar",
       "no_types": "Keine Typen"
@@ -330,6 +335,7 @@
       "size": "Größe",
       "deps": "Deps",
       "updated": "Aktualisiert",
+      "get_started": "Loslegen",
       "readme": "Readme",
       "maintainers": "Maintainer",
       "keywords": "Schlüsselwörter",
@@ -346,7 +352,7 @@
   "connector": {
     "status": {
       "connecting": "Verbinde...",
-      "connected_as": "verbunden als {'@'}{user}",
+      "connected_as": "verbunden als ~{user}",
       "connected": "verbunden",
       "connect_cli": "Lokale CLI verbinden",
       "aria_connecting": "Verbindung zum lokalen Connector wird hergestellt",
@@ -356,8 +362,8 @@
     },
     "modal": {
       "title": "Lokaler Connector",
-      "close_modal": "Modal schließen",
       "connected": "Verbunden",
+      "connected_as_user": "Angemeldet als ~{user}",
       "connected_hint": "Du kannst jetzt Pakete und Organisationen über die Web-Oberfläche verwalten.",
       "disconnect": "Trennen",
       "run_hint": "Führe den Connector auf deinem Rechner aus, um Admin-Funktionen zu aktivieren.",
@@ -503,7 +509,6 @@
   "claim": {
     "modal": {
       "title": "Paketnamen beanspruchen",
-      "close_modal": "Modal schließen",
       "success": "Paket beansprucht!",
       "success_detail": "{name}{'@'}0.0.0 wurde auf npm veröffentlicht.",
       "success_hint": "Du kannst jetzt neue Versionen dieses Pakets mit npm publish veröffentlichen.",
@@ -725,6 +730,34 @@
         "description": "Bleib auf dem Laufenden über neue Features und Updates",
         "cta": "Folgen"
       }
+    }
+  },
+  "account_menu": {
+    "connect": "verbinden",
+    "account": "Konto",
+    "npm_cli": "npm-CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Pakete und Organisationen verwalten",
+    "atmosphere_desc": "Soziale Funktionen & Identität",
+    "connect_npm_cli": "Verbinde dich mit der npm-CLI",
+    "connect_atmosphere": "Verbinde dich mit Atmosphere",
+    "connecting": "Verbinde...",
+    "ops": "{count} Operation | {count} Operationen",
+    "disconnect": "Verbindung trennen"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Verbunden als {'@'}{handle}",
+      "disconnect": "Verbindung trennen",
+      "connect_prompt": "Melde dich bei deinem Atmosphere-Konto an",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.bsky.social",
+      "connect": "Verbinden",
+      "create_account": "Erstelle ein neues Konto",
+      "connect_bluesky": "Verbinde dich mit Bluesky",
+      "what_is_atmosphere": "Was ist ein Atmosphere-Konto?",
+      "atmosphere_explanation": "{npmx} nutzt {atproto}, um viele der sozialen Funktionen zu betreiben. So können Nutzer ihre Daten selbst verwalten und ein einziges Konto für alle kompatiblen Anwendungen nutzen. Sobald du ein Konto erstellt hast, kannst du andere Apps wie {bluesky} und {tangled} mit demselben Konto nutzen."
     }
   },
   "header": {

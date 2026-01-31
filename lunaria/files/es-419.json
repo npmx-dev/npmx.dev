@@ -314,7 +314,6 @@
       "size": "Tamaño",
       "deps": "Deps",
       "updated": "Actualizado",
-      "install": "Instalar",
       "readme": "Léame",
       "maintainers": "Mantenedores",
       "keywords": "Palabras clave",
@@ -341,9 +340,7 @@
     },
     "modal": {
       "title": "Conector Local",
-      "close_modal": "Cerrar modal",
       "connected": "Conectado",
-      "logged_in_as": "Iniciado sesión como {'@'}{user}",
       "connected_hint": "Ahora puedes administrar paquetes y organizaciones desde la interfaz web.",
       "disconnect": "Desconectar",
       "run_hint": "Ejecuta el conector en tu computadora para habilitar funciones de administración.",
@@ -489,7 +486,6 @@
   "claim": {
     "modal": {
       "title": "Reclamar Nombre de Paquete",
-      "close_modal": "Cerrar modal",
       "success": "¡Paquete reclamado!",
       "success_detail": "{name}{'@'}0.0.0 ha sido publicado en npm.",
       "success_hint": "Ahora puedes publicar nuevas versiones de este paquete usando npm publish.",
