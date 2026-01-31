@@ -34,6 +34,7 @@ export type AllLinksResponse = {
 
 const HEADERS = { 'User-Agent': 'npmx' }
 
+/** @public */
 export class Constellation {
   private readonly cachedFetch: CachedFetchFunction
   constructor(fetch: CachedFetchFunction) {
