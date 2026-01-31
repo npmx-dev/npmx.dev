@@ -20,12 +20,14 @@ describe('MarkdownText', () => {
   })
 
   describe('HTML escaping', () => {
-    it('escapes HTML tags to prevent XSS', async () => {
+    it('strips HTML tags to prevent XSS', async () => {
       const component = await mountSuspended(MarkdownText, {
         props: { text: '<script>alert("xss")</script>' },
       })
+      // HTML tags should be stripped (not rendered)
       expect(component.html()).not.toContain('<script>')
-      expect(component.text()).toContain('<script>')
+      // Only the text content remains
+      expect(component.text()).toBe('alert("xss")')
     })
 
     it('escapes special characters', async () => {
