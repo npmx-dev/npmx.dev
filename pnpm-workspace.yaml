@@ -33,3 +33,5 @@ patchedDependencies:
   '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
 
 savePrefix: ''
+
+shellEmulator: true

@@ -255,6 +255,17 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'it-IT.json',
     name: 'Italiano',
   },
+  {
+    code: 'pl-PL',
+    file: 'pl-PL.json',
+    name: 'Polski',
+    pluralRule: (choice: number) => {
+      if (choice === 0) return 0
+
+      const name = new Intl.PluralRules('pl-PL').select(choice)
+      return { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
+    },
+  },
   /*{
       code: 'sv',
       file: 'sv.json',

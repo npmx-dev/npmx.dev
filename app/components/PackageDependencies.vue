@@ -103,7 +103,7 @@ const sortedOptionalDependencies = computed(() => {
               v-if="outdatedDeps[dep]"
               class="shrink-0"
               :class="getVersionClass(outdatedDeps[dep])"
-              :title="getOutdatedTooltip(outdatedDeps[dep])"
+              :title="getOutdatedTooltip(outdatedDeps[dep], $t)"
               aria-hidden="true"
             >
               <span class="i-carbon:warning-alt w-3 h-3 block" />
@@ -138,12 +138,12 @@ const sortedOptionalDependencies = computed(() => {
               :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"
               class="font-mono text-xs text-end truncate"
               :class="getVersionClass(outdatedDeps[dep])"
-              :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep]) : version"
+              :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep], $t) : version"
             >
               {{ version }}
             </NuxtLink>
             <span v-if="outdatedDeps[dep]" class="sr-only">
-              ({{ getOutdatedTooltip(outdatedDeps[dep]) }})
+              ({{ getOutdatedTooltip(outdatedDeps[dep], $t) }})
             </span>
             <span v-if="getVulnerableDepInfo(dep)" class="sr-only">
               ({{ getVulnerableDepInfo(dep)!.counts.total }} vulnerabilities)
