@@ -69,9 +69,7 @@ function handleGlobalKeydown(e: KeyboardEvent) {
 }
 
 function handleGlobalKeyup(e: KeyboardEvent) {
-  if (e.key === '?') {
-    showKbdHints.value = false
-  }
+  showKbdHints.value = false
 }
 
 if (import.meta.client) {
