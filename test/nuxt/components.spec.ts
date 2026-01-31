@@ -95,6 +95,12 @@ import ViewModeToggle from '~/components/ViewModeToggle.vue'
 import PackageVulnerabilityTree from '~/components/PackageVulnerabilityTree.vue'
 import PackageDeprecatedTree from '~/components/PackageDeprecatedTree.vue'
 import DependencyPathPopup from '~/components/DependencyPathPopup.vue'
+import CompareFacetSelector from '~/components/compare/FacetSelector.vue'
+import ComparePackageSelector from '~/components/compare/PackageSelector.vue'
+import CompareMetricRow from '~/components/compare/MetricRow.vue'
+import CompareComparisonGrid from '~/components/compare/ComparisonGrid.vue'
+import CompareVersionPicker from '~/components/compare/VersionPicker.vue'
+import CompareComingSoonPlaceholder from '~/components/compare/ComingSoonPlaceholder.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -1287,6 +1293,169 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(DependencyPathPopup, {
         props: {
           path: ['root@1.0.0', 'dep-a@1.0.0', 'dep-b@2.0.0', 'dep-c@3.0.0', 'vulnerable-pkg@4.0.0'],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  // Compare feature components
+  describe('CompareFacetSelector', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CompareFacetSelector)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ComparePackageSelector', () => {
+    it('should have no accessibility violations with no packages', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: [] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with packages selected', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: ['vue', 'react'] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations at max packages', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: ['vue', 'react', 'angular', 'svelte'], max: 4 },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareMetricRow', () => {
+    it('should have no accessibility violations with basic values', async () => {
+      const component = await mountSuspended(CompareMetricRow, {
+        props: {
+          label: 'Downloads',
+          description: 'Weekly download count',
+          values: [
+            { raw: 1000, display: '1,000' },
+            { raw: 2000, display: '2,000' },
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with diffs', async () => {
+      const component = await mountSuspended(CompareMetricRow, {
+        props: {
+          label: 'Package Size',
+          description: 'Size of the package',
+          values: [
+            { raw: 100, display: '100 KB' },
+            { raw: 150, display: '150 KB' },
+          ],
+          diffs: [null, { display: '+50%', direction: 'increase' as const, favorable: false }],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when loading', async () => {
+      const component = await mountSuspended(CompareMetricRow, {
+        props: {
+          label: 'Install Size',
+          description: 'Total install size',
+          values: [null, null],
+          loading: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareComparisonGrid', () => {
+    it('should have no accessibility violations with 2 columns', async () => {
+      const component = await mountSuspended(CompareComparisonGrid, {
+        props: {
+          columns: 2,
+          headers: ['vue', 'react'],
+        },
+        slots: {
+          default: '<div>Grid content</div>',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with 3 columns', async () => {
+      const component = await mountSuspended(CompareComparisonGrid, {
+        props: {
+          columns: 3,
+          headers: ['vue', 'react', 'angular'],
+        },
+        slots: {
+          default: '<div>Grid content</div>',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareVersionPicker', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CompareVersionPicker, {
+        props: {
+          packageName: 'vue',
+          modelValue: '3.5.0',
+          label: 'From version',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with other version context', async () => {
+      const component = await mountSuspended(CompareVersionPicker, {
+        props: {
+          packageName: 'vue',
+          modelValue: '3.5.0',
+          label: 'From version',
+          otherVersion: '3.4.0',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareComingSoonPlaceholder', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CompareComingSoonPlaceholder, {
+        props: {
+          title: 'File Diff',
+          description: 'Compare file changes between versions',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with icon', async () => {
+      const component = await mountSuspended(CompareComingSoonPlaceholder, {
+        props: {
+          title: 'Dependency Diff',
+          description: 'Compare dependency changes',
+          icon: 'i-carbon:flow',
         },
       })
       const results = await runAxe(component)
