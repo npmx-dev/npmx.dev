@@ -10,7 +10,7 @@ const { locale, locales } = useI18n()
 initPreferencesOnPrehydrate()
 
 const isHomepage = computed(() => route.name === 'index')
-const showKbdHints = ref(false)
+const showKbdHints = shallowRef(false)
 
 const localeMap = locales.value.reduce(
   (acc, l) => {
