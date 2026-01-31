@@ -83,7 +83,6 @@ const { data: skillsData } = useLazyFetch<SkillsListResponse>(
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
 
-// Skills modal state
 const skillsModalOpen = shallowRef(false)
 
 const { data: pkg, status, error } = await usePackage(packageName, requestedVersion)

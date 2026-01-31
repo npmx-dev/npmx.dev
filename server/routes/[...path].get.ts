@@ -18,7 +18,6 @@ export default defineCachedEventHandler(
   async event => {
     const path = getRouterParam(event, 'path') || ''
 
-    // Check for .well-known/skills/ pattern
     const match = path.match(/^(.+?)\/\.well-known\/skills\/(.*)$/)
     if (!match) {
       // Not a well-known skills request, return 404 to let other handlers deal with it
@@ -38,12 +37,10 @@ export default defineCachedEventHandler(
         throw createError({ statusCode: 404, message: 'No latest version found' })
       }
 
-      // Route to appropriate handler
       if (skillsPath === 'index.json' || skillsPath === '') {
         return await handleWellKnownIndex(event, validated.packageName, version)
       }
 
-      // Parse skill name and file: my-skill/SKILL.md
       const parts = skillsPath!.split('/')
       const skillName = v.parse(SkillNameSchema, parts[0])
       const fileName = parts.slice(1).join('/')
@@ -79,7 +76,6 @@ async function handleWellKnownIndex(event: H3Event, packageName: string, version
   const skillNames = skillDirs.map(s => s.name)
   const skills = await fetchSkillsListForWellKnown(packageName, version, skillNames)
 
-  // Set cache headers
   setHeader(event, 'Cache-Control', `public, max-age=${CACHE_MAX_AGE_ONE_HOUR}`)
   setHeader(event, 'Content-Type', 'application/json')
 
@@ -95,7 +91,6 @@ async function handleWellKnownSkillMd(
   try {
     const content = await fetchSkillFile(packageName, version, `skills/${skillName}/SKILL.md`)
 
-    // Set headers for raw markdown
     setHeader(event, 'Cache-Control', `public, max-age=${CACHE_MAX_AGE_ONE_YEAR}, immutable`)
     setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
 
