@@ -1,5 +1,4 @@
 import { object, string, pipe, url, array, minLength, boolean } from 'valibot'
-import type { InferOutput } from 'valibot'
 
 export const OAuthMetadataSchema = object({
   client_id: pipe(string(), url()),
@@ -12,5 +11,3 @@ export const OAuthMetadataSchema = object({
   token_endpoint_auth_method: string(),
   dpop_bound_access_tokens: boolean(),
 })
-
-export type OAuthMetadata = InferOutput<typeof OAuthMetadataSchema>
