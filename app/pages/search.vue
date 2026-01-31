@@ -799,7 +799,7 @@ defineOgImageComponent('Default', {
               {{
                 $t('filters.count.showing_paginated', {
                   pageSize: preferredPageSize === 'all' ? visibleResults.total : preferredPageSize,
-                  total: visibleResults.total.toLocaleString(),
+                  count: visibleResults.total.toLocaleString(),
                 })
               }}
             </p>
