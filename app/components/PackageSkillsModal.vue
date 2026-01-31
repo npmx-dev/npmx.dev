@@ -27,8 +27,12 @@ function toggleSkill(dirName: string) {
   expandedSkills.value = new Set(expandedSkills.value)
 }
 
-const requestUrl = useRequestURL()
-const baseUrl = computed(() => `${requestUrl.protocol}//${requestUrl.host}`)
+type InstallMethod = 'skills-npm' | 'skills-cli'
+const selectedMethod = ref<InstallMethod>('skills-npm')
+
+const baseUrl = computed(() =>
+  typeof window !== 'undefined' ? window.location.origin : 'https://npmx.dev',
+)
 
 const installCommand = computed(() => {
   if (!props.skills.length) return null
@@ -94,40 +98,99 @@ function handleKeydown(event: KeyboardEvent) {
               </button>
             </div>
 
-            <!-- Terminal-style install command -->
+            <!-- Install header with tabs -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <h3 class="text-xs text-fg-subtle uppercase tracking-wider">Install</h3>
+              <div
+                class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md"
+                role="tablist"
+                aria-label="Installation method"
+              >
+                <button
+                  role="tab"
+                  :aria-selected="selectedMethod === 'skills-npm'"
+                  :tabindex="selectedMethod === 'skills-npm' ? 0 : -1"
+                  type="button"
+                  class="px-2 py-1 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  :class="
+                    selectedMethod === 'skills-npm'
+                      ? 'bg-bg border-border shadow-sm text-fg'
+                      : 'border-transparent text-fg-subtle hover:text-fg'
+                  "
+                  @click="selectedMethod = 'skills-npm'"
+                >
+                  skills-npm
+                </button>
+                <button
+                  role="tab"
+                  :aria-selected="selectedMethod === 'skills-cli'"
+                  :tabindex="selectedMethod === 'skills-cli' ? 0 : -1"
+                  type="button"
+                  class="px-2 py-1 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  :class="
+                    selectedMethod === 'skills-cli'
+                      ? 'bg-bg border-border shadow-sm text-fg'
+                      : 'border-transparent text-fg-subtle hover:text-fg'
+                  "
+                  @click="selectedMethod = 'skills-cli'"
+                >
+                  skills CLI
+                </button>
+              </div>
+            </div>
+
+            <!-- skills-npm: requires setup -->
             <div
-              v-if="installCommand"
+              v-if="selectedMethod === 'skills-npm'"
+              class="flex items-center justify-between gap-2 px-3 py-2.5 sm:px-4 bg-bg-subtle border border-border rounded-lg mb-5"
+            >
+              <span class="text-sm text-fg-muted"
+                >Requires <code class="font-mono text-fg">skills-npm</code> setup</span
+              >
+              <a
+                href="/skills-npm"
+                class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg transition-colors shrink-0"
+              >
+                Learn more
+                <span class="i-carbon:arrow-right w-3 h-3" />
+              </a>
+            </div>
+
+            <!-- skills CLI: terminal command -->
+            <div
+              v-else-if="installCommand"
               class="bg-bg-subtle border border-border rounded-lg overflow-hidden mb-5"
             >
               <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
-                <span class="size-2.5 rounded-full bg-fg-subtle/50" />
-                <span class="size-2.5 rounded-full bg-fg-subtle/50" />
-                <span class="size-2.5 rounded-full bg-fg-subtle/50" />
+                <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+                <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+                <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
               </div>
               <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 overflow-x-auto">
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 group/cmd">
                   <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
-                  <code class="font-mono text-sm text-fg-muted whitespace-nowrap">
-                    npx skills add {{ baseUrl }}/{{ packageName }}
-                  </code>
+                  <code class="font-mono text-sm"
+                    ><span class="text-fg">npx </span
+                    ><span class="text-fg-muted"
+                      >skills add {{ baseUrl }}/{{ packageName }}</span
+                    ></code
+                  >
                   <button
                     type="button"
-                    class="p-1.5 text-fg-muted rounded transition-colors duration-200 hover:text-fg hover:bg-bg-muted active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 shrink-0"
+                    class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/cmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                     :aria-label="$t('package.get_started.copy_command')"
                     @click.stop="copyCommand"
                   >
-                    <span
-                      v-if="copied"
-                      class="i-carbon:checkmark size-4 block"
-                      aria-hidden="true"
-                    />
-                    <span v-else class="i-carbon:copy size-4 block" aria-hidden="true" />
+                    <span aria-live="polite">{{
+                      copied ? $t('common.copied') : $t('common.copy')
+                    }}</span>
                   </button>
                 </div>
               </div>
             </div>
 
-            <!-- Skills list with expandable descriptions -->
+            <!-- Skills list -->
+            <h3 class="text-xs text-fg-subtle uppercase tracking-wider mb-2">Available Skills</h3>
             <ul class="space-y-0.5 list-none m-0 p-0">
               <li v-for="skill in skills" :key="skill.dirName">
                 <button
@@ -137,14 +200,14 @@ function handleKeydown(event: KeyboardEvent) {
                   @click="toggleSkill(skill.dirName)"
                 >
                   <span
-                    class="i-carbon:chevron-right w-3.5 h-3.5 text-fg-subtle shrink-0 transition-transform duration-200"
+                    class="i-carbon:chevron-right w-3 h-3 text-fg-subtle shrink-0 transition-transform duration-200"
                     :class="{ 'rotate-90': expandedSkills.has(skill.dirName) }"
                     aria-hidden="true"
                   />
                   <span class="font-mono text-sm text-fg-muted">{{ skill.name }}</span>
                   <span
                     v-if="skill.warnings?.length"
-                    class="i-carbon:warning size-3.5 text-amber-500 shrink-0"
+                    class="i-carbon:warning w-3.5 h-3.5 text-amber-500 shrink-0"
                     :title="getWarningTooltip(skill)"
                   />
                 </button>

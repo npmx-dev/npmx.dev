@@ -656,7 +656,8 @@ function handleClick(event: MouseEvent) {
 
         <!-- Stats grid -->
         <dl
-          class="grid grid-cols-2 sm:grid-cols-12 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
+          class="grid grid-cols-2 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
+          :class="skillsData?.skills?.length ? 'sm:grid-cols-12' : 'sm:grid-cols-11'"
         >
           <div v-if="pkg.license" class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
