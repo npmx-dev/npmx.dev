@@ -10,7 +10,7 @@ const emit = defineEmits<{
   reset: []
 }>()
 
-const isOpen = ref(false)
+const isOpen = shallowRef(false)
 const buttonRef = useTemplateRef('buttonRef')
 const menuRef = useTemplateRef('menuRef')
 const menuId = useId()

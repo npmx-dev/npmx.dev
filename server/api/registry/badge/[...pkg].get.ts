@@ -30,8 +30,8 @@ export default defineCachedEventHandler(
 
       const label = `./ ${packageName}`
 
-      const packument = await fetchNpmPackage(packageName)
-      const value = requestedVersion ?? packument['dist-tags']?.latest ?? 'unknown'
+      const value =
+        requestedVersion ?? (await fetchNpmPackage(packageName))['dist-tags']?.latest ?? 'unknown'
 
       const leftWidth = measureTextWidth(label)
       const rightWidth = measureTextWidth(value)

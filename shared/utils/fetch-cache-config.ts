@@ -5,7 +5,7 @@
  * using Nitro's storage layer (backed by Vercel's runtime cache in production).
  */
 
-import { CONSTELLATION_ENDPOINT, SLINGSHOT_ENDPOINT } from './constants'
+import { CONSTELLATION_HOST, SLINGSHOT_HOST } from './constants'
 
 /**
  * Domains that should have their fetch responses cached.
@@ -27,8 +27,8 @@ export const FETCH_CACHE_ALLOWED_DOMAINS = [
   'codeberg.org', // Codeberg (Gitea-based)
   'gitee.com', // Gitee API
   // microcosm endpoints for atproto data
-  CONSTELLATION_ENDPOINT,
-  SLINGSHOT_ENDPOINT,
+  CONSTELLATION_HOST,
+  SLINGSHOT_HOST,
 ] as const
 
 /**
@@ -99,3 +99,16 @@ export interface CachedFetchResult<T> {
   /** Unix timestamp when the data was cached, or null if fresh fetch */
   cachedAt: number | null
 }
+
+/**
+ * Type for the cachedFetch function attached to event context.
+ */
+export type CachedFetchFunction = <T = unknown>(
+  url: string,
+  options?: {
+    method?: string
+    body?: unknown
+    headers?: Record<string, string>
+  },
+  ttl?: number,
+) => Promise<CachedFetchResult<T>>

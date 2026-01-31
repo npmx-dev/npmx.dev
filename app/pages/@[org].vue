@@ -58,7 +58,7 @@ const {
 })
 
 // Pagination state
-const currentPage = ref(1)
+const currentPage = shallowRef(1)
 
 // Calculate total pages
 const totalPages = computed(() => {
@@ -114,7 +114,7 @@ function handleSortChange(option: SortOption) {
   setSort(option)
 }
 
-const activeTab = ref<'members' | 'teams'>('members')
+const activeTab = shallowRef<'members' | 'teams'>('members')
 
 // Canonical URL for this org page
 const canonicalUrl = computed(() => `https://npmx.dev/@${orgName.value}`)
@@ -139,7 +139,7 @@ defineOgImageComponent('Default', {
   <main class="container flex-1 py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
-      <div class="flex items-center gap-4 mb-4">
+      <div class="flex items-end gap-4">
         <!-- Org avatar placeholder -->
         <div
           class="w-16 h-16 rounded-lg bg-bg-muted border border-border flex items-center justify-center"
@@ -155,20 +155,21 @@ defineOgImageComponent('Default', {
             {{ $t('org.public_packages', { count: formatNumber(packageCount) }, packageCount) }}
           </p>
         </div>
-      </div>
 
-      <!-- Link to npmjs.com org page -->
-      <nav aria-label="External links">
-        <a
-          :href="`https://www.npmjs.com/org/${orgName}`"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-        >
-          <span class="i-carbon-cube w-4 h-4" />
-          {{ $t('common.view_on_npm') }}
-        </a>
-      </nav>
+        <!-- Link to npmjs.com org page -->
+        <nav aria-label="External links" class="ms-auto">
+          <a
+            :href="`https://www.npmjs.com/org/${orgName}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+            :title="$t('common.view_on_npm')"
+          >
+            <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
+            npm
+          </a>
+        </nav>
+      </div>
     </header>
 
     <!-- Admin panels (when connected) -->

@@ -10,7 +10,7 @@ const username = computed(() => route.params.username)
 // Infinite scroll state
 const pageSize = 50
 const maxResults = 250 // npm API hard limit
-const currentPage = ref(1)
+const currentPage = shallowRef(1)
 
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
@@ -33,12 +33,17 @@ const updateUrl = debounce((updates: { page?: number; filter?: string; sort?: st
 type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
 
 // Filter and sort state (from URL)
-const filterText = ref((route.query.q as string) ?? '')
-const sortOption = ref<SortOption>((route.query.sort as SortOption) || 'downloads')
+const filterText = shallowRef(
+  (Array.isArray(route.query.q) ? route.query.q[0] : route.query.q) ?? '',
+)
+const sortOption = shallowRef<SortOption>(
+  ((Array.isArray(route.query.sort) ? route.query.sort[0] : route.query.sort) as SortOption) ||
+    'downloads',
+)
 
 // Track if we've loaded all results (one-way flag, doesn't reset)
 // Initialize to true if URL already has filter/sort params
-const hasLoadedAll = ref(
+const hasLoadedAll = shallowRef(
   Boolean(route.query.q) || (route.query.sort && route.query.sort !== 'downloads'),
 )
 
@@ -169,7 +174,7 @@ defineOgImageComponent('Default', {
   <main class="container flex-1 py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
-      <div class="flex items-center gap-4 mb-4">
+      <div class="flex items-end gap-4">
         <!-- Avatar placeholder -->
         <div
           class="w-16 h-16 rounded-full bg-bg-muted border border-border flex items-center justify-center"
@@ -185,20 +190,21 @@ defineOgImageComponent('Default', {
             {{ $t('org.public_packages', { count: formatNumber(results.total) }, results.total) }}
           </p>
         </div>
-      </div>
 
-      <!-- Link to npmjs.com profile -->
-      <nav aria-label="External links">
-        <a
-          :href="`https://www.npmjs.com/~${username}`"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-        >
-          <span class="i-carbon-cube w-4 h-4" />
-          {{ $t('common.view_on_npm') }}
-        </a>
-      </nav>
+        <!-- Link to npmjs.com profile -->
+        <nav aria-label="External links" class="ms-auto">
+          <a
+            :href="`https://www.npmjs.com/~${username}`"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+            :title="$t('common.view_on_npm')"
+          >
+            <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
+            npm
+          </a>
+        </nav>
+      </div>
     </header>
 
     <!-- Loading state -->
@@ -233,7 +239,7 @@ defineOgImageComponent('Default', {
       <PackageListControls
         v-model:filter="filterText"
         v-model:sort="sortOption"
-        :placeholder="$t('user.page.filter_placeholder', { count: packageCount })"
+        :placeholder="$t('user.page.filter_placeholder', { count: results.total })"
         :total-count="packageCount"
         :filtered-count="filteredCount"
       />

@@ -41,16 +41,6 @@ function generateFetchCacheKey(url: string | URL, method: string = 'GET', body?:
   return parts.join(':')
 }
 
-export type CachedFetchFunction = <T = unknown>(
-  url: string,
-  options?: {
-    method?: string
-    body?: unknown
-    headers?: Record<string, string>
-  },
-  ttl?: number,
-) => Promise<CachedFetchResult<T>>
-
 /**
  * Server plugin that attaches a cachedFetch function to the event context.
  * This allows app composables to access the cached fetch via useRequestEvent().

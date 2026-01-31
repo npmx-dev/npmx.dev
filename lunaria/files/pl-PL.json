@@ -111,6 +111,7 @@
     "verified_provenance": "Zweryfikowane pochodzenie",
     "view_permalink": "Zobacz stały link do tej wersji",
     "navigation": "Pakiet",
+    "copy_name": "Kopiuj nazwę pakietu",
     "deprecation": {
       "package": "Ten pakiet został oznaczony jako przestarzały.",
       "version": "Ta wersja została oznaczona jako przestarzała.",
@@ -363,6 +364,7 @@
     "modal": {
       "title": "Lokalny konektor",
       "connected": "Połączono",
+      "connected_as_user": "Połączono jako ~{user}",
       "connected_hint": "Możesz teraz zarządzać pakietami i organizacjami z poziomu interfejsu WWW.",
       "disconnect": "Rozłącz",
       "run_hint": "Uruchom konektor na swoim komputerze, aby włączyć funkcje administracyjne.",
@@ -377,6 +379,34 @@
       "warning_text": "To pozwala npmx uzyskać dostęp do twojego npm CLI. Łącz się tylko ze stronami, którym ufasz.",
       "connect": "Połącz",
       "connecting": "Łączenie..."
+    }
+  },
+  "account_menu": {
+    "connect": "połącz",
+    "account": "Konto",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Zarządzaj pakietami i organizacjami",
+    "atmosphere_desc": "Funkcje społecznościowe i tożsamość",
+    "connect_npm_cli": "Połącz z npm CLI",
+    "connect_atmosphere": "Połącz z Atmosphere",
+    "connecting": "Łączenie...",
+    "ops": "{count} operacja | {count} operacje | {count} operacji | {count} operacji | {count} operacji",
+    "disconnect": "Rozłącz"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Połączono jako {'@'}{handle}",
+      "disconnect": "Rozłącz",
+      "connect_prompt": "Połącz się ze swoim kontem Atmosphere",
+      "handle_label": "Identyfikator",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Połącz",
+      "create_account": "Utwórz nowe konto",
+      "connect_bluesky": "Połącz z Bluesky",
+      "what_is_atmosphere": "Czym jest konto Atmosphere?",
+      "atmosphere_explanation": "{npmx} używa {atproto} do zasilania wielu funkcji społecznościowych, umożliwiając użytkownikom posiadanie swoich danych i korzystanie z jednego konta we wszystkich kompatybilnych aplikacjach. Gdy utworzysz konto, możesz używać innych aplikacji, takich jak {bluesky} i {tangled}, z tym samym kontem."
     }
   },
   "operations": {

@@ -5,6 +5,9 @@
       "description": "A better browser for the npm registry. Search, browse, and explore packages with a modern interface."
     }
   },
+  "version": "Version",
+  "built_at": "built {0}",
+  "alt_logo": "npmx logo",
   "tagline": "a better browser for the npm registry",
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
@@ -111,6 +114,7 @@
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
     "navigation": "Package",
+    "copy_name": "Copy package name",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
