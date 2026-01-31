@@ -316,7 +316,6 @@
       "size": "Taille",
       "deps": "Dépendances",
       "updated": "Mis à jour",
-      "install": "Installer",
       "readme": "Readme",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
@@ -343,9 +342,7 @@
     },
     "modal": {
       "title": "Connecteur local",
-      "close_modal": "Fermer la fenêtre",
       "connected": "Connecté·e",
-      "logged_in_as": "Connecté·e en tant que {'@'}{user}",
       "connected_hint": "Vous pouvez maintenant gérer les paquets et les organisations depuis l'interface web.",
       "disconnect": "Se déconnecter",
       "run_hint": "Exécutez le connecteur sur votre machine pour activer les fonctionnalités d'administration.",
@@ -491,7 +488,6 @@
   "claim": {
     "modal": {
       "title": "Réserver un nom de paquet",
-      "close_modal": "Fermer la fenêtre",
       "success": "Paquet réservé !",
       "success_detail": "{name}{'@'}0.0.0 a été publié sur npm.",
       "success_hint": "Vous pouvez maintenant publier de nouvelles versions de ce paquet avec npm publish.",

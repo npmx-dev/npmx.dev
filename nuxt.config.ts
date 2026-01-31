@@ -94,7 +94,9 @@ export default defineNuxtConfig({
     '/opensearch.xml': { isr: true },
     '/**': { isr: 60 },
     '/package/**': { isr: 60 },
+    // never cache
     '/search': { isr: false, cache: false },
+    '/api/auth/**': { isr: false, cache: false },
     // infinite cache (versioned - doesn't change)
     '/code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -103,6 +105,7 @@ export default defineNuxtConfig({
     // static pages
     '/about': { prerender: true },
     '/settings': { prerender: true },
+    '/oauth-client-metadata.json': { prerender: true },
     // proxy for insights
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },

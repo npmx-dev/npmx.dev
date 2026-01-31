@@ -347,6 +347,7 @@ defineOgImageComponent('Package', {
   version: () => displayVersion.value?.version ?? '',
   downloads: () => (downloads.value ? formatNumber(downloads.value.downloads) : ''),
   license: () => pkg.value?.license ?? '',
+  primaryColor: '#60a5fa',
 })
 
 // We're using only @click because it catches touch events and enter hits
@@ -492,7 +493,7 @@ function handleClick(event: MouseEvent) {
           <!-- Description container with min-height to prevent CLS -->
           <div class="max-w-2xl min-h-[4.5rem]">
             <p v-if="pkg.description" class="text-fg-muted text-base m-0">
-              <MarkdownText :text="pkg.description" />
+              <MarkdownText :text="pkg.description" :package-name="pkg.name" />
             </p>
             <p v-else class="text-fg-subtle text-base m-0 italic">
               {{ $t('package.no_description') }}

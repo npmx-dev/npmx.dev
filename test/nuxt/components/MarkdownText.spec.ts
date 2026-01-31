@@ -20,12 +20,14 @@ describe('MarkdownText', () => {
   })
 
   describe('HTML escaping', () => {
-    it('escapes HTML tags to prevent XSS', async () => {
+    it('strips HTML tags to prevent XSS', async () => {
       const component = await mountSuspended(MarkdownText, {
         props: { text: '<script>alert("xss")</script>' },
       })
+      // HTML tags should be stripped (not rendered)
       expect(component.html()).not.toContain('<script>')
-      expect(component.text()).toContain('<script>')
+      // Only the text content remains
+      expect(component.text()).toBe('alert("xss")')
     })
 
     it('escapes special characters', async () => {
@@ -200,6 +202,217 @@ describe('MarkdownText', () => {
       expect(component.find('strong').exists()).toBe(true)
       expect(component.find('em').exists()).toBe(true)
       expect(component.find('code').exists()).toBe(true)
+    })
+  })
+
+  describe('markdown image stripping', () => {
+    it('strips standalone markdown images', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: '![badge](https://img.shields.io/badge.svg) A library' },
+      })
+      expect(component.text()).toBe('A library')
+    })
+
+    it('strips linked markdown images (badges)', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: '[![Build Status](https://travis-ci.org/user/repo.svg)](https://travis-ci.org/user/repo) A library',
+        },
+      })
+      expect(component.text()).toBe('A library')
+    })
+
+    it('strips multiple badges', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: '[![npm](https://badge.svg)](https://npm.com) [![build](https://ci.svg)](https://ci.com) A library',
+        },
+      })
+      expect(component.text()).toBe('A library')
+    })
+
+    it('preserves malformed image syntax without closing paren', async () => {
+      // Incomplete/malformed markdown images are left as-is for safety
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: '![badge](https://example.svg A library' },
+      })
+      // The image syntax is not stripped because it's malformed (no closing paren)
+      expect(component.text()).toBe('![badge](https://example.svg A library')
+    })
+
+    it('strips empty link syntax', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: '[](https://example.com) A library' },
+      })
+      expect(component.text()).toBe('A library')
+    })
+
+    it('preserves regular markdown links', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: '[documentation](https://docs.example.com) is here' },
+      })
+      const link = component.find('a')
+      expect(link.exists()).toBe(true)
+      expect(link.text()).toBe('documentation')
+      expect(component.text()).toBe('documentation is here')
+    })
+  })
+
+  describe('packageName prop', () => {
+    it('strips package name from the beginning of plain text', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: 'my-package - A great library',
+          packageName: 'my-package',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('strips package name with colon separator', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: 'my-package: A great library',
+          packageName: 'my-package',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('strips package name with em dash separator', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: 'my-package — A great library',
+          packageName: 'my-package',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('strips package name without separator', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: 'my-package A great library',
+          packageName: 'my-package',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('is case-insensitive', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: 'MY-PACKAGE - A great library',
+          packageName: 'my-package',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('does not strip package name from middle of text', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: 'A great my-package library',
+          packageName: 'my-package',
+        },
+      })
+      expect(component.text()).toBe('A great my-package library')
+    })
+
+    it('handles scoped package names', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: '@org/my-package - A great library',
+          packageName: '@org/my-package',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('handles package names with special regex characters', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: 'pkg.name+test - A great library',
+          packageName: 'pkg.name+test',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('strips package name from HTML-containing descriptions', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: '<b>my-package</b> - A great library',
+          packageName: 'my-package',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('strips package name from descriptions with markdown images', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: '![badge](https://badge.svg) my-package - A great library',
+          packageName: 'my-package',
+        },
+      })
+      expect(component.text()).toBe('A great library')
+    })
+
+    it('does nothing when packageName is not provided', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: {
+          text: 'my-package - A great library',
+        },
+      })
+      expect(component.text()).toBe('my-package - A great library')
+    })
+  })
+
+  describe('HTML tag stripping', () => {
+    it('strips simple HTML tags but keeps content', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: '<b>bold text</b> here' },
+      })
+      expect(component.text()).toBe('bold text here')
+      expect(component.html()).not.toContain('<b>')
+    })
+
+    it('strips nested HTML tags', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: '<div><span>nested</span> content</div>' },
+      })
+      expect(component.text()).toBe('nested content')
+    })
+
+    it('strips self-closing tags', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: 'before<br/>after' },
+      })
+      expect(component.text()).toBe('beforeafter')
+    })
+
+    it('strips tags with attributes', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: '<a href="https://evil.com">click me</a>' },
+      })
+      expect(component.text()).toBe('click me')
+      expect(component.find('a').exists()).toBe(false)
+    })
+
+    it('preserves text that looks like comparison operators', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: 'x < y > z and a < b && c > d' },
+      })
+      expect(component.text()).toBe('x < y > z and a < b && c > d')
+    })
+
+    it('handles mixed HTML and markdown', async () => {
+      const component = await mountSuspended(MarkdownText, {
+        props: { text: '<b>bold</b> and **also bold**' },
+      })
+      expect(component.text()).toBe('bold and also bold')
+      expect(component.find('strong').exists()).toBe(true)
     })
   })
 })
