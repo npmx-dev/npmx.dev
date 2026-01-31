@@ -123,7 +123,7 @@ const emit = defineEmits<{
             <dt class="sr-only">{{ $t('package.card.weekly_downloads') }}</dt>
             <dd class="flex items-center gap-1.5">
               <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
-              <span class="font-mono">{{ formatNumber(result.downloads.weekly) }}/w</span>
+              <span class="font-mono">{{ $n(result.downloads.weekly) }}/w</span>
             </dd>
           </div>
         </dl>
@@ -158,7 +158,7 @@ const emit = defineEmits<{
         >
           <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
           <span class="font-mono text-xs">
-            {{ formatNumber(result.downloads.weekly) }} {{ $t('common.per_week') }}
+            {{ $n(result.downloads.weekly) }} {{ $t('common.per_week') }}
           </span>
         </div>
       </div>

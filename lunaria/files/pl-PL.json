@@ -5,6 +5,9 @@
       "description": "Lepsza przeglądarka rejestru npm. Wyszukuj, przeglądaj i odkrywaj pakiety w nowoczesnym interfejsie."
     }
   },
+  "version": "Wersja",
+  "built_at": "zbudowano {0}",
+  "alt_logo": "npmx logo",
   "tagline": "lepsza przeglądarka rejestru npm",
   "non_affiliation_disclaimer": "niepowiązane z npm, Inc.",
   "trademark_disclaimer": "npm jest zarejestrowanym znakiem towarowym npm, Inc. Ta strona nie jest powiązana z npm, Inc.",

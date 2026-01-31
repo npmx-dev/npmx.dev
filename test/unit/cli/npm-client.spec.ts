@@ -4,7 +4,7 @@ import {
   validateOrgName,
   validateScopeTeam,
   validatePackageName,
-} from '../../cli/src/npm-client.ts'
+} from '../../../cli/src/npm-client.ts'
 
 describe('validateUsername', () => {
   it('accepts valid usernames', () => {

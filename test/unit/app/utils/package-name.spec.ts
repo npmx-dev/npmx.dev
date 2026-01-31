@@ -3,7 +3,7 @@ import {
   checkPackageExists,
   findSimilarPackages,
   normalizePackageName,
-} from '../../app/utils/package-name'
+} from '../../../../app/utils/package-name'
 
 describe('normalizePackageName', () => {
   it.each([

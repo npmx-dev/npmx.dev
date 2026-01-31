@@ -463,6 +463,7 @@ html.light .shiki span {
   border-collapse: collapse;
   margin: 1.5rem 0;
   font-size: 0.875rem;
+  word-break: keep-all;
 }
 
 .readme-content th,

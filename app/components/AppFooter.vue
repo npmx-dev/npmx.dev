@@ -13,7 +13,7 @@ const isHome = computed(() => route.name === 'index')
           <p class="font-mono text-balance m-0 hidden sm:block">{{ $t('tagline') }}</p>
           <BuildEnvironment v-if="!isHome" footer />
         </div>
-        <div class="flex items-center gap-3 sm:gap-6">
+        <div class="flex flex-wrap items-center gap-x-3 sm:gap-6">
           <NuxtLink
             to="/about"
             class="link-subtle font-mono text-xs min-h-8 sm:min-h-11 flex items-center"

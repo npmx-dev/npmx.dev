@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { extractInstallScriptsInfo } from '../../app/utils/install-scripts'
+import { extractInstallScriptsInfo } from '../../../../app/utils/install-scripts'
 
 describe('extractInstallScriptsInfo', () => {
   it('returns null when no install scripts exist', () => {

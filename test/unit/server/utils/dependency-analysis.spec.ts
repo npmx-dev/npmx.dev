@@ -5,14 +5,14 @@ vi.stubGlobal('defineCachedFunction', (fn: Function) => fn)
 vi.stubGlobal('$fetch', vi.fn())
 
 // Import module under test
-const { analyzeDependencyTree } = await import('../../server/utils/dependency-analysis')
+const { analyzeDependencyTree } = await import('../../../../server/utils/dependency-analysis')
 
 // Mock the dependency resolver
-vi.mock('../../server/utils/dependency-resolver', () => ({
+vi.mock('../../../../server/utils/dependency-resolver', () => ({
   resolveDependencyTree: vi.fn(),
 }))
 
-const { resolveDependencyTree } = await import('../../server/utils/dependency-resolver')
+const { resolveDependencyTree } = await import('../../../../server/utils/dependency-resolver')
 
 describe('dependency-analysis', () => {
   beforeEach(() => {

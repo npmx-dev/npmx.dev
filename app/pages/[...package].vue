@@ -2,7 +2,6 @@
 import type { NpmVersionDist, PackumentVersion, ReadmeResponse } from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
-import { onKeyStroke } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
 
@@ -259,10 +258,6 @@ function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-function formatNumber(num: number): string {
-  return new Intl.NumberFormat('en-US').format(num)
-}
-
 function getDependencyCount(version: PackumentVersion | null): number {
   if (!version?.dependencies) return 0
   return Object.keys(version.dependencies).length
@@ -331,27 +326,37 @@ useSeoMeta({
   description: () => pkg.value?.description ?? '',
 })
 
-onKeyStroke('.', () => {
-  if (pkg.value && displayVersion.value) {
-    router.push({
-      name: 'code',
-      params: {
-        path: [pkg.value.name, 'v', displayVersion.value.version],
-      },
-    })
-  }
-})
+onKeyStroke(
+  '.',
+  e => {
+    if (pkg.value && displayVersion.value) {
+      e.preventDefault()
+      navigateTo({
+        name: 'code',
+        params: {
+          path: [pkg.value.name, 'v', displayVersion.value.version],
+        },
+      })
+    }
+  },
+  { dedupe: true },
+)
 
-onKeyStroke('d', () => {
-  if (docsLink.value) {
-    router.push(docsLink.value)
-  }
-})
+onKeyStroke(
+  'd',
+  e => {
+    if (docsLink.value) {
+      e.preventDefault()
+      navigateTo(docsLink.value)
+    }
+  },
+  { dedupe: true },
+)
 
 defineOgImageComponent('Package', {
   name: () => pkg.value?.name ?? 'Package',
   version: () => displayVersion.value?.version ?? '',
-  downloads: () => (downloads.value ? formatNumber(downloads.value.downloads) : ''),
+  downloads: () => (downloads.value ? $n(downloads.value.downloads) : ''),
   license: () => pkg.value?.license ?? '',
   primaryColor: '#60a5fa',
 })

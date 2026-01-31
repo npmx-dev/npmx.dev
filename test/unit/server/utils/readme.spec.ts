@@ -12,7 +12,7 @@ beforeAll(() => {
 })
 
 // Import after mock is set up
-const { renderReadmeHtml } = await import('../../server/utils/readme')
+const { renderReadmeHtml } = await import('../../../../server/utils/readme')
 
 describe('Playground Link Extraction', () => {
   describe('StackBlitz', () => {

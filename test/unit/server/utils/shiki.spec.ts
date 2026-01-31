@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { escapeRawGt, highlightCodeBlock } from '../../server/utils/shiki'
+import { escapeRawGt, highlightCodeBlock } from '../../../../server/utils/shiki'
 
 describe('escapeRawGt', () => {
   it('should encode > in arrow functions', () => {

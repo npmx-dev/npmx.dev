@@ -301,6 +301,14 @@ For example to check if all Japanese translation keys are up-to-date, run:
 pnpm i18n:check ja-JP
 ```
 
+To automatically add missing keys with English placeholders, use `--fix`:
+
+```bash
+pnpm i18n:check:fix fr-FR
+```
+
+This will add missing keys with `"EN TEXT TO REPLACE: {english text}"` as placeholder values, making it easier to see what needs translation.
+
 #### Country variants (advanced)
 
 Most languages only need a single locale file. Country variants are only needed when you want to support regional differences (e.g., `es-ES` for Spain vs `es-419` for Latin America).
@@ -361,13 +369,17 @@ We recommend the [i18n-ally](https://marketplace.visualstudio.com/items?itemName
 
 The extension is included in our workspace recommendations, so VSCode should prompt you to install it.
 
-### Formatting with locale
+### Formatting numbers and dates
 
-When formatting numbers or dates that should respect the user's locale, pass the locale:
+Use vue-i18n's built-in formatters for locale-aware formatting:
 
-```typescript
-const { locale } = useI18n()
-const formatted = formatNumber(12345, locale.value) // "12,345" in en-US
+```vue
+<template>
+  <p>{{ $n(12345) }}</p>
+  <!-- "12,345" in en-US, "12 345" in fr-FR -->
+  <p>{{ $d(new Date()) }}</p>
+  <!-- locale-aware date -->
+</template>
 ```
 
 ## Testing

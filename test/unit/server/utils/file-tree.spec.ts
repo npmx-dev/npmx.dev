@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { JsDelivrFileNode, PackageFileTree } from '../../shared/types'
-import { convertToFileTree, fetchFileTree, getPackageFileTree } from '../../server/utils/file-tree'
+import type { JsDelivrFileNode, PackageFileTree } from '../../../../shared/types'
+import {
+  convertToFileTree,
+  fetchFileTree,
+  getPackageFileTree,
+} from '../../../../server/utils/file-tree'
 
 const getChildren = (node?: PackageFileTree): PackageFileTree[] => node?.children ?? []
 
