@@ -553,6 +553,26 @@ input[type='search']::-webkit-search-results-decoration {
   animation: none;
 }
 
+/* Keyboard shortcut highlight on "?" key press */
+kbd {
+  position: relative;
+}
+
+kbd::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 4px 2px var(--accent);
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+  pointer-events: none;
+}
+
+html[data-kbd-hints='true'] kbd::before {
+  opacity: 1;
+}
+
 /* Customize the view transition animations for specific elements */
 ::view-transition-old(search-box),
 ::view-transition-new(search-box),

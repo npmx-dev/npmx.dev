@@ -10,6 +10,7 @@ const { locale, locales } = useI18n()
 initPreferencesOnPrehydrate()
 
 const isHomepage = computed(() => route.name === 'index')
+const showKbdHints = ref(false)
 
 const localeMap = locales.value.reduce(
   (acc, l) => {
@@ -21,8 +22,9 @@ const localeMap = locales.value.reduce(
 
 useHead({
   htmlAttrs: {
-    lang: () => locale.value,
-    dir: () => localeMap[locale.value] ?? 'ltr',
+    'lang': () => locale.value,
+    'dir': () => localeMap[locale.value] ?? 'ltr',
+    'data-kbd-hints': () => showKbdHints.value,
   },
   titleTemplate: titleChunk => {
     return titleChunk ? titleChunk : 'npmx - Better npm Package Browser'
@@ -40,9 +42,7 @@ function handleGlobalKeydown(e: KeyboardEvent) {
   const isEditableTarget =
     target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
 
-  if (isEditableTarget) {
-    return
-  }
+  if (isEditableTarget) return
 
   if (e.key === '/') {
     e.preventDefault()
@@ -59,10 +59,22 @@ function handleGlobalKeydown(e: KeyboardEvent) {
 
     router.push('/search')
   }
+
+  if (e.key === '?') {
+    e.preventDefault()
+    showKbdHints.value = true
+  }
+}
+
+function handleGlobalKeyup(e: KeyboardEvent) {
+  if (e.key === '?') {
+    showKbdHints.value = false
+  }
 }
 
 if (import.meta.client) {
   useEventListener(document, 'keydown', handleGlobalKeydown)
+  useEventListener(document, 'keyup', handleGlobalKeyup)
 }
 </script>
 
