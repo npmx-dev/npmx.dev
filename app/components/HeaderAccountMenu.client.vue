@@ -46,7 +46,9 @@ function openConnectorModal() {
   const connectorModal = document.querySelector<HTMLDialogElement>('#connector-modal')
   if (connectorModal) {
     isOpen.value = false
-    connectorModal.showModal()
+    setTimeout(() => {
+      connectorModal.showModal()
+    })
   }
 }
 
@@ -54,7 +56,9 @@ function openAuthModal() {
   const authModal = document.querySelector<HTMLDialogElement>('#auth-modal')
   if (authModal) {
     isOpen.value = false
-    authModal.showModal()
+    setTimeout(() => {
+      authModal.showModal()
+    })
   }
 }
 </script>
