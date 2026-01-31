@@ -40,6 +40,9 @@ jobs:
       - name: 🔠 Fix lint errors
         run: pnpm lint:fix
 
+      - name: 🌐 Compare translations
+        run: pnpm i18n:check
+
       - name: 🧪 Update unit test snapshots
         run: pnpm test:unit -u
 

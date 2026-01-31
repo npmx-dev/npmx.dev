@@ -1,9 +1,10 @@
-import { existsSync, readFileSync } from 'node:fs'
+import process from 'node:process'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const LOCALES_DIRECTORY = join(process.cwd(), 'i18n/locales')
+const LOCALES_DIRECTORY = fileURLToPath(new URL('../i18n/locales', import.meta.url))
 const REFERENCE_FILE_NAME = 'en.json'
-const TARGET_LOCALE_CODE = process.argv[2]
 
 const COLORS = {
   reset: '\x1b[0m',
@@ -15,15 +16,6 @@ const COLORS = {
 } as const
 
 type NestedObject = { [key: string]: unknown }
-
-const validateInput = (): void => {
-  if (!TARGET_LOCALE_CODE) {
-    console.error(
-      `${COLORS.red}Error: Missing locale argument. Usage: pnpm i18n:check <locale>${COLORS.reset}`,
-    )
-    process.exit(1)
-  }
-}
 
 const flattenObject = (obj: NestedObject, prefix = ''): Record<string, unknown> => {
   return Object.keys(obj).reduce<Record<string, unknown>>((acc, key) => {
@@ -38,14 +30,45 @@ const flattenObject = (obj: NestedObject, prefix = ''): Record<string, unknown> 
   }, {})
 }
 
-const loadAndFlatten = (locale: string): string[] => {
-  const filePath = join(LOCALES_DIRECTORY, locale.endsWith('.json') ? locale : `${locale}.json`)
+const loadJson = (filePath: string): NestedObject => {
   if (!existsSync(filePath)) {
     console.error(`${COLORS.red}Error: File not found at ${filePath}${COLORS.reset}`)
     process.exit(1)
   }
-  const content = JSON.parse(readFileSync(filePath, 'utf-8')) as NestedObject
-  return Object.keys(flattenObject(content))
+  return JSON.parse(readFileSync(filePath, 'utf-8')) as NestedObject
+}
+
+const removeKeysFromObject = (obj: NestedObject, keysToRemove: string[]): NestedObject => {
+  const result: NestedObject = {}
+
+  for (const key of Object.keys(obj)) {
+    const value = obj[key]
+
+    // Check if this key or any nested path starting with this key should be removed
+    const shouldRemoveKey = keysToRemove.some(k => k === key || k.startsWith(`${key}.`))
+    const hasNestedRemovals = keysToRemove.some(k => k.startsWith(`${key}.`))
+
+    if (keysToRemove.includes(key)) {
+      // Skip this key entirely
+      continue
+    }
+
+    if (typeof value === 'object' && value !== null && !Array.isArray(value) && hasNestedRemovals) {
+      // Recursively process nested objects
+      const nestedKeysToRemove = keysToRemove
+        .filter(k => k.startsWith(`${key}.`))
+        .map(k => k.slice(key.length + 1))
+      const cleaned = removeKeysFromObject(value as NestedObject, nestedKeysToRemove)
+      // Only add if there are remaining keys
+      if (Object.keys(cleaned).length > 0) {
+        result[key] = cleaned
+      }
+    } else if (!shouldRemoveKey || hasNestedRemovals) {
+      result[key] = value
+    }
+  }
+
+  return result
 }
 
 const logSection = (
@@ -63,36 +86,121 @@ const logSection = (
   keys.forEach(key => console.log(`  - ${key}`))
 }
 
+const processLocale = (
+  localeFile: string,
+  referenceKeys: string[],
+): { missing: string[]; removed: string[] } => {
+  const filePath = join(LOCALES_DIRECTORY, localeFile)
+  const content = loadJson(filePath)
+  const flattenedKeys = Object.keys(flattenObject(content))
+
+  const missingKeys = referenceKeys.filter(key => !flattenedKeys.includes(key))
+  const extraneousKeys = flattenedKeys.filter(key => !referenceKeys.includes(key))
+
+  if (extraneousKeys.length > 0) {
+    // Remove extraneous keys and write back
+    const cleaned = removeKeysFromObject(content, extraneousKeys)
+    writeFileSync(filePath, JSON.stringify(cleaned, null, 2) + '\n', 'utf-8')
+  }
+
+  return { missing: missingKeys, removed: extraneousKeys }
+}
+
+const runSingleLocale = (locale: string, referenceKeys: string[]): void => {
+  const localeFile = locale.endsWith('.json') ? locale : `${locale}.json`
+  const filePath = join(LOCALES_DIRECTORY, localeFile)
+
+  if (!existsSync(filePath)) {
+    console.error(`${COLORS.red}Error: Locale file not found: ${localeFile}${COLORS.reset}`)
+    process.exit(1)
+  }
+
+  const content = loadJson(filePath)
+  const flattenedKeys = Object.keys(flattenObject(content))
+  const missingKeys = referenceKeys.filter(key => !flattenedKeys.includes(key))
+
+  console.log(`${COLORS.cyan}=== Missing keys for ${localeFile} ===${COLORS.reset}`)
+  console.log(`Reference: ${REFERENCE_FILE_NAME} (${referenceKeys.length} keys)`)
+  console.log(`Target: ${localeFile} (${flattenedKeys.length} keys)`)
+
+  if (missingKeys.length === 0) {
+    console.log(`\n${COLORS.green}No missing keys!${COLORS.reset}\n`)
+  } else {
+    console.log(`\n${COLORS.yellow}Missing ${missingKeys.length} key(s):${COLORS.reset}`)
+    missingKeys.forEach(key => console.log(`  - ${key}`))
+    console.log('')
+  }
+}
+
+const runAllLocales = (referenceKeys: string[]): void => {
+  const localeFiles = readdirSync(LOCALES_DIRECTORY).filter(
+    file => file.endsWith('.json') && file !== REFERENCE_FILE_NAME,
+  )
+
+  console.log(`${COLORS.cyan}=== Translation Audit ===${COLORS.reset}`)
+  console.log(`Reference: ${REFERENCE_FILE_NAME} (${referenceKeys.length} keys)`)
+  console.log(`Checking ${localeFiles.length} locale(s)...`)
+
+  let totalMissing = 0
+  let totalRemoved = 0
+
+  for (const localeFile of localeFiles) {
+    const { missing, removed } = processLocale(localeFile, referenceKeys)
+
+    if (missing.length > 0 || removed.length > 0) {
+      console.log(`\n${COLORS.cyan}--- ${localeFile} ---${COLORS.reset}`)
+
+      if (missing.length > 0) {
+        logSection(
+          'MISSING KEYS (in en.json but not in this locale)',
+          missing,
+          COLORS.yellow,
+          '',
+          '',
+        )
+        totalMissing += missing.length
+      }
+
+      if (removed.length > 0) {
+        logSection(
+          'REMOVED EXTRANEOUS KEYS (were in this locale but not in en.json)',
+          removed,
+          COLORS.magenta,
+          '',
+          '',
+        )
+        totalRemoved += removed.length
+      }
+    }
+  }
+
+  console.log(`\n${COLORS.cyan}=== Summary ===${COLORS.reset}`)
+  if (totalMissing > 0) {
+    console.log(`${COLORS.yellow}  Missing keys across all locales: ${totalMissing}${COLORS.reset}`)
+  }
+  if (totalRemoved > 0) {
+    console.log(`${COLORS.magenta}  Removed extraneous keys: ${totalRemoved}${COLORS.reset}`)
+  }
+  if (totalMissing === 0 && totalRemoved === 0) {
+    console.log(`${COLORS.green}  All locales are in sync!${COLORS.reset}`)
+  }
+  console.log('')
+}
+
 const run = (): void => {
-  validateInput()
+  const referenceFilePath = join(LOCALES_DIRECTORY, REFERENCE_FILE_NAME)
+  const referenceContent = loadJson(referenceFilePath)
+  const referenceKeys = Object.keys(flattenObject(referenceContent))
 
-  const referenceKeys = loadAndFlatten(REFERENCE_FILE_NAME)
-  const targetKeys = loadAndFlatten(TARGET_LOCALE_CODE)
+  const targetLocale = process.argv[2]
 
-  const missingKeys = referenceKeys.filter(key => !targetKeys.includes(key))
-  const extraneousKeys = targetKeys.filter(key => !referenceKeys.includes(key))
-
-  console.log(
-    `\n${COLORS.cyan}=== Deep Translation Audit: ${TARGET_LOCALE_CODE} ===${COLORS.reset}`,
-  )
-
-  logSection(
-    'MISSING KEYS (Path exists in en.json but not in target)',
-    missingKeys,
-    COLORS.yellow,
-    '',
-    'No missing keys found.',
-  )
-
-  logSection(
-    'EXTRANEOUS KEYS (Path exists in target but not in en.json)',
-    extraneousKeys,
-    COLORS.magenta,
-    '',
-    'No extraneous keys found.',
-  )
-
-  console.log(`\n${COLORS.cyan}==========================================${COLORS.reset}\n`)
+  if (targetLocale) {
+    // Single locale mode: just show missing keys (no modifications)
+    runSingleLocale(targetLocale, referenceKeys)
+  } else {
+    // All locales mode: check all and remove extraneous keys
+    runAllLocales(referenceKeys)
+  }
 }
 
 run()
