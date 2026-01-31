@@ -7,7 +7,7 @@ function handleSubmit() {
   router.push({
     name: 'search',
     query: {
-      q: searchQuery.value.trim(),
+      q: searchQuery.value,
     },
   })
 }
@@ -68,7 +68,7 @@ defineOgImageComponent('Default', {
               <input
                 id="home-search"
                 ref="searchInputRef"
-                v-model="searchQuery"
+                v-model.trim="searchQuery"
                 type="search"
                 name="q"
                 :placeholder="$t('search.placeholder')"
