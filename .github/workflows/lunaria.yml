@@ -28,11 +28,14 @@ jobs:
           # Makes the action clone the entire git history
           fetch-depth: 0
 
-      - run: corepack enable
       - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: pnpm
+
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: Install pnpm
+        with:
+          cache: true
 
       - name: 📦 Install dependencies
         run: pnpm install
