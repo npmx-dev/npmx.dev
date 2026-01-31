@@ -86,6 +86,12 @@ const displayVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
+//copy package name
+const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
+  source: packageName,
+  copiedDuring: 2000,
+})
+
 // Fetch dependency analysis (lazy, client-side)
 // This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
 const {
@@ -388,9 +394,19 @@ function handleClick(event: MouseEvent) {
                 :to="{ name: 'org', params: { org: orgName } }"
                 class="text-fg-muted hover:text-fg transition-colors duration-200"
                 >@{{ orgName }}</NuxtLink
-              ><span v-if="orgName">/</span
-              >{{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
+              ><span v-if="orgName">/</span>
+              <AnnounceTooltip :text="$t('common.copied')" :isVisible="copiedPkgName">
+                <button
+                  @click="copyPkgName()"
+                  aria-describedby="copy-pkg-name"
+                  class="cursor-copy ms-1 mt-1 active:scale-95 transition-transform"
+                >
+                  {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
+                </button>
+              </AnnounceTooltip>
             </h1>
+
+            <span id="copy-pkg-name" class="sr-only">{{ $t('package.copy_name') }}</span>
             <span
               v-if="displayVersion"
               class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0"

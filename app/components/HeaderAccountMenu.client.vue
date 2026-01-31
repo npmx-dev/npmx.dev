@@ -10,9 +10,9 @@ const {
 
 const { user: atprotoUser } = useAtproto()
 
-const isOpen = ref(false)
-const showConnectorModal = ref(false)
-const showAuthModal = ref(false)
+const isOpen = shallowRef(false)
+const showConnectorModal = shallowRef(false)
+const showAuthModal = shallowRef(false)
 
 /** Check if connected to at least one service */
 const hasAnyConnection = computed(() => isNpmConnected.value || !!atprotoUser.value)

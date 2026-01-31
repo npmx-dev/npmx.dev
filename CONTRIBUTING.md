@@ -284,6 +284,23 @@ To add a new locale:
 
 Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization.html#custom-pluralization) for more info.
 
+### Update translation
+
+We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
+If you see any outdated translations in your language, feel free to update the keys to match then English version.
+
+In order to make sure you have everything up-to-date, you can run:
+
+```bash
+pnpm i18n:check <country-code>
+```
+
+For example to check if all Japanese translation keys are up-to-date, run:
+
+```bash
+pnpm i18n:check ja-JP
+```
+
 #### Country variants (advanced)
 
 Most languages only need a single locale file. Country variants are only needed when you want to support regional differences (e.g., `es-ES` for Spain vs `es-419` for Latin America).

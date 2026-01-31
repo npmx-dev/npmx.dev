@@ -7,7 +7,7 @@ const props = defineProps<{
 
 // Show first N missing keys by default
 const INITIAL_SHOW_COUNT = 5
-const showAll = ref(false)
+const showAll = shallowRef(false)
 
 const missingKeysToShow = computed(() => {
   if (showAll.value || props.status.missingKeys.length <= INITIAL_SHOW_COUNT) {

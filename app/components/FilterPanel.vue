@@ -27,8 +27,8 @@ const emit = defineEmits<{
   'toggleKeyword': [keyword: string]
 }>()
 
-const isExpanded = ref(false)
-const showAllKeywords = ref(false)
+const isExpanded = shallowRef(false)
+const showAllKeywords = shallowRef(false)
 
 const displayedKeywords = computed(() => {
   const keywords = props.availableKeywords ?? []

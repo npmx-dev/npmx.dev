@@ -3,7 +3,7 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import DateTime from '~/components/DateTime.vue'
 
 // Mock the useRelativeDates composable
-const mockRelativeDates = ref(false)
+const mockRelativeDates = shallowRef(false)
 vi.mock('~/composables/useSettings', () => ({
   useRelativeDates: () => mockRelativeDates,
   useSettings: () => ({

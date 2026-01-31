@@ -748,7 +748,6 @@
   "auth": {
     "modal": {
       "title": "Atmosphere",
-      "close": "Schließen",
       "connected_as": "Verbunden als {'@'}{handle}",
       "disconnect": "Verbindung trennen",
       "connect_prompt": "Melde dich bei deinem Atmosphere-Konto an",

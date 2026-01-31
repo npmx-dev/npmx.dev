@@ -2,8 +2,7 @@
 import { debounce } from 'perfect-debounce'
 
 const router = useRouter()
-
-const searchQuery = ref('')
+const searchQuery = shallowRef('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
 

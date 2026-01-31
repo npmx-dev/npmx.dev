@@ -104,7 +104,7 @@ const { data: fileContent, status: fileStatus } = useFetch<PackageFileContentRes
 )
 
 // Track hash manually since we update it via history API to avoid scroll
-const currentHash = ref('')
+const currentHash = shallowRef('')
 
 onMounted(() => {
   currentHash.value = window.location.hash
@@ -136,7 +136,7 @@ const selectedLines = computed(() => {
 })
 
 // Scroll to selected line only on initial load or file change (not on click)
-const shouldScrollOnHashChange = ref(true)
+const shouldScrollOnHashChange = shallowRef(true)
 
 function scrollToLine() {
   if (!shouldScrollOnHashChange.value) return
@@ -256,7 +256,7 @@ const markdownViewModes = [
   },
 ] as const
 
-const markdownViewMode = ref<(typeof markdownViewModes)[number]['key']>('preview')
+const markdownViewMode = shallowRef<(typeof markdownViewModes)[number]['key']>('preview')
 
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
@@ -418,7 +418,7 @@ defineOgImageComponent('Default', {
               <button
                 v-if="selectedLines"
                 type="button"
-                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors"
+                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors active:scale-95"
                 @click="copyPermalinkUrl"
               >
                 {{ permalinkCopied ? $t('common.copied') : $t('code.copy_link') }}

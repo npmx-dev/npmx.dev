@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const showModal = ref(false)
+const showModal = shallowRef(false)
 const { user } = useAtproto()
 </script>
 

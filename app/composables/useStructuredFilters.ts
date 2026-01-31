@@ -123,7 +123,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   })
 
   // Sort state
-  const sortOption = ref<SortOption>(initialSort ?? 'updated-desc')
+  const sortOption = shallowRef<SortOption>(initialSort ?? 'updated-desc')
 
   // Available keywords extracted from all packages
   const availableKeywords = computed(() => {

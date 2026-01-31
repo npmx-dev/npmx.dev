@@ -12,7 +12,7 @@ const { isConnected, npmUser } = useConnector()
 
 const router = useRouter()
 
-const showFullSearch = ref(false)
+const showFullSearch = shallowRef(false)
 
 onKeyStroke(',', e => {
   // Don't trigger if user is typing in an input

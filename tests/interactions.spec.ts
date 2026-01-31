@@ -41,7 +41,7 @@ test.describe('Search Pages', () => {
     const searchInput = page.locator('input[type="search"]')
     await searchInput.fill('vue')
 
-    await page.waitForLoadState('domcontentloaded')
+    await page.waitForURL(/\/search/)
 
     await expect(page.locator('text=/found \\d+/i')).toBeVisible()
 

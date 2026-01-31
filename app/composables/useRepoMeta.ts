@@ -1,6 +1,5 @@
 import type { ProviderId, RepoRef } from '#shared/utils/git-providers'
 import { parseRepoUrl, GITLAB_HOSTS } from '#shared/utils/git-providers'
-import type { CachedFetchFunction } from '~/composables/useCachedFetch'
 
 // TTL for git repo metadata (10 minutes - repo stats don't change frequently)
 const REPO_META_TTL = 60 * 10
@@ -84,20 +83,6 @@ type RadicleProjectResponse = {
   delegates?: Array<{ id: string; alias?: string }>
   patches?: { open: number; draft: number; archived: number; merged: number }
   issues?: { open: number; closed: number }
-}
-
-/** microcosm's constellation API response for /links/all to get tangled.org  stats */
-type ConstellationAllLinksResponse = {
-  links: Record<
-    string,
-    Record<
-      string,
-      {
-        records: number
-        distinct_dids: number
-      }
-    >
-  >
 }
 
 type ProviderAdapter = {
@@ -597,14 +582,11 @@ const tangledAdapter: ProviderAdapter = {
       let forks = 0
       const atUri = atUriMatch?.[1]
 
-      if (atUriMatch) {
+      if (atUri) {
         try {
+          const constellation = new Constellation(cachedFetch)
           //Get counts of records that reference this repo in the atmosphere using constellation
-          const { data: allLinks } = await cachedFetch<ConstellationAllLinksResponse>(
-            `https://constellation.microcosm.blue/links/all?target=${atUri}`,
-            { headers: { 'User-Agent': 'npmx' } },
-            REPO_META_TTL,
-          )
+          const { data: allLinks } = await constellation.getAllLinks(atUri)
           stars = allLinks.links['sh.tangled.feed.star']?.['.subject']?.distinct_dids ?? stars
           forks = allLinks.links['sh.tangled.repo']?.['.source']?.distinct_dids ?? stars
         } catch {
