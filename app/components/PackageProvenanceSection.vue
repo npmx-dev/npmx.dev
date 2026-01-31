@@ -25,27 +25,25 @@ defineProps<{
       </a>
     </h2>
 
-    <div class="space-y-3">
+    <div class="space-y-3 border border-border rounded-lg p-5">
       <p class="flex items-center gap-2 text-sm text-fg m-0">
         <span
           class="i-solar-shield-check-outline w-4 h-4 shrink-0 text-emerald-500"
           aria-hidden="true"
         />
-        <span>{{
-          $t('package.provenance_section.built_and_signed_on', { provider: details.providerLabel })
-        }}</span>
+        <span v-html="$t('package.provenance_section.built_and_signed_on', { provider: `<b>${details.providerLabel}</b>` })" />
       </p>
       <a
         v-if="details.buildSummaryUrl"
         :href="details.buildSummaryUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="link text-sm font-medium block"
+        class="link text-sm text-fg-muted block mt-1"
       >
         {{ $t('package.provenance_section.view_build_summary') }}
       </a>
 
-      <dl class="space-y-3 m-0 mt-4">
+      <dl class="m-0 mt-4 flex justify-between">
         <div v-if="details.sourceCommitUrl" class="flex flex-col gap-0.5">
           <dt class="font-mono text-xs text-fg-muted m-0">
             {{ $t('package.provenance_section.source_commit') }}
