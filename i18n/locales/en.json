@@ -980,7 +980,7 @@
     "from": "From",
     "to": "To",
     "comparing": "Comparing versions...",
-    "invalid_url": "Invalid comparison URL. Use format: /compare/package/v/from...to",
+    "invalid_url": "Invalid comparison URL. Use format: /diff/package/v/from...to",
     "failed": "Failed to compare versions",
     "files_added": "Files added",
     "files_removed": "Files removed",
@@ -997,7 +997,7 @@
     "view_in_browser": "View in code browser",
     "close_diff": "Close diff",
     "lines_hidden": "{count} lines hidden",
-    "compare_versions": "Compare versions"
+    "compare_versions": "Diff"
   },
   "privacy_policy": {
     "title": "privacy policy",

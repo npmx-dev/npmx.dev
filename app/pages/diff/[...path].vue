@@ -3,15 +3,15 @@ import type { CompareResponse, FileChange } from '#shared/types'
 import { getFileIcon } from '~/utils/file-icons'
 
 definePageMeta({
-  name: 'compare',
+  name: 'diff',
 })
 
-const route = useRoute('compare')
+const route = useRoute('diff')
 
 // Parse package name and version range from URL
 // Patterns:
-// -  /compare/nuxt/v/4.0.0...4.2.0
-// -  /compare/@nuxt/kit/v/1.0.0...2.0.0
+// -  /diff/nuxt/v/4.0.0...4.2.0
+// -  /diff/@nuxt/kit/v/1.0.0...2.0.0
 const parsedRoute = computed(() => {
   const segments = route.params.path || []
 
@@ -148,10 +148,10 @@ function getChangeIcon(type: FileChange['type']): string {
 }
 
 const fromVersionUrlPattern = computed(() => {
-  return `/compare/${packageName.value}/v/{version}...${toVersion.value}`
+  return `/diff/${packageName.value}/v/{version}...${toVersion.value}`
 })
 const toVersionUrlPattern = computed(() => {
-  return `/compare/${packageName.value}/v/${fromVersion.value}...{version}`
+  return `/diff/${packageName.value}/v/${fromVersion.value}...{version}`
 })
 
 function packageRoute(ver?: string | null) {
@@ -225,7 +225,7 @@ useSeoMeta({
     <!-- Error: invalid route -->
     <div v-if="!parsedRoute.range" class="container py-20 text-center">
       <p class="text-fg-muted mb-4">
-        Invalid comparison URL. Use format: /compare/package/v/from...to
+        Invalid comparison URL. Use format: /diff/package/v/from...to
       </p>
       <NuxtLink :to="packageRoute()" class="btn">Go to package</NuxtLink>
     </div>
