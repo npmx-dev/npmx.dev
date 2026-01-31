@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   label: string
+  description?: string
 }>()
 
 const checked = defineModel<boolean>({
@@ -30,6 +31,9 @@ const checked = defineModel<boolean>({
       />
     </span>
   </button>
+  <p v-if="description" class="text-sm text-fg-muted">
+    {{ description }}
+  </p>
 </template>
 
 <style scoped>

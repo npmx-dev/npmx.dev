@@ -109,11 +109,9 @@ defineOgImageComponent('Default', {
             <div class="space-y-2">
               <Toggle
                 :label="$t('settings.include_types')"
+                :description="$t('settings.include_types_description')"
                 v-model="settings.includeTypesInInstall"
               />
-              <p class="text-sm text-fg-muted">
-                {{ $t('settings.include_types_description') }}
-              </p>
             </div>
 
             <!-- Divider -->
@@ -123,11 +121,9 @@ defineOgImageComponent('Default', {
             <div class="space-y-2">
               <Toggle
                 :label="$t('settings.hide_platform_packages')"
+                :description="$t('settings.hide_platform_packages')"
                 v-model="settings.hidePlatformPackages"
               />
-              <p class="text-sm text-fg-muted">
-                {{ $t('settings.hide_platform_packages') }}
-              </p>
             </div>
           </div>
         </section>

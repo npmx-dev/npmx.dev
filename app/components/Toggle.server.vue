@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   label: string
+  description?: string
 }>()
 </script>
 
@@ -11,4 +12,7 @@ defineProps<{
     </span>
     <span class="skeleton block h-6 w-11 shrink-0 rounded-full" />
   </div>
+  <p v-if="description" class="text-sm text-fg-muted">
+    {{ description }}
+  </p>
 </template>
