@@ -3,6 +3,7 @@ import type { PlaygroundLink } from '#shared/types'
 
 const props = defineProps<{
   links: PlaygroundLink[]
+  order: number
 }>()
 
 // Map provider id to icon class
@@ -108,11 +109,12 @@ function focusMenuItem(index: number) {
 </script>
 
 <template>
-  <section v-if="links.length > 0">
-    <h2 id="playgrounds-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-      {{ $t('package.playgrounds.title') }}
-    </h2>
-
+  <CollapsibleSection
+    v-if="links.length > 0"
+    id="playgrounds"
+    :title="$t('package.playgrounds.title')"
+    :order
+  >
     <div ref="dropdownRef" class="relative">
       <!-- Single link: direct button -->
       <AppTooltip v-if="hasSingleLink && firstLink" :text="firstLink.providerName" class="w-full">
@@ -188,5 +190,5 @@ function focusMenuItem(index: number) {
         </div>
       </Transition>
     </div>
-  </section>
+  </CollapsibleSection>
 </template>

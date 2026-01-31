@@ -197,4 +197,5 @@ export default defineConfig({
     // Ensures elements start in initial state during delay
     ['animate-fill-both', { 'animation-fill-mode': 'both' }],
   ],
+  safelist: Array.from({ length: 15 }, (_, i) => `order-${i}`),
 })

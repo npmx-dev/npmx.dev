@@ -17,6 +17,7 @@ const props = defineProps<{
   versions: Record<string, PackumentVersion>
   distTags: Record<string, string>
   time: Record<string, string>
+  order: number
 }>()
 
 /** Maximum number of dist-tag rows to show before collapsing into "Other versions" */
@@ -315,6 +316,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
     v-if="allTagRows.length > 0"
     :title="$t('package.versions.title')"
     id="versions"
+    :order
   >
     <div class="space-y-0.5 min-w-0">
       <!-- Dist-tag rows (limited to MAX_VISIBLE_TAGS) -->

@@ -6,6 +6,7 @@ import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '../utils/colors'
 
 const { packageName } = defineProps<{
   packageName: string
+  order: number
 }>()
 
 const showModal = shallowRef(false)
@@ -190,57 +191,55 @@ const config = computed(() => {
 </script>
 
 <template>
-  <div class="space-y-8">
-    <CollapsibleSection id="downloads" :title="$t('package.downloads.title')">
-      <template #actions>
-        <button
-          type="button"
-          @click="showModal = true"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ms-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-          :title="$t('package.downloads.analyze')"
-        >
-          <span class="i-carbon:data-analytics w-4 h-4" aria-hidden="true" />
-          <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
-        </button>
-      </template>
+  <CollapsibleSection id="downloads" :title="$t('package.downloads.title')" :order>
+    <template #actions>
+      <button
+        type="button"
+        @click="showModal = true"
+        class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ms-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+        :title="$t('package.downloads.analyze')"
+      >
+        <span class="i-carbon:data-analytics w-4 h-4" aria-hidden="true" />
+        <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
+      </button>
+    </template>
 
-      <div class="w-full overflow-hidden">
-        <ClientOnly>
-          <VueUiSparkline class="w-full max-w-xs" :dataset :config>
-            <template #skeleton>
-              <!-- This empty div overrides the default built-in scanning animation on load -->
-              <div />
-            </template>
-          </VueUiSparkline>
-          <template #fallback>
-            <!-- Skeleton matching sparkline layout: title row + chart with data label -->
-            <div class="min-h-[75.195px]">
-              <!-- Title row: date range (24px height) -->
-              <div class="h-6 flex items-center ps-3">
-                <span class="skeleton h-3 w-36" />
+    <div class="w-full overflow-hidden">
+      <ClientOnly>
+        <VueUiSparkline class="w-full max-w-xs" :dataset :config>
+          <template #skeleton>
+            <!-- This empty div overrides the default built-in scanning animation on load -->
+            <div />
+          </template>
+        </VueUiSparkline>
+        <template #fallback>
+          <!-- Skeleton matching sparkline layout: title row + chart with data label -->
+          <div class="min-h-[75.195px]">
+            <!-- Title row: date range (24px height) -->
+            <div class="h-6 flex items-center ps-3">
+              <span class="skeleton h-3 w-36" />
+            </div>
+            <!-- Chart area: data label left, sparkline right -->
+            <div class="aspect-[500/80] flex items-center">
+              <!-- Data label (covers ~42% width) -->
+              <div class="w-[42%] flex items-center ps-0.5">
+                <span class="skeleton h-7 w-24" />
               </div>
-              <!-- Chart area: data label left, sparkline right -->
-              <div class="aspect-[500/80] flex items-center">
-                <!-- Data label (covers ~42% width) -->
-                <div class="w-[42%] flex items-center ps-0.5">
-                  <span class="skeleton h-7 w-24" />
-                </div>
-                <!-- Sparkline area (~58% width) -->
-                <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
-                  <span
-                    v-for="i in 16"
-                    :key="i"
-                    class="skeleton flex-1 rounded-sm"
-                    :style="{ height: `${25 + ((i * 7) % 50)}%` }"
-                  />
-                </div>
+              <!-- Sparkline area (~58% width) -->
+              <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
+                <span
+                  v-for="i in 16"
+                  :key="i"
+                  class="skeleton flex-1 rounded-sm"
+                  :style="{ height: `${25 + ((i * 7) % 50)}%` }"
+                />
               </div>
             </div>
-          </template>
-        </ClientOnly>
-      </div>
-    </CollapsibleSection>
-  </div>
+          </div>
+        </template>
+      </ClientOnly>
+    </div>
+  </CollapsibleSection>
 
   <ChartModal v-model:open="showModal">
     <template #title>{{ $t('package.downloads.modal_title') }}</template>

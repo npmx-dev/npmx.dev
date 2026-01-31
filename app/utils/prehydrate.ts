@@ -58,5 +58,6 @@ export function initPreferencesOnPrehydrate() {
     document.documentElement.dataset.pm = pm
 
     document.documentElement.dataset.collapsed = settings.sidebar?.collapsed?.join(' ') ?? ''
+    document.documentElement.dataset.pinned = settings.sidebar?.pinned?.join(' ') ?? ''
   })
 }

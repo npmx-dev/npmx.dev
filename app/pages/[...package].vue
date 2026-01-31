@@ -5,6 +5,22 @@ import { assertValidPackageName } from '#shared/utils/npm'
 import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
 
+const defaultSections = [
+  'maintainers',
+  'accessControls',
+  'keywords',
+  'downloads',
+  'playgrounds',
+  'compatibility',
+  'versions',
+  'installScripts',
+  'dependencies',
+  'peerDependencies',
+  'optionalDependencies',
+]
+
+type SideBarSection = (typeof defaultSections)[number]
+
 definePageMeta({
   name: 'package',
   alias: ['/package/:package(.*)*'],
@@ -384,6 +400,22 @@ function handleClick(event: MouseEvent) {
     router.push(route)
   }
 }
+
+const { settings } = useSettings()
+
+const sidebar = computed(() => settings.value.sidebar.pinned)
+
+const sideBarSections = shallowRef<SideBarSection[]>(defaultSections)
+
+function updateSections() {
+  const sections = new Set(settings.value.sidebar.pinned)
+  defaultSections.forEach(section => sections.add(section))
+
+  sideBarSections.value = [...sections]
+}
+
+watch(sidebar, () => updateSections())
+onMounted(() => updateSections())
 </script>
 
 <template>
@@ -952,32 +984,29 @@ function handleClick(event: MouseEvent) {
 
       <div class="area-sidebar">
         <!-- Sidebar -->
-        <div class="sticky top-20 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
+        <div class="sticky top-20 gap-6 min-w-0 overflow-hidden flex flex-col">
           <!-- Maintainers (with admin actions when connected) -->
-          <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
+          <PackageMaintainers
+            :order="sideBarSections.indexOf('maintainers')"
+            :package-name="pkg.name"
+            :maintainers="pkg.maintainers"
+          />
 
           <!-- Team access controls (for scoped packages when connected) -->
           <ClientOnly>
-            <PackageAccessControls :package-name="pkg.name" />
+            <PackageAccessControls
+              :order="sideBarSections.indexOf('accessControl')"
+              :package-name="pkg.name"
+            />
           </ClientOnly>
 
           <!-- Keywords -->
-          <section id="keywords" v-if="displayVersion?.keywords?.length" class="scroll-mt-20">
-            <h2
-              id="keywords-heading"
-              class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
-            >
-              <a
-                href="#keywords"
-                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-              >
-                {{ $t('package.keywords_title') }}
-                <span
-                  class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  aria-hidden="true"
-                />
-              </a>
-            </h2>
+          <CollapsibleSection
+            :order="sideBarSections.indexOf('keywords')"
+            v-if="displayVersion?.keywords?.length"
+            id="keywords"
+            :title="$t('package.keywords_title')"
+          >
             <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
               <li v-for="keyword in displayVersion.keywords.slice(0, 15)" :key="keyword">
                 <NuxtLink :to="{ name: 'search', query: { q: `keywords:${keyword}` } }" class="tag">
@@ -985,39 +1014,29 @@ function handleClick(event: MouseEvent) {
                 </NuxtLink>
               </li>
             </ul>
-          </section>
+          </CollapsibleSection>
 
           <!-- Download stats -->
-          <PackageWeeklyDownloadStats :packageName />
+          <PackageWeeklyDownloadStats
+            :order="sideBarSections.indexOf('downloads')"
+            :packageName="pkg.name"
+          />
 
           <!-- Playground links -->
           <PackagePlaygrounds
             v-if="readmeData?.playgroundLinks?.length"
             :links="readmeData.playgroundLinks"
+            :order="sideBarSections.indexOf('playgrounds')"
           />
 
-          <section
-            id="compatibility"
+          <CollapsibleSection
             v-if="
               displayVersion?.engines && (displayVersion.engines.node || displayVersion.engines.npm)
             "
-            class="scroll-mt-20"
+            :order="sideBarSections.indexOf('compatibility')"
+            id="compatibility"
+            :title="$t('package.compatibility')"
           >
-            <h2
-              id="compatibility-heading"
-              class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
-            >
-              <a
-                href="#compatibility"
-                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-              >
-                {{ $t('package.compatibility') }}
-                <span
-                  class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  aria-hidden="true"
-                />
-              </a>
-            </h2>
             <dl class="space-y-2">
               <div v-if="displayVersion.engines.node" class="flex justify-between gap-4 py-1">
                 <dt class="text-fg-muted text-sm shrink-0">node</dt>
@@ -1032,11 +1051,12 @@ function handleClick(event: MouseEvent) {
                 </dd>
               </div>
             </dl>
-          </section>
+          </CollapsibleSection>
 
           <!-- Versions (grouped by release channel) -->
           <PackageVersions
             v-if="pkg.versions && Object.keys(pkg.versions).length > 0"
+            :order="sideBarSections.indexOf('versions')"
             :package-name="pkg.name"
             :versions="pkg.versions"
             :dist-tags="pkg['dist-tags'] ?? {}"
@@ -1048,11 +1068,13 @@ function handleClick(event: MouseEvent) {
             v-if="displayVersion?.installScripts"
             :package-name="pkg.name"
             :install-scripts="displayVersion.installScripts"
+            :order="sideBarSections.indexOf('installScripts')"
           />
 
           <!-- Dependencies -->
           <PackageDependencies
             v-if="hasDependencies && displayVersion"
+            :sideBarSections="sideBarSections"
             :package-name="pkg.name"
             :version="displayVersion.version"
             :dependencies="displayVersion.dependencies"

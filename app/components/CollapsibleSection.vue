@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { shallowRef, computed } from 'vue'
+import { computed, shallowRef } from 'vue'
 
 interface Props {
   title: string
   isLoading?: boolean
   headingLevel?: `h${number}`
   id: string
+  order?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,6 +21,7 @@ const contentId = `${props.id}-collapsible-content`
 const headingId = `${props.id}-heading`
 
 const isOpen = shallowRef(true)
+const isPinned = shallowRef(false)
 
 onPrehydrate(() => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
@@ -38,13 +40,14 @@ onPrehydrate(() => {
 onMounted(() => {
   if (document?.documentElement) {
     isOpen.value = !(document.documentElement.dataset.collapsed?.includes(props.id) ?? false)
+    isPinned.value = document.documentElement.dataset.pinned?.includes(props.id) ?? false
   }
 })
 
 function toggle() {
   isOpen.value = !isOpen.value
 
-  const removed = appSettings.settings.value.sidebar.collapsed.filter(c => c !== props.id)
+  const removed = appSettings.settings.value.sidebar.collapsed?.filter(c => c !== props.id) ?? []
 
   if (isOpen.value) {
     appSettings.settings.value.sidebar.collapsed = removed
@@ -55,6 +58,21 @@ function toggle() {
 
   document.documentElement.dataset.collapsed =
     appSettings.settings.value.sidebar.collapsed.join(' ')
+}
+
+function togglePin() {
+  isPinned.value = !isPinned.value
+
+  const removed = appSettings.settings.value.sidebar.pinned?.filter(c => c !== props.id) ?? []
+
+  if (isPinned.value) {
+    removed.push(props.id)
+    appSettings.settings.value.sidebar.pinned = removed
+  } else {
+    appSettings.settings.value.sidebar.pinned = removed
+  }
+
+  document.documentElement.dataset.pinned = appSettings.settings.value.sidebar.pinned.join(' ')
 }
 
 const ariaLabel = computed(() => {
@@ -74,7 +92,11 @@ useHead({
 </script>
 
 <template>
-  <section class="scroll-mt-20" :data-anchor-id="id">
+  <section
+    class="scroll-mt-20"
+    :class="order !== undefined ? `order-${order}` : ''"
+    :data-anchor-id="id"
+  >
     <div class="flex items-center justify-between mb-3">
       <component
         :is="headingLevel"
@@ -117,6 +139,15 @@ useHead({
 
       <!-- Actions slot for buttons or other elements -->
       <slot name="actions" />
+      <!-- pin button -->
+      <button
+        type="button"
+        class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg-muted transition-colors duration-200 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+        @click="togglePin"
+      >
+        <span v-if="isPinned" class="i-carbon:pin-filled w-3 h-3" aria-hidden="true" />
+        <span v-else class="i-carbon:pin w-3 h-3" aria-hidden="true" />
+      </button>
     </div>
 
     <div

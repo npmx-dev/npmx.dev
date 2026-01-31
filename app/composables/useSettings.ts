@@ -18,6 +18,7 @@ export interface AppSettings {
   hidePlatformPackages: boolean
   sidebar: {
     collapsed: string[]
+    pinned: string[]
   }
 }
 
@@ -28,6 +29,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   hidePlatformPackages: true,
   sidebar: {
     collapsed: [],
+    pinned: [],
   },
 }
 

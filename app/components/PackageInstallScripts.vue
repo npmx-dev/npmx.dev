@@ -6,6 +6,7 @@ const props = defineProps<{
     content?: Record<string, string>
     npxDependencies: Record<string, string>
   }
+  order: number
 }>()
 
 const outdatedNpxDeps = useOutdatedDependencies(() => props.installScripts.npxDependencies)
@@ -18,15 +19,7 @@ const isExpanded = shallowRef(false)
 </script>
 
 <template>
-  <section>
-    <h2
-      id="install-scripts-heading"
-      class="text-xs text-fg-subtle uppercase tracking-wider mb-3 flex items-center gap-2"
-    >
-      <span class="i-carbon:warning-alt w-3 h-3 text-yellow-500" aria-hidden="true" />
-      {{ $t('package.install_scripts.title') }}
-    </h2>
-
+  <CollapsibleSection id="install-scripts" :title="$t('package.install_scripts.title')" :order>
     <!-- Script list: name as label, content below -->
     <dl class="space-y-2 m-0">
       <div v-for="scriptName in installScripts.scripts" :key="scriptName">
@@ -112,5 +105,5 @@ const isExpanded = shallowRef(false)
         </li>
       </ul>
     </div>
-  </section>
+  </CollapsibleSection>
 </template>
