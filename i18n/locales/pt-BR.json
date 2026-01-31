@@ -777,23 +777,23 @@
     }
   },
   "header": {
-    "home": "npmx home",
+    "home": "página inicial npmx",
     "github": "GitHub",
-    "packages": "packages",
+    "packages": "pacotes",
     "packages_dropdown": {
-      "title": "Your Packages",
-      "loading": "Loading...",
-      "error": "Failed to load packages",
-      "empty": "No packages found",
-      "view_all": "View all"
+      "title": "Seus Pacotes",
+      "loading": "Carregando...",
+      "error": "Falha ao carregar pacotes",
+      "empty": "Nenhum pacote encontrado",
+      "view_all": "Ver tudo"
     },
-    "orgs": "orgs",
+    "orgs": "organizações",
     "orgs_dropdown": {
-      "title": "Your Organizations",
-      "loading": "Loading...",
-      "error": "Failed to load organizations",
-      "empty": "No organizations found",
-      "view_all": "View all"
+      "title": "Suas Organizações",
+      "loading": "Carregando...",
+      "error": "Falha ao carregar organizações",
+      "empty": "Nenhuma organização encontrada",
+      "view_all": "Ver tudo"
     }
   },
   "compare": {
