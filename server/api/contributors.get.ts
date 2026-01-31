@@ -15,7 +15,7 @@ export default defineCachedEventHandler(
       {
         headers: {
           'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'npmx.dev',
+          'User-Agent': 'npmx',
         },
       },
     )

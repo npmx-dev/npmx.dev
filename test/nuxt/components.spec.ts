@@ -96,6 +96,10 @@ import ViewModeToggle from '~/components/ViewModeToggle.vue'
 import PackageVulnerabilityTree from '~/components/PackageVulnerabilityTree.vue'
 import PackageDeprecatedTree from '~/components/PackageDeprecatedTree.vue'
 import DependencyPathPopup from '~/components/DependencyPathPopup.vue'
+import CompareFacetSelector from '~/components/compare/FacetSelector.vue'
+import ComparePackageSelector from '~/components/compare/PackageSelector.vue'
+import CompareFacetRow from '~/components/compare/FacetRow.vue'
+import CompareComparisonGrid from '~/components/compare/ComparisonGrid.vue'
 import PackageManagerSelect from '~/components/PackageManagerSelect.vue'
 
 describe('component accessibility audits', () => {
@@ -1300,6 +1304,101 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(DependencyPathPopup, {
         props: {
           path: ['root@1.0.0', 'dep-a@1.0.0', 'dep-b@2.0.0', 'dep-c@3.0.0', 'vulnerable-pkg@4.0.0'],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  // Compare feature components
+  describe('CompareFacetSelector', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CompareFacetSelector)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ComparePackageSelector', () => {
+    it('should have no accessibility violations with no packages', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: [] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with packages selected', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: ['vue', 'react'] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations at max packages', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: ['vue', 'react', 'angular', 'svelte'], max: 4 },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareFacetRow', () => {
+    it('should have no accessibility violations with basic values', async () => {
+      const component = await mountSuspended(CompareFacetRow, {
+        props: {
+          label: 'Downloads',
+          description: 'Weekly download count',
+          values: [
+            { raw: 1000, display: '1,000' },
+            { raw: 2000, display: '2,000' },
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when loading', async () => {
+      const component = await mountSuspended(CompareFacetRow, {
+        props: {
+          label: 'Install Size',
+          description: 'Total install size',
+          values: [null, null],
+          loading: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareComparisonGrid', () => {
+    it('should have no accessibility violations with 2 columns', async () => {
+      const component = await mountSuspended(CompareComparisonGrid, {
+        props: {
+          columns: 2,
+          headers: ['vue', 'react'],
+        },
+        slots: {
+          default: '<div>Grid content</div>',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with 3 columns', async () => {
+      const component = await mountSuspended(CompareComparisonGrid, {
+        props: {
+          columns: 3,
+          headers: ['vue', 'react', 'angular'],
+        },
+        slots: {
+          default: '<div>Grid content</div>',
         },
       })
       const results = await runAxe(component)
