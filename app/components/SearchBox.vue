@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
 
-const isMobile = useIsMobile()
-
 withDefaults(
   defineProps<{
     inputClass?: string
@@ -81,6 +79,13 @@ function handleSearchFocus() {
   isSearchFocused.value = true
   emit('focus')
 }
+
+// Expose focus method for parent components
+const inputRef = shallowRef<HTMLInputElement | null>(null)
+function focus() {
+  inputRef.value?.focus()
+}
+defineExpose({ focus })
 </script>
 <template>
   <search v-if="showSearchBar" :class="'flex-1 sm:max-w-md ' + inputClass">
@@ -99,7 +104,7 @@ function handleSearchFocus() {
 
           <input
             id="header-search"
-            :autofocus="!isMobile"
+            ref="inputRef"
             v-model="searchQuery"
             type="search"
             name="q"

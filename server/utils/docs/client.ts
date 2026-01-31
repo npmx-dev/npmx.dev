@@ -84,7 +84,9 @@ function createLoader(): (
     let url: URL
     try {
       url = new URL(specifier)
-    } catch {
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
       return undefined
     }
 
@@ -93,21 +95,18 @@ function createLoader(): (
       return undefined
     }
 
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
-
     try {
-      const response = await fetch(url.toString(), {
+      const response = await $fetch.raw<Blob>(url.toString(), {
+        method: 'GET',
+        timeout: FETCH_TIMEOUT_MS,
         redirect: 'follow',
-        signal: controller.signal,
       })
-      clearTimeout(timeoutId)
 
       if (response.status !== 200) {
         return undefined
       }
 
-      const content = await response.text()
+      const content = (await response._data?.text()) ?? ''
       const headers: Record<string, string> = {}
       for (const [key, value] of response.headers) {
         headers[key.toLowerCase()] = value
@@ -119,8 +118,9 @@ function createLoader(): (
         headers,
         content,
       }
-    } catch {
-      clearTimeout(timeoutId)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
       return undefined
     }
   }
@@ -161,18 +161,15 @@ function createResolver(): (specifier: string, referrer: string) => string {
 async function getTypesUrl(packageName: string, version: string): Promise<string | null> {
   const url = `https://esm.sh/${packageName}@${version}`
 
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
-
   try {
-    const response = await fetch(url, {
+    const response = await $fetch.raw(url, {
       method: 'HEAD',
-      signal: controller.signal,
+      timeout: FETCH_TIMEOUT_MS,
     })
-    clearTimeout(timeoutId)
     return response.headers.get('x-typescript-types')
-  } catch {
-    clearTimeout(timeoutId)
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
     return null
   }
 }

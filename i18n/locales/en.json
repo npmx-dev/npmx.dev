@@ -46,7 +46,12 @@
     "popular_packages": "Popular packages",
     "search": "search",
     "settings": "settings",
-    "back": "back"
+    "back": "back",
+    "menu": "Menu",
+    "mobile_menu": "Navigation menu",
+    "open_menu": "Open menu",
+    "links": "Links",
+    "tap_to_search": "Tap to search"
   },
   "settings": {
     "title": "settings",
@@ -564,7 +569,8 @@
     "markdown_view_mode": {
       "preview": "preview",
       "code": "code"
-    }
+    },
+    "file_path": "File path"
   },
   "badges": {
     "provenance": {
