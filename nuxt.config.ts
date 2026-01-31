@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { currentLocales } from './config/i18n'
 
 export default defineNuxtConfig({
@@ -45,7 +46,22 @@ export default defineNuxtConfig({
 
   css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
+  runtimeConfig: {
+    sessionPassword: '',
+    // Upstash Redis for distributed OAuth token refresh locking in production
+    upstash: {
+      redisRestUrl: process.env.KV_REST_API_URL || '',
+      redisRestToken: process.env.KV_REST_API_TOKEN || '',
+    },
+  },
+
   devtools: { enabled: true },
+
+  devServer: {
+    // Used with atproto oauth
+    // https://atproto.com/specs/oauth#localhost-client-development
+    host: '127.0.0.1',
+  },
 
   app: {
     head: {
@@ -131,6 +147,14 @@ export default defineNuxtConfig({
       'fetch-cache': {
         driver: 'fsLite',
         base: './.cache/fetch',
+      },
+      'oauth-atproto-state': {
+        driver: 'fsLite',
+        base: './.cache/atproto-oauth/state',
+      },
+      'oauth-atproto-session': {
+        driver: 'fsLite',
+        base: './.cache/atproto-oauth/session',
       },
     },
   },

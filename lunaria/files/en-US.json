@@ -352,7 +352,7 @@
   "connector": {
     "status": {
       "connecting": "connecting...",
-      "connected_as": "connected as {'@'}{user}",
+      "connected_as": "connected as ~{user}",
       "connected": "connected",
       "connect_cli": "connect local CLI",
       "aria_connecting": "Connecting to local connector",
@@ -364,7 +364,7 @@
       "title": "Local Connector",
       "close_modal": "Close modal",
       "connected": "Connected",
-      "logged_in_as": "Logged in as {'@'}{user}",
+      "connected_as_user": "Connected as ~{user}",
       "connected_hint": "You can now manage packages and organizations from the web UI.",
       "disconnect": "Disconnect",
       "run_hint": "Run the connector on your machine to enable admin features.",
@@ -732,6 +732,35 @@
         "description": "Find out the latest on npmx.",
         "cta": "Follow on Bluesky"
       }
+    }
+  },
+  "account_menu": {
+    "connect": "connect",
+    "account": "Account",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Manage packages & orgs",
+    "atmosphere_desc": "Social features & identity",
+    "connect_npm_cli": "Connect to npm CLI",
+    "connect_atmosphere": "Connect to Atmosphere",
+    "connecting": "Connecting...",
+    "ops": "ops",
+    "disconnect": "Disconnect"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "close": "Close",
+      "connected_as": "Connected as {'@'}{handle}",
+      "disconnect": "Disconnect",
+      "connect_prompt": "Connect with your Atmosphere account",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.bsky.social",
+      "connect": "Connect",
+      "create_account": "Create a new account",
+      "connect_bluesky": "Connect with Bluesky",
+      "what_is_atmosphere": "What is an Atmosphere account?",
+      "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account."
     }
   },
   "header": {

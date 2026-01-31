@@ -5,6 +5,8 @@
  * using Nitro's storage layer (backed by Vercel's runtime cache in production).
  */
 
+import { CONSTELLATION_ENDPOINT, SLINGSHOT_ENDPOINT } from './constants'
+
 /**
  * Domains that should have their fetch responses cached.
  * Only requests to these domains will be intercepted and cached.
@@ -24,6 +26,9 @@ export const FETCH_CACHE_ALLOWED_DOMAINS = [
   'api.bitbucket.org', // Bitbucket API
   'codeberg.org', // Codeberg (Gitea-based)
   'gitee.com', // Gitee API
+  // microcosm endpoints for atproto data
+  CONSTELLATION_ENDPOINT,
+  SLINGSHOT_ENDPOINT,
 ] as const
 
 /**

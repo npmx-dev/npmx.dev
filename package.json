@@ -33,7 +33,9 @@
     "start:playwright:webserver": "NODE_ENV=test pnpm build && pnpm preview --port 5678"
   },
   "dependencies": {
+    "@atproto/api": "^0.18.17",
     "@atproto/lex": "0.0.13",
+    "@atproto/oauth-client-node": "^0.3.15",
     "@deno/doc": "jsr:^0.189.1",
     "@iconify-json/simple-icons": "1.2.68",
     "@iconify-json/vscode-icons": "1.2.40",
@@ -48,6 +50,8 @@
     "@nuxtjs/i18n": "10.2.1",
     "@shikijs/langs": "3.21.0",
     "@shikijs/themes": "3.21.0",
+    "@upstash/redis": "1.36.1",
+    "@vercel/kv": "3.0.0",
     "@vueuse/core": "14.1.0",
     "@vueuse/nuxt": "14.1.0",
     "module-replacements": "2.11.0",
