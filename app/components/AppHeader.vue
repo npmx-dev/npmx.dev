@@ -185,7 +185,7 @@ onKeyStroke(
         <!-- Mobile: Menu button (always visible, toggles menu) -->
         <button
           type="button"
-          class="sm:hidden p-2 -m-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          class="sm:hidden flex items-center p-2 -m-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
           :aria-label="showMobileMenu ? $t('common.close') : $t('nav.open_menu')"
           :aria-expanded="showMobileMenu"
           @click="showMobileMenu = !showMobileMenu"
