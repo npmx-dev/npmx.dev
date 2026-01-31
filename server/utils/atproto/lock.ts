@@ -55,10 +55,10 @@ export function getOAuthLock(): RuntimeLock {
   const config = useRuntimeConfig()
 
   // Use distributed lock in production if Upstash is configured
-  if (!import.meta.dev && config.upstashRedisRestUrl && config.upstashRedisRestToken) {
+  if (!import.meta.dev && config.upstash?.redisRestUrl && config.upstash?.redisRestToken) {
     const redis = new Redis({
-      url: config.upstashRedisRestUrl,
-      token: config.upstashRedisRestToken,
+      url: config.upstash.redisRestUrl,
+      token: config.upstash.redisRestToken,
     })
     return createUpstashLock(redis)
   }
