@@ -90,7 +90,7 @@ function handleBlur() {
           class="absolute inset-is-3 top-1/2 -translate-y-1/2 text-fg-subtle"
           aria-hidden="true"
         >
-          <span class="i-carbon:search w-4 h-4" />
+          <span class="i-carbon:search inline-block w-4 h-4" />
         </span>
         <input
           id="package-search"

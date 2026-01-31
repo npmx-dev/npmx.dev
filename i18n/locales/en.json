@@ -794,8 +794,8 @@
   },
   "compare": {
     "packages": {
-      "title": "Compare Packages",
-      "tagline": "Compare npm packages side-by-side to help you choose the right one.",
+      "title": "compare packages",
+      "tagline": "compare npm packages side-by-side to help you choose the right one.",
       "meta_title": "Compare {packages} - npmx",
       "meta_title_empty": "Compare Packages - npmx",
       "meta_description": "Side-by-side comparison of {packages}",
