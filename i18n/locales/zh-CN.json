@@ -752,7 +752,7 @@
       "disconnect": "断开连接",
       "connect_prompt": "使用 Atmosphere 账户登录",
       "handle_label": "用户标识",
-      "handle_placeholder": "alice.bsky.social",
+      "handle_placeholder": "alice.npmx.social",
       "connect": "连接",
       "create_account": "创建一个新账户",
       "connect_bluesky": "使用 Bluesky 账户登录",
