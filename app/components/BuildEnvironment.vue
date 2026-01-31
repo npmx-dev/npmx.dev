@@ -4,7 +4,6 @@ defineProps<{
 }>()
 
 const buildInfo = useAppConfig().buildInfo
-const buildTimeDate = new Date(buildInfo.time)
 </script>
 
 <template>
@@ -14,7 +13,7 @@ const buildTimeDate = new Date(buildInfo.time)
     style="animation-delay: 0.05s"
   >
     <i18n-t keypath="built_at">
-      <NuxtTime :datetime="buildTimeDate" relative />
+      <NuxtTime :datetime="buildInfo.time" relative />
     </i18n-t>
     <span>&middot;</span>
     <NuxtLink

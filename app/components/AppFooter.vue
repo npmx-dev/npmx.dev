@@ -1,4 +1,3 @@
-<script setup lang="ts"></script>
 <template>
   <footer class="border-t border-border mt-auto">
     <div class="container py-3 sm:py-8 flex flex-col gap-2 sm:gap-4 text-fg-subtle text-sm">

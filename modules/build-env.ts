@@ -11,21 +11,17 @@ export default defineNuxtModule({
   },
   async setup(_options, nuxt) {
     const { env, commit, shortCommit, branch } = await getEnv(nuxt.options.dev)
-    const buildInfo: BuildInfo = {
+
+    nuxt.options.appConfig = nuxt.options.appConfig || {}
+    nuxt.options.appConfig.env = env
+    nuxt.options.appConfig.buildInfo = {
       version,
       time: +Date.now(),
       commit,
       shortCommit,
       branch,
       env,
-    }
-
-    nuxt.options.appConfig = nuxt.options.appConfig || {}
-    nuxt.options.appConfig.env = env
-    nuxt.options.appConfig.buildInfo = buildInfo
-
-    nuxt.options.nitro.virtual = nuxt.options.nitro.virtual || {}
-    nuxt.options.nitro.virtual['#build-info'] = `export const env = ${JSON.stringify(env)}`
+    } satisfies BuildInfo
 
     nuxt.options.nitro.publicAssets = nuxt.options.nitro.publicAssets || []
     if (env === 'dev') nuxt.options.nitro.publicAssets.unshift({ dir: resolve('../public-dev') })
@@ -33,3 +29,10 @@ export default defineNuxtModule({
       nuxt.options.nitro.publicAssets.unshift({ dir: resolve('../public-staging') })
   },
 })
+
+declare module '@nuxt/schema' {
+  interface AppConfig {
+    env: BuildInfo['env']
+    buildInfo: BuildInfo
+  }
+}

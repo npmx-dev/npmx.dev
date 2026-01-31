@@ -1,5 +1,4 @@
 import process from 'node:process'
-import type { BuildInfo } from './shared/types'
 import { currentLocales } from './config/i18n'
 
 export default defineNuxtConfig({
@@ -241,10 +240,3 @@ export default defineNuxtConfig({
     langDir: 'locales',
   },
 })
-
-declare module '@nuxt/schema' {
-  interface AppConfig {
-    env: BuildInfo['env']
-    buildInfo: BuildInfo
-  }
-}
