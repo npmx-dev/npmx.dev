@@ -50,6 +50,7 @@
     "@nuxtjs/i18n": "10.2.1",
     "@shikijs/langs": "3.21.0",
     "@shikijs/themes": "3.21.0",
+    "@vercel/kv": "3.0.0",
     "@vueuse/core": "14.1.0",
     "@vueuse/nuxt": "14.1.0",
     "module-replacements": "2.11.0",
