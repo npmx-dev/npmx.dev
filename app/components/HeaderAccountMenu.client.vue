@@ -59,7 +59,7 @@ function openAuthModal() {
   <div class="account-menu relative" @keydown="handleKeydown">
     <button
       type="button"
-      class="relative flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors duration-200 hover:bg-bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+      class="relative flex items-center justify-end gap-2 px-2 py-1.5 min-w-24 rounded-md transition-colors duration-200 hover:bg-bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       @click="isOpen = !isOpen"
@@ -165,7 +165,11 @@ function openAuthModal() {
                     : 'bg-blue-500/20 text-blue-500'
                 "
               >
-                {{ operationCount }} {{ $t('account_menu.ops') }}
+                {{
+                  $t('account_menu.ops', {
+                    count: operationCount,
+                  })
+                }}
               </span>
             </button>
 

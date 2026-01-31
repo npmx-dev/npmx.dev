@@ -74,8 +74,8 @@ import CodeDirectoryListing from '~/components/CodeDirectoryListing.vue'
 import CodeFileTree from '~/components/CodeFileTree.vue'
 import UserCombobox from '~/components/UserCombobox.vue'
 import ConnectorModal from '~/components/ConnectorModal.vue'
-import ConnectorStatusServer from '~/components/ConnectorStatus.server.vue'
-import ConnectorStatusClient from '~/components/ConnectorStatus.client.vue'
+import HeaderAccountMenuServer from '~/components/HeaderAccountMenu.server.vue'
+import HeaderAccountMenuClient from '~/components/HeaderAccountMenu.client.vue'
 import ClaimPackageModal from '~/components/ClaimPackageModal.vue'
 import OperationsQueue from '~/components/OperationsQueue.vue'
 import PackageList from '~/components/PackageList.vue'
@@ -724,17 +724,17 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('ConnectorStatus.server', () => {
+  describe('HeaderAccountMenu.server', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(ConnectorStatusServer)
+      const component = await mountSuspended(HeaderAccountMenuServer)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
   })
 
-  describe('ConnectorStatus.client', () => {
+  describe('HeaderAccountMenu.client', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(ConnectorStatusClient)
+      const component = await mountSuspended(HeaderAccountMenuClient)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

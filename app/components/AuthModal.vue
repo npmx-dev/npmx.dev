@@ -51,7 +51,7 @@ async function handleLogin() {
         <button
           type="button"
           class="absolute inset-0 bg-black/60 cursor-default"
-          :aria-label="$t('auth.modal.close')"
+          :aria-label="$t('common.close')"
           @click="open = false"
         />
 
