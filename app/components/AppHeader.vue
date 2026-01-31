@@ -76,6 +76,9 @@ onKeyStroke(
 onKeyStroke(
   'c',
   e => {
+    // Allow more specific handlers to take precedence
+    if (e.defaultPrevented) return
+
     // Don't trigger if user is typing in an input
     const target = e.target as HTMLElement
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
