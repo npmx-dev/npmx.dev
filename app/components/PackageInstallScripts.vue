@@ -88,7 +88,7 @@ const isExpanded = shallowRef(false)
               "
               class="shrink-0"
               :class="getVersionClass(outdatedNpxDeps[dep])"
-              :title="getOutdatedTooltip(outdatedNpxDeps[dep])"
+              :title="getOutdatedTooltip(outdatedNpxDeps[dep], $t)"
               aria-hidden="true"
             >
               <span class="i-carbon:warning-alt w-3 h-3 block" />
@@ -102,7 +102,7 @@ const isExpanded = shallowRef(false)
                     ? $t('package.install_scripts.currently', {
                         version: outdatedNpxDeps[dep].latest,
                       })
-                    : getOutdatedTooltip(outdatedNpxDeps[dep])
+                    : getOutdatedTooltip(outdatedNpxDeps[dep], $t)
                   : version
               "
             >

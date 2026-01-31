@@ -463,6 +463,7 @@ html.light .shiki span {
   border-collapse: collapse;
   margin: 1.5rem 0;
   font-size: 0.875rem;
+  word-break: keep-all;
 }
 
 .readme-content th,
@@ -541,12 +542,6 @@ input[type='search']::-webkit-search-results-decoration {
   appearance: none;
 }
 
-/* View transition for logo (hero -> header) */
-.hero-logo,
-.header-logo {
-  view-transition-name: site-logo;
-}
-
 /* Disable the default fade transition on page navigation */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -555,9 +550,7 @@ input[type='search']::-webkit-search-results-decoration {
 
 /* Customize the view transition animations for specific elements */
 ::view-transition-old(search-box),
-::view-transition-new(search-box),
-::view-transition-old(site-logo),
-::view-transition-new(site-logo) {
+::view-transition-new(search-box) {
   animation-duration: 0.3s;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }

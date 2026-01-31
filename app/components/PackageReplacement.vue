@@ -5,23 +5,27 @@ const props = defineProps<{
   replacement: ModuleReplacement
 }>()
 
-const { t } = useI18n()
-
-const message = computed(() => {
+const message = computed<[string, { replacement?: string; nodeVersion?: string }]>(() => {
   switch (props.replacement.type) {
     case 'native':
-      return t('package.replacement.native', {
-        replacement: props.replacement.replacement,
-        nodeVersion: props.replacement.nodeVersion,
-      })
+      return [
+        'package.replacement.native',
+        {
+          replacement: props.replacement.replacement,
+          nodeVersion: props.replacement.nodeVersion,
+        },
+      ]
     case 'simple':
-      return t('package.replacement.simple', {
-        replacement: props.replacement.replacement,
-      })
+      return [
+        'package.replacement.simple',
+        {
+          replacement: props.replacement.replacement,
+        },
+      ]
     case 'documented':
-      return t('package.replacement.documented')
+      return ['package.replacement.documented', {}]
     case 'none':
-      return t('package.replacement.none')
+      return ['package.replacement.none', {}]
   }
 })
 
@@ -45,7 +49,25 @@ const docPath = computed(() => {
       {{ $t('package.replacement.title') }}
     </h2>
     <p class="text-sm m-0">
-      {{ message }}
+      <i18n-t :keypath="message[0]" scope="global">
+        <template #replacement>
+          {{ message[1].replacement ?? '' }}
+        </template>
+        <template #nodeVersion>
+          {{ message[1].nodeVersion ?? '' }}
+        </template>
+        <template #community>
+          <a
+            href="https://e18e.dev/docs/replacements/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
+          >
+            {{ $t('package.replacement.community') }}
+            <span class="i-carbon-launch w-3 h-3" aria-hidden="true" />
+          </a>
+        </template>
+      </i18n-t>
       <a
         v-if="mdnUrl"
         :href="mdnUrl"

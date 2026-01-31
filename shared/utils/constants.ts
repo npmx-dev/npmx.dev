@@ -17,8 +17,13 @@ export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
 export const ERROR_PROVENANCE_FETCH_FAILED = 'Failed to fetch provenance.'
+export const UNSET_NUXT_SESSION_PASSWORD = 'NUXT_SESSION_PASSWORD not set'
 /** @public */
 export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
+
+// microcosm services
+export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
+export const SLINGSHOT_HOST = 'slingshot.microcosm.blue'
 
 // Theming
 export const ACCENT_COLORS = {

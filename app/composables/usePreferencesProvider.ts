@@ -62,7 +62,7 @@ function createLocalStorageProvider<T>(key: string): StorageProvider<T> {
 export function usePreferencesProvider<T>(defaultValue: T) {
   const provider = createLocalStorageProvider<T>(STORAGE_KEY)
   const data = ref<T>(defaultValue) as Ref<T>
-  const isHydrated = ref(false)
+  const isHydrated = shallowRef(false)
 
   // Load from storage on client
   onMounted(() => {

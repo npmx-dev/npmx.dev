@@ -17,9 +17,9 @@ interface OrgInfo {
   isLoadingDetails: boolean
 }
 
-const isLoading = ref(true)
-const orgs = ref<OrgInfo[]>([])
-const error = ref<string | null>(null)
+const isLoading = shallowRef(true)
+const orgs = shallowRef<OrgInfo[]>([])
+const error = shallowRef<string | null>(null)
 
 async function loadOrgDetails(org: OrgInfo) {
   org.isLoadingDetails = true
@@ -100,6 +100,18 @@ function getRoleBadgeClass(role: string | null): string {
 useSeoMeta({
   title: () => `@${username.value} Organizations - npmx`,
   description: () => `npm organizations for ${username.value}`,
+})
+
+defineOgImageComponent('Default', {
+  title: () => `@${username.value}`,
+  description: () => {
+    if (isLoading.value) return 'npm organizations'
+    if (orgs.value.length === 0) return 'No organizations found'
+
+    const count = orgs.value.length
+    return `${count} ${count === 1 ? 'organization' : 'organizations'}`
+  },
+  primaryColor: '#60a5fa',
 })
 </script>
 

@@ -70,22 +70,11 @@ const sortedOptionalDependencies = computed(() => {
 <template>
   <div class="space-y-8">
     <!-- Dependencies -->
-    <section id="dependencies" v-if="sortedDependencies.length > 0" class="scroll-mt-20">
-      <h2
-        id="dependencies-heading"
-        class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
-      >
-        <a
-          href="#dependencies"
-          class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-        >
-          {{ $t('package.dependencies.title', { count: sortedDependencies.length }) }}
-          <span
-            class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            aria-hidden="true"
-          />
-        </a>
-      </h2>
+    <CollapsibleSection
+      v-if="sortedDependencies.length > 0"
+      id="dependencies"
+      :title="$t('package.dependencies.title', { count: sortedDependencies.length })"
+    >
       <ul class="space-y-1 list-none m-0 p-0" :aria-label="$t('package.dependencies.list_label')">
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
@@ -103,7 +92,7 @@ const sortedOptionalDependencies = computed(() => {
               v-if="outdatedDeps[dep]"
               class="shrink-0"
               :class="getVersionClass(outdatedDeps[dep])"
-              :title="getOutdatedTooltip(outdatedDeps[dep])"
+              :title="getOutdatedTooltip(outdatedDeps[dep], $t)"
               aria-hidden="true"
             >
               <span class="i-carbon:warning-alt w-3 h-3 block" />
@@ -138,12 +127,12 @@ const sortedOptionalDependencies = computed(() => {
               :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"
               class="font-mono text-xs text-end truncate"
               :class="getVersionClass(outdatedDeps[dep])"
-              :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep]) : version"
+              :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep], $t) : version"
             >
               {{ version }}
             </NuxtLink>
             <span v-if="outdatedDeps[dep]" class="sr-only">
-              ({{ getOutdatedTooltip(outdatedDeps[dep]) }})
+              ({{ getOutdatedTooltip(outdatedDeps[dep], $t) }})
             </span>
             <span v-if="getVulnerableDepInfo(dep)" class="sr-only">
               ({{ getVulnerableDepInfo(dep)!.counts.total }} vulnerabilities)
@@ -151,33 +140,14 @@ const sortedOptionalDependencies = computed(() => {
           </span>
         </li>
       </ul>
-      <button
-        v-if="sortedDependencies.length > 10 && !depsExpanded"
-        type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-        @click="depsExpanded = true"
-      >
-        {{ $t('package.dependencies.show_all', { count: sortedDependencies.length }) }}
-      </button>
-    </section>
+    </CollapsibleSection>
 
     <!-- Peer Dependencies -->
-    <section id="peer-dependencies" v-if="sortedPeerDependencies.length > 0" class="scroll-mt-20">
-      <h2
-        id="peer-dependencies-heading"
-        class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
-      >
-        <a
-          href="#peer-dependencies"
-          class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-        >
-          {{ $t('package.peer_dependencies.title', { count: sortedPeerDependencies.length }) }}
-          <span
-            class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            aria-hidden="true"
-          />
-        </a>
-      </h2>
+    <CollapsibleSection
+      v-if="sortedPeerDependencies.length > 0"
+      id="peer-dependencies"
+      :title="$t('package.peer_dependencies.title', { count: sortedPeerDependencies.length })"
+    >
       <ul
         class="space-y-1 list-none m-0 p-0"
         :aria-label="$t('package.peer_dependencies.list_label')"
@@ -223,31 +193,16 @@ const sortedOptionalDependencies = computed(() => {
       >
         {{ $t('package.peer_dependencies.show_all', { count: sortedPeerDependencies.length }) }}
       </button>
-    </section>
+    </CollapsibleSection>
 
     <!-- Optional Dependencies -->
-    <section
-      id="optional-dependencies"
+    <CollapsibleSection
       v-if="sortedOptionalDependencies.length > 0"
-      class="scroll-mt-20"
+      id="optional-dependencies"
+      :title="
+        $t('package.optional_dependencies.title', { count: sortedOptionalDependencies.length })
+      "
     >
-      <h2
-        id="optional-dependencies-heading"
-        class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
-      >
-        <a
-          href="#optional-dependencies"
-          class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-        >
-          {{
-            $t('package.optional_dependencies.title', { count: sortedOptionalDependencies.length })
-          }}
-          <span
-            class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            aria-hidden="true"
-          />
-        </a>
-      </h2>
       <ul
         class="space-y-1 list-none m-0 p-0"
         :aria-label="$t('package.optional_dependencies.list_label')"
@@ -286,6 +241,6 @@ const sortedOptionalDependencies = computed(() => {
           $t('package.optional_dependencies.show_all', { count: sortedOptionalDependencies.length })
         }}
       </button>
-    </section>
+    </CollapsibleSection>
   </div>
 </template>

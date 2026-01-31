@@ -5,13 +5,8 @@ defineProps<{
 }>()
 
 const isOpen = shallowRef(false)
-const popupEl = ref<HTMLElement | null>(null)
+const popupEl = useTemplateRef('popupEl')
 const popupPosition = shallowRef<{ top: number; left: number } | null>(null)
-
-// Function ref - captures the element when popup mounts
-function setPopupRef(el: unknown) {
-  popupEl.value = (el as HTMLElement) || null
-}
 
 function closePopup() {
   isOpen.value = false
@@ -78,7 +73,7 @@ function parsePackageString(pkg: string): { name: string; version: string } {
     <!-- Tree popup -->
     <div
       v-if="isOpen"
-      :ref="setPopupRef"
+      ref="popupEl"
       class="fixed z-[100] bg-bg-elevated border border-border rounded-lg shadow-xl p-3 min-w-64 max-w-sm"
       :style="getPopupStyle()"
     >

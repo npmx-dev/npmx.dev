@@ -6,14 +6,14 @@ import type { ConfigOptions } from '@nuxt/test-utils/playwright'
 const baseURL = 'http://localhost:5678'
 
 export default defineConfig<ConfigOptions>({
-  testDir: './tests',
+  testDir: './test/e2e',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   reporter: 'html',
   timeout: 120_000,
   webServer: {
-    command: 'NODE_ENV=test pnpm build && pnpm preview --port 5678',
+    command: 'pnpm start:playwright:webserver',
     url: baseURL,
     reuseExistingServer: false,
     timeout: 120_000,

@@ -5,11 +5,11 @@ const props = defineProps<{
 
 const { listUserPackages } = useConnector()
 
-const isOpen = ref(false)
-const isLoading = ref(false)
-const packages = ref<string[]>([])
-const hasLoaded = ref(false)
-const error = ref<string | null>(null)
+const isOpen = shallowRef(false)
+const isLoading = shallowRef(false)
+const packages = shallowRef<string[]>([])
+const hasLoaded = shallowRef(false)
+const error = shallowRef<string | null>(null)
 
 async function loadPackages() {
   if (hasLoaded.value || isLoading.value) return

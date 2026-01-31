@@ -32,11 +32,11 @@ const updateUrlPage = debounce((page: number) => {
 // The actual search query (from URL, used for API calls)
 const query = computed(() => (route.query.q as string) ?? '')
 
-const selectedIndex = ref(0)
+const selectedIndex = shallowRef(0)
 const packageListRef = useTemplateRef('packageListRef')
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
-const hasInteracted = ref(false)
+const hasInteracted = shallowRef(false)
 onMounted(() => {
   // Small delay to let view transition complete
   setTimeout(() => {
@@ -46,7 +46,7 @@ onMounted(() => {
 
 // Infinite scroll / pagination state
 const pageSize = 25
-const currentPage = ref(1)
+const currentPage = shallowRef(1)
 
 // Calculate how many results we need based on current page and preferred page size
 const requestedSize = computed(() => {
@@ -230,7 +230,7 @@ watch(query, () => {
 const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim()))
 
 // Check if package name is available (doesn't exist on npm)
-const packageAvailability = ref<{ name: string; available: boolean } | null>(null)
+const packageAvailability = shallowRef<{ name: string; available: boolean } | null>(null)
 
 // Debounced check for package availability
 const checkAvailability = debounce(async (name: string) => {
@@ -325,7 +325,7 @@ const showClaimPrompt = computed(() => {
 })
 
 // Modal state for claiming a package
-const claimModalOpen = ref(false)
+const claimModalOpen = shallowRef(false)
 
 /**
  * Check if a string is a valid npm username/org name
@@ -452,7 +452,7 @@ const parsedQuery = computed<ParsedQuery>(() => {
 
 /** Validated suggestions (only those that exist) */
 const validatedSuggestions = ref<ValidatedSuggestion[]>([])
-const suggestionsLoading = ref(false)
+const suggestionsLoading = shallowRef(false)
 
 /** Debounced function to validate suggestions */
 const validateSuggestions = debounce(async (parsed: ParsedQuery) => {
@@ -551,8 +551,8 @@ const suggestionCount = computed(() => validatedSuggestions.value.length)
 const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
 
 /** Unified selected index: negative for suggestions, 0+ for packages */
-const unifiedSelectedIndex = ref(0)
-const userHasNavigated = ref(false)
+const unifiedSelectedIndex = shallowRef(0)
+const userHasNavigated = shallowRef(false)
 
 /** Convert unified index to suggestion index (0-based) or null */
 function toSuggestionIndex(unified: number): number | null {
@@ -699,11 +699,12 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   title: 'npmx',
   description: () => (query.value ? `Search results for "${query.value}"` : 'Search npm packages'),
+  primaryColor: '#60a5fa',
 })
 </script>
 
 <template>
-  <main class="flex-1 overflow-x-hidden">
+  <main class="flex-1" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
     <!-- Results area with container padding -->
     <div class="container-sm py-6">
       <section v-if="query" :aria-label="$t('search.results')">
@@ -799,7 +800,7 @@ defineOgImageComponent('Default', {
               {{
                 $t('filters.count.showing_paginated', {
                   pageSize: preferredPageSize === 'all' ? visibleResults.total : preferredPageSize,
-                  total: visibleResults.total.toLocaleString(),
+                  count: visibleResults.total.toLocaleString(),
                 })
               }}
             </p>

@@ -20,7 +20,7 @@ const {
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 const colorMode = useColorMode()
-const resolvedMode = ref<'light' | 'dark'>('light')
+const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 
 const { width } = useElementSize(rootEl)
@@ -221,8 +221,8 @@ function extractDates(dateLabel: string): [string, string] | null {
  * - selectedGranularity: immediate UI
  * - displayedGranularity: only updated once data is ready
  */
-const selectedGranularity = ref<ChartTimeGranularity>('weekly')
-const displayedGranularity = ref<ChartTimeGranularity>('weekly')
+const selectedGranularity = shallowRef<ChartTimeGranularity>('weekly')
+const displayedGranularity = shallowRef<ChartTimeGranularity>('weekly')
 
 /**
  * Date range inputs.
@@ -230,9 +230,9 @@ const displayedGranularity = ref<ChartTimeGranularity>('weekly')
  * - weekly: from weeklyDownloads first -> weekStart/weekEnd
  * - fallback: last 30 days ending yesterday (client-side)
  */
-const startDate = ref<string>('') // YYYY-MM-DD
-const endDate = ref<string>('') // YYYY-MM-DD
-const hasUserEditedDates = ref(false)
+const startDate = shallowRef<string>('') // YYYY-MM-DD
+const endDate = shallowRef<string>('') // YYYY-MM-DD
+const hasUserEditedDates = shallowRef(false)
 
 function initDateRangeFromWeekly() {
   if (hasUserEditedDates.value) return
@@ -274,8 +274,8 @@ watch(
   { immediate: true },
 )
 
-const initialStartDate = ref<string>('') // YYYY-MM-DD
-const initialEndDate = ref<string>('') // YYYY-MM-DD
+const initialStartDate = shallowRef<string>('') // YYYY-MM-DD
+const initialEndDate = shallowRef<string>('') // YYYY-MM-DD
 
 function setInitialRangeIfEmpty() {
   if (initialStartDate.value || initialEndDate.value) return
@@ -343,8 +343,8 @@ watch(
 
 const { fetchPackageDownloadEvolution } = useCharts()
 
-const evolution = ref<EvolutionData>(weeklyDownloads)
-const pending = ref(false)
+const evolution = shallowRef<EvolutionData>(weeklyDownloads)
+const pending = shallowRef(false)
 
 let lastRequestKey = ''
 let requestToken = 0
@@ -463,7 +463,7 @@ const config = computed(() => {
   return {
     theme: isDarkMode.value ? 'dark' : 'default',
     chart: {
-      height: isMobile.value ? 850 : 600,
+      height: isMobile.value ? 950 : 600,
       userOptions: {
         buttons: {
           pdf: false,
@@ -486,7 +486,20 @@ const config = computed(() => {
             )
           },
           csv: (csvStr: string) => {
-            const blob = new Blob([csvStr.replace('data:text/csv;charset=utf-8,', '')])
+            // Extract multiline date format template and replace newlines with spaces in CSV
+            // This ensures CSV compatibility by converting multiline date ranges to single-line format
+            const PLACEHOLDER_CHAR = '\0'
+            const multilineDateTemplate = $t('package.downloads.date_range_multiline', {
+              start: PLACEHOLDER_CHAR,
+              end: PLACEHOLDER_CHAR,
+            })
+              .replaceAll(PLACEHOLDER_CHAR, '')
+              .trim()
+            const blob = new Blob([
+              csvStr
+                .replace('data:text/csv;charset=utf-8,', '')
+                .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
+            ])
             const url = URL.createObjectURL(blob)
             loadFile(
               url,
@@ -508,15 +521,17 @@ const config = computed(() => {
       grid: {
         stroke: colors.value.border,
         labels: {
+          fontSize: isMobile.value ? 24 : 16,
           axis: {
             yLabel: $t('package.downloads.y_axis_label', {
               granularity: $t(`package.downloads.granularity_${selectedGranularity.value}`),
             }),
             xLabel: packageName,
             yLabelOffsetX: 12,
-            fontSize: 24,
+            fontSize: isMobile.value ? 32 : 24,
           },
           xAxisLabels: {
+            show: !isMobile.value,
             values: chartData.value?.dates,
             showOnlyAtModulo: true,
             modulo: 12,
@@ -554,7 +569,7 @@ const config = computed(() => {
         },
       },
       zoom: {
-        maxWidth: 500,
+        maxWidth: isMobile.value ? 350 : 500,
         customFormat:
           displayedGranularity.value !== 'weekly'
             ? undefined

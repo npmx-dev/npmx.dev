@@ -78,14 +78,14 @@ export const countryLocaleVariants: Record<string, (LocaleObjectData & { country
     ],*/
 }
 
-const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
+const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: string }))[] = [
   {
     code: 'en',
     file: 'en.json',
     name: 'English',
   },
   {
-    code: 'ar-EG',
+    code: 'ar',
     file: 'ar.json',
     name: 'العربية',
     dir: 'rtl',
@@ -93,7 +93,12 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
       const name = new Intl.PluralRules('ar-EG').select(choice)
       return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
     },
-  } satisfies LocaleObjectData,
+  },
+  {
+    code: 'az-AZ',
+    file: 'az.json',
+    name: 'Azərbaycanca',
+  },
   /*{
     code: 'ckb',
     file: 'ckb.json',
@@ -103,7 +108,7 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
       const name = new Intl.PluralRules('ckb').select(choice)
       return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
     },
-  } satisfies LocaleObjectData,
+  },
   {
     code: 'fa-IR',
     file: 'fa-IR.json',
@@ -113,7 +118,7 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
       const name = new Intl.PluralRules('fa-IR').select(choice)
       return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
     },
-  } satisfies LocaleObjectData,
+  },
   {
     code: 'ca',
     file: 'ca.json',
@@ -177,7 +182,18 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
       const name = new Intl.PluralRules('ru-RU').select(choice)
       return { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 3 }[name]
     },
-  } satisfies LocaleObjectData,
+  },
+  {
+    code: 'uk-UA',
+    file: 'uk-UA.json',
+    name: 'Українська',
+    pluralRule: (choice: number) => {
+      if (choice === 0) return 0
+
+      const name = new Intl.PluralRules('uk-UA').select(choice)
+      return { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
+    },
+  },
   /*{
       code: 'ru-RU',
       file: 'ru-RU.json',
@@ -185,18 +201,6 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
       pluralRule: (choice: number) => {
         const name = new Intl.PluralRules('ru-RU').select(choice)
         return { zero: 2 /!* not used *!/, one: 0, two: 1 /!* not used *!/, few: 1, many: 2, other: 3 }[name]
-      },
-    },
-    {
-      code: 'uk-UA',
-      file: 'uk-UA.json',
-      name: 'Українська',
-      pluralRule: (choice: number) => {
-        if (choice === 0)
-          return 0
-
-        const name = new Intl.PluralRules('uk-UA').select(choice)
-        return { zero: 0, one: 1, two: 0 /!* not used *!/, few: 2, many: 3, other: 4 }[name]
       },
     },
     {
@@ -251,6 +255,17 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
     file: 'it-IT.json',
     name: 'Italiano',
   },
+  {
+    code: 'pl-PL',
+    file: 'pl-PL.json',
+    name: 'Polski',
+    pluralRule: (choice: number) => {
+      if (choice === 0) return 0
+
+      const name = new Intl.PluralRules('pl-PL').select(choice)
+      return { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
+    },
+  },
   /*{
       code: 'sv',
       file: 'sv.json',
@@ -278,6 +293,8 @@ const locales: (Omit<LocaleObjectData, 'code'> & { code: string })[] = [
     },*/
 ]
 
+const lunariaJSONFiles: Record<string, string> = {}
+
 function buildLocales() {
   const useLocales = Object.values(locales).reduce((acc, data) => {
     const locales = countryLocaleVariants[data.code]
@@ -289,10 +306,12 @@ function buildLocales() {
           name: l.name,
           files: [data.file as string, `${l.code}.json`],
         }
+        lunariaJSONFiles[l.code] = l.country ? (data.file as string) : `${l.code}.json`
         delete entry.file
         acc.push(entry)
       })
     } else {
+      lunariaJSONFiles[data.code] = data.file as string
       acc.push(data as LocaleObjectData)
     }
     return acc
@@ -302,6 +321,8 @@ function buildLocales() {
 }
 
 export const currentLocales = buildLocales()
+
+export { lunariaJSONFiles }
 
 export const datetimeFormats = Object.values(currentLocales).reduce((acc, data) => {
   const dateTimeFormats = data.dateTimeFormats

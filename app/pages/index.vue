@@ -2,7 +2,7 @@
 import { debounce } from 'perfect-debounce'
 
 const router = useRouter()
-const searchQuery = ref('')
+const searchQuery = shallowRef('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
 
@@ -25,7 +25,11 @@ useSeoMeta({
   description: () => $t('seo.home.description'),
 })
 
-defineOgImageComponent('Default')
+defineOgImageComponent('Default', {
+  primaryColor: '#60a5fa',
+  title: 'npmx',
+  description: 'A better browser for the **npm registry**',
+})
 </script>
 
 <template>
@@ -34,9 +38,18 @@ defineOgImageComponent('Default')
     <header class="flex-1 flex flex-col items-center justify-center text-center py-20">
       <!-- Animated title -->
       <h1
-        class="font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+        dir="ltr"
+        class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
       >
-        <span class="text-accent"><span class="-tracking-0.2em">.</span>/</span>npmx
+        <img
+          aria-hidden="true"
+          :alt="$t('alt_logo')"
+          src="/logo.svg"
+          width="48"
+          height="48"
+          class="w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl"
+        />
+        <span class="pb-4">npmx</span>
       </h1>
 
       <p
@@ -93,6 +106,9 @@ defineOgImageComponent('Default')
           </div>
         </form>
       </search>
+
+      <!-- Build info badge -->
+      <BuildEnvironment class="mt-4" />
     </header>
 
     <!-- Popular packages -->

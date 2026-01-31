@@ -10,7 +10,7 @@ const emit = defineEmits<{
   reset: []
 }>()
 
-const isOpen = ref(false)
+const isOpen = shallowRef(false)
 const buttonRef = useTemplateRef('buttonRef')
 const menuRef = useTemplateRef('menuRef')
 const menuId = useId()
@@ -93,7 +93,7 @@ function handleReset() {
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute inset-is-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >

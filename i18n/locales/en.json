@@ -5,6 +5,9 @@
       "description": "A better browser for the npm registry. Search, browse, and explore packages with a modern interface."
     }
   },
+  "version": "Version",
+  "built_at": "built {0}",
+  "alt_logo": "npmx logo",
   "tagline": "a better browser for the npm registry",
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
@@ -95,6 +98,7 @@
     "go_back_home": "Go back home",
     "view_on_npm": "view on npm",
     "per_week": "/ week",
+    "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",
       "role": "role",
@@ -111,6 +115,7 @@
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
     "navigation": "Package",
+    "copy_name": "Copy package name",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -119,11 +124,12 @@
     "replacement": {
       "title": "You might not need this dependency.",
       "native": "This can be replaced with {replacement}, available since Node {nodeVersion}.",
-      "simple": "The community has flagged this package as redundant, with the advice: {replacement}.",
-      "documented": "The community has flagged this package as having more performant alternatives.",
+      "simple": "The {community} has flagged this package as redundant, with the advice: {replacement}.",
+      "documented": "The {community} has flagged this package as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
-      "mdn": "MDN"
+      "mdn": "MDN",
+      "community": "community"
     },
     "stats": {
       "license": "License",
@@ -200,24 +206,28 @@
       "other_versions": "Other versions",
       "more_tagged": "{count} more tagged",
       "all_covered": "All versions are covered by tags above",
-      "deprecated_title": "{version} (deprecated)"
+      "deprecated_title": "{version} (deprecated)",
+      "view_all": "View {count} version | View all {count} versions"
     },
     "dependencies": {
       "title": "Dependencies ({count})",
       "list_label": "Package dependencies",
-      "show_all": "show all {count} deps",
+      "show_all": "show {count} dep | show all {count} deps",
       "optional": "optional",
-      "view_vulnerabilities": "View vulnerabilities"
+      "view_vulnerabilities": "View vulnerabilities",
+      "outdated_major": "{count} major version behind (latest: {latest}) | {count} major versions behind (latest: {latest})",
+      "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
+      "outdated_patch": "Patch update available (latest: {latest})"
     },
     "peer_dependencies": {
       "title": "Peer Dependencies ({count})",
       "list_label": "Package peer dependencies",
-      "show_all": "show all {count} peer deps"
+      "show_all": "show {count} peer dep | show all {count} peer deps"
     },
     "optional_dependencies": {
       "title": "Optional Dependencies ({count})",
       "list_label": "Package optional dependencies",
-      "show_all": "show all {count} optional deps"
+      "show_all": "show {count} optional dep | show all {count} optional deps"
     },
     "maintainers": {
       "title": "Maintainers",
@@ -266,6 +276,7 @@
       "esm": "ES Modules supported",
       "cjs": "CommonJS supported",
       "no_esm": "No ES Modules support",
+      "types_label": "Types",
       "types_included": "Types included",
       "types_available": "Types available via {package}",
       "no_types": "No TypeScript types"
@@ -303,7 +314,7 @@
     "deprecated": {
       "label": "Deprecated",
       "tree_found": "{count} deprecated dependency | {count} deprecated dependencies",
-      "show_all": "show all {count} deprecated packages"
+      "show_all": "show {count} deprecated package | show all {count} deprecated packages"
     },
     "access": {
       "title": "Team Access",
@@ -356,7 +367,7 @@
   "connector": {
     "status": {
       "connecting": "connecting...",
-      "connected_as": "connected as {'@'}{user}",
+      "connected_as": "connected as ~{user}",
       "connected": "connected",
       "connect_cli": "connect local CLI",
       "aria_connecting": "Connecting to local connector",
@@ -366,9 +377,8 @@
     },
     "modal": {
       "title": "Local Connector",
-      "close_modal": "Close modal",
       "connected": "Connected",
-      "logged_in_as": "Logged in as {'@'}{user}",
+      "connected_as_user": "Connected as ~{user}",
       "connected_hint": "You can now manage packages and organizations from the web UI.",
       "disconnect": "Disconnect",
       "run_hint": "Run the connector on your machine to enable admin features.",
@@ -514,7 +524,6 @@
   "claim": {
     "modal": {
       "title": "Claim Package Name",
-      "close_modal": "Close modal",
       "success": "Package claimed!",
       "success_detail": "{name}{'@'}0.0.0 has been published to npm.",
       "success_hint": "You can now publish new versions to this package using npm publish.",
@@ -675,9 +684,9 @@
       "nav_label": "Pagination"
     },
     "count": {
-      "showing_filtered": "{filtered} of {total} packages",
-      "showing_all": "{total} packages",
-      "showing_paginated": "{pageSize} of {total} packages"
+      "showing_filtered": "{filtered} of {count} package | {filtered} of {count} packages",
+      "showing_all": "{count} package | {count} packages",
+      "showing_paginated": "{pageSize} of {count} package | {pageSize} of {count} packages"
     },
     "table": {
       "security_warning": "Security warning",
@@ -737,6 +746,34 @@
         "description": "Find out the latest on npmx.",
         "cta": "Follow on Bluesky"
       }
+    }
+  },
+  "account_menu": {
+    "connect": "connect",
+    "account": "Account",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Manage packages & orgs",
+    "atmosphere_desc": "Social features & identity",
+    "connect_npm_cli": "Connect to npm CLI",
+    "connect_atmosphere": "Connect to Atmosphere",
+    "connecting": "Connecting...",
+    "ops": "{count} op | {count} ops",
+    "disconnect": "Disconnect"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Connected as {'@'}{handle}",
+      "disconnect": "Disconnect",
+      "connect_prompt": "Connect with your Atmosphere account",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Connect",
+      "create_account": "Create a new account",
+      "connect_bluesky": "Connect with Bluesky",
+      "what_is_atmosphere": "What is an Atmosphere account?",
+      "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account."
     }
   },
   "header": {

@@ -220,11 +220,20 @@ function linkifyImports(html: string, options?: LinkifyOptions): string {
   // or: <span>import</span><span>(</span><span>'module'</span>
   // Note: require often has a leading space in the span from Shiki
   result = result.replace(
-    /(<span[^>]*>)\s*(require|import)(<\/span>)(<span[^>]*>\(<\/span>)(<span[^>]*>)(['"][^'"]+['"])<\/span>/g,
-    (match, spanOpen, keyword, spanClose, parenSpan, stringSpanOpen, moduleSpecifier) => {
+    /(<span[^>]*>)(\s*)(require|import)(<\/span>)(<span[^>]*>\(<\/span>)(<span[^>]*>)(['"][^'"]+['"])<\/span>/g,
+    (
+      match,
+      spanOpen,
+      whitespace,
+      keyword,
+      spanClose,
+      parenSpan,
+      stringSpanOpen,
+      moduleSpecifier,
+    ) => {
       const href = getHref(moduleSpecifier)
       if (!href) return match
-      return `${spanOpen}${keyword}${spanClose}${parenSpan}${stringSpanOpen}<a href="${href}" class="import-link">${moduleSpecifier}</a></span>`
+      return `${spanOpen}${whitespace}${keyword}${spanClose}${parenSpan}${stringSpanOpen}<a href="${href}" class="import-link">${moduleSpecifier}</a></span>`
     },
   )
 

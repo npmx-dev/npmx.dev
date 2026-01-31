@@ -17,17 +17,26 @@ const emit = defineEmits(['blur', 'focus'])
 const router = useRouter()
 const route = useRoute()
 
-const isSearchFocused = ref(false)
+const isSearchFocused = shallowRef(false)
 
 const showSearchBar = computed(() => {
   return route.name !== 'index'
 })
 
 // Local input value (updates immediately as user types)
-const searchQuery = ref((route.query.q as string) ?? '')
+const searchQuery = shallowRef(
+  (Array.isArray(route.query.q) ? route.query.q[0] : route.query.q) ?? '',
+)
+
+// Pages that have their own local filter using ?q
+const pagesWithLocalFilter = new Set(['~username', 'org'])
 
 // Debounced URL update for search query
 const updateUrlQuery = debounce((value: string) => {
+  // Don't navigate away from pages that use ?q for local filtering
+  if (pagesWithLocalFilter.has(route.name as string)) {
+    return
+  }
   if (route.name === 'search') {
     router.replace({ query: { q: value || undefined } })
     return
@@ -53,6 +62,10 @@ watch(searchQuery, value => {
 watch(
   () => route.query.q,
   urlQuery => {
+    // Don't sync from pages that use ?q for local filtering
+    if (pagesWithLocalFilter.has(route.name as string)) {
+      return
+    }
     const value = (urlQuery as string) ?? ''
     if (searchQuery.value !== value) {
       searchQuery.value = value

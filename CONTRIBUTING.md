@@ -256,30 +256,70 @@ The [config/i18n.ts](./config/i18n.ts) configuration file will be used to regist
 - `locales` object will be used to link the supported locales (country and single one)
 - `buildLocales` function will build the target locales
 
-To register a new locale:
-
-- for a single country, your JSON file should include the language and the country in the name (for example, `pl-PL.json`) and register the info at `locales` object
-- for multiple country variants, you need to add the default language JSON file (for example for Spanish, `es.json`) and one of the country variants (for example for Spanish for Spain, `es-ES.json`); register the language at `countryLocaleVariants` object adding the country variants with the JSON country file and register the language at `locales` object using the language JSON file (check how we register `es`, `es-ES` and `es-419` in [config/i18n.ts](./config/i18n.ts))
-
-The country file should contain will contain only the translations that differ from the language JSON file, Vue I18n will merge the messages for us.
-
 To add a new locale:
 
-1. Add a new file at [locales](./i18n/locales) folder with the language code as the filename.
-2. Copy [en](./i18n/locales/en.json) and translate the strings
-3. Add the language to the `locales` array in [config/i18n.ts](./config/i18n.ts), below `en` and `ar`:
-   - If your language has multiple country variants, add the generic one for language only (only if there are a lot of common entries, you can always add it as a new one)
-     - Add all country variants in [country variants object](./config/i18n.ts)
-     - Add all country variants files with empty `messages` object: `{}`
-     - Translate the strings in the generic language file
-     - Later, when anyone wants to add the corresponding translations for the country variant, just override any entry in the corresponding file: you can see an example with `es` variants.
-   - If the generic language already exists:
-     - If the translation doesn't differ from the generic language, then add the corresponding translations in the corresponding file
-     - If the translation differs from the generic language, then add the corresponding translations in the corresponding file and remove it from the country variants entry
-4. If the language is `right-to-left`, add `dir` option with `rtl` value, for example, for [ar](./config/i18n.ts)
-5. If the language requires special pluralization rules, add `pluralRule` callback option, for example, for [ar](./config/i18n.ts)
+1. Create a new JSON file in [`i18n/locales/`](./i18n/locales) with the locale code as the filename (e.g., `uk-UA.json`, `de-DE.json`)
+2. Copy [`en.json`](./i18n/locales/en.json) and translate the strings
+3. Add the locale to the `locales` array in [config/i18n.ts](./config/i18n.ts):
+
+   ```typescript
+   {
+     code: 'uk-UA',        // Must match the filename (without .json)
+     file: 'uk-UA.json',
+     name: 'Українська',   // Native name of the language
+   },
+   ```
+
+4. Copy your translation file to `lunaria/files/` for translation tracking:
+
+   ```bash
+   cp i18n/locales/uk-UA.json lunaria/files/uk-UA.json
+   ```
+
+   > [!IMPORTANT]
+   > This file must be committed. Lunaria uses git history to track translation progress, so the build will fail if this file is missing.
+
+5. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
+6. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
 
 Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization.html#custom-pluralization) for more info.
+
+### Update translation
+
+We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
+If you see any outdated translations in your language, feel free to update the keys to match then English version.
+
+In order to make sure you have everything up-to-date, you can run:
+
+```bash
+pnpm i18n:check <country-code>
+```
+
+For example to check if all Japanese translation keys are up-to-date, run:
+
+```bash
+pnpm i18n:check ja-JP
+```
+
+To automatically add missing keys with English placeholders, use `--fix`:
+
+```bash
+pnpm i18n:check:fix fr-FR
+```
+
+This will add missing keys with `"EN TEXT TO REPLACE: {english text}"` as placeholder values, making it easier to see what needs translation.
+
+#### Country variants (advanced)
+
+Most languages only need a single locale file. Country variants are only needed when you want to support regional differences (e.g., `es-ES` for Spain vs `es-419` for Latin America).
+
+If you need country variants:
+
+1. Create a base language file (e.g., `es.json`) with all translations
+2. Create country variant files (e.g., `es-ES.json`, `es-419.json`) with only the differing translations
+3. Register the base language in `locales` and add variants to `countryLocaleVariants`
+
+See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/i18n.ts) for a complete example.
 
 ### Adding translations
 

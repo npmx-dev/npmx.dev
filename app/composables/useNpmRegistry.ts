@@ -12,7 +12,7 @@ import type { ReleaseType } from 'semver'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
 import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
-import type { CachedFetchFunction } from '~/composables/useCachedFetch'
+import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -299,7 +299,7 @@ export function useNpmSearch(
     total: number
   } | null>(null)
 
-  const isLoadingMore = ref(false)
+  const isLoadingMore = shallowRef(false)
 
   // Standard (non-incremental) search implementation
   let lastSearch: NpmSearchResponse | undefined = undefined
@@ -805,16 +805,25 @@ export function useOutdatedDependencies(
  * Get tooltip text for an outdated dependency
  * @public
  */
-export function getOutdatedTooltip(info: OutdatedDependencyInfo): string {
+export function getOutdatedTooltip(
+  info: OutdatedDependencyInfo,
+  t: (key: string, params?: Record<string, unknown>, plural?: number) => string,
+): string {
   if (info.majorsBehind > 0) {
-    const s = info.majorsBehind === 1 ? '' : 's'
-    return `${info.majorsBehind} major version${s} behind (latest: ${info.latest})`
+    return t(
+      'package.dependencies.outdated_major',
+      { count: info.majorsBehind, latest: info.latest },
+      info.majorsBehind,
+    )
   }
   if (info.minorsBehind > 0) {
-    const s = info.minorsBehind === 1 ? '' : 's'
-    return `${info.minorsBehind} minor version${s} behind (latest: ${info.latest})`
+    return t(
+      'package.dependencies.outdated_minor',
+      { count: info.minorsBehind, latest: info.latest },
+      info.minorsBehind,
+    )
   }
-  return `Patch update available (latest: ${info.latest})`
+  return t('package.dependencies.outdated_patch', { latest: info.latest })
 }
 
 /**
