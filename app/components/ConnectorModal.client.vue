@@ -8,7 +8,10 @@ const tokenInput = shallowRef('')
 const portInput = shallowRef('31415')
 const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
+const hasAttemptedConnect = shallowRef(false)
+
 async function handleConnect() {
+  hasAttemptedConnect.value = true
   const port = Number.parseInt(portInput.value, 10) || 31415
   const success = await connect(tokenInput.value.trim(), port)
   if (success) {
@@ -38,10 +41,10 @@ const executeNpmxConnectorCommand = computed(() => {
   })
 })
 
-// Reset form when modal opens
 watch(open, isOpen => {
   if (isOpen) {
     tokenInput.value = ''
+    hasAttemptedConnect.value = false
   }
 })
 </script>
@@ -82,6 +85,31 @@ watch(open, isOpen => {
 
     <!-- Disconnected state -->
     <form v-else class="space-y-4" @submit.prevent="handleConnect">
+      <!-- Contributor-only notice -->
+      <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+        <div class="space-y-2">
+          <span
+            class="inline-block px-2 py-0.5 text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 rounded"
+          >
+            {{ $t('connector.modal.contributor_badge') }}
+          </span>
+          <p class="text-sm text-fg-muted">
+            <i18n-t keypath="connector.modal.contributor_notice">
+              <template #link>
+                <a
+                  href="https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md#local-connector-cli"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-amber-400 hover:underline"
+                >
+                  {{ $t('connector.modal.contributor_link') }}
+                </a>
+              </template>
+            </i18n-t>
+          </p>
+        </div>
+      </div>
+
       <p class="text-sm text-fg-muted">
         {{ $t('connector.modal.run_hint') }}
       </p>
@@ -90,25 +118,45 @@ watch(open, isOpen => {
         class="flex items-center p-3 bg-bg-muted border border-border rounded-lg font-mono text-sm"
       >
         <span class="text-fg-subtle">$</span>
-        <span class="text-fg-subtle ms-2">{{ executeNpmxConnectorCommand }}</span>
-        <div class="ms-auto flex items-center gap-2">
-          <PackageManagerSelect />
-
-          <button
-            type="button"
-            :aria-label="copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')"
-            class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-            @click="copyCommand"
-          >
-            <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
-            <span
-              v-else
-              class="i-carbon:checkmark block w-5 h-5 text-green-500"
-              aria-hidden="true"
-            />
-          </button>
-        </div>
+        <span class="text-fg-subtle ms-2">pnpm npmx-connector</span>
+        <button
+          type="button"
+          :aria-label="copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')"
+          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+          @click="copy('pnpm npmx-connector')"
+        >
+          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
+          <span v-else class="i-carbon:checkmark block w-5 h-5 text-green-500" aria-hidden="true" />
+        </button>
       </div>
+
+      <!-- TODO: Uncomment when npmx-connector is published to npm
+                    <div
+                      class="flex items-center p-3 bg-bg-muted border border-border rounded-lg font-mono text-sm"
+                    >
+                      <span class="text-fg-subtle">$</span>
+                      <span class="text-fg-subtle ms-2">{{ executeNpmxConnectorCommand }}</span>
+                      <div class="ms-auto flex items-center gap-2">
+                        <PackageManagerSelect />
+
+                        <button
+                          type="button"
+                          :aria-label="
+                            copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
+                          "
+                          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                          @click="copyCommand"
+                        >
+                          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
+                          <span
+                            v-else
+                            class="i-carbon:checkmark block w-5 h-5 text-green-500"
+                            aria-hidden="true"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                    -->
 
       <p class="text-sm text-fg-muted">{{ $t('connector.modal.paste_token') }}</p>
 
@@ -157,9 +205,9 @@ watch(open, isOpen => {
         </details>
       </div>
 
-      <!-- Error message -->
+      <!-- Error message (only show after user explicitly clicks Connect) -->
       <div
-        v-if="error"
+        v-if="error && hasAttemptedConnect"
         role="alert"
         class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
       >
