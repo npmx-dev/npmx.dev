@@ -318,8 +318,10 @@
       "dependencies": "الاعتماديات"
     },
     "sort": {
-      "downloads": "الأكثر تنزيلًا",
-      "updated": "مُحدَّثة مؤخرًا",
+      "downloads_desc": "الأكثر تنزيلًا",
+      "downloads_asc": "الأقل تنزيلًا",
+      "updated_desc": "مُحدَّثة مؤخرًا",
+      "updated_asc": "الأقدم تحديثًا",
       "name_asc": "الاسم (A-Z)",
       "name_desc": "الاسم (Z-A)"
     }

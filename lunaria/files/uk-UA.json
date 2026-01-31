@@ -337,8 +337,10 @@
       "dependencies": "Залежності"
     },
     "sort": {
-      "downloads": "Найбільше завантажено",
-      "updated": "Недавно оновлено",
+      "downloads_desc": "Найбільше завантажено",
+      "downloads_asc": "Найменше завантажено",
+      "updated_desc": "Недавно оновлено",
+      "updated_asc": "Найдавніше оновлено",
       "name_asc": "Ім'я (A-Z)",
       "name_desc": "Ім'я (Z-A)"
     }

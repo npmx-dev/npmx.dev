@@ -333,8 +333,10 @@
       "get_started": "Empezar"
     },
     "sort": {
-      "downloads": "Más descargados",
-      "updated": "Recientemente actualizados",
+      "downloads_desc": "Más descargados",
+      "downloads_asc": "Menos descargados",
+      "updated_desc": "Recientemente actualizados",
+      "updated_asc": "Menos recientemente actualizados",
       "name_asc": "Nombre (A-Z)",
       "name_desc": "Nombre (Z-A)"
     },

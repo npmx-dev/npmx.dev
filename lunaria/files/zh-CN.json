@@ -343,8 +343,10 @@
       "dependencies": "依赖"
     },
     "sort": {
-      "downloads": "最多下载的",
-      "updated": "最近更新的",
+      "downloads_desc": "最多下载的",
+      "downloads_asc": "最少下载的",
+      "updated_desc": "最近更新的",
+      "updated_asc": "最久未更新的",
       "name_asc": "名称（A-Z）",
       "name_desc": "名称（Z-A）"
     }

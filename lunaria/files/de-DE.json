@@ -347,8 +347,10 @@
       "dependencies": "Abhängigkeiten"
     },
     "sort": {
-      "downloads": "Meiste Downloads",
-      "updated": "Zuletzt aktualisiert",
+      "downloads_desc": "Meiste Downloads",
+      "downloads_asc": "Wenigste Downloads",
+      "updated_desc": "Zuletzt aktualisiert",
+      "updated_asc": "Am wenigsten kürzlich aktualisiert",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
     }

@@ -337,8 +337,10 @@
       "dependencies": "Asılılıqlar"
     },
     "sort": {
-      "downloads": "Ən çox endirilən",
-      "updated": "Son yenilənən",
+      "downloads_desc": "Ən çox endirilən",
+      "downloads_asc": "Ən az endirilən",
+      "updated_desc": "Son yenilənən",
+      "updated_asc": "Ən əvvəl yenilənən",
       "name_asc": "Ad (A-Z)",
       "name_desc": "Ad (Z-A)"
     }

@@ -355,8 +355,10 @@
       "dependencies": "Zależności"
     },
     "sort": {
-      "downloads": "Najczęściej pobierane",
-      "updated": "Ostatnio aktualizowane",
+      "downloads_desc": "Najczęściej pobierane",
+      "downloads_asc": "Najrzadziej pobierane",
+      "updated_desc": "Ostatnio aktualizowane",
+      "updated_asc": "Najdawniej aktualizowane",
       "name_asc": "Nazwa (A-Z)",
       "name_desc": "Nazwa (Z-A)"
     }

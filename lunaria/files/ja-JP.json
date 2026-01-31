@@ -323,8 +323,10 @@
       "dependencies": "依存関係"
     },
     "sort": {
-      "downloads": "ダウンロード数順",
-      "updated": "更新順",
+      "downloads_desc": "ダウンロード数順",
+      "downloads_asc": "ダウンロード数が少ない順",
+      "updated_desc": "更新順",
+      "updated_asc": "更新が古い順",
       "name_asc": "名前順（A-Z）",
       "name_desc": "名前順（Z-A）"
     }
