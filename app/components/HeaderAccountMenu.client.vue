@@ -130,7 +130,7 @@ function handleModalOpen() {
       leave-to-class="opacity-0 translate-y-1"
     >
       <div v-if="isOpen" class="absolute inset-ie-0 top-full pt-2 w-72 z-50" role="menu">
-        <div class="bg-bg-elevated border border-border rounded-lg shadow-lg overflow-hidden">
+        <div class="bg-bg-elevated border border-border rounded-lg shadow-lg overflow-hidden px-1">
           <!-- Connected accounts section -->
           <div v-if="hasAnyConnection" class="py-1">
             <!-- npm CLI connection -->
@@ -206,7 +206,7 @@ function handleModalOpen() {
               v-if="!isNpmConnected"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
               @click="openConnectorModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
@@ -234,7 +234,7 @@ function handleModalOpen() {
               id="auth-modal-trigger"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
               @click="handleModalOpen"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
