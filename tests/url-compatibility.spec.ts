@@ -8,7 +8,7 @@ test.describe('npmjs.com URL Compatibility', () => {
       // Should show package name
       await expect(page.locator('h1')).toContainText('vue')
       // Should have version badge
-      await expect(page.locator('text=/v\\d+\\.\\d+/')).toBeVisible()
+      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible()
     })
 
     test('/package/@nuxt/kit → scoped package page', async ({ page, goto }) => {

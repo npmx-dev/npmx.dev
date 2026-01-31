@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto'
 
 export default defineNuxtModule({
   meta: {
-    name: 'dev',
+    name: 'oauth',
   },
   setup() {
     const nuxt = useNuxt()
