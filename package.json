@@ -29,7 +29,8 @@
     "test:browser:update": "playwright test --update-snapshots",
     "test:nuxt": "vite test --project nuxt",
     "test:types": "nuxt prepare && vue-tsc -b --noEmit && pnpm --filter npmx-connector test:types",
-    "test:unit": "vite test --project unit"
+    "test:unit": "vite test --project unit",
+    "start:playwright:webserver": "NODE_ENV=test pnpm build && pnpm preview --port 5678"
   },
   "dependencies": {
     "@atproto/lex": "0.0.13",
@@ -84,7 +85,6 @@
     "@voidzero-dev/vite-plus-core": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
-    "happy-dom": "20.4.0",
     "knip": "5.82.1",
     "lint-staged": "16.2.7",
     "marked": "17.0.1",
