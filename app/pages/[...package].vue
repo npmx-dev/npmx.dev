@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { NpmVersionDist, PackumentVersion, ReadmeResponse } from '#shared/types'
+import type {
+  NpmVersionDist,
+  PackumentVersion,
+  ReadmeResponse,
+  SkillsListResponse,
+} from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { onKeyStroke } from '@vueuse/core'
@@ -65,8 +70,21 @@ const {
 )
 onMounted(() => fetchInstallSize())
 
+// Fetch skills data (lazy, client-side)
+const { data: skillsData } = useLazyFetch<SkillsListResponse>(
+  () => {
+    const base = `/skills/${packageName.value}`
+    const version = requestedVersion.value
+    return version ? `${base}/v/${version}` : base
+  },
+  { server: false, default: () => ({ package: '', version: '', skills: [] }) },
+)
+
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
+
+// Skills modal state
+const skillsModalOpen = shallowRef(false)
 
 const { data: pkg, status, error } = await usePackage(packageName, requestedVersion)
 const resolvedVersion = computed(() => pkg.value?.resolvedVersion ?? null)
@@ -638,7 +656,7 @@ function handleClick(event: MouseEvent) {
 
         <!-- Stats grid -->
         <dl
-          class="grid grid-cols-2 sm:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
+          class="grid grid-cols-2 sm:grid-cols-12 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-border"
         >
           <div v-if="pkg.license" class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
@@ -789,7 +807,36 @@ function handleClick(event: MouseEvent) {
               <DateTime :datetime="pkg.time.modified" date-style="medium" />
             </dd>
           </div>
+
+          <!-- Skills -->
+          <ClientOnly>
+            <div v-if="skillsData?.skills?.length" class="space-y-1 sm:col-span-1">
+              <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+                {{ $t('package.stats.skills', 'Skills') }}
+              </dt>
+              <dd class="font-mono text-sm text-fg">
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-1 hover:text-fg-muted transition-colors"
+                  @click="skillsModalOpen = true"
+                >
+                  <span class="i-carbon:bot w-3.5 h-3.5" aria-hidden="true" />
+                  {{ skillsData.skills.length }}
+                </button>
+              </dd>
+            </div>
+          </ClientOnly>
         </dl>
+
+        <!-- Skills Modal -->
+        <ClientOnly>
+          <PackageSkillsModal
+            v-model:open="skillsModalOpen"
+            :skills="skillsData?.skills ?? []"
+            :package-name="pkg.name"
+            :version="displayVersion?.version"
+          />
+        </ClientOnly>
       </header>
 
       <!-- Binary-only packages: Show only execute command (no install) -->
