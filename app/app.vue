@@ -10,6 +10,7 @@ const { locale, locales } = useI18n()
 initPreferencesOnPrehydrate()
 
 const isHomepage = computed(() => route.name === 'index')
+const showKbdHints = shallowRef(false)
 
 const localeMap = locales.value.reduce(
   (acc, l) => {
@@ -21,8 +22,9 @@ const localeMap = locales.value.reduce(
 
 useHead({
   htmlAttrs: {
-    lang: () => locale.value,
-    dir: () => localeMap[locale.value] ?? 'ltr',
+    'lang': () => locale.value,
+    'dir': () => localeMap[locale.value] ?? 'ltr',
+    'data-kbd-hints': () => showKbdHints.value,
   },
   titleTemplate: titleChunk => {
     return titleChunk ? titleChunk : 'npmx - Better npm Package Browser'
@@ -33,16 +35,16 @@ if (import.meta.server) {
   setJsonLd(createWebSiteSchema())
 }
 
-// Global keyboard shortcut: "/" focuses search or navigates to search page
+// Global keyboard shortcut:
+// "/" focuses search or navigates to search page
+// "?" highlights all keyboard shortcut elements
 function handleGlobalKeydown(e: KeyboardEvent) {
   const target = e.target as HTMLElement
 
   const isEditableTarget =
     target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
 
-  if (isEditableTarget) {
-    return
-  }
+  if (isEditableTarget) return
 
   if (e.key === '/') {
     e.preventDefault()
@@ -59,10 +61,20 @@ function handleGlobalKeydown(e: KeyboardEvent) {
 
     router.push('/search')
   }
+
+  if (e.key === '?') {
+    e.preventDefault()
+    showKbdHints.value = true
+  }
+}
+
+function handleGlobalKeyup() {
+  showKbdHints.value = false
 }
 
 if (import.meta.client) {
   useEventListener(document, 'keydown', handleGlobalKeydown)
+  useEventListener(document, 'keyup', handleGlobalKeyup)
 }
 </script>
 
@@ -82,3 +94,25 @@ if (import.meta.client) {
     <ScrollToTop />
   </div>
 </template>
+
+<style>
+/* Keyboard shortcut highlight on "?" key press */
+kbd {
+  position: relative;
+}
+
+kbd::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 4px 2px var(--accent);
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+  pointer-events: none;
+}
+
+html[data-kbd-hints='true'] kbd::before {
+  opacity: 1;
+}
+</style>
