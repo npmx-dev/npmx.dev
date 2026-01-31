@@ -5,7 +5,6 @@ import { useRouteQuery } from '@vueuse/router'
 /**
  * Composable for managing comparison facet selection with URL sync.
  *
- * @public
  * @param queryParam - The URL query parameter name to use (default: 'facets')
  */
 export function useFacetSelection(queryParam = 'facets') {

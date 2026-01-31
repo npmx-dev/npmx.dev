@@ -73,6 +73,24 @@ onKeyStroke(
   },
   { dedupe: true },
 )
+
+onKeyStroke(
+  'c',
+  e => {
+    // Allow more specific handlers to take precedence
+    if (e.defaultPrevented) return
+
+    // Don't trigger if user is typing in an input
+    const target = e.target as HTMLElement
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      return
+    }
+
+    e.preventDefault()
+    navigateTo('/compare')
+  },
+  { dedupe: true },
+)
 </script>
 
 <template>
@@ -158,10 +176,16 @@ onKeyStroke(
         <!-- Desktop: Compare link -->
         <NuxtLink
           to="/compare"
-          class="hidden sm:inline-flex link-subtle font-mono text-sm items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          class="hidden sm:inline-flex link-subtle font-mono text-sm items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          aria-keyshortcuts="c"
         >
-          <span class="i-carbon:compare w-4 h-4" aria-hidden="true" />
           {{ $t('nav.compare') }}
+          <kbd
+            class="inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
+            aria-hidden="true"
+          >
+            c
+          </kbd>
         </NuxtLink>
 
         <!-- Desktop: Settings link -->

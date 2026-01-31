@@ -27,7 +27,6 @@ import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
  *   )
  * }
  * ```
- * @public
  */
 export function useCachedFetch(): CachedFetchFunction {
   // On client, return a function that just uses $fetch (no caching, not stale)

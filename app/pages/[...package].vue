@@ -338,8 +338,9 @@ onKeyStroke(
   { dedupe: true },
 )
 
-onKeyStroke('c', () => {
+onKeyStroke('c', e => {
   if (pkg.value) {
+    e.preventDefault()
     router.push({ path: '/compare', query: { packages: pkg.value.name } })
   }
 })

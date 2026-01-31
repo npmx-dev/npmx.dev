@@ -58,7 +58,6 @@ async function getOAuthSession(event: H3Event): Promise<OAuthSession | undefined
   return await client.restore(currentSession.tokenSet.sub)
 }
 
-/** @public */
 export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
   handler: EventHandlerWithOAuthSession<T, D>,
 ) {

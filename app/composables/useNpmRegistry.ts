@@ -176,7 +176,6 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
   }
 }
 
-/** @public */
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
@@ -226,7 +225,6 @@ function getResolvedVersion(pkg: SlimPackument, reqVer?: string | null): string 
   return resolved
 }
 
-/** @public */
 export function usePackageDownloads(
   name: MaybeRefOrGetter<string>,
   period: MaybeRefOrGetter<'last-day' | 'last-week' | 'last-month' | 'last-year'> = 'last-week',
@@ -264,7 +262,6 @@ type NpmDownloadsRangeResponse = {
 /**
  * Fetch download range data from npm API.
  * Exported for external use (e.g., in components).
- * @public
  */
 export async function fetchNpmDownloadsRange(
   packageName: string,
@@ -289,7 +286,6 @@ export interface NpmSearchOptions {
   size?: number
 }
 
-/** @public */
 export function useNpmSearch(
   query: MaybeRefOrGetter<string>,
   options: MaybeRefOrGetter<NpmSearchOptions> = {},
@@ -505,7 +501,6 @@ function packumentToSearchResult(pkg: MinimalPackument, weeklyDownloads?: number
 /**
  * Fetch all packages for an npm organization
  * Returns search-result-like objects for compatibility with PackageList
- * @public
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const cachedFetch = useCachedFetch()
@@ -758,7 +753,6 @@ async function checkDependencyOutdated(
 /**
  * Composable to check for outdated dependencies.
  * Returns a reactive map of dependency name to outdated info.
- * @public
  */
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
@@ -808,7 +802,6 @@ export function useOutdatedDependencies(
 
 /**
  * Get tooltip text for an outdated dependency
- * @public
  */
 export function getOutdatedTooltip(
   info: OutdatedDependencyInfo,
@@ -833,7 +826,6 @@ export function getOutdatedTooltip(
 
 /**
  * Get CSS class for a dependency version based on outdated status
- * @public
  */
 export function getVersionClass(info: OutdatedDependencyInfo | undefined): string {
   if (!info) return 'text-fg-subtle'

@@ -5,7 +5,6 @@
  * `data-pm` attribute on `<html>`. The attribute enables CSS-based
  * visibility of PM-specific content without JavaScript.
  *
- * @public
  */
 export const useSelectedPackageManager = createSharedComposable(
   function useSelectedPackageManager() {
