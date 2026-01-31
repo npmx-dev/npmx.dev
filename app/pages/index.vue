@@ -11,6 +11,10 @@ async function search() {
     path: '/search',
     query: query ? { q: query } : undefined,
   })
+  const newQuery = searchQuery.value.trim()
+  if (newQuery !== query) {
+    await search()
+  }
 }
 
 const handleInput = isTouchDevice()

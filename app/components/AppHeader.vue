@@ -30,14 +30,18 @@ function expandMobileSearch() {
   })
 }
 
-watch(isOnSearchPage, visible => {
-  if (!visible) return
+watch(
+  isOnSearchPage,
+  visible => {
+    if (!visible) return
 
-  searchBoxRef.value?.focus()
-  nextTick(() => {
     searchBoxRef.value?.focus()
-  })
-})
+    nextTick(() => {
+      searchBoxRef.value?.focus()
+    })
+  },
+  { flush: 'sync' },
+)
 
 function handleSearchBlur() {
   showFullSearch.value = false
