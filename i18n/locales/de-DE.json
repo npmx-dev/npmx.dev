@@ -46,7 +46,13 @@
     "back": "Zurück",
     "popular_packages": "Beliebte Pakete",
     "search": "Suche",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "compare": "Pakete vergleichen",
+    "menu": "Menü",
+    "mobile_menu": "Menü",
+    "open_menu": "Menü öffnen",
+    "links": "Links",
+    "tap_to_search": "Tippen zum Suchen..."
   },
   "settings": {
     "title": "Einstellungen",
@@ -103,7 +109,8 @@
       "role": "Rolle",
       "members": "Mitglieder"
     },
-    "scroll_to_top": "Nach oben scrollen"
+    "scroll_to_top": "Nach oben scrollen",
+    "vanity_downloads_hint": "Vanity-Nummer: keine Pakete angezeigt | Vanity-Nummer: für das angezeigte Paket | Vanity-Nummer: Summe von {count} angezeigten Paketen."
   },
   "package": {
     "navigation": "Paketnavigation",
@@ -150,7 +157,8 @@
       "jsr": "JSR",
       "code": "Code",
       "docs": "Doku",
-      "fund": "Spenden"
+      "fund": "Spenden",
+      "compare": "Vergleichen"
     },
     "docs": {
       "not_available": "Dokumentation nicht verfügbar",
@@ -381,7 +389,10 @@
       "warning": "WARNUNG",
       "warning_text": "Dies erlaubt npmx Zugriff auf deine npm CLI. Verbinde dich nur mit Seiten, denen du vertraust.",
       "connect": "Verbinden",
-      "connecting": "Verbinde..."
+      "connecting": "Verbinde...",
+      "contributor_badge": "Mitwirkende",
+      "contributor_notice": "Noch nicht auf npm veröffentlicht. {link} um das Paket lokal auszuführen.",
+      "contributor_link": "Hinweise für Mitwirkende"
     }
   },
   "operations": {
@@ -783,6 +794,50 @@
       "error": "Organisationen konnten nicht geladen werden",
       "empty": "Keine Organisationen gefunden",
       "view_all": "Alle anzeigen"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "Pakete vergleichen",
+      "tagline": "Mach' dir die Auswahl eines Paketes einfacher indem du sie hier direkt vergleichst.",
+      "meta_title": "{packages} Pakete vergleichen - npmx",
+      "meta_title_empty": "Pakete vergleichen - npmx",
+      "meta_description": "Direkter vergleich von {packages} Paketen",
+      "meta_description_empty": "Pakete direkt vergleichen",
+      "section_packages": "Pakete auswählen",
+      "section_facets": "Zu vergleichende Metriken",
+      "section_comparison": "Deine ausgewählten Pakete:",
+      "loading": "Lade Daten des Paketes...s",
+      "error": "Daten des Paketes konnten nicht geladen werden. Bitte erneut versuchen.",
+      "empty_title": "Pakete zum Vergleichen auswählen",
+      "empty_description": "Suche und füge oben mindestens 2 Pakete hinzu um deren Daten im direkten Vergleich zu sehen."
+    },
+    "selector": {
+      "search_label": "Ein Paket suchen",
+      "search_first": "Nach einem Paket suchen...",
+      "search_add": "Ein weiteres Paket hinzufügen...",
+      "searching": "Suchen...",
+      "remove_package": "Paket entfernen: {package}",
+      "packages_selected": "{count}/{max} Pakete ausgewählt.",
+      "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu.",
+      "loading_versions": "Lade Versionen...",
+      "select_version": "Version auswählen"
+    },
+    "facets": {
+      "group_label": "Zu vergleichende Werte",
+      "all": "Alle",
+      "none": "Keine",
+      "coming_soon": "Kommt demnächst!",
+      "select_all": "Alle Werte auswählen",
+      "deselect_all": "Alle Werte abwählen",
+      "select_category": "Alle {category} Werte auswählen",
+      "deselect_category": "Alle {category} Werte abwählen",
+      "categories": {
+        "performance": "Performance",
+        "health": "Package-Health",
+        "compatibility": "Kompatibilität",
+        "security": "Security & Compliance"
+      }
     }
   }
 }
