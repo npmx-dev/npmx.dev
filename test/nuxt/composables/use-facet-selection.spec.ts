@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
-import { DEFAULT_FACETS, FACETS_BY_CATEGORY } from '../../../shared/types/comparison'
+import { DEFAULT_FACETS, FACETS_BY_CATEGORY } from '#shared/types/comparison'
 
 // Mock useRouteQuery
 const mockRouteQuery = ref('')

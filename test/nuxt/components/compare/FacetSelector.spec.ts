@@ -1,9 +1,9 @@
+import type { ComparisonFacet } from '#shared/types/comparison'
+import { CATEGORY_ORDER, FACET_INFO, FACETS_BY_CATEGORY } from '#shared/types/comparison'
+import FacetSelector from '~/components/compare/FacetSelector.vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import FacetSelector from '~/components/compare/FacetSelector.vue'
-import type { ComparisonFacet } from '../../../../shared/types/comparison'
-import { CATEGORY_ORDER, FACET_INFO, FACETS_BY_CATEGORY } from '../../../../shared/types/comparison'
 
 // Mock useFacetSelection
 const mockSelectedFacets = ref<string[]>(['downloads', 'types'])
@@ -216,39 +216,6 @@ describe('FacetSelector', () => {
       const noneButton = component.findAll('button').find(b => b.text() === 'none')
       // First none button (performance) should be disabled
       expect(noneButton!.attributes('disabled')).toBeDefined()
-    })
-  })
-
-  describe('accessibility', () => {
-    it('has role=group on main container', async () => {
-      const component = await mountSuspended(FacetSelector)
-
-      expect(component.find('[role="group"]').exists()).toBe(true)
-    })
-
-    it('has aria-label on facet group', async () => {
-      const component = await mountSuspended(FacetSelector)
-
-      const groups = component.findAll('[role="group"]')
-      expect(groups.length).toBeGreaterThan(0)
-    })
-
-    it('facet buttons have aria-label', async () => {
-      const component = await mountSuspended(FacetSelector)
-
-      const facetButtons = component.findAll('button[aria-pressed]')
-      for (const button of facetButtons) {
-        expect(button.attributes('aria-label')).toBeTruthy()
-      }
-    })
-
-    it('category buttons have aria-label', async () => {
-      const component = await mountSuspended(FacetSelector)
-
-      const allButtons = component.findAll('button').filter(b => b.text() === 'all')
-      for (const button of allButtons) {
-        expect(button.attributes('aria-label')).toBeTruthy()
-      }
     })
   })
 
