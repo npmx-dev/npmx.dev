@@ -7,12 +7,6 @@ const buildInfo = useAppConfig().buildInfo
 const timeAgoOptions = useTimeAgoOptions()
 const buildTimeDate = new Date(buildInfo.time)
 const buildTimeAgo = useTimeAgo(buildTimeDate, timeAgoOptions)
-const isHydrated = shallowRef(false)
-
-useNuxtApp().hook('app:suspense:resolve', () => {
-  console.log('app:suspense:resolve')
-  isHydrated.value = true
-})
 </script>
 <template>
   <div
