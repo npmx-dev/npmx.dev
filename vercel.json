@@ -2,9 +2,14 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/:path((?!api|_nuxt|_v|__nuxt|search|code|\\.md$).*)",
+      "source": "/:path((?!api|_nuxt|_v|__nuxt|search|code|raw/).*)",
       "has": [{ "type": "header", "key": "accept", "value": "(.*?)text/markdown(.*)" }],
-      "destination": "/:path.md"
+      "destination": "/raw/:path.md"
+    },
+    {
+      "source": "/:path((?!api|_nuxt|_v|__nuxt|search|code|raw/).*)",
+      "has": [{ "type": "header", "key": "user-agent", "value": "curl/.*" }],
+      "destination": "/raw/:path.md"
     }
   ],
   "redirects": [

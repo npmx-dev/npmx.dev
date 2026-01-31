@@ -1,4 +1,4 @@
-import { generatePackageMarkdown } from '../utils/markdown'
+import { generatePackageMarkdown } from '../../utils/markdown'
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import {
@@ -92,11 +92,11 @@ function isStandardReadme(filename: string | undefined): boolean {
   return !!filename && standardReadmePattern.test(filename)
 }
 
-function parsePackageParamsFromPath(path: string): {
+function parsePackageParamsFromSlug(slug: string): {
   rawPackageName: string
   rawVersion: string | undefined
 } {
-  const segments = path.slice(1).split('/').filter(Boolean)
+  const segments = slug.split('/').filter(Boolean)
 
   if (segments.length === 0) {
     return { rawPackageName: '', rawVersion: undefined }
@@ -127,8 +127,22 @@ function parsePackageParamsFromPath(path: string): {
   }
 }
 
-async function handleMarkdownRequest(packagePath: string): Promise<string> {
-  const { rawPackageName, rawVersion } = parsePackageParamsFromPath(packagePath)
+export default defineEventHandler(async event => {
+  // Get the slug parameter - Nitro captures it as "slug.md" due to the route pattern
+  const params = getRouterParams(event)
+  const slugParam = params['slug.md'] || params.slug
+
+  if (!slugParam) {
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Package not found',
+    })
+  }
+
+  // Remove .md suffix if present (it will be there from the route)
+  const slug = slugParam.endsWith('.md') ? slugParam.slice(0, -3) : slugParam
+
+  const { rawPackageName, rawVersion } = parsePackageParamsFromSlug(slug)
 
   if (!rawPackageName) {
     throw createError({
@@ -142,7 +156,15 @@ async function handleMarkdownRequest(packagePath: string): Promise<string> {
     version: rawVersion,
   })
 
-  const packageData = await fetchNpmPackage(packageName)
+  let packageData
+  try {
+    packageData = await fetchNpmPackage(packageName)
+  } catch {
+    throw createError({
+      statusCode: 502,
+      statusMessage: ERROR_NPM_FETCH_FAILED,
+    })
+  }
 
   let targetVersion = version
   if (!targetVersion) {
@@ -193,7 +215,7 @@ async function handleMarkdownRequest(packagePath: string): Promise<string> {
 
   const repoInfo = parseRepositoryInfo(packageData.repository)
 
-  return generatePackageMarkdown({
+  const markdown = generatePackageMarkdown({
     pkg: packageData,
     version: versionData,
     readme: readmeContent && readmeContent !== NPM_MISSING_README_SENTINEL ? readmeContent : null,
@@ -201,55 +223,13 @@ async function handleMarkdownRequest(packagePath: string): Promise<string> {
     dailyDownloads: dailyDownloads ?? undefined,
     repoInfo,
   })
-}
 
-/** Handle .md suffix and Accept: text/markdown header requests */
-export default defineEventHandler(async event => {
-  const url = getRequestURL(event)
-  const path = url.pathname
+  setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
+  setHeader(
+    event,
+    'Cache-Control',
+    `public, max-age=${CACHE_MAX_AGE_ONE_HOUR}, stale-while-revalidate`,
+  )
 
-  if (
-    path.startsWith('/api/') ||
-    path.startsWith('/_') ||
-    path.startsWith('/__') ||
-    path === '/search' ||
-    path.startsWith('/search') ||
-    path.startsWith('/code/') ||
-    path === '/' ||
-    path === '/.md'
-  ) {
-    return
-  }
-
-  const isMarkdownPath = path.endsWith('.md') && path.length > 3
-  const acceptHeader = getHeader(event, 'accept') ?? ''
-  const wantsMarkdown = acceptHeader.includes('text/markdown')
-
-  if (!isMarkdownPath && !wantsMarkdown) {
-    return
-  }
-
-  const packagePath = isMarkdownPath ? path.slice(0, -3) : path
-
-  try {
-    const markdown = await handleMarkdownRequest(packagePath)
-
-    setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
-    setHeader(
-      event,
-      'Cache-Control',
-      `public, max-age=${CACHE_MAX_AGE_ONE_HOUR}, stale-while-revalidate`,
-    )
-
-    return markdown
-  } catch (error: unknown) {
-    if (error && typeof error === 'object' && 'statusCode' in error) {
-      throw error
-    }
-
-    throw createError({
-      statusCode: 502,
-      statusMessage: ERROR_NPM_FETCH_FAILED,
-    })
-  }
+  return markdown
 })

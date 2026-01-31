@@ -251,7 +251,7 @@ export function generatePackageMarkdown(options: PackageMarkdownOptions): string
       const username = (maintainer as { username?: string }).username
       const name = maintainer.name || username || 'Unknown'
       if (username) {
-        lines.push(`- [${name}](https://www.npmjs.com/~${username})`)
+        lines.push(`- [${name}](https://npmx.dev/~${username})`)
       } else {
         lines.push(`- ${name}`)
       }
