@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FacetValue, FacetDiffResult } from '#shared/types'
+import type { FacetValue } from '#shared/types'
 
 const props = defineProps<{
   /** Facet label */
@@ -8,8 +8,6 @@ const props = defineProps<{
   description?: string
   /** Values for each column */
   values: (FacetValue | null | undefined)[]
-  /** Diff results between adjacent columns (for release comparison) */
-  diffs?: (FacetDiffResult | null | undefined)[]
   /** Whether this row is loading */
   loading?: boolean
   /** Whether to show the proportional bar (defaults to true for numeric values) */
@@ -52,27 +50,6 @@ function getStatusClass(status?: FacetValue['status']): string {
       return 'text-fg'
   }
 }
-
-function getDiffClass(diff?: FacetDiffResult | null): string {
-  if (!diff) return ''
-  if (diff.favorable === true) return 'text-emerald-400'
-  if (diff.favorable === false) return 'text-red-400'
-  return 'text-fg-muted'
-}
-
-function getDiffIcon(diff?: FacetDiffResult | null): string {
-  if (!diff) return ''
-  switch (diff.direction) {
-    case 'increase':
-      return 'i-carbon:arrow-up'
-    case 'decrease':
-      return 'i-carbon:arrow-down'
-    case 'changed':
-      return 'i-carbon:arrows-horizontal'
-    default:
-      return ''
-  }
-}
 </script>
 
 <template>
@@ -94,7 +71,7 @@ function getDiffIcon(diff?: FacetDiffResult | null): string {
     <div
       v-for="(value, index) in values"
       :key="index"
-      class="comparison-cell relative flex flex-col items-end justify-center gap-1 px-4 py-3 border-b border-border"
+      class="comparison-cell relative flex items-end justify-center px-4 py-3 border-b border-border"
     >
       <!-- Background bar for numeric values -->
       <div
@@ -124,21 +101,6 @@ function getDiffIcon(diff?: FacetDiffResult | null): string {
           <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />
           <template v-else>{{ value.display }}</template>
         </span>
-
-        <!-- Diff indicator (if provided) -->
-        <div
-          v-if="diffs && diffs[index] && diffs[index]?.direction !== 'same'"
-          class="relative flex items-center gap-1 text-xs tabular-nums"
-          :class="getDiffClass(diffs[index])"
-        >
-          <span
-            v-if="getDiffIcon(diffs[index])"
-            class="w-3 h-3"
-            :class="getDiffIcon(diffs[index])"
-            aria-hidden="true"
-          />
-          <span>{{ diffs[index]?.display }}</span>
-        </div>
       </template>
     </div>
   </div>

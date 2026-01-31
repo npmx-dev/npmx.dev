@@ -129,20 +129,6 @@ export interface FacetValue<T = unknown> {
   type?: 'date'
 }
 
-/** Result of comparing two facet values */
-export interface FacetDiffResult<_T = unknown> {
-  /** Absolute difference (for numeric values) */
-  absoluteDiff?: number
-  /** Percentage difference (for numeric values) */
-  percentDiff?: number
-  /** Human-readable difference string */
-  display: string
-  /** Direction of change */
-  direction: 'increase' | 'decrease' | 'same' | 'changed'
-  /** Whether the change is favorable (depends on facet semantics) */
-  favorable?: boolean
-}
-
 /** Package data for comparison */
 export interface ComparisonPackage {
   name: string

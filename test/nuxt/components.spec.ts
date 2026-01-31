@@ -1349,22 +1349,6 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violations with diffs', async () => {
-      const component = await mountSuspended(CompareFacetRow, {
-        props: {
-          label: 'Package Size',
-          description: 'Size of the package',
-          values: [
-            { raw: 100, display: '100 KB' },
-            { raw: 150, display: '150 KB' },
-          ],
-          diffs: [null, { display: '+50%', direction: 'increase' as const, favorable: false }],
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
     it('should have no accessibility violations when loading', async () => {
       const component = await mountSuspended(CompareFacetRow, {
         props: {
