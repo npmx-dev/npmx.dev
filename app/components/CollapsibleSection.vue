@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { shallowRef, computed } from 'vue'
 
 interface Props {
   title: string
@@ -19,7 +19,7 @@ const buttonId = `${props.id}-collapsible-button`
 const contentId = `${props.id}-collapsible-content`
 const headingId = `${props.id}-heading`
 
-const isOpen = ref(true)
+const isOpen = shallowRef(true)
 
 onPrehydrate(() => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')

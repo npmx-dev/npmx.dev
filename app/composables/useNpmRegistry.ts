@@ -185,9 +185,11 @@ export function usePackage(
 
   const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
-    async () => {
+    async (_nuxtApp, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
-      const { data: r, isStale } = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
+      const { data: r, isStale } = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`, {
+        signal,
+      })
       const reqVer = toValue(requestedVersion)
       const pkg = transformPackument(r, reqVer)
       const resolvedVersion = getResolvedVersion(pkg, reqVer)
@@ -233,10 +235,11 @@ export function usePackageDownloads(
 
   const asyncData = useLazyAsyncData(
     () => `downloads:${toValue(name)}:${toValue(period)}`,
-    async () => {
+    async (_nuxtApp, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
       const { data, isStale } = await cachedFetch<NpmDownloadCount>(
         `${NPM_API}/downloads/point/${toValue(period)}/${encodedName}`,
+        { signal },
       )
       return { ...data, isStale }
     },
@@ -306,7 +309,7 @@ export function useNpmSearch(
 
   const asyncData = useLazyAsyncData(
     () => `search:incremental:${toValue(query)}`,
-    async () => {
+    async (_nuxtApp, { signal }) => {
       const q = toValue(query)
       if (!q.trim()) {
         return emptySearchResponse
@@ -325,7 +328,7 @@ export function useNpmSearch(
 
       const { data: response, isStale } = await cachedFetch<NpmSearchResponse>(
         `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
-        {},
+        { signal },
         60,
       )
 
@@ -509,7 +512,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
 
   const asyncData = useLazyAsyncData(
     () => `org-packages:${toValue(orgName)}`,
-    async () => {
+    async (_nuxtApp, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
         return emptySearchResponse
@@ -520,6 +523,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       try {
         const { data } = await cachedFetch<Record<string, string>>(
           `${NPM_REGISTRY}/-/org/${encodeURIComponent(org)}/package`,
+          { signal },
         )
         packageNames = Object.keys(data)
       } catch (err) {
@@ -553,6 +557,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
                   const encoded = encodePackageName(name)
                   const { data: pkg } = await cachedFetch<MinimalPackument>(
                     `${NPM_REGISTRY}/${encoded}`,
+                    { signal },
                   )
                   return pkg
                 } catch {

@@ -1,6 +1,9 @@
 import { expect, test } from '@nuxt/test-utils/playwright'
 
 test.describe('npmjs.com URL Compatibility', () => {
+  // TODO: these tests depend on external npm registry API - we should add data fixtures
+  test.describe.configure({ retries: 2 })
+
   test.describe('Package Pages', () => {
     test('/package/vue → package page', async ({ page, goto }) => {
       await goto('/package/vue', { waitUntil: 'domcontentloaded' })
@@ -73,12 +76,14 @@ test.describe('npmjs.com URL Compatibility', () => {
 
   test.describe('User Profile Pages', () => {
     test('/~sindresorhus → user profile', async ({ page, goto }) => {
-      await goto('/~sindresorhus', { waitUntil: 'domcontentloaded' })
+      await goto('/~sindresorhus', { waitUntil: 'hydration' })
 
       // Should show username
       await expect(page.locator('h1')).toContainText('~sindresorhus')
-      // Should show packages heading (user has packages)
-      await expect(page.getByRole('heading', { name: 'Packages' })).toBeVisible()
+
+      await expect(page.locator('text=/\\d+\\s+public\\s+package/i').first()).toBeVisible({
+        timeout: 15000,
+      })
     })
 
     test('/~nonexistent-user-12345 → empty user handling', async ({ page, goto }) => {

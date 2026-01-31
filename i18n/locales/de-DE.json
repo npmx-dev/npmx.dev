@@ -563,7 +563,8 @@
     "markdown_view_mode": {
       "preview": "Vorschau",
       "code": "Code"
-    }
+    },
+    "file_path": "Dateipfade"
   },
   "badges": {
     "provenance": {

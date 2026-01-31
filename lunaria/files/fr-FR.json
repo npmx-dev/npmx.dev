@@ -137,7 +137,8 @@
       "jsr": "jsr",
       "code": "code",
       "docs": "docs",
-      "fund": "donner"
+      "fund": "donner",
+      "compare": "comparer"
     },
     "docs": {
       "not_available": "Documentation non disponible",
@@ -752,6 +753,50 @@
       "error": "Échec du chargement des organisations",
       "empty": "Aucune organisation trouvée",
       "view_all": "Tout voir"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "Comparer les paquets",
+      "tagline": "Comparez les paquets npm côte à côte pour vous aider à choisir le bon.",
+      "meta_title": "Comparer {packages} - npmx",
+      "meta_title_empty": "Comparer les paquets - npmx",
+      "meta_description": "Comparaison côte à côte de {packages}",
+      "meta_description_empty": "Comparez les paquets npm côte à côte",
+      "section_packages": "Paquets",
+      "section_facets": "Facettes",
+      "section_comparison": "Comparaison",
+      "loading": "Chargement des données des paquets...",
+      "error": "Échec du chargement des données. Veuillez réessayer.",
+      "empty_title": "Sélectionnez des paquets à comparer",
+      "empty_description": "Recherchez et ajoutez au moins 2 paquets ci-dessus pour voir une comparaison côte à côte de leurs facettes."
+    },
+    "selector": {
+      "search_label": "Rechercher des paquets",
+      "search_first": "Rechercher un paquet...",
+      "search_add": "Ajouter un autre paquet...",
+      "searching": "Recherche...",
+      "remove_package": "Supprimer {package}",
+      "packages_selected": "{count}/{max} paquets sélectionnés.",
+      "add_hint": "Ajoutez au moins 2 paquets à comparer.",
+      "loading_versions": "Chargement des versions...",
+      "select_version": "Sélectionner une version"
+    },
+    "facets": {
+      "group_label": "Facettes de comparaison",
+      "all": "tout",
+      "none": "aucun",
+      "coming_soon": "Bientôt disponible",
+      "select_all": "Sélectionner toutes les facettes",
+      "deselect_all": "Désélectionner toutes les facettes",
+      "select_category": "Sélectionner toutes les facettes {category}",
+      "deselect_category": "Désélectionner toutes les facettes {category}",
+      "categories": {
+        "performance": "Performance",
+        "health": "Santé",
+        "compatibility": "Compatibilité",
+        "security": "Sécurité & Conformité"
+      }
     }
   },
   "version": "Version",
