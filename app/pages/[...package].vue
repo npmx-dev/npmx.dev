@@ -382,60 +382,6 @@ function handleClick(event: MouseEvent) {
       <!-- Package header -->
       <header class="area-header border-b border-border">
         <div class="mb-4">
-          <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
-          <nav
-            v-if="displayVersion"
-            :aria-label="$t('package.navigation')"
-            class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md w-fit mb-3 ms-auto"
-          >
-            <NuxtLink
-              v-if="docsLink"
-              :to="docsLink"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-              aria-keyshortcuts="d"
-            >
-              <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
-              {{ $t('package.links.docs') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                aria-hidden="true"
-              >
-                d
-              </kbd>
-            </NuxtLink>
-            <NuxtLink
-              :to="{
-                name: 'code',
-                params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
-              }"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-              aria-keyshortcuts="."
-            >
-              <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
-              {{ $t('package.links.code') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                aria-hidden="true"
-              >
-                .
-              </kbd>
-            </NuxtLink>
-            <NuxtLink
-              :to="{ path: '/compare', query: { packages: pkg.name } }"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-              aria-keyshortcuts="c"
-            >
-              <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
-              {{ $t('package.links.compare') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                aria-hidden="true"
-              >
-                c
-              </kbd>
-            </NuxtLink>
-          </nav>
-
           <!-- Package name and version -->
           <div class="flex items-baseline gap-2 mb-1.5 sm:gap-3 sm:mb-2 flex-wrap min-w-0">
             <h1
@@ -507,6 +453,60 @@ function handleClick(event: MouseEvent) {
                 </ul>
               </template>
             </ClientOnly>
+
+            <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
+            <nav
+              v-if="displayVersion"
+              :aria-label="$t('package.navigation')"
+              class="hidden sm:flex items-center gap-0.5 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
+            >
+              <NuxtLink
+                v-if="docsLink"
+                :to="docsLink"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                aria-keyshortcuts="d"
+              >
+                <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
+                {{ $t('package.links.docs') }}
+                <kbd
+                  class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                  aria-hidden="true"
+                >
+                  d
+                </kbd>
+              </NuxtLink>
+              <NuxtLink
+                :to="{
+                  name: 'code',
+                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
+                }"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                aria-keyshortcuts="."
+              >
+                <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
+                {{ $t('package.links.code') }}
+                <kbd
+                  class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                  aria-hidden="true"
+                >
+                  .
+                </kbd>
+              </NuxtLink>
+              <NuxtLink
+                :to="{ path: '/compare', query: { packages: pkg.name } }"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                aria-keyshortcuts="c"
+              >
+                <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
+                {{ $t('package.links.compare') }}
+                <kbd
+                  class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                  aria-hidden="true"
+                >
+                  c
+                </kbd>
+              </NuxtLink>
+            </nav>
           </div>
 
           <!-- Description container with min-height to prevent CLS -->
