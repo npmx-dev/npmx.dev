@@ -270,6 +270,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       return { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
     },
   },
+  {
+    code: 'pt-BR',
+    file: 'pt-BR.json',
+    name: 'Português (Brasil)',
+  },
   /*{
       code: 'sv',
       file: 'sv.json',
