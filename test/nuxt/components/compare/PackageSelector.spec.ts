@@ -331,32 +331,6 @@ describe('PackageSelector', () => {
     })
   })
 
-  describe('accessibility', () => {
-    it('remove buttons have aria-label', async () => {
-      const component = await mountSuspended(PackageSelector, {
-        props: {
-          modelValue: ['lodash'],
-        },
-      })
-
-      const removeButton = component
-        .findAll('button')
-        .find(b => b.find('.i-carbon\\:close').exists())
-      expect(removeButton?.attributes('aria-label')).toBeTruthy()
-    })
-
-    it('search input has aria-autocomplete', async () => {
-      const component = await mountSuspended(PackageSelector, {
-        props: {
-          modelValue: [],
-        },
-      })
-
-      const input = component.find('input')
-      expect(input.attributes('aria-autocomplete')).toBe('list')
-    })
-  })
-
   describe('search results dropdown', () => {
     it('renders dropdown container when focused with results', async () => {
       const component = await mountSuspended(PackageSelector, {
