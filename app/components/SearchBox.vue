@@ -18,7 +18,7 @@ const router = useRouter()
 const route = useRoute()
 
 const isSearchFocused = shallowRef(false)
-
+const searchInputRef = useTemplateRef('searchInputRef')
 const showSearchBar = computed(() => {
   return route.name !== 'index'
 })
@@ -71,7 +71,7 @@ watch(
       searchQuery.value = value
     }
     nextTick(() => {
-      document.getElementById('header-search')?.focus()
+      searchInputRef.value?.focus()
     })
   },
 )
@@ -102,6 +102,7 @@ function handleSearchFocus() {
 
           <input
             id="header-search"
+            ref="searchInputRef"
             :autofocus="!isMobile"
             v-model="searchQuery"
             type="search"
