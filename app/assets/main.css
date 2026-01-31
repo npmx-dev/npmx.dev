@@ -554,3 +554,32 @@ input[type='search']::-webkit-search-results-decoration {
   animation-duration: 0.3s;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* Locking the scroll whenever any of the modals are open */
+html:has(dialog:modal) {
+  overflow: hidden;
+}
+
+/* Backdrop styling when any of the modals are open */
+dialog:modal::backdrop {
+  @apply bg-black/60;
+}
+
+/* Modal transition styles */
+dialog {
+  opacity: 0;
+  transition: opacity 200ms ease;
+  transition-behavior: allow-discrete;
+}
+
+dialog:modal {
+  opacity: 1;
+  transition: opacity 200ms ease;
+  transition-behavior: allow-discrete;
+}
+
+@starting-style {
+  dialog[modal] {
+    opacity: 0;
+  }
+}

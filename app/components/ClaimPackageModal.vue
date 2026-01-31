@@ -38,6 +38,13 @@ async function checkAvailability() {
   }
 }
 
+function openConnectorModal() {
+  const connectorModal = document.querySelector<HTMLDialogElement>('#connector-modal')
+  if (connectorModal) {
+    connectorModal.showModal()
+  }
+}
+
 async function handleClaim() {
   if (!checkResult.value?.available || !isConnected.value) return
 
@@ -72,14 +79,14 @@ async function handleClaim() {
       if (completedOp.result?.requiresOtp) {
         // OTP is needed - open connector panel to handle it
         open.value = false
-        connectorModalOpen.value = true
+        openConnectorModal()
       } else {
         publishError.value = completedOp.result?.stderr || 'Failed to publish package'
       }
     } else {
       // Still pending/approved/running - open connector panel to show progress
       open.value = false
-      connectorModalOpen.value = true
+      openConnectorModal()
     }
   } catch (err) {
     publishError.value = err instanceof Error ? err.message : $t('claim.modal.failed_to_claim')
@@ -124,8 +131,6 @@ const previewPackageJson = computed(() => {
     ...(access && { publishConfig: { access } }),
   }
 })
-
-const connectorModalOpen = shallowRef(false)
 </script>
 
 <template>
@@ -351,7 +356,7 @@ const connectorModalOpen = shallowRef(false)
                   <button
                     type="button"
                     class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                    @click="connectorModalOpen = true"
+                    @click="openConnectorModal"
                   >
                     {{ $t('claim.modal.connect_button') }}
                   </button>
@@ -420,7 +425,4 @@ const connectorModalOpen = shallowRef(false)
       </div>
     </Transition>
   </Teleport>
-
-  <!-- Connector modal -->
-  <ConnectorModal v-model:open="connectorModalOpen" />
 </template>
