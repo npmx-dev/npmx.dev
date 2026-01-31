@@ -347,7 +347,7 @@
   "connector": {
     "status": {
       "connecting": "connecting...",
-      "connected_as": "connected as {'@'}{user}",
+      "connected_as": "connected as ~{user}",
       "connected": "connected",
       "connect_cli": "connect local CLI",
       "aria_connecting": "Connecting to local connector",
@@ -359,7 +359,7 @@
       "title": "Local Connector",
       "close_modal": "Close modal",
       "connected": "Connected",
-      "logged_in_as": "Logged in as {'@'}{user}",
+      "logged_in_as": "Logged in as ~{user}",
       "connected_hint": "You can now manage packages and organizations from the web UI.",
       "disconnect": "Disconnect",
       "run_hint": "Run the connector on your machine to enable admin features.",
@@ -728,6 +728,18 @@
         "cta": "Follow on Bluesky"
       }
     }
+  },
+  "account_menu": {
+    "connect": "connect",
+    "account": "Account",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Manage packages & orgs",
+    "atmosphere_desc": "Social features & identity",
+    "connect_npm_cli": "Connect to npm CLI",
+    "connect_atmosphere": "Connect to Atmosphere",
+    "connecting": "Connecting...",
+    "ops": "ops"
   },
   "header": {
     "home": "npmx home",
