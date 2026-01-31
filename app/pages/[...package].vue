@@ -137,7 +137,7 @@ if (import.meta.client) {
   })
 }
 
-const provenanceBadgeMounted = ref(false)
+const provenanceBadgeMounted = shallowRef(false)
 onMounted(() => {
   provenanceBadgeMounted.value = true
 })
