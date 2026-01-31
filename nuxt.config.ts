@@ -236,7 +236,11 @@ export default defineNuxtConfig({
     locales: currentLocales,
     defaultLocale: 'en-US',
     strategy: 'no_prefix',
-    detectBrowserLanguage: false,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'npmx-locale',
+      fallbackLocale: 'en-US',
+    },
     langDir: 'locales',
   },
 })
