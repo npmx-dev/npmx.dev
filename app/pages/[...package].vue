@@ -10,6 +10,15 @@ definePageMeta({
   alias: ['/package/:package(.*)*'],
 })
 
+registerScopedCommand({
+  id: 'package hello',
+  name: 'Hello',
+  description: 'Say hello to the package',
+  handler: async () => {
+    console.log(`Hello ${packageName.value}!`)
+  },
+})
+
 const router = useRouter()
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()

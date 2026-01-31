@@ -20,6 +20,8 @@ const localeMap = locales.value.reduce(
   {} as Record<string, Directions>,
 )
 
+const commandBarRef = useTemplateRef('commandBarRef')
+
 useHead({
   htmlAttrs: {
     'lang': () => locale.value,
@@ -40,6 +42,11 @@ if (import.meta.server) {
 // "?" highlights all keyboard shortcut elements
 function handleGlobalKeydown(e: KeyboardEvent) {
   const target = e.target as HTMLElement
+
+  if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+    e.preventDefault()
+    commandBarRef.value?.toggle()
+  }
 
   const isEditableTarget =
     target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable
@@ -82,6 +89,7 @@ if (import.meta.client) {
   <div class="min-h-screen flex flex-col bg-bg text-fg">
     <NuxtPwaAssets />
     <a href="#main-content" class="skip-link font-mono">{{ $t('common.skip_link') }}</a>
+    <CommandBar ref="commandBarRef" />
 
     <AppHeader :show-logo="!isHomepage" />
 
