@@ -751,13 +751,13 @@
       "connected_as": "已连接为 {'@'}{handle}",
       "disconnect": "断开连接",
       "connect_prompt": "使用 Atmosphere 账户登录",
-      "handle_label": "用户标识",
+      "handle_label": "账户代码",
       "handle_placeholder": "alice.npmx.social",
       "connect": "连接",
       "create_account": "创建一个新账户",
       "connect_bluesky": "使用 Bluesky 账户登录",
       "what_is_atmosphere": "什么是 Atmosphere 账户？",
-      "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账号登录所有兼容的应用。一旦创建账号，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。"
+      "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账户登录所有兼容的应用。一旦创建账户，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。"
     }
   },
   "header": {
