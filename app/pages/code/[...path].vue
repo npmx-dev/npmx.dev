@@ -271,6 +271,12 @@ useSeoMeta({
   },
   description: () => `Browse source code for ${packageName.value}@${version.value}`,
 })
+
+defineOgImageComponent('Default', {
+  title: () => `${pkg.value?.name ?? 'Package'} - Code`,
+  description: () => pkg.value?.license ?? '',
+  primaryColor: '#60a5fa',
+})
 </script>
 
 <template>

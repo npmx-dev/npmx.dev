@@ -347,6 +347,7 @@ defineOgImageComponent('Package', {
   version: () => displayVersion.value?.version ?? '',
   downloads: () => (downloads.value ? formatNumber(downloads.value.downloads) : ''),
   license: () => pkg.value?.license ?? '',
+  primaryColor: '#60a5fa',
 })
 
 // We're using only @click because it catches touch events and enter hits

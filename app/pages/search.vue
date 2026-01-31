@@ -699,6 +699,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   title: 'npmx',
   description: () => (query.value ? `Search results for "${query.value}"` : 'Search npm packages'),
+  primaryColor: '#60a5fa',
 })
 </script>
 
