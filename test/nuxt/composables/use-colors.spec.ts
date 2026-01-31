@@ -77,6 +77,8 @@ describe('useCssVariables', () => {
     await nextTick()
 
     expect(useMutationObserverMock).not.toHaveBeenCalled()
+    expect(lastMutationObserverInstance).not.toBeNull()
+    expect(lastMutationObserverInstance!.observe).toHaveBeenCalledTimes(1)
 
     wrapper.unmount()
   })
@@ -93,7 +95,8 @@ describe('useCssVariables', () => {
 
     await nextTick()
 
-    expect(useMutationObserverMock).toHaveBeenCalledOnce()
+    expect(lastMutationObserverInstance).not.toBeNull()
+    expect(lastMutationObserverInstance!.observe).toHaveBeenCalledTimes(1)
 
     wrapper.unmount()
   })
