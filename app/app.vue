@@ -93,9 +93,6 @@ if (import.meta.client) {
 
     <ScrollToTop />
   </div>
-
-  <!-- <ConnectorModal /> -->
-  <AuthModal />
 </template>
 
 <style>

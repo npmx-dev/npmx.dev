@@ -11,8 +11,6 @@ const {
 const { user: atprotoUser } = useAtproto()
 
 const isOpen = shallowRef(false)
-const showConnectorModal = shallowRef(false)
-const showAuthModal = shallowRef(false)
 
 /** Check if connected to at least one service */
 const hasAnyConnection = computed(() => isNpmConnected.value || !!atprotoUser.value)
@@ -45,12 +43,15 @@ onUnmounted(() => {
 })
 
 function openConnectorModal() {
-  isOpen.value = false
-  showConnectorModal.value = true
+  const connectorModal = document.querySelector<HTMLDialogElement>('#connector-modal')
+  if (connectorModal) {
+    isOpen.value = false
+    connectorModal.showModal()
+  }
 }
 
-function handleModalOpen() {
-  const authModal = document.querySelector<HTMLDialogElement>('#modal')
+function openAuthModal() {
+  const authModal = document.querySelector<HTMLDialogElement>('#auth-modal')
   if (authModal) {
     isOpen.value = false
     authModal.showModal()
@@ -182,7 +183,7 @@ function handleModalOpen() {
               type="button"
               role="menuitem"
               class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
-              @click="handleModalOpen"
+              @click="openAuthModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
                 <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
@@ -231,11 +232,10 @@ function handleModalOpen() {
 
             <button
               v-if="!atprotoUser"
-              id="auth-modal-trigger"
               type="button"
               role="menuitem"
               class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
-              @click="handleModalOpen"
+              @click="openAuthModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
                 <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
@@ -252,4 +252,6 @@ function handleModalOpen() {
       </div>
     </Transition>
   </div>
+  <ConnectorModal />
+  <AuthModal />
 </template>

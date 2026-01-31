@@ -38,7 +38,7 @@ async function handleLogin() {
 
 <template>
   <!-- Modal -->
-  <Modal :modalTitle="$t('auth.modal.title')" class="max-w-lg">
+  <Modal :modalTitle="$t('auth.modal.title')" class="max-w-lg" id="auth-modal">
     <div v-if="user?.handle" class="space-y-4">
       <div class="flex items-center gap-3 p-4 bg-bg-subtle border border-border rounded-lg">
         <span class="w-3 h-3 rounded-full bg-green-500" aria-hidden="true" />
