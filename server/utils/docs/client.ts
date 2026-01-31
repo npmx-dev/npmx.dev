@@ -7,7 +7,7 @@
  * @module server/utils/docs/client
  */
 
-import { doc } from '@deno/doc'
+import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
 
 // =============================================================================
@@ -33,10 +33,15 @@ export async function getDocNodes(packageName: string, version: string): Promise
   }
 
   // Generate docs using @deno/doc WASM
-  const result = await doc([typesUrl], {
-    load: createLoader(),
-    resolve: createResolver(),
-  })
+  let result: Record<string, DocNode[]>
+  try {
+    result = await doc([typesUrl], {
+      load: createLoader(),
+      resolve: createResolver(),
+    })
+  } catch {
+    return { version: 1, nodes: [] }
+  }
 
   // Collect all nodes from all specifiers
   const allNodes: DenoDocNode[] = []

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isPlatformSpecificPackage } from '../../app/utils/platform-packages'
+import { isPlatformSpecificPackage } from '../../../../app/utils/platform-packages'
 
 describe('isPlatformSpecificPackage', () => {
   describe('standard platform packages', () => {

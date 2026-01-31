@@ -551,6 +551,25 @@
       "label": "jsr"
     }
   },
+  "filters": {
+    "sort": {
+      "label": "パッケージ一覧を並び替える",
+      "toggle_direction": "並び順を切り替える",
+      "ascending": "昇順",
+      "descending": "降順",
+      "relevance": "関連度",
+      "downloads_week": "ダウンロード数/週",
+      "downloads_day": "ダウンロード数/日",
+      "downloads_month": "ダウンロード数/月",
+      "downloads_year": "ダウンロード数/年",
+      "updated": "最終更新",
+      "name": "パッケージ名",
+      "quality": "品質",
+      "popularity": "人気度",
+      "maintenance": "メンテナンス",
+      "score": "スコア"
+    }
+  },
   "about": {
     "title": "npmxについて",
     "heading": "このサイトについて",

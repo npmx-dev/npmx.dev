@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { buildScopeTeam } from '../../app/utils/npm'
-import { validateScopeTeam } from '../../cli/src/npm-client'
-import { getSpdxLicenseUrl } from '../../shared/utils/spdx'
+import { buildScopeTeam } from '../../../../app/utils/npm'
+import { validateScopeTeam } from '../../../../cli/src/npm-client'
+import { getSpdxLicenseUrl } from '../../../../shared/utils/spdx'
 
 describe('getSpdxLicenseUrl', () => {
   it('returns SPDX URL for valid license identifiers', () => {

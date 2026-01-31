@@ -21,7 +21,7 @@ import {
   PackageInitParamsSchema,
   safeParse,
   validateOperationParams,
-} from '../../cli/src/schemas.ts'
+} from '../../../cli/src/schemas.ts'
 
 describe('PackageNameSchema', () => {
   it('accepts valid package names', () => {

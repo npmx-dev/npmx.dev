@@ -4,8 +4,8 @@ import {
   parseJsDocLinks,
   renderMarkdown,
   stripAnsi,
-} from '../../server/utils/docs/text'
-import type { SymbolLookup } from '../../server/utils/docs/types'
+} from '../../../../../server/utils/docs/text'
+import type { SymbolLookup } from '../../../../../server/utils/docs/types'
 
 describe('stripAnsi', () => {
   it('should strip basic color codes', () => {
