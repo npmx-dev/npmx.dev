@@ -334,6 +334,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 ? $t('package.versions.collapse', { tag: row.tag })
                 : $t('package.versions.expand', { tag: row.tag })
             "
+            data-testid="tag-expand-button"
             @click="expandTagRow(row.tag)"
           >
             <span
@@ -583,6 +584,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           ? $t('package.versions.collapse_major', { major: group.label })
                           : $t('package.versions.expand_major', { major: group.label })
                       "
+                      data-testid="major-group-expand-button"
                       @click="toggleMajorGroup(group.groupKey)"
                     >
                       <span

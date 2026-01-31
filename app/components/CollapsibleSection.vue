@@ -19,7 +19,7 @@ const buttonId = `${props.id}-collapsible-button`
 const contentId = `${props.id}-collapsible-content`
 const headingId = `${props.id}-heading`
 
-const isOpen = ref(false)
+const isOpen = ref(true)
 
 onMounted(() => {
   if (document?.documentElement) {
