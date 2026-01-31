@@ -21,6 +21,8 @@ const EXTENSION_MAP: Record<string, string> = {
   vue: 'vue',
   svelte: 'svelte',
   astro: 'astro',
+  gjs: 'glimmer-js',
+  gts: 'glimmer-ts',
 
   // Data formats
   json: 'json',
