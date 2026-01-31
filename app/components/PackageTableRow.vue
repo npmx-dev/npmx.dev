@@ -17,8 +17,7 @@ const emit = defineEmits<{
 const pkg = computed(() => props.result.package)
 const score = computed(() => props.result.score)
 
-// Get the best available date: prefer result.updated (from packument), fall back to package.date
-const updatedDate = computed(() => props.result.updated ?? props.result.package.date)
+const updatedDate = computed(() => props.result.package.date)
 
 function formatDownloads(count?: number): string {
   if (count === undefined) return '-'

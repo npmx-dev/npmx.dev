@@ -106,8 +106,8 @@ const filteredAndSortedPackages = computed(() => {
   switch (sortOption.value) {
     case 'updated':
       pkgs.sort((a, b) => {
-        const dateA = a.updated || a.package.date || ''
-        const dateB = b.updated || b.package.date || ''
+        const dateA = a.package.date || ''
+        const dateB = b.package.date || ''
         return dateB.localeCompare(dateA)
       })
       break
