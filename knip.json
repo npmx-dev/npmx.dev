@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "includeEntryExports": true,
   "ignoreExportsUsedInFile": true,
-  "ignoreBinaries": ["simple-git-hooks", "lint-staged", "lex"],
+  "ignoreBinaries": ["simple-git-hooks", "lint-staged"],
   "ignore": ["shared/types/lexicons/**"],
   "workspaces": {
     ".": {
@@ -28,7 +28,6 @@
         "server/**/*.ts!",
         "shared/**/*.ts!",
         "test/**/*.ts",
-        "tests/**/*.ts",
         "lunaria/**/*.ts",
         "modules/**/*.ts!",
         "i18n/**/*.ts!"

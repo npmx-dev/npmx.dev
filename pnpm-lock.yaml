@@ -222,9 +222,6 @@ importers:
       unplugin-vue-router:
         specifier: 0.19.2
         version: 0.19.2(@vue/compiler-sfc@3.5.27)(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
-      vite-plugin-pwa:
-        specifier: 1.2.0
-        version: 1.2.0(@vite-pwa/assets-generator@1.0.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))(workbox-build@7.4.0)(workbox-window@7.4.0)
       vite-plus:
         specifier: 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
         version: 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab(@types/node@24.10.9)(esbuild@0.27.2)(happy-dom@20.4.0)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)
