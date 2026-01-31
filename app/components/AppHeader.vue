@@ -32,7 +32,7 @@ onKeyStroke(
   <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
     <nav
       :aria-label="$t('nav.main_navigation')"
-      class="container h-14 flex items-center justify-start"
+      class="container min-h-14 flex items-center justify-start"
     >
       <!-- Start: Logo -->
       <div :class="{ 'hidden sm:block': showFullSearch }" class="flex-shrink-0">
@@ -85,18 +85,18 @@ onKeyStroke(
       <!-- End: User status + GitHub -->
       <div
         :class="{ 'hidden sm:flex': showFullSearch }"
-        class="flex-shrink-0 flex items-center gap-4 sm:gap-6 ms-auto sm:ms-0"
+        class="flex-1 flex flex-wrap items-center justify-end sm:gap-3 ms-auto sm:ms-0"
       >
         <NuxtLink
           to="/about"
-          class="sm:hidden link-subtle font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          class="px-2 py-1.5 sm:hidden link-subtle font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
         >
           {{ $t('footer.about') }}
         </NuxtLink>
 
         <NuxtLink
           to="/settings"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          class="link-subtle font-mono text-sm inline-flex items-center gap-2 px-2 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
           aria-keyshortcuts=","
         >
           {{ $t('nav.settings') }}
