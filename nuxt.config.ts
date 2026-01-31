@@ -86,6 +86,7 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/opensearch.xml': { isr: true },
     '/**': { isr: 60 },
+    '/raw/**': { isr: 60 },
     '/package/**': { isr: 60 },
     // never cache
     '/search': { isr: false, cache: false },

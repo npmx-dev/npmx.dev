@@ -317,8 +317,14 @@ const canonicalUrl = computed(() => {
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
 
+// Markdown alternate URL for AI/LLM consumption
+const markdownUrl = computed(() => `${canonicalUrl.value}.md`)
+
 useHead({
-  link: [{ rel: 'canonical', href: canonicalUrl }],
+  link: [
+    { rel: 'canonical', href: canonicalUrl },
+    { rel: 'alternate', type: 'text/markdown', href: markdownUrl },
+  ],
 })
 
 useSeoMeta({
