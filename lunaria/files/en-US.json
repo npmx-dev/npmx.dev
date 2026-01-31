@@ -374,6 +374,9 @@
     },
     "modal": {
       "title": "Local Connector",
+      "contributor_badge": "Contributors only",
+      "contributor_notice": "The connector is not yet published to npm. See the {link} for how to run locally.",
+      "contributor_link": "contributing guide",
       "connected": "Connected",
       "connected_as_user": "Connected as ~{user}",
       "connected_hint": "You can now manage packages and organizations from the web UI.",

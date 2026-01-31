@@ -105,10 +105,6 @@ export interface CachedFetchResult<T> {
  */
 export type CachedFetchFunction = <T = unknown>(
   url: string,
-  options?: {
-    method?: string
-    body?: unknown
-    headers?: Record<string, string>
-  },
+  options?: Parameters<typeof $fetch>[1],
   ttl?: number,
 ) => Promise<CachedFetchResult<T>>
