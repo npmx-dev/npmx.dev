@@ -399,7 +399,7 @@ function handleClick(event: MouseEvent) {
                 <button
                   @click="copyPkgName()"
                   aria-describedby="copy-pkg-name"
-                  class="cursor-copy ms-1 mt-1"
+                  class="cursor-copy ms-1 mt-1 active:scale-95 transition-transform"
                 >
                   {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
                 </button>

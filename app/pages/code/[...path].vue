@@ -418,7 +418,7 @@ defineOgImageComponent('Default', {
               <button
                 v-if="selectedLines"
                 type="button"
-                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors"
+                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors active:scale-95"
                 @click="copyPermalinkUrl"
               >
                 {{ permalinkCopied ? $t('common.copied') : $t('code.copy_link') }}
