@@ -15,7 +15,6 @@ function getSkillSourceUrl(skill: SkillListItem): string {
 
 const open = defineModel<boolean>('open', { default: false })
 
-// Track expanded skills
 const expandedSkills = ref<Set<string>>(new Set())
 
 function toggleSkill(dirName: string) {

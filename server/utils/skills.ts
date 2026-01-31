@@ -21,7 +21,6 @@ export function parseFrontmatter(raw: string): { frontmatter: SkillFrontmatter; 
   const yamlBlock = match[1]!
   const content = match[2]!
 
-  // Simple YAML parser for flat key-value pairs
   const frontmatter: Record<string, string | Record<string, string>> = {}
   let currentKey = ''
   let inMetadata = false
@@ -32,7 +31,6 @@ export function parseFrontmatter(raw: string): { frontmatter: SkillFrontmatter; 
     if (!trimmed || trimmed.startsWith('#')) continue
 
     if (line.startsWith('  ') && inMetadata) {
-      // Nested metadata key
       const [key, ...valueParts] = trimmed.split(':')
       if (key && valueParts.length) {
         metadata[key.trim()] = valueParts

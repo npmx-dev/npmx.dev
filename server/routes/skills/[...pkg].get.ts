@@ -35,7 +35,6 @@ export default defineCachedEventHandler(
     try {
       const validated = v.parse(PackageRouteParamsSchema, { packageName, version: rawVersion })
 
-      // Resolve latest version if not specified
       let version = validated.version
       let isVersioned = !!version
       if (!version) {
@@ -51,20 +50,16 @@ export default defineCachedEventHandler(
         setHeader(event, 'Cache-Control', `public, max-age=${CACHE_MAX_AGE_ONE_YEAR}, immutable`)
       }
 
-      // Discovery endpoint - list all skills
       if (rest.length === 0) {
         return await handleDiscovery(validated.packageName, version)
       }
 
-      // Validate skill name
       const skillName = v.parse(SkillNameSchema, rest[0])
 
-      // Skill content endpoint
       if (rest.length === 1) {
         return await handleSkillContent(validated.packageName, version, skillName)
       }
 
-      // Supporting file endpoint
       const filePath = rest.slice(1).join('/')
       return await handleSkillFile(event, validated.packageName, version, skillName, filePath)
     } catch (error) {
@@ -133,7 +128,6 @@ async function handleSkillFile(
   try {
     const content = await fetchSkillFile(packageName, version, `skills/${skillName}/${filePath}`)
 
-    // Set appropriate content type based on extension
     const ext = filePath.split('.').pop()?.toLowerCase() || ''
     const contentTypes: Record<string, string> = {
       md: 'text/markdown',
