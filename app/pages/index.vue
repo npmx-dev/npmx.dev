@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const isMobile = useIsMobile()
 const router = useRouter()
-const searchQuery = ref('')
+const searchQuery = shallowRef('')
 
 function handleSubmit() {
   router.push({

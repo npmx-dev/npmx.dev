@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const open = defineModel<boolean>('open', { default: false })
 
-const handleInput = ref('')
+const handleInput = shallowRef('')
 
 const { user, logout } = useAtproto()
 

@@ -17,9 +17,9 @@ interface OrgInfo {
   isLoadingDetails: boolean
 }
 
-const isLoading = ref(true)
-const orgs = ref<OrgInfo[]>([])
-const error = ref<string | null>(null)
+const isLoading = shallowRef(true)
+const orgs = shallowRef<OrgInfo[]>([])
+const error = shallowRef<string | null>(null)
 
 async function loadOrgDetails(org: OrgInfo) {
   org.isLoadingDetails = true

@@ -1,19 +1,6 @@
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
 
 /**
- * Type for the cachedFetch function attached to event context.
- */
-export type CachedFetchFunction = <T = unknown>(
-  url: string,
-  options?: {
-    method?: string
-    body?: unknown
-    headers?: Record<string, string>
-  },
-  ttl?: number,
-) => Promise<CachedFetchResult<T>>
-
-/**
  * Get the cachedFetch function from the current request context.
  *
  * IMPORTANT: This must be called in the composable setup context (outside of

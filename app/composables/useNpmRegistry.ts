@@ -12,7 +12,7 @@ import type { ReleaseType } from 'semver'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
 import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
-import type { CachedFetchFunction } from '~/composables/useCachedFetch'
+import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -299,7 +299,7 @@ export function useNpmSearch(
     total: number
   } | null>(null)
 
-  const isLoadingMore = ref(false)
+  const isLoadingMore = shallowRef(false)
 
   // Standard (non-incremental) search implementation
   let lastSearch: NpmSearchResponse | undefined = undefined

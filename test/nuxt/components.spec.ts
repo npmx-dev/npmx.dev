@@ -56,6 +56,7 @@ import DateTime from '~/components/DateTime.vue'
 import AppHeader from '~/components/AppHeader.vue'
 import AppFooter from '~/components/AppFooter.vue'
 import AppTooltip from '~/components/AppTooltip.vue'
+import AnnounceTooltip from '~/components/AnnounceTooltip.vue'
 import LoadingSpinner from '~/components/LoadingSpinner.vue'
 import JsrBadge from '~/components/JsrBadge.vue'
 import ProvenanceBadge from '~/components/ProvenanceBadge.vue'
@@ -187,6 +188,17 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(AppTooltip, {
         props: { text: 'Tooltip content' },
+        slots: { default: '<button>Trigger</button>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('AnnounceTooltip', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(AnnounceTooltip, {
+        props: { text: 'Tooltip content', isVisible: true },
         slots: { default: '<button>Trigger</button>' },
       })
       const results = await runAxe(component)

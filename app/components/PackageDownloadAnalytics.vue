@@ -20,7 +20,7 @@ const {
 
 const { accentColors, selectedAccentColor } = useAccentColor()
 const colorMode = useColorMode()
-const resolvedMode = ref<'light' | 'dark'>('light')
+const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
 
 const { width } = useElementSize(rootEl)
@@ -221,8 +221,8 @@ function extractDates(dateLabel: string): [string, string] | null {
  * - selectedGranularity: immediate UI
  * - displayedGranularity: only updated once data is ready
  */
-const selectedGranularity = ref<ChartTimeGranularity>('weekly')
-const displayedGranularity = ref<ChartTimeGranularity>('weekly')
+const selectedGranularity = shallowRef<ChartTimeGranularity>('weekly')
+const displayedGranularity = shallowRef<ChartTimeGranularity>('weekly')
 
 /**
  * Date range inputs.
@@ -230,9 +230,9 @@ const displayedGranularity = ref<ChartTimeGranularity>('weekly')
  * - weekly: from weeklyDownloads first -> weekStart/weekEnd
  * - fallback: last 30 days ending yesterday (client-side)
  */
-const startDate = ref<string>('') // YYYY-MM-DD
-const endDate = ref<string>('') // YYYY-MM-DD
-const hasUserEditedDates = ref(false)
+const startDate = shallowRef<string>('') // YYYY-MM-DD
+const endDate = shallowRef<string>('') // YYYY-MM-DD
+const hasUserEditedDates = shallowRef(false)
 
 function initDateRangeFromWeekly() {
   if (hasUserEditedDates.value) return
@@ -274,8 +274,8 @@ watch(
   { immediate: true },
 )
 
-const initialStartDate = ref<string>('') // YYYY-MM-DD
-const initialEndDate = ref<string>('') // YYYY-MM-DD
+const initialStartDate = shallowRef<string>('') // YYYY-MM-DD
+const initialEndDate = shallowRef<string>('') // YYYY-MM-DD
 
 function setInitialRangeIfEmpty() {
   if (initialStartDate.value || initialEndDate.value) return
@@ -343,8 +343,8 @@ watch(
 
 const { fetchPackageDownloadEvolution } = useCharts()
 
-const evolution = ref<EvolutionData>(weeklyDownloads)
-const pending = ref(false)
+const evolution = shallowRef<EvolutionData>(weeklyDownloads)
+const pending = shallowRef(false)
 
 let lastRequestKey = ''
 let requestToken = 0

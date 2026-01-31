@@ -247,8 +247,8 @@ describe('useInstallCommand', () => {
     })
 
     it('should update when using ref values', () => {
-      const packageName = ref<string | null>('vue')
-      const version = ref<string | null>(null)
+      const packageName = shallowRef<string | null>('vue')
+      const version = shallowRef<string | null>(null)
 
       const { installCommand } = useInstallCommand(packageName, version, null, null)
 

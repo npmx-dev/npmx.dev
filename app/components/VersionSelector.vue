@@ -21,10 +21,10 @@ const props = defineProps<{
   urlPattern: string
 }>()
 
-const isOpen = ref(false)
+const isOpen = shallowRef(false)
 const dropdownRef = useTemplateRef('dropdownRef')
 const listboxRef = useTemplateRef('listboxRef')
-const focusedIndex = ref(-1)
+const focusedIndex = shallowRef(-1)
 
 onClickOutside(dropdownRef, () => {
   isOpen.value = false
@@ -57,10 +57,10 @@ interface VersionGroup {
 const versionGroups = ref<VersionGroup[]>([])
 
 /** Whether we've loaded all versions from the API */
-const hasLoadedAll = ref(false)
+const hasLoadedAll = shallowRef(false)
 
 /** Loading state for initial all-versions fetch */
-const isLoadingAll = ref(false)
+const isLoadingAll = shallowRef(false)
 
 /** Cached full version list */
 const allVersionsCache = shallowRef<PackageVersionInfo[] | null>(null)

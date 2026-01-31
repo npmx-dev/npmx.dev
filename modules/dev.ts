@@ -18,6 +18,7 @@ export default defineNuxtModule({
       existsSync(envPath) && /^NUXT_SESSION_PASSWORD=/m.test(readFileSync(envPath, 'utf-8'))
 
     if (!hasPassword) {
+      // eslint-disable-next-line no-console
       console.info('Generating NUXT_SESSION_PASSWORD for development environment.')
       const password = randomUUID().replace(/-/g, '')
 

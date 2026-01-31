@@ -8,7 +8,7 @@ const { packageName } = defineProps<{
   packageName: string
 }>()
 
-const showModal = ref(false)
+const showModal = shallowRef(false)
 
 const { data: packument } = usePackage(() => packageName)
 const createdIso = computed(() => packument.value?.time?.created ?? null)
@@ -19,7 +19,7 @@ const { accentColors, selectedAccentColor } = useAccentColor()
 
 const colorMode = useColorMode()
 
-const resolvedMode = ref<'light' | 'dark'>('light')
+const resolvedMode = shallowRef<'light' | 'dark'>('light')
 
 const rootEl = shallowRef<HTMLElement | null>(null)
 
@@ -78,7 +78,7 @@ const pulseColor = computed(() => {
   return isDarkMode.value ? accent.value : lightenOklch(accent.value, 0.5)
 })
 
-const weeklyDownloads = ref<WeeklyDownloadPoint[]>([])
+const weeklyDownloads = shallowRef<WeeklyDownloadPoint[]>([])
 
 async function loadWeeklyDownloads() {
   if (!import.meta.client) return

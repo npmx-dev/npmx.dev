@@ -21,8 +21,8 @@ export const UNSET_NUXT_SESSION_PASSWORD = 'NUXT_SESSION_PASSWORD not set'
 export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
 
 // microcosm services
-export const CONSTELLATION_ENDPOINT = 'https://constellation.microcosm.blue'
-export const SLINGSHOT_ENDPOINT = 'https://slingshot.microcosm.blue'
+export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
+export const SLINGSHOT_HOST = 'slingshot.microcosm.blue'
 
 // Theming
 export const ACCENT_COLORS = {
