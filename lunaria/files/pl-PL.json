@@ -364,7 +364,6 @@
       "title": "Lokalny konektor",
       "close_modal": "Zamknij okno",
       "connected": "Połączono",
-      "logged_in_as": "Zalogowano jako {'@'}{user}",
       "connected_hint": "Możesz teraz zarządzać pakietami i organizacjami z poziomu interfejsu WWW.",
       "disconnect": "Rozłącz",
       "run_hint": "Uruchom konektor na swoim komputerze, aby włączyć funkcje administracyjne.",
