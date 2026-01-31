@@ -191,14 +191,18 @@
       "other_versions": "Inne wersje",
       "more_tagged": "jeszcze {count}",
       "all_covered": "Wszystkie wersje są objęte powyższymi tagami",
-      "deprecated_title": "{version} (przestarzała)"
+      "deprecated_title": "{version} (przestarzała)",
+      "view_all": "Zobacz wszystkie {count} wersje | Zobacz {count} wersję | Zobacz {count} wersje | Zobacz {count} wersji | Zobacz {count} wersji"
     },
     "dependencies": {
       "title": "Zależności ({count})",
       "list_label": "Zależności pakietu",
       "show_all": "pokaż wszystkie ({count})",
       "optional": "opcjonalne",
-      "view_vulnerabilities": "Zobacz luki"
+      "view_vulnerabilities": "Zobacz luki",
+      "outdated_major": "{count} wersji głównych w tyle (najnowsza: {latest}) | {count} wersja główna w tyle (najnowsza: {latest}) | {count} wersje główne w tyle (najnowsza: {latest}) | {count} wersji głównych w tyle (najnowsza: {latest}) | {count} wersji głównych w tyle (najnowsza: {latest})",
+      "outdated_minor": "{count} wersji minor w tyle (najnowsza: {latest}) | {count} wersja minor w tyle (najnowsza: {latest}) | {count} wersje minor w tyle (najnowsza: {latest}) | {count} wersji minor w tyle (najnowsza: {latest}) | {count} wersji minor w tyle (najnowsza: {latest})",
+      "outdated_patch": "Dostępna poprawka (najnowsza: {latest})"
     },
     "peer_dependencies": {
       "title": "Zależności peer ({count})",
@@ -257,6 +261,7 @@
       "esm": "Obsługuje ES Modules",
       "cjs": "Obsługuje CommonJS",
       "no_esm": "Brak obsługi ES Modules",
+      "types_label": "Typy",
       "types_included": "Typy w pakiecie",
       "types_available": "Typy dostępne przez {package}",
       "no_types": "Brak typów TypeScript"
@@ -357,9 +362,7 @@
     },
     "modal": {
       "title": "Lokalny konektor",
-      "close_modal": "Zamknij okno",
       "connected": "Połączono",
-      "logged_in_as": "Zalogowano jako {'@'}{user}",
       "connected_hint": "Możesz teraz zarządzać pakietami i organizacjami z poziomu interfejsu WWW.",
       "disconnect": "Rozłącz",
       "run_hint": "Uruchom konektor na swoim komputerze, aby włączyć funkcje administracyjne.",
@@ -505,7 +508,6 @@
   "claim": {
     "modal": {
       "title": "Zajmij nazwę pakietu",
-      "close_modal": "Zamknij okno",
       "success": "Pakiet zajęty!",
       "success_detail": "Opublikowano {name}{'@'}0.0.0 na npm.",
       "success_hint": "Możesz teraz publikować nowe wersje tego pakietu używając npm publish.",

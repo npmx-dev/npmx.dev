@@ -347,6 +347,7 @@ defineOgImageComponent('Package', {
   version: () => displayVersion.value?.version ?? '',
   downloads: () => (downloads.value ? formatNumber(downloads.value.downloads) : ''),
   license: () => pkg.value?.license ?? '',
+  primaryColor: '#60a5fa',
 })
 
 // We're using only @click because it catches touch events and enter hits
@@ -798,8 +799,8 @@ function handleClick(event: MouseEvent) {
           <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             {{ $t('package.run.title') }}
           </h2>
-          <!-- Package manager tabs -->
-          <PackageManagerTabs />
+          <!-- Package manager dropdown -->
+          <PackageManagerSelect />
         </div>
         <div
           role="tabpanel"
@@ -832,8 +833,8 @@ function handleClick(event: MouseEvent) {
               />
             </a>
           </h2>
-          <!-- Package manager tabs -->
-          <PackageManagerTabs />
+          <!-- Package manager dropdown -->
+          <PackageManagerSelect />
         </div>
         <div
           role="tabpanel"
@@ -1071,18 +1072,21 @@ function handleClick(event: MouseEvent) {
   grid-area: header;
   overflow-x: hidden;
 }
+
 .area-install {
   grid-area: install;
-  overflow-x: hidden;
 }
+
 .area-vulns {
   grid-area: vulns;
   overflow-x: hidden;
 }
+
 .area-readme {
   grid-area: readme;
   overflow-x: hidden;
 }
+
 .area-sidebar {
   grid-area: sidebar;
 }

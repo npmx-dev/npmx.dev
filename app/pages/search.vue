@@ -699,11 +699,12 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   title: 'npmx',
   description: () => (query.value ? `Search results for "${query.value}"` : 'Search npm packages'),
+  primaryColor: '#60a5fa',
 })
 </script>
 
 <template>
-  <main class="flex-1 overflow-x-hidden">
+  <main class="flex-1" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
     <!-- Results area with container padding -->
     <div class="container-sm py-6">
       <section v-if="query" :aria-label="$t('search.results')">
@@ -799,7 +800,7 @@ defineOgImageComponent('Default', {
               {{
                 $t('filters.count.showing_paginated', {
                   pageSize: preferredPageSize === 'all' ? visibleResults.total : preferredPageSize,
-                  total: visibleResults.total.toLocaleString(),
+                  count: visibleResults.total.toLocaleString(),
                 })
               }}
             </p>

@@ -486,7 +486,20 @@ const config = computed(() => {
             )
           },
           csv: (csvStr: string) => {
-            const blob = new Blob([csvStr.replace('data:text/csv;charset=utf-8,', '')])
+            // Extract multiline date format template and replace newlines with spaces in CSV
+            // This ensures CSV compatibility by converting multiline date ranges to single-line format
+            const PLACEHOLDER_CHAR = '\0'
+            const multilineDateTemplate = $t('package.downloads.date_range_multiline', {
+              start: PLACEHOLDER_CHAR,
+              end: PLACEHOLDER_CHAR,
+            })
+              .replaceAll(PLACEHOLDER_CHAR, '')
+              .trim()
+            const blob = new Blob([
+              csvStr
+                .replace('data:text/csv;charset=utf-8,', '')
+                .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
+            ])
             const url = URL.createObjectURL(blob)
             loadFile(
               url,

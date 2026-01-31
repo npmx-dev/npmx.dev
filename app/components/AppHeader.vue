@@ -2,11 +2,9 @@
 withDefaults(
   defineProps<{
     showLogo?: boolean
-    showConnector?: boolean
   }>(),
   {
     showLogo: true,
-    showConnector: true,
   },
 )
 
@@ -98,9 +96,7 @@ onKeyStroke(',', e => {
           </kbd>
         </NuxtLink>
 
-        <div v-if="showConnector" class="hidden sm:block">
-          <ConnectorStatus />
-        </div>
+        <HeaderAccountMenu />
       </div>
     </nav>
   </header>

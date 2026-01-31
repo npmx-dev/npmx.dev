@@ -40,6 +40,7 @@
         "@iconify-json/solar",
         "@iconify-json/svg-spinners",
         "@iconify-json/vscode-icons",
+        "@vercel/kv",
         "@voidzero-dev/vite-plus-core",
         "h3",
         "ohash",
