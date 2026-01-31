@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
+
 const props = defineProps<{
   packageName: string
   version: string
