@@ -118,12 +118,12 @@ function getSortKeyLabelKey(key: SortKey): string {
           {{
             $t('filters.count.showing_filtered', {
               filtered: filteredCount.toLocaleString(),
-              total: totalCount.toLocaleString(),
+              count: totalCount.toLocaleString(),
             })
           }}
         </template>
         <template v-else>
-          {{ $t('filters.count.showing_all', { total: totalCount.toLocaleString() }) }}
+          {{ $t('filters.count.showing_all', { count: totalCount.toLocaleString() }) }}
         </template>
       </div>
 
@@ -135,7 +135,7 @@ function getSortKeyLabelKey(key: SortKey): string {
         {{
           $t('filters.count.showing_paginated', {
             pageSize: pageSize === 'all' ? filteredCount : pageSize,
-            total: filteredCount.toLocaleString(),
+            count: filteredCount.toLocaleString(),
           })
         }}
       </div>

@@ -13,8 +13,9 @@ useSeoMeta({
 })
 
 defineOgImageComponent('Default', {
-  title: () => $t('about.title'),
-  description: () => $t('tagline'),
+  primaryColor: '#60a5fa',
+  title: 'About npmx',
+  description: 'A better browser for the **npm registry**',
 })
 
 const pmLinks = {

@@ -356,9 +356,7 @@
     },
     "modal": {
       "title": "Lokal Konnektor",
-      "close_modal": "Pəncərəni bağla",
       "connected": "Qoşulub",
-      "logged_in_as": "{'@'}{user} olaraq daxil olunub",
       "connected_hint": "İndi veb interfeysdən paketləri və təşkilatları idarə edə bilərsiniz.",
       "disconnect": "Ayrıl",
       "run_hint": "Admin funksiyalarını aktivləşdirmək üçün konnektoru kompüterinizdə işə salın.",
@@ -504,7 +502,6 @@
   "claim": {
     "modal": {
       "title": "Paket Adını Tut",
-      "close_modal": "Pəncərəni bağla",
       "success": "Paket tutuldu!",
       "success_detail": "{name}{'@'}0.0.0 npm-ə dərc edildi.",
       "success_hint": "İndi npm publish istifadə edərək bu paketə yeni versiyalar dərc edə bilərsiniz.",

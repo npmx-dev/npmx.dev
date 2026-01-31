@@ -165,7 +165,11 @@ function openAuthModal() {
                     : 'bg-blue-500/20 text-blue-500'
                 "
               >
-                {{ operationCount }} {{ $t('account_menu.ops') }}
+                {{
+                  $t('account_menu.ops', {
+                    count: operationCount,
+                  })
+                }}
               </span>
             </button>
 

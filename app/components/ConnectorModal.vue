@@ -59,7 +59,7 @@ watch(open, isOpen => {
         <button
           type="button"
           class="absolute inset-0 bg-black/60 cursor-default"
-          :aria-label="$t('connector.modal.close_modal')"
+          :aria-label="$t('common.close_modal')"
           @click="open = false"
         />
 

@@ -316,7 +316,6 @@
       "size": "サイズ",
       "deps": "依存関係",
       "updated": "最終更新",
-      "install": "インストール",
       "readme": "Readme",
       "maintainers": "メンテナ",
       "keywords": "キーワード",
@@ -343,9 +342,7 @@
     },
     "modal": {
       "title": "ローカルコネクタ",
-      "close_modal": "モーダルを閉じる",
       "connected": "接続済み",
-      "logged_in_as": "{'@'}{user} としてログイン中",
       "connected_hint": "Web UIからパッケージとOrganizationを管理できるようになりました。",
       "disconnect": "切断",
       "run_hint": "管理機能を有効にするには、ローカル環境でコネクタを実行してください。",
@@ -491,7 +488,6 @@
   "claim": {
     "modal": {
       "title": "パッケージ名を取得",
-      "close_modal": "モーダルを閉じる",
       "success": "パッケージ名を取得しました！",
       "success_detail": "{name}{'@'}0.0.0 がnpmに公開されました。",
       "success_hint": "npm publish を使用して、このパッケージの新しいバージョンを公開できるようになりました。",

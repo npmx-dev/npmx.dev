@@ -699,6 +699,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   title: 'npmx',
   description: () => (query.value ? `Search results for "${query.value}"` : 'Search npm packages'),
+  primaryColor: '#60a5fa',
 })
 </script>
 
@@ -799,7 +800,7 @@ defineOgImageComponent('Default', {
               {{
                 $t('filters.count.showing_paginated', {
                   pageSize: preferredPageSize === 'all' ? visibleResults.total : preferredPageSize,
-                  total: visibleResults.total.toLocaleString(),
+                  count: visibleResults.total.toLocaleString(),
                 })
               }}
             </p>

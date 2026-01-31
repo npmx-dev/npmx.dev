@@ -96,6 +96,12 @@ useSeoMeta({
   title: () => pageTitle.value,
 })
 
+defineOgImageComponent('Default', {
+  title: () => `${pkg.value?.name ?? 'Package'} - Docs`,
+  description: () => pkg.value?.license ?? '',
+  primaryColor: '#60a5fa',
+})
+
 const showLoading = computed(() => docsStatus.value === 'pending')
 const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 </script>
