@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { BuildInfo } from './shared/types'
 import { currentLocales } from './config/i18n'
 
@@ -39,7 +40,22 @@ export default defineNuxtConfig({
 
   css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
+  runtimeConfig: {
+    sessionPassword: '',
+    // Upstash Redis for distributed OAuth token refresh locking in production
+    upstash: {
+      redisRestUrl: process.env.KV_REST_API_URL || '',
+      redisRestToken: process.env.KV_REST_API_TOKEN || '',
+    },
+  },
+
   devtools: { enabled: true },
+
+  devServer: {
+    // Used with atproto oauth
+    // https://atproto.com/specs/oauth#localhost-client-development
+    host: '127.0.0.1',
+  },
 
   app: {
     head: {
@@ -72,7 +88,9 @@ export default defineNuxtConfig({
     '/opensearch.xml': { isr: true },
     '/**': { isr: 60 },
     '/package/**': { isr: 60 },
+    // never cache
     '/search': { isr: false, cache: false },
+    '/api/auth/**': { isr: false, cache: false },
     // infinite cache (versioned - doesn't change)
     '/code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -81,6 +99,7 @@ export default defineNuxtConfig({
     // static pages
     '/about': { prerender: true },
     '/settings': { prerender: true },
+    '/oauth-client-metadata.json': { prerender: true },
     // proxy for insights
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
@@ -125,6 +144,14 @@ export default defineNuxtConfig({
       'fetch-cache': {
         driver: 'fsLite',
         base: './.cache/fetch',
+      },
+      'oauth-atproto-state': {
+        driver: 'fsLite',
+        base: './.cache/atproto-oauth/state',
+      },
+      'oauth-atproto-session': {
+        driver: 'fsLite',
+        base: './.cache/atproto-oauth/session',
       },
     },
   },

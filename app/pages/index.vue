@@ -26,7 +26,11 @@ useSeoMeta({
   description: () => $t('seo.home.description'),
 })
 
-defineOgImageComponent('Default')
+defineOgImageComponent('Default', {
+  primaryColor: '#60a5fa',
+  title: 'npmx',
+  description: 'A better browser for the **npm registry**',
+})
 </script>
 
 <template>

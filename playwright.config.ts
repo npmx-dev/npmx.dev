@@ -13,7 +13,7 @@ export default defineConfig<ConfigOptions>({
   reporter: 'html',
   timeout: 120_000,
   webServer: {
-    command: 'NODE_ENV=test pnpm build && pnpm preview --port 5678',
+    command: 'pnpm start:playwright:webserver',
     url: baseURL,
     reuseExistingServer: false,
     timeout: 120_000,

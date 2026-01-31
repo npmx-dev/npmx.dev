@@ -71,7 +71,7 @@ export const useConnector = createSharedComposable(function useConnector() {
     lastExecutionTime: null,
   }))
 
-  const baseUrl = computed(() => `http://localhost:${config.value?.port ?? DEFAULT_PORT}`)
+  const baseUrl = computed(() => `http://127.0.0.1:${config.value?.port ?? DEFAULT_PORT}`)
 
   const route = useRoute()
   const router = useRouter()
@@ -109,7 +109,7 @@ export const useConnector = createSharedComposable(function useConnector() {
     state.value.error = null
 
     try {
-      const response = await $fetch<ConnectResponse>(`http://localhost:${port}/connect`, {
+      const response = await $fetch<ConnectResponse>(`http://127.0.0.1:${port}/connect`, {
         method: 'POST',
         body: { token },
         timeout: 5000,

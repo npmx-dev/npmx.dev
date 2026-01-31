@@ -52,7 +52,7 @@ const typesHref = computed(() => {
 
 <template>
   <ul v-if="analysis" class="flex items-center gap-1.5 list-none m-0 p-0">
-    <!-- TypeScript types -->
+    <!-- TypeScript types badge -->
     <li>
       <component
         :is="typesHref ? NuxtLink : 'span'"
@@ -73,7 +73,7 @@ const typesHref = computed(() => {
           :class="hasTypes ? 'i-carbon-checkmark' : 'i-carbon-close'"
           aria-hidden="true"
         />
-        Types
+        {{ $t('package.metrics.types_label') }}
       </component>
     </li>
 

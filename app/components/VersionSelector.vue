@@ -625,7 +625,13 @@ watch(
             class="text-xs text-fg-subtle hover:text-fg transition-[color] focus-visible:outline-none focus-visible:text-fg"
             @click="isOpen = false"
           >
-            View all {{ Object.keys(versions).length }} versions
+            {{
+              $t(
+                'package.versions.view_all',
+                { count: Object.keys(versions).length },
+                Object.keys(versions).length,
+              )
+            }}
           </NuxtLink>
         </div>
       </div>

@@ -21,6 +21,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   title: () => $t('settings.title'),
   description: () => $t('settings.tagline'),
+  primaryColor: '#60a5fa',
 })
 </script>
 
