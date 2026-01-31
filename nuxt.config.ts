@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { currentLocales } from './config/i18n'
 
 export default defineNuxtConfig({
@@ -47,6 +48,11 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     sessionPassword: '',
+    // Upstash Redis for distributed OAuth token refresh locking in production
+    upstash: {
+      redisRestUrl: process.env.KV_REST_API_URL || '',
+      redisRestToken: process.env.KV_REST_API_TOKEN || '',
+    },
   },
 
   devtools: { enabled: true },

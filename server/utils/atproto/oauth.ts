@@ -1,12 +1,11 @@
-import type { OAuthClientMetadataInput } from '@atproto/oauth-client-node'
-import type { EventHandlerRequest, H3Event } from 'h3'
-import type { OAuthSession } from '@atproto/oauth-client-node'
+import type { OAuthClientMetadataInput, OAuthSession } from '@atproto/oauth-client-node'
+import type { EventHandlerRequest, H3Event, SessionManager } from 'h3'
 import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { parse } from 'valibot'
+import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { UNSET_NUXT_SESSION_PASSWORD } from '#shared/utils/constants'
 import { OAuthMetadataSchema } from '#shared/schemas/oauth'
-import type { SessionManager } from 'h3'
 // TODO: limit scope as features gets added. atproto just allows login so no scary login screen till we have scopes
 export const scope = 'atproto'
 
@@ -49,6 +48,7 @@ async function getOAuthSession(event: H3Event): Promise<OAuthSession | undefined
     stateStore,
     sessionStore,
     clientMetadata,
+    requestLock: getOAuthLock(),
   })
 
   const currentSession = await sessionStore.get()

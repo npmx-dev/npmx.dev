@@ -71,6 +71,9 @@ importers:
       '@shikijs/themes':
         specifier: 3.21.0
         version: 3.21.0
+      '@upstash/redis':
+        specifier: 1.36.1
+        version: 1.36.1
       '@vercel/kv':
         specifier: 3.0.0
         version: 3.0.0
