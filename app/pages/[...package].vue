@@ -377,8 +377,8 @@ function handleClick(event: MouseEvent) {
       <!-- Package header -->
       <header class="area-header border-b border-border">
         <div class="mb-4">
-          <!-- Package name and version -->
-          <div class="flex items-baseline gap-2 mb-1.5 sm:gap-3 sm:mb-2 flex-wrap min-w-0">
+          <!-- Row 1: Package name + Docs/Code nav -->
+          <div class="flex items-start justify-between gap-4 mb-1.5 sm:mb-2">
             <h1
               class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
               :title="pkg.name"
@@ -391,9 +391,52 @@ function handleClick(event: MouseEvent) {
               ><span v-if="orgName">/</span
               >{{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
             </h1>
-            <span
+
+            <!-- Internal navigation: Docs + Code -->
+            <nav
               v-if="displayVersion"
-              class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0"
+              :aria-label="$t('package.navigation')"
+              class="flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0"
+            >
+              <NuxtLink
+                v-if="docsLink"
+                :to="docsLink"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                aria-keyshortcuts="d"
+              >
+                <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
+                {{ $t('package.links.docs') }}
+                <kbd
+                  class="hidden sm:inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                  aria-hidden="true"
+                >
+                  d
+                </kbd>
+              </NuxtLink>
+              <NuxtLink
+                :to="{
+                  name: 'code',
+                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
+                }"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                aria-keyshortcuts="."
+              >
+                <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
+                {{ $t('package.links.code') }}
+                <kbd
+                  class="hidden sm:inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                  aria-hidden="true"
+                >
+                  .
+                </kbd>
+              </NuxtLink>
+            </nav>
+          </div>
+
+          <!-- Row 2: Version + Badges -->
+          <div v-if="displayVersion" class="flex items-center gap-2 sm:gap-3 flex-wrap mb-3">
+            <span
+              class="inline-flex items-center gap-1.5 font-mono text-base sm:text-lg text-fg-muted"
             >
               <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
               <template v-if="resolvedVersion !== requestedVersion">
@@ -421,6 +464,7 @@ function handleClick(event: MouseEvent) {
                   class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0"
                   aria-hidden="true"
                 />
+                <span class="sr-only">{{ $t('package.verified_provenance') }}</span>
               </a>
               <span
                 v-if="
@@ -435,59 +479,14 @@ function handleClick(event: MouseEvent) {
 
             <!-- Package metrics (module format, types) -->
             <ClientOnly>
-              <PackageMetricsBadges
-                v-if="displayVersion"
-                :package-name="pkg.name"
-                :version="displayVersion.version"
-                class="self-baseline ms-1 sm:ms-2"
-              />
+              <PackageMetricsBadges :package-name="pkg.name" :version="displayVersion.version" />
               <template #fallback>
-                <ul class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
+                <ul class="flex items-center gap-1.5">
                   <li class="skeleton w-8 h-5 rounded" />
                   <li class="skeleton w-12 h-5 rounded" />
                 </ul>
               </template>
             </ClientOnly>
-
-            <!-- Internal navigation: Docs + Code (hidden on mobile, shown in external links instead) -->
-            <nav
-              v-if="displayVersion"
-              :aria-label="$t('package.navigation')"
-              class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
-            >
-              <NuxtLink
-                v-if="docsLink"
-                :to="docsLink"
-                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-                aria-keyshortcuts="d"
-              >
-                <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
-                {{ $t('package.links.docs') }}
-                <kbd
-                  class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                  aria-hidden="true"
-                >
-                  d
-                </kbd>
-              </NuxtLink>
-              <NuxtLink
-                :to="{
-                  name: 'code',
-                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
-                }"
-                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
-                aria-keyshortcuts="."
-              >
-                <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
-                {{ $t('package.links.code') }}
-                <kbd
-                  class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                  aria-hidden="true"
-                >
-                  .
-                </kbd>
-              </NuxtLink>
-            </nav>
           </div>
 
           <!-- Description container with min-height to prevent CLS -->
@@ -594,28 +593,6 @@ function handleClick(event: MouseEvent) {
                 <span class="i-carbon:favorite w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.fund') }}
               </a>
-            </li>
-            <!-- Mobile-only: Docs + Code links -->
-            <li v-if="docsLink && displayVersion" class="sm:hidden">
-              <NuxtLink
-                :to="docsLink"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:document w-4 h-4" aria-hidden="true" />
-                {{ $t('package.links.docs') }}
-              </NuxtLink>
-            </li>
-            <li v-if="displayVersion" class="sm:hidden">
-              <NuxtLink
-                :to="{
-                  name: 'code',
-                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
-                }"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:code w-4 h-4" aria-hidden="true" />
-                {{ $t('package.links.code') }}
-              </NuxtLink>
             </li>
           </ul>
         </div>
