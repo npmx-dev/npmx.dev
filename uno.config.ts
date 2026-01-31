@@ -6,6 +6,7 @@ import {
   transformerVariantGroup,
 } from 'unocss'
 import type { Theme } from '@unocss/preset-wind4/theme'
+import { presetRtl } from './uno-preset-rtl'
 
 const customIcons = {
   tangled:
@@ -23,6 +24,8 @@ export default defineConfig({
         custom: customIcons,
       },
     }),
+    // keep this preset last
+    presetRtl(),
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
