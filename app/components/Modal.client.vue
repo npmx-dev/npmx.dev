@@ -4,7 +4,7 @@ defineProps<{
 }>()
 
 function handleModalClose() {
-  const modal = document.querySelector<HTMLDialogElement>('dialog[open]')
+  const modal = document.querySelector<HTMLDialogElement>('dialog:modal')
   if (modal) {
     modal.close()
   }
