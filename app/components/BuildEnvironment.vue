@@ -4,24 +4,18 @@ defineProps<{
 }>()
 
 const buildInfo = useAppConfig().buildInfo
-const timeAgoOptions = useTimeAgoOptions()
 const buildTimeDate = new Date(buildInfo.time)
-const buildTimeAgo = useTimeAgo(buildTimeDate, timeAgoOptions)
 </script>
+
 <template>
   <div
     class="font-mono text-xs text-fg-muted flex items-center gap-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
     :class="footer ? 'mt-4 justify-start' : 'mb-8 justify-center'"
     style="animation-delay: 0.05s"
   >
-    <!-- TODO: replace this with NuxtTime -->
-    <ClientOnly>
-      <i18n-t keypath="built_at">
-        <time :datetime="String(buildTimeDate)" :title="$d(buildTimeDate, 'long')">{{
-          buildTimeAgo
-        }}</time>
-      </i18n-t>
-    </ClientOnly>
+    <i18n-t keypath="built_at">
+      <NuxtTime :datetime="buildTimeDate" relative />
+    </i18n-t>
     <span>&middot;</span>
     <NuxtLink
       v-if="buildInfo.env === 'release'"
