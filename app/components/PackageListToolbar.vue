@@ -62,7 +62,6 @@ const availableSortKeys = computed(() => {
     return SORT_KEYS.filter(k => !k.searchOnly || k.key === 'relevance').map(k =>
       Object.assign({}, k, {
         disabled: k.key !== 'relevance',
-        disabledReason: k.key !== 'relevance' ? 'Coming soon' : undefined,
       }),
     )
   }
@@ -162,8 +161,7 @@ function getSortKeyLabelKey(key: SortKey): string {
                 :value="keyConfig.key"
                 :disabled="keyConfig.disabled"
               >
-                {{ $t(getSortKeyLabelKey(keyConfig.key))
-                }}{{ keyConfig.disabled ? ` (${$t('filters.columns.coming_soon')})` : '' }}
+                {{ $t(getSortKeyLabelKey(keyConfig.key)) }}
               </option>
             </select>
             <div

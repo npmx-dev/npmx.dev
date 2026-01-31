@@ -81,6 +81,13 @@ function handleSearchFocus() {
   isSearchFocused.value = true
   emit('focus')
 }
+
+// Expose focus method for parent components
+const inputRef = shallowRef<HTMLInputElement | null>(null)
+function focus() {
+  inputRef.value?.focus()
+}
+defineExpose({ focus })
 </script>
 <template>
   <search v-if="showSearchBar" :class="'flex-1 sm:max-w-md ' + inputClass">
@@ -99,6 +106,7 @@ function handleSearchFocus() {
 
           <input
             id="header-search"
+            ref="inputRef"
             :autofocus="!isMobile"
             v-model="searchQuery"
             type="search"

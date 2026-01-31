@@ -11,6 +11,39 @@ withDefaults(
 const { isConnected, npmUser } = useConnector()
 
 const showFullSearch = shallowRef(false)
+const showMobileMenu = shallowRef(false)
+
+// On mobile, clicking logo+search button expands search
+const route = useRoute()
+const isMobile = useIsMobile()
+const isSearchExpandedManually = shallowRef(false)
+const searchBoxRef = shallowRef<{ focus: () => void } | null>(null)
+
+// On search page, always show search expanded on mobile
+const isOnSearchPage = computed(() => route.name === 'search')
+const isSearchExpanded = computed(() => isOnSearchPage.value || isSearchExpandedManually.value)
+
+function expandMobileSearch() {
+  isSearchExpandedManually.value = true
+  nextTick(() => {
+    searchBoxRef.value?.focus()
+  })
+}
+
+function handleSearchBlur() {
+  showFullSearch.value = false
+  // Collapse expanded search on mobile after blur (with delay for click handling)
+  // But don't collapse if we're on the search page
+  if (isMobile.value && !isOnSearchPage.value) {
+    setTimeout(() => {
+      isSearchExpandedManually.value = false
+    }, 150)
+  }
+}
+
+function handleSearchFocus() {
+  showFullSearch.value = true
+}
 
 onKeyStroke(
   ',',
@@ -32,43 +65,66 @@ onKeyStroke(
   <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
     <nav
       :aria-label="$t('nav.main_navigation')"
-      class="container min-h-14 flex items-center justify-start"
+      class="container min-h-14 flex items-center justify-between gap-2"
     >
-      <!-- Start: Logo -->
-      <div :class="{ 'hidden sm:block': showFullSearch }" class="flex-shrink-0">
-        <div v-if="showLogo">
-          <NuxtLink
-            to="/"
-            :aria-label="$t('header.home')"
-            dir="ltr"
-            class="inline-flex items-center gap-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
-          >
-            <img
-              aria-hidden="true"
-              :alt="$t('alt_logo')"
-              src="/logo.svg"
-              width="96"
-              height="96"
-              class="w-8 h-8 rounded-lg"
-            />
-            <span>npmx</span>
-          </NuxtLink>
-        </div>
-        <!-- Spacer when logo is hidden -->
-        <span v-else class="w-1" />
+      <!-- Mobile: Logo + search button (expands search, doesn't navigate) -->
+      <button
+        v-if="!isSearchExpanded"
+        type="button"
+        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
+        :aria-label="$t('nav.tap_to_search')"
+        @click="expandMobileSearch"
+      >
+        <img
+          aria-hidden="true"
+          :alt="$t('alt_logo')"
+          src="/logo.svg"
+          width="96"
+          height="96"
+          class="w-8 h-8 rounded-lg"
+        />
+        <span class="i-carbon:search w-4 h-4 text-fg-subtle" aria-hidden="true" />
+      </button>
+
+      <!-- Desktop: Logo (navigates home) -->
+      <div v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
+        <NuxtLink
+          to="/"
+          :aria-label="$t('header.home')"
+          dir="ltr"
+          class="inline-flex items-center gap-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
+        >
+          <img
+            aria-hidden="true"
+            :alt="$t('alt_logo')"
+            src="/logo.svg"
+            width="96"
+            height="96"
+            class="w-8 h-8 rounded-lg"
+          />
+          <span>npmx</span>
+        </NuxtLink>
       </div>
+      <!-- Spacer when logo is hidden on desktop -->
+      <span v-else class="hidden sm:block w-1" />
 
       <!-- Center: Search bar + nav items -->
-      <div class="flex-1 flex items-center justify-center md:gap-6 mx-2">
-        <!-- Search bar (shown on all pages except home) -->
+      <div
+        class="flex-1 flex items-center justify-center md:gap-6"
+        :class="{ 'hidden sm:flex': !isSearchExpanded }"
+      >
+        <!-- Search bar (hidden on mobile unless expanded) -->
         <SearchBox
-          :inputClass="showFullSearch ? '' : 'max-w[6rem]'"
-          @focus="showFullSearch = true"
-          @blur="showFullSearch = false"
+          ref="searchBoxRef"
+          :inputClass="isSearchExpanded ? 'w-full' : ''"
+          :class="{ 'max-w-md': !isSearchExpanded }"
+          @focus="handleSearchFocus"
+          @blur="handleSearchBlur"
         />
         <ul
-          :class="{ 'hidden sm:flex': showFullSearch }"
-          class="flex items-center gap-4 sm:gap-6 list-none m-0 p-0"
+          v-if="!isSearchExpanded"
+          :class="{ hidden: showFullSearch }"
+          class="hidden sm:flex items-center gap-4 sm:gap-6 list-none m-0 p-0"
         >
           <!-- Packages dropdown (when connected) -->
           <li v-if="isConnected && npmUser" class="flex items-center">
@@ -82,34 +138,46 @@ onKeyStroke(
         </ul>
       </div>
 
-      <!-- End: User status + GitHub -->
-      <div
-        :class="{ 'hidden sm:flex': showFullSearch }"
-        class="flex-1 flex flex-wrap items-center justify-end sm:gap-3 ms-auto sm:ms-0"
-      >
-        <NuxtLink
-          to="/about"
-          class="px-2 py-1.5 sm:hidden link-subtle font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
-        >
-          {{ $t('footer.about') }}
-        </NuxtLink>
-
+      <!-- End: Desktop nav items + Mobile menu button -->
+      <div class="flex-shrink-0 flex items-center gap-4 sm:gap-6">
+        <!-- Desktop: Settings link -->
         <NuxtLink
           to="/settings"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-2 px-2 py-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          class="hidden sm:inline-flex link-subtle font-mono text-sm items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
           aria-keyshortcuts=","
         >
           {{ $t('nav.settings') }}
           <kbd
-            class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
+            class="inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
             aria-hidden="true"
           >
             ,
           </kbd>
         </NuxtLink>
 
-        <HeaderAccountMenu />
+        <!-- Desktop: Account menu -->
+        <div class="hidden sm:block">
+          <HeaderAccountMenu />
+        </div>
+
+        <!-- Mobile: Menu button (always visible, toggles menu) -->
+        <button
+          type="button"
+          class="sm:hidden p-2 -m-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          :aria-label="showMobileMenu ? $t('common.close') : $t('nav.open_menu')"
+          :aria-expanded="showMobileMenu"
+          @click="showMobileMenu = !showMobileMenu"
+        >
+          <span
+            class="w-6 h-6 inline-block"
+            :class="showMobileMenu ? 'i-carbon:close' : 'i-carbon:menu'"
+            aria-hidden="true"
+          />
+        </button>
       </div>
     </nav>
+
+    <!-- Mobile menu -->
+    <MobileMenu v-model:open="showMobileMenu" />
   </header>
 </template>
