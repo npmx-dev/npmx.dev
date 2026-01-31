@@ -97,6 +97,11 @@ watch([() => filters.value.text, sortOption], ([filter, sort]) => {
 
 const filteredCount = computed(() => sortedPackages.value.length)
 
+// Total weekly downloads across displayed packages (updates with filter)
+const totalWeeklyDownloads = computed(() =>
+  sortedPackages.value.reduce((sum, pkg) => sum + (pkg.downloads?.weekly ?? 0), 0),
+)
+
 // Reset state when org changes
 watch(orgName, () => {
   clearAllFilters()
@@ -156,19 +161,30 @@ defineOgImageComponent('Default', {
           </p>
         </div>
 
-        <!-- Link to npmjs.com org page -->
-        <nav aria-label="External links" class="ms-auto">
-          <a
-            :href="`https://www.npmjs.com/org/${orgName}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-            :title="$t('common.view_on_npm')"
+        <!-- Link to npmjs.com org page + vanity downloads -->
+        <div class="ms-auto text-end">
+          <nav aria-label="External links">
+            <a
+              :href="`https://www.npmjs.com/org/${orgName}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              :title="$t('common.view_on_npm')"
+            >
+              <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
+              npm
+            </a>
+          </nav>
+          <p
+            class="text-fg-subtle text-xs mt-1 flex items-center gap-1.5 justify-end cursor-help"
+            :title="$t('common.vanity_downloads_hint', { count: filteredCount }, filteredCount)"
           >
-            <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
-            npm
-          </a>
-        </nav>
+            <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
+            <span class="font-mono"
+              >{{ formatNumber(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
+            >
+          </p>
+        </div>
       </div>
     </header>
 

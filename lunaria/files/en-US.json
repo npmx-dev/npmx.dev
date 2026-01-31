@@ -98,6 +98,7 @@
     "go_back_home": "Go back home",
     "view_on_npm": "view on npm",
     "per_week": "/ week",
+    "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
       "name": "name",
       "role": "role",
