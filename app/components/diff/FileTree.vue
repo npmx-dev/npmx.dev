@@ -153,7 +153,7 @@ function handleFileClick(node: DiffTreeNode) {
           />
           <span class="truncate">{{ node.name }}</span>
         </button>
-        <DiffFileTree
+        <FileTree
           v-if="isExpanded(node.path) && node.children"
           :files="files"
           :tree-nodes="node.children"
