@@ -53,9 +53,6 @@ defineOgImageComponent('Default', {
         <span class="pb-4">npmx</span>
       </h1>
 
-      <!-- Build info badge -->
-      <BuildEnvironment />
-
       <p
         class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 motion-safe:animate-slide-up motion-safe:animate-fill-both"
         style="animation-delay: 0.1s"
@@ -110,6 +107,9 @@ defineOgImageComponent('Default', {
           </div>
         </form>
       </search>
+
+      <!-- Build info badge -->
+      <BuildEnvironment class="mt-4 text-fg-muted" />
     </header>
 
     <!-- Popular packages -->

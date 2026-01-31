@@ -6,7 +6,7 @@
     }
   },
   "version": "Version",
-  "built_at": "Built {0}",
+  "built_at": "built {0}",
   "alt_logo": "npmx logo",
   "tagline": "a better browser for the npm registry",
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
