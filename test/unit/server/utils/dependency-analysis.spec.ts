@@ -8,7 +8,7 @@ vi.stubGlobal('$fetch', vi.fn())
 const { analyzeDependencyTree } = await import('../../../../server/utils/dependency-analysis')
 
 // Mock the dependency resolver
-vi.mock('../../server/utils/dependency-resolver', () => ({
+vi.mock('../../../../server/utils/dependency-resolver', () => ({
   resolveDependencyTree: vi.fn(),
 }))
 
