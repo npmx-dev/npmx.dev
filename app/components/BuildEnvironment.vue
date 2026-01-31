@@ -3,9 +3,8 @@ defineProps<{
   footer?: boolean
 }>()
 
-const { locale } = useI18n();
+const { locale } = useI18n()
 const buildInfo = useAppConfig().buildInfo
-
 </script>
 
 <template>
