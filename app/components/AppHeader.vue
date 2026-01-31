@@ -13,11 +13,6 @@ withDefaults(
 const { isConnected, npmUser } = useConnector()
 
 const router = useRouter()
-const route = useRoute()
-const buildInfo = useAppConfig().buildInfo
-
-const searchQuery = ref('')
-const isSearchFocused = ref(false)
 
 const showFullSearch = ref(false)
 
