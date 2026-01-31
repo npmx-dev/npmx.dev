@@ -3,7 +3,7 @@ const open = defineModel<boolean>('open', { default: false })
 
 const handleInput = ref('')
 
-const { user, logout } = await useAtproto()
+const { user, logout } = useAtproto()
 
 async function handleBlueskySignIn() {
   await navigateTo(

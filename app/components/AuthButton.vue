@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const showModal = ref(false)
-const { user } = await useAtproto()
+const { user } = useAtproto()
 </script>
 
 <template>
