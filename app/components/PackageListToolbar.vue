@@ -142,17 +142,11 @@ function getSortKeyLabelKey(key: SortKey): string {
 
       <div class="flex-1" />
 
-      <div class="flex flex-wrap items-center gap-3">
-        <!-- Column picker (table view only) -->
-        <ColumnPicker
-          v-if="viewMode === 'table'"
-          :columns="columns"
-          @toggle="emit('toggleColumn', $event)"
-          @reset="emit('resetColumns')"
-        />
-
+      <div
+        class="flex flex-wrap items-center gap-3 sm:justify-end justify-between w-full sm:w-auto"
+      >
         <!-- Sort controls -->
-        <div class="flex items-center gap-1 shrink-0">
+        <div class="flex items-center gap-1 shrink-0 order-1 sm:order-1">
           <!-- Sort key dropdown -->
           <div class="relative">
             <label for="sort-select" class="sr-only">{{ $t('filters.sort.label') }}</label>
@@ -205,8 +199,31 @@ function getSortKeyLabelKey(key: SortKey): string {
           </button>
         </div>
 
-        <!-- View mode toggle -->
-        <ViewModeToggle v-model="viewMode" />
+        <!-- View mode toggle - mobile (left side, row 2) -->
+        <div class="flex sm:hidden items-center gap-1 order-2">
+          <ViewModeToggle v-model="viewMode" />
+        </div>
+
+        <!-- Column picker - mobile (right side, row 2) -->
+        <ColumnPicker
+          v-if="viewMode === 'table'"
+          class="flex sm:hidden order-3"
+          :columns="columns"
+          @toggle="emit('toggleColumn', $event)"
+          @reset="emit('resetColumns')"
+        />
+
+        <!-- View mode toggle + Column picker - desktop (right side, row 1) -->
+        <div class="hidden sm:flex items-center gap-1 order-2">
+          <ViewModeToggle v-model="viewMode" />
+
+          <ColumnPicker
+            v-if="viewMode === 'table'"
+            :columns="columns"
+            @toggle="emit('toggleColumn', $event)"
+            @reset="emit('resetColumns')"
+          />
+        </div>
       </div>
     </div>
 

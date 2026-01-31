@@ -463,7 +463,7 @@ const config = computed(() => {
   return {
     theme: isDarkMode.value ? 'dark' : 'default',
     chart: {
-      height: isMobile.value ? 850 : 600,
+      height: isMobile.value ? 950 : 600,
       userOptions: {
         buttons: {
           pdf: false,
@@ -508,15 +508,17 @@ const config = computed(() => {
       grid: {
         stroke: colors.value.border,
         labels: {
+          fontSize: isMobile.value ? 24 : 16,
           axis: {
             yLabel: $t('package.downloads.y_axis_label', {
               granularity: $t(`package.downloads.granularity_${selectedGranularity.value}`),
             }),
             xLabel: packageName,
             yLabelOffsetX: 12,
-            fontSize: 24,
+            fontSize: isMobile.value ? 32 : 24,
           },
           xAxisLabels: {
+            show: !isMobile.value,
             values: chartData.value?.dates,
             showOnlyAtModulo: true,
             modulo: 12,
@@ -554,7 +556,7 @@ const config = computed(() => {
         },
       },
       zoom: {
-        maxWidth: 500,
+        maxWidth: isMobile.value ? 350 : 500,
         customFormat:
           displayedGranularity.value !== 'weekly'
             ? undefined

@@ -119,11 +119,12 @@
     "replacement": {
       "title": "You might not need this dependency.",
       "native": "This can be replaced with {replacement}, available since Node {nodeVersion}.",
-      "simple": "The community has flagged this package as redundant, with the advice: {replacement}.",
-      "documented": "The community has flagged this package as having more performant alternatives.",
+      "simple": "The {community} has flagged this package as redundant, with the advice: {replacement}.",
+      "documented": "The {community} has flagged this package as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
-      "mdn": "MDN"
+      "mdn": "MDN",
+      "community": "community"
     },
     "stats": {
       "license": "License",
@@ -190,14 +191,18 @@
       "other_versions": "Other versions",
       "more_tagged": "{count} more tagged",
       "all_covered": "All versions are covered by tags above",
-      "deprecated_title": "{version} (deprecated)"
+      "deprecated_title": "{version} (deprecated)",
+      "view_all": "View all {count} version | View all {count} versions"
     },
     "dependencies": {
       "title": "Dependencies ({count})",
       "list_label": "Package dependencies",
       "show_all": "show all {count} deps",
       "optional": "optional",
-      "view_vulnerabilities": "View vulnerabilities"
+      "view_vulnerabilities": "View vulnerabilities",
+      "outdated_major": "{count} major version behind (latest: {latest}) | {count} major versions behind (latest: {latest})",
+      "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
+      "outdated_patch": "Patch update available (latest: {latest})"
     },
     "peer_dependencies": {
       "title": "Peer Dependencies ({count})",
@@ -256,6 +261,7 @@
       "esm": "ES Modules supported",
       "cjs": "CommonJS supported",
       "no_esm": "No ES Modules support",
+      "types_label": "Types",
       "types_included": "Types included",
       "types_available": "Types available via {package}",
       "no_types": "No TypeScript types"

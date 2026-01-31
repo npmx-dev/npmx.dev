@@ -119,11 +119,12 @@
     "replacement": {
       "title": "Du brauchst diese Abhängigkeit vielleicht nicht.",
       "native": "Dies kann durch {replacement} ersetzt werden, verfügbar seit Node {nodeVersion}.",
-      "simple": "Die Community hat dieses Paket als überflüssig markiert und empfiehlt: {replacement}.",
-      "documented": "Die Community hat dieses Paket als eines mit leistungsstärkeren Alternativen markiert.",
+      "simple": "Die {community} hat dieses Paket als überflüssig markiert und empfiehlt: {replacement}.",
+      "documented": "Die {community} hat dieses Paket als eines mit leistungsstärkeren Alternativen markiert.",
       "none": "Dieses Paket wurde als nicht mehr nötig markiert, und seine Funktionen sind wahrscheinlich in allen Engines von Haus aus verfügbar.",
       "learn_more": "Mehr erfahren",
-      "mdn": "MDN"
+      "mdn": "MDN",
+      "community": "Community"
     },
     "stats": {
       "license": "Lizenz",

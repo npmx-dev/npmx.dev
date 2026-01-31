@@ -78,7 +78,7 @@ describe('parseJsDocLinks', () => {
     const result = parseJsDocLinks('{@link https://example.com}', emptyLookup)
     expect(result).toContain('href="https://example.com"')
     expect(result).toContain('target="_blank"')
-    expect(result).toContain('rel="noopener"')
+    expect(result).toContain('rel="noreferrer"')
   })
 
   it('should handle external URLs with labels', () => {
@@ -251,5 +251,15 @@ describe('renderMarkdown', () => {
     const result = await renderMarkdown(input, emptyLookup)
     expect(result).toContain('<code class="docs-inline-code">code</code>')
     expect(result).toContain('shiki')
+  })
+
+  it('should handle basic markdown links', async () => {
+    const result = await renderMarkdown(
+      'This [thing](https://example.com) is really important',
+      emptyLookup,
+    )
+    expect(result).toContain(
+      'This <a href="https://example.com" target="_blank" rel="noreferrer" class="docs-link">thing</a> is really important',
+    )
   })
 })

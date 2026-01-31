@@ -109,7 +109,14 @@ const visibleTagRows = computed(() => {
   const rows = isPackageDeprecated.value
     ? allTagRows.value
     : allTagRows.value.filter(row => !row.primaryVersion.deprecated)
-  return rows.slice(0, MAX_VISIBLE_TAGS)
+  const first = rows.slice(0, MAX_VISIBLE_TAGS)
+  const latestTagRow = rows.find(row => row.tag === 'latest')
+  // Ensure 'latest' tag is always included (at the end) if not already present
+  if (latestTagRow && !first.includes(latestTagRow)) {
+    first.pop()
+    first.push(latestTagRow)
+  }
+  return first
 })
 
 // Hidden tag rows (all other tags) - shown in "Other versions"
@@ -322,7 +329,10 @@ function getTagVersions(tag: string): VersionDisplay[] {
     <div class="space-y-0.5 min-w-0">
       <!-- Dist-tag rows (limited to MAX_VISIBLE_TAGS) -->
       <div v-for="row in visibleTagRows" :key="row.id">
-        <div class="flex items-center gap-2">
+        <div
+          class="flex items-center gap-2 pe-2"
+          :class="row.tag === 'latest' ? 'bg-bg-subtle rounded-lg' : ''"
+        >
           <!-- Expand button (only if there are more versions to show) -->
           <button
             v-if="getTagVersions(row.tag).length > 1 || !hasLoadedAll"
@@ -354,57 +364,59 @@ function getTagVersions(tag: string): VersionDisplay[] {
           <span v-else class="w-4" />
 
           <!-- Version info -->
-          <div class="flex-1 py-1.5 min-w-0">
-            <div class="flex items-center justify-between gap-2">
-              <NuxtLink
-                :to="versionRoute(row.primaryVersion.version)"
-                class="font-mono text-sm transition-colors duration-200 truncate inline-flex items-center gap-1"
-                :class="
-                  row.primaryVersion.deprecated
-                    ? 'text-red-400 hover:text-red-300'
-                    : 'text-fg-muted hover:text-fg'
-                "
-                :title="
-                  row.primaryVersion.deprecated
-                    ? $t('package.versions.deprecated_title', {
-                        version: row.primaryVersion.version,
-                      })
-                    : row.primaryVersion.version
-                "
-              >
+          <div class="flex-1 py-1.5 min-w-0 flex gap-2 justify-between items-center">
+            <div>
+              <div>
+                <NuxtLink
+                  :to="versionRoute(row.primaryVersion.version)"
+                  class="font-mono text-sm transition-colors duration-200 truncate inline-flex items-center gap-1"
+                  :class="
+                    row.primaryVersion.deprecated
+                      ? 'text-red-400 hover:text-red-300'
+                      : 'text-fg-muted hover:text-fg'
+                  "
+                  :title="
+                    row.primaryVersion.deprecated
+                      ? $t('package.versions.deprecated_title', {
+                          version: row.primaryVersion.version,
+                        })
+                      : row.primaryVersion.version
+                  "
+                >
+                  <span
+                    v-if="row.primaryVersion.deprecated"
+                    class="i-carbon-warning-hex w-3.5 h-3.5 shrink-0"
+                    aria-hidden="true"
+                  />
+                  {{ row.primaryVersion.version }}
+                </NuxtLink>
+              </div>
+              <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
                 <span
-                  v-if="row.primaryVersion.deprecated"
-                  class="i-carbon-warning-hex w-3.5 h-3.5 shrink-0"
-                  aria-hidden="true"
-                />
-                {{ row.primaryVersion.version }}
-              </NuxtLink>
-              <div class="flex items-center gap-2 shrink-0">
-                <DateTime
-                  v-if="row.primaryVersion.time"
-                  :datetime="row.primaryVersion.time"
-                  year="numeric"
-                  month="short"
-                  day="numeric"
-                  class="text-xs text-fg-subtle"
-                />
-                <ProvenanceBadge
-                  v-if="row.primaryVersion.hasProvenance"
-                  :package-name="packageName"
-                  :version="row.primaryVersion.version"
-                  compact
-                />
+                  v-for="tag in row.tags"
+                  :key="tag"
+                  class="text-[9px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[150px]"
+                  :title="tag"
+                >
+                  {{ tag }}
+                </span>
               </div>
             </div>
-            <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
-              <span
-                v-for="tag in row.tags"
-                :key="tag"
-                class="text-[9px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[150px]"
-                :title="tag"
-              >
-                {{ tag }}
-              </span>
+            <div class="flex items-center gap-2 shrink-0">
+              <DateTime
+                v-if="row.primaryVersion.time"
+                :datetime="row.primaryVersion.time"
+                year="numeric"
+                month="short"
+                day="numeric"
+                class="text-xs text-fg-subtle"
+              />
+              <ProvenanceBadge
+                v-if="row.primaryVersion.hasProvenance"
+                :package-name="packageName"
+                :version="row.primaryVersion.version"
+                compact
+              />
             </div>
           </div>
         </div>
@@ -412,7 +424,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
         <!-- Expanded versions -->
         <div
           v-if="expandedTags.has(row.tag) && getTagVersions(row.tag).length > 1"
-          class="ms-4 ps-2 border-is border-border space-y-0.5"
+          class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
         >
           <div v-for="v in getTagVersions(row.tag).slice(1)" :key="v.version" class="py-1">
             <div class="flex items-center justify-between gap-2">
@@ -542,7 +554,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 />
                 {{ row.primaryVersion.version }}
               </NuxtLink>
-              <div class="flex items-center gap-2 shrink-0">
+              <div class="flex items-center gap-2 shrink-0 pe-2">
                 <DateTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
@@ -618,7 +630,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       {{ group.versions[0]?.version }}
                     </NuxtLink>
                   </div>
-                  <div class="flex items-center gap-2 shrink-0">
+                  <div class="flex items-center gap-2 shrink-0 pe-2">
                     <DateTime
                       v-if="group.versions[0]?.time"
                       :datetime="group.versions[0]?.time"

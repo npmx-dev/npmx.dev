@@ -75,7 +75,7 @@ export function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): strin
 
     // External URL
     if (target.startsWith('http://') || target.startsWith('https://')) {
-      return `<a href="${target}" target="_blank" rel="noopener" class="docs-link">${displayText}</a>`
+      return `<a href="${target}" target="_blank" rel="noreferrer" class="docs-link">${displayText}</a>`
     }
 
     // Internal symbol reference
@@ -115,6 +115,12 @@ export async function renderMarkdown(text: string, symbolLookup: SymbolLookup): 
 
   // Now process the rest (JSDoc links, HTML escaping, etc.)
   result = parseJsDocLinks(result, symbolLookup)
+
+  // Markdown links - i.e. [text](url)
+  result = result.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noreferrer" class="docs-link">$1</a>',
+  )
 
   // Handle inline code (single backticks) - won't interfere with fenced blocks
   result = result

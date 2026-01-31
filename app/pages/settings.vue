@@ -5,10 +5,6 @@ const { locale, locales, setLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 
-const availableLocales = computed(() =>
-  locales.value.map(l => (typeof l === 'string' ? { code: l, name: l } : l)),
-)
-
 // Escape to go back (but not when focused on form elements)
 onKeyStroke('Escape', e => {
   const target = e.target as HTMLElement
@@ -212,7 +208,7 @@ defineOgImageComponent('Default', {
                   class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 cursor-pointer"
                   @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
                 >
-                  <option v-for="loc in availableLocales" :key="loc.code" :value="loc.code">
+                  <option v-for="loc in locales" :key="loc.code" :value="loc.code" :lang="loc.code">
                     {{ loc.name }}
                   </option>
                 </select>
