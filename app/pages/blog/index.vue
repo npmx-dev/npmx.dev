@@ -29,7 +29,7 @@ useSeoMeta({
 <template>
   <main class="container py-8 sm:py-12 w-full">
     <header class="mb-8 pb-8 border-b border-border flex place-content-center text-3xl">
-      <div class="">blog...</div>
+      <h1 class="">blog...</h1>
     </header>
 
     <article v-if="posts && posts.length > 0" class="mx-30 space-y-4">
