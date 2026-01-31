@@ -5,8 +5,8 @@ import {
   getRunCommandParts,
   isBinaryOnlyPackage,
   isCreatePackage,
-} from '../../app/utils/run-command'
-import type { JsrPackageInfo } from '../../shared/types/jsr'
+} from '../../../../app/utils/run-command'
+import type { JsrPackageInfo } from '../../../../shared/types/jsr'
 
 describe('executable detection and run commands', () => {
   const jsrNotAvailable: JsrPackageInfo = { exists: false }
