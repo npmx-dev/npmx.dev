@@ -93,7 +93,7 @@ watch(open, isOpen => {
                 <div>
                   <p class="font-mono text-sm text-fg">{{ $t('connector.modal.connected') }}</p>
                   <p v-if="npmUser" class="font-mono text-xs text-fg-muted">
-                    {{ $t('connector.modal.logged_in_as', { user: npmUser }) }}
+                    {{ $t('connector.modal.connected_as_user', { user: npmUser }) }}
                   </p>
                 </div>
               </div>
