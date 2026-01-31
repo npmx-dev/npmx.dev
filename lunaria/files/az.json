@@ -356,7 +356,6 @@
     },
     "modal": {
       "title": "Lokal Konnektor",
-      "close_modal": "Pəncərəni bağla",
       "connected": "Qoşulub",
       "connected_hint": "İndi veb interfeysdən paketləri və təşkilatları idarə edə bilərsiniz.",
       "disconnect": "Ayrıl",
@@ -503,7 +502,6 @@
   "claim": {
     "modal": {
       "title": "Paket Adını Tut",
-      "close_modal": "Pəncərəni bağla",
       "success": "Paket tutuldu!",
       "success_detail": "{name}{'@'}0.0.0 npm-ə dərc edildi.",
       "success_hint": "İndi npm publish istifadə edərək bu paketə yeni versiyalar dərc edə bilərsiniz.",

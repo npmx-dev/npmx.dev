@@ -337,7 +337,6 @@
     },
     "modal": {
       "title": "الموصل المحلي",
-      "close_modal": "إغلاق النافذة",
       "connected": "متصل",
       "connected_hint": "يمكنك الآن إدارة الحزم والمؤسسات من واجهة الويب.",
       "disconnect": "قطع الاتصال",
@@ -484,7 +483,6 @@
   "claim": {
     "modal": {
       "title": "حجز اسم حزمة",
-      "close_modal": "إغلاق النافذة",
       "success": "تم حجز الحزمة!",
       "success_detail": "تم نشر {name}{'@'}0.0.0 على npm.",
       "success_hint": "يمكنك الآن نشر إصدارات جديدة لهذه الحزمة باستخدام npm publish.",

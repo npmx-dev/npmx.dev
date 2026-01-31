@@ -342,7 +342,6 @@
     },
     "modal": {
       "title": "ローカルコネクタ",
-      "close_modal": "モーダルを閉じる",
       "connected": "接続済み",
       "connected_hint": "Web UIからパッケージとOrganizationを管理できるようになりました。",
       "disconnect": "切断",
@@ -489,7 +488,6 @@
   "claim": {
     "modal": {
       "title": "パッケージ名を取得",
-      "close_modal": "モーダルを閉じる",
       "success": "パッケージ名を取得しました！",
       "success_detail": "{name}{'@'}0.0.0 がnpmに公開されました。",
       "success_hint": "npm publish を使用して、このパッケージの新しいバージョンを公開できるようになりました。",

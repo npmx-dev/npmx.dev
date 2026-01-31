@@ -342,7 +342,6 @@
     },
     "modal": {
       "title": "Connessione Locale",
-      "close_modal": "Chiudi",
       "connected": "Connesso",
       "connected_hint": "Puoi ora gestire i pacchetti e le organizzazioni dalla pagina web.",
       "disconnect": "Disconnetti",
@@ -489,7 +488,6 @@
   "claim": {
     "modal": {
       "title": "Ottieni il nome del pacchetto",
-      "close_modal": "Chiudi",
       "success": "Pacchetto ottenuto!",
       "success_detail": "{name}{'@'}0.0.0 è stato pubblicato su npm.",
       "success_hint": "Ora puoi pubblicare nuove versioni di questo pacchetto usando npm publish.",

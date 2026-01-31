@@ -342,7 +342,6 @@
     },
     "modal": {
       "title": "Connecteur local",
-      "close_modal": "Fermer la fenêtre",
       "connected": "Connecté·e",
       "connected_hint": "Vous pouvez maintenant gérer les paquets et les organisations depuis l'interface web.",
       "disconnect": "Se déconnecter",
@@ -489,7 +488,6 @@
   "claim": {
     "modal": {
       "title": "Réserver un nom de paquet",
-      "close_modal": "Fermer la fenêtre",
       "success": "Paquet réservé !",
       "success_detail": "{name}{'@'}0.0.0 a été publié sur npm.",
       "success_hint": "Vous pouvez maintenant publier de nouvelles versions de ce paquet avec npm publish.",

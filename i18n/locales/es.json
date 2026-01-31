@@ -340,7 +340,6 @@
     },
     "modal": {
       "title": "Conector Local",
-      "close_modal": "Cerrar modal",
       "connected": "Conectado",
       "connected_hint": "Ahora puedes gestionar paquetes y organizaciones desde la interfaz web.",
       "disconnect": "Desconectar",
@@ -487,7 +486,6 @@
   "claim": {
     "modal": {
       "title": "Reclamar Nombre de Paquete",
-      "close_modal": "Cerrar modal",
       "success": "¡Paquete reclamado!",
       "success_detail": "{name}{'@'}0.0.0 ha sido publicado en npm.",
       "success_hint": "Ahora puedes publicar nuevas versiones de este paquete usando npm publish.",
