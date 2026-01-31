@@ -362,9 +362,7 @@
     },
     "modal": {
       "title": "Lokalny konektor",
-      "close_modal": "Zamknij okno",
       "connected": "Połączono",
-      "logged_in_as": "Zalogowano jako {'@'}{user}",
       "connected_hint": "Możesz teraz zarządzać pakietami i organizacjami z poziomu interfejsu WWW.",
       "disconnect": "Rozłącz",
       "run_hint": "Uruchom konektor na swoim komputerze, aby włączyć funkcje administracyjne.",
@@ -510,7 +508,6 @@
   "claim": {
     "modal": {
       "title": "Zajmij nazwę pakietu",
-      "close_modal": "Zamknij okno",
       "success": "Pakiet zajęty!",
       "success_detail": "Opublikowano {name}{'@'}0.0.0 na npm.",
       "success_hint": "Możesz teraz publikować nowe wersje tego pakietu używając npm publish.",

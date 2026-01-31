@@ -362,7 +362,6 @@
     },
     "modal": {
       "title": "Lokaler Connector",
-      "close_modal": "Modal schließen",
       "connected": "Verbunden",
       "connected_as_user": "Angemeldet als ~{user}",
       "connected_hint": "Du kannst jetzt Pakete und Organisationen über die Web-Oberfläche verwalten.",
@@ -510,7 +509,6 @@
   "claim": {
     "modal": {
       "title": "Paketnamen beanspruchen",
-      "close_modal": "Modal schließen",
       "success": "Paket beansprucht!",
       "success_detail": "{name}{'@'}0.0.0 wurde auf npm veröffentlicht.",
       "success_hint": "Du kannst jetzt neue Versionen dieses Pakets mit npm publish veröffentlichen.",
