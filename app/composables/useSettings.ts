@@ -55,7 +55,6 @@ export function useSettings() {
 /**
  * Composable for accessing just the relative dates setting.
  * Useful for components that only need to read this specific setting.
- * @public
  */
 export function useRelativeDates() {
   const { settings } = useSettings()

@@ -247,7 +247,6 @@ function resolveImageUrl(url: string, packageName: string, repoInfo?: Repository
   return resolved
 }
 
-/** @public */
 export async function renderReadmeHtml(
   content: string,
   packageName: string,

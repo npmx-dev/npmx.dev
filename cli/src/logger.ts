@@ -54,14 +54,6 @@ export function logInfo(message: string): void {
 export const logDebug = createDebug('npmx-connector')
 
 /**
- * Log a message (generic)
- * @public
- */
-export function logMessage(message: string): void {
-  p.log.message(message)
-}
-
-/**
  * Show the connection token in a nice box
  */
 export function showToken(token: string, port: number, frontendUrl: string): void {
@@ -75,20 +67,4 @@ export function showToken(token: string, port: number, frontendUrl: string): voi
     ].join('\n'),
     'Click to connect',
   )
-}
-
-/**
- * Show outro message
- * @public
- */
-export function showOutro(message: string): void {
-  p.outro(message)
-}
-
-/**
- * Create a spinner for async operations
- * @public
- */
-export function createSpinner() {
-  return p.spinner()
 }

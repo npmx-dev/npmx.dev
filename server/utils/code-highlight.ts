@@ -81,7 +81,6 @@ const FILENAME_MAP: Record<string, string> = {
 
 /**
  * Determine the language for syntax highlighting based on file path
- * @public
  */
 export function getLanguageFromPath(filePath: string): string {
   const filename = filePath.split('/').pop() || ''
@@ -263,7 +262,6 @@ export interface HighlightOptions {
 /**
  * Highlight code using Shiki with line-by-line output for line highlighting.
  * Each line is wrapped in a span.line for individual line highlighting.
- * @public
  */
 export async function highlightCode(
   code: string,

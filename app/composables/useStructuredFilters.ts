@@ -111,7 +111,6 @@ function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolea
 /**
  * Composable for structured filtering and sorting of package lists
  *
- * @public
  */
 export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   const { packages, initialFilters, initialSort } = options
