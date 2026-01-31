@@ -744,7 +744,7 @@
     "connect_npm_cli": "Connect to npm CLI",
     "connect_atmosphere": "Connect to Atmosphere",
     "connecting": "Connecting...",
-    "ops": "ops",
+    "ops": "{count} op | {count} ops",
     "disconnect": "Disconnect"
   },
   "auth": {
