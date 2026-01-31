@@ -16,6 +16,9 @@ export interface AppSettings {
   accentColorId: AccentColorId | null
   /** Hide platform-specific packages (e.g., @scope/pkg-linux-x64) from search results */
   hidePlatformPackages: boolean
+  sidebar: {
+    collapsed: string[]
+  }
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -23,6 +26,9 @@ const DEFAULT_SETTINGS: AppSettings = {
   includeTypesInInstall: true,
   accentColorId: null,
   hidePlatformPackages: true,
+  sidebar: {
+    collapsed: [],
+  },
 }
 
 const STORAGE_KEY = 'npmx-settings'

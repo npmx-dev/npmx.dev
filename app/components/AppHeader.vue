@@ -10,20 +10,22 @@ withDefaults(
 
 const { isConnected, npmUser } = useConnector()
 
-const router = useRouter()
-
 const showFullSearch = shallowRef(false)
 
-onKeyStroke(',', e => {
-  // Don't trigger if user is typing in an input
-  const target = e.target as HTMLElement
-  if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
-    return
-  }
+onKeyStroke(
+  ',',
+  e => {
+    // Don't trigger if user is typing in an input
+    const target = e.target as HTMLElement
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+      return
+    }
 
-  e.preventDefault()
-  router.push('/settings')
-})
+    e.preventDefault()
+    navigateTo('/settings')
+  },
+  { dedupe: true },
+)
 </script>
 
 <template>

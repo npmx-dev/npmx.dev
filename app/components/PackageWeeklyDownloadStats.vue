@@ -191,20 +191,8 @@ const config = computed(() => {
 
 <template>
   <div class="space-y-8">
-    <section id="downloads" class="scroll-mt-20">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="group text-xs text-fg-subtle uppercase tracking-wider">
-          <a
-            href="#downloads"
-            class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-          >
-            {{ $t('package.downloads.title') }}
-            <span
-              class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-              aria-hidden="true"
-            />
-          </a>
-        </h2>
+    <CollapsibleSection id="downloads" :title="$t('package.downloads.title')">
+      <template #actions>
         <button
           type="button"
           @click="showModal = true"
@@ -214,7 +202,7 @@ const config = computed(() => {
           <span class="i-carbon:data-analytics w-4 h-4" aria-hidden="true" />
           <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
         </button>
-      </div>
+      </template>
 
       <div class="w-full overflow-hidden">
         <ClientOnly>
@@ -251,7 +239,7 @@ const config = computed(() => {
           </template>
         </ClientOnly>
       </div>
-    </section>
+    </CollapsibleSection>
   </div>
 
   <ChartModal v-model:open="showModal">

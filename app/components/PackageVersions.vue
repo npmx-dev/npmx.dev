@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { PackumentVersion, PackageVersionInfo } from '#shared/types'
-import type { RouteLocationRaw } from 'vue-router'
+import type { PackageVersionInfo, PackumentVersion } from '#shared/types'
 import { compare } from 'semver'
+import type { RouteLocationRaw } from 'vue-router'
+import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
 import {
   buildVersionToTagsMap,
   filterExcludedTags,
@@ -9,9 +10,7 @@ import {
   getVersionGroupKey,
   getVersionGroupLabel,
   isSameVersionGroup,
-  parseVersion,
 } from '~/utils/versions'
-import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
 
 const props = defineProps<{
   packageName: string
@@ -312,20 +311,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
 </script>
 
 <template>
-  <section id="versions" v-if="allTagRows.length > 0" class="overflow-hidden scroll-mt-20">
-    <h2 id="versions-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-3">
-      <a
-        href="#versions"
-        class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-      >
-        {{ $t('package.versions.title') }}
-        <span
-          class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-          aria-hidden="true"
-        />
-      </a>
-    </h2>
-
+  <CollapsibleSection
+    v-if="allTagRows.length > 0"
+    :title="$t('package.versions.title')"
+    id="versions"
+  >
     <div class="space-y-0.5 min-w-0">
       <!-- Dist-tag rows (limited to MAX_VISIBLE_TAGS) -->
       <div v-for="row in visibleTagRows" :key="row.id">
@@ -344,6 +334,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 ? $t('package.versions.collapse', { tag: row.tag })
                 : $t('package.versions.expand', { tag: row.tag })
             "
+            data-testid="tag-expand-button"
             @click="expandTagRow(row.tag)"
           >
             <span
@@ -593,6 +584,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                           ? $t('package.versions.collapse_major', { major: group.label })
                           : $t('package.versions.expand_major', { major: group.label })
                       "
+                      data-testid="major-group-expand-button"
                       @click="toggleMajorGroup(group.groupKey)"
                     >
                       <span
@@ -786,5 +778,5 @@ function getTagVersions(tag: string): VersionDisplay[] {
         </div>
       </div>
     </div>
-  </section>
+  </CollapsibleSection>
 </template>
