@@ -141,7 +141,7 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
       filteredVersions[v] = {
         ...slimVersion,
         installScripts: installScripts ?? undefined,
-      } as PackumentVersion
+      } satisfies PackumentVersion
     }
   }
 
