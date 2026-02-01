@@ -153,10 +153,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
               class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
               :title="$t('package.get_started.view_types', { package: typesPackageName })"
             >
-              <span
-                class="i-carbon:arrow-right rtl-flip w-3 h-3 inline-block align-middle"
-                aria-hidden="true"
-              />
+              <span class="i-carbon:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />
               <span class="sr-only">View {{ typesPackageName }}</span>
             </NuxtLink>
           </div>

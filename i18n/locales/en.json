@@ -298,7 +298,8 @@
       "no_types": "No TypeScript types"
     },
     "license": {
-      "view_spdx": "View license text on SPDX"
+      "view_spdx": "View license text on SPDX",
+      "none": "None"
     },
     "vulnerabilities": {
       "no_description": "No description available",

@@ -21,6 +21,9 @@ export default defineConfig({
   presets: [
     presetWind4(),
     presetIcons({
+      extraProperties: {
+        display: 'inline-block',
+      },
       warn: true,
       scale: 1.2,
       collections: {

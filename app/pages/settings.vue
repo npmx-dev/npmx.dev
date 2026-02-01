@@ -131,7 +131,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <div class="space-y-2">
               <SettingsToggle
                 :label="$t('settings.hide_platform_packages')"
-                :description="$t('settings.hide_platform_packages')"
+                :description="$t('settings.hide_platform_packages_description')"
                 v-model="settings.hidePlatformPackages"
               />
             </div>

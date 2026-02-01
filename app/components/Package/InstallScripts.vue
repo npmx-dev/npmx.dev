@@ -91,7 +91,7 @@ const isExpanded = shallowRef(false)
               :title="getOutdatedTooltip(outdatedNpxDeps[dep], $t)"
               aria-hidden="true"
             >
-              <span class="i-carbon:warning-alt w-3 h-3 block" />
+              <span class="i-carbon:warning-alt w-3 h-3" />
             </span>
             <span
               class="font-mono text-xs text-end truncate"
