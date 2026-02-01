@@ -1,8 +1,11 @@
-<!-- simple component only taking slot -->
+<script setup lang="ts">
+defineProps<{
+  html: string
+}>()
+</script>
+
 <template>
-  <article class="readme prose prose-invert max-w-[70ch]">
-    <slot />
-  </article>
+  <article class="readme prose prose-invert max-w-[70ch]" v-html="html" />
 </template>
 
 <style scoped>

@@ -19,7 +19,7 @@ function hide() {
 </script>
 
 <template>
-  <BaseTooltip
+  <TooltipBase
     :text
     :isVisible
     :position
@@ -30,5 +30,5 @@ function hide() {
     @focusout="hide"
     :aria-describedby="isVisible ? tooltipId : undefined"
     ><slot
-  /></BaseTooltip>
+  /></TooltipBase>
 </template>

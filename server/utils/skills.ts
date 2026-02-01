@@ -88,16 +88,14 @@ export function findSkillDirs(tree: PackageFileTree[]): SkillDirInfo[] {
     .map(child => ({ name: child.name, children: child.children || [] }))
 }
 
+const countFilesRecursive = (nodes: PackageFileTree[]): number =>
+  nodes.reduce((acc, n) => acc + (n.type === 'file' ? 1 : countFilesRecursive(n.children || [])), 0)
+
 /**
  * Count files in skill subdirectories (scripts, references, assets).
  */
 export function countSkillFiles(children: PackageFileTree[]): SkillFileCounts | undefined {
   const counts: SkillFileCounts = {}
-  const countFilesRecursive = (nodes: PackageFileTree[]): number =>
-    nodes.reduce(
-      (acc, n) => acc + (n.type === 'file' ? 1 : countFilesRecursive(n.children || [])),
-      0,
-    )
 
   for (const child of children) {
     if (child.type !== 'directory') continue

@@ -27,21 +27,20 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'OgImage/Package.vue': 'OG Image component - server-rendered image, not interactive UI',
 
   // Client-only components with complex dependencies
-  'AuthButton.client.vue':
-    'Client component with AuthModal dependency - AuthButton.server.vue tested',
-  'AuthModal.client.vue': 'Complex auth modal with navigation - requires full app context',
+  'Header/AuthModal.client.vue': 'Complex auth modal with navigation - requires full app context',
 
   // Complex components requiring full app context or specific runtime conditions
-  'HeaderOrgsDropdown.vue': 'Requires connector context and API calls',
-  'HeaderPackagesDropdown.vue': 'Requires connector context and API calls',
-  'MobileMenu.vue': 'Requires Teleport and full navigation context',
+  'Header/OrgsDropdown.vue': 'Requires connector context and API calls',
+  'Header/PackagesDropdown.vue': 'Requires connector context and API calls',
+  'Header/MobileMenu.vue': 'Requires Teleport and full navigation context',
   'Modal.client.vue':
     'Base modal component - tested via specific modals like ChartModal, ConnectorModal',
-  'PackageSkillsModal.vue': 'Complex modal with tabs - requires modal context and state',
+  'Package/SkillsModal.vue': 'Complex modal with tabs - requires modal context and state',
   'ScrollToTop.vue': 'Requires scroll position and CSS scroll-state queries',
-  'TranslationHelper.vue': 'i18n helper component - requires specific locale status data',
-  'PackageWeeklyDownloadStats.vue':
+  'Settings/TranslationHelper.vue': 'i18n helper component - requires specific locale status data',
+  'Package/WeeklyDownloadStats.vue':
     'Uses vue-data-ui VueUiSparkline - has DOM measurement issues in test environment',
+  'UserCombobox.vue': 'Unused component - intended for future admin features',
 }
 
 /**
@@ -65,16 +64,49 @@ function getVueFiles(dir: string, baseDir: string = dir): string[] {
 }
 
 /**
+ * Parse .nuxt/components.d.ts to get the mapping from component names to file paths.
+ * This uses Nuxt's actual component resolution, so we don't have to guess the naming convention.
+ *
+ * Returns a Map of component name -> array of file paths (relative to app/components/)
+ */
+function parseComponentsDeclaration(dtsPath: string): Map<string, string[]> {
+  const content = fs.readFileSync(dtsPath, 'utf-8')
+  const componentMap = new Map<string, string[]>()
+
+  // Match lines like:
+  // export const ComponentName: typeof import("../app/components/Path/File.vue").default
+  const exportRegex =
+    /export const (\w+): typeof import\("\.\.\/app\/components\/([^"]+\.vue)"\)\.default/g
+
+  let match
+  while ((match = exportRegex.exec(content)) !== null) {
+    const componentName = match[1]!
+    const filePath = match[2]!
+
+    const existing = componentMap.get(componentName) || []
+    if (!existing.includes(filePath)) {
+      existing.push(filePath)
+    }
+    componentMap.set(componentName, existing)
+  }
+
+  return componentMap
+}
+
+/**
  * Extract tested component names from the test file.
  * Handles both #components imports and direct ~/components/ imports.
  */
-function getTestedComponents(testFileContent: string): Set<string> {
+function getTestedComponents(
+  testFileContent: string,
+  componentMap: Map<string, string[]>,
+): Set<string> {
   const tested = new Set<string>()
 
   // Match direct imports like:
   // import ComponentName from '~/components/ComponentName.vue'
   // import ComponentName from '~/components/subdir/ComponentName.vue'
-  const directImportRegex = /import\s+\w+\s+from\s+['"]~\/components\/(.+\.vue)['"]/g
+  const directImportRegex = /import\s+\w+\s+from\s+['"]~\/components\/([^"']+\.vue)['"]/g
   let match
 
   while ((match = directImportRegex.exec(testFileContent)) !== null) {
@@ -93,8 +125,8 @@ function getTestedComponents(testFileContent: string): Set<string> {
       .filter(name => name.length > 0)
 
     for (const name of componentNames) {
-      // Map #components name to file path(s)
-      const filePaths = mapComponentNameToFiles(name)
+      // Look up the file paths from Nuxt's component map
+      const filePaths = componentMap.get(name) || []
       for (const filePath of filePaths) {
         tested.add(filePath)
       }
@@ -104,37 +136,21 @@ function getTestedComponents(testFileContent: string): Set<string> {
   return tested
 }
 
-/**
- * Map a #components export name to the actual file path(s).
- * Handles various naming conventions.
- *
- * Returns an array because importing from #components can cover multiple files:
- * - `HeaderAccountMenu` from #components -> tests HeaderAccountMenu.client.vue
- *   (Nuxt auto-resolves to client variant when both .server and .client exist)
- */
-function mapComponentNameToFiles(name: string): string[] {
-  // Handle Compare* prefix -> compare/ subdirectory
-  if (name.startsWith('Compare')) {
-    const baseName = name.slice('Compare'.length)
-    return [`compare/${baseName}.vue`]
-  }
-
-  // Regular component - could be .vue or .client.vue
-  // When importing from #components, Nuxt resolves to the client variant if it exists
-  return [`${name}.vue`, `${name}.client.vue`]
-}
-
 describe('a11y component test coverage', () => {
   const componentsDir = fileURLToPath(new URL('../../app/components', import.meta.url))
+  const componentsDtsPath = fileURLToPath(new URL('../../.nuxt/components.d.ts', import.meta.url))
   const testFilePath = fileURLToPath(new URL('../nuxt/a11y.spec.ts', import.meta.url))
 
   it('should have accessibility tests for all components (or be explicitly skipped)', () => {
     // Get all Vue components
     const allComponents = getVueFiles(componentsDir)
 
+    // Parse Nuxt's component declarations to get name -> path mapping
+    const componentMap = parseComponentsDeclaration(componentsDtsPath)
+
     // Get components that are tested
     const testFileContent = fs.readFileSync(testFilePath, 'utf-8')
-    const testedComponents = getTestedComponents(testFileContent)
+    const testedComponents = getTestedComponents(testFileContent, componentMap)
 
     // Find components that are neither tested nor skipped
     const missingTests = allComponents.filter(
@@ -157,8 +173,9 @@ describe('a11y component test coverage', () => {
   })
 
   it('should not skip components that are actually tested', () => {
+    const componentMap = parseComponentsDeclaration(componentsDtsPath)
     const testFileContent = fs.readFileSync(testFilePath, 'utf-8')
-    const testedComponents = getTestedComponents(testFileContent)
+    const testedComponents = getTestedComponents(testFileContent, componentMap)
 
     const unnecessarySkips = Object.keys(SKIPPED_COMPONENTS).filter(component =>
       testedComponents.has(component),

@@ -55,15 +55,9 @@ afterEach(() => {
 // Import components from #components where possible
 // For server/client variants, we need to import directly to test the specific variant
 import {
-  AccentColorPicker,
-  AnnounceTooltip,
   AppFooter,
   AppHeader,
-  AppTooltip,
-  BaseTooltip,
   BuildEnvironment,
-  ChartModal,
-  ClaimPackageModal,
   CodeDirectoryListing,
   CodeFileTree,
   CodeMobileTreeDrawer,
@@ -75,20 +69,19 @@ import {
   CompareFacetSelector,
   CompareComparisonGrid,
   ComparePackageSelector,
-  ConnectorModal,
   DateTime,
   DependencyPathPopup,
-  ExecuteCommandTerminal,
   FilterChips,
   FilterPanel,
   HeaderAccountMenu,
-  InstallCommandTerminal,
-  JsrBadge,
   LicenseDisplay,
   LoadingSpinner,
   MarkdownText,
-  OperationsQueue,
+  PackageChartModal,
+  PackageClaimPackageModal,
+  HeaderConnectorModal,
   OrgMembersPanel,
+  OrgOperationsQueue,
   OrgTeamsPanel,
   PackageAccessControls,
   PackageCard,
@@ -113,19 +106,23 @@ import {
   PaginationControls,
   ProvenanceBadge,
   Readme,
-  SearchBox,
+  SettingsAccentColorPicker,
+  SettingsToggle,
+  TerminalExecute,
+  TerminalInstall,
+  TooltipAnnounce,
+  TooltipApp,
+  TooltipBase,
+  HeaderSearchBox,
   SearchSuggestionCard,
-  Toggle,
-  UserCombobox,
   VersionSelector,
   ViewModeToggle,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
 // The #components import automatically provides the client variant
-import AuthButtonServer from '~/components/AuthButton.server.vue'
-import HeaderAccountMenuServer from '~/components/HeaderAccountMenu.server.vue'
-import ToggleServer from '~/components/Toggle.server.vue'
+import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
+import ToggleServer from '~/components/Settings/Toggle.server.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -213,9 +210,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('AppTooltip', () => {
+  describe('TooltipApp', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(AppTooltip, {
+      const component = await mountSuspended(TooltipApp, {
         props: { text: 'Tooltip content' },
         slots: { default: '<button>Trigger</button>' },
       })
@@ -224,9 +221,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('AnnounceTooltip', () => {
+  describe('TooltipAnnounce', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(AnnounceTooltip, {
+      const component = await mountSuspended(TooltipAnnounce, {
         props: { text: 'Tooltip content', isVisible: true },
         slots: { default: '<button>Trigger</button>' },
       })
@@ -245,24 +242,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with custom text', async () => {
       const component = await mountSuspended(LoadingSpinner, {
         props: { text: 'Fetching data...' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('JsrBadge', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(JsrBadge, {
-        props: { url: 'https://jsr.io/@std/fs' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations in compact mode', async () => {
-      const component = await mountSuspended(JsrBadge, {
-        props: { url: 'https://jsr.io/@std/fs', compact: true },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -382,9 +361,9 @@ describe('component accessibility audits', () => {
   // component has issues in the test environment (requires DOM measurements that aren't
   // available during SSR-like test mounting).
 
-  describe('ChartModal', () => {
+  describe('PackageChartModal', () => {
     it('should have no accessibility violations when closed', async () => {
-      const component = await mountSuspended(ChartModal, {
+      const component = await mountSuspended(PackageChartModal, {
         props: { open: false },
         slots: { title: 'Downloads', default: '<div>Chart content</div>' },
       })
@@ -722,34 +701,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('UserCombobox', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(UserCombobox, {
-        props: {
-          suggestions: ['user1', 'user2', 'user3'],
-          label: 'Select a user',
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations when disabled', async () => {
-      const component = await mountSuspended(UserCombobox, {
-        props: {
-          suggestions: ['user1', 'user2'],
-          disabled: true,
-          label: 'Select a user',
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('ConnectorModal', () => {
+  describe('HeaderConnectorModal', () => {
     it('should have no accessibility violations when closed', async () => {
-      const component = await mountSuspended(ConnectorModal, {
+      const component = await mountSuspended(HeaderConnectorModal, {
         props: { open: false },
       })
       const results = await runAxe(component)
@@ -757,7 +711,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when open (disconnected)', async () => {
-      const component = await mountSuspended(ConnectorModal, {
+      const component = await mountSuspended(HeaderConnectorModal, {
         props: { open: true },
       })
       const results = await runAxe(component)
@@ -781,9 +735,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('ClaimPackageModal', () => {
+  describe('PackageClaimPackageModal', () => {
     it('should have no accessibility violations when closed', async () => {
-      const component = await mountSuspended(ClaimPackageModal, {
+      const component = await mountSuspended(PackageClaimPackageModal, {
         props: {
           packageName: 'test-package',
           open: false,
@@ -794,7 +748,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when open', async () => {
-      const component = await mountSuspended(ClaimPackageModal, {
+      const component = await mountSuspended(PackageClaimPackageModal, {
         props: {
           packageName: 'test-package',
           open: true,
@@ -805,9 +759,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('OperationsQueue', () => {
+  describe('OrgOperationsQueue', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(OperationsQueue)
+      const component = await mountSuspended(OrgOperationsQueue)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1470,25 +1424,17 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('AccentColorPicker', () => {
+  describe('SettingsAccentColorPicker', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(AccentColorPicker)
+      const component = await mountSuspended(SettingsAccentColorPicker)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
   })
 
-  describe('AuthButton.server', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(AuthButtonServer)
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('BaseTooltip', () => {
+  describe('TooltipBase', () => {
     it('should have no accessibility violations when hidden', async () => {
-      const component = await mountSuspended(BaseTooltip, {
+      const component = await mountSuspended(TooltipBase, {
         props: { text: 'Tooltip text', isVisible: false },
         slots: { default: '<button>Trigger</button>' },
       })
@@ -1497,7 +1443,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when visible', async () => {
-      const component = await mountSuspended(BaseTooltip, {
+      const component = await mountSuspended(TooltipBase, {
         props: { text: 'Tooltip text', isVisible: true },
         slots: { default: '<button>Trigger</button>' },
       })
@@ -1551,9 +1497,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('ExecuteCommandTerminal', () => {
+  describe('TerminalExecute', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(ExecuteCommandTerminal, {
+      const component = await mountSuspended(TerminalExecute, {
         props: { packageName: 'create-vite' },
       })
       const results = await runAxe(component)
@@ -1561,7 +1507,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations for create package', async () => {
-      const component = await mountSuspended(ExecuteCommandTerminal, {
+      const component = await mountSuspended(TerminalExecute, {
         props: { packageName: 'create-vite', isCreatePackage: true },
       })
       const results = await runAxe(component)
@@ -1569,9 +1515,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('InstallCommandTerminal', () => {
+  describe('TerminalInstall', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(InstallCommandTerminal, {
+      const component = await mountSuspended(TerminalInstall, {
         props: { packageName: 'vue' },
       })
       const results = await runAxe(component)
@@ -1579,7 +1525,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations with version', async () => {
-      const component = await mountSuspended(InstallCommandTerminal, {
+      const component = await mountSuspended(TerminalInstall, {
         props: { packageName: 'vue', requestedVersion: '3.5.0' },
       })
       const results = await runAxe(component)
@@ -1587,7 +1533,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations with types package', async () => {
-      const component = await mountSuspended(InstallCommandTerminal, {
+      const component = await mountSuspended(TerminalInstall, {
         props: { packageName: 'lodash', typesPackageName: '@types/lodash' },
       })
       const results = await runAxe(component)
@@ -1595,7 +1541,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations with executable info', async () => {
-      const component = await mountSuspended(InstallCommandTerminal, {
+      const component = await mountSuspended(TerminalInstall, {
         props: {
           packageName: 'eslint',
           executableInfo: { hasExecutable: true, primaryCommand: 'eslint' },
@@ -1743,9 +1689,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('SearchBox', () => {
+  describe('HeaderSearchBox', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(SearchBox)
+      const component = await mountSuspended(HeaderSearchBox)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1797,7 +1743,7 @@ describe('component accessibility audits', () => {
 
   describe('Toggle', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(Toggle, {
+      const component = await mountSuspended(SettingsToggle, {
         props: { label: 'Enable feature' },
       })
       const results = await runAxe(component)
@@ -1805,7 +1751,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations with description', async () => {
-      const component = await mountSuspended(Toggle, {
+      const component = await mountSuspended(SettingsToggle, {
         props: { label: 'Enable feature', description: 'This enables the feature' },
       })
       const results = await runAxe(component)
@@ -1813,7 +1759,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when checked', async () => {
-      const component = await mountSuspended(Toggle, {
+      const component = await mountSuspended(SettingsToggle, {
         props: { label: 'Enable feature', modelValue: true },
       })
       const results = await runAxe(component)

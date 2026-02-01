@@ -117,7 +117,7 @@ function handleReset() {
               <span class="text-sm text-fg-muted font-mono flex-1">
                 {{ getColumnLabel(column.id) }}
               </span>
-              <AppTooltip
+              <TooltipApp
                 v-if="column.disabled"
                 :id="`${column.id}-disabled-reason`"
                 class="text-fg-subtle"
@@ -127,7 +127,7 @@ function handleReset() {
                 <span class="size-4 flex justify-center items-center text-xs border rounded-full"
                   >i</span
                 >
-              </AppTooltip>
+              </TooltipApp>
             </label>
           </div>
 

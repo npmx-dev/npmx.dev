@@ -418,7 +418,7 @@ function handleClick(event: MouseEvent) {
                 class="text-fg-muted hover:text-fg transition-colors duration-200"
                 >@{{ orgName }}</NuxtLink
               ><span v-if="orgName">/</span>
-              <AnnounceTooltip :text="$t('common.copied')" :isVisible="copiedPkgName">
+              <TooltipAnnounce :text="$t('common.copied')" :isVisible="copiedPkgName">
                 <button
                   @click="copyPkgName()"
                   aria-describedby="copy-pkg-name"
@@ -426,7 +426,7 @@ function handleClick(event: MouseEvent) {
                 >
                   {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
                 </button>
-              </AnnounceTooltip>
+              </TooltipAnnounce>
             </h1>
 
             <span id="copy-pkg-name" class="sr-only">{{ $t('package.copy_name') }}</span>
@@ -885,7 +885,7 @@ function handleClick(event: MouseEvent) {
           :id="`pm-panel-${activePmId}`"
           :aria-labelledby="`pm-tab-${activePmId}`"
         >
-          <ExecuteCommandTerminal
+          <TerminalExecute
             :package-name="pkg.name"
             :jsr-info="jsrInfo"
             :is-create-package="isCreatePkg"
@@ -919,7 +919,7 @@ function handleClick(event: MouseEvent) {
           :id="`pm-panel-${activePmId}`"
           :aria-labelledby="`pm-tab-${activePmId}`"
         >
-          <InstallCommandTerminal
+          <TerminalInstall
             :package-name="pkg.name"
             :requested-version="requestedVersion"
             :jsr-info="jsrInfo"
@@ -964,7 +964,7 @@ function handleClick(event: MouseEvent) {
           </a>
         </h2>
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-        <Readme v-if="readmeData?.html" v-html="readmeData.html" @click="handleClick" />
+        <Readme v-if="readmeData?.html" :html="readmeData.html" @click="handleClick" />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
           <a v-if="repositoryUrl" :href="repositoryUrl" rel="noopener noreferrer" class="link">{{
