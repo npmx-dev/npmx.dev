@@ -21,9 +21,9 @@ test.describe('Search Pages', () => {
     await page.keyboard.press('ArrowUp')
 
     // Enter navigates to the selected result
-    // URL is /vue not /package/vue (cleaner URLs)
+    // URL is /package/vue not /vue
     await page.keyboard.press('Enter')
-    await expect(page).toHaveURL(/\/vue/)
+    await expect(page).toHaveURL(/\/package\/vue/)
   })
 
   test('/search?q=vue → "/" focuses the search input from results', async ({ page, goto }) => {
@@ -109,7 +109,7 @@ test.describe('Keyboard Shortcuts', () => {
     page,
     goto,
   }) => {
-    await goto('/vue', { waitUntil: 'hydration' })
+    await goto('/package/vue', { waitUntil: 'hydration' })
 
     await page.keyboard.press('c')
 
@@ -136,7 +136,7 @@ test.describe('Keyboard Shortcuts', () => {
     page,
     goto,
   }) => {
-    await goto('/vue', { waitUntil: 'hydration' })
+    await goto('/package/vue', { waitUntil: 'hydration' })
 
     await page.keyboard.press('Shift+c')
     await expect(page).toHaveURL(/\/vue/)
