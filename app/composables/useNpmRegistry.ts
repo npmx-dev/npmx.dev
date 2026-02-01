@@ -9,6 +9,7 @@ import type {
   PackageVersionInfo,
 } from '#shared/types'
 import type { ReleaseType } from 'semver'
+import { mapWithConcurrency } from '#shared/utils/async'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
 import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
@@ -546,34 +547,28 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
 
       // Fetch packuments and downloads in parallel
       const [packuments, downloads] = await Promise.all([
-        // Fetch packuments in parallel (with concurrency limit)
+        // Fetch packuments with concurrency limit
         (async () => {
-          const concurrency = 10
-          const results: MinimalPackument[] = []
-          for (let i = 0; i < packageNames.length; i += concurrency) {
-            const batch = packageNames.slice(i, i + concurrency)
-            const batchResults = await Promise.all(
-              batch.map(async name => {
-                try {
-                  const encoded = encodePackageName(name)
-                  const { data: pkg } = await cachedFetch<MinimalPackument>(
-                    `${NPM_REGISTRY}/${encoded}`,
-                    { signal },
-                  )
-                  return pkg
-                } catch {
-                  return null
-                }
-              }),
-            )
-            for (const pkg of batchResults) {
-              // Filter out any unpublished packages (missing dist-tags)
-              if (pkg && pkg['dist-tags']) {
-                results.push(pkg)
+          const results = await mapWithConcurrency(
+            packageNames,
+            async name => {
+              try {
+                const encoded = encodePackageName(name)
+                const { data: pkg } = await cachedFetch<MinimalPackument>(
+                  `${NPM_REGISTRY}/${encoded}`,
+                  { signal },
+                )
+                return pkg
+              } catch {
+                return null
               }
-            }
-          }
-          return results
+            },
+            10,
+          )
+          // Filter out any unpublished packages (missing dist-tags)
+          return results.filter(
+            (pkg): pkg is MinimalPackument => pkg !== null && !!pkg['dist-tags'],
+          )
         })(),
         // Fetch downloads in bulk
         fetchBulkDownloads(packageNames, { signal }),
@@ -772,23 +767,20 @@ export function useOutdatedDependencies(
       return
     }
 
-    const results: Record<string, OutdatedDependencyInfo> = {}
     const entries = Object.entries(deps)
-    const batchSize = 5
+    const batchResults = await mapWithConcurrency(
+      entries,
+      async ([name, constraint]) => {
+        const info = await checkDependencyOutdated(cachedFetch, name, constraint)
+        return [name, info] as const
+      },
+      5,
+    )
 
-    for (let i = 0; i < entries.length; i += batchSize) {
-      const batch = entries.slice(i, i + batchSize)
-      const batchResults = await Promise.all(
-        batch.map(async ([name, constraint]) => {
-          const info = await checkDependencyOutdated(cachedFetch, name, constraint)
-          return [name, info] as const
-        }),
-      )
-
-      for (const [name, info] of batchResults) {
-        if (info) {
-          results[name] = info
-        }
+    const results: Record<string, OutdatedDependencyInfo> = {}
+    for (const [name, info] of batchResults) {
+      if (info) {
+        results[name] = info
       }
     }
 

@@ -189,16 +189,23 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
               target="_blank"
               rel="noopener noreferrer"
               class="group relative"
-              :title="$t('about.contributors.view_profile', { name: contributor.login })"
+              :aria-label="$t('about.contributors.view_profile', { name: contributor.login })"
             >
-              <img
-                :src="`${contributor.avatar_url}&s=64`"
-                :alt="contributor.login"
-                width="32"
-                height="32"
-                class="w-8 h-8 rounded-full ring-2 ring-transparent group-hover:ring-accent transition-all duration-200"
-                loading="lazy"
-              />
+              <div class="relative flex items-center">
+                <img
+                  :src="`${contributor.avatar_url}&s=64`"
+                  :alt="contributor.login"
+                  width="32"
+                  height="32"
+                  class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out hover:scale-125 will-change-transform"
+                  loading="lazy"
+                />
+                <span
+                  class="pointer-events-none absolute -top-9 inset-is-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 text-xs px-2 py-1 shadow-lg opacity-0 scale-95 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100"
+                >
+                  @{{ contributor.login }}
+                </span>
+              </div>
             </a>
           </div>
         </div>
