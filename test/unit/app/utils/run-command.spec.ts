@@ -3,9 +3,8 @@ import {
   getExecutableInfo,
   getRunCommand,
   getRunCommandParts,
-  isBinaryOnlyPackage,
-  isCreatePackage,
 } from '../../../../app/utils/run-command'
+import { isBinaryOnlyPackage, isCreatePackage } from '../../../../shared/utils/binary-detection'
 import type { JsrPackageInfo } from '../../../../shared/types/jsr'
 
 describe('executable detection and run commands', () => {

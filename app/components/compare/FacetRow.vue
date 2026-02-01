@@ -48,6 +48,8 @@ function getStatusClass(status?: FacetValue['status']): string {
       return 'text-amber-400'
     case 'bad':
       return 'text-red-400'
+    case 'muted':
+      return 'text-fg-subtle'
     default:
       return 'text-fg'
   }
@@ -62,16 +64,11 @@ function isCellLoading(index: number): boolean {
 <template>
   <div class="contents">
     <!-- Label cell -->
-    <div
-      class="comparison-label flex items-center gap-1.5 px-4 py-3 border-b border-border"
-      :title="description"
-    >
+    <div class="comparison-label flex items-center gap-1.5 px-4 py-3 border-b border-border">
       <span class="text-xs text-fg-muted uppercase tracking-wider">{{ label }}</span>
-      <span
-        v-if="description"
-        class="i-carbon:information w-3 h-3 text-fg-subtle"
-        aria-hidden="true"
-      />
+      <AppTooltip v-if="description" :text="description" position="top">
+        <span class="i-carbon:information w-3 h-3 text-fg-subtle cursor-help" aria-hidden="true" />
+      </AppTooltip>
     </div>
 
     <!-- Value cells -->

@@ -1,6 +1,7 @@
-import type { FacetValue, ComparisonFacet, ComparisonPackage } from '#shared/types'
+import type { FacetValue, ComparisonFacet, ComparisonPackage, Packument } from '#shared/types'
 import { encodePackageName } from '#shared/utils/npm'
 import type { PackageAnalysisResponse } from './usePackageAnalysis'
+import { isBinaryOnlyPackage } from '#shared/utils/binary-detection'
 
 export interface PackageComparisonData {
   package: ComparisonPackage
@@ -24,6 +25,8 @@ export interface PackageComparisonData {
     engines?: { node?: string; npm?: string }
     deprecated?: string
   }
+  /** Whether this is a binary-only package (CLI without library entry points) */
+  isBinaryOnly?: boolean
 }
 
 /**
@@ -75,13 +78,9 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
         namesToFetch.map(async (name): Promise<PackageComparisonData | null> => {
           try {
             // Fetch basic package info first (required)
-            const pkgData = await $fetch<{
-              'name': string
-              'dist-tags': Record<string, string>
-              'time': Record<string, string>
-              'license'?: string
-              'versions': Record<string, { dist?: { unpackedSize?: number }; deprecated?: string }>
-            }>(`https://registry.npmjs.org/${encodePackageName(name)}`)
+            const pkgData = await $fetch<Packument>(
+              `https://registry.npmjs.org/${encodePackageName(name)}`,
+            )
 
             const latestVersion = pkgData['dist-tags']?.latest
             if (!latestVersion) return null
@@ -99,6 +98,15 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize
+
+            // Detect if package is binary-only
+            const isBinary = isBinaryOnlyPackage({
+              name: pkgData.name,
+              bin: versionData?.bin,
+              main: versionData?.main,
+              module: versionData?.module,
+              exports: versionData?.exports,
+            })
 
             // Count vulnerabilities by severity
             const vulnCounts = { critical: 0, high: 0, medium: 0, low: 0 }
@@ -128,6 +136,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 engines: analysis?.engines,
                 deprecated: versionData?.deprecated,
               },
+              isBinaryOnly: isBinary,
             }
           } catch {
             return null
@@ -259,6 +268,13 @@ function computeFacetValue(facet: ComparisonFacet, data: PackageComparisonData):
       }
 
     case 'types':
+      if (data.isBinaryOnly) {
+        return {
+          raw: 'binary',
+          display: 'N/A',
+          status: 'muted',
+        }
+      }
       if (!data.analysis) return null
       const types = data.analysis.types
       return {
