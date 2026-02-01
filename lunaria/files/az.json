@@ -24,7 +24,6 @@
     "found_packages": "Paket tapılmadı | 1 paket tapıldı | {count} paket tapıldı",
     "updating": "(yenilənir...)",
     "no_results": "\"{query}\" üçün paket tapılmadı",
-    "results": "Axtarış nəticələri",
     "not_taken": "{name} tutulmayıb",
     "claim_prompt": "Bu paket adını npm-də tutun",
     "claim_button": "\"{name}\" adını tut",
@@ -137,6 +136,9 @@
         "unpacked": "{size} açılmış həcm (bu paket)",
         "total": "{size} ümumi açılmış həcm (linux-x64 üçün bütün {count} asılılıq daxil olmaqla)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repo",
@@ -725,6 +727,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "npmx ana səhifə",
     "github": "GitHub",
@@ -743,6 +749,13 @@
       "error": "Təşkilatlar yüklənə bilmədi",
       "empty": "Təşkilat tapılmadı",
       "view_all": "Hamısını göstər"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }
