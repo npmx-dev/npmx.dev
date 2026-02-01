@@ -42,8 +42,6 @@ if (import.meta.server) {
 // "/" focuses search or navigates to search page
 // "?" highlights all keyboard shortcut elements
 function handleGlobalKeydown(e: KeyboardEvent) {
-  const target = e.target as HTMLElement
-
   if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
     e.preventDefault()
     commandBarRef.value?.toggle()
