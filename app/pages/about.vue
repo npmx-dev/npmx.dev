@@ -292,7 +292,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
       <footer class="mt-16 pt-8 border-t border-border">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-[color] duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-[color] duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
         >
           <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
           {{ $t('about.back_home') }}

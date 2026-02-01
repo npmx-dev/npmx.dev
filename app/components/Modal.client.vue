@@ -36,7 +36,7 @@ defineExpose({
         </h2>
         <button
           type="button"
-          class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+          class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
           :aria-label="$t('common.close')"
           @click="handleModalClose"
         >

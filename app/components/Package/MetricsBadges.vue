@@ -65,7 +65,7 @@ const typesHref = computed(() => {
               ? 'text-fg-muted bg-bg-muted border border-border'
               : 'text-fg-subtle bg-bg-subtle border border-border-subtle',
             typesHref
-              ? 'hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50'
+              ? 'hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50'
               : '',
           ]"
         >

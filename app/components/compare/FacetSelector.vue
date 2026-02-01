@@ -91,7 +91,7 @@ function isCategoryNoneSelected(category: string): boolean {
           :disabled="info.comingSoon"
           :aria-pressed="isFacetSelected(facet)"
           :aria-label="info.label"
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded border transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded border transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
           :class="
             info.comingSoon
               ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'

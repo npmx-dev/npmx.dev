@@ -688,7 +688,7 @@ const config = computed(() => {
           v-if="showResetButton"
           type="button"
           aria-label="Reset date range"
-          class="self-end flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 sm:mb-0"
+          class="self-end flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 sm:mb-0"
           @click="
             () => {
               hasUserEditedDates = false

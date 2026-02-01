@@ -145,7 +145,7 @@ const sortedOptionalDependencies = computed(() => {
       <button
         v-if="sortedDependencies.length > 10 && !depsExpanded"
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
         @click="depsExpanded = true"
       >
         {{
@@ -208,7 +208,7 @@ const sortedOptionalDependencies = computed(() => {
       <button
         v-if="sortedPeerDependencies.length > 10 && !peerDepsExpanded"
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
         @click="peerDepsExpanded = true"
       >
         {{
@@ -262,7 +262,7 @@ const sortedOptionalDependencies = computed(() => {
       <button
         v-if="sortedOptionalDependencies.length > 10 && !optionalDepsExpanded"
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
         @click="optionalDepsExpanded = true"
       >
         {{

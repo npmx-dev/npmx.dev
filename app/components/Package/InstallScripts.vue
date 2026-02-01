@@ -33,7 +33,7 @@ const isExpanded = shallowRef(false)
         <dt class="font-mono text-xs text-fg-muted">{{ scriptName }}</dt>
         <dd
           tabindex="0"
-          class="font-mono text-sm text-fg-subtle m-0 truncate focus:whitespace-normal focus:overflow-visible cursor-help rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="font-mono text-sm text-fg-subtle m-0 truncate focus:whitespace-normal focus:overflow-visible cursor-help rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
           :title="installScripts.content?.[scriptName]"
         >
           {{ installScripts.content?.[scriptName] || $t('package.install_scripts.script_label') }}
@@ -45,7 +45,7 @@ const isExpanded = shallowRef(false)
     <div v-if="hasNpxDeps" class="mt-3">
       <button
         type="button"
-        class="flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+        class="flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
         :aria-expanded="isExpanded"
         aria-controls="npx-packages-details"
         @click="isExpanded = !isExpanded"
