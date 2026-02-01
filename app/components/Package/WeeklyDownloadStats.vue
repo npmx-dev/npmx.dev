@@ -251,7 +251,7 @@ const config = computed(() => {
       :weeklyDownloads="weeklyDownloads"
       :inModal="true"
       :packageName="props.packageName"
-      :createdIso="props.createdIso"
+      :createdIso="createdIso"
     />
   </PackageChartModal>
 </template>
