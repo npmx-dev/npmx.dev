@@ -798,6 +798,9 @@
   },
   "command": {
     "placeholder": "Enter command...",
+    "label": "Command",
+    "package_search": "Search packages",
+    "package_search_desc": "Search for npm packages",
     "copy_install": "Copy install command",
     "copy_install_desc": "Copy install command to clipboard",
     "copy_run": "Copy run command",
