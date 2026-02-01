@@ -3,7 +3,7 @@ import { NuxtLink } from '#components'
 
 const props = defineProps<{
   packageName: string
-  isBinary: boolean
+  isBinary?: boolean
   version?: string
 }>()
 
