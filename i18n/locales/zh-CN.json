@@ -782,6 +782,9 @@
   },
   "command": {
     "placeholder": "输入命令...",
+    "label": "命令",
+    "package_search": "搜索包",
+    "package_search_desc": "搜索 npm 包",
     "copy_install": "复制安装命令",
     "copy_install_desc": "复制安装命令到剪贴板",
     "copy_run": "复制运行命令",

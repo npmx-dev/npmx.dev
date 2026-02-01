@@ -1,45 +1,54 @@
 <template>
-  <Transition name="fade">
-    <div
-      class="fixed inset-0 z-[1000] flex items-start justify-center bg-black/50 backdrop-blur-sm"
-      v-show="show"
-    >
+  <Teleport to="body">
+    <Transition name="fade">
       <div
-        class="cmdbar-container flex items-center justify-center border border-border shadow-lg rounded-xl bg-bg p2 flex-col gap-2 mt-5rem"
+        class="fixed inset-0 z-[1000] flex items-start justify-center bg-black/50 backdrop-blur-sm"
+        v-show="show"
       >
-        <label for="command-input" class="sr-only">command-input</label>
+        <div
+          class="cmdbar-container flex items-center justify-center border border-border shadow-lg rounded-xl bg-bg p2 flex-col gap-2 mt-5rem"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="command-input-label"
+        >
+          <label for="command-input" id="command-input-label" class="sr-only">{{
+            t('command.label')
+          }}</label>
 
-        <search class="relative w-xl h-12 flex items-center">
-          <span class="absolute inset-is-4 text-fg-subtle font-mono pointer-events-none"> > </span>
-          <input
-            type="text"
-            v-model="inputVal"
-            id="command-input"
-            ref="inputRef"
-            class="w-full h-full px-4 pl-8 text-fg outline-none bg-bg-subtle border border-border rounded-md"
-            :placeholder="placeholderText"
-            @keydown="handleKeydown"
-          />
-        </search>
+          <search class="relative w-xl h-12 flex items-center">
+            <span class="absolute inset-is-4 text-fg-subtle font-mono pointer-events-none">
+              >
+            </span>
+            <input
+              type="text"
+              v-model="inputVal"
+              id="command-input"
+              ref="inputRef"
+              class="w-full h-full px-4 pl-8 text-fg outline-none bg-bg-subtle border border-border rounded-md"
+              :placeholder="placeholderText"
+              @keydown="handleKeydown"
+            />
+          </search>
 
-        <div class="w-xl max-h-lg overflow-auto" v-if="view.type != 'INPUT'">
-          <div
-            v-for="item in filteredCmdList"
-            :key="item.id"
-            class="flex-col items-center justify-between px-4 py-2 not-first:mt-2 hover:bg-bg-elevated select-none cursor-pointer rounded-md transition"
-            :class="{
-              'bg-bg-subtle': item.id === selected,
-              'trigger-anim': item.id === triggeringId,
-            }"
-            @click="onTrigger(item.id)"
-          >
-            <div class="text-fg">{{ item.name }}</div>
-            <div class="text-fg-subtle text-sm">{{ item.description }}</div>
+          <div class="w-xl max-h-lg overflow-auto" v-if="view.type != 'INPUT'">
+            <div
+              v-for="item in filteredCmdList"
+              :key="item.id"
+              class="px-4 py-2 not-first:mt-2 hover:bg-bg-elevated select-none cursor-pointer rounded-md transition"
+              :class="{
+                'bg-bg-subtle': item.id === selected,
+                'trigger-anim': item.id === triggeringId,
+              }"
+              @click="onTrigger(item.id)"
+            >
+              <div class="text-fg">{{ item.name }}</div>
+              <div class="text-fg-subtle text-sm">{{ item.description }}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </Transition>
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -161,6 +170,11 @@ const handleKeydown = useThrottleFn((e: KeyboardEvent) => {
   if (view.value.type === 'INPUT' && e.key === 'Enter') {
     e.preventDefault()
     onTrigger('') // Trigger for input doesn't need ID
+    return
+  }
+
+  if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !filteredCmdList.value.length) {
+    e.preventDefault()
     return
   }
 
