@@ -699,7 +699,7 @@ const config = computed(() => {
             }
           "
         >
-          <span class="i-carbon:reset w-5 h-5 inline-block" aria-hidden="true" />
+          <span class="i-carbon:reset w-5 h-5" aria-hidden="true" />
         </button>
       </div>
     </div>

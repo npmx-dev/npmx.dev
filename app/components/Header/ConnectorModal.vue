@@ -119,8 +119,8 @@ function handleDisconnect() {
           class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
           @click="copy('pnpm npmx-connector')"
         >
-          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
-          <span v-else class="i-carbon:checkmark block w-5 h-5 text-green-500" aria-hidden="true" />
+          <span v-if="!copied" class="i-carbon:copy w-5 h-5" aria-hidden="true" />
+          <span v-else class="i-carbon:checkmark w-5 h-5 text-green-500" aria-hidden="true" />
         </button>
       </div>
 
@@ -141,10 +141,10 @@ function handleDisconnect() {
                           class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
                           @click="copyCommand"
                         >
-                          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
+                          <span v-if="!copied" class="i-carbon:copy w-5 h-5" aria-hidden="true" />
                           <span
                             v-else
-                            class="i-carbon:checkmark block w-5 h-5 text-green-500"
+                            class="i-carbon:checkmark w-5 h-5 text-green-500"
                             aria-hidden="true"
                           />
                         </button>

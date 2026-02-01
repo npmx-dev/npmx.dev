@@ -40,7 +40,7 @@ defineExpose({
           :aria-label="$t('common.close')"
           @click="handleModalClose"
         >
-          <span class="i-carbon-close block w-5 h-5" aria-hidden="true" />
+          <span class="i-carbon-close w-5 h-5" aria-hidden="true" />
         </button>
       </div>
       <!-- Modal body content -->

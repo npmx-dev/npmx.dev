@@ -109,7 +109,7 @@ useHead({
         >
           {{ title }}
           <span
-            class="i-carbon:link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             aria-hidden="true"
           />
         </a>

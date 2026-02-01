@@ -176,7 +176,7 @@ watch(
       >
         {{ $t('package.maintainers.title') }}
         <span
-          class="i-carbon-link w-3 h-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          class="i-carbon-link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
           aria-hidden="true"
         />
       </a>
@@ -230,7 +230,7 @@ watch(
           "
           @click="handleRemoveOwner(maintainer.name)"
         >
-          <span class="i-carbon-close block w-3.5 h-3.5" aria-hidden="true" />
+          <span class="i-carbon-close w-3.5 h-3.5" aria-hidden="true" />
         </button>
       </li>
     </ul>
@@ -280,7 +280,7 @@ watch(
             :aria-label="$t('package.maintainers.cancel_add')"
             @click="showAddOwner = false"
           >
-            <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
+            <span class="i-carbon-close w-4 h-4" aria-hidden="true" />
           </button>
         </form>
       </div>
