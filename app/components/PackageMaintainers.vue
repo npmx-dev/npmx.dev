@@ -196,7 +196,7 @@ watch(
             }"
             class="link-subtle font-mono text-sm shrink-0"
           >
-            @{{ maintainer.name }}
+            ~{{ maintainer.name }}
           </NuxtLink>
           <span v-else class="font-mono text-sm text-fg-muted">{{ maintainer.email }}</span>
 
