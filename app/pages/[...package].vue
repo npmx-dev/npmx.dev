@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { NpmVersionDist, PackumentVersion, ReadmeResponse } from '#shared/types'
+import type {
+  NpmVersionDist,
+  PackumentVersion,
+  ReadmeResponse,
+  SkillsListResponse,
+} from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { joinURL } from 'ufo'
@@ -65,6 +70,15 @@ const {
   },
 )
 onMounted(() => fetchInstallSize())
+
+const { data: skillsData } = useLazyFetch<SkillsListResponse>(
+  () => {
+    const base = `/skills/${packageName.value}`
+    const version = requestedVersion.value
+    return version ? `${base}/v/${version}` : base
+  },
+  { default: () => ({ package: '', version: '', skills: [] }) },
+)
 
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
@@ -836,6 +850,15 @@ function handleClick(event: MouseEvent) {
             </dd>
           </div>
         </dl>
+
+        <!-- Skills Modal -->
+        <ClientOnly>
+          <PackageSkillsModal
+            :skills="skillsData?.skills ?? []"
+            :package-name="pkg.name"
+            :version="displayVersion?.version"
+          />
+        </ClientOnly>
       </header>
 
       <!-- Binary-only packages: Show only execute command (no install) -->
@@ -976,6 +999,16 @@ function handleClick(event: MouseEvent) {
               </li>
             </ul>
           </section>
+
+          <!-- Agent Skills -->
+          <ClientOnly>
+            <PackageSkillsCard
+              v-if="skillsData?.skills?.length"
+              :skills="skillsData.skills"
+              :package-name="pkg.name"
+              :version="displayVersion?.version"
+            />
+          </ClientOnly>
 
           <!-- Download stats -->
           <PackageWeeklyDownloadStats :packageName />
