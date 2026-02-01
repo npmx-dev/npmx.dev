@@ -16,33 +16,23 @@ const menuRef = useTemplateRef('menuRef')
 const menuId = useId()
 
 // Close on click outside (check both button and menu)
-function handleClickOutside(event: MouseEvent) {
-  const target = event.target as Node
-  const isOutsideButton = buttonRef.value && !buttonRef.value.contains(target)
-  const isOutsideMenu = !menuRef.value || !menuRef.value.contains(target)
-  if (isOutsideButton && isOutsideMenu) {
+onClickOutside(
+  menuRef,
+  () => {
     isOpen.value = false
-  }
-}
+  },
+  {
+    ignore: [buttonRef],
+  },
+)
 
 // Close on Escape key
-function handleKeydown(event: KeyboardEvent) {
+useEventListener('keydown', event => {
   if (event.key === 'Escape' && isOpen.value) {
     isOpen.value = false
     buttonRef.value?.focus()
   }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-  document.addEventListener('keydown', handleKeydown)
 })
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-  document.removeEventListener('keydown', handleKeydown)
-})
-
 // Columns that can be toggled (name is always visible)
 const toggleableColumns = computed(() => props.columns.filter(col => col.id !== 'name'))
 
@@ -127,7 +117,7 @@ function handleReset() {
               <span class="text-sm text-fg-muted font-mono flex-1">
                 {{ getColumnLabel(column.id) }}
               </span>
-              <AppTooltip
+              <TooltipApp
                 v-if="column.disabled"
                 :id="`${column.id}-disabled-reason`"
                 class="text-fg-subtle"
@@ -137,7 +127,7 @@ function handleReset() {
                 <span class="size-4 flex justify-center items-center text-xs border rounded-full"
                   >i</span
                 >
-              </AppTooltip>
+              </TooltipApp>
             </label>
           </div>
 

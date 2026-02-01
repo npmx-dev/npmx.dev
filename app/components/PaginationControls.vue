@@ -22,7 +22,6 @@ const effectiveMode = computed<PaginationMode>(() =>
 
 // When 'all' is selected, there's only 1 page with everything
 const isShowingAll = computed(() => pageSize.value === 'all')
-const effectivePageSize = computed(() => (isShowingAll.value ? props.totalItems : pageSize.value))
 const totalPages = computed(() =>
   isShowingAll.value ? 1 : Math.ceil(props.totalItems / (pageSize.value as number)),
 )

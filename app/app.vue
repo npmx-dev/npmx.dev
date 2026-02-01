@@ -42,7 +42,7 @@ if (import.meta.server) {
 function handleGlobalKeydown(e: KeyboardEvent) {
   if (isEditableElement(e.target)) return
 
-  if (e.key === '/') {
+  if (isKeyWithoutModifiers(e, '/')) {
     e.preventDefault()
 
     // Try to find and focus search input on current page
@@ -58,7 +58,7 @@ function handleGlobalKeydown(e: KeyboardEvent) {
     router.push('/search')
   }
 
-  if (e.key === '?') {
+  if (isKeyWithoutModifiers(e, '?')) {
     e.preventDefault()
     showKbdHints.value = true
   }
@@ -68,9 +68,20 @@ function handleGlobalKeyup() {
   showKbdHints.value = false
 }
 
+/* A hack to get light dismiss to work in safari because it does not support closedby="any" yet */
+// https://codepen.io/paramagicdev/pen/gbYompq
+// see: https://github.com/npmx-dev/npmx.dev/pull/522#discussion_r2749978022
+function handleModalLightDismiss(e: MouseEvent) {
+  const target = e.target as HTMLElement
+  if (target.tagName === 'DIALOG' && target.hasAttribute('open')) {
+    ;(target as HTMLDialogElement).close()
+  }
+}
+
 if (import.meta.client) {
   useEventListener(document, 'keydown', handleGlobalKeydown)
   useEventListener(document, 'keyup', handleGlobalKeyup)
+  useEventListener(document, 'click', handleModalLightDismiss)
 }
 </script>
 
@@ -90,6 +101,29 @@ if (import.meta.client) {
     <ScrollToTop />
   </div>
 </template>
+
+<style scoped>
+/* Skip link */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  inset-inline-start: 0;
+  padding: 0.5rem 1rem;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.875rem;
+  z-index: 100;
+  transition: top 0.2s ease;
+}
+
+.skip-link:hover {
+  color: var(--bg);
+  text-decoration: underline;
+}
+.skip-link:focus {
+  top: 0;
+}
+</style>
 
 <style>
 /* Keyboard shortcut highlight on "?" key press */
