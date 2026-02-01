@@ -198,7 +198,7 @@ defineOgImageComponent('Default', {
   <main class="container flex-1 py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
-      <div class="flex items-end gap-4">
+      <div class="flex flex-wrap items-end gap-4">
         <!-- Avatar -->
         <div
           class="w-16 h-16 rounded-full bg-bg-muted border border-border flex items-center justify-center overflow-hidden"
