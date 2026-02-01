@@ -101,14 +101,7 @@ onKeyStroke(
         :aria-label="$t('nav.tap_to_search')"
         @click="expandMobileSearch"
       >
-        <img
-          aria-hidden="true"
-          :alt="$t('alt_logo')"
-          src="/logo.svg"
-          width="96"
-          height="96"
-          class="w-8 h-8 rounded-lg"
-        />
+        <AppLogo class="w-8 h-8 rounded-lg" />
         <span class="i-carbon:search w-4 h-4 text-fg-subtle" aria-hidden="true" />
       </button>
 
@@ -118,16 +111,9 @@ onKeyStroke(
           to="/"
           :aria-label="$t('header.home')"
           dir="ltr"
-          class="inline-flex items-center gap-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
+          class="inline-flex items-center gap-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg focus-visible:outline-accent/50 transition-colors duration-200 rounded"
         >
-          <img
-            aria-hidden="true"
-            :alt="$t('alt_logo')"
-            src="/logo.svg"
-            width="96"
-            height="96"
-            class="w-8 h-8 rounded-lg"
-          />
+          <AppLogo class="w-8 h-8 rounded-lg" />
           <span>npmx</span>
         </NuxtLink>
       </div>
@@ -165,11 +151,11 @@ onKeyStroke(
       </div>
 
       <!-- End: Desktop nav items + Mobile menu button -->
-      <div class="flex-shrink-0 flex items-center gap-4 sm:gap-6">
+      <div class="flex-shrink-0 flex items-center lg:gap-4">
         <!-- Desktop: Compare link -->
         <NuxtLink
           to="/compare"
-          class="hidden sm:inline-flex link-subtle font-mono text-sm items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          class="hidden sm:inline-flex link-subtle px-2 py-1.5 hover:bg-bg-subtle font-mono text-sm items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
           aria-keyshortcuts="c"
         >
           {{ $t('nav.compare') }}
@@ -184,7 +170,7 @@ onKeyStroke(
         <!-- Desktop: Settings link -->
         <NuxtLink
           to="/settings"
-          class="hidden sm:inline-flex link-subtle font-mono text-sm items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          class="hidden sm:inline-flex link-subtle px-2 py-1.5 hover:bg-bg-subtle font-mono text-sm items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
           aria-keyshortcuts=","
         >
           {{ $t('nav.settings') }}

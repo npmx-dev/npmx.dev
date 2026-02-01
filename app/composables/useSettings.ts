@@ -3,7 +3,7 @@ import { useLocalStorage } from '@vueuse/core'
 import { ACCENT_COLORS } from '#shared/utils/constants'
 import type { LocaleObject } from '@nuxtjs/i18n'
 
-type AccentColorId = keyof typeof ACCENT_COLORS
+type AccentColorId = keyof typeof ACCENT_COLORS.light
 
 /**
  * Application settings stored in localStorage
@@ -70,20 +70,34 @@ export function useRelativeDates() {
  */
 export function useAccentColor() {
   const { settings } = useSettings()
+  const colorMode = useColorMode()
 
-  const accentColors = Object.entries(ACCENT_COLORS).map(([id, value]) => ({
-    id: id as AccentColorId,
-    name: id,
-    value,
-  }))
+  const accentColors = computed(() =>
+    Object.entries(ACCENT_COLORS[colorMode.value as 'light' | 'dark']).map(([id, value]) => ({
+      id: id as AccentColorId,
+      name: id,
+      value,
+    })),
+  )
+
+  const currentAccentColor = computed(() => {
+    const id = settings.value.accentColorId
+    const theme = colorMode.value as 'light' | 'dark'
+    return id ? ACCENT_COLORS[theme][id] : null
+  })
+
+  // Simple client-side check
+  if (process.client) {
+    watchEffect(() => {
+      if (currentAccentColor.value) {
+        document.documentElement.style.setProperty('--accent-color', currentAccentColor.value)
+      } else {
+        document.documentElement.style.removeProperty('--accent-color')
+      }
+    })
+  }
 
   function setAccentColor(id: AccentColorId | null) {
-    const color = id ? ACCENT_COLORS[id] : null
-    if (color) {
-      document.documentElement.style.setProperty('--accent-color', color)
-    } else {
-      document.documentElement.style.removeProperty('--accent-color')
-    }
     settings.value.accentColorId = id
   }
 

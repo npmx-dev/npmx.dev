@@ -129,9 +129,9 @@ a:hover {
 }
 
 a:focus-visible {
-  outline: 2px solid var(--border);
+  outline: 2px solid var(--border-hover);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 /* Reset dd margin (browser default is margin-left: 40px) */
@@ -146,6 +146,12 @@ button {
   cursor: pointer;
   font: inherit;
   padding: 0;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--border-hover);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Selection */
