@@ -2,10 +2,34 @@
 defineProps<{
   html: string
 }>()
+
+const router = useRouter()
+
+// We're using only @click because it catches touch events and enter hits
+function handleClick(event: MouseEvent) {
+  const target = (event?.target as HTMLElement | undefined)?.closest('a')
+  if (!target) return
+
+  const href = target.getAttribute('href')
+  if (!href) return
+
+  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
+  if (!match || !match[1]) return
+
+  const route = router.resolve(match[1])
+  if (route) {
+    event.preventDefault()
+    router.push(route)
+  }
+}
 </script>
 
 <template>
-  <article class="readme prose prose-invert max-w-[70ch] lg:max-w-none" v-html="html" />
+  <article
+    class="readme prose prose-invert max-w-[70ch] lg:max-w-none"
+    v-html="html"
+    @click="handleClick"
+  />
 </template>
 
 <style scoped>
