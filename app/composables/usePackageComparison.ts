@@ -1,4 +1,5 @@
 import type { FacetValue, ComparisonFacet, ComparisonPackage } from '#shared/types'
+import { encodePackageName } from '#shared/utils/npm'
 import type { PackageAnalysisResponse } from './usePackageAnalysis'
 
 export interface PackageComparisonData {
@@ -220,13 +221,6 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
     isFacetLoading,
     isColumnLoading,
   }
-}
-
-function encodePackageName(name: string): string {
-  if (name.startsWith('@')) {
-    return `@${encodeURIComponent(name.slice(1))}`
-  }
-  return encodeURIComponent(name)
 }
 
 function computeFacetValue(facet: ComparisonFacet, data: PackageComparisonData): FacetValue | null {

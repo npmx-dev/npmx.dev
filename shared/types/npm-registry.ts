@@ -30,6 +30,10 @@ export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
 }
 
+export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {
+  hasProvenance?: true
+}
+
 /**
  * Slimmed down Packument for client-side use.
  * Strips unnecessary fields to reduce payload size.
@@ -52,8 +56,10 @@ export interface SlimPackument {
   'keywords'?: string[]
   'repository'?: { type?: string; url?: string; directory?: string }
   'bugs'?: { url?: string; email?: string }
+  /** current version */
+  'requestedVersion': SlimPackumentVersion | null
   /** Only includes dist-tag versions (with installScripts info added per version) */
-  'versions': Record<string, SlimPackumentVersion>
+  'versions': Record<string, SlimVersion>
 }
 
 /**

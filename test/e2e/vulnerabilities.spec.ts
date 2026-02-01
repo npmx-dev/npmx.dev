@@ -73,6 +73,6 @@ test.describe('vulnerabilities API', () => {
     )
     const response = await page.request.get(url)
 
-    expect(response.status()).toBe(502) // Based on handleApiError fallback
+    expect(response.status()).toBe(404) // Package not found returns 404
   })
 })

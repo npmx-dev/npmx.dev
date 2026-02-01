@@ -24,7 +24,6 @@
     "found_packages": "共找到 {count} 个包",
     "updating": "（更新中…）",
     "no_results": "未找到匹配“{query}”的包",
-    "results": "搜索结果",
     "not_taken": "{name} 尚未被占用",
     "claim_prompt": "在 npm 上声明",
     "claim_button": "声明“{name}”",
@@ -32,18 +31,18 @@
     "start_typing": "输入以搜索软件包",
     "exact_match": "精确匹配",
     "suggestion": {
-      "org": "组织",
       "user": "用户",
-      "view_org_packages": "查看该组织的包",
-      "view_user_packages": "查看该用户的包"
+      "org": "组织",
+      "view_user_packages": "查看该用户的包",
+      "view_org_packages": "查看该组织的包"
     }
   },
   "nav": {
+    "main_navigation": "主页",
     "popular_packages": "热门软件包",
     "search": "搜索",
     "settings": "设置",
-    "back": "返回",
-    "main_navigation": "主页"
+    "back": "返回"
   },
   "settings": {
     "title": "设置",
@@ -61,8 +60,8 @@
     "hide_platform_packages": "在搜索结果隐藏平台特定包",
     "hide_platform_packages_description": "在搜索结果中隐藏平台特定的原生二进制包（例如 {'@'}esbuild/linux-x64）",
     "theme": "主题",
-    "theme_dark": "深色",
     "theme_light": "浅色",
+    "theme_dark": "深色",
     "theme_system": "跟随系统",
     "language": "语言",
     "help_translate": "帮助翻译 npmx",
@@ -130,14 +129,17 @@
       "license": "许可证",
       "deps": "依赖项",
       "install_size": "安装大小",
+      "vulns": "漏洞",
       "updated": "最近更新",
       "view_dependency_graph": "查看依赖图",
       "inspect_dependency_tree": "查看依赖树",
-      "vulns": "漏洞",
       "size_tooltip": {
         "unpacked": "未打包大小 (当前包)：{size}",
         "total": "总未打包大小（包括 {count} 个依赖项）：{size}"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "仓库",
@@ -334,8 +336,8 @@
       "weekly": "每周",
       "size": "大小",
       "deps": "依赖",
-      "get_started": "开始使用",
       "updated": "更新",
+      "get_started": "开始使用",
       "readme": "Readme",
       "maintainers": "维护者",
       "keywords": "关键词",
@@ -596,12 +598,12 @@
     "clear_all": "清除所有",
     "remove_filter": "移除 {label} 筛选",
     "download_range": {
-      "100_1k": "100 - 1K",
-      "10k_100k": "10K - 100K",
-      "1k_10k": "1K - 10K",
       "any": "任意",
-      "gt100k": "> 100K",
-      "lt100": "< 100"
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
     },
     "updated": {
       "any": "任意",
@@ -612,8 +614,8 @@
     },
     "security_options": {
       "all": "所有包",
-      "insecure": "不带警告",
-      "secure": "带有警告"
+      "secure": "带有警告",
+      "insecure": "不带警告"
     },
     "sort": {
       "label": "排序包",
@@ -673,9 +675,9 @@
       "showing_paginated": "已显示 {pageSize} 个，共 {count} 个包"
     },
     "table": {
-      "no_packages": "安全性警告",
+      "security_warning": "未找到包",
       "secure": "安全",
-      "security_warning": "未找到包"
+      "no_packages": "安全性警告"
     }
   },
   "about": {
@@ -715,15 +717,15 @@
     },
     "get_involved": {
       "title": "加入我们",
-      "community": {
-        "title": "加入社区",
-        "description": "聊天、提出问题并分享想法。",
-        "cta": "加入 Discord"
-      },
       "contribute": {
         "title": "作出贡献",
         "description": "帮助我们打造更好的 npm 体验。",
         "cta": "在 GitHub 上查看"
+      },
+      "community": {
+        "title": "加入社区",
+        "description": "聊天、提出问题并分享想法。",
+        "cta": "加入 Discord"
       },
       "follow": {
         "title": "保持更新",
@@ -778,6 +780,13 @@
       "error": "加载组织失败",
       "empty": "未找到组织",
       "view_all": "查看全部"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

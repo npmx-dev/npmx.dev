@@ -27,7 +27,6 @@
     "found_packages": "Paket tidak ditemukan | Ditemukan 1 paket | Ditemukan {count} paket",
     "updating": "(memperbarui...)",
     "no_results": "Tidak ada paket yang ditemukan untuk \"{query}\"",
-    "results": "Hasil pencarian",
     "not_taken": "{name} tersedia",
     "claim_prompt": "Klaim nama paket ini di npm",
     "claim_button": "Klaim \"{name}\"",
@@ -149,6 +148,9 @@
         "unpacked": "{size} ukuran tidak terkompresi (paket ini)",
         "total": "{size} total ukuran tidak terkompresi (termasuk semua {count} dependensi untuk linux-x64)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repo",
