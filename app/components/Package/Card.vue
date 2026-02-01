@@ -26,10 +26,6 @@ const pkgDescription = useMarkdown(() => ({
   plain: true,
   packageName: props.result.package.name,
 }))
-
-const emit = defineEmits<{
-  focus: [index: number]
-}>()
 </script>
 
 <template>
