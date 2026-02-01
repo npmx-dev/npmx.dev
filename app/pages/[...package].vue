@@ -83,8 +83,6 @@ const { data: skillsData } = useLazyFetch<SkillsListResponse>(
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
 
-const skillsModalOpen = shallowRef(false)
-
 const { data: pkg, status, error } = await usePackage(packageName, requestedVersion)
 const resolvedVersion = computed(() => pkg.value?.resolvedVersion ?? null)
 
@@ -859,7 +857,6 @@ function handleClick(event: MouseEvent) {
         <!-- Skills Modal -->
         <ClientOnly>
           <PackageSkillsModal
-            v-model:open="skillsModalOpen"
             :skills="skillsData?.skills ?? []"
             :package-name="pkg.name"
             :version="displayVersion?.version"
@@ -1013,7 +1010,6 @@ function handleClick(event: MouseEvent) {
               :skills="skillsData.skills"
               :package-name="pkg.name"
               :version="displayVersion?.version"
-              v-model:open="skillsModalOpen"
             />
           </ClientOnly>
 

@@ -7,7 +7,7 @@ defineProps<{
   version?: string
 }>()
 
-const open = defineModel<boolean>('open', { default: false })
+const skillsModal = useModal('skills-modal')
 </script>
 
 <template>
@@ -27,7 +27,7 @@ const open = defineModel<boolean>('open', { default: false })
     <button
       type="button"
       class="group/btn w-full flex items-center gap-2 px-3 py-2 bg-bg-subtle border border-border rounded-lg hover:border-border-hover hover:bg-bg-muted transition-colors"
-      @click="open = true"
+      @click="skillsModal.open()"
     >
       <span class="i-custom:agent-skills size-4 text-fg-muted" aria-hidden="true" />
       <span class="text-sm text-fg">{{
