@@ -91,7 +91,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.13.7"
+    "vue-data-ui": "3.14.0"
   },
   "devDependencies": {
     "@npm/types": "2.1.0",

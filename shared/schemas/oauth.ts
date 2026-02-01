@@ -10,4 +10,5 @@ export const OAuthMetadataSchema = object({
   application_type: string(),
   token_endpoint_auth_method: string(),
   dpop_bound_access_tokens: boolean(),
+  response_types: array(string()),
 })
