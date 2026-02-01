@@ -4,6 +4,7 @@ import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 const route = useRoute()
 const router = useRouter()
@@ -29,7 +30,7 @@ const updateUrlPage = debounce((page: number) => {
 }, 500)
 
 // The actual search query (from URL, used for API calls)
-const query = computed(() => (route.query.q as string) ?? '')
+const query = computed(() => normalizeSearchParam(route.query.q))
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
@@ -53,7 +54,7 @@ const requestedSize = computed(() => {
 
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
-  const p = Number.parseInt(route.query.page as string, 10)
+  const p = Number.parseInt(normalizeSearchParam(route.query.page), 10)
   return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 

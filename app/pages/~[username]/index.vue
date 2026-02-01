@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 const route = useRoute('~username')
 const router = useRouter()
@@ -13,7 +14,7 @@ const currentPage = shallowRef(1)
 
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
-  const p = Number.parseInt(route.query.page as string, 10)
+  const p = Number.parseInt(normalizeSearchParam(route.query.page), 10)
   return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 
@@ -32,18 +33,16 @@ const updateUrl = debounce((updates: { page?: number; filter?: string; sort?: st
 type SortOption = 'downloads' | 'updated' | 'name-asc' | 'name-desc'
 
 // Filter and sort state (from URL)
-const filterText = shallowRef(
-  (Array.isArray(route.query.q) ? route.query.q[0] : route.query.q) ?? '',
-)
+const filterText = shallowRef(normalizeSearchParam(route.query.q))
 const sortOption = shallowRef<SortOption>(
-  ((Array.isArray(route.query.sort) ? route.query.sort[0] : route.query.sort) as SortOption) ||
-    'downloads',
+  (normalizeSearchParam(route.query.sort) as SortOption) || 'downloads',
 )
 
 // Track if we've loaded all results (one-way flag, doesn't reset)
 // Initialize to true if URL already has filter/sort params
 const hasLoadedAll = shallowRef(
-  Boolean(route.query.q) || (route.query.sort && route.query.sort !== 'downloads'),
+  Boolean(route.query.q) ||
+    (route.query.sort && normalizeSearchParam(route.query.sort) !== 'downloads'),
 )
 
 // Update URL when filter/sort changes (debounced)

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FilterChip, SortOption } from '#shared/types/preferences'
 import { debounce } from 'perfect-debounce'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 definePageMeta({
   name: 'org',
@@ -51,9 +52,9 @@ const {
 } = useStructuredFilters({
   packages,
   initialFilters: {
-    text: (route.query.q as string) ?? '',
+    text: normalizeSearchParam(route.query.q),
   },
-  initialSort: (route.query.sort as SortOption) ?? 'updated-desc',
+  initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'updated-desc',
 })
 
 // Pagination state
