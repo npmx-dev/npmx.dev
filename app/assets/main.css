@@ -173,6 +173,14 @@ button {
   background: #404040;
 }
 
+/* Scrollbar styling for Firefox */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) var(--bg);
+  }
+}
+
 /* Shiki theme colors */
 html.light .shiki,
 html.light .shiki span {
