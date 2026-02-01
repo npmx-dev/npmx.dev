@@ -6,7 +6,6 @@ const props = defineProps<{
   packageName: string
 }>()
 
-const claimPackageModal = useModal('claim-package-modal')
 const {
   isConnected,
   state,
@@ -72,14 +71,14 @@ async function handleClaim() {
     } else if (completedOp?.status === 'failed') {
       if (completedOp.result?.requiresOtp) {
         // OTP is needed - open connector panel to handle it
-        claimPackageModal.close()
+        close()
         connectorModal.open()
       } else {
         publishError.value = completedOp.result?.stderr || 'Failed to publish package'
       }
     } else {
       // Still pending/approved/running - open connector panel to show progress
-      claimPackageModal.close()
+      close()
       connectorModal.open()
     }
   } catch (err) {
@@ -89,13 +88,22 @@ async function handleClaim() {
   }
 }
 
-// Reset state when modal opens
-function handleModalOpen() {
+const dialogRef = ref<HTMLDialogElement>()
+
+function open() {
+  // Reset state and check availability each time modal is opened
   checkResult.value = null
   publishError.value = null
   publishSuccess.value = false
   checkAvailability()
+  dialogRef.value?.showModal()
 }
+
+function close() {
+  dialogRef.value?.close()
+}
+
+defineExpose({ open, close })
 
 // Computed for similar packages with warnings
 const hasDangerousSimilarPackages = computed(() => {
@@ -127,7 +135,12 @@ const previewPackageJson = computed(() => {
 
 <template>
   <!-- Modal -->
-  <Modal :modalTitle="$t('claim.modal.title')" id="claim-package-modal" @open="handleModalOpen">
+  <Modal
+    ref="dialogRef"
+    :modalTitle="$t('claim.modal.title')"
+    id="claim-package-modal"
+    class="max-w-md"
+  >
     <!-- Loading state -->
     <div v-if="isChecking" class="py-8 text-center">
       <LoadingSpinner :text="$t('claim.modal.checking')" />
@@ -155,14 +168,14 @@ const previewPackageJson = computed(() => {
         <NuxtLink
           :to="`/package/${packageName}`"
           class="flex-1 px-4 py-2 font-mono text-sm text-center text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-          @click="claimPackageModal.close"
+          @click="close"
         >
           {{ $t('claim.modal.view_package') }}
         </NuxtLink>
         <button
           type="button"
           class="flex-1 px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-          @click="claimPackageModal.close"
+          @click="close"
         >
           {{ $t('common.close') }}
         </button>
@@ -349,7 +362,7 @@ const previewPackageJson = computed(() => {
         v-if="!checkResult.available || !checkResult.valid"
         type="button"
         class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-        @click="claimPackageModal.close"
+        @click="close"
       >
         {{ $t('common.close') }}
       </button>

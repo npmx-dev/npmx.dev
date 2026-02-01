@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const open = defineModel<boolean>('open', { default: false })
-
 const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disconnect } =
   useConnector()
 
@@ -10,14 +8,17 @@ const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
 const hasAttemptedConnect = shallowRef(false)
 
+watch(isConnected, connected => {
+  if (!connected) {
+    tokenInput.value = ''
+    hasAttemptedConnect.value = false
+  }
+})
+
 async function handleConnect() {
   hasAttemptedConnect.value = true
   const port = Number.parseInt(portInput.value, 10) || 31415
-  const success = await connect(tokenInput.value.trim(), port)
-  if (success) {
-    tokenInput.value = ''
-    open.value = false
-  }
+  await connect(tokenInput.value.trim(), port)
 }
 
 function handleDisconnect() {
@@ -39,13 +40,6 @@ const executeNpmxConnectorCommand = computed(() => {
     packageName: 'npmx-connector',
     packageManager: selectedPM.value,
   })
-})
-
-watch(open, isOpen => {
-  if (isOpen) {
-    tokenInput.value = ''
-    hasAttemptedConnect.value = false
-  }
 })
 </script>
 

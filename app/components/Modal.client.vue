@@ -1,26 +1,37 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   modalTitle: string
 }>()
 
+const dialogRef = ref<HTMLDialogElement>()
+
+const modalTitleId = computed(() => {
+  const id = getCurrentInstance()?.attrs.id
+  return id ? `${id}-title` : undefined
+})
+
 function handleModalClose() {
-  const modal = document.querySelector<HTMLDialogElement>('dialog:modal')
-  if (modal) {
-    modal.close()
-  }
+  dialogRef.value?.close()
 }
+
+defineExpose({
+  showModal: () => dialogRef.value?.showModal(),
+  close: () => dialogRef.value?.close(),
+})
 </script>
 
 <template>
   <Teleport to="body">
     <dialog
+      ref="dialogRef"
       closedby="any"
       class="w-full bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain m-0 m-auto p-6 text-white"
+      :aria-labelledby="modalTitleId"
       v-bind="$attrs"
     >
       <!-- Modal top header section -->
       <div class="flex items-center justify-between mb-6">
-        <h2 class="font-mono text-lg font-medium">
+        <h2 :id="modalTitleId" class="font-mono text-lg font-medium">
           {{ modalTitle }}
         </h2>
         <button

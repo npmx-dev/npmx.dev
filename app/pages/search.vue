@@ -323,8 +323,7 @@ const showClaimPrompt = computed(() => {
   )
 })
 
-// Modal state for claiming a package
-const claimModalOpen = shallowRef(false)
+const claimPackageModalRef = useTemplateRef('claimPackageModalRef')
 
 /**
  * Check if a string is a valid npm username/org name
@@ -742,7 +741,7 @@ defineOgImageComponent('Default', {
             <button
               type="button"
               class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-              @click="claimModalOpen = true"
+              @click="claimPackageModalRef?.open()"
             >
               {{ $t('search.claim_button', { name: query }) }}
             </button>
@@ -835,7 +834,7 @@ defineOgImageComponent('Default', {
                 <button
                   type="button"
                   class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                  @click="claimModalOpen = true"
+                  @click="claimPackageModalRef?.open()"
                 >
                   {{ $t('search.claim_button', { name: query }) }}
                 </button>
@@ -884,6 +883,6 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Claim package modal -->
-    <ClaimPackageModal v-model:open="claimModalOpen" :package-name="query" />
+    <ClaimPackageModal ref="claimPackageModalRef" :package-name="query" />
   </main>
 </template>
