@@ -1,11 +1,11 @@
 <template>
   <Transition name="fade">
     <div
-      class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      class="fixed inset-0 z-[1000] flex items-start justify-center bg-black/50 backdrop-blur-sm"
       v-show="show"
     >
       <div
-        class="cmdbar-container flex items-center justify-center border border-border shadow-lg rounded-xl bg-bg p2 flex-col gap-2"
+        class="cmdbar-container flex items-center justify-center border border-border shadow-lg rounded-xl bg-bg p2 flex-col gap-2 mt-5rem"
       >
         <label for="command-input" class="sr-only">command-input</label>
 
@@ -13,17 +13,16 @@
           <span class="absolute inset-is-4 text-fg-subtle font-mono pointer-events-none"> > </span>
           <input
             type="text"
-            label="Enter command..."
             v-model="inputVal"
             id="command-input"
             ref="inputRef"
             class="w-full h-full px-4 pl-8 text-fg outline-none bg-bg-subtle border border-border rounded-md"
-            placeholder="Enter command..."
+            :placeholder="placeholderText"
             @keydown="handleKeydown"
           />
         </search>
 
-        <div class="w-xl h-lg overflow-auto">
+        <div class="w-xl max-h-lg overflow-auto" v-if="view.type != 'INPUT'">
           <div
             v-for="item in filteredCmdList"
             :key="item.id"
@@ -32,7 +31,7 @@
               'bg-bg-subtle': item.id === selected,
               'trigger-anim': item.id === triggeringId,
             }"
-            @click="triggerCommand(item.id)"
+            @click="onTrigger(item.id)"
           >
             <div class="text-fg">{{ item.name }}</div>
             <div class="text-fg-subtle text-sm">{{ item.description }}</div>
@@ -44,6 +43,27 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
+
+type ViewState =
+  | { type: 'ROOT' }
+  | { type: 'INPUT'; prompt: string; resolve: (val: string) => void }
+  | { type: 'SELECT'; prompt: string; items: any[]; resolve: (val: any) => void }
+const view = ref<ViewState>({ type: 'ROOT' })
+
+const cmdCtx: CommandContext = {
+  async input(options) {
+    return new Promise(resolve => {
+      view.value = { type: 'INPUT', prompt: options.prompt, resolve }
+    })
+  },
+  async select(options) {
+    return new Promise(resolve => {
+      view.value = { type: 'SELECT', prompt: options.prompt, items: options.items, resolve }
+    })
+  },
+}
+
 const { commands } = useCommandRegistry()
 
 const selected = shallowRef(commands.value[0]?.id || '')
@@ -54,13 +74,26 @@ const inputRef = useTemplateRef('inputRef')
 
 const { focused: inputFocused } = useFocus(inputRef)
 
+const placeholderText = computed(() => {
+  if (view.value.type === 'INPUT' || view.value.type === 'SELECT') {
+    return view.value.prompt
+  }
+  return t('command.placeholder')
+})
+
 const filteredCmdList = computed(() => {
+  if (view.value.type === 'INPUT') {
+    return []
+  }
+
+  const list = view.value.type === 'SELECT' ? view.value.items : commands.value
+
   if (!inputVal.value) {
-    return commands.value
+    return list
   }
   const filter = inputVal.value.trim().toLowerCase()
-  return commands.value.filter(
-    item =>
+  return list.filter(
+    (item: any) =>
       item.name.toLowerCase().includes(filter) ||
       item.description?.toLowerCase().includes(filter) ||
       item.id.includes(filter),
@@ -84,6 +117,7 @@ function open() {
   inputVal.value = ''
   selected.value = commands.value[0]?.id || ''
   show.value = true
+  view.value = { type: 'ROOT' }
   nextTick(focusInput)
 }
 
@@ -101,20 +135,36 @@ function toggle() {
   }
 }
 
-function triggerCommand(id: string) {
-  const selectedItem = filteredCmdList.value.find(item => item.id === id)
-  selectedItem?.handler?.({} as CommandContext)
+function onTrigger(id: string) {
   triggeringId.value = id
-  setTimeout(() => {
+
+  if (view.value.type === 'ROOT') {
+    const selectedItem = filteredCmdList.value.find((item: any) => item.id === id)
+    selectedItem?.handler?.(cmdCtx)
+    setTimeout(() => {
+      triggeringId.value = ''
+      if (view.value.type === 'ROOT') {
+        close()
+      }
+    }, 100)
+  } else if (view.value.type === 'INPUT') {
+    view.value.resolve(inputVal.value)
     close()
-    triggeringId.value = ''
-  }, 100)
+  } else if (view.value.type === 'SELECT') {
+    const selectedItem = filteredCmdList.value.find((item: any) => item.id === id)
+    view.value.resolve(selectedItem)
+    close()
+  }
 }
 
 const handleKeydown = useThrottleFn((e: KeyboardEvent) => {
-  if (!filteredCmdList.value.length) return
+  if (view.value.type === 'INPUT' && e.key === 'Enter') {
+    e.preventDefault()
+    onTrigger('') // Trigger for input doesn't need ID
+    return
+  }
 
-  const currentIndex = filteredCmdList.value.findIndex(item => item.id === selected.value)
+  const currentIndex = filteredCmdList.value.findIndex((item: any) => item.id === selected.value)
 
   if (e.key === 'ArrowDown') {
     e.preventDefault()
@@ -127,7 +177,7 @@ const handleKeydown = useThrottleFn((e: KeyboardEvent) => {
     selected.value = filteredCmdList.value[prevIndex]?.id || ''
   } else if (e.key === 'Enter') {
     e.preventDefault()
-    triggerCommand(selected.value)
+    onTrigger(selected.value)
   } else if (e.key === 'Escape') {
     e.preventDefault()
     close()

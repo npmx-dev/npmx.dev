@@ -747,5 +747,14 @@
       "empty": "未找到组织",
       "view_all": "查看全部"
     }
+  },
+  "command": {
+    "placeholder": "输入命令...",
+    "copy_install": "复制安装命令",
+    "copy_install_desc": "复制安装命令到剪贴板",
+    "copy_run": "复制运行命令",
+    "copy_run_desc": "复制运行命令到剪贴板",
+    "copy_create": "复制创建命令",
+    "copy_create_desc": "复制创建命令到剪贴板"
   }
 }

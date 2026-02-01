@@ -2,6 +2,8 @@
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import type { PackageManagerId } from '~/utils/install-command'
 
+const { t } = useI18n()
+
 const props = defineProps<{
   packageName: string
   requestedVersion?: string | null
@@ -93,6 +95,37 @@ const copyRunCommand = (command?: string) => copyRun(getFullRunCommand(command))
 
 const { copied: createCopied, copy: copyCreate } = useClipboard({ copiedDuring: 2000 })
 const copyCreateCommand = () => copyCreate(getFullCreateCommand())
+
+registerScopedCommand({
+  id: 'package:install',
+  name: t('command.copy_install'),
+  description: t('command.copy_install_desc'),
+  handler: async () => {
+    copyInstallCommand()
+  },
+})
+
+if (props.executableInfo?.hasExecutable) {
+  registerScopedCommand({
+    id: 'packages:copy-run',
+    name: t('command.copy_run'),
+    description: t('command.copy_run_desc'),
+    handler: async () => {
+      copyRunCommand()
+    },
+  })
+}
+
+if (props.createPackageInfo) {
+  registerScopedCommand({
+    id: 'packages:copy-create',
+    name: t('command.copy_create'),
+    description: t('command.copy_create_desc'),
+    handler: async () => {
+      copyCreateCommand()
+    },
+  })
+}
 </script>
 
 <template>

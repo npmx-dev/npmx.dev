@@ -1,11 +1,22 @@
 export default defineNuxtPlugin(() => {
   const { register } = useCommandRegistry()
+  const router = useRouter()
+
   register({
-    id: 'npmx:hello',
-    name: 'Hello',
-    description: 'Say hello to npmx',
+    id: 'packages:search',
+    name: 'Search Packages',
+    description: 'Search for npm packages',
     handler: async () => {
-      console.log('Hello npmx!')
+      const searchInput = document.querySelector<HTMLInputElement>(
+        'input[type="search"], input[name="q"]',
+      )
+
+      if (searchInput) {
+        searchInput.focus()
+        return
+      }
+
+      router.push('/search')
     },
   })
 })
