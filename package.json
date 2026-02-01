@@ -11,11 +11,11 @@
   },
   "scripts": {
     "build": "nuxt build",
-    "build:lunaria": "node --experimental-transform-types ./lunaria/lunaria.ts",
+    "build:lunaria": "node ./lunaria/lunaria.ts",
     "dev": "nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
-    "i18n:check": "node --experimental-transform-types scripts/compare-translations.ts",
-    "i18n:check:fix": "node --experimental-transform-types scripts/compare-translations.ts --fix",
+    "i18n:check": "node scripts/compare-translations.ts",
+    "i18n:check:fix": "node scripts/compare-translations.ts --fix",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "vite lint && vite fmt --check",
@@ -112,6 +112,9 @@
     "vitest": "npm:@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vitest-environment-nuxt": "1.0.1",
     "vue-tsc": "3.2.4"
+  },
+  "engines": {
+    "node": ">=24"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

@@ -118,7 +118,7 @@ const pkgDescription = useMarkdown(() => ({
           <div class="flex items-center gap-1.5">
             <dt class="sr-only">{{ $t('package.card.weekly_downloads') }}</dt>
             <dd class="flex items-center gap-1.5">
-              <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+              <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
               <span class="font-mono">{{ $n(result.downloads.weekly) }}/w</span>
             </dd>
           </div>
@@ -152,7 +152,7 @@ const pkgDescription = useMarkdown(() => ({
           v-if="result.downloads?.weekly"
           class="text-fg-subtle gap-2 flex items-center justify-end"
         >
-          <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+          <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
           <span class="font-mono text-xs">
             {{ $n(result.downloads.weekly) }} {{ $t('common.per_week') }}
           </span>

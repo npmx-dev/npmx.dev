@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <article class="readme prose prose-invert max-w-[70ch]" v-html="html" />
+  <article class="readme prose prose-invert max-w-[70ch] lg:max-w-none" v-html="html" />
 </template>
 
 <style scoped>
