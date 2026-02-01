@@ -255,6 +255,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       name: '한국어',
     },*/
   {
+    code: 'id-ID',
+    file: 'id-ID.json',
+    name: 'Indonesia',
+  },
+  {
     code: 'it-IT',
     file: 'it-IT.json',
     name: 'Italiano',

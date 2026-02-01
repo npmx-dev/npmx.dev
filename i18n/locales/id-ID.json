@@ -1,0 +1,843 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - Penjelajah Paket untuk Registri npm",
+      "description": "Cara yang lebih baik untuk menjelajahi registri npm. Cari, telusuri, dan pelajari paket dengan antarmuka modern."
+    }
+  },
+  "version": "Versi",
+  "built_at": "dibuat {0}",
+  "alt_logo": "logo npmx",
+  "tagline": "cara lebih baik menjelajahi registri npm",
+  "non_affiliation_disclaimer": "tidak berafiliasi dengan npm, Inc.",
+  "trademark_disclaimer": "npm adalah merek dagang terdaftar dari npm, Inc. Situs ini tidak berafiliasi dengan npm, Inc.",
+  "footer": {
+    "about": "tentang",
+    "docs": "dokumen",
+    "source": "sumber",
+    "social": "sosial",
+    "chat": "obrolan"
+  },
+  "search": {
+    "label": "Cari paket npm",
+    "placeholder": "cari paket...",
+    "button": "cari",
+    "clear": "Hapus pencarian",
+    "searching": "Mencari...",
+    "found_packages": "Paket tidak ditemukan | Ditemukan 1 paket | Ditemukan {count} paket",
+    "updating": "(memperbarui...)",
+    "no_results": "Tidak ada paket yang ditemukan untuk \"{query}\"",
+    "results": "Hasil pencarian",
+    "not_taken": "{name} tersedia",
+    "claim_prompt": "Klaim nama paket ini di npm",
+    "claim_button": "Klaim \"{name}\"",
+    "want_to_claim": "Ingin klaim nama paket ini?",
+    "start_typing": "Mulai mengetik untuk mencari paket",
+    "exact_match": "persis",
+    "suggestion": {
+      "user": "pengguna",
+      "org": "organisasi",
+      "view_user_packages": "Lihat paket oleh pengguna ini",
+      "view_org_packages": "Lihat paket oleh organisasi ini"
+    }
+  },
+  "nav": {
+    "main_navigation": "Utama",
+    "popular_packages": "Paket populer",
+    "search": "cari",
+    "settings": "pengaturan",
+    "compare": "bandingkan",
+    "back": "kembali",
+    "menu": "Menu",
+    "mobile_menu": "Menu navigasi",
+    "open_menu": "Buka menu",
+    "links": "Tautan",
+    "tap_to_search": "Ketuk untuk mencari"
+  },
+  "settings": {
+    "title": "pengaturan",
+    "tagline": "sesuaikan pengalaman npmx Anda",
+    "meta_description": "Sesuaikan pengalaman npmx.dev Anda dengan tema, bahasa, dan preferensi tampilan.",
+    "sections": {
+      "appearance": "Tampilan",
+      "display": "Layar",
+      "language": "Bahasa"
+    },
+    "relative_dates": "Format tanggal relatif",
+    "relative_dates_description": "Tampilkan \"3 hari yang lalu\" alih-alih tanggal lengkap",
+    "include_types": "Sertakan {'@'}types saat instal",
+    "include_types_description": "Tambahkan paket {'@'}types ke perintah instalasi untuk paket tanpa tipe",
+    "hide_platform_packages": "Sembunyikan paket spesifik-platform",
+    "hide_platform_packages_description": "Sembunyikan paket biner asli seperti {'@'}esbuild/linux-x64 dari hasil",
+    "theme": "Tema",
+    "theme_light": "Terang",
+    "theme_dark": "Gelap",
+    "theme_system": "Sistem",
+    "language": "Bahasa",
+    "help_translate": "Bantu terjemahkan npmx",
+    "accent_colors": "Warna aksen",
+    "clear_accent": "Hapus warna aksen",
+    "translation_progress": "Progres terjemahan"
+  },
+  "i18n": {
+    "missing_keys": "{count} terjemahan hilang | {count} terjemahan hilang",
+    "copy_keys": "Salin key",
+    "show_more_keys": "Tampilkan {count} lagi...",
+    "contribute_hint": "Bantu tingkatkan terjemahan ini dengan menambahkan key yang hilang.",
+    "edit_on_github": "Edit di GitHub",
+    "view_guide": "Panduan terjemahan"
+  },
+  "common": {
+    "loading": "Memuat...",
+    "loading_more": "Memuat lebih banyak...",
+    "loading_packages": "Memuat paket...",
+    "end_of_results": "Akhir dari hasil",
+    "try_again": "Coba lagi",
+    "close": "Tutup",
+    "retry": "Ulangi",
+    "copy": "salin",
+    "copied": "tersalin!",
+    "skip_link": "Lanjut ke konten utama",
+    "close_modal": "Tutup modal",
+    "show_more": "lihat lebih banyak",
+    "warnings": "Peringatan:",
+    "go_back_home": "Kembali ke Beranda",
+    "view_on_npm": "lihat di npm",
+    "per_week": "/ minggu",
+    "vanity_downloads_hint": "Angka statistik: tidak ada paket | Angka statistik: untuk paket yang tampil | Angka statistik: Total dari {count} paket yang tampil",
+    "sort": {
+      "name": "nama",
+      "role": "peran",
+      "members": "anggota"
+    },
+    "scroll_to_top": "Kembali ke atas"
+  },
+  "package": {
+    "not_found": "Paket Tidak Ditemukan",
+    "not_found_message": "Paket tidak dapat ditemukan.",
+    "no_description": "Tidak ada deskripsi",
+    "show_full_description": "Tampilkan deskripsi lengkap",
+    "not_latest": "(bukan versi terbaru)",
+    "verified_provenance": "Provenans terverifikasi",
+    "view_permalink": "Lihat permalink untuk versi ini",
+    "navigation": "Paket",
+    "copy_name": "Salin nama paket",
+    "deprecation": {
+      "package": "Paket ini telah usang (deprecated).",
+      "version": "Versi ini telah usang (deprecated).",
+      "no_reason": "Alasan tidak diberikan"
+    },
+    "replacement": {
+      "title": "Mungkin Anda tidak butuh dependensi ini.",
+      "native": "Ini bisa diganti dengan {replacement}, tersedia sejak Node {nodeVersion}.",
+      "simple": "{community} menganggap paket ini redundan, dengan saran: {replacement}.",
+      "documented": "{community} menganggap paket ini memiliki alternatif yang lebih berperforma.",
+      "none": "Paket ini ditandai sudah tidak diperlukan, fungsinya kemungkinan sudah tersedia secara bawaan (native).",
+      "learn_more": "Pelajari lebih lanjut",
+      "mdn": "MDN",
+      "community": "komunitas"
+    },
+    "stats": {
+      "license": "Lisensi",
+      "deps": "Dep",
+      "install_size": "Ukuran Instal",
+      "vulns": "Kerentanan",
+      "updated": "Diperbarui",
+      "view_dependency_graph": "Lihat grafik dependensi",
+      "inspect_dependency_tree": "Periksa pohon dependensi",
+      "size_tooltip": {
+        "unpacked": "{size} ukuran tidak terkompresi (paket ini)",
+        "total": "{size} total ukuran tidak terkompresi (termasuk semua {count} dependensi untuk linux-x64)"
+      }
+    },
+    "links": {
+      "repo": "repo",
+      "homepage": "beranda",
+      "issues": "kendala",
+      "jsr": "jsr",
+      "code": "kode",
+      "docs": "dokumen",
+      "fund": "donasi",
+      "compare": "bandingkan"
+    },
+    "docs": {
+      "not_available": "Dokumen tidak tersedia",
+      "not_available_detail": "Kami tidak dapat membuat dokumen untuk versi ini."
+    },
+    "get_started": {
+      "title": "Memulai",
+      "pm_label": "Manajer paket",
+      "copy_command": "Salin perintah instal",
+      "view_types": "Lihat {package}"
+    },
+    "create": {
+      "title": "Buat proyek baru",
+      "copy_command": "Salin perintah 'create'"
+    },
+    "run": {
+      "title": "Jalankan",
+      "locally": "Jalankan secara lokal"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "README tidak tersedia.",
+      "view_on_github": "Lihat di GitHub"
+    },
+    "keywords_title": "Kata Kunci",
+    "compatibility": "Kompatibilitas",
+    "card": {
+      "publisher": "Penerbit",
+      "updated": "Diperbarui",
+      "weekly_downloads": "Unduhan mingguan",
+      "keywords": "Kata kunci",
+      "license": "Lisensi"
+    },
+    "versions": {
+      "title": "Versi",
+      "collapse": "Ciutkan {tag}",
+      "expand": "Expand {tag}",
+      "collapse_other": "Ciutkan versi lain",
+      "expand_other": "Tampilkan versi lain",
+      "collapse_major": "Ciutkan major {major}",
+      "expand_major": "Expand major {major}",
+      "other_versions": "Versi lainnya",
+      "more_tagged": "{count} lagi dengan tag",
+      "all_covered": "Semua versi sudah tercakup oleh tag di atas",
+      "deprecated_title": "{version} (usang)",
+      "view_all": "Lihat {count} versi | Lihat semua {count} versi"
+    },
+    "dependencies": {
+      "title": "Dependensi ({count})",
+      "list_label": "Dependensi paket",
+      "show_all": "tampilkan {count} dep | tampilkan semua {count} dep",
+      "optional": "opsional",
+      "view_vulnerabilities": "Lihat kerentanan",
+      "outdated_major": "Tertinggal {count} versi major (terbaru: {latest}) | Tertinggal {count} versi major (terbaru: {latest})",
+      "outdated_minor": "Tertinggal {count} versi minor (terbaru: {latest}) | Tertinggal {count} versi minor (terbaru: {latest})",
+      "outdated_patch": "Pembaruan patch tersedia (terbaru: {latest})"
+    },
+    "peer_dependencies": {
+      "title": "Peer Dependencies ({count})",
+      "list_label": "Peer dependencies paket",
+      "show_all": "tampilkan {count} peer dep | tampilkan semua {count} peer dep"
+    },
+    "optional_dependencies": {
+      "title": "Optional Dependencies ({count})",
+      "list_label": "Optional dependencies paket",
+      "show_all": "tampilkan {count} optional dep | tampilkan semua {count} optional dep"
+    },
+    "maintainers": {
+      "title": "Pemelihara",
+      "list_label": "Pemelihara paket",
+      "you": "(Anda)",
+      "via": "via {teams}",
+      "remove_owner": "Hapus {name} sebagai pemilik",
+      "username_to_add": "Username untuk ditambah sebagai pemilik",
+      "username_placeholder": "username...",
+      "add_button": "tambah",
+      "cancel_add": "Batal menambah pemilik",
+      "add_owner": "+ Tambah pemilik",
+      "show_more": "(tampilkan {count} lagi)",
+      "show_less": "(tampilkan lebih sedikit)"
+    },
+    "downloads": {
+      "title": "Unduhan Mingguan",
+      "date_range": "{start} sampai {end}",
+      "date_range_multiline": "{start}\nsampai {end}",
+      "analyze": "Analisis unduhan",
+      "modal_title": "Unduhan",
+      "granularity": "Granularitas",
+      "granularity_daily": "Harian",
+      "granularity_weekly": "Mingguan",
+      "granularity_monthly": "Bulanan",
+      "granularity_yearly": "Tahunan",
+      "start_date": "Mulai",
+      "end_date": "Selesai",
+      "no_data": "Data unduhan tidak tersedia",
+      "loading": "Memuat...",
+      "y_axis_label": "Unduhan {granularity}",
+      "download_file": "Unduh {fileType}",
+      "toggle_annotator": "Ganti anotator"
+    },
+    "install_scripts": {
+      "title": "Skrip Instalasi",
+      "script_label": "(skrip)",
+      "npx_packages": "{count} paket npx | {count} paket npx",
+      "currently": "saat ini {version}"
+    },
+    "playgrounds": {
+      "title": "Coba langsung",
+      "choose": "pilih playground"
+    },
+    "metrics": {
+      "esm": "Mendukung ES Modules",
+      "cjs": "Mendukung CommonJS",
+      "no_esm": "Tidak mendukung ES Modules",
+      "types_label": "Tipe",
+      "types_included": "Tipe sudah disertakan",
+      "types_available": "Tipe tersedia via {package}",
+      "no_types": "Tidak ada tipe TypeScript"
+    },
+    "license": {
+      "view_spdx": "Lihat teks lisensi di SPDX"
+    },
+    "vulnerabilities": {
+      "no_description": "Deskripsi tidak tersedia",
+      "found": "{count} kerentanan ditemukan | {count} kerentanan ditemukan",
+      "deps_found": "{count} kerentanan ditemukan | {count} kerentanan ditemukan",
+      "deps_affected": "{count} dependensi terdampak | {count} dependensi terdampak",
+      "tree_found": "{vulns} kerentanan di {packages}/{total} paket | {vulns} kerentanan di {packages}/{total} paket",
+      "scanning_tree": "Memindai pohon dependensi...",
+      "show_all_packages": "tampilkan semua {count} paket terdampak",
+      "no_summary": "Tanpa ringkasan",
+      "view_details": "Lihat detail kerentanan",
+      "path": "path",
+      "more": "+{count} lagi",
+      "packages_failed": "{count} paket tidak dapat diperiksa | {count} paket tidak dapat diperiksa",
+      "no_known": "Tidak ada kerentanan yang diketahui di {count} paket",
+      "scan_failed": "Gagal memindai kerentanan",
+      "depth": {
+        "root": "Paket ini",
+        "direct": "Dependensi langsung",
+        "transitive": "Dependensi transitif (tidak langsung)"
+      },
+      "severity": {
+        "critical": "kritis",
+        "high": "tinggi",
+        "moderate": "sedang",
+        "low": "rendah"
+      }
+    },
+    "deprecated": {
+      "label": "Usang",
+      "tree_found": "{count} dependensi usang | {count} dependensi usang",
+      "show_all": "tampilkan {count} paket usang | tampilkan semua {count} paket usang"
+    },
+    "access": {
+      "title": "Akses Tim",
+      "refresh": "Perbarui akses tim",
+      "list_label": "Daftar akses tim",
+      "owner": "pemilik",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "Cabut akses {name}",
+      "no_access": "Akses tim belum dikonfigurasi",
+      "select_team_label": "Pilih tim",
+      "loading_teams": "Memuat tim...",
+      "select_team": "Pilih tim",
+      "permission_label": "Level izin",
+      "permission": {
+        "read_only": "hanya-baca",
+        "read_write": "baca-tulis"
+      },
+      "grant_button": "berikan",
+      "cancel_grant": "Batal berikan akses",
+      "grant_access": "+ Berikan akses tim"
+    },
+    "list": {
+      "filter_label": "Filter paket",
+      "filter_placeholder": "Filter paket...",
+      "sort_label": "Urutkan paket",
+      "showing_count": "Menampilkan {filtered} dari {total} paket"
+    },
+    "skeleton": {
+      "loading": "Memuat detail paket",
+      "license": "Lisensi",
+      "weekly": "Mingguan",
+      "size": "Ukuran",
+      "deps": "Dep",
+      "updated": "Diperbarui",
+      "get_started": "Memulai",
+      "readme": "Readme",
+      "maintainers": "Pemelihara",
+      "keywords": "Kata kunci",
+      "versions": "Versi",
+      "dependencies": "Dependensi"
+    },
+    "sort": {
+      "downloads": "Paling banyak diunduh",
+      "updated": "Terakhir diperbarui",
+      "name_asc": "Nama (A-Z)",
+      "name_desc": "Nama (Z-A)"
+    }
+  },
+  "connector": {
+    "status": {
+      "connecting": "menghubungkan...",
+      "connected_as": "terhubung sebagai ~{user}",
+      "connected": "terhubung",
+      "connect_cli": "hubungkan CLI lokal",
+      "aria_connecting": "Menghubungkan ke konektor lokal",
+      "aria_connected": "Terhubung ke konektor lokal",
+      "aria_click_to_connect": "Klik untuk terhubung ke konektor lokal",
+      "avatar_alt": "avatar {user}"
+    },
+    "modal": {
+      "title": "Konektor Lokal",
+      "contributor_badge": "Hanya untuk kontributor",
+      "contributor_notice": "Konektor belum diterbitkan ke npm. Lihat {link} untuk cara menjalankannya secara lokal.",
+      "contributor_link": "panduan kontribusi",
+      "connected": "Terhubung",
+      "connected_as_user": "Terhubung sebagai ~{user}",
+      "connected_hint": "Anda sekarang dapat mengelola paket dan organisasi dari UI web.",
+      "disconnect": "Putuskan",
+      "run_hint": "Jalankan konektor pada mesin Anda untuk mengaktifkan fitur admin.",
+      "copy_command": "Salin perintah",
+      "copied": "Tersalin",
+      "paste_token": "Lalu tempel token di bawah untuk menghubungkan:",
+      "token_label": "Token",
+      "token_placeholder": "tempel token di sini...",
+      "advanced": "Opsi lanjutan",
+      "port_label": "Port",
+      "warning": "PERINGATAN",
+      "warning_text": "Ini memungkinkan npmx mengakses npm CLI Anda. Hanya hubungkan ke situs yang Anda percayai.",
+      "connect": "Hubungkan",
+      "connecting": "Menghubungkan..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Antrean Operasi",
+      "clear_all": "hapus semua",
+      "refresh": "Perbarui operasi",
+      "empty": "Tidak ada operasi dalam antrean",
+      "empty_hint": "Tambah operasi dari halaman paket atau organisasi",
+      "active_label": "Operasi aktif",
+      "otp_required": "Diperlukan OTP",
+      "otp_prompt": "Masukkan OTP untuk melanjutkan",
+      "otp_placeholder": "Masukkan kode OTP...",
+      "otp_label": "Kata sandi sekali-pakai",
+      "retry_otp": "Ulangi dengan OTP",
+      "retrying": "Mengulangi...",
+      "approve_operation": "Setujui operasi",
+      "remove_operation": "Hapus operasi",
+      "approve_all": "Setujui Semua",
+      "execute": "Eksekusi",
+      "executing": "Mengeksekusi...",
+      "log": "Log",
+      "log_label": "Log operasi selesai",
+      "remove_from_log": "Hapus dari log"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Tim",
+      "refresh": "Perbarui tim",
+      "filter_label": "Filter tim",
+      "filter_placeholder": "Filter tim...",
+      "sort_by": "Urutkan berdasarkan",
+      "loading": "Memuat tim...",
+      "no_teams": "Tim tidak ditemukan",
+      "list_label": "Tim organisasi",
+      "delete_team": "Hapus tim {name}",
+      "member_count": "{count} anggota | {count} anggota",
+      "members_of": "Anggota dari {team}",
+      "no_members": "Tidak ada anggota",
+      "remove_user": "Hapus {user} dari tim",
+      "username_to_add": "Username untuk ditambah ke {team}",
+      "username_placeholder": "username...",
+      "add_button": "tambah",
+      "cancel_add_user": "Batal menambah pengguna",
+      "add_member": "+ Tambah anggota",
+      "team_name_label": "Nama tim",
+      "team_name_placeholder": "nama-tim...",
+      "create_button": "buat",
+      "no_match": "Tidak ada tim yang cocok dengan \"{query}\"",
+      "cancel_create": "Batal membuat tim",
+      "create_team": "+ Buat tim"
+    },
+    "members": {
+      "title": "Anggota",
+      "refresh": "Perbarui anggota",
+      "filter_label": "Filter anggota",
+      "filter_placeholder": "Filter anggota...",
+      "filter_by_role": "Filter peran",
+      "filter_by_team": "Filter tim",
+      "all_teams": "semua tim",
+      "sort_by": "Urutkan berdasarkan",
+      "loading": "Memuat anggota...",
+      "no_members": "Anggota tidak ditemukan",
+      "list_label": "Anggota organisasi",
+      "change_role_for": "Ubah peran untuk {name}",
+      "remove_from_org": "Hapus {name} dari organisasi",
+      "view_team": "Lihat tim {team}",
+      "no_match": "Tidak ada anggota yang cocok dengan filter",
+      "username_label": "Username",
+      "username_placeholder": "username...",
+      "role_label": "Peran",
+      "role": {
+        "all": "semua",
+        "developer": "developer",
+        "admin": "admin",
+        "owner": "pemilik"
+      },
+      "team_label": "Tim",
+      "no_team": "tanpa tim",
+      "add_button": "tambah",
+      "cancel_add": "Batal menambah anggota",
+      "add_member": "+ Tambah anggota"
+    },
+    "public_packages": "{count} paket publik | {count} paket publik",
+    "page": {
+      "packages_title": "Paket",
+      "members_tab": "Anggota",
+      "teams_tab": "Tim",
+      "no_packages": "Tidak ada paket publik untuk",
+      "no_packages_hint": "Organisasi ini mungkin tidak ada atau tidak memiliki paket publik.",
+      "failed_to_load": "Gagal memuat paket organisasi",
+      "no_match": "Tidak ada paket yang cocok dengan \"{query}\"",
+      "not_found": "Organisasi tidak ditemukan",
+      "not_found_message": "Organisasi \"{'@'}{name}\" tidak ada di npm",
+      "filter_placeholder": "Filter {count} paket..."
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(juga akan ditambahkan ke org)",
+      "press_enter_to_add": "Tekan Enter untuk menambah {'@'}{username}",
+      "default_placeholder": "username...",
+      "suggestions_label": "Saran pengguna"
+    },
+    "page": {
+      "packages_title": "Paket",
+      "no_packages": "Tidak ada paket publik untuk",
+      "no_packages_hint": "Pengguna ini mungkin tidak ada atau tidak memiliki paket publik.",
+      "failed_to_load": "Gagal memuat paket pengguna",
+      "no_match": "Tidak ada paket yang cocok dengan \"{query}\"",
+      "filter_placeholder": "Filter {count} paket..."
+    },
+    "orgs_page": {
+      "title": "Organisasi",
+      "back_to_profile": "Kembali ke profil",
+      "connect_required": "Hubungkan CLI lokal untuk melihat organisasi Anda.",
+      "connect_hint_prefix": "Jalankan",
+      "connect_hint_suffix": "untuk memulai.",
+      "own_orgs_only": "Anda hanya dapat melihat organisasi Anda sendiri.",
+      "view_your_orgs": "Lihat organisasi Anda",
+      "loading": "Memuat organisasi...",
+      "empty": "Organisasi tidak ditemukan.",
+      "empty_hint": "Organisasi terdeteksi dari paket scoped Anda.",
+      "count": "{count} Organisasi | {count} Organisasi",
+      "packages_count": "{count} paket | {count} paket"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Klaim Nama Paket",
+      "success": "Paket berhasil diklaim!",
+      "success_detail": "{name}{'@'}0.0.0 telah diterbitkan ke npm.",
+      "success_hint": "Anda sekarang dapat menerbitkan versi baru ke paket ini menggunakan npm publish.",
+      "view_package": "Lihat Paket",
+      "invalid_name": "Nama paket tidak valid:",
+      "available": "Nama ini tersedia!",
+      "taken": "Nama ini sudah digunakan.",
+      "similar_warning": "Paket serupa ditemukan - npm mungkin menolak nama ini:",
+      "related": "Paket terkait:",
+      "scope_warning_title": "Pertimbangkan untuk menggunakan paket scoped",
+      "scope_warning_text": "Nama paket unscoped adalah sumber daya bersama. Hanya klaim nama jika Anda berniat untuk menerbitkan dan memeliharanya. Untuk proyek pribadi atau organisasi, gunakan nama scoped seperti {'@'}{username}/{name}.",
+      "connect_required": "Hubungkan ke konektor lokal untuk mengklaim nama paket ini.",
+      "connect_button": "Hubungkan ke Konektor",
+      "publish_hint": "Ini akan menerbitkan paket placeholder minimal.",
+      "preview_json": "Pratinjau package.json",
+      "claim_button": "Klaim Nama Paket",
+      "publishing": "Menerbitkan...",
+      "checking": "Memeriksa ketersediaan...",
+      "failed_to_check": "Gagal memeriksa ketersediaan nama",
+      "failed_to_claim": "Gagal mengklaim paket"
+    }
+  },
+  "code": {
+    "files_label": "Berkas",
+    "no_files": "Tidak ada berkas di direktori ini",
+    "select_version": "Pilih versi",
+    "root": "root",
+    "lines": "{count} baris",
+    "toggle_tree": "Ganti pohon berkas",
+    "close_tree": "Tutup pohon berkas",
+    "copy_link": "Salin tautan",
+    "raw": "Raw",
+    "view_raw": "Lihat berkas mentah",
+    "file_too_large": "Berkas terlalu besar untuk pratinjau",
+    "file_size_warning": "{size} melebihi batas 500KB untuk penyorotan sintaksis",
+    "load_anyway": "Tetap muat",
+    "failed_to_load": "Gagal memuat berkas",
+    "unavailable_hint": "Berkas mungkin terlalu besar atau tidak tersedia",
+    "version_required": "Versi diperlukan untuk menjelajahi kode",
+    "go_to_package": "Buka paket",
+    "loading_tree": "Memuat pohon berkas...",
+    "failed_to_load_tree": "Gagal memuat berkas untuk versi paket ini",
+    "back_to_package": "Kembali ke paket",
+    "table": {
+      "name": "Nama",
+      "size": "Ukuran"
+    },
+    "markdown_view_mode": {
+      "preview": "pratinjau",
+      "code": "kode"
+    },
+    "file_path": "Jalur berkas"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "terverifikasi",
+      "verified_title": "Provenans terverifikasi",
+      "verified_via": "Terverifikasi: diterbitkan via {provider}"
+    },
+    "jsr": {
+      "title": "juga tersedia di JSR",
+      "label": "jsr"
+    }
+  },
+  "filters": {
+    "title": "Filter",
+    "search": "Cari",
+    "search_scope": "Cakupan pencarian",
+    "search_placeholder_name": "Filter berdasarkan nama paket...",
+    "search_placeholder_description": "Filter berdasarkan deskripsi...",
+    "search_placeholder_keywords": "Filter berdasarkan kata kunci...",
+    "search_placeholder_all": "Cari semua atau gunakan nama: deskripsi: kw:",
+    "scope_name": "Nama",
+    "scope_name_description": "Hanya cari di nama paket",
+    "scope_description": "Deskripsi",
+    "scope_description_description": "Hanya cari di deskripsi",
+    "scope_keywords": "Kata Kunci",
+    "scope_keywords_description": "Hanya cari di kata kunci",
+    "scope_all": "Semua",
+    "scope_all_description": "Cari di semua kolom, mendukung operator nama: desc: kw:",
+    "weekly_downloads": "Unduhan mingguan",
+    "updated_within": "Diperbarui dalam",
+    "security": "Keamanan",
+    "keywords": "Kata kunci",
+    "more_keywords": "+{count} lagi",
+    "clear_all": "Hapus semua",
+    "remove_filter": "Hapus filter {label}",
+    "download_range": {
+      "any": "Apa pun",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Kapan pun",
+      "week": "Seminggu terakhir",
+      "month": "Sebulan terakhir",
+      "quarter": "3 bulan terakhir",
+      "year": "Setahun terakhir"
+    },
+    "security_options": {
+      "all": "Semua paket",
+      "secure": "Tanpa peringatan",
+      "insecure": "Dengan peringatan"
+    },
+    "sort": {
+      "label": "Urutkan paket",
+      "toggle_direction": "Ganti arah urutan",
+      "ascending": "Naik (A-Z)",
+      "descending": "Turun (Z-A)",
+      "relevance": "Relevansi",
+      "downloads_week": "Unduhan/minggu",
+      "downloads_day": "Unduhan/hari",
+      "downloads_month": "Unduhan/bulan",
+      "downloads_year": "Unduhan/tahun",
+      "updated": "Pembaruan Terakhir",
+      "name": "Nama",
+      "quality": "Kualitas",
+      "popularity": "Popularitas",
+      "maintenance": "Pemeliharaan",
+      "score": "Skor"
+    },
+    "columns": {
+      "title": "Kolom",
+      "show": "Tampilkan kolom",
+      "reset": "Atur ulang ke bawaan",
+      "coming_soon": "Segera hadir",
+      "name": "Nama",
+      "version": "Versi",
+      "description": "Deskripsi",
+      "downloads": "Unduhan/minggu",
+      "updated": "Pembaruan Terakhir",
+      "maintainers": "Pemelihara",
+      "keywords": "Kata kunci",
+      "quality_score": "Skor kualitas",
+      "popularity_score": "Skor popularitas",
+      "maintenance_score": "Skor pemeliharaan",
+      "combined_score": "Skor gabungan",
+      "security": "Keamanan"
+    },
+    "view_mode": {
+      "label": "Mode tampilan",
+      "cards": "Tampilan kartu",
+      "table": "Tampilan tabel"
+    },
+    "pagination": {
+      "mode_label": "Mode paginasi",
+      "infinite": "Tak terbatas",
+      "paginated": "Terpaginasi",
+      "items_per_page": "Item per halaman",
+      "per_page": "{count} / halaman",
+      "all_yolo": "Semua (YOLO)",
+      "showing": "{start}-{end} dari {total}",
+      "previous": "Halaman sebelumnya",
+      "next": "Halaman berikutnya",
+      "nav_label": "Paginasi"
+    },
+    "count": {
+      "showing_filtered": "{filtered} dari {count} paket | {filtered} dari {count} paket",
+      "showing_all": "{count} paket | {count} paket",
+      "showing_paginated": "{pageSize} dari {count} paket | {pageSize} dari {count} paket"
+    },
+    "table": {
+      "security_warning": "Peringatan keamanan",
+      "secure": "Aman",
+      "no_packages": "Paket tidak ditemukan"
+    }
+  },
+  "about": {
+    "title": "Tentang",
+    "heading": "tentang",
+    "meta_description": "npmx adalah penjelajah cepat dan modern untuk registri npm. UX/DX yang lebih baik untuk mencari paket npm.",
+    "back_home": "kembali ke beranda",
+    "what_we_are": {
+      "title": "Apa itu npmx",
+      "better_ux_dx": "UX/DX yang lebih baik",
+      "admin_ui": "UI admin",
+      "description": "npmx adalah {betterUxDx} untuk registri dan perkakas paket npm. Kami menyediakan antarmuka modern yang cepat untuk menjelajahi paket, dengan fitur seperti mode gelap, navigasi keyboard, penjelajahan kode, dan koneksi ke registri alternatif seperti {jsr}.",
+      "admin_description": "Kami juga bertujuan menyediakan {adminUi} yang lebih baik untuk mengelola paket, tim, dan organisasi Anda — semua dari peramban, didukung oleh npm CLI lokal Anda."
+    },
+    "what_we_are_not": {
+      "title": "Apa yang bukan npmx",
+      "not_package_manager": "Bukan manajer paket.",
+      "not_registry": "Bukan registri.",
+      "registry_description": "Kami tidak menghosting paket. Kami hanyalah cara yang lebih baik untuk menjelajahinya.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Sudah ada",
+        "people": "banyak",
+        "building": "orang",
+        "really": "yang",
+        "cool": "membangun",
+        "package": "manajer paket",
+        "managers": "yang keren"
+      }
+    },
+    "contributors": {
+      "title": "Kontributor",
+      "description": "npmx sepenuhnya sumber terbuka (open source), dibangun oleh komunitas kontributor yang luar biasa. Bergabunglah dengan kami dan mari bangun pengalaman menjelajah npm yang selalu kita inginkan, bersama-sama.",
+      "loading": "Memuat kontributor...",
+      "error": "Gagal memuat kontributor",
+      "view_profile": "Lihat profil GitHub {name}"
+    },
+    "get_involved": {
+      "title": "Ikut terlibat",
+      "contribute": {
+        "title": "Kontribusi",
+        "description": "Bantu kami membangun pengalaman npm yang lebih baik.",
+        "cta": "Lihat di GitHub"
+      },
+      "community": {
+        "title": "Gabung komunitas",
+        "description": "Obrolkan, ajukan pertanyaan, dan bagikan ide.",
+        "cta": "Gabung Discord"
+      },
+      "follow": {
+        "title": "Tetap terbarui",
+        "description": "Temukan kabar terbaru tentang npmx.",
+        "cta": "Ikuti di Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "hubungkan",
+    "account": "Akun",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Kelola paket & org",
+    "atmosphere_desc": "Fitur sosial & identitas",
+    "connect_npm_cli": "Hubungkan ke npm CLI",
+    "connect_atmosphere": "Hubungkan ke Atmosphere",
+    "connecting": "Menghubungkan...",
+    "ops": "{count} op | {count} op",
+    "disconnect": "Putuskan"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Terhubung sebagai {'@'}{handle}",
+      "disconnect": "Putuskan",
+      "connect_prompt": "Hubungkan dengan akun Atmosphere Anda",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Hubungkan",
+      "create_account": "Buat akun baru",
+      "connect_bluesky": "Hubungkan dengan Bluesky",
+      "what_is_atmosphere": "Apa itu akun Atmosphere?",
+      "atmosphere_explanation": "{npmx} menggunakan {atproto} untuk mendukung berbagai fitur sosialnya, memungkinkan pengguna memiliki data mereka sendiri dan menggunakan satu akun untuk semua aplikasi yang kompatibel. Setelah membuat akun, Anda dapat menggunakan aplikasi lain seperti {bluesky} dan {tangled} dengan akun yang sama."
+    }
+  },
+  "header": {
+    "home": "beranda npmx",
+    "github": "GitHub",
+    "packages": "paket",
+    "packages_dropdown": {
+      "title": "Paket Anda",
+      "loading": "Memuat...",
+      "error": "Gagal memuat paket",
+      "empty": "Paket tidak ditemukan",
+      "view_all": "Lihat semua"
+    },
+    "orgs": "organisasi",
+    "orgs_dropdown": {
+      "title": "Organisasi Anda",
+      "loading": "Memuat...",
+      "error": "Gagal memuat organisasi",
+      "empty": "Organisasi tidak ditemukan",
+      "view_all": "Lihat semua"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "bandingkan paket",
+      "tagline": "bandingkan paket npm secara berdampingan untuk membantu Anda memilih yang tepat.",
+      "meta_title": "Bandingkan {packages} - npmx",
+      "meta_title_empty": "Bandingkan Paket - npmx",
+      "meta_description": "Perbandingan berdampingan untuk {packages}",
+      "meta_description_empty": "Bandingkan paket npm secara berdampingan",
+      "section_packages": "Paket",
+      "section_facets": "Aspek",
+      "section_comparison": "Perbandingan",
+      "loading": "Memuat data paket...",
+      "error": "Gagal memuat data paket. Silakan coba lagi.",
+      "empty_title": "Pilih paket untuk dibandingkan",
+      "empty_description": "Cari dan tambahkan setidaknya 2 paket di atas untuk melihat perbandingan metrik mereka secara berdampingan."
+    },
+    "selector": {
+      "search_label": "Cari paket",
+      "search_first": "Cari paket...",
+      "search_add": "Tambah paket lain...",
+      "searching": "Mencari...",
+      "remove_package": "Hapus {package}",
+      "packages_selected": "{count}/{max} paket dipilih.",
+      "add_hint": "Tambah setidaknya 2 paket untuk dibandingkan.",
+      "loading_versions": "Memuat versi...",
+      "select_version": "Pilih versi"
+    },
+    "facets": {
+      "group_label": "Aspek perbandingan",
+      "all": "semua",
+      "none": "tidak ada",
+      "coming_soon": "Segera hadir",
+      "select_all": "Pilih semua aspek",
+      "deselect_all": "Batalkan semua aspek",
+      "select_category": "Pilih semua aspek {category}",
+      "deselect_category": "Batalkan semua aspek {category}",
+      "categories": {
+        "performance": "Performa",
+        "health": "Kesehatan",
+        "compatibility": "Kompatibilitas",
+        "security": "Keamanan & Kepatuhan"
+      }
+    }
+  }
+}
