@@ -45,8 +45,7 @@ export default defineCachedEventHandler(
     getKey: event => {
       const username = getQueryParam(event, 'username').trim().toLowerCase()
       const size = getQueryParam(event, 'size') || '80'
-      const defaultImg = getQueryParam(event, 'default') || '404'
-      return `gravatar:v1:${username}:${size}:${defaultImg}`
+      return `gravatar:v1:${username}:${size}`
     },
   },
 )
