@@ -28,7 +28,6 @@ export interface PackageComparisonData {
 /**
  * Composable for fetching and comparing multiple packages.
  *
- * @public
  */
 export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const packages = computed(() => toValue(packageNames))

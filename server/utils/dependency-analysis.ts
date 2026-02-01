@@ -110,7 +110,6 @@ function getSeverityLevel(vuln: OsvVulnerability): OsvSeverityLevel {
 
 /**
  * Analyze entire dependency tree for vulnerabilities and deprecated packages.
- * @public
  */
 export const analyzeDependencyTree = defineCachedFunction(
   async (name: string, version: string): Promise<VulnerabilityTreeResult> => {

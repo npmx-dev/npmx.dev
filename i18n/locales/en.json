@@ -143,12 +143,31 @@
       "install_size": "Install Size",
       "vulns": "Vulns",
       "updated": "Updated",
+      "skills": "Skills",
       "view_dependency_graph": "View dependency graph",
       "inspect_dependency_tree": "Inspect dependency tree",
       "size_tooltip": {
         "unpacked": "{size} unpacked size (this package)",
         "total": "{size} total unpacked size (including all {count} dependencies for linux-x64)"
       }
+    },
+    "skills": {
+      "title": "Agent Skills",
+      "skills_available": "{count} skill available | {count} skills available",
+      "view": "View",
+      "compatible_with": "Compatible with {tool}",
+      "install": "Install",
+      "installation_method": "Installation method",
+      "learn_more": "Learn more",
+      "available_skills": "Available Skills",
+      "click_to_expand": "Click to expand",
+      "no_description": "No description",
+      "file_counts": {
+        "scripts": "{count} script | {count} scripts",
+        "refs": "{count} ref | {count} refs",
+        "assets": "{count} asset | {count} assets"
+      },
+      "view_source": "View source"
     },
     "links": {
       "repo": "repo",

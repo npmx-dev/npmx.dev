@@ -1,0 +1,843 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - npm रजिस्ट्रीका लागि प्याकेज ब्राउजर",
+      "description": "npm रजिस्ट्रीका लागि अझ राम्रो ब्राउजर। आधुनिक इन्टरफेससँग प्याकेजहरू खोज्नुहोस्, ब्राउज गर्नुहोस्, र अन्वेषण गर्नुहोस्।"
+    }
+  },
+  "version": "संस्करण",
+  "built_at": "बिल्ड गरिएको {0}",
+  "alt_logo": "npmx लोगो",
+  "tagline": "npm रजिस्ट्रीका लागि अझ राम्रो ब्राउजर",
+  "non_affiliation_disclaimer": "npm, Inc. सँग सम्बद्ध छैन",
+  "trademark_disclaimer": "npm, npm, Inc. को दर्ता गरिएको ट्रेडमार्क हो। यो साइट npm, Inc. सँग सम्बद्ध छैन।",
+  "footer": {
+    "about": "बारेमा",
+    "docs": "डकुमेन्टेसन",
+    "source": "स्रोत",
+    "social": "सामाजिक",
+    "chat": "च्याट"
+  },
+  "search": {
+    "label": "npm प्याकेजहरू खोज्नुहोस्",
+    "placeholder": "प्याकेज खोज्नुहोस्...",
+    "button": "खोज",
+    "clear": "खोज खाली गर्नुहोस्",
+    "searching": "खोजिँदैछ...",
+    "found_packages": "कुनै प्याकेज फेला परेन | {count} प्याकेज फेला पर्यो | {count} प्याकेज फेला परे",
+    "updating": "(अपडेट हुँदैछ...)",
+    "no_results": "\"{query}\" का लागि कुनै प्याकेज फेला परेन",
+    "results": "खोज परिणाम",
+    "not_taken": "{name} लिइएको छैन",
+    "claim_prompt": "npm मा यो प्याकेज नाम दाबी गर्नुहोस्",
+    "claim_button": "\"{name}\" दाबी गर्नुहोस्",
+    "want_to_claim": "यो प्याकेज नाम दाबी गर्न चाहनुहुन्छ?",
+    "start_typing": "प्याकेज खोज्न टाइप गर्न सुरू गर्नुहोस्",
+    "exact_match": "ठ्याक्कै",
+    "suggestion": {
+      "user": "प्रयोगकर्ता",
+      "org": "संगठन",
+      "view_user_packages": "यस प्रयोगकर्ताका प्याकेजहरू हेर्नुहोस्",
+      "view_org_packages": "यस संगठनका प्याकेजहरू हेर्नुहोस्"
+    }
+  },
+  "nav": {
+    "main_navigation": "मुख्य",
+    "popular_packages": "लोकप्रिय प्याकेजहरू",
+    "search": "खोज",
+    "settings": "सेटिङ्स",
+    "compare": "तुलना",
+    "back": "पछाडि",
+    "menu": "मेनु",
+    "mobile_menu": "नेभिगेसन मेनु",
+    "open_menu": "मेनु खोल्नुहोस्",
+    "links": "लिङ्कहरू",
+    "tap_to_search": "खोज्न ट्याप गर्नुहोस्"
+  },
+  "settings": {
+    "title": "सेटिङ्स",
+    "tagline": "आफ्नो npmx अनुभव अनुकूल बनाउनुहोस्",
+    "meta_description": "थिम, भाषा, र डिस्प्ले प्राथमिकतासँग आफ्नो npmx.dev अनुभव अनुकूल बनाउनुहोस्।",
+    "sections": {
+      "appearance": "दिखावट",
+      "display": "डिस्प्ले",
+      "language": "भाषा"
+    },
+    "relative_dates": "सापेक्ष मितिहरू",
+    "relative_dates_description": "पूर्ण मिति सट्टा \"३ दिन अगाडि\" देखाउनुहोस्",
+    "include_types": "इन्स्टलमा {'@'}types समावेश गर्नुहोस्",
+    "include_types_description": "टाइप नभएका प्याकेजका इन्स्टल कमाण्डहरूमा {'@'}types प्याकेज थप्नुहोस्",
+    "hide_platform_packages": "खोजमा प्लेटफर्म-विशेष प्याकेजहरू लुकाउनुहोस्",
+    "hide_platform_packages_description": "नतिजाबाट {'@'}esbuild/linux-x64 जस्ता नेटिभ बाइनरी प्याकेजहरू लुकाउनुहोस्",
+    "theme": "थिम",
+    "theme_light": "हल्का",
+    "theme_dark": "गाढा",
+    "theme_system": "सिस्टम",
+    "language": "भाषा",
+    "help_translate": "npmx अनुवाद गर्न सहयोग गर्नुहोस्",
+    "accent_colors": "एक्सेन्ट रङहरू",
+    "clear_accent": "एक्सेन्ट रङ हटाउनुहोस्",
+    "translation_progress": "अनुवाद प्रगति"
+  },
+  "i18n": {
+    "missing_keys": "{count} अनुवाद छुटेको छ | {count} अनुवादहरू छुटेका छन्",
+    "copy_keys": "कुञ्जीहरू कपी गर्नुहोस्",
+    "show_more_keys": "अझै {count} देखाउनुहोस्...",
+    "contribute_hint": "छुटेका कुञ्जीहरू थपेर यो अनुवाद सुधार्न सहयोग गर्नुहोस्।",
+    "edit_on_github": "GitHub मा सम्पादन गर्नुहोस्",
+    "view_guide": "अनुवाद मार्गदर्शन"
+  },
+  "common": {
+    "loading": "लोड हुँदैछ...",
+    "loading_more": "अझै लोड हुँदैछ...",
+    "loading_packages": "प्याकेजहरू लोड हुँदैछन्...",
+    "end_of_results": "नतिजाको अन्त्य",
+    "try_again": "फेरि प्रयास गर्नुहोस्",
+    "close": "बन्द गर्नुहोस्",
+    "retry": "पुनः प्रयास",
+    "copy": "कपी",
+    "copied": "कपी भयो!",
+    "skip_link": "मुख्य सामग्रीमा जानुहोस्",
+    "close_modal": "मोडल बन्द गर्नुहोस्",
+    "show_more": "अझै देखाउनुहोस्",
+    "warnings": "चेतावनीहरू:",
+    "go_back_home": "होममा फर्कनुहोस्",
+    "view_on_npm": "npm मा हेर्नुहोस्",
+    "per_week": "/ हप्ता",
+    "vanity_downloads_hint": "भ्यानिटी नम्बर: कुनै प्याकेज देखाइएको छैन | भ्यानिटी नम्बर: देखाइएको प्याकेजका लागि | भ्यानिटी नम्बर: देखाइएको {count} प्याकेजहरूको योग",
+    "sort": {
+      "name": "नाम",
+      "role": "भूमिका",
+      "members": "सदस्यहरू"
+    },
+    "scroll_to_top": "माथि स्क्रोल गर्नुहोस्"
+  },
+  "package": {
+    "not_found": "प्याकेज फेला परेन",
+    "not_found_message": "प्याकेज फेला पार्न सकिएन।",
+    "no_description": "विवरण उपलब्ध छैन",
+    "show_full_description": "पूरा विवरण देखाउनुहोस्",
+    "not_latest": "(नवीनतम होइन)",
+    "verified_provenance": "प्रमाणित प्रुभेनेन्स",
+    "view_permalink": "यस संस्करणको पर्मालिङ्क हेर्नुहोस्",
+    "navigation": "प्याकेज",
+    "copy_name": "प्याकेज नाम कपी गर्नुहोस्",
+    "deprecation": {
+      "package": "यो प्याकेज अप्रचलित (deprecated) गरिएको छ।",
+      "version": "यो संस्करण अप्रचलित (deprecated) गरिएको छ।",
+      "no_reason": "कारण दिइएको छैन"
+    },
+    "replacement": {
+      "title": "तपाईंलाई यो डिपेन्डेन्सी आवश्यक नपर्न सक्छ।",
+      "native": "Node {nodeVersion} देखि उपलब्ध {replacement} ले यसलाई प्रतिस्थापन गर्न सक्छ।",
+      "simple": "{community} ले यो प्याकेजलाई अनावश्यक भनेर चिन्ह लगाएको छ, सल्लाह: {replacement}।",
+      "documented": "{community} ले यो प्याकेजका थप उच्च प्रदर्शन भएका विकल्पहरू छन् भनेर चिन्ह लगाएको छ।",
+      "none": "यो प्याकेज अब आवश्यक छैन भनेर चिन्ह लगाइएको छ, र यसको कार्यक्षमता सम्भवतः सबै इन्जिनहरूमा नै बिल्ट-इन रूपमा उपलब्ध छ।",
+      "learn_more": "थप जान्नुहोस्",
+      "mdn": "MDN",
+      "community": "समुदाय"
+    },
+    "stats": {
+      "license": "लाइसेन्स",
+      "deps": "डिपेन्डेन्सी",
+      "install_size": "इन्स्टल साइज",
+      "vulns": "कमजोरीहरू",
+      "updated": "अपडेट",
+      "view_dependency_graph": "डिपेन्डेन्सी ग्राफ हेर्नुहोस्",
+      "inspect_dependency_tree": "डिपेन्डेन्सी ट्री जाँच्नुहोस्",
+      "size_tooltip": {
+        "unpacked": "{size} अनप्याक्ड साइज (यो प्याकेज)",
+        "total": "{size} कुल अनप्याक्ड साइज (linux-x64 का लागि {count} सबै डिपेन्डेन्सीहरू सहित)"
+      }
+    },
+    "links": {
+      "repo": "रिपो",
+      "homepage": "होमपेज",
+      "issues": "इश्यूहरू",
+      "jsr": "jsr",
+      "code": "कोड",
+      "docs": "डकुमेन्टेसन",
+      "fund": "फन्ड",
+      "compare": "तुलना"
+    },
+    "docs": {
+      "not_available": "डकुमेन्टेसन उपलब्ध छैन",
+      "not_available_detail": "यस संस्करणका लागि डकुमेन्टेसन तयार गर्न सकिएन।"
+    },
+    "get_started": {
+      "title": "सुरु गर्नुहोस्",
+      "pm_label": "प्याकेज म्यानेजर",
+      "copy_command": "इन्स्टल कमाण्ड कपी गर्नुहोस्",
+      "view_types": "{package} हेर्नुहोस्"
+    },
+    "create": {
+      "title": "नयाँ प्रोजेक्ट बनाउनुहोस्",
+      "copy_command": "create कमाण्ड कपी गर्नुहोस्"
+    },
+    "run": {
+      "title": "चलाउनुहोस्",
+      "locally": "लोकल रूपमा चलाउनुहोस्"
+    },
+    "readme": {
+      "title": "README",
+      "no_readme": "README उपलब्ध छैन।",
+      "view_on_github": "GitHub मा हेर्नुहोस्"
+    },
+    "keywords_title": "किवर्ड्स",
+    "compatibility": "कम्प्याटिबिलिटी",
+    "card": {
+      "publisher": "प्रकाशक",
+      "updated": "अपडेट",
+      "weekly_downloads": "साप्ताहिक डाउनलोड",
+      "keywords": "किवर्ड्स",
+      "license": "लाइसेन्स"
+    },
+    "versions": {
+      "title": "संस्करणहरू",
+      "collapse": "{tag} समेट्नुहोस्",
+      "expand": "{tag} विस्तार गर्नुहोस्",
+      "collapse_other": "अन्य संस्करणहरू समेट्नुहोस्",
+      "expand_other": "अन्य संस्करणहरू विस्तार गर्नुहोस्",
+      "collapse_major": "मेजर {major} समेट्नुहोस्",
+      "expand_major": "मेजर {major} विस्तार गर्नुहोस्",
+      "other_versions": "अन्य संस्करणहरू",
+      "more_tagged": "{count} थप ट्याग गरिएको",
+      "all_covered": "माथिका ट्यागले सबै संस्करणहरू कभर गर्छन्",
+      "deprecated_title": "{version} (deprecated)",
+      "view_all": "{count} संस्करण हेर्नुहोस् | सबै {count} संस्करणहरू हेर्नुहोस्"
+    },
+    "dependencies": {
+      "title": "डिपेन्डेन्सीहरू ({count})",
+      "list_label": "प्याकेज डिपेन्डेन्सीहरू",
+      "show_all": "{count} dep देखाउनुहोस् | सबै {count} deps देखाउनुहोस्",
+      "optional": "वैकल्पिक",
+      "view_vulnerabilities": "कमजोरीहरू हेर्नुहोस्",
+      "outdated_major": "{count} मेजर संस्करण पछाडि (नवीनतम: {latest}) | {count} मेजर संस्करणहरू पछाडि (नवीनतम: {latest})",
+      "outdated_minor": "{count} माइनर संस्करण पछाडि (नवीनतम: {latest}) | {count} माइनर संस्करणहरू पछाडि (नवीनतम: {latest})",
+      "outdated_patch": "प्याच अपडेट उपलब्ध (नवीनतम: {latest})"
+    },
+    "peer_dependencies": {
+      "title": "पियर डिपेन्डेन्सीहरू ({count})",
+      "list_label": "प्याकेज पियर डिपेन्डेन्सीहरू",
+      "show_all": "{count} पियर dep देखाउनुहोस् | सबै {count} पियर deps देखाउनुहोस्"
+    },
+    "optional_dependencies": {
+      "title": "वैकल्पिक डिपेन्डेन्सीहरू ({count})",
+      "list_label": "प्याकेज वैकल्पिक डिपेन्डेन्सीहरू",
+      "show_all": "{count} वैकल्पिक dep देखाउनुहोस् | सबै {count} वैकल्पिक deps देखाउनुहोस्"
+    },
+    "maintainers": {
+      "title": "मेन्टेनरहरू",
+      "list_label": "प्याकेज मेन्टेनरहरू",
+      "you": "(तपाईं)",
+      "via": "{teams} मार्फत",
+      "remove_owner": "{name} लाई ओनरबाट हटाउनुहोस्",
+      "username_to_add": "ओनरको रूपमा थप्ने युजरनेम",
+      "username_placeholder": "युजरनेम...",
+      "add_button": "थप्नुहोस्",
+      "cancel_add": "ओनर थप्न रद्द गर्नुहोस्",
+      "add_owner": "+ ओनर थप्नुहोस्",
+      "show_more": "(अझै {count} देखाउनुहोस्)",
+      "show_less": "(कम देखाउनुहोस्)"
+    },
+    "downloads": {
+      "title": "साप्ताहिक डाउनलोड",
+      "date_range": "{start} देखि {end}",
+      "date_range_multiline": "{start}\nदेखि {end}",
+      "analyze": "डाउनलोड विश्लेषण",
+      "modal_title": "डाउनलोडहरू",
+      "granularity": "सूक्ष्मता",
+      "granularity_daily": "दैनिक",
+      "granularity_weekly": "साप्ताहिक",
+      "granularity_monthly": "मासिक",
+      "granularity_yearly": "वार्षिक",
+      "start_date": "सुरु",
+      "end_date": "अन्त्य",
+      "no_data": "डाउनलोड डेटा उपलब्ध छैन",
+      "loading": "लोड हुँदैछ...",
+      "y_axis_label": "{granularity} डाउनलोड",
+      "download_file": "{fileType} डाउनलोड गर्नुहोस्",
+      "toggle_annotator": "एनोटेटर टगल गर्नुहोस्"
+    },
+    "install_scripts": {
+      "title": "इन्स्टल स्क्रिप्टहरू",
+      "script_label": "(स्क्रिप्ट)",
+      "npx_packages": "{count} npx प्याकेज | {count} npx प्याकेजहरू",
+      "currently": "हाल {version}"
+    },
+    "playgrounds": {
+      "title": "चलाएर हेर्नुहोस्",
+      "choose": "प्लेग्राउन्ड छान्नुहोस्"
+    },
+    "metrics": {
+      "esm": "ES Modules समर्थित",
+      "cjs": "CommonJS समर्थित",
+      "no_esm": "ES Modules समर्थन छैन",
+      "types_label": "टाइपहरू",
+      "types_included": "टाइपहरू समावेश",
+      "types_available": "{package} मार्फत टाइपहरू उपलब्ध",
+      "no_types": "TypeScript टाइपहरू छैनन्"
+    },
+    "license": {
+      "view_spdx": "SPDX मा लाइसेन्स टेक्स्ट हेर्नुहोस्"
+    },
+    "vulnerabilities": {
+      "no_description": "विवरण उपलब्ध छैन",
+      "found": "{count} कमजोरी फेला पर्‍यो | {count} कमजोरीहरू फेला परे",
+      "deps_found": "{count} कमजोरी फेला पर्‍यो | {count} कमजोरीहरू फेला परे",
+      "deps_affected": "{count} डिपेन्डेन्सी प्रभावित | {count} डिपेन्डेन्सीहरू प्रभावित",
+      "tree_found": "{packages}/{total} प्याकेजमा {vulns} कमजोरी | {packages}/{total} प्याकेजमा {vulns} कमजोरीहरू",
+      "scanning_tree": "डिपेन्डेन्सी ट्री स्क्यान हुँदैछ...",
+      "show_all_packages": "प्रभावित सबै {count} प्याकेज देखाउनुहोस्",
+      "no_summary": "सारांश छैन",
+      "view_details": "कमजोरी विवरण हेर्नुहोस्",
+      "path": "पथ",
+      "more": "+{count} थप",
+      "packages_failed": "{count} प्याकेज जाँच गर्न सकिएन | {count} प्याकेजहरू जाँच गर्न सकिएन",
+      "no_known": "{count} प्याकेजमा ज्ञात कमजोरी छैन",
+      "scan_failed": "कमजोरीका लागि स्क्यान गर्न सकिएन",
+      "depth": {
+        "root": "यो प्याकेज",
+        "direct": "प्रत्यक्ष डिपेन्डेन्सी",
+        "transitive": "ट्रान्जिटिभ डिपेन्डेन्सी (अप्रत्यक्ष)"
+      },
+      "severity": {
+        "critical": "अत्यन्त गम्भीर",
+        "high": "उच्च",
+        "moderate": "मध्यम",
+        "low": "कम"
+      }
+    },
+    "deprecated": {
+      "label": "अप्रचलित",
+      "tree_found": "{count} अप्रचलित डिपेन्डेन्सी | {count} अप्रचलित डिपेन्डेन्सीहरू",
+      "show_all": "{count} अप्रचलित प्याकेज देखाउनुहोस् | सबै {count} अप्रचलित प्याकेजहरू देखाउनुहोस्"
+    },
+    "access": {
+      "title": "टिम पहुँच",
+      "refresh": "टिम पहुँच रिफ्रेश गर्नुहोस्",
+      "list_label": "टिम पहुँच सूची",
+      "owner": "ओनर",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "{name} को पहुँच रद्द गर्नुहोस्",
+      "no_access": "टिम पहुँच सेट गरिएको छैन",
+      "select_team_label": "टिम चयन गर्नुहोस्",
+      "loading_teams": "टिमहरू लोड हुँदैछन्...",
+      "select_team": "टिम चयन गर्नुहोस्",
+      "permission_label": "अनुमति स्तर",
+      "permission": {
+        "read_only": "पढ्ने-मात्र",
+        "read_write": "पढ्ने/लेख्ने"
+      },
+      "grant_button": "दिनुहोस्",
+      "cancel_grant": "पहुँच दिन रद्द गर्नुहोस्",
+      "grant_access": "+ टिम पहुँच दिनुहोस्"
+    },
+    "list": {
+      "filter_label": "प्याकेज फिल्टर",
+      "filter_placeholder": "प्याकेज फिल्टर गर्नुहोस्...",
+      "sort_label": "प्याकेज क्रमबद्ध",
+      "showing_count": "{total} मध्ये {filtered} प्याकेज देखाइँदैछ"
+    },
+    "skeleton": {
+      "loading": "प्याकेज विवरण लोड हुँदैछ",
+      "license": "लाइसेन्स",
+      "weekly": "साप्ताहिक",
+      "size": "साइज",
+      "deps": "डिपेन्डेन्सी",
+      "updated": "अपडेट",
+      "get_started": "सुरु गर्नुहोस्",
+      "readme": "README",
+      "maintainers": "मेन्टेनरहरू",
+      "keywords": "किवर्ड्स",
+      "versions": "संस्करणहरू",
+      "dependencies": "डिपेन्डेन्सीहरू"
+    },
+    "sort": {
+      "downloads": "धेरै डाउनलोड भएका",
+      "updated": "भर्खरै अपडेट भएका",
+      "name_asc": "नाम (A-Z)",
+      "name_desc": "नाम (Z-A)"
+    }
+  },
+  "connector": {
+    "status": {
+      "connecting": "जोडिँदैछ...",
+      "connected_as": "~{user} रूपमा जोडियो",
+      "connected": "जोडियो",
+      "connect_cli": "लोकल CLI जोड्नुहोस्",
+      "aria_connecting": "लोकल कनेक्टरसँग जोडिँदैछ",
+      "aria_connected": "लोकल कनेक्टरसँग जोडियो",
+      "aria_click_to_connect": "लोकल कनेक्टरसँग जोड्न क्लिक गर्नुहोस्",
+      "avatar_alt": "{user} को अवतार"
+    },
+    "modal": {
+      "title": "लोकल कनेक्टर",
+      "contributor_badge": "कन्ट्रिब्युटर मात्र",
+      "contributor_notice": "कनेक्टर अझै npm मा प्रकाशित गरिएको छैन। लोकल रूपमा चलाउने तरिका हेर्न {link} हेर्नुहोस्।",
+      "contributor_link": "कन्ट्रिब्युटिङ गाइड",
+      "connected": "जोडियो",
+      "connected_as_user": "~{user} रूपमा जोडियो",
+      "connected_hint": "अब तपाईं वेब UI बाट प्याकेज र संगठनहरू व्यवस्थापन गर्न सक्नुहुन्छ।",
+      "disconnect": "डिस्कनेक्ट",
+      "run_hint": "एडमिन सुविधाहरू सक्षम गर्न आफ्नो मेसिनमा कनेक्टर चलाउनुहोस्।",
+      "copy_command": "कमाण्ड कपी गर्नुहोस्",
+      "copied": "कपी भयो",
+      "paste_token": "त्यसपछि जोड्नका लागि तलको टोकन पेस्ट गर्नुहोस्:",
+      "token_label": "टोकन",
+      "token_placeholder": "टोकन यहाँ पेस्ट गर्नुहोस्...",
+      "advanced": "उन्नत विकल्पहरू",
+      "port_label": "पोर्ट",
+      "warning": "चेतावनी",
+      "warning_text": "यसले npmx लाई तपाईंको npm CLI पहुँच दिन्छ। विश्वास गर्ने साइटसँग मात्र कनेक्ट गर्नुहोस्।",
+      "connect": "कनेक्ट",
+      "connecting": "कनेक्ट हुँदैछ..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "अपरेसन क्यू",
+      "clear_all": "सबै हटाउनुहोस्",
+      "refresh": "अपरेसनहरू रिफ्रेश गर्नुहोस्",
+      "empty": "कुनै अपरेसन क्यूमा छैन",
+      "empty_hint": "प्याकेज वा संगठन पेजबाट अपरेसन थप्नुहोस्",
+      "active_label": "सक्रिय अपरेसनहरू",
+      "otp_required": "OTP चाहिन्छ",
+      "otp_prompt": "जारी राख्न OTP प्रविष्ट गर्नुहोस्",
+      "otp_placeholder": "OTP कोड प्रविष्ट गर्नुहोस्...",
+      "otp_label": "एकपटक प्रयोग हुने पासवर्ड",
+      "retry_otp": "OTP सँग पुनः प्रयास गर्नुहोस्",
+      "retrying": "पुनः प्रयास हुँदैछ...",
+      "approve_operation": "अपरेसन स्वीकृत गर्नुहोस्",
+      "remove_operation": "अपरेसन हटाउनुहोस्",
+      "approve_all": "सबै स्वीकृत",
+      "execute": "चलाउनुहोस्",
+      "executing": "चल्दैछ...",
+      "log": "लग",
+      "log_label": "सम्पन्न अपरेसन लग",
+      "remove_from_log": "लगबाट हटाउनुहोस्"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "टिमहरू",
+      "refresh": "टिमहरू रिफ्रेश गर्नुहोस्",
+      "filter_label": "टिमहरू फिल्टर",
+      "filter_placeholder": "टिमहरू फिल्टर गर्नुहोस्...",
+      "sort_by": "क्रमबद्ध:",
+      "loading": "टिमहरू लोड हुँदैछन्...",
+      "no_teams": "टिम फेला परेन",
+      "list_label": "संगठनका टिमहरू",
+      "delete_team": "{name} टिम हटाउनुहोस्",
+      "member_count": "{count} सदस्य | {count} सदस्यहरू",
+      "members_of": "{team} का सदस्यहरू",
+      "no_members": "सदस्य छैन",
+      "remove_user": "टिमबाट {user} हटाउनुहोस्",
+      "username_to_add": "{team} मा थप्ने युजरनेम",
+      "username_placeholder": "युजरनेम...",
+      "add_button": "थप्नुहोस्",
+      "cancel_add_user": "प्रयोगकर्ता थप्न रद्द गर्नुहोस्",
+      "add_member": "+ सदस्य थप्नुहोस्",
+      "team_name_label": "टिम नाम",
+      "team_name_placeholder": "team-name...",
+      "create_button": "बनाउनुहोस्",
+      "no_match": "\"{query}\" सँग मिल्ने टिम छैन",
+      "cancel_create": "टिम बनाउन रद्द गर्नुहोस्",
+      "create_team": "+ टिम बनाउनुहोस्"
+    },
+    "members": {
+      "title": "सदस्यहरू",
+      "refresh": "सदस्यहरू रिफ्रेश गर्नुहोस्",
+      "filter_label": "सदस्यहरू फिल्टर",
+      "filter_placeholder": "सदस्यहरू फिल्टर गर्नुहोस्...",
+      "filter_by_role": "भूमिकाअनुसार फिल्टर",
+      "filter_by_team": "टिम अनुसार फिल्टर",
+      "all_teams": "सबै टिम",
+      "sort_by": "क्रमबद्ध:",
+      "loading": "सदस्यहरू लोड हुँदैछन्...",
+      "no_members": "सदस्य फेला परेन",
+      "list_label": "संगठनका सदस्यहरू",
+      "change_role_for": "{name} को भूमिका परिवर्तन गर्नुहोस्",
+      "remove_from_org": "संगठनबाट {name} हटाउनुहोस्",
+      "view_team": "{team} टिम हेर्नुहोस्",
+      "no_match": "तपाईंका फिल्टरसँग मिल्ने सदस्य छैन",
+      "username_label": "युजरनेम",
+      "username_placeholder": "युजरनेम...",
+      "role_label": "भूमिका",
+      "role": {
+        "all": "सबै",
+        "developer": "डेभलपर",
+        "admin": "एडमिन",
+        "owner": "ओनर"
+      },
+      "team_label": "टिम",
+      "no_team": "टिम छैन",
+      "add_button": "थप्नुहोस्",
+      "cancel_add": "सदस्य थप्न रद्द गर्नुहोस्",
+      "add_member": "+ सदस्य थप्नुहोस्"
+    },
+    "public_packages": "{count} सार्वजनिक प्याकेज | {count} सार्वजनिक प्याकेजहरू",
+    "page": {
+      "packages_title": "प्याकेजहरू",
+      "members_tab": "सदस्यहरू",
+      "teams_tab": "टिमहरू",
+      "no_packages": "यसका लागि कुनै सार्वजनिक प्याकेज फेला परेन",
+      "no_packages_hint": "यो संगठन अस्तित्वमा नहुन सक्छ वा यससँग सार्वजनिक प्याकेज छैन।",
+      "failed_to_load": "संगठनका प्याकेजहरू लोड गर्न असफल",
+      "no_match": "\"{query}\" सँग मिल्ने प्याकेज छैन",
+      "not_found": "संगठन फेला परेन",
+      "not_found_message": "संगठन \"{'@'}{name}\" npm मा अस्तित्वमा छैन",
+      "filter_placeholder": "{count} प्याकेज फिल्टर गर्नुहोस्..."
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(संगठनमा पनि थपिनेछ)",
+      "press_enter_to_add": "{'@'}{username} थप्न Enter थिच्नुहोस्",
+      "default_placeholder": "युजरनेम...",
+      "suggestions_label": "प्रयोगकर्ता सुझावहरू"
+    },
+    "page": {
+      "packages_title": "प्याकेजहरू",
+      "no_packages": "यसका लागि कुनै सार्वजनिक प्याकेज फेला परेन",
+      "no_packages_hint": "यो प्रयोगकर्ता अस्तित्वमा नहुन सक्छ वा यससँग सार्वजनिक प्याकेज छैन।",
+      "failed_to_load": "प्रयोगकर्ताका प्याकेजहरू लोड गर्न असफल",
+      "no_match": "\"{query}\" सँग मिल्ने प्याकेज छैन",
+      "filter_placeholder": "{count} प्याकेज फिल्टर गर्नुहोस्..."
+    },
+    "orgs_page": {
+      "title": "संगठनहरू",
+      "back_to_profile": "प्रोफाइलमा फर्कनुहोस्",
+      "connect_required": "आफ्ना संगठनहरू हेर्न लोकल CLI कनेक्ट गर्नुहोस्।",
+      "connect_hint_prefix": "चलाउनुहोस्",
+      "connect_hint_suffix": "सुरु गर्नका लागि।",
+      "own_orgs_only": "तपाईंले आफ्नै संगठनहरू मात्र हेर्न सक्नुहुन्छ।",
+      "view_your_orgs": "आफ्ना संगठनहरू हेर्नुहोस्",
+      "loading": "संगठनहरू लोड हुँदैछन्...",
+      "empty": "कुनै संगठन फेला परेन।",
+      "empty_hint": "scoped packages बाट संगठनहरू पत्ता लगाइन्छ।",
+      "count": "{count} संगठन | {count} संगठनहरू",
+      "packages_count": "{count} प्याकेज | {count} प्याकेजहरू"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "प्याकेज नाम दाबी गर्नुहोस्",
+      "success": "प्याकेज दाबी गरियो!",
+      "success_detail": "{name}{'@'}0.0.0 npm मा प्रकाशित गरिएको छ।",
+      "success_hint": "अब तपाईं npm publish प्रयोग गरेर यो प्याकेजमा नयाँ संस्करणहरू प्रकाशित गर्न सक्नुहुन्छ।",
+      "view_package": "प्याकेज हेर्नुहोस्",
+      "invalid_name": "अमान्य प्याकेज नाम:",
+      "available": "यो नाम उपलब्ध छ!",
+      "taken": "यो नाम पहिले नै लिइएको छ।",
+      "similar_warning": "मिल्दोजुल्दो प्याकेजहरू छन् — npm ले यो नाम अस्वीकार गर्न सक्छ:",
+      "related": "सम्बन्धित प्याकेजहरू:",
+      "scope_warning_title": "बरु scoped package प्रयोग गर्ने विचार गर्नुहोस्",
+      "scope_warning_text": "Unscoped प्याकेज नामहरू साझा स्रोत हुन्। प्याकेज प्रकाशित र मर्मत गर्ने उद्देश्य छ भने मात्र नाम दाबी गर्नुहोस्। व्यक्तिगत वा संगठनात्मक प्रोजेक्टका लागि {'@'}{username}/{name} जस्तो scoped नाम प्रयोग गर्नुहोस्।",
+      "connect_required": "यो प्याकेज नाम दाबी गर्न लोकल कनेक्टर कनेक्ट गर्नुहोस्।",
+      "connect_button": "कनेक्टर कनेक्ट गर्नुहोस्",
+      "publish_hint": "यसले न्यूनतम placeholder प्याकेज प्रकाशित गर्नेछ।",
+      "preview_json": "package.json प्रिभ्यू",
+      "claim_button": "प्याकेज नाम दाबी गर्नुहोस्",
+      "publishing": "प्रकाशन हुँदैछ...",
+      "checking": "उपलब्धता जाँच हुँदैछ...",
+      "failed_to_check": "नाम उपलब्धता जाँच गर्न असफल",
+      "failed_to_claim": "प्याकेज दाबी गर्न असफल"
+    }
+  },
+  "code": {
+    "files_label": "फाइलहरू",
+    "no_files": "यो डाइरेक्टरीमा कुनै फाइल छैन",
+    "select_version": "संस्करण चयन गर्नुहोस्",
+    "root": "root",
+    "lines": "{count} लाइन",
+    "toggle_tree": "फाइल ट्री टगल",
+    "close_tree": "फाइल ट्री बन्द",
+    "copy_link": "लिङ्क कपी",
+    "raw": "Raw",
+    "view_raw": "raw फाइल हेर्नुहोस्",
+    "file_too_large": "प्रिभ्यू गर्न फाइल धेरै ठूलो छ",
+    "file_size_warning": "syntax highlighting का लागि 500KB सीमा भन्दा {size} ठूलो छ",
+    "load_anyway": "जसरी पनि लोड",
+    "failed_to_load": "फाइल लोड गर्न असफल",
+    "unavailable_hint": "फाइल धेरै ठूलो हुन सक्छ वा उपलब्ध नहुन सक्छ",
+    "version_required": "कोड ब्राउज गर्न संस्करण चाहिन्छ",
+    "go_to_package": "प्याकेजमा जानुहोस्",
+    "loading_tree": "फाइल ट्री लोड हुँदैछ...",
+    "failed_to_load_tree": "यस प्याकेज संस्करणका फाइलहरू लोड गर्न असफल",
+    "back_to_package": "प्याकेजमा फर्कनुहोस्",
+    "table": {
+      "name": "नाम",
+      "size": "साइज"
+    },
+    "markdown_view_mode": {
+      "preview": "preview",
+      "code": "code"
+    },
+    "file_path": "फाइल पथ"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "प्रमाणित",
+      "verified_title": "प्रमाणित प्रुभेनेन्स",
+      "verified_via": "प्रमाणित: {provider} मार्फत प्रकाशित"
+    },
+    "jsr": {
+      "title": "JSR मा पनि उपलब्ध",
+      "label": "jsr"
+    }
+  },
+  "filters": {
+    "title": "फिल्टरहरू",
+    "search": "खोज",
+    "search_scope": "खोज दायरा",
+    "search_placeholder_name": "प्याकेज नामबाट फिल्टर...",
+    "search_placeholder_description": "विवरणबाट फिल्टर...",
+    "search_placeholder_keywords": "किवर्ड्सबाट फिल्टर...",
+    "search_placeholder_all": "सबैमा खोज्नुहोस् वा name: desc: kw: प्रयोग गर्नुहोस्",
+    "scope_name": "नाम",
+    "scope_name_description": "प्याकेज नाम मात्र खोज्नुहोस्",
+    "scope_description": "विवरण",
+    "scope_description_description": "विवरण मात्र खोज्नुहोस्",
+    "scope_keywords": "किवर्ड्स",
+    "scope_keywords_description": "किवर्ड्स मात्र खोज्नुहोस्",
+    "scope_all": "सबै",
+    "scope_all_description": "सबै फाँट खोज्नुहोस्; name: desc: kw: अपरेटर समर्थित",
+    "weekly_downloads": "साप्ताहिक डाउनलोड",
+    "updated_within": "अपडेट भएको समय",
+    "security": "सिक्युरिटी",
+    "keywords": "किवर्ड्स",
+    "more_keywords": "+{count} थप",
+    "clear_all": "सबै हटाउनुहोस्",
+    "remove_filter": "{label} फिल्टर हटाउनुहोस्",
+    "download_range": {
+      "any": "कुनै पनि",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "कुनै पनि समय",
+      "week": "गत हप्ता",
+      "month": "गत महिना",
+      "quarter": "गत ३ महिना",
+      "year": "गत वर्ष"
+    },
+    "security_options": {
+      "all": "सबै प्याकेज",
+      "secure": "चेतावनी बिना",
+      "insecure": "चेतावनी सहित"
+    },
+    "sort": {
+      "label": "प्याकेज क्रमबद्ध",
+      "toggle_direction": "क्रमबद्ध दिशा टगल",
+      "ascending": "आरोही",
+      "descending": "अवरोही",
+      "relevance": "सम्बन्धित",
+      "downloads_week": "डाउनलोड/हप्ता",
+      "downloads_day": "डाउनलोड/दिन",
+      "downloads_month": "डाउनलोड/महिना",
+      "downloads_year": "डाउनलोड/वर्ष",
+      "updated": "अन्तिम अपडेट",
+      "name": "नाम",
+      "quality": "क्वालिटी",
+      "popularity": "लोकप्रियता",
+      "maintenance": "मेन्टेनेन्स",
+      "score": "स्कोर"
+    },
+    "columns": {
+      "title": "स्तम्भहरू",
+      "show": "स्तम्भहरू देखाउनुहोस्",
+      "reset": "डिफल्टमा फर्काउनुहोस्",
+      "coming_soon": "छिट्टै आउँदैछ",
+      "name": "नाम",
+      "version": "संस्करण",
+      "description": "विवरण",
+      "downloads": "डाउनलोड/हप्ता",
+      "updated": "अन्तिम अपडेट",
+      "maintainers": "मेन्टेनरहरू",
+      "keywords": "किवर्ड्स",
+      "quality_score": "क्वालिटी स्कोर",
+      "popularity_score": "लोकप्रियता स्कोर",
+      "maintenance_score": "मेन्टेनेन्स स्कोर",
+      "combined_score": "समग्र स्कोर",
+      "security": "सिक्युरिटी"
+    },
+    "view_mode": {
+      "label": "दृश्य मोड",
+      "cards": "कार्ड दृश्य",
+      "table": "टेबल दृश्य"
+    },
+    "pagination": {
+      "mode_label": "पेजिनेशन मोड",
+      "infinite": "अनन्त",
+      "paginated": "पृष्ठमा विभाजित",
+      "items_per_page": "प्रति पृष्ठ वस्तुहरू",
+      "per_page": "{count} / पृष्ठ",
+      "all_yolo": "सबै (YOLO)",
+      "showing": "{total} मध्ये {start}-{end}",
+      "previous": "अघिल्लो पृष्ठ",
+      "next": "अर्को पृष्ठ",
+      "nav_label": "पेजिनेशन"
+    },
+    "count": {
+      "showing_filtered": "{count} मध्ये {filtered} प्याकेज | {count} मध्ये {filtered} प्याकेजहरू",
+      "showing_all": "{count} प्याकेज | {count} प्याकेजहरू",
+      "showing_paginated": "{count} मध्ये {pageSize} प्याकेज | {count} मध्ये {pageSize} प्याकेजहरू"
+    },
+    "table": {
+      "security_warning": "सिक्युरिटी चेतावनी",
+      "secure": "सुरक्षित",
+      "no_packages": "कुनै प्याकेज फेला परेन"
+    }
+  },
+  "about": {
+    "title": "बारेमा",
+    "heading": "बारेमा",
+    "meta_description": "npmx, npm रजिस्ट्रीका लागि छिटो र आधुनिक ब्राउजर हो। npm प्याकेजहरू अन्वेषण गर्न अझ राम्रो UX/DX।",
+    "back_home": "होममा फर्कनुहोस्",
+    "what_we_are": {
+      "title": "हामी के हौं",
+      "better_ux_dx": "अझ राम्रो UX/DX",
+      "admin_ui": "admin UI",
+      "description": "npmx, npm प्याकेज रजिस्ट्री र टुलिङका लागि {betterUxDx} हो। हामी डार्क मोड, कीबोर्ड नेभिगेसन, कोड ब्राउजिङ, र {jsr} जस्ता वैकल्पिक रजिस्ट्रीहरूसँग कनेक्शनजस्ता सुविधासहित प्याकेजहरू अन्वेषण गर्न छिटो र आधुनिक इन्टरफेस दिन्छौं।",
+      "admin_description": "हामी तपाईंका प्याकेज, टिम, र संगठन व्यवस्थापन गर्न—लोकल npm CLI द्वारा सञ्चालित—ब्राउजरमैबाट अझ राम्रो {adminUi} उपलब्ध गराउने लक्ष्य पनि राख्छौं।"
+    },
+    "what_we_are_not": {
+      "title": "हामी के होइनौं",
+      "not_package_manager": "प्याकेज म्यानेजर होइन।",
+      "not_registry": "रजिस्ट्री होइन।",
+      "registry_description": "हामी प्याकेज होस्ट गर्दैनौं। हामी तिनीहरू ब्राउज गर्ने अझ राम्रो तरिका मात्र हौं।",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "पहिल्यै",
+        "people": "धेरै",
+        "building": "मानिसहरू",
+        "really": "साँच्चिकै",
+        "cool": "राम्रो",
+        "package": "प्याकेज",
+        "managers": "म्यानेजरहरू बनाइरहेका छन्"
+      }
+    },
+    "contributors": {
+      "title": "कन्ट्रिब्युटरहरू",
+      "description": "npmx पूर्ण रूपमा ओपन सोर्स हो, अद्भुत कन्ट्रिब्युटर समुदायले बनाएको। हामीसँग जोडिनुहोस् र हामीले चाहेको npm ब्राउजिङ अनुभव सँगै बनाऔँ।",
+      "loading": "कन्ट्रिब्युटरहरू लोड हुँदैछन्...",
+      "error": "कन्ट्रिब्युटरहरू लोड गर्न असफल",
+      "view_profile": "{name} को GitHub प्रोफाइल हेर्नुहोस्"
+    },
+    "get_involved": {
+      "title": "सहभागी हुनुहोस्",
+      "contribute": {
+        "title": "कन्ट्रिब्युट",
+        "description": "अझ राम्रो npm अनुभव बनाउन हामीलाई सहयोग गर्नुहोस्।",
+        "cta": "GitHub मा हेर्नुहोस्"
+      },
+      "community": {
+        "title": "समुदायमा जोडिनुहोस्",
+        "description": "च्याट गर्नुहोस्, प्रश्न सोध्नुहोस्, र विचार साझा गर्नुहोस्।",
+        "cta": "Discord मा जोडिनुहोस्"
+      },
+      "follow": {
+        "title": "अपडेट रहनुहोस्",
+        "description": "npmx का ताजा अपडेटहरू जान्नुहोस्।",
+        "cta": "Bluesky मा फलो गर्नुहोस्"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "कनेक्ट",
+    "account": "अकाउन्ट",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "प्याकेज र संगठनहरू व्यवस्थापन",
+    "atmosphere_desc": "सामाजिक सुविधाहरू र पहिचान",
+    "connect_npm_cli": "npm CLI कनेक्ट गर्नुहोस्",
+    "connect_atmosphere": "Atmosphere कनेक्ट गर्नुहोस्",
+    "connecting": "कनेक्ट हुँदैछ...",
+    "ops": "{count} अपरेसन | {count} अपरेसनहरू",
+    "disconnect": "डिस्कनेक्ट"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "{'@'}{handle} रूपमा कनेक्ट",
+      "disconnect": "डिस्कनेक्ट",
+      "connect_prompt": "आफ्नो Atmosphere अकाउन्टसँग कनेक्ट गर्नुहोस्",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "कनेक्ट",
+      "create_account": "नयाँ अकाउन्ट बनाउनुहोस्",
+      "connect_bluesky": "Bluesky सँग कनेक्ट",
+      "what_is_atmosphere": "Atmosphere अकाउन्ट भनेको के हो?",
+      "atmosphere_explanation": "{npmx} ले आफ्ना धेरै सामाजिक सुविधाहरू चलाउन {atproto} प्रयोग गर्छ, जसले प्रयोगकर्तालाई आफ्ना डेटा स्वामित्व गर्न र सबै कम्प्याटिबल एपहरूका लागि एउटै अकाउन्ट प्रयोग गर्न दिन्छ। एकपटक अकाउन्ट बनाएपछि, त्यही अकाउन्ट प्रयोग गरेर {bluesky} र {tangled} जस्ता अन्य एपहरू पनि चलाउन सक्नुहुन्छ।"
+    }
+  },
+  "header": {
+    "home": "npmx होम",
+    "github": "GitHub",
+    "packages": "प्याकेजहरू",
+    "packages_dropdown": {
+      "title": "तपाईंका प्याकेजहरू",
+      "loading": "लोड हुँदैछ...",
+      "error": "प्याकेजहरू लोड गर्न असफल",
+      "empty": "कुनै प्याकेज फेला परेन",
+      "view_all": "सबै हेर्नुहोस्"
+    },
+    "orgs": "संगठनहरू",
+    "orgs_dropdown": {
+      "title": "तपाईंका संगठनहरू",
+      "loading": "लोड हुँदैछ...",
+      "error": "संगठनहरू लोड गर्न असफल",
+      "empty": "कुनै संगठन फेला परेन",
+      "view_all": "सबै हेर्नुहोस्"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "प्याकेज तुलना",
+      "tagline": "सही प्याकेज छनोट गर्न मद्दतका लागि npm प्याकेजहरू सँगै राखेर तुलना गर्नुहोस्।",
+      "meta_title": "{packages} तुलना - npmx",
+      "meta_title_empty": "प्याकेज तुलना - npmx",
+      "meta_description": "{packages} को साइड-बाइ-साइड तुलना",
+      "meta_description_empty": "npm प्याकेजहरू साइड-बाइ-साइड तुलना गर्नुहोस्",
+      "section_packages": "प्याकेजहरू",
+      "section_facets": "पक्षहरू",
+      "section_comparison": "तुलना",
+      "loading": "प्याकेज डेटा लोड हुँदैछ...",
+      "error": "प्याकेज डेटा लोड गर्न असफल। कृपया फेरि प्रयास गर्नुहोस्।",
+      "empty_title": "तुलना गर्न प्याकेज छनोट गर्नुहोस्",
+      "empty_description": "उनीहरूको मेट्रिकको साइड-बाइ-साइड तुलना हेर्न माथि कम्तिमा २ वटा प्याकेज खोजेर थप्नुहोस्।"
+    },
+    "selector": {
+      "search_label": "प्याकेज खोज्नुहोस्",
+      "search_first": "प्याकेज खोज्नुहोस्...",
+      "search_add": "अर्को प्याकेज थप्नुहोस्...",
+      "searching": "खोजिँदैछ...",
+      "remove_package": "{package} हटाउनुहोस्",
+      "packages_selected": "{count}/{max} प्याकेज चयन गरियो।",
+      "add_hint": "तुलना गर्न कम्तिमा २ प्याकेज थप्नुहोस्।",
+      "loading_versions": "संस्करणहरू लोड हुँदैछन्...",
+      "select_version": "संस्करण चयन गर्नुहोस्"
+    },
+    "facets": {
+      "group_label": "तुलना पक्षहरू",
+      "all": "सबै",
+      "none": "कुनै पनि छैन",
+      "coming_soon": "छिट्टै आउँदैछ",
+      "select_all": "सबै पक्षहरू चयन गर्नुहोस्",
+      "deselect_all": "सबै पक्षहरू हटाउनुहोस्",
+      "select_category": "सबै {category} पक्षहरू चयन गर्नुहोस्",
+      "deselect_category": "सबै {category} पक्षहरू हटाउनुहोस्",
+      "categories": {
+        "performance": "परफर्मेन्स",
+        "health": "हेल्थ",
+        "compatibility": "कम्प्याटिबिलिटी",
+        "security": "सिक्युरिटी र कम्प्लायन्स"
+      }
+    }
+  }
+}

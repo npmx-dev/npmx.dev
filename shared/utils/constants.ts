@@ -8,7 +8,6 @@ export const CACHE_MAX_AGE_ONE_YEAR = 60 * 60 * 24 * 365
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
 export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
-/** @public */
 export const ERROR_PACKAGE_REQUIREMENTS_FAILED =
   'Package name, version, and file path are required.'
 export const ERROR_FILE_LIST_FETCH_FAILED = 'Failed to fetch file list.'
@@ -17,8 +16,10 @@ export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
 export const UNSET_NUXT_SESSION_PASSWORD = 'NUXT_SESSION_PASSWORD not set'
-/** @public */
 export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
+export const ERROR_SKILLS_FETCH_FAILED = 'Failed to fetch skills.'
+export const ERROR_SKILL_NOT_FOUND = 'Skill not found.'
+export const ERROR_SKILL_FILE_NOT_FOUND = 'Skill file not found.'
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'

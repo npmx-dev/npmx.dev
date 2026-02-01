@@ -139,4 +139,4 @@ jobs:
         run: pnpm install
 
       - name: 🔍 Check for unused code
-        run: pnpm knip:production
+        run: pnpm knip

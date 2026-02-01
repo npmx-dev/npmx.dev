@@ -206,7 +206,6 @@ export interface NpmDownloadCount {
   package: string
 }
 
-/** @public */
 export interface NpmDownloadRange {
   downloads: Array<{
     downloads: number
@@ -221,21 +220,18 @@ export interface NpmDownloadRange {
  * Organization API types
  * These require authentication
  * Note: Not covered by @npm/types
- * @public
  */
 export interface NpmOrgMember {
   user: string
   role: 'developer' | 'admin' | 'owner'
 }
 
-/** @public */
 export interface NpmTeam {
   name: string
   description?: string
   members?: string[]
 }
 
-/** @public */
 export interface NpmPackageAccess {
   permissions: 'read-only' | 'read-write'
 }
@@ -243,7 +239,6 @@ export interface NpmPackageAccess {
 /**
  * Trusted Publishing types
  * Note: Not covered by @npm/types
- * @public
  */
 export interface NpmTrustedPublisher {
   type: 'github-actions' | 'gitlab-ci'

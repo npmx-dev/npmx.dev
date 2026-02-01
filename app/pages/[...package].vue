@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import type { NpmVersionDist, PackumentVersion, ReadmeResponse } from '#shared/types'
+import type {
+  NpmVersionDist,
+  PackumentVersion,
+  ReadmeResponse,
+  SkillsListResponse,
+} from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
-import { parseRepoUrl } from '#shared/utils/git-providers'
-import {
-  detectModuleFormat,
-  hasBuiltInTypes,
-  type ExtendedPackageJson,
-} from '#shared/utils/package-analysis'
+import { isEditableElement } from '~/utils/input'
+import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'package',
@@ -70,6 +71,15 @@ const {
 )
 onMounted(() => fetchInstallSize())
 
+const { data: skillsData } = useLazyFetch<SkillsListResponse>(
+  () => {
+    const base = `/skills/${packageName.value}`
+    const version = requestedVersion.value
+    return version ? `${base}/v/${version}` : base
+  },
+  { default: () => ({ package: '', version: '', skills: [] }) },
+)
+
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
 
@@ -99,24 +109,9 @@ const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
 
 // Fetch dependency analysis (lazy, client-side)
 // This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
-const {
-  data: vulnTree,
-  status: vulnTreeStatus,
-  fetch: fetchVulnTree,
-} = useDependencyAnalysis(packageName, () => displayVersion.value?.version ?? '')
-onMounted(() => {
-  // Fetch vulnerability tree once displayVersion is available
-  if (displayVersion.value) {
-    fetchVulnTree()
-  }
-})
-watch(
-  () => displayVersion.value?.version,
-  () => {
-    if (displayVersion.value) {
-      fetchVulnTree()
-    }
-  },
+const { data: vulnTree, status: vulnTreeStatus } = useDependencyAnalysis(
+  packageName,
+  () => displayVersion.value?.version ?? '',
 )
 
 // Keep latestVersion for comparison (to show "(latest)" badge)
@@ -134,7 +129,10 @@ const deprecationNotice = computed(() => {
 
   // If latest is deprecated, show "package deprecated"
   if (isLatestDeprecated) {
-    return { type: 'package' as const, message: displayVersion.value.deprecated }
+    return {
+      type: 'package' as const,
+      message: displayVersion.value.deprecated,
+    }
   }
 
   // Otherwise show "version deprecated"
@@ -236,7 +234,9 @@ const docsLink = computed(() => {
 
   return {
     name: 'docs' as const,
-    params: { path: [...pkg.value!.name.split('/'), 'v', displayVersion.value.version] },
+    params: {
+      path: [...pkg.value!.name.split('/'), 'v', displayVersion.value.version],
+    },
   }
 })
 
@@ -257,43 +257,6 @@ function normalizeGitUrl(url: string): string {
     .replace(/^ssh:\/\/git@github\.com/, 'https://github.com')
     .replace(/^git@github\.com:/, 'https://github.com/')
 }
-
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} kB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}
-
-// OG Image helpers
-function formatOgDate(isoDate?: string): string {
-  if (!isoDate) return ''
-  const date = new Date(isoDate)
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-}
-
-// Computed values for OG image
-const ogRepoRef = computed(() => {
-  const repoUrl = displayVersion.value?.repository?.url
-  if (!repoUrl) return null
-  return parseRepoUrl(normalizeGitUrl(repoUrl))
-})
-
-const ogDirectDepsCount = computed(() => {
-  const deps = displayVersion.value?.dependencies
-  return deps ? Object.keys(deps).length : 0
-})
-
-const ogModuleFormat = computed(() => {
-  const ver = displayVersion.value as ExtendedPackageJson | null
-  if (!ver) return 'unknown'
-  return detectModuleFormat(ver)
-})
-
-const ogHasTypes = computed(() => {
-  const ver = displayVersion.value as ExtendedPackageJson | null
-  if (!ver) return false
-  return hasBuiltInTypes(ver)
-})
 
 function getDependencyCount(version: PackumentVersion | null): number {
   if (!version?.dependencies) return 0
@@ -364,54 +327,46 @@ useSeoMeta({
 })
 
 onKeyStroke(
-  '.',
+  e => isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
   e => {
-    if (pkg.value && displayVersion.value) {
-      e.preventDefault()
-      navigateTo({
-        name: 'code',
-        params: {
-          path: [pkg.value.name, 'v', displayVersion.value.version],
-        },
-      })
-    }
+    if (pkg.value == null || displayVersion.value == null) return
+    e.preventDefault()
+    navigateTo({
+      name: 'code',
+      params: {
+        path: [pkg.value.name, 'v', displayVersion.value.version],
+      },
+    })
   },
   { dedupe: true },
 )
 
 onKeyStroke(
-  'd',
+  e => isKeyWithoutModifiers(e, 'd') && !isEditableElement(e.target),
   e => {
-    if (docsLink.value) {
-      e.preventDefault()
-      navigateTo(docsLink.value)
-    }
+    if (!docsLink.value) return
+    e.preventDefault()
+    navigateTo(docsLink.value)
   },
   { dedupe: true },
 )
 
-onKeyStroke('c', () => {
-  if (pkg.value) {
+onKeyStroke(
+  e => isKeyWithoutModifiers(e, 'c') && !isEditableElement(e.target),
+  e => {
+    if (!pkg.value) return
+    e.preventDefault()
     router.push({ path: '/compare', query: { packages: pkg.value.name } })
-  }
-})
+  },
+)
 
 defineOgImageComponent('Package', {
   name: () => pkg.value?.name ?? 'Package',
   version: () => displayVersion.value?.version ?? '',
-  downloads: () => (downloads.value ? formatCompactNumber(downloads.value.downloads) : ''),
+  downloads: () => (downloads.value ? $n(downloads.value.downloads) : ''),
   license: () => pkg.value?.license ?? '',
-  primaryColor: '#60a5fa',
-  description: () => pkg.value?.description ?? '',
-  repoOwner: () => ogRepoRef.value?.owner ?? '',
-  repoName: () => ogRepoRef.value?.repo ?? '',
   stars: () => stars.value ?? 0,
-  forks: () => forks.value ?? 0,
-  directDepsCount: () => ogDirectDepsCount.value,
-  updatedAt: () => formatOgDate(pkg.value?.time?.modified),
-  hasTypes: () => ogHasTypes.value,
-  hasESM: () => ogModuleFormat.value === 'esm' || ogModuleFormat.value === 'dual',
-  hasCJS: () => ogModuleFormat.value === 'cjs' || ogModuleFormat.value === 'dual',
+  primaryColor: '#60a5fa',
 })
 
 // We're using only @click because it catches touch events and enter hits
@@ -434,7 +389,7 @@ function handleClick(event: MouseEvent) {
 </script>
 
 <template>
-  <main class="container flex-1 py-8 xl:py-12">
+  <main class="container flex-1 w-full py-8 xl:py-12">
     <PackageSkeleton v-if="status === 'pending'" />
 
     <article v-else-if="status === 'success' && pkg" class="package-page">
@@ -453,7 +408,7 @@ function handleClick(event: MouseEvent) {
                 class="text-fg-muted hover:text-fg transition-colors duration-200"
                 >@{{ orgName }}</NuxtLink
               ><span v-if="orgName">/</span>
-              <AnnounceTooltip :text="$t('common.copied')" :isVisible="copiedPkgName">
+              <TooltipAnnounce :text="$t('common.copied')" :isVisible="copiedPkgName">
                 <button
                   @click="copyPkgName()"
                   aria-describedby="copy-pkg-name"
@@ -461,7 +416,7 @@ function handleClick(event: MouseEvent) {
                 >
                   {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
                 </button>
-              </AnnounceTooltip>
+              </TooltipAnnounce>
             </h1>
 
             <span id="copy-pkg-name" class="sr-only">{{ $t('package.copy_name') }}</span>
@@ -513,6 +468,7 @@ function handleClick(event: MouseEvent) {
                 v-if="displayVersion"
                 :package-name="pkg.name"
                 :version="displayVersion.version"
+                :is-binary="isBinaryOnly"
                 class="self-baseline ms-1 sm:ms-2"
               />
               <template #fallback>
@@ -547,7 +503,9 @@ function handleClick(event: MouseEvent) {
               <NuxtLink
                 :to="{
                   name: 'code',
-                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
+                  params: {
+                    path: [...pkg.name.split('/'), 'v', displayVersion.version],
+                  },
                 }"
                 class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
                 aria-keyshortcuts="."
@@ -697,7 +655,9 @@ function handleClick(event: MouseEvent) {
               <NuxtLink
                 :to="{
                   name: 'code',
-                  params: { path: [...pkg.name.split('/'), 'v', displayVersion.version] },
+                  params: {
+                    path: [...pkg.name.split('/'), 'v', displayVersion.version],
+                  },
                 }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
@@ -731,7 +691,9 @@ function handleClick(event: MouseEvent) {
           <p v-if="deprecationNotice.message" class="text-base m-0">
             <MarkdownText :text="deprecationNotice.message" />
           </p>
-          <p v-else class="text-base m-0 italic">{{ $t('package.deprecation.no_reason') }}</p>
+          <p v-else class="text-base m-0 italic">
+            {{ $t('package.deprecation.no_reason') }}
+          </p>
         </div>
 
         <!-- Stats grid -->
@@ -888,6 +850,15 @@ function handleClick(event: MouseEvent) {
             </dd>
           </div>
         </dl>
+
+        <!-- Skills Modal -->
+        <ClientOnly>
+          <PackageSkillsModal
+            :skills="skillsData?.skills ?? []"
+            :package-name="pkg.name"
+            :version="displayVersion?.version"
+          />
+        </ClientOnly>
       </header>
 
       <!-- Binary-only packages: Show only execute command (no install) -->
@@ -904,7 +875,7 @@ function handleClick(event: MouseEvent) {
           :id="`pm-panel-${activePmId}`"
           :aria-labelledby="`pm-tab-${activePmId}`"
         >
-          <ExecuteCommandTerminal
+          <TerminalExecute
             :package-name="pkg.name"
             :jsr-info="jsrInfo"
             :is-create-package="isCreatePkg"
@@ -938,7 +909,7 @@ function handleClick(event: MouseEvent) {
           :id="`pm-panel-${activePmId}`"
           :aria-labelledby="`pm-tab-${activePmId}`"
         >
-          <InstallCommandTerminal
+          <TerminalInstall
             :package-name="pkg.name"
             :requested-version="requestedVersion"
             :jsr-info="jsrInfo"
@@ -983,12 +954,7 @@ function handleClick(event: MouseEvent) {
           </a>
         </h2>
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-        <article
-          v-if="readmeData?.html"
-          class="readme-content prose prose-invert max-w-[70ch]"
-          v-html="readmeData.html"
-          @click="handleClick"
-        />
+        <Readme v-if="readmeData?.html" :html="readmeData.html" @click="handleClick" />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
           <a v-if="repositoryUrl" :href="repositoryUrl" rel="noopener noreferrer" class="link">{{
@@ -1033,6 +999,16 @@ function handleClick(event: MouseEvent) {
               </li>
             </ul>
           </section>
+
+          <!-- Agent Skills -->
+          <ClientOnly>
+            <PackageSkillsCard
+              v-if="skillsData?.skills?.length"
+              :skills="skillsData.skills"
+              :package-name="pkg.name"
+              :version="displayVersion?.version"
+            />
+          </ClientOnly>
 
           <!-- Download stats -->
           <PackageWeeklyDownloadStats :packageName />
@@ -1117,7 +1093,9 @@ function handleClick(event: MouseEvent) {
       role="alert"
       class="flex flex-col items-center py-20 text-center"
     >
-      <h1 class="font-mono text-2xl font-medium mb-4">{{ $t('package.not_found') }}</h1>
+      <h1 class="font-mono text-2xl font-medium mb-4">
+        {{ $t('package.not_found') }}
+      </h1>
       <p class="text-fg-muted mb-8">
         {{ error?.message ?? $t('package.not_found_message') }}
       </p>
@@ -1150,6 +1128,7 @@ function handleClick(event: MouseEvent) {
       'install install'
       'vulns   vulns'
       'readme  sidebar';
+    grid-template-rows: auto auto auto 1fr;
   }
 }
 

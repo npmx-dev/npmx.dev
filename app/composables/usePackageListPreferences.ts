@@ -15,7 +15,6 @@ import { DEFAULT_COLUMNS, DEFAULT_PREFERENCES } from '#shared/types/preferences'
  * Composable for managing package list display preferences
  * Persists to localStorage and provides reactive state
  *
- * @public
  */
 export function usePackageListPreferences() {
   const {

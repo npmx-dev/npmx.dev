@@ -26,7 +26,10 @@ const packumentCache = new Map<string, Promise<Packument | null>>()
  * Uses bulk API for unscoped packages, parallel individual requests for scoped.
  * Note: npm bulk downloads API does not support scoped packages.
  */
-async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, number>> {
+async function fetchBulkDownloads(
+  packageNames: string[],
+  options: Parameters<typeof $fetch>[1] = {},
+): Promise<Map<string, number>> {
   const downloads = new Map<string, number>()
   if (packageNames.length === 0) return downloads
 
@@ -44,6 +47,7 @@ async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, n
         try {
           const response = await $fetch<Record<string, { downloads: number } | null>>(
             `${NPM_API}/downloads/point/last-week/${chunk.join(',')}`,
+            options,
           )
           for (const [name, data] of Object.entries(response)) {
             if (data?.downloads !== undefined) {
@@ -176,7 +180,6 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
   }
 }
 
-/** @public */
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
@@ -226,7 +229,6 @@ function getResolvedVersion(pkg: SlimPackument, reqVer?: string | null): string 
   return resolved
 }
 
-/** @public */
 export function usePackageDownloads(
   name: MaybeRefOrGetter<string>,
   period: MaybeRefOrGetter<'last-day' | 'last-week' | 'last-month' | 'last-year'> = 'last-week',
@@ -264,7 +266,6 @@ type NpmDownloadsRangeResponse = {
 /**
  * Fetch download range data from npm API.
  * Exported for external use (e.g., in components).
- * @public
  */
 export async function fetchNpmDownloadsRange(
   packageName: string,
@@ -289,7 +290,6 @@ export interface NpmSearchOptions {
   size?: number
 }
 
-/** @public */
 export function useNpmSearch(
   query: MaybeRefOrGetter<string>,
   options: MaybeRefOrGetter<NpmSearchOptions> = {},
@@ -386,9 +386,11 @@ export function useNpmSearch(
 
       // Update cache
       if (cache.value && cache.value.query === q) {
+        const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
+        const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
         cache.value = {
           query: q,
-          objects: [...cache.value.objects, ...response.objects],
+          objects: [...cache.value.objects, ...newObjects],
           total: response.total,
         }
       } else {
@@ -505,7 +507,6 @@ function packumentToSearchResult(pkg: MinimalPackument, weeklyDownloads?: number
 /**
  * Fetch all packages for an npm organization
  * Returns search-result-like objects for compatibility with PackageList
- * @public
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const cachedFetch = useCachedFetch()
@@ -575,7 +576,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
           return results
         })(),
         // Fetch downloads in bulk
-        fetchBulkDownloads(packageNames),
+        fetchBulkDownloads(packageNames, { signal }),
       ])
 
       // Convert to search results with download data
@@ -758,7 +759,6 @@ async function checkDependencyOutdated(
 /**
  * Composable to check for outdated dependencies.
  * Returns a reactive map of dependency name to outdated info.
- * @public
  */
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
@@ -808,7 +808,6 @@ export function useOutdatedDependencies(
 
 /**
  * Get tooltip text for an outdated dependency
- * @public
  */
 export function getOutdatedTooltip(
   info: OutdatedDependencyInfo,
@@ -833,7 +832,6 @@ export function getOutdatedTooltip(
 
 /**
  * Get CSS class for a dependency version based on outdated status
- * @public
  */
 export function getVersionClass(info: OutdatedDependencyInfo | undefined): string {
   if (!info) return 'text-fg-subtle'
