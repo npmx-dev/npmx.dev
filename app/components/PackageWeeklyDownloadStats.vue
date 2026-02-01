@@ -1,16 +1,22 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 import { useCssVariables } from '../composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '../utils/colors'
 
-const { packageName } = defineProps<{
+const props = defineProps<{
   packageName: string
 }>()
 
-const showModal = shallowRef(false)
+const chartModal = useModal('chart-modal')
 
-const { data: packument } = usePackage(() => packageName)
+const isChartModalOpen = shallowRef(false)
+function openChartModal() {
+  isChartModalOpen.value = true
+  // ensure the component renders before opening the dialog
+  nextTick(() => chartModal.open())
+}
+
+const { data: packument } = usePackage(() => props.packageName)
 const createdIso = computed(() => packument.value?.time?.created ?? null)
 
 const { fetchPackageDownloadEvolution } = useCharts()
@@ -85,7 +91,7 @@ async function loadWeeklyDownloads() {
 
   try {
     const result = await fetchPackageDownloadEvolution(
-      () => packageName,
+      () => props.packageName,
       () => createdIso.value,
       () => ({ granularity: 'week' as const, weeks: 52 }),
     )
@@ -100,7 +106,7 @@ onMounted(() => {
 })
 
 watch(
-  () => packageName,
+  () => props.packageName,
   () => loadWeeklyDownloads(),
 )
 
@@ -195,7 +201,7 @@ const config = computed(() => {
       <template #actions>
         <button
           type="button"
-          @click="showModal = true"
+          @click="openChartModal"
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ms-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
           :title="$t('package.downloads.analyze')"
         >
@@ -242,28 +248,13 @@ const config = computed(() => {
     </CollapsibleSection>
   </div>
 
-  <ChartModal v-model:open="showModal">
-    <template #title>{{ $t('package.downloads.modal_title') }}</template>
-
+  <ChartModal v-if="isChartModalOpen" @close="isChartModalOpen = false">
     <PackageDownloadAnalytics
       :weeklyDownloads="weeklyDownloads"
       :inModal="true"
-      :packageName="packageName"
+      :packageName="props.packageName"
       :createdIso="createdIso"
     />
-
-    <template #after="{ close }">
-      <div class="sm:hidden flex justify-center">
-        <button
-          type="button"
-          @click="close"
-          class="w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors"
-          :aria-label="$t('common.close')"
-        >
-          <span class="w-5 h-5 i-carbon:close" aria-hidden="true" />
-        </button>
-      </div>
-    </template>
   </ChartModal>
 </template>
 

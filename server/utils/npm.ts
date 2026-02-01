@@ -64,7 +64,6 @@ export async function resolveVersionConstraint(
 /**
  * Resolve multiple dependency constraints to their best matching versions.
  * Returns a map of package name to resolved version.
- * @public
  */
 export async function resolveDependencyVersions(
   dependencies: Record<string, string>,

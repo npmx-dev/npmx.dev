@@ -3,6 +3,7 @@ import { NuxtLink } from '#components'
 
 const props = defineProps<{
   packageName: string
+  isBinary?: boolean
   version?: string
 }>()
 
@@ -43,7 +44,7 @@ const typesTooltip = computed(() => {
 
 const typesHref = computed(() => {
   if (!analysis.value) return null
-  if (analysis.value.types.kind === '@types') {
+  if (analysis.value.types?.kind === '@types') {
     return `/${analysis.value.types.packageName}`
   }
   return null
@@ -53,59 +54,62 @@ const typesHref = computed(() => {
 <template>
   <ul v-if="analysis" class="flex items-center gap-1.5 list-none m-0 p-0">
     <!-- TypeScript types badge -->
-    <li>
-      <component
-        :is="typesHref ? NuxtLink : 'span'"
-        :to="typesHref"
-        class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
-        :class="[
-          hasTypes
-            ? 'text-fg-muted bg-bg-muted border border-border'
-            : 'text-fg-subtle bg-bg-subtle border border-border-subtle',
-          typesHref
-            ? 'hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50'
-            : '',
-        ]"
-        :title="typesTooltip"
-      >
-        <span
-          class="w-3 h-3"
-          :class="hasTypes ? 'i-carbon-checkmark' : 'i-carbon-close'"
-          aria-hidden="true"
-        />
-        {{ $t('package.metrics.types_label') }}
-      </component>
+    <li v-if="!props.isBinary">
+      <AppTooltip :text="typesTooltip">
+        <component
+          :is="typesHref ? NuxtLink : 'span'"
+          :to="typesHref"
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
+          :class="[
+            hasTypes
+              ? 'text-fg-muted bg-bg-muted border border-border'
+              : 'text-fg-subtle bg-bg-subtle border border-border-subtle',
+            typesHref
+              ? 'hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50'
+              : '',
+          ]"
+        >
+          <span
+            class="w-3 h-3"
+            :class="hasTypes ? 'i-carbon-checkmark' : 'i-carbon-close'"
+            aria-hidden="true"
+          />
+          {{ $t('package.metrics.types_label') }}
+        </component>
+      </AppTooltip>
     </li>
 
     <!-- ESM badge (show with X if missing) -->
     <li>
-      <span
-        class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
-        :class="
-          hasEsm
-            ? 'text-fg-muted bg-bg-muted border border-border'
-            : 'text-fg-subtle bg-bg-subtle border border-border-subtle'
-        "
-        :title="hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')"
-      >
+      <AppTooltip :text="hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')">
         <span
-          class="w-3 h-3"
-          :class="hasEsm ? 'i-carbon-checkmark' : 'i-carbon-close'"
-          aria-hidden="true"
-        />
-        ESM
-      </span>
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
+          :class="
+            hasEsm
+              ? 'text-fg-muted bg-bg-muted border border-border'
+              : 'text-fg-subtle bg-bg-subtle border border-border-subtle'
+          "
+        >
+          <span
+            class="w-3 h-3"
+            :class="hasEsm ? 'i-carbon-checkmark' : 'i-carbon-close'"
+            aria-hidden="true"
+          />
+          ESM
+        </span>
+      </AppTooltip>
     </li>
 
     <!-- CJS badge (only show if present) -->
     <li v-if="hasCjs">
-      <span
-        class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200"
-        :title="$t('package.metrics.cjs')"
-      >
-        <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
-        CJS
-      </span>
+      <AppTooltip :text="$t('package.metrics.cjs')">
+        <span
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200"
+        >
+          <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
+          CJS
+        </span>
+      </AppTooltip>
     </li>
   </ul>
 </template>

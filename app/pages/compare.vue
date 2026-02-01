@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FACET_INFO, type ComparisonFacet } from '#shared/types/comparison'
+import { FACET_INFO } from '#shared/types/comparison'
 import { useRouteQuery } from '@vueuse/router'
 
 definePageMeta({

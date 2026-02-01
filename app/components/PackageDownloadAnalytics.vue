@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, shallowRef, watch } from 'vue'
 import type { VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize } from '@vueuse/core'
 import { useCssVariables } from '../composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '../utils/colors'
 
-const {
-  weeklyDownloads,
-  inModal = false,
-  packageName,
-  createdIso,
-} = defineProps<{
+const props = defineProps<{
   weeklyDownloads: WeeklyDownloadPoint[]
   inModal?: boolean
   packageName: string
@@ -25,9 +19,16 @@ const rootEl = shallowRef<HTMLElement | null>(null)
 
 const { width } = useElementSize(rootEl)
 
-onMounted(() => {
+const chartKey = ref(0)
+
+onMounted(async () => {
   rootEl.value = document.documentElement
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      chartKey.value += 1
+    })
+  })
 })
 
 const { colors } = useCssVariables(
@@ -132,7 +133,7 @@ function formatXyDataset(
     return {
       dataset: [
         {
-          name: packageName,
+          name: props.packageName,
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
@@ -150,7 +151,7 @@ function formatXyDataset(
     return {
       dataset: [
         {
-          name: packageName,
+          name: props.packageName,
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
@@ -163,7 +164,7 @@ function formatXyDataset(
     return {
       dataset: [
         {
-          name: packageName,
+          name: props.packageName,
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
@@ -176,7 +177,7 @@ function formatXyDataset(
     return {
       dataset: [
         {
-          name: packageName,
+          name: props.packageName,
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
@@ -236,10 +237,10 @@ const hasUserEditedDates = shallowRef(false)
 
 function initDateRangeFromWeekly() {
   if (hasUserEditedDates.value) return
-  if (!weeklyDownloads?.length) return
+  if (!props.weeklyDownloads?.length) return
 
-  const first = weeklyDownloads[0]
-  const last = weeklyDownloads[weeklyDownloads.length - 1]
+  const first = props.weeklyDownloads[0]
+  const last = props.weeklyDownloads[props.weeklyDownloads.length - 1]
   const start = first?.weekStart ? toIsoDateOnly(first.weekStart) : ''
   const end = last?.weekEnd ? toIsoDateOnly(last.weekEnd) : ''
   if (isValidIsoDateOnly(start)) startDate.value = start
@@ -266,7 +267,7 @@ function initDateRangeFallbackClient() {
 }
 
 watch(
-  () => weeklyDownloads?.length,
+  () => props.weeklyDownloads?.length,
   () => {
     initDateRangeFromWeekly()
     initDateRangeFallbackClient()
@@ -343,7 +344,7 @@ watch(
 
 const { fetchPackageDownloadEvolution } = useCharts()
 
-const evolution = shallowRef<EvolutionData>(weeklyDownloads)
+const evolution = shallowRef<EvolutionData>(props.weeklyDownloads)
 const pending = shallowRef(false)
 
 let lastRequestKey = ''
@@ -355,7 +356,7 @@ const debouncedLoad = useDebounceFn(() => {
 
 async function load() {
   if (!import.meta.client) return
-  if (!inModal) return
+  if (!props.inModal) return
 
   const o = options.value
   const extraBase =
@@ -367,14 +368,14 @@ async function load() {
 
   const startKey = (o as any).startDate ?? ''
   const endKey = (o as any).endDate ?? ''
-  const requestKey = `${packageName}|${createdIso ?? ''}|${o.granularity}|${extraBase}|${startKey}|${endKey}`
+  const requestKey = `${props.packageName}|${props.createdIso ?? ''}|${o.granularity}|${extraBase}|${startKey}|${endKey}`
 
   if (requestKey === lastRequestKey) return
   lastRequestKey = requestKey
 
   const hasExplicitRange = Boolean((o as any).startDate || (o as any).endDate)
-  if (o.granularity === 'week' && weeklyDownloads?.length && !hasExplicitRange) {
-    evolution.value = weeklyDownloads
+  if (o.granularity === 'week' && props.weeklyDownloads?.length && !hasExplicitRange) {
+    evolution.value = props.weeklyDownloads
     pending.value = false
     displayedGranularity.value = 'weekly'
     return
@@ -385,8 +386,8 @@ async function load() {
 
   try {
     const result = await fetchPackageDownloadEvolution(
-      () => packageName,
-      () => createdIso,
+      () => props.packageName,
+      () => props.createdIso,
       () => o as any, // FIXME: any
     )
 
@@ -405,7 +406,7 @@ async function load() {
 }
 
 watch(
-  () => inModal,
+  () => props.inModal,
   () => {
     // modal open/close should be immediate
     load()
@@ -415,8 +416,8 @@ watch(
 
 watch(
   () => [
-    packageName,
-    createdIso,
+    props.packageName,
+    props.createdIso,
     options.value.granularity,
     (options.value as any).weeks,
     (options.value as any).months,
@@ -438,9 +439,9 @@ watch(
 )
 
 const effectiveData = computed<EvolutionData>(() => {
-  if (displayedGranularity.value === 'weekly' && weeklyDownloads?.length) {
+  if (displayedGranularity.value === 'weekly' && props.weeklyDownloads?.length) {
     if (isWeeklyDataset(evolution.value) && evolution.value.length) return evolution.value
-    return weeklyDownloads
+    return props.weeklyDownloads
   }
   return evolution.value
 })
@@ -482,7 +483,7 @@ const config = computed(() => {
           img: ({ imageUri }: { imageUri: string }) => {
             loadFile(
               imageUri,
-              `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.png`,
+              `${props.packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.png`,
             )
           },
           csv: (csvStr: string) => {
@@ -503,7 +504,7 @@ const config = computed(() => {
             const url = URL.createObjectURL(blob)
             loadFile(
               url,
-              `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.csv`,
+              `${props.packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.csv`,
             )
             URL.revokeObjectURL(url)
           },
@@ -511,7 +512,7 @@ const config = computed(() => {
             const url = URL.createObjectURL(blob)
             loadFile(
               url,
-              `${packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.svg`,
+              `${props.packageName}-${selectedGranularity.value}_${startDate.value}_${endDate.value}.svg`,
             )
             URL.revokeObjectURL(url)
           },
@@ -526,7 +527,7 @@ const config = computed(() => {
             yLabel: $t('package.downloads.y_axis_label', {
               granularity: $t(`package.downloads.granularity_${selectedGranularity.value}`),
             }),
-            xLabel: packageName,
+            xLabel: props.packageName,
             yLabelOffsetX: 12,
             fontSize: isMobile.value ? 32 : 24,
           },
@@ -549,6 +550,7 @@ const config = computed(() => {
         show: false, // As long as a single package is displayed
       },
       tooltip: {
+        teleportTo: '#chart-modal',
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
@@ -693,7 +695,12 @@ const config = computed(() => {
     </div>
 
     <ClientOnly v-if="inModal && chartData.dataset">
-      <VueUiXy :dataset="chartData.dataset" :config="config" class="[direction:ltr]">
+      <VueUiXy
+        :dataset="chartData.dataset"
+        :config="config"
+        class="[direction:ltr]"
+        :key="chartKey"
+      >
         <template #menuIcon="{ isOpen }">
           <span v-if="isOpen" class="i-carbon:close w-6 h-6" aria-hidden="true" />
           <span v-else class="i-carbon:overflow-menu-vertical w-6 h-6" aria-hidden="true" />

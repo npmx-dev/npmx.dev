@@ -2,16 +2,7 @@
 import type { ComparisonFacet } from '#shared/types'
 import { FACET_INFO, FACETS_BY_CATEGORY, CATEGORY_ORDER } from '#shared/types/comparison'
 
-const {
-  isFacetSelected,
-  toggleFacet,
-  selectCategory,
-  deselectCategory,
-  selectAll,
-  deselectAll,
-  isAllSelected,
-  isNoneSelected,
-} = useFacetSelection()
+const { isFacetSelected, toggleFacet, selectCategory, deselectCategory } = useFacetSelection()
 
 // Enrich facets with their info for rendering
 const facetsByCategory = computed(() => {

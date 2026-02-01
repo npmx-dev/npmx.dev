@@ -5,20 +5,17 @@ import type { ColumnConfig } from '#shared/types/preferences'
 const props = defineProps<{
   result: NpmSearchResult
   columns: ColumnConfig[]
-  selected?: boolean
   index?: number
 }>()
 
 const emit = defineEmits<{
-  focus: []
   clickKeyword: [keyword: string]
 }>()
 
 const pkg = computed(() => props.result.package)
 const score = computed(() => props.result.score)
 
-// Get the best available date: prefer result.updated (from packument), fall back to package.date
-const updatedDate = computed(() => props.result.updated ?? props.result.package.date)
+const updatedDate = computed(() => props.result.package.date)
 
 function formatDownloads(count?: number): string {
   if (count === undefined) return '-'
@@ -46,10 +43,9 @@ const allMaintainersText = computed(() => {
 
 <template>
   <tr
-    class="border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none"
-    :class="{ 'bg-bg-muted': selected }"
+    class="border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none focus:bg-bg-muted"
     tabindex="0"
-    @focus="emit('focus')"
+    :data-result-index="index"
   >
     <!-- Name (always visible) -->
     <td class="py-2 px-3">

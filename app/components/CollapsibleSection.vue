@@ -123,7 +123,7 @@ useHead({
       :id="contentId"
       class="grid ms-6 transition-[grid-template-rows] duration-200 ease-in-out collapsible-content overflow-hidden"
     >
-      <div class="min-h-0">
+      <div class="min-h-0 min-w-0">
         <slot />
       </div>
     </div>

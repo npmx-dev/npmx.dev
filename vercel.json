@@ -60,6 +60,26 @@
         }
       ],
       "destination": "https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "governance.npmx.dev"
+        }
+      ],
+      "destination": "https://github.com/npmx-dev/npmx.dev/blob/main/GOVERNANCE.md"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "license.npmx.dev"
+        }
+      ],
+      "destination": "https://github.com/npmx-dev/npmx.dev/blob/main/LICENSE"
     }
   ]
 }
