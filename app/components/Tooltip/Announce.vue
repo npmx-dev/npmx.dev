@@ -10,7 +10,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <BaseTooltip :text :isVisible :position :tooltip-attr="{ 'aria-live': 'polite' }"
+  <TooltipBase :text :isVisible :position :tooltip-attr="{ 'aria-live': 'polite' }"
     ><slot
-  /></BaseTooltip>
+  /></TooltipBase>
 </template>

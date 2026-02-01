@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
-import { useCssVariables } from '../composables/useColors'
-import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '../utils/colors'
+import { useCssVariables } from '~/composables/useColors'
+import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
 
 const props = defineProps<{
   packageName: string
@@ -248,14 +248,14 @@ const config = computed(() => {
     </CollapsibleSection>
   </div>
 
-  <ChartModal v-if="isChartModalOpen" @close="isChartModalOpen = false">
+  <PackageChartModal v-if="isChartModalOpen" @close="isChartModalOpen = false">
     <PackageDownloadAnalytics
       :weeklyDownloads="weeklyDownloads"
       :inModal="true"
       :packageName="props.packageName"
       :createdIso="createdIso"
     />
-  </ChartModal>
+  </PackageChartModal>
 </template>
 
 <style>

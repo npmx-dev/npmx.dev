@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PendingOperation } from '../../cli/src/types'
+import type { PendingOperation } from '~~/cli/src/types'
 
 const {
   isConnected,

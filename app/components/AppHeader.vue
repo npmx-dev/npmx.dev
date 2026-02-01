@@ -124,7 +124,7 @@ onKeyStroke(
         :class="{ 'hidden sm:flex': !isSearchExpanded }"
       >
         <!-- Search bar (hidden on mobile unless expanded) -->
-        <SearchBox
+        <HeaderSearchBox
           ref="searchBoxRef"
           :inputClass="isSearchExpanded ? 'w-full' : ''"
           :class="{ 'max-w-md': !isSearchExpanded }"
@@ -203,6 +203,6 @@ onKeyStroke(
     </nav>
 
     <!-- Mobile menu -->
-    <MobileMenu v-model:open="showMobileMenu" />
+    <HeaderMobileMenu v-model:open="showMobileMenu" />
   </header>
 </template>

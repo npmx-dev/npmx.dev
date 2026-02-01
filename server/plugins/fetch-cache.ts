@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import type { CachedFetchEntry, CachedFetchResult } from '#shared/utils/fetch-cache-config'
+import { $fetch } from 'ofetch'
 import {
   FETCH_CACHE_DEFAULT_TTL,
   FETCH_CACHE_STORAGE_BASE,

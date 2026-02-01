@@ -247,6 +247,6 @@ function openAuthModal() {
       </div>
     </Transition>
   </div>
-  <ConnectorModal />
-  <AuthModal />
+  <HeaderConnectorModal />
+  <HeaderAuthModal />
 </template>

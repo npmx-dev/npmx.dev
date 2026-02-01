@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { CheckNameResult } from '~/utils/package-name'
 import { checkPackageName } from '~/utils/package-name'
 
 const props = defineProps<{
@@ -16,25 +15,34 @@ const {
   refreshState,
 } = useConnector()
 
-// Fetch name availability when modal opens
-const checkResult = shallowRef<CheckNameResult | null>(null)
-
-const isChecking = shallowRef(false)
 const isPublishing = shallowRef(false)
-const publishError = shallowRef<string | null>(null)
 const publishSuccess = shallowRef(false)
+const publishError = shallowRef<string | null>(null)
 
-async function checkAvailability() {
-  isChecking.value = true
-  publishError.value = null
-  try {
-    checkResult.value = await checkPackageName(props.packageName)
-  } catch (err) {
-    publishError.value = err instanceof Error ? err.message : $t('claim.modal.failed_to_check')
-  } finally {
-    isChecking.value = false
-  }
-}
+const {
+  data: checkResult,
+  refresh: checkAvailability,
+  status,
+  error: checkError,
+} = useAsyncData(
+  (_nuxtApp, { signal }) => {
+    return checkPackageName(props.packageName, { signal })
+  },
+  { default: () => null, immediate: false },
+)
+
+const isChecking = computed(() => {
+  return status.value === 'pending'
+})
+
+const mergedError = computed(() => {
+  return (
+    publishError.value ??
+    (checkError.value instanceof Error
+      ? checkError.value.message
+      : $t('claim.modal.failed_to_check'))
+  )
+})
 
 const connectorModal = useModal('connector-modal')
 
@@ -92,7 +100,6 @@ const dialogRef = ref<HTMLDialogElement>()
 
 function open() {
   // Reset state and check availability each time modal is opened
-  checkResult.value = null
   publishError.value = null
   publishSuccess.value = false
   checkAvailability()
@@ -287,11 +294,11 @@ const previewPackageJson = computed(() => {
 
       <!-- Error message -->
       <div
-        v-if="publishError"
+        v-if="mergedError"
         role="alert"
         class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
       >
-        {{ publishError }}
+        {{ mergedError }}
       </div>
 
       <!-- Actions -->
@@ -369,17 +376,17 @@ const previewPackageJson = computed(() => {
     </div>
 
     <!-- Error state -->
-    <div v-else-if="publishError" class="space-y-4">
+    <div v-else-if="mergedError" class="space-y-4">
       <div
         role="alert"
         class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
       >
-        {{ publishError }}
+        {{ mergedError }}
       </div>
       <button
         type="button"
         class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-        @click="checkAvailability"
+        @click="() => checkAvailability()"
       >
         {{ $t('common.retry') }}
       </button>
