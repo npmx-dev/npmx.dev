@@ -453,7 +453,7 @@ function handleClick(event: MouseEvent) {
 
             <NuxtLink
               v-if="requestedVersion && resolvedVersion !== requestedVersion"
-              :to="`/package/${pkg.name}/v/${displayVersion.version}`"
+              :to="`/package/${pkg.name}/v/${displayVersion?.version}`"
               :title="$t('package.view_permalink')"
               >{{ resolvedVersion }}</NuxtLink
             >
