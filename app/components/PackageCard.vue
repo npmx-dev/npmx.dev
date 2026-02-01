@@ -22,7 +22,7 @@ const isExactMatch = computed(() => {
 </script>
 
 <template>
-  <Card :selected="selected" :isExactMatch="isExactMatch">
+  <Card :isExactMatch="isExactMatch">
     <div class="mb-2 flex items-baseline justify-start gap-2">
       <component
         :is="headingLevel ?? 'h3'"
