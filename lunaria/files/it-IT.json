@@ -730,5 +730,16 @@
       "empty": "Nessuna organizzazione trovata",
       "view_all": "Vedi tutte"
     }
+  },
+  "dependencies": {
+    "title": "dependencies",
+    "version_required": "No version specified. Please select a version to view dependencies.",
+    "go_to_package": "Go to package page",
+    "loading": "Loading dependencies...",
+    "error": "Failed to load dependencies",
+    "back_to_package": "Back to package",
+    "no_deps": "No dependencies",
+    "optional": "optional",
+    "dev_title": "dev dependencies"
   }
 }
