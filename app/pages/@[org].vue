@@ -113,11 +113,6 @@ function handleClearFilter(chip: FilterChip) {
   clearFilter(chip)
 }
 
-// Handle sort change from table
-function handleSortChange(option: SortOption) {
-  setSort(option)
-}
-
 const activeTab = shallowRef<'members' | 'teams'>('members')
 
 // Canonical URL for this org page

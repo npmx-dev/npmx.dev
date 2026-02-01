@@ -1,6 +1,5 @@
 import type { UserSession } from '#shared/schemas/userSession'
 
-/** @public */
 export function useAtproto() {
   const { data: user, pending, clear } = useFetch<UserSession | null>('/api/auth/session')
 

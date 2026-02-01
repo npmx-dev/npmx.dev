@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
 import { getFileIcon } from '~/utils/file-icons'
+import { formatBytes } from '~/utils/formatters'
 
 const props = defineProps<{
   tree: PackageFileTree[]
@@ -35,13 +36,6 @@ const parentPath = computed(() => {
   if (parts.length <= 1) return ''
   return parts.slice(0, -1).join('/')
 })
-
-// Format file size
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} kB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}
 </script>
 
 <template>

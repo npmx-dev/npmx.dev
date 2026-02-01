@@ -7,7 +7,6 @@ const props = defineProps<{
   /** Whether to show the publisher username */
   showPublisher?: boolean
   prefetch?: boolean
-  selected?: boolean
   index?: number
   /** Search query for highlighting exact matches */
   searchQuery?: string
@@ -35,9 +34,8 @@ const emit = defineEmits<{
 
 <template>
   <article
-    class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
+    class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
     :class="{
-      'bg-bg-muted border-border-hover': selected,
       'border-accent/30 bg-accent/5': isExactMatch,
     }"
   >
@@ -57,8 +55,6 @@ const emit = defineEmits<{
           :prefetch-on="prefetch ? 'visibility' : 'interaction'"
           class="decoration-none scroll-mt-48 scroll-mb-6 after:content-[''] after:absolute after:inset-0"
           :data-result-index="index"
-          @focus="index != null && emit('focus', index)"
-          @mouseenter="index != null && emit('focus', index)"
           >{{ result.package.name }}</NuxtLink
         >
         <span
@@ -99,7 +95,7 @@ const emit = defineEmits<{
               class="flex items-center gap-1.5"
             >
               <dt class="sr-only">{{ $t('package.card.publisher') }}</dt>
-              <dd class="font-mono">@{{ result.package.publisher.username }}</dd>
+              <dd class="font-mono">{{ result.package.publisher.username }}</dd>
             </div>
             <div v-if="result.package.date" class="flex items-center gap-1.5">
               <dt class="sr-only">{{ $t('package.card.updated') }}</dt>

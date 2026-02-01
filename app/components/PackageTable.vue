@@ -6,14 +6,12 @@ import { buildSortOption, parseSortOption, toggleDirection } from '#shared/types
 const props = defineProps<{
   results: NpmSearchResult[]
   columns: ColumnConfig[]
-  selectedIndex?: number
   isLoading?: boolean
 }>()
 
 const sortOption = defineModel<SortOption>('sortOption')
 
 const emit = defineEmits<{
-  select: [index: number]
   clickKeyword: [keyword: string]
 }>()
 
@@ -318,9 +316,7 @@ function getColumnLabelKey(id: ColumnId): string {
             :key="result.package.name"
             :result="result"
             :columns="columns"
-            :selected="selectedIndex === index"
             :index="index"
-            @focus="emit('select', index)"
             @click-keyword="emit('clickKeyword', $event)"
           />
         </template>

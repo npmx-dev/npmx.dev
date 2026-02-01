@@ -1,19 +1,19 @@
 <script setup lang="ts">
 const router = useRouter()
 const { settings } = useSettings()
-const { locale, locales, setLocale } = useI18n()
+const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 
-// Escape to go back (but not when focused on form elements)
+// Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
-  'Escape',
+  e =>
+    isKeyWithoutModifiers(e, 'Escape') &&
+    !isEditableElement(e.target) &&
+    !document.documentElement.matches('html:has(:modal)'),
   e => {
-    const target = e.target as HTMLElement
-    if (!['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.tagName)) {
-      e.preventDefault()
-      router.back()
-    }
+    e.preventDefault()
+    router.back()
   },
   { dedupe: true },
 )
@@ -28,6 +28,11 @@ defineOgImageComponent('Default', {
   description: () => $t('settings.tagline'),
   primaryColor: '#60a5fa',
 })
+
+const setLocale: typeof setNuxti18nLocale = locale => {
+  settings.value.selectedLocale = locale
+  return setNuxti18nLocale(locale)
+}
 </script>
 
 <template>
@@ -77,7 +82,9 @@ defineOgImageComponent('Default', {
                     | 'system'
                 "
               >
-                <option value="system">{{ $t('settings.theme_system') }}</option>
+                <option value="system">
+                  {{ $t('settings.theme_system') }}
+                </option>
                 <option value="light">{{ $t('settings.theme_light') }}</option>
                 <option value="dark">{{ $t('settings.theme_dark') }}</option>
               </select>
