@@ -46,8 +46,8 @@
     "popular_packages": "Beliebte Pakete",
     "search": "Suche",
     "settings": "Einstellungen",
-    "compare": "vergleichen",
-    "back": "zurück",
+    "compare": "Vergleichen",
+    "back": "Zurück",
     "menu": "Menü",
     "mobile_menu": "Navigationsmenü",
     "open_menu": "Menü öffnen",
@@ -64,7 +64,7 @@
       "language": "Sprache"
     },
     "relative_dates": "Relative Datumsangaben",
-    "relative_dates_description": "Zeige „vor 3 Tagen“ anstelle von vollständigen Daten an",
+    "relative_dates_description": "Zeige „vor 3 Tagen“ anstelle von vollständigen Datumsangaben an",
     "include_types": "{'@'}types bei Installation einschließen",
     "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Paket) automatisch zu Installationsbefehlen für Pakete ohne Typen hinzufügen",
     "hide_platform_packages": "Plattformspezifische Pakete in der Suche ausblenden",
@@ -158,7 +158,7 @@
       "code": "Code",
       "docs": "Doku",
       "fund": "Spenden",
-      "compare": "vergleichen"
+      "compare": "Vergleichen"
     },
     "docs": {
       "not_available": "Dokumentation nicht verfügbar",
