@@ -271,6 +271,16 @@ const docsLink = computed(() => {
   }
 })
 
+// Impact URL: bundle size analysis
+const impactLink = computed(() => {
+  if (!displayVersion.value) return null
+
+  return {
+    name: 'impact' as const,
+    params: { path: [...pkg.value!.name.split('/'), 'v', displayVersion.value.version] },
+  }
+})
+
 const fundingUrl = computed(() => {
   let funding = displayVersion.value?.funding
   if (Array.isArray(funding)) funding = funding[0]
@@ -391,6 +401,12 @@ onKeyStroke(
   },
 )
 
+onKeyStroke('i', () => {
+  if (impactLink.value) {
+    router.push(impactLink.value)
+  }
+})
+
 defineOgImageComponent('Package', {
   name: () => pkg.value?.name ?? 'Package',
   version: () => displayVersion.value?.version ?? '',
@@ -510,7 +526,7 @@ function handleClick(event: MouseEvent) {
             </template>
           </ClientOnly>
 
-          <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
+          <!-- Internal navigation: Docs + Code + Impact + Compare (hidden on mobile, shown in external links instead) -->
           <nav
             v-if="displayVersion"
             :aria-label="$t('package.navigation')"
@@ -548,6 +564,21 @@ function handleClick(event: MouseEvent) {
                 aria-hidden="true"
               >
                 .
+              </kbd>
+            </NuxtLink>
+            <NuxtLink
+              v-if="impactLink"
+              :to="impactLink"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              aria-keyshortcuts="i"
+            >
+              <span class="i-carbon:chart-treemap w-3 h-3" aria-hidden="true" />
+              {{ $t('package.links.impact') }}
+              <kbd
+                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                aria-hidden="true"
+              >
+                i
               </kbd>
             </NuxtLink>
             <NuxtLink
@@ -676,7 +707,7 @@ function handleClick(event: MouseEvent) {
                 {{ $t('package.links.fund') }}
               </a>
             </li>
-            <!-- Mobile-only: Docs + Code + Compare links -->
+            <!-- Mobile-only: Docs + Code + Impact + Compare links -->
             <li v-if="docsLink && displayVersion" class="sm:hidden">
               <NuxtLink
                 :to="docsLink"
@@ -698,6 +729,15 @@ function handleClick(event: MouseEvent) {
               >
                 <span class="i-carbon:code w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.code') }}
+              </NuxtLink>
+            </li>
+            <li v-if="impactLink && displayVersion" class="sm:hidden">
+              <NuxtLink
+                :to="impactLink"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon:chart-treemap w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.impact') }}
               </NuxtLink>
             </li>
             <li class="sm:hidden">

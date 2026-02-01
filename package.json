@@ -36,9 +36,11 @@
     "start:playwright:webserver": "NODE_ENV=test pnpm build && pnpm preview --port 5678"
   },
   "dependencies": {
+    "@atcute/uint8array": "1.0.6",
     "@atproto/api": "^0.18.17",
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
+    "@bokuweb/zstd-wasm": "0.0.27",
     "@deno/doc": "jsr:^0.189.1",
     "@iconify-json/carbon": "1.2.18",
     "@iconify-json/lucide": "1.2.87",
@@ -49,6 +51,7 @@
     "@intlify/core-base": "11.2.8",
     "@intlify/shared": "11.2.8",
     "@lunariajs/core": "https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3",
+    "@mary/tar": "jsr:^0.3.2",
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "0.13.0",
     "@nuxt/scripts": "0.13.2",
@@ -56,6 +59,7 @@
     "@nuxtjs/color-mode": "4.0.0",
     "@nuxtjs/html-validator": "2.1.0",
     "@nuxtjs/i18n": "10.2.1",
+    "@rolldown/browser": "1.0.0-rc.1",
     "@shikijs/langs": "3.21.0",
     "@shikijs/themes": "3.21.0",
     "@unocss/nuxt": "66.6.0",
@@ -95,6 +99,7 @@
   },
   "devDependencies": {
     "@npm/types": "2.1.0",
+    "@oxc-project/types": "0.110.0",
     "@playwright/test": "1.58.1",
     "@types/node": "24.10.9",
     "@types/sanitize-html": "2.16.0",
@@ -106,6 +111,7 @@
     "axe-core": "4.11.1",
     "knip": "5.82.1",
     "lint-staged": "16.2.7",
+    "memfs": "4.56.10",
     "playwright-core": "1.58.0",
     "simple-git-hooks": "2.13.1",
     "typescript": "5.9.3",
