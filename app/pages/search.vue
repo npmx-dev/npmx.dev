@@ -76,19 +76,6 @@ const {
   incremental: true,
 }))
 
-// Track previous query for UI continuity
-const previousQuery = useState('search-previous-query', () => query.value)
-
-// Update previous query when results change
-watch(
-  () => results.value,
-  newResults => {
-    if (newResults && newResults.objects.length > 0) {
-      previousQuery.value = query.value
-    }
-  },
-)
-
 // Results to display (directly from incremental search)
 const rawVisibleResults = computed(() => results.value)
 

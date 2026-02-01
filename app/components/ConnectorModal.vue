@@ -24,6 +24,23 @@ function handleDisconnect() {
   disconnect()
 }
 
+// function copyCommand() {
+//   let command = executeNpmxConnectorCommand.value
+//   if (portInput.value !== '31415') {
+//     command += ` --port ${portInput.value}`
+//   }
+//   copy(command)
+// }
+
+// const selectedPM = useSelectedPackageManager()
+
+// const executeNpmxConnectorCommand = computed(() => {
+//   return getExecuteCommand({
+//     packageName: 'npmx-connector',
+//     packageManager: selectedPM.value,
+//   })
+// })
+
 // Reset form when modal opens
 watch(open, isOpen => {
   if (isOpen) {
