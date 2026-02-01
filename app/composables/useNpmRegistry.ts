@@ -14,9 +14,6 @@ import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 
-const NPM_REGISTRY = 'https://registry.npmjs.org'
-const NPM_API = 'https://api.npmjs.org'
-
 // Cache for packument fetches to avoid duplicate requests across components
 const packumentCache = new Map<string, Promise<Packument | null>>()
 
@@ -30,6 +27,8 @@ async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, n
   const downloads = new Map<string, number>()
   if (packageNames.length === 0) return downloads
 
+  const { $npmApi } = useNuxtApp()
+
   // Separate scoped and unscoped packages
   const scopedPackages = packageNames.filter(n => n.startsWith('@'))
   const unscopedPackages = packageNames.filter(n => !n.startsWith('@'))
@@ -42,10 +41,10 @@ async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, n
     bulkPromises.push(
       (async () => {
         try {
-          const response = await $fetch<Record<string, { downloads: number } | null>>(
-            `${NPM_API}/downloads/point/last-week/${chunk.join(',')}`,
+          const response = await $npmApi<Record<string, { downloads: number } | null>>(
+            `/downloads/point/last-week/${chunk.join(',')}`,
           )
-          for (const [name, data] of Object.entries(response)) {
+          for (const [name, data] of Object.entries(response.data)) {
             if (data?.downloads !== undefined) {
               downloads.set(name, data.downloads)
             }
@@ -67,8 +66,8 @@ async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, n
         const results = await Promise.allSettled(
           batch.map(async name => {
             const encoded = encodePackageName(name)
-            const data = await $fetch<{ downloads: number }>(
-              `${NPM_API}/downloads/point/last-week/${encoded}`,
+            const { data } = await $npmApi<{ downloads: number }>(
+              `/downloads/point/last-week/${encoded}`,
             )
             return { name, downloads: data.downloads }
           }),
@@ -180,13 +179,11 @@ export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
 ) {
-  const cachedFetch = useCachedFetch()
-
   const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
-    async (_nuxtApp, { signal }) => {
+    async ({ $npmRegistry }, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
-      const { data: r, isStale } = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`, {
+      const { data: r, isStale } = await $npmRegistry<Packument>(`/${encodedName}`, {
         signal,
       })
       const reqVer = toValue(requestedVersion)
@@ -229,14 +226,14 @@ export function usePackageDownloads(
   name: MaybeRefOrGetter<string>,
   period: MaybeRefOrGetter<'last-day' | 'last-week' | 'last-month' | 'last-year'> = 'last-week',
 ) {
-  const cachedFetch = useCachedFetch()
+  const { $npmApi } = useNuxtApp()
 
   const asyncData = useLazyAsyncData(
     () => `downloads:${toValue(name)}:${toValue(period)}`,
     async (_nuxtApp, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
-      const { data, isStale } = await cachedFetch<NpmDownloadCount>(
-        `${NPM_API}/downloads/point/${toValue(period)}/${encodedName}`,
+      const { data, isStale } = await $npmApi<NpmDownloadCount>(
+        `/downloads/point/${toValue(period)}/${encodedName}`,
         { signal },
       )
       return { ...data, isStale }
@@ -269,9 +266,11 @@ export async function fetchNpmDownloadsRange(
   end: string,
 ): Promise<NpmDownloadsRangeResponse> {
   const encodedName = encodePackageName(packageName)
-  return await $fetch<NpmDownloadsRangeResponse>(
-    `${NPM_API}/downloads/range/${start}:${end}/${encodedName}`,
-  )
+  const { $npmApi } = useNuxtApp()
+
+  return (
+    await $npmApi<NpmDownloadsRangeResponse>(`/downloads/range/${start}:${end}/${encodedName}`)
+  ).data
 }
 
 const emptySearchResponse = {
@@ -290,7 +289,6 @@ export function useNpmSearch(
   query: MaybeRefOrGetter<string>,
   options: MaybeRefOrGetter<NpmSearchOptions> = {},
 ) {
-  const cachedFetch = useCachedFetch()
   // Client-side cache
   const cache = shallowRef<{
     query: string
@@ -305,7 +303,7 @@ export function useNpmSearch(
 
   const asyncData = useLazyAsyncData(
     () => `search:incremental:${toValue(query)}`,
-    async (_nuxtApp, { signal }) => {
+    async ({ $npmRegistry }, { signal }) => {
       const q = toValue(query)
       if (!q.trim()) {
         return emptySearchResponse
@@ -322,8 +320,8 @@ export function useNpmSearch(
       // Use requested size for initial fetch
       params.set('size', String(opts.size ?? 25))
 
-      const { data: response, isStale } = await cachedFetch<NpmSearchResponse>(
-        `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
+      const { data: response, isStale } = await $npmRegistry<NpmSearchResponse>(
+        `/-/v1/search?${params.toString()}`,
         { signal },
         60,
       )
@@ -364,6 +362,8 @@ export function useNpmSearch(
 
     isLoadingMore.value = true
 
+    const { $npmRegistry } = useNuxtApp()
+
     try {
       // Fetch from where we left off - calculate size needed
       const from = currentCount
@@ -374,7 +374,7 @@ export function useNpmSearch(
       params.set('size', String(size))
       params.set('from', String(from))
 
-      const { data: response } = await cachedFetch<NpmSearchResponse>(
+      const { data: response } = await $npmRegistry<NpmSearchResponse>(
         `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
         {},
         60,
@@ -505,11 +505,9 @@ function packumentToSearchResult(pkg: MinimalPackument, weeklyDownloads?: number
  * Returns search-result-like objects for compatibility with PackageList
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
-  const cachedFetch = useCachedFetch()
-
   const asyncData = useLazyAsyncData(
     () => `org-packages:${toValue(orgName)}`,
-    async (_nuxtApp, { signal }) => {
+    async ({ $npmRegistry }, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
         return emptySearchResponse
@@ -518,8 +516,8 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       // Get all package names in the org
       let packageNames: string[]
       try {
-        const { data } = await cachedFetch<Record<string, string>>(
-          `${NPM_REGISTRY}/-/org/${encodeURIComponent(org)}/package`,
+        const { data } = await $npmRegistry<Record<string, string>>(
+          `/-/org/${encodeURIComponent(org)}/package`,
           { signal },
         )
         packageNames = Object.keys(data)
@@ -552,10 +550,9 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
               batch.map(async name => {
                 try {
                   const encoded = encodePackageName(name)
-                  const { data: pkg } = await cachedFetch<MinimalPackument>(
-                    `${NPM_REGISTRY}/${encoded}`,
-                    { signal },
-                  )
+                  const { data: pkg } = await $npmRegistry<MinimalPackument>(`/${encoded}`, {
+                    signal,
+                  })
                   return pkg
                 } catch {
                   return null
@@ -698,6 +695,7 @@ async function checkDependencyOutdated(
   if (cached) {
     packument = await cached
   } else {
+    // todo: use $npmRegistry here
     const promise = cachedFetch<Packument>(`${NPM_REGISTRY}/${encodePackageName(packageName)}`)
       .then(({ data }) => data)
       .catch(() => null)

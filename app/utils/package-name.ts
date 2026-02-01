@@ -70,8 +70,6 @@ export interface CheckNameResult {
   similarPackages?: SimilarPackage[]
 }
 
-const NPM_REGISTRY = 'https://registry.npmjs.org'
-
 export async function checkPackageExists(name: string): Promise<boolean> {
   try {
     const encodedName = name.startsWith('@')
