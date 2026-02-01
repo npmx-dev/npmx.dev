@@ -88,7 +88,7 @@ function getDepthStyle(depth: DependencyDepth) {
                   name: 'package',
                   params: { package: [...pkg.name.split('/'), 'v', pkg.version] },
                 }"
-                class="font-mono text-sm font-medium hover:underline truncate"
+                class="font-mono text-sm font-medium hover:underline truncate py-4"
                 :class="getDepthStyle(pkg.depth).text"
               >
                 {{ pkg.name }}@{{ pkg.version }}

@@ -53,7 +53,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 
       <section class="prose prose-invert max-w-none space-y-8">
         <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('about.what_we_are.title') }}
           </h2>
           <p class="text-fg-muted leading-relaxed mb-4">
@@ -82,7 +82,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
         </div>
 
         <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('about.what_we_are_not.title') }}
           </h2>
           <ul class="space-y-3 text-fg-muted list-none p-0">
@@ -167,8 +167,8 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
         </div>
 
         <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-            {{ $t('about.contributors.title') }}
+          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
+            {{ contributors?.length ?? 0 }} {{ $t('about.contributors.title') }}
           </h2>
           <p class="text-fg-muted leading-relaxed mb-6">
             {{ $t('about.contributors.description') }}
@@ -205,7 +205,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 
         <!-- Get Involved CTAs -->
         <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-6">
+          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-6">
             {{ $t('about.get_involved.title') }}
           </h2>
 
