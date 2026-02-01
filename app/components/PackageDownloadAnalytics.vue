@@ -19,9 +19,16 @@ const rootEl = shallowRef<HTMLElement | null>(null)
 
 const { width } = useElementSize(rootEl)
 
-onMounted(() => {
+const chartKey = ref(0)
+
+onMounted(async () => {
   rootEl.value = document.documentElement
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      chartKey.value += 1
+    })
+  })
 })
 
 const { colors } = useCssVariables(
@@ -543,6 +550,7 @@ const config = computed(() => {
         show: false, // As long as a single package is displayed
       },
       tooltip: {
+        teleportTo: '#chart-modal',
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
@@ -687,7 +695,12 @@ const config = computed(() => {
     </div>
 
     <ClientOnly v-if="inModal && chartData.dataset">
-      <VueUiXy :dataset="chartData.dataset" :config="config" class="[direction:ltr]">
+      <VueUiXy
+        :dataset="chartData.dataset"
+        :config="config"
+        class="[direction:ltr]"
+        :key="chartKey"
+      >
         <template #menuIcon="{ isOpen }">
           <span v-if="isOpen" class="i-carbon:close w-6 h-6" aria-hidden="true" />
           <span v-else class="i-carbon:overflow-menu-vertical w-6 h-6" aria-hidden="true" />
