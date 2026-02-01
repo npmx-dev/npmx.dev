@@ -29,8 +29,6 @@ const props = defineProps<{
   pageSize?: PageSize
   /** Initial page to scroll to (1-indexed) */
   initialPage?: number
-  /** Selected result index (for keyboard navigation) */
-  selectedIndex?: number
   /** Search query for highlighting exact matches */
   searchQuery?: string
   /** View mode: cards or table */
@@ -48,8 +46,6 @@ const emit = defineEmits<{
   'loadMore': []
   /** Emitted when the visible page changes */
   'pageChange': [page: number]
-  /** Emitted when a result is hovered/focused */
-  'select': [index: number]
   /** Emitted when sort option changes (table view) */
   'update:sortOption': [option: SortOption]
   /** Emitted when a keyword is clicked */
@@ -153,9 +149,7 @@ defineExpose({
         :results="displayedResults"
         :columns="columns"
         v-model:sort-option="sortOption"
-        :selected-index="selectedIndex"
         :is-loading="isLoading"
-        @select="emit('select', $event)"
         @click-keyword="emit('clickKeyword', $event)"
       />
     </template>
@@ -179,12 +173,10 @@ defineExpose({
                 :result="item as NpmSearchResult"
                 :heading-level="headingLevel"
                 :show-publisher="showPublisher"
-                :selected="index === (selectedIndex ?? -1)"
                 :index="index"
                 :search-query="searchQuery"
                 class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
                 :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
-                @focus="emit('select', $event)"
               />
             </div>
           </template>
@@ -199,7 +191,6 @@ defineExpose({
                   :result="item"
                   :heading-level="headingLevel"
                   :show-publisher="showPublisher"
-                  :selected="index === (selectedIndex ?? -1)"
                   :index="index"
                   :search-query="searchQuery"
                 />
@@ -230,12 +221,10 @@ defineExpose({
             :result="item"
             :heading-level="headingLevel"
             :show-publisher="showPublisher"
-            :selected="index === (selectedIndex ?? -1)"
             :index="index"
             :search-query="searchQuery"
             class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
             :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
-            @focus="emit('select', $event)"
           />
         </li>
       </ol>

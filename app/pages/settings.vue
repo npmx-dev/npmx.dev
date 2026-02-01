@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const router = useRouter()
 const { settings } = useSettings()
-const { locale, locales, setLocale } = useI18n()
+const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 
@@ -28,6 +28,11 @@ defineOgImageComponent('Default', {
   description: () => $t('settings.tagline'),
   primaryColor: '#60a5fa',
 })
+
+const setLocale: typeof setNuxti18nLocale = locale => {
+  settings.value.selectedLocale = locale
+  return setNuxti18nLocale(locale)
+}
 </script>
 
 <template>

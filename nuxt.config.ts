@@ -219,6 +219,10 @@ export default defineNuxtConfig({
     },
   },
 
+  debug: {
+    hydration: true,
+  },
+
   vite: {
     optimizeDeps: {
       include: [
