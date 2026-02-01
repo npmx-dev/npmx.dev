@@ -19,6 +19,13 @@ const isExactMatch = computed(() => {
   const name = props.result.package.name.toLowerCase()
   return query === name
 })
+
+// Process package description
+const pkgDescription = useMarkdown(() => ({
+  text: props.result.package.description ?? '',
+  plain: true,
+  packageName: props.result.package.name,
+}))
 </script>
 
 <template>
@@ -74,11 +81,8 @@ const isExactMatch = computed(() => {
     </div>
     <div class="flex justify-start items-start gap-4 sm:gap-8">
       <div class="min-w-0">
-        <p
-          v-if="result.package.description"
-          class="text-fg-muted text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-3"
-        >
-          <MarkdownText :text="result.package.description" plain />
+        <p v-if="pkgDescription" class="text-fg-muted text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-3">
+          <span v-html="pkgDescription" />
         </p>
         <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 text-xs text-fg-subtle">
           <dl v-if="showPublisher || result.package.date" class="flex items-center gap-4 m-0">

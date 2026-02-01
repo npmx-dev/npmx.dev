@@ -76,7 +76,6 @@ import {
   HeaderAccountMenu,
   LicenseDisplay,
   LoadingSpinner,
-  MarkdownText,
   PackageChartModal,
   PackageClaimPackageModal,
   HeaderConnectorModal,
@@ -275,24 +274,6 @@ describe('component accessibility audits', () => {
           version: '3.0.0',
           compact: true,
         },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('MarkdownText', () => {
-    it('should have no accessibility violations with plain text', async () => {
-      const component = await mountSuspended(MarkdownText, {
-        props: { text: 'Simple text' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations with formatted text', async () => {
-      const component = await mountSuspended(MarkdownText, {
-        props: { text: '**Bold** and *italic* and `code`' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

@@ -187,7 +187,7 @@ import { hasProtocol } from 'ufo'
 
 | Type             | Convention               | Example                        |
 | ---------------- | ------------------------ | ------------------------------ |
-| Vue components   | PascalCase               | `MarkdownText.vue`             |
+| Vue components   | PascalCase               | `DateTime.vue`                 |
 | Pages            | kebab-case               | `search.vue`, `[...name].vue`  |
 | Composables      | camelCase + `use` prefix | `useNpmRegistry.ts`            |
 | Server routes    | kebab-case + method      | `search.get.ts`                |
