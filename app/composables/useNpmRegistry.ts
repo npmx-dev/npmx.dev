@@ -8,11 +8,10 @@ import type {
   NpmPerson,
   PackageVersionInfo,
 } from '#shared/types'
-import type { PackageVersionsInfoWithMetadata } from 'fast-npm-meta'
+import type { PackageVersionsInfoWithMetadata, ResolvedPackageVersion } from 'fast-npm-meta'
 import type { ReleaseType } from 'semver'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
-import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 import { FAST_NPM_META_API, encodePackageName } from '#shared/utils/npm'
@@ -172,6 +171,23 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
   }
 }
 
+export function useResolvedVersion(
+  packageName: MaybeRefOrGetter<string>,
+  requestedVersion: MaybeRefOrGetter<string | null>,
+) {
+  return useFetch(
+    () => {
+      const version = toValue(requestedVersion)
+      return version
+        ? `https://npm.antfu.dev/${toValue(packageName)}@${version}`
+        : `https://npm.antfu.dev/${toValue(packageName)}`
+    },
+    {
+      transform: (data: ResolvedPackageVersion) => data.version,
+    },
+  )
+}
+
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
@@ -187,8 +203,7 @@ export function usePackage(
       })
       const reqVer = toValue(requestedVersion)
       const pkg = transformPackument(r, reqVer)
-      const resolvedVersion = getResolvedVersion(pkg, reqVer)
-      return { ...pkg, resolvedVersion, isStale }
+      return { ...pkg, isStale }
     },
   )
 
@@ -199,26 +214,6 @@ export function usePackage(
   }
 
   return asyncData
-}
-
-function getResolvedVersion(pkg: SlimPackument, reqVer?: string | null): string | null {
-  if (!pkg || !reqVer) return null
-
-  // 1. Check if it's already an exact version in pkg.versions
-  if (isExactVersion(reqVer) && pkg.versions[reqVer]) {
-    return reqVer
-  }
-
-  // 2. Check if it's a dist-tag (latest, next, beta, etc.)
-  const tagVersion = pkg['dist-tags']?.[reqVer]
-  if (tagVersion) {
-    return tagVersion
-  }
-
-  // 3. Try to resolve as a semver range
-  const versions = Object.keys(pkg.versions)
-  const resolved = maxSatisfying(versions, reqVer)
-  return resolved
 }
 
 export function usePackageDownloads(
