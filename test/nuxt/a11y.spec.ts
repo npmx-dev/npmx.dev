@@ -52,55 +52,77 @@ afterEach(() => {
   mountedContainers.length = 0
 })
 
-import DateTime from '~/components/DateTime.vue'
-import AppHeader from '~/components/AppHeader.vue'
-import AppFooter from '~/components/AppFooter.vue'
-import AppTooltip from '~/components/AppTooltip.vue'
-import AnnounceTooltip from '~/components/AnnounceTooltip.vue'
-import LoadingSpinner from '~/components/LoadingSpinner.vue'
-import JsrBadge from '~/components/JsrBadge.vue'
-import ProvenanceBadge from '~/components/ProvenanceBadge.vue'
-import MarkdownText from '~/components/MarkdownText.vue'
-import PackageSkeleton from '~/components/PackageSkeleton.vue'
-import PackageCard from '~/components/PackageCard.vue'
-import ChartModal from '~/components/ChartModal.vue'
-import PackageDownloadAnalytics from '~/components/PackageDownloadAnalytics.vue'
-import PackagePlaygrounds from '~/components/PackagePlaygrounds.vue'
-import PackageDependencies from '~/components/PackageDependencies.vue'
-import PackageVersions from '~/components/PackageVersions.vue'
-import PackageListControls from '~/components/PackageListControls.vue'
-import PackageMaintainers from '~/components/PackageMaintainers.vue'
-import CodeViewer from '~/components/CodeViewer.vue'
-import CodeDirectoryListing from '~/components/CodeDirectoryListing.vue'
-import CodeFileTree from '~/components/CodeFileTree.vue'
-import UserCombobox from '~/components/UserCombobox.vue'
-import ConnectorModal from '~/components/ConnectorModal.vue'
-import HeaderAccountMenuServer from '~/components/HeaderAccountMenu.server.vue'
-import HeaderAccountMenuClient from '~/components/HeaderAccountMenu.client.vue'
-import ClaimPackageModal from '~/components/ClaimPackageModal.vue'
-import OperationsQueue from '~/components/OperationsQueue.vue'
-import PackageList from '~/components/PackageList.vue'
-import PackageMetricsBadges from '~/components/PackageMetricsBadges.vue'
-import PackageAccessControls from '~/components/PackageAccessControls.vue'
-import OrgMembersPanel from '~/components/OrgMembersPanel.vue'
-import OrgTeamsPanel from '~/components/OrgTeamsPanel.vue'
-import CodeMobileTreeDrawer from '~/components/CodeMobileTreeDrawer.vue'
-import ColumnPicker from '~/components/ColumnPicker.vue'
-import FilterChips from '~/components/FilterChips.vue'
-import FilterPanel from '~/components/FilterPanel.vue'
-import PackageListToolbar from '~/components/PackageListToolbar.vue'
-import PackageTable from '~/components/PackageTable.vue'
-import PackageTableRow from '~/components/PackageTableRow.vue'
-import PaginationControls from '~/components/PaginationControls.vue'
-import ViewModeToggle from '~/components/ViewModeToggle.vue'
-import PackageVulnerabilityTree from '~/components/PackageVulnerabilityTree.vue'
-import PackageDeprecatedTree from '~/components/PackageDeprecatedTree.vue'
-import DependencyPathPopup from '~/components/DependencyPathPopup.vue'
-import CompareFacetSelector from '~/components/compare/FacetSelector.vue'
-import ComparePackageSelector from '~/components/compare/PackageSelector.vue'
-import CompareFacetRow from '~/components/compare/FacetRow.vue'
-import CompareComparisonGrid from '~/components/compare/ComparisonGrid.vue'
-import PackageManagerSelect from '~/components/PackageManagerSelect.vue'
+// Import components from #components where possible
+// For server/client variants, we need to import directly to test the specific variant
+import {
+  AppFooter,
+  AppHeader,
+  BuildEnvironment,
+  CodeDirectoryListing,
+  CodeFileTree,
+  CodeMobileTreeDrawer,
+  CodeViewer,
+  CollapsibleSection,
+  ColumnPicker,
+  CompareFacetCard,
+  CompareFacetRow,
+  CompareFacetSelector,
+  CompareComparisonGrid,
+  ComparePackageSelector,
+  DateTime,
+  DependencyPathPopup,
+  FilterChips,
+  FilterPanel,
+  HeaderAccountMenu,
+  LicenseDisplay,
+  LoadingSpinner,
+  MarkdownText,
+  PackageChartModal,
+  PackageClaimPackageModal,
+  HeaderConnectorModal,
+  OrgMembersPanel,
+  OrgOperationsQueue,
+  OrgTeamsPanel,
+  PackageAccessControls,
+  PackageCard,
+  PackageDependencies,
+  PackageDeprecatedTree,
+  PackageDownloadAnalytics,
+  PackageInstallScripts,
+  PackageList,
+  PackageListControls,
+  PackageListToolbar,
+  PackageMaintainers,
+  PackageManagerSelect,
+  PackageMetricsBadges,
+  PackagePlaygrounds,
+  PackageReplacement,
+  PackageSkeleton,
+  PackageSkillsCard,
+  PackageTable,
+  PackageTableRow,
+  PackageVersions,
+  PackageVulnerabilityTree,
+  PaginationControls,
+  ProvenanceBadge,
+  Readme,
+  SettingsAccentColorPicker,
+  SettingsToggle,
+  TerminalExecute,
+  TerminalInstall,
+  TooltipAnnounce,
+  TooltipApp,
+  TooltipBase,
+  HeaderSearchBox,
+  SearchSuggestionCard,
+  VersionSelector,
+  ViewModeToggle,
+} from '#components'
+
+// Server variant components must be imported directly to test the server-side render
+// The #components import automatically provides the client variant
+import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
+import ToggleServer from '~/components/Settings/Toggle.server.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -188,9 +210,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('AppTooltip', () => {
+  describe('TooltipApp', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(AppTooltip, {
+      const component = await mountSuspended(TooltipApp, {
         props: { text: 'Tooltip content' },
         slots: { default: '<button>Trigger</button>' },
       })
@@ -199,9 +221,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('AnnounceTooltip', () => {
+  describe('TooltipAnnounce', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(AnnounceTooltip, {
+      const component = await mountSuspended(TooltipAnnounce, {
         props: { text: 'Tooltip content', isVisible: true },
         slots: { default: '<button>Trigger</button>' },
       })
@@ -220,24 +242,6 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with custom text', async () => {
       const component = await mountSuspended(LoadingSpinner, {
         props: { text: 'Fetching data...' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('JsrBadge', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(JsrBadge, {
-        props: { url: 'https://jsr.io/@std/fs' },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations in compact mode', async () => {
-      const component = await mountSuspended(JsrBadge, {
-        props: { url: 'https://jsr.io/@std/fs', compact: true },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -357,9 +361,9 @@ describe('component accessibility audits', () => {
   // component has issues in the test environment (requires DOM measurements that aren't
   // available during SSR-like test mounting).
 
-  describe('ChartModal', () => {
+  describe('PackageChartModal', () => {
     it('should have no accessibility violations when closed', async () => {
-      const component = await mountSuspended(ChartModal, {
+      const component = await mountSuspended(PackageChartModal, {
         props: { open: false },
         slots: { title: 'Downloads', default: '<div>Chart content</div>' },
       })
@@ -697,34 +701,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('UserCombobox', () => {
-    it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(UserCombobox, {
-        props: {
-          suggestions: ['user1', 'user2', 'user3'],
-          label: 'Select a user',
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-
-    it('should have no accessibility violations when disabled', async () => {
-      const component = await mountSuspended(UserCombobox, {
-        props: {
-          suggestions: ['user1', 'user2'],
-          disabled: true,
-          label: 'Select a user',
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
-
-  describe('ConnectorModal', () => {
+  describe('HeaderConnectorModal', () => {
     it('should have no accessibility violations when closed', async () => {
-      const component = await mountSuspended(ConnectorModal, {
+      const component = await mountSuspended(HeaderConnectorModal, {
         props: { open: false },
       })
       const results = await runAxe(component)
@@ -732,7 +711,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when open (disconnected)', async () => {
-      const component = await mountSuspended(ConnectorModal, {
+      const component = await mountSuspended(HeaderConnectorModal, {
         props: { open: true },
       })
       const results = await runAxe(component)
@@ -748,17 +727,17 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('HeaderAccountMenu.client', () => {
+  describe('HeaderAccountMenu', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(HeaderAccountMenuClient)
+      const component = await mountSuspended(HeaderAccountMenu)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
   })
 
-  describe('ClaimPackageModal', () => {
+  describe('PackageClaimPackageModal', () => {
     it('should have no accessibility violations when closed', async () => {
-      const component = await mountSuspended(ClaimPackageModal, {
+      const component = await mountSuspended(PackageClaimPackageModal, {
         props: {
           packageName: 'test-package',
           open: false,
@@ -769,7 +748,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when open', async () => {
-      const component = await mountSuspended(ClaimPackageModal, {
+      const component = await mountSuspended(PackageClaimPackageModal, {
         props: {
           packageName: 'test-package',
           open: true,
@@ -780,9 +759,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('OperationsQueue', () => {
+  describe('OrgOperationsQueue', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(OperationsQueue)
+      const component = await mountSuspended(OrgOperationsQueue)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1409,6 +1388,420 @@ describe('component accessibility audits', () => {
   describe('PackageManagerSelect', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(PackageManagerSelect)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareFacetCard', () => {
+    it('should have no accessibility violations with numeric values', async () => {
+      const component = await mountSuspended(CompareFacetCard, {
+        props: {
+          label: 'Downloads',
+          description: 'Weekly download count',
+          values: [
+            { raw: 1000, display: '1,000' },
+            { raw: 2000, display: '2,000' },
+          ],
+          headers: ['vue', 'react'],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when loading', async () => {
+      const component = await mountSuspended(CompareFacetCard, {
+        props: {
+          label: 'Install Size',
+          values: [null, null],
+          headers: ['vue', 'react'],
+          facetLoading: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SettingsAccentColorPicker', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SettingsAccentColorPicker)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TooltipBase', () => {
+    it('should have no accessibility violations when hidden', async () => {
+      const component = await mountSuspended(TooltipBase, {
+        props: { text: 'Tooltip text', isVisible: false },
+        slots: { default: '<button>Trigger</button>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when visible', async () => {
+      const component = await mountSuspended(TooltipBase, {
+        props: { text: 'Tooltip text', isVisible: true },
+        slots: { default: '<button>Trigger</button>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('BuildEnvironment', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(BuildEnvironment)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in footer mode', async () => {
+      const component = await mountSuspended(BuildEnvironment, {
+        props: { footer: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CollapsibleSection', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Section Title', id: 'test-section' },
+        slots: { default: '<p>Section content</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with custom heading level', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Section Title', id: 'test-section', headingLevel: 'h3' },
+        slots: { default: '<p>Section content</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when loading', async () => {
+      const component = await mountSuspended(CollapsibleSection, {
+        props: { title: 'Section Title', id: 'test-section', isLoading: true },
+        slots: { default: '<p>Loading content...</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TerminalExecute', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(TerminalExecute, {
+        props: { packageName: 'create-vite' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for create package', async () => {
+      const component = await mountSuspended(TerminalExecute, {
+        props: { packageName: 'create-vite', isCreatePackage: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TerminalInstall', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(TerminalInstall, {
+        props: { packageName: 'vue' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with version', async () => {
+      const component = await mountSuspended(TerminalInstall, {
+        props: { packageName: 'vue', requestedVersion: '3.5.0' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with types package', async () => {
+      const component = await mountSuspended(TerminalInstall, {
+        props: { packageName: 'lodash', typesPackageName: '@types/lodash' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with executable info', async () => {
+      const component = await mountSuspended(TerminalInstall, {
+        props: {
+          packageName: 'eslint',
+          executableInfo: { hasExecutable: true, primaryCommand: 'eslint' },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('LicenseDisplay', () => {
+    it('should have no accessibility violations with simple license', async () => {
+      const component = await mountSuspended(LicenseDisplay, {
+        props: { license: 'MIT' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with compound license', async () => {
+      const component = await mountSuspended(LicenseDisplay, {
+        props: { license: 'MIT OR Apache-2.0' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageInstallScripts', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageInstallScripts, {
+        props: {
+          packageName: 'esbuild',
+          installScripts: {
+            scripts: ['postinstall'],
+            content: { postinstall: 'node install.js' },
+            npxDependencies: {},
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with npx dependencies', async () => {
+      const component = await mountSuspended(PackageInstallScripts, {
+        props: {
+          packageName: 'husky',
+          installScripts: {
+            scripts: ['postinstall'],
+            content: { postinstall: 'husky install' },
+            npxDependencies: { husky: '^9.0.0' },
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageReplacement', () => {
+    it('should have no accessibility violations for native replacement', async () => {
+      const component = await mountSuspended(PackageReplacement, {
+        props: {
+          replacement: {
+            type: 'native',
+            moduleName: 'array-every',
+            nodeVersion: '0.10.0',
+            replacement: 'Array.prototype.every',
+            mdnPath: 'Global_Objects/Array/every',
+            category: 'native',
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for simple replacement', async () => {
+      const component = await mountSuspended(PackageReplacement, {
+        props: {
+          replacement: {
+            type: 'simple',
+            moduleName: 'underscore',
+            replacement: 'lodash',
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for documented replacement', async () => {
+      const component = await mountSuspended(PackageReplacement, {
+        props: {
+          replacement: {
+            type: 'documented',
+            moduleName: 'moment',
+            docPath: 'moment',
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageSkillsCard', () => {
+    it('should have no accessibility violations with skills', async () => {
+      const component = await mountSuspended(PackageSkillsCard, {
+        props: {
+          packageName: 'vue',
+          skills: [
+            {
+              name: 'Vue Components',
+              description: 'Create Vue components',
+              dirName: 'vue-components',
+            },
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should render nothing when no skills', async () => {
+      const component = await mountSuspended(PackageSkillsCard, {
+        props: {
+          packageName: 'vue',
+          skills: [],
+        },
+      })
+      // Empty skills array means the component renders nothing
+      expect(component.html()).toBe('<!--v-if-->')
+    })
+  })
+
+  describe('Readme', () => {
+    it('should have no accessibility violations with slot content', async () => {
+      const component = await mountSuspended(Readme, {
+        slots: { default: '<h3>README</h3><p>Some content</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('HeaderSearchBox', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(HeaderSearchBox)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SearchSuggestionCard', () => {
+    it('should have no accessibility violations for user suggestion', async () => {
+      const component = await mountSuspended(SearchSuggestionCard, {
+        props: { type: 'user', name: 'testuser' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for org suggestion', async () => {
+      const component = await mountSuspended(SearchSuggestionCard, {
+        props: { type: 'org', name: 'testorg' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for exact match', async () => {
+      const component = await mountSuspended(SearchSuggestionCard, {
+        props: { type: 'user', name: 'exactuser', isExactMatch: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Toggle.server', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ToggleServer, {
+        props: { label: 'Enable feature' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with description', async () => {
+      const component = await mountSuspended(ToggleServer, {
+        props: { label: 'Enable feature', description: 'This enables the feature' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Toggle', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SettingsToggle, {
+        props: { label: 'Enable feature' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with description', async () => {
+      const component = await mountSuspended(SettingsToggle, {
+        props: { label: 'Enable feature', description: 'This enables the feature' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when checked', async () => {
+      const component = await mountSuspended(SettingsToggle, {
+        props: { label: 'Enable feature', modelValue: true },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('VersionSelector', () => {
+    const mockVersions = {
+      '3.5.0': {},
+      '3.4.0': {},
+      '3.3.0': {},
+    }
+    const mockDistTags = {
+      latest: '3.5.0',
+      next: '3.4.0',
+    }
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(VersionSelector, {
+        props: {
+          packageName: 'vue',
+          currentVersion: '3.5.0',
+          versions: mockVersions,
+          distTags: mockDistTags,
+          urlPattern: '/vue/v/{version}',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with non-latest version', async () => {
+      const component = await mountSuspended(VersionSelector, {
+        props: {
+          packageName: 'vue',
+          currentVersion: '3.4.0',
+          versions: mockVersions,
+          distTags: mockDistTags,
+          urlPattern: '/vue/v/{version}',
+        },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

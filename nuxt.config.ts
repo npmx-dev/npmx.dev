@@ -93,11 +93,15 @@ export default defineNuxtConfig({
     '/opensearch.xml': { isr: true },
     '/**': { isr: 60 },
     '/package/**': { isr: 60 },
+    '/:pkg/.well-known/skills/**': { isr: 3600 },
+    '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
     // never cache
     '/search': { isr: false, cache: false },
     '/api/auth/**': { isr: false, cache: false },
     // infinite cache (versioned - doesn't change)
     '/code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/docs/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/docs/:scope/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -166,11 +170,13 @@ export default defineNuxtConfig({
       {
         name: 'Geist',
         weights: ['400', '500', '600'],
+        preload: true,
         global: true,
       },
       {
         name: 'Geist Mono',
         weights: ['400', '500'],
+        preload: true,
         global: true,
       },
     ],

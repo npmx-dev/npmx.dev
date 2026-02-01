@@ -762,6 +762,6 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Claim package modal -->
-    <ClaimPackageModal ref="claimPackageModalRef" :package-name="query" />
+    <PackageClaimPackageModal ref="claimPackageModalRef" :package-name="query" />
   </main>
 </template>

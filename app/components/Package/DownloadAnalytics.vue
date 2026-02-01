@@ -2,8 +2,8 @@
 import type { VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize } from '@vueuse/core'
-import { useCssVariables } from '../composables/useColors'
-import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '../utils/colors'
+import { useCssVariables } from '~/composables/useColors'
+import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
 
 const props = defineProps<{
   weeklyDownloads: WeeklyDownloadPoint[]

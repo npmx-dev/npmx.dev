@@ -55,7 +55,7 @@ const typesHref = computed(() => {
   <ul v-if="analysis" class="flex items-center gap-1.5 list-none m-0 p-0">
     <!-- TypeScript types badge -->
     <li v-if="!props.isBinary">
-      <AppTooltip :text="typesTooltip">
+      <TooltipApp :text="typesTooltip">
         <component
           :is="typesHref ? NuxtLink : 'span'"
           :to="typesHref"
@@ -76,12 +76,12 @@ const typesHref = computed(() => {
           />
           {{ $t('package.metrics.types_label') }}
         </component>
-      </AppTooltip>
+      </TooltipApp>
     </li>
 
     <!-- ESM badge (show with X if missing) -->
     <li>
-      <AppTooltip :text="hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')">
+      <TooltipApp :text="hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')">
         <span
           class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
           :class="
@@ -97,19 +97,19 @@ const typesHref = computed(() => {
           />
           ESM
         </span>
-      </AppTooltip>
+      </TooltipApp>
     </li>
 
     <!-- CJS badge (only show if present) -->
     <li v-if="hasCjs">
-      <AppTooltip :text="$t('package.metrics.cjs')">
+      <TooltipApp :text="$t('package.metrics.cjs')">
         <span
           class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200"
         >
           <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
           CJS
         </span>
-      </AppTooltip>
+      </TooltipApp>
     </li>
   </ul>
 </template>

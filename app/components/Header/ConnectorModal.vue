@@ -62,7 +62,7 @@ function handleDisconnect() {
       </div>
 
       <!-- Operations Queue -->
-      <OperationsQueue />
+      <OrgOperationsQueue />
 
       <div v-if="!hasOperations" class="text-sm text-fg-muted">
         {{ $t('connector.modal.connected_hint') }}

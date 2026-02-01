@@ -116,7 +116,7 @@ function focusMenuItem(index: number) {
 
     <div ref="dropdownRef" class="relative">
       <!-- Single link: direct button -->
-      <AppTooltip v-if="hasSingleLink && firstLink" :text="firstLink.providerName" class="w-full">
+      <TooltipApp v-if="hasSingleLink && firstLink" :text="firstLink.providerName" class="w-full">
         <a
           :href="firstLink.url"
           target="_blank"
@@ -129,7 +129,7 @@ function focusMenuItem(index: number) {
           />
           <span class="truncate text-fg-muted">{{ decodeHtmlEntities(firstLink.label) }}</span>
         </a>
-      </AppTooltip>
+      </TooltipApp>
 
       <!-- Multiple links: dropdown button -->
       <button
@@ -170,7 +170,7 @@ function focusMenuItem(index: number) {
           class="absolute top-full inset-is-0 inset-ie-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 py-1 overflow-visible"
           @keydown="handleKeydown"
         >
-          <AppTooltip v-for="link in links" :key="link.url" :text="link.providerName" class="block">
+          <TooltipApp v-for="link in links" :key="link.url" :text="link.providerName" class="block">
             <a
               :href="link.url"
               target="_blank"
@@ -185,7 +185,7 @@ function focusMenuItem(index: number) {
               />
               <span class="truncate">{{ decodeHtmlEntities(link.label) }}</span>
             </a>
-          </AppTooltip>
+          </TooltipApp>
         </div>
       </Transition>
     </div>

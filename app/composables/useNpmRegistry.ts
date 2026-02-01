@@ -26,7 +26,10 @@ const packumentCache = new Map<string, Promise<Packument | null>>()
  * Uses bulk API for unscoped packages, parallel individual requests for scoped.
  * Note: npm bulk downloads API does not support scoped packages.
  */
-async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, number>> {
+async function fetchBulkDownloads(
+  packageNames: string[],
+  options: Parameters<typeof $fetch>[1] = {},
+): Promise<Map<string, number>> {
   const downloads = new Map<string, number>()
   if (packageNames.length === 0) return downloads
 
@@ -44,6 +47,7 @@ async function fetchBulkDownloads(packageNames: string[]): Promise<Map<string, n
         try {
           const response = await $fetch<Record<string, { downloads: number } | null>>(
             `${NPM_API}/downloads/point/last-week/${chunk.join(',')}`,
+            options,
           )
           for (const [name, data] of Object.entries(response)) {
             if (data?.downloads !== undefined) {
@@ -572,7 +576,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
           return results
         })(),
         // Fetch downloads in bulk
-        fetchBulkDownloads(packageNames),
+        fetchBulkDownloads(packageNames, { signal }),
       ])
 
       // Convert to search results with download data

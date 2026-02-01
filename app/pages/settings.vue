@@ -95,7 +95,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               <span class="block text-sm text-fg font-medium">
                 {{ $t('settings.accent_colors') }}
               </span>
-              <AccentColorPicker />
+              <SettingsAccentColorPicker />
             </div>
           </div>
         </section>
@@ -107,14 +107,17 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </h2>
           <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-4">
             <!-- Relative dates toggle -->
-            <Toggle :label="$t('settings.relative_dates')" v-model="settings.relativeDates" />
+            <SettingsToggle
+              :label="$t('settings.relative_dates')"
+              v-model="settings.relativeDates"
+            />
 
             <!-- Divider -->
             <div class="border-t border-border" />
 
             <!-- Include @types in install toggle -->
             <div class="space-y-2">
-              <Toggle
+              <SettingsToggle
                 :label="$t('settings.include_types')"
                 :description="$t('settings.include_types_description')"
                 v-model="settings.includeTypesInInstall"
@@ -126,7 +129,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
 
             <!-- Hide platform-specific packages toggle -->
             <div class="space-y-2">
-              <Toggle
+              <SettingsToggle
                 :label="$t('settings.hide_platform_packages')"
                 :description="$t('settings.hide_platform_packages')"
                 v-model="settings.hidePlatformPackages"
@@ -172,7 +175,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Translation helper for non-source locales -->
             <template v-if="currentLocaleStatus && !isSourceLocale">
               <div class="border-t border-border pt-4">
-                <TranslationHelper :status="currentLocaleStatus" />
+                <SettingsTranslationHelper :status="currentLocaleStatus" />
               </div>
             </template>
 
