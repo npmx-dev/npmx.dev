@@ -7,7 +7,6 @@ const props = defineProps<{
   /** Whether to show the publisher username */
   showPublisher?: boolean
   prefetch?: boolean
-  selected?: boolean
   index?: number
   /** Search query for highlighting exact matches */
   searchQuery?: string
@@ -20,17 +19,12 @@ const isExactMatch = computed(() => {
   const name = props.result.package.name.toLowerCase()
   return query === name
 })
-
-const emit = defineEmits<{
-  focus: [index: number]
-}>()
 </script>
 
 <template>
   <article
-    class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
+    class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
     :class="{
-      'bg-bg-muted border-border-hover': selected,
       'border-accent/30 bg-accent/5': isExactMatch,
     }"
   >
@@ -50,8 +44,6 @@ const emit = defineEmits<{
           :prefetch-on="prefetch ? 'visibility' : 'interaction'"
           class="decoration-none scroll-mt-48 scroll-mb-6 after:content-[''] after:absolute after:inset-0"
           :data-result-index="index"
-          @focus="index != null && emit('focus', index)"
-          @mouseenter="index != null && emit('focus', index)"
           >{{ result.package.name }}</NuxtLink
         >
         <span
