@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FilterChip, SortOption } from '#shared/types/preferences'
+import type { FilterChip } from '#shared/types/preferences'
 import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
@@ -30,8 +30,6 @@ const updateUrlPage = debounce((page: number) => {
 
 // The actual search query (from URL, used for API calls)
 const query = computed(() => (route.query.q as string) ?? '')
-
-const packageListRef = useTemplateRef('packageListRef')
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
@@ -77,23 +75,6 @@ const {
   size: requestedSize.value,
   incremental: true,
 }))
-
-// Track previous query for UI continuity
-const previousQuery = useState('search-previous-query', () => query.value)
-
-// Update previous query when results change
-watch(
-  () => results.value,
-  newResults => {
-    if (newResults && newResults.objects.length > 0) {
-      previousQuery.value = query.value
-    }
-  },
-)
-
-const resultsMatchQuery = computed(() => {
-  return previousQuery.value === query.value
-})
 
 // Results to display (directly from incremental search)
 const rawVisibleResults = computed(() => results.value)
@@ -158,7 +139,6 @@ const {
   toggleKeyword,
   clearFilter,
   clearAllFilters,
-  setSort,
 } = useStructuredFilters({
   packages: resultsArray,
   initialSort: 'relevance-desc', // Default to search relevance
@@ -182,22 +162,12 @@ function handleClearFilter(chip: FilterChip) {
   clearFilter(chip)
 }
 
-// Handle sort change from table
-function handleSortChange(option: SortOption) {
-  setSort(option)
-}
-
 // Should we show the loading spinner?
 const showSearching = computed(() => {
   // Don't show during initial page load (view transition)
   if (!hasInteracted.value) return false
   // Show if pending and no results yet
   return status.value === 'pending' && displayResults.value.length === 0
-})
-
-const totalPages = computed(() => {
-  if (!visibleResults.value) return 0
-  return Math.ceil(visibleResults.value.total / pageSize)
 })
 
 // Load more when triggered by infinite scroll
@@ -317,8 +287,7 @@ const showClaimPrompt = computed(() => {
   )
 })
 
-// Modal state for claiming a package
-const claimModalOpen = shallowRef(false)
+const claimPackageModalRef = useTemplateRef('claimPackageModalRef')
 
 /**
  * Check if a string is a valid npm username/org name
@@ -656,7 +625,7 @@ defineOgImageComponent('Default', {
             <button
               type="button"
               class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-              @click="claimModalOpen = true"
+              @click="claimPackageModalRef?.open()"
             >
               {{ $t('search.claim_button', { name: query }) }}
             </button>
@@ -747,7 +716,7 @@ defineOgImageComponent('Default', {
                 <button
                   type="button"
                   class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                  @click="claimModalOpen = true"
+                  @click="claimPackageModalRef?.open()"
                 >
                   {{ $t('search.claim_button', { name: query }) }}
                 </button>
@@ -757,7 +726,6 @@ defineOgImageComponent('Default', {
 
           <PackageList
             v-if="displayResults.length > 0"
-            ref="packageListRef"
             :results="displayResults"
             :search-query="query"
             heading-level="h2"
@@ -794,6 +762,6 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Claim package modal -->
-    <ClaimPackageModal v-model:open="claimModalOpen" :package-name="query" />
+    <PackageClaimPackageModal ref="claimPackageModalRef" :package-name="query" />
   </main>
 </template>

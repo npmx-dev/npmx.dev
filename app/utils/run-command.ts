@@ -23,10 +23,8 @@ export interface PackageMetadata {
  * - Has bin field but no main, module, or exports fields
  */
 export function isBinaryOnlyPackage(pkg: PackageMetadata): boolean {
-  const baseName = pkg.name.startsWith('@') ? pkg.name.split('/')[1] : pkg.name
-
   // Check create-* patterns
-  if (baseName?.startsWith('create-') || pkg.name.includes('/create-')) {
+  if (isCreatePackage(pkg.name)) {
     return true
   }
 

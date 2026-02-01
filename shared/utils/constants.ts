@@ -18,6 +18,9 @@ export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry
 export const ERROR_PROVENANCE_FETCH_FAILED = 'Failed to fetch provenance.'
 export const UNSET_NUXT_SESSION_PASSWORD = 'NUXT_SESSION_PASSWORD not set'
 export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
+export const ERROR_SKILLS_FETCH_FAILED = 'Failed to fetch skills.'
+export const ERROR_SKILL_NOT_FOUND = 'Skill not found.'
+export const ERROR_SKILL_FILE_NOT_FOUND = 'Skill file not found.'
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
