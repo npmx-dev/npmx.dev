@@ -680,10 +680,15 @@ defineOgImageComponent('Default', {
               class="text-fg-muted text-sm mt-4 font-mono"
             >
               {{
-                $t('filters.count.showing_paginated', {
-                  pageSize: preferredPageSize === 'all' ? visibleResults.total : preferredPageSize,
-                  count: visibleResults.total.toLocaleString(),
-                })
+                $t(
+                  'filters.count.showing_paginated',
+                  {
+                    pageSize:
+                      preferredPageSize === 'all' ? $n(visibleResults.total) : preferredPageSize,
+                    count: $n(visibleResults.total),
+                  },
+                  visibleResults.total,
+                )
               }}
             </p>
           </div>

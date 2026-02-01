@@ -652,9 +652,9 @@
       "nav_label": "Пагинация"
     },
     "count": {
-      "showing_filtered": "{filtered} из {total}",
-      "showing_all": "{total}",
-      "showing_paginated": "{pageSize} из {total}"
+      "showing_filtered": "{filtered} из {count}",
+      "showing_all": "{count}",
+      "showing_paginated": "{pageSize} из {count}"
     },
     "table": {
       "security_warning": "Предупреждение безопасности",

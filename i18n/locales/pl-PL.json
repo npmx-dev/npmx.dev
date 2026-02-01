@@ -712,9 +712,9 @@
       "nav_label": "Paginacja"
     },
     "count": {
-      "showing_filtered": "{filtered} z {total} pakietów",
-      "showing_all": "{total} pakietów",
-      "showing_paginated": "{pageSize} z {total} pakietów"
+      "showing_filtered": "{filtered} z {count} pakietów",
+      "showing_all": "{count} pakietów",
+      "showing_paginated": "{pageSize} z {count} pakietów"
     },
     "table": {
       "security_warning": "Ostrzeżenie bezpieczeństwa",

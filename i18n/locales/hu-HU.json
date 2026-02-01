@@ -659,9 +659,9 @@
       "nav_label": "Lapozás"
     },
     "count": {
-      "showing_filtered": "{filtered} / {total} csomag",
-      "showing_all": "{total} csomag",
-      "showing_paginated": "{pageSize} / {total} csomag"
+      "showing_filtered": "{filtered} / {count} csomag",
+      "showing_all": "{count} csomag",
+      "showing_paginated": "{pageSize} / {count} csomag"
     },
     "table": {
       "security_warning": "Biztonsági figyelmeztetés",

@@ -661,9 +661,9 @@
       "nav_label": "Нумерація сторінок"
     },
     "count": {
-      "showing_filtered": "{filtered} з {total} пакетів",
-      "showing_all": "{total} пакетів",
-      "showing_paginated": "{pageSize} з {total} пакетів"
+      "showing_filtered": "{filtered} з {count} пакетів",
+      "showing_all": "{count} пакетів",
+      "showing_paginated": "{pageSize} з {count} пакетів"
     },
     "table": {
       "security_warning": "Попередження безпеки",
