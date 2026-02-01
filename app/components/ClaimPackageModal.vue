@@ -59,7 +59,7 @@ async function handleClaim() {
 
     // Auto-approve and execute
     await approveOperation(operation.id)
-    const result = await executeOperations()
+    await executeOperations()
 
     // Refresh state and check if operation completed successfully
     await refreshState()
@@ -141,7 +141,7 @@ const connectorModalOpen = shallowRef(false)
         <button
           type="button"
           class="absolute inset-0 bg-black/60 cursor-default"
-          :aria-label="$t('claim.modal.close_modal')"
+          :aria-label="$t('common.close_modal')"
           @click="open = false"
         />
 

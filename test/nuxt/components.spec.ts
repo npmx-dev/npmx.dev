@@ -56,6 +56,7 @@ import DateTime from '~/components/DateTime.vue'
 import AppHeader from '~/components/AppHeader.vue'
 import AppFooter from '~/components/AppFooter.vue'
 import AppTooltip from '~/components/AppTooltip.vue'
+import AnnounceTooltip from '~/components/AnnounceTooltip.vue'
 import LoadingSpinner from '~/components/LoadingSpinner.vue'
 import JsrBadge from '~/components/JsrBadge.vue'
 import ProvenanceBadge from '~/components/ProvenanceBadge.vue'
@@ -74,8 +75,8 @@ import CodeDirectoryListing from '~/components/CodeDirectoryListing.vue'
 import CodeFileTree from '~/components/CodeFileTree.vue'
 import UserCombobox from '~/components/UserCombobox.vue'
 import ConnectorModal from '~/components/ConnectorModal.vue'
-import ConnectorStatusServer from '~/components/ConnectorStatus.server.vue'
-import ConnectorStatusClient from '~/components/ConnectorStatus.client.vue'
+import HeaderAccountMenuServer from '~/components/HeaderAccountMenu.server.vue'
+import HeaderAccountMenuClient from '~/components/HeaderAccountMenu.client.vue'
 import ClaimPackageModal from '~/components/ClaimPackageModal.vue'
 import OperationsQueue from '~/components/OperationsQueue.vue'
 import PackageList from '~/components/PackageList.vue'
@@ -95,6 +96,11 @@ import ViewModeToggle from '~/components/ViewModeToggle.vue'
 import PackageVulnerabilityTree from '~/components/PackageVulnerabilityTree.vue'
 import PackageDeprecatedTree from '~/components/PackageDeprecatedTree.vue'
 import DependencyPathPopup from '~/components/DependencyPathPopup.vue'
+import CompareFacetSelector from '~/components/compare/FacetSelector.vue'
+import ComparePackageSelector from '~/components/compare/PackageSelector.vue'
+import CompareFacetRow from '~/components/compare/FacetRow.vue'
+import CompareComparisonGrid from '~/components/compare/ComparisonGrid.vue'
+import PackageManagerSelect from '~/components/PackageManagerSelect.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -186,6 +192,17 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(AppTooltip, {
         props: { text: 'Tooltip content' },
+        slots: { default: '<button>Trigger</button>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('AnnounceTooltip', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(AnnounceTooltip, {
+        props: { text: 'Tooltip content', isVisible: true },
         slots: { default: '<button>Trigger</button>' },
       })
       const results = await runAxe(component)
@@ -723,17 +740,17 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('ConnectorStatus.server', () => {
+  describe('HeaderAccountMenu.server', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(ConnectorStatusServer)
+      const component = await mountSuspended(HeaderAccountMenuServer)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
   })
 
-  describe('ConnectorStatus.client', () => {
+  describe('HeaderAccountMenu.client', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(ConnectorStatusClient)
+      const component = await mountSuspended(HeaderAccountMenuClient)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1289,6 +1306,109 @@ describe('component accessibility audits', () => {
           path: ['root@1.0.0', 'dep-a@1.0.0', 'dep-b@2.0.0', 'dep-c@3.0.0', 'vulnerable-pkg@4.0.0'],
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  // Compare feature components
+  describe('CompareFacetSelector', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CompareFacetSelector)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ComparePackageSelector', () => {
+    it('should have no accessibility violations with no packages', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: [] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with packages selected', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: ['vue', 'react'] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations at max packages', async () => {
+      const component = await mountSuspended(ComparePackageSelector, {
+        props: { modelValue: ['vue', 'react', 'angular', 'svelte'], max: 4 },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareFacetRow', () => {
+    it('should have no accessibility violations with basic values', async () => {
+      const component = await mountSuspended(CompareFacetRow, {
+        props: {
+          label: 'Downloads',
+          description: 'Weekly download count',
+          values: [
+            { raw: 1000, display: '1,000' },
+            { raw: 2000, display: '2,000' },
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when loading', async () => {
+      const component = await mountSuspended(CompareFacetRow, {
+        props: {
+          label: 'Install Size',
+          description: 'Total install size',
+          values: [null, null],
+          loading: true,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareComparisonGrid', () => {
+    it('should have no accessibility violations with 2 columns', async () => {
+      const component = await mountSuspended(CompareComparisonGrid, {
+        props: {
+          columns: 2,
+          headers: ['vue', 'react'],
+        },
+        slots: {
+          default: '<div>Grid content</div>',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with 3 columns', async () => {
+      const component = await mountSuspended(CompareComparisonGrid, {
+        props: {
+          columns: 3,
+          headers: ['vue', 'react', 'angular'],
+        },
+        slots: {
+          default: '<div>Grid content</div>',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageManagerSelect', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageManagerSelect)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

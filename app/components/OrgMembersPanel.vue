@@ -433,7 +433,7 @@ watch(lastExecutionTime, () => {
               :to="{ name: '~username', params: { username: member.name } }"
               class="font-mono text-sm text-fg hover:text-fg transition-colors duration-200"
             >
-              @{{ member.name }}
+              ~{{ member.name }}
             </NuxtLink>
             <span
               class="px-1.5 py-0.5 font-mono text-xs border rounded"

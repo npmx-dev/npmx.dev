@@ -55,7 +55,6 @@ export function getPrereleaseChannel(version: string): string {
  * Sort tags with 'latest' first, then alphabetically
  * @param tags - Array of tag names
  * @returns New sorted array
- * @public
  */
 export function sortTags(tags: string[]): string[] {
   return [...tags].sort((a, b) => {
@@ -112,7 +111,6 @@ export interface TaggedVersionRow {
  * Each unique version appears once with all its tags
  * @param distTags - Object mapping tag names to version strings
  * @returns Array of rows sorted by version (descending)
- * @public
  */
 export function buildTaggedVersionRows(distTags: Record<string, string>): TaggedVersionRow[] {
   const versionToTags = buildVersionToTagsMap(distTags)

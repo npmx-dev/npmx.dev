@@ -41,16 +41,6 @@ function generateFetchCacheKey(url: string | URL, method: string = 'GET', body?:
   return parts.join(':')
 }
 
-export type CachedFetchFunction = <T = unknown>(
-  url: string,
-  options?: {
-    method?: string
-    body?: unknown
-    headers?: Record<string, string>
-  },
-  ttl?: number,
-) => Promise<CachedFetchResult<T>>
-
 /**
  * Server plugin that attaches a cachedFetch function to the event context.
  * This allows app composables to access the cached fetch via useRequestEvent().
@@ -70,16 +60,12 @@ export default defineNitroPlugin(nitroApp => {
   function createCachedFetch(event: H3Event): CachedFetchFunction {
     return async <T = unknown>(
       url: string,
-      options: {
-        method?: string
-        body?: unknown
-        headers?: Record<string, string>
-      } = {},
+      options: Parameters<typeof $fetch>[1] = {},
       ttl: number = FETCH_CACHE_DEFAULT_TTL,
     ): Promise<CachedFetchResult<T>> => {
       // Check if this URL should be cached
       if (!isAllowedDomain(url)) {
-        const data = (await $fetch(url, options as Parameters<typeof $fetch>[1])) as T
+        const data = (await $fetch(url, options)) as T
         return { data, isStale: false, cachedAt: null }
       }
 

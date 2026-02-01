@@ -4,7 +4,6 @@ import { onClickOutside } from '@vueuse/core'
 import { compare } from 'semver'
 import {
   buildVersionToTagsMap,
-  parseVersion,
   getPrereleaseChannel,
   getVersionGroupKey,
   getVersionGroupLabel,
@@ -21,10 +20,10 @@ const props = defineProps<{
   urlPattern: string
 }>()
 
-const isOpen = ref(false)
+const isOpen = shallowRef(false)
 const dropdownRef = useTemplateRef('dropdownRef')
 const listboxRef = useTemplateRef('listboxRef')
-const focusedIndex = ref(-1)
+const focusedIndex = shallowRef(-1)
 
 onClickOutside(dropdownRef, () => {
   isOpen.value = false
@@ -57,10 +56,10 @@ interface VersionGroup {
 const versionGroups = ref<VersionGroup[]>([])
 
 /** Whether we've loaded all versions from the API */
-const hasLoadedAll = ref(false)
+const hasLoadedAll = shallowRef(false)
 
 /** Loading state for initial all-versions fetch */
-const isLoadingAll = ref(false)
+const isLoadingAll = shallowRef(false)
 
 /** Cached full version list */
 const allVersionsCache = shallowRef<PackageVersionInfo[] | null>(null)
@@ -511,7 +510,7 @@ watch(
         @keydown="handleListboxKeydown"
       >
         <!-- Version groups -->
-        <div v-for="(group, groupIndex) in versionGroups" :key="group.id">
+        <div v-for="group in versionGroups" :key="group.id">
           <!-- Group header (primary version) -->
           <div
             :id="`version-${group.primaryVersion.version}`"
@@ -580,7 +579,7 @@ watch(
             v-if="group.isExpanded && group.versions.length > 1"
             class="ms-6 border-is border-border"
           >
-            <template v-for="(v, vIndex) in group.versions.slice(1)" :key="v.version">
+            <template v-for="v in group.versions.slice(1)" :key="v.version">
               <NuxtLink
                 :id="`version-${v.version}`"
                 :to="getVersionUrl(v.version)"
@@ -625,7 +624,13 @@ watch(
             class="text-xs text-fg-subtle hover:text-fg transition-[color] focus-visible:outline-none focus-visible:text-fg"
             @click="isOpen = false"
           >
-            View all {{ Object.keys(versions).length }} versions
+            {{
+              $t(
+                'package.versions.view_all',
+                { count: Object.keys(versions).length },
+                Object.keys(versions).length,
+              )
+            }}
           </NuxtLink>
         </div>
       </div>

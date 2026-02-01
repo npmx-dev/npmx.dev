@@ -1,31 +1,36 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
 
-const router = useRouter()
-const searchQuery = ref('')
+const searchQuery = shallowRef('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
 
-const isMobile = useIsMobile()
-
-const debouncedNavigate = debounce(() => {
-  router.push({
+async function search() {
+  const query = searchQuery.value.trim()
+  await navigateTo({
     path: '/search',
-    query: searchQuery.value.trim() ? { q: searchQuery.value.trim() } : undefined,
+    query: query ? { q: query } : undefined,
   })
-}, 250)
-
-function handleSearch() {
-  // If input is empty, navigate immediately (no need to debounce)
-  return searchQuery.value.trim() ? debouncedNavigate() : router.push('/search')
+  const newQuery = searchQuery.value.trim()
+  if (newQuery !== query) {
+    await search()
+  }
 }
+
+const handleInput = isTouchDevice()
+  ? search
+  : debounce(search, 250, { leading: true, trailing: true })
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
   description: () => $t('seo.home.description'),
 })
 
-defineOgImageComponent('Default')
+defineOgImageComponent('Default', {
+  primaryColor: '#60a5fa',
+  title: 'npmx',
+  description: 'A better browser for the **npm registry**',
+})
 </script>
 
 <template>
@@ -34,9 +39,18 @@ defineOgImageComponent('Default')
     <header class="flex-1 flex flex-col items-center justify-center text-center py-20">
       <!-- Animated title -->
       <h1
-        class="font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+        dir="ltr"
+        class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
       >
-        <span class="text-accent"><span class="-tracking-0.2em">.</span>/</span>npmx
+        <img
+          aria-hidden="true"
+          :alt="$t('alt_logo')"
+          src="/logo.svg"
+          width="48"
+          height="48"
+          class="w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl"
+        />
+        <span class="pb-4">npmx</span>
       </h1>
 
       <p
@@ -51,7 +65,7 @@ defineOgImageComponent('Default')
         class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
         style="animation-delay: 0.2s"
       >
-        <form method="GET" action="/search" class="relative" @submit.prevent="handleSearch">
+        <form method="GET" action="/search" class="relative" @submit.prevent.trim="search">
           <label for="home-search" class="sr-only">
             {{ $t('search.label') }}
           </label>
@@ -76,11 +90,11 @@ defineOgImageComponent('Default')
                 v-model="searchQuery"
                 type="search"
                 name="q"
+                autofocus
                 :placeholder="$t('search.placeholder')"
                 v-bind="noCorrect"
-                :autofocus="!isMobile"
                 class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-                @input="handleSearch"
+                @input="handleInput"
               />
 
               <button
@@ -93,6 +107,9 @@ defineOgImageComponent('Default')
           </div>
         </form>
       </search>
+
+      <!-- Build info badge -->
+      <BuildEnvironment class="mt-4" />
     </header>
 
     <!-- Popular packages -->

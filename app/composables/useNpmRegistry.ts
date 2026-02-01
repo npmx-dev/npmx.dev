@@ -12,7 +12,7 @@ import type { ReleaseType } from 'semver'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
 import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
-import type { CachedFetchFunction } from '~/composables/useCachedFetch'
+import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -176,7 +176,6 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
   }
 }
 
-/** @public */
 export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
@@ -185,9 +184,11 @@ export function usePackage(
 
   const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
-    async () => {
+    async (_nuxtApp, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
-      const { data: r, isStale } = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
+      const { data: r, isStale } = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`, {
+        signal,
+      })
       const reqVer = toValue(requestedVersion)
       const pkg = transformPackument(r, reqVer)
       const resolvedVersion = getResolvedVersion(pkg, reqVer)
@@ -224,7 +225,6 @@ function getResolvedVersion(pkg: SlimPackument, reqVer?: string | null): string 
   return resolved
 }
 
-/** @public */
 export function usePackageDownloads(
   name: MaybeRefOrGetter<string>,
   period: MaybeRefOrGetter<'last-day' | 'last-week' | 'last-month' | 'last-year'> = 'last-week',
@@ -233,10 +233,11 @@ export function usePackageDownloads(
 
   const asyncData = useLazyAsyncData(
     () => `downloads:${toValue(name)}:${toValue(period)}`,
-    async () => {
+    async (_nuxtApp, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
       const { data, isStale } = await cachedFetch<NpmDownloadCount>(
         `${NPM_API}/downloads/point/${toValue(period)}/${encodedName}`,
+        { signal },
       )
       return { ...data, isStale }
     },
@@ -261,7 +262,6 @@ type NpmDownloadsRangeResponse = {
 /**
  * Fetch download range data from npm API.
  * Exported for external use (e.g., in components).
- * @public
  */
 export async function fetchNpmDownloadsRange(
   packageName: string,
@@ -286,7 +286,6 @@ export interface NpmSearchOptions {
   size?: number
 }
 
-/** @public */
 export function useNpmSearch(
   query: MaybeRefOrGetter<string>,
   options: MaybeRefOrGetter<NpmSearchOptions> = {},
@@ -299,14 +298,14 @@ export function useNpmSearch(
     total: number
   } | null>(null)
 
-  const isLoadingMore = ref(false)
+  const isLoadingMore = shallowRef(false)
 
   // Standard (non-incremental) search implementation
   let lastSearch: NpmSearchResponse | undefined = undefined
 
   const asyncData = useLazyAsyncData(
     () => `search:incremental:${toValue(query)}`,
-    async () => {
+    async (_nuxtApp, { signal }) => {
       const q = toValue(query)
       if (!q.trim()) {
         return emptySearchResponse
@@ -325,7 +324,7 @@ export function useNpmSearch(
 
       const { data: response, isStale } = await cachedFetch<NpmSearchResponse>(
         `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
-        {},
+        { signal },
         60,
       )
 
@@ -383,9 +382,11 @@ export function useNpmSearch(
 
       // Update cache
       if (cache.value && cache.value.query === q) {
+        const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
+        const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
         cache.value = {
           query: q,
-          objects: [...cache.value.objects, ...response.objects],
+          objects: [...cache.value.objects, ...newObjects],
           total: response.total,
         }
       } else {
@@ -502,14 +503,13 @@ function packumentToSearchResult(pkg: MinimalPackument, weeklyDownloads?: number
 /**
  * Fetch all packages for an npm organization
  * Returns search-result-like objects for compatibility with PackageList
- * @public
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const cachedFetch = useCachedFetch()
 
   const asyncData = useLazyAsyncData(
     () => `org-packages:${toValue(orgName)}`,
-    async () => {
+    async (_nuxtApp, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
         return emptySearchResponse
@@ -520,6 +520,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       try {
         const { data } = await cachedFetch<Record<string, string>>(
           `${NPM_REGISTRY}/-/org/${encodeURIComponent(org)}/package`,
+          { signal },
         )
         packageNames = Object.keys(data)
       } catch (err) {
@@ -553,6 +554,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
                   const encoded = encodePackageName(name)
                   const { data: pkg } = await cachedFetch<MinimalPackument>(
                     `${NPM_REGISTRY}/${encoded}`,
+                    { signal },
                   )
                   return pkg
                 } catch {
@@ -753,7 +755,6 @@ async function checkDependencyOutdated(
 /**
  * Composable to check for outdated dependencies.
  * Returns a reactive map of dependency name to outdated info.
- * @public
  */
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
@@ -803,23 +804,30 @@ export function useOutdatedDependencies(
 
 /**
  * Get tooltip text for an outdated dependency
- * @public
  */
-export function getOutdatedTooltip(info: OutdatedDependencyInfo): string {
+export function getOutdatedTooltip(
+  info: OutdatedDependencyInfo,
+  t: (key: string, params?: Record<string, unknown>, plural?: number) => string,
+): string {
   if (info.majorsBehind > 0) {
-    const s = info.majorsBehind === 1 ? '' : 's'
-    return `${info.majorsBehind} major version${s} behind (latest: ${info.latest})`
+    return t(
+      'package.dependencies.outdated_major',
+      { count: info.majorsBehind, latest: info.latest },
+      info.majorsBehind,
+    )
   }
   if (info.minorsBehind > 0) {
-    const s = info.minorsBehind === 1 ? '' : 's'
-    return `${info.minorsBehind} minor version${s} behind (latest: ${info.latest})`
+    return t(
+      'package.dependencies.outdated_minor',
+      { count: info.minorsBehind, latest: info.latest },
+      info.minorsBehind,
+    )
   }
-  return `Patch update available (latest: ${info.latest})`
+  return t('package.dependencies.outdated_patch', { latest: info.latest })
 }
 
 /**
  * Get CSS class for a dependency version based on outdated status
- * @public
  */
 export function getVersionClass(info: OutdatedDependencyInfo | undefined): string {
   if (!info) return 'text-fg-subtle'

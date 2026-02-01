@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { formatNumber } from '#imports'
 import type { FilterChip, SortOption } from '#shared/types/preferences'
 import { debounce } from 'perfect-debounce'
 
@@ -58,7 +57,7 @@ const {
 })
 
 // Pagination state
-const currentPage = ref(1)
+const currentPage = shallowRef(1)
 
 // Calculate total pages
 const totalPages = computed(() => {
@@ -97,6 +96,11 @@ watch([() => filters.value.text, sortOption], ([filter, sort]) => {
 
 const filteredCount = computed(() => sortedPackages.value.length)
 
+// Total weekly downloads across displayed packages (updates with filter)
+const totalWeeklyDownloads = computed(() =>
+  sortedPackages.value.reduce((sum, pkg) => sum + (pkg.downloads?.weekly ?? 0), 0),
+)
+
 // Reset state when org changes
 watch(orgName, () => {
   clearAllFilters()
@@ -109,12 +113,7 @@ function handleClearFilter(chip: FilterChip) {
   clearFilter(chip)
 }
 
-// Handle sort change from table
-function handleSortChange(option: SortOption) {
-  setSort(option)
-}
-
-const activeTab = ref<'members' | 'teams'>('members')
+const activeTab = shallowRef<'members' | 'teams'>('members')
 
 // Canonical URL for this org page
 const canonicalUrl = computed(() => `https://npmx.dev/@${orgName.value}`)
@@ -131,6 +130,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   title: () => `@${orgName.value}`,
   description: () => (packageCount.value ? `${packageCount.value} packages` : 'npm organization'),
+  primaryColor: '#60a5fa',
 })
 </script>
 
@@ -138,10 +138,10 @@ defineOgImageComponent('Default', {
   <main class="container flex-1 py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
-      <div class="flex items-center gap-4 mb-4">
+      <div class="flex flex-wrap items-end gap-4">
         <!-- Org avatar placeholder -->
         <div
-          class="w-16 h-16 rounded-lg bg-bg-muted border border-border flex items-center justify-center"
+          class="size-16 shrink-0 rounded-lg bg-bg-muted border border-border flex items-center justify-center"
           aria-hidden="true"
         >
           <span class="text-2xl text-fg-subtle font-mono">{{
@@ -151,23 +151,35 @@ defineOgImageComponent('Default', {
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">@{{ orgName }}</h1>
           <p v-if="status === 'success'" class="text-fg-muted text-sm mt-1">
-            {{ $t('org.public_packages', { count: formatNumber(packageCount) }, packageCount) }}
+            {{ $t('org.public_packages', { count: $n(packageCount) }, packageCount) }}
+          </p>
+        </div>
+
+        <!-- Link to npmjs.com org page + vanity downloads -->
+        <div class="ms-auto text-end">
+          <nav aria-label="External links">
+            <a
+              :href="`https://www.npmjs.com/org/${orgName}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              :title="$t('common.view_on_npm')"
+            >
+              <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
+              npm
+            </a>
+          </nav>
+          <p
+            class="text-fg-subtle text-xs mt-1 flex items-center gap-1.5 justify-end cursor-help"
+            :title="$t('common.vanity_downloads_hint', { count: filteredCount }, filteredCount)"
+          >
+            <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
+            <span class="font-mono"
+              >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
+            >
           </p>
         </div>
       </div>
-
-      <!-- Link to npmjs.com org page -->
-      <nav aria-label="External links">
-        <a
-          :href="`https://www.npmjs.com/org/${orgName}`"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-        >
-          <span class="i-carbon-cube w-4 h-4" />
-          {{ $t('common.view_on_npm') }}
-        </a>
-      </nav>
     </header>
 
     <!-- Admin panels (when connected) -->

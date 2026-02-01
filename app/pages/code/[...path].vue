@@ -4,6 +4,7 @@ import type {
   PackageFileTreeResponse,
   PackageFileContentResponse,
 } from '#shared/types'
+import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'code',
@@ -104,7 +105,7 @@ const { data: fileContent, status: fileStatus } = useFetch<PackageFileContentRes
 )
 
 // Track hash manually since we update it via history API to avoid scroll
-const currentHash = ref('')
+const currentHash = shallowRef('')
 
 onMounted(() => {
   currentHash.value = window.location.hash
@@ -136,7 +137,7 @@ const selectedLines = computed(() => {
 })
 
 // Scroll to selected line only on initial load or file change (not on click)
-const shouldScrollOnHashChange = ref(true)
+const shouldScrollOnHashChange = shallowRef(true)
 
 function scrollToLine() {
   if (!shouldScrollOnHashChange.value) return
@@ -194,13 +195,6 @@ function packageRoute(ver?: string | null) {
   return { name: 'package' as const, params: { package: segments } }
 }
 
-// Format file size
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} kB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}
-
 // Line number click handler - update URL hash without scrolling
 function handleLineClick(lineNum: number, event: MouseEvent) {
   let newHash: string
@@ -256,7 +250,7 @@ const markdownViewModes = [
   },
 ] as const
 
-const markdownViewMode = ref<(typeof markdownViewModes)[number]['key']>('preview')
+const markdownViewMode = shallowRef<(typeof markdownViewModes)[number]['key']>('preview')
 
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
@@ -270,6 +264,12 @@ useSeoMeta({
     return `Code - ${packageName.value}@${version.value} - npmx`
   },
   description: () => `Browse source code for ${packageName.value}@${version.value}`,
+})
+
+defineOgImageComponent('Default', {
+  title: () => `${pkg.value?.name ?? 'Package'} - Code`,
+  description: () => pkg.value?.license ?? '',
+  primaryColor: '#60a5fa',
 })
 </script>
 
@@ -412,7 +412,7 @@ useSeoMeta({
               <button
                 v-if="selectedLines"
                 type="button"
-                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors"
+                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors active:scale-95"
                 @click="copyPermalinkUrl"
               >
                 {{ permalinkCopied ? $t('common.copied') : $t('code.copy_link') }}
@@ -433,10 +433,7 @@ useSeoMeta({
             v-show="markdownViewMode === 'preview'"
             class="flex justify-center p-4"
           >
-            <div
-              class="readme-content prose prose-invert max-w-[70ch]"
-              v-html="fileContent.markdownHtml.html"
-            ></div>
+            <Readme v-html="fileContent.markdownHtml.html" />
           </div>
 
           <CodeViewer

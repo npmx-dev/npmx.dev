@@ -27,6 +27,16 @@ export default defineNuxtModule({
         ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
         driver: 'vercel-runtime-cache',
       }
+
+      const env = process.env.VERCEL_ENV
+
+      nitroConfig.storage['oauth-atproto-state'] = {
+        driver: env === 'production' ? 'vercel-kv' : 'vercel-runtime-cache',
+      }
+
+      nitroConfig.storage['oauth-atproto-session'] = {
+        driver: env === 'production' ? 'vercel-kv' : 'vercel-runtime-cache',
+      }
     })
   },
 })

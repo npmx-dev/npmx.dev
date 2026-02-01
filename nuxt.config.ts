@@ -1,14 +1,8 @@
+import process from 'node:process'
 import { currentLocales } from './config/i18n'
 
 export default defineNuxtConfig({
   modules: [
-    function (_, nuxt) {
-      if (nuxt.options._prepare) {
-        nuxt.options.pwa ||= {}
-        nuxt.options.pwa.pwaAssets ||= {}
-        nuxt.options.pwa.pwaAssets.disabled = true
-      }
-    },
     // Workaround for Nuxt 4.3.0 regression: https://github.com/nuxt/nuxt/issues/34140
     // shared-imports.d.ts pulls in app composables during type-checking of shared context,
     // but the shared context doesn't have access to auto-import globals.
@@ -45,7 +39,22 @@ export default defineNuxtConfig({
 
   css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
+  runtimeConfig: {
+    sessionPassword: '',
+    // Upstash Redis for distributed OAuth token refresh locking in production
+    upstash: {
+      redisRestUrl: process.env.KV_REST_API_URL || '',
+      redisRestToken: process.env.KV_REST_API_TOKEN || '',
+    },
+  },
+
   devtools: { enabled: true },
+
+  devServer: {
+    // Used with atproto oauth
+    // https://atproto.com/specs/oauth#localhost-client-development
+    host: '127.0.0.1',
+  },
 
   app: {
     head: {
@@ -78,7 +87,9 @@ export default defineNuxtConfig({
     '/opensearch.xml': { isr: true },
     '/**': { isr: 60 },
     '/package/**': { isr: 60 },
+    // never cache
     '/search': { isr: false, cache: false },
+    '/api/auth/**': { isr: false, cache: false },
     // infinite cache (versioned - doesn't change)
     '/code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -87,6 +98,7 @@ export default defineNuxtConfig({
     // static pages
     '/about': { prerender: true },
     '/settings': { prerender: true },
+    '/oauth-client-metadata.json': { prerender: true },
     // proxy for insights
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
@@ -132,6 +144,14 @@ export default defineNuxtConfig({
         driver: 'fsLite',
         base: './.cache/fetch',
       },
+      'oauth-atproto-state': {
+        driver: 'fsLite',
+        base: './.cache/atproto-oauth/state',
+      },
+      'oauth-atproto-session': {
+        driver: 'fsLite',
+        base: './.cache/atproto-oauth/session',
+      },
     },
   },
 
@@ -161,10 +181,10 @@ export default defineNuxtConfig({
   },
 
   pwa: {
-    // Disable service worker - only using for asset generation
+    // Disable service worker
     disable: true,
     pwaAssets: {
-      config: true,
+      config: false,
     },
     manifest: {
       name: 'npmx',
@@ -172,6 +192,42 @@ export default defineNuxtConfig({
       description: 'A fast, modern browser for the npm registry',
       theme_color: '#0a0a0a',
       background_color: '#0a0a0a',
+      icons: [
+        {
+          src: 'pwa-64x64.png',
+          sizes: '64x64',
+          type: 'image/png',
+        },
+        {
+          src: 'pwa-192x192.png',
+          sizes: '192x192',
+          type: 'image/png',
+        },
+        {
+          src: 'pwa-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any',
+        },
+        {
+          src: 'maskable-icon-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'maskable',
+        },
+      ],
+    },
+  },
+
+  debug: {
+    hydration: true,
+  },
+
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        noUnusedLocals: true,
+      },
     },
   },
 

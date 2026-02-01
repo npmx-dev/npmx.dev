@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
 
-const isMobile = useIsMobile()
-
 withDefaults(
   defineProps<{
     inputClass?: string
@@ -17,17 +15,26 @@ const emit = defineEmits(['blur', 'focus'])
 const router = useRouter()
 const route = useRoute()
 
-const isSearchFocused = ref(false)
+const isSearchFocused = shallowRef(false)
 
 const showSearchBar = computed(() => {
   return route.name !== 'index'
 })
 
 // Local input value (updates immediately as user types)
-const searchQuery = ref((route.query.q as string) ?? '')
+const searchQuery = shallowRef(
+  (Array.isArray(route.query.q) ? route.query.q[0] : route.query.q) ?? '',
+)
+
+// Pages that have their own local filter using ?q
+const pagesWithLocalFilter = new Set(['~username', 'org'])
 
 // Debounced URL update for search query
 const updateUrlQuery = debounce((value: string) => {
+  // Don't navigate away from pages that use ?q for local filtering
+  if (pagesWithLocalFilter.has(route.name as string)) {
+    return
+  }
   if (route.name === 'search') {
     router.replace({ query: { q: value || undefined } })
     return
@@ -53,6 +60,10 @@ watch(searchQuery, value => {
 watch(
   () => route.query.q,
   urlQuery => {
+    // Don't sync from pages that use ?q for local filtering
+    if (pagesWithLocalFilter.has(route.name as string)) {
+      return
+    }
     const value = (urlQuery as string) ?? ''
     if (searchQuery.value !== value) {
       searchQuery.value = value
@@ -68,6 +79,13 @@ function handleSearchFocus() {
   isSearchFocused.value = true
   emit('focus')
 }
+
+// Expose focus method for parent components
+const inputRef = shallowRef<HTMLInputElement | null>(null)
+function focus() {
+  inputRef.value?.focus()
+}
+defineExpose({ focus })
 </script>
 <template>
   <search v-if="showSearchBar" :class="'flex-1 sm:max-w-md ' + inputClass">
@@ -86,13 +104,13 @@ function handleSearchFocus() {
 
           <input
             id="header-search"
-            :autofocus="!isMobile"
+            ref="inputRef"
             v-model="searchQuery"
             type="search"
             name="q"
             :placeholder="$t('search.placeholder')"
             v-bind="noCorrect"
-            class="w-full bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+            class="w-full min-w-25 bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
             @focus="handleSearchFocus"
             @blur="handleSearchBlur"
           />
