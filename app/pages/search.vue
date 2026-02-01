@@ -31,7 +31,6 @@ const updateUrlPage = debounce((page: number) => {
 // The actual search query (from URL, used for API calls)
 const query = computed(() => (route.query.q as string) ?? '')
 
-const selectedIndex = shallowRef(0)
 const packageListRef = useTemplateRef('packageListRef')
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
@@ -218,11 +217,6 @@ function handlePageChange(page: number) {
 watch(query, () => {
   currentPage.value = 1
   hasInteracted.value = true
-})
-
-// Reset selection when query changes (new search)
-watch(query, () => {
-  selectedIndex.value = 0
 })
 
 // Check if current query could be a valid package name
@@ -542,136 +536,68 @@ const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
   return null
 })
 
-/**
- * Selection uses negative indices for suggestions, positive for packages
- * -2 = first suggestion, -1 = second suggestion, 0+ = package indices
- */
 const suggestionCount = computed(() => validatedSuggestions.value.length)
 const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
 
-/** Unified selected index: negative for suggestions, 0+ for packages */
-const unifiedSelectedIndex = shallowRef(0)
-const userHasNavigated = shallowRef(false)
-
-/** Convert unified index to suggestion index (0-based) or null */
-function toSuggestionIndex(unified: number): number | null {
-  if (unified < 0 && unified >= -suggestionCount.value) {
-    return suggestionCount.value + unified
-  }
-  return null
+/**
+ * Get all focusable result elements in DOM order (suggestions first, then packages)
+ */
+function getFocusableElements(): HTMLElement[] {
+  const suggestions = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-suggestion-index]'),
+  ).sort((a, b) => {
+    const aIdx = Number.parseInt(a.dataset.suggestionIndex ?? '0', 10)
+    const bIdx = Number.parseInt(b.dataset.suggestionIndex ?? '0', 10)
+    return aIdx - bIdx
+  })
+  const packages = Array.from(document.querySelectorAll<HTMLElement>('[data-result-index]')).sort(
+    (a, b) => {
+      const aIdx = Number.parseInt(a.dataset.resultIndex ?? '0', 10)
+      const bIdx = Number.parseInt(b.dataset.resultIndex ?? '0', 10)
+      return aIdx - bIdx
+    },
+  )
+  return [...suggestions, ...packages]
 }
 
-/** Convert unified index to package index or null */
-function toPackageIndex(unified: number): number | null {
-  if (unified >= 0 && unified < resultCount.value) {
-    return unified
-  }
-  return null
-}
-
-/** Clamp unified index to valid range */
-function clampUnifiedIndex(next: number): number {
-  const min = -suggestionCount.value
-  const max = Math.max(0, resultCount.value - 1)
-  if (totalSelectableCount.value <= 0) return 0
-  return Math.max(min, Math.min(max, next))
-}
-
-// Keep legacy selectedIndex in sync for PackageList
-watch(unifiedSelectedIndex, unified => {
-  const pkgIndex = toPackageIndex(unified)
-  selectedIndex.value = pkgIndex ?? -1
-})
-
-// Initialize selection to exact match when results load
-watch(
-  [visibleResults, validatedSuggestions, exactMatchType],
-  () => {
-    if (userHasNavigated.value) {
-      unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value)
-      return
-    }
-
-    if (exactMatchType.value === 'package') {
-      // Find the exact match package index
-      const q = query.value.trim().toLowerCase()
-      const idx =
-        visibleResults.value?.objects.findIndex(r => r.package.name.toLowerCase() === q) ?? -1
-      if (idx >= 0) {
-        unifiedSelectedIndex.value = idx
-        return
-      }
-    }
-    if (exactMatchType.value === 'org') {
-      // Select the org suggestion
-      const orgIdx = validatedSuggestions.value.findIndex(s => s.type === 'org')
-      if (orgIdx >= 0) {
-        unifiedSelectedIndex.value = -(suggestionCount.value - orgIdx)
-        return
-      }
-    }
-    if (exactMatchType.value === 'user') {
-      // Select the user suggestion
-      const userIdx = validatedSuggestions.value.findIndex(s => s.type === 'user')
-      if (userIdx >= 0) {
-        unifiedSelectedIndex.value = -(suggestionCount.value - userIdx)
-        return
-      }
-    }
-    // Default to first item (first suggestion if any, else first package)
-    unifiedSelectedIndex.value = suggestionCount.value > 0 ? -suggestionCount.value : 0
-  },
-  { immediate: true },
-)
-
-// Reset selection and navigation flag when query changes
-watch(query, () => {
-  userHasNavigated.value = false
-  // Will be re-initialized by the watch above when results load
-  unifiedSelectedIndex.value = 0
-})
-
-function scrollToSelectedItem() {
-  const pkgIndex = toPackageIndex(unifiedSelectedIndex.value)
-  if (pkgIndex !== null) {
-    packageListRef.value?.scrollToIndex(pkgIndex)
-  }
+/**
+ * Focus an element and scroll it into view
+ */
+function focusElement(el: HTMLElement) {
+  el.focus()
+  el.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
 }
 
 function handleResultsKeydown(e: KeyboardEvent) {
   if (totalSelectableCount.value <= 0) return
 
+  const elements = getFocusableElements()
+  if (elements.length === 0) return
+
+  const currentIndex = elements.findIndex(el => el === document.activeElement)
+
   if (e.key === 'ArrowDown') {
     e.preventDefault()
-    userHasNavigated.value = true
-    unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value + 1)
-    scrollToSelectedItem()
+    const nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, elements.length - 1)
+    const el = elements[nextIndex]
+    if (el) focusElement(el)
     return
   }
 
   if (e.key === 'ArrowUp') {
     e.preventDefault()
-    userHasNavigated.value = true
-    unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value - 1)
-    scrollToSelectedItem()
+    const nextIndex = currentIndex < 0 ? 0 : Math.max(currentIndex - 1, 0)
+    const el = elements[nextIndex]
+    if (el) focusElement(el)
     return
   }
 
   if (e.key === 'Enter') {
-    if (!resultsMatchQuery.value) return
-
-    const suggIdx = toSuggestionIndex(unifiedSelectedIndex.value)
-    const pkgIdx = toPackageIndex(unifiedSelectedIndex.value)
-
-    if (suggIdx !== null) {
-      const el = document.querySelector<HTMLElement>(`[data-suggestion-index="${suggIdx}"]`)
-      if (el) {
-        e.preventDefault()
-        el.click()
-      }
-    } else if (pkgIdx !== null) {
-      const el = document.querySelector<HTMLElement>(`[data-result-index="${pkgIdx}"]`)
-      if (el) {
+    // Browser handles Enter on focused links naturally, but handle for non-link elements
+    if (document.activeElement && elements.includes(document.activeElement as HTMLElement)) {
+      const el = document.activeElement as HTMLElement
+      // Only prevent default and click if it's not already a link (links handle Enter natively)
+      if (el.tagName !== 'A') {
         e.preventDefault()
         el.click()
       }
@@ -680,16 +606,6 @@ function handleResultsKeydown(e: KeyboardEvent) {
 }
 
 onKeyDown(['ArrowDown', 'ArrowUp', 'Enter'], handleResultsKeydown)
-
-function handleSuggestionSelect(index: number) {
-  // Convert suggestion index to unified index
-  unifiedSelectedIndex.value = -(suggestionCount.value - index)
-}
-
-function handlePackageSelect(index: number) {
-  if (index < 0) return
-  unifiedSelectedIndex.value = index
-}
 
 useSeoMeta({
   title: () => (query.value ? `Search: ${query.value} - npmx` : 'Search Packages - npmx'),
@@ -719,12 +635,10 @@ defineOgImageComponent('Default', {
               :type="suggestion.type"
               :name="suggestion.name"
               :index="idx"
-              :selected="toSuggestionIndex(unifiedSelectedIndex) === idx"
               :is-exact-match="
                 (exactMatchType === 'org' && suggestion.type === 'org') ||
                 (exactMatchType === 'user' && suggestion.type === 'user')
               "
-              @focus="handleSuggestionSelect"
             />
           </div>
 
@@ -819,12 +733,10 @@ defineOgImageComponent('Default', {
                 :type="suggestion.type"
                 :name="suggestion.name"
                 :index="idx"
-                :selected="toSuggestionIndex(unifiedSelectedIndex) === idx"
                 :is-exact-match="
                   (exactMatchType === 'org' && suggestion.type === 'org') ||
                   (exactMatchType === 'user' && suggestion.type === 'user')
                 "
-                @focus="handleSuggestionSelect"
               />
             </div>
 
@@ -847,7 +759,6 @@ defineOgImageComponent('Default', {
             v-if="displayResults.length > 0"
             ref="packageListRef"
             :results="displayResults"
-            :selected-index="selectedIndex"
             :search-query="query"
             heading-level="h2"
             show-publisher
@@ -862,7 +773,6 @@ defineOgImageComponent('Default', {
             :current-page="currentPage"
             @load-more="loadMore"
             @page-change="handlePageChange"
-            @select="handlePackageSelect"
             @click-keyword="toggleKeyword"
           />
 
