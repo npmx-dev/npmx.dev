@@ -64,7 +64,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `docs:v1:${pkg}`
+      return `docs:v2:${pkg}`
     },
   },
 )

@@ -1,60 +1,50 @@
 {
   "$schema": "https://unpkg.com/knip@5/schema.json",
-  "includeEntryExports": true,
-  "ignoreExportsUsedInFile": true,
-  "ignoreBinaries": ["simple-git-hooks", "lint-staged", "lex"],
   "ignore": ["shared/types/lexicons/**"],
   "workspaces": {
     ".": {
       "entry": [
-        "scripts/*.sh",
-        "lunaria/**/*.ts!",
-        "modules/**/*.ts!",
-        "i18n/i18n.config.ts!",
-        "app/app.vue!",
-        "app/error.vue!",
-        "app/pages/**/*.vue!",
-        "app/middleware/**/*.ts!",
-        "app/composables/**/*.ts!",
-        "app/utils/**/*.ts!",
-        "app/plugins/**/*.ts!",
-        "app/components/**/*.vue!",
-        "config/**/*.ts!",
-        "server/utils/**/*.ts!",
-        "shared/**/*.ts!"
-      ],
-      "project": [
-        "app/**/*.{ts,vue}!",
-        "server/**/*.ts!",
-        "shared/**/*.ts!",
-        "test/**/*.ts",
-        "tests/**/*.ts",
+        "app/app.vue",
+        "app/error.vue",
+        "app/pages/**/*.vue",
+        "app/components/**/*.vue",
+        "app/composables/**/*.ts",
+        "app/middleware/**/*.ts",
+        "app/plugins/**/*.ts",
+        "app/utils/**/*.ts",
+        "server/**/*.ts",
+        "modules/**/*.ts",
+        "config/**/*.ts",
+        "i18n/**/*.ts",
+        "lunaria.config.ts",
+        "pwa-assets.config.ts",
+        ".lighthouserc.cjs",
+        "lighthouse-setup.cjs",
+        "uno-preset-rtl.ts",
+        "scripts/**/*.ts",
         "lunaria/**/*.ts",
-        "modules/**/*.ts!",
-        "i18n/**/*.ts!"
+        "shared/**/*.ts"
       ],
+      "project": ["**/*.{ts,vue,cjs,mjs}"],
       "ignoreDependencies": [
-        "@iconify-json/carbon",
-        "@iconify-json/lucide",
-        "@iconify-json/simple-icons",
-        "@iconify-json/solar",
-        "@iconify-json/svg-spinners",
-        "@iconify-json/vscode-icons",
+        "@iconify-json/*",
         "@vercel/kv",
         "@voidzero-dev/vite-plus-core",
         "h3",
-        "ohash",
+        "puppeteer",
         "unplugin-vue-router",
+        "vite-plugin-pwa",
         "vue-router"
       ],
       "ignoreUnresolved": ["#components"]
     },
     "cli": {
-      "project": ["src/**/*.ts!"]
+      "project": ["src/**/*.ts"]
     },
     "docs": {
-      "entry": ["app/app.config.ts"],
-      "ignoreDependencies": ["docus", "better-sqlite3", "nuxt"]
+      "entry": ["app/**/*.{ts,vue}"],
+      "project": ["**/*.{ts,vue}"],
+      "ignoreDependencies": ["docus", "better-sqlite3"]
     }
   }
 }

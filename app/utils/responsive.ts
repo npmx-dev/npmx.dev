@@ -1,4 +1,3 @@
-/** @public */
 export function isTouchDevice() {
   if (import.meta.server) {
     return false

@@ -4,6 +4,7 @@ import type {
   PackageFileTreeResponse,
   PackageFileContentResponse,
 } from '#shared/types'
+import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'code',
@@ -98,9 +99,18 @@ const fileContentUrl = computed(() => {
   return `/api/registry/file/${packageName.value}/v/${version.value}/${filePath.value}`
 })
 
-const { data: fileContent, status: fileStatus } = useFetch<PackageFileContentResponse>(
-  () => fileContentUrl.value!,
-  { immediate: !!fileContentUrl.value },
+const {
+  data: fileContent,
+  status: fileStatus,
+  execute: fetchFileContent,
+} = useFetch<PackageFileContentResponse>(() => fileContentUrl.value!, { immediate: false })
+
+watch(
+  fileContentUrl,
+  url => {
+    if (url) fetchFileContent()
+  },
+  { immediate: true },
 )
 
 // Track hash manually since we update it via history API to avoid scroll
@@ -192,13 +202,6 @@ function packageRoute(ver?: string | null) {
     segments.push('v', ver)
   }
   return { name: 'package' as const, params: { package: segments } }
-}
-
-// Format file size
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} kB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
 // Line number click handler - update URL hash without scrolling
@@ -439,10 +442,7 @@ defineOgImageComponent('Default', {
             v-show="markdownViewMode === 'preview'"
             class="flex justify-center p-4"
           >
-            <div
-              class="readme-content prose prose-invert max-w-[70ch]"
-              v-html="fileContent.markdownHtml.html"
-            ></div>
+            <Readme :html="fileContent.markdownHtml.html" />
           </div>
 
           <CodeViewer

@@ -158,6 +158,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'ja-JP.json',
     name: '日本語',
   },
+  {
+    code: 'ne-NP',
+    file: 'ne-NP.json',
+    name: 'नेपाली',
+  },
   /*{
       code: 'nl-NL',
       file: 'nl-NL.json',
@@ -255,6 +260,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       name: '한국어',
     },*/
   {
+    code: 'id-ID',
+    file: 'id-ID.json',
+    name: 'Indonesia',
+  },
+  {
     code: 'it-IT',
     file: 'it-IT.json',
     name: 'Italiano',
@@ -269,6 +279,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       const name = new Intl.PluralRules('pl-PL').select(choice)
       return { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
     },
+  },
+  {
+    code: 'pt-BR',
+    file: 'pt-BR.json',
+    name: 'Português (Brasil)',
   },
   /*{
       code: 'sv',

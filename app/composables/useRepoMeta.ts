@@ -754,7 +754,6 @@ const providers: readonly ProviderAdapter[] = [
 
 const parseRepoFromUrl = parseRepoUrl
 
-/** @public */
 export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | undefined>) {
   // Get cachedFetch in setup context (outside async handler)
   const cachedFetch = useCachedFetch()
