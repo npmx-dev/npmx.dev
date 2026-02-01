@@ -1,7 +1,8 @@
-import type { Packument } from '#shared/types'
+import type { FastNpmMetaResponse, Packument } from '#shared/types'
 import { maxSatisfying, prerelease } from 'semver'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
+const FAST_NPM_META_API = 'https://npm.antfu.dev'
 
 function encodePackageName(name: string): string {
   if (name.startsWith('@')) {
@@ -22,6 +23,53 @@ export const fetchNpmPackage = defineCachedFunction(
     getKey: (name: string) => name,
   },
 )
+
+/**
+ * Fetch lightweight package metadata from fast-npm-meta API.
+ * Much smaller payload than full packument - ideal for just getting latest version.
+ *
+ * @param name Package name
+ * @param specifier Optional version specifier (tag like "alpha", or range like "^2.1.0")
+ * @returns Resolved version info
+ * @see https://github.com/antfu/fast-npm-meta
+ */
+export const fetchFastNpmMeta = defineCachedFunction(
+  async (name: string, specifier?: string): Promise<FastNpmMetaResponse> => {
+    const encodedName = encodePackageName(name)
+    const url = specifier
+      ? `${FAST_NPM_META_API}/${encodedName}@${encodeURIComponent(specifier)}`
+      : `${FAST_NPM_META_API}/${encodedName}`
+    return await $fetch<FastNpmMetaResponse>(url)
+  },
+  {
+    maxAge: 60 * 5,
+    swr: true,
+    name: 'fast-npm-meta',
+    getKey: (name: string, specifier?: string) => (specifier ? `${name}@${specifier}` : name),
+  },
+)
+
+/**
+ * Get the latest version of a package using fast-npm-meta API.
+ * Falls back to full packument if fast-npm-meta fails.
+ *
+ * @param name Package name
+ * @returns Latest version string or null if not found
+ */
+export async function fetchLatestVersion(name: string): Promise<string | null> {
+  try {
+    const meta = await fetchFastNpmMeta(name)
+    return meta.version
+  } catch {
+    // Fallback to full packument
+    try {
+      const packument = await fetchNpmPackage(name)
+      return packument['dist-tags']?.latest ?? null
+    } catch {
+      return null
+    }
+  }
+}
 
 /**
  * Check if a version constraint explicitly includes a prerelease tag.

@@ -41,12 +41,11 @@ const latestVersion = computed(() => pkg.value?.['dist-tags']?.latest ?? null)
 
 if (import.meta.server && !requestedVersion.value) {
   const app = useNuxtApp()
-  const { data: pkg } = await usePackage(packageName)
-  const latest = pkg.value?.['dist-tags']?.latest
-  if (latest) {
+  const version = await fetchLatestVersion(packageName.value)
+  if (version) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
     app.runWithContext(() =>
-      navigateTo('/docs/' + packageName.value + '/v/' + latest, { redirectCode: 302 }),
+      navigateTo('/docs/' + packageName.value + '/v/' + version, { redirectCode: 302 }),
     )
   }
 }

@@ -2,7 +2,7 @@ import * as v from 'valibot'
 import { createError, getRouterParam, setHeader } from 'h3'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
-import { fetchNpmPackage } from '#server/utils/npm'
+import { fetchLatestVersion } from '#server/utils/npm'
 import { assertValidPackageName } from '#shared/utils/npm'
 import { handleApiError } from '#server/utils/error-handler'
 
@@ -30,8 +30,7 @@ export default defineCachedEventHandler(
 
       const label = `./ ${packageName}`
 
-      const value =
-        requestedVersion ?? (await fetchNpmPackage(packageName))['dist-tags']?.latest ?? 'unknown'
+      const value = requestedVersion ?? (await fetchLatestVersion(packageName)) ?? 'unknown'
 
       const leftWidth = measureTextWidth(label)
       const rightWidth = measureTextWidth(value)
