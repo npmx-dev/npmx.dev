@@ -31,7 +31,7 @@ function stripAndEscapeHtml(text: string, packageName?: string): string {
   let stripped = decodeHtmlEntities(text)
 
   // Then strip markdown image badges
-  stripped = stripMarkdownImages(text)
+  stripped = stripMarkdownImages(stripped)
 
   // Then strip actual HTML tags (keep their text content)
   // Only match tags that start with a letter or / (to avoid matching things like "a < b > c")
