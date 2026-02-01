@@ -1,14 +1,9 @@
 import type { Packument, NpmSearchResponse } from '#shared/types'
+import { encodePackageName, fetchLatestVersion } from '#shared/utils/npm'
 import { maxSatisfying, prerelease } from 'semver'
+import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
-
-function encodePackageName(name: string): string {
-  if (name.startsWith('@')) {
-    return `@${encodeURIComponent(name.slice(1))}`
-  }
-  return encodeURIComponent(name)
-}
 
 export const fetchNpmPackage = defineCachedFunction(
   async (name: string): Promise<Packument> => {
@@ -16,12 +11,32 @@ export const fetchNpmPackage = defineCachedFunction(
     return await $fetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
   },
   {
-    maxAge: 60 * 5,
+    maxAge: CACHE_MAX_AGE_FIVE_MINUTES,
     swr: true,
     name: 'npm-package',
     getKey: (name: string) => name,
   },
 )
+
+/**
+ * Get the latest version of a package using fast-npm-meta API.
+ * Falls back to full packument if fast-npm-meta fails.
+ *
+ * @param name Package name
+ * @returns Latest version string or null if not found
+ */
+export async function fetchLatestVersionWithFallback(name: string): Promise<string | null> {
+  const version = await fetchLatestVersion(name)
+  if (version) return version
+
+  // Fallback to full packument (also cached)
+  try {
+    const packument = await fetchNpmPackage(name)
+    return packument['dist-tags']?.latest ?? null
+  } catch {
+    return null
+  }
+}
 
 /**
  * Check if a version constraint explicitly includes a prerelease tag.

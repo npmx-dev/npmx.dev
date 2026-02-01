@@ -24,7 +24,6 @@
     "found_packages": "تم العثور على {count} حزمة | تم العثور على حزمة واحدة | تم العثور على حزمتين | تم العثور على {count} حزم | تم العثور على {count} حزمة | تم العثور على {count} حزمة",
     "updating": "(جارٍ التحديث...)",
     "no_results": "لم يتم العثور على حزم لـ \"{query}\"",
-    "results": "نتائج البحث",
     "not_taken": "الاسم {name} غير مأخوذ",
     "claim_prompt": "احجز اسم هذه الحزمة على npm",
     "claim_button": "احجز \"{name}\"",
@@ -116,6 +115,7 @@
       "version": "تم إهمال هذا الإصدار.",
       "no_reason": "لم يتم تقديم سبب"
     },
+    "replacement": {},
     "stats": {
       "license": "الترخيص",
       "deps": "الاعتماديات",
@@ -123,7 +123,11 @@
       "vulns": "الثغرات",
       "updated": "آخر تحديث",
       "view_dependency_graph": "عرض مخطط الاعتماديات",
-      "inspect_dependency_tree": "فحص شجرة الاعتماديات"
+      "inspect_dependency_tree": "فحص شجرة الاعتماديات",
+      "size_tooltip": {}
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "المستودع",
@@ -277,6 +281,7 @@
         "low": "منخفضة"
       }
     },
+    "deprecated": {},
     "access": {
       "title": "وصول الفريق",
       "refresh": "تحديث وصول الفريق",
@@ -706,6 +711,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "الصفحة الرئيسية لـ npmx",
     "github": "GitHub",
@@ -724,6 +733,13 @@
       "error": "فشل تحميل المؤسسات",
       "empty": "لا توجد مؤسسات",
       "view_all": "عرض الكل"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

@@ -27,7 +27,7 @@
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
-    "results": "Search results",
+    "title": "search",
     "not_taken": "{name} is not taken",
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
@@ -298,7 +298,8 @@
       "no_types": "No TypeScript types"
     },
     "license": {
-      "view_spdx": "View license text on SPDX"
+      "view_spdx": "View license text on SPDX",
+      "none": "None"
     },
     "vulnerabilities": {
       "no_description": "No description available",

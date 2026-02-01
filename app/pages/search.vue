@@ -588,10 +588,13 @@ defineOgImageComponent('Default', {
 </script>
 
 <template>
-  <main class="flex-1" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
-    <!-- Results area with container padding -->
-    <div class="container-sm py-6">
-      <section v-if="query" :aria-label="$t('search.results')">
+  <main class="flex-1 py-8" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
+    <div class="container-sm">
+      <h1 class="font-mono text-2xl sm:text-3xl font-medium mb-4">
+        {{ $t('search.title') }}
+      </h1>
+
+      <section v-if="query">
         <!-- Initial loading (only after user interaction, not during view transition) -->
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 

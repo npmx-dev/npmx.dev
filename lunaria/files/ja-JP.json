@@ -24,7 +24,6 @@
     "found_packages": "{count} 個のパッケージが見つかりました",
     "updating": "（更新中...）",
     "no_results": "\"{query}\" に一致するパッケージは見つかりませんでした",
-    "results": "検索結果",
     "not_taken": "{name} は使用可能です",
     "claim_prompt": "このパッケージ名をnpmで取得する",
     "claim_button": "\"{name}\" を取得",
@@ -116,6 +115,7 @@
       "version": "このバージョンは非推奨になりました。",
       "no_reason": "理由は提供されていません"
     },
+    "replacement": {},
     "stats": {
       "license": "ライセンス",
       "deps": "依存関係",
@@ -123,7 +123,11 @@
       "vulns": "脆弱性",
       "updated": "最終更新",
       "view_dependency_graph": "依存関係グラフを表示",
-      "inspect_dependency_tree": "依存関係ツリーを検査"
+      "inspect_dependency_tree": "依存関係ツリーを検査",
+      "size_tooltip": {}
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "リポジトリ",
@@ -552,6 +556,9 @@
     }
   },
   "filters": {
+    "download_range": {},
+    "updated": {},
+    "security_options": {},
     "sort": {
       "label": "パッケージ一覧を並び替える",
       "toggle_direction": "並び順を切り替える",
@@ -568,7 +575,12 @@
       "popularity": "人気度",
       "maintenance": "メンテナンス",
       "score": "スコア"
-    }
+    },
+    "columns": {},
+    "view_mode": {},
+    "pagination": {},
+    "count": {},
+    "table": {}
   },
   "about": {
     "title": "npmxについて",
@@ -624,6 +636,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "ホーム",
     "github": "GitHub",
@@ -642,6 +658,13 @@
       "error": "Organizationの読み込みに失敗しました",
       "empty": "Organizationは見つかりませんでした",
       "view_all": "すべて表示"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

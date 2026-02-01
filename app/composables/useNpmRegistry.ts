@@ -1,6 +1,5 @@
 import type {
   Packument,
-  PackumentVersion,
   SlimPackument,
   NpmSearchResponse,
   NpmSearchResult,
@@ -8,9 +7,11 @@ import type {
   NpmPerson,
   PackageVersionInfo,
 } from '#shared/types'
+import { getVersions } from 'fast-npm-meta'
+import type { ResolvedPackageVersion } from 'fast-npm-meta'
 import type { ReleaseType } from 'semver'
+import { mapWithConcurrency } from '#shared/utils/async'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
-import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 
@@ -92,17 +93,6 @@ async function fetchBulkDownloads(
   return downloads
 }
 
-/**
- * Encode a package name for use in npm registry URLs.
- * Handles scoped packages (e.g., @scope/name -> @scope%2Fname).
- */
-export function encodePackageName(name: string): string {
-  if (name.startsWith('@')) {
-    return `@${encodeURIComponent(name.slice(1))}`
-  }
-  return encodeURIComponent(name)
-}
-
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
 
@@ -137,20 +127,28 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
   }
 
   // Build filtered versions object with install scripts info per version
-  const filteredVersions: Record<string, PackumentVersion> = {}
+  const filteredVersions: Record<string, SlimVersion> = {}
+  let versionData: SlimPackumentVersion | null = null
   for (const v of includedVersions) {
     const version = pkg.versions[v]
     if (version) {
-      // Strip readme from each version, extract install scripts info
-      const { readme: _readme, scripts, ...slimVersion } = version
+      if (version.version === requestedVersion) {
+        // Strip readme from each version, extract install scripts info
+        const { readme: _readme, scripts, ...slimVersion } = version
 
-      // Extract install scripts info (which scripts exist + npx deps)
-      const installScripts = scripts ? extractInstallScriptsInfo(scripts) : null
-
+        // Extract install scripts info (which scripts exist + npx deps)
+        const installScripts = scripts ? extractInstallScriptsInfo(scripts) : null
+        versionData = {
+          ...slimVersion,
+          installScripts: installScripts ?? undefined,
+        }
+      }
       filteredVersions[v] = {
-        ...slimVersion,
-        installScripts: installScripts ?? undefined,
-      } as PackumentVersion
+        ...((version?.dist as { attestations?: unknown }) ? { hasProvenance: true } : {}),
+        version: version.version,
+        deprecated: version.deprecated,
+        tags: version.tags as string[],
+      }
     }
   }
 
@@ -176,8 +174,26 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
     'keywords': pkg.keywords,
     'repository': pkg.repository,
     'bugs': pkg.bugs,
+    'requestedVersion': versionData,
     'versions': filteredVersions,
   }
+}
+
+export function useResolvedVersion(
+  packageName: MaybeRefOrGetter<string>,
+  requestedVersion: MaybeRefOrGetter<string | null>,
+) {
+  return useFetch(
+    () => {
+      const version = toValue(requestedVersion)
+      return version
+        ? `https://npm.antfu.dev/${toValue(packageName)}@${version}`
+        : `https://npm.antfu.dev/${toValue(packageName)}`
+    },
+    {
+      transform: (data: ResolvedPackageVersion) => data.version,
+    },
+  )
 }
 
 export function usePackage(
@@ -195,8 +211,7 @@ export function usePackage(
       })
       const reqVer = toValue(requestedVersion)
       const pkg = transformPackument(r, reqVer)
-      const resolvedVersion = getResolvedVersion(pkg, reqVer)
-      return { ...pkg, resolvedVersion, isStale }
+      return { ...pkg, isStale }
     },
   )
 
@@ -207,26 +222,6 @@ export function usePackage(
   }
 
   return asyncData
-}
-
-function getResolvedVersion(pkg: SlimPackument, reqVer?: string | null): string | null {
-  if (!pkg || !reqVer) return null
-
-  // 1. Check if it's already an exact version in pkg.versions
-  if (isExactVersion(reqVer) && pkg.versions[reqVer]) {
-    return reqVer
-  }
-
-  // 2. Check if it's a dist-tag (latest, next, beta, etc.)
-  const tagVersion = pkg['dist-tags']?.[reqVer]
-  if (tagVersion) {
-    return tagVersion
-  }
-
-  // 3. Try to resolve as a semver range
-  const versions = Object.keys(pkg.versions)
-  const resolved = maxSatisfying(versions, reqVer)
-  return resolved
 }
 
 export function usePackageDownloads(
@@ -546,34 +541,28 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
 
       // Fetch packuments and downloads in parallel
       const [packuments, downloads] = await Promise.all([
-        // Fetch packuments in parallel (with concurrency limit)
+        // Fetch packuments with concurrency limit
         (async () => {
-          const concurrency = 10
-          const results: MinimalPackument[] = []
-          for (let i = 0; i < packageNames.length; i += concurrency) {
-            const batch = packageNames.slice(i, i + concurrency)
-            const batchResults = await Promise.all(
-              batch.map(async name => {
-                try {
-                  const encoded = encodePackageName(name)
-                  const { data: pkg } = await cachedFetch<MinimalPackument>(
-                    `${NPM_REGISTRY}/${encoded}`,
-                    { signal },
-                  )
-                  return pkg
-                } catch {
-                  return null
-                }
-              }),
-            )
-            for (const pkg of batchResults) {
-              // Filter out any unpublished packages (missing dist-tags)
-              if (pkg && pkg['dist-tags']) {
-                results.push(pkg)
+          const results = await mapWithConcurrency(
+            packageNames,
+            async name => {
+              try {
+                const encoded = encodePackageName(name)
+                const { data: pkg } = await cachedFetch<MinimalPackument>(
+                  `${NPM_REGISTRY}/${encoded}`,
+                  { signal },
+                )
+                return pkg
+              } catch {
+                return null
               }
-            }
-          }
-          return results
+            },
+            10,
+          )
+          // Filter out any unpublished packages (missing dist-tags)
+          return results.filter(
+            (pkg): pkg is MinimalPackument => pkg !== null && !!pkg['dist-tags'],
+          )
         })(),
         // Fetch downloads in bulk
         fetchBulkDownloads(packageNames, { signal }),
@@ -605,32 +594,28 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
 const allVersionsCache = new Map<string, Promise<PackageVersionInfo[]>>()
 
 /**
- * Fetch all versions of a package from the npm registry.
+ * Fetch all versions of a package using fast-npm-meta API.
  * Returns version info sorted by version (newest first).
  * Results are cached to avoid duplicate requests.
  *
  * Note: This is a standalone async function for use in event handlers.
  * For composable usage, use useAllPackageVersions instead.
+ *
+ * @see https://github.com/antfu/fast-npm-meta
  */
 export async function fetchAllPackageVersions(packageName: string): Promise<PackageVersionInfo[]> {
   const cached = allVersionsCache.get(packageName)
   if (cached) return cached
 
   const promise = (async () => {
-    const encodedName = encodePackageName(packageName)
-    // Use regular $fetch for client-side calls (this is called on user interaction)
-    const data = await $fetch<{
-      versions: Record<string, { deprecated?: string }>
-      time: Record<string, string>
-    }>(`${NPM_REGISTRY}/${encodedName}`)
+    const data = await getVersions(packageName, { metadata: true })
 
-    return Object.entries(data.versions)
-      .filter(([v]) => data.time[v])
-      .map(([version, versionData]) => ({
+    return Object.entries(data.versionsMeta)
+      .map(([version, meta]) => ({
         version,
-        time: data.time[version],
-        hasProvenance: false, // Would need to check dist.attestations for each version
-        deprecated: versionData.deprecated,
+        time: meta.time,
+        hasProvenance: meta.provenance === 'trustedPublisher' || meta.provenance === true,
+        deprecated: meta.deprecated,
       }))
       .sort((a, b) => compare(b.version, a.version))
   })()
@@ -772,23 +757,20 @@ export function useOutdatedDependencies(
       return
     }
 
-    const results: Record<string, OutdatedDependencyInfo> = {}
     const entries = Object.entries(deps)
-    const batchSize = 5
+    const batchResults = await mapWithConcurrency(
+      entries,
+      async ([name, constraint]) => {
+        const info = await checkDependencyOutdated(cachedFetch, name, constraint)
+        return [name, info] as const
+      },
+      5,
+    )
 
-    for (let i = 0; i < entries.length; i += batchSize) {
-      const batch = entries.slice(i, i + batchSize)
-      const batchResults = await Promise.all(
-        batch.map(async ([name, constraint]) => {
-          const info = await checkDependencyOutdated(cachedFetch, name, constraint)
-          return [name, info] as const
-        }),
-      )
-
-      for (const [name, info] of batchResults) {
-        if (info) {
-          results[name] = info
-        }
+    const results: Record<string, OutdatedDependencyInfo> = {}
+    for (const [name, info] of batchResults) {
+      if (info) {
+        results[name] = info
       }
     }
 

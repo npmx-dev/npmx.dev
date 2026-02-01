@@ -5,6 +5,7 @@ import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
 
 const props = defineProps<{
   packageName: string
+  createdIso: string | null
 }>()
 
 const chartModal = useModal('chart-modal')
@@ -15,9 +16,6 @@ function openChartModal() {
   // ensure the component renders before opening the dialog
   nextTick(() => chartModal.open())
 }
-
-const { data: packument } = usePackage(() => props.packageName)
-const createdIso = computed(() => packument.value?.time?.created ?? null)
 
 const { fetchPackageDownloadEvolution } = useCharts()
 
@@ -92,7 +90,7 @@ async function loadWeeklyDownloads() {
   try {
     const result = await fetchPackageDownloadEvolution(
       () => props.packageName,
-      () => createdIso.value,
+      () => props.createdIso,
       () => ({ granularity: 'week' as const, weeks: 52 }),
     )
     weeklyDownloads.value = (result as WeeklyDownloadPoint[]) ?? []

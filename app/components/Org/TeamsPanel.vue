@@ -272,7 +272,7 @@ watch(lastExecutionTime, () => {
         @click="loadTeams"
       >
         <span
-          class="i-carbon:renew block w-4 h-4"
+          class="i-carbon:renew w-4 h-4"
           :class="{ 'animate-spin': isLoadingTeams }"
           aria-hidden="true"
         />
@@ -328,7 +328,7 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoadingTeams && teams.length === 0" class="p-8 text-center">
       <span
-        class="i-carbon:rotate-180 block w-5 h-5 text-fg-muted motion-safe:animate-spin mx-auto"
+        class="i-carbon:rotate-180 w-5 h-5 text-fg-muted motion-safe:animate-spin mx-auto"
         aria-hidden="true"
       />
       <p class="font-mono text-sm text-fg-muted mt-2">{{ $t('org.teams.loading') }}</p>
@@ -398,7 +398,7 @@ watch(lastExecutionTime, () => {
             :aria-label="$t('org.teams.delete_team', { name: teamName })"
             @click.stop="handleDestroyTeam(teamName)"
           >
-            <span class="i-carbon:trash-can block w-4 h-4" aria-hidden="true" />
+            <span class="i-carbon:trash-can w-4 h-4" aria-hidden="true" />
           </button>
         </div>
 
@@ -432,7 +432,7 @@ watch(lastExecutionTime, () => {
                 :aria-label="$t('org.teams.remove_user', { user })"
                 @click="handleRemoveUser(teamName, user)"
               >
-                <span class="i-carbon:close block w-3.5 h-3.5" aria-hidden="true" />
+                <span class="i-carbon:close w-3.5 h-3.5" aria-hidden="true" />
               </button>
             </li>
           </ul>
@@ -468,7 +468,7 @@ watch(lastExecutionTime, () => {
                 :aria-label="$t('org.teams.cancel_add_user')"
                 @click="showAddUserFor = null"
               >
-                <span class="i-carbon:close block w-4 h-4" aria-hidden="true" />
+                <span class="i-carbon:close w-4 h-4" aria-hidden="true" />
               </button>
             </form>
           </div>
@@ -525,7 +525,7 @@ watch(lastExecutionTime, () => {
             :aria-label="$t('org.teams.cancel_create')"
             @click="showCreateTeam = false"
           >
-            <span class="i-carbon:close block w-4 h-4" aria-hidden="true" />
+            <span class="i-carbon:close w-4 h-4" aria-hidden="true" />
           </button>
         </form>
       </div>

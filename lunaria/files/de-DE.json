@@ -27,7 +27,6 @@
     "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
-    "results": "Suchergebnisse",
     "not_taken": "{name} ist noch frei",
     "claim_prompt": "Diesen Paketnamen auf npm beanspruchen",
     "claim_button": "\"{name}\" beanspruchen",
@@ -143,12 +142,31 @@
       "install_size": "Installationsgröße",
       "vulns": "Sicherheitslücken",
       "updated": "Aktualisiert",
+      "skills": "Fähigkeiten",
       "view_dependency_graph": "Abhängigkeitsgraph anzeigen",
       "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen",
       "size_tooltip": {
         "unpacked": "{size} Größe nach dem Entpacken (dieses Paket)",
         "total": "{size} Gesamtgröße nach dem Entpacken (inklusive aller {count} Abhängigkeiten für linux-x64)"
       }
+    },
+    "skills": {
+      "title": "Agentenfähigkeiten",
+      "skills_available": "{count} Fähigkeit verfügbar | {count} Fähigkeiten verfügbar",
+      "view": "Ansehen",
+      "compatible_with": "Kompatibel mit: {tool}",
+      "install": "installieren",
+      "installation_method": "Installationsmethode",
+      "learn_more": "Mehr erfahren",
+      "available_skills": "Verfügbare Fähigkeiten",
+      "click_to_expand": "Klicken zum Aufklappen",
+      "no_description": "Keine Beschreibung",
+      "file_counts": {
+        "scripts": "{count} Skript | {count} Skripte",
+        "refs": "{count} Referenz | {count} Referenzen",
+        "assets": "{count} Asset | {count} Assets"
+      },
+      "view_source": "Quelltext ansehen"
     },
     "links": {
       "repo": "Repo",
@@ -296,16 +314,16 @@
       "packages_failed": "{count} Paket konnte nicht geprüft werden | {count} Pakete konnten nicht geprüft werden",
       "no_known": "Keine bekannten Sicherheitslücken in {count} Paketen",
       "scan_failed": "Sicherheits-Scan fehlgeschlagen",
+      "depth": {
+        "root": "Dieses Paket",
+        "direct": "Direkte Abhängigkeit",
+        "transitive": "Transitive Abhängigkeit (indirekt)"
+      },
       "severity": {
         "critical": "kritisch",
         "high": "hoch",
         "moderate": "mittel",
         "low": "niedrig"
-      },
-      "depth": {
-        "root": "Dieses Paket",
-        "direct": "Direkte Abhängigkeit",
-        "transitive": "Transitive Abhängigkeit (indirekt)"
       }
     },
     "deprecated": {

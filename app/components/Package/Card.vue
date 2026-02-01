@@ -32,7 +32,7 @@ const pkgDescription = useMarkdown(() => ({
   <article
     class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
     :class="{
-      'border-accent/30 bg-accent/5': isExactMatch,
+      'border-accent/30 contrast-more:border-accent/90 bg-accent/5': isExactMatch,
     }"
   >
     <!-- Glow effect for exact matches -->
@@ -118,7 +118,7 @@ const pkgDescription = useMarkdown(() => ({
           <div class="flex items-center gap-1.5">
             <dt class="sr-only">{{ $t('package.card.weekly_downloads') }}</dt>
             <dd class="flex items-center gap-1.5">
-              <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+              <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
               <span class="font-mono">{{ $n(result.downloads.weekly) }}/w</span>
             </dd>
           </div>
@@ -152,7 +152,7 @@ const pkgDescription = useMarkdown(() => ({
           v-if="result.downloads?.weekly"
           class="text-fg-subtle gap-2 flex items-center justify-end"
         >
-          <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+          <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
           <span class="font-mono text-xs">
             {{ $n(result.downloads.weekly) }} {{ $t('common.per_week') }}
           </span>

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageVersions from '~/components/Package/Versions.vue'
-import type { PackumentVersion } from '#shared/types'
+import type { SlimVersion } from '#shared/types'
 
 // Mock the fetchAllPackageVersions function
 const mockFetchAllPackageVersions = vi.fn()
@@ -10,7 +10,7 @@ vi.mock('~/composables/useNpmRegistry', () => ({
 }))
 
 /**
- * Helper to create a minimal PackumentVersion for testing
+ * Helper to create a minimal SlimVersion for testing
  */
 function createVersion(
   version: string,
@@ -18,22 +18,13 @@ function createVersion(
     deprecated?: string
     hasProvenance?: boolean
   } = {},
-): PackumentVersion {
-  const dist: Record<string, unknown> = {
-    tarball: `https://registry.npmjs.org/test-package/-/test-package-${version}.tgz`,
-    shasum: 'abc123',
-  }
-  if (options.hasProvenance) {
-    dist.attestations = { url: 'https://example.com', provenance: { predicateType: 'test' } }
-  }
+): SlimVersion {
   return {
-    _id: `test-package@${version}`,
-    _npmVersion: '10.0.0',
-    name: 'test-package',
     version,
-    dist,
     deprecated: options.deprecated,
-  } as unknown as PackumentVersion
+    tags: undefined,
+    ...(options.hasProvenance ? { hasProvenance: true } : {}),
+  } as SlimVersion
 }
 
 describe('PackageVersions', () => {
@@ -459,7 +450,7 @@ describe('PackageVersions', () => {
 
     it('shows count of hidden tagged versions', async () => {
       // Create more than MAX_VISIBLE_TAGS (10) dist-tags
-      const versions: Record<string, PackumentVersion> = {}
+      const versions: Record<string, SlimVersion> = {}
       const distTags: Record<string, string> = {}
       const time: Record<string, string> = {}
 
@@ -551,7 +542,7 @@ describe('PackageVersions', () => {
   describe('MAX_VISIBLE_TAGS limit', () => {
     it('limits visible tag rows to 10', async () => {
       // Create 15 dist-tags
-      const versions: Record<string, PackumentVersion> = {}
+      const versions: Record<string, SlimVersion> = {}
       const distTags: Record<string, string> = {}
       const time: Record<string, string> = {}
 

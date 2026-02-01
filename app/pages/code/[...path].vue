@@ -42,7 +42,8 @@ const parsedRoute = computed(() => {
 
 const packageName = computed(() => parsedRoute.value.packageName)
 const version = computed(() => parsedRoute.value.version)
-const filePath = computed(() => parsedRoute.value.filePath)
+const filePathOrig = computed(() => parsedRoute.value.filePath)
+const filePath = computed(() => parsedRoute.value.filePath?.replace(/\/$/, ''))
 
 // Fetch package data for version list
 const { data: pkg } = usePackage(packageName)
@@ -64,17 +65,26 @@ const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>
 // Determine what to show based on the current path
 // Note: This needs fileTree to be loaded first
 const currentNode = computed(() => {
-  if (!fileTree.value?.tree || !filePath.value) return null
+  if (!fileTree.value?.tree || !filePathOrig.value) return null
 
-  const parts = filePath.value.split('/')
+  // We use original file path to correctly handle trailing slashes for file tree navigation
+  // - /src/index.ts - correct file path
+  // - /src/index.ts/ - incorrect file path (but formally can exist as a directory)
+  // - /src/index and /src/index/ - correct directory paths
+  const parts = filePathOrig.value.split('/')
   let current: PackageFileTree[] | undefined = fileTree.value.tree
   let lastFound: PackageFileTree | null = null
+  const partsLength = parts.length
 
-  for (const part of parts) {
+  for (let i = 0; i < partsLength; i++) {
+    const part = parts[i]
+    const isLast = i === partsLength - 1
+    // If the previous part is a directory and the last one is empty (like /lib/) then return the previous directory
+    if (!part && isLast && lastFound?.type === 'directory') return lastFound
     const found: PackageFileTree | undefined = current?.find(n => n.name === part)
     if (!found) return null
     lastFound = found
-    if (found.type === 'file') return found
+    if (found.type === 'file' && isLast) return found
     current = found.children
   }
 
