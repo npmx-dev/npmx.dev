@@ -82,15 +82,6 @@ onKeyStroke(
   },
   { dedupe: true },
 )
-
-onKeyStroke(
-  e => isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
-  e => {
-    e.preventDefault()
-    navigateTo('/blog')
-  },
-  { dedupe: true },
-)
 </script>
 
 <template>
