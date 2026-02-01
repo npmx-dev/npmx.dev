@@ -18,7 +18,7 @@ const viewMode = defineModel<ViewMode>({ default: 'cards' })
       :aria-label="$t('filters.view_mode.cards')"
       @click="viewMode = 'cards'"
     >
-      <span class="i-carbon-grid w-4 h-4" aria-hidden="true" />
+      <span class="i-carbon-horizontal-view w-4 h-4" aria-hidden="true" />
       <span class="sr-only">{{ $t('filters.view_mode.cards') }}</span>
     </button>
     <button
@@ -29,7 +29,7 @@ const viewMode = defineModel<ViewMode>({ default: 'cards' })
       :aria-label="$t('filters.view_mode.table')"
       @click="viewMode = 'table'"
     >
-      <span class="i-carbon-list w-4 h-4" aria-hidden="true" />
+      <span class="i-carbon-table-split w-4 h-4" aria-hidden="true" />
       <span class="sr-only">{{ $t('filters.view_mode.table') }}</span>
     </button>
   </div>

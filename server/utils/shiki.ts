@@ -24,6 +24,8 @@ export async function getShikiHighlighter(): Promise<HighlighterCore> {
         import('@shikijs/langs/tsx'),
         import('@shikijs/langs/svelte'),
         import('@shikijs/langs/astro'),
+        import('@shikijs/langs/glimmer-js'),
+        import('@shikijs/langs/glimmer-ts'),
 
         // Shell/CLI
         import('@shikijs/langs/bash'),
@@ -43,6 +45,10 @@ export async function getShikiHighlighter(): Promise<HighlighterCore> {
         import('@shikijs/langs/rust'),
         import('@shikijs/langs/go'),
       ],
+      langAlias: {
+        gjs: 'glimmer-js',
+        gts: 'glimmer-ts',
+      },
       engine: createJavaScriptRegexEngine(),
     })
   }

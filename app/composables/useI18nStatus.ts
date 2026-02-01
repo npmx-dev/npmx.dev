@@ -3,7 +3,6 @@ import type { I18nStatus, I18nLocaleStatus } from '#shared/types'
 /**
  * Composable for accessing translation status data from Lunaria.
  * Provides information about translation progress for each locale.
- * @public
  */
 export function useI18nStatus() {
   const { locale } = useI18n()

@@ -3,7 +3,6 @@ import type { JsrPackageInfo } from '#shared/types/jsr'
 /**
  * Composable for generating install commands with support for
  * multiple package managers, @types packages, and JSR.
- * @public
  */
 export function useInstallCommand(
   packageName: MaybeRefOrGetter<string | null>,

@@ -21,7 +21,6 @@ export function isValidSpdxLicense(license: string): boolean {
  * Generate an SPDX license URL for the given license identifier.
  * Returns null if the license is not a valid SPDX identifier.
  * @see https://spdx.org/licenses/
- * @public
  */
 export function getSpdxLicenseUrl(license: string | undefined): string | null {
   if (!license) return null

@@ -27,6 +27,8 @@ const EXTENSION_ICONS: Record<string, string> = {
   'vue': 'i-vscode-icons-file-type-vue',
   'svelte': 'i-vscode-icons-file-type-svelte',
   'astro': 'i-vscode-icons-file-type-astro',
+  'gjs': 'i-vscode-icons-file-type-glimmer',
+  'gts': 'i-vscode-icons-file-type-glimmer',
 
   // Config/Data
   'json': 'i-vscode-icons-file-type-json',

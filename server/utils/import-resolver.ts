@@ -8,7 +8,6 @@ export type FileSet = Set<string>
 
 /**
  * Flatten a nested file tree into a set of file paths for quick lookups.
- * @public
  */
 export function flattenFileTree(tree: PackageFileTree[]): FileSet {
   const files = new Set<string>()
@@ -203,7 +202,6 @@ export function resolveRelativeImport(
 
 /**
  * Create a resolver function bound to a specific file tree and current file.
- * @public
  */
 export function createImportResolver(
   files: FileSet,

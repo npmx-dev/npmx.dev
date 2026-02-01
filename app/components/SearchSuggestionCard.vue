@@ -4,24 +4,17 @@ defineProps<{
   type: 'user' | 'org'
   /** The name (username or org name) */
   name: string
-  /** Whether this suggestion is currently selected (keyboard nav) */
-  selected?: boolean
   /** Whether this is an exact match for the query */
   isExactMatch?: boolean
   /** Index for keyboard navigation */
   index?: number
 }>()
-
-const emit = defineEmits<{
-  focus: [index: number]
-}>()
 </script>
 
 <template>
   <article
-    class="group card-interactive relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
+    class="group card-interactive relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
     :class="{
-      'bg-bg-muted border-border-hover': selected,
       'border-accent/30 bg-accent/5': isExactMatch,
     }"
   >
@@ -35,8 +28,6 @@ const emit = defineEmits<{
       :to="type === 'user' ? `/~${name}` : `/@${name}`"
       :data-suggestion-index="index"
       class="flex items-center gap-4 focus-visible:outline-none after:content-[''] after:absolute after:inset-0"
-      @focus="index != null && emit('focus', index)"
-      @mouseenter="index != null && emit('focus', index)"
     >
       <!-- Avatar placeholder -->
       <div

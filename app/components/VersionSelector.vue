@@ -4,7 +4,6 @@ import { onClickOutside } from '@vueuse/core'
 import { compare } from 'semver'
 import {
   buildVersionToTagsMap,
-  parseVersion,
   getPrereleaseChannel,
   getVersionGroupKey,
   getVersionGroupLabel,
@@ -511,7 +510,7 @@ watch(
         @keydown="handleListboxKeydown"
       >
         <!-- Version groups -->
-        <div v-for="(group, groupIndex) in versionGroups" :key="group.id">
+        <div v-for="group in versionGroups" :key="group.id">
           <!-- Group header (primary version) -->
           <div
             :id="`version-${group.primaryVersion.version}`"
@@ -580,7 +579,7 @@ watch(
             v-if="group.isExpanded && group.versions.length > 1"
             class="ms-6 border-is border-border"
           >
-            <template v-for="(v, vIndex) in group.versions.slice(1)" :key="v.version">
+            <template v-for="v in group.versions.slice(1)" :key="v.version">
               <NuxtLink
                 :id="`version-${v.version}`"
                 :to="getVersionUrl(v.version)"

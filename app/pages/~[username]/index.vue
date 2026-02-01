@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { formatNumber } from '#imports'
 import { debounce } from 'perfect-debounce'
 
 const route = useRoute('~username')
@@ -107,8 +106,8 @@ const filteredAndSortedPackages = computed(() => {
   switch (sortOption.value) {
     case 'updated':
       pkgs.sort((a, b) => {
-        const dateA = a.updated || a.package.date || ''
-        const dateB = b.updated || b.package.date || ''
+        const dateA = a.package.date || ''
+        const dateB = b.package.date || ''
         return dateB.localeCompare(dateA)
       })
       break
@@ -128,6 +127,11 @@ const filteredAndSortedPackages = computed(() => {
 })
 
 const filteredCount = computed(() => filteredAndSortedPackages.value.length)
+
+// Total weekly downloads across displayed packages (updates with filter)
+const totalWeeklyDownloads = computed(() =>
+  filteredAndSortedPackages.value.reduce((sum, pkg) => sum + (pkg.downloads?.weekly ?? 0), 0),
+)
 
 // Check if there are potentially more results
 const hasMore = computed(() => {
@@ -171,13 +175,13 @@ defineOgImageComponent('Default', {
 </script>
 
 <template>
-  <main class="container flex-1 py-8 sm:py-12 w-full">
+  <main class="container flex-1 flex flex-col py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
-      <div class="flex items-end gap-4">
+      <div class="flex flex-wrap items-center gap-4">
         <!-- Avatar placeholder -->
         <div
-          class="w-16 h-16 rounded-full bg-bg-muted border border-border flex items-center justify-center"
+          class="size-16 shrink-0 rounded-full bg-bg-muted border border-border flex items-center justify-center"
           aria-hidden="true"
         >
           <span class="text-2xl text-fg-subtle font-mono">{{
@@ -187,23 +191,34 @@ defineOgImageComponent('Default', {
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">~{{ username }}</h1>
           <p v-if="results?.total" class="text-fg-muted text-sm mt-1">
-            {{ $t('org.public_packages', { count: formatNumber(results.total) }, results.total) }}
+            {{ $t('org.public_packages', { count: $n(results.total) }, results.total) }}
           </p>
         </div>
 
-        <!-- Link to npmjs.com profile -->
-        <nav aria-label="External links" class="ms-auto">
-          <a
-            :href="`https://www.npmjs.com/~${username}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-            :title="$t('common.view_on_npm')"
+        <!-- Link to npmjs.com profile + vanity downloads -->
+        <div class="ms-auto text-end">
+          <nav aria-label="External links">
+            <a
+              :href="`https://www.npmjs.com/~${username}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              :title="$t('common.view_on_npm')"
+            >
+              <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
+              npm
+            </a>
+          </nav>
+          <p
+            class="text-fg-subtle text-xs mt-1 flex items-center gap-1.5 justify-end cursor-help"
+            :title="$t('common.vanity_downloads_hint', { count: filteredCount }, filteredCount)"
           >
-            <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
-            npm
-          </a>
-        </nav>
+            <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
+            <span class="font-mono"
+              >{{ $n(totalWeeklyDownloads) }} {{ $t('common.per_week') }}</span
+            >
+          </p>
+        </div>
       </div>
     </header>
 
@@ -221,16 +236,8 @@ defineOgImageComponent('Default', {
       <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
 
-    <!-- Empty state -->
-    <div v-else-if="results && results.total === 0" class="py-12 text-center">
-      <p class="text-fg-muted font-mono">
-        {{ $t('user.page.no_packages') }} <span class="text-fg">~{{ username }}</span>
-      </p>
-      <p class="text-fg-subtle text-sm mt-2">{{ $t('user.page.no_packages_hint') }}</p>
-    </div>
-
     <!-- Package list -->
-    <section v-else-if="results && packages.length > 0">
+    <section v-else-if="packages.length > 0">
       <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
         {{ $t('user.page.packages_title') }}
       </h2>
@@ -239,7 +246,7 @@ defineOgImageComponent('Default', {
       <PackageListControls
         v-model:filter="filterText"
         v-model:sort="sortOption"
-        :placeholder="$t('user.page.filter_placeholder', { count: results.total })"
+        :placeholder="$t('user.page.filter_placeholder', { count: results?.total ?? 0 })"
         :total-count="packageCount"
         :filtered-count="filteredCount"
       />
@@ -263,5 +270,15 @@ defineOgImageComponent('Default', {
         @page-change="handlePageChange"
       />
     </section>
+
+    <!-- Empty state (no packages found for user) -->
+    <div v-else-if="status === 'success'" class="flex-1 flex items-center justify-center">
+      <div class="text-center">
+        <p class="text-fg-muted font-mono">
+          {{ $t('user.page.no_packages') }} <span class="text-fg">~{{ username }}</span>
+        </p>
+        <p class="text-fg-subtle text-sm mt-2">{{ $t('user.page.no_packages_hint') }}</p>
+      </div>
+    </div>
   </main>
 </template>

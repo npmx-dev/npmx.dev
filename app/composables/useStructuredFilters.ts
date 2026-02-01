@@ -111,7 +111,6 @@ function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolea
 /**
  * Composable for structured filtering and sorting of package lists
  *
- * @public
  */
 export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   const { packages, initialFilters, initialSort } = options
@@ -225,7 +224,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
     const config = UPDATED_WITHIN_OPTIONS.find(o => o.value === within)
     if (!config?.days) return true
 
-    const updatedDate = new Date(pkg.updated ?? pkg.package.date)
+    const updatedDate = new Date(pkg.package.date)
     const cutoff = new Date()
     cutoff.setDate(cutoff.getDate() - config.days)
     return updatedDate >= cutoff
@@ -260,9 +259,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         diff = (a.downloads?.weekly ?? 0) - (b.downloads?.weekly ?? 0)
         break
       case 'updated':
-        diff =
-          new Date(a.updated ?? a.package.date).getTime() -
-          new Date(b.updated ?? b.package.date).getTime()
+        diff = new Date(a.package.date).getTime() - new Date(b.package.date).getTime()
         break
       case 'name':
         diff = a.package.name.localeCompare(b.package.name)

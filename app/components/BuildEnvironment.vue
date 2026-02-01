@@ -3,6 +3,7 @@ defineProps<{
   footer?: boolean
 }>()
 
+const { locale } = useI18n()
 const buildInfo = useAppConfig().buildInfo
 </script>
 
@@ -12,8 +13,8 @@ const buildInfo = useAppConfig().buildInfo
     :class="footer ? 'mt-4 justify-start' : 'mb-8 justify-center'"
     style="animation-delay: 0.05s"
   >
-    <i18n-t keypath="built_at">
-      <NuxtTime :datetime="buildInfo.time" relative />
+    <i18n-t keypath="built_at" scope="global">
+      <NuxtTime :datetime="buildInfo.time" :locale="locale" relative />
     </i18n-t>
     <span>&middot;</span>
     <NuxtLink

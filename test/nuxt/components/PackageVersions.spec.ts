@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import PackageVersions from '~/components/PackageVersions.vue'
+import PackageVersions from '~/components/Package/Versions.vue'
 import type { PackumentVersion } from '#shared/types'
 
 // Mock the fetchAllPackageVersions function
@@ -338,7 +338,7 @@ describe('PackageVersions', () => {
         },
       })
 
-      const expandButton = component.find('button[aria-expanded]')
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
       expect(expandButton.exists()).toBe(true)
       expect(expandButton.attributes('aria-expanded')).toBe('false')
     })
@@ -355,7 +355,7 @@ describe('PackageVersions', () => {
         },
       })
 
-      const expandButton = component.find('button[aria-expanded="false"]')
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
       expect(expandButton.attributes('aria-label')).toBe('Expand latest')
     })
 
@@ -376,7 +376,7 @@ describe('PackageVersions', () => {
         },
       })
 
-      const expandButton = component.find('button[aria-expanded="false"]')
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
       await expandButton.trigger('click')
 
       // Wait for async operation
@@ -405,7 +405,7 @@ describe('PackageVersions', () => {
       })
 
       // Get initial expand button
-      const expandButton = component.find('button[aria-expanded]')
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
       expect(expandButton.exists()).toBe(true)
 
       // Expand
@@ -419,19 +419,21 @@ describe('PackageVersions', () => {
       // Wait for the component to update after loading
       await vi.waitFor(
         () => {
-          const btn = component.find('button[aria-expanded="true"]')
+          const btn = component.find('[data-testid="tag-expand-button"][aria-expanded="true"]')
           expect(btn.exists()).toBe(true)
         },
         { timeout: 2000 },
       )
 
       // Now collapse by clicking again
-      const expandedButton = component.find('button[aria-expanded="true"]')
+      const expandedButton = component.find(
+        '[data-testid="tag-expand-button"][aria-expanded="true"]',
+      )
       await expandedButton.trigger('click')
 
       await vi.waitFor(
         () => {
-          const btn = component.find('button[aria-expanded="false"]')
+          const btn = component.find('[data-testid="tag-expand-button"][aria-expanded="false"]')
           expect(btn.exists()).toBe(true)
         },
         { timeout: 2000 },
@@ -795,7 +797,7 @@ describe('PackageVersions', () => {
       })
 
       // Click expand
-      const expandButton = component.find('button[aria-expanded]')
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
       await expandButton.trigger('click')
 
       // Should show loading spinner (animate-spin class)
@@ -953,7 +955,7 @@ describe('PackageVersions', () => {
       })
 
       // Click expand
-      const expandButton = component.find('button[aria-expanded]')
+      const expandButton = component.find('[data-testid="tag-expand-button"]')
       await expandButton.trigger('click')
 
       // Wait for error to be logged
@@ -991,7 +993,7 @@ describe('PackageVersions', () => {
       })
 
       // Expand first tag row
-      const expandButtons = component.findAll('button[aria-expanded="false"]')
+      const expandButtons = component.findAll('[data-testid="tag-expand-button"]')
       await expandButtons[0]?.trigger('click')
 
       await vi.waitFor(() => {
@@ -999,9 +1001,9 @@ describe('PackageVersions', () => {
       })
 
       // Expand second tag row - should not fetch again
-      const updatedButtons = component.findAll('button[aria-expanded="false"]')
-      if (updatedButtons[0]) {
-        await updatedButtons[0].trigger('click')
+      const updatedButtons = component.findAll('[data-testid="tag-expand-button"]')
+      if (updatedButtons[1]) {
+        await updatedButtons[1].trigger('click')
       }
 
       // Should still only have been called once

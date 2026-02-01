@@ -1,7 +1,6 @@
 /**
  * Parses Nitro router segments into packageName and an optional version
  * Handles patterns: [pkg], [pkg, 'v', version], [@scope, pkg], [@scope, pkg, 'v', version]
- * @public
  */
 export function parsePackageParams(segments: string[]): {
   rawPackageName: string

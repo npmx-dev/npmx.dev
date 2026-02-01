@@ -1,0 +1,103 @@
+<script setup lang="ts">
+import type { PackageFileTree } from '#shared/types'
+import { getFileIcon } from '~/utils/file-icons'
+import { formatBytes } from '~/utils/formatters'
+
+const props = defineProps<{
+  tree: PackageFileTree[]
+  currentPath: string
+  baseUrl: string
+}>()
+
+// Get the current directory's contents
+const currentContents = computed(() => {
+  if (!props.currentPath) {
+    return props.tree
+  }
+
+  const parts = props.currentPath.split('/')
+  let current: PackageFileTree[] | undefined = props.tree
+
+  for (const part of parts) {
+    const found: PackageFileTree | undefined = current?.find(n => n.name === part)
+    if (!found || found.type === 'file') {
+      return []
+    }
+    current = found.children
+  }
+
+  return current ?? []
+})
+
+// Get parent directory path
+const parentPath = computed(() => {
+  if (!props.currentPath) return null
+  const parts = props.currentPath.split('/')
+  if (parts.length <= 1) return ''
+  return parts.slice(0, -1).join('/')
+})
+</script>
+
+<template>
+  <div class="directory-listing">
+    <!-- Empty state -->
+    <div v-if="currentContents.length === 0" class="py-20 text-center text-fg-muted">
+      <p>{{ $t('code.no_files') }}</p>
+    </div>
+
+    <!-- File list -->
+    <table v-else class="w-full">
+      <thead class="sr-only">
+        <tr>
+          <th>{{ $t('code.table.name') }}</th>
+          <th>{{ $t('code.table.size') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Parent directory link -->
+        <tr
+          v-if="parentPath !== null"
+          class="border-b border-border hover:bg-bg-subtle transition-colors"
+        >
+          <td class="py-2 px-4">
+            <NuxtLink
+              :to="parentPath ? `${baseUrl}/${parentPath}` : baseUrl"
+              class="flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors"
+            >
+              <span class="i-carbon:folder w-4 h-4 text-yellow-600" />
+              <span>..</span>
+            </NuxtLink>
+          </td>
+          <td />
+        </tr>
+
+        <!-- Directory/file rows -->
+        <tr
+          v-for="node in currentContents"
+          :key="node.path"
+          class="border-b border-border hover:bg-bg-subtle transition-colors"
+        >
+          <td class="py-2 px-4">
+            <NuxtLink
+              :to="`${baseUrl}/${node.path}`"
+              class="flex items-center gap-2 font-mono text-sm hover:text-fg transition-colors"
+              :class="node.type === 'directory' ? 'text-fg' : 'text-fg-muted'"
+            >
+              <span
+                v-if="node.type === 'directory'"
+                class="i-carbon:folder w-4 h-4 text-yellow-600"
+              />
+              <span v-else class="w-4 h-4" :class="getFileIcon(node.name)" />
+              <span>{{ node.name }}</span>
+            </NuxtLink>
+          </td>
+          <td class="py-2 px-4 text-end font-mono text-xs text-fg-subtle">
+            <span v-if="node.type === 'file' && node.size">
+              {{ formatBytes(node.size) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>

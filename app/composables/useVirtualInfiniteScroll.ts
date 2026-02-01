@@ -34,7 +34,6 @@ export interface UseVirtualInfiniteScrollOptions {
  * Composable for handling infinite scroll with virtua's WindowVirtualizer
  * Detects when user scrolls near the end and triggers loading more items
  * Also tracks current visible page for URL persistence
- * @public
  */
 export function useVirtualInfiniteScroll(options: UseVirtualInfiniteScrollOptions) {
   const {

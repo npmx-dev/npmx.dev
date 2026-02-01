@@ -77,7 +77,6 @@ export interface VulnerabilitySummary {
 
 /**
  * Package vulnerability response returned by our API
- * @public
  */
 export interface PackageVulnerabilities {
   package: string

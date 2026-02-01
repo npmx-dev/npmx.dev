@@ -9,14 +9,11 @@ const destFolder = path.resolve('lunaria/files')
 const localesFolder = path.resolve('i18n/locales')
 
 const defaultLocale = currentLocales.find(l => l.code === 'en-US')!
-/** @public */
 export { lunariaJSONFiles }
-/** @public */
 export const sourceLocale = {
   label: defaultLocale.name,
   lang: defaultLocale.code,
 }
-/** @public */
 export const locales: Locale[] = currentLocales
   .filter(l => l.code !== 'en-US')
   .map(l => ({

@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import type { CachedFetchEntry, CachedFetchResult } from '#shared/utils/fetch-cache-config'
+import { $fetch } from 'ofetch'
 import {
   FETCH_CACHE_DEFAULT_TTL,
   FETCH_CACHE_STORAGE_BASE,
@@ -60,16 +61,12 @@ export default defineNitroPlugin(nitroApp => {
   function createCachedFetch(event: H3Event): CachedFetchFunction {
     return async <T = unknown>(
       url: string,
-      options: {
-        method?: string
-        body?: unknown
-        headers?: Record<string, string>
-      } = {},
+      options: Parameters<typeof $fetch>[1] = {},
       ttl: number = FETCH_CACHE_DEFAULT_TTL,
     ): Promise<CachedFetchResult<T>> => {
       // Check if this URL should be cached
       if (!isAllowedDomain(url)) {
-        const data = (await $fetch(url, options as Parameters<typeof $fetch>[1])) as T
+        const data = (await $fetch(url, options)) as T
         return { data, isStale: false, cachedAt: null }
       }
 

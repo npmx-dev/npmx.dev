@@ -5,6 +5,9 @@
       "description": "Lepsza przeglądarka rejestru npm. Wyszukuj, przeglądaj i odkrywaj pakiety w nowoczesnym interfejsie."
     }
   },
+  "version": "Wersja",
+  "built_at": "zbudowano {0}",
+  "alt_logo": "npmx logo",
   "tagline": "lepsza przeglądarka rejestru npm",
   "non_affiliation_disclaimer": "niepowiązane z npm, Inc.",
   "trademark_disclaimer": "npm jest zarejestrowanym znakiem towarowym npm, Inc. Ta strona nie jest powiązana z npm, Inc.",
@@ -43,7 +46,13 @@
     "popular_packages": "Popularne pakiety",
     "search": "szukaj",
     "settings": "ustawienia",
-    "back": "wstecz"
+    "compare": "porównaj",
+    "back": "wstecz",
+    "menu": "Menu",
+    "mobile_menu": "Menu nawigacji",
+    "open_menu": "Otwórz menu",
+    "links": "Linki",
+    "tap_to_search": "Dotknij, aby wyszukać"
   },
   "settings": {
     "title": "ustawienia",
@@ -95,6 +104,7 @@
     "go_back_home": "Wróć na stronę główną",
     "view_on_npm": "zobacz na npm",
     "per_week": "/ tydz.",
+    "vanity_downloads_hint": "Numer ozdobny: brak wyświetlonych pakietów | Numer ozdobny: dla wyświetlanego pakietu | Numer ozdobny: suma {count} wyświetlanych pakietów | Numer ozdobny: suma {count} wyświetlanych pakietów | Numer ozdobny: suma {count} wyświetlanych pakietów",
     "sort": {
       "name": "nazwa",
       "role": "rola",
@@ -147,7 +157,8 @@
       "jsr": "jsr",
       "code": "kod źródłowy",
       "docs": "dokumentacja",
-      "fund": "wsparcie"
+      "fund": "wsparcie",
+      "compare": "porównaj"
     },
     "docs": {
       "not_available": "Dokumentacja niedostępna",
@@ -368,6 +379,9 @@
       "connected_hint": "Możesz teraz zarządzać pakietami i organizacjami z poziomu interfejsu WWW.",
       "disconnect": "Rozłącz",
       "run_hint": "Uruchom konektor na swoim komputerze, aby włączyć funkcje administracyjne.",
+      "contributor_badge": "Tylko dla współtwórców",
+      "contributor_notice": "Konektor nie jest jeszcze opublikowany na npm. Zobacz {link}, aby uruchomić lokalnie.",
+      "contributor_link": "przewodnik współtworzenia",
       "copy_command": "Kopiuj komendę",
       "copied": "Skopiowano",
       "paste_token": "Następnie wklej token poniżej, aby się połączyć:",
@@ -588,7 +602,8 @@
     "markdown_view_mode": {
       "preview": "podgląd",
       "code": "kod"
-    }
+    },
+    "file_path": "Ścieżka pliku"
   },
   "badges": {
     "provenance": {
@@ -779,6 +794,50 @@
       "error": "Nie udało się wczytać organizacji",
       "empty": "Nie znaleziono organizacji",
       "view_all": "Zobacz wszystkie"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "porównaj pakiety",
+      "tagline": "porównuj pakiety npm obok siebie, aby łatwiej wybrać właściwy.",
+      "meta_title": "Porównaj {packages} - npmx",
+      "meta_title_empty": "Porównaj pakiety - npmx",
+      "meta_description": "Porównanie obok siebie: {packages}",
+      "meta_description_empty": "Porównuj pakiety npm obok siebie",
+      "section_packages": "Pakiety",
+      "section_facets": "Aspekty",
+      "section_comparison": "Porównanie",
+      "loading": "Ładowanie danych pakietów...",
+      "error": "Nie udało się wczytać danych pakietów. Spróbuj ponownie.",
+      "empty_title": "Wybierz pakiety do porównania",
+      "empty_description": "Wyszukaj i dodaj co najmniej 2 pakiety powyżej, aby zobaczyć porównanie ich metryk."
+    },
+    "selector": {
+      "search_label": "Szukaj pakietów",
+      "search_first": "Wyszukaj pakiet...",
+      "search_add": "Dodaj kolejny pakiet...",
+      "searching": "Wyszukiwanie...",
+      "remove_package": "Usuń {package}",
+      "packages_selected": "Wybrano pakiety: {count}/{max}.",
+      "add_hint": "Dodaj co najmniej 2 pakiety do porównania.",
+      "loading_versions": "Ładowanie wersji...",
+      "select_version": "Wybierz wersję"
+    },
+    "facets": {
+      "group_label": "Aspekty porównania",
+      "all": "wszystkie",
+      "none": "brak",
+      "coming_soon": "Wkrótce",
+      "select_all": "Wybierz wszystkie aspekty",
+      "deselect_all": "Odznacz wszystkie aspekty",
+      "select_category": "Wybierz wszystkie aspekty: {category}",
+      "deselect_category": "Odznacz wszystkie aspekty: {category}",
+      "categories": {
+        "performance": "Wydajność",
+        "health": "Zdrowie",
+        "compatibility": "Kompatybilność",
+        "security": "Bezpieczeństwo i zgodność"
+      }
     }
   }
 }

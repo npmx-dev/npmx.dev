@@ -90,7 +90,6 @@ type JsonLdSchema =
 
 /**
  * Inject JSON-LD script into head
- * @public
  */
 export function setJsonLd(schema: JsonLdSchema | JsonLdSchema[]) {
   const schemas = Array.isArray(schema) ? schema : [schema]
@@ -106,7 +105,6 @@ export function setJsonLd(schema: JsonLdSchema | JsonLdSchema[]) {
 
 /**
  * Create WebSite schema with search action
- * @public
  */
 export function createWebSiteSchema(options?: {
   name?: string

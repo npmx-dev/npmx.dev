@@ -47,7 +47,7 @@
   },
   "settings": {
     "title": "настройки",
-    "tagline": "настройте ваш опыт использования npmx",
+    "tagline": "сделайте npmx удобным для себя",
     "meta_description": "Настройте npmx.dev под себя: тема, язык и параметры отображения.",
     "sections": {
       "appearance": "Внешний вид",
@@ -71,16 +71,16 @@
     "translation_progress": "Прогресс перевода"
   },
   "i18n": {
-    "missing_keys": "{count} отсутствующий перевод | {count} отсутствующих переводов",
+    "missing_keys": "{count} отсутствующий перевод | {count} отсутствующих перевода | {count} отсутствующих переводов",
     "copy_keys": "Скопировать ключи",
-    "show_more_keys": "Показать еще {count}...",
+    "show_more_keys": "Показать ещё {count}...",
     "contribute_hint": "Помогите улучшить этот перевод, добавив недостающие ключи.",
     "edit_on_github": "Редактировать на GitHub",
     "view_guide": "Руководство по переводу"
   },
   "common": {
     "loading": "Загрузка...",
-    "loading_more": "Загрузка еще...",
+    "loading_more": "Загрузить ещё...",
     "loading_packages": "Загрузка пакетов...",
     "end_of_results": "Конец результатов",
     "try_again": "Попробовать снова",
@@ -184,26 +184,26 @@
       "collapse_major": "Свернуть мажорную {major}",
       "expand_major": "Развернуть мажорную {major}",
       "other_versions": "Другие версии",
-      "more_tagged": "еще {count} с тегом",
+      "more_tagged": "ещё {count} с тегом",
       "all_covered": "Все версии охвачены тегами выше",
       "deprecated_title": "{version} (устарела)"
     },
     "dependencies": {
       "title": "Зависимости ({count})",
       "list_label": "Зависимости пакета",
-      "show_all": "показать все {count} зависимостей",
+      "show_all": "показать все ({count})",
       "optional": "опционально",
       "view_vulnerabilities": "Посмотреть уязвимости"
     },
     "peer_dependencies": {
       "title": "Peer-зависимости ({count})",
       "list_label": "Peer-зависимости пакета",
-      "show_all": "показать все {count} peer-зависимостей"
+      "show_all": "показать все ({count})"
     },
     "optional_dependencies": {
       "title": "Опциональные зависимости ({count})",
       "list_label": "Опциональные зависимости пакета",
-      "show_all": "показать все {count} опциональных зависимостей"
+      "show_all": "показать все ({count})"
     },
     "maintainers": {
       "title": "Мейнтейнеры",
@@ -216,7 +216,7 @@
       "add_button": "добавить",
       "cancel_add": "Отменить добавление владельца",
       "add_owner": "+ Добавить владельца",
-      "show_more": "(показать еще {count})",
+      "show_more": "(показать ещё {count})",
       "show_less": "(показать меньше)"
     },
     "downloads": {
@@ -241,7 +241,7 @@
     "install_scripts": {
       "title": "Скрипты установки",
       "script_label": "(скрипт)",
-      "npx_packages": "{count} пакет npx | {count} пакетов npx",
+      "npx_packages": "{count} пакет npx | {count} пакета npx | {count} пакетов npx",
       "currently": "сейчас {version}"
     },
     "playgrounds": {
@@ -249,9 +249,9 @@
       "choose": "выберите песочницу"
     },
     "metrics": {
-      "esm": "Поддержка ES Modules",
+      "esm": "Поддержка ES-модулей",
       "cjs": "Поддержка CommonJS",
-      "no_esm": "Нет поддержки ES Modules",
+      "no_esm": "Нет поддержки ES-модулей",
       "types_included": "Типы включены",
       "types_available": "Типы доступны через {package}",
       "no_types": "Нет типов TypeScript"
@@ -261,17 +261,17 @@
     },
     "vulnerabilities": {
       "no_description": "Описание отсутствует",
-      "found": "Найдена {count} уязвимость | Найдено {count} уязвимостей",
-      "deps_found": "Найдена {count} уязвимость | Найдено {count} уязвимостей",
-      "deps_affected": "Затронута {count} зависимость | Затронуто {count} зависимостей",
+      "found": "Найдена {count} уязвимость | Найдено {count} уязвимости |Найдено {count} уязвимостей",
+      "deps_found": "Найдена {count} уязвимость | Найдено {count} уязвимости | Найдено {count} уязвимостей",
+      "deps_affected": "Затронута {count} зависимость | Затронуто {count} зависимости | Затронуто {count} зависимостей",
       "tree_found": "{vulns} уязвимость в {packages}/{total} пакетах | {vulns} уязвимостей в {packages}/{total} пакетах",
       "scanning_tree": "Сканирование дерева зависимостей...",
       "show_all_packages": "показать все затронутые пакеты ({count})",
       "no_summary": "Нет сводки",
       "view_details": "Посмотреть детали уязвимости",
       "path": "путь",
-      "more": "+{count} еще",
-      "packages_failed": "{count} пакет не удалось проверить | {count} пакетов не удалось проверить",
+      "more": "ещё +{count}",
+      "packages_failed": "{count} пакет не удалось проверить | {count} пакета не удалось проверить | {count} пакетов не удалось проверить",
       "no_known": "Нет известных уязвимостей в {count} пакетах",
       "scan_failed": "Не удалось выполнить сканирование на уязвимости",
       "depth": {
@@ -316,7 +316,7 @@
       "filter_label": "Фильтр пакетов",
       "filter_placeholder": "Фильтровать пакеты...",
       "sort_label": "Сортировка пакетов",
-      "showing_count": "Показано {filtered} из {total} пакетов"
+      "showing_count": "Показано {filtered} из {total}"
     },
     "skeleton": {
       "loading": "Загрузка информации о пакете",
@@ -333,7 +333,7 @@
     },
     "sort": {
       "downloads": "Больше всего скачиваний",
-      "updated": "Недавно обновленные",
+      "updated": "Недавно обновлённые",
       "name_asc": "Имя (А-Я)",
       "name_desc": "Имя (Я-А)"
     }
@@ -403,7 +403,7 @@
       "no_teams": "Команды не найдены",
       "list_label": "Команды организации",
       "delete_team": "Удалить команду {name}",
-      "member_count": "{count} участник | {count} участников",
+      "member_count": "{count} участник | {count} участника | {count} участников",
       "members_of": "Участники {team}",
       "no_members": "Нет участников",
       "remove_user": "Удалить {user} из команды",
@@ -450,7 +450,7 @@
       "cancel_add": "Отменить добавление участника",
       "add_member": "+ Добавить участника"
     },
-    "public_packages": "{count} публичный пакет | {count} публичных пакетов",
+    "public_packages": "{count} публичный пакет | {count} публичных пакета | {count} публичных пакетов",
     "page": {
       "packages_title": "Пакеты",
       "members_tab": "Участники",
@@ -461,7 +461,7 @@
       "no_match": "Нет пакетов, соответствующих \"{query}\"",
       "not_found": "Организация не найдена",
       "not_found_message": "Организация \"{'@'}{name}\" не существует в npm",
-      "filter_placeholder": "Фильтровать {count} пакетов..."
+      "filter_placeholder": "Фильтровать {count} пакет... | Фильтровать {count} пакета... | Фильтровать {count} пакетов..."
     }
   },
   "user": {
@@ -477,7 +477,7 @@
       "no_packages_hint": "Этот пользователь может не существовать или у него нет публичных пакетов.",
       "failed_to_load": "Не удалось загрузить пакеты пользователя",
       "no_match": "Нет пакетов, соответствующих \"{query}\"",
-      "filter_placeholder": "Фильтровать {count} пакетов..."
+      "filter_placeholder": "Фильтровать {count} пакет... | Фильтровать {count} пакета... | Фильтровать {count} пакетов..."
     },
     "orgs_page": {
       "title": "Организации",
@@ -490,8 +490,8 @@
       "loading": "Загрузка организаций...",
       "empty": "Организации не найдены.",
       "empty_hint": "Организации определяются по вашим scoped-пакетам.",
-      "count": "{count} организация | {count} организаций",
-      "packages_count": "{count} пакет | {count} пакетов"
+      "count": "{count} организация | {count} организации | {count} организаций",
+      "packages_count": "{count} пакет | {count} пакета | {count} пакетов"
     }
   },
   "claim": {
@@ -531,7 +531,7 @@
     "raw": "Raw",
     "view_raw": "Посмотреть исходный файл",
     "file_too_large": "Файл слишком большой для предпросмотра",
-    "file_size_warning": "{size} превышает лимит в 500KB для подсветки синтаксиса",
+    "file_size_warning": "{size} превышает лимит в 500 КБ для подсветки синтаксиса",
     "load_anyway": "Загрузить всё равно",
     "failed_to_load": "Не удалось загрузить файл",
     "unavailable_hint": "Файл может быть слишком большим или недоступным",
@@ -576,7 +576,7 @@
     "updated_within": "Обновлено за",
     "security": "Безопасность",
     "keywords": "Ключевые слова",
-    "more_keywords": "еще +{count}",
+    "more_keywords": "ещё +{count}",
     "clear_all": "Очистить все",
     "remove_filter": "Удалить фильтр {label}",
     "download_range": {
@@ -652,9 +652,9 @@
       "nav_label": "Пагинация"
     },
     "count": {
-      "showing_filtered": "{filtered} из {total} пакетов",
-      "showing_all": "{total} пакетов",
-      "showing_paginated": "{pageSize} из {total} пакетов"
+      "showing_filtered": "{filtered} из {total}",
+      "showing_all": "{total}",
+      "showing_paginated": "{pageSize} из {total}"
     },
     "table": {
       "security_warning": "Предупреждение безопасности",
@@ -714,6 +714,34 @@
         "description": "Узнавайте последние новости об npmx.",
         "cta": "Подписаться в Bluesky"
       }
+    }
+  },
+  "account_menu": {
+    "connect": "подключить",
+    "account": "Аккаунт",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Управление пакетами и организациями",
+    "atmosphere_desc": "Социальные функции и идентификация",
+    "connect_npm_cli": "Подключиться к npm CLI",
+    "connect_atmosphere": "Подключиться к Atmosphere",
+    "connecting": "Подключение...",
+    "ops": "{count} операция | {count} операции | {count} операций",
+    "disconnect": "Выйти"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Вы вошли как {'@'}{handle}",
+      "disconnect": "Выйти",
+      "connect_prompt": "Войдите через аккаунт Atmosphere",
+      "handle_label": "Хендл",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Подключить",
+      "create_account": "Создать новый аккаунт",
+      "connect_bluesky": "Войти через Bluesky",
+      "what_is_atmosphere": "Что такое аккаунт Atmosphere?",
+      "atmosphere_explanation": "{npmx} использует протокол {atproto} для работы многих социальных функций, позволяя пользователям владеть своими данными и использовать единый аккаунт для всех совместимых приложений. Создав аккаунт, вы сможете использовать другие приложения, такие как {bluesky} и {tangled}, с той же учетной записью."
     }
   },
   "header": {

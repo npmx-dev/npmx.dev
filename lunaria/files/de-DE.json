@@ -5,6 +5,9 @@
       "description": "Ein besserer Browser für die npm Registry. Pakete suchen, durchstöbern und erkunden mit einer modernen Oberfläche."
     }
   },
+  "version": "Version",
+  "built_at": "erstellt {0}",
+  "alt_logo": "npmx Logo",
   "tagline": "ein besserer Browser für die npm Registry",
   "non_affiliation_disclaimer": "nicht verbunden mit npm, Inc.",
   "trademark_disclaimer": "npm ist eine eingetragene Marke von npm, Inc. Diese Seite ist nicht mit npm, Inc. verbunden.",
@@ -40,24 +43,30 @@
   },
   "nav": {
     "main_navigation": "Hauptnavigation",
-    "back": "Zurück",
     "popular_packages": "Beliebte Pakete",
     "search": "Suche",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "compare": "Vergleichen",
+    "back": "Zurück",
+    "menu": "Menü",
+    "mobile_menu": "Navigationsmenü",
+    "open_menu": "Menü öffnen",
+    "links": "Links",
+    "tap_to_search": "Tippen zum Suchen"
   },
   "settings": {
     "title": "Einstellungen",
     "tagline": "Passe npmx an deine Vorlieben an",
-    "meta_description": "Einstellungen für npmx konfigurieren - Design, Sprache, Datumsformat und mehr anpassen",
+    "meta_description": "Passe dein npmx.dev-Erlebnis mit Einstellungen für Design, Sprache und Anzeige an.",
     "sections": {
       "appearance": "Erscheinungsbild",
       "display": "Anzeige",
       "language": "Sprache"
     },
     "relative_dates": "Relative Datumsangaben",
-    "relative_dates_description": "Zeige Daten relativ zur aktuellen Zeit an (z.B. 'vor 2 Tagen')",
+    "relative_dates_description": "Zeige „vor 3 Tagen“ anstelle von vollständigen Datumsangaben an",
     "include_types": "{'@'}types bei Installation einschließen",
-    "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Pakete) automatisch bei Installationsbefehlen einschließen",
+    "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Paket) automatisch zu Installationsbefehlen für Pakete ohne Typen hinzufügen",
     "hide_platform_packages": "Plattformspezifische Pakete in der Suche ausblenden",
     "hide_platform_packages_description": "Native Binärpakete wie {'@'}esbuild/linux-x64 aus den Ergebnissen ausblenden",
     "theme": "Design",
@@ -68,19 +77,17 @@
     "help_translate": "Hilf bei der Übersetzung von npmx",
     "accent_colors": "Akzentfarben",
     "clear_accent": "Akzentfarbe zurücksetzen",
-    "translation_progress": "Übersetzungsfortschritt: {progress}%"
+    "translation_progress": "Übersetzungsfortschritt"
   },
   "i18n": {
     "missing_keys": "{count} fehlende Übersetzung | {count} fehlende Übersetzungen",
     "copy_keys": "Schlüssel kopieren",
-    "show_more_keys": "{count} weitere Schlüssel anzeigen",
-    "contribute_hint": "Hilf mit, npmx in deine Sprache zu übersetzen!",
+    "show_more_keys": "{count} weitere anzeigen...",
+    "contribute_hint": "Hilf mit, diese Übersetzung zu verbessern, indem du die fehlenden Schlüssel ergänzt.",
     "edit_on_github": "Auf GitHub bearbeiten",
-    "view_guide": "Übersetzungsleitfaden anzeigen"
+    "view_guide": "Übersetzungsleitfaden"
   },
   "common": {
-    "skip_link": "Zum Hauptinhalt springen",
-    "close_modal": "Modal schließen",
     "loading": "Lädt...",
     "loading_more": "Lädt mehr...",
     "loading_packages": "Pakete werden geladen...",
@@ -90,11 +97,14 @@
     "retry": "Wiederholen",
     "copy": "Kopieren",
     "copied": "Kopiert!",
+    "skip_link": "Zum Hauptinhalt springen",
+    "close_modal": "Modal schließen",
     "show_more": "Mehr anzeigen",
     "warnings": "Warnungen:",
     "go_back_home": "Zur Startseite",
     "view_on_npm": "auf npm ansehen",
     "per_week": "/ Woche",
+    "vanity_downloads_hint": "Prestige-Zahl: keine Pakete angezeigt | Prestige-Zahl: für das angezeigte Paket | Prestige-Zahl: Summe von {count} angezeigten Paketen",
     "sort": {
       "name": "Name",
       "role": "Rolle",
@@ -103,7 +113,6 @@
     "scroll_to_top": "Nach oben scrollen"
   },
   "package": {
-    "navigation": "Paketnavigation",
     "not_found": "Paket nicht gefunden",
     "not_found_message": "Das Paket konnte nicht gefunden werden.",
     "no_description": "Keine Beschreibung vorhanden",
@@ -111,6 +120,8 @@
     "not_latest": "(nicht aktuell)",
     "verified_provenance": "Verifizierte Herkunft",
     "view_permalink": "Permalink für diese Version anzeigen",
+    "navigation": "Paket",
+    "copy_name": "Paketnamen kopieren",
     "deprecation": {
       "package": "Dieses Paket ist veraltet.",
       "version": "Diese Version ist veraltet.",
@@ -121,22 +132,22 @@
       "native": "Dies kann durch {replacement} ersetzt werden, verfügbar seit Node {nodeVersion}.",
       "simple": "Die {community} hat dieses Paket als überflüssig markiert und empfiehlt: {replacement}.",
       "documented": "Die {community} hat dieses Paket als eines mit leistungsstärkeren Alternativen markiert.",
-      "none": "Dieses Paket wurde als nicht mehr nötig markiert, und seine Funktionen sind wahrscheinlich in allen Engines von Haus aus verfügbar.",
+      "none": "Dieses Paket wurde als nicht mehr nötig markiert, und seine Funktionen sind wahrscheinlich in allen Engines nativ verfügbar.",
       "learn_more": "Mehr erfahren",
       "mdn": "MDN",
       "community": "Community"
     },
     "stats": {
       "license": "Lizenz",
-      "deps": "Deps",
+      "deps": "Abhängigkeiten",
       "install_size": "Installationsgröße",
-      "vulns": "Vulns",
+      "vulns": "Sicherheitslücken",
       "updated": "Aktualisiert",
       "view_dependency_graph": "Abhängigkeitsgraph anzeigen",
       "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen",
       "size_tooltip": {
-        "unpacked": "{size} Größe nach dem Auspacken (dieses Paket)",
-        "total": "{size} Gesamtgröße nach dem Entpacken (inklusive aller {count} Abhängigkeiten für Linux-x64)"
+        "unpacked": "{size} Größe nach dem Entpacken (dieses Paket)",
+        "total": "{size} Gesamtgröße nach dem Entpacken (inklusive aller {count} Abhängigkeiten für linux-x64)"
       }
     },
     "links": {
@@ -146,11 +157,18 @@
       "jsr": "JSR",
       "code": "Code",
       "docs": "Doku",
-      "fund": "Spenden"
+      "fund": "Spenden",
+      "compare": "Vergleichen"
     },
     "docs": {
       "not_available": "Dokumentation nicht verfügbar",
-      "not_available_detail": "Für dieses Paket ist keine Dokumentation verfügbar"
+      "not_available_detail": "Für diese Version konnte keine Dokumentation generiert werden."
+    },
+    "get_started": {
+      "title": "Erste Schritte",
+      "pm_label": "Paketmanager",
+      "copy_command": "Installationsbefehl kopieren",
+      "view_types": "{package} anzeigen"
     },
     "create": {
       "title": "Neues Projekt erstellen",
@@ -160,15 +178,9 @@
       "title": "Ausführen",
       "locally": "Lokal ausführen"
     },
-    "get_started": {
-      "title": "Erste Schritte",
-      "pm_label": "Paketmanager",
-      "copy_command": "Installationsbefehl kopieren",
-      "view_types": "Typdefinitionen anzeigen"
-    },
     "readme": {
       "title": "Readme",
-      "no_readme": "Kein README vorhanden.",
+      "no_readme": "Keine README verfügbar.",
       "view_on_github": "Auf GitHub ansehen"
     },
     "keywords_title": "Schlüsselwörter",
@@ -197,22 +209,22 @@
     "dependencies": {
       "title": "Abhängigkeiten ({count})",
       "list_label": "Paketabhängigkeiten",
-      "show_all": "alle {count} Deps anzeigen",
+      "show_all": "{count} Abhängigkeit anzeigen | alle {count} Abhängigkeiten anzeigen",
       "optional": "optional",
       "view_vulnerabilities": "Sicherheitslücken anzeigen",
       "outdated_major": "{count} Hauptversion zurück (neueste: {latest}) | {count} Hauptversionen zurück (neueste: {latest})",
       "outdated_minor": "{count} Nebenversion zurück (neueste: {latest}) | {count} Nebenversionen zurück (neueste: {latest})",
-      "outdated_patch": "Patch-Update verfügbar (aktuellste Version: {latest})"
+      "outdated_patch": "Patch-Update verfügbar (aktuellste: {latest})"
     },
     "peer_dependencies": {
       "title": "Peer-Abhängigkeiten ({count})",
       "list_label": "Peer-Abhängigkeiten des Pakets",
-      "show_all": "alle {count} Peer-Deps anzeigen"
+      "show_all": "{count} Peer-Abhängigkeit anzeigen | alle {count} Peer-Abhängigkeiten anzeigen"
     },
     "optional_dependencies": {
       "title": "Optionale Abhängigkeiten ({count})",
       "list_label": "Optionale Abhängigkeiten des Pakets",
-      "show_all": "alle {count} optionalen Deps anzeigen"
+      "show_all": "{count} optionale Abhängigkeit anzeigen | alle {count} optionalen Abhängigkeiten anzeigen"
     },
     "maintainers": {
       "title": "Maintainer",
@@ -257,33 +269,33 @@
       "title": "Ausprobieren",
       "choose": "Playground wählen"
     },
-    "license": {
-      "view_spdx": "Lizenztext auf SPDX ansehen"
-    },
     "metrics": {
-      "esm": "ESM",
-      "cjs": "CJS",
-      "no_esm": "Kein ESM",
+      "esm": "ES-Module unterstützt",
+      "cjs": "CommonJS unterstützt",
+      "no_esm": "Keine ESM-Unterstützung",
       "types_label": "Typen",
       "types_included": "Typen enthalten",
-      "types_available": "Typen verfügbar",
-      "no_types": "Keine Typen"
+      "types_available": "Typen verfügbar via {package}",
+      "no_types": "Keine TypeScript-Typen"
+    },
+    "license": {
+      "view_spdx": "Lizenztext auf SPDX ansehen"
     },
     "vulnerabilities": {
       "no_description": "Keine Beschreibung verfügbar",
       "found": "{count} Sicherheitslücke gefunden | {count} Sicherheitslücken gefunden",
+      "deps_found": "{count} Sicherheitslücke gefunden | {count} Sicherheitslücken gefunden",
+      "deps_affected": "{count} betroffene Abhängigkeit | {count} betroffene Abhängigkeiten",
+      "tree_found": "{vulns} Sicherheitslücke in {packages}/{total} Paketen | {vulns} Sicherheitslücken in {packages}/{total} Paketen",
+      "scanning_tree": "Abhängigkeitsbaum wird gescannt...",
+      "show_all_packages": "alle {count} betroffenen Pakete anzeigen",
       "no_summary": "Keine Zusammenfassung",
       "view_details": "Details zur Sicherheitslücke anzeigen",
-      "deps_found": "{count} Abhängigkeit mit Sicherheitslücken gefunden | {count} Abhängigkeiten mit Sicherheitslücken gefunden",
-      "deps_affected": "{count} betroffene Abhängigkeit | {count} betroffene Abhängigkeiten",
-      "tree_found": "{count} Sicherheitslücke im Abhängigkeitsbaum gefunden | {count} Sicherheitslücken im Abhängigkeitsbaum gefunden",
-      "scanning_tree": "Abhängigkeitsbaum wird gescannt...",
-      "show_all_packages": "Alle {count} Pakete anzeigen",
       "path": "Pfad",
       "more": "+{count} weitere",
-      "packages_failed": "Einige Pakete konnten nicht gescannt werden",
-      "no_known": "Keine bekannten Sicherheitslücken",
-      "scan_failed": "Scan fehlgeschlagen",
+      "packages_failed": "{count} Paket konnte nicht geprüft werden | {count} Pakete konnten nicht geprüft werden",
+      "no_known": "Keine bekannten Sicherheitslücken in {count} Paketen",
+      "scan_failed": "Sicherheits-Scan fehlgeschlagen",
       "severity": {
         "critical": "kritisch",
         "high": "hoch",
@@ -291,23 +303,23 @@
         "low": "niedrig"
       },
       "depth": {
-        "root": "Root-Paket",
+        "root": "Dieses Paket",
         "direct": "Direkte Abhängigkeit",
-        "transitive": "Transitive Abhängigkeit"
+        "transitive": "Transitive Abhängigkeit (indirekt)"
       }
     },
     "deprecated": {
       "label": "Veraltet",
       "tree_found": "{count} veraltete Abhängigkeit | {count} veraltete Abhängigkeiten",
-      "show_all": "alle {count} veralteten Pakete anzeigen"
+      "show_all": "{count} veraltetes Paket anzeigen | alle {count} veralteten Pakete anzeigen"
     },
     "access": {
       "title": "Team-Zugriff",
       "refresh": "Team-Zugriff aktualisieren",
       "list_label": "Team-Zugriffsliste",
       "owner": "Owner",
-      "rw": "lesen/schreiben",
-      "ro": "nur lesen",
+      "rw": "rw",
+      "ro": "ro",
       "revoke_access": "Zugriff von {name} entziehen",
       "no_access": "Kein Team-Zugriff konfiguriert",
       "select_team_label": "Team auswählen",
@@ -333,9 +345,9 @@
       "license": "Lizenz",
       "weekly": "Wöchentlich",
       "size": "Größe",
-      "deps": "Deps",
+      "deps": "Abhängigkeiten",
       "updated": "Aktualisiert",
-      "get_started": "Loslegen",
+      "get_started": "Erste Schritte",
       "readme": "Readme",
       "maintainers": "Maintainer",
       "keywords": "Schlüsselwörter",
@@ -362,8 +374,11 @@
     },
     "modal": {
       "title": "Lokaler Connector",
+      "contributor_badge": "Nur für Mitwirkende",
+      "contributor_notice": "Der Connector ist noch nicht auf npm veröffentlicht. Siehe den {link} für Informationen zum lokalen Ausführen.",
+      "contributor_link": "Leitfaden für Mitwirkende",
       "connected": "Verbunden",
-      "connected_as_user": "Angemeldet als ~{user}",
+      "connected_as_user": "Verbunden als ~{user}",
       "connected_hint": "Du kannst jetzt Pakete und Organisationen über die Web-Oberfläche verwalten.",
       "disconnect": "Trennen",
       "run_hint": "Führe den Connector auf deinem Rechner aus, um Admin-Funktionen zu aktivieren.",
@@ -425,7 +440,7 @@
       "cancel_add_user": "Benutzer-Hinzufügung abbrechen",
       "add_member": "+ Mitglied hinzufügen",
       "team_name_label": "Teamname",
-      "team_name_placeholder": "teamname...",
+      "team_name_placeholder": "team-name...",
       "create_button": "Erstellen",
       "no_match": "Keine Teams entsprechen \"{query}\"",
       "cancel_create": "Team-Erstellung abbrechen",
@@ -559,7 +574,8 @@
     "markdown_view_mode": {
       "preview": "Vorschau",
       "code": "Code"
-    }
+    },
+    "file_path": "Dateipfad"
   },
   "badges": {
     "provenance": {
@@ -594,7 +610,7 @@
     "keywords": "Stichwörter",
     "more_keywords": "+{count} mehr",
     "clear_all": "Alles löschen",
-    "remove_filter": "Entferne den Filter {label}",
+    "remove_filter": "Filter {label} entfernen",
     "download_range": {
       "any": "Beliebig",
       "lt100": "< 100",
@@ -606,8 +622,8 @@
     "updated": {
       "any": "Jederzeit",
       "week": "Letzte Woche",
-      "month": "Letztes Monat",
-      "quarter": "Letzten drei Monate",
+      "month": "Letzter Monat",
+      "quarter": "Letzte 3 Monate",
       "year": "Letztes Jahr"
     },
     "security_options": {
@@ -642,12 +658,12 @@
       "description": "Beschreibung",
       "downloads": "Downloads/Woche",
       "updated": "Zuletzt aktualisiert",
-      "maintainers": "Maintainers",
+      "maintainers": "Maintainer",
       "keywords": "Stichwörter",
       "quality_score": "Qualitätsfaktor",
       "popularity_score": "Beliebtheitswert",
       "maintenance_score": "Wartungsbewertung",
-      "combined_score": "Kombinierte Bewertung",
+      "combined_score": "Gesamtwertung",
       "security": "Sicherheit"
     },
     "view_mode": {
@@ -668,9 +684,9 @@
       "nav_label": "Paginierung"
     },
     "count": {
-      "showing_filtered": "{filtered} von {total} Paketen",
-      "showing_all": "{total} Pakete",
-      "showing_paginated": "{pageSize} von {total} Paketen"
+      "showing_filtered": "{filtered} von {count} Paket | {filtered} von {count} Paketen",
+      "showing_all": "{count} Paket | {count} Pakete",
+      "showing_paginated": "{pageSize} von {count} Paket | {pageSize} von {count} Paketen"
     },
     "table": {
       "security_warning": "Sicherheitswarnung",
@@ -699,36 +715,36 @@
       "words": {
         "already": "Es gibt",
         "people": "bereits",
-        "building": "Leute, die",
-        "really": "richtig",
-        "cool": "coole",
-        "package": "Paketmanager",
-        "managers": "bauen"
+        "building": "Leute,",
+        "really": "die",
+        "cool": "richtig",
+        "package": "coole",
+        "managers": "Paketmanager bauen"
       }
     },
     "contributors": {
       "title": "Mitwirkende",
-      "description": "npmx wird von einer wachsenden Community von Mitwirkenden entwickelt. Mach mit und lass uns gemeinsam das npm-Browsing-Erlebnis gestalten, das wir uns schon immer gewünscht haben.",
+      "description": "npmx ist komplett Open Source und wird von einer großartigen Community von Mitwirkenden entwickelt. Mach mit und lass uns gemeinsam das npm-Browsing-Erlebnis gestalten, das wir uns schon immer gewünscht haben.",
       "loading": "Mitwirkende werden geladen...",
       "error": "Mitwirkende konnten nicht geladen werden",
-      "view_profile": "Profil von {name} anzeigen"
+      "view_profile": "GitHub-Profil von {name} anzeigen"
     },
     "get_involved": {
       "title": "Mitmachen",
       "contribute": {
         "title": "Beitragen",
-        "description": "Hilf mit, npmx zu verbessern - melde Bugs, schlage Features vor oder trage Code bei",
-        "cta": "Auf GitHub beitragen"
+        "description": "Hilf uns, ein besseres npm-Erlebnis zu bauen.",
+        "cta": "Auf GitHub ansehen"
       },
       "community": {
-        "title": "Community",
-        "description": "Tritt unserer Community bei, stelle Fragen und tausche dich mit anderen Nutzern aus",
-        "cta": "Community beitreten"
+        "title": "Tritt der Community bei",
+        "description": "Chatte, stelle Fragen und teile Ideen.",
+        "cta": "Discord beitreten"
       },
       "follow": {
-        "title": "Folgen",
-        "description": "Bleib auf dem Laufenden über neue Features und Updates",
-        "cta": "Folgen"
+        "title": "Bleib auf dem Laufenden",
+        "description": "Erfahre das Neueste über npmx.",
+        "cta": "Auf Bluesky folgen"
       }
     }
   },
@@ -737,27 +753,27 @@
     "account": "Konto",
     "npm_cli": "npm-CLI",
     "atmosphere": "Atmosphere",
-    "npm_cli_desc": "Pakete und Organisationen verwalten",
+    "npm_cli_desc": "Pakete & Orgs verwalten",
     "atmosphere_desc": "Soziale Funktionen & Identität",
-    "connect_npm_cli": "Verbinde dich mit der npm-CLI",
-    "connect_atmosphere": "Verbinde dich mit Atmosphere",
+    "connect_npm_cli": "Mit npm-CLI verbinden",
+    "connect_atmosphere": "Mit Atmosphere verbinden",
     "connecting": "Verbinde...",
     "ops": "{count} Operation | {count} Operationen",
-    "disconnect": "Verbindung trennen"
+    "disconnect": "Trennen"
   },
   "auth": {
     "modal": {
       "title": "Atmosphere",
       "connected_as": "Verbunden als {'@'}{handle}",
-      "disconnect": "Verbindung trennen",
-      "connect_prompt": "Melde dich bei deinem Atmosphere-Konto an",
+      "disconnect": "Trennen",
+      "connect_prompt": "Verbinde dich mit deinem Atmosphere-Konto",
       "handle_label": "Handle",
-      "handle_placeholder": "alice.bsky.social",
+      "handle_placeholder": "alice.npmx.social",
       "connect": "Verbinden",
-      "create_account": "Erstelle ein neues Konto",
-      "connect_bluesky": "Verbinde dich mit Bluesky",
+      "create_account": "Neues Konto erstellen",
+      "connect_bluesky": "Mit Bluesky verbinden",
       "what_is_atmosphere": "Was ist ein Atmosphere-Konto?",
-      "atmosphere_explanation": "{npmx} nutzt {atproto}, um viele der sozialen Funktionen zu betreiben. So können Nutzer ihre Daten selbst verwalten und ein einziges Konto für alle kompatiblen Anwendungen nutzen. Sobald du ein Konto erstellt hast, kannst du andere Apps wie {bluesky} und {tangled} mit demselben Konto nutzen."
+      "atmosphere_explanation": "{npmx} nutzt das {atproto}, um viele seiner sozialen Funktionen zu betreiben. So können Nutzer ihre Daten selbst verwalten und ein einziges Konto für alle kompatiblen Anwendungen nutzen. Sobald du ein Konto erstellt hast, kannst du andere Apps wie {bluesky} und {tangled} mit demselben Konto nutzen."
     }
   },
   "header": {
@@ -778,6 +794,50 @@
       "error": "Organisationen konnten nicht geladen werden",
       "empty": "Keine Organisationen gefunden",
       "view_all": "Alle anzeigen"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "Pakete vergleichen",
+      "tagline": "Vergleiche npm-Pakete direkt miteinander, um das richtige für dich zu finden.",
+      "meta_title": "{packages} vergleichen - npmx",
+      "meta_title_empty": "Pakete vergleichen - npmx",
+      "meta_description": "Direkter Vergleich von {packages}",
+      "meta_description_empty": "Vergleiche npm-Pakete direkt miteinander",
+      "section_packages": "Pakete",
+      "section_facets": "Facetten",
+      "section_comparison": "Vergleich",
+      "loading": "Paketdaten werden geladen...",
+      "error": "Paketdaten konnten nicht geladen werden. Bitte versuche es erneut.",
+      "empty_title": "Wähle Pakete zum Vergleichen aus",
+      "empty_description": "Suche und füge oben mindestens 2 Pakete hinzu, um einen direkten Vergleich ihrer Metriken zu sehen."
+    },
+    "selector": {
+      "search_label": "Nach Paketen suchen",
+      "search_first": "Nach einem Paket suchen...",
+      "search_add": "Weiteres Paket hinzufügen...",
+      "searching": "Suche läuft...",
+      "remove_package": "{package} entfernen",
+      "packages_selected": "{count}/{max} Pakete ausgewählt.",
+      "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu.",
+      "loading_versions": "Versionen werden geladen...",
+      "select_version": "Version auswählen"
+    },
+    "facets": {
+      "group_label": "Vergleichsfacetten",
+      "all": "Alle",
+      "none": "Keine",
+      "coming_soon": "Demnächst verfügbar",
+      "select_all": "Alle Facetten auswählen",
+      "deselect_all": "Alle Facetten abwählen",
+      "select_category": "Alle {category}-Facetten auswählen",
+      "deselect_category": "Alle {category}-Facetten abwählen",
+      "categories": {
+        "performance": "Performance",
+        "health": "Gesundheit",
+        "compatibility": "Kompatibilität",
+        "security": "Sicherheit & Compliance"
+      }
     }
   }
 }

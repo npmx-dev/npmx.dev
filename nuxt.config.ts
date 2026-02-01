@@ -39,6 +39,12 @@ export default defineNuxtConfig({
 
   css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
+  $production: {
+    debug: {
+      hydration: true,
+    },
+  },
+
   runtimeConfig: {
     sessionPassword: '',
     // Upstash Redis for distributed OAuth token refresh locking in production
@@ -87,11 +93,15 @@ export default defineNuxtConfig({
     '/opensearch.xml': { isr: true },
     '/**': { isr: 60 },
     '/package/**': { isr: 60 },
+    '/:pkg/.well-known/skills/**': { isr: 3600 },
+    '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
     // never cache
     '/search': { isr: false, cache: false },
     '/api/auth/**': { isr: false, cache: false },
     // infinite cache (versioned - doesn't change)
     '/code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/docs/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/docs/:scope/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -119,7 +129,7 @@ export default defineNuxtConfig({
     typedPages: true,
   },
 
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2026-01-31',
 
   nitro: {
     experimental: {
@@ -166,11 +176,13 @@ export default defineNuxtConfig({
       {
         name: 'Geist',
         weights: ['400', '500', '600'],
+        preload: true,
         global: true,
       },
       {
         name: 'Geist Mono',
         weights: ['400', '500'],
+        preload: true,
         global: true,
       },
     ],
@@ -222,6 +234,14 @@ export default defineNuxtConfig({
           purpose: 'maskable',
         },
       ],
+    },
+  },
+
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        noUnusedLocals: true,
+      },
     },
   },
 

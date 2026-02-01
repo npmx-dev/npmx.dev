@@ -10,7 +10,6 @@ export interface DocsResponse {
   message?: string
 }
 
-/** @public */
 export interface DocsSearchResponse {
   package: string
   version: string

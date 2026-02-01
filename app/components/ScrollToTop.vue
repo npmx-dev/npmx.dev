@@ -9,9 +9,11 @@ const isActive = computed(() => !excludedRoutes.has(route.name as string))
 const isMounted = useMounted()
 const isVisible = shallowRef(false)
 const scrollThreshold = 300
-const supportsScrollStateQueries = useSupported(() => {
-  return isMounted.value && CSS.supports('container-type', 'scroll-state')
-})
+const { isSupported: supportsScrollStateQueries } = useCssSupports(
+  'container-type',
+  'scroll-state',
+  { ssrValue: false },
+)
 
 function onScroll() {
   if (!supportsScrollStateQueries.value) {

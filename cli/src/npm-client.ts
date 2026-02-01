@@ -103,7 +103,7 @@ function filterNpmWarnings(stderr: string): string {
     .trim()
 }
 
-export async function execNpm(
+async function execNpm(
   args: string[],
   options: { otp?: string; silent?: boolean } = {},
 ): Promise<NpmExecResult> {
