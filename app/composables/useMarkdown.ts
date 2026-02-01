@@ -1,13 +1,17 @@
-<script setup lang="ts">
 import { decodeHtmlEntities } from '~/utils/formatters'
 
-const props = defineProps<{
+interface UseMarkdownOptions {
   text: string
   /** When true, renders link text without the anchor tag (useful when inside another link) */
   plain?: boolean
   /** Package name to strip from the beginning of the description (if present) */
   packageName?: string
-}>()
+}
+
+/** @public */
+export function useMarkdown(options: MaybeRefOrGetter<UseMarkdownOptions>) {
+  return computed(() => parseMarkdown(toValue(options)))
+}
 
 // Strip markdown image badges from text
 function stripMarkdownImages(text: string): string {
@@ -22,7 +26,7 @@ function stripMarkdownImages(text: string): string {
 }
 
 // Strip HTML tags and escape remaining HTML to prevent XSS
-function stripAndEscapeHtml(text: string): string {
+function stripAndEscapeHtml(text: string, packageName?: string): string {
   // First decode any HTML entities in the input
   let stripped = decodeHtmlEntities(text)
 
@@ -33,13 +37,13 @@ function stripAndEscapeHtml(text: string): string {
   // Only match tags that start with a letter or / (to avoid matching things like "a < b > c")
   stripped = stripped.replace(/<\/?[a-z][^>]*>/gi, '')
 
-  if (props.packageName) {
+  if (packageName) {
     // Trim first to handle leading/trailing whitespace from stripped HTML
     stripped = stripped.trim()
     // Collapse multiple whitespace into single space
     stripped = stripped.replace(/\s+/g, ' ')
     // Escape special regex characters in package name
-    const escapedName = props.packageName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const escapedName = packageName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     // Match package name at the start, optionally followed by: space, dash, colon, hyphen, or just space
     const namePattern = new RegExp(`^${escapedName}\\s*[-:—]?\\s*`, 'i')
     stripped = stripped.replace(namePattern, '').trim()
@@ -55,11 +59,11 @@ function stripAndEscapeHtml(text: string): string {
 }
 
 // Parse simple inline markdown to HTML
-function parseMarkdown(text: string): string {
+function parseMarkdown({ text, packageName, plain }: UseMarkdownOptions): string {
   if (!text) return ''
 
   // First strip HTML tags and escape remaining HTML
-  let html = stripAndEscapeHtml(text)
+  let html = stripAndEscapeHtml(text, packageName)
 
   // Bold: **text** or __text__
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
@@ -78,7 +82,7 @@ function parseMarkdown(text: string): string {
   // Links: [text](url) - only allow https, mailto
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, text, url) => {
     // In plain mode, just render the link text without the anchor
-    if (props.plain) {
+    if (plain) {
       return text
     }
     const decodedUrl = url.replace(/&amp;/g, '&')
@@ -94,11 +98,3 @@ function parseMarkdown(text: string): string {
 
   return html
 }
-
-const html = computed(() => parseMarkdown(props.text))
-</script>
-
-<template>
-  <!-- eslint-disable-next-line vue/no-v-html -->
-  <span v-html="html" />
-</template>

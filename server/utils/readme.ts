@@ -143,16 +143,17 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   source: ['src', 'srcset', 'type', 'media'],
   th: ['colspan', 'rowspan', 'align'],
   td: ['colspan', 'rowspan', 'align'],
-  h3: ['id', 'data-level'],
-  h4: ['id', 'data-level'],
-  h5: ['id', 'data-level'],
-  h6: ['id', 'data-level'],
+  h3: ['id', 'data-level', 'align'],
+  h4: ['id', 'data-level', 'align'],
+  h5: ['id', 'data-level', 'align'],
+  h6: ['id', 'data-level', 'align'],
   blockquote: ['data-callout'],
   details: ['open'],
   code: ['class'],
   pre: ['class', 'style'],
   span: ['class', 'style'],
   div: ['class', 'style', 'align'],
+  p: ['align'],
 }
 
 // GitHub-style callout types
