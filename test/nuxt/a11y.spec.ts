@@ -58,6 +58,7 @@ import {
   AppFooter,
   AppHeader,
   BuildEnvironment,
+  CallToAction,
   CodeDirectoryListing,
   CodeFileTree,
   CodeMobileTreeDrawer,
@@ -1444,6 +1445,14 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(BuildEnvironment, {
         props: { footer: true },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CallToAction', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CallToAction)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
