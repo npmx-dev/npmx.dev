@@ -503,20 +503,18 @@ describe('component accessibility audits', () => {
 
   describe('PackageVersions', () => {
     it('should have no accessibility violations', async () => {
-      // Minimal mock data satisfying PackumentVersion type
+      // Minimal mock data satisfying SlimVersion type
       const mockVersion = {
-        _id: 'vue@3.5.0',
-        _npmVersion: '10.0.0',
-        name: 'vue',
         version: '3.5.0',
-        dist: { tarball: '', shasum: '', signatures: [] },
+        deprecated: undefined,
+        tags: undefined,
       }
       const component = await mountSuspended(PackageVersions, {
         props: {
           packageName: 'vue',
           versions: {
             '3.5.0': mockVersion,
-            '3.4.0': { ...mockVersion, _id: 'vue@3.4.0', version: '3.4.0' },
+            '3.4.0': { ...mockVersion, version: '3.4.0' },
           },
           distTags: {
             latest: '3.5.0',
