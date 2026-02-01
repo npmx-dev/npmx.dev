@@ -3,7 +3,6 @@ import type { PackageDependenciesResponse } from '#shared/types'
 
 definePageMeta({
   name: 'dependencies',
-  alias: ['/package/dependencies/:path(.*)*'],
 })
 
 const route = useRoute('dependencies')
@@ -39,7 +38,7 @@ const version = computed(() => parsedRoute.value.version)
 const { data: pkg } = usePackage(packageName)
 
 // URL pattern for version selector
-const versionUrlPattern = computed(() => `/dependencies/${packageName.value}/v/{version}`)
+const versionUrlPattern = computed(() => `/package-deps/${packageName.value}/v/{version}`)
 
 // Fetch dependencies data
 const { data: dependencies, status: dependenciesStatus } = useFetch<PackageDependenciesResponse>(
@@ -94,9 +93,9 @@ const pageDescription = computed(() => {
 
 const canonicalUrl = computed(() => {
   if (packageName.value && version.value) {
-    return `https://npmx.dev/dependencies/${packageName.value}/v/${version.value}`
+    return `https://npmx.dev/package-deps/${packageName.value}/v/${version.value}`
   }
-  return 'https://npmx.dev/dependencies'
+  return 'https://npmx.dev/package-deps'
 })
 
 useHead({
