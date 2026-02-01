@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { CheckNameResult } from '~/utils/package-name'
 import { checkPackageName } from '~/utils/package-name'
 
 const props = defineProps<{
@@ -20,12 +19,13 @@ const {
 
 const isPublishing = shallowRef(false)
 const publishSuccess = shallowRef(false)
+const publishError = shallowRef<string | null>(null)
 
 const {
   data: checkResult,
   refresh: checkAvailability,
   status,
-  error,
+  error: checkError,
 } = useAsyncData(
   (_nuxtApp, { signal }) => {
     return checkPackageName(props.packageName, { signal })
@@ -37,14 +37,20 @@ const isChecking = computed(() => {
   return status.value === 'pending'
 })
 
-const publishError = computed(() => {
-  return error.value instanceof Error ? error.value.message : $t('claim.modal.failed_to_check')
+const mergedError = computed(() => {
+  return (
+    publishError.value ??
+    (checkError.value instanceof Error
+      ? checkError.value.message
+      : $t('claim.modal.failed_to_check'))
+  )
 })
 
 async function handleClaim() {
   if (!checkResult.value?.available || !isConnected.value) return
 
   isPublishing.value = true
+  publishError.value = null
 
   try {
     // Add the operation
@@ -61,7 +67,7 @@ async function handleClaim() {
 
     // Auto-approve and execute
     await approveOperation(operation.id)
-    const result = await executeOperations()
+    await executeOperations()
 
     // Refresh state and check if operation completed successfully
     await refreshState()
@@ -93,7 +99,6 @@ async function handleClaim() {
 // Check availability when modal opens
 watch(open, isOpen => {
   if (isOpen) {
-    checkResult.value = null
     publishError.value = null
     publishSuccess.value = false
     checkAvailability()
@@ -318,11 +323,11 @@ const connectorModalOpen = shallowRef(false)
 
               <!-- Error message -->
               <div
-                v-if="publishError"
+                v-if="mergedError"
                 role="alert"
                 class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
               >
-                {{ publishError }}
+                {{ mergedError }}
               </div>
 
               <!-- Actions -->
@@ -402,12 +407,12 @@ const connectorModalOpen = shallowRef(false)
             </div>
 
             <!-- Error state -->
-            <div v-else-if="publishError" class="space-y-4">
+            <div v-else-if="mergedError" class="space-y-4">
               <div
                 role="alert"
                 class="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-md"
               >
-                {{ publishError }}
+                {{ mergedError }}
               </div>
               <button
                 type="button"
