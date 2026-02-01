@@ -24,7 +24,7 @@
     "found_packages": "Trovati {count} pacchetti",
     "updating": "(aggiornando...)",
     "no_results": "Nessun pacchetto trovato per \"{query}\"",
-    "title": "Cerca",
+    "title": "cerca",
     "not_taken": "{name} è disponibile",
     "claim_prompt": "Ottieni il nome di questo pacchetto su npm",
     "claim_button": "Ottieni \"{name}\"",
