@@ -7,13 +7,13 @@ import type {
   NpmPerson,
   PackageVersionInfo,
 } from '#shared/types'
-import type { PackageVersionsInfoWithMetadata, ResolvedPackageVersion } from 'fast-npm-meta'
+import { getVersions } from 'fast-npm-meta'
+import type { ResolvedPackageVersion } from 'fast-npm-meta'
 import type { ReleaseType } from 'semver'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
-import { FAST_NPM_META_API, encodePackageName } from '#shared/utils/npm'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -608,10 +608,7 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
   if (cached) return cached
 
   const promise = (async () => {
-    const encodedName = encodePackageName(packageName)
-    const data = await $fetch<PackageVersionsInfoWithMetadata>(
-      `${FAST_NPM_META_API}/versions/${encodedName}?metadata=true`,
-    )
+    const data = await getVersions(packageName, { metadata: true })
 
     return Object.entries(data.versionsMeta)
       .map(([version, meta]) => ({

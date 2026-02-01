@@ -1,8 +1,6 @@
-import type { ResolvedPackageVersion } from 'fast-npm-meta'
+import { getLatestVersion } from 'fast-npm-meta'
 import { createError } from 'h3'
 import validatePackageName from 'validate-npm-package-name'
-
-export const FAST_NPM_META_API = 'https://npm.antfu.dev'
 
 /**
  * Encode package name for URL usage.
@@ -25,8 +23,7 @@ export function encodePackageName(name: string): string {
  */
 export async function fetchLatestVersion(name: string): Promise<string | null> {
   try {
-    const encodedName = encodePackageName(name)
-    const meta = await $fetch<ResolvedPackageVersion>(`${FAST_NPM_META_API}/${encodedName}`)
+    const meta = await getLatestVersion(name)
     return meta.version
   } catch {
     return null
