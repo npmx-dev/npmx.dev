@@ -375,7 +375,7 @@ function handleClick(event: MouseEvent) {
 </script>
 
 <template>
-  <main class="container flex-1 py-8 xl:py-12">
+  <main class="container flex-1 w-full py-8 xl:py-12">
     <PackageSkeleton v-if="status === 'pending'" />
 
     <article v-else-if="status === 'success' && pkg" class="package-page">
