@@ -42,7 +42,8 @@ export function assertValidPackageName(name: string): void {
   if (!result.validForNewPackages && !result.validForOldPackages) {
     const errors = [...(result.errors ?? []), ...(result.warnings ?? [])]
     throw createError({
-      statusCode: 400,
+      // TODO: throwing 404 rather than 400 as it's cacheable
+      statusCode: 404,
       message: `Invalid package name: ${errors[0] ?? 'unknown error'}`,
     })
   }
