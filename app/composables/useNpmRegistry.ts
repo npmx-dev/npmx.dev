@@ -8,11 +8,13 @@ import type {
   NpmPerson,
   PackageVersionInfo,
 } from '#shared/types'
+import type { PackageVersionsInfoWithMetadata } from 'fast-npm-meta'
 import type { ReleaseType } from 'semver'
 import { maxSatisfying, prerelease, major, minor, diff, gt, compare } from 'semver'
 import { isExactVersion } from '~/utils/versions'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
+import { FAST_NPM_META_API, encodePackageName } from '#shared/utils/npm'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 const NPM_API = 'https://api.npmjs.org'
@@ -594,12 +596,14 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
 const allVersionsCache = new Map<string, Promise<PackageVersionInfo[]>>()
 
 /**
- * Fetch all versions of a package from the npm registry.
+ * Fetch all versions of a package using fast-npm-meta API.
  * Returns version info sorted by version (newest first).
  * Results are cached to avoid duplicate requests.
  *
  * Note: This is a standalone async function for use in event handlers.
  * For composable usage, use useAllPackageVersions instead.
+ *
+ * @see https://github.com/antfu/fast-npm-meta
  */
 export async function fetchAllPackageVersions(packageName: string): Promise<PackageVersionInfo[]> {
   const cached = allVersionsCache.get(packageName)
@@ -607,19 +611,16 @@ export async function fetchAllPackageVersions(packageName: string): Promise<Pack
 
   const promise = (async () => {
     const encodedName = encodePackageName(packageName)
-    // Use regular $fetch for client-side calls (this is called on user interaction)
-    const data = await $fetch<{
-      versions: Record<string, { deprecated?: string }>
-      time: Record<string, string>
-    }>(`${NPM_REGISTRY}/${encodedName}`)
+    const data = await $fetch<PackageVersionsInfoWithMetadata>(
+      `${FAST_NPM_META_API}/versions/${encodedName}?metadata=true`,
+    )
 
-    return Object.entries(data.versions)
-      .filter(([v]) => data.time[v])
-      .map(([version, versionData]) => ({
+    return Object.entries(data.versionsMeta)
+      .map(([version, meta]) => ({
         version,
-        time: data.time[version],
-        hasProvenance: false, // Would need to check dist.attestations for each version
-        deprecated: versionData.deprecated,
+        time: meta.time,
+        hasProvenance: meta.provenance === 'trustedPublisher' || meta.provenance === true,
+        deprecated: meta.deprecated,
       }))
       .sort((a, b) => compare(b.version, a.version))
   })()
