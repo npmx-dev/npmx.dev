@@ -822,6 +822,51 @@ export function getOutdatedTooltip(
   return t('package.dependencies.outdated_patch', { latest: info.latest })
 }
 
+// ============================================================================
+// Package Dependents
+// ============================================================================
+
+export interface DependentPackage {
+  name: string
+  downloads: number
+  description?: string
+  version?: string
+}
+
+export interface DependentsResponse {
+  dependents: DependentPackage[]
+  total: number
+}
+
+const emptyDependentsResponse: DependentsResponse = {
+  dependents: [],
+  total: 0,
+}
+
+/**
+ * Fetch packages that depend on a given package (dependents).
+ * Uses the e18e CouchDB mirror to get accurate dependency data.
+ * Results are sorted by download count (most downloaded first)
+ * to help with security triage when vulnerabilities are discovered.
+ */
+export function usePackageDependents(packageName: MaybeRefOrGetter<string>) {
+  return useLazyAsyncData(
+    () => `dependents:${toValue(packageName)}`,
+    async () => {
+      const name = toValue(packageName)
+      if (!name) return emptyDependentsResponse
+
+      return await $fetch<DependentsResponse>(
+        `/api/registry/dependents/${encodeURIComponent(name)}`,
+      )
+    },
+    {
+      server: false,
+      default: () => emptyDependentsResponse,
+    },
+  )
+}
+
 /**
  * Get CSS class for a dependency version based on outdated status
  */
