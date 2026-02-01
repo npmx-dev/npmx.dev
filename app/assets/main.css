@@ -558,4 +558,5 @@ input[type='search']::-webkit-search-results-decoration {
 /* Locking the scroll whenever any of the modals are open */
 html:has(dialog:modal) {
   overflow: hidden;
+  scrollbar-gutter: stable;
 }
