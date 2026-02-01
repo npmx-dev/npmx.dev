@@ -8,8 +8,8 @@ import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'code',
-  // Both alias paths need to be (.+) so that they don't match the package page alias.
-  alias: ['/package/code/:path(.+)', '/code/:path(.+)'],
+  path: '/package-code/:path+',
+  alias: ['/package/code/:path+', '/code/:path+'],
 })
 
 const route = useRoute('code')

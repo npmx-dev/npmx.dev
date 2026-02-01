@@ -5,8 +5,8 @@ import { assertValidPackageName, fetchLatestVersion } from '#shared/utils/npm'
 
 definePageMeta({
   name: 'docs',
-  // Both alias paths need to be (.+) so that they don't match the package page alias.
-  alias: ['/package/docs/:path(.+)', '/docs/:path(.+)'],
+  path: '/package-docs/:path+',
+  alias: ['/package/docs/:path+', '/docs/:path+'],
 })
 
 const route = useRoute('docs')
