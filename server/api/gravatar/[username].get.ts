@@ -13,25 +13,23 @@ function getQueryParam(event: H3Event, key: string): string {
 
 export default defineCachedEventHandler(
   async event => {
-    const rawUsername = getQueryParam(event, 'username')
-    const rawSize = getQueryParam(event, 'size')
+    const rawUsername = getRouterParam(event, 'username')
 
     try {
-      const { username, size } = v.parse(GravatarQuerySchema, {
+      const { username } = v.parse(GravatarQuerySchema, {
         username: rawUsername,
-        size: rawSize ? rawSize : undefined,
       })
 
-      const dataUrl = await getGravatarFromUsername(username, size ?? 80)
+      const hash = await getGravatarFromUsername(username)
 
-      if (!dataUrl) {
+      if (!hash) {
         throw createError({
           statusCode: 404,
           message: ERROR_GRAVATAR_EMAIL_UNAVAILABLE,
         })
       }
 
-      return { url: dataUrl }
+      return { hash }
     } catch (error: unknown) {
       handleApiError(error, {
         statusCode: 502,

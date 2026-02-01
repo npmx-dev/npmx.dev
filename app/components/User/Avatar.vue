@@ -3,12 +3,8 @@ const props = defineProps<{
   username: string
 }>()
 
-const { data: gravatarUrl } = useLazyFetch('/api/gravatar', {
-  query: {
-    username: computed(() => props.username),
-    size: 128,
-  },
-  transform: res => res.url,
+const { data: gravatarUrl } = useLazyFetch(() => `/api/gravatar/${props.username}`, {
+  transform: res => (res.hash ? `/_avatar/${res.hash}?s=128&d=404` : null),
 })
 </script>
 

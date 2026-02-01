@@ -19,22 +19,6 @@ export const NpmUsernameSchema = v.pipe(
  */
 export const GravatarQuerySchema = v.object({
   username: NpmUsernameSchema,
-  size: v.optional(
-    v.pipe(
-      v.union([v.number(), v.string()]),
-      v.transform(value => {
-        if (typeof value === 'string') {
-          const trimmed = value.trim()
-          return /^\d+$/.test(trimmed) ? Number(trimmed) : Number.NaN
-        }
-        return value
-      }),
-      v.check(value => !Number.isNaN(value), 'Invalid size'),
-      v.number(),
-      v.minValue(16),
-      v.maxValue(512),
-    ),
-  ),
 })
 
 /** @public */
