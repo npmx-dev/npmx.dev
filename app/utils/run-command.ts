@@ -21,13 +21,10 @@ export interface PackageMetadata {
  * - Name starts with "create-" (e.g., create-vite)
  * - Scoped name contains "/create-" (e.g., @vue/create-app)
  * - Has bin field but no main, module, or exports fields
- * @public
  */
 export function isBinaryOnlyPackage(pkg: PackageMetadata): boolean {
-  const baseName = pkg.name.startsWith('@') ? pkg.name.split('/')[1] : pkg.name
-
   // Check create-* patterns
-  if (baseName?.startsWith('create-') || pkg.name.includes('/create-')) {
+  if (isCreatePackage(pkg.name)) {
     return true
   }
 
@@ -41,7 +38,6 @@ export function isBinaryOnlyPackage(pkg: PackageMetadata): boolean {
 
 /**
  * Check if a package uses the create-* naming convention.
- * @public
  */
 export function isCreatePackage(packageName: string): boolean {
   const baseName = packageName.startsWith('@') ? packageName.split('/')[1] : packageName
@@ -63,7 +59,6 @@ export interface ExecutableInfo {
 /**
  * Extract executable command information from a package's bin field.
  * Handles both string format ("bin": "./cli.js") and object format ("bin": { "cmd": "./cli.js" }).
- * @public
  */
 export function getExecutableInfo(
   packageName: string,
@@ -150,7 +145,6 @@ export function getRunCommandParts(options: RunCommandOptions): string[] {
 
 /**
  * Generate the full run command for a package.
- * @public
  */
 export function getRunCommand(options: RunCommandOptions): string {
   return getRunCommandParts(options).join(' ')

@@ -4,21 +4,24 @@ const isOpen = defineModel<boolean>('open', { default: false })
 const { isConnected, npmUser, avatar: npmAvatar } = useConnector()
 const { user: atprotoUser } = useAtproto()
 
-const showConnectorModal = shallowRef(false)
-const showAuthModal = shallowRef(false)
-
 function closeMenu() {
   isOpen.value = false
 }
 
 function handleShowConnector() {
-  showConnectorModal.value = true
-  closeMenu()
+  const connectorModal = document.querySelector<HTMLDialogElement>('#connector-modal')
+  if (connectorModal) {
+    closeMenu()
+    connectorModal.showModal()
+  }
 }
 
 function handleShowAuth() {
-  showAuthModal.value = true
-  closeMenu()
+  const authModal = document.querySelector<HTMLDialogElement>('#auth-modal')
+  if (authModal) {
+    closeMenu()
+    authModal.showModal()
+  }
 }
 
 // Close menu on route change
@@ -26,11 +29,12 @@ const route = useRoute()
 watch(() => route.fullPath, closeMenu)
 
 // Close on escape
-onKeyStroke('Escape', () => {
-  if (isOpen.value) {
+onKeyStroke(
+  e => isKeyWithoutModifiers(e, 'Escape') && isOpen.value,
+  e => {
     isOpen.value = false
-  }
-})
+  },
+)
 
 // Prevent body scroll when menu is open
 const isLocked = useScrollLock(document)
@@ -279,9 +283,5 @@ watch(isOpen, open => (isLocked.value = open))
         </Transition>
       </div>
     </Transition>
-
-    <!-- Modals -->
-    <ConnectorModal v-model:open="showConnectorModal" />
-    <AuthModal v-model:open="showAuthModal" />
   </Teleport>
 </template>

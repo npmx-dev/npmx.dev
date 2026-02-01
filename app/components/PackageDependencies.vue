@@ -79,15 +79,15 @@ const sortedOptionalDependencies = computed(() => {
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
-          class="flex items-center justify-start py-1 text-sm gap-2"
+          class="flex items-center justify-between py-1 text-sm gap-2"
         >
           <NuxtLink
             :to="{ name: 'package', params: { package: dep.split('/') } }"
-            class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0"
+            class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0 flex-1"
           >
             {{ dep }}
           </NuxtLink>
-          <span class="flex items-center gap-1">
+          <span class="flex items-center gap-1 max-w-[40%]">
             <span
               v-if="outdatedDeps[dep]"
               class="shrink-0"
@@ -97,7 +97,6 @@ const sortedOptionalDependencies = computed(() => {
             >
               <span class="i-carbon:warning-alt w-3 h-3 block" />
             </span>
-            <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
             <NuxtLink
               v-if="getVulnerableDepInfo(dep)"
               :to="{
@@ -124,7 +123,10 @@ const sortedOptionalDependencies = computed(() => {
               <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </NuxtLink>
             <NuxtLink
-              :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"
+              :to="{
+                name: 'package',
+                params: { package: [...dep.split('/'), 'v', version] },
+              }"
               class="font-mono text-xs text-end truncate"
               :class="getVersionClass(outdatedDeps[dep])"
               :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep], $t) : version"
@@ -140,13 +142,29 @@ const sortedOptionalDependencies = computed(() => {
           </span>
         </li>
       </ul>
+      <button
+        v-if="sortedDependencies.length > 10 && !depsExpanded"
+        type="button"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        @click="depsExpanded = true"
+      >
+        {{
+          $t('package.dependencies.show_all', {
+            count: sortedDependencies.length,
+          })
+        }}
+      </button>
     </CollapsibleSection>
 
     <!-- Peer Dependencies -->
     <CollapsibleSection
       v-if="sortedPeerDependencies.length > 0"
       id="peer-dependencies"
-      :title="$t('package.peer_dependencies.title', { count: sortedPeerDependencies.length })"
+      :title="
+        $t('package.peer_dependencies.title', {
+          count: sortedPeerDependencies.length,
+        })
+      "
     >
       <ul
         class="space-y-1 list-none m-0 p-0"
@@ -155,11 +173,14 @@ const sortedOptionalDependencies = computed(() => {
         <li
           v-for="peer in sortedPeerDependencies.slice(0, peerDepsExpanded ? undefined : 10)"
           :key="peer.name"
-          class="flex items-center justify-start py-1 text-sm gap-2"
+          class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-center gap-1 min-w-0 flex-1">
             <NuxtLink
-              :to="{ name: 'package', params: { package: peer.name.split('/') } }"
+              :to="{
+                name: 'package',
+                params: { package: peer.name.split('/') },
+              }"
               class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate"
             >
               {{ peer.name }}
@@ -172,13 +193,12 @@ const sortedOptionalDependencies = computed(() => {
               {{ $t('package.dependencies.optional') }}
             </span>
           </div>
-          <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
           <NuxtLink
             :to="{
               name: 'package',
               params: { package: [...peer.name.split('/'), 'v', peer.version] },
             }"
-            class="font-mono text-xs text-fg-subtle max-w-[40%] text-end truncate"
+            class="font-mono text-xs text-fg-subtle max-w-[40%] truncate"
             :title="peer.version"
           >
             {{ peer.version }}
@@ -191,7 +211,11 @@ const sortedOptionalDependencies = computed(() => {
         class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
         @click="peerDepsExpanded = true"
       >
-        {{ $t('package.peer_dependencies.show_all', { count: sortedPeerDependencies.length }) }}
+        {{
+          $t('package.peer_dependencies.show_all', {
+            count: sortedPeerDependencies.length,
+          })
+        }}
       </button>
     </CollapsibleSection>
 
@@ -200,7 +224,9 @@ const sortedOptionalDependencies = computed(() => {
       v-if="sortedOptionalDependencies.length > 0"
       id="optional-dependencies"
       :title="
-        $t('package.optional_dependencies.title', { count: sortedOptionalDependencies.length })
+        $t('package.optional_dependencies.title', {
+          count: sortedOptionalDependencies.length,
+        })
       "
     >
       <ul
@@ -213,18 +239,20 @@ const sortedOptionalDependencies = computed(() => {
             optionalDepsExpanded ? undefined : 10,
           )"
           :key="dep"
-          class="flex items-center justify-start py-1 text-sm gap-2"
+          class="flex items-center justify-between py-1 text-sm gap-2"
         >
           <NuxtLink
             :to="{ name: 'package', params: { package: dep.split('/') } }"
-            class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0"
+            class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0 flex-1"
           >
             {{ dep }}
           </NuxtLink>
-          <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
           <NuxtLink
-            :to="{ name: 'package', params: { package: [...dep.split('/'), 'v', version] } }"
-            class="font-mono text-xs text-fg-subtle max-w-[50%] text-end truncate"
+            :to="{
+              name: 'package',
+              params: { package: [...dep.split('/'), 'v', version] },
+            }"
+            class="font-mono text-xs text-fg-subtle max-w-[40%] text-end truncate"
             :title="version"
           >
             {{ version }}
@@ -238,7 +266,9 @@ const sortedOptionalDependencies = computed(() => {
         @click="optionalDepsExpanded = true"
       >
         {{
-          $t('package.optional_dependencies.show_all', { count: sortedOptionalDependencies.length })
+          $t('package.optional_dependencies.show_all', {
+            count: sortedOptionalDependencies.length,
+          })
         }}
       </button>
     </CollapsibleSection>

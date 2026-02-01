@@ -48,7 +48,9 @@ test.describe('Search Pages', () => {
     // Wait for navigation to /search (debounce is 250ms)
     await expect(page).toHaveURL(/\/search/, { timeout: 10000 })
 
-    await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({ timeout: 15000 })
+    await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({
+      timeout: 15000,
+    })
 
     // Home search input should be gone (we're on /search now)
     await expect(homeSearchInput).not.toBeVisible()
@@ -70,9 +72,123 @@ test.describe('Search Pages', () => {
 
     await expect(page).toHaveURL(/\/search/, { timeout: 10000 })
 
-    await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({ timeout: 15000 })
+    await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({
+      timeout: 15000,
+    })
 
     const headerSearchInput = page.locator('#header-search')
     await expect(headerSearchInput).toBeFocused()
+  })
+})
+
+test.describe('Keyboard Shortcuts', () => {
+  test('"c" navigates to /compare', async ({ page, goto }) => {
+    await goto('/settings', { waitUntil: 'hydration' })
+
+    await page.keyboard.press('c')
+
+    await expect(page).toHaveURL(/\/compare/)
+  })
+
+  test('"c" does not navigate when any modifier key is pressed', async ({ page, goto }) => {
+    await goto('/settings', { waitUntil: 'hydration' })
+
+    await page.keyboard.press('Shift+c')
+    await expect(page).toHaveURL(/\/settings/)
+    await page.keyboard.press('Control+c')
+    await expect(page).toHaveURL(/\/settings/)
+    await page.keyboard.press('Alt+c')
+    await expect(page).toHaveURL(/\/settings/)
+    await page.keyboard.press('Meta+c')
+    await expect(page).toHaveURL(/\/settings/)
+    await page.keyboard.press('ControlOrMeta+Shift+c')
+    await expect(page).toHaveURL(/\/settings/)
+  })
+
+  test('"c" on package page navigates to /compare with package pre-filled', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/vue', { waitUntil: 'hydration' })
+
+    await page.keyboard.press('c')
+
+    // Should navigate to /compare with the package in the query
+    await expect(page).toHaveURL(/\/compare\?packages=vue/)
+  })
+
+  test('"c" does not navigate when search input is focused', async ({ page, goto }) => {
+    await goto('/settings', { waitUntil: 'hydration' })
+
+    const searchInput = page.locator('#header-search')
+    await searchInput.focus()
+    await expect(searchInput).toBeFocused()
+
+    await page.keyboard.press('c')
+
+    // Should still be on settings, not navigated to compare
+    await expect(page).toHaveURL(/\/settings/)
+    // The 'c' should have been typed into the input
+    await expect(searchInput).toHaveValue('c')
+  })
+
+  test('"c" on package page does not navigate when any modifier key is pressed', async ({
+    page,
+    goto,
+  }) => {
+    await goto('/vue', { waitUntil: 'hydration' })
+
+    await page.keyboard.press('Shift+c')
+    await expect(page).toHaveURL(/\/vue/)
+    await page.keyboard.press('Control+c')
+    await expect(page).toHaveURL(/\/vue/)
+    await page.keyboard.press('Alt+c')
+    await expect(page).toHaveURL(/\/vue/)
+    await page.keyboard.press('Meta+c')
+    await expect(page).toHaveURL(/\/vue/)
+    await page.keyboard.press('ControlOrMeta+Shift+c')
+    await expect(page).toHaveURL(/\/vue/)
+  })
+
+  test('"," navigates to /settings', async ({ page, goto }) => {
+    await goto('/compare', { waitUntil: 'hydration' })
+
+    await page.keyboard.press(',')
+
+    await expect(page).toHaveURL(/\/settings/)
+  })
+
+  test('"," does not navigate when any modifier key is pressed', async ({ page, goto }) => {
+    await goto('/settings', { waitUntil: 'hydration' })
+
+    const searchInput = page.locator('#header-search')
+    await searchInput.focus()
+    await expect(searchInput).toBeFocused()
+
+    await page.keyboard.press('Shift+,')
+    await expect(page).toHaveURL(/\/settings/)
+    await page.keyboard.press('Control+,')
+    await expect(page).toHaveURL(/\/settings/)
+    await page.keyboard.press('Alt+,')
+    await expect(page).toHaveURL(/\/settings/)
+    await page.keyboard.press('Meta+,')
+    await expect(page).toHaveURL(/\/settings/)
+    await page.keyboard.press('ControlOrMeta+Shift+,')
+    await expect(page).toHaveURL(/\/settings/)
+  })
+
+  test('"," does not navigate when search input is focused', async ({ page, goto }) => {
+    await goto('/compare', { waitUntil: 'hydration' })
+
+    const searchInput = page.locator('#header-search')
+    await searchInput.focus()
+    await expect(searchInput).toBeFocused()
+
+    await page.keyboard.press(',')
+
+    // Should still be on compare, not navigated to settings
+    await expect(page).toHaveURL(/\/compare/)
+    // The ',' should have been typed into the input
+    await expect(searchInput).toHaveValue(',')
   })
 })
