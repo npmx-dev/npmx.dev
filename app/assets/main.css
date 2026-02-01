@@ -155,7 +155,7 @@ a:hover {
 }
 
 a:focus-visible {
-  outline: 2px solid var(--border);
+  outline: 2px solid var(--fg-muted);
   outline-offset: 2px;
   border-radius: 2px;
 }
