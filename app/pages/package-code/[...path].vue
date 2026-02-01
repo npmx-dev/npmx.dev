@@ -8,7 +8,7 @@ import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'code',
-  alias: ['/package/code/:path(.*)*'],
+  alias: ['/package/code/:path(.*)*', '/code/:path(.*)*'],
 })
 
 const route = useRoute('code')
@@ -49,7 +49,7 @@ const { data: pkg } = usePackage(packageName)
 
 // URL pattern for version selector - includes file path if present
 const versionUrlPattern = computed(() => {
-  const base = `/code/${packageName.value}/v/{version}`
+  const base = `/package-code/${packageName.value}/v/{version}`
   return filePath.value ? `${base}/${filePath.value}` : base
 })
 
@@ -183,7 +183,7 @@ const breadcrumbs = computed(() => {
 
 // Navigation helper - build URL for a path
 function getCodeUrl(path?: string): string {
-  const base = `/code/${packageName.value}/v/${version.value}`
+  const base = `/package-code/${packageName.value}/v/${version.value}`
   return path ? `${base}/${path}` : base
 }
 
@@ -238,7 +238,7 @@ function copyPermalinkUrl() {
 
 // Canonical URL for this code page
 const canonicalUrl = computed(() => {
-  let url = `https://npmx.dev/code/${packageName.value}/v/${version.value}`
+  let url = `https://npmx.dev/package-code/${packageName.value}/v/${version.value}`
   if (filePath.value) {
     url += `/${filePath.value}`
   }

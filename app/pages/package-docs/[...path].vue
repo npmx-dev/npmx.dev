@@ -5,6 +5,7 @@ import { assertValidPackageName } from '#shared/utils/npm'
 
 definePageMeta({
   name: 'docs',
+  alias: ['/package/docs/:path(.*)*', '/docs/:path(.*)*'],
 })
 
 const route = useRoute('docs')
@@ -46,7 +47,7 @@ if (import.meta.server && !requestedVersion.value) {
   if (latest) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
     app.runWithContext(() =>
-      navigateTo('/docs/' + packageName.value + '/v/' + latest, { redirectCode: 302 }),
+      navigateTo('/package-docs/' + packageName.value + '/v/' + latest, { redirectCode: 302 }),
     )
   }
 }
@@ -55,7 +56,7 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      router.replace(`/docs/${name}/v/${latest}`)
+      router.replace(`/package-docs/${name}/v/${latest}`)
     }
   },
   { immediate: true },
@@ -121,7 +122,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
           <div class="flex items-center gap-3 min-w-0">
             <NuxtLink
               v-if="packageName"
-              :to="`/${packageName}`"
+              :to="{ name: 'package', params: { package: [packageName] } }"
               class="font-mono text-lg sm:text-xl font-semibold text-fg hover:text-fg-muted transition-colors truncate"
             >
               {{ packageName }}
@@ -132,7 +133,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
               :current-version="resolvedVersion"
               :versions="pkg.versions"
               :dist-tags="pkg['dist-tags']"
-              :url-pattern="`/docs/${packageName}/v/{version}`"
+              :url-pattern="`/package-docs/${packageName}/v/{version}`"
             />
             <span v-else-if="resolvedVersion" class="text-fg-subtle font-mono text-sm shrink-0">
               {{ resolvedVersion }}
@@ -180,7 +181,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
             <div class="flex gap-4 mt-4">
               <NuxtLink
                 v-if="packageName"
-                :to="`/${packageName}`"
+                :to="{ name: 'package', params: { package: [packageName] } }"
                 class="link-subtle font-mono text-sm"
               >
                 View package

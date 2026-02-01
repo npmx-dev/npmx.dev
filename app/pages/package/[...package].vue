@@ -14,7 +14,7 @@ import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'package',
-  alias: ['/package/:package(.*)*'],
+  alias: ['/:package(.*)*'],
 })
 
 const router = useRouter()
@@ -344,7 +344,7 @@ const createPackageInfo = computed(() => {
 
 // Canonical URL for this package page
 const canonicalUrl = computed(() => {
-  const base = `https://npmx.dev/${packageName.value}`
+  const base = `https://npmx.dev/package/${packageName.value}`
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
 
@@ -466,7 +466,7 @@ function handleClick(event: MouseEvent) {
 
             <NuxtLink
               v-if="resolvedVersion !== requestedVersion"
-              :to="`/${pkg.name}/v/${displayVersion.version}`"
+              :to="`/package/${pkg.name}/v/${displayVersion.version}`"
               :title="$t('package.view_permalink')"
               >{{ displayVersion.version }}</NuxtLink
             >
@@ -990,9 +990,14 @@ function handleClick(event: MouseEvent) {
         <Readme v-if="readmeData?.html" :html="readmeData.html" @click="handleClick" />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
-          <a v-if="repositoryUrl" :href="repositoryUrl" rel="noopener noreferrer" class="link">{{
-            $t('package.readme.view_on_github')
-          }}</a>
+          <a
+            v-if="repositoryUrl"
+            :href="repositoryUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link"
+            >{{ $t('package.readme.view_on_github') }}</a
+          >
         </p>
       </section>
 
