@@ -636,9 +636,9 @@
       "nav_label": "Paginazione"
     },
     "count": {
-      "showing_filtered": "{filtered} di {total} pacchetti",
-      "showing_all": "{total} pacchetti",
-      "showing_paginated": "{pageSize} di {total} pacchetti"
+      "showing_filtered": "{filtered} di {count} pacchetti",
+      "showing_all": "{count} pacchetti",
+      "showing_paginated": "{pageSize} di {count} pacchetti"
     },
     "table": {
       "security_warning": "Avviso di sicurezza",

@@ -668,9 +668,9 @@
       "nav_label": "分页"
     },
     "count": {
-      "showing_filtered": "匹配 {filtered} 的 {total} 个包",
-      "showing_all": "{total} 个包",
-      "showing_paginated": "已显示 {pageSize} 个, 共 {total} 个包"
+      "showing_filtered": "匹配 {filtered} 的 {count} 个包",
+      "showing_all": "{count} 个包",
+      "showing_paginated": "已显示 {pageSize} 个，共 {count} 个包"
     },
     "table": {
       "no_packages": "安全性警告",

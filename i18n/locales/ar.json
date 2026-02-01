@@ -642,9 +642,9 @@
       "nav_label": "التصفح"
     },
     "count": {
-      "showing_filtered": "{filtered} من {total} حزمة",
-      "showing_all": "{total} حزمة | حزمة واحدة | حزمتان | {total} حزم | {total} حزمة | {total} حزمة",
-      "showing_paginated": "{pageSize} من {total} حزمة"
+      "showing_filtered": "{filtered} من {count} حزمة",
+      "showing_all": "{count} حزمة | حزمة واحدة | حزمتان | {count} حزم | {count} حزمة | {count} حزمة",
+      "showing_paginated": "{pageSize} من {count} حزمة"
     },
     "table": {
       "security_warning": "تحذير أمني",

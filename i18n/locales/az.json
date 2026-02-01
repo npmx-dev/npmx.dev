@@ -661,9 +661,9 @@
       "nav_label": "Səhifələmə"
     },
     "count": {
-      "showing_filtered": "{total} paketdən {filtered}",
-      "showing_all": "{total} paket",
-      "showing_paginated": "{total} paketdən {pageSize}"
+      "showing_filtered": "{count} paketdən {filtered}",
+      "showing_all": "{count} paket",
+      "showing_paginated": "{count} paketdən {pageSize}"
     },
     "table": {
       "security_warning": "Təhlükəsizlik xəbərdarlığı",
