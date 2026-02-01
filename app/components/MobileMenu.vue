@@ -4,6 +4,8 @@ const isOpen = defineModel<boolean>('open', { default: false })
 const { isConnected, npmUser, avatar: npmAvatar } = useConnector()
 const { user: atprotoUser } = useAtproto()
 
+const { trapRef } = useFocusTrap()
+
 function closeMenu() {
   isOpen.value = false
 }
@@ -74,6 +76,7 @@ watch(isOpen, open => (isLocked.value = open))
         >
           <nav
             v-if="isOpen"
+            ref="trapRef"
             class="absolute inset-ie-0 top-0 bottom-0 w-72 bg-bg border-is border-border shadow-xl flex flex-col"
           >
             <!-- Header -->
