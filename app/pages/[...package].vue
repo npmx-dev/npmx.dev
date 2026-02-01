@@ -122,6 +122,12 @@ const displayVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
+// Process package description
+const pkgDescription = useMarkdown(() => ({
+  text: pkg.value?.description ?? '',
+  packageName: pkg.value?.name,
+}))
+
 //copy package name
 const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   source: packageName,
@@ -159,6 +165,10 @@ const deprecationNotice = computed(() => {
   // Otherwise show "version deprecated"
   return { type: 'version' as const, message: displayVersion.value.deprecated }
 })
+
+const deprecationNoticeMessage = useMarkdown(() => ({
+  text: deprecationNotice.value?.message ?? '',
+}))
 
 const sizeTooltip = computed(() => {
   const chunks = [
@@ -563,8 +573,8 @@ function handleClick(event: MouseEvent) {
         <div class="mb-4">
           <!-- Description container with min-height to prevent CLS -->
           <div class="max-w-2xl min-h-[4.5rem]">
-            <p v-if="pkg.description" class="text-fg-muted text-base m-0">
-              <MarkdownText :text="pkg.description" :package-name="pkg.name" />
+            <p v-if="pkgDescription" class="text-fg-muted text-base m-0">
+              <span v-html="pkgDescription" />
             </p>
             <p v-else class="text-fg-subtle text-base m-0 italic">
               {{ $t('package.no_description') }}
@@ -713,8 +723,8 @@ function handleClick(event: MouseEvent) {
                 : $t('package.deprecation.version')
             }}
           </h2>
-          <p v-if="deprecationNotice.message" class="text-base m-0">
-            <MarkdownText :text="deprecationNotice.message" />
+          <p v-if="deprecationNoticeMessage" class="text-base m-0">
+            <span v-html="deprecationNoticeMessage" />
           </p>
           <p v-else class="text-base m-0 italic">
             {{ $t('package.deprecation.no_reason') }}
