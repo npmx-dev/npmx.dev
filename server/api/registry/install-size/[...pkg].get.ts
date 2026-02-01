@@ -25,7 +25,7 @@ export default defineCachedEventHandler(
       // If no version specified, resolve to latest using fast-npm-meta (lightweight)
       let version: string | undefined = requestedVersion
       if (!version) {
-        const latestVersion = await fetchLatestVersion(packageName)
+        const latestVersion = await fetchLatestVersionWithFallback(packageName)
         if (!latestVersion) {
           throw createError({
             statusCode: 404,

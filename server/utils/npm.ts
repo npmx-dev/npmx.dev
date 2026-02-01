@@ -1,5 +1,5 @@
 import type { Packument } from '#shared/types'
-import { encodePackageName, fetchLatestVersion as _fetchLatestVersion } from '#shared/utils/npm'
+import { encodePackageName, fetchLatestVersion } from '#shared/utils/npm'
 import { maxSatisfying, prerelease } from 'semver'
 import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
 
@@ -25,8 +25,8 @@ export const fetchNpmPackage = defineCachedFunction(
  * @param name Package name
  * @returns Latest version string or null if not found
  */
-export async function fetchLatestVersion(name: string): Promise<string | null> {
-  const version = await _fetchLatestVersion(name)
+export async function fetchLatestVersionWithFallback(name: string): Promise<string | null> {
+  const version = await fetchLatestVersion(name)
   if (version) return version
 
   // Fallback to full packument (also cached)
