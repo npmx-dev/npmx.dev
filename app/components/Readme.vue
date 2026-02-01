@@ -34,7 +34,11 @@ const handleCopy = async (e: MouseEvent) => {
 </script>
 
 <template>
-  <article class="readme prose prose-invert max-w-[70ch] lg:max-w-none" v-html="html" @click="handleCopy" />
+  <article
+    class="readme prose prose-invert max-w-[70ch] lg:max-w-none"
+    v-html="html"
+    @click="handleCopy"
+  />
 </template>
 
 <style scoped>
