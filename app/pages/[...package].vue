@@ -327,41 +327,38 @@ useSeoMeta({
 })
 
 onKeyStroke(
-  '.',
+  e => isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
   e => {
-    if (isEditableElement(e.target)) return
-    if (pkg.value && displayVersion.value) {
-      e.preventDefault()
-      navigateTo({
-        name: 'code',
-        params: {
-          path: [pkg.value.name, 'v', displayVersion.value.version],
-        },
-      })
-    }
+    if (pkg.value == null || displayVersion.value == null) return
+    e.preventDefault()
+    navigateTo({
+      name: 'code',
+      params: {
+        path: [pkg.value.name, 'v', displayVersion.value.version],
+      },
+    })
   },
   { dedupe: true },
 )
 
 onKeyStroke(
-  'd',
+  e => isKeyWithoutModifiers(e, 'd') && !isEditableElement(e.target),
   e => {
-    if (isEditableElement(e.target)) return
-    if (docsLink.value) {
-      e.preventDefault()
-      navigateTo(docsLink.value)
-    }
+    if (!docsLink.value) return
+    e.preventDefault()
+    navigateTo(docsLink.value)
   },
   { dedupe: true },
 )
 
-onKeyStroke('c', e => {
-  if (isEditableElement(e.target)) return
-  if (pkg.value) {
+onKeyStroke(
+  e => isKeyWithoutModifiers(e, 'c') && !isEditableElement(e.target),
+  e => {
+    if (!pkg.value) return
     e.preventDefault()
     router.push({ path: '/compare', query: { packages: pkg.value.name } })
-  }
-})
+  },
+)
 
 defineOgImageComponent('Package', {
   name: () => pkg.value?.name ?? 'Package',
@@ -392,7 +389,7 @@ function handleClick(event: MouseEvent) {
 </script>
 
 <template>
-  <main class="container flex-1 py-8 xl:py-12">
+  <main class="container flex-1 w-full py-8 xl:py-12">
     <PackageSkeleton v-if="status === 'pending'" />
 
     <article v-else-if="status === 'success' && pkg" class="package-page">

@@ -39,6 +39,12 @@ export default defineNuxtConfig({
 
   css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
+  $production: {
+    debug: {
+      hydration: true,
+    },
+  },
+
   runtimeConfig: {
     sessionPassword: '',
     // Upstash Redis for distributed OAuth token refresh locking in production
@@ -113,7 +119,7 @@ export default defineNuxtConfig({
     typedPages: true,
   },
 
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: '2026-01-31',
 
   nitro: {
     experimental: {
@@ -217,10 +223,6 @@ export default defineNuxtConfig({
         },
       ],
     },
-  },
-
-  debug: {
-    hydration: true,
   },
 
   typescript: {
