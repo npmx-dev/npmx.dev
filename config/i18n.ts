@@ -158,6 +158,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'ja-JP.json',
     name: '日本語',
   },
+  {
+    code: 'ne-NP',
+    file: 'ne-NP.json',
+    name: 'नेपाली',
+  },
   /*{
       code: 'nl-NL',
       file: 'nl-NL.json',
