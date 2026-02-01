@@ -23,25 +23,16 @@ const hasBothConnections = computed(() => isNpmConnected.value && !!atprotoUser.
 /** Only show count of active (pending/approved/running) operations */
 const operationCount = computed(() => activeOperations.value.length)
 
-function handleClickOutside(event: MouseEvent) {
-  const target = event.target as HTMLElement
-  if (!target.closest('.account-menu')) {
-    isOpen.value = false
-  }
-}
+const accountMenuRef = useTemplateRef('accountMenuRef')
 
-function handleKeydown(event: KeyboardEvent) {
+onClickOutside(accountMenuRef, () => {
+  isOpen.value = false
+})
+
+useEventListener('keydown', event => {
   if (event.key === 'Escape' && isOpen.value) {
     isOpen.value = false
   }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
 })
 
 function openConnectorModal() {
@@ -56,7 +47,7 @@ function openAuthModal() {
 </script>
 
 <template>
-  <div class="account-menu relative" @keydown="handleKeydown">
+  <div ref="accountMenuRef" class="relative">
     <button
       type="button"
       class="relative flex items-center justify-end gap-2 px-2 py-1.5 min-w-24 rounded-md transition-colors duration-200 hover:bg-bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
