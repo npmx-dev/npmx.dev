@@ -66,7 +66,7 @@
     "relative_dates": "Relativní data",
     "relative_dates_description": "Zobrazit \"před 3 dny\" místo celého data",
     "include_types": "Zahrnout {'@'}types při instalaci",
-    "include_types_description": "Přidat balíček {'@'}types do instalačních příkazů pro neoznačené balíčky",
+    "include_types_description": "Přidat balíček {'@'}types do instalačních příkazů pro balíčky bez integrovaných typů",
     "hide_platform_packages": "Skrýt platformně specifické balíčky ve vyhledávání",
     "hide_platform_packages_description": "Skrýt nativní binární balíčky jako {'@'}esbuild/linux-x64 z výsledků",
     "theme": "Téma",
