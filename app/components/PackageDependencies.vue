@@ -187,12 +187,10 @@ const sortedOptionalDependencies = computed(() => {
             </NuxtLink>
             <span
               v-if="peer.optional"
-              class="shrink-0 text-fg-muted hover:text-fg transition-colors duration-200 cursor-help inline-flex items-center"
+              class="px-1 py-0.5 font-mono text-[10px] text-fg-subtle bg-bg-muted border border-border rounded shrink-0"
               :title="$t('package.dependencies.optional')"
-              :aria-label="$t('package.dependencies.optional')"
-              role="img"
             >
-              <span aria-hidden="true" class="i-carbon:information w-3 h-3 block" />
+              {{ $t('package.dependencies.optional') }}
             </span>
           </div>
           <NuxtLink
