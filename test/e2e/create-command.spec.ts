@@ -1,6 +1,9 @@
 import { expect, test } from '@nuxt/test-utils/playwright'
 
 test.describe('Create Command', () => {
+  // TODO: these tests depend on external npm registry API - we should add data fixtures
+  test.describe.configure({ retries: 2 })
+
   test.describe('Visibility', () => {
     test('/vite - should show create command (same maintainers)', async ({ page, goto }) => {
       await goto('/vite', { waitUntil: 'domcontentloaded' })
@@ -80,13 +83,15 @@ test.describe('Create Command', () => {
     test('hovering create command shows copy button', async ({ page, goto }) => {
       await goto('/vite', { waitUntil: 'hydration' })
 
-      // Wait for package analysis API to load (create command requires this)
-      // First ensure the package page has loaded
-      await expect(page.locator('h1')).toContainText('vite')
+      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
+
+      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
+        timeout: 15000,
+      })
 
       // Find the create command container (wait longer for API response)
       const createCommandContainer = page.locator('.group\\/createcmd').first()
-      await expect(createCommandContainer).toBeVisible({ timeout: 15000 })
+      await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
 
       // Copy button should initially be hidden (opacity-0)
       const copyButton = createCommandContainer.locator('button')
@@ -108,9 +113,15 @@ test.describe('Create Command', () => {
       await context.grantPermissions(['clipboard-read', 'clipboard-write'])
 
       await goto('/vite', { waitUntil: 'hydration' })
+      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
 
-      // Find and hover over the create command container
+      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
+        timeout: 15000,
+      })
+
       const createCommandContainer = page.locator('.group\\/createcmd').first()
+      await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
+
       await createCommandContainer.hover()
 
       // Click the copy button

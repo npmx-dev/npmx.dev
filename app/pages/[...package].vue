@@ -98,24 +98,9 @@ const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
 
 // Fetch dependency analysis (lazy, client-side)
 // This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
-const {
-  data: vulnTree,
-  status: vulnTreeStatus,
-  fetch: fetchVulnTree,
-} = useDependencyAnalysis(packageName, () => displayVersion.value?.version ?? '')
-onMounted(() => {
-  // Fetch vulnerability tree once displayVersion is available
-  if (displayVersion.value) {
-    fetchVulnTree()
-  }
-})
-watch(
-  () => displayVersion.value?.version,
-  () => {
-    if (displayVersion.value) {
-      fetchVulnTree()
-    }
-  },
+const { data: vulnTree, status: vulnTreeStatus } = useDependencyAnalysis(
+  packageName,
+  () => displayVersion.value?.version ?? '',
 )
 
 const {
@@ -292,10 +277,6 @@ function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-function formatNumber(num: number): string {
-  return new Intl.NumberFormat('en-US').format(num)
-}
-
 function getDependencyCount(version: PackumentVersion | null): number {
   if (!version?.dependencies) return 0
   return Object.keys(version.dependencies).length
@@ -389,11 +370,19 @@ onKeyStroke(
   { dedupe: true },
 )
 
+onKeyStroke('c', e => {
+  if (pkg.value) {
+    e.preventDefault()
+    router.push({ path: '/compare', query: { packages: pkg.value.name } })
+  }
+})
+
 defineOgImageComponent('Package', {
   name: () => pkg.value?.name ?? 'Package',
   version: () => displayVersion.value?.version ?? '',
-  downloads: () => (downloads.value ? formatNumber(downloads.value.downloads) : ''),
+  downloads: () => (downloads.value ? $n(downloads.value.downloads) : ''),
   license: () => pkg.value?.license ?? '',
+  stars: () => stars.value ?? 0,
   primaryColor: '#60a5fa',
 })
 
@@ -535,11 +524,11 @@ function handleClick(event: MouseEvent) {
               </template>
             </ClientOnly>
 
-            <!-- Internal navigation: Docs + Code (hidden on mobile, shown in external links instead) -->
+            <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
             <nav
               v-if="displayVersion"
               :aria-label="$t('package.navigation')"
-              class="hidden sm:flex items-center gap-1 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
+              class="hidden sm:flex items-center gap-0.5 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
             >
               <NuxtLink
                 v-if="docsLink"
@@ -571,6 +560,20 @@ function handleClick(event: MouseEvent) {
                   aria-hidden="true"
                 >
                   .
+                </kbd>
+              </NuxtLink>
+              <NuxtLink
+                :to="{ path: '/compare', query: { packages: pkg.name } }"
+                class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                aria-keyshortcuts="c"
+              >
+                <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
+                {{ $t('package.links.compare') }}
+                <kbd
+                  class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
+                  aria-hidden="true"
+                >
+                  c
                 </kbd>
               </NuxtLink>
             </nav>
@@ -681,7 +684,7 @@ function handleClick(event: MouseEvent) {
                 {{ $t('package.links.fund') }}
               </a>
             </li>
-            <!-- Mobile-only: Docs + Code links -->
+            <!-- Mobile-only: Docs + Code + Compare links -->
             <li v-if="docsLink && displayVersion" class="sm:hidden">
               <NuxtLink
                 :to="docsLink"
@@ -701,6 +704,15 @@ function handleClick(event: MouseEvent) {
               >
                 <span class="i-carbon:code w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.code') }}
+              </NuxtLink>
+            </li>
+            <li class="sm:hidden">
+              <NuxtLink
+                :to="{ path: '/compare', query: { packages: pkg.name } }"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon:compare w-4 h-4" aria-hidden="true" />
+                {{ $t('package.links.compare') }}
               </NuxtLink>
             </li>
           </ul>
@@ -972,7 +984,7 @@ function handleClick(event: MouseEvent) {
           </a>
         </h2>
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-        <div
+        <article
           v-if="readmeData?.html"
           class="readme-content prose prose-invert max-w-[70ch]"
           v-html="readmeData.html"
@@ -1012,7 +1024,7 @@ function handleClick(event: MouseEvent) {
 
       <div class="area-sidebar">
         <!-- Sidebar -->
-        <aside class="sticky top-20 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
+        <div class="sticky top-20 space-y-6 sm:space-y-8 min-w-0 overflow-hidden">
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 
@@ -1120,7 +1132,7 @@ function handleClick(event: MouseEvent) {
             :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
             :optional-dependencies="displayVersion.optionalDependencies"
           />
-        </aside>
+        </div>
       </div>
     </article>
 

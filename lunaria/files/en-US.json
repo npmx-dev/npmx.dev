@@ -46,7 +46,13 @@
     "popular_packages": "Popular packages",
     "search": "search",
     "settings": "settings",
-    "back": "back"
+    "compare": "compare",
+    "back": "back",
+    "menu": "Menu",
+    "mobile_menu": "Navigation menu",
+    "open_menu": "Open menu",
+    "links": "Links",
+    "tap_to_search": "Tap to search"
   },
   "settings": {
     "title": "settings",
@@ -151,7 +157,8 @@
       "jsr": "jsr",
       "code": "code",
       "docs": "docs",
-      "fund": "fund"
+      "fund": "fund",
+      "compare": "compare"
     },
     "docs": {
       "not_available": "Docs not available",
@@ -377,6 +384,9 @@
     },
     "modal": {
       "title": "Local Connector",
+      "contributor_badge": "Contributors only",
+      "contributor_notice": "The connector is not yet published to npm. See the {link} for how to run locally.",
+      "contributor_link": "contributing guide",
       "connected": "Connected",
       "connected_as_user": "Connected as ~{user}",
       "connected_hint": "You can now manage packages and organizations from the web UI.",
@@ -574,7 +584,8 @@
     "markdown_view_mode": {
       "preview": "preview",
       "code": "code"
-    }
+    },
+    "file_path": "File path"
   },
   "badges": {
     "provenance": {
@@ -794,6 +805,50 @@
       "error": "Failed to load organizations",
       "empty": "No organizations found",
       "view_all": "View all"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "compare packages",
+      "tagline": "compare npm packages side-by-side to help you choose the right one.",
+      "meta_title": "Compare {packages} - npmx",
+      "meta_title_empty": "Compare Packages - npmx",
+      "meta_description": "Side-by-side comparison of {packages}",
+      "meta_description_empty": "Compare npm packages side-by-side",
+      "section_packages": "Packages",
+      "section_facets": "Facets",
+      "section_comparison": "Comparison",
+      "loading": "Loading package data...",
+      "error": "Failed to load package data. Please try again.",
+      "empty_title": "Select packages to compare",
+      "empty_description": "Search and add at least 2 packages above to see a side-by-side comparison of their metrics."
+    },
+    "selector": {
+      "search_label": "Search for packages",
+      "search_first": "Search for a package...",
+      "search_add": "Add another package...",
+      "searching": "Searching...",
+      "remove_package": "Remove {package}",
+      "packages_selected": "{count}/{max} packages selected.",
+      "add_hint": "Add at least 2 packages to compare.",
+      "loading_versions": "Loading versions...",
+      "select_version": "Select version"
+    },
+    "facets": {
+      "group_label": "Comparison facets",
+      "all": "all",
+      "none": "none",
+      "coming_soon": "Coming soon",
+      "select_all": "Select all facets",
+      "deselect_all": "Deselect all facets",
+      "select_category": "Select all {category} facets",
+      "deselect_category": "Deselect all {category} facets",
+      "categories": {
+        "performance": "Performance",
+        "health": "Health",
+        "compatibility": "Compatibility",
+        "security": "Security & Compliance"
+      }
     }
   }
 }

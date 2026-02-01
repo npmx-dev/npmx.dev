@@ -5,8 +5,8 @@ import {
   getPackageSpecifier,
   getExecuteCommand,
   getExecuteCommandParts,
-} from '../../app/utils/install-command'
-import type { JsrPackageInfo } from '../../shared/types/jsr'
+} from '../../../../app/utils/install-command'
+import type { JsrPackageInfo } from '../../../../shared/types/jsr'
 
 describe('install command generation', () => {
   // Test fixtures

@@ -105,6 +105,12 @@ The connector will check your npm authentication, generate a connection token, a
 
 ## Code style
 
+When committing changes, try to keep an eye out for unintended formatting updates. These can make a pull request look noisier than it really is and slow down the review process. Sometimes IDEs automatically reformat files on save, which can unintentionally introduce extra changes.
+
+To help with this, the project uses `oxfmt` to handle formatting via a pre-commit hook. The hook will automatically reformat files when needed. If something can’t be fixed automatically, it will let you know what needs to be updated before you can commit.
+
+If you want to get ahead of any formatting issues, you can also run `pnpm lint:fix` before committing to fix formatting across the whole project.
+
 ### Typescript
 
 - We care about good types &ndash; never cast things to `any` 💪
@@ -369,13 +375,17 @@ We recommend the [i18n-ally](https://marketplace.visualstudio.com/items?itemName
 
 The extension is included in our workspace recommendations, so VSCode should prompt you to install it.
 
-### Formatting with locale
+### Formatting numbers and dates
 
-When formatting numbers or dates that should respect the user's locale, pass the locale:
+Use vue-i18n's built-in formatters for locale-aware formatting:
 
-```typescript
-const { locale } = useI18n()
-const formatted = formatNumber(12345, locale.value) // "12,345" in en-US
+```vue
+<template>
+  <p>{{ $n(12345) }}</p>
+  <!-- "12,345" in en-US, "12 345" in fr-FR -->
+  <p>{{ $d(new Date()) }}</p>
+  <!-- locale-aware date -->
+</template>
 ```
 
 ## Testing

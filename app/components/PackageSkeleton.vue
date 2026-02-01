@@ -150,7 +150,7 @@
       </div>
 
       <!-- Sidebar: order-1 lg:order-2 space-y-8 -->
-      <aside class="order-1 lg:order-2 space-y-8">
+      <div class="order-1 lg:order-2 space-y-8">
         <!-- Maintainers -->
         <section>
           <h2
@@ -249,7 +249,7 @@
             </li>
           </ul>
         </section>
-      </aside>
+      </div>
     </div>
   </article>
 </template>

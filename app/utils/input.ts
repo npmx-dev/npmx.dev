@@ -1,4 +1,3 @@
-/** @public */
 export const noCorrect = {
   autocapitalize: 'off',
   autocomplete: 'off',

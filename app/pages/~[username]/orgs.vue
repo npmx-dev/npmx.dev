@@ -119,10 +119,10 @@ defineOgImageComponent('Default', {
   <main class="container flex-1 py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
-      <div class="flex items-center gap-4 mb-4">
+      <div class="flex flex-wrap items-center gap-4 mb-4">
         <!-- Avatar placeholder -->
         <div
-          class="w-16 h-16 rounded-full bg-bg-muted border border-border flex items-center justify-center"
+          class="size-16 shrink-0 rounded-full bg-bg-muted border border-border flex items-center justify-center"
           aria-hidden="true"
         >
           <span class="text-2xl text-fg-subtle font-mono">{{

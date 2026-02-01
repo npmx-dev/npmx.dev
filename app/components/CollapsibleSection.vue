@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { shallowRef, computed } from 'vue'
 
 interface Props {
   title: string
@@ -19,7 +19,7 @@ const buttonId = `${props.id}-collapsible-button`
 const contentId = `${props.id}-collapsible-content`
 const headingId = `${props.id}-heading`
 
-const isOpen = ref(true)
+const isOpen = shallowRef(true)
 
 onPrehydrate(() => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
@@ -123,7 +123,7 @@ useHead({
       :id="contentId"
       class="grid ms-6 transition-[grid-template-rows] duration-200 ease-in-out collapsible-content overflow-hidden"
     >
-      <div class="min-h-0">
+      <div class="min-h-0 min-w-0">
         <slot />
       </div>
     </div>

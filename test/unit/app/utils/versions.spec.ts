@@ -9,7 +9,7 @@ import {
   isSameVersionGroup,
   parseVersion,
   sortTags,
-} from '../../app/utils/versions'
+} from '../../../../app/utils/versions'
 
 describe('parseVersion', () => {
   it('parses stable versions', () => {

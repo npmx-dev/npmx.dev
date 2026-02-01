@@ -11,6 +11,11 @@ on:
     branches:
       - main
 
+# cancel in-progress runs on new commits to same PR (gitub.event.number)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.sha }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -134,4 +139,4 @@ jobs:
         run: pnpm install
 
       - name: 🔍 Check for unused code
-        run: pnpm knip:production
+        run: pnpm knip

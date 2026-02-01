@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const router = useRouter()
 const { settings } = useSettings()
-const { locale, locales, setLocale } = useI18n()
+const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 
@@ -28,6 +28,11 @@ defineOgImageComponent('Default', {
   description: () => $t('settings.tagline'),
   primaryColor: '#60a5fa',
 })
+
+const setLocale: typeof setNuxti18nLocale = locale => {
+  settings.value.selectedLocale = locale
+  return setNuxti18nLocale(locale)
+}
 </script>
 
 <template>
@@ -100,64 +105,18 @@ defineOgImageComponent('Default', {
           </h2>
           <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-4">
             <!-- Relative dates toggle -->
-            <div class="space-y-2">
-              <button
-                type="button"
-                class="w-full flex items-center justify-between gap-4 group"
-                role="switch"
-                :aria-checked="settings.relativeDates"
-                @click="settings.relativeDates = !settings.relativeDates"
-              >
-                <span class="text-sm text-fg font-medium text-start">
-                  {{ $t('settings.relative_dates') }}
-                </span>
-                <span
-                  class="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out motion-reduce:transition-none shadow-sm cursor-pointer"
-                  :class="settings.relativeDates ? 'bg-accent' : 'bg-bg border border-border'"
-                  aria-hidden="true"
-                >
-                  <span
-                    class="pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-                    :class="settings.relativeDates ? 'bg-bg' : 'bg-fg-muted'"
-                  />
-                </span>
-              </button>
-              <p class="text-sm text-fg-muted">
-                {{ $t('settings.relative_dates_description') }}
-              </p>
-            </div>
+            <Toggle :label="$t('settings.relative_dates')" v-model="settings.relativeDates" />
 
             <!-- Divider -->
             <div class="border-t border-border" />
 
             <!-- Include @types in install toggle -->
             <div class="space-y-2">
-              <button
-                type="button"
-                class="w-full flex items-center justify-between gap-4 group"
-                role="switch"
-                :aria-checked="settings.includeTypesInInstall"
-                @click="settings.includeTypesInInstall = !settings.includeTypesInInstall"
-              >
-                <span class="text-sm text-fg font-medium text-start">
-                  {{ $t('settings.include_types') }}
-                </span>
-                <span
-                  class="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out motion-reduce:transition-none shadow-sm cursor-pointer"
-                  :class="
-                    settings.includeTypesInInstall ? 'bg-accent' : 'bg-bg border border-border'
-                  "
-                  aria-hidden="true"
-                >
-                  <span
-                    class="pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-                    :class="settings.includeTypesInInstall ? 'bg-bg' : 'bg-fg-muted'"
-                  />
-                </span>
-              </button>
-              <p class="text-sm text-fg-muted">
-                {{ $t('settings.include_types_description') }}
-              </p>
+              <Toggle
+                :label="$t('settings.include_types')"
+                :description="$t('settings.include_types_description')"
+                v-model="settings.includeTypesInInstall"
+              />
             </div>
 
             <!-- Divider -->
@@ -165,32 +124,11 @@ defineOgImageComponent('Default', {
 
             <!-- Hide platform-specific packages toggle -->
             <div class="space-y-2">
-              <button
-                type="button"
-                class="w-full flex items-center justify-between gap-4 group"
-                role="switch"
-                :aria-checked="settings.hidePlatformPackages"
-                @click="settings.hidePlatformPackages = !settings.hidePlatformPackages"
-              >
-                <span class="text-sm text-fg font-medium text-start">
-                  {{ $t('settings.hide_platform_packages') }}
-                </span>
-                <span
-                  class="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out motion-reduce:transition-none shadow-sm cursor-pointer"
-                  :class="
-                    settings.hidePlatformPackages ? 'bg-accent' : 'bg-bg border border-border'
-                  "
-                  aria-hidden="true"
-                >
-                  <span
-                    class="pointer-events-none inline-block h-5 w-5 rounded-full shadow-sm ring-0 transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-                    :class="settings.hidePlatformPackages ? 'bg-bg' : 'bg-fg-muted'"
-                  />
-                </span>
-              </button>
-              <p class="text-sm text-fg-muted">
-                {{ $t('settings.hide_platform_packages_description') }}
-              </p>
+              <Toggle
+                :label="$t('settings.hide_platform_packages')"
+                :description="$t('settings.hide_platform_packages')"
+                v-model="settings.hidePlatformPackages"
+              />
             </div>
           </div>
         </section>
@@ -254,15 +192,3 @@ defineOgImageComponent('Default', {
     </article>
   </main>
 </template>
-
-<style scoped>
-button[aria-checked='false'] > span:last-of-type > span {
-  translate: 0;
-}
-button[aria-checked='true'] > span:last-of-type > span {
-  translate: calc(100%);
-}
-html[dir='rtl'] button[aria-checked='true'] > span:last-of-type > span {
-  translate: calc(-100%);
-}
-</style>

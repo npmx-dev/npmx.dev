@@ -7,7 +7,7 @@ import {
   getCreateShortName,
   getTypesPackageName,
   hasBuiltInTypes,
-} from '../../shared/utils/package-analysis'
+} from '../../../../shared/utils/package-analysis'
 
 describe('detectModuleFormat', () => {
   it('detects ESM from type: module', () => {

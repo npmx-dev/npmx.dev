@@ -13,7 +13,7 @@ const buildInfo = useAppConfig().buildInfo
     :class="footer ? 'mt-4 justify-start' : 'mb-8 justify-center'"
     style="animation-delay: 0.05s"
   >
-    <i18n-t keypath="built_at">
+    <i18n-t keypath="built_at" scope="global">
       <NuxtTime :datetime="buildInfo.time" :locale="locale" relative />
     </i18n-t>
     <span>&middot;</span>

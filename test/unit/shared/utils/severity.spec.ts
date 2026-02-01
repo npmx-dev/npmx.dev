@@ -4,7 +4,7 @@ import {
   SEVERITY_TEXT_COLORS,
   SEVERITY_BADGE_COLORS,
   getHighestSeverity,
-} from '../../shared/utils/severity'
+} from '../../../../shared/utils/severity'
 
 describe('severity utils', () => {
   describe('SEVERITY_COLORS', () => {
