@@ -148,7 +148,10 @@ const handleCopy = async (e: MouseEvent) => {
   border: 1px solid var(--border);
   color: var(--fg-subtle);
   opacity: 0;
-  transition: opacity 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .readme :deep(.readme-code-block:hover .readme-copy-button) {
