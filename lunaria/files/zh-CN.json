@@ -732,6 +732,10 @@
       }
     }
   },
+  "bookmarks": {
+    "add": "收藏 {name}",
+    "remove": "取消收藏 {name}"
+  },
   "account_menu": {
     "connect": "连接",
     "account": "账户",
@@ -763,6 +767,13 @@
   "header": {
     "home": "npmx 主页",
     "github": "GitHub",
+    "bookmarks": "收藏",
+    "bookmarks_dropdown": {
+      "title": "收藏的包",
+      "empty": "暂无收藏",
+      "clear_all": "清空全部",
+      "remove": "取消收藏 {name}"
+    },
     "packages": "包",
     "packages_dropdown": {
       "title": "您的包",

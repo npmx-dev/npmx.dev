@@ -624,9 +624,20 @@
       }
     }
   },
+  "bookmarks": {
+    "add": "{name}をブックマークに追加",
+    "remove": "{name}をブックマークから削除"
+  },
   "header": {
     "home": "ホーム",
     "github": "GitHub",
+    "bookmarks": "ブックマーク",
+    "bookmarks_dropdown": {
+      "title": "ブックマーク",
+      "empty": "ブックマークはありません",
+      "clear_all": "すべて削除",
+      "remove": "{name}をブックマークから削除"
+    },
     "packages": "パッケージ",
     "packages_dropdown": {
       "title": "あなたのパッケージ",

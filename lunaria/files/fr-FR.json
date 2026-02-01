@@ -735,9 +735,20 @@
       }
     }
   },
+  "bookmarks": {
+    "add": "Ajouter {name} aux favoris",
+    "remove": "Retirer {name} des favoris"
+  },
   "header": {
     "home": "accueil npmx",
     "github": "GitHub",
+    "bookmarks": "favoris",
+    "bookmarks_dropdown": {
+      "title": "Paquets favoris",
+      "empty": "Aucun favori",
+      "clear_all": "tout supprimer",
+      "remove": "Retirer {name} des favoris"
+    },
     "packages": "paquets",
     "packages_dropdown": {
       "title": "Vos paquets",

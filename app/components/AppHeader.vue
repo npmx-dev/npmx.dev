@@ -162,8 +162,15 @@ onKeyStroke(
         </ul>
       </div>
 
-      <!-- End: Desktop nav items + Mobile menu button -->
-      <div class="flex-shrink-0 flex items-center gap-4 sm:gap-6">
+      <!-- End: Bookmarks + Settings + Connector -->
+      <div
+        :class="{ 'hidden sm:flex': showFullSearch }"
+        class="flex-shrink-0 flex items-center gap-4 sm:gap-6 ms-auto sm:ms-0"
+      >
+        <ClientOnly>
+          <HeaderBookmarksDropdown />
+        </ClientOnly>
+
         <!-- Desktop: Compare link -->
         <NuxtLink
           to="/compare"

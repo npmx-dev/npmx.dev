@@ -510,12 +510,15 @@ function handleClick(event: MouseEvent) {
             </template>
           </ClientOnly>
 
-          <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
+          <!-- Internal navigation: Bookmark + Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
           <nav
             v-if="displayVersion"
             :aria-label="$t('package.navigation')"
             class="hidden sm:flex items-center gap-0.5 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
           >
+            <ClientOnly>
+              <BookmarkButton :package-name="pkg.name" />
+            </ClientOnly>
             <NuxtLink
               v-if="docsLink"
               :to="docsLink"

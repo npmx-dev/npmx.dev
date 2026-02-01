@@ -711,9 +711,20 @@
       }
     }
   },
+  "bookmarks": {
+    "add": "Aggiungi {name} ai preferiti",
+    "remove": "Rimuovi {name} dai preferiti"
+  },
   "header": {
     "home": "npmx home",
     "github": "GitHub",
+    "bookmarks": "preferiti",
+    "bookmarks_dropdown": {
+      "title": "Pacchetti preferiti",
+      "empty": "Nessun preferito",
+      "clear_all": "elimina tutti",
+      "remove": "Rimuovi {name} dai preferiti"
+    },
     "packages": "pacchetti",
     "packages_dropdown": {
       "title": "I tuoi pacchetti",

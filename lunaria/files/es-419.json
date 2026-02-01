@@ -732,9 +732,20 @@
       }
     }
   },
+  "bookmarks": {
+    "add": "Guardar {name} en marcadores",
+    "remove": "Eliminar {name} de marcadores"
+  },
   "header": {
     "home": "inicio npmx",
     "github": "GitHub",
+    "bookmarks": "marcadores",
+    "bookmarks_dropdown": {
+      "title": "Paquetes guardados",
+      "empty": "Sin marcadores",
+      "clear_all": "eliminar todo",
+      "remove": "Eliminar {name} de marcadores"
+    },
     "packages": "paquetes",
     "packages_dropdown": {
       "title": "Tus Paquetes",

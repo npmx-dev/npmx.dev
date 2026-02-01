@@ -767,6 +767,10 @@
       }
     }
   },
+  "bookmarks": {
+    "add": "{name} als Lesezeichen speichern",
+    "remove": "{name} aus Lesezeichen entfernen"
+  },
   "account_menu": {
     "connect": "verbinden",
     "account": "Konto",
@@ -798,6 +802,13 @@
   "header": {
     "home": "npmx Startseite",
     "github": "GitHub",
+    "bookmarks": "Lesezeichen",
+    "bookmarks_dropdown": {
+      "title": "Gespeicherte Pakete",
+      "empty": "Noch keine Lesezeichen",
+      "clear_all": "alle löschen",
+      "remove": "{name} aus Lesezeichen entfernen"
+    },
     "packages": "Pakete",
     "packages_dropdown": {
       "title": "Deine Pakete",
