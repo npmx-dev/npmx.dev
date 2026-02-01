@@ -11,7 +11,7 @@ const route = useRoute('docs')
 const router = useRouter()
 
 const parsedRoute = computed(() => {
-  const segments = route.params.path || []
+  const segments = route.params.path?.filter(Boolean) || []
   const vIndex = segments.indexOf('v')
 
   if (vIndex === -1 || vIndex >= segments.length - 1) {
