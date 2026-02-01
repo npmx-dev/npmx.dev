@@ -76,9 +76,9 @@ function handleGlobalKeyup() {
 // https://codepen.io/paramagicdev/pen/gbYompq
 // see: https://github.com/npmx-dev/npmx.dev/pull/522#discussion_r2749978022
 function handleModalLightDismiss(e: MouseEvent) {
-  const modal = document.querySelector<HTMLDialogElement>('dialog:modal')
-  if (modal && modal.open && !e.composedPath().includes(modal)) {
-    modal.close()
+  const target = e.target as HTMLElement
+  if (target.tagName === 'DIALOG' && target.hasAttribute('open')) {
+    ;(target as HTMLDialogElement).close()
   }
 }
 

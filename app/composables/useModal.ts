@@ -1,7 +1,8 @@
 export function useModal(modalId: string) {
-  const modal = document.querySelector<HTMLDialogElement>(`#${modalId}`)
+  const getModal = () => document.querySelector<HTMLDialogElement>(`#${modalId}`)
 
   function open() {
+    const modal = getModal()
     if (modal) {
       setTimeout(() => {
         modal.showModal()
@@ -10,6 +11,7 @@ export function useModal(modalId: string) {
   }
 
   function close() {
+    const modal = getModal()
     if (modal) {
       modal.close()
     }
