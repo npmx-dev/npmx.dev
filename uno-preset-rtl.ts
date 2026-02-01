@@ -33,7 +33,7 @@ function directionSizeRTL(
     console.warn(
       `[RTL] Avoid using '${match}'. Use '${match.replace(direction === 'l' ? 'l' : 'r', replacement)}' instead.`,
     )
-    return matcher([match, replacement, size], context)
+    return matcher([match, replacement, size!], context)
   }
 }
 
@@ -42,18 +42,18 @@ function handlerRounded(
   { theme }: RuleContext<any>,
 ): CSSEntries | undefined {
   if (a in cornerMap) {
-    if (s === 'full') return cornerMap[a].map(i => [`border${i}-radius`, 'calc(infinity * 1px)'])
+    if (s === 'full') return cornerMap[a]!.map(i => [`border${i}-radius`, 'calc(infinity * 1px)'])
 
-    const _v = theme.radius?.[s] ?? h.bracket.cssvar.global.fraction.rem(s)
+    const _v = theme.radius?.[s] ?? h.bracket!.cssvar!.global!.fraction!.rem!(s)
     if (_v != null) {
-      return cornerMap[a].map(i => [`border${i}-radius`, _v])
+      return cornerMap[a]!.map(i => [`border${i}-radius`, _v])
     }
   }
 }
 
 function handlerBorderSize([, a = '', b = '1']: string[]): CSSEntries | undefined {
-  const v = h.bracket.cssvar.global.px(b)
-  if (a in directionMap && v != null) return directionMap[a].map(i => [`border${i}-width`, v])
+  const v = h.bracket!.cssvar!.global!.px!(b)
+  if (a in directionMap && v != null) return directionMap[a]!.map(i => [`border${i}-width`, v])
 }
 
 /**
@@ -83,7 +83,7 @@ export function presetRtl(): Preset {
           console.warn(
             `[RTL] Avoid using '${direction}-${size}'. Use '${replacement}-${size}' instead.`,
           )
-          return directionSize('inset')(['', direction === 'left' ? 'is' : 'ie', size], context)
+          return directionSize('inset')(['', direction === 'left' ? 'is' : 'ie', size!], context)
         },
         { autocomplete: '(left|right)-<num>' },
       ],
@@ -105,12 +105,12 @@ export function presetRtl(): Preset {
             l: 'is',
             r: 'ie',
           }
-          const replacement = replacementMap[direction]
+          const replacement = replacementMap[direction!]
           // oxlint-disable-next-line no-console -- warn logging
           console.warn(
             `[RTL] Avoid using 'rounded-${direction}'. Use 'rounded-${replacement}' instead.`,
           )
-          return handlerRounded(['', replacement, size], context)
+          return handlerRounded(['', replacement!, size!], context)
         },
       ],
       [
