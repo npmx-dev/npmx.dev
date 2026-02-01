@@ -21,14 +21,21 @@ const { width } = useElementSize(rootEl)
 
 const chartKey = ref(0)
 
+function nextAnimationFrame(): Promise<void> {
+  return new Promise(resolve => {
+    requestAnimationFrame(() => resolve())
+  })
+}
+
 onMounted(async () => {
   rootEl.value = document.documentElement
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      chartKey.value += 1
-    })
-  })
+
+  // If the chart is painted too early, built-in auto-sizing does not adapt to the final container size
+  await nextAnimationFrame()
+  await nextAnimationFrame()
+  await nextAnimationFrame()
+  chartKey.value += 1
 })
 
 const { colors } = useCssVariables(
