@@ -26,11 +26,12 @@ const route = useRoute()
 watch(() => route.fullPath, closeMenu)
 
 // Close on escape
-onKeyStroke('Escape', () => {
-  if (isOpen.value) {
+onKeyStroke(
+  e => isKeyWithoutModifiers(e, 'Escape') && isOpen.value,
+  e => {
     isOpen.value = false
-  }
-})
+  },
+)
 
 // Prevent body scroll when menu is open
 const isLocked = useScrollLock(document)

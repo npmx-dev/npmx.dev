@@ -42,7 +42,7 @@ if (import.meta.server) {
 function handleGlobalKeydown(e: KeyboardEvent) {
   if (isEditableElement(e.target)) return
 
-  if (e.key === '/') {
+  if (isKeyWithoutModifiers(e, '/')) {
     e.preventDefault()
 
     // Try to find and focus search input on current page
@@ -58,7 +58,7 @@ function handleGlobalKeydown(e: KeyboardEvent) {
     router.push('/search')
   }
 
-  if (e.key === '?') {
+  if (isKeyWithoutModifiers(e, '?')) {
     e.preventDefault()
     showKbdHints.value = true
   }

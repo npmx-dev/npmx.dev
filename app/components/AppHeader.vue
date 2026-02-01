@@ -62,10 +62,8 @@ function handleSearchFocus() {
 }
 
 onKeyStroke(
-  ',',
+  e => isKeyWithoutModifiers(e, ',') && !isEditableElement(e.target),
   e => {
-    if (isEditableElement(e.target)) return
-
     e.preventDefault()
     navigateTo('/settings')
   },
@@ -73,12 +71,12 @@ onKeyStroke(
 )
 
 onKeyStroke(
-  'c',
-  e => {
+  e =>
+    isKeyWithoutModifiers(e, 'c') &&
+    !isEditableElement(e.target) &&
     // Allow more specific handlers to take precedence
-    if (e.defaultPrevented) return
-    if (isEditableElement(e.target)) return
-
+    !e.defaultPrevented,
+  e => {
     e.preventDefault()
     navigateTo('/compare')
   },

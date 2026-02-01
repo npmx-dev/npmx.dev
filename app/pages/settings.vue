@@ -7,13 +7,10 @@ const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 
 // Escape to go back (but not when focused on form elements)
 onKeyStroke(
-  'Escape',
+  e => isKeyWithoutModifiers(e, 'Escape') && !isEditableElement(e.target),
   e => {
-    const target = e.target as HTMLElement
-    if (!['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.tagName)) {
-      e.preventDefault()
-      router.back()
-    }
+    e.preventDefault()
+    router.back()
   },
   { dedupe: true },
 )
@@ -82,7 +79,9 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                     | 'system'
                 "
               >
-                <option value="system">{{ $t('settings.theme_system') }}</option>
+                <option value="system">
+                  {{ $t('settings.theme_system') }}
+                </option>
                 <option value="light">{{ $t('settings.theme_light') }}</option>
                 <option value="dark">{{ $t('settings.theme_dark') }}</option>
               </select>
