@@ -64,7 +64,7 @@ function handleBlur() {
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-bg-subtle border border-border rounded-md"
       >
         <NuxtLink
-          :to="`/${pkg}`"
+          :to="`/package/${pkg}`"
           class="font-mono text-sm text-fg hover:text-accent transition-colors"
         >
           {{ pkg }}
