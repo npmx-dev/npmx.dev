@@ -9,7 +9,11 @@ import type {
   VulnerabilityTreeResult,
   DeprecatedPackageInfo,
 } from '#shared/types/dependency-analysis'
+import { mapWithConcurrency } from '#shared/utils/async'
 import { resolveDependencyTree } from './dependency-resolver'
+
+/** Maximum concurrent requests for fetching vulnerability details */
+const OSV_DETAIL_CONCURRENCY = 25
 
 /** Package info needed for OSV queries */
 interface PackageQueryInfo {
@@ -46,6 +50,15 @@ async function queryOsvBatch(
       const result = response.results[i]
       if (result?.vulns && result.vulns.length > 0) {
         vulnerableIndices.push(i)
+      }
+      // Warn if pagination token present (>1000 vulns for single query or >3000 total)
+      // This is extremely unlikely for npm packages but log for visibility
+      if (result?.next_page_token) {
+        // oxlint-disable-next-line no-console -- warn about paginated results
+        console.warn(
+          `[dep-analysis] OSV batch result has pagination token for package index ${i} ` +
+            `(${packages[i]?.name}@${packages[i]?.version}) - some vulnerabilities may be missing`,
+        )
       }
     }
 
@@ -199,10 +212,10 @@ export const analyzeDependencyTree = defineCachedFunction(
     if (!batchFailed && vulnerableIndices.length > 0) {
       // Step 2: Fetch full vulnerability details only for packages with vulns
       // This is typically a small fraction of total packages
-      const vulnerablePackageInfos = vulnerableIndices.map(i => packages[i]!)
-
-      const detailResults = await Promise.all(
-        vulnerablePackageInfos.map(pkg => queryOsvDetails(pkg)),
+      const detailResults = await mapWithConcurrency(
+        vulnerableIndices,
+        i => queryOsvDetails(packages[i]!),
+        OSV_DETAIL_CONCURRENCY,
       )
 
       for (const result of detailResults) {
