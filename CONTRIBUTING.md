@@ -409,10 +409,10 @@ describe('featureName', () => {
 
 ### Component accessibility tests
 
-All new components should have a basic accessibility test in `test/nuxt/components.spec.ts`. These tests use [axe-core](https://github.com/dequelabs/axe-core) to catch common accessibility violations.
+All Vue components should have accessibility tests in `test/nuxt/a11y.spec.ts`. These tests use [axe-core](https://github.com/dequelabs/axe-core) to catch common accessibility violations and run in a real browser environment via Playwright.
 
 ```typescript
-import MyComponent from '~/components/MyComponent.vue'
+import { MyComponent } from '#components'
 
 describe('MyComponent', () => {
   it('should have no accessibility violations', async () => {
@@ -428,6 +428,8 @@ describe('MyComponent', () => {
 ```
 
 The `runAxe` helper handles DOM isolation and disables page-level rules that don't apply to isolated component testing.
+
+A coverage test in `test/unit/a11y-component-coverage.spec.ts` ensures all components are either tested or explicitly skipped with justification. When you add a new component, this test will fail until you add accessibility tests for it.
 
 > [!IMPORTANT]
 > Just because axe-core doesn't find any obvious issues, it does not mean a component is accessible. Please do additional checks and use best practices.

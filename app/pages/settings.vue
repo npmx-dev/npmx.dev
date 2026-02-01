@@ -1,19 +1,19 @@
 <script setup lang="ts">
 const router = useRouter()
 const { settings } = useSettings()
-const { locale, locales, setLocale } = useI18n()
+const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 
-// Escape to go back (but not when focused on form elements)
+// Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
-  'Escape',
+  e =>
+    isKeyWithoutModifiers(e, 'Escape') &&
+    !isEditableElement(e.target) &&
+    !document.documentElement.matches('html:has(:modal)'),
   e => {
-    const target = e.target as HTMLElement
-    if (!['INPUT', 'SELECT', 'TEXTAREA'].includes(target?.tagName)) {
-      e.preventDefault()
-      router.back()
-    }
+    e.preventDefault()
+    router.back()
   },
   { dedupe: true },
 )
@@ -28,6 +28,11 @@ defineOgImageComponent('Default', {
   description: () => $t('settings.tagline'),
   primaryColor: '#60a5fa',
 })
+
+const setLocale: typeof setNuxti18nLocale = locale => {
+  settings.value.selectedLocale = locale
+  return setNuxti18nLocale(locale)
+}
 </script>
 
 <template>
@@ -77,7 +82,9 @@ defineOgImageComponent('Default', {
                     | 'system'
                 "
               >
-                <option value="system">{{ $t('settings.theme_system') }}</option>
+                <option value="system">
+                  {{ $t('settings.theme_system') }}
+                </option>
                 <option value="light">{{ $t('settings.theme_light') }}</option>
                 <option value="dark">{{ $t('settings.theme_dark') }}</option>
               </select>
@@ -88,7 +95,7 @@ defineOgImageComponent('Default', {
               <span class="block text-sm text-fg font-medium">
                 {{ $t('settings.accent_colors') }}
               </span>
-              <AccentColorPicker />
+              <SettingsAccentColorPicker />
             </div>
           </div>
         </section>
@@ -100,14 +107,17 @@ defineOgImageComponent('Default', {
           </h2>
           <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-4">
             <!-- Relative dates toggle -->
-            <Toggle :label="$t('settings.relative_dates')" v-model="settings.relativeDates" />
+            <SettingsToggle
+              :label="$t('settings.relative_dates')"
+              v-model="settings.relativeDates"
+            />
 
             <!-- Divider -->
             <div class="border-t border-border" />
 
             <!-- Include @types in install toggle -->
             <div class="space-y-2">
-              <Toggle
+              <SettingsToggle
                 :label="$t('settings.include_types')"
                 :description="$t('settings.include_types_description')"
                 v-model="settings.includeTypesInInstall"
@@ -119,7 +129,7 @@ defineOgImageComponent('Default', {
 
             <!-- Hide platform-specific packages toggle -->
             <div class="space-y-2">
-              <Toggle
+              <SettingsToggle
                 :label="$t('settings.hide_platform_packages')"
                 :description="$t('settings.hide_platform_packages')"
                 v-model="settings.hidePlatformPackages"
@@ -165,7 +175,7 @@ defineOgImageComponent('Default', {
             <!-- Translation helper for non-source locales -->
             <template v-if="currentLocaleStatus && !isSourceLocale">
               <div class="border-t border-border pt-4">
-                <TranslationHelper :status="currentLocaleStatus" />
+                <SettingsTranslationHelper :status="currentLocaleStatus" />
               </div>
             </template>
 

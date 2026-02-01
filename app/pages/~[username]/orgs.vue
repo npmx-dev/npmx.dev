@@ -130,7 +130,7 @@ defineOgImageComponent('Default', {
           }}</span>
         </div>
         <div>
-          <h1 class="font-mono text-2xl sm:text-3xl font-medium">@{{ username }}</h1>
+          <h1 class="font-mono text-2xl sm:text-3xl font-medium">~{{ username }}</h1>
           <p class="text-fg-muted text-sm mt-1">{{ $t('user.orgs_page.title') }}</p>
         </div>
       </div>

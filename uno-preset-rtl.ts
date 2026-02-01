@@ -58,7 +58,6 @@ function handlerBorderSize([, a = '', b = '1']: string[]): CSSEntries | undefine
 
 /**
  * CSS RTL support to detect, replace and warn wrong left/right usages.
- * @public
  */
 export function presetRtl(): Preset {
   return {

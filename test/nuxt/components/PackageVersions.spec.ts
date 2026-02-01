@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import PackageVersions from '~/components/PackageVersions.vue'
+import PackageVersions from '~/components/Package/Versions.vue'
 import type { PackumentVersion } from '#shared/types'
 
 // Mock the fetchAllPackageVersions function

@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "$schema": "https://unpkg.com/oxlint/configuration_schema.json",
   "plugins": ["unicorn", "typescript", "oxc", "vue", "vitest"],
   "categories": {
     "correctness": "error",

@@ -92,12 +92,9 @@ export const PackageFileDiffQuerySchema = v.object({
 /**
  * Automatically infer types for routes
  * Usage - prefer this over manually defining interfaces
- * @public
  */
 export type PackageRouteParams = v.InferOutput<typeof PackageRouteParamsSchema>
-/** @public */
 export type PackageVersionQuery = v.InferOutput<typeof PackageVersionQuerySchema>
-/** @public */
 export type PackageFileQuery = v.InferOutput<typeof PackageFileQuerySchema>
 /** @public */
 export type PackageCompareQuery = v.InferOutput<typeof PackageCompareQuerySchema>

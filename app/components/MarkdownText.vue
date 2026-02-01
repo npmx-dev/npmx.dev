@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { decodeHtmlEntities } from '~/utils/formatters'
+
 const props = defineProps<{
   text: string
   /** When true, renders link text without the anchor tag (useful when inside another link) */
@@ -21,8 +23,11 @@ function stripMarkdownImages(text: string): string {
 
 // Strip HTML tags and escape remaining HTML to prevent XSS
 function stripAndEscapeHtml(text: string): string {
-  // First strip markdown image badges
-  let stripped = stripMarkdownImages(text)
+  // First decode any HTML entities in the input
+  let stripped = decodeHtmlEntities(text)
+
+  // Then strip markdown image badges
+  stripped = stripMarkdownImages(stripped)
 
   // Then strip actual HTML tags (keep their text content)
   // Only match tags that start with a letter or / (to avoid matching things like "a < b > c")
