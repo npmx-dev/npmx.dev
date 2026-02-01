@@ -117,6 +117,7 @@ import {
   SearchSuggestionCard,
   VersionSelector,
   ViewModeToggle,
+  CommandBar,
 } from '#components'
 
 // Server variant components must be imported directly to test the server-side render
@@ -1802,6 +1803,14 @@ describe('component accessibility audits', () => {
           urlPattern: '/vue/v/{version}',
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CommandBar', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(CommandBar)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

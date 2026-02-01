@@ -41,7 +41,6 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Package/WeeklyDownloadStats.vue':
     'Uses vue-data-ui VueUiSparkline - has DOM measurement issues in test environment',
   'UserCombobox.vue': 'Unused component - intended for future admin features',
-  'CommandBar.vue': 'Requires full app context to collect and render commands',
 }
 
 /**
