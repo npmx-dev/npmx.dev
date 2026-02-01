@@ -439,10 +439,7 @@ defineOgImageComponent('Default', {
             v-show="markdownViewMode === 'preview'"
             class="flex justify-center p-4"
           >
-            <div
-              class="readme-content prose prose-invert max-w-[70ch]"
-              v-html="fileContent.markdownHtml.html"
-            ></div>
+            <Readme v-html="fileContent.markdownHtml.html" />
           </div>
 
           <CodeViewer

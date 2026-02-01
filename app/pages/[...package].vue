@@ -939,12 +939,7 @@ function handleClick(event: MouseEvent) {
           </a>
         </h2>
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-        <article
-          v-if="readmeData?.html"
-          class="readme-content prose prose-invert max-w-[70ch]"
-          v-html="readmeData.html"
-          @click="handleClick"
-        />
+        <Readme v-if="readmeData?.html" v-html="readmeData.html" @click="handleClick" />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
           <a v-if="repositoryUrl" :href="repositoryUrl" rel="noopener noreferrer" class="link">{{
