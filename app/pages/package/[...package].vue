@@ -970,7 +970,7 @@ defineOgImageComponent('Package', {
 
       <!-- README -->
       <section id="readme" class="area-readme min-w-0 scroll-mt-20">
-        <div class="flex flex-wrap items-center justify-between mb-3">
+        <div class="flex flex-wrap items-center justify-between mb-4">
           <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
             <a
               href="#readme"
