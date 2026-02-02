@@ -1,5 +1,6 @@
 // Duration
 export const CACHE_MAX_AGE_ONE_MINUTE = 60
+export const CACHE_MAX_AGE_FIVE_MINUTES = 60 * 5
 export const CACHE_MAX_AGE_ONE_HOUR = 60 * 60
 export const CACHE_MAX_AGE_ONE_DAY = 60 * 60 * 24
 export const CACHE_MAX_AGE_ONE_YEAR = 60 * 60 * 24 * 365

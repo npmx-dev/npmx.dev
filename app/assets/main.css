@@ -75,6 +75,32 @@
   --badge-cyan: oklch(0.571 0.181 210);
 }
 
+@media (prefers-contrast: more) {
+  :root[data-theme='dark'] {
+    /* text colors */
+    --fg: oklch(1 0 0);
+    --fg-muted: oklch(0.769 0 0);
+    --fg-subtle: oklch(0.693 0 0);
+
+    /* border, separator colors */
+    --border: oklch(0.769 0 0);
+    --border-subtle: oklch(0.739 0 0);
+    --border-hover: oklch(0.771 0 0);
+  }
+
+  :root[data-theme='light'] {
+    /* text colors */
+    --fg: oklch(0 0 0);
+    --fg-muted: oklch(0.329 0 0);
+    --fg-subtle: oklch(0.4 0 0);
+
+    /* border, separator colors */
+    --border: oklch(0.3514 0 0);
+    --border-subtle: oklch(0.422 0 0);
+    --border-hover: oklch(0.315 0 0);
+  }
+}
+
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -24,7 +24,6 @@
     "found_packages": "Пакетов не найдено | Найден 1 пакет | Найдено {count} пакетов",
     "updating": "(обновление...)",
     "no_results": "Пакетов по запросу \"{query}\" не найдено",
-    "results": "Результаты поиска",
     "not_taken": "{name} не занято",
     "claim_prompt": "Занять это имя пакета в npm",
     "claim_button": "Занять \"{name}\"",
@@ -132,7 +131,11 @@
       "vulns": "Уязвимости",
       "updated": "Обновлен",
       "view_dependency_graph": "Посмотреть граф зависимостей",
-      "inspect_dependency_tree": "Изучить дерево зависимостей"
+      "inspect_dependency_tree": "Изучить дерево зависимостей",
+      "size_tooltip": {}
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "репозиторий",
@@ -543,7 +546,8 @@
     "table": {
       "name": "Имя",
       "size": "Размер"
-    }
+    },
+    "markdown_view_mode": {}
   },
   "badges": {
     "provenance": {
@@ -762,6 +766,13 @@
       "error": "Не удалось загрузить организации",
       "empty": "Организации не найдены",
       "view_all": "Посмотреть все"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

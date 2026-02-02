@@ -32,7 +32,7 @@ const pkgDescription = useMarkdown(() => ({
   <article
     class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
     :class="{
-      'border-accent/30 bg-accent/5': isExactMatch,
+      'border-accent/30 contrast-more:border-accent/90 bg-accent/5': isExactMatch,
     }"
   >
     <!-- Glow effect for exact matches -->

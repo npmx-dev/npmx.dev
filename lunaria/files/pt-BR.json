@@ -27,7 +27,6 @@
     "found_packages": "Nenhum pacote encontrado | 1 pacote encontrado | {count} pacotes encontrados",
     "updating": "(atualizando...)",
     "no_results": "Nenhum pacote encontrado para \"{query}\"",
-    "results": "Resultados da pesquisa",
     "not_taken": "{name} não está em uso",
     "claim_prompt": "Reivindicar este nome de pacote no npm",
     "claim_button": "Reivindicar \"{name}\"",
@@ -149,6 +148,9 @@
         "unpacked": "{size} tamanho descompactado (este pacote)",
         "total": "{size} tamanho total descompactado (incluindo todas as {count} dependências para linux-x64)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repositório",

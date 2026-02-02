@@ -91,7 +91,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.0"
+    "vue-data-ui": "3.14.1"
   },
   "devDependencies": {
     "@npm/types": "2.1.0",
@@ -104,6 +104,7 @@
     "@vitest/coverage-v8": "4.0.18",
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
+    "fast-npm-meta": "1.0.0",
     "knip": "5.82.1",
     "lint-staged": "16.2.7",
     "playwright-core": "1.58.0",

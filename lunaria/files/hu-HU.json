@@ -24,7 +24,6 @@
     "found_packages": "Nincs találat | 1 csomag található | {count} csomag található",
     "updating": "(frissítés...)",
     "no_results": "Nincs találat a következőre: \"{query}\"",
-    "results": "Keresési eredmények",
     "not_taken": "{name} még szabad",
     "claim_prompt": "Foglald le ezt a csomagnevet az npm-en",
     "claim_button": "\"{name}\" lefoglalása",
@@ -137,6 +136,9 @@
         "unpacked": "{size} kicsomagolt méret (ez a csomag)",
         "total": "{size} teljes kicsomagolt méret ({count} függőséggel együtt linux-x64-en)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repo",
@@ -723,6 +725,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "npmx kezdőlap",
     "github": "GitHub",
@@ -741,6 +747,13 @@
       "error": "Nem sikerült betölteni a szervezeteket",
       "empty": "Nincsenek szervezetek",
       "view_all": "Összes megtekintése"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }
