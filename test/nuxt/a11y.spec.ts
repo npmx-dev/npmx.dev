@@ -57,6 +57,7 @@ afterEach(() => {
 import {
   AppFooter,
   AppHeader,
+  Avatar,
   BuildEnvironment,
   CallToAction,
   CodeDirectoryListing,
@@ -205,6 +206,32 @@ describe('component accessibility audits', () => {
   describe('AppFooter', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(AppFooter)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Avatar', () => {
+    it('should have no accessibility violations for user type', async () => {
+      const component = await mountSuspended(Avatar, {
+        props: { name: 'testuser', type: 'user', size: 'md' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for org type', async () => {
+      const component = await mountSuspended(Avatar, {
+        props: { name: 'testorg', type: 'org', size: 'md' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with small size', async () => {
+      const component = await mountSuspended(Avatar, {
+        props: { name: 'testuser', type: 'user', size: 'sm' },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
