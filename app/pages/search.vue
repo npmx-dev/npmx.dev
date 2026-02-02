@@ -723,7 +723,7 @@ defineOgImageComponent('Default', {
               </div>
               <NuxtLink
                 :to="{ name: 'package', params: { package: [query] } }"
-                class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md hover:text-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md hover:bg-fg/90 hover:text-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
               >
                 {{ $t('search.not_invalid_button_label', { name: query }) }}
               </NuxtLink>
