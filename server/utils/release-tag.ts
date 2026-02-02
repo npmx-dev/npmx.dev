@@ -92,7 +92,7 @@ function generateTagCandidates(version: string, packageName: string): string[] {
 /**
  * Providers that support release tag checking
  */
-const SUPPORTED_PROVIDERS: ProviderId[] = new Set([
+const SUPPORTED_PROVIDERS: Set<ProviderId> = new Set([
   'github',
   'gitlab',
   'codeberg',
