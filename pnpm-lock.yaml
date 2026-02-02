@@ -32,6 +32,9 @@ importers:
       '@deno/doc':
         specifier: jsr:^0.189.1
         version: '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)'
+      '@floating-ui/vue':
+        specifier: 1.1.10
+        version: 1.1.10(vue@3.5.27(typescript@5.9.3))
       '@iconify-json/carbon':
         specifier: 1.2.18
         version: 1.2.18
