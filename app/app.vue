@@ -79,14 +79,6 @@ function handleGlobalKeyup() {
   showKbdHints.value = false
 }
 
-// Feature check for native light dismiss support via closedby="any"
-// https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#closedby
-const supportsClosedBy =
-  import.meta.client &&
-  typeof HTMLDialogElement !== 'undefined' &&
-  typeof HTMLDialogElement.prototype === 'object' &&
-  'closedBy' in HTMLDialogElement.prototype
-
 // Light dismiss fallback for browsers that don't support closedby="any" (Safari + old Chrome/Firefox)
 // https://codepen.io/paramagicdev/pen/gbYompq
 // see: https://github.com/npmx-dev/npmx.dev/pull/522#discussion_r2749978022
@@ -109,7 +101,12 @@ if (import.meta.client) {
   useEventListener(document, 'keydown', handleGlobalKeydown)
   useEventListener(document, 'keyup', handleGlobalKeyup)
 
-  // Only use the light dismiss hack when closedby="any" is not supported
+  // Feature check for native light dismiss support via closedby="any"
+  // https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#closedby
+  const supportsClosedBy =
+    typeof HTMLDialogElement !== 'undefined' &&
+    typeof HTMLDialogElement.prototype === 'object' &&
+    'closedBy' in HTMLDialogElement.prototype
   if (!supportsClosedBy) {
     useEventListener(document, 'click', handleModalLightDismiss)
   }
