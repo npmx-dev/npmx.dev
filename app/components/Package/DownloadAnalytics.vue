@@ -12,6 +12,7 @@ const props = defineProps<{
   createdIso: string | null
 }>()
 
+const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
@@ -19,13 +20,30 @@ const rootEl = shallowRef<HTMLElement | null>(null)
 
 const { width } = useElementSize(rootEl)
 
+const chartKey = ref(0)
+
+let chartRemountTimeoutId: ReturnType<typeof setTimeout> | null = null
+
 onMounted(() => {
   rootEl.value = document.documentElement
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
+
+  // If the chart is painted too early, built-in auto-sizing does not adapt to the final container size
+  chartRemountTimeoutId = setTimeout(() => {
+    chartKey.value += 1
+    chartRemountTimeoutId = null
+  }, 1)
+})
+
+onBeforeUnmount(() => {
+  if (chartRemountTimeoutId !== null) {
+    clearTimeout(chartRemountTimeoutId)
+    chartRemountTimeoutId = null
+  }
 })
 
 const { colors } = useCssVariables(
-  ['--bg', '--bg-subtle', '--bg-elevated', '--fg-subtle', '--border', '--border-subtle'],
+  ['--bg', '--fg', '--bg-subtle', '--bg-elevated', '--fg-subtle', '--border', '--border-subtle'],
   {
     element: rootEl,
     watchHtmlAttributes: true,
@@ -121,7 +139,7 @@ function isYearlyDataset(data: unknown): data is YearlyDownloadPoint[] {
 function formatXyDataset(
   selectedGranularity: ChartTimeGranularity,
   dataset: EvolutionData,
-): { dataset: VueUiXyDatasetItem[] | null; dates: string[] } {
+): { dataset: VueUiXyDatasetItem[] | null; dates: number[] } {
   if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
     return {
       dataset: [
@@ -132,12 +150,7 @@ function formatXyDataset(
           color: accent.value,
         },
       ],
-      dates: dataset.map(d =>
-        $t('package.downloads.date_range_multiline', {
-          start: d.weekStart,
-          end: d.weekEnd,
-        }),
-      ),
+      dates: dataset.map(d => d.timestampEnd),
     }
   }
   if (selectedGranularity === 'daily' && isDailyDataset(dataset)) {
@@ -150,7 +163,7 @@ function formatXyDataset(
           color: accent.value,
         },
       ],
-      dates: dataset.map(d => d.day),
+      dates: dataset.map(d => d.timestamp),
     }
   }
   if (selectedGranularity === 'monthly' && isMonthlyDataset(dataset)) {
@@ -163,7 +176,7 @@ function formatXyDataset(
           color: accent.value,
         },
       ],
-      dates: dataset.map(d => d.month),
+      dates: dataset.map(d => d.timestamp),
     }
   }
   if (selectedGranularity === 'yearly' && isYearlyDataset(dataset)) {
@@ -176,7 +189,7 @@ function formatXyDataset(
           color: accent.value,
         },
       ],
-      dates: dataset.map(d => d.year),
+      dates: dataset.map(d => d.timestamp),
     }
   }
   return { dataset: null, dates: [] }
@@ -196,18 +209,6 @@ function safeMin(a: string, b: string): string {
 
 function safeMax(a: string, b: string): string {
   return a.localeCompare(b) >= 0 ? a : b
-}
-
-function extractDates(dateLabel: string): [string, string] | null {
-  const matches = dateLabel.match(/\b(\d{4}(?:-\d{2}-\d{2})?)\b/g) // either yyyy or yyyy-mm-dd
-  if (!matches) return null
-
-  const first = matches.at(0)
-  const last = matches.at(-1)
-
-  if (!first || !last || first === last) return null
-
-  return [first, last]
 }
 
 /**
@@ -439,7 +440,7 @@ const effectiveData = computed<EvolutionData>(() => {
   return evolution.value
 })
 
-const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: string[] }>(() => {
+const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: number[] }>(() => {
   return formatXyDataset(displayedGranularity.value, effectiveData.value)
 })
 
@@ -453,11 +454,39 @@ const loadFile = (link: string, filename: string) => {
   a.remove()
 }
 
+const datetimeFormatterOptions = computed(() => {
+  return {
+    daily: {
+      year: 'yyyy-MM-dd',
+      month: 'yyyy-MM-dd',
+      day: 'yyyy-MM-dd',
+    },
+    weekly: {
+      year: 'yyyy-MM-dd',
+      month: 'yyyy-MM-dd',
+      day: 'yyyy-MM-dd',
+    },
+    monthly: {
+      year: 'MMM yyyy',
+      month: 'MMM yyyy',
+      day: 'MMM yyyy',
+    },
+    yearly: {
+      year: 'yyyy',
+      month: 'yyyy',
+      day: 'yyyy',
+    },
+  }[selectedGranularity.value]
+})
+
 const config = computed(() => {
   return {
     theme: isDarkMode.value ? 'dark' : 'default',
     chart: {
       height: isMobile.value ? 950 : 600,
+      padding: {
+        bottom: 36,
+      },
       userOptions: {
         buttons: {
           pdf: false,
@@ -525,16 +554,32 @@ const config = computed(() => {
             fontSize: isMobile.value ? 32 : 24,
           },
           xAxisLabels: {
-            show: !isMobile.value,
+            show: false,
             values: chartData.value?.dates,
-            showOnlyAtModulo: true,
-            modulo: 12,
+            datetimeFormatter: {
+              enable: true,
+              locale: locale.value,
+              useUTC: true,
+              options: datetimeFormatterOptions.value,
+            },
           },
           yAxis: {
             formatter,
             useNiceScale: true,
           },
         },
+      },
+      timeTag: {
+        show: true,
+        backgroundColor: colors.value.bgElevated,
+        color: colors.value.fg,
+        fontSize: 16,
+        circleMarker: {
+          radius: 3,
+          color: colors.value.border,
+        },
+        useDefaultFormat: true,
+        timeFormat: 'yyyy-MM-dd HH:mm:ss',
       },
       highlighter: {
         useLine: true,
@@ -547,32 +592,17 @@ const config = computed(() => {
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
-        customFormat: ({
-          absoluteIndex,
-          datapoint,
-        }: {
-          absoluteIndex: number
-          datapoint: Record<string, any>
-        }) => {
+        customFormat: ({ datapoint }: { datapoint: Record<string, any> }) => {
           if (!datapoint) return ''
           const displayValue = formatter({ value: datapoint[0]?.value ?? 0 })
           return `<div class="flex flex-col font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
-          <span class="text-fg-subtle">${chartData.value?.dates[absoluteIndex]}</span>
-          <span class="text-xl">${displayValue}</span>
+          <span class="text-xl text-[var(--fg)]">${displayValue}</span>
         </div>
         `
         },
       },
       zoom: {
         maxWidth: isMobile.value ? 350 : 500,
-        customFormat:
-          displayedGranularity.value !== 'weekly'
-            ? undefined
-            : ({ absoluteIndex, side }: { absoluteIndex: number; side: 'left' | 'right' }) => {
-                const parts = extractDates(chartData.value.dates[absoluteIndex] ?? '')
-                if (!parts) return ''
-                return side === 'left' ? parts[0] : parts[1]
-              },
         highlightColor: colors.value.bgElevated,
         minimap: {
           show: true,
@@ -594,7 +624,7 @@ const config = computed(() => {
 </script>
 
 <template>
-  <div class="w-full relative">
+  <div class="w-full relative" id="download-analytics">
     <div class="w-full mb-4 flex flex-col gap-3">
       <!-- Mobile: stack vertically, Desktop: horizontal -->
       <div class="flex flex-col sm:flex-row gap-3 sm:gap-2 sm:items-end">
@@ -688,7 +718,12 @@ const config = computed(() => {
     </div>
 
     <ClientOnly v-if="inModal && chartData.dataset">
-      <VueUiXy :dataset="chartData.dataset" :config="config" class="[direction:ltr]">
+      <VueUiXy
+        :dataset="chartData.dataset"
+        :config="config"
+        class="[direction:ltr]"
+        :key="chartKey"
+      >
         <template #menuIcon="{ isOpen }">
           <span v-if="isOpen" class="i-carbon:close w-6 h-6" aria-hidden="true" />
           <span v-else class="i-carbon:overflow-menu-vertical w-6 h-6" aria-hidden="true" />
@@ -798,5 +833,11 @@ const config = computed(() => {
 .vue-ui-pen-and-paper-action:hover {
   background: var(--bg-elevated) !important;
   box-shadow: none !important;
+}
+
+/* Override default placement of the refresh button to have it to the minimap's side */
+#download-analytics .vue-data-ui-refresh-button {
+  top: -0.6rem !important;
+  left: calc(100% + 2rem) !important;
 }
 </style>

@@ -366,18 +366,24 @@ describe('component accessibility audits', () => {
         weekKey: '2024-W01',
         weekStart: '2024-01-01',
         weekEnd: '2024-01-07',
+        timestampStart: 1704067200,
+        timestampEnd: 1704585600,
       },
       {
         downloads: 1200,
         weekKey: '2024-W02',
         weekStart: '2024-01-08',
         weekEnd: '2024-01-14',
+        timestampStart: 1704672000,
+        timestampEnd: 1705190400,
       },
       {
         downloads: 1500,
         weekKey: '2024-W03',
         weekStart: '2024-01-15',
         weekEnd: '2024-01-21',
+        timestampStart: 1705276800,
+        timestampEnd: 1705795200,
       },
     ]
 
