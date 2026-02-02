@@ -19,7 +19,7 @@ const showMobileMenu = shallowRef(false)
 const route = useRoute()
 const isMobile = useIsMobile()
 const isSearchExpandedManually = shallowRef(false)
-const searchBoxRef = shallowRef<{ focus: () => void } | null>(null)
+const searchBoxRef = useTemplateRef('searchBoxRef')
 
 // On search page, always show search expanded on mobile
 const isOnHomePage = computed(() => route.name === 'index')

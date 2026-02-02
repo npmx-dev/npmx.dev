@@ -8,8 +8,8 @@ import type {
 } from '#shared/types/preferences'
 import {
   DOWNLOAD_RANGES,
-  SEARCH_SCOPE_OPTIONS,
-  SECURITY_FILTER_OPTIONS,
+  SEARCH_SCOPE_VALUES,
+  SECURITY_FILTER_VALUES,
   UPDATED_WITHIN_OPTIONS,
 } from '#shared/types/preferences'
 
@@ -205,20 +205,20 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               :aria-label="$t('filters.search_scope')"
             >
               <button
-                v-for="option in SEARCH_SCOPE_OPTIONS"
-                :key="option.value"
+                v-for="scope in SEARCH_SCOPE_VALUES"
+                :key="scope"
                 type="button"
                 class="px-2 py-0.5 text-xs font-mono rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
                 :class="
-                  filters.searchScope === option.value
+                  filters.searchScope === scope
                     ? 'bg-bg-muted text-fg'
                     : 'text-fg-muted hover:text-fg'
                 "
-                :aria-pressed="filters.searchScope === option.value"
-                :title="$t(getScopeDescriptionKey(option.value))"
-                @click="emit('update:searchScope', option.value)"
+                :aria-pressed="filters.searchScope === scope"
+                :title="$t(getScopeDescriptionKey(scope))"
+                @click="emit('update:searchScope', scope)"
               >
-                {{ $t(getScopeLabelKey(option.value)) }}
+                {{ $t(getScopeLabelKey(scope)) }}
               </button>
             </div>
           </div>
@@ -291,15 +291,15 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
           </legend>
           <div class="flex flex-wrap gap-2" role="radiogroup" :aria-label="$t('filters.security')">
             <TagClickable
-              v-for="option in SECURITY_FILTER_OPTIONS"
-              :key="option.value"
+              v-for="security in SECURITY_FILTER_VALUES"
+              :key="security"
               type="button"
               role="radio"
               disabled
-              :aria-checked="filters.security === option.value"
-              :status="filters.security === option.value ? 'active' : 'default'"
+              :aria-checked="filters.security === security"
+              :status="filters.security === security ? 'active' : 'default'"
             >
-              {{ $t(getSecurityLabelKey(option.value)) }}
+              {{ $t(getSecurityLabelKey(security)) }}
             </TagClickable>
           </div>
         </fieldset>

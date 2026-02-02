@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { NpmSearchResult } from '#shared/types/npm-registry'
-import type { ColumnConfig } from '#shared/types/preferences'
+import type { ColumnConfig, StructuredFilters } from '#shared/types/preferences'
 
 const props = defineProps<{
   result: NpmSearchResult
   columns: ColumnConfig[]
   index?: number
+  filters?: StructuredFilters
 }>()
 
 const emit = defineEmits<{
@@ -117,17 +118,26 @@ const allMaintainersText = computed(() => {
 
     <!-- Keywords -->
     <td v-if="isColumnVisible('keywords')" class="py-2 px-3">
-      <div v-if="pkg.keywords?.length" class="flex flex-wrap gap-1">
+      <div
+        v-if="pkg.keywords?.length"
+        class="flex flex-wrap gap-1"
+        :aria-label="$t('package.card.keywords')"
+      >
         <TagClickable
           v-for="keyword in pkg.keywords.slice(0, 3)"
           :key="keyword"
           type="button"
+          :status="props.filters?.keywords.includes(keyword) ? 'active' : 'default'"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"
         >
           {{ keyword }}
         </TagClickable>
-        <span v-if="pkg.keywords.length > 3" class="text-fg-subtle text-xs">
+        <span
+          v-if="pkg.keywords.length > 3"
+          class="text-fg-subtle text-xs"
+          :title="pkg.keywords.slice(3).join(', ')"
+        >
           +{{ pkg.keywords.length - 3 }}
         </span>
       </div>
