@@ -87,7 +87,7 @@ function handleBlur() {
           {{ $t('compare.selector.search_label') }}
         </label>
         <span
-          class="absolute inset-is-3 top-1/2 -translate-y-1/2 text-fg-subtle"
+          class="absolute inset-is-3 top-1/2 -translate-y-1/2 text-fg-subtle flex"
           aria-hidden="true"
         >
           <span class="i-carbon:search w-4 h-4" />
