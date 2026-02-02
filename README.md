@@ -13,12 +13,16 @@
 
 ## Vision
 
-The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the npm registry &ndash; fast, modern, and accessible. We don't aim to replace the [npmjs.com](https://www.npmjs.com/) registry, just provide a better UI, DX, and admin experience.
+The goal of [npmx.dev](https://npmx.dev) is to build a fast, modern browser for the npm registry.
 
-- **Speed first** &ndash; Layout shift, flakiness, slowness is The Worst. Fast searching, filtering, and navigation.
-- **URL compatible** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
-- **Simplicity** &ndash; No noise, cluttered display, or confusing UI. If in doubt: choose simplicity.
-- **Admin UI** &ndash; Manage your packages, teams, and organizations from the browser, powered by your local npm CLI.
+We're not replacing the [npmjs.com](https://www.npmjs.com/) registry, but instead providing an elevated developer experience through a fast, modern UI.
+
+What npmx offers:
+
+- **Speed** &ndash; Fast searching, filtering, and navigation.
+- **Simplicity** &ndash; Get the information you need when you need it in an intuitive UI.
+- **Compatibility** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
+- **Enhanced admin experience** &ndash; Manage your packages, teams, and organizations from the browser, powered by your local npm CLI.
 
 ## Shortcuts
 
@@ -36,7 +40,7 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 
 ### Package browsing
 
-- **Dark mode by default** &ndash; easier on the eyes
+- **Dark mode by default** &ndash; and customize the color palette to your preferences
 - **Fast search** &ndash; quick package search with instant results
 - **Package details** &ndash; READMEs, versions, dependencies, and metadata
 - **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines
@@ -100,7 +104,7 @@ The aim of [npmx.dev](https://npmx.dev) is to provide a better browser for the n
 
 ### npm compatibility
 
-npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev` or `xnpmjs.com` and it works:
+npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev` or `xnpmjs.com` to get the npmx experience:
 
 | npm URL                         | npmx.dev equivalent                                                    |
 | ------------------------------- | ---------------------------------------------------------------------- |
@@ -142,7 +146,7 @@ npmx.dev also supports shorter, cleaner URLs:
 
 ## Contributing
 
-We welcome contributions &ndash; please do feel free to poke around and improve things. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get up and running!
+We welcome contributions &ndash; please do feel free to explore the project and improve things. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get up and running!
 
 ## Related projects
 
@@ -151,6 +155,7 @@ We welcome contributions &ndash; please do feel free to poke around and improve 
 - [npm-userscript](https://github.com/bluwy/npm-userscript) &ndash; Browser userscript with various improvements and fixes for npmjs.com
 - [npm-alt](https://npm.willow.sh/) &ndash; An alternative npm package browser
 - [npkg.lorypelli.dev](https://npkg.lorypelli.dev/) &ndash; An alternative frontend to npm made with as little client-side JavaScript as possible
+- [vscode-npmx](https://github.com/npmx-dev/vscode-npmx) &ndash; VSCode extension for npmx
 
 If you're building something cool, let us know! 🙏
 
