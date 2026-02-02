@@ -106,11 +106,7 @@ const { data: moduleReplacement } = useModuleReplacement(packageName)
 
 const { data: resolvedVersion } = await useResolvedVersion(packageName, requestedVersion)
 
-const {
-  data: pkg,
-  status,
-  error,
-} = usePackage(packageName, resolvedVersion.value ?? requestedVersion)
+const { data: pkg, status } = usePackage(packageName, resolvedVersion.value ?? requestedVersion)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
 // Process package description
