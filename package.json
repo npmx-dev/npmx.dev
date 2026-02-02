@@ -40,6 +40,7 @@
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
     "@deno/doc": "jsr:^0.189.1",
+    "@floating-ui/vue": "1.1.10",
     "@iconify-json/carbon": "1.2.18",
     "@iconify-json/lucide": "1.2.87",
     "@iconify-json/simple-icons": "1.2.68",
