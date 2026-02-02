@@ -17,9 +17,7 @@ const props = defineProps<{
 
 const uid = useId()
 const internalId = `${model.value}-${uid}`
-
 const checked = computed(() => model.value === props.value)
-
 /** Todo: This shouldn't be necessary, but using v-model on `input type=radio` doesn't work as expected in Vue */
 const onChange = () => {
   model.value = props.value
@@ -27,30 +25,23 @@ const onChange = () => {
 </script>
 
 <template>
-  <label
-    class="inline-flex items-center px-2 py-0.5 text-xs font-mono border rounded transition-colors duration-200 focus-within:ring-2 focus-within:ring-fg"
-    :class="[
-      /** TODO: This should ideally be done in CSS only, but right now I can't get it working with UnoCSS */
-      checked
-        ? 'peer-checked:(bg-fg text-bg border-fg hover:(text-text-bg/50))'
-        : 'bg-bg-muted text-fg-muted border-border hover:(text-fg border-border-hover)',
-      {
-        'opacity-50 cursor-not-allowed': props.disabled,
-      },
-    ]"
-    :htmlFor="internalId"
-  >
+  <div>
     <input
       type="radio"
-      :name="props.value"
       :id="internalId"
       :value="props.value"
       :checked="checked"
       :disabled="props.disabled ? true : undefined"
       @change="onChange"
+      class="peer"
     />
-    <slot />
-  </label>
+    <label
+      class="bg-bg-muted text-fg-muted border-border hover:(text-fg border-border-hover) inline-flex items-center px-2 py-0.5 text-xs font-mono border rounded transition-colors duration-200 peer-focus:ring-2 peer-focus:ring-fg border-none peer-checked:(bg-fg text-bg border-fg hover:(text-text-bg/50)) peer-disabled:(opacity-50 pointer-events-none)"
+      :htmlFor="internalId"
+    >
+      <slot />
+    </label>
+  </div>
 </template>
 
 <style scoped>
