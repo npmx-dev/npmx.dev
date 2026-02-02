@@ -134,7 +134,11 @@ const allMaintainersText = computed(() => {
         >
           {{ keyword }}
         </button>
-        <span v-if="pkg.keywords.length > 3" class="text-fg-subtle text-xs">
+        <span
+          v-if="pkg.keywords.length > 3"
+          class="tag text-fg-subtle text-xs border-none bg-transparent"
+          :title="pkg.keywords.slice(3).join(', ')"
+        >
           +{{ pkg.keywords.length - 3 }}
         </span>
       </div>

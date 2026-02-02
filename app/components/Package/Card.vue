@@ -173,6 +173,13 @@ const pkgDescription = useMarkdown(() => ({
       >
         {{ keyword }}
       </button>
+      <span
+        v-if="result.package.keywords.length > 5"
+        class="tag text-fg-subtle text-xs border-none bg-transparent pointer-events-auto"
+        :title="result.package.keywords.slice(5).join(', ')"
+      >
+        +{{ result.package.keywords.length - 5 }}
+      </span>
     </div>
   </BaseCard>
 </template>
