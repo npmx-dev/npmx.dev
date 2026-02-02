@@ -27,7 +27,6 @@
     "found_packages": "कोई पैकेज नहीं मिला | 1 पैकेज मिला | {count} पैकेज मिले",
     "updating": "(अपडेट हो रहा है...)",
     "no_results": "\"{query}\" के लिए कोई पैकेज नहीं मिला",
-    "results": "खोज परिणाम",
     "not_taken": "{name} उपलब्ध है",
     "claim_prompt": "npm पर इस पैकेज नाम को क्लेम करें",
     "claim_button": "\"{name}\" क्लेम करें",
