@@ -104,9 +104,30 @@ const { data: skillsData } = useLazyFetch<SkillsListResponse>(
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
 
-const { data: resolvedVersion } = await useResolvedVersion(packageName, requestedVersion)
+const {
+  data: resolvedVersion,
+  status: versionStatus,
+  error: versionError,
+} = await useResolvedVersion(packageName, requestedVersion)
 
-const { data: pkg, status } = usePackage(packageName, resolvedVersion.value ?? requestedVersion)
+if (
+  versionStatus.value === 'error' &&
+  versionError.value?.statusCode &&
+  versionError.value.statusCode >= 400 &&
+  versionError.value.statusCode < 500
+) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: $t('package.not_found'),
+    message: $t('package.not_found_message'),
+  })
+}
+
+const {
+  data: pkg,
+  status,
+  error,
+} = usePackage(packageName, resolvedVersion.value ?? requestedVersion)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
 // Process package description
@@ -1101,9 +1122,12 @@ defineOgImageComponent('Package', {
       role="alert"
       class="flex flex-col items-center py-20 text-center"
     >
-      <h1 class="font-mono text-2xl font-medium mb-8">
+      <h1 class="font-mono text-2xl font-medium mb-4">
         {{ $t('package.not_found') }}
       </h1>
+      <p class="text-fg-muted mb-8">
+        {{ error?.message ?? $t('package.not_found_message') }}
+      </p>
       <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
   </main>

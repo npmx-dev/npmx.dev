@@ -20,22 +20,6 @@ const statusText = computed(() => {
   }
 })
 
-// Sanitize error messages to hide internal details (e.g., HTTP methods, registry URLs)
-const sanitizedMessage = computed(() => {
-  const msg = props.error.message
-  if (!msg) return null
-
-  // Clean up messages that expose internal HTTP details like:
-  // [GET] "https://registry.npmjs.org/...": 404 Not Found
-  // Extract just the status part (e.g., "404 Not Found")
-  const httpMatch = msg.match(/^\[(GET|POST|PUT|DELETE|PATCH)\]\s+"https?:\/\/[^"]+"\s*:\s*(.+)$/)
-  if (httpMatch) {
-    return httpMatch[2] // Return just "404 Not Found" part
-  }
-
-  return msg
-})
-
 function handleError() {
   clearError({ redirect: '/' })
 }
@@ -59,10 +43,10 @@ useHead({
       </h1>
 
       <p
-        v-if="sanitizedMessage && sanitizedMessage !== statusText"
+        v-if="error.message && error.message !== statusText"
         class="text-fg-muted text-base max-w-md mb-8"
       >
-        {{ sanitizedMessage }}
+        {{ error.message }}
       </p>
 
       <button
