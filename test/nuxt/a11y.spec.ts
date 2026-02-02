@@ -1978,7 +1978,7 @@ describe('background theme accessibility', () => {
         it(`${colorMode}/${bgTheme}`, async () => {
           applyTheme(colorMode, bgTheme)
           const results = await runAxe(await mount())
-          await new Promise(resolve => setTimeout(resolve, 2000))
+          await nextTick()
           expect(results.violations).toEqual([])
         })
       }
