@@ -80,7 +80,7 @@ function handleSearchFocus() {
 }
 
 // Expose focus method for parent components
-const inputRef = shallowRef<HTMLInputElement | null>(null)
+const inputRef = useTemplateRef('inputRef')
 function focus() {
   inputRef.value?.focus()
 }
