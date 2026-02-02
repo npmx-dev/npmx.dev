@@ -14,8 +14,8 @@ const props = defineProps<{
   tooltipAttr?: HTMLAttributes
 }>()
 
-const triggerRef = shallowRef<HTMLElement | null>(null)
-const tooltipRef = shallowRef<HTMLElement | null>(null)
+const triggerRef = useTemplateRef('triggerRef')
+const tooltipRef = useTemplateRef('tooltipRef')
 
 const placement = computed<Placement>(() => props.position || 'bottom')
 
