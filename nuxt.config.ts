@@ -163,6 +163,11 @@ export default defineNuxtConfig({
         base: './.cache/atproto-oauth/session',
       },
     },
+    typescript: {
+      tsConfig: {
+        include: ['../test/unit/server/**/*.ts'],
+      },
+    },
   },
 
   fonts: {
