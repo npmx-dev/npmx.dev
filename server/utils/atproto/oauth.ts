@@ -4,12 +4,14 @@ import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { parse } from 'valibot'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
+import { LIKES_SCOPE, UNSET_NUXT_SESSION_PASSWORD } from '#shared/utils/constants'
 import { OAuthMetadataSchema } from '#shared/schemas/oauth'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
 import { useServerSession } from '#server/utils/server-session'
 // TODO: limit scope as features gets added. atproto just allows login so no scary login screen till we have scopes
-export const scope = 'atproto repo:dev.npmx.feed.like'
+// export const scope = 'atproto'
+export const scope = `atproto ${LIKES_SCOPE}`
 
 export function getOauthClientMetadata() {
   const dev = import.meta.dev

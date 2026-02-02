@@ -1,7 +1,8 @@
 import { Client } from '@atproto/lex'
-import { main as likeRecord } from '#shared/types/lexicons/dev/npmx/feed/like.defs'
+// import { main as likeRecord } from '#shared/types/lexicons/dev/npmx/feed/like.defs'
 import * as dev from '#shared/types/lexicons/dev'
 import type { UriString } from '@atproto/lex'
+import { ERROR_NEED_REAUTH, LIKES_SCOPE } from '~~/shared/utils/constants'
 
 export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
   const loggedInUsersDid = oAuthSession?.did.toString()
@@ -39,6 +40,15 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     })
   }
 
+  //Checks if the user has a scope to like packages
+  const tokenInfo = await oAuthSession.getTokenInfo()
+  if (!tokenInfo.scope.includes(LIKES_SCOPE)) {
+    throw createError({
+      status: 403,
+      message: ERROR_NEED_REAUTH,
+    })
+  }
+
   const subjectRef = PACKAGE_SUBJECT_REF(body.packageName)
   const client = new Client(oAuthSession)
 
@@ -48,7 +58,7 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     subjectRef: subjectRef as UriString,
   })
 
-  const result = await client.create(likeRecord, like)
+  const result = await client.create(dev.npmx.feed.like, like)
   if (!result) {
     throw createError({
       status: 500,

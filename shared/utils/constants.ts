@@ -1,3 +1,5 @@
+import * as dev from '#shared/types/lexicons/dev'
+
 // Duration
 export const CACHE_MAX_AGE_ONE_MINUTE = 60
 export const CACHE_MAX_AGE_FIVE_MINUTES = 60 * 5
@@ -25,6 +27,7 @@ export const ERROR_SKILL_FILE_NOT_FOUND = 'Skill file not found.'
 export const ERROR_GRAVATAR_FETCH_FAILED = 'Failed to fetch Gravatar profile.'
 /** @public */
 export const ERROR_GRAVATAR_EMAIL_UNAVAILABLE = "User's email not accessible."
+export const ERROR_NEED_REAUTH = 'User needs to reauthenticate'
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
@@ -34,6 +37,8 @@ export const SLINGSHOT_HOST = 'slingshot.microcosm.blue'
 // Refrences used to link packages to things that are not inherently atproto
 export const PACKAGE_SUBJECT_REF = (packageName: string) =>
   `https://npmx.dev/package/${packageName}`
+// OAuth scopes as we add new ones we need to check these on certain actions. If not redirect the user to login again to upgrade the scopes
+export const LIKES_SCOPE = `repo:${dev.npmx.feed.like.$nsid}`
 
 // Theming
 export const ACCENT_COLORS = {
