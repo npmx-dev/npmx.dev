@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { NpmSearchResult } from '#shared/types'
 
 // Helper to create mock package results
@@ -29,40 +30,60 @@ function createPackage(overrides: {
   }
 }
 
+/**
+ * Helper to test useStructuredFilters by wrapping it in a component.
+ * This is required because the composable uses useI18n which must be
+ * called inside a Vue component's setup function.
+ */
+async function useStructuredFiltersInComponent(packages: Ref<NpmSearchResult[]>) {
+  let capturedResult: ReturnType<typeof useStructuredFilters>
+
+  const WrapperComponent = defineComponent({
+    setup() {
+      capturedResult = useStructuredFilters({ packages })
+      return () => h('div')
+    },
+  })
+
+  await mountSuspended(WrapperComponent)
+
+  return capturedResult!
+}
+
 describe('useStructuredFilters', () => {
   describe('keyword filtering (AND logic)', () => {
-    it('returns all packages when no keywords selected', () => {
+    it('returns all packages when no keywords selected', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['react'] }),
         createPackage({ name: 'pkg-b', keywords: ['vue'] }),
       ])
 
-      const { sortedPackages } = useStructuredFilters({ packages })
+      const { sortedPackages } = await useStructuredFiltersInComponent(packages)
 
       expect(sortedPackages.value).toHaveLength(2)
     })
 
-    it('filters to packages with single keyword', () => {
+    it('filters to packages with single keyword', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['react', 'hooks'] }),
         createPackage({ name: 'pkg-b', keywords: ['vue'] }),
       ])
 
-      const { sortedPackages, addKeyword } = useStructuredFilters({ packages })
+      const { sortedPackages, addKeyword } = await useStructuredFiltersInComponent(packages)
       addKeyword('react')
 
       expect(sortedPackages.value).toHaveLength(1)
       expect(sortedPackages.value[0]!.package.name).toBe('pkg-a')
     })
 
-    it('uses AND logic for multiple keywords', () => {
+    it('uses AND logic for multiple keywords', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['react', 'hooks'] }),
         createPackage({ name: 'pkg-b', keywords: ['react', 'state'] }),
         createPackage({ name: 'pkg-c', keywords: ['react', 'hooks', 'state'] }),
       ])
 
-      const { sortedPackages, addKeyword } = useStructuredFilters({ packages })
+      const { sortedPackages, addKeyword } = await useStructuredFiltersInComponent(packages)
       addKeyword('react')
       addKeyword('hooks')
 
@@ -72,13 +93,13 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value.map(p => p.package.name)).toContain('pkg-c')
     })
 
-    it('returns empty when no package has all keywords', () => {
+    it('returns empty when no package has all keywords', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['react'] }),
         createPackage({ name: 'pkg-b', keywords: ['hooks'] }),
       ])
 
-      const { sortedPackages, addKeyword } = useStructuredFilters({ packages })
+      const { sortedPackages, addKeyword } = await useStructuredFiltersInComponent(packages)
       addKeyword('react')
       addKeyword('hooks')
 
@@ -87,13 +108,14 @@ describe('useStructuredFilters', () => {
   })
 
   describe('text filtering', () => {
-    it('filters by name when scope is name', () => {
+    it('filters by name when scope is name', async () => {
       const packages = ref([
         createPackage({ name: 'react-query', description: 'Data fetching' }),
         createPackage({ name: 'vue-query', description: 'Data fetching for Vue' }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('name')
       setTextFilter('react')
 
@@ -101,13 +123,14 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[0]!.package.name).toBe('react-query')
     })
 
-    it('filters by description when scope is description', () => {
+    it('filters by description when scope is description', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', description: 'A React component library' }),
         createPackage({ name: 'pkg-b', description: 'A Vue component library' }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('description')
       setTextFilter('React')
 
@@ -115,13 +138,14 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[0]!.package.name).toBe('pkg-a')
     })
 
-    it('filters by keywords when scope is keywords', () => {
+    it('filters by keywords when scope is keywords', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['typescript', 'react'] }),
         createPackage({ name: 'pkg-b', keywords: ['javascript', 'vue'] }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('keywords')
       setTextFilter('type')
 
@@ -129,14 +153,15 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[0]!.package.name).toBe('pkg-a')
     })
 
-    it('filters by all fields when scope is all', () => {
+    it('filters by all fields when scope is all', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', description: 'foo', keywords: ['bar'] }),
         createPackage({ name: 'pkg-b', description: 'baz', keywords: ['qux'] }),
         createPackage({ name: 'search-term', description: 'other', keywords: [] }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('all')
       setTextFilter('search-term')
 
@@ -146,13 +171,14 @@ describe('useStructuredFilters', () => {
   })
 
   describe('text filtering with operators', () => {
-    it('parses name: operator in all scope', () => {
+    it('parses name: operator in all scope', async () => {
       const packages = ref([
         createPackage({ name: 'react-query', description: 'vue stuff' }),
         createPackage({ name: 'vue-query', description: 'react stuff' }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('all')
       setTextFilter('name:react')
 
@@ -160,13 +186,14 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[0]!.package.name).toBe('react-query')
     })
 
-    it('parses desc: operator in all scope', () => {
+    it('parses desc: operator in all scope', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', description: 'A fantastic library' }),
         createPackage({ name: 'pkg-b', description: 'A mediocre library' }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('all')
       setTextFilter('desc:fantastic')
 
@@ -174,13 +201,14 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[0]!.package.name).toBe('pkg-a')
     })
 
-    it('parses kw: operator in all scope', () => {
+    it('parses kw: operator in all scope', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['typescript'] }),
         createPackage({ name: 'pkg-b', keywords: ['javascript'] }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('all')
       setTextFilter('kw:typescript')
 
@@ -188,14 +216,15 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[0]!.package.name).toBe('pkg-a')
     })
 
-    it('combines multiple operators with AND logic', () => {
+    it('combines multiple operators with AND logic', async () => {
       const packages = ref([
         createPackage({ name: 'react-lib', description: 'hooks library', keywords: ['react'] }),
         createPackage({ name: 'react-other', description: 'other stuff', keywords: ['react'] }),
         createPackage({ name: 'vue-lib', description: 'hooks library', keywords: ['vue'] }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('all')
       setTextFilter('name:react desc:hooks')
 
@@ -203,14 +232,15 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[0]!.package.name).toBe('react-lib')
     })
 
-    it('handles comma-separated keyword values with OR logic', () => {
+    it('handles comma-separated keyword values with OR logic', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['react'] }),
         createPackage({ name: 'pkg-b', keywords: ['vue'] }),
         createPackage({ name: 'pkg-c', keywords: ['angular'] }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('all')
       setTextFilter('kw:react,vue')
 
@@ -219,7 +249,7 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value.map(p => p.package.name)).toContain('pkg-b')
     })
 
-    it('combines operators with remaining text', () => {
+    it('combines operators with remaining text', async () => {
       const packages = ref([
         createPackage({
           name: 'react-query',
@@ -234,7 +264,8 @@ describe('useStructuredFilters', () => {
         }),
       ])
 
-      const { sortedPackages, setTextFilter, setSearchScope } = useStructuredFilters({ packages })
+      const { sortedPackages, setTextFilter, setSearchScope } =
+        await useStructuredFiltersInComponent(packages)
       setSearchScope('all')
       setTextFilter('name:react fetching')
 
@@ -244,26 +275,26 @@ describe('useStructuredFilters', () => {
   })
 
   describe('download range filtering', () => {
-    it('filters packages below threshold', () => {
+    it('filters packages below threshold', async () => {
       const packages = ref([
         createPackage({ name: 'popular', downloads: 50000 }),
         createPackage({ name: 'unpopular', downloads: 50 }),
       ])
 
-      const { sortedPackages, setDownloadRange } = useStructuredFilters({ packages })
+      const { sortedPackages, setDownloadRange } = await useStructuredFiltersInComponent(packages)
       setDownloadRange('gt100k')
 
       expect(sortedPackages.value).toHaveLength(0)
     })
 
-    it('filters packages within range', () => {
+    it('filters packages within range', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', downloads: 500 }),
         createPackage({ name: 'pkg-b', downloads: 5000 }),
         createPackage({ name: 'pkg-c', downloads: 50000 }),
       ])
 
-      const { sortedPackages, setDownloadRange } = useStructuredFilters({ packages })
+      const { sortedPackages, setDownloadRange } = await useStructuredFiltersInComponent(packages)
       setDownloadRange('1k-10k')
 
       expect(sortedPackages.value).toHaveLength(1)
@@ -272,14 +303,14 @@ describe('useStructuredFilters', () => {
   })
 
   describe('sorting', () => {
-    it('sorts by downloads descending by default with downloads sort', () => {
+    it('sorts by downloads descending by default with downloads sort', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', downloads: 100 }),
         createPackage({ name: 'pkg-b', downloads: 1000 }),
         createPackage({ name: 'pkg-c', downloads: 500 }),
       ])
 
-      const { sortedPackages, setSort } = useStructuredFilters({ packages })
+      const { sortedPackages, setSort } = await useStructuredFiltersInComponent(packages)
       setSort('downloads-week-desc')
 
       expect(sortedPackages.value[0]!.package.name).toBe('pkg-b')
@@ -287,14 +318,14 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[2]!.package.name).toBe('pkg-a')
     })
 
-    it('sorts by name ascending', () => {
+    it('sorts by name ascending', async () => {
       const packages = ref([
         createPackage({ name: 'zlib' }),
         createPackage({ name: 'axios' }),
         createPackage({ name: 'lodash' }),
       ])
 
-      const { sortedPackages, setSort } = useStructuredFilters({ packages })
+      const { sortedPackages, setSort } = await useStructuredFiltersInComponent(packages)
       setSort('name-asc')
 
       expect(sortedPackages.value[0]!.package.name).toBe('axios')
@@ -302,14 +333,14 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[2]!.package.name).toBe('zlib')
     })
 
-    it('sorts by updated date descending', () => {
+    it('sorts by updated date descending', async () => {
       const packages = ref([
         createPackage({ name: 'old', updated: '2023-01-01T00:00:00.000Z' }),
         createPackage({ name: 'new', updated: '2024-06-01T00:00:00.000Z' }),
         createPackage({ name: 'mid', updated: '2024-01-01T00:00:00.000Z' }),
       ])
 
-      const { sortedPackages, setSort } = useStructuredFilters({ packages })
+      const { sortedPackages, setSort } = await useStructuredFiltersInComponent(packages)
       setSort('updated-desc')
 
       expect(sortedPackages.value[0]!.package.name).toBe('new')
@@ -317,14 +348,14 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value[2]!.package.name).toBe('old')
     })
 
-    it('relevance sort preserves original order', () => {
+    it('relevance sort preserves original order', async () => {
       const packages = ref([
         createPackage({ name: 'first', downloads: 100 }),
         createPackage({ name: 'second', downloads: 1000 }),
         createPackage({ name: 'third', downloads: 500 }),
       ])
 
-      const { sortedPackages, setSort } = useStructuredFilters({ packages })
+      const { sortedPackages, setSort } = await useStructuredFiltersInComponent(packages)
       setSort('relevance-desc')
 
       // Relevance should preserve the original order from the server
@@ -335,14 +366,14 @@ describe('useStructuredFilters', () => {
   })
 
   describe('clearing filters', () => {
-    it('clearAllFilters resets all filters', () => {
+    it('clearAllFilters resets all filters', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['react'], downloads: 1000 }),
         createPackage({ name: 'pkg-b', keywords: ['vue'], downloads: 500 }),
       ])
 
       const { sortedPackages, setTextFilter, addKeyword, setDownloadRange, clearAllFilters } =
-        useStructuredFilters({ packages })
+        await useStructuredFiltersInComponent(packages)
 
       setTextFilter('pkg-a')
       addKeyword('react')
@@ -355,13 +386,14 @@ describe('useStructuredFilters', () => {
       expect(sortedPackages.value).toHaveLength(2)
     })
 
-    it('removeKeyword removes specific keyword', () => {
+    it('removeKeyword removes specific keyword', async () => {
       const packages = ref([
         createPackage({ name: 'pkg-a', keywords: ['react', 'hooks'] }),
         createPackage({ name: 'pkg-b', keywords: ['react'] }),
       ])
 
-      const { sortedPackages, addKeyword, removeKeyword } = useStructuredFilters({ packages })
+      const { sortedPackages, addKeyword, removeKeyword } =
+        await useStructuredFiltersInComponent(packages)
 
       addKeyword('react')
       addKeyword('hooks')

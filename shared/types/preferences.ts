@@ -23,7 +23,6 @@ export type ColumnId =
 
 export interface ColumnConfig {
   id: ColumnId
-  label: string
   visible: boolean
   sortable: boolean
   width?: string
@@ -33,22 +32,20 @@ export interface ColumnConfig {
 
 // Default column configuration
 export const DEFAULT_COLUMNS: ColumnConfig[] = [
-  { id: 'name', label: 'Name', visible: true, sortable: true, width: 'minmax(200px, 1fr)' },
-  { id: 'version', label: 'Version', visible: true, sortable: false, width: '100px' },
+  { id: 'name', visible: true, sortable: true, width: 'minmax(200px, 1fr)' },
+  { id: 'version', visible: true, sortable: false, width: '100px' },
   {
     id: 'description',
-    label: 'Description',
     visible: true,
     sortable: false,
     width: 'minmax(200px, 2fr)',
   },
-  { id: 'downloads', label: 'Downloads/wk', visible: true, sortable: true, width: '120px' },
-  { id: 'updated', label: 'Updated', visible: true, sortable: true, width: '120px' },
-  { id: 'maintainers', label: 'Maintainers', visible: false, sortable: false, width: '150px' },
-  { id: 'keywords', label: 'Keywords', visible: false, sortable: false, width: '200px' },
+  { id: 'downloads', visible: true, sortable: true, width: '120px' },
+  { id: 'updated', visible: true, sortable: true, width: '120px' },
+  { id: 'maintainers', visible: false, sortable: false, width: '150px' },
+  { id: 'keywords', visible: false, sortable: false, width: '200px' },
   {
     id: 'qualityScore',
-    label: 'Quality score',
     visible: false,
     sortable: true,
     width: '100px',
@@ -56,7 +53,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
   },
   {
     id: 'popularityScore',
-    label: 'Popularity score',
     visible: false,
     sortable: true,
     width: '100px',
@@ -64,7 +60,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
   },
   {
     id: 'maintenanceScore',
-    label: 'Maintenance score',
     visible: false,
     sortable: true,
     width: '100px',
@@ -72,7 +67,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
   },
   {
     id: 'combinedScore',
-    label: 'Combined score',
     visible: false,
     sortable: true,
     width: '100px',
@@ -80,7 +74,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
   },
   {
     id: 'security',
-    label: 'Security',
     visible: false,
     sortable: false,
     width: '80px',
@@ -131,7 +124,6 @@ export type SortOption =
 
 export interface SortKeyConfig {
   key: SortKey
-  label: string
   /** Default direction for this sort key */
   defaultDirection: SortDirection
   /** Whether the sort option is disabled (not yet available) */
@@ -141,52 +133,17 @@ export interface SortKeyConfig {
 }
 
 export const SORT_KEYS: SortKeyConfig[] = [
-  { key: 'relevance', label: 'Relevance', defaultDirection: 'desc', searchOnly: true },
-  { key: 'downloads-week', label: 'Downloads/wk', defaultDirection: 'desc' },
-  {
-    key: 'downloads-day',
-    label: 'Downloads/day',
-    defaultDirection: 'desc',
-    disabled: true,
-  },
-  {
-    key: 'downloads-month',
-    label: 'Downloads/mo',
-    defaultDirection: 'desc',
-    disabled: true,
-  },
-  {
-    key: 'downloads-year',
-    label: 'Downloads/yr',
-    defaultDirection: 'desc',
-    disabled: true,
-  },
-  { key: 'updated', label: 'Updated', defaultDirection: 'desc' },
-  { key: 'name', label: 'Name', defaultDirection: 'asc' },
-  {
-    key: 'quality',
-    label: 'Quality',
-    defaultDirection: 'desc',
-    disabled: true,
-  },
-  {
-    key: 'popularity',
-    label: 'Popularity',
-    defaultDirection: 'desc',
-    disabled: true,
-  },
-  {
-    key: 'maintenance',
-    label: 'Maintenance',
-    defaultDirection: 'desc',
-    disabled: true,
-  },
-  {
-    key: 'score',
-    label: 'Score',
-    defaultDirection: 'desc',
-    disabled: true,
-  },
+  { key: 'relevance', defaultDirection: 'desc', searchOnly: true },
+  { key: 'downloads-week', defaultDirection: 'desc' },
+  { key: 'downloads-day', defaultDirection: 'desc', disabled: true },
+  { key: 'downloads-month', defaultDirection: 'desc', disabled: true },
+  { key: 'downloads-year', defaultDirection: 'desc', disabled: true },
+  { key: 'updated', defaultDirection: 'desc' },
+  { key: 'name', defaultDirection: 'asc' },
+  { key: 'quality', defaultDirection: 'desc', disabled: true },
+  { key: 'popularity', defaultDirection: 'desc', disabled: true },
+  { key: 'maintenance', defaultDirection: 'desc', disabled: true },
+  { key: 'score', defaultDirection: 'desc', disabled: true },
 ]
 
 /** All valid sort keys for validation */
@@ -205,7 +162,10 @@ const VALID_SORT_KEYS = new Set<SortKey>([
 ])
 
 /** Parse a SortOption into key and direction */
-export function parseSortOption(option: SortOption): { key: SortKey; direction: SortDirection } {
+export function parseSortOption(option: SortOption): {
+  key: SortKey
+  direction: SortDirection
+} {
   const match = option.match(/^(.+)-(asc|desc)$/)
   if (match) {
     const key = match[1]
@@ -234,18 +194,17 @@ export type DownloadRange = 'any' | 'lt100' | '100-1k' | '1k-10k' | '10k-100k' |
 
 export interface DownloadRangeConfig {
   value: DownloadRange
-  label: string
   min?: number
   max?: number
 }
 
 export const DOWNLOAD_RANGES: DownloadRangeConfig[] = [
-  { value: 'any', label: 'Any' },
-  { value: 'lt100', label: '< 100', max: 100 },
-  { value: '100-1k', label: '100 - 1K', min: 100, max: 1000 },
-  { value: '1k-10k', label: '1K - 10K', min: 1000, max: 10000 },
-  { value: '10k-100k', label: '10K - 100K', min: 10000, max: 100000 },
-  { value: 'gt100k', label: '> 100K', min: 100000 },
+  { value: 'any' },
+  { value: 'lt100', max: 100 },
+  { value: '100-1k', min: 100, max: 1000 },
+  { value: '1k-10k', min: 1000, max: 10000 },
+  { value: '10k-100k', min: 10000, max: 100000 },
+  { value: 'gt100k', min: 100000 },
 ]
 
 // Updated within presets
@@ -253,47 +212,28 @@ export type UpdatedWithin = 'any' | 'week' | 'month' | 'quarter' | 'year'
 
 export interface UpdatedWithinConfig {
   value: UpdatedWithin
-  label: string
   days?: number
 }
 
 export const UPDATED_WITHIN_OPTIONS: UpdatedWithinConfig[] = [
-  { value: 'any', label: 'Any time' },
-  { value: 'week', label: 'Past week', days: 7 },
-  { value: 'month', label: 'Past month', days: 30 },
-  { value: 'quarter', label: 'Past 3 months', days: 90 },
-  { value: 'year', label: 'Past year', days: 365 },
+  { value: 'any' },
+  { value: 'week', days: 7 },
+  { value: 'month', days: 30 },
+  { value: 'quarter', days: 90 },
+  { value: 'year', days: 365 },
 ]
 
 // Security filter options
 export type SecurityFilter = 'all' | 'secure' | 'warnings'
 
-export interface SecurityFilterConfig {
-  value: SecurityFilter
-  label: string
-}
-
-export const SECURITY_FILTER_OPTIONS: SecurityFilterConfig[] = [
-  { value: 'all', label: 'All packages' },
-  { value: 'secure', label: 'Secure only' },
-  { value: 'warnings', label: 'Insecure only' },
-]
+/** Security filter values - labels are in i18n under filters.security_options */
+export const SECURITY_FILTER_VALUES: SecurityFilter[] = ['all', 'secure', 'warnings']
 
 // Search scope options
 export type SearchScope = 'name' | 'description' | 'keywords' | 'all'
 
-export interface SearchScopeConfig {
-  value: SearchScope
-  label: string
-  description: string
-}
-
-export const SEARCH_SCOPE_OPTIONS: SearchScopeConfig[] = [
-  { value: 'name', label: 'Name', description: 'Search package names only' },
-  { value: 'description', label: 'Description', description: 'Search descriptions only' },
-  { value: 'keywords', label: 'Keywords', description: 'Search keywords only' },
-  { value: 'all', label: 'All', description: 'Search name, description, and keywords' },
-]
+/** Search scope values - labels are in i18n under filters.scope_* */
+export const SEARCH_SCOPE_VALUES: SearchScope[] = ['name', 'description', 'keywords', 'all']
 
 // Structured filters state
 export interface StructuredFilters {

@@ -15,7 +15,6 @@ import {
   DEFAULT_FILTERS,
   DOWNLOAD_RANGES,
   parseSortOption,
-  SECURITY_FILTER_OPTIONS,
   UPDATED_WITHIN_OPTIONS,
 } from '#shared/types/preferences'
 
@@ -113,7 +112,21 @@ function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolea
  *
  */
 export function useStructuredFilters(options: UseStructuredFiltersOptions) {
+  const route = useRoute()
+  const router = useRouter()
   const { packages, initialFilters, initialSort } = options
+  const { t } = useI18n()
+
+  const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
+  watch(
+    () => route.query.q,
+    urlQuery => {
+      const value = normalizeSearchParam(urlQuery)
+      if (searchQuery.value !== value) {
+        searchQuery.value = value
+      }
+    },
+  )
 
   // Filter state
   const filters = ref<StructuredFilters>({
@@ -292,6 +305,30 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
     return [...filteredPackages.value].sort((a, b) => comparePackages(a, b, sortOption.value))
   })
 
+  // i18n key mappings for filter chip values
+  const downloadRangeKeys: Record<DownloadRange, string> = {
+    'any': 'filters.download_range.any',
+    'lt100': 'filters.download_range.lt100',
+    '100-1k': 'filters.download_range.100_1k',
+    '1k-10k': 'filters.download_range.1k_10k',
+    '10k-100k': 'filters.download_range.10k_100k',
+    'gt100k': 'filters.download_range.gt100k',
+  }
+
+  const securityKeys: Record<SecurityFilter, string> = {
+    all: 'filters.security_options.all',
+    secure: 'filters.security_options.secure',
+    warnings: 'filters.security_options.insecure',
+  }
+
+  const updatedWithinKeys: Record<UpdatedWithin, string> = {
+    any: 'filters.updated.any',
+    week: 'filters.updated.week',
+    month: 'filters.updated.month',
+    quarter: 'filters.updated.quarter',
+    year: 'filters.updated.year',
+  }
+
   // Active filter chips for display
   const activeFilters = computed<FilterChip[]>(() => {
     const chips: FilterChip[] = []
@@ -300,18 +337,17 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
       chips.push({
         id: 'text',
         type: 'text',
-        label: 'Search',
+        label: t('filters.chips.search'),
         value: filters.value.text,
       })
     }
 
     if (filters.value.downloadRange !== 'any') {
-      const config = DOWNLOAD_RANGES.find(r => r.value === filters.value.downloadRange)
       chips.push({
         id: 'downloadRange',
         type: 'downloadRange',
-        label: 'Downloads',
-        value: config?.label ?? filters.value.downloadRange,
+        label: t('filters.chips.downloads'),
+        value: t(downloadRangeKeys[filters.value.downloadRange]),
       })
     }
 
@@ -319,28 +355,26 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
       chips.push({
         id: `keyword-${keyword}`,
         type: 'keywords',
-        label: 'Keyword',
+        label: t('filters.chips.keyword'),
         value: keyword,
       })
     }
 
     if (filters.value.security !== 'all') {
-      const config = SECURITY_FILTER_OPTIONS.find(o => o.value === filters.value.security)
       chips.push({
         id: 'security',
         type: 'security',
-        label: 'Security',
-        value: config?.label ?? filters.value.security,
+        label: t('filters.chips.security'),
+        value: t(securityKeys[filters.value.security]),
       })
     }
 
     if (filters.value.updatedWithin !== 'any') {
-      const config = UPDATED_WITHIN_OPTIONS.find(o => o.value === filters.value.updatedWithin)
       chips.push({
         id: 'updatedWithin',
         type: 'updatedWithin',
-        label: 'Updated',
-        value: config?.label ?? filters.value.updatedWithin,
+        label: t('filters.chips.updated'),
+        value: t(updatedWithinKeys[filters.value.updatedWithin]),
       })
     }
 
@@ -366,11 +400,17 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   function addKeyword(keyword: string) {
     if (!filters.value.keywords.includes(keyword)) {
       filters.value.keywords = [...filters.value.keywords, keyword]
+      const newQ = searchQuery.value
+        ? `${searchQuery.value.trim()} keyword:${keyword}`
+        : `keyword:${keyword}`
+      router.replace({ query: { ...route.query, q: newQ } })
     }
   }
 
   function removeKeyword(keyword: string) {
     filters.value.keywords = filters.value.keywords.filter(k => k !== keyword)
+    const newQ = searchQuery.value.replace(new RegExp(`keyword:${keyword}($| )`, 'g'), '').trim()
+    router.replace({ query: { ...route.query, q: newQ || undefined } })
   }
 
   function toggleKeyword(keyword: string) {
