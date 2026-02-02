@@ -7,6 +7,7 @@ const { focused: isSearchFocused } = useFocus(searchInputRef)
 
 async function search() {
   const query = searchQuery.value.trim()
+  if (!query) return
   await navigateTo({
     path: '/search',
     query: query ? { q: query } : undefined,
