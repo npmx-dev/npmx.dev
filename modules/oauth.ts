@@ -1,4 +1,4 @@
-import { defineNuxtModule, useNuxt, addTemplate } from 'nuxt/kit'
+import { defineNuxtModule, useNuxt, addServerTemplate } from 'nuxt/kit'
 import { join } from 'node:path'
 import { appendFileSync, existsSync, readFileSync } from 'node:fs'
 import { randomUUID } from 'node:crypto'
@@ -24,13 +24,10 @@ export default defineNuxtModule({
     }
 
     // bake it into a virtual file
-    const template = addTemplate({
-      filename: 'oauth-config.mjs',
+    addServerTemplate({
+      filename: '#oauth/config',
       getContents: () => `export const clientUri = ${JSON.stringify(clientUri)};`,
-      write: true,
     })
-
-    nuxt.options.alias['#oauth/config'] = template.dst
 
     if (nuxt.options._prepare || process.env.NUXT_SESSION_PASSWORD) {
       return
