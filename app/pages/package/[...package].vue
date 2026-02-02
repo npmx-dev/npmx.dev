@@ -12,6 +12,7 @@ import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
 import { formatBytes } from '~/utils/formatters'
 import { NuxtLink } from '#components'
+import { useModal } from '~/composables/useModal'
 
 definePageMeta({
   name: 'package',
@@ -358,7 +359,8 @@ const canonicalUrl = computed(() => {
 
 //atproto
 const { user } = useAtproto()
-const showAuthModal = ref(false)
+
+const authModal = useModal('auth-modal')
 
 const { data: likesData } = useFetch(() => `/api/social/likes/${packageName.value}`, {
   default: () => ({ totalLikes: 0, userHasLiked: false }),
@@ -368,7 +370,7 @@ const { mutate: likePackage } = useLikePackage(packageName.value)
 
 const likeAction = async () => {
   if (user.value?.handle == null) {
-    showAuthModal.value = true
+    authModal.open()
   } else {
     const result = await likePackage()
     if (result?.totalLikes) {
@@ -1126,7 +1128,6 @@ defineOgImageComponent('Package', {
       </p>
       <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
-    <AuthModal v-model:open="showAuthModal" />
   </main>
 </template>
 
