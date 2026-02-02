@@ -94,7 +94,7 @@ function handleKeydown(event: KeyboardEvent) {
           <ul v-else-if="packages.length > 0" class="py-1 max-h-80 overflow-y-auto">
             <li v-for="pkg in packages" :key="pkg">
               <NuxtLink
-                :to="`/${pkg}`"
+                :to="`/package/${pkg}`"
                 class="block px-3 py-2 font-mono text-sm text-fg hover:bg-bg-subtle transition-colors truncate"
               >
                 {{ pkg }}

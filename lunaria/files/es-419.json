@@ -24,7 +24,6 @@
     "found_packages": "No se encontraron paquetes | Se encontró 1 paquete | Se encontraron {count} paquetes",
     "updating": "(actualizando...)",
     "no_results": "No se encontraron paquetes para \"{query}\"",
-    "results": "Resultados de la búsqueda",
     "not_taken": "{name} no está ocupado",
     "claim_prompt": "Reclamar este nombre de paquete en npm",
     "claim_button": "Reclamar \"{name}\"",
@@ -116,18 +115,30 @@
       "version": "Esta versión ha sido obsoleta.",
       "no_reason": "Sin razón proporcionada"
     },
+    "replacement": {
+      "title": "Es posible que no necesite esta dependencia.",
+      "native": "Esto se puede reemplazar con {replacement}, disponible desde Node {nodeVersion}.",
+      "simple": "La {community} ha marcado este paquete como redundante, con el siguiente consejo: {replacement}.",
+      "documented": "La {community} ha señalado que este paquete tiene alternativas con mejor rendimiento.",
+      "none": "Este paquete se ha marcado como ya no necesario y es probable que su funcionalidad esté disponible de forma nativa en todos los motores.",
+      "learn_more": "Más información",
+      "mdn": "MDN",
+      "community": "comunidad"
+    },
     "stats": {
       "license": "Licencia",
       "deps": "Dependencias",
       "install_size": "Tamaño de instalación",
       "vulns": "Vulnerabilidades",
-      "updated": "Actualizado",
       "view_dependency_graph": "Ver gráfico de dependencias",
       "inspect_dependency_tree": "Inspeccionar árbol de dependencias",
       "size_tooltip": {
         "unpacked": "{size} tamaño desempaquetado (este paquete)",
         "total": "{size} tamaño total desempaquetado (incluidas las {count} dependencias para Linux-x64)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repo",
@@ -165,7 +176,6 @@
     "compatibility": "Compatibilidad",
     "card": {
       "publisher": "Publicador",
-      "updated": "Actualizado",
       "weekly_downloads": "Descargas semanales",
       "keywords": "Palabras clave",
       "license": "Licencia"
@@ -251,10 +261,10 @@
       "esm": "Módulos ES soportados",
       "cjs": "CommonJS soportado",
       "no_esm": "Sin soporte de Módulos ES",
+      "types_label": "Tipos",
       "types_included": "Tipos incluidos",
       "types_available": "Tipos disponibles vía {package}",
-      "no_types": "Sin tipos TypeScript",
-      "types_label": "Tipos"
+      "no_types": "Sin tipos TypeScript"
     },
     "license": {
       "view_spdx": "Ver texto de licencia en SPDX"
@@ -296,6 +306,8 @@
       "refresh": "Actualizar acceso de equipo",
       "list_label": "Lista de acceso de equipo",
       "owner": "propietario",
+      "rw": "rw",
+      "ro": "ro",
       "revoke_access": "Revocar acceso de {name}",
       "no_access": "No hay acceso de equipo configurado",
       "select_team_label": "Seleccionar equipo",
@@ -308,9 +320,7 @@
       },
       "grant_button": "otorgar",
       "cancel_grant": "Cancelar otorgar acceso",
-      "grant_access": "+ Otorgar acceso de equipo",
-      "ro": "ro",
-      "rw": "rw"
+      "grant_access": "+ Otorgar acceso de equipo"
     },
     "list": {
       "filter_label": "Filtrar paquetes",
@@ -324,31 +334,17 @@
       "weekly": "Semanal",
       "size": "Tamaño",
       "deps": "Deps",
-      "updated": "Actualizado",
+      "get_started": "Empezar",
       "readme": "Léame",
       "maintainers": "Mantenedores",
       "keywords": "Palabras clave",
       "versions": "Versiones",
-      "dependencies": "Dependencias",
-      "get_started": "Empezar"
+      "dependencies": "Dependencias"
     },
     "sort": {
-      "downloads_desc": "Más descargados",
-      "downloads_asc": "Menos descargados",
-      "updated_desc": "Recientemente actualizados",
-      "updated_asc": "Menos recientemente actualizados",
+      "downloads": "Más descargados",
       "name_asc": "Nombre (A-Z)",
       "name_desc": "Nombre (Z-A)"
-    },
-    "replacement": {
-      "documented": "La {community} ha señalado que este paquete tiene alternativas con mejor rendimiento.",
-      "community": "comunidad",
-      "mdn": "MDN",
-      "none": "Este paquete se ha marcado como ya no necesario y es probable que su funcionalidad esté disponible de forma nativa en todos los motores.",
-      "learn_more": "Más información",
-      "native": "Esto se puede reemplazar con {replacement}, disponible desde Node {nodeVersion}.",
-      "simple": "La {community} ha marcado este paquete como redundante, con el siguiente consejo: {replacement}.",
-      "title": "Es posible que no necesite esta dependencia."
     }
   },
   "connector": {
@@ -365,6 +361,7 @@
     "modal": {
       "title": "Conector Local",
       "connected": "Conectado",
+      "connected_as_user": "Conectado como ~{user}",
       "connected_hint": "Ahora puedes administrar paquetes y organizaciones desde la interfaz web.",
       "disconnect": "Desconectar",
       "run_hint": "Ejecuta el conector en tu computadora para habilitar funciones de administración.",
@@ -378,8 +375,7 @@
       "warning": "ADVERTENCIA",
       "warning_text": "Esto permite a npmx acceder a tu CLI de npm. Conéctate solo a sitios en los que confíes.",
       "connect": "Conectar",
-      "connecting": "Conectando...",
-      "connected_as_user": "Conectado como ~{user}"
+      "connecting": "Conectando..."
     }
   },
   "operations": {
@@ -627,7 +623,6 @@
       "downloads_day": "Descargas/día",
       "downloads_month": "Descargas/mes",
       "downloads_year": "Descargas/año",
-      "updated": "Última Actualización",
       "name": "Nombre",
       "quality": "Calidad",
       "popularity": "Popularidad",
@@ -643,7 +638,6 @@
       "version": "Versión",
       "description": "Descripción",
       "downloads": "Descargas/sem",
-      "updated": "Última Actualización",
       "maintainers": "Mantenedores",
       "keywords": "Palabras clave",
       "quality_score": "Puntuación de calidad",
@@ -670,9 +664,9 @@
       "nav_label": "Paginación"
     },
     "count": {
-      "showing_filtered": "{filtered} de {total} paquetes",
-      "showing_all": "{total} paquetes",
-      "showing_paginated": "{pageSize} de {total} paquetes"
+      "showing_filtered": "{filtered} de {count} paquetes",
+      "showing_all": "{count} paquetes",
+      "showing_paginated": "{pageSize} de {count} paquetes"
     },
     "table": {
       "security_warning": "Advertencia de seguridad",
@@ -734,6 +728,34 @@
       }
     }
   },
+  "account_menu": {
+    "connect": "conectar",
+    "account": "Cuenta",
+    "npm_cli": "CLI de npm",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Gestionar paquetes y organizaciones",
+    "atmosphere_desc": "Características sociales e identidad",
+    "connect_npm_cli": "Conectar a la CLI de npm",
+    "connect_atmosphere": "Conectar a la Atmosphere",
+    "connecting": "Conectando...",
+    "ops": "{count} op | {count} ops",
+    "disconnect": "Desconectar"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Conectado como {'@'}{handle}",
+      "disconnect": "Desconectar",
+      "connect_prompt": "Conectar con tu cuenta de la Atmosphere",
+      "handle_label": "Nombre de usuario",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Conectar",
+      "create_account": "Crear una nueva cuenta",
+      "connect_bluesky": "Conectar con Bluesky",
+      "what_is_atmosphere": "¿Qué es una cuenta de la Atmosphere?",
+      "atmosphere_explanation": "{npmx} utiliza {atproto} para proporcionar muchas de sus funciones sociales, lo que permite a los usuarios ser propietarios de sus datos y utilizar una cuenta para todas las aplicaciones compatibles. Una vez que crea una cuenta, puede usar otras aplicaciones como {bluesky} y {tangled} con la misma cuenta."
+    }
+  },
   "header": {
     "home": "inicio npmx",
     "github": "GitHub",
@@ -754,32 +776,11 @@
       "view_all": "Ver todo"
     }
   },
-  "account_menu": {
-    "account": "Cuenta",
-    "atmosphere": "Atmosphere",
-    "atmosphere_desc": "Características sociales e identidad",
-    "connect": "conectar",
-    "connect_atmosphere": "Conectar a la Atmosphere",
-    "connect_npm_cli": "Conectar a la CLI de npm",
-    "connecting": "Conectando...",
-    "disconnect": "Desconectar",
-    "npm_cli": "CLI de npm",
-    "npm_cli_desc": "Gestionar paquetes y organizaciones",
-    "ops": "{count} op | {count} ops"
-  },
-  "auth": {
-    "modal": {
-      "atmosphere_explanation": "{npmx} utiliza {atproto} para proporcionar muchas de sus funciones sociales, lo que permite a los usuarios ser propietarios de sus datos y utilizar una cuenta para todas las aplicaciones compatibles. Una vez que crea una cuenta, puede usar otras aplicaciones como {bluesky} y {tangled} con la misma cuenta.",
-      "connect": "Conectar",
-      "connect_prompt": "Conectar con tu cuenta de la Atmosphere",
-      "connected_as": "Conectado como {'@'}{handle}",
-      "create_account": "Crear una nueva cuenta",
-      "disconnect": "Desconectar",
-      "handle_label": "Nombre de usuario",
-      "handle_placeholder": "alice.npmx.social",
-      "title": "Atmosphere",
-      "what_is_atmosphere": "¿Qué es una cuenta de la Atmosphere?",
-      "connect_bluesky": "Conectar con Bluesky"
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

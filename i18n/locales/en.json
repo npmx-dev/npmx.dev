@@ -27,7 +27,7 @@
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
-    "results": "Search results",
+    "title": "search",
     "not_taken": "{name} is not taken",
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
@@ -77,7 +77,8 @@
     "help_translate": "Help translate npmx",
     "accent_colors": "Accent colors",
     "clear_accent": "Clear accent color",
-    "translation_progress": "Translation progress"
+    "translation_progress": "Translation progress",
+    "background_themes": "Background shade"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",
@@ -142,7 +143,8 @@
       "deps": "Deps",
       "install_size": "Install Size",
       "vulns": "Vulns",
-      "updated": "Updated",
+      "published": "Published",
+      "published_tooltip": "Date {package}{'@'}{version} was published",
       "skills": "Skills",
       "view_dependency_graph": "View dependency graph",
       "inspect_dependency_tree": "Inspect dependency tree",
@@ -206,7 +208,7 @@
     "compatibility": "Compatibility",
     "card": {
       "publisher": "Publisher",
-      "updated": "Updated",
+      "published": "Published",
       "weekly_downloads": "Weekly downloads",
       "keywords": "Keywords",
       "license": "License"
@@ -298,7 +300,8 @@
       "no_types": "No TypeScript types"
     },
     "license": {
-      "view_spdx": "View license text on SPDX"
+      "view_spdx": "View license text on SPDX",
+      "none": "None"
     },
     "vulnerabilities": {
       "no_description": "No description available",
@@ -365,7 +368,7 @@
       "weekly": "Weekly",
       "size": "Size",
       "deps": "Deps",
-      "updated": "Updated",
+      "published": "Published",
       "get_started": "Get started",
       "readme": "Readme",
       "maintainers": "Maintainers",
@@ -376,8 +379,8 @@
     "sort": {
       "downloads_desc": "Most downloaded",
       "downloads_asc": "Least downloaded",
-      "updated_desc": "Recently updated",
-      "updated_asc": "Least recently updated",
+      "published_desc": "Recently published",
+      "published_asc": "Least recently published",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
     }
@@ -662,7 +665,7 @@
       "downloads_day": "Downloads/day",
       "downloads_month": "Downloads/mo",
       "downloads_year": "Downloads/yr",
-      "updated": "Last Updated",
+      "published": "Last Published",
       "name": "Name",
       "quality": "Quality",
       "popularity": "Popularity",
@@ -678,7 +681,7 @@
       "version": "Version",
       "description": "Description",
       "downloads": "Downloads/wk",
-      "updated": "Last Updated",
+      "published": "Last Published",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "quality_score": "Quality score",
@@ -853,6 +856,7 @@
       "deselect_all": "Deselect all facets",
       "select_category": "Select all {category} facets",
       "deselect_category": "Deselect all {category} facets",
+      "binary_only_tooltip": "This package exposes binaries and no exports",
       "categories": {
         "performance": "Performance",
         "health": "Health",

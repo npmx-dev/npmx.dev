@@ -181,7 +181,7 @@ function handlePageSizeChange(event: Event) {
           $t('filters.pagination.showing', {
             start: startItem,
             end: endItem,
-            total: totalItems.toLocaleString(),
+            total: $n(totalItems),
           })
         }}
       </span>

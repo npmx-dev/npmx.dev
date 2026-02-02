@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  hasSearchOperators,
-  parseSearchOperators,
-} from '../../app/composables/useStructuredFilters'
+import { hasSearchOperators, parseSearchOperators } from '~/composables/useStructuredFilters'
 
 describe('parseSearchOperators', () => {
   describe('basic operator parsing', () => {

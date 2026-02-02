@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 const route = useRoute('~username')
 const router = useRouter()
@@ -13,7 +14,7 @@ const currentPage = shallowRef(1)
 
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
-  const p = Number.parseInt(route.query.page as string, 10)
+  const p = Number.parseInt(normalizeSearchParam(route.query.page), 10)
   return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 
@@ -38,10 +39,8 @@ type SortOption =
   | 'name-desc'
 
 // Filter and sort state (from URL)
-const filterText = shallowRef(
-  (Array.isArray(route.query.q) ? route.query.q[0] : route.query.q) ?? '',
-)
-const rawSort = (Array.isArray(route.query.sort) ? route.query.sort[0] : route.query.sort) as
+const filterText = shallowRef(normalizeSearchParam(route.query.q))
+const rawSort = normalizeSearchParam(route.query.sort) as
   | SortOption
   | 'downloads'
   | 'updated'
@@ -202,15 +201,7 @@ defineOgImageComponent('Default', {
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-wrap items-center gap-4">
-        <!-- Avatar placeholder -->
-        <div
-          class="size-16 shrink-0 rounded-full bg-bg-muted border border-border flex items-center justify-center"
-          aria-hidden="true"
-        >
-          <span class="text-2xl text-fg-subtle font-mono">{{
-            username.charAt(0).toUpperCase()
-          }}</span>
-        </div>
+        <UserAvatar :username="username" />
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">~{{ username }}</h1>
           <p v-if="results?.total" class="text-fg-muted text-sm mt-1">

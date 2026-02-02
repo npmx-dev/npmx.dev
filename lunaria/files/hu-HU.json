@@ -24,7 +24,6 @@
     "found_packages": "Nincs találat | 1 csomag található | {count} csomag található",
     "updating": "(frissítés...)",
     "no_results": "Nincs találat a következőre: \"{query}\"",
-    "results": "Keresési eredmények",
     "not_taken": "{name} még szabad",
     "claim_prompt": "Foglald le ezt a csomagnevet az npm-en",
     "claim_button": "\"{name}\" lefoglalása",
@@ -130,13 +129,15 @@
       "deps": "Függ.",
       "install_size": "Telepítési méret",
       "vulns": "Sebez.",
-      "updated": "Frissítve",
       "view_dependency_graph": "Függőségi gráf megtekintése",
       "inspect_dependency_tree": "Függőségi fa vizsgálata",
       "size_tooltip": {
         "unpacked": "{size} kicsomagolt méret (ez a csomag)",
         "total": "{size} teljes kicsomagolt méret ({count} függőséggel együtt linux-x64-en)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repo",
@@ -174,7 +175,6 @@
     "compatibility": "Kompatibilitás",
     "card": {
       "publisher": "Kiadó",
-      "updated": "Frissítve",
       "weekly_downloads": "Heti letöltések",
       "keywords": "Kulcsszavak",
       "license": "Licenc"
@@ -327,7 +327,6 @@
       "weekly": "Heti",
       "size": "Méret",
       "deps": "Függ.",
-      "updated": "Frissítve",
       "readme": "Readme",
       "maintainers": "Karbantartók",
       "keywords": "Kulcsszavak",
@@ -335,10 +334,7 @@
       "dependencies": "Függőségek"
     },
     "sort": {
-      "downloads_desc": "Legtöbbször letöltött",
-      "downloads_asc": "Legkevesebbet letöltött",
-      "updated_desc": "Legfrissebb",
-      "updated_asc": "Legrégebben frissített",
+      "downloads": "Legtöbbször letöltött",
       "name_asc": "Név (A-Z)",
       "name_desc": "Név (Z-A)"
     }
@@ -618,7 +614,6 @@
       "downloads_day": "Letöltés/nap",
       "downloads_month": "Letöltés/hó",
       "downloads_year": "Letöltés/év",
-      "updated": "Frissítve",
       "name": "Név",
       "quality": "Minőség",
       "popularity": "Népszerűség",
@@ -634,7 +629,6 @@
       "version": "Verzió",
       "description": "Leírás",
       "downloads": "Letöltés/hét",
-      "updated": "Frissítve",
       "maintainers": "Karbantartók",
       "keywords": "Kulcsszavak",
       "quality_score": "Minőség pontszám",
@@ -661,9 +655,9 @@
       "nav_label": "Lapozás"
     },
     "count": {
-      "showing_filtered": "{filtered} / {total} csomag",
-      "showing_all": "{total} csomag",
-      "showing_paginated": "{pageSize} / {total} csomag"
+      "showing_filtered": "{filtered} / {count} csomag",
+      "showing_all": "{count} csomag",
+      "showing_paginated": "{pageSize} / {count} csomag"
     },
     "table": {
       "security_warning": "Biztonsági figyelmeztetés",
@@ -725,6 +719,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "npmx kezdőlap",
     "github": "GitHub",
@@ -743,6 +741,13 @@
       "error": "Nem sikerült betölteni a szervezeteket",
       "empty": "Nincsenek szervezetek",
       "view_all": "Összes megtekintése"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

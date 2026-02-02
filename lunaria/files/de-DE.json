@@ -27,7 +27,7 @@
     "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
-    "results": "Suchergebnisse",
+    "title": "Suche",
     "not_taken": "{name} ist noch frei",
     "claim_prompt": "Diesen Paketnamen auf npm beanspruchen",
     "claim_button": "\"{name}\" beanspruchen",
@@ -142,13 +142,31 @@
       "deps": "Abhängigkeiten",
       "install_size": "Installationsgröße",
       "vulns": "Sicherheitslücken",
-      "updated": "Aktualisiert",
+      "skills": "Fähigkeiten",
       "view_dependency_graph": "Abhängigkeitsgraph anzeigen",
       "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen",
       "size_tooltip": {
         "unpacked": "{size} Größe nach dem Entpacken (dieses Paket)",
         "total": "{size} Gesamtgröße nach dem Entpacken (inklusive aller {count} Abhängigkeiten für linux-x64)"
       }
+    },
+    "skills": {
+      "title": "Agentenfähigkeiten",
+      "skills_available": "{count} Fähigkeit verfügbar | {count} Fähigkeiten verfügbar",
+      "view": "Ansehen",
+      "compatible_with": "Kompatibel mit: {tool}",
+      "install": "installieren",
+      "installation_method": "Installationsmethode",
+      "learn_more": "Mehr erfahren",
+      "available_skills": "Verfügbare Fähigkeiten",
+      "click_to_expand": "Klicken zum Aufklappen",
+      "no_description": "Keine Beschreibung",
+      "file_counts": {
+        "scripts": "{count} Skript | {count} Skripte",
+        "refs": "{count} Referenz | {count} Referenzen",
+        "assets": "{count} Asset | {count} Assets"
+      },
+      "view_source": "Quelltext ansehen"
     },
     "links": {
       "repo": "Repo",
@@ -187,7 +205,6 @@
     "compatibility": "Kompatibilität",
     "card": {
       "publisher": "Herausgeber",
-      "updated": "Aktualisiert",
       "weekly_downloads": "Wöchentliche Downloads",
       "keywords": "Schlüsselwörter",
       "license": "Lizenz"
@@ -279,7 +296,8 @@
       "no_types": "Keine TypeScript-Typen"
     },
     "license": {
-      "view_spdx": "Lizenztext auf SPDX ansehen"
+      "view_spdx": "Lizenztext auf SPDX ansehen",
+      "none": "Keine"
     },
     "vulnerabilities": {
       "no_description": "Keine Beschreibung verfügbar",
@@ -296,16 +314,16 @@
       "packages_failed": "{count} Paket konnte nicht geprüft werden | {count} Pakete konnten nicht geprüft werden",
       "no_known": "Keine bekannten Sicherheitslücken in {count} Paketen",
       "scan_failed": "Sicherheits-Scan fehlgeschlagen",
+      "depth": {
+        "root": "Dieses Paket",
+        "direct": "Direkte Abhängigkeit",
+        "transitive": "Transitive Abhängigkeit (indirekt)"
+      },
       "severity": {
         "critical": "kritisch",
         "high": "hoch",
         "moderate": "mittel",
         "low": "niedrig"
-      },
-      "depth": {
-        "root": "Dieses Paket",
-        "direct": "Direkte Abhängigkeit",
-        "transitive": "Transitive Abhängigkeit (indirekt)"
       }
     },
     "deprecated": {
@@ -346,7 +364,6 @@
       "weekly": "Wöchentlich",
       "size": "Größe",
       "deps": "Abhängigkeiten",
-      "updated": "Aktualisiert",
       "get_started": "Erste Schritte",
       "readme": "Readme",
       "maintainers": "Maintainer",
@@ -355,10 +372,7 @@
       "dependencies": "Abhängigkeiten"
     },
     "sort": {
-      "downloads_desc": "Meiste Downloads",
-      "downloads_asc": "Wenigste Downloads",
-      "updated_desc": "Zuletzt aktualisiert",
-      "updated_asc": "Am wenigsten kürzlich aktualisiert",
+      "downloads": "Meiste Downloads",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
     }
@@ -643,7 +657,6 @@
       "downloads_day": "Downloads/Tag",
       "downloads_month": "Downloads/Monat",
       "downloads_year": "Downloads/Jahr",
-      "updated": "Zuletzt aktualisiert",
       "name": "Name",
       "quality": "Qualität",
       "popularity": "Beliebtheit",
@@ -659,7 +672,6 @@
       "version": "Version",
       "description": "Beschreibung",
       "downloads": "Downloads/Woche",
-      "updated": "Zuletzt aktualisiert",
       "maintainers": "Maintainer",
       "keywords": "Stichwörter",
       "quality_score": "Qualitätsfaktor",

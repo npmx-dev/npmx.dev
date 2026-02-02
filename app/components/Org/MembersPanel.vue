@@ -302,7 +302,7 @@ watch(lastExecutionTime, () => {
         @click="refreshData"
       >
         <span
-          class="i-carbon:renew block w-4 h-4"
+          class="i-carbon:renew w-4 h-4"
           :class="{ 'motion-safe:animate-spin': isLoading || isLoadingTeams }"
           aria-hidden="true"
         />
@@ -391,7 +391,7 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoading && memberList.length === 0" class="p-8 text-center">
       <span
-        class="i-carbon:rotate-180 block w-5 h-5 text-fg-muted animate-spin mx-auto"
+        class="i-carbon:rotate-180 w-5 h-5 text-fg-muted animate-spin mx-auto"
         aria-hidden="true"
       />
       <p class="font-mono text-sm text-fg-muted mt-2">{{ $t('org.members.loading') }}</p>
@@ -470,7 +470,7 @@ watch(lastExecutionTime, () => {
               :aria-label="$t('org.members.remove_from_org', { name: member.name })"
               @click="handleRemoveMember(member.name)"
             >
-              <span class="i-carbon:close block w-4 h-4" aria-hidden="true" />
+              <span class="i-carbon:close w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -549,7 +549,7 @@ watch(lastExecutionTime, () => {
               :aria-label="$t('org.members.cancel_add')"
               @click="showAddMember = false"
             >
-              <span class="i-carbon:close block w-4 h-4" aria-hidden="true" />
+              <span class="i-carbon:close w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </form>

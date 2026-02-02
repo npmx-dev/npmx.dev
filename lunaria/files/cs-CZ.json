@@ -1,0 +1,855 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - Prohlížeč balíčků pro registr npm",
+      "description": "Lepší prohlížeč pro registr npm. Vyhledávejte, prohlížejte a objevujte balíčky v moderním rozhraní."
+    }
+  },
+  "version": "Verze",
+  "built_at": "sestaveno {0}",
+  "alt_logo": "npmx logo",
+  "tagline": "lepší prohlížeč pro registr npm",
+  "non_affiliation_disclaimer": "není spojen s npm, Inc.",
+  "trademark_disclaimer": "npm je registrovaná ochranná známka společnosti npm, Inc. Tato stránka není spojena s npm, Inc.",
+  "footer": {
+    "about": "o projektu",
+    "docs": "dokumentace",
+    "source": "zdrojový kód",
+    "social": "sociální sítě",
+    "chat": "chat"
+  },
+  "search": {
+    "label": "Hledat npm balíčky",
+    "placeholder": "Hledat balíčky...",
+    "button": "Hledat",
+    "clear": "Vymazat hledání",
+    "searching": "Hledání...",
+    "found_packages": "Nalezen {count} balíček | Nalezeny {count} balíčky | Nalezeno {count} balíčků",
+    "updating": "(aktualizace...)",
+    "no_results": "Žádné výsledky pro \"{query}\"",
+    "not_taken": "{name} není rezervováno",
+    "claim_prompt": "Nárokovat toto jméno balíčku na npm",
+    "claim_button": "Nárokovat \"{name}\"",
+    "want_to_claim": "Chcete nárokovat toto jméno balíčku?",
+    "start_typing": "Začněte psát pro hledání balíčků",
+    "exact_match": "přesná shoda",
+    "suggestion": {
+      "user": "uživatel",
+      "org": "organizace",
+      "view_user_packages": "Zobrazit balíčky tohoto uživatele",
+      "view_org_packages": "Zobrazit balíčky této organizace"
+    }
+  },
+  "nav": {
+    "main_navigation": "Hlavní",
+    "popular_packages": "Populární balíčky",
+    "search": "vyhledávání",
+    "settings": "nastavení",
+    "compare": "porovnat",
+    "back": "zpět",
+    "menu": "Menu",
+    "mobile_menu": "Navigační menu",
+    "open_menu": "Otevřít menu",
+    "links": "Odkazy",
+    "tap_to_search": "Klepněte pro hledání"
+  },
+  "settings": {
+    "title": "nastavení",
+    "tagline": "přizpůsobte si své npmx",
+    "meta_description": " Přizpůsobte si své npmx.dev vzhledem, jazykem a preferencemi zobrazení.",
+    "sections": {
+      "appearance": "Vzhled",
+      "display": "Zobrazení",
+      "language": "Jazyk"
+    },
+    "relative_dates": "Relativní data",
+    "relative_dates_description": "Zobrazit \"před 3 dny\" místo celého data",
+    "include_types": "Zahrnout {'@'}types při instalaci",
+    "include_types_description": "Přidat balíček {'@'}types do instalačních příkazů pro balíčky bez integrovaných typů",
+    "hide_platform_packages": "Skrýt platformně specifické balíčky ve vyhledávání",
+    "hide_platform_packages_description": "Skrýt nativní binární balíčky jako {'@'}esbuild/linux-x64 z výsledků",
+    "theme": "Téma",
+    "theme_light": "Světlé",
+    "theme_dark": "Tmavé",
+    "theme_system": "Systémové",
+    "language": "Jazyk",
+    "help_translate": "Pomozte přeložit npmx",
+    "accent_colors": "Barvy akcentu",
+    "clear_accent": "Vymazat barvu akcentu",
+    "translation_progress": "Pokrok překladu"
+  },
+  "i18n": {
+    "missing_keys": "{count} chybějící překlad | {count} chybějící překlady | {count} chybějících překladů",
+    "copy_keys": "Kopírovat klíče",
+    "show_more_keys": "Zobrazit dalších {count}...",
+    "contribute_hint": "Pomozte zlepšit tento překlad přidáním chybějících klíčů.",
+    "edit_on_github": "Upravit na GitHubu",
+    "view_guide": "Překladatelská příručka"
+  },
+  "common": {
+    "loading": "Načítání...",
+    "loading_more": "Načítání dalších...",
+    "loading_packages": "Načítání balíčků...",
+    "end_of_results": "Konec výsledků",
+    "try_again": "Zkuste to znovu",
+    "close": "Zavřít",
+    "retry": "Opakovat",
+    "copy": "zkopírovat",
+    "copied": "zkopírováno!",
+    "skip_link": "Přejít na hlavní obsah",
+    "close_modal": "Zavřít okno",
+    "show_more": "zobrazit více",
+    "warnings": "Varování:",
+    "go_back_home": "Zpět na začátek",
+    "view_on_npm": "Zobrazit na npm",
+    "per_week": "/ týden",
+    "vanity_downloads_hint": "Pro zobrazený balíček | Součet pro {count} zobrazené balíčky | Součet pro {count} zobrazených balíčků",
+    "sort": {
+      "name": "jméno",
+      "role": "role",
+      "members": "členové"
+    },
+    "scroll_to_top": "Posunout nahoru"
+  },
+  "package": {
+    "not_found": "Balíček nenalezen",
+    "not_found_message": "Balíček nebyl nalezen.",
+    "no_description": "Není k dispozici žádný popis",
+    "show_full_description": "Zobrazit celý popis",
+    "not_latest": "(není nejnovější)",
+    "verified_provenance": "Ověřený původ",
+    "view_permalink": "Zobrazit trvalý odkaz na tuto verzi",
+    "navigation": "Navigace balíčku",
+    "copy_name": "Zkopírovat název balíčku",
+    "deprecation": {
+      "package": "Tento balíček byl označen jako zastaralý.",
+      "version": "Tato verze byla označena jako zastaralá.",
+      "no_reason": "Bez uvedeného důvodu."
+    },
+    "replacement": {
+      "title": "Možná tuto závislost nepotřebujete.",
+      "native": "Tento balíček lze nahradit {replacement}, dostupné od Node {nodeVersion}.",
+      "simple": "{community} označila tento balíček jako zbytečný s doporučením: {replacement}.",
+      "documented": "{community} označila tento balíček jako mající výkonnější alternativy.",
+      "none": "Tento balíček byl označen jako již nepotřebný a jeho funkčnost je pravděpodobně dostupná nativně ve všech enginech.",
+      "learn_more": "Zjistit více",
+      "mdn": "MDN",
+      "community": "komunita"
+    },
+    "stats": {
+      "license": "Licence",
+      "deps": "Závislosti",
+      "install_size": "Velikost instalace",
+      "vulns": "Zranitelnosti",
+      "skills": "Dovednosti",
+      "view_dependency_graph": "Zobrazit graf závislostí",
+      "inspect_dependency_tree": "Prozkoumat strom závislostí",
+      "size_tooltip": {
+        "unpacked": "{size} velikost po rozbalení (tento balíček)",
+        "total": "{size} celková velikost po rozbalení (včetně všech závislostí ({count}) pro linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "Dovednosti agentů",
+      "skills_available": "{count} dostupná dovednost | {count} dostupné dovednosti | {count} dostupných dovedností",
+      "view": "Zobrazit",
+      "compatible_with": "Kompatibilní s {tool}",
+      "install": "Nainstalovat",
+      "installation_method": "Metoda instalace",
+      "learn_more": "Zjistit více",
+      "available_skills": "Dostupné dovednosti",
+      "click_to_expand": "Klikněte pro rozbalení",
+      "no_description": "Bez popisu",
+      "file_counts": {
+        "scripts": "{count} skript | {count} skripty | {count} skriptů",
+        "refs": "{count} odkaz | {count} odkazy | {count} odkazů",
+        "assets": "{count} zdroj | {count} zdroje | {count} zdrojů"
+      },
+      "view_source": "Zobrazit zdroj"
+    },
+    "links": {
+      "repo": "repozitář",
+      "homepage": "domovská stránka",
+      "issues": "úkoly",
+      "jsr": "jsr",
+      "code": "kód",
+      "docs": "dokumentace",
+      "fund": "financovat",
+      "compare": "porovnat"
+    },
+    "docs": {
+      "not_available": "Dokumentace není k dispozici",
+      "not_available_detail": "Nepodařilo se nám vygenerovat dokumentaci pro tuto verzi."
+    },
+    "get_started": {
+      "title": "Začínáme",
+      "pm_label": "Správce balíčků",
+      "copy_command": "Zkopírovat příkaz pro instalaci",
+      "view_types": "Zobrazit {package}"
+    },
+    "create": {
+      "title": "Vytvořit nový projekt",
+      "copy_command": "Zkopírovat příkaz pro vytvoření"
+    },
+    "run": {
+      "title": "Spustit",
+      "locally": "Spustit lokálně"
+    },
+    "readme": {
+      "title": "ČTI MĚ",
+      "no_readme": "Žádné ČTI MĚ NENÍ k dispozici.",
+      "view_on_github": "Zobrazit na GitHubu"
+    },
+    "keywords_title": "Klíčová slova",
+    "compatibility": "Kompatibilita",
+    "card": {
+      "publisher": "Vydavatel",
+      "weekly_downloads": "Týdenní stažení",
+      "keywords": "Klíčová slova",
+      "license": "Licence"
+    },
+    "versions": {
+      "title": "Verze",
+      "collapse": "Sbalit {tag}",
+      "expand": "Rozbalit {tag}",
+      "collapse_other": "Sbalit ostatní verze",
+      "expand_other": "Rozbalit ostatní verze",
+      "collapse_major": "Sbalit hlavní {major}",
+      "expand_major": "Rozbalit hlavní {major}",
+      "other_versions": "Další verze",
+      "more_tagged": "{count} další tag | {count} další tagy | {count} dalších tagů",
+      "all_covered": "Všechny verze jsou pokryty výše uvedenými tagy",
+      "deprecated_title": "{version} (zastaralá)",
+      "view_all": "Zobrazit {count} verzi | Zobrazit {count} verze | Zobrazit {count} verzí"
+    },
+    "dependencies": {
+      "title": "Závislosti ({count})",
+      "list_label": "Závislosti balíčku",
+      "show_all": "zobrazit všechny závislosti ({count})",
+      "optional": "volitelné",
+      "view_vulnerabilities": "Zobrazit zranitelnosti",
+      "outdated_major": "o {count} hlavní verzi pozadu (nejnovější: {latest}) | o {count} hlavní verze pozadu (nejnovější: {latest}) | o {count} hlavních verzích pozadu (nejnovější: {latest})",
+      "outdated_minor": "o {count} vedlejší verzi pozadu (nejnovější: {latest}) | o {count} vedlejší verze pozadu (nejnovější: {latest}) | o {count} vedlejších verzích pozadu (nejnovější: {latest})",
+      "outdated_patch": "Aktualizace záplaty dostupná (nejnovější: {latest})"
+    },
+    "peer_dependencies": {
+      "title": "Požadované závislosti ({count})",
+      "list_label": "Požadované závislosti balíčku",
+      "show_all": "zobrazit všechny požadované závislosti ({count})"
+    },
+    "optional_dependencies": {
+      "title": "Volitelné závislosti ({count})",
+      "list_label": "Volitelné závislosti balíčku",
+      "show_all": "zobrazit všechny volitelné závislosti ({count})"
+    },
+    "maintainers": {
+      "title": "Správci",
+      "list_label": "Správci balíčku",
+      "you": "(vy)",
+      "via": "přes {teams}",
+      "remove_owner": "Odebrat {name} jako vlastníka",
+      "username_to_add": "Uživatelské jméno pro přidání jako vlastníka",
+      "username_placeholder": "uživatelské jméno...",
+      "add_button": "přidat",
+      "cancel_add": "Zrušit přidání vlastníka",
+      "add_owner": "+ Přidat vlastníka",
+      "show_more": "(zobrazit {count} dalšího) | (zobrazit {count} další) | (zobrazit {count} dalších)",
+      "show_less": "(zobrazit méně)"
+    },
+    "downloads": {
+      "title": "Týdenní stažení",
+      "date_range": "od {start} do {end}",
+      "date_range_multiline": "od {start}\ndo {end}",
+      "analyze": "Analyzovat stažení",
+      "modal_title": "Stažení",
+      "granularity": "Rozlišení",
+      "granularity_daily": "Denně",
+      "granularity_weekly": "Týdně",
+      "granularity_monthly": "Měsíčně",
+      "granularity_yearly": "Ročně",
+      "start_date": "Od",
+      "end_date": "Do",
+      "no_data": "Žádná data o stažení nejsou k dispozici",
+      "loading": "Načítání...",
+      "y_axis_label": "Stažení {granularity}",
+      "download_file": "Stáhnout {fileType}",
+      "toggle_annotator": "Přepnout popisovač"
+    },
+    "install_scripts": {
+      "title": "Instalační skripty",
+      "script_label": "(skript)",
+      "npx_packages": "{count} npx balíček | {count} npx balíčky | {count} npx balíčků",
+      "currently": "aktuálně {version}"
+    },
+    "playgrounds": {
+      "title": "Vyzkoušejte si to",
+      "choose": "vyberte playground"
+    },
+    "metrics": {
+      "esm": "ES Moduly podporovány",
+      "cjs": "CommonJS podporováno",
+      "no_esm": "Bez podpory ES Modulů",
+      "types_label": "Typy",
+      "types_included": "Typy zahrnuty",
+      "types_available": "Typy dostupné přes {package}",
+      "no_types": "Žádné typy TypeScriptu"
+    },
+    "license": {
+      "view_spdx": "Zobrazit text licence na SPDX"
+    },
+    "vulnerabilities": {
+      "no_description": "Popis není k dispozici",
+      "found": "nalezena {count} zranitelnost | nalezeny {count} zranitelnosti | nalezeno {count} zranitelností",
+      "deps_found": "nalezena {count} zranitelnost | nalezeny {count} zranitelnosti | nalezeno {count} zranitelností",
+      "deps_affected": "postihuje {count} závislost | postihuje {count} závislosti | postihuje {count} závislostí",
+      "tree_found": "{vulns} zranitelnost v {packages}/{total} balíčcích | {vulns} zranitelnosti v {packages}/{total} balíčcích | {vulns} zranitelností v {packages}/{total} balíčcích",
+      "scanning_tree": "Prohledávání stromu závislostí...",
+      "show_all_packages": "zobrazit všechny {count} ovlivněné balíčky",
+      "no_summary": "Žádné shrnutí",
+      "view_details": "Zobrazit podrobnosti o zranitelnosti",
+      "path": "cesta",
+      "more": "+{count} další | +{count} další | +{count} dalších",
+      "packages_failed": "{count} balíček nemohl být zkontrolován | {count} balíčky nemohly být zkontrolovány | {count} balíčků nemohlo být zkontrolováno",
+      "no_known": "Žádné známé zranitelnosti",
+      "scan_failed": "Nepodařilo se provést kontrolu zranitelností",
+      "depth": {
+        "root": "Tento balíček",
+        "direct": "Přímá závislost",
+        "transitive": "Nepřímá závislost (transitivní)"
+      },
+      "severity": {
+        "critical": "kritická",
+        "high": "vysoká",
+        "moderate": "střední",
+        "low": "nízká"
+      }
+    },
+    "deprecated": {
+      "label": "Zastaralé",
+      "tree_found": "{count} zastaralá závislost | {count} zastaralé závislosti | {count} zastaralých závislostí",
+      "show_all": "zobrazit {count} zastaralý balíček | zobrazit {count} zastaralé balíčky | zobrazit {count} zastaralých balíčků"
+    },
+    "access": {
+      "title": "Přístup týmu",
+      "refresh": "Obnovit přístup týmu",
+      "list_label": "Seznam přístupu týmu",
+      "owner": "vlastník",
+      "rw": "zápis a čtení",
+      "ro": "pouze čtení",
+      "revoke_access": "Odebrat přístup {name}",
+      "no_access": "Není nakonfigurován žádný přístup týmu",
+      "select_team_label": "Vyberte tým",
+      "loading_teams": "Načítání týmů...",
+      "select_team": "Vyberte tým",
+      "permission_label": "Úroveň oprávnění",
+      "permission": {
+        "read_only": "pouze čtení",
+        "read_write": "čtení a zápis"
+      },
+      "grant_button": "přidělit",
+      "cancel_grant": "Zrušit přidělení přístupu",
+      "grant_access": "+ Přidělit přístup týmu"
+    },
+    "list": {
+      "filter_label": "Filtrovat balíčky",
+      "filter_placeholder": "Filtrovat balíčky...",
+      "sort_label": "Řadit balíčky",
+      "showing_count": "Zobrazuji {filtered} z {total} balíčků"
+    },
+    "skeleton": {
+      "loading": "Načítání detailů balíčku",
+      "license": "Licence",
+      "weekly": "Týdenní",
+      "size": "Velikost",
+      "deps": "Závislosti",
+      "get_started": "Začínáme",
+      "readme": "Readme",
+      "maintainers": "Správci",
+      "keywords": "Klíčová slova",
+      "versions": "Verze",
+      "dependencies": "Závislosti"
+    },
+    "sort": {
+      "downloads": "Nejvíce stažení",
+      "name_asc": "Název (A-Z)",
+      "name_desc": "Název (Z-A)"
+    }
+  },
+  "connector": {
+    "status": {
+      "connecting": "připojování...",
+      "connected_as": "připojeno jako {'@'}{user}",
+      "connected": "připojeno",
+      "connect_cli": "připojit lokální CLI",
+      "aria_connecting": "Připojování k lokálnímu konektoru",
+      "aria_connected": "Připojeno k lokálnímu konektoru",
+      "aria_click_to_connect": "Klikněte pro připojení k lokálnímu konektoru",
+      "avatar_alt": "Avatar uživatele {user}"
+    },
+    "modal": {
+      "title": "Lokální konektor",
+      "contributor_badge": "Pouze přispěvatelé",
+      "contributor_notice": "Konektor ještě není publikován na npm. Viz {link} pro informace, jak jej spustit lokálně.",
+      "contributor_link": "příručka pro přispěvatele",
+      "connected": "Připojeno",
+      "connected_as_user": "Připojeno jako ~{user}",
+      "connected_hint": "Nyní můžete spravovat balíčky a organizace z webového rozhraní.",
+      "disconnect": "Odpojit",
+      "run_hint": "Spusťte konektor na svém počítači pro povolení administrátorských funkcí.",
+      "copy_command": "Kopírovat příkaz",
+      "copied": "Zkopírováno",
+      "paste_token": "Poté vložte níže token pro připojení:",
+      "token_label": "Token",
+      "token_placeholder": "vložit token zde...",
+      "advanced": "Pokročilé možnosti",
+      "port_label": "Port",
+      "warning": "VAROVÁNÍ",
+      "warning_text": "Toto umožňuje npmx přístup k vašemu npm CLI. Připojujte se pouze k důvěryhodným stránkám.",
+      "connect": "Připojit",
+      "connecting": "Připojování..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Fronta operací",
+      "clear_all": "vymazat vše",
+      "refresh": "Obnovit operace",
+      "empty": "Žádné operace ve frontě",
+      "empty_hint": "Přidejte operace ze stránek balíčků nebo organizací",
+      "active_label": "Aktivní operace",
+      "otp_required": "vyžadováno OTP",
+      "otp_prompt": "Zadejte OTP pro pokračování",
+      "otp_placeholder": "Zadejte OTP kód...",
+      "otp_label": "Jednorázové heslo",
+      "retry_otp": "Zkusit znovu s OTP",
+      "retrying": "Znovu se pokouším...",
+      "approve_operation": "Schválit operaci",
+      "remove_operation": "Odebrat operaci",
+      "approve_all": "Schválit vše",
+      "execute": "Proveď",
+      "executing": "Provádění...",
+      "log": "Záznam",
+      "log_label": "Záznam dokončených operací",
+      "remove_from_log": "Odebrat ze záznamu"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Týmy",
+      "refresh": "Obnovit týmy",
+      "filter_label": "Filtrovat týmy",
+      "filter_placeholder": "Filtrovat týmy...",
+      "sort_by": "Řadit podle",
+      "loading": "Načítání týmů...",
+      "no_teams": "Nebyly nalezeny žádné týmy",
+      "list_label": "Týmy organizace",
+      "delete_team": "Smazat tým {name}",
+      "member_count": "{count} člen | {count} členové | {count} členů",
+      "members_of": "Členové týmu {team}",
+      "no_members": "Žádní členové",
+      "remove_user": "Odebrat {user} z týmu",
+      "username_to_add": "Uživatelské jméno pro přidání do {team}",
+      "username_placeholder": "uživatelské jméno...",
+      "add_button": "přidat",
+      "cancel_add_user": "Zrušit přidání uživatele",
+      "add_member": "+ Přidat člena",
+      "team_name_label": "Název týmu",
+      "team_name_placeholder": "název-týmu...",
+      "create_button": "vytvořit",
+      "no_match": "Žádné týmy neodpovídají \"{query}\"",
+      "cancel_create": "Zrušit vytváření týmu",
+      "create_team": "+ Vytvořit tým"
+    },
+    "members": {
+      "title": "Členové",
+      "refresh": "Obnovit členy",
+      "filter_label": "Filtrovat členy",
+      "filter_placeholder": "Filtrovat členy...",
+      "filter_by_role": "Filtrovat podle role",
+      "filter_by_team": "Filtrovat podle týmu",
+      "all_teams": "všechny týmy",
+      "sort_by": "Řadit podle",
+      "loading": "Načítání členů...",
+      "no_members": "Nebyli nalezeni žádní členové",
+      "list_label": "Členové organizace",
+      "change_role_for": "Změnit roli pro {name}",
+      "remove_from_org": "Odebrat {name} z organizace",
+      "view_team": "Zobrazit tým {team}",
+      "no_match": "Žádní členové neodpovídají vašim filtrům",
+      "username_label": "Uživatelské jméno",
+      "username_placeholder": "uživatelské jméno...",
+      "role_label": "Role",
+      "role": {
+        "all": "všechny",
+        "developer": "vývojář",
+        "admin": "správce",
+        "owner": "vlastník"
+      },
+      "team_label": "Tým",
+      "no_team": "žádný tým",
+      "add_button": "přidat",
+      "cancel_add": "Zrušit přidání člena",
+      "add_member": "+ Přidat člena"
+    },
+    "public_packages": "{count} veřejný balíček | {count} veřejné balíčky | {count} veřejných balíčků",
+    "page": {
+      "packages_title": "Balíčky",
+      "members_tab": "Členové",
+      "teams_tab": "Týmy",
+      "no_packages": "Nebyly nalezeny žádné veřejné balíčky pro",
+      "no_packages_hint": "Tato organizace nemusí existovat nebo nemá žádné veřejné balíčky.",
+      "failed_to_load": "Nepodařilo se načíst balíčky organizace",
+      "no_match": "Nebyly nalezeny žádné balíčky odpovídající \"{query}\"",
+      "not_found": "Organizace nenalezena",
+      "not_found_message": "Organizace \"{'@'}{name}\" neexistuje na npm",
+      "filter_placeholder": "Filtrovat {count} balíčků..."
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(bude také přidán do organizace)",
+      "press_enter_to_add": "Stiskněte Enter pro přidání {'@'}{username}",
+      "default_placeholder": "uživatelské jméno...",
+      "suggestions_label": "Návrhy uživatelů"
+    },
+    "page": {
+      "packages_title": "Balíčky",
+      "no_packages": "Nebyly nalezeny žádné veřejné balíčky pro",
+      "no_packages_hint": "Tento uživatel nemusí existovat nebo nemá žádné veřejné balíčky.",
+      "failed_to_load": "Nepodařilo se načíst uživatelské balíčky",
+      "no_match": "Nebyly nalezeny žádné balíčky odpovídající \"{query}\"",
+      "filter_placeholder": "Filtrovat {count} balíčků..."
+    },
+    "orgs_page": {
+      "title": "Organizace",
+      "back_to_profile": "Zpět na profil",
+      "connect_required": "Připojte místní CLI pro zobrazení vašich organizací.",
+      "connect_hint_prefix": "Spusťte",
+      "connect_hint_suffix": "pro začátek.",
+      "own_orgs_only": "Můžete zobrazit pouze své vlastní organizace.",
+      "view_your_orgs": "Zobrazit vaše organizace",
+      "loading": "Načítání organizací...",
+      "empty": "Nebyly nalezeny žádné organizace.",
+      "empty_hint": "Organizace jsou detekovány z vašich balíčků s prefixem.",
+      "count": "{count} organizace | {count} organizace | {count} organizací",
+      "packages_count": "{count} balíček | {count} balíčky | {count} balíčků"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Nárokovat název balíčku",
+      "success": "Název balíčku nárokován!",
+      "success_detail": "{name}{'@'}0.0.0 byl zveřejněn na npm.",
+      "success_hint": "Nyní můžete publikovat nové verze tohoto balíčku pomocí npm publish.",
+      "view_package": "Zobrazit balíček",
+      "invalid_name": "Neplatný název balíčku:",
+      "available": "Tento název je k dispozici!",
+      "taken": "Tento název je již obsazen.",
+      "similar_warning": "Podobné balíčky existují - npm může tento název odmítnout:",
+      "related": "Související balíčky:",
+      "scope_warning_title": "Zvažte použití balíčku s rozsahem",
+      "scope_warning_text": "Názvy balíčků bez rozsahu jsou sdíleným zdrojem. Nárokujte název pouze pokud máte v úmyslu balíček publikovat a udržovat. Pro osobní nebo organizační projekty použijte název s rozsahem, například {'@'}{username}/{name}.",
+      "connect_required": "Připojte se k místnímu konektoru pro nárokování tohoto názvu balíčku.",
+      "connect_button": "Připojit ke konektoru",
+      "publish_hint": "Tímto se zveřejní minimální zástupný balíček.",
+      "preview_json": "Náhled package.json",
+      "claim_button": "Nárokovat název balíčku",
+      "publishing": "Publikování...",
+      "checking": "Kontrola dostupnosti...",
+      "failed_to_check": "Nepodařilo se zkontrolovat dostupnost názvu",
+      "failed_to_claim": "Nepodařilo se nárokovat balíček"
+    }
+  },
+  "code": {
+    "files_label": "Soubory",
+    "no_files": "Žádné soubory v této složce",
+    "select_version": "Vyberte verzi",
+    "root": "kořen",
+    "lines": "{count} řádků",
+    "toggle_tree": "Přepnout strom souborů",
+    "close_tree": "Zavřít strom souborů",
+    "copy_link": "Kopírovat odkaz",
+    "raw": "Raw",
+    "view_raw": "Zobrazit raw soubor",
+    "file_too_large": "Soubor je příliš velký pro náhled",
+    "file_size_warning": "{size} překračuje limit 500KB pro zvýraznění syntaxe",
+    "load_anyway": "Načíst přesto",
+    "failed_to_load": "Nepodařilo se načíst soubor",
+    "unavailable_hint": "Soubor může být příliš velký nebo nedostupný",
+    "version_required": "Pro prohlížení kódu je vyžadována verze",
+    "go_to_package": "Přejít na balíček",
+    "loading_tree": "Načítání stromu souborů...",
+    "failed_to_load_tree": "Nepodařilo se načíst soubory pro tuto verzi balíčku",
+    "back_to_package": "Zpět na balíček",
+    "table": {
+      "name": "Název",
+      "size": "Velikost"
+    },
+    "markdown_view_mode": {
+      "preview": "náhled",
+      "code": "kód"
+    },
+    "file_path": "Cesta k souboru"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "ověřeno",
+      "verified_title": "Ověřený původ",
+      "verified_via": "Ověřeno: publikováno přes {provider}"
+    },
+    "jsr": {
+      "title": "také dostupné na JSR",
+      "label": "jsr"
+    }
+  },
+  "filters": {
+    "title": "Filtry",
+    "search": "Hledat",
+    "search_scope": "Rozsah hledání",
+    "search_placeholder_name": "Filtrovat podle názvu balíčku...",
+    "search_placeholder_description": "Filtrovat podle popisu...",
+    "search_placeholder_keywords": "Filtrovat podle klíčových slov...",
+    "search_placeholder_all": "Hledat vše nebo použít name: desc: kw:",
+    "scope_name": "Název",
+    "scope_name_description": "Hledat pouze názvy balíčků",
+    "scope_description": "Popis",
+    "scope_description_description": "Hledat pouze v popisech",
+    "scope_keywords": "Klíčová slova",
+    "scope_keywords_description": "Hledat pouze klíčová slova",
+    "scope_all": "Vše",
+    "scope_all_description": "Hledat ve všech polích, podporuje operátory name: desc: kw:",
+    "weekly_downloads": "Stažení/týden",
+    "updated_within": "Aktualizováno během",
+    "security": "Bezpečnost",
+    "keywords": "Klíčová slova",
+    "more_keywords": "+{count} další",
+    "clear_all": "Vymazat vše",
+    "remove_filter": "Odstranit filtr {label}",
+    "download_range": {
+      "any": "Jakýkoliv",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Kdykoliv",
+      "week": "Poslední týden",
+      "month": "Poslední měsíc",
+      "quarter": "Poslední 3 měsíce",
+      "year": "Poslední rok"
+    },
+    "security_options": {
+      "all": "Všechny balíčky",
+      "secure": "Bez varování",
+      "insecure": "S varováními"
+    },
+    "sort": {
+      "label": "Seřadit podle",
+      "toggle_direction": "Přepnout směr řazení",
+      "ascending": "Vzestupně",
+      "descending": "Sestupně",
+      "relevance": "Relevance",
+      "downloads_week": "Stažení/týden",
+      "downloads_day": "Stažení/den",
+      "downloads_month": "Stažení/měsíc",
+      "downloads_year": "Stažení/rok",
+      "name": "Název",
+      "quality": "Kvalita",
+      "popularity": "Popularita",
+      "maintenance": "Údržba",
+      "score": "Skóre"
+    },
+    "columns": {
+      "title": "Sloupce",
+      "show": "Zobrazit sloupce",
+      "reset": "Obnovit výchozí nastavení",
+      "coming_soon": "Brzy k dispozici",
+      "name": "Název",
+      "version": "Verze",
+      "description": "Popis",
+      "downloads": "Stažení/týden",
+      "maintainers": "Správci",
+      "keywords": "Klíčová slova",
+      "quality_score": "Skóre kvality",
+      "popularity_score": "Skóre popularity",
+      "maintenance_score": "Skóre údržby",
+      "combined_score": "Kombinované skóre",
+      "security": "Bezpečnost"
+    },
+    "view_mode": {
+      "label": "Režim zobrazení",
+      "cards": "Zobrazení karet",
+      "table": "Zobrazení tabulky"
+    },
+    "pagination": {
+      "mode_label": "Režim stránkování",
+      "infinite": "Nekonečné",
+      "paginated": "Stránkované",
+      "items_per_page": "Položek na stránku",
+      "per_page": "{count} / stránku",
+      "all_yolo": "Vše (YOLO)",
+      "showing": "{start}-{end} z {total}",
+      "previous": "Předchozí stránka",
+      "next": "Další stránka",
+      "nav_label": "Stránkování"
+    },
+    "count": {
+      "showing_filtered": "{filtered} z {count} balíčků",
+      "showing_all": "{count} balíčků",
+      "showing_paginated": "{pageSize} z {count} balíčku | {pageSize} ze {count} balíčků | {pageSize} z {count} balíčků"
+    },
+    "table": {
+      "security_warning": "Bezpečnostní varování",
+      "secure": "Bezpečný",
+      "no_packages": "Nebyly nalezeny žádné balíčky"
+    }
+  },
+  "about": {
+    "title": "O projektu",
+    "heading": "o projektu",
+    "meta_description": "npmx je rychlý, moderní prohlížeč pro registr npm. Lepší UX/DX pro prozkoumávání balíčků npm.",
+    "back_home": "zpět na domovskou stránku",
+    "what_we_are": {
+      "title": "Co jsme",
+      "better_ux_dx": "lepší UX/DX",
+      "admin_ui": "UI pro správu",
+      "description": "npmx je {betterUxDx} pro správce balíčků npm a jeho nástroje. Poskytujeme rychlé, moderní rozhraní pro prozkoumávání balíčků, s funkcemi jako je tmavý režim, navigace pomocí klávesnice, prohlížení kódu a připojení k alternativním registrům jako {jsr}.",
+      "admin_description": " Snažíme se také poskytnout lepší {adminUi} pro správu vašich balíčků, týmů a organizací — vše z prohlížeče, poháněné vaším lokálním npm CLI."
+    },
+    "what_we_are_not": {
+      "title": "Co nejsme",
+      "not_package_manager": "Nejsme správce balíčků.",
+      "not_registry": "Nejsme registr.",
+      "registry_description": "Nehostujeme balíčky. Jsme jen lepší způsob, jak je prohlížet.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Je spousta",
+        "people": "úžasných lidí",
+        "building": "co",
+        "really": "staví",
+        "cool": "opravdu",
+        "package": "skvělé",
+        "managers": "správce balíčků"
+      }
+    },
+    "contributors": {
+      "title": "Přispěvatelé",
+      "description": "npmx je plně open source, postavený úžasnou komunitou přispěvatelů. Přidejte se k nám a společně vytvořme npm prohlížeč, jaký jsme vždy chtěli.",
+      "loading": "Načítání přispěvatelů...",
+      "error": "Nepodařilo se načíst přispěvatele",
+      "view_profile": "Zobrazit GitHub profil uživatele {name}"
+    },
+    "get_involved": {
+      "title": "Zapojte se",
+      "contribute": {
+        "title": "Přispět",
+        "description": "Pomozte nám vytvořit lepší npm zážitek.",
+        "cta": "Zobrazit na GitHubu"
+      },
+      "community": {
+        "title": "Připojte se ke komunitě",
+        "description": "Chatujte, pokládejte otázky a sdílejte nápady.",
+        "cta": "Připojit se na Discordu"
+      },
+      "follow": {
+        "title": "Zůstaňte v obraze",
+        "description": "Zjistěte nejnovější informace o npmx.",
+        "cta": "Sledovat na Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "připojit",
+    "account": "Účet",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Spravovat balíčky a organizace",
+    "atmosphere_desc": "Sociální funkce a identita",
+    "connect_npm_cli": "Připojit k npm CLI",
+    "connect_atmosphere": "Připojit k Atmosphere",
+    "connecting": "Připojování...",
+    "ops": "{count} operace | {count} operace | {count} operací",
+    "disconnect": "Odpojit"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Připojen jako {'@'}{handle}",
+      "disconnect": "Odpojit",
+      "connect_prompt": "Připojit se svým účtem Atmosphere",
+      "handle_label": "Uživatelské jméno",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Připojit",
+      "create_account": "Vytvořit nový účet",
+      "connect_bluesky": "Připojit k Bluesky",
+      "what_is_atmosphere": "Co je účet Atmosphere?",
+      "atmosphere_explanation": "{npmx} používá {atproto} k pohánění mnoha svých sociálních funkcí, což uživatelům umožňuje vlastnit svá data a používat jeden účet pro všechny kompatibilní aplikace. Jakmile si vytvoříte účet, můžete používat i jiné aplikace jako {bluesky} a {tangled} se stejným účtem."
+    }
+  },
+  "header": {
+    "home": "npmx",
+    "github": "GitHub",
+    "packages": "balíčky",
+    "packages_dropdown": {
+      "title": "Vaše balíčky",
+      "loading": "Načítání...",
+      "error": "Nepodařilo se načíst balíčky",
+      "empty": "Nebyly nalezeny žádné balíčky",
+      "view_all": "Zobrazit vše"
+    },
+    "orgs": "organizace",
+    "orgs_dropdown": {
+      "title": "Vaše organizace",
+      "loading": "Načítání...",
+      "error": "Nepodařilo se načíst organizace",
+      "empty": "Nebyly nalezeny žádné organizace",
+      "view_all": "Zobrazit vše"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "porovnat balíčky",
+      "tagline": "porovnejte balíčky vedle sebe pro výběr toho nejlepšího.",
+      "meta_title": "Srovnání {packages} - npmx",
+      "meta_title_empty": "Porovnat balíčky - npmx",
+      "meta_description": "Porovnání {packages} vedle sebe",
+      "meta_description_empty": "Porovnat balíčky npm vedle sebe",
+      "section_packages": "Balíčky",
+      "section_facets": "Vlastnosti",
+      "section_comparison": "Srovnání",
+      "loading": "Načítání dat balíčků...",
+      "error": "Nepodařilo se načíst data balíčků. Zkuste to prosím znovu.",
+      "empty_title": "Vyberte balíčky k porovnání",
+      "empty_description": "Vyhledejte a přidejte alespoň 2 balíčky výše, abyste viděli porovnání jejich metrik vedle sebe."
+    },
+    "selector": {
+      "search_label": "Vyhledat balíčky",
+      "search_first": "Vyhledat balíček...",
+      "search_add": "Přidat další balíček...",
+      "searching": "Vyhledávání...",
+      "remove_package": "Odebrat {package}",
+      "packages_selected": "Vybrané balíčky: {count}/{max}.",
+      "add_hint": "Přidejte alespoň 2 balíčky ke srovnání.",
+      "loading_versions": "Načítání verzí...",
+      "select_version": "Vybrat verzi"
+    },
+    "facets": {
+      "group_label": "Kategorie vlastností",
+      "all": "Vše",
+      "none": "Žádné",
+      "coming_soon": "Brzy k dispozici",
+      "select_all": "Vybrat všechny vlastnosti",
+      "deselect_all": "Zrušit výběr všech vlastností",
+      "select_category": "Vybrat všechny vlastnosti kategorie {category}",
+      "deselect_category": "Zrušit výběr všech vlastností kategorie {category}",
+      "categories": {
+        "performance": "Výkon",
+        "health": "Zdraví",
+        "compatibility": "Kompatibilita",
+        "security": "Bezpečnost"
+      }
+    }
+  }
+}

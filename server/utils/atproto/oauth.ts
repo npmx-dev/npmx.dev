@@ -31,6 +31,7 @@ export function getOauthClientMetadata() {
     application_type: 'web',
     token_endpoint_auth_method: 'none',
     dpop_bound_access_tokens: true,
+    response_types: ['code'],
   }) as OAuthClientMetadataInput
 }
 

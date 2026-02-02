@@ -30,6 +30,10 @@ export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
 }
 
+export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {
+  hasProvenance?: true
+}
+
 /**
  * Slimmed down Packument for client-side use.
  * Strips unnecessary fields to reduce payload size.
@@ -43,7 +47,19 @@ export interface SlimPackument {
   'name': string
   'description'?: string
   'dist-tags': { latest?: string } & Record<string, string>
-  /** Only includes time for dist-tag versions + modified/created */
+  /**
+   * Timestamps for package versions.
+   *
+   * **IMPORTANT**: Use `time[version]` to get the publish date of a specific version.
+   *
+   * **DO NOT use `time.modified`** - it can be updated by metadata changes (e.g., maintainer
+   * additions/removals) without any code being published, making it misleading for users
+   * trying to assess package maintenance activity.
+   *
+   * - `time[version]` - When that specific version was published (use this!)
+   * - `time.created` - When the package was first created
+   * - `time.modified` - Last metadata change (misleading - avoid using)
+   */
   'time': { modified?: string; created?: string } & Record<string, string>
   'maintainers'?: NpmPerson[]
   'author'?: NpmPerson
@@ -52,8 +68,10 @@ export interface SlimPackument {
   'keywords'?: string[]
   'repository'?: { type?: string; url?: string; directory?: string }
   'bugs'?: { url?: string; email?: string }
+  /** current version */
+  'requestedVersion': SlimPackumentVersion | null
   /** Only includes dist-tag versions (with installScripts info added per version) */
-  'versions': Record<string, SlimPackumentVersion>
+  'versions': Record<string, SlimVersion>
 }
 
 /**

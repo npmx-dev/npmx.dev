@@ -8,7 +8,8 @@ import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'code',
-  alias: ['/package/code/:path(.*)*'],
+  path: '/package-code/:path+',
+  alias: ['/package/code/:path+', '/code/:path+'],
 })
 
 const route = useRoute('code')
@@ -19,7 +20,7 @@ const route = useRoute('code')
 //   /code/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0", filePath: "src/index.ts"
 //   /code/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0", filePath: null
 const parsedRoute = computed(() => {
-  const segments = route.params.path || []
+  const segments = route.params.path
 
   // Find the /v/ separator for version
   const vIndex = segments.indexOf('v')
@@ -42,14 +43,15 @@ const parsedRoute = computed(() => {
 
 const packageName = computed(() => parsedRoute.value.packageName)
 const version = computed(() => parsedRoute.value.version)
-const filePath = computed(() => parsedRoute.value.filePath)
+const filePathOrig = computed(() => parsedRoute.value.filePath)
+const filePath = computed(() => parsedRoute.value.filePath?.replace(/\/$/, ''))
 
 // Fetch package data for version list
 const { data: pkg } = usePackage(packageName)
 
 // URL pattern for version selector - includes file path if present
 const versionUrlPattern = computed(() => {
-  const base = `/code/${packageName.value}/v/{version}`
+  const base = `/package-code/${packageName.value}/v/{version}`
   return filePath.value ? `${base}/${filePath.value}` : base
 })
 
@@ -64,17 +66,26 @@ const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>
 // Determine what to show based on the current path
 // Note: This needs fileTree to be loaded first
 const currentNode = computed(() => {
-  if (!fileTree.value?.tree || !filePath.value) return null
+  if (!fileTree.value?.tree || !filePathOrig.value) return null
 
-  const parts = filePath.value.split('/')
+  // We use original file path to correctly handle trailing slashes for file tree navigation
+  // - /src/index.ts - correct file path
+  // - /src/index.ts/ - incorrect file path (but formally can exist as a directory)
+  // - /src/index and /src/index/ - correct directory paths
+  const parts = filePathOrig.value.split('/')
   let current: PackageFileTree[] | undefined = fileTree.value.tree
   let lastFound: PackageFileTree | null = null
+  const partsLength = parts.length
 
-  for (const part of parts) {
+  for (let i = 0; i < partsLength; i++) {
+    const part = parts[i]
+    const isLast = i === partsLength - 1
+    // If the previous part is a directory and the last one is empty (like /lib/) then return the previous directory
+    if (!part && isLast && lastFound?.type === 'directory') return lastFound
     const found: PackageFileTree | undefined = current?.find(n => n.name === part)
     if (!found) return null
     lastFound = found
-    if (found.type === 'file') return found
+    if (found.type === 'file' && isLast) return found
     current = found.children
   }
 
@@ -183,7 +194,7 @@ const breadcrumbs = computed(() => {
 
 // Navigation helper - build URL for a path
 function getCodeUrl(path?: string): string {
-  const base = `/code/${packageName.value}/v/${version.value}`
+  const base = `/package-code/${packageName.value}/v/${version.value}`
   return path ? `${base}/${path}` : base
 }
 
@@ -238,7 +249,7 @@ function copyPermalinkUrl() {
 
 // Canonical URL for this code page
 const canonicalUrl = computed(() => {
-  let url = `https://npmx.dev/code/${packageName.value}/v/${version.value}`
+  let url = `https://npmx.dev/package-code/${packageName.value}/v/${version.value}`
   if (filePath.value) {
     url += `/${filePath.value}`
   }
@@ -482,31 +493,31 @@ defineOgImageComponent('Default', {
           <!-- Fake line numbers column -->
           <div class="shrink-0 bg-bg-subtle border-ie border-border w-14 py-0">
             <div v-for="n in 20" :key="n" class="px-3 h-6 flex items-center justify-end">
-              <span class="skeleton w-4 h-3 rounded-sm" />
+              <SkeletonInline class="w-4 h-3 rounded-sm" />
             </div>
           </div>
           <!-- Fake code content -->
           <div class="flex-1 p-4 space-y-1.5">
-            <div class="skeleton h-4 w-32 rounded-sm" />
-            <div class="skeleton h-4 w-48 rounded-sm" />
-            <div class="skeleton h-4 w-24 rounded-sm" />
+            <SkeletonBlock class="h-4 w-32 rounded-sm" />
+            <SkeletonBlock class="h-4 w-48 rounded-sm" />
+            <SkeletonBlock class="h-4 w-24 rounded-sm" />
             <div class="h-4" />
-            <div class="skeleton h-4 w-64 rounded-sm" />
-            <div class="skeleton h-4 w-56 rounded-sm" />
-            <div class="skeleton h-4 w-40 rounded-sm" />
-            <div class="skeleton h-4 w-72 rounded-sm" />
+            <SkeletonBlock class="h-4 w-64 rounded-sm" />
+            <SkeletonBlock class="h-4 w-56 rounded-sm" />
+            <SkeletonBlock class="h-4 w-40 rounded-sm" />
+            <SkeletonBlock class="h-4 w-72 rounded-sm" />
             <div class="h-4" />
-            <div class="skeleton h-4 w-36 rounded-sm" />
-            <div class="skeleton h-4 w-52 rounded-sm" />
-            <div class="skeleton h-4 w-44 rounded-sm" />
-            <div class="skeleton h-4 w-28 rounded-sm" />
+            <SkeletonBlock class="h-4 w-36 rounded-sm" />
+            <SkeletonBlock class="h-4 w-52 rounded-sm" />
+            <SkeletonBlock class="h-4 w-44 rounded-sm" />
+            <SkeletonBlock class="h-4 w-28 rounded-sm" />
             <div class="h-4" />
-            <div class="skeleton h-4 w-60 rounded-sm" />
-            <div class="skeleton h-4 w-48 rounded-sm" />
-            <div class="skeleton h-4 w-32 rounded-sm" />
-            <div class="skeleton h-4 w-56 rounded-sm" />
-            <div class="skeleton h-4 w-40 rounded-sm" />
-            <div class="skeleton h-4 w-24 rounded-sm" />
+            <SkeletonBlock class="h-4 w-60 rounded-sm" />
+            <SkeletonBlock class="h-4 w-48 rounded-sm" />
+            <SkeletonBlock class="h-4 w-32 rounded-sm" />
+            <SkeletonBlock class="h-4 w-56 rounded-sm" />
+            <SkeletonBlock class="h-4 w-40 rounded-sm" />
+            <SkeletonBlock class="h-4 w-24 rounded-sm" />
           </div>
         </div>
 

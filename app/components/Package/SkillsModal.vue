@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 function getSkillSourceUrl(skill: SkillListItem): string {
-  const base = `/code/${props.packageName}`
+  const base = `/package-code/${props.packageName}`
   const versionPath = props.version ? `/v/${props.version}` : ''
   return `${base}${versionPath}/skills/${skill.dirName}/SKILL.md`
 }
@@ -101,7 +101,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
         </template>
       </i18n-t>
       <a
-        href="/skills-npm"
+        href="/package/skills-npm"
         class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg transition-colors shrink-0"
       >
         {{ $t('package.skills.learn_more') }}
@@ -184,7 +184,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
               <!-- File counts & warnings -->
               <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                 <span v-if="skill.fileCounts?.scripts" class="text-fg-subtle">
-                  <span class="i-carbon:script size-3 inline-block align-[-2px] me-0.5" />{{
+                  <span class="i-carbon:script size-3 align-[-2px] me-0.5" />{{
                     $t(
                       'package.skills.file_counts.scripts',
                       { count: skill.fileCounts.scripts },
@@ -193,7 +193,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                   }}
                 </span>
                 <span v-if="skill.fileCounts?.references" class="text-fg-subtle">
-                  <span class="i-carbon:document size-3 inline-block align-[-2px] me-0.5" />{{
+                  <span class="i-carbon:document size-3 align-[-2px] me-0.5" />{{
                     $t(
                       'package.skills.file_counts.refs',
                       { count: skill.fileCounts.references },
@@ -202,7 +202,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                   }}
                 </span>
                 <span v-if="skill.fileCounts?.assets" class="text-fg-subtle">
-                  <span class="i-carbon:image size-3 inline-block align-[-2px] me-0.5" />{{
+                  <span class="i-carbon:image size-3 align-[-2px] me-0.5" />{{
                     $t(
                       'package.skills.file_counts.assets',
                       { count: skill.fileCounts.assets },
@@ -212,7 +212,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                 </span>
                 <template v-for="warning in skill.warnings" :key="warning.message">
                   <span class="text-amber-500">
-                    <span class="i-carbon:warning size-3 inline-block align-[-2px] me-0.5" />{{
+                    <span class="i-carbon:warning size-3 align-[-2px] me-0.5" />{{
                       warning.message
                     }}
                   </span>

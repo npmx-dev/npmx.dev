@@ -21,6 +21,9 @@ export default defineConfig({
   presets: [
     presetWind4(),
     presetIcons({
+      extraProperties: {
+        display: 'inline-block',
+      },
       warn: true,
       scale: 1.2,
       collections: {
@@ -28,7 +31,7 @@ export default defineConfig({
       },
     }),
     // keep this preset last
-    process.env.CI ? undefined : presetRtl(),
+    ...(process.env.CI ? [] : [presetRtl()]),
   ].filter(Boolean),
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
@@ -139,19 +142,6 @@ export default defineConfig({
     ],
     ['link-subtle', 'text-fg-muted hover:text-fg transition-colors duration-200 focus-ring'],
 
-    // Cards
-    [
-      'card',
-      'bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 transition-[border-color,background-color] duration-200',
-    ],
-    ['card-interactive', 'card hover:(border-border-hover bg-bg-muted) cursor-pointer'],
-
-    // Form elements
-    [
-      'input-base',
-      'w-full bg-bg-subtle border border-border rounded-md px-4 py-3 font-mono text-sm text-fg placeholder:text-fg-subtle transition-all duration-200 focus:(border-fg/40 outline-none ring-1 ring-fg/10)',
-    ],
-
     // Tags/badges
     [
       'tag',
@@ -166,21 +156,6 @@ export default defineConfig({
     ['badge-purple', 'bg-badge-purple/10 text-badge-purple'],
     ['badge-pink', 'bg-badge-pink/10 text-badge-pink'],
     ['badge-subtle', 'bg-bg-subtle text-fg-subtle'],
-
-    // Code blocks
-    [
-      'code-block',
-      'bg-bg-muted border border-border rounded-md p-4 font-mono text-sm overflow-x-auto',
-    ],
-
-    // Skeleton loading
-    ['skeleton', 'bg-bg-elevated rounded animate-skeleton-pulse'],
-
-    // Subtle divider
-    ['divider', 'border-t border-border'],
-
-    // Section spacing
-    ['section', 'py-8 sm:py-12'],
   ],
   rules: [
     // Custom scale for active states

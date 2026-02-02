@@ -27,7 +27,6 @@
     "found_packages": "कुनै प्याकेज फेला परेन | {count} प्याकेज फेला पर्यो | {count} प्याकेज फेला परे",
     "updating": "(अपडेट हुँदैछ...)",
     "no_results": "\"{query}\" का लागि कुनै प्याकेज फेला परेन",
-    "results": "खोज परिणाम",
     "not_taken": "{name} लिइएको छैन",
     "claim_prompt": "npm मा यो प्याकेज नाम दाबी गर्नुहोस्",
     "claim_button": "\"{name}\" दाबी गर्नुहोस्",
@@ -142,7 +141,6 @@
       "deps": "डिपेन्डेन्सी",
       "install_size": "इन्स्टल साइज",
       "vulns": "कमजोरीहरू",
-      "updated": "अपडेट",
       "view_dependency_graph": "डिपेन्डेन्सी ग्राफ हेर्नुहोस्",
       "inspect_dependency_tree": "डिपेन्डेन्सी ट्री जाँच्नुहोस्",
       "size_tooltip": {
@@ -190,7 +188,6 @@
     "compatibility": "कम्प्याटिबिलिटी",
     "card": {
       "publisher": "प्रकाशक",
-      "updated": "अपडेट",
       "weekly_downloads": "साप्ताहिक डाउनलोड",
       "keywords": "किवर्ड्स",
       "license": "लाइसेन्स"
@@ -349,7 +346,6 @@
       "weekly": "साप्ताहिक",
       "size": "साइज",
       "deps": "डिपेन्डेन्सी",
-      "updated": "अपडेट",
       "get_started": "सुरु गर्नुहोस्",
       "readme": "README",
       "maintainers": "मेन्टेनरहरू",
@@ -358,6 +354,7 @@
       "dependencies": "डिपेन्डेन्सीहरू"
     },
     "sort": {
+      "downloads": "धेरै डाउनलोड भएका",
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     }
@@ -642,7 +639,6 @@
       "downloads_day": "डाउनलोड/दिन",
       "downloads_month": "डाउनलोड/महिना",
       "downloads_year": "डाउनलोड/वर्ष",
-      "updated": "अन्तिम अपडेट",
       "name": "नाम",
       "quality": "क्वालिटी",
       "popularity": "लोकप्रियता",
@@ -658,7 +654,6 @@
       "version": "संस्करण",
       "description": "विवरण",
       "downloads": "डाउनलोड/हप्ता",
-      "updated": "अन्तिम अपडेट",
       "maintainers": "मेन्टेनरहरू",
       "keywords": "किवर्ड्स",
       "quality_score": "क्वालिटी स्कोर",

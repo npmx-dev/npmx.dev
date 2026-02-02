@@ -24,7 +24,6 @@
     "found_packages": "{count} 個のパッケージが見つかりました",
     "updating": "（更新中...）",
     "no_results": "\"{query}\" に一致するパッケージは見つかりませんでした",
-    "results": "検索結果",
     "not_taken": "{name} は使用可能です",
     "claim_prompt": "このパッケージ名をnpmで取得する",
     "claim_button": "\"{name}\" を取得",
@@ -116,14 +115,18 @@
       "version": "このバージョンは非推奨になりました。",
       "no_reason": "理由は提供されていません"
     },
+    "replacement": {},
     "stats": {
       "license": "ライセンス",
       "deps": "依存関係",
       "install_size": "インストールサイズ",
       "vulns": "脆弱性",
-      "updated": "最終更新",
       "view_dependency_graph": "依存関係グラフを表示",
-      "inspect_dependency_tree": "依存関係ツリーを検査"
+      "inspect_dependency_tree": "依存関係ツリーを検査",
+      "size_tooltip": {}
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "リポジトリ",
@@ -161,7 +164,6 @@
     "compatibility": "互換性",
     "card": {
       "publisher": "パブリッシャー",
-      "updated": "最終更新",
       "weekly_downloads": "週間ダウンロード数",
       "keywords": "キーワード",
       "license": "ライセンス"
@@ -315,7 +317,6 @@
       "weekly": "週間",
       "size": "サイズ",
       "deps": "依存関係",
-      "updated": "最終更新",
       "readme": "Readme",
       "maintainers": "メンテナ",
       "keywords": "キーワード",
@@ -323,10 +324,7 @@
       "dependencies": "依存関係"
     },
     "sort": {
-      "downloads_desc": "ダウンロード数順",
-      "downloads_asc": "ダウンロード数が少ない順",
-      "updated_desc": "更新順",
-      "updated_asc": "更新が古い順",
+      "downloads": "ダウンロード数順",
       "name_asc": "名前順（A-Z）",
       "name_desc": "名前順（Z-A）"
     }
@@ -554,6 +552,9 @@
     }
   },
   "filters": {
+    "download_range": {},
+    "updated": {},
+    "security_options": {},
     "sort": {
       "label": "パッケージ一覧を並び替える",
       "toggle_direction": "並び順を切り替える",
@@ -564,13 +565,17 @@
       "downloads_day": "ダウンロード数/日",
       "downloads_month": "ダウンロード数/月",
       "downloads_year": "ダウンロード数/年",
-      "updated": "最終更新",
       "name": "パッケージ名",
       "quality": "品質",
       "popularity": "人気度",
       "maintenance": "メンテナンス",
       "score": "スコア"
-    }
+    },
+    "columns": {},
+    "view_mode": {},
+    "pagination": {},
+    "count": {},
+    "table": {}
   },
   "about": {
     "title": "npmxについて",
@@ -626,6 +631,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "ホーム",
     "github": "GitHub",
@@ -644,6 +653,13 @@
       "error": "Organizationの読み込みに失敗しました",
       "empty": "Organizationは見つかりませんでした",
       "view_all": "すべて表示"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

@@ -3,7 +3,7 @@ import { expect, test } from '@nuxt/test-utils/playwright'
 test.describe('API Documentation Pages', () => {
   test('docs page loads and shows content for a package', async ({ page, goto }) => {
     // Use a small, stable package with TypeScript types
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
+    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
 
     // Page title should include package name
     await expect(page).toHaveTitle(/ufo.*docs/i)
@@ -24,7 +24,7 @@ test.describe('API Documentation Pages', () => {
   })
 
   test('docs page shows TOC sidebar on desktop', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
+    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
 
     // TOC sidebar should be visible (on desktop viewport)
     const tocSidebar = page.locator('aside')
@@ -38,7 +38,7 @@ test.describe('API Documentation Pages', () => {
   })
 
   test('TOC links navigate to sections', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
+    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
 
     // Click on Functions in TOC
     const functionsLink = page.locator('aside a[href="#section-function"]')
@@ -53,7 +53,7 @@ test.describe('API Documentation Pages', () => {
   })
 
   test('clicking symbol name scrolls to symbol', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
+    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
 
     // Find a symbol link in the TOC
     const symbolLink = page.locator('aside a[href^="#function-"]').first()
@@ -67,27 +67,27 @@ test.describe('API Documentation Pages', () => {
   })
 
   test('docs page without version redirects to latest', async ({ page, goto }) => {
-    await goto('/docs/ufo', { waitUntil: 'networkidle' })
+    await goto('/package-docs/ufo', { waitUntil: 'networkidle' })
 
     // Should redirect to include version
-    await expect(page).toHaveURL(/\/docs\/ufo\/v\//)
+    await expect(page).toHaveURL(/\/package-docs\/ufo\/v\//)
   })
 
   test('package link in header navigates to package page', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
+    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'networkidle' })
 
     // Click on package name in header
     const packageLink = page.locator('header a').filter({ hasText: 'ufo' })
     await packageLink.click()
 
     // Should navigate to package page (URL ends with /ufo)
-    await expect(page).toHaveURL(/\/ufo$/)
+    await expect(page).toHaveURL(/\/package\/ufo$/)
   })
 
   test('docs page handles package gracefully when types unavailable', async ({ page, goto }) => {
     // Use a simple JS package - the page should load without crashing
     // regardless of whether it has types or shows an error state
-    await goto('/docs/is-odd/v/3.0.1', { waitUntil: 'networkidle' })
+    await goto('/package-docs/is-odd/v/3.0.1', { waitUntil: 'networkidle' })
 
     // Header should always show the package name
     await expect(page.locator('header').getByText('is-odd')).toBeVisible()
@@ -105,7 +105,7 @@ test.describe('API Documentation Pages', () => {
 
 test.describe('Version Selector', () => {
   test('version selector dropdown shows versions', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
+    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Find and click the version selector button (wait for it to be visible)
     const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })
@@ -123,7 +123,7 @@ test.describe('Version Selector', () => {
   })
 
   test('selecting a version navigates to that version', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
+    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Find and click the version selector button (wait for it to be visible)
     const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })
@@ -132,7 +132,7 @@ test.describe('Version Selector', () => {
     await versionButton.click()
 
     // Find a version link that's not the current version by checking the href
-    const versionLinks = page.locator('[role="option"] a[href*="/docs/ufo/v/"]')
+    const versionLinks = page.locator('[role="option"] a[href*="/package-docs/ufo/v/"]')
     const count = await versionLinks.count()
 
     // Find first link that doesn't point to 1.6.3
@@ -157,7 +157,7 @@ test.describe('Version Selector', () => {
   })
 
   test('escape key closes version dropdown', async ({ page, goto }) => {
-    await goto('/docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
+    await goto('/package-docs/ufo/v/1.6.3', { waitUntil: 'hydration' })
 
     // Wait for version button to be visible
     const versionButton = page.locator('header button').filter({ hasText: '1.6.3' })

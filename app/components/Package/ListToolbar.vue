@@ -91,7 +91,7 @@ const sortKeyLabelKeys: Record<SortKey, string> = {
   'downloads-day': 'filters.sort.downloads_day',
   'downloads-month': 'filters.sort.downloads_month',
   'downloads-year': 'filters.sort.downloads_year',
-  'updated': 'filters.sort.updated',
+  'updated': 'filters.sort.published',
   'name': 'filters.sort.name',
   'quality': 'filters.sort.quality',
   'popularity': 'filters.sort.popularity',
@@ -115,14 +115,18 @@ function getSortKeyLabelKey(key: SortKey): string {
       >
         <template v-if="showingFiltered">
           {{
-            $t('filters.count.showing_filtered', {
-              filtered: filteredCount.toLocaleString(),
-              count: totalCount.toLocaleString(),
-            })
+            $t(
+              'filters.count.showing_filtered',
+              {
+                filtered: $n(filteredCount),
+                count: $n(totalCount),
+              },
+              totalCount,
+            )
           }}
         </template>
         <template v-else>
-          {{ $t('filters.count.showing_all', { count: totalCount.toLocaleString() }) }}
+          {{ $t('filters.count.showing_all', { count: $n(totalCount) }, totalCount) }}
         </template>
       </div>
 
@@ -132,10 +136,14 @@ function getSortKeyLabelKey(key: SortKey): string {
         class="text-sm font-mono text-fg-muted"
       >
         {{
-          $t('filters.count.showing_paginated', {
-            pageSize: pageSize === 'all' ? filteredCount : pageSize,
-            count: filteredCount.toLocaleString(),
-          })
+          $t(
+            'filters.count.showing_paginated',
+            {
+              pageSize: pageSize === 'all' ? $n(filteredCount) : pageSize,
+              count: $n(filteredCount),
+            },
+            filteredCount,
+          )
         }}
       </div>
 

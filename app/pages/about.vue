@@ -27,12 +27,6 @@ const pmLinks = {
   vlt: 'https://www.vlt.sh/',
 }
 
-const socialLinks = {
-  github: 'https://repo.npmx.dev',
-  discord: 'https://chat.npmx.dev',
-  bluesky: 'https://social.npmx.dev',
-}
-
 const { data: contributors, status: contributorsStatus } = useFetch<GitHubContributor[]>(
   '/api/contributors',
   {
@@ -53,7 +47,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 
       <section class="prose prose-invert max-w-none space-y-8">
         <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('about.what_we_are.title') }}
           </h2>
           <p class="text-fg-muted leading-relaxed mb-4">
@@ -82,7 +76,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
         </div>
 
         <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
             {{ $t('about.what_we_are_not.title') }}
           </h2>
           <ul class="space-y-3 text-fg-muted list-none p-0">
@@ -167,8 +161,8 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
         </div>
 
         <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-            {{ $t('about.contributors.title') }}
+          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
+            {{ contributors?.length ?? 0 }} {{ $t('about.contributors.title') }}
           </h2>
           <p class="text-fg-muted leading-relaxed mb-6">
             {{ $t('about.contributors.description') }}
@@ -189,104 +183,28 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
               target="_blank"
               rel="noopener noreferrer"
               class="group relative"
-              :title="$t('about.contributors.view_profile', { name: contributor.login })"
+              :aria-label="$t('about.contributors.view_profile', { name: contributor.login })"
             >
-              <img
-                :src="`${contributor.avatar_url}&s=64`"
-                :alt="contributor.login"
-                width="32"
-                height="32"
-                class="w-8 h-8 rounded-full ring-2 ring-transparent group-hover:ring-accent transition-all duration-200"
-                loading="lazy"
-              />
+              <div class="relative flex items-center">
+                <img
+                  :src="`${contributor.avatar_url}&s=64`"
+                  :alt="contributor.login"
+                  width="32"
+                  height="32"
+                  class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out hover:scale-125 will-change-transform"
+                  loading="lazy"
+                />
+                <span
+                  class="pointer-events-none absolute -top-9 inset-is-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 text-xs px-2 py-1 shadow-lg opacity-0 scale-95 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100"
+                >
+                  @{{ contributor.login }}
+                </span>
+              </div>
             </a>
           </div>
         </div>
 
-        <!-- Get Involved CTAs -->
-        <div>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-6">
-            {{ $t('about.get_involved.title') }}
-          </h2>
-
-          <div class="grid gap-4 sm:grid-cols-3">
-            <!-- Contribute CTA -->
-            <a
-              :href="socialLinks.github"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group flex flex-col gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200"
-            >
-              <div class="flex gap-2">
-                <span
-                  class="i-carbon:logo-github shrink-0 mt-1 w-5 h-5 text-fg"
-                  aria-hidden="true"
-                />
-                <span class="font-medium text-fg">{{
-                  $t('about.get_involved.contribute.title')
-                }}</span>
-              </div>
-              <p class="text-sm text-fg-muted leading-relaxed">
-                {{ $t('about.get_involved.contribute.description') }}
-              </p>
-              <span
-                class="text-sm text-fg-muted group-hover:text-fg inline-flex items-center gap-1 mt-auto"
-              >
-                {{ $t('about.get_involved.contribute.cta') }}
-                <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
-              </span>
-            </a>
-
-            <!-- Community CTA -->
-            <a
-              :href="socialLinks.discord"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group flex flex-col gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200"
-            >
-              <div class="flex gap-2">
-                <span class="i-carbon:chat shrink-0 mt-1 w-5 h-5 text-fg" aria-hidden="true" />
-                <span class="font-medium text-fg">{{
-                  $t('about.get_involved.community.title')
-                }}</span>
-              </div>
-              <p class="text-sm text-fg-muted leading-relaxed">
-                {{ $t('about.get_involved.community.description') }}
-              </p>
-              <span
-                class="text-sm text-fg-muted group-hover:text-fg inline-flex items-center gap-1 mt-auto"
-              >
-                {{ $t('about.get_involved.community.cta') }}
-                <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
-              </span>
-            </a>
-
-            <!-- Follow CTA -->
-            <a
-              :href="socialLinks.bluesky"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group flex flex-col gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200"
-            >
-              <div class="flex gap-2">
-                <span
-                  class="i-simple-icons:bluesky shrink-0 mt-1 w-5 h-5 text-fg"
-                  aria-hidden="true"
-                />
-                <span class="font-medium text-fg">{{ $t('about.get_involved.follow.title') }}</span>
-              </div>
-              <p class="text-sm text-fg-muted leading-relaxed">
-                {{ $t('about.get_involved.follow.description') }}
-              </p>
-              <span
-                class="text-sm text-fg-muted group-hover:text-fg inline-flex items-center gap-1 mt-auto"
-              >
-                {{ $t('about.get_involved.follow.cta') }}
-                <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
-              </span>
-            </a>
-          </div>
-        </div>
+        <CallToAction />
       </section>
 
       <footer class="mt-16 pt-8 border-t border-border">

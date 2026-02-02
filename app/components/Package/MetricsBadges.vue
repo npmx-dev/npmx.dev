@@ -45,7 +45,7 @@ const typesTooltip = computed(() => {
 const typesHref = computed(() => {
   if (!analysis.value) return null
   if (analysis.value.types?.kind === '@types') {
-    return `/${analysis.value.types.packageName}`
+    return `/package/${analysis.value.types.packageName}`
   }
   return null
 })

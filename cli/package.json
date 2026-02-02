@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "dev": "NPMX_CLI_DEV=true node --experimental-strip-types src/cli.ts",
+    "dev": "NPMX_CLI_DEV=true node src/cli.ts",
     "test:types": "tsc --noEmit"
   },
   "dependencies": {
@@ -45,5 +45,8 @@
     "@types/validate-npm-package-name": "4.0.2",
     "tsdown": "0.20.1",
     "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }

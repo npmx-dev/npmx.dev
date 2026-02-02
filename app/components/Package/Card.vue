@@ -19,21 +19,17 @@ const isExactMatch = computed(() => {
   const name = props.result.package.name.toLowerCase()
   return query === name
 })
+
+// Process package description
+const pkgDescription = useMarkdown(() => ({
+  text: props.result.package.description ?? '',
+  plain: true,
+  packageName: props.result.package.name,
+}))
 </script>
 
 <template>
-  <article
-    class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
-    :class="{
-      'border-accent/30 bg-accent/5': isExactMatch,
-    }"
-  >
-    <!-- Glow effect for exact matches -->
-    <div
-      v-if="isExactMatch"
-      class="absolute -inset-px rounded-lg bg-gradient-to-r from-accent/0 via-accent/20 to-accent/0 opacity-100 blur-sm -z-1 pointer-events-none motion-reduce:opacity-50"
-      aria-hidden="true"
-    />
+  <BaseCard :isExactMatch="isExactMatch">
     <div class="mb-2 flex items-baseline justify-start gap-2">
       <component
         :is="headingLevel ?? 'h3'"
@@ -74,11 +70,8 @@ const isExactMatch = computed(() => {
     </div>
     <div class="flex justify-start items-start gap-4 sm:gap-8">
       <div class="min-w-0">
-        <p
-          v-if="result.package.description"
-          class="text-fg-muted text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-3"
-        >
-          <MarkdownText :text="result.package.description" plain />
+        <p v-if="pkgDescription" class="text-fg-muted text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-3">
+          <span v-html="pkgDescription" />
         </p>
         <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 text-xs text-fg-subtle">
           <dl v-if="showPublisher || result.package.date" class="flex items-center gap-4 m-0">
@@ -90,7 +83,7 @@ const isExactMatch = computed(() => {
               <dd class="font-mono">{{ result.package.publisher.username }}</dd>
             </div>
             <div v-if="result.package.date" class="flex items-center gap-1.5">
-              <dt class="sr-only">{{ $t('package.card.updated') }}</dt>
+              <dt class="sr-only">{{ $t('package.card.published') }}</dt>
               <dd>
                 <DateTime
                   :datetime="result.package.date"
@@ -114,7 +107,7 @@ const isExactMatch = computed(() => {
           <div class="flex items-center gap-1.5">
             <dt class="sr-only">{{ $t('package.card.weekly_downloads') }}</dt>
             <dd class="flex items-center gap-1.5">
-              <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+              <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
               <span class="font-mono">{{ $n(result.downloads.weekly) }}/w</span>
             </dd>
           </div>
@@ -148,7 +141,7 @@ const isExactMatch = computed(() => {
           v-if="result.downloads?.weekly"
           class="text-fg-subtle gap-2 flex items-center justify-end"
         >
-          <span class="i-carbon:chart-line w-3.5 h-3.5 inline-block" aria-hidden="true" />
+          <span class="i-carbon:chart-line w-3.5 h-3.5" aria-hidden="true" />
           <span class="font-mono text-xs">
             {{ $n(result.downloads.weekly) }} {{ $t('common.per_week') }}
           </span>
@@ -165,5 +158,5 @@ const isExactMatch = computed(() => {
         {{ keyword }}
       </li>
     </ul>
-  </article>
+  </BaseCard>
 </template>
