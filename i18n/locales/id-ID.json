@@ -141,7 +141,6 @@
       "deps": "Dep",
       "install_size": "Ukuran Instal",
       "vulns": "Kerentanan",
-      "updated": "Diperbarui",
       "view_dependency_graph": "Lihat grafik dependensi",
       "inspect_dependency_tree": "Periksa pohon dependensi",
       "size_tooltip": {
@@ -189,7 +188,6 @@
     "compatibility": "Kompatibilitas",
     "card": {
       "publisher": "Penerbit",
-      "updated": "Diperbarui",
       "weekly_downloads": "Unduhan mingguan",
       "keywords": "Kata kunci",
       "license": "Lisensi"
@@ -348,7 +346,6 @@
       "weekly": "Mingguan",
       "size": "Ukuran",
       "deps": "Dep",
-      "updated": "Diperbarui",
       "get_started": "Memulai",
       "readme": "Readme",
       "maintainers": "Pemelihara",
@@ -358,7 +355,6 @@
     },
     "sort": {
       "downloads": "Paling banyak diunduh",
-      "updated": "Terakhir diperbarui",
       "name_asc": "Nama (A-Z)",
       "name_desc": "Nama (Z-A)"
     }
@@ -643,7 +639,6 @@
       "downloads_day": "Unduhan/hari",
       "downloads_month": "Unduhan/bulan",
       "downloads_year": "Unduhan/tahun",
-      "updated": "Pembaruan Terakhir",
       "name": "Nama",
       "quality": "Kualitas",
       "popularity": "Popularitas",
@@ -659,7 +654,6 @@
       "version": "Versi",
       "description": "Deskripsi",
       "downloads": "Unduhan/minggu",
-      "updated": "Pembaruan Terakhir",
       "maintainers": "Pemelihara",
       "keywords": "Kata kunci",
       "quality_score": "Skor kualitas",

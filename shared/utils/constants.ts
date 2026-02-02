@@ -39,3 +39,11 @@ export const ACCENT_COLORS = {
   violet: 'oklch(0.714 0.148 286.067)',
   coral: 'oklch(0.704 0.177 14.75)',
 } as const
+
+export const BACKGROUND_THEMES = {
+  neutral: 'oklch(0.555 0 0)',
+  stone: 'oklch(0.555 0.013 58.123)',
+  zinc: 'oklch(0.555 0.016 285.931)',
+  slate: 'oklch(0.555 0.046 257.407)',
+  black: 'oklch(0.4 0 0)',
+} as const

@@ -248,6 +248,12 @@ export default defineNuxtConfig({
         noUnusedLocals: true,
       },
     },
+    nodeTsConfig: {
+      compilerOptions: {
+        allowImportingTsExtensions: true,
+      },
+      include: ['../*.ts'],
+    },
   },
 
   vite: {

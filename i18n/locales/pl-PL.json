@@ -141,7 +141,7 @@
       "deps": "Zależności",
       "install_size": "Rozmiar instalacji",
       "vulns": "Luki",
-      "updated": "Zaktualizowano",
+      "skills": "Umiejętności",
       "view_dependency_graph": "Pokaż graf zależności",
       "inspect_dependency_tree": "Przejrzyj drzewo zależności",
       "size_tooltip": {
@@ -150,7 +150,22 @@
       }
     },
     "skills": {
-      "file_counts": {}
+      "title": "Umiejętności agenta",
+      "skills_available": "{count} dostępnych umiejętności | {count} dostępna umiejętność | {count} dostępne umiejętności | {count} dostępnych umiejętności | {count} dostępnych umiejętności",
+      "view": "Zobacz",
+      "compatible_with": "Zgodne z {tool}",
+      "install": "Zainstaluj",
+      "installation_method": "Metoda instalacji",
+      "learn_more": "Dowiedz się więcej",
+      "available_skills": "Dostępne umiejętności",
+      "click_to_expand": "Kliknij, aby rozwinąć",
+      "no_description": "Brak opisu",
+      "file_counts": {
+        "scripts": "{count} skryptów | {count} skrypt | {count} skrypty | {count} skryptów | {count} skryptów",
+        "refs": "{count} odnośników | {count} odnośnik | {count} odnośniki | {count} odnośników | {count} odnośników",
+        "assets": "{count} zasobów | {count} zasób | {count} zasoby | {count} zasobów | {count} zasobów"
+      },
+      "view_source": "Zobacz źródło"
     },
     "links": {
       "repo": "repozytorium",
@@ -159,7 +174,7 @@
       "jsr": "jsr",
       "code": "kod źródłowy",
       "docs": "dokumentacja",
-      "fund": "wsparcie",
+      "fund": "wesprzyj",
       "compare": "porównaj"
     },
     "docs": {
@@ -189,8 +204,7 @@
     "compatibility": "Zgodność",
     "card": {
       "publisher": "Wydawca",
-      "updated": "Zaktualizowano",
-      "weekly_downloads": "Pobrania tygodniowe",
+      "weekly_downloads": "Pobrania tygodniowo",
       "keywords": "Słowa kluczowe",
       "license": "Licencja"
     },
@@ -281,7 +295,8 @@
       "no_types": "Brak typów TypeScript"
     },
     "license": {
-      "view_spdx": "Zobacz tekst licencji na SPDX"
+      "view_spdx": "Zobacz tekst licencji na SPDX",
+      "none": "Brak"
     },
     "vulnerabilities": {
       "no_description": "Brak opisu",
@@ -348,7 +363,6 @@
       "weekly": "Tygodniowo",
       "size": "Rozmiar",
       "deps": "Zależności",
-      "updated": "Zaktualizowano",
       "get_started": "Zacznij",
       "readme": "README",
       "maintainers": "Opiekunowie",
@@ -358,7 +372,6 @@
     },
     "sort": {
       "downloads": "Najczęściej pobierane",
-      "updated": "Ostatnio aktualizowane",
       "name_asc": "Nazwa (A-Z)",
       "name_desc": "Nazwa (Z-A)"
     }
@@ -643,7 +656,6 @@
       "downloads_day": "Pobrania/dzień",
       "downloads_month": "Pobrania/mies.",
       "downloads_year": "Pobrania/rok",
-      "updated": "Ostatnia aktualizacja",
       "name": "Nazwa",
       "quality": "Jakość",
       "popularity": "Popularność",
@@ -659,7 +671,6 @@
       "version": "Wersja",
       "description": "Opis",
       "downloads": "Pobrania/tydz.",
-      "updated": "Ostatnia aktualizacja",
       "maintainers": "Opiekunowie",
       "keywords": "Słowa kluczowe",
       "quality_score": "Wynik jakości",
@@ -801,11 +812,11 @@
   "compare": {
     "packages": {
       "title": "porównaj pakiety",
-      "tagline": "porównuj pakiety npm obok siebie, aby łatwiej wybrać właściwy.",
+      "tagline": "porównuj pakiety npm ze sobą, aby łatwiej wybrać właściwy.",
       "meta_title": "Porównaj {packages} - npmx",
       "meta_title_empty": "Porównaj pakiety - npmx",
-      "meta_description": "Porównanie obok siebie: {packages}",
-      "meta_description_empty": "Porównuj pakiety npm obok siebie",
+      "meta_description": "Porównanie pakietów: {packages}",
+      "meta_description_empty": "Porównuj pakiety npm ze sobą",
       "section_packages": "Pakiety",
       "section_facets": "Aspekty",
       "section_comparison": "Porównanie",
