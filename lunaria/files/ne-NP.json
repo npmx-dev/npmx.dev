@@ -354,7 +354,6 @@
       "dependencies": "डिपेन्डेन्सीहरू"
     },
     "sort": {
-      "downloads": "धेरै डाउनलोड भएका",
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     }

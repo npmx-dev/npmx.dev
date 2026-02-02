@@ -336,7 +336,6 @@
       "dependencies": "Залежності"
     },
     "sort": {
-      "downloads": "Найбільше завантажено",
       "name_asc": "Ім'я (A-Z)",
       "name_desc": "Ім'я (Z-A)"
     }

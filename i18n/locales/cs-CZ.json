@@ -370,7 +370,6 @@
       "dependencies": "Závislosti"
     },
     "sort": {
-      "downloads": "Nejvíce stažení",
       "name_asc": "Název (A-Z)",
       "name_desc": "Název (Z-A)"
     }

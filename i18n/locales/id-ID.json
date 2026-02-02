@@ -354,7 +354,6 @@
       "dependencies": "Dependensi"
     },
     "sort": {
-      "downloads": "Paling banyak diunduh",
       "name_asc": "Nama (A-Z)",
       "name_desc": "Nama (Z-A)"
     }

@@ -342,7 +342,6 @@
       "dependencies": "依赖"
     },
     "sort": {
-      "downloads": "最多下载的",
       "name_asc": "名称（A-Z）",
       "name_desc": "名称（Z-A）"
     }

@@ -324,7 +324,6 @@
       "dependencies": "依存関係"
     },
     "sort": {
-      "downloads": "ダウンロード数順",
       "name_asc": "名前順（A-Z）",
       "name_desc": "名前順（Z-A）"
     }

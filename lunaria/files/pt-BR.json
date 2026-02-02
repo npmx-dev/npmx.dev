@@ -372,7 +372,6 @@
       "dependencies": "Dependências"
     },
     "sort": {
-      "downloads": "Mais baixados",
       "name_asc": "Nome (A-Z)",
       "name_desc": "Nome (Z-A)"
     }

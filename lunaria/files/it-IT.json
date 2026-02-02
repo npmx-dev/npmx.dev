@@ -116,13 +116,18 @@
       "version": "Questa versione è stata deprecata.",
       "no_reason": "Nessuna ragione fornita"
     },
+    "replacement": {},
     "stats": {
       "license": "Licenza",
       "deps": "Deps",
       "install_size": "Dimensioni di installazione",
       "vulns": "Vulns",
       "view_dependency_graph": "Vedi il grafico delle dipendenze",
-      "inspect_dependency_tree": "Ispeziona l'albero delle dipendenze"
+      "inspect_dependency_tree": "Ispeziona l'albero delle dipendenze",
+      "size_tooltip": {}
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repo",
@@ -132,6 +137,10 @@
       "code": "codice",
       "docs": "documenti",
       "fund": "finanzia"
+    },
+    "docs": {
+      "not_available": "Documenti non disponibili",
+      "not_available_detail": "Non abbiamo potuto generare i documenti per questa versione."
     },
     "get_started": {
       "title": "Inizia",
@@ -151,10 +160,6 @@
       "title": "Readme",
       "no_readme": "Nessuno README disponibile.",
       "view_on_github": "Vedi su GitHub"
-    },
-    "docs": {
-      "not_available": "Documenti non disponibili",
-      "not_available_detail": "Non abbiamo potuto generare i documenti per questa versione."
     },
     "keywords_title": "Keywords",
     "compatibility": "Compatibilità",
@@ -320,7 +325,6 @@
       "dependencies": "Dipendenze"
     },
     "sort": {
-      "downloads": "Più scaricati",
       "name_asc": "Nome (A-Z)",
       "name_desc": "Nome (Z-A)"
     }
@@ -536,6 +540,17 @@
       "code": "codice"
     }
   },
+  "badges": {
+    "provenance": {
+      "verified": "verificato",
+      "verified_title": "Provenienza verificata",
+      "verified_via": "Verificato: pubblicato tramite {provider}"
+    },
+    "jsr": {
+      "title": "disponibile anche su JSR",
+      "label": "jsr"
+    }
+  },
   "filters": {
     "title": "Filtri",
     "search": "Cerca",
@@ -640,17 +655,6 @@
       "no_packages": "Nessun pacchetto trovato"
     }
   },
-  "badges": {
-    "provenance": {
-      "verified": "verificato",
-      "verified_title": "Provenienza verificata",
-      "verified_via": "Verificato: pubblicato tramite {provider}"
-    },
-    "jsr": {
-      "title": "disponibile anche su JSR",
-      "label": "jsr"
-    }
-  },
   "about": {
     "title": "Info",
     "heading": "info",
@@ -705,6 +709,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "npmx home",
     "github": "GitHub",
@@ -723,6 +731,13 @@
       "error": "Caricamento delle organizzazioni non riuscito",
       "empty": "Nessuna organizzazione trovata",
       "view_all": "Vedi tutte"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

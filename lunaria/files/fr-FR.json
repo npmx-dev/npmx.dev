@@ -352,8 +352,6 @@
       "dependencies": "Dépendances"
     },
     "sort": {
-      "downloads": "Plus téléchargés",
-      "published": "Récemment publié",
       "name_asc": "Nom (A-Z)",
       "name_desc": "Nom (Z-A)"
     }

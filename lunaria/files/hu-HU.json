@@ -334,7 +334,6 @@
       "dependencies": "Függőségek"
     },
     "sort": {
-      "downloads": "Legtöbbször letöltött",
       "name_asc": "Név (A-Z)",
       "name_desc": "Név (Z-A)"
     }

@@ -371,7 +371,6 @@
       "dependencies": "निर्भरताएँ"
     },
     "sort": {
-      "downloads": "सबसे अधिक डाउनलोड किए गए",
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     }
