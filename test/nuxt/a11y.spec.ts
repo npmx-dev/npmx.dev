@@ -111,6 +111,8 @@ import {
   SettingsAccentColorPicker,
   SettingsBgThemePicker,
   SettingsToggle,
+  TagStatic,
+  TagClickable,
   TerminalExecute,
   TerminalInstall,
   TooltipAnnounce,
@@ -226,6 +228,44 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(BaseCard, {
         props: { isExactMatch: true },
         slots: { default: '<p>Exact match content</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TagStatic', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(TagStatic, {
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TagClickable', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(TagClickable, {
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violationst for active state', async () => {
+      const component = await mountSuspended(TagClickable, {
+        props: { status: 'active' },
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violationst for disabled state', async () => {
+      const component = await mountSuspended(TagClickable, {
+        props: { disabled: true },
+        slots: { default: 'Tag content' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
