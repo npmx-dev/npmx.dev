@@ -40,7 +40,7 @@ What npmx offers:
 
 ### Package browsing
 
-- **Dark mode by default** &ndash; and customize the color palette to your preferences
+- **Dark mode** &ndash; customize the color palette to your preferences
 - **Fast search** &ndash; quick package search with instant results
 - **Package details** &ndash; READMEs, versions, dependencies, and metadata
 - **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines
