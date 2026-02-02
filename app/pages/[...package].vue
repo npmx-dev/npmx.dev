@@ -912,7 +912,7 @@ function handleClick(event: MouseEvent) {
           >
             <a
               href="#get-started"
-              class="inline-flex items-center gap-1.5 py-1 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+              class="inline-flex items-center gap-1.5 py-1 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline rounded focus-visible:(ring-2 ring-fg/50 ring-offset-1 ring-offset-bg outline-none)"
             >
               {{ $t('package.get_started.title') }}
               <span
@@ -964,7 +964,7 @@ function handleClick(event: MouseEvent) {
         <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-4">
           <a
             href="#readme"
-            class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+            class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline rounded focus-visible:(ring-2 ring-fg/50 ring-offset-1 ring-offset-bg outline-none)"
           >
             {{ $t('package.readme.title') }}
             <span
@@ -985,7 +985,7 @@ function handleClick(event: MouseEvent) {
 
       <div class="area-sidebar">
         <!-- Sidebar -->
-        <div class="sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-hidden xl:(top-22 pt-2)">
+        <div class="sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-clip xl:(top-22 pt-2)">
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 
@@ -1002,7 +1002,7 @@ function handleClick(event: MouseEvent) {
             >
               <a
                 href="#keywords"
-                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline rounded focus-visible:(ring-2 ring-fg/50 ring-offset-1 ring-offset-bg outline-none)"
               >
                 {{ $t('package.keywords_title') }}
                 <span
@@ -1052,7 +1052,7 @@ function handleClick(event: MouseEvent) {
             >
               <a
                 href="#compatibility"
-                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline rounded focus-visible:(ring-2 ring-fg/50 ring-offset-1 ring-offset-bg outline-none)"
               >
                 {{ $t('package.compatibility') }}
                 <span
