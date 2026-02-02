@@ -142,7 +142,6 @@
       "deps": "الاعتماديات",
       "install_size": "حجم التثبيت",
       "vulns": "الثغرات",
-      "updated": "آخر تحديث",
       "skills": "المهارات",
       "view_dependency_graph": "عرض مخطط الاعتماديات",
       "inspect_dependency_tree": "فحص شجرة الاعتماديات",
@@ -206,7 +205,6 @@
     "compatibility": "التوافق",
     "card": {
       "publisher": "الناشر",
-      "updated": "آخر تحديث",
       "weekly_downloads": "التنزيلات الأسبوعية",
       "keywords": "الكلمات المفتاحية",
       "license": "الترخيص"
@@ -366,7 +364,6 @@
       "weekly": "أسبوعيًا",
       "size": "الحجم",
       "deps": "الاعتماديات",
-      "updated": "آخر تحديث",
       "get_started": "ابدأ",
       "readme": "README",
       "maintainers": "المشرفون",
@@ -376,7 +373,6 @@
     },
     "sort": {
       "downloads": "الأكثر تنزيلًا",
-      "updated": "مُحدَّثة مؤخرًا",
       "name_asc": "الاسم (A-Z)",
       "name_desc": "الاسم (Z-A)"
     }
@@ -661,7 +657,6 @@
       "downloads_day": "التنزيلات/اليوم",
       "downloads_month": "التنزيلات/الشهر",
       "downloads_year": "التنزيلات/السنة",
-      "updated": "آخر تحديث",
       "name": "الاسم",
       "quality": "الجودة",
       "popularity": "الشعبية",
@@ -677,7 +672,6 @@
       "version": "الإصدار",
       "description": "الوصف",
       "downloads": "التنزيلات/الأسبوع",
-      "updated": "آخر تحديث",
       "maintainers": "المشرفون",
       "keywords": "الكلمات المفتاحية",
       "quality_score": "درجة الجودة",

@@ -81,7 +81,7 @@ export function useCssVariables(
   if (options.watchHtmlAttributes && isClientSupported.value) {
     useMutationObserver(document.documentElement, () => void colors.value, {
       attributes: true,
-      attributeFilter: ['class', 'style', 'data-theme'],
+      attributeFilter: ['class', 'style', 'data-theme', 'data-bg-theme'],
     })
   }
 

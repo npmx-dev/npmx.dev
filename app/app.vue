@@ -79,12 +79,20 @@ function handleGlobalKeyup() {
   showKbdHints.value = false
 }
 
-/* A hack to get light dismiss to work in safari because it does not support closedby="any" yet */
+// Light dismiss fallback for browsers that don't support closedby="any" (Safari + old Chrome/Firefox)
 // https://codepen.io/paramagicdev/pen/gbYompq
 // see: https://github.com/npmx-dev/npmx.dev/pull/522#discussion_r2749978022
 function handleModalLightDismiss(e: MouseEvent) {
   const target = e.target as HTMLElement
   if (target.tagName === 'DIALOG' && target.hasAttribute('open')) {
+    const rect = target.getBoundingClientRect()
+    const isOutside =
+      e.clientX < rect.left ||
+      e.clientX > rect.right ||
+      e.clientY < rect.top ||
+      e.clientY > rect.bottom
+
+    if (!isOutside) return
     ;(target as HTMLDialogElement).close()
   }
 }
@@ -92,7 +100,16 @@ function handleModalLightDismiss(e: MouseEvent) {
 if (import.meta.client) {
   useEventListener(document, 'keydown', handleGlobalKeydown)
   useEventListener(document, 'keyup', handleGlobalKeyup)
-  useEventListener(document, 'click', handleModalLightDismiss)
+
+  // Feature check for native light dismiss support via closedby="any"
+  // https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#closedby
+  const supportsClosedBy =
+    typeof HTMLDialogElement !== 'undefined' &&
+    typeof HTMLDialogElement.prototype === 'object' &&
+    'closedBy' in HTMLDialogElement.prototype
+  if (!supportsClosedBy) {
+    useEventListener(document, 'click', handleModalLightDismiss)
+  }
 }
 </script>
 

@@ -385,24 +385,6 @@ defineOgImageComponent('Package', {
   stars: () => stars.value ?? 0,
   primaryColor: '#60a5fa',
 })
-
-// We're using only @click because it catches touch events and enter hits
-function handleClick(event: MouseEvent) {
-  const target = (event?.target as HTMLElement | undefined)?.closest('a')
-  if (!target) return
-
-  const href = target.getAttribute('href')
-  if (!href) return
-
-  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
-  if (!match || !match[1]) return
-
-  const route = router.resolve(match[1])
-  if (route) {
-    event.preventDefault()
-    router.push(route)
-  }
-}
 </script>
 
 <template>
@@ -418,28 +400,37 @@ function handleClick(event: MouseEvent) {
       >
         <!-- Package name and version -->
         <div class="flex items-baseline gap-2 sm:gap-3 flex-wrap min-w-0">
-          <h1
-            class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
-            :title="pkg.name"
-          >
-            <NuxtLink
-              v-if="orgName"
-              :to="{ name: 'org', params: { org: orgName } }"
-              class="text-fg-muted hover:text-fg transition-colors duration-200"
-              >@{{ orgName }}</NuxtLink
-            ><span v-if="orgName">/</span>
+          <div class="group relative flex flex-col items-start min-w-0">
+            <h1
+              class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
+              :title="pkg.name"
+            >
+              <NuxtLink
+                v-if="orgName"
+                :to="{ name: 'org', params: { org: orgName } }"
+                class="text-fg-muted hover:text-fg transition-colors duration-200"
+              >
+                @{{ orgName }}
+              </NuxtLink>
+              <span v-if="orgName">/</span>
+              <span :class="{ 'text-fg-muted': orgName }">
+                {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
+              </span>
+            </h1>
+
+            <!-- Floating copy button -->
             <TooltipAnnounce :text="$t('common.copied')" :isVisible="copiedPkgName">
               <button
+                type="button"
                 @click="copyPkgName()"
-                aria-describedby="copy-pkg-name"
-                class="cursor-copy active:scale-95 transition-transform"
+                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
+                :aria-label="$t('package.copy_name')"
               >
-                {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
+                <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
+                {{ $t('package.copy_name') }}
               </button>
             </TooltipAnnounce>
-          </h1>
-
-          <span id="copy-pkg-name" class="sr-only">{{ $t('package.copy_name') }}</span>
+          </div>
           <span
             v-if="resolvedVersion"
             class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0"
@@ -485,10 +476,10 @@ function handleClick(event: MouseEvent) {
               class="self-baseline ms-1 sm:ms-2"
             />
             <template #fallback>
-              <ul class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
-                <li class="skeleton w-8 h-5 rounded" />
-                <li class="skeleton w-12 h-5 rounded" />
-              </ul>
+              <div class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
+                <SkeletonBlock class="w-8 h-5 rounded" />
+                <SkeletonBlock class="w-12 h-5 rounded" />
+              </div>
             </template>
           </ClientOnly>
 
@@ -846,12 +837,23 @@ function handleClick(event: MouseEvent) {
             </template>
           </ClientOnly>
 
-          <div v-if="pkg.time?.modified" class="space-y-1 sm:col-span-2">
-            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-              {{ $t('package.stats.updated') }}
+          <div
+            v-if="resolvedVersion && pkg.time?.[resolvedVersion]"
+            class="space-y-1 sm:col-span-2"
+          >
+            <dt
+              class="text-xs text-fg-subtle uppercase tracking-wider"
+              :title="
+                $t('package.stats.published_tooltip', {
+                  package: pkg.name,
+                  version: resolvedVersion,
+                })
+              "
+            >
+              {{ $t('package.stats.published') }}
             </dt>
             <dd class="font-mono text-sm text-fg">
-              <DateTime :datetime="pkg.time.modified" date-style="medium" />
+              <DateTime :datetime="pkg.time[resolvedVersion]!" date-style="medium" />
             </dd>
           </div>
         </dl>
@@ -861,7 +863,7 @@ function handleClick(event: MouseEvent) {
           <PackageSkillsModal
             :skills="skillsData?.skills ?? []"
             :package-name="pkg.name"
-            :version="displayVersion?.version"
+            :version="resolvedVersion || undefined"
           />
         </ClientOnly>
       </section>
@@ -959,7 +961,7 @@ function handleClick(event: MouseEvent) {
           </a>
         </h2>
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-        <Readme v-if="readmeData?.html" :html="readmeData.html" @click="handleClick" />
+        <Readme v-if="readmeData?.html" :html="readmeData.html" />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
           <a
@@ -1016,7 +1018,7 @@ function handleClick(event: MouseEvent) {
               v-if="skillsData?.skills?.length"
               :skills="skillsData.skills"
               :package-name="pkg.name"
-              :version="displayVersion?.version"
+              :version="resolvedVersion || undefined"
             />
           </ClientOnly>
 
@@ -1140,7 +1142,7 @@ function handleClick(event: MouseEvent) {
       'install install'
       'vulns   vulns'
       'readme  sidebar';
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto auto auto 1fr;
   }
 }
 
@@ -1213,5 +1215,11 @@ function handleClick(event: MouseEvent) {
 .package-page > * {
   max-width: 100%;
   min-width: 0;
+}
+
+@media (hover: none) {
+  .copy-button {
+    display: none;
+  }
 }
 </style>

@@ -183,7 +183,8 @@ function slugify(text: string): string {
 /**
  * Resolve a relative URL to an absolute URL.
  * If repository info is available, resolve to provider's raw file URLs.
- * Otherwise, fall back to jsdelivr CDN.
+ * For markdown files (.md), use blob URLs so they render properly.
+ * Otherwise, fall back to jsdelivr CDN (except for .md files which are left unchanged).
  */
 function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   if (!url) return url
@@ -207,7 +208,10 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
     // for non-HTTP protocols (javascript:, data:, etc.), don't return, treat as relative
   }
 
-  // Use provider's raw URL base when repository info is available
+  // Check if this is a markdown file link
+  const isMarkdownFile = /\.md$/i.test(url.split('?')[0]?.split('#')[0] ?? '')
+
+  // Use provider's URL base when repository info is available
   // This handles assets that exist in the repo but not in the npm tarball
   if (repoInfo?.rawBaseUrl) {
     // Normalize the relative path (remove leading ./)
@@ -232,7 +236,16 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
       }
     }
 
-    return `${repoInfo.rawBaseUrl}/${relativePath}`
+    // For markdown files, use blob URL so they render on the provider's site
+    // For other files, use raw URL for direct access
+    const baseUrl = isMarkdownFile ? repoInfo.blobBaseUrl : repoInfo.rawBaseUrl
+    return `${baseUrl}/${relativePath}`
+  }
+
+  // For markdown files without repo info, leave unchanged (like npm does)
+  // This avoids 404s from jsdelivr which doesn't render markdown
+  if (isMarkdownFile) {
+    return url
   }
 
   // Fallback: relative URLs → jsdelivr CDN (may 404 if asset not in npm tarball)
