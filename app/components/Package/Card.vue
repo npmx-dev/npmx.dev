@@ -162,17 +162,15 @@ const pkgDescription = useMarkdown(() => ({
       :aria-label="$t('package.card.keywords')"
       class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0 pointer-events-none"
     >
-      <TagClickable
+      <TagButton
         v-for="keyword in result.package.keywords.slice(0, 5)"
         :key="keyword"
-        type="button"
-        class="pointer-events-auto"
-        :status="props.filters?.keywords.includes(keyword) ? 'active' : 'default'"
+        :pressed="props.filters?.keywords.includes(keyword)"
         :title="`Filter by ${keyword}`"
         @click.stop="emit('clickKeyword', keyword)"
       >
         {{ keyword }}
-      </TagClickable>
+      </TagButton>
       <span
         v-if="result.package.keywords.length > 5"
         class="text-fg-subtle text-xs pointer-events-auto"
