@@ -12,12 +12,12 @@ const socialLinks = {
       {{ $t('about.get_involved.title') }}
     </h2>
 
-    <div class="grid gap-4 sm:grid-cols-3">
+    <div class="grid gap-4 sm:grid-cols-3 sm:items-stretch sm:grid-rows-[auto,1fr,auto]">
       <a
         :href="socialLinks.github"
         target="_blank"
         rel="noopener noreferrer"
-        class="group flex flex-col gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200"
+        class="group grid gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200 sm:grid-rows-subgrid sm:row-span-3"
       >
         <div class="flex gap-2">
           <span class="i-carbon:logo-github shrink-0 mt-1 w-5 h-5 text-fg" aria-hidden="true" />
@@ -40,7 +40,7 @@ const socialLinks = {
         :href="socialLinks.discord"
         target="_blank"
         rel="noopener noreferrer"
-        class="group flex flex-col gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200"
+        class="group grid gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200 sm:grid-rows-subgrid sm:row-span-3"
       >
         <div class="flex gap-2">
           <span class="i-carbon:chat shrink-0 mt-1 w-5 h-5 text-fg" aria-hidden="true" />
@@ -63,7 +63,7 @@ const socialLinks = {
         :href="socialLinks.bluesky"
         target="_blank"
         rel="noopener noreferrer"
-        class="group flex flex-col gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200"
+        class="group grid gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200 sm:grid-rows-subgrid sm:row-span-3"
       >
         <div class="flex gap-2">
           <span class="i-simple-icons:bluesky shrink-0 mt-1 w-5 h-5 text-fg" aria-hidden="true" />

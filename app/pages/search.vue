@@ -142,6 +142,9 @@ const {
   clearAllFilters,
 } = useStructuredFilters({
   packages: resultsArray,
+  initialFilters: {
+    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
+  },
   initialSort: 'relevance-desc', // Default to search relevance
 })
 
@@ -737,6 +740,8 @@ defineOgImageComponent('Default', {
             v-if="displayResults.length > 0"
             :results="displayResults"
             :search-query="query"
+            :filters="filters"
+            search-context
             heading-level="h2"
             show-publisher
             :has-more="hasMore"

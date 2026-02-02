@@ -1,4 +1,4 @@
-import type { Packument } from '#shared/types'
+import type { Packument, NpmSearchResponse } from '#shared/types'
 import { encodePackageName, fetchLatestVersion } from '#shared/utils/npm'
 import { maxSatisfying, prerelease } from 'semver'
 import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
@@ -99,3 +99,43 @@ export async function resolveDependencyVersions(
   }
   return resolved
 }
+
+/**
+ * Find a user's email address from its username
+ * by exploring metadata in its public packages
+ */
+export const fetchUserEmail = defineCachedFunction(
+  async (username: string): Promise<string | null> => {
+    const handle = username.trim()
+    if (!handle) return null
+
+    // Fetch packages with the user's handle as a maintainer
+    const params = new URLSearchParams({
+      text: `maintainer:${handle}`,
+      size: '20',
+    })
+    const response = await $fetch<NpmSearchResponse>(`${NPM_REGISTRY}/-/v1/search?${params}`)
+    const lowerHandle = handle.toLowerCase()
+
+    // Search for the user's email in packages metadata
+    for (const result of response.objects) {
+      const maintainers = result.package.maintainers ?? []
+      const match = maintainers.find(
+        person =>
+          person.username?.toLowerCase() === lowerHandle ||
+          person.name?.toLowerCase() === lowerHandle,
+      )
+      if (match?.email) {
+        return match.email
+      }
+    }
+
+    return null
+  },
+  {
+    maxAge: CACHE_MAX_AGE_ONE_DAY,
+    swr: true,
+    name: 'npm-user-email',
+    getKey: (username: string) => `npm-user-email:${username.trim().toLowerCase()}`,
+  },
+)

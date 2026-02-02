@@ -1,7 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { createConnectorApp } from '../../../cli/src/server.ts'
 
 const TEST_TOKEN = 'test-token-123'
+vi.mock('../../../cli/src/logger.ts', () => {
+  return {
+    logError: () => {},
+    logDebug: () => {},
+  }
+})
 
 describe('connector server', () => {
   describe('GET /team/:scopeTeam/users', () => {

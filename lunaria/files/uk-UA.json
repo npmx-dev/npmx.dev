@@ -129,7 +129,6 @@
       "deps": "Залежності",
       "install_size": "Розмір встановлення",
       "vulns": "Вразливості",
-      "updated": "Оновлено",
       "view_dependency_graph": "Переглянути граф залежностей",
       "inspect_dependency_tree": "Дослідити дерево залежностей",
       "size_tooltip": {
@@ -176,7 +175,6 @@
     "compatibility": "Сумісність",
     "card": {
       "publisher": "Видавець",
-      "updated": "Оновлено",
       "weekly_downloads": "Завантажень на тиждень",
       "keywords": "Ключові слова",
       "license": "Ліцензія"
@@ -330,7 +328,6 @@
       "weekly": "Щотижнева",
       "size": "Розмір",
       "deps": "Залежності",
-      "updated": "Оновлено",
       "get_started": "Розпочніть роботу",
       "readme": "Readme",
       "maintainers": "Супроводжувачі",
@@ -340,7 +337,6 @@
     },
     "sort": {
       "downloads": "Найбільше завантажено",
-      "updated": "Недавно оновлено",
       "name_asc": "Ім'я (A-Z)",
       "name_desc": "Ім'я (Z-A)"
     }
@@ -620,7 +616,6 @@
       "downloads_day": "Завантажень/день",
       "downloads_month": "Завантажень/міс",
       "downloads_year": "Завантажень/рік",
-      "updated": "Останнє оновлення",
       "name": "Ім'я",
       "quality": "Якість",
       "popularity": "Популярність",
@@ -636,7 +631,6 @@
       "version": "Версія",
       "description": "Опис",
       "downloads": "Завантажень/тиж",
-      "updated": "Останнє оновлення",
       "maintainers": "Супроводжувачі",
       "keywords": "Ключові слова",
       "quality_score": "Оцінка якості",

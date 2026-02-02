@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { StructuredFilters } from '#shared/types/preferences'
+
 const props = defineProps<{
   /** The search result object containing package data */
   result: NpmSearchResult
@@ -8,8 +10,14 @@ const props = defineProps<{
   showPublisher?: boolean
   prefetch?: boolean
   index?: number
+  /** Filters to apply to the results */
+  filters?: StructuredFilters
   /** Search query for highlighting exact matches */
   searchQuery?: string
+}>()
+
+const emit = defineEmits<{
+  clickKeyword: [keyword: string]
 }>()
 
 /** Check if this package is an exact match for the search query */
@@ -29,18 +37,7 @@ const pkgDescription = useMarkdown(() => ({
 </script>
 
 <template>
-  <article
-    class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
-    :class="{
-      'border-accent/30 contrast-more:border-accent/90 bg-accent/5': isExactMatch,
-    }"
-  >
-    <!-- Glow effect for exact matches -->
-    <div
-      v-if="isExactMatch"
-      class="absolute -inset-px rounded-lg bg-gradient-to-r from-accent/0 via-accent/20 to-accent/0 opacity-100 blur-sm -z-1 pointer-events-none motion-reduce:opacity-50"
-      aria-hidden="true"
-    />
+  <BaseCard :isExactMatch="isExactMatch">
     <div class="mb-2 flex items-baseline justify-start gap-2">
       <component
         :is="headingLevel ?? 'h3'"
@@ -94,7 +91,7 @@ const pkgDescription = useMarkdown(() => ({
               <dd class="font-mono">{{ result.package.publisher.username }}</dd>
             </div>
             <div v-if="result.package.date" class="flex items-center gap-1.5">
-              <dt class="sr-only">{{ $t('package.card.updated') }}</dt>
+              <dt class="sr-only">{{ $t('package.card.published') }}</dt>
               <dd>
                 <DateTime
                   :datetime="result.package.date"
@@ -160,14 +157,29 @@ const pkgDescription = useMarkdown(() => ({
       </div>
     </div>
 
-    <ul
+    <div
       v-if="result.package.keywords?.length"
       :aria-label="$t('package.card.keywords')"
-      class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0"
+      class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0 pointer-events-none"
     >
-      <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword" class="tag">
+      <button
+        v-for="keyword in result.package.keywords.slice(0, 5)"
+        :key="keyword"
+        type="button"
+        class="tag text-xs hover:bg-fg hover:text-bg hover:border-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1 border-solid pointer-events-auto"
+        :class="{ 'bg-fg text-bg hover:opacity-80': props.filters?.keywords.includes(keyword) }"
+        :title="`Filter by ${keyword}`"
+        @click.stop="emit('clickKeyword', keyword)"
+      >
         {{ keyword }}
-      </li>
-    </ul>
-  </article>
+      </button>
+      <span
+        v-if="result.package.keywords.length > 5"
+        class="tag text-fg-subtle text-xs border-none bg-transparent pointer-events-auto"
+        :title="result.package.keywords.slice(5).join(', ')"
+      >
+        +{{ result.package.keywords.length - 5 }}
+      </span>
+    </div>
+  </BaseCard>
 </template>

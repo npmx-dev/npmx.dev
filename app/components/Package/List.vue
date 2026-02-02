@@ -17,6 +17,8 @@ const SSR_COUNT = 20
 const props = defineProps<{
   /** List of search results to display */
   results: NpmSearchResult[]
+  /** Filters to apply to the results */
+  filters?: StructuredFilters
   /** Heading level for package names */
   headingLevel?: 'h2' | 'h3'
   /** Whether to show publisher username on cards */
@@ -39,6 +41,8 @@ const props = defineProps<{
   paginationMode?: PaginationMode
   /** Current page (1-indexed) for paginated mode */
   currentPage?: number
+  /** When true, shows search-specific UI (relevance sort, no filters) */
+  searchContext?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -60,7 +64,11 @@ const sortOption = defineModel<SortOption>('sortOption')
 
 // View mode and columns
 const viewMode = computed(() => props.viewMode ?? 'cards')
-const columns = computed(() => props.columns ?? DEFAULT_COLUMNS)
+const columns = computed(() => {
+  const targetColumns = props.columns ?? DEFAULT_COLUMNS
+  if (props.searchContext) return targetColumns.map(column => ({ ...column, sortable: false }))
+  return targetColumns
+})
 // Table view forces pagination mode (no virtualization for tables)
 const paginationMode = computed(() =>
   viewMode.value === 'table' ? 'paginated' : (props.paginationMode ?? 'infinite'),
@@ -147,6 +155,7 @@ defineExpose({
     <template v-if="viewMode === 'table'">
       <PackageTable
         :results="displayedResults"
+        :filters="filters"
         :columns="columns"
         v-model:sort-option="sortOption"
         :is-loading="isLoading"
@@ -176,7 +185,9 @@ defineExpose({
                 :index="index"
                 :search-query="searchQuery"
                 class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
+                :filters="filters"
                 :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+                @click-keyword="emit('clickKeyword', $event)"
               />
             </div>
           </template>
@@ -193,6 +204,8 @@ defineExpose({
                   :show-publisher="showPublisher"
                   :index="index"
                   :search-query="searchQuery"
+                  :filters="filters"
+                  @click-keyword="emit('clickKeyword', $event)"
                 />
               </div>
             </li>
@@ -225,6 +238,8 @@ defineExpose({
             :search-query="searchQuery"
             class="motion-safe:animate-fade-in motion-safe:animate-fill-both"
             :style="{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }"
+            :filters="filters"
+            @click-keyword="emit('clickKeyword', $event)"
           />
         </li>
       </ol>

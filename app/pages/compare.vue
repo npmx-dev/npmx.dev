@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FACET_INFO } from '#shared/types/comparison'
 import { useRouteQuery } from '@vueuse/router'
 
 definePageMeta({
@@ -24,7 +23,7 @@ const packages = computed({
   },
 })
 
-// Facet selection
+// Facet selection and info
 const { selectedFacets, selectAll, deselectAll, isAllSelected, isNoneSelected } =
   useFacetSelection()
 
@@ -128,13 +127,13 @@ useSeoMeta({
             <CompareComparisonGrid :columns="packages.length" :headers="gridHeaders">
               <CompareFacetRow
                 v-for="facet in selectedFacets"
-                :key="facet"
-                :label="FACET_INFO[facet].label"
-                :description="FACET_INFO[facet].description"
-                :values="getFacetValues(facet)"
-                :facet-loading="isFacetLoading(facet)"
+                :key="facet.id"
+                :label="facet.label"
+                :description="facet.description"
+                :values="getFacetValues(facet.id)"
+                :facet-loading="isFacetLoading(facet.id)"
                 :column-loading="columnLoading"
-                :bar="facet !== 'lastUpdated'"
+                :bar="facet.id !== 'lastUpdated'"
                 :headers="gridHeaders"
               />
             </CompareComparisonGrid>
@@ -144,13 +143,13 @@ useSeoMeta({
           <div class="md:hidden space-y-3">
             <CompareFacetCard
               v-for="facet in selectedFacets"
-              :key="facet"
-              :label="FACET_INFO[facet].label"
-              :description="FACET_INFO[facet].description"
-              :values="getFacetValues(facet)"
-              :facet-loading="isFacetLoading(facet)"
+              :key="facet.id"
+              :label="facet.label"
+              :description="facet.description"
+              :values="getFacetValues(facet.id)"
+              :facet-loading="isFacetLoading(facet.id)"
               :column-loading="columnLoading"
-              :bar="facet !== 'lastUpdated'"
+              :bar="facet.id !== 'lastUpdated'"
               :headers="gridHeaders"
             />
           </div>

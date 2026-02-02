@@ -25,7 +25,9 @@ export const packageManagers = [
     id: 'yarn',
     label: 'yarn',
     action: 'add',
-    executeLocal: 'yarn',
+    // For both yarn v1 and v2+ support
+    // local exec defers to npx instead
+    executeLocal: 'npx',
     executeRemote: 'yarn dlx',
     create: 'yarn create',
     icon: 'i-simple-icons:yarn',

@@ -105,6 +105,12 @@ export default defineNuxtConfig({
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/_avatar/**': {
+      isr: 3600,
+      proxy: {
+        to: 'https://www.gravatar.com/avatar/**',
+      },
+    },
     // static pages
     '/about': { prerender: true },
     '/settings': { prerender: true },
@@ -240,7 +246,18 @@ export default defineNuxtConfig({
     tsConfig: {
       compilerOptions: {
         noUnusedLocals: true,
+        allowImportingTsExtensions: true,
       },
+      include: ['../test/unit/app/**/*.ts'],
+    },
+    sharedTsConfig: {
+      include: ['../test/unit/shared/**/*.ts'],
+    },
+    nodeTsConfig: {
+      compilerOptions: {
+        allowImportingTsExtensions: true,
+      },
+      include: ['../*.ts'],
     },
   },
 
