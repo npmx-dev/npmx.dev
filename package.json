@@ -121,6 +121,11 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
+    "i18n/locales/*": [
+      "pnpm build:lunaria",
+      "vite fmt lunaria/files/",
+      "git add lunaria/files/"
+    ],
     "*.{js,ts,mjs,cjs,vue}": [
       "vite lint --fix"
     ],
