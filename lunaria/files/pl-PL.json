@@ -290,7 +290,7 @@
       "cjs": "Obsługuje CommonJS",
       "no_esm": "Brak obsługi ES Modules",
       "types_label": "Typy",
-      "types_included": "Typy w pakiecie",
+      "types_included": "Typy wbudowane",
       "types_available": "Typy dostępne przez {package}",
       "no_types": "Brak typów TypeScript"
     },
@@ -850,6 +850,66 @@
         "health": "Zdrowie",
         "compatibility": "Kompatybilność",
         "security": "Bezpieczeństwo i zgodność"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Rozmiar pakietu",
+          "description": "Rozmiar samego pakietu (rozpakowany)"
+        },
+        "installSize": {
+          "label": "Rozmiar instalacji",
+          "description": "Łączny rozmiar instalacji wraz ze wszystkimi zależnościami"
+        },
+        "dependencies": {
+          "label": "Bezpośrednie zależności",
+          "description": "Liczba bezpośrednich zależności"
+        },
+        "totalDependencies": {
+          "label": "# Wszystkich zależności",
+          "description": "Łączna liczba zależności, w tym przechodnich"
+        },
+        "downloads": {
+          "label": "Pobrania/tydz.",
+          "description": "Tygodniowa liczba pobrań"
+        },
+        "lastUpdated": {
+          "label": "Opublikowano",
+          "description": "Kiedy ta wersja została opublikowana"
+        },
+        "deprecated": {
+          "label": "Wycofany?",
+          "description": "Czy pakiet jest wycofany"
+        },
+        "engines": {
+          "label": "Silniki",
+          "description": "Wymagania wersji Node.js"
+        },
+        "types": {
+          "label": "Typy",
+          "description": "Definicje typów TypeScript"
+        },
+        "moduleFormat": {
+          "label": "Format modułu",
+          "description": "Obsługa ESM/CJS"
+        },
+        "license": {
+          "label": "Licencja",
+          "description": "Licencja pakietu"
+        },
+        "vulnerabilities": {
+          "label": "Podatności",
+          "description": "Znane luki bezpieczeństwa"
+        }
+      },
+      "values": {
+        "any": "Dowolne",
+        "none": "Brak",
+        "unknown": "Nieznana",
+        "deprecated": "Wycofany",
+        "not_deprecated": "Nie",
+        "types_included": "Wbudowane",
+        "types_none": "Brak",
+        "vulnerabilities_summary": "{count} ({critical}K/{high}W)"
       }
     }
   }
