@@ -16,6 +16,6 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession, _) => {
     })
   }
 
-  const likesUtlil = new PackageLikesUtils(cachedFetch)
-  return await likesUtlil.getLikes(packageName, oAuthSession?.did.toString())
+  const likesUtil = new PackageLikesUtils(cachedFetch)
+  return await likesUtil.getLikes(packageName, oAuthSession?.did.toString())
 })

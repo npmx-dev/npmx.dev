@@ -360,20 +360,20 @@ const canonicalUrl = computed(() => {
 const { user } = useAtproto()
 const showAuthModal = ref(false)
 
-const { data: likesData } = useFetch(() => `/api/likes/${packageName.value}`, {
-  default: () => ({ totalPackageLikes: 0, userHasLiked: false }),
+const { data: likesData } = useFetch(() => `/api/social/likes/${packageName.value}`, {
+  default: () => ({ totalLikes: 0, userHasLiked: false }),
 })
 
-// const { mutate: likePackage } = useLikePackage(subjectRef)
+const { mutate: likePackage } = useLikePackage(packageName.value)
 
 const likeAction = async () => {
   if (user.value?.handle == null) {
     showAuthModal.value = true
   } else {
-    // const result = await likePackage()
-    // if (result?.likes) {
-    //   likesData.value = result.likes
-    // }
+    const result = await likePackage()
+    if (result?.totalLikes) {
+      likesData.value = result
+    }
   }
 }
 
@@ -541,9 +541,7 @@ defineOgImageComponent('Package', {
               class="w-4 h-4"
               aria-hidden="true"
             />
-            <span>{{
-              formatCompactNumber(likesData?.totalPackageLikes ?? 0, { decimals: 1 })
-            }}</span>
+            <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
           </button>
 
           <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
@@ -1128,6 +1126,7 @@ defineOgImageComponent('Package', {
       </p>
       <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
+    <AuthModal v-model:open="showAuthModal" />
   </main>
 </template>
 

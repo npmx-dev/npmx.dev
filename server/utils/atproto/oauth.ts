@@ -9,7 +9,7 @@ import { OAuthMetadataSchema } from '#shared/schemas/oauth'
 import { clientUri } from '#oauth/config'
 import { useServerSession } from '#server/utils/server-session'
 // TODO: limit scope as features gets added. atproto just allows login so no scary login screen till we have scopes
-export const scope = 'atproto'
+export const scope = 'atproto repo:dev.npmx.feed.like'
 
 export function getOauthClientMetadata() {
   const dev = import.meta.dev
