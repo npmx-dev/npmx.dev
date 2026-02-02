@@ -21,7 +21,7 @@
         "pwa-assets.config.ts",
         ".lighthouserc.cjs",
         "lighthouse-setup.cjs",
-        "uno-preset-rtl.ts",
+        "uno-preset-rtl.ts!",
         "scripts/**/*.ts"
       ],
       "project": ["**/*.{ts,vue,cjs,mjs}"],
