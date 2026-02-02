@@ -18,8 +18,8 @@
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
     "knip": "knip",
     "knip:fix": "knip --fix",
-    "lint": "vite lint && vite fmt --check",
-    "lint:fix": "vite lint --fix && vite fmt",
+    "lint": "oxlint && oxfmt --check",
+    "lint:fix": "oxlint --fix && oxfmt",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "generate-pwa-icons": "pwa-assets-generator",
@@ -108,6 +108,8 @@
     "fast-npm-meta": "1.0.0",
     "knip": "5.82.1",
     "lint-staged": "16.2.7",
+    "oxfmt": "0.27.0",
+    "oxlint": "1.42.0",
     "playwright-core": "1.58.0",
     "schema-dts": "1.1.5",
     "simple-git-hooks": "2.13.1",
@@ -125,14 +127,14 @@
   "lint-staged": {
     "i18n/locales/*": [
       "pnpm build:lunaria",
-      "vite fmt lunaria/files/",
+      "pnpm oxfmt lunaria/files/",
       "git add lunaria/files/"
     ],
     "*.{js,ts,mjs,cjs,vue}": [
-      "vite lint --fix"
+      "pnpm oxlint --fix"
     ],
     "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
-      "vite fmt"
+      "pnpm oxfmt"
     ]
   },
   "packageManager": "pnpm@10.28.2"

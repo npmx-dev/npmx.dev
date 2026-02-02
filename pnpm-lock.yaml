@@ -231,6 +231,12 @@ importers:
       lint-staged:
         specifier: 16.2.7
         version: 16.2.7
+      oxfmt:
+        specifier: 0.27.0
+        version: 0.27.0
+      oxlint:
+        specifier: 1.42.0
+        version: 1.42.0(oxlint-tsgolint@0.11.3)
       playwright-core:
         specifier: 1.58.0
         version: 1.58.0
