@@ -21,6 +21,10 @@ export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
 export const ERROR_SKILLS_FETCH_FAILED = 'Failed to fetch skills.'
 export const ERROR_SKILL_NOT_FOUND = 'Skill not found.'
 export const ERROR_SKILL_FILE_NOT_FOUND = 'Skill file not found.'
+/** @public */
+export const ERROR_GRAVATAR_FETCH_FAILED = 'Failed to fetch Gravatar profile.'
+/** @public */
+export const ERROR_GRAVATAR_EMAIL_UNAVAILABLE = "User's email not accessible."
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'

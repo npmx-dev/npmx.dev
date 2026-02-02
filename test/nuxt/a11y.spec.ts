@@ -57,6 +57,7 @@ afterEach(() => {
 import {
   AppFooter,
   AppHeader,
+  UserAvatar,
   BuildEnvironment,
   CallToAction,
   CodeDirectoryListing,
@@ -1795,6 +1796,32 @@ describe('component accessibility audits', () => {
           distTags: mockDistTags,
           urlPattern: '/package/vue/v/{version}',
         },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('UserAvatar', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(UserAvatar, {
+        props: { username: 'testuser' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with short username', async () => {
+      const component = await mountSuspended(UserAvatar, {
+        props: { username: 'a' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with long username', async () => {
+      const component = await mountSuspended(UserAvatar, {
+        props: { username: 'verylongusernameexample' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
