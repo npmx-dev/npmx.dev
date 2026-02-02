@@ -346,7 +346,7 @@ export function useNpmSearch(
         if ((error as NpmSearchError)?.data?.code === 'ERR_TEXT_LENGTH') {
           try {
             const encodedName = encodePackageName(q)
-            const [{ data: pkg }, { data: downloads }] = await Promise.all([
+            const [{ data: pkg, isStale }, { data: downloads }] = await Promise.all([
               cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`, { signal }),
               cachedFetch<NpmDownloadCount>(`${NPM_API}/downloads/point/last-week/${encodedName}`, {
                 signal,
@@ -365,12 +365,7 @@ export function useNpmSearch(
               total: 1,
             }
 
-            return {
-              objects: [result],
-              total: 1,
-              isStale: false,
-              time: new Date().toISOString(),
-            }
+            return { ...pkg, isStale }
           } catch {
             // If exact lookup also fails, throw original error
             throw error
