@@ -8,6 +8,7 @@ import {
   isAllowedDomain,
   isCacheEntryStale,
 } from '#shared/utils/fetch-cache-config'
+import { shouldBypassCacheFor } from '../utils/cache-bypass'
 
 /**
  * Simple hash function for cache keys.
@@ -64,8 +65,15 @@ export default defineNitroPlugin(nitroApp => {
       options: Parameters<typeof $fetch>[1] = {},
       ttl: number = FETCH_CACHE_DEFAULT_TTL,
     ): Promise<CachedFetchResult<T>> => {
-      // Check if this URL should be cached
-      if (!isAllowedDomain(url)) {
+      // Check if cache bypass is requested for the fetch layer
+      const bypassCache = shouldBypassCacheFor(event, 'fetch')
+
+      // Check if this URL should be cached (or if bypass is requested)
+      if (bypassCache || !isAllowedDomain(url)) {
+        if (bypassCache && import.meta.dev) {
+          // eslint-disable-next-line no-console
+          console.log(`[fetch-cache] BYPASS: ${url}`)
+        }
         const data = (await $fetch(url, options)) as T
         return { data, isStale: false, cachedAt: null }
       }

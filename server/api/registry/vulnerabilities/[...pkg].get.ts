@@ -8,7 +8,7 @@ import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
  * Analyze entire dependency tree for vulnerabilities and deprecated dependencies.
  * I does not rename this endpoint for backward compatibility.
  */
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
     const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
@@ -43,6 +43,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
+    bypassKey: 'vulnerabilities',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `vulnerabilities:v1:${pkg.replace(/\/+$/, '').trim()}`

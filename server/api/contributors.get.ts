@@ -6,7 +6,7 @@ export interface GitHubContributor {
   contributions: number
 }
 
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async (): Promise<GitHubContributor[]> => {
     const allContributors: GitHubContributor[] = []
     let page = 1
@@ -52,6 +52,7 @@ export default defineCachedEventHandler(
   {
     maxAge: 3600, // Cache for 1 hour
     name: 'github-contributors',
+    bypassKey: 'contributors',
     getKey: () => 'contributors',
   },
 )

@@ -20,7 +20,7 @@ import {
 import { parseRepoUrl } from '#shared/utils/git-providers'
 import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
 
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     // Parse package name and optional version from path
     // e.g., "vue" or "vue/v/3.4.0" or "@nuxt/kit" or "@nuxt/kit/v/1.0.0"
@@ -69,6 +69,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_DAY, // 24 hours - analysis rarely changes
     swr: true,
+    bypassKey: 'analysis',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `analysis:v1:${pkg.replace(/\/+$/, '').trim()}`

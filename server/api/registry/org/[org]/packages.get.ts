@@ -15,7 +15,7 @@ function validateOrgName(name: string): void {
   }
 }
 
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     const org = getRouterParam(event, 'org')
 
@@ -48,6 +48,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
+    bypassKey: 'org-packages',
     getKey: event => {
       const org = getRouterParam(event, 'org') ?? ''
       return `org-packages:v1:${org}`

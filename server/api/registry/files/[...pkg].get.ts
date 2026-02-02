@@ -10,7 +10,7 @@ import { CACHE_MAX_AGE_ONE_YEAR, ERROR_FILE_LIST_FETCH_FAILED } from '#shared/ut
  * - /api/registry/files/packageName/v/1.2.3 - required version
  * - /api/registry/files/@scope/packageName/v/1.2.3 - scoped package
  */
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     // Parse package name and version from URL segments
     // Patterns: [pkg, 'v', version] or [@scope, pkg, 'v', version]
@@ -44,6 +44,7 @@ export default defineCachedEventHandler(
     // Files for a specific version never change - cache permanently
     maxAge: CACHE_MAX_AGE_ONE_YEAR, // 1 year
     swr: true,
+    bypassKey: 'files',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `files:v1:${pkg.replace(/\/+$/, '').trim()}`

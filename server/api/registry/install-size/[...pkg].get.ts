@@ -8,7 +8,7 @@ import { CACHE_MAX_AGE_ONE_HOUR, ERROR_CALC_INSTALL_SIZE_FAILED } from '#shared/
  * Calculate total install size for a package including all dependencies.
  * Handles platform-specific optional dependencies by counting only one representative per group.
  */
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     // Parse package name and optional version from path segments
     // Supports: /install-size/lodash, /install-size/lodash/v/4.17.21, /install-size/@scope/name, /install-size/@scope/name/v/1.0.0
@@ -46,6 +46,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
+    bypassKey: 'install-size',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `install-size:v1:${pkg.replace(/\/+$/, '').trim()}`

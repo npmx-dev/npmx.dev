@@ -10,7 +10,7 @@ function measureTextWidth(text: string, charWidth = 6.2, paddingX = 6): number {
   return Math.max(40, Math.round(text.length * charWidth) + paddingX * 2)
 }
 
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
     if (pkgParamSegments.length === 0) {
@@ -67,6 +67,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
+    bypassKey: 'badge',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `badge:version:${pkg}`

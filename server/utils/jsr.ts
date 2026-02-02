@@ -15,7 +15,7 @@ const JSR_REGISTRY = 'https://jsr.io'
  * @param npmPackageName - The npm package name (e.g., "@hono/hono")
  * @returns JsrPackageInfo with existence status and metadata
  */
-export const fetchJsrPackageInfo = defineCachedFunction(
+export const fetchJsrPackageInfo = defineBypassableCachedFunction(
   async (npmPackageName: string): Promise<JsrPackageInfo> => {
     // Only check scoped packages - we can't authoritatively map unscoped names
     if (!npmPackageName.startsWith('@')) {
@@ -61,6 +61,7 @@ export const fetchJsrPackageInfo = defineCachedFunction(
     maxAge: 60 * 60 * 24, // 1 day
     swr: true,
     name: 'jsr-package-info',
+    bypassKey: 'jsr-package',
     getKey: (name: string) => name,
   },
 )

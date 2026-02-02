@@ -23,7 +23,7 @@ const CACHE_VERSION = 1
  * - /skills/vue/v/3.4.0/my-skill/refs/guide.md  → supporting file (raw)
  * - /skills/@scope/pkg/v/1.0.0                  → scoped package
  */
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
@@ -69,6 +69,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
+    bypassKey: 'skills',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `skills:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}`

@@ -7,7 +7,7 @@ import { CACHE_MAX_AGE_ONE_HOUR, CACHE_MAX_AGE_ONE_YEAR } from '#shared/utils/co
 /**
  * Serves /.well-known/skills endpoints for `npx skills add` CLI.
  */
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async (event: H3Event) => {
     const url = getRequestURL(event)
     const match = url.pathname.match(/^\/(.+?)\/\.well-known\/skills\/(.*)$/)!
@@ -54,6 +54,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
+    bypassKey: 'well-known-skills',
     getKey: (event: H3Event) =>
       `well-known-skills:v1:${getRequestURL(event).pathname.replace(/\/+$/, '')}`,
   },

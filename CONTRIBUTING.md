@@ -64,6 +64,68 @@ pnpm test:nuxt        # Nuxt component tests
 pnpm test:browser     # Playwright E2E tests
 ```
 
+### Debugging cache
+
+The app has multiple caching layers that can make debugging tricky. You can bypass caching using the `__bypass_cache__` query parameter.
+
+**Category bypass** (bypasses all caches of that type):
+
+```
+?__bypass_cache__=1           # Bypass ALL cache layers
+?__bypass_cache__=all         # Same as above
+?__bypass_cache__=fetch       # Bypass external API fetch cache (npm registry, JSR, GitHub, etc.)
+?__bypass_cache__=handler     # Bypass all API route handlers
+```
+
+**Specific key bypass** (bypasses only that cache):
+
+```
+?__bypass_cache__=readme      # Bypass only the readme handler
+?__bypass_cache__=npm-package # Bypass only npm package fetching
+?__bypass_cache__=readme,fetch # Combine specific keys with categories
+```
+
+<details>
+<summary>All available bypass keys</summary>
+
+| Key                 | What it caches                                                |
+| ------------------- | ------------------------------------------------------------- |
+| **Categories**      |                                                               |
+| `fetch`             | External API calls (npm registry, JSR, GitHub, etc.) with SWR |
+| `handler`           | All API route handlers                                        |
+| **API Routes**      |                                                               |
+| `readme`            | Package README content                                        |
+| `analysis`          | Package analysis (types, create-\*, etc.)                     |
+| `docs`              | Generated TypeScript docs                                     |
+| `files`             | Package file tree                                             |
+| `file`              | Individual file content                                       |
+| `vulnerabilities`   | Dependency vulnerability scan                                 |
+| `badge`             | Version badge SVG                                             |
+| `install-size`      | Install size calculation handler                              |
+| `org-packages`      | Org package list                                              |
+| `jsr`               | JSR package lookup handler                                    |
+| `suggestions`       | Search suggestions                                            |
+| `contributors`      | GitHub contributors                                           |
+| `skills`            | Package skills                                                |
+| `well-known-skills` | .well-known/skills endpoints                                  |
+| **Utilities**       |                                                               |
+| `npm-package`       | npm packument fetching                                        |
+| `jsr-package`       | JSR package info fetching                                     |
+| `install-size-calc` | Install size calculation                                      |
+
+</details>
+
+> [!TIP]
+> To bypass **all** caching layers including Vercel's CDN, use a unique value like a timestamp: `?__bypass_cache__=1738438123`. The CDN caches based on the full URL, so a unique query string causes a cache miss at the edge, and then our code bypasses the internal caches too.
+
+When cache bypass is active, the response includes an `X-Cache-Bypass` header showing which caches were bypassed:
+
+```
+X-Cache-Bypass: readme,npm-package
+```
+
+In development mode, cache bypass also logs to the console.
+
 ### Project structure
 
 ```

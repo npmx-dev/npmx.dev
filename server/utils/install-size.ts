@@ -32,7 +32,7 @@ export interface DependencySize {
  *
  * Dependencies are resolved for linux-x64-glibc as a representative platform.
  */
-export const calculateInstallSize = defineCachedFunction(
+export const calculateInstallSize = defineBypassableCachedFunction(
   async (name: string, version: string): Promise<InstallSizeResult> => {
     const resolved = await resolveDependencyTree(name, version)
 
@@ -76,6 +76,7 @@ export const calculateInstallSize = defineCachedFunction(
     maxAge: 60 * 60,
     swr: true,
     name: 'install-size',
+    bypassKey: 'install-size-calc',
     getKey: (name: string, version: string) => `${name}@${version}`,
   },
 )

@@ -55,7 +55,7 @@ async function fetchReadmeFromJsdelivr(
  * - /api/registry/readme/@scope/packageName - scoped package, latest
  * - /api/registry/readme/@scope/packageName/v/1.2.3 - scoped package, specific version
  */
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     // Parse package name and optional version from URL segments
     // Patterns: [pkg] or [pkg, 'v', version] or [@scope, pkg] or [@scope, pkg, 'v', version]
@@ -124,6 +124,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
+    bypassKey: 'readme',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `readme:v7:${pkg.replace(/\/+$/, '').trim()}`

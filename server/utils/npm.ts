@@ -5,7 +5,7 @@ import { CACHE_MAX_AGE_FIVE_MINUTES } from '#shared/utils/constants'
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 
-export const fetchNpmPackage = defineCachedFunction(
+export const fetchNpmPackage = defineBypassableCachedFunction(
   async (name: string): Promise<Packument> => {
     const encodedName = encodePackageName(name)
     return await $fetch<Packument>(`${NPM_REGISTRY}/${encodedName}`)
@@ -14,6 +14,7 @@ export const fetchNpmPackage = defineCachedFunction(
     maxAge: CACHE_MAX_AGE_FIVE_MINUTES,
     swr: true,
     name: 'npm-package',
+    bypassKey: 'npm-package',
     getKey: (name: string) => name,
   },
 )
