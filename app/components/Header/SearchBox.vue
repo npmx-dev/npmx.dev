@@ -79,6 +79,19 @@ function handleSearchFocus() {
   emit('focus')
 }
 
+function handleSubmit() {
+  if (pagesWithLocalFilter.has(route.name as string)) {
+    router.push({
+      name: 'search',
+      query: {
+        q: searchQuery.value,
+      },
+    })
+  } else {
+    updateUrlQuery.flush()
+  }
+}
+
 // Expose focus method for parent components
 const inputRef = useTemplateRef('inputRef')
 function focus() {
@@ -88,7 +101,7 @@ defineExpose({ focus })
 </script>
 <template>
   <search v-if="showSearchBar" :class="'flex-1 sm:max-w-md ' + inputClass">
-    <form method="GET" action="/search" class="relative">
+    <form method="GET" action="/search" class="relative" @submit.prevent="handleSubmit">
       <label for="header-search" class="sr-only">
         {{ $t('search.label') }}
       </label>

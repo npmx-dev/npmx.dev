@@ -52,7 +52,7 @@ const {
 } = useStructuredFilters({
   packages,
   initialFilters: {
-    text: normalizeSearchParam(route.query.q),
+    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
   },
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'updated-desc',
 })
@@ -91,9 +91,15 @@ const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
 }, 300)
 
 // Update URL when filter/sort changes (debounced)
-watch([() => filters.value.text, sortOption], ([filter, sort]) => {
-  updateUrl({ filter, sort })
-})
+watch(
+  [() => filters.value.text, () => filters.value.keywords, () => sortOption.value] as const,
+  ([text, keywords, sort]) => {
+    const filter = [text, ...keywords.map(keyword => `keyword:${keyword}`)]
+      .filter(Boolean)
+      .join(' ')
+    updateUrl({ filter, sort })
+  },
+)
 
 const filteredCount = computed(() => sortedPackages.value.length)
 
@@ -282,6 +288,7 @@ defineOgImageComponent('Default', {
           :results="sortedPackages"
           :view-mode="viewMode"
           :columns="columns"
+          :filters="filters"
           v-model:sort-option="sortOption"
           :pagination-mode="paginationMode"
           :page-size="pageSize"

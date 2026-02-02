@@ -36,7 +36,7 @@
         "vite-plugin-pwa",
         "vue-router"
       ],
-      "ignoreUnresolved": ["#components"]
+      "ignoreUnresolved": ["#components", "#oauth/config"]
     },
     "cli": {
       "project": ["src/**/*.ts"]
