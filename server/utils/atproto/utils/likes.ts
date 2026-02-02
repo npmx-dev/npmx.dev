@@ -1,4 +1,3 @@
-import { getCacheAdatper } from '../../cache'
 import { $nsid as likeNsid } from '#shared/types/lexicons/dev/npmx/feed/like.defs'
 import type { Backlink } from '#shared/utils/constellation'
 
@@ -14,7 +13,7 @@ export type PackageLikes = {
 
 //Cache keys and helpers
 const CACHE_PREFIX = 'atproto-likes:'
-const CACHE_PACKAGE_TOTAL_KEY = (packageName: string) => `${CACHE_PREFIX}:${packageName}:total`
+const CACHE_PACKAGE_TOTAL_KEY = (packageName: string) => `${CACHE_PREFIX}${packageName}:total`
 const CACHE_USER_LIKES_KEY = (packageName: string, did: string) =>
   `${CACHE_PREFIX}${packageName}:users:${did}:liked`
 const CACHE_USERS_BACK_LINK = (packageName: string, did: string) =>
@@ -41,7 +40,7 @@ export class PackageLikesUtils {
         return { data, isStale: false, cachedAt: null }
       },
     )
-    this.cache = getCacheAdatper(CACHE_PREFIX)
+    this.cache = getCacheAdatper('generic')
   }
 
   /**
