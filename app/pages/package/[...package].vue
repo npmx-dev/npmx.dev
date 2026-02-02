@@ -297,11 +297,6 @@ function normalizeGitUrl(url: string): string {
     .replace(/^git@github\.com:/, 'https://github.com/')
 }
 
-function getDependencyCount(version: PackumentVersion | null): number {
-  if (!version?.dependencies) return 0
-  return Object.keys(version.dependencies).length
-}
-
 // Check if a version has provenance/attestations
 // The dist object may have attestations that aren't in the base type
 function hasProvenance(version: PackumentVersion | null): boolean {
