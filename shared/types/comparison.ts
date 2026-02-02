@@ -41,7 +41,6 @@ export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
   },
   totalDependencies: {
     category: 'performance',
-    comingSoon: true,
   },
   // Health
   downloads: {
