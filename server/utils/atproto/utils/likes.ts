@@ -1,6 +1,5 @@
 import { getCacheAdatper } from '../../cache'
 import { $nsid as likeNsid } from '#shared/types/lexicons/dev/npmx/feed/like.defs'
-import { SUBJECT_REF_PREFIX } from '~~/shared/utils/constants'
 
 /**
  * Likes for a npm package on npmx
@@ -41,8 +40,6 @@ export class PackageLikesUtils {
       '.subjectRef',
       //Limit doesn't matter here since we are just counting the total likes
       1,
-      undefined,
-      CACHE_MAX_AGE_ONE_MINUTE * 10,
     )
     return totalLinks.total
   }
@@ -77,7 +74,7 @@ export class PackageLikesUtils {
   async getLikes(packageName: string, usersDid?: string | undefined) {
     //TODO: May need to do some clean up on the package name, and maybe even hash it? some of the charcteres may be a bit odd as keys
     const totalLikesKey = CACHE_PACKAGE_TOTAL_KEY(packageName)
-    const subjectRef = `${SUBJECT_REF_PREFIX}/${packageName}`
+    const subjectRef = PACKAGE_SUBJECT_REF(packageName)
 
     const cachedLikes = await this.cache.get<number>(totalLikesKey)
     let totalLikes = 0
@@ -120,10 +117,9 @@ export class PackageLikesUtils {
     if (cached !== undefined) {
       return cached
     }
-    const userHasLiked = await this.constellationUserHasLiked(
-      `${SUBJECT_REF_PREFIX}/${packageName}`,
-      usersDid,
-    )
+    const subjectRef = PACKAGE_SUBJECT_REF(packageName)
+
+    const userHasLiked = await this.constellationUserHasLiked(subjectRef, usersDid)
     await this.cache.set(CACHE_USER_LIKES_KEY(packageName, usersDid), userHasLiked, CACHE_MAX_AGE)
     return userHasLiked
   }
@@ -141,7 +137,7 @@ export class PackageLikesUtils {
     if (totalLikes !== undefined) {
       await this.cache.set(totalLikesKey, totalLikes + 1, CACHE_MAX_AGE)
     } else {
-      const subjectRef = `${SUBJECT_REF_PREFIX}/${packageName}`
+      const subjectRef = PACKAGE_SUBJECT_REF(packageName)
       totalLikes = await this.constellationLikes(subjectRef)
     }
     // We already know the user has not liked the package so set in the cache

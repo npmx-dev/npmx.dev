@@ -31,8 +31,9 @@ export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
 export const SLINGSHOT_HOST = 'slingshot.microcosm.blue'
 
 // ATProtocol
-// Refrence prefix used to link packages to things that are not inherently atproto
-export const SUBJECT_REF_PREFIX = 'https://npmx.dev'
+// Refrences used to link packages to things that are not inherently atproto
+export const PACKAGE_SUBJECT_REF = (packageName: string) =>
+  `https://npmx.dev/package/${packageName}`
 
 // Theming
 export const ACCENT_COLORS = {

@@ -356,6 +356,27 @@ const canonicalUrl = computed(() => {
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
 
+//atproto
+const { user } = useAtproto()
+const showAuthModal = ref(false)
+
+const { data: likesData } = useFetch(() => `/api/likes/${packageName.value}`, {
+  default: () => ({ totalPackageLikes: 0, userHasLiked: false }),
+})
+
+// const { mutate: likePackage } = useLikePackage(subjectRef)
+
+const likeAction = async () => {
+  if (user.value?.handle == null) {
+    showAuthModal.value = true
+  } else {
+    // const result = await likePackage()
+    // if (result?.likes) {
+    //   likesData.value = result.likes
+    // }
+  }
+}
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -504,6 +525,26 @@ defineOgImageComponent('Package', {
               </div>
             </template>
           </ClientOnly>
+
+          <button
+            @click="likeAction"
+            type="button"
+            class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
+            :title="$t('package.links.like')"
+          >
+            <span
+              :class="
+                likesData?.userHasLiked
+                  ? 'i-lucide-heart-minus text-red-500'
+                  : 'i-lucide-heart-plus'
+              "
+              class="w-4 h-4"
+              aria-hidden="true"
+            />
+            <span>{{
+              formatCompactNumber(likesData?.totalPackageLikes ?? 0, { decimals: 1 })
+            }}</span>
+          </button>
 
           <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
           <nav
