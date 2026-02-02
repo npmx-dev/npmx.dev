@@ -6,14 +6,15 @@ import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { UNSET_NUXT_SESSION_PASSWORD } from '#shared/utils/constants'
 import { OAuthMetadataSchema } from '#shared/schemas/oauth'
+// @ts-ignore: virtual file from oauth module
+import { clientUri } from '#oauth/config'
 // TODO: limit scope as features gets added. atproto just allows login so no scary login screen till we have scopes
 export const scope = 'atproto'
 
 export function getOauthClientMetadata() {
   const dev = import.meta.dev
 
-  // on dev, match in nuxt.config.ts devServer: { host: "127.0.0.1" }
-  const client_uri = dev ? `http://127.0.0.1:3000` : 'https://npmx.dev'
+  const client_uri = clientUri
   const redirect_uri = `${client_uri}/api/auth/atproto`
 
   const client_id = dev
