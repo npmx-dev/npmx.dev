@@ -2,11 +2,7 @@
 import type { ProvenanceDetails } from '#shared/types'
 
 defineProps<{
-  /** Parsed provenance details from the API */
   details: ProvenanceDetails
-  /** Optional: link "View on npm" to package provenance page */
-  packageName?: string
-  version?: string
 }>()
 </script>
 
@@ -101,16 +97,5 @@ defineProps<{
         </div>
       </dl>
     </div>
-
-    <p v-if="packageName && version" class="mt-4 m-0">
-      <a
-        :href="`https://www.npmjs.com/package/${packageName}/v/${version}#provenance`"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="link-subtle font-mono text-sm"
-      >
-        {{ $t('common.view_on_npm') }}
-      </a>
-    </p>
   </section>
 </template>
