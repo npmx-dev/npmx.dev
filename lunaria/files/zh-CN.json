@@ -878,11 +878,11 @@
           "description": "包括所有依赖项的总安装大小"
         },
         "dependencies": {
-          "label": "# 直接依赖项",
+          "label": "直接依赖项",
           "description": "直接依赖项数量"
         },
         "totalDependencies": {
-          "label": "# 总依赖项",
+          "label": "总依赖项",
           "description": "包括所有依赖项的总依赖项数量"
         },
         "downloads": {

@@ -878,11 +878,11 @@
           "description": "Total install size including all dependencies"
         },
         "dependencies": {
-          "label": "# Direct Deps",
+          "label": "Direct Deps",
           "description": "Number of direct dependencies"
         },
         "totalDependencies": {
-          "label": "# Total Deps",
+          "label": "Total Deps",
           "description": "Total number of dependencies including transitive"
         },
         "downloads": {
