@@ -122,14 +122,14 @@
     "verified_provenance": "已验证的来源",
     "view_permalink": "查看这个版本的链接",
     "navigation": "包导航",
-    "copy_name": "复制包名",
+    "copy_name": "拷贝包名",
     "deprecation": {
       "package": "这个包已经被弃用。",
       "version": "这个版本已经被弃用。",
       "no_reason": "没有提供原因"
     },
     "replacement": {
-      "title": "您可能不需要这个依赖。",
+      "title": "你可能不需要这个依赖。",
       "native": "该功能自 Node.js {nodeVersion} 起已被内置，可直接使用 {replacement} 替代。",
       "simple": "社区标记此包为冗余，建议替换为：{replacement}。",
       "documented": "社区标记此包存在性能更优的替代方案",
@@ -149,7 +149,7 @@
       "view_dependency_graph": "查看依赖图",
       "inspect_dependency_tree": "查看依赖树",
       "size_tooltip": {
-        "unpacked": "未打包大小 (当前包)：{size}",
+        "unpacked": "未打包大小（当前包)：{size}",
         "total": "总未打包大小（包括 {count} 个依赖项）：{size}"
       }
     },
@@ -250,7 +250,7 @@
     "maintainers": {
       "title": "维护者",
       "list_label": "包维护者",
-      "you": "（您）",
+      "you": "（你）",
       "via": "来自 {teams}",
       "remove_owner": "移除 {name} 为拥有者",
       "username_to_add": "要添加为拥有者的用户名",
@@ -377,8 +377,8 @@
       "dependencies": "依赖"
     },
     "sort": {
-      "downloads": "最多下载的",
-      "published": "最近发布的",
+      "downloads": "最多下载",
+      "published": "最近发布",
       "name_asc": "名称（A-Z）",
       "name_desc": "名称（Z-A）"
     }
@@ -401,9 +401,9 @@
       "contributor_link": "贡献指南",
       "connected": "已连接",
       "connected_as_user": "已连接为 {'@'}{user}",
-      "connected_hint": "现在您可以通过 Web UI 管理包和组织。",
+      "connected_hint": "现在你可以通过 Web UI 管理包和组织。",
       "disconnect": "断开连接",
-      "run_hint": "在您的机器上运行连接器以启用管理功能。",
+      "run_hint": "在你的机器上运行连接器以启用管理功能。",
       "copy_command": "拷贝命令",
       "copied": "已拷贝",
       "paste_token": "再在下方粘贴令牌以连接：",
@@ -412,7 +412,7 @@
       "advanced": "高级选项",
       "port_label": "端口",
       "warning": "警告",
-      "warning_text": "这将允许 npmx 访问您的 npm CLI。请仅连接您信任的站点。",
+      "warning_text": "这将允许 npmx 访问你的 npm CLI。请仅连接你信任的站点。",
       "connect": "连接",
       "connecting": "连接中…"
     }
@@ -428,7 +428,7 @@
       "otp_required": "需要 OTP",
       "otp_prompt": "输入 OTP 继续",
       "otp_placeholder": "输入 OTP 代码…",
-      "otp_label": "一次性密码",
+      "otp_label": "一次性代码",
       "retry_otp": "使用 OTP 重试",
       "retrying": "重试中…",
       "approve_operation": "批准操作",
@@ -531,14 +531,14 @@
     "orgs_page": {
       "title": "组织",
       "back_to_profile": "返回个人资料",
-      "connect_required": "连接本地 CLI 以查看您的组织。",
+      "connect_required": "连接本地 CLI 以查看你的组织。",
       "connect_hint_prefix": "运行",
       "connect_hint_suffix": "以开始。",
-      "own_orgs_only": "您只能查看自己的组织。",
-      "view_your_orgs": "查看您的组织",
+      "own_orgs_only": "你只能查看自己的组织。",
+      "view_your_orgs": "查看你的组织",
       "loading": "加载组织中…",
       "empty": "未找到组织。",
-      "empty_hint": "已根据您限定范围的包名中检测到组织。",
+      "empty_hint": "已根据你限定范围的包名中检测到组织。",
       "count": "{count} 个组织",
       "packages_count": "{count} 个包"
     }
@@ -548,7 +548,7 @@
       "title": "声明包名",
       "success": "包已声明！",
       "success_detail": "{name}{'@'}0.0.0 已发布到 npm。",
-      "success_hint": "您现在可以使用 npm publish 发布新版本到这个包。",
+      "success_hint": "你现在可以使用 npm publish 发布新版本到这个包。",
       "view_package": "查看包",
       "invalid_name": "无效的包名：",
       "available": "这个名称可用！",
@@ -556,7 +556,7 @@
       "similar_warning": "存在相似的包 — npm 可能会拒绝这个名称：",
       "related": "相关包：",
       "scope_warning_title": "考虑使用一个限定范围的包",
-      "scope_warning_text": "未限定范围的包名是共享资源。当您计划发布并持续维护一个包时，方可声明此类名称。对于个人或组织项目，请使用限定范围的包名，如 {'@'}{username}/{name}。",
+      "scope_warning_text": "未限定范围的包名是共享资源。当你计划发布并持续维护一个包时，方可声明此类名称。对于个人或组织项目，请使用限定范围的包名，如 {'@'}{username}/{name}。",
       "connect_required": "连接到本地连接器以声明这个包名。",
       "connect_button": "连接到连接器",
       "publish_hint": "这将发布一个最小的占位符包。",
@@ -633,6 +633,13 @@
     "more_keywords": "+ {count} 个更多",
     "clear_all": "清除所有",
     "remove_filter": "移除 {label} 筛选",
+    "chips": {
+      "search": "搜索",
+      "downloads": "下载量",
+      "keyword": "关键词",
+      "security": "安全性",
+      "updated": "最近更新"
+    },
     "download_range": {
       "any": "任意",
       "lt100": "< 100",
@@ -663,7 +670,7 @@
       "downloads_day": "每日下载量",
       "downloads_month": "每月下载量",
       "downloads_year": "每年下载量",
-      "published": "最近发布的",
+      "published": "最近发布",
       "name": "名称",
       "quality": "质量评分",
       "popularity": "受欢迎度",
@@ -674,12 +681,12 @@
       "title": "列",
       "show": "展示列",
       "reset": "重置为默认值",
-      "coming_soon": "敬请期待",
+      "coming_soon": "即将推出",
       "name": "名称",
       "version": "版本",
       "description": "描述",
       "downloads": "每周下载量",
-      "published": "最近发布的",
+      "published": "最近发布",
       "maintainers": "维护者",
       "keywords": "关键词",
       "quality_score": "质量评分",
@@ -726,7 +733,7 @@
       "better_ux_dx": "更好的用户体验和开发者体验",
       "admin_ui": "管理界面",
       "description": "npmx 为 npm 仓库及其工具链提供{betterUxDx}。我们提供快速、现代化的界面来探索 npm 包，支持深色模式、键盘导航、代码浏览以及与 {jsr} 等替代仓库连接等功能。",
-      "admin_description": "我们也致力于提供更好的{adminUi}，用于管理您的 npm 包、团队和组织⸺一切都在浏览器中完成，并由您本地的 npm CLI 驱动。"
+      "admin_description": "我们也致力于提供更好的{adminUi}，用于管理你的 npm 包、团队和组织⸺一切都在浏览器中完成，并由你本地的 npm CLI 驱动。"
     },
     "what_we_are_not": {
       "title": "我们不是什么",
@@ -803,7 +810,7 @@
     "github": "GitHub",
     "packages": "包",
     "packages_dropdown": {
-      "title": "您的包",
+      "title": "你的包",
       "loading": "加载中…",
       "error": "加载包失败",
       "empty": "未找到包",
@@ -811,7 +818,7 @@
     },
     "orgs": "组织",
     "orgs_dropdown": {
-      "title": "您的组织",
+      "title": "你的组织",
       "loading": "加载中…",
       "error": "加载组织失败",
       "empty": "未找到组织",
@@ -821,13 +828,13 @@
   "compare": {
     "packages": {
       "title": "比较包",
-      "tagline": "并排比较 npm 包，帮助您选择合适的包。",
+      "tagline": "并排比较 npm 包，帮助你选择合适的包。",
       "meta_title": "比较 {packages} - npmx",
       "meta_title_empty": "比较包 - npmx",
       "meta_description": "并排比较 {packages}",
-      "meta_description_empty": "并排比较 npm 包，帮助您选择合适的包。",
+      "meta_description_empty": "并排比较 npm 包，帮助你选择合适的包。",
       "section_packages": "包",
-      "section_facets": "方面",
+      "section_facets": "维度",
       "section_comparison": "比较",
       "loading": "正在加载包数据…",
       "error": "加载包数据失败。请重试。",
@@ -836,30 +843,90 @@
     },
     "selector": {
       "search_label": "搜索包",
-      "search_first": "搜索包...",
-      "search_add": "添加另一个包...",
-      "searching": "搜索中...",
+      "search_first": "搜索包…",
+      "search_add": "添加另一个包…",
+      "searching": "搜索中…",
       "remove_package": "移除 {package}",
-      "packages_selected": "{count}/{max} 个包已选择。",
+      "packages_selected": "已选择 {count}/{max} 个包。",
       "add_hint": "至少添加 2 个包以进行比较。",
-      "loading_versions": "正在加载版本...",
+      "loading_versions": "正在加载版本…",
       "select_version": "选择版本"
     },
     "facets": {
-      "group_label": "比较方面",
-      "all": "全部",
-      "none": "无",
+      "group_label": "比较维度",
+      "all": "全选",
+      "none": "取消全选",
       "coming_soon": "即将推出",
-      "select_all": "选择所有方面",
-      "deselect_all": "取消选择所有方面",
-      "select_category": "选择所有 {category} 方面",
-      "deselect_category": "取消选择所有 {category} 方面",
-      "binary_only_tooltip": "此包仅暴露二进制文件且无导出的指标",
+      "select_all": "选择所有维度",
+      "deselect_all": "取消选择所有维度",
+      "select_category": "选择所有{category}维度",
+      "deselect_category": "取消选择所有{category}维度",
+      "binary_only_tooltip": "此包仅暴露二进制文件且无导出",
       "categories": {
         "performance": "性能",
         "health": "健康",
         "compatibility": "兼容性",
         "security": "安全与合规"
+      },
+      "items": {
+        "packageSize": {
+          "label": "包大小",
+          "description": "包的大小（未压缩）"
+        },
+        "installSize": {
+          "label": "安装大小",
+          "description": "包括所有依赖项的总安装大小"
+        },
+        "dependencies": {
+          "label": "# 直接依赖项",
+          "description": "直接依赖项数量"
+        },
+        "totalDependencies": {
+          "label": "# 总依赖项",
+          "description": "包括所有依赖项的总依赖项数量"
+        },
+        "downloads": {
+          "label": "每周下载量",
+          "description": "每周下载次数"
+        },
+        "lastUpdated": {
+          "label": "发布日期",
+          "description": "此版本的发布日期"
+        },
+        "deprecated": {
+          "label": "已弃用？",
+          "description": "包是否已弃用"
+        },
+        "engines": {
+          "label": "引擎",
+          "description": "Node.js 版本要求"
+        },
+        "types": {
+          "label": "类型",
+          "description": "TypeScript 类型定义"
+        },
+        "moduleFormat": {
+          "label": "模块格式",
+          "description": "支持 ESM/CJS"
+        },
+        "license": {
+          "label": "许可证",
+          "description": "包许可证"
+        },
+        "vulnerabilities": {
+          "label": "漏洞",
+          "description": "已知安全漏洞"
+        }
+      },
+      "values": {
+        "any": "任意",
+        "none": "无",
+        "unknown": "未知",
+        "deprecated": "已弃用",
+        "not_deprecated": "未弃用",
+        "types_included": "包含类型",
+        "types_none": "无",
+        "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）"
       }
     }
   }
