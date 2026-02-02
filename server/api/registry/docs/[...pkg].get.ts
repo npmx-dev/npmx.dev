@@ -3,7 +3,7 @@ import { assertValidPackageName } from '#shared/utils/npm'
 import { parsePackageParam } from '#shared/utils/parse-package-param'
 import { generateDocsWithDeno } from '#server/utils/docs'
 
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     const pkgParam = getRouterParam(event, 'pkg')
     if (!pkgParam) {
@@ -62,6 +62,7 @@ export default defineCachedEventHandler(
   {
     maxAge: 60 * 60, // 1 hour cache
     swr: true,
+    bypassKey: 'docs',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `docs:v2:${pkg}`

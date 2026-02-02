@@ -93,7 +93,7 @@ async function fetchFileContent(
  * - /api/registry/file/packageName/v/1.2.3/path/to/file.ts
  * - /api/registry/file/@scope/packageName/v/1.2.3/path/to/file.ts
  */
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     // Parse: [pkg, 'v', version, ...filePath] or [@scope, pkg, 'v', version, ...filePath]
     const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
@@ -200,6 +200,7 @@ export default defineCachedEventHandler(
   {
     // File content for a specific version never changes - cache permanently
     maxAge: CACHE_MAX_AGE_ONE_YEAR, // 1 year
+    bypassKey: 'file',
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
       return `file:v${CACHE_VERSION}:${pkg.replace(/\/+$/, '').trim()}`

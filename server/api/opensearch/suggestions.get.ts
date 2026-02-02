@@ -2,7 +2,7 @@ import * as v from 'valibot'
 import { SearchQuerySchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_MINUTE, NPM_REGISTRY } from '#shared/utils/constants'
 
-export default defineCachedEventHandler(
+export default defineBypassableCachedEventHandler(
   async event => {
     const query = getQuery(event)
 
@@ -28,6 +28,7 @@ export default defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_MINUTE,
     swr: true,
+    bypassKey: 'suggestions',
     getKey: event => {
       const query = getQuery(event)
       const q = String(query.q || '').trim()
