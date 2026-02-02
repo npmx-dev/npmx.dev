@@ -129,7 +129,6 @@
       "deps": "Asılılıqlar",
       "install_size": "Quraşdırma Həcmi",
       "vulns": "Zəifliklər",
-      "updated": "Yenilənib",
       "view_dependency_graph": "Asılılıq qrafikini göstər",
       "inspect_dependency_tree": "Asılılıq ağacını yoxla",
       "size_tooltip": {
@@ -176,7 +175,6 @@
     "compatibility": "Uyğunluq",
     "card": {
       "publisher": "Naşir",
-      "updated": "Yenilənib",
       "weekly_downloads": "Həftəlik endirmələr",
       "keywords": "Açar sözlər",
       "license": "Lisenziya"
@@ -330,7 +328,6 @@
       "weekly": "Həftəlik",
       "size": "Həcm",
       "deps": "Asılılıqlar",
-      "updated": "Yenilənib",
       "get_started": "Başla",
       "readme": "Readme",
       "maintainers": "Dəstəkçilər",
@@ -340,7 +337,6 @@
     },
     "sort": {
       "downloads": "Ən çox endirilən",
-      "updated": "Son yenilənən",
       "name_asc": "Ad (A-Z)",
       "name_desc": "Ad (Z-A)"
     }
@@ -620,7 +616,6 @@
       "downloads_day": "Endirmələr/gün",
       "downloads_month": "Endirmələr/ay",
       "downloads_year": "Endirmələr/il",
-      "updated": "Son Yenilənmə",
       "name": "Ad",
       "quality": "Keyfiyyət",
       "popularity": "Populyarlıq",
@@ -636,7 +631,6 @@
       "version": "Versiya",
       "description": "Təsvir",
       "downloads": "Endirmələr/həftə",
-      "updated": "Son Yenilənmə",
       "maintainers": "Dəstəkçilər",
       "keywords": "Açar sözlər",
       "quality_score": "Keyfiyyət xalı",

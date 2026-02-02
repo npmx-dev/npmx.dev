@@ -1,6 +1,19 @@
-import type { ComparisonFacet } from '#shared/types'
-import { ALL_FACETS, DEFAULT_FACETS, FACET_INFO } from '#shared/types/comparison'
+import type { ComparisonFacet, FacetInfo } from '#shared/types'
+import {
+  ALL_FACETS,
+  CATEGORY_ORDER,
+  DEFAULT_FACETS,
+  FACET_INFO,
+  FACETS_BY_CATEGORY,
+} from '#shared/types/comparison'
 import { useRouteQuery } from '@vueuse/router'
+
+/** Facet info enriched with i18n labels */
+export interface FacetInfoWithLabels extends Omit<FacetInfo, 'id'> {
+  id: ComparisonFacet
+  label: string
+  description: string
+}
 
 /**
  * Composable for managing comparison facet selection with URL sync.
@@ -8,11 +21,23 @@ import { useRouteQuery } from '@vueuse/router'
  * @param queryParam - The URL query parameter name to use (default: 'facets')
  */
 export function useFacetSelection(queryParam = 'facets') {
+  const { t } = useI18n()
+
+  // Helper to build facet info with i18n labels
+  function buildFacetInfo(facet: ComparisonFacet): FacetInfoWithLabels {
+    return {
+      id: facet,
+      ...FACET_INFO[facet],
+      label: t(`compare.facets.items.${facet}.label`),
+      description: t(`compare.facets.items.${facet}.description`),
+    }
+  }
+
   // Sync with URL query param (stable ref - doesn't change on other query changes)
   const facetsParam = useRouteQuery<string>(queryParam, '', { mode: 'replace' })
 
-  // Parse facets from URL or use defaults
-  const selectedFacets = computed<ComparisonFacet[]>({
+  // Parse facet IDs from URL or use defaults
+  const selectedFacetIds = computed<ComparisonFacet[]>({
     get() {
       if (!facetsParam.value) {
         return DEFAULT_FACETS
@@ -40,21 +65,26 @@ export function useFacetSelection(queryParam = 'facets') {
     },
   })
 
+  // Selected facets with full info and i18n labels
+  const selectedFacets = computed<FacetInfoWithLabels[]>(() =>
+    selectedFacetIds.value.map(buildFacetInfo),
+  )
+
   // Check if a facet is selected
   function isFacetSelected(facet: ComparisonFacet): boolean {
-    return selectedFacets.value.includes(facet)
+    return selectedFacetIds.value.includes(facet)
   }
 
   // Toggle a single facet
   function toggleFacet(facet: ComparisonFacet): void {
-    const current = selectedFacets.value
+    const current = selectedFacetIds.value
     if (current.includes(facet)) {
       // Don't allow deselecting all facets
       if (current.length > 1) {
-        selectedFacets.value = current.filter(f => f !== facet)
+        selectedFacetIds.value = current.filter(f => f !== facet)
       }
     } else {
-      selectedFacets.value = [...current, facet]
+      selectedFacetIds.value = [...current, facet]
     }
   }
 
@@ -69,36 +99,50 @@ export function useFacetSelection(queryParam = 'facets') {
   // Select all facets in a category
   function selectCategory(category: string): void {
     const categoryFacets = getFacetsInCategory(category)
-    const current = selectedFacets.value
+    const current = selectedFacetIds.value
     const newFacets = [...new Set([...current, ...categoryFacets])]
-    selectedFacets.value = newFacets
+    selectedFacetIds.value = newFacets
   }
 
   // Deselect all facets in a category
   function deselectCategory(category: string): void {
     const categoryFacets = getFacetsInCategory(category)
-    const remaining = selectedFacets.value.filter(f => !categoryFacets.includes(f))
+    const remaining = selectedFacetIds.value.filter(f => !categoryFacets.includes(f))
     // Don't allow deselecting all facets
     if (remaining.length > 0) {
-      selectedFacets.value = remaining
+      selectedFacetIds.value = remaining
     }
   }
 
   // Select all facets globally
   function selectAll(): void {
-    selectedFacets.value = DEFAULT_FACETS
+    selectedFacetIds.value = DEFAULT_FACETS
   }
 
   // Deselect all facets globally (keeps first facet to ensure at least one)
   function deselectAll(): void {
-    selectedFacets.value = [DEFAULT_FACETS[0] as ComparisonFacet]
+    selectedFacetIds.value = [DEFAULT_FACETS[0] as ComparisonFacet]
   }
 
   // Check if all facets are selected
-  const isAllSelected = computed(() => selectedFacets.value.length === DEFAULT_FACETS.length)
+  const isAllSelected = computed(() => selectedFacetIds.value.length === DEFAULT_FACETS.length)
 
   // Check if only one facet is selected (minimum)
-  const isNoneSelected = computed(() => selectedFacets.value.length === 1)
+  const isNoneSelected = computed(() => selectedFacetIds.value.length === 1)
+
+  // Get translated category name
+  function getCategoryLabel(category: FacetInfo['category']): string {
+    return t(`compare.facets.categories.${category}`)
+  }
+
+  // All facets with their info and i18n labels, grouped by category
+  const facetsByCategory = computed(() => {
+    const result: Record<string, FacetInfoWithLabels[]> = {}
+    for (const category of CATEGORY_ORDER) {
+      result[category] = FACETS_BY_CATEGORY[category].map(buildFacetInfo)
+    }
+    return result
+  })
 
   return {
     selectedFacets,
@@ -111,6 +155,10 @@ export function useFacetSelection(queryParam = 'facets') {
     isAllSelected,
     isNoneSelected,
     allFacets: ALL_FACETS,
+    // Facet info with i18n
+    getCategoryLabel,
+    facetsByCategory,
+    categoryOrder: CATEGORY_ORDER,
   }
 }
 

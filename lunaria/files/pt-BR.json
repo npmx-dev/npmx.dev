@@ -142,7 +142,6 @@
       "deps": "Deps",
       "install_size": "Tamanho de Instalação",
       "vulns": "Vulnerabilidades",
-      "updated": "Atualizado",
       "skills": "Habilidades",
       "view_dependency_graph": "Ver gráfico de dependências",
       "inspect_dependency_tree": "Inspecionar árvore de dependências",
@@ -206,7 +205,6 @@
     "compatibility": "Compatibilidade",
     "card": {
       "publisher": "Publicador",
-      "updated": "Atualizado",
       "weekly_downloads": "Downloads semanais",
       "keywords": "Palavras-chave",
       "license": "Licença"
@@ -366,7 +364,6 @@
       "weekly": "Semanal",
       "size": "Tamanho",
       "deps": "Deps",
-      "updated": "Atualizado",
       "get_started": "Comece agora",
       "readme": "Readme",
       "maintainers": "Mantenedores",
@@ -376,7 +373,6 @@
     },
     "sort": {
       "downloads": "Mais baixados",
-      "updated": "Recentemente atualizado",
       "name_asc": "Nome (A-Z)",
       "name_desc": "Nome (Z-A)"
     }
@@ -661,7 +657,6 @@
       "downloads_day": "Downloads/dia",
       "downloads_month": "Downloads/mês",
       "downloads_year": "Downloads/ano",
-      "updated": "Última Atualização",
       "name": "Nome",
       "quality": "Qualidade",
       "popularity": "Popularidade",
@@ -677,7 +672,6 @@
       "version": "Versão",
       "description": "Descrição",
       "downloads": "Downloads/sem",
-      "updated": "Última Atualização",
       "maintainers": "Mantenedores",
       "keywords": "Palavras-chave",
       "quality_score": "Pontuação de qualidade",

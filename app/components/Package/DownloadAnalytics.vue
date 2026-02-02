@@ -20,26 +20,9 @@ const rootEl = shallowRef<HTMLElement | null>(null)
 
 const { width } = useElementSize(rootEl)
 
-const chartKey = ref(0)
-
-let chartRemountTimeoutId: ReturnType<typeof setTimeout> | null = null
-
 onMounted(() => {
   rootEl.value = document.documentElement
   resolvedMode.value = colorMode.value === 'dark' ? 'dark' : 'light'
-
-  // If the chart is painted too early, built-in auto-sizing does not adapt to the final container size
-  chartRemountTimeoutId = setTimeout(() => {
-    chartKey.value += 1
-    chartRemountTimeoutId = null
-  }, 1)
-})
-
-onBeforeUnmount(() => {
-  if (chartRemountTimeoutId !== null) {
-    clearTimeout(chartRemountTimeoutId)
-    chartRemountTimeoutId = null
-  }
 })
 
 const { colors } = useCssVariables(
@@ -718,12 +701,7 @@ const config = computed(() => {
     </div>
 
     <ClientOnly v-if="inModal && chartData.dataset">
-      <VueUiXy
-        :dataset="chartData.dataset"
-        :config="config"
-        class="[direction:ltr]"
-        :key="chartKey"
-      >
+      <VueUiXy :dataset="chartData.dataset" :config="config" class="[direction:ltr]">
         <template #menuIcon="{ isOpen }">
           <span v-if="isOpen" class="i-carbon:close w-6 h-6" aria-hidden="true" />
           <span v-else class="i-carbon:overflow-menu-vertical w-6 h-6" aria-hidden="true" />
@@ -836,8 +814,10 @@ const config = computed(() => {
 }
 
 /* Override default placement of the refresh button to have it to the minimap's side */
-#download-analytics .vue-data-ui-refresh-button {
-  top: -0.6rem !important;
-  left: calc(100% + 2rem) !important;
+@media screen and (min-width: 767px) {
+  #download-analytics .vue-data-ui-refresh-button {
+    top: -0.6rem !important;
+    left: calc(100% + 2rem) !important;
+  }
 }
 </style>

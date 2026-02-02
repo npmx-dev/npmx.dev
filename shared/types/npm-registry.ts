@@ -47,7 +47,19 @@ export interface SlimPackument {
   'name': string
   'description'?: string
   'dist-tags': { latest?: string } & Record<string, string>
-  /** Only includes time for dist-tag versions + modified/created */
+  /**
+   * Timestamps for package versions.
+   *
+   * **IMPORTANT**: Use `time[version]` to get the publish date of a specific version.
+   *
+   * **DO NOT use `time.modified`** - it can be updated by metadata changes (e.g., maintainer
+   * additions/removals) without any code being published, making it misleading for users
+   * trying to assess package maintenance activity.
+   *
+   * - `time[version]` - When that specific version was published (use this!)
+   * - `time.created` - When the package was first created
+   * - `time.modified` - Last metadata change (misleading - avoid using)
+   */
   'time': { modified?: string; created?: string } & Record<string, string>
   'maintainers'?: NpmPerson[]
   'author'?: NpmPerson

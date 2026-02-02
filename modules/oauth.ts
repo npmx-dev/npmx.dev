@@ -1,4 +1,4 @@
-import { defineNuxtModule, useNuxt } from 'nuxt/kit'
+import { defineNuxtModule, useNuxt, addServerTemplate } from 'nuxt/kit'
 import { join } from 'node:path'
 import { appendFileSync, existsSync, readFileSync } from 'node:fs'
 import { randomUUID } from 'node:crypto'
@@ -9,6 +9,26 @@ export default defineNuxtModule({
   },
   setup() {
     const nuxt = useNuxt()
+
+    const env = process.env.NUXT_ENV_VERCEL_ENV
+    const previewUrl = process.env.NUXT_ENV_VERCEL_URL
+    const prodUrl = process.env.NUXT_ENV_VERCEL_PROJECT_PRODUCTION_URL
+
+    let clientUri: string
+    if (env === 'preview' && previewUrl) {
+      clientUri = `https://${previewUrl}`
+    } else if (env === 'production' && prodUrl) {
+      clientUri = `https://${prodUrl}`
+    } else {
+      clientUri = 'http://127.0.0.1:3000'
+    }
+
+    // bake it into a virtual file
+    addServerTemplate({
+      filename: '#oauth/config',
+      getContents: () => `export const clientUri = ${JSON.stringify(clientUri)};`,
+    })
+
     if (nuxt.options._prepare || process.env.NUXT_SESSION_PASSWORD) {
       return
     }

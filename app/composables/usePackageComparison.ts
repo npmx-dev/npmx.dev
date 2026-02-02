@@ -21,6 +21,12 @@ export interface PackageComparisonData {
   }
   metadata?: {
     license?: string
+    /**
+     * Publish date of this version (ISO 8601 date-time string).
+     * Uses `time[version]` from the registry, NOT `time.modified`.
+     * For example, if the package was most recently published 3 years ago
+     * but a maintainer was removed last week, this would show the '3 years ago' time.
+     */
     lastUpdated?: string
     engines?: { node?: string; npm?: string }
     deprecated?: string
@@ -133,7 +139,9 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               },
               metadata: {
                 license: pkgData.license,
-                lastUpdated: pkgData.time?.modified,
+                // Use version-specific publish time, NOT time.modified (which can be
+                // updated by metadata changes like maintainer additions)
+                lastUpdated: pkgData.time?.[latestVersion],
                 engines: analysis?.engines,
                 deprecated: versionData?.deprecated,
               },
@@ -236,7 +244,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 function computeFacetValue(
   facet: ComparisonFacet,
   data: PackageComparisonData,
-  t: (key: string) => string,
+  t: (key: string, params?: Record<string, unknown>) => string,
 ): FacetValue | null {
   switch (facet) {
     case 'downloads':
@@ -286,13 +294,19 @@ function computeFacetValue(
       return {
         raw: types.kind,
         display:
-          types.kind === 'included' ? 'Included' : types.kind === '@types' ? '@types' : 'None',
+          types.kind === 'included'
+            ? t('compare.facets.values.types_included')
+            : types.kind === '@types'
+              ? '@types'
+              : t('compare.facets.values.types_none'),
         status: types.kind === 'included' ? 'good' : types.kind === '@types' ? 'info' : 'bad',
       }
 
     case 'engines':
       const engines = data.metadata?.engines
-      if (!engines?.node) return { raw: null, display: 'Any', status: 'neutral' }
+      if (!engines?.node) {
+        return { raw: null, display: t('compare.facets.values.any'), status: 'neutral' }
+      }
       return {
         raw: engines.node,
         display: `Node ${engines.node}`,
@@ -305,7 +319,14 @@ function computeFacetValue(
       const sev = data.vulnerabilities.severity
       return {
         raw: count,
-        display: count === 0 ? 'None' : `${count} (${sev.critical}C/${sev.high}H)`,
+        display:
+          count === 0
+            ? t('compare.facets.values.none')
+            : t('compare.facets.values.vulnerabilities_summary', {
+                count,
+                critical: sev.critical,
+                high: sev.high,
+              }),
         status: count === 0 ? 'good' : sev.critical > 0 || sev.high > 0 ? 'bad' : 'warning',
       }
 
@@ -321,7 +342,9 @@ function computeFacetValue(
 
     case 'license':
       const license = data.metadata?.license
-      if (!license) return { raw: null, display: 'Unknown', status: 'warning' }
+      if (!license) {
+        return { raw: null, display: t('compare.facets.values.unknown'), status: 'warning' }
+      }
       return {
         raw: license,
         display: license,
@@ -341,7 +364,9 @@ function computeFacetValue(
       const isDeprecated = !!data.metadata?.deprecated
       return {
         raw: isDeprecated,
-        display: isDeprecated ? 'Deprecated' : 'No',
+        display: isDeprecated
+          ? t('compare.facets.values.deprecated')
+          : t('compare.facets.values.not_deprecated'),
         status: isDeprecated ? 'bad' : 'good',
       }
 

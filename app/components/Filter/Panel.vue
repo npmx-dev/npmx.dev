@@ -8,8 +8,8 @@ import type {
 } from '#shared/types/preferences'
 import {
   DOWNLOAD_RANGES,
-  SEARCH_SCOPE_OPTIONS,
-  SECURITY_FILTER_OPTIONS,
+  SEARCH_SCOPE_VALUES,
+  SECURITY_FILTER_VALUES,
   UPDATED_WITHIN_OPTIONS,
 } from '#shared/types/preferences'
 
@@ -205,20 +205,20 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               :aria-label="$t('filters.search_scope')"
             >
               <button
-                v-for="option in SEARCH_SCOPE_OPTIONS"
-                :key="option.value"
+                v-for="scope in SEARCH_SCOPE_VALUES"
+                :key="scope"
                 type="button"
                 class="px-2 py-0.5 text-xs font-mono rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
                 :class="
-                  filters.searchScope === option.value
+                  filters.searchScope === scope
                     ? 'bg-bg-muted text-fg'
                     : 'text-fg-muted hover:text-fg'
                 "
-                :aria-pressed="filters.searchScope === option.value"
-                :title="$t(getScopeDescriptionKey(option.value))"
-                @click="emit('update:searchScope', option.value)"
+                :aria-pressed="filters.searchScope === scope"
+                :title="$t(getScopeDescriptionKey(scope))"
+                @click="emit('update:searchScope', scope)"
               >
-                {{ $t(getScopeLabelKey(option.value)) }}
+                {{ $t(getScopeLabelKey(scope)) }}
               </button>
             </div>
           </div>
@@ -228,7 +228,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             :value="filters.text"
             :placeholder="searchPlaceholder"
             autocomplete="off"
-            class="input-base"
+            class="w-full bg-bg-subtle border border-border rounded-md px-4 py-3 font-mono text-sm text-fg placeholder:text-fg-subtle transition-all duration-200 focus:(border-fg/40 outline-none ring-1 ring-fg/10)"
             @input="handleTextInput"
           />
         </div>
@@ -243,22 +243,17 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             role="radiogroup"
             :aria-label="$t('filters.weekly_downloads')"
           >
-            <button
+            <TagClickable
               v-for="range in DOWNLOAD_RANGES"
               :key="range.value"
               type="button"
               role="radio"
               :aria-checked="filters.downloadRange === range.value"
-              class="tag transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="
-                filters.downloadRange === range.value
-                  ? 'bg-fg text-bg border-fg hover:text-bg/50'
-                  : ''
-              "
+              :status="filters.downloadRange === range.value ? 'active' : 'default'"
               @click="emit('update:downloadRange', range.value)"
             >
               {{ $t(getDownloadRangeLabelKey(range.value)) }}
-            </button>
+            </TagClickable>
           </div>
         </fieldset>
 
@@ -272,22 +267,17 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             role="radiogroup"
             :aria-label="$t('filters.updated_within')"
           >
-            <button
+            <TagClickable
               v-for="option in UPDATED_WITHIN_OPTIONS"
               :key="option.value"
               type="button"
               role="radio"
               :aria-checked="filters.updatedWithin === option.value"
-              class="tag transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="
-                filters.updatedWithin === option.value
-                  ? 'bg-fg text-bg border-fg hover:text-bg/70'
-                  : ''
-              "
+              :status="filters.updatedWithin === option.value ? 'active' : 'default'"
               @click="emit('update:updatedWithin', option.value)"
             >
               {{ $t(getUpdatedWithinLabelKey(option.value)) }}
-            </button>
+            </TagClickable>
           </div>
         </fieldset>
 
@@ -300,20 +290,17 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             </span>
           </legend>
           <div class="flex flex-wrap gap-2" role="radiogroup" :aria-label="$t('filters.security')">
-            <button
-              v-for="option in SECURITY_FILTER_OPTIONS"
-              :key="option.value"
+            <TagClickable
+              v-for="security in SECURITY_FILTER_VALUES"
+              :key="security"
               type="button"
               role="radio"
               disabled
-              :aria-checked="filters.security === option.value"
-              class="tag transition-colors duration-200 opacity-50 cursor-not-allowed focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="
-                filters.security === option.value ? 'bg-fg text-bg border-fg hover:text-bg/70' : ''
-              "
+              :aria-checked="filters.security === security"
+              :status="filters.security === security ? 'active' : 'default'"
             >
-              {{ $t(getSecurityLabelKey(option.value)) }}
-            </button>
+              {{ $t(getSecurityLabelKey(security)) }}
+            </TagClickable>
           </div>
         </fieldset>
 
@@ -323,19 +310,16 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             {{ $t('filters.keywords') }}
           </legend>
           <div class="flex flex-wrap gap-1.5" role="group" :aria-label="$t('filters.keywords')">
-            <button
+            <TagClickable
               v-for="keyword in displayedKeywords"
               :key="keyword"
               type="button"
               :aria-pressed="filters.keywords.includes(keyword)"
-              class="tag text-xs transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="
-                filters.keywords.includes(keyword) ? 'bg-fg text-bg border-fg hover:text-bg/70' : ''
-              "
+              :status="filters.keywords.includes(keyword) ? 'active' : 'default'"
               @click="emit('toggleKeyword', keyword)"
             >
               {{ keyword }}
-            </button>
+            </TagClickable>
             <button
               v-if="hasMoreKeywords"
               type="button"

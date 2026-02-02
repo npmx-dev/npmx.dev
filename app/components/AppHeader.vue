@@ -19,7 +19,7 @@ const showMobileMenu = shallowRef(false)
 const route = useRoute()
 const isMobile = useIsMobile()
 const isSearchExpandedManually = shallowRef(false)
-const searchBoxRef = shallowRef<{ focus: () => void } | null>(null)
+const searchBoxRef = useTemplateRef('searchBoxRef')
 
 // On search page, always show search expanded on mobile
 const isOnHomePage = computed(() => route.name === 'index')
@@ -146,7 +146,7 @@ onKeyStroke(
           @blur="handleSearchBlur"
         />
         <ul
-          v-if="!isSearchExpanded"
+          v-if="!isSearchExpanded && isConnected && npmUser"
           :class="{ hidden: showFullSearch }"
           class="hidden sm:flex items-center gap-4 sm:gap-6 list-none m-0 p-0"
         >

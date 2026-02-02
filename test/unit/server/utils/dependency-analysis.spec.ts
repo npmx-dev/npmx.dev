@@ -76,6 +76,10 @@ describe('dependency-analysis', () => {
     })
 
     it('tracks failed queries when OSV batch API fails', async () => {
+      // Suppress expected console output from error path
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+      vi.spyOn(console, 'error').mockImplementation(() => {})
+
       const mockResolved = new Map([
         [
           'test-pkg@1.0.0',

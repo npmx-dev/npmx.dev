@@ -97,6 +97,14 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               </span>
               <SettingsAccentColorPicker />
             </div>
+
+            <!-- Background themes -->
+            <div class="space-y-3">
+              <span class="block text-sm text-fg font-medium">
+                {{ $t('settings.background_themes') }}
+              </span>
+              <SettingsBgThemePicker />
+            </div>
           </div>
         </section>
 
