@@ -638,7 +638,7 @@ const config = computed(() => {
           </label>
 
           <div
-            class="flex items-center px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
+            class="flex items-center px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
           >
             <select
               id="granularity"
@@ -663,7 +663,7 @@ const config = computed(() => {
               {{ $t('package.downloads.start_date') }}
             </label>
             <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
+              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
             >
               <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
               <input
@@ -683,7 +683,7 @@ const config = computed(() => {
               {{ $t('package.downloads.end_date') }}
             </label>
             <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
+              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
             >
               <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
               <input

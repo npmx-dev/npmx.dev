@@ -75,7 +75,10 @@ const sortedOptionalDependencies = computed(() => {
       id="dependencies"
       :title="$t('package.dependencies.title', { count: sortedDependencies.length })"
     >
-      <ul class="space-y-1 list-none m-0 p-0" :aria-label="$t('package.dependencies.list_label')">
+      <ul
+        class="space-y-1 list-none m-0 p-0 px-1"
+        :aria-label="$t('package.dependencies.list_label')"
+      >
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
@@ -145,7 +148,7 @@ const sortedOptionalDependencies = computed(() => {
       <button
         v-if="sortedDependencies.length > 10 && !depsExpanded"
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"
+        class="my-2 ms-1 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded"
         @click="depsExpanded = true"
       >
         {{

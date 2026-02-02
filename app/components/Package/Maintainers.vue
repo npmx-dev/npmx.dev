@@ -168,11 +168,11 @@ watch(
 </script>
 
 <template>
-  <section id="maintainers" v-if="maintainers?.length" class="scroll-mt-20">
+  <section id="maintainers" v-if="maintainers?.length" class="scroll-mt-20 px-1">
     <h2 id="maintainers-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-3">
       <a
         href="#maintainers"
-        class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+        class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
       >
         {{ $t('package.maintainers.title') }}
         <span

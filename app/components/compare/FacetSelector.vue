@@ -44,7 +44,7 @@ function isCategoryNoneSelected(category: string): boolean {
         </span>
         <button
           type="button"
-          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline"
+          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
           :class="
             isCategoryAllSelected(category)
               ? 'text-fg-muted'
@@ -63,7 +63,7 @@ function isCategoryNoneSelected(category: string): boolean {
         <span class="text-[10px] text-fg-muted/40">/</span>
         <button
           type="button"
-          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline"
+          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
           :class="
             isCategoryNoneSelected(category)
               ? 'text-fg-muted'

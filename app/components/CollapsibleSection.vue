@@ -75,7 +75,7 @@ useHead({
 
 <template>
   <section class="scroll-mt-20" :data-anchor-id="id">
-    <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center justify-between mb-3 px-1">
       <component
         :is="headingLevel"
         :id="headingId"

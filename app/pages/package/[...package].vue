@@ -420,7 +420,7 @@ function handleClick(event: MouseEvent) {
         <div class="flex items-baseline gap-2 sm:gap-3 flex-wrap min-w-0">
           <div class="group relative flex flex-col items-start min-w-0">
             <h1
-              class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
+              class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words group relative"
               :title="pkg.name"
             >
               <NuxtLink
@@ -437,17 +437,21 @@ function handleClick(event: MouseEvent) {
             </h1>
 
             <!-- Floating copy button -->
-            <TooltipAnnounce :text="$t('common.copied')" :isVisible="copiedPkgName">
-              <button
-                type="button"
-                @click="copyPkgName()"
-                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
-                :aria-label="$t('package.copy_name')"
-              >
-                <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
-                {{ $t('package.copy_name') }}
-              </button>
-            </TooltipAnnounce>
+            <button
+              type="button"
+              @click="copyPkgName()"
+              class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
+              :class="
+                copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border'
+              "
+            >
+              <span
+                :class="copiedPkgName ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+                class="w-3.5 h-3.5"
+                aria-hidden="true"
+              />
+              {{ copiedPkgName ? $t('common.copied') : $t('package.copy_name') }}
+            </button>
           </div>
           <span
             v-if="resolvedVersion"
@@ -958,7 +962,7 @@ function handleClick(event: MouseEvent) {
         <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-4">
           <a
             href="#readme"
-            class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+            class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline ms-1 mt-1"
           >
             {{ $t('package.readme.title') }}
             <span
@@ -994,7 +998,7 @@ function handleClick(event: MouseEvent) {
           </ClientOnly>
 
           <!-- Keywords -->
-          <section id="keywords" v-if="displayVersion?.keywords?.length" class="scroll-mt-20">
+          <section id="keywords" v-if="displayVersion?.keywords?.length" class="scroll-mt-20 px-1">
             <h2
               id="keywords-heading"
               class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
@@ -1043,7 +1047,7 @@ function handleClick(event: MouseEvent) {
             v-if="
               displayVersion?.engines && (displayVersion.engines.node || displayVersion.engines.npm)
             "
-            class="scroll-mt-20"
+            class="scroll-mt-20 px-1"
           >
             <h2
               id="compatibility-heading"
