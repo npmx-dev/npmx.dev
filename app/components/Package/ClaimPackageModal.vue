@@ -96,7 +96,7 @@ async function handleClaim() {
   }
 }
 
-const dialogRef = ref<HTMLDialogElement>()
+const dialogRef = useTemplateRef('dialogRef')
 
 function open() {
   // Reset state and check availability each time modal is opened

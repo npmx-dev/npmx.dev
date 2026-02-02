@@ -385,24 +385,6 @@ defineOgImageComponent('Package', {
   stars: () => stars.value ?? 0,
   primaryColor: '#60a5fa',
 })
-
-// We're using only @click because it catches touch events and enter hits
-function handleClick(event: MouseEvent) {
-  const target = (event?.target as HTMLElement | undefined)?.closest('a')
-  if (!target) return
-
-  const href = target.getAttribute('href')
-  if (!href) return
-
-  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
-  if (!match || !match[1]) return
-
-  const route = router.resolve(match[1])
-  if (route) {
-    event.preventDefault()
-    router.push(route)
-  }
-}
 </script>
 
 <template>
@@ -494,10 +476,10 @@ function handleClick(event: MouseEvent) {
               class="self-baseline ms-1 sm:ms-2"
             />
             <template #fallback>
-              <ul class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
-                <li class="skeleton w-8 h-5 rounded" />
-                <li class="skeleton w-12 h-5 rounded" />
-              </ul>
+              <div class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
+                <SkeletonBlock class="w-8 h-5 rounded" />
+                <SkeletonBlock class="w-12 h-5 rounded" />
+              </div>
             </template>
           </ClientOnly>
 
@@ -855,12 +837,23 @@ function handleClick(event: MouseEvent) {
             </template>
           </ClientOnly>
 
-          <div v-if="pkg.time?.modified" class="space-y-1 sm:col-span-2">
-            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-              {{ $t('package.stats.updated') }}
+          <div
+            v-if="resolvedVersion && pkg.time?.[resolvedVersion]"
+            class="space-y-1 sm:col-span-2"
+          >
+            <dt
+              class="text-xs text-fg-subtle uppercase tracking-wider"
+              :title="
+                $t('package.stats.published_tooltip', {
+                  package: pkg.name,
+                  version: resolvedVersion,
+                })
+              "
+            >
+              {{ $t('package.stats.published') }}
             </dt>
             <dd class="font-mono text-sm text-fg">
-              <DateTime :datetime="pkg.time.modified" date-style="medium" />
+              <DateTime :datetime="pkg.time[resolvedVersion]!" date-style="medium" />
             </dd>
           </div>
         </dl>
@@ -870,7 +863,7 @@ function handleClick(event: MouseEvent) {
           <PackageSkillsModal
             :skills="skillsData?.skills ?? []"
             :package-name="pkg.name"
-            :version="displayVersion?.version"
+            :version="resolvedVersion || undefined"
           />
         </ClientOnly>
       </section>
@@ -968,7 +961,7 @@ function handleClick(event: MouseEvent) {
           </a>
         </h2>
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-        <Readme v-if="readmeData?.html" :html="readmeData.html" @click="handleClick" />
+        <Readme v-if="readmeData?.html" :html="readmeData.html" />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
           <a
@@ -1025,7 +1018,7 @@ function handleClick(event: MouseEvent) {
               v-if="skillsData?.skills?.length"
               :skills="skillsData.skills"
               :package-name="pkg.name"
-              :version="displayVersion?.version"
+              :version="resolvedVersion || undefined"
             />
           </ClientOnly>
 
@@ -1149,7 +1142,7 @@ function handleClick(event: MouseEvent) {
       'install install'
       'vulns   vulns'
       'readme  sidebar';
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-rows: auto auto auto auto 1fr;
   }
 }
 

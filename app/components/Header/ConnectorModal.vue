@@ -88,7 +88,7 @@ function handleDisconnect() {
             {{ $t('connector.modal.contributor_badge') }}
           </span>
           <p class="text-sm text-fg-muted">
-            <i18n-t keypath="connector.modal.contributor_notice">
+            <i18n-t keypath="connector.modal.contributor_notice" scope="global">
               <template #link>
                 <a
                   href="https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md#local-connector-cli"

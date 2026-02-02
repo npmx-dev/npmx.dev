@@ -292,7 +292,7 @@ describe('install command generation', () => {
       it.each([
         ['npm', ['npx', 'eslint']],
         ['pnpm', ['pnpm', 'exec', 'eslint']],
-        ['yarn', ['yarn', 'eslint']],
+        ['yarn', ['npx', 'eslint']],
         ['bun', ['bunx', 'eslint']],
         ['deno', ['deno', 'run', 'npm:eslint']],
         ['vlt', ['vlt', 'x', 'eslint']],

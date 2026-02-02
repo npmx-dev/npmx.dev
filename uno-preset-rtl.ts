@@ -26,6 +26,7 @@ function directionSizeRTL(
   const matcher = directionSize(propertyPrefix)
   return (args, context) => {
     const [match, direction, size] = args
+    if (!size) return undefined
     const defaultMap = { l: 'is', r: 'ie' }
     const map = prefixMap || defaultMap
     const replacement = map[direction as 'l' | 'r']
@@ -41,19 +42,21 @@ function handlerRounded(
   [, a = '', s = 'DEFAULT']: string[],
   { theme }: RuleContext<any>,
 ): CSSEntries | undefined {
-  if (a in cornerMap) {
-    if (s === 'full') return cornerMap[a].map(i => [`border${i}-radius`, 'calc(infinity * 1px)'])
+  const corners = cornerMap[a]
+  if (!corners) return undefined
 
-    const _v = theme.radius?.[s] ?? h.bracket.cssvar.global.fraction.rem(s)
-    if (_v != null) {
-      return cornerMap[a].map(i => [`border${i}-radius`, _v])
-    }
+  if (s === 'full') return corners.map(i => [`border${i}-radius`, 'calc(infinity * 1px)'])
+
+  const _v = theme.radius?.[s] ?? h.bracket?.cssvar?.global?.fraction?.rem?.(s)
+  if (_v != null) {
+    return corners.map(i => [`border${i}-radius`, _v])
   }
 }
 
 function handlerBorderSize([, a = '', b = '1']: string[]): CSSEntries | undefined {
-  const v = h.bracket.cssvar.global.px(b)
-  if (a in directionMap && v != null) return directionMap[a].map(i => [`border${i}-width`, v])
+  const v = h.bracket?.cssvar?.global?.px?.(b)
+  const directions = directionMap[a]
+  if (directions && v != null) return directions.map(i => [`border${i}-width`, v])
 }
 
 /**
@@ -78,6 +81,7 @@ export function presetRtl(): Preset {
       [
         /^(?:position-|pos-)?(left|right)-(.+)$/,
         ([, direction, size], context) => {
+          if (!size) return undefined
           const replacement = direction === 'left' ? 'inset-is' : 'inset-ie'
           // oxlint-disable-next-line no-console -- warn logging
           console.warn(
@@ -101,16 +105,18 @@ export function presetRtl(): Preset {
         /^rounded-([rl])(?:-(.+))?$/,
         (args, context) => {
           const [_, direction, size] = args
+          if (!direction) return undefined
           const replacementMap: Record<string, string> = {
             l: 'is',
             r: 'ie',
           }
           const replacement = replacementMap[direction]
+          if (!replacement) return undefined
           // oxlint-disable-next-line no-console -- warn logging
           console.warn(
             `[RTL] Avoid using 'rounded-${direction}'. Use 'rounded-${replacement}' instead.`,
           )
-          return handlerRounded(['', replacement, size], context)
+          return handlerRounded(['', replacement, size ?? 'DEFAULT'], context)
         },
       ],
       [

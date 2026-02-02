@@ -3,33 +3,58 @@ defineProps<{
   html: string
 }>()
 
+const router = useRouter()
 const { copy } = useClipboard()
 
-const handleCopy = async (e: MouseEvent) => {
-  const target = (e.target as HTMLElement).closest('[data-copy]')
+// Combined click handler for:
+// 1. Intercepting npmjs.com links to route internally
+// 2. Copy button functionality for code blocks
+function handleClick(event: MouseEvent) {
+  const target = event.target as HTMLElement | undefined
   if (!target) return
 
-  const wrapper = target.closest('.readme-code-block')
-  if (!wrapper) return
+  // Handle copy button clicks
+  const copyTarget = target.closest('[data-copy]')
+  if (copyTarget) {
+    const wrapper = copyTarget.closest('.readme-code-block')
+    if (!wrapper) return
 
-  const pre = wrapper.querySelector('pre')
-  if (!pre?.textContent) return
+    const pre = wrapper.querySelector('pre')
+    if (!pre?.textContent) return
 
-  await copy(pre.textContent)
+    copy(pre.textContent)
 
-  const icon = target.querySelector('span')
-  if (!icon) return
+    const icon = copyTarget.querySelector('span')
+    if (!icon) return
 
-  const originalIcon = 'i-carbon:copy'
-  const successIcon = 'i-carbon:checkmark'
+    const originalIcon = 'i-carbon:copy'
+    const successIcon = 'i-carbon:checkmark'
 
-  icon.classList.remove(originalIcon)
-  icon.classList.add(successIcon)
+    icon.classList.remove(originalIcon)
+    icon.classList.add(successIcon)
 
-  setTimeout(() => {
-    icon.classList.remove(successIcon)
-    icon.classList.add(originalIcon)
-  }, 2000)
+    setTimeout(() => {
+      icon.classList.remove(successIcon)
+      icon.classList.add(originalIcon)
+    }, 2000)
+    return
+  }
+
+  // Handle npmjs.com link clicks - route internally
+  const anchor = target.closest('a')
+  if (!anchor) return
+
+  const href = anchor.getAttribute('href')
+  if (!href) return
+
+  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
+  if (!match || !match[1]) return
+
+  const route = router.resolve(match[1])
+  if (route) {
+    event.preventDefault()
+    router.push(route)
+  }
 }
 </script>
 
@@ -37,7 +62,7 @@ const handleCopy = async (e: MouseEvent) => {
   <article
     class="readme prose prose-invert max-w-[70ch] lg:max-w-none"
     v-html="html"
-    @click="handleCopy"
+    @click="handleClick"
   />
 </template>
 

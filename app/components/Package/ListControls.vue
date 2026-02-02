@@ -33,7 +33,7 @@ const sortOptions = computed(
   () =>
     [
       { value: 'downloads', label: $t('package.sort.downloads') },
-      { value: 'updated', label: $t('package.sort.updated') },
+      { value: 'updated', label: $t('package.sort.published') },
       { value: 'name-asc', label: $t('package.sort.name_asc') },
       { value: 'name-desc', label: $t('package.sort.name_desc') },
     ] as const,
