@@ -13,6 +13,9 @@ import { isEditableElement } from '~/utils/input'
 import { formatBytes } from '~/utils/formatters'
 import { NuxtLink } from '#components'
 import { useModal } from '~/composables/useModal'
+import { useAtproto } from '~/composables/atproto/useAtproto'
+import { useLikePackage } from '~/composables/atproto/useLikePackage'
+import { useUnlikePackage } from '~/composables/atproto/useUnlikePackage'
 
 definePageMeta({
   name: 'package',

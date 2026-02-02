@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { authRedirect } from '~/composables/useAtproto'
+import { authRedirect, useAtproto } from '~/composables/atproto/useAtproto'
 
 const handleInput = shallowRef('')
 
