@@ -282,6 +282,7 @@ defineOgImageComponent('Default', {
           :results="sortedPackages"
           :view-mode="viewMode"
           :columns="columns"
+          :filters="filters"
           v-model:sort-option="sortOption"
           :pagination-mode="paginationMode"
           :page-size="pageSize"

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { StructuredFilters } from '#shared/types/preferences'
+
 const props = defineProps<{
   /** The search result object containing package data */
   result: NpmSearchResult
@@ -8,8 +10,14 @@ const props = defineProps<{
   showPublisher?: boolean
   prefetch?: boolean
   index?: number
+  /** Filters to apply to the results */
+  filters?: StructuredFilters
   /** Search query for highlighting exact matches */
   searchQuery?: string
+}>()
+
+const emit = defineEmits<{
+  clickKeyword: [keyword: string]
 }>()
 
 /** Check if this package is an exact match for the search query */
@@ -160,18 +168,22 @@ const pkgDescription = useMarkdown(() => ({
       </div>
     </div>
 
-    <ul
+    <div
       v-if="result.package.keywords?.length"
       :aria-label="$t('package.card.keywords')"
       class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0 pointer-events-none"
     >
-      <li
+      <button
         v-for="keyword in result.package.keywords.slice(0, 5)"
         :key="keyword"
-        class="tag pointer-events-auto"
+        type="button"
+        class="tag text-xs hover:bg-fg hover:text-bg hover:border-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1 pointer-events-auto"
+        :class="{ 'bg-fg text-bg hover:opacity-80': props.filters?.keywords.includes(keyword) }"
+        :title="`Filter by ${keyword}`"
+        @click.stop="emit('clickKeyword', keyword)"
       >
         {{ keyword }}
-      </li>
-    </ul>
+      </button>
+    </div>
   </article>
 </template>
