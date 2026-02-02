@@ -113,7 +113,20 @@ function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolea
  *
  */
 export function useStructuredFilters(options: UseStructuredFiltersOptions) {
+  const route = useRoute()
+  const router = useRouter()
   const { packages, initialFilters, initialSort } = options
+
+  const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
+  watch(
+    () => route.query.q,
+    urlQuery => {
+      const value = normalizeSearchParam(urlQuery)
+      if (searchQuery.value !== value) {
+        searchQuery.value = value
+      }
+    },
+  )
 
   // Filter state
   const filters = ref<StructuredFilters>({
@@ -366,11 +379,17 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   function addKeyword(keyword: string) {
     if (!filters.value.keywords.includes(keyword)) {
       filters.value.keywords = [...filters.value.keywords, keyword]
+      const newQ = searchQuery.value
+        ? `${searchQuery.value.trim()} keyword:${keyword}`
+        : `keyword:${keyword}`
+      router.replace({ query: { ...route.query, q: newQ } })
     }
   }
 
   function removeKeyword(keyword: string) {
     filters.value.keywords = filters.value.keywords.filter(k => k !== keyword)
+    const newQ = searchQuery.value.replace(new RegExp(`keyword:${keyword}($| )`, 'g'), '').trim()
+    router.replace({ query: { ...route.query, q: newQ || undefined } })
   }
 
   function toggleKeyword(keyword: string) {

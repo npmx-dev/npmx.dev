@@ -52,7 +52,7 @@ const {
 } = useStructuredFilters({
   packages,
   initialFilters: {
-    text: normalizeSearchParam(route.query.q),
+    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
   },
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'updated-desc',
 })
