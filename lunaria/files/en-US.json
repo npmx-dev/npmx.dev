@@ -34,9 +34,6 @@
     "want_to_claim": "Want to claim this package name?",
     "start_typing": "Start typing to search packages",
     "exact_match": "exact",
-    "not_invalid": "Search query invalid",
-    "not_invalid_description": "Your search query doesn't meet the requirements. View the package directly instead.",
-    "not_invalid_button_label": "View \"{name}\"",
     "suggestion": {
       "user": "user",
       "org": "org",
