@@ -1,5 +1,7 @@
+import * as v from 'valibot'
 import { Client } from '@atproto/lex'
 import * as dev from '#shared/types/lexicons/dev'
+import { PackageLikeBodySchema } from '#shared/schemas/social'
 import { throwOnMissingOAuthScope } from '#server/utils/atproto/oauth'
 
 export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
@@ -12,14 +14,7 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
   //Checks if the user has a scope to like packages
   await throwOnMissingOAuthScope(oAuthSession, LIKES_SCOPE)
 
-  const body = await readBody<{ packageName: string }>(event)
-
-  if (!body.packageName) {
-    throw createError({
-      status: 400,
-      message: 'packageName is required',
-    })
-  }
+  const body = v.parse(PackageLikeBodySchema, await readBody(event))
 
   const likesUtil = new PackageLikesUtils()
 

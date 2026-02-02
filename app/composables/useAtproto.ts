@@ -1,7 +1,6 @@
 import { ERROR_NEED_REAUTH } from '#imports'
 import type { FetchError } from 'ofetch'
 import type { UserSession } from '#shared/schemas/userSession'
-import type { PackageLikes } from '#server/utils/atproto/utils/likes'
 
 export async function authRedirect(identifier: string, create: boolean = false) {
   let query = { handle: identifier } as {}
