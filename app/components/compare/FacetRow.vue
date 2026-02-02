@@ -78,7 +78,7 @@ function isCellLoading(index: number): boolean {
     <div
       v-for="(value, index) in values"
       :key="index"
-      class="comparison-cell relative flex items-end justify-center px-4 py-3 border-b border-border"
+      class="comparison-cell relative flex items-center justify-center px-4 py-3 border-b border-border"
     >
       <!-- Background bar for numeric values -->
       <div
@@ -103,7 +103,10 @@ function isCellLoading(index: number): boolean {
 
       <!-- Value display -->
       <template v-else>
-        <span class="relative font-mono text-sm tabular-nums" :class="getStatusClass(value.status)">
+        <span
+          class="relative font-mono text-sm text-center tabular-nums"
+          :class="getStatusClass(value.status)"
+        >
           <!-- Date values use DateTime component for i18n and user settings -->
           <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />
           <template v-else>{{ value.display }}</template>
