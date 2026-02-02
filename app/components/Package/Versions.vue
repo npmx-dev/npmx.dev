@@ -307,7 +307,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
     id="versions"
   >
     <template #actions>
-       <a
+      <a
         :href="`https://majors.nullvoxpopuli.com/q?packages=${props.packageName}`"
         target="_blank"
         rel="noopener noreferrer"
