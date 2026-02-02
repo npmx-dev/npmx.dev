@@ -633,6 +633,13 @@
     "more_keywords": "+{count} more",
     "clear_all": "Clear all",
     "remove_filter": "Remove {label} filter",
+    "chips": {
+      "search": "Search",
+      "downloads": "Downloads",
+      "keyword": "Keyword",
+      "security": "Security",
+      "updated": "Updated"
+    },
     "download_range": {
       "any": "Any",
       "lt100": "< 100",
