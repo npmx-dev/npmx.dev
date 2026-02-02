@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
+
 const packages = defineModel<string[]>({ required: true })
 
 const props = defineProps<{
@@ -16,6 +18,19 @@ const isInputFocused = shallowRef(false)
 const { data: searchData, status } = useNpmSearch(inputValue, { size: 15 })
 
 const isSearching = computed(() => status.value === 'pending')
+
+// Trigger phrases for "What Would James Do?" option
+const noDependencyTriggers = ['no dep', 'none', 'vanilla', 'diy', 'zero', 'nothing', '0']
+
+// Check if "no dependency" option should show
+const showNoDependencyOption = computed(() => {
+  if (packages.value.includes(NO_DEPENDENCY_ID)) return false
+  const input = inputValue.value.toLowerCase().trim()
+  if (!input) return false
+  return noDependencyTriggers.some(
+    trigger => trigger.startsWith(input) || input.startsWith(trigger),
+  )
+})
 
 // Filter out already selected packages
 const filteredResults = computed(() => {
@@ -63,7 +78,15 @@ function handleBlur() {
         :key="pkg"
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-bg-subtle border border-border rounded-md"
       >
+        <!-- No dependency display -->
+        <template v-if="pkg === NO_DEPENDENCY_ID">
+          <span class="text-sm text-accent italic flex items-center gap-1.5">
+            <span class="i-carbon:clean w-3.5 h-3.5" aria-hidden="true" />
+            {{ $t('compare.no_dependency.label') }}
+          </span>
+        </template>
         <NuxtLink
+          v-else
           :to="`/package/${pkg}`"
           class="font-mono text-sm text-fg hover:text-accent transition-colors"
         >
@@ -72,7 +95,11 @@ function handleBlur() {
         <button
           type="button"
           class="text-fg-subtle hover:text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
-          :aria-label="$t('compare.selector.remove_package', { package: pkg })"
+          :aria-label="
+            $t('compare.selector.remove_package', {
+              package: pkg === NO_DEPENDENCY_ID ? 'No dependency' : pkg,
+            })
+          "
           @click="removePackage(pkg)"
         >
           <span class="i-carbon:close w-3.5 h-3.5" aria-hidden="true" />
@@ -118,9 +145,28 @@ function handleBlur() {
         leave-to-class="opacity-0"
       >
         <div
-          v-if="isInputFocused && (filteredResults.length > 0 || isSearching)"
+          v-if="
+            isInputFocused && (filteredResults.length > 0 || isSearching || showNoDependencyOption)
+          "
           class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
+          <!-- No dependency option (easter egg with James) -->
+          <button
+            v-if="showNoDependencyOption"
+            type="button"
+            class="w-full text-start px-4 py-2.5 hover:bg-bg-muted transition-colors focus-visible:outline-none focus-visible:bg-bg-muted border-b border-border/50"
+            :aria-label="$t('compare.no_dependency.add_column')"
+            @click="addPackage(NO_DEPENDENCY_ID)"
+          >
+            <div class="text-sm text-accent italic flex items-center gap-2">
+              <span class="i-carbon:clean w-4 h-4" aria-hidden="true" />
+              {{ $t('compare.no_dependency.typeahead_title') }}
+            </div>
+            <div class="text-xs text-fg-muted truncate mt-0.5">
+              {{ $t('compare.no_dependency.typeahead_description') }}
+            </div>
+          </button>
+
           <div v-if="isSearching" class="px-4 py-3 text-sm text-fg-muted">
             {{ $t('compare.selector.searching') }}
           </div>
@@ -128,7 +174,7 @@ function handleBlur() {
             v-for="result in filteredResults"
             :key="result.name"
             type="button"
-            class="w-full text-left px-4 py-2.5 hover:bg-bg-muted transition-colors focus-visible:outline-none focus-visible:bg-bg-muted"
+            class="w-full text-start px-4 py-2.5 hover:bg-bg-muted transition-colors focus-visible:outline-none focus-visible:bg-bg-muted"
             @click="addPackage(result.name)"
           >
             <div class="font-mono text-sm text-fg">{{ result.name }}</div>

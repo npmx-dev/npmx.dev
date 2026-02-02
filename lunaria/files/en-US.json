@@ -136,7 +136,8 @@
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
       "mdn": "MDN",
-      "community": "community"
+      "community": "community",
+      "consider_no_dep": "+ Consider no dep?"
     },
     "stats": {
       "license": "License",
@@ -853,6 +854,15 @@
       "add_hint": "Add at least 2 packages to compare.",
       "loading_versions": "Loading versions...",
       "select_version": "Select version"
+    },
+    "no_dependency": {
+      "label": "No dep",
+      "typeahead_title": "What Would James Do?",
+      "typeahead_description": "Compare against writing it yourself! @43081j approved.",
+      "james_says": "James says:",
+      "tooltip_description": "Compare against writing it yourself! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
+      "e18e_community": "e18e community",
+      "add_column": "Add no dependency column to comparison"
     },
     "facets": {
       "group_label": "Comparison facets",

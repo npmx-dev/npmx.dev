@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 
 definePageMeta({
@@ -31,6 +32,28 @@ const { selectedFacets, selectAll, deselectAll, isAllSelected, isNoneSelected } 
 const { packagesData, status, getFacetValues, isFacetLoading, isColumnLoading } =
   usePackageComparison(packages)
 
+// Fetch module replacement suggestions
+const { noDepSuggestions, infoSuggestions, replacements } = useCompareReplacements(packages)
+
+// Map replacements to column order for the grid tooltip
+const columnReplacements = computed(() =>
+  packages.value.map(pkg => replacements.value.get(pkg) ?? null),
+)
+
+// Filter "no dep" suggestions to only show if not already added and we have room
+const actionableNoDepSuggestions = computed(() => {
+  if (packages.value.length >= 4) return [] // Can't add more
+  if (packages.value.includes(NO_DEPENDENCY_ID)) return [] // Already added
+  return noDepSuggestions.value
+})
+
+// Add "no dependency" column to comparison
+function addNoDep() {
+  if (packages.value.length >= 4) return
+  if (packages.value.includes(NO_DEPENDENCY_ID)) return
+  packages.value = [...packages.value, NO_DEPENDENCY_ID]
+}
+
 // Get loading state for each column
 const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoading(i)))
 
@@ -41,9 +64,16 @@ const canCompare = computed(() => packages.value.length >= 2)
 const gridHeaders = computed(() => {
   if (!packagesData.value) return packages.value
   return packagesData.value.map((p, i) =>
-    p ? `${p.package.name}@${p.package.version}` : (packages.value[i] ?? ''),
+    p
+      ? p.package.version
+        ? `${p.package.name}@${p.package.version}`
+        : p.package.name
+      : (packages.value[i] ?? ''),
   )
 })
+
+// Track which columns are the "no dep" column (for special styling)
+const specialColumns = computed(() => packages.value.map(pkg => pkg === NO_DEPENDENCY_ID))
 
 useSeoMeta({
   title: () =>
@@ -75,6 +105,29 @@ useSeoMeta({
           {{ $t('compare.packages.section_packages') }}
         </h2>
         <ComparePackageSelector v-model="packages" :max="4" />
+
+        <!-- "No dep" replacement suggestions (native, simple) -->
+        <div v-if="actionableNoDepSuggestions.length > 0" class="mt-3 space-y-2">
+          <CompareReplacementSuggestion
+            v-for="suggestion in actionableNoDepSuggestions"
+            :key="suggestion.forPackage"
+            :package-name="suggestion.forPackage"
+            :replacement="suggestion.replacement"
+            variant="nodep"
+            @add-no-dep="addNoDep"
+          />
+        </div>
+
+        <!-- Informational replacement suggestions (documented) -->
+        <div v-if="infoSuggestions.length > 0" class="mt-3 space-y-2">
+          <CompareReplacementSuggestion
+            v-for="suggestion in infoSuggestions"
+            :key="suggestion.forPackage"
+            :package-name="suggestion.forPackage"
+            :replacement="suggestion.replacement"
+            variant="info"
+          />
+        </div>
       </section>
 
       <!-- Facet selector -->
@@ -124,7 +177,12 @@ useSeoMeta({
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
           <!-- Desktop: Grid layout -->
           <div class="hidden md:block overflow-x-auto">
-            <CompareComparisonGrid :columns="packages.length" :headers="gridHeaders">
+            <CompareComparisonGrid
+              :columns="packages.length"
+              :headers="gridHeaders"
+              :special-columns="specialColumns"
+              :replacements="columnReplacements"
+            >
               <CompareFacetRow
                 v-for="facet in selectedFacets"
                 :key="facet.id"

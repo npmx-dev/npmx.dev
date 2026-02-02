@@ -71,6 +71,7 @@ import {
   CompareFacetRow,
   CompareFacetSelector,
   ComparePackageSelector,
+  CompareReplacementSuggestion,
   DateTime,
   DependencyPathPopup,
   FilterChips,
@@ -1462,6 +1463,73 @@ describe('component accessibility audits', () => {
         },
         slots: {
           default: '<div>Grid content</div>',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with special column', async () => {
+      const component = await mountSuspended(CompareComparisonGrid, {
+        props: {
+          columns: 3,
+          headers: ['vue', 'react', 'No dep'],
+          specialColumns: [false, false, true],
+        },
+        slots: {
+          default: '<div>Grid content</div>',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareReplacementSuggestion', () => {
+    it('should have no accessibility violations for nodep variant with native replacement', async () => {
+      const component = await mountSuspended(CompareReplacementSuggestion, {
+        props: {
+          packageName: 'array-includes',
+          replacement: {
+            type: 'native',
+            moduleName: 'array-includes',
+            nodeVersion: '6.0.0',
+            replacement: 'Array.prototype.includes',
+            mdnPath: 'Global_Objects/Array/includes',
+          },
+          variant: 'nodep',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for nodep variant with simple replacement', async () => {
+      const component = await mountSuspended(CompareReplacementSuggestion, {
+        props: {
+          packageName: 'is-even',
+          replacement: {
+            type: 'simple',
+            moduleName: 'is-even',
+            replacement: 'Use (n % 2) === 0',
+          },
+          variant: 'nodep',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations for info variant with documented replacement', async () => {
+      const component = await mountSuspended(CompareReplacementSuggestion, {
+        props: {
+          packageName: 'moment',
+          replacement: {
+            type: 'documented',
+            moduleName: 'moment',
+            docPath: 'moment',
+          },
+          variant: 'info',
         },
       })
       const results = await runAxe(component)
