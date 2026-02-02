@@ -163,7 +163,7 @@ const config = computed(() => {
         color: colors.value.fg,
       },
       line: {
-        color: transparentizeOklch(accent.value, 0.5),
+        color: transparentizeOklch(accent.value, 0.75),
         pulse: {
           show: true,
           loop: true, // runs only once if false
