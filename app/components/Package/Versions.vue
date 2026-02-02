@@ -308,7 +308,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
   >
     <template #actions>
        <a
-        :href="`https://majors.nullvoxpopuli.com/q?packages=${pkg.name}`"
+        :href="`https://majors.nullvoxpopuli.com/q?packages=${props.packageName}`"
         target="_blank"
         rel="noopener noreferrer"
         class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
