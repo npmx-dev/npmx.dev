@@ -7,6 +7,7 @@ const { focused: isSearchFocused } = useFocus(searchInputRef)
 const frameworks = ref([
   { name: 'nuxt', package: 'nuxt' },
   { name: 'vue', package: 'vue' },
+  { name: 'nitro', package: 'nitro' },
   { name: 'react', package: 'react' },
   { name: 'svelte', package: 'svelte' },
   { name: 'vite', package: 'vite' },
