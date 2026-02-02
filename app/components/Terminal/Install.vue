@@ -200,6 +200,16 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             <span class="text-fg-subtle font-mono text-sm select-none"
               ># {{ $t('package.create.title') }}</span
             >
+            <NuxtLink
+              :to="`/package/${createPackageInfo.packageName}`"
+              class="text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+              :title="$t('package.create.view', { packageName: createPackageInfo.packageName })"
+            >
+              <span class="i-carbon:information w-3 h-3 mt-1" aria-hidden="true" />
+              <span class="sr-only">{{
+                $t('package.create.view', { packageName: createPackageInfo.packageName })
+              }}</span>
+            </NuxtLink>
           </div>
 
           <div
@@ -217,14 +227,6 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
                 >{{ i > 0 ? ' ' : '' }}{{ part }}</span
               ></code
             >
-            <NuxtLink
-              :to="`/package/${createPackageInfo.packageName}`"
-              class="text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-              :title="`View ${createPackageInfo.packageName}`"
-            >
-              <span class="i-carbon:arrow-right rtl-flip w-3 h-3 mt-1" aria-hidden="true" />
-              <span class="sr-only">View {{ createPackageInfo.packageName }}</span>
-            </NuxtLink>
             <button
               type="button"
               class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"

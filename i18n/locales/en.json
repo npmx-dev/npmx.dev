@@ -193,7 +193,8 @@
     },
     "create": {
       "title": "Create new project",
-      "copy_command": "Copy create command"
+      "copy_command": "Copy create command",
+      "view": "{packageName} has the same maintainer. Click for more details."
     },
     "run": {
       "title": "Run",
