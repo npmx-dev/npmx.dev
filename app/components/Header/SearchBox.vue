@@ -80,7 +80,16 @@ function handleSearchFocus() {
 }
 
 function handleSubmit() {
-  updateUrlQuery.flush()
+  if (pagesWithLocalFilter.has(route.name as string)) {
+    router.push({
+      name: 'search',
+      query: {
+        q: searchQuery.value,
+      },
+    })
+  } else {
+    updateUrlQuery.flush()
+  }
 }
 
 // Expose focus method for parent components
