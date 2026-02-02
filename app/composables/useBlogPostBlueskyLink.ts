@@ -74,10 +74,10 @@ export function useBlogPostBlueskyLink(slug: MaybeRefOrGetter<string | null | un
             postUri: `at://${facetRecord.did}/app.bsky.feed.post/${facetRecord.rkey}`,
           }
         }
-      } catch {
+      } catch (error: unknown) {
         // Constellation unavailable or error - fail silently
         // But during dev we will get an error
-        if (import.meta.dev) console.error('[Bluesky] Constellation error:', err)
+        if (import.meta.dev) console.error('[Bluesky] Constellation error:', error)
       }
 
       return null
