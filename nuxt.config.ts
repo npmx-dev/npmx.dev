@@ -246,7 +246,13 @@ export default defineNuxtConfig({
     tsConfig: {
       compilerOptions: {
         noUnusedLocals: true,
+        // TODO (jg): this isn't actually right since the app shouldn't be
+        // importing `.ts` files directly. But there is an app test which
+        // imports the CLI, which _does_ import `.ts` files directly.
+        // Figure out a better solution later.
+        allowImportingTsExtensions: true,
       },
+      include: ['../test/unit/app/**/*.ts'],
     },
     nodeTsConfig: {
       compilerOptions: {
