@@ -21,6 +21,8 @@ const EXTENSION_MAP: Record<string, string> = {
   vue: 'vue',
   svelte: 'svelte',
   astro: 'astro',
+  gjs: 'glimmer-js',
+  gts: 'glimmer-ts',
 
   // Data formats
   json: 'json',
@@ -79,7 +81,6 @@ const FILENAME_MAP: Record<string, string> = {
 
 /**
  * Determine the language for syntax highlighting based on file path
- * @public
  */
 export function getLanguageFromPath(filePath: string): string {
   const filename = filePath.split('/').pop() || ''
@@ -186,10 +187,10 @@ function linkifyImports(html: string, options?: LinkifyOptions): string {
     const dep = dependencies?.[packageName]
     if (dep) {
       // Link to code browser with resolved version
-      return `/code/${packageName}/v/${dep.version}`
+      return `/package-code/${packageName}/v/${dep.version}`
     }
     // Fall back to package page if not a known dependency
-    return `/${packageName}`
+    return `/package/${packageName}`
   }
 
   // Match: from keyword span followed by string span containing module specifier
@@ -261,7 +262,6 @@ export interface HighlightOptions {
 /**
  * Highlight code using Shiki with line-by-line output for line highlighting.
  * Each line is wrapped in a span.line for individual line highlighting.
- * @public
  */
 export async function highlightCode(
   code: string,

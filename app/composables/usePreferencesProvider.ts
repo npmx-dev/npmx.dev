@@ -57,12 +57,11 @@ function createLocalStorageProvider<T>(key: string): StorageProvider<T> {
  * Composable for managing preferences storage
  * Abstracts the storage mechanism to allow future migration to API-based storage
  *
- * @public
  */
 export function usePreferencesProvider<T>(defaultValue: T) {
   const provider = createLocalStorageProvider<T>(STORAGE_KEY)
   const data = ref<T>(defaultValue) as Ref<T>
-  const isHydrated = ref(false)
+  const isHydrated = shallowRef(false)
 
   // Load from storage on client
   onMounted(() => {

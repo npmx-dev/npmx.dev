@@ -10,39 +10,29 @@ const emit = defineEmits<{
   reset: []
 }>()
 
-const isOpen = ref(false)
+const isOpen = shallowRef(false)
 const buttonRef = useTemplateRef('buttonRef')
 const menuRef = useTemplateRef('menuRef')
 const menuId = useId()
 
 // Close on click outside (check both button and menu)
-function handleClickOutside(event: MouseEvent) {
-  const target = event.target as Node
-  const isOutsideButton = buttonRef.value && !buttonRef.value.contains(target)
-  const isOutsideMenu = !menuRef.value || !menuRef.value.contains(target)
-  if (isOutsideButton && isOutsideMenu) {
+onClickOutside(
+  menuRef,
+  () => {
     isOpen.value = false
-  }
-}
+  },
+  {
+    ignore: [buttonRef],
+  },
+)
 
 // Close on Escape key
-function handleKeydown(event: KeyboardEvent) {
+useEventListener('keydown', event => {
   if (event.key === 'Escape' && isOpen.value) {
     isOpen.value = false
     buttonRef.value?.focus()
   }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-  document.addEventListener('keydown', handleKeydown)
 })
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
-  document.removeEventListener('keydown', handleKeydown)
-})
-
 // Columns that can be toggled (name is always visible)
 const toggleableColumns = computed(() => props.columns.filter(col => col.id !== 'name'))
 
@@ -93,7 +83,7 @@ function handleReset() {
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute inset-is-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >
@@ -127,7 +117,7 @@ function handleReset() {
               <span class="text-sm text-fg-muted font-mono flex-1">
                 {{ getColumnLabel(column.id) }}
               </span>
-              <AppTooltip
+              <TooltipApp
                 v-if="column.disabled"
                 :id="`${column.id}-disabled-reason`"
                 class="text-fg-subtle"
@@ -137,7 +127,7 @@ function handleReset() {
                 <span class="size-4 flex justify-center items-center text-xs border rounded-full"
                   >i</span
                 >
-              </AppTooltip>
+              </TooltipApp>
             </label>
           </div>
 

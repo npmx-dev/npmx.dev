@@ -72,13 +72,17 @@ export interface CheckNameResult {
 
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 
-export async function checkPackageExists(name: string): Promise<boolean> {
+export async function checkPackageExists(
+  name: string,
+  options: Parameters<typeof $fetch>[1] = {},
+): Promise<boolean> {
   try {
     const encodedName = name.startsWith('@')
       ? `@${encodeURIComponent(name.slice(1))}`
       : encodeURIComponent(name)
 
     await $fetch(`${NPM_REGISTRY}/${encodedName}`, {
+      ...options,
       method: 'HEAD',
     })
     return true
@@ -87,7 +91,10 @@ export async function checkPackageExists(name: string): Promise<boolean> {
   }
 }
 
-export async function findSimilarPackages(name: string): Promise<SimilarPackage[]> {
+export async function findSimilarPackages(
+  name: string,
+  options: Parameters<typeof $fetch>[1] = {},
+): Promise<SimilarPackage[]> {
   const normalized = normalizePackageName(name)
   const similar: SimilarPackage[] = []
 
@@ -99,7 +106,7 @@ export async function findSimilarPackages(name: string): Promise<SimilarPackage[
           description?: string
         }
       }>
-    }>(`${NPM_REGISTRY}/-/v1/search?text=${encodeURIComponent(name)}&size=20`)
+    }>(`${NPM_REGISTRY}/-/v1/search?text=${encodeURIComponent(name)}&size=20`, options)
 
     for (const obj of searchResponse.objects) {
       const pkgName = obj.package.name
@@ -153,7 +160,10 @@ export async function findSimilarPackages(name: string): Promise<SimilarPackage[
   }
 }
 
-export async function checkPackageName(name: string): Promise<CheckNameResult> {
+export async function checkPackageName(
+  name: string,
+  options: Parameters<typeof $fetch>[1] = {},
+): Promise<CheckNameResult> {
   const validation = validatePackageName(name)
   const valid = validation.validForNewPackages === true
 
@@ -177,8 +187,8 @@ export async function checkPackageName(name: string): Promise<CheckNameResult> {
 
   // Check if package exists and find similar packages in parallel
   const [exists, similarPackages] = await Promise.all([
-    checkPackageExists(name),
-    findSimilarPackages(name),
+    checkPackageExists(name, options),
+    findSimilarPackages(name, options),
   ])
 
   result.available = !exists

@@ -29,8 +29,6 @@ export interface ColumnConfig {
   width?: string
   /** Whether the column is disabled (not yet available) */
   disabled?: boolean
-  /** Reason for being disabled, shown in UI */
-  disabledReason?: string
 }
 
 // Default column configuration
@@ -55,7 +53,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
     sortable: true,
     width: '100px',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     id: 'popularityScore',
@@ -64,7 +61,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
     sortable: true,
     width: '100px',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     id: 'maintenanceScore',
@@ -73,7 +69,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
     sortable: true,
     width: '100px',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     id: 'combinedScore',
@@ -82,7 +77,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
     sortable: true,
     width: '100px',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     id: 'security',
@@ -91,7 +85,6 @@ export const DEFAULT_COLUMNS: ColumnConfig[] = [
     sortable: false,
     width: '80px',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
 ]
 
@@ -143,8 +136,6 @@ export interface SortKeyConfig {
   defaultDirection: SortDirection
   /** Whether the sort option is disabled (not yet available) */
   disabled?: boolean
-  /** Reason for being disabled, shown in UI */
-  disabledReason?: string
   /** Only show this sort option in search context */
   searchOnly?: boolean
 }
@@ -157,21 +148,18 @@ export const SORT_KEYS: SortKeyConfig[] = [
     label: 'Downloads/day',
     defaultDirection: 'desc',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     key: 'downloads-month',
     label: 'Downloads/mo',
     defaultDirection: 'desc',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     key: 'downloads-year',
     label: 'Downloads/yr',
     defaultDirection: 'desc',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   { key: 'updated', label: 'Updated', defaultDirection: 'desc' },
   { key: 'name', label: 'Name', defaultDirection: 'asc' },
@@ -180,28 +168,24 @@ export const SORT_KEYS: SortKeyConfig[] = [
     label: 'Quality',
     defaultDirection: 'desc',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     key: 'popularity',
     label: 'Popularity',
     defaultDirection: 'desc',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     key: 'maintenance',
     label: 'Maintenance',
     defaultDirection: 'desc',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
   {
     key: 'score',
     label: 'Score',
     defaultDirection: 'desc',
     disabled: true,
-    disabledReason: 'Coming soon',
   },
 ]
 

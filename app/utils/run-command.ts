@@ -3,52 +3,6 @@ import { getPackageSpecifier, packageManagers } from './install-command'
 import type { PackageManagerId } from './install-command'
 
 /**
- * Metadata needed to determine if a package is binary-only.
- */
-export interface PackageMetadata {
-  name: string
-  bin?: string | Record<string, string>
-  main?: string
-  module?: unknown
-  exports?: unknown
-}
-
-/**
- * Determine if a package is "binary-only" (executable without library entry points).
- * Binary-only packages should show execute commands without install commands.
- *
- * A package is binary-only if:
- * - Name starts with "create-" (e.g., create-vite)
- * - Scoped name contains "/create-" (e.g., @vue/create-app)
- * - Has bin field but no main, module, or exports fields
- * @public
- */
-export function isBinaryOnlyPackage(pkg: PackageMetadata): boolean {
-  const baseName = pkg.name.startsWith('@') ? pkg.name.split('/')[1] : pkg.name
-
-  // Check create-* patterns
-  if (baseName?.startsWith('create-') || pkg.name.includes('/create-')) {
-    return true
-  }
-
-  // Has bin but no entry points
-  const hasBin =
-    pkg.bin !== undefined && (typeof pkg.bin === 'string' || Object.keys(pkg.bin).length > 0)
-  const hasEntryPoint = !!pkg.main || !!pkg.module || !!pkg.exports
-
-  return hasBin && !hasEntryPoint
-}
-
-/**
- * Check if a package uses the create-* naming convention.
- * @public
- */
-export function isCreatePackage(packageName: string): boolean {
-  const baseName = packageName.startsWith('@') ? packageName.split('/')[1] : packageName
-  return baseName?.startsWith('create-') || packageName.includes('/create-') || false
-}
-
-/**
  * Information about executable commands provided by a package.
  */
 export interface ExecutableInfo {
@@ -63,7 +17,6 @@ export interface ExecutableInfo {
 /**
  * Extract executable command information from a package's bin field.
  * Handles both string format ("bin": "./cli.js") and object format ("bin": { "cmd": "./cli.js" }).
- * @public
  */
 export function getExecutableInfo(
   packageName: string,
@@ -150,7 +103,6 @@ export function getRunCommandParts(options: RunCommandOptions): string[] {
 
 /**
  * Generate the full run command for a package.
- * @public
  */
 export function getRunCommand(options: RunCommandOptions): string {
   return getRunCommandParts(options).join(' ')

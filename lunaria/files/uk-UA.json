@@ -24,7 +24,6 @@
     "found_packages": "Пакетів не знайдено | Знайдено 1 пакет | Знайдено {count} пакетів",
     "updating": "(оновлення...)",
     "no_results": "Пакетів не знайдено для \"{query}\"",
-    "results": "Результати пошуку",
     "not_taken": "\"{name}\" не зайнято",
     "claim_prompt": "Зарезервуйте цю назву пакета на npm",
     "claim_button": "Зарезервувати \"{name}\"",
@@ -137,6 +136,9 @@
         "unpacked": "{size} розпаковано розмір (цей пакет)",
         "total": "{size} загальний розпаковано розмір (включаючи всі {count} залежностей для linux-x64)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "репозиторій",
@@ -356,9 +358,7 @@
     },
     "modal": {
       "title": "Локальний сполучник",
-      "close_modal": "Закрити модальне вікно",
       "connected": "Підключено",
-      "logged_in_as": "Виконаний вхід як {'@'}{user}",
       "connected_hint": "Тепер ви можете керувати пакетами та організаціями з веб-інтерфейсу.",
       "disconnect": "Відключити",
       "run_hint": "Запустіть сполучник на своєму комп'ютері, щоб увімкнути функції адміністратора.",
@@ -504,7 +504,6 @@
   "claim": {
     "modal": {
       "title": "Зарезервувати назву пакета",
-      "close_modal": "Закрити модальне вікно",
       "success": "Пакет зарезервовано!",
       "success_detail": "{name}{'@'}0.0.0 було опубліковано на npm.",
       "success_hint": "Тепер ви можете опублікувати нові версії цього пакета за допомогою npm publish.",
@@ -664,9 +663,9 @@
       "nav_label": "Нумерація сторінок"
     },
     "count": {
-      "showing_filtered": "{filtered} з {total} пакетів",
-      "showing_all": "{total} пакетів",
-      "showing_paginated": "{pageSize} з {total} пакетів"
+      "showing_filtered": "{filtered} з {count} пакетів",
+      "showing_all": "{count} пакетів",
+      "showing_paginated": "{pageSize} з {count} пакетів"
     },
     "table": {
       "security_warning": "Попередження безпеки",
@@ -728,6 +727,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "головна npmx",
     "github": "GitHub",
@@ -746,6 +749,13 @@
       "error": "Не вдалося завантажити організації",
       "empty": "Організації не знайдені",
       "view_all": "Переглянути все"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

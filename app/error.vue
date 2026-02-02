@@ -31,7 +31,7 @@ useHead({
 
 <template>
   <div class="min-h-screen flex flex-col bg-bg text-fg">
-    <AppHeader :show-connector="false" />
+    <AppHeader />
 
     <main class="flex-1 container flex flex-col items-center justify-center py-20 text-center">
       <p class="font-mono text-8xl sm:text-9xl font-medium text-fg-subtle mb-4">

@@ -8,7 +8,6 @@ type AccentColorId = keyof typeof ACCENT_COLORS
  * to show the correct content before Vue hydration occurs.
  *
  * Call this in app.vue or any page that needs early access to user preferences.
- * @public
  */
 export function initPreferencesOnPrehydrate() {
   // Callback is stringified by Nuxt - external variables won't be available.
@@ -56,5 +55,7 @@ export function initPreferencesOnPrehydrate() {
 
     // Set data attribute for CSS-based visibility
     document.documentElement.dataset.pm = pm
+
+    document.documentElement.dataset.collapsed = settings.sidebar?.collapsed?.join(' ') ?? ''
   })
 }

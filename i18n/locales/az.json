@@ -24,7 +24,6 @@
     "found_packages": "Paket tapılmadı | 1 paket tapıldı | {count} paket tapıldı",
     "updating": "(yenilənir...)",
     "no_results": "\"{query}\" üçün paket tapılmadı",
-    "results": "Axtarış nəticələri",
     "not_taken": "{name} tutulmayıb",
     "claim_prompt": "Bu paket adını npm-də tutun",
     "claim_button": "\"{name}\" adını tut",
@@ -137,6 +136,9 @@
         "unpacked": "{size} açılmış həcm (bu paket)",
         "total": "{size} ümumi açılmış həcm (linux-x64 üçün bütün {count} asılılıq daxil olmaqla)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repo",
@@ -356,9 +358,7 @@
     },
     "modal": {
       "title": "Lokal Konnektor",
-      "close_modal": "Pəncərəni bağla",
       "connected": "Qoşulub",
-      "logged_in_as": "{'@'}{user} olaraq daxil olunub",
       "connected_hint": "İndi veb interfeysdən paketləri və təşkilatları idarə edə bilərsiniz.",
       "disconnect": "Ayrıl",
       "run_hint": "Admin funksiyalarını aktivləşdirmək üçün konnektoru kompüterinizdə işə salın.",
@@ -504,7 +504,6 @@
   "claim": {
     "modal": {
       "title": "Paket Adını Tut",
-      "close_modal": "Pəncərəni bağla",
       "success": "Paket tutuldu!",
       "success_detail": "{name}{'@'}0.0.0 npm-ə dərc edildi.",
       "success_hint": "İndi npm publish istifadə edərək bu paketə yeni versiyalar dərc edə bilərsiniz.",
@@ -664,9 +663,9 @@
       "nav_label": "Səhifələmə"
     },
     "count": {
-      "showing_filtered": "{total} paketdən {filtered}",
-      "showing_all": "{total} paket",
-      "showing_paginated": "{total} paketdən {pageSize}"
+      "showing_filtered": "{count} paketdən {filtered}",
+      "showing_all": "{count} paket",
+      "showing_paginated": "{count} paketdən {pageSize}"
     },
     "table": {
       "security_warning": "Təhlükəsizlik xəbərdarlığı",
@@ -728,6 +727,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "npmx ana səhifə",
     "github": "GitHub",
@@ -746,6 +749,13 @@
       "error": "Təşkilatlar yüklənə bilmədi",
       "empty": "Təşkilat tapılmadı",
       "view_all": "Hamısını göstər"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

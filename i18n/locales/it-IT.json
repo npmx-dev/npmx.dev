@@ -24,7 +24,7 @@
     "found_packages": "Trovati {count} pacchetti",
     "updating": "(aggiornando...)",
     "no_results": "Nessun pacchetto trovato per \"{query}\"",
-    "results": "Risultati della ricerca",
+    "title": "cerca",
     "not_taken": "{name} è disponibile",
     "claim_prompt": "Ottieni il nome di questo pacchetto su npm",
     "claim_button": "Ottieni \"{name}\"",
@@ -316,7 +316,6 @@
       "size": "Misura",
       "deps": "Deps",
       "updated": "Aggiornato",
-      "install": "Installato",
       "readme": "Readme",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
@@ -343,9 +342,7 @@
     },
     "modal": {
       "title": "Connessione Locale",
-      "close_modal": "Chiudi",
       "connected": "Connesso",
-      "logged_in_as": "Connesso come {'@'}{user}",
       "connected_hint": "Puoi ora gestire i pacchetti e le organizzazioni dalla pagina web.",
       "disconnect": "Disconnetti",
       "run_hint": "Esegui il connettore sulla tua macchina per abilitare le funzioni da amministratore.",
@@ -491,7 +488,6 @@
   "claim": {
     "modal": {
       "title": "Ottieni il nome del pacchetto",
-      "close_modal": "Chiudi",
       "success": "Pacchetto ottenuto!",
       "success_detail": "{name}{'@'}0.0.0 è stato pubblicato su npm.",
       "success_hint": "Ora puoi pubblicare nuove versioni di questo pacchetto usando npm publish.",
@@ -640,9 +636,9 @@
       "nav_label": "Paginazione"
     },
     "count": {
-      "showing_filtered": "{filtered} di {total} pacchetti",
-      "showing_all": "{total} pacchetti",
-      "showing_paginated": "{pageSize} di {total} pacchetti"
+      "showing_filtered": "{filtered} di {count} pacchetti",
+      "showing_all": "{count} pacchetti",
+      "showing_paginated": "{pageSize} di {count} pacchetti"
     },
     "table": {
       "security_warning": "Avviso di sicurezza",

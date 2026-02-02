@@ -105,6 +105,12 @@ The connector will check your npm authentication, generate a connection token, a
 
 ## Code style
 
+When committing changes, try to keep an eye out for unintended formatting updates. These can make a pull request look noisier than it really is and slow down the review process. Sometimes IDEs automatically reformat files on save, which can unintentionally introduce extra changes.
+
+To help with this, the project uses `oxfmt` to handle formatting via a pre-commit hook. The hook will automatically reformat files when needed. If something can’t be fixed automatically, it will let you know what needs to be updated before you can commit.
+
+If you want to get ahead of any formatting issues, you can also run `pnpm lint:fix` before committing to fix formatting across the whole project.
+
 ### Typescript
 
 - We care about good types &ndash; never cast things to `any` 💪
@@ -181,7 +187,7 @@ import { hasProtocol } from 'ufo'
 
 | Type             | Convention               | Example                        |
 | ---------------- | ------------------------ | ------------------------------ |
-| Vue components   | PascalCase               | `MarkdownText.vue`             |
+| Vue components   | PascalCase               | `DateTime.vue`                 |
 | Pages            | kebab-case               | `search.vue`, `[...name].vue`  |
 | Composables      | camelCase + `use` prefix | `useNpmRegistry.ts`            |
 | Server routes    | kebab-case + method      | `search.get.ts`                |
@@ -284,6 +290,31 @@ To add a new locale:
 
 Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization.html#custom-pluralization) for more info.
 
+### Update translation
+
+We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
+If you see any outdated translations in your language, feel free to update the keys to match then English version.
+
+In order to make sure you have everything up-to-date, you can run:
+
+```bash
+pnpm i18n:check <country-code>
+```
+
+For example to check if all Japanese translation keys are up-to-date, run:
+
+```bash
+pnpm i18n:check ja-JP
+```
+
+To automatically add missing keys with English placeholders, use `--fix`:
+
+```bash
+pnpm i18n:check:fix fr-FR
+```
+
+This will add missing keys with `"EN TEXT TO REPLACE: {english text}"` as placeholder values, making it easier to see what needs translation.
+
 #### Country variants (advanced)
 
 Most languages only need a single locale file. Country variants are only needed when you want to support regional differences (e.g., `es-ES` for Spain vs `es-419` for Latin America).
@@ -344,13 +375,17 @@ We recommend the [i18n-ally](https://marketplace.visualstudio.com/items?itemName
 
 The extension is included in our workspace recommendations, so VSCode should prompt you to install it.
 
-### Formatting with locale
+### Formatting numbers and dates
 
-When formatting numbers or dates that should respect the user's locale, pass the locale:
+Use vue-i18n's built-in formatters for locale-aware formatting:
 
-```typescript
-const { locale } = useI18n()
-const formatted = formatNumber(12345, locale.value) // "12,345" in en-US
+```vue
+<template>
+  <p>{{ $n(12345) }}</p>
+  <!-- "12,345" in en-US, "12 345" in fr-FR -->
+  <p>{{ $d(new Date()) }}</p>
+  <!-- locale-aware date -->
+</template>
 ```
 
 ## Testing
@@ -374,10 +409,10 @@ describe('featureName', () => {
 
 ### Component accessibility tests
 
-All new components should have a basic accessibility test in `test/nuxt/components.spec.ts`. These tests use [axe-core](https://github.com/dequelabs/axe-core) to catch common accessibility violations.
+All Vue components should have accessibility tests in `test/nuxt/a11y.spec.ts`. These tests use [axe-core](https://github.com/dequelabs/axe-core) to catch common accessibility violations and run in a real browser environment via Playwright.
 
 ```typescript
-import MyComponent from '~/components/MyComponent.vue'
+import { MyComponent } from '#components'
 
 describe('MyComponent', () => {
   it('should have no accessibility violations', async () => {
@@ -393,6 +428,8 @@ describe('MyComponent', () => {
 ```
 
 The `runAxe` helper handles DOM isolation and disables page-level rules that don't apply to isolated component testing.
+
+A coverage test in `test/unit/a11y-component-coverage.spec.ts` ensures all components are either tested or explicitly skipped with justification. When you add a new component, this test will fail until you add accessibility tests for it.
 
 > [!IMPORTANT]
 > Just because axe-core doesn't find any obvious issues, it does not mean a component is accessible. Please do additional checks and use best practices.

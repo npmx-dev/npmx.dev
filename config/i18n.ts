@@ -134,11 +134,20 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'de-DE.json',
     name: 'Deutsch',
   },
-  /*{
-      code: 'hu-HU',
-      file: 'hu-HU.json',
-      name: 'Magyar',
-    },*/
+  {
+    code: 'hi-IN',
+    file: 'hi-IN.json',
+    name: 'हिंदी',
+  },
+  {
+    code: 'hu-HU',
+    file: 'hu-HU.json',
+    name: 'Magyar',
+    pluralRule: (choice: number) => {
+      const name = new Intl.PluralRules('hu-HU').select(choice)
+      return { zero: 0, one: 0, two: 1, few: 1, many: 1, other: 1 }[name]
+    },
+  },
   {
     code: 'zh-CN',
     file: 'zh-CN.json',
@@ -153,6 +162,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     code: 'ja-JP',
     file: 'ja-JP.json',
     name: '日本語',
+  },
+  {
+    code: 'ne-NP',
+    file: 'ne-NP.json',
+    name: 'नेपाली',
   },
   /*{
       code: 'nl-NL',
@@ -202,12 +216,16 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
         const name = new Intl.PluralRules('ru-RU').select(choice)
         return { zero: 2 /!* not used *!/, one: 0, two: 1 /!* not used *!/, few: 1, many: 2, other: 3 }[name]
       },
+    },*/
+  {
+    code: 'cs-CZ',
+    file: 'cs-CZ.json',
+    name: 'Čeština',
+    pluralRule: (choice: number) => {
+      const name = new Intl.PluralRules('cs-CZ').select(choice)
+      return { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 2 }[name]
     },
-    {
-      code: 'cs-CZ',
-      file: 'cs-CZ.json',
-      name: 'Česky',
-    },
+  } /*
     {
       code: 'pl-PL',
       file: 'pl-PL.json',
@@ -249,11 +267,32 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       code: 'ko-KR',
       file: 'ko-KR.json',
       name: '한국어',
-    },*/
+    },*/,
+  {
+    code: 'id-ID',
+    file: 'id-ID.json',
+    name: 'Indonesia',
+  },
   {
     code: 'it-IT',
     file: 'it-IT.json',
     name: 'Italiano',
+  },
+  {
+    code: 'pl-PL',
+    file: 'pl-PL.json',
+    name: 'Polski',
+    pluralRule: (choice: number) => {
+      if (choice === 0) return 0
+
+      const name = new Intl.PluralRules('pl-PL').select(choice)
+      return { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
+    },
+  },
+  {
+    code: 'pt-BR',
+    file: 'pt-BR.json',
+    name: 'Português (Brasil)',
   },
   /*{
       code: 'sv',

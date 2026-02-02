@@ -30,6 +30,10 @@ export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
 }
 
+export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {
+  hasProvenance?: true
+}
+
 /**
  * Slimmed down Packument for client-side use.
  * Strips unnecessary fields to reduce payload size.
@@ -52,8 +56,10 @@ export interface SlimPackument {
   'keywords'?: string[]
   'repository'?: { type?: string; url?: string; directory?: string }
   'bugs'?: { url?: string; email?: string }
+  /** current version */
+  'requestedVersion': SlimPackumentVersion | null
   /** Only includes dist-tag versions (with installScripts info added per version) */
-  'versions': Record<string, SlimPackumentVersion>
+  'versions': Record<string, SlimVersion>
 }
 
 /**
@@ -206,7 +212,6 @@ export interface NpmDownloadCount {
   package: string
 }
 
-/** @public */
 export interface NpmDownloadRange {
   downloads: Array<{
     downloads: number
@@ -221,21 +226,18 @@ export interface NpmDownloadRange {
  * Organization API types
  * These require authentication
  * Note: Not covered by @npm/types
- * @public
  */
 export interface NpmOrgMember {
   user: string
   role: 'developer' | 'admin' | 'owner'
 }
 
-/** @public */
 export interface NpmTeam {
   name: string
   description?: string
   members?: string[]
 }
 
-/** @public */
 export interface NpmPackageAccess {
   permissions: 'read-only' | 'read-write'
 }
@@ -243,7 +245,6 @@ export interface NpmPackageAccess {
 /**
  * Trusted Publishing types
  * Note: Not covered by @npm/types
- * @public
  */
 export interface NpmTrustedPublisher {
   type: 'github-actions' | 'gitlab-ci'

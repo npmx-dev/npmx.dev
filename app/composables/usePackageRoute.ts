@@ -8,13 +8,12 @@
  *   /@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
  *   /axios@1.13.3 → packageName: "axios", requestedVersion: "1.13.3"
  *   /@nuxt/kit@1.0.0 → packageName: "@nuxt/kit", requestedVersion: "1.0.0"
- * @public
  */
 export function usePackageRoute() {
   const route = useRoute('package')
 
   const parsedRoute = computed(() => {
-    const segments = route.params.package || []
+    const segments = route.params.package?.filter(Boolean) || []
 
     // Find the /v/ separator for version
     const vIndex = segments.indexOf('v')
