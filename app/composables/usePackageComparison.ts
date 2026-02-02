@@ -1,4 +1,10 @@
-import type { FacetValue, ComparisonFacet, ComparisonPackage, Packument } from '#shared/types'
+import type {
+  FacetValue,
+  ComparisonFacet,
+  ComparisonPackage,
+  Packument,
+  VulnerabilityTreeResult,
+} from '#shared/types'
 import { encodePackageName } from '#shared/utils/npm'
 import type { PackageAnalysisResponse } from './usePackageAnalysis'
 import { isBinaryOnlyPackage } from '#shared/utils/binary-detection'
@@ -17,7 +23,7 @@ export interface PackageComparisonData {
   analysis?: PackageAnalysisResponse
   vulnerabilities?: {
     count: number
-    severity: { critical: number; high: number; medium: number; low: number }
+    severity: { critical: number; high: number; moderate: number; low: number }
   }
   metadata?: {
     license?: string
@@ -98,9 +104,9 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
               ).catch(() => null),
               $fetch<PackageAnalysisResponse>(`/api/registry/analysis/${name}`).catch(() => null),
-              $fetch<{
-                vulnerabilities: Array<{ severity: string }>
-              }>(`/api/registry/vulnerabilities/${name}`).catch(() => null),
+              $fetch<VulnerabilityTreeResult>(`/api/registry/vulnerabilities/${name}`).catch(
+                () => null,
+              ),
             ])
 
             const versionData = pkgData.versions[latestVersion]
@@ -115,12 +121,14 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               exports: versionData?.exports,
             })
 
-            // Count vulnerabilities by severity
-            const vulnCounts = { critical: 0, high: 0, medium: 0, low: 0 }
-            const vulnList = vulns?.vulnerabilities ?? []
-            for (const v of vulnList) {
-              const sev = v.severity.toLowerCase() as keyof typeof vulnCounts
-              if (sev in vulnCounts) vulnCounts[sev]++
+            // Vulnerabilities
+            let vulnsTotal: number = 0
+            let vulnsSeverity = { critical: 0, high: 0, moderate: 0, low: 0 }
+
+            if (vulns) {
+              const { total, ...severity } = vulns.totalCounts
+              vulnsTotal = total
+              vulnsSeverity = severity
             }
 
             return {
@@ -134,8 +142,8 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
               vulnerabilities: {
-                count: vulnList.length,
-                severity: vulnCounts,
+                count: vulnsTotal,
+                severity: vulnsSeverity,
               },
               metadata: {
                 license: pkgData.license,
