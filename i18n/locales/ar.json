@@ -5,6 +5,9 @@
       "description": "متصفح أفضل لسجل npm. ابحث عن الحزم واستعرضها واستكشفها عبر واجهة حديثة."
     }
   },
+  "version": "الإصدار",
+  "built_at": "تم البناء في {0}",
+  "alt_logo": "شعار npmx",
   "tagline": "متصفح أفضل لسجل npm",
   "non_affiliation_disclaimer": "غير مرتبط بشركة npm, Inc.",
   "trademark_disclaimer": "npm علامة تجارية مسجلة لشركة npm, Inc. هذا الموقع غير مرتبط بشركة npm, Inc.",
@@ -24,7 +27,7 @@
     "found_packages": "تم العثور على {count} حزمة | تم العثور على حزمة واحدة | تم العثور على حزمتين | تم العثور على {count} حزم | تم العثور على {count} حزمة | تم العثور على {count} حزمة",
     "updating": "(جارٍ التحديث...)",
     "no_results": "لم يتم العثور على حزم لـ \"{query}\"",
-    "results": "نتائج البحث",
+    "title": "بحث",
     "not_taken": "الاسم {name} غير مأخوذ",
     "claim_prompt": "احجز اسم هذه الحزمة على npm",
     "claim_button": "احجز \"{name}\"",
@@ -43,7 +46,13 @@
     "popular_packages": "الحزم الشائعة",
     "search": "بحث",
     "settings": "الإعدادات",
-    "back": "عودة"
+    "compare": "مقارنة",
+    "back": "عودة",
+    "menu": "القائمة",
+    "mobile_menu": "قائمة التنقل",
+    "open_menu": "فتح القائمة",
+    "links": "روابط",
+    "tap_to_search": "اضغط للبحث"
   },
   "settings": {
     "title": "الإعدادات",
@@ -55,7 +64,7 @@
       "language": "اللغة"
     },
     "relative_dates": "تواريخ نسبية",
-    "relative_dates_description": "عرض التواريخ مثل \"منذ 3 أيام\" بدلًا من التاريخ كاملا.",
+    "relative_dates_description": "عرض التواريخ مثل \"منذ 3 أيام\" بدلًا من التاريخ كاملًا.",
     "include_types": "تضمين {'@'}types في التثبيت",
     "include_types_description": "إضافة حزمة {'@'}types إلى أوامر التثبيت للحزم غير المرفقة بأنواع TypeScript.",
     "hide_platform_packages": "إخفاء الحزم الخاصة بالمنصة في البحث",
@@ -95,6 +104,7 @@
     "go_back_home": "العودة إلى الصفحة الرئيسية",
     "view_on_npm": "عرض على npm",
     "per_week": "/ أسبوع",
+    "vanity_downloads_hint": "رقم زخرفي: لا توجد حزم معروضة | رقم زخرفي: للحزمة المعروضة | رقم زخرفي: للحزمتين المعروضتين | رقم زخرفي: مجموع {count} من الحزم المعروضة | رقم زخرفي: مجموع {count} من الحزم المعروضة | رقم زخرفي: مجموع {count} من الحزم المعروضة",
     "sort": {
       "name": "الاسم",
       "role": "الدور",
@@ -111,10 +121,21 @@
     "verified_provenance": "مصدر موثّق",
     "view_permalink": "عرض الرابط الدائم لهذا الإصدار",
     "navigation": "تصفح الحزمة",
+    "copy_name": "نسخ اسم الحزمة",
     "deprecation": {
       "package": "تم إهمال هذه الحزمة.",
       "version": "تم إهمال هذا الإصدار.",
       "no_reason": "لم يتم تقديم سبب"
+    },
+    "replacement": {
+      "title": "قد لا تحتاج إلى هذه التبعية.",
+      "native": "يمكن استبدالها بـ {replacement}، المتوفرة منذ Node {nodeVersion}.",
+      "simple": "أشار {community} إلى أن هذه الحزمة زائدة، مع النصيحة: {replacement}.",
+      "documented": "أشار {community} إلى أن هذه الحزمة لها بدائل أكثر أداءً.",
+      "none": "تم وضع علامة على هذه الحزمة بأنها لم تعد مطلوبة، ومن المرجح أن وظيفتها متاحة أصلًا في جميع المحركات.",
+      "learn_more": "اعرف المزيد",
+      "mdn": "MDN",
+      "community": "المجتمع"
     },
     "stats": {
       "license": "الترخيص",
@@ -122,8 +143,31 @@
       "install_size": "حجم التثبيت",
       "vulns": "الثغرات",
       "updated": "آخر تحديث",
+      "skills": "المهارات",
       "view_dependency_graph": "عرض مخطط الاعتماديات",
-      "inspect_dependency_tree": "فحص شجرة الاعتماديات"
+      "inspect_dependency_tree": "فحص شجرة الاعتماديات",
+      "size_tooltip": {
+        "unpacked": "{size} الحجم غير المضغوط (لهذه الحزمة)",
+        "total": "{size} الحجم غير المضغوط الإجمالي (بما في ذلك كل {count} اعتمادًا لـ linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "مهارات العميل (Agent Skills)",
+      "skills_available": "{count} مهارة متاحة | مهارة واحدة متاحة | ترجمتان متاحتان | {count} مهارات متاحة | {count} مهارة متاحة | {count} مهارة متاحة",
+      "view": "عرض",
+      "compatible_with": "متوافق مع {tool}",
+      "install": "تثبيت",
+      "installation_method": "طريقة التثبيت",
+      "learn_more": "اعرف المزيد",
+      "available_skills": "المهارات المتاحة",
+      "click_to_expand": "انقر للتوسيع",
+      "no_description": "لا يوجد وصف",
+      "file_counts": {
+        "scripts": "{count} سكربت | سكربت واحد | سكربتان | {count} سكربتات | {count} سكربت | {count} سكربت",
+        "refs": "{count} مرجع | مرجع واحد | مرجعان | {count} مراجع | {count} مرجع | {count} مرجع",
+        "assets": "{count} أصل | أصل واحد | أصلان | {count} أصول | {count} أصل | {count} أصل"
+      },
+      "view_source": "عرض المصدر"
     },
     "links": {
       "repo": "المستودع",
@@ -132,7 +176,8 @@
       "jsr": "jsr",
       "code": "الكود",
       "docs": "التوثيق",
-      "fund": "التمويل"
+      "fund": "التمويل",
+      "compare": "مقارنة"
     },
     "docs": {
       "not_available": "التوثيق غير متوفر",
@@ -177,14 +222,18 @@
       "other_versions": "إصدارات أخرى",
       "more_tagged": "{count} إصدار موسوم آخر | إصدار موسوم آخر | إصدارين موسومين أخريين | {count} إصدارات موسومة أخرى | {count} إصدار موسوم آخر | {count} إصدار موسوم آخر",
       "all_covered": "جميع الإصدارات مشمولة بالوسوم أعلاه",
-      "deprecated_title": "{version} (مهمل)"
+      "deprecated_title": "{version} (مهمل)",
+      "view_all": "عرض {count} إصدار | عرض إصدار واحدة | عرض إصدارين | عرض {count} إصدارات | عرض {count} إصدار | عرض {count} إصدار"
     },
     "dependencies": {
       "title": "الاعتماديات ({count})",
       "list_label": "اعتماديات الحزمة",
       "show_all": "عرض كل الاعتماديات ({count})",
       "optional": "اختياري",
-      "view_vulnerabilities": "عرض الثغرات"
+      "view_vulnerabilities": "عرض الثغرات",
+      "outdated_major": "أقدم بـ{count} إصدار رئيسي (الأحدث: {latest}) | أقدم بإصدار رئيسي واحد (الأحدث: {latest}) | أقدم بإصدارين رئيسيين (الأحدث: {latest}) | أقدم بـ{count} إصدارات رئيسية (الأحدث: {latest}) | أقدم بـ{count} إصدار رئيسي (الأحدث: {latest}) | أقدم بـ{count} إصدار رئيسي (الأحدث: {latest})",
+      "outdated_minor": "أقدم بـ{count} إصدار ثانوي (الأحدث: {latest}) | أقدم بإصدار ثانوي واحد (الأحدث: {latest}) | أقدم بإصدارين ثانويين (الأحدث: {latest}) | أقدم بـ{count} إصدارات ثانوية (الأحدث: {latest}) | أقدم بـ{count} إصدار ثانوي (الأحدث: {latest}) | أقدم بـ{count} إصدار ثانوي (الأحدث: {latest})",
+      "outdated_patch": "تحديث تصحيحي متاح (الأحدث: {latest})"
     },
     "peer_dependencies": {
       "title": "اعتماديات النظير ({count})",
@@ -243,12 +292,14 @@
       "esm": "ES Modules مدعومة",
       "cjs": "CommonJS مدعومة",
       "no_esm": "لا تدعم ES Modules",
+      "types_label": "الأنواع",
       "types_included": "أنواع TypeScript مضمّنة",
       "types_available": "أنواع TypeScript متوفرة عبر {package}",
       "no_types": "لا توجد أنواع TypeScript"
     },
     "license": {
-      "view_spdx": "عرض نص الترخيص على SPDX"
+      "view_spdx": "عرض نص الترخيص على SPDX",
+      "none": "لا شيء"
     },
     "vulnerabilities": {
       "no_description": "لا يتوفر وصف",
@@ -276,6 +327,11 @@
         "moderate": "متوسطة",
         "low": "منخفضة"
       }
+    },
+    "deprecated": {
+      "label": "مهمل",
+      "tree_found": "{count} تبعية مهملة | تبعية واحدة مهملة | تبعيتان مهملتان | {count} تبعيات مهملة | {count} تبعية مهملة | {count} تبعية مهملة",
+      "show_all": "عرض {count} حزمة مهملة | عرض حزمة مهملة واحدة | عرض حزمتين مهملتين | عرض {count} حزم مهملة | عرض {count} حزمة مهملة | عرض {count} حزمة مهملة"
     },
     "access": {
       "title": "وصول الفريق",
@@ -311,6 +367,7 @@
       "size": "الحجم",
       "deps": "الاعتماديات",
       "updated": "آخر تحديث",
+      "get_started": "ابدأ",
       "readme": "README",
       "maintainers": "المشرفون",
       "keywords": "الكلمات المفتاحية",
@@ -337,7 +394,11 @@
     },
     "modal": {
       "title": "الموصل المحلي",
+      "contributor_badge": "للمساهمين فقط",
+      "contributor_notice": "لم يُنشر الموصل بعد على npm. راجع {link} لمعرفة كيفية التشغيل محليًا.",
+      "contributor_link": "دليل المساهمة",
       "connected": "متصل",
+      "connected_as_user": "متصل كـ ~{user}",
       "connected_hint": "يمكنك الآن إدارة الحزم والمؤسسات من واجهة الويب.",
       "disconnect": "قطع الاتصال",
       "run_hint": "شغّل الموصل على جهازك لتمكين ميزات الإدارة.",
@@ -533,7 +594,8 @@
     "markdown_view_mode": {
       "preview": "معاينة",
       "code": "الكود"
-    }
+    },
+    "file_path": "مسار الملف"
   },
   "badges": {
     "provenance": {
@@ -553,7 +615,7 @@
     "search_placeholder_name": "فلترة حسب اسم الحزمة...",
     "search_placeholder_description": "فلترة حسب الوصف...",
     "search_placeholder_keywords": "فلترة حسب الكلمات المفتاحية...",
-    "search_placeholder_all": "فلترة حسب الكل أو استخدم name: desc: kw:",
+    "search_placeholder_all": "فلتر حسب الكل أو استخدم name: desc: kw:",
     "scope_name": "الإسم",
     "scope_name_description": "بحث في أسماء الحزم فقط",
     "scope_description": "الوصف",
@@ -706,6 +768,34 @@
       }
     }
   },
+  "account_menu": {
+    "connect": "اتصال",
+    "account": "الحساب",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "إدارة الحزم والمنظمات",
+    "atmosphere_desc": "ميزات اجتماعية وهوية",
+    "connect_npm_cli": "الاتصال بـ npm CLI",
+    "connect_atmosphere": "الاتصال بـ Atmosphere",
+    "connecting": "جارٍ الاتصال...",
+    "ops": "{count} عملية | عملية واحدة | عمليتان | {count} عمليات | {count} عملية | {count} عملية",
+    "disconnect": "قطع الاتصال"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "متصل كـ {'@'}{handle}",
+      "disconnect": "قطع الاتصال",
+      "connect_prompt": "اتصل بحساب Atmosphere الخاص بك",
+      "handle_label": "المعرّف",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "اتصال",
+      "create_account": "إنشاء حساب جديد",
+      "connect_bluesky": "الاتصال عبر Bluesky",
+      "what_is_atmosphere": "ما هو حساب Atmosphere؟",
+      "atmosphere_explanation": "{npmx} يستخدم {atproto} لتشغيل العديد من ميزاته الاجتماعية، مما يسمح للمستخدمين بامتلاك بياناتهم واستخدام حساب واحد لكل التطبيقات المتوافقة. بعد إنشاء حساب، يمكنك استخدام تطبيقات أخرى مثل {bluesky} و {tangled} بالحساب نفسه."
+    }
+  },
   "header": {
     "home": "الصفحة الرئيسية لـ npmx",
     "github": "GitHub",
@@ -724,6 +814,50 @@
       "error": "فشل تحميل المؤسسات",
       "empty": "لا توجد مؤسسات",
       "view_all": "عرض الكل"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "مقارنة الحزم",
+      "tagline": "قارن حزم npm جنبًا إلى جنب لمساعدتك على اختيار الأنسب.",
+      "meta_title": "مقارنة {packages} - npmx",
+      "meta_title_empty": "مقارنة الحزم - npmx",
+      "meta_description": "مقارنة جنبًا إلى جنب لـ {packages}",
+      "meta_description_empty": "مقارنة حزم npm جنبًا إلى جنب",
+      "section_packages": "الحزم",
+      "section_facets": "المحاور",
+      "section_comparison": "المقارنة",
+      "loading": "جارٍ تحميل بيانات الحزم...",
+      "error": "فشل تحميل بيانات الحزم. الرجاء المحاولة مرة أخرى.",
+      "empty_title": "اختر حزمًا للمقارنة",
+      "empty_description": "ابحث وأضف حزمتين على الأقل أعلاه لعرض مقارنة جنبًا إلى جنب لمقاييسها."
+    },
+    "selector": {
+      "search_label": "ابحث عن حزم",
+      "search_first": "ابحث عن حزمة...",
+      "search_add": "أضف حزمة أخرى...",
+      "searching": "جارٍ البحث...",
+      "remove_package": "إزالة {package}",
+      "packages_selected": "{count}/{max} حزمة محددة.",
+      "add_hint": "أضف حزمتين على الأقل للمقارنة.",
+      "loading_versions": "جارٍ تحميل الإصدارات...",
+      "select_version": "اختر إصدارًا"
+    },
+    "facets": {
+      "group_label": "محاور المقارنة",
+      "all": "الكل",
+      "none": "لا شيء",
+      "coming_soon": "قريبًا",
+      "select_all": "تحديد كل المحاور",
+      "deselect_all": "إلغاء تحديد كل المحاور",
+      "select_category": "تحديد جميع محاور {category}",
+      "deselect_category": "إلغاء تحديد جميع محاور {category}",
+      "categories": {
+        "performance": "الأداء",
+        "health": "الصحة",
+        "compatibility": "التوافق",
+        "security": "الأمان والامتثال"
+      }
     }
   }
 }

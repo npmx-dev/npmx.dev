@@ -27,7 +27,7 @@
     "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
-    "results": "Suchergebnisse",
+    "title": "Suche",
     "not_taken": "{name} ist noch frei",
     "claim_prompt": "Diesen Paketnamen auf npm beanspruchen",
     "claim_button": "\"{name}\" beanspruchen",
@@ -298,7 +298,8 @@
       "no_types": "Keine TypeScript-Typen"
     },
     "license": {
-      "view_spdx": "Lizenztext auf SPDX ansehen"
+      "view_spdx": "Lizenztext auf SPDX ansehen",
+      "none": "Keine"
     },
     "vulnerabilities": {
       "no_description": "Keine Beschreibung verfügbar",

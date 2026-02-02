@@ -27,7 +27,6 @@
     "found_packages": "Nie znaleziono pakietów | Znaleziono 1 pakiet | Znaleziono {count} pakiety | Znaleziono {count} pakietów | Znaleziono {count} pakietów",
     "updating": "(aktualizowanie...)",
     "no_results": "Nie znaleziono pakietów dla \"{query}\"",
-    "results": "Wyniki wyszukiwania",
     "not_taken": "{name} jest wolne",
     "claim_prompt": "Zajmij tę nazwę pakietu w npm",
     "claim_button": "Zajmij \"{name}\"",
@@ -149,6 +148,9 @@
         "unpacked": "{size} rozpakowany rozmiar (ten pakiet)",
         "total": "{size} łączny rozpakowany rozmiar (w tym {count} zależności dla linux-x64)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repozytorium",
@@ -374,14 +376,14 @@
     },
     "modal": {
       "title": "Lokalny konektor",
+      "contributor_badge": "Tylko dla współtwórców",
+      "contributor_notice": "Konektor nie jest jeszcze opublikowany na npm. Zobacz {link}, aby uruchomić lokalnie.",
+      "contributor_link": "przewodnik współtworzenia",
       "connected": "Połączono",
       "connected_as_user": "Połączono jako ~{user}",
       "connected_hint": "Możesz teraz zarządzać pakietami i organizacjami z poziomu interfejsu WWW.",
       "disconnect": "Rozłącz",
       "run_hint": "Uruchom konektor na swoim komputerze, aby włączyć funkcje administracyjne.",
-      "contributor_badge": "Tylko dla współtwórców",
-      "contributor_notice": "Konektor nie jest jeszcze opublikowany na npm. Zobacz {link}, aby uruchomić lokalnie.",
-      "contributor_link": "przewodnik współtworzenia",
       "copy_command": "Kopiuj komendę",
       "copied": "Skopiowano",
       "paste_token": "Następnie wklej token poniżej, aby się połączyć:",
@@ -393,34 +395,6 @@
       "warning_text": "To pozwala npmx uzyskać dostęp do twojego npm CLI. Łącz się tylko ze stronami, którym ufasz.",
       "connect": "Połącz",
       "connecting": "Łączenie..."
-    }
-  },
-  "account_menu": {
-    "connect": "połącz",
-    "account": "Konto",
-    "npm_cli": "npm CLI",
-    "atmosphere": "Atmosphere",
-    "npm_cli_desc": "Zarządzaj pakietami i organizacjami",
-    "atmosphere_desc": "Funkcje społecznościowe i tożsamość",
-    "connect_npm_cli": "Połącz z npm CLI",
-    "connect_atmosphere": "Połącz z Atmosphere",
-    "connecting": "Łączenie...",
-    "ops": "{count} operacja | {count} operacje | {count} operacji | {count} operacji | {count} operacji",
-    "disconnect": "Rozłącz"
-  },
-  "auth": {
-    "modal": {
-      "title": "Atmosphere",
-      "connected_as": "Połączono jako {'@'}{handle}",
-      "disconnect": "Rozłącz",
-      "connect_prompt": "Połącz się ze swoim kontem Atmosphere",
-      "handle_label": "Identyfikator",
-      "handle_placeholder": "alice.npmx.social",
-      "connect": "Połącz",
-      "create_account": "Utwórz nowe konto",
-      "connect_bluesky": "Połącz z Bluesky",
-      "what_is_atmosphere": "Czym jest konto Atmosphere?",
-      "atmosphere_explanation": "{npmx} używa {atproto} do zasilania wielu funkcji społecznościowych, umożliwiając użytkownikom posiadanie swoich danych i korzystanie z jednego konta we wszystkich kompatybilnych aplikacjach. Gdy utworzysz konto, możesz używać innych aplikacji, takich jak {bluesky} i {tangled}, z tym samym kontem."
     }
   },
   "operations": {
@@ -774,6 +748,34 @@
         "description": "Sprawdź, co nowego w npmx.",
         "cta": "Obserwuj na Bluesky"
       }
+    }
+  },
+  "account_menu": {
+    "connect": "połącz",
+    "account": "Konto",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Zarządzaj pakietami i organizacjami",
+    "atmosphere_desc": "Funkcje społecznościowe i tożsamość",
+    "connect_npm_cli": "Połącz z npm CLI",
+    "connect_atmosphere": "Połącz z Atmosphere",
+    "connecting": "Łączenie...",
+    "ops": "{count} operacja | {count} operacje | {count} operacji | {count} operacji | {count} operacji",
+    "disconnect": "Rozłącz"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Połączono jako {'@'}{handle}",
+      "disconnect": "Rozłącz",
+      "connect_prompt": "Połącz się ze swoim kontem Atmosphere",
+      "handle_label": "Identyfikator",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Połącz",
+      "create_account": "Utwórz nowe konto",
+      "connect_bluesky": "Połącz z Bluesky",
+      "what_is_atmosphere": "Czym jest konto Atmosphere?",
+      "atmosphere_explanation": "{npmx} używa {atproto} do zasilania wielu funkcji społecznościowych, umożliwiając użytkownikom posiadanie swoich danych i korzystanie z jednego konta we wszystkich kompatybilnych aplikacjach. Gdy utworzysz konto, możesz używać innych aplikacji, takich jak {bluesky} i {tangled}, z tym samym kontem."
     }
   },
   "header": {

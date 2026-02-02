@@ -120,15 +120,7 @@ defineOgImageComponent('Default', {
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-wrap items-center gap-4 mb-4">
-        <!-- Avatar placeholder -->
-        <div
-          class="size-16 shrink-0 rounded-full bg-bg-muted border border-border flex items-center justify-center"
-          aria-hidden="true"
-        >
-          <span class="text-2xl text-fg-subtle font-mono">{{
-            username.charAt(0).toUpperCase()
-          }}</span>
-        </div>
+        <UserAvatar :username="username" />
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">~{{ username }}</h1>
           <p class="text-fg-muted text-sm mt-1">{{ $t('user.orgs_page.title') }}</p>

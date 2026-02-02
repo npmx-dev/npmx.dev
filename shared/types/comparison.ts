@@ -124,9 +124,11 @@ export interface FacetValue<T = unknown> {
   /** Formatted display string (or ISO date string if type is 'date') */
   display: string
   /** Optional status indicator */
-  status?: 'good' | 'info' | 'warning' | 'bad' | 'neutral'
+  status?: 'good' | 'info' | 'warning' | 'bad' | 'neutral' | 'muted'
   /** Value type for special rendering (e.g., dates use DateTime component) */
   type?: 'date'
+  /** Optional tooltip text to explain the value */
+  tooltip?: string
 }
 
 /** Package data for comparison */

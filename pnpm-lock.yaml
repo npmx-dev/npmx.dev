@@ -186,8 +186,8 @@ importers:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-data-ui:
-        specifier: 3.13.7
-        version: 3.13.7(vue@3.5.27(typescript@5.9.3))
+        specifier: 3.14.1
+        version: 3.14.1(vue@3.5.27(typescript@5.9.3))
     devDependencies:
       '@npm/types':
         specifier: 2.1.0
@@ -219,6 +219,9 @@ importers:
       axe-core:
         specifier: 4.11.1
         version: 4.11.1
+      fast-npm-meta:
+        specifier: 1.0.0
+        version: 1.0.0
       knip:
         specifier: 5.82.1
         version: 5.82.1(@types/node@24.10.9)(typescript@5.9.3)
@@ -5686,6 +5689,9 @@ packages:
   fast-npm-meta@0.4.8:
     resolution: {integrity: sha512-ybZVlDZ2PkO79dosM+6CLZfKWRH8MF0PiWlw8M4mVWJl8IEJrPfxYc7Tsu830Dwj/R96LKXfePGTSzKWbPJ08w==}
 
+  fast-npm-meta@1.0.0:
+    resolution: {integrity: sha512-LZN+gRB2TnkkhRbNnTOgEXyhNBkDypngGX9nJzcKzrOaIQqfZnWEDYdxBqGw6bgiyl0tzpxDuTk1G7tKHyUcsg==}
+
   fast-redact@3.5.0:
     resolution: {integrity: sha512-dwsoQlS7h9hMeYUq1W++23NDcBLV4KqONnITDV9DjfS3q1SgDGVrBdvvTLUotWtPSD7asWDV9/CmsZPy8Hf70A==}
     engines: {node: '>=6'}
@@ -9241,8 +9247,8 @@ packages:
   vue-component-type-helpers@3.2.4:
     resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
-  vue-data-ui@3.13.7:
-    resolution: {integrity: sha512-tFz+sN5CaDUl1/VotE35lV3hvJPurkhE6j/e3DldOMDbDCunOYvwqGuMglmGxQ8n/w1N/iqnEWVTmhIJHYdd8Q==}
+  vue-data-ui@3.14.1:
+    resolution: {integrity: sha512-i7GNaNtw39Avy9VuDHGdLdDpH2sRsr2ZFRpiilOvQ0XA5887KCvd7J5IUQRpVNTQSaT7pFSSEMPwcQ7NfPHuVw==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -15801,6 +15807,8 @@ snapshots:
 
   fast-npm-meta@0.4.8: {}
 
+  fast-npm-meta@1.0.0: {}
+
   fast-redact@3.5.0: {}
 
   fast-uri@3.1.0: {}
@@ -20658,7 +20666,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.4: {}
 
-  vue-data-ui@3.13.7(vue@3.5.27(typescript@5.9.3)):
+  vue-data-ui@3.14.1(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
 

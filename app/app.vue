@@ -21,6 +21,16 @@ const localeMap = locales.value.reduce(
   {} as Record<string, Directions>,
 )
 
+const darkMode = usePreferredDark()
+const colorMode = useColorMode()
+const colorScheme = computed(() => {
+  return {
+    system: darkMode ? 'dark light' : 'light dark',
+    light: 'only light',
+    dark: 'only dark',
+  }[colorMode.preference]
+})
+
 useHead({
   htmlAttrs: {
     'lang': () => locale.value,
@@ -30,6 +40,7 @@ useHead({
   titleTemplate: titleChunk => {
     return titleChunk ? titleChunk : 'npmx - Better npm Package Browser'
   },
+  meta: [{ name: 'color-scheme', content: colorScheme }],
 })
 
 if (import.meta.server) {

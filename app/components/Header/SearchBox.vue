@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 withDefaults(
   defineProps<{
@@ -22,9 +23,7 @@ const showSearchBar = computed(() => {
 })
 
 // Local input value (updates immediately as user types)
-const searchQuery = shallowRef(
-  (Array.isArray(route.query.q) ? route.query.q[0] : route.query.q) ?? '',
-)
+const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
 
 // Pages that have their own local filter using ?q
 const pagesWithLocalFilter = new Set(['~username', 'org'])
@@ -64,7 +63,7 @@ watch(
     if (pagesWithLocalFilter.has(route.name as string)) {
       return
     }
-    const value = (urlQuery as string) ?? ''
+    const value = normalizeSearchParam(urlQuery)
     if (searchQuery.value !== value) {
       searchQuery.value = value
     }

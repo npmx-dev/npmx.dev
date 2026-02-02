@@ -6,7 +6,7 @@ test.describe('Create Command', () => {
 
   test.describe('Visibility', () => {
     test('/vite - should show create command (same maintainers)', async ({ page, goto }) => {
-      await goto('/vite', { waitUntil: 'domcontentloaded' })
+      await goto('/package/vite', { waitUntil: 'domcontentloaded' })
 
       // Create command section should be visible (SSR)
       // Use specific container to avoid matching README code blocks
@@ -15,14 +15,14 @@ test.describe('Create Command', () => {
       await expect(createCommandSection.locator('code')).toContainText(/create vite/i)
 
       // Link to create-vite should be present (uses sr-only text, so check attachment not visibility)
-      await expect(page.locator('a[href="/create-vite"]').first()).toBeAttached()
+      await expect(page.locator('a[href="/package/create-vite"]').first()).toBeAttached()
     })
 
     test('/next - should show create command (shared maintainer, same repo)', async ({
       page,
       goto,
     }) => {
-      await goto('/next', { waitUntil: 'domcontentloaded' })
+      await goto('/package/next', { waitUntil: 'domcontentloaded' })
 
       // Create command section should be visible (SSR)
       // Use specific container to avoid matching README code blocks
@@ -31,14 +31,14 @@ test.describe('Create Command', () => {
       await expect(createCommandSection.locator('code')).toContainText(/create next-app/i)
 
       // Link to create-next-app should be present (uses sr-only text, so check attachment not visibility)
-      await expect(page.locator('a[href="/create-next-app"]').first()).toBeAttached()
+      await expect(page.locator('a[href="/package/create-next-app"]').first()).toBeAttached()
     })
 
     test('/nuxt - should show create command (same maintainer, same org)', async ({
       page,
       goto,
     }) => {
-      await goto('/nuxt', { waitUntil: 'domcontentloaded' })
+      await goto('/package/nuxt', { waitUntil: 'domcontentloaded' })
 
       // Create command section should be visible (SSR)
       // nuxt has create-nuxt package, so command is "npm create nuxt"
@@ -52,7 +52,7 @@ test.describe('Create Command', () => {
       page,
       goto,
     }) => {
-      await goto('/color', { waitUntil: 'domcontentloaded' })
+      await goto('/package/color', { waitUntil: 'domcontentloaded' })
 
       // Wait for package to load
       await expect(page.locator('h1').filter({ hasText: 'color' })).toBeVisible()
@@ -67,7 +67,7 @@ test.describe('Create Command', () => {
       page,
       goto,
     }) => {
-      await goto('/lodash', { waitUntil: 'domcontentloaded' })
+      await goto('/package/lodash', { waitUntil: 'domcontentloaded' })
 
       // Wait for package to load
       await expect(page.locator('h1').filter({ hasText: 'lodash' })).toBeVisible()
@@ -81,7 +81,7 @@ test.describe('Create Command', () => {
 
   test.describe('Copy Functionality', () => {
     test('hovering create command shows copy button', async ({ page, goto }) => {
-      await goto('/vite', { waitUntil: 'hydration' })
+      await goto('/package/vite', { waitUntil: 'hydration' })
 
       await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
 
@@ -112,7 +112,7 @@ test.describe('Create Command', () => {
       // Grant clipboard permissions
       await context.grantPermissions(['clipboard-read', 'clipboard-write'])
 
-      await goto('/vite', { waitUntil: 'hydration' })
+      await goto('/package/vite', { waitUntil: 'hydration' })
       await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
 
       await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
@@ -142,7 +142,7 @@ test.describe('Create Command', () => {
 
   test.describe('Install Command Copy', () => {
     test('hovering install command shows copy button', async ({ page, goto }) => {
-      await goto('/lodash', { waitUntil: 'hydration' })
+      await goto('/package/lodash', { waitUntil: 'hydration' })
 
       // Find the install command container
       const installCommandContainer = page.locator('.group\\/installcmd').first()
@@ -167,7 +167,7 @@ test.describe('Create Command', () => {
       // Grant clipboard permissions
       await context.grantPermissions(['clipboard-read', 'clipboard-write'])
 
-      await goto('/lodash', { waitUntil: 'hydration' })
+      await goto('/package/lodash', { waitUntil: 'hydration' })
 
       // Find and hover over the install command container
       const installCommandContainer = page.locator('.group\\/installcmd').first()

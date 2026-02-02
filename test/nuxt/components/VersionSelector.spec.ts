@@ -26,7 +26,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -42,7 +42,7 @@ describe('VersionSelector', () => {
           currentVersion: '2.0.0',
           versions: { '2.0.0': {} },
           distTags: { latest: '2.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -56,7 +56,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {}, '2.0.0': {} },
           distTags: { latest: '2.0.0', old: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -72,7 +72,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -89,7 +89,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -107,7 +107,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -129,7 +129,7 @@ describe('VersionSelector', () => {
             latest: '2.0.0',
             old: '1.0.0',
           },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -148,7 +148,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {}, '2.0.0': {}, '3.0.0': {} },
           distTags: { latest: '3.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -167,7 +167,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -184,7 +184,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -206,7 +206,7 @@ describe('VersionSelector', () => {
             latest: '2.0.0',
             old: '1.0.0',
           },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -232,7 +232,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -256,7 +256,7 @@ describe('VersionSelector', () => {
             beta: '2.0.0',
             old: '1.0.0',
           },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -287,7 +287,7 @@ describe('VersionSelector', () => {
             latest: '2.0.0',
             old: '1.0.0',
           },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -313,7 +313,7 @@ describe('VersionSelector', () => {
             latest: '2.0.0',
             old: '1.0.0',
           },
-          urlPattern: '/code/test-package/v/{version}/src/index.ts',
+          urlPattern: '/package-code/test-package/v/{version}/src/index.ts',
         },
       })
 
@@ -321,7 +321,9 @@ describe('VersionSelector', () => {
       await button.trigger('click')
 
       const versionLink = component.findAll('a').find(a => a.text().includes('1.0.0'))
-      expect(versionLink?.attributes('href')).toBe('/code/test-package/v/1.0.0/src/index.ts')
+      expect(versionLink?.attributes('href')).toBe(
+        '/package-code/test-package/v/1.0.0/src/index.ts',
+      )
     })
   })
 
@@ -333,7 +335,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -357,7 +359,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -386,7 +388,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.2.0',
           versions: { '1.2.0': {} },
           distTags: { latest: '1.2.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -439,7 +441,7 @@ describe('VersionSelector', () => {
           currentVersion: '0.10.1',
           versions: { '0.10.1': {} },
           distTags: { latest: '0.10.1' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -480,7 +482,7 @@ describe('VersionSelector', () => {
             latest: '1.0.0',
             stable: '1.0.0',
           },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -499,7 +501,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -529,7 +531,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -559,7 +561,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -574,7 +576,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -591,7 +593,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -608,7 +610,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -629,7 +631,7 @@ describe('VersionSelector', () => {
             latest: '2.0.0',
             old: '1.0.0',
           },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -647,7 +649,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -666,7 +668,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -685,7 +687,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -707,7 +709,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -743,7 +745,7 @@ describe('VersionSelector', () => {
             latest: '2.0.0',
             old: '1.0.0',
           },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
       })
 
@@ -783,7 +785,7 @@ describe('VersionSelector', () => {
           currentVersion: '1.0.0',
           versions: { '1.0.0': {} },
           distTags: { latest: '1.0.0' },
-          urlPattern: '/docs/test-package/v/{version}',
+          urlPattern: '/package-docs/test-package/v/{version}',
         },
         attachTo: document.body,
       })

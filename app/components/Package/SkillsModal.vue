@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 function getSkillSourceUrl(skill: SkillListItem): string {
-  const base = `/code/${props.packageName}`
+  const base = `/package-code/${props.packageName}`
   const versionPath = props.version ? `/v/${props.version}` : ''
   return `${base}${versionPath}/skills/${skill.dirName}/SKILL.md`
 }
@@ -101,7 +101,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
         </template>
       </i18n-t>
       <a
-        href="/skills-npm"
+        href="/package/skills-npm"
         class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg transition-colors shrink-0"
       >
         {{ $t('package.skills.learn_more') }}
