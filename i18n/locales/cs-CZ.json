@@ -27,6 +27,7 @@
     "found_packages": "Nalezen {count} balíček | Nalezeny {count} balíčky | Nalezeno {count} balíčků",
     "updating": "(aktualizace...)",
     "no_results": "Žádné výsledky pro \"{query}\"",
+    "title": "hledání",
     "not_taken": "{name} není rezervováno",
     "claim_prompt": "Nárokovat toto jméno balíčku na npm",
     "claim_button": "Nárokovat \"{name}\"",
@@ -76,7 +77,8 @@
     "help_translate": "Pomozte přeložit npmx",
     "accent_colors": "Barvy akcentu",
     "clear_accent": "Vymazat barvu akcentu",
-    "translation_progress": "Pokrok překladu"
+    "translation_progress": "Pokrok překladu",
+    "background_themes": "Odstín pozadí"
   },
   "i18n": {
     "missing_keys": "{count} chybějící překlad | {count} chybějící překlady | {count} chybějících překladů",
@@ -141,6 +143,8 @@
       "deps": "Závislosti",
       "install_size": "Velikost instalace",
       "vulns": "Zranitelnosti",
+      "published": "Publikováno",
+      "published_tooltip": "Datum publikace verze {package}{'@'}{version}",
       "skills": "Dovednosti",
       "view_dependency_graph": "Zobrazit graf závislostí",
       "inspect_dependency_tree": "Prozkoumat strom závislostí",
@@ -204,6 +208,7 @@
     "compatibility": "Kompatibilita",
     "card": {
       "publisher": "Vydavatel",
+      "published": "Publikováno",
       "weekly_downloads": "Týdenní stažení",
       "keywords": "Klíčová slova",
       "license": "Licence"
@@ -363,6 +368,7 @@
       "weekly": "Týdenní",
       "size": "Velikost",
       "deps": "Závislosti",
+      "published": "Publikováno",
       "get_started": "Začínáme",
       "readme": "Readme",
       "maintainers": "Správci",
@@ -372,6 +378,7 @@
     },
     "sort": {
       "downloads": "Nejvíce stažení",
+      "published": "Nedávno publikováno",
       "name_asc": "Název (A-Z)",
       "name_desc": "Název (Z-A)"
     }
@@ -626,6 +633,13 @@
     "more_keywords": "+{count} další",
     "clear_all": "Vymazat vše",
     "remove_filter": "Odstranit filtr {label}",
+    "chips": {
+      "search": "Hledání",
+      "downloads": "Stažení",
+      "keyword": "Klíčové slovo",
+      "security": "Bezpečnost",
+      "updated": "Aktualizováno"
+    },
     "download_range": {
       "any": "Jakýkoliv",
       "lt100": "< 100",
@@ -656,6 +670,7 @@
       "downloads_day": "Stažení/den",
       "downloads_month": "Stažení/měsíc",
       "downloads_year": "Stažení/rok",
+      "published": "Naposledy publikováno",
       "name": "Název",
       "quality": "Kvalita",
       "popularity": "Popularita",
@@ -671,6 +686,7 @@
       "version": "Verze",
       "description": "Popis",
       "downloads": "Stažení/týden",
+      "published": "Naposledy publikováno",
       "maintainers": "Správci",
       "keywords": "Klíčová slova",
       "quality_score": "Skóre kvality",
@@ -845,11 +861,72 @@
       "deselect_all": "Zrušit výběr všech vlastností",
       "select_category": "Vybrat všechny vlastnosti kategorie {category}",
       "deselect_category": "Zrušit výběr všech vlastností kategorie {category}",
+      "binary_only_tooltip": "Tento balíček obsahuje pouze binární soubory a žádné exporty",
       "categories": {
         "performance": "Výkon",
         "health": "Zdraví",
         "compatibility": "Kompatibilita",
         "security": "Bezpečnost"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Velikost balíčku",
+          "description": "Velikost samotného balíčku (rozbaleného)"
+        },
+        "installSize": {
+          "label": "Velikost instalace",
+          "description": "Celková velikost instalace včetně všech závislostí"
+        },
+        "dependencies": {
+          "label": "Počet přímých závislostí",
+          "description": "Počet přímých závislostí"
+        },
+        "totalDependencies": {
+          "label": "Celkový počet závislostí",
+          "description": "Celkový počet závislostí včetně tranzitivních"
+        },
+        "downloads": {
+          "label": "Stažení/týden",
+          "description": "Počet stažení za týden"
+        },
+        "lastUpdated": {
+          "label": "Publikováno",
+          "description": "Kdy byla tato verze publikována"
+        },
+        "deprecated": {
+          "label": "Zastaralé?",
+          "description": "Zda byl balíček označen jako zastaralý"
+        },
+        "engines": {
+          "label": "Enginy",
+          "description": "Požadavky na verzi Node.js"
+        },
+        "types": {
+          "label": "Typy",
+          "description": "Definice typů TypeScript"
+        },
+        "moduleFormat": {
+          "label": "Formát modulu",
+          "description": "Podpora ESM/CJS"
+        },
+        "license": {
+          "label": "Licence",
+          "description": "Licence balíčku"
+        },
+        "vulnerabilities": {
+          "label": "Zranitelnosti",
+          "description": "Známé bezpečnostní zranitelnosti"
+        }
+      },
+      "values": {
+        "any": "Jakékoliv",
+        "none": "Žádné",
+        "unknown": "Neznámé",
+        "deprecated": "Zastaralé",
+        "not_deprecated": "Ne",
+        "types_included": "Zahrnuté",
+        "types_none": "Žádné",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
       }
     }
   }
