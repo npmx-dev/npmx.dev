@@ -60,8 +60,8 @@ export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
     category: 'health',
   },
   lastUpdated: {
-    label: 'Last Updated',
-    description: 'Most recent publish date',
+    label: 'Published',
+    description: 'When this version was published',
     category: 'health',
   },
   deprecated: {

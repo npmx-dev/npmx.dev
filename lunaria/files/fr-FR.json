@@ -135,7 +135,8 @@
       "deps": "Dépendances",
       "install_size": "Taille d'install.",
       "vulns": "Vulnérabilités",
-      "updated": "Mis à jour",
+      "published": "Publié",
+      "published_tooltip": "Date de publication de {package}{'@'}{version}",
       "view_dependency_graph": "Voir le graphe de dépendances",
       "inspect_dependency_tree": "Inspecter l'arbre de dépendances",
       "size_tooltip": {
@@ -183,7 +184,7 @@
     "compatibility": "Compatibilité",
     "card": {
       "publisher": "Éditeur",
-      "updated": "Mis à jour",
+      "published": "Publié",
       "weekly_downloads": "Téléchargements hebdomadaires",
       "keywords": "Mots-clés",
       "license": "Licence"
@@ -342,7 +343,7 @@
       "weekly": "Hebdo",
       "size": "Taille",
       "deps": "Dépendances",
-      "updated": "Mis à jour",
+      "published": "Publié",
       "get_started": "Commencer",
       "readme": "Readme",
       "maintainers": "Mainteneurs",
@@ -352,7 +353,7 @@
     },
     "sort": {
       "downloads": "Plus téléchargés",
-      "updated": "Récemment mis à jour",
+      "published": "Récemment publié",
       "name_asc": "Nom (A-Z)",
       "name_desc": "Nom (Z-A)"
     }
@@ -633,7 +634,7 @@
       "downloads_day": "Téléch./jour",
       "downloads_month": "Téléch./mois",
       "downloads_year": "Téléch./an",
-      "updated": "Dern. mise à jour",
+      "published": "Dern. publication",
       "name": "Nom",
       "quality": "Qualité",
       "popularity": "Popularité",
@@ -649,7 +650,7 @@
       "version": "Version",
       "description": "Description",
       "downloads": "Téléch./sem",
-      "updated": "Dern. mise à jour",
+      "published": "Dern. publication",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
       "quality_score": "Score de qualité",

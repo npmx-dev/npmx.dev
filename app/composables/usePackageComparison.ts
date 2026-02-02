@@ -21,6 +21,12 @@ export interface PackageComparisonData {
   }
   metadata?: {
     license?: string
+    /**
+     * Publish date of this version (ISO 8601 date-time string).
+     * Uses `time[version]` from the registry, NOT `time.modified`.
+     * For example, if the package was most recently published 3 years ago
+     * but a maintainer was removed last week, this would show the '3 years ago' time.
+     */
     lastUpdated?: string
     engines?: { node?: string; npm?: string }
     deprecated?: string
@@ -133,7 +139,9 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               },
               metadata: {
                 license: pkgData.license,
-                lastUpdated: pkgData.time?.modified,
+                // Use version-specific publish time, NOT time.modified (which can be
+                // updated by metadata changes like maintainer additions)
+                lastUpdated: pkgData.time?.[latestVersion],
                 engines: analysis?.engines,
                 deprecated: versionData?.deprecated,
               },

@@ -5,6 +5,9 @@
       "description": "更好的 npm 仓库浏览工具。通过更现代化的用户界面搜索，浏览，并探索软件包。"
     }
   },
+  "version": "版本",
+  "built_at": "构建于 {0}",
+  "alt_logo": "npmx 标志",
   "tagline": "更好的 npm 仓库浏览工具",
   "non_affiliation_disclaimer": "不与 npm, Inc. 有任何隶属关系",
   "trademark_disclaimer": "npm 是 npm, Inc. 的注册商标。本网站不与 npm, Inc. 有任何隶属关系。",
@@ -24,6 +27,7 @@
     "found_packages": "共找到 {count} 个包",
     "updating": "（更新中…）",
     "no_results": "未找到匹配“{query}”的包",
+    "title": "搜索",
     "not_taken": "{name} 尚未被占用",
     "claim_prompt": "在 npm 上声明",
     "claim_button": "声明“{name}”",
@@ -42,7 +46,13 @@
     "popular_packages": "热门软件包",
     "search": "搜索",
     "settings": "设置",
-    "back": "返回"
+    "compare": "比较包",
+    "back": "返回",
+    "menu": "菜单",
+    "mobile_menu": "导航菜单",
+    "open_menu": "打开菜单",
+    "links": "链接",
+    "tap_to_search": "点击搜索"
   },
   "settings": {
     "title": "设置",
@@ -67,7 +77,8 @@
     "help_translate": "帮助翻译 npmx",
     "accent_colors": "强调色",
     "clear_accent": "清除强调色",
-    "translation_progress": "翻译进度"
+    "translation_progress": "翻译进度",
+    "background_themes": "背景色调"
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",
@@ -94,6 +105,7 @@
     "go_back_home": "返回首页",
     "view_on_npm": "在 npm 上查看",
     "per_week": "/ 周",
+    "vanity_downloads_hint": "累计下载量：未显示包 | 累计下载量：显示的包 | 累计下载量：{count} 个显示的包的总和",
     "sort": {
       "name": "名称",
       "role": "角色",
@@ -110,6 +122,7 @@
     "verified_provenance": "已验证的来源",
     "view_permalink": "查看这个版本的链接",
     "navigation": "包导航",
+    "copy_name": "复制包名",
     "deprecation": {
       "package": "这个包已经被弃用。",
       "version": "这个版本已经被弃用。",
@@ -130,7 +143,9 @@
       "deps": "依赖项",
       "install_size": "安装大小",
       "vulns": "漏洞",
-      "updated": "最近更新",
+      "published": "发布于",
+      "published_tooltip": "日期 {package}{'@'}{version} 发布",
+      "skills": "技能",
       "view_dependency_graph": "查看依赖图",
       "inspect_dependency_tree": "查看依赖树",
       "size_tooltip": {
@@ -139,7 +154,22 @@
       }
     },
     "skills": {
-      "file_counts": {}
+      "title": "代理技能",
+      "skills_available": "{count} 个技能可用 | {count} 个技能可用",
+      "view": "查看",
+      "compatible_with": "兼容 {tool}",
+      "install": "安装",
+      "installation_method": "安装方法",
+      "learn_more": "了解更多",
+      "available_skills": "可用技能",
+      "click_to_expand": "点击展开",
+      "no_description": "无描述",
+      "file_counts": {
+        "scripts": "{count} 个脚本 | {count} 个脚本",
+        "refs": "{count} 个引用 | {count} 个引用",
+        "assets": "{count} 个资源 | {count} 个资源"
+      },
+      "view_source": "查看源代码"
     },
     "links": {
       "repo": "仓库",
@@ -148,7 +178,8 @@
       "jsr": "jsr",
       "code": "代码",
       "docs": "文档",
-      "fund": "资助"
+      "fund": "资助",
+      "compare": "比较"
     },
     "docs": {
       "not_available": "文档不可用",
@@ -177,7 +208,7 @@
     "compatibility": "兼容性",
     "card": {
       "publisher": "发布者",
-      "updated": "更新",
+      "published": "发布于",
       "weekly_downloads": "每周下载量",
       "keywords": "关键词",
       "license": "许可证"
@@ -269,7 +300,8 @@
       "no_types": "没有 TypeScript 类型"
     },
     "license": {
-      "view_spdx": "在 SPDX 上查看许可证文本"
+      "view_spdx": "在 SPDX 上查看许可证文本",
+      "none": "无"
     },
     "vulnerabilities": {
       "no_description": "没有可用的描述",
@@ -336,7 +368,7 @@
       "weekly": "每周",
       "size": "大小",
       "deps": "依赖",
-      "updated": "更新",
+      "published": "发布于",
       "get_started": "开始使用",
       "readme": "Readme",
       "maintainers": "维护者",
@@ -346,7 +378,7 @@
     },
     "sort": {
       "downloads": "最多下载的",
-      "updated": "最近更新的",
+      "published": "最近发布的",
       "name_asc": "名称（A-Z）",
       "name_desc": "名称（Z-A）"
     }
@@ -364,6 +396,9 @@
     },
     "modal": {
       "title": "本地连接器",
+      "contributor_badge": "贡献者专用",
+      "contributor_notice": "连接器尚未发布到 npm。请参阅 {link} 了解如何本地运行。",
+      "contributor_link": "贡献指南",
       "connected": "已连接",
       "connected_as_user": "已连接为 {'@'}{user}",
       "connected_hint": "现在您可以通过 Web UI 管理包和组织。",
@@ -561,7 +596,8 @@
     "markdown_view_mode": {
       "preview": "预览",
       "code": "代码"
-    }
+    },
+    "file_path": "文件路径"
   },
   "badges": {
     "provenance": {
@@ -627,7 +663,7 @@
       "downloads_day": "每日下载量",
       "downloads_month": "每月下载量",
       "downloads_year": "每年下载量",
-      "updated": "最近更新",
+      "published": "最近发布的",
       "name": "名称",
       "quality": "质量评分",
       "popularity": "受欢迎度",
@@ -643,7 +679,7 @@
       "version": "版本",
       "description": "描述",
       "downloads": "每周下载量",
-      "updated": "最近更新",
+      "published": "最近发布的",
       "maintainers": "维护者",
       "keywords": "关键词",
       "quality_score": "质量评分",
@@ -783,10 +819,48 @@
     }
   },
   "compare": {
-    "packages": {},
-    "selector": {},
+    "packages": {
+      "title": "比较包",
+      "tagline": "并排比较 npm 包，帮助您选择合适的包。",
+      "meta_title": "比较 {packages} - npmx",
+      "meta_title_empty": "比较包 - npmx",
+      "meta_description": "并排比较 {packages}",
+      "meta_description_empty": "并排比较 npm 包，帮助您选择合适的包。",
+      "section_packages": "包",
+      "section_facets": "方面",
+      "section_comparison": "比较",
+      "loading": "正在加载包数据…",
+      "error": "加载包数据失败。请重试。",
+      "empty_title": "选择要比较的包",
+      "empty_description": "在上方搜索并添加至少 2 个包，以查看它们指标的并排比较。"
+    },
+    "selector": {
+      "search_label": "搜索包",
+      "search_first": "搜索包...",
+      "search_add": "添加另一个包...",
+      "searching": "搜索中...",
+      "remove_package": "移除 {package}",
+      "packages_selected": "{count}/{max} 个包已选择。",
+      "add_hint": "至少添加 2 个包以进行比较。",
+      "loading_versions": "正在加载版本...",
+      "select_version": "选择版本"
+    },
     "facets": {
-      "categories": {}
+      "group_label": "比较方面",
+      "all": "全部",
+      "none": "无",
+      "coming_soon": "即将推出",
+      "select_all": "选择所有方面",
+      "deselect_all": "取消选择所有方面",
+      "select_category": "选择所有 {category} 方面",
+      "deselect_category": "取消选择所有 {category} 方面",
+      "binary_only_tooltip": "此包仅暴露二进制文件且无导出的指标",
+      "categories": {
+        "performance": "性能",
+        "health": "健康",
+        "compatibility": "兼容性",
+        "security": "安全与合规"
+      }
     }
   }
 }
