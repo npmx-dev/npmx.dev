@@ -293,37 +293,11 @@ function getCodeUrl(version: string): string {
             }"
           >
             <div class="flex flex-col gap-2">
-              <!-- Merge modified lines checkbox -->
-              <div class="flex items-center gap-2">
-                <input
-                  id="merge-modified-lines"
-                  v-model="mergeModifiedLines"
-                  type="checkbox"
-                  class="w-4 h-4 rounded border-border bg-bg text-blue-500 focus:ring-2 focus:ring-blue-500/50 cursor-pointer"
-                />
-                <label
-                  for="merge-modified-lines"
-                  class="text-sm cursor-pointer select-none whitespace-nowrap w-full"
-                >
-                  Merge modified lines
-                </label>
-              </div>
+              <!-- Merge modified lines toggle -->
+              <SettingsToggle label="Merge modified lines" v-model="mergeModifiedLines" />
 
-              <!-- Word wrap checkbox -->
-              <div class="flex items-center gap-2">
-                <input
-                  id="word-wrap"
-                  v-model="wordWrap"
-                  type="checkbox"
-                  class="w-4 h-4 rounded border-border bg-bg text-blue-500 focus:ring-2 focus:ring-blue-500/50 cursor-pointer"
-                />
-                <label
-                  for="word-wrap"
-                  class="text-sm cursor-pointer select-none whitespace-nowrap w-full"
-                >
-                  Word wrap
-                </label>
-              </div>
+              <!-- Word wrap toggle -->
+              <SettingsToggle label="Word wrap" v-model="wordWrap" />
 
               <!-- Sliders -->
               <motion.div
