@@ -57,6 +57,8 @@ afterEach(() => {
 import {
   AppFooter,
   AppHeader,
+  BaseCard,
+  UserAvatar,
   BuildEnvironment,
   CallToAction,
   CodeDirectoryListing,
@@ -107,6 +109,7 @@ import {
   ProvenanceBadge,
   Readme,
   SettingsAccentColorPicker,
+  SettingsBgThemePicker,
   SettingsToggle,
   TerminalExecute,
   TerminalInstall,
@@ -205,6 +208,25 @@ describe('component accessibility audits', () => {
   describe('AppFooter', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(AppFooter)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('BaseCard', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(BaseCard, {
+        slots: { default: '<p>Card content</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with exact match highlight', async () => {
+      const component = await mountSuspended(BaseCard, {
+        props: { isExactMatch: true },
+        slots: { default: '<p>Exact match content</p>' },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -1418,6 +1440,14 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('SettingsBgThemePicker', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SettingsBgThemePicker)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('TooltipBase', () => {
     it('should have no accessibility violations when hidden', async () => {
       const component = await mountSuspended(TooltipBase, {
@@ -1800,4 +1830,156 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
   })
+
+  describe('UserAvatar', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(UserAvatar, {
+        props: { username: 'testuser' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with short username', async () => {
+      const component = await mountSuspended(UserAvatar, {
+        props: { username: 'a' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with long username', async () => {
+      const component = await mountSuspended(UserAvatar, {
+        props: { username: 'verylongusernameexample' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+})
+
+describe('background theme accessibility', () => {
+  const pairs = [
+    ['light', 'neutral'],
+    ['dark', 'neutral'],
+    ['light', 'stone'],
+    ['dark', 'stone'],
+    ['light', 'zinc'],
+    ['dark', 'zinc'],
+    ['light', 'slate'],
+    ['dark', 'slate'],
+    ['light', 'black'],
+    ['dark', 'black'],
+  ] as const
+
+  function applyTheme(colorMode: string, bgTheme: string | null) {
+    document.documentElement.dataset.theme = colorMode
+    document.documentElement.classList.add(colorMode)
+    if (bgTheme) document.documentElement.dataset.bgTheme = bgTheme
+  }
+
+  afterEach(() => {
+    document.documentElement.removeAttribute('data-theme')
+    document.documentElement.removeAttribute('data-bg-theme')
+    document.documentElement.classList.remove('light', 'dark')
+  })
+
+  const packageResult = {
+    package: {
+      name: 'vue',
+      version: '3.5.0',
+      description: 'Framework',
+      date: '2024-01-15T00:00:00.000Z',
+      keywords: [],
+      links: {},
+      publisher: { username: 'evan' },
+    },
+    score: { final: 0.9, detail: { quality: 0.9, popularity: 0.9, maintenance: 0.9 } },
+    searchScore: 100000,
+  }
+
+  const components = [
+    { name: 'AppHeader', mount: () => mountSuspended(AppHeader) },
+    { name: 'AppFooter', mount: () => mountSuspended(AppFooter) },
+    { name: 'HeaderSearchBox', mount: () => mountSuspended(HeaderSearchBox) },
+    {
+      name: 'LoadingSpinner',
+      mount: () => mountSuspended(LoadingSpinner, { props: { text: 'Loading...' } }),
+    },
+    {
+      name: 'SettingsToggle',
+      mount: () =>
+        mountSuspended(SettingsToggle, { props: { label: 'Feature', description: 'Desc' } }),
+    },
+    { name: 'SettingsBgThemePicker', mount: () => mountSuspended(SettingsBgThemePicker) },
+    {
+      name: 'ProvenanceBadge',
+      mount: () =>
+        mountSuspended(ProvenanceBadge, {
+          props: { provider: 'github', packageName: 'vue', version: '3.0.0' },
+        }),
+    },
+    {
+      name: 'TerminalInstall',
+      mount: () => mountSuspended(TerminalInstall, { props: { packageName: 'vue' } }),
+    },
+    {
+      name: 'LicenseDisplay',
+      mount: () => mountSuspended(LicenseDisplay, { props: { license: 'MIT' } }),
+    },
+    {
+      name: 'DateTime',
+      mount: () => mountSuspended(DateTime, { props: { datetime: '2024-01-15T12:00:00.000Z' } }),
+    },
+    {
+      name: 'ViewModeToggle',
+      mount: () => mountSuspended(ViewModeToggle, { props: { modelValue: 'cards' } }),
+    },
+    {
+      name: 'TooltipApp',
+      mount: () =>
+        mountSuspended(TooltipApp, {
+          props: { text: 'Tooltip' },
+          slots: { default: '<button>Trigger</button>' },
+        }),
+    },
+    {
+      name: 'CollapsibleSection',
+      mount: () =>
+        mountSuspended(CollapsibleSection, {
+          props: { title: 'Title', id: 'section' },
+          slots: { default: '<p>Content</p>' },
+        }),
+    },
+    {
+      name: 'FilterChips',
+      mount: () =>
+        mountSuspended(FilterChips, {
+          props: {
+            chips: [{ id: 'text', type: 'text', label: 'Search', value: 'react' }] as FilterChip[],
+          },
+        }),
+    },
+    {
+      name: 'PackageCard',
+      mount: () => mountSuspended(PackageCard, { props: { result: packageResult } }),
+    },
+    {
+      name: 'PackageList',
+      mount: () => mountSuspended(PackageList, { props: { results: [packageResult] } }),
+    },
+  ]
+
+  for (const { name, mount } of components) {
+    describe(`${name} colors`, () => {
+      for (const [colorMode, bgTheme] of pairs) {
+        it(`${colorMode}/${bgTheme}`, async () => {
+          applyTheme(colorMode, bgTheme)
+          const results = await runAxe(await mount())
+          await new Promise(resolve => setTimeout(resolve, 2000))
+          expect(results.violations).toEqual([])
+        })
+      }
+    })
+  }
 })

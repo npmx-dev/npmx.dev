@@ -27,6 +27,7 @@
     "found_packages": "Nenhum pacote encontrado | 1 pacote encontrado | {count} pacotes encontrados",
     "updating": "(atualizando...)",
     "no_results": "Nenhum pacote encontrado para \"{query}\"",
+    "title": "pesquisar",
     "not_taken": "{name} não está em uso",
     "claim_prompt": "Reivindicar este nome de pacote no npm",
     "claim_button": "Reivindicar \"{name}\"",
@@ -141,7 +142,7 @@
       "deps": "Deps",
       "install_size": "Tamanho de Instalação",
       "vulns": "Vulnerabilidades",
-      "updated": "Atualizado",
+      "skills": "Habilidades",
       "view_dependency_graph": "Ver gráfico de dependências",
       "inspect_dependency_tree": "Inspecionar árvore de dependências",
       "size_tooltip": {
@@ -150,7 +151,22 @@
       }
     },
     "skills": {
-      "file_counts": {}
+      "title": "Habilidades do Agente",
+      "skills_available": "{count} habilidade disponível | {count} habilidades disponíveis",
+      "view": "Ver",
+      "compatible_with": "Compatível com {tool}",
+      "install": "Instalar",
+      "installation_method": "Método de Instalação",
+      "learn_more": "Saiba mais",
+      "available_skills": "Habilidades Disponíveis",
+      "click_to_expand": "Clique para expandir",
+      "no_description": "Sem descrição",
+      "file_counts": {
+        "scripts": "{count} script | {count} scripts",
+        "refs": "{count} ref | {count} refs",
+        "assets": "{count} asset | {count} assets"
+      },
+      "view_source": "Ver código-fonte"
     },
     "links": {
       "repo": "repositório",
@@ -189,7 +205,6 @@
     "compatibility": "Compatibilidade",
     "card": {
       "publisher": "Publicador",
-      "updated": "Atualizado",
       "weekly_downloads": "Downloads semanais",
       "keywords": "Palavras-chave",
       "license": "Licença"
@@ -281,7 +296,8 @@
       "no_types": "Sem tipos TypeScript"
     },
     "license": {
-      "view_spdx": "Ver texto da licença no SPDX"
+      "view_spdx": "Ver texto da licença no SPDX",
+      "none": "Nenhuma"
     },
     "vulnerabilities": {
       "no_description": "Nenhuma descrição disponível",
@@ -348,7 +364,6 @@
       "weekly": "Semanal",
       "size": "Tamanho",
       "deps": "Deps",
-      "updated": "Atualizado",
       "get_started": "Comece agora",
       "readme": "Readme",
       "maintainers": "Mantenedores",
@@ -358,7 +373,6 @@
     },
     "sort": {
       "downloads": "Mais baixados",
-      "updated": "Recentemente atualizado",
       "name_asc": "Nome (A-Z)",
       "name_desc": "Nome (Z-A)"
     }
@@ -643,7 +657,6 @@
       "downloads_day": "Downloads/dia",
       "downloads_month": "Downloads/mês",
       "downloads_year": "Downloads/ano",
-      "updated": "Última Atualização",
       "name": "Nome",
       "quality": "Qualidade",
       "popularity": "Popularidade",
@@ -659,7 +672,6 @@
       "version": "Versão",
       "description": "Descrição",
       "downloads": "Downloads/sem",
-      "updated": "Última Atualização",
       "maintainers": "Mantenedores",
       "keywords": "Palavras-chave",
       "quality_score": "Pontuação de qualidade",
@@ -754,27 +766,27 @@
     "connect": "conectar",
     "account": "Conta",
     "npm_cli": "npm CLI",
-    "atmosphere": "Atmosphere",
+    "atmosphere": "Atmosfera",
     "npm_cli_desc": "Gerenciar pacotes e organizações",
     "atmosphere_desc": "Recursos sociais e identidade",
     "connect_npm_cli": "Conectar ao CLI npm",
-    "connect_atmosphere": "Conectar ao Atmosphere",
+    "connect_atmosphere": "Conectar à Atmosfera",
     "connecting": "Conectando...",
     "ops": "{count} op | {count} ops",
     "disconnect": "Desconectar"
   },
   "auth": {
     "modal": {
-      "title": "Atmosphere",
+      "title": "Atmosfera",
       "connected_as": "Conectado como {'@'}{handle}",
       "disconnect": "Desconectar",
-      "connect_prompt": "Conecte-se com sua conta Atmosphere",
+      "connect_prompt": "Conecte-se com sua conta da Atmosfera",
       "handle_label": "Nome de identificação",
       "handle_placeholder": "alice.npmx.social",
       "connect": "Conectar",
       "create_account": "Criar uma nova conta",
       "connect_bluesky": "Conectar com Bluesky",
-      "what_is_atmosphere": "O que é uma conta Atmosphere?",
+      "what_is_atmosphere": "O que é uma conta da Atmosfera?",
       "atmosphere_explanation": "{npmx} usa o {atproto} para alimentar muitos de seus recursos sociais, permitindo que os usuários possuam seus dados e usem uma conta para todos os aplicativos compatíveis. Depois de criar uma conta, você pode usar outros aplicativos como {bluesky} e {tangled} com a mesma conta."
     }
   },

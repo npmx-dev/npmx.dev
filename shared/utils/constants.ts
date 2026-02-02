@@ -21,6 +21,10 @@ export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
 export const ERROR_SKILLS_FETCH_FAILED = 'Failed to fetch skills.'
 export const ERROR_SKILL_NOT_FOUND = 'Skill not found.'
 export const ERROR_SKILL_FILE_NOT_FOUND = 'Skill file not found.'
+/** @public */
+export const ERROR_GRAVATAR_FETCH_FAILED = 'Failed to fetch Gravatar profile.'
+/** @public */
+export const ERROR_GRAVATAR_EMAIL_UNAVAILABLE = "User's email not accessible."
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'
@@ -34,4 +38,12 @@ export const ACCENT_COLORS = {
   sky: 'oklch(0.787 0.128 230.318)',
   violet: 'oklch(0.714 0.148 286.067)',
   coral: 'oklch(0.704 0.177 14.75)',
+} as const
+
+export const BACKGROUND_THEMES = {
+  neutral: 'oklch(0.555 0 0)',
+  stone: 'oklch(0.555 0.013 58.123)',
+  zinc: 'oklch(0.555 0.016 285.931)',
+  slate: 'oklch(0.555 0.046 257.407)',
+  black: 'oklch(0.4 0 0)',
 } as const

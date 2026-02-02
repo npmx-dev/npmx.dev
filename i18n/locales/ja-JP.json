@@ -121,7 +121,6 @@
       "deps": "依存関係",
       "install_size": "インストールサイズ",
       "vulns": "脆弱性",
-      "updated": "最終更新",
       "view_dependency_graph": "依存関係グラフを表示",
       "inspect_dependency_tree": "依存関係ツリーを検査",
       "size_tooltip": {}
@@ -165,7 +164,6 @@
     "compatibility": "互換性",
     "card": {
       "publisher": "パブリッシャー",
-      "updated": "最終更新",
       "weekly_downloads": "週間ダウンロード数",
       "keywords": "キーワード",
       "license": "ライセンス"
@@ -319,7 +317,6 @@
       "weekly": "週間",
       "size": "サイズ",
       "deps": "依存関係",
-      "updated": "最終更新",
       "readme": "Readme",
       "maintainers": "メンテナ",
       "keywords": "キーワード",
@@ -328,7 +325,6 @@
     },
     "sort": {
       "downloads": "ダウンロード数順",
-      "updated": "更新順",
       "name_asc": "名前順（A-Z）",
       "name_desc": "名前順（Z-A）"
     }
@@ -569,7 +565,6 @@
       "downloads_day": "ダウンロード数/日",
       "downloads_month": "ダウンロード数/月",
       "downloads_year": "ダウンロード数/年",
-      "updated": "最終更新",
       "name": "パッケージ名",
       "quality": "品質",
       "popularity": "人気度",

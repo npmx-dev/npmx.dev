@@ -120,15 +120,7 @@ defineOgImageComponent('Default', {
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-wrap items-center gap-4 mb-4">
-        <!-- Avatar placeholder -->
-        <div
-          class="size-16 shrink-0 rounded-full bg-bg-muted border border-border flex items-center justify-center"
-          aria-hidden="true"
-        >
-          <span class="text-2xl text-fg-subtle font-mono">{{
-            username.charAt(0).toUpperCase()
-          }}</span>
-        </div>
+        <UserAvatar :username="username" />
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">~{{ username }}</h1>
           <p class="text-fg-muted text-sm mt-1">{{ $t('user.orgs_page.title') }}</p>
@@ -216,10 +208,7 @@ defineOgImageComponent('Default', {
                   >
                     {{ org.role }}
                   </span>
-                  <span
-                    v-else-if="org.isLoadingDetails"
-                    class="skeleton inline-block mt-1 h-5 w-16 rounded"
-                  />
+                  <SkeletonInline v-else-if="org.isLoadingDetails" class="mt-1 h-5 w-16 rounded" />
                 </div>
               </div>
 
@@ -236,7 +225,7 @@ defineOgImageComponent('Default', {
                       )
                     }}
                   </span>
-                  <span v-else-if="org.isLoadingDetails" class="skeleton inline-block h-4 w-20" />
+                  <SkeletonInline v-else-if="org.isLoadingDetails" class="h-4 w-20" />
                   <span v-else class="text-fg-subtle">—</span>
                 </div>
               </div>

@@ -141,7 +141,6 @@
       "deps": "Zależności",
       "install_size": "Rozmiar instalacji",
       "vulns": "Luki",
-      "updated": "Zaktualizowano",
       "view_dependency_graph": "Pokaż graf zależności",
       "inspect_dependency_tree": "Przejrzyj drzewo zależności",
       "size_tooltip": {
@@ -189,7 +188,6 @@
     "compatibility": "Zgodność",
     "card": {
       "publisher": "Wydawca",
-      "updated": "Zaktualizowano",
       "weekly_downloads": "Pobrania tygodniowe",
       "keywords": "Słowa kluczowe",
       "license": "Licencja"
@@ -348,7 +346,6 @@
       "weekly": "Tygodniowo",
       "size": "Rozmiar",
       "deps": "Zależności",
-      "updated": "Zaktualizowano",
       "get_started": "Zacznij",
       "readme": "README",
       "maintainers": "Opiekunowie",
@@ -358,7 +355,6 @@
     },
     "sort": {
       "downloads": "Najczęściej pobierane",
-      "updated": "Ostatnio aktualizowane",
       "name_asc": "Nazwa (A-Z)",
       "name_desc": "Nazwa (Z-A)"
     }
@@ -643,7 +639,6 @@
       "downloads_day": "Pobrania/dzień",
       "downloads_month": "Pobrania/mies.",
       "downloads_year": "Pobrania/rok",
-      "updated": "Ostatnia aktualizacja",
       "name": "Nazwa",
       "quality": "Jakość",
       "popularity": "Popularność",
@@ -659,7 +654,6 @@
       "version": "Wersja",
       "description": "Opis",
       "downloads": "Pobrania/tydz.",
-      "updated": "Ostatnia aktualizacja",
       "maintainers": "Opiekunowie",
       "keywords": "Słowa kluczowe",
       "quality_score": "Wynik jakości",

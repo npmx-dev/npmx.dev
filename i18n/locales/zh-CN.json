@@ -130,7 +130,6 @@
       "deps": "依赖项",
       "install_size": "安装大小",
       "vulns": "漏洞",
-      "updated": "最近更新",
       "view_dependency_graph": "查看依赖图",
       "inspect_dependency_tree": "查看依赖树",
       "size_tooltip": {
@@ -177,7 +176,6 @@
     "compatibility": "兼容性",
     "card": {
       "publisher": "发布者",
-      "updated": "更新",
       "weekly_downloads": "每周下载量",
       "keywords": "关键词",
       "license": "许可证"
@@ -336,7 +334,6 @@
       "weekly": "每周",
       "size": "大小",
       "deps": "依赖",
-      "updated": "更新",
       "get_started": "开始使用",
       "readme": "Readme",
       "maintainers": "维护者",
@@ -346,7 +343,6 @@
     },
     "sort": {
       "downloads": "最多下载的",
-      "updated": "最近更新的",
       "name_asc": "名称（A-Z）",
       "name_desc": "名称（Z-A）"
     }
@@ -627,7 +623,6 @@
       "downloads_day": "每日下载量",
       "downloads_month": "每月下载量",
       "downloads_year": "每年下载量",
-      "updated": "最近更新",
       "name": "名称",
       "quality": "质量评分",
       "popularity": "受欢迎度",
@@ -643,7 +638,6 @@
       "version": "版本",
       "description": "描述",
       "downloads": "每周下载量",
-      "updated": "最近更新",
       "maintainers": "维护者",
       "keywords": "关键词",
       "quality_score": "质量评分",
