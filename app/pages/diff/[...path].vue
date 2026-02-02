@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { CompareResponse, FileChange } from '#shared/types'
-import { getFileIcon } from '~/utils/file-icons'
 
 definePageMeta({
   name: 'diff',
@@ -133,17 +132,6 @@ function getSemverBadgeClass(semverDiff: string | null | undefined): string {
       return 'bg-purple-500/10 text-purple-500'
     default:
       return 'bg-bg-muted text-fg-subtle'
-  }
-}
-
-function getChangeIcon(type: FileChange['type']): string {
-  switch (type) {
-    case 'added':
-      return 'i-carbon-add-alt text-green-500'
-    case 'removed':
-      return 'i-carbon-subtract-alt text-red-500'
-    case 'modified':
-      return 'i-carbon-edit text-yellow-500'
   }
 }
 
