@@ -106,6 +106,7 @@ export const OperationTypeSchema = v.picklist([
   'owner:add',
   'owner:rm',
   'package:init',
+  'package:deprecate',
 ])
 
 /**
@@ -231,6 +232,18 @@ export const PackageInitParamsSchema = v.object({
   author: v.optional(UsernameSchema),
 })
 
+const PackageDeprecateParamsSchema = v.object({
+  pkg: PackageNameSchema,
+  message: v.pipe(
+    v.string(),
+    v.nonEmpty('Deprecation message is required'),
+    v.maxLength(500, 'Message is too long'),
+  ),
+  version: v.optional(v.pipe(v.string(), v.nonEmpty())),
+  dryRun: v.optional(v.picklist(['true', 'false'], 'dryRun must be "true" or "false"')),
+  registry: v.optional(v.pipe(v.string(), v.minLength(1, 'Registry URL cannot be empty'))),
+})
+
 // ============================================================================
 // Helper Functions
 // ============================================================================
@@ -279,6 +292,9 @@ export function validateOperationParams(
       break
     case 'package:init':
       v.parse(PackageInitParamsSchema, params)
+      break
+    case 'package:deprecate':
+      v.parse(PackageDeprecateParamsSchema, params)
       break
   }
 }

@@ -424,3 +424,30 @@ export async function packageInit(
     })
   }
 }
+
+/**
+ * Deprecate a package or a specific version with a custom message.
+ * @param pkg Package name (e.g. "vue" or "@nuxt/kit")
+ * @param reason Deprecation message shown to users
+ * @param version Optional version to deprecate (e.g. "1.0.0"); if omitted, deprecates the whole package
+ * @param options.dryRun If true, passes --dry-run to npm (report what would be done without making changes)
+ * @param options.registry Registry URL (e.g. "https://registry.npmjs.org"); if set, passes --registry
+ */
+export async function packageDeprecate(
+  pkg: string,
+  reason: string,
+  version?: string,
+  otp?: string,
+  options?: { dryRun?: boolean; registry?: string },
+): Promise<NpmExecResult> {
+  validatePackageName(pkg)
+  const target = version ? `${pkg}@${version}` : pkg
+  const args = ['deprecate', target, reason]
+  if (options?.dryRun) {
+    args.push('--dry-run')
+  }
+  if (options?.registry?.trim()) {
+    args.push('--registry', options.registry.trim())
+  }
+  return execNpm(args, { otp })
+}
