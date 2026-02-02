@@ -29,18 +29,7 @@ const pkgDescription = useMarkdown(() => ({
 </script>
 
 <template>
-  <article
-    class="group card-interactive scroll-mt-48 scroll-mb-6 relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover"
-    :class="{
-      'border-accent/30 contrast-more:border-accent/90 bg-accent/5': isExactMatch,
-    }"
-  >
-    <!-- Glow effect for exact matches -->
-    <div
-      v-if="isExactMatch"
-      class="absolute -inset-px rounded-lg bg-gradient-to-r from-accent/0 via-accent/20 to-accent/0 opacity-100 blur-sm -z-1 pointer-events-none motion-reduce:opacity-50"
-      aria-hidden="true"
-    />
+  <BaseCard :isExactMatch="isExactMatch">
     <div class="mb-2 flex items-baseline justify-start gap-2">
       <component
         :is="headingLevel ?? 'h3'"
@@ -94,7 +83,7 @@ const pkgDescription = useMarkdown(() => ({
               <dd class="font-mono">{{ result.package.publisher.username }}</dd>
             </div>
             <div v-if="result.package.date" class="flex items-center gap-1.5">
-              <dt class="sr-only">{{ $t('package.card.updated') }}</dt>
+              <dt class="sr-only">{{ $t('package.card.published') }}</dt>
               <dd>
                 <DateTime
                   :datetime="result.package.date"
@@ -169,5 +158,5 @@ const pkgDescription = useMarkdown(() => ({
         {{ keyword }}
       </li>
     </ul>
-  </article>
+  </BaseCard>
 </template>

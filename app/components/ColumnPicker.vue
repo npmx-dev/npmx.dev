@@ -42,7 +42,7 @@ const columnLabelKey: Record<string, string> = {
   version: 'filters.columns.version',
   description: 'filters.columns.description',
   downloads: 'filters.columns.downloads',
-  updated: 'filters.columns.updated',
+  updated: 'filters.columns.published',
   maintainers: 'filters.columns.maintainers',
   keywords: 'filters.columns.keywords',
   qualityScore: 'filters.columns.quality_score',

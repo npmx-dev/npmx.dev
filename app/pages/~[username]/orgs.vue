@@ -208,10 +208,7 @@ defineOgImageComponent('Default', {
                   >
                     {{ org.role }}
                   </span>
-                  <span
-                    v-else-if="org.isLoadingDetails"
-                    class="skeleton inline-block mt-1 h-5 w-16 rounded"
-                  />
+                  <SkeletonInline v-else-if="org.isLoadingDetails" class="mt-1 h-5 w-16 rounded" />
                 </div>
               </div>
 
@@ -228,7 +225,7 @@ defineOgImageComponent('Default', {
                       )
                     }}
                   </span>
-                  <span v-else-if="org.isLoadingDetails" class="skeleton inline-block h-4 w-20" />
+                  <SkeletonInline v-else-if="org.isLoadingDetails" class="h-4 w-20" />
                   <span v-else class="text-fg-subtle">—</span>
                 </div>
               </div>

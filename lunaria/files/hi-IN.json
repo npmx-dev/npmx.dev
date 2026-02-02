@@ -141,7 +141,6 @@
       "deps": "निर्भरता",
       "install_size": "इंस्टॉल साइज़",
       "vulns": "कमजोरियाँ",
-      "updated": "अद्यतन किया गया",
       "skills": "स्किल्स",
       "view_dependency_graph": "निर्भरता ग्राफ़ देखें",
       "inspect_dependency_tree": "निर्भरता ट्री का निरीक्षण करें",
@@ -205,7 +204,6 @@
     "compatibility": "संगतता",
     "card": {
       "publisher": "प्रकाशक",
-      "updated": "अद्यतन किया गया",
       "weekly_downloads": "साप्ताहिक डाउनलोड्स",
       "keywords": "कीवर्ड्स",
       "license": "अनुज्ञप्ति"
@@ -365,7 +363,6 @@
       "weekly": "साप्ताहिक",
       "size": "साइज़",
       "deps": "निर्भरताएँ",
-      "updated": "अद्यतन किया गया",
       "get_started": "शुरू करें",
       "readme": "रीडमी",
       "maintainers": "अनुरक्षक",
@@ -375,7 +372,6 @@
     },
     "sort": {
       "downloads": "सबसे अधिक डाउनलोड किए गए",
-      "updated": "हाल ही में अद्यतन किए गए",
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     }
@@ -660,7 +656,6 @@
       "downloads_day": "डाउनलोड्स/दिन",
       "downloads_month": "डाउनलोड्स/महीना",
       "downloads_year": "डाउनलोड्स/वर्ष",
-      "updated": "अंतिम अद्यतन",
       "name": "नाम",
       "quality": "गुणवत्ता",
       "popularity": "लोकप्रियता",
@@ -676,7 +671,6 @@
       "version": "संस्करण",
       "description": "विवरण",
       "downloads": "डाउनलोड्स/सप्ताह",
-      "updated": "अंतिम अद्यतन",
       "maintainers": "अनुरक्षक",
       "keywords": "कीवर्ड्स",
       "quality_score": "गुणवत्ता स्कोर",

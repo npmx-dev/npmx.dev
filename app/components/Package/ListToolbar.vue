@@ -91,7 +91,7 @@ const sortKeyLabelKeys: Record<SortKey, string> = {
   'downloads-day': 'filters.sort.downloads_day',
   'downloads-month': 'filters.sort.downloads_month',
   'downloads-year': 'filters.sort.downloads_year',
-  'updated': 'filters.sort.updated',
+  'updated': 'filters.sort.published',
   'name': 'filters.sort.name',
   'quality': 'filters.sort.quality',
   'popularity': 'filters.sort.popularity',

@@ -166,10 +166,10 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
       <!-- Main content -->
       <main class="flex-1 min-w-0">
         <div v-if="showLoading" class="p-6 sm:p-8 lg:p-12 space-y-4">
-          <div class="skeleton h-8 w-64 rounded" />
-          <div class="skeleton h-4 w-full max-w-2xl rounded" />
-          <div class="skeleton h-4 w-5/6 max-w-2xl rounded" />
-          <div class="skeleton h-4 w-3/4 max-w-2xl rounded" />
+          <SkeletonBlock class="h-8 w-64 rounded" />
+          <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
+          <SkeletonBlock class="h-4 w-5/6 max-w-2xl rounded" />
+          <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
         </div>
 
         <div v-else-if="showEmptyState" class="p-6 sm:p-8 lg:p-12">
