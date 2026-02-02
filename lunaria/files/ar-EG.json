@@ -6,7 +6,7 @@
     }
   },
   "version": "الإصدار",
-  "built_at": "تم البناء في {0}",
+  "built_at": "تم البناء {0}",
   "alt_logo": "شعار npmx",
   "tagline": "متصفح أفضل لسجل npm",
   "non_affiliation_disclaimer": "غير مرتبط بشركة npm, Inc.",
