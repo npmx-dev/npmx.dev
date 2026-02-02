@@ -19,14 +19,6 @@ const uid = useId()
 const internalId = `${model.value}-${uid}`
 
 const checked = computed(() => model.value === props.value)
-
-const onChange = () => {
-  model.value = props.value
-}
-
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
 </script>
 
 <template>
@@ -48,9 +40,8 @@ const emit = defineEmits<{
       :name="props.value"
       :id="internalId"
       :value="props.value"
-      :checked="checked"
+      v-model="model"
       :disabled="props.disabled ? true : undefined"
-      @change="onChange"
     />
     <slot />
   </label>
