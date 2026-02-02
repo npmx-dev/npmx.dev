@@ -29,14 +29,9 @@ defineProps<{
       :data-suggestion-index="index"
       class="flex items-center gap-4 focus-visible:outline-none after:content-[''] after:absolute after:inset-0"
     >
-      <!-- Avatar placeholder -->
-      <div
-        class="w-10 h-10 shrink-0 flex items-center justify-center border border-border"
-        :class="type === 'org' ? 'rounded-lg bg-bg-muted' : 'rounded-full bg-bg-muted'"
-        aria-hidden="true"
-      >
-        <span class="text-lg text-fg-subtle font-mono">{{ name.charAt(0).toUpperCase() }}</span>
-      </div>
+      <!-- Avatar -->
+      <OrgAvatar v-if="type === 'org'" :org-name="name" size="sm" />
+      <UserAvatar v-else :username="name" size="sm" />
 
       <div class="min-w-0 flex-1">
         <div class="flex items-center gap-2">

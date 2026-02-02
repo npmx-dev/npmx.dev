@@ -140,15 +140,8 @@ defineOgImageComponent('Default', {
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
       <div class="flex flex-wrap items-end gap-4">
-        <!-- Org avatar placeholder -->
-        <div
-          class="size-16 shrink-0 rounded-lg bg-bg-muted border border-border flex items-center justify-center"
-          aria-hidden="true"
-        >
-          <span class="text-2xl text-fg-subtle font-mono">{{
-            orgName.charAt(0).toUpperCase()
-          }}</span>
-        </div>
+        <!-- Org avatar -->
+        <OrgAvatar :org-name="orgName" size="lg" />
         <div>
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">@{{ orgName }}</h1>
           <p v-if="status === 'success'" class="text-fg-muted text-sm mt-1">

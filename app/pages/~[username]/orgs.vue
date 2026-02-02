@@ -190,14 +190,7 @@ defineOgImageComponent('Default', {
             >
               <div class="flex items-start gap-4 mb-4">
                 <!-- Org avatar -->
-                <div
-                  class="w-14 h-14 rounded-lg bg-bg-muted border border-border flex items-center justify-center flex-shrink-0"
-                  aria-hidden="true"
-                >
-                  <span class="text-2xl text-fg-subtle font-mono">{{
-                    org.name.charAt(0).toUpperCase()
-                  }}</span>
-                </div>
+                <OrgAvatar :org-name="org.name" />
                 <div class="min-w-0 flex-1">
                   <h3 class="font-mono text-lg text-fg truncate">@{{ org.name }}</h3>
                   <!-- Role badge -->
