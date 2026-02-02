@@ -1706,7 +1706,9 @@ describe('component accessibility audits', () => {
   describe('Readme', () => {
     it('should have no accessibility violations with slot content', async () => {
       const component = await mountSuspended(Readme, {
-        slots: { default: '<h3>README</h3><p>Some content</p>' },
+        props: {
+          html: '<h3>README</h3><p>Some content</p>',
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

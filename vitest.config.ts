@@ -33,6 +33,9 @@ export default defineConfig({
                 experimental: {
                   viteEnvironmentApi: false,
                 },
+                pwa: {
+                  pwaAssets: { disabled: true },
+                },
                 ogImage: { enabled: false },
               },
             },
