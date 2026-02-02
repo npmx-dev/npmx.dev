@@ -248,6 +248,9 @@ export default defineNuxtConfig({
         noUnusedLocals: true,
       },
     },
+    sharedTsConfig: {
+      include: ['../test/unit/shared/**/*.ts'],
+    },
     nodeTsConfig: {
       compilerOptions: {
         allowImportingTsExtensions: true,

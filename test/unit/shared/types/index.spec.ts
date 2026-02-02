@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import type { NpmPackage, NpmSearchResponse } from '../../../../shared/types'
+import type { Packument, NpmSearchResponse } from '../../../../shared/types'
 
 describe('npm registry types', () => {
   it('should correctly type a package response', () => {
-    const pkg: NpmPackage = {
+    const pkg: Packument = {
       '_id': 'test-package',
       '_rev': '1-abc123',
       'name': 'test-package',
@@ -59,6 +59,7 @@ describe('npm registry types', () => {
       ],
       total: 1,
       time: '2024-01-01T00:00:00.000Z',
+      isStale: false,
     }
 
     expect(response.total).toBe(1)
