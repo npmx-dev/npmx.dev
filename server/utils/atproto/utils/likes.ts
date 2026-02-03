@@ -149,11 +149,17 @@ export class PackageLikesUtils {
     const subjectRef = PACKAGE_SUBJECT_REF(packageName)
 
     const splitAtUri = atUri.replace('at://', '').split('/')
-    const backLink = {
+    const collection = splitAtUri[1]
+    const rkey = splitAtUri[2]
+
+    if (!collection || !rkey) {
+      throw new Error(`Invalid atUri given: ${atUri}`)
+    }
+    const backLink: Backlink = {
       did: usersDid,
-      collection: splitAtUri[1],
-      rkey: splitAtUri[2],
-    } as Backlink
+      collection,
+      rkey,
+    }
 
     // We store the backlink incase a user is liking and unlikign rapidly. constellation takes a few seconds to capture the backlink
     const usersBackLinkKey = CACHE_USERS_BACK_LINK(packageName, usersDid)

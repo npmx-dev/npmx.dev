@@ -22,7 +22,7 @@ function isCacheEntryStale(entry: LocalCachedEntry): boolean {
 /**
  * Local implmentation of a cache to be used during development
  */
-export class StorageCacheAdapter implements CacheAdapter {
+export class LocalCacheAdapter implements CacheAdapter {
   private readonly storage = useStorage('generic-cache')
 
   async get<T>(key: string): Promise<T | undefined> {

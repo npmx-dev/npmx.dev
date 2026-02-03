@@ -10,5 +10,5 @@ export function getCacheAdatper(prefix: string): CacheAdapter {
     })
     return new RedisCacheAdatper(redis, prefix)
   }
-  return new StorageCacheAdapter()
+  return new LocalCacheAdapter()
 }
