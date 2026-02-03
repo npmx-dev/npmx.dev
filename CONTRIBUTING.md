@@ -8,11 +8,21 @@ Thank you for your interest in contributing! ❤️ This document provides guide
 
 ## Goals
 
-We want to create 'a fast, modern browser for the npm registry.' This means, among other things:
+The goal of [npmx.dev](https://npmx.dev) is to build a fast, modern and open-source browser for the npm registry, prioritizing speed, simplicity and a community-driven developer experience.
 
-- We don't aim to replace the [npmjs.com](https://www.npmjs.com/) registry, just provide a better UI and DX.
-- Layout shift, flakiness, slowness is The Worst. We need to continually iterate to create the most performant, best DX possible.
-- We want to provide information in the best way. We don't want noise, cluttered display, or confusing UI. If in doubt: choose simplicity.
+### Core values
+
+- Speed
+- Simplicity
+- Community-first
+
+### Target audience
+
+npmx is built for open-source developers, by open-source developers.
+
+Our goal is to create tools and capabilities that solve real problems for package maintainers and power users, while also providing a great developer experience for everyone who works in the JavaScript ecosystem.
+
+This focus helps guide our project decisions as a community and what we choose to build.
 
 ## Table of Contents
 
@@ -148,6 +158,10 @@ When committing changes, try to keep an eye out for unintended formatting update
 To help with this, the project uses `oxfmt` to handle formatting via a pre-commit hook. The hook will automatically reformat files when needed. If something can’t be fixed automatically, it will let you know what needs to be updated before you can commit.
 
 If you want to get ahead of any formatting issues, you can also run `pnpm lint:fix` before committing to fix formatting across the whole project.
+
+### npmx name
+
+When displaying the project name anywhere in the UI, use `npmx` in all lowercase letters.
 
 ### TypeScript
 
