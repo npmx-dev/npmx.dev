@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { setResponseHeader } from 'h3'
 import type { DocsResponse } from '#shared/types'
-import { assertValidPackageName } from '#shared/utils/npm'
+import { assertValidPackageName, fetchLatestVersion } from '#shared/utils/npm'
 
 definePageMeta({
   name: 'docs',
+  path: '/package-docs/:path+',
+  alias: ['/package/docs/:path+', '/docs/:path+'],
 })
 
 const route = useRoute('docs')
 const router = useRouter()
 
 const parsedRoute = computed(() => {
-  const segments = route.params.path || []
+  const segments = route.params.path?.filter(Boolean)
   const vIndex = segments.indexOf('v')
 
   if (vIndex === -1 || vIndex >= segments.length - 1) {
@@ -39,14 +41,13 @@ const { data: pkg } = usePackage(packageName)
 
 const latestVersion = computed(() => pkg.value?.['dist-tags']?.latest ?? null)
 
-if (import.meta.server && !requestedVersion.value) {
+if (import.meta.server && !requestedVersion.value && packageName.value) {
   const app = useNuxtApp()
-  const { data: pkg } = await usePackage(packageName)
-  const latest = pkg.value?.['dist-tags']?.latest
-  if (latest) {
+  const version = await fetchLatestVersion(packageName.value)
+  if (version) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
     app.runWithContext(() =>
-      navigateTo('/docs/' + packageName.value + '/v/' + latest, { redirectCode: 302 }),
+      navigateTo('/package-docs/' + packageName.value + '/v/' + version, { redirectCode: 302 }),
     )
   }
 }
@@ -55,7 +56,7 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      router.replace(`/docs/${name}/v/${latest}`)
+      router.replace(`/package-docs/${name}/v/${latest}`)
     }
   },
   { immediate: true },
@@ -121,7 +122,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
           <div class="flex items-center gap-3 min-w-0">
             <NuxtLink
               v-if="packageName"
-              :to="`/${packageName}`"
+              :to="{ name: 'package', params: { package: [packageName] } }"
               class="font-mono text-lg sm:text-xl font-semibold text-fg hover:text-fg-muted transition-colors truncate"
             >
               {{ packageName }}
@@ -132,7 +133,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
               :current-version="resolvedVersion"
               :versions="pkg.versions"
               :dist-tags="pkg['dist-tags']"
-              :url-pattern="`/docs/${packageName}/v/{version}`"
+              :url-pattern="`/package-docs/${packageName}/v/{version}`"
             />
             <span v-else-if="resolvedVersion" class="text-fg-subtle font-mono text-sm shrink-0">
               {{ resolvedVersion }}
@@ -165,10 +166,10 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
       <!-- Main content -->
       <main class="flex-1 min-w-0">
         <div v-if="showLoading" class="p-6 sm:p-8 lg:p-12 space-y-4">
-          <div class="skeleton h-8 w-64 rounded" />
-          <div class="skeleton h-4 w-full max-w-2xl rounded" />
-          <div class="skeleton h-4 w-5/6 max-w-2xl rounded" />
-          <div class="skeleton h-4 w-3/4 max-w-2xl rounded" />
+          <SkeletonBlock class="h-8 w-64 rounded" />
+          <SkeletonBlock class="h-4 w-full max-w-2xl rounded" />
+          <SkeletonBlock class="h-4 w-5/6 max-w-2xl rounded" />
+          <SkeletonBlock class="h-4 w-3/4 max-w-2xl rounded" />
         </div>
 
         <div v-else-if="showEmptyState" class="p-6 sm:p-8 lg:p-12">
@@ -180,7 +181,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
             <div class="flex gap-4 mt-4">
               <NuxtLink
                 v-if="packageName"
-                :to="`/${packageName}`"
+                :to="{ name: 'package', params: { package: [packageName] } }"
                 class="link-subtle font-mono text-sm"
               >
                 View package

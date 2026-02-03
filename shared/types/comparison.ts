@@ -20,8 +20,6 @@ export type ComparisonFacet =
 /** Facet metadata for UI display */
 export interface FacetInfo {
   id: ComparisonFacet
-  label: string
-  description: string
   category: 'performance' | 'health' | 'compatibility' | 'security'
   comingSoon?: boolean
 }
@@ -33,67 +31,43 @@ export const CATEGORY_ORDER = ['performance', 'health', 'compatibility', 'securi
 export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
   // Performance
   packageSize: {
-    label: 'Package Size',
-    description: 'Size of the package itself (unpacked)',
     category: 'performance',
   },
   installSize: {
-    label: 'Install Size',
-    description: 'Total install size including all dependencies',
     category: 'performance',
   },
   dependencies: {
-    label: '# Direct Deps',
-    description: 'Number of direct dependencies',
     category: 'performance',
   },
   totalDependencies: {
-    label: '# Total Deps',
-    description: 'Total number of dependencies including transitive',
     category: 'performance',
     comingSoon: true,
   },
   // Health
   downloads: {
-    label: 'Downloads/wk',
-    description: 'Weekly download count',
     category: 'health',
   },
   lastUpdated: {
-    label: 'Last Updated',
-    description: 'Most recent publish date',
     category: 'health',
   },
   deprecated: {
-    label: 'Deprecated?',
-    description: 'Whether the package is deprecated',
     category: 'health',
   },
   // Compatibility
   engines: {
-    label: 'Engines',
-    description: 'Node.js version requirements',
     category: 'compatibility',
   },
   types: {
-    label: 'Types',
-    description: 'TypeScript type definitions',
     category: 'compatibility',
   },
   moduleFormat: {
-    label: 'Module Format',
-    description: 'ESM/CJS support',
     category: 'compatibility',
   },
   // Security
   license: {
-    label: 'License',
-    description: 'Package license',
     category: 'security',
   },
   vulnerabilities: {
-    label: 'Vulnerabilities',
-    description: 'Known security vulnerabilities',
     category: 'security',
   },
 }
@@ -124,9 +98,11 @@ export interface FacetValue<T = unknown> {
   /** Formatted display string (or ISO date string if type is 'date') */
   display: string
   /** Optional status indicator */
-  status?: 'good' | 'info' | 'warning' | 'bad' | 'neutral'
+  status?: 'good' | 'info' | 'warning' | 'bad' | 'neutral' | 'muted'
   /** Value type for special rendering (e.g., dates use DateTime component) */
   type?: 'date'
+  /** Optional tooltip text to explain the value */
+  tooltip?: string
 }
 
 /** Package data for comparison */

@@ -65,6 +65,30 @@ export interface OsvQueryResponse {
 }
 
 /**
+ * Single result from OSV batch query (minimal info - just ID and modified)
+ */
+export interface OsvBatchVulnRef {
+  id: string
+  modified: string
+}
+
+/**
+ * Single result in OSV batch response
+ */
+export interface OsvBatchResult {
+  vulns?: OsvBatchVulnRef[]
+  next_page_token?: string
+}
+
+/**
+ * OSV batch query response
+ * @see https://google.github.io/osv.dev/post-v1-querybatch/
+ */
+export interface OsvBatchResponse {
+  results: OsvBatchResult[]
+}
+
+/**
  * Simplified vulnerability info for display
  */
 export interface VulnerabilitySummary {

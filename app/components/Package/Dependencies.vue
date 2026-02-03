@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useDependencyAnalysis } from '~/composables/useDependencyAnalysis'
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
+import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
 
 const props = defineProps<{
   packageName: string
@@ -95,7 +95,7 @@ const sortedOptionalDependencies = computed(() => {
               :title="getOutdatedTooltip(outdatedDeps[dep], $t)"
               aria-hidden="true"
             >
-              <span class="i-carbon:warning-alt w-3 h-3 block" />
+              <span class="i-carbon:warning-alt w-3 h-3" />
             </span>
             <NuxtLink
               v-if="getVulnerableDepInfo(dep)"
@@ -107,7 +107,7 @@ const sortedOptionalDependencies = computed(() => {
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
               :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
             >
-              <span class="i-carbon:security w-3 h-3 block" aria-hidden="true" />
+              <span class="i-carbon:security w-3 h-3" aria-hidden="true" />
               <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
             </NuxtLink>
             <NuxtLink
@@ -119,7 +119,7 @@ const sortedOptionalDependencies = computed(() => {
               class="shrink-0 text-purple-500"
               :title="getDeprecatedDepInfo(dep)!.message"
             >
-              <span class="i-carbon-warning-hex w-3 h-3 block" aria-hidden="true" />
+              <span class="i-carbon-warning-hex w-3 h-3" aria-hidden="true" />
               <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </NuxtLink>
             <NuxtLink

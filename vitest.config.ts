@@ -31,7 +31,11 @@ export default defineConfig({
               rootDir: fileURLToPath(new URL('.', import.meta.url)),
               overrides: {
                 experimental: {
+                  payloadExtraction: false,
                   viteEnvironmentApi: false,
+                },
+                pwa: {
+                  pwaAssets: { disabled: true },
                 },
                 ogImage: { enabled: false },
               },
@@ -41,7 +45,7 @@ export default defineConfig({
             enabled: true,
             headless: true,
             provider: playwright(),
-            instances: [{ browser: 'chromium' }],
+            instances: [{ browser: 'chromium', headless: true }],
           },
         },
       }),

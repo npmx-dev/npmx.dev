@@ -13,7 +13,7 @@ export function usePackageRoute() {
   const route = useRoute('package')
 
   const parsedRoute = computed(() => {
-    const segments = route.params.package || []
+    const segments = route.params.package?.filter(Boolean) || []
 
     // Find the /v/ separator for version
     const vIndex = segments.indexOf('v')

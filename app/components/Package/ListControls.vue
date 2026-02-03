@@ -33,7 +33,7 @@ const sortOptions = computed(
   () =>
     [
       { value: 'downloads', label: $t('package.sort.downloads') },
-      { value: 'updated', label: $t('package.sort.updated') },
+      { value: 'updated', label: $t('package.sort.published') },
       { value: 'name-asc', label: $t('package.sort.name_asc') },
       { value: 'name-desc', label: $t('package.sort.name_desc') },
     ] as const,
@@ -59,7 +59,7 @@ const showFilteredCount = computed(() => {
         class="absolute h-full w-10 flex items-center justify-center text-fg-subtle pointer-events-none"
         aria-hidden="true"
       >
-        <div class="i-carbon:search inline-block w-4 h-4" />
+        <div class="i-carbon:search w-4 h-4" />
       </div>
       <input
         id="package-filter"

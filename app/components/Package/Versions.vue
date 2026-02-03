@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PackageVersionInfo, PackumentVersion } from '#shared/types'
+import type { PackageVersionInfo, SlimVersion } from '#shared/types'
 import { compare } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
-import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
+import { fetchAllPackageVersions } from '~/utils/npm/api'
 import {
   buildVersionToTagsMap,
   filterExcludedTags,
@@ -14,7 +14,7 @@ import {
 
 const props = defineProps<{
   packageName: string
-  versions: Record<string, PackumentVersion>
+  versions: Record<string, SlimVersion>
   distTags: Record<string, string>
   time: Record<string, string>
 }>()
@@ -29,13 +29,6 @@ interface VersionDisplay {
   tags?: string[]
   hasProvenance: boolean
   deprecated?: string
-}
-
-// Check if a version has provenance/attestations
-function hasProvenance(version: PackumentVersion | undefined): boolean {
-  if (!version?.dist) return false
-  const dist = version.dist as { attestations?: unknown }
-  return !!dist.attestations
 }
 
 // Build route object for package version link
@@ -53,10 +46,7 @@ const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
 // Deduplicates so each version appears only once, with all its tags
 const allTagRows = computed(() => {
   // Group tags by version with their metadata
-  const versionMap = new Map<
-    string,
-    { tags: string[]; versionData: PackumentVersion | undefined }
-  >()
+  const versionMap = new Map<string, { tags: string[]; versionData: SlimVersion | undefined }>()
   for (const [tag, version] of Object.entries(props.distTags)) {
     const existing = versionMap.get(version)
     if (existing) {
@@ -88,7 +78,7 @@ const allTagRows = computed(() => {
         version,
         time: props.time[version],
         tags,
-        hasProvenance: hasProvenance(versionData),
+        hasProvenance: versionData?.hasProvenance,
         deprecated: versionData?.deprecated,
       } as VersionDisplay,
     }))

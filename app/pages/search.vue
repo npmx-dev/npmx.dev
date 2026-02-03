@@ -4,6 +4,7 @@ import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 const route = useRoute()
 const router = useRouter()
@@ -29,7 +30,7 @@ const updateUrlPage = debounce((page: number) => {
 }, 500)
 
 // The actual search query (from URL, used for API calls)
-const query = computed(() => (route.query.q as string) ?? '')
+const query = computed(() => normalizeSearchParam(route.query.q))
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
@@ -53,7 +54,7 @@ const requestedSize = computed(() => {
 
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
-  const p = Number.parseInt(route.query.page as string, 10)
+  const p = Number.parseInt(normalizeSearchParam(route.query.page), 10)
   return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 
@@ -141,6 +142,9 @@ const {
   clearAllFilters,
 } = useStructuredFilters({
   packages: resultsArray,
+  initialFilters: {
+    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
+  },
   initialSort: 'relevance-desc', // Default to search relevance
 })
 
@@ -586,10 +590,13 @@ defineOgImageComponent('Default', {
 </script>
 
 <template>
-  <main class="flex-1" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
-    <!-- Results area with container padding -->
-    <div class="container-sm py-6">
-      <section v-if="query" :aria-label="$t('search.results')">
+  <main class="flex-1 py-8" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
+    <div class="container-sm">
+      <h1 class="font-mono text-2xl sm:text-3xl font-medium mb-4">
+        {{ $t('search.title') }}
+      </h1>
+
+      <section v-if="query">
         <!-- Initial loading (only after user interaction, not during view transition) -->
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
@@ -731,6 +738,8 @@ defineOgImageComponent('Default', {
             v-if="displayResults.length > 0"
             :results="displayResults"
             :search-query="query"
+            :filters="filters"
+            search-context
             heading-level="h2"
             show-publisher
             :has-more="hasMore"

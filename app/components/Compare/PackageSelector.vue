@@ -64,7 +64,7 @@ function handleBlur() {
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-bg-subtle border border-border rounded-md"
       >
         <NuxtLink
-          :to="`/${pkg}`"
+          :to="`/package/${pkg}`"
           class="font-mono text-sm text-fg hover:text-accent transition-colors"
         >
           {{ pkg }}
@@ -75,7 +75,7 @@ function handleBlur() {
           :aria-label="$t('compare.selector.remove_package', { package: pkg })"
           @click="removePackage(pkg)"
         >
-          <span class="i-carbon:close block w-3.5 h-3.5" aria-hidden="true" />
+          <span class="i-carbon:close w-3.5 h-3.5" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -87,10 +87,10 @@ function handleBlur() {
           {{ $t('compare.selector.search_label') }}
         </label>
         <span
-          class="absolute inset-is-3 top-1/2 -translate-y-1/2 text-fg-subtle"
+          class="absolute inset-is-3 top-1/2 -translate-y-1/2 text-fg-subtle flex"
           aria-hidden="true"
         >
-          <span class="i-carbon:search inline-block w-4 h-4" />
+          <span class="i-carbon:search w-4 h-4" />
         </span>
         <input
           id="package-search"

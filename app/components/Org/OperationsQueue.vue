@@ -141,7 +141,7 @@ watch(isExecuting, executing => {
           :aria-label="$t('operations.queue.refresh')"
           @click="refreshState"
         >
-          <span class="i-carbon:renew block w-4 h-4" aria-hidden="true" />
+          <span class="i-carbon:renew w-4 h-4" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -213,7 +213,7 @@ watch(isExecuting, executing => {
             :aria-label="$t('operations.queue.approve_operation')"
             @click="approveOperation(op.id)"
           >
-            <span class="i-carbon:checkmark block w-4 h-4" aria-hidden="true" />
+            <span class="i-carbon:checkmark w-4 h-4" aria-hidden="true" />
           </button>
           <button
             v-if="op.status !== 'running'"
@@ -222,7 +222,7 @@ watch(isExecuting, executing => {
             :aria-label="$t('operations.queue.remove_operation')"
             @click="removeOperation(op.id)"
           >
-            <span class="i-carbon-close block w-4 h-4" aria-hidden="true" />
+            <span class="i-carbon-close w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </li>
@@ -235,7 +235,7 @@ watch(isExecuting, executing => {
       role="alert"
     >
       <div class="flex items-center gap-2 mb-2">
-        <span class="i-carbon:locked block w-4 h-4 text-amber-400 shrink-0" aria-hidden="true" />
+        <span class="i-carbon:locked w-4 h-4 text-amber-400 shrink-0" aria-hidden="true" />
         <span class="font-mono text-sm text-amber-400">
           {{ $t('operations.queue.otp_prompt') }}
         </span>
@@ -295,7 +295,7 @@ watch(isExecuting, executing => {
         class="flex items-center gap-2 font-mono text-xs text-fg-muted cursor-pointer hover:text-fg transition-colors duration-200 select-none"
       >
         <span
-          class="i-carbon:chevron-right rtl-flip block w-3 h-3 transition-transform duration-200 [[open]>&]:rotate-90"
+          class="i-carbon:chevron-right rtl-flip w-3 h-3 transition-transform duration-200 [[open]>&]:rotate-90"
           aria-hidden="true"
         />
         {{ $t('operations.queue.log') }} ({{ completedOperations.length }})
@@ -331,7 +331,7 @@ watch(isExecuting, executing => {
             :aria-label="$t('operations.queue.remove_from_log')"
             @click="removeOperation(op.id)"
           >
-            <span class="i-carbon:close block w-3 h-3" aria-hidden="true" />
+            <span class="i-carbon:close w-3 h-3" aria-hidden="true" />
           </button>
         </li>
       </ul>

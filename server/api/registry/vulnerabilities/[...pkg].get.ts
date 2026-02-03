@@ -19,17 +19,17 @@ export default defineCachedEventHandler(
         version: rawVersion,
       })
 
-      // If no version specified, resolve to latest
-      let version = requestedVersion
+      // If no version specified, resolve to latest using fast-npm-meta (lightweight)
+      let version: string | undefined = requestedVersion
       if (!version) {
-        const packument = await fetchNpmPackage(packageName)
-        version = packument['dist-tags']?.latest
-        if (!version) {
+        const latestVersion = await fetchLatestVersionWithFallback(packageName)
+        if (!latestVersion) {
           throw createError({
             statusCode: 404,
             message: 'No latest version found',
           })
         }
+        version = latestVersion
       }
 
       return await analyzeDependencyTree(packageName, version)

@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { NpmSearchResult } from '#shared/types/npm-registry'
-import type { ColumnConfig } from '#shared/types/preferences'
+import type { ColumnConfig, StructuredFilters } from '#shared/types/preferences'
 
 const props = defineProps<{
   result: NpmSearchResult
   columns: ColumnConfig[]
   index?: number
+  filters?: StructuredFilters
 }>()
 
 const emit = defineEmits<{
@@ -43,7 +44,7 @@ const allMaintainersText = computed(() => {
 
 <template>
   <tr
-    class="border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none focus:bg-bg-muted"
+    class="group border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none focus:bg-bg-muted"
     tabindex="0"
     :data-result-index="index"
   >
@@ -51,7 +52,7 @@ const allMaintainersText = computed(() => {
     <td class="py-2 px-3">
       <NuxtLink
         :to="packageUrl"
-        class="font-mono text-sm text-fg hover:text-accent-muted transition-colors duration-200"
+        class="font-mono text-sm text-fg hover:text-accent-fallback transition-colors duration-200"
       >
         {{ pkg.name }}
       </NuxtLink>
@@ -79,7 +80,10 @@ const allMaintainersText = computed(() => {
     </td>
 
     <!-- Updated -->
-    <td v-if="isColumnVisible('updated')" class="py-2 px-3 font-mono text-xs text-fg-muted">
+    <td
+      v-if="isColumnVisible('updated')"
+      class="py-2 px-3 font-mono text-end text-xs text-fg-muted"
+    >
       <DateTime
         v-if="updatedDate"
         :datetime="updatedDate"
@@ -91,7 +95,7 @@ const allMaintainersText = computed(() => {
     </td>
 
     <!-- Maintainers -->
-    <td v-if="isColumnVisible('maintainers')" class="py-2 px-3 text-sm text-fg-muted">
+    <td v-if="isColumnVisible('maintainers')" class="py-2 px-3 text-sm text-fg-muted text-end">
       <span
         v-if="pkg.maintainers?.length"
         :title="pkg.maintainers.length > 3 ? allMaintainersText : undefined"
@@ -103,7 +107,7 @@ const allMaintainersText = computed(() => {
         >
           <NuxtLink
             :to="`/~${maintainer.username || maintainer.name}`"
-            class="hover:text-accent-muted transition-colors duration-200"
+            class="hover:text-accent-fallback transition-colors duration-200"
             @click.stop
             >{{ maintainer.username || maintainer.name || maintainer.email }}</NuxtLink
           ><span v-if="idx < Math.min(pkg.maintainers.length, 3) - 1">, </span>
@@ -116,19 +120,28 @@ const allMaintainersText = computed(() => {
     </td>
 
     <!-- Keywords -->
-    <td v-if="isColumnVisible('keywords')" class="py-2 px-3">
-      <div v-if="pkg.keywords?.length" class="flex flex-wrap gap-1">
-        <button
+    <td v-if="isColumnVisible('keywords')" class="py-2 px-3 text-end">
+      <div
+        v-if="pkg.keywords?.length"
+        class="flex flex-wrap gap-1 justify-end"
+        :aria-label="$t('package.card.keywords')"
+      >
+        <TagClickable
           v-for="keyword in pkg.keywords.slice(0, 3)"
           :key="keyword"
           type="button"
-          class="tag text-xs hover:bg-fg hover:text-bg hover:border-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          :status="props.filters?.keywords.includes(keyword) ? 'active' : 'default'"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"
+          :class="{ 'group-hover:bg-bg-elevated': !props.filters?.keywords.includes(keyword) }"
         >
           {{ keyword }}
-        </button>
-        <span v-if="pkg.keywords.length > 3" class="text-fg-subtle text-xs">
+        </TagClickable>
+        <span
+          v-if="pkg.keywords.length > 3"
+          class="text-fg-subtle text-xs"
+          :title="pkg.keywords.slice(3).join(', ')"
+        >
           +{{ pkg.keywords.length - 3 }}
         </span>
       </div>

@@ -157,7 +157,7 @@ describe('createImportResolver', () => {
 
     const url = resolver('./utils')
 
-    expect(url).toBe('/code/pkg-name/v/1.2.3/dist/utils.js')
+    expect(url).toBe('/package-code/pkg-name/v/1.2.3/dist/utils.js')
   })
 
   it('returns null when the import cannot be resolved', () => {
@@ -175,6 +175,6 @@ describe('createImportResolver', () => {
 
     const url = resolver('./utils')
 
-    expect(url).toBe('/code/@scope/pkg/v/1.2.3/dist/utils.js')
+    expect(url).toBe('/package-code/@scope/pkg/v/1.2.3/dist/utils.js')
   })
 })

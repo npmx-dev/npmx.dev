@@ -32,6 +32,9 @@ importers:
       '@deno/doc':
         specifier: jsr:^0.189.1
         version: '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)'
+      '@floating-ui/vue':
+        specifier: 1.1.10
+        version: 1.1.10(vue@3.5.27(typescript@5.9.3))
       '@iconify-json/carbon':
         specifier: 1.2.18
         version: 1.2.18
@@ -119,6 +122,9 @@ importers:
       '@vueuse/router':
         specifier: ^14.2.0
         version: 14.2.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      defu:
+        specifier: 6.1.4
+        version: 6.1.4
       focus-trap:
         specifier: ^7.8.0
         version: 7.8.0
@@ -186,8 +192,8 @@ importers:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-data-ui:
-        specifier: 3.13.7
-        version: 3.13.7(vue@3.5.27(typescript@5.9.3))
+        specifier: 3.14.2
+        version: 3.14.2(vue@3.5.27(typescript@5.9.3))
     devDependencies:
       '@npm/types':
         specifier: 2.1.0
@@ -219,18 +225,30 @@ importers:
       axe-core:
         specifier: 4.11.1
         version: 4.11.1
-      defu:
-        specifier: 6.1.4
-        version: 6.1.4
+      fast-check:
+        specifier: 4.5.3
+        version: 4.5.3
+      fast-npm-meta:
+        specifier: 1.0.0
+        version: 1.0.0
       knip:
-        specifier: 5.82.1
-        version: 5.82.1(@types/node@24.10.9)(typescript@5.9.3)
+        specifier: 5.83.0
+        version: 5.83.0(@types/node@24.10.9)(typescript@5.9.3)
       lint-staged:
         specifier: 16.2.7
         version: 16.2.7
+      oxfmt:
+        specifier: 0.27.0
+        version: 0.27.0
+      oxlint:
+        specifier: 1.42.0
+        version: 1.42.0(oxlint-tsgolint@0.11.3)
       playwright-core:
         specifier: 1.58.0
         version: 1.58.0
+      schema-dts:
+        specifier: 1.1.5
+        version: 1.1.5
       simple-git-hooks:
         specifier: 2.13.1
         version: 2.13.1
@@ -5670,6 +5688,10 @@ packages:
     resolution: {integrity: sha512-CGnyrvbhPlWYMngksqrSSUT1BAVP49dZocrHuK0SvtR0D5TMs5wP0o3j7jexDJW01KSadjBp1M/71o/KR3nD1w==}
     engines: {node: '>=18'}
 
+  fast-check@4.5.3:
+    resolution: {integrity: sha512-IE9csY7lnhxBnA8g/WI5eg/hygA6MGWJMSNfFRrBlXUciADEhS1EDB0SIsMSvzubzIlOBbVITSsypCsW717poA==}
+    engines: {node: '>=12.17.0'}
+
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
 
@@ -5688,6 +5710,9 @@ packages:
 
   fast-npm-meta@0.4.8:
     resolution: {integrity: sha512-ybZVlDZ2PkO79dosM+6CLZfKWRH8MF0PiWlw8M4mVWJl8IEJrPfxYc7Tsu830Dwj/R96LKXfePGTSzKWbPJ08w==}
+
+  fast-npm-meta@1.0.0:
+    resolution: {integrity: sha512-LZN+gRB2TnkkhRbNnTOgEXyhNBkDypngGX9nJzcKzrOaIQqfZnWEDYdxBqGw6bgiyl0tzpxDuTk1G7tKHyUcsg==}
 
   fast-redact@3.5.0:
     resolution: {integrity: sha512-dwsoQlS7h9hMeYUq1W++23NDcBLV4KqONnITDV9DjfS3q1SgDGVrBdvvTLUotWtPSD7asWDV9/CmsZPy8Hf70A==}
@@ -6575,8 +6600,8 @@ packages:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
 
-  knip@5.82.1:
-    resolution: {integrity: sha512-1nQk+5AcnkqL40kGQXfouzAEXkTR+eSrgo/8m1d0BMei4eAzFwghoXC4gOKbACgBiCof7hE8wkBVDsEvznf85w==}
+  knip@5.83.0:
+    resolution: {integrity: sha512-FfmaHMntpZB13B1oJQMSs1hTOZxd0TOn+FYB3oWEI02XlxTW3RH4H7d8z5Us3g0ziHCYyl7z0B1xi8ENP3QEKA==}
     engines: {node: '>=18.18.0'}
     hasBin: true
     peerDependencies:
@@ -7887,6 +7912,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  pure-rand@7.0.1:
+    resolution: {integrity: sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==}
+
   qs@6.14.1:
     resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
     engines: {node: '>=0.6'}
@@ -8182,6 +8210,9 @@ packages:
   sax@1.4.4:
     resolution: {integrity: sha512-1n3r/tGXO6b6VXMdFT54SHzT9ytu9yr7TaELowdYpMqY/Ao7EnlQGmAQ1+RatX7Tkkdm6hONI2owqNx2aZj5Sw==}
     engines: {node: '>=11.0.0'}
+
+  schema-dts@1.1.5:
+    resolution: {integrity: sha512-RJr9EaCmsLzBX2NDiO5Z3ux2BVosNZN5jo0gWgsyKvxKIUL5R3swNvoorulAeL9kLB0iTSX7V6aokhla2m7xbg==}
 
   schema-utils@4.3.3:
     resolution: {integrity: sha512-eflK8wEtyOE6+hsaRVPxvUKYCpRgzLqDTb8krvAsRIwOGlHoSgYLgBXoubGgLd2fT41/OUYdb48v4k4WWHQurA==}
@@ -9244,8 +9275,8 @@ packages:
   vue-component-type-helpers@3.2.4:
     resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
-  vue-data-ui@3.13.7:
-    resolution: {integrity: sha512-tFz+sN5CaDUl1/VotE35lV3hvJPurkhE6j/e3DldOMDbDCunOYvwqGuMglmGxQ8n/w1N/iqnEWVTmhIJHYdd8Q==}
+  vue-data-ui@3.14.2:
+    resolution: {integrity: sha512-gxMhF0DXMfJ+TgErs0fKsM7Se+txRQSFhy+DWtw5XhD2HnjxnlbBSuyJDyNvLdHtPWOVeoXzc1TSMvLzsheZnQ==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -15786,6 +15817,10 @@ snapshots:
 
   fake-indexeddb@6.2.5: {}
 
+  fast-check@4.5.3:
+    dependencies:
+      pure-rand: 7.0.1
+
   fast-deep-equal@3.1.3: {}
 
   fast-fifo@1.3.2: {}
@@ -15803,6 +15838,8 @@ snapshots:
   fast-levenshtein@2.0.6: {}
 
   fast-npm-meta@0.4.8: {}
+
+  fast-npm-meta@1.0.0: {}
 
   fast-redact@3.5.0: {}
 
@@ -16865,7 +16902,7 @@ snapshots:
 
   klona@2.0.6: {}
 
-  knip@5.82.1(@types/node@24.10.9)(typescript@5.9.3):
+  knip@5.83.0(@types/node@24.10.9)(typescript@5.9.3):
     dependencies:
       '@nodelib/fs.walk': 1.2.8
       '@types/node': 24.10.9
@@ -18983,6 +19020,8 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  pure-rand@7.0.1: {}
+
   qs@6.14.1:
     dependencies:
       side-channel: 1.1.0
@@ -19427,6 +19466,8 @@ snapshots:
       yoga-layout: 3.2.1
 
   sax@1.4.4: {}
+
+  schema-dts@1.1.5: {}
 
   schema-utils@4.3.3:
     dependencies:
@@ -20661,7 +20702,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.4: {}
 
-  vue-data-ui@3.13.7(vue@3.5.27(typescript@5.9.3)):
+  vue-data-ui@3.14.2(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
 

@@ -58,7 +58,7 @@ onUnmounted(deactivate)
     >
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-50 sm:hidden"
+        class="fixed inset-0 z-[60] sm:hidden"
         role="dialog"
         aria-modal="true"
         :aria-label="$t('nav.mobile_menu')"
@@ -94,7 +94,7 @@ onUnmounted(deactivate)
                 :aria-label="$t('common.close')"
                 @click="closeMenu"
               >
-                <span class="i-carbon:close block w-5 h-5" aria-hidden="true" />
+                <span class="i-carbon:close w-5 h-5" aria-hidden="true" />
               </button>
             </div>
 

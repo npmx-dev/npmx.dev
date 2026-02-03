@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 withDefaults(
   defineProps<{
@@ -22,9 +23,7 @@ const showSearchBar = computed(() => {
 })
 
 // Local input value (updates immediately as user types)
-const searchQuery = shallowRef(
-  (Array.isArray(route.query.q) ? route.query.q[0] : route.query.q) ?? '',
-)
+const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
 
 // Pages that have their own local filter using ?q
 const pagesWithLocalFilter = new Set(['~username', 'org'])
@@ -64,7 +63,7 @@ watch(
     if (pagesWithLocalFilter.has(route.name as string)) {
       return
     }
-    const value = (urlQuery as string) ?? ''
+    const value = normalizeSearchParam(urlQuery)
     if (searchQuery.value !== value) {
       searchQuery.value = value
     }
@@ -80,8 +79,21 @@ function handleSearchFocus() {
   emit('focus')
 }
 
+function handleSubmit() {
+  if (pagesWithLocalFilter.has(route.name as string)) {
+    router.push({
+      name: 'search',
+      query: {
+        q: searchQuery.value,
+      },
+    })
+  } else {
+    updateUrlQuery.flush()
+  }
+}
+
 // Expose focus method for parent components
-const inputRef = shallowRef<HTMLInputElement | null>(null)
+const inputRef = useTemplateRef('inputRef')
 function focus() {
   inputRef.value?.focus()
 }
@@ -89,7 +101,7 @@ defineExpose({ focus })
 </script>
 <template>
   <search v-if="showSearchBar" :class="'flex-1 sm:max-w-md ' + inputClass">
-    <form method="GET" action="/search" class="relative">
+    <form method="GET" action="/search" class="relative" @submit.prevent="handleSubmit">
       <label for="header-search" class="sr-only">
         {{ $t('search.label') }}
       </label>

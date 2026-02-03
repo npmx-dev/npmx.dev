@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import FacetRow from '~/components/compare/FacetRow.vue'
+import FacetRow from '~/components/Compare/FacetRow.vue'
 
 // Mock useRelativeDates for DateTime component
 vi.mock('~/composables/useSettings', () => ({
@@ -98,44 +98,44 @@ describe('FacetRow', () => {
   })
 
   describe('status styling', () => {
-    it('applies good status class', async () => {
+    it('applies good status', async () => {
       const component = await mountSuspended(FacetRow, {
         props: {
           ...baseProps,
           values: [{ raw: 0, display: 'None', status: 'good' }],
         },
       })
-      expect(component.find('.text-emerald-400').exists()).toBe(true)
+      expect(component.find('[data-status="good"]').exists()).toBe(true)
     })
 
-    it('applies warning status class', async () => {
+    it('applies warning status', async () => {
       const component = await mountSuspended(FacetRow, {
         props: {
           ...baseProps,
           values: [{ raw: 100, display: '100 MB', status: 'warning' }],
         },
       })
-      expect(component.find('.text-amber-400').exists()).toBe(true)
+      expect(component.find('[data-status="warning"]').exists()).toBe(true)
     })
 
-    it('applies bad status class', async () => {
+    it('applies bad status', async () => {
       const component = await mountSuspended(FacetRow, {
         props: {
           ...baseProps,
           values: [{ raw: 5, display: '5 critical', status: 'bad' }],
         },
       })
-      expect(component.find('.text-red-400').exists()).toBe(true)
+      expect(component.find('[data-status="bad"]').exists()).toBe(true)
     })
 
-    it('applies info status class', async () => {
+    it('applies info status', async () => {
       const component = await mountSuspended(FacetRow, {
         props: {
           ...baseProps,
           values: [{ raw: '@types', display: '@types', status: 'info' }],
         },
       })
-      expect(component.find('.text-blue-400').exists()).toBe(true)
+      expect(component.find('[data-status="info"]').exists()).toBe(true)
     })
   })
 

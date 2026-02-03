@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
+
 const props = defineProps<{
   packageName: string
   installScripts: {
@@ -18,15 +20,11 @@ const isExpanded = shallowRef(false)
 </script>
 
 <template>
-  <section>
-    <h2
-      id="install-scripts-heading"
-      class="text-xs text-fg-subtle uppercase tracking-wider mb-3 flex items-center gap-2"
-    >
-      <span class="i-carbon:warning-alt w-3 h-3 text-yellow-500" aria-hidden="true" />
-      {{ $t('package.install_scripts.title') }}
-    </h2>
-
+  <CollapsibleSection
+    :title="$t('package.install_scripts.title')"
+    id="installScripts"
+    icon="i-carbon:warning-alt w-3 h-3 text-yellow-500"
+  >
     <!-- Script list: name as label, content below -->
     <dl class="space-y-2 m-0">
       <div v-for="scriptName in installScripts.scripts" :key="scriptName">
@@ -91,7 +89,7 @@ const isExpanded = shallowRef(false)
               :title="getOutdatedTooltip(outdatedNpxDeps[dep], $t)"
               aria-hidden="true"
             >
-              <span class="i-carbon:warning-alt w-3 h-3 block" />
+              <span class="i-carbon:warning-alt w-3 h-3" />
             </span>
             <span
               class="font-mono text-xs text-end truncate"
@@ -112,5 +110,5 @@ const isExpanded = shallowRef(false)
         </li>
       </ul>
     </div>
-  </section>
+  </CollapsibleSection>
 </template>

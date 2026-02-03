@@ -24,7 +24,6 @@
     "found_packages": "Paket tapılmadı | 1 paket tapıldı | {count} paket tapıldı",
     "updating": "(yenilənir...)",
     "no_results": "\"{query}\" üçün paket tapılmadı",
-    "results": "Axtarış nəticələri",
     "not_taken": "{name} tutulmayıb",
     "claim_prompt": "Bu paket adını npm-də tutun",
     "claim_button": "\"{name}\" adını tut",
@@ -130,13 +129,15 @@
       "deps": "Asılılıqlar",
       "install_size": "Quraşdırma Həcmi",
       "vulns": "Zəifliklər",
-      "updated": "Yenilənib",
       "view_dependency_graph": "Asılılıq qrafikini göstər",
       "inspect_dependency_tree": "Asılılıq ağacını yoxla",
       "size_tooltip": {
         "unpacked": "{size} açılmış həcm (bu paket)",
         "total": "{size} ümumi açılmış həcm (linux-x64 üçün bütün {count} asılılıq daxil olmaqla)"
       }
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "repo",
@@ -174,7 +175,6 @@
     "compatibility": "Uyğunluq",
     "card": {
       "publisher": "Naşir",
-      "updated": "Yenilənib",
       "weekly_downloads": "Həftəlik endirmələr",
       "keywords": "Açar sözlər",
       "license": "Lisenziya"
@@ -328,7 +328,6 @@
       "weekly": "Həftəlik",
       "size": "Həcm",
       "deps": "Asılılıqlar",
-      "updated": "Yenilənib",
       "get_started": "Başla",
       "readme": "Readme",
       "maintainers": "Dəstəkçilər",
@@ -338,7 +337,6 @@
     },
     "sort": {
       "downloads": "Ən çox endirilən",
-      "updated": "Son yenilənən",
       "name_asc": "Ad (A-Z)",
       "name_desc": "Ad (Z-A)"
     }
@@ -618,7 +616,6 @@
       "downloads_day": "Endirmələr/gün",
       "downloads_month": "Endirmələr/ay",
       "downloads_year": "Endirmələr/il",
-      "updated": "Son Yenilənmə",
       "name": "Ad",
       "quality": "Keyfiyyət",
       "popularity": "Populyarlıq",
@@ -634,7 +631,6 @@
       "version": "Versiya",
       "description": "Təsvir",
       "downloads": "Endirmələr/həftə",
-      "updated": "Son Yenilənmə",
       "maintainers": "Dəstəkçilər",
       "keywords": "Açar sözlər",
       "quality_score": "Keyfiyyət xalı",
@@ -725,6 +721,10 @@
       }
     }
   },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
   "header": {
     "home": "npmx ana səhifə",
     "github": "GitHub",
@@ -743,6 +743,13 @@
       "error": "Təşkilatlar yüklənə bilmədi",
       "empty": "Təşkilat tapılmadı",
       "view_all": "Hamısını göstər"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }

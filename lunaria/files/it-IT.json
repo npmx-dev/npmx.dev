@@ -24,7 +24,7 @@
     "found_packages": "Trovati {count} pacchetti",
     "updating": "(aggiornando...)",
     "no_results": "Nessun pacchetto trovato per \"{query}\"",
-    "results": "Risultati della ricerca",
+    "title": "cerca",
     "not_taken": "{name} è disponibile",
     "claim_prompt": "Ottieni il nome di questo pacchetto su npm",
     "claim_button": "Ottieni \"{name}\"",
@@ -121,7 +121,6 @@
       "deps": "Deps",
       "install_size": "Dimensioni di installazione",
       "vulns": "Vulns",
-      "updated": "Aggiornato",
       "view_dependency_graph": "Vedi il grafico delle dipendenze",
       "inspect_dependency_tree": "Ispeziona l'albero delle dipendenze"
     },
@@ -161,7 +160,6 @@
     "compatibility": "Compatibilità",
     "card": {
       "publisher": "Autore",
-      "updated": "Aggiornato",
       "weekly_downloads": "Download settimanali",
       "keywords": "Keywords",
       "license": "Licenza"
@@ -315,7 +313,6 @@
       "weekly": "Settimanale",
       "size": "Misura",
       "deps": "Deps",
-      "updated": "Aggiornato",
       "readme": "Readme",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
@@ -324,7 +321,6 @@
     },
     "sort": {
       "downloads": "Più scaricati",
-      "updated": "Aggiornati di recente",
       "name_asc": "Nome (A-Z)",
       "name_desc": "Nome (Z-A)"
     }
@@ -593,7 +589,6 @@
       "downloads_day": "Download/giorno",
       "downloads_month": "Download/mese",
       "downloads_year": "Download/anno",
-      "updated": "Ultimo aggiornamento",
       "name": "Nome",
       "quality": "Qualità",
       "popularity": "Popolarità",
@@ -609,7 +604,6 @@
       "version": "Versione",
       "description": "Descrizione",
       "downloads": "Download/sett",
-      "updated": "Ultimo aggiornamento",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
       "quality_score": "Punteggio qualità",

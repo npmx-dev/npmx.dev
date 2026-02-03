@@ -5,19 +5,19 @@ import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
 
 const props = defineProps<{
   packageName: string
+  createdIso: string | null
 }>()
 
 const chartModal = useModal('chart-modal')
 
 const isChartModalOpen = shallowRef(false)
-function openChartModal() {
+async function openChartModal() {
   isChartModalOpen.value = true
   // ensure the component renders before opening the dialog
-  nextTick(() => chartModal.open())
+  await nextTick()
+  await nextTick()
+  chartModal.open()
 }
-
-const { data: packument } = usePackage(() => props.packageName)
-const createdIso = computed(() => packument.value?.time?.created ?? null)
 
 const { fetchPackageDownloadEvolution } = useCharts()
 
@@ -92,7 +92,7 @@ async function loadWeeklyDownloads() {
   try {
     const result = await fetchPackageDownloadEvolution(
       () => props.packageName,
-      () => createdIso.value,
+      () => props.createdIso,
       () => ({ granularity: 'week' as const, weeks: 52 }),
     )
     weeklyDownloads.value = (result as WeeklyDownloadPoint[]) ?? []
@@ -223,20 +223,20 @@ const config = computed(() => {
             <div class="min-h-[75.195px]">
               <!-- Title row: date range (24px height) -->
               <div class="h-6 flex items-center ps-3">
-                <span class="skeleton h-3 w-36" />
+                <SkeletonInline class="h-3 w-36" />
               </div>
               <!-- Chart area: data label left, sparkline right -->
               <div class="aspect-[500/80] flex items-center">
                 <!-- Data label (covers ~42% width) -->
                 <div class="w-[42%] flex items-center ps-0.5">
-                  <span class="skeleton h-7 w-24" />
+                  <SkeletonInline class="h-7 w-24" />
                 </div>
                 <!-- Sparkline area (~58% width) -->
                 <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
-                  <span
+                  <SkeletonInline
                     v-for="i in 16"
                     :key="i"
-                    class="skeleton flex-1 rounded-sm"
+                    class="flex-1 rounded-sm"
                     :style="{ height: `${25 + ((i * 7) % 50)}%` }"
                   />
                 </div>

@@ -97,6 +97,14 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               </span>
               <SettingsAccentColorPicker />
             </div>
+
+            <!-- Background themes -->
+            <div class="space-y-3">
+              <span class="block text-sm text-fg font-medium">
+                {{ $t('settings.background_themes') }}
+              </span>
+              <SettingsBgThemePicker />
+            </div>
           </div>
         </section>
 
@@ -131,7 +139,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <div class="space-y-2">
               <SettingsToggle
                 :label="$t('settings.hide_platform_packages')"
-                :description="$t('settings.hide_platform_packages')"
+                :description="$t('settings.hide_platform_packages_description')"
                 v-model="settings.hidePlatformPackages"
               />
             </div>

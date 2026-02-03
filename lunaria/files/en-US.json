@@ -27,7 +27,7 @@
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
-    "results": "Search results",
+    "title": "search",
     "not_taken": "{name} is not taken",
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
@@ -77,7 +77,8 @@
     "help_translate": "Help translate npmx",
     "accent_colors": "Accent colors",
     "clear_accent": "Clear accent color",
-    "translation_progress": "Translation progress"
+    "translation_progress": "Translation progress",
+    "background_themes": "Background shade"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",
@@ -142,7 +143,8 @@
       "deps": "Deps",
       "install_size": "Install Size",
       "vulns": "Vulns",
-      "updated": "Updated",
+      "published": "Published",
+      "published_tooltip": "Date {package}{'@'}{version} was published",
       "skills": "Skills",
       "view_dependency_graph": "View dependency graph",
       "inspect_dependency_tree": "Inspect dependency tree",
@@ -191,7 +193,8 @@
     },
     "create": {
       "title": "Create new project",
-      "copy_command": "Copy create command"
+      "copy_command": "Copy create command",
+      "view": "{packageName} has the same maintainer. Click for more details."
     },
     "run": {
       "title": "Run",
@@ -200,13 +203,14 @@
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
-      "view_on_github": "View on GitHub"
+      "view_on_github": "View on GitHub",
+      "toc_title": "Outline"
     },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
     "card": {
       "publisher": "Publisher",
-      "updated": "Updated",
+      "published": "Published",
       "weekly_downloads": "Weekly downloads",
       "keywords": "Keywords",
       "license": "License"
@@ -298,7 +302,8 @@
       "no_types": "No TypeScript types"
     },
     "license": {
-      "view_spdx": "View license text on SPDX"
+      "view_spdx": "View license text on SPDX",
+      "none": "None"
     },
     "vulnerabilities": {
       "no_description": "No description available",
@@ -365,7 +370,7 @@
       "weekly": "Weekly",
       "size": "Size",
       "deps": "Deps",
-      "updated": "Updated",
+      "published": "Published",
       "get_started": "Get started",
       "readme": "Readme",
       "maintainers": "Maintainers",
@@ -375,7 +380,7 @@
     },
     "sort": {
       "downloads": "Most downloaded",
-      "updated": "Recently updated",
+      "published": "Recently published",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
     }
@@ -630,6 +635,13 @@
     "more_keywords": "+{count} more",
     "clear_all": "Clear all",
     "remove_filter": "Remove {label} filter",
+    "chips": {
+      "search": "Search",
+      "downloads": "Downloads",
+      "keyword": "Keyword",
+      "security": "Security",
+      "updated": "Updated"
+    },
     "download_range": {
       "any": "Any",
       "lt100": "< 100",
@@ -660,7 +672,7 @@
       "downloads_day": "Downloads/day",
       "downloads_month": "Downloads/mo",
       "downloads_year": "Downloads/yr",
-      "updated": "Last Updated",
+      "published": "Last Published",
       "name": "Name",
       "quality": "Quality",
       "popularity": "Popularity",
@@ -676,7 +688,7 @@
       "version": "Version",
       "description": "Description",
       "downloads": "Downloads/wk",
-      "updated": "Last Updated",
+      "published": "Last Published",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "quality_score": "Quality score",
@@ -742,7 +754,7 @@
       }
     },
     "contributors": {
-      "title": "Contributors",
+      "title": "{count} Contributor | {count} Contributors",
       "description": "npmx is fully open source, built by an amazing community of contributors. Join us and let's build the npm browsing experience we always wanted, together.",
       "loading": "Loading contributors...",
       "error": "Failed to load contributors",
@@ -851,11 +863,72 @@
       "deselect_all": "Deselect all facets",
       "select_category": "Select all {category} facets",
       "deselect_category": "Deselect all {category} facets",
+      "binary_only_tooltip": "This package exposes binaries and no exports",
       "categories": {
         "performance": "Performance",
         "health": "Health",
         "compatibility": "Compatibility",
         "security": "Security & Compliance"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Package Size",
+          "description": "Size of the package itself (unpacked)"
+        },
+        "installSize": {
+          "label": "Install Size",
+          "description": "Total install size including all dependencies"
+        },
+        "dependencies": {
+          "label": "Direct Deps",
+          "description": "Number of direct dependencies"
+        },
+        "totalDependencies": {
+          "label": "Total Deps",
+          "description": "Total number of dependencies including transitive"
+        },
+        "downloads": {
+          "label": "Downloads/wk",
+          "description": "Weekly download count"
+        },
+        "lastUpdated": {
+          "label": "Published",
+          "description": "When this version was published"
+        },
+        "deprecated": {
+          "label": "Deprecated?",
+          "description": "Whether the package is deprecated"
+        },
+        "engines": {
+          "label": "Engines",
+          "description": "Node.js version requirements"
+        },
+        "types": {
+          "label": "Types",
+          "description": "TypeScript type definitions"
+        },
+        "moduleFormat": {
+          "label": "Module Format",
+          "description": "ESM/CJS support"
+        },
+        "license": {
+          "label": "License",
+          "description": "Package license"
+        },
+        "vulnerabilities": {
+          "label": "Vulnerabilities",
+          "description": "Known security vulnerabilities"
+        }
+      },
+      "values": {
+        "any": "Any",
+        "none": "None",
+        "unknown": "Unknown",
+        "deprecated": "Deprecated",
+        "not_deprecated": "No",
+        "types_included": "Included",
+        "types_none": "None",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
       }
     }
   }

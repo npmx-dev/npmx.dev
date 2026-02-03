@@ -24,7 +24,6 @@
     "found_packages": "Пакетов не найдено | Найден 1 пакет | Найдено {count} пакетов",
     "updating": "(обновление...)",
     "no_results": "Пакетов по запросу \"{query}\" не найдено",
-    "results": "Результаты поиска",
     "not_taken": "{name} не занято",
     "claim_prompt": "Занять это имя пакета в npm",
     "claim_button": "Занять \"{name}\"",
@@ -130,9 +129,12 @@
       "deps": "Зависимости",
       "install_size": "Размер установки",
       "vulns": "Уязвимости",
-      "updated": "Обновлен",
       "view_dependency_graph": "Посмотреть граф зависимостей",
-      "inspect_dependency_tree": "Изучить дерево зависимостей"
+      "inspect_dependency_tree": "Изучить дерево зависимостей",
+      "size_tooltip": {}
+    },
+    "skills": {
+      "file_counts": {}
     },
     "links": {
       "repo": "репозиторий",
@@ -170,7 +172,6 @@
     "compatibility": "Совместимость",
     "card": {
       "publisher": "Издатель",
-      "updated": "Обновлен",
       "weekly_downloads": "Еженедельные загрузки",
       "keywords": "Ключевые слова",
       "license": "Лицензия"
@@ -324,7 +325,6 @@
       "weekly": "В неделю",
       "size": "Размер",
       "deps": "Зависимости",
-      "updated": "Обновлен",
       "readme": "Readme",
       "maintainers": "Мейнтейнеры",
       "keywords": "Ключевые слова",
@@ -333,7 +333,6 @@
     },
     "sort": {
       "downloads": "Больше всего скачиваний",
-      "updated": "Недавно обновлённые",
       "name_asc": "Имя (А-Я)",
       "name_desc": "Имя (Я-А)"
     }
@@ -543,7 +542,8 @@
     "table": {
       "name": "Имя",
       "size": "Размер"
-    }
+    },
+    "markdown_view_mode": {}
   },
   "badges": {
     "provenance": {
@@ -609,7 +609,6 @@
       "downloads_day": "Загрузок/день",
       "downloads_month": "Загрузок/мес",
       "downloads_year": "Загрузок/год",
-      "updated": "Последнее обновление",
       "name": "Имя",
       "quality": "Качество",
       "popularity": "Популярность",
@@ -625,7 +624,6 @@
       "version": "Версия",
       "description": "Описание",
       "downloads": "Загрузок/нед",
-      "updated": "Последнее обновление",
       "maintainers": "Мейнтейнеры",
       "keywords": "Ключевые слова",
       "quality_score": "Оценка качества",
@@ -762,6 +760,13 @@
       "error": "Не удалось загрузить организации",
       "empty": "Организации не найдены",
       "view_all": "Посмотреть все"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
     }
   }
 }
