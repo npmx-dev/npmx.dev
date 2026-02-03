@@ -16,6 +16,12 @@ The goal of [npmx.dev](https://npmx.dev) is to build a fast, modern and open-sou
 - Simplicity
 - Community-first
 
+### Target audience
+
+We're building npmx primarily for **package maintainers**. This means putting a focus on building the tools and capabilities that prioritise the needs of maintainers over consumers of packages.
+
+Designing and building npmx for this audience helps us to decide what features to build, and what features to deprioritize.
+
 ## Table of Contents
 
 - [Getting started](#getting-started)
