@@ -16,7 +16,7 @@ export interface PackageComparisonData {
   /** Package's own unpacked size (from dist.unpackedSize) */
   packageSize?: number
   /** Direct dependencies count */
-  directDeps: number
+  directDeps: number | null
   /** Install size data (fetched lazily) */
   installSize?: {
     selfSize: number
@@ -113,9 +113,6 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               ),
             ])
 
-            const pkg = usePackage(name, latestVersion)
-            const requestedVersion = pkg.data.value?.requestedVersion
-
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize
 
@@ -146,7 +143,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               },
               downloads: downloads?.downloads,
               packageSize,
-              directDeps: getDependencyCount(requestedVersion ?? null),
+              directDeps: versionData ? getDependencyCount(versionData) : null,
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
               vulnerabilities: {
@@ -263,31 +260,31 @@ function computeFacetValue(
   t: (key: string, params?: Record<string, unknown>) => string,
 ): FacetValue | null {
   switch (facet) {
-    case 'downloads':
+    case 'downloads': {
       if (data.downloads === undefined) return null
       return {
         raw: data.downloads,
         display: formatCompactNumber(data.downloads),
         status: 'neutral',
       }
-
-    case 'packageSize':
+    }
+    case 'packageSize': {
       if (!data.packageSize) return null
       return {
         raw: data.packageSize,
         display: formatBytes(data.packageSize),
         status: data.packageSize > 5 * 1024 * 1024 ? 'warning' : 'neutral',
       }
-
-    case 'installSize':
+    }
+    case 'installSize': {
       if (!data.installSize) return null
       return {
         raw: data.installSize.totalSize,
         display: formatBytes(data.installSize.totalSize),
         status: data.installSize.totalSize > 50 * 1024 * 1024 ? 'warning' : 'neutral',
       }
-
-    case 'moduleFormat':
+    }
+    case 'moduleFormat': {
       if (!data.analysis) return null
       const format = data.analysis.moduleFormat
       return {
@@ -295,8 +292,8 @@ function computeFacetValue(
         display: format === 'dual' ? 'ESM + CJS' : format.toUpperCase(),
         status: format === 'esm' || format === 'dual' ? 'good' : 'neutral',
       }
-
-    case 'types':
+    }
+    case 'types': {
       if (data.isBinaryOnly) {
         return {
           raw: 'binary',
@@ -317,8 +314,8 @@ function computeFacetValue(
               : t('compare.facets.values.types_none'),
         status: types.kind === 'included' ? 'good' : types.kind === '@types' ? 'info' : 'bad',
       }
-
-    case 'engines':
+    }
+    case 'engines': {
       const engines = data.metadata?.engines
       if (!engines?.node) {
         return { raw: null, display: t('compare.facets.values.any'), status: 'neutral' }
@@ -328,8 +325,8 @@ function computeFacetValue(
         display: `Node ${engines.node}`,
         status: 'neutral',
       }
-
-    case 'vulnerabilities':
+    }
+    case 'vulnerabilities': {
       if (!data.vulnerabilities) return null
       const count = data.vulnerabilities.count
       const sev = data.vulnerabilities.severity
@@ -345,8 +342,8 @@ function computeFacetValue(
               }),
         status: count === 0 ? 'good' : sev.critical > 0 || sev.high > 0 ? 'bad' : 'warning',
       }
-
-    case 'lastUpdated':
+    }
+    case 'lastUpdated': {
       if (!data.metadata?.lastUpdated) return null
       const date = new Date(data.metadata.lastUpdated)
       return {
@@ -355,8 +352,8 @@ function computeFacetValue(
         status: isStale(date) ? 'warning' : 'neutral',
         type: 'date',
       }
-
-    case 'license':
+    }
+    case 'license': {
       const license = data.metadata?.license
       if (!license) {
         return { raw: null, display: t('compare.facets.values.unknown'), status: 'warning' }
@@ -366,17 +363,17 @@ function computeFacetValue(
         display: license,
         status: 'neutral',
       }
-
-    case 'dependencies':
-      if (!data.directDeps) return null
+    }
+    case 'dependencies': {
+      if (data.directDeps == null) return null
       const depCount = data.directDeps
       return {
         raw: depCount,
         display: String(depCount),
         status: depCount > 10 ? 'warning' : 'neutral',
       }
-
-    case 'deprecated':
+    }
+    case 'deprecated': {
       const isDeprecated = !!data.metadata?.deprecated
       return {
         raw: isDeprecated,
@@ -385,9 +382,9 @@ function computeFacetValue(
           : t('compare.facets.values.not_deprecated'),
         status: isDeprecated ? 'bad' : 'good',
       }
-
+    }
     // Coming soon facets
-    case 'totalDependencies':
+    case 'totalDependencies': {
       if (!data.installSize) return null
       const totalDepCount = data.installSize.dependencyCount
       return {
@@ -395,9 +392,10 @@ function computeFacetValue(
         display: String(totalDepCount),
         status: totalDepCount > 50 ? 'warning' : 'neutral',
       }
-
-    default:
+    }
+    default: {
       return null
+    }
   }
 }
 
