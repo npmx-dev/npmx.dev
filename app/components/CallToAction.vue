@@ -1,30 +1,30 @@
 <script setup lang="ts">
-const socialLinks = [
+const socialLinks = computed(() => [
   {
     id: 'github',
     href: 'https://repo.npmx.dev',
     icon: 'i-carbon:logo-github',
-    titleKey: 'about.get_involved.contribute.title',
-    descriptionKey: 'about.get_involved.contribute.description',
-    ctaKey: 'about.get_involved.contribute.cta',
+    titleKey: $t('about.get_involved.contribute.title'),
+    descriptionKey: $t('about.get_involved.contribute.description'),
+    ctaKey: $t('about.get_involved.contribute.cta'),
   },
   {
     id: 'discord',
     href: 'https://chat.npmx.dev',
     icon: 'i-carbon:chat',
-    titleKey: 'about.get_involved.community.title',
-    descriptionKey: 'about.get_involved.community.description',
-    ctaKey: 'about.get_involved.community.cta',
+    titleKey: $t('about.get_involved.community.title'),
+    descriptionKey: $t('about.get_involved.community.description'),
+    ctaKey: $t('about.get_involved.community.cta'),
   },
   {
     id: 'bluesky',
     href: 'https://social.npmx.dev',
     icon: 'i-simple-icons:bluesky',
-    titleKey: 'about.get_involved.follow.title',
-    descriptionKey: 'about.get_involved.follow.description',
-    ctaKey: 'about.get_involved.follow.cta',
+    titleKey: $t('about.get_involved.follow.title'),
+    descriptionKey: $t('about.get_involved.follow.description'),
+    ctaKey: $t('about.get_involved.follow.cta'),
   },
-]
+])
 </script>
 
 <template>
@@ -45,16 +45,16 @@ const socialLinks = [
         <div class="flex gap-2">
           <span :class="link.icon" class="shrink-0 mt-1 w-5 h-5 text-fg" aria-hidden="true" />
           <span class="font-medium text-fg">
-            {{ $t(link.titleKey) }}
+            {{ link.titleKey }}
           </span>
         </div>
         <p class="text-sm text-fg-muted leading-relaxed">
-          {{ $t(link.descriptionKey) }}
+          {{ link.descriptionKey }}
         </p>
         <span
           class="text-sm text-fg-muted group-hover:text-fg inline-flex items-center gap-1 mt-auto"
         >
-          {{ $t(link.ctaKey) }}
+          {{ link.ctaKey }}
           <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
         </span>
       </a>
