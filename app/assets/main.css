@@ -9,6 +9,7 @@
   /* background colors */
   --bg: oklch(0.145 0 0);
   --bg-subtle: oklch(0.178 0 0);
+  --bg-blog: oklch(0.195 0 0);
   --bg-muted: oklch(0.218 0 0);
   --bg-elevated: oklch(0.252 0 0);
 

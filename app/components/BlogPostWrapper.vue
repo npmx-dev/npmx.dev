@@ -22,14 +22,19 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
 
 <template>
   <main class="container w-full py-8">
-    <article class="prose dark:prose-invert mx-auto border-b border-border">
+    <article
+      class="max-w-prose mx-auto p-2 border-b border-border"
+      :style="{
+        background: `linear-gradient(to bottom, transparent 0%, var(--bg-blog) 2%, var(--bg-blog) 94%, transparent 100%)`,
+      }"
+    >
       <slot />
     </article>
-    <div v-if="frontmatter.authors" class="mt-12 max-w-prose mx-auto">
+    <article v-if="frontmatter.authors" class="mt-12 max-w-prose mx-auto">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <AuthorList :authors="frontmatter.authors" variant="expanded" />
       </div>
-    </div>
+    </article>
 
     <!--
       - Only renders if Constellation found a Bluesky post linking to this slug
@@ -38,3 +43,9 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
     <LazyBlueskyComments v-if="blueskyPostUri" :post-uri="blueskyPostUri" />
   </main>
 </template>
+
+<style scoped>
+:deep(.markdown-body) {
+  @apply prose dark:prose-invert;
+}
+</style>
