@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FileDiffResponse, FileChange } from '#shared/types'
+import type { FileDiffResponse, FileChange, DiffHunk } from '#shared/types'
 import { createDiff, insertSkipBlocks, countDiffStats } from '#shared/utils/diff'
 // @ts-expect-error: (tasky): idk why this is type-erroring even if it has types? /shrug
 import { motion } from 'motion-v'
@@ -111,9 +111,7 @@ function computeDiff() {
   }
 
   const hunksWithSkips = insertSkipBlocks(
-    parsed.hunks.filter(
-      (h): h is (typeof parsed.hunks)[number] & { type: 'hunk' } => h.type === 'hunk',
-    ),
+    parsed.hunks.filter((h): h is DiffHunk => h.type === 'hunk'),
   )
   const stats = countDiffStats(hunksWithSkips)
 
