@@ -87,7 +87,7 @@ async function handleLogin() {
             {{ $t('auth.modal.what_is_atmosphere') }}
           </summary>
           <div class="mt-3">
-            <i18n-t keypath="auth.modal.atmosphere_explanation" tag="p">
+            <i18n-t keypath="auth.modal.atmosphere_explanation" tag="p" scope="global">
               <template #npmx>
                 <span class="font-bold">npmx.dev</span>
               </template>

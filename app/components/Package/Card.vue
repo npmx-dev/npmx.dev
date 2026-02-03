@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { StructuredFilters } from '#shared/types/preferences'
+
 const props = defineProps<{
   /** The search result object containing package data */
   result: NpmSearchResult
@@ -8,8 +10,14 @@ const props = defineProps<{
   showPublisher?: boolean
   prefetch?: boolean
   index?: number
+  /** Filters to apply to the results */
+  filters?: StructuredFilters
   /** Search query for highlighting exact matches */
   searchQuery?: string
+}>()
+
+const emit = defineEmits<{
+  clickKeyword: [keyword: string]
 }>()
 
 /** Check if this package is an exact match for the search query */
@@ -149,14 +157,29 @@ const pkgDescription = useMarkdown(() => ({
       </div>
     </div>
 
-    <ul
+    <div
       v-if="result.package.keywords?.length"
       :aria-label="$t('package.card.keywords')"
-      class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0"
+      class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0 pointer-events-none"
     >
-      <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword" class="tag">
+      <TagClickable
+        v-for="keyword in result.package.keywords.slice(0, 5)"
+        :key="keyword"
+        type="button"
+        class="pointer-events-auto"
+        :status="props.filters?.keywords.includes(keyword) ? 'active' : 'default'"
+        :title="`Filter by ${keyword}`"
+        @click.stop="emit('clickKeyword', keyword)"
+      >
         {{ keyword }}
-      </li>
-    </ul>
+      </TagClickable>
+      <span
+        v-if="result.package.keywords.length > 5"
+        class="text-fg-subtle text-xs pointer-events-auto"
+        :title="result.package.keywords.slice(5).join(', ')"
+      >
+        +{{ result.package.keywords.length - 5 }}
+      </span>
+    </div>
   </BaseCard>
 </template>

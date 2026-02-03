@@ -6,6 +6,7 @@ interface Props {
   isLoading?: boolean
   headingLevel?: `h${number}`
   id: string
+  icon?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -107,6 +108,7 @@ useHead({
           :href="`#${id}`"
           class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
         >
+          <span v-if="icon" :class="icon" aria-hidden="true" />
           {{ title }}
           <span
             class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"

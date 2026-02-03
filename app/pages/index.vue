@@ -4,6 +4,18 @@ import { debounce } from 'perfect-debounce'
 const searchQuery = shallowRef('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
+const frameworks = ref([
+  { name: 'nuxt', package: 'nuxt' },
+  { name: 'vue', package: 'vue' },
+  { name: 'nitro', package: 'nitro' },
+  { name: 'react', package: 'react' },
+  { name: 'svelte', package: 'svelte' },
+  { name: 'vite', package: 'vite' },
+  { name: 'next', package: 'next' },
+  { name: 'astro', package: 'astro' },
+  { name: 'typescript', package: 'typescript' },
+  { name: 'angular', package: '@angular/core' },
+])
 
 async function search() {
   const query = searchQuery.value.trim()
@@ -104,28 +116,26 @@ defineOgImageComponent('Default', {
       <BuildEnvironment class="mt-4" />
     </header>
 
-    <nav
-      :aria-label="$t('nav.popular_packages')"
-      class="pt-4 pb-36 sm:pb-40 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
-      style="animation-delay: 0.3s"
-    >
-      <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
-        <li
-          v-for="pkg in ['nuxt', 'vue', 'react', 'svelte', 'vite', 'next', 'astro', 'typescript']"
-          :key="pkg"
-        >
-          <NuxtLink
-            :to="{ name: 'package', params: { package: [pkg] } }"
-            class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
-          >
-            <span
-              class="w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
-            />
-            {{ pkg }}
-          </NuxtLink>
-        </li>
-      </ul>
-    </nav>
+      <nav
+        :aria-label="$t('nav.popular_packages')"
+        class="pt-4 pb-36 sm:pb-40 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
+        style="animation-delay: 0.3s"
+      >
+        <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
+          <li v-for="framework in frameworks" :key="framework.name">
+            <NuxtLink
+              :to="{ name: 'package', params: { package: [framework.package] } }"
+              class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
+            >
+              <span
+                class="w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
+              />
+              {{ framework.name }}
+            </NuxtLink>
+          </li>
+        </ul>
+      </nav>
+    </section>
 
     <section class="border-t border-border py-24 bg-bg-subtle/10">
       <div class="container max-w-3xl mx-auto">

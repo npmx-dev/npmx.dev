@@ -95,7 +95,12 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
       v-if="selectedMethod === 'skills-npm'"
       class="flex items-center justify-between gap-2 px-3 py-2.5 sm:px-4 bg-bg-subtle border border-border rounded-lg mb-5"
     >
-      <i18n-t keypath="package.skills.compatible_with" tag="span" class="text-sm text-fg-muted">
+      <i18n-t
+        keypath="package.skills.compatible_with"
+        tag="span"
+        class="text-sm text-fg-muted"
+        scope="global"
+      >
         <template #tool>
           <code class="font-mono text-fg">skills-npm</code>
         </template>

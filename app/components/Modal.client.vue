@@ -3,7 +3,7 @@ const props = defineProps<{
   modalTitle: string
 }>()
 
-const dialogRef = ref<HTMLDialogElement>()
+const dialogRef = useTemplateRef('dialogRef')
 
 const modalTitleId = computed(() => {
   const id = getCurrentInstance()?.attrs.id

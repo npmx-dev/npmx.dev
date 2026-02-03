@@ -32,6 +32,9 @@ importers:
       '@deno/doc':
         specifier: jsr:^0.189.1
         version: '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)'
+      '@floating-ui/vue':
+        specifier: 1.1.10
+        version: 1.1.10(vue@3.5.27(typescript@5.9.3))
       '@iconify-json/carbon':
         specifier: 1.2.18
         version: 1.2.18
@@ -119,6 +122,9 @@ importers:
       '@vueuse/router':
         specifier: ^14.2.0
         version: 14.2.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      defu:
+        specifier: 6.1.4
+        version: 6.1.4
       focus-trap:
         specifier: ^7.8.0
         version: 7.8.0
@@ -186,8 +192,8 @@ importers:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-data-ui:
-        specifier: 3.14.1
-        version: 3.14.1(vue@3.5.27(typescript@5.9.3))
+        specifier: 3.14.2
+        version: 3.14.2(vue@3.5.27(typescript@5.9.3))
     devDependencies:
       '@npm/types':
         specifier: 2.1.0
@@ -223,14 +229,23 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       knip:
-        specifier: 5.82.1
-        version: 5.82.1(@types/node@24.10.9)(typescript@5.9.3)
+        specifier: 5.83.0
+        version: 5.83.0(@types/node@24.10.9)(typescript@5.9.3)
       lint-staged:
         specifier: 16.2.7
         version: 16.2.7
+      oxfmt:
+        specifier: 0.27.0
+        version: 0.27.0
+      oxlint:
+        specifier: 1.42.0
+        version: 1.42.0(oxlint-tsgolint@0.11.3)
       playwright-core:
         specifier: 1.58.0
         version: 1.58.0
+      schema-dts:
+        specifier: 1.1.5
+        version: 1.1.5
       simple-git-hooks:
         specifier: 2.13.1
         version: 2.13.1
@@ -6578,8 +6593,8 @@ packages:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
 
-  knip@5.82.1:
-    resolution: {integrity: sha512-1nQk+5AcnkqL40kGQXfouzAEXkTR+eSrgo/8m1d0BMei4eAzFwghoXC4gOKbACgBiCof7hE8wkBVDsEvznf85w==}
+  knip@5.83.0:
+    resolution: {integrity: sha512-FfmaHMntpZB13B1oJQMSs1hTOZxd0TOn+FYB3oWEI02XlxTW3RH4H7d8z5Us3g0ziHCYyl7z0B1xi8ENP3QEKA==}
     engines: {node: '>=18.18.0'}
     hasBin: true
     peerDependencies:
@@ -8186,6 +8201,9 @@ packages:
     resolution: {integrity: sha512-1n3r/tGXO6b6VXMdFT54SHzT9ytu9yr7TaELowdYpMqY/Ao7EnlQGmAQ1+RatX7Tkkdm6hONI2owqNx2aZj5Sw==}
     engines: {node: '>=11.0.0'}
 
+  schema-dts@1.1.5:
+    resolution: {integrity: sha512-RJr9EaCmsLzBX2NDiO5Z3ux2BVosNZN5jo0gWgsyKvxKIUL5R3swNvoorulAeL9kLB0iTSX7V6aokhla2m7xbg==}
+
   schema-utils@4.3.3:
     resolution: {integrity: sha512-eflK8wEtyOE6+hsaRVPxvUKYCpRgzLqDTb8krvAsRIwOGlHoSgYLgBXoubGgLd2fT41/OUYdb48v4k4WWHQurA==}
     engines: {node: '>= 10.13.0'}
@@ -9247,8 +9265,8 @@ packages:
   vue-component-type-helpers@3.2.4:
     resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
-  vue-data-ui@3.14.1:
-    resolution: {integrity: sha512-i7GNaNtw39Avy9VuDHGdLdDpH2sRsr2ZFRpiilOvQ0XA5887KCvd7J5IUQRpVNTQSaT7pFSSEMPwcQ7NfPHuVw==}
+  vue-data-ui@3.14.2:
+    resolution: {integrity: sha512-gxMhF0DXMfJ+TgErs0fKsM7Se+txRQSFhy+DWtw5XhD2HnjxnlbBSuyJDyNvLdHtPWOVeoXzc1TSMvLzsheZnQ==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -16870,7 +16888,7 @@ snapshots:
 
   klona@2.0.6: {}
 
-  knip@5.82.1(@types/node@24.10.9)(typescript@5.9.3):
+  knip@5.83.0(@types/node@24.10.9)(typescript@5.9.3):
     dependencies:
       '@nodelib/fs.walk': 1.2.8
       '@types/node': 24.10.9
@@ -19433,6 +19451,8 @@ snapshots:
 
   sax@1.4.4: {}
 
+  schema-dts@1.1.5: {}
+
   schema-utils@4.3.3:
     dependencies:
       '@types/json-schema': 7.0.15
@@ -20666,7 +20686,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.4: {}
 
-  vue-data-ui@3.14.1(vue@3.5.27(typescript@5.9.3)):
+  vue-data-ui@3.14.2(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
 

@@ -1,4 +1,10 @@
-import type { FacetValue, ComparisonFacet, ComparisonPackage, Packument } from '#shared/types'
+import type {
+  FacetValue,
+  ComparisonFacet,
+  ComparisonPackage,
+  Packument,
+  VulnerabilityTreeResult,
+} from '#shared/types'
 import { encodePackageName } from '#shared/utils/npm'
 import type { PackageAnalysisResponse } from './usePackageAnalysis'
 import { isBinaryOnlyPackage } from '#shared/utils/binary-detection'
@@ -17,7 +23,7 @@ export interface PackageComparisonData {
   analysis?: PackageAnalysisResponse
   vulnerabilities?: {
     count: number
-    severity: { critical: number; high: number; medium: number; low: number }
+    severity: { critical: number; high: number; moderate: number; low: number }
   }
   metadata?: {
     license?: string
@@ -98,9 +104,9 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
               ).catch(() => null),
               $fetch<PackageAnalysisResponse>(`/api/registry/analysis/${name}`).catch(() => null),
-              $fetch<{
-                vulnerabilities: Array<{ severity: string }>
-              }>(`/api/registry/vulnerabilities/${name}`).catch(() => null),
+              $fetch<VulnerabilityTreeResult>(`/api/registry/vulnerabilities/${name}`).catch(
+                () => null,
+              ),
             ])
 
             const versionData = pkgData.versions[latestVersion]
@@ -115,12 +121,14 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               exports: versionData?.exports,
             })
 
-            // Count vulnerabilities by severity
-            const vulnCounts = { critical: 0, high: 0, medium: 0, low: 0 }
-            const vulnList = vulns?.vulnerabilities ?? []
-            for (const v of vulnList) {
-              const sev = v.severity.toLowerCase() as keyof typeof vulnCounts
-              if (sev in vulnCounts) vulnCounts[sev]++
+            // Vulnerabilities
+            let vulnsTotal: number = 0
+            let vulnsSeverity = { critical: 0, high: 0, moderate: 0, low: 0 }
+
+            if (vulns) {
+              const { total, ...severity } = vulns.totalCounts
+              vulnsTotal = total
+              vulnsSeverity = severity
             }
 
             return {
@@ -134,8 +142,8 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
               vulnerabilities: {
-                count: vulnList.length,
-                severity: vulnCounts,
+                count: vulnsTotal,
+                severity: vulnsSeverity,
               },
               metadata: {
                 license: pkgData.license,
@@ -244,7 +252,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 function computeFacetValue(
   facet: ComparisonFacet,
   data: PackageComparisonData,
-  t: (key: string) => string,
+  t: (key: string, params?: Record<string, unknown>) => string,
 ): FacetValue | null {
   switch (facet) {
     case 'downloads':
@@ -294,13 +302,19 @@ function computeFacetValue(
       return {
         raw: types.kind,
         display:
-          types.kind === 'included' ? 'Included' : types.kind === '@types' ? '@types' : 'None',
+          types.kind === 'included'
+            ? t('compare.facets.values.types_included')
+            : types.kind === '@types'
+              ? '@types'
+              : t('compare.facets.values.types_none'),
         status: types.kind === 'included' ? 'good' : types.kind === '@types' ? 'info' : 'bad',
       }
 
     case 'engines':
       const engines = data.metadata?.engines
-      if (!engines?.node) return { raw: null, display: 'Any', status: 'neutral' }
+      if (!engines?.node) {
+        return { raw: null, display: t('compare.facets.values.any'), status: 'neutral' }
+      }
       return {
         raw: engines.node,
         display: `Node ${engines.node}`,
@@ -313,7 +327,14 @@ function computeFacetValue(
       const sev = data.vulnerabilities.severity
       return {
         raw: count,
-        display: count === 0 ? 'None' : `${count} (${sev.critical}C/${sev.high}H)`,
+        display:
+          count === 0
+            ? t('compare.facets.values.none')
+            : t('compare.facets.values.vulnerabilities_summary', {
+                count,
+                critical: sev.critical,
+                high: sev.high,
+              }),
         status: count === 0 ? 'good' : sev.critical > 0 || sev.high > 0 ? 'bad' : 'warning',
       }
 
@@ -329,7 +350,9 @@ function computeFacetValue(
 
     case 'license':
       const license = data.metadata?.license
-      if (!license) return { raw: null, display: 'Unknown', status: 'warning' }
+      if (!license) {
+        return { raw: null, display: t('compare.facets.values.unknown'), status: 'warning' }
+      }
       return {
         raw: license,
         display: license,
@@ -349,7 +372,9 @@ function computeFacetValue(
       const isDeprecated = !!data.metadata?.deprecated
       return {
         raw: isDeprecated,
-        display: isDeprecated ? 'Deprecated' : 'No',
+        display: isDeprecated
+          ? t('compare.facets.values.deprecated')
+          : t('compare.facets.values.not_deprecated'),
         status: isDeprecated ? 'bad' : 'good',
       }
 

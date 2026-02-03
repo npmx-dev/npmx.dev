@@ -58,7 +58,7 @@ onUnmounted(deactivate)
     >
       <div
         v-if="isOpen"
-        class="fixed inset-0 z-50 sm:hidden"
+        class="fixed inset-0 z-[60] sm:hidden"
         role="dialog"
         aria-modal="true"
         :aria-label="$t('nav.mobile_menu')"

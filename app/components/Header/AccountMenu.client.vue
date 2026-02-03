@@ -55,7 +55,7 @@ function openAuthModal() {
 </script>
 
 <template>
-  <div ref="accountMenuRef" class="relative">
+  <div ref="accountMenuRef" class="relative flex min-w-24 justify-end">
     <button
       type="button"
       class="relative flex items-center justify-end gap-2 px-2 py-1.5 min-w-24 rounded-md transition-colors duration-200 hover:bg-bg-subtle hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70"

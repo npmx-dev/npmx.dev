@@ -306,6 +306,7 @@ export function useNpmSearch(
     () => `search:incremental:${toValue(query)}`,
     async (_nuxtApp, { signal }) => {
       const q = toValue(query)
+
       if (!q.trim()) {
         return emptySearchResponse
       }
@@ -321,11 +322,50 @@ export function useNpmSearch(
       // Use requested size for initial fetch
       params.set('size', String(opts.size ?? 25))
 
+      if (q.length === 1) {
+        const encodedName = encodePackageName(q)
+        const [{ data: pkg, isStale }, { data: downloads }] = await Promise.all([
+          cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`, { signal }),
+          cachedFetch<NpmDownloadCount>(`${NPM_API}/downloads/point/last-week/${encodedName}`, {
+            signal,
+          }),
+        ])
+
+        if (!pkg) {
+          return emptySearchResponse
+        }
+
+        const result = packumentToSearchResult(pkg, downloads?.downloads)
+
+        // If query changed/outdated, return empty search response
+        if (q !== toValue(query)) {
+          return emptySearchResponse
+        }
+
+        cache.value = {
+          query: q,
+          objects: [result],
+          total: 1,
+        }
+
+        return {
+          objects: [result],
+          total: 1,
+          isStale,
+          time: new Date().toISOString(),
+        }
+      }
+
       const { data: response, isStale } = await cachedFetch<NpmSearchResponse>(
         `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
         { signal },
         60,
       )
+
+      // If query changed/outdated, return empty search response
+      if (q !== toValue(query)) {
+        return emptySearchResponse
+      }
 
       cache.value = {
         query: q,

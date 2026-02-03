@@ -11,10 +11,12 @@ const props = defineProps<{
 const chartModal = useModal('chart-modal')
 
 const isChartModalOpen = shallowRef(false)
-function openChartModal() {
+async function openChartModal() {
   isChartModalOpen.value = true
   // ensure the component renders before opening the dialog
-  nextTick(() => chartModal.open())
+  await nextTick()
+  await nextTick()
+  chartModal.open()
 }
 
 const { fetchPackageDownloadEvolution } = useCharts()
