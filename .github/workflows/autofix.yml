@@ -31,8 +31,8 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
 
-      - name: 📦 Install browsers
-        run: pnpm playwright install
+      - name: 🌐 Install browser
+        run: pnpm playwright install chromium-headless-shell
 
       - name: 🌐 Compare translations
         run: pnpm i18n:check
