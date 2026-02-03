@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import FacetRow from '~/components/compare/FacetRow.vue'
+import FacetRow from '~/components/Compare/FacetRow.vue'
 
 // Mock useRelativeDates for DateTime component
 vi.mock('~/composables/useSettings', () => ({
