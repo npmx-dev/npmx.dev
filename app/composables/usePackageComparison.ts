@@ -236,7 +236,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   function isFacetLoading(facet: ComparisonFacet): boolean {
     if (!installSizeLoading.value) return false
     // These facets depend on install-size API
-    return facet === 'installSize' || facet === 'dependencies'
+    return facet === 'installSize' || facet === 'totalDependencies'
   }
 
   // Check if a specific column (package) is loading
