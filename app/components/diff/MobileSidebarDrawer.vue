@@ -21,15 +21,10 @@ watch(
   },
 )
 
-const isLocked = useScrollLock(document)
+const isLocked = useScrollLock(import.meta.client ? document : null)
 watch(open, value => {
   isLocked.value = value
 })
-
-function handleFileSelect(file: FileChange) {
-  selectedFile.value = file
-  open.value = false
-}
 </script>
 
 <template>
