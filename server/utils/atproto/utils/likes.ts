@@ -230,11 +230,11 @@ export class PackageLikesUtils {
     if (!totalLikes) {
       totalLikes = await this.constellationLikes(subjectRef)
     }
-    totalLikes = totalLikes - 1
+    totalLikes = Math.max(totalLikes - 1, 0)
     await this.cache.set(totalLikesKey, totalLikes, CACHE_MAX_AGE)
 
     //Clean up
-    await this.cache.delete(CACHE_USER_LIKES_KEY(packageName, usersDid))
+    await this.cache.set(CACHE_USER_LIKES_KEY(packageName, usersDid), false, CACHE_MAX_AGE)
     await this.cache.delete(CACHE_USERS_BACK_LINK(packageName, usersDid))
 
     return {

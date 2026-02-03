@@ -33,7 +33,9 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     return result
   }
 
-  console.error(
+  console.warn(
     `User ${loggedInUsersDid} tried to unlike a package ${body.packageName} but it was not liked by them.`,
   )
+
+  return await likesUtil.getLikes(body.packageName, loggedInUsersDid)
 })

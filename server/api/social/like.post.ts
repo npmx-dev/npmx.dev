@@ -20,12 +20,10 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
 
   const likesUtil = new PackageLikesUtils()
 
-  const hasLiked = await likesUtil.hasTheUserLikedThePackage(body.packageName, loggedInUsersDid)
-  if (hasLiked) {
-    throw createError({
-      status: 400,
-      message: 'User has already liked the package',
-    })
+  // Checks to see if the user has liked the package already
+  const likesResult = await likesUtil.getLikes(body.packageName, loggedInUsersDid)
+  if (likesResult.userHasLiked) {
+    return likesResult
   }
 
   const subjectRef = PACKAGE_SUBJECT_REF(body.packageName)
