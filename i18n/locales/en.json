@@ -57,7 +57,10 @@
   },
   "blog": {
     "title": "Blog",
-    "description": "Insights and updates from the npmx community"
+    "description": "Insights and updates from the npmx community",
+    "author": {
+      "view_profile": "View {name}'s profile on Bluesky"
+    }
   },
   "settings": {
     "title": "settings",

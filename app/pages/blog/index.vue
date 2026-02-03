@@ -5,7 +5,7 @@ const blogModules = import.meta.glob<BlogPostFrontmatter>('./*.md', { eager: tru
 
 const posts: BlogPostFrontmatter[] = []
 
-for (const [path, module] of Object.entries(blogModules)) {
+for (const [_, module] of Object.entries(blogModules)) {
   if (module.draft) continue
 
   posts.push({ ...module })
@@ -35,8 +35,8 @@ useSeoMeta({
     <article v-if="posts && posts.length > 0" class="mx-30 space-y-4">
       <BlogPostListCard
         v-for="(post, idx) in posts"
-        :key="`${post.author}-${post.title}`"
-        :author="post.author || 'Roe'"
+        :key="`${post.authors.map(a => a.name).join('-')}-${post.title}`"
+        :authors="post.authors"
         :title="post.title"
         :path="post.slug"
         :excerpt="post.excerpt || post.description || 'No Excerpt Available'"

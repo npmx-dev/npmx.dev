@@ -1,5 +1,7 @@
 ---
-author: 'Daniel Roe'
+authors:
+  - name: Daniel Roe
+    blueskyHandle: danielroe.dev
 title: 'Package Registries'
 tags: ['OpenSource', 'Nuxt']
 excerpt: 'Package Registries need fixing'

@@ -4,7 +4,6 @@ import type {
   AppBskyEmbedImages,
   AppBskyEmbedExternal,
 } from '@atproto/api'
-
 export interface CommentEmbed {
   type: 'images' | 'external'
   images?: AppBskyEmbedImages.ViewImage[]

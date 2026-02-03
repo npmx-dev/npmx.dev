@@ -1,5 +1,7 @@
 ---
-author: 'Daniel Roe'
+authors:
+  - name: Daniel Roe
+    blueskyHandle: danielroe.dev
 title: 'Nuxted'
 tags: ['OpenSource', 'Nuxt']
 excerpt: 'Nuxting'

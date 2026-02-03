@@ -1,5 +1,7 @@
 ---
-author: 'Daniel Roe'
+authors:
+  - name: Daniel Roe
+    blueskyHandle: danielroe.dev
 title: 'TEST FAIL'
 tags: ['OpenSource', 'Nuxt']
 excerpt: 'My first post'

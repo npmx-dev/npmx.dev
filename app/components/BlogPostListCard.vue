@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { Author } from '#shared/schemas/blog'
+
 defineProps<{
-  /** First and last name - Potentially Multiple? i.e. co-authors */
-  author: string
+  /** Authors of the blog post */
+  authors: Author[]
   /** Blog Title */
   title: string
   /** Tags such as OpenSource, Architecture, Community, etc. */
@@ -32,22 +34,6 @@ const emit = defineEmits<{
       @focus="index != null && emit('focus', index)"
       @mouseenter="index != null && emit('focus', index)"
     >
-      <!-- Avatar placeholder -->
-      <div
-        class="w-10 h-10 shrink-0 flex items-center justify-center border border-border rounded-full bg-bg-muted"
-        aria-hidden="true"
-      >
-        <span class="text-lg text-fg-subtle font-mono">
-          {{
-            author
-              .split(' ')
-              .map(n => n[0])
-              .join('')
-              .toUpperCase()
-          }}
-        </span>
-      </div>
-
       <!-- Text Content -->
       <div class="flex-1 min-w-0 text-left">
         <h2
@@ -56,8 +42,8 @@ const emit = defineEmits<{
           {{ title }}
         </h2>
 
-        <div class="flex items-center gap-2 text-xs text-fg-muted font-mono">
-          <span>{{ author }}</span>
+        <div class="flex items-center gap-2 text-xs text-fg-muted font-mono mt-1">
+          <AuthorList :authors="authors" />
           <span>•</span>
           <span>{{ published }}</span>
         </div>
@@ -68,13 +54,9 @@ const emit = defineEmits<{
       </div>
 
       <span
-        class="i-carbon-arrow-right w-4 h-4 text-fg-subtle group-hover:text-fg transition-colors shrink-0"
+        class="i-carbon:arrow-right w-4 h-4 text-fg-subtle group-hover:text-fg transition-colors shrink-0"
         aria-hidden="true"
       />
     </NuxtLink>
   </article>
 </template>
-<!-- :class="{
-  'bg-bg-muted border-border-hover': selected,
-  'border-accent/30 bg-accent/5': isExactMatch,
-}" -->

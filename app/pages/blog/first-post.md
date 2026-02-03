@@ -1,5 +1,9 @@
 ---
-author: 'Daniel Roe'
+authors:
+  - name: Daniel Roe
+    blueskyHandle: danielroe.dev
+  - name: Salma Alam-Naylor
+    blueskyHandle: whitep4nth3r.com
 title: 'Hello World'
 tags: ['OpenSource', 'Nuxt']
 excerpt: 'My first post'

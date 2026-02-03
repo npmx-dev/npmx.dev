@@ -1,5 +1,7 @@
 ---
-author: 'Daniel Roe'
+authors:
+  - name: Daniel Roe
+    blueskyHandle: danielroe.dev
 title: 'OSS'
 tags: ['OpenSource', 'Nuxt']
 excerpt: 'OSS Things'

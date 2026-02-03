@@ -1,5 +1,7 @@
 ---
-author: 'Daniel Roe'
+authors:
+  - name: Daniel Roe
+    blueskyHandle: danielroe.dev
 title: 'Server Components'
 date: '2026-01-28'
 slug: 'server-components'
