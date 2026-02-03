@@ -342,3 +342,15 @@ export interface PackageFileContentResponse {
   lines: number
   markdownHtml?: ReadmeResponse
 }
+
+/**
+ * Changelog info for a package version
+ */
+export interface ChangelogInfo {
+  /** Source type: 'file' (internal view) or 'releases' (external link) */
+  source: 'file' | 'releases'
+  /** URL to the changelog (internal path for file, external URL for releases) */
+  url: string
+  /** Filename if source is 'file' (e.g., "CHANGELOG.md") */
+  filename?: string
+}

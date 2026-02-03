@@ -19,6 +19,10 @@ import {
 } from '#shared/utils/constants'
 import { parseRepoUrl } from '#shared/utils/git-providers'
 import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
+import type { ChangelogInfo } from '#shared/types'
+import { findChangelogFile } from '#shared/utils/changelog'
+import { fetchFileTree } from '../../../utils/file-tree'
+import { checkReleaseTag } from '../../../utils/release-tag'
 
 export default defineCachedEventHandler(
   async event => {
@@ -52,12 +56,17 @@ export default defineCachedEventHandler(
       // Only show if the packages are actually associated (same maintainers or same org)
       const createPackage = await findAssociatedCreatePackage(packageName, pkg)
 
+      // Detect changelog: check release tag first (faster), then fall back to file tree
+      const resolvedVersion = pkg.version ?? version ?? 'latest'
+      const changelog = await detectChangelog(pkg, packageName, resolvedVersion)
+
       const analysis = analyzePackage(pkg, { typesPackage, createPackage })
 
       return {
         package: packageName,
-        version: pkg.version ?? version ?? 'latest',
+        version: resolvedVersion,
         ...analysis,
+        changelog,
       } satisfies PackageAnalysisResponse
     } catch (error: unknown) {
       handleApiError(error, {
@@ -71,7 +80,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `analysis:v1:${pkg.replace(/\/+$/, '').trim()}`
+      return `analysis:v2:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )
@@ -215,4 +224,50 @@ function hasSameRepositoryOwner(
 export interface PackageAnalysisResponse extends PackageAnalysis {
   package: string
   version: string
+}
+
+/**
+ * Detect changelog for a package version.
+ * Priority: release tag (faster) > changelog file in tarball
+ */
+async function detectChangelog(
+  pkg: ExtendedPackageJson,
+  packageName: string,
+  version: string,
+): Promise<ChangelogInfo | undefined> {
+  // Step 1: Check for release tag (faster - single API call per tag format)
+  if (pkg.repository?.url) {
+    const repoRef = parseRepoUrl(pkg.repository.url)
+    if (repoRef) {
+      try {
+        const releaseInfo = await checkReleaseTag(repoRef, version, packageName)
+        if (releaseInfo.exists && releaseInfo.url) {
+          return {
+            source: 'releases',
+            url: releaseInfo.url,
+          }
+        }
+      } catch {
+        // Release tag check failed, continue to file tree check
+      }
+    }
+  }
+
+  // Step 2: Check for changelog file in tarball (fallback)
+  try {
+    const fileTreeResult = await fetchFileTree(packageName, version)
+    const changelogFile = findChangelogFile(fileTreeResult.files)
+    if (changelogFile) {
+      return {
+        source: 'file',
+        url: `/package-code/${packageName}/v/${version}/${changelogFile}`,
+        filename: changelogFile,
+      }
+    }
+  } catch {
+    // File tree fetch failed, no changelog available
+  }
+
+  // Neither release tag nor changelog file found
+  return undefined
 }

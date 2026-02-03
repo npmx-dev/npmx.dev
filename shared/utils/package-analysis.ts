@@ -18,6 +18,12 @@ export interface PackageAnalysis {
   }
   /** Associated create-* package if it exists */
   createPackage?: CreatePackageInfo
+  /** Changelog info if available (file in tarball or release page) */
+  changelog?: {
+    source: 'file' | 'releases'
+    url: string
+    filename?: string
+  }
 }
 
 /**

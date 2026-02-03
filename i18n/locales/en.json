@@ -175,6 +175,7 @@
       "repo": "repo",
       "homepage": "homepage",
       "issues": "issues",
+      "changelog": "changelog",
       "jsr": "jsr",
       "code": "code",
       "docs": "docs",

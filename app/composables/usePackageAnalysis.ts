@@ -1,4 +1,5 @@
 import type { ModuleFormat, TypesStatus, CreatePackageInfo } from '#shared/utils/package-analysis'
+import type { ChangelogInfo } from '#shared/types'
 
 export interface PackageAnalysisResponse {
   package: string
@@ -10,6 +11,7 @@ export interface PackageAnalysisResponse {
     npm?: string
   }
   createPackage?: CreatePackageInfo
+  changelog?: ChangelogInfo
 }
 
 /**
