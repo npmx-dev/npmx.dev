@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import * as fc from 'fast-check'
 import {
   escapeHtml,
   parseJsDocLinks,
@@ -39,6 +40,15 @@ describe('stripAnsi', () => {
     const ESC = String.fromCharCode(27)
     const input = `object is ReactElement${ESC}[0m${ESC}[38;5;12m<${ESC}[0mP${ESC}[38;5;12m>${ESC}[0m`
     expect(stripAnsi(input)).toBe('object is ReactElement<P>')
+  })
+
+  it('should strip everything in one pass', () => {
+    fc.assert(
+      fc.property(fc.string(), input => {
+        const stripped = stripAnsi(input)
+        expect(stripAnsi(stripped)).toBe(stripped)
+      }),
+    )
   })
 })
 
@@ -123,6 +133,65 @@ describe('parseJsDocLinks', () => {
   it('should handle http URLs (not just https)', () => {
     const result = parseJsDocLinks('{@link http://example.com}', emptyLookup)
     expect(result).toContain('href="http://example.com"')
+  })
+
+  it('should convert external URLs using {@link url} to links', () => {
+    fc.assert(
+      fc.property(fc.webUrl(), url => {
+        const result = parseJsDocLinks(`{@link ${url}}`, emptyLookup)
+        expect(result).toContain(`href="${escapeHtml(url)}"`)
+        expect(result).toContain('target="_blank"')
+        expect(result).toContain('rel="noreferrer"')
+        expect(result).toContain(escapeHtml(url))
+      }),
+    )
+  })
+
+  it('should convert external URLs using {@link url text} to links', () => {
+    fc.assert(
+      fc.property(fc.webUrl(), fc.stringMatching(/^[^}\s][^}]+[^}\s]$/), (url, text) => {
+        const result = parseJsDocLinks(`{@link ${url} ${text}}`, emptyLookup)
+        expect(result).toContain(`href="${escapeHtml(url)}"`)
+        expect(result).toContain('target="_blank"')
+        expect(result).toContain('rel="noreferrer"')
+        expect(result).toContain(escapeHtml(text))
+      }),
+    )
+  })
+
+  it('should be able to treat correctly several external URLs at the middle of a text', () => {
+    const surrounding = fc.stringMatching(/^[^{]*$/)
+    const link = fc.record({
+      url: fc.webUrl(),
+      label: fc.option(fc.stringMatching(/^[^}\s][^}]+[^}\s]$/)),
+      before: surrounding,
+      after: surrounding,
+    })
+    fc.assert(
+      fc.property(fc.array(link, { minLength: 1 }), content => {
+        let docString = ''
+        const expectedUrls = []
+        for (const chunk of content) {
+          if (chunk.before.length !== 0 || docString.length !== 0) {
+            docString += `${chunk.before} `
+          }
+          if (chunk.label === null) {
+            docString += `{@link ${chunk.url}}`
+            expectedUrls.push(chunk.url)
+          } else {
+            docString += `{@link ${chunk.url} ${chunk.label}}`
+            expectedUrls.push(chunk.url)
+          }
+          if (chunk.after.length !== 0) {
+            docString += ` ${chunk.after}`
+          }
+        }
+        const result = parseJsDocLinks(docString, emptyLookup)
+        for (const url of expectedUrls) {
+          expect(result).toContain(`href="${escapeHtml(url)}"`)
+        }
+      }),
+    )
   })
 })
 
