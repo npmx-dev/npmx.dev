@@ -14,7 +14,7 @@ const frameworks = ref([
   { name: 'next', package: 'next' },
   { name: 'astro', package: 'astro' },
   { name: 'typescript', package: 'typescript' },
-  { name: 'Angular', package: '@angular/core' },
+  { name: 'angular', package: '@angular/core' },
 ])
 
 async function search() {

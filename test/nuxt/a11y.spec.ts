@@ -110,6 +110,7 @@ import {
   PaginationControls,
   ProvenanceBadge,
   Readme,
+  ReadmeTocDropdown,
   SearchSuggestionCard,
   SettingsAccentColorPicker,
   SettingsBgThemePicker,
@@ -1788,6 +1789,54 @@ describe('component accessibility audits', () => {
         props: {
           html: '<h3>README</h3><p>Some content</p>',
         },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('ReadmeTocDropdown', () => {
+    const mockToc = [
+      { text: 'Installation', id: 'installation', depth: 2 },
+      { text: 'Usage', id: 'usage', depth: 2 },
+      { text: 'Basic Usage', id: 'basic-usage', depth: 3 },
+      { text: 'Advanced Usage', id: 'advanced-usage', depth: 3 },
+      { text: 'API', id: 'api', depth: 2 },
+    ]
+
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ReadmeTocDropdown, {
+        props: { toc: mockToc },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with active item', async () => {
+      const component = await mountSuspended(ReadmeTocDropdown, {
+        props: {
+          toc: mockToc,
+          activeId: 'usage',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with nested active item', async () => {
+      const component = await mountSuspended(ReadmeTocDropdown, {
+        props: {
+          toc: mockToc,
+          activeId: 'basic-usage',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with empty toc', async () => {
+      const component = await mountSuspended(ReadmeTocDropdown, {
+        props: { toc: [] },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])

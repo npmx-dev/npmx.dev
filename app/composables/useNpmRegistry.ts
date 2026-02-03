@@ -337,6 +337,11 @@ export function useNpmSearch(
 
         const result = packumentToSearchResult(pkg, downloads?.downloads)
 
+        // If query changed/outdated, return empty search response
+        if (q !== toValue(query)) {
+          return emptySearchResponse
+        }
+
         cache.value = {
           query: q,
           objects: [result],
@@ -356,6 +361,11 @@ export function useNpmSearch(
         { signal },
         60,
       )
+
+      // If query changed/outdated, return empty search response
+      if (q !== toValue(query)) {
+        return emptySearchResponse
+      }
 
       cache.value = {
         query: q,

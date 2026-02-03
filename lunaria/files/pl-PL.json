@@ -865,7 +865,7 @@
           "description": "Liczba bezpośrednich zależności"
         },
         "totalDependencies": {
-          "label": "# Wszystkich zależności",
+          "label": "Wszystkich zależności",
           "description": "Łączna liczba zależności, w tym przechodnich"
         },
         "downloads": {
