@@ -12,6 +12,9 @@ import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
 import { formatBytes } from '~/utils/formatters'
 import { NuxtLink } from '#components'
+import { useModal } from '~/composables/useModal'
+import { useAtproto } from '~/composables/atproto/useAtproto'
+import { togglePackageLike } from '~/utils/atproto/likes'
 
 definePageMeta({
   name: 'package',
@@ -356,6 +359,54 @@ const canonicalUrl = computed(() => {
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
 
+//atproto
+// TODO: Maybe set this where it's not loaded here every load?
+const { user } = useAtproto()
+
+const authModal = useModal('auth-modal')
+
+const { data: likesData } = useFetch(() => `/api/social/likes/${packageName.value}`, {
+  default: () => ({ totalLikes: 0, userHasLiked: false }),
+  server: false,
+})
+
+const isLikeActionPending = ref(false)
+
+const likeAction = async () => {
+  if (user.value?.handle == null) {
+    authModal.open()
+    return
+  }
+
+  if (isLikeActionPending.value) return
+
+  const currentlyLiked = likesData.value?.userHasLiked ?? false
+  const currentLikes = likesData.value?.totalLikes ?? 0
+
+  // Optimistic update
+  likesData.value = {
+    totalLikes: currentlyLiked ? currentLikes - 1 : currentLikes + 1,
+    userHasLiked: !currentlyLiked,
+  }
+
+  isLikeActionPending.value = true
+
+  const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
+
+  isLikeActionPending.value = false
+
+  if (result.success) {
+    // Update with server response
+    likesData.value = result.data
+  } else {
+    // Revert on error
+    likesData.value = {
+      totalLikes: currentLikes,
+      userHasLiked: currentlyLiked,
+    }
+  }
+}
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -497,10 +548,31 @@ defineOgImageComponent('Package', {
               :is-binary="isBinaryOnly"
               class="self-baseline ms-1 sm:ms-2"
             />
+
+            <!-- Package likes -->
+            <button
+              @click="likeAction"
+              type="button"
+              class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
+              :title="$t('package.links.like')"
+            >
+              <span
+                :class="
+                  likesData?.userHasLiked
+                    ? 'i-lucide-heart-minus text-red-500'
+                    : 'i-lucide-heart-plus'
+                "
+                class="w-4 h-4"
+                aria-hidden="true"
+              />
+              <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
+            </button>
+
             <template #fallback>
               <div class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
                 <SkeletonBlock class="w-8 h-5 rounded" />
                 <SkeletonBlock class="w-12 h-5 rounded" />
+                <SkeletonBlock class="w-5 h-5 rounded" />
               </div>
             </template>
           </ClientOnly>
