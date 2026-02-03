@@ -38,7 +38,7 @@ function getBarWidth(value: FacetValue | null | undefined): number {
   return (value.raw / maxValue.value) * 100
 }
 
-function getStatusClass(status?: FacetValue['status'], hasBar): string {
+function getStatusClass(status?: FacetValue['status'], hasBar = false): string {
   // When there's a bar, only apply text color, not background
   if (hasBar) {
     switch (status) {
