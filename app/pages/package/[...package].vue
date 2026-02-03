@@ -445,7 +445,7 @@ defineOgImageComponent('Package', {
               <button
                 type="button"
                 @click="copyPkgName()"
-                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
+                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border hidden opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-hover:flex focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
                 :aria-label="$t('package.copy_name')"
               >
                 <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
@@ -1189,6 +1189,13 @@ defineOgImageComponent('Package', {
 .package-page > * {
   max-width: 100%;
   min-width: 0;
+}
+
+.copy-button {
+  transition:
+    opacity ease-in-out 0.15s,
+    display 0.15s;
+  transition-behavior: allow-discrete;
 }
 
 @media (hover: none) {
