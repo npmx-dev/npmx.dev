@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import * as fc from 'fast-check'
 import { mapWithConcurrency } from '../../../../shared/utils/async'
 
 describe('mapWithConcurrency', () => {
@@ -91,5 +92,45 @@ describe('mapWithConcurrency', () => {
 
     // Should only have 3 concurrent since we only have 3 items
     expect(maxConcurrent).toBe(3)
+  })
+
+  it('waits for all tasks to succeed and return them in order whatever their count and the concurrency', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.array(fc.anything()),
+        fc.integer({ min: 1 }),
+        fc.scheduler(),
+        async (items, concurrency, s) => {
+          const fn = s.scheduleFunction(async item => item)
+          const results = await s.waitFor(mapWithConcurrency(items, fn, concurrency))
+          expect(results).toEqual(items)
+        },
+      ),
+    )
+  })
+
+  it('not run more than concurrency tasks in parallel', async () => {
+    await fc.assert(
+      fc.asyncProperty(
+        fc.array(fc.anything()),
+        fc.integer({ min: 1 }),
+        fc.scheduler(),
+        async (items, concurrency, s) => {
+          let tooManyRunningTasksEncountered = false
+          let currentlyRunning = 0
+          const fn = async (item: (typeof items)[number]) => {
+            currentlyRunning++
+            if (currentlyRunning > concurrency) {
+              tooManyRunningTasksEncountered = true
+            }
+            const task = s.schedule(Promise.resolve(item))
+            task.then(() => currentlyRunning--) // this task always succeeds by construct
+            return task
+          }
+          await s.waitFor(mapWithConcurrency(items, fn, concurrency))
+          expect(tooManyRunningTasksEncountered).toBe(false)
+        },
+      ),
+    )
   })
 })
