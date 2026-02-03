@@ -59,8 +59,12 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
     const version = requestedVersion.value
     return version ? `${base}/v/${version}` : base
   },
-  { default: () => ({ html: '', playgroundLinks: [] }) },
+  { default: () => ({ html: '', playgroundLinks: [], toc: [] }) },
 )
+
+// Track active TOC item based on scroll position
+const tocItems = computed(() => readmeData.value?.toc ?? [])
+const { activeId: activeTocId, scrollToHeading } = useActiveTocItem(tocItems)
 
 // Check if package exists on JSR (only for scoped packages)
 const { data: jsrInfo } = useLazyFetch<JsrPackageInfo>(() => `/api/jsr/${packageName.value}`, {
@@ -469,7 +473,7 @@ defineOgImageComponent('Package', {
               <button
                 type="button"
                 @click="copyPkgName()"
-                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
+                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
                 :aria-label="$t('package.copy_name')"
               >
                 <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
@@ -1024,18 +1028,29 @@ defineOgImageComponent('Package', {
 
       <!-- README -->
       <section id="readme" class="area-readme min-w-0 scroll-mt-20">
-        <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-4">
-          <a
-            href="#readme"
-            class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-          >
-            {{ $t('package.readme.title') }}
-            <span
-              class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-              aria-hidden="true"
+        <div class="flex flex-wrap items-center justify-between mb-4">
+          <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
+            <a
+              href="#readme"
+              class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+            >
+              {{ $t('package.readme.title') }}
+              <span
+                class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                aria-hidden="true"
+              />
+            </a>
+          </h2>
+          <ClientOnly>
+            <ReadmeTocDropdown
+              v-if="readmeData?.toc && readmeData.toc.length > 1"
+              :toc="readmeData.toc"
+              :active-id="activeTocId"
+              :scroll-to-heading="scrollToHeading"
             />
-          </a>
-        </h2>
+          </ClientOnly>
+        </div>
+
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
         <Readme v-if="readmeData?.html" :html="readmeData.html" />
         <p v-else class="text-fg-subtle italic">
@@ -1254,6 +1269,33 @@ defineOgImageComponent('Package', {
 .package-page > * {
   max-width: 100%;
   min-width: 0;
+}
+
+.copy-button {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  width: 1px;
+  transition:
+    opacity 0.25s 0.1s,
+    translate 0.15s 0.1s,
+    clip 0.01s 0.34s allow-discrete,
+    clip-path 0.01s 0.34s allow-discrete,
+    height 0.01s 0.34s allow-discrete,
+    width 0.01s 0.34s allow-discrete;
+}
+
+.group:hover .copy-button,
+.copy-button:focus-visible {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  overflow: visible;
+  width: auto;
+  transition:
+    opacity 0.15s,
+    translate 0.15s;
 }
 
 @media (hover: none) {

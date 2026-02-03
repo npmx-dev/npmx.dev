@@ -522,6 +522,31 @@ Format: `type(scope): description`
 > [!NOTE]
 > The subject must start with a lowercase letter. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
 
+### PR descriptions
+
+If your pull request directly addresses an open issue, use the following inside your PR description.
+
+```text
+Resolves | Fixes | Closes: #xxx
+```
+
+Replace `#xxx` with either a URL to the issue, or the number of the issue. For example:
+
+```text
+Fixes #123
+```
+
+or
+
+```text
+Closes https://github.com/npmx-dev/npmx.dev/issues/123
+```
+
+This provides the following benefits:
+
+- it links the pull request to the issue (the merge icon will appear in the issue), so everybody can see there is an open PR
+- when the pull request is merged, the linked issue is automatically closed
+
 ## Pre-commit hooks
 
 The project uses `lint-staged` with `simple-git-hooks` to automatically lint files on commit.

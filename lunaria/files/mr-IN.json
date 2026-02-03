@@ -1,0 +1,319 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - npm नोंदणीसाठी पॅकेज ब्राउझर",
+      "description": "npm नोंदणीसाठी एक चांगला ब्राउझर. आधुनिक इंटरफेससह पॅकेजेस शोधा, ब्राउझ करा आणि एक्सप्लोर करा."
+    }
+  },
+  "version": "आवृत्ती",
+  "built_at": "{0} ला तयार केले",
+  "alt_logo": "npmx लोगो",
+  "tagline": "npm नोंदणीसाठी एक चांगला ब्राउझर",
+  "non_affiliation_disclaimer": "npm, Inc. शी संलग्न नाही.",
+  "trademark_disclaimer": "npm हा npm, Inc. चा नोंदणीकृत ट्रेडमार्क आहे. ही साइट npm, Inc. शी संलग्न नाही.",
+  "footer": {
+    "about": "बद्दल",
+    "docs": "दस्तऐवज",
+    "source": "स्रोत",
+    "social": "सोशल",
+    "chat": "चॅट"
+  },
+  "search": {
+    "label": "npm पॅकेजेस शोधा",
+    "placeholder": "पॅकेजेस शोधा...",
+    "button": "शोधा",
+    "clear": "शोध साफ करा",
+    "searching": "शोधत आहे...",
+    "found_packages": "कोणतेही पॅकेज सापडले नाही | 1 पॅकेज सापडले | {count} पॅकेजेस सापडल्या",
+    "updating": "(अद्यतनित करत आहे...)",
+    "no_results": "\"{query}\" साठी कोणतेही पॅकेज सापडले नाही",
+    "title": "शोध",
+    "not_taken": "{name} उपलब्ध आहे",
+    "claim_prompt": "npm वर हे पॅकेज नाव दावा करा",
+    "claim_button": "\"{name}\" दावा करा",
+    "want_to_claim": "हे पॅकेज नाव दावा करायचे आहे का?",
+    "start_typing": "पॅकेजेस शोधण्यासाठी टाइप करणे सुरू करा",
+    "exact_match": "अचूक",
+    "suggestion": {
+      "user": "वापरकर्ता",
+      "org": "संस्था",
+      "view_user_packages": "या वापरकर्त्याची पॅकेजेस पहा",
+      "view_org_packages": "या संस्थेची पॅकेजेस पहा"
+    }
+  },
+  "nav": {
+    "main_navigation": "मुख्य",
+    "popular_packages": "लोकप्रिय पॅकेजेस",
+    "search": "शोध",
+    "settings": "सेटिंग्ज",
+    "compare": "तुलना करा",
+    "back": "मागे",
+    "menu": "मेनू",
+    "mobile_menu": "नेव्हिगेशन मेनू",
+    "open_menu": "मेनू उघडा",
+    "links": "लिंक",
+    "tap_to_search": "शोधण्यासाठी टॅप करा"
+  },
+  "settings": {
+    "title": "सेटिंग्ज",
+    "tagline": "तुमचा npmx अनुभव सानुकूलित करा",
+    "meta_description": "थीम, भाषा आणि प्रदर्शन प्राधान्यांसह तुमचा npmx.dev अनुभव सानुकूलित करा.",
+    "sections": {
+      "appearance": "देखावा",
+      "display": "प्रदर्शन",
+      "language": "भाषा"
+    },
+    "relative_dates": "सापेक्ष तारखा",
+    "relative_dates_description": "पूर्ण तारखांऐवजी \"3 दिवसांपूर्वी\" दर्शवा",
+    "include_types": "स्थापनेत {'@'}types समाविष्ट करा",
+    "include_types_description": "अनटाइप केलेल्या पॅकेजसाठी स्थापना आदेशात {'@'}types पॅकेज जोडा",
+    "hide_platform_packages": "शोधात प्लॅटफॉर्म-विशिष्ट पॅकेजेस लपवा",
+    "hide_platform_packages_description": "परिणामांमधून {'@'}esbuild/linux-x64 सारखी मूळ बायनरी पॅकेजेस लपवा",
+    "theme": "थीम",
+    "theme_light": "फिकट",
+    "theme_dark": "गडद",
+    "theme_system": "सिस्टम",
+    "language": "भाषा",
+    "help_translate": "npmx चे भाषांतर करण्यात मदत करा",
+    "accent_colors": "उच्चारण रंग",
+    "clear_accent": "उच्चारण रंग साफ करा",
+    "translation_progress": "भाषांतर प्रगती",
+    "background_themes": "पार्श्वभूमी छटा"
+  },
+  "i18n": {
+    "missing_keys": "{count} भाषांतर गायब आहे | {count} भाषांतरे गायब आहेत",
+    "copy_keys": "कळा कॉपी करा",
+    "show_more_keys": "{count} अधिक दर्शवा...",
+    "contribute_hint": "गायब कळा जोडून या भाषांतराला सुधारण्यास मदत करा.",
+    "edit_on_github": "GitHub वर संपादित करा",
+    "view_guide": "भाषांतर मार्गदर्शक"
+  },
+  "common": {
+    "loading": "लोड करत आहे...",
+    "loading_more": "अधिक लोड करत आहे...",
+    "loading_packages": "पॅकेजेस लोड करत आहे...",
+    "end_of_results": "परिणाम संपले",
+    "try_again": "पुन्हा प्रयत्न करा",
+    "close": "बंद करा",
+    "retry": "पुन्हा प्रयत्न करा",
+    "copy": "कॉपी करा",
+    "copied": "कॉपी झाले!",
+    "skip_link": "मुख्य सामग्रीवर जा",
+    "close_modal": "मोडल बंद करा",
+    "show_more": "अधिक दर्शवा",
+    "warnings": "चेतावण्या:",
+    "go_back_home": "मुख्यपृष्ठावर परत जा",
+    "view_on_npm": "npm वर पहा",
+    "per_week": "/ आठवडा",
+    "vanity_downloads_hint": "व्यर्थ संख्या: कोणतीही पॅकेजेस दर्शविली नाहीत | व्यर्थ संख्या: दर्शवलेल्या पॅकेजसाठी | व्यर्थ संख्या: {count} दर्शवलेल्या पॅकेजेसची बेरीज",
+    "sort": {
+      "name": "नाव",
+      "role": "भूमिका",
+      "members": "सदस्य"
+    },
+    "scroll_to_top": "वर स्क्रोल करा"
+  },
+  "package": {
+    "not_found": "पॅकेज सापडले नाही",
+    "not_found_message": "पॅकेज सापडले नाही.",
+    "no_description": "कोणतेही वर्णन प्रदान केलेले नाही",
+    "show_full_description": "संपूर्ण वर्णन दर्शवा",
+    "not_latest": "(नवीनतम नाही)",
+    "verified_provenance": "सत्यापित उत्पत्ती",
+    "view_permalink": "या आवृत्तीसाठी परमालिंक पहा",
+    "navigation": "पॅकेज",
+    "copy_name": "पॅकेज नाव कॉपी करा",
+    "deprecation": {
+      "package": "हे पॅकेज नापसंत केले गेले आहे.",
+      "version": "ही आवृत्ती नापसंत केली गेली आहे.",
+      "no_reason": "कोणतेही कारण प्रदान केलेले नाही"
+    },
+    "replacement": {
+      "title": "तुम्हाला या निर्भरतेची गरज नसू शकते.",
+      "native": "हे {replacement} सह बदलले जाऊ शकते, Node {nodeVersion} पासून उपलब्ध आहे.",
+      "simple": "{community} ने या पॅकेजला अनावश्यक म्हणून चिन्हांकित केले आहे, सल्ल्यासह: {replacement}.",
+      "documented": "{community} ने या पॅकेजला अधिक कार्यक्षम पर्याय असल्याने चिन्हांकित केले आहे.",
+      "none": "हे पॅकेज यापुढे आवश्यक नाही असे चिन्हांकित केले गेले आहे, आणि त्याची कार्यक्षमता सर्व इंजिनांमध्ये मूळतः उपलब्ध असू शकते.",
+      "learn_more": "अधिक जाणून घ्या",
+      "mdn": "MDN",
+      "community": "समुदाय"
+    },
+    "stats": {
+      "license": "परवाना",
+      "deps": "निर्भरता",
+      "install_size": "स्थापना आकार",
+      "vulns": "असुरक्षितता",
+      "published": "प्रकाशित",
+      "published_tooltip": "{package}{'@'}{version} प्रकाशित झाल्याची तारीख",
+      "skills": "कौशल्ये",
+      "view_dependency_graph": "निर्भरता आलेख पहा",
+      "inspect_dependency_tree": "निर्भरता वृक्षाची तपासणी करा",
+      "size_tooltip": {
+        "unpacked": "{size} अनपॅक केलेला आकार (हे पॅकेज)",
+        "total": "{size} एकूण अनपॅक केलेला आकार (linux-x64 साठी सर्व {count} निर्भरतांसह)"
+      }
+    },
+    "skills": {
+      "title": "एजंट कौशल्ये",
+      "skills_available": "{count} कौशल्य उपलब्ध | {count} कौशल्ये उपलब्ध",
+      "view": "पहा",
+      "compatible_with": "{tool} शी सुसंगत",
+      "install": "स्थापित करा",
+      "installation_method": "स्थापना पद्धत",
+      "learn_more": "अधिक जाणून घ्या",
+      "available_skills": "उपलब्ध कौशल्ये",
+      "click_to_expand": "विस्तारित करण्यासाठी क्लिक करा",
+      "no_description": "कोणतेही वर्णन नाही",
+      "file_counts": {
+        "scripts": "{count} स्क्रिप्ट | {count} स्क्रिप्ट्स",
+        "refs": "{count} संदर्भ | {count} संदर्भ",
+        "assets": "{count} मालमत्ता | {count} मालमत्ता"
+      },
+      "view_source": "स्रोत पहा"
+    },
+    "links": {
+      "repo": "रिपो",
+      "homepage": "होमपेज",
+      "issues": "समस्या",
+      "jsr": "jsr",
+      "code": "कोड",
+      "docs": "दस्तऐवज",
+      "fund": "निधी",
+      "compare": "तुलना करा"
+    },
+    "docs": {
+      "not_available": "दस्तऐवज उपलब्ध नाहीत",
+      "not_available_detail": "आम्ही या आवृत्तीसाठी दस्तऐवज तयार करू शकलो नाही."
+    },
+    "get_started": {
+      "title": "सुरुवात करा",
+      "pm_label": "पॅकेज मॅनेजर",
+      "copy_command": "स्थापना आदेश कॉपी करा",
+      "view_types": "{package} पहा"
+    },
+    "create": {
+      "title": "नवीन प्रोजेक्ट तयार करा",
+      "copy_command": "तयार करण्याचा आदेश कॉपी करा",
+      "view": "{packageName} चा समान देखभालकर्ता आहे. अधिक तपशीलांसाठी क्लिक करा."
+    },
+    "run": {
+      "title": "चालवा",
+      "locally": "स्थानिकरित्या चालवा"
+    },
+    "readme": {},
+    "keywords_title": "कीवर्ड",
+    "compatibility": "सुसंगतता",
+    "card": {},
+    "versions": {},
+    "dependencies": {},
+    "peer_dependencies": {},
+    "optional_dependencies": {},
+    "maintainers": {},
+    "downloads": {},
+    "install_scripts": {},
+    "playgrounds": {},
+    "metrics": {},
+    "license": {},
+    "vulnerabilities": {
+      "depth": {},
+      "severity": {}
+    },
+    "deprecated": {},
+    "access": {
+      "permission": {}
+    },
+    "list": {},
+    "skeleton": {},
+    "sort": {}
+  },
+  "connector": {
+    "status": {},
+    "modal": {}
+  },
+  "operations": {
+    "queue": {}
+  },
+  "org": {
+    "teams": {},
+    "members": {
+      "role": {}
+    },
+    "page": {}
+  },
+  "user": {
+    "combobox": {},
+    "page": {},
+    "orgs_page": {}
+  },
+  "claim": {
+    "modal": {}
+  },
+  "code": {
+    "no_files": "कोणत्याही फाइल्स उपलब्ध नाहीत",
+    "lines": "{count} ओळी",
+    "raw": "कच्चा",
+    "table": {},
+    "markdown_view_mode": {}
+  },
+  "badges": {
+    "provenance": {},
+    "jsr": {}
+  },
+  "filters": {
+    "chips": {},
+    "download_range": {},
+    "updated": {},
+    "security_options": {},
+    "sort": {},
+    "columns": {},
+    "view_mode": {},
+    "pagination": {},
+    "count": {},
+    "table": {}
+  },
+  "about": {
+    "title": "बद्दल",
+    "what_we_are": {},
+    "what_we_are_not": {
+      "words": {}
+    },
+    "contributors": {},
+    "get_involved": {
+      "contribute": {},
+      "community": {},
+      "follow": {}
+    }
+  },
+  "account_menu": {
+    "account": "खाते"
+  },
+  "auth": {
+    "modal": {}
+  },
+  "header": {
+    "packages_dropdown": {},
+    "orgs_dropdown": {}
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {},
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {}
+    }
+  }
+}

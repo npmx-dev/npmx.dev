@@ -4,10 +4,10 @@ import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { parse } from 'valibot'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
-import { UNSET_NUXT_SESSION_PASSWORD } from '#shared/utils/constants'
 import { OAuthMetadataSchema } from '#shared/schemas/oauth'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
+import { useServerSession } from '#server/utils/server-session'
 // TODO: limit scope as features gets added. atproto just allows login so no scary login screen till we have scopes
 export const scope = 'atproto'
 
@@ -44,7 +44,8 @@ type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
 
 async function getOAuthSession(event: H3Event): Promise<OAuthSession | undefined> {
   const clientMetadata = getOauthClientMetadata()
-  const { stateStore, sessionStore } = useOAuthStorage(event)
+  const serverSession = await useServerSession(event)
+  const { stateStore, sessionStore } = useOAuthStorage(serverSession)
 
   const client = new NodeOAuthClient({
     stateStore,
@@ -64,18 +65,7 @@ export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
   handler: EventHandlerWithOAuthSession<T, D>,
 ) {
   return defineEventHandler(async event => {
-    const config = useRuntimeConfig(event)
-
-    if (!config.sessionPassword) {
-      throw createError({
-        status: 500,
-        message: UNSET_NUXT_SESSION_PASSWORD,
-      })
-    }
-
-    const serverSession = await useSession(event, {
-      password: config.sessionPassword,
-    })
+    const serverSession = await useServerSession(event)
 
     const oAuthSession = await getOAuthSession(event)
     return await handler(event, oAuthSession, serverSession)

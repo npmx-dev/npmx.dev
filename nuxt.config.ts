@@ -39,12 +39,6 @@ export default defineNuxtConfig({
 
   css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
-  $production: {
-    debug: {
-      hydration: true,
-    },
-  },
-
   runtimeConfig: {
     sessionPassword: '',
     // Upstash Redis for distributed OAuth token refresh locking in production
@@ -132,9 +126,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-01-31',
 
   nitro: {
-    experimental: {
-      wasm: true,
-    },
     externals: {
       inline: [
         'shiki',
@@ -159,14 +150,6 @@ export default defineNuxtConfig({
       'fetch-cache': {
         driver: 'fsLite',
         base: './.cache/fetch',
-      },
-      'oauth-atproto-state': {
-        driver: 'fsLite',
-        base: './.cache/atproto-oauth/state',
-      },
-      'oauth-atproto-session': {
-        driver: 'fsLite',
-        base: './.cache/atproto-oauth/session',
       },
     },
     typescript: {
@@ -280,5 +263,9 @@ export default defineNuxtConfig({
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
     langDir: 'locales',
+  },
+
+  imports: {
+    dirs: ['~/composables', '~/composables/*/*.ts'],
   },
 })

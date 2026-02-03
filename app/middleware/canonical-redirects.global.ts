@@ -6,7 +6,7 @@
  * - /package/docs/* → /package-docs/*
  * - /docs/* → /package-docs/*
  * - /org/* → /@*
- * - /* → /package/* (Unless its an existing page)
+ * - /* → /package/* (Unless it's an existing page)
  */
 export default defineNuxtRouteMiddleware(to => {
   // Only redirect on client-side to avoid breaking crawlers mid-transition
@@ -38,7 +38,7 @@ export default defineNuxtRouteMiddleware(to => {
   }
 
   // Keep this one last as it will catch everything
-  // /* → /package/* (Unless its an existing page)
+  // /* → /package/* (Unless it's an existing page)
   if (path.startsWith('/') && !path.startsWith('/package/')) {
     const router = useRouter()
     const resolved = router.resolve(path)

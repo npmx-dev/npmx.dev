@@ -366,3 +366,16 @@ export interface PackageFileContentResponse {
   lines: number
   markdownHtml?: ReadmeResponse
 }
+
+/**
+ * Minimal packument data needed for package cards
+ */
+export interface MinimalPackument {
+  'name': string
+  'description'?: string
+  'keywords'?: string[]
+  // `dist-tags` can be missing in some later unpublished packages
+  'dist-tags'?: Record<string, string>
+  'time': Record<string, string>
+  'maintainers'?: NpmPerson[]
+}
