@@ -430,7 +430,7 @@ defineOgImageComponent('Package', {
               <NuxtLink
                 v-if="orgName"
                 :to="{ name: 'org', params: { org: orgName } }"
-                class="text-fg-muted hover:text-fg transition-colors duration-200"
+                class="text-fg-muted hover:text-accent transition-colors duration-200"
               >
                 @{{ orgName }}
               </NuxtLink>
@@ -445,7 +445,7 @@ defineOgImageComponent('Package', {
               <button
                 type="button"
                 @click="copyPkgName()"
-                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
+                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
                 :aria-label="$t('package.copy_name')"
               >
                 <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
@@ -476,7 +476,7 @@ defineOgImageComponent('Package', {
               :href="`https://www.npmjs.com/package/${pkg.name}/v/${resolvedVersion}#provenance`"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
+              class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-accent transition-colors duration-200 min-w-6 min-h-6"
               :title="$t('package.verified_provenance')"
             >
               <span class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0" aria-hidden="true" />
@@ -514,7 +514,7 @@ defineOgImageComponent('Package', {
             <NuxtLink
               v-if="docsLink"
               :to="docsLink"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-accent hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
               aria-keyshortcuts="d"
             >
               <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
@@ -528,7 +528,7 @@ defineOgImageComponent('Package', {
             </NuxtLink>
             <NuxtLink
               :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-accent hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
               aria-keyshortcuts="."
             >
               <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
@@ -542,7 +542,7 @@ defineOgImageComponent('Package', {
             </NuxtLink>
             <NuxtLink
               :to="{ path: '/compare', query: { packages: pkg.name } }"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-accent hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
               aria-keyshortcuts="c"
             >
               <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
@@ -765,7 +765,7 @@ defineOgImageComponent('Package', {
                 :href="`https://npmgraph.js.org/?q=${pkg.name}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+                class="text-fg-subtle hover:text-accent transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
                 :title="$t('package.stats.view_dependency_graph')"
               >
                 <span class="i-carbon:network-3 w-3.5 h-3.5" aria-hidden="true" />
@@ -777,7 +777,7 @@ defineOgImageComponent('Package', {
                 :href="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+                class="text-fg-subtle hover:text-accent transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
                 :title="$t('package.stats.inspect_dependency_tree')"
               >
                 <span class="i-solar:eye-scan-outline w-3.5 h-3.5" aria-hidden="true" />
