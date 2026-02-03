@@ -242,14 +242,31 @@
     },
     "run": {
       "title": "चालवा",
-      "copy_command": "चालवण्याचा आदेश कॉपी करा"
+      "copy_command": "चालवण्याचा आदेश कॉपी करा",
+      "locally": "स्थानिकरित्या चालवा"
+    },
+    "readme": "README",
+    "keywords_title": "कीवर्ड",
+    "compatibility": "सुसंगतता",
+    "card": "पॅकेज कार्ड",
+    "versions": "आवृत्त्या",
+    "dependencies": "निर्भरता",
+    "peer_dependencies": "समवयस्क निर्भरता",
+    "optional_dependencies": "पर्यायी निर्भरता",
+    "dev_dependencies": "विकास निर्भरता",
+    "bundled_dependencies": "बंडल केलेली निर्भरता",
+    "dependents": "अवलंबित",
+    "code_tab": {
+      "title": "कोड",
+      "explore": "एक्सप्लोर करा"
+    },
+    "provenance_tab": {
+      "title": "उत्पत्ती",
+      "verified": "सत्यापित",
+      "not_available": "उत्पत्ती माहिती उपलब्ध नाही"
     },
     "title": "{name}",
     "overview": "विहंगावलोकन",
-    "readme": "README",
-    "dependencies": "निर्भरता",
-    "dependents": "अवलंबित",
-    "versions": "आवृत्त्या",
     "code": "कोड",
     "provenance": "उत्पत्ती",
     "install": "स्थापित करा",
@@ -285,10 +302,6 @@
     "loading": "लोड करत आहे...",
     "dependencies_count": "निर्भरता | निर्भरता | {count} निर्भरता",
     "no_dependencies": "कोणतीही निर्भरता नाही",
-    "dev_dependencies": "विकास निर्भरता",
-    "peer_dependencies": "समवयस्क निर्भरता",
-    "optional_dependencies": "पर्यायी निर्भरता",
-    "bundled_dependencies": "बंडल केलेली निर्भरता",
     "dependents_count": "{count} अवलंबित",
     "no_dependents": "कोणतेही अवलंबित नाहीत",
     "types": "प्रकार",
