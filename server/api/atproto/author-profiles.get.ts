@@ -60,7 +60,7 @@ export default defineCachedEventHandler(
     try {
       const response = await $fetch<ProfilesResponse>(`${BLUESKY_API}app.bsky.actor.getProfiles`, {
         query: { actors: handles },
-      })
+      }).catch(() => ({ profiles: [] }))
 
       const avatarMap = new Map<string, string>()
       for (const profile of response.profiles) {
