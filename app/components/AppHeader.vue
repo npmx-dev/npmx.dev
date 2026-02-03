@@ -197,17 +197,27 @@ onKeyStroke(
       class="relative container min-h-14 flex items-center gap-2 z-1"
       :class="isOnHomePage ? 'justify-end' : 'justify-between'"
     >
-      <!-- Mobile: Logo + search button (expands search, doesn't navigate) -->
-      <button
+      <!-- Mobile: Logo (navigates home) + Search button (expands search) -->
+      <div
         v-if="!isSearchExpanded && !isOnHomePage"
-        type="button"
-        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 rounded"
-        :aria-label="$t('nav.tap_to_search')"
-        @click="expandMobileSearch"
+        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2"
       >
-        <AppLogo class="w-8 h-8 rounded-lg" />
-        <span class="i-carbon:search w-4 h-4 text-fg-subtle" aria-hidden="true" />
-      </button>
+        <NuxtLink
+          to="/"
+          :aria-label="$t('header.home')"
+          class="font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
+        >
+          <AppLogo class="w-8 h-8 rounded-lg" />
+        </NuxtLink>
+        <button
+          type="button"
+          class="p-1 -m-1 text-fg-subtle hover:text-fg transition-colors duration-200 focus-ring rounded"
+          :aria-label="$t('nav.tap_to_search')"
+          @click="expandMobileSearch"
+        >
+          <span class="i-carbon:search w-4 h-4" aria-hidden="true" />
+        </button>
+      </div>
 
       <!-- Desktop: Logo (navigates home) -->
       <div v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
