@@ -152,13 +152,6 @@ export default defineConfig({
     ['badge-purple', 'bg-badge-purple/10 text-badge-purple'],
     ['badge-pink', 'bg-badge-pink/10 text-badge-pink'],
     ['badge-subtle', 'bg-bg-subtle text-fg-subtle'],
-
-    // table
-    [
-      'table-th',
-      'py-3 px-3 text-(xs start fg-muted) font-(mono medium) uppercase tracking-wider whitespace-nowrap select-none',
-    ],
-    ['table-td-skeleton', 'bg-bg-muted rounded animate-pulse'],
   ],
   rules: [
     // Custom scale for active states
