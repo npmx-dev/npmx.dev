@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useAtproto } from '~/composables/atproto/useAtproto'
 import { useModal } from '~/composables/useModal'
 
 const {
