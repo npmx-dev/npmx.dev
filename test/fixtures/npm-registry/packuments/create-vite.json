@@ -73,7 +73,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -83,19 +83,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -115,19 +115,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -170,7 +170,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -211,19 +211,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -266,7 +266,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -307,19 +307,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -362,7 +362,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -403,19 +403,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -458,7 +458,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -499,19 +499,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -554,7 +554,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -595,19 +595,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -650,7 +650,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -692,19 +692,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -747,7 +747,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -788,19 +788,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -843,7 +843,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
@@ -884,19 +884,19 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "patak",
-          "email": "hey.patak@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "antfu",
-          "email": "anthonyfu117@hotmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vitebot",
-          "email": "vite@voidzero.dev"
+          "email": "user5@example.com"
         }
       ],
       "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
@@ -939,7 +939,7 @@
       },
       "_npmUser": {
         "name": "vitebot",
-        "email": "vite@voidzero.dev"
+        "email": "user5@example.com"
       },
       "_resolved": "/tmp/9fe4e3088dbd29607e01b0bf8a51fed9/create-vite-7.1.1.tgz",
       "_integrity": "sha512-9njjp5o1Sc+4XRpyARFillR+dNS0x50U8i2tB6H2KDKYAKWbntUcOOPcNJxTglAwd9nJxznq9K67kl3B/JkCZg==",
@@ -983,19 +983,19 @@
   "maintainers": [
     {
       "name": "yyx990803",
-      "email": "yyx990803@gmail.com"
+      "email": "user2@example.com"
     },
     {
       "name": "patak",
-      "email": "hey.patak@gmail.com"
+      "email": "user3@example.com"
     },
     {
       "name": "antfu",
-      "email": "anthonyfu117@hotmail.com"
+      "email": "user4@example.com"
     },
     {
       "name": "vitebot",
-      "email": "vite@voidzero.dev"
+      "email": "user5@example.com"
     }
   ],
   "author": {

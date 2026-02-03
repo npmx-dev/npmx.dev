@@ -74,7 +74,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -84,7 +84,7 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -101,7 +101,7 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -146,7 +146,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -187,7 +187,7 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -232,7 +232,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -273,7 +273,7 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -318,7 +318,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -359,7 +359,7 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -404,7 +404,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -445,7 +445,7 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -490,7 +490,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -530,15 +530,15 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         },
         {
           "name": "atinux",
-          "email": "atinux@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "danielroe",
-          "email": "daniel@roe.dev"
+          "email": "user4@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -584,7 +584,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -624,15 +624,15 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         },
         {
           "name": "atinux",
-          "email": "atinux@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "danielroe",
-          "email": "daniel@roe.dev"
+          "email": "user4@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -678,7 +678,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -718,15 +718,15 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         },
         {
           "name": "atinux",
-          "email": "atinux@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "danielroe",
-          "email": "daniel@roe.dev"
+          "email": "user4@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -772,7 +772,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -812,15 +812,15 @@
       "maintainers": [
         {
           "name": "nuxtbot",
-          "email": "nuxtbot@roe.dev"
+          "email": "user2@example.com"
         },
         {
           "name": "atinux",
-          "email": "atinux@gmail.com"
+          "email": "user3@example.com"
         },
         {
           "name": "danielroe",
-          "email": "daniel@roe.dev"
+          "email": "user4@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt/cli#readme",
@@ -866,7 +866,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
@@ -916,7 +916,7 @@
   "maintainers": [
     {
       "name": "nuxtbot",
-      "email": "nuxtbot@roe.dev"
+      "email": "user2@example.com"
     }
   ],
   "license": "MIT",

@@ -115,7 +115,7 @@ function createLoader(): (
 
       return {
         kind: 'module',
-        specifier: response.url,
+        specifier: response.url || specifier,
         headers,
         content,
       }

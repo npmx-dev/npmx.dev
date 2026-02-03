@@ -33,7 +33,7 @@
       },
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "bin": {
@@ -99,21 +99,21 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "directories": {},
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -128,22 +128,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.23",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -185,7 +185,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -229,22 +229,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.22",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -286,7 +286,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -330,22 +330,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.21",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -387,7 +387,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -431,22 +431,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.20",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -488,7 +488,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -532,22 +532,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.19",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -589,7 +589,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -633,22 +633,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.18",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -690,7 +690,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -734,22 +734,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.17",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -791,7 +791,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -835,22 +835,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.16",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -892,7 +892,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -937,22 +937,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.2.0-canary.15",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -994,7 +994,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1039,30 +1039,30 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@11.1.4",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@timneutkens.nl"
+          "email": "user5@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "zeit-bot",
-          "email": "team@zeit.co"
+          "email": "user6@example.com"
         },
         {
           "name": "redacted-vercel",
-          "email": "a@vercel.com"
+          "email": "user7@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1098,7 +1098,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1143,22 +1143,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@12.2.6",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@timneutkens.nl"
+          "email": "user5@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1195,7 +1195,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1240,22 +1240,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@14.1.1",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "timneutkens@icloud.com"
+          "email": "user8@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1298,7 +1298,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1343,22 +1343,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@15.0.0-rc.1",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "timneutkens@icloud.com"
+          "email": "user8@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1401,7 +1401,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1446,22 +1446,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@13.5.11",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "timneutkens@icloud.com"
+          "email": "user8@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1504,7 +1504,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1551,22 +1551,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@12.3.7",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "timneutkens@icloud.com"
+          "email": "user8@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1601,7 +1601,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1646,22 +1646,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.0.0-beta.0",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "timneutkens@icloud.com"
+          "email": "user8@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1704,7 +1704,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1748,22 +1748,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@14.2.35",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "timneutkens@icloud.com"
+          "email": "user8@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1806,7 +1806,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1852,22 +1852,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@15.3.9",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -1910,7 +1910,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -1955,22 +1955,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@15.2.9",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -2013,7 +2013,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -2058,22 +2058,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@15.1.12",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -2116,7 +2116,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -2161,22 +2161,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@15.0.8",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -2219,7 +2219,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -2264,22 +2264,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@16.1.6",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -2321,7 +2321,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -2365,22 +2365,22 @@
       "keywords": ["react", "next", "next.js"],
       "author": {
         "name": "Next.js Team",
-        "email": "support@vercel.com"
+        "email": "user1@example.com"
       },
       "license": "MIT",
       "_id": "create-next-app@15.5.11",
       "maintainers": [
         {
           "name": "timneutkens",
-          "email": "tim@vercel.com"
+          "email": "user3@example.com"
         },
         {
           "name": "timer",
-          "email": "timer150@gmail.com"
+          "email": "user4@example.com"
         },
         {
           "name": "vercel-release-bot",
-          "email": "infra+release@vercel.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "https://github.com/vercel/next.js#readme",
@@ -2423,7 +2423,7 @@
       },
       "_npmUser": {
         "name": "vercel-release-bot",
-        "email": "infra+release@vercel.com"
+        "email": "user2@example.com"
       },
       "repository": {
         "url": "git+https://github.com/vercel/next.js.git",
@@ -2494,20 +2494,20 @@
   "maintainers": [
     {
       "name": "timneutkens",
-      "email": "tim@vercel.com"
+      "email": "user3@example.com"
     },
     {
       "name": "timer",
-      "email": "timer150@gmail.com"
+      "email": "user4@example.com"
     },
     {
       "name": "vercel-release-bot",
-      "email": "infra+release@vercel.com"
+      "email": "user2@example.com"
     }
   ],
   "author": {
     "name": "Next.js Team",
-    "email": "support@vercel.com"
+    "email": "user1@example.com"
   },
   "license": "MIT",
   "homepage": "https://github.com/vercel/next.js#readme",

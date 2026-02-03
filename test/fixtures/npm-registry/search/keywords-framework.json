@@ -7,7 +7,7 @@
       },
       "dependents": "5345",
       "updated": "2026-02-03T06:13:21.215Z",
-      "searchScore": 46.89331,
+      "searchScore": 46.90461,
       "package": {
         "name": "vite",
         "keywords": ["frontend", "framework", "hmr", "dev-server", "build-tool", "vite"],
@@ -15,11 +15,11 @@
         "description": "Native-ESM powered web dev build tool",
         "sanitized_name": "vite",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "vitebot",
             "type": "user",
-            "email": "vite@voidzero.dev"
+            "email": "user2@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:a2e674b1-239b-4e35-a07f-7b43debc0a8c",
@@ -29,19 +29,19 @@
         },
         "maintainers": [
           {
-            "email": "yyx990803@gmail.com",
+            "email": "user3@example.com",
             "username": "yyx990803"
           },
           {
-            "email": "hey.patak@gmail.com",
+            "email": "user4@example.com",
             "username": "patak"
           },
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user5@example.com",
             "username": "antfu"
           },
           {
-            "email": "vite@voidzero.dev",
+            "email": "user2@example.com",
             "username": "vitebot"
           }
         ],
@@ -55,7 +55,7 @@
         }
       },
       "score": {
-        "final": 46.89331,
+        "final": 46.90461,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -73,7 +73,7 @@
       },
       "dependents": "97477",
       "updated": "2026-02-03T06:12:30.925Z",
-      "searchScore": 46.385788,
+      "searchScore": 46.49283,
       "package": {
         "name": "express",
         "keywords": [
@@ -92,28 +92,28 @@
         "description": "Fast, unopinionated, minimalist web framework",
         "sanitized_name": "express",
         "publisher": {
-          "email": "npm@jonchurch.com",
+          "email": "user6@example.com",
           "username": "jonchurch"
         },
         "maintainers": [
           {
-            "email": "wes@wesleytodd.com",
+            "email": "user7@example.com",
             "username": "wesleytodd"
           },
           {
-            "email": "npm@jonchurch.com",
+            "email": "user6@example.com",
             "username": "jonchurch"
           },
           {
-            "email": "c@labsector.com",
+            "email": "user8@example.com",
             "username": "ctcpip"
           },
           {
-            "email": "ulisesgascondev@gmail.com",
+            "email": "user9@example.com",
             "username": "ulisesgascon"
           },
           {
-            "email": "jean.burellier@gmail.com",
+            "email": "user10@example.com",
             "username": "sheplu"
           }
         ],
@@ -127,7 +127,7 @@
         }
       },
       "score": {
-        "final": 46.385788,
+        "final": 46.49283,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -145,7 +145,7 @@
       },
       "dependents": "60110",
       "updated": "2026-02-03T06:12:27.515Z",
-      "searchScore": 45.320477,
+      "searchScore": 45.319336,
       "package": {
         "name": "next",
         "keywords": [
@@ -164,21 +164,21 @@
         "description": "The React Framework",
         "sanitized_name": "next",
         "publisher": {
-          "email": "infra+release@vercel.com",
+          "email": "user11@example.com",
           "actor": {
             "name": "vercel-release-bot",
             "type": "user",
-            "email": "infra+release@vercel.com"
+            "email": "user11@example.com"
           },
           "username": "vercel-release-bot"
         },
         "maintainers": [
           {
-            "email": "infra+release@vercel.com",
+            "email": "user11@example.com",
             "username": "vercel-release-bot"
           },
           {
-            "email": "team@zeit.co",
+            "email": "user12@example.com",
             "username": "zeit-bot"
           }
         ],
@@ -192,7 +192,7 @@
         }
       },
       "score": {
-        "final": 45.320477,
+        "final": 45.319336,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -210,7 +210,7 @@
       },
       "dependents": "1819",
       "updated": "2026-02-03T06:15:31.800Z",
-      "searchScore": 43.78785,
+      "searchScore": 43.785503,
       "package": {
         "name": "hono",
         "keywords": [
@@ -234,17 +234,17 @@
         "description": "Web framework built on Web Standards",
         "sanitized_name": "hono",
         "publisher": {
-          "email": "yusuke@kamawada.com",
+          "email": "user13@example.com",
           "actor": {
             "name": "yusukebe",
             "type": "user",
-            "email": "yusuke@kamawada.com"
+            "email": "user13@example.com"
           },
           "username": "yusukebe"
         },
         "maintainers": [
           {
-            "email": "yusuke@kamawada.com",
+            "email": "user13@example.com",
             "username": "yusukebe"
           }
         ],
@@ -258,7 +258,7 @@
         }
       },
       "score": {
-        "final": 43.78785,
+        "final": 43.785503,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -276,7 +276,7 @@
       },
       "dependents": "11506",
       "updated": "2026-02-03T06:13:37.170Z",
-      "searchScore": 43.058933,
+      "searchScore": 43.05912,
       "package": {
         "name": "socket.io-client",
         "keywords": ["realtime", "framework", "websocket", "tcp", "events", "client"],
@@ -284,7 +284,7 @@
         "description": "Realtime application framework client",
         "sanitized_name": "socket-io-client",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:b5be00ed-88d3-478a-a22f-7c48c2379f57",
             "id": "github"
@@ -293,11 +293,11 @@
         },
         "maintainers": [
           {
-            "email": "rauchg@gmail.com",
+            "email": "user14@example.com",
             "username": "rauchg"
           },
           {
-            "email": "damien.arrachequesne@gmail.com",
+            "email": "user15@example.com",
             "username": "darrachequesne"
           }
         ],
@@ -311,7 +311,7 @@
         }
       },
       "score": {
-        "final": 43.058933,
+        "final": 43.05912,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -329,7 +329,7 @@
       },
       "dependents": "11169",
       "updated": "2026-02-03T06:13:01.691Z",
-      "searchScore": 42.952408,
+      "searchScore": 42.95133,
       "package": {
         "name": "socket.io",
         "keywords": ["realtime", "framework", "websocket", "tcp", "events", "socket", "io"],
@@ -337,7 +337,7 @@
         "description": "node.js realtime framework server",
         "sanitized_name": "socket-io",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:51c61f97-f8ff-4369-9032-84a98d5103a4",
             "id": "github"
@@ -346,11 +346,11 @@
         },
         "maintainers": [
           {
-            "email": "rauchg@gmail.com",
+            "email": "user14@example.com",
             "username": "rauchg"
           },
           {
-            "email": "damien.arrachequesne@gmail.com",
+            "email": "user15@example.com",
             "username": "darrachequesne"
           }
         ],
@@ -364,7 +364,7 @@
         }
       },
       "score": {
-        "final": 42.952408,
+        "final": 42.95133,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -382,7 +382,7 @@
       },
       "dependents": "2333",
       "updated": "2026-02-03T06:13:20.581Z",
-      "searchScore": 41.794323,
+      "searchScore": 41.794792,
       "package": {
         "name": "preact",
         "keywords": [
@@ -401,36 +401,36 @@
         "description": "Fast 3kb React-compatible Virtual DOM library.",
         "sanitized_name": "preact",
         "publisher": {
-          "email": "decroockjovi@gmail.com",
+          "email": "user16@example.com",
           "username": "jdecroock"
         },
         "maintainers": [
           {
-            "email": "hello@preactjs.com",
+            "email": "user17@example.com",
             "username": "preactjs"
           },
           {
-            "email": "jason@developit.ca",
+            "email": "user18@example.com",
             "username": "developit"
           },
           {
-            "email": "hello@marvinh.dev",
+            "email": "user19@example.com",
             "username": "marvinhagemeister"
           },
           {
-            "email": "drewigg@gmail.com",
+            "email": "user20@example.com",
             "username": "drewigg"
           },
           {
-            "email": "decroockjovi@gmail.com",
+            "email": "user16@example.com",
             "username": "jdecroock"
           },
           {
-            "email": "rchristian@ryanchristian.dev",
+            "email": "user21@example.com",
             "username": "rschristian"
           },
           {
-            "email": "robertknight@gmail.com",
+            "email": "user22@example.com",
             "username": "robertknight"
           }
         ],
@@ -444,7 +444,7 @@
         }
       },
       "score": {
-        "final": 41.794323,
+        "final": 41.794792,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -462,7 +462,7 @@
       },
       "dependents": "3130",
       "updated": "2026-02-03T06:12:44.168Z",
-      "searchScore": 41.598637,
+      "searchScore": 41.599102,
       "package": {
         "name": "connect",
         "keywords": ["framework", "web", "middleware", "connect", "rack"],
@@ -470,12 +470,12 @@
         "description": "High performance middleware framework",
         "sanitized_name": "connect",
         "publisher": {
-          "email": "doug@somethingdoug.com",
+          "email": "user23@example.com",
           "username": "dougwilson"
         },
         "maintainers": [
           {
-            "email": "doug@somethingdoug.com",
+            "email": "user23@example.com",
             "username": "dougwilson"
           }
         ],
@@ -489,7 +489,7 @@
         }
       },
       "score": {
-        "final": 41.598637,
+        "final": 41.599102,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -507,7 +507,7 @@
       },
       "dependents": "14871",
       "updated": "2026-02-03T06:15:22.418Z",
-      "searchScore": 41.53839,
+      "searchScore": 41.536163,
       "package": {
         "name": "bootstrap",
         "keywords": ["css", "sass", "mobile-first", "responsive", "front-end", "framework", "web"],
@@ -515,25 +515,25 @@
         "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
         "sanitized_name": "bootstrap",
         "publisher": {
-          "email": "markdotto@gmail.com",
+          "email": "user24@example.com",
           "actor": {
             "name": "mdo",
             "type": "user",
-            "email": "markdotto@gmail.com"
+            "email": "user24@example.com"
           },
           "username": "mdo"
         },
         "maintainers": [
           {
-            "email": "getbootstrap@gmail.com",
+            "email": "user25@example.com",
             "username": "bootstrap-admin"
           },
           {
-            "email": "markdotto@gmail.com",
+            "email": "user24@example.com",
             "username": "mdo"
           },
           {
-            "email": "xhmikosr@gmail.com",
+            "email": "user26@example.com",
             "username": "xhmikosr"
           }
         ],
@@ -547,7 +547,7 @@
         }
       },
       "score": {
-        "final": 41.53839,
+        "final": 41.536163,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -565,7 +565,7 @@
       },
       "dependents": "104",
       "updated": "2026-02-03T06:14:34.734Z",
-      "searchScore": 41.449245,
+      "searchScore": 41.44943,
       "package": {
         "name": "@envelop/core",
         "keywords": ["gql", "graphql", "server", "framework", "node", "nodejs", "typescript"],
@@ -573,25 +573,25 @@
         "description": "This is the core package for Envelop. You can find a complete documentation here: https://github.com/graphql-hive/envelop",
         "sanitized_name": "@envelop/core",
         "publisher": {
-          "email": "bot@the-guild.dev",
+          "email": "user27@example.com",
           "actor": {
             "name": "theguild-bot",
             "type": "user",
-            "email": "bot@the-guild.dev"
+            "email": "user27@example.com"
           },
           "username": "theguild-bot"
         },
         "maintainers": [
           {
-            "email": "dotan@the-guild.dev",
+            "email": "user28@example.com",
             "username": "dotansimha"
           },
           {
-            "email": "badurinadenis@gmail.com",
+            "email": "user29@example.com",
             "username": "enisdenjo"
           },
           {
-            "email": "bot@the-guild.dev",
+            "email": "user27@example.com",
             "username": "theguild-bot"
           }
         ],
@@ -605,7 +605,7 @@
         }
       },
       "score": {
-        "final": 41.449245,
+        "final": 41.44943,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -623,7 +623,7 @@
       },
       "dependents": "7605",
       "updated": "2026-02-03T06:14:12.419Z",
-      "searchScore": 41.311462,
+      "searchScore": 41.321415,
       "package": {
         "name": "koa",
         "keywords": ["web", "app", "http", "application", "framework", "middleware", "rack"],
@@ -631,7 +631,7 @@
         "description": "Koa web app framework",
         "sanitized_name": "koa",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:bdd63175-b661-40af-ae06-d2aa448ef971",
             "id": "github"
@@ -640,47 +640,47 @@
         },
         "maintainers": [
           {
-            "email": "niftylettuce@gmail.com",
+            "email": "user30@example.com",
             "username": "niftylettuce"
           },
           {
-            "email": "fengmk2@gmail.com",
+            "email": "user31@example.com",
             "username": "fengmk2"
           },
           {
-            "email": "dead_horse@qq.com",
+            "email": "user32@example.com",
             "username": "dead_horse"
           },
           {
-            "email": "jonathanrichardong@gmail.com",
+            "email": "user33@example.com",
             "username": "jongleberry"
           },
           {
-            "email": "julian@juliangruber.com",
+            "email": "user34@example.com",
             "username": "juliangruber"
           },
           {
-            "email": "aaron.heckmann+github@gmail.com",
+            "email": "user35@example.com",
             "username": "aaron"
           },
           {
-            "email": "npm@titanism.com",
+            "email": "user36@example.com",
             "username": "titanism"
           },
           {
-            "email": "imed_jebari@hotmail.fr",
+            "email": "user37@example.com",
             "username": "3imed-jaberi"
           },
           {
-            "email": "ljharb@gmail.com",
+            "email": "user38@example.com",
             "username": "ljharb"
           },
           {
-            "email": "haoxinst@gmail.com",
+            "email": "user39@example.com",
             "username": "coderhaoxin"
           },
           {
-            "email": "tj@vision-media.ca",
+            "email": "user40@example.com",
             "username": "tjholowaychuk"
           }
         ],
@@ -694,7 +694,7 @@
         }
       },
       "score": {
-        "final": 41.311462,
+        "final": 41.321415,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -712,7 +712,7 @@
       },
       "dependents": "12665",
       "updated": "2026-02-03T06:13:18.783Z",
-      "searchScore": 40.32178,
+      "searchScore": 40.321957,
       "package": {
         "name": "antd",
         "keywords": [
@@ -730,41 +730,41 @@
         "description": "An enterprise-class UI design language and React components implementation",
         "sanitized_name": "antd",
         "publisher": {
-          "email": "afc163@gmail.com",
+          "email": "user41@example.com",
           "actor": {
             "name": "peachscript",
             "type": "user",
-            "email": "scdzwyxst@gmail.com"
+            "email": "user42@example.com"
           },
           "username": "afc163"
         },
         "maintainers": [
           {
-            "email": "afc163@gmail.com",
+            "email": "user41@example.com",
             "username": "afc163"
           },
           {
-            "email": "scdzwyxst@gmail.com",
+            "email": "user42@example.com",
             "username": "peachscript"
           },
           {
-            "email": "smith3816@gmail.com",
+            "email": "user43@example.com",
             "username": "zombiej"
           },
           {
-            "email": "wasd2144@hotmail.com",
+            "email": "user44@example.com",
             "username": "chenshuai2144"
           },
           {
-            "email": "xrkffgg@hotmail.com",
+            "email": "user45@example.com",
             "username": "xrkffgg"
           },
           {
-            "email": "1075746765@qq.com",
+            "email": "user46@example.com",
             "username": "madccc"
           },
           {
-            "email": "zoomdong07@gmail.com",
+            "email": "user47@example.com",
             "username": "zoomdong07"
           }
         ],
@@ -778,7 +778,7 @@
         }
       },
       "score": {
-        "final": 40.32178,
+        "final": 40.321957,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -796,7 +796,7 @@
       },
       "dependents": "2291",
       "updated": "2026-02-03T06:12:34.093Z",
-      "searchScore": 39.632812,
+      "searchScore": 39.642365,
       "package": {
         "name": "quill",
         "keywords": [
@@ -812,16 +812,16 @@
         "description": "Your powerful, rich text editor",
         "sanitized_name": "quill",
         "publisher": {
-          "email": "i@zihua.li",
+          "email": "user48@example.com",
           "username": "luin"
         },
         "maintainers": [
           {
-            "email": "i@zihua.li",
+            "email": "user48@example.com",
             "username": "luin"
           },
           {
-            "email": "jhchen7@gmail.com",
+            "email": "user49@example.com",
             "username": "jhchen"
           }
         ],
@@ -835,7 +835,7 @@
         }
       },
       "score": {
-        "final": 39.632812,
+        "final": 39.642365,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -853,7 +853,7 @@
       },
       "dependents": "55",
       "updated": "2026-02-03T06:12:17.275Z",
-      "searchScore": 39.55388,
+      "searchScore": 39.552883,
       "package": {
         "name": "vitefu",
         "keywords": ["vite", "framework", "utilities"],
@@ -861,21 +861,21 @@
         "description": "Utilities for building frameworks with Vite",
         "sanitized_name": "vitefu",
         "publisher": {
-          "email": "dominik.goepel@gmx.de",
+          "email": "user50@example.com",
           "actor": {
             "name": "dominik_g",
             "type": "user",
-            "email": "dominik.goepel@gmx.de"
+            "email": "user50@example.com"
           },
           "username": "dominik_g"
         },
         "maintainers": [
           {
-            "email": "dominik.goepel@gmx.de",
+            "email": "user50@example.com",
             "username": "dominik_g"
           },
           {
-            "email": "bjornlu.dev@gmail.com",
+            "email": "user51@example.com",
             "username": "bluwy"
           }
         ],
@@ -889,7 +889,7 @@
         }
       },
       "score": {
-        "final": 39.55388,
+        "final": 39.552883,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -907,7 +907,7 @@
       },
       "dependents": "3493",
       "updated": "2026-02-03T06:12:32.584Z",
-      "searchScore": 39.483604,
+      "searchScore": 39.484047,
       "package": {
         "name": "fastify",
         "keywords": ["web", "framework", "json", "schema", "open", "api"],
@@ -915,28 +915,28 @@
         "description": "Fast and low overhead web framework, for Node.js",
         "sanitized_name": "fastify",
         "publisher": {
-          "email": "hello@matteocollina.com",
+          "email": "user52@example.com",
           "username": "matteo.collina"
         },
         "maintainers": [
           {
-            "email": "james.sumners@gmail.com",
+            "email": "user53@example.com",
             "username": "jsumners"
           },
           {
-            "email": "tommydelved@gmail.com",
+            "email": "user54@example.com",
             "username": "delvedor"
           },
           {
-            "email": "hello@matteocollina.com",
+            "email": "user52@example.com",
             "username": "matteo.collina"
           },
           {
-            "email": "behemoth89@gmail.com",
+            "email": "user55@example.com",
             "username": "eomm"
           },
           {
-            "email": "kaka@kakawebsitedemo.com",
+            "email": "user56@example.com",
             "username": "climba03003"
           }
         ],
@@ -950,7 +950,7 @@
         }
       },
       "score": {
-        "final": 39.483604,
+        "final": 39.484047,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -968,7 +968,7 @@
       },
       "dependents": "458",
       "updated": "2026-02-03T06:13:29.222Z",
-      "searchScore": 38.753387,
+      "searchScore": 38.754627,
       "package": {
         "name": "@ckeditor/ckeditor5-core",
         "keywords": [
@@ -994,17 +994,17 @@
         "description": "The core architecture of CKEditor 5 – the best browser-based rich text editor.",
         "sanitized_name": "@ckeditor/ckeditor5-core",
         "publisher": {
-          "email": "npm@cksource.com",
+          "email": "user57@example.com",
           "actor": {
             "name": "ckeditor",
             "type": "user",
-            "email": "npm@cksource.com"
+            "email": "user57@example.com"
           },
           "username": "ckeditor"
         },
         "maintainers": [
           {
-            "email": "npm@cksource.com",
+            "email": "user57@example.com",
             "username": "ckeditor"
           }
         ],
@@ -1018,7 +1018,7 @@
         }
       },
       "score": {
-        "final": 38.753387,
+        "final": 38.754627,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1036,7 +1036,7 @@
       },
       "dependents": "3336",
       "updated": "2026-02-03T06:14:26.413Z",
-      "searchScore": 38.736393,
+      "searchScore": 38.736828,
       "package": {
         "name": "swiper",
         "keywords": [
@@ -1062,17 +1062,17 @@
         "description": "Most modern mobile touch slider and framework with hardware accelerated transitions",
         "sanitized_name": "swiper",
         "publisher": {
-          "email": "nolimits4web@gmail.com",
+          "email": "user58@example.com",
           "actor": {
             "name": "nolimits4web",
             "type": "user",
-            "email": "nolimits4web@gmail.com"
+            "email": "user58@example.com"
           },
           "username": "nolimits4web"
         },
         "maintainers": [
           {
-            "email": "nolimits4web@gmail.com",
+            "email": "user58@example.com",
             "username": "nolimits4web"
           }
         ],
@@ -1086,7 +1086,7 @@
         }
       },
       "score": {
-        "final": 38.736393,
+        "final": 38.736828,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1104,7 +1104,7 @@
       },
       "dependents": "1812",
       "updated": "2026-02-03T06:15:19.662Z",
-      "searchScore": 38.62011,
+      "searchScore": 38.628876,
       "package": {
         "name": "svelte",
         "keywords": ["svelte", "UI", "framework", "templates", "templating"],
@@ -1112,11 +1112,11 @@
         "description": "Cybernetically enhanced web apps",
         "sanitized_name": "svelte",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "svelte-admin",
             "type": "user",
-            "email": "richard.a.harris+svelte@gmail.com"
+            "email": "user59@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:375c7e5b-4e4c-479a-b0f6-729eb69dcbb6",
@@ -1126,15 +1126,15 @@
         },
         "maintainers": [
           {
-            "email": "richard.a.harris@gmail.com",
+            "email": "user60@example.com",
             "username": "rich_harris"
           },
           {
-            "email": "npm@chor.date",
+            "email": "user61@example.com",
             "username": "conduitry"
           },
           {
-            "email": "richard.a.harris+svelte@gmail.com",
+            "email": "user59@example.com",
             "username": "svelte-admin"
           }
         ],
@@ -1148,7 +1148,7 @@
         }
       },
       "score": {
-        "final": 38.62011,
+        "final": 38.628876,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1166,7 +1166,7 @@
       },
       "dependents": "710",
       "updated": "2026-02-03T06:14:44.473Z",
-      "searchScore": 38.406227,
+      "searchScore": 38.406395,
       "package": {
         "name": "@hapi/hapi",
         "keywords": ["framework", "http", "api", "web"],
@@ -1174,36 +1174,36 @@
         "description": "HTTP Server framework",
         "sanitized_name": "@hapi/hapi",
         "publisher": {
-          "email": "nicolas@morel.io",
+          "email": "user62@example.com",
           "username": "marsup"
         },
         "maintainers": [
           {
-            "email": "quitlahok@gmail.com",
+            "email": "user63@example.com",
             "username": "nlf"
           },
           {
-            "email": "devinivy@gmail.com",
+            "email": "user64@example.com",
             "username": "devinivy"
           },
           {
-            "email": "wpreul@gmail.com",
+            "email": "user65@example.com",
             "username": "wyatt"
           },
           {
-            "email": "lloyd.benson@gmail.com",
+            "email": "user66@example.com",
             "username": "lloydbenson"
           },
           {
-            "email": "xt47tezpk@mozmail.com",
+            "email": "user67@example.com",
             "username": "nargonath"
           },
           {
-            "email": "cjihrig@gmail.com",
+            "email": "user68@example.com",
             "username": "cjihrig"
           },
           {
-            "email": "nicolas@morel.io",
+            "email": "user62@example.com",
             "username": "marsup"
           }
         ],
@@ -1217,7 +1217,7 @@
         }
       },
       "score": {
-        "final": 38.406227,
+        "final": 38.406395,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1235,7 +1235,7 @@
       },
       "dependents": "203",
       "updated": "2026-02-03T06:12:44.494Z",
-      "searchScore": 37.342793,
+      "searchScore": 37.343987,
       "package": {
         "name": "@sveltejs/kit",
         "keywords": ["framework", "official", "svelte", "sveltekit", "vite"],
@@ -1243,11 +1243,11 @@
         "description": "SvelteKit is the fastest way to build Svelte apps",
         "sanitized_name": "@sveltejs/kit",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "svelte-admin",
             "type": "user",
-            "email": "richard.a.harris+svelte@gmail.com"
+            "email": "user59@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:fdd8c40e-9a45-4fd7-a9eb-5089a75030d7",
@@ -1257,19 +1257,19 @@
         },
         "maintainers": [
           {
-            "email": "richard.a.harris@gmail.com",
+            "email": "user60@example.com",
             "username": "rich_harris"
           },
           {
-            "email": "richard.a.harris+svelte@gmail.com",
+            "email": "user59@example.com",
             "username": "svelte-admin"
           },
           {
-            "email": "npm@chor.date",
+            "email": "user61@example.com",
             "username": "conduitry"
           },
           {
-            "email": "dominik.goepel@gmx.de",
+            "email": "user50@example.com",
             "username": "dominik_g"
           }
         ],
@@ -1283,7 +1283,7 @@
         }
       },
       "score": {
-        "final": 37.342793,
+        "final": 37.343987,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1301,7 +1301,7 @@
       },
       "dependents": "122",
       "updated": "2026-02-03T11:55:43.689Z",
-      "searchScore": 37.031006,
+      "searchScore": 37.03993,
       "package": {
         "name": "@modern-js/utils",
         "keywords": ["react", "framework", "modern", "modern.js"],
@@ -1309,25 +1309,25 @@
         "description": "A Progressive React Framework for modern web development.",
         "sanitized_name": "@modern-js/utils",
         "publisher": {
-          "email": "1057275848@qq.com",
+          "email": "user69@example.com",
           "actor": {
             "name": "caohuilin",
             "type": "user",
-            "email": "1057275848@qq.com"
+            "email": "user69@example.com"
           },
           "username": "caohuilin"
         },
         "maintainers": [
           {
-            "email": "bnpm@bytedance.com",
+            "email": "user70@example.com",
             "username": "bytednpm"
           },
           {
-            "email": "870803309@qq.com",
+            "email": "user71@example.com",
             "username": "kky_kongjiacong"
           },
           {
-            "email": "1057275848@qq.com",
+            "email": "user69@example.com",
             "username": "caohuilin"
           }
         ],
@@ -1341,7 +1341,7 @@
         }
       },
       "score": {
-        "final": 37.031006,
+        "final": 37.03993,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1359,7 +1359,7 @@
       },
       "dependents": "90",
       "updated": "2026-02-03T06:14:38.662Z",
-      "searchScore": 36.908676,
+      "searchScore": 36.917053,
       "package": {
         "name": "rtlcss",
         "keywords": [
@@ -1378,12 +1378,12 @@
         "description": "Framework for transforming cascading style sheets (CSS) from left-to-right (LTR) to right-to-left (RTL)",
         "sanitized_name": "rtlcss",
         "publisher": {
-          "email": "myounes@gmail.com",
+          "email": "user72@example.com",
           "username": "myounes"
         },
         "maintainers": [
           {
-            "email": "myounes@gmail.com",
+            "email": "user72@example.com",
             "username": "myounes"
           }
         ],
@@ -1397,7 +1397,7 @@
         }
       },
       "score": {
-        "final": 36.908676,
+        "final": 36.917053,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1415,7 +1415,7 @@
       },
       "dependents": "6",
       "updated": "2026-02-03T06:13:40.346Z",
-      "searchScore": 36.906845,
+      "searchScore": 36.915737,
       "package": {
         "name": "@modern-js/node-bundle-require",
         "keywords": ["react", "framework", "modern", "modern.js"],
@@ -1423,25 +1423,25 @@
         "description": "A Progressive React Framework for modern web development.",
         "sanitized_name": "@modern-js/node-bundle-require",
         "publisher": {
-          "email": "1057275848@qq.com",
+          "email": "user69@example.com",
           "actor": {
             "name": "caohuilin",
             "type": "user",
-            "email": "1057275848@qq.com"
+            "email": "user69@example.com"
           },
           "username": "caohuilin"
         },
         "maintainers": [
           {
-            "email": "bnpm@bytedance.com",
+            "email": "user70@example.com",
             "username": "bytednpm"
           },
           {
-            "email": "870803309@qq.com",
+            "email": "user71@example.com",
             "username": "kky_kongjiacong"
           },
           {
-            "email": "1057275848@qq.com",
+            "email": "user69@example.com",
             "username": "caohuilin"
           }
         ],
@@ -1455,7 +1455,7 @@
         }
       },
       "score": {
-        "final": 36.906845,
+        "final": 36.915737,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1473,7 +1473,7 @@
       },
       "dependents": "227",
       "updated": "2026-02-03T06:15:38.318Z",
-      "searchScore": 36.90256,
+      "searchScore": 36.902973,
       "package": {
         "name": "@ckeditor/ckeditor5-engine",
         "keywords": [
@@ -1499,17 +1499,17 @@
         "description": "The editing engine of CKEditor 5 – the best browser-based rich text editor.",
         "sanitized_name": "@ckeditor/ckeditor5-engine",
         "publisher": {
-          "email": "npm@cksource.com",
+          "email": "user57@example.com",
           "actor": {
             "name": "ckeditor",
             "type": "user",
-            "email": "npm@cksource.com"
+            "email": "user57@example.com"
           },
           "username": "ckeditor"
         },
         "maintainers": [
           {
-            "email": "npm@cksource.com",
+            "email": "user57@example.com",
             "username": "ckeditor"
           }
         ],
@@ -1523,7 +1523,7 @@
         }
       },
       "score": {
-        "final": 36.90256,
+        "final": 36.902973,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1541,7 +1541,7 @@
       },
       "dependents": "299",
       "updated": "2026-02-03T06:15:33.972Z",
-      "searchScore": 36.30842,
+      "searchScore": 36.308823,
       "package": {
         "name": "ckeditor5",
         "keywords": [
@@ -1565,17 +1565,17 @@
         "description": "A set of ready-to-use rich text editors created with a powerful framework. Made with real-time collaborative editing in mind.",
         "sanitized_name": "ckeditor5",
         "publisher": {
-          "email": "npm@cksource.com",
+          "email": "user57@example.com",
           "actor": {
             "name": "ckeditor",
             "type": "user",
-            "email": "npm@cksource.com"
+            "email": "user57@example.com"
           },
           "username": "ckeditor"
         },
         "maintainers": [
           {
-            "email": "npm@cksource.com",
+            "email": "user57@example.com",
             "username": "ckeditor"
           }
         ],
@@ -1589,7 +1589,7 @@
         }
       },
       "score": {
-        "final": 36.30842,
+        "final": 36.308823,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1602,5 +1602,5 @@
     }
   ],
   "total": 35203,
-  "time": "2026-02-03T13:10:00.784Z"
+  "time": "2026-02-03T13:37:00.998Z"
 }

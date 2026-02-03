@@ -67,6 +67,15 @@ const REQUIRED_ORGS = ['nuxt'] as const
  */
 const REQUIRED_USERS = ['qwerzl'] as const
 
+/**
+ * Packages that need esm.sh TypeScript types fixtures for docs tests.
+ * Format: { package: version }
+ */
+const REQUIRED_ESM_TYPES: Record<string, string> = {
+  'ufo': '1.6.3',
+  'is-odd': '3.0.1',
+}
+
 // ============================================================================
 // Utility Functions
 // ============================================================================
@@ -77,9 +86,47 @@ function ensureDir(path: string): void {
   }
 }
 
+/**
+ * Sanitize email addresses in fixture data to avoid exposing personal info.
+ * Replaces real emails with anonymized versions like "user1@example.com".
+ */
+function sanitizeEmails(data: unknown): unknown {
+  const emailMap = new Map<string, string>()
+  let emailCounter = 0
+
+  function getAnonymizedEmail(email: string): string {
+    if (!emailMap.has(email)) {
+      emailCounter++
+      emailMap.set(email, `user${emailCounter}@example.com`)
+    }
+    return emailMap.get(email)!
+  }
+
+  function sanitize(obj: unknown): unknown {
+    if (obj === null || obj === undefined) return obj
+    if (typeof obj === 'string') return obj
+    if (Array.isArray(obj)) return obj.map(sanitize)
+    if (typeof obj === 'object') {
+      const result: Record<string, unknown> = {}
+      for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+        if (key === 'email' && typeof value === 'string') {
+          result[key] = getAnonymizedEmail(value)
+        } else {
+          result[key] = sanitize(value)
+        }
+      }
+      return result
+    }
+    return obj
+  }
+
+  return sanitize(data)
+}
+
 function writeFixture(path: string, data: unknown): void {
   ensureDir(dirname(path))
-  writeFileSync(path, JSON.stringify(data, null, 2) + '\n')
+  const sanitized = sanitizeEmails(data)
+  writeFileSync(path, JSON.stringify(sanitized, null, 2) + '\n')
   console.log(`  Written: ${path}`)
 }
 
@@ -277,6 +324,54 @@ async function generateUserFixture(username: string): Promise<void> {
   }
 }
 
+async function generateEsmTypesFixture(packageName: string, version: string): Promise<void> {
+  console.log(`  Fetching esm.sh types: ${packageName}@${version}`)
+
+  const baseUrl = `https://esm.sh/${packageName}@${version}`
+
+  try {
+    // First, get the types URL from the header
+    const headResponse = await fetch(baseUrl, { method: 'HEAD' })
+    const typesUrl = headResponse.headers.get('x-typescript-types')
+
+    if (!typesUrl) {
+      console.log(`    No types available for ${packageName}@${version}`)
+      return
+    }
+
+    // Fetch the actual types content
+    const typesResponse = await fetch(typesUrl)
+    if (!typesResponse.ok) {
+      throw new Error(`HTTP ${typesResponse.status}: ${typesUrl}`)
+    }
+    const typesContent = await typesResponse.text()
+
+    // Extract the path portion from the types URL for the fixture path
+    // e.g., https://esm.sh/ufo@1.6.3/dist/index.d.ts -> ufo@1.6.3/dist/index.d.ts
+    const typesPath = typesUrl.replace('https://esm.sh/', '')
+
+    // Save the types header info
+    const headerFixturePath = join(
+      FIXTURES_DIR,
+      'esm-sh',
+      'headers',
+      `${packageName}@${version}.json`,
+    )
+    writeFixture(headerFixturePath, {
+      'x-typescript-types': typesUrl,
+    })
+
+    // Save the actual types content
+    const typesFixturePath = join(FIXTURES_DIR, 'esm-sh', 'types', typesPath)
+    ensureDir(dirname(typesFixturePath))
+    writeFileSync(typesFixturePath, typesContent)
+    console.log(`  Written: ${typesFixturePath}`)
+  } catch (error) {
+    console.error(`  Failed to fetch esm.sh types for ${packageName}@${version}:`, error)
+    // Types are optional for some packages, don't throw
+  }
+}
+
 // ============================================================================
 // Main
 // ============================================================================
@@ -322,6 +417,12 @@ async function main(): Promise<void> {
     console.log('\nUsers:')
     for (const user of REQUIRED_USERS) {
       await generateUserFixture(user)
+    }
+
+    // Generate esm.sh types fixtures
+    console.log('\nesm.sh Types:')
+    for (const [pkg, version] of Object.entries(REQUIRED_ESM_TYPES)) {
+      await generateEsmTypesFixture(pkg, version)
     }
   }
 

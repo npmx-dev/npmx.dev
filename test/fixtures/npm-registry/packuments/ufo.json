@@ -79,13 +79,13 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "directories": {},
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -102,7 +102,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -147,7 +147,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -187,7 +187,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -231,7 +231,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -271,7 +271,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -315,7 +315,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -355,7 +355,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -399,7 +399,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -439,7 +439,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -483,7 +483,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -523,7 +523,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -567,7 +567,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -607,7 +607,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -651,7 +651,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -691,7 +691,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -735,7 +735,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -775,7 +775,7 @@
       "maintainers": [
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -819,7 +819,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -859,15 +859,15 @@
       "maintainers": [
         {
           "name": "atinux",
-          "email": "atinux@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "danielroe",
-          "email": "daniel@roe.dev"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/unjs/ufo#readme",
@@ -901,7 +901,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/unjs/ufo.git",
@@ -940,15 +940,15 @@
       "maintainers": [
         {
           "name": "atinux",
-          "email": "atinux@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "pi0",
-          "email": "pyapar@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "danielroe",
-          "email": "daniel@roe.dev"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/nuxt-contrib/ufo#readme",
@@ -988,7 +988,7 @@
       },
       "_npmUser": {
         "name": "pi0",
-        "email": "pyapar@gmail.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "git+https://github.com/nuxt-contrib/ufo.git",
@@ -1039,7 +1039,7 @@
   "maintainers": [
     {
       "name": "pi0",
-      "email": "pyapar@gmail.com"
+      "email": "user1@example.com"
     }
   ],
   "license": "MIT",

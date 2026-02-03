@@ -87,7 +87,7 @@
       "_nodeVersion": "10.0.0",
       "_npmUser": {
         "name": "jonschlinkert",
-        "email": "github@sellside.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "integrity": "sha512-CQpnWPrDwmP1+SMHXZhtLtJv90yiyVfluGsX5iNCVkrhQtU3TQHsUWPG9wkdk9Lgd5yNpAg9jQEo90CBaXgWMA==",
@@ -105,11 +105,11 @@
       },
       "maintainers": [
         {
-          "email": "brian.woodward@gmail.com",
+          "email": "user2@example.com",
           "name": "doowb"
         },
         {
-          "email": "github@sellside.com",
+          "email": "user1@example.com",
           "name": "jonschlinkert"
         }
       ],
@@ -200,7 +200,7 @@
       "_nodeVersion": "10.0.0",
       "_npmUser": {
         "name": "jonschlinkert",
-        "email": "github@sellside.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "integrity": "sha512-204vE5IJ0Cd6pA6x1dMyLooGk6/xeKuq90imFuJN/ndMDBP4Sk9tJpBlTedHPvt6KDbtTDTsjVzzgctFqNV7FQ==",
@@ -218,11 +218,11 @@
       },
       "maintainers": [
         {
-          "email": "brian.woodward@gmail.com",
+          "email": "user2@example.com",
           "name": "doowb"
         },
         {
-          "email": "github@sellside.com",
+          "email": "user1@example.com",
           "name": "jonschlinkert"
         }
       ],
@@ -313,7 +313,7 @@
       "_nodeVersion": "8.7.0",
       "_npmUser": {
         "name": "jonschlinkert",
-        "email": "github@sellside.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "integrity": "sha512-OTiixgpZAT1M4NHgS5IguFp/Vz2VI3U7Goh4/HA1adtwyLtSBrxYlcSYkhpAE07s4fKEcjrFxyvtQBND4vFQyQ==",
@@ -328,11 +328,11 @@
       },
       "maintainers": [
         {
-          "email": "brian.woodward@gmail.com",
+          "email": "user2@example.com",
           "name": "doowb"
         },
         {
-          "email": "github@sellside.com",
+          "email": "user1@example.com",
           "name": "jonschlinkert"
         }
       ],
@@ -420,16 +420,16 @@
       "_nodeVersion": "7.7.3",
       "_npmUser": {
         "name": "jonschlinkert",
-        "email": "github@sellside.com"
+        "email": "user1@example.com"
       },
       "maintainers": [
         {
           "name": "jonschlinkert",
-          "email": "github@sellside.com"
+          "email": "user1@example.com"
         },
         {
           "name": "doowb",
-          "email": "brian.woodward@gmail.com"
+          "email": "user2@example.com"
         }
       ],
       "dist": {
@@ -524,16 +524,16 @@
       "_nodeVersion": "7.7.3",
       "_npmUser": {
         "name": "jonschlinkert",
-        "email": "github@sellside.com"
+        "email": "user1@example.com"
       },
       "maintainers": [
         {
           "name": "jonschlinkert",
-          "email": "github@sellside.com"
+          "email": "user1@example.com"
         },
         {
           "name": "doowb",
-          "email": "brian.woodward@gmail.com"
+          "email": "user2@example.com"
         }
       ],
       "dist": {
@@ -618,16 +618,16 @@
       "_nodeVersion": "6.7.0",
       "_npmUser": {
         "name": "jonschlinkert",
-        "email": "github@sellside.com"
+        "email": "user1@example.com"
       },
       "maintainers": [
         {
           "name": "jonschlinkert",
-          "email": "github@sellside.com"
+          "email": "user1@example.com"
         },
         {
           "name": "doowb",
-          "email": "brian.woodward@gmail.com"
+          "email": "user2@example.com"
         }
       ],
       "dist": {
@@ -697,12 +697,12 @@
       "_nodeVersion": "0.12.0",
       "_npmUser": {
         "name": "jonschlinkert",
-        "email": "github@sellside.com"
+        "email": "user1@example.com"
       },
       "maintainers": [
         {
           "name": "jonschlinkert",
-          "email": "github@sellside.com"
+          "email": "user1@example.com"
         }
       ],
       "dist": {
@@ -732,11 +732,11 @@
   },
   "maintainers": [
     {
-      "email": "brian.woodward@gmail.com",
+      "email": "user2@example.com",
       "name": "doowb"
     },
     {
-      "email": "github@sellside.com",
+      "email": "user1@example.com",
       "name": "jonschlinkert"
     }
   ],

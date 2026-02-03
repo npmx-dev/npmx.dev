@@ -7,7 +7,7 @@
       },
       "dependents": "747",
       "updated": "2026-02-03T06:13:28.573Z",
-      "searchScore": 1846.1357,
+      "searchScore": 1846.2391,
       "package": {
         "name": "nuxt",
         "keywords": [],
@@ -15,11 +15,11 @@
         "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
         "sanitized_name": "nuxt",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "danielroe",
             "type": "user",
-            "email": "daniel@roe.dev"
+            "email": "user2@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f",
@@ -29,7 +29,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -43,77 +43,7 @@
         }
       },
       "score": {
-        "final": 1846.1357,
-        "detail": {
-          "popularity": 1,
-          "quality": 1,
-          "maintenance": 1
-        }
-      },
-      "flags": {
-        "insecure": 0
-      }
-    },
-    {
-      "downloads": {
-        "monthly": 3814423,
-        "weekly": 1011799
-      },
-      "dependents": "23",
-      "updated": "2026-02-03T06:14:27.463Z",
-      "searchScore": 435.5205,
-      "package": {
-        "name": "@nuxt/devtools",
-        "keywords": [],
-        "version": "3.1.1",
-        "description": "The Nuxt DevTools gives you insights and transparency about your Nuxt App.",
-        "sanitized_name": "@nuxt/devtools",
-        "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
-          "actor": {
-            "name": "antfu",
-            "type": "user",
-            "email": "anthonyfu117@hotmail.com"
-          },
-          "trustedPublisher": {
-            "oidcConfigId": "oidc:eeab0b2f-4185-4788-8d6d-50eecde25a87",
-            "id": "github"
-          },
-          "username": "GitHub Actions"
-        },
-        "maintainers": [
-          {
-            "email": "atinux@gmail.com",
-            "username": "atinux"
-          },
-          {
-            "email": "pyapar@gmail.com",
-            "username": "pi0"
-          },
-          {
-            "email": "anthonyfu117@hotmail.com",
-            "username": "antfu"
-          },
-          {
-            "email": "daniel@roe.dev",
-            "username": "danielroe"
-          },
-          {
-            "email": "nuxtbot@roe.dev",
-            "username": "nuxtbot"
-          }
-        ],
-        "license": "MIT",
-        "date": "2025-11-25T08:59:07.402Z",
-        "links": {
-          "homepage": "https://devtools.nuxt.com",
-          "repository": "git+https://github.com/nuxt/devtools.git",
-          "bugs": "https://github.com/nuxt/devtools/issues",
-          "npm": "https://www.npmjs.com/package/@nuxt/devtools"
-        }
-      },
-      "score": {
-        "final": 435.5205,
+        "final": 1846.2391,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -131,7 +61,7 @@
       },
       "dependents": "11",
       "updated": "2026-02-03T06:32:42.495Z",
-      "searchScore": 435.45096,
+      "searchScore": 436.68585,
       "package": {
         "name": "@nuxt/vite-builder",
         "keywords": [],
@@ -139,11 +69,11 @@
         "description": "Vite bundler for Nuxt",
         "sanitized_name": "@nuxt/vite-builder",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "danielroe",
             "type": "user",
-            "email": "daniel@roe.dev"
+            "email": "user2@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:b683310d-7ab6-4e77-8087-471551814aab",
@@ -153,7 +83,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -167,7 +97,77 @@
         }
       },
       "score": {
-        "final": 435.45096,
+        "final": 436.68585,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 3814423,
+        "weekly": 1011799
+      },
+      "dependents": "23",
+      "updated": "2026-02-03T06:14:27.463Z",
+      "searchScore": 435.51923,
+      "package": {
+        "name": "@nuxt/devtools",
+        "keywords": [],
+        "version": "3.1.1",
+        "description": "The Nuxt DevTools gives you insights and transparency about your Nuxt App.",
+        "sanitized_name": "@nuxt/devtools",
+        "publisher": {
+          "email": "user1@example.com",
+          "actor": {
+            "name": "antfu",
+            "type": "user",
+            "email": "user4@example.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:eeab0b2f-4185-4788-8d6d-50eecde25a87",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "user5@example.com",
+            "username": "atinux"
+          },
+          {
+            "email": "user6@example.com",
+            "username": "pi0"
+          },
+          {
+            "email": "user4@example.com",
+            "username": "antfu"
+          },
+          {
+            "email": "user2@example.com",
+            "username": "danielroe"
+          },
+          {
+            "email": "user3@example.com",
+            "username": "nuxtbot"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-25T08:59:07.402Z",
+        "links": {
+          "homepage": "https://devtools.nuxt.com",
+          "repository": "git+https://github.com/nuxt/devtools.git",
+          "bugs": "https://github.com/nuxt/devtools/issues",
+          "npm": "https://www.npmjs.com/package/@nuxt/devtools"
+        }
+      },
+      "score": {
+        "final": 435.51923,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -185,7 +185,7 @@
       },
       "dependents": "230",
       "updated": "2026-02-03T06:14:09.514Z",
-      "searchScore": 434.00882,
+      "searchScore": 435.2237,
       "package": {
         "name": "@vueuse/nuxt",
         "keywords": ["vue", "vueuse", "nuxt", "nuxt3", "nuxt-module"],
@@ -193,11 +193,11 @@
         "description": "VueUse Nuxt Module",
         "sanitized_name": "@vueuse/nuxt",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "vueuse-bot",
             "type": "user",
-            "email": "npm-vueuse@antfu.me"
+            "email": "user7@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:d63813ae-12cd-4fcd-b1af-688bc2afa4bd",
@@ -207,7 +207,7 @@
         },
         "maintainers": [
           {
-            "email": "npm-vueuse@antfu.me",
+            "email": "user7@example.com",
             "username": "vueuse-bot"
           }
         ],
@@ -221,7 +221,7 @@
         }
       },
       "score": {
-        "final": 434.00882,
+        "final": 435.2237,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -239,7 +239,7 @@
       },
       "dependents": "111",
       "updated": "2026-02-03T06:13:32.299Z",
-      "searchScore": 433.7545,
+      "searchScore": 433.77365,
       "package": {
         "name": "@nuxt/schema",
         "keywords": [],
@@ -247,11 +247,11 @@
         "description": "Nuxt types and default configuration",
         "sanitized_name": "@nuxt/schema",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "danielroe",
             "type": "user",
-            "email": "daniel@roe.dev"
+            "email": "user2@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:4c63ab48-f200-42e8-a90c-33eb9e9eb701",
@@ -261,7 +261,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -275,7 +275,7 @@
         }
       },
       "score": {
-        "final": 433.7545,
+        "final": 433.77365,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -293,7 +293,7 @@
       },
       "dependents": "270",
       "updated": "2026-02-03T06:12:43.975Z",
-      "searchScore": 430.9173,
+      "searchScore": 430.91614,
       "package": {
         "name": "@pinia/nuxt",
         "keywords": ["pinia", "nuxt", "vue", "vuex", "store"],
@@ -301,16 +301,16 @@
         "description": "Nuxt Module for pinia",
         "sanitized_name": "@pinia/nuxt",
         "publisher": {
-          "email": "posva13@gmail.com",
+          "email": "user8@example.com",
           "username": "posva"
         },
         "maintainers": [
           {
-            "email": "posva13@gmail.com",
+            "email": "user8@example.com",
             "username": "posva"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           }
         ],
@@ -324,7 +324,7 @@
         }
       },
       "score": {
-        "final": 430.9173,
+        "final": 430.91614,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -342,7 +342,7 @@
       },
       "dependents": "2971",
       "updated": "2026-02-03T06:15:22.389Z",
-      "searchScore": 429.22473,
+      "searchScore": 429.22345,
       "package": {
         "name": "@nuxt/kit",
         "keywords": [],
@@ -350,11 +350,11 @@
         "description": "Toolkit for authoring modules and interacting with Nuxt",
         "sanitized_name": "@nuxt/kit",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "danielroe",
             "type": "user",
-            "email": "daniel@roe.dev"
+            "email": "user2@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235",
@@ -364,7 +364,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -378,7 +378,7 @@
         }
       },
       "score": {
-        "final": 429.22473,
+        "final": 429.22345,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -396,7 +396,7 @@
       },
       "dependents": "146",
       "updated": "2026-02-03T06:12:39.746Z",
-      "searchScore": 420.6606,
+      "searchScore": 420.65933,
       "package": {
         "name": "@nuxt/image",
         "keywords": [],
@@ -404,7 +404,7 @@
         "description": "Nuxt Image Module",
         "sanitized_name": "@nuxt/image",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:b4a3a833-3f50-4420-8627-c4aa3f28a210",
             "id": "github"
@@ -413,7 +413,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -427,7 +427,7 @@
         }
       },
       "score": {
-        "final": 420.6606,
+        "final": 420.65933,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -445,7 +445,7 @@
       },
       "dependents": "3",
       "updated": "2026-02-03T06:16:31.399Z",
-      "searchScore": 418.01666,
+      "searchScore": 419.1896,
       "package": {
         "name": "@dxup/nuxt",
         "keywords": [],
@@ -453,7 +453,7 @@
         "description": "TypeScript plugin for Nuxt",
         "sanitized_name": "@dxup/nuxt",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:52475691-c56b-447d-86fd-332951f17c7a",
             "id": "github"
@@ -462,7 +462,7 @@
         },
         "maintainers": [
           {
-            "email": "mimorimaboroshi@gmail.com",
+            "email": "user9@example.com",
             "username": "kazariex"
           }
         ],
@@ -476,7 +476,7 @@
         }
       },
       "score": {
-        "final": 418.01666,
+        "final": 419.1896,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -494,7 +494,7 @@
       },
       "dependents": "80",
       "updated": "2026-02-03T06:12:42.017Z",
-      "searchScore": 408.53308,
+      "searchScore": 408.49863,
       "package": {
         "name": "@nuxt/types",
         "keywords": [],
@@ -502,28 +502,28 @@
         "description": "Nuxt types",
         "sanitized_name": "@nuxt/types",
         "publisher": {
-          "email": "daniel@roe.dev",
+          "email": "user2@example.com",
           "username": "danielroe"
         },
         "maintainers": [
           {
-            "email": "atinux@gmail.com",
+            "email": "user5@example.com",
             "username": "atinux"
           },
           {
-            "email": "pyapar@gmail.com",
+            "email": "user6@example.com",
             "username": "pi0"
           },
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user4@example.com",
             "username": "antfu"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -537,7 +537,7 @@
         }
       },
       "score": {
-        "final": 408.53308,
+        "final": 408.49863,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -555,7 +555,7 @@
       },
       "dependents": "23",
       "updated": "2026-02-03T06:14:14.075Z",
-      "searchScore": 402.82422,
+      "searchScore": 403.97028,
       "package": {
         "name": "@nuxt/test-utils",
         "keywords": [],
@@ -563,11 +563,11 @@
         "description": "Test utilities for Nuxt",
         "sanitized_name": "@nuxt/test-utils",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "danielroe",
             "type": "user",
-            "email": "daniel@roe.dev"
+            "email": "user2@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:e373741e-79cc-4eee-95c1-6d212aedfcb1",
@@ -577,7 +577,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -591,7 +591,7 @@
         }
       },
       "score": {
-        "final": 402.82422,
+        "final": 403.97028,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -609,7 +609,7 @@
       },
       "dependents": "2",
       "updated": "2026-02-03T06:18:48.318Z",
-      "searchScore": 396.8385,
+      "searchScore": 396.81116,
       "package": {
         "name": "@nuxt/nitro-server",
         "keywords": [],
@@ -617,7 +617,7 @@
         "description": "Nitro server integration for Nuxt",
         "sanitized_name": "@nuxt/nitro-server",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:308e5883-7d24-43f5-9714-2c4b1316f02a",
             "id": "github"
@@ -626,7 +626,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -640,7 +640,7 @@
         }
       },
       "score": {
-        "final": 396.8385,
+        "final": 396.81116,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -658,7 +658,7 @@
       },
       "dependents": "15",
       "updated": "2026-02-03T06:12:42.785Z",
-      "searchScore": 395.76538,
+      "searchScore": 395.78107,
       "package": {
         "name": "@nuxt/eslint-plugin",
         "keywords": [],
@@ -666,11 +666,11 @@
         "description": "ESLint plugin for Nuxt",
         "sanitized_name": "@nuxt/eslint-plugin",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "antfu",
             "type": "user",
-            "email": "anthonyfu117@hotmail.com"
+            "email": "user4@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:2e7e5713-69f6-48e4-8e85-af0bff106e8f",
@@ -680,23 +680,23 @@
         },
         "maintainers": [
           {
-            "email": "atinux@gmail.com",
+            "email": "user5@example.com",
             "username": "atinux"
           },
           {
-            "email": "pyapar@gmail.com",
+            "email": "user6@example.com",
             "username": "pi0"
           },
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user4@example.com",
             "username": "antfu"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -710,7 +710,7 @@
         }
       },
       "score": {
-        "final": 395.76538,
+        "final": 395.78107,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -728,7 +728,7 @@
       },
       "dependents": "18",
       "updated": "2026-02-03T06:13:01.754Z",
-      "searchScore": 389.14587,
+      "searchScore": 389.1604,
       "package": {
         "name": "@nuxt/cli",
         "keywords": [],
@@ -736,7 +736,7 @@
         "description": "Nuxt CLI",
         "sanitized_name": "@nuxt/cli",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:54b2efe0-2a9d-4b5d-9e74-4f602460ded3",
             "id": "github"
@@ -745,7 +745,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -759,7 +759,7 @@
         }
       },
       "score": {
-        "final": 389.14587,
+        "final": 389.1604,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -777,7 +777,7 @@
       },
       "dependents": "97",
       "updated": "2026-02-03T06:13:22.537Z",
-      "searchScore": 385.65964,
+      "searchScore": 385.6585,
       "package": {
         "name": "@nuxt/icon",
         "keywords": [],
@@ -785,11 +785,11 @@
         "description": "![nuxt-icon](https://github.com/nuxt-modules/icon/assets/904724/ae673805-06ad-4c05-820e-a8445c7224ce)",
         "sanitized_name": "@nuxt/icon",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "antfu",
             "type": "user",
-            "email": "anthonyfu117@hotmail.com"
+            "email": "user4@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:f9845942-f250-49c6-a905-986f22b51baf",
@@ -799,23 +799,23 @@
         },
         "maintainers": [
           {
-            "email": "atinux@gmail.com",
+            "email": "user5@example.com",
             "username": "atinux"
           },
           {
-            "email": "pyapar@gmail.com",
+            "email": "user6@example.com",
             "username": "pi0"
           },
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user4@example.com",
             "username": "antfu"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -829,7 +829,7 @@
         }
       },
       "score": {
-        "final": 385.65964,
+        "final": 385.6585,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -847,7 +847,7 @@
       },
       "dependents": "55",
       "updated": "2026-02-03T06:14:20.016Z",
-      "searchScore": 384.3293,
+      "searchScore": 384.345,
       "package": {
         "name": "@nuxt/eslint-config",
         "keywords": [],
@@ -855,11 +855,11 @@
         "description": "ESLint config for Nuxt projects",
         "sanitized_name": "@nuxt/eslint-config",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "antfu",
             "type": "user",
-            "email": "anthonyfu117@hotmail.com"
+            "email": "user4@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:9a079df2-09e3-4f80-9f75-34f5432e281d",
@@ -869,23 +869,23 @@
         },
         "maintainers": [
           {
-            "email": "atinux@gmail.com",
+            "email": "user5@example.com",
             "username": "atinux"
           },
           {
-            "email": "pyapar@gmail.com",
+            "email": "user6@example.com",
             "username": "pi0"
           },
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user4@example.com",
             "username": "antfu"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -899,7 +899,7 @@
         }
       },
       "score": {
-        "final": 384.3293,
+        "final": 384.345,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -917,7 +917,7 @@
       },
       "dependents": "63",
       "updated": "2026-02-03T06:13:20.551Z",
-      "searchScore": 380.06818,
+      "searchScore": 380.06802,
       "package": {
         "name": "@nuxt/fonts",
         "keywords": [],
@@ -925,7 +925,7 @@
         "description": "Automatic font configuration for Nuxt apps",
         "sanitized_name": "@nuxt/fonts",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:b6d5b59c-b2dc-4c48-98bf-a734e8a8e267",
             "id": "github"
@@ -934,7 +934,7 @@
         },
         "maintainers": [
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -948,7 +948,7 @@
         }
       },
       "score": {
-        "final": 380.06818,
+        "final": 380.06802,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -966,7 +966,7 @@
       },
       "dependents": "62",
       "updated": "2026-02-03T06:13:25.935Z",
-      "searchScore": 369.396,
+      "searchScore": 369.41135,
       "package": {
         "name": "@nuxt/eslint",
         "keywords": [],
@@ -974,11 +974,11 @@
         "description": "Generate ESLint config from current Nuxt settings",
         "sanitized_name": "@nuxt/eslint",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "antfu",
             "type": "user",
-            "email": "anthonyfu117@hotmail.com"
+            "email": "user4@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:f493ad20-04e3-4dbe-b139-4b98b1aff7f8",
@@ -988,23 +988,23 @@
         },
         "maintainers": [
           {
-            "email": "atinux@gmail.com",
+            "email": "user5@example.com",
             "username": "atinux"
           },
           {
-            "email": "pyapar@gmail.com",
+            "email": "user6@example.com",
             "username": "pi0"
           },
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user4@example.com",
             "username": "antfu"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -1018,7 +1018,7 @@
         }
       },
       "score": {
-        "final": 369.396,
+        "final": 369.41135,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1036,7 +1036,7 @@
       },
       "dependents": "23",
       "updated": "2026-02-03T06:18:19.430Z",
-      "searchScore": 369.35483,
+      "searchScore": 369.3478,
       "package": {
         "name": "nuxt-lodash",
         "keywords": ["nuxt", "nuxt-module", "lodash", "lodash-es"],
@@ -1044,12 +1044,12 @@
         "description": "Lodash for Nuxt",
         "sanitized_name": "nuxt-lodash",
         "publisher": {
-          "email": "michalcipa@gmail.com",
+          "email": "user10@example.com",
           "username": "cipami"
         },
         "maintainers": [
           {
-            "email": "michalcipa@gmail.com",
+            "email": "user10@example.com",
             "username": "cipami"
           }
         ],
@@ -1063,7 +1063,7 @@
         }
       },
       "score": {
-        "final": 369.35483,
+        "final": 369.3478,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1081,7 +1081,7 @@
       },
       "dependents": "20",
       "updated": "2026-02-03T06:13:35.950Z",
-      "searchScore": 368.129,
+      "searchScore": 368.14578,
       "package": {
         "name": "@nuxt/telemetry",
         "keywords": [],
@@ -1089,28 +1089,28 @@
         "description": "Nuxt collects anonymous telemetry data about general usage. This helps us to accurately gauge Nuxt feature usage and customization across all our users.",
         "sanitized_name": "@nuxt/telemetry",
         "publisher": {
-          "email": "daniel@roe.dev",
+          "email": "user2@example.com",
           "username": "danielroe"
         },
         "maintainers": [
           {
-            "email": "atinux@gmail.com",
+            "email": "user5@example.com",
             "username": "atinux"
           },
           {
-            "email": "pyapar@gmail.com",
+            "email": "user6@example.com",
             "username": "pi0"
           },
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user4@example.com",
             "username": "antfu"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -1124,7 +1124,7 @@
         }
       },
       "score": {
-        "final": 368.129,
+        "final": 368.14578,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1142,7 +1142,7 @@
       },
       "dependents": "6",
       "updated": "2026-02-03T06:13:21.643Z",
-      "searchScore": 362.6268,
+      "searchScore": 362.62573,
       "package": {
         "name": "@sentry/nuxt",
         "keywords": [],
@@ -1150,17 +1150,17 @@
         "description": "Official Sentry SDK for Nuxt",
         "sanitized_name": "@sentry/nuxt",
         "publisher": {
-          "email": "accounts@sentry.io",
+          "email": "user11@example.com",
           "actor": {
             "name": "sentry-bot",
             "type": "user",
-            "email": "accounts@sentry.io"
+            "email": "user11@example.com"
           },
           "username": "sentry-bot"
         },
         "maintainers": [
           {
-            "email": "accounts@sentry.io",
+            "email": "user11@example.com",
             "username": "sentry-bot"
           }
         ],
@@ -1174,7 +1174,7 @@
         }
       },
       "score": {
-        "final": 362.6268,
+        "final": 362.62573,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1192,7 +1192,7 @@
       },
       "dependents": "17",
       "updated": "2026-02-03T06:18:32.287Z",
-      "searchScore": 358.26086,
+      "searchScore": 358.2893,
       "package": {
         "name": "@nuxt/postcss8",
         "keywords": [],
@@ -1200,28 +1200,28 @@
         "description": "Since [nuxt@2.15](https://github.com/nuxt/nuxt.js/releases/tag/v2.15.0) nuxt supports opting-in to use `postcss@8` (via [nuxt/nuxt.js#8546](https://github.com/nuxt/nuxt.js/pull/8546)).",
         "sanitized_name": "@nuxt/postcss8",
         "publisher": {
-          "email": "pyapar@gmail.com",
+          "email": "user6@example.com",
           "username": "pi0"
         },
         "maintainers": [
           {
-            "email": "atinux@gmail.com",
+            "email": "user5@example.com",
             "username": "atinux"
           },
           {
-            "email": "pyapar@gmail.com",
+            "email": "user6@example.com",
             "username": "pi0"
           },
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user4@example.com",
             "username": "antfu"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "nuxtbot@roe.dev",
+            "email": "user3@example.com",
             "username": "nuxtbot"
           }
         ],
@@ -1235,7 +1235,7 @@
         }
       },
       "score": {
-        "final": 358.26086,
+        "final": 358.2893,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1253,7 +1253,7 @@
       },
       "dependents": "1",
       "updated": "2026-02-03T06:13:41.593Z",
-      "searchScore": 355.48315,
+      "searchScore": 355.45712,
       "package": {
         "name": "@workflow/nuxt",
         "keywords": [],
@@ -1261,60 +1261,60 @@
         "description": "Nuxt integration for Workflow DevKit",
         "sanitized_name": "@workflow/nuxt",
         "publisher": {
-          "email": "infra+release@vercel.com",
+          "email": "user12@example.com",
           "username": "vercel-release-bot"
         },
         "maintainers": [
           {
-            "email": "bob.shannon@vercel.com",
+            "email": "user13@example.com",
             "username": "bobmshannon"
           },
           {
-            "email": "it+npmserviceaccount@vercel.com",
+            "email": "user14@example.com",
             "username": "vercel_it_service_account"
           },
           {
-            "email": "ronnie.hanif@gmail.com",
+            "email": "user15@example.com",
             "username": "ronnie-hanif"
           },
           {
-            "email": "nick.tracey@vercel.com",
+            "email": "user16@example.com",
             "username": "nick.tracey"
           },
           {
-            "email": "lsimon@commoner.com",
+            "email": "user17@example.com",
             "username": "elsigh"
           },
           {
-            "email": "adam.dong@vercel.com",
+            "email": "user18@example.com",
             "username": "adamdong"
           },
           {
-            "email": "matheus.frndes@gmail.com",
+            "email": "user19@example.com",
             "username": "matheuss"
           },
           {
-            "email": "aaron.brown@vercel.com",
+            "email": "user20@example.com",
             "username": "aaronbrown-vercel"
           },
           {
-            "email": "becky.vredenburg@vercel.com",
+            "email": "user21@example.com",
             "username": "bvred4244"
           },
           {
-            "email": "matt.j.straka@gmail.com",
+            "email": "user22@example.com",
             "username": "matt.straka"
           },
           {
-            "email": "pranay.gp@gmail.com",
+            "email": "user23@example.com",
             "username": "pranaygp"
           },
           {
-            "email": "nathan@tootallnate.net",
+            "email": "user24@example.com",
             "username": "tootallnate"
           },
           {
-            "email": "infra+release@vercel.com",
+            "email": "user12@example.com",
             "username": "vercel-release-bot"
           }
         ],
@@ -1328,7 +1328,7 @@
         }
       },
       "score": {
-        "final": 355.48315,
+        "final": 355.45712,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1346,7 +1346,7 @@
       },
       "dependents": "61",
       "updated": "2026-02-03T06:12:35.758Z",
-      "searchScore": 354.80774,
+      "searchScore": 354.82272,
       "package": {
         "name": "@unocss/nuxt",
         "keywords": ["unocss", "nuxt-module", "nuxt", "nuxt3"],
@@ -1354,11 +1354,11 @@
         "description": "Nuxt module for UnoCSS",
         "sanitized_name": "@unocss/nuxt",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "antfu",
             "type": "user",
-            "email": "anthonyfu117@hotmail.com"
+            "email": "user4@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:d5c1f09c-7e52-492f-ad7a-6546762313f7",
@@ -1368,11 +1368,11 @@
         },
         "maintainers": [
           {
-            "email": "anthonyfu117@hotmail.com",
+            "email": "user4@example.com",
             "username": "antfu"
           },
           {
-            "email": "npm-unocss@antfu.me",
+            "email": "user25@example.com",
             "username": "unocss-bot"
           }
         ],
@@ -1386,7 +1386,7 @@
         }
       },
       "score": {
-        "final": 354.80774,
+        "final": 354.82272,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1404,7 +1404,7 @@
       },
       "dependents": "4",
       "updated": "2026-02-03T06:16:31.414Z",
-      "searchScore": 353.01498,
+      "searchScore": 352.99255,
       "package": {
         "name": "nuxt-csurf",
         "keywords": ["nuxt", "csrf", "module"],
@@ -1412,12 +1412,12 @@
         "description": "Nuxt Cross-Site Request Forgery (CSRF) Prevention",
         "sanitized_name": "nuxt-csurf",
         "publisher": {
-          "email": "npm@creamyweb.com",
+          "email": "user26@example.com",
           "username": "morgbn"
         },
         "maintainers": [
           {
-            "email": "npm@creamyweb.com",
+            "email": "user26@example.com",
             "username": "morgbn"
           }
         ],
@@ -1431,7 +1431,7 @@
         }
       },
       "score": {
-        "final": 353.01498,
+        "final": 352.99255,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -1444,5 +1444,5 @@
     }
   ],
   "total": 9576,
-  "time": "2026-02-03T13:10:00.302Z"
+  "time": "2026-02-03T13:37:00.737Z"
 }

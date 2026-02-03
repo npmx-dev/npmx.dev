@@ -17,16 +17,16 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         }
       ],
       "repository": {
@@ -59,16 +59,16 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         }
       ],
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "directories": {},
       "_npmOperationalInternal": {
@@ -87,18 +87,18 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -117,7 +117,7 @@
       "_nodeVersion": "9.3.0",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "integrity": "sha512-AOYza4+Hf5z1/0Hztxpm2/xiPZgi/cjMqdnKTUWTBSKchJlxXXuUSxCCl8rJlf4g6yww/j6mA8nC8Hw/EZWxKQ==",
@@ -133,11 +133,11 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -156,23 +156,23 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Blaine Bublitz",
-          "email": "blaine.bublitz@gmail.com",
+          "email": "user3@example.com",
           "url": "https://github.com/phated"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -193,7 +193,7 @@
       "_nodeVersion": "4.4.7",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "shasum": "69884ba144ac33fe699737a6086deffadd0f89c5",
@@ -209,15 +209,15 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         },
         {
           "name": "phated",
-          "email": "blaine@iceddev.com"
+          "email": "user4@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -236,23 +236,23 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Blaine Bublitz",
-          "email": "blaine.bublitz@gmail.com",
+          "email": "user3@example.com",
           "url": "https://github.com/phated"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -273,7 +273,7 @@
       "_nodeVersion": "6.0.0",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "shasum": "15b8d95a1692568323b7a4e3d60d50a04f51f4eb",
@@ -289,15 +289,15 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         },
         {
           "name": "phated",
-          "email": "blaine@iceddev.com"
+          "email": "user4@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -316,23 +316,23 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Blaine Bublitz",
-          "email": "blaine.bublitz@gmail.com",
+          "email": "user3@example.com",
           "url": "https://github.com/phated"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -353,7 +353,7 @@
       "_nodeVersion": "4.2.4",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "shasum": "2e9e016e1a038e89a60415bd9a8458e5f7bf3ab4",
@@ -369,15 +369,15 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         },
         {
           "name": "phated",
-          "email": "blaine@iceddev.com"
+          "email": "user4@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -396,23 +396,23 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Blaine Bublitz",
-          "email": "blaine.bublitz@gmail.com",
+          "email": "user3@example.com",
           "url": "https://github.com/phated"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -440,7 +440,7 @@
       "_nodeVersion": "5.5.0",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "shasum": "2ec8922c6b09d076ef2abaebfe554616e798124a",
@@ -456,15 +456,15 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         },
         {
           "name": "phated",
-          "email": "blaine@iceddev.com"
+          "email": "user4@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -483,23 +483,23 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Blaine Bublitz",
-          "email": "blaine.bublitz@gmail.com",
+          "email": "user3@example.com",
           "url": "https://github.com/phated"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -527,7 +527,7 @@
       "_nodeVersion": "5.5.0",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "shasum": "54e58c4f2083d9feccb1579a60f74b093d72ad17",
@@ -543,15 +543,15 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         },
         {
           "name": "phated",
-          "email": "blaine@iceddev.com"
+          "email": "user4@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -570,23 +570,23 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Blaine Bublitz",
-          "email": "blaine.bublitz@gmail.com",
+          "email": "user3@example.com",
           "url": "https://github.com/phated"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -614,7 +614,7 @@
       "_nodeVersion": "5.9.1",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "shasum": "f2cdb185b52f4694ea31ac992597b21a89a0f86c",
@@ -630,15 +630,15 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         },
         {
           "name": "phated",
-          "email": "blaine@iceddev.com"
+          "email": "user4@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -657,23 +657,23 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Blaine Bublitz",
-          "email": "blaine.bublitz@gmail.com",
+          "email": "user3@example.com",
           "url": "https://github.com/phated"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -701,7 +701,7 @@
       "_nodeVersion": "5.5.0",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "shasum": "0494a224256c6b8f8ffa3d1976ab3131ee1239dc",
@@ -717,15 +717,15 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         },
         {
           "name": "phated",
-          "email": "blaine@iceddev.com"
+          "email": "user4@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -744,23 +744,23 @@
       "keywords": ["lodash-modularized", "merge"],
       "author": {
         "name": "John-David Dalton",
-        "email": "john.david.dalton@gmail.com",
+        "email": "user1@example.com",
         "url": "http://allyoucanleet.com/"
       },
       "contributors": [
         {
           "name": "John-David Dalton",
-          "email": "john.david.dalton@gmail.com",
+          "email": "user1@example.com",
           "url": "http://allyoucanleet.com/"
         },
         {
           "name": "Blaine Bublitz",
-          "email": "blaine.bublitz@gmail.com",
+          "email": "user3@example.com",
           "url": "https://github.com/phated"
         },
         {
           "name": "Mathias Bynens",
-          "email": "mathias@qiwi.be",
+          "email": "user2@example.com",
           "url": "https://mathiasbynens.be/"
         }
       ],
@@ -788,7 +788,7 @@
       "_nodeVersion": "5.5.0",
       "_npmUser": {
         "name": "jdalton",
-        "email": "john.david.dalton@gmail.com"
+        "email": "user1@example.com"
       },
       "dist": {
         "shasum": "de9ed940113ed1126e018658b1082b7f28e50729",
@@ -804,15 +804,15 @@
       "maintainers": [
         {
           "name": "jdalton",
-          "email": "john.david.dalton@gmail.com"
+          "email": "user1@example.com"
         },
         {
           "name": "mathias",
-          "email": "mathias@qiwi.be"
+          "email": "user2@example.com"
         },
         {
           "name": "phated",
-          "email": "blaine@iceddev.com"
+          "email": "user4@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -839,16 +839,16 @@
   "maintainers": [
     {
       "name": "jdalton",
-      "email": "john.david.dalton@gmail.com"
+      "email": "user1@example.com"
     },
     {
       "name": "mathias",
-      "email": "mathias@qiwi.be"
+      "email": "user2@example.com"
     }
   ],
   "author": {
     "name": "John-David Dalton",
-    "email": "john.david.dalton@gmail.com"
+    "email": "user1@example.com"
   },
   "license": "MIT",
   "homepage": "https://lodash.com/",

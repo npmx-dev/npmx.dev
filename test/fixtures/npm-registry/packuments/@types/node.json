@@ -203,13 +203,13 @@
       },
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "directories": {},
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -226,7 +226,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -365,7 +365,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -400,7 +400,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -544,7 +544,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -582,7 +582,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -726,7 +726,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -763,7 +763,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -907,7 +907,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -944,7 +944,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -1088,7 +1088,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -1125,7 +1125,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -1259,7 +1259,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -1293,7 +1293,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -1432,7 +1432,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -1466,7 +1466,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -1610,7 +1610,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -1647,7 +1647,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -1791,7 +1791,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -1828,7 +1828,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -2047,7 +2047,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -2078,7 +2078,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -2317,7 +2317,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -2354,7 +2354,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -2593,7 +2593,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -2630,7 +2630,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -2869,7 +2869,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -2906,7 +2906,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -3145,7 +3145,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -3182,7 +3182,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -3426,7 +3426,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -3460,7 +3460,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -3709,7 +3709,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -3743,7 +3743,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -3977,7 +3977,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -4011,7 +4011,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -4240,7 +4240,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -4271,7 +4271,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -4511,7 +4511,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -4542,7 +4542,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -4771,7 +4771,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -4797,7 +4797,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -5022,7 +5022,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -5048,7 +5048,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -5278,7 +5278,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -5304,7 +5304,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -5534,7 +5534,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -5560,7 +5560,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -5790,7 +5790,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -5821,7 +5821,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -6056,7 +6056,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -6087,7 +6087,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -6316,7 +6316,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -6347,7 +6347,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -6572,7 +6572,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -6605,7 +6605,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -6824,7 +6824,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -7070,7 +7070,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -7098,7 +7098,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -7317,7 +7317,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -7351,7 +7351,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -7570,7 +7570,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -7604,7 +7604,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -7818,7 +7818,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -7852,7 +7852,7 @@
       "maintainers": [
         {
           "name": "types",
-          "email": "ts-npm-types@microsoft.com"
+          "email": "user1@example.com"
         }
       ],
       "contributors": [
@@ -7996,7 +7996,7 @@
       "scripts": {},
       "_npmUser": {
         "name": "types",
-        "email": "ts-npm-types@microsoft.com"
+        "email": "user1@example.com"
       },
       "repository": {
         "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
@@ -8070,7 +8070,7 @@
   "maintainers": [
     {
       "name": "types",
-      "email": "ts-npm-types@microsoft.com"
+      "email": "user1@example.com"
     }
   ],
   "license": "MIT",

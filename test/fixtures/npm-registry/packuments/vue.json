@@ -145,7 +145,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -155,11 +155,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "_npmOperationalInternal": {
@@ -180,11 +180,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -270,7 +270,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -335,11 +335,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -425,7 +425,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -487,11 +487,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -577,7 +577,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -642,11 +642,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -732,7 +732,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -797,11 +797,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -887,7 +887,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -952,11 +952,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -1042,7 +1042,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -1104,11 +1104,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -1194,7 +1194,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -1259,11 +1259,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -1349,7 +1349,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -1414,11 +1414,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -1504,7 +1504,7 @@
       },
       "_npmUser": {
         "name": "GitHub Actions",
-        "email": "npm-oidc-no-reply@github.com",
+        "email": "user1@example.com",
         "trustedPublisher": {
           "id": "github",
           "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
@@ -1563,14 +1563,14 @@
       "keywords": ["mvvm", "browser", "framework"],
       "author": {
         "name": "Evan You",
-        "email": "yyx990803@gmail.com"
+        "email": "user2@example.com"
       },
       "license": "MIT",
       "_id": "vue@1.0.28-csp",
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         }
       ],
       "homepage": "http://vuejs.org",
@@ -1617,7 +1617,7 @@
       },
       "_npmUser": {
         "name": "yyx990803",
-        "email": "yyx990803@gmail.com"
+        "email": "user2@example.com"
       },
       "browserify": {
         "transform": ["envify"]
@@ -1682,11 +1682,11 @@
       "maintainers": [
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/vue#readme",
@@ -1754,7 +1754,7 @@
       "typings": "types/index.d.ts",
       "_npmUser": {
         "name": "yyx990803",
-        "email": "yyx990803@gmail.com"
+        "email": "user2@example.com"
       },
       "gitHooks": {
         "commit-msg": "node scripts/verify-commit-msg.js",
@@ -1844,15 +1844,15 @@
       "maintainers": [
         {
           "name": "soda",
-          "email": "npm@haoqun.me"
+          "email": "user4@example.com"
         },
         {
           "name": "yyx990803",
-          "email": "yyx990803@gmail.com"
+          "email": "user2@example.com"
         },
         {
           "name": "posva",
-          "email": "posva13@gmail.com"
+          "email": "user3@example.com"
         }
       ],
       "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
@@ -1938,7 +1938,7 @@
       },
       "_npmUser": {
         "name": "yyx990803",
-        "email": "yyx990803@gmail.com"
+        "email": "user2@example.com"
       },
       "jsdelivr": "dist/vue.global.js",
       "_resolved": "/tmp/5a119922014e1cdba575aa6176206352/vue-3.5.0-rc.1.tgz",
@@ -2006,11 +2006,11 @@
   "maintainers": [
     {
       "name": "yyx990803",
-      "email": "yyx990803@gmail.com"
+      "email": "user2@example.com"
     },
     {
       "name": "posva",
-      "email": "posva13@gmail.com"
+      "email": "user3@example.com"
     }
   ],
   "author": {

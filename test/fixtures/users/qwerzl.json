@@ -7,7 +7,7 @@
       },
       "dependents": "7",
       "updated": "2026-02-03T06:15:21.778Z",
-      "searchScore": 87.63458,
+      "searchScore": 87.64574,
       "package": {
         "name": "unifont",
         "keywords": [],
@@ -15,11 +15,11 @@
         "description": "Framework agnostic tools for accessing data from font CDNs and providers",
         "sanitized_name": "unifont",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "actor": {
             "name": "danielroe",
             "type": "user",
-            "email": "daniel@roe.dev"
+            "email": "user2@example.com"
           },
           "trustedPublisher": {
             "oidcConfigId": "oidc:ac4cf077-eadc-4f86-bf5a-f92351fbf295",
@@ -29,11 +29,11 @@
         },
         "maintainers": [
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "me@qwerzl.me",
+            "email": "user3@example.com",
             "username": "qwerzl"
           }
         ],
@@ -47,7 +47,7 @@
         }
       },
       "score": {
-        "final": 87.63458,
+        "final": 87.64574,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -65,7 +65,7 @@
       },
       "dependents": "2",
       "updated": "2026-02-03T06:16:52.066Z",
-      "searchScore": 75.62355,
+      "searchScore": 75.63318,
       "package": {
         "name": "fontless",
         "keywords": ["font", "optimization", "vite-plugin", "css", "javascript"],
@@ -73,7 +73,7 @@
         "description": "Magical plug-and-play font optimization for modern web applications",
         "sanitized_name": "fontless",
         "publisher": {
-          "email": "npm-oidc-no-reply@github.com",
+          "email": "user1@example.com",
           "trustedPublisher": {
             "oidcConfigId": "oidc:5d63f963-8c13-491e-9630-ff434d541fab",
             "id": "github"
@@ -82,15 +82,15 @@
         },
         "maintainers": [
           {
-            "email": "giorgiob.boa@gmail.com",
+            "email": "user4@example.com",
             "username": "gioboa"
           },
           {
-            "email": "daniel@roe.dev",
+            "email": "user2@example.com",
             "username": "danielroe"
           },
           {
-            "email": "me@qwerzl.me",
+            "email": "user3@example.com",
             "username": "qwerzl"
           }
         ],
@@ -104,7 +104,7 @@
         }
       },
       "score": {
-        "final": 75.62355,
+        "final": 75.63318,
         "detail": {
           "popularity": 1,
           "quality": 1,
@@ -117,5 +117,5 @@
     }
   ],
   "total": 2,
-  "time": "2026-02-03T13:10:01.440Z"
+  "time": "2026-02-03T13:37:01.539Z"
 }
