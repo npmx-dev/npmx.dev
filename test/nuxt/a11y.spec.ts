@@ -13,6 +13,22 @@ declare const axe: {
 // Track mounted containers for cleanup
 const mountedContainers: HTMLElement[] = []
 
+const axeRunOptions: RunOptions = {
+  // Only compute violations to reduce work per run
+  resultTypes: ['violations'],
+  // Disable rules that don't apply to isolated component testing
+  rules: {
+    // These rules check page-level concerns that don't apply to isolated components
+    'landmark-one-main': { enabled: false },
+    'region': { enabled: false },
+    'page-has-heading-one': { enabled: false },
+    // Duplicate landmarks are expected when testing multiple header/footer components
+    'landmark-no-duplicate-banner': { enabled: false },
+    'landmark-no-duplicate-contentinfo': { enabled: false },
+    'landmark-no-duplicate-main': { enabled: false },
+  },
+}
+
 /**
  * Run axe accessibility audit on a mounted component.
  * Mounts the component in an isolated container to avoid cross-test pollution.
@@ -29,19 +45,7 @@ async function runAxe(wrapper: VueWrapper): Promise<AxeResults> {
   container.appendChild(el)
 
   // Run axe only on the isolated container
-  return axe.run(container, {
-    // Disable rules that don't apply to isolated component testing
-    rules: {
-      // These rules check page-level concerns that don't apply to isolated components
-      'landmark-one-main': { enabled: false },
-      'region': { enabled: false },
-      'page-has-heading-one': { enabled: false },
-      // Duplicate landmarks are expected when testing multiple header/footer components
-      'landmark-no-duplicate-banner': { enabled: false },
-      'landmark-no-duplicate-contentinfo': { enabled: false },
-      'landmark-no-duplicate-main': { enabled: false },
-    },
-  })
+  return axe.run(container, axeRunOptions)
 }
 
 // Clean up mounted containers after each test
@@ -2117,14 +2121,60 @@ describe('background theme accessibility', () => {
     },
   ]
 
+  /**
+   * For performance, we pool axe runs for each theme combination, optimistically assuming no
+   * violations will occur. If violations are found in the pooled run, we re-run axe on individual
+   * components for precise results.
+   */
+  const pooledResults = new Map<string, Promise<AxeResults>>()
+
+  function getPooledResults(colorMode: string, bgTheme: string) {
+    const key = `${colorMode}:${bgTheme}`
+    const cached = pooledResults.get(key)
+    if (cached) return cached
+
+    const promise = (async () => {
+      const wrappers = await Promise.all(components.map(({ mount }) => mount()))
+      const poolContainer = document.createElement('div')
+      poolContainer.id = `a11y-theme-pool-${colorMode}-${bgTheme}`
+      document.body.appendChild(poolContainer)
+      mountedContainers.push(poolContainer)
+
+      try {
+        for (const wrapper of wrappers) {
+          const el = wrapper.element.cloneNode(true) as HTMLElement
+          poolContainer.appendChild(el)
+        }
+
+        await nextTick()
+        return await axe.run(poolContainer, axeRunOptions)
+      } finally {
+        for (const wrapper of wrappers) {
+          wrapper.unmount()
+        }
+      }
+    })()
+
+    pooledResults.set(key, promise)
+    return promise
+  }
+
   for (const { name, mount } of components) {
     describe(`${name} colors`, () => {
       for (const [colorMode, bgTheme] of pairs) {
         it(`${colorMode}/${bgTheme}`, async () => {
           applyTheme(colorMode, bgTheme)
-          const results = await runAxe(await mount())
-          await nextTick()
-          expect(results.violations).toEqual([])
+
+          const pooled = await getPooledResults(colorMode, bgTheme)
+          if (pooled.violations.length === 0) return
+
+          const wrapper = await mount()
+          try {
+            const results = await runAxe(wrapper)
+            expect(results.violations).toEqual([])
+          } finally {
+            wrapper.unmount()
+          }
         })
       }
     })
