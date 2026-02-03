@@ -30,18 +30,18 @@ export default defineCachedEventHandler(
       const parsed = v.parse(PackageRouteParamsSchema, {
         packageName: rawPackageName,
         version: rawVersion,
-      })
+      }) as { packageName: string; version: string }
       const { packageName, version } = parsed
-      if (!version) {
-        throw createError({
-          statusCode: 400,
-          message: 'Version is required for provenance.',
-        })
-      }
 
       const packument = await fetchNpmPackage(packageName)
       const versionData = packument.versions[version]
-      const dist = versionData?.dist as NpmVersionDist | undefined
+      if (!versionData) {
+        throw createError({
+          statusCode: 404,
+          message: `Version ${version} not found for package ${packageName}.`,
+        })
+      }
+      const dist = versionData.dist as NpmVersionDist | undefined
       const attestationsUrl = dist?.attestations?.url
 
       if (!attestationsUrl) {
