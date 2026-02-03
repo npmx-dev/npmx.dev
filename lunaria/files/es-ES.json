@@ -78,7 +78,7 @@
     "accent_colors": "Colores de acento",
     "clear_accent": "Limpiar color de acento",
     "translation_progress": "Progreso de traducción",
-    "background_themes": "Tono de fondo"
+    "background_themes": "Tema de fondo"
   },
   "i18n": {
     "missing_keys": "{count} traducción faltante | {count} traducciones faltantes",
@@ -167,7 +167,7 @@
       "file_counts": {
         "scripts": "{count} script | {count} scripts",
         "refs": "{count} ref | {count} refs",
-        "assets": "{count} activo | {count} activos"
+        "assets": "{count} recurso | {count} recursos"
       },
       "view_source": "Ver fuente"
     },
