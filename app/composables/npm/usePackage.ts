@@ -1,4 +1,5 @@
-import type { Packument, SlimPackument } from '#shared/types'
+import type { Packument, SlimPackument, SlimVersion, SlimPackumentVersion } from '#shared/types'
+import { NPM_REGISTRY } from '~/utils/npm/common'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 
 /** Number of recent versions to include in initial payload */

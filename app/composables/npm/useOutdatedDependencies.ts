@@ -7,6 +7,7 @@ import {
   isNonSemverConstraint,
   constraintIncludesPrerelease,
 } from '~/utils/npm/outdated-dependencies'
+import { NPM_REGISTRY } from '~/utils/npm/common'
 
 // Cache for packument fetches to avoid duplicate requests across components
 const packumentCache = new Map<string, Promise<Packument | null>>()
