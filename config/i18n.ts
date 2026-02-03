@@ -109,10 +109,6 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     name: 'العربية',
     dir: 'rtl',
     pluralRule: createPluralRule('ar-EG', { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }),
-    // pluralRule: (choice: number) => {
-    //   const name = new Intl.PluralRules('ar-EG').select(choice)
-    //   return { zero: 0, one: 1, two: 2, few: 3, many: 4, other: 5 }[name]
-    // },
   },
   {
     code: 'az-AZ',
@@ -169,10 +165,6 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'hu-HU.json',
     name: 'Magyar',
     pluralRule: createPluralRule('hu-HU', { zero: 0, one: 0, two: 1, few: 1, many: 1, other: 1 }),
-    // pluralRule: (choice: number) => {
-    //   const name = new Intl.PluralRules('hu-HU').select(choice)
-    //   return { zero: 0, one: 0, two: 1, few: 1, many: 1, other: 1 }[name]
-    // },
   },
   {
     code: 'zh-CN',
@@ -219,34 +211,12 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'ru-RU.json',
     name: 'Русский',
     pluralRule: createPluralRule('ru-RU', { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 3 }),
-    // pluralRule: (choice: number) => {
-    //   const name = new Intl.PluralRules('ru-RU').select(choice)
-    //   return { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 3 }[name]
-    // },
   },
   {
     code: 'uk-UA',
     file: 'uk-UA.json',
     name: 'Українська',
     pluralRule: createPluralRule('uk-UA', { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }),
-    // pluralRule: (choice: number, choicesLength: number) => {
-    //   if (choice === 0) return 0
-
-    //   const name = new Intl.PluralRules('uk-UA').select(choice)
-    //   const plural = { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
-
-    //   // In case translation doesn't have all plural forms, use the last available form
-    //   if (plural > choicesLength - 1) {
-    //     if (import.meta.dev) {
-    //       console.warn(
-    //         `Plural form index ${plural} for choice ${choice} exceeds available forms ${choicesLength} for locale uk-UA.`,
-    //       )
-    //     }
-    //     return choicesLength - 1
-    //   }
-
-    //   return plural
-    // },
   },
   /*{
       code: 'ru-RU',
@@ -262,10 +232,6 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'cs-CZ.json',
     name: 'Čeština',
     pluralRule: createPluralRule('cs-CZ', { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 2 }),
-    // pluralRule: (choice: number) => {
-    //   const name = new Intl.PluralRules('cs-CZ').select(choice)
-    //   return { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 2 }[name]
-    // },
   } /*
     {
       code: 'pl-PL',
@@ -324,12 +290,6 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'pl-PL.json',
     name: 'Polski',
     pluralRule: createPluralRule('pl-PL', { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }),
-    // pluralRule: (choice: number) => {
-    //   if (choice === 0) return 0
-
-    //   const name = new Intl.PluralRules('pl-PL').select(choice)
-    //   return { zero: 0, one: 1, two: 0, few: 2, many: 3, other: 4 }[name]
-    // },
   },
   {
     code: 'pt-BR',
