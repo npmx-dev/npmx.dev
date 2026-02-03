@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const model = defineModel()
+const model = defineModel<string>()
 
 const props = defineProps<{
   disabled?: boolean
