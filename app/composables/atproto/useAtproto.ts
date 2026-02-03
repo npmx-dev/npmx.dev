@@ -1,6 +1,6 @@
 import type { UserSession } from '#shared/schemas/userSession'
 
-export function useAtproto() {
+export const useAtproto = createSharedComposable(function useAtproto() {
   const {
     data: user,
     pending,
@@ -19,4 +19,4 @@ export function useAtproto() {
   }
 
   return { user, pending, logout }
-}
+})
