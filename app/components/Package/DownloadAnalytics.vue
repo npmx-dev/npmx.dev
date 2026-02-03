@@ -387,6 +387,15 @@ function applyDateRange<T extends Record<string, unknown>>(base: T): T & DateRan
   return next
 }
 
+const { fetchPackageDownloadEvolution } = useCharts()
+
+const evolution = shallowRef<EvolutionData>(props.weeklyDownloads ?? [])
+const evolutionsByPackage = shallowRef<Record<string, EvolutionData>>({})
+const pending = shallowRef(false)
+
+const isMounted = shallowRef(false)
+let requestToken = 0
+
 watch(
   [selectedGranularity, startDate, endDate],
   ([granularityValue]) => {
@@ -396,18 +405,34 @@ watch(
     else if (granularityValue === 'monthly')
       options.value = applyDateRange({ granularity: 'month', months: 24 })
     else options.value = applyDateRange({ granularity: 'year' })
+
+    // Do not set pending during initial setup
+    if (!isMounted.value) return
+
+    const packageNames = effectivePackageNames.value
+    if (!import.meta.client || !shouldFetch.value || !packageNames.length) {
+      pending.value = false
+      return
+    }
+
+    const o = options.value as any
+    const hasExplicitRange = Boolean(o.startDate || o.endDate)
+
+    // Do not show loading when weeklyDownloads is already provided
+    if (
+      !isMultiPackageMode.value &&
+      o.granularity === 'week' &&
+      props.weeklyDownloads?.length &&
+      !hasExplicitRange
+    ) {
+      pending.value = false
+      return
+    }
+
+    pending.value = true
   },
   { immediate: true },
 )
-
-const { fetchPackageDownloadEvolution } = useCharts()
-
-const evolution = shallowRef<EvolutionData>(props.weeklyDownloads ?? [])
-const evolutionsByPackage = shallowRef<Record<string, EvolutionData>>({})
-const pending = shallowRef(false)
-
-const isMounted = shallowRef(false)
-let requestToken = 0
 
 async function loadNow() {
   if (!import.meta.client) return
