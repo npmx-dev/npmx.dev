@@ -239,7 +239,7 @@ const repositoryUrl = computed(() => {
   return url
 })
 
-const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
+const { meta: repoMeta, repoRef, stars, starsLink } = useRepoMeta(repositoryUrl)
 
 const PROVIDER_ICONS: Record<string, string> = {
   github: 'i-carbon:logo-github',
