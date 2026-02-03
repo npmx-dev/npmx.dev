@@ -200,6 +200,16 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             <span class="text-fg-subtle font-mono text-sm select-none"
               ># {{ $t('package.create.title') }}</span
             >
+            <NuxtLink
+              :to="`/package/${createPackageInfo.packageName}`"
+              class="text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+              :title="$t('package.create.view', { packageName: createPackageInfo.packageName })"
+            >
+              <span class="i-carbon:information w-3 h-3 mt-1" aria-hidden="true" />
+              <span class="sr-only">{{
+                $t('package.create.view', { packageName: createPackageInfo.packageName })
+              }}</span>
+            </NuxtLink>
           </div>
 
           <div
@@ -227,14 +237,6 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
                 createCopied ? $t('common.copied') : $t('common.copy')
               }}</span>
             </button>
-            <NuxtLink
-              :to="`/package/${createPackageInfo.packageName}`"
-              class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-              :title="`View ${createPackageInfo.packageName}`"
-            >
-              <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
-              <span class="sr-only">View {{ createPackageInfo.packageName }}</span>
-            </NuxtLink>
           </div>
         </template>
       </div>

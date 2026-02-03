@@ -7,13 +7,14 @@ const { focused: isSearchFocused } = useFocus(searchInputRef)
 const frameworks = ref([
   { name: 'nuxt', package: 'nuxt' },
   { name: 'vue', package: 'vue' },
+  { name: 'nitro', package: 'nitro' },
   { name: 'react', package: 'react' },
   { name: 'svelte', package: 'svelte' },
   { name: 'vite', package: 'vite' },
   { name: 'next', package: 'next' },
   { name: 'astro', package: 'astro' },
   { name: 'typescript', package: 'typescript' },
-  { name: 'Angular', package: '@angular/core' },
+  { name: 'angular', package: '@angular/core' },
 ])
 
 async function search() {
@@ -109,6 +110,7 @@ defineOgImageComponent('Default', {
                   type="submit"
                   class="absolute inset-ie-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
                 >
+                  <span class="i-carbon:search align-middle w-4 h-4" aria-hidden="true"></span>
                   {{ $t('search.button') }}
                 </button>
               </div>

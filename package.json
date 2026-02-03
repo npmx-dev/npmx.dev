@@ -18,8 +18,8 @@
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
     "knip": "knip",
     "knip:fix": "knip --fix",
-    "lint": "vite lint && vite fmt --check",
-    "lint:fix": "vite lint --fix && vite fmt",
+    "lint": "oxlint && oxfmt --check",
+    "lint:fix": "oxlint --fix && oxfmt",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "generate-pwa-icons": "pwa-assets-generator",
@@ -40,6 +40,7 @@
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
     "@deno/doc": "jsr:^0.189.1",
+    "@floating-ui/vue": "1.1.10",
     "@iconify-json/carbon": "1.2.18",
     "@iconify-json/lucide": "1.2.87",
     "@iconify-json/simple-icons": "1.2.68",
@@ -91,7 +92,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.1"
+    "vue-data-ui": "3.14.2"
   },
   "devDependencies": {
     "@npm/types": "2.1.0",
@@ -105,9 +106,12 @@
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
     "fast-npm-meta": "1.0.0",
-    "knip": "5.82.1",
+    "knip": "5.83.0",
     "lint-staged": "16.2.7",
+    "oxfmt": "0.27.0",
+    "oxlint": "1.42.0",
     "playwright-core": "1.58.0",
+    "schema-dts": "1.1.5",
     "simple-git-hooks": "2.13.1",
     "typescript": "5.9.3",
     "vitest": "npm:@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
@@ -123,14 +127,14 @@
   "lint-staged": {
     "i18n/locales/*": [
       "pnpm build:lunaria",
-      "vite fmt lunaria/files/",
+      "pnpm oxfmt lunaria/files/",
       "git add lunaria/files/"
     ],
     "*.{js,ts,mjs,cjs,vue}": [
-      "vite lint --fix"
+      "pnpm oxlint --fix"
     ],
     "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
-      "vite fmt"
+      "pnpm oxfmt"
     ]
   },
   "packageManager": "pnpm@10.28.2"

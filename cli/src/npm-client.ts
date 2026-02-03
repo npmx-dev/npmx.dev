@@ -14,6 +14,7 @@ const execFileAsync = promisify(execFile)
 /**
  * Validates an npm package name using the official npm validation package
  * @throws Error if the name is invalid
+ * @internal
  */
 export function validatePackageName(name: string): void {
   const result = v.safeParse(PackageNameSchema, name)
@@ -26,6 +27,7 @@ export function validatePackageName(name: string): void {
 /**
  * Validates an npm username
  * @throws Error if the username is invalid
+ * @internal
  */
 export function validateUsername(name: string): void {
   const result = v.safeParse(UsernameSchema, name)
@@ -37,6 +39,7 @@ export function validateUsername(name: string): void {
 /**
  * Validates an npm org name (without the @ prefix)
  * @throws Error if the org name is invalid
+ * @internal
  */
 export function validateOrgName(name: string): void {
   const result = v.safeParse(OrgNameSchema, name)
@@ -48,6 +51,7 @@ export function validateOrgName(name: string): void {
 /**
  * Validates a scope:team format (e.g., @myorg:developers)
  * @throws Error if the scope:team is invalid
+ * @internal
  */
 export function validateScopeTeam(scopeTeam: string): void {
   const result = v.safeParse(ScopeTeamSchema, scopeTeam)

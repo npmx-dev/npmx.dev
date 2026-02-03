@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import type { NpmSearchResult } from '#shared/types/npm-registry'
-import type { ColumnConfig, ColumnId, SortKey, SortOption } from '#shared/types/preferences'
+import type {
+  ColumnConfig,
+  ColumnId,
+  SortKey,
+  SortOption,
+  StructuredFilters,
+} from '#shared/types/preferences'
 import { buildSortOption, parseSortOption, toggleDirection } from '#shared/types/preferences'
 
 const props = defineProps<{
   results: NpmSearchResult[]
   columns: ColumnConfig[]
+  filters?: StructuredFilters
   isLoading?: boolean
 }>()
 
@@ -317,6 +324,7 @@ function getColumnLabelKey(id: ColumnId): string {
             :result="result"
             :columns="columns"
             :index="index"
+            :filters="filters"
             @click-keyword="emit('clickKeyword', $event)"
           />
         </template>
