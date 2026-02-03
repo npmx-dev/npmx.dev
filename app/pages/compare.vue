@@ -158,7 +158,7 @@ useSeoMeta({
             id="comparison-heading"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
           >
-            downloads history
+            {{ $t('package.downloads.title') }}
           </h2>
 
           <CompareLineChart :packages />
