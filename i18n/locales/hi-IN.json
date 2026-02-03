@@ -120,6 +120,7 @@
     "verified_provenance": "सत्यापित प्रोवेनेंस",
     "view_permalink": "इस संस्करण का परमालिंक देखें",
     "navigation": "पैकेज",
+    "sidebar": "पैकेज जानकारी",
     "copy_name": "पैकेज नाम अनुकरण करें",
     "deprecation": {
       "package": "यह पैकेज डेप्रीकेट कर दिया गया है।",

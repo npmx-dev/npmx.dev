@@ -120,6 +120,7 @@
     "verified_provenance": "प्रमाणित प्रुभेनेन्स",
     "view_permalink": "यस संस्करणको पर्मालिङ्क हेर्नुहोस्",
     "navigation": "प्याकेज",
+    "sidebar": "प्याकेज जानकारी",
     "copy_name": "प्याकेज नाम कपी गर्नुहोस्",
     "deprecation": {
       "package": "यो प्याकेज अप्रचलित (deprecated) गरिएको छ।",

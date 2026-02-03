@@ -122,6 +122,7 @@
     "verified_provenance": "Ověřený původ",
     "view_permalink": "Zobrazit trvalý odkaz na tuto verzi",
     "navigation": "Navigace balíčku",
+    "sidebar": "Informace o balíčku",
     "copy_name": "Zkopírovat název balíčku",
     "deprecation": {
       "package": "Tento balíček byl označen jako zastaralý.",

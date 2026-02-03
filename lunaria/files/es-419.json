@@ -110,6 +110,7 @@
     "verified_provenance": "Procedencia verificada",
     "view_permalink": "Ver enlace permanente para esta versión",
     "navigation": "Navegación del paquete",
+    "sidebar": "Información del paquete",
     "deprecation": {
       "package": "Este paquete ha sido obsoleto.",
       "version": "Esta versión ha sido obsoleta.",

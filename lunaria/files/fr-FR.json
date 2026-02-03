@@ -114,6 +114,7 @@
     "verified_provenance": "Provenance vérifiée",
     "view_permalink": "Voir le lien permanent pour cette version",
     "navigation": "Navigation du paquet",
+    "sidebar": "Informations sur le paquet",
     "copy_name": "Copier le nom du paquet",
     "deprecation": {
       "package": "Ce paquet a été déprécié.",

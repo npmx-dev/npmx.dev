@@ -110,6 +110,7 @@
     "verified_provenance": "Hitelesített eredet",
     "view_permalink": "Verzió permalinkjének megtekintése",
     "navigation": "Csomag",
+    "sidebar": "Csomag információk",
     "deprecation": {
       "package": "Ez a csomag elavult (deprecated).",
       "version": "Ez a verzió elavult (deprecated).",

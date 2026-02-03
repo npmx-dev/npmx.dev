@@ -1008,7 +1008,7 @@ defineOgImageComponent('Package', {
         </p>
       </section>
 
-      <aside class="area-sidebar" aria-label="Package information">
+      <aside class="area-sidebar" :aria-label="$t('package.sidebar')">
         <!-- Sidebar -->
         <div
           class="scroll-shadow sticky top-34 space-y-6 sm:space-y-8 min-w-0 max-h-[calc(100dvh-9rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-border pe-1 xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"

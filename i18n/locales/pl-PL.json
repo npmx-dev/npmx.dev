@@ -120,6 +120,7 @@
     "verified_provenance": "Zweryfikowane pochodzenie",
     "view_permalink": "Zobacz stały link do tej wersji",
     "navigation": "Pakiet",
+    "sidebar": "Informacje o pakiecie",
     "copy_name": "Kopiuj nazwę pakietu",
     "deprecation": {
       "package": "Ten pakiet został oznaczony jako przestarzały.",

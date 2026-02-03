@@ -122,6 +122,7 @@
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
     "navigation": "Package",
+    "sidebar": "Package information",
     "copy_name": "Copy package name",
     "deprecation": {
       "package": "This package has been deprecated.",

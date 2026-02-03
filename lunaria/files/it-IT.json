@@ -111,6 +111,7 @@
     "verified_provenance": "Provenienza verificata",
     "view_permalink": "Vedi il link permanente per questa versione",
     "navigation": "Navigazione del pacchetto",
+    "sidebar": "Informazioni sul pacchetto",
     "deprecation": {
       "package": "Questo pacchetto è stato deprecato.",
       "version": "Questa versione è stata deprecata.",

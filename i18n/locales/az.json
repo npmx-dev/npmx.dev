@@ -110,6 +110,7 @@
     "verified_provenance": "Təsdiqlənmiş mənşə",
     "view_permalink": "Bu versiya üçün daimi keçidə bax",
     "navigation": "Paket",
+    "sidebar": "Paket məlumatı",
     "deprecation": {
       "package": "Bu paket köhnəlmişdir.",
       "version": "Bu versiya köhnəlmişdir.",

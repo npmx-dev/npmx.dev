@@ -121,6 +121,7 @@
     "verified_provenance": "Verifizierte Herkunft",
     "view_permalink": "Permalink für diese Version anzeigen",
     "navigation": "Paket",
+    "sidebar": "Paketinformationen",
     "copy_name": "Paketnamen kopieren",
     "deprecation": {
       "package": "Dieses Paket ist veraltet.",

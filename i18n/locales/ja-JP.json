@@ -110,6 +110,7 @@
     "verified_provenance": "検証済みプロバナンス",
     "view_permalink": "このバージョンのパーマリンクを表示",
     "navigation": "パッケージナビゲーション",
+    "sidebar": "パッケージ情報",
     "deprecation": {
       "package": "このパッケージは非推奨になりました。",
       "version": "このバージョンは非推奨になりました。",

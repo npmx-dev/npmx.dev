@@ -121,6 +121,7 @@
     "verified_provenance": "Proveniência verificada",
     "view_permalink": "Ver link permanente para esta versão",
     "navigation": "Pacote",
+    "sidebar": "Informações do pacote",
     "copy_name": "Copiar nome do pacote",
     "deprecation": {
       "package": "Este pacote foi descontinuado.",

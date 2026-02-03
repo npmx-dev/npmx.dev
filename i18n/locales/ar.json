@@ -122,6 +122,7 @@
     "verified_provenance": "مصدر موثّق",
     "view_permalink": "عرض الرابط الدائم لهذا الإصدار",
     "navigation": "تصفح الحزمة",
+    "sidebar": "معلومات الحزمة",
     "copy_name": "نسخ اسم الحزمة",
     "deprecation": {
       "package": "تم إهمال هذه الحزمة.",

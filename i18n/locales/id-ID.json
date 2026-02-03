@@ -120,6 +120,7 @@
     "verified_provenance": "Provenans terverifikasi",
     "view_permalink": "Lihat permalink untuk versi ini",
     "navigation": "Paket",
+    "sidebar": "Informasi paket",
     "copy_name": "Salin nama paket",
     "deprecation": {
       "package": "Paket ini telah usang (deprecated).",

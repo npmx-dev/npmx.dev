@@ -122,6 +122,7 @@
     "verified_provenance": "已验证的来源",
     "view_permalink": "查看这个版本的链接",
     "navigation": "包导航",
+    "sidebar": "软件包信息",
     "copy_name": "拷贝包名",
     "deprecation": {
       "package": "这个包已经被弃用。",
