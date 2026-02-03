@@ -12,9 +12,9 @@ const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
 const NPMS_API = 'https://api.npms.io/v2/package'
 
 const QUERY_SCHEMA = v.object({
-  color: v.optional(v.string()),
+  colorA: v.optional(v.string()),
   name: v.optional(v.string()),
-  colorLeft: v.optional(v.string()),
+  colorB: v.optional(v.string()),
 })
 
 const COLORS = {
@@ -263,8 +263,8 @@ export default defineCachedEventHandler(
       })
 
       const queryParams = v.safeParse(QUERY_SCHEMA, query)
-      const userColor = queryParams.success ? queryParams.output.color : undefined
-      const userColorLeft = queryParams.success ? queryParams.output.colorLeft : undefined
+      const userColor = queryParams.success ? queryParams.output.colorB : undefined
+      const userColorLeft = queryParams.success ? queryParams.output.colorA : undefined
       const showName = queryParams.success && queryParams.output.name === 'true'
 
       const badgeTypeResult = v.safeParse(BadgeTypeSchema, typeParam)
