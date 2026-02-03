@@ -60,7 +60,7 @@ jobs:
         run: pnpm install
 
       - name: 🌐 Install browser
-        run: pnpm playwright install
+        run: pnpm playwright install chromium --no-shell
 
       - name: 💪 Type check
         run: pnpm test:types
