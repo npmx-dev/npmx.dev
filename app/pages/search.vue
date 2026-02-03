@@ -581,12 +581,21 @@ function handleResultsKeydown(e: KeyboardEvent) {
 onKeyDown(['ArrowDown', 'ArrowUp', 'Enter'], handleResultsKeydown)
 
 useSeoMeta({
-  title: () => (query.value ? `Search: ${query.value} - npmx` : 'Search Packages - npmx'),
+  title: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  description: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
 })
 
 defineOgImageComponent('Default', {
-  title: 'npmx',
-  description: () => (query.value ? `Search results for "${query.value}"` : 'Search npm packages'),
+  title: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  description: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
   primaryColor: '#60a5fa',
 })
 </script>

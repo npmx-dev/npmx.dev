@@ -11,6 +11,10 @@ export default defineNuxtModule({
 
     if (isCI && provider !== 'github_actions') {
       nuxt.options.debug = defu(nuxt.options.debug, { hydration: true })
+      nuxt.options.sourcemap = {
+        server: true,
+        client: true,
+      }
     }
   },
 })

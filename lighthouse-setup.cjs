@@ -6,7 +6,6 @@
  * If not set, defaults to 'dark'.
  */
 
-/** @param {import('puppeteer').Browser} browser */
 module.exports = async function setup(browser, { url }) {
   const colorMode = process.env.LIGHTHOUSE_COLOR_MODE || 'dark'
   const page = await browser.newPage()
