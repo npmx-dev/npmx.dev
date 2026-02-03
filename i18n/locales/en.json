@@ -28,6 +28,10 @@
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "title": "search",
+    "title_search": "search: {search}",
+    "title_packages": "search packages",
+    "meta_description": "Search results for '{search}'",
+    "meta_description_packages": "Search npm packages",
     "not_taken": "{name} is not taken",
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
@@ -193,7 +197,8 @@
     },
     "create": {
       "title": "Create new project",
-      "copy_command": "Copy create command"
+      "copy_command": "Copy create command",
+      "view": "{packageName} has the same maintainer. Click for more details."
     },
     "run": {
       "title": "Run",
@@ -202,7 +207,8 @@
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
-      "view_on_github": "View on GitHub"
+      "view_on_github": "View on GitHub",
+      "toc_title": "Outline"
     },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
@@ -753,7 +759,7 @@
       }
     },
     "contributors": {
-      "title": "Contributors",
+      "title": "{count} Contributor | {count} Contributors",
       "description": "npmx is fully open source, built by an amazing community of contributors. Join us and let's build the npm browsing experience we always wanted, together.",
       "loading": "Loading contributors...",
       "error": "Failed to load contributors",
@@ -879,11 +885,11 @@
           "description": "Total install size including all dependencies"
         },
         "dependencies": {
-          "label": "# Direct Deps",
+          "label": "Direct Deps",
           "description": "Number of direct dependencies"
         },
         "totalDependencies": {
-          "label": "# Total Deps",
+          "label": "Total Deps",
           "description": "Total number of dependencies including transitive"
         },
         "downloads": {

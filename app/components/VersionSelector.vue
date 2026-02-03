@@ -9,7 +9,7 @@ import {
   getVersionGroupLabel,
   isSameVersionGroup,
 } from '~/utils/versions'
-import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
+import { fetchAllPackageVersions } from '~/utils/npm/api'
 
 const props = defineProps<{
   packageName: string

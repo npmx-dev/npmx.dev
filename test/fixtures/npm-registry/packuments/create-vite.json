@@ -1,0 +1,1016 @@
+{
+  "_id": "create-vite",
+  "_rev": "98-0fa8978a32b885b88cfa01ace47f1f5c",
+  "name": "create-vite",
+  "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+  "dist-tags": {
+    "beta": "8.0.0-beta.0",
+    "latest": "8.2.0"
+  },
+  "versions": {
+    "8.2.0": {
+      "name": "create-vite",
+      "version": "8.2.0",
+      "type": "module",
+      "license": "MIT",
+      "author": {
+        "name": "Evan You"
+      },
+      "bin": {
+        "create-vite": "index.js",
+        "cva": "index.js"
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vitejs/vite.git",
+        "directory": "packages/create-vite"
+      },
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "devDependencies": {
+        "@clack/prompts": "^0.11.0",
+        "cross-spawn": "^7.0.6",
+        "mri": "^1.2.0",
+        "picocolors": "^1.1.1",
+        "tsdown": "^0.16.5"
+      },
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_id": "create-vite@8.2.0",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "_integrity": "sha512-77BlmjbmiaEaBc1xmBFZ5Izq7nSdFkrs037Jxegk93jv/3AkzNNLxypIbKBVMY7/lAMWynug4ERssvruqxxd1g==",
+      "_resolved": "/tmp/a2e4c696f78421539a9f920d4b5ff518/create-vite-8.2.0.tgz",
+      "_from": "file:create-vite-8.2.0.tgz",
+      "_nodeVersion": "24.11.1",
+      "_npmVersion": "11.6.3",
+      "dist": {
+        "integrity": "sha512-77BlmjbmiaEaBc1xmBFZ5Izq7nSdFkrs037Jxegk93jv/3AkzNNLxypIbKBVMY7/lAMWynug4ERssvruqxxd1g==",
+        "shasum": "ba203929c6eb79b788b95de02dfc904e36f669a9",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-8.2.0.tgz",
+        "fileCount": 194,
+        "unpackedSize": 218998,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@8.2.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIH/yLAWs9ExUEe/CO2t1kLNoamPYF//4gur9TXpnxiKsAiEA0SMzKy5++p1fSMQUFh/U72O3NO+343tiZSFzxyZzIvE="
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/create-vite_8.2.0_1763623498970_0.36921278129427315"
+      },
+      "_hasShrinkwrap": false
+    },
+    "8.1.0": {
+      "name": "create-vite",
+      "version": "8.1.0",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@8.1.0",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "705c04c01abc11758ce238b0745828a8640cef2f",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-8.1.0.tgz",
+        "fileCount": 194,
+        "integrity": "sha512-JkgaTpyvvvEh9s1JBheRDW/LxUMp562revOmN30anozgioou6T/5uY4duWuwX6u/O41hoQ5N+lt8CXzaQ0cMHw==",
+        "signatures": [
+          {
+            "sig": "MEUCIAHZPzDmAGtQ5ZWK00pr7vEbzyjo+5v+VEocML0Edrd5AiEA0g/HFsPtSfQjmWMnniym4YrFtT0/h3JN4m67bmSes5U=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@8.1.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 218661
+      },
+      "type": "module",
+      "_from": "file:create-vite-8.1.0.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "_resolved": "/tmp/8950b65353178201c21a8e8096e7cc23/create-vite-8.1.0.tgz",
+      "_integrity": "sha512-JkgaTpyvvvEh9s1JBheRDW/LxUMp562revOmN30anozgioou6T/5uY4duWuwX6u/O41hoQ5N+lt8CXzaQ0cMHw==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "24.11.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.16.1",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_8.1.0_1762952270263_0.5334307379152043",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.3": {
+      "name": "create-vite",
+      "version": "8.0.3",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@8.0.3",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "4dcdb363b20c5fa7c1f1b84d921a0dbc37c4d15c",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-8.0.3.tgz",
+        "fileCount": 194,
+        "integrity": "sha512-R/Xo0zGvaK3exv0q5ipKiGNz0Ne6jDsCHeR5Ayk19K4MBm26bSndHoaJNq6Df/lBsq/KcZE51vC0N3B997MzXA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDm6eUYBleQfJRaK7rIzpBiAD1LPqlLluOOcOsrqiO5nAIgLZc1haJCIUBJM/jNDXeayFl5WaB2LDKhP0UOcLss6bo=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@8.0.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 218678
+      },
+      "type": "module",
+      "_from": "file:create-vite-8.0.3.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "_resolved": "/tmp/be877446a8addaacf6ea5e686a5c4d48/create-vite-8.0.3.tgz",
+      "_integrity": "sha512-R/Xo0zGvaK3exv0q5ipKiGNz0Ne6jDsCHeR5Ayk19K4MBm26bSndHoaJNq6Df/lBsq/KcZE51vC0N3B997MzXA==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "24.11.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.15.12",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_8.0.3_1762746847620_0.685965145462867",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.2": {
+      "name": "create-vite",
+      "version": "8.0.2",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@8.0.2",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "d71e5f6705ebd5843f8f43d294165d1edf0bd24e",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-8.0.2.tgz",
+        "fileCount": 194,
+        "integrity": "sha512-vWwuyDtHTOc0FKs6efl2FeDRp+zZ8MjvS1fKZachMQWgpOSc+ORTZtclgVqZj8J1ZFaeDbgKtxE/VhzlfBqZCw==",
+        "signatures": [
+          {
+            "sig": "MEUCIDsqTxyKkUBvM9QM6Vz2H0HLLu8NH0tiYdfOkZ1ioRH5AiEAh+SYajii8SP9oAkSgl1Dz7jxciUPCt/LPXcpVoe4fSM=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@8.0.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 218642
+      },
+      "type": "module",
+      "_from": "file:create-vite-8.0.2.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "_resolved": "/tmp/d9c34f665d74630d9be3edc148756b47/create-vite-8.0.2.tgz",
+      "_integrity": "sha512-vWwuyDtHTOc0FKs6efl2FeDRp+zZ8MjvS1fKZachMQWgpOSc+ORTZtclgVqZj8J1ZFaeDbgKtxE/VhzlfBqZCw==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "11.6.1",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "22.19.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.15.5",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_8.0.2_1759384430446_0.9276874597462754",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.1": {
+      "name": "create-vite",
+      "version": "8.0.1",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@8.0.1",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "596c771a1a6a2c64530ae250a0d6bf08856b3a5e",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-8.0.1.tgz",
+        "fileCount": 194,
+        "integrity": "sha512-psKi5uYJ7lWHscVz/j3Nvi+014BCTspaxABgfDWKoQWGOcf+wymtw4x6SK40ZoZlnGWY0w85QJM83nKUJNufhw==",
+        "signatures": [
+          {
+            "sig": "MEUCIA4Gs01bGt9TBFLX4VEznOahy/MBS8f7b/YcwTOiXWXrAiEA63el4taN4SkEN2ZaCmhCKjoRhH++vds0SNIPyrF4HAE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@8.0.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 218253
+      },
+      "type": "module",
+      "_from": "file:create-vite-8.0.1.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "_resolved": "/tmp/592630fd004464c0516cb56a367cb72b/create-vite-8.0.1.tgz",
+      "_integrity": "sha512-psKi5uYJ7lWHscVz/j3Nvi+014BCTspaxABgfDWKoQWGOcf+wymtw4x6SK40ZoZlnGWY0w85QJM83nKUJNufhw==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "22.19.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.15.4",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_8.0.1_1758636215606_0.021522266021358538",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.0": {
+      "name": "create-vite",
+      "version": "8.0.0",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@8.0.0",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "955f2651d13eeed2f4fd8195bfad6d4d9d9d26d0",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-8.0.0.tgz",
+        "fileCount": 194,
+        "integrity": "sha512-BAzAv1azeK2dA0TAIAVp0uTfmXWNk368RDqsJFuMcGkr1RhO3T9Plr4FuzmSFhn50BgI5Yzy2cL9CLQi3dJw4A==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD6+93z5brxZ/baPOeXMa8YhaELj2xC4LbD4ookXUU2LAIgECg10Bezs7+azHFW3gxa1Gwm6D7RX7hQXrn9oB9f5OE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@8.0.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 218257
+      },
+      "type": "module",
+      "_from": "file:create-vite-8.0.0.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "_resolved": "/tmp/72567ea70018417b2260bef53a4fcb63/create-vite-8.0.0.tgz",
+      "_integrity": "sha512-BAzAv1azeK2dA0TAIAVp0uTfmXWNk368RDqsJFuMcGkr1RhO3T9Plr4FuzmSFhn50BgI5Yzy2cL9CLQi3dJw4A==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "22.19.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.15.4",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_8.0.0_1758615571841_0.6783021686820465",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.0-beta.0": {
+      "name": "create-vite",
+      "version": "8.0.0-beta.0",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@8.0.0-beta.0",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "890ee017a9a9c7ea125caeebd5ec69dd8174ca6d",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-8.0.0-beta.0.tgz",
+        "fileCount": 194,
+        "integrity": "sha512-oeeP2RPLaxCyn2LcU0+bOCUTuWhACf/G0XnYC+yZ+Q4HrUqffEIdSBC5ZBqByeQb/5mqD5S38Ea424R+NmUr3A==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDbsELKpSxNtsGtiLZC5D+Xi7HgJQJYT9uPsdLwXGrW2wIhALdhfRKkdzJEQRL/GqGDtfq8dF9VFSST4izUtDxlH0go",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@8.0.0-beta.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 218178
+      },
+      "type": "module",
+      "_from": "file:create-vite-8.0.0-beta.0.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "_resolved": "/tmp/7d9fafcbd6a219cbdf25dc32e9b5df70/create-vite-8.0.0-beta.0.tgz",
+      "_integrity": "sha512-oeeP2RPLaxCyn2LcU0+bOCUTuWhACf/G0XnYC+yZ+Q4HrUqffEIdSBC5ZBqByeQb/5mqD5S38Ea424R+NmUr3A==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "22.19.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.15.1",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_8.0.0-beta.0_1758594099395_0.3288094383803637",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "7.1.3": {
+      "name": "create-vite",
+      "version": "7.1.3",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@7.1.3",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "fe617a040381d786eed01fabf6ea337decffa334",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-7.1.3.tgz",
+        "fileCount": 204,
+        "integrity": "sha512-2Z0rewXosdL4Y9ABL2Wu33QN39bxBSK8oSKjgyrNnVyfpIce1wM52P1pc4vzRFQH8GApr26OpcgjvPo8iGnesQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCrtELWnnupHOcV3IO/E+AXglk02fjVW35cX2sJ/WVuHwIgLSxlbvFmccFv2Ux0KCaAtyYmsQufulY1Ehi4fxQi5uw=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@7.1.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 213893
+      },
+      "type": "module",
+      "_from": "file:create-vite-7.1.3.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "_resolved": "/tmp/f1bf94aab10e4e4c233a210e306ff0ec/create-vite-7.1.3.tgz",
+      "_integrity": "sha512-2Z0rewXosdL4Y9ABL2Wu33QN39bxBSK8oSKjgyrNnVyfpIce1wM52P1pc4vzRFQH8GApr26OpcgjvPo8iGnesQ==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "22.19.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.15.1",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_7.1.3_1758520492390_0.5002991904730851",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "7.1.2": {
+      "name": "create-vite",
+      "version": "7.1.2",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@7.1.2",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "3a34a7c6741cc4eecd493e360678433763f72074",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-7.1.2.tgz",
+        "fileCount": 204,
+        "integrity": "sha512-Wrdbw7yMXTJQw+xoRHtKg0ycBa/4khf+bnIaVYcTljx2I1fzgXC9zIbpBstHSDOZYfPUOjdBoECNl7Xfx1ohew==",
+        "signatures": [
+          {
+            "sig": "MEQCIArqwHAy+TMPfr0Z1gzu0z9ZK6/w+q3INplIfs5a2llzAiAj/ezMhD4Wx3AjlLPP6HTt+r+KdhvSDeIz1P2znQGVKA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@7.1.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 213823
+      },
+      "type": "module",
+      "_from": "file:create-vite-7.1.2.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:8e3581e7-18e9-4e75-8e2b-5b54a0d6d6e8"
+        }
+      },
+      "_resolved": "/tmp/a41c17f1d5ad5e685912ddc700e64337/create-vite-7.1.2.tgz",
+      "_integrity": "sha512-Wrdbw7yMXTJQw+xoRHtKg0ycBa/4khf+bnIaVYcTljx2I1fzgXC9zIbpBstHSDOZYfPUOjdBoECNl7Xfx1ohew==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "22.19.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.15.1",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_7.1.2_1758168656837_0.2914149668731838",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "7.1.1": {
+      "name": "create-vite",
+      "version": "7.1.1",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "create-vite@7.1.1",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "patak",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "user5@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite/issues"
+      },
+      "bin": {
+        "cva": "index.js",
+        "create-vite": "index.js"
+      },
+      "dist": {
+        "shasum": "9abc3e38a57dadb102fc1dd5f33f0f931fe3dd84",
+        "tarball": "https://registry.npmjs.org/create-vite/-/create-vite-7.1.1.tgz",
+        "fileCount": 204,
+        "integrity": "sha512-9njjp5o1Sc+4XRpyARFillR+dNS0x50U8i2tB6H2KDKYAKWbntUcOOPcNJxTglAwd9nJxznq9K67kl3B/JkCZg==",
+        "signatures": [
+          {
+            "sig": "MEUCIE6x4Nb8ZZCY//2wOjMq41g0mV8fXKmPrCXLx9vBjAFpAiEA935wHZZ1AEtaWzuDLCSMENu0sUEuOmefNlpypL5xBpQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-vite@7.1.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 214111
+      },
+      "type": "module",
+      "_from": "file:create-vite-7.1.1.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": "https://github.com/vitejs/vite?sponsor=1",
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown",
+        "typecheck": "tsc"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "user5@example.com"
+      },
+      "_resolved": "/tmp/9fe4e3088dbd29607e01b0bf8a51fed9/create-vite-7.1.1.tgz",
+      "_integrity": "sha512-9njjp5o1Sc+4XRpyARFillR+dNS0x50U8i2tB6H2KDKYAKWbntUcOOPcNJxTglAwd9nJxznq9K67kl3B/JkCZg==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite.git",
+        "type": "git",
+        "directory": "packages/create-vite"
+      },
+      "_npmVersion": "10.9.3",
+      "description": "> **Compatibility Note:** > Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.",
+      "directories": {},
+      "_nodeVersion": "22.18.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "mri": "^1.2.0",
+        "tsdown": "^0.14.0",
+        "picocolors": "^1.1.1",
+        "cross-spawn": "^7.0.6",
+        "@clack/prompts": "^0.11.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-vite_7.1.1_1754963976930_0.09893668800044764",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    }
+  },
+  "time": {
+    "modified": "2025-11-20T07:24:59.612Z",
+    "created": "2020-07-08T13:27:20.890Z",
+    "8.2.0": "2025-11-20T07:24:59.173Z",
+    "8.1.0": "2025-11-12T12:57:50.419Z",
+    "8.0.3": "2025-11-10T03:54:07.806Z",
+    "8.0.2": "2025-10-02T05:53:50.671Z",
+    "8.0.1": "2025-09-23T14:03:35.800Z",
+    "8.0.0": "2025-09-23T08:19:32.046Z",
+    "8.0.0-beta.0": "2025-09-23T02:21:39.589Z",
+    "7.1.3": "2025-09-22T05:54:52.573Z",
+    "7.1.2": "2025-09-18T04:10:57.038Z",
+    "7.1.1": "2025-08-12T01:59:37.178Z"
+  },
+  "maintainers": [
+    {
+      "name": "yyx990803",
+      "email": "user2@example.com"
+    },
+    {
+      "name": "patak",
+      "email": "user3@example.com"
+    },
+    {
+      "name": "antfu",
+      "email": "user4@example.com"
+    },
+    {
+      "name": "vitebot",
+      "email": "user5@example.com"
+    }
+  ],
+  "author": {
+    "name": "Evan You"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/vitejs/vite/tree/main/packages/create-vite#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vitejs/vite.git",
+    "directory": "packages/create-vite"
+  },
+  "bugs": {
+    "url": "https://github.com/vitejs/vite/issues"
+  },
+  "readme": "# create-vite <a href=\"https://npmjs.com/package/create-vite\"><img src=\"https://img.shields.io/npm/v/create-vite\" alt=\"npm package\"></a>\n\n## Scaffolding Your First Vite Project\n\n> **Compatibility Note:**\n> Vite requires [Node.js](https://nodejs.org/en/) version 20.19+, 22.12+. However, some templates require a higher Node.js version to work, please upgrade if your package manager warns about it.\n\nWith NPM:\n\n```bash\nnpm create vite@latest\n```\n\nWith Yarn:\n\n```bash\nyarn create vite\n```\n\nWith PNPM:\n\n```bash\npnpm create vite\n```\n\nWith Bun:\n\n```bash\nbun create vite\n```\n\nWith Deno:\n\n```bash\ndeno init --npm vite\n```\n\nThen follow the prompts!\n\nYou can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold a Vite + Vue project, run:\n\n```bash\n# npm 7+, extra double-dash is needed:\nnpm create vite@latest my-vue-app -- --template vue\n\n# yarn\nyarn create vite my-vue-app --template vue\n\n# pnpm\npnpm create vite my-vue-app --template vue\n\n# Bun\nbun create vite my-vue-app --template vue\n\n# Deno\ndeno init --npm vite my-vue-app --template vue\n```\n\nCurrently supported template presets include:\n\n- `vanilla`\n- `vanilla-ts`\n- `vue`\n- `vue-ts`\n- `react`\n- `react-ts`\n- `react-swc`\n- `react-swc-ts`\n- `preact`\n- `preact-ts`\n- `lit`\n- `lit-ts`\n- `svelte`\n- `svelte-ts`\n- `solid`\n- `solid-ts`\n- `qwik`\n- `qwik-ts`\n\nYou can use `.` for the project name to scaffold in the current directory.\n\n## Community Templates\n\ncreate-vite is a tool to quickly start a project from a basic template for popular frameworks. Check out Awesome Vite for [community maintained templates](https://github.com/vitejs/awesome-vite#templates) that include other tools or target different frameworks. You can use a tool like [degit](https://github.com/Rich-Harris/degit) to scaffold your project with one of the templates.\n\n```bash\nnpx degit user/project my-project\ncd my-project\n\nnpm install\nnpm run dev\n```\n\nIf the project uses `main` as the default branch, suffix the project repo with `#main`\n\n```bash\nnpx degit user/project#main my-project\n```\n",
+  "readmeFilename": "README.md"
+}

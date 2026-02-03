@@ -69,7 +69,8 @@ function handleGlobalKeydown(e: KeyboardEvent) {
     router.push('/search')
   }
 
-  if (isKeyWithoutModifiers(e, '?')) {
+  // For "?" we check the key property directly since it's usually combined with shift
+  if (e.key === '?') {
     e.preventDefault()
     showKbdHints.value = true
   }
