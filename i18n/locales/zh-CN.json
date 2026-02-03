@@ -193,7 +193,8 @@
     },
     "create": {
       "title": "创建新项目",
-      "copy_command": "拷贝创建命令"
+      "copy_command": "拷贝创建命令",
+      "view": "目录"
     },
     "run": {
       "title": "运行",
@@ -202,7 +203,8 @@
     "readme": {
       "title": "Readme",
       "no_readme": "没有可用的 README。",
-      "view_on_github": "在 GitHub 上查看"
+      "view_on_github": "在 GitHub 上查看",
+      "toc_title": "{packageName} 由同一位维护者维护，点击查看详情"
     },
     "keywords_title": "关键词",
     "compatibility": "兼容性",
