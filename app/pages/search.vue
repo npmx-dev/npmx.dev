@@ -590,7 +590,8 @@ useSeoMeta({
 })
 
 defineOgImageComponent('Default', {
-  title: 'npmx',
+  title: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
   description: () =>
     query.value
       ? $t('search.meta_description', { search: query.value })
