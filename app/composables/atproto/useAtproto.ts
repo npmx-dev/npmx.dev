@@ -1,4 +1,4 @@
-export function useAtproto() {
+export const useAtproto = createSharedComposable(function useAtproto() {
   const {
     data: user,
     pending,
@@ -17,4 +17,4 @@ export function useAtproto() {
   }
 
   return { user, pending, logout }
-}
+})
