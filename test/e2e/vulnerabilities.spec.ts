@@ -1,4 +1,4 @@
-import { expect, test } from '@nuxt/test-utils/playwright'
+import { expect, test } from './test-utils'
 
 function toLocalUrl(baseURL: string | undefined, path: string): string {
   if (!baseURL) return path
@@ -27,23 +27,23 @@ test.describe('vulnerabilities API', () => {
   })
 
   test('scoped package vulnerabilities with URL encoding', async ({ page, baseURL }) => {
-    const url = toLocalUrl(baseURL, '/api/registry/vulnerabilities/@vitejs%2Fplugin-vue')
+    const url = toLocalUrl(baseURL, '/api/registry/vulnerabilities/@nuxt%2Fkit')
     const { response, body } = await fetchVulnerabilities(page, url)
 
     expect(response.status()).toBe(200)
     expect(response.headers()['content-type']).toContain('application/json')
-    expect(body).toHaveProperty('package', '@vitejs/plugin-vue')
+    expect(body).toHaveProperty('package', '@nuxt/kit')
     expect(body).toHaveProperty('version')
   })
 
   test('scoped package with explicit version and URL encoding', async ({ page, baseURL }) => {
-    const url = toLocalUrl(baseURL, '/api/registry/vulnerabilities/@vitejs%2Fplugin-vue/v/6.0.3')
+    const url = toLocalUrl(baseURL, '/api/registry/vulnerabilities/@nuxt%2Fkit/v/3.20.0')
     const { response, body } = await fetchVulnerabilities(page, url)
 
     expect(response.status()).toBe(200)
     expect(response.headers()['content-type']).toContain('application/json')
-    expect(body).toHaveProperty('package', '@vitejs/plugin-vue')
-    expect(body).toHaveProperty('version', '6.0.3')
+    expect(body).toHaveProperty('package', '@nuxt/kit')
+    expect(body).toHaveProperty('version', '3.20.0')
   })
 
   test('scoped package without URL encoding (for comparison)', async ({ page, baseURL }) => {
@@ -56,13 +56,13 @@ test.describe('vulnerabilities API', () => {
     expect(body).toHaveProperty('version')
   })
 
-  test('complex scoped package name with URL encoding', async ({ page, baseURL }) => {
-    const url = toLocalUrl(baseURL, '/api/registry/vulnerabilities/@babel%2Fcore')
+  test('scoped package with different scope', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/vulnerabilities/@types%2Fnode')
     const { response, body } = await fetchVulnerabilities(page, url)
 
     expect(response.status()).toBe(200)
     expect(response.headers()['content-type']).toContain('application/json')
-    expect(body).toHaveProperty('package', '@babel/core')
+    expect(body).toHaveProperty('package', '@types/node')
     expect(body).toHaveProperty('version')
   })
 

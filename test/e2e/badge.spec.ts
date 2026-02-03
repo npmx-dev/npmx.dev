@@ -1,4 +1,4 @@
-import { expect, test } from '@nuxt/test-utils/playwright'
+import { expect, test } from './test-utils'
 
 function toLocalUrl(baseURL: string | undefined, path: string): string {
   if (!baseURL) return path
@@ -87,7 +87,7 @@ test.describe('badge API', () => {
 
   test.describe('specific scenarios', () => {
     test('downloads-year handles large numbers', async ({ page, baseURL }) => {
-      const url = toLocalUrl(baseURL, '/api/registry/badge/downloads-year/lodash')
+      const url = toLocalUrl(baseURL, '/api/registry/badge/downloads-year/vue')
       const { body } = await fetchBadge(page, url)
 
       expect(body).toContain('downloads/yr')

@@ -1,0 +1,2702 @@
+{
+  "_id": "nuxt",
+  "_rev": "455-ca2dac9b7cf868285d6533786451a3bb",
+  "name": "nuxt",
+  "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+  "dist-tags": {
+    "1x": "1.4.5",
+    "2x": "2.18.1",
+    "alpha": "4.0.0-alpha.4",
+    "rc": "4.0.0-rc.0",
+    "3x": "3.21.0",
+    "latest": "4.3.0"
+  },
+  "versions": {
+    "3.21.0": {
+      "name": "nuxt",
+      "version": "3.21.0",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "directory": "packages/nuxt"
+      },
+      "homepage": "https://nuxt.com",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "license": "MIT",
+      "type": "module",
+      "types": "./types.d.ts",
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": "./schema.js",
+        "./kit": "./kit.js",
+        "./meta": "./meta.js",
+        "./app": "./dist/app/index.js",
+        "./app/defaults": "./dist/app/defaults.js",
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": "./dist/app/index.js",
+        "#app/nuxt": "./dist/app/nuxt.js",
+        "#unhead/composables": "./dist/head/runtime/composables/v4.js"
+      },
+      "dependencies": {
+        "@dxup/nuxt": "^0.3.2",
+        "@nuxt/cli": "^3.32.0",
+        "@nuxt/devtools": "^3.1.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "@unhead/vue": "^2.1.2",
+        "@vue/shared": "^3.5.27",
+        "c12": "^3.3.3",
+        "chokidar": "^5.0.0",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "cookie-es": "^2.0.0",
+        "defu": "^6.1.4",
+        "destr": "^2.0.5",
+        "devalue": "^5.6.2",
+        "errx": "^0.1.0",
+        "escape-string-regexp": "^5.0.0",
+        "exsolve": "^1.0.8",
+        "h3": "^1.15.5",
+        "hookable": "^5.5.3",
+        "ignore": "^7.0.5",
+        "impound": "^1.0.0",
+        "jiti": "^2.6.1",
+        "klona": "^2.0.6",
+        "knitwork": "^1.3.0",
+        "magic-string": "^0.30.21",
+        "mlly": "^1.8.0",
+        "nanotar": "^0.2.0",
+        "nypm": "^0.6.2",
+        "ofetch": "^1.5.1",
+        "ohash": "^2.0.11",
+        "on-change": "^6.0.1",
+        "oxc-minify": "^0.110.0",
+        "oxc-parser": "^0.110.0",
+        "oxc-transform": "^0.110.0",
+        "oxc-walker": "^0.7.0",
+        "pathe": "^2.0.3",
+        "perfect-debounce": "^2.0.0",
+        "pkg-types": "^2.3.0",
+        "rou3": "^0.7.12",
+        "scule": "^1.3.0",
+        "semver": "^7.7.3",
+        "std-env": "^3.10.0",
+        "tinyglobby": "^0.2.15",
+        "ufo": "^1.6.3",
+        "ultrahtml": "^1.6.0",
+        "uncrypto": "^0.1.3",
+        "unctx": "^2.5.0",
+        "unimport": "^5.6.0",
+        "unplugin": "^2.3.11",
+        "unplugin-vue-router": "^0.19.2",
+        "untyped": "^2.0.0",
+        "vue": "^3.5.27",
+        "vue-router": "^4.6.4",
+        "@nuxt/kit": "3.21.0",
+        "@nuxt/schema": "3.21.0",
+        "@nuxt/vite-builder": "3.21.0",
+        "@nuxt/nitro-server": "3.21.0"
+      },
+      "devDependencies": {
+        "@nuxt/scripts": "0.13.2",
+        "@parcel/watcher": "2.5.4",
+        "@types/estree": "1.0.8",
+        "@vitejs/plugin-vue": "6.0.3",
+        "@vitejs/plugin-vue-jsx": "5.1.3",
+        "@vue/compiler-sfc": "3.5.27",
+        "unbuild": "3.6.1",
+        "vite": "7.3.1",
+        "vitest": "3.2.4",
+        "vue-bundle-renderer": "2.2.0",
+        "vue-sfc-transformer": "0.1.17"
+      },
+      "peerDependencies": {
+        "@parcel/watcher": "^2.1.0",
+        "@types/node": "^18.0.0 || ^20.0.0 || >=22.0.0"
+      },
+      "peerDependenciesMeta": {
+        "@parcel/watcher": {
+          "optional": true
+        },
+        "@types/node": {
+          "optional": true
+        }
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "scripts": {
+        "build:stub": "unbuild --stub",
+        "test:attw": "attw --pack"
+      },
+      "readmeFilename": "README.md",
+      "_id": "nuxt@3.21.0",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "_integrity": "sha512-K3vX68M0lXbqzvehWb+y6/YqAF+m7MEQQ3mtbcm34ynzB6OpFOJoZV9scBzFd5LehLoYl55CSNpY5vsupyJw7Q==",
+      "_resolved": "/tmp/20a8f983693ef4840f79a2362a6ff072/nuxt-3.21.0.tgz",
+      "_from": "file:nuxt-3.21.0.tgz",
+      "_nodeVersion": "25.4.0",
+      "_npmVersion": "11.7.0",
+      "dist": {
+        "integrity": "sha512-K3vX68M0lXbqzvehWb+y6/YqAF+m7MEQQ3mtbcm34ynzB6OpFOJoZV9scBzFd5LehLoYl55CSNpY5vsupyJw7Q==",
+        "shasum": "efc0d9fc4978b8f4e3fb136ba974ac9d9b8076f6",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-3.21.0.tgz",
+        "fileCount": 243,
+        "unpackedSize": 796813,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@3.21.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIHGulqw/n1Qd/TPuT0iHIMZ4BSHTcYXRhnvHDCiT2SKGAiEA81L0um9YDGQ7yeva98leEi93U1UTasu7LEAscOyDjuw="
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/nuxt_3.21.0_1769123090302_0.32709756823214"
+      },
+      "_hasShrinkwrap": false
+    },
+    "4.3.0": {
+      "name": "nuxt",
+      "version": "4.3.0",
+      "license": "MIT",
+      "_id": "nuxt@4.3.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "233e4fe523c86222707e10391ecc009c8fdd8bf9",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-4.3.0.tgz",
+        "fileCount": 235,
+        "integrity": "sha512-99Iw3E3L5/2QtJyV4errZ0axkX/S9IAFK0AHm0pmRHkCu37OFn8mz2P4/CYTt6B/TG3mcKbXAVaeuF2FsAc1cA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD8D+qmRtnqLsPpkSML8nvoWSRjzywU3tXkLWT9H/7k9gIgS+im5iA9LvzOdzxq4naULgKKeb0Shh75iUIhQ+t1CPY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@4.3.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 710544
+      },
+      "type": "module",
+      "_from": "file:nuxt-4.3.0.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": "./dist/app/index.js",
+        "./kit": "./kit.js",
+        "./meta": "./meta.js",
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": "./schema.js",
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": "./dist/app/index.js",
+        "#app/nuxt": "./dist/app/nuxt.js",
+        "#unhead/composables": "./dist/head/runtime/composables.js"
+      },
+      "scripts": {
+        "test:attw": "attw --pack",
+        "build:stub": "unbuild --stub"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/e7a8458e2c751b327df6833e94bcef51/nuxt-4.3.0.tgz",
+      "_integrity": "sha512-99Iw3E3L5/2QtJyV4errZ0axkX/S9IAFK0AHm0pmRHkCu37OFn8mz2P4/CYTt6B/TG3mcKbXAVaeuF2FsAc1cA==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "25.4.0",
+      "dependencies": {
+        "h3": "^1.15.5",
+        "c12": "^3.3.3",
+        "ufo": "^1.6.3",
+        "vue": "^3.5.27",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "rou3": "^0.7.12",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.5.0",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.5.1",
+        "semver": "^7.7.3",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.6.2",
+        "exsolve": "^1.0.8",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.10.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^5.0.0",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.3.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.6.0",
+        "unplugin": "^2.3.11",
+        "@nuxt/cli": "^3.32.0",
+        "@nuxt/kit": "4.3.0",
+        "cookie-es": "^2.0.0",
+        "on-change": "^6.0.1",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "@dxup/nuxt": "^0.3.2",
+        "oxc-minify": "^0.110.0",
+        "oxc-parser": "^0.110.0",
+        "oxc-walker": "^0.7.0",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.6.4",
+        "@unhead/vue": "^2.1.2",
+        "@vue/shared": "^3.5.27",
+        "@nuxt/schema": "4.3.0",
+        "magic-string": "^0.30.21",
+        "oxc-transform": "^0.110.0",
+        "@nuxt/devtools": "^3.1.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "@nuxt/nitro-server": "4.3.0",
+        "@nuxt/vite-builder": "4.3.0",
+        "unplugin-vue-router": "^0.19.2",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.3.1",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.13.2",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.4",
+        "@vue/compiler-sfc": "3.5.27",
+        "@vitejs/plugin-vue": "6.0.3",
+        "vue-bundle-renderer": "2.2.0",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.3"
+      },
+      "peerDependencies": {
+        "@types/node": ">=18.12.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_4.3.0_1769122934910_0.07836171421962757",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.2.2": {
+      "name": "nuxt",
+      "version": "4.2.2",
+      "license": "MIT",
+      "_id": "nuxt@4.2.2",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "f2579b99ad6d4a7ab8606f5d1131784716673309",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-4.2.2.tgz",
+        "fileCount": 233,
+        "integrity": "sha512-n6oYFikgLEb70J4+K19jAzfx4exZcRSRX7yZn09P5qlf2Z59VNOBqNmaZO5ObzvyGUZ308SZfL629/Q2v2FVjw==",
+        "signatures": [
+          {
+            "sig": "MEQCICu7TqjMZpWfALtX/G4z0XxOdcYsNyn7OeqgUMLAzKxeAiAI1YqGPHT05UBPutc7rA8qx3adBO5siVUX/o/C25D4uw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@4.2.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 689762
+      },
+      "type": "module",
+      "_from": "file:nuxt-4.2.2.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables.d.ts",
+          "import": "./dist/head/runtime/composables.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/048cb70dcb5357268e9973b7dbc536d8/nuxt-4.2.2.tgz",
+      "_integrity": "sha512-n6oYFikgLEb70J4+K19jAzfx4exZcRSRX7yZn09P5qlf2Z59VNOBqNmaZO5ObzvyGUZ308SZfL629/Q2v2FVjw==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "25.2.1",
+      "dependencies": {
+        "h3": "^1.15.4",
+        "c12": "^3.3.2",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.25",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.5.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.3",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.6.0",
+        "exsolve": "^1.0.8",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.10.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^5.0.0",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.3.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.5.0",
+        "unplugin": "^2.3.11",
+        "@nuxt/cli": "^3.31.1",
+        "@nuxt/kit": "4.2.2",
+        "cookie-es": "^2.0.0",
+        "on-change": "^6.0.1",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "@dxup/nuxt": "^0.2.2",
+        "oxc-minify": "^0.102.0",
+        "oxc-parser": "^0.102.0",
+        "oxc-walker": "^0.6.0",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.6.3",
+        "@unhead/vue": "^2.0.19",
+        "@vue/shared": "^3.5.25",
+        "@nuxt/schema": "4.2.2",
+        "magic-string": "^0.30.21",
+        "oxc-transform": "^0.102.0",
+        "@nuxt/devtools": "^3.1.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "@nuxt/nitro-server": "4.2.2",
+        "@nuxt/vite-builder": "4.2.2",
+        "unplugin-vue-router": "^0.19.0",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.2.7",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.13.0",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.25",
+        "@vitejs/plugin-vue": "6.0.2",
+        "vue-bundle-renderer": "2.2.0",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.2"
+      },
+      "peerDependencies": {
+        "@types/node": ">=18.12.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_4.2.2_1765300771481_0.8205738049728677",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.20.2": {
+      "name": "nuxt",
+      "version": "3.20.2",
+      "license": "MIT",
+      "_id": "nuxt@3.20.2",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "3ea40738a640329d3f819e0409377796010b9bdd",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-3.20.2.tgz",
+        "fileCount": 233,
+        "integrity": "sha512-DoayekzYjYmGj7A5iI7crBiLRTq1K8U1DLgAR/vGADh1IQfOLagn5Klg1Jn1xxIyN8x0iiFDf3dGd2JWyiKBLA==",
+        "signatures": [
+          {
+            "sig": "MEUCIC85XqeBKWBnAnlsrclxBimSlV7jc0FZEc5IGbRv9JneAiEAt7QjadhgaQS9iux1Of8m82gqF2OBIGdFAwKvk9lzOMU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@3.20.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 767603
+      },
+      "type": "module",
+      "_from": "file:nuxt-3.20.2.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./app/defaults": {
+          "types": "./dist/app/defaults.d.ts",
+          "import": "./dist/app/defaults.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables/v4.d.ts",
+          "import": "./dist/head/runtime/composables/v4.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/08f7b656235edc7ec757e748796b99de/nuxt-3.20.2.tgz",
+      "_integrity": "sha512-DoayekzYjYmGj7A5iI7crBiLRTq1K8U1DLgAR/vGADh1IQfOLagn5Klg1Jn1xxIyN8x0iiFDf3dGd2JWyiKBLA==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "25.2.1",
+      "dependencies": {
+        "h3": "^1.15.4",
+        "c12": "^3.3.2",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.25",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.5.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.3",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.6.0",
+        "exsolve": "^1.0.8",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.10.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^5.0.0",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.3.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.5.0",
+        "unplugin": "^2.3.11",
+        "@nuxt/cli": "^3.31.1",
+        "@nuxt/kit": "3.20.2",
+        "cookie-es": "^2.0.0",
+        "on-change": "^6.0.1",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "@dxup/nuxt": "^0.2.2",
+        "oxc-minify": "^0.102.0",
+        "oxc-parser": "^0.102.0",
+        "oxc-walker": "^0.6.0",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.6.3",
+        "@unhead/vue": "^2.0.19",
+        "@vue/shared": "^3.5.25",
+        "@nuxt/schema": "3.20.2",
+        "magic-string": "^0.30.21",
+        "oxc-transform": "^0.102.0",
+        "@nuxt/devtools": "^3.1.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "@nuxt/nitro-server": "3.20.2",
+        "@nuxt/vite-builder": "3.20.2",
+        "unplugin-vue-router": "^0.19.0",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.2.7",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.13.0",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.25",
+        "@vitejs/plugin-vue": "6.0.2",
+        "vue-bundle-renderer": "2.2.0",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.2"
+      },
+      "peerDependencies": {
+        "@types/node": "^18.0.0 || ^20.0.0 || >=22.0.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_3.20.2_1765300466046_0.750110994656882",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.2.1": {
+      "name": "nuxt",
+      "version": "4.2.1",
+      "license": "MIT",
+      "_id": "nuxt@4.2.1",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "b040202704c603cd9710fcffe59eb0beea876c44",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-4.2.1.tgz",
+        "fileCount": 233,
+        "integrity": "sha512-OE5ONizgwkKhjTGlUYB3ksE+2q2/I30QIYFl3N1yYz1r2rwhunGA3puUvqkzXwgLQ3AdsNcigPDmyQsqjbSdoQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIDwrAZ70j6QKJAk4IAxxwdoi4TKQatyNtDhmlAxgsVzjAiEAvkxktIY1raRz5Wmo9AOE9W2IsId/Oi4p37DVu0cS2NA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@4.2.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 685895
+      },
+      "type": "module",
+      "_from": "file:nuxt-4.2.1.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables.d.ts",
+          "import": "./dist/head/runtime/composables.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/cacdbeaf27a80ff06ff2644838553705/nuxt-4.2.1.tgz",
+      "_integrity": "sha512-OE5ONizgwkKhjTGlUYB3ksE+2q2/I30QIYFl3N1yYz1r2rwhunGA3puUvqkzXwgLQ3AdsNcigPDmyQsqjbSdoQ==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "25.1.0",
+      "dependencies": {
+        "h3": "^1.15.4",
+        "c12": "^3.3.1",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.23",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.5.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.3",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.4.2",
+        "exsolve": "^1.0.7",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.10.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^4.0.3",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.2.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.5.0",
+        "unplugin": "^2.3.10",
+        "@nuxt/cli": "^3.30.0",
+        "@nuxt/kit": "4.2.1",
+        "cookie-es": "^2.0.0",
+        "on-change": "^6.0.1",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "@dxup/nuxt": "^0.2.1",
+        "oxc-minify": "^0.96.0",
+        "oxc-parser": "^0.96.0",
+        "oxc-walker": "^0.5.2",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.6.3",
+        "@unhead/vue": "^2.0.19",
+        "@vue/shared": "^3.5.23",
+        "@nuxt/schema": "4.2.1",
+        "magic-string": "^0.30.21",
+        "oxc-transform": "^0.96.0",
+        "@nuxt/devtools": "^3.0.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "@nuxt/nitro-server": "4.2.1",
+        "@nuxt/vite-builder": "4.2.1",
+        "unplugin-vue-router": "^0.16.1",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.2.1",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.13.0",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.23",
+        "@vitejs/plugin-vue": "6.0.1",
+        "vue-bundle-renderer": "2.2.0",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.1"
+      },
+      "peerDependencies": {
+        "@types/node": ">=18.12.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_4.2.1_1762473414110_0.8535419209851838",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.20.1": {
+      "name": "nuxt",
+      "version": "3.20.1",
+      "license": "MIT",
+      "_id": "nuxt@3.20.1",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "ff270dec28a1000e8307b4465fc203c91617a41f",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-3.20.1.tgz",
+        "fileCount": 233,
+        "integrity": "sha512-1d0tBndWdC3DQ/8s6cZqD6jc7DmFG4hIswjK2sYfYNsPzVe3WiM+svuXd9ixUGe6E13StaepJLDubz2GLyU+XQ==",
+        "signatures": [
+          {
+            "sig": "MEUCID9qFoDi3C0lszdenbLS9IWGt+JRvDOcGoKSrG7bZ7gxAiEA8D6MB2aZgMzwHEH7X8o7RAWum3joHa9E+ikj3X6gj/c=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@3.20.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 764701
+      },
+      "type": "module",
+      "_from": "file:nuxt-3.20.1.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./app/defaults": {
+          "types": "./dist/app/defaults.d.ts",
+          "import": "./dist/app/defaults.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables/v4.d.ts",
+          "import": "./dist/head/runtime/composables/v4.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/2af4004f39d9e16c08f30b3cb99b77b3/nuxt-3.20.1.tgz",
+      "_integrity": "sha512-1d0tBndWdC3DQ/8s6cZqD6jc7DmFG4hIswjK2sYfYNsPzVe3WiM+svuXd9ixUGe6E13StaepJLDubz2GLyU+XQ==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "25.1.0",
+      "dependencies": {
+        "h3": "^1.15.4",
+        "c12": "^3.3.1",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.23",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.5.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.3",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.4.2",
+        "exsolve": "^1.0.7",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.10.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^4.0.3",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.2.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.5.0",
+        "unplugin": "^2.3.10",
+        "@nuxt/cli": "^3.30.0",
+        "@nuxt/kit": "3.20.1",
+        "cookie-es": "^2.0.0",
+        "on-change": "^6.0.1",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "@dxup/nuxt": "^0.2.1",
+        "oxc-minify": "^0.96.0",
+        "oxc-parser": "^0.96.0",
+        "oxc-walker": "^0.5.2",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.6.3",
+        "@unhead/vue": "^2.0.19",
+        "@vue/shared": "^3.5.23",
+        "@nuxt/schema": "3.20.1",
+        "magic-string": "^0.30.21",
+        "oxc-transform": "^0.96.0",
+        "@nuxt/devtools": "^3.0.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "@nuxt/nitro-server": "3.20.1",
+        "@nuxt/vite-builder": "3.20.1",
+        "unplugin-vue-router": "^0.16.1",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.2.1",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.13.0",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.23",
+        "@vitejs/plugin-vue": "6.0.1",
+        "vue-bundle-renderer": "2.2.0",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.1"
+      },
+      "peerDependencies": {
+        "@types/node": "^18.0.0 || ^20.0.0 || >=22.0.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_3.20.1_1762473223637_0.39086443598533815",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.20.0": {
+      "name": "nuxt",
+      "version": "3.20.0",
+      "license": "MIT",
+      "_id": "nuxt@3.20.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "2fa2a51adc394f0b1dc55d01b3782497d93faa2a",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-3.20.0.tgz",
+        "fileCount": 233,
+        "integrity": "sha512-JjrKlbsJyK/OO7eF70Q/ay0tJALSMMeu2t4Ocu1aFJ6qS5aDkhYRAvOstcU+ojTLY4wOvOUrGBmVnfE+hgsfvw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD+Ft8oLmKq8NRcJYMCqJY/LzsMasMd+y+zvKZ9eJ7Y5gIhAKcAUdtRTSemfUCDMMw/SmZ7O3ALv3ZDQEML50d+erLr",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@3.20.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 764102
+      },
+      "type": "module",
+      "_from": "file:nuxt-3.20.0.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./app/defaults": {
+          "types": "./dist/app/defaults.d.ts",
+          "import": "./dist/app/defaults.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables/v4.d.ts",
+          "import": "./dist/head/runtime/composables/v4.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/696068f892c9b71da0470369788fd842/nuxt-3.20.0.tgz",
+      "_integrity": "sha512-JjrKlbsJyK/OO7eF70Q/ay0tJALSMMeu2t4Ocu1aFJ6qS5aDkhYRAvOstcU+ojTLY4wOvOUrGBmVnfE+hgsfvw==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "25.0.0",
+      "dependencies": {
+        "h3": "^1.15.4",
+        "c12": "^3.3.0",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.22",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.4.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.3",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.3.2",
+        "exsolve": "^1.0.7",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^4.0.3",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.2.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.4.1",
+        "unplugin": "^2.3.10",
+        "@nuxt/cli": "^3.29.3",
+        "@nuxt/kit": "3.20.0",
+        "cookie-es": "^2.0.0",
+        "on-change": "^6.0.0",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "@dxup/nuxt": "^0.1.0",
+        "oxc-minify": "^0.94.0",
+        "oxc-parser": "^0.94.0",
+        "oxc-walker": "^0.5.2",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.6.3",
+        "@unhead/vue": "^2.0.14",
+        "@vue/shared": "^3.5.22",
+        "@nuxt/schema": "3.20.0",
+        "magic-string": "^0.30.19",
+        "oxc-transform": "^0.94.0",
+        "@nuxt/devtools": "^2.6.5",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "@nuxt/nitro-server": "3.20.0",
+        "@nuxt/vite-builder": "3.20.0",
+        "unplugin-vue-router": "^0.16.0",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.1.9",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.12.1",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.22",
+        "@vitejs/plugin-vue": "6.0.1",
+        "vue-bundle-renderer": "2.2.0",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.1"
+      },
+      "peerDependencies": {
+        "@types/node": "^18.0.0 || ^20.0.0 || >=22.0.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_3.20.0_1761649323956_0.43466591109889485",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.2.0": {
+      "name": "nuxt",
+      "version": "4.2.0",
+      "license": "MIT",
+      "_id": "nuxt@4.2.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "7e6a541eb36873c612db37a6660218ec34a0eca4",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-4.2.0.tgz",
+        "fileCount": 233,
+        "integrity": "sha512-4qzf2Ymf07dMMj50TZdNZgMqCdzDch8NY3NO2ClucUaIvvsr6wd9+JrDpI1CckSTHwqU37/dIPFpvIQZoeHoYA==",
+        "signatures": [
+          {
+            "sig": "MEQCIDJfaIwJVfGk/ozMvnZIo++jaqMxovCqx+H/l7/bbI1cAiAlNxwbRNarYglcJZmvHHZLcnZnfyERP7KAgArs/gDGuw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@4.2.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 685562
+      },
+      "type": "module",
+      "_from": "file:nuxt-4.2.0.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables.d.ts",
+          "import": "./dist/head/runtime/composables.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/593946b93a9000a1032c0feebbdef26d/nuxt-4.2.0.tgz",
+      "_integrity": "sha512-4qzf2Ymf07dMMj50TZdNZgMqCdzDch8NY3NO2ClucUaIvvsr6wd9+JrDpI1CckSTHwqU37/dIPFpvIQZoeHoYA==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "25.0.0",
+      "dependencies": {
+        "h3": "^1.15.4",
+        "c12": "^3.3.1",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.22",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.4.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.3",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.4.2",
+        "exsolve": "^1.0.7",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.10.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^4.0.3",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.2.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.5.0",
+        "unplugin": "^2.3.10",
+        "@nuxt/cli": "^3.29.3",
+        "@nuxt/kit": "4.2.0",
+        "cookie-es": "^2.0.0",
+        "on-change": "^6.0.0",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "@dxup/nuxt": "^0.2.0",
+        "oxc-minify": "^0.95.0",
+        "oxc-parser": "^0.95.0",
+        "oxc-walker": "^0.5.2",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.6.3",
+        "@unhead/vue": "^2.0.19",
+        "@vue/shared": "^3.5.22",
+        "@nuxt/schema": "4.2.0",
+        "magic-string": "^0.30.21",
+        "oxc-transform": "^0.95.0",
+        "@nuxt/devtools": "^2.6.5",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "@nuxt/nitro-server": "4.2.0",
+        "@nuxt/vite-builder": "4.2.0",
+        "unplugin-vue-router": "^0.16.0",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.1.12",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.13.0",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.22",
+        "@vitejs/plugin-vue": "6.0.1",
+        "vue-bundle-renderer": "2.2.0",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.1"
+      },
+      "peerDependencies": {
+        "@types/node": ">=18.12.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_4.2.0_1761371846002_0.7998915347959945",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.1.3": {
+      "name": "nuxt",
+      "version": "4.1.3",
+      "license": "MIT",
+      "_id": "nuxt@4.1.3",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user4@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "1b55e2bbe9d55a605b12e160daec3d88229bf8dd",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-4.1.3.tgz",
+        "fileCount": 272,
+        "integrity": "sha512-FPl+4HNIOTRYWQXtsZe5KJAr/eddFesuXABvcSTnFLYckIfnxcistwmbtPlkJhkW6vr/Jdhef5QqqYYkBsowGg==",
+        "signatures": [
+          {
+            "sig": "MEUCIHG5xwn2b+JofcKfUZ7+doQWu732QRzvXv4VSCb5vFy3AiEAgsWabR8qZNptgDTv3hh8KIdd9GjkZfEB56qQOYNve7w=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@4.1.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 769824
+      },
+      "type": "module",
+      "_from": "file:nuxt-4.1.3.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables.d.ts",
+          "import": "./dist/head/runtime/composables.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/b70a93ef69c58d681f42490eb7029543/nuxt-4.1.3.tgz",
+      "_integrity": "sha512-FPl+4HNIOTRYWQXtsZe5KJAr/eddFesuXABvcSTnFLYckIfnxcistwmbtPlkJhkW6vr/Jdhef5QqqYYkBsowGg==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "24.9.0",
+      "dependencies": {
+        "h3": "^1.15.4",
+        "c12": "^3.3.0",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.22",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.4.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.2",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.3.2",
+        "esbuild": "^0.25.10",
+        "exsolve": "^1.0.7",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^4.0.3",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.2.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.4.1",
+        "unplugin": "^2.3.10",
+        "@nuxt/cli": "^3.29.0",
+        "@nuxt/kit": "4.1.3",
+        "cookie-es": "^2.0.0",
+        "nitropack": "^2.12.6",
+        "on-change": "^6.0.0",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "unstorage": "^1.17.1",
+        "oxc-minify": "^0.94.0",
+        "oxc-parser": "^0.94.0",
+        "oxc-walker": "^0.5.2",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.5.1",
+        "@unhead/vue": "^2.0.14",
+        "@vue/shared": "^3.5.22",
+        "@nuxt/schema": "4.1.3",
+        "magic-string": "^0.30.19",
+        "@nuxt/devalue": "^2.0.2",
+        "estree-walker": "^3.0.3",
+        "oxc-transform": "^0.94.0",
+        "@nuxt/devtools": "^2.6.5",
+        "mocked-exports": "^0.1.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "vue-devtools-stub": "^0.1.0",
+        "@nuxt/vite-builder": "4.1.3",
+        "unplugin-vue-router": "^0.15.0",
+        "vue-bundle-renderer": "^2.2.0",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.1.9",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.12.1",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.22",
+        "@vitejs/plugin-vue": "6.0.1",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.1"
+      },
+      "peerDependencies": {
+        "@types/node": ">=18.12.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_4.1.3_1759766791655_0.39979724702758235",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.19.3": {
+      "name": "nuxt",
+      "version": "3.19.3",
+      "license": "MIT",
+      "_id": "nuxt@3.19.3",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user4@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "0cfee281c2bcfd81f5785a1935e4a25b77ccb1fd",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-3.19.3.tgz",
+        "fileCount": 269,
+        "integrity": "sha512-J5vfkt69gamnl81iDgeSi1tZ0ADEesKfZizPfKxY10dMdjuelAo9WYItFmFGWZ9j1+uXtFJ+PLzqGmXfPLBsuw==",
+        "signatures": [
+          {
+            "sig": "MEQCIGHYKSDvkzCygXoJGzlXxqn8vnIx5dYJfuDGpvmqdDpkAiBuvrrZWKHz46YRxhO8B8iMw6uHg3M1oqOKsaken+RX2Q==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/nuxt@3.19.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 842486
+      },
+      "type": "module",
+      "_from": "file:nuxt-3.19.3.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./app/defaults": {
+          "types": "./dist/app/defaults.d.ts",
+          "import": "./dist/app/defaults.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables/v4.d.ts",
+          "import": "./dist/head/runtime/composables/v4.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d0585aa6-1a29-450d-8bf8-c3440b4bcc0f"
+        }
+      },
+      "_resolved": "/tmp/1e3e5e103f2d8dbd41d30686d8369d3a/nuxt-3.19.3.tgz",
+      "_integrity": "sha512-J5vfkt69gamnl81iDgeSi1tZ0ADEesKfZizPfKxY10dMdjuelAo9WYItFmFGWZ9j1+uXtFJ+PLzqGmXfPLBsuw==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "24.9.0",
+      "dependencies": {
+        "h3": "^1.15.4",
+        "c12": "^3.3.0",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.22",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "nypm": "^0.6.2",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.4.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.2",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.3.2",
+        "esbuild": "^0.25.10",
+        "exsolve": "^1.0.7",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^4.0.3",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.2.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.4.1",
+        "unplugin": "^2.3.10",
+        "@nuxt/cli": "^3.29.0",
+        "@nuxt/kit": "3.19.3",
+        "cookie-es": "^2.0.0",
+        "nitropack": "^2.12.6",
+        "on-change": "^6.0.0",
+        "pkg-types": "^2.3.0",
+        "ultrahtml": "^1.6.0",
+        "unstorage": "^1.17.1",
+        "oxc-minify": "^0.94.0",
+        "oxc-parser": "^0.94.0",
+        "oxc-walker": "^0.5.2",
+        "tinyglobby": "^0.2.15",
+        "vue-router": "^4.5.1",
+        "@unhead/vue": "^2.0.14",
+        "@vue/shared": "^3.5.22",
+        "@nuxt/schema": "3.19.3",
+        "magic-string": "^0.30.19",
+        "@nuxt/devalue": "^2.0.2",
+        "estree-walker": "^3.0.3",
+        "oxc-transform": "^0.94.0",
+        "@nuxt/devtools": "^2.6.5",
+        "mocked-exports": "^0.1.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^2.0.0",
+        "vue-devtools-stub": "^0.1.0",
+        "@nuxt/vite-builder": "3.19.3",
+        "unplugin-vue-router": "^0.15.0",
+        "vue-bundle-renderer": "^2.2.0",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.1.9",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "@nuxt/scripts": "0.12.1",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.22",
+        "@vitejs/plugin-vue": "6.0.1",
+        "vue-sfc-transformer": "0.1.17",
+        "@vitejs/plugin-vue-jsx": "5.1.1"
+      },
+      "peerDependencies": {
+        "@types/node": "^18.0.0 || ^20.0.0 || >=22.0.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_3.19.3_1759765893347_0.35567231323311943",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "1.4.5": {
+      "name": "nuxt",
+      "version": "1.4.5",
+      "keywords": [
+        "nuxt",
+        "nuxt.js",
+        "nuxtjs",
+        "vue",
+        "vue.js",
+        "vuejs",
+        "vue universal",
+        "vue ssr",
+        "vue isomorphic",
+        "vue versatile"
+      ],
+      "license": "MIT",
+      "_id": "nuxt@1.4.5",
+      "maintainers": [
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        }
+      ],
+      "contributors": [
+        {
+          "url": "@Atinux",
+          "name": "Sebastien Chopin"
+        },
+        {
+          "url": "@alexchopin",
+          "name": "Alexandre Chopin"
+        },
+        {
+          "url": "@pi0",
+          "name": "Pooya Parsa"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/nuxt.js#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt.js/issues"
+      },
+      "bin": {
+        "nuxt": "./bin/nuxt"
+      },
+      "nyc": {
+        "include": ["lib"]
+      },
+      "dist": {
+        "shasum": "cf199939e6a77069920f5f0e751068d017fcf891",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-1.4.5.tgz",
+        "fileCount": 61,
+        "integrity": "sha512-JhGCcDId3umMh+Hzvx2p6GUy/R4DNTUaNiP60jjMaYXXee6oumrpZh45t0S9Z0kPQz6+2H2/4J5ATxmVFFL8ZQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDs4cq74UvPyjmBqqTeIQDUogOQCSpz2iisnfMbYLzJFwIgC4CFh945p6mj+BkqDcNYi2sWxDADWhdDMuwtIZF7pQ8=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 232399,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJb/YO/CRA9TVsSAnZWagAAL+sP/jc49+pGh0vsAeV3VzIg\nVtsMniE8+n60dYPv5xA0vo0uN12++okijdSAgjTeLkcm5AiB2/UfNRYcNKCj\npmFqs9QMWetgy2RZ/OKJimRpkRyQgdlNVjjUyBWbSqBjPq/yp/zFAmxe6WPU\nWs3xT9M4EvIPeU1ZTMzF/fcUm1KBJwllkMcRN4A6znmiQcOnztFbt4N3VDTP\n7J6z7vZSmQLJx5xhidzmmic0eVhW2nNHVnDmu4MaOm/XSR+7tIxzwk2Km6U7\nO39KCCeYrezVOhspbqtCN1D5xIBZij4PxvcGF/iozO3syq+qNZFmZEC0TCtc\n+30oXYD1/LmyzWyuJKGJcpUdDLeg9Mjuy2s51wEwmhy/n1bUmot5lHyLAj7V\nEMZ/zQgM22Jji7gW9FN1EWRMkHE4JiG8toW9AgW00IVfaPJMNFLq9uXDJ92D\nkFZ+6cz5upKu2T2OATam5aVNAknS30acZk/4dGcDGatcfnU+bEjiHq4QHjxo\n+ifb12HxlKeHnmiG7Ru4C5iS2w5Sc7Noc2n02nFsd0Q1udXgz1gnzXf6sNKX\nrnu51/TTzfuS9B7ecHdisiAGvLB7l6jx5hWSHsBG7o7bVRxJ8ic5ZtJLvyYU\n1/Vma9DZb3qUnuhz0laydNwEloehSv/Xs2MAWfKAtrrQ+spTa/5DYmnsX/ZL\nSklB\r\n=tX4v\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "main": "./lib/index.js",
+      "engines": {
+        "npm": ">=5.0.0",
+        "node": ">=8.0.0"
+      },
+      "gitHead": "c8962964b8ced4c703804ed9cc5e54c6d486a321",
+      "scripts": {
+        "lint": "eslint --ext .js,.vue bin/* build/ lib/ test/ examples/",
+        "test": "npm run lint && nyc ava --verbose test/ -- && nyc report --reporter=html",
+        "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+        "precommit": "npm run lint",
+        "postinstall": "opencollective postinstall || exit 0",
+        "test-appveyor": "npm run lint && nyc ava --serial test/ -- && nyc report --reporter=html"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user5@example.com"
+      },
+      "collective": {
+        "url": "https://opencollective.com/nuxtjs",
+        "logo": "https://opencollective.com/nuxtjs/logo.txt?reverse=true&variant=variant2",
+        "type": "opencollective"
+      },
+      "deprecated": "Nuxt 1 has reached EOL and is no longer actively maintained. See https://nuxt.com/blog/nuxt2-eol for more details.",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.js.git",
+        "type": "git"
+      },
+      "_npmVersion": "6.4.1",
+      "description": "A minimalistic framework for server-rendered Vue.js applications (inspired by Next.js)",
+      "directories": {},
+      "_nodeVersion": "11.1.0",
+      "dependencies": {
+        "vue": "^2.5.17",
+        "etag": "^1.8.1",
+        "glob": "^7.1.2",
+        "vuex": "^3.0.1",
+        "chalk": "^2.3.1",
+        "clone": "^2.1.1",
+        "debug": "^3.1.0",
+        "fresh": "^0.5.2",
+        "upath": "^1.1.0",
+        "lodash": "^4.17.5",
+        "semver": "^5.5.0",
+        "connect": "^3.6.5",
+        "postcss": "^6.0.17",
+        "webpack": "^3.11.0",
+        "chokidar": "^2.0.1",
+        "fs-extra": "^5.0.0",
+        "hash-sum": "^1.0.2",
+        "minimist": "^1.2.0",
+        "vue-meta": "^1.4.3",
+        "ansi-html": "^0.0.7",
+        "lru-cache": "^4.1.1",
+        "memory-fs": "^0.4.1",
+        "babel-core": "^6.26.0",
+        "css-loader": "^0.28.9",
+        "source-map": "^0.7.0",
+        "url-loader": "^0.6.2",
+        "vue-loader": "^13.7.2",
+        "vue-router": "^3.0.1",
+        "compression": "^1.7.1",
+        "es6-promise": "^4.2.4",
+        "file-loader": "^1.1.6",
+        "postcss-url": "^7.3.0",
+        "autoprefixer": "^7.2.5",
+        "babel-loader": "^7.1.2",
+        "caniuse-lite": "^1.0.30000808",
+        "pretty-error": "^2.1.1",
+        "serve-static": "^1.13.2",
+        "@nuxtjs/youch": "^4.2.3",
+        "html-minifier": "^3.5.9",
+        "launch-editor": "^2.2.1",
+        "css-hot-loader": "^1.3.7",
+        "opencollective": "^1.0.3",
+        "postcss-import": "^11.1.0",
+        "postcss-loader": "^2.1.0",
+        "server-destroy": "^1.0.1",
+        "postcss-cssnext": "^3.1.0",
+        "html-webpack-plugin": "^2.30.1",
+        "vue-server-renderer": "^2.5.17",
+        "babel-preset-vue-app": "^2.0.0",
+        "serialize-javascript": "^1.4.0",
+        "vue-template-compiler": "^2.5.17",
+        "style-resources-loader": "^1.0.0",
+        "webpack-dev-middleware": "^2.0.5",
+        "webpack-hot-middleware": "^2.21.0",
+        "webpack-node-externals": "^1.6.0",
+        "postcss-import-resolver": "^1.1.0",
+        "uglifyjs-webpack-plugin": "^1.1.8",
+        "webpack-bundle-analyzer": "^2.10.0",
+        "launch-editor-middleware": "^2.2.1",
+        "extract-text-webpack-plugin": "^3.0.2",
+        "progress-bar-webpack-plugin": "^1.10.0",
+        "friendly-errors-webpack-plugin": "^1.6.1"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "ava": "^0.25.0",
+        "nyc": "^11.4.1",
+        "jsdom": "^11.6.2",
+        "sinon": "^4.3.0",
+        "eslint": "^4.17.0",
+        "codecov": "^3.0.0",
+        "express": "^4.16.2",
+        "request": "^2.83.0",
+        "cross-env": "^5.1.3",
+        "puppeteer": "^1.9.0",
+        "uglify-js": "^3.3.10",
+        "json-loader": "^0.5.7",
+        "babel-eslint": "^8.2.1",
+        "finalhandler": "^1.1.0",
+        "eslint-plugin-html": "^4.0.2",
+        "eslint-plugin-node": "^6.0.0",
+        "copy-webpack-plugin": "^4.4.1",
+        "eslint-plugin-react": "^7.6.1",
+        "eslint-plugin-import": "^2.8.0",
+        "babel-plugin-istanbul": "^4.1.5",
+        "eslint-plugin-promise": "^3.6.0",
+        "eslint-config-standard": "^11.0.0-beta.0",
+        "eslint-plugin-standard": "^3.0.1",
+        "request-promise-native": "^1.0.5",
+        "eslint-config-standard-jsx": "^4.0.2",
+        "babel-plugin-array-includes": "^2.0.3",
+        "babel-plugin-external-helpers": "^6.22.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_1.4.5_1543340990129_0.031234439919660906",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "2.18.1": {
+      "name": "nuxt",
+      "version": "2.18.1",
+      "keywords": [
+        "nuxt",
+        "nuxt.js",
+        "nuxtjs",
+        "ssr",
+        "vue",
+        "vue isomorphic",
+        "vue server side",
+        "vue ssr",
+        "vue universal",
+        "vue versatile",
+        "vue.js",
+        "vuejs"
+      ],
+      "license": "MIT",
+      "_id": "nuxt@2.18.1",
+      "homepage": "https://github.com/nuxt/nuxt#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxt": "bin/nuxt.js"
+      },
+      "dist": {
+        "shasum": "4e9148c728f6adbbb42c6b6e88a848a09071ecee",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-2.18.1.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-SZFOLDKgCfLu23BrQE0YYNWeoi/h+fw07TNDNDzRfbmMvQlStgTBG7lqeELytXdQnaPKWjWAYo12K7pPPRZb9Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCEEVC/GbeqfbT471Gu/v+b7iOe7lIPOkvgOOyjQGY+egIhAMkdkQ8hQAC+shBHTh8QtIn3JFUEs+WuQdQ89CgS2cGO",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 12482
+      },
+      "main": "dist/nuxt.js",
+      "scripts": {
+        "postinstall": "opencollective || exit 0"
+      },
+      "_npmUser": {
+        "name": "danielroe",
+        "email": "user4@example.com"
+      },
+      "collective": {
+        "url": "https://opencollective.com/nuxtjs",
+        "logoUrl": "https://opencollective.com/nuxtjs/logo.txt?reverse=true&variant=variant2"
+      },
+      "deprecated": "Nuxt 2 has reached EOL and is no longer actively maintained. See https://nuxt.com/blog/nuxt2-eol for more details.",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "distributions/nuxt"
+      },
+      "_npmVersion": "10.7.0",
+      "description": "A minimalistic framework for server-rendered Vue.js applications (inspired by Next.js)",
+      "directories": {},
+      "_nodeVersion": "18.20.3",
+      "dependencies": {
+        "@nuxt/cli": "2.18.1",
+        "@nuxt/core": "2.18.1",
+        "@nuxt/utils": "2.18.1",
+        "@nuxt/config": "2.18.1",
+        "@nuxt/server": "2.18.1",
+        "@nuxt/builder": "2.18.1",
+        "@nuxt/vue-app": "2.18.1",
+        "@nuxt/webpack": "2.18.1",
+        "@nuxt/generator": "2.18.1",
+        "@nuxt/telemetry": "^1.5.0",
+        "@nuxt/components": "^2.2.1",
+        "@nuxt/vue-renderer": "2.18.1",
+        "@nuxt/loading-screen": "^2.0.4",
+        "@nuxt/opencollective": "^0.4.0",
+        "@nuxt/babel-preset-app": "2.18.1"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_2.18.1_1719574515284_0.6761224218700868",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "4.0.0-alpha.4": {
+      "name": "nuxt",
+      "version": "4.0.0-alpha.4",
+      "license": "MIT",
+      "_id": "nuxt@4.0.0-alpha.4",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user6@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "8dd3b151864060b33dc135f33ef0ba430645e9cb",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-4.0.0-alpha.4.tgz",
+        "fileCount": 259,
+        "integrity": "sha512-7iqrEonNhJhQbiAotARMtiRIeyMVgVcYQN4ZOqrVV2R+Xmol62vUPOQxlJ98ogCNgPDLZAtCgA1jUvsO8r16TA==",
+        "signatures": [
+          {
+            "sig": "MEUCIDOuBV2whIJOPNaUsjkCtqUn4N1qfAKONQBaLcSjp0YtAiEAk9qwKRixOtyF1iw7Fp1jWqy88nW0MCBHP6j/aS3TCBg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 744986
+      },
+      "type": "module",
+      "_from": "file:nuxt-4.0.0-alpha.4.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables.d.ts",
+          "import": "./dist/head/runtime/composables.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "danielroe",
+        "actor": {
+          "name": "danielroe",
+          "type": "user",
+          "email": "user4@example.com"
+        },
+        "email": "user4@example.com"
+      },
+      "_resolved": "/private/var/folders/6z/46zhtr8n22zg8nh3bp7cq7c40000gn/T/417e8c8484037480b9304d4af956fc91/nuxt-4.0.0-alpha.4.tgz",
+      "_integrity": "sha512-7iqrEonNhJhQbiAotARMtiRIeyMVgVcYQN4ZOqrVV2R+Xmol62vUPOQxlJ98ogCNgPDLZAtCgA1jUvsO8r16TA==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "10.9.2",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "dependencies": {
+        "h3": "^1.15.3",
+        "c12": "^3.0.4",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.17",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.4.2",
+        "mlly": "^1.7.4",
+        "nypm": "^0.6.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.4.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.2",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.1.1",
+        "esbuild": "^0.25.5",
+        "exsolve": "^1.0.7",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^4.0.3",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.2.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.0.1",
+        "unplugin": "^2.3.5",
+        "@nuxt/cli": "^3.26.0-rc.1",
+        "@nuxt/kit": "4.0.0-alpha.4",
+        "cookie-es": "^2.0.0",
+        "nitropack": "2.11.13",
+        "on-change": "^5.0.1",
+        "pkg-types": "^2.1.0",
+        "ultrahtml": "^1.6.0",
+        "unstorage": "^1.16.0",
+        "oxc-minify": "^0.74.0",
+        "oxc-parser": "^0.74.0",
+        "oxc-walker": "^0.3.0",
+        "tinyglobby": "0.2.14",
+        "vue-router": "^4.5.1",
+        "@unhead/vue": "^2.0.10",
+        "@vue/shared": "^3.5.17",
+        "@nuxt/schema": "4.0.0-alpha.4",
+        "magic-string": "^0.30.17",
+        "@nuxt/devalue": "^2.0.2",
+        "estree-walker": "^3.0.3",
+        "oxc-transform": "^0.74.0",
+        "strip-literal": "^3.0.0",
+        "@nuxt/devtools": "^2.5.0",
+        "mocked-exports": "^0.1.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^1.0.0",
+        "vue-devtools-stub": "^0.1.0",
+        "@nuxt/vite-builder": "4.0.0-alpha.4",
+        "unplugin-vue-router": "^0.12.0",
+        "vue-bundle-renderer": "^2.1.1",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.0.0",
+        "vitest": "3.2.4",
+        "unbuild": "3.5.0",
+        "@nuxt/scripts": "0.11.8",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.17",
+        "@vitejs/plugin-vue": "6.0.0",
+        "vue-sfc-transformer": "0.1.16",
+        "@vitejs/plugin-vue-jsx": "5.0.0"
+      },
+      "peerDependencies": {
+        "@types/node": ">=18.12.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_4.0.0-alpha.4_1751031484630_0.46667687563247084",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.0.0-rc.0": {
+      "name": "nuxt",
+      "version": "4.0.0-rc.0",
+      "license": "MIT",
+      "_id": "nuxt@4.0.0-rc.0",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "antfu",
+          "email": "user6@example.com"
+        }
+      ],
+      "homepage": "https://nuxt.com",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "bin": {
+        "nuxi": "bin/nuxt.mjs",
+        "nuxt": "bin/nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "2024b757c8440080be0e54614269ac8660c5b5a9",
+        "tarball": "https://registry.npmjs.org/nuxt/-/nuxt-4.0.0-rc.0.tgz",
+        "fileCount": 259,
+        "integrity": "sha512-0DLesgb0B5ruSkWMk0Ykh9nPR3TFzBQqWn05gfUx6B5KzJe9v+au9uVDRMMvEFy0gxq/9+w7co4VgsEJDaSqaw==",
+        "signatures": [
+          {
+            "sig": "MEUCIE5y9rx71jAkCPlQs0W9nvl5Lto2Vr6BZg9BmPwYIU1nAiEA6A9IFk9fl7NOxrZymo/p+Du1uiIJQ+/FypeaS2xKjMM=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 746290
+      },
+      "type": "module",
+      "_from": "file:nuxt-4.0.0-rc.0.tgz",
+      "types": "./types.d.ts",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./types.d.mts",
+          "import": "./dist/index.mjs"
+        },
+        "./app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "./kit": {
+          "types": "./kit.d.ts",
+          "import": "./kit.js"
+        },
+        "./config": {
+          "types": "./config.d.ts",
+          "import": "./config.js",
+          "require": "./config.cjs"
+        },
+        "./schema": {
+          "types": "./schema.d.ts",
+          "import": "./schema.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#app": {
+          "types": "./dist/app/index.d.ts",
+          "import": "./dist/app/index.js"
+        },
+        "#app/nuxt": {
+          "types": "./dist/app/nuxt.d.ts",
+          "import": "./dist/app/nuxt.js"
+        },
+        "#unhead/composables": {
+          "types": "./dist/head/runtime/composables.d.ts",
+          "import": "./dist/head/runtime/composables.js"
+        }
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "danielroe",
+        "actor": {
+          "name": "danielroe",
+          "type": "user",
+          "email": "user4@example.com"
+        },
+        "email": "user4@example.com"
+      },
+      "_resolved": "/private/var/folders/6z/46zhtr8n22zg8nh3bp7cq7c40000gn/T/4eedfae9c351fc33ba4cbeb15d4f6708/nuxt-4.0.0-rc.0.tgz",
+      "_integrity": "sha512-0DLesgb0B5ruSkWMk0Ykh9nPR3TFzBQqWn05gfUx6B5KzJe9v+au9uVDRMMvEFy0gxq/9+w7co4VgsEJDaSqaw==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/nuxt"
+      },
+      "_npmVersion": "10.9.2",
+      "description": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "dependencies": {
+        "h3": "^1.15.3",
+        "c12": "^3.0.4",
+        "ufo": "^1.6.1",
+        "vue": "^3.5.17",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.4.2",
+        "mlly": "^1.7.4",
+        "nypm": "^0.6.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "ofetch": "^1.4.1",
+        "radix3": "^1.1.2",
+        "semver": "^7.7.2",
+        "compatx": "^0.2.0",
+        "consola": "^3.4.2",
+        "devalue": "^5.1.1",
+        "esbuild": "^0.25.5",
+        "exsolve": "^1.0.7",
+        "impound": "^1.0.0",
+        "nanotar": "^0.2.0",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "chokidar": "^4.0.3",
+        "hookable": "^5.5.3",
+        "knitwork": "^1.2.0",
+        "uncrypto": "^0.1.3",
+        "unimport": "^5.1.0",
+        "unplugin": "^2.3.5",
+        "@nuxt/cli": "^3.26.0-rc.3",
+        "@nuxt/kit": "4.0.0-rc.0",
+        "cookie-es": "^2.0.0",
+        "nitropack": "2.11.13",
+        "on-change": "^5.0.1",
+        "pkg-types": "^2.2.0",
+        "ultrahtml": "^1.6.0",
+        "unstorage": "^1.16.0",
+        "oxc-minify": "^0.75.1",
+        "oxc-parser": "^0.75.1",
+        "oxc-walker": "^0.3.0",
+        "tinyglobby": "0.2.14",
+        "vue-router": "^4.5.1",
+        "@unhead/vue": "^2.0.12",
+        "@vue/shared": "^3.5.17",
+        "@nuxt/schema": "4.0.0-rc.0",
+        "magic-string": "^0.30.17",
+        "@nuxt/devalue": "^2.0.2",
+        "estree-walker": "^3.0.3",
+        "oxc-transform": "^0.75.1",
+        "strip-literal": "^3.0.0",
+        "@nuxt/devtools": "^2.6.2",
+        "mocked-exports": "^0.1.1",
+        "@nuxt/telemetry": "^2.6.6",
+        "perfect-debounce": "^1.0.0",
+        "vue-devtools-stub": "^0.1.0",
+        "@nuxt/vite-builder": "4.0.0-rc.0",
+        "unplugin-vue-router": "^0.14.0",
+        "vue-bundle-renderer": "^2.1.1",
+        "escape-string-regexp": "^5.0.0"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.0.2",
+        "vitest": "3.2.4",
+        "unbuild": "3.5.0",
+        "@nuxt/scripts": "0.11.9",
+        "@types/estree": "1.0.8",
+        "@parcel/watcher": "2.5.1",
+        "@vue/compiler-sfc": "3.5.17",
+        "@vitejs/plugin-vue": "6.0.0",
+        "vue-sfc-transformer": "0.1.16",
+        "@vitejs/plugin-vue-jsx": "5.0.1"
+      },
+      "peerDependencies": {
+        "@types/node": ">=18.12.0",
+        "@parcel/watcher": "^2.1.0"
+      },
+      "peerDependenciesMeta": {
+        "@types/node": {
+          "optional": true
+        },
+        "@parcel/watcher": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/nuxt_4.0.0-rc.0_1751928268007_0.6467807233247032",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-01-22T23:04:50.858Z",
+    "created": "2016-10-26T11:41:36.169Z",
+    "3.21.0": "2026-01-22T23:04:50.573Z",
+    "4.3.0": "2026-01-22T23:02:15.086Z",
+    "4.2.2": "2025-12-09T17:19:31.667Z",
+    "3.20.2": "2025-12-09T17:14:26.265Z",
+    "4.2.1": "2025-11-06T23:56:54.412Z",
+    "3.20.1": "2025-11-06T23:53:43.885Z",
+    "3.20.0": "2025-10-28T11:02:04.225Z",
+    "4.2.0": "2025-10-25T05:57:26.265Z",
+    "4.1.3": "2025-10-06T16:06:31.908Z",
+    "3.19.3": "2025-10-06T15:51:33.588Z",
+    "1.4.5": "2018-11-27T17:49:50.250Z",
+    "2.18.1": "2024-06-28T11:35:15.434Z",
+    "4.0.0-alpha.4": "2025-06-27T13:38:04.826Z",
+    "4.0.0-rc.0": "2025-07-07T22:44:28.218Z"
+  },
+  "maintainers": [
+    {
+      "name": "nuxtbot",
+      "email": "user2@example.com"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://nuxt.com",
+  "repository": {
+    "url": "git+https://github.com/nuxt/nuxt.git",
+    "type": "git",
+    "directory": "packages/nuxt"
+  },
+  "bugs": {
+    "url": "https://github.com/nuxt/nuxt/issues"
+  },
+  "readme": "",
+  "readmeFilename": ""
+}
