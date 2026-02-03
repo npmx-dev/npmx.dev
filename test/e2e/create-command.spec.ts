@@ -1,9 +1,6 @@
 import { expect, test } from '@nuxt/test-utils/playwright'
 
 test.describe('Create Command', () => {
-  // TODO: these tests depend on external npm registry API - we should add data fixtures
-  test.describe.configure({ retries: 2 })
-
   test.describe('Visibility', () => {
     test('/vite - should show create command (same maintainers)', async ({ page, goto }) => {
       await goto('/package/vite', { waitUntil: 'domcontentloaded' })

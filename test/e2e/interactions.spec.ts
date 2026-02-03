@@ -1,8 +1,6 @@
 import { expect, test } from '@nuxt/test-utils/playwright'
 
 test.describe('Search Pages', () => {
-  // TODO: these tests depend on external npm registry API - we should add data fixtures
-  test.describe.configure({ retries: 2 })
   test('/search?q=vue → keyboard navigation (arrow keys + enter)', async ({ page, goto }) => {
     await goto('/search?q=vue', { waitUntil: 'hydration' })
 

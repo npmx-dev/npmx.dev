@@ -25,6 +25,7 @@
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare && simple-git-hooks && pnpm generate:lexicons",
+    "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
     "test:browser": "playwright test",

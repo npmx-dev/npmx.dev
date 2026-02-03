@@ -1,0 +1,1414 @@
+{
+  "_id": "@nuxt/kit",
+  "_rev": "145-1a44fc8dbb407dbf9af8dabe1667dad8",
+  "name": "@nuxt/kit",
+  "description": "Toolkit for authoring modules and interacting with Nuxt",
+  "dist-tags": {
+    "alpha": "4.0.0-alpha.4",
+    "rc": "4.0.0-rc.0",
+    "3x": "3.21.0",
+    "latest": "4.3.0"
+  },
+  "versions": {
+    "3.21.0": {
+      "name": "@nuxt/kit",
+      "version": "3.21.0",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "directory": "packages/kit"
+      },
+      "homepage": "https://nuxt.com/docs/api/kit",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "license": "MIT",
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "dependencies": {
+        "c12": "^3.3.3",
+        "consola": "^3.4.2",
+        "defu": "^6.1.4",
+        "destr": "^2.0.5",
+        "errx": "^0.1.0",
+        "exsolve": "^1.0.8",
+        "ignore": "^7.0.5",
+        "jiti": "^2.6.1",
+        "klona": "^2.0.6",
+        "knitwork": "^1.3.0",
+        "mlly": "^1.8.0",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "pkg-types": "^2.3.0",
+        "rc9": "^2.1.2",
+        "scule": "^1.3.0",
+        "semver": "^7.7.3",
+        "tinyglobby": "^0.2.15",
+        "ufo": "^1.6.3",
+        "unctx": "^2.5.0",
+        "untyped": "^2.0.0"
+      },
+      "devDependencies": {
+        "@rspack/core": "1.7.2",
+        "@types/lodash-es": "4.17.12",
+        "@types/semver": "7.7.1",
+        "hookable": "5.5.3",
+        "lodash-es": "4.17.22",
+        "nitro": "3.0.1-alpha.1",
+        "nitropack": "2.13.1",
+        "unbuild": "3.6.1",
+        "unimport": "5.6.0",
+        "vite": "7.3.1",
+        "vitest": "3.2.4",
+        "webpack": "5.104.1",
+        "@nuxt/schema": "3.21.0"
+      },
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "scripts": {
+        "build:stub": "unbuild --stub",
+        "test:attw": "attw --pack"
+      },
+      "readmeFilename": "README.md",
+      "_id": "@nuxt/kit@3.21.0",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "_integrity": "sha512-KMTLK/dsGaQioZzkYUvgfN9le4grNW54aNcA1jqzgVZLcFVy4jJfrJr5WZio9NT2EMfajdoZ+V28aD7BRr4Zfw==",
+      "_resolved": "/tmp/3f2473578eff9bc7e6aae8c6096b6e23/nuxt-kit-3.21.0.tgz",
+      "_from": "file:nuxt-kit-3.21.0.tgz",
+      "_nodeVersion": "25.4.0",
+      "_npmVersion": "11.7.0",
+      "dist": {
+        "integrity": "sha512-KMTLK/dsGaQioZzkYUvgfN9le4grNW54aNcA1jqzgVZLcFVy4jJfrJr5WZio9NT2EMfajdoZ+V28aD7BRr4Zfw==",
+        "shasum": "4267fab25e29101ef488bf18350cada4ebdddc76",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-3.21.0.tgz",
+        "fileCount": 6,
+        "unpackedSize": 184015,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@3.21.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDabNPyEN+sWwp5EwdJbdmUQWnSEdyFDZAv7HRlabGaPAIgVHSEOOpM640xEJuBhjoptLJFn/RDPRDt4FMPPD+c6Qk="
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/kit_3.21.0_1769123067251_0.38769963232394233"
+      },
+      "_hasShrinkwrap": false
+    },
+    "4.3.0": {
+      "name": "@nuxt/kit",
+      "version": "4.3.0",
+      "license": "MIT",
+      "_id": "@nuxt/kit@4.3.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/4.x/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "2ea76259a2ba5b27d6ae6998202957123616665e",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-4.3.0.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-cD/0UU9RQmlnTbmyJTDyzN8f6CzpziDLv3tFQCnwl0Aoxt3KmFu4k/XA4Sogxqj7jJ/3cdX1kL+Lnsh34sxcQQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIB9NY/xbYA3kV7CXQ5yFRKT9SMH3sX2nQAZQ1cC61KXWAiEAt+CcOyciTwDaarv/peOj9FQ4Mv49cYL7TzJp3gMYxwk=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@4.3.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 109145
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-4.3.0.tgz",
+      "types": "./dist/index.d.mts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack",
+        "build:stub": "obuild --stub"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/7617deb486d8231527880e283965e499/nuxt-kit-4.3.0.tgz",
+      "_integrity": "sha512-cD/0UU9RQmlnTbmyJTDyzN8f6CzpziDLv3tFQCnwl0Aoxt3KmFu4k/XA4Sogxqj7jJ/3cdX1kL+Lnsh34sxcQQ==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "25.4.0",
+      "dependencies": {
+        "c12": "^3.3.3",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.3",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.5.0",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.3",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.8",
+        "untyped": "^2.0.0",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.3.1",
+        "nitro": "3.0.1-alpha.1",
+        "obuild": "0.4.14",
+        "vitest": "3.2.4",
+        "webpack": "5.104.1",
+        "hookable": "5.5.3",
+        "unimport": "5.6.0",
+        "nitropack": "2.13.1",
+        "@nuxt/schema": "4.3.0",
+        "@rspack/core": "1.7.2",
+        "@types/semver": "7.7.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_4.3.0_1769122913335_0.34034876641735257",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.2.2": {
+      "name": "@nuxt/kit",
+      "version": "4.2.2",
+      "license": "MIT",
+      "_id": "@nuxt/kit@4.2.2",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/4.x/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "f3f900a59e8c8f71313e31366c9319806ac9c9e7",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-4.2.2.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-ZAgYBrPz/yhVgDznBNdQj2vhmOp31haJbO0I0iah/P9atw+OHH7NJLUZ3PK+LOz/0fblKTN1XJVSi8YQ1TQ0KA==",
+        "signatures": [
+          {
+            "sig": "MEUCICkbBfwwUue/D6dvBynCwJ2qhAbKc6in7zY57m6+uY8cAiEAwtDc86bq33vGs9hDWhcPTle6IQz085CpjIn5PatJFHc=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@4.2.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 129226
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-4.2.2.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/f75d204f3d539209fe785bc890289af2/nuxt-kit-4.2.2.tgz",
+      "_integrity": "sha512-ZAgYBrPz/yhVgDznBNdQj2vhmOp31haJbO0I0iah/P9atw+OHH7NJLUZ3PK+LOz/0fblKTN1XJVSi8YQ1TQ0KA==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "25.2.1",
+      "dependencies": {
+        "c12": "^3.3.2",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.3",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.8",
+        "untyped": "^2.0.0",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.2.7",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "webpack": "5.103.0",
+        "hookable": "5.5.3",
+        "unimport": "5.5.0",
+        "nitropack": "2.12.9",
+        "@nuxt/schema": "4.2.2",
+        "@rspack/core": "1.6.7",
+        "@types/semver": "7.7.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_4.2.2_1765300741657_0.3045726855513571",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.20.2": {
+      "name": "@nuxt/kit",
+      "version": "3.20.2",
+      "license": "MIT",
+      "_id": "@nuxt/kit@3.20.2",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "6af1b227f15ee9518337b1306829872d17a6e341",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-3.20.2.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-laqfmMcWWNV1FsVmm1+RQUoGY8NIJvCRl0z0K8ikqPukoEry0LXMqlQ+xaf8xJRvoH2/78OhZmsEEsUBTXipcw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCl6dC6ZAg170P+8EHQSr0Ieg3kuaRr1Usu+hfEzSmCfQIhAI3+2yiWfvQReqdzcmAEJL1dht6hUHn4PdIXKmBp4WAz",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@3.20.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 180924
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-3.20.2.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/35fe817ae3de4f8fc15c89535b1b0f3d/nuxt-kit-3.20.2.tgz",
+      "_integrity": "sha512-laqfmMcWWNV1FsVmm1+RQUoGY8NIJvCRl0z0K8ikqPukoEry0LXMqlQ+xaf8xJRvoH2/78OhZmsEEsUBTXipcw==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "25.2.1",
+      "dependencies": {
+        "c12": "^3.3.2",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.3",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.8",
+        "untyped": "^2.0.0",
+        "knitwork": "^1.3.0",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.2.7",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "webpack": "5.103.0",
+        "hookable": "5.5.3",
+        "unimport": "5.5.0",
+        "lodash-es": "4.17.21",
+        "nitropack": "2.12.9",
+        "@nuxt/schema": "3.20.2",
+        "@rspack/core": "1.6.7",
+        "@types/semver": "7.7.1",
+        "@types/lodash-es": "4.17.12"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_3.20.2_1765300436802_0.3016098342794422",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.2.1": {
+      "name": "@nuxt/kit",
+      "version": "4.2.1",
+      "license": "MIT",
+      "_id": "@nuxt/kit@4.2.1",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/4.x/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "a53fdff6c99454414db6a2b037b895a50723fdcc",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-4.2.1.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-lLt8KLHyl7IClc3RqRpRikz15eCfTRlAWL9leVzPyg5N87FfKE/7EWgWvpiL/z4Tf3dQCIqQb88TmHE0JTIDvA==",
+        "signatures": [
+          {
+            "sig": "MEQCICCKLa3DRYwBvPP6Hrji+QlZXejCAsLLKA3r07nf0+e3AiAwDsWvRdjWafBZqXBAUwUFSpLbIWqQZnFmlmGo1/wpew==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@4.2.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 127916
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-4.2.1.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/3cd3fd4f9d1d638e4f6d763d68ddc29a/nuxt-kit-4.2.1.tgz",
+      "_integrity": "sha512-lLt8KLHyl7IClc3RqRpRikz15eCfTRlAWL9leVzPyg5N87FfKE/7EWgWvpiL/z4Tf3dQCIqQb88TmHE0JTIDvA==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "25.1.0",
+      "dependencies": {
+        "c12": "^3.3.1",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.3",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.7",
+        "untyped": "^2.0.0",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.2.1",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "webpack": "5.102.1",
+        "hookable": "5.5.3",
+        "unimport": "5.5.0",
+        "nitropack": "2.12.9",
+        "@nuxt/schema": "4.2.1",
+        "@rspack/core": "1.6.1",
+        "@types/semver": "7.7.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_4.2.1_1762473383392_0.15327281836607654",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.20.1": {
+      "name": "@nuxt/kit",
+      "version": "3.20.1",
+      "license": "MIT",
+      "_id": "@nuxt/kit@3.20.1",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "0cf6d00b1fda03408d9e2ab3048b8cad73abb2e9",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-3.20.1.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-TIslaylfI5kd3AxX5qts0qyrIQ9Uq3HAA1bgIIJ+c+zpDfK338YS+YrCWxBBzDMECRCbAS58mqAd2MtJfG1ENA==",
+        "signatures": [
+          {
+            "sig": "MEUCIA2MhASQD67fh93Njz7YhcfxLT/03kf5EChRQBX/Zt3JAiEAm6UWzm/cLP/ExsWGXAsTCNDNzm2RkTZIYFRPFbMuasg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@3.20.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 179709
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-3.20.1.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/9ef526e75cc816c30a300efbbcc7f237/nuxt-kit-3.20.1.tgz",
+      "_integrity": "sha512-TIslaylfI5kd3AxX5qts0qyrIQ9Uq3HAA1bgIIJ+c+zpDfK338YS+YrCWxBBzDMECRCbAS58mqAd2MtJfG1ENA==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "25.1.0",
+      "dependencies": {
+        "c12": "^3.3.1",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.3",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.7",
+        "untyped": "^2.0.0",
+        "knitwork": "^1.2.0",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.2.1",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "webpack": "5.102.1",
+        "hookable": "5.5.3",
+        "unimport": "5.5.0",
+        "lodash-es": "4.17.21",
+        "nitropack": "2.12.9",
+        "@nuxt/schema": "3.20.1",
+        "@rspack/core": "1.6.1",
+        "@types/semver": "7.7.1",
+        "@types/lodash-es": "4.17.12"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_3.20.1_1762473191312_0.5463613598661883",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.20.0": {
+      "name": "@nuxt/kit",
+      "version": "3.20.0",
+      "license": "MIT",
+      "_id": "@nuxt/kit@3.20.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "80e1e4621d0f0e09f32e405c2e98a2adeb6ea33b",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-3.20.0.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-EoF1Gf0SPj9vxgAIcGEH+a4PRLC7Dwsy21K6f5+POzylT8DgssN8zL5pwXC+X7OcfzBrwYFh7mM7phvh7ubgeg==",
+        "signatures": [
+          {
+            "sig": "MEUCIAZyrn0KI7+om5AoqBQlmYXTwgyhzW4zqiSZ3WpbiyBVAiEA2wPHyPQIgaZUuUafzBTN7ELvhWyVBAdDph3Bem9Ce5E=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@3.20.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 179807
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-3.20.0.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/e8f762facd542a3a9d5a878b14b729fe/nuxt-kit-3.20.0.tgz",
+      "_integrity": "sha512-EoF1Gf0SPj9vxgAIcGEH+a4PRLC7Dwsy21K6f5+POzylT8DgssN8zL5pwXC+X7OcfzBrwYFh7mM7phvh7ubgeg==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "25.0.0",
+      "dependencies": {
+        "c12": "^3.3.0",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.3",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.7",
+        "untyped": "^2.0.0",
+        "knitwork": "^1.2.0",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.1.9",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "webpack": "5.102.1",
+        "hookable": "5.5.3",
+        "unimport": "5.4.1",
+        "lodash-es": "4.17.21",
+        "nitropack": "2.12.8",
+        "@nuxt/schema": "3.20.0",
+        "@rspack/core": "1.5.8",
+        "@types/semver": "7.7.1",
+        "@types/lodash-es": "4.17.12"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_3.20.0_1761649293832_0.5053405999763882",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.2.0": {
+      "name": "@nuxt/kit",
+      "version": "4.2.0",
+      "license": "MIT",
+      "_id": "@nuxt/kit@4.2.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/4.x/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "4a87246efc5b28d20c5b0a96e5fde9afb4f58ce4",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-4.2.0.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-1yN3LL6RDN5GjkNLPUYCbNRkaYnat6hqejPyfIBBVzrWOrpiQeNMGxQM/IcVdaSuBJXAnu0sUvTKXpXkmPhljg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCaTu0TZNr6YYkbrSGwOr8MMjUEuGMHLAafB4bvPVl3OAIhAIfpXsGdsefZ0LHIR/MsRynQ/UpiOAf5/zPRL96E/Lew",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@4.2.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 128015
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-4.2.0.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/07a4d7702fb6960bd7030ee1a39f8629/nuxt-kit-4.2.0.tgz",
+      "_integrity": "sha512-1yN3LL6RDN5GjkNLPUYCbNRkaYnat6hqejPyfIBBVzrWOrpiQeNMGxQM/IcVdaSuBJXAnu0sUvTKXpXkmPhljg==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "25.0.0",
+      "dependencies": {
+        "c12": "^3.3.1",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.3",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.7",
+        "untyped": "^2.0.0",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.1.12",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "webpack": "5.102.1",
+        "hookable": "5.5.3",
+        "unimport": "5.5.0",
+        "nitropack": "2.12.8",
+        "@nuxt/schema": "4.2.0",
+        "@rspack/core": "1.5.8",
+        "@types/semver": "7.7.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_4.2.0_1761371814309_0.4631740888342295",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.1.3": {
+      "name": "@nuxt/kit",
+      "version": "4.1.3",
+      "license": "MIT",
+      "_id": "@nuxt/kit@4.1.3",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/4.x/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "c2536419c0f8b4bdd2c3eb5dd158a1cd2baba705",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-4.1.3.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-WK0yPIqcb3GQ8r4GutF6p/2fsyXnmmmkuwVLzN4YaJHrpA2tjEagjbxdjkWYeHW8o4XIKJ4micah4wPOVK49Mg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDtcy3YX0ODmS2Gz99VZgn2V/D0brYVtJpwsIyal+CqLwIgTopmPUXsh5/dqFUpMy59KsU8pJJWkH5IYghAHEpofms=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@4.1.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 123835
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-4.1.3.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/a93593c8c78db2733894054454f22e77/nuxt-kit-4.1.3.tgz",
+      "_integrity": "sha512-WK0yPIqcb3GQ8r4GutF6p/2fsyXnmmmkuwVLzN4YaJHrpA2tjEagjbxdjkWYeHW8o4XIKJ4micah4wPOVK49Mg==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "24.9.0",
+      "dependencies": {
+        "c12": "^3.3.0",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.2",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.7",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "unimport": "^5.4.1",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vite": "7.1.9",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "webpack": "5.102.0",
+        "hookable": "5.5.3",
+        "nitropack": "2.12.6",
+        "@nuxt/schema": "4.1.3",
+        "@rspack/core": "1.5.8",
+        "@types/semver": "7.7.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_4.1.3_1759766770910_0.7922022324858444",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.19.3": {
+      "name": "@nuxt/kit",
+      "version": "3.19.3",
+      "license": "MIT",
+      "_id": "@nuxt/kit@3.19.3",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "9574122aa9f903360380368c154524ae82f02eea",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-3.19.3.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-ze46EW5xW+UxDvinvPkYt2MzR355Az1lA3bpX8KDialgnCwr+IbkBij/udbUEC6ZFbidPkfK1eKl4ESN7gMY+w==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCJvHp+u4B/h68VOTz1moOtFj1091AO/xtoBk+JIK+xOAIhALmqw/vFx5eNBkteVNYDdlKsXyx1DdZ5CKSRDE/IKrem",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@nuxt%2fkit@3.19.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 175335
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-3.19.3.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba131b18-fdae-4501-8d1e-723095f43235"
+        }
+      },
+      "_resolved": "/tmp/3b7d31378347efebacf41ea6b744bc5f/nuxt-kit-3.19.3.tgz",
+      "_integrity": "sha512-ze46EW5xW+UxDvinvPkYt2MzR355Az1lA3bpX8KDialgnCwr+IbkBij/udbUEC6ZFbidPkfK1eKl4ESN7gMY+w==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "24.9.0",
+      "dependencies": {
+        "c12": "^3.3.0",
+        "rc9": "^2.1.2",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.6.1",
+        "mlly": "^1.8.0",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.2",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.7",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "knitwork": "^1.2.0",
+        "unimport": "^5.4.1",
+        "pkg-types": "^2.3.0",
+        "tinyglobby": "^0.2.15"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.1.9",
+        "vitest": "3.2.4",
+        "unbuild": "3.6.1",
+        "webpack": "5.102.0",
+        "hookable": "5.5.3",
+        "lodash-es": "4.17.21",
+        "nitropack": "2.12.6",
+        "@nuxt/schema": "3.19.3",
+        "@rspack/core": "1.5.8",
+        "@types/semver": "7.7.1",
+        "@types/lodash-es": "4.17.12"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_3.19.3_1759765872183_0.22054410156514948",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.0.0-alpha.4": {
+      "name": "@nuxt/kit",
+      "version": "4.0.0-alpha.4",
+      "license": "MIT",
+      "_id": "@nuxt/kit@4.0.0-alpha.4",
+      "maintainers": [
+        {
+          "name": "atinux",
+          "email": "atinux@gmail.com"
+        },
+        {
+          "name": "pi0",
+          "email": "pyapar@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "daniel@roe.dev"
+        },
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "fd0ad037cec4cdbefbda9044ee413b65507aa6a8",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-4.0.0-alpha.4.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-hWpb+scyDqdDSyGhN2nDRmZreaEkCdP5E0idHyfAgJhSZkknYIISBn/uVSU71LLSz1H8w6tPfWTcayOZxQC1Eg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD4MLM1Ul4zUgUX9C5yk6SSsrb7OD6etBy/g+RP7xuuAwIhAO5EJK73RRqrOxstY/PH/w1c75KtSB3uJebrhTScnn0v",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 102423
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-4.0.0-alpha.4.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "danielroe",
+        "actor": {
+          "name": "danielroe",
+          "type": "user",
+          "email": "daniel@roe.dev"
+        },
+        "email": "daniel@roe.dev"
+      },
+      "_resolved": "/private/var/folders/6z/46zhtr8n22zg8nh3bp7cq7c40000gn/T/cb0d8015d097e55ee490bc54dbc9b6d0/nuxt-kit-4.0.0-alpha.4.tgz",
+      "_integrity": "sha512-hWpb+scyDqdDSyGhN2nDRmZreaEkCdP5E0idHyfAgJhSZkknYIISBn/uVSU71LLSz1H8w6tPfWTcayOZxQC1Eg==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "10.9.2",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "dependencies": {
+        "c12": "^3.0.4",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.4.2",
+        "mlly": "^1.7.4",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.2",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.7",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "unimport": "^5.0.1",
+        "pkg-types": "^2.1.0",
+        "tinyglobby": "^0.2.14"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.0.0",
+        "vitest": "3.2.4",
+        "unbuild": "3.5.0",
+        "webpack": "5.99.9",
+        "hookable": "5.5.3",
+        "nitropack": "2.11.13",
+        "@nuxt/schema": "4.0.0-alpha.4",
+        "@rspack/core": "1.3.15",
+        "@types/semver": "7.7.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_4.0.0-alpha.4_1751031471449_0.684349668829201",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "4.0.0-rc.0": {
+      "name": "@nuxt/kit",
+      "version": "4.0.0-rc.0",
+      "license": "MIT",
+      "_id": "@nuxt/kit@4.0.0-rc.0",
+      "maintainers": [
+        {
+          "name": "atinux",
+          "email": "atinux@gmail.com"
+        },
+        {
+          "name": "pi0",
+          "email": "pyapar@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "daniel@roe.dev"
+        },
+        {
+          "name": "nuxtbot",
+          "email": "nuxtbot@roe.dev"
+        }
+      ],
+      "homepage": "https://nuxt.com/docs/api/kit",
+      "bugs": {
+        "url": "https://github.com/nuxt/nuxt/issues"
+      },
+      "dist": {
+        "shasum": "58c8c5c9de5168f30db3e3ff5dac685c333f6032",
+        "tarball": "https://registry.npmjs.org/@nuxt/kit/-/kit-4.0.0-rc.0.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-VgiR4y1HBDwu/c/TbNTuzX+FdmsAnMPFLh4InMdnkSyQHK48CdD8q2L3YCEkh9dqFzvRj5rOF2HhrqQsGbTATA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDuVDnZ1rJf31eypDkBtdosKNNDR9u1Zf9d0NWKo59gpQIhAOyNcH4drta6Ks0o7dBDl5eLw7vxqaRiEDSZhpht4aL1",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 107100
+      },
+      "type": "module",
+      "_from": "file:nuxt-kit-4.0.0-rc.0.tgz",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": ">=18.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.mjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "test:attw": "attw --pack"
+      },
+      "_npmUser": {
+        "name": "danielroe",
+        "actor": {
+          "name": "danielroe",
+          "type": "user",
+          "email": "daniel@roe.dev"
+        },
+        "email": "daniel@roe.dev"
+      },
+      "_resolved": "/private/var/folders/6z/46zhtr8n22zg8nh3bp7cq7c40000gn/T/af6549cc9d6a68ff79d6d0089dac5ac6/nuxt-kit-4.0.0-rc.0.tgz",
+      "_integrity": "sha512-VgiR4y1HBDwu/c/TbNTuzX+FdmsAnMPFLh4InMdnkSyQHK48CdD8q2L3YCEkh9dqFzvRj5rOF2HhrqQsGbTATA==",
+      "repository": {
+        "url": "git+https://github.com/nuxt/nuxt.git",
+        "type": "git",
+        "directory": "packages/kit"
+      },
+      "_npmVersion": "10.9.2",
+      "description": "Toolkit for authoring modules and interacting with Nuxt",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "dependencies": {
+        "c12": "^3.0.4",
+        "ufo": "^1.6.1",
+        "defu": "^6.1.4",
+        "errx": "^0.1.0",
+        "jiti": "^2.4.2",
+        "mlly": "^1.7.4",
+        "destr": "^2.0.5",
+        "klona": "^2.0.6",
+        "ohash": "^2.0.11",
+        "pathe": "^2.0.3",
+        "scule": "^1.3.0",
+        "unctx": "^2.4.1",
+        "ignore": "^7.0.5",
+        "semver": "^7.7.2",
+        "consola": "^3.4.2",
+        "exsolve": "^1.0.7",
+        "std-env": "^3.9.0",
+        "untyped": "^2.0.0",
+        "unimport": "^5.1.0",
+        "pkg-types": "^2.2.0",
+        "tinyglobby": "^0.2.14"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vite": "7.0.2",
+        "vitest": "3.2.4",
+        "unbuild": "3.5.0",
+        "webpack": "5.99.9",
+        "hookable": "5.5.3",
+        "nitropack": "2.11.13",
+        "@nuxt/schema": "4.0.0-rc.0",
+        "@rspack/core": "1.4.4",
+        "@types/semver": "7.7.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/kit_4.0.0-rc.0_1751928216118_0.0328423415901169",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-01-22T23:04:27.708Z",
+    "created": "2021-04-04T15:52:31.292Z",
+    "3.21.0": "2026-01-22T23:04:27.418Z",
+    "4.3.0": "2026-01-22T23:01:53.501Z",
+    "4.2.2": "2025-12-09T17:19:01.817Z",
+    "3.20.2": "2025-12-09T17:13:56.971Z",
+    "4.2.1": "2025-11-06T23:56:23.667Z",
+    "3.20.1": "2025-11-06T23:53:11.564Z",
+    "3.20.0": "2025-10-28T11:01:34.041Z",
+    "4.2.0": "2025-10-25T05:56:54.519Z",
+    "4.1.3": "2025-10-06T16:06:11.115Z",
+    "3.19.3": "2025-10-06T15:51:12.361Z",
+    "4.0.0-alpha.4": "2025-06-27T13:37:51.620Z",
+    "4.0.0-rc.0": "2025-07-07T22:43:36.277Z"
+  },
+  "maintainers": [
+    {
+      "name": "nuxtbot",
+      "email": "nuxtbot@roe.dev"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://nuxt.com/docs/4.x/api/kit",
+  "repository": {
+    "url": "git+https://github.com/nuxt/nuxt.git",
+    "type": "git",
+    "directory": "packages/kit"
+  },
+  "bugs": {
+    "url": "https://github.com/nuxt/nuxt/issues"
+  },
+  "readme": "",
+  "readmeFilename": ""
+}

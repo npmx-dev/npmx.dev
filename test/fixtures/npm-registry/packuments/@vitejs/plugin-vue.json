@@ -1,0 +1,1397 @@
+{
+  "_id": "@vitejs/plugin-vue",
+  "_rev": "130-46c6768c99b33be81fe83e9d8df230e9",
+  "name": "@vitejs/plugin-vue",
+  "description": "The official plugin for Vue SFC support in Vite.",
+  "dist-tags": {
+    "alpha": "5.0.0-alpha.0",
+    "previous": "4.6.2",
+    "beta": "6.0.0-beta.2",
+    "latest": "6.0.4"
+  },
+  "versions": {
+    "6.0.4": {
+      "name": "@vitejs/plugin-vue",
+      "version": "6.0.4",
+      "type": "module",
+      "license": "MIT",
+      "author": {
+        "name": "Evan You"
+      },
+      "description": "The official plugin for Vue SFC support in Vite.",
+      "keywords": ["vite", "vite-plugin", "vue"],
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./package.json": "./package.json"
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "directory": "packages/plugin-vue"
+      },
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "peerDependencies": {
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0",
+        "vue": "^3.2.25"
+      },
+      "devDependencies": {
+        "@jridgewell/gen-mapping": "^0.3.13",
+        "@jridgewell/trace-mapping": "^0.3.31",
+        "obug": "^2.1.1",
+        "rollup": "^4.57.1",
+        "slash": "^5.1.0",
+        "source-map-js": "^1.2.1",
+        "tsdown": "^0.20.1",
+        "vite": "^7.3.1",
+        "vue": "^3.5.27"
+      },
+      "dependencies": {
+        "@rolldown/pluginutils": "1.0.0-rc.2"
+      },
+      "compatiblePackages": {
+        "schemaVersion": 1,
+        "rolldown": {
+          "type": "incompatible",
+          "reason": "Uses Vite-specific APIs"
+        },
+        "rollup": {
+          "type": "incompatible",
+          "reason": "Uses Vite-specific APIs"
+        }
+      },
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown"
+      },
+      "_id": "@vitejs/plugin-vue@6.0.4",
+      "_integrity": "sha512-uM5iXipgYIn13UUQCZNdWkYk+sysBeA97d5mHsAoAt1u/wpN3+zxOmsVJWosuzX+IMGRzeYUNytztrYznboIkQ==",
+      "_resolved": "/tmp/d683b775373ae09739c422a739ea4874/vitejs-plugin-vue-6.0.4.tgz",
+      "_from": "file:vitejs-plugin-vue-6.0.4.tgz",
+      "_nodeVersion": "24.13.0",
+      "_npmVersion": "11.8.0",
+      "dist": {
+        "integrity": "sha512-uM5iXipgYIn13UUQCZNdWkYk+sysBeA97d5mHsAoAt1u/wpN3+zxOmsVJWosuzX+IMGRzeYUNytztrYznboIkQ==",
+        "shasum": "f571fe5aeb0be511e3bfdd43844d8eaa0738b28e",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-6.0.4.tgz",
+        "fileCount": 5,
+        "unpackedSize": 74771,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@6.0.4",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCtndvPQtietAbQXSUINFu2c+76IN4F9N4S9fuVhWLjNQIhAI5ZMw84Z1lxxVqyzlmsagv8h2se9x3AMctuhEy03Bce"
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c46a2df0-6d07-4e58-bb52-a174d20ac7a9"
+        }
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "npm@sxzz.moe"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/plugin-vue_6.0.4_1770029973545_0.08783379278762604"
+      },
+      "_hasShrinkwrap": false
+    },
+    "6.0.3": {
+      "name": "@vitejs/plugin-vue",
+      "version": "6.0.3",
+      "keywords": ["vite", "vite-plugin", "vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@6.0.3",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "b857c5dcbc5cfb30bf5d7f9d6e274afcca2d46d1",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-6.0.3.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-TlGPkLFLVOY3T7fZrwdvKpjprR3s4fxRln0ORDo1VQ7HHyxJwTlrjKU3kpVWTlaAjIEuCTokmjkZnr8Tpc925w==",
+        "signatures": [
+          {
+            "sig": "MEQCID5RsKOeCYg6EluEC6CndnpxH2BgNfRE9TSNx+Rx/LwLAiB3yOzis8Kb+GoZSsrfXbT9ed8aV0ll+OiKop3ShXMH1Q==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@6.0.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 74779
+      },
+      "type": "module",
+      "_from": "file:vitejs-plugin-vue-6.0.3.tgz",
+      "tsdown": {
+        "dts": {
+          "tsgo": true
+        }
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c46a2df0-6d07-4e58-bb52-a174d20ac7a9"
+        }
+      },
+      "_resolved": "/tmp/ec2359867fe216835e17b2c32f3ae75c/vitejs-plugin-vue-6.0.3.tgz",
+      "_integrity": "sha512-TlGPkLFLVOY3T7fZrwdvKpjprR3s4fxRln0ORDo1VQ7HHyxJwTlrjKU3kpVWTlaAjIEuCTokmjkZnr8Tpc925w==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "The official plugin for Vue SFC support in Vite.",
+      "directories": {},
+      "_nodeVersion": "24.11.1",
+      "dependencies": {
+        "@rolldown/pluginutils": "1.0.0-beta.53"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vue": "^3.5.25",
+        "obug": "^2.1.1",
+        "vite": "^7.2.6",
+        "slash": "^5.1.0",
+        "rollup": "^4.53.3",
+        "tsdown": "^0.17.0-beta.6",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.13",
+        "@jridgewell/trace-mapping": "^0.3.31"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_6.0.3_1765527443206_0.7183293790202103",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "6.0.2": {
+      "name": "@vitejs/plugin-vue",
+      "version": "6.0.2",
+      "keywords": ["vite", "vite-plugin", "vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@6.0.2",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "318d1828fe73e4a0b73f473040dcb3ad52db38ec",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-6.0.2.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-iHmwV3QcVGGvSC1BG5bZ4z6iwa1SOpAPWmnjOErd4Ske+lZua5K9TtAVdx0gMBClJ28DViCbSmZitjWZsWO3LA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCkbx746pHomALXP4t5gnB6Sezvq25aI8pqHIH1KBVV0gIgQP++3x4S2+rJ6L72jYqnRyEcoV4U6GjF42RUPf5X38M=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@6.0.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 84308
+      },
+      "type": "module",
+      "_from": "file:vitejs-plugin-vue-6.0.2.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c46a2df0-6d07-4e58-bb52-a174d20ac7a9"
+        }
+      },
+      "_resolved": "/tmp/31c2372b0821872e0d577244eaad609c/vitejs-plugin-vue-6.0.2.tgz",
+      "_integrity": "sha512-iHmwV3QcVGGvSC1BG5bZ4z6iwa1SOpAPWmnjOErd4Ske+lZua5K9TtAVdx0gMBClJ28DViCbSmZitjWZsWO3LA==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "The official plugin for Vue SFC support in Vite.",
+      "directories": {},
+      "_nodeVersion": "24.11.1",
+      "dependencies": {
+        "@rolldown/pluginutils": "1.0.0-beta.50"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vue": "^3.5.24",
+        "vite": "^7.2.2",
+        "debug": "^4.4.3",
+        "slash": "^5.1.0",
+        "rollup": "^4.53.2",
+        "tsdown": "^0.16.4",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.13",
+        "@jridgewell/trace-mapping": "^0.3.31"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_6.0.2_1763519630161_0.48384116216105344",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "6.0.1": {
+      "name": "@vitejs/plugin-vue",
+      "version": "6.0.1",
+      "keywords": ["vite", "vite-plugin", "vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@6.0.1",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "4c7f559621af104a22255c6ace5626e6d8349689",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-6.0.1.tgz",
+        "fileCount": 5,
+        "integrity": "sha512-+MaE752hU0wfPFJEUAIxqw18+20euHHdxVtMvbFcOEpjEyfqXH/5DCoTHiVJ0J29EhTJdoTkjEv5YBKU9dnoTw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD61V2G6FDl390WZorS45D36yyIED66G8Mh3lQF2ybaZwIgUSzo28bv0eSZil+k6izh34VlIfZBwa4hyEmEy0nZLfQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@6.0.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 84253
+      },
+      "type": "module",
+      "_from": "file:vitejs-plugin-vue-6.0.1.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": "./dist/index.js",
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "dev": "tsdown --watch",
+        "build": "tsdown"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "vite@voidzero.dev"
+      },
+      "_resolved": "/tmp/85d1c7395358d7e8e7b01d73e4de8dcf/vitejs-plugin-vue-6.0.1.tgz",
+      "_integrity": "sha512-+MaE752hU0wfPFJEUAIxqw18+20euHHdxVtMvbFcOEpjEyfqXH/5DCoTHiVJ0J29EhTJdoTkjEv5YBKU9dnoTw==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "The official plugin for Vue SFC support in Vite.",
+      "directories": {},
+      "_nodeVersion": "22.17.1",
+      "dependencies": {
+        "@rolldown/pluginutils": "1.0.0-beta.29"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vue": "^3.5.18",
+        "vite": "^7.0.5",
+        "debug": "^4.4.1",
+        "slash": "^5.1.0",
+        "rollup": "^4.45.1",
+        "tsdown": "^0.13.0",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.12",
+        "@jridgewell/trace-mapping": "^0.3.29"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_6.0.1_1753674245022_0.2000844126542305",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "6.0.0": {
+      "name": "@vitejs/plugin-vue",
+      "version": "6.0.0",
+      "keywords": ["vite", "vite-plugin", "vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@6.0.0",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "3f8c3cdeb709d9646770eebead1babe6409bf059",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-6.0.0.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-iAliE72WsdhjzTOp2DtvKThq1VBC4REhwRcaA+zPAAph6I+OQhUXv+Xu2KS7ElxYtb7Zc/3R30Hwv1DxEo7NXQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIE8sju3tJdoVsyxd5dAwkGlXmh0G5SKRK95kJN3AkpRRAiBQ0sFBzZepq1GEaBXqZ+1PYRVs7tnNMFPfMUuugN5FhQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@6.0.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 110007
+      },
+      "type": "module",
+      "_from": "file:vitejs-plugin-vue-6.0.0.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "dev": "unbuild --stub",
+        "build": "unbuild"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "actor": {
+          "name": "vitebot",
+          "type": "user",
+          "email": "vite@voidzero.dev"
+        },
+        "email": "vite@voidzero.dev"
+      },
+      "_resolved": "/tmp/c9b697c844b68f127a11cc12222bcb9d/vitejs-plugin-vue-6.0.0.tgz",
+      "_integrity": "sha512-iAliE72WsdhjzTOp2DtvKThq1VBC4REhwRcaA+zPAAph6I+OQhUXv+Xu2KS7ElxYtb7Zc/3R30Hwv1DxEo7NXQ==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "The official plugin for Vue SFC support in Vite.",
+      "directories": {},
+      "_nodeVersion": "22.16.0",
+      "dependencies": {
+        "@rolldown/pluginutils": "1.0.0-beta.19"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vue": "^3.5.17",
+        "vite": "^6.3.5",
+        "debug": "^4.4.1",
+        "slash": "^5.1.0",
+        "rollup": "^4.43.0",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.8",
+        "@jridgewell/trace-mapping": "^0.3.25"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_6.0.0_1750757468804_0.6957184076054999",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "6.0.0-beta.2": {
+      "name": "@vitejs/plugin-vue",
+      "version": "6.0.0-beta.2",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@6.0.0-beta.2",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "d65553d8d9673e087aed04f80389560ac1354250",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-6.0.0-beta.2.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-MBdWoBO4+ZXZyalu2RK3xWEa86Ib92Qeys/zqjG/iZztehspwjd2Dk4uVGx3VOyx/KTP9vqRdlPNe4gDqu9ciw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCJ1wXH7Y4+r31tzVvM60RJuy37I3XzGoelnloG/LfwmwIgSkEjcKaT99sDMJQ6z5qbRHAjX7UrL5M3uHZ7cwuMVws=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@6.0.0-beta.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 110147
+      },
+      "type": "module",
+      "_from": "file:vitejs-plugin-vue-6.0.0-beta.2.tgz",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "dev": "unbuild --stub",
+        "build": "unbuild"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "vite@voidzero.dev"
+      },
+      "_resolved": "/tmp/ea702d640c35d6de50ce9cc06bbc4aa4/vitejs-plugin-vue-6.0.0-beta.2.tgz",
+      "_integrity": "sha512-MBdWoBO4+ZXZyalu2RK3xWEa86Ib92Qeys/zqjG/iZztehspwjd2Dk4uVGx3VOyx/KTP9vqRdlPNe4gDqu9ciw==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.",
+      "directories": {},
+      "_nodeVersion": "22.16.0",
+      "dependencies": {
+        "@rolldown/pluginutils": "1.0.0-beta.9"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vue": "^3.5.14",
+        "vite": "^6.3.5",
+        "debug": "^4.4.1",
+        "slash": "^5.1.0",
+        "rollup": "^4.40.2",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.8",
+        "@jridgewell/trace-mapping": "^0.3.25"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0-0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_6.0.0-beta.2_1749181528526_0.18127224537207165",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "6.0.0-beta.1": {
+      "name": "@vitejs/plugin-vue",
+      "version": "6.0.0-beta.1",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@6.0.0-beta.1",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "80c5aa17c25f61b78a1e9c0d2a14a9514c3522ec",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-6.0.0-beta.1.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-/g2zLUvuARZSp/p7m7+66nIEfaHS5+GIlVVMuNKT2RXKzfUS596ONDFqgLM1W3zwOXod0miLN1we5e8cfSvP1g==",
+        "signatures": [
+          {
+            "sig": "MEUCIENvQkLhxo9knDt8POJT43qh6+2baGF0eOJRSKH8OM3BAiEAr0mzPhlZwcAZWhVRrixd/7svYcRZvkPltv6CsWw/YwM=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@6.0.0-beta.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 205856
+      },
+      "main": "./dist/index.cjs",
+      "type": "commonjs",
+      "_from": "file:vitejs-plugin-vue-6.0.0-beta.1.tgz",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "engines": {
+        "node": "^18.0.0 || >=20.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "scripts": {
+        "dev": "unbuild --stub",
+        "build": "unbuild && pnpm run patch-cjs",
+        "patch-cjs": "tsx ../../scripts/patchCJS.ts"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "vite@voidzero.dev"
+      },
+      "_resolved": "/tmp/fbcc6474c5b8dfba8d9d71f11e0ef69e/vitejs-plugin-vue-6.0.0-beta.1.tgz",
+      "_integrity": "sha512-/g2zLUvuARZSp/p7m7+66nIEfaHS5+GIlVVMuNKT2RXKzfUS596ONDFqgLM1W3zwOXod0miLN1we5e8cfSvP1g==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.",
+      "directories": {},
+      "_nodeVersion": "22.16.0",
+      "dependencies": {
+        "@rolldown/pluginutils": "1.0.0-beta.9"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vue": "^3.5.14",
+        "vite": "^6.3.5",
+        "debug": "^4.4.1",
+        "slash": "^5.1.0",
+        "rollup": "^4.40.2",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.8",
+        "@jridgewell/trace-mapping": "^0.3.25"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_6.0.0-beta.1_1748845419700_0.6305330455925622",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "6.0.0-beta.0": {
+      "name": "@vitejs/plugin-vue",
+      "version": "6.0.0-beta.0",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@6.0.0-beta.0",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "20e892204e151dd6b9254a5338a52a3c81a13ca3",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-6.0.0-beta.0.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-Ymff00Qc0/Y8VRvvcaQF5PFj5/GegOZcPjBd24JKLTW/IcJOOcoUmesIKo3UVcqJN5WC0wjzxLSdKCsI+cdA+A==",
+        "signatures": [
+          {
+            "sig": "MEYCIQC+Tox3WmNK2eLWPuIpZXt1GtKtAv5t27wONA0EXXXvLAIhANvVnFf2WkQN9aKrFdJjpB4N6dXQw3Ww/NTRmTnnAAPB",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@6.0.0-beta.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 205679
+      },
+      "main": "./dist/index.cjs",
+      "type": "commonjs",
+      "_from": "file:vitejs-plugin-vue-6.0.0-beta.0.tgz",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "engines": {
+        "node": "^18.0.0 || >=20.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "scripts": {
+        "dev": "unbuild --stub",
+        "build": "unbuild && pnpm run patch-cjs",
+        "patch-cjs": "tsx ../../scripts/patchCJS.ts"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "vite@voidzero.dev"
+      },
+      "_resolved": "/tmp/c384365751dc7594a7293436623c4f49/vitejs-plugin-vue-6.0.0-beta.0.tgz",
+      "_integrity": "sha512-Ymff00Qc0/Y8VRvvcaQF5PFj5/GegOZcPjBd24JKLTW/IcJOOcoUmesIKo3UVcqJN5WC0wjzxLSdKCsI+cdA+A==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.",
+      "directories": {},
+      "_nodeVersion": "22.15.0",
+      "dependencies": {
+        "@rolldown/pluginutils": "1.0.0-beta.9"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vue": "^3.5.14",
+        "vite": "^6.3.5",
+        "debug": "^4.4.1",
+        "slash": "^5.1.0",
+        "rollup": "^4.40.2",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.8",
+        "@jridgewell/trace-mapping": "^0.3.25"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_6.0.0-beta.0_1747805352923_0.4293820756006381",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.2.4": {
+      "name": "@vitejs/plugin-vue",
+      "version": "5.2.4",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@5.2.4",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vite@voidzero.dev"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "9e8a512eb174bfc2a333ba959bbf9de428d89ad8",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-5.2.4.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-7Yx/SXSOcQq5HiiV3orevHUFn+pmMB4cgbEkDYgnkUWb0WfeQ/wa2yFv6D5ICiCQOVpjA7vYDXrC7AGO8yjDHA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCHxyFDLWtwo1iFSncMzuwB3temAEh5j1XWNsSz+hvP4AIgWDC0rqFXo4nQ86rT3bamVOSrha6dHOcotlUY0Z9QUFs=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@5.2.4",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 201134
+      },
+      "main": "./dist/index.cjs",
+      "type": "commonjs",
+      "_from": "file:vitejs-plugin-vue-5.2.4.tgz",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "engines": {
+        "node": "^18.0.0 || >=20.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "scripts": {
+        "dev": "unbuild --stub",
+        "build": "unbuild && pnpm run patch-cjs",
+        "patch-cjs": "tsx ../../scripts/patchCJS.ts"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "vite@voidzero.dev"
+      },
+      "_resolved": "/tmp/11940f01bf95e4469919c8f08eedfbf3/vitejs-plugin-vue-5.2.4.tgz",
+      "_integrity": "sha512-7Yx/SXSOcQq5HiiV3orevHUFn+pmMB4cgbEkDYgnkUWb0WfeQ/wa2yFv6D5ICiCQOVpjA7vYDXrC7AGO8yjDHA==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.",
+      "directories": {},
+      "_nodeVersion": "22.15.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vue": "^3.5.13",
+        "vite": "^6.3.5",
+        "debug": "^4.4.0",
+        "slash": "^5.1.0",
+        "rollup": "^4.40.2",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.8",
+        "@jridgewell/trace-mapping": "^0.3.25"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_5.2.4_1746784070762_0.8983766603847565",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.2.3": {
+      "name": "@vitejs/plugin-vue",
+      "version": "5.2.3",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@5.2.3",
+      "maintainers": [
+        {
+          "name": "soda",
+          "email": "npm@haoqun.me"
+        },
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "hey.patak@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "vitebot",
+          "email": "vitejs.twitter@gmail.com"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "71a8fc82d4d2e425af304c35bf389506f674d89b",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-5.2.3.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-IYSLEQj4LgZZuoVpdSUCw3dIynTWQgPlaRP6iAvMle4My0HdYwr5g5wQAfwOeHQBmYwEkqF70nRpSilr6PoUDg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCGF7uMV4Qk36zouGVWTlfkmDEIXPC7Pq2ABR7q1yr8FAIhAJ0j4t+Ei59JbN3YC9VPP/6LRxADyafQAI0z0iCor7vg",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@5.2.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 199486
+      },
+      "main": "./dist/index.cjs",
+      "type": "commonjs",
+      "_from": "file:vitejs-plugin-vue-5.2.3.tgz",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "engines": {
+        "node": "^18.0.0 || >=20.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "scripts": {
+        "dev": "unbuild --stub",
+        "build": "unbuild && pnpm run patch-cjs",
+        "patch-cjs": "tsx ../../scripts/patchCJS.ts"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "vitejs.twitter@gmail.com"
+      },
+      "_resolved": "/tmp/fed1b25faec479a7ae2edd45912143c8/vitejs-plugin-vue-5.2.3.tgz",
+      "_integrity": "sha512-IYSLEQj4LgZZuoVpdSUCw3dIynTWQgPlaRP6iAvMle4My0HdYwr5g5wQAfwOeHQBmYwEkqF70nRpSilr6PoUDg==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "vue": "^3.5.13",
+        "vite": "^6.2.0",
+        "debug": "^4.4.0",
+        "slash": "^5.1.0",
+        "rollup": "^4.34.9",
+        "source-map-js": "^1.2.1",
+        "@jridgewell/gen-mapping": "^0.3.8",
+        "@jridgewell/trace-mapping": "^0.3.25"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0 || ^6.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_5.2.3_1742211689107_0.957761523848865",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "5.0.0-alpha.0": {
+      "name": "@vitejs/plugin-vue",
+      "version": "5.0.0-alpha.0",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@5.0.0-alpha.0",
+      "maintainers": [
+        {
+          "name": "soda",
+          "email": "npm@haoqun.me"
+        },
+        {
+          "name": "vitebot",
+          "email": "vitejs.twitter@gmail.com"
+        },
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "matias.capeletto@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "6e6f7e351d28d21acf002ea535cad5af4f28ff70",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-5.0.0-alpha.0.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-2t6mxT4hYljhupF5DcZZ07rZz5mm5LwJs/hp3VZqI/bpY5CganQKro9RAz8psWJRI8FZA9bDTQlzXIUNyqZC1Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCromHhFRPiIcZEv5QkQYnIAaTWRDYS1Z5QNAWgSeDbbgIhALxTe5GwJd700uZc/JY6ztSzaEVD0wCR6V5ofJX3lQtx",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@5.0.0-alpha.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 181656
+      },
+      "main": "./dist/index.cjs",
+      "_from": "file:vitejs-plugin-vue-5.0.0-alpha.0.tgz",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "engines": {
+        "node": "^18.0.0 || >=20.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "scripts": {
+        "dev": "unbuild --stub",
+        "build": "unbuild && pnpm run patch-cjs",
+        "patch-cjs": "tsx ../../scripts/patchCJS.ts"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "vitejs.twitter@gmail.com"
+      },
+      "_resolved": "/tmp/c068c1f00af37c0b95e83d715b37e608/vitejs-plugin-vue-5.0.0-alpha.0.tgz",
+      "_integrity": "sha512-2t6mxT4hYljhupF5DcZZ07rZz5mm5LwJs/hp3VZqI/bpY5CganQKro9RAz8psWJRI8FZA9bDTQlzXIUNyqZC1Q==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.",
+      "directories": {},
+      "_nodeVersion": "20.9.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vue": "^3.3.8",
+        "vite": "^5.0.2",
+        "debug": "^4.3.4",
+        "slash": "^5.1.0",
+        "rollup": "^4.6.0",
+        "source-map-js": "^1.0.2",
+        "@jridgewell/gen-mapping": "^0.3.3",
+        "@jridgewell/trace-mapping": "^0.3.20"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^5.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_5.0.0-alpha.0_1701195748216_0.4162026216620025",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "4.6.2": {
+      "name": "@vitejs/plugin-vue",
+      "version": "4.6.2",
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "@vitejs/plugin-vue@4.6.2",
+      "maintainers": [
+        {
+          "name": "soda",
+          "email": "npm@haoqun.me"
+        },
+        {
+          "name": "vitebot",
+          "email": "vitejs.twitter@gmail.com"
+        },
+        {
+          "name": "yyx990803",
+          "email": "yyx990803@gmail.com"
+        },
+        {
+          "name": "patak",
+          "email": "matias.capeletto@gmail.com"
+        },
+        {
+          "name": "antfu",
+          "email": "anthonyfu117@hotmail.com"
+        },
+        {
+          "name": "sxzz",
+          "email": "sxzz@sxzz.moe"
+        }
+      ],
+      "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+      "bugs": {
+        "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+      },
+      "dist": {
+        "shasum": "057d2ded94c4e71b94e9814f92dcd9306317aa46",
+        "tarball": "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-4.6.2.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-kqf7SGFoG+80aZG6Pf+gsZIVvGSCKE98JbiWqcCV9cThtg91Jav0yvYFC9Zb+jKetNGF6ZKeoaxgZfND21fWKw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDl/E5ljnSkSlNGPdjcHqEkQDogb3F4SIS/3wI6y23G9wIgdtSe9XT7huKN9lVDsAh/cPK1y2phcB0aHnJOJvcL0hU=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/@vitejs%2fplugin-vue@4.6.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v0.2"
+          }
+        },
+        "unpackedSize": 184750
+      },
+      "main": "./dist/index.cjs",
+      "_from": "file:vitejs-plugin-vue-4.6.2.tgz",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "engines": {
+        "node": "^14.18.0 || >=16.0.0"
+      },
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        }
+      },
+      "scripts": {
+        "dev": "unbuild --stub",
+        "build": "unbuild && pnpm run patch-cjs",
+        "patch-cjs": "tsx ../../scripts/patchCJS.ts"
+      },
+      "_npmUser": {
+        "name": "vitebot",
+        "email": "vitejs.twitter@gmail.com"
+      },
+      "_resolved": "/tmp/3e2e4cfa8569563d5fc9d137638124b3/vitejs-plugin-vue-4.6.2.tgz",
+      "_integrity": "sha512-kqf7SGFoG+80aZG6Pf+gsZIVvGSCKE98JbiWqcCV9cThtg91Jav0yvYFC9Zb+jKetNGF6ZKeoaxgZfND21fWKw==",
+      "repository": {
+        "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+        "type": "git",
+        "directory": "packages/plugin-vue"
+      },
+      "_npmVersion": "9.7.2",
+      "description": "> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.",
+      "directories": {},
+      "_nodeVersion": "20.10.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "vue": "^3.3.8",
+        "vite": "^4.5.0",
+        "debug": "^4.3.4",
+        "slash": "^5.1.0",
+        "rollup": "^3.29.4",
+        "source-map-js": "^1.0.2",
+        "@jridgewell/gen-mapping": "^0.3.3",
+        "@jridgewell/trace-mapping": "^0.3.20"
+      },
+      "peerDependencies": {
+        "vue": "^3.2.25",
+        "vite": "^4.0.0 || ^5.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/plugin-vue_4.6.2_1703988389761_0.8166917758190726",
+        "host": "s3://npm-registry-packages"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-02-02T10:59:34.031Z",
+    "created": "2020-12-29T05:53:47.974Z",
+    "6.0.4": "2026-02-02T10:59:33.695Z",
+    "6.0.3": "2025-12-12T08:17:23.360Z",
+    "6.0.2": "2025-11-19T02:33:50.377Z",
+    "6.0.1": "2025-07-28T03:44:05.199Z",
+    "6.0.0": "2025-06-24T09:31:08.973Z",
+    "6.0.0-beta.2": "2025-06-06T03:45:28.737Z",
+    "6.0.0-beta.1": "2025-06-02T06:23:39.883Z",
+    "6.0.0-beta.0": "2025-05-21T05:29:13.147Z",
+    "5.2.4": "2025-05-09T09:47:50.969Z",
+    "5.2.3": "2025-03-17T11:41:29.290Z",
+    "5.0.0-alpha.0": "2023-11-28T18:22:28.385Z",
+    "4.6.2": "2023-12-31T02:06:29.937Z"
+  },
+  "maintainers": [
+    {
+      "name": "yyx990803",
+      "email": "yyx990803@gmail.com"
+    },
+    {
+      "name": "patak",
+      "email": "hey.patak@gmail.com"
+    },
+    {
+      "name": "antfu",
+      "email": "anthonyfu117@hotmail.com"
+    },
+    {
+      "name": "vitebot",
+      "email": "vite@voidzero.dev"
+    },
+    {
+      "name": "sxzz",
+      "email": "npm@sxzz.moe"
+    }
+  ],
+  "author": {
+    "name": "Evan You"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+  "keywords": ["vite", "vite-plugin", "vue"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+    "directory": "packages/plugin-vue"
+  },
+  "bugs": {
+    "url": "https://github.com/vitejs/vite-plugin-vue/issues"
+  },
+  "readme": "# @vitejs/plugin-vue [![npm](https://img.shields.io/npm/v/@vitejs/plugin-vue.svg)](https://npmjs.com/package/@vitejs/plugin-vue)\n\n> Note: as of `vue` 3.2.13+ and `@vitejs/plugin-vue` 1.9.0+, `@vue/compiler-sfc` is no longer required as a peer dependency.\n\n```js\n// vite.config.js\nimport vue from '@vitejs/plugin-vue'\n\nexport default {\n  plugins: [vue()],\n}\n```\n\nFor JSX / TSX support, [`@vitejs/plugin-vue-jsx`](https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue-jsx) is also needed.\n\n## Options\n\n```ts\nexport interface Options {\n  include?: string | RegExp | (string | RegExp)[]\n  exclude?: string | RegExp | (string | RegExp)[]\n\n  isProduction?: boolean\n\n  /**\n   * Requires @vitejs/plugin-vue@^5.1.0\n   */\n  features?: {\n    /**\n     * Enable reactive destructure for `defineProps`.\n     * - Available in Vue 3.4 and later.\n     * - **default:** `false` in Vue 3.4 (**experimental**), `true` in Vue 3.5+\n     */\n    propsDestructure?: boolean\n    /**\n     * Transform Vue SFCs into custom elements.\n     * - `true`: all `*.vue` imports are converted into custom elements\n     * - `string | RegExp`: matched files are converted into custom elements\n     * - **default:** /\\.ce\\.vue$/\n     */\n    customElement?: boolean | string | RegExp | (string | RegExp)[]\n    /**\n     * Set to `false` to disable Options API support and allow related code in\n     * Vue core to be dropped via dead-code elimination in production builds,\n     * resulting in smaller bundles.\n     * - **default:** `true`\n     */\n    optionsAPI?: boolean\n    /**\n     * Set to `true` to enable devtools support in production builds.\n     * Results in slightly larger bundles.\n     * - **default:** `false`\n     */\n    prodDevtools?: boolean\n    /**\n     * Set to `true` to enable detailed information for hydration mismatch\n     * errors in production builds. Results in slightly larger bundles.\n     * - **default:** `false`\n     */\n    prodHydrationMismatchDetails?: boolean\n    /**\n     * Customize the component ID generation strategy.\n     * - `'filepath'`: hash the file path (relative to the project root)\n     * - `'filepath-source'`: hash the file path and the source code\n     * - `function`: custom function that takes the file path, source code,\n     *   whether in production mode, and the default hash function as arguments\n     * - **default:** `'filepath'` in development, `'filepath-source'` in production\n     */\n    componentIdGenerator?:\n      | 'filepath'\n      | 'filepath-source'\n      | ((\n          filepath: string,\n          source: string,\n          isProduction: boolean | undefined,\n          getHash: (text: string) => string,\n        ) => string)\n  }\n\n  // `script`, `template` and `style` are lower-level compiler options\n  // to pass on to respective APIs of `vue/compiler-sfc`\n\n  script?: Partial<\n    Omit<\n      SFCScriptCompileOptions,\n      | 'id'\n      | 'isProd'\n      | 'inlineTemplate'\n      | 'templateOptions'\n      | 'sourceMap'\n      | 'genDefaultAs'\n      | 'customElement'\n    >\n  >\n\n  template?: Partial<\n    Omit<\n      SFCTemplateCompileOptions,\n      | 'id'\n      | 'source'\n      | 'ast'\n      | 'filename'\n      | 'scoped'\n      | 'slotted'\n      | 'isProd'\n      | 'inMap'\n      | 'ssr'\n      | 'ssrCssVars'\n      | 'preprocessLang'\n    >\n  >\n\n  style?: Partial<\n    Omit<\n      SFCStyleCompileOptions,\n      | 'filename'\n      | 'id'\n      | 'isProd'\n      | 'source'\n      | 'scoped'\n      | 'cssDevSourcemap'\n      | 'postcssOptions'\n      | 'map'\n      | 'postcssPlugins'\n      | 'preprocessCustomRequire'\n      | 'preprocessLang'\n      | 'preprocessOptions'\n    >\n  >\n\n  /**\n   * Use custom compiler-sfc instance. Can be used to force a specific version.\n   */\n  compiler?: typeof _compiler\n\n  /**\n   * @deprecated moved to `features.customElement`.\n   */\n  customElements?: boolean | string | RegExp | (string | RegExp)[]\n}\n```\n\n## Asset URL handling\n\nWhen `@vitejs/plugin-vue` compiles the `<template>` blocks in SFCs, it also converts any encountered asset URLs into ESM imports.\n\nFor example, the following template snippet:\n\n```vue\n<img src=\"../image.png\" />\n```\n\nIs the same as:\n\n```vue\n<script setup>\nimport _imports_0 from '../image.png'\n</script>\n\n<img :src=\"_imports_0\" />\n```\n\nBy default the following tag/attribute combinations are transformed, and can be configured using the `template.transformAssetUrls` option.\n\n```js\n{\n  video: ['src', 'poster'],\n  source: ['src'],\n  img: ['src'],\n  image: ['xlink:href', 'href'],\n  use: ['xlink:href', 'href']\n}\n```\n\nNote that only attribute values that are static strings are transformed. Otherwise, you'd need to import the asset manually, e.g. `import imgUrl from '../image.png'`.\n\n## Example for passing options to `vue/compiler-sfc`:\n\n```ts\nimport vue from '@vitejs/plugin-vue'\n\nexport default {\n  plugins: [\n    vue({\n      template: {\n        compilerOptions: {\n          // ...\n        },\n        transformAssetUrls: {\n          // ...\n        },\n      },\n    }),\n  ],\n}\n```\n\n## Example for transforming custom blocks\n\n```ts\nimport vue from '@vitejs/plugin-vue'\nimport yaml from 'js-yaml'\n\nconst vueI18nPlugin = {\n  name: 'vue-i18n',\n  transform(code, id) {\n    // if .vue file don't have <i18n> block, just return\n    if (!/vue&type=i18n/.test(id)) {\n      return\n    }\n    // parse yaml\n    if (/\\.ya?ml$/.test(id)) {\n      code = JSON.stringify(yaml.load(code.trim()))\n    }\n    // mount the value on the i18n property of the component instance\n    return `export default Comp => {\n      Comp.i18n = ${code}\n    }`\n  },\n}\n\nexport default {\n  plugins: [vue(), vueI18nPlugin],\n}\n```\n\nCreate a file named `Demo.vue`, add `lang=\"yaml\"` to the `<i18n>` blocks, then you can use the syntax of `YAML`:\n\n```vue\n<template>Hello</template>\n\n<i18n lang=\"yaml\">\nmessage: 'world'\nfullWord: 'hello world'\n</i18n>\n```\n\n`message` is mounted on the i18n property of the component instance, you can use like this:\n\n```vue\n<script setup lang=\"ts\">\nimport Demo from 'components/Demo.vue'\n</script>\n\n<template>\n  <Demo /> {{ Demo.i18n.message }}\n  <div>{{ Demo.i18n.fullWord }}</div>\n</template>\n```\n\n## Using Vue SFCs as Custom Elements\n\n> Requires `vue@^3.2.0` & `@vitejs/plugin-vue@^1.4.0`\n\nVue 3.2 introduces the `defineCustomElement` method, which works with SFCs. By default, `<style>` tags inside SFCs are extracted and merged into CSS files during build. However when shipping a library of custom elements, it may be desirable to inline the styles as JavaScript strings and inject them into the custom elements' shadow root instead.\n\nStarting in 1.4.0, files ending with `*.ce.vue` will be compiled in \"custom elements\" mode: its `<style>` tags are compiled into inlined CSS strings and attached to the component as its `styles` property:\n\n```js\nimport { defineCustomElement } from 'vue'\nimport Example from './Example.ce.vue'\n\nconsole.log(Example.styles) // ['/* css content */']\n\n// register\ncustomElements.define('my-example', defineCustomElement(Example))\n```\n\nNote in custom elements mode there is no need to use `<style scoped>` since the CSS is already scoped inside the shadow DOM.\n\nThe `customElement` plugin option can be used to configure the behavior:\n\n- `{ customElement: true }` will import all `*.vue` files in custom element mode.\n- Use a string or regex pattern to change how files should be loaded as Custom Elements (this check is applied after `include` and `exclude` matches).\n\n## License\n\nMIT\n",
+  "readmeFilename": "README.md"
+}

@@ -1,0 +1,1435 @@
+{
+  "objects": [
+    {
+      "downloads": {
+        "monthly": 32818849,
+        "weekly": 8497364
+      },
+      "dependents": "83901",
+      "updated": "2026-02-02T03:48:16.987Z",
+      "searchScore": 1843.0671,
+      "package": {
+        "name": "vue",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "The progressive JavaScript framework for building modern web UI.",
+        "sanitized_name": "vue",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          },
+          {
+            "email": "posva13@gmail.com",
+            "username": "posva"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:43.982Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/vue"
+        }
+      },
+      "score": {
+        "final": 1843.0671,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 28698428,
+        "weekly": 7420034
+      },
+      "dependents": "342",
+      "updated": "2026-02-02T03:48:01.062Z",
+      "searchScore": 332.18774,
+      "package": {
+        "name": "@vue/reactivity",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "@vue/reactivity",
+        "sanitized_name": "@vue/reactivity",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:6c458fb2-e383-47c3-a8d5-9f222de480c7",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:26.018Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/reactivity#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/reactivity"
+        }
+      },
+      "score": {
+        "final": 332.18774,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 49346590,
+        "weekly": 12928247
+      },
+      "dependents": "1505",
+      "updated": "2026-02-02T03:48:14.412Z",
+      "searchScore": 331.008,
+      "package": {
+        "name": "@vue/compiler-sfc",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "@vue/compiler-sfc",
+        "sanitized_name": "@vue/compiler-sfc",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:64385cf4-8269-4c1a-878c-1ac2242d2518",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:19.064Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/compiler-sfc#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/compiler-sfc"
+        }
+      },
+      "score": {
+        "final": 331.008,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 53893390,
+        "weekly": 14115159
+      },
+      "dependents": "170",
+      "updated": "2026-02-02T03:47:56.720Z",
+      "searchScore": 327.85788,
+      "package": {
+        "name": "@vue/compiler-core",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "@vue/compiler-core",
+        "sanitized_name": "@vue/compiler-core",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:117f4cf5-a20b-4bd8-a187-4a12264b0950",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:11.908Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/compiler-core#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/compiler-core"
+        }
+      },
+      "score": {
+        "final": 327.85788,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 45511168,
+        "weekly": 11882845
+      },
+      "dependents": "17",
+      "updated": "2026-02-02T03:48:21.080Z",
+      "searchScore": 325.4508,
+      "package": {
+        "name": "@vue/compiler-ssr",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "@vue/compiler-ssr",
+        "sanitized_name": "@vue/compiler-ssr",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:ba968dda-7e8c-462c-bb5c-93dd5925b1fd",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:22.444Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/compiler-ssr#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/compiler-ssr"
+        }
+      },
+      "score": {
+        "final": 325.4508,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 53582524,
+        "weekly": 14040384
+      },
+      "dependents": "289",
+      "updated": "2026-02-02T03:48:00.624Z",
+      "searchScore": 324.96396,
+      "package": {
+        "name": "@vue/compiler-dom",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "@vue/compiler-dom",
+        "sanitized_name": "@vue/compiler-dom",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:0f300997-f0ce-43a2-9497-61c22541e3b0",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:15.573Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/compiler-dom#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/compiler-dom"
+        }
+      },
+      "score": {
+        "final": 324.96396,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 26613404,
+        "weekly": 6877617
+      },
+      "dependents": "226",
+      "updated": "2026-02-02T03:48:36.444Z",
+      "searchScore": 314.3801,
+      "package": {
+        "name": "@vue/runtime-core",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "@vue/runtime-core",
+        "sanitized_name": "@vue/runtime-core",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:3330543d-f6ee-49db-b52f-f616328c51bf",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:29.968Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/runtime-core#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/runtime-core"
+        }
+      },
+      "score": {
+        "final": 314.3801,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 26455360,
+        "weekly": 6839600
+      },
+      "dependents": "126",
+      "updated": "2026-02-02T03:47:24.951Z",
+      "searchScore": 312.65,
+      "package": {
+        "name": "@vue/server-renderer",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "@vue/server-renderer",
+        "sanitized_name": "@vue/server-renderer",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:2a643cb9-597d-4130-b579-f34ea33eab7c",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:37.342Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/server-renderer#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/server-renderer"
+        }
+      },
+      "score": {
+        "final": 312.65,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 59727151,
+        "weekly": 15602236
+      },
+      "dependents": "663",
+      "updated": "2026-02-02T03:47:46.558Z",
+      "searchScore": 312.16455,
+      "package": {
+        "name": "@vue/shared",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "internal utils shared across @vue packages",
+        "sanitized_name": "@vue/shared",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:b5675c34-a1f5-4f65-a3e4-cc57df0448f4",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:40.459Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/shared#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/shared"
+        }
+      },
+      "score": {
+        "final": 312.16455,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 26565944,
+        "weekly": 6866386
+      },
+      "dependents": "96",
+      "updated": "2026-02-02T03:46:57.475Z",
+      "searchScore": 311.4814,
+      "package": {
+        "name": "@vue/runtime-dom",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "@vue/runtime-dom",
+        "sanitized_name": "@vue/runtime-dom",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:0d12aa0f-e572-4407-bce8-4ed82d6df3f8",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:33.606Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/runtime-dom#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/runtime-dom"
+        }
+      },
+      "score": {
+        "final": 311.4814,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 18075637,
+        "weekly": 4679722
+      },
+      "dependents": "24056",
+      "updated": "2026-02-02T09:26:34.377Z",
+      "searchScore": 292.554,
+      "package": {
+        "name": "vue-router",
+        "keywords": [],
+        "version": "5.0.2",
+        "description": "> - This is the repository for Vue Router 4 (for Vue 3) > - For Vue Router 3 (for Vue 2) see [vuejs/vue-router](https://github.com/vuejs/vue-router). >   To see what versions are currently supported, please refer to the [Security Policy](./packages/router",
+        "sanitized_name": "vue-router",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:83feb04f-a306-4fe0-9791-b9b7ba3c9b0e",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          },
+          {
+            "email": "posva13@gmail.com",
+            "username": "posva"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-02-02T09:26:03.144Z",
+        "links": {
+          "homepage": "https://router.vuejs.org",
+          "repository": "git+https://github.com/vuejs/router.git",
+          "bugs": "https://github.com/vuejs/router/issues",
+          "npm": "https://www.npmjs.com/package/vue-router"
+        }
+      },
+      "score": {
+        "final": 292.554,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 8690498,
+        "weekly": 2230304
+      },
+      "dependents": "3612",
+      "updated": "2026-02-02T03:46:56.002Z",
+      "searchScore": 273.4575,
+      "package": {
+        "name": "vue-template-compiler",
+        "keywords": ["vue", "compiler"],
+        "version": "2.7.16",
+        "description": "template compiler for Vue 2.0",
+        "sanitized_name": "vue-template-compiler",
+        "publisher": {
+          "email": "yyx990803@gmail.com",
+          "username": "yyx990803"
+        },
+        "maintainers": [
+          {
+            "email": "posva13@gmail.com",
+            "username": "posva"
+          },
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-12-24T15:02:16.927Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/vue/tree/dev/packages/vue-template-compiler#readme",
+          "repository": "git+https://github.com/vuejs/vue.git",
+          "bugs": "https://github.com/vuejs/vue/issues",
+          "npm": "https://www.npmjs.com/package/vue-template-compiler"
+        }
+      },
+      "score": {
+        "final": 273.4575,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 3893444,
+        "weekly": 976127
+      },
+      "dependents": "9",
+      "updated": "2026-02-02T03:47:08.104Z",
+      "searchScore": 272.98285,
+      "package": {
+        "name": "@vue/reactivity-transform",
+        "keywords": ["vue"],
+        "version": "3.3.13",
+        "description": "@vue/reactivity-transform",
+        "sanitized_name": "@vue/reactivity-transform",
+        "publisher": {
+          "email": "yyx990803@gmail.com",
+          "username": "yyx990803"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-12-19T10:13:22.864Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/dev/packages/reactivity-transform#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/reactivity-transform"
+        }
+      },
+      "score": {
+        "final": 272.98285,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 4443869,
+        "weekly": 1170387
+      },
+      "dependents": "384",
+      "updated": "2026-02-02T03:49:44.320Z",
+      "searchScore": 272.34106,
+      "package": {
+        "name": "@floating-ui/vue",
+        "keywords": ["tooltip", "popover", "dropdown", "menu", "popup", "positioning", "vue"],
+        "version": "1.1.10",
+        "description": "Floating UI for Vue",
+        "sanitized_name": "@floating-ui/vue",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "atomiks",
+            "type": "user",
+            "email": "cc.glows@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:4ed509c4-c9d9-44f1-8f85-f97554b93626",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "federico.zivolo@gmail.com",
+            "username": "fezvrasta"
+          },
+          {
+            "email": "cc.glows@gmail.com",
+            "username": "atomiks"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-27T16:27:17.952Z",
+        "links": {
+          "homepage": "https://floating-ui.com/docs/vue",
+          "repository": "git+https://github.com/floating-ui/floating-ui.git",
+          "bugs": "https://github.com/floating-ui/floating-ui",
+          "npm": "https://www.npmjs.com/package/@floating-ui/vue"
+        }
+      },
+      "score": {
+        "final": 272.34106,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 11025927,
+        "weekly": 2931089
+      },
+      "dependents": 0,
+      "updated": "2026-02-02T03:51:56.485Z",
+      "searchScore": 268.70966,
+      "package": {
+        "name": "@vue/compiler-vue2",
+        "keywords": ["vue", "compiler"],
+        "version": "2.7.16",
+        "description": "template compiler for Vue 2.x",
+        "sanitized_name": "@vue/compiler-vue2",
+        "publisher": {
+          "email": "yyx990803@gmail.com",
+          "username": "yyx990803"
+        },
+        "maintainers": [
+          {
+            "email": "rahulkdn@gmail.com",
+            "username": "znck"
+          },
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          },
+          {
+            "email": "guillaume.b.chau@gmail.com",
+            "username": "akryum"
+          },
+          {
+            "email": "npm@haoqun.me",
+            "username": "soda"
+          },
+          {
+            "email": "thorsten@linusb.org",
+            "username": "linusborg"
+          },
+          {
+            "email": "anthonyfu117@hotmail.com",
+            "username": "antfu"
+          },
+          {
+            "email": "david-181@hotmail.com",
+            "username": "pikax"
+          },
+          {
+            "email": "posva13@gmail.com",
+            "username": "posva"
+          },
+          {
+            "email": "kia.king.08@gmail.com",
+            "username": "kiaking"
+          },
+          {
+            "email": "sxzz@sxzz.moe",
+            "username": "sxzz"
+          },
+          {
+            "email": "daiwei521@126.com",
+            "username": "daiwei1105"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-07-25T01:51:35.200Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/vue/tree/dev/packages/vue-template-compiler#readme",
+          "repository": "git+https://github.com/vuejs/vue.git",
+          "bugs": "https://github.com/vuejs/vue/issues",
+          "npm": "https://www.npmjs.com/package/@vue/compiler-vue2"
+        }
+      },
+      "score": {
+        "final": 268.70966,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 679318,
+        "weekly": 178437
+      },
+      "dependents": "63",
+      "updated": "2026-02-02T03:48:18.322Z",
+      "searchScore": 266.31757,
+      "package": {
+        "name": "@vue/compat",
+        "keywords": ["vue"],
+        "version": "3.5.27",
+        "description": "Vue 3 compatibility build for Vue 2",
+        "sanitized_name": "@vue/compat",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "yyx990803",
+            "type": "user",
+            "email": "yyx990803@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:8ca30e3d-b12c-41a0-b3cb-3bde308329fb",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-19T06:33:48.700Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/core/tree/main/packages/vue-compat#readme",
+          "repository": "git+https://github.com/vuejs/core.git",
+          "bugs": "https://github.com/vuejs/core/issues",
+          "npm": "https://www.npmjs.com/package/@vue/compat"
+        }
+      },
+      "score": {
+        "final": 266.31757,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 23191825,
+        "weekly": 6044066
+      },
+      "dependents": "1279",
+      "updated": "2026-02-02T03:47:13.315Z",
+      "searchScore": 265.65,
+      "package": {
+        "name": "vue-eslint-parser",
+        "keywords": [],
+        "version": "10.2.0",
+        "description": "The ESLint custom parser for `.vue` files.",
+        "sanitized_name": "vue-eslint-parser",
+        "publisher": {
+          "email": "otameshiyo23@gmail.com",
+          "actor": {
+            "name": "ota-meshi",
+            "type": "user",
+            "email": "otameshiyo23@gmail.com"
+          },
+          "username": "ota-meshi"
+        },
+        "maintainers": [
+          {
+            "email": "public@mysticatea.dev",
+            "username": "mysticatea"
+          },
+          {
+            "email": "otameshiyo23@gmail.com",
+            "username": "ota-meshi"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-07-01T11:56:53.814Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/vue-eslint-parser#readme",
+          "repository": "git+https://github.com/vuejs/vue-eslint-parser.git",
+          "bugs": "https://github.com/vuejs/vue-eslint-parser/issues",
+          "npm": "https://www.npmjs.com/package/vue-eslint-parser"
+        }
+      },
+      "score": {
+        "final": 265.65,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 11594594,
+        "weekly": 3074651
+      },
+      "dependents": "314",
+      "updated": "2026-02-02T03:46:56.611Z",
+      "searchScore": 263.6936,
+      "package": {
+        "name": "vue-tsc",
+        "keywords": [],
+        "version": "3.2.4",
+        "description": "Vue 3 command line Type-Checking tool.",
+        "sanitized_name": "vue-tsc",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "kazariex",
+            "type": "user",
+            "email": "mimorimaboroshi@gmail.com"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:a6d0be0a-5c61-4b37-91ca-2edbe770c408",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "johnsoncodehk@gmail.com",
+            "username": "johnsoncodehk"
+          },
+          {
+            "email": "mimorimaboroshi@gmail.com",
+            "username": "kazariex"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-26T03:48:52.062Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/language-tools#readme",
+          "repository": "git+https://github.com/vuejs/language-tools.git",
+          "bugs": "https://github.com/vuejs/language-tools/issues",
+          "npm": "https://www.npmjs.com/package/vue-tsc"
+        }
+      },
+      "score": {
+        "final": 263.6936,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 18479066,
+        "weekly": 4797318
+      },
+      "dependents": "1197",
+      "updated": "2026-02-02T11:00:04.795Z",
+      "searchScore": 261.95444,
+      "package": {
+        "name": "@vitejs/plugin-vue",
+        "keywords": ["vite", "vite-plugin", "vue"],
+        "version": "6.0.4",
+        "description": "The official plugin for Vue SFC support in Vite.",
+        "sanitized_name": "@vitejs/plugin-vue",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "vitebot",
+            "type": "user",
+            "email": "vite@voidzero.dev"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:c46a2df0-6d07-4e58-bb52-a174d20ac7a9",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          },
+          {
+            "email": "hey.patak@gmail.com",
+            "username": "patak"
+          },
+          {
+            "email": "anthonyfu117@hotmail.com",
+            "username": "antfu"
+          },
+          {
+            "email": "vite@voidzero.dev",
+            "username": "vitebot"
+          },
+          {
+            "email": "npm@sxzz.moe",
+            "username": "sxzz"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-02-02T10:59:33.695Z",
+        "links": {
+          "homepage": "https://github.com/vitejs/vite-plugin-vue/tree/main/packages/plugin-vue#readme",
+          "repository": "git+https://github.com/vitejs/vite-plugin-vue.git",
+          "bugs": "https://github.com/vitejs/vite-plugin-vue/issues",
+          "npm": "https://www.npmjs.com/package/@vitejs/plugin-vue"
+        }
+      },
+      "score": {
+        "final": 261.95444,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 1764068,
+        "weekly": 475626
+      },
+      "dependents": "8",
+      "updated": "2026-02-02T03:51:15.586Z",
+      "searchScore": 260.29083,
+      "package": {
+        "name": "@intlify/vue-i18n-extensions",
+        "keywords": [
+          "extensions",
+          "i18n",
+          "optimaization",
+          "server-side-rendering",
+          "vue",
+          "vue-i18n"
+        ],
+        "version": "6.0.0",
+        "description": "vue-i18n extensions",
+        "sanitized_name": "@intlify/vue-i18n-extensions",
+        "publisher": {
+          "email": "kawakazu80@gmail.com",
+          "username": "kazupon"
+        },
+        "maintainers": [
+          {
+            "email": "kawakazu80@gmail.com",
+            "username": "kazupon"
+          },
+          {
+            "email": "otameshiyo23@gmail.com",
+            "username": "ota-meshi"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-06-07T11:13:26.844Z",
+        "links": {
+          "homepage": "https://github.com/intlify/vue-i18n-extensions#readme",
+          "repository": "git+https://github.com/intlify/vue-i18n-extensions.git",
+          "bugs": "https://github.com/intlify/vue-i18n-extensions/issues",
+          "npm": "https://www.npmjs.com/package/@intlify/vue-i18n-extensions"
+        }
+      },
+      "score": {
+        "final": 260.29083,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 8814496,
+        "weekly": 2231764
+      },
+      "dependents": "3292",
+      "updated": "2026-02-02T03:47:26.915Z",
+      "searchScore": 258.1195,
+      "package": {
+        "name": "vue-loader",
+        "keywords": [],
+        "version": "17.4.2",
+        "description": "> webpack loader for Vue Single-File Components",
+        "sanitized_name": "vue-loader",
+        "publisher": {
+          "email": "yyx990803@gmail.com",
+          "username": "yyx990803"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          },
+          {
+            "email": "npm@haoqun.me",
+            "username": "soda"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-12-30T14:08:14.600Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/vue-loader#readme",
+          "repository": "git+https://github.com/vuejs/vue-loader.git",
+          "bugs": "https://github.com/vuejs/vue-loader/issues",
+          "npm": "https://www.npmjs.com/package/vue-loader"
+        }
+      },
+      "score": {
+        "final": 258.1195,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 883202,
+        "weekly": 231228
+      },
+      "dependents": "196",
+      "updated": "2026-02-02T03:47:08.053Z",
+      "searchScore": 256.75928,
+      "package": {
+        "name": "vue-jest",
+        "keywords": [
+          "jest",
+          "vue",
+          "jest vue",
+          "jest vue transform",
+          "jest vue preprocessor",
+          "vue jest",
+          "vue jest",
+          "vue jest transform",
+          "vue jest preprocessor"
+        ],
+        "version": "3.0.7",
+        "description": "Jest Vue transform",
+        "sanitized_name": "vue-jest",
+        "publisher": {
+          "email": "lachlan.miller.1990@outlook.com",
+          "username": "lmiller1990"
+        },
+        "maintainers": [
+          {
+            "email": "edward.yerburgh@gmail.com",
+            "username": "eddyerburgh"
+          },
+          {
+            "email": "dobromir92@gmail.com",
+            "username": "dobromir-hristov"
+          },
+          {
+            "email": "lachlan.miller.1990@outlook.com",
+            "username": "lmiller1990"
+          },
+          {
+            "email": "afontcu@gmail.com",
+            "username": "afontcu"
+          },
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          }
+        ],
+        "license": "MIT",
+        "date": "2020-09-14T06:41:16.117Z",
+        "links": {
+          "repository": "git+https://github.com/vuejs/vue-jest.git",
+          "npm": "https://www.npmjs.com/package/vue-jest"
+        }
+      },
+      "score": {
+        "final": 256.75928,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 2103612,
+        "weekly": 574262
+      },
+      "dependents": "477",
+      "updated": "2026-02-02T03:47:03.833Z",
+      "searchScore": 256.66125,
+      "package": {
+        "name": "@tiptap/vue-3",
+        "keywords": ["tiptap", "tiptap vue components"],
+        "version": "3.18.0",
+        "description": "Vue components for tiptap",
+        "sanitized_name": "@tiptap/vue-3",
+        "publisher": {
+          "email": "npm-oidc-no-reply@github.com",
+          "actor": {
+            "name": "tiptap-bot",
+            "type": "user",
+            "email": "npm@tiptap.dev"
+          },
+          "trustedPublisher": {
+            "oidcConfigId": "oidc:ad1351c7-e5ac-40ad-82e2-2ce8dfc45132",
+            "id": "github"
+          },
+          "username": "GitHub Actions"
+        },
+        "maintainers": [
+          {
+            "email": "arnau.gomez@tiptap.dev",
+            "username": "arnaugomeztiptap"
+          },
+          {
+            "email": "patrick.baber@tiptap.dev",
+            "username": "patrickbaber"
+          },
+          {
+            "email": "mail@timoisik.de",
+            "username": "timoisik"
+          },
+          {
+            "email": "dominik@bdbch.com",
+            "username": "_bdbch"
+          },
+          {
+            "email": "sven.adlung@ueber.io",
+            "username": "svenadlung"
+          },
+          {
+            "email": "npm@tiptap.dev",
+            "username": "tiptap-bot"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-28T12:43:11.410Z",
+        "links": {
+          "homepage": "https://tiptap.dev",
+          "repository": "git+https://github.com/ueberdosis/tiptap.git",
+          "bugs": "https://github.com/ueberdosis/tiptap/issues",
+          "npm": "https://www.npmjs.com/package/@tiptap/vue-3"
+        }
+      },
+      "score": {
+        "final": 256.66125,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 9864143,
+        "weekly": 2597995
+      },
+      "dependents": "339",
+      "updated": "2026-02-02T03:48:25.886Z",
+      "searchScore": 256.617,
+      "package": {
+        "name": "@vue/test-utils",
+        "keywords": [],
+        "version": "2.4.6",
+        "description": "Component testing utils for Vue 3.",
+        "sanitized_name": "@vue/test-utils",
+        "publisher": {
+          "email": "lachlan.miller.1990@outlook.com",
+          "username": "lmiller1990"
+        },
+        "maintainers": [
+          {
+            "email": "yyx990803@gmail.com",
+            "username": "yyx990803"
+          },
+          {
+            "email": "edward.yerburgh@gmail.com",
+            "username": "eddyerburgh"
+          },
+          {
+            "email": "dobromir92@gmail.com",
+            "username": "dobromir-hristov"
+          },
+          {
+            "email": "lachlan.miller.1990@outlook.com",
+            "username": "lmiller1990"
+          },
+          {
+            "email": "afontcu@gmail.com",
+            "username": "afontcu"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-05-07T00:07:48.868Z",
+        "links": {
+          "homepage": "https://github.com/vuejs/test-utils",
+          "repository": "git+https://github.com/vuejs/test-utils.git",
+          "bugs": "https://github.com/vuejs/test-utils/issues",
+          "npm": "https://www.npmjs.com/package/@vue/test-utils"
+        }
+      },
+      "score": {
+        "final": 256.617,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 3715746,
+        "weekly": 969217
+      },
+      "dependents": "2",
+      "updated": "2026-02-02T03:51:08.936Z",
+      "searchScore": 255.44722,
+      "package": {
+        "name": "@cspell/dict-vue",
+        "keywords": ["cspell", "cspell-ext", "vue", "dictionary", "spelling"],
+        "version": "3.0.5",
+        "description": "CSpell configuration for VUE files.",
+        "sanitized_name": "@cspell/dict-vue",
+        "publisher": {
+          "email": "jason@streetsidesoftware.nl",
+          "actor": {
+            "name": "jason-dent",
+            "type": "user",
+            "email": "jason@streetsidesoftware.nl"
+          },
+          "username": "jason-dent"
+        },
+        "maintainers": [
+          {
+            "email": "jason@streetsidesoftware.nl",
+            "username": "jason-dent"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-07-09T18:55:21.047Z",
+        "links": {
+          "homepage": "https://github.com/streetsidesoftware/cspell-dicts/blob/main/dictionaries/vue#readme",
+          "repository": "https://github.com/streetsidesoftware/cspell-dicts",
+          "bugs": "https://github.com/streetsidesoftware/cspell-dicts/issues",
+          "npm": "https://www.npmjs.com/package/@cspell/dict-vue"
+        }
+      },
+      "score": {
+        "final": 255.44722,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    }
+  ],
+  "total": 151211,
+  "time": "2026-02-03T00:16:53.588Z"
+}

@@ -1,9 +1,6 @@
 import { expect, test } from '@nuxt/test-utils/playwright'
 
 test.describe('npmjs.com URL Compatibility', () => {
-  // TODO: these tests depend on external npm registry API - we should add data fixtures
-  test.describe.configure({ retries: 2 })
-
   test.describe('Package Pages', () => {
     test('/package/vue → package page', async ({ page, goto }) => {
       await goto('/package/vue', { waitUntil: 'domcontentloaded' })
@@ -21,22 +18,25 @@ test.describe('npmjs.com URL Compatibility', () => {
       await expect(page.locator('h1')).toContainText('@nuxt/kit')
     })
 
-    test('/package/vue/v/3.4.0 → specific version', async ({ page, goto }) => {
-      await goto('/package/vue/v/3.4.0', { waitUntil: 'domcontentloaded' })
+    test('/package/vue/v/3.5.27 → specific version', async ({ page, goto }) => {
+      await goto('/package/vue/v/3.5.27', { waitUntil: 'domcontentloaded' })
 
       // Should show package name
       await expect(page.locator('h1')).toContainText('vue')
       // Should show the specific version
-      await expect(page.locator('text=v3.4.0')).toBeVisible()
+      await expect(page.locator('text=v3.5.27')).toBeVisible()
     })
 
-    test('/package/@nuxt/kit/v/3.0.0 → scoped package specific version', async ({ page, goto }) => {
-      await goto('/package/@nuxt/kit/v/3.0.0', { waitUntil: 'domcontentloaded' })
+    test('/package/@nuxt/kit/v/3.20.0 → scoped package specific version', async ({
+      page,
+      goto,
+    }) => {
+      await goto('/package/@nuxt/kit/v/3.20.0', { waitUntil: 'domcontentloaded' })
 
       // Should show scoped package name
       await expect(page.locator('h1')).toContainText('@nuxt/kit')
       // Should show the specific version (or "not latest" indicator)
-      await expect(page.locator('text=v3.0.0').first()).toBeVisible()
+      await expect(page.locator('text=v3.20.0').first()).toBeVisible()
     })
 
     test('/package/nonexistent-pkg-12345 → 404 handling', async ({ page, goto }) => {

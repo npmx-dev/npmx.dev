@@ -1,0 +1,5827 @@
+{
+  "objects": [
+    {
+      "downloads": {
+        "monthly": 1080376109,
+        "weekly": 283017821
+      },
+      "dependents": "6431",
+      "updated": "2026-02-02T03:51:20.189Z",
+      "searchScore": 84.03638,
+      "package": {
+        "name": "wrap-ansi",
+        "keywords": [
+          "wrap",
+          "break",
+          "wordwrap",
+          "wordbreak",
+          "linewrap",
+          "ansi",
+          "styles",
+          "color",
+          "colour",
+          "colors",
+          "terminal",
+          "console",
+          "cli",
+          "string",
+          "tty",
+          "escape",
+          "formatting",
+          "rgb",
+          "256",
+          "shell",
+          "xterm",
+          "log",
+          "logging",
+          "command-line",
+          "text"
+        ],
+        "version": "9.0.2",
+        "description": "Wordwrap a string with ANSI escape codes",
+        "sanitized_name": "wrap-ansi",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T15:10:49.479Z",
+        "links": {
+          "homepage": "https://github.com/chalk/wrap-ansi#readme",
+          "repository": "git+https://github.com/chalk/wrap-ansi.git",
+          "bugs": "https://github.com/chalk/wrap-ansi/issues",
+          "npm": "https://www.npmjs.com/package/wrap-ansi"
+        }
+      },
+      "score": {
+        "final": 84.03638,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 931760680,
+        "weekly": 236798849
+      },
+      "dependents": "3259",
+      "updated": "2026-02-02T03:48:57.569Z",
+      "searchScore": 82.51366,
+      "package": {
+        "name": "has-flag",
+        "keywords": [
+          "has",
+          "check",
+          "detect",
+          "contains",
+          "find",
+          "flag",
+          "cli",
+          "command-line",
+          "argv",
+          "process",
+          "arg",
+          "args",
+          "argument",
+          "arguments",
+          "getopt",
+          "minimist",
+          "optimist"
+        ],
+        "version": "5.0.1",
+        "description": "Check if argv has a specific flag",
+        "sanitized_name": "has-flag",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-07-19T17:30:54.122Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/has-flag#readme",
+          "repository": "git+https://github.com/sindresorhus/has-flag.git",
+          "bugs": "https://github.com/sindresorhus/has-flag/issues",
+          "npm": "https://www.npmjs.com/package/has-flag"
+        }
+      },
+      "score": {
+        "final": 82.51366,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 736588660,
+        "weekly": 191049325
+      },
+      "dependents": "5334",
+      "updated": "2026-02-02T03:49:56.084Z",
+      "searchScore": 81.54196,
+      "package": {
+        "name": "find-up",
+        "keywords": [
+          "find",
+          "up",
+          "find-up",
+          "findup",
+          "look-up",
+          "look",
+          "file",
+          "search",
+          "match",
+          "package",
+          "resolve",
+          "parent",
+          "parents",
+          "folder",
+          "directory",
+          "walk",
+          "walking",
+          "path"
+        ],
+        "version": "8.0.0",
+        "description": "Find a file or directory by walking up parent directories",
+        "sanitized_name": "find-up",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-16T01:13:57.112Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/find-up#readme",
+          "repository": "git+https://github.com/sindresorhus/find-up.git",
+          "bugs": "https://github.com/sindresorhus/find-up/issues",
+          "npm": "https://www.npmjs.com/package/find-up"
+        }
+      },
+      "score": {
+        "final": 81.54196,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 1939965798,
+        "weekly": 506703523
+      },
+      "dependents": "3756",
+      "updated": "2026-02-02T03:50:26.094Z",
+      "searchScore": 81.321945,
+      "package": {
+        "name": "ansi-styles",
+        "keywords": [
+          "ansi",
+          "styles",
+          "color",
+          "colour",
+          "colors",
+          "terminal",
+          "console",
+          "cli",
+          "string",
+          "tty",
+          "escape",
+          "formatting",
+          "rgb",
+          "256",
+          "shell",
+          "xterm",
+          "log",
+          "logging",
+          "command-line",
+          "text"
+        ],
+        "version": "6.2.3",
+        "description": "ANSI escape codes for styling strings in the terminal",
+        "sanitized_name": "ansi-styles",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T14:52:15.705Z",
+        "links": {
+          "homepage": "https://github.com/chalk/ansi-styles#readme",
+          "repository": "git+https://github.com/chalk/ansi-styles.git",
+          "bugs": "https://github.com/chalk/ansi-styles/issues",
+          "npm": "https://www.npmjs.com/package/ansi-styles"
+        }
+      },
+      "score": {
+        "final": 81.321945,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 1558447917,
+        "weekly": 395174883
+      },
+      "dependents": "139479",
+      "updated": "2026-02-02T03:47:06.628Z",
+      "searchScore": 80.914505,
+      "package": {
+        "name": "chalk",
+        "keywords": [
+          "color",
+          "colour",
+          "colors",
+          "terminal",
+          "console",
+          "cli",
+          "string",
+          "ansi",
+          "style",
+          "styles",
+          "tty",
+          "formatting",
+          "rgb",
+          "256",
+          "shell",
+          "xterm",
+          "log",
+          "logging",
+          "command-line",
+          "text"
+        ],
+        "version": "5.6.2",
+        "description": "Terminal string styling done right",
+        "sanitized_name": "chalk",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T14:47:54.486Z",
+        "links": {
+          "homepage": "https://github.com/chalk/chalk#readme",
+          "repository": "git+https://github.com/chalk/chalk.git",
+          "bugs": "https://github.com/chalk/chalk/issues",
+          "npm": "https://www.npmjs.com/package/chalk"
+        }
+      },
+      "score": {
+        "final": 80.914505,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 616307435,
+        "weekly": 158830216
+      },
+      "dependents": "2211",
+      "updated": "2026-02-02T03:49:49.835Z",
+      "searchScore": 80.804924,
+      "package": {
+        "name": "path-key",
+        "keywords": [
+          "path",
+          "key",
+          "environment",
+          "env",
+          "variable",
+          "get",
+          "cross-platform",
+          "windows"
+        ],
+        "version": "4.0.0",
+        "description": "Get the PATH environment variable key cross-platform",
+        "sanitized_name": "path-key",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-04-09T12:04:51.822Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/path-key#readme",
+          "repository": "git+https://github.com/sindresorhus/path-key.git",
+          "bugs": "https://github.com/sindresorhus/path-key/issues",
+          "npm": "https://www.npmjs.com/package/path-key"
+        }
+      },
+      "score": {
+        "final": 80.804924,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 592464737,
+        "weekly": 151064764
+      },
+      "dependents": "2416",
+      "updated": "2026-02-02T03:47:42.374Z",
+      "searchScore": 80.641815,
+      "package": {
+        "name": "get-stream",
+        "keywords": [
+          "get",
+          "stream",
+          "promise",
+          "concat",
+          "string",
+          "text",
+          "buffer",
+          "read",
+          "data",
+          "consume",
+          "readable",
+          "readablestream",
+          "object",
+          "concat"
+        ],
+        "version": "9.0.1",
+        "description": "Get a stream as a string, Buffer, ArrayBuffer or array",
+        "sanitized_name": "get-stream",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          },
+          {
+            "email": "ehmicky@gmail.com",
+            "username": "ehmicky"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-03-16T18:05:50.308Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/get-stream#readme",
+          "repository": "git+https://github.com/sindresorhus/get-stream.git",
+          "bugs": "https://github.com/sindresorhus/get-stream/issues",
+          "npm": "https://www.npmjs.com/package/get-stream"
+        }
+      },
+      "score": {
+        "final": 80.641815,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 1382072138,
+        "weekly": 360627536
+      },
+      "dependents": "4366",
+      "updated": "2026-02-02T03:50:29.487Z",
+      "searchScore": 79.98935,
+      "package": {
+        "name": "supports-color",
+        "keywords": [
+          "color",
+          "colour",
+          "colors",
+          "terminal",
+          "console",
+          "cli",
+          "ansi",
+          "styles",
+          "tty",
+          "rgb",
+          "256",
+          "shell",
+          "xterm",
+          "command-line",
+          "support",
+          "supports",
+          "capability",
+          "detect",
+          "truecolor",
+          "16m"
+        ],
+        "version": "10.2.2",
+        "description": "Detect whether a terminal supports color",
+        "sanitized_name": "supports-color",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T14:49:55.476Z",
+        "links": {
+          "homepage": "https://github.com/chalk/supports-color#readme",
+          "repository": "git+https://github.com/chalk/supports-color.git",
+          "bugs": "https://github.com/chalk/supports-color/issues",
+          "npm": "https://www.npmjs.com/package/supports-color"
+        }
+      },
+      "score": {
+        "final": 79.98935,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 1468373717,
+        "weekly": 375221002
+      },
+      "dependents": "10021",
+      "updated": "2026-02-02T03:47:14.249Z",
+      "searchScore": 79.98361,
+      "package": {
+        "name": "strip-ansi",
+        "keywords": [
+          "strip",
+          "trim",
+          "remove",
+          "ansi",
+          "styles",
+          "color",
+          "colour",
+          "colors",
+          "terminal",
+          "console",
+          "string",
+          "tty",
+          "escape",
+          "formatting",
+          "rgb",
+          "256",
+          "shell",
+          "xterm",
+          "log",
+          "logging",
+          "command-line",
+          "text"
+        ],
+        "version": "7.1.2",
+        "description": "Strip ANSI escape codes from a string",
+        "sanitized_name": "strip-ansi",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T15:05:29.146Z",
+        "links": {
+          "homepage": "https://github.com/chalk/strip-ansi#readme",
+          "repository": "git+https://github.com/chalk/strip-ansi.git",
+          "bugs": "https://github.com/chalk/strip-ansi/issues",
+          "npm": "https://www.npmjs.com/package/strip-ansi"
+        }
+      },
+      "score": {
+        "final": 79.98361,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 1349325368,
+        "weekly": 355357252
+      },
+      "dependents": "3308",
+      "updated": "2026-02-02T03:49:52.921Z",
+      "searchScore": 79.89511,
+      "package": {
+        "name": "ansi-regex",
+        "keywords": [
+          "ansi",
+          "styles",
+          "color",
+          "colour",
+          "colors",
+          "terminal",
+          "console",
+          "cli",
+          "string",
+          "tty",
+          "escape",
+          "formatting",
+          "rgb",
+          "256",
+          "shell",
+          "xterm",
+          "command-line",
+          "text",
+          "regex",
+          "regexp",
+          "re",
+          "match",
+          "test",
+          "find",
+          "pattern"
+        ],
+        "version": "6.2.2",
+        "description": "Regular expression for matching ANSI escape codes",
+        "sanitized_name": "ansi-regex",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T14:48:14.264Z",
+        "links": {
+          "homepage": "https://github.com/chalk/ansi-regex#readme",
+          "repository": "git+https://github.com/chalk/ansi-regex.git",
+          "bugs": "https://github.com/chalk/ansi-regex/issues",
+          "npm": "https://www.npmjs.com/package/ansi-regex"
+        }
+      },
+      "score": {
+        "final": 79.89511,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 1319338274,
+        "weekly": 347022900
+      },
+      "dependents": "6901",
+      "updated": "2026-02-02T03:50:02.672Z",
+      "searchScore": 79.806786,
+      "package": {
+        "name": "string-width",
+        "keywords": [
+          "string",
+          "character",
+          "unicode",
+          "width",
+          "visual",
+          "column",
+          "columns",
+          "fullwidth",
+          "full-width",
+          "wcwidth",
+          "wcswidth",
+          "full",
+          "ansi",
+          "escape",
+          "codes",
+          "cli",
+          "command-line",
+          "terminal",
+          "console",
+          "cjk",
+          "chinese",
+          "japanese",
+          "korean",
+          "fixed-width",
+          "east-asian-width"
+        ],
+        "version": "8.1.1",
+        "description": "Get the visual width of a string - the number of columns required to display it",
+        "sanitized_name": "string-width",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-29T03:42:41.370Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/string-width#readme",
+          "repository": "git+https://github.com/sindresorhus/string-width.git",
+          "bugs": "https://github.com/sindresorhus/string-width/issues",
+          "npm": "https://www.npmjs.com/package/string-width"
+        }
+      },
+      "score": {
+        "final": 79.806786,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 341937698,
+        "weekly": 88121658
+      },
+      "dependents": "3471",
+      "updated": "2026-02-02T03:46:55.588Z",
+      "searchScore": 79.22828,
+      "package": {
+        "name": "pify",
+        "keywords": [
+          "promisify",
+          "callback",
+          "promise",
+          "promises",
+          "denodify",
+          "denodeify",
+          "node",
+          "then",
+          "thenify",
+          "convert",
+          "transform",
+          "wrap",
+          "wrapper",
+          "bind",
+          "async",
+          "await",
+          "es2015",
+          "bluebird"
+        ],
+        "version": "6.1.0",
+        "description": "Promisify a callback-style function",
+        "sanitized_name": "pify",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2022-09-02T12:55:21.948Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/pify#readme",
+          "repository": "git+https://github.com/sindresorhus/pify.git",
+          "bugs": "https://github.com/sindresorhus/pify/issues",
+          "npm": "https://www.npmjs.com/package/pify"
+        }
+      },
+      "score": {
+        "final": 79.22828,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 323925701,
+        "weekly": 85346818
+      },
+      "dependents": "1339",
+      "updated": "2026-02-02T03:50:10.102Z",
+      "searchScore": 79.00212,
+      "package": {
+        "name": "is-docker",
+        "keywords": [
+          "detect",
+          "docker",
+          "dockerized",
+          "container",
+          "inside",
+          "is",
+          "env",
+          "environment",
+          "process"
+        ],
+        "version": "4.0.0",
+        "description": "Check if the process is running inside a Docker container",
+        "sanitized_name": "is-docker",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-15T21:04:08.390Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-docker#readme",
+          "repository": "git+https://github.com/sindresorhus/is-docker.git",
+          "bugs": "https://github.com/sindresorhus/is-docker/issues",
+          "npm": "https://www.npmjs.com/package/is-docker"
+        }
+      },
+      "score": {
+        "final": 79.00212,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 788727583,
+        "weekly": 203470695
+      },
+      "dependents": "5289",
+      "updated": "2026-02-02T03:49:45.709Z",
+      "searchScore": 78.47104,
+      "package": {
+        "name": "escape-string-regexp",
+        "keywords": [
+          "escape",
+          "regex",
+          "regexp",
+          "regular",
+          "expression",
+          "string",
+          "special",
+          "characters"
+        ],
+        "version": "5.0.0",
+        "description": "Escape RegExp special characters",
+        "sanitized_name": "escape-string-regexp",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-04-17T15:45:50.334Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/escape-string-regexp#readme",
+          "repository": "git+https://github.com/sindresorhus/escape-string-regexp.git",
+          "bugs": "https://github.com/sindresorhus/escape-string-regexp/issues",
+          "npm": "https://www.npmjs.com/package/escape-string-regexp"
+        }
+      },
+      "score": {
+        "final": 78.47104,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 708522941,
+        "weekly": 183900817
+      },
+      "dependents": "2347",
+      "updated": "2026-02-02T03:51:13.614Z",
+      "searchScore": 78.045876,
+      "package": {
+        "name": "p-locate",
+        "keywords": [
+          "promise",
+          "locate",
+          "find",
+          "finder",
+          "search",
+          "searcher",
+          "test",
+          "array",
+          "collection",
+          "iterable",
+          "iterator",
+          "race",
+          "fulfilled",
+          "fastest",
+          "async",
+          "await",
+          "promises",
+          "bluebird"
+        ],
+        "version": "6.0.0",
+        "description": "Get the first fulfilled promise that satisfies the provided testing function",
+        "sanitized_name": "p-locate",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-08-25T11:56:43.294Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/p-locate#readme",
+          "repository": "git+https://github.com/sindresorhus/p-locate.git",
+          "bugs": "https://github.com/sindresorhus/p-locate/issues",
+          "npm": "https://www.npmjs.com/package/p-locate"
+        }
+      },
+      "score": {
+        "final": 78.045876,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 312017365,
+        "weekly": 77852905
+      },
+      "dependents": "1890",
+      "updated": "2026-02-02T03:48:09.999Z",
+      "searchScore": 77.99092,
+      "package": {
+        "name": "import-fresh",
+        "keywords": ["require", "cache", "uncache", "uncached", "module", "fresh", "bypass"],
+        "version": "3.3.1",
+        "description": "Import a module while bypassing the cache",
+        "sanitized_name": "import-fresh",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-02-02T09:45:41.743Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/import-fresh#readme",
+          "repository": "git+https://github.com/sindresorhus/import-fresh.git",
+          "bugs": "https://github.com/sindresorhus/import-fresh/issues",
+          "npm": "https://www.npmjs.com/package/import-fresh"
+        }
+      },
+      "score": {
+        "final": 77.99092,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 1065289904,
+        "weekly": 272752021
+      },
+      "dependents": "5700",
+      "updated": "2026-02-02T03:47:08.123Z",
+      "searchScore": 77.9762,
+      "package": {
+        "name": "type-fest",
+        "keywords": [
+          "typescript",
+          "ts",
+          "types",
+          "utility",
+          "util",
+          "utilities",
+          "omit",
+          "merge",
+          "json",
+          "generics"
+        ],
+        "version": "5.4.3",
+        "description": "A collection of essential TypeScript types",
+        "sanitized_name": "type-fest",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "(MIT OR CC0-1.0)",
+        "date": "2026-01-31T11:27:13.908Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/type-fest#readme",
+          "repository": "git+https://github.com/sindresorhus/type-fest.git",
+          "bugs": "https://github.com/sindresorhus/type-fest/issues",
+          "npm": "https://www.npmjs.com/package/type-fest"
+        }
+      },
+      "score": {
+        "final": 77.9762,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 715376330,
+        "weekly": 182964661
+      },
+      "dependents": "4649",
+      "updated": "2026-02-02T03:48:35.851Z",
+      "searchScore": 77.401344,
+      "package": {
+        "name": "p-limit",
+        "keywords": [
+          "promise",
+          "limit",
+          "limited",
+          "concurrency",
+          "throttle",
+          "throat",
+          "rate",
+          "batch",
+          "ratelimit",
+          "task",
+          "queue",
+          "async",
+          "await",
+          "promises",
+          "bluebird"
+        ],
+        "version": "7.2.0",
+        "description": "Run multiple promise-returning & async functions with limited concurrency",
+        "sanitized_name": "p-limit",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-10-19T15:26:03.779Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/p-limit#readme",
+          "repository": "git+https://github.com/sindresorhus/p-limit.git",
+          "bugs": "https://github.com/sindresorhus/p-limit/issues",
+          "npm": "https://www.npmjs.com/package/p-limit"
+        }
+      },
+      "score": {
+        "final": 77.401344,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 708859901,
+        "weekly": 183912681
+      },
+      "dependents": "2379",
+      "updated": "2026-02-02T03:49:53.261Z",
+      "searchScore": 77.1303,
+      "package": {
+        "name": "locate-path",
+        "keywords": [
+          "locate",
+          "path",
+          "paths",
+          "file",
+          "files",
+          "exists",
+          "find",
+          "finder",
+          "search",
+          "searcher",
+          "array",
+          "iterable",
+          "iterator"
+        ],
+        "version": "8.0.0",
+        "description": "Get the first path that exists on disk of multiple paths",
+        "sanitized_name": "locate-path",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-15T23:17:38.813Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/locate-path#readme",
+          "repository": "git+https://github.com/sindresorhus/locate-path.git",
+          "bugs": "https://github.com/sindresorhus/locate-path/issues",
+          "npm": "https://www.npmjs.com/package/locate-path"
+        }
+      },
+      "score": {
+        "final": 77.1303,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 536802468,
+        "weekly": 141500201
+      },
+      "dependents": "2396",
+      "updated": "2026-02-02T03:49:14.436Z",
+      "searchScore": 76.94549,
+      "package": {
+        "name": "is-stream",
+        "keywords": [
+          "stream",
+          "type",
+          "streams",
+          "writable",
+          "readable",
+          "duplex",
+          "transform",
+          "check",
+          "detect",
+          "is"
+        ],
+        "version": "4.0.1",
+        "description": "Check if something is a Node.js stream",
+        "sanitized_name": "is-stream",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-02-19T19:14:12.256Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-stream#readme",
+          "repository": "git+https://github.com/sindresorhus/is-stream.git",
+          "bugs": "https://github.com/sindresorhus/is-stream/issues",
+          "npm": "https://www.npmjs.com/package/is-stream"
+        }
+      },
+      "score": {
+        "final": 76.94549,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 536193494,
+        "weekly": 137332529
+      },
+      "dependents": "3091",
+      "updated": "2026-02-02T03:51:33.133Z",
+      "searchScore": 76.94099,
+      "package": {
+        "name": "resolve-from",
+        "keywords": ["require", "resolve", "path", "module", "from", "like", "import"],
+        "version": "5.0.0",
+        "description": "Resolve the path of a module like `require.resolve()` but from a given path",
+        "sanitized_name": "resolve-from",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2019-04-15T04:06:25.601Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/resolve-from#readme",
+          "repository": "git+https://github.com/sindresorhus/resolve-from.git",
+          "bugs": "https://github.com/sindresorhus/resolve-from/issues",
+          "npm": "https://www.npmjs.com/package/resolve-from"
+        }
+      },
+      "score": {
+        "final": 76.94099,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 196767093,
+        "weekly": 52466007
+      },
+      "dependents": "37139",
+      "updated": "2026-02-02T03:47:53.787Z",
+      "searchScore": 76.91873,
+      "package": {
+        "name": "ora",
+        "keywords": [
+          "cli",
+          "spinner",
+          "spinners",
+          "terminal",
+          "term",
+          "console",
+          "ascii",
+          "unicode",
+          "loading",
+          "indicator",
+          "progress",
+          "busy",
+          "wait",
+          "idle"
+        ],
+        "version": "9.1.0",
+        "description": "Elegant terminal spinner",
+        "sanitized_name": "ora",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-21T03:05:45.651Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/ora#readme",
+          "repository": "git+https://github.com/sindresorhus/ora.git",
+          "bugs": "https://github.com/sindresorhus/ora/issues",
+          "npm": "https://www.npmjs.com/package/ora"
+        }
+      },
+      "score": {
+        "final": 76.91873,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 239868338,
+        "weekly": 63324190
+      },
+      "dependents": "1779",
+      "updated": "2026-02-02T03:50:26.692Z",
+      "searchScore": 76.90379,
+      "package": {
+        "name": "p-try",
+        "keywords": [
+          "promise",
+          "try",
+          "resolve",
+          "function",
+          "catch",
+          "async",
+          "await",
+          "promises",
+          "settled",
+          "ponyfill",
+          "polyfill",
+          "shim",
+          "bluebird"
+        ],
+        "version": "3.0.0",
+        "description": "`Start a promise chain",
+        "sanitized_name": "p-try",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-10-04T16:19:43.327Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/p-try#readme",
+          "repository": "git+https://github.com/sindresorhus/p-try.git",
+          "bugs": "https://github.com/sindresorhus/p-try/issues",
+          "npm": "https://www.npmjs.com/package/p-try"
+        }
+      },
+      "score": {
+        "final": 76.90379,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 227607159,
+        "weekly": 59434525
+      },
+      "dependents": "1567",
+      "updated": "2026-02-02T03:51:32.688Z",
+      "searchScore": 76.68688,
+      "package": {
+        "name": "error-ex",
+        "keywords": [
+          "error",
+          "errors",
+          "extend",
+          "extending",
+          "extension",
+          "subclass",
+          "stack",
+          "custom"
+        ],
+        "version": "1.3.4",
+        "description": "Easy error subclassing and stack customization",
+        "sanitized_name": "error-ex",
+        "publisher": {
+          "email": "npm@josh.junon.me",
+          "username": "qix"
+        },
+        "maintainers": [
+          {
+            "email": "npm@josh.junon.me",
+            "username": "qix"
+          },
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-15T14:58:41.266Z",
+        "links": {
+          "homepage": "https://github.com/qix-/node-error-ex#readme",
+          "repository": "git+https://github.com/qix-/node-error-ex.git",
+          "bugs": "https://github.com/qix-/node-error-ex/issues",
+          "npm": "https://www.npmjs.com/package/error-ex"
+        }
+      },
+      "score": {
+        "final": 76.68688,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 738364964,
+        "weekly": 196863032
+      },
+      "dependents": "2679",
+      "updated": "2026-02-02T03:51:52.511Z",
+      "searchScore": 76.55367,
+      "package": {
+        "name": "is-fullwidth-code-point",
+        "keywords": [
+          "fullwidth",
+          "full-width",
+          "full",
+          "width",
+          "unicode",
+          "character",
+          "string",
+          "codepoint",
+          "code",
+          "point",
+          "is",
+          "detect",
+          "check",
+          "east-asian-width"
+        ],
+        "version": "5.1.0",
+        "description": "Check if the character represented by a given Unicode code point is fullwidth",
+        "sanitized_name": "is-fullwidth-code-point",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-08-31T07:37:04.805Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-fullwidth-code-point#readme",
+          "repository": "git+https://github.com/sindresorhus/is-fullwidth-code-point.git",
+          "bugs": "https://github.com/sindresorhus/is-fullwidth-code-point/issues",
+          "npm": "https://www.npmjs.com/package/is-fullwidth-code-point"
+        }
+      },
+      "score": {
+        "final": 76.55367,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 498500821,
+        "weekly": 131813943
+      },
+      "dependents": "2033",
+      "updated": "2026-02-02T07:42:54.795Z",
+      "searchScore": 76.409744,
+      "package": {
+        "name": "onetime",
+        "keywords": [
+          "once",
+          "function",
+          "one",
+          "onetime",
+          "func",
+          "fn",
+          "single",
+          "call",
+          "called",
+          "prevent"
+        ],
+        "version": "8.0.0",
+        "description": "Ensure a function is only called once",
+        "sanitized_name": "onetime",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-02-02T07:42:24.047Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/onetime#readme",
+          "repository": "git+https://github.com/sindresorhus/onetime.git",
+          "bugs": "https://github.com/sindresorhus/onetime/issues",
+          "npm": "https://www.npmjs.com/package/onetime"
+        }
+      },
+      "score": {
+        "final": 76.409744,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 580817911,
+        "weekly": 144503976
+      },
+      "dependents": "4795",
+      "updated": "2026-02-02T03:47:34.072Z",
+      "searchScore": 76.349754,
+      "package": {
+        "name": "globals",
+        "keywords": [
+          "globals",
+          "global",
+          "identifiers",
+          "variables",
+          "vars",
+          "jshint",
+          "eslint",
+          "environments"
+        ],
+        "version": "17.3.0",
+        "description": "Global identifiers from different JavaScript environments",
+        "sanitized_name": "globals",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "actor": {
+            "name": "sindresorhus",
+            "type": "user",
+            "email": "sindresorhus@gmail.com"
+          },
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "ben@byk.im",
+            "username": "byk"
+          },
+          {
+            "email": "nicholas@nczconsulting.com",
+            "username": "nzakas"
+          },
+          {
+            "email": "schreck.mathias@gmail.com",
+            "username": "lo1tuma"
+          },
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-02-01T00:49:58.790Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/globals#readme",
+          "repository": "git+https://github.com/sindresorhus/globals.git",
+          "bugs": "https://github.com/sindresorhus/globals/issues",
+          "npm": "https://www.npmjs.com/package/globals"
+        }
+      },
+      "score": {
+        "final": 76.349754,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 165703507,
+        "weekly": 40423344
+      },
+      "dependents": "6992",
+      "updated": "2026-02-02T03:48:06.830Z",
+      "searchScore": 76.20063,
+      "package": {
+        "name": "boxen",
+        "keywords": [
+          "cli",
+          "box",
+          "boxes",
+          "terminal",
+          "term",
+          "console",
+          "ascii",
+          "unicode",
+          "border",
+          "text"
+        ],
+        "version": "8.0.1",
+        "description": "Create boxes in the terminal",
+        "sanitized_name": "boxen",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-08-05T11:05:04.703Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/boxen#readme",
+          "repository": "git+https://github.com/sindresorhus/boxen.git",
+          "bugs": "https://github.com/sindresorhus/boxen/issues",
+          "npm": "https://www.npmjs.com/package/boxen"
+        }
+      },
+      "score": {
+        "final": 76.20063,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 161528612,
+        "weekly": 42959699
+      },
+      "dependents": "2269",
+      "updated": "2026-02-02T03:48:06.575Z",
+      "searchScore": 76.09398,
+      "package": {
+        "name": "cli-spinners",
+        "keywords": [
+          "cli",
+          "spinner",
+          "spinners",
+          "terminal",
+          "term",
+          "console",
+          "ascii",
+          "unicode",
+          "loading",
+          "indicator",
+          "progress",
+          "busy",
+          "wait",
+          "idle",
+          "json"
+        ],
+        "version": "3.4.0",
+        "description": "Spinners for use in the terminal",
+        "sanitized_name": "cli-spinners",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-13T15:09:46.171Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/cli-spinners#readme",
+          "repository": "git+https://github.com/sindresorhus/cli-spinners.git",
+          "bugs": "https://github.com/sindresorhus/cli-spinners/issues",
+          "npm": "https://www.npmjs.com/package/cli-spinners"
+        }
+      },
+      "score": {
+        "final": 76.09398,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 148724679,
+        "weekly": 36109242
+      },
+      "dependents": "547",
+      "updated": "2026-02-02T03:48:57.696Z",
+      "searchScore": 75.748825,
+      "package": {
+        "name": "registry-url",
+        "keywords": ["npm", "conf", "config", "npmconf", "registry", "url", "uri", "scope"],
+        "version": "7.2.0",
+        "description": "Get the set npm registry URL",
+        "sanitized_name": "registry-url",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-04-15T18:28:12.049Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/registry-url#readme",
+          "repository": "git+https://github.com/sindresorhus/registry-url.git",
+          "bugs": "https://github.com/sindresorhus/registry-url/issues",
+          "npm": "https://www.npmjs.com/package/registry-url"
+        }
+      },
+      "score": {
+        "final": 75.748825,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 180311352,
+        "weekly": 46969431
+      },
+      "dependents": "1338",
+      "updated": "2026-02-02T03:47:28.175Z",
+      "searchScore": 75.72391,
+      "package": {
+        "name": "is-path-inside",
+        "keywords": ["path", "inside", "folder", "directory", "file", "resolve"],
+        "version": "4.0.0",
+        "description": "Check if a path is inside another path",
+        "sanitized_name": "is-path-inside",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-05-03T12:59:34.548Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-path-inside#readme",
+          "repository": "git+https://github.com/sindresorhus/is-path-inside.git",
+          "bugs": "https://github.com/sindresorhus/is-path-inside/issues",
+          "npm": "https://www.npmjs.com/package/is-path-inside"
+        }
+      },
+      "score": {
+        "final": 75.72391,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 147300511,
+        "weekly": 38379642
+      },
+      "dependents": "1112",
+      "updated": "2026-02-02T03:49:52.519Z",
+      "searchScore": 75.70861,
+      "package": {
+        "name": "string-length",
+        "keywords": [
+          "unicode",
+          "string",
+          "length",
+          "size",
+          "count",
+          "astral",
+          "symbol",
+          "surrogates",
+          "codepoints",
+          "ansi",
+          "escape",
+          "codes"
+        ],
+        "version": "7.0.1",
+        "description": "Get the real length of a string - by correctly counting astral symbols and ignoring ansi escape codes",
+        "sanitized_name": "string-length",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-21T14:39:13.979Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/string-length#readme",
+          "repository": "git+https://github.com/sindresorhus/string-length.git",
+          "bugs": "https://github.com/sindresorhus/string-length/issues",
+          "npm": "https://www.npmjs.com/package/string-length"
+        }
+      },
+      "score": {
+        "final": 75.70861,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 177366671,
+        "weekly": 49060557
+      },
+      "dependents": "1225",
+      "updated": "2026-02-02T03:47:41.643Z",
+      "searchScore": 75.65584,
+      "package": {
+        "name": "strip-indent",
+        "keywords": [
+          "strip",
+          "indent",
+          "indentation",
+          "normalize",
+          "remove",
+          "delete",
+          "whitespace",
+          "space",
+          "tab",
+          "string",
+          "dedent"
+        ],
+        "version": "4.1.1",
+        "description": "Strip leading whitespace from each line in a string",
+        "sanitized_name": "strip-indent",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-10-12T14:55:54.463Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/strip-indent#readme",
+          "repository": "git+https://github.com/sindresorhus/strip-indent.git",
+          "bugs": "https://github.com/sindresorhus/strip-indent/issues",
+          "npm": "https://www.npmjs.com/package/strip-indent"
+        }
+      },
+      "score": {
+        "final": 75.65584,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 493888143,
+        "weekly": 126398741
+      },
+      "dependents": "4766",
+      "updated": "2026-02-02T03:50:18.326Z",
+      "searchScore": 75.53795,
+      "package": {
+        "name": "path-exists",
+        "keywords": [
+          "path",
+          "exists",
+          "exist",
+          "file",
+          "filepath",
+          "fs",
+          "filesystem",
+          "file-system",
+          "access",
+          "stat"
+        ],
+        "version": "5.0.0",
+        "description": "Check if a path exists",
+        "sanitized_name": "path-exists",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-08-12T10:43:19.346Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/path-exists#readme",
+          "repository": "git+https://github.com/sindresorhus/path-exists.git",
+          "bugs": "https://github.com/sindresorhus/path-exists/issues",
+          "npm": "https://www.npmjs.com/package/path-exists"
+        }
+      },
+      "score": {
+        "final": 75.53795,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 437124260,
+        "weekly": 115136385
+      },
+      "dependents": "1673",
+      "updated": "2026-02-02T03:51:32.768Z",
+      "searchScore": 75.46548,
+      "package": {
+        "name": "npm-run-path",
+        "keywords": [
+          "npm",
+          "run",
+          "path",
+          "package",
+          "bin",
+          "binary",
+          "binaries",
+          "script",
+          "cli",
+          "command-line",
+          "execute",
+          "executable"
+        ],
+        "version": "6.0.0",
+        "description": "Get your PATH prepended with locally installed binaries",
+        "sanitized_name": "npm-run-path",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-08-26T08:40:09.814Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/npm-run-path#readme",
+          "repository": "git+https://github.com/sindresorhus/npm-run-path.git",
+          "bugs": "https://github.com/sindresorhus/npm-run-path/issues",
+          "npm": "https://www.npmjs.com/package/npm-run-path"
+        }
+      },
+      "score": {
+        "final": 75.46548,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 168305919,
+        "weekly": 43970098
+      },
+      "dependents": "545",
+      "updated": "2026-02-02T03:51:46.306Z",
+      "searchScore": 75.439064,
+      "package": {
+        "name": "cli-boxes",
+        "keywords": [
+          "cli",
+          "box",
+          "boxes",
+          "terminal",
+          "term",
+          "console",
+          "ascii",
+          "unicode",
+          "border",
+          "text",
+          "json"
+        ],
+        "version": "4.0.1",
+        "description": "Boxes for use in the terminal",
+        "sanitized_name": "cli-boxes",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-08-04T17:57:54.988Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/cli-boxes#readme",
+          "repository": "git+https://github.com/sindresorhus/cli-boxes.git",
+          "bugs": "https://github.com/sindresorhus/cli-boxes/issues",
+          "npm": "https://www.npmjs.com/package/cli-boxes"
+        }
+      },
+      "score": {
+        "final": 75.439064,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 551776430,
+        "weekly": 144692323
+      },
+      "dependents": "6822",
+      "updated": "2026-02-02T03:49:54.008Z",
+      "searchScore": 75.42324,
+      "package": {
+        "name": "camelcase",
+        "keywords": [
+          "camelcase",
+          "camel-case",
+          "camel",
+          "case",
+          "dash",
+          "hyphen",
+          "dot",
+          "underscore",
+          "separator",
+          "string",
+          "text",
+          "convert",
+          "pascalcase",
+          "pascal-case"
+        ],
+        "version": "9.0.0",
+        "description": "Convert a dash/dot/underscore/space separated string to camelCase or PascalCase: `foo-bar` → `fooBar`",
+        "sanitized_name": "camelcase",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-10T20:38:44.112Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/camelcase#readme",
+          "repository": "git+https://github.com/sindresorhus/camelcase.git",
+          "bugs": "https://github.com/sindresorhus/camelcase/issues",
+          "npm": "https://www.npmjs.com/package/camelcase"
+        }
+      },
+      "score": {
+        "final": 75.42324,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 353670905,
+        "weekly": 93343406
+      },
+      "dependents": "2007",
+      "updated": "2026-02-02T03:51:21.274Z",
+      "searchScore": 75.29119,
+      "package": {
+        "name": "is-wsl",
+        "keywords": [
+          "check",
+          "wsl",
+          "windows",
+          "subsystem",
+          "linux",
+          "detect",
+          "bash",
+          "process",
+          "console",
+          "terminal",
+          "is"
+        ],
+        "version": "3.1.0",
+        "description": "Check if the process is running inside Windows Subsystem for Linux (Bash on Windows)",
+        "sanitized_name": "is-wsl",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-09-25T05:58:41.397Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-wsl#readme",
+          "repository": "git+https://github.com/sindresorhus/is-wsl.git",
+          "bugs": "https://github.com/sindresorhus/is-wsl/issues",
+          "npm": "https://www.npmjs.com/package/is-wsl"
+        }
+      },
+      "score": {
+        "final": 75.29119,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 374826523,
+        "weekly": 97171812
+      },
+      "dependents": "2611",
+      "updated": "2026-02-02T03:47:41.199Z",
+      "searchScore": 75.28284,
+      "package": {
+        "name": "make-dir",
+        "keywords": [
+          "mkdir",
+          "mkdirp",
+          "make",
+          "directories",
+          "folders",
+          "directory",
+          "folder",
+          "path",
+          "parent",
+          "parents",
+          "intermediate",
+          "recursively",
+          "recursive",
+          "create",
+          "fs",
+          "filesystem",
+          "file-system"
+        ],
+        "version": "5.1.0",
+        "description": "Make a directory and its parents if needed - Think `mkdir -p`",
+        "sanitized_name": "make-dir",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-10T18:24:35.819Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/make-dir#readme",
+          "repository": "git+https://github.com/sindresorhus/make-dir.git",
+          "bugs": "https://github.com/sindresorhus/make-dir/issues",
+          "npm": "https://www.npmjs.com/package/make-dir"
+        }
+      },
+      "score": {
+        "final": 75.28284,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 527572134,
+        "weekly": 129744822
+      },
+      "dependents": "3184",
+      "updated": "2026-02-02T03:47:59.079Z",
+      "searchScore": 75.24917,
+      "package": {
+        "name": "strip-json-comments",
+        "keywords": [
+          "json",
+          "strip",
+          "comments",
+          "remove",
+          "delete",
+          "trim",
+          "multiline",
+          "parse",
+          "config",
+          "configuration",
+          "settings",
+          "util",
+          "env",
+          "environment",
+          "jsonc"
+        ],
+        "version": "5.0.3",
+        "description": "Strip comments from JSON. Lets you use comments in your JSON files!",
+        "sanitized_name": "strip-json-comments",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-08-08T14:14:05.044Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/strip-json-comments#readme",
+          "repository": "git+https://github.com/sindresorhus/strip-json-comments.git",
+          "bugs": "https://github.com/sindresorhus/strip-json-comments/issues",
+          "npm": "https://www.npmjs.com/package/strip-json-comments"
+        }
+      },
+      "score": {
+        "final": 75.24917,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 518131042,
+        "weekly": 132943004
+      },
+      "dependents": "2208",
+      "updated": "2026-02-02T03:51:28.101Z",
+      "searchScore": 75.17909,
+      "package": {
+        "name": "shebang-regex",
+        "keywords": ["regex", "regexp", "shebang", "match", "test", "line"],
+        "version": "4.0.0",
+        "description": "Regular expression for matching a shebang line",
+        "sanitized_name": "shebang-regex",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-08-13T23:09:49.954Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/shebang-regex#readme",
+          "repository": "git+https://github.com/sindresorhus/shebang-regex.git",
+          "bugs": "https://github.com/sindresorhus/shebang-regex/issues",
+          "npm": "https://www.npmjs.com/package/shebang-regex"
+        }
+      },
+      "score": {
+        "final": 75.17909,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 361884090,
+        "weekly": 95417816
+      },
+      "dependents": "1298",
+      "updated": "2026-02-02T03:51:53.258Z",
+      "searchScore": 75.14396,
+      "package": {
+        "name": "strip-final-newline",
+        "keywords": [
+          "strip",
+          "trim",
+          "remove",
+          "delete",
+          "final",
+          "last",
+          "end",
+          "file",
+          "newline",
+          "linebreak",
+          "character",
+          "string",
+          "uint8array"
+        ],
+        "version": "4.0.0",
+        "description": "Strip the final newline character from a string or Uint8Array",
+        "sanitized_name": "strip-final-newline",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-12-13T19:31:50.243Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/strip-final-newline#readme",
+          "repository": "git+https://github.com/sindresorhus/strip-final-newline.git",
+          "bugs": "https://github.com/sindresorhus/strip-final-newline/issues",
+          "npm": "https://www.npmjs.com/package/strip-final-newline"
+        }
+      },
+      "score": {
+        "final": 75.14396,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 489988382,
+        "weekly": 124535491
+      },
+      "dependents": "16911",
+      "updated": "2026-02-02T03:48:46.398Z",
+      "searchScore": 74.962364,
+      "package": {
+        "name": "execa",
+        "keywords": [
+          "exec",
+          "child",
+          "process",
+          "subprocess",
+          "execute",
+          "fork",
+          "execfile",
+          "spawn",
+          "file",
+          "shell",
+          "bin",
+          "binary",
+          "binaries",
+          "npm",
+          "path",
+          "local",
+          "zx"
+        ],
+        "version": "9.6.1",
+        "description": "Process execution for humans",
+        "sanitized_name": "execa",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          },
+          {
+            "email": "ehmicky@gmail.com",
+            "username": "ehmicky"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-29T20:53:46.888Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/execa#readme",
+          "repository": "git+https://github.com/sindresorhus/execa.git",
+          "bugs": "https://github.com/sindresorhus/execa/issues",
+          "npm": "https://www.npmjs.com/package/execa"
+        }
+      },
+      "score": {
+        "final": 74.962364,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 119598135,
+        "weekly": 34350970
+      },
+      "dependents": "727",
+      "updated": "2026-02-02T03:51:18.087Z",
+      "searchScore": 74.83789,
+      "package": {
+        "name": "min-indent",
+        "keywords": [
+          "indent",
+          "indentation",
+          "normalize",
+          "whitespace",
+          "space",
+          "tab",
+          "string",
+          "str",
+          "min",
+          "minimum"
+        ],
+        "version": "1.0.1",
+        "description": "Get the shortest leading whitespace from lines in a string",
+        "sanitized_name": "min-indent",
+        "publisher": {
+          "email": "me@thejameskyle.com",
+          "username": "thejameskyle"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          },
+          {
+            "email": "me@thejameskyle.com",
+            "username": "thejameskyle"
+          }
+        ],
+        "license": "MIT",
+        "date": "2020-05-28T19:20:06.032Z",
+        "links": {
+          "homepage": "https://github.com/thejameskyle/min-indent#readme",
+          "repository": "git+https://github.com/thejameskyle/min-indent.git",
+          "bugs": "https://github.com/thejameskyle/min-indent/issues",
+          "npm": "https://www.npmjs.com/package/min-indent"
+        }
+      },
+      "score": {
+        "final": 74.83789,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 117698780,
+        "weekly": 31329584
+      },
+      "dependents": "141",
+      "updated": "2026-02-02T03:51:17.276Z",
+      "searchScore": 74.77098,
+      "package": {
+        "name": "chalk-template",
+        "keywords": [
+          "chalk",
+          "template",
+          "templates",
+          "templating",
+          "ansi",
+          "styles",
+          "color",
+          "colour",
+          "colors",
+          "terminal",
+          "console",
+          "string",
+          "tty",
+          "escape",
+          "formatting",
+          "rgb",
+          "256",
+          "shell",
+          "xterm",
+          "log",
+          "logging",
+          "command-line",
+          "text"
+        ],
+        "version": "1.1.2",
+        "description": "Terminal string styling with tagged template literals",
+        "sanitized_name": "chalk-template",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T15:13:28.338Z",
+        "links": {
+          "homepage": "https://github.com/chalk/chalk-template#readme",
+          "repository": "git+https://github.com/chalk/chalk-template.git",
+          "bugs": "https://github.com/chalk/chalk-template/issues",
+          "npm": "https://www.npmjs.com/package/chalk-template"
+        }
+      },
+      "score": {
+        "final": 74.77098,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 320219315,
+        "weekly": 84073400
+      },
+      "dependents": "2676",
+      "updated": "2026-02-02T03:50:20.830Z",
+      "searchScore": 74.660545,
+      "package": {
+        "name": "ansi-escapes",
+        "keywords": [
+          "ansi",
+          "terminal",
+          "console",
+          "cli",
+          "string",
+          "tty",
+          "escape",
+          "escapes",
+          "formatting",
+          "shell",
+          "xterm",
+          "log",
+          "logging",
+          "command-line",
+          "text",
+          "vt100",
+          "sequence",
+          "control",
+          "code",
+          "codes",
+          "cursor",
+          "iterm",
+          "iterm2",
+          "clear",
+          "screen",
+          "erase",
+          "scrollback"
+        ],
+        "version": "7.2.0",
+        "description": "ANSI escape codes for manipulating the terminal",
+        "sanitized_name": "ansi-escapes",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-04T08:36:56.236Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/ansi-escapes#readme",
+          "repository": "git+https://github.com/sindresorhus/ansi-escapes.git",
+          "bugs": "https://github.com/sindresorhus/ansi-escapes/issues",
+          "npm": "https://www.npmjs.com/package/ansi-escapes"
+        }
+      },
+      "score": {
+        "final": 74.660545,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 375176342,
+        "weekly": 95969254
+      },
+      "dependents": "2043",
+      "updated": "2026-02-02T03:51:05.576Z",
+      "searchScore": 74.63741,
+      "package": {
+        "name": "strip-bom",
+        "keywords": [
+          "strip",
+          "bom",
+          "byte",
+          "order",
+          "mark",
+          "unicode",
+          "utf8",
+          "utf-8",
+          "remove",
+          "delete",
+          "trim",
+          "text",
+          "string"
+        ],
+        "version": "5.0.0",
+        "description": "Strip UTF-8 byte order mark (BOM) from a string",
+        "sanitized_name": "strip-bom",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-04-16T18:54:19.266Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/strip-bom#readme",
+          "repository": "git+https://github.com/sindresorhus/strip-bom.git",
+          "bugs": "https://github.com/sindresorhus/strip-bom/issues",
+          "npm": "https://www.npmjs.com/package/strip-bom"
+        }
+      },
+      "score": {
+        "final": 74.63741,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 111286372,
+        "weekly": 29454519
+      },
+      "dependents": "1613",
+      "updated": "2026-02-02T03:50:01.714Z",
+      "searchScore": 74.53685,
+      "package": {
+        "name": "dot-prop",
+        "keywords": [
+          "object",
+          "prop",
+          "property",
+          "dot",
+          "path",
+          "get",
+          "set",
+          "delete",
+          "access",
+          "notation",
+          "dotty",
+          "dottie",
+          "unflatten",
+          "expand"
+        ],
+        "version": "10.1.0",
+        "description": "Get, set, or delete a property from a nested object using a dot path",
+        "sanitized_name": "dot-prop",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-10-05T12:00:55.181Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/dot-prop#readme",
+          "repository": "git+https://github.com/sindresorhus/dot-prop.git",
+          "bugs": "https://github.com/sindresorhus/dot-prop/issues",
+          "npm": "https://www.npmjs.com/package/dot-prop"
+        }
+      },
+      "score": {
+        "final": 74.53685,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 109490978,
+        "weekly": 28832040
+      },
+      "dependents": "546",
+      "updated": "2026-02-02T18:46:05.762Z",
+      "searchScore": 74.46887,
+      "package": {
+        "name": "lowercase-keys",
+        "keywords": [
+          "object",
+          "assign",
+          "extend",
+          "properties",
+          "lowercase",
+          "lower-case",
+          "case",
+          "keys",
+          "key"
+        ],
+        "version": "4.0.1",
+        "description": "Lowercase the keys of an object",
+        "sanitized_name": "lowercase-keys",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-02-02T18:45:35.003Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/lowercase-keys#readme",
+          "repository": "git+https://github.com/sindresorhus/lowercase-keys.git",
+          "bugs": "https://github.com/sindresorhus/lowercase-keys/issues",
+          "npm": "https://www.npmjs.com/package/lowercase-keys"
+        }
+      },
+      "score": {
+        "final": 74.46887,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 106631740,
+        "weekly": 28113239
+      },
+      "dependents": "598",
+      "updated": "2026-02-02T03:51:17.187Z",
+      "searchScore": 74.358284,
+      "package": {
+        "name": "thenify-all",
+        "keywords": ["promisify", "promise", "thenify", "then", "es6"],
+        "version": "1.6.0",
+        "description": "Promisifies all the selected functions in an object",
+        "sanitized_name": "thenify-all",
+        "publisher": {
+          "email": "dead_horse@qq.com",
+          "username": "dead_horse"
+        },
+        "maintainers": [
+          {
+            "email": "dead_horse@qq.com",
+            "username": "dead-horse"
+          },
+          {
+            "email": "dead_horse@qq.com",
+            "username": "dead_horse"
+          },
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          },
+          {
+            "email": "jonathanrichardong@gmail.com",
+            "username": "jongleberry"
+          }
+        ],
+        "license": "MIT",
+        "date": "2015-01-10T17:24:24.668Z",
+        "links": {
+          "homepage": "https://github.com/thenables/thenify-all",
+          "repository": "https://github.com/thenables/thenify-all",
+          "bugs": "https://github.com/thenables/thenify-all/issues",
+          "npm": "https://www.npmjs.com/package/thenify-all"
+        }
+      },
+      "score": {
+        "final": 74.358284,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 276883635,
+        "weekly": 72602087
+      },
+      "dependents": "1310",
+      "updated": "2026-02-02T03:47:15.561Z",
+      "searchScore": 74.32077,
+      "package": {
+        "name": "restore-cursor",
+        "keywords": [
+          "exit",
+          "quit",
+          "process",
+          "graceful",
+          "shutdown",
+          "sigterm",
+          "sigint",
+          "terminate",
+          "kill",
+          "stop",
+          "cli",
+          "cursor",
+          "ansi",
+          "show",
+          "term",
+          "terminal",
+          "console",
+          "tty",
+          "shell",
+          "command-line"
+        ],
+        "version": "5.1.0",
+        "description": "Gracefully restore the CLI cursor on exit",
+        "sanitized_name": "restore-cursor",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-07-26T13:56:42.169Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/restore-cursor#readme",
+          "repository": "git+https://github.com/sindresorhus/restore-cursor.git",
+          "bugs": "https://github.com/sindresorhus/restore-cursor/issues",
+          "npm": "https://www.npmjs.com/package/restore-cursor"
+        }
+      },
+      "score": {
+        "final": 74.32077,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 360901478,
+        "weekly": 91340490
+      },
+      "dependents": "1908",
+      "updated": "2026-02-02T03:49:44.460Z",
+      "searchScore": 74.311714,
+      "package": {
+        "name": "yocto-queue",
+        "keywords": [
+          "queue",
+          "data",
+          "structure",
+          "algorithm",
+          "queues",
+          "queuing",
+          "list",
+          "array",
+          "linkedlist",
+          "fifo",
+          "enqueue",
+          "dequeue",
+          "data-structure"
+        ],
+        "version": "1.2.2",
+        "description": "Tiny queue data structure",
+        "sanitized_name": "yocto-queue",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-11T06:32:08.991Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/yocto-queue#readme",
+          "repository": "git+https://github.com/sindresorhus/yocto-queue.git",
+          "bugs": "https://github.com/sindresorhus/yocto-queue/issues",
+          "npm": "https://www.npmjs.com/package/yocto-queue"
+        }
+      },
+      "score": {
+        "final": 74.311714,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 335622135,
+        "weekly": 87028701
+      },
+      "dependents": "1825",
+      "updated": "2026-02-02T03:47:13.897Z",
+      "searchScore": 74.200905,
+      "package": {
+        "name": "parse-json",
+        "keywords": [
+          "parse",
+          "json",
+          "graceful",
+          "error",
+          "message",
+          "humanize",
+          "friendly",
+          "helpful",
+          "string"
+        ],
+        "version": "8.3.0",
+        "description": "Parse JSON with more helpful errors",
+        "sanitized_name": "parse-json",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-04-09T09:02:03.317Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/parse-json#readme",
+          "repository": "git+https://github.com/sindresorhus/parse-json.git",
+          "bugs": "https://github.com/sindresorhus/parse-json/issues",
+          "npm": "https://www.npmjs.com/package/parse-json"
+        }
+      },
+      "score": {
+        "final": 74.200905,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 313436816,
+        "weekly": 78973341
+      },
+      "dependents": "2179",
+      "updated": "2026-02-02T03:50:09.249Z",
+      "searchScore": 74.158295,
+      "package": {
+        "name": "callsites",
+        "keywords": [
+          "stacktrace",
+          "v8",
+          "callsite",
+          "callsites",
+          "stack",
+          "trace",
+          "function",
+          "file",
+          "line",
+          "debug"
+        ],
+        "version": "4.2.0",
+        "description": "Get callsites from the V8 stack trace API",
+        "sanitized_name": "callsites",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-06-29T13:46:24.572Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/callsites#readme",
+          "repository": "git+https://github.com/sindresorhus/callsites.git",
+          "bugs": "https://github.com/sindresorhus/callsites/issues",
+          "npm": "https://www.npmjs.com/package/callsites"
+        }
+      },
+      "score": {
+        "final": 74.158295,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 391382672,
+        "weekly": 103096634
+      },
+      "dependents": "3832",
+      "updated": "2026-02-02T03:50:18.640Z",
+      "searchScore": 74.09039,
+      "package": {
+        "name": "slash",
+        "keywords": ["path", "seperator", "slash", "backslash", "windows", "convert"],
+        "version": "5.1.0",
+        "description": "Convert Windows backslash paths to slash paths",
+        "sanitized_name": "slash",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-05-09T17:07:03.367Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/slash#readme",
+          "repository": "git+https://github.com/sindresorhus/slash.git",
+          "bugs": "https://github.com/sindresorhus/slash/issues",
+          "npm": "https://www.npmjs.com/package/slash"
+        }
+      },
+      "score": {
+        "final": 74.09039,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 121094226,
+        "weekly": 32073195
+      },
+      "dependents": "884",
+      "updated": "2026-02-02T03:51:12.232Z",
+      "searchScore": 74.078064,
+      "package": {
+        "name": "is-obj",
+        "keywords": ["object", "is", "check", "test", "type"],
+        "version": "3.0.0",
+        "description": "Check if a value is an object",
+        "sanitized_name": "is-obj",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-04-16T19:05:38.181Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-obj#readme",
+          "repository": "git+https://github.com/sindresorhus/is-obj.git",
+          "bugs": "https://github.com/sindresorhus/is-obj/issues",
+          "npm": "https://www.npmjs.com/package/is-obj"
+        }
+      },
+      "score": {
+        "final": 74.078064,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 119124283,
+        "weekly": 30979347
+      },
+      "dependents": "347",
+      "updated": "2026-02-02T03:47:05.019Z",
+      "searchScore": 74.01026,
+      "package": {
+        "name": "@sindresorhus/is",
+        "keywords": [
+          "type",
+          "types",
+          "is",
+          "check",
+          "checking",
+          "validate",
+          "validation",
+          "utility",
+          "util",
+          "typeof",
+          "instanceof",
+          "object",
+          "assert",
+          "assertion",
+          "test",
+          "kind",
+          "primitive",
+          "verify",
+          "compare",
+          "typescript",
+          "typeguards",
+          "types"
+        ],
+        "version": "7.2.0",
+        "description": "Type check values",
+        "sanitized_name": "@sindresorhus/is",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-12-27T10:44:14.788Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is#readme",
+          "repository": "git+https://github.com/sindresorhus/is.git",
+          "bugs": "https://github.com/sindresorhus/is/issues",
+          "npm": "https://www.npmjs.com/package/@sindresorhus/is"
+        }
+      },
+      "score": {
+        "final": 74.01026,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 259543119,
+        "weekly": 69044118
+      },
+      "dependents": "1569",
+      "updated": "2026-02-02T03:49:49.675Z",
+      "searchScore": 73.83028,
+      "package": {
+        "name": "is-plain-obj",
+        "keywords": ["object", "is", "check", "test", "type", "plain", "vanilla", "pure", "simple"],
+        "version": "4.1.0",
+        "description": "Check if a value is a plain object",
+        "sanitized_name": "is-plain-obj",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2022-06-15T15:47:13.746Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-plain-obj#readme",
+          "repository": "git+https://github.com/sindresorhus/is-plain-obj.git",
+          "bugs": "https://github.com/sindresorhus/is-plain-obj/issues",
+          "npm": "https://www.npmjs.com/package/is-plain-obj"
+        }
+      },
+      "score": {
+        "final": 73.83028,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 284141795,
+        "weekly": 75432852
+      },
+      "dependents": "8764",
+      "updated": "2026-02-02T03:50:24.908Z",
+      "searchScore": 73.77267,
+      "package": {
+        "name": "globby",
+        "keywords": [
+          "all",
+          "array",
+          "directories",
+          "expand",
+          "files",
+          "filesystem",
+          "filter",
+          "find",
+          "fnmatch",
+          "folders",
+          "fs",
+          "glob",
+          "globbing",
+          "globs",
+          "gulpfriendly",
+          "match",
+          "matcher",
+          "minimatch",
+          "multi",
+          "multiple",
+          "paths",
+          "pattern",
+          "patterns",
+          "traverse",
+          "util",
+          "utility",
+          "wildcard",
+          "wildcards",
+          "promise",
+          "gitignore",
+          "git"
+        ],
+        "version": "16.1.0",
+        "description": "User-friendly glob matching",
+        "sanitized_name": "globby",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-12-21T14:50:06.837Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/globby#readme",
+          "repository": "git+https://github.com/sindresorhus/globby.git",
+          "bugs": "https://github.com/sindresorhus/globby/issues",
+          "npm": "https://www.npmjs.com/package/globby"
+        }
+      },
+      "score": {
+        "final": 73.77267,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 297798303,
+        "weekly": 74777535
+      },
+      "dependents": "9808",
+      "updated": "2026-02-02T03:47:40.236Z",
+      "searchScore": 73.73243,
+      "package": {
+        "name": "object-assign",
+        "keywords": [
+          "object",
+          "assign",
+          "extend",
+          "properties",
+          "es2015",
+          "ecmascript",
+          "harmony",
+          "ponyfill",
+          "prollyfill",
+          "polyfill",
+          "shim",
+          "browser"
+        ],
+        "version": "4.1.1",
+        "description": "ES2015 `Object.assign()` ponyfill",
+        "sanitized_name": "object-assign",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "npm2@sophiebits.com",
+            "username": "sophiebits"
+          },
+          {
+            "email": "dan.abramov@gmail.com",
+            "username": "gaearon"
+          },
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2017-01-16T15:35:15.282Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/object-assign#readme",
+          "repository": "git+https://github.com/sindresorhus/object-assign.git",
+          "bugs": "https://github.com/sindresorhus/object-assign/issues",
+          "npm": "https://www.npmjs.com/package/object-assign"
+        }
+      },
+      "score": {
+        "final": 73.73243,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 289960303,
+        "weekly": 75946439
+      },
+      "dependents": "1745",
+      "updated": "2026-02-02T03:49:45.082Z",
+      "searchScore": 73.62793,
+      "package": {
+        "name": "path-type",
+        "keywords": [
+          "path",
+          "fs",
+          "type",
+          "is",
+          "check",
+          "directory",
+          "file",
+          "filepath",
+          "symlink",
+          "symbolic",
+          "link",
+          "stat",
+          "stats",
+          "filesystem"
+        ],
+        "version": "6.0.0",
+        "description": "Check if a path is a file, directory, or symlink",
+        "sanitized_name": "path-type",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-07-26T10:54:40.007Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/path-type#readme",
+          "repository": "git+https://github.com/sindresorhus/path-type.git",
+          "bugs": "https://github.com/sindresorhus/path-type/issues",
+          "npm": "https://www.npmjs.com/package/path-type"
+        }
+      },
+      "score": {
+        "final": 73.62793,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 89191911,
+        "weekly": 22876276
+      },
+      "dependents": "1235",
+      "updated": "2026-02-02T03:47:26.232Z",
+      "searchScore": 73.611885,
+      "package": {
+        "name": "component-emitter",
+        "keywords": ["event", "emitter", "events", "emit", "listener", "pubsub", "observe"],
+        "version": "2.0.0",
+        "description": "Simple event emitter",
+        "sanitized_name": "component-emitter",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-11-17T09:55:09.525Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/component-emitter#readme",
+          "repository": "git+https://github.com/sindresorhus/component-emitter.git",
+          "bugs": "https://github.com/sindresorhus/component-emitter/issues",
+          "npm": "https://www.npmjs.com/package/component-emitter"
+        }
+      },
+      "score": {
+        "final": 73.611885,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 240006332,
+        "weekly": 65198465
+      },
+      "dependents": "1678",
+      "updated": "2026-02-02T03:49:50.770Z",
+      "searchScore": 73.520996,
+      "package": {
+        "name": "indent-string",
+        "keywords": ["indent", "string", "pad", "align", "line", "text", "each", "every"],
+        "version": "5.0.0",
+        "description": "Indent each line in a string",
+        "sanitized_name": "indent-string",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-04-17T17:10:20.469Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/indent-string#readme",
+          "repository": "git+https://github.com/sindresorhus/indent-string.git",
+          "bugs": "https://github.com/sindresorhus/indent-string/issues",
+          "npm": "https://www.npmjs.com/package/indent-string"
+        }
+      },
+      "score": {
+        "final": 73.520996,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 87228110,
+        "weekly": 23856322
+      },
+      "dependents": "679",
+      "updated": "2026-02-02T03:47:34.170Z",
+      "searchScore": 73.51884,
+      "package": {
+        "name": "p-timeout",
+        "keywords": [
+          "promise",
+          "timeout",
+          "error",
+          "invalidate",
+          "async",
+          "await",
+          "promises",
+          "time",
+          "out",
+          "cancel",
+          "bluebird"
+        ],
+        "version": "7.0.1",
+        "description": "Timeout a promise after a specified amount of time",
+        "sanitized_name": "p-timeout",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-10-07T01:46:05.476Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/p-timeout#readme",
+          "repository": "git+https://github.com/sindresorhus/p-timeout.git",
+          "bugs": "https://github.com/sindresorhus/p-timeout/issues",
+          "npm": "https://www.npmjs.com/package/p-timeout"
+        }
+      },
+      "score": {
+        "final": 73.51884,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 264409073,
+        "weekly": 69422456
+      },
+      "dependents": "13265",
+      "updated": "2026-02-02T03:48:49.544Z",
+      "searchScore": 73.48981,
+      "package": {
+        "name": "open",
+        "keywords": [
+          "app",
+          "open",
+          "opener",
+          "opens",
+          "launch",
+          "start",
+          "xdg-open",
+          "xdg",
+          "default",
+          "cmd",
+          "browser",
+          "editor",
+          "executable",
+          "exe",
+          "url",
+          "urls",
+          "arguments",
+          "args",
+          "spawn",
+          "exec",
+          "child",
+          "process",
+          "website",
+          "file"
+        ],
+        "version": "11.0.0",
+        "description": "Open stuff like URLs, files, executables. Cross-platform.",
+        "sanitized_name": "open",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-15T08:22:54.225Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/open#readme",
+          "repository": "git+https://github.com/sindresorhus/open.git",
+          "bugs": "https://github.com/sindresorhus/open/issues",
+          "npm": "https://www.npmjs.com/package/open"
+        }
+      },
+      "score": {
+        "final": 73.48981,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 103857306,
+        "weekly": 24392598
+      },
+      "dependents": "110",
+      "updated": "2026-02-02T03:48:48.535Z",
+      "searchScore": 73.443275,
+      "package": {
+        "name": "is-port-reachable",
+        "keywords": [
+          "port",
+          "reachable",
+          "local",
+          "remote",
+          "host",
+          "ip",
+          "localhost",
+          "address",
+          "connect",
+          "connectable",
+          "online",
+          "socket",
+          "tcp",
+          "is",
+          "check"
+        ],
+        "version": "4.0.0",
+        "description": "Check if a local or remote port is reachable",
+        "sanitized_name": "is-port-reachable",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-09-19T09:40:45.281Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-port-reachable#readme",
+          "repository": "git+https://github.com/sindresorhus/is-port-reachable.git",
+          "bugs": "https://github.com/sindresorhus/is-port-reachable/issues",
+          "npm": "https://www.npmjs.com/package/is-port-reachable"
+        }
+      },
+      "score": {
+        "final": 73.443275,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 276521951,
+        "weekly": 69283135
+      },
+      "dependents": "1656",
+      "updated": "2026-02-02T03:51:05.615Z",
+      "searchScore": 73.27072,
+      "package": {
+        "name": "parent-module",
+        "keywords": [
+          "parent",
+          "module",
+          "package",
+          "caller",
+          "calling",
+          "module",
+          "path",
+          "callsites",
+          "callsite",
+          "stacktrace",
+          "stack",
+          "trace",
+          "function",
+          "file"
+        ],
+        "version": "3.2.0",
+        "description": "Get the path of the parent module",
+        "sanitized_name": "parent-module",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-15T07:20:45.338Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/parent-module#readme",
+          "repository": "git+https://github.com/sindresorhus/parent-module.git",
+          "bugs": "https://github.com/sindresorhus/parent-module/issues",
+          "npm": "https://www.npmjs.com/package/parent-module"
+        }
+      },
+      "score": {
+        "final": 73.27072,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 275901423,
+        "weekly": 73295097
+      },
+      "dependents": "1674",
+      "updated": "2026-02-02T03:50:10.096Z",
+      "searchScore": 73.26194,
+      "package": {
+        "name": "cli-cursor",
+        "keywords": [
+          "cli",
+          "cursor",
+          "ansi",
+          "toggle",
+          "display",
+          "show",
+          "hide",
+          "term",
+          "terminal",
+          "console",
+          "tty",
+          "shell",
+          "command-line"
+        ],
+        "version": "5.0.0",
+        "description": "Toggle the CLI cursor",
+        "sanitized_name": "cli-cursor",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-07-26T14:02:26.233Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/cli-cursor#readme",
+          "repository": "git+https://github.com/sindresorhus/cli-cursor.git",
+          "bugs": "https://github.com/sindresorhus/cli-cursor/issues",
+          "npm": "https://www.npmjs.com/package/cli-cursor"
+        }
+      },
+      "score": {
+        "final": 73.26194,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 81268507,
+        "weekly": 21772905
+      },
+      "dependents": "1997",
+      "updated": "2026-02-02T03:48:47.141Z",
+      "searchScore": 73.22307,
+      "package": {
+        "name": "pretty-bytes",
+        "keywords": [
+          "pretty",
+          "bytes",
+          "byte",
+          "filesize",
+          "size",
+          "file",
+          "human",
+          "humanized",
+          "readable",
+          "si",
+          "data",
+          "locale",
+          "localization",
+          "localized"
+        ],
+        "version": "7.1.0",
+        "description": "Convert bytes to a human readable string: 1337 → 1.34 kB",
+        "sanitized_name": "pretty-bytes",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-21T07:36:56.073Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/pretty-bytes#readme",
+          "repository": "git+https://github.com/sindresorhus/pretty-bytes.git",
+          "bugs": "https://github.com/sindresorhus/pretty-bytes/issues",
+          "npm": "https://www.npmjs.com/package/pretty-bytes"
+        }
+      },
+      "score": {
+        "final": 73.22307,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 96233575,
+        "weekly": 25618490
+      },
+      "dependents": "113",
+      "updated": "2026-02-02T03:47:33.266Z",
+      "searchScore": 73.1281,
+      "package": {
+        "name": "unicorn-magic",
+        "keywords": [
+          "utilities",
+          "util",
+          "extras",
+          "url",
+          "path",
+          "delay",
+          "wait",
+          "settimeout",
+          "sleep",
+          "child_process",
+          "child",
+          "process",
+          "subprocess",
+          "exec",
+          "execfile",
+          "execfilesync"
+        ],
+        "version": "0.4.0",
+        "description": "Some useful utilities I often need",
+        "sanitized_name": "unicorn-magic",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-15T10:26:17.659Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/unicorn-magic#readme",
+          "repository": "git+https://github.com/sindresorhus/unicorn-magic.git",
+          "bugs": "https://github.com/sindresorhus/unicorn-magic/issues",
+          "npm": "https://www.npmjs.com/package/unicorn-magic"
+        }
+      },
+      "score": {
+        "final": 73.1281,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 233431735,
+        "weekly": 63610722
+      },
+      "dependents": "5705",
+      "updated": "2026-02-02T03:50:22.161Z",
+      "searchScore": 73.00011,
+      "package": {
+        "name": "log-symbols",
+        "keywords": [
+          "unicode",
+          "cli",
+          "cmd",
+          "command-line",
+          "characters",
+          "symbol",
+          "symbols",
+          "figure",
+          "figures",
+          "fallback",
+          "windows",
+          "log",
+          "logging",
+          "terminal",
+          "stdout"
+        ],
+        "version": "7.0.1",
+        "description": "Colored symbols for various log levels. Example: `✔︎ Success`",
+        "sanitized_name": "log-symbols",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-05-21T13:47:39.089Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/log-symbols#readme",
+          "repository": "git+https://github.com/sindresorhus/log-symbols.git",
+          "bugs": "https://github.com/sindresorhus/log-symbols/issues",
+          "npm": "https://www.npmjs.com/package/log-symbols"
+        }
+      },
+      "score": {
+        "final": 73.00011,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 232783934,
+        "weekly": 60735129
+      },
+      "dependents": "2387",
+      "updated": "2026-02-02T03:48:47.474Z",
+      "searchScore": 72.98918,
+      "package": {
+        "name": "p-map",
+        "keywords": [
+          "promise",
+          "map",
+          "resolved",
+          "wait",
+          "collection",
+          "iterable",
+          "iterator",
+          "race",
+          "fulfilled",
+          "async",
+          "await",
+          "promises",
+          "concurrently",
+          "concurrency",
+          "parallel",
+          "bluebird"
+        ],
+        "version": "7.0.4",
+        "description": "Map over promises concurrently",
+        "sanitized_name": "p-map",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-11T06:28:53.483Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/p-map#readme",
+          "repository": "git+https://github.com/sindresorhus/p-map.git",
+          "bugs": "https://github.com/sindresorhus/p-map/issues",
+          "npm": "https://www.npmjs.com/package/p-map"
+        }
+      },
+      "score": {
+        "final": 72.98918,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 239714556,
+        "weekly": 61359608
+      },
+      "dependents": "1544",
+      "updated": "2026-02-02T03:47:00.408Z",
+      "searchScore": 72.88235,
+      "package": {
+        "name": "binary-extensions",
+        "keywords": ["binary", "extensions", "extension", "file", "json", "list", "array"],
+        "version": "3.1.0",
+        "description": "List of binary file extensions",
+        "sanitized_name": "binary-extensions",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "paul@paulmillr.com",
+            "username": "paulmillr"
+          },
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-05-04T07:29:38.752Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/binary-extensions#readme",
+          "repository": "git+https://github.com/sindresorhus/binary-extensions.git",
+          "bugs": "https://github.com/sindresorhus/binary-extensions/issues",
+          "npm": "https://www.npmjs.com/package/binary-extensions"
+        }
+      },
+      "score": {
+        "final": 72.88235,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 73709717,
+        "weekly": 19233743
+      },
+      "dependents": "1487",
+      "updated": "2026-02-02T03:51:52.635Z",
+      "searchScore": 72.81506,
+      "package": {
+        "name": "to-fast-properties",
+        "keywords": ["object", "properties", "props", "v8", "optimize", "fast", "convert", "mode"],
+        "version": "4.0.0",
+        "description": "Force V8 to use fast properties for an object",
+        "sanitized_name": "to-fast-properties",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-08-08T10:33:03.897Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/to-fast-properties#readme",
+          "repository": "git+https://github.com/sindresorhus/to-fast-properties.git",
+          "bugs": "https://github.com/sindresorhus/to-fast-properties/issues",
+          "npm": "https://www.npmjs.com/package/to-fast-properties"
+        }
+      },
+      "score": {
+        "final": 72.81506,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 87059534,
+        "weekly": 23607454
+      },
+      "dependents": "1700",
+      "updated": "2026-02-02T03:49:51.898Z",
+      "searchScore": 72.71392,
+      "package": {
+        "name": "p-retry",
+        "keywords": [
+          "promise",
+          "retry",
+          "retries",
+          "operation",
+          "failed",
+          "rejected",
+          "try",
+          "exponential",
+          "backoff",
+          "attempt",
+          "async",
+          "await",
+          "promises",
+          "concurrently",
+          "concurrency",
+          "parallel",
+          "bluebird"
+        ],
+        "version": "7.1.1",
+        "description": "Retry a promise-returning or async function",
+        "sanitized_name": "p-retry",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-12-09T21:15:14.365Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/p-retry#readme",
+          "repository": "git+https://github.com/sindresorhus/p-retry.git",
+          "bugs": "https://github.com/sindresorhus/p-retry/issues",
+          "npm": "https://www.npmjs.com/package/p-retry"
+        }
+      },
+      "score": {
+        "final": 72.71392,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 274223344,
+        "weekly": 71410828
+      },
+      "dependents": "923",
+      "updated": "2026-02-02T03:48:21.849Z",
+      "searchScore": 72.70986,
+      "package": {
+        "name": "slice-ansi",
+        "keywords": [
+          "slice",
+          "string",
+          "ansi",
+          "styles",
+          "color",
+          "colour",
+          "colors",
+          "terminal",
+          "console",
+          "cli",
+          "tty",
+          "escape",
+          "formatting",
+          "rgb",
+          "256",
+          "shell",
+          "xterm",
+          "log",
+          "logging",
+          "command-line",
+          "text"
+        ],
+        "version": "7.1.2",
+        "description": "Slice a string with ANSI escape codes",
+        "sanitized_name": "slice-ansi",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T15:11:55.899Z",
+        "links": {
+          "homepage": "https://github.com/chalk/slice-ansi#readme",
+          "repository": "git+https://github.com/chalk/slice-ansi.git",
+          "bugs": "https://github.com/chalk/slice-ansi/issues",
+          "npm": "https://www.npmjs.com/package/slice-ansi"
+        }
+      },
+      "score": {
+        "final": 72.70986,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 193730872,
+        "weekly": 51322766
+      },
+      "dependents": "2725",
+      "updated": "2026-02-02T04:06:35.915Z",
+      "searchScore": 72.67448,
+      "package": {
+        "name": "figures",
+        "keywords": [
+          "unicode",
+          "cli",
+          "cmd",
+          "command-line",
+          "characters",
+          "symbol",
+          "symbols",
+          "figure",
+          "figures",
+          "fallback"
+        ],
+        "version": "6.1.0",
+        "description": "Unicode symbols with fallbacks for older terminals",
+        "sanitized_name": "figures",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-03-04T19:16:04.779Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/figures#readme",
+          "repository": "git+https://github.com/sindresorhus/figures.git",
+          "bugs": "https://github.com/sindresorhus/figures/issues",
+          "npm": "https://www.npmjs.com/package/figures"
+        }
+      },
+      "score": {
+        "final": 72.67448,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 225950902,
+        "weekly": 59726075
+      },
+      "dependents": "1023",
+      "updated": "2026-02-02T03:51:05.517Z",
+      "searchScore": 72.650665,
+      "package": {
+        "name": "merge-descriptors",
+        "keywords": [
+          "merge",
+          "descriptors",
+          "object",
+          "property",
+          "properties",
+          "merging",
+          "getter",
+          "setter"
+        ],
+        "version": "2.0.0",
+        "description": "Merge objects using their property descriptors",
+        "sanitized_name": "merge-descriptors",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-11-16T18:49:20.714Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/merge-descriptors#readme",
+          "repository": "git+https://github.com/sindresorhus/merge-descriptors.git",
+          "bugs": "https://github.com/sindresorhus/merge-descriptors/issues",
+          "npm": "https://www.npmjs.com/package/merge-descriptors"
+        }
+      },
+      "score": {
+        "final": 72.650665,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 176969883,
+        "weekly": 46481561
+      },
+      "dependents": "497",
+      "updated": "2026-02-02T03:51:02.858Z",
+      "searchScore": 72.546135,
+      "package": {
+        "name": "mimic-response",
+        "keywords": ["mimic", "response", "stream", "http", "https", "request", "get", "core"],
+        "version": "4.0.0",
+        "description": "Mimic a Node.js HTTP response stream",
+        "sanitized_name": "mimic-response",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-08-11T14:32:51.305Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/mimic-response#readme",
+          "repository": "git+https://github.com/sindresorhus/mimic-response.git",
+          "bugs": "https://github.com/sindresorhus/mimic-response/issues",
+          "npm": "https://www.npmjs.com/package/mimic-response"
+        }
+      },
+      "score": {
+        "final": 72.546135,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 228274901,
+        "weekly": 59271123
+      },
+      "dependents": "1556",
+      "updated": "2026-02-02T03:51:31.378Z",
+      "searchScore": 72.52123,
+      "package": {
+        "name": "is-binary-path",
+        "keywords": ["binary", "extensions", "extension", "file", "path", "check", "detect", "is"],
+        "version": "3.0.0",
+        "description": "Check if a file path is a binary file",
+        "sanitized_name": "is-binary-path",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "paul@paulmillr.com",
+            "username": "paulmillr"
+          },
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-04-30T16:50:25.858Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-binary-path#readme",
+          "repository": "git+https://github.com/sindresorhus/is-binary-path.git",
+          "bugs": "https://github.com/sindresorhus/is-binary-path/issues",
+          "npm": "https://www.npmjs.com/package/is-binary-path"
+        }
+      },
+      "score": {
+        "final": 72.52123,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 195120788,
+        "weekly": 50531751
+      },
+      "dependents": "1529",
+      "updated": "2026-02-02T03:48:00.573Z",
+      "searchScore": 72.29558,
+      "package": {
+        "name": "array-union",
+        "keywords": [
+          "array",
+          "set",
+          "uniq",
+          "unique",
+          "duplicate",
+          "remove",
+          "union",
+          "combine",
+          "merge"
+        ],
+        "version": "3.0.1",
+        "description": "Create an array of unique values, in order, from the input arrays",
+        "sanitized_name": "array-union",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-03-01T18:43:09.121Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/array-union#readme",
+          "repository": "git+https://github.com/sindresorhus/array-union.git",
+          "bugs": "https://github.com/sindresorhus/array-union/issues",
+          "npm": "https://www.npmjs.com/package/array-union"
+        }
+      },
+      "score": {
+        "final": 72.29558,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 165030000,
+        "weekly": 42935171
+      },
+      "dependents": "1826",
+      "updated": "2026-02-02T03:47:42.258Z",
+      "searchScore": 72.269196,
+      "package": {
+        "name": "read-pkg",
+        "keywords": [
+          "json",
+          "read",
+          "parse",
+          "file",
+          "fs",
+          "graceful",
+          "load",
+          "package",
+          "normalize"
+        ],
+        "version": "10.0.0",
+        "description": "Read a package.json file",
+        "sanitized_name": "read-pkg",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-11-07T18:07:21.696Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/read-pkg#readme",
+          "repository": "git+https://github.com/sindresorhus/read-pkg.git",
+          "bugs": "https://github.com/sindresorhus/read-pkg/issues",
+          "npm": "https://www.npmjs.com/package/read-pkg"
+        }
+      },
+      "score": {
+        "final": 72.269196,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 231939543,
+        "weekly": 62846752
+      },
+      "dependents": "1236",
+      "updated": "2026-02-02T03:51:04.535Z",
+      "searchScore": 72.059975,
+      "package": {
+        "name": "is-unicode-supported",
+        "keywords": [
+          "terminal",
+          "unicode",
+          "detect",
+          "utf8",
+          "console",
+          "shell",
+          "support",
+          "supports",
+          "supported",
+          "check",
+          "detection"
+        ],
+        "version": "2.1.0",
+        "description": "Detect whether the terminal supports Unicode",
+        "sanitized_name": "is-unicode-supported",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-09-09T06:26:03.073Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-unicode-supported#readme",
+          "repository": "git+https://github.com/sindresorhus/is-unicode-supported.git",
+          "bugs": "https://github.com/sindresorhus/is-unicode-supported/issues",
+          "npm": "https://www.npmjs.com/package/is-unicode-supported"
+        }
+      },
+      "score": {
+        "final": 72.059975,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 181720756,
+        "weekly": 47879672
+      },
+      "dependents": "660",
+      "updated": "2026-02-02T03:51:12.273Z",
+      "searchScore": 72.01597,
+      "package": {
+        "name": "define-lazy-prop",
+        "keywords": [
+          "lazy",
+          "property",
+          "properties",
+          "prop",
+          "define",
+          "object",
+          "value",
+          "lazily",
+          "laziness",
+          "evaluation",
+          "eval",
+          "execute",
+          "getter",
+          "function",
+          "fn",
+          "memoize",
+          "cache",
+          "defer",
+          "deferred"
+        ],
+        "version": "3.0.0",
+        "description": "Define a lazily evaluated property on an object",
+        "sanitized_name": "define-lazy-prop",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-04-14T07:54:05.644Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/define-lazy-prop#readme",
+          "repository": "git+https://github.com/sindresorhus/define-lazy-prop.git",
+          "bugs": "https://github.com/sindresorhus/define-lazy-prop/issues",
+          "npm": "https://www.npmjs.com/package/define-lazy-prop"
+        }
+      },
+      "score": {
+        "final": 72.01597,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 178549450,
+        "weekly": 43249788
+      },
+      "dependents": "531",
+      "updated": "2026-02-02T03:47:36.071Z",
+      "searchScore": 71.94678,
+      "package": {
+        "name": "widest-line",
+        "keywords": [
+          "string",
+          "character",
+          "unicode",
+          "width",
+          "visual",
+          "column",
+          "columns",
+          "fullwidth",
+          "full-width",
+          "full",
+          "ansi",
+          "escape",
+          "codes",
+          "cli",
+          "command-line",
+          "terminal",
+          "console",
+          "cjk",
+          "chinese",
+          "japanese",
+          "korean",
+          "fixed-width"
+        ],
+        "version": "6.0.0",
+        "description": "Get the visual width of the widest line in a string - the number of columns required to display it",
+        "sanitized_name": "widest-line",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2026-01-24T03:25:03.834Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/widest-line#readme",
+          "repository": "git+https://github.com/sindresorhus/widest-line.git",
+          "bugs": "https://github.com/sindresorhus/widest-line/issues",
+          "npm": "https://www.npmjs.com/package/widest-line"
+        }
+      },
+      "score": {
+        "final": 71.94678,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 70810981,
+        "weekly": 18376877
+      },
+      "dependents": "385",
+      "updated": "2026-02-02T03:47:37.958Z",
+      "searchScore": 71.85992,
+      "package": {
+        "name": "http2-wrapper",
+        "keywords": ["http2", "https", "http", "request"],
+        "version": "2.2.1",
+        "description": "HTTP2 client, just with the familiar `https` API",
+        "sanitized_name": "http2-wrapper",
+        "publisher": {
+          "email": "sz.marczak@gmail.com",
+          "username": "szmarczak"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          },
+          {
+            "email": "sz.marczak@gmail.com",
+            "username": "szmarczak"
+          }
+        ],
+        "license": "MIT",
+        "date": "2023-11-10T16:11:05.951Z",
+        "links": {
+          "homepage": "https://github.com/szmarczak/http2-wrapper#readme",
+          "repository": "git+https://github.com/szmarczak/http2-wrapper.git",
+          "bugs": "https://github.com/szmarczak/http2-wrapper/issues",
+          "npm": "https://www.npmjs.com/package/http2-wrapper"
+        }
+      },
+      "score": {
+        "final": 71.85992,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 170251992,
+        "weekly": 44862808
+      },
+      "dependents": "1921",
+      "updated": "2026-02-02T03:49:56.032Z",
+      "searchScore": 71.759766,
+      "package": {
+        "name": "decamelize",
+        "keywords": [
+          "decamelize",
+          "decamelcase",
+          "camelcase",
+          "lowercase",
+          "case",
+          "dash",
+          "hyphen",
+          "string",
+          "text",
+          "convert"
+        ],
+        "version": "6.0.1",
+        "description": "Convert a camelized string into a lowercased one with a custom separator: unicornRainbow → unicorn_rainbow",
+        "sanitized_name": "decamelize",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-08-19T14:50:35.009Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/decamelize#readme",
+          "repository": "git+https://github.com/sindresorhus/decamelize.git",
+          "bugs": "https://github.com/sindresorhus/decamelize/issues",
+          "npm": "https://www.npmjs.com/package/decamelize"
+        }
+      },
+      "score": {
+        "final": 71.759766,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 150127558,
+        "weekly": 40574049
+      },
+      "dependents": "1019",
+      "updated": "2026-02-02T03:51:34.731Z",
+      "searchScore": 71.66675,
+      "package": {
+        "name": "is-interactive",
+        "keywords": ["interactive", "stdout", "stderr", "detect", "is", "terminal", "shell", "tty"],
+        "version": "2.0.0",
+        "description": "Check if stdout or stderr is interactive",
+        "sanitized_name": "is-interactive",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-05-03T20:19:09.981Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-interactive#readme",
+          "repository": "git+https://github.com/sindresorhus/is-interactive.git",
+          "bugs": "https://github.com/sindresorhus/is-interactive/issues",
+          "npm": "https://www.npmjs.com/package/is-interactive"
+        }
+      },
+      "score": {
+        "final": 71.66675,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 63736240,
+        "weekly": 16527715
+      },
+      "dependents": "942",
+      "updated": "2026-02-02T03:48:21.850Z",
+      "searchScore": 71.42476,
+      "package": {
+        "name": "builtin-modules",
+        "keywords": [
+          "builtin",
+          "built-in",
+          "builtins",
+          "node",
+          "modules",
+          "core",
+          "bundled",
+          "list",
+          "array",
+          "names"
+        ],
+        "version": "5.0.0",
+        "description": "A static list of the Node.js builtin modules from the latest Node.js version",
+        "sanitized_name": "builtin-modules",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-02-27T09:38:19.482Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/builtin-modules#readme",
+          "repository": "git+https://github.com/sindresorhus/builtin-modules.git",
+          "bugs": "https://github.com/sindresorhus/builtin-modules/issues",
+          "npm": "https://www.npmjs.com/package/builtin-modules"
+        }
+      },
+      "score": {
+        "final": 71.42476,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 52592970,
+        "weekly": 13839413
+      },
+      "dependents": "226",
+      "updated": "2026-02-02T03:51:10.132Z",
+      "searchScore": 71.40431,
+      "package": {
+        "name": "clone-response",
+        "keywords": ["clone", "response", "duplicate", "copy", "http", "stream"],
+        "version": "2.0.0",
+        "description": "Clone a Node.js HTTP response stream",
+        "sanitized_name": "clone-response",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2022-07-17T15:13:17.135Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/clone-response#readme",
+          "repository": "git+https://github.com/sindresorhus/clone-response.git",
+          "bugs": "https://github.com/sindresorhus/clone-response/issues",
+          "npm": "https://www.npmjs.com/package/clone-response"
+        }
+      },
+      "score": {
+        "final": 71.40431,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 154702835,
+        "weekly": 40167384
+      },
+      "dependents": "1529",
+      "updated": "2026-02-02T03:46:59.220Z",
+      "searchScore": 71.38338,
+      "package": {
+        "name": "leven",
+        "keywords": [
+          "leven",
+          "levenshtein",
+          "distance",
+          "algorithm",
+          "string",
+          "difference",
+          "diff",
+          "fast",
+          "fuzzy",
+          "similar",
+          "similarity",
+          "compare",
+          "comparison",
+          "edit",
+          "text",
+          "match",
+          "matching"
+        ],
+        "version": "4.1.0",
+        "description": "Measure the difference between two strings using the Levenshtein distance algorithm",
+        "sanitized_name": "leven",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-11T12:27:52.301Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/leven#readme",
+          "repository": "git+https://github.com/sindresorhus/leven.git",
+          "bugs": "https://github.com/sindresorhus/leven/issues",
+          "npm": "https://www.npmjs.com/package/leven"
+        }
+      },
+      "score": {
+        "final": 71.38338,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 136844096,
+        "weekly": 35882816
+      },
+      "dependents": "1550",
+      "updated": "2026-02-02T03:51:51.916Z",
+      "searchScore": 71.30061,
+      "package": {
+        "name": "resolve-cwd",
+        "keywords": [
+          "require",
+          "resolve",
+          "path",
+          "module",
+          "from",
+          "like",
+          "cwd",
+          "current",
+          "working",
+          "directory",
+          "import"
+        ],
+        "version": "3.0.0",
+        "description": "Resolve the path of a module like `require.resolve()` but from the current working directory",
+        "sanitized_name": "resolve-cwd",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2019-04-30T12:53:23.953Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/resolve-cwd#readme",
+          "repository": "git+https://github.com/sindresorhus/resolve-cwd.git",
+          "bugs": "https://github.com/sindresorhus/resolve-cwd/issues",
+          "npm": "https://www.npmjs.com/package/resolve-cwd"
+        }
+      },
+      "score": {
+        "final": 71.30061,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 50377755,
+        "weekly": 13350073
+      },
+      "dependents": "5455",
+      "updated": "2026-02-02T03:47:04.651Z",
+      "searchScore": 71.22446,
+      "package": {
+        "name": "del",
+        "keywords": [
+          "delete",
+          "files",
+          "folders",
+          "directories",
+          "remove",
+          "destroy",
+          "trash",
+          "unlink",
+          "clean",
+          "cleaning",
+          "cleanup",
+          "rm",
+          "rmrf",
+          "rimraf",
+          "rmdir",
+          "glob",
+          "gulpfriendly",
+          "file",
+          "folder",
+          "directory",
+          "fs",
+          "filesystem"
+        ],
+        "version": "8.0.1",
+        "description": "Delete files and directories",
+        "sanitized_name": "del",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-18T14:47:08.181Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/del#readme",
+          "repository": "git+https://github.com/sindresorhus/del.git",
+          "bugs": "https://github.com/sindresorhus/del/issues",
+          "npm": "https://www.npmjs.com/package/del"
+        }
+      },
+      "score": {
+        "final": 71.22446,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 133580046,
+        "weekly": 37962978
+      },
+      "dependents": "823",
+      "updated": "2026-02-02T03:50:22.630Z",
+      "searchScore": 71.20521,
+      "package": {
+        "name": "redent",
+        "keywords": [
+          "string",
+          "strip",
+          "trim",
+          "indent",
+          "indentation",
+          "add",
+          "reindent",
+          "normalize",
+          "remove",
+          "whitespace",
+          "space"
+        ],
+        "version": "4.0.0",
+        "description": "Strip redundant indentation and indent the string",
+        "sanitized_name": "redent",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-05-03T19:21:04.019Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/redent#readme",
+          "repository": "git+https://github.com/sindresorhus/redent.git",
+          "bugs": "https://github.com/sindresorhus/redent/issues",
+          "npm": "https://www.npmjs.com/package/redent"
+        }
+      },
+      "score": {
+        "final": 71.20521,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 49996222,
+        "weekly": 13028340
+      },
+      "dependents": "296",
+      "updated": "2026-02-02T03:48:48.302Z",
+      "searchScore": 71.19269,
+      "package": {
+        "name": "is-regexp",
+        "keywords": [
+          "regex",
+          "regexp",
+          "regular",
+          "expression",
+          "regular expression",
+          "check",
+          "type",
+          "is"
+        ],
+        "version": "3.1.0",
+        "description": "Check if a value is a regular expression",
+        "sanitized_name": "is-regexp",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2021-10-31T05:37:37.669Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/is-regexp#readme",
+          "repository": "git+https://github.com/sindresorhus/is-regexp.git",
+          "bugs": "https://github.com/sindresorhus/is-regexp/issues",
+          "npm": "https://www.npmjs.com/package/is-regexp"
+        }
+      },
+      "score": {
+        "final": 71.19269,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 142028468,
+        "weekly": 37235706
+      },
+      "dependents": "2501",
+      "updated": "2026-02-02T03:51:55.366Z",
+      "searchScore": 71.047455,
+      "package": {
+        "name": "import-local",
+        "keywords": ["import", "local", "require", "resolve", "global", "version", "prefer", "cli"],
+        "version": "3.2.0",
+        "description": "Let a globally installed package use a locally installed version of itself if available",
+        "sanitized_name": "import-local",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-07-22T10:56:48.659Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/import-local#readme",
+          "repository": "git+https://github.com/sindresorhus/import-local.git",
+          "bugs": "https://github.com/sindresorhus/import-local/issues",
+          "npm": "https://www.npmjs.com/package/import-local"
+        }
+      },
+      "score": {
+        "final": 71.047455,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 127195732,
+        "weekly": 33030608
+      },
+      "dependents": "4369",
+      "updated": "2026-02-02T03:50:26.060Z",
+      "searchScore": 71.01166,
+      "package": {
+        "name": "yn",
+        "keywords": [
+          "yn",
+          "yes",
+          "no",
+          "cli",
+          "prompt",
+          "validate",
+          "input",
+          "answer",
+          "true",
+          "false",
+          "parse",
+          "lenient"
+        ],
+        "version": "5.1.0",
+        "description": "Parse yes/no like values",
+        "sanitized_name": "yn",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-08-22T08:54:54.259Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/yn#readme",
+          "repository": "git+https://github.com/sindresorhus/yn.git",
+          "bugs": "https://github.com/sindresorhus/yn/issues",
+          "npm": "https://www.npmjs.com/package/yn"
+        }
+      },
+      "score": {
+        "final": 71.01166,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 47370661,
+        "weekly": 12495596
+      },
+      "dependents": "206",
+      "updated": "2026-02-02T03:51:19.286Z",
+      "searchScore": 70.96723,
+      "package": {
+        "name": "filter-obj",
+        "keywords": [
+          "filter",
+          "object",
+          "key",
+          "keys",
+          "value",
+          "values",
+          "iterate",
+          "iterator",
+          "include",
+          "exclude",
+          "pick",
+          "omit"
+        ],
+        "version": "6.1.0",
+        "description": "Filter object keys and values into a new object",
+        "sanitized_name": "filter-obj",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2024-05-27T10:48:42.084Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/filter-obj#readme",
+          "repository": "git+https://github.com/sindresorhus/filter-obj.git",
+          "bugs": "https://github.com/sindresorhus/filter-obj/issues",
+          "npm": "https://www.npmjs.com/package/filter-obj"
+        }
+      },
+      "score": {
+        "final": 70.96723,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 55153080,
+        "weekly": 14557935
+      },
+      "dependents": "1946",
+      "updated": "2026-02-02T03:51:05.547Z",
+      "searchScore": 70.826805,
+      "package": {
+        "name": "terminal-link",
+        "keywords": [
+          "link",
+          "hyperlink",
+          "url",
+          "ansi",
+          "escape",
+          "terminal",
+          "term",
+          "console",
+          "command-line"
+        ],
+        "version": "5.0.0",
+        "description": "Create clickable links in the terminal",
+        "sanitized_name": "terminal-link",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-09-08T11:27:04.420Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/terminal-link#readme",
+          "repository": "git+https://github.com/sindresorhus/terminal-link.git",
+          "bugs": "https://github.com/sindresorhus/terminal-link/issues",
+          "npm": "https://www.npmjs.com/package/terminal-link"
+        }
+      },
+      "score": {
+        "final": 70.826805,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    },
+    {
+      "downloads": {
+        "monthly": 132800382,
+        "weekly": 34707203
+      },
+      "dependents": "400",
+      "updated": "2026-02-02T03:51:00.476Z",
+      "searchScore": 70.78343,
+      "package": {
+        "name": "cli-truncate",
+        "keywords": [
+          "truncate",
+          "ellipsis",
+          "text",
+          "limit",
+          "slice",
+          "cli",
+          "terminal",
+          "term",
+          "shell",
+          "width",
+          "ansi",
+          "string"
+        ],
+        "version": "5.1.1",
+        "description": "Truncate a string to a specific width in the terminal",
+        "sanitized_name": "cli-truncate",
+        "publisher": {
+          "email": "sindresorhus@gmail.com",
+          "username": "sindresorhus"
+        },
+        "maintainers": [
+          {
+            "email": "sindresorhus@gmail.com",
+            "username": "sindresorhus"
+          }
+        ],
+        "license": "MIT",
+        "date": "2025-10-23T05:01:21.176Z",
+        "links": {
+          "homepage": "https://github.com/sindresorhus/cli-truncate#readme",
+          "repository": "git+https://github.com/sindresorhus/cli-truncate.git",
+          "bugs": "https://github.com/sindresorhus/cli-truncate/issues",
+          "npm": "https://www.npmjs.com/package/cli-truncate"
+        }
+      },
+      "score": {
+        "final": 70.78343,
+        "detail": {
+          "popularity": 1,
+          "quality": 1,
+          "maintenance": 1
+        }
+      },
+      "flags": {
+        "insecure": 0
+      }
+    }
+  ],
+  "total": 1063,
+  "time": "2026-02-03T00:16:54.643Z"
+}

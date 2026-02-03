@@ -1,0 +1,1643 @@
+{
+  "_id": "@babel/core",
+  "_rev": "271-d7fd7087d0880ad6bbc605a91e5277c8",
+  "name": "@babel/core",
+  "description": "Babel compiler core.",
+  "dist-tags": {
+    "bridge6": "6.0.0-bridge.1",
+    "esm": "7.21.4-esm.4",
+    "next": "8.0.0-rc.1",
+    "latest": "7.29.0"
+  },
+  "versions": {
+    "8.0.0-rc.1": {
+      "name": "@babel/core",
+      "version": "8.0.0-rc.1",
+      "description": "Babel compiler core.",
+      "main": "./lib/index.js",
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "publishConfig": {
+        "access": "public"
+      },
+      "repository": {
+        "type": "git",
+        "url": "https://github.com/babel/babel.git",
+        "directory": "packages/babel-core"
+      },
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/babel"
+      },
+      "dependencies": {
+        "@babel/code-frame": "^8.0.0-rc.1",
+        "@babel/generator": "^8.0.0-rc.1",
+        "@babel/helper-compilation-targets": "^8.0.0-rc.1",
+        "@babel/helpers": "^8.0.0-rc.1",
+        "@babel/parser": "^8.0.0-rc.1",
+        "@babel/template": "^8.0.0-rc.1",
+        "@babel/traverse": "^8.0.0-rc.1",
+        "@babel/types": "^8.0.0-rc.1",
+        "@jridgewell/remapping": "^2.3.5",
+        "@types/gensync": "^1.0.0",
+        "convert-source-map": "^2.0.0",
+        "gensync": "^1.0.0-beta.2",
+        "import-meta-resolve": "^4.2.0",
+        "json5": "^2.2.3",
+        "obug": "^2.1.1",
+        "semver": "^7.7.3"
+      },
+      "devDependencies": {
+        "@babel/helper-transform-fixture-test-runner": "^8.0.0-rc.1",
+        "@babel/plugin-syntax-flow": "^8.0.0-rc.1",
+        "@babel/plugin-transform-flow-strip-types": "^8.0.0-rc.1",
+        "@babel/plugin-transform-modules-commonjs": "^8.0.0-rc.1",
+        "@babel/preset-env": "^8.0.0-rc.1",
+        "@babel/preset-typescript": "^8.0.0-rc.1",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@types/resolve": "^1.3.2",
+        "@types/semver": "^5.4.0",
+        "ts-node": "^11.0.0-beta.1",
+        "tsx": "^4.20.3"
+      },
+      "peerDependencies": {
+        "@babel/preset-typescript": "^8.0.0-0"
+      },
+      "peerDependenciesMeta": {
+        "@babel/preset-typescript": {
+          "optional": true
+        }
+      },
+      "exports": {
+        ".": {
+          "types": "./lib/index.d.ts",
+          "default": "./lib/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "imports": {
+        "#config/files": {
+          "babel-src": {
+            "browser": "./src/config/files/index-browser.ts",
+            "default": "./src/config/files/index.ts"
+          },
+          "types": "./lib/config/files/index.d.ts",
+          "browser": "./lib/config/files/index-browser.js",
+          "default": "./lib/config/files/index.js"
+        },
+        "#config/resolve-targets": {
+          "babel-src": {
+            "browser": "./src/config/resolve-targets-browser.ts",
+            "default": "./src/config/resolve-targets.ts"
+          },
+          "types": "./lib/config/resolve-targets.d.ts",
+          "browser": "./lib/config/resolve-targets-browser.js",
+          "default": "./lib/config/resolve-targets.js"
+        },
+        "#transform-file": {
+          "babel-src": {
+            "browser": "./src/transform-file-browser.ts",
+            "default": "./src/transform-file.ts"
+          },
+          "types": "./lib/transform-file.d.ts",
+          "browser": "./lib/transform-file-browser.js",
+          "default": "./lib/transform-file.js"
+        },
+        "#hack-for-rollup-inlining-order-1": "./lib/errors/rewrite-stack-trace.js",
+        "#hack-for-rollup-inlining-order-2": "./lib/config/caching.js"
+      },
+      "type": "module",
+      "_id": "@babel/core@8.0.0-rc.1",
+      "dist": {
+        "shasum": "4f702413146e57666696fe3481176c8344fe4d74",
+        "integrity": "sha512-oTiaza5UaPxaErnPc9VbG/xk2b6nH96e/FgsoRwtgXvNKA9HXzJe0balrZdP6sacjZ1+YsYXW6fTvUfu+vKn8g==",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-8.0.0-rc.1.tgz",
+        "fileCount": 29,
+        "unpackedSize": 585648,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEUCIQDvUkuW8XBrqL37+HEmOLzm5TS/bAI7nofD6ccmRXydvQIgXnkwVGDhopvBTsYtEGs/gHoFatNBWSfcFEsO144MYFo="
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba399ff9-7571-41a0-a48c-c6724c9639e3"
+        }
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/core_8.0.0-rc.1_1769881736829_0.6611965537649911"
+      },
+      "_hasShrinkwrap": false
+    },
+    "7.29.0": {
+      "name": "@babel/core",
+      "version": "7.29.0",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@7.29.0",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "5286ad785df7f79d656e88ce86e650d16ca5f322",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-7.29.0.tgz",
+        "fileCount": 119,
+        "integrity": "sha512-CGOfOJqWjg2qW/Mb6zNsDm+u5vFQ8DxXfbM09z69p5Z6+mE1ikP2jUXw+j42Pf1XTYED2Rni5f95npYeuwMDQA==",
+        "signatures": [
+          {
+            "sig": "MEUCIGDveiJmpnvJ+vHEvha06PVLsON7RfHcx1/EluHUqejNAiEApdWTiQcrHzLGS/lBqi/Y50F4yl/aq7V+xhSazoSoigk=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 799525
+      },
+      "main": "./lib/index.js",
+      "type": "commonjs",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba399ff9-7571-41a0-a48c-c6724c9639e3"
+        }
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.3",
+        "semver": "^6.3.1",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^7.29.0",
+        "@babel/parser": "^7.29.0",
+        "@babel/helpers": "^7.28.6",
+        "@babel/template": "^7.28.6",
+        "@babel/traverse": "^7.29.0",
+        "@babel/generator": "^7.29.0",
+        "@babel/code-frame": "^7.29.0",
+        "convert-source-map": "^2.0.0",
+        "@jridgewell/remapping": "^2.3.5",
+        "@babel/helper-module-transforms": "^7.28.6",
+        "@babel/helper-compilation-targets": "^7.28.6"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "rimraf": "^3.0.0",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^7.29.0",
+        "@babel/preset-typescript": "^7.28.5",
+        "@babel/plugin-syntax-flow": "^7.28.6",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^7.27.1",
+        "@babel/plugin-transform-modules-commonjs": "^7.28.6",
+        "@babel/helper-transform-fixture-test-runner": "^7.28.6"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_7.29.0_1769881162502_0.06230298765471298",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "7.28.6": {
+      "name": "@babel/core",
+      "version": "7.28.6",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@7.28.6",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "531bf883a1126e53501ba46eb3bb414047af507f",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-7.28.6.tgz",
+        "fileCount": 119,
+        "integrity": "sha512-H3mcG6ZDLTlYfaSNi0iOKkigqMFvkTKlGUYlD8GW7nNOYRrevuA46iTypPyv+06V3fEmvvazfntkBU34L0azAw==",
+        "signatures": [
+          {
+            "sig": "MEUCIEOGIxaHU88g3hPoMcLjO1gNhmY7hTBmzU16aoL6kSwNAiEArDYeDF4nLxSfNu3rkyayQ2uPeDApFQAvtJobX5uX/ds=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 798812
+      },
+      "main": "./lib/index.js",
+      "type": "commonjs",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba399ff9-7571-41a0-a48c-c6724c9639e3"
+        }
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.3",
+        "semver": "^6.3.1",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^7.28.6",
+        "@babel/parser": "^7.28.6",
+        "@babel/helpers": "^7.28.6",
+        "@babel/template": "^7.28.6",
+        "@babel/traverse": "^7.28.6",
+        "@babel/generator": "^7.28.6",
+        "@babel/code-frame": "^7.28.6",
+        "convert-source-map": "^2.0.0",
+        "@jridgewell/remapping": "^2.3.5",
+        "@babel/helper-module-transforms": "^7.28.6",
+        "@babel/helper-compilation-targets": "^7.28.6"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "rimraf": "^3.0.0",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^7.28.6",
+        "@babel/preset-typescript": "^7.28.5",
+        "@babel/plugin-syntax-flow": "^7.28.6",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^7.27.1",
+        "@babel/plugin-transform-modules-commonjs": "^7.28.6",
+        "@babel/helper-transform-fixture-test-runner": "^7.28.6"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_7.28.6_1768240210843_0.19359680291114723",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.0-beta.4": {
+      "name": "@babel/core",
+      "version": "8.0.0-beta.4",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@8.0.0-beta.4",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "acf601857e3f43b78fa19fa8ee2fd0d90600d8f8",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-8.0.0-beta.4.tgz",
+        "fileCount": 116,
+        "integrity": "sha512-O4kRh5uP+yYow5tvQN6YqVwzbz31Ya7svQ72+z2NRleu2ZFZCtv3Sqr7sbk2FS53kyvXHmpfAdz5U1J+aum/Mw==",
+        "signatures": [
+          {
+            "sig": "MEUCICt/Sls+85wac0afH2g478UalcNvRN6lAPdVKDm5nAp6AiEA7JYC/2WRuIIBu2B0aStAE5WAgPl2x7cQb4H1Q+FSwzc=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 595130
+      },
+      "main": "./lib/index.js",
+      "type": "module",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./lib/index.d.ts",
+          "default": "./lib/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba399ff9-7571-41a0-a48c-c6724c9639e3"
+        }
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "obug": "^2.1.1",
+        "json5": "^2.2.3",
+        "semver": "^7.7.3",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^8.0.0-beta.4",
+        "@babel/parser": "^8.0.0-beta.4",
+        "@babel/helpers": "^8.0.0-beta.4",
+        "@types/gensync": "^1.0.0",
+        "@babel/template": "^8.0.0-beta.4",
+        "@babel/traverse": "^8.0.0-beta.4",
+        "@babel/generator": "^8.0.0-beta.4",
+        "@babel/code-frame": "^8.0.0-beta.4",
+        "convert-source-map": "^2.0.0",
+        "import-meta-resolve": "^4.2.0",
+        "@jridgewell/remapping": "^2.3.5",
+        "@babel/helper-compilation-targets": "^8.0.0-beta.4"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^8.0.0-beta.4",
+        "@babel/preset-typescript": "^8.0.0-beta.4",
+        "@babel/plugin-syntax-flow": "^8.0.0-beta.4",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^8.0.0-beta.4",
+        "@babel/plugin-transform-modules-commonjs": "^8.0.0-beta.4",
+        "@babel/helper-transform-fixture-test-runner": "^8.0.0-beta.4"
+      },
+      "peerDependencies": {
+        "@babel/preset-typescript": "^8.0.0-0"
+      },
+      "peerDependenciesMeta": {
+        "@babel/preset-typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_8.0.0-beta.4_1768239143463_0.7026809070867477",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "7.28.5": {
+      "name": "@babel/core",
+      "version": "7.28.5",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@7.28.5",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "4c81b35e51e1b734f510c99b07dfbc7bbbb48f7e",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-7.28.5.tgz",
+        "fileCount": 119,
+        "integrity": "sha512-e7jT4DxYvIDLk1ZHmU/m/mB19rex9sv0c2ftBtjSBv+kVM/902eh0fINUzD7UwLLNR+jU585GxUJ8/EBfAM5fw==",
+        "signatures": [
+          {
+            "sig": "MEQCIBcW/Pi4kmBgDBIhJ0OsBdpHvlS35hCsgEnpDj3E4X/LAiBxJam4Bh1xUXkfZI12DpMe7+mH62zgb6GN3sY7ugMf1w==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 799321
+      },
+      "main": "./lib/index.js",
+      "type": "commonjs",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba399ff9-7571-41a0-a48c-c6724c9639e3"
+        }
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.3",
+        "semver": "^6.3.1",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^7.28.5",
+        "@babel/parser": "^7.28.5",
+        "@babel/helpers": "^7.28.4",
+        "@babel/template": "^7.27.2",
+        "@babel/traverse": "^7.28.5",
+        "@babel/generator": "^7.28.5",
+        "@babel/code-frame": "^7.27.1",
+        "convert-source-map": "^2.0.0",
+        "@jridgewell/remapping": "^2.3.5",
+        "@babel/helper-module-transforms": "^7.28.3",
+        "@babel/helper-compilation-targets": "^7.27.2"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "rimraf": "^3.0.0",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^7.28.5",
+        "@babel/preset-typescript": "^7.28.5",
+        "@babel/plugin-syntax-flow": "^7.27.1",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^7.27.1",
+        "@babel/plugin-transform-modules-commonjs": "^7.27.1",
+        "@babel/helper-transform-fixture-test-runner": "^7.28.5"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_7.28.5_1761232673104_0.6342509665717366",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.0-beta.3": {
+      "name": "@babel/core",
+      "version": "8.0.0-beta.3",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@8.0.0-beta.3",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "1fb51e505f603dd30a2b70e8baa24b20684cff31",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-8.0.0-beta.3.tgz",
+        "fileCount": 120,
+        "integrity": "sha512-WiCavSOahhRtH6yEQWz3xhzDc2loDiFmtVcqkLkPKD1Z3ykysP5oSf7OcRZeygqjJqPXjf+WMipwzJvZyTfL6A==",
+        "signatures": [
+          {
+            "sig": "MEUCIB4S57nchjzQ27svIjj8K5rPTvJxZaJicTtzqy41NdWvAiEA7qsPuHmrocD/hP/dJoe3jrjTQBrE4r8R+A2y4SLcxO0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 763279
+      },
+      "main": "./lib/index.js",
+      "type": "module",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./lib/index.d.ts",
+          "default": "./lib/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "npm-oidc-no-reply@github.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:ba399ff9-7571-41a0-a48c-c6724c9639e3"
+        }
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.3",
+        "semver": "^7.3.4",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^8.0.0-beta.3",
+        "@babel/parser": "^8.0.0-beta.3",
+        "@babel/helpers": "^8.0.0-beta.3",
+        "@types/gensync": "^1.0.0",
+        "@babel/template": "^8.0.0-beta.3",
+        "@babel/traverse": "^8.0.0-beta.3",
+        "@babel/generator": "^8.0.0-beta.3",
+        "@babel/code-frame": "^8.0.0-beta.3",
+        "convert-source-map": "^2.0.0",
+        "@jridgewell/remapping": "^2.3.5",
+        "@babel/helper-compilation-targets": "^8.0.0-beta.3"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "rimraf": "^3.0.0",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^8.0.0-beta.3",
+        "@babel/preset-typescript": "^8.0.0-beta.3",
+        "@babel/plugin-syntax-flow": "^8.0.0-beta.3",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^8.0.0-beta.3",
+        "@babel/plugin-transform-modules-commonjs": "^8.0.0-beta.3",
+        "@babel/helper-transform-fixture-test-runner": "^8.0.0-beta.3"
+      },
+      "peerDependencies": {
+        "@babel/preset-typescript": "^7.21.4 || ^8.0.0-0"
+      },
+      "peerDependenciesMeta": {
+        "@babel/preset-typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_8.0.0-beta.3_1761230720284_0.16803537732692386",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.0-beta.2": {
+      "name": "@babel/core",
+      "version": "8.0.0-beta.2",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@8.0.0-beta.2",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "6314cf96b7039f45e2a3b8570d42bb996f9ed303",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-8.0.0-beta.2.tgz",
+        "fileCount": 120,
+        "integrity": "sha512-CK8wwGHx/rAfH8FzVGN7Sa9FSp5yyaYvcIrG1pAj4YrRF9jOXHH/bGa3bUdmwzzVPnhpiHt89a2l5/Fk7qlFIQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCJmV7inINuyDDUggNk9Zdt+GyeqdoIazXAatHGqe9FLgIgXZsKPCKlucVktm2n8if8wzY3UuBolkKjkoPiT4w8WBA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 760842
+      },
+      "main": "./lib/index.js",
+      "type": "module",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./lib/index.d.ts",
+          "default": "./lib/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "nicolo-ribaudo",
+        "email": "nicolo.ribaudo@gmail.com"
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.3",
+        "semver": "^7.3.4",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^8.0.0-beta.2",
+        "@babel/parser": "^8.0.0-beta.2",
+        "@babel/helpers": "^8.0.0-beta.2",
+        "@types/gensync": "^1.0.0",
+        "@babel/template": "^8.0.0-beta.2",
+        "@babel/traverse": "^8.0.0-beta.2",
+        "@babel/generator": "^8.0.0-beta.2",
+        "@babel/code-frame": "^8.0.0-beta.2",
+        "convert-source-map": "^2.0.0",
+        "@jridgewell/remapping": "^2.3.5",
+        "@babel/helper-compilation-targets": "^8.0.0-beta.2"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "rimraf": "^3.0.0",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^8.0.0-beta.2",
+        "@babel/preset-typescript": "^8.0.0-beta.2",
+        "@babel/plugin-syntax-flow": "^8.0.0-beta.2",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^8.0.0-beta.2",
+        "@babel/plugin-transform-modules-commonjs": "^8.0.0-beta.2",
+        "@babel/helper-transform-fixture-test-runner": "^8.0.0-beta.2"
+      },
+      "peerDependencies": {
+        "@babel/preset-typescript": "^7.21.4 || ^8.0.0-0"
+      },
+      "peerDependenciesMeta": {
+        "@babel/preset-typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_8.0.0-beta.2_1757084798127_0.8656657294003887",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "7.28.4": {
+      "name": "@babel/core",
+      "version": "7.28.4",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@7.28.4",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "12a550b8794452df4c8b084f95003bce1742d496",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-7.28.4.tgz",
+        "fileCount": 119,
+        "integrity": "sha512-2BCOP7TN8M+gVDj7/ht3hsaO/B/n5oDbiAyyvnRlNOs+u1o+JWNYTQrmpuNp1/Wq2gcFrI01JAW+paEKDMx/CA==",
+        "signatures": [
+          {
+            "sig": "MEQCIBmoj4hSrOeJSGZ1WbQzb1BdRonB4bhfqcSqhHLfV+FoAiBNJ2RbJIzIdazE71HXQvZl+gc3dLPsYwtdjwY9K8j4uQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 798250
+      },
+      "main": "./lib/index.js",
+      "type": "commonjs",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "nicolo-ribaudo",
+        "email": "nicolo.ribaudo@gmail.com"
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.3",
+        "semver": "^6.3.1",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^7.28.4",
+        "@babel/parser": "^7.28.4",
+        "@babel/helpers": "^7.28.4",
+        "@babel/template": "^7.27.2",
+        "@babel/traverse": "^7.28.4",
+        "@babel/generator": "^7.28.3",
+        "@babel/code-frame": "^7.27.1",
+        "convert-source-map": "^2.0.0",
+        "@jridgewell/remapping": "^2.3.5",
+        "@babel/helper-module-transforms": "^7.28.3",
+        "@babel/helper-compilation-targets": "^7.27.2"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "rimraf": "^3.0.0",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^7.28.3",
+        "@babel/preset-typescript": "^7.27.1",
+        "@babel/plugin-syntax-flow": "^7.27.1",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^7.27.1",
+        "@babel/plugin-transform-modules-commonjs": "^7.27.1",
+        "@babel/helper-transform-fixture-test-runner": "^7.28.3"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_7.28.4_1757083996333_0.7787284005624955",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "7.28.3": {
+      "name": "@babel/core",
+      "version": "7.28.3",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@7.28.3",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "aceddde69c5d1def69b839d09efa3e3ff59c97cb",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-7.28.3.tgz",
+        "fileCount": 119,
+        "integrity": "sha512-yDBHV9kQNcr2/sUr9jghVyz9C3Y5G2zUM2H2lo+9mKv4sFgbA8s8Z9t8D1jiTkGoO/NoIfKMyKWr4s6CN23ZwQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIDd4B2RtXltZQ2qKFPCZvqk7Q5LMjNGXji0oP2acZGOgAiA0irCjkAtMrs4EBKPTVvjjM4zRWo1o10VF+vCQo3xEgg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 795974
+      },
+      "main": "./lib/index.js",
+      "type": "commonjs",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "nicolo-ribaudo",
+        "email": "nicolo.ribaudo@gmail.com"
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.3",
+        "semver": "^6.3.1",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^7.28.2",
+        "@babel/parser": "^7.28.3",
+        "@babel/helpers": "^7.28.3",
+        "@babel/template": "^7.27.2",
+        "@babel/traverse": "^7.28.3",
+        "@babel/generator": "^7.28.3",
+        "@babel/code-frame": "^7.27.1",
+        "convert-source-map": "^2.0.0",
+        "@ampproject/remapping": "^2.2.0",
+        "@babel/helper-module-transforms": "^7.28.3",
+        "@babel/helper-compilation-targets": "^7.27.2"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "rimraf": "^3.0.0",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^7.28.3",
+        "@babel/preset-typescript": "^7.27.1",
+        "@babel/plugin-syntax-flow": "^7.27.1",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^7.27.1",
+        "@babel/plugin-transform-modules-commonjs": "^7.27.1",
+        "@babel/helper-transform-fixture-test-runner": "^7.28.3"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_7.28.3_1755174981559_0.5966193459185276",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "8.0.0-beta.1": {
+      "name": "@babel/core",
+      "version": "8.0.0-beta.1",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@8.0.0-beta.1",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "jlhwung@gmail.com"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "7a9452c40c16d9f1441d2229dbcea630bf0f6014",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-8.0.0-beta.1.tgz",
+        "fileCount": 120,
+        "integrity": "sha512-LWpvDL6wm4m5wGp+ucYpBUK3Z6nMywgKvqETT7F1vSIr+3k6dVgqyTA5pS9KiIhTKYo9vEfo7NLbnIAptIeEVQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQC1H9zdVI/NNCP1JTZtRBfnAx/UhxUWHWL82Xbxw/jAuwIgXWwZGUZMXxyAHfg5c5pUwNOHD5Sbl19sCwCrdBwp/wg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 757506
+      },
+      "main": "./lib/index.js",
+      "type": "module",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "exports": {
+        ".": {
+          "types": "./lib/index.d.ts",
+          "default": "./lib/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "nicolo-ribaudo",
+        "actor": {
+          "name": "nicolo-ribaudo",
+          "type": "user",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        "email": "nicolo.ribaudo@gmail.com"
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.3",
+        "semver": "^7.3.4",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "^8.0.0-beta.1",
+        "@babel/parser": "^8.0.0-beta.1",
+        "@babel/helpers": "^8.0.0-beta.1",
+        "@types/gensync": "^1.0.0",
+        "@babel/template": "^8.0.0-beta.1",
+        "@babel/traverse": "^8.0.0-beta.1",
+        "@babel/generator": "^8.0.0-beta.1",
+        "@babel/code-frame": "^8.0.0-beta.1",
+        "convert-source-map": "^2.0.0",
+        "@ampproject/remapping": "^2.2.0",
+        "@babel/helper-compilation-targets": "^8.0.0-beta.1"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tsx": "^4.20.3",
+        "rimraf": "^3.0.0",
+        "ts-node": "^11.0.0-beta.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "^8.0.0-beta.1",
+        "@babel/preset-typescript": "^8.0.0-beta.1",
+        "@babel/plugin-syntax-flow": "^8.0.0-beta.1",
+        "@jridgewell/trace-mapping": "^0.3.28",
+        "@types/convert-source-map": "^2.0.0",
+        "@babel/plugin-transform-flow-strip-types": "^8.0.0-beta.1",
+        "@babel/plugin-transform-modules-commonjs": "^8.0.0-beta.1",
+        "@babel/helper-transform-fixture-test-runner": "^8.0.0-beta.1"
+      },
+      "peerDependencies": {
+        "@babel/preset-typescript": "^7.21.4 || ^8.0.0-0"
+      },
+      "peerDependenciesMeta": {
+        "@babel/preset-typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_8.0.0-beta.1_1751447085636_0.058610302748819176",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "6.0.0-bridge.1": {
+      "name": "@babel/core",
+      "version": "6.0.0-bridge.1",
+      "author": {
+        "name": "Logan Smyth",
+        "email": "loganfsmyth@gmail.com"
+      },
+      "license": "MIT",
+      "_id": "@babel/core@6.0.0-bridge.1",
+      "maintainers": [
+        {
+          "name": "danez",
+          "email": "daniel@tschinder.de"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "loganfsmyth",
+          "email": "loganfsmyth@gmail.com"
+        },
+        {
+          "name": "xtuc",
+          "email": "contact@xtuc.fr"
+        }
+      ],
+      "dist": {
+        "shasum": "1bb22873e573058e5068dd65b55714ff520a1c49",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-6.0.0-bridge.1.tgz",
+        "fileCount": 3,
+        "integrity": "sha512-WBPLb/tEjC8Xhl/r775XGPqKmTqw+EkgWRBw7EFFZyXYEQfbTuIlQ8kVtVxyYOqo8ofRg2pXkspqw1OXr65sHA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDJ69+MU+VgBQZRJRfzPnVYSnAssJDvJ/CTE6ykZpNCOAIhAKq9MrwZBz5/50+5rjkHWi5LS7H8PqrDjSjOxXahfkmL",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 1651,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJbgIB1CRA9TVsSAnZWagAA9zIQAIj87kRtaqkmkDOikop0\nvh3RxcT0hLzgZ7jBTcXScCA9X1cTrEka2/HRcePYc1w1Y3L+CB28g7AQ2R7e\n+wvY65qpkAAelBwJWqiTvFWMYlEpKOg5n/+Rvw5Kl3p8pyUBF5XC5RgykDqL\nRAGELw29wq1lN2iY9Zndp16lHSmAUVXvPtk2Z87U1LcJyHwGXhsDxBE1/dEU\nBvi6DeSRVSwaxQzZN+TEpG45W3hCHJENwC1dCZ+hss3af9we6jXWlP/xjiQm\nxNKUv1Y5+IXzH/DI1PN8SNtiqQQ0zAvwEJskh6+05syUKmsl3rEI+W6hxEqo\nZjFKADrZoB8uFBQZMx/FQNpX2T/sgzYpvl7j84CU0uIabyc0kNqadTVMtZlV\nXF2DVfuO/qh6T35VYO3zOKaz1mJxHoAMPFzhNglYN6rYOVS7D1pXWzR2TXTm\nkndWu1r6hpHIL0o2Ph4wqU1A3G4HlRYosc47H+GTxMx8W65wJVHa7eqeLOW8\n6RKRBqxEKz3ZKyQIWyRwVq6dfZeSAgPVNZVgy2wd2fW37CRMYZlLRW1vYIqd\nf9c1CZpBr+byP9Ee5s9jA4FGWoorYibQ9p1wWy8Jjsc/4wXbXDxzqntW8Gj8\nHtTL6L+0LG9g/WyWzWOuPo0WKpd3j29dwWnIU325UHEvi73TbIB7EWgLkesL\nhYsC\r\n=XkNu\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "main": "index.js",
+      "files": ["README.md", "index.js"],
+      "gitHead": "1dc6fd5cd0c449232e38887498162ae65b67945b",
+      "_npmUser": {
+        "name": "loganfsmyth",
+        "email": "loganfsmyth@gmail.com"
+      },
+      "_npmVersion": "6.1.0",
+      "description": "A placeholder package that bridges @babel/core to babel-core.",
+      "directories": {},
+      "_nodeVersion": "10.6.0",
+      "publishConfig": {
+        "tag": "bridge6"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "babel-core": "^6.0.0-0"
+      },
+      "peerDependencies": {
+        "babel-core": "^6.0.0-0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_6.0.0-bridge.1_1535148148896_0.8662419627217424",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "7.21.4-esm.4": {
+      "name": "@babel/core",
+      "version": "7.21.4-esm.4",
+      "keywords": [
+        "6to5",
+        "babel",
+        "classes",
+        "const",
+        "es6",
+        "harmony",
+        "let",
+        "modules",
+        "transpile",
+        "transpiler",
+        "var",
+        "babel-core",
+        "compiler"
+      ],
+      "author": "The Babel Team (https://babel.dev/team)",
+      "license": "MIT",
+      "_id": "@babel/core@7.21.4-esm.4",
+      "maintainers": [
+        {
+          "name": "hzoo",
+          "email": "hi@henryzoo.com"
+        },
+        {
+          "name": "existentialism",
+          "email": "bng412@gmail.com"
+        },
+        {
+          "name": "nicolo-ribaudo",
+          "email": "nicolo.ribaudo@gmail.com"
+        },
+        {
+          "name": "jlhwung",
+          "email": "i@jhuang.me"
+        }
+      ],
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+      "dist": {
+        "shasum": "610dd45c287d96d917690f86b578aa9232613b47",
+        "tarball": "https://registry.npmjs.org/@babel/core/-/core-7.21.4-esm.4.tgz",
+        "fileCount": 121,
+        "integrity": "sha512-0Ai0dXEmfJv/+qBwgw+u9Ge7AlNjcxKEeO3pG+UQkWpdJGZA/M6zgsE38t0cCxdvt6ZD68K0/uU4P27cabEHNA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCjn5QzL7G6r2ESnz+DVdBBC9gF2Y0u/emShdI6sKDnwAIgXdhm1aEpAmIa0Sz/Y6t5muxPVp86+AK1bczecpumDI8=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 928085,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJkLD6tACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2Vmp6gQ//YYYOVs4RIqS6sds3tGjfBJZ835mUnVwFcinYE4YQKC4nxwzT\r\nVKGfRCMWGIyW5KaCKYgTUEOTvf5xu0dRS2jh3uayw6L9ZIrAbyEdAba/3z3P\r\nO+YllmVuIcFnOFbafxJUz+oFrCJlCs8dsV6qHJeFdogQWrofg2maiQKhgARu\r\nqdXFrTo1pto+0ikq3gHCIi21GvQFOAH/EHKLqq4pZ3I3vgy8xb4+7YptQ1rI\r\nwI0h4pb+VWwNk56UyYiLvKgwE6ahmVftyT2ZIhemoCz7iDxO643nLaqZFHCp\r\n1fF3vDBL4MxRHmWhR1j6VPDB3YxZWf1BbNFjlQouJIg3RE4GJc6gfcKPnbpI\r\nO4q57CNyZ/fILgoxn5gZ/6apmyrBLJsHG8gnF7wcv+r7xxZNPgot3wb44lqj\r\nQWb1n93gGoA4t68+3I3zl4+dwgBFz3XnLrxHuMrkoNddvLfIrZkxEkxmzsw1\r\nWEYxjqGtRiGkMP455kLe4djGiXaRhL3KbG1fGrVP90JYx9tnzJ1VIqmeGEmm\r\nXmV6GiWk/3lvAzMZS8rEvspMy9BpCVXTS291gtEpwDM7x+Kbjx1fVgLD2spp\r\nz0sU7++X+XQeCthTuefJqe7DIOs5b78ZReQf8DFDWYX8lEnvJDknQJgpjv3e\r\n7iG5uqc6HLLGzlBf9BJMwn72e7oZry8KPZY=\r\n=jWLp\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "main": "./lib/index.js",
+      "type": "module",
+      "browser": {
+        "./lib/transform-file.js": "./lib/transform-file-browser.js",
+        "./src/transform-file.ts": "./src/transform-file-browser.ts",
+        "./lib/config/files/index.js": "./lib/config/files/index-browser.js",
+        "./src/config/files/index.ts": "./src/config/files/index-browser.ts",
+        "./lib/config/resolve-targets.js": "./lib/config/resolve-targets-browser.js",
+        "./src/config/resolve-targets.ts": "./src/config/resolve-targets-browser.ts"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "exports": {
+        ".": {
+          "default": "./lib/index.js",
+          "require": "./cjs-proxy.cjs"
+        },
+        "./package.json": "./package.json"
+      },
+      "funding": {
+        "url": "https://opencollective.com/babel",
+        "type": "opencollective"
+      },
+      "_npmUser": {
+        "name": "nicolo-ribaudo",
+        "email": "nicolo.ribaudo@gmail.com"
+      },
+      "repository": {
+        "url": "https://github.com/babel/babel.git",
+        "type": "git",
+        "directory": "packages/babel-core"
+      },
+      "description": "Babel compiler core.",
+      "directories": {},
+      "dependencies": {
+        "debug": "^4.1.0",
+        "json5": "^2.2.2",
+        "semver": "^6.3.0",
+        "gensync": "^1.0.0-beta.2",
+        "@babel/types": "7.21.4-esm.4",
+        "@babel/parser": "7.21.4-esm.4",
+        "@babel/helpers": "7.21.4-esm.4",
+        "@babel/template": "7.21.4-esm.4",
+        "@babel/traverse": "7.21.4-esm.4",
+        "@babel/generator": "7.21.4-esm.4",
+        "@babel/code-frame": "7.21.4-esm.4",
+        "convert-source-map": "^1.7.0",
+        "@ampproject/remapping": "^2.2.0",
+        "@babel/helper-module-transforms": "7.21.4-esm.4",
+        "@babel/helper-compilation-targets": "7.21.4-esm.4"
+      },
+      "publishConfig": {
+        "access": "public"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rimraf": "^3.0.0",
+        "ts-node": "^10.9.1",
+        "@types/debug": "^4.1.0",
+        "@types/semver": "^5.4.0",
+        "@types/gensync": "^1.0.0",
+        "@types/resolve": "^1.3.2",
+        "@babel/preset-env": "7.21.4-esm.4",
+        "@babel/preset-typescript": "7.21.4-esm.4",
+        "@babel/plugin-syntax-flow": "7.21.4-esm.4",
+        "@jridgewell/trace-mapping": "^0.3.17",
+        "@types/convert-source-map": "^1.5.1",
+        "@babel/plugin-transform-flow-strip-types": "7.21.4-esm.4",
+        "@babel/plugin-transform-modules-commonjs": "7.21.4-esm.4",
+        "@babel/helper-transform-fixture-test-runner": "7.21.4-esm.4"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/core_7.21.4-esm.4_1680621229066_0.13263006579028436",
+        "host": "s3://npm-registry-packages"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-01-31T17:48:57.209Z",
+    "created": "2017-10-30T18:36:15.121Z",
+    "8.0.0-rc.1": "2026-01-31T17:48:57.024Z",
+    "7.29.0": "2026-01-31T17:39:22.681Z",
+    "7.28.6": "2026-01-12T17:50:10.986Z",
+    "8.0.0-beta.4": "2026-01-12T17:32:23.643Z",
+    "7.28.5": "2025-10-23T15:17:53.335Z",
+    "8.0.0-beta.3": "2025-10-23T14:45:20.520Z",
+    "8.0.0-beta.2": "2025-09-05T15:06:38.332Z",
+    "7.28.4": "2025-09-05T14:53:16.514Z",
+    "7.28.3": "2025-08-14T12:36:21.762Z",
+    "8.0.0-beta.1": "2025-07-02T09:04:45.920Z",
+    "6.0.0-bridge.1": "2018-08-24T22:02:28.987Z",
+    "7.21.4-esm.4": "2023-04-04T15:13:49.336Z"
+  },
+  "maintainers": [
+    {
+      "name": "hzoo",
+      "email": "hi@henryzoo.com"
+    },
+    {
+      "name": "existentialism",
+      "email": "bng412@gmail.com"
+    },
+    {
+      "name": "nicolo-ribaudo",
+      "email": "nicolo.ribaudo@gmail.com"
+    },
+    {
+      "name": "jlhwung",
+      "email": "jlhwung@gmail.com"
+    }
+  ],
+  "author": "The Babel Team (https://babel.dev/team)",
+  "license": "MIT",
+  "homepage": "https://babel.dev/docs/en/next/babel-core",
+  "keywords": [
+    "6to5",
+    "babel",
+    "classes",
+    "const",
+    "es6",
+    "harmony",
+    "let",
+    "modules",
+    "transpile",
+    "transpiler",
+    "var",
+    "babel-core",
+    "compiler"
+  ],
+  "repository": {
+    "url": "https://github.com/babel/babel.git",
+    "type": "git",
+    "directory": "packages/babel-core"
+  },
+  "bugs": "https://github.com/babel/babel/issues?utf8=%E2%9C%93&q=is%3Aissue+label%3A%22pkg%3A%20core%22+is%3Aopen",
+  "readme": "",
+  "readmeFilename": ""
+}
