@@ -1,6 +1,6 @@
 import type { ComparisonFacet } from '#shared/types/comparison'
 import { CATEGORY_ORDER, FACET_INFO, FACETS_BY_CATEGORY } from '#shared/types/comparison'
-import FacetSelector from '~/components/compare/FacetSelector.vue'
+import FacetSelector from '~/components/Compare/FacetSelector.vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'

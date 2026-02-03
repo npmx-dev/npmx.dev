@@ -32,14 +32,10 @@ jobs:
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: Install pnpm
-        with:
-          cache: true
-
-      - name: 📦 Install dependencies
-        run: pnpm install
+        # pnpm cache skipped deliberately as the project is not actually installed here
 
       - name: 🔠 Lint project
-        run: pnpm lint
+        run: node scripts/lint.ts
 
   test:
     runs-on: ubuntu-latest
@@ -60,7 +56,7 @@ jobs:
         run: pnpm install
 
       - name: 🌐 Install browser
-        run: pnpm playwright install
+        run: pnpm playwright install chromium-headless-shell
 
       - name: 💪 Type check
         run: pnpm test:types
@@ -96,6 +92,9 @@ jobs:
 
   a11y:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mode: [dark, light]
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -115,10 +114,11 @@ jobs:
       - name: 🏗️ Build project
         run: pnpm build
 
-      - name: ♿ Accessibility audit (Lighthouse - dark & light mode)
+      - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
         run: ./scripts/lighthouse-a11y.sh
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          LIGHTHOUSE_COLOR_MODE: ${{ matrix.mode }}
 
   knip:
     runs-on: ubuntu-latest
