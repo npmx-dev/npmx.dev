@@ -28,6 +28,10 @@
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "title": "search",
+    "title_search": "search: {search}",
+    "title_packages": "search packages",
+    "meta_description": "Search results for '{search}'",
+    "meta_description_packages": "Search npm packages",
     "not_taken": "{name} is not taken",
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
@@ -150,7 +154,7 @@
       "inspect_dependency_tree": "Inspect dependency tree",
       "size_tooltip": {
         "unpacked": "{size} unpacked size (this package)",
-        "total": "{size} total unpacked size (including all {count} dependencies for linux-x64)"
+        "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)"
       }
     },
     "skills": {
@@ -230,7 +234,7 @@
       "view_all": "View {count} version | View all {count} versions"
     },
     "dependencies": {
-      "title": "Dependencies ({count})",
+      "title": "Dependency ({count}) | Dependencies ({count})",
       "list_label": "Package dependencies",
       "show_all": "show {count} dep | show all {count} deps",
       "optional": "optional",
@@ -240,12 +244,12 @@
       "outdated_patch": "Patch update available (latest: {latest})"
     },
     "peer_dependencies": {
-      "title": "Peer Dependencies ({count})",
+      "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
       "list_label": "Package peer dependencies",
       "show_all": "show {count} peer dep | show all {count} peer deps"
     },
     "optional_dependencies": {
-      "title": "Optional Dependencies ({count})",
+      "title": "Optional Dependency ({count}) | Optional Dependencies ({count})",
       "list_label": "Package optional dependencies",
       "show_all": "show {count} optional dep | show all {count} optional deps"
     },
@@ -312,13 +316,13 @@
       "deps_affected": "{count} dependency affected | {count} dependencies affected",
       "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",
       "scanning_tree": "Scanning dependency tree...",
-      "show_all_packages": "show all {count} affected packages",
+      "show_all_packages": "show {count} affected package | show all {count} affected packages",
       "no_summary": "No summary",
       "view_details": "View vulnerability details",
       "path": "path",
       "more": "+{count} more",
       "packages_failed": "{count} package could not be checked | {count} packages could not be checked",
-      "no_known": "No known vulnerabilities in {count} packages",
+      "no_known": "No known vulnerabilities in {count} package | No known vulnerabilities in {count} packages",
       "scan_failed": "Could not scan for vulnerabilities",
       "depth": {
         "root": "This package",
@@ -512,7 +516,7 @@
       "no_match": "No packages match \"{query}\"",
       "not_found": "Organization not found",
       "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm",
-      "filter_placeholder": "Filter {count} packages..."
+      "filter_placeholder": "Filter {count} package... | Filter {count} packages..."
     }
   },
   "user": {
@@ -528,7 +532,7 @@
       "no_packages_hint": "This user may not exist or has no public packages.",
       "failed_to_load": "Failed to load user packages",
       "no_match": "No packages match \"{query}\"",
-      "filter_placeholder": "Filter {count} packages..."
+      "filter_placeholder": "Filter {count} package... | Filter {count} packages..."
     },
     "orgs_page": {
       "title": "Organizations",
@@ -575,7 +579,7 @@
     "no_files": "No files in this directory",
     "select_version": "Select version",
     "root": "root",
-    "lines": "{count} lines",
+    "lines": "{count} line | {count} lines",
     "toggle_tree": "Toggle file tree",
     "close_tree": "Close file tree",
     "copy_link": "Copy link",

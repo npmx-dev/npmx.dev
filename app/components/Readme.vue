@@ -432,9 +432,15 @@ function handleClick(event: MouseEvent) {
 
 .readme :deep(img) {
   max-width: 100%;
-  height: auto;
+  height: revert-layer;
+  display: revert-layer;
   border-radius: 8px;
   margin: 1rem 0;
+}
+
+.readme :deep(video) {
+  height: revert-layer;
+  display: revert-layer;
 }
 
 .readme :deep(hr) {

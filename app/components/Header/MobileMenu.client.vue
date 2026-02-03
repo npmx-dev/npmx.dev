@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { useAtproto } from '~/composables/atproto/useAtproto'
 
 const isOpen = defineModel<boolean>('open', { default: false })
 
