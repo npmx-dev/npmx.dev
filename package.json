@@ -12,6 +12,7 @@
   "scripts": {
     "build": "nuxt build",
     "build:lunaria": "node ./lunaria/lunaria.ts",
+    "build:playwright": "NODE_ENV=test pnpm build",
     "dev": "nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "i18n:check": "node scripts/compare-translations.ts",
@@ -28,13 +29,14 @@
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
-    "test:browser": "playwright test",
-    "test:browser:ui": "playwright test --ui",
-    "test:browser:update": "playwright test --update-snapshots",
+    "test:browser": "pnpm build:playwright && pnpm test:browser:prebuilt",
+    "test:browser:prebuilt": "playwright test",
+    "test:browser:ui": "pnpm build:playwright && pnpm test:browser:prebuilt --ui",
+    "test:browser:update": "pnpm build:playwright && pnpm test:browser:prebuilt --update-snapshots",
     "test:nuxt": "vite test --project nuxt",
     "test:types": "nuxt prepare && vue-tsc -b --noEmit && pnpm --filter npmx-connector test:types",
     "test:unit": "vite test --project unit",
-    "start:playwright:webserver": "NODE_ENV=test pnpm build && pnpm preview --port 5678"
+    "start:playwright:webserver": "NODE_ENV=test pnpm preview --port 5678"
   },
   "dependencies": {
     "@atproto/api": "^0.18.17",

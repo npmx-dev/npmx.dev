@@ -754,7 +754,7 @@
       }
     },
     "contributors": {
-      "title": "Contributors",
+      "title": "{count} Contributor | {count} Contributors",
       "description": "npmx is fully open source, built by an amazing community of contributors. Join us and let's build the npm browsing experience we always wanted, together.",
       "loading": "Loading contributors...",
       "error": "Failed to load contributors",

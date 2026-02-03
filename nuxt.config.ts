@@ -275,4 +275,8 @@ export default defineNuxtConfig({
     detectBrowserLanguage: false,
     langDir: 'locales',
   },
+
+  imports: {
+    dirs: ['~/composables', '~/composables/*/*.ts'],
+  },
 })

@@ -5,7 +5,7 @@ import type { SlimVersion } from '#shared/types'
 
 // Mock the fetchAllPackageVersions function
 const mockFetchAllPackageVersions = vi.fn()
-vi.mock('~/composables/useNpmRegistry', () => ({
+vi.mock('~/utils/npm/api', () => ({
   fetchAllPackageVersions: (...args: unknown[]) => mockFetchAllPackageVersions(...args),
 }))
 
