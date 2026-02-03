@@ -166,7 +166,7 @@
       "no_description": "Sin descripción",
       "file_counts": {
         "scripts": "{count} script | {count} scripts",
-        "refs": "{count} ref | {count} refs",
+        "refs": "{count} referencia | {count} referencias",
         "assets": "{count} recurso | {count} recursos"
       },
       "view_source": "Ver fuente"
@@ -880,11 +880,11 @@
           "description": "Tamaño total de instalación incluyendo todas las dependencias"
         },
         "dependencies": {
-          "label": "Deps Directas",
+          "label": "Dependencias Directas",
           "description": "Número de dependencias directas"
         },
         "totalDependencies": {
-          "label": "Deps Totales",
+          "label": "Dependencias Totales",
           "description": "Número total de dependencias incluyendo transitivas"
         },
         "downloads": {
