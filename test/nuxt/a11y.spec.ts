@@ -286,7 +286,7 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violations when it\'s the current link', async () => {
+    it("should have no accessibility violations when it's the current link", async () => {
       const component = await mountSuspended(TagLink, {
         props: { href: 'http://example.com', current: true },
         slots: { default: 'Tag content' },
