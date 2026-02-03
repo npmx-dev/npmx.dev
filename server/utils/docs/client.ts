@@ -8,7 +8,6 @@
  */
 
 import { doc, type DocNode } from '@deno/doc'
-import { $fetch } from 'ofetch'
 import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
 
 // =============================================================================
