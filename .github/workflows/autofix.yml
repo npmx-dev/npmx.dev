@@ -31,9 +31,6 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
 
-      - name: 📦 Install browsers
-        run: pnpm playwright install
-
       - name: 🌐 Compare translations
         run: pnpm i18n:check
 
@@ -42,15 +39,5 @@ jobs:
 
       - name: 🔠 Fix lint errors
         run: pnpm lint:fix
-
-      - name: 🧪 Update unit test snapshots
-        run: pnpm test:unit -u
-
-      - name: 🏃 Update component test snapshots
-        run: pnpm test:nuxt -u
-
-      # TODO: re-enable when we have snapshots in browser tests
-      # - name: 🖥️ Update browser test snapshots
-      #   run: pnpm test:browser --update-snapshots
 
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27

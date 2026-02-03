@@ -19,6 +19,7 @@
     "chat": "espace de discussion"
   },
   "search": {
+    "title": "Recherche",
     "label": "Rechercher des paquets npm",
     "placeholder": "rechercher des paquets...",
     "button": "rechercher",
@@ -44,8 +45,14 @@
     "main_navigation": "Barre de navigation",
     "popular_packages": "Paquets populaires",
     "search": "recherche",
+    "compare": "comparer",
     "settings": "paramètres",
-    "back": "Retour"
+    "back": "Retour",
+    "menu": "Menu",
+    "mobile_menu": "Menu de navigation",
+    "open_menu": "Ouvrir le menu",
+    "links": "Liens",
+    "tap_to_search": "Toucher pour rechercher"
   },
   "settings": {
     "title": "paramètres",

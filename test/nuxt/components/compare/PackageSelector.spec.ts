@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import PackageSelector from '~/components/compare/PackageSelector.vue'
+import PackageSelector from '~/components/Compare/PackageSelector.vue'
 
 // Mock $fetch for useNpmSearch
 const mockFetch = vi.fn()

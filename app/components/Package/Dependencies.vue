@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useDependencyAnalysis } from '~/composables/useDependencyAnalysis'
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
+import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
 
 const props = defineProps<{
   packageName: string

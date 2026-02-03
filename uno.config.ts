@@ -120,7 +120,7 @@ export default defineConfig({
   shortcuts: [
     // Layout
     ['container', 'max-w-6xl mx-auto px-4 sm:px-6'],
-    ['container-sm', 'max-w-4xl mx-auto px-4 sm:px-6'],
+    ['container-sm', 'max-w-5xl mx-auto px-4 sm:px-6'],
 
     // Focus states - subtle but accessible
     ['focus-ring', 'outline-none focus-visible:(ring-2 ring-fg/10 ring-offset-2)'],

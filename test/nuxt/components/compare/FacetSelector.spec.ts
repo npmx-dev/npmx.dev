@@ -1,6 +1,6 @@
 import type { ComparisonFacet } from '#shared/types/comparison'
 import { CATEGORY_ORDER, FACET_INFO, FACETS_BY_CATEGORY } from '#shared/types/comparison'
-import FacetSelector from '~/components/compare/FacetSelector.vue'
+import FacetSelector from '~/components/Compare/FacetSelector.vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
@@ -19,9 +19,9 @@ const facetLabels: Record<ComparisonFacet, { label: string; description: string 
   vulnerabilities: { label: 'Vulnerabilities', description: 'Known security vulnerabilities' },
   lastUpdated: { label: 'Published', description: 'When this version was published' },
   license: { label: 'License', description: 'Package license' },
-  dependencies: { label: '# Direct Deps', description: 'Number of direct dependencies' },
+  dependencies: { label: 'Direct Deps', description: 'Number of direct dependencies' },
   totalDependencies: {
-    label: '# Total Deps',
+    label: 'Total Deps',
     description: 'Total number of dependencies including transitive',
   },
   deprecated: { label: 'Deprecated?', description: 'Whether the package is deprecated' },
@@ -180,7 +180,7 @@ describe('FacetSelector', () => {
 
       // totalDependencies is marked as comingSoon
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('# Total Deps'))
+      const comingSoonButton = buttons.find(b => b.text().includes('Total Deps'))
 
       expect(comingSoonButton?.attributes('disabled')).toBeDefined()
     })
@@ -196,7 +196,7 @@ describe('FacetSelector', () => {
 
       // Find the comingSoon button
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('# Total Deps'))
+      const comingSoonButton = buttons.find(b => b.text().includes('Total Deps'))
 
       // Should not have checkmark or add icon
       expect(comingSoonButton?.find('.i-carbon\\:checkmark').exists()).toBe(false)
@@ -207,7 +207,7 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('# Total Deps'))
+      const comingSoonButton = buttons.find(b => b.text().includes('Total Deps'))
       await comingSoonButton?.trigger('click')
 
       // toggleFacet should not have been called with totalDependencies
