@@ -322,3 +322,26 @@ html:has(dialog:modal) {
   overflow: hidden;
   scrollbar-gutter: stable;
 }
+
+/* Scroll shadow - disappears at scroll ends */
+@screen lg {
+  .scroll-shadow {
+    --_sh: oklch(0 0 0 / 0.12);
+    background:
+      linear-gradient(var(--bg) 30%, transparent) local,
+      linear-gradient(transparent, var(--bg) 70%) local,
+      radial-gradient(farthest-side at 50% 0, var(--_sh), transparent) scroll,
+      radial-gradient(farthest-side at 50% 100%, var(--_sh), transparent) scroll;
+    background-position: top, bottom, top, bottom;
+    background-size:
+      100% 3rem,
+      100% 3rem,
+      100% 1.5rem,
+      100% 1.5rem;
+    background-repeat: no-repeat;
+  }
+
+  :root[data-theme='dark'] .scroll-shadow {
+    --_sh: oklch(1 0 0 / 0.08);
+  }
+}
