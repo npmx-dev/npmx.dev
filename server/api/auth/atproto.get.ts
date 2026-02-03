@@ -1,6 +1,7 @@
 import { Agent } from '@atproto/api'
 import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { createError, getQuery, sendRedirect } from 'h3'
+import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
@@ -24,6 +25,7 @@ export default defineEventHandler(async event => {
     stateStore,
     sessionStore,
     clientMetadata,
+    requestLock: getOAuthLock(),
   })
 
   if (!query.code) {
