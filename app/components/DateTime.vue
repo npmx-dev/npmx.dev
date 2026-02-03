@@ -51,7 +51,7 @@ const titleValue = computed(() => {
 </script>
 
 <template>
-  <button type="button" @click="toggleRelativeDates">
+  <button type="button" :aria-pressed="relativeDates" @click="toggleRelativeDates">
     <ClientOnly>
       <NuxtTime
         v-if="relativeDates"

@@ -130,6 +130,19 @@ describe('DateTime', () => {
       })
       expect(component.find('time').attributes('title')).toContain(testYear)
     })
+
+    it('always toggle relative dates settings when click', async () => {
+      const component = await mountSuspended(DateTime, {
+        props: { datetime: testDate },
+      })
+      const button = component.find('button')
+
+      await button.trigger('click')
+      expect(button.attributes('aria-pressed')).toBe('true')
+
+      await button.trigger('click')
+      expect(button.attributes('aria-pressed')).toBe('false')
+    })
   })
 
   describe('SSR fallback', () => {
