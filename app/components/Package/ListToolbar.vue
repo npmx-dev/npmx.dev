@@ -173,7 +173,7 @@ function getSortKeyLabelKey(key: SortKey): string {
               </option>
             </select>
             <div
-              class="absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
+              class="flex items-center absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
               aria-hidden="true"
             >
               <span class="i-carbon-chevron-down w-4 h-4" />
