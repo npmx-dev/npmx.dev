@@ -152,9 +152,9 @@ export default defineNuxtConfig({
         driver: 'fsLite',
         base: './.cache/fetch',
       },
-      'generic-cache': {
+      'atproto': {
         driver: 'fsLite',
-        base: './.cache/generic',
+        base: './.cache/atproto',
       },
     },
     typescript: {
