@@ -323,6 +323,48 @@ async function handleGravatarApi(route: Route): Promise<boolean> {
 }
 
 /**
+ * Handle GitHub API requests.
+ * Returns mock contributor data for the contributors endpoint.
+ */
+async function handleGitHubApi(route: Route): Promise<boolean> {
+  const url = new URL(route.request().url())
+  const pathname = url.pathname
+
+  // Contributors endpoint: /repos/{owner}/{repo}/contributors
+  const contributorsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/contributors$/)
+  if (contributorsMatch) {
+    await route.fulfill({
+      json: [
+        {
+          login: 'danielroe',
+          id: 28706372,
+          avatar_url: 'https://avatars.githubusercontent.com/u/28706372?v=4',
+          html_url: 'https://github.com/danielroe',
+          contributions: 150,
+        },
+        {
+          login: 'antfu',
+          id: 11247099,
+          avatar_url: 'https://avatars.githubusercontent.com/u/11247099?v=4',
+          html_url: 'https://github.com/antfu',
+          contributions: 120,
+        },
+        {
+          login: 'pi0',
+          id: 5158436,
+          avatar_url: 'https://avatars.githubusercontent.com/u/5158436?v=4',
+          html_url: 'https://github.com/pi0',
+          contributions: 100,
+        },
+      ],
+    })
+    return true
+  }
+
+  return false
+}
+
+/**
  * Fail the test with a clear error message when an external API request isn't mocked.
  */
 function failUnmockedRequest(route: Route, apiName: string): never {
@@ -401,6 +443,12 @@ async function setupRouteMocking(page: Page): Promise<void> {
   await page.route('https://www.gravatar.com/**', async route => {
     const handled = await handleGravatarApi(route)
     if (!handled) failUnmockedRequest(route, 'Gravatar API')
+  })
+
+  // GitHub API for contributors, etc.
+  await page.route('https://api.github.com/**', async route => {
+    const handled = await handleGitHubApi(route)
+    if (!handled) failUnmockedRequest(route, 'GitHub API')
   })
 }
 

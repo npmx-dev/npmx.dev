@@ -25,6 +25,7 @@ const FIXTURE_PATHS = {
   user: 'users',
   esmHeaders: 'esm-sh:headers',
   esmTypes: 'esm-sh:types',
+  githubContributors: 'github:contributors.json',
 } as const
 
 type FixtureType = keyof typeof FIXTURE_PATHS
@@ -156,6 +157,13 @@ function getMockForUrl(url: string): MockResult | null {
     return { data: null }
   }
 
+  // GitHub API - handled via fixtures, return null to use fixture system
+  // Note: The actual fixture loading is handled in fetchFromFixtures via special case
+  if (host === 'api.github.com') {
+    // Return null here so it goes through fetchFromFixtures which handles the fixture loading
+    return null
+  }
+
   // esm.sh is handled specially via $fetch.raw override, not here
   // Return null to indicate no mock available at the cachedFetch level
 
@@ -273,6 +281,39 @@ async function handleFastNpmMeta(
   return { data: result }
 }
 
+/**
+ * Handle GitHub API requests using fixtures.
+ */
+async function handleGitHubApi(
+  url: string,
+  storage: ReturnType<typeof useStorage>,
+): Promise<MockResult | null> {
+  let urlObj: URL
+  try {
+    urlObj = new URL(url)
+  } catch {
+    return null
+  }
+
+  const { host, pathname } = urlObj
+
+  if (host !== 'api.github.com') return null
+
+  // Contributors endpoint: /repos/{owner}/{repo}/contributors
+  const contributorsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/contributors$/)
+  if (contributorsMatch) {
+    const contributors = await storage.getItem<unknown[]>(FIXTURE_PATHS.githubContributors)
+    if (contributors) {
+      return { data: contributors }
+    }
+    // Return empty array if no fixture exists
+    return { data: [] }
+  }
+
+  // Other GitHub API endpoints can be added here as needed
+  return null
+}
+
 interface FixtureMatchWithVersion extends FixtureMatch {
   version?: string // 'latest', a semver version, or undefined for full packument
 }
@@ -383,6 +424,13 @@ async function fetchFromFixtures<T>(
   if (fastNpmMetaResult) {
     if (VERBOSE) process.stdout.write(`[test-fixtures] Fast-npm-meta: ${url}\n`)
     return { data: fastNpmMetaResult.data as T, isStale: false, cachedAt: Date.now() }
+  }
+
+  // Check for GitHub API
+  const githubResult = await handleGitHubApi(url, storage)
+  if (githubResult) {
+    if (VERBOSE) process.stdout.write(`[test-fixtures] GitHub API: ${url}\n`)
+    return { data: githubResult.data as T, isStale: false, cachedAt: Date.now() }
   }
 
   const match = matchUrlToFixture(url)
