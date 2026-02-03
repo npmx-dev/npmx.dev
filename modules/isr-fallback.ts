@@ -15,12 +15,15 @@ export default defineNuxtModule({
     nuxt.hook('nitro:init', nitro => {
       nitro.hooks.hook('compiled', () => {
         const spaTemplate = readFileSync(nitro.options.output.publicDir + '/200.html', 'utf-8')
-        const outputPath = resolve(
-          nitro.options.output.serverDir,
-          '..',
-          'spa.prerender-fallback.html',
-        )
-        writeFileSync(outputPath, spaTemplate)
+        for (const path of ['package', '']) {
+          const outputPath = resolve(
+            nitro.options.output.serverDir,
+            '..',
+            path,
+            'spa.prerender-fallback.html',
+          )
+          writeFileSync(outputPath, spaTemplate)
+        }
       })
     })
   },
