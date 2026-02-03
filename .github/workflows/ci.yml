@@ -66,6 +66,8 @@ jobs:
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
+        env:
+          CODECOV_TOKEN: 17b4bed9-d407-4ce2-9c10-2ccd4328a1d9
 
   browser:
     runs-on: ubuntu-latest

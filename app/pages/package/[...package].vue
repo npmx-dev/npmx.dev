@@ -1188,6 +1188,33 @@ defineOgImageComponent('Package', {
   min-width: 0;
 }
 
+.copy-button {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  width: 1px;
+  transition:
+    opacity 0.25s 0.1s,
+    translate 0.15s 0.1s,
+    clip 0.01s 0.34s allow-discrete,
+    clip-path 0.01s 0.34s allow-discrete,
+    height 0.01s 0.34s allow-discrete,
+    width 0.01s 0.34s allow-discrete;
+}
+
+.group:hover .copy-button,
+.copy-button:focus-visible {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  overflow: visible;
+  width: auto;
+  transition:
+    opacity 0.15s,
+    translate 0.15s;
+}
+
 @media (hover: none) {
   .copy-button {
     display: none;
