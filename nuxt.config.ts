@@ -188,7 +188,7 @@ export default defineNuxtConfig({
 
   htmlValidator: {
     failOnError: true,
-    ignore: ['/200.html'],
+    ignore: [/200\.html/],
   },
 
   ogImage: {
