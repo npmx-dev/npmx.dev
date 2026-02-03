@@ -1010,7 +1010,7 @@ defineOgImageComponent('Package', {
 
       <div class="area-sidebar">
         <!-- Sidebar -->
-        <div class="sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-hidden xl:(top-22 pt-2)">
+        <div class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 xl:(top-22 pt-2)">
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 
@@ -1157,6 +1157,58 @@ defineOgImageComponent('Package', {
 
 .area-sidebar {
   grid-area: sidebar;
+}
+
+/* Keep sidebar scrollable inside viewport when hovered/focused. */
+.sidebar-scroll {
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.sidebar-scroll:hover {
+  padding-right: 2px;
+}
+
+@media (min-width: 1024px) {
+  .sidebar-scroll {
+    max-height: calc(100dvh - 8.5rem);
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-width: none;
+  }
+
+  .sidebar-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .sidebar-scroll:hover,
+  .sidebar-scroll:focus-within {
+    scrollbar-width: auto;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar,
+  .sidebar-scroll:focus-within::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar-thumb,
+  .sidebar-scroll:focus-within::-webkit-scrollbar-thumb {
+    background-color: #cecece;
+    border-radius: 9999px;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar-track,
+  .sidebar-scroll:focus-within::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@media (min-width: 1280px) {
+  .sidebar-scroll {
+    max-height: calc(100dvh - 6rem);
+  }
 }
 
 /* Improve package name wrapping for narrow screens */
