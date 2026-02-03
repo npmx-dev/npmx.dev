@@ -12,6 +12,9 @@ import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
 import { formatBytes } from '~/utils/formatters'
 import { NuxtLink } from '#components'
+import { useModal } from '~/composables/useModal'
+import { useAtproto } from '~/composables/atproto/useAtproto'
+import { togglePackageLike } from '~/utils/atproto/likes'
 
 definePageMeta({
   name: 'package',
@@ -356,6 +359,54 @@ const canonicalUrl = computed(() => {
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
 
+//atproto
+// TODO: Maybe set this where it's not loaded here every load?
+const { user } = useAtproto()
+
+const authModal = useModal('auth-modal')
+
+const { data: likesData } = useFetch(() => `/api/social/likes/${packageName.value}`, {
+  default: () => ({ totalLikes: 0, userHasLiked: false }),
+  server: false,
+})
+
+const isLikeActionPending = ref(false)
+
+const likeAction = async () => {
+  if (user.value?.handle == null) {
+    authModal.open()
+    return
+  }
+
+  if (isLikeActionPending.value) return
+
+  const currentlyLiked = likesData.value?.userHasLiked ?? false
+  const currentLikes = likesData.value?.totalLikes ?? 0
+
+  // Optimistic update
+  likesData.value = {
+    totalLikes: currentlyLiked ? currentLikes - 1 : currentLikes + 1,
+    userHasLiked: !currentlyLiked,
+  }
+
+  isLikeActionPending.value = true
+
+  const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
+
+  isLikeActionPending.value = false
+
+  if (result.success) {
+    // Update with server response
+    likesData.value = result.data
+  } else {
+    // Revert on error
+    likesData.value = {
+      totalLikes: currentLikes,
+      userHasLiked: currentlyLiked,
+    }
+  }
+}
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -445,7 +496,7 @@ defineOgImageComponent('Package', {
               <button
                 type="button"
                 @click="copyPkgName()"
-                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
+                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
                 :aria-label="$t('package.copy_name')"
               >
                 <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
@@ -497,10 +548,31 @@ defineOgImageComponent('Package', {
               :is-binary="isBinaryOnly"
               class="self-baseline ms-1 sm:ms-2"
             />
+
+            <!-- Package likes -->
+            <button
+              @click="likeAction"
+              type="button"
+              class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
+              :title="$t('package.links.like')"
+            >
+              <span
+                :class="
+                  likesData?.userHasLiked
+                    ? 'i-lucide-heart-minus text-red-500'
+                    : 'i-lucide-heart-plus'
+                "
+                class="w-4 h-4"
+                aria-hidden="true"
+              />
+              <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
+            </button>
+
             <template #fallback>
               <div class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
                 <SkeletonBlock class="w-8 h-5 rounded" />
                 <SkeletonBlock class="w-12 h-5 rounded" />
+                <SkeletonBlock class="w-5 h-5 rounded" />
               </div>
             </template>
           </ClientOnly>
@@ -1189,6 +1261,33 @@ defineOgImageComponent('Package', {
 .package-page > * {
   max-width: 100%;
   min-width: 0;
+}
+
+.copy-button {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  width: 1px;
+  transition:
+    opacity 0.25s 0.1s,
+    translate 0.15s 0.1s,
+    clip 0.01s 0.34s allow-discrete,
+    clip-path 0.01s 0.34s allow-discrete,
+    height 0.01s 0.34s allow-discrete,
+    width 0.01s 0.34s allow-discrete;
+}
+
+.group:hover .copy-button,
+.copy-button:focus-visible {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  overflow: visible;
+  width: auto;
+  transition:
+    opacity 0.15s,
+    translate 0.15s;
 }
 
 @media (hover: none) {
