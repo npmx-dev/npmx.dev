@@ -126,9 +126,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-01-31',
 
   nitro: {
-    experimental: {
-      wasm: true,
-    },
     externals: {
       inline: [
         'shiki',
