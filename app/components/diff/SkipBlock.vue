@@ -17,7 +17,7 @@ defineProps<{
     </td>
     <td>
       <span class="px-0 sticky left-2 italic opacity-50">
-        {{ content || `${count} lines hidden` }}
+        {{ content || $t('compare.lines_hidden', { count }) }}
       </span>
     </td>
   </tr>
