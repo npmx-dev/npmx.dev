@@ -1,5 +1,4 @@
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
-import { join } from 'node:path'
 
 /**
  * Test fixtures plugin for CI environments.
@@ -18,13 +17,13 @@ import { join } from 'node:path'
 const VERBOSE = process.env.NUXT_TEST_FIXTURES_VERBOSE === 'true'
 
 const FIXTURE_PATHS = {
-  packument: 'npm-registry/packuments',
-  search: 'npm-registry/search',
-  org: 'npm-registry/orgs',
-  downloads: 'npm-api/downloads',
+  packument: 'npm-registry:packuments',
+  search: 'npm-registry:search',
+  org: 'npm-registry:orgs',
+  downloads: 'npm-api:downloads',
   user: 'users',
-  esmHeaders: 'esm-sh/headers',
-  esmTypes: 'esm-sh/types',
+  esmHeaders: 'esm-sh:headers',
+  esmTypes: 'esm-sh:types',
 } as const
 
 type FixtureType = keyof typeof FIXTURE_PATHS
@@ -58,7 +57,7 @@ function getFixturePath(type: FixtureType, name: string): string {
       filename = `${name}.json`
   }
 
-  return join(dir, filename).replace(/\//g, ':')
+  return `${dir}:${filename.replace(/\//g, ':')}`
 }
 
 function getMockForUrl(url: string): MockResult | null {
