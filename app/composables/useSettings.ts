@@ -63,6 +63,23 @@ export function useSettings() {
 }
 
 /**
+ * Composable for accessing just the relative dates setting.
+ * Useful for components that only need to read this specific setting.
+ */
+export function useRelativeDates() {
+  const { settings } = useSettings()
+
+  function toggleRelativeDates() {
+    settings.value.relativeDates = !settings.value.relativeDates
+  }
+
+  return {
+    relativeDates: computed(() => settings.value.relativeDates),
+    toggleRelativeDates,
+  }
+}
+
+/**
  * Composable for managing accent color.
  */
 export function useAccentColor() {

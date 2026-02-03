@@ -5,6 +5,9 @@ import DateTime from '~/components/DateTime.vue'
 // Mock the useRelativeDates composable
 const mockRelativeDates = shallowRef(false)
 vi.mock('~/composables/useSettings', () => ({
+  useRelativeDates: () => ({
+    relativeDates: mockRelativeDates,
+  }),
   useSettings: () => ({
     settings: ref({ relativeDates: mockRelativeDates.value }),
   }),

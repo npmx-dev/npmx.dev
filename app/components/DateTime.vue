@@ -31,7 +31,7 @@ const props = withDefaults(
 
 const { locale } = useI18n()
 
-const { settings } = useSettings()
+const { relativeDates, toggleRelativeDates } = useRelativeDates()
 
 const dateFormatter = new Intl.DateTimeFormat(locale.value, {
   month: 'short',
@@ -48,17 +48,13 @@ const titleValue = computed(() => {
   const date = typeof props.datetime === 'string' ? new Date(props.datetime) : props.datetime
   return dateFormatter.format(date)
 })
-
-function toggleRelativeDates() {
-  settings.value.relativeDates = !settings.value.relativeDates
-}
 </script>
 
 <template>
   <button type="button" @click="toggleRelativeDates">
     <ClientOnly>
       <NuxtTime
-        v-if="settings.relativeDates"
+        v-if="relativeDates"
         :datetime="datetime"
         :title="titleValue"
         relative
