@@ -1,6 +1,5 @@
 export default eventHandlerWithOAuthSession(async (event, oAuthSession, serverSession) => {
-  await oAuthSession?.signOut()
-  await serverSession.clear()
+  await Promise.all([oAuthSession?.signOut(), serverSession.clear()])
 
   return 'Session cleared'
 })

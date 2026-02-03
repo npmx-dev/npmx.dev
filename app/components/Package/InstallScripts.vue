@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
+
 const props = defineProps<{
   packageName: string
   installScripts: {

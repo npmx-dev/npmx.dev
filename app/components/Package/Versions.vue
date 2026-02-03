@@ -2,7 +2,7 @@
 import type { PackageVersionInfo, SlimVersion } from '#shared/types'
 import { compare } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
-import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
+import { fetchAllPackageVersions } from '~/utils/npm/api'
 import {
   buildVersionToTagsMap,
   filterExcludedTags,

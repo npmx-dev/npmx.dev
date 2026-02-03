@@ -38,7 +38,7 @@
       "user": "user",
       "org": "org",
       "view_user_packages": "View packages by this user",
-      "view_org_packages": "View packages by this organization"
+      "view_org_packages": "View packages by this organisation"
     }
   },
   "nav": {
@@ -56,7 +56,7 @@
   },
   "settings": {
     "title": "settings",
-    "tagline": "customize your npmx experience",
+    "tagline": "customise your npmx experience",
     "meta_description": "Customize your npmx.dev experience with theme, language, and display preferences.",
     "sections": {
       "appearance": "Appearance",
@@ -76,7 +76,7 @@
     "language": "Language",
     "help_translate": "Help translate npmx",
     "accent_colors": "Accent colors",
-    "clear_accent": "Clear accent color",
+    "clear_accent": "Clear accent colour",
     "translation_progress": "Translation progress",
     "background_themes": "Background shade"
   },
@@ -403,7 +403,7 @@
       "contributor_link": "contributing guide",
       "connected": "Connected",
       "connected_as_user": "Connected as ~{user}",
-      "connected_hint": "You can now manage packages and organizations from the web UI.",
+      "connected_hint": "You can now manage packages and organisations from the web UI.",
       "disconnect": "Disconnect",
       "run_hint": "Run the connector on your machine to enable admin features.",
       "copy_command": "Copy command",
@@ -507,11 +507,11 @@
       "members_tab": "Members",
       "teams_tab": "Teams",
       "no_packages": "No public packages found for",
-      "no_packages_hint": "This organization may not exist or has no public packages.",
-      "failed_to_load": "Failed to load organization packages",
+      "no_packages_hint": "This organisation may not exist or has no public packages.",
+      "failed_to_load": "Failed to load organisation packages",
       "no_match": "No packages match \"{query}\"",
       "not_found": "Organization not found",
-      "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm",
+      "not_found_message": "The organisation \"{'@'}{name}\" does not exist on npm",
       "filter_placeholder": "Filter {count} packages..."
     }
   },
@@ -533,13 +533,13 @@
     "orgs_page": {
       "title": "Organizations",
       "back_to_profile": "Back to profile",
-      "connect_required": "Connect the local CLI to view your organizations.",
+      "connect_required": "Connect the local CLI to view your organisations.",
       "connect_hint_prefix": "Run",
       "connect_hint_suffix": "to get started.",
-      "own_orgs_only": "You can only view your own organizations.",
-      "view_your_orgs": "View your organizations",
-      "loading": "Loading organizations...",
-      "empty": "No organizations found.",
+      "own_orgs_only": "You can only view your own organisations.",
+      "view_your_orgs": "View your organisations",
+      "loading": "Loading organisations...",
+      "empty": "No organisations found.",
       "empty_hint": "Organizations are detected from your scoped packages.",
       "count": "{count} Organization | {count} Organizations",
       "packages_count": "{count} package | {count} packages"
@@ -558,7 +558,7 @@
       "similar_warning": "Similar packages exist - npm may reject this name:",
       "related": "Related packages:",
       "scope_warning_title": "Consider using a scoped package instead",
-      "scope_warning_text": "Unscoped package names are a shared resource. Only claim a name if you intend to publish and maintain a package. For personal or organizational projects, use a scoped name like {'@'}{username}/{name}.",
+      "scope_warning_text": "Unscoped package names are a shared resource. Only claim a name if you intend to publish and maintain a package. For personal or organisational projects, use a scoped name like {'@'}{username}/{name}.",
       "connect_required": "Connect to the local connector to claim this package name.",
       "connect_button": "Connect to Connector",
       "publish_hint": "This will publish a minimal placeholder package.",
@@ -735,7 +735,7 @@
       "better_ux_dx": "better UX/DX",
       "admin_ui": "admin UI",
       "description": "npmx is a {betterUxDx} for the npm package registry and tooling. We provide a fast, modern interface for exploring packages, with features like dark mode, keyboard navigation, code browsing, and connections to alternative registries like {jsr}.",
-      "admin_description": "We also aim to provide a better {adminUi} for managing your packages, teams, and organizations — all from the browser, powered by your local npm CLI."
+      "admin_description": "We also aim to provide a better {adminUi} for managing your packages, teams, and organisations — all from the browser, powered by your local npm CLI."
     },
     "what_we_are_not": {
       "title": "What we're not",
@@ -822,8 +822,8 @@
     "orgs_dropdown": {
       "title": "Your Organizations",
       "loading": "Loading...",
-      "error": "Failed to load organizations",
-      "empty": "No organizations found",
+      "error": "Failed to load organisations",
+      "empty": "No organisations found",
       "view_all": "View all"
     }
   },

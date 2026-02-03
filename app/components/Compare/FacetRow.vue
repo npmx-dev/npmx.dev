@@ -38,20 +38,46 @@ function getBarWidth(value: FacetValue | null | undefined): number {
   return (value.raw / maxValue.value) * 100
 }
 
-function getStatusClass(status?: FacetValue['status']): string {
+function getStatusClass(status?: FacetValue['status'], hasBar = false): string {
+  // When there's a bar, only apply text color, not background
+  if (hasBar) {
+    switch (status) {
+      case 'muted':
+        return 'text-fg-subtle'
+      default:
+        return 'text-fg'
+    }
+  }
+
+  // Original behavior when no bar
   switch (status) {
     case 'good':
-      return 'text-emerald-400'
+      return 'bg-emerald-400/20 px-3 py-0.5 rounded-xl'
     case 'info':
-      return 'text-blue-400'
+      return 'bg-blue-400/20 px-3 py-0.5 rounded-xl'
     case 'warning':
-      return 'text-amber-400'
+      return 'bg-amber-400/20 px-3 py-0.5 rounded-xl'
     case 'bad':
-      return 'text-red-400'
+      return 'bg-red-400/20 px-3 py-0.5 rounded-xl'
     case 'muted':
       return 'text-fg-subtle'
     default:
       return 'text-fg'
+  }
+}
+
+function getStatusBarClass(status?: FacetValue['status']): string {
+  switch (status) {
+    case 'good':
+      return 'bg-emerald-500/20'
+    case 'info':
+      return 'bg-blue-500/20'
+    case 'warning':
+      return 'bg-amber-500/20'
+    case 'bad':
+      return 'bg-red-500/20'
+    default:
+      return 'bg-fg/5'
   }
 }
 
@@ -80,7 +106,8 @@ function isCellLoading(index: number): boolean {
       <!-- Background bar for numeric values -->
       <div
         v-if="showBar && value && getBarWidth(value) > 0"
-        class="absolute inset-y-1 inset-is-1 bg-fg/5 rounded-sm transition-all duration-300"
+        class="absolute inset-y-1 inset-is-1 rounded-sm transition-all duration-300"
+        :class="getStatusBarClass(value.status)"
         :style="{ width: `calc(${getBarWidth(value)}% - 8px)` }"
         aria-hidden="true"
       />
@@ -103,7 +130,8 @@ function isCellLoading(index: number): boolean {
         <TooltipApp v-if="value.tooltip" :text="value.tooltip" position="top">
           <span
             class="relative font-mono text-sm text-center tabular-nums cursor-help"
-            :class="getStatusClass(value.status)"
+            :class="getStatusClass(value.status, showBar && getBarWidth(value) > 0)"
+            :data-status="value.status"
           >
             <!-- Date values use DateTime component for i18n and user settings -->
             <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />
@@ -113,7 +141,8 @@ function isCellLoading(index: number): boolean {
         <span
           v-else
           class="relative font-mono text-sm text-center tabular-nums"
-          :class="getStatusClass(value.status)"
+          :class="getStatusClass(value.status, showBar && getBarWidth(value) > 0)"
+          :data-status="value.status"
         >
           <!-- Date values use DateTime component for i18n and user settings -->
           <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />

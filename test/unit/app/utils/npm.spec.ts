@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { buildScopeTeam } from '../../../../app/utils/npm'
+import { buildScopeTeam } from '../../../../app/utils/npm/common'
 import { validateScopeTeam } from '../../../../cli/src/npm-client'
 import { getSpdxLicenseUrl } from '../../../../shared/utils/spdx'
 
