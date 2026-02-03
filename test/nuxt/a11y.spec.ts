@@ -74,6 +74,7 @@ import {
   CompareFacetCard,
   CompareFacetRow,
   CompareFacetSelector,
+  CompareLineChart,
   ComparePackageSelector,
   DateTime,
   DependencyPathPopup,
@@ -1442,6 +1443,24 @@ describe('component accessibility audits', () => {
   describe('CompareFacetSelector', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CompareFacetSelector)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CompareLineChart', () => {
+    it('should have no accessibility violations with no packages', async () => {
+      const component = await mountSuspended(CompareLineChart, {
+        props: { packages: [] },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with packages selected', async () => {
+      const component = await mountSuspended(CompareLineChart, {
+        props: { packages: ['vue', 'react'] },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
