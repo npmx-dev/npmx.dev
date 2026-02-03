@@ -102,9 +102,17 @@ test.describe('badge API', () => {
     })
   })
 
-  test('custom color parameter is applied to SVG', async ({ page, baseURL }) => {
+  test('custom colorA parameter is applied to SVG', async ({ page, baseURL }) => {
+    const customColor = '00ff00'
+    const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?colorA=${customColor}`)
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain(`fill="#${customColor}"`)
+  })
+
+  test('custom colorB parameter is applied to SVG', async ({ page, baseURL }) => {
     const customColor = 'ff69b4'
-    const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?color=${customColor}`)
+    const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?colorB=${customColor}`)
     const { body } = await fetchBadge(page, url)
 
     expect(body).toContain(`fill="#${customColor}"`)
