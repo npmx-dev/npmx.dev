@@ -46,7 +46,7 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const accentColorValueById = computed<Record<string, string>>(() => {
   const map: Record<string, string> = {}
-  for (const item of accentColors) {
+  for (const item of accentColors.value) {
     map[item.id] = item.value
   }
   return map
@@ -621,7 +621,7 @@ const config = computed(() => {
           </label>
 
           <div
-            class="flex items-center px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
+            class="flex items-center px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
           >
             <select
               id="granularity"
@@ -646,7 +646,7 @@ const config = computed(() => {
               {{ $t('package.downloads.start_date') }}
             </label>
             <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
+              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
             >
               <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
               <input
@@ -666,7 +666,7 @@ const config = computed(() => {
               {{ $t('package.downloads.end_date') }}
             </label>
             <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/30)"
+              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
             >
               <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
               <input
@@ -684,7 +684,7 @@ const config = computed(() => {
           v-if="showResetButton"
           type="button"
           aria-label="Reset date range"
-          class="self-end flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 sm:mb-0"
+          class="self-end flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
           @click="
             () => {
               hasUserEditedDates = false
