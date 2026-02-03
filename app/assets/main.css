@@ -222,10 +222,6 @@ select:focus-visible {
   border-radius: 4px;
 }
 
-input[type='text']:focus-visible {
-  outline: 2px solid var(--accent);
-}
-
 /* Selection */
 ::selection {
   background-color: var(--fg-muted);
