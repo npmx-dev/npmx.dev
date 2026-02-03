@@ -1200,11 +1200,10 @@ defineOgImageComponent('Package', {
   transition:
     opacity 0.25s 0.1s,
     translate 0.15s 0.1s,
-    clip 0s 0.35s,
-    clip-path 0s 0.35s,
-    height 0s 0.35s,
-    width 0s 0.35s;
-  transition-behavior: allow-discrete;
+    clip 0.01s 0.34s allow-discrete,
+    clip-path 0.01s 0.34s allow-discrete,
+    height 0.01s 0.34s allow-discrete,
+    width 0.01s 0.34s allow-discrete;
 }
 
 .group:hover .copy-button,
@@ -1216,11 +1215,7 @@ defineOgImageComponent('Package', {
   width: auto;
   transition:
     opacity 0.15s,
-    translate 0.15s,
-    clip 0.15s,
-    clip-path 0s,
-    height 0s,
-    width 0s;
+    translate 0.15s;
 }
 
 @media (hover: none) {
