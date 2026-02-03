@@ -272,6 +272,7 @@
       "date_range": "{start} to {end}",
       "date_range_multiline": "{start}\nto {end}",
       "analyze": "Analyze downloads",
+      "community_distribution": "View community adoption distribution",
       "modal_title": "Downloads",
       "granularity": "Granularity",
       "granularity_daily": "Daily",
