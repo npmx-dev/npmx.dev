@@ -13,14 +13,14 @@ export function useFrameworks() {
     { name: 'angular', package: '@angular/core', color: 'oklch(0.626 0.2663 310.4)' },
   ])
 
-  type FrameworkName = (typeof frameworks.value)[number]['name']
+  type FrameworkName = (typeof frameworks.value)[number]['package']
 
   function getFrameworkColor(framework: FrameworkName): string {
-    return frameworks.value.find(f => f.name === framework)!.color
+    return frameworks.value.find(f => f.package === framework)!.color
   }
 
   function isListedFramework(name: string): name is FrameworkName {
-    return frameworks.value.some(f => f.name === name)
+    return frameworks.value.some(f => f.package === name)
   }
 
   return {
