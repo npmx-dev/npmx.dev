@@ -1,0 +1,2031 @@
+{
+  "_id": "vue",
+  "_rev": "1133-8e21f46747e7c31a8c31574aa5dddc0e",
+  "name": "vue",
+  "description": "The progressive JavaScript framework for building modern web UI.",
+  "dist-tags": {
+    "csp": "1.0.28-csp",
+    "legacy": "2.7.16",
+    "v2-latest": "2.7.16",
+    "rc": "3.5.0-rc.1",
+    "alpha": "3.6.0-alpha.7",
+    "latest": "3.5.27",
+    "beta": "3.6.0-beta.5"
+  },
+  "versions": {
+    "3.6.0-beta.5": {
+      "name": "vue",
+      "version": "3.6.0-beta.5",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "main": "index.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "jsdelivr": "dist/vue.global.js",
+      "exports": {
+        ".": {
+          "import": {
+            "types": "./dist/vue.d.mts",
+            "node": "./index.mjs",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "types": "./dist/vue.d.ts",
+            "node": {
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js",
+              "default": "./index.js"
+            },
+            "default": "./index.js"
+          }
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./package.json": "./package.json"
+      },
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime",
+          "esm-browser-vapor"
+        ]
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vuejs/core.git"
+      },
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "dependencies": {
+        "@vue/shared": "3.6.0-beta.5",
+        "@vue/compiler-dom": "3.6.0-beta.5",
+        "@vue/runtime-dom": "3.6.0-beta.5",
+        "@vue/runtime-vapor": "3.6.0-beta.5",
+        "@vue/compiler-sfc": "3.6.0-beta.5",
+        "@vue/server-renderer": "3.6.0-beta.5"
+      },
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "readmeFilename": "README.md",
+      "_id": "vue@3.6.0-beta.5",
+      "_integrity": "sha512-BOvdhQru+8ckl4RPpgwTVOIs6yVRmuG9RY/fDadhyy30kRtaQvcxOsRIg/+N9eZDaEmPXMjLETfSsoqeHyvfug==",
+      "_resolved": "/tmp/f93913ea47225cbbac4844171c89d26a/vue-3.6.0-beta.5.tgz",
+      "_from": "file:vue-3.6.0-beta.5.tgz",
+      "_nodeVersion": "22.14.0",
+      "_npmVersion": "11.8.0",
+      "dist": {
+        "integrity": "sha512-BOvdhQru+8ckl4RPpgwTVOIs6yVRmuG9RY/fDadhyy30kRtaQvcxOsRIg/+N9eZDaEmPXMjLETfSsoqeHyvfug==",
+        "shasum": "33b7b081b8d22efde746f0a7e2271418d3de6031",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.6.0-beta.5.tgz",
+        "fileCount": 39,
+        "unpackedSize": 2995168,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.6.0-beta.5",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEQCIDGHhAj4T3af/I+sGXfZa1FqR6Lx8VoHTG9Z0f+MrzmFAiA95ZkzQGqZwv1m0ZNX/wFdalz9MpH8fJU6+TvyZen/8Q=="
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/vue_3.6.0-beta.5_1769752608206_0.6864157485437448"
+      },
+      "_hasShrinkwrap": false
+    },
+    "3.6.0-beta.4": {
+      "name": "vue",
+      "version": "3.6.0-beta.4",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.6.0-beta.4",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "e85efe3835fe575a172c40d5f88b6f3c780631df",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.6.0-beta.4.tgz",
+        "fileCount": 39,
+        "integrity": "sha512-/y9SPWAGbp+arbqa/x8a2MdKPArL92B25NzSpTyoq9lgV0YTluW8xD1fGRap+ieFxQpu7lUQS3dTc4IIaYkicQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIHf/uyDnfVwSSk9dDGACt4vy81uBB6HGjEsR405YhQRXAiEAxALZIdGZawiP4QT/Q7n8I3YPY1fwkmbV5H0ynSpUys4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.6.0-beta.4",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 3266032
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.6.0-beta.4.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/b25d0d22c3a62cd7822cf9e96f0d5848/vue-3.6.0-beta.4.tgz",
+      "_integrity": "sha512-/y9SPWAGbp+arbqa/x8a2MdKPArL92B25NzSpTyoq9lgV0YTluW8xD1fGRap+ieFxQpu7lUQS3dTc4IIaYkicQ==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.8.0",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime",
+          "esm-browser-vapor"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.6.0-beta.4",
+        "@vue/runtime-dom": "3.6.0-beta.4",
+        "@vue/compiler-dom": "3.6.0-beta.4",
+        "@vue/compiler-sfc": "3.6.0-beta.4",
+        "@vue/runtime-vapor": "3.6.0-beta.4",
+        "@vue/server-renderer": "3.6.0-beta.4"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.6.0-beta.4_1769150327125_0.14920772562784834",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.5.27": {
+      "name": "vue",
+      "version": "3.5.27",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.5.27",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "e55fd941b614459ab2228489bc19d1692e05876c",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.5.27.tgz",
+        "fileCount": 37,
+        "integrity": "sha512-aJ/UtoEyFySPBGarREmN4z6qNKpbEguYHMmXSiOGk69czc+zhs0NF6tEFrY8TZKAl8N/LYAkd4JHVd5E/AsSmw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCDMyx3LPRDqsZG4LSKMmio+UjkqGQr3SJJAifEbDkCwgIhAJlpuV4Qv+GF0v1T99HyDcdbN74+GEBT/tUnmFqzFGfu",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.5.27",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2447688
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.5.27.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/8c844b07717834ce0d68664c9138d2c3/vue-3.5.27.tgz",
+      "_integrity": "sha512-aJ/UtoEyFySPBGarREmN4z6qNKpbEguYHMmXSiOGk69czc+zhs0NF6tEFrY8TZKAl8N/LYAkd4JHVd5E/AsSmw==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.5.27",
+        "@vue/runtime-dom": "3.5.27",
+        "@vue/compiler-dom": "3.5.27",
+        "@vue/compiler-sfc": "3.5.27",
+        "@vue/server-renderer": "3.5.27"
+      },
+      "_hasShrinkwrap": false,
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.5.27_1768804423827_0.10500968808308175",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.6.0-beta.3": {
+      "name": "vue",
+      "version": "3.6.0-beta.3",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.6.0-beta.3",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "3baff69115cbeda23d90596144b8daeb0216b7a8",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.6.0-beta.3.tgz",
+        "fileCount": 39,
+        "integrity": "sha512-N2Btn6rJqqrac0hBQkkgyGb+T4FzYyFzuJDkSAOR1EKir28MG6HyfpIGLKwETEyVAqdZK/oJ+qHZXMltXX8KRQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIFY4B0PZ/78Fokxt84FpXVKpnK+zYUMCJrhK8FDQOP4vAiB3JJmzyHt+Diw+MVQL4fO83RvR4ZFqogh44+rLpI8HzQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.6.0-beta.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 3261995
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.6.0-beta.3.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/55a36c2e5793a4209bdd9b5d181c3885/vue-3.6.0-beta.3.tgz",
+      "_integrity": "sha512-N2Btn6rJqqrac0hBQkkgyGb+T4FzYyFzuJDkSAOR1EKir28MG6HyfpIGLKwETEyVAqdZK/oJ+qHZXMltXX8KRQ==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime",
+          "esm-browser-vapor"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.6.0-beta.3",
+        "@vue/runtime-dom": "3.6.0-beta.3",
+        "@vue/compiler-dom": "3.6.0-beta.3",
+        "@vue/compiler-sfc": "3.6.0-beta.3",
+        "@vue/runtime-vapor": "3.6.0-beta.3",
+        "@vue/server-renderer": "3.6.0-beta.3"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.6.0-beta.3_1768185228740_0.6827576895486647",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.6.0-beta.2": {
+      "name": "vue",
+      "version": "3.6.0-beta.2",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.6.0-beta.2",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "4db0f58d652762fb04ce3a4eaf8f99d394addb15",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.6.0-beta.2.tgz",
+        "fileCount": 39,
+        "integrity": "sha512-jqx3kNNBZrvRnqhO0WEOSrPnwPXeANkbYQz82bF0IizBHFYaiCx3d6hpcn+oY5o7lMbTCKoP/Ww6eD+drwCAVA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD6CA2RPsKFwniuOuMhE19rYRtlLX3HJi3ME3ywztO46wIhAIbyxP7d9OPgyBFhLCNiSExF4Px4B1PWgF/s6xzAFTR9",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.6.0-beta.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 3257102
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.6.0-beta.2.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/284c9c167751324a92567f24c2bd8e86/vue-3.6.0-beta.2.tgz",
+      "_integrity": "sha512-jqx3kNNBZrvRnqhO0WEOSrPnwPXeANkbYQz82bF0IizBHFYaiCx3d6hpcn+oY5o7lMbTCKoP/Ww6eD+drwCAVA==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime",
+          "esm-browser-vapor"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.6.0-beta.2",
+        "@vue/runtime-dom": "3.6.0-beta.2",
+        "@vue/compiler-dom": "3.6.0-beta.2",
+        "@vue/compiler-sfc": "3.6.0-beta.2",
+        "@vue/runtime-vapor": "3.6.0-beta.2",
+        "@vue/server-renderer": "3.6.0-beta.2"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.6.0-beta.2_1767511105367_0.37530067859492755",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.6.0-beta.1": {
+      "name": "vue",
+      "version": "3.6.0-beta.1",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.6.0-beta.1",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "62e28cba65424046cfb6e3e569743abee0ffb1b5",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.6.0-beta.1.tgz",
+        "fileCount": 39,
+        "integrity": "sha512-z2VKatkexJ9XZ/eYbUUQaitaYC1MpTtE+7zESy7bBvfcExlF5ubBmCB001I6GznEw4vRR1WMZbDqT482QJEJHw==",
+        "signatures": [
+          {
+            "sig": "MEQCIGEHnIRBoFD5guH5kOAKjYU4S/YEcxyXdpaKxGFfZolGAiAvNgP5FH5nIDBly8dFv3KAK+koYZq3sY8g/CqY7mUWMQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.6.0-beta.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 3255169
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.6.0-beta.1.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/629a3c3aed9cd4db739ed0d77dbb55bb/vue-3.6.0-beta.1.tgz",
+      "_integrity": "sha512-z2VKatkexJ9XZ/eYbUUQaitaYC1MpTtE+7zESy7bBvfcExlF5ubBmCB001I6GznEw4vRR1WMZbDqT482QJEJHw==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime",
+          "esm-browser-vapor"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.6.0-beta.1",
+        "@vue/runtime-dom": "3.6.0-beta.1",
+        "@vue/compiler-dom": "3.6.0-beta.1",
+        "@vue/compiler-sfc": "3.6.0-beta.1",
+        "@vue/runtime-vapor": "3.6.0-beta.1",
+        "@vue/server-renderer": "3.6.0-beta.1"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.6.0-beta.1_1766498259958_0.9572179667381926",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.5.26": {
+      "name": "vue",
+      "version": "3.5.26",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.5.26",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "03a0b17311e0e593d34b9358fa249b85e3a6d9fb",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.5.26.tgz",
+        "fileCount": 37,
+        "integrity": "sha512-SJ/NTccVyAoNUJmkM9KUqPcYlY+u8OVL1X5EW9RIs3ch5H2uERxyyIUI4MRxVCSOiEcupX9xNGde1tL9ZKpimA==",
+        "signatures": [
+          {
+            "sig": "MEUCIDVQEBJAXx00rvttQDiv/pEzyhqO9pzpWwNFggUEb3bFAiEAiNW9krKCgO4w+WfjGE6ZpkI8ZHEMOneXzujq5PmU/rg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.5.26",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2445088
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.5.26.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/557b499c3e83bc1144a25c8974d33866/vue-3.5.26.tgz",
+      "_integrity": "sha512-SJ/NTccVyAoNUJmkM9KUqPcYlY+u8OVL1X5EW9RIs3ch5H2uERxyyIUI4MRxVCSOiEcupX9xNGde1tL9ZKpimA==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.5.26",
+        "@vue/runtime-dom": "3.5.26",
+        "@vue/compiler-dom": "3.5.26",
+        "@vue/compiler-sfc": "3.5.26",
+        "@vue/server-renderer": "3.5.26"
+      },
+      "_hasShrinkwrap": false,
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.5.26_1766059950200_0.16653886863197798",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.6.0-alpha.7": {
+      "name": "vue",
+      "version": "3.6.0-alpha.7",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.6.0-alpha.7",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "fde127c6e5808de9239218e3f1c62d2fa640c77f",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.6.0-alpha.7.tgz",
+        "fileCount": 39,
+        "integrity": "sha512-+/gdBadJSo8lENlOtDOUKo3818cyl4Cjjh1O1HutVLm7UnQF59496xnlS4j0ug0QaQwI3UnvEjlqsbMhSP2scw==",
+        "signatures": [
+          {
+            "sig": "MEQCICgtfBy3S8ApUv4BN7aXpEA9HRMWvRftPkYOZXPDP8ZAAiB+JPwzDr655rWZpdt7JF6t75gJTw8d0VSqDQ80/uqcNA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.6.0-alpha.7",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 3238658
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.6.0-alpha.7.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/e0e51b68e9402fdec5c20b924782a933/vue-3.6.0-alpha.7.tgz",
+      "_integrity": "sha512-+/gdBadJSo8lENlOtDOUKo3818cyl4Cjjh1O1HutVLm7UnQF59496xnlS4j0ug0QaQwI3UnvEjlqsbMhSP2scw==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.7.0",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime",
+          "esm-browser-vapor"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.6.0-alpha.7",
+        "@vue/runtime-dom": "3.6.0-alpha.7",
+        "@vue/compiler-dom": "3.6.0-alpha.7",
+        "@vue/compiler-sfc": "3.6.0-alpha.7",
+        "@vue/runtime-vapor": "3.6.0-alpha.7",
+        "@vue/server-renderer": "3.6.0-alpha.7"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.6.0-alpha.7_1765528402139_0.7157388539502658",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.6.0-alpha.6": {
+      "name": "vue",
+      "version": "3.6.0-alpha.6",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.6.0-alpha.6",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "f863f100c7bd08e2321508b2d92350b43ec9caae",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.6.0-alpha.6.tgz",
+        "fileCount": 39,
+        "integrity": "sha512-ZSetlhOPkI4dUfC8Aslf4cHRoy0te0Ly0sS88029GDSPghrMyJwwrlIk4WIR2HgpuLzdieUKcoGbQeITvR0Liw==",
+        "signatures": [
+          {
+            "sig": "MEQCIDV3xWjN9TmHqWilhnqzJmqebBqpDmpUF5N8NfvRaFQdAiB5AWj5O5fdWftQVFzJZJnrC1tV/ZOiH1ZXYBgPoaKnKA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.6.0-alpha.6",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 3234938
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.6.0-alpha.6.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/44c362a5614512ec1e7224c2874b9ea7/vue-3.6.0-alpha.6.tgz",
+      "_integrity": "sha512-ZSetlhOPkI4dUfC8Aslf4cHRoy0te0Ly0sS88029GDSPghrMyJwwrlIk4WIR2HgpuLzdieUKcoGbQeITvR0Liw==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.6.4",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime",
+          "esm-browser-vapor"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.6.0-alpha.6",
+        "@vue/runtime-dom": "3.6.0-alpha.6",
+        "@vue/compiler-dom": "3.6.0-alpha.6",
+        "@vue/compiler-sfc": "3.6.0-alpha.6",
+        "@vue/runtime-vapor": "3.6.0-alpha.6",
+        "@vue/server-renderer": "3.6.0-alpha.6"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.6.0-alpha.6_1764835221484_0.6349870315522796",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.6.0-alpha.5": {
+      "name": "vue",
+      "version": "3.6.0-alpha.5",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.6.0-alpha.5",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "e5be148eac62aa14986c465c1f1ab94f8e946530",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.6.0-alpha.5.tgz",
+        "fileCount": 39,
+        "integrity": "sha512-sOVhkO7D0lb+/TNZvmfvDliXncqDKa3zMDkEK2Fd13J5vqKKuEHSZeYrZYYISv1RIT88pJRF/0A6gInKhrKLqQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQC0ThEmV8LLswOIy+XitUgL1uMmpn6jhW1iruBLDhev3AIgSunCQaPB2xydTHY9EF8RMINFmN3noo6SuRqbBmAGMB8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.6.0-alpha.5",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 3228649
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.6.0-alpha.5.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:d56cba3e-2e34-4b01-9442-d2f0981e3993"
+        }
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/01be3bf9a7702b1ad57b254c3d90496d/vue-3.6.0-alpha.5.tgz",
+      "_integrity": "sha512-sOVhkO7D0lb+/TNZvmfvDliXncqDKa3zMDkEK2Fd13J5vqKKuEHSZeYrZYYISv1RIT88pJRF/0A6gInKhrKLqQ==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.6.3",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "22.14.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime",
+          "esm-browser-vapor"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.6.0-alpha.5",
+        "@vue/runtime-dom": "3.6.0-alpha.5",
+        "@vue/compiler-dom": "3.6.0-alpha.5",
+        "@vue/compiler-sfc": "3.6.0-alpha.5",
+        "@vue/runtime-vapor": "3.6.0-alpha.5",
+        "@vue/server-renderer": "3.6.0-alpha.5"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.6.0-alpha.5_1764038439290_0.8794294589403397",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "1.0.28-csp": {
+      "name": "vue",
+      "version": "1.0.28-csp",
+      "keywords": ["mvvm", "browser", "framework"],
+      "author": {
+        "name": "Evan You",
+        "email": "user2@example.com"
+      },
+      "license": "MIT",
+      "_id": "vue@1.0.28-csp",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "http://vuejs.org",
+      "bugs": {
+        "url": "https://github.com/vuejs/vue/issues"
+      },
+      "dist": {
+        "shasum": "02814d502eff3e4efb6a12b882fbf3b55f1e2f1e",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-1.0.28-csp.tgz",
+        "integrity": "sha512-aQwUv+HwY22xVLKaTmYztNYw2xmlOCy2xTmgHEqnRJM3+ruJSQpLA9+KGVGLyZUp7RBNISLR489FbdohaWZ5GQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIFJuSLpdkSjpnHeZCBQE4Yb9C/1aHCB925PRcFGXtkAVAiBqhfrVFMw8Zb3QHkeaEX87Pm2Vr2izvKaVypEoQAQgvA==",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ]
+      },
+      "main": "dist/vue.common.js",
+      "_from": ".",
+      "files": [
+        "dist/vue.js",
+        "dist/vue.min.js",
+        "dist/vue.min.js.map",
+        "dist/vue.common.js",
+        "src"
+      ],
+      "_shasum": "02814d502eff3e4efb6a12b882fbf3b55f1e2f1e",
+      "gitHead": "c45cfee24d222b68b8e6a320863cb7e13c15f2bc",
+      "scripts": {
+        "dev": "webpack --watch --config build/webpack.dev.config.js & npm run serve-test",
+        "e2e": "casperjs test --concise ./test/e2e",
+        "lint": "eslint src test/e2e test/unit/specs build",
+        "test": "npm run lint && npm run cover && npm run build && npm run e2e",
+        "unit": "karma start build/karma.unit.config.js",
+        "build": "node build/build.js",
+        "cover": "karma start build/karma.cover.config.js",
+        "sauce": "karma start build/karma.sauce.config.js",
+        "release": "bash build/release.sh",
+        "sauce-all": "npm run sauce",
+        "build-test": "webpack --config build/webpack.test.config.js",
+        "serve-test": "webpack-dev-server --config build/webpack.test.config.js --host 0.0.0.0",
+        "release-csp": "bash build/release-csp.sh",
+        "install-hook": "ln -s ../../build/git-hooks/pre-commit .git/hooks/pre-commit"
+      },
+      "_npmUser": {
+        "name": "yyx990803",
+        "email": "user2@example.com"
+      },
+      "browserify": {
+        "transform": ["envify"]
+      },
+      "repository": {
+        "url": "git+https://github.com/vuejs/vue.git",
+        "type": "git"
+      },
+      "_npmVersion": "3.10.3",
+      "description": "Simple, Fast & Composable MVVM for building interactive interfaces",
+      "directories": {},
+      "_nodeVersion": "6.3.1",
+      "dependencies": {
+        "envify": "^3.4.0"
+      },
+      "devDependencies": {
+        "karma": "^1.3.0",
+        "eslint": "^3.5.0",
+        "rollup": "^0.34.13",
+        "notevil": "^1.0.0",
+        "webpack": "^1.12.2",
+        "casperjs": "^1.1.3",
+        "phantomjs": "^1.9.17",
+        "uglify-js": "^2.4.24",
+        "babel-core": "^5.8.0",
+        "codecov.io": "^0.1.2",
+        "babel-loader": "^5.4.0",
+        "jasmine-core": "^2.4.1",
+        "babel-runtime": "^5.8.0",
+        "karma-jasmine": "^1.0.2",
+        "karma-webpack": "^1.7.0",
+        "object-assign": "^4.0.1",
+        "karma-coverage": "^1.1.1",
+        "eslint-config-vue": "^1.0.0",
+        "karma-ie-launcher": "^1.0.0",
+        "eslint-plugin-html": "^1.5.2",
+        "webpack-dev-server": "^1.12.1",
+        "rollup-plugin-babel": "^1.0.0",
+        "karma-sauce-launcher": "^1.0.0",
+        "karma-chrome-launcher": "^2.0.0",
+        "karma-safari-launcher": "^1.0.0",
+        "rollup-plugin-replace": "^1.1.0",
+        "karma-firefox-launcher": "^1.0.0",
+        "karma-sourcemap-loader": "^0.3.7",
+        "karma-phantomjs-launcher": "^1.0.2",
+        "istanbul-instrumenter-loader": "^0.2.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue-1.0.28-csp.tgz_1475009243806_0.7087466502562165",
+        "host": "packages-12-west.internal.npmjs.com"
+      }
+    },
+    "2.7.16": {
+      "name": "vue",
+      "version": "2.7.16",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@2.7.16",
+      "maintainers": [
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/vue/issues"
+      },
+      "dist": {
+        "shasum": "98c60de9def99c0e3da8dae59b304ead43b967c9",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-2.7.16.tgz",
+        "fileCount": 228,
+        "integrity": "sha512-4gCtFXaAA3zYZdTp5s4Hl2sozuySsgz4jy1EnpBHNfpMa9dK1ZCG7viqBPCwXtmgc8nHqUsAu3G4gtmXkkY3Sw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDyFn9d8RTttuLBpXseEohbkR8EJrE9pbf342h8NwAy7wIgZFVsZvWeMG4Ewxaa4yU0/YvHvz2TocU7op4+FtWOFAs=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 4511532
+      },
+      "main": "dist/vue.runtime.common.js",
+      "_from": "file:vue-2.7.16.tgz",
+      "unpkg": "dist/vue.js",
+      "module": "dist/vue.runtime.esm.js",
+      "exports": {
+        ".": {
+          "types": "./types/index.d.ts",
+          "import": {
+            "node": "./dist/vue.runtime.mjs",
+            "default": "./dist/vue.runtime.esm.js"
+          },
+          "require": "./dist/vue.runtime.common.js"
+        },
+        "./dist/*": "./dist/*",
+        "./types/*": ["./types/*.d.ts", "./types/*"],
+        "./compiler-sfc": {
+          "types": "./compiler-sfc/index.d.ts",
+          "import": "./compiler-sfc/index.mjs",
+          "require": "./compiler-sfc/index.js"
+        },
+        "./package.json": "./package.json"
+      },
+      "scripts": {
+        "dev": "rollup -w -c scripts/config.js --environment TARGET:full-dev",
+        "test": "npm run ts-check && npm run test:types && npm run test:unit && npm run test:e2e && npm run test:ssr && npm run test:sfc",
+        "build": "node scripts/build.js",
+        "format": "prettier --write --parser typescript \"(src|test|packages|types)/**/*.ts\"",
+        "dev:cjs": "rollup -w -c scripts/config.js --environment TARGET:runtime-cjs-dev",
+        "dev:esm": "rollup -w -c scripts/config.js --environment TARGET:runtime-esm",
+        "dev:ssr": "rollup -w -c scripts/config.js --environment TARGET:server-renderer",
+        "release": "node scripts/release.js",
+        "test:e2e": "npm run build -- full-prod,server-renderer-basic && vitest run test/e2e",
+        "test:sfc": "vitest run compiler-sfc",
+        "test:ssr": "npm run build:ssr && vitest run server-renderer",
+        "ts-check": "tsc -p tsconfig.json --noEmit",
+        "bench:ssr": "npm run build:ssr && node benchmarks/ssr/renderToString.js && node benchmarks/ssr/renderToStream.js",
+        "build:ssr": "npm run build -- runtime-cjs,server-renderer",
+        "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+        "test:unit": "vitest run test/unit",
+        "test:types": "npm run build:types && tsc -p ./types/tsconfig.json",
+        "build:types": "rimraf temp && tsc --declaration --emitDeclarationOnly --outDir temp && api-extractor run && api-extractor run -c packages/compiler-sfc/api-extractor.json",
+        "dev:compiler": "rollup -w -c scripts/config.js --environment TARGET:compiler ",
+        "ts-check:test": "tsc -p test/tsconfig.json --noEmit",
+        "test:transition": "karma start test/transition/karma.conf.js"
+      },
+      "typings": "types/index.d.ts",
+      "_npmUser": {
+        "name": "yyx990803",
+        "email": "user2@example.com"
+      },
+      "gitHooks": {
+        "commit-msg": "node scripts/verify-commit-msg.js",
+        "pre-commit": "lint-staged"
+      },
+      "jsdelivr": "dist/vue.js",
+      "_resolved": "/private/var/folders/y4/6cp34gld0_s85nrqnzqvfh880000gn/T/a057fc49f30b8ad4be9b2a51906ae7b7/vue-2.7.16.tgz",
+      "_integrity": "sha512-4gCtFXaAA3zYZdTp5s4Hl2sozuySsgz4jy1EnpBHNfpMa9dK1ZCG7viqBPCwXtmgc8nHqUsAu3G4gtmXkkY3Sw==",
+      "deprecated": "Vue 2 has reached EOL and is no longer actively maintained. See https://v2.vuejs.org/eol/ for more details.",
+      "repository": {
+        "url": "git+https://github.com/vuejs/vue.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.2.3",
+      "description": "Reactive, component-oriented view layer for modern web interfaces.",
+      "directories": {},
+      "lint-staged": {
+        "*.js": ["prettier --write"],
+        "*.ts": ["prettier --parser=typescript --write"]
+      },
+      "sideEffects": false,
+      "_nodeVersion": "20.10.0",
+      "dependencies": {
+        "csstype": "^3.1.0",
+        "@vue/compiler-sfc": "2.7.16"
+      },
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@8.9.2",
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "he": "^1.2.0",
+        "chalk": "^4.1.2",
+        "execa": "^4.1.0",
+        "jsdom": "^19.0.0",
+        "karma": "^6.3.20",
+        "tslib": "^2.4.0",
+        "lodash": "^4.17.21",
+        "marked": "^4.0.16",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.79.1",
+        "semver": "^7.3.7",
+        "terser": "^5.14.0",
+        "vitest": "^1.0.4",
+        "yorkie": "^2.0.0",
+        "esbuild": "^0.19.8",
+        "postcss": "^8.4.14",
+        "shelljs": "^0.8.5",
+        "ts-node": "^10.8.1",
+        "enquirer": "^2.3.6",
+        "minimist": "^1.2.6",
+        "prettier": "^2.6.2",
+        "@types/he": "^1.1.2",
+        "karma-cli": "^2.0.0",
+        "puppeteer": "^14.3.0",
+        "typescript": "^4.8.4",
+        "@types/node": "^20.10.3",
+        "cross-spawn": "^7.0.3",
+        "lint-staged": "^12.5.0",
+        "jasmine-core": "^4.2.0",
+        "@babel/parser": "^7.23.5",
+        "karma-esbuild": "^2.2.5",
+        "karma-jasmine": "^5.0.1",
+        "todomvc-app-css": "^2.4.2",
+        "@rollup/plugin-alias": "^3.1.9",
+        "karma-chrome-launcher": "^3.1.1",
+        "@rollup/plugin-replace": "^4.0.0",
+        "@rollup/plugin-commonjs": "^22.0.0",
+        "@microsoft/api-extractor": "^7.25.0",
+        "rollup-plugin-typescript2": "^0.32.0",
+        "conventional-changelog-cli": "^2.2.2",
+        "@rollup/plugin-node-resolve": "^13.3.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_2.7.16_1703430140996_0.13413489140114132",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "3.5.0-rc.1": {
+      "name": "vue",
+      "version": "3.5.0-rc.1",
+      "keywords": ["vue"],
+      "author": {
+        "name": "Evan You"
+      },
+      "license": "MIT",
+      "_id": "vue@3.5.0-rc.1",
+      "maintainers": [
+        {
+          "name": "soda",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "yyx990803",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "posva",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+      "bugs": {
+        "url": "https://github.com/vuejs/core/issues"
+      },
+      "dist": {
+        "shasum": "e925727e9ff3fd4b23bacb20f9319fca2c00e97c",
+        "tarball": "https://registry.npmjs.org/vue/-/vue-3.5.0-rc.1.tgz",
+        "fileCount": 37,
+        "integrity": "sha512-8p8+hzDP8AejAzxFRQWfTYkOeJmHLmMcqRcWvfglPo9YaSqzDswVpA+sj5k0n/2p5jF3kmf8VeW+GcySxgrBEQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCXylPz38wYMi8JB2Btk6xGSuc9QGJfzJ9Z9vsf23eH0gIgILWl0fZxb8W83r7Id3PyJ4r39/PgnrLikYPIKQCrwvo=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/vue@3.5.0-rc.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2372473
+      },
+      "main": "index.js",
+      "_from": "file:vue-3.5.0-rc.1.tgz",
+      "types": "dist/vue.d.ts",
+      "unpkg": "dist/vue.global.js",
+      "module": "dist/vue.runtime.esm-bundler.js",
+      "exports": {
+        ".": {
+          "import": {
+            "node": "./index.mjs",
+            "types": "./dist/vue.d.mts",
+            "default": "./dist/vue.runtime.esm-bundler.js"
+          },
+          "require": {
+            "node": {
+              "default": "./index.js",
+              "production": "./dist/vue.cjs.prod.js",
+              "development": "./dist/vue.cjs.js"
+            },
+            "types": "./dist/vue.d.ts",
+            "default": "./index.js"
+          }
+        },
+        "./jsx": "./jsx.d.ts",
+        "./dist/*": "./dist/*",
+        "./jsx-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./compiler-sfc": {
+          "import": {
+            "types": "./compiler-sfc/index.d.mts",
+            "browser": "./compiler-sfc/index.browser.mjs",
+            "default": "./compiler-sfc/index.mjs"
+          },
+          "require": {
+            "types": "./compiler-sfc/index.d.ts",
+            "browser": "./compiler-sfc/index.browser.js",
+            "default": "./compiler-sfc/index.js"
+          }
+        },
+        "./package.json": "./package.json",
+        "./jsx-dev-runtime": {
+          "types": "./jsx-runtime/index.d.ts",
+          "import": "./jsx-runtime/index.mjs",
+          "require": "./jsx-runtime/index.js"
+        },
+        "./server-renderer": {
+          "import": {
+            "types": "./server-renderer/index.d.mts",
+            "default": "./server-renderer/index.mjs"
+          },
+          "require": {
+            "types": "./server-renderer/index.d.ts",
+            "default": "./server-renderer/index.js"
+          }
+        }
+      },
+      "_npmUser": {
+        "name": "yyx990803",
+        "email": "user2@example.com"
+      },
+      "jsdelivr": "dist/vue.global.js",
+      "_resolved": "/tmp/5a119922014e1cdba575aa6176206352/vue-3.5.0-rc.1.tgz",
+      "_integrity": "sha512-8p8+hzDP8AejAzxFRQWfTYkOeJmHLmMcqRcWvfglPo9YaSqzDswVpA+sj5k0n/2p5jF3kmf8VeW+GcySxgrBEQ==",
+      "repository": {
+        "url": "git+https://github.com/vuejs/core.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.8.2",
+      "description": "The progressive JavaScript framework for building modern web UI.",
+      "directories": {},
+      "_nodeVersion": "20.17.0",
+      "buildOptions": {
+        "name": "Vue",
+        "formats": [
+          "esm-bundler",
+          "esm-bundler-runtime",
+          "cjs",
+          "global",
+          "global-runtime",
+          "esm-browser",
+          "esm-browser-runtime"
+        ]
+      },
+      "dependencies": {
+        "@vue/shared": "3.5.0-rc.1",
+        "@vue/runtime-dom": "3.5.0-rc.1",
+        "@vue/compiler-dom": "3.5.0-rc.1",
+        "@vue/compiler-sfc": "3.5.0-rc.1",
+        "@vue/server-renderer": "3.5.0-rc.1"
+      },
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "peerDependencies": {
+        "typescript": "*"
+      },
+      "peerDependenciesMeta": {
+        "typescript": {
+          "optional": true
+        }
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/vue_3.5.0-rc.1_1724916526797_0.6190937320214607",
+        "host": "s3://npm-registry-packages"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-01-30T05:56:48.660Z",
+    "created": "2013-12-07T06:09:46.299Z",
+    "3.6.0-beta.5": "2026-01-30T05:56:48.375Z",
+    "3.6.0-beta.4": "2026-01-23T06:38:47.349Z",
+    "3.5.27": "2026-01-19T06:33:43.982Z",
+    "3.6.0-beta.3": "2026-01-12T02:33:49.008Z",
+    "3.6.0-beta.2": "2026-01-04T07:18:25.581Z",
+    "3.6.0-beta.1": "2025-12-23T13:57:40.168Z",
+    "3.5.26": "2025-12-18T12:12:30.440Z",
+    "3.6.0-alpha.7": "2025-12-12T08:33:22.331Z",
+    "3.6.0-alpha.6": "2025-12-04T08:00:21.674Z",
+    "3.6.0-alpha.5": "2025-11-25T02:40:39.542Z",
+    "1.0.28-csp": "2016-09-27T20:47:26.372Z",
+    "2.7.16": "2023-12-24T15:02:21.257Z",
+    "3.5.0-rc.1": "2024-08-29T07:28:47.048Z"
+  },
+  "maintainers": [
+    {
+      "name": "yyx990803",
+      "email": "user2@example.com"
+    },
+    {
+      "name": "posva",
+      "email": "user3@example.com"
+    }
+  ],
+  "author": {
+    "name": "Evan You"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/vuejs/core/tree/main/packages/vue#readme",
+  "keywords": ["vue"],
+  "repository": {
+    "url": "git+https://github.com/vuejs/core.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/vuejs/core/issues"
+  },
+  "readme": "",
+  "readmeFilename": ""
+}

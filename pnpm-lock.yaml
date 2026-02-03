@@ -53,9 +53,6 @@ importers:
       '@iconify-json/vscode-icons':
         specifier: 1.2.40
         version: 1.2.40
-      '@intlify/core-base':
-        specifier: 11.2.8
-        version: 11.2.8
       '@intlify/shared':
         specifier: 11.2.8
         version: 11.2.8
@@ -125,6 +122,9 @@ importers:
       defu:
         specifier: 6.1.4
         version: 6.1.4
+      fast-npm-meta:
+        specifier: 1.0.0
+        version: 1.0.0
       focus-trap:
         specifier: ^7.8.0
         version: 7.8.0
@@ -195,6 +195,9 @@ importers:
         specifier: 3.14.3
         version: 3.14.3(vue@3.5.27(typescript@5.9.3))
     devDependencies:
+      '@intlify/core-base':
+        specifier: 11.2.8
+        version: 11.2.8
       '@npm/types':
         specifier: 2.1.0
         version: 2.1.0
@@ -228,9 +231,6 @@ importers:
       fast-check:
         specifier: 4.5.3
         version: 4.5.3
-      fast-npm-meta:
-        specifier: 1.0.0
-        version: 1.0.0
       knip:
         specifier: 5.83.0
         version: 5.83.0(@types/node@24.10.9)(typescript@5.9.3)

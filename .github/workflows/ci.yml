@@ -117,7 +117,7 @@ jobs:
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: pnpm build
+        run: NODE_ENV=test pnpm build
 
       - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
         run: ./scripts/lighthouse-a11y.sh
