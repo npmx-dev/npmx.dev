@@ -139,7 +139,7 @@ describe('parseJsDocLinks', () => {
     fc.assert(
       fc.property(fc.webUrl(), url => {
         const result = parseJsDocLinks(`{@link ${url}}`, emptyLookup)
-        expect(result).toContain(`href="${url.replaceAll('"', '\\"')}"`)
+        expect(result).toContain(`href="${escapeHtml(url)}"`)
         expect(result).toContain('target="_blank"')
         expect(result).toContain('rel="noreferrer"')
         expect(result).toContain(escapeHtml(url))
@@ -151,7 +151,7 @@ describe('parseJsDocLinks', () => {
     fc.assert(
       fc.property(fc.webUrl(), fc.stringMatching(/^[^}\s][^}]+[^}\s]$/), (url, text) => {
         const result = parseJsDocLinks(`{@link ${url} ${text}}`, emptyLookup)
-        expect(result).toContain(`href="${url.replaceAll('"', '\\"')}"`)
+        expect(result).toContain(`href="${escapeHtml(url)}"`)
         expect(result).toContain('target="_blank"')
         expect(result).toContain('rel="noreferrer"')
         expect(result).toContain(escapeHtml(text))
@@ -188,7 +188,7 @@ describe('parseJsDocLinks', () => {
         }
         const result = parseJsDocLinks(docString, emptyLookup)
         for (const url of expectedUrls) {
-          expect(result).toContain(`href="${url.replaceAll('"', '\\"')}"`)
+          expect(result).toContain(`href="${escapeHtml(url)}"`)
         }
       }),
     )
