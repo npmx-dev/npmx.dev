@@ -183,6 +183,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               selfSize: number
               totalSize: number
               dependencyCount: number
+              directDepCount: number
             }>(`/api/registry/install-size/${name}`)
 
             // Update cache with install size
