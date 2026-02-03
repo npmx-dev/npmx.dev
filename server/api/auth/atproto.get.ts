@@ -3,7 +3,8 @@ import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { createError, getQuery, sendRedirect } from 'h3'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
-import { useServerSession } from '~~/server/utils/server-session'
+import { useServerSession } from '#server/utils/server-session'
+import type { PublicUserSession } from '#shared/schemas/publicUserSession'
 
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig(event)
@@ -53,15 +54,12 @@ export default defineEventHandler(async event => {
     `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${agent.did}`,
     { headers: { 'User-Agent': 'npmx' } },
   )
-  const miniDoc = await response.json()
-
-  await session.update({
-    public: {
-      did: miniDoc.did,
-      handle: miniDoc.handle,
-      pds: miniDoc.pds,
-    },
-  })
+  if (response.ok) {
+    const miniDoc: PublicUserSession = await response.json()
+    await session.update({
+      public: miniDoc,
+    })
+  }
 
   return sendRedirect(event, '/')
 })
