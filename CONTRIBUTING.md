@@ -16,7 +16,7 @@ What npmx offers:
 
 - **Speed** &ndash; Fast searching, filtering, and navigation.
 - **Simplicity** &ndash; Get the information you need when you need it in an intuitive UI.
-- **Compatibility** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
+- **URL Compatibility** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
 - **Enhanced admin experience** &ndash; Manage your packages, teams, and organizations from the browser, powered by your local npm CLI.
 
 ## Table of Contents
