@@ -65,12 +65,12 @@ watch(open, value => {
             <span class="text-yellow-500">~{{ props.compare.stats.filesModified }}</span>
           </span>
           <span class="text-fg-subtle">•</span>
-          <span>{{ props.allChanges.length }} files</span>
+          <span>{{ $t('compare.files_count', { count: props.allChanges.length }) }}</span>
         </div>
         <button
           type="button"
           class="text-fg-muted hover:text-fg transition-colors"
-          aria-label="Close files panel"
+          :aria-label="$t('compare.close_files_panel')"
           @click="open = false"
         >
           <span class="i-carbon:close w-5 h-5" />

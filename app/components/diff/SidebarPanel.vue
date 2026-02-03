@@ -18,12 +18,13 @@ const fileFilter = defineModel<'all' | 'added' | 'removed' | 'modified'>('fileFi
 })
 
 const sectionOrder = ['dependencies', 'devDependencies', 'peerDependencies', 'optionalDependencies']
-const sectionMeta: Record<string, { label: string; icon: string }> = {
-  dependencies: { label: 'Dependencies', icon: 'i-carbon-cube' },
-  devDependencies: { label: 'Dev Dependencies', icon: 'i-carbon-tools' },
-  peerDependencies: { label: 'Peer Dependencies', icon: 'i-carbon-user-multiple' },
-  optionalDependencies: { label: 'Optional Dependencies', icon: 'i-carbon-help' },
-}
+const { t } = useI18n()
+const sectionMeta = computed<Record<string, { label: string; icon: string }>>(() => ({
+  dependencies: { label: t('compare.dependencies'), icon: 'i-carbon-cube' },
+  devDependencies: { label: t('compare.dev_dependencies'), icon: 'i-carbon-tools' },
+  peerDependencies: { label: t('compare.peer_dependencies'), icon: 'i-carbon-user-multiple' },
+  optionalDependencies: { label: t('compare.optional_dependencies'), icon: 'i-carbon-help' },
+}))
 
 const sectionList = computed(() => {
   const entries = Array.from(props.groupedDeps.entries())
@@ -31,8 +32,8 @@ const sectionList = computed(() => {
     .map(([key, changes]) => ({
       key,
       changes,
-      label: sectionMeta[key]?.label ?? key,
-      icon: sectionMeta[key]?.icon ?? 'i-carbon-cube',
+      label: sectionMeta.value[key]?.label ?? key,
+      icon: sectionMeta.value[key]?.icon ?? 'i-carbon-cube',
       order: sectionOrder.indexOf(key) === -1 ? sectionOrder.length + 1 : sectionOrder.indexOf(key),
     }))
     .sort((a, b) => a.order - b.order)
@@ -72,7 +73,7 @@ function handleFileSelect(file: FileChange) {
         <div class="flex flex-wrap items-center justify-between gap-2">
           <span class="text-xs font-medium flex items-center gap-1.5">
             <span class="i-lucide-lightbulb w-3.5 h-3.5" />
-            Summary
+            {{ $t('compare.summary') }}
           </span>
           <div class="flex items-center gap-3 font-mono text-[10px]">
             <span class="flex items-center gap-1">
@@ -83,9 +84,7 @@ function handleFileSelect(file: FileChange) {
               <span class="text-yellow-500">~{{ compare.stats.filesModified }}</span>
             </span>
             <span v-if="compare.dependencyChanges.length > 0" class="text-fg-muted">
-              {{ compare.dependencyChanges.length }} dep{{
-                compare.dependencyChanges.length !== 1 ? 's' : ''
-              }}
+              {{ $t('compare.deps_count', { count: compare.dependencyChanges.length }) }}
             </span>
           </div>
         </div>
@@ -168,7 +167,7 @@ function handleFileSelect(file: FileChange) {
         v-if="compare.dependencyChanges.length === 0 && !compare.meta.warnings?.length"
         class="px-3 py-2 text-[10px] text-fg-muted text-center"
       >
-        No dependency changes
+        {{ $t('compare.no_dependency_changes') }}
       </div>
     </div>
 
@@ -179,17 +178,27 @@ function handleFileSelect(file: FileChange) {
       >
         <span class="text-xs font-medium flex items-center gap-1.5">
           <span class="i-carbon-document w-3.5 h-3.5" />
-          Changed Files
+          {{ $t('compare.file_changes') }}
         </span>
         <span class="flex items-center gap-2">
           <select
             v-model="fileFilter"
             class="text-[10px] px-2 py-1 bg-bg-subtle border border-border rounded font-mono cursor-pointer hover:border-border-hover transition-colors"
           >
-            <option value="all">All ({{ allChanges.length }})</option>
-            <option value="added">Added ({{ compare.stats.filesAdded }})</option>
-            <option value="removed">Removed ({{ compare.stats.filesRemoved }})</option>
-            <option value="modified">Modified ({{ compare.stats.filesModified }})</option>
+            <option value="all">
+              {{ $t('compare.file_filter_option.all', { count: allChanges.length }) }}
+            </option>
+            <option value="added">
+              {{ $t('compare.file_filter_option.added', { count: compare.stats.filesAdded }) }}
+            </option>
+            <option value="removed">
+              {{ $t('compare.file_filter_option.removed', { count: compare.stats.filesRemoved }) }}
+            </option>
+            <option value="modified">
+              {{
+                $t('compare.file_filter_option.modified', { count: compare.stats.filesModified })
+              }}
+            </option>
           </select>
           <span
             class="i-carbon-chevron-right w-3.5 h-3.5 transition-transform group-open:rotate-90"
@@ -199,7 +208,11 @@ function handleFileSelect(file: FileChange) {
 
       <div class="flex-1 overflow-y-auto min-h-0">
         <div v-if="filteredChanges.length === 0" class="p-8 text-center text-xs text-fg-muted">
-          No {{ fileFilter === 'all' ? '' : fileFilter }} files
+          {{
+            fileFilter === 'all'
+              ? $t('compare.no_files_all')
+              : $t('compare.no_files_filtered', { filter: $t(`compare.filter.${fileFilter}`) })
+          }}
         </div>
 
         <DiffFileTree

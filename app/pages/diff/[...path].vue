@@ -227,7 +227,7 @@ useSeoMeta({
               <span class="text-yellow-500">~{{ compare.stats.filesModified }}</span>
             </span>
             <span class="text-fg-subtle">•</span>
-            <span>{{ allChanges.length }} files</span>
+            <span>{{ $t('compare.files_count', { count: allChanges.length }) }}</span>
           </div>
           <button
             type="button"
@@ -235,7 +235,7 @@ useSeoMeta({
             @click="mobileDrawerOpen = true"
           >
             <span class="i-carbon:document w-3.5 h-3.5" />
-            Files
+            {{ $t('compare.files_button') }}
           </button>
         </div>
 
@@ -253,7 +253,7 @@ useSeoMeta({
               <span
                 class="i-carbon-document-blank w-16 h-16 mx-auto text-fg-subtle/50 block mb-4"
               />
-              <p class="text-fg-muted">Select a file from the sidebar to view its diff</p>
+              <p class="text-fg-muted">{{ $t('compare.select_file_prompt') }}</p>
             </div>
           </div>
         </div>

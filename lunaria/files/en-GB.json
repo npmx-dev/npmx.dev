@@ -997,7 +997,30 @@
     "view_in_browser": "View in code browser",
     "close_diff": "Close diff",
     "lines_hidden": "{count} lines hidden",
-    "compare_versions": "Diff"
+    "compare_versions": "Diff",
+    "summary": "Summary",
+    "deps_count": "{count} deps",
+    "dependencies": "Dependencies",
+    "dev_dependencies": "Dev Dependencies",
+    "peer_dependencies": "Peer Dependencies",
+    "optional_dependencies": "Optional Dependencies",
+    "no_dependency_changes": "No dependency changes",
+    "file_filter_option": {
+      "all": "All ({count})",
+      "added": "Added ({count})",
+      "removed": "Removed ({count})",
+      "modified": "Modified ({count})"
+    },
+    "no_files_all": "No files",
+    "no_files_filtered": "No {filter} files",
+    "filter": {
+      "added": "added",
+      "removed": "removed",
+      "modified": "modified"
+    },
+    "files_button": "Files",
+    "select_file_prompt": "Select a file from the sidebar to view its diff",
+    "close_files_panel": "Close files panel"
   },
   "privacy_policy": {
     "title": "privacy policy",
