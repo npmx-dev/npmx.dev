@@ -1,11 +1,6 @@
 import { FetchError } from 'ofetch'
 import { handleAuthError } from '~/utils/atproto/helpers'
-
-// TODO: I need to share a type with the backend likes service
-export type PackageLikes = {
-  totalLikes: number
-  userHasLiked: boolean
-}
+import type { PackageLikes } from '#shared/types/social'
 
 export type LikeResult = { success: true; data: PackageLikes } | { success: false; error: Error }
 

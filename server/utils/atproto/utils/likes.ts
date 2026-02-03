@@ -1,16 +1,6 @@
 import { $nsid as likeNsid } from '#shared/types/lexicons/dev/npmx/feed/like.defs'
 import type { Backlink } from '#shared/utils/constellation'
 
-/**
- * Likes for a npm package on npmx
- */
-export type PackageLikes = {
-  // The total likes found for the package
-  totalLikes: number
-  // If the logged in user has liked the package, false if not logged in
-  userHasLiked: boolean
-}
-
 //Cache keys and helpers
 const CACHE_PREFIX = 'atproto-likes:'
 const CACHE_PACKAGE_TOTAL_KEY = (packageName: string) => `${CACHE_PREFIX}${packageName}:total`
@@ -88,7 +78,7 @@ export class PackageLikesUtils {
    * @param usersDid
    * @returns
    */
-  async getLikes(packageName: string, usersDid?: string | undefined) {
+  async getLikes(packageName: string, usersDid?: string | undefined): Promise<PackageLikes> {
     //TODO: May need to do some clean up on the package name, and maybe even hash it? some of the charcteres may be a bit odd as keys
     const totalLikesKey = CACHE_PACKAGE_TOTAL_KEY(packageName)
     const subjectRef = PACKAGE_SUBJECT_REF(packageName)
