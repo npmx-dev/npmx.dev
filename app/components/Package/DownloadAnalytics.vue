@@ -580,7 +580,7 @@ function buildExportFilename(extension: string): string {
   }
 
   const names = effectivePackageNames.value
-  const label = names.length === 1 ? names[0] : 'packages'
+  const label = names.length === 1 ? names[0] : names.join('_')
   return `${label}-${g}_${range}.${extension}`
 }
 
