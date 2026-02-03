@@ -1,4 +1,4 @@
-import type { Packument, PackumentVersion, DependencyDepth } from '#shared/types'
+import type { Packument, PackumentVersion, ResolvedPackage } from '#shared/types'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { maxSatisfying } from 'semver'
 
@@ -103,20 +103,6 @@ export function resolveVersion(range: string, versions: string[]): string | null
   }
 
   return maxSatisfying(versions, range)
-}
-
-/** Resolved package info */
-export interface ResolvedPackage {
-  name: string
-  version: string
-  size: number
-  optional: boolean
-  /** Depth level (only when trackDepth is enabled) */
-  depth?: DependencyDepth
-  /** Dependency path from root (only when trackDepth is enabled) */
-  path?: string[]
-  /** Deprecation message if the version is deprecated */
-  deprecated?: string
 }
 
 /**

@@ -3,6 +3,7 @@ import { shallowRef, computed } from 'vue'
 
 interface Props {
   title: string
+  titleHref?: string
   isLoading?: boolean
   headingLevel?: `h${number}`
   id: string
@@ -62,6 +63,11 @@ const ariaLabel = computed(() => {
   const action = isOpen.value ? 'Collapse' : 'Expand'
   return props.title ? `${action} ${props.title}` : action
 })
+
+const linkHref = computed(() => props.titleHref ?? `#${props.id}`)
+
+const hasCustomHref = computed(() => !!props.titleHref)
+
 useHead({
   style: [
     {
@@ -105,13 +111,14 @@ useHead({
         </button>
 
         <a
-          :href="`#${id}`"
+          :href="linkHref"
           class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
         >
           <span v-if="icon" :class="icon" aria-hidden="true" />
           {{ title }}
           <span
-            class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            class="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            :class="hasCustomHref ? 'i-carbon:arrow-right' : 'i-carbon:link'"
             aria-hidden="true"
           />
         </a>

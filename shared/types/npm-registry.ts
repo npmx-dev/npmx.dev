@@ -8,6 +8,7 @@
 
 import type { PackumentVersion } from '@npm/types'
 import type { ReadmeResponse } from './readme'
+import type { DependencyDepth } from './dependency-analysis'
 
 // Re-export official npm types for packument/manifest
 export type {
@@ -341,4 +342,33 @@ export interface PackageFileContentResponse {
   html: string
   lines: number
   markdownHtml?: ReadmeResponse
+}
+
+/**
+ * Response from dependencies API
+ */
+export interface PackageDependenciesResponse {
+  package: string
+  version: string
+  dependencies: ResolvedPackage[]
+  total: number
+  direct: number
+  transitive: number
+  devDependencies?: Record<string, string>
+}
+
+/**
+ * Resolved package info
+ */
+export interface ResolvedPackage {
+  name: string
+  version: string
+  size: number
+  optional: boolean
+  /** Depth level */
+  depth?: DependencyDepth
+  /** Dependency path from root */
+  path?: string[]
+  /** Deprecation message if the version is deprecated */
+  deprecated?: string
 }

@@ -13,6 +13,7 @@ export const ERROR_PACKAGE_REQUIREMENTS_FAILED =
   'Package name, version, and file path are required.'
 export const ERROR_FILE_LIST_FETCH_FAILED = 'Failed to fetch file list.'
 export const ERROR_CALC_INSTALL_SIZE_FAILED = 'Failed to calculate install size.'
+export const ERROR_CALC_DEPENDENCIES_FAILED = 'Failed to resolve dependencies.'
 export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'

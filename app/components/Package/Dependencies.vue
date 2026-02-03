@@ -74,6 +74,7 @@ const sortedOptionalDependencies = computed(() => {
       v-if="sortedDependencies.length > 0"
       id="dependencies"
       :title="$t('package.dependencies.title', { count: sortedDependencies.length })"
+      :title-href="`/package-deps/${props.packageName}/v/${props.version}`"
     >
       <ul class="space-y-1 list-none m-0 p-0" :aria-label="$t('package.dependencies.list_label')">
         <li

@@ -839,5 +839,47 @@
         "security": "Sécurité & Conformité"
       }
     }
+  },
+  "version": "Version",
+  "built_at": "compilé {0}",
+  "alt_logo": "Logo npmx",
+  "account_menu": {
+    "connect": "connexion",
+    "account": "Compte",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphère",
+    "npm_cli_desc": "Gérer les paquets et orgs",
+    "atmosphere_desc": "Fonctionnalités sociales et identité",
+    "connect_npm_cli": "Connexion à npm CLI",
+    "connect_atmosphere": "Connexion à Atmosphère",
+    "connecting": "Connexion en cours...",
+    "ops": "{count} op | {count} ops",
+    "disconnect": "Déconnexion"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphère",
+      "connected_as": "Connecté·e en tant que {'@'}{handle}",
+      "disconnect": "Déconnexion",
+      "connect_prompt": "Connectez-vous avec votre compte Atmosphère",
+      "handle_label": "Identifiant",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Connexion",
+      "create_account": "Créer un nouveau compte",
+      "connect_bluesky": "Connexion avec Bluesky",
+      "what_is_atmosphere": "Qu'est-ce qu'un compte Atmosphère ?",
+      "atmosphere_explanation": "{npmx} utilise {atproto} pour alimenter plusieurs de ses fonctionnalités sociales, permettant aux utilisateurs de posséder leurs données et d'utiliser un seul compte pour toutes les applications compatibles. Une fois votre compte créé, vous pouvez utiliser d'autres applications comme {bluesky} ou {tangled} avec le même compte."
+    }
+  },
+  "dependencies": {
+    "title": "dependencies",
+    "version_required": "No version specified. Please select a version to view dependencies.",
+    "go_to_package": "Go to package page",
+    "loading": "Loading dependencies...",
+    "error": "Failed to load dependencies",
+    "back_to_package": "Back to package",
+    "no_deps": "No dependencies",
+    "optional": "optional",
+    "dev_title": "dev dependencies"
   }
 }
