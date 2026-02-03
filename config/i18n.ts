@@ -86,6 +86,7 @@ function createPluralRule(locale: string, mapping: Record<string, number>) {
     // In case translation doesn't have all plural forms, use the last available form
     if (plural > choicesLength - 1) {
       if (import.meta.dev) {
+        // oxlint-disable-next-line no-console -- warn logging
         console.warn(
           `Plural form index ${plural} for choice ${choice} exceeds available forms ${choicesLength} for locale ${locale}.`,
         )
