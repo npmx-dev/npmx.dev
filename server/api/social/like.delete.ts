@@ -29,7 +29,7 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     await client.delete(dev.npmx.feed.like, {
       rkey: getTheUsersLikedRecord.rkey,
     })
-    var result = await likesUtil.unlikeAPackageAndReturnLikes(body.packageName, loggedInUsersDid)
+    const result = await likesUtil.unlikeAPackageAndReturnLikes(body.packageName, loggedInUsersDid)
     return result
   }
 
