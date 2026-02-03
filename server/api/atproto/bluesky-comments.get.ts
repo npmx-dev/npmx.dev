@@ -9,6 +9,8 @@ import {
 import { BlueSkyUriSchema } from '#shared/schemas/atproto'
 import { CACHE_MAX_AGE_ONE_MINUTE, BLUESKY_API, AT_URI_REGEX } from '#shared/utils/constants'
 
+import { jsonToLex } from '@atproto/api'
+
 type ThreadResponse = { thread: AppBskyFeedDefs.ThreadViewPost }
 
 type LikesResponse = {
@@ -136,10 +138,11 @@ function parseThread(thread: AppBskyFeedDefs.ThreadViewPost): Comment | null {
 
   const { post } = thread
 
-  const recordValidation = AppBskyFeedPost.validateRecord(post.record)
+  // This casts our external.thumb as a blobRef which is needed to validateRecord
+  const lexPostRecord = jsonToLex(post.record)
+  const recordValidation = AppBskyFeedPost.validateRecord(lexPostRecord)
 
   if (!recordValidation.success) return null
-
   const record = recordValidation.value
 
   const replies: Comment[] = []
