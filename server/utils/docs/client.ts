@@ -164,7 +164,7 @@ async function getTypesUrl(packageName: string, version: string): Promise<string
 
   try {
     const response = await $fetch.raw(url, {
-      method: 'HEAD' as 'GET', // Cast to satisfy Nitro's typed $fetch (external URL, any method is fine)
+      method: 'HEAD',
       timeout: FETCH_TIMEOUT_MS,
     })
     return response.headers.get('x-typescript-types')

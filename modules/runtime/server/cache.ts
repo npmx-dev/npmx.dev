@@ -157,31 +157,6 @@ async function handleFastNpmMeta(
 }
 
 /**
- * Handle esm.sh requests for the standard $fetch (returns data directly).
- */
-async function handleEsmShRequest(
-  url: string,
-  _options: unknown,
-  storage: ReturnType<typeof useStorage>,
-): Promise<unknown | null> {
-  const urlObj = new URL(url)
-  if (urlObj.hostname !== 'esm.sh') return null
-
-  // For GET requests to .d.ts files, return the file content
-  const typesPath = urlObj.pathname.slice(1) // Remove leading /
-  if (typesPath.endsWith('.d.ts')) {
-    const fixturePath = `${FIXTURE_PATHS.esmTypes}:${typesPath.replace(/\//g, ':')}`
-    const content = await storage.getItem<string>(fixturePath)
-    if (content) {
-      if (VERBOSE) process.stdout.write(`[test-fixtures] esm.sh types: ${typesPath}\n`)
-      return content
-    }
-  }
-
-  return null
-}
-
-/**
  * Handle esm.sh requests for $fetch.raw (returns response object with headers).
  */
 async function handleEsmShRawRequest(
@@ -348,80 +323,6 @@ export default defineNitroPlugin(nitroApp => {
     process.stdout.write('[test-fixtures] Test mode active (verbose logging enabled)\n')
   }
 
-  // Override native fetch globally to intercept esm.sh requests from ofetch
-  // This is needed because server/utils/docs/client.ts imports $fetch from ofetch
-  // directly, bypassing our globalThis.$fetch override
-  const originalNativeFetch = globalThis.fetch
-  globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
-    const url =
-      typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
-    if (url.includes('esm.sh')) {
-      const method = init?.method || 'GET'
-
-      // HEAD request - return headers with x-typescript-types
-      if (method === 'HEAD') {
-        const urlObj = new URL(url)
-        const pathname = urlObj.pathname.slice(1)
-        let pkgVersion = pathname
-        const slashIndex = pkgVersion.indexOf(
-          '/',
-          pkgVersion.includes('@') ? pkgVersion.lastIndexOf('@') + 1 : 0,
-        )
-        if (slashIndex !== -1) {
-          pkgVersion = pkgVersion.slice(0, slashIndex)
-        }
-
-        const fixturePath = `${FIXTURE_PATHS.esmHeaders}:${pkgVersion.replace(/\//g, ':')}.json`
-        const headerData = await storage.getItem<{ 'x-typescript-types': string }>(fixturePath)
-
-        if (headerData) {
-          if (VERBOSE) process.stdout.write(`[test-fixtures] fetch HEAD esm.sh: ${pkgVersion}\n`)
-          return new Response(null, {
-            status: 200,
-            headers: new Headers({
-              'x-typescript-types': headerData['x-typescript-types'],
-              'content-type': 'application/javascript',
-            }),
-          })
-        }
-
-        // No fixture - return response without types header
-        if (VERBOSE)
-          process.stdout.write(`[test-fixtures] fetch HEAD esm.sh (no fixture): ${pkgVersion}\n`)
-        return new Response(null, {
-          status: 200,
-          headers: new Headers({ 'content-type': 'application/javascript' }),
-        })
-      }
-
-      // GET request for .d.ts files
-      if (method === 'GET') {
-        const urlObj = new URL(url)
-        const pathname = urlObj.pathname.slice(1)
-        const fixturePath = `${FIXTURE_PATHS.esmTypes}:${pathname.replace(/\//g, ':')}`
-        const content = await storage.getItem<string>(fixturePath)
-
-        if (content) {
-          if (VERBOSE) process.stdout.write(`[test-fixtures] fetch GET esm.sh: ${pathname}\n`)
-          return new Response(content, {
-            status: 200,
-            headers: new Headers({ 'content-type': 'application/typescript' }),
-          })
-        }
-
-        // No fixture - return 404 so the loader skips this file
-        if (VERBOSE)
-          process.stdout.write(`[test-fixtures] fetch GET esm.sh (no fixture): ${pathname}\n`)
-        return new Response('Not Found', {
-          status: 404,
-          headers: new Headers({ 'content-type': 'text/plain' }),
-        })
-      }
-    }
-
-    return originalNativeFetch(input, init)
-  }
-
   nitroApp.hooks.hook('request', event => {
     event.context.cachedFetch = async <T = unknown>(
       url: string,
@@ -488,26 +389,86 @@ export default defineNitroPlugin(nitroApp => {
       return { data, isStale: false, cachedAt: Date.now() }
     }
 
-    const originalFetch = globalThis.$fetch
+    const original$Fetch = globalThis.$fetch
+    const originalFetch = globalThis.fetch
+
+    globalThis.fetch = async (url: URL | RequestInfo, init?: RequestInit): Promise<Response> => {
+      const urlStr = typeof url === 'string' ? url : url instanceof URL ? url.toString() : url.url
+
+      // Handle esm.sh requests specially (used by docs feature)
+      if (urlStr.startsWith('https://esm.sh/')) {
+        const method = init?.method?.toUpperCase() || 'GET'
+        const urlObj = new URL(urlStr)
+        const pathname = urlObj.pathname.slice(1) // Remove leading /
+
+        // HEAD request - return headers with x-typescript-types if fixture exists
+        if (method === 'HEAD') {
+          // Extract package@version from pathname
+          let pkgVersion = pathname
+          const slashIndex = pkgVersion.indexOf(
+            '/',
+            pkgVersion.includes('@') ? pkgVersion.lastIndexOf('@') + 1 : 0,
+          )
+          if (slashIndex !== -1) {
+            pkgVersion = pkgVersion.slice(0, slashIndex)
+          }
+
+          const fixturePath = `${FIXTURE_PATHS.esmHeaders}:${pkgVersion.replace(/\//g, ':')}.json`
+          const headerData = await storage.getItem<{ 'x-typescript-types': string }>(fixturePath)
+
+          if (headerData) {
+            if (VERBOSE) process.stdout.write(`[test-fixtures] fetch HEAD esm.sh: ${pkgVersion}\n`)
+            return new Response(null, {
+              status: 200,
+              headers: {
+                'x-typescript-types': headerData['x-typescript-types'],
+                'content-type': 'application/javascript',
+              },
+            })
+          }
+
+          // No fixture - return 200 without x-typescript-types header (types not available)
+          if (VERBOSE)
+            process.stdout.write(`[test-fixtures] fetch HEAD esm.sh (no fixture): ${pkgVersion}\n`)
+          return new Response(null, {
+            status: 200,
+            headers: { 'content-type': 'application/javascript' },
+          })
+        }
+
+        // GET request - return .d.ts content if fixture exists
+        if (method === 'GET' && pathname.endsWith('.d.ts')) {
+          const fixturePath = `${FIXTURE_PATHS.esmTypes}:${pathname.replace(/\//g, ':')}`
+          const content = await storage.getItem<string>(fixturePath)
+
+          if (content) {
+            if (VERBOSE) process.stdout.write(`[test-fixtures] fetch GET esm.sh: ${pathname}\n`)
+            return new Response(content, {
+              status: 200,
+              headers: { 'content-type': 'application/typescript' },
+            })
+          }
+
+          // No fixture - return 404 for missing .d.ts files
+          if (VERBOSE)
+            process.stdout.write(`[test-fixtures] fetch GET esm.sh (no fixture): ${pathname}\n`)
+          return new Response('Not Found', {
+            status: 404,
+            headers: { 'content-type': 'text/plain' },
+          })
+        }
+
+        // Other esm.sh requests - return empty response
+        return new Response(null, { status: 200 })
+      }
+
+      return originalFetch(url, init)
+    }
 
     // @ts-expect-error invalid global augmentation
     globalThis.$fetch = async (url, options) => {
       if (typeof url === 'string' && url.startsWith('/')) {
-        return originalFetch(url, options)
-      }
-
-      // Handle esm.sh requests specially (used by docs feature)
-      if (typeof url === 'string' && url.includes('esm.sh')) {
-        const esmResult = await handleEsmShRequest(url, options, storage)
-        if (esmResult !== null) {
-          return esmResult
-        }
-        // If no fixture found, throw an error in test mode
-        throw createError({
-          statusCode: 404,
-          statusMessage: 'No esm.sh fixture available',
-          message: `No fixture for esm.sh URL: ${url}`,
-        })
+        return original$Fetch(url, options)
       }
 
       const { data } = await event.context.cachedFetch!<any>(url as string, options)
