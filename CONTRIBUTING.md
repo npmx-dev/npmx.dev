@@ -8,16 +8,13 @@ Thank you for your interest in contributing! ❤️ This document provides guide
 
 ## Goals
 
-The goal of [npmx.dev](https://npmx.dev) is to build a fast, modern browser for the npm registry.
+The goal of [npmx.dev](https://npmx.dev) is to build a fast, modern and open-source browser for the npm registry, prioritizing speed, simplicity and a community-driven developer experience.
 
-We're not replacing the [npm](https://www.npmjs.com/) registry, but instead providing an elevated developer experience through a fast, modern UI.
+### Core values
 
-What npmx offers:
-
-- **Speed** &ndash; Fast searching, filtering, and navigation.
-- **Simplicity** &ndash; Get the information you need when you need it in an intuitive UI.
-- **URL Compatibility** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
-- **Enhanced admin experience** &ndash; Manage your packages, teams, and organizations from the browser, powered by your local npm CLI.
+- Speed
+- Simplicity
+- Community-first
 
 ## Table of Contents
 
