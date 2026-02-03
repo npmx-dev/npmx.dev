@@ -32,7 +32,7 @@ jobs:
           node-version: lts/*
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+        name: 🟧 Install pnpm
         # pnpm cache skipped deliberately as the project is not actually installed here
 
       - name: 🔠 Lint project
@@ -50,7 +50,7 @@ jobs:
           node-version: lts/*
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+        name: 🟧 Install pnpm
         with:
           cache: true
 
@@ -72,7 +72,7 @@ jobs:
           node-version: lts/*
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+        name: 🟧 Install pnpm
         with:
           cache: true
 
@@ -94,7 +94,7 @@ jobs:
           node-version: lts/*
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+        name: 🟧 Install pnpm
         with:
           cache: true
 
@@ -126,7 +126,7 @@ jobs:
           node-version: lts/*
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+        name: 🟧 Install pnpm
         with:
           cache: true
 
@@ -154,7 +154,7 @@ jobs:
           node-version: lts/*
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+        name: 🟧 Install pnpm
         with:
           cache: true
 
@@ -182,7 +182,7 @@ jobs:
           node-version: lts/*
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+        name: 🟧 Install pnpm
         with:
           cache: true
 
