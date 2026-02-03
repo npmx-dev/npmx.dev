@@ -85,8 +85,20 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: true },
     '/opensearch.xml': { isr: true },
-    '/**': { isr: 60 },
-    '/package/**': { isr: 60 },
+    '/**': {
+      isr: {
+        expiration: 60,
+        fallback: 'spa.prerender-fallback.html',
+      },
+    },
+    '/api/**': { isr: 60 },
+    '/200.html': { prerender: true },
+    '/package/**': {
+      isr: {
+        expiration: 60,
+        fallback: 'spa.prerender-fallback.html',
+      },
+    },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
     // never cache
@@ -186,6 +198,7 @@ export default defineNuxtConfig({
 
   htmlValidator: {
     failOnError: true,
+    ignore: ['/200.html'],
   },
 
   ogImage: {
