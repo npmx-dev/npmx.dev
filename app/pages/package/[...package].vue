@@ -789,11 +789,9 @@ defineOgImageComponent('Package', {
           <div class="space-y-1 sm:col-span-3">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
-              <span
-                class="i-carbon:information w-3 h-3 text-fg-subtle"
-                aria-hidden="true"
-                :title="sizeTooltip"
-              />
+              <TooltipApp :text="sizeTooltip">
+                <span class="i-carbon:information w-3 h-3 text-fg-subtle" aria-hidden="true" />
+              </TooltipApp>
             </dt>
             <dd class="font-mono text-sm text-fg">
               <!-- Package size (greyed out) -->
