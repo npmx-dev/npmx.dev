@@ -8,7 +8,7 @@ import type {
 import { encodePackageName } from '#shared/utils/npm'
 import type { PackageAnalysisResponse } from './usePackageAnalysis'
 import { isBinaryOnlyPackage } from '#shared/utils/binary-detection'
-import { getDependencyCount } from '~/utils/npm/common'
+import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 export interface PackageComparisonData {
   package: ComparisonPackage
@@ -114,6 +114,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
             ])
 
             const pkg = usePackage(name, latestVersion)
+            const requestedVersion = pkg.data.value?.requestedVersion
 
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize
@@ -145,7 +146,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               },
               downloads: downloads?.downloads,
               packageSize,
-              directDeps: getDependencyCount(pkg.data.value?.requestedVersion ?? null),
+              directDeps: getDependencyCount(requestedVersion ?? null),
               installSize: undefined, // Will be filled in second pass
               analysis: analysis ?? undefined,
               vulnerabilities: {
@@ -367,11 +368,12 @@ function computeFacetValue(
       }
 
     case 'dependencies':
+      if (!data.directDeps) return null
       const depCount = data.directDeps
       return {
         raw: depCount,
         display: String(depCount),
-        status: depCount > 50 ? 'warning' : 'neutral',
+        status: depCount > 10 ? 'warning' : 'neutral',
       }
 
     case 'deprecated':
