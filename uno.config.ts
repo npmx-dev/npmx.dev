@@ -208,11 +208,7 @@ export default defineConfig({
     ],
     ['link-subtle', 'text-fg-muted hover:text-fg transition-colors duration-200 focus-ring'],
 
-    // Tags/badges
-    [
-      'tag',
-      'inline-flex items-center px-2 py-0.5 text-xs font-mono text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200 hover:(text-fg border-border-hover)',
-    ],
+    // badges
     ['badge-orange', 'bg-badge-orange/10 text-badge-orange'],
     ['badge-yellow', 'bg-badge-yellow/10 text-badge-yellow'],
     ['badge-green', 'bg-badge-green/10 text-badge-green'],

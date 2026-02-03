@@ -146,7 +146,7 @@ onKeyStroke(
           @blur="handleSearchBlur"
         />
         <ul
-          v-if="!isSearchExpanded"
+          v-if="!isSearchExpanded && isConnected && npmUser"
           :class="{ hidden: showFullSearch }"
           class="hidden sm:flex items-center gap-4 sm:gap-6 list-none m-0 p-0"
         >

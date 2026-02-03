@@ -15,7 +15,7 @@ defineProps<{
     <!-- Glow effect for exact matches -->
     <div
       v-if="isExactMatch"
-      class="absolute -inset-px rounded-lg bg-gradient-to-r from-accent/0 via-accent/20 to-accent/0 opacity-100 blur-sm -z-1 pointer-events-none motion-reduce:opacity-50"
+      class="absolute -inset-px rounded-lg bg-gradient-to-r from-accent/0 via-accent/0 to-accent/10 opacity-100 blur-sm -z-1 pointer-events-none motion-reduce:opacity-50"
       aria-hidden="true"
     />
     <slot />

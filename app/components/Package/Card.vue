@@ -162,20 +162,20 @@ const pkgDescription = useMarkdown(() => ({
       :aria-label="$t('package.card.keywords')"
       class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0 pointer-events-none"
     >
-      <button
+      <TagClickable
         v-for="keyword in result.package.keywords.slice(0, 5)"
         :key="keyword"
         type="button"
-        class="tag text-xs hover:bg-fg hover:text-bg hover:border-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1 border-solid pointer-events-auto"
-        :class="{ 'bg-fg text-bg hover:opacity-80': props.filters?.keywords.includes(keyword) }"
+        class="pointer-events-auto"
+        :status="props.filters?.keywords.includes(keyword) ? 'active' : 'default'"
         :title="`Filter by ${keyword}`"
         @click.stop="emit('clickKeyword', keyword)"
       >
         {{ keyword }}
-      </button>
+      </TagClickable>
       <span
         v-if="result.package.keywords.length > 5"
-        class="tag text-fg-subtle text-xs border-none bg-transparent pointer-events-auto"
+        class="text-fg-subtle text-xs pointer-events-auto"
         :title="result.package.keywords.slice(5).join(', ')"
       >
         +{{ result.package.keywords.length - 5 }}

@@ -14,6 +14,43 @@ We want to create 'a fast, modern browser for the npm registry.' This means, amo
 - Layout shift, flakiness, slowness is The Worst. We need to continually iterate to create the most performant, best DX possible.
 - We want to provide information in the best way. We don't want noise, cluttered display, or confusing UI. If in doubt: choose simplicity.
 
+## Table of Contents
+
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
+- [Development workflow](#development-workflow)
+  - [Available commands](#available-commands)
+  - [Project structure](#project-structure)
+  - [Local connector CLI](#local-connector-cli)
+- [Code style](#code-style)
+  - [TypeScript](#typescript)
+  - [Server API patterns](#server-api-patterns)
+  - [Import order](#import-order)
+  - [Naming conventions](#naming-conventions)
+  - [Vue components](#vue-components)
+- [RTL Support](#rtl-support)
+- [Localization (i18n)](#localization-i18n)
+  - [Approach](#approach)
+  - [Adding a new locale](#adding-a-new-locale)
+  - [Update translation](#update-translation)
+  - [Adding translations](#adding-translations)
+  - [Translation key conventions](#translation-key-conventions)
+  - [Using i18n-ally (recommended)](#using-i18n-ally-recommended)
+  - [Formatting numbers and dates](#formatting-numbers-and-dates)
+- [Testing](#testing)
+  - [Unit tests](#unit-tests)
+  - [Component accessibility tests](#component-accessibility-tests)
+  - [End to end tests](#end-to-end-tests)
+- [Submitting changes](#submitting-changes)
+  - [Before submitting](#before-submitting)
+  - [Pull request process](#pull-request-process)
+  - [Commit messages and PR titles](#commit-messages-and-pr-titles)
+- [Pre-commit hooks](#pre-commit-hooks)
+- [Using AI](#using-ai)
+- [Questions](#questions)
+- [License](#license)
+
 ## Getting started
 
 ### Prerequisites
@@ -111,7 +148,7 @@ To help with this, the project uses `oxfmt` to handle formatting via a pre-commi
 
 If you want to get ahead of any formatting issues, you can also run `pnpm lint:fix` before committing to fix formatting across the whole project.
 
-### Typescript
+### TypeScript
 
 - We care about good types &ndash; never cast things to `any` 💪
 - Validate rather than just assert

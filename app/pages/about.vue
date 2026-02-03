@@ -162,7 +162,13 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 
         <div>
           <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
-            {{ contributors?.length ?? 0 }} {{ $t('about.contributors.title') }}
+            {{
+              $t(
+                'about.contributors.title',
+                { count: $n(contributors?.length ?? 0) },
+                contributors?.length ?? 0,
+              )
+            }}
           </h2>
           <p class="text-fg-muted leading-relaxed mb-6">
             {{ $t('about.contributors.description') }}

@@ -243,22 +243,17 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             role="radiogroup"
             :aria-label="$t('filters.weekly_downloads')"
           >
-            <button
+            <TagClickable
               v-for="range in DOWNLOAD_RANGES"
               :key="range.value"
               type="button"
               role="radio"
               :aria-checked="filters.downloadRange === range.value"
-              class="tag transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="
-                filters.downloadRange === range.value
-                  ? 'bg-fg text-bg border-fg hover:text-bg/50'
-                  : ''
-              "
+              :status="filters.downloadRange === range.value ? 'active' : 'default'"
               @click="emit('update:downloadRange', range.value)"
             >
               {{ $t(getDownloadRangeLabelKey(range.value)) }}
-            </button>
+            </TagClickable>
           </div>
         </fieldset>
 
@@ -272,22 +267,17 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             role="radiogroup"
             :aria-label="$t('filters.updated_within')"
           >
-            <button
+            <TagClickable
               v-for="option in UPDATED_WITHIN_OPTIONS"
               :key="option.value"
               type="button"
               role="radio"
               :aria-checked="filters.updatedWithin === option.value"
-              class="tag transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="
-                filters.updatedWithin === option.value
-                  ? 'bg-fg text-bg border-fg hover:text-bg/70'
-                  : ''
-              "
+              :status="filters.updatedWithin === option.value ? 'active' : 'default'"
               @click="emit('update:updatedWithin', option.value)"
             >
               {{ $t(getUpdatedWithinLabelKey(option.value)) }}
-            </button>
+            </TagClickable>
           </div>
         </fieldset>
 
@@ -300,20 +290,17 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             </span>
           </legend>
           <div class="flex flex-wrap gap-2" role="radiogroup" :aria-label="$t('filters.security')">
-            <button
+            <TagClickable
               v-for="security in SECURITY_FILTER_VALUES"
               :key="security"
               type="button"
               role="radio"
               disabled
               :aria-checked="filters.security === security"
-              class="tag transition-colors duration-200 opacity-50 cursor-not-allowed focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="
-                filters.security === security ? 'bg-fg text-bg border-fg hover:text-bg/70' : ''
-              "
+              :status="filters.security === security ? 'active' : 'default'"
             >
               {{ $t(getSecurityLabelKey(security)) }}
-            </button>
+            </TagClickable>
           </div>
         </fieldset>
 
@@ -323,19 +310,16 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             {{ $t('filters.keywords') }}
           </legend>
           <div class="flex flex-wrap gap-1.5" role="group" :aria-label="$t('filters.keywords')">
-            <button
+            <TagClickable
               v-for="keyword in displayedKeywords"
               :key="keyword"
               type="button"
               :aria-pressed="filters.keywords.includes(keyword)"
-              class="tag text-xs transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
-              :class="
-                filters.keywords.includes(keyword) ? 'bg-fg text-bg border-fg hover:text-bg/70' : ''
-              "
+              :status="filters.keywords.includes(keyword) ? 'active' : 'default'"
               @click="emit('toggleKeyword', keyword)"
             >
               {{ keyword }}
-            </button>
+            </TagClickable>
             <button
               v-if="hasMoreKeywords"
               type="button"

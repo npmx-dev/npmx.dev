@@ -201,7 +201,8 @@
     },
     "create": {
       "title": "Create new project",
-      "copy_command": "Copy create command"
+      "copy_command": "Copy create command",
+      "view": "{packageName} has the same maintainer. Click for more details."
     },
     "run": {
       "title": "Run",
@@ -210,7 +211,8 @@
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
-      "view_on_github": "View on GitHub"
+      "view_on_github": "View on GitHub",
+      "toc_title": "Outline"
     },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
@@ -886,11 +888,11 @@
           "description": "Total install size including all dependencies"
         },
         "dependencies": {
-          "label": "# Direct Deps",
+          "label": "Direct Deps",
           "description": "Number of direct dependencies"
         },
         "totalDependencies": {
-          "label": "# Total Deps",
+          "label": "Total Deps",
           "description": "Total number of dependencies including transitive"
         },
         "downloads": {
