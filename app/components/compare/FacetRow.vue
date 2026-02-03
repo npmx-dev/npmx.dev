@@ -131,6 +131,7 @@ function isCellLoading(index: number): boolean {
           <span
             class="relative font-mono text-sm text-center tabular-nums cursor-help"
             :class="getStatusClass(value.status, showBar && getBarWidth(value) > 0)"
+            :data-status="value.status"
           >
             <!-- Date values use DateTime component for i18n and user settings -->
             <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />
@@ -141,6 +142,7 @@ function isCellLoading(index: number): boolean {
           v-else
           class="relative font-mono text-sm text-center tabular-nums"
           :class="getStatusClass(value.status, showBar && getBarWidth(value) > 0)"
+          :data-status="value.status"
         >
           <!-- Date values use DateTime component for i18n and user settings -->
           <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />
