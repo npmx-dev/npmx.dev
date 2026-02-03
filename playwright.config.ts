@@ -28,7 +28,7 @@ export default defineConfig<ConfigOptions>({
   },
   projects: [
     {
-      name: 'chromium',
+      name: 'chromium-headless-shell',
       use: { ...devices['Desktop Chrome'] },
     },
   ],
