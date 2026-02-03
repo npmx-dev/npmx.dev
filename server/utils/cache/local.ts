@@ -23,7 +23,7 @@ function isCacheEntryStale(entry: LocalCachedEntry): boolean {
  * Local implmentation of a cache to be used during development
  */
 export class LocalCacheAdapter implements CacheAdapter {
-  private readonly storage = useStorage('generic-cache')
+  private readonly storage = useStorage('atproto:generic')
 
   async get<T>(key: string): Promise<T | undefined> {
     const result = await this.storage.getItem<LocalCachedEntry<T>>(key)
