@@ -18,6 +18,7 @@ export interface PackageComparisonData {
   installSize?: {
     selfSize: number
     totalSize: number
+    directDepCount: number
     dependencyCount: number
   }
   analysis?: PackageAnalysisResponse
@@ -361,11 +362,11 @@ function computeFacetValue(
 
     case 'dependencies':
       if (!data.installSize) return null
-      const depCount = data.installSize.dependencyCount
+      const directDepCount = data.installSize.directDepCount
       return {
-        raw: depCount,
-        display: String(depCount),
-        status: depCount > 50 ? 'warning' : 'neutral',
+        raw: directDepCount,
+        display: String(directDepCount),
+        status: directDepCount > 50 ? 'warning' : 'neutral',
       }
 
     case 'deprecated':
@@ -380,7 +381,13 @@ function computeFacetValue(
 
     // Coming soon facets
     case 'totalDependencies':
-      return null
+      if (!data.installSize) return null
+      const depCount = data.installSize.dependencyCount
+      return {
+        raw: depCount,
+        display: String(depCount),
+        status: depCount > 50 ? 'warning' : 'neutral',
+      }
 
     default:
       return null

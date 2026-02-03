@@ -10,6 +10,8 @@ export interface InstallSizeResult {
   selfSize: number
   /** Total unpacked size including all dependencies (bytes) */
   totalSize: number
+  /** Number of direct dependencies */
+  directDepCount: number
   /** Number of dependencies (including transitive) */
   dependencyCount: number
   /** Breakdown of dependency sizes */
@@ -34,7 +36,7 @@ export interface DependencySize {
  */
 export const calculateInstallSize = defineCachedFunction(
   async (name: string, version: string): Promise<InstallSizeResult> => {
-    const resolved = await resolveDependencyTree(name, version)
+    const resolved = await resolveDependencyTree(name, version, { trackDepth: true })
 
     // Separate self from dependencies
     const selfKey = `${name}@${version}`
@@ -45,6 +47,7 @@ export const calculateInstallSize = defineCachedFunction(
     const dependencies: DependencySize[] = []
     let totalSize = selfSize
     let dependencyCount = 0
+    let directDepCount = 0
 
     for (const [key, dep] of resolved) {
       if (key === selfKey) continue
@@ -57,6 +60,7 @@ export const calculateInstallSize = defineCachedFunction(
       })
       totalSize += dep.size
       dependencyCount++
+      if (dep.depth === 'direct') directDepCount++
     }
 
     // Sort by size descending
@@ -67,6 +71,7 @@ export const calculateInstallSize = defineCachedFunction(
       version,
       selfSize,
       totalSize,
+      directDepCount,
       dependencyCount,
       dependencies,
     }
