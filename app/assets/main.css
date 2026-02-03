@@ -154,15 +154,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  scroll-behavior: smooth;
   scroll-padding-top: 5rem; /* Offset for fixed header - otherwise anchor headers are cutted */
-}
-
-/* Disable smooth scrolling if user prefers reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
 }
 
 /*
