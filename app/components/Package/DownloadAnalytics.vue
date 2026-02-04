@@ -868,7 +868,7 @@ const config = computed(() => {
                   v-for="datapoint in legend"
                   :key="datapoint.name"
                   :aria-pressed="datapoint.isSegregated"
-                  :arial-label="datapoint.name"
+                  :aria-label="datapoint.name"
                   type="button"
                   class="flex gap-1 place-items-center"
                   @click="datapoint.segregate()"
