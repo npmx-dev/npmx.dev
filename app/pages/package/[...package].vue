@@ -585,8 +585,8 @@ defineOgImageComponent('Package', {
           </span>
 
           <!-- Package metrics (module format, types) -->
-          <ClientOnly>
-            <div class="flex gap-2 sm:gap-3 flex-wrap">
+          <div class="flex gap-2 sm:gap-3 flex-wrap">
+            <ClientOnly>
               <PackageMetricsBadges
                 v-if="resolvedVersion"
                 :package-name="pkg.name"
@@ -613,16 +613,18 @@ defineOgImageComponent('Package', {
                 />
                 <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
               </button>
-            </div>
-
-            <template #fallback>
-              <div class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
-                <SkeletonBlock class="w-8 h-5 rounded" />
-                <SkeletonBlock class="w-12 h-5 rounded" />
-                <SkeletonBlock class="w-5 h-5 rounded" />
-              </div>
-            </template>
-          </ClientOnly>
+              <template #fallback>
+                <div
+                  class="flex items-center gap-1.5 list-none m-0 p-0 relative top-[5px] self-baseline ms-1 sm:ms-2"
+                >
+                  <SkeletonBlock class="w-16 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
+                </div>
+              </template>
+            </ClientOnly>
+          </div>
 
           <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
           <nav
