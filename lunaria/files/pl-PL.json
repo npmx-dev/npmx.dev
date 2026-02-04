@@ -19,7 +19,6 @@
     "chat": "czat"
   },
   "search": {
-    "title": "Wyszukiwanie",
     "label": "Szukaj pakietów npm",
     "placeholder": "szukaj pakietów...",
     "button": "szukaj",
@@ -28,6 +27,7 @@
     "found_packages": "Nie znaleziono pakietów | Znaleziono 1 pakiet | Znaleziono {count} pakiety | Znaleziono {count} pakietów | Znaleziono {count} pakietów",
     "updating": "(aktualizowanie...)",
     "no_results": "Nie znaleziono pakietów dla \"{query}\"",
+    "title": "Wyszukiwanie",
     "not_taken": "{name} jest wolne",
     "claim_prompt": "Zajmij tę nazwę pakietu w npm",
     "claim_button": "Zajmij \"{name}\"",
@@ -73,12 +73,12 @@
     "theme_light": "Jasny",
     "theme_dark": "Ciemny",
     "theme_system": "Systemowy",
-    "background_themes": "Odcień tła",
     "language": "Język",
     "help_translate": "Pomóż tłumaczyć npmx",
     "accent_colors": "Kolory akcentu",
     "clear_accent": "Wyczyść kolor akcentu",
-    "translation_progress": "Postęp tłumaczenia"
+    "translation_progress": "Postęp tłumaczenia",
+    "background_themes": "Odcień tła"
   },
   "i18n": {
     "missing_keys": "{count} brakujących tłumaczeń | {count} brakujące tłumaczenie | {count} brakujące tłumaczenia | {count} brakujących tłumaczeń | {count} brakujących tłumaczeń",
@@ -204,8 +204,16 @@
       "title": "README",
       "no_readme": "Brak README.",
       "view_on_github": "Zobacz na GitHub",
-      "toc_title": "Spis treści"
+      "toc_title": "Spis treści",
+      "callout": {
+        "note": "Notatka",
+        "tip": "Wskazówka",
+        "important": "Ważne",
+        "warning": "Uwaga",
+        "caution": "Ostrożnie"
+      }
     },
+    "provenance_section": {},
     "keywords_title": "Słowa kluczowe",
     "compatibility": "Zgodność",
     "card": {

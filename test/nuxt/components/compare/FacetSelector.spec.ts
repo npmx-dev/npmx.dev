@@ -1,5 +1,11 @@
 import type { ComparisonFacet } from '#shared/types/comparison'
-import { CATEGORY_ORDER, FACET_INFO, FACETS_BY_CATEGORY } from '#shared/types/comparison'
+import {
+  CATEGORY_ORDER,
+  FACET_INFO,
+  FACETS_BY_CATEGORY,
+  comingSoonFacets,
+  hasComingSoonFacets,
+} from '#shared/types/comparison'
 import FacetSelector from '~/components/Compare/FacetSelector.vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { computed, ref } from 'vue'
@@ -21,7 +27,7 @@ const facetLabels: Record<ComparisonFacet, { label: string; description: string 
   license: { label: 'License', description: 'Package license' },
   dependencies: { label: 'Direct Deps', description: 'Number of direct dependencies' },
   totalDependencies: {
-    label: 'Total Deps',
+    label: 'Total deps',
     description: 'Total number of dependencies including transitive',
   },
   deprecated: { label: 'Deprecated?', description: 'Whether the package is deprecated' },
@@ -33,6 +39,11 @@ const categoryLabels: Record<string, string> = {
   compatibility: 'Compatibility',
   security: 'Security & Compliance',
 }
+
+const comingSoonFacetId = comingSoonFacets[0]
+const comingSoonFacetLabel = hasComingSoonFacets
+  ? (facetLabels[comingSoonFacetId!]?.label ?? comingSoonFacetId)
+  : ''
 
 // Helper to build facet info with labels
 function buildFacetInfo(facet: ComparisonFacet) {
@@ -174,13 +185,13 @@ describe('FacetSelector', () => {
     })
   })
 
-  describe('comingSoon facets', () => {
+  describe.runIf(hasComingSoonFacets)('comingSoon facets', () => {
     it('disables comingSoon facets', async () => {
       const component = await mountSuspended(FacetSelector)
 
       // totalDependencies is marked as comingSoon
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('Total Deps'))
+      const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
 
       expect(comingSoonButton?.attributes('disabled')).toBeDefined()
     })
@@ -196,7 +207,7 @@ describe('FacetSelector', () => {
 
       // Find the comingSoon button
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('Total Deps'))
+      const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
 
       // Should not have checkmark or add icon
       expect(comingSoonButton?.find('.i-carbon\\:checkmark').exists()).toBe(false)
@@ -207,11 +218,11 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       const buttons = component.findAll('button')
-      const comingSoonButton = buttons.find(b => b.text().includes('Total Deps'))
+      const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
       await comingSoonButton?.trigger('click')
 
       // toggleFacet should not have been called with totalDependencies
-      expect(mockToggleFacet).not.toHaveBeenCalledWith('totalDependencies')
+      expect(mockToggleFacet).not.toHaveBeenCalledWith(comingSoonFacetId)
     })
   })
 
@@ -242,13 +253,11 @@ describe('FacetSelector', () => {
 
     it('disables all button when all facets in category are selected', async () => {
       // Select all performance facets
-      const performanceFacets = FACETS_BY_CATEGORY.performance.filter(
+      const performanceFacets: (string | ComparisonFacet)[] = FACETS_BY_CATEGORY.performance.filter(
         f => !FACET_INFO[f].comingSoon,
       )
       mockSelectedFacets.value = performanceFacets
-      mockIsFacetSelected.mockImplementation((f: string) =>
-        performanceFacets.includes(f as ComparisonFacet),
-      )
+      mockIsFacetSelected.mockImplementation((f: string) => performanceFacets.includes(f))
 
       const component = await mountSuspended(FacetSelector)
 
@@ -281,7 +290,7 @@ describe('FacetSelector', () => {
       expect(component.find('.bg-bg-muted').exists()).toBe(true)
     })
 
-    it('applies cursor-not-allowed to comingSoon facets', async () => {
+    it.runIf(hasComingSoonFacets)('applies cursor-not-allowed to comingSoon facets', async () => {
       const component = await mountSuspended(FacetSelector)
 
       expect(component.find('.cursor-not-allowed').exists()).toBe(true)

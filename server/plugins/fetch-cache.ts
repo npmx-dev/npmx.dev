@@ -172,7 +172,7 @@ export default defineNitroPlugin(nitroApp => {
 
   // Attach to event context for access in composables via useRequestEvent()
   nitroApp.hooks.hook('request', event => {
-    event.context.cachedFetch = createCachedFetch(event)
+    event.context.cachedFetch ||= createCachedFetch(event)
   })
 })
 

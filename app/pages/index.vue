@@ -1,21 +1,10 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
+import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
 const searchQuery = shallowRef('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
-const frameworks = ref([
-  { name: 'nuxt', package: 'nuxt' },
-  { name: 'vue', package: 'vue' },
-  { name: 'nitro', package: 'nitro' },
-  { name: 'react', package: 'react' },
-  { name: 'svelte', package: 'svelte' },
-  { name: 'vite', package: 'vite' },
-  { name: 'next', package: 'next' },
-  { name: 'astro', package: 'astro' },
-  { name: 'typescript', package: 'typescript' },
-  { name: 'angular', package: '@angular/core' },
-])
 
 async function search() {
   const query = searchQuery.value.trim()
@@ -36,7 +25,12 @@ const handleInput = isTouchDevice()
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
+  ogTitle: () => $t('seo.home.title'),
+  twitterTitle: () => $t('seo.home.title'),
+  twitterCard: 'summary_large_image',
   description: () => $t('seo.home.description'),
+  ogDescription: () => $t('seo.home.description'),
+  twitterDescription: () => $t('seo.home.description'),
 })
 
 defineOgImageComponent('Default', {
@@ -54,14 +48,7 @@ defineOgImageComponent('Default', {
           dir="ltr"
           class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
         >
-          <img
-            aria-hidden="true"
-            :alt="$t('alt_logo')"
-            src="/logo.svg"
-            width="48"
-            height="48"
-            class="w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl"
-          />
+          <AppLogo class="w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl" />
           <span class="pb-4">npmx</span>
         </h1>
 
@@ -102,13 +89,13 @@ defineOgImageComponent('Default', {
                   autofocus
                   :placeholder="$t('search.placeholder')"
                   v-bind="noCorrect"
-                  class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+                  class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
                   @input="handleInput"
                 />
 
                 <button
                   type="submit"
-                  class="absolute inset-ie-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  class="absolute inset-ie-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-95 focus-visible:outline-accent/70"
                 >
                   <span class="i-carbon:search align-middle w-4 h-4" aria-hidden="true"></span>
                   {{ $t('search.button') }}
@@ -127,7 +114,7 @@ defineOgImageComponent('Default', {
         style="animation-delay: 0.3s"
       >
         <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
-          <li v-for="framework in frameworks" :key="framework.name">
+          <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
             <NuxtLink
               :to="{ name: 'package', params: { package: [framework.package] } }"
               class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"

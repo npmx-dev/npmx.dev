@@ -296,7 +296,7 @@ watch(lastExecutionTime, () => {
       </h2>
       <button
         type="button"
-        class="p-1.5 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="p-1.5 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
         :aria-label="$t('org.members.refresh')"
         :disabled="isLoading"
         @click="refreshData"
@@ -324,7 +324,7 @@ watch(lastExecutionTime, () => {
           name="members-search"
           :placeholder="$t('org.members.filter_placeholder')"
           v-bind="noCorrect"
-          class="w-full ps-7 pe-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="w-full ps-7 pe-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
         />
       </div>
       <div
@@ -336,7 +336,7 @@ watch(lastExecutionTime, () => {
           v-for="role in ['all', 'owner', 'admin', 'developer'] as const"
           :key="role"
           type="button"
-          class="px-2 py-1 font-mono text-xs rounded transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="px-2 py-1 font-mono text-xs rounded transition-colors duration-200 focus-visible:outline-accent/70"
           :class="filterRole === role ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="filterRole === role"
           @click="filterRole = role"
@@ -352,7 +352,7 @@ watch(lastExecutionTime, () => {
           id="team-filter"
           v-model="filterTeam"
           name="team-filter"
-          class="px-2 py-1 font-mono text-xs bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="px-2 py-1 font-mono text-xs bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
         >
           <option :value="null">{{ $t('org.members.all_teams') }}</option>
           <option v-for="team in teamNames" :key="team" :value="team">
@@ -367,7 +367,7 @@ watch(lastExecutionTime, () => {
       >
         <button
           type="button"
-          class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-visible:outline-accent/70"
           :class="sortBy === 'name' ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="sortBy === 'name'"
           @click="toggleSort('name')"
@@ -377,7 +377,7 @@ watch(lastExecutionTime, () => {
         </button>
         <button
           type="button"
-          class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-visible:outline-accent/70"
           :class="sortBy === 'role' ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="sortBy === 'role'"
           @click="toggleSort('role')"
@@ -404,7 +404,7 @@ watch(lastExecutionTime, () => {
       </p>
       <button
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
         @click="loadMembers"
       >
         {{ $t('common.try_again') }}
@@ -451,7 +451,7 @@ watch(lastExecutionTime, () => {
               :id="`role-${member.name}`"
               :value="member.role"
               :name="`role-${member.name}`"
-              class="px-1.5 py-0.5 font-mono text-xs bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 cursor-pointer"
+              class="px-1.5 py-0.5 font-mono text-xs bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
               @change="
                 handleChangeRole(
                   member.name,
@@ -466,7 +466,7 @@ watch(lastExecutionTime, () => {
             <!-- Remove button -->
             <button
               type="button"
-              class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-accent/70"
               :aria-label="$t('org.members.remove_from_org', { name: member.name })"
               @click="handleRemoveMember(member.name)"
             >
@@ -480,7 +480,7 @@ watch(lastExecutionTime, () => {
             v-for="team in member.teams"
             :key="team"
             type="button"
-            class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted border border-border rounded hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted border border-border rounded hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:outline-accent/70"
             :aria-label="$t('org.members.view_team', { team })"
             @click="handleTeamClick(team)"
           >
@@ -509,7 +509,7 @@ watch(lastExecutionTime, () => {
             name="new-member-username"
             :placeholder="$t('org.members.username_placeholder')"
             v-bind="noCorrect"
-            class="w-full px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="w-full px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
           />
           <div class="flex items-center gap-2">
             <label for="new-member-role" class="sr-only">{{ $t('org.members.role_label') }}</label>
@@ -517,7 +517,7 @@ watch(lastExecutionTime, () => {
               id="new-member-role"
               v-model="newRole"
               name="new-member-role"
-              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
             >
               <option value="developer">{{ $t('org.members.role.developer') }}</option>
               <option value="admin">{{ $t('org.members.role.admin') }}</option>
@@ -529,7 +529,7 @@ watch(lastExecutionTime, () => {
               id="new-member-team"
               v-model="newTeam"
               name="new-member-team"
-              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
             >
               <option value="">{{ $t('org.members.no_team') }}</option>
               <option v-for="team in teamNames" :key="team" :value="team">
@@ -539,13 +539,13 @@ watch(lastExecutionTime, () => {
             <button
               type="submit"
               :disabled="!newUsername.trim() || isAddingMember"
-              class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
             >
               {{ isAddingMember ? '…' : $t('org.members.add_button') }}
             </button>
             <button
               type="button"
-              class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
               :aria-label="$t('org.members.cancel_add')"
               @click="showAddMember = false"
             >
@@ -557,7 +557,7 @@ watch(lastExecutionTime, () => {
       <button
         v-else
         type="button"
-        class="w-full px-3 py-2 font-mono text-sm text-fg-muted bg-bg border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="w-full px-3 py-2 font-mono text-sm text-fg-muted bg-bg border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
         @click="showAddMember = true"
       >
         {{ $t('org.members.add_member') }}

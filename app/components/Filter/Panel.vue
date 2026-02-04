@@ -243,17 +243,16 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             role="radiogroup"
             :aria-label="$t('filters.weekly_downloads')"
           >
-            <TagClickable
+            <TagRadioButton
               v-for="range in DOWNLOAD_RANGES"
               :key="range.value"
-              type="button"
-              role="radio"
-              :aria-checked="filters.downloadRange === range.value"
-              :status="filters.downloadRange === range.value ? 'active' : 'default'"
-              @click="emit('update:downloadRange', range.value)"
+              :model-value="filters.downloadRange"
+              :value="range.value"
+              @update:modelValue="emit('update:downloadRange', $event as DownloadRange)"
+              name="range"
             >
               {{ $t(getDownloadRangeLabelKey(range.value)) }}
-            </TagClickable>
+            </TagRadioButton>
           </div>
         </fieldset>
 
@@ -267,17 +266,16 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             role="radiogroup"
             :aria-label="$t('filters.updated_within')"
           >
-            <TagClickable
+            <TagRadioButton
               v-for="option in UPDATED_WITHIN_OPTIONS"
               :key="option.value"
-              type="button"
-              role="radio"
-              :aria-checked="filters.updatedWithin === option.value"
-              :status="filters.updatedWithin === option.value ? 'active' : 'default'"
-              @click="emit('update:updatedWithin', option.value)"
+              :model-value="filters.updatedWithin"
+              :value="option.value"
+              name="updatedWithin"
+              @update:modelValue="emit('update:updatedWithin', $event as UpdatedWithin)"
             >
               {{ $t(getUpdatedWithinLabelKey(option.value)) }}
-            </TagClickable>
+            </TagRadioButton>
           </div>
         </fieldset>
 
@@ -290,17 +288,16 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             </span>
           </legend>
           <div class="flex flex-wrap gap-2" role="radiogroup" :aria-label="$t('filters.security')">
-            <TagClickable
+            <TagRadioButton
               v-for="security in SECURITY_FILTER_VALUES"
               :key="security"
-              type="button"
-              role="radio"
               disabled
-              :aria-checked="filters.security === security"
-              :status="filters.security === security ? 'active' : 'default'"
+              :model-value="filters.security"
+              :value="security"
+              name="security"
             >
               {{ $t(getSecurityLabelKey(security)) }}
-            </TagClickable>
+            </TagRadioButton>
           </div>
         </fieldset>
 
@@ -310,16 +307,14 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             {{ $t('filters.keywords') }}
           </legend>
           <div class="flex flex-wrap gap-1.5" role="group" :aria-label="$t('filters.keywords')">
-            <TagClickable
+            <TagButton
               v-for="keyword in displayedKeywords"
               :key="keyword"
-              type="button"
-              :aria-pressed="filters.keywords.includes(keyword)"
-              :status="filters.keywords.includes(keyword) ? 'active' : 'default'"
+              :pressed="filters.keywords.includes(keyword)"
               @click="emit('toggleKeyword', keyword)"
             >
               {{ keyword }}
-            </TagClickable>
+            </TagButton>
             <button
               v-if="hasMoreKeywords"
               type="button"

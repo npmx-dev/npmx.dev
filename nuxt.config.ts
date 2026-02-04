@@ -59,6 +59,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en-US' },
+      title: 'npmx',
       link: [
         {
           rel: 'search',
@@ -85,19 +86,23 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { prerender: true },
     '/opensearch.xml': { isr: true },
-    '/**': { isr: 60 },
-    '/package/**': { isr: 60 },
+    '/**': { isr: getISRConfig(60, true) },
+    '/api/**': { isr: 60 },
+    '/200.html': { prerender: true },
+    '/package/**': { isr: getISRConfig(60, true) },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
     // never cache
     '/search': { isr: false, cache: false },
     '/api/auth/**': { isr: false, cache: false },
+    '/api/social/**': { isr: false, cache: false },
     // infinite cache (versioned - doesn't change)
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/package-docs/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/package-docs/:scope/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/_avatar/**': {
       isr: 3600,
@@ -126,9 +131,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-01-31',
 
   nitro: {
-    experimental: {
-      wasm: true,
-    },
     externals: {
       inline: [
         'shiki',
@@ -154,13 +156,9 @@ export default defineNuxtConfig({
         driver: 'fsLite',
         base: './.cache/fetch',
       },
-      'oauth-atproto-state': {
+      'atproto': {
         driver: 'fsLite',
-        base: './.cache/atproto-oauth/state',
-      },
-      'oauth-atproto-session': {
-        driver: 'fsLite',
-        base: './.cache/atproto-oauth/session',
+        base: './.cache/atproto',
       },
     },
     typescript: {
@@ -264,6 +262,7 @@ export default defineNuxtConfig({
         'virtua/vue',
         'semver',
         'validate-npm-package-name',
+        '@atproto/lex',
       ],
     },
   },
@@ -280,3 +279,15 @@ export default defineNuxtConfig({
     dirs: ['~/composables', '~/composables/*/*.ts'],
   },
 })
+
+function getISRConfig(expirationSeconds: number, fallback = false) {
+  if (fallback) {
+    return {
+      expiration: expirationSeconds,
+      fallback: 'spa.prerender-fallback.html',
+    } as { expiration: number }
+  }
+  return {
+    expiration: expirationSeconds,
+  }
+}
