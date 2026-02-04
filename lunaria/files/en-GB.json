@@ -184,7 +184,7 @@
       "docs": "docs",
       "fund": "fund",
       "compare": "compare",
-      "likes": "Likes"
+      "like": "like"
     },
     "docs": {
       "not_available": "Docs not available",
