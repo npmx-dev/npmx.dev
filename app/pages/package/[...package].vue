@@ -443,7 +443,11 @@ useHead({
 
 useSeoMeta({
   title: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
+  ogTitle: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
+  twitterTitle: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
   description: () => pkg.value?.description ?? '',
+  ogDescription: () => pkg.value?.description ?? '',
+  twitterDescription: () => pkg.value?.description ?? '',
 })
 
 onKeyStroke(

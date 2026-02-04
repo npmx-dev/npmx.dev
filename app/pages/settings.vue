@@ -20,7 +20,11 @@ onKeyStroke(
 
 useSeoMeta({
   title: () => `${$t('settings.title')} - npmx`,
+  ogTitle: () => `${$t('settings.title')} - npmx`,
+  twitterTitle: () => `${$t('settings.title')} - npmx`,
   description: () => $t('settings.meta_description'),
+  ogDescription: () => $t('settings.meta_description'),
+  twitterDescription: () => $t('settings.meta_description'),
 })
 
 defineOgImageComponent('Default', {

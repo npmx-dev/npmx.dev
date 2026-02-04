@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FilterChip, SortOption } from '#shared/types/preferences'
-import { debounce } from 'perfect-debounce'
 import { normalizeSearchParam } from '#shared/utils/url'
+import { debounce } from 'perfect-debounce'
 
 definePageMeta({
   name: 'org',
@@ -131,7 +131,11 @@ useHead({
 
 useSeoMeta({
   title: () => `@${orgName.value} - npmx`,
+  ogTitle: () => `@${orgName.value} - npmx`,
+  twitterTitle: () => `@${orgName.value} - npmx`,
   description: () => `npm packages published by the ${orgName.value} organization`,
+  ogDescription: () => `npm packages published by the ${orgName.value} organization`,
+  twitterDescription: () => `npm packages published by the ${orgName.value} organization`,
 })
 
 defineOgImageComponent('Default', {

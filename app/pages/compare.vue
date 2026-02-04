@@ -50,7 +50,23 @@ useSeoMeta({
     packages.value.length > 0
       ? $t('compare.packages.meta_title', { packages: packages.value.join(' vs ') })
       : $t('compare.packages.meta_title_empty'),
+  ogTitle: () =>
+    packages.value.length > 0
+      ? $t('compare.packages.meta_title', { packages: packages.value.join(' vs ') })
+      : $t('compare.packages.meta_title_empty'),
+  twitterTitle: () =>
+    packages.value.length > 0
+      ? $t('compare.packages.meta_title', { packages: packages.value.join(' vs ') })
+      : $t('compare.packages.meta_title_empty'),
   description: () =>
+    packages.value.length > 0
+      ? $t('compare.packages.meta_description', { packages: packages.value.join(', ') })
+      : $t('compare.packages.meta_description_empty'),
+  ogDescription: () =>
+    packages.value.length > 0
+      ? $t('compare.packages.meta_description', { packages: packages.value.join(', ') })
+      : $t('compare.packages.meta_description_empty'),
+  twitterDescription: () =>
     packages.value.length > 0
       ? $t('compare.packages.meta_description', { packages: packages.value.join(', ') })
       : $t('compare.packages.meta_description_empty'),

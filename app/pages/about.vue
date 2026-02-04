@@ -9,7 +9,11 @@ interface GitHubContributor {
 
 useSeoMeta({
   title: () => `${$t('about.title')} - npmx`,
+  ogTitle: () => `${$t('about.title')} - npmx`,
+  twitterTitle: () => `${$t('about.title')} - npmx`,
   description: () => $t('about.meta_description'),
+  ogDescription: () => $t('about.meta_description'),
+  twitterDescription: () => $t('about.meta_description'),
 })
 
 defineOgImageComponent('Default', {

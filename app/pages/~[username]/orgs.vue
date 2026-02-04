@@ -99,7 +99,11 @@ function getRoleBadgeClass(role: string | null): string {
 
 useSeoMeta({
   title: () => `@${username.value} Organizations - npmx`,
+  ogTitle: () => `@${username.value} Organizations - npmx`,
+  twitterTitle: () => `@${username.value} Organizations - npmx`,
   description: () => `npm organizations for ${username.value}`,
+  ogDescription: () => `npm organizations for ${username.value}`,
+  twitterDescription: () => `npm organizations for ${username.value}`,
 })
 
 defineOgImageComponent('Default', {

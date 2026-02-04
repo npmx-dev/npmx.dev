@@ -68,6 +68,7 @@ export default defineNuxtConfig({
           href: '/opensearch.xml',
         },
       ],
+      meta: [{ name: 'twitter:card', content: 'summary_large_image' }],
     },
   },
 
