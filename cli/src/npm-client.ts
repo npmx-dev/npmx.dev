@@ -124,10 +124,12 @@ async function execNpm(
 
   try {
     // Use execFile instead of exec to avoid shell injection vulnerabilities
-    // execFile does not spawn a shell, so metacharacters are passed literally
+    // On Windows, shell: true is required to execute .cmd files (like npm.cmd)
+    // On Unix, we keep it false for better security and performance
     const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
       timeout: 60000,
       env: { ...process.env, FORCE_COLOR: '0' },
+      shell: process.platform === 'win32',
     })
 
     if (!options.silent) {
@@ -386,6 +388,7 @@ export async function packageInit(
         timeout: 60000,
         cwd: tempDir,
         env: { ...process.env, FORCE_COLOR: '0' },
+        shell: process.platform === 'win32',
       })
 
       logSuccess(`Published ${name}@0.0.0`)
