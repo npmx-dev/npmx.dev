@@ -7,8 +7,9 @@ import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import type { PublicUserSession } from '#shared/schemas/publicUserSession'
 import { handleResolver } from '#server/utils/atproto/oauth'
-import { type AtIdentifierString, Client } from '@atproto/lex'
+import { Client } from '@atproto/lex'
 import * as app from '#shared/types/lexicons/app'
+import { ensureValidAtIdentifier } from '@atproto/syntax'
 
 /**
  * Fetch the user's profile record to get their avatar blob reference
@@ -22,10 +23,10 @@ async function getAvatar(did: string, pds: string) {
     const pdsUrl = new URL(pds)
     // Only fetch from HTTPS PDS endpoints to prevent SSRF
     if (did && pdsUrl.protocol === 'https:') {
+      ensureValidAtIdentifier(did)
       const client = new Client(pdsUrl)
       const profileResponse = await client.get(app.bsky.actor.profile, {
-        // Hack for now need to find an example on how to use it properly
-        repo: did as AtIdentifierString,
+        repo: did,
         rkey: 'self',
       })
 

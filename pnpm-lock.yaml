@@ -32,6 +32,9 @@ importers:
       '@atproto/oauth-client-node':
         specifier: ^0.3.15
         version: 0.3.16
+      '@atproto/syntax':
+        specifier: 0.4.3
+        version: 0.4.3
       '@deno/doc':
         specifier: jsr:^0.189.1
         version: '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)'
