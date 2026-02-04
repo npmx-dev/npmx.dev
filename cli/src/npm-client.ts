@@ -448,13 +448,23 @@ export async function packageDeprecate(
   options?: { dryRun?: boolean; registry?: string },
 ): Promise<NpmExecResult> {
   validatePackageName(pkg)
+
+  const reasonText = reason.trim()
+
+  if (!reasonText) {
+    throw new Error('Deprecation reason must not be empty')
+  }
+
   const target = version ? `${pkg}@${version}` : pkg
   const args = ['deprecate', target, reason]
+
   if (options?.dryRun) {
     args.push('--dry-run')
   }
+
   if (options?.registry?.trim()) {
     args.push('--registry', options.registry.trim())
   }
+
   return execNpm(args, { otp })
 }
