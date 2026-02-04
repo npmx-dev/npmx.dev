@@ -526,7 +526,7 @@ defineOgImageComponent('Package', {
               class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
               :title="$t('package.verified_provenance')"
             >
-              <span class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+              <span class="i-lucide-shield-check w-3.5 h-3.5 shrink-0" aria-hidden="true" />
             </a>
             <span
               v-if="requestedVersion && latestVersion && resolvedVersion !== latestVersion.version"
@@ -848,7 +848,7 @@ defineOgImageComponent('Package', {
                 class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
                 :title="$t('package.stats.inspect_dependency_tree')"
               >
-                <span class="i-solar:eye-scan-outline w-3.5 h-3.5" aria-hidden="true" />
+                <span class="i-lucide-view w-3.5 h-3.5" aria-hidden="true" />
                 <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
               </a>
             </dd>
