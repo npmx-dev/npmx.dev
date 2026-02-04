@@ -1153,11 +1153,9 @@ onKeyStroke(
           </div>
         </section>
       </section>
-      <div class="area-sidebar">
-        <!-- Sidebar -->
-        <div
-          class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)]) pt-1"
-        >
+
+      <PackageSidebar class="area-sidebar">
+        <div class="flex flex-col gap-4 sm:gap-6 xl:(pt-2)">
           <!-- Team access controls (for scoped packages when connected) -->
           <ClientOnly>
             <PackageAccessControls :package-name="pkg.name" />
@@ -1217,7 +1215,7 @@ onKeyStroke(
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
         </div>
-      </div>
+      </PackageSidebar>
     </article>
 
     <!-- Error state -->
@@ -1309,41 +1307,6 @@ onKeyStroke(
 
 .area-sidebar {
   grid-area: sidebar;
-}
-
-/* Sidebar scrollbar: hidden by default, shown on hover/focus */
-@media (min-width: 1024px) {
-  .sidebar-scroll {
-    scrollbar-gutter: stable;
-    scrollbar-width: 8px;
-    scrollbar-color: transparent transparent;
-  }
-
-  .sidebar-scroll::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  .sidebar-scroll::-webkit-scrollbar-track,
-  .sidebar-scroll::-webkit-scrollbar-thumb {
-    background: transparent;
-  }
-
-  .sidebar-scroll:hover,
-  .sidebar-scroll:focus-within {
-    scrollbar-color: var(--border) transparent;
-  }
-
-  .sidebar-scroll:hover::-webkit-scrollbar-thumb,
-  .sidebar-scroll:focus-within::-webkit-scrollbar-thumb {
-    background-color: var(--border);
-    border-radius: 9999px;
-  }
-
-  .sidebar-scroll:hover::-webkit-scrollbar-track,
-  .sidebar-scroll:focus-within::-webkit-scrollbar-track {
-    background: transparent;
-  }
 }
 
 /* Improve package name wrapping for narrow screens */
