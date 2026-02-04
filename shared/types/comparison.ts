@@ -47,13 +47,13 @@ export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
   downloads: {
     category: 'health',
   },
+  totalLikes: {
+    category: 'health',
+  },
   lastUpdated: {
     category: 'health',
   },
   deprecated: {
-    category: 'health',
-  },
-  totalLikes: {
     category: 'health',
   },
   // Compatibility

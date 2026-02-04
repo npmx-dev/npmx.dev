@@ -908,6 +908,10 @@
           "label": "Downloads/wk",
           "description": "Weekly download count"
         },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Number of likes"
+        },
         "lastUpdated": {
           "label": "Published",
           "description": "When this version was published"
@@ -935,9 +939,6 @@
         "vulnerabilities": {
           "label": "Vulnerabilities",
           "description": "Known security vulnerabilities"
-        },
-        "totalLikes": {
-          "label": "Likes"
         }
       },
       "values": {

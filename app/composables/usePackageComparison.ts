@@ -14,6 +14,8 @@ import { getDependencyCount } from '~/utils/npm/dependency-count'
 export interface PackageComparisonData {
   package: ComparisonPackage
   downloads?: number
+  /** Total likes from atproto */
+  totalLikes: number
   /** Package's own unpacked size (from dist.unpackedSize) */
   packageSize?: number
   /** Number of direct dependencies */
@@ -44,8 +46,6 @@ export interface PackageComparisonData {
   }
   /** Whether this is a binary-only package (CLI without library entry points) */
   isBinaryOnly?: boolean
-  /** Total likes from atproto */
-  totalLikes: number
 }
 
 /**
@@ -275,6 +275,14 @@ function computeFacetValue(
         status: 'neutral',
       }
     }
+    case 'totalLikes': {
+      if (data.totalLikes === undefined) return null
+      return {
+        raw: data.totalLikes,
+        display: formatCompactNumber(data.totalLikes),
+        status: 'neutral',
+      }
+    }
     case 'packageSize': {
       if (!data.packageSize) return null
       return {
@@ -388,14 +396,6 @@ function computeFacetValue(
           ? t('compare.facets.values.deprecated')
           : t('compare.facets.values.not_deprecated'),
         status: isDeprecated ? 'bad' : 'good',
-      }
-    }
-    case 'totalLikes': {
-      if (data.totalLikes === undefined) return null
-      return {
-        raw: data.totalLikes,
-        display: formatCompactNumber(data.totalLikes),
-        status: 'neutral',
       }
     }
     // Coming soon facets

@@ -891,6 +891,10 @@
           "label": "Téléch./semaine",
           "description": "Nombre de téléchargements par semaine"
         },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Nombre de likes"
+        },
         "lastUpdated": {
           "label": "Publié",
           "description": "Quand cette version a été publiée"
