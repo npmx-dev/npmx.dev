@@ -287,6 +287,14 @@
       "download_file": "Download {fileType}",
       "toggle_annotator": "Toggle annotator"
     },
+    "scores": {
+      "title": "Scores",
+      "quality": "Quality",
+      "popularity": "Popularity",
+      "maintenance": "Maintenance",
+      "unavailable": "Score data unavailable",
+      "source": "Scores from npms.io"
+    },
     "install_scripts": {
       "title": "Install Scripts",
       "script_label": "(script)",

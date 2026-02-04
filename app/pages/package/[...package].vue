@@ -1101,6 +1101,9 @@ defineOgImageComponent('Package', {
           <!-- Download stats -->
           <PackageWeeklyDownloadStats :packageName :createdIso="pkg?.time?.created ?? null" />
 
+          <!-- Package scores -->
+          <PackageScoreGauges :packageName />
+
           <!-- Playground links -->
           <PackagePlaygrounds
             v-if="readmeData?.playgroundLinks?.length"
