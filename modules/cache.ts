@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtModule } from 'nuxt/kit'
 import { provider } from 'std-env'
 
@@ -26,6 +27,11 @@ export default defineNuxtModule({
       nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
         ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
         driver: 'vercel-runtime-cache',
+      }
+
+      const env = process.env.VERCEL_ENV
+      nitroConfig.storage.atproto = {
+        driver: env === 'production' ? 'vercel-kv' : 'vercel-runtime-cache',
       }
     })
   },

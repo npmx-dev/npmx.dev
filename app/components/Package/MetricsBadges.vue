@@ -59,13 +59,14 @@ const typesHref = computed(() => {
         <component
           :is="typesHref ? NuxtLink : 'span'"
           :to="typesHref"
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
+          :tabindex="!typesHref ? 0 : undefined"
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200 focus-visible:(outline-2 outline-accent)"
           :class="[
             hasTypes
               ? 'text-fg-muted bg-bg-muted border border-border'
               : 'text-fg-subtle bg-bg-subtle border border-border-subtle',
             typesHref
-              ? 'hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50'
+              ? 'hover:text-fg hover:border-border-hover focus-visible:outline-accent/70'
               : '',
           ]"
         >
@@ -83,7 +84,8 @@ const typesHref = computed(() => {
     <li>
       <TooltipApp :text="hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')">
         <span
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
+          tabindex="0"
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200 focus-visible:(outline-2 outline-accent)"
           :class="
             hasEsm
               ? 'text-fg-muted bg-bg-muted border border-border'
@@ -104,7 +106,8 @@ const typesHref = computed(() => {
     <li v-if="hasCjs">
       <TooltipApp :text="$t('package.metrics.cjs')">
         <span
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200"
+          tabindex="0"
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200 focus-visible:(outline-2 outline-accent)"
         >
           <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
           CJS

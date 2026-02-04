@@ -85,7 +85,7 @@ useSeoMeta({
           </h2>
           <button
             type="button"
-            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline"
+            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
             :class="isAllSelected ? 'text-fg-muted' : 'text-fg-muted/60 hover:text-fg-muted'"
             :disabled="isAllSelected"
             :aria-label="$t('compare.facets.select_all')"
@@ -96,7 +96,7 @@ useSeoMeta({
           <span class="text-[10px] text-fg-muted/40" aria-hidden="true">/</span>
           <button
             type="button"
-            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline"
+            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
             :class="isNoneSelected ? 'text-fg-muted' : 'text-fg-muted/60 hover:text-fg-muted'"
             :disabled="isNoneSelected"
             :aria-label="$t('compare.facets.deselect_all')"

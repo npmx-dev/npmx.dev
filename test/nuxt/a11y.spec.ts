@@ -61,6 +61,7 @@ afterEach(() => {
 import {
   AppFooter,
   AppHeader,
+  AppLogo,
   BaseCard,
   BuildEnvironment,
   CallToAction,
@@ -121,7 +122,9 @@ import {
   SettingsBgThemePicker,
   SettingsToggle,
   TagStatic,
-  TagClickable,
+  TagButton,
+  TagLink,
+  TagRadioButton,
   TerminalExecute,
   TerminalInstall,
   TooltipAnnounce,
@@ -223,6 +226,22 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('AppLogo', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(AppLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with custom class', async () => {
+      const component = await mountSuspended(AppLogo, {
+        props: { class: 'h-6 w-6 text-accent' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   describe('BaseCard', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(BaseCard, {
@@ -252,27 +271,85 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('TagClickable', () => {
+  describe('TagButton', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(TagClickable, {
+      const component = await mountSuspended(TagButton, {
         slots: { default: 'Tag content' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violationst for active state', async () => {
-      const component = await mountSuspended(TagClickable, {
-        props: { status: 'active' },
+    it('should have no accessibility violations when pressed', async () => {
+      const component = await mountSuspended(TagButton, {
+        props: { pressed: true },
         slots: { default: 'Tag content' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violationst for disabled state', async () => {
-      const component = await mountSuspended(TagClickable, {
+    it('should have no accessibility violations for disabled state', async () => {
+      const component = await mountSuspended(TagButton, {
         props: { disabled: true },
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TagLink', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(TagLink, {
+        props: { href: 'http://example.com' },
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it("should have no accessibility violations when it's the current link", async () => {
+      const component = await mountSuspended(TagLink, {
+        props: { href: 'http://example.com', current: true },
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when disabled (plain text)', async () => {
+      const component = await mountSuspended(TagLink, {
+        props: { href: 'http://example.com', disabled: true },
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('TagRadioButton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(TagRadioButton, {
+        props: { value: 'option1', modelValue: 'option2' },
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when checked', async () => {
+      const component = await mountSuspended(TagRadioButton, {
+        props: { value: 'option1', modelValue: 'option1' },
+        slots: { default: 'Tag content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when disabled', async () => {
+      const component = await mountSuspended(TagRadioButton, {
+        props: { value: 'option1', modelValue: 'option2', disabled: true },
         slots: { default: 'Tag content' },
       })
       const results = await runAxe(component)

@@ -40,7 +40,7 @@ const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
         <div
           v-if="props.isVisible"
           ref="tooltipRef"
-          class="px-2 py-1 font-mono text-xs text-fg bg-bg-elevated border border-border rounded shadow-lg whitespace-nowrap z-[100] pointer-events-none"
+          class="px-2 py-1 font-mono text-xs text-fg bg-bg-elevated border border-border rounded shadow-lg whitespace-pre-line z-[100] pointer-events-none"
           :style="floatingStyles"
           v-bind="tooltipAttr"
         >

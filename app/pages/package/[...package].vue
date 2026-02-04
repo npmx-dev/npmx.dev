@@ -12,7 +12,11 @@ import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
 import { formatBytes } from '~/utils/formatters'
+import { getDependencyCount } from '~/utils/npm/dependency-count'
 import { NuxtLink } from '#components'
+import { useModal } from '~/composables/useModal'
+import { useAtproto } from '~/composables/atproto/useAtproto'
+import { togglePackageLike } from '~/utils/atproto/likes'
 
 definePageMeta({
   name: 'package',
@@ -327,11 +331,8 @@ function normalizeGitUrl(url: string): string {
     .replace(/^git@github\.com:/, 'https://github.com/')
 }
 
-function getDependencyCount(version: PackumentVersion | null): number {
-  if (!version?.dependencies) return 0
-  return Object.keys(version.dependencies).length
-}
-
+// Check if a version has provenance/attestations
+// The dist object may have attestations that aren't in the base type
 function hasProvenance(version: PackumentVersion | null): boolean {
   if (!version?.dist) return false
   const dist = version.dist as NpmVersionDist
@@ -383,6 +384,54 @@ const canonicalUrl = computed(() => {
   const base = `https://npmx.dev/package/${packageName.value}`
   return requestedVersion.value ? `${base}/v/${requestedVersion.value}` : base
 })
+
+//atproto
+// TODO: Maybe set this where it's not loaded here every load?
+const { user } = useAtproto()
+
+const authModal = useModal('auth-modal')
+
+const { data: likesData } = useFetch(() => `/api/social/likes/${packageName.value}`, {
+  default: () => ({ totalLikes: 0, userHasLiked: false }),
+  server: false,
+})
+
+const isLikeActionPending = ref(false)
+
+const likeAction = async () => {
+  if (user.value?.handle == null) {
+    authModal.open()
+    return
+  }
+
+  if (isLikeActionPending.value) return
+
+  const currentlyLiked = likesData.value?.userHasLiked ?? false
+  const currentLikes = likesData.value?.totalLikes ?? 0
+
+  // Optimistic update
+  likesData.value = {
+    totalLikes: currentlyLiked ? currentLikes - 1 : currentLikes + 1,
+    userHasLiked: !currentlyLiked,
+  }
+
+  isLikeActionPending.value = true
+
+  const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
+
+  isLikeActionPending.value = false
+
+  if (result.success) {
+    // Update with server response
+    likesData.value = result.data
+  } else {
+    // Revert on error
+    likesData.value = {
+      totalLikes: currentLikes,
+      userHasLiked: currentlyLiked,
+    }
+  }
+}
 
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
@@ -469,17 +518,22 @@ defineOgImageComponent('Package', {
             </h1>
 
             <!-- Floating copy button -->
-            <TooltipAnnounce :text="$t('common.copied')" :isVisible="copiedPkgName">
-              <button
-                type="button"
-                @click="copyPkgName()"
-                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
-                :aria-label="$t('package.copy_name')"
-              >
-                <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
-                {{ $t('package.copy_name') }}
-              </button>
-            </TooltipAnnounce>
+            <button
+              type="button"
+              @click="copyPkgName()"
+              class="copy-button absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
+              :class="
+                copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border'
+              "
+              :aria-label="copiedPkgName ? $t('common.copied') : $t('package.copy_name')"
+            >
+              <span
+                :class="copiedPkgName ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+                class="w-3.5 h-3.5"
+                aria-hidden="true"
+              />
+              {{ copiedPkgName ? $t('common.copied') : $t('package.copy_name') }}
+            </button>
           </div>
           <span
             v-if="resolvedVersion"
@@ -538,10 +592,31 @@ defineOgImageComponent('Package', {
               :is-binary="isBinaryOnly"
               class="self-baseline ms-1 sm:ms-2"
             />
+
+            <!-- Package likes -->
+            <button
+              @click="likeAction"
+              type="button"
+              class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
+              :title="$t('package.links.like')"
+            >
+              <span
+                :class="
+                  likesData?.userHasLiked
+                    ? 'i-lucide-heart-minus text-red-500'
+                    : 'i-lucide-heart-plus'
+                "
+                class="w-4 h-4"
+                aria-hidden="true"
+              />
+              <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
+            </button>
+
             <template #fallback>
               <div class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
                 <SkeletonBlock class="w-8 h-5 rounded" />
                 <SkeletonBlock class="w-12 h-5 rounded" />
+                <SkeletonBlock class="w-5 h-5 rounded" />
               </div>
             </template>
           </ClientOnly>
@@ -555,7 +630,7 @@ defineOgImageComponent('Package', {
             <NuxtLink
               v-if="docsLink"
               :to="docsLink"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="d"
             >
               <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
@@ -569,7 +644,7 @@ defineOgImageComponent('Package', {
             </NuxtLink>
             <NuxtLink
               :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="."
             >
               <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
@@ -583,7 +658,7 @@ defineOgImageComponent('Package', {
             </NuxtLink>
             <NuxtLink
               :to="{ path: '/compare', query: { packages: pkg.name } }"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="c"
             >
               <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
@@ -806,7 +881,7 @@ defineOgImageComponent('Package', {
                 :href="`https://npmgraph.js.org/?q=${pkg.name}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
                 :title="$t('package.stats.view_dependency_graph')"
               >
                 <span class="i-carbon:network-3 w-3.5 h-3.5" aria-hidden="true" />
@@ -818,10 +893,10 @@ defineOgImageComponent('Package', {
                 :href="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
                 :title="$t('package.stats.inspect_dependency_tree')"
               >
-                <span class="i-solar:eye-scan-outline w-3.5 h-3.5" aria-hidden="true" />
+                <span class="i-lucide-view w-3.5 h-3.5" aria-hidden="true" />
                 <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
               </a>
             </dd>
@@ -830,11 +905,9 @@ defineOgImageComponent('Package', {
           <div class="space-y-1 sm:col-span-3">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
-              <span
-                class="i-carbon:information w-3 h-3 text-fg-subtle"
-                aria-hidden="true"
-                :title="sizeTooltip"
-              />
+              <TooltipApp :text="sizeTooltip">
+                <span class="i-carbon:information w-3 h-3 text-fg-subtle" aria-hidden="true" />
+              </TooltipApp>
             </dt>
             <dd class="font-mono text-sm text-fg">
               <!-- Package size (greyed out) -->
@@ -1011,11 +1084,11 @@ defineOgImageComponent('Package', {
 
       <!-- README -->
       <section id="readme" class="area-readme min-w-0 scroll-mt-20">
-        <div class="flex flex-wrap items-center justify-between mb-4">
+        <div class="flex flex-wrap items-center justify-between mb-4 px-1">
           <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
             <a
               href="#readme"
-              class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+              class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
             >
               {{ $t('package.readme.title') }}
               <span
@@ -1073,7 +1146,7 @@ defineOgImageComponent('Package', {
 
       <div class="area-sidebar">
         <!-- Sidebar -->
-        <div class="sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-hidden xl:(top-22 pt-2)">
+        <div class="sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-hidden xl:(top-22) pt-1">
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 

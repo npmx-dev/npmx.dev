@@ -15,13 +15,13 @@
 
 The goal of [npmx.dev](https://npmx.dev) is to build a fast, modern browser for the npm registry.
 
-We're not replacing the [npmjs.com](https://www.npmjs.com/) registry, but instead providing an elevated developer experience through a fast, modern UI.
+We're not replacing the [npm](https://www.npmjs.com/) registry, but instead providing an elevated developer experience through a fast, modern UI.
 
 What npmx offers:
 
 - **Speed** &ndash; Fast searching, filtering, and navigation.
 - **Simplicity** &ndash; Get the information you need when you need it in an intuitive UI.
-- **Compatibility** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
+- **URL Compatibility** &ndash; Replace `npmjs.com` with `xnpmjs.com` or `npmx.dev` in any URL and it just works.
 - **Enhanced admin experience** &ndash; Manage your packages, teams, and organizations from the browser, powered by your local npm CLI.
 
 ## Shortcuts
@@ -156,6 +156,8 @@ We welcome contributions &ndash; please do feel free to explore the project and 
 - [npm-alt](https://npm.willow.sh/) &ndash; An alternative npm package browser
 - [npkg.lorypelli.dev](https://npkg.lorypelli.dev/) &ndash; An alternative frontend to npm made with as little client-side JavaScript as possible
 - [vscode-npmx](https://github.com/npmx-dev/vscode-npmx) &ndash; VSCode extension for npmx
+- [nxjt](https://nxjt.netlify.app) &ndash; npmx Jump To: Quickly navigate to npmx common webpages.
+- [npmx-digest](https://npmx-digest.trueberryless.org/) &ndash; An automated news aggregation website that summarizes npmx activity from GitHub and Bluesky every 8 hours.
 
 If you're building something cool, let us know! 🙏
 

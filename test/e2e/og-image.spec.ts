@@ -1,4 +1,4 @@
-import { expect, test } from '@nuxt/test-utils/playwright'
+import { expect, test } from './test-utils'
 
 const paths = ['/', '/package/nuxt/v/3.20.2']
 for (const path of paths) {

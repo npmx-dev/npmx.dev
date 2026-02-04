@@ -116,7 +116,7 @@ const formattedStars = computed(() =>
     </div>
 
     <div
-      class="absolute -top-32 -right-32 w-[550px] h-[550px] rounded-full blur-3xl"
+      class="absolute -top-32 -inset-ie-32 w-[550px] h-[550px] rounded-full blur-3xl"
       :style="{ backgroundColor: primaryColor + '10' }"
     />
   </div>

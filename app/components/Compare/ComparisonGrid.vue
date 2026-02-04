@@ -22,9 +22,13 @@ defineProps<{
           :key="index"
           class="comparison-cell comparison-cell-header"
         >
-          <span class="font-mono text-sm font-medium text-fg truncate" :title="header">
+          <NuxtLink
+            :to="`/package/${header}`"
+            class="link-subtle font-mono text-sm font-medium text-fg truncate"
+            :title="header"
+          >
             {{ header }}
-          </span>
+          </NuxtLink>
         </div>
       </div>
 

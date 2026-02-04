@@ -1,6 +1,7 @@
 import { Agent } from '@atproto/api'
 import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { createError, getQuery, sendRedirect } from 'h3'
+import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
@@ -11,7 +12,7 @@ export default defineEventHandler(async event => {
   if (!config.sessionPassword) {
     throw createError({
       status: 500,
-      message: 'NUXT_SESSION_PASSWORD not set',
+      message: UNSET_NUXT_SESSION_PASSWORD,
     })
   }
 
@@ -24,6 +25,7 @@ export default defineEventHandler(async event => {
     stateStore,
     sessionStore,
     clientMetadata,
+    requestLock: getOAuthLock(),
   })
 
   if (!query.code) {

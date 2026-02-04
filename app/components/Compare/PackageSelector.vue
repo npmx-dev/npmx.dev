@@ -71,7 +71,7 @@ function handleBlur() {
         </NuxtLink>
         <button
           type="button"
-          class="text-fg-subtle hover:text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          class="text-fg-subtle hover:text-fg transition-colors focus-visible:outline-accent/70 rounded"
           :aria-label="$t('compare.selector.remove_package', { package: pkg })"
           @click="removePackage(pkg)"
         >
@@ -82,12 +82,12 @@ function handleBlur() {
 
     <!-- Add package input -->
     <div v-if="packages.length < maxPackages" class="relative">
-      <div class="relative">
+      <div class="relative group">
         <label for="package-search" class="sr-only">
           {{ $t('compare.selector.search_label') }}
         </label>
         <span
-          class="absolute inset-is-3 top-1/2 -translate-y-1/2 text-fg-subtle flex"
+          class="absolute inset-y-0 start-3 flex items-center text-fg-subtle pointer-events-none group-focus-within:text-accent"
           aria-hidden="true"
         >
           <span class="i-carbon:search w-4 h-4" />
@@ -101,7 +101,7 @@ function handleBlur() {
               ? $t('compare.selector.search_first')
               : $t('compare.selector.search_add')
           "
-          class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:outline-none"
+          class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2.5 font-mono text-sm text-fg placeholder:text-fg-subtle motion-reduce:transition-none duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
           aria-autocomplete="list"
           @focus="isInputFocused = true"
           @blur="handleBlur"

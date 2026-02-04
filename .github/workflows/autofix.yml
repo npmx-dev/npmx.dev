@@ -14,7 +14,8 @@ permissions:
 
 jobs:
   code:
-    runs-on: ubuntu-latest
+    name: 🤖 Autofix code
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -24,7 +25,7 @@ jobs:
           node-version: lts/*
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+        name: 🟧 Install pnpm
         with:
           cache: true
 

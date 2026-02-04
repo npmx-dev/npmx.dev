@@ -4,12 +4,12 @@ import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { parse } from 'valibot'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
+import { LIKES_SCOPE } from '#shared/utils/constants'
 import { OAuthMetadataSchema } from '#shared/schemas/oauth'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
-import { useServerSession } from '#server/utils/server-session'
-// TODO: limit scope as features gets added. atproto just allows login so no scary login screen till we have scopes
-export const scope = 'atproto'
+// TODO: If you add writing a new record you will need to add a scope for it
+export const scope = `atproto ${LIKES_SCOPE}`
 
 export function getOauthClientMetadata() {
   const dev = import.meta.dev
@@ -43,22 +43,50 @@ type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
 ) => Promise<D>
 
 async function getOAuthSession(event: H3Event): Promise<OAuthSession | undefined> {
-  const clientMetadata = getOauthClientMetadata()
-  const serverSession = await useServerSession(event)
-  const { stateStore, sessionStore } = useOAuthStorage(serverSession)
+  try {
+    const clientMetadata = getOauthClientMetadata()
+    const serverSession = await useServerSession(event)
+    const { stateStore, sessionStore } = useOAuthStorage(serverSession)
 
-  const client = new NodeOAuthClient({
-    stateStore,
-    sessionStore,
-    clientMetadata,
-    requestLock: getOAuthLock(),
-  })
+    const client = new NodeOAuthClient({
+      stateStore,
+      sessionStore,
+      clientMetadata,
+      requestLock: getOAuthLock(),
+    })
 
-  const currentSession = await sessionStore.get()
-  if (!currentSession) return undefined
+    const currentSession = await sessionStore.get()
+    if (!currentSession) return undefined
 
-  // restore using the subject
-  return await client.restore(currentSession.tokenSet.sub)
+    // restore using the subject
+    return await client.restore(currentSession.tokenSet.sub)
+  } catch (error) {
+    // Log error safely without using util.inspect on potentially problematic objects
+    // The @atproto library creates error objects with getters that crash Node's util.inspect
+    // eslint-disable-next-line no-console
+    console.error(
+      '[oauth] Failed to get session:',
+      error instanceof Error ? error.message : 'Unknown error',
+    )
+    return undefined
+  }
+}
+
+/**
+ * Throws if the logged in OAuth Session does not have the required scopes.
+ * As we add new scopes we need to check if the client has the ability to use it.
+ * If not need to let the client know to redirect the user to the PDS to upgrade their scopes.
+ * @param oAuthSession - The current OAuth session from the event
+ * @param requiredScopes - The required scope you are checking if you can use
+ */
+export async function throwOnMissingOAuthScope(oAuthSession: OAuthSession, requiredScopes: string) {
+  const tokenInfo = await oAuthSession.getTokenInfo()
+  if (!tokenInfo.scope.includes(requiredScopes)) {
+    throw createError({
+      status: 403,
+      message: ERROR_NEED_REAUTH,
+    })
+  }
 }
 
 export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(

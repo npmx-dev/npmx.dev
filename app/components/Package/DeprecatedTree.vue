@@ -48,7 +48,7 @@ function getDepthStyle(depth: DependencyDepth) {
       <!-- Header -->
       <button
         type="button"
-        class="w-full flex items-center justify-between gap-3 px-4 py-3 text-start transition-colors duration-200 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-fg/50"
+        class="w-full flex items-center justify-between gap-3 px-4 py-3 text-start transition-colors duration-200 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/70"
         :aria-expanded="isExpanded"
         aria-controls="deprecated-tree-details"
         @click="isExpanded = !isExpanded"

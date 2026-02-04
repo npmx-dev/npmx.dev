@@ -122,7 +122,7 @@ defineExpose({ focus })
             name="q"
             :placeholder="$t('search.placeholder')"
             v-bind="noCorrect"
-            class="w-full min-w-25 bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+            class="w-full min-w-25 bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:(outline-2 outline-accent/70)"
             @focus="handleSearchFocus"
             @blur="handleSearchBlur"
           />
