@@ -23,6 +23,7 @@ import {
   ownerAdd,
   ownerRemove,
   packageInit,
+  packageDeprecate,
   listUserPackages,
   type NpmExecResult,
 } from './npm-client.ts'
@@ -734,6 +735,14 @@ async function executeOperation(op: PendingOperation, otp?: string): Promise<Npm
       return ownerRemove(params.user, params.pkg, otp)
     case 'package:init':
       return packageInit(params.name, params.author, otp)
+    case 'package:deprecate': {
+      const dryRun = params.dryRun === 'true'
+      const registry = params.registry?.trim() ?? undefined
+      return packageDeprecate(params.pkg, params.message, params.version, otp, {
+        dryRun: dryRun ?? undefined,
+        registry,
+      })
+    }
     default:
       return {
         stdout: '',

@@ -24,6 +24,7 @@ export type OperationType =
   | 'owner:add'
   | 'owner:rm'
   | 'package:init'
+  | 'package:deprecate'
 
 export type OperationStatus =
   | 'pending'
