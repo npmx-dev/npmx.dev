@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NuxtLink } from '#components'
+import { ButtonLink, TagStatic } from '#components'
 
 const props = defineProps<{
   packageName: string
@@ -56,62 +56,42 @@ const typesHref = computed(() => {
     <!-- TypeScript types badge -->
     <li v-if="!props.isBinary">
       <TooltipApp :text="typesTooltip">
-        <component
-          :is="typesHref ? NuxtLink : 'span'"
-          :to="typesHref"
-          :tabindex="!typesHref ? 0 : undefined"
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
-          :class="[
-            hasTypes
-              ? 'text-fg-muted bg-bg-muted border border-border'
-              : 'text-fg-subtle bg-bg-subtle border border-border-subtle',
-            typesHref
-              ? 'hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50'
-              : '',
-          ]"
-        >
+        <ButtonLink v-if="typesHref" variant="tag" :to="typesHref">
+          <span class="w-3 h-3 i-carbon-checkmark" aria-hidden="true" />
+          {{ $t('package.metrics.types_label') }}
+        </ButtonLink>
+        <TagStatic v-else :variant="hasTypes ? 'default' : 'disabled'" :tabindex="0">
           <span
             class="w-3 h-3"
             :class="hasTypes ? 'i-carbon-checkmark' : 'i-carbon-close'"
             aria-hidden="true"
           />
           {{ $t('package.metrics.types_label') }}
-        </component>
+        </TagStatic>
       </TooltipApp>
     </li>
 
     <!-- ESM badge (show with X if missing) -->
     <li>
       <TooltipApp :text="hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')">
-        <span
-          tabindex="0"
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
-          :class="
-            hasEsm
-              ? 'text-fg-muted bg-bg-muted border border-border'
-              : 'text-fg-subtle bg-bg-subtle border border-border-subtle'
-          "
-        >
+        <TagStatic tabindex="0" :variant="hasEsm ? 'default' : 'disabled'">
           <span
             class="w-3 h-3"
             :class="hasEsm ? 'i-carbon-checkmark' : 'i-carbon-close'"
             aria-hidden="true"
           />
           ESM
-        </span>
+        </TagStatic>
       </TooltipApp>
     </li>
 
     <!-- CJS badge (only show if present) -->
     <li v-if="hasCjs">
       <TooltipApp :text="$t('package.metrics.cjs')">
-        <span
-          tabindex="0"
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200"
-        >
+        <TagStatic tabindex="0">
           <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
           CJS
-        </span>
+        </TagStatic>
       </TooltipApp>
     </li>
   </ul>
