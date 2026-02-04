@@ -24,8 +24,8 @@ const connectorModal = useModal('connector-modal')
 
 const modalTitle = computed(() =>
   deprecateVersion.value
-    ? `${$t('package.deprecation.modal.title')} ${props.packageName}@${deprecateVersion.value}`
-    : `${$t('package.deprecation.modal.title')} ${props.packageName}`,
+    ? `${t('package.deprecation.modal.title')} ${props.packageName}@${deprecateVersion.value}`
+    : `${t('package.deprecation.modal.title')} ${props.packageName}`,
 )
 
 async function handleDeprecate() {
