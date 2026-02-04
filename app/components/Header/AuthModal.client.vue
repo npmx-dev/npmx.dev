@@ -96,24 +96,17 @@ async function handleLogin() {
         </details>
       </div>
 
-      <button
-        type="submit"
-        :disabled="!handleInput.trim()"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-      >
+      <ButtonBase type="submit" variant="primary" :disabled="!handleInput.trim()" class="w-full">
         {{ $t('auth.modal.connect') }}
-      </button>
-      <button
-        type="button"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-        @click="handleCreateAccount"
-      >
+      </ButtonBase>
+      <ButtonBase type="button" variant="primary" class="w-full" @click="handleCreateAccount">
         {{ $t('auth.modal.create_account') }}
-      </button>
+      </ButtonBase>
       <hr />
-      <button
+      <ButtonBase
         type="button"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg flex items-center justify-center gap-2"
+        variant="primary"
+        class="w-full flex items-center justify-center gap-2"
         @click="handleBlueskySignIn"
       >
         {{ $t('auth.modal.connect_bluesky') }}
@@ -123,7 +116,7 @@ async function handleLogin() {
             d="M13.873 3.805C21.21 9.332 29.103 20.537 32 26.55v15.882c0-.338-.13.044-.41.867-1.512 4.456-7.418 21.847-20.923 7.944-7.111-7.32-3.819-14.64 9.125-16.85-7.405 1.264-15.73-.825-18.014-9.015C1.12 23.022 0 8.51 0 6.55 0-3.268 8.579-.182 13.873 3.805ZM50.127 3.805C42.79 9.332 34.897 20.537 32 26.55v15.882c0-.338.13.044.41.867 1.512 4.456 7.418 21.847 20.923 7.944 7.111-7.32 3.819-14.64-9.125-16.85 7.405 1.264 15.73-.825 18.014-9.015C62.88 23.022 64 8.51 64 6.55c0-9.818-8.578-6.732-13.873-2.745Z"
           ></path>
         </svg>
-      </button>
+      </ButtonBase>
     </form>
   </Modal>
 </template>

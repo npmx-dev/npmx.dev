@@ -219,13 +219,14 @@ function handleDisconnect() {
         </p>
       </div>
 
-      <button
+      <ButtonBase
         type="submit"
+        variant="primary"
         :disabled="!tokenInput.trim() || isConnecting"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+        class="w-full"
       >
         {{ isConnecting ? $t('connector.modal.connecting') : $t('connector.modal.connect') }}
-      </button>
+      </ButtonBase>
     </form>
   </Modal>
 </template>
