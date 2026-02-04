@@ -284,8 +284,8 @@ export default defineCachedEventHandler(
       const rawColor = userColor ?? strategyResult.color
       const finalColor = rawColor?.startsWith('#') ? rawColor : `#${rawColor}`
 
-      const rawLeftColor = labelColor ?? '#0a0a0a'
-      const finalLeftColor = rawLeftColor?.startsWith('#') ? rawLeftColor : `#${rawLeftColor}`
+      const rawLabelColor = labelColor ?? '#0a0a0a'
+      const finalLabelColor = rawLabelColor?.startsWith('#') ? rawLabelColor : `#${rawLabelColor}`
 
       const leftWidth = measureTextWidth(finalLabel)
       const rightWidth = measureTextWidth(finalValue)
@@ -298,7 +298,7 @@ export default defineCachedEventHandler(
             <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
           </clipPath>
           <g clip-path="url(#r)">
-            <rect width="${leftWidth}" height="${height}" fill="${finalLeftColor}"/>
+            <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
             <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
           </g>
           <g text-anchor="middle" font-family="'Geist', system-ui, -apple-system, sans-serif" font-size="11">
