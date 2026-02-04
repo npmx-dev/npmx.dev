@@ -203,9 +203,12 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             <NuxtLink
               :to="`/package/${createPackageInfo.packageName}`"
               class="text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-              :title="$t('package.create.view', { packageName: createPackageInfo.packageName })"
             >
-              <span class="i-carbon:information w-3 h-3 mt-1" aria-hidden="true" />
+              <TooltipApp
+                :text="$t('package.create.view', { packageName: createPackageInfo.packageName })"
+              >
+                <span class="i-carbon:information w-3 h-3 mt-1" aria-hidden="true" />
+              </TooltipApp>
               <span class="sr-only">{{
                 $t('package.create.view', { packageName: createPackageInfo.packageName })
               }}</span>

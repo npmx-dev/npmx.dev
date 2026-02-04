@@ -1,37 +1,22 @@
 <script setup lang="ts">
+import { useAtproto } from '~/composables/atproto/useAtproto'
+import { authRedirect } from '~/utils/atproto/helpers'
+
 const handleInput = shallowRef('')
 
 const { user, logout } = useAtproto()
 
 async function handleBlueskySignIn() {
-  await navigateTo(
-    {
-      path: '/api/auth/atproto',
-      query: { handle: 'https://bsky.social' },
-    },
-    { external: true },
-  )
+  await authRedirect('https://bsky.social')
 }
 
 async function handleCreateAccount() {
-  await navigateTo(
-    {
-      path: '/api/auth/atproto',
-      query: { handle: 'https://npmx.social', create: 'true' },
-    },
-    { external: true },
-  )
+  await authRedirect('https://npmx.social', true)
 }
 
 async function handleLogin() {
   if (handleInput.value) {
-    await navigateTo(
-      {
-        path: '/api/auth/atproto',
-        query: { handle: handleInput.value },
-      },
-      { external: true },
-    )
+    await authRedirect(handleInput.value)
   }
 }
 </script>

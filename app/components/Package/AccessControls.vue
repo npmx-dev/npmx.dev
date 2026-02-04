@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { NewOperation } from '~/composables/useConnector'
-import { buildScopeTeam } from '~/utils/npm'
+import { buildScopeTeam } from '~/utils/npm/common'
 
 const props = defineProps<{
   packageName: string

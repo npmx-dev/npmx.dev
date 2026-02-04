@@ -4,7 +4,7 @@ import VersionSelector from '~/components/VersionSelector.vue'
 
 // Mock the fetchAllPackageVersions function
 const mockFetchAllPackageVersions = vi.fn()
-vi.mock('~/composables/useNpmRegistry', () => ({
+vi.mock('~/utils/npm/api', () => ({
   fetchAllPackageVersions: (...args: unknown[]) => mockFetchAllPackageVersions(...args),
 }))
 

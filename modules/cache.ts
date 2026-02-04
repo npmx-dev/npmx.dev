@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtModule } from 'nuxt/kit'
 import { provider } from 'std-env'
 
@@ -29,12 +30,7 @@ export default defineNuxtModule({
       }
 
       const env = process.env.VERCEL_ENV
-
-      nitroConfig.storage['oauth-atproto-state'] = {
-        driver: env === 'production' ? 'vercel-kv' : 'vercel-runtime-cache',
-      }
-
-      nitroConfig.storage['oauth-atproto-session'] = {
+      nitroConfig.storage.atproto = {
         driver: env === 'production' ? 'vercel-kv' : 'vercel-runtime-cache',
       }
     })

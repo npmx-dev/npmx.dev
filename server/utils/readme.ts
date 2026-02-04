@@ -2,7 +2,7 @@ import { marked, type Tokens } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
 import type { ReadmeResponse, TocItem } from '#shared/types/readme'
-import { convertBlobToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
 import { highlightCodeSync } from './shiki'
 import { convertToEmoji } from '#shared/utils/emoji'
 
@@ -258,7 +258,7 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
 function resolveImageUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   const resolved = resolveUrl(url, packageName, repoInfo)
   if (repoInfo?.provider) {
-    return convertBlobToRawUrl(resolved, repoInfo.provider)
+    return convertBlobOrFileToRawUrl(resolved, repoInfo.provider)
   }
   return resolved
 }

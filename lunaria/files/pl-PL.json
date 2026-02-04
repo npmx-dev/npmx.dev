@@ -19,6 +19,7 @@
     "chat": "czat"
   },
   "search": {
+    "title": "Wyszukiwanie",
     "label": "Szukaj pakietów npm",
     "placeholder": "szukaj pakietów...",
     "button": "szukaj",
@@ -72,6 +73,7 @@
     "theme_light": "Jasny",
     "theme_dark": "Ciemny",
     "theme_system": "Systemowy",
+    "background_themes": "Odcień tła",
     "language": "Język",
     "help_translate": "Pomóż tłumaczyć npmx",
     "accent_colors": "Kolory akcentu",
@@ -141,6 +143,8 @@
       "deps": "Zależności",
       "install_size": "Rozmiar instalacji",
       "vulns": "Luki",
+      "published": "Opublikowano",
+      "published_tooltip": "Data publikacji {package}{'@'}{version}",
       "skills": "Umiejętności",
       "view_dependency_graph": "Pokaż graf zależności",
       "inspect_dependency_tree": "Przejrzyj drzewo zależności",
@@ -189,7 +193,8 @@
     },
     "create": {
       "title": "Utwórz nowy projekt",
-      "copy_command": "Kopiuj komendę tworzenia"
+      "copy_command": "Kopiuj komendę tworzenia",
+      "view": "{packageName} ma tego samego opiekuna. Kliknij, aby zobaczyć szczegóły."
     },
     "run": {
       "title": "Uruchom",
@@ -198,12 +203,14 @@
     "readme": {
       "title": "README",
       "no_readme": "Brak README.",
-      "view_on_github": "Zobacz na GitHub"
+      "view_on_github": "Zobacz na GitHub",
+      "toc_title": "Spis treści"
     },
     "keywords_title": "Słowa kluczowe",
     "compatibility": "Zgodność",
     "card": {
       "publisher": "Wydawca",
+      "published": "Opublikowano",
       "weekly_downloads": "Pobrania tygodniowo",
       "keywords": "Słowa kluczowe",
       "license": "Licencja"
@@ -363,6 +370,7 @@
       "weekly": "Tygodniowo",
       "size": "Rozmiar",
       "deps": "Zależności",
+      "published": "Opublikowano",
       "get_started": "Zacznij",
       "readme": "README",
       "maintainers": "Opiekunowie",
@@ -372,6 +380,7 @@
     },
     "sort": {
       "downloads": "Najczęściej pobierane",
+      "published": "Ostatnio opublikowane",
       "name_asc": "Nazwa (A-Z)",
       "name_desc": "Nazwa (Z-A)"
     }
@@ -626,6 +635,13 @@
     "more_keywords": "+{count} więcej",
     "clear_all": "Wyczyść wszystko",
     "remove_filter": "Usuń filtr {label}",
+    "chips": {
+      "search": "Szukaj",
+      "downloads": "Pobrania",
+      "keyword": "Słowo kluczowe",
+      "security": "Bezpieczeństwo",
+      "updated": "Zaktualizowano"
+    },
     "download_range": {
       "any": "Dowolnie",
       "lt100": "< 100",
@@ -656,6 +672,7 @@
       "downloads_day": "Pobrania/dzień",
       "downloads_month": "Pobrania/mies.",
       "downloads_year": "Pobrania/rok",
+      "published": "Ostatnio opublikowano",
       "name": "Nazwa",
       "quality": "Jakość",
       "popularity": "Popularność",
@@ -671,6 +688,7 @@
       "version": "Wersja",
       "description": "Opis",
       "downloads": "Pobrania/tydz.",
+      "published": "Ostatnio opublikowano",
       "maintainers": "Opiekunowie",
       "keywords": "Słowa kluczowe",
       "quality_score": "Wynik jakości",
@@ -845,6 +863,7 @@
       "deselect_all": "Odznacz wszystkie aspekty",
       "select_category": "Wybierz wszystkie aspekty: {category}",
       "deselect_category": "Odznacz wszystkie aspekty: {category}",
+      "binary_only_tooltip": "Ten pakiet udostępnia tylko pliki binarne i nie ma eksportów",
       "categories": {
         "performance": "Wydajność",
         "health": "Zdrowie",
@@ -865,7 +884,7 @@
           "description": "Liczba bezpośrednich zależności"
         },
         "totalDependencies": {
-          "label": "Wszystkich zależności",
+          "label": "Wszystkie zależności",
           "description": "Łączna liczba zależności, w tym przechodnich"
         },
         "downloads": {

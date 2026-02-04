@@ -2,7 +2,7 @@
 import type { PackageVersionInfo, SlimVersion } from '#shared/types'
 import { compare } from 'semver'
 import type { RouteLocationRaw } from 'vue-router'
-import { fetchAllPackageVersions } from '~/composables/useNpmRegistry'
+import { fetchAllPackageVersions } from '~/utils/npm/api'
 import {
   buildVersionToTagsMap,
   filterExcludedTags,
@@ -306,6 +306,18 @@ function getTagVersions(tag: string): VersionDisplay[] {
     :title="$t('package.versions.title')"
     id="versions"
   >
+    <template #actions>
+      <a
+        :href="`https://majors.nullvoxpopuli.com/q?packages=${packageName}`"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+        :title="$t('package.downloads.community_distribution')"
+      >
+        <span class="i-carbon:load-balancer-network w-3.5 h-3.5" aria-hidden="true" />
+        <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
+      </a>
+    </template>
     <div class="space-y-0.5 min-w-0">
       <!-- Dist-tag rows (limited to MAX_VISIBLE_TAGS) -->
       <div v-for="row in visibleTagRows" :key="row.id">

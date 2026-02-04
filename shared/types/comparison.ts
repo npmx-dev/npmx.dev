@@ -41,7 +41,6 @@ export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
   },
   totalDependencies: {
     category: 'performance',
-    comingSoon: true,
   },
   // Health
   downloads: {
@@ -111,3 +110,9 @@ export interface ComparisonPackage {
   version: string
   description?: string
 }
+
+// ComingSoon tests run only when FACET_INFO has at least one comingSoon facet
+export const comingSoonFacets = (Object.keys(FACET_INFO) as ComparisonFacet[]).filter(
+  f => FACET_INFO[f].comingSoon,
+)
+export const hasComingSoonFacets = comingSoonFacets.length > 0

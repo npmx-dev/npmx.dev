@@ -59,6 +59,7 @@ const typesHref = computed(() => {
         <component
           :is="typesHref ? NuxtLink : 'span'"
           :to="typesHref"
+          :tabindex="!typesHref ? 0 : undefined"
           class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
           :class="[
             hasTypes
@@ -83,6 +84,7 @@ const typesHref = computed(() => {
     <li>
       <TooltipApp :text="hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')">
         <span
+          tabindex="0"
           class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200"
           :class="
             hasEsm
@@ -104,6 +106,7 @@ const typesHref = computed(() => {
     <li v-if="hasCjs">
       <TooltipApp :text="$t('package.metrics.cjs')">
         <span
+          tabindex="0"
           class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted bg-bg-muted border border-border rounded transition-colors duration-200"
         >
           <span class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
