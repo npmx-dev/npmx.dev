@@ -46,7 +46,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </h1>
           <button
             type="button"
-            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 shrink-0"
+            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
           >
             <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
@@ -74,7 +74,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               <select
                 id="theme-select"
                 :value="colorMode.preference"
-                class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 cursor-pointer"
+                class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg cursor-pointer"
                 @change="
                   colorMode.preference = ($event.target as HTMLSelectElement).value as
                     | 'light'
@@ -161,7 +161,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <select
                   id="language-select"
                   :value="locale"
-                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 cursor-pointer"
+                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-accent/70 cursor-pointer"
                   @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
                 >
                   <option v-for="loc in locales" :key="loc.code" :value="loc.code" :lang="loc.code">
@@ -193,7 +193,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
               >
                 <span class="i-carbon:logo-github w-4 h-4" aria-hidden="true" />
                 {{ $t('settings.help_translate') }}

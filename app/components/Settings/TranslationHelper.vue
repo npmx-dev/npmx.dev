@@ -68,7 +68,7 @@ ${template}`
         </h4>
         <button
           type="button"
-          class="text-xs text-accent hover:underline rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+          class="text-xs text-accent hover:underline rounded focus-visible:outline-accent/70"
           @click="copyMissingKeysTemplate"
         >
           {{ copied ? $t('common.copied') : $t('i18n.copy_keys') }}
@@ -84,7 +84,7 @@ ${template}`
       <button
         v-if="hasMoreKeys"
         type="button"
-        class="text-xs text-fg-muted hover:text-fg rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="text-xs text-fg-muted hover:text-fg rounded focus-visible:outline-accent/70"
         @click="showAll = true"
       >
         {{ $t('i18n.show_more_keys', { count: remainingCount }) }}
@@ -102,7 +102,7 @@ ${template}`
           :href="status.githubEditUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs bg-bg hover:bg-bg-subtle border border-border rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs bg-bg hover:bg-bg-subtle border border-border rounded-md transition-colors focus-visible:outline-accent/70"
         >
           <span class="i-carbon-edit w-3.5 h-3.5" aria-hidden="true" />
           {{ $t('i18n.edit_on_github') }}
@@ -112,7 +112,7 @@ ${template}`
           :href="contributionGuideUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-fg-muted hover:text-fg rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-fg-muted hover:text-fg rounded transition-colors focus-visible:outline-accent/70"
         >
           <span class="i-carbon-document w-3.5 h-3.5" aria-hidden="true" />
           {{ $t('i18n.view_guide') }}

@@ -154,7 +154,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
       :aria-activedescendant="
         highlightedIndex >= 0 ? `${listboxId}-option-${highlightedIndex}` : undefined
       "
-      class="w-full px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="w-full px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70 disabled:opacity-50 disabled:cursor-not-allowed"
       @input="handleInput"
       @focus="handleFocus"
       @blur="handleBlur"

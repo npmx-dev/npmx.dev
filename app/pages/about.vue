@@ -181,7 +181,10 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
           <div v-else-if="contributorsStatus === 'error'" class="text-fg-subtle text-sm">
             {{ $t('about.contributors.error') }}
           </div>
-          <div v-else-if="contributors?.length" class="flex flex-wrap gap-2">
+          <div
+            v-else-if="contributors?.length"
+            class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-2"
+          >
             <a
               v-for="contributor in contributors"
               :key="contributor.id"
@@ -216,7 +219,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
       <footer class="mt-16 pt-8 border-t border-border">
         <NuxtLink
           to="/"
-          class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-[color] duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-[color] duration-200 rounded focus-visible:outline-accent/70"
         >
           <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
           {{ $t('about.back_home') }}

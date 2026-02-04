@@ -1,12 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <rect width="512" height="512" rx="64" fill="#0a0a0a"/>
+  <rect x="110" y="310" width="60" height="60" fill="#525252"/>
   <text
-    x="256"
-    y="320"
-    font-family="ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace"
-    font-size="280"
+    x="320"
+    y="370"
+    font-family="'Geist Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace"
+    font-size="420"
     font-weight="500"
     text-anchor="middle"
-    fill="#91BA4D"
-  ><tspan fill="#20461A">.</tspan>/</text>
+    fill="#fafafa"
+  ><tspan>/</tspan></text>
 </svg>
