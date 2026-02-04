@@ -6,7 +6,7 @@ import { BACKGROUND_THEMES } from '#shared/utils/constants'
 
 type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
 
-type AccentColorId = keyof typeof ACCENT_COLORS
+type AccentColorId = keyof typeof ACCENT_COLORS.light
 
 /**
  * Application settings stored in localStorage
@@ -76,22 +76,39 @@ export function useRelativeDates() {
  */
 export function useAccentColor() {
   const { settings } = useSettings()
+  const colorMode = useColorMode()
 
-  const accentColors = Object.entries(ACCENT_COLORS).map(([id, value]) => ({
-    id: id as AccentColorId,
-    name: id,
-    value,
-  }))
+  const accentColors = computed(() => {
+    const isDark = colorMode.value === 'dark'
+    const colors = isDark ? ACCENT_COLORS.dark : ACCENT_COLORS.light
+
+    return Object.entries(colors).map(([id, value]) => ({
+      id: id as AccentColorId,
+      name: id,
+      value,
+    }))
+  })
 
   function setAccentColor(id: AccentColorId | null) {
-    const color = id ? ACCENT_COLORS[id] : null
-    if (color) {
+    if (id) {
+      const isDark = colorMode.value === 'dark'
+      const color = isDark ? ACCENT_COLORS.dark[id] : ACCENT_COLORS.light[id]
       document.documentElement.style.setProperty('--accent-color', color)
     } else {
       document.documentElement.style.removeProperty('--accent-color')
     }
     settings.value.accentColorId = id
   }
+
+  // Update accent color when color mode changes
+  watch(
+    () => colorMode.value,
+    () => {
+      if (settings.value.accentColorId) {
+        setAccentColor(settings.value.accentColorId)
+      }
+    },
+  )
 
   return {
     accentColors,

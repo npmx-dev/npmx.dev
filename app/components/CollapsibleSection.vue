@@ -76,7 +76,7 @@ useHead({
 
 <template>
   <section class="scroll-mt-20" :data-anchor-id="id">
-    <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center justify-between mb-3 px-1">
       <component
         :is="headingLevel"
         :id="headingId"
@@ -85,7 +85,7 @@ useHead({
         <button
           :id="buttonId"
           type="button"
-          class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg-muted transition-colors duration-200 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+          class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg-muted transition-colors duration-200 shrink-0 focus-visible:outline-accent/70 rounded"
           :aria-expanded="isOpen"
           :aria-controls="contentId"
           :aria-label="ariaLabel"
@@ -118,14 +118,17 @@ useHead({
       </component>
 
       <!-- Actions slot for buttons or other elements -->
-      <slot name="actions" />
+      <div class="pe-1">
+        <slot name="actions" />
+      </div>
     </div>
 
     <div
       :id="contentId"
       class="grid ms-6 transition-[grid-template-rows] duration-200 ease-in-out collapsible-content overflow-hidden"
+      :inert="!isOpen"
     >
-      <div class="min-h-0 min-w-0">
+      <div class="min-h-0 min-w-0 p-1">
         <slot />
       </div>
     </div>

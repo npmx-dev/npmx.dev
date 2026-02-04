@@ -61,6 +61,7 @@ afterEach(() => {
 import {
   AppFooter,
   AppHeader,
+  AppLogo,
   BaseCard,
   BuildEnvironment,
   CallToAction,
@@ -219,6 +220,22 @@ describe('component accessibility audits', () => {
   describe('AppFooter', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(AppFooter)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('AppLogo', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(AppLogo)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with custom class', async () => {
+      const component = await mountSuspended(AppLogo, {
+        props: { class: 'h-6 w-6 text-accent' },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

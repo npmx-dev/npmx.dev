@@ -123,7 +123,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
           >
           <button
             type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70"
             :aria-label="$t('package.get_started.copy_command')"
             @click.stop="copyInstallCommand"
           >
@@ -150,7 +150,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             >
             <NuxtLink
               :to="`/package/${typesPackageName}`"
-              class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+              class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded"
               :title="$t('package.get_started.view_types', { package: typesPackageName })"
             >
               <span class="i-carbon:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />
@@ -185,7 +185,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             >
             <button
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/runcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70"
               @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
             >
               {{ runCopied ? $t('common.copied') : $t('common.copy') }}
@@ -202,7 +202,8 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             >
             <NuxtLink
               :to="`/package/${createPackageInfo.packageName}`"
-              class="text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+              class="text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-accent/70 rounded"
+              :title="$t('package.create.view', { packageName: createPackageInfo.packageName })"
             >
               <TooltipApp
                 :text="$t('package.create.view', { packageName: createPackageInfo.packageName })"
@@ -232,7 +233,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             >
             <button
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/createcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70"
               :aria-label="$t('package.create.copy_command')"
               @click.stop="copyCreateCommand"
             >

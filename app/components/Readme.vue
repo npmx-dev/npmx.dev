@@ -60,7 +60,7 @@ function handleClick(event: MouseEvent) {
 
 <template>
   <article
-    class="readme prose prose-invert max-w-[70ch] lg:max-w-none"
+    class="readme prose prose-invert max-w-[70ch] lg:max-w-none px-1"
     v-html="html"
     @click="handleClick"
   />
