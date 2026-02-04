@@ -23,10 +23,7 @@ defineProps<{
 
     <div class="space-y-3 border border-border rounded-lg p-5">
       <p class="flex items-center gap-2 text-sm text-fg m-0">
-        <span
-          class="i-solar-shield-check-outline w-4 h-4 shrink-0 text-emerald-500"
-          aria-hidden="true"
-        />
+        <span class="i-lucide-shield-check w-4 h-4 shrink-0 text-emerald-500" aria-hidden="true" />
         <i18n-t keypath="package.provenance_section.built_and_signed_on" tag="span">
           <template #provider>
             <strong>{{ details.providerLabel }}</strong>

@@ -569,10 +569,7 @@ defineOgImageComponent('Package', {
                   :aria-label="$t('package.provenance_section.view_more_details')"
                   class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-emerald-500 transition-colors duration-200 min-w-6 min-h-6"
                 >
-                  <span
-                    class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0"
-                    aria-hidden="true"
-                  />
+                  <span class="i-lucide-shield-check w-3.5 h-3.5 shrink-0" aria-hidden="true" />
                 </a>
               </TooltipApp>
             </template>
