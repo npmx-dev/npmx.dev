@@ -165,48 +165,7 @@ function handleClick(event: MouseEvent) {
 }
 
 .readme :deep(.readme-code-block) {
-  display: block;
-  width: 100%;
-  position: relative;
-}
-
-.readme :deep(.readme-copy-button) {
-  position: absolute;
-  top: 0.4rem;
-  inset-inline-end: 0.4rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--bg-subtle) 80%, transparent);
-  border: 1px solid var(--border);
-  color: var(--fg-subtle);
-  opacity: 0;
-  transition:
-    opacity 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.readme :deep(.readme-code-block:hover .readme-copy-button),
-.readme :deep(.readme-copy-button:focus-visible) {
-  opacity: 1;
-}
-
-.readme :deep(.readme-copy-button:hover) {
-  color: var(--fg);
-  border-color: var(--border-hover);
-}
-
-.readme :deep(.readme-copy-button > span) {
-  width: 1rem;
-  height: 1rem;
-  display: inline-block;
-  pointer-events: none;
-}
-
-.readme :deep(.readme-code-block) {
+  @apply bg-bg-subtle;
   display: block;
   width: 100%;
   position: relative;
