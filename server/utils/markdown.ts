@@ -30,6 +30,12 @@ function formatNumber(num: number): string {
   return new Intl.NumberFormat('en-US').format(num)
 }
 
+function formatCompactNumber(num: number): string {
+  return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(
+    num,
+  )
+}
+
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} kB`
@@ -65,6 +71,8 @@ function getRepositoryUrl(repository?: {
 }): string | null {
   if (!repository?.url) return null
   let url = normalizeGitUrl(repository.url)
+  // Skip non-HTTP URLs after normalization
+  if (!isHttpUrl(url)) return null
   // Append directory for monorepo packages
   if (repository.directory) {
     url = joinURL(`${url}/tree/HEAD`, repository.directory)
@@ -160,7 +168,7 @@ export function generatePackageMarkdown(options: PackageMarkdownOptions): string
   const statsSeparators: string[] = []
   const statsValues: string[] = []
 
-  // Weekly downloads with sparkline
+  // Weekly downloads with sparkline and trend numbers
   if (weeklyDownloads !== undefined) {
     statsHeaders.push('Downloads (weekly)')
     statsSeparators.push('---')
@@ -169,7 +177,9 @@ export function generatePackageMarkdown(options: PackageMarkdownOptions): string
     if (dailyDownloads && dailyDownloads.length > 0) {
       const weeklyTotals = buildWeeklyTotals(dailyDownloads)
       if (weeklyTotals.length > 1) {
-        downloadCell += ` ${generateSparkline(weeklyTotals)}`
+        // Add both numeric trend and visual sparkline for LLM + human readability
+        const compactTotals = weeklyTotals.map(formatCompactNumber).join(' ')
+        downloadCell += ` [${compactTotals}] ${generateSparkline(weeklyTotals)}`
       }
     }
     statsValues.push(downloadCell)
@@ -182,7 +192,7 @@ export function generatePackageMarkdown(options: PackageMarkdownOptions): string
   statsValues.push(String(depCount))
 
   // Install size
-  if (installSize) {
+  if (installSize !== undefined) {
     statsHeaders.push('Install Size')
     statsSeparators.push('---')
     statsValues.push(formatBytes(installSize))

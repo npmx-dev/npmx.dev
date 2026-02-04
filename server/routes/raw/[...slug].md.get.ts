@@ -1,11 +1,10 @@
 import { generatePackageMarkdown } from '../../utils/markdown'
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
-import {
-  CACHE_MAX_AGE_ONE_HOUR,
-  NPM_MISSING_README_SENTINEL,
-  ERROR_NPM_FETCH_FAILED,
-} from '#shared/utils/constants'
+import { NPM_MISSING_README_SENTINEL, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
+
+// Cache TTL matches the ISR config for /raw/** routes (60 seconds)
+const CACHE_MAX_AGE = 60
 import { parseRepositoryInfo } from '#shared/utils/git-providers'
 
 const NPM_API = 'https://api.npmjs.org'
@@ -225,11 +224,7 @@ export default defineEventHandler(async event => {
   })
 
   setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
-  setHeader(
-    event,
-    'Cache-Control',
-    `public, max-age=${CACHE_MAX_AGE_ONE_HOUR}, stale-while-revalidate`,
-  )
+  setHeader(event, 'Cache-Control', `public, max-age=${CACHE_MAX_AGE}, stale-while-revalidate`)
 
   return markdown
 })
