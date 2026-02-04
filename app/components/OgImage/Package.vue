@@ -46,6 +46,10 @@ const repositoryUrl = computed(() => {
   return url
 })
 
+const { data: likes, refresh: refreshLikes } = useFetch(() => `/api/social/likes/${name.value}`, {
+  default: () => ({ totalLikes: 0, userHasLiked: false }),
+})
+
 const { stars, refresh: refreshRepoMeta } = useRepoMeta(repositoryUrl)
 
 const formattedStars = computed(() =>
@@ -57,7 +61,7 @@ const formattedStars = computed(() =>
 
 try {
   await refreshPkg()
-  await Promise.all([refreshRepoMeta(), refreshDownloads()])
+  await Promise.all([refreshRepoMeta(), refreshDownloads(), refreshLikes()])
 } catch (err) {
   console.warn('[og-image-package] Failed to load data server-side:', err)
   throw createError({
@@ -173,6 +177,35 @@ try {
           </svg>
           <span>
             {{ formattedStars }}
+          </span>
+        </span>
+        <span class="flex items-center gap-2">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="opacity-90"
+          >
+            <path
+              d="M19.3057 25.8317L18.011 27.0837C17.7626 27.3691 17.4562 27.5983 17.1124 27.7561C16.7685 27.914 16.3951 27.9969 16.0167 27.9993C15.6384 28.0017 15.2639 27.9235 14.918 27.77C14.5722 27.6165 14.263 27.3912 14.011 27.1091L6.66699 19.9997C4.66699 17.9997 2.66699 15.7331 2.66699 12.6664C2.66702 11.1827 3.11712 9.73384 3.95784 8.51128C4.79856 7.28872 5.99035 6.34994 7.3758 5.81893C8.76126 5.28792 10.2752 5.18965 11.7177 5.53712C13.1602 5.88459 14.4633 6.66143 15.455 7.76506C15.5248 7.83975 15.6093 7.89929 15.7031 7.93999C15.7969 7.9807 15.8981 8.00171 16.0003 8.00171C16.1026 8.00171 16.2038 7.9807 16.2976 7.93999C16.3914 7.89929 16.4758 7.83975 16.5457 7.76506C17.5342 6.65426 18.8377 5.87088 20.2825 5.5192C21.7273 5.16751 23.245 5.26419 24.6335 5.79637C26.022 6.32856 27.2155 7.271 28.0551 8.49826C28.8948 9.72553 29.3407 11.1794 29.3337 12.6664C29.3332 13.3393 29.2349 14.0085 29.0417 14.6531"
+              :stroke="primaryColor"
+              stroke-width="2.66667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="opacity-60"
+            />
+            <path
+              d="M20 20H24M28 20H24M24 16L24 20M24 24L24 20"
+              :stroke="primaryColor"
+              stroke-width="2.66667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>
+            {{ likes.totalLikes }}
           </span>
         </span>
       </div>
