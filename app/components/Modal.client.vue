@@ -25,7 +25,7 @@ defineExpose({
     <dialog
       ref="dialogRef"
       closedby="any"
-      class="w-full bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain m-0 m-auto p-6 text-fg"
+      class="w-full bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain m-0 m-auto p-6 text-fg focus-visible:outline focus-visible:outline-accent/70"
       :aria-labelledby="modalTitleId"
       v-bind="$attrs"
     >
@@ -36,7 +36,7 @@ defineExpose({
         </h2>
         <button
           type="button"
-          class="text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+          class="text-fg-subtle w-5 h-5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
           :aria-label="$t('common.close')"
           @click="handleModalClose"
         >

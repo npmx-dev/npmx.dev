@@ -472,4 +472,11 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 .docs-content .docs-members pre code {
   @apply text-fg-muted;
 }
+
+.docs-content .docs-symbol-name,
+.docs-content .docs-members dl dd,
+.docs-content .docs-members dl dt code,
+.docs-content .docs-section .docs-symbol .docs-description {
+  word-break: break-all;
+}
 </style>

@@ -174,14 +174,14 @@ const previewPackageJson = computed(() => {
       <div class="flex gap-3">
         <NuxtLink
           :to="`/package/${packageName}`"
-          class="flex-1 px-4 py-2 font-mono text-sm text-center text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="flex-1 px-4 py-2 font-mono text-sm text-center text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
           @click="close"
         >
           {{ $t('claim.modal.view_package') }}
         </NuxtLink>
         <button
           type="button"
-          class="flex-1 px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="flex-1 px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
           @click="close"
         >
           {{ $t('common.close') }}
@@ -278,7 +278,7 @@ const previewPackageJson = computed(() => {
               <div class="min-w-0">
                 <NuxtLink
                   :to="`/package/${pkg.name}`"
-                  class="font-mono text-sm text-fg hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                  class="font-mono text-sm text-fg hover:underline focus-visible:outline-accent/70 rounded"
                   target="_blank"
                 >
                   {{ pkg.name }}
@@ -328,7 +328,7 @@ const previewPackageJson = computed(() => {
           </div>
           <button
             type="button"
-            class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
             @click="connectorModal.open"
           >
             {{ $t('claim.modal.connect_button') }}
@@ -356,7 +356,7 @@ const previewPackageJson = computed(() => {
           <button
             type="button"
             :disabled="isPublishing"
-            class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
             @click="handleClaim"
           >
             {{ isPublishing ? $t('claim.modal.publishing') : $t('claim.modal.claim_button') }}
@@ -368,7 +368,7 @@ const previewPackageJson = computed(() => {
       <button
         v-if="!checkResult.available || !checkResult.valid"
         type="button"
-        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
         @click="close"
       >
         {{ $t('common.close') }}
@@ -385,7 +385,7 @@ const previewPackageJson = computed(() => {
       </div>
       <button
         type="button"
-        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
         @click="() => checkAvailability()"
       >
         {{ $t('common.retry') }}

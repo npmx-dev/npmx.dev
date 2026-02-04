@@ -7,6 +7,15 @@ import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import type { PublicUserSession } from '#shared/schemas/publicUserSession'
 
+interface ProfileRecord {
+  avatar?: {
+    $type: 'blob'
+    ref: { $link: string }
+    mimeType: string
+    size: number
+  }
+}
+
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig(event)
   if (!config.sessionPassword) {
@@ -58,8 +67,36 @@ export default defineEventHandler(async event => {
   )
   if (response.ok) {
     const miniDoc: PublicUserSession = await response.json()
+
+    // Fetch the user's profile record to get their avatar blob reference
+    let avatar: string | undefined
+    const did = agent.did
+    try {
+      const pdsUrl = new URL(miniDoc.pds)
+      // Only fetch from HTTPS PDS endpoints to prevent SSRF
+      if (did && pdsUrl.protocol === 'https:') {
+        const profileResponse = await fetch(
+          `${pdsUrl.origin}/xrpc/com.atproto.repo.getRecord?repo=${encodeURIComponent(did)}&collection=app.bsky.actor.profile&rkey=self`,
+          { headers: { 'User-Agent': 'npmx' } },
+        )
+        if (profileResponse.ok) {
+          const record = (await profileResponse.json()) as { value: ProfileRecord }
+          const avatarBlob = record.value.avatar
+          if (avatarBlob?.ref?.$link) {
+            // Use Bluesky CDN for faster image loading
+            avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${avatarBlob.ref.$link}@jpeg`
+          }
+        }
+      }
+    } catch {
+      // Avatar fetch failed, continue without it
+    }
+
     await session.update({
-      public: miniDoc,
+      public: {
+        ...miniDoc,
+        avatar,
+      },
     })
   }
 

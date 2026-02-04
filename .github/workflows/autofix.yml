@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
         with:
           cache: true
@@ -41,4 +41,4 @@ jobs:
       - name: 🔠 Fix lint errors
         run: pnpm lint:fix
 
-      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
+      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # 635ffb0c9798bd160680f18fd73371e355b85f27

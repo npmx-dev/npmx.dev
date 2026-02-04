@@ -157,7 +157,7 @@ watch(
       </h2>
       <button
         type="button"
-        class="p-1 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="p-1 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
         :aria-label="$t('package.access.refresh')"
         :disabled="isLoadingCollaborators"
         @click="loadCollaborators"
@@ -225,7 +225,7 @@ watch(
         <button
           v-if="collab.isTeam"
           type="button"
-          class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 shrink-0 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 shrink-0 rounded focus-visible:outline-accent/70"
           :aria-label="$t('package.access.revoke_access', { name: collab.displayName })"
           @click="handleRevokeAccess(collab.name)"
         >
@@ -250,7 +250,7 @@ watch(
             id="grant-team-select"
             v-model="selectedTeam"
             name="grant-team"
-            class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
             :disabled="isLoadingTeams"
           >
             <option value="" disabled>
@@ -273,7 +273,7 @@ watch(
             id="grant-permission-select"
             v-model="permission"
             name="grant-permission"
-            class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
           >
             <option value="read-only">{{ $t('package.access.permission.read_only') }}</option>
             <option value="read-write">{{ $t('package.access.permission.read_write') }}</option>
@@ -281,13 +281,13 @@ watch(
           <button
             type="submit"
             :disabled="!selectedTeam || isGranting"
-            class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
           >
             {{ isGranting ? '…' : $t('package.access.grant_button') }}
           </button>
           <button
             type="button"
-            class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
             :aria-label="$t('package.access.cancel_grant')"
             @click="showGrantAccess = false"
           >
@@ -299,7 +299,7 @@ watch(
     <button
       v-else
       type="button"
-      class="w-full px-3 py-1.5 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+      class="w-full px-3 py-1.5 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
       @click="showGrantAccess = true"
     >
       {{ $t('package.access.grant_access') }}

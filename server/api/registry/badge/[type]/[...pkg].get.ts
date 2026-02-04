@@ -31,8 +31,13 @@ const COLORS = {
   white: '#ffffff',
 }
 
-function measureTextWidth(text: string): number {
-  const charWidth = 7
+const DEFAULT_CHAR_WIDTH = 7
+const CHARS_WIDTH = {
+  engines: 5.5,
+}
+
+function measureTextWidth(text: string, charWidth?: number): number {
+  charWidth ??= DEFAULT_CHAR_WIDTH
   const paddingX = 8
   return Math.max(40, Math.round(text.length * charWidth) + paddingX * 2)
 }
@@ -288,7 +293,10 @@ export default defineCachedEventHandler(
       const finalLabelColor = rawLabelColor?.startsWith('#') ? rawLabelColor : `#${rawLabelColor}`
 
       const leftWidth = measureTextWidth(finalLabel)
-      const rightWidth = measureTextWidth(finalValue)
+      const rightWidth = measureTextWidth(
+        finalValue,
+        CHARS_WIDTH[strategyKey as keyof typeof CHARS_WIDTH],
+      )
       const totalWidth = leftWidth + rightWidth
       const height = 20
 

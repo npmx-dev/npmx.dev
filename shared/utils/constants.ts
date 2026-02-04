@@ -21,6 +21,7 @@ export const ERROR_CALC_INSTALL_SIZE_FAILED = 'Failed to calculate install size.
 export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
+export const ERROR_PROVENANCE_FETCH_FAILED = 'Failed to fetch provenance.'
 export const UNSET_NUXT_SESSION_PASSWORD = 'NUXT_SESSION_PASSWORD not set'
 export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
 export const ERROR_SKILLS_FETCH_FAILED = 'Failed to fetch skills.'
@@ -45,12 +46,22 @@ export const LIKES_SCOPE = `repo:${dev.npmx.feed.like.$nsid}`
 
 // Theming
 export const ACCENT_COLORS = {
-  rose: 'oklch(0.797 0.084 11.056)',
-  amber: 'oklch(0.828 0.165 84.429)',
-  emerald: 'oklch(0.792 0.153 166.95)',
-  sky: 'oklch(0.787 0.128 230.318)',
-  violet: 'oklch(0.714 0.148 286.067)',
-  coral: 'oklch(0.704 0.177 14.75)',
+  light: {
+    coral: 'oklch(0.70 0.19 14.75)',
+    amber: 'oklch(0.8 0.25 84.429)',
+    emerald: 'oklch(0.70 0.17 166.95)',
+    sky: 'oklch(0.70 0.15 230.318)',
+    violet: 'oklch(0.70 0.17 286.067)',
+    magenta: 'oklch(0.75 0.18 330)',
+  },
+  dark: {
+    coral: 'oklch(0.704 0.177 14.75)',
+    amber: 'oklch(0.828 0.165 84.429)',
+    emerald: 'oklch(0.792 0.153 166.95)',
+    sky: 'oklch(0.787 0.128 230.318)',
+    violet: 'oklch(0.78 0.148 286.067)',
+    magenta: 'oklch(0.78 0.15 330)',
+  },
 } as const
 
 export const BACKGROUND_THEMES = {

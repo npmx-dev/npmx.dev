@@ -5,6 +5,7 @@ export interface UserServerSession {
     did: string
     handle: string
     pds: string
+    avatar?: string
   }
   // Only to be used in the atproto session and state stores
   // Will need to change to Record<string, T> and add a current logged in user if we ever want to support

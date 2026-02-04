@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
         with:
           cache: true
@@ -41,4 +41,4 @@ jobs:
         run: pnpm install
 
       - name: Generate Lunaria Overview
-        uses: lunariajs/action@v1-prerelease
+        uses: lunariajs/action@4911ad0736d1e3b20af4cb70f5079aea2327ed8e # v1-prerelease

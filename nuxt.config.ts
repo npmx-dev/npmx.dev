@@ -102,6 +102,7 @@ export default defineNuxtConfig({
     '/package-docs/:scope/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/_avatar/**': {
       isr: 3600,
@@ -262,10 +263,6 @@ export default defineNuxtConfig({
         'semver',
         'validate-npm-package-name',
         '@atproto/lex',
-        '@atproto/lex-data',
-        '@atproto/lex-json',
-        '@atproto/lex-schema',
-        '@atproto/lex-client',
       ],
     },
   },
