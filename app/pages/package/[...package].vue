@@ -863,7 +863,12 @@ defineOgImageComponent('Package', {
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
               <TooltipApp :text="sizeTooltip">
-                <span class="i-carbon:information w-3 h-3 text-fg-subtle" aria-hidden="true" />
+                <span
+                  tabindex="0"
+                  class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline focus-visible:outline-accent/70 rounded"
+                >
+                  <span class="i-carbon:information w-3 h-3" aria-hidden="true" />
+                </span>
               </TooltipApp>
             </dt>
             <dd class="font-mono text-sm text-fg">
