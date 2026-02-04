@@ -1,4 +1,6 @@
 {
+  "built_at": "generado {0}",
+  "alt_logo": "logo de npmx",
   "connector": {
     "modal": {
       "connected_hint": "Ahora puedes administrar paquetes y organizaciones desde la interfaz web.",

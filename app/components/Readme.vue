@@ -3,41 +3,73 @@ defineProps<{
   html: string
 }>()
 
+const router = useRouter()
 const { copy } = useClipboard()
 
-const handleCopy = async (e: MouseEvent) => {
-  const target = (e.target as HTMLElement).closest('[data-copy]')
+// Combined click handler for:
+// 1. Intercepting npmjs.com links to route internally
+// 2. Copy button functionality for code blocks
+function handleClick(event: MouseEvent) {
+  const target = event.target as HTMLElement | undefined
   if (!target) return
 
-  const wrapper = target.closest('.readme-code-block')
-  if (!wrapper) return
+  // Handle copy button clicks
+  const copyTarget = target.closest('[data-copy]')
+  if (copyTarget) {
+    const wrapper = copyTarget.closest('.readme-code-block')
+    if (!wrapper) return
 
-  const pre = wrapper.querySelector('pre')
-  if (!pre?.textContent) return
+    const pre = wrapper.querySelector('pre')
+    if (!pre?.textContent) return
 
-  await copy(pre.textContent)
+    copy(pre.textContent)
 
-  const icon = target.querySelector('span')
-  if (!icon) return
+    const icon = copyTarget.querySelector('span')
+    if (!icon) return
 
-  const originalIcon = 'i-carbon:copy'
-  const successIcon = 'i-carbon:checkmark'
+    const originalIcon = 'i-carbon:copy'
+    const successIcon = 'i-carbon:checkmark'
 
-  icon.classList.remove(originalIcon)
-  icon.classList.add(successIcon)
+    icon.classList.remove(originalIcon)
+    icon.classList.add(successIcon)
 
-  setTimeout(() => {
-    icon.classList.remove(successIcon)
-    icon.classList.add(originalIcon)
-  }, 2000)
+    setTimeout(() => {
+      icon.classList.remove(successIcon)
+      icon.classList.add(originalIcon)
+    }, 2000)
+    return
+  }
+
+  // Handle npmjs.com link clicks - route internally
+  const anchor = target.closest('a')
+  if (!anchor) return
+
+  const href = anchor.getAttribute('href')
+  if (!href) return
+
+  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
+  if (!match || !match[1]) return
+
+  const route = router.resolve(match[1])
+  if (route) {
+    event.preventDefault()
+    router.push(route)
+  }
 }
 </script>
 
 <template>
   <article
-    class="readme prose prose-invert max-w-[70ch] lg:max-w-none"
+    class="readme prose prose-invert max-w-[70ch] lg:max-w-none px-1"
     v-html="html"
-    @click="handleCopy"
+    :style="{
+      '--i18n-note': '\'' + $t('package.readme.callout.note') + '\'',
+      '--i18n-tip': '\'' + $t('package.readme.callout.tip') + '\'',
+      '--i18n-important': '\'' + $t('package.readme.callout.important') + '\'',
+      '--i18n-warning': '\'' + $t('package.readme.callout.warning') + '\'',
+      '--i18n-caution': '\'' + $t('package.readme.callout.caution') + '\'',
+    }"
+    @click="handleClick"
   />
 </template>
 
@@ -63,7 +95,7 @@ const handleCopy = async (e: MouseEvent) => {
   color: var(--fg);
   @apply font-mono;
   font-weight: 500;
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
   line-height: 1.3;
 
@@ -308,7 +340,7 @@ const handleCopy = async (e: MouseEvent) => {
   background: rgba(59, 130, 246, 0.05);
 }
 .readme :deep(blockquote[data-callout='note']::before) {
-  content: 'Note';
+  content: var(--i18n-note, 'Note');
   color: #3b82f6;
 }
 .readme :deep(blockquote[data-callout='note']::after) {
@@ -323,7 +355,7 @@ const handleCopy = async (e: MouseEvent) => {
   background: rgba(34, 197, 94, 0.05);
 }
 .readme :deep(blockquote[data-callout='tip']::before) {
-  content: 'Tip';
+  content: var(--i18n-tip, 'Tip');
   color: #22c55e;
 }
 .readme :deep(blockquote[data-callout='tip']::after) {
@@ -338,7 +370,7 @@ const handleCopy = async (e: MouseEvent) => {
   background: rgba(168, 85, 247, 0.05);
 }
 .readme :deep(blockquote[data-callout='important']::before) {
-  content: 'Important';
+  content: var(--i18n-important, 'Important');
   color: var(--syntax-fn);
 }
 .readme :deep(blockquote[data-callout='important']::after) {
@@ -353,7 +385,7 @@ const handleCopy = async (e: MouseEvent) => {
   background: rgba(234, 179, 8, 0.05);
 }
 .readme :deep(blockquote[data-callout='warning']::before) {
-  content: 'Warning';
+  content: var(--i18n-warning, 'Warning');
   color: #eab308;
 }
 .readme :deep(blockquote[data-callout='warning']::after) {
@@ -368,7 +400,7 @@ const handleCopy = async (e: MouseEvent) => {
   background: rgba(239, 68, 68, 0.05);
 }
 .readme :deep(blockquote[data-callout='caution']::before) {
-  content: 'Caution';
+  content: var(--i18n-caution, 'Caution');
   color: #ef4444;
 }
 .readme :deep(blockquote[data-callout='caution']::after) {
@@ -407,9 +439,15 @@ const handleCopy = async (e: MouseEvent) => {
 
 .readme :deep(img) {
   max-width: 100%;
-  height: auto;
+  height: revert-layer;
+  display: revert-layer;
   border-radius: 8px;
   margin: 1rem 0;
+}
+
+.readme :deep(video) {
+  height: revert-layer;
+  display: revert-layer;
 }
 
 .readme :deep(hr) {

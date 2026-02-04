@@ -47,7 +47,19 @@ export interface SlimPackument {
   'name': string
   'description'?: string
   'dist-tags': { latest?: string } & Record<string, string>
-  /** Only includes time for dist-tag versions + modified/created */
+  /**
+   * Timestamps for package versions.
+   *
+   * **IMPORTANT**: Use `time[version]` to get the publish date of a specific version.
+   *
+   * **DO NOT use `time.modified`** - it can be updated by metadata changes (e.g., maintainer
+   * additions/removals) without any code being published, making it misleading for users
+   * trying to assess package maintenance activity.
+   *
+   * - `time[version]` - When that specific version was published (use this!)
+   * - `time.created` - When the package was first created
+   * - `time.modified` - Last metadata change (misleading - avoid using)
+   */
   'time': { modified?: string; created?: string } & Record<string, string>
   'maintainers'?: NpmPerson[]
   'author'?: NpmPerson
@@ -201,6 +213,30 @@ export interface NpmVersionDist {
 }
 
 /**
+ * Parsed provenance details for display (from attestation bundle SLSA predicate).
+ * Used by the provenance API and PackageProvenanceSection.
+ * @public
+ */
+export interface ProvenanceDetails {
+  /** Provider ID (e.g. "github", "gitlab") */
+  provider: string
+  /** Human-readable provider label (e.g. "GitHub Actions") */
+  providerLabel: string
+  /** Link to build run summary (e.g. GitHub Actions run URL) */
+  buildSummaryUrl?: string
+  /** Link to source commit in repository */
+  sourceCommitUrl?: string
+  /** Source commit SHA (short or full) */
+  sourceCommitSha?: string
+  /** Link to workflow/build config file in repo */
+  buildFileUrl?: string
+  /** Workflow path (e.g. ".github/workflows/release.yml") */
+  buildFilePath?: string
+  /** Link to transparency log entry (e.g. Sigstore search) */
+  publicLedgerUrl?: string
+}
+
+/**
  * Download counts API response
  * From https://api.npmjs.org/downloads/
  * Note: Not covered by @npm/types
@@ -329,4 +365,17 @@ export interface PackageFileContentResponse {
   html: string
   lines: number
   markdownHtml?: ReadmeResponse
+}
+
+/**
+ * Minimal packument data needed for package cards
+ */
+export interface MinimalPackument {
+  'name': string
+  'description'?: string
+  'keywords'?: string[]
+  // `dist-tags` can be missing in some later unpublished packages
+  'dist-tags'?: Record<string, string>
+  'time': Record<string, string>
+  'maintainers'?: NpmPerson[]
 }

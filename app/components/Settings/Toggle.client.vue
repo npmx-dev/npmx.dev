@@ -22,7 +22,7 @@ const checked = defineModel<boolean>({
     </span>
     <span
       class="relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 transition-colors duration-200 ease-in-out motion-reduce:transition-none cursor-pointer"
-      :class="checked ? 'bg-accent border-transparent shadow-sm' : 'bg-bg border border-border'"
+      :class="checked ? 'bg-accent border-transparent shadow-sm' : 'bg-bg border border-border/50'"
       aria-hidden="true"
     >
       <span

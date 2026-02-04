@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
+
 const props = defineProps<{
   packageName: string
   installScripts: {
@@ -18,22 +20,18 @@ const isExpanded = shallowRef(false)
 </script>
 
 <template>
-  <section>
-    <h2
-      id="install-scripts-heading"
-      class="text-xs text-fg-subtle uppercase tracking-wider mb-3 flex items-center gap-2"
-    >
-      <span class="i-carbon:warning-alt w-3 h-3 text-yellow-500" aria-hidden="true" />
-      {{ $t('package.install_scripts.title') }}
-    </h2>
-
+  <CollapsibleSection
+    :title="$t('package.install_scripts.title')"
+    id="installScripts"
+    icon="i-carbon:warning-alt w-3 h-3 text-yellow-500"
+  >
     <!-- Script list: name as label, content below -->
     <dl class="space-y-2 m-0">
       <div v-for="scriptName in installScripts.scripts" :key="scriptName">
         <dt class="font-mono text-xs text-fg-muted">{{ scriptName }}</dt>
         <dd
           tabindex="0"
-          class="font-mono text-sm text-fg-subtle m-0 truncate focus:whitespace-normal focus:overflow-visible cursor-help rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="font-mono text-sm text-fg-subtle m-0 truncate focus:whitespace-normal focus:overflow-visible cursor-help rounded focus-visible:(outline-2 outline-accent outline-offset-2)"
           :title="installScripts.content?.[scriptName]"
         >
           {{ installScripts.content?.[scriptName] || $t('package.install_scripts.script_label') }}
@@ -45,7 +43,7 @@ const isExpanded = shallowRef(false)
     <div v-if="hasNpxDeps" class="mt-3">
       <button
         type="button"
-        class="flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+        class="flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
         :aria-expanded="isExpanded"
         aria-controls="npx-packages-details"
         @click="isExpanded = !isExpanded"
@@ -112,5 +110,5 @@ const isExpanded = shallowRef(false)
         </li>
       </ul>
     </div>
-  </section>
+  </CollapsibleSection>
 </template>

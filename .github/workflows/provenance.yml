@@ -4,21 +4,29 @@ on:
   push:
     branches:
       - main
+    paths:
+      - pnpm-lock.yaml
   pull_request:
     branches:
       - main
+    paths:
+      - pnpm-lock.yaml
   merge_group:
     branches:
       - main
+
 permissions:
   contents: read
+
 jobs:
   check-provenance:
-    runs-on: ubuntu-latest
+    name: 🔒 Check provenance downgrades
+    runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           fetch-depth: 0
+
       - name: Check provenance downgrades
         uses: danielroe/provenance-action@41bcc969e579d9e29af08ba44fcbfdf95cee6e6c # v0.1.1
         with:

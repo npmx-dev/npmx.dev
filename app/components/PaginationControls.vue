@@ -153,7 +153,7 @@ function handlePageSizeChange(event: Event) {
         <select
           id="page-size"
           :value="pageSize"
-          class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg focus-visible:outline-none"
+          class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover"
           @change="handlePageSizeChange"
         >
           <option v-for="size in PAGE_SIZE_OPTIONS" :key="size" :value="size">
@@ -165,7 +165,7 @@ function handlePageSizeChange(event: Event) {
           </option>
         </select>
         <div
-          class="absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
+          class="flex items-center absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
           aria-hidden="true"
         >
           <span class="i-carbon-chevron-down w-3 h-3" />

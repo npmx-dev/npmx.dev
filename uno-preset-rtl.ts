@@ -1,6 +1,22 @@
 import type { CSSEntries, DynamicMatcher, Preset, RuleContext } from 'unocss'
 import { cornerMap, directionSize, h } from '@unocss/preset-wind4/utils'
 
+// Track warnings to avoid duplicates
+const warnedClasses = new Set<string>()
+
+function warnOnce(message: string, key: string) {
+  if (!warnedClasses.has(key)) {
+    warnedClasses.add(key)
+    // oxlint-disable-next-line no-console -- warn logging
+    console.warn(message)
+  }
+}
+
+/** Reset warning state (for testing) */
+export function resetRtlWarnings() {
+  warnedClasses.clear()
+}
+
 const directionMap: Record<string, string[]> = {
   'l': ['-left'],
   'r': ['-right'],
@@ -26,12 +42,13 @@ function directionSizeRTL(
   const matcher = directionSize(propertyPrefix)
   return (args, context) => {
     const [match, direction, size] = args
+    if (!size) return undefined
     const defaultMap = { l: 'is', r: 'ie' }
     const map = prefixMap || defaultMap
     const replacement = map[direction as 'l' | 'r']
-    // oxlint-disable-next-line no-console -- warn logging
-    console.warn(
+    warnOnce(
       `[RTL] Avoid using '${match}'. Use '${match.replace(direction === 'l' ? 'l' : 'r', replacement)}' instead.`,
+      match,
     )
     return matcher([match, replacement, size], context)
   }
@@ -41,19 +58,21 @@ function handlerRounded(
   [, a = '', s = 'DEFAULT']: string[],
   { theme }: RuleContext<any>,
 ): CSSEntries | undefined {
-  if (a in cornerMap) {
-    if (s === 'full') return cornerMap[a].map(i => [`border${i}-radius`, 'calc(infinity * 1px)'])
+  const corners = cornerMap[a]
+  if (!corners) return undefined
 
-    const _v = theme.radius?.[s] ?? h.bracket.cssvar.global.fraction.rem(s)
-    if (_v != null) {
-      return cornerMap[a].map(i => [`border${i}-radius`, _v])
-    }
+  if (s === 'full') return corners.map(i => [`border${i}-radius`, 'calc(infinity * 1px)'])
+
+  const _v = theme.radius?.[s] ?? h.bracket?.cssvar?.global?.fraction?.rem?.(s)
+  if (_v != null) {
+    return corners.map(i => [`border${i}-radius`, _v])
   }
 }
 
 function handlerBorderSize([, a = '', b = '1']: string[]): CSSEntries | undefined {
-  const v = h.bracket.cssvar.global.px(b)
-  if (a in directionMap && v != null) return directionMap[a].map(i => [`border${i}-width`, v])
+  const v = h.bracket?.cssvar?.global?.px?.(b)
+  const directions = directionMap[a]
+  if (directions && v != null) return directions.map(i => [`border${i}-width`, v])
 }
 
 /**
@@ -78,10 +97,11 @@ export function presetRtl(): Preset {
       [
         /^(?:position-|pos-)?(left|right)-(.+)$/,
         ([, direction, size], context) => {
+          if (!size) return undefined
           const replacement = direction === 'left' ? 'inset-is' : 'inset-ie'
-          // oxlint-disable-next-line no-console -- warn logging
-          console.warn(
+          warnOnce(
             `[RTL] Avoid using '${direction}-${size}'. Use '${replacement}-${size}' instead.`,
+            `${direction}-${size}`,
           )
           return directionSize('inset')(['', direction === 'left' ? 'is' : 'ie', size], context)
         },
@@ -91,8 +111,10 @@ export function presetRtl(): Preset {
         /^text-(left|right)$/,
         ([, direction]) => {
           const replacement = direction === 'left' ? 'start' : 'end'
-          // oxlint-disable-next-line no-console -- warn logging
-          console.warn(`[RTL] Avoid using 'text-${direction}'. Use 'text-${replacement}' instead.`)
+          warnOnce(
+            `[RTL] Avoid using 'text-${direction}'. Use 'text-${replacement}' instead.`,
+            `text-${direction}`,
+          )
           return { 'text-align': replacement }
         },
         { autocomplete: 'text-(left|right)' },
@@ -101,16 +123,18 @@ export function presetRtl(): Preset {
         /^rounded-([rl])(?:-(.+))?$/,
         (args, context) => {
           const [_, direction, size] = args
+          if (!direction) return undefined
           const replacementMap: Record<string, string> = {
             l: 'is',
             r: 'ie',
           }
           const replacement = replacementMap[direction]
-          // oxlint-disable-next-line no-console -- warn logging
-          console.warn(
+          if (!replacement) return undefined
+          warnOnce(
             `[RTL] Avoid using 'rounded-${direction}'. Use 'rounded-${replacement}' instead.`,
+            `rounded-${direction}`,
           )
-          return handlerRounded(['', replacement, size], context)
+          return handlerRounded(['', replacement, size ?? 'DEFAULT'], context)
         },
       ],
       [
@@ -118,9 +142,9 @@ export function presetRtl(): Preset {
         args => {
           const [_, direction, size] = args
           const replacement = direction === 'l' ? 'is' : 'ie'
-          // oxlint-disable-next-line no-console -- warn logging
-          console.warn(
+          warnOnce(
             `[RTL] Avoid using 'border-${direction}'. Use 'border-${replacement}' instead.`,
+            `border-${direction}`,
           )
           return handlerBorderSize(['', replacement, size || '1'])
         },

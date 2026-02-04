@@ -33,7 +33,7 @@ const sortOptions = computed(
   () =>
     [
       { value: 'downloads', label: $t('package.sort.downloads') },
-      { value: 'updated', label: $t('package.sort.updated') },
+      { value: 'updated', label: $t('package.sort.published') },
       { value: 'name-asc', label: $t('package.sort.name_asc') },
       { value: 'name-desc', label: $t('package.sort.name_desc') },
     ] as const,
@@ -67,7 +67,7 @@ const showFilteredCount = computed(() => {
         type="search"
         :placeholder="placeholder ?? $t('package.list.filter_placeholder')"
         v-bind="noCorrect"
-        class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:(border-border-hover outline-none)"
+        class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
       />
     </div>
 

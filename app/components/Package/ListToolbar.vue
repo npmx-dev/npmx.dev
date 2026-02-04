@@ -91,7 +91,7 @@ const sortKeyLabelKeys: Record<SortKey, string> = {
   'downloads-day': 'filters.sort.downloads_day',
   'downloads-month': 'filters.sort.downloads_month',
   'downloads-year': 'filters.sort.downloads_year',
-  'updated': 'filters.sort.updated',
+  'updated': 'filters.sort.published',
   'name': 'filters.sort.name',
   'quality': 'filters.sort.quality',
   'popularity': 'filters.sort.popularity',
@@ -160,7 +160,7 @@ function getSortKeyLabelKey(key: SortKey): string {
             <select
               id="sort-select"
               :value="currentSort.key"
-              class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1.5 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg focus-visible:outline-none"
+              class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1.5 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover"
               @change="handleSortKeyChange"
             >
               <option
@@ -173,7 +173,7 @@ function getSortKeyLabelKey(key: SortKey): string {
               </option>
             </select>
             <div
-              class="absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
+              class="flex items-center absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
               aria-hidden="true"
             >
               <span class="i-carbon-chevron-down w-4 h-4" />

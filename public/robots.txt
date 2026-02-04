@@ -4,4 +4,5 @@ Allow: /$
 Allow: /about$
 Allow: /search$
 Allow: /settings$
+Allow: /__og-image__/*
 Disallow: /

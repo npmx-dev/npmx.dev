@@ -1,23 +1,52 @@
 <script setup lang="ts">
-import { computed, toRefs } from 'vue'
+import { joinURL } from 'ufo'
 
 const props = withDefaults(
   defineProps<{
     name: string
     version: string
-    stars: number
-    downloads?: string
-    license?: string
     primaryColor?: string
   }>(),
   {
-    downloads: '',
-    license: '',
     primaryColor: '#60a5fa',
   },
 )
 
-const { name, version, stars, downloads, license, primaryColor } = toRefs(props)
+const { name, version, primaryColor } = toRefs(props)
+
+const {
+  data: resolvedVersion,
+  status: versionStatus,
+  error: versionError,
+} = await useResolvedVersion(name, version)
+
+if (
+  versionStatus.value === 'error' &&
+  versionError.value?.statusCode &&
+  versionError.value.statusCode >= 400 &&
+  versionError.value.statusCode < 500
+) {
+  throw createError({
+    statusCode: 404,
+  })
+}
+
+const { data: downloads, refresh: refreshDownloads } = usePackageDownloads(name, 'last-week')
+const { data: pkg, refresh: refreshPkg } = usePackage(name, resolvedVersion.value ?? version.value)
+const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
+
+const repositoryUrl = computed(() => {
+  const repo = displayVersion.value?.repository
+  if (!repo?.url) return null
+  let url = normalizeGitUrl(repo.url)
+  // append `repository.directory` for monorepo packages
+  if (repo.directory) {
+    url = joinURL(`${url}/tree/HEAD`, repo.directory)
+  }
+  return url
+})
+
+const { stars, refresh: refreshRepoMeta } = useRepoMeta(repositoryUrl)
 
 const formattedStars = computed(() =>
   Intl.NumberFormat('en', {
@@ -25,6 +54,16 @@ const formattedStars = computed(() =>
     maximumFractionDigits: 1,
   }).format(stars.value),
 )
+
+try {
+  await refreshPkg()
+  await Promise.all([refreshRepoMeta(), refreshDownloads()])
+} catch (err) {
+  console.warn('[og-image-package] Failed to load data server-side:', err)
+  throw createError({
+    statusCode: 404,
+  })
+}
 </script>
 
 <template>
@@ -60,7 +99,7 @@ const formattedStars = computed(() =>
           class="text-8xl font-bold tracking-tighter"
           style="font-family: 'Geist Sans', sans-serif"
         >
-          <span :style="{ color: primaryColor }" class="opacity-80">./</span>{{ name }}
+          <span :style="{ color: primaryColor }" class="opacity-80">./</span>{{ pkg?.name }}
         </h1>
       </div>
 
@@ -77,10 +116,10 @@ const formattedStars = computed(() =>
             boxShadow: `0 0 20px ${primaryColor}25`,
           }"
         >
-          {{ version }}
+          {{ resolvedVersion }}
         </span>
         <span v-if="downloads">
-          <span>• {{ downloads }} </span>
+          <span>• {{ $n(downloads.downloads) }} </span>
           <span class="flex items-center gap-0">
             <svg
               width="30"
@@ -99,7 +138,7 @@ const formattedStars = computed(() =>
             <span>/wk</span>
           </span>
         </span>
-        <span v-if="license"> • {{ license }}</span>
+        <span v-if="pkg?.license"> • {{ pkg.license }}</span>
         <span class="flex items-center gap-2">
           <span>•</span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32px" height="32px">
@@ -116,7 +155,7 @@ const formattedStars = computed(() =>
     </div>
 
     <div
-      class="absolute -top-32 -right-32 w-[550px] h-[550px] rounded-full blur-3xl"
+      class="absolute -top-32 -inset-ie-32 w-[550px] h-[550px] rounded-full blur-3xl"
       :style="{ backgroundColor: primaryColor + '10' }"
     />
   </div>

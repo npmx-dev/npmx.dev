@@ -11,10 +11,12 @@ const props = defineProps<{
 const chartModal = useModal('chart-modal')
 
 const isChartModalOpen = shallowRef(false)
-function openChartModal() {
+async function openChartModal() {
   isChartModalOpen.value = true
   // ensure the component renders before opening the dialog
-  nextTick(() => chartModal.open())
+  await nextTick()
+  await nextTick()
+  chartModal.open()
 }
 
 const { fetchPackageDownloadEvolution } = useCharts()
@@ -62,7 +64,7 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const accentColorValueById = computed<Record<string, string>>(() => {
   const map: Record<string, string> = {}
-  for (const item of accentColors) {
+  for (const item of accentColors.value) {
     map[item.id] = item.value
   }
   return map
@@ -200,7 +202,7 @@ const config = computed(() => {
         <button
           type="button"
           @click="openChartModal"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ms-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+          class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
           :title="$t('package.downloads.analyze')"
         >
           <span class="i-carbon:data-analytics w-4 h-4" aria-hidden="true" />
@@ -221,20 +223,20 @@ const config = computed(() => {
             <div class="min-h-[75.195px]">
               <!-- Title row: date range (24px height) -->
               <div class="h-6 flex items-center ps-3">
-                <span class="skeleton h-3 w-36" />
+                <SkeletonInline class="h-3 w-36" />
               </div>
               <!-- Chart area: data label left, sparkline right -->
               <div class="aspect-[500/80] flex items-center">
                 <!-- Data label (covers ~42% width) -->
                 <div class="w-[42%] flex items-center ps-0.5">
-                  <span class="skeleton h-7 w-24" />
+                  <SkeletonInline class="h-7 w-24" />
                 </div>
                 <!-- Sparkline area (~58% width) -->
                 <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
-                  <span
+                  <SkeletonInline
                     v-for="i in 16"
                     :key="i"
-                    class="skeleton flex-1 rounded-sm"
+                    class="flex-1 rounded-sm"
                     :style="{ height: `${25 + ((i * 7) % 50)}%` }"
                   />
                 </div>

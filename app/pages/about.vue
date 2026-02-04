@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const router = useRouter()
+
 interface GitHubContributor {
   login: string
   id: number
@@ -39,7 +41,19 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
   <main class="container flex-1 py-12 sm:py-16">
     <article class="max-w-2xl mx-auto">
       <header class="mb-12">
-        <h1 class="font-mono text-3xl sm:text-4xl font-medium mb-4">{{ $t('about.heading') }}</h1>
+        <div class="flex items-baseline justify-between gap-4 mb-4">
+          <h1 class="font-mono text-3xl sm:text-4xl font-medium">
+            {{ $t('about.heading') }}
+          </h1>
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            @click="router.back()"
+          >
+            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+          </button>
+        </div>
         <p class="text-fg-muted text-lg">
           {{ $t('tagline') }}
         </p>
@@ -162,7 +176,13 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 
         <div>
           <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
-            {{ contributors?.length ?? 0 }} {{ $t('about.contributors.title') }}
+            {{
+              $t(
+                'about.contributors.title',
+                { count: $n(contributors?.length ?? 0) },
+                contributors?.length ?? 0,
+              )
+            }}
           </h2>
           <p class="text-fg-muted leading-relaxed mb-6">
             {{ $t('about.contributors.description') }}
@@ -175,7 +195,10 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
           <div v-else-if="contributorsStatus === 'error'" class="text-fg-subtle text-sm">
             {{ $t('about.contributors.error') }}
           </div>
-          <div v-else-if="contributors?.length" class="flex flex-wrap gap-2">
+          <div
+            v-else-if="contributors?.length"
+            class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-2"
+          >
             <a
               v-for="contributor in contributors"
               :key="contributor.id"
@@ -206,16 +229,6 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 
         <CallToAction />
       </section>
-
-      <footer class="mt-16 pt-8 border-t border-border">
-        <NuxtLink
-          to="/"
-          class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-[color] duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-        >
-          <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-          {{ $t('about.back_home') }}
-        </NuxtLink>
-      </footer>
     </article>
   </main>
 </template>

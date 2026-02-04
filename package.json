@@ -12,41 +12,44 @@
   "scripts": {
     "build": "nuxt build",
     "build:lunaria": "node ./lunaria/lunaria.ts",
+    "build:playwright": "NODE_ENV=test pnpm build",
     "dev": "nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "i18n:check": "node scripts/compare-translations.ts",
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
     "knip": "knip",
     "knip:fix": "knip --fix",
-    "lint": "vite lint && vite fmt --check",
-    "lint:fix": "vite lint --fix && vite fmt",
+    "lint": "oxlint && oxfmt --check",
+    "lint:fix": "oxlint --fix && oxfmt",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare && simple-git-hooks && pnpm generate:lexicons",
+    "postinstall": "pnpm generate:lexicons && nuxt prepare && simple-git-hooks",
+    "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
-    "test:browser": "playwright test",
-    "test:browser:ui": "playwright test --ui",
-    "test:browser:update": "playwright test --update-snapshots",
+    "test:browser": "pnpm build:playwright && pnpm test:browser:prebuilt",
+    "test:browser:prebuilt": "playwright test",
+    "test:browser:ui": "pnpm build:playwright && pnpm test:browser:prebuilt --ui",
+    "test:browser:update": "pnpm build:playwright && pnpm test:browser:prebuilt --update-snapshots",
     "test:nuxt": "vite test --project nuxt",
-    "test:types": "nuxt prepare && vue-tsc -b --noEmit && pnpm --filter npmx-connector test:types",
+    "test:types": "pnpm generate:lexicons && nuxt prepare && vue-tsc -b --noEmit && pnpm --filter npmx-connector test:types",
     "test:unit": "vite test --project unit",
-    "start:playwright:webserver": "NODE_ENV=test pnpm build && pnpm preview --port 5678"
+    "start:playwright:webserver": "NODE_ENV=test pnpm preview --port 5678"
   },
   "dependencies": {
     "@atproto/api": "^0.18.17",
+    "@atproto/common": "0.5.10",
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
     "@deno/doc": "jsr:^0.189.1",
+    "@floating-ui/vue": "1.1.10",
     "@iconify-json/carbon": "1.2.18",
     "@iconify-json/lucide": "1.2.87",
     "@iconify-json/simple-icons": "1.2.68",
-    "@iconify-json/solar": "1.2.5",
     "@iconify-json/svg-spinners": "1.2.4",
     "@iconify-json/vscode-icons": "1.2.40",
-    "@intlify/core-base": "11.2.8",
     "@intlify/shared": "11.2.8",
     "@lunariajs/core": "https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3",
     "@nuxt/a11y": "1.0.0-alpha.1",
@@ -69,7 +72,10 @@
     "@vueuse/integrations": "14.2.0",
     "@vueuse/nuxt": "14.2.0",
     "@vueuse/router": "^14.2.0",
+    "defu": "6.1.4",
+    "fast-npm-meta": "1.0.0",
     "focus-trap": "^7.8.0",
+    "tinyglobby": "0.2.15",
     "marked": "17.0.1",
     "module-replacements": "2.11.0",
     "nuxt": "4.3.0",
@@ -91,9 +97,10 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.1"
+    "vue-data-ui": "3.14.5"
   },
   "devDependencies": {
+    "@intlify/core-base": "11.2.8",
     "@npm/types": "2.1.0",
     "@playwright/test": "1.58.1",
     "@types/node": "24.10.9",
@@ -104,10 +111,12 @@
     "@vitest/coverage-v8": "4.0.18",
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
-    "fast-npm-meta": "1.0.0",
-    "knip": "5.82.1",
+    "fast-check": "4.5.3",
+    "knip": "5.83.0",
     "lint-staged": "16.2.7",
-    "playwright-core": "1.58.0",
+    "oxfmt": "0.27.0",
+    "oxlint": "1.42.0",
+    "schema-dts": "1.1.5",
     "simple-git-hooks": "2.13.1",
     "typescript": "5.9.3",
     "vitest": "npm:@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
@@ -121,11 +130,16 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
+    "i18n/locales/*": [
+      "pnpm build:lunaria",
+      "pnpm oxfmt lunaria/files/",
+      "git add lunaria/files/"
+    ],
     "*.{js,ts,mjs,cjs,vue}": [
-      "vite lint --fix"
+      "pnpm oxlint --fix"
     ],
     "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
-      "vite fmt"
+      "pnpm oxfmt"
     ]
   },
   "packageManager": "pnpm@10.28.2"

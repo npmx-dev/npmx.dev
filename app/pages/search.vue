@@ -142,6 +142,9 @@ const {
   clearAllFilters,
 } = useStructuredFilters({
   packages: resultsArray,
+  initialFilters: {
+    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
+  },
   initialSort: 'relevance-desc', // Default to search relevance
 })
 
@@ -578,12 +581,21 @@ function handleResultsKeydown(e: KeyboardEvent) {
 onKeyDown(['ArrowDown', 'ArrowUp', 'Enter'], handleResultsKeydown)
 
 useSeoMeta({
-  title: () => (query.value ? `Search: ${query.value} - npmx` : 'Search Packages - npmx'),
+  title: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  description: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
 })
 
 defineOgImageComponent('Default', {
-  title: 'npmx',
-  description: () => (query.value ? `Search results for "${query.value}"` : 'Search npm packages'),
+  title: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  description: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
   primaryColor: '#60a5fa',
 })
 </script>
@@ -628,7 +640,7 @@ defineOgImageComponent('Default', {
             </div>
             <button
               type="button"
-              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
               @click="claimPackageModalRef?.open()"
             >
               {{ $t('search.claim_button', { name: query }) }}
@@ -724,7 +736,7 @@ defineOgImageComponent('Default', {
                 <p class="text-sm text-fg-muted mb-3">{{ $t('search.want_to_claim') }}</p>
                 <button
                   type="button"
-                  class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
                   @click="claimPackageModalRef?.open()"
                 >
                   {{ $t('search.claim_button', { name: query }) }}
@@ -737,6 +749,8 @@ defineOgImageComponent('Default', {
             v-if="displayResults.length > 0"
             :results="displayResults"
             :search-query="query"
+            :filters="filters"
+            search-context
             heading-level="h2"
             show-publisher
             :has-more="hasMore"

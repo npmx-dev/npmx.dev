@@ -1,4 +1,4 @@
-import { expect, test } from '@nuxt/test-utils/playwright'
+import { expect, test } from './test-utils'
 
 test.describe('Package Page', () => {
   test('/vue → package manager select dropdown works', async ({ page, goto }) => {

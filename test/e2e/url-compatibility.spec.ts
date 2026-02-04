@@ -1,9 +1,6 @@
-import { expect, test } from '@nuxt/test-utils/playwright'
+import { expect, test } from './test-utils'
 
 test.describe('npmjs.com URL Compatibility', () => {
-  // TODO: these tests depend on external npm registry API - we should add data fixtures
-  test.describe.configure({ retries: 2 })
-
   test.describe('Package Pages', () => {
     test('/package/vue → package page', async ({ page, goto }) => {
       await goto('/package/vue', { waitUntil: 'domcontentloaded' })
@@ -21,22 +18,25 @@ test.describe('npmjs.com URL Compatibility', () => {
       await expect(page.locator('h1')).toContainText('@nuxt/kit')
     })
 
-    test('/package/vue/v/3.4.0 → specific version', async ({ page, goto }) => {
-      await goto('/package/vue/v/3.4.0', { waitUntil: 'domcontentloaded' })
+    test('/package/vue/v/3.5.27 → specific version', async ({ page, goto }) => {
+      await goto('/package/vue/v/3.5.27', { waitUntil: 'domcontentloaded' })
 
       // Should show package name
       await expect(page.locator('h1')).toContainText('vue')
       // Should show the specific version
-      await expect(page.locator('text=v3.4.0')).toBeVisible()
+      await expect(page.locator('text=v3.5.27')).toBeVisible()
     })
 
-    test('/package/@nuxt/kit/v/3.0.0 → scoped package specific version', async ({ page, goto }) => {
-      await goto('/package/@nuxt/kit/v/3.0.0', { waitUntil: 'domcontentloaded' })
+    test('/package/@nuxt/kit/v/3.20.0 → scoped package specific version', async ({
+      page,
+      goto,
+    }) => {
+      await goto('/package/@nuxt/kit/v/3.20.0', { waitUntil: 'domcontentloaded' })
 
       // Should show scoped package name
       await expect(page.locator('h1')).toContainText('@nuxt/kit')
       // Should show the specific version (or "not latest" indicator)
-      await expect(page.locator('text=v3.0.0').first()).toBeVisible()
+      await expect(page.locator('text=v3.20.0').first()).toBeVisible()
     })
 
     test('/package/nonexistent-pkg-12345 → 404 handling', async ({ page, goto }) => {
@@ -75,11 +75,11 @@ test.describe('npmjs.com URL Compatibility', () => {
   })
 
   test.describe('User Profile Pages', () => {
-    test('/~sindresorhus → user profile', async ({ page, goto }) => {
-      await goto('/~sindresorhus', { waitUntil: 'hydration' })
+    test('/~qwerzl → user profile', async ({ page, goto }) => {
+      await goto('/~qwerzl', { waitUntil: 'hydration' })
 
       // Should show username
-      await expect(page.locator('h1')).toContainText('~sindresorhus')
+      await expect(page.locator('h1')).toContainText('~qwerzl')
 
       await expect(page.locator('text=/\\d+\\s+public\\s+package/i').first()).toBeVisible({
         timeout: 15000,
@@ -121,10 +121,10 @@ test.describe('npmjs.com URL Compatibility', () => {
       await expect(page.locator('h1')).toContainText('lodash.merge')
     })
 
-    test('package name with hyphens: /package/date-fns', async ({ page, goto }) => {
-      await goto('/package/date-fns', { waitUntil: 'domcontentloaded' })
+    test('package name with hyphens: /package/is-odd', async ({ page, goto }) => {
+      await goto('/package/is-odd', { waitUntil: 'domcontentloaded' })
 
-      await expect(page.locator('h1')).toContainText('date-fns')
+      await expect(page.locator('h1')).toContainText('is-odd')
     })
 
     test('scoped package with hyphens: /package/@types/node', async ({ page, goto }) => {

@@ -2,6 +2,7 @@
 import type {
   NpmVersionDist,
   PackumentVersion,
+  ProvenanceDetails,
   ReadmeResponse,
   SkillsListResponse,
 } from '#shared/types'
@@ -11,10 +12,21 @@ import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
 import { formatBytes } from '~/utils/formatters'
+import { getDependencyCount } from '~/utils/npm/dependency-count'
+import { NuxtLink } from '#components'
+import { useModal } from '~/composables/useModal'
+import { useAtproto } from '~/composables/atproto/useAtproto'
+import { togglePackageLike } from '~/utils/atproto/likes'
 
 definePageMeta({
   name: 'package',
   alias: ['/:package(.*)*'],
+})
+
+defineOgImageComponent('Package', {
+  name: () => packageName.value,
+  version: () => requestedVersion.value ?? '',
+  primaryColor: '#60a5fa',
 })
 
 const router = useRouter()
@@ -48,8 +60,6 @@ if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
 
-const { data: downloads } = usePackageDownloads(packageName, 'last-week')
-
 // Fetch README for specific version if requested, otherwise latest
 const { data: readmeData } = useLazyFetch<ReadmeResponse>(
   () => {
@@ -57,8 +67,12 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
     const version = requestedVersion.value
     return version ? `${base}/v/${version}` : base
   },
-  { default: () => ({ html: '', playgroundLinks: [] }) },
+  { default: () => ({ html: '', playgroundLinks: [], toc: [] }) },
 )
+
+// Track active TOC item based on scroll position
+const tocItems = computed(() => readmeData.value?.toc ?? [])
+const { activeId: activeTocId, scrollToHeading } = useActiveTocItem(tocItems)
 
 // Check if package exists on JSR (only for scoped packages)
 const { data: jsrInfo } = useLazyFetch<JsrPackageInfo>(() => `/api/jsr/${packageName.value}`, {
@@ -104,13 +118,30 @@ const { data: skillsData } = useLazyFetch<SkillsListResponse>(
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
 
-const { data: resolvedVersion } = await useResolvedVersion(packageName, requestedVersion)
+const {
+  data: resolvedVersion,
+  status: versionStatus,
+  error: versionError,
+} = await useResolvedVersion(packageName, requestedVersion)
+
+if (
+  versionStatus.value === 'error' &&
+  versionError.value?.statusCode &&
+  versionError.value.statusCode >= 400 &&
+  versionError.value.statusCode < 500
+) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: $t('package.not_found'),
+    message: $t('package.not_found_message'),
+  })
+}
 
 const {
   data: pkg,
   status,
   error,
-} = usePackage(packageName, resolvedVersion.value ?? requestedVersion)
+} = usePackage(packageName, resolvedVersion.value ?? requestedVersion.value)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
 // Process package description
@@ -131,6 +162,39 @@ const { data: vulnTree, status: vulnTreeStatus } = useDependencyAnalysis(
   packageName,
   () => resolvedVersion.value ?? '',
 )
+
+const {
+  data: provenanceData,
+  status: provenanceStatus,
+  execute: fetchProvenance,
+} = useLazyFetch<ProvenanceDetails | null>(
+  () => {
+    const v = displayVersion.value
+    if (!v || !hasProvenance(v)) return ''
+    return `/api/registry/provenance/${packageName.value}/v/${v.version}`
+  },
+  {
+    default: () => null,
+    server: false,
+    immediate: false,
+  },
+)
+if (import.meta.client) {
+  watch(
+    displayVersion,
+    v => {
+      if (v && hasProvenance(v) && provenanceStatus.value === 'idle') {
+        fetchProvenance()
+      }
+    },
+    { immediate: true },
+  )
+}
+
+const provenanceBadgeMounted = shallowRef(false)
+onMounted(() => {
+  provenanceBadgeMounted.value = true
+})
 
 // Keep latestVersion for comparison (to show "(latest)" badge)
 const latestVersion = computed(() => {
@@ -275,11 +339,6 @@ function normalizeGitUrl(url: string): string {
     .replace(/^git@github\.com:/, 'https://github.com/')
 }
 
-function getDependencyCount(version: PackumentVersion | null): number {
-  if (!version?.dependencies) return 0
-  return Object.keys(version.dependencies).length
-}
-
 // Check if a version has provenance/attestations
 // The dist object may have attestations that aren't in the base type
 function hasProvenance(version: PackumentVersion | null): boolean {
@@ -337,6 +396,63 @@ const canonicalUrl = computed(() => {
 // Markdown alternate URL for AI/LLM consumption
 const markdownUrl = computed(() => `${canonicalUrl.value}.md`)
 
+//atproto
+// TODO: Maybe set this where it's not loaded here every load?
+const { user } = useAtproto()
+
+const authModal = useModal('auth-modal')
+
+const { data: likesData } = useFetch(() => `/api/social/likes/${packageName.value}`, {
+  default: () => ({ totalLikes: 0, userHasLiked: false }),
+  server: false,
+})
+
+const isLikeActionPending = ref(false)
+
+const likeAction = async () => {
+  if (user.value?.handle == null) {
+    authModal.open()
+    return
+  }
+
+  if (isLikeActionPending.value) return
+
+  const currentlyLiked = likesData.value?.userHasLiked ?? false
+  const currentLikes = likesData.value?.totalLikes ?? 0
+
+  // Optimistic update
+  likesData.value = {
+    totalLikes: currentlyLiked ? currentLikes - 1 : currentLikes + 1,
+    userHasLiked: !currentlyLiked,
+  }
+
+  isLikeActionPending.value = true
+
+  try {
+    const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
+
+    isLikeActionPending.value = false
+
+    if (result.success) {
+      // Update with server response
+      likesData.value = result.data
+    } else {
+      // Revert on error
+      likesData.value = {
+        totalLikes: currentLikes,
+        userHasLiked: currentlyLiked,
+      }
+    }
+  } catch {
+    // Revert on error
+    likesData.value = {
+      totalLikes: currentLikes,
+      userHasLiked: currentlyLiked,
+    }
+    isLikeActionPending.value = false
+  }
+}
+
 useHead({
   link: [
     { rel: 'canonical', href: canonicalUrl },
@@ -382,33 +498,6 @@ onKeyStroke(
     router.push({ path: '/compare', query: { packages: pkg.value.name } })
   },
 )
-
-defineOgImageComponent('Package', {
-  name: () => pkg.value?.name ?? 'Package',
-  version: () => resolvedVersion.value ?? '',
-  downloads: () => (downloads.value ? $n(downloads.value.downloads) : ''),
-  license: () => pkg.value?.license ?? '',
-  stars: () => stars.value ?? 0,
-  primaryColor: '#60a5fa',
-})
-
-// We're using only @click because it catches touch events and enter hits
-function handleClick(event: MouseEvent) {
-  const target = (event?.target as HTMLElement | undefined)?.closest('a')
-  if (!target) return
-
-  const href = target.getAttribute('href')
-  if (!href) return
-
-  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
-  if (!match || !match[1]) return
-
-  const route = router.resolve(match[1])
-  if (route) {
-    event.preventDefault()
-    router.push(route)
-  }
-}
 </script>
 
 <template>
@@ -443,17 +532,22 @@ function handleClick(event: MouseEvent) {
             </h1>
 
             <!-- Floating copy button -->
-            <TooltipAnnounce :text="$t('common.copied')" :isVisible="copiedPkgName">
-              <button
-                type="button"
-                @click="copyPkgName()"
-                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none transition-all duration-150 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
-                :aria-label="$t('package.copy_name')"
-              >
-                <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
-                {{ $t('package.copy_name') }}
-              </button>
-            </TooltipAnnounce>
+            <button
+              type="button"
+              @click="copyPkgName()"
+              class="copy-button absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
+              :class="
+                copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border'
+              "
+              :aria-label="copiedPkgName ? $t('common.copied') : $t('package.copy_name')"
+            >
+              <span
+                :class="copiedPkgName ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+                class="w-3.5 h-3.5"
+                aria-hidden="true"
+              />
+              {{ copiedPkgName ? $t('common.copied') : $t('package.copy_name') }}
+            </button>
           </div>
           <span
             v-if="resolvedVersion"
@@ -473,16 +567,26 @@ function handleClick(event: MouseEvent) {
             >
             <span v-else>v{{ resolvedVersion }}</span>
 
-            <a
-              v-if="hasProvenance(displayVersion)"
-              :href="`https://www.npmjs.com/package/${pkg.name}/v/${resolvedVersion}#provenance`"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
-              :title="$t('package.verified_provenance')"
-            >
-              <span class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-            </a>
+            <template v-if="hasProvenance(displayVersion) && provenanceBadgeMounted">
+              <TooltipApp
+                :text="
+                  provenanceData && provenanceStatus !== 'pending'
+                    ? $t('package.provenance_section.built_and_signed_on', {
+                        provider: provenanceData.providerLabel,
+                      })
+                    : $t('package.verified_provenance')
+                "
+                position="bottom"
+              >
+                <a
+                  href="#provenance"
+                  :aria-label="$t('package.provenance_section.view_more_details')"
+                  class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-emerald-500 transition-colors duration-200 min-w-6 min-h-6"
+                >
+                  <span class="i-lucide-shield-check w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                </a>
+              </TooltipApp>
+            </template>
             <span
               v-if="requestedVersion && latestVersion && resolvedVersion !== latestVersion.version"
               class="text-fg-subtle text-sm shrink-0"
@@ -491,21 +595,46 @@ function handleClick(event: MouseEvent) {
           </span>
 
           <!-- Package metrics (module format, types) -->
-          <ClientOnly>
-            <PackageMetricsBadges
-              v-if="resolvedVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-              :is-binary="isBinaryOnly"
-              class="self-baseline ms-1 sm:ms-2"
-            />
-            <template #fallback>
-              <ul class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
-                <li class="skeleton w-8 h-5 rounded" />
-                <li class="skeleton w-12 h-5 rounded" />
-              </ul>
-            </template>
-          </ClientOnly>
+          <div class="flex gap-2 sm:gap-3 flex-wrap">
+            <ClientOnly>
+              <PackageMetricsBadges
+                v-if="resolvedVersion"
+                :package-name="pkg.name"
+                :version="resolvedVersion"
+                :is-binary="isBinaryOnly"
+                class="self-baseline ms-1 sm:ms-2"
+              />
+
+              <!-- Package likes -->
+              <button
+                @click="likeAction"
+                type="button"
+                class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
+                :title="$t('package.links.like')"
+              >
+                <span
+                  :class="
+                    likesData?.userHasLiked
+                      ? 'i-lucide-heart-minus text-red-500'
+                      : 'i-lucide-heart-plus'
+                  "
+                  class="w-4 h-4"
+                  aria-hidden="true"
+                />
+                <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
+              </button>
+              <template #fallback>
+                <div
+                  class="flex items-center gap-1.5 list-none m-0 p-0 relative top-[5px] self-baseline ms-1 sm:ms-2"
+                >
+                  <SkeletonBlock class="w-16 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
+                </div>
+              </template>
+            </ClientOnly>
+          </div>
 
           <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
           <nav
@@ -516,7 +645,7 @@ function handleClick(event: MouseEvent) {
             <NuxtLink
               v-if="docsLink"
               :to="docsLink"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="d"
             >
               <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
@@ -530,7 +659,7 @@ function handleClick(event: MouseEvent) {
             </NuxtLink>
             <NuxtLink
               :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="."
             >
               <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
@@ -544,7 +673,7 @@ function handleClick(event: MouseEvent) {
             </NuxtLink>
             <NuxtLink
               :to="{ path: '/compare', query: { packages: pkg.name } }"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="c"
             >
               <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
@@ -720,7 +849,7 @@ function handleClick(event: MouseEvent) {
 
         <!-- Stats grid -->
         <dl
-          class="grid grid-cols-2 sm:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-b border-border"
+          class="grid grid-cols-2 sm:grid-cols-7 md:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-b border-border"
         >
           <div class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
@@ -767,7 +896,7 @@ function handleClick(event: MouseEvent) {
                 :href="`https://npmgraph.js.org/?q=${pkg.name}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
                 :title="$t('package.stats.view_dependency_graph')"
               >
                 <span class="i-carbon:network-3 w-3.5 h-3.5" aria-hidden="true" />
@@ -779,10 +908,10 @@ function handleClick(event: MouseEvent) {
                 :href="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
                 :title="$t('package.stats.inspect_dependency_tree')"
               >
-                <span class="i-solar:eye-scan-outline w-3.5 h-3.5" aria-hidden="true" />
+                <span class="i-lucide-view w-3.5 h-3.5" aria-hidden="true" />
                 <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
               </a>
             </dd>
@@ -791,11 +920,14 @@ function handleClick(event: MouseEvent) {
           <div class="space-y-1 sm:col-span-3">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
-              <span
-                class="i-carbon:information w-3 h-3 text-fg-subtle"
-                aria-hidden="true"
-                :title="sizeTooltip"
-              />
+              <TooltipApp :text="sizeTooltip">
+                <span
+                  tabindex="0"
+                  class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+                >
+                  <span class="i-carbon:information w-3 h-3" aria-hidden="true" />
+                </span>
+              </TooltipApp>
             </dt>
             <dd class="font-mono text-sm text-fg">
               <!-- Package size (greyed out) -->
@@ -861,12 +993,23 @@ function handleClick(event: MouseEvent) {
             </template>
           </ClientOnly>
 
-          <div v-if="pkg.time?.modified" class="space-y-1 sm:col-span-2">
-            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-              {{ $t('package.stats.updated') }}
+          <div
+            v-if="resolvedVersion && pkg.time?.[resolvedVersion]"
+            class="space-y-1 sm:col-span-2"
+          >
+            <dt
+              class="text-xs text-fg-subtle uppercase tracking-wider"
+              :title="
+                $t('package.stats.published_tooltip', {
+                  package: pkg.name,
+                  version: resolvedVersion,
+                })
+              "
+            >
+              {{ $t('package.stats.published') }}
             </dt>
             <dd class="font-mono text-sm text-fg">
-              <DateTime :datetime="pkg.time.modified" date-style="medium" />
+              <DateTime :datetime="pkg.time[resolvedVersion]!" date-style="medium" />
             </dd>
           </div>
         </dl>
@@ -876,7 +1019,7 @@ function handleClick(event: MouseEvent) {
           <PackageSkillsModal
             :skills="skillsData?.skills ?? []"
             :package-name="pkg.name"
-            :version="displayVersion?.version"
+            :version="resolvedVersion || undefined"
           />
         </ClientOnly>
       </section>
@@ -961,20 +1104,31 @@ function handleClick(event: MouseEvent) {
 
       <!-- README -->
       <section id="readme" class="area-readme min-w-0 scroll-mt-20">
-        <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider mb-4">
-          <a
-            href="#readme"
-            class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-          >
-            {{ $t('package.readme.title') }}
-            <span
-              class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-              aria-hidden="true"
+        <div class="flex flex-wrap items-center justify-between mb-4 px-1">
+          <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
+            <a
+              href="#readme"
+              class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
+            >
+              {{ $t('package.readme.title') }}
+              <span
+                class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                aria-hidden="true"
+              />
+            </a>
+          </h2>
+          <ClientOnly>
+            <ReadmeTocDropdown
+              v-if="readmeData?.toc && readmeData.toc.length > 1"
+              :toc="readmeData.toc"
+              :active-id="activeTocId"
+              :scroll-to-heading="scrollToHeading"
             />
-          </a>
-        </h2>
+          </ClientOnly>
+        </div>
+
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
-        <Readme v-if="readmeData?.html" :html="readmeData.html" @click="handleClick" />
+        <Readme v-if="readmeData?.html" :html="readmeData.html" />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
           <a
@@ -986,11 +1140,42 @@ function handleClick(event: MouseEvent) {
             >{{ $t('package.readme.view_on_github') }}</a
           >
         </p>
-      </section>
 
+        <section
+          v-if="hasProvenance(displayVersion) && provenanceBadgeMounted"
+          id="provenance"
+          class="scroll-mt-20"
+        >
+          <div
+            v-if="provenanceStatus === 'pending'"
+            class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
+          >
+            <span
+              class="i-carbon-circle-dash w-4 h-4 motion-safe:animate-spin"
+              aria-hidden="true"
+            />
+            <span>{{ $t('package.provenance_section.title') }}…</span>
+          </div>
+          <PackageProvenanceSection
+            v-else-if="provenanceData"
+            :details="provenanceData"
+            class="mt-8"
+          />
+          <!-- Error state: provenance exists but details failed to load -->
+          <div
+            v-else-if="provenanceStatus === 'error'"
+            class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
+          >
+            <span class="i-carbon:warning w-4 h-4" aria-hidden="true" />
+            <span>{{ $t('package.provenance_section.error_loading') }}</span>
+          </div>
+        </section>
+      </section>
       <div class="area-sidebar">
         <!-- Sidebar -->
-        <div class="sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-hidden xl:(top-22 pt-2)">
+        <div
+          class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pr-2.5 hover:pr-0.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"
+        >
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 
@@ -1000,30 +1185,7 @@ function handleClick(event: MouseEvent) {
           </ClientOnly>
 
           <!-- Keywords -->
-          <section id="keywords" v-if="displayVersion?.keywords?.length" class="scroll-mt-20">
-            <h2
-              id="keywords-heading"
-              class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
-            >
-              <a
-                href="#keywords"
-                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-              >
-                {{ $t('package.keywords_title') }}
-                <span
-                  class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  aria-hidden="true"
-                />
-              </a>
-            </h2>
-            <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
-              <li v-for="keyword in displayVersion.keywords.slice(0, 15)" :key="keyword">
-                <NuxtLink :to="{ name: 'search', query: { q: `keywords:${keyword}` } }" class="tag">
-                  {{ keyword }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </section>
+          <PackageKeywords :keywords="displayVersion?.keywords" />
 
           <!-- Agent Skills -->
           <ClientOnly>
@@ -1031,7 +1193,7 @@ function handleClick(event: MouseEvent) {
               v-if="skillsData?.skills?.length"
               :skills="skillsData.skills"
               :package-name="pkg.name"
-              :version="displayVersion?.version"
+              :version="resolvedVersion || undefined"
             />
           </ClientOnly>
 
@@ -1044,43 +1206,7 @@ function handleClick(event: MouseEvent) {
             :links="readmeData.playgroundLinks"
           />
 
-          <section
-            id="compatibility"
-            v-if="
-              displayVersion?.engines && (displayVersion.engines.node || displayVersion.engines.npm)
-            "
-            class="scroll-mt-20"
-          >
-            <h2
-              id="compatibility-heading"
-              class="group text-xs text-fg-subtle uppercase tracking-wider mb-3"
-            >
-              <a
-                href="#compatibility"
-                class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-              >
-                {{ $t('package.compatibility') }}
-                <span
-                  class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                  aria-hidden="true"
-                />
-              </a>
-            </h2>
-            <dl class="space-y-2">
-              <div v-if="displayVersion.engines.node" class="flex justify-between gap-4 py-1">
-                <dt class="text-fg-muted text-sm shrink-0">node</dt>
-                <dd class="font-mono text-sm text-fg text-end" :title="displayVersion.engines.node">
-                  {{ displayVersion.engines.node }}
-                </dd>
-              </div>
-              <div v-if="displayVersion.engines.npm" class="flex justify-between gap-4 py-1">
-                <dt class="text-fg-muted text-sm shrink-0">npm</dt>
-                <dd class="font-mono text-sm text-fg text-end" :title="displayVersion.engines.npm">
-                  {{ displayVersion.engines.npm }}
-                </dd>
-              </div>
-            </dl>
-          </section>
+          <PackageCompatibility :engines="displayVersion?.engines" />
 
           <!-- Versions (grouped by release channel) -->
           <PackageVersions
@@ -1198,6 +1324,41 @@ function handleClick(event: MouseEvent) {
   grid-area: sidebar;
 }
 
+/* Sidebar scrollbar: hidden by default, shown on hover/focus */
+@media (min-width: 1024px) {
+  .sidebar-scroll {
+    scrollbar-gutter: stable;
+    scrollbar-width: none;
+  }
+
+  .sidebar-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .sidebar-scroll:hover,
+  .sidebar-scroll:focus-within {
+    scrollbar-width: auto;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar,
+  .sidebar-scroll:focus-within::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar-thumb,
+  .sidebar-scroll:focus-within::-webkit-scrollbar-thumb {
+    background-color: #cecece;
+    border-radius: 9999px;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar-track,
+  .sidebar-scroll:focus-within::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
 /* Improve package name wrapping for narrow screens */
 .area-header h1 {
   overflow-wrap: anywhere;
@@ -1228,6 +1389,33 @@ function handleClick(event: MouseEvent) {
 .package-page > * {
   max-width: 100%;
   min-width: 0;
+}
+
+.copy-button {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  width: 1px;
+  transition:
+    opacity 0.25s 0.1s,
+    translate 0.15s 0.1s,
+    clip 0.01s 0.34s allow-discrete,
+    clip-path 0.01s 0.34s allow-discrete,
+    height 0.01s 0.34s allow-discrete,
+    width 0.01s 0.34s allow-discrete;
+}
+
+.group:hover .copy-button,
+.copy-button:focus-visible {
+  clip: auto;
+  clip-path: none;
+  height: auto;
+  overflow: visible;
+  width: auto;
+  transition:
+    opacity 0.15s,
+    translate 0.15s;
 }
 
 @media (hover: none) {
