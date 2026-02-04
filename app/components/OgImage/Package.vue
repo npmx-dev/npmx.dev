@@ -73,7 +73,7 @@ try {
     <div class="relative z-10 flex flex-col gap-6">
       <div class="flex items-start gap-4">
         <div
-          class="flex items-start justify-center w-16 h-16 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
+          class="flex items-center justify-center w-16 h-16 p-4 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
           :style="{ backgroundColor: primaryColor }"
         >
           <svg
@@ -104,11 +104,11 @@ try {
       </div>
 
       <div
-        class="flex items-center gap-3 text-4xl font-light text-[#a3a3a3]"
+        class="flex items-center gap-5 text-4xl font-light text-[#a3a3a3]"
         style="font-family: 'Geist Sans', sans-serif"
       >
         <span
-          class="px-3 py-1 rounded-lg border"
+          class="px-3 py-1 mr-2 rounded-lg border font-bold opacity-90"
           :style="{
             color: primaryColor,
             backgroundColor: primaryColor + '10',
@@ -118,32 +118,56 @@ try {
         >
           {{ resolvedVersion }}
         </span>
-        <span v-if="downloads">
-          <span>• {{ $n(downloads.downloads) }} </span>
-          <span class="flex items-center gap-0">
-            <svg
-              width="30"
-              height="30"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-white/70"
-            >
-              <circle cx="12" cy="12" r="10" class="opacity-40" />
-              <path d="M12 8v8m-3-3l3 3 3-3" />
-            </svg>
-            <span>/wk</span>
+        <span v-if="downloads" class="flex items-center gap-2">
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 24 24"
+            fill="none"
+            :stroke="primaryColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="opacity-90"
+          >
+            <circle cx="12" cy="12" r="10" class="opacity-60" />
+            <path d="M12 8v8m-3-3l3 3 3-3" />
+          </svg>
+          <span>{{ $n(downloads.downloads) }}/wk</span>
+        </span>
+        <span v-if="pkg?.license" class="flex items-center gap-2">
+          <svg
+            viewBox="0 0 32 32"
+            :fill="primaryColor"
+            xmlns="http://www.w3.org/2000/svg"
+            height="32"
+            width="32"
+            class="opacity-90"
+          >
+            <path
+              d="M21.7166 12.57C20.5503 10.631 18.4257 9.33301 15.9997 9.33301C12.3197 9.33301 9.33301 12.3197 9.33301 15.9997C9.33301 19.6797 12.3197 22.6663 15.9997 22.6663C18.4257 22.6663 20.5503 21.3683 21.7166 19.4294L19.4302 18.0586C18.7307 19.2218 17.4566 19.9997 15.9997 19.9997C13.7897 19.9997 11.9997 18.2097 11.9997 15.9997C11.9997 13.7897 13.7897 11.9997 15.9997 11.9997C17.457 11.9997 18.7318 12.7782 19.431 13.9421L21.7166 12.57Z"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M15.5247 2.66602C22.8847 2.66602 28.8581 8.63932 28.8581 15.9993C28.8581 23.3593 22.8847 29.3327 15.5247 29.3327C8.16471 29.3327 2.19141 23.3593 2.19141 15.9993C2.19141 8.63932 8.16471 2.66602 15.5247 2.66602ZM4.85807 15.9993C4.85807 10.106 9.63135 5.33268 15.5247 5.33268C21.4181 5.33268 26.1914 10.106 26.1914 15.9993C26.1914 21.8927 21.4181 26.666 15.5247 26.666C9.63135 26.666 4.85807 21.8927 4.85807 15.9993Z"
+              class="opacity-60"
+            />
+          </svg>
+          <span>
+            {{ pkg.license }}
           </span>
         </span>
-        <span v-if="pkg?.license"> • {{ pkg.license }}</span>
         <span class="flex items-center gap-2">
-          <span>•</span>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32px" height="32px">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            width="32px"
+            height="32px"
+            class="opacity-60"
+          >
             <path
-              fill="currentColor"
+              :fill="primaryColor"
               d="m16 6.52l2.76 5.58l.46 1l1 .15l6.16.89l-4.38 4.3l-.75.73l.18 1l1.05 6.13l-5.51-2.89L16 23l-.93.49l-5.51 2.85l1-6.13l.18-1l-.74-.77l-4.42-4.35l6.16-.89l1-.15l.46-1zM16 2l-4.55 9.22l-10.17 1.47l7.36 7.18L6.9 30l9.1-4.78L25.1 30l-1.74-10.13l7.36-7.17l-10.17-1.48Z"
             />
           </svg>
