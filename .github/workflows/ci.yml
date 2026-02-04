@@ -107,10 +107,16 @@ jobs:
       - name: 🧪 Component tests
         run: pnpm test:nuxt run --coverage --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: Upload coverage reports to Codecov
+      - name: ⬆︎ Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: ⬆︎ Upload coverage reports to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
         env:
-          CODECOV_TOKEN: 17b4bed9-d407-4ce2-9c10-2ccd4328a1d9
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   browser:
     name: 🖥️ Browser tests
