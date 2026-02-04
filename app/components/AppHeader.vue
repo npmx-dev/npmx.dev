@@ -95,18 +95,11 @@ onKeyStroke(
       <button
         v-if="!isSearchExpanded && !isOnHomePage"
         type="button"
-        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
+        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 rounded"
         :aria-label="$t('nav.tap_to_search')"
         @click="expandMobileSearch"
       >
-        <img
-          aria-hidden="true"
-          :alt="$t('alt_logo')"
-          src="/logo.svg"
-          width="96"
-          height="96"
-          class="w-8 h-8 rounded-lg"
-        />
+        <AppLogo class="w-8 h-8 rounded-lg" />
         <span class="i-carbon:search w-4 h-4 text-fg-subtle" aria-hidden="true" />
       </button>
 
@@ -116,16 +109,9 @@ onKeyStroke(
           to="/"
           :aria-label="$t('header.home')"
           dir="ltr"
-          class="inline-flex items-center gap-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
+          class="inline-flex items-center gap-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 rounded"
         >
-          <img
-            aria-hidden="true"
-            :alt="$t('alt_logo')"
-            src="/logo.svg"
-            width="96"
-            height="96"
-            class="w-8 h-8 rounded-lg"
-          />
+          <AppLogo class="w-8 h-8 rounded-lg" />
           <span>npmx</span>
         </NuxtLink>
       </div>
