@@ -25,8 +25,6 @@ const props = defineProps<{
   createdIso?: string | null
 }>()
 
-const shouldFetch = computed(() => true)
-
 const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
 const colorMode = useColorMode()
@@ -140,6 +138,29 @@ function isYearlyDataset(data: unknown): data is YearlyDownloadPoint[] {
   )
 }
 
+/**
+ * Formats a single evolution dataset into the structure expected by `VueUiXy`
+ * for single-series charts.
+ *
+ * The dataset is interpreted based on the selected time granularity:
+ * - **daily**   → uses `timestamp`
+ * - **weekly**  → uses `timestampEnd`
+ * - **monthly** → uses `timestamp`
+ * - **yearly**  → uses `timestamp`
+ *
+ * Only datasets matching the expected shape for the given granularity are
+ * accepted. If the dataset does not match, an empty result is returned.
+ *
+ * The returned structure includes:
+ * - a single line-series dataset with a consistent color
+ * - a list of timestamps used as the x-axis values
+ *
+ * @param selectedGranularity - Active chart time granularity
+ * @param dataset - Raw evolution dataset to format
+ * @param seriesName - Display name for the resulting series
+ * @returns An object containing a formatted dataset and its associated dates,
+ *          or `{ dataset: null, dates: [] }` when the input is incompatible
+ */
 function formatXyDataset(
   selectedGranularity: ChartTimeGranularity,
   dataset: EvolutionData,
@@ -200,6 +221,30 @@ function formatXyDataset(
   return { dataset: null, dates: [] }
 }
 
+/**
+ * Extracts normalized time-series points from an evolution dataset based on
+ * the selected time granularity.
+ *
+ * Each returned point contains:
+ * - `timestamp`: the numeric time value used for x-axis alignment
+ * - `downloads`: the corresponding value at that time
+ *
+ * The timestamp field is selected according to granularity:
+ * - **daily**   → `timestamp`
+ * - **weekly**  → `timestampEnd`
+ * - **monthly** → `timestamp`
+ * - **yearly**  → `timestamp`
+ *
+ * If the dataset does not match the expected shape for the given granularity,
+ * an empty array is returned.
+ *
+ * This helper is primarily used in multi-package mode to align multiple
+ * datasets on a shared time axis.
+ *
+ * @param selectedGranularity - Active chart time granularity
+ * @param dataset - Raw evolution dataset to extract points from
+ * @returns An array of normalized `{ timestamp, downloads }` points
+ */
 function extractSeriesPoints(
   selectedGranularity: ChartTimeGranularity,
   dataset: EvolutionData,
@@ -263,6 +308,22 @@ const startDate = shallowRef<string>('') // YYYY-MM-DD
 const endDate = shallowRef<string>('') // YYYY-MM-DD
 const hasUserEditedDates = shallowRef(false)
 
+/**
+ * Initializes the date range from the provided weeklyDownloads dataset.
+ *
+ * The range is inferred directly from the dataset boundaries:
+ * - `startDate` is set from the `weekStart` of the first entry
+ * - `endDate` is set from the `weekEnd` of the last entry
+ *
+ * Dates are normalized to `YYYY-MM-DD` and validated before assignment.
+ *
+ * This function is a no-op when:
+ * - the user has already edited the date range
+ * - no weekly download data is available
+ *
+ * The inferred range takes precedence over client-side fallbacks but does not
+ * override user-defined dates.
+ */
 function initDateRangeFromWeekly() {
   if (hasUserEditedDates.value) return
   if (!props.weeklyDownloads?.length) return
@@ -275,6 +336,20 @@ function initDateRangeFromWeekly() {
   if (isValidIsoDateOnly(end)) endDate.value = end
 }
 
+/**
+ * Initializes a default date range on the client when no explicit dates
+ * have been provided and the user has not manually edited the range, typically
+ * when weeklyDownloads is not provided.
+ *
+ * The range is computed in UTC to avoid timezone-related off-by-one errors:
+ * - `endDate` is set to yesterday (UTC)
+ * - `startDate` is set to 29 days before yesterday (UTC), yielding a 30-day range
+ *
+ * This function is a no-op when:
+ * - the user has already edited the date range
+ * - the code is running on the server
+ * - both `startDate` and `endDate` are already defined
+ */
 function initDateRangeFallbackClient() {
   if (hasUserEditedDates.value) return
   if (!import.meta.client) return
@@ -297,11 +372,31 @@ function initDateRangeFallbackClient() {
 function toUtcDateOnly(date: Date): string {
   return date.toISOString().slice(0, 10)
 }
+
 function addUtcDays(date: Date, days: number): Date {
   const next = new Date(date)
   next.setUTCDate(next.getUTCDate() + days)
   return next
 }
+
+/**
+ * Initializes a default date range for multi-package mode using a fixed
+ * 52-week rolling window.
+ *
+ * The range is computed in UTC to ensure consistent boundaries across
+ * timezones:
+ * - `endDate` is set to yesterday (UTC)
+ * - `startDate` is set to the first day of the 52-week window ending yesterday
+ *
+ * This function is intended for multi-package comparisons where no explicit
+ * date range or dataset-derived range is available.
+ *
+ * This function is a no-op when:
+ * - the user has already edited the date range
+ * - the code is running on the server
+ * - the component is not in multi-package mode
+ * - both `startDate` and `endDate` are already defined
+ */
 function initDateRangeForMultiPackageWeekly52() {
   if (hasUserEditedDates.value) return
   if (!import.meta.client) return
@@ -364,6 +459,24 @@ const options = shallowRef<
   | { granularity: 'year'; startDate?: string; endDate?: string }
 >({ granularity: 'week', weeks: 52 })
 
+/**
+ * Applies the current date range (`startDate` / `endDate`) to a base options
+ * object, returning a new object augmented with validated date fields.
+ *
+ * Dates are normalized to `YYYY-MM-DD`, validated, and ordered to ensure
+ * logical consistency:
+ * - When both dates are valid, the earliest is assigned to `startDate` and
+ *   the latest to `endDate`
+ * - When only one valid date is present, only that boundary is applied
+ * - Invalid or empty dates are omitted from the result
+ *
+ * The input object is not mutated.
+ *
+ * @typeParam T - Base options type to extend with date range fields
+ * @param base - Base options object to which the date range should be applied
+ * @returns A new options object including the applicable `startDate` and/or
+ *          `endDate` fields
+ */
 function applyDateRange<T extends Record<string, unknown>>(base: T): T & DateRangeFields {
   const next: T & DateRangeFields = { ...base }
 
@@ -396,6 +509,16 @@ const pending = shallowRef(false)
 const isMounted = shallowRef(false)
 let requestToken = 0
 
+// Watches granularity and date inputs to keep request options in sync and
+// manage the loading state.
+//
+// This watcher does NOT perform the fetch itself. Its responsibilities are:
+// - derive the correct API options from the selected granularity
+// - apply the current validated date range to those options
+// - determine whether a loading indicator should be shown
+//
+// Fetching is debounced separately to avoid excessive
+// network requests while the user is interacting with controls.
 watch(
   [selectedGranularity, startDate, endDate],
   ([granularityValue]) => {
@@ -410,7 +533,7 @@ watch(
     if (!isMounted.value) return
 
     const packageNames = effectivePackageNames.value
-    if (!import.meta.client || !shouldFetch.value || !packageNames.length) {
+    if (!import.meta.client || !packageNames.length) {
       pending.value = false
       return
     }
@@ -434,9 +557,27 @@ watch(
   { immediate: true },
 )
 
+/**
+ * Fetches download evolution data based on the current granularity,
+ * date range, and package selection.
+ *
+ * This function:
+ * - runs only on the client
+ * - supports both single-package and multi-package modes
+ * - applies request de-duplication via a request token to avoid race conditions
+ * - updates the appropriate reactive stores with fetched data
+ * - manages the `pending` loading state
+ *
+ * Behavior details:
+ * - In multi-package mode, all packages are fetched in parallel and partial
+ *   failures are tolerated using `Promise.allSettled`
+ * - In single-package mode, weekly data is reused from `weeklyDownloads`
+ *   when available and no explicit date range is requested
+ * - Outdated responses are discarded when a newer request supersedes them
+ *
+ */
 async function loadNow() {
   if (!import.meta.client) return
-  if (!shouldFetch.value) return
 
   const packageNames = effectivePackageNames.value
   if (!packageNames.length) return
@@ -498,6 +639,13 @@ async function loadNow() {
   }
 }
 
+// Debounced wrapper around `loadNow` to avoid triggering a network request
+// on every intermediate state change while the user is interacting with inputs
+//
+// This 'arbitrary' 1000 ms delay:
+// - gives enough time for the user to finish changing granularity or dates
+// - prevents unnecessary API load and visual flicker of the loading state
+//
 const debouncedLoadNow = useDebounceFn(() => {
   loadNow()
 }, 1000)
@@ -506,7 +654,6 @@ const fetchTriggerKey = computed(() => {
   const names = effectivePackageNames.value.join(',')
   const o = options.value as any
   return [
-    shouldFetch.value ? '1' : '0',
     isMultiPackageMode.value ? 'M' : 'S',
     names,
     String(props.createdIso ?? ''),
@@ -536,6 +683,28 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
   return evolution.value
 })
 
+/**
+ * Normalized chart data derived from the fetched evolution datasets.
+ *
+ * This computed value adapts its behavior based on the current mode:
+ *
+ * - **Single-package mode**
+ *   - Delegates formatting to `formatXyDataset`
+ *   - Produces a single series with its corresponding timestamps
+ *
+ * - **Multi-package mode**
+ *   - Merges multiple package datasets into a shared time axis
+ *   - Aligns all series on the same sorted list of timestamps
+ *   - Fills missing datapoints with `0` to keep series lengths consistent
+ *   - Assigns framework-specific colors when applicable
+ *
+ * The returned structure matches the expectations of `VueUiXy`:
+ * - `dataset`: array of series definitions, or `null` when no data is available
+ * - `dates`: sorted list of timestamps used as the x-axis reference
+ *
+ * Returning `dataset: null` explicitly signals the absence of data and allows
+ * the template to handle empty states without ambiguity.
+ */
 const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: number[] }>(() => {
   if (!isMultiPackageMode.value) {
     const pkg = effectivePackageNames.value[0] ?? props.packageName ?? ''
@@ -558,7 +727,7 @@ const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: number
   const dates = Array.from(timestampSet).sort((a, b) => a - b)
   if (!dates.length) return { dataset: null, dates: [] }
 
-  const dataset: VueUiXyDatasetItem[] = names.map((pkg, index) => {
+  const dataset: VueUiXyDatasetItem[] = names.map(pkg => {
     const points = pointsByPackage.get(pkg) ?? []
     const map = new Map<number, number>()
     for (const p of points) map.set(p.timestamp, p.downloads)
@@ -616,7 +785,8 @@ function buildExportFilename(extension: string): string {
   return `${sanitise(label ?? '')}-${g}_${range}.${extension}`
 }
 
-const config = computed(() => {
+// VueUiXy chart component configuration
+const chartConfig = computed(() => {
   return {
     theme: isDarkMode.value ? 'dark' : 'default',
     chart: {
@@ -860,7 +1030,7 @@ const config = computed(() => {
     <div role="region" aria-labelledby="download-analytics-title">
       <ClientOnly v-if="chartData.dataset">
         <div>
-          <VueUiXy :dataset="chartData.dataset" :config="config" class="[direction:ltr]">
+          <VueUiXy :dataset="chartData.dataset" :config="chartConfig" class="[direction:ltr]">
             <!-- Custom legend for multiple series -->
             <template v-if="isMultiPackageMode" #legend="{ legend }">
               <div class="flex gap-4 flex-wrap justify-center">
@@ -970,7 +1140,7 @@ const config = computed(() => {
     </div>
 
     <div
-      v-if="shouldFetch && !chartData.dataset && !pending"
+      v-if="!chartData.dataset && !pending"
       class="min-h-[260px] flex items-center justify-center text-fg-subtle font-mono text-sm"
     >
       {{ $t('package.downloads.no_data') }}
