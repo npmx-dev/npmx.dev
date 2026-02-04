@@ -797,6 +797,20 @@ onKeyStroke(
                 {{ $t('package.links.compare') }}
               </LinkBase>
             </li>
+            <li
+              v-if="
+                displayVersion && latestVersion && displayVersion.version !== latestVersion.version
+              "
+              class="sm:hidden"
+            >
+              <NuxtLink
+                :to="`/diff/${pkg.name}/v/${displayVersion.version}...${latestVersion.version}`"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-text-align-mixed w-4 h-4" aria-hidden="true" />
+                {{ $t('compare.compare_versions') }}
+              </NuxtLink>
+            </li>
           </ul>
         </div>
 
