@@ -4,6 +4,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import 'axe-core'
 import type { AxeResults, RunOptions } from 'axe-core'
 import { afterEach, describe, expect, it } from 'vitest'
+import { ref } from 'vue'
 
 // axe-core is a UMD module that exposes itself as window.axe in the browser
 declare const axe: {
@@ -1013,9 +1014,52 @@ describe('component accessibility audits', () => {
   })
 
   describe('PackageScoreBars', () => {
-    it('should have no accessibility violations', async () => {
+    it('should have no accessibility violations with score data', async () => {
       const component = await mountSuspended(PackageScoreBars, {
         props: { packageName: 'vue' },
+        global: {
+          mocks: {
+            usePackageScore: () => ({
+              data: ref({
+                final: 0.85,
+                detail: { quality: 0.82, popularity: 0.91, maintenance: 0.78 },
+              }),
+              status: ref('success'),
+            }),
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in loading state', async () => {
+      const component = await mountSuspended(PackageScoreBars, {
+        props: { packageName: 'vue' },
+        global: {
+          mocks: {
+            usePackageScore: () => ({
+              data: ref(null),
+              status: ref('pending'),
+            }),
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when unavailable', async () => {
+      const component = await mountSuspended(PackageScoreBars, {
+        props: { packageName: 'vue' },
+        global: {
+          mocks: {
+            usePackageScore: () => ({
+              data: ref(null),
+              status: ref('error'),
+            }),
+          },
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
