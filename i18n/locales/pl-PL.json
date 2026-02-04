@@ -206,11 +206,11 @@
       "view_on_github": "Zobacz na GitHub",
       "toc_title": "Spis treści",
       "callout": {
-        "note": "notatka",
-        "tip": "wskazówka",
-        "important": "ważne",
-        "warning": "uwaga",
-        "caution": "ostrożnie"
+        "note": "Notatka",
+        "tip": "Wskazówka",
+        "important": "Ważne",
+        "warning": "Uwaga",
+        "caution": "Ostrożnie"
       }
     },
     "provenance_section": {},

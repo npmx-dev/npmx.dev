@@ -210,11 +210,11 @@
       "view_on_github": "View on GitHub",
       "toc_title": "Outline",
       "callout": {
-        "note": "note",
-        "tip": "tip",
-        "important": "important",
-        "warning": "warning",
-        "caution": "caution"
+        "note": "Note",
+        "tip": "Tip",
+        "important": "Important",
+        "warning": "Warning",
+        "caution": "Caution"
       }
     },
     "keywords_title": "Keywords",
