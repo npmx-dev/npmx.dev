@@ -17,6 +17,7 @@ const props = defineProps<{
   versions: Record<string, SlimVersion>
   distTags: Record<string, string>
   time: Record<string, string>
+  selectedVersion?: string
 }>()
 
 /** Maximum number of dist-tag rows to show before collapsing into "Other versions" */
@@ -41,6 +42,10 @@ function versionRoute(version: string): RouteLocationRaw {
 
 // Version to tags lookup (supports multiple tags per version)
 const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
+
+const effectiveCurrentVersion = computed(
+  () => props.selectedVersion ?? props.distTags.latest ?? undefined,
+)
 
 // All tag rows derived from props (SSR-safe)
 // Deduplicates so each version appears only once, with all its tags
@@ -298,6 +303,36 @@ function toggleMajorGroup(groupKey: string) {
 function getTagVersions(tag: string): VersionDisplay[] {
   return tagVersions.value.get(tag) ?? []
 }
+
+function findClaimingTag(version: string): string | null {
+  const versionChannel = getPrereleaseChannel(version)
+
+  // First matching tag claims the version
+  for (const row of allTagRows.value) {
+    const tagVersion = props.distTags[row.tag]
+    if (!tagVersion) continue
+
+    const tagChannel = getPrereleaseChannel(tagVersion)
+
+    if (isSameVersionGroup(version, tagVersion) && versionChannel === tagChannel) {
+      return row.tag
+    }
+  }
+
+  return null
+}
+
+// Whether this row should be highlighted for the current version
+function rowContainsCurrentVersion(row: (typeof visibleTagRows.value)[0]): boolean {
+  if (!effectiveCurrentVersion.value) return false
+
+  if (row.primaryVersion.version === effectiveCurrentVersion.value) return true
+
+  if (getTagVersions(row.tag).some(v => v.version === effectiveCurrentVersion.value)) return true
+
+  const claimingTag = findClaimingTag(effectiveCurrentVersion.value)
+  return claimingTag === row.tag
+}
 </script>
 
 <template>
@@ -323,7 +358,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
       <div v-for="row in visibleTagRows" :key="row.id">
         <div
           class="flex items-center gap-2 pe-2 px-1"
-          :class="row.tag === 'latest' ? 'bg-bg-subtle rounded-lg' : ''"
+          :class="rowContainsCurrentVersion(row) ? 'bg-bg-subtle rounded-lg' : ''"
         >
           <!-- Expand button (only if there are more versions to show) -->
           <button
@@ -419,7 +454,12 @@ function getTagVersions(tag: string): VersionDisplay[] {
           v-if="expandedTags.has(row.tag) && getTagVersions(row.tag).length > 1"
           class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
         >
-          <div v-for="v in getTagVersions(row.tag).slice(1)" :key="v.version" class="py-1">
+          <div
+            v-for="v in getTagVersions(row.tag).slice(1)"
+            :key="v.version"
+            class="py-1"
+            :class="v.version === effectiveCurrentVersion ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
+          >
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(v.version)"
