@@ -333,6 +333,35 @@ function rowContainsCurrentVersion(row: (typeof visibleTagRows.value)[0]): boole
   const claimingTag = findClaimingTag(effectiveCurrentVersion.value)
   return claimingTag === row.tag
 }
+
+function otherVersionsContainsCurrent(): boolean {
+  if (!effectiveCurrentVersion.value) return false
+
+  const claimingTag = findClaimingTag(effectiveCurrentVersion.value)
+
+  // If a tag claims it, check if that tag is in visibleTagRows
+  if (claimingTag) {
+    const isInVisibleTags = visibleTagRows.value.some(row => row.tag === claimingTag)
+    if (!isInVisibleTags) return true
+    return false
+  }
+
+  // No tag claims it - it would be in otherMajorGroups
+  return true
+}
+
+function hiddenRowContainsCurrent(row: (typeof hiddenTagRows.value)[0]): boolean {
+  if (!effectiveCurrentVersion.value) return false
+  if (row.primaryVersion.version === effectiveCurrentVersion.value) return true
+
+  const claimingTag = findClaimingTag(effectiveCurrentVersion.value)
+  return claimingTag === row.tag
+}
+
+function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): boolean {
+  if (!effectiveCurrentVersion.value) return false
+  return group.versions.some(v => v.version === effectiveCurrentVersion.value)
+}
 </script>
 
 <template>
@@ -520,7 +549,8 @@ function rowContainsCurrentVersion(row: (typeof visibleTagRows.value)[0]): boole
       <div class="p-1">
         <button
           type="button"
-          class="flex items-center gap-2 text-start rounded-sm"
+          class="flex items-center gap-2 text-start rounded-sm w-full"
+          :class="otherVersionsContainsCurrent() ? 'bg-bg-subtle' : ''"
           :aria-expanded="otherVersionsExpanded"
           :aria-label="
             otherVersionsExpanded
@@ -562,7 +592,12 @@ function rowContainsCurrentVersion(row: (typeof visibleTagRows.value)[0]): boole
         <!-- Expanded other versions -->
         <div v-if="otherVersionsExpanded" class="ms-4 ps-2 border-is border-border space-y-0.5">
           <!-- Hidden tag rows (overflow from visible tags) -->
-          <div v-for="row in hiddenTagRows" :key="row.id" class="py-1">
+          <div
+            v-for="row in hiddenTagRows"
+            :key="row.id"
+            class="py-1"
+            :class="hiddenRowContainsCurrent(row) ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
+          >
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(row.primaryVersion.version)"
@@ -614,7 +649,11 @@ function rowContainsCurrentVersion(row: (typeof visibleTagRows.value)[0]): boole
           <template v-if="otherMajorGroups.length > 0">
             <div v-for="group in otherMajorGroups" :key="group.groupKey">
               <!-- Version group header -->
-              <div v-if="group.versions.length > 1" class="py-1">
+              <div
+                v-if="group.versions.length > 1"
+                class="py-1"
+                :class="majorGroupContainsCurrent(group) ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
+              >
                 <div class="flex items-center justify-between gap-2">
                   <div class="flex items-center gap-2 min-w-0">
                     <button
@@ -696,7 +735,11 @@ function rowContainsCurrentVersion(row: (typeof visibleTagRows.value)[0]): boole
                 </div>
               </div>
               <!-- Single version (no expand needed) -->
-              <div v-else class="py-1">
+              <div
+                v-else
+                class="py-1"
+                :class="majorGroupContainsCurrent(group) ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
+              >
                 <div class="flex items-center justify-between gap-2">
                   <div class="flex items-center gap-2 min-w-0">
                     <span class="w-4 shrink-0" />
@@ -758,7 +801,14 @@ function rowContainsCurrentVersion(row: (typeof visibleTagRows.value)[0]): boole
                 v-if="expandedMajorGroups.has(group.groupKey) && group.versions.length > 1"
                 class="ms-6 space-y-0.5"
               >
-                <div v-for="v in group.versions.slice(1)" :key="v.version" class="py-1">
+                <div
+                  v-for="v in group.versions.slice(1)"
+                  :key="v.version"
+                  class="py-1"
+                  :class="
+                    v.version === effectiveCurrentVersion ? 'rounded bg-bg-subtle px-2 -mx-2' : ''
+                  "
+                >
                   <div class="flex items-center justify-between gap-2">
                     <NuxtLink
                       :to="versionRoute(v.version)"
