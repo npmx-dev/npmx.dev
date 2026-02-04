@@ -179,6 +179,17 @@ const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
 }))
 
+const { isConnected, npmUser } = useConnector()
+const deprecateModal = useTemplateRef<{ open: () => void }>('deprecateModal')
+
+const isPackageOwner = computed(() => {
+  const maintainers = pkg.value?.maintainers
+  const user = npmUser.value
+  if (!maintainers?.length || !user) return false
+  const userLower = user.toLowerCase()
+  return maintainers.some((m: { name?: string }) => (m.name ?? '').toLowerCase() === userLower)
+})
+
 const sizeTooltip = computed(() => {
   const chunks = [
     displayVersion.value &&
@@ -1054,6 +1065,22 @@ defineOgImageComponent('Package', {
             :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
             :optional-dependencies="displayVersion.optionalDependencies"
           />
+
+          <!-- Deprecation (when connected as package owner) -->
+          <div v-if="isConnected && resolvedVersion && isPackageOwner" class="space-y-1">
+            <button
+              type="button"
+              class="flex items-center justify-center w-full px-3 py-1.5 bg-bg-subtle rounded text-sm font-mono text-red-400 hover:text-red-500 transition-colors inline-flex items-center gap-1.5 w-full"
+              @click="deprecateModal?.open()"
+            >
+              <span class="i-carbon-warning-alt w-4 h-4 shrink-0" aria-hidden="true" />
+              {{
+                deprecationNotice
+                  ? $t('package.deprecation.action_change')
+                  : $t('package.deprecation.action')
+              }}
+            </button>
+          </div>
         </div>
       </div>
     </article>
@@ -1072,6 +1099,14 @@ defineOgImageComponent('Package', {
       </p>
       <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
+    <ClientOnly>
+      <PackageDeprecatePackageModal
+        v-if="pkg"
+        ref="deprecateModal"
+        :package-name="pkg.name"
+        :version="resolvedVersion ?? ''"
+      />
+    </ClientOnly>
   </main>
 </template>
 
