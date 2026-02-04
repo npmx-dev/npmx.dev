@@ -7,15 +7,8 @@ import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import type { PublicUserSession } from '#shared/schemas/publicUserSession'
 import { handleResolver } from '#server/utils/atproto/oauth'
-
-interface ProfileRecord {
-  avatar?: {
-    $type: 'blob'
-    ref: { $link: string }
-    mimeType: string
-    size: number
-  }
-}
+import { type AtIdentifierString, Client } from '@atproto/lex'
+import * as app from '#shared/types/lexicons/app'
 
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig(event)
@@ -86,17 +79,18 @@ export default defineEventHandler(async event => {
       const pdsUrl = new URL(miniDoc.pds)
       // Only fetch from HTTPS PDS endpoints to prevent SSRF
       if (did && pdsUrl.protocol === 'https:') {
-        const profileResponse = await fetch(
-          `${pdsUrl.origin}/xrpc/com.atproto.repo.getRecord?repo=${encodeURIComponent(did)}&collection=app.bsky.actor.profile&rkey=self`,
-          { headers: { 'User-Agent': 'npmx' } },
-        )
-        if (profileResponse.ok) {
-          const record = (await profileResponse.json()) as { value: ProfileRecord }
-          const avatarBlob = record.value.avatar
-          if (avatarBlob?.ref?.$link) {
-            // Use Bluesky CDN for faster image loading
-            avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${avatarBlob.ref.$link}@jpeg`
-          }
+        const client = new Client(pdsUrl)
+        const profileResponse = await client.get(app.bsky.actor.profile, {
+          // Hack for now need to find an example on how to use it properly
+          repo: did as AtIdentifierString,
+          rkey: 'self',
+        })
+
+        const validatedResponse = app.bsky.actor.profile.main.validate(profileResponse.value)
+
+        if (validatedResponse.avatar?.ref) {
+          // Use Bluesky CDN for faster image loading
+          avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${validatedResponse.avatar?.ref}@jpeg`
         }
       }
     } catch {
