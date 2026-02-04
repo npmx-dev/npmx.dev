@@ -87,6 +87,7 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/opensearch.xml': { isr: true },
     '/**': { isr: getISRConfig(60, true) },
+    '/__og-image__/**': { isr: false, ssr: true },
     '/api/**': { isr: 60 },
     '/200.html': { prerender: true },
     '/package/**': { isr: getISRConfig(60, true) },
