@@ -43,17 +43,21 @@ defineOgImageComponent('Default', {
 <template>
   <main>
     <section class="container min-h-screen flex flex-col">
-      <header class="flex-1 flex flex-col items-center justify-center text-center py-20">
+      <header
+        class="flex-1 flex flex-col items-center justify-center text-center pt-20 pb-4 md:pb-8 lg:pb-20"
+      >
         <h1
           dir="ltr"
-          class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+          class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
         >
-          <AppLogo class="w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl" />
+          <AppLogo
+            class="w-12 h-12 -ms-3 sm:w-20 sm:h-20 -ms-5 md:w-24 md:h-24 -ms-6 rounded-2xl sm:rounded-3xl"
+          />
           <span class="pb-4">npmx</span>
         </h1>
 
         <p
-          class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 motion-safe:animate-slide-up motion-safe:animate-fill-both"
+          class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.1s"
         >
           {{ $t('tagline') }}
@@ -75,7 +79,7 @@ defineOgImageComponent('Default', {
 
               <div class="search-box relative flex items-center">
                 <span
-                  class="absolute inset-is-4 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 group-focus-within:text-accent z-1"
+                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
                 >
                   /
                 </span>
@@ -89,16 +93,21 @@ defineOgImageComponent('Default', {
                   autofocus
                   :placeholder="$t('search.placeholder')"
                   v-bind="noCorrect"
-                  class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+                  class="w-full bg-bg-subtle border border-border rounded-xl ps-8 pe-24 h-14 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 motion-reduce:transition-none hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
                   @input="handleInput"
                 />
 
                 <button
                   type="submit"
-                  class="absolute inset-ie-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-95 focus-visible:outline-accent/70"
+                  class="absolute group inset-ie-2.5 px-2.5 sm:ps-4 sm:pe-4 py-2 font-mono text-sm text-bg bg-fg/90 rounded-md transition-[background-color,transform] duration-200 hover:bg-fg! group-focus-within:bg-fg/80 active:scale-95 focus-visible:outline-accent/70"
                 >
-                  <span class="i-carbon:search align-middle w-4 h-4" aria-hidden="true"></span>
-                  {{ $t('search.button') }}
+                  <span
+                    class="inline-block i-carbon:search align-middle w-4 h-4 sm:mr-2"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="sr-only sm:not-sr-only">
+                    {{ $t('search.button') }}
+                  </span>
                 </button>
               </div>
             </div>

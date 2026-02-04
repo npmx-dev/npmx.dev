@@ -144,7 +144,7 @@ function openAuthModal() {
               v-if="isNpmConnected && npmUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
               @click="openConnectorModal"
             >
               <img
@@ -187,7 +187,7 @@ function openAuthModal() {
               v-if="atprotoUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
               @click="openAuthModal"
             >
               <img

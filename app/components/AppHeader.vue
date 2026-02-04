@@ -109,7 +109,7 @@ onKeyStroke(
           to="/"
           :aria-label="$t('header.home')"
           dir="ltr"
-          class="inline-flex items-center gap-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 rounded"
+          class="inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded"
         >
           <AppLogo class="w-8 h-8 rounded-lg" />
           <span>npmx</span>
