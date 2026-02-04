@@ -38,7 +38,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 </script>
 
 <template>
-  <main class="container flex-1 py-12 sm:py-16">
+  <main class="container flex-1 py-12 sm:py-16 overflow-x-hidden">
     <article class="max-w-2xl mx-auto">
       <header class="mb-12">
         <div class="flex items-baseline justify-between gap-4 mb-4">
