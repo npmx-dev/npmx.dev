@@ -936,5 +936,53 @@
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
       }
     }
+  },
+  "cookie_policy": {
+    "title": "Cookie Policy",
+    "last_updated": "Last updated: {date}",
+    "welcome": "Welcome to {app}. In this policy, we explain what cookies are, how we use them, and how you can manage them.",
+    "section_1": {
+      "title": "1. What are cookies?",
+      "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+    },
+    "section_2": {
+      "title": "2. What types of cookies do we use?",
+      "p1": "On our website, we only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
+      "bold": "first-party cookies",
+      "li1": "They allow us to keep your session active once you have logged in. Technically, this cookie has no expiration date and is deleted by your browser upon closing. However, for your security, the session on our servers {bold}, at which point you will be asked to log in again.",
+      "li1_bold": "will automatically terminate after a period of inactivity"
+    },
+    "section_3": {
+      "title": "3. Other Storage Technologies",
+      "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
+      "bold": "Local Storage",
+      "p2": "This information is purely functional, stored only on your device, and {bold}. We use it exclusively to improve your experience on our website.",
+      "bold2": "contains no personal data nor is it used to track you",
+      "settings": "settings"
+    },
+    "section_4": {
+      "title": "4. Cookie Acceptance and Application Access",
+      "p1": "The use of cookies on our website is {bold}. Therefore, {bold2}. By continuing to browse or log in, you expressly accept our cookie policy.",
+      "bold": "essential for its proper functioning",
+      "bold2": "if you do not accept the use of cookies, you will not be able to access the application"
+    },
+    "section_5": {
+      "title": "5. Cookie Management",
+      "p1": "You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
+      "bold": "rejecting cookies will prevent access to and use of the application",
+      "p2": "Below are links with instructions for cookie management in the most commonly used browsers:",
+      "chrome": "Google Chrome (opens in a new window)",
+      "firefox": "Mozilla Firefox (opens in a new window)",
+      "edge": "Microsoft Edge (opens in a new window)"
+    },
+    "section_6": {
+      "title": "6. Data Controller",
+      "p1": "While our only cookie does not collect personal information, we guarantee compliance with the principles of transparency and security in data management. For any questions or requests regarding the use of cookies, you can contact us by opening an issue on our {link}.",
+      "link": "GitHub repository"
+    },
+    "section_7": {
+      "title": "7. Changes to the Cookie Policy",
+      "p1": "We reserve the right to modify this policy at any time. Any changes will be published on this page."
+    }
   }
 }
