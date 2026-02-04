@@ -67,12 +67,8 @@ async function getOAuthSession(
     })
 
     const currentSession = serverSession.data
-    if (!currentSession) {
-      console.log('oauth session not found')
-      return { oauthSession: undefined, serverSession }
-    }
+    if (!currentSession) return { oauthSession: undefined, serverSession }
 
-    // restore using the subject
     const oauthSession = await client.restore(currentSession.public.did)
     return { oauthSession, serverSession }
   } catch (error) {

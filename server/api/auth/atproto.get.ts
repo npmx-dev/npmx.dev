@@ -10,6 +10,38 @@ import { handleResolver } from '#server/utils/atproto/oauth'
 import { type AtIdentifierString, Client } from '@atproto/lex'
 import * as app from '#shared/types/lexicons/app'
 
+/**
+ * Fetch the user's profile record to get their avatar blob reference
+ * @param did
+ * @param pds
+ * @returns
+ */
+async function getAvatar(did: string, pds: string) {
+  let avatar: string | undefined
+  try {
+    const pdsUrl = new URL(pds)
+    // Only fetch from HTTPS PDS endpoints to prevent SSRF
+    if (did && pdsUrl.protocol === 'https:') {
+      const client = new Client(pdsUrl)
+      const profileResponse = await client.get(app.bsky.actor.profile, {
+        // Hack for now need to find an example on how to use it properly
+        repo: did as AtIdentifierString,
+        rkey: 'self',
+      })
+
+      const validatedResponse = app.bsky.actor.profile.main.validate(profileResponse.value)
+
+      if (validatedResponse.avatar?.ref) {
+        // Use Bluesky CDN for faster image loading
+        avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${validatedResponse.avatar?.ref}@jpeg`
+      }
+    }
+  } catch {
+    // Avatar fetch failed, continue without it
+  }
+  return avatar
+}
+
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig(event)
   if (!config.sessionPassword) {
@@ -72,30 +104,7 @@ export default defineEventHandler(async event => {
   if (response.ok) {
     const miniDoc: PublicUserSession = await response.json()
 
-    // Fetch the user's profile record to get their avatar blob reference
-    let avatar: string | undefined
-    const did = agent.did
-    try {
-      const pdsUrl = new URL(miniDoc.pds)
-      // Only fetch from HTTPS PDS endpoints to prevent SSRF
-      if (did && pdsUrl.protocol === 'https:') {
-        const client = new Client(pdsUrl)
-        const profileResponse = await client.get(app.bsky.actor.profile, {
-          // Hack for now need to find an example on how to use it properly
-          repo: did as AtIdentifierString,
-          rkey: 'self',
-        })
-
-        const validatedResponse = app.bsky.actor.profile.main.validate(profileResponse.value)
-
-        if (validatedResponse.avatar?.ref) {
-          // Use Bluesky CDN for faster image loading
-          avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${validatedResponse.avatar?.ref}@jpeg`
-        }
-      }
-    } catch {
-      // Avatar fetch failed, continue without it
-    }
+    let avatar: string | undefined = await getAvatar(authSession.did, miniDoc.pds)
 
     await session.update({
       public: {
@@ -106,14 +115,15 @@ export default defineEventHandler(async event => {
   } else {
     //If slingshot fails we still want to set some key info we need.
     const pdsBase = (await authSession.getTokenInfo()).aud
+    let avatar: string | undefined = await getAvatar(authSession.did, pdsBase)
     await session.update({
       public: {
         did: authSession.did,
         handle: 'Not available',
         pds: pdsBase,
+        avatar,
       },
     })
   }
-
   return sendRedirect(event, '/')
 })

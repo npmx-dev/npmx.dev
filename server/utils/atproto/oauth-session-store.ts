@@ -17,13 +17,16 @@ export class OAuthSessionStore implements NodeSavedSessionStore {
 
   async set(_key: string, val: NodeSavedSession) {
     // We are ignoring the key since the mapping is already done in the session
-    console.log('New set expires:', val.tokenSet.expires_at)
     try {
       await this.session.update({
         oauthSession: val,
       })
     } catch (error) {
-      console.error('Error setting OAuth session:', error)
+      // Not sure if this has been happening. But helps with debugging
+      console.error(
+        '[oauth session store] Failed to set session:',
+        error instanceof Error ? error.message : 'Unknown error',
+      )
     }
   }
 
