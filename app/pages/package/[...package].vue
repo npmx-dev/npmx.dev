@@ -465,8 +465,12 @@ if (import.meta.server) {
   const isCrawler = crawlerRegex.test(agent)
 
   if (isCrawler) {
-    await refreshPkg()
-    await Promise.all([refreshRepoMeta(), refreshDownloads()])
+    try {
+      await refreshPkg()
+      await Promise.all([refreshRepoMeta(), refreshDownloads()])
+    } catch (err) {
+      console.warn('[crawler-refresh] Failed to refresh data server-side:', err)
+    }
   }
 }
 
