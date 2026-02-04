@@ -124,9 +124,22 @@
     "navigation": "包导航",
     "copy_name": "拷贝包名",
     "deprecation": {
+      "action": "废弃",
+      "action_change": "修改弃用",
       "package": "这个包已经被弃用。",
       "version": "这个版本已经被弃用。",
-      "no_reason": "没有提供原因"
+      "no_reason": "没有提供原因",
+      "modal": {
+        "deprecating": "废弃中",
+        "title": "废弃",
+        "title_version": "废弃版本",
+        "reason": "原因",
+        "reason_placeholder": "例如：使用 package-x 替代。这个包不再维护。",
+        "success": "包已废弃",
+        "success_detail": "这个包已废弃。",
+        "version": "版本",
+        "version_placeholder": "留空则废弃整个包"
+      }
     },
     "replacement": {
       "title": "你可能不需要这个依赖。",
