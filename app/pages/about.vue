@@ -181,7 +181,10 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
           <div v-else-if="contributorsStatus === 'error'" class="text-fg-subtle text-sm">
             {{ $t('about.contributors.error') }}
           </div>
-          <div v-else-if="contributors?.length" class="flex flex-wrap gap-2">
+          <div
+            v-else-if="contributors?.length"
+            class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-2"
+          >
             <a
               v-for="contributor in contributors"
               :key="contributor.id"
