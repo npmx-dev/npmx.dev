@@ -863,7 +863,7 @@
     "no_dependency": {
       "label": "No dep",
       "typeahead_title": "What Would James Do?",
-      "typeahead_description": "Compare against writing it yourself! @43081j approved.",
+      "typeahead_description": "Compare against writing it yourself! {'@'}43081j approved.",
       "james_says": "James says:",
       "tooltip_description": "Compare against writing it yourself! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
       "e18e_community": "e18e community",
