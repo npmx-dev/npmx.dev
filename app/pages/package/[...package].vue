@@ -699,6 +699,14 @@ defineOgImageComponent('Package', {
                 {{ $t('package.links.issues') }}
               </a>
             </li>
+
+            <NuxtLink
+              v-if="packageAnalysis?.hasChangelog"
+              class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+            >
+              <span class="i-carbon:catalog w-4 h-4" aria-hidden="true" />
+              {{ $t('package.links.changelog') }}
+            </NuxtLink>
             <li>
               <a
                 :href="`https://www.npmjs.com/package/${pkg.name}`"
