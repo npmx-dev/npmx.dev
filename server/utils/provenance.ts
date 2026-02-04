@@ -112,7 +112,7 @@ export function parseAttestationToProvenanceDetails(response: unknown): Provenan
   const workflow = pred.buildDefinition?.externalParameters?.workflow
   const repo = workflow?.repository?.replace(/\/$/, '').replace(/\.git$/, '') ?? ''
   const workflowPath = workflow?.path ?? ''
-  const ref = workflow?.ref?.replace(/^refs\/heads\//, '') ?? 'main'
+  const ref = workflow?.ref?.replace(/^refs\/heads\//, '').replace(/^refs\/tags\//, '') ?? 'main'
 
   const resolved = pred.buildDefinition?.resolvedDependencies?.[0]
   const commitSha = resolved?.digest?.gitCommit ?? ''
