@@ -12,9 +12,10 @@ const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
 const NPMS_API = 'https://api.npms.io/v2/package'
 
 const QUERY_SCHEMA = v.object({
-  colorA: v.optional(v.string()),
+  color: v.optional(v.string()),
   name: v.optional(v.string()),
-  colorB: v.optional(v.string()),
+  labelColor: v.optional(v.string()),
+  label: v.optional(v.string()),
 })
 
 const COLORS = {
@@ -263,9 +264,10 @@ export default defineCachedEventHandler(
       })
 
       const queryParams = v.safeParse(QUERY_SCHEMA, query)
-      const userColor = queryParams.success ? queryParams.output.colorB : undefined
-      const userColorLeft = queryParams.success ? queryParams.output.colorA : undefined
+      const userColor = queryParams.success ? queryParams.output.color : undefined
+      const labelColor = queryParams.success ? queryParams.output.labelColor : undefined
       const showName = queryParams.success && queryParams.output.name === 'true'
+      const userLabel = queryParams.success ? queryParams.output.label : undefined
 
       const badgeTypeResult = v.safeParse(BadgeTypeSchema, typeParam)
       const strategyKey = badgeTypeResult.success ? badgeTypeResult.output : 'version'
@@ -276,13 +278,13 @@ export default defineCachedEventHandler(
       const pkgData = await fetchNpmPackage(packageName)
       const strategyResult = await strategy(pkgData, requestedVersion)
 
-      const finalLabel = showName ? packageName : strategyResult.label
+      const finalLabel = userLabel ? userLabel : showName ? packageName : strategyResult.label
       const finalValue = strategyResult.value
 
       const rawColor = userColor ?? strategyResult.color
       const finalColor = rawColor?.startsWith('#') ? rawColor : `#${rawColor}`
 
-      const rawLeftColor = userColorLeft ?? '#0a0a0a'
+      const rawLeftColor = labelColor ?? '#0a0a0a'
       const finalLeftColor = rawLeftColor?.startsWith('#') ? rawLeftColor : `#${rawLeftColor}`
 
       const leftWidth = measureTextWidth(finalLabel)

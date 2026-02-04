@@ -102,20 +102,28 @@ test.describe('badge API', () => {
     })
   })
 
-  test('custom colorA parameter is applied to SVG', async ({ page, baseURL }) => {
+  test('custom labelColor parameter is applied to SVG', async ({ page, baseURL }) => {
     const customColor = '00ff00'
-    const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?colorA=${customColor}`)
+    const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?labelColor=${customColor}`)
     const { body } = await fetchBadge(page, url)
 
     expect(body).toContain(`fill="#${customColor}"`)
   })
 
-  test('custom colorB parameter is applied to SVG', async ({ page, baseURL }) => {
+  test('custom color parameter is applied to SVG', async ({ page, baseURL }) => {
     const customColor = 'ff69b4'
-    const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?colorB=${customColor}`)
+    const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?color=${customColor}`)
     const { body } = await fetchBadge(page, url)
 
     expect(body).toContain(`fill="#${customColor}"`)
+  })
+
+  test('custom label parameter is applied to SVG', async ({ page, baseURL }) => {
+    const customLabel = 'my-label'
+    const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?label=${customLabel}`)
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain(customLabel)
   })
 
   test('invalid badge type defaults to version strategy', async ({ page, baseURL }) => {
