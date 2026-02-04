@@ -307,14 +307,15 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             {{ $t('filters.keywords') }}
           </legend>
           <div class="flex flex-wrap gap-1.5" role="group" :aria-label="$t('filters.keywords')">
-            <TagButton
+            <ButtonBase
               v-for="keyword in displayedKeywords"
               :key="keyword"
+              variant="tag"
               :aria-pressed="filters.keywords.includes(keyword)"
               @click="emit('toggleKeyword', keyword)"
             >
               {{ keyword }}
-            </TagButton>
+            </ButtonBase>
             <button
               v-if="hasMoreKeywords"
               type="button"

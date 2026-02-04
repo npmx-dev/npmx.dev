@@ -126,16 +126,17 @@ const allMaintainersText = computed(() => {
         class="flex flex-wrap gap-1 justify-end"
         :aria-label="$t('package.card.keywords')"
       >
-        <TagButton
+        <ButtonBase
           v-for="keyword in pkg.keywords.slice(0, 3)"
           :key="keyword"
+          variant="tag"
           :aria-pressed="props.filters?.keywords.includes(keyword)"
           :title="`Filter by ${keyword}`"
           @click.stop="emit('clickKeyword', keyword)"
           :class="{ 'group-hover:bg-bg-elevated': !props.filters?.keywords.includes(keyword) }"
         >
           {{ keyword }}
-        </TagButton>
+        </ButtonBase>
         <span
           v-if="pkg.keywords.length > 3"
           class="text-fg-subtle text-xs"
