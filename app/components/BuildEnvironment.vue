@@ -1,10 +1,14 @@
 <script setup lang="ts">
-defineProps<{
+import type { BuildInfo } from '#shared/types'
+
+const { footer = false, buildInfo: buildInfoProp } = defineProps<{
   footer?: boolean
+  buildInfo?: BuildInfo
 }>()
 
 const { locale } = useI18n()
-const buildInfo = useAppConfig().buildInfo
+const appConfig = useAppConfig()
+const buildInfo = computed(() => buildInfoProp || appConfig.buildInfo)
 </script>
 
 <template>

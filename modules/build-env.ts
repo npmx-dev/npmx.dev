@@ -1,3 +1,4 @@
+import type { EnvType } from '../config/env'
 import type { BuildInfo } from '../shared/types'
 import { createResolver, defineNuxtModule } from 'nuxt/kit'
 import { isCI } from 'std-env'
@@ -10,18 +11,31 @@ export default defineNuxtModule({
     name: 'npmx:build-env',
   },
   async setup(_options, nuxt) {
-    const { env, commit, shortCommit, branch } = await getEnv(nuxt.options.dev)
-
     nuxt.options.appConfig = nuxt.options.appConfig || {}
-    nuxt.options.appConfig.env = env
-    nuxt.options.appConfig.buildInfo = {
-      version,
-      time: +Date.now(),
-      commit,
-      shortCommit,
-      branch,
-      env,
-    } satisfies BuildInfo
+    let env: EnvType = 'dev'
+
+    if (process.env.TEST) {
+      nuxt.options.appConfig.buildInfo = {
+        env,
+        version: '0.0.0',
+        commit: '704987bba88909f3782d792c224bde989569acb9',
+        shortCommit: '704987b',
+        branch: 'xxx',
+        time: 1770237446424,
+      } satisfies BuildInfo
+    } else {
+      const { env: useEnv, commit, shortCommit, branch } = await getEnv(nuxt.options.dev)
+      env = useEnv
+      nuxt.options.appConfig.env = useEnv
+      nuxt.options.appConfig.buildInfo = {
+        version,
+        time: +Date.now(),
+        commit,
+        shortCommit,
+        branch,
+        env,
+      } satisfies BuildInfo
+    }
 
     nuxt.options.nitro.publicAssets = nuxt.options.nitro.publicAssets || []
     if (env === 'dev') nuxt.options.nitro.publicAssets.unshift({ dir: resolve('../public-dev') })

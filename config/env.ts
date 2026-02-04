@@ -41,6 +41,8 @@ export const isPreview =
   process.env.VERCEL_ENV === 'preview' ||
   process.env.VERCEL_ENV === 'development'
 
+export type EnvType = 'dev' | 'preview' | 'canary' | 'release'
+
 const git = Git()
 export async function getGitInfo() {
   let branch
