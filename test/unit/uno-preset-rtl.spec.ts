@@ -1,11 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
-import { presetRtl } from '../../uno-preset-rtl'
+import { presetRtl, resetRtlWarnings } from '../../uno-preset-rtl'
 import { createGenerator } from 'unocss'
 
 describe('uno-preset-rtl', () => {
   let warnSpy: MockInstance
 
   beforeEach(() => {
+    resetRtlWarnings()
     warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
   })
 

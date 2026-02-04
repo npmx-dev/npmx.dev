@@ -153,6 +153,15 @@ useSeoMeta({
               :headers="gridHeaders"
             />
           </div>
+
+          <h2
+            id="comparison-heading"
+            class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
+          >
+            {{ $t('package.downloads.title') }}
+          </h2>
+
+          <CompareLineChart :packages />
         </div>
 
         <div v-else class="text-center py-12" role="alert">

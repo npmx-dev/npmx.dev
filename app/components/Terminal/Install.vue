@@ -200,20 +200,19 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             <span class="text-fg-subtle font-mono text-sm select-none"
               ># {{ $t('package.create.title') }}</span
             >
-            <NuxtLink
-              :to="`/package/${createPackageInfo.packageName}`"
-              class="text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-accent/70 rounded"
-              :title="$t('package.create.view', { packageName: createPackageInfo.packageName })"
+            <TooltipApp
+              :text="$t('package.create.view', { packageName: createPackageInfo.packageName })"
             >
-              <TooltipApp
-                :text="$t('package.create.view', { packageName: createPackageInfo.packageName })"
+              <NuxtLink
+                :to="`/package/${createPackageInfo.packageName}`"
+                class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
               >
-                <span class="i-carbon:information w-3 h-3 mt-1" aria-hidden="true" />
-              </TooltipApp>
-              <span class="sr-only">{{
-                $t('package.create.view', { packageName: createPackageInfo.packageName })
-              }}</span>
-            </NuxtLink>
+                <span class="i-carbon:information w-3 h-3" aria-hidden="true" />
+                <span class="sr-only">{{
+                  $t('package.create.view', { packageName: createPackageInfo.packageName })
+                }}</span>
+              </NuxtLink>
+            </TooltipApp>
           </div>
 
           <div

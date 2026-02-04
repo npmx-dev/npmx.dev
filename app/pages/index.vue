@@ -1,21 +1,10 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
+import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
 const searchQuery = shallowRef('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
-const frameworks = ref([
-  { name: 'nuxt', package: 'nuxt' },
-  { name: 'vue', package: 'vue' },
-  { name: 'nitro', package: 'nitro' },
-  { name: 'react', package: 'react' },
-  { name: 'svelte', package: 'svelte' },
-  { name: 'vite', package: 'vite' },
-  { name: 'next', package: 'next' },
-  { name: 'astro', package: 'astro' },
-  { name: 'typescript', package: 'typescript' },
-  { name: 'angular', package: '@angular/core' },
-])
 
 async function search() {
   const query = searchQuery.value.trim()
@@ -125,7 +114,7 @@ defineOgImageComponent('Default', {
         style="animation-delay: 0.3s"
       >
         <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
-          <li v-for="framework in frameworks" :key="framework.name">
+          <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
             <NuxtLink
               :to="{ name: 'package', params: { package: [framework.package] } }"
               class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
