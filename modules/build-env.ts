@@ -11,9 +11,9 @@ export default defineNuxtModule({
     name: 'npmx:build-env',
   },
   async setup(_options, nuxt) {
-    nuxt.options.appConfig = nuxt.options.appConfig || {}
     let env: EnvType = 'dev'
-
+    nuxt.options.appConfig = nuxt.options.appConfig || {}
+    nuxt.options.appConfig.env = env
     if (process.env.TEST) {
       nuxt.options.appConfig.buildInfo = {
         env,
