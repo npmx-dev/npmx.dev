@@ -345,7 +345,7 @@ Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essential
 ### Update translation
 
 We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
-If you see any outdated translations in your language, feel free to update the keys to match then English version.
+If you see any outdated translations in your language, feel free to update the keys to match the English version.
 
 In order to make sure you have everything up-to-date, you can run:
 
