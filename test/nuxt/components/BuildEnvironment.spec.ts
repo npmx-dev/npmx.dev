@@ -5,7 +5,14 @@ import BuildEnvironment from '~/components/BuildEnvironment.vue'
 
 describe('BuildEnvironment', () => {
   it('renders dev environment correctly', async () => {
-    const buildInfo = useAppConfig().buildInfo as BuildInfo
+    const buildInfo: BuildInfo = {
+      env: 'dev',
+      version: '1.2.3',
+      time: 1234567890,
+      commit: 'abcdef',
+      shortCommit: 'abc',
+      branch: 'main',
+    }
     const component = await mountSuspended(BuildEnvironment, {
       props: {
         buildInfo,
