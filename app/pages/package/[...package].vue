@@ -1139,27 +1139,27 @@ onKeyStroke(
             <div class="flex items-center gap-2">
               <TooltipApp
                 v-if="readmeData?.html"
-                :text="copiedReadme ? 'Copied!' : 'Copy README as markdown'"
+                :text="copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')"
                 position="bottom"
               >
                 <button
                   type="button"
                   @click="copyReadme()"
                   :disabled="!readmeData?.html"
-                  class="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 text-xs font-mono rounded border transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 text-fg-subtle hover:text-fg inline-flex items-center gap-1.5"
                   :class="
-                    copiedReadme
-                      ? 'text-accent bg-accent/10 border-accent'
-                      : 'text-fg-subtle bg-bg border-border-subtle hover:border-border hover:text-fg'
+                    copiedReadme ? 'text-accent bg-accent/10' : 'text-fg-subtle bg-bg hover:text-fg'
                   "
-                  :aria-label="copiedReadme ? 'Copied!' : 'Copy README'"
+                  :aria-label="
+                    copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
+                  "
                 >
                   <span
                     :class="copiedReadme ? 'i-carbon:checkmark' : 'i-simple-icons:markdown'"
-                    class="w-3.5 h-3.5"
+                    class="size-3"
                     aria-hidden="true"
                   />
-                  {{ copiedReadme ? $t('common.copied') : 'Copy' }}
+                  {{ copiedReadme ? $t('common.copied') : $t('common.copy') }}
                 </button>
               </TooltipApp>
               <ReadmeTocDropdown
