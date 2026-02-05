@@ -8,7 +8,7 @@
     "perf": "warn"
   },
   "rules": {
-    "no-console": "off",
+    "no-console": "warn",
     "no-await-in-loop": "off",
     "unicorn/no-array-sort": "off",
     "no-restricted-globals": "error",
@@ -19,7 +19,20 @@
     "e18e/prefer-regex-test": "error",
     "e18e/prefer-array-some": "error"
   },
-  "overrides": [],
+  "overrides": [
+    {
+      "files": [
+        "server/**/*",
+        "cli/**/*",
+        "scripts/**/*",
+        "modules/**/*",
+        "app/components/OgImage/*"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ],
   "ignorePatterns": [
     ".output/**",
     ".data/**",
