@@ -59,8 +59,7 @@ async function handleLogin() {
             type="text"
             name="handle"
             :placeholder="$t('auth.modal.handle_placeholder')"
-            autocomplete="off"
-            spellcheck="false"
+            v-bind="noCorrect"
             class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
           />
         </div>
