@@ -12,6 +12,8 @@ const chartModal = useModal('chart-modal')
 
 const isChartModalOpen = shallowRef(false)
 async function openChartModal() {
+  if (!hasWeeklyDownloads.value) return
+
   isChartModalOpen.value = true
   // ensure the component renders before opening the dialog
   await nextTick()
@@ -85,10 +87,13 @@ const pulseColor = computed(() => {
 })
 
 const weeklyDownloads = shallowRef<WeeklyDownloadPoint[]>([])
+const isLoadingWeeklyDownloads = shallowRef(false)
+const hasWeeklyDownloads = computed(() => weeklyDownloads.value.length > 0)
 
 async function loadWeeklyDownloads() {
   if (!import.meta.client) return
 
+  isLoadingWeeklyDownloads.value = true
   try {
     const result = await fetchPackageDownloadEvolution(
       () => props.packageName,
@@ -98,6 +103,8 @@ async function loadWeeklyDownloads() {
     weeklyDownloads.value = (result as WeeklyDownloadPoint[]) ?? []
   } catch {
     weeklyDownloads.value = []
+  } finally {
+    isLoadingWeeklyDownloads.value = false
   }
 }
 
@@ -197,10 +204,11 @@ const config = computed(() => {
 </script>
 
 <template>
-  <div class="space-y-8">
+  <div v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads" class="space-y-8">
     <CollapsibleSection id="downloads" :title="$t('package.downloads.title')">
       <template #actions>
         <button
+          v-if="hasWeeklyDownloads"
           type="button"
           @click="openChartModal"
           class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
@@ -249,7 +257,10 @@ const config = computed(() => {
     </CollapsibleSection>
   </div>
 
-  <PackageChartModal v-if="isChartModalOpen" @close="isChartModalOpen = false">
+  <PackageChartModal
+    v-if="isChartModalOpen && hasWeeklyDownloads"
+    @close="isChartModalOpen = false"
+  >
     <PackageDownloadAnalytics
       :weeklyDownloads="weeklyDownloads"
       :inModal="true"
