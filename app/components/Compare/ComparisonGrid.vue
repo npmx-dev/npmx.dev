@@ -74,7 +74,7 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
               <span
                 class="i-carbon:idea w-3.5 h-3.5 text-amber-500 shrink-0 cursor-help"
                 role="img"
-                :aria-label="$t('package.replacement.title')"
+                :aria-label="$t('compare.no_dependency.tooltip_title')"
               />
               <template #content>
                 <p class="text-sm font-medium text-fg mb-1">
