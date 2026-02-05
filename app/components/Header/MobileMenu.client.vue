@@ -290,13 +290,6 @@ onUnmounted(deactivate)
                 <span class="flex-1">{{ $t('account_menu.connect_atmosphere') }}</span>
               </button>
             </div>
-
-            <!-- Footer -->
-            <div class="p-4 border-t border-border mt-auto">
-              <p class="font-mono text-xs text-fg-subtle text-center">
-                {{ $t('non_affiliation_disclaimer') }}
-              </p>
-            </div>
           </nav>
         </Transition>
       </div>
