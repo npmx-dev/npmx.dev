@@ -95,6 +95,11 @@ const pageTitle = computed(() => {
 
 useSeoMeta({
   title: () => pageTitle.value,
+  ogTitle: () => pageTitle.value,
+  twitterTitle: () => pageTitle.value,
+  description: () => pkg.value?.license ?? '',
+  ogDescription: () => pkg.value?.license ?? '',
+  twitterDescription: () => pkg.value?.license ?? '',
 })
 
 defineOgImageComponent('Default', {

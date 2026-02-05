@@ -68,6 +68,7 @@ export default defineNuxtConfig({
           href: '/opensearch.xml',
         },
       ],
+      meta: [{ name: 'twitter:card', content: 'summary_large_image' }],
     },
   },
 
@@ -87,6 +88,7 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/opensearch.xml': { isr: true },
     '/**': { isr: getISRConfig(60, true) },
+    '/__og-image__/**': { isr: getISRConfig(60) },
     '/api/**': { isr: 60 },
     '/200.html': { prerender: true },
     '/package/**': { isr: getISRConfig(60, true) },
@@ -96,6 +98,13 @@ export default defineNuxtConfig({
     '/search': { isr: false, cache: false },
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
+    '/api/opensearch/suggestions': {
+      isr: {
+        expiration: 60 * 60 * 24 /* one day */,
+        passQuery: true,
+        allowQuery: ['q'],
+      },
+    },
     // infinite cache (versioned - doesn't change)
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/package-docs/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },

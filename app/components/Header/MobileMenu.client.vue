@@ -113,6 +113,15 @@ onUnmounted(deactivate)
                 </NuxtLink>
 
                 <NuxtLink
+                  to="/privacy"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:security w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('privacy_policy.title') }}
+                </NuxtLink>
+
+                <NuxtLink
                   to="/compare"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"

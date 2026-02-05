@@ -165,14 +165,15 @@ const config = computed(() => {
       line: {
         color: colors.value.borderHover,
         pulse: {
-          show: true,
+          show: true, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
           loop: true, // runs only once if false
-          radius: 2,
+          radius: 1.5,
           color: pulseColor.value,
           easing: 'ease-in-out',
           trail: {
             show: true,
-            length: 6,
+            length: 20,
+            opacity: 0.75,
           },
         },
       },

@@ -456,7 +456,11 @@ useHead({
 
 useSeoMeta({
   title: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
+  ogTitle: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
+  twitterTitle: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
   description: () => pkg.value?.description ?? '',
+  ogDescription: () => pkg.value?.description ?? '',
+  twitterDescription: () => pkg.value?.description ?? '',
 })
 
 onKeyStroke(
@@ -861,26 +865,28 @@ onKeyStroke(
               <span class="text-fg-muted">{{ getDependencyCount(displayVersion) }}</span>
 
               <!-- Separator and total transitive deps -->
-              <span class="text-fg-subtle mx-1">/</span>
+              <template v-if="getDependencyCount(displayVersion) !== totalDepsCount">
+                <span class="text-fg-subtle mx-1">/</span>
 
-              <ClientOnly>
-                <span
-                  v-if="
-                    vulnTreeStatus === 'pending' || (installSizeStatus === 'pending' && !vulnTree)
-                  "
-                  class="inline-flex items-center gap-1 text-fg-subtle"
-                >
+                <ClientOnly>
                   <span
-                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                    aria-hidden="true"
-                  />
-                </span>
-                <span v-else-if="totalDepsCount !== null">{{ totalDepsCount }}</span>
-                <span v-else class="text-fg-subtle">-</span>
-                <template #fallback>
-                  <span class="text-fg-subtle">-</span>
-                </template>
-              </ClientOnly>
+                    v-if="
+                      vulnTreeStatus === 'pending' || (installSizeStatus === 'pending' && !vulnTree)
+                    "
+                    class="inline-flex items-center gap-1 text-fg-subtle"
+                  >
+                    <span
+                      class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span v-else-if="totalDepsCount !== null">{{ totalDepsCount }}</span>
+                  <span v-else class="text-fg-subtle">-</span>
+                  <template #fallback>
+                    <span class="text-fg-subtle">-</span>
+                  </template>
+                </ClientOnly>
+              </template>
 
               <a
                 v-if="getDependencyCount(displayVersion) > 0"
@@ -930,21 +936,23 @@ onKeyStroke(
               </span>
 
               <!-- Separator and install size -->
-              <span class="text-fg-subtle mx-1">/</span>
+              <template v-if="getDependencyCount(displayVersion) > 0">
+                <span class="text-fg-subtle mx-1">/</span>
 
-              <span
-                v-if="installSizeStatus === 'pending'"
-                class="inline-flex items-center gap-1 text-fg-subtle"
-              >
                 <span
-                  class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                  aria-hidden="true"
-                />
-              </span>
-              <span v-else-if="installSize?.totalSize">
-                {{ formatBytes(installSize.totalSize) }}
-              </span>
-              <span v-else class="text-fg-subtle">-</span>
+                  v-if="installSizeStatus === 'pending'"
+                  class="inline-flex items-center gap-1 text-fg-subtle"
+                >
+                  <span
+                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span v-else-if="installSize?.totalSize">
+                  {{ formatBytes(installSize.totalSize) }}
+                </span>
+                <span v-else class="text-fg-subtle">-</span>
+              </template>
             </dd>
           </div>
 
@@ -1165,7 +1173,7 @@ onKeyStroke(
       <div class="area-sidebar">
         <!-- Sidebar -->
         <div
-          class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pr-2.5 hover:pr-0.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"
+          class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"
         >
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />

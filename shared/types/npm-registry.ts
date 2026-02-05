@@ -6,17 +6,17 @@
  * @see https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md
  */
 
-import type { PackumentVersion } from '@npm/types'
+import type { Packument as PackumentWithoutLicenseObjects, PackumentVersion } from '@npm/types'
 import type { ReadmeResponse } from './readme'
 
 // Re-export official npm types for packument/manifest
-export type {
-  Packument,
-  PackumentVersion,
-  Manifest,
-  ManifestVersion,
-  PackageJSON,
-} from '@npm/types'
+export type { PackumentVersion, Manifest, ManifestVersion, PackageJSON } from '@npm/types'
+
+// TODO: Remove this type override when @npm/types fixes the license field typing
+export type Packument = Omit<PackumentWithoutLicenseObjects, 'license'> & {
+  // Fix for license field being incorrectly typed in @npm/types
+  license?: string | { type: string; url?: string }
+}
 
 /** Install scripts info (preinstall, install, postinstall) */
 export interface InstallScriptsInfo {

@@ -952,7 +952,9 @@ const chartConfig = computed(() => {
             {{ $t('package.downloads.granularity') }}
           </label>
 
-          <div class="flex items-center bg-bg-subtle border border-border rounded-md">
+          <div
+            class="flex items-center bg-bg-subtle border border-border rounded-md overflow-hidden"
+          >
             <select
               id="granularity"
               v-model="selectedGranularity"

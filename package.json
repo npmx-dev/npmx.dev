@@ -43,6 +43,7 @@
     "@atproto/common": "0.5.10",
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
+    "@atproto/syntax": "0.4.3",
     "@deno/doc": "jsr:^0.189.1",
     "@floating-ui/vue": "1.1.10",
     "@iconify-json/carbon": "1.2.18",
@@ -75,7 +76,6 @@
     "defu": "6.1.4",
     "fast-npm-meta": "1.0.0",
     "focus-trap": "^7.8.0",
-    "tinyglobby": "0.2.15",
     "marked": "17.0.1",
     "module-replacements": "2.11.0",
     "nuxt": "4.3.0",
@@ -88,6 +88,7 @@
     "simple-git": "3.30.0",
     "spdx-license-list": "6.11.0",
     "std-env": "3.10.0",
+    "tinyglobby": "0.2.15",
     "ufo": "1.6.3",
     "unocss": "66.6.0",
     "unplugin-vue-router": "0.19.2",
@@ -97,7 +98,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.5"
+    "vue-data-ui": "3.14.7"
   },
   "devDependencies": {
     "@intlify/core-base": "11.2.8",

@@ -344,7 +344,7 @@
   "connector": {
     "status": {
       "connecting": "qoşulur...",
-      "connected_as": "{'@'}{user} olaraq qoşulub",
+      "connected_as": "~{user} olaraq qoşulub",
       "connected": "qoşulub",
       "connect_cli": "lokal CLI qoş",
       "aria_connecting": "Lokal konnektora qoşulur",

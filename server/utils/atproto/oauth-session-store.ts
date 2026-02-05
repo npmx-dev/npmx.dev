@@ -17,9 +17,18 @@ export class OAuthSessionStore implements NodeSavedSessionStore {
 
   async set(_key: string, val: NodeSavedSession) {
     // We are ignoring the key since the mapping is already done in the session
-    await this.session.update({
-      oauthSession: val,
-    })
+    try {
+      await this.session.update({
+        oauthSession: val,
+      })
+    } catch (error) {
+      // Not sure if this has been happening. But helps with debugging
+      console.error(
+        '[oauth session store] Failed to set session:',
+        error instanceof Error ? error.message : 'Unknown error',
+      )
+      throw error
+    }
   }
 
   async del() {

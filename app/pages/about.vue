@@ -11,7 +11,11 @@ interface GitHubContributor {
 
 useSeoMeta({
   title: () => `${$t('about.title')} - npmx`,
+  ogTitle: () => `${$t('about.title')} - npmx`,
+  twitterTitle: () => `${$t('about.title')} - npmx`,
   description: () => $t('about.meta_description'),
+  ogDescription: () => $t('about.meta_description'),
+  twitterDescription: () => $t('about.meta_description'),
 })
 
 defineOgImageComponent('Default', {
@@ -38,7 +42,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
 </script>
 
 <template>
-  <main class="container flex-1 py-12 sm:py-16">
+  <main class="container flex-1 py-12 sm:py-16 overflow-x-hidden">
     <article class="max-w-2xl mx-auto">
       <header class="mb-12">
         <div class="flex items-baseline justify-between gap-4 mb-4">
