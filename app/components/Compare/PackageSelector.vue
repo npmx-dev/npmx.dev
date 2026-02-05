@@ -17,6 +17,16 @@ const { data: searchData, status } = useNpmSearch(inputValue, { size: 15 })
 
 const isSearching = computed(() => status.value === 'pending')
 
+const suggestedPackagesCandidates = ['vue', 'svelte', 'solid-js', 'react']
+
+const suggestedPackages = computed(() => {
+  return suggestedPackagesCandidates.includes(packages.value[0])
+    ? suggestedPackagesCandidates
+        .filter(name => !packages.value.includes(name))
+        .slice(0, Math.max(0, 4 - packages.value.length))
+    : []
+})
+
 // Filter out already selected packages
 const filteredResults = computed(() => {
   if (!searchData.value?.objects) return []
@@ -76,6 +86,30 @@ function handleBlur() {
           @click="removePackage(pkg)"
         >
           <span class="i-carbon:close flex items-center w-3.5 h-3.5" aria-hidden="true" />
+        </button>
+      </div>
+
+      <p class="flex-1"></p>
+
+      <!-- suggested packages -->
+      <div
+        v-for="pkg in suggestedPackages"
+        :key="pkg"
+        class="inline-flex items-center gap-2 px-3 py-1.5 border-border rounded-md"
+      >
+        <NuxtLink
+          :to="`/${pkg}`"
+          class="font-mono text-sm text-fg hover:text-accent transition-colors"
+        >
+          {{ pkg }}
+        </NuxtLink>
+        <button
+          type="button"
+          class="text-fg-subtle hover:text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+          :aria-label="$t('compare.selector.add_package', { package: pkg })"
+          @click="addPackage(pkg)"
+        >
+          <span class="i-carbon:add w-3.5 h-3.5" aria-hidden="true" />
         </button>
       </div>
     </div>
