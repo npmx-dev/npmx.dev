@@ -30,7 +30,7 @@ const oxlintVersion = getDependencyVersion('oxlint')
 const oxfmtVersion = getDependencyVersion('oxfmt')
 const e18eVersion = getDependencyVersion('@e18e/eslint-plugin')
 
-// Peers of the lint config
-runCommand('pnpm', ['i', '-g', `@e18e/eslint-plugin@${e18eVersion}`])
-runCommand('pnpx', [`--package=oxlint@${oxlintVersion}`, 'oxlint'])
+// Install globally so we can also install peers
+runCommand('pnpm', ['i', '-g', `@e18e/eslint-plugin@${e18eVersion}`, `oxlint@${oxlintVersion}`])
+runCommand('pnpm', ['exec', 'oxlint'])
 runCommand('pnpx', [`oxfmt@${oxfmtVersion}`, '--check'])
