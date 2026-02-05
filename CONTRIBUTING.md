@@ -427,7 +427,11 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
    If you need to include HTML or components inside the translation, use [`i18n-t`](https://vue-i18n.intlify.dev/guide/advanced/component.html) component. This is especially useful when the order of elements might change between languages.
 
    ```json
-   { "agreement": "I accept the {terms} and {privacy}." }
+   {
+     "agreement": "I accept the {terms} and {privacy}.",
+     "terms_link": "Terms of Service",
+     "privacy_policy": "Privacy Policy"
+   }
    ```
 
    ```vue
