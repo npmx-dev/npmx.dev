@@ -33,6 +33,8 @@ jobs:
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
+        with:
+          cache: true
 
       - name: 📦 Install dependencies (root only, no scripts)
         run: pnpm install --filter . --ignore-scripts
