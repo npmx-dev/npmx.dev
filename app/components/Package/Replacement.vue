@@ -5,7 +5,9 @@ const props = defineProps<{
   replacement: ModuleReplacement
 }>()
 
-const message = computed<[string, { replacement?: string; nodeVersion?: string }]>(() => {
+const message = computed<
+  [string, { replacement?: string; nodeVersion?: string; community?: string }]
+>(() => {
   switch (props.replacement.type) {
     case 'native':
       return [
@@ -20,10 +22,16 @@ const message = computed<[string, { replacement?: string; nodeVersion?: string }
         'package.replacement.simple',
         {
           replacement: props.replacement.replacement,
+          community: $t('package.replacement.community'),
         },
       ]
     case 'documented':
-      return ['package.replacement.documented', {}]
+      return [
+        'package.replacement.documented',
+        {
+          community: $t('package.replacement.community'),
+        },
+      ]
     case 'none':
       return ['package.replacement.none', {}]
   }

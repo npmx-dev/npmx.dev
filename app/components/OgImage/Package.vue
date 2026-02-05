@@ -112,7 +112,7 @@ try {
         style="font-family: 'Geist Sans', sans-serif"
       >
         <span
-          class="px-3 py-1 mr-2 rounded-lg border font-bold opacity-90"
+          class="px-3 py-1 me-2 rounded-lg border font-bold opacity-90"
           :style="{
             color: primaryColor,
             backgroundColor: primaryColor + '10',

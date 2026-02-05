@@ -172,11 +172,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'zh-CN.json',
     name: '简体中文',
   },
-  /*{
-      code: 'zh-TW',
-      file: 'zh-TW.json',
-      name: '繁體中文',
-    },*/
+  {
+    code: 'zh-TW',
+    file: 'zh-TW.json',
+    name: '繁體中文',
+  },
   {
     code: 'ja-JP',
     file: 'ja-JP.json',

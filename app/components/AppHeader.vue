@@ -185,19 +185,14 @@ onKeyStroke(
           <HeaderAccountMenu />
         </div>
 
-        <!-- Mobile: Menu button (always visible, toggles menu) -->
+        <!-- Mobile: Menu button (always visible, click to open menu) -->
         <button
           type="button"
           class="sm:hidden flex items-center p-2 -m-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
-          :aria-label="showMobileMenu ? $t('common.close') : $t('nav.open_menu')"
-          :aria-expanded="showMobileMenu"
-          @click="showMobileMenu = !showMobileMenu"
+          :aria-label="$t('nav.open_menu')"
+          @click="showMobileMenu = true"
         >
-          <span
-            class="w-6 h-6 inline-block"
-            :class="showMobileMenu ? 'i-carbon:close' : 'i-carbon:menu'"
-            aria-hidden="true"
-          />
+          <span class="w-6 h-6 inline-block i-carbon:menu" aria-hidden="true" />
         </button>
       </div>
     </nav>

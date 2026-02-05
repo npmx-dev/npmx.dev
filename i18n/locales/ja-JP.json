@@ -28,6 +28,10 @@
     "updating": "（更新中...）",
     "no_results": "\"{query}\" に一致するパッケージは見つかりませんでした",
     "title": "検索",
+    "title_search": "検索: {search}",
+    "title_packages": "パッケージを検索",
+    "meta_description": "'{search}' の検索結果",
+    "meta_description_packages": "npmパッケージを検索",
     "not_taken": "{name} は使用可能です",
     "claim_prompt": "このパッケージ名をnpmで取得する",
     "claim_button": "\"{name}\" を取得",
@@ -119,7 +123,7 @@
     "no_description": "説明はありません",
     "show_full_description": "詳細な説明を表示",
     "not_latest": "（最新ではありません）",
-    "verified_provenance": "検証済みプロバナンス",
+    "verified_provenance": "検証済みprovenance",
     "view_permalink": "このバージョンのパーマリンクを表示",
     "navigation": "パッケージナビゲーション",
     "copy_name": "パッケージ名をコピー",
@@ -194,7 +198,7 @@
     "create": {
       "title": "新しいプロジェクトを作成",
       "copy_command": "作成コマンドをコピー",
-      "view": "{packageName} は同じメンテナによって管理されています。クリックして詳細を表示。"
+      "view": "{packageName} は同じメンテナにより管理されています。詳細を確認するにはクリックしてください。"
     },
     "run": {
       "title": "実行",
@@ -204,7 +208,25 @@
       "title": "Readme",
       "no_readme": "READMEはありません。",
       "view_on_github": "GitHubで表示",
-      "toc_title": "目次"
+      "toc_title": "目次",
+      "callout": {
+        "note": "メモ",
+        "tip": "ヒント",
+        "important": "重要",
+        "warning": "警告",
+        "caution": "注意"
+      }
+    },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "{provider} でビルドおよび署名済み",
+      "view_build_summary": "ビルドサマリーを表示",
+      "source_commit": "ソースコミット",
+      "build_file": "ビルドファイル",
+      "public_ledger": "パブリックレジャー",
+      "transparency_log_entry": "透明性ログエントリ",
+      "view_more_details": "詳細を表示",
+      "error_loading": "provenance詳細情報の読み込みに失敗しました"
     },
     "keywords_title": "キーワード",
     "compatibility": "互換性",
@@ -268,6 +290,7 @@
       "date_range": "{start} から {end}",
       "date_range_multiline": "{start}\nから {end}",
       "analyze": "ダウンロード数を分析",
+      "community_distribution": "コミュニティの採用分布を表示",
       "modal_title": "ダウンロード数",
       "granularity": "粒度",
       "granularity_daily": "日次",
@@ -388,7 +411,7 @@
   "connector": {
     "status": {
       "connecting": "接続中...",
-      "connected_as": "{'@'}{user} として接続済み",
+      "connected_as": "~{user} として接続済み",
       "connected": "接続済み",
       "connect_cli": "ローカルCLIに接続",
       "aria_connecting": "ローカルコネクタに接続中",
@@ -604,8 +627,9 @@
   "badges": {
     "provenance": {
       "verified": "検証済み",
-      "verified_title": "検証済みプロバナンス",
-      "verified_via": "検証済み: {provider} 経由で公開"
+      "verified_title": "検証済みprovenance",
+      "verified_via": "検証済み: {provider} 経由で公開",
+      "view_more_details": "詳細を表示"
     },
     "jsr": {
       "title": "JSRでも利用可能",

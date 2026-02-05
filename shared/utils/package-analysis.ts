@@ -12,10 +12,7 @@ export type TypesStatus =
 export interface PackageAnalysis {
   moduleFormat: ModuleFormat
   types: TypesStatus
-  engines?: {
-    node?: string
-    npm?: string
-  }
+  engines?: Record<string, string>
   /** Associated create-* package if it exists */
   createPackage?: CreatePackageInfo
 }
@@ -306,12 +303,7 @@ export function analyzePackage(
   return {
     moduleFormat,
     types,
-    engines: pkg.engines
-      ? {
-          node: pkg.engines.node,
-          npm: pkg.engines.npm,
-        }
-      : undefined,
+    engines: pkg.engines,
     createPackage: options?.createPackage,
   }
 }

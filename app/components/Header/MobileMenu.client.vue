@@ -113,6 +113,15 @@ onUnmounted(deactivate)
                 </NuxtLink>
 
                 <NuxtLink
+                  to="/privacy"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:security w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('privacy_policy.title') }}
+                </NuxtLink>
+
+                <NuxtLink
                   to="/compare"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"
@@ -280,13 +289,6 @@ onUnmounted(deactivate)
                 </span>
                 <span class="flex-1">{{ $t('account_menu.connect_atmosphere') }}</span>
               </button>
-            </div>
-
-            <!-- Footer -->
-            <div class="p-4 border-t border-border mt-auto">
-              <p class="font-mono text-xs text-fg-subtle text-center">
-                {{ $t('non_affiliation_disclaimer') }}
-              </p>
             </div>
           </nav>
         </Transition>

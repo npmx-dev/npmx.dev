@@ -139,8 +139,10 @@
       "documented": "The {community} has flagged this package as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
+      "learn_more_above": "Learn more above.",
       "mdn": "MDN",
-      "community": "community"
+      "community": "community",
+      "consider_no_dep": "+ Consider no dep?"
     },
     "stats": {
       "license": "License",
@@ -882,6 +884,15 @@
       "loading_versions": "Loading versions...",
       "select_version": "Select version"
     },
+    "no_dependency": {
+      "label": "(No dependency)",
+      "typeahead_title": "What Would James Do?",
+      "typeahead_description": "Compare against not using a dependency! e18e approved.",
+      "tooltip_title": "You might not need a dependency",
+      "tooltip_description": "Compare against not using a dependency! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
+      "e18e_community": "e18e community",
+      "add_column": "Add no dependency column to comparison"
+    },
     "facets": {
       "group_label": "Comparison facets",
       "all": "all",
@@ -956,8 +967,90 @@
         "not_deprecated": "No",
         "types_included": "Included",
         "types_none": "None",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Up to you!"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "privacy policy",
+    "last_updated": "Last updated: {date}",
+    "welcome": "Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
+    "cookies": {
+      "title": "Cookies",
+      "what_are": {
+        "title": "What are cookies?",
+        "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+      },
+      "types": {
+        "title": "What cookies do we use?",
+        "p1": "We only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
+        "bold": "essential technical cookies",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "This cookie is used by our hosting provider (Vercel) for skew protection. It ensures you fetch assets from the correct deployment version if a new update is released while you are browsing. It does not track you.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
+      },
+      "local_storage": {
+        "title": "Local storage",
+        "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
+        "bold": "Local Storage",
+        "p2": "This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
+        "bold2": "contains no personal data nor is it used to track you",
+        "settings": "settings"
+      },
+      "management": {
+        "title": "Managing cookies",
+        "p1": "You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
+        "bold": "rejecting essential cookies may prevent full access to the application",
+        "p2": "Below are links with instructions for cookie management in the most commonly used browsers:",
+        "chrome": "Google Chrome (opens in a new window)",
+        "firefox": "Mozilla Firefox (opens in a new window)",
+        "edge": "Microsoft Edge (opens in a new window)"
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "p1": "We use {bold} to understand how visitors use our website. This helps us improve the user experience and identify issues.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics is designed with privacy in mind:",
+      "li1": "It does not use cookies",
+      "li2": "It does not collect personal identifiers",
+      "li3": "It does not track users across websites",
+      "li4": "All data is aggregated and anonymised",
+      "p3": "The only information collected includes: page URLs, referrer, country/region, device type, browser, and operating system. This data cannot be used to identify individual users."
+    },
+    "authenticated": {
+      "title": "Authenticated users",
+      "p1": "When you connect your {bold} account to npmx, we store your OAuth access token in a secure, HTTP-only session cookie. This token is used solely to authenticate requests on your behalf.",
+      "bold": "Atmosphere",
+      "p2": "We do not store your credentials, and we do not access any data beyond what is necessary to provide the features you use. You can disconnect your account at any time from the {settings} page.",
+      "settings": "settings"
+    },
+    "data_retention": {
+      "title": "Data retention",
+      "p1": "Session cookies are automatically deleted when you close your browser or after a period of inactivity. Local storage preferences remain on your device until you clear your browser data. Analytics data is retained in aggregate form and cannot be linked to individual users."
+    },
+    "your_rights": {
+      "title": "Your rights",
+      "p1": "You have the right to:",
+      "li1": "Access information about what data we collect",
+      "li2": "Clear your local storage and cookies at any time",
+      "li3": "Disconnect your authenticated session",
+      "li4": "Request information about our data practices",
+      "p2": "Since we do not collect personal data, there is typically no personal information to delete or export."
+    },
+    "contact": {
+      "title": "Contact us",
+      "p1": "For any questions or concerns about this privacy policy, you can contact us by opening an issue on our {link}.",
+      "link": "GitHub repository"
+    },
+    "changes": {
+      "title": "Changes to this policy",
+      "p1": "We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
     }
   }
 }
