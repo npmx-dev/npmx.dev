@@ -1,28 +1,50 @@
 <script setup lang="ts">
 const props = defineProps<{
-  engines?: {
-    node?: string
-    npm?: string
-  }
+  engines?: Record<string, string>
 }>()
+
+const engineNames: Record<string, string> = {
+  bun: 'Bun',
+  node: 'Node.js',
+  npm: 'npm',
+}
+
+// Map engine name to icon class
+const engineIcons: Record<string, string> = {
+  bun: 'i-simple-icons:bun',
+  node: 'i-simple-icons:nodedotjs',
+  npm: 'i-simple-icons:npm',
+}
+
+function getName(engine: string): string {
+  return engineNames[engine] || engine
+}
+
+function getIcon(engine: string): string {
+  return engineIcons[engine] || 'i-carbon:code'
+}
 </script>
 <template>
   <CollapsibleSection
-    v-if="engines && (engines.node || engines.npm)"
+    v-if="engines && Object.keys(engines).length"
     :title="$t('package.compatibility')"
     id="compatibility"
   >
     <dl class="space-y-2">
-      <div v-if="engines.node" class="flex justify-between gap-4 py-1">
-        <dt class="text-fg-muted text-sm shrink-0">node</dt>
-        <dd class="font-mono text-sm text-fg text-end" :title="engines.node">
-          {{ engines.node }}
-        </dd>
-      </div>
-      <div v-if="engines.npm" class="flex justify-between gap-4 py-1">
-        <dt class="text-fg-muted text-sm shrink-0">npm</dt>
-        <dd class="font-mono text-sm text-fg text-end" :title="engines.npm">
-          {{ engines.npm }}
+      <div
+        v-for="(version, engine) in engines"
+        :key="engine"
+        class="flex justify-between gap-4 py-1"
+      >
+        <dt class="flex items-center gap-2 text-fg-muted text-sm shrink-0">
+          <span
+            :class="[getIcon(engine), 'inline-block w-4 h-4 shrink-0 text-fg-muted']"
+            aria-hidden="true"
+          />
+          {{ getName(engine) }}
+        </dt>
+        <dd class="font-mono text-sm text-fg text-end" :title="version">
+          {{ version }}
         </dd>
       </div>
     </dl>
