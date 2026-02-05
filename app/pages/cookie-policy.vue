@@ -102,7 +102,7 @@ const { locale } = useI18n()
           </p>
           <p>
             <i18n-t keypath="cookie_policy.section_3.p2" tag="span" scope="global">
-              <template #bold>
+              <template #bold2>
                 <strong class="text-fg">{{ $t('cookie_policy.section_3.bold2') }}</strong>
               </template>
             </i18n-t>
