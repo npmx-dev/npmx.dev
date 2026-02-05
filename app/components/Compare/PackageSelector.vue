@@ -19,17 +19,27 @@ const { data: searchData, status } = useNpmSearch(inputValue, { size: 15 })
 
 const isSearching = computed(() => status.value === 'pending')
 
-// Trigger phrases for "What Would James Do?" option
-const noDependencyTriggers = ['no dep', 'none', 'vanilla', 'diy', 'zero', 'nothing', '0']
+// Trigger strings for "What Would James Do?" typeahead Easter egg
+// Intentionally not localized
+const EASTER_EGG_TRIGGERS = new Set([
+  'no dep',
+  'none',
+  'vanilla',
+  'diy',
+  'zero',
+  'nothing',
+  '0',
+  "don't",
+  'native',
+  'use the platform',
+])
 
 // Check if "no dependency" option should show
 const showNoDependencyOption = computed(() => {
   if (packages.value.includes(NO_DEPENDENCY_ID)) return false
   const input = inputValue.value.toLowerCase().trim()
   if (!input) return false
-  return noDependencyTriggers.some(
-    trigger => trigger.startsWith(input) || input.startsWith(trigger),
-  )
+  return EASTER_EGG_TRIGGERS.has(input)
 })
 
 // Filter out already selected packages
@@ -188,7 +198,12 @@ function handleBlur() {
 
     <!-- Hint -->
     <p class="text-xs text-fg-subtle">
-      {{ $t('compare.selector.packages_selected', { count: packages.length, max: maxPackages }) }}
+      {{
+        $t('compare.selector.packages_selected', {
+          count: packages.length,
+          max: maxPackages,
+        })
+      }}
       <span v-if="packages.length < 2">{{ $t('compare.selector.add_hint') }}</span>
     </p>
   </div>

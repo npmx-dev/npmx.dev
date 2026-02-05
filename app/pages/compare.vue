@@ -37,9 +37,25 @@ const { packagesData, status, getFacetValues, isFacetLoading, isColumnLoading } 
 // Fetch module replacement suggestions
 const { noDepSuggestions, infoSuggestions, replacements } = useCompareReplacements(packages)
 
-// Map replacements to column order for the grid tooltip
-const columnReplacements = computed(() =>
-  packages.value.map(pkg => replacements.value.get(pkg) ?? null),
+// Whether the "no dependency" baseline column is active
+const showNoDependency = computed(() => packages.value.includes(NO_DEPENDENCY_ID))
+
+// Build column definitions for real packages only (no-dep is handled separately by the grid)
+const gridColumns = computed(() =>
+  packages.value
+    .filter(pkg => pkg !== NO_DEPENDENCY_ID)
+    .map((pkg, i) => {
+      const data = packagesData.value?.[i]
+      const header = data
+        ? data.package.version
+          ? `${data.package.name}@${data.package.version}`
+          : data.package.name
+        : pkg
+      return {
+        header,
+        replacement: replacements.value.get(pkg) ?? null,
+      }
+    }),
 )
 
 // Filter "no dep" suggestions to only show if not already added and we have room
@@ -62,20 +78,8 @@ const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoadin
 // Check if we have enough packages to compare
 const canCompare = computed(() => packages.value.length >= 2)
 
-// Get headers for the grid
-const gridHeaders = computed(() => {
-  if (!packagesData.value) return packages.value
-  return packagesData.value.map((p, i) =>
-    p
-      ? p.package.version
-        ? `${p.package.name}@${p.package.version}`
-        : p.package.name
-      : (packages.value[i] ?? ''),
-  )
-})
-
-// Track which columns are the "no dep" column (for special styling)
-const specialColumns = computed(() => packages.value.map(pkg => pkg === NO_DEPENDENCY_ID))
+// Extract headers from columns for facet rows
+const gridHeaders = computed(() => gridColumns.value.map(col => col.header))
 
 useSeoMeta({
   title: () =>
@@ -189,12 +193,7 @@ useSeoMeta({
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
           <!-- Desktop: Grid layout -->
           <div class="hidden md:block overflow-x-auto">
-            <CompareComparisonGrid
-              :columns="packages.length"
-              :headers="gridHeaders"
-              :special-columns="specialColumns"
-              :replacements="columnReplacements"
-            >
+            <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
               <CompareFacetRow
                 v-for="facet in selectedFacets"
                 :key="facet.id"
@@ -231,7 +230,7 @@ useSeoMeta({
             {{ $t('package.downloads.title') }}
           </h2>
 
-          <CompareLineChart :packages />
+          <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
         </div>
 
         <div v-else class="text-center py-12" role="alert">

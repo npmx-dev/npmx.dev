@@ -131,10 +131,12 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<{ downloads: number }>(
                 `https://api.npmjs.org/downloads/point/last-week/${encodePackageName(name)}`,
               ).catch(() => null),
-              $fetch<PackageAnalysisResponse>(`/api/registry/analysis/${name}`).catch(() => null),
-              $fetch<VulnerabilityTreeResult>(`/api/registry/vulnerabilities/${name}`).catch(
-                () => null,
-              ),
+              $fetch<PackageAnalysisResponse>(
+                `/api/registry/analysis/${encodePackageName(name)}`,
+              ).catch(() => null),
+              $fetch<VulnerabilityTreeResult>(
+                `/api/registry/vulnerabilities/${encodePackageName(name)}`,
+              ).catch(() => null),
             ])
 
             const versionData = pkgData.versions[latestVersion]
@@ -211,7 +213,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               selfSize: number
               totalSize: number
               dependencyCount: number
-            }>(`/api/registry/install-size/${name}`)
+            }>(`/api/registry/install-size/${encodePackageName(name)}`)
 
             // Update cache with install size
             const existing = cache.value.get(name)
@@ -288,9 +290,9 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 function createNoDependencyData(): PackageComparisonData {
   return {
     package: {
-      name: '(No Dependency)',
+      name: NO_DEPENDENCY_ID,
       version: '',
-      description: 'No dependency at all! @43081j approved.',
+      description: undefined,
     },
     isNoDependency: true,
     downloads: undefined,
@@ -317,12 +319,13 @@ function createNoDependencyData(): PackageComparisonData {
  */
 function resolveNoDependencyDisplay(
   marker: string,
+  t: (key: string) => string,
 ): { display: string; status: FacetValue['status'] } | null {
   switch (marker) {
     case NoDependencyDisplay.DASH:
       return { display: '–', status: 'neutral' }
     case NoDependencyDisplay.UP_TO_YOU:
-      return { display: 'Up to you!', status: 'good' }
+      return { display: t('compare.facets.values.up_to_you'), status: 'good' }
     default:
       return null
   }
@@ -365,7 +368,8 @@ function computeFacetValue(
     }
     case 'moduleFormat': {
       if (!data.analysis) {
-        if (isNoDependency) return { raw: 'up-to-you', display: 'Up to you!', status: 'good' }
+        if (isNoDependency)
+          return { raw: 'up-to-you', display: t('compare.facets.values.up_to_you'), status: 'good' }
         return null
       }
       const format = data.analysis.moduleFormat
@@ -385,7 +389,8 @@ function computeFacetValue(
         }
       }
       if (!data.analysis) {
-        if (isNoDependency) return { raw: 'up-to-you', display: 'Up to you!', status: 'good' }
+        if (isNoDependency)
+          return { raw: 'up-to-you', display: t('compare.facets.values.up_to_you'), status: 'good' }
         return null
       }
       const types = data.analysis.types
@@ -403,7 +408,8 @@ function computeFacetValue(
     case 'engines': {
       const engines = data.metadata?.engines
       if (!engines?.node) {
-        if (isNoDependency) return { raw: 'up-to-you', display: 'Up to you!', status: 'good' }
+        if (isNoDependency)
+          return { raw: 'up-to-you', display: t('compare.facets.values.up_to_you'), status: 'good' }
         return {
           raw: null,
           display: t('compare.facets.values.any'),
@@ -418,7 +424,8 @@ function computeFacetValue(
     }
     case 'vulnerabilities': {
       if (!data.vulnerabilities) {
-        if (isNoDependency) return { raw: 'up-to-you', display: 'Up to you!', status: 'good' }
+        if (isNoDependency)
+          return { raw: 'up-to-you', display: t('compare.facets.values.up_to_you'), status: 'good' }
         return null
       }
       const count = data.vulnerabilities.count
@@ -438,7 +445,7 @@ function computeFacetValue(
     }
     case 'lastUpdated': {
       const lastUpdated = data.metadata?.lastUpdated
-      const resolved = lastUpdated ? resolveNoDependencyDisplay(lastUpdated) : null
+      const resolved = lastUpdated ? resolveNoDependencyDisplay(lastUpdated, t) : null
       if (resolved) return { raw: 0, ...resolved }
       if (!lastUpdated) return null
       const date = new Date(lastUpdated)
@@ -451,7 +458,7 @@ function computeFacetValue(
     }
     case 'license': {
       const license = data.metadata?.license
-      const resolved = license ? resolveNoDependencyDisplay(license) : null
+      const resolved = license ? resolveNoDependencyDisplay(license, t) : null
       if (resolved) return { raw: null, ...resolved }
       if (!license) {
         if (isNoDependency) return { raw: null, display: '–', status: 'neutral' }

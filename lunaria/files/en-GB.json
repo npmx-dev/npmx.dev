@@ -139,6 +139,7 @@
       "documented": "The {community} has flagged this package as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
+      "learn_more_above": "Learn more above.",
       "mdn": "MDN",
       "community": "community",
       "consider_no_dep": "+ Consider no dep?"
@@ -880,11 +881,11 @@
       "select_version": "Select version"
     },
     "no_dependency": {
-      "label": "No dep",
+      "label": "(No dependency)",
       "typeahead_title": "What Would James Do?",
-      "typeahead_description": "Compare against writing it yourself! {'@'}43081j approved.",
-      "james_says": "James says:",
-      "tooltip_description": "Compare against writing it yourself! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
+      "typeahead_description": "Compare against not using a dependency! e18e approved.",
+      "tooltip_title": "You might not need a dependency",
+      "tooltip_description": "Compare against not using a dependency! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
       "e18e_community": "e18e community",
       "add_column": "Add no dependency column to comparison"
     },
@@ -962,7 +963,8 @@
         "not_deprecated": "No",
         "types_included": "Included",
         "types_none": "None",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Up to you!"
       }
     }
   }

@@ -1608,8 +1608,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with 2 columns', async () => {
       const component = await mountSuspended(CompareComparisonGrid, {
         props: {
-          columns: 2,
-          headers: ['vue', 'react'],
+          columns: [{ header: 'vue' }, { header: 'react' }],
         },
         slots: {
           default: '<div>Grid content</div>',
@@ -1622,8 +1621,7 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with 3 columns', async () => {
       const component = await mountSuspended(CompareComparisonGrid, {
         props: {
-          columns: 3,
-          headers: ['vue', 'react', 'angular'],
+          columns: [{ header: 'vue' }, { header: 'react' }, { header: 'angular' }],
         },
         slots: {
           default: '<div>Grid content</div>',
@@ -1633,12 +1631,11 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violations with special column', async () => {
+    it('should have no accessibility violations with no-dependency column', async () => {
       const component = await mountSuspended(CompareComparisonGrid, {
         props: {
-          columns: 3,
-          headers: ['vue', 'react', 'No dep'],
-          specialColumns: [false, false, true],
+          columns: [{ header: 'vue' }, { header: 'react' }],
+          showNoDependency: true,
         },
         slots: {
           default: '<div>Grid content</div>',
