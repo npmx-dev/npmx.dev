@@ -354,7 +354,8 @@ function computeFacetValue(
       }
     }
     case 'packageSize': {
-      if (!data.packageSize) return null
+      // A size of zero is valid
+      if (data.packageSize == null) return null
       return {
         raw: data.packageSize,
         display: formatBytes(data.packageSize),
@@ -362,7 +363,8 @@ function computeFacetValue(
       }
     }
     case 'installSize': {
-      if (!data.installSize) return null
+      // A size of zero is valid
+      if (data.installSize == null) return null
       return {
         raw: data.installSize.totalSize,
         display: formatBytes(data.installSize.totalSize),
@@ -372,7 +374,11 @@ function computeFacetValue(
     case 'moduleFormat': {
       if (!data.analysis) {
         if (isNoDependency)
-          return { raw: 'up-to-you', display: t('compare.facets.values.up_to_you'), status: 'good' }
+          return {
+            raw: 'up-to-you',
+            display: t('compare.facets.values.up_to_you'),
+            status: 'good',
+          }
         return null
       }
       const format = data.analysis.moduleFormat
@@ -393,7 +399,11 @@ function computeFacetValue(
       }
       if (!data.analysis) {
         if (isNoDependency)
-          return { raw: 'up-to-you', display: t('compare.facets.values.up_to_you'), status: 'good' }
+          return {
+            raw: 'up-to-you',
+            display: t('compare.facets.values.up_to_you'),
+            status: 'good',
+          }
         return null
       }
       const types = data.analysis.types
@@ -412,7 +422,11 @@ function computeFacetValue(
       const engines = data.metadata?.engines
       if (!engines?.node) {
         if (isNoDependency)
-          return { raw: 'up-to-you', display: t('compare.facets.values.up_to_you'), status: 'good' }
+          return {
+            raw: 'up-to-you',
+            display: t('compare.facets.values.up_to_you'),
+            status: 'good',
+          }
         return {
           raw: null,
           display: t('compare.facets.values.any'),
@@ -428,7 +442,11 @@ function computeFacetValue(
     case 'vulnerabilities': {
       if (!data.vulnerabilities) {
         if (isNoDependency)
-          return { raw: 'up-to-you', display: t('compare.facets.values.up_to_you'), status: 'good' }
+          return {
+            raw: 'up-to-you',
+            display: t('compare.facets.values.up_to_you'),
+            status: 'good',
+          }
         return null
       }
       const count = data.vulnerabilities.count
@@ -479,7 +497,7 @@ function computeFacetValue(
     }
     case 'dependencies': {
       const depCount = data.directDeps
-      if (depCount === null) return null
+      if (depCount == null) return null
       return {
         raw: depCount,
         display: String(depCount),
@@ -496,7 +514,6 @@ function computeFacetValue(
         status: isDeprecated ? 'bad' : 'good',
       }
     }
-    // Coming soon facets
     case 'totalDependencies': {
       if (!data.installSize) return null
       const totalDepCount = data.installSize.dependencyCount
