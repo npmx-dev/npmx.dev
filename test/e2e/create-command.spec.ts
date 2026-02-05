@@ -197,7 +197,7 @@ test.describe('Create Command', () => {
 
       // Verify clipboard content contains the run command
       const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
-      expect(clipboardContent).toMatch(/vite|npx vite/i)
+      expect(clipboardContent).toMatch(/npx vite/i)
 
       await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
       await expect(copyButton).not.toContainText(/copied/i)
