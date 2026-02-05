@@ -104,7 +104,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
       </div>
-      <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1 overflow-x-auto" dir="auto">
+      <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1 overflow-x-auto" dir="ltr">
         <!-- Install command - render all PM variants, CSS controls visibility -->
         <div
           v-for="pm in packageManagers"
