@@ -110,6 +110,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
           v-for="pm in packageManagers"
           :key="`install-${pm.id}`"
           :data-pm-cmd="pm.id"
+          dir="ltr"
           class="flex items-center gap-2 group/installcmd min-w-0"
         >
           <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
