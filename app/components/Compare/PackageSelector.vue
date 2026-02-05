@@ -34,7 +34,7 @@ const EASTER_EGG_TRIGGERS = new Set([
   'use the platform',
 ])
 
-// Check if "no dependency" option should show
+// Check if "no dependency" option should show in typeahead
 const showNoDependencyOption = computed(() => {
   if (packages.value.includes(NO_DEPENDENCY_ID)) return false
   const input = inputValue.value.toLowerCase().trim()

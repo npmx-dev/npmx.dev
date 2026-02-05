@@ -6,6 +6,8 @@ const props = defineProps<{
   replacement: ModuleReplacement
   /** Whether this suggestion should show the "no dep" action (native/simple) or just info (documented) */
   variant: 'nodep' | 'info'
+  /** Whether to show the action button (defaults to true) */
+  showAction?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -63,7 +65,7 @@ const docUrl = computed(() => {
 
     <!-- No dependency action button -->
     <button
-      v-if="variant === 'nodep'"
+      v-if="variant === 'nodep' && showAction !== false"
       type="button"
       class="flex-shrink-0 px-2 py-1 text-xs font-medium bg-amber-500/20 hover:bg-amber-500/30 rounded transition-colors"
       :aria-label="$t('compare.no_dependency.add_column')"

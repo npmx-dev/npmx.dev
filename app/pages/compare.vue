@@ -59,12 +59,10 @@ const gridColumns = computed(() =>
     }),
 )
 
-// Filter "no dep" suggestions to only show if not already added and we have room
-const actionableNoDepSuggestions = computed(() => {
-  if (packages.value.length >= 4) return [] // Can't add more
-  if (packages.value.includes(NO_DEPENDENCY_ID)) return [] // Already added
-  return noDepSuggestions.value
-})
+// Whether we can add the no-dep column (not already added and have room)
+const canAddNoDep = computed(
+  () => packages.value.length < 4 && !packages.value.includes(NO_DEPENDENCY_ID),
+)
 
 // Add "no dependency" column to comparison
 function addNoDep() {
@@ -140,13 +138,14 @@ useSeoMeta({
         <ComparePackageSelector v-model="packages" :max="4" />
 
         <!-- "No dep" replacement suggestions (native, simple) -->
-        <div v-if="actionableNoDepSuggestions.length > 0" class="mt-3 space-y-2">
+        <div v-if="noDepSuggestions.length > 0" class="mt-3 space-y-2">
           <CompareReplacementSuggestion
-            v-for="suggestion in actionableNoDepSuggestions"
+            v-for="suggestion in noDepSuggestions"
             :key="suggestion.forPackage"
             :package-name="suggestion.forPackage"
             :replacement="suggestion.replacement"
             variant="nodep"
+            :show-action="canAddNoDep"
             @add-no-dep="addNoDep"
           />
         </div>
