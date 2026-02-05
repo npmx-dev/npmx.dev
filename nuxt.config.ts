@@ -108,12 +108,12 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/package/:scope/:name': { isr: getISRConfig(60, true) },
-    '/package/:scope/:name/v/:version': { isr: getISRConfig(60, true) },
+    '/package/:org/:name': { isr: getISRConfig(60, true) },
+    '/package/:org/:name/v/:version': { isr: getISRConfig(60, true) },
     // infinite cache (versioned - doesn't change)
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/package-docs/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/package-docs/:scope/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/package-docs/:name/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/package-docs/:org/:name/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     // static pages
     '/': { prerender: true },
     '/200.html': { prerender: true },
