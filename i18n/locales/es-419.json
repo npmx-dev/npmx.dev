@@ -1,16 +1,90 @@
 {
+  "seo": {
+    "home": {}
+  },
   "built_at": "generado {0}",
   "alt_logo": "logo de npmx",
+  "footer": {},
+  "search": {
+    "suggestion": {}
+  },
+  "nav": {},
+  "settings": {
+    "sections": {}
+  },
+  "i18n": {},
+  "common": {
+    "sort": {}
+  },
+  "package": {
+    "deprecation": {},
+    "replacement": {},
+    "stats": {
+      "size_tooltip": {}
+    },
+    "skills": {
+      "file_counts": {}
+    },
+    "links": {},
+    "likes": {},
+    "docs": {},
+    "get_started": {},
+    "create": {},
+    "run": {},
+    "readme": {
+      "title": "Léame",
+      "callout": {}
+    },
+    "provenance_section": {},
+    "card": {},
+    "versions": {},
+    "dependencies": {},
+    "peer_dependencies": {},
+    "optional_dependencies": {},
+    "maintainers": {},
+    "downloads": {},
+    "install_scripts": {},
+    "playgrounds": {},
+    "metrics": {},
+    "license": {},
+    "vulnerabilities": {
+      "depth": {},
+      "severity": {}
+    },
+    "deprecated": {},
+    "access": {
+      "permission": {},
+      "grant_button": "otorgar",
+      "cancel_grant": "Cancelar otorgar acceso",
+      "grant_access": "+ Otorgar acceso de equipo"
+    },
+    "list": {},
+    "skeleton": {
+      "readme": "Léame"
+    },
+    "sort": {}
+  },
   "connector": {
+    "status": {},
     "modal": {
       "connected_hint": "Ahora puedes administrar paquetes y organizaciones desde la interfaz web.",
       "run_hint": "Ejecuta el conector en tu computadora para habilitar funciones de administración."
     }
   },
-  "about": {
-    "what_we_are": {
-      "admin_description": "También aspiramos a proporcionar una mejor {adminUi} para administrar tus paquetes, equipos y organizaciones — todo desde el navegador, impulsado por tu CLI de npm local."
-    }
+  "operations": {
+    "queue": {}
+  },
+  "org": {
+    "teams": {},
+    "members": {
+      "role": {}
+    },
+    "page": {}
+  },
+  "user": {
+    "combobox": {},
+    "page": {},
+    "orgs_page": {}
   },
   "claim": {
     "modal": {
@@ -18,26 +92,75 @@
       "failed_to_check": "Error al verificar disponibilidad del nombre"
     }
   },
-  "package": {
-    "no_dependency": {
-      "typeahead_description": "¡Compara versus no usar una dependencia! Aprobado por e18e.",
-      "tooltip_description": "¡Compara versus no usar una dependencia! La {link} mantiene una lista de paquetes que pueden ser reemplazados con APIs nativas o alternativas más simples."
+  "code": {
+    "table": {},
+    "markdown_view_mode": {}
+  },
+  "badges": {
+    "provenance": {},
+    "jsr": {}
+  },
+  "filters": {
+    "chips": {},
+    "download_range": {},
+    "updated": {},
+    "security_options": {},
+    "sort": {},
+    "columns": {},
+    "view_mode": {},
+    "pagination": {},
+    "count": {},
+    "table": {}
+  },
+  "about": {
+    "what_we_are": {
+      "admin_description": "También aspiramos a proporcionar una mejor {adminUi} para administrar tus paquetes, equipos y organizaciones — todo desde el navegador, impulsado por tu CLI de npm local."
     },
-
-    "readme": {
-      "title": "Léame"
+    "what_we_are_not": {
+      "words": {}
     },
-    "access": {
-      "grant_button": "otorgar",
-      "cancel_grant": "Cancelar otorgar acceso",
-      "grant_access": "+ Otorgar acceso de equipo"
-    },
-    "skeleton": {
-      "readme": "Léame"
+    "contributors": {},
+    "get_involved": {
+      "contribute": {},
+      "community": {},
+      "follow": {}
+    }
+  },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
+  "header": {
+    "packages_dropdown": {},
+    "orgs_dropdown": {}
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "no_dependency": {},
+    "facets": {
+      "categories": {},
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {}
     }
   },
   "privacy_policy": {
     "cookies": {
+      "what_are": {},
+      "types": {},
       "local_storage": {
         "settings": "configuraciones"
       },
@@ -45,13 +168,17 @@
         "p2": "A continuación se muestran enlaces con instrucciones para la administración de cookies en los navegadores más utilizados:"
       }
     },
+    "analytics": {},
     "authenticated": {
       "p1": "Cuando vinculas tu cuenta de {bold} a npmx, almacenamos tu token de acceso OAuth en una cookie de sesión segura y solo HTTP. Este token se utiliza únicamente para autenticar solicitudes en tu nombre.",
       "p2": "No almacenamos tus credenciales y no accedemos a ningún dato más allá de lo necesario para proporcionar las funciones que utilizas. Puedes desvincular tu cuenta en cualquier momento desde la página de {settings}.",
       "settings": "configuraciones"
     },
+    "data_retention": {},
     "your_rights": {
       "li3": "Desvincular tu sesión autenticada"
-    }
+    },
+    "contact": {},
+    "changes": {}
   }
 }

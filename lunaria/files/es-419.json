@@ -412,10 +412,6 @@
       "published": "Recientemente publicado",
       "name_asc": "Nombre (A-Z)",
       "name_desc": "Nombre (Z-A)"
-    },
-    "no_dependency": {
-      "typeahead_description": "¡Compara versus no usar una dependencia! Aprobado por e18e.",
-      "tooltip_description": "¡Compara versus no usar una dependencia! La {link} mantiene una lista de paquetes que pueden ser reemplazados con APIs nativas o alternativas más simples."
     }
   },
   "connector": {
