@@ -448,7 +448,7 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
 - Group related keys together
 - Use `common.*` for shared strings (loading, retry, close, etc.)
 - Use component-specific prefixes: `package.card.*`, `settings.*`, `nav.*`
-- Do not use dashes (`-`) in traslation keys; always use underscore (`_`): e.g., `private_policy` instead of `private-policy`
+- Do not use dashes (`-`) in translation keys; always use underscore (`_`): e.g., `private_policy` instead of `private-policy`
 
 ### Using i18n-ally (recommended)
 
