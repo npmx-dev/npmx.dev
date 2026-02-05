@@ -113,7 +113,7 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
   },
   {
     code: 'az-AZ',
-    file: 'az.json',
+    file: 'az-AZ.json',
     name: 'Azərbaycanca',
   },
   /*{
