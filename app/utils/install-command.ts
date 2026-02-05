@@ -79,7 +79,6 @@ export interface DevDependencySuggestion {
 }
 
 const KNOWN_DEV_DEPENDENCY_PACKAGES = new Set<string>([
-  '@types',
   'biome',
   'chai',
   'eslint',
