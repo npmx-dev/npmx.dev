@@ -28,6 +28,10 @@
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
     "title": "Suche",
+    "title_search": "Suche: {search}",
+    "title_packages": "Suche Packete",
+    "meta_description": "Suchergebnisse für '{search}'",
+    "meta_description_packages": "Suche nach npm-Paketen",
     "not_taken": "{name} ist noch frei",
     "claim_prompt": "Diesen Paketnamen auf npm beanspruchen",
     "claim_button": "\"{name}\" beanspruchen",
@@ -204,7 +208,25 @@
       "title": "Readme",
       "no_readme": "Keine README verfügbar.",
       "view_on_github": "Auf GitHub ansehen",
-      "toc_title": "Gliederung"
+      "toc_title": "Gliederung",
+      "callout": {
+        "note": "Notiz",
+        "tip": "Tipp",
+        "important": "Wichtig",
+        "warning": "Warnung",
+        "caution": "Vorsicht"
+      }
+    },
+    "provenance_section": {
+      "title": "Herkunft",
+      "built_and_signed_on": "Erstellt und signiert via {provider}",
+      "view_build_summary": "Build-Zusammenfassung anzeigen",
+      "source_commit": "Quell-Commit",
+      "build_file": "Build-Datei",
+      "public_ledger": "Öffentliches Hauptbuch",
+      "transparency_log_entry": "Transparenzprotokolleintrag",
+      "view_more_details": "Weitere Details anzeigen",
+      "error_loading": "Fehler beim Laden der Herkunftsdaten"
     },
     "keywords_title": "Schlüsselwörter",
     "compatibility": "Kompatibilität",
@@ -268,6 +290,7 @@
       "date_range": "{start} bis {end}",
       "date_range_multiline": "{start}\nbis {end}",
       "analyze": "Downloads analysieren",
+      "community_distribution": "Community-Adoptionsverteilung ansehen",
       "modal_title": "Downloads",
       "granularity": "Granularität",
       "granularity_daily": "Täglich",
@@ -605,7 +628,8 @@
     "provenance": {
       "verified": "verifiziert",
       "verified_title": "Verifizierte Herkunft",
-      "verified_via": "Verifiziert: veröffentlicht via {provider}"
+      "verified_via": "Verifiziert: veröffentlicht via {provider}",
+      "view_more_details": "Weitere Details anzeigen"
     },
     "jsr": {
       "title": "auch auf JSR verfügbar",
