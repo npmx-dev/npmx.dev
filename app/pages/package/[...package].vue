@@ -1145,14 +1145,14 @@ onKeyStroke(
 
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
         <Readme v-if="readmeData?.html" :html="readmeData.html" />
-        <p v-else class="text-fg-subtle italic">
+        <p v-else class="text-fg-muted italic">
           {{ $t('package.readme.no_readme') }}
           <a
             v-if="repositoryUrl"
             :href="repositoryUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="link"
+            class="link text-fg"
             >{{ $t('package.readme.view_on_github') }}</a
           >
         </p>
