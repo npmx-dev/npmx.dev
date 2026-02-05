@@ -11,15 +11,6 @@ const props = defineProps<{
 const chartModal = useModal('chart-modal')
 
 const isChartModalOpen = shallowRef(false)
-async function openChartModal() {
-  if (!hasWeeklyDownloads.value) return
-
-  isChartModalOpen.value = true
-  // ensure the component renders before opening the dialog
-  await nextTick()
-  await nextTick()
-  chartModal.open()
-}
 
 const { fetchPackageDownloadEvolution } = useCharts()
 
@@ -87,8 +78,18 @@ const pulseColor = computed(() => {
 })
 
 const weeklyDownloads = shallowRef<WeeklyDownloadPoint[]>([])
-const isLoadingWeeklyDownloads = shallowRef(false)
+const isLoadingWeeklyDownloads = shallowRef(true)
 const hasWeeklyDownloads = computed(() => weeklyDownloads.value.length > 0)
+
+async function openChartModal() {
+  if (!hasWeeklyDownloads.value) return
+
+  isChartModalOpen.value = true
+  // ensure the component renders before opening the dialog
+  await nextTick()
+  await nextTick()
+  chartModal.open()
+}
 
 async function loadWeeklyDownloads() {
   if (!import.meta.client) return
