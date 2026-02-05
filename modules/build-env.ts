@@ -1,5 +1,4 @@
-import type { EnvType } from '../config/env'
-import type { BuildInfo } from '../shared/types'
+import type { BuildInfo, EnvType } from '../shared/types'
 import { createResolver, defineNuxtModule } from 'nuxt/kit'
 import { isCI } from 'std-env'
 import { getEnv, version } from '../config/env'
