@@ -1,7 +1,22 @@
 <script setup lang="ts">
-import type { FilterChip, SortOption } from '#shared/types/preferences'
+import type { FilterChip, SearchScope, SortOption } from '#shared/types/preferences'
 import { debounce } from 'perfect-debounce'
 import { normalizeSearchParam } from '#shared/utils/url'
+
+// INFO: a custom search query builder for single scope search (multi scope q=foo:bar+baz:qux could later be introduced but needs appropriate multi-select UI refactor)
+function buildSearchQuery({
+  text,
+  scope,
+  keywords,
+}: {
+  text: string
+  scope: SearchScope
+  keywords: string[]
+}): string {
+  const textWithScope = text ? (scope === 'all' ? text : `${scope}:${text}`) : ''
+  const keywordPart = keywords.map(kw => `keyword:${kw}`).join(' ')
+  return [textWithScope, keywordPart].filter(Boolean).join(' ')
+}
 
 definePageMeta({
   name: 'org',
@@ -10,6 +25,10 @@ definePageMeta({
 
 const route = useRoute('org')
 const router = useRouter()
+
+const parsedQuery = parseSearchOperators(normalizeSearchParam(route.query.q))
+const initialScope: SearchScope =
+  (['name', 'description', 'keywords'] as const).find(k => parsedQuery[k]?.length) ?? 'all'
 
 const orgName = computed(() => route.params.org)
 
@@ -59,7 +78,8 @@ const {
 } = useStructuredFilters({
   packages,
   initialFilters: {
-    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
+    ...parsedQuery,
+    searchScope: initialScope,
   },
   initialSort: (normalizeSearchParam(route.query.sort) as SortOption) ?? 'updated-desc',
 })
@@ -79,6 +99,13 @@ watch([filters, sortOption], () => {
   currentPage.value = 1
 })
 
+watch(
+  () => filters.value.searchScope,
+  () => {
+    filters.value.keywords = []
+  },
+)
+
 // Clamp current page when total pages decreases (e.g., after filtering)
 watch(totalPages, newTotal => {
   if (currentPage.value > newTotal && newTotal > 0) {
@@ -87,24 +114,26 @@ watch(totalPages, newTotal => {
 })
 
 // Debounced URL update for filter/sort
-const updateUrl = debounce((updates: { filter?: string; sort?: string }) => {
+const updateUrl = debounce((updates: { q?: string; sort?: string }) => {
   router.replace({
     query: {
       ...route.query,
-      q: updates.filter || undefined,
+      q: updates.q || undefined,
       sort: updates.sort && updates.sort !== 'updated-desc' ? updates.sort : undefined,
     },
   })
 }, 300)
-
 // Update URL when filter/sort changes (debounced)
 watch(
-  [() => filters.value.text, () => filters.value.keywords, () => sortOption.value] as const,
-  ([text, keywords, sort]) => {
-    const filter = [text, ...keywords.map(keyword => `keyword:${keyword}`)]
-      .filter(Boolean)
-      .join(' ')
-    updateUrl({ filter, sort })
+  [
+    () => filters.value.text,
+    () => filters.value.keywords,
+    () => filters.value.searchScope,
+    () => sortOption.value,
+  ] as const,
+  ([text, keywords, scope, sort]) => {
+    const q = buildSearchQuery({ text, scope, keywords })
+    updateUrl({ q, sort })
   },
 )
 
