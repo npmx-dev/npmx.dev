@@ -1146,8 +1146,7 @@ onKeyStroke(
                 <button
                   type="button"
                   @click="copyReadme()"
-                  :disabled="!readmeData?.md"
-                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 text-fg-subtle hover:text-fg inline-flex items-center gap-1.5"
+                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 inline-flex items-center gap-1.5"
                   :class="
                     copiedReadme ? 'text-accent bg-accent/10' : 'text-fg-subtle bg-bg hover:text-fg'
                   "
