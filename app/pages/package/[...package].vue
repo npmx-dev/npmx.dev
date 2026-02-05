@@ -72,7 +72,7 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
 
 //copy README file as Markdown
 const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: () => readmeData.value?.md?.trim() ?? '',
+  source: () => readmeData.value?.md ?? '',
   copiedDuring: 2000,
 })
 
