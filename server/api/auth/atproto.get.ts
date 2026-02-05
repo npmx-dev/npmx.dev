@@ -55,17 +55,6 @@ export default defineEventHandler(async event => {
   }
 
   const query = getQuery(event)
-  // Validate returnTo is a safe relative path (prevent open redirect)
-  const newURL = new URL(query.returnTo?.toString() || '/', clientUri)
-  const redirectPath = newURL.origin === clientUri ? newURL.pathname : '/'
-
-  setCookie(event, 'auth_return_to', redirectPath, {
-    maxAge: 60 * 5,
-    httpOnly: true,
-    // secure only if NOT in dev mode
-    secure: !import.meta.dev,
-  })
-
   const clientMetadata = getOauthClientMetadata()
   const session = await useServerSession(event)
   const { stateStore, sessionStore } = useOAuthStorage(session)
@@ -79,6 +68,25 @@ export default defineEventHandler(async event => {
   })
 
   if (!query.code) {
+    // Validate returnTo is a safe relative path (prevent open redirect)
+    // Only set cookie on initial auth request, not the callback
+    let redirectPath = '/'
+    try {
+      const clientOrigin = new URL(clientUri).origin
+      const returnToUrl = new URL(query.returnTo?.toString() || '/', clientUri)
+      if (returnToUrl.origin === clientOrigin) {
+        redirectPath = returnToUrl.pathname + returnToUrl.search + returnToUrl.hash
+      }
+    } catch {
+      // Invalid URL, fall back to root
+    }
+
+    setCookie(event, 'auth_return_to', redirectPath, {
+      maxAge: 60 * 5,
+      httpOnly: true,
+      // secure only if NOT in dev mode
+      secure: !import.meta.dev,
+    })
     try {
       const handle = query.handle?.toString()
       const create = query.create?.toString()
