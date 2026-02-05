@@ -12,6 +12,7 @@ import type { ReadmeResponse } from './readme'
 // Re-export official npm types for packument/manifest
 export type { PackumentVersion, Manifest, ManifestVersion, PackageJSON } from '@npm/types'
 
+// TODO: Remove this type override when @npm/types fixes the license field typing
 export type Packument = Omit<PackumentWithoutLicenseObjects, 'license'> & {
   // Fix for license field being incorrectly typed in @npm/types
   license?: string | { type: string; url?: string }
