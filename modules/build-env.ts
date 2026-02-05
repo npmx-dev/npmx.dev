@@ -1,7 +1,7 @@
 import type { BuildInfo } from '../shared/types'
 import { createResolver, defineNuxtModule } from 'nuxt/kit'
 import { isCI } from 'std-env'
-import { getEnv, version } from '../config/env'
+import { getEnv, getFileLastUpdated, version } from '../config/env'
 
 const { resolve } = createResolver(import.meta.url)
 
@@ -10,7 +10,10 @@ export default defineNuxtModule({
     name: 'npmx:build-env',
   },
   async setup(_options, nuxt) {
-    const { env, commit, shortCommit, branch } = await getEnv(nuxt.options.dev)
+    const [{ env, commit, shortCommit, branch }, cookiePolicyDate] = await Promise.all([
+      getEnv(nuxt.options.dev),
+      getFileLastUpdated('app/pages/cookie-policy.vue'),
+    ])
 
     nuxt.options.appConfig = nuxt.options.appConfig || {}
     nuxt.options.appConfig.env = env
@@ -21,6 +24,7 @@ export default defineNuxtModule({
       shortCommit,
       branch,
       env,
+      cookiePolicyDate,
     } satisfies BuildInfo
 
     nuxt.options.nitro.publicAssets = nuxt.options.nitro.publicAssets || []
