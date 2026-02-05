@@ -47,9 +47,9 @@ describe('ComparisonGrid', () => {
           columns: cols(longName, 'short'),
         },
       })
-      const spans = component.findAll('.truncate')
-      const longSpan = spans.find(s => s.text() === longName)
-      expect(longSpan?.attributes('title')).toBe(longName)
+      const links = component.findAll('a.truncate')
+      const longLink = links.find(a => a.text() === longName)
+      expect(longLink?.attributes('title')).toBe(longName)
     })
   })
 
