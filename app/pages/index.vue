@@ -101,7 +101,7 @@ defineOgImageComponent('Default', {
                   class="absolute group inset-ie-2.5 px-2.5 sm:ps-4 sm:pe-4 py-2 font-mono text-sm text-bg bg-fg/90 rounded-md transition-[background-color,transform] duration-200 hover:bg-fg! group-focus-within:bg-fg/80 active:scale-95 focus-visible:outline-accent/70"
                 >
                   <span
-                    class="inline-block i-carbon:search align-middle w-4 h-4 sm:mr-2"
+                    class="inline-block i-carbon:search align-middle w-4 h-4 sm:me-2"
                     aria-hidden="true"
                   ></span>
                   <span class="sr-only sm:not-sr-only">

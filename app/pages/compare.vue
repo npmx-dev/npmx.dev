@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
 
 definePageMeta({
@@ -33,19 +34,51 @@ const { selectedFacets, selectAll, deselectAll, isAllSelected, isNoneSelected } 
 const { packagesData, status, getFacetValues, isFacetLoading, isColumnLoading } =
   usePackageComparison(packages)
 
+// Fetch module replacement suggestions
+const { noDepSuggestions, infoSuggestions, replacements } = useCompareReplacements(packages)
+
+// Whether the "no dependency" baseline column is active
+const showNoDependency = computed(() => packages.value.includes(NO_DEPENDENCY_ID))
+
+// Build column definitions for real packages only (no-dep is handled separately by the grid)
+const gridColumns = computed(() =>
+  packages.value
+    .map((pkg, i) => ({ pkg, originalIndex: i }))
+    .filter(({ pkg }) => pkg !== NO_DEPENDENCY_ID)
+    .map(({ pkg, originalIndex }) => {
+      const data = packagesData.value?.[originalIndex]
+      const header = data
+        ? data.package.version
+          ? `${data.package.name}@${data.package.version}`
+          : data.package.name
+        : pkg
+      return {
+        header,
+        replacement: replacements.value.get(pkg) ?? null,
+      }
+    }),
+)
+
+// Whether we can add the no-dep column (not already added and have room)
+const canAddNoDep = computed(
+  () => packages.value.length < 4 && !packages.value.includes(NO_DEPENDENCY_ID),
+)
+
+// Add "no dependency" column to comparison
+function addNoDep() {
+  if (packages.value.length >= 4) return
+  if (packages.value.includes(NO_DEPENDENCY_ID)) return
+  packages.value = [...packages.value, NO_DEPENDENCY_ID]
+}
+
 // Get loading state for each column
 const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoading(i)))
 
 // Check if we have enough packages to compare
 const canCompare = computed(() => packages.value.length >= 2)
 
-// Get headers for the grid
-const gridHeaders = computed(() => {
-  if (!packagesData.value) return packages.value
-  return packagesData.value.map((p, i) =>
-    p ? `${p.package.name}@${p.package.version}` : (packages.value[i] ?? ''),
-  )
-})
+// Extract headers from columns for facet rows
+const gridHeaders = computed(() => gridColumns.value.map(col => col.header))
 
 useSeoMeta({
   title: () =>
@@ -103,6 +136,30 @@ useSeoMeta({
           {{ $t('compare.packages.section_packages') }}
         </h2>
         <ComparePackageSelector v-model="packages" :max="4" />
+
+        <!-- "No dep" replacement suggestions (native, simple) -->
+        <div v-if="noDepSuggestions.length > 0" class="mt-3 space-y-2">
+          <CompareReplacementSuggestion
+            v-for="suggestion in noDepSuggestions"
+            :key="suggestion.forPackage"
+            :package-name="suggestion.forPackage"
+            :replacement="suggestion.replacement"
+            variant="nodep"
+            :show-action="canAddNoDep"
+            @add-no-dep="addNoDep"
+          />
+        </div>
+
+        <!-- Informational replacement suggestions (documented) -->
+        <div v-if="infoSuggestions.length > 0" class="mt-3 space-y-2">
+          <CompareReplacementSuggestion
+            v-for="suggestion in infoSuggestions"
+            :key="suggestion.forPackage"
+            :package-name="suggestion.forPackage"
+            :replacement="suggestion.replacement"
+            variant="info"
+          />
+        </div>
       </section>
 
       <!-- Facet selector -->
@@ -152,7 +209,7 @@ useSeoMeta({
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
           <!-- Desktop: Grid layout -->
           <div class="hidden md:block overflow-x-auto">
-            <CompareComparisonGrid :columns="packages.length" :headers="gridHeaders">
+            <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
               <CompareFacetRow
                 v-for="facet in selectedFacets"
                 :key="facet.id"
@@ -189,7 +246,7 @@ useSeoMeta({
             {{ $t('package.downloads.title') }}
           </h2>
 
-          <CompareLineChart :packages />
+          <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
         </div>
 
         <div v-else class="text-center py-12" role="alert">

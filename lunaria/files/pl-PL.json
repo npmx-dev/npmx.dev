@@ -131,12 +131,12 @@
     "replacement": {
       "title": "Możliwe, że nie potrzebujesz tej zależności.",
       "native": "Można to zastąpić {replacement}, dostępne od Node {nodeVersion}.",
-      "simple": "Społeczność {community} oznaczyła ten pakiet jako zbędny, z sugestią: {replacement}.",
-      "documented": "Społeczność {community} wskazuje, że istnieją wydajniejsze alternatywy.",
+      "simple": "{community} oznaczyła ten pakiet jako zbędny, z sugestią: {replacement}.",
+      "documented": "{community} wskazuje, że istnieją wydajniejsze alternatywy.",
       "none": "Ten pakiet został oznaczony jako zbędny, a jego funkcjonalność jest prawdopodobnie dostępna natywnie we wszystkich środowiskach.",
       "learn_more": "Dowiedz się więcej",
       "mdn": "MDN",
-      "community": "społeczność"
+      "community": "Społeczność"
     },
     "stats": {
       "license": "Licencja",
@@ -396,7 +396,7 @@
   "connector": {
     "status": {
       "connecting": "łączenie...",
-      "connected_as": "połączono jako {'@'}{user}",
+      "connected_as": "połączono jako ~{user}",
       "connected": "połączono",
       "connect_cli": "połącz lokalne CLI",
       "aria_connecting": "Łączenie z lokalnym konektorem",
