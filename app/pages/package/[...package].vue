@@ -70,6 +70,12 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
   { default: () => ({ html: '', playgroundLinks: [], toc: [] }) },
 )
 
+//copy README file
+const { copied: copiedReadme, copy: copyReadme } = useClipboard({
+  source: readmeData.value?.html ?? '',
+  copiedDuring: 2000,
+})
+
 // Track active TOC item based on scroll position
 const tocItems = computed(() => readmeData.value?.toc ?? [])
 const { activeId: activeTocId, scrollToHeading } = useActiveTocItem(tocItems)
@@ -1130,12 +1136,39 @@ onKeyStroke(
             </a>
           </h2>
           <ClientOnly>
-            <ReadmeTocDropdown
-              v-if="readmeData?.toc && readmeData.toc.length > 1"
-              :toc="readmeData.toc"
-              :active-id="activeTocId"
-              :scroll-to-heading="scrollToHeading"
-            />
+            <div class="flex items-center gap-2">
+              <TooltipApp
+                v-if="readmeData?.html"
+                :text="copiedReadme ? 'Copied!' : 'Copy README as markdown'"
+                position="bottom"
+              >
+                <button
+                  type="button"
+                  @click="copyReadme()"
+                  :disabled="!readmeData?.html"
+                  class="inline-flex items-center justify-center gap-1.5 px-2 py-1.5 text-xs font-mono rounded border transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+                  :class="
+                    copiedReadme
+                      ? 'text-accent bg-accent/10 border-accent'
+                      : 'text-fg-subtle bg-bg border-border-subtle hover:border-border hover:text-fg'
+                  "
+                  :aria-label="copiedReadme ? 'Copied!' : 'Copy README'"
+                >
+                  <span
+                    :class="copiedReadme ? 'i-carbon:checkmark' : 'i-simple-icons:markdown'"
+                    class="w-3.5 h-3.5"
+                    aria-hidden="true"
+                  />
+                  {{ copiedReadme ? $t('common.copied') : 'Copy' }}
+                </button>
+              </TooltipApp>
+              <ReadmeTocDropdown
+                v-if="readmeData?.toc && readmeData.toc.length > 1"
+                :toc="readmeData.toc"
+                :active-id="activeTocId"
+                :scroll-to-heading="scrollToHeading"
+              />
+            </div>
           </ClientOnly>
         </div>
 
