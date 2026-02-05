@@ -240,6 +240,9 @@ importers:
       fast-check:
         specifier: 4.5.3
         version: 4.5.3
+      h3:
+        specifier: 1.15.5
+        version: 1.15.5
       knip:
         specifier: 5.83.0
         version: 5.83.0(@types/node@24.10.9)(typescript@5.9.3)
