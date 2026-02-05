@@ -14,11 +14,13 @@ describe('BuildEnvironment', () => {
     const html = component.html()
 
     // In dev mode, it shows env name, not version link
-    expect(html).toContain('<span class="tracking-wider">dev</span>')
+    expect(html).toContain(`<span class="tracking-wider">${buildInfo.env}</span>`)
     expect(html).toContain(
-      '<a href="https://github.com/npmx-dev/npmx.dev/commit/704987bba88909f3782d792c224bde989569acb9"',
+      `<a href="https://github.com/npmx-dev/npmx.dev/commit/${buildInfo.commit}"`,
     )
-    expect(html).not.toContain('href="https://github.com/npmx-dev/npmx.dev/tag/v0.0.0"')
+    expect(html).not.toContain(
+      `<a href="https://github.com/npmx-dev/npmx.dev/tag/v${buildInfo.version}"`,
+    )
   })
 
   it('renders release environment correctly', async () => {
@@ -39,10 +41,12 @@ describe('BuildEnvironment', () => {
     const html = component.html()
 
     // In release mode, it shows tag version link, not env name
-    expect(html).not.toContain('<span class="tracking-wider">dev</span>')
+    expect(html).not.toContain('<span class="tracking-wider">${buildInfo.env}</span>')
     expect(html).not.toContain(
-      '<a href="https://github.com/npmx-dev/npmx.dev/commit/704987bba88909f3782d792c224bde989569acb9"',
+      `<a href="https://github.com/npmx-dev/npmx.dev/commit/${buildInfo.commit}"`,
     )
-    expect(html).toContain('href="https://github.com/npmx-dev/npmx.dev/tag/v1.2.3"')
+    expect(html).toContain(
+      `<a href="https://github.com/npmx-dev/npmx.dev/tag/v${buildInfo.version}"`,
+    )
   })
 })
