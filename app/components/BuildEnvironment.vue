@@ -10,7 +10,7 @@ const buildInfo = useAppConfig().buildInfo
 <template>
   <div
     class="font-mono text-xs text-fg-muted flex items-center gap-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
-    :class="footer ? 'mt-0 mb-3 justify-center sm:justify-start' : 'mb-8 justify-center'"
+    :class="footer ? 'mt-4 justify-start' : 'mb-8 justify-center'"
     style="animation-delay: 0.05s"
   >
     <i18n-t keypath="built_at" scope="global">

@@ -11,6 +11,7 @@ const isHome = computed(() => route.name === 'index')
       >
         <div>
           <p class="font-mono text-balance m-0 hidden sm:block">{{ $t('tagline') }}</p>
+          <BuildEnvironment v-if="!isHome" footer />
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
         <div class="hidden sm:flex items-center gap-6">
@@ -61,7 +62,6 @@ const isHome = computed(() => route.name === 'index')
           </a>
         </div>
       </div>
-      <BuildEnvironment v-if="!isHome" footer />
       <p class="text-xs text-fg-muted text-center sm:text-start m-0">
         <span class="sm:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
         <span class="hidden sm:inline">{{ $t('trademark_disclaimer') }}</span>
