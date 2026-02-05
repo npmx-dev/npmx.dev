@@ -67,12 +67,12 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
     const version = requestedVersion.value
     return version ? `${base}/v/${version}` : base
   },
-  { default: () => ({ html: '', playgroundLinks: [], toc: [] }) },
+  { default: () => ({ html: '', md: '', playgroundLinks: [], toc: [] }) },
 )
 
-//copy README file
+//copy README file as Markdown
 const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: readmeData.value?.html ?? '',
+  source: readmeData.value?.md ?? '',
   copiedDuring: 2000,
 })
 
@@ -1137,15 +1137,16 @@ onKeyStroke(
           </h2>
           <ClientOnly>
             <div class="flex items-center gap-2">
+              <!-- Copy readme as Markdown button -->
               <TooltipApp
-                v-if="readmeData?.html"
+                v-if="readmeData?.md"
                 :text="copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')"
                 position="bottom"
               >
                 <button
                   type="button"
                   @click="copyReadme()"
-                  :disabled="!readmeData?.html"
+                  :disabled="!readmeData?.md"
                   class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 text-fg-subtle hover:text-fg inline-flex items-center gap-1.5"
                   :class="
                     copiedReadme ? 'text-accent bg-accent/10' : 'text-fg-subtle bg-bg hover:text-fg'
