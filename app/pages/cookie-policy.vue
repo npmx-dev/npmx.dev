@@ -63,14 +63,14 @@ const { locale } = useI18n()
         </p>
 
         <section class="mt-8">
-          <h2 class="text-lg text-fg-subtle tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle tracking-wider mb-4 uppercase">
             {{ $t('cookie_policy.section_1.title') }}
           </h2>
           <p>{{ $t('cookie_policy.section_1.p1') }}</p>
         </section>
 
         <section class="mt-8">
-          <h2 class="text-lg text-fg-subtle tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle tracking-wider mb-4 uppercase">
             {{ $t('cookie_policy.section_2.title') }}
           </h2>
           <p class="mb-4">
@@ -117,7 +117,7 @@ const { locale } = useI18n()
         </section>
 
         <section class="mt-8">
-          <h2 class="text-lg text-fg-subtle tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle tracking-wider mb-4 uppercase">
             {{ $t('cookie_policy.section_3.title') }}
           </h2>
           <p class="mb-4">
@@ -145,7 +145,7 @@ const { locale } = useI18n()
         </section>
 
         <section class="mt-8">
-          <h2 class="text-lg text-fg-subtle tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle tracking-wider mb-4 uppercase">
             {{ $t('cookie_policy.section_4.title') }}
           </h2>
           <p>
@@ -161,7 +161,7 @@ const { locale } = useI18n()
         </section>
 
         <section class="mt-8">
-          <h2 class="text-lg text-fg-subtle tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle tracking-wider mb-4 uppercase">
             {{ $t('cookie_policy.section_5.title') }}
           </h2>
           <p class="mb-4">
@@ -231,7 +231,7 @@ const { locale } = useI18n()
         </section>
 
         <section class="mt-8">
-          <h2 class="text-lg text-fg-subtle tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle tracking-wider mb-4 uppercase">
             {{ $t('cookie_policy.section_6.title') }}
           </h2>
           <p>
@@ -255,7 +255,7 @@ const { locale } = useI18n()
         </section>
 
         <section class="mt-8">
-          <h2 class="text-lg text-fg-subtle tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle tracking-wider mb-4 uppercase">
             {{ $t('cookie_policy.section_7.title') }}
           </h2>
           <p>{{ $t('cookie_policy.section_7.p1') }}</p>

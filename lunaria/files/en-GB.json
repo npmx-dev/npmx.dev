@@ -965,11 +965,11 @@
     "last_updated": "Last updated: {date}",
     "welcome": "Welcome to {app}. In this policy, we explain what cookies are, how we use them, and how you can manage them.",
     "section_1": {
-      "title": "WHAT ARE COOKIES?",
+      "title": "What are cookies?",
       "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
     },
     "section_2": {
-      "title": "WHAT TYPES OF COOKIES DO WE USE?",
+      "title": "What types of cookies do we use?",
       "p1": "On our website, we only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
       "bold": "essential technical cookies",
       "li1": "{li11}{separator} {li12}",
@@ -981,7 +981,7 @@
       "cookie_h3_desc": "This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
     },
     "section_3": {
-      "title": "OTHER STORAGE TECHNOLOGIES",
+      "title": "Other storage technologies",
       "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
       "bold": "Local Storage",
       "p2": "This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
@@ -989,13 +989,13 @@
       "settings": "settings"
     },
     "section_4": {
-      "title": "COOKIE ACCEPTANCE AND APPLICATION ACCESS",
+      "title": "Cookie acceptance and application access",
       "p1": "The use of cookies on our website is {bold}. Therefore, {bold2}. By continuing to browse or log in, you expressly accept our cookie policy.",
       "bold": "essential for its proper functioning",
       "bold2": "if you do not accept the use of cookies, you will not be able to access the application"
     },
     "section_5": {
-      "title": "COOKIE MANAGEMENT",
+      "title": "Cookie management",
       "p1": "You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
       "bold": "rejecting cookies will prevent access to and use of the application",
       "p2": "Below are links with instructions for cookie management in the most commonly used browsers:",
@@ -1004,12 +1004,12 @@
       "edge": "Microsoft Edge (opens in a new window)"
     },
     "section_6": {
-      "title": "DATA CONTROLLER",
+      "title": "Data controller",
       "p1": "While we only use cookies for essential functionality and session management, we guarantee compliance with the principles of transparency and security in data management. For any questions or requests regarding the use of cookies, you can contact us by opening an issue on our {link}.",
       "link": "GitHub repository"
     },
     "section_7": {
-      "title": "CHANGES TO THE COOKIE POLICY",
+      "title": "Changes to the cookie policy",
       "p1": "We reserve the right to modify this policy at any time. Any changes will be published on this page."
     }
   }
