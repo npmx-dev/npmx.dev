@@ -23,7 +23,7 @@ export default defineEventHandler(async event => {
   const path = event.path.split('?')[0]!
 
   // username
-  if (path.startsWith('~')) {
+  if (path.startsWith('/~')) {
     return
   }
 
