@@ -1,18 +1,25 @@
 {
   "$schema": "https://unpkg.com/oxlint/configuration_schema.json",
   "plugins": ["unicorn", "typescript", "oxc", "vue", "vitest"],
+  "jsPlugins": ["@e18e/eslint-plugin"],
   "categories": {
     "correctness": "error",
     "suspicious": "warn",
     "perf": "warn"
   },
   "rules": {
-    "no-console": "warn",
+    "no-console": "off",
     "no-await-in-loop": "off",
     "unicorn/no-array-sort": "off",
     "no-restricted-globals": "error",
-    "typescript/consistent-type-imports": "error"
+    "typescript/consistent-type-imports": "error",
+    "e18e/prefer-array-from-map": "error",
+    "e18e/prefer-timer-args": "error",
+    "e18e/prefer-date-now": "error",
+    "e18e/prefer-regex-test": "error",
+    "e18e/prefer-array-some": "error"
   },
+  "overrides": [],
   "ignorePatterns": [
     ".output/**",
     ".data/**",

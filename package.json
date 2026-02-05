@@ -101,6 +101,7 @@
     "vue-data-ui": "3.14.7"
   },
   "devDependencies": {
+    "@e18e/eslint-plugin": "0.1.4",
     "@intlify/core-base": "11.2.8",
     "@npm/types": "2.1.0",
     "@playwright/test": "1.58.1",

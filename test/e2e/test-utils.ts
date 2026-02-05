@@ -313,7 +313,7 @@ async function handleJsdelivrCdn(route: Route): Promise<boolean> {
   const pathname = decodeURIComponent(url.pathname)
 
   // README file requests - return 404 (package pages work fine without README)
-  if (pathname.match(/readme/i)) {
+  if (/readme/i.test(pathname)) {
     await route.fulfill({ status: 404, body: 'Not found' })
     return true
   }
