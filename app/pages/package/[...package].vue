@@ -882,7 +882,7 @@ onKeyStroke(
               <span class="text-fg-muted">{{ getDependencyCount(displayVersion) }}</span>
 
               <!-- Separator and total transitive deps -->
-              <template v-if="getDependencyCount(displayVersion) > 0">
+              <template v-if="getDependencyCount(displayVersion) !== totalDepsCount">
                 <span class="text-fg-subtle mx-1">/</span>
 
                 <ClientOnly>
