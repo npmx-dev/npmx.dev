@@ -2,6 +2,7 @@
 import type {
   NpmVersionDist,
   PackumentVersion,
+  ProvenanceDetails,
   ReadmeResponse,
   SkillsListResponse,
 } from '#shared/types'
@@ -20,6 +21,12 @@ import { togglePackageLike } from '~/utils/atproto/likes'
 definePageMeta({
   name: 'package',
   alias: ['/:package(.*)*'],
+})
+
+defineOgImageComponent('Package', {
+  name: () => packageName.value,
+  version: () => requestedVersion.value ?? '',
+  primaryColor: '#60a5fa',
 })
 
 const router = useRouter()
@@ -52,8 +59,6 @@ const activePmId = computed(() => selectedPM.value ?? 'npm')
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
-
-const { data: downloads } = usePackageDownloads(packageName, 'last-week')
 
 // Fetch README for specific version if requested, otherwise latest
 const { data: readmeData } = useLazyFetch<ReadmeResponse>(
@@ -136,7 +141,7 @@ const {
   data: pkg,
   status,
   error,
-} = usePackage(packageName, resolvedVersion.value ?? requestedVersion)
+} = usePackage(packageName, resolvedVersion.value ?? requestedVersion.value)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
 // Process package description
@@ -157,6 +162,39 @@ const { data: vulnTree, status: vulnTreeStatus } = useDependencyAnalysis(
   packageName,
   () => resolvedVersion.value ?? '',
 )
+
+const {
+  data: provenanceData,
+  status: provenanceStatus,
+  execute: fetchProvenance,
+} = useLazyFetch<ProvenanceDetails | null>(
+  () => {
+    const v = displayVersion.value
+    if (!v || !hasProvenance(v)) return ''
+    return `/api/registry/provenance/${packageName.value}/v/${v.version}`
+  },
+  {
+    default: () => null,
+    server: false,
+    immediate: false,
+  },
+)
+if (import.meta.client) {
+  watch(
+    displayVersion,
+    v => {
+      if (v && hasProvenance(v) && provenanceStatus.value === 'idle') {
+        fetchProvenance()
+      }
+    },
+    { immediate: true },
+  )
+}
+
+const provenanceBadgeMounted = shallowRef(false)
+onMounted(() => {
+  provenanceBadgeMounted.value = true
+})
 
 // Keep latestVersion for comparison (to show "(latest)" badge)
 const latestVersion = computed(() => {
@@ -387,19 +425,28 @@ const likeAction = async () => {
 
   isLikeActionPending.value = true
 
-  const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
+  try {
+    const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
 
-  isLikeActionPending.value = false
+    isLikeActionPending.value = false
 
-  if (result.success) {
-    // Update with server response
-    likesData.value = result.data
-  } else {
+    if (result.success) {
+      // Update with server response
+      likesData.value = result.data
+    } else {
+      // Revert on error
+      likesData.value = {
+        totalLikes: currentLikes,
+        userHasLiked: currentlyLiked,
+      }
+    }
+  } catch {
     // Revert on error
     likesData.value = {
       totalLikes: currentLikes,
       userHasLiked: currentlyLiked,
     }
+    isLikeActionPending.value = false
   }
 }
 
@@ -445,15 +492,6 @@ onKeyStroke(
     router.push({ path: '/compare', query: { packages: pkg.value.name } })
   },
 )
-
-defineOgImageComponent('Package', {
-  name: () => pkg.value?.name ?? 'Package',
-  version: () => resolvedVersion.value ?? '',
-  downloads: () => (downloads.value ? $n(downloads.value.downloads) : ''),
-  license: () => pkg.value?.license ?? '',
-  stars: () => stars.value ?? 0,
-  primaryColor: '#60a5fa',
-})
 </script>
 
 <template>
@@ -488,17 +526,22 @@ defineOgImageComponent('Package', {
             </h1>
 
             <!-- Floating copy button -->
-            <TooltipAnnounce :text="$t('common.copied')" :isVisible="copiedPkgName">
-              <button
-                type="button"
-                @click="copyPkgName()"
-                class="copy-button absolute z-20 left-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap text-fg-muted bg-bg border-border opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/40"
-                :aria-label="$t('package.copy_name')"
-              >
-                <span class="i-carbon:copy w-3.5 h-3.5" aria-hidden="true" />
-                {{ $t('package.copy_name') }}
-              </button>
-            </TooltipAnnounce>
+            <button
+              type="button"
+              @click="copyPkgName()"
+              class="copy-button absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
+              :class="
+                copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border'
+              "
+              :aria-label="copiedPkgName ? $t('common.copied') : $t('package.copy_name')"
+            >
+              <span
+                :class="copiedPkgName ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+                class="w-3.5 h-3.5"
+                aria-hidden="true"
+              />
+              {{ copiedPkgName ? $t('common.copied') : $t('package.copy_name') }}
+            </button>
           </div>
           <span
             v-if="resolvedVersion"
@@ -518,16 +561,26 @@ defineOgImageComponent('Package', {
             >
             <span v-else>v{{ resolvedVersion }}</span>
 
-            <a
-              v-if="hasProvenance(displayVersion)"
-              :href="`https://www.npmjs.com/package/${pkg.name}/v/${resolvedVersion}#provenance`"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
-              :title="$t('package.verified_provenance')"
-            >
-              <span class="i-solar:shield-check-outline w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-            </a>
+            <template v-if="hasProvenance(displayVersion) && provenanceBadgeMounted">
+              <TooltipApp
+                :text="
+                  provenanceData && provenanceStatus !== 'pending'
+                    ? $t('package.provenance_section.built_and_signed_on', {
+                        provider: provenanceData.providerLabel,
+                      })
+                    : $t('package.verified_provenance')
+                "
+                position="bottom"
+              >
+                <a
+                  href="#provenance"
+                  :aria-label="$t('package.provenance_section.view_more_details')"
+                  class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-emerald-500 transition-colors duration-200 min-w-6 min-h-6"
+                >
+                  <span class="i-lucide-shield-check w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                </a>
+              </TooltipApp>
+            </template>
             <span
               v-if="requestedVersion && latestVersion && resolvedVersion !== latestVersion.version"
               class="text-fg-subtle text-sm shrink-0"
@@ -536,42 +589,46 @@ defineOgImageComponent('Package', {
           </span>
 
           <!-- Package metrics (module format, types) -->
-          <ClientOnly>
-            <PackageMetricsBadges
-              v-if="resolvedVersion"
-              :package-name="pkg.name"
-              :version="resolvedVersion"
-              :is-binary="isBinaryOnly"
-              class="self-baseline ms-1 sm:ms-2"
-            />
-
-            <!-- Package likes -->
-            <button
-              @click="likeAction"
-              type="button"
-              class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
-              :title="$t('package.links.like')"
-            >
-              <span
-                :class="
-                  likesData?.userHasLiked
-                    ? 'i-lucide-heart-minus text-red-500'
-                    : 'i-lucide-heart-plus'
-                "
-                class="w-4 h-4"
-                aria-hidden="true"
+          <div class="flex gap-2 sm:gap-3 flex-wrap">
+            <ClientOnly>
+              <PackageMetricsBadges
+                v-if="resolvedVersion"
+                :package-name="pkg.name"
+                :version="resolvedVersion"
+                :is-binary="isBinaryOnly"
+                class="self-baseline ms-1 sm:ms-2"
               />
-              <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
-            </button>
 
-            <template #fallback>
-              <div class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
-                <SkeletonBlock class="w-8 h-5 rounded" />
-                <SkeletonBlock class="w-12 h-5 rounded" />
-                <SkeletonBlock class="w-5 h-5 rounded" />
-              </div>
-            </template>
-          </ClientOnly>
+              <!-- Package likes -->
+              <button
+                @click="likeAction"
+                type="button"
+                class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
+                :title="$t('package.links.like')"
+              >
+                <span
+                  :class="
+                    likesData?.userHasLiked
+                      ? 'i-lucide-heart-minus text-red-500'
+                      : 'i-lucide-heart-plus'
+                  "
+                  class="w-4 h-4"
+                  aria-hidden="true"
+                />
+                <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
+              </button>
+              <template #fallback>
+                <div
+                  class="flex items-center gap-1.5 list-none m-0 p-0 relative top-[5px] self-baseline ms-1 sm:ms-2"
+                >
+                  <SkeletonBlock class="w-16 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
+                </div>
+              </template>
+            </ClientOnly>
+          </div>
 
           <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
           <nav
@@ -582,7 +639,7 @@ defineOgImageComponent('Package', {
             <NuxtLink
               v-if="docsLink"
               :to="docsLink"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="d"
             >
               <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
@@ -596,7 +653,7 @@ defineOgImageComponent('Package', {
             </NuxtLink>
             <NuxtLink
               :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="."
             >
               <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
@@ -610,7 +667,7 @@ defineOgImageComponent('Package', {
             </NuxtLink>
             <NuxtLink
               :to="{ path: '/compare', query: { packages: pkg.name } }"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="c"
             >
               <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
@@ -786,7 +843,7 @@ defineOgImageComponent('Package', {
 
         <!-- Stats grid -->
         <dl
-          class="grid grid-cols-2 sm:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-b border-border"
+          class="grid grid-cols-2 sm:grid-cols-7 md:grid-cols-11 gap-3 sm:gap-4 py-4 sm:py-6 mt-4 sm:mt-6 border-t border-b border-border"
         >
           <div class="space-y-1 sm:col-span-2">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider">
@@ -833,7 +890,7 @@ defineOgImageComponent('Package', {
                 :href="`https://npmgraph.js.org/?q=${pkg.name}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
                 :title="$t('package.stats.view_dependency_graph')"
               >
                 <span class="i-carbon:network-3 w-3.5 h-3.5" aria-hidden="true" />
@@ -845,10 +902,10 @@ defineOgImageComponent('Package', {
                 :href="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1"
+                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
                 :title="$t('package.stats.inspect_dependency_tree')"
               >
-                <span class="i-solar:eye-scan-outline w-3.5 h-3.5" aria-hidden="true" />
+                <span class="i-lucide-view w-3.5 h-3.5" aria-hidden="true" />
                 <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
               </a>
             </dd>
@@ -858,7 +915,12 @@ defineOgImageComponent('Package', {
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
               <TooltipApp :text="sizeTooltip">
-                <span class="i-carbon:information w-3 h-3 text-fg-subtle" aria-hidden="true" />
+                <span
+                  tabindex="0"
+                  class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+                >
+                  <span class="i-carbon:information w-3 h-3" aria-hidden="true" />
+                </span>
               </TooltipApp>
             </dt>
             <dd class="font-mono text-sm text-fg">
@@ -1036,11 +1098,11 @@ defineOgImageComponent('Package', {
 
       <!-- README -->
       <section id="readme" class="area-readme min-w-0 scroll-mt-20">
-        <div class="flex flex-wrap items-center justify-between mb-3">
+        <div class="flex flex-wrap items-center justify-between mb-4 px-1">
           <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
             <a
               href="#readme"
-              class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
+              class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
             >
               {{ $t('package.readme.title') }}
               <span
@@ -1072,11 +1134,42 @@ defineOgImageComponent('Package', {
             >{{ $t('package.readme.view_on_github') }}</a
           >
         </p>
-      </section>
 
+        <section
+          v-if="hasProvenance(displayVersion) && provenanceBadgeMounted"
+          id="provenance"
+          class="scroll-mt-20"
+        >
+          <div
+            v-if="provenanceStatus === 'pending'"
+            class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
+          >
+            <span
+              class="i-carbon-circle-dash w-4 h-4 motion-safe:animate-spin"
+              aria-hidden="true"
+            />
+            <span>{{ $t('package.provenance_section.title') }}…</span>
+          </div>
+          <PackageProvenanceSection
+            v-else-if="provenanceData"
+            :details="provenanceData"
+            class="mt-8"
+          />
+          <!-- Error state: provenance exists but details failed to load -->
+          <div
+            v-else-if="provenanceStatus === 'error'"
+            class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
+          >
+            <span class="i-carbon:warning w-4 h-4" aria-hidden="true" />
+            <span>{{ $t('package.provenance_section.error_loading') }}</span>
+          </div>
+        </section>
+      </section>
       <div class="area-sidebar">
         <!-- Sidebar -->
-        <div class="sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-hidden xl:(top-22 pt-2)">
+        <div
+          class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pr-2.5 hover:pr-0.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"
+        >
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
 
@@ -1223,6 +1316,41 @@ defineOgImageComponent('Package', {
 
 .area-sidebar {
   grid-area: sidebar;
+}
+
+/* Sidebar scrollbar: hidden by default, shown on hover/focus */
+@media (min-width: 1024px) {
+  .sidebar-scroll {
+    scrollbar-gutter: stable;
+    scrollbar-width: none;
+  }
+
+  .sidebar-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .sidebar-scroll:hover,
+  .sidebar-scroll:focus-within {
+    scrollbar-width: auto;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar,
+  .sidebar-scroll:focus-within::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar-thumb,
+  .sidebar-scroll:focus-within::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
+  }
+
+  .sidebar-scroll:hover::-webkit-scrollbar-track,
+  .sidebar-scroll:focus-within::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }
 
 /* Improve package name wrapping for narrow screens */

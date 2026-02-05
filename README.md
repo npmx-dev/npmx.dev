@@ -44,7 +44,7 @@ What npmx offers:
 - **Fast search** &ndash; quick package search with instant results
 - **Package details** &ndash; READMEs, versions, dependencies, and metadata
 - **Code viewer** &ndash; browse package source code with syntax highlighting and permalink to specific lines
-- **Provenance indicators** &ndash; verified build badges for packages with npm provenance
+- **Provenance indicators** &ndash; verified build badges and provenance section below the README
 - **Multi-provider repository support** &ndash; stars/forks from GitHub, GitLab, Bitbucket, Codeberg, Gitee, Sourcehut, Forgejo, Gitea, Radicle, and Tangled
 - **JSR availability** &ndash; see if scoped packages are also available on JSR
 - **Package badges** &ndash; module format (ESM/CJS/dual), TypeScript types (with `@types/*` links), and engine constraints

@@ -34,7 +34,7 @@ async function handleLogin() {
         </div>
       </div>
       <button
-        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
         @click="logout"
       >
         {{ $t('auth.modal.disconnect') }}
@@ -61,13 +61,13 @@ async function handleLogin() {
             :placeholder="$t('auth.modal.handle_placeholder')"
             autocomplete="off"
             spellcheck="false"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
           />
         </div>
 
         <details class="text-sm">
           <summary
-            class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200"
+            class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200 focus-visible:(outline-2 outline-accent/70)"
           >
             {{ $t('auth.modal.what_is_atmosphere') }}
           </summary>
@@ -99,21 +99,21 @@ async function handleLogin() {
       <button
         type="submit"
         :disabled="!handleInput.trim()"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
       >
         {{ $t('auth.modal.connect') }}
       </button>
       <button
         type="button"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         @click="handleCreateAccount"
       >
         {{ $t('auth.modal.create_account') }}
       </button>
-      <hr />
+      <hr class="color-border" />
       <button
         type="button"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg flex items-center justify-center gap-2"
+        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg flex items-center justify-center gap-2"
         @click="handleBlueskySignIn"
       >
         {{ $t('auth.modal.connect_bluesky') }}

@@ -6,6 +6,8 @@ definePageMeta({
   name: 'compare',
 })
 
+const router = useRouter()
+
 // Sync packages with URL query param (stable ref - doesn't change on other query changes)
 const packagesParam = useRouteQuery<string>('packages', '', { mode: 'replace' })
 
@@ -91,9 +93,19 @@ useSeoMeta({
   <main class="container flex-1 py-12 sm:py-16 w-full">
     <div class="max-w-2xl mx-auto">
       <header class="mb-12">
-        <h1 class="font-mono text-3xl sm:text-4xl font-medium mb-4">
-          {{ $t('compare.packages.title') }}
-        </h1>
+        <div class="flex items-baseline justify-between gap-4 mb-4">
+          <h1 class="font-mono text-3xl sm:text-4xl font-medium">
+            {{ $t('compare.packages.title') }}
+          </h1>
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            @click="router.back()"
+          >
+            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+          </button>
+        </div>
         <p class="text-fg-muted text-lg">
           {{ $t('compare.packages.tagline') }}
         </p>
@@ -138,7 +150,7 @@ useSeoMeta({
           </h2>
           <button
             type="button"
-            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline"
+            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
             :class="isAllSelected ? 'text-fg-muted' : 'text-fg-muted/60 hover:text-fg-muted'"
             :disabled="isAllSelected"
             :aria-label="$t('compare.facets.select_all')"
@@ -149,7 +161,7 @@ useSeoMeta({
           <span class="text-[10px] text-fg-muted/40" aria-hidden="true">/</span>
           <button
             type="button"
-            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline"
+            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
             :class="isNoneSelected ? 'text-fg-muted' : 'text-fg-muted/60 hover:text-fg-muted'"
             :disabled="isNoneSelected"
             :aria-label="$t('compare.facets.deselect_all')"
@@ -211,6 +223,15 @@ useSeoMeta({
               :headers="gridHeaders"
             />
           </div>
+
+          <h2
+            id="comparison-heading"
+            class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
+          >
+            {{ $t('package.downloads.title') }}
+          </h2>
+
+          <CompareLineChart :packages />
         </div>
 
         <div v-else class="text-center py-12" role="alert">
@@ -219,7 +240,10 @@ useSeoMeta({
       </section>
 
       <!-- Empty state -->
-      <section v-else class="text-center py-16 border border-dashed border-border rounded-lg">
+      <section
+        v-else
+        class="text-center px-1.5 py-16 border border-dashed border-border rounded-lg"
+      >
         <div class="i-carbon:compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
         <h2 class="font-mono text-lg text-fg-muted mb-2">
           {{ $t('compare.packages.empty_title') }}

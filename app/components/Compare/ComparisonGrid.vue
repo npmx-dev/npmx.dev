@@ -148,9 +148,14 @@ function onTooltipLeave() {
           </button>
 
           <!-- Regular package header (no replacement) -->
-          <span v-else class="font-mono text-sm font-medium text-fg truncate" :title="header">
+          <NuxtLink
+            v-else
+            :to="`/package/${header}`"
+            class="link-subtle font-mono text-sm font-medium text-fg truncate"
+            :title="header"
+          >
             {{ header }}
-          </span>
+          </NuxtLink>
         </div>
       </div>
 

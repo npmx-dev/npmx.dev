@@ -168,9 +168,10 @@ export class PackageLikesUtils {
     let totalLikes = await this.cache.get<number>(totalLikesKey)
     if (!totalLikes) {
       totalLikes = await this.constellationLikes(subjectRef)
-      totalLikes = totalLikes + 1
-      await this.cache.set(totalLikesKey, totalLikes, CACHE_MAX_AGE)
     }
+    totalLikes = totalLikes + 1
+    await this.cache.set(totalLikesKey, totalLikes, CACHE_MAX_AGE)
+
     // We already know the user has not liked the package before so set in the cache
     await this.cache.set(CACHE_USER_LIKES_KEY(packageName, usersDid), true, CACHE_MAX_AGE)
     return {
@@ -213,6 +214,15 @@ export class PackageLikesUtils {
   }
 
   /**
+   * Access to unlike a package for a user in the cache.
+   * @param packageName
+   * @param usersDid
+   */
+  async setUnlikeInCache(packageName: string, usersDid: string) {
+    await this.cache.set(CACHE_USER_LIKES_KEY(packageName, usersDid), false, CACHE_MAX_AGE)
+  }
+
+  /**
    * At this point you should have checked if the user had a record for the package on the network and removed it before updating the cache
    * @param packageName
    * @param usersDid
@@ -230,7 +240,7 @@ export class PackageLikesUtils {
     await this.cache.set(totalLikesKey, totalLikes, CACHE_MAX_AGE)
 
     //Clean up
-    await this.cache.set(CACHE_USER_LIKES_KEY(packageName, usersDid), false, CACHE_MAX_AGE)
+    await this.setUnlikeInCache(packageName, usersDid)
     await this.cache.delete(CACHE_USERS_BACK_LINK(packageName, usersDid))
 
     return {

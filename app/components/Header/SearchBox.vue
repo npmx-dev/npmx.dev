@@ -109,7 +109,7 @@ defineExpose({ focus })
       <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
         <div class="search-box relative flex items-center">
           <span
-            class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none group-focus-within:text-accent z-1"
+            class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
           >
             /
           </span>
@@ -122,7 +122,7 @@ defineExpose({ focus })
             name="q"
             :placeholder="$t('search.placeholder')"
             v-bind="noCorrect"
-            class="w-full min-w-25 bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+            class="w-full min-w-25 bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
             @focus="handleSearchFocus"
             @blur="handleSearchBlur"
           />
