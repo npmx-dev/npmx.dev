@@ -3,12 +3,6 @@ import { createError } from 'h3'
 import * as v from 'valibot'
 import { handleApiError } from '../../../../server/utils/error-handler'
 
-function h3Error(statusCode: number, message: string) {
-  const error = createError({ statusCode, message })
-  error.statusCode = statusCode
-  return error
-}
-
 describe('handleApiError', () => {
   const fallback = { message: 'Something went wrong', statusCode: 500 }
 
@@ -28,28 +22,26 @@ describe('handleApiError', () => {
       valibotError = e
     }
 
-    const expected = h3Error(404, 'Name is required')
-    expect(() => handleApiError(valibotError, fallback)).toThrow(expected)
+    expect(() => handleApiError(valibotError, fallback)).toThrow(
+      expect.objectContaining({ statusCode: 404, message: 'Name is required' }),
+    )
   })
 
   it('throws a fallback error with the given statusCode and message', () => {
-    const expected = h3Error(502, 'Bad gateway')
     expect(() =>
       handleApiError(new Error('unexpected'), { message: 'Bad gateway', statusCode: 502 }),
-    ).toThrow(expected)
+    ).toThrow(expect.objectContaining({ statusCode: 502, message: 'Bad gateway' }))
   })
 
   it('defaults fallback statusCode to 502 when not provided', () => {
-    const expected = h3Error(502, 'Upstream failed')
     expect(() => handleApiError('some string error', { message: 'Upstream failed' })).toThrow(
-      expected,
+      expect.objectContaining({ statusCode: 502, message: 'Upstream failed' }),
     )
   })
 
   it('uses the custom fallback statusCode when provided', () => {
-    const expected = h3Error(503, 'Service unavailable')
     expect(() => handleApiError(null, { message: 'Service unavailable', statusCode: 503 })).toThrow(
-      expected,
+      expect.objectContaining({ statusCode: 503, message: 'Service unavailable' }),
     )
   })
 })
