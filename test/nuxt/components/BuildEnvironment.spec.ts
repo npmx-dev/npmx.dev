@@ -18,16 +18,15 @@ describe('BuildEnvironment', () => {
         buildInfo,
       },
     })
-    const html = component.html()
 
     // In dev mode, it shows env name, not version link
-    expect(html).toContain(`<span class="tracking-wider">${buildInfo.env}</span>`)
-    expect(html).toContain(
-      `<a href="https://github.com/npmx-dev/npmx.dev/commit/${buildInfo.commit}"`,
-    )
-    expect(html).not.toContain(
-      `<a href="https://github.com/npmx-dev/npmx.dev/tag/v${buildInfo.version}"`,
-    )
+    const envSpan = component.find('span.tracking-wider')
+    expect(envSpan.exists()).toBe(true)
+    expect(envSpan.text()).toBe(buildInfo.env)
+    const commitLink = component.find(`a[href$="/commit/${buildInfo.commit}"]`)
+    expect(commitLink.exists()).toBe(true)
+    const tagLink = component.find(`a[href$="/tag/v${buildInfo.commit}"]`)
+    expect(tagLink.exists()).toBe(false)
   })
 
   it('renders release environment correctly', async () => {
@@ -45,15 +44,13 @@ describe('BuildEnvironment', () => {
         buildInfo,
       },
     })
-    const html = component.html()
 
     // In release mode, it shows tag version link, not env name
-    expect(html).not.toContain(`<span class="tracking-wider">${buildInfo.env}</span>`)
-    expect(html).not.toContain(
-      `<a href="https://github.com/npmx-dev/npmx.dev/commit/${buildInfo.commit}"`,
-    )
-    expect(html).toContain(
-      `<a href="https://github.com/npmx-dev/npmx.dev/tag/v${buildInfo.version}"`,
-    )
+    const envSpan = component.find('span.tracking-wider')
+    expect(envSpan.exists()).toBe(false)
+    const commitLink = component.find(`a[href$="/commit/${buildInfo.commit}"]`)
+    expect(commitLink.exists()).toBe(false)
+    const tagLink = component.find(`a[href$="/tag/v${buildInfo.version}"]`)
+    expect(tagLink.exists()).toBe(true)
   })
 })
