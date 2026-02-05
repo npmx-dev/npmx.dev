@@ -310,6 +310,15 @@ describe('install command generation', () => {
       })
     })
 
+    it('suggests dev dependency from README --dev flag hints', () => {
+      const readmeHtml = '<p><code>yarn add --dev some-tool</code></p>'
+
+      expect(getDevDependencySuggestion('some-tool', readmeHtml)).toEqual({
+        recommended: true,
+        reason: 'readme-hint',
+      })
+    })
+
     it('does not suggest dev dependency for runtime packages without hints', () => {
       expect(getDevDependencySuggestion('react')).toEqual({
         recommended: false,

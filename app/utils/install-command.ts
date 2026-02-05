@@ -140,12 +140,12 @@ function hasReadmeDevInstallHint(packageName: string, readmeHtml?: string | null
   const patterns = [
     // npm install -D pkg / pnpm add --save-dev pkg
     new RegExp(
-      String.raw`(?:npm|pnpm|yarn|bun|vlt)\s+(?:install|add|i)\s+(?:--save-dev|-d)\s+${packageSpec}`,
+      String.raw`(?:npm|pnpm|yarn|bun|vlt)\s+(?:install|add|i)\s+(?:--save-dev|--dev|-d)\s+${packageSpec}`,
       'i',
     ),
     // npm install pkg --save-dev / pnpm add pkg -D
     new RegExp(
-      String.raw`(?:npm|pnpm|yarn|bun|vlt)\s+(?:install|add|i)\s+${packageSpec}\s+(?:--save-dev|-d)`,
+      String.raw`(?:npm|pnpm|yarn|bun|vlt)\s+(?:install|add|i)\s+${packageSpec}\s+(?:--save-dev|--dev|-d)`,
       'i',
     ),
     // deno add -D npm:pkg
