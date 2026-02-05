@@ -8,8 +8,28 @@
  * - /org/* → /@*
  * - /* → /package/* (Unless it's an existing page)
  */
+const pages = [
+  '/about',
+  '/compare',
+  '/org',
+  '/package',
+  '/package-code',
+  '/package-docs',
+  '/privacy',
+  '/search',
+  '/settings',
+]
 export default defineEventHandler(async event => {
   const path = event.path
+
+  // username
+  if (path.startsWith('~')) {
+    return
+  }
+
+  if (pages.some(page => path === page || path.startsWith(page + '/'))) {
+    return
+  }
 
   // /@org/pkg or /pkg → /package/org/pkg or /package/pkg
   let pkgMatch = path.match(/^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)$/)
