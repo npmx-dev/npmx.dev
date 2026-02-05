@@ -30,5 +30,24 @@
     "skeleton": {
       "readme": "Léame"
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "local_storage": {
+        "settings": "configuraciones"
+      },
+      "management": {
+        "title": "Administración de cookies",
+        "p2": "A continuación se muestran enlaces con instrucciones para la administración de cookies en los navegadores más utilizados:"
+      }
+    },
+    "authenticated": {
+      "p1": "Cuando vinculas tu cuenta de {bold} a npmx, almacenamos tu token de acceso OAuth en una cookie de sesión segura y solo HTTP. Este token se utiliza únicamente para autenticar solicitudes en tu nombre.",
+      "p2": "No almacenamos tus credenciales y no accedemos a ningún dato más allá de lo necesario para proporcionar las funciones que utilizas. Puedes desvincular tu cuenta en cualquier momento desde la página de {settings}.",
+      "settings": "configuraciones"
+    },
+    "your_rights": {
+      "li3": "Desvincular tu sesión autenticada"
+    }
   }
 }
