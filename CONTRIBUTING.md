@@ -340,7 +340,7 @@ To add a new locale:
 5. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
 6. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
 
-Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization.html#custom-pluralization) and [Plural Rules](https://cldr.unicode.org/index/cldr-spec/plural-rules#TOC-Determining-Plural-Categories) for more info.
+Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization#custom-pluralization) and [Plural Rules](https://cldr.unicode.org/index/cldr-spec/plural-rules#TOC-Determining-Plural-Categories) for more info.
 
 ### Update translation
 
