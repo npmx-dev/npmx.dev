@@ -1152,7 +1152,7 @@ onKeyStroke(
             :href="repositoryUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="link text-fg"
+            class="link text-fg underline underline-offset-4 decoration-fg-subtle hover:(decoration-fg text-fg) transition-colors duration-200"
             >{{ $t('package.readme.view_on_github') }}</a
           >
         </p>
