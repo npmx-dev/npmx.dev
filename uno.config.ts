@@ -35,6 +35,7 @@ export default defineConfig({
   ].filter(Boolean),
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
+    spacing: { DEFAULT: '4px' },
     font: {
       mono: "'Geist Mono', monospace",
       sans: "'Geist', system-ui, -apple-system, sans-serif",
