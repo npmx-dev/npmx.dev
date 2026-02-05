@@ -113,10 +113,10 @@ function handleBlur() {
         </NuxtLink>
         <button
           type="button"
-          class="text-fg-subtle hover:text-fg transition-colors focus-visible:outline-accent/70 rounded"
+          class="text-fg-subtle hover:text-fg transition-colors rounded"
           :aria-label="
             $t('compare.selector.remove_package', {
-              package: pkg === NO_DEPENDENCY_ID ? 'No dependency' : pkg,
+              package: pkg === NO_DEPENDENCY_ID ? $t('compare.no_dependency.label') : pkg,
             })
           "
           @click="removePackage(pkg)"
