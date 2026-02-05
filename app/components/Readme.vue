@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { scrollToAnchor } from '~/utils/scrollToAnchor'
+
 defineProps<{
   html: string
 }>()
@@ -9,6 +11,7 @@ const { copy } = useClipboard()
 // Combined click handler for:
 // 1. Intercepting npmjs.com links to route internally
 // 2. Copy button functionality for code blocks
+// 3. Hash link scrolling for internal README navigation (Table of Contents)
 function handleClick(event: MouseEvent) {
   const target = event.target as HTMLElement | undefined
   if (!target) return
@@ -40,13 +43,22 @@ function handleClick(event: MouseEvent) {
     return
   }
 
-  // Handle npmjs.com link clicks - route internally
+  // Handle anchor link clicks
   const anchor = target.closest('a')
   if (!anchor) return
 
   const href = anchor.getAttribute('href')
   if (!href) return
 
+  // Handle hash links for internal README navigation (e.g., Table of Contents)
+  if (href.startsWith('#')) {
+    event.preventDefault()
+    const id = href.slice(1) // Remove the leading '#'
+    scrollToAnchor(id)
+    return
+  }
+
+  // Handle npmjs.com link clicks - route internally
   const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
   if (!match || !match[1]) return
 
