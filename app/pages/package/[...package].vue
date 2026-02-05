@@ -1092,6 +1092,7 @@ onKeyStroke(
             :package-name="pkg.name"
             :requested-version="requestedVersion"
             :jsr-info="jsrInfo"
+            :readme-html="readmeData?.html"
             :types-package-name="typesPackageName"
             :executable-info="executableInfo"
             :create-package-info="createPackageInfo"

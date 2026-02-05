@@ -5,6 +5,8 @@ import {
   getPackageSpecifier,
   getExecuteCommand,
   getExecuteCommandParts,
+  getDevDependencySuggestion,
+  getDevDependencyFlag,
 } from '../../../../app/utils/install-command'
 import type { JsrPackageInfo } from '../../../../shared/types/jsr'
 
@@ -124,6 +126,26 @@ describe('install command generation', () => {
       })
     })
 
+    describe('dev dependency installs', () => {
+      it.each([
+        ['npm', 'npm install -D eslint'],
+        ['pnpm', 'pnpm add -D eslint'],
+        ['yarn', 'yarn add -D eslint'],
+        ['bun', 'bun add -d eslint'],
+        ['deno', 'deno add -D npm:eslint'],
+        ['vlt', 'vlt install -D eslint'],
+      ] as const)('%s → %s', (pm, expected) => {
+        expect(
+          getInstallCommand({
+            packageName: 'eslint',
+            packageManager: pm,
+            jsrInfo: jsrNotAvailable,
+            dev: true,
+          }),
+        ).toBe(expected)
+      })
+    })
+
     describe('scoped package on JSR without version', () => {
       it.each([
         ['npm', 'npm install @trpc/server'],
@@ -203,6 +225,16 @@ describe('install command generation', () => {
       expect(parts).toEqual(['npm', 'install', 'lodash@4.17.21'])
     })
 
+    it('returns correct parts for npm with dev flag', () => {
+      const parts = getInstallCommandParts({
+        packageName: 'eslint',
+        packageManager: 'npm',
+        jsrInfo: jsrNotAvailable,
+        dev: true,
+      })
+      expect(parts).toEqual(['npm', 'install', '-D', 'eslint'])
+    })
+
     it('returns correct parts for deno with jsr: prefix when available', () => {
       const parts = getInstallCommandParts({
         packageName: '@trpc/server',
@@ -210,6 +242,16 @@ describe('install command generation', () => {
         jsrInfo: jsrAvailable,
       })
       expect(parts).toEqual(['deno', 'add', 'jsr:@trpc/server'])
+    })
+
+    it('returns correct parts for bun with lowercase dev flag', () => {
+      const parts = getInstallCommandParts({
+        packageName: 'eslint',
+        packageManager: 'bun',
+        jsrInfo: jsrNotAvailable,
+        dev: true,
+      })
+      expect(parts).toEqual(['bun', 'add', '-d', 'eslint'])
     })
 
     it('returns correct parts for deno with npm: prefix when not on JSR', () => {
@@ -240,6 +282,54 @@ describe('install command generation', () => {
       const parts = getInstallCommandParts(options)
       const command = getInstallCommand(options)
       expect(parts.join(' ')).toBe(command)
+    })
+  })
+
+  describe('dev dependency suggestion heuristic', () => {
+    it('suggests dev dependency for known tooling packages', () => {
+      expect(getDevDependencySuggestion('eslint')).toEqual({
+        recommended: true,
+        reason: 'known-package',
+      })
+      expect(getDevDependencySuggestion('@types/node')).toEqual({
+        recommended: true,
+        reason: 'known-package',
+      })
+      expect(getDevDependencySuggestion('@typescript-eslint/parser')).toEqual({
+        recommended: true,
+        reason: 'known-package',
+      })
+    })
+
+    it('suggests dev dependency from README install command hints', () => {
+      const readmeHtml = '<p>Install with <code>npm install --save-dev some-tool</code></p>'
+
+      expect(getDevDependencySuggestion('some-tool', readmeHtml)).toEqual({
+        recommended: true,
+        reason: 'readme-hint',
+      })
+    })
+
+    it('does not suggest dev dependency for runtime packages without hints', () => {
+      expect(getDevDependencySuggestion('react')).toEqual({
+        recommended: false,
+      })
+    })
+
+    it('does not suggest dev dependency when README hint targets a different package', () => {
+      const readmeHtml = '<p>Install with <code>yarn add -D bar</code></p>'
+
+      expect(getDevDependencySuggestion('foo', readmeHtml)).toEqual({
+        recommended: false,
+      })
+    })
+  })
+
+  describe('getDevDependencyFlag', () => {
+    it('returns lowercase flag only for bun', () => {
+      expect(getDevDependencyFlag('bun')).toBe('-d')
+      expect(getDevDependencyFlag('npm')).toBe('-D')
+      expect(getDevDependencyFlag('deno')).toBe('-D')
     })
   })
 
