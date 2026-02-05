@@ -415,7 +415,7 @@
   "connector": {
     "status": {
       "connecting": "连接中…",
-      "connected_as": "已连接为 {'@'}{user}",
+      "connected_as": "已连接为 ~{user}",
       "connected": "已连接",
       "connect_cli": "连接本地 CLI",
       "aria_connecting": "连接到本地连接器中",
@@ -429,7 +429,7 @@
       "contributor_notice": "连接器尚未发布到 npm。请参阅 {link} 了解如何本地运行。",
       "contributor_link": "贡献指南",
       "connected": "已连接",
-      "connected_as_user": "已连接为 {'@'}{user}",
+      "connected_as_user": "已连接为 ~{user}",
       "connected_hint": "现在你可以通过 Web UI 管理包和组织。",
       "disconnect": "断开连接",
       "run_hint": "在你的机器上运行连接器以启用管理功能。",
@@ -782,7 +782,7 @@
       }
     },
     "contributors": {
-      "title": "贡献者",
+      "title": "{count} 位贡献者",
       "description": "npmx 是完全开源的，由令人惊叹的社区贡献者们共同构建。",
       "loading": "正在加载贡献者…",
       "error": "无法加载贡献者",
