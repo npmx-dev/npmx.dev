@@ -1,5 +1,8 @@
 <script setup lang="ts">
+const router = useRouter()
+
 import type { BlogPostFrontmatter } from '#shared/schemas/blog'
+import { isModEventDivert } from '@atproto/api/dist/client/types/tools/ozone/moderation/defs'
 
 const blogModules = import.meta.glob<BlogPostFrontmatter>('./*.md', { eager: true })
 
@@ -17,44 +20,69 @@ const placeHolder = ['atproto', 'nuxt']
 
 definePageMeta({
   name: 'blog',
-  // alias: ['/:path(.*)*'],
 })
 
 useSeoMeta({
-  title: () => $t('blog.title'),
-  description: () => $t('blog.description'),
+  title: () => `${$t('blog.title')} - npmx`,
+  ogTitle: () => `${$t('blog.title')} - npmx`,
+  twitterTitle: () => `${$t('blog.title')} - npmx`,
+  description: () => $t('blog.meta_description'),
+  ogDescription: () => $t('blog.meta_description'),
+  twitterDescription: () => $t('blog.meta_description'),
 })
 </script>
 
 <template>
-  <main class="container py-8 sm:py-12 w-full">
-    <header class="mb-8 pb-8 border-b border-border flex place-content-center text-3xl">
-      <h1 class="">blog...</h1>
-    </header>
+  <main class="container w-full flex-1 py-12 sm:py-16 overflow-x-hidden">
+    <article class="max-w-2xl mx-auto">
+      <header class="mb-12">
+        <div class="flex items-baseline justify-between gap-4 mb-4">
+          <h1 class="font-mono text-3xl sm:text-4xl font-medium">
+            {{ $t('blog.heading') }}
+          </h1>
+          <button
+            type="button"
+            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            @click="router.back()"
+          >
+            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+          </button>
+        </div>
+        <p class="text-fg-muted text-lg">
+          {{ $t('tagline') }}
+        </p>
+      </header>
+      <article v-if="posts && posts.length > 0" class="flex flex-col gap-8">
+        <template
+          v-for="(post, idx) in posts"
+          :key="`${post.authors.map(a => a.name).join('-')}-${post.title}`"
+        >
+          <BlogPostListCard
+            :authors="post.authors"
+            :title="post.title"
+            :path="post.slug"
+            :excerpt="post.excerpt || post.description || 'No Excerpt Available'"
+            :topics="Array.isArray(post.tags) ? post.tags : placeHolder"
+            :published="post.date"
+            :index="idx"
+            @focus="i => console.log('Hovered:', i)"
+          />
+          <hr v-if="idx < posts.length - 1" class="border-border-subtle" />
+        </template>
+        <!-- :selected="toSuggestionIndex(unifiedSelectedIndex) === idx" -->
+        <!-- :is-exact-match="
+                  (exactMatchType === 'org' && suggestion.type === 'org') ||
+                  (exactMatchType === 'user' && suggestion.type === 'user')
+                " -->
+        <!-- @focus="handleBlogPostSelect" -->
+        <!-- </div> -->
+      </article>
 
-    <article v-if="posts && posts.length > 0" class="mx-30 space-y-4">
-      <BlogPostListCard
-        v-for="(post, idx) in posts"
-        :key="`${post.authors.map(a => a.name).join('-')}-${post.title}`"
-        :authors="post.authors"
-        :title="post.title"
-        :path="post.slug"
-        :excerpt="post.excerpt || post.description || 'No Excerpt Available'"
-        :topics="Array.isArray(post.tags) ? post.tags : placeHolder"
-        :published="post.date"
-        :index="idx"
-        @focus="i => console.log('Hovered:', i)"
-      />
-      <!-- :selected="toSuggestionIndex(unifiedSelectedIndex) === idx" -->
-      <!-- :is-exact-match="
-                (exactMatchType === 'org' && suggestion.type === 'org') ||
-                (exactMatchType === 'user' && suggestion.type === 'user')
-              " -->
-      <!-- @focus="handleBlogPostSelect" -->
-      <!-- </div> -->
+      <isModEventDivert v-else class="text-center py-20 text-fg-subtle"
+        >No posts found.</isModEventDivert
+      >
     </article>
-
-    <article v-else class="text-center py-20 text-fg-subtle">No posts found.</article>
   </main>
 </template>
 

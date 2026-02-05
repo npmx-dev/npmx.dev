@@ -29,15 +29,16 @@ const { resolvedAuthors } = useAuthorProfiles(props.authors)
     </div>
   </div>
 
-  <!-- Compact variant: stacked avatars -->
-  <div v-else class="flex items-center gap-2">
-    <div class="flex items-center gap-1">
+  <!-- Compact variant: no avatars -->
+  <div v-else class="flex items-center gap-2 min-w-0">
+    <div class="flex items-center">
       <AuthorAvatar
-        v-for="author in resolvedAuthors"
+        v-for="(author, index) in resolvedAuthors"
         :key="author.name"
         :author="author"
         size="md"
         class="ring-2 ring-bg"
+        :class="index > 0 ? '-ms-3' : ''"
       />
     </div>
     <span class="text-xs text-fg-muted font-mono truncate">

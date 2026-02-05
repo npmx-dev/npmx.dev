@@ -25,7 +25,7 @@ const emit = defineEmits<{
 
 <template>
   <article
-    class="group card-interactive relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
+    class="group relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
   >
     <NuxtLink
       :to="`/blog/${path}`"
@@ -36,21 +36,18 @@ const emit = defineEmits<{
     >
       <!-- Text Content -->
       <div class="flex-1 min-w-0 text-left">
+        <span class="text-xs text-fg-muted font-mono">{{ published }}</span>
         <h2
-          class="font-mono text-base font-medium text-fg group-hover:text-primary transition-colors hover:underline"
+          class="font-mono text-xl font-medium text-fg group-hover:text-primary transition-colors hover:underline"
         >
           {{ title }}
         </h2>
-
-        <div class="flex items-center gap-2 text-xs text-fg-muted font-mono mt-1">
-          <AuthorList :authors="authors" />
-          <span>•</span>
-          <span>{{ published }}</span>
-        </div>
-
-        <p v-if="excerpt" class="text-sm text-muted-foreground mt-2 line-clamp-2 no-underline">
+        <p v-if="excerpt" class="text-fg-muted leading-relaxed line-clamp-2 no-underline">
           {{ excerpt }}
         </p>
+        <div class="flex flex-wrap items-center gap-2 text-xs text-fg-muted font-mono">
+          <AuthorList :authors="authors" />
+        </div>
       </div>
 
       <span
