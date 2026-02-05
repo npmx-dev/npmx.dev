@@ -957,7 +957,7 @@ const chartConfig = computed(() => {
               id="granularity"
               v-model="selectedGranularity"
               :disabled="pending"
-              class="w-full px-2.5 py-1.75 bg-bg-subtle font-mono text-sm text-fg outline-none appearance-none focus-visible:outline-accent/70"
+              class="w-full px-2.5 py-1.75 font-mono text-sm text-fg outline-none appearance-none focus-visible:outline-accent/70"
             >
               <option value="daily">{{ $t('package.downloads.granularity_daily') }}</option>
               <option value="weekly">{{ $t('package.downloads.granularity_weekly') }}</option>
