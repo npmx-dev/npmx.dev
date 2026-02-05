@@ -41,7 +41,7 @@ describe('BuildEnvironment', () => {
     const html = component.html()
 
     // In release mode, it shows tag version link, not env name
-    expect(html).not.toContain('<span class="tracking-wider">${buildInfo.env}</span>')
+    expect(html).not.toContain(`<span class="tracking-wider">${buildInfo.env}</span>`)
     expect(html).not.toContain(
       `<a href="https://github.com/npmx-dev/npmx.dev/commit/${buildInfo.commit}"`,
     )
