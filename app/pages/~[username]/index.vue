@@ -163,7 +163,11 @@ watch(username, () => {
 
 useSeoMeta({
   title: () => `~${username.value} - npmx`,
+  ogTitle: () => `~${username.value} - npmx`,
+  twitterTitle: () => `~${username.value} - npmx`,
   description: () => `npm packages maintained by ${username.value}`,
+  ogDescription: () => `npm packages maintained by ${username.value}`,
+  twitterDescription: () => `npm packages maintained by ${username.value}`,
 })
 
 defineOgImageComponent('Default', {

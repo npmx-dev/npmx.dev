@@ -75,7 +75,7 @@ const sortedOptionalDependencies = computed(() => {
       id="dependencies"
       :title="$t('package.dependencies.title', { count: sortedDependencies.length })"
     >
-      <ul class="space-y-1 list-none m-0 p-0" :aria-label="$t('package.dependencies.list_label')">
+      <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
@@ -145,7 +145,7 @@ const sortedOptionalDependencies = computed(() => {
       <button
         v-if="sortedDependencies.length > 10 && !depsExpanded"
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="my-2 ms-1 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
         @click="depsExpanded = true"
       >
         {{
@@ -166,10 +166,7 @@ const sortedOptionalDependencies = computed(() => {
         })
       "
     >
-      <ul
-        class="space-y-1 list-none m-0 p-0"
-        :aria-label="$t('package.peer_dependencies.list_label')"
-      >
+      <ul class="space-y-1 list-none m-0" :aria-label="$t('package.peer_dependencies.list_label')">
         <li
           v-for="peer in sortedPeerDependencies.slice(0, peerDepsExpanded ? undefined : 10)"
           :key="peer.name"
@@ -208,7 +205,7 @@ const sortedOptionalDependencies = computed(() => {
       <button
         v-if="sortedPeerDependencies.length > 10 && !peerDepsExpanded"
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
         @click="peerDepsExpanded = true"
       >
         {{
@@ -230,7 +227,7 @@ const sortedOptionalDependencies = computed(() => {
       "
     >
       <ul
-        class="space-y-1 list-none m-0 p-0"
+        class="space-y-1 list-none m-0"
         :aria-label="$t('package.optional_dependencies.list_label')"
       >
         <li
@@ -262,7 +259,7 @@ const sortedOptionalDependencies = computed(() => {
       <button
         v-if="sortedOptionalDependencies.length > 10 && !optionalDepsExpanded"
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
         @click="optionalDepsExpanded = true"
       >
         {{

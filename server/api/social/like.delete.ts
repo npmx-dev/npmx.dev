@@ -31,6 +31,9 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
     })
     const result = await likesUtil.unlikeAPackageAndReturnLikes(body.packageName, loggedInUsersDid)
     return result
+  } else {
+    // Always unlike in the cache if this endpoint is called. May be a mismatch
+    await likesUtil.setUnlikeInCache(body.packageName, loggedInUsersDid)
   }
 
   console.warn(

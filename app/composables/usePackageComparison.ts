@@ -152,7 +152,10 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
                 severity: vulnsSeverity,
               },
               metadata: {
-                license: pkgData.license,
+                license:
+                  typeof pkgData.license === 'object' && 'type' in pkgData.license
+                    ? pkgData.license.type
+                    : pkgData.license,
                 // Use version-specific publish time, NOT time.modified (which can be
                 // updated by metadata changes like maintainer additions)
                 lastUpdated: pkgData.time?.[latestVersion],

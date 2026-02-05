@@ -70,7 +70,7 @@ function handleDisconnect() {
 
       <button
         type="button"
-        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
         @click="handleDisconnect"
       >
         {{ $t('connector.modal.disconnect') }}
@@ -114,7 +114,7 @@ function handleDisconnect() {
         <button
           type="button"
           :aria-label="copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')"
-          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
           @click="copy('pnpm npmx-connector')"
         >
           <span v-if="!copied" class="i-carbon:copy w-5 h-5" aria-hidden="true" />
@@ -136,7 +136,7 @@ function handleDisconnect() {
                           :aria-label="
                             copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
                           "
-                          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+                          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
                           @click="copyCommand"
                         >
                           <span v-if="!copied" class="i-carbon:copy w-5 h-5" aria-hidden="true" />
@@ -167,7 +167,7 @@ function handleDisconnect() {
             name="connector-token"
             :placeholder="$t('connector.modal.token_placeholder')"
             v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
           />
         </div>
 
@@ -191,7 +191,7 @@ function handleDisconnect() {
               name="connector-port"
               inputmode="numeric"
               autocomplete="off"
-              class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+              class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
             />
           </div>
         </details>
@@ -222,7 +222,7 @@ function handleDisconnect() {
       <button
         type="submit"
         :disabled="!tokenInput.trim() || isConnecting"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
       >
         {{ isConnecting ? $t('connector.modal.connecting') : $t('connector.modal.connect') }}
       </button>

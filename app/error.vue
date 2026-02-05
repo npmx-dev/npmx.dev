@@ -5,9 +5,9 @@ const props = defineProps<{
   error: NuxtError
 }>()
 
-const status = computed(() => props.error.status || 500)
+const status = computed(() => props.error.statusCode || 500)
 const statusText = computed(() => {
-  if (props.error.statusText) return props.error.statusText
+  if (props.error.statusMessage) return props.error.statusMessage
   switch (status.value) {
     case 404:
       return 'Page not found'

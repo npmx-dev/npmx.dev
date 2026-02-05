@@ -6,6 +6,42 @@ import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import type { PublicUserSession } from '#shared/schemas/publicUserSession'
+import { handleResolver } from '#server/utils/atproto/oauth'
+import { Client } from '@atproto/lex'
+import * as app from '#shared/types/lexicons/app'
+import { ensureValidAtIdentifier } from '@atproto/syntax'
+
+/**
+ * Fetch the user's profile record to get their avatar blob reference
+ * @param did
+ * @param pds
+ * @returns
+ */
+async function getAvatar(did: string, pds: string) {
+  let avatar: string | undefined
+  try {
+    const pdsUrl = new URL(pds)
+    // Only fetch from HTTPS PDS endpoints to prevent SSRF
+    if (did && pdsUrl.protocol === 'https:') {
+      ensureValidAtIdentifier(did)
+      const client = new Client(pdsUrl)
+      const profileResponse = await client.get(app.bsky.actor.profile, {
+        repo: did,
+        rkey: 'self',
+      })
+
+      const validatedResponse = app.bsky.actor.profile.main.validate(profileResponse.value)
+
+      if (validatedResponse.avatar?.ref) {
+        // Use Bluesky CDN for faster image loading
+        avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${validatedResponse.avatar?.ref}@jpeg`
+      }
+    }
+  } catch {
+    // Avatar fetch failed, continue without it
+  }
+  return avatar
+}
 
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig(event)
@@ -26,24 +62,34 @@ export default defineEventHandler(async event => {
     sessionStore,
     clientMetadata,
     requestLock: getOAuthLock(),
+    handleResolver,
   })
 
   if (!query.code) {
-    const handle = query.handle?.toString()
-    const create = query.create?.toString()
+    try {
+      const handle = query.handle?.toString()
+      const create = query.create?.toString()
 
-    if (!handle) {
-      throw createError({
-        status: 400,
-        message: 'Handle not provided in query',
+      if (!handle) {
+        throw createError({
+          statusCode: 401,
+          message: 'Handle not provided in query',
+        })
+      }
+
+      const redirectUrl = await atclient.authorize(handle, {
+        scope,
+        prompt: create ? 'create' : undefined,
+      })
+      return sendRedirect(event, redirectUrl.toString())
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Authentication failed.'
+
+      return handleApiError(error, {
+        statusCode: 401,
+        message: `${message}. Please login and try again.`,
       })
     }
-
-    const redirectUrl = await atclient.authorize(handle, {
-      scope,
-      prompt: create ? 'create' : undefined,
-    })
-    return sendRedirect(event, redirectUrl.toString())
   }
 
   const { session: authSession } = await atclient.callback(
@@ -58,10 +104,27 @@ export default defineEventHandler(async event => {
   )
   if (response.ok) {
     const miniDoc: PublicUserSession = await response.json()
+
+    let avatar: string | undefined = await getAvatar(authSession.did, miniDoc.pds)
+
     await session.update({
-      public: miniDoc,
+      public: {
+        ...miniDoc,
+        avatar,
+      },
+    })
+  } else {
+    //If slingshot fails we still want to set some key info we need.
+    const pdsBase = (await authSession.getTokenInfo()).aud
+    let avatar: string | undefined = await getAvatar(authSession.did, pdsBase)
+    await session.update({
+      public: {
+        did: authSession.did,
+        handle: 'Not available',
+        pds: pdsBase,
+        avatar,
+      },
     })
   }
-
   return sendRedirect(event, '/')
 })

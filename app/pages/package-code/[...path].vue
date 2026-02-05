@@ -283,7 +283,21 @@ useSeoMeta({
     }
     return `Code - ${packageName.value}@${version.value} - npmx`
   },
+  ogTitle: () => {
+    if (filePath.value) {
+      return `${filePath.value} - ${packageName.value}@${version.value} - npmx`
+    }
+    return `Code - ${packageName.value}@${version.value} - npmx`
+  },
+  twitterTitle: () => {
+    if (filePath.value) {
+      return `${filePath.value} - ${packageName.value}@${version.value} - npmx`
+    }
+    return `Code - ${packageName.value}@${version.value} - npmx`
+  },
   description: () => `Browse source code for ${packageName.value}@${version.value}`,
+  ogDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
+  twitterDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
 })
 
 defineOgImageComponent('Default', {
@@ -407,7 +421,7 @@ defineOgImageComponent('Default', {
                   v-for="mode in markdownViewModes"
                   :key="mode.key"
                   role="tab"
-                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 inline-flex items-center gap-1.5"
+                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-solid focus-visible:outline-accent/70 inline-flex items-center gap-1.5"
                   :class="
                     markdownViewMode === mode.key
                       ? 'bg-bg shadow text-fg border-border'

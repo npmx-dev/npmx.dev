@@ -14,7 +14,7 @@ const isHome = computed(() => route.name === 'index')
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
         <div class="hidden sm:flex items-center gap-6">
-          <NuxtLink to="/about" class="link-subtle font-mono text-xs min-h-11 flex items-center">
+          <NuxtLink to="/about" class="link-subtle font-mono text-xs flex items-center">
             {{ $t('footer.about') }}
           </NuxtLink>
           <NuxtLink
@@ -27,7 +27,7 @@ const isHome = computed(() => route.name === 'index')
             href="https://docs.npmx.dev"
             target="_blank"
             rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1"
+            class="link-subtle font-mono text-xs flex items-center gap-1"
           >
             {{ $t('footer.docs') }}
             <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
@@ -36,7 +36,7 @@ const isHome = computed(() => route.name === 'index')
             href="https://repo.npmx.dev"
             target="_blank"
             rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1"
+            class="link-subtle font-mono text-xs flex items-center gap-1"
           >
             {{ $t('footer.source') }}
             <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
@@ -45,7 +45,7 @@ const isHome = computed(() => route.name === 'index')
             href="https://social.npmx.dev"
             target="_blank"
             rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1"
+            class="link-subtle font-mono text-xs flex items-center gap-1"
           >
             {{ $t('footer.social') }}
             <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
@@ -54,7 +54,7 @@ const isHome = computed(() => route.name === 'index')
             href="https://chat.npmx.dev"
             target="_blank"
             rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1"
+            class="link-subtle font-mono text-xs flex items-center gap-1"
           >
             {{ $t('footer.chat') }}
             <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />

@@ -34,7 +34,7 @@ function isCategoryNoneSelected(category: string): boolean {
         </span>
         <button
           type="button"
-          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline"
+          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
           :class="
             isCategoryAllSelected(category)
               ? 'text-fg-muted'
@@ -51,7 +51,7 @@ function isCategoryNoneSelected(category: string): boolean {
         <span class="text-[10px] text-fg-muted/40">/</span>
         <button
           type="button"
-          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline"
+          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
           :class="
             isCategoryNoneSelected(category)
               ? 'text-fg-muted'
@@ -77,7 +77,7 @@ function isCategoryNoneSelected(category: string): boolean {
           :disabled="facet.comingSoon"
           :aria-pressed="isFacetSelected(facet.id)"
           :aria-label="facet.label"
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded border transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded border transition-colors duration-200 focus-visible:outline-accent/70"
           :class="
             facet.comingSoon
               ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'

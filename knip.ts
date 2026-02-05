@@ -8,6 +8,7 @@ const config: KnipConfig = {
         'app/error.vue!',
         'app/pages/**/*.vue!',
         'app/components/**/*.vue!',
+        'app/components/**/*.d.vue.ts!',
         'app/composables/**/*.ts!',
         'app/middleware/**/*.ts!',
         'app/plugins/**/*.ts!',
@@ -25,8 +26,7 @@ const config: KnipConfig = {
         'uno-preset-rtl.ts!',
         'scripts/**/*.ts',
       ],
-      project: ['**/*.{ts,vue,cjs,mjs}'],
-      ignore: ['test/fixtures/**'],
+      project: ['**/*.{ts,vue,cjs,mjs}', '!test/fixtures/**'],
       ignoreDependencies: [
         '@iconify-json/*',
         '@vercel/kv',

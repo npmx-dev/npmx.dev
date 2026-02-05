@@ -6,17 +6,17 @@
  * @see https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md
  */
 
-import type { PackumentVersion } from '@npm/types'
+import type { Packument as PackumentWithoutLicenseObjects, PackumentVersion } from '@npm/types'
 import type { ReadmeResponse } from './readme'
 
 // Re-export official npm types for packument/manifest
-export type {
-  Packument,
-  PackumentVersion,
-  Manifest,
-  ManifestVersion,
-  PackageJSON,
-} from '@npm/types'
+export type { PackumentVersion, Manifest, ManifestVersion, PackageJSON } from '@npm/types'
+
+// TODO: Remove this type override when @npm/types fixes the license field typing
+export type Packument = Omit<PackumentWithoutLicenseObjects, 'license'> & {
+  // Fix for license field being incorrectly typed in @npm/types
+  license?: string | { type: string; url?: string }
+}
 
 /** Install scripts info (preinstall, install, postinstall) */
 export interface InstallScriptsInfo {
@@ -210,6 +210,30 @@ export interface NpmVersionDist {
   }>
   /** Attestations/provenance (present if published with provenance) */
   attestations?: NpmVersionAttestations
+}
+
+/**
+ * Parsed provenance details for display (from attestation bundle SLSA predicate).
+ * Used by the provenance API and PackageProvenanceSection.
+ * @public
+ */
+export interface ProvenanceDetails {
+  /** Provider ID (e.g. "github", "gitlab") */
+  provider: string
+  /** Human-readable provider label (e.g. "GitHub Actions") */
+  providerLabel: string
+  /** Link to build run summary (e.g. GitHub Actions run URL) */
+  buildSummaryUrl?: string
+  /** Link to source commit in repository */
+  sourceCommitUrl?: string
+  /** Source commit SHA (short or full) */
+  sourceCommitSha?: string
+  /** Link to workflow/build config file in repo */
+  buildFileUrl?: string
+  /** Workflow path (e.g. ".github/workflows/release.yml") */
+  buildFilePath?: string
+  /** Link to transparency log entry (e.g. Sigstore search) */
+  publicLedgerUrl?: string
 }
 
 /**

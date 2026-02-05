@@ -185,6 +185,10 @@
       "fund": "fund",
       "compare": "compare"
     },
+    "likes": {
+      "like": "Like this package",
+      "unlike": "Unlike this package"
+    },
     "docs": {
       "not_available": "Docs not available",
       "not_available_detail": "We could not generate docs for this version."
@@ -208,7 +212,25 @@
       "title": "Readme",
       "no_readme": "No README available.",
       "view_on_github": "View on GitHub",
-      "toc_title": "Outline"
+      "toc_title": "Outline",
+      "callout": {
+        "note": "Note",
+        "tip": "Tip",
+        "important": "Important",
+        "warning": "Warning",
+        "caution": "Caution"
+      }
+    },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "Built and signed on {provider}",
+      "view_build_summary": "View build summary",
+      "source_commit": "Source Commit",
+      "build_file": "Build File",
+      "public_ledger": "Public Ledger",
+      "transparency_log_entry": "Transparency log entry",
+      "view_more_details": "View more details",
+      "error_loading": "Failed to load provenance details"
     },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
@@ -610,7 +632,8 @@
     "provenance": {
       "verified": "verified",
       "verified_title": "Verified provenance",
-      "verified_via": "Verified: published via {provider}"
+      "verified_via": "Verified: published via {provider}",
+      "view_more_details": "View more details"
     },
     "jsr": {
       "title": "also available on JSR",
