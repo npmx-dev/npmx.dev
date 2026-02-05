@@ -981,7 +981,7 @@
       "title": "OTHER STORAGE TECHNOLOGIES",
       "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
       "bold": "Local Storage",
-      "p2": "This information is purely functional, stored only on your device, and {bold}. We use it exclusively to improve your experience on our website.",
+      "p2": "This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
       "bold2": "contains no personal data nor is it used to track you",
       "settings": "settings"
     },
@@ -1002,7 +1002,7 @@
     },
     "section_6": {
       "title": "DATA CONTROLLER",
-      "p1": "While our only cookie does not collect personal information, we guarantee compliance with the principles of transparency and security in data management. For any questions or requests regarding the use of cookies, you can contact us by opening an issue on our {link}.",
+      "p1": "While we only use cookies for essential functionality and session management, we guarantee compliance with the principles of transparency and security in data management. For any questions or requests regarding the use of cookies, you can contact us by opening an issue on our {link}.",
       "link": "GitHub repository"
     },
     "section_7": {
