@@ -53,7 +53,7 @@ export function detectPublishSecurityDowngrade(
     }))
     .sort(sortByRecency)
 
-  const latest = sorted[0]
+  const latest = sorted.at(0)
   if (!latest || latest.hasProvenance) return null
 
   const latestTrusted = sorted.find(version => version.hasProvenance)
@@ -89,7 +89,7 @@ export function detectPublishSecurityDowngradeForVersion(
   const currentIndex = sorted.findIndex(version => version.version === viewedVersion)
   if (currentIndex === -1) return null
 
-  const current = sorted[currentIndex]
+  const current = sorted.at(currentIndex)
   if (!current || current.hasProvenance) return null
 
   const trustedOlder = sorted.slice(currentIndex + 1).find(version => version.hasProvenance)

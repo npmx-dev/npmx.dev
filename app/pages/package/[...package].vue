@@ -244,7 +244,7 @@ const publishSecurityDowngrade = computed(() => {
 
 const installVersionOverride = computed(() => {
   if (!publishSecurityDowngrade.value) return null
-  return publishSecurityDowngrade.value?.trustedVersion ?? null
+  return publishSecurityDowngrade.value.trustedVersion
 })
 
 const sizeTooltip = computed(() => {
