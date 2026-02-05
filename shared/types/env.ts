@@ -5,5 +5,5 @@ export interface BuildInfo {
   time: number
   branch: string
   env: 'preview' | 'canary' | 'dev' | 'release'
-  cookiePolicyDate: string
+  privacyPolicyDate: string
 }

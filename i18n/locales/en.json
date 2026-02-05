@@ -960,57 +960,85 @@
       }
     }
   },
-  "cookie_policy": {
-    "title": "cookie policy",
+  "privacy_policy": {
+    "title": "privacy policy",
     "last_updated": "Last updated: {date}",
-    "welcome": "Welcome to {app}. In this policy, we explain what cookies are, how we use them, and how you can manage them.",
-    "section_1": {
-      "title": "What are cookies?",
-      "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+    "welcome": "Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
+    "cookies": {
+      "title": "Cookies",
+      "what_are": {
+        "title": "What are cookies?",
+        "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+      },
+      "types": {
+        "title": "What cookies do we use?",
+        "p1": "We only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
+        "bold": "essential technical cookies",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "This cookie is used by our hosting provider (Vercel) for skew protection. It ensures you fetch assets from the correct deployment version if a new update is released while you are browsing. It does not track you.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
+      },
+      "local_storage": {
+        "title": "Local storage",
+        "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
+        "bold": "Local Storage",
+        "p2": "This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
+        "bold2": "contains no personal data nor is it used to track you",
+        "settings": "settings"
+      },
+      "management": {
+        "title": "Managing cookies",
+        "p1": "You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
+        "bold": "rejecting essential cookies may prevent full access to the application",
+        "p2": "Below are links with instructions for cookie management in the most commonly used browsers:",
+        "chrome": "Google Chrome (opens in a new window)",
+        "firefox": "Mozilla Firefox (opens in a new window)",
+        "edge": "Microsoft Edge (opens in a new window)"
+      }
     },
-    "section_2": {
-      "title": "What types of cookies do we use?",
-      "p1": "On our website, we only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
-      "bold": "essential technical cookies",
-      "li1": "{li11}{separator} {li12}",
-      "li2": "{li21}{separator} {li22}",
-      "separator": ":",
-      "cookie_vdpl": "__vdpl",
-      "cookie_vdpl_desc": "This cookie is used by our hosting provider (Vercel) for skew protection. It ensures you fetch assets from the correct deployment version if a new update is released while you are browsing. It does not track you.",
-      "cookie_h3": "h3",
-      "cookie_h3_desc": "This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
+    "analytics": {
+      "title": "Analytics",
+      "p1": "We use {bold} to understand how visitors use our website. This helps us improve the user experience and identify issues.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics is designed with privacy in mind:",
+      "li1": "It does not use cookies",
+      "li2": "It does not collect personal identifiers",
+      "li3": "It does not track users across websites",
+      "li4": "All data is aggregated and anonymised",
+      "p3": "The only information collected includes: page URLs, referrer, country/region, device type, browser, and operating system. This data cannot be used to identify individual users."
     },
-    "section_3": {
-      "title": "Other storage technologies",
-      "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
-      "bold": "Local Storage",
-      "p2": "This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
-      "bold2": "contains no personal data nor is it used to track you",
+    "authenticated": {
+      "title": "Authenticated users",
+      "p1": "When you connect your {bold} account to npmx, we store your OAuth access token in a secure, HTTP-only session cookie. This token is used solely to authenticate requests on your behalf.",
+      "bold": "Atmosphere",
+      "p2": "We do not store your credentials, and we do not access any data beyond what is necessary to provide the features you use. You can disconnect your account at any time from the {settings} page.",
       "settings": "settings"
     },
-    "section_4": {
-      "title": "Cookie acceptance and application access",
-      "p1": "The use of cookies on our website is {bold}. Therefore, {bold2}. By continuing to browse or log in, you expressly accept our cookie policy.",
-      "bold": "essential for its proper functioning",
-      "bold2": "if you do not accept the use of cookies, you will not be able to access the application"
+    "data_retention": {
+      "title": "Data retention",
+      "p1": "Session cookies are automatically deleted when you close your browser or after a period of inactivity. Local storage preferences remain on your device until you clear your browser data. Analytics data is retained in aggregate form and cannot be linked to individual users."
     },
-    "section_5": {
-      "title": "Cookie management",
-      "p1": "You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
-      "bold": "rejecting cookies will prevent access to and use of the application",
-      "p2": "Below are links with instructions for cookie management in the most commonly used browsers:",
-      "chrome": "Google Chrome (opens in a new window)",
-      "firefox": "Mozilla Firefox (opens in a new window)",
-      "edge": "Microsoft Edge (opens in a new window)"
+    "your_rights": {
+      "title": "Your rights",
+      "p1": "You have the right to:",
+      "li1": "Access information about what data we collect",
+      "li2": "Clear your local storage and cookies at any time",
+      "li3": "Disconnect your authenticated session",
+      "li4": "Request information about our data practices",
+      "p2": "Since we do not collect personal data, there is typically no personal information to delete or export."
     },
-    "section_6": {
-      "title": "Data controller",
-      "p1": "While we only use cookies for essential functionality and session management, we guarantee compliance with the principles of transparency and security in data management. For any questions or requests regarding the use of cookies, you can contact us by opening an issue on our {link}.",
+    "contact": {
+      "title": "Contact us",
+      "p1": "For any questions or concerns about this privacy policy, you can contact us by opening an issue on our {link}.",
       "link": "GitHub repository"
     },
-    "section_7": {
-      "title": "Changes to the cookie policy",
-      "p1": "We reserve the right to modify this policy at any time. Any changes will be published on this page."
+    "changes": {
+      "title": "Changes to this policy",
+      "p1": "We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
     }
   }
 }

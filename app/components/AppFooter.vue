@@ -19,10 +19,10 @@ const isHome = computed(() => route.name === 'index')
             {{ $t('footer.about') }}
           </NuxtLink>
           <NuxtLink
-            to="/cookie-policy"
+            to="/privacy"
             class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1 lowercase"
           >
-            {{ $t('cookie_policy.title') }}
+            {{ $t('privacy_policy.title') }}
           </NuxtLink>
           <a
             href="https://docs.npmx.dev"

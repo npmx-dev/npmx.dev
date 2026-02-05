@@ -10,9 +10,9 @@ export default defineNuxtModule({
     name: 'npmx:build-env',
   },
   async setup(_options, nuxt) {
-    const [{ env, commit, shortCommit, branch }, cookiePolicyDate] = await Promise.all([
+    const [{ env, commit, shortCommit, branch }, privacyPolicyDate] = await Promise.all([
       getEnv(nuxt.options.dev),
-      getFileLastUpdated('app/pages/cookie-policy.vue'),
+      getFileLastUpdated('app/pages/privacy.vue'),
     ])
 
     nuxt.options.appConfig = nuxt.options.appConfig || {}
@@ -24,7 +24,7 @@ export default defineNuxtModule({
       shortCommit,
       branch,
       env,
-      cookiePolicyDate,
+      privacyPolicyDate,
     } satisfies BuildInfo
 
     nuxt.options.nitro.publicAssets = nuxt.options.nitro.publicAssets || []
