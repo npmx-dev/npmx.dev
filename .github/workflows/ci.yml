@@ -21,7 +21,8 @@ permissions:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    name: 🔠 Lint project
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -30,19 +31,42 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: true
+
+      - name: 📦 Install dependencies (root only, no scripts)
+        run: pnpm install --filter . --ignore-scripts
+
+      - name: 🔠 Lint project
+        run: pnpm lint
+
+  types:
+    name: 💪 Type check
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
         with:
           cache: true
 
       - name: 📦 Install dependencies
         run: pnpm install
 
-      - name: 🔠 Lint project
-        run: pnpm lint
+      - name: 💪 Type check
+        run: pnpm test:types
 
-  test:
-    runs-on: ubuntu-latest
+  unit:
+    name: 🧪 Unit tests
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -51,8 +75,36 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: true
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 🧪 Unit tests
+        run: pnpm test:unit run --coverage --reporter=junit --outputFile=test-report.junit.xml
+
+      - name: ⬆︎ Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  test:
+    name: 🧪 Component tests
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
         with:
           cache: true
 
@@ -60,19 +112,25 @@ jobs:
         run: pnpm install
 
       - name: 🌐 Install browser
-        run: pnpm playwright install
+        run: pnpm playwright install chromium-headless-shell
 
-      - name: 💪 Type check
-        run: pnpm test:types
+      - name: 🧪 Component tests
+        run: pnpm test:nuxt run --coverage --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: 🧪 Unit test
-        run: pnpm test:unit
+      - name: ⬆︎ Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: 🏃 Component tests
-        run: pnpm test:nuxt
+      - name: ⬆︎ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   browser:
-    runs-on: ubuntu-latest
+    name: 🖥️ Browser tests
+    runs-on: ubuntu-24.04-arm
     container:
       image: mcr.microsoft.com/playwright:v1.58.0-noble
 
@@ -83,29 +141,8 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
-        with:
-          cache: true
-
-      - name: 📦 Install dependencies
-        run: pnpm install
-
-      - name: 🖥️ Test project (browser)
-        run: pnpm test:browser
-
-  a11y:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
-        with:
-          node-version: lts/*
-
-      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
         with:
           cache: true
 
@@ -113,15 +150,17 @@ jobs:
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: pnpm build
+        run: pnpm build:playwright
 
-      - name: ♿ Accessibility audit (Lighthouse - dark & light mode)
-        run: ./scripts/lighthouse-a11y.sh
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      - name: 🖥️ Test project (browser)
+        run: pnpm test:browser:prebuilt
 
-  knip:
-    runs-on: ubuntu-latest
+  a11y:
+    name: ♿ Accessibility audit
+    runs-on: ubuntu-latest # See https://github.com/GoogleChrome/lighthouse/discussions/16834
+    strategy:
+      matrix:
+        mode: [dark, light]
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -130,13 +169,44 @@ jobs:
         with:
           node-version: lts/*
 
-      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
-        name: Install pnpm
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
         with:
           cache: true
 
       - name: 📦 Install dependencies
         run: pnpm install
 
-      - name: 🔍 Check for unused code
+      - name: 🏗️ Build project
+        run: NODE_ENV=test pnpm build
+
+      - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
+        run: ./scripts/lighthouse-a11y.sh
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          LIGHTHOUSE_COLOR_MODE: ${{ matrix.mode }}
+
+  knip:
+    name: 🧹 Unused code check
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: true
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 🧹 Check for unused code
         run: pnpm knip
+
+      - name: 🧹 Check for unused production code
+        run: pnpm knip --production

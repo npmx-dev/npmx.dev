@@ -25,19 +25,25 @@ describe('spdx utilities', () => {
   })
 
   describe('getSpdxLicenseUrl', () => {
-    it('returns URL for valid SPDX licenses', () => {
+    it('returns URL for valid license identifiers', () => {
       expect(getSpdxLicenseUrl('MIT')).toBe('https://spdx.org/licenses/MIT.html')
+      expect(getSpdxLicenseUrl('ISC')).toBe('https://spdx.org/licenses/ISC.html')
       expect(getSpdxLicenseUrl('Apache-2.0')).toBe('https://spdx.org/licenses/Apache-2.0.html')
+      expect(getSpdxLicenseUrl('GPL-3.0-only')).toBe('https://spdx.org/licenses/GPL-3.0-only.html')
+      expect(getSpdxLicenseUrl('BSD-2-Clause')).toBe('https://spdx.org/licenses/BSD-2-Clause.html')
+      expect(getSpdxLicenseUrl('GPL-3.0+')).toBe('https://spdx.org/licenses/GPL-3.0+.html')
     })
 
     it('returns null for invalid licenses', () => {
       expect(getSpdxLicenseUrl('CustomLicense')).toBeNull()
       expect(getSpdxLicenseUrl('INVALID')).toBeNull()
+      expect(getSpdxLicenseUrl('MIT OR Apache-2.0')).toBeNull()
     })
 
     it('returns null for undefined or empty', () => {
       expect(getSpdxLicenseUrl(undefined)).toBeNull()
       expect(getSpdxLicenseUrl('')).toBeNull()
+      expect(getSpdxLicenseUrl('   ')).toBeNull()
     })
 
     it('trims whitespace', () => {

@@ -1,40 +1,39 @@
 import type { NodeSavedSession, NodeSavedSessionStore } from '@atproto/oauth-client-node'
-import type { H3Event } from 'h3'
-
-/**
- * Storage key prefix for oauth session storage.
- */
-export const OAUTH_SESSION_CACHE_STORAGE_BASE = 'oauth-atproto-session'
+import type { UserServerSession } from '#shared/types/userSession'
+import type { SessionManager } from 'h3'
 
 export class OAuthSessionStore implements NodeSavedSessionStore {
-  // TODO: not sure if we will support multi accounts, but if we do in the future will need to change this around
-  private readonly cookieKey = 'oauth:atproto:session'
-  private readonly storage = useStorage(OAUTH_SESSION_CACHE_STORAGE_BASE)
+  private readonly session: SessionManager<UserServerSession>
 
-  constructor(private event: H3Event) {}
-
-  async get(): Promise<NodeSavedSession | undefined> {
-    const sessionKey = getCookie(this.event, this.cookieKey)
-    if (!sessionKey) return
-    const result = await this.storage.getItem<NodeSavedSession>(sessionKey)
-    if (!result) return
-    return result
+  constructor(session: SessionManager<UserServerSession>) {
+    this.session = session
   }
 
-  async set(key: string, val: NodeSavedSession) {
-    setCookie(this.event, this.cookieKey, key, {
-      httpOnly: true,
-      secure: !import.meta.dev,
-      sameSite: 'lax',
-    })
-    await this.storage.setItem<NodeSavedSession>(key, val)
+  async get(): Promise<NodeSavedSession | undefined> {
+    const sessionData = this.session.data
+    if (!sessionData) return undefined
+    return sessionData.oauthSession
+  }
+
+  async set(_key: string, val: NodeSavedSession) {
+    // We are ignoring the key since the mapping is already done in the session
+    try {
+      await this.session.update({
+        oauthSession: val,
+      })
+    } catch (error) {
+      // Not sure if this has been happening. But helps with debugging
+      console.error(
+        '[oauth session store] Failed to set session:',
+        error instanceof Error ? error.message : 'Unknown error',
+      )
+      throw error
+    }
   }
 
   async del() {
-    const sessionKey = getCookie(this.event, this.cookieKey)
-    if (sessionKey) {
-      await this.storage.del(sessionKey)
-    }
-    deleteCookie(this.event, this.cookieKey)
+    await this.session.update({
+      oauthSession: undefined,
+    })
   }
 }

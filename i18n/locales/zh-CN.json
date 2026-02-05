@@ -28,6 +28,10 @@
     "updating": "（更新中…）",
     "no_results": "未找到匹配“{query}”的包",
     "title": "搜索",
+    "title_search": "搜索：{search}",
+    "title_packages": "搜索包",
+    "meta_description": "“{search}” 的搜索结果",
+    "meta_description_packages": "搜索 npm 包",
     "not_taken": "{name} 尚未被占用",
     "claim_prompt": "在 npm 上声明",
     "claim_button": "声明“{name}”",
@@ -181,6 +185,10 @@
       "fund": "资助",
       "compare": "比较"
     },
+    "likes": {
+      "like": "喜欢这个包",
+      "unlike": "取消喜欢这个包"
+    },
     "docs": {
       "not_available": "文档不可用",
       "not_available_detail": "我们无法为此版本生成文档。"
@@ -193,7 +201,8 @@
     },
     "create": {
       "title": "创建新项目",
-      "copy_command": "拷贝创建命令"
+      "copy_command": "拷贝创建命令",
+      "view": "{packageName} 由同一位维护者维护，点击查看详情"
     },
     "run": {
       "title": "运行",
@@ -202,7 +211,26 @@
     "readme": {
       "title": "Readme",
       "no_readme": "没有可用的 README。",
-      "view_on_github": "在 GitHub 上查看"
+      "view_on_github": "在 GitHub 上查看",
+      "toc_title": "大纲",
+      "callout": {
+        "note": "注意",
+        "tip": "提示",
+        "important": "重要",
+        "warning": "警告",
+        "caution": "当心"
+      }
+    },
+    "provenance_section": {
+      "title": "来源",
+      "built_and_signed_on": "在 {provider} 上构建并签名",
+      "view_build_summary": "查看构建摘要",
+      "source_commit": "源提交",
+      "build_file": "构建文件",
+      "public_ledger": "公共账本",
+      "transparency_log_entry": "透明日志条目",
+      "view_more_details": "查看更多详情",
+      "error_loading": "加载来源详情失败"
     },
     "keywords_title": "关键词",
     "compatibility": "兼容性",
@@ -266,6 +294,7 @@
       "date_range": "{start} 到 {end}",
       "date_range_multiline": "{start}\n到 {end}",
       "analyze": "分析下载量",
+      "community_distribution": "查看社区采用分布",
       "modal_title": "下载量",
       "granularity": "周期",
       "granularity_daily": "每日",
@@ -386,7 +415,7 @@
   "connector": {
     "status": {
       "connecting": "连接中…",
-      "connected_as": "已连接为 {'@'}{user}",
+      "connected_as": "已连接为 ~{user}",
       "connected": "已连接",
       "connect_cli": "连接本地 CLI",
       "aria_connecting": "连接到本地连接器中",
@@ -400,7 +429,7 @@
       "contributor_notice": "连接器尚未发布到 npm。请参阅 {link} 了解如何本地运行。",
       "contributor_link": "贡献指南",
       "connected": "已连接",
-      "connected_as_user": "已连接为 {'@'}{user}",
+      "connected_as_user": "已连接为 ~{user}",
       "connected_hint": "现在你可以通过 Web UI 管理包和组织。",
       "disconnect": "断开连接",
       "run_hint": "在你的机器上运行连接器以启用管理功能。",
@@ -603,7 +632,8 @@
     "provenance": {
       "verified": "已验证",
       "verified_title": "已验证的来源",
-      "verified_via": "已验证：通过 {provider} 发布"
+      "verified_via": "已验证：通过 {provider} 发布",
+      "view_more_details": "查看更多详情"
     },
     "jsr": {
       "title": "也适用于 JSR",
@@ -752,7 +782,7 @@
       }
     },
     "contributors": {
-      "title": "贡献者",
+      "title": "{count} 位贡献者",
       "description": "npmx 是完全开源的，由令人惊叹的社区贡献者们共同构建。",
       "loading": "正在加载贡献者…",
       "error": "无法加载贡献者",
@@ -878,11 +908,11 @@
           "description": "包括所有依赖项的总安装大小"
         },
         "dependencies": {
-          "label": "# 直接依赖项",
+          "label": "直接依赖项",
           "description": "直接依赖项数量"
         },
         "totalDependencies": {
-          "label": "# 总依赖项",
+          "label": "总依赖项",
           "description": "包括所有依赖项的总依赖项数量"
         },
         "downloads": {

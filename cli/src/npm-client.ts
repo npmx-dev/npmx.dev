@@ -7,13 +7,14 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import * as v from 'valibot'
 import { PackageNameSchema, UsernameSchema, OrgNameSchema, ScopeTeamSchema } from './schemas.ts'
-import { logCommand, logSuccess, logError } from './logger.ts'
+import { logCommand, logSuccess, logError, logDebug } from './logger.ts'
 
 const execFileAsync = promisify(execFile)
 
 /**
  * Validates an npm package name using the official npm validation package
  * @throws Error if the name is invalid
+ * @internal
  */
 export function validatePackageName(name: string): void {
   const result = v.safeParse(PackageNameSchema, name)
@@ -26,6 +27,7 @@ export function validatePackageName(name: string): void {
 /**
  * Validates an npm username
  * @throws Error if the username is invalid
+ * @internal
  */
 export function validateUsername(name: string): void {
   const result = v.safeParse(UsernameSchema, name)
@@ -37,6 +39,7 @@ export function validateUsername(name: string): void {
 /**
  * Validates an npm org name (without the @ prefix)
  * @throws Error if the org name is invalid
+ * @internal
  */
 export function validateOrgName(name: string): void {
   const result = v.safeParse(OrgNameSchema, name)
@@ -48,6 +51,7 @@ export function validateOrgName(name: string): void {
 /**
  * Validates a scope:team format (e.g., @myorg:developers)
  * @throws Error if the scope:team is invalid
+ * @internal
  */
 export function validateScopeTeam(scopeTeam: string): void {
   const result = v.safeParse(ScopeTeamSchema, scopeTeam)
@@ -71,10 +75,15 @@ function detectOtpRequired(stderr: string): boolean {
     'EOTP',
     'one-time password',
     'This operation requires a one-time password',
+    'OTP required for authentication',
     '--otp=<code>',
   ]
   const lowerStderr = stderr.toLowerCase()
-  return otpPatterns.some(pattern => lowerStderr.includes(pattern.toLowerCase()))
+  logDebug('Checking for OTP requirement in stderr:', stderr)
+  logDebug('OTP patterns:', otpPatterns)
+  const result = otpPatterns.some(pattern => lowerStderr.includes(pattern.toLowerCase()))
+  logDebug('OTP required:', result)
+  return result
 }
 
 function detectAuthFailure(stderr: string): boolean {
@@ -92,7 +101,11 @@ function detectAuthFailure(stderr: string): boolean {
     'npm adduser',
   ]
   const lowerStderr = stderr.toLowerCase()
-  return authPatterns.some(pattern => lowerStderr.includes(pattern.toLowerCase()))
+  logDebug('Checking for auth failure in stderr:', stderr)
+  logDebug('Auth patterns:', authPatterns)
+  const result = authPatterns.some(pattern => lowerStderr.includes(pattern.toLowerCase()))
+  logDebug('Auth failure:', result)
+  return result
 }
 
 function filterNpmWarnings(stderr: string): string {
@@ -119,12 +132,17 @@ async function execNpm(
   }
 
   try {
+    logDebug('Executing npm command:', { command: 'npm', args: npmArgs })
     // Use execFile instead of exec to avoid shell injection vulnerabilities
-    // execFile does not spawn a shell, so metacharacters are passed literally
+    // On Windows, shell: true is required to execute .cmd files (like npm.cmd)
+    // On Unix, we keep it false for better security and performance
     const { stdout, stderr } = await execFileAsync('npm', npmArgs, {
       timeout: 60000,
       env: { ...process.env, FORCE_COLOR: '0' },
+      shell: process.platform === 'win32',
     })
+
+    logDebug('Command succeeded:', { stdout, stderr })
 
     if (!options.silent) {
       logSuccess('Done')
@@ -138,6 +156,7 @@ async function execNpm(
   } catch (error) {
     const err = error as { stdout?: string; stderr?: string; code?: number }
     const stderr = err.stderr?.trim() ?? String(error)
+    logDebug('Command failed:', { error, stdout: err.stdout, stderr: err.stderr, code: err.code })
     const requiresOtp = detectOtpRequired(stderr)
     const authFailure = detectAuthFailure(stderr)
 
@@ -382,6 +401,7 @@ export async function packageInit(
         timeout: 60000,
         cwd: tempDir,
         env: { ...process.env, FORCE_COLOR: '0' },
+        shell: process.platform === 'win32',
       })
 
       logSuccess(`Published ${name}@0.0.0`)

@@ -12,7 +12,7 @@
   "non_affiliation_disclaimer": "nicht verbunden mit npm, Inc.",
   "trademark_disclaimer": "npm ist eine eingetragene Marke von npm, Inc. Diese Seite ist nicht mit npm, Inc. verbunden.",
   "footer": {
-    "about": "über uns",
+    "about": "Über uns",
     "docs": "Doku",
     "source": "Quellcode",
     "social": "Social",
@@ -28,6 +28,10 @@
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
     "title": "Suche",
+    "title_search": "Suche: {search}",
+    "title_packages": "Suche Pakete",
+    "meta_description": "Suchergebnisse für '{search}'",
+    "meta_description_packages": "Suche nach npm-Paketen",
     "not_taken": "{name} ist noch frei",
     "claim_prompt": "Diesen Paketnamen auf npm beanspruchen",
     "claim_button": "\"{name}\" beanspruchen",
@@ -36,7 +40,7 @@
     "exact_match": "exakt",
     "suggestion": {
       "user": "Benutzer",
-      "org": "Org",
+      "org": "Organisation",
       "view_user_packages": "Pakete dieses Benutzers anzeigen",
       "view_org_packages": "Pakete dieser Organisation anzeigen"
     }
@@ -77,7 +81,8 @@
     "help_translate": "Hilf bei der Übersetzung von npmx",
     "accent_colors": "Akzentfarben",
     "clear_accent": "Akzentfarbe zurücksetzen",
-    "translation_progress": "Übersetzungsfortschritt"
+    "translation_progress": "Übersetzungsfortschritt",
+    "background_themes": "Hintergrundschattierung"
   },
   "i18n": {
     "missing_keys": "{count} fehlende Übersetzung | {count} fehlende Übersetzungen",
@@ -102,7 +107,7 @@
     "show_more": "Mehr anzeigen",
     "warnings": "Warnungen:",
     "go_back_home": "Zur Startseite",
-    "view_on_npm": "auf npm ansehen",
+    "view_on_npm": "Auf npm ansehen",
     "per_week": "/ Woche",
     "vanity_downloads_hint": "Prestige-Zahl: keine Pakete angezeigt | Prestige-Zahl: für das angezeigte Paket | Prestige-Zahl: Summe von {count} angezeigten Paketen",
     "sort": {
@@ -142,6 +147,8 @@
       "deps": "Abhängigkeiten",
       "install_size": "Installationsgröße",
       "vulns": "Sicherheitslücken",
+      "published": "Veröffentlicht",
+      "published_tooltip": "Datum, an dem {package}{'@'}{version} veröffentlicht wurde",
       "skills": "Fähigkeiten",
       "view_dependency_graph": "Abhängigkeitsgraph anzeigen",
       "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen",
@@ -154,8 +161,8 @@
       "title": "Agentenfähigkeiten",
       "skills_available": "{count} Fähigkeit verfügbar | {count} Fähigkeiten verfügbar",
       "view": "Ansehen",
-      "compatible_with": "Kompatibel mit: {tool}",
-      "install": "installieren",
+      "compatible_with": "Kompatibel mit {tool}",
+      "install": "Installieren",
       "installation_method": "Installationsmethode",
       "learn_more": "Mehr erfahren",
       "available_skills": "Verfügbare Fähigkeiten",
@@ -190,7 +197,8 @@
     },
     "create": {
       "title": "Neues Projekt erstellen",
-      "copy_command": "Erstellungsbefehl kopieren"
+      "copy_command": "Erstellungsbefehl kopieren",
+      "view": "{packageName} hat denselben Maintainer. Klicke für mehr Details."
     },
     "run": {
       "title": "Ausführen",
@@ -199,12 +207,32 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Keine README verfügbar.",
-      "view_on_github": "Auf GitHub ansehen"
+      "view_on_github": "Auf GitHub ansehen",
+      "toc_title": "Gliederung",
+      "callout": {
+        "note": "Notiz",
+        "tip": "Tipp",
+        "important": "Wichtig",
+        "warning": "Warnung",
+        "caution": "Vorsicht"
+      }
+    },
+    "provenance_section": {
+      "title": "Herkunft",
+      "built_and_signed_on": "Erstellt und signiert via {provider}",
+      "view_build_summary": "Build-Zusammenfassung anzeigen",
+      "source_commit": "Quell-Commit",
+      "build_file": "Build-Datei",
+      "public_ledger": "Öffentliches Hauptbuch",
+      "transparency_log_entry": "Transparenzprotokolleintrag",
+      "view_more_details": "Weitere Details anzeigen",
+      "error_loading": "Fehler beim Laden der Herkunftsdaten"
     },
     "keywords_title": "Schlüsselwörter",
     "compatibility": "Kompatibilität",
     "card": {
       "publisher": "Herausgeber",
+      "published": "Veröffentlicht",
       "weekly_downloads": "Wöchentliche Downloads",
       "keywords": "Schlüsselwörter",
       "license": "Lizenz"
@@ -262,6 +290,7 @@
       "date_range": "{start} bis {end}",
       "date_range_multiline": "{start}\nbis {end}",
       "analyze": "Downloads analysieren",
+      "community_distribution": "Community-Adoptionsverteilung ansehen",
       "modal_title": "Downloads",
       "granularity": "Granularität",
       "granularity_daily": "Täglich",
@@ -306,13 +335,13 @@
       "deps_affected": "{count} betroffene Abhängigkeit | {count} betroffene Abhängigkeiten",
       "tree_found": "{vulns} Sicherheitslücke in {packages}/{total} Paketen | {vulns} Sicherheitslücken in {packages}/{total} Paketen",
       "scanning_tree": "Abhängigkeitsbaum wird gescannt...",
-      "show_all_packages": "alle {count} betroffenen Pakete anzeigen",
+      "show_all_packages": "{count} betroffenes Paket anzeigen | Alle {count} betroffenen Pakete anzeigen",
       "no_summary": "Keine Zusammenfassung",
       "view_details": "Details zur Sicherheitslücke anzeigen",
       "path": "Pfad",
       "more": "+{count} weitere",
       "packages_failed": "{count} Paket konnte nicht geprüft werden | {count} Pakete konnten nicht geprüft werden",
-      "no_known": "Keine bekannten Sicherheitslücken in {count} Paketen",
+      "no_known": "Keine bekannten Sicherheitslücken in {count} Paket | Keine bekannten Sicherheitslücken in {count} Paketen",
       "scan_failed": "Sicherheits-Scan fehlgeschlagen",
       "depth": {
         "root": "Dieses Paket",
@@ -320,10 +349,10 @@
         "transitive": "Transitive Abhängigkeit (indirekt)"
       },
       "severity": {
-        "critical": "kritisch",
-        "high": "hoch",
-        "moderate": "mittel",
-        "low": "niedrig"
+        "critical": "Kritisch",
+        "high": "Hoch",
+        "moderate": "Mittel",
+        "low": "Niedrig"
       }
     },
     "deprecated": {
@@ -345,7 +374,7 @@
       "select_team": "Team auswählen",
       "permission_label": "Berechtigungsstufe",
       "permission": {
-        "read_only": "nur Lesen",
+        "read_only": "Nur Lesen",
         "read_write": "Lesen/Schreiben"
       },
       "grant_button": "Gewähren",
@@ -364,6 +393,7 @@
       "weekly": "Wöchentlich",
       "size": "Größe",
       "deps": "Abhängigkeiten",
+      "published": "Veröffentlicht",
       "get_started": "Erste Schritte",
       "readme": "Readme",
       "maintainers": "Maintainer",
@@ -373,6 +403,7 @@
     },
     "sort": {
       "downloads": "Meiste Downloads",
+      "published": "Zuletzt veröffentlicht",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
     }
@@ -380,8 +411,8 @@
   "connector": {
     "status": {
       "connecting": "Verbinde...",
-      "connected_as": "verbunden als ~{user}",
-      "connected": "verbunden",
+      "connected_as": "Verbunden als ~{user}",
+      "connected": "Verbunden",
       "connect_cli": "Lokale CLI verbinden",
       "aria_connecting": "Verbindung zum lokalen Connector wird hergestellt",
       "aria_connected": "Mit lokalem Connector verbunden",
@@ -456,7 +487,7 @@
       "cancel_add_user": "Benutzer-Hinzufügung abbrechen",
       "add_member": "+ Mitglied hinzufügen",
       "team_name_label": "Teamname",
-      "team_name_placeholder": "team-name...",
+      "team_name_placeholder": "Teamname...",
       "create_button": "Erstellen",
       "no_match": "Keine Teams entsprechen \"{query}\"",
       "cancel_create": "Team-Erstellung abbrechen",
@@ -504,12 +535,12 @@
       "no_match": "Keine Pakete entsprechen \"{query}\"",
       "not_found": "Organisation nicht gefunden",
       "not_found_message": "Die Organisation \"{'@'}{name}\" existiert nicht auf npm",
-      "filter_placeholder": "{count} Pakete filtern..."
+      "filter_placeholder": "{count} Paket filtern... | {count} Pakete filtern..."
     }
   },
   "user": {
     "combobox": {
-      "add_to_org_hint": "(wird auch zur Org hinzugefügt)",
+      "add_to_org_hint": "(wird auch zur Organisation hinzugefügt)",
       "press_enter_to_add": "Enter drücken, um {'@'}{username} hinzuzufügen",
       "default_placeholder": "Benutzername...",
       "suggestions_label": "Benutzervorschläge"
@@ -520,7 +551,7 @@
       "no_packages_hint": "Dieser Benutzer existiert möglicherweise nicht oder hat keine öffentlichen Pakete.",
       "failed_to_load": "Benutzer-Pakete konnten nicht geladen werden",
       "no_match": "Keine Pakete entsprechen \"{query}\"",
-      "filter_placeholder": "{count} Pakete filtern..."
+      "filter_placeholder": "{count} Paket filtern... | {count} Pakete filtern..."
     },
     "orgs_page": {
       "title": "Organisationen",
@@ -567,7 +598,7 @@
     "no_files": "Keine Dateien in diesem Verzeichnis",
     "select_version": "Version auswählen",
     "root": "Wurzel",
-    "lines": "{count} Zeilen",
+    "lines": "{count} Zeile | {count} Zeilen",
     "toggle_tree": "Dateibaum umschalten",
     "close_tree": "Dateibaum schließen",
     "copy_link": "Link kopieren",
@@ -597,7 +628,8 @@
     "provenance": {
       "verified": "verifiziert",
       "verified_title": "Verifizierte Herkunft",
-      "verified_via": "Verifiziert: veröffentlicht via {provider}"
+      "verified_via": "Verifiziert: veröffentlicht via {provider}",
+      "view_more_details": "Weitere Details anzeigen"
     },
     "jsr": {
       "title": "auch auf JSR verfügbar",
@@ -611,7 +643,7 @@
     "search_placeholder_name": "Nach Paketnamen filtern...",
     "search_placeholder_description": "Nach Beschreibung filtern...",
     "search_placeholder_keywords": "Nach Stichwörtern filtern...",
-    "search_placeholder_all": "Such nach allem oder verwende name: desc: kw:",
+    "search_placeholder_all": "Suche nach allem oder verwende name: desc: kw:",
     "scope_name": "Name",
     "scope_name_description": "Nur nach Paketnamen suchen",
     "scope_description": "Beschreibung",
@@ -627,6 +659,13 @@
     "more_keywords": "+{count} mehr",
     "clear_all": "Alles löschen",
     "remove_filter": "Filter {label} entfernen",
+    "chips": {
+      "search": "Suche",
+      "downloads": "Downloads",
+      "keyword": "Stichwort",
+      "security": "Sicherheit",
+      "updated": "Aktualisiert"
+    },
     "download_range": {
       "any": "Beliebig",
       "lt100": "< 100",
@@ -657,6 +696,7 @@
       "downloads_day": "Downloads/Tag",
       "downloads_month": "Downloads/Monat",
       "downloads_year": "Downloads/Jahr",
+      "published": "Zuletzt veröffentlicht",
       "name": "Name",
       "quality": "Qualität",
       "popularity": "Beliebtheit",
@@ -672,6 +712,7 @@
       "version": "Version",
       "description": "Beschreibung",
       "downloads": "Downloads/Woche",
+      "published": "Zuletzt veröffentlicht",
       "maintainers": "Maintainer",
       "keywords": "Stichwörter",
       "quality_score": "Qualitätsfaktor",
@@ -712,10 +753,10 @@
     "title": "Über uns",
     "heading": "Über uns",
     "meta_description": "npmx ist ein schneller, moderner Browser für die npm Registry. Ein besseres UX/DX zum Erkunden von npm-Paketen.",
-    "back_home": "zurück zur Startseite",
+    "back_home": "Zurück zur Startseite",
     "what_we_are": {
       "title": "Was wir sind",
-      "better_ux_dx": "bessere UX/DX",
+      "better_ux_dx": "Bessere UX/DX",
       "admin_ui": "Admin-UI",
       "description": "npmx ist eine {betterUxDx} für die npm-Paket-Registry und Tooling. Wir bieten eine schnelle, moderne Oberfläche zum Erkunden von Paketen mit Features wie Dark Mode, Tastaturnavigation, Code-Browsing und Verbindungen zu alternativen Registries wie {jsr}.",
       "admin_description": "Wir wollen auch eine bessere {adminUi} zum Verwalten deiner Pakete, Teams und Organisationen bieten — alles im Browser, angetrieben von deiner lokalen npm CLI."
@@ -737,7 +778,7 @@
       }
     },
     "contributors": {
-      "title": "Mitwirkende",
+      "title": "{count} Mitwirkender | {count} Mitwirkende",
       "description": "npmx ist komplett Open Source und wird von einer großartigen Community von Mitwirkenden entwickelt. Mach mit und lass uns gemeinsam das npm-Browsing-Erlebnis gestalten, das wir uns schon immer gewünscht haben.",
       "loading": "Mitwirkende werden geladen...",
       "error": "Mitwirkende konnten nicht geladen werden",
@@ -763,11 +804,11 @@
     }
   },
   "account_menu": {
-    "connect": "verbinden",
+    "connect": "Verbinden",
     "account": "Konto",
     "npm_cli": "npm-CLI",
     "atmosphere": "Atmosphere",
-    "npm_cli_desc": "Pakete & Orgs verwalten",
+    "npm_cli_desc": "Pakete & Organisationen verwalten",
     "atmosphere_desc": "Soziale Funktionen & Identität",
     "connect_npm_cli": "Mit npm-CLI verbinden",
     "connect_atmosphere": "Mit Atmosphere verbinden",
@@ -801,7 +842,7 @@
       "empty": "Keine Pakete gefunden",
       "view_all": "Alle anzeigen"
     },
-    "orgs": "Orgs",
+    "orgs": "Organisationen",
     "orgs_dropdown": {
       "title": "Deine Organisationen",
       "loading": "Lädt...",
@@ -846,11 +887,72 @@
       "deselect_all": "Alle Facetten abwählen",
       "select_category": "Alle {category}-Facetten auswählen",
       "deselect_category": "Alle {category}-Facetten abwählen",
+      "binary_only_tooltip": "Dieses Paket stellt Binärdateien bereit und hat keine Exports",
       "categories": {
         "performance": "Performance",
         "health": "Gesundheit",
         "compatibility": "Kompatibilität",
         "security": "Sicherheit & Compliance"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Paketgröße",
+          "description": "Größe des Pakets selbst (entpackt)"
+        },
+        "installSize": {
+          "label": "Installationsgröße",
+          "description": "Gesamtgröße inklusive aller Abhängigkeiten"
+        },
+        "dependencies": {
+          "label": "Direkte Abhängigkeiten",
+          "description": "Anzahl der direkten Abhängigkeiten"
+        },
+        "totalDependencies": {
+          "label": "Gesamt-Abhängigkeiten",
+          "description": "Gesamtanzahl inklusive transitiver Abhängigkeiten"
+        },
+        "downloads": {
+          "label": "Downloads/Woche",
+          "description": "Wöchentliche Downloadzahlen"
+        },
+        "lastUpdated": {
+          "label": "Veröffentlicht",
+          "description": "Wann diese Version veröffentlicht wurde"
+        },
+        "deprecated": {
+          "label": "Veraltet?",
+          "description": "Ob das Paket als veraltet markiert ist"
+        },
+        "engines": {
+          "label": "Engines",
+          "description": "Node.js-Versionsanforderungen"
+        },
+        "types": {
+          "label": "Typen",
+          "description": "TypeScript-Typdefinitionen"
+        },
+        "moduleFormat": {
+          "label": "Modulformat",
+          "description": "ESM/CJS-Unterstützung"
+        },
+        "license": {
+          "label": "Lizenz",
+          "description": "Paketlizenz"
+        },
+        "vulnerabilities": {
+          "label": "Sicherheitslücken",
+          "description": "Bekannte Sicherheitsrisiken"
+        }
+      },
+      "values": {
+        "any": "Beliebig",
+        "none": "Keine",
+        "unknown": "Unbekannt",
+        "deprecated": "Veraltet",
+        "not_deprecated": "Nein",
+        "types_included": "Enthalten",
+        "types_none": "Keine",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
       }
     }
   }

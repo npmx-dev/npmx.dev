@@ -48,6 +48,8 @@ interface ProviderConfig {
   getRawBaseUrl(ref: RepoRef, branch?: string): string
   /** Get blob/rendered URL base for markdown files */
   getBlobBaseUrl(ref: RepoRef, branch?: string): string
+  /** Convert file URLs to blob URLs (for images) */
+  fileToRaw?(url: string): string
   /** Convert blob URLs to raw URLs (for images) */
   blobToRaw?(url: string): string
 }
@@ -69,6 +71,7 @@ const providers: ProviderConfig[] = [
       `https://raw.githubusercontent.com/${ref.owner}/${ref.repo}/${branch}`,
     getBlobBaseUrl: (ref, branch = 'HEAD') =>
       `https://github.com/${ref.owner}/${ref.repo}/blob/${branch}`,
+    fileToRaw: url => url.replace('/tree/', '/raw/'),
     blobToRaw: url => url.replace('/blob/', '/raw/'),
   },
   {
@@ -386,12 +389,16 @@ export function getProviderConfig(providerId: ProviderId): ProviderConfig | unde
   return providers.find(p => p.id === providerId)
 }
 
-export function convertBlobToRawUrl(url: string, providerId: ProviderId): string {
+export function convertBlobOrFileToRawUrl(url: string, providerId: ProviderId): string {
   const provider = providers.find(p => p.id === providerId)
-  if (provider?.blobToRaw) {
-    return provider.blobToRaw(url)
+  let rawUrl = url
+  if (provider?.fileToRaw) {
+    rawUrl = provider.fileToRaw(url)
   }
-  return url
+  if (provider?.blobToRaw) {
+    rawUrl = provider.blobToRaw(rawUrl)
+  }
+  return rawUrl
 }
 
 export function isKnownGitProvider(url: string): boolean {

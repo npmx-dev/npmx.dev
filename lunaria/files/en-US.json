@@ -28,6 +28,10 @@
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "title": "search",
+    "title_search": "search: {search}",
+    "title_packages": "search packages",
+    "meta_description": "Search results for '{search}'",
+    "meta_description_packages": "Search npm packages",
     "not_taken": "{name} is not taken",
     "claim_prompt": "Claim this package name on npm",
     "claim_button": "Claim \"{name}\"",
@@ -135,8 +139,10 @@
       "documented": "The {community} has flagged this package as having more performant alternatives.",
       "none": "This package has been flagged as no longer needed, and its functionality is likely available natively in all engines.",
       "learn_more": "Learn more",
+      "learn_more_above": "Learn more above.",
       "mdn": "MDN",
-      "community": "community"
+      "community": "community",
+      "consider_no_dep": "+ Consider no dep?"
     },
     "stats": {
       "license": "License",
@@ -150,7 +156,7 @@
       "inspect_dependency_tree": "Inspect dependency tree",
       "size_tooltip": {
         "unpacked": "{size} unpacked size (this package)",
-        "total": "{size} total unpacked size (including all {count} dependencies for linux-x64)"
+        "total": "{size} total unpacked size (including {count} dependency for linux-x64) | {size} total unpacked size (including all {count} dependencies for linux-x64)"
       }
     },
     "skills": {
@@ -181,6 +187,10 @@
       "fund": "fund",
       "compare": "compare"
     },
+    "likes": {
+      "like": "Like this package",
+      "unlike": "Unlike this package"
+    },
     "docs": {
       "not_available": "Docs not available",
       "not_available_detail": "We could not generate docs for this version."
@@ -193,7 +203,8 @@
     },
     "create": {
       "title": "Create new project",
-      "copy_command": "Copy create command"
+      "copy_command": "Copy create command",
+      "view": "{packageName} has the same maintainer. Click for more details."
     },
     "run": {
       "title": "Run",
@@ -202,7 +213,26 @@
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
-      "view_on_github": "View on GitHub"
+      "view_on_github": "View on GitHub",
+      "toc_title": "Outline",
+      "callout": {
+        "note": "Note",
+        "tip": "Tip",
+        "important": "Important",
+        "warning": "Warning",
+        "caution": "Caution"
+      }
+    },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "Built and signed on {provider}",
+      "view_build_summary": "View build summary",
+      "source_commit": "Source Commit",
+      "build_file": "Build File",
+      "public_ledger": "Public Ledger",
+      "transparency_log_entry": "Transparency log entry",
+      "view_more_details": "View more details",
+      "error_loading": "Failed to load provenance details"
     },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
@@ -228,7 +258,7 @@
       "view_all": "View {count} version | View all {count} versions"
     },
     "dependencies": {
-      "title": "Dependencies ({count})",
+      "title": "Dependency ({count}) | Dependencies ({count})",
       "list_label": "Package dependencies",
       "show_all": "show {count} dep | show all {count} deps",
       "optional": "optional",
@@ -238,12 +268,12 @@
       "outdated_patch": "Patch update available (latest: {latest})"
     },
     "peer_dependencies": {
-      "title": "Peer Dependencies ({count})",
+      "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
       "list_label": "Package peer dependencies",
       "show_all": "show {count} peer dep | show all {count} peer deps"
     },
     "optional_dependencies": {
-      "title": "Optional Dependencies ({count})",
+      "title": "Optional Dependency ({count}) | Optional Dependencies ({count})",
       "list_label": "Package optional dependencies",
       "show_all": "show {count} optional dep | show all {count} optional deps"
     },
@@ -266,6 +296,7 @@
       "date_range": "{start} to {end}",
       "date_range_multiline": "{start}\nto {end}",
       "analyze": "Analyze downloads",
+      "community_distribution": "View community adoption distribution",
       "modal_title": "Downloads",
       "granularity": "Granularity",
       "granularity_daily": "Daily",
@@ -310,13 +341,13 @@
       "deps_affected": "{count} dependency affected | {count} dependencies affected",
       "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",
       "scanning_tree": "Scanning dependency tree...",
-      "show_all_packages": "show all {count} affected packages",
+      "show_all_packages": "show {count} affected package | show all {count} affected packages",
       "no_summary": "No summary",
       "view_details": "View vulnerability details",
       "path": "path",
       "more": "+{count} more",
       "packages_failed": "{count} package could not be checked | {count} packages could not be checked",
-      "no_known": "No known vulnerabilities in {count} packages",
+      "no_known": "No known vulnerabilities in {count} package | No known vulnerabilities in {count} packages",
       "scan_failed": "Could not scan for vulnerabilities",
       "depth": {
         "root": "This package",
@@ -510,7 +541,7 @@
       "no_match": "No packages match \"{query}\"",
       "not_found": "Organization not found",
       "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm",
-      "filter_placeholder": "Filter {count} packages..."
+      "filter_placeholder": "Filter {count} package... | Filter {count} packages..."
     }
   },
   "user": {
@@ -526,7 +557,7 @@
       "no_packages_hint": "This user may not exist or has no public packages.",
       "failed_to_load": "Failed to load user packages",
       "no_match": "No packages match \"{query}\"",
-      "filter_placeholder": "Filter {count} packages..."
+      "filter_placeholder": "Filter {count} package... | Filter {count} packages..."
     },
     "orgs_page": {
       "title": "Organizations",
@@ -573,7 +604,7 @@
     "no_files": "No files in this directory",
     "select_version": "Select version",
     "root": "root",
-    "lines": "{count} lines",
+    "lines": "{count} line | {count} lines",
     "toggle_tree": "Toggle file tree",
     "close_tree": "Close file tree",
     "copy_link": "Copy link",
@@ -603,7 +634,8 @@
     "provenance": {
       "verified": "verified",
       "verified_title": "Verified provenance",
-      "verified_via": "Verified: published via {provider}"
+      "verified_via": "Verified: published via {provider}",
+      "view_more_details": "View more details"
     },
     "jsr": {
       "title": "also available on JSR",
@@ -752,7 +784,7 @@
       }
     },
     "contributors": {
-      "title": "Contributors",
+      "title": "{count} Contributor | {count} Contributors",
       "description": "npmx is fully open source, built by an amazing community of contributors. Join us and let's build the npm browsing experience we always wanted, together.",
       "loading": "Loading contributors...",
       "error": "Failed to load contributors",
@@ -852,6 +884,15 @@
       "loading_versions": "Loading versions...",
       "select_version": "Select version"
     },
+    "no_dependency": {
+      "label": "(No dependency)",
+      "typeahead_title": "What Would James Do?",
+      "typeahead_description": "Compare against not using a dependency! e18e approved.",
+      "tooltip_title": "You might not need a dependency",
+      "tooltip_description": "Compare against not using a dependency! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
+      "e18e_community": "e18e community",
+      "add_column": "Add no dependency column to comparison"
+    },
     "facets": {
       "group_label": "Comparison facets",
       "all": "all",
@@ -878,11 +919,11 @@
           "description": "Total install size including all dependencies"
         },
         "dependencies": {
-          "label": "# Direct Deps",
+          "label": "Direct Deps",
           "description": "Number of direct dependencies"
         },
         "totalDependencies": {
-          "label": "# Total Deps",
+          "label": "Total Deps",
           "description": "Total number of dependencies including transitive"
         },
         "downloads": {
@@ -926,8 +967,90 @@
         "not_deprecated": "No",
         "types_included": "Included",
         "types_none": "None",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Up to you!"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "privacy policy",
+    "last_updated": "Last updated: {date}",
+    "welcome": "Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
+    "cookies": {
+      "title": "Cookies",
+      "what_are": {
+        "title": "What are cookies?",
+        "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+      },
+      "types": {
+        "title": "What cookies do we use?",
+        "p1": "We only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
+        "bold": "essential technical cookies",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "This cookie is used by our hosting provider (Vercel) for skew protection. It ensures you fetch assets from the correct deployment version if a new update is released while you are browsing. It does not track you.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
+      },
+      "local_storage": {
+        "title": "Local storage",
+        "p1": "In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
+        "bold": "Local Storage",
+        "p2": "This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
+        "bold2": "contains no personal data nor is it used to track you",
+        "settings": "settings"
+      },
+      "management": {
+        "title": "Managing cookies",
+        "p1": "You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
+        "bold": "rejecting essential cookies may prevent full access to the application",
+        "p2": "Below are links with instructions for cookie management in the most commonly used browsers:",
+        "chrome": "Google Chrome (opens in a new window)",
+        "firefox": "Mozilla Firefox (opens in a new window)",
+        "edge": "Microsoft Edge (opens in a new window)"
+      }
+    },
+    "analytics": {
+      "title": "Analytics",
+      "p1": "We use {bold} to understand how visitors use our website. This helps us improve the user experience and identify issues.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics is designed with privacy in mind:",
+      "li1": "It does not use cookies",
+      "li2": "It does not collect personal identifiers",
+      "li3": "It does not track users across websites",
+      "li4": "All data is aggregated and anonymised",
+      "p3": "The only information collected includes: page URLs, referrer, country/region, device type, browser, and operating system. This data cannot be used to identify individual users."
+    },
+    "authenticated": {
+      "title": "Authenticated users",
+      "p1": "When you connect your {bold} account to npmx, we store your OAuth access token in a secure, HTTP-only session cookie. This token is used solely to authenticate requests on your behalf.",
+      "bold": "Atmosphere",
+      "p2": "We do not store your credentials, and we do not access any data beyond what is necessary to provide the features you use. You can disconnect your account at any time from the {settings} page.",
+      "settings": "settings"
+    },
+    "data_retention": {
+      "title": "Data retention",
+      "p1": "Session cookies are automatically deleted when you close your browser or after a period of inactivity. Local storage preferences remain on your device until you clear your browser data. Analytics data is retained in aggregate form and cannot be linked to individual users."
+    },
+    "your_rights": {
+      "title": "Your rights",
+      "p1": "You have the right to:",
+      "li1": "Access information about what data we collect",
+      "li2": "Clear your local storage and cookies at any time",
+      "li3": "Disconnect your authenticated session",
+      "li4": "Request information about our data practices",
+      "p2": "Since we do not collect personal data, there is typically no personal information to delete or export."
+    },
+    "contact": {
+      "title": "Contact us",
+      "p1": "For any questions or concerns about this privacy policy, you can contact us by opening an issue on our {link}.",
+      "link": "GitHub repository"
+    },
+    "changes": {
+      "title": "Changes to this policy",
+      "p1": "We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
     }
   }
 }

@@ -17,7 +17,7 @@ jobs:
       statuses: write # for amannn/action-semantic-pull-request to mark status of analyzed PR
     if: github.repository == 'npmx-dev/npmx.dev'
     runs-on: ubuntu-slim
-    name: semantic-pr
+    name: 🏷️ Validate PR title
     steps:
       - name: Validate PR title
         uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
@@ -26,6 +26,7 @@ jobs:
             a11y
             deps
             docs
+            cli
             i18n
             ui
           subjectPattern: ^(?![A-Z]).+$

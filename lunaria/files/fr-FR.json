@@ -27,6 +27,7 @@
     "found_packages": "{count} paquets trouvés",
     "updating": "(mise à jour...)",
     "no_results": "Aucun paquet trouvé pour « {query} »",
+    "title": "Recherche",
     "not_taken": "{name} n'est pas pris",
     "claim_prompt": "Réserver ce nom de paquet sur npm",
     "claim_button": "Réserver « {name} »",
@@ -45,7 +46,13 @@
     "popular_packages": "Paquets populaires",
     "search": "recherche",
     "settings": "paramètres",
-    "back": "Retour"
+    "compare": "comparer",
+    "back": "Retour",
+    "menu": "Menu",
+    "mobile_menu": "Menu de navigation",
+    "open_menu": "Ouvrir le menu",
+    "links": "Liens",
+    "tap_to_search": "Toucher pour rechercher"
   },
   "settings": {
     "title": "paramètres",
@@ -70,7 +77,8 @@
     "help_translate": "Aidez à traduire npmx",
     "accent_colors": "Couleurs d'accentuation",
     "clear_accent": "Supprimer la couleur d'accentuation",
-    "translation_progress": "Progression de la traduction"
+    "translation_progress": "Progression de la traduction",
+    "background_themes": "Teinte de fond"
   },
   "i18n": {
     "missing_keys": "{count} traduction manquante | {count} traductions manquantes",
@@ -127,8 +135,10 @@
       "documented": "La {community} a signalé que ce paquet a des alternatives plus performantes.",
       "none": "Ce paquet a été signalé comme n'étant plus nécessaire, et sa fonctionnalité est probablement disponible nativement dans tous les moteurs.",
       "learn_more": "En savoir plus",
+      "learn_more_above": "En savoir plus ci-dessus.",
       "mdn": "MDN",
-      "community": "communauté"
+      "community": "communauté",
+      "consider_no_dep": "+ Envisager sans dépendance ?"
     },
     "stats": {
       "license": "Licence",
@@ -137,6 +147,7 @@
       "vulns": "Vulnérabilités",
       "published": "Publié",
       "published_tooltip": "Date de publication de {package}{'@'}{version}",
+      "skills": "Compétences de l'agent",
       "view_dependency_graph": "Voir le graphe de dépendances",
       "inspect_dependency_tree": "Inspecter l'arbre de dépendances",
       "size_tooltip": {
@@ -145,7 +156,22 @@
       }
     },
     "skills": {
-      "file_counts": {}
+      "title": "Compétences de l'agent",
+      "skills_available": "{count} compétence disponible | {count} compétences disponibles",
+      "view": "Voir",
+      "compatible_with": "Compatible avec {tool}",
+      "install": "Installer",
+      "installation_method": "Méthode d'installation",
+      "learn_more": "En savoir plus",
+      "available_skills": "Compétences disponibles",
+      "click_to_expand": "Cliquer pour développer",
+      "no_description": "Aucune description",
+      "file_counts": {
+        "scripts": "{count} script | {count} scripts",
+        "refs": "{count} ref | {count} refs",
+        "assets": "{count} asset | {count} assets"
+      },
+      "view_source": "Voir la source"
     },
     "links": {
       "repo": "dépôt",
@@ -169,7 +195,8 @@
     },
     "create": {
       "title": "Créer un nouveau projet",
-      "copy_command": "Copier la commande de création"
+      "copy_command": "Copier la commande de création",
+      "view": "{packageName} a le même mainteneur. Cliquer pour plus de détails."
     },
     "run": {
       "title": "Exécuter",
@@ -178,7 +205,8 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Aucun README disponible.",
-      "view_on_github": "Voir sur GitHub"
+      "view_on_github": "Voir sur GitHub",
+      "toc_title": "Sommaire"
     },
     "keywords_title": "Mots-clés",
     "compatibility": "Compatibilité",
@@ -276,7 +304,8 @@
       "no_types": "Pas de types TypeScript"
     },
     "license": {
-      "view_spdx": "Voir le texte de la licence sur SPDX"
+      "view_spdx": "Voir le texte de la licence sur SPDX",
+      "none": "Aucune"
     },
     "vulnerabilities": {
       "no_description": "Aucune description disponible",
@@ -361,7 +390,7 @@
   "connector": {
     "status": {
       "connecting": "connexion...",
-      "connected_as": "connecté·e en tant que {'@'}{user}",
+      "connected_as": "connecté·e en tant que ~{user}",
       "connected": "connecté·e",
       "connect_cli": "connecter le CLI local",
       "aria_connecting": "Connexion au connecteur local",
@@ -371,6 +400,9 @@
     },
     "modal": {
       "title": "Connecteur local",
+      "contributor_badge": "Contributeurs uniquement",
+      "contributor_notice": "Le connecteur n'est pas encore publié sur npm. Consultez le {link} pour savoir comment l'exécuter localement.",
+      "contributor_link": "guide de contribution",
       "connected": "Connecté·e",
       "connected_as_user": "Connecté·e en tant que ~{user}",
       "connected_hint": "Vous pouvez maintenant gérer les paquets et les organisations depuis l'interface web.",
@@ -568,7 +600,8 @@
     "markdown_view_mode": {
       "preview": "aperçu",
       "code": "code"
-    }
+    },
+    "file_path": "Chemin du fichier"
   },
   "badges": {
     "provenance": {
@@ -604,6 +637,13 @@
     "more_keywords": "+{count} de plus",
     "clear_all": "Tout effacer",
     "remove_filter": "Supprimer le filtre {label}",
+    "chips": {
+      "search": "Rechercher",
+      "downloads": "Téléchargements",
+      "keyword": "Mot-clé",
+      "security": "Sécurité",
+      "updated": "Mis à jour"
+    },
     "download_range": {
       "any": "Tous",
       "lt100": "< 100",
@@ -816,6 +856,15 @@
       "loading_versions": "Chargement des versions...",
       "select_version": "Sélectionner une version"
     },
+    "no_dependency": {
+      "label": "(Sans dépendance)",
+      "typeahead_title": "Et sans dépendance ?",
+      "typeahead_description": "Comparer avec l'absence de dépendance ! Approuvé par e18e.",
+      "tooltip_title": "Vous n'avez peut-être pas besoin d'une dépendance",
+      "tooltip_description": "Comparer avec l'absence de dépendance ! La {link} maintient une liste de paquets pouvant être remplacés par des API natives ou des alternatives plus simples.",
+      "e18e_community": "communauté e18e",
+      "add_column": "Ajouter la colonne sans dépendance à la comparaison"
+    },
     "facets": {
       "group_label": "Facettes de comparaison",
       "all": "tout",
@@ -825,11 +874,73 @@
       "deselect_all": "Désélectionner toutes les facettes",
       "select_category": "Sélectionner toutes les facettes {category}",
       "deselect_category": "Désélectionner toutes les facettes {category}",
+      "binary_only_tooltip": "Ce paquet expose des binaires et aucun export",
       "categories": {
         "performance": "Performance",
         "health": "Santé",
         "compatibility": "Compatibilité",
         "security": "Sécurité & Conformité"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Taille du paquet",
+          "description": "Taille du paquet lui-même (décompressé)"
+        },
+        "installSize": {
+          "label": "Taille d'installation",
+          "description": "Taille d'installation totale incluant toutes les dépendances"
+        },
+        "dependencies": {
+          "label": "Dépendances directes",
+          "description": "Nombre de dépendances directes"
+        },
+        "totalDependencies": {
+          "label": "Dépendances totales",
+          "description": "Nombre total de dépendances incluant les transitives"
+        },
+        "downloads": {
+          "label": "Téléch./semaine",
+          "description": "Nombre de téléchargements par semaine"
+        },
+        "lastUpdated": {
+          "label": "Publié",
+          "description": "Quand cette version a été publiée"
+        },
+        "deprecated": {
+          "label": "Déprécié ?",
+          "description": "Si le paquet est déprécié"
+        },
+        "engines": {
+          "label": "Moteurs",
+          "description": "Versions de Node.js requises"
+        },
+        "types": {
+          "label": "Types",
+          "description": "Définitions de types TypeScript"
+        },
+        "moduleFormat": {
+          "label": "Format du module",
+          "description": "Support ESM/CJS"
+        },
+        "license": {
+          "label": "Licence",
+          "description": "Licence du paquet"
+        },
+        "vulnerabilities": {
+          "label": "Vulnérabilités",
+          "description": "Vulnérabilités de sécurité connues"
+        }
+      },
+      "values": {
+        "any": "Tout",
+        "none": "Aucun",
+        "unknown": "Inconnu",
+        "deprecated": "Déprécié",
+        "not_deprecated": "Non",
+        "types_included": "Inclus",
+        "types_none": "Aucun",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "À vous de décider !"
       }
     }
   }

@@ -4,12 +4,14 @@ import type { Placement } from '@floating-ui/vue'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 
 const props = defineProps<{
-  /** Tooltip text */
-  text: string
+  /** Tooltip text (optional when using content slot) */
+  text?: string
   /** Position: 'top' | 'bottom' | 'left' | 'right' */
   position?: 'top' | 'bottom' | 'left' | 'right'
   /** is tooltip visible */
   isVisible: boolean
+  /** Allow pointer events on tooltip (for interactive content like links) */
+  interactive?: boolean
   /** attributes for tooltip element */
   tooltipAttr?: HTMLAttributes
 }>()
@@ -40,11 +42,12 @@ const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
         <div
           v-if="props.isVisible"
           ref="tooltipRef"
-          class="px-2 py-1 font-mono text-xs text-fg bg-bg-elevated border border-border rounded shadow-lg whitespace-nowrap z-[100] pointer-events-none"
+          class="px-2 py-1 font-mono text-xs text-fg bg-bg-elevated border border-border rounded shadow-lg whitespace-pre-line break-words max-w-xs z-[100]"
+          :class="{ 'pointer-events-none': !interactive }"
           :style="floatingStyles"
           v-bind="tooltipAttr"
         >
-          {{ text }}
+          <slot name="content">{{ text }}</slot>
         </div>
       </Transition>
     </Teleport>

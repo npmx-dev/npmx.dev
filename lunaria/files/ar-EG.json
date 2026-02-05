@@ -386,7 +386,7 @@
   "connector": {
     "status": {
       "connecting": "جارٍ الاتصال…",
-      "connected_as": "متصل كـ {'@'}{user}",
+      "connected_as": "متصل كـ ~{user}",
       "connected": "متصل",
       "connect_cli": "ربط واجهة سطر الأوامر المحلية",
       "aria_connecting": "جارٍ الاتصال بالموصل المحلي",

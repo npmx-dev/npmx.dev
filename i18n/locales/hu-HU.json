@@ -342,7 +342,7 @@
   "connector": {
     "status": {
       "connecting": "kapcsolódás...",
-      "connected_as": "csatlakoztatva: {'@'}{user}",
+      "connected_as": "csatlakoztatva: ~{user}",
       "connected": "csatlakoztatva",
       "connect_cli": "helyi CLI csatlakoztatása",
       "aria_connecting": "Kapcsolódás a helyi connectorhoz",

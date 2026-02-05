@@ -1,8 +1,8 @@
 import { marked, type Tokens } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
-import type { ReadmeResponse } from '#shared/types/readme'
-import { convertBlobToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import type { ReadmeResponse, TocItem } from '#shared/types/readme'
+import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
 import { highlightCodeSync } from './shiki'
 import { convertToEmoji } from '#shared/utils/emoji'
 
@@ -139,23 +139,24 @@ const ALLOWED_TAGS = [
 ]
 
 const ALLOWED_ATTR: Record<string, string[]> = {
-  a: ['href', 'title', 'target', 'rel'],
-  img: ['src', 'alt', 'title', 'width', 'height', 'align'],
-  source: ['src', 'srcset', 'type', 'media'],
-  button: ['class', 'title', 'type', 'aria-label', 'data-copy'],
-  th: ['colspan', 'rowspan', 'align'],
-  td: ['colspan', 'rowspan', 'align'],
-  h3: ['id', 'data-level', 'align'],
-  h4: ['id', 'data-level', 'align'],
-  h5: ['id', 'data-level', 'align'],
-  h6: ['id', 'data-level', 'align'],
-  blockquote: ['data-callout'],
-  details: ['open'],
-  code: ['class'],
-  pre: ['class', 'style'],
-  span: ['class', 'style'],
-  div: ['class', 'style', 'align'],
-  p: ['align'],
+  '*': ['id'], // Allow id on all tags
+  'a': ['href', 'title', 'target', 'rel'],
+  'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
+  'source': ['src', 'srcset', 'type', 'media'],
+  'button': ['class', 'title', 'type', 'aria-label', 'data-copy'],
+  'th': ['colspan', 'rowspan', 'align'],
+  'td': ['colspan', 'rowspan', 'align'],
+  'h3': ['data-level', 'align'],
+  'h4': ['data-level', 'align'],
+  'h5': ['data-level', 'align'],
+  'h6': ['data-level', 'align'],
+  'blockquote': ['data-callout'],
+  'details': ['open'],
+  'code': ['class'],
+  'pre': ['class', 'style'],
+  'span': ['class', 'style'],
+  'div': ['class', 'style', 'align'],
+  'p': ['align'],
 }
 
 // GitHub-style callout types
@@ -258,9 +259,17 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
 function resolveImageUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   const resolved = resolveUrl(url, packageName, repoInfo)
   if (repoInfo?.provider) {
-    return convertBlobToRawUrl(resolved, repoInfo.provider)
+    return convertBlobOrFileToRawUrl(resolved, repoInfo.provider)
   }
   return resolved
+}
+
+// Helper to prefix id attributes with 'user-content-'
+function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
+  if (attribs.id && !attribs.id.startsWith('user-content-')) {
+    attribs.id = `user-content-${attribs.id}`
+  }
+  return { tagName, attribs }
 }
 
 export async function renderReadmeHtml(
@@ -268,7 +277,7 @@ export async function renderReadmeHtml(
   packageName: string,
   repoInfo?: RepositoryInfo,
 ): Promise<ReadmeResponse> {
-  if (!content) return { html: '', playgroundLinks: [] }
+  if (!content) return { html: '', playgroundLinks: [], toc: [] }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
@@ -276,6 +285,9 @@ export async function renderReadmeHtml(
   // Collect playground links during parsing
   const collectedLinks: PlaygroundLink[] = []
   const seenUrls = new Set<string>()
+
+  // Collect table of contents items during parsing
+  const toc: TocItem[] = []
 
   // Track used heading slugs to handle duplicates (GitHub-style: foo, foo-1, foo-2)
   const usedSlugs = new Map<string, number>()
@@ -315,6 +327,12 @@ export async function renderReadmeHtml(
     // Prefix with 'user-content-' to avoid collisions with page IDs
     // (e.g., #install, #dependencies, #versions are used by the package page)
     const id = `user-content-${uniqueSlug}`
+
+    // Collect TOC item with plain text (HTML stripped)
+    const plainText = text.replace(/<[^>]*>/g, '').trim()
+    if (plainText) {
+      toc.push({ text: plainText, id, depth })
+    }
 
     return `<h${semanticLevel} id="${id}" data-level="${depth}">${text}</h${semanticLevel}>\n`
   }
@@ -427,11 +445,17 @@ ${html}
         }
         return { tagName, attribs }
       },
+      div: prefixId,
+      p: prefixId,
+      span: prefixId,
+      section: prefixId,
+      article: prefixId,
     },
   })
 
   return {
     html: convertToEmoji(sanitized),
     playgroundLinks: collectedLinks,
+    toc,
   }
 }

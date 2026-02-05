@@ -2,7 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { ref } from 'vue'
 import type { ComparisonFacet } from '#shared/types/comparison'
-import { DEFAULT_FACETS, FACETS_BY_CATEGORY } from '#shared/types/comparison'
+import {
+  DEFAULT_FACETS,
+  FACET_INFO,
+  FACETS_BY_CATEGORY,
+  hasComingSoonFacets,
+} from '#shared/types/comparison'
 import type { FacetInfoWithLabels } from '~/composables/useFacetSelection'
 
 // Mock useRouteQuery - needs to be outside of the helper to persist across calls
@@ -113,7 +118,7 @@ describe('useFacetSelection', () => {
     expect(isFacetSelected('types')).toBe(true)
   })
 
-  it('filters out comingSoon facets from query', async () => {
+  it.runIf(hasComingSoonFacets)('filters out comingSoon facets from query', async () => {
     mockRouteQuery.value = 'downloads,totalDependencies,types'
 
     const { isFacetSelected } = await useFacetSelectionInComponent()
@@ -225,7 +230,7 @@ describe('useFacetSelection', () => {
       selectCategory('performance')
 
       const performanceFacets = FACETS_BY_CATEGORY.performance.filter(
-        f => f !== 'totalDependencies', // comingSoon facet
+        f => !FACET_INFO[f].comingSoon, // comingSoon facet
       )
       for (const facet of performanceFacets) {
         expect(isFacetSelected(facet)).toBe(true)
@@ -252,7 +257,7 @@ describe('useFacetSelection', () => {
       deselectCategory('performance')
 
       const nonComingSoonPerformanceFacets = FACETS_BY_CATEGORY.performance.filter(
-        f => f !== 'totalDependencies',
+        f => !FACET_INFO[f].comingSoon,
       )
       for (const facet of nonComingSoonPerformanceFacets) {
         expect(isFacetSelected(facet)).toBe(false)
@@ -368,12 +373,6 @@ describe('useFacetSelection', () => {
 
       expect(Array.isArray(allFacets)).toBe(true)
       expect(allFacets.length).toBeGreaterThan(0)
-    })
-
-    it('allFacets includes all facets including comingSoon', async () => {
-      const { allFacets } = await useFacetSelectionInComponent()
-
-      expect(allFacets).toContain('totalDependencies')
     })
   })
 

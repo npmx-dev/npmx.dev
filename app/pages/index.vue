@@ -1,21 +1,10 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
+import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
 const searchQuery = shallowRef('')
 const searchInputRef = useTemplateRef('searchInputRef')
 const { focused: isSearchFocused } = useFocus(searchInputRef)
-const frameworks = ref([
-  { name: 'nuxt', package: 'nuxt' },
-  { name: 'vue', package: 'vue' },
-  { name: 'nitro', package: 'nitro' },
-  { name: 'react', package: 'react' },
-  { name: 'svelte', package: 'svelte' },
-  { name: 'vite', package: 'vite' },
-  { name: 'next', package: 'next' },
-  { name: 'astro', package: 'astro' },
-  { name: 'typescript', package: 'typescript' },
-  { name: 'Angular', package: '@angular/core' },
-])
 
 async function search() {
   const query = searchQuery.value.trim()
@@ -36,7 +25,11 @@ const handleInput = isTouchDevice()
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
+  ogTitle: () => $t('seo.home.title'),
+  twitterTitle: () => $t('seo.home.title'),
   description: () => $t('seo.home.description'),
+  ogDescription: () => $t('seo.home.description'),
+  twitterDescription: () => $t('seo.home.description'),
 })
 
 defineOgImageComponent('Default', {
@@ -49,24 +42,21 @@ defineOgImageComponent('Default', {
 <template>
   <main>
     <section class="container min-h-screen flex flex-col">
-      <header class="flex-1 flex flex-col items-center justify-center text-center py-20">
+      <header
+        class="flex-1 flex flex-col items-center justify-center text-center pt-20 pb-4 md:pb-8 lg:pb-20"
+      >
         <h1
           dir="ltr"
-          class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-4 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+          class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
         >
-          <img
-            aria-hidden="true"
-            :alt="$t('alt_logo')"
-            src="/logo.svg"
-            width="48"
-            height="48"
-            class="w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl sm:rounded-3xl"
+          <AppLogo
+            class="w-12 h-12 -ms-3 sm:w-20 sm:h-20 sm:-ms-5 md:w-24 md:h-24 md:-ms-6 rounded-2xl sm:rounded-3xl"
           />
           <span class="pb-4">npmx</span>
         </h1>
 
         <p
-          class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 motion-safe:animate-slide-up motion-safe:animate-fill-both"
+          class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.1s"
         >
           {{ $t('tagline') }}
@@ -88,7 +78,7 @@ defineOgImageComponent('Default', {
 
               <div class="search-box relative flex items-center">
                 <span
-                  class="absolute inset-is-4 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 group-focus-within:text-accent z-1"
+                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
                 >
                   /
                 </span>
@@ -102,16 +92,21 @@ defineOgImageComponent('Default', {
                   autofocus
                   :placeholder="$t('search.placeholder')"
                   v-bind="noCorrect"
-                  class="w-full bg-bg-subtle border border-border rounded-lg ps-8 pe-24 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-border-color duration-300 focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+                  class="w-full bg-bg-subtle border border-border rounded-xl ps-8 pe-24 h-14 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 motion-reduce:transition-none hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
                   @input="handleInput"
                 />
 
                 <button
                   type="submit"
-                  class="absolute inset-ie-2 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-[background-color,transform] duration-200 hover:bg-fg/90 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
+                  class="absolute group inset-ie-2.5 px-2.5 sm:ps-4 sm:pe-4 py-2 font-mono text-sm text-bg bg-fg/90 rounded-md transition-[background-color,transform] duration-200 hover:bg-fg! group-focus-within:bg-fg/80 active:scale-95 focus-visible:outline-accent/70"
                 >
-                  <span class="i-carbon:search align-middle w-4 h-4" aria-hidden="true"></span>
-                  {{ $t('search.button') }}
+                  <span
+                    class="inline-block i-carbon:search align-middle w-4 h-4 sm:me-2"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="sr-only sm:not-sr-only">
+                    {{ $t('search.button') }}
+                  </span>
                 </button>
               </div>
             </div>
@@ -127,7 +122,7 @@ defineOgImageComponent('Default', {
         style="animation-delay: 0.3s"
       >
         <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
-          <li v-for="framework in frameworks" :key="framework.name">
+          <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
             <NuxtLink
               :to="{ name: 'package', params: { package: [framework.package] } }"
               class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"

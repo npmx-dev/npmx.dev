@@ -154,15 +154,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  scroll-behavior: smooth;
   scroll-padding-top: 5rem; /* Offset for fixed header - otherwise anchor headers are cutted */
-}
-
-/* Disable smooth scrolling if user prefers reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
 }
 
 /*
@@ -204,9 +196,9 @@ a:hover {
 }
 
 a:focus-visible {
-  outline: 2px solid var(--border);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 /* Reset dd margin (browser default is margin-left: 40px) */
@@ -221,6 +213,13 @@ button {
   cursor: pointer;
   font: inherit;
   padding: 0;
+}
+
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Selection */

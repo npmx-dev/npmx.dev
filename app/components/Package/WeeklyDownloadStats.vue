@@ -64,7 +64,7 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const accentColorValueById = computed<Record<string, string>>(() => {
   const map: Record<string, string> = {}
-  for (const item of accentColors) {
+  for (const item of accentColors.value) {
     map[item.id] = item.value
   }
   return map
@@ -165,14 +165,15 @@ const config = computed(() => {
       line: {
         color: colors.value.borderHover,
         pulse: {
-          show: true,
+          show: true, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
           loop: true, // runs only once if false
-          radius: 2,
+          radius: 1.5,
           color: pulseColor.value,
           easing: 'ease-in-out',
           trail: {
             show: true,
-            length: 6,
+            length: 20,
+            opacity: 0.75,
           },
         },
       },
@@ -202,7 +203,7 @@ const config = computed(() => {
         <button
           type="button"
           @click="openChartModal"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-1.5 ms-auto shrink-0 self-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
+          class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
           :title="$t('package.downloads.analyze')"
         >
           <span class="i-carbon:data-analytics w-4 h-4" aria-hidden="true" />

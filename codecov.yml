@@ -1,0 +1,19 @@
+coverage:
+  status:
+    changes:
+      default:
+        target: auto
+        informational: true
+    project:
+      default:
+        target: auto
+        informational: true
+    patch:
+      default:
+        target: auto
+        informational: true
+
+comment:
+  layout: 'reach,diff,flags,tree,components,tests,build'
+  behavior: default
+  require_changes: false

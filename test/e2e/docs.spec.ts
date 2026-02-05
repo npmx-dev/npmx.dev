@@ -1,4 +1,4 @@
-import { expect, test } from '@nuxt/test-utils/playwright'
+import { expect, test } from './test-utils'
 
 test.describe('API Documentation Pages', () => {
   test('docs page loads and shows content for a package', async ({ page, goto }) => {

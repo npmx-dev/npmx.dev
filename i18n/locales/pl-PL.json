@@ -27,6 +27,7 @@
     "found_packages": "Nie znaleziono pakietów | Znaleziono 1 pakiet | Znaleziono {count} pakiety | Znaleziono {count} pakietów | Znaleziono {count} pakietów",
     "updating": "(aktualizowanie...)",
     "no_results": "Nie znaleziono pakietów dla \"{query}\"",
+    "title": "Wyszukiwanie",
     "not_taken": "{name} jest wolne",
     "claim_prompt": "Zajmij tę nazwę pakietu w npm",
     "claim_button": "Zajmij \"{name}\"",
@@ -76,7 +77,8 @@
     "help_translate": "Pomóż tłumaczyć npmx",
     "accent_colors": "Kolory akcentu",
     "clear_accent": "Wyczyść kolor akcentu",
-    "translation_progress": "Postęp tłumaczenia"
+    "translation_progress": "Postęp tłumaczenia",
+    "background_themes": "Odcień tła"
   },
   "i18n": {
     "missing_keys": "{count} brakujących tłumaczeń | {count} brakujące tłumaczenie | {count} brakujące tłumaczenia | {count} brakujących tłumaczeń | {count} brakujących tłumaczeń",
@@ -129,18 +131,20 @@
     "replacement": {
       "title": "Możliwe, że nie potrzebujesz tej zależności.",
       "native": "Można to zastąpić {replacement}, dostępne od Node {nodeVersion}.",
-      "simple": "Społeczność {community} oznaczyła ten pakiet jako zbędny, z sugestią: {replacement}.",
-      "documented": "Społeczność {community} wskazuje, że istnieją wydajniejsze alternatywy.",
+      "simple": "{community} oznaczyła ten pakiet jako zbędny, z sugestią: {replacement}.",
+      "documented": "{community} wskazuje, że istnieją wydajniejsze alternatywy.",
       "none": "Ten pakiet został oznaczony jako zbędny, a jego funkcjonalność jest prawdopodobnie dostępna natywnie we wszystkich środowiskach.",
       "learn_more": "Dowiedz się więcej",
       "mdn": "MDN",
-      "community": "społeczność"
+      "community": "Społeczność"
     },
     "stats": {
       "license": "Licencja",
       "deps": "Zależności",
       "install_size": "Rozmiar instalacji",
       "vulns": "Luki",
+      "published": "Opublikowano",
+      "published_tooltip": "Data publikacji {package}{'@'}{version}",
       "skills": "Umiejętności",
       "view_dependency_graph": "Pokaż graf zależności",
       "inspect_dependency_tree": "Przejrzyj drzewo zależności",
@@ -189,7 +193,8 @@
     },
     "create": {
       "title": "Utwórz nowy projekt",
-      "copy_command": "Kopiuj komendę tworzenia"
+      "copy_command": "Kopiuj komendę tworzenia",
+      "view": "{packageName} ma tego samego opiekuna. Kliknij, aby zobaczyć szczegóły."
     },
     "run": {
       "title": "Uruchom",
@@ -198,12 +203,22 @@
     "readme": {
       "title": "README",
       "no_readme": "Brak README.",
-      "view_on_github": "Zobacz na GitHub"
+      "view_on_github": "Zobacz na GitHub",
+      "toc_title": "Spis treści",
+      "callout": {
+        "note": "Notatka",
+        "tip": "Wskazówka",
+        "important": "Ważne",
+        "warning": "Uwaga",
+        "caution": "Ostrożnie"
+      }
     },
+    "provenance_section": {},
     "keywords_title": "Słowa kluczowe",
     "compatibility": "Zgodność",
     "card": {
       "publisher": "Wydawca",
+      "published": "Opublikowano",
       "weekly_downloads": "Pobrania tygodniowo",
       "keywords": "Słowa kluczowe",
       "license": "Licencja"
@@ -363,6 +378,7 @@
       "weekly": "Tygodniowo",
       "size": "Rozmiar",
       "deps": "Zależności",
+      "published": "Opublikowano",
       "get_started": "Zacznij",
       "readme": "README",
       "maintainers": "Opiekunowie",
@@ -372,6 +388,7 @@
     },
     "sort": {
       "downloads": "Najczęściej pobierane",
+      "published": "Ostatnio opublikowane",
       "name_asc": "Nazwa (A-Z)",
       "name_desc": "Nazwa (Z-A)"
     }
@@ -379,7 +396,7 @@
   "connector": {
     "status": {
       "connecting": "łączenie...",
-      "connected_as": "połączono jako {'@'}{user}",
+      "connected_as": "połączono jako ~{user}",
       "connected": "połączono",
       "connect_cli": "połącz lokalne CLI",
       "aria_connecting": "Łączenie z lokalnym konektorem",
@@ -626,6 +643,13 @@
     "more_keywords": "+{count} więcej",
     "clear_all": "Wyczyść wszystko",
     "remove_filter": "Usuń filtr {label}",
+    "chips": {
+      "search": "Szukaj",
+      "downloads": "Pobrania",
+      "keyword": "Słowo kluczowe",
+      "security": "Bezpieczeństwo",
+      "updated": "Zaktualizowano"
+    },
     "download_range": {
       "any": "Dowolnie",
       "lt100": "< 100",
@@ -656,6 +680,7 @@
       "downloads_day": "Pobrania/dzień",
       "downloads_month": "Pobrania/mies.",
       "downloads_year": "Pobrania/rok",
+      "published": "Ostatnio opublikowano",
       "name": "Nazwa",
       "quality": "Jakość",
       "popularity": "Popularność",
@@ -671,6 +696,7 @@
       "version": "Wersja",
       "description": "Opis",
       "downloads": "Pobrania/tydz.",
+      "published": "Ostatnio opublikowano",
       "maintainers": "Opiekunowie",
       "keywords": "Słowa kluczowe",
       "quality_score": "Wynik jakości",
@@ -845,6 +871,7 @@
       "deselect_all": "Odznacz wszystkie aspekty",
       "select_category": "Wybierz wszystkie aspekty: {category}",
       "deselect_category": "Odznacz wszystkie aspekty: {category}",
+      "binary_only_tooltip": "Ten pakiet udostępnia tylko pliki binarne i nie ma eksportów",
       "categories": {
         "performance": "Wydajność",
         "health": "Zdrowie",
@@ -865,7 +892,7 @@
           "description": "Liczba bezpośrednich zależności"
         },
         "totalDependencies": {
-          "label": "# Wszystkich zależności",
+          "label": "Wszystkie zależności",
           "description": "Łączna liczba zależności, w tym przechodnich"
         },
         "downloads": {
