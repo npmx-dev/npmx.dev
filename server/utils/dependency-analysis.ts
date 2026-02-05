@@ -9,9 +9,11 @@ import type {
   VulnerabilityTreeResult,
   DeprecatedPackageInfo,
   OsvAffected,
+  OsvRange,
 } from '#shared/types/dependency-analysis'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { resolveDependencyTree } from './dependency-resolver'
+import * as semver from 'semver'
 
 /** Maximum concurrent requests for fetching vulnerability details */
 const OSV_DETAIL_CONCURRENCY = 25
@@ -116,7 +118,7 @@ async function queryOsvDetails(pkg: PackageQueryInfo): Promise<PackageVulnerabil
         severity,
         aliases: vuln.aliases || [],
         url: getVulnerabilityUrl(vuln),
-        fixedIn: getFixedVersion(vuln.affected, pkg.name),
+        fixedIn: getFixedVersion(vuln.affected, pkg.name, pkg.version),
       })
     }
 
@@ -147,26 +149,56 @@ function getVulnerabilityUrl(vuln: OsvVulnerability): string {
 }
 
 /**
- * Extract the earliest fixed version for a specific package from vulnerability data.
- * Returns the first 'fixed' event found in the affected ranges for the given package.
+ * Check if a version falls within an OSV range (between introduced and fixed).
+ * OSV ranges use events: introduced starts vulnerability, fixed ends it.
+ */
+function isVersionInRange(version: string, range: OsvRange): boolean {
+  const introduced = range.events.find(e => e.introduced)?.introduced
+  const fixed = range.events.find(e => e.fixed)?.fixed
+
+  if (!introduced) return false
+
+  // Handle "0" as "0.0.0" for semver comparison
+  const introVersion = introduced === '0' ? '0.0.0' : introduced
+
+  try {
+    // Version must be >= introduced AND < fixed (if fixed exists)
+    return semver.gte(version, introVersion) && (!fixed || semver.lt(version, fixed))
+  } catch {
+    // If semver parsing fails, skip this range
+    return false
+  }
+}
+
+/**
+ * Extract the fixed version for a specific package version from vulnerability data.
+ * Finds the range that contains the current version and returns its fixed version.
+ * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
  */
 function getFixedVersion(
   affected: OsvAffected[] | undefined,
   packageName: string,
+  currentVersion: string,
 ): string | undefined {
   if (!affected) return undefined
 
-  // Find the affected entry for this specific package
-  const packageAffected = affected.find(
+  // Find all affected entries for this specific package
+  const packageAffectedEntries = affected.filter(
     a => a.package.ecosystem === 'npm' && a.package.name === packageName,
   )
-  if (!packageAffected?.ranges) return undefined
 
-  // Look through ranges to find a 'fixed' event
-  for (const range of packageAffected.ranges) {
-    for (const event of range.events) {
-      if (event.fixed) {
-        return event.fixed
+  // Check each entry's ranges to find one that contains the current version
+  for (const entry of packageAffectedEntries) {
+    if (!entry.ranges) continue
+
+    for (const range of entry.ranges) {
+      // Only handle SEMVER ranges (most common for npm)
+      if (range.type !== 'SEMVER') continue
+
+      if (isVersionInRange(currentVersion, range)) {
+        // Found the matching range - return its fixed version
+        const fixedEvent = range.events.find(e => e.fixed)
+        if (fixedEvent?.fixed) return fixedEvent.fixed
       }
     }
   }
