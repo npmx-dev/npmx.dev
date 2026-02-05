@@ -1,12 +1,16 @@
 /**
- * Redirect legacy URLs to canonical paths (client-side only)
+ * Redirect legacy/shorthand URLs to canonical paths.
  *
+ * Handled here:
+ * - /@org/pkg or /pkg           → /package/@org/pkg or /package/pkg
+ * - /@org/pkg/v/ver or /pkg@ver → /package/@org/pkg/v/ver or /package/pkg/v/ver
+ * - /@org                       → /org/org
+ *
+ * Handled via route aliases (not here):
  * - /package/code/* → /package-code/*
- * - /code/* → /package-code/*
+ * - /code/*         → /package-code/*
  * - /package/docs/* → /package-docs/*
- * - /docs/* → /package-docs/*
- * - /org/* → /@*
- * - /* → /package/* (Unless it's an existing page)
+ * - /docs/*         → /package-docs/*
  */
 const pages = [
   '/about',
@@ -49,7 +53,7 @@ export default defineEventHandler(async event => {
     return sendRedirect(event, `/package/${args}/v/${pkgVersionMatch.groups.version}`)
   }
 
-  // /org/* → /@*
+  // /@org → /org/org
   const orgMatch = path.match(/^\/@(?<org>[^/]+)$/)
   if (orgMatch?.groups) {
     return sendRedirect(event, `/org/${orgMatch.groups.org}`)
