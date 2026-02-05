@@ -340,7 +340,7 @@ To add a new locale:
 5. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
 6. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
 
-Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization.html#custom-pluralization) for more info.
+Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization.html#custom-pluralization) and [Plural Rules](https://cldr.unicode.org/index/cldr-spec/plural-rules#TOC-Determining-Plural-Categories) for more info.
 
 ### Update translation
 
@@ -408,6 +408,39 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
    <p>{{ $t('greeting', { name: userName }) }}</p>
    ```
 
+4. Don't concatenate string messages in the vue templates, some languages can have different word order. Use placeholders instead.
+
+   **Bad:**
+
+   ```vue
+   <p>{{ $t('hello') }} {{ userName }}</p>
+   ```
+
+   **Good:**
+
+   ```vue
+   <p>{{ $t('greeting', { name: userName }) }}</p>
+   ```
+
+   **Complex content:**
+
+   If you need to include HTML or components inside the translation, use [`i18n-t`](https://vue-i18n.intlify.dev/guide/advanced/component.html) component. This is especially useful when the order of elements might change between languages.
+
+   ```json
+   { "agreement": "I accept the {terms} and {privacy}." }
+   ```
+
+   ```vue
+   <i18n-t keypath="agreement" tag="p">
+     <template #terms>
+       <NuxtLink to="/terms">{{ $t('terms_link') }}</NuxtLink>
+     </template>
+     <template #privacy>
+       <strong>{{ $t('privacy_policy') }}</strong>
+     </template>
+   </i18n-t>
+   ```
+
 ### Translation key conventions
 
 - Use dot notation for hierarchy: `section.subsection.key`
@@ -415,6 +448,7 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
 - Group related keys together
 - Use `common.*` for shared strings (loading, retry, close, etc.)
 - Use component-specific prefixes: `package.card.*`, `settings.*`, `nav.*`
+- Do not use dashes (`-`) in traslation keys; always use underscore (`_`): e.g., `private_policy` instead of `private-policy`
 
 ### Using i18n-ally (recommended)
 
