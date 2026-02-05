@@ -10,6 +10,8 @@ import { handleResolver } from '#server/utils/atproto/oauth'
 import { Client } from '@atproto/lex'
 import * as app from '#shared/types/lexicons/app'
 import { ensureValidAtIdentifier } from '@atproto/syntax'
+// @ts-expect-error virtual file from oauth module
+import { clientUri } from '#oauth/config'
 
 /**
  * Fetch the user's profile record to get their avatar blob reference
@@ -53,13 +55,11 @@ export default defineEventHandler(async event => {
   }
 
   const query = getQuery(event)
-  const rawReturnTo = query.returnTo?.toString() || '/'
   // Validate returnTo is a safe relative path (prevent open redirect)
-  const isRelativePath =
-    rawReturnTo.startsWith('/') && !rawReturnTo.startsWith('//') && !rawReturnTo.includes(':')
-  const returnTo = isRelativePath ? rawReturnTo : '/'
+  const newURL = new URL(query.returnTo?.toString() || '/', clientUri)
+  const redirectPath = newURL.origin === clientUri ? newURL.pathname : '/'
 
-  setCookie(event, 'auth_return_to', returnTo, {
+  setCookie(event, 'auth_return_to', redirectPath, {
     maxAge: 60 * 5,
     httpOnly: true,
     // secure only if NOT in dev mode
