@@ -28,6 +28,10 @@
     "updating": "（更新中...）",
     "no_results": "\"{query}\" に一致するパッケージは見つかりませんでした",
     "title": "検索",
+    "title_search": "EN TEXT TO REPLACE: search: {search}",
+    "title_packages": "EN TEXT TO REPLACE: search packages",
+    "meta_description": "EN TEXT TO REPLACE: Search results for '{search}'",
+    "meta_description_packages": "EN TEXT TO REPLACE: Search npm packages",
     "not_taken": "{name} は使用可能です",
     "claim_prompt": "このパッケージ名をnpmで取得する",
     "claim_button": "\"{name}\" を取得",
@@ -204,7 +208,25 @@
       "title": "Readme",
       "no_readme": "READMEはありません。",
       "view_on_github": "GitHubで表示",
-      "toc_title": "目次"
+      "toc_title": "目次",
+      "callout": {
+        "note": "EN TEXT TO REPLACE: Note",
+        "tip": "EN TEXT TO REPLACE: Tip",
+        "important": "EN TEXT TO REPLACE: Important",
+        "warning": "EN TEXT TO REPLACE: Warning",
+        "caution": "EN TEXT TO REPLACE: Caution"
+      }
+    },
+    "provenance_section": {
+      "title": "EN TEXT TO REPLACE: Provenance",
+      "built_and_signed_on": "EN TEXT TO REPLACE: Built and signed on {provider}",
+      "view_build_summary": "EN TEXT TO REPLACE: View build summary",
+      "source_commit": "EN TEXT TO REPLACE: Source Commit",
+      "build_file": "EN TEXT TO REPLACE: Build File",
+      "public_ledger": "EN TEXT TO REPLACE: Public Ledger",
+      "transparency_log_entry": "EN TEXT TO REPLACE: Transparency log entry",
+      "view_more_details": "EN TEXT TO REPLACE: View more details",
+      "error_loading": "EN TEXT TO REPLACE: Failed to load provenance details"
     },
     "keywords_title": "キーワード",
     "compatibility": "互換性",
@@ -268,6 +290,7 @@
       "date_range": "{start} から {end}",
       "date_range_multiline": "{start}\nから {end}",
       "analyze": "ダウンロード数を分析",
+      "community_distribution": "EN TEXT TO REPLACE: View community adoption distribution",
       "modal_title": "ダウンロード数",
       "granularity": "粒度",
       "granularity_daily": "日次",
@@ -605,7 +628,8 @@
     "provenance": {
       "verified": "検証済み",
       "verified_title": "検証済みプロバナンス",
-      "verified_via": "検証済み: {provider} 経由で公開"
+      "verified_via": "検証済み: {provider} 経由で公開",
+      "view_more_details": "EN TEXT TO REPLACE: View more details"
     },
     "jsr": {
       "title": "JSRでも利用可能",
