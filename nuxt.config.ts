@@ -101,6 +101,7 @@ export default defineNuxtConfig({
     '/api/opensearch/suggestions': {
       isr: {
         expiration: 60 * 60 * 24 /* one day */,
+        passQuery: true,
         allowQuery: ['q'],
       },
     },
