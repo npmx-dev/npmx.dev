@@ -402,7 +402,7 @@ ${html}
   // Helper to prefix id attributes with 'user-content-'
   const prefixId = (tagName: string, attribs: sanitizeHtml.Attributes) => {
     if (attribs.id && !attribs.id.startsWith('user-content-')) {
-      attribs.id = `user-content-${attribs.id}`
+      attribs.id = `user-content-${attribs.id.toLowerCase()}`
     }
     return { tagName, attribs }
   }
