@@ -25,7 +25,7 @@
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
-    "postinstall": "pnpm generate:lexicons && nuxt prepare && simple-git-hooks",
+    "postinstall": "pnpm rebuild @resvg/resvg-js && pnpm generate:lexicons && nuxt prepare && simple-git-hooks",
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
