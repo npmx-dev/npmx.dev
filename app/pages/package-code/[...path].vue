@@ -493,12 +493,9 @@ defineOgImageComponent('Default', {
           <LinkBase
             variant="button-secondary"
             :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-            target="_blank"
-            rel="noopener noreferrer"
             class="inline-flex items-center gap-2"
           >
             {{ $t('code.view_raw') }}
-            <span class="i-carbon:launch w-4 h-4" />
           </LinkBase>
         </div>
 
@@ -548,12 +545,9 @@ defineOgImageComponent('Default', {
           <LinkBase
             variant="button-secondary"
             :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-            target="_blank"
-            rel="noopener noreferrer"
             class="inline-flex items-center gap-2"
           >
             {{ $t('code.view_raw') }}
-            <span class="i-carbon:launch w-4 h-4" />
           </LinkBase>
         </div>
 

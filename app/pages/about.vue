@@ -74,9 +74,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
                 <strong class="text-fg">{{ $t('about.what_we_are.better_ux_dx') }}</strong>
               </template>
               <template #jsr>
-                <LinkBase href="https://jsr.io/" target="_blank" rel="noopener noreferrer"
-                  >JSR</LinkBase
-                >
+                <LinkBase href="https://jsr.io/">JSR</LinkBase>
               </template>
             </i18n-t>
           </p>
@@ -108,32 +106,32 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
                 >
                   <template #already>{{ $t('about.what_we_are_not.words.already') }}</template>
                   <template #people>
-                    <LinkBase :href="pmLinks.npm" target="_blank" rel="noopener noreferrer">{{
+                    <LinkBase :href="pmLinks.npm">{{
                       $t('about.what_we_are_not.words.people')
                     }}</LinkBase>
                   </template>
                   <template #building>
-                    <LinkBase :href="pmLinks.pnpm" target="_blank" rel="noopener noreferrer">{{
+                    <LinkBase :href="pmLinks.pnpm">{{
                       $t('about.what_we_are_not.words.building')
                     }}</LinkBase>
                   </template>
                   <template #really>
-                    <LinkBase :href="pmLinks.yarn" target="_blank" rel="noopener noreferrer">{{
+                    <LinkBase :href="pmLinks.yarn">{{
                       $t('about.what_we_are_not.words.really')
                     }}</LinkBase>
                   </template>
                   <template #cool>
-                    <LinkBase :href="pmLinks.bun" target="_blank" rel="noopener noreferrer">{{
+                    <LinkBase :href="pmLinks.bun">{{
                       $t('about.what_we_are_not.words.cool')
                     }}</LinkBase>
                   </template>
                   <template #package>
-                    <LinkBase :href="pmLinks.deno" target="_blank" rel="noopener noreferrer">{{
+                    <LinkBase :href="pmLinks.deno">{{
                       $t('about.what_we_are_not.words.package')
                     }}</LinkBase>
                   </template>
                   <template #managers>
-                    <LinkBase :href="pmLinks.vlt" target="_blank" rel="noopener noreferrer">{{
+                    <LinkBase :href="pmLinks.vlt">{{
                       $t('about.what_we_are_not.words.managers')
                     }}</LinkBase>
                   </template>

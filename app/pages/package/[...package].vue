@@ -697,8 +697,6 @@ onKeyStroke(
               <LinkBase
                 variant="button-secondary"
                 :href="repositoryUrl"
-                target="_blank"
-                rel="noopener noreferrer"
                 :classicon="repoProviderIcon"
               >
                 <span v-if="repoRef">
@@ -708,35 +706,17 @@ onKeyStroke(
               </LinkBase>
             </li>
             <li v-if="repositoryUrl && repoMeta && starsLink">
-              <LinkBase
-                variant="button-secondary"
-                :href="starsLink"
-                target="_blank"
-                rel="noopener noreferrer"
-                classicon="i-carbon:star"
-              >
+              <LinkBase variant="button-secondary" :href="starsLink" classicon="i-carbon:star">
                 {{ formatCompactNumber(stars, { decimals: 1 }) }}
               </LinkBase>
             </li>
             <li v-if="forks && forksLink">
-              <LinkBase
-                variant="button-secondary"
-                :href="forksLink"
-                target="_blank"
-                rel="noopener noreferrer"
-                classicon="i-carbon:fork"
-              >
+              <LinkBase variant="button-secondary" :href="forksLink" classicon="i-carbon:fork">
                 {{ formatCompactNumber(forks, { decimals: 1 }) }}
               </LinkBase>
             </li>
             <li v-if="homepageUrl">
-              <LinkBase
-                variant="button-secondary"
-                :href="homepageUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                classicon="i-carbon:link"
-              >
+              <LinkBase variant="button-secondary" :href="homepageUrl" classicon="i-carbon:link">
                 {{ $t('package.links.homepage') }}
               </LinkBase>
             </li>
@@ -744,8 +724,6 @@ onKeyStroke(
               <LinkBase
                 variant="button-secondary"
                 :href="displayVersion.bugs.url"
-                target="_blank"
-                rel="noopener noreferrer"
                 classicon="i-carbon:warning"
               >
                 {{ $t('package.links.issues') }}
@@ -755,8 +733,6 @@ onKeyStroke(
               <LinkBase
                 variant="button-secondary"
                 :href="`https://www.npmjs.com/package/${pkg.name}`"
-                target="_blank"
-                rel="noopener noreferrer"
                 :title="$t('common.view_on_npm')"
                 classicon="i-carbon:logo-npm"
               >
@@ -767,8 +743,6 @@ onKeyStroke(
               <LinkBase
                 variant="button-secondary"
                 :href="jsrInfo.url"
-                target="_blank"
-                rel="noopener noreferrer"
                 :title="$t('badges.jsr.title')"
                 classicon="i-simple-icons:jsr"
               >
@@ -776,13 +750,7 @@ onKeyStroke(
               </LinkBase>
             </li>
             <li v-if="fundingUrl">
-              <LinkBase
-                variant="button-secondary"
-                :href="fundingUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                classicon="i-carbon:favorite"
-              >
+              <LinkBase variant="button-secondary" :href="fundingUrl" classicon="i-carbon:favorite">
                 {{ $t('package.links.fund') }}
               </LinkBase>
             </li>
@@ -883,8 +851,6 @@ onKeyStroke(
                   variant="tag"
                   v-if="getDependencyCount(displayVersion) > 0"
                   :href="`https://npmgraph.js.org/?q=${pkg.name}`"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   :title="$t('package.stats.view_dependency_graph')"
                   classicon="i-carbon:network-3"
                 >
@@ -895,8 +861,6 @@ onKeyStroke(
                   variant="tag"
                   v-if="getDependencyCount(displayVersion) > 0"
                   :href="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   :title="$t('package.stats.inspect_dependency_tree')"
                   classicon="i-carbon:tree-view"
                 >
@@ -1122,14 +1086,9 @@ onKeyStroke(
         <Readme v-if="readmeData?.html" :html="readmeData.html" />
         <p v-else class="text-fg-subtle italic">
           {{ $t('package.readme.no_readme') }}
-          <a
-            v-if="repositoryUrl"
-            :href="repositoryUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link"
-            >{{ $t('package.readme.view_on_github') }}</a
-          >
+          <a v-if="repositoryUrl" :href="repositoryUrl" class="link">{{
+            $t('package.readme.view_on_github')
+          }}</a>
         </p>
 
         <section

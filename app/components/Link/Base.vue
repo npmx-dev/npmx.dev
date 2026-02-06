@@ -21,6 +21,16 @@ const props = withDefaults(
        */
       'aria-keyshortcuts'?: never
 
+      /**
+       * Don't use this directly. This will automatically be set to `_blank` if `href` for external links.
+       */
+      'target'?: never
+
+      /**
+       * Don't use this directly. This will automatically be set to `_blank` if `href` for external links.
+       */
+      'rel'?: never
+
       'classicon'?: string
     } &
       /** This makes sure the link always has either `to` or `href` */
@@ -62,6 +72,8 @@ const props = withDefaults(
     :to="to"
     :href="href"
     :aria-keyshortcuts="keyshortcut"
+    :target="href ? '_blank' : undefined"
+    :rel="href ? 'noopener noreferrer' : undefined"
   >
     <span
       v-if="classicon"
