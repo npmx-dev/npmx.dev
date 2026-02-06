@@ -624,19 +624,13 @@ onKeyStroke(
                     likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
                   "
                   :aria-pressed="likesData?.userHasLiked"
+                  :classicon="
+                    likesData?.userHasLiked
+                      ? 'i-lucide-heart-minus text-red-500'
+                      : 'i-lucide-heart-plus'
+                  "
                 >
-                  <span
-                    :class="
-                      likesData?.userHasLiked
-                        ? 'i-lucide-heart-minus text-red-500'
-                        : 'i-lucide-heart-plus'
-                    "
-                    class="w-4 h-4"
-                    aria-hidden="true"
-                  />
-                  <span>{{
-                    formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 })
-                  }}</span>
+                  {{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}
                 </ButtonBase>
               </TooltipApp>
               <template #fallback>
