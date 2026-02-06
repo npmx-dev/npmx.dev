@@ -46,8 +46,12 @@ if (import.meta.server && !requestedVersion.value && packageName.value) {
   const version = await fetchLatestVersion(packageName.value)
   if (version) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
+    const pathSegments = [...packageName.value.split('/'), 'v', version]
     app.runWithContext(() =>
-      navigateTo('/package-docs/' + packageName.value + '/v/' + version, { redirectCode: 302 }),
+      navigateTo(
+        { name: 'docs', params: { path: pathSegments as [string, ...string[]] } },
+        { redirectCode: 302 },
+      ),
     )
   }
 }
@@ -56,7 +60,8 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      router.replace(`/package-docs/${name}/v/${latest}`)
+      const pathSegments = [...name.split('/'), 'v', latest]
+      router.replace({ name: 'docs', params: { path: pathSegments as [string, ...string[]] } })
     }
   },
   { immediate: true },
@@ -127,7 +132,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
           <div class="flex items-center gap-3 min-w-0">
             <NuxtLink
               v-if="packageName"
-              :to="{ name: 'package', params: { package: [packageName] } }"
+              :to="packageRoute(packageName)"
               class="font-mono text-lg sm:text-xl font-semibold text-fg hover:text-fg-muted transition-colors truncate"
             >
               {{ packageName }}
@@ -186,7 +191,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
             <div class="flex gap-4 mt-4">
               <NuxtLink
                 v-if="packageName"
-                :to="{ name: 'package', params: { package: [packageName] } }"
+                :to="packageRoute(packageName)"
                 class="link-subtle font-mono text-sm"
               >
                 View package

@@ -34,7 +34,7 @@ function isColumnVisible(id: string): boolean {
   return props.columns.find(c => c.id === id)?.visible ?? false
 }
 
-const packageUrl = computed(() => `/package/${pkg.value.name}`)
+const packageUrl = computed(() => packageRoute(pkg.value.name))
 
 const allMaintainersText = computed(() => {
   if (!pkg.value.maintainers?.length) return ''
@@ -107,7 +107,10 @@ const allMaintainersText = computed(() => {
           :key="maintainer.username || maintainer.email"
         >
           <NuxtLink
-            :to="`/~${maintainer.username || maintainer.name}`"
+            :to="{
+              name: '~username',
+              params: { username: maintainer.username || maintainer.name || '' },
+            }"
             class="hover:text-accent-fallback transition-colors duration-200"
             @click.stop
             >{{ maintainer.username || maintainer.name || maintainer.email }}</NuxtLink

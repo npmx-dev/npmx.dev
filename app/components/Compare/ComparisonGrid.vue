@@ -45,7 +45,7 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
         >
           <span class="inline-flex items-center gap-1.5 truncate">
             <NuxtLink
-              :to="`/package/${col.header}`"
+              :to="packageRoute(col.header)"
               class="link-subtle font-mono text-sm font-medium text-fg truncate"
               :title="col.header"
             >

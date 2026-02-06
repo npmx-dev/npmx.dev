@@ -62,7 +62,7 @@ onKeyDown(
       return
     }
 
-    router.push('/search')
+    router.push({ name: 'search' })
   },
   { dedupe: true },
 )

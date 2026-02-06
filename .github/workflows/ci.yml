@@ -150,7 +150,9 @@ jobs:
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: pnpm build:playwright
+        run: pnpm build:test
+        env:
+          VALIDATE_HTML: true
 
       - name: 🖥️ Test project (browser)
         run: pnpm test:browser:prebuilt
@@ -178,7 +180,7 @@ jobs:
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: NODE_ENV=test pnpm build
+        run: pnpm build:test
 
       - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
         run: ./scripts/lighthouse-a11y.sh
@@ -210,3 +212,25 @@ jobs:
 
       - name: 🧹 Check for unused production code
         run: pnpm knip --production
+
+  i18n:
+    name: 🌐 i18n validation
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: true
+
+      - name: 📦 Install dependencies (root only, no scripts)
+        run: pnpm install --filter . --ignore-scripts
+
+      - name: 🌐 Check for missing or dynamic i18n keys
+        run: pnpm i18n:report

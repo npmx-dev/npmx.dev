@@ -104,7 +104,7 @@ onUnmounted(deactivate)
               <!-- Main navigation -->
               <div class="px-2 py-2">
                 <NuxtLink
-                  to="/about"
+                  :to="{ name: 'about' }"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"
                 >
@@ -113,7 +113,7 @@ onUnmounted(deactivate)
                 </NuxtLink>
 
                 <NuxtLink
-                  to="/privacy"
+                  :to="{ name: 'privacy' }"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"
                 >
@@ -122,7 +122,7 @@ onUnmounted(deactivate)
                 </NuxtLink>
 
                 <NuxtLink
-                  to="/compare"
+                  :to="{ name: 'compare' }"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"
                 >
@@ -131,7 +131,7 @@ onUnmounted(deactivate)
                 </NuxtLink>
 
                 <NuxtLink
-                  to="/settings"
+                  :to="{ name: 'settings' }"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"
                 >
@@ -142,7 +142,7 @@ onUnmounted(deactivate)
                 <!-- Connected user links -->
                 <template v-if="isConnected && npmUser">
                   <NuxtLink
-                    :to="`/~${npmUser}`"
+                    :to="{ name: '~username', params: { username: npmUser } }"
                     class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                     @click="closeMenu"
                   >
@@ -151,7 +151,7 @@ onUnmounted(deactivate)
                   </NuxtLink>
 
                   <NuxtLink
-                    :to="`/~${npmUser}/orgs`"
+                    :to="{ name: '~username-orgs', params: { username: npmUser } }"
                     class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                     @click="closeMenu"
                   >
