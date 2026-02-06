@@ -17,6 +17,7 @@
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "i18n:check": "node scripts/compare-translations.ts",
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
+    "i18n:report": "node scripts/find-invalid-translations.ts",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint && oxfmt --check",
@@ -124,6 +125,7 @@
     "typescript": "5.9.3",
     "vitest": "npm:@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vitest-environment-nuxt": "1.0.1",
+    "vue-i18n-extract": "2.0.7",
     "vue-tsc": "3.2.4"
   },
   "engines": {
