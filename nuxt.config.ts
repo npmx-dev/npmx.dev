@@ -94,7 +94,7 @@ export default defineNuxtConfig({
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/__og-image__/**': { isr: getISRConfig(60) },
+    '/_og/**': { isr: getISRConfig(60) },
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
@@ -204,6 +204,7 @@ export default defineNuxtConfig({
   ogImage: {
     defaults: {
       component: 'Default',
+      renderer: 'takumi',
     },
   },
 

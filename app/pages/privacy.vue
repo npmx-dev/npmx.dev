@@ -8,9 +8,9 @@ useSeoMeta({
   description: () => $t('privacy_policy.welcome', { app: 'npmx' }),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('privacy_policy.title'),
-  description: () => $t('privacy_policy.welcome', { app: 'npmx' }),
+defineOgImage('Default', {
+  title: $t('privacy_policy.title'),
+  description: $t('privacy_policy.welcome', { app: 'npmx' }),
 })
 
 const router = useRouter()

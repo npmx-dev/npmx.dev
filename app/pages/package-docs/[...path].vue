@@ -107,9 +107,9 @@ useSeoMeta({
   twitterDescription: () => pkg.value?.license ?? '',
 })
 
-defineOgImageComponent('Default', {
-  title: () => `${pkg.value?.name ?? 'Package'} - Docs`,
-  description: () => pkg.value?.license ?? '',
+defineOgImage('Default', {
+  title: `${pkg.value?.name ?? 'Package'} - Docs`,
+  description: pkg.value?.license ?? '',
   primaryColor: '#60a5fa',
 })
 

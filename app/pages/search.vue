@@ -650,13 +650,13 @@ useSeoMeta({
       : $t('search.meta_description_packages'),
 })
 
-defineOgImageComponent('Default', {
-  title: () =>
-    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
-  description: () =>
-    query.value
-      ? $t('search.meta_description', { search: query.value })
-      : $t('search.meta_description_packages'),
+defineOgImage('Default', {
+  title: query.value
+    ? `${$t('search.title_search', { search: query.value })} - npmx`
+    : `${$t('search.title_packages')} - npmx`,
+  description: query.value
+    ? $t('search.meta_description', { search: query.value })
+    : $t('search.meta_description_packages'),
   primaryColor: '#60a5fa',
 })
 </script>

@@ -23,8 +23,8 @@ import { fileURLToPath } from 'node:url'
  */
 const SKIPPED_COMPONENTS: Record<string, string> = {
   // OgImage components are server-side rendered images, not interactive UI
-  'OgImage/Default.vue': 'OG Image component - server-rendered image, not interactive UI',
-  'OgImage/Package.vue': 'OG Image component - server-rendered image, not interactive UI',
+  'OgImage/Default.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
+  'OgImage/Package.takumi.vue': 'OG Image component - server-rendered image, not interactive UI',
 
   // Client-only components with complex dependencies
   'Header/AuthModal.client.vue': 'Complex auth modal with navigation - requires full app context',

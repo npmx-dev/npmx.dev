@@ -27,9 +27,9 @@ useSeoMeta({
   twitterDescription: () => $t('settings.meta_description'),
 })
 
-defineOgImageComponent('Default', {
-  title: () => $t('settings.title'),
-  description: () => $t('settings.tagline'),
+defineOgImage('Default', {
+  title: $t('settings.title'),
+  description: $t('settings.tagline'),
   primaryColor: '#60a5fa',
 })
 

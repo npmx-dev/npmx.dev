@@ -18,12 +18,6 @@ import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
 
-defineOgImageComponent('Package', {
-  name: () => packageName.value,
-  version: () => requestedVersion.value ?? '',
-  primaryColor: '#60a5fa',
-})
-
 const router = useRouter()
 
 const header = useTemplateRef('header')
@@ -48,6 +42,13 @@ onMounted(() => {
 })
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
+
+defineOgImage('Package', {
+  name: packageName.value,
+  version: requestedVersion.value || '',
+  primaryColor: '#60a5fa',
+})
+
 const selectedPM = useSelectedPackageManager()
 const activePmId = computed(() => selectedPM.value ?? 'npm')
 

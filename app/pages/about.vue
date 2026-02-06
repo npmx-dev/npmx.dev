@@ -18,7 +18,7 @@ useSeoMeta({
   twitterDescription: () => $t('about.meta_description'),
 })
 
-defineOgImageComponent('Default', {
+defineOgImage('Default', {
   primaryColor: '#60a5fa',
   title: 'About npmx',
   description: 'a fast, modern browser for the **npm registry**',
