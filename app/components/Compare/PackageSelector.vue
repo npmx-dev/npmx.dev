@@ -106,7 +106,7 @@ function handleBlur() {
         </template>
         <NuxtLink
           v-else
-          :to="`/package/${pkg}`"
+          :to="packageRoute(pkg)"
           class="font-mono text-sm text-fg hover:text-accent transition-colors"
         >
           {{ pkg }}

@@ -18,11 +18,6 @@ import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
 
-definePageMeta({
-  name: 'package',
-  alias: ['/:package(.*)*'],
-})
-
 defineOgImageComponent('Package', {
   name: () => packageName.value,
   version: () => requestedVersion.value ?? '',
@@ -318,7 +313,12 @@ const homepageUrl = computed(() => {
 const docsLink = computed(() => {
   if (!resolvedVersion.value) return null
 
-  return `/package-docs/${pkg.value!.name}/v/${resolvedVersion.value}`
+  return {
+    name: 'docs' as const,
+    params: {
+      path: [pkg.value!.name, 'v', resolvedVersion.value] satisfies [string, string, string],
+    },
+  }
 })
 
 const fundingUrl = computed(() => {
@@ -493,7 +493,7 @@ onKeyStroke(
   e => {
     if (!pkg.value) return
     e.preventDefault()
-    router.push({ path: '/compare', query: { packages: pkg.value.name } })
+    router.push({ name: 'compare', query: { packages: pkg.value.name } })
   },
 )
 </script>
@@ -559,7 +559,7 @@ onKeyStroke(
 
             <NuxtLink
               v-if="requestedVersion && resolvedVersion !== requestedVersion"
-              :to="`/package/${pkg.name}/v/${resolvedVersion}`"
+              :to="packageRoute(pkg.name, resolvedVersion)"
               :title="$t('package.view_permalink')"
               >{{ resolvedVersion }}</NuxtLink
             >
@@ -670,7 +670,7 @@ onKeyStroke(
               </kbd>
             </NuxtLink>
             <NuxtLink
-              :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
+              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
               class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="."
             >
@@ -684,7 +684,7 @@ onKeyStroke(
               </kbd>
             </NuxtLink>
             <NuxtLink
-              :to="{ path: '/compare', query: { packages: pkg.name } }"
+              :to="{ name: 'compare', query: { packages: pkg.name } }"
               class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="c"
             >
@@ -821,7 +821,7 @@ onKeyStroke(
             </li>
             <li v-if="resolvedVersion" class="sm:hidden">
               <NuxtLink
-                :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
+                :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
                 <span class="i-carbon:code w-4 h-4" aria-hidden="true" />
@@ -830,7 +830,7 @@ onKeyStroke(
             </li>
             <li class="sm:hidden">
               <NuxtLink
-                :to="{ path: '/compare', query: { packages: pkg.name } }"
+                :to="{ name: 'compare', query: { packages: pkg.name } }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
                 <span class="i-carbon:compare w-4 h-4" aria-hidden="true" />
@@ -1266,7 +1266,7 @@ onKeyStroke(
       <p class="text-fg-muted mb-8">
         {{ error?.message ?? $t('package.not_found_message') }}
       </p>
-      <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
+      <NuxtLink :to="{ name: 'index' }" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
   </main>
 </template>
