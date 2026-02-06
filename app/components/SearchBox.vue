@@ -49,7 +49,8 @@ defineExpose({
 
         <div class="search-box relative flex items-center">
           <span
-            class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
+            class="absolute text-fg-subtle font-mono pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
+            :class="compact ? 'inset-is-3 text-sm' : 'inset-is-4 text-xl'"
           >
             /
           </span>
@@ -62,11 +63,9 @@ defineExpose({
             name="q"
             :placeholder="$t('search.placeholder')"
             v-bind="noCorrect"
-            class="w-full bg-bg-subtle border border-border font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 motion-reduce:transition-none hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+            class="w-full bg-bg-subtle border border-border text-base font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 motion-reduce:transition-none hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
             :class="
-              compact
-                ? 'ps-7 pe-3 py-1.5 rounded-md text-sm'
-                : 'ps-8 pe-24 h-14 py-4 rounded-xl text-base'
+              compact ? 'ps-7 pe-3 py-1.5 rounded-md text-sm!' : 'ps-8 pe-24 h-14 py-4 rounded-xl'
             "
             @blur="handleBlur"
             @focus="handleFocus"
