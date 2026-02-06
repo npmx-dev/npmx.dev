@@ -541,10 +541,7 @@ function focusElement(el: HTMLElement) {
 
 // Navigate to package page
 async function navigateToPackage(packageName: string) {
-  await navigateTo({
-    name: 'package',
-    params: { package: packageName.split('/') },
-  })
+  await navigateTo(packageRoute(packageName))
 }
 
 // Track the input value when user pressed Enter (for navigating when results arrive)

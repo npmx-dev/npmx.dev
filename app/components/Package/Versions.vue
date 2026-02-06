@@ -33,10 +33,7 @@ interface VersionDisplay {
 
 // Build route object for package version link
 function versionRoute(version: string): RouteLocationRaw {
-  return {
-    name: 'package',
-    params: { package: [...props.packageName.split('/'), 'v', version] },
-  }
+  return packageRoute(props.packageName, version)
 }
 
 // Version to tags lookup (supports multiple tags per version)

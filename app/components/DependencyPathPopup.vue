@@ -93,16 +93,12 @@ function parsePackageString(pkg: string): { name: string; version: string } {
           >
             <span v-if="idx > 0" class="text-fg-subtle me-1">└─</span>
             <NuxtLink
-              :to="{
-                name: 'package',
-                params: {
-                  package: [
-                    ...parsePackageString(pathItem).name.split('/'),
-                    'v',
-                    parsePackageString(pathItem).version,
-                  ],
-                },
-              }"
+              :to="
+                packageRoute(
+                  parsePackageString(pathItem).name,
+                  parsePackageString(pathItem).version,
+                )
+              "
               class="hover:underline"
               :class="idx === path.length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
               @click="closePopup"

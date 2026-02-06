@@ -15,11 +15,11 @@ const isHome = computed(() => route.name === 'index')
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
         <div class="hidden sm:flex items-center gap-6">
-          <NuxtLink to="/about" class="link-subtle font-mono text-xs flex items-center">
+          <NuxtLink :to="{ name: 'about' }" class="link-subtle font-mono text-xs flex items-center">
             {{ $t('footer.about') }}
           </NuxtLink>
           <NuxtLink
-            to="/privacy"
+            :to="{ name: 'privacy' }"
             class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1 lowercase"
           >
             {{ $t('privacy_policy.title') }}
