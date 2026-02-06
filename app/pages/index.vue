@@ -53,7 +53,7 @@ defineOgImageComponent('Default', {
         </p>
 
         <SearchBox
-          class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
+          class="max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
           v-model:search-query="searchQuery"
           @submit="handleSearchSubmit"
