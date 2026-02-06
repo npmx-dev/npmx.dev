@@ -21,12 +21,12 @@ const props = withDefaults(
       'aria-keyshortcuts'?: never
 
       /**
-       * Don't use this directly. This will automatically be set to `_blank` if `href` for external links.
+       * Don't use this directly. This will automatically be set to `_blank` for external links passed via `to`.
        */
       'target'?: never
 
       /**
-       * Don't use this directly. This will automatically be set to `_blank` if `href` for external links.
+       * Don't use this directly. This will automatically be set for external links passed via `to`.
        */
       'rel'?: never
 
