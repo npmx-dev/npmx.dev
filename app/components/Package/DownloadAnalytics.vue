@@ -904,7 +904,7 @@ const chartConfig = computed(() => {
                   ${label}
                 </span>
 
-                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-right">
+                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">
                   ${v}
                 </span>
               </div>`
