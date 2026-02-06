@@ -119,6 +119,10 @@ const router = useRouter()
               <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
               <span>{{ $t('a11y.implementation.li6') }}</span>
             </li>
+            <li class="flex items-start gap-3">
+              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span>{{ $t('a11y.implementation.li7') }}</span>
+            </li>
           </ul>
         </div>
 
