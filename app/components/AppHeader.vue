@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { LinkBase } from '#components'
 import { isEditableElement } from '~/utils/input'
 
 withDefaults(
@@ -155,15 +156,9 @@ onKeyStroke(
           variant="button-secondary"
           to="/compare"
           class="inline-flex items-center gap-2"
-          aria-keyshortcuts="c"
+          keyshortcut="c"
         >
           {{ $t('nav.compare') }}
-          <kbd
-            class="inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded no-underline"
-            aria-hidden="true"
-          >
-            c
-          </kbd>
         </LinkBase>
 
         <!-- Desktop: Settings link -->
@@ -171,15 +166,9 @@ onKeyStroke(
           variant="button-secondary"
           to="/settings"
           class="inline-flex items-center gap-2"
-          aria-keyshortcuts=","
+          keyshortcut=","
         >
           {{ $t('nav.settings') }}
-          <kbd
-            class="inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded no-underline"
-            aria-hidden="true"
-          >
-            ,
-          </kbd>
         </LinkBase>
 
         <!-- Desktop: Account menu -->

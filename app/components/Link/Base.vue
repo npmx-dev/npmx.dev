@@ -5,14 +5,21 @@ const props = withDefaults(
   defineProps<
     {
       /** Disabled links will be displayed as plain text */
-      disabled?: boolean
+      'disabled'?: boolean
       /**
        * `type` should never be used, because this will always be a link.
        *
        * If you want a button use `TagButton` instead.
        * */
-      type?: never
-      variant?: 'button-primary' | 'button-secondary' | 'tag' | 'link'
+      'type'?: never
+      'variant'?: 'button-primary' | 'button-secondary' | 'tag' | 'link'
+
+      'keyshortcut'?: string
+
+      /**
+       * Don't use this directly, use `keyshortcut` instead. Correcty HTML will be automatically generated and the shortcut will automatically be displayed in the UI.
+       */
+      'aria-keyshortcuts'?: never
     } &
       /** This makes sure the link always has either `to` or `href` */
       (Required<Pick<NuxtLinkProps, 'to'>> | Required<Pick<NuxtLinkProps, 'href'>>) &
@@ -38,6 +45,7 @@ const props = withDefaults(
   /></span>
   <NuxtLink
     v-else
+    class="group"
     :class="{
       'text-fg underline-offset-4 underline decoration-1 decoration-fg/50 hover:(no-underline text-fg/80) transition-colors duration-200':
         variant === 'link',
@@ -51,7 +59,15 @@ const props = withDefaults(
     }"
     :to="to"
     :href="href"
+    :aria-keyshortcuts="keyshortcut"
   >
     <slot />
+    <kbd
+      v-if="keyshortcut"
+      class="inline-flex items-center justify-center w-4 h-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
+      aria-hidden="true"
+    >
+      {{ keyshortcut }}
+    </kbd>
   </NuxtLink>
 </template>

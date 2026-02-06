@@ -16,6 +16,7 @@ import { getDependencyCount } from '~/utils/npm/dependency-count'
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
+import { LinkBase } from '#components'
 
 definePageMeta({
   name: 'package',
@@ -649,48 +650,25 @@ onKeyStroke(
             :aria-label="$t('package.navigation')"
             class="hidden sm:flex items-center gap-0.5 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
           >
-            <LinkBase
-              variant="button-secondary"
-              v-if="docsLink"
-              :to="docsLink"
-              aria-keyshortcuts="d"
-            >
+            <LinkBase variant="button-secondary" v-if="docsLink" :to="docsLink" keyshortcut="d">
               <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
               {{ $t('package.links.docs') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded no-underline"
-                aria-hidden="true"
-              >
-                d
-              </kbd>
             </LinkBase>
             <LinkBase
               variant="button-secondary"
               :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
-              aria-keyshortcuts="."
+              keyshortcut="."
             >
               <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
               {{ $t('package.links.code') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded no-underline"
-                aria-hidden="true"
-              >
-                .
-              </kbd>
             </LinkBase>
             <LinkBase
               variant="button-secondary"
               :to="{ path: '/compare', query: { packages: pkg.name } }"
-              aria-keyshortcuts="c"
+              keyshortcut="c"
             >
               <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
               {{ $t('package.links.compare') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded no-underline"
-                aria-hidden="true"
-              >
-                c
-              </kbd>
             </LinkBase>
           </nav>
         </div>
