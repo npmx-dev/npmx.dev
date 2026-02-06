@@ -183,9 +183,8 @@ onKeyStroke(
           :aria-label="$t('nav.open_menu')"
           :aria-expanded="showMobileMenu"
           @click="showMobileMenu = !showMobileMenu"
-        >
-          <span class="w-6 h-6 inline-block i-carbon:menu" aria-hidden="true" />
-        </ButtonBase>
+          iconclass="i-carbon:menu"
+        />
       </div>
     </nav>
 

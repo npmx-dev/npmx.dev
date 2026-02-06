@@ -59,7 +59,6 @@ function openAuthModal() {
   <div ref="accountMenuRef" class="relative flex min-w-24 justify-end">
     <ButtonBase
       type="button"
-      class="relative flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors duration-200 hover:bg-bg-subtle hover:text-accent focus-visible:outline-accent/70"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       @click="isOpen = !isOpen"

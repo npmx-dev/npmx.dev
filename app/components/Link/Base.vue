@@ -59,15 +59,15 @@ const props = withDefaults(
     v-else
     class="group inline-flex gap-x-1 items-center justify-center"
     :class="{
-      'text-fg underline-offset-[0.2rem] underline decoration-1 decoration-fg/50 hover:(no-underline text-fg/80) transition-colors duration-200':
+      'text-fg underline-offset-[0.2rem] underline decoration-1 decoration-fg/50 hover:(no-underline text-accent) transition-colors duration-200':
         variant === 'link',
       'gap-x-1 font-mono border border-border rounded-md transition-all duration-200 aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
         variant !== 'link',
       'text-sm px-4 py-2': variant !== 'tag' && variant !== 'link',
       'text-xs px-2 py-0.5': variant === 'tag',
-      'bg-bg-muted text-fg-muted hover:(text-fg border-border-hover)': variant === 'tag',
-      'text-bg bg-fg hover:(bg-fg/90)': variant === 'button-primary',
-      'bg-transparent text-fg hover:(bg-fg text-bg border-fg)': variant === 'button-secondary',
+      'bg-transparent text-fg hover:(bg-accent/30 border-fg)':
+        variant === 'tag' || variant === 'button-secondary',
+      'text-bg bg-fg hover:(bg-accent/90)': variant === 'button-primary',
     }"
     :to="to"
     :href="href"
