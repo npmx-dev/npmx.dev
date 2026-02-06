@@ -29,12 +29,12 @@ function isCategoryNoneSelected(category: string): boolean {
     <div v-for="category in categoryOrder" :key="category">
       <!-- Category header with all/none buttons -->
       <div class="flex items-center gap-2 mb-2">
-        <span class="text-[10px] text-fg-subtle uppercase tracking-wider">
+        <span class="text-xxs text-fg-subtle uppercase tracking-wider">
           {{ getCategoryLabel(category) }}
         </span>
         <button
           type="button"
-          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
+          class="text-xxs transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
           :class="
             isCategoryAllSelected(category)
               ? 'text-fg-muted'
@@ -48,10 +48,10 @@ function isCategoryNoneSelected(category: string): boolean {
         >
           {{ $t('compare.facets.all') }}
         </button>
-        <span class="text-[10px] text-fg-muted/40">/</span>
+        <span class="text-xxs text-fg-muted/40">/</span>
         <button
           type="button"
-          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
+          class="text-xxs transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
           :class="
             isCategoryNoneSelected(category)
               ? 'text-fg-muted'
@@ -94,7 +94,7 @@ function isCategoryNoneSelected(category: string): boolean {
             aria-hidden="true"
           />
           {{ facet.label }}
-          <span v-if="facet.comingSoon" class="text-[9px]"
+          <span v-if="facet.comingSoon" class="text-xxs"
             >({{ $t('compare.facets.coming_soon') }})</span
           >
         </button>

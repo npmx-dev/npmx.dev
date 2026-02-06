@@ -174,7 +174,7 @@ const sortedOptionalDependencies = computed(() => {
             </NuxtLink>
             <span
               v-if="peer.optional"
-              class="px-1 py-0.5 font-mono text-[10px] text-fg-subtle bg-bg-muted border border-border rounded shrink-0"
+              class="px-1 py-0.5 font-mono text-xxs text-fg-subtle bg-bg-muted border border-border rounded shrink-0"
               :title="$t('package.dependencies.optional')"
             >
               {{ $t('package.dependencies.optional') }}

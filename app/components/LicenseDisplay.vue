@@ -24,7 +24,7 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
         {{ token.value }}
       </a>
       <span v-else-if="token.type === 'license'">{{ token.value }}</span>
-      <span v-else-if="token.type === 'operator'" class="text-[0.65em]">{{ token.value }}</span>
+      <span v-else-if="token.type === 'operator'" class="text-xxs">{{ token.value }}</span>
     </template>
     <span
       v-if="hasAnyValidLicense"

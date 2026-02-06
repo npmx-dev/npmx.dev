@@ -604,7 +604,7 @@ watch(
                   <span
                     v-for="tag in v.tags"
                     :key="tag"
-                    class="text-[9px] px-1 py-0.5 rounded font-sans font-medium"
+                    class="text-xxs px-1 py-0.5 rounded font-sans font-medium"
                     :class="
                       tag === 'latest'
                         ? 'bg-emerald-500/10 text-emerald-400'
