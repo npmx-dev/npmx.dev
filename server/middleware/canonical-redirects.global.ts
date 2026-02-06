@@ -44,6 +44,7 @@ export default defineEventHandler(async event => {
   let pkgMatch = path.match(/^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)$/)
   if (pkgMatch?.groups) {
     const args = [pkgMatch.groups.org, pkgMatch.groups.name].filter(Boolean).join('/')
+    setHeader(event, 'cache-control', 'stale-while-revalidate=31536000, public')
     return sendRedirect(event, `/package/${args}`)
   }
 
@@ -55,12 +56,14 @@ export default defineEventHandler(async event => {
 
   if (pkgVersionMatch?.groups) {
     const args = [pkgVersionMatch.groups.org, pkgVersionMatch.groups.name].filter(Boolean).join('/')
+    setHeader(event, 'cache-control', 'stale-while-revalidate=31536000, public')
     return sendRedirect(event, `/package/${args}/v/${pkgVersionMatch.groups.version}`)
   }
 
   // /@org → /org/org
   const orgMatch = path.match(/^\/@(?<org>[^/]+)$/)
   if (orgMatch?.groups) {
+    setHeader(event, 'cache-control', 'stale-while-revalidate=31536000, public')
     return sendRedirect(event, `/org/${orgMatch.groups.org}`)
   }
 })
