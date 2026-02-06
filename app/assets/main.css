@@ -5,6 +5,7 @@
   box-sizing: border-box;
 }
 
+:root:not([data-theme='light']),
 :root[data-theme='dark'] {
   /* background colors */
   --bg: var(--bg-color, oklch(0.145 0 0));

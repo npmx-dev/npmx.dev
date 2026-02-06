@@ -292,7 +292,7 @@ export default defineCachedEventHandler(
       const rawLabelColor = labelColor ?? '#0a0a0a'
       const finalLabelColor = rawLabelColor?.startsWith('#') ? rawLabelColor : `#${rawLabelColor}`
 
-      const leftWidth = measureTextWidth(finalLabel)
+      const leftWidth = finalLabel.trim().length === 0 ? 0 : measureTextWidth(finalLabel)
       const rightWidth = measureTextWidth(
         finalValue,
         CHARS_WIDTH[strategyKey as keyof typeof CHARS_WIDTH],

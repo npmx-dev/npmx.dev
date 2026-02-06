@@ -18,11 +18,6 @@ import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
 
-definePageMeta({
-  name: 'package',
-  alias: ['/:package(.*)*'],
-})
-
 defineOgImageComponent('Package', {
   name: () => packageName.value,
   version: () => requestedVersion.value ?? '',
@@ -318,7 +313,12 @@ const homepageUrl = computed(() => {
 const docsLink = computed(() => {
   if (!resolvedVersion.value) return null
 
-  return `/package-docs/${pkg.value!.name}/v/${resolvedVersion.value}`
+  return {
+    name: 'docs' as const,
+    params: {
+      path: [pkg.value!.name, 'v', resolvedVersion.value] satisfies [string, string, string],
+    },
+  }
 })
 
 const fundingUrl = computed(() => {
@@ -493,7 +493,7 @@ onKeyStroke(
   e => {
     if (!pkg.value) return
     e.preventDefault()
-    router.push({ path: '/compare', query: { packages: pkg.value.name } })
+    router.push({ name: 'compare', query: { packages: pkg.value.name } })
   },
 )
 </script>
@@ -515,6 +515,7 @@ onKeyStroke(
             <h1
               class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
               :title="pkg.name"
+              dir="ltr"
             >
               <NuxtLink
                 v-if="orgName"
@@ -553,17 +554,18 @@ onKeyStroke(
           >
             <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
             <template v-if="requestedVersion && resolvedVersion !== requestedVersion">
-              <span class="font-mono text-fg-muted text-sm">{{ requestedVersion }}</span>
+              <span class="font-mono text-fg-muted text-sm" dir="ltr">{{ requestedVersion }}</span>
               <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
             </template>
 
             <NuxtLink
               v-if="requestedVersion && resolvedVersion !== requestedVersion"
-              :to="`/package/${pkg.name}/v/${resolvedVersion}`"
+              :to="packageRoute(pkg.name, resolvedVersion)"
               :title="$t('package.view_permalink')"
+              dir="ltr"
               >{{ resolvedVersion }}</NuxtLink
             >
-            <span v-else>v{{ resolvedVersion }}</span>
+            <span dir="ltr" v-else>v{{ resolvedVersion }}</span>
 
             <template v-if="hasProvenance(displayVersion) && provenanceBadgeMounted">
               <TooltipApp
@@ -670,7 +672,7 @@ onKeyStroke(
               </kbd>
             </NuxtLink>
             <NuxtLink
-              :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
+              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
               class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="."
             >
@@ -684,7 +686,7 @@ onKeyStroke(
               </kbd>
             </NuxtLink>
             <NuxtLink
-              :to="{ path: '/compare', query: { packages: pkg.name } }"
+              :to="{ name: 'compare', query: { packages: pkg.name } }"
               class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
               aria-keyshortcuts="c"
             >
@@ -821,7 +823,7 @@ onKeyStroke(
             </li>
             <li v-if="resolvedVersion" class="sm:hidden">
               <NuxtLink
-                :to="`/package-code/${pkg.name}/v/${resolvedVersion}`"
+                :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
                 <span class="i-carbon:code w-4 h-4" aria-hidden="true" />
@@ -830,7 +832,7 @@ onKeyStroke(
             </li>
             <li class="sm:hidden">
               <NuxtLink
-                :to="{ path: '/compare', query: { packages: pkg.name } }"
+                :to="{ name: 'compare', query: { packages: pkg.name } }"
                 class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
               >
                 <span class="i-carbon:compare w-4 h-4" aria-hidden="true" />
@@ -945,7 +947,7 @@ onKeyStroke(
             </dt>
             <dd class="font-mono text-sm text-fg">
               <!-- Package size (greyed out) -->
-              <span class="text-fg-muted">
+              <span class="text-fg-muted" dir="ltr">
                 <span v-if="displayVersion?.dist?.unpackedSize">
                   {{ formatBytes(displayVersion.dist.unpackedSize) }}
                 </span>
@@ -965,7 +967,7 @@ onKeyStroke(
                     aria-hidden="true"
                   />
                 </span>
-                <span v-else-if="installSize?.totalSize">
+                <span v-else-if="installSize?.totalSize" dir="ltr">
                   {{ formatBytes(installSize.totalSize) }}
                 </span>
                 <span v-else class="text-fg-subtle">-</span>
@@ -1120,11 +1122,11 @@ onKeyStroke(
 
       <!-- README -->
       <section id="readme" class="area-readme min-w-0 scroll-mt-20">
-        <div class="flex flex-wrap items-center justify-between mb-4 px-1">
+        <div class="flex flex-wrap items-center justify-between mb-3 px-1">
           <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
             <a
               href="#readme"
-              class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
+              class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
             >
               {{ $t('package.readme.title') }}
               <span
@@ -1266,7 +1268,7 @@ onKeyStroke(
       <p class="text-fg-muted mb-8">
         {{ error?.message ?? $t('package.not_found_message') }}
       </p>
-      <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
+      <NuxtLink :to="{ name: 'index' }" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
     </div>
   </main>
 </template>

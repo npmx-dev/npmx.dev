@@ -84,7 +84,7 @@ describe('executable detection and run commands', () => {
       ['yarn', ['npx', 'eslint']],
       ['bun', ['bunx', 'eslint']],
       ['deno', ['deno', 'run', 'npm:eslint']],
-      ['vlt', ['vlt', 'x', 'eslint']],
+      ['vlt', ['vlx', 'eslint']],
     ] as const)('%s (local) → %s', (pm, expected) => {
       expect(
         getRunCommandParts({
@@ -102,7 +102,7 @@ describe('executable detection and run commands', () => {
       ['yarn', ['yarn', 'dlx', 'create-vite']],
       ['bun', ['bunx', 'create-vite']],
       ['deno', ['deno', 'run', 'npm:create-vite']],
-      ['vlt', ['vlt', 'x', 'create-vite']],
+      ['vlt', ['vlx', 'create-vite']],
     ] as const)('%s (remote) → %s', (pm, expected) => {
       expect(
         getRunCommandParts({

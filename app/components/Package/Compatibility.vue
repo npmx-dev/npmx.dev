@@ -48,7 +48,7 @@ const sortedEngines = computed(() => {
           />
           {{ getName(engine) }}
         </dt>
-        <dd class="font-mono text-sm text-fg text-end" :title="version">
+        <dd class="font-mono text-sm text-fg text-end" :title="version" dir="ltr">
           {{ version }}
         </dd>
       </div>

@@ -5,6 +5,10 @@ const props = defineProps<{
 
 const dialogRef = useTemplateRef('dialogRef')
 
+const emit = defineEmits<{
+  (e: 'transitioned'): void
+}>()
+
 const modalTitleId = computed(() => {
   const id = getCurrentInstance()?.attrs.id
   return id ? `${id}-title` : undefined
@@ -12,6 +16,20 @@ const modalTitleId = computed(() => {
 
 function handleModalClose() {
   dialogRef.value?.close()
+}
+
+/**
+ * Emits `transitioned` once the dialog has finished its open opacity transition.
+ * This is used by consumers that need to run layout-sensitive logic (for example
+ * dispatching a resize) only after the modal is fully displayed.
+ */
+function onDialogTransitionEnd(event: TransitionEvent) {
+  const el = dialogRef.value
+  if (!el) return
+  if (!el.open) return
+  if (event.target !== el) return
+  if (event.propertyName !== 'opacity') return
+  emit('transitioned')
 }
 
 defineExpose({
@@ -28,6 +46,7 @@ defineExpose({
       class="w-full bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain m-0 m-auto p-6 text-fg focus-visible:outline focus-visible:outline-accent/70"
       :aria-labelledby="modalTitleId"
       v-bind="$attrs"
+      @transitionend="onDialogTransitionEnd"
     >
       <!-- Modal top header section -->
       <div class="flex items-center justify-between mb-6">

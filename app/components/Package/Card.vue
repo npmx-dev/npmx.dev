@@ -44,10 +44,11 @@ const pkgDescription = useMarkdown(() => ({
         class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
       >
         <NuxtLink
-          :to="{ name: 'package', params: { package: result.package.name.split('/') } }"
+          :to="packageRoute(result.package.name)"
           :prefetch-on="prefetch ? 'visibility' : 'interaction'"
           class="decoration-none scroll-mt-48 scroll-mb-6 after:content-[''] after:absolute after:inset-0"
           :data-result-index="index"
+          dir="ltr"
           >{{ result.package.name }}</NuxtLink
         >
         <span
