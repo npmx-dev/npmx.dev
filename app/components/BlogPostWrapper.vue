@@ -27,7 +27,7 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
         <AuthorList :authors="frontmatter.authors" variant="expanded" />
       </div>
     </div>
-    <article class="max-w-prose mx-auto p-2 prose dark:prose-invert mx-auto">
+    <article class="max-w-prose mx-auto p-2 prose dark:prose-invert">
       <div class="text-sm text-fg-muted font-mono mb-4">
         <DateTime :datetime="frontmatter.date" year="numeric" month="short" day="numeric" />
       </div>

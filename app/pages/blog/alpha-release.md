@@ -68,13 +68,31 @@ together into strong and productive communities."
 
 ## What's included in the npmx alpha release
 
-features
+We've packed a lot into the alpha release. Here's an overview of what you can expect from npmx today.
 
-- 19 languages and additional locales
+Search and view details about packages, users and organizations available on npm, dive deeper into the code, plus get
+detailed information on:
+
+- download statistics
+- outdated dependency warnings
+- module format (ESM/CJS)
+- install size calculation
+- JSR cross-refernce
+- multi-provider repo support
+- version range resolution
+- package likes powered by the AT protocol
+
+You also get quick access to StackBlitz, CodeSandbox, and other demo environments from package READMEs files. Plus, use
+npmx in 19 languages and additional locals, customize your experience with light or dark mode, and power-up your
+workflow across the user interface with keyboard shortcuts.
 
 ## The future of npmx
 
-values
+Our goal at npmx is to build a faster, modern package browsing and management experience for everyone in the JavaScript
+ecosystem. We're moving fast, but we know we don't have all the answers. To work towards this goal, today we're building
+together for our peers: open-source developers who work with packages on a daily basis and keen early adopters who are
+willing to try out the alpha to help us identify what's working and what's not. Our aim is to build on our progress to
+date, and learn together how to tackle the next stage of releasing npmx in beta for a wider audience.
 
 ## Join us at npmx
 
