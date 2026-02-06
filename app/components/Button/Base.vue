@@ -39,7 +39,15 @@ defineExpose({
         variant === 'primary',
     }"
     :type="props.type"
-    :disabled="disabled ? true : undefined"
+    :disabled="
+      /**
+       * Unfortunately Vue _sometimes_ doesn't handle `disabled` correct,
+       * resulting in an invalid `disabled=false` attribute in the final HTML.
+       *
+       * This fixes this.
+       */
+      disabled ? true : undefined
+    "
     :aria-keyshortcuts="keyshortcut"
   >
     <span
