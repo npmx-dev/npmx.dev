@@ -1,6 +1,8 @@
 import type { CSSEntries, DynamicMatcher, Preset, RuleContext } from 'unocss'
 import { cornerMap, directionSize, h } from '@unocss/preset-wind4/utils'
 
+export type CollectorChecker = (warning: string, rule: string) => void
+
 // Track warnings to avoid duplicates
 const warnedClasses = new Set<string>()
 
@@ -38,6 +40,7 @@ const directionMap: Record<string, string[]> = {
 function directionSizeRTL(
   propertyPrefix: string,
   prefixMap?: { l: string; r: string },
+  checker?: CollectorChecker,
 ): DynamicMatcher {
   const matcher = directionSize(propertyPrefix)
   return (args, context) => {
@@ -46,10 +49,16 @@ function directionSizeRTL(
     const defaultMap = { l: 'is', r: 'ie' }
     const map = prefixMap || defaultMap
     const replacement = map[direction as 'l' | 'r']
-    warnOnce(
-      `[RTL] Avoid using '${match}'. Use '${match.replace(direction === 'l' ? 'l' : 'r', replacement)}' instead.`,
-      match,
-    )
+
+    const fullClass = context.rawSelector || match
+    const suggestedBase = match.replace(direction === 'l' ? 'l' : 'r', replacement)
+    const suggestedClass = fullClass.replace(match, suggestedBase)
+
+    if (checker) {
+      checker(`avoid using '${fullClass}', use '${suggestedClass}' instead.`, fullClass)
+    } else {
+      warnOnce(`[RTL] Avoid using '${fullClass}'. Use '${suggestedClass}' instead.`, fullClass)
+    }
     return matcher([match, replacement, size], context)
   }
 }
@@ -78,7 +87,7 @@ function handlerBorderSize([, a = '', b = '1']: string[]): CSSEntries | undefine
 /**
  * CSS RTL support to detect, replace and warn wrong left/right usages.
  */
-export function presetRtl(): Preset {
+export function presetRtl(checker?: CollectorChecker): Preset {
   return {
     name: 'rtl-preset',
     rules: [
@@ -86,43 +95,60 @@ export function presetRtl(): Preset {
       // We need to move the dash out of the capturing group to avoid capturing it in the direction
       [
         /^p([rl])-(.+)?$/,
-        directionSizeRTL('padding', { l: 's', r: 'e' }),
+        directionSizeRTL('padding', { l: 's', r: 'e' }, checker),
         { autocomplete: '(m|p)<directions>-<num>' },
       ],
       [
         /^m([rl])-(.+)?$/,
-        directionSizeRTL('margin', { l: 's', r: 'e' }),
+        directionSizeRTL('margin', { l: 's', r: 'e' }, checker),
         { autocomplete: '(m|p)<directions>-<num>' },
       ],
       [
         /^(?:position-|pos-)?(left|right)-(.+)$/,
-        ([, direction, size], context) => {
+        ([match, direction, size], context) => {
           if (!size) return undefined
           const replacement = direction === 'left' ? 'inset-is' : 'inset-ie'
-          warnOnce(
-            `[RTL] Avoid using '${direction}-${size}'. Use '${replacement}-${size}' instead.`,
-            `${direction}-${size}`,
-          )
+
+          const fullClass = context.rawSelector || match
+          const suggestedBase = match.replace(direction!, replacement)
+          const suggestedClass = fullClass.replace(match, suggestedBase)
+
+          if (checker) {
+            checker(`avoid using '${fullClass}'. Use '${suggestedClass}' instead.`, fullClass)
+          } else {
+            warnOnce(
+              `[RTL] Avoid using '${fullClass}'. Use '${suggestedClass}' instead.`,
+              fullClass,
+            )
+          }
           return directionSize('inset')(['', direction === 'left' ? 'is' : 'ie', size], context)
         },
         { autocomplete: '(left|right)-<num>' },
       ],
       [
         /^text-(left|right)$/,
-        ([, direction]) => {
+        ([match, direction], context) => {
           const replacement = direction === 'left' ? 'start' : 'end'
-          warnOnce(
-            `[RTL] Avoid using 'text-${direction}'. Use 'text-${replacement}' instead.`,
-            `text-${direction}`,
-          )
+
+          const fullClass = context.rawSelector || match
+          const suggestedBase = match.replace(direction!, replacement)
+          const suggestedClass = fullClass.replace(match, suggestedBase)
+
+          if (checker) {
+            checker(`avoid using '${fullClass}', use '${suggestedClass}' instead.`, fullClass)
+          } else {
+            warnOnce(
+              `[RTL] Avoid using '${fullClass}'. Use '${suggestedClass}' instead.`,
+              fullClass,
+            )
+          }
           return { 'text-align': replacement }
         },
         { autocomplete: 'text-(left|right)' },
       ],
       [
         /^rounded-([rl])(?:-(.+))?$/,
-        (args, context) => {
-          const [_, direction, size] = args
+        ([match, direction, size], context) => {
           if (!direction) return undefined
           const replacementMap: Record<string, string> = {
             l: 'is',
@@ -130,22 +156,39 @@ export function presetRtl(): Preset {
           }
           const replacement = replacementMap[direction]
           if (!replacement) return undefined
-          warnOnce(
-            `[RTL] Avoid using 'rounded-${direction}'. Use 'rounded-${replacement}' instead.`,
-            `rounded-${direction}`,
-          )
+
+          const fullClass = context.rawSelector || match
+          const suggestedBase = match.replace(direction!, replacement)
+          const suggestedClass = fullClass.replace(match, suggestedBase)
+
+          if (checker) {
+            checker(`avoid using '${fullClass}', use '${suggestedClass}' instead.`, fullClass)
+          } else {
+            warnOnce(
+              `[RTL] Avoid using '${fullClass}'. Use '${suggestedClass}' instead.`,
+              fullClass,
+            )
+          }
           return handlerRounded(['', replacement, size ?? 'DEFAULT'], context)
         },
       ],
       [
         /^border-([rl])(?:-(.+))?$/,
-        args => {
-          const [_, direction, size] = args
+        ([match, direction, size], context) => {
           const replacement = direction === 'l' ? 'is' : 'ie'
-          warnOnce(
-            `[RTL] Avoid using 'border-${direction}'. Use 'border-${replacement}' instead.`,
-            `border-${direction}`,
-          )
+
+          const fullClass = context.rawSelector || match
+          const suggestedBase = match.replace(direction!, replacement)
+          const suggestedClass = fullClass.replace(match, suggestedBase)
+
+          if (checker) {
+            checker(`avoid using '${fullClass}', use '${suggestedClass}' instead.`, fullClass)
+          } else {
+            warnOnce(
+              `[RTL] Avoid using '${fullClass}'. Use '${suggestedClass}' instead.`,
+              fullClass,
+            )
+          }
           return handlerBorderSize(['', replacement, size || '1'])
         },
       ],

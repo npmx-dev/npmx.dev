@@ -17,6 +17,7 @@
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "i18n:check": "node scripts/compare-translations.ts",
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
+    "rtl:check": "node scripts/rtl-checker.ts",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint && oxfmt --check",
