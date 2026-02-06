@@ -8,7 +8,7 @@ const props = withDefaults(
     'keyshortcut'?: string
 
     /**
-     * Don't use this directly, use `keyshortcut` instead. Correctly HTML will be automatically generated and the shortcut will automatically be displayed in the UI.
+     * Do not use this directly. Use keyshortcut instead; it generates the correct HTML and displays the shortcut in the UI.
      */
     'aria-keyshortcuts'?: never
 
