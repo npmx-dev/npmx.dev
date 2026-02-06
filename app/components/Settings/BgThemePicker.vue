@@ -14,7 +14,9 @@ onPrehydrate(el => {
 </script>
 
 <template>
-  <fieldset class="flex items-center gap-4">
+  <fieldset
+    class="flex items-center gap-4 has-[input:focus-visible]:(outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
+  >
     <legend class="sr-only">{{ $t('settings.background_themes') }}</legend>
     <label
       v-for="theme in backgroundThemes"

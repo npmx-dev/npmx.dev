@@ -264,12 +264,20 @@ function resolveImageUrl(url: string, packageName: string, repoInfo?: Repository
   return resolved
 }
 
+// Helper to prefix id attributes with 'user-content-'
+function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
+  if (attribs.id && !attribs.id.startsWith('user-content-')) {
+    attribs.id = `user-content-${attribs.id}`
+  }
+  return { tagName, attribs }
+}
+
 export async function renderReadmeHtml(
   content: string,
   packageName: string,
   repoInfo?: RepositoryInfo,
 ): Promise<ReadmeResponse> {
-  if (!content) return { html: '', playgroundLinks: [], toc: [] }
+  if (!content) return { html: '', md: '', playgroundLinks: [], toc: [] }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
@@ -398,14 +406,6 @@ ${html}
 
   const rawHtml = marked.parse(content) as string
 
-  // Helper to prefix id attributes with 'user-content-'
-  const prefixId = (tagName: string, attribs: sanitizeHtml.Attributes) => {
-    if (attribs.id && !attribs.id.startsWith('user-content-')) {
-      attribs.id = `user-content-${attribs.id}`
-    }
-    return { tagName, attribs }
-  }
-
   const sanitized = sanitizeHtml(rawHtml, {
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: ALLOWED_ATTR,
@@ -455,6 +455,7 @@ ${html}
 
   return {
     html: convertToEmoji(sanitized),
+    md: content,
     playgroundLinks: collectedLinks,
     toc,
   }

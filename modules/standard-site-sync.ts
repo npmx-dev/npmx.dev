@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'

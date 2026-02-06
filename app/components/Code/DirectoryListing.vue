@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
+import type { RouteLocationRaw } from 'vue-router'
 import { getFileIcon } from '~/utils/file-icons'
 import { formatBytes } from '~/utils/formatters'
 
@@ -7,6 +8,8 @@ const props = defineProps<{
   tree: PackageFileTree[]
   currentPath: string
   baseUrl: string
+  /** Base path segments for the code route (e.g., ['nuxt', 'v', '4.2.0']) */
+  basePath: string[]
 }>()
 
 // Get the current directory's contents
@@ -36,6 +39,18 @@ const parentPath = computed(() => {
   if (parts.length <= 1) return ''
   return parts.slice(0, -1).join('/')
 })
+
+// Build route object for a path
+function getCodeRoute(nodePath?: string): RouteLocationRaw {
+  if (!nodePath) {
+    return { name: 'code', params: { path: props.basePath as [string, ...string[]] } }
+  }
+  const pathSegments = [...props.basePath, ...nodePath.split('/')]
+  return {
+    name: 'code',
+    params: { path: pathSegments as [string, ...string[]] },
+  }
+}
 </script>
 
 <template>
@@ -61,7 +76,7 @@ const parentPath = computed(() => {
         >
           <td class="py-2 px-4">
             <NuxtLink
-              :to="parentPath ? `${baseUrl}/${parentPath}` : baseUrl"
+              :to="getCodeRoute(parentPath || undefined)"
               class="flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors"
             >
               <span class="i-carbon:folder w-4 h-4 text-yellow-600" />
@@ -79,7 +94,7 @@ const parentPath = computed(() => {
         >
           <td class="py-2 px-4">
             <NuxtLink
-              :to="`${baseUrl}/${node.path}`"
+              :to="getCodeRoute(node.path)"
               class="flex items-center gap-2 font-mono text-sm hover:text-fg transition-colors"
               :class="node.type === 'directory' ? 'text-fg' : 'text-fg-muted'"
             >

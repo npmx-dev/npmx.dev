@@ -47,13 +47,9 @@ const gridColumns = computed(() =>
     .filter(({ pkg }) => pkg !== NO_DEPENDENCY_ID)
     .map(({ pkg, originalIndex }) => {
       const data = packagesData.value?.[originalIndex]
-      const header = data
-        ? data.package.version
-          ? `${data.package.name}@${data.package.version}`
-          : data.package.name
-        : pkg
       return {
-        header,
+        name: data?.package.name || pkg,
+        version: data?.package.version,
         replacement: replacements.value.get(pkg) ?? null,
       }
     }),
@@ -78,7 +74,9 @@ const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoadin
 const canCompare = computed(() => packages.value.length >= 2)
 
 // Extract headers from columns for facet rows
-const gridHeaders = computed(() => gridColumns.value.map(col => col.header))
+const gridHeaders = computed(() =>
+  gridColumns.value.map(col => (col.version ? `${col.name}@${col.version}` : col.name)),
+)
 
 useSeoMeta({
   title: () =>

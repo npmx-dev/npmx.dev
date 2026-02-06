@@ -33,10 +33,7 @@ interface VersionDisplay {
 
 // Build route object for package version link
 function versionRoute(version: string): RouteLocationRaw {
-  return {
-    name: 'package',
-    params: { package: [...props.packageName.split('/'), 'v', version] },
-  }
+  return packageRoute(props.packageName, version)
 }
 
 // Version to tags lookup (supports multiple tags per version)
@@ -381,7 +378,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     class="i-carbon-warning-hex w-3.5 h-3.5 shrink-0"
                     aria-hidden="true"
                   />
-                  {{ row.primaryVersion.version }}
+                  <span dir="ltr">
+                    {{ row.primaryVersion.version }}
+                  </span>
                 </NuxtLink>
               </div>
               <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
@@ -440,7 +439,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   class="i-carbon-warning-hex w-3 h-3 shrink-0"
                   aria-hidden="true"
                 />
-                {{ v.version }}
+                <span dir="ltr">
+                  {{ v.version }}
+                </span>
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
                 <DateTime
@@ -545,7 +546,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   class="i-carbon-warning-hex w-3 h-3 shrink-0"
                   aria-hidden="true"
                 />
-                {{ row.primaryVersion.version }}
+                <span dir="ltr">
+                  {{ row.primaryVersion.version }}
+                </span>
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0 pe-2">
                 <DateTime
@@ -621,7 +624,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         class="i-carbon-warning-hex w-3 h-3 shrink-0"
                         aria-hidden="true"
                       />
-                      {{ group.versions[0]?.version }}
+                      <span dir="ltr">
+                        {{ group.versions[0]?.version }}
+                      </span>
                     </NuxtLink>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
@@ -682,7 +687,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         class="i-carbon-warning-hex w-3 h-3 shrink-0"
                         aria-hidden="true"
                       />
-                      {{ group.versions[0]?.version }}
+                      <span dir="ltr">
+                        {{ group.versions[0]?.version }}
+                      </span>
                     </NuxtLink>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
@@ -739,7 +746,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         class="i-carbon-warning-hex w-3 h-3 shrink-0"
                         aria-hidden="true"
                       />
-                      {{ v.version }}
+                      <span dir="ltr">
+                        {{ v.version }}
+                      </span>
                     </NuxtLink>
                     <div class="flex items-center gap-2 shrink-0 pe-2">
                       <DateTime

@@ -113,7 +113,7 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
   },
   {
     code: 'az-AZ',
-    file: 'az.json',
+    file: 'az-AZ.json',
     name: 'Azərbaycanca',
   },
   /*{
@@ -155,6 +155,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     code: 'hi-IN',
     file: 'hi-IN.json',
     name: 'हिंदी',
+  },
+  {
+    code: 'te-IN',
+    file: 'te-IN.json',
+    name: 'తెలుగు',
   },
   {
     code: 'mr-IN',
@@ -322,6 +327,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       file: 'cy.json',
       name: 'Cymraeg',
     },*/
+  {
+    code: 'no-NO',
+    file: 'no-NO.json',
+    name: 'Norsk',
+  },
 ]
 
 const lunariaJSONFiles: Record<string, string> = {}

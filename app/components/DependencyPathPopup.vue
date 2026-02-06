@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { onKeyDown } from '@vueuse/core'
+import { UseFocusTrap } from '@vueuse/integrations/useFocusTrap/component'
+
 defineProps<{
   /** Dependency path from root to vulnerable package (readonly from VulnerabilityTreeResult) */
   path: readonly string[]
@@ -17,13 +20,16 @@ onClickOutside(popupEl, () => {
   if (isOpen.value) closePopup()
 })
 
-// Close popup on ESC or scroll
-function handleKeydown(e: KeyboardEvent) {
-  if (e.key === 'Escape') closePopup()
-}
+onKeyDown(
+  'Escape',
+  e => {
+    e.preventDefault()
+    closePopup()
+  },
+  { dedupe: true, target: popupEl },
+)
 
-useEventListener(document, 'keydown', handleKeydown)
-useEventListener('scroll', closePopup, true)
+useEventListener('scroll', closePopup, { passive: true })
 
 function togglePopup(event: MouseEvent) {
   if (isOpen.value) {
@@ -77,34 +83,32 @@ function parsePackageString(pkg: string): { name: string; version: string } {
       class="fixed z-[100] bg-bg-elevated border border-border rounded-lg shadow-xl p-3 min-w-64 max-w-sm"
       :style="getPopupStyle()"
     >
-      <ul class="list-none m-0 p-0 space-y-0.5">
-        <li
-          v-for="(pathItem, idx) in path"
-          :key="idx"
-          class="font-mono text-xs"
-          :style="{ paddingLeft: `${idx * 12}px` }"
-        >
-          <span v-if="idx > 0" class="text-fg-subtle me-1">└─</span>
-          <NuxtLink
-            :to="{
-              name: 'package',
-              params: {
-                package: [
-                  ...parsePackageString(pathItem).name.split('/'),
-                  'v',
-                  parsePackageString(pathItem).version,
-                ],
-              },
-            }"
-            class="hover:underline"
-            :class="idx === path.length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
-            @click="closePopup"
+      <UseFocusTrap :options="{ immediate: true }">
+        <ul class="list-none m-0 p-0 space-y-0.5">
+          <li
+            v-for="(pathItem, idx) in path"
+            :key="idx"
+            class="font-mono text-xs"
+            :style="{ paddingLeft: `${idx * 12}px` }"
           >
-            {{ pathItem }}
-          </NuxtLink>
-          <span v-if="idx === path.length - 1" class="ms-1 text-amber-500">⚠</span>
-        </li>
-      </ul>
+            <span v-if="idx > 0" class="text-fg-subtle me-1">└─</span>
+            <NuxtLink
+              :to="
+                packageRoute(
+                  parsePackageString(pathItem).name,
+                  parsePackageString(pathItem).version,
+                )
+              "
+              class="hover:underline"
+              :class="idx === path.length - 1 ? 'text-fg font-medium' : 'text-fg-muted'"
+              @click="closePopup"
+            >
+              {{ pathItem }}
+            </NuxtLink>
+            <span v-if="idx === path.length - 1" class="ms-1 text-amber-500">⚠</span>
+          </li>
+        </ul>
+      </UseFocusTrap>
     </div>
   </div>
 </template>

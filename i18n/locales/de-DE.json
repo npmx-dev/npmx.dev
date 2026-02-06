@@ -2,13 +2,13 @@
   "seo": {
     "home": {
       "title": "npmx - Paket-Browser für die npm Registry",
-      "description": "Ein besserer Browser für die npm Registry. Pakete suchen, durchstöbern und erkunden mit einer modernen Oberfläche."
+      "description": "Ein schnellerer, modernerer Browser für die npm Registry. Pakete suchen, durchstöbern und erkunden mit einer modernen Oberfläche."
     }
   },
   "version": "Version",
   "built_at": "erstellt {0}",
   "alt_logo": "npmx Logo",
-  "tagline": "ein besserer Browser für die npm Registry",
+  "tagline": "ein schnellerer, modernerer Browser für die npm Registry",
   "non_affiliation_disclaimer": "nicht verbunden mit npm, Inc.",
   "trademark_disclaimer": "npm ist eine eingetragene Marke von npm, Inc. Diese Seite ist nicht mit npm, Inc. verbunden.",
   "footer": {
@@ -139,8 +139,14 @@
       "documented": "Die {community} hat dieses Paket als eines mit leistungsstärkeren Alternativen markiert.",
       "none": "Dieses Paket wurde als nicht mehr nötig markiert, und seine Funktionen sind wahrscheinlich in allen Engines nativ verfügbar.",
       "learn_more": "Mehr erfahren",
+      "learn_more_above": "Erfahre oben mehr.",
       "mdn": "MDN",
-      "community": "Community"
+      "community": "Community",
+      "consider_no_dep": "+ Ohne Abhängigkeit lösen?"
+    },
+    "likes": {
+      "like": "Dieses Paket liken",
+      "unlike": "Like entfernen"
     },
     "stats": {
       "license": "Lizenz",
@@ -215,7 +221,8 @@
         "important": "Wichtig",
         "warning": "Warnung",
         "caution": "Vorsicht"
-      }
+      },
+      "copy_as_markdown": "README als Markdown kopieren"
     },
     "provenance_section": {
       "title": "Herkunft",
@@ -313,7 +320,7 @@
     },
     "playgrounds": {
       "title": "Ausprobieren",
-      "choose": "Playground wählen"
+      "choose": "Testumgebung wählen"
     },
     "metrics": {
       "esm": "ES-Module unterstützt",
@@ -444,26 +451,26 @@
   },
   "operations": {
     "queue": {
-      "title": "Operations-Warteschlange",
+      "title": "Aktions-Warteschlange",
       "clear_all": "Alle löschen",
-      "refresh": "Operationen aktualisieren",
-      "empty": "Keine Operationen in der Warteschlange",
-      "empty_hint": "Füge Operationen von Paket- oder Org-Seiten hinzu",
-      "active_label": "Aktive Operationen",
+      "refresh": "Aktionen aktualisieren",
+      "empty": "Keine Aktionen in der Warteschlange",
+      "empty_hint": "Füge Aktionen von Paket- oder Org-Seiten hinzu",
+      "active_label": "Aktive Aktionen",
       "otp_required": "OTP erforderlich",
       "otp_prompt": "OTP eingeben, um fortzufahren",
       "otp_placeholder": "OTP-Code eingeben...",
       "otp_label": "Einmalpasswort",
       "retry_otp": "Mit OTP wiederholen",
       "retrying": "Wird wiederholt...",
-      "approve_operation": "Operation genehmigen",
-      "remove_operation": "Operation entfernen",
+      "approve_operation": "Aktion genehmigen",
+      "remove_operation": "Aktion entfernen",
       "approve_all": "Alle genehmigen",
       "execute": "Ausführen",
       "executing": "Wird ausgeführt...",
-      "log": "Log",
-      "log_label": "Log abgeschlossener Operationen",
-      "remove_from_log": "Aus Log entfernen"
+      "log": "Protokoll",
+      "log_label": "Protokoll abgeschlossener Aktionen",
+      "remove_from_log": "Aus Protokoll entfernen"
     }
   },
   "org": {
@@ -758,14 +765,14 @@
       "title": "Was wir sind",
       "better_ux_dx": "Bessere UX/DX",
       "admin_ui": "Admin-UI",
-      "description": "npmx ist eine {betterUxDx} für die npm-Paket-Registry und Tooling. Wir bieten eine schnelle, moderne Oberfläche zum Erkunden von Paketen mit Features wie Dark Mode, Tastaturnavigation, Code-Browsing und Verbindungen zu alternativen Registries wie {jsr}.",
+      "description": "npmx ist eine {betterUxDx} für die npm-Paket-Registry und Tooling. Wir bieten eine schnelle, moderne Oberfläche zum Erkunden von Paketen mit Funktionen wie Dark Mode, Tastaturnavigation, Code-Browsing und Verbindungen zu alternativen Registries wie {jsr}.",
       "admin_description": "Wir wollen auch eine bessere {adminUi} zum Verwalten deiner Pakete, Teams und Organisationen bieten — alles im Browser, angetrieben von deiner lokalen npm CLI."
     },
     "what_we_are_not": {
       "title": "Was wir nicht sind",
       "not_package_manager": "Kein Paketmanager.",
       "not_registry": "Keine Registry.",
-      "registry_description": "Wir hosten keine Pakete. Wir sind nur ein besserer Weg, sie zu durchstöbern.",
+      "registry_description": "Wir hosten keine Pakete. Wir sind nur ein schnellerer, modernerer Weg, sie zu durchstöbern.",
       "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
       "words": {
         "already": "Es gibt",
@@ -878,6 +885,15 @@
       "loading_versions": "Versionen werden geladen...",
       "select_version": "Version auswählen"
     },
+    "no_dependency": {
+      "label": "(Keine Abhängigkeit)",
+      "typeahead_title": "Was würde James tun?",
+      "typeahead_description": "Vergleiche mit der Option, gar keine Abhängigkeit zu nutzen! e18e-geprüft.",
+      "tooltip_title": "Du brauchst vielleicht keine Abhängigkeit",
+      "tooltip_description": "Vergleiche mit dem Verzicht auf eine Abhängigkeit! Die {link} pflegt eine Liste von Paketen, die durch native APIs oder einfachere Alternativen ersetzt werden können.",
+      "e18e_community": "e18e Community",
+      "add_column": "Spalte „Keine Abhängigkeit“ zum Vergleich hinzufügen"
+    },
     "facets": {
       "group_label": "Vergleichsfacetten",
       "all": "Alle",
@@ -952,8 +968,90 @@
         "not_deprecated": "Nein",
         "types_included": "Enthalten",
         "types_none": "Keine",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Deine Entscheidung!"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "Datenschutzerklärung",
+    "last_updated": "Zuletzt aktualisiert: {date}",
+    "welcome": "Willkommen bei {app}. Wir setzen uns für den Schutz deiner Privatsphäre ein. Diese Richtlinie erklärt, welche Daten wir sammeln, wie wir sie verwenden und welche Rechte du in Bezug auf deine Informationen hast.",
+    "cookies": {
+      "title": "Cookies",
+      "what_are": {
+        "title": "Was sind Cookies?",
+        "p1": "Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert werden, wenn du eine Website besuchst. Ihr Zweck ist es, dein Surferlebnis zu verbessern, indem sie bestimmte Präferenzen und Einstellungen speichern."
+      },
+      "types": {
+        "title": "Welche Cookies verwenden wir?",
+        "p1": "Wir verwenden ausschließlich {bold} für Zwecke, die für die Funktionalität der Seite unbedingt erforderlich sind. Wir verwenden keine Cookies von Drittanbietern oder für Werbezwecke.",
+        "bold": "technisch notwendige Cookies",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Dieser Cookie wird von unserem Hosting-Anbieter (Vercel) zum Schutz vor Skew-Effekten verwendet. Er stellt sicher, dass du Assets der korrekten Deployment-Version lädst, wenn während deines Besuchs ein neues Update veröffentlicht wird. Er dient nicht dem Tracking.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Dies ist unser sicheres Sitzungs-Cookie. Es speichert den OAuth-Access-Token, wenn du dein Atmosphere-Konto verbindest. Es ist unerlässlich, um deine authentifizierte Sitzung aufrechtzuerhalten."
+      },
+      "local_storage": {
+        "title": "Lokaler Speicher",
+        "p1": "Zusätzlich zu Sitzungs-Cookies nutzen wir den {bold} deines Browsers, um deine Anzeige-Präferenzen zu speichern. Dies ermöglicht uns, das Design (Hell/Dunkel) und andere von dir gewählte {settings} zu speichern, damit du sie nicht bei jedem Besuch neu konfigurieren musst.",
+        "bold": "Local Storage",
+        "p2": "Diese Informationen sind rein funktional, werden nur auf deinem Gerät gespeichert und {bold2}. Wir nutzen sie ausschließlich, um deine Erfahrung auf unserer Website zu verbessern.",
+        "bold2": "enthalten keine persönlichen Daten und werden nicht zum Tracking verwendet",
+        "settings": "Einstellungen"
+      },
+      "management": {
+        "title": "Verwalten von Cookies",
+        "p1": "Du kannst deinen Browser so konfigurieren, dass Cookies nach deinen Wünschen akzeptiert, abgelehnt oder gelöscht werden. Bitte beachte jedoch, dass {bold}.",
+        "bold": "das Ablehnen notwendiger Cookies den vollständigen Zugriff auf die Anwendung verhindern kann",
+        "p2": "Nachfolgend findest du Links mit Anleitungen zur Cookie-Verwaltung in den gängigsten Browsern:",
+        "chrome": "Google Chrome (öffnet in einem neuen Fenster)",
+        "firefox": "Mozilla Firefox (öffnet in einem neuen Fenster)",
+        "edge": "Microsoft Edge (öffnet in einem neuen Fenster)"
+      }
+    },
+    "analytics": {
+      "title": "Analyse",
+      "p1": "Wir verwenden {bold}, um zu verstehen, wie Besucher unsere Website nutzen. Dies hilft uns, die Benutzererfahrung zu verbessern und Probleme zu identifizieren.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics wurde mit Fokus auf Datenschutz entwickelt:",
+      "li1": "Es werden keine Cookies verwendet",
+      "li2": "Es werden keine persönlichen Identifikationsmerkmale gesammelt",
+      "li3": "Nutzer werden nicht über verschiedene Websites hinweg verfolgt",
+      "li4": "Alle Daten werden aggregiert und anonymisiert",
+      "p3": "Die einzigen gesammelten Informationen umfassen: Seiten-URLs, Referrer, Land/Region, Gerätetyp, Browser und Betriebssystem. Diese Daten können nicht zur Identifizierung einzelner Nutzer verwendet werden."
+    },
+    "authenticated": {
+      "title": "Authentifizierte Benutzer",
+      "p1": "Wenn du dein {bold}-Konto mit npmx verbindest, speichern wir deinen OAuth-Access-Token in einem sicheren, HTTP-only Sitzungs-Cookie. Dieser Token wird ausschließlich dazu verwendet, Anfragen in deinem Namen zu authentifizieren.",
+      "bold": "Atmosphere",
+      "p2": "Wir speichern keine Anmeldedaten und greifen auf keine Daten zu, die über das hinausgehen, was für die Bereitstellung der von dir genutzten Funktionen erforderlich ist. Du kannst dein Konto jederzeit auf der Seite {settings} trennen.",
+      "settings": "Einstellungen"
+    },
+    "data_retention": {
+      "title": "Datenspeicherung",
+      "p1": "Sitzungs-Cookies werden automatisch gelöscht, wenn du deinen Browser schließt oder nach einer gewissen Zeit der Inaktivität. Local-Storage-Präferenzen bleiben auf deinem Gerät, bis du deine Browserdaten löschst. Analysedaten werden in aggregierter Form gespeichert und können nicht mit einzelnen Nutzern verknüpft werden."
+    },
+    "your_rights": {
+      "title": "Deine Rechte",
+      "p1": "Du hast das Recht:",
+      "li1": "Informationen darüber zu erhalten, welche Daten wir sammeln",
+      "li2": "Deinen Local Storage und deine Cookies jederzeit zu löschen",
+      "li3": "Deine authentifizierte Sitzung zu beenden",
+      "li4": "Auskunft über unsere Datenpraktiken zu verlangen",
+      "p2": "Da wir keine personenbezogenen Daten sammeln, gibt es in der Regel keine persönlichen Informationen, die gelöscht oder exportiert werden könnten."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "p1": "Bei Fragen oder Bedenken zu dieser Datenschutzerklärung kannst du uns kontaktieren, indem du ein Issue in unserem {link} eröffnest.",
+      "link": "GitHub-Repository"
+    },
+    "changes": {
+      "title": "Änderungen an dieser Richtlinie",
+      "p1": "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Alle Änderungen werden auf dieser Seite mit einem aktualisierten Revisionsdatum veröffentlicht."
     }
   }
 }

@@ -785,6 +785,17 @@ function buildExportFilename(extension: string): string {
   return `${sanitise(label ?? '')}-${g}_${range}.${extension}`
 }
 
+const granularityLabels = computed(() => ({
+  daily: $t('package.downloads.granularity_daily'),
+  weekly: $t('package.downloads.granularity_weekly'),
+  monthly: $t('package.downloads.granularity_monthly'),
+  yearly: $t('package.downloads.granularity_yearly'),
+}))
+
+function getGranularityLabel(granularity: ChartTimeGranularity) {
+  return granularityLabels.value[granularity]
+}
+
 // VueUiXy chart component configuration
 const chartConfig = computed(() => {
   return {
@@ -835,7 +846,7 @@ const chartConfig = computed(() => {
           fontSize: isMobile.value ? 24 : 16,
           axis: {
             yLabel: $t('package.downloads.y_axis_label', {
-              granularity: $t(`package.downloads.granularity_${selectedGranularity.value}`),
+              granularity: getGranularityLabel(selectedGranularity.value),
             }),
             xLabel: isMultiPackageMode.value ? '' : xAxisLabel.value, // for multiple series, names are displayed in the chart's legend
             yLabelOffsetX: 12,
@@ -904,7 +915,7 @@ const chartConfig = computed(() => {
                   ${label}
                 </span>
 
-                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-right">
+                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">
                   ${v}
                 </span>
               </div>`

@@ -39,6 +39,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Import order](#import-order)
   - [Naming conventions](#naming-conventions)
   - [Vue components](#vue-components)
+  - [Internal linking](#internal-linking)
 - [RTL Support](#rtl-support)
 - [Localization (i18n)](#localization-i18n)
   - [Approach](#approach)
@@ -278,6 +279,79 @@ const props = defineProps<{
 
 Ideally, extract utilities into separate files so they can be unit tested. 🙏
 
+### Internal linking
+
+Always use **object syntax with named routes** for internal navigation. This makes links resilient to URL structure changes and provides type safety via `unplugin-vue-router`.
+
+```vue
+<!-- Good: named route -->
+<NuxtLink :to="{ name: 'settings' }">Settings</NuxtLink>
+
+<!-- Bad: string path -->
+<NuxtLink to="/settings">Settings</NuxtLink>
+```
+
+The same applies to programmatic navigation:
+
+```typescript
+// Good
+navigateTo({ name: 'compare' })
+router.push({ name: 'search' })
+
+// Bad
+navigateTo('/compare')
+router.push('/search')
+```
+
+For routes with parameters, pass them explicitly:
+
+```vue
+<NuxtLink :to="{ name: '~username', params: { username } }">Profile</NuxtLink>
+<NuxtLink :to="{ name: 'org', params: { org: orgName } }">Organization</NuxtLink>
+```
+
+Query parameters work as expected:
+
+```vue
+<NuxtLink :to="{ name: 'compare', query: { packages: pkg.name } }">Compare</NuxtLink>
+```
+
+#### Package routes
+
+For package links, use the auto-imported `packageRoute()` utility from `app/utils/router.ts`. It handles scoped/unscoped packages and optional versions:
+
+```vue
+<!-- Links to /package/vue -->
+<NuxtLink :to="packageRoute('vue')">vue</NuxtLink>
+
+<!-- Links to /package/@nuxt/kit -->
+<NuxtLink :to="packageRoute('@nuxt/kit')">@nuxt/kit</NuxtLink>
+
+<!-- Links to /package/vue/v/3.5.0 -->
+<NuxtLink :to="packageRoute('vue', '3.5.0')">vue@3.5.0</NuxtLink>
+```
+
+> [!IMPORTANT]
+> Never construct package URLs as strings. The route structure uses separate `org` and `name` params, and `packageRoute()` handles the splitting correctly.
+
+#### Available route names
+
+| Route name        | URL pattern                       | Parameters                |
+| ----------------- | --------------------------------- | ------------------------- |
+| `index`           | `/`                               | &mdash;                   |
+| `about`           | `/about`                          | &mdash;                   |
+| `compare`         | `/compare`                        | &mdash;                   |
+| `privacy`         | `/privacy`                        | &mdash;                   |
+| `search`          | `/search`                         | &mdash;                   |
+| `settings`        | `/settings`                       | &mdash;                   |
+| `package`         | `/package/:org?/:name`            | `org?`, `name`            |
+| `package-version` | `/package/:org?/:name/v/:version` | `org?`, `name`, `version` |
+| `code`            | `/package-code/:path+`            | `path` (array)            |
+| `docs`            | `/package-docs/:path+`            | `path` (array)            |
+| `org`             | `/org/:org`                       | `org`                     |
+| `~username`       | `/~:username`                     | `username`                |
+| `~username-orgs`  | `/~:username/orgs`                | `username`                |
+
 ## RTL Support
 
 We support `right-to-left` languages, we need to make sure that the UI is working correctly in both directions.
@@ -334,18 +408,18 @@ To add a new locale:
    cp i18n/locales/uk-UA.json lunaria/files/uk-UA.json
    ```
 
-   > [!IMPORTANT]
+   > ⚠**Important:**
    > This file must be committed. Lunaria uses git history to track translation progress, so the build will fail if this file is missing.
 
 5. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
 6. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
 
-Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization.html#custom-pluralization) for more info.
+Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization#custom-pluralization) and [Plural Rules](https://cldr.unicode.org/index/cldr-spec/plural-rules#TOC-Determining-Plural-Categories) for more info.
 
 ### Update translation
 
 We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
-If you see any outdated translations in your language, feel free to update the keys to match then English version.
+If you see any outdated translations in your language, feel free to update the keys to match the English version.
 
 In order to make sure you have everything up-to-date, you can run:
 
@@ -408,6 +482,43 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
    <p>{{ $t('greeting', { name: userName }) }}</p>
    ```
 
+4. Don't concatenate string messages in the Vue templates, some languages can have different word order. Use placeholders instead.
+
+   **Bad:**
+
+   ```vue
+   <p>{{ $t('hello') }} {{ userName }}</p>
+   ```
+
+   **Good:**
+
+   ```vue
+   <p>{{ $t('greeting', { name: userName }) }}</p>
+   ```
+
+   **Complex content:**
+
+   If you need to include HTML or components inside the translation, use [`i18n-t`](https://vue-i18n.intlify.dev/guide/advanced/component.html) component. This is especially useful when the order of elements might change between languages.
+
+   ```json
+   {
+     "agreement": "I accept the {terms} and {privacy}.",
+     "terms_link": "Terms of Service",
+     "privacy_policy": "Privacy Policy"
+   }
+   ```
+
+   ```vue
+   <i18n-t keypath="agreement" tag="p">
+     <template #terms>
+       <NuxtLink to="/terms">{{ $t('terms_link') }}</NuxtLink>
+     </template>
+     <template #privacy>
+       <strong>{{ $t('privacy_policy') }}</strong>
+     </template>
+   </i18n-t>
+   ```
+
 ### Translation key conventions
 
 - Use dot notation for hierarchy: `section.subsection.key`
@@ -415,6 +526,7 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
 - Group related keys together
 - Use `common.*` for shared strings (loading, retry, close, etc.)
 - Use component-specific prefixes: `package.card.*`, `settings.*`, `nav.*`
+- Do not use dashes (`-`) in translation keys; always use underscore (`_`): e.g., `privacy_policy` instead of `privacy-policy`
 
 ### Using i18n-ally (recommended)
 

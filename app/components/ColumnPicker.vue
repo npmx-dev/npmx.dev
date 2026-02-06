@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ColumnConfig, ColumnId } from '#shared/types/preferences'
+import { onKeyDown } from '@vueuse/core'
 
 const props = defineProps<{
   columns: ColumnConfig[]
@@ -26,35 +27,38 @@ onClickOutside(
   },
 )
 
-// Close on Escape key
-useEventListener('keydown', event => {
-  if (event.key === 'Escape' && isOpen.value) {
+onKeyDown(
+  'Escape',
+  e => {
+    if (!isOpen.value) return
     isOpen.value = false
     buttonRef.value?.focus()
-  }
-})
+  },
+  { dedupe: true },
+)
+
 // Columns that can be toggled (name is always visible)
 const toggleableColumns = computed(() => props.columns.filter(col => col.id !== 'name'))
 
 // Map column IDs to i18n keys
-const columnLabelKey: Record<string, string> = {
-  name: 'filters.columns.name',
-  version: 'filters.columns.version',
-  description: 'filters.columns.description',
-  downloads: 'filters.columns.downloads',
-  updated: 'filters.columns.published',
-  maintainers: 'filters.columns.maintainers',
-  keywords: 'filters.columns.keywords',
-  qualityScore: 'filters.columns.quality_score',
-  popularityScore: 'filters.columns.popularity_score',
-  maintenanceScore: 'filters.columns.maintenance_score',
-  combinedScore: 'filters.columns.combined_score',
-  security: 'filters.columns.security',
-}
+const columnLabelKey = computed(() => ({
+  name: $t('filters.columns.name'),
+  version: $t('filters.columns.version'),
+  description: $t('filters.columns.description'),
+  downloads: $t('filters.columns.downloads'),
+  updated: $t('filters.columns.published'),
+  maintainers: $t('filters.columns.maintainers'),
+  keywords: $t('filters.columns.keywords'),
+  qualityScore: $t('filters.columns.quality_score'),
+  popularityScore: $t('filters.columns.popularity_score'),
+  maintenanceScore: $t('filters.columns.maintenance_score'),
+  combinedScore: $t('filters.columns.combined_score'),
+  security: $t('filters.columns.security'),
+}))
 
-function getColumnLabel(id: string): string {
-  const key = columnLabelKey[id]
-  return key ? $t(key) : id
+function getColumnLabel(id: ColumnId): string {
+  const key = columnLabelKey.value[id]
+  return key ?? id
 }
 
 function handleReset() {

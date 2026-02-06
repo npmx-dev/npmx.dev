@@ -35,7 +35,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
   title: 'npmx',
-  description: 'A better browser for the **npm registry**',
+  description: 'a fast, modern browser for the **npm registry**',
 })
 </script>
 
@@ -56,7 +56,7 @@ defineOgImageComponent('Default', {
         </h1>
 
         <p
-          class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
+          class="text-fg-muted text-lg sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.1s"
         >
           {{ $t('tagline') }}
@@ -124,7 +124,7 @@ defineOgImageComponent('Default', {
         <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
           <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
             <NuxtLink
-              :to="{ name: 'package', params: { package: [framework.package] } }"
+              :to="packageRoute(framework.package)"
               class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
             >
               <span
