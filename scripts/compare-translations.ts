@@ -28,7 +28,7 @@ interface LocaleInfo {
   mergeLocale?: boolean
 }
 
-const contries = new Map<string, Map<string, LocaleInfo>>()
+const countries = new Map<string, Map<string, LocaleInfo>>()
 
 const extractLocalInfo = (
   filePath: string,
@@ -44,14 +44,14 @@ const populateLocaleCountries = (): void => {
   for (const lang of Object.keys(countryLocaleVariants)) {
     const variants = countryLocaleVariants[lang]
     for (const variant of variants) {
-      if (!contries.has(lang)) {
-        contries.set(lang, new Map())
+      if (!countries.has(lang)) {
+        countries.set(lang, new Map())
       }
       if (variant.country) {
-        contries.get(lang)!.set(lang, extractLocalInfo(lang, true))
-        contries.get(lang)!.set(variant.code, extractLocalInfo(variant.code, true, true))
+        countries.get(lang)!.set(lang, extractLocalInfo(lang, true))
+        countries.get(lang)!.set(variant.code, extractLocalInfo(variant.code, true, true))
       } else {
-        contries.get(lang)!.set(variant.code, extractLocalInfo(variant.code, false, true))
+        countries.get(lang)!.set(variant.code, extractLocalInfo(variant.code, false, true))
       }
     }
   }
@@ -65,7 +65,7 @@ const populateLocaleCountries = (): void => {
  */
 const checkCountryVariant = (localeInfo: LocaleInfo): void => {
   const { locale, lang, country } = localeInfo
-  const countryVariant = contries.get(lang)
+  const countryVariant = countries.get(lang)
   if (countryVariant) {
     if (country) {
       const found = countryVariant.get(locale)
