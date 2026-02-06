@@ -198,6 +198,7 @@ function handleKeydown(event: KeyboardEvent) {
               activeId === node.id ? 'text-fg font-medium' : 'text-fg-muted',
               highlightedIndex === getIndex(node.id) ? 'bg-bg-elevated' : 'hover:bg-bg-elevated',
             ]"
+            dir="auto"
             @click="select(node.id)"
             @mouseenter="highlightedIndex = getIndex(node.id)"
           >
@@ -214,6 +215,7 @@ function handleKeydown(event: KeyboardEvent) {
                 activeId === child.id ? 'text-fg font-medium' : 'text-fg-subtle',
                 highlightedIndex === getIndex(child.id) ? 'bg-bg-elevated' : 'hover:bg-bg-elevated',
               ]"
+              dir="auto"
               @click="select(child.id)"
               @mouseenter="highlightedIndex = getIndex(child.id)"
             >
@@ -233,6 +235,7 @@ function handleKeydown(event: KeyboardEvent) {
                   ? 'bg-bg-elevated'
                   : 'hover:bg-bg-elevated',
               ]"
+              dir="auto"
               @click="select(grandchild.id)"
               @mouseenter="highlightedIndex = getIndex(grandchild.id)"
             >

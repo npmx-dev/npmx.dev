@@ -370,7 +370,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   "
                   :classicon="row.primaryVersion.deprecated ? 'i-carbon-warning-hex' : undefined"
                 >
-                  {{ row.primaryVersion.version }}
+                  <span dir="ltr">
+                    {{ row.primaryVersion.version }}
+                  </span>
                 </LinkBase>
               </div>
               <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
@@ -421,7 +423,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :classicon="v.deprecated ? 'i-carbon-warning-hex' : undefined"
               >
-                {{ v.version }}
+                <span dir="ltr">
+                  {{ v.version }}
+                </span>
               </LinkBase>
               <div class="flex items-center gap-2 shrink-0">
                 <DateTime
@@ -520,7 +524,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 "
                 :classicon="row.primaryVersion.deprecated ? 'i-carbon-warning-hex' : undefined"
               >
-                {{ row.primaryVersion.version }}
+                <span dir="ltr">
+                  {{ row.primaryVersion.version }}
+                </span>
               </LinkBase>
               <div class="flex items-center gap-2 shrink-0 pe-2">
                 <DateTime
@@ -594,7 +600,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         group.versions[0]?.deprecated ? 'i-carbon-warning-hex' : undefined
                       "
                     >
-                      {{ group.versions[0]?.version }}
+                      <span dir="ltr">
+                        {{ group.versions[0]?.version }}
+                      </span>
                     </LinkBase>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
@@ -653,7 +661,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         group.versions[0]?.deprecated ? 'i-carbon-warning-hex' : undefined
                       "
                     >
-                      {{ group.versions[0]?.version }}
+                      <span dir="ltr">
+                        {{ group.versions[0]?.version }}
+                      </span>
                     </LinkBase>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
@@ -702,7 +712,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       "
                       :classicon="v.deprecated ? 'i-carbon-warning-hex' : undefined"
                     >
-                      {{ v.version }}
+                      <span dir="ltr">
+                        {{ v.version }}
+                      </span>
                     </LinkBase>
                     <div class="flex items-center gap-2 shrink-0 pe-2">
                       <DateTime

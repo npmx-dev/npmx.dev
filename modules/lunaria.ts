@@ -1,3 +1,4 @@
+import process from 'node:process'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { execSync } from 'node:child_process'
 import { join } from 'node:path'

@@ -158,7 +158,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
       </div>
     </header>
 
-    <div class="flex">
+    <div class="flex" dir="ltr">
       <!-- Sidebar TOC -->
       <aside
         v-if="docsData?.toc && !showEmptyState"

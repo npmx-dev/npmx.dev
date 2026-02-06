@@ -81,10 +81,10 @@ const sortedOptionalDependencies = computed(() => {
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)">
+          <LinkBase :to="packageRoute(dep)" dir="ltr">
             {{ dep }}
           </LinkBase>
-          <span class="flex items-center gap-1 max-w-[40%]">
+          <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
             <span
               v-if="outdatedDeps[dep]"
               class="shrink-0"
@@ -161,7 +161,7 @@ const sortedOptionalDependencies = computed(() => {
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-1 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="truncate">
+            <LinkBase :to="packageRoute(peer.name)" class="truncate" dir="ltr">
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -172,6 +172,7 @@ const sortedOptionalDependencies = computed(() => {
             :to="packageRoute(peer.name, peer.version)"
             class="truncate"
             :title="peer.version"
+            dir="ltr"
           >
             {{ peer.version }}
           </LinkBase>
@@ -213,10 +214,10 @@ const sortedOptionalDependencies = computed(() => {
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="truncate">
+          <LinkBase :to="packageRoute(dep)" class="truncate" dir="ltr">
             {{ dep }}
           </LinkBase>
-          <LinkBase :to="packageRoute(dep, version)" class="truncate" :title="version">
+          <LinkBase :to="packageRoute(dep, version)" class="truncate" :title="version" dir="ltr">
             {{ version }}
           </LinkBase>
         </li>
