@@ -145,8 +145,7 @@ onKeyStroke(
         <SearchBox
           v-if="!isOnHomePage"
           ref="searchBoxRef"
-          class="max-w-sm"
-          :class="{ 'max-w-md': !isSearchExpanded }"
+          :class="isSearchExpanded ? 'max-w-md' : 'max-w-sm'"
           compact
           v-model="searchQuery"
           @submit="handleSearchSubmit"
