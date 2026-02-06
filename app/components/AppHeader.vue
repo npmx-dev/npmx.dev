@@ -105,10 +105,11 @@ onKeyStroke(
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border">
+  <header class="sticky top-0 z-50 border-b border-border">
+    <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />
     <nav
       :aria-label="$t('nav.main_navigation')"
-      class="container min-h-14 flex items-center gap-4"
+      class="relative container min-h-14 flex items-center gap-4 z-1"
       :class="isOnHomePage ? 'justify-end' : 'justify-between'"
     >
       <!-- Mobile: Logo + search button (expands search, doesn't navigate) -->

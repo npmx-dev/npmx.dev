@@ -136,7 +136,9 @@ function openAuthModal() {
       leave-to-class="opacity-0 translate-y-1"
     >
       <div v-if="isOpen" class="absolute inset-ie-0 top-full pt-2 w-72 z-50" role="menu">
-        <div class="bg-bg-elevated border border-border rounded-lg shadow-lg overflow-hidden px-1">
+        <div
+          class="bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/50 overflow-hidden px-1"
+        >
           <!-- Connected accounts section -->
           <div v-if="hasAnyConnection" class="py-1">
             <!-- npm CLI connection -->
@@ -144,7 +146,7 @@ function openAuthModal() {
               v-if="isNpmConnected && npmUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openConnectorModal"
             >
               <img
@@ -187,7 +189,7 @@ function openAuthModal() {
               v-if="atprotoUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openAuthModal"
             >
               <img
@@ -223,7 +225,7 @@ function openAuthModal() {
               v-if="!isNpmConnected"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openConnectorModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
@@ -250,7 +252,7 @@ function openAuthModal() {
               v-if="!atprotoUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openAuthModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
