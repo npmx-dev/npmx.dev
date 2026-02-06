@@ -52,15 +52,15 @@ reality. In just 24 hours, a growing community had mobilised in the form of cont
 opened 49 pull requests in a single day. And this showed no signs of slowing down. Not more than two weeks later, the
 [community had contributed 1000 issues and PRs](https://github.com/npmx-dev/npmx.dev/issues/1000) to the project. The
 statistics tell a story of one PR or issue every 20 minutes, around the clock, which equated to over a million seconds
-of project activity in just two weeks. We don't know the exact statistics, but we hypothesise that this might be the
-most active open-source project yet.
+of project activity in just two weeks. We don't know the exact statistics, but with ADD_NUMBER_HERE contributors to
+date, we hypothesise that this might be the most active open-source project yet.
 
-At npmx, we don't believe this happened by chance. The idea of npmx was conceived to meet the needs of a global and
-diverse developer community, prioritising accessibility, internationalization, and decentralization. As a result, a
-strong and diverse global community came together to realise this vision. And the great thing about people who believe
-in these areas of focus, is that they're all committed to collaborating in meaningful ways whilst building an inclusive
-and welcoming environment in which to do so: together. The npmx project is a testament to how open source is a powerful
-enabler and a powerful builder of communities when done well.
+At npmx, we don't believe this happened by chance. npmx was created to meet the needs of a global and diverse developer
+community, prioritising accessibility, internationalization, and decentralization. As a result, a strong and diverse
+global community came together to realise this vision. And the great thing about people who believe in these areas of
+focus, is that they're all committed to collaborating in meaningful ways whilst building an inclusive and welcoming
+environment in which to do so: together. The npmx project is a testament to how open source is a powerful enabler and a
+powerful builder of communities when done really, really well.
 
 ## What's included in the npmx alpha release
 
