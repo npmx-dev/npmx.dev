@@ -53,6 +53,7 @@ const allMaintainersText = computed(() => {
       <NuxtLink
         :to="packageUrl"
         class="font-mono text-sm text-fg hover:text-accent-fallback transition-colors duration-200"
+        dir="ltr"
       >
         {{ pkg.name }}
       </NuxtLink>

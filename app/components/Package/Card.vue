@@ -48,6 +48,7 @@ const pkgDescription = useMarkdown(() => ({
           :prefetch-on="prefetch ? 'visibility' : 'interaction'"
           class="decoration-none scroll-mt-48 scroll-mb-6 after:content-[''] after:absolute after:inset-0"
           :data-result-index="index"
+          dir="ltr"
           >{{ result.package.name }}</NuxtLink
         >
         <span

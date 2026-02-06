@@ -375,6 +375,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         })
                       : row.primaryVersion.version
                   "
+                  dir="ltr"
                 >
                   <span
                     v-if="row.primaryVersion.deprecated"
@@ -434,6 +435,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     ? $t('package.versions.deprecated_title', { version: v.version })
                     : v.version
                 "
+                dir="ltr"
               >
                 <span
                   v-if="v.deprecated"

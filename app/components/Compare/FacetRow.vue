@@ -146,7 +146,9 @@ function isCellLoading(index: number): boolean {
         >
           <!-- Date values use DateTime component for i18n and user settings -->
           <DateTime v-if="value.type === 'date'" :datetime="value.display" date-style="medium" />
-          <template v-else>{{ value.display }}</template>
+          <template v-else>
+            <span dir="ltr">{{ value.display }}</span>
+          </template>
         </span>
       </template>
     </div>
