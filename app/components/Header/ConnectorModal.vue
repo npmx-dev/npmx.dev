@@ -115,11 +115,11 @@ function handleDisconnect() {
         <button
           type="button"
           :aria-label="copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')"
-          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+          class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
           @click="copy('pnpm npmx-connector')"
         >
-          <span v-if="!copied" class="i-carbon:copy w-5 h-5" aria-hidden="true" />
-          <span v-else class="i-carbon:checkmark w-5 h-5 text-green-500" aria-hidden="true" />
+          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
+          <span v-else class="i-carbon:checkmark block w-5 h-5 text-green-500" aria-hidden="true" />
         </button>
       </div>
 
@@ -137,13 +137,13 @@ function handleDisconnect() {
                           :aria-label="
                             copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
                           "
-                          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+                          class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
                           @click="copyCommand"
                         >
-                          <span v-if="!copied" class="i-carbon:copy w-5 h-5" aria-hidden="true" />
+                          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
                           <span
                             v-else
-                            class="i-carbon:checkmark w-5 h-5 text-green-500"
+                            class="i-carbon:checkmark block w-5 h-5 text-green-500"
                             aria-hidden="true"
                           />
                         </button>
@@ -168,7 +168,7 @@ function handleDisconnect() {
             name="connector-token"
             :placeholder="$t('connector.modal.token_placeholder')"
             v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
+            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 hover:border-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
           />
         </div>
 
@@ -192,7 +192,7 @@ function handleDisconnect() {
               name="connector-port"
               inputmode="numeric"
               autocomplete="off"
-              class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
+              class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg transition-colors duration-200 hover:border-fg-subtle focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
             />
           </div>
         </details>
@@ -215,7 +215,7 @@ function handleDisconnect() {
         <p class="inline-block text-xs font-bold uppercase tracking-wider text-fg rounded">
           {{ $t('connector.modal.warning') }}
         </p>
-        <p class="text-sm text-fg-muted">
+        <p class="text-sm text-fg-muted mt-1">
           {{ $t('connector.modal.warning_text') }}
         </p>
       </div>

@@ -125,9 +125,10 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
     <!-- Sticky header - positioned below AppHeader -->
     <header
       aria-label="Package documentation header"
-      class="docs-header sticky z-10 bg-bg/95 backdrop-blur border-b border-border"
+      class="docs-header sticky z-10 border-b border-border"
     >
-      <div class="px-4 sm:px-6 lg:px-8 py-4">
+      <div class="absolute inset-0 bg-bg/90 backdrop-blur" />
+      <div class="relative px-4 sm:px-6 lg:px-8 py-4 z-1">
         <div class="flex items-center justify-between gap-4">
           <div class="flex items-center gap-3 min-w-0">
             <NuxtLink

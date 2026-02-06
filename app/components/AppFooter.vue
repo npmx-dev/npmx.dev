@@ -14,7 +14,7 @@ const isHome = computed(() => route.name === 'index')
           <BuildEnvironment v-if="!isHome" footer />
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
-        <div class="hidden sm:flex items-center gap-6">
+        <div class="hidden sm:flex items-center gap-6 min-h-11">
           <LinkBase :to="{ name: 'about' }">
             {{ $t('footer.about') }}
           </LinkBase>

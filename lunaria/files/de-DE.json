@@ -221,7 +221,8 @@
         "important": "Wichtig",
         "warning": "Warnung",
         "caution": "Vorsicht"
-      }
+      },
+      "copy_as_markdown": "README als Markdown kopieren"
     },
     "provenance_section": {
       "title": "Herkunft",
