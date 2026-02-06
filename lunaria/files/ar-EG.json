@@ -156,7 +156,7 @@
       "inspect_dependency_tree": "فحص شجرة التبعيات",
       "size_tooltip": {
         "unpacked": "{size} الحجم غير المضغوط (لهذه الحزمة)",
-        "total": "{size} الحجم غير المضغوط الإجمالي (بما في ذلك كل {count} اعتمادًا لـ linux-x64)"
+        "total": "{size} الحجم غير المضغوط الإجمالي (بما في ذلك كل {count} تبعية لـ linux-x64)"
       }
     },
     "skills": {
