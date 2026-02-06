@@ -134,13 +134,9 @@ function handleReset() {
           </div>
 
           <div class="border-t border-border py-1">
-            <button
-              type="button"
-              class="w-full px-3 py-2 text-start text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
-              @click="handleReset"
-            >
+            <ButtonBase @click="handleReset">
               {{ $t('filters.columns.reset') }}
-            </button>
+            </ButtonBase>
           </div>
         </div>
       </div>
