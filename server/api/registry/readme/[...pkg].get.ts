@@ -107,7 +107,7 @@ export default defineCachedEventHandler(
       }
 
       if (!readmeContent || readmeContent === NPM_MISSING_README_SENTINEL) {
-        return { html: '', playgroundLinks: [], toc: [] }
+        return { html: '', md: '', playgroundLinks: [], toc: [] }
       }
 
       // Parse repository info for resolving relative URLs to GitHub
