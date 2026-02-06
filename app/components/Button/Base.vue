@@ -31,13 +31,13 @@ defineExpose({
 <template>
   <button
     ref="el"
-    class="group cursor-pointer inline-flex gap-x-1 items-center justify-center font-mono border border-border rounded-md transition-all duration-200 disabled:(opacity-40 cursor-not-allowed border-transparent) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50)) bg-gradient-to-t dark:bg-gradient-to-b"
+    class="group cursor-pointer inline-flex gap-x-1 items-center justify-center font-mono border border-border rounded-md transition-all duration-200 disabled:(opacity-40 cursor-not-allowed border-transparent) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))"
     :class="{
       'text-sm px-4 py-2': size === 'medium',
       'text-xs px-2 py-0.5': size === 'small',
-      'from-fg/10 via-transparent to-transparent text-fg hover:enabled:(bg-accent/20) focus-visible:enabled:(bg-accent/20)':
+      'bg-transparent text-fg hover:enabled:(bg-fg/30) focus-visible:enabled:(bg-fg/30)':
         variant === 'secondary',
-      'text-black from-accent via-accent to-accent/30 hover:enabled:(bg-accent/50) focus-visible:enabled:(bg-accent/50)':
+      'text-black bg-fg hover:enabled:(bg-fg/50) focus-visible:enabled:(bg-fg/50)':
         variant === 'primary',
     }"
     :type="props.type"

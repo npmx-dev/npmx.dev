@@ -76,16 +76,14 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
     class="group inline-flex gap-x-1 items-center justify-center"
     :class="{
       'underline-offset-[0.2rem] underline decoration-1 decoration-fg/50': !isLinkAnchor && isLink,
-      'text-fg hover:(no-underline text-accent) focus-visible:(no-underline text-accent) transition-colors duration-200':
+      'text-fg hover:(no-underline text-fg/50) focus-visible:(no-underline text-fg/50) transition-colors duration-200':
         isLink,
-      'font-mono border border-border rounded-md transition-all duration-200 bg-gradient-to-t dark:bg-gradient-to-b':
-        isButton,
+      'font-mono border border-border rounded-md transition-all duration-200': isButton,
       'text-sm px-4 py-2': isButtonMedium,
       'text-xs px-2 py-0.5': isButtonSmall,
-      'from-fg/10 via-transparent to-transparent text-fg hover:(bg-accent/20) focus-visible:(bg-accent/20)':
+      'bg-transparent text-fg hover:(bg-fg/30) focus-visible:(bg-fg/30)':
         variant === 'button-secondary',
-      'text-black from-accent via-accent to-accent/30 hover:(bg-accent/50) focus-visible:(bg-accent/50)':
-        variant === 'button-primary',
+      'text-black bg-fg hover:(bg-fg/50) focus-visible:(bg-fg/50)': variant === 'button-primary',
     }"
     :to="to"
     :href="to"
