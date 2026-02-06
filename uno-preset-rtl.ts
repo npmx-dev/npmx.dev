@@ -110,11 +110,14 @@ export function presetRtl(checker?: CollectorChecker): Preset {
           const replacement = direction === 'left' ? 'inset-is' : 'inset-ie'
 
           const fullClass = context.rawSelector || match
-          const suggestedBase = match.replace(direction!, replacement)
+          // match is 'left-4' or 'position-left-4'
+          // replacement is 'inset-is' or 'inset-ie'
+          // We want 'inset-is-4'
+          const suggestedBase = `${replacement}-${size}`
           const suggestedClass = fullClass.replace(match, suggestedBase)
 
           if (checker) {
-            checker(`avoid using '${fullClass}'. Use '${suggestedClass}' instead.`, fullClass)
+            checker(`avoid using '${fullClass}', use '${suggestedClass}' instead.`, fullClass)
           } else {
             warnOnce(
               `[RTL] Avoid using '${fullClass}'. Use '${suggestedClass}' instead.`,
