@@ -1225,6 +1225,7 @@ onKeyStroke(
             :versions="pkg.versions"
             :dist-tags="pkg['dist-tags'] ?? {}"
             :time="pkg.time"
+            :current-version="resolvedVersion"
           />
 
           <!-- Install Scripts Warning -->
