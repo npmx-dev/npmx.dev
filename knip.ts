@@ -8,6 +8,7 @@ const config: KnipConfig = {
         'app/error.vue!',
         'app/pages/**/*.vue!',
         'app/components/**/*.vue!',
+        'app/components/**/*.d.vue.ts!',
         'app/composables/**/*.ts!',
         'app/middleware/**/*.ts!',
         'app/plugins/**/*.ts!',
@@ -38,6 +39,9 @@ const config: KnipConfig = {
 
         /** Some components import types from here, but installing it directly could lead to a version mismatch */
         'vue-router',
+
+        /** Oxlint plugins don't get picked up yet */
+        '@e18e/eslint-plugin',
       ],
       ignoreUnresolved: ['#components', '#oauth/config'],
     },

@@ -32,6 +32,9 @@ importers:
       '@atproto/oauth-client-node':
         specifier: ^0.3.15
         version: 0.3.16
+      '@atproto/syntax':
+        specifier: 0.4.3
+        version: 0.4.3
       '@deno/doc':
         specifier: jsr:^0.189.1
         version: '@jsr/deno__doc@0.189.1(patch_hash=24f326e123c822a07976329a5afe91a8713e82d53134b5586625b72431c87832)'
@@ -195,9 +198,12 @@ importers:
         specifier: 3.5.27
         version: 3.5.27(typescript@5.9.3)
       vue-data-ui:
-        specifier: 3.14.5
-        version: 3.14.5(vue@3.5.27(typescript@5.9.3))
+        specifier: 3.14.7
+        version: 3.14.7(vue@3.5.27(typescript@5.9.3))
     devDependencies:
+      '@e18e/eslint-plugin':
+        specifier: 0.1.4
+        version: 0.1.4(eslint@9.39.2(jiti@2.6.1))
       '@intlify/core-base':
         specifier: 11.2.8
         version: 11.2.8
@@ -234,6 +240,9 @@ importers:
       fast-check:
         specifier: 4.5.3
         version: 4.5.3
+      h3:
+        specifier: 1.15.5
+        version: 1.15.5
       knip:
         specifier: 5.83.0
         version: 5.83.0(@types/node@24.10.9)(typescript@5.9.3)
@@ -1054,6 +1063,11 @@ packages:
 
   '@dxup/unimport@0.1.2':
     resolution: {integrity: sha512-/B8YJGPzaYq1NbsQmwgP8EZqg40NpTw4ZB3suuI0TplbxKHeK94jeaawLmVhCv+YwUnOpiWEz9U6SeThku/8JQ==}
+
+  '@e18e/eslint-plugin@0.1.4':
+    resolution: {integrity: sha512-nN0zo9lIsYJynhFyN+kNVINc9pDMotKjfEr1NcRRXCFKJt89V5S4DL6ZSXN2USJb2XezkMvyLOQMZ0lZTpvFeQ==}
+    peerDependencies:
+      eslint: ^9.0.0
 
   '@emnapi/core@1.8.1':
     resolution: {integrity: sha512-AvT9QFpxK0Zd8J0jopedNm+w/2fIzvtPKPjqyw9jwvBaReTTqPBk9Hixaz7KbjimP+QNz605/XnjFcDAL2pqBg==}
@@ -5562,6 +5576,9 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
+  eslint-plugin-depend@1.4.0:
+    resolution: {integrity: sha512-MQs+m4nHSfgAO9bJDsBzqw0ofK/AOA0vfeY/6ahofqcUMLeM6/D1sTYs21fOhc17kNU/gn58YCtj20XaAssh2A==}
+
   eslint-scope@5.1.1:
     resolution: {integrity: sha512-2NxwbF/hZ0KpepYN0cNbo+FN6XoK7GaHlQhgx/hIZl6Va0bF45RQOOwhLIy8lQDbuCiadSLCBnH2CFYquit5bw==}
     engines: {node: '>=8.0.0'}
@@ -9276,8 +9293,8 @@ packages:
   vue-component-type-helpers@3.2.4:
     resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
-  vue-data-ui@3.14.5:
-    resolution: {integrity: sha512-VjRJAHvnb0NFqrz/hB8cG4bNnOVzO0J3kJ1lE9Ir3dMFKA37R1lEriu7Q4tlgkoFLmsvhV/wfan2iiLFCBYKWA==}
+  vue-data-ui@3.14.7:
+    resolution: {integrity: sha512-aA7jNLyqBPGDvxRSJYI+xCnYhjdJgP2csvGCNNmsjJiI+N7yc8YmgcYR34BcVH7BTyO+kbt1xQ7zZry0H0SiMA==}
     peerDependencies:
       jspdf: '>=3.0.1'
       vue: '>=3.3.0'
@@ -10641,6 +10658,11 @@ snapshots:
       - magicast
 
   '@dxup/unimport@0.1.2': {}
+
+  '@e18e/eslint-plugin@0.1.4(eslint@9.39.2(jiti@2.6.1))':
+    dependencies:
+      eslint: 9.39.2(jiti@2.6.1)
+      eslint-plugin-depend: 1.4.0
 
   '@emnapi/core@1.8.1':
     dependencies:
@@ -15635,6 +15657,12 @@ snapshots:
       esutils: 2.0.3
     optionalDependencies:
       source-map: 0.6.1
+
+  eslint-plugin-depend@1.4.0:
+    dependencies:
+      empathic: 2.0.0
+      module-replacements: 2.11.0
+      semver: 7.7.3
 
   eslint-scope@5.1.1:
     dependencies:
@@ -20704,7 +20732,7 @@ snapshots:
 
   vue-component-type-helpers@3.2.4: {}
 
-  vue-data-ui@3.14.5(vue@3.5.27(typescript@5.9.3)):
+  vue-data-ui@3.14.7(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
 

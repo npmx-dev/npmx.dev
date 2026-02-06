@@ -73,6 +73,16 @@ export async function getGitInfo() {
   return { branch, commit, shortCommit }
 }
 
+export async function getFileLastUpdated(path: string) {
+  try {
+    // Get ISO date of last commit for file
+    const date = await git.log(['-1', '--format=%cI', '--', path])
+    return date.latest?.date || new Date().toISOString()
+  } catch {
+    return new Date().toISOString()
+  }
+}
+
 export async function getEnv(isDevelopment: boolean) {
   const { commit, shortCommit, branch } = await getGitInfo()
   const env = isDevelopment

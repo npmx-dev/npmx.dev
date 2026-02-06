@@ -77,7 +77,7 @@ function openAuthModal() {
           :alt="npmUser || $t('account_menu.npm_cli')"
           width="24"
           height="24"
-          class="w-6 h-6 rounded-full ring-2 ring-bg"
+          class="w-6 h-6 rounded-full ring-2 ring-bg object-cover"
         />
         <span
           v-else-if="isNpmConnected"
@@ -87,8 +87,17 @@ function openAuthModal() {
         </span>
 
         <!-- Atmosphere avatar (second/front, overlapping) -->
+        <img
+          v-if="atprotoUser?.avatar"
+          :src="atprotoUser.avatar"
+          :alt="atprotoUser.handle"
+          width="24"
+          height="24"
+          class="w-6 h-6 rounded-full ring-2 ring-bg object-cover"
+          :class="hasBothConnections ? 'relative z-10' : ''"
+        />
         <span
-          v-if="atprotoUser"
+          v-else-if="atprotoUser"
           class="w-6 h-6 rounded-full bg-bg-muted ring-2 ring-bg flex items-center justify-center"
           :class="hasBothConnections ? 'relative z-10' : ''"
         >
@@ -135,7 +144,7 @@ function openAuthModal() {
               v-if="isNpmConnected && npmUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
               @click="openConnectorModal"
             >
               <img
@@ -144,7 +153,7 @@ function openAuthModal() {
                 :alt="npmUser"
                 width="32"
                 height="32"
-                class="w-8 h-8 rounded-full"
+                class="w-8 h-8 rounded-full object-cover"
               />
               <span
                 v-else
@@ -178,10 +187,21 @@ function openAuthModal() {
               v-if="atprotoUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
               @click="openAuthModal"
             >
-              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
+              <img
+                v-if="atprotoUser.avatar"
+                :src="atprotoUser.avatar"
+                :alt="atprotoUser.handle"
+                width="32"
+                height="32"
+                class="w-8 h-8 rounded-full object-cover"
+              />
+              <span
+                v-else
+                class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center"
+              >
                 <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
               <div class="flex-1 min-w-0">

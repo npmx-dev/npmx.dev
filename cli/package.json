@@ -28,6 +28,7 @@
   "scripts": {
     "build": "tsdown",
     "dev": "NPMX_CLI_DEV=true node src/cli.ts",
+    "dev:debug": "DEBUG=npmx-connector NPMX_CLI_DEV=true node src/cli.ts",
     "test:types": "tsc --noEmit"
   },
   "dependencies": {

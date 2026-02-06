@@ -26,6 +26,7 @@ jobs:
             a11y
             deps
             docs
+            cli
             i18n
             ui
           subjectPattern: ^(?![A-Z]).+$

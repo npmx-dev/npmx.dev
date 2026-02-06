@@ -15,7 +15,7 @@ defineProps<{
   >
     <title>{{ $t('alt_logo') }}</title>
     <rect fill="var(--bg)" width="512" height="512" rx="64" />
-    <rect fill="var(--fg)" x="110" y="310" width="60" height="60" />
+    <rect fill="currentColor" x="110" y="310" width="60" height="60" />
     <text
       fill="var(--accent)"
       x="320"

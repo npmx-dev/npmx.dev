@@ -135,8 +135,10 @@
       "documented": "La {community} a signalé que ce paquet a des alternatives plus performantes.",
       "none": "Ce paquet a été signalé comme n'étant plus nécessaire, et sa fonctionnalité est probablement disponible nativement dans tous les moteurs.",
       "learn_more": "En savoir plus",
+      "learn_more_above": "En savoir plus ci-dessus.",
       "mdn": "MDN",
-      "community": "communauté"
+      "community": "communauté",
+      "consider_no_dep": "+ Envisager sans dépendance ?"
     },
     "stats": {
       "license": "Licence",
@@ -388,7 +390,7 @@
   "connector": {
     "status": {
       "connecting": "connexion...",
-      "connected_as": "connecté·e en tant que {'@'}{user}",
+      "connected_as": "connecté·e en tant que ~{user}",
       "connected": "connecté·e",
       "connect_cli": "connecter le CLI local",
       "aria_connecting": "Connexion au connecteur local",
@@ -854,6 +856,15 @@
       "loading_versions": "Chargement des versions...",
       "select_version": "Sélectionner une version"
     },
+    "no_dependency": {
+      "label": "(Sans dépendance)",
+      "typeahead_title": "Et sans dépendance ?",
+      "typeahead_description": "Comparer avec l'absence de dépendance ! Approuvé par e18e.",
+      "tooltip_title": "Vous n'avez peut-être pas besoin d'une dépendance",
+      "tooltip_description": "Comparer avec l'absence de dépendance ! La {link} maintient une liste de paquets pouvant être remplacés par des API natives ou des alternatives plus simples.",
+      "e18e_community": "communauté e18e",
+      "add_column": "Ajouter la colonne sans dépendance à la comparaison"
+    },
     "facets": {
       "group_label": "Facettes de comparaison",
       "all": "tout",
@@ -928,7 +939,8 @@
         "not_deprecated": "Non",
         "types_included": "Inclus",
         "types_none": "Aucun",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "À vous de décider !"
       }
     }
   }

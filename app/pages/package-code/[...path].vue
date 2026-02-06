@@ -283,7 +283,21 @@ useSeoMeta({
     }
     return `Code - ${packageName.value}@${version.value} - npmx`
   },
+  ogTitle: () => {
+    if (filePath.value) {
+      return `${filePath.value} - ${packageName.value}@${version.value} - npmx`
+    }
+    return `Code - ${packageName.value}@${version.value} - npmx`
+  },
+  twitterTitle: () => {
+    if (filePath.value) {
+      return `${filePath.value} - ${packageName.value}@${version.value} - npmx`
+    }
+    return `Code - ${packageName.value}@${version.value} - npmx`
+  },
   description: () => `Browse source code for ${packageName.value}@${version.value}`,
+  ogDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
+  twitterDescription: () => `Browse source code for ${packageName.value}@${version.value}`,
 })
 
 defineOgImageComponent('Default', {

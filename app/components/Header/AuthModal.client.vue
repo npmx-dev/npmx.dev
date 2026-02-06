@@ -3,15 +3,15 @@ import { useAtproto } from '~/composables/atproto/useAtproto'
 import { authRedirect } from '~/utils/atproto/helpers'
 
 const handleInput = shallowRef('')
-
+const route = useRoute()
 const { user, logout } = useAtproto()
 
 async function handleBlueskySignIn() {
-  await authRedirect('https://bsky.social')
+  await authRedirect('https://bsky.social', { redirectTo: route.fullPath })
 }
 
 async function handleCreateAccount() {
-  await authRedirect('https://npmx.social', true)
+  await authRedirect('https://npmx.social', { create: true, redirectTo: route.fullPath })
 }
 
 async function handleLogin() {
@@ -59,8 +59,7 @@ async function handleLogin() {
             type="text"
             name="handle"
             :placeholder="$t('auth.modal.handle_placeholder')"
-            autocomplete="off"
-            spellcheck="false"
+            v-bind="noCorrect"
             class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
           />
         </div>

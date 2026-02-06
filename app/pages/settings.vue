@@ -20,7 +20,11 @@ onKeyStroke(
 
 useSeoMeta({
   title: () => `${$t('settings.title')} - npmx`,
+  ogTitle: () => `${$t('settings.title')} - npmx`,
+  twitterTitle: () => `${$t('settings.title')} - npmx`,
   description: () => $t('settings.meta_description'),
+  ogDescription: () => $t('settings.meta_description'),
+  twitterDescription: () => $t('settings.meta_description'),
 })
 
 defineOgImageComponent('Default', {
@@ -46,11 +50,11 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </h1>
           <button
             type="button"
-            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0 p-1.5 -mx-1.5"
             @click="router.back()"
           >
             <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+            <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
           </button>
         </div>
         <p class="text-fg-muted text-lg">
@@ -62,7 +66,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
       <div class="space-y-8">
         <!-- APPEARANCE Section -->
         <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.appearance') }}
           </h2>
           <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-6">
@@ -74,7 +78,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               <select
                 id="theme-select"
                 :value="colorMode.preference"
-                class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg cursor-pointer"
+                class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg cursor-pointer duration-200 transition-colors hover:border-fg-subtle"
                 @change="
                   colorMode.preference = ($event.target as HTMLSelectElement).value as
                     | 'light'
@@ -110,10 +114,10 @@ const setLocale: typeof setNuxti18nLocale = locale => {
 
         <!-- DISPLAY Section -->
         <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.display') }}
           </h2>
-          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-4">
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6">
             <!-- Relative dates toggle -->
             <SettingsToggle
               :label="$t('settings.relative_dates')"
@@ -121,33 +125,29 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             />
 
             <!-- Divider -->
-            <div class="border-t border-border" />
+            <div class="border-t border-border my-4" />
 
             <!-- Include @types in install toggle -->
-            <div class="space-y-2">
-              <SettingsToggle
-                :label="$t('settings.include_types')"
-                :description="$t('settings.include_types_description')"
-                v-model="settings.includeTypesInInstall"
-              />
-            </div>
+            <SettingsToggle
+              :label="$t('settings.include_types')"
+              :description="$t('settings.include_types_description')"
+              v-model="settings.includeTypesInInstall"
+            />
 
             <!-- Divider -->
-            <div class="border-t border-border" />
+            <div class="border-t border-border my-4" />
 
             <!-- Hide platform-specific packages toggle -->
-            <div class="space-y-2">
-              <SettingsToggle
-                :label="$t('settings.hide_platform_packages')"
-                :description="$t('settings.hide_platform_packages_description')"
-                v-model="settings.hidePlatformPackages"
-              />
-            </div>
+            <SettingsToggle
+              :label="$t('settings.hide_platform_packages')"
+              :description="$t('settings.hide_platform_packages_description')"
+              v-model="settings.hidePlatformPackages"
+            />
           </div>
         </section>
 
         <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.language') }}
           </h2>
           <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 space-y-4">
@@ -161,7 +161,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <select
                   id="language-select"
                   :value="locale"
-                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-accent/70 cursor-pointer"
+                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-accent/70 cursor-pointer duration-200 transition-colors hover:border-fg-subtle"
                   @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
                 >
                   <option v-for="loc in locales" :key="loc.code" :value="loc.code" :lang="loc.code">
@@ -172,7 +172,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                   <select
                     id="language-select"
                     disabled
-                    class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg opacity-50 cursor-wait"
+                    class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg opacity-50 cursor-wait duration-200 transition-colors hover:border-fg-subtle"
                   >
                     <option>{{ $t('common.loading') }}</option>
                   </select>

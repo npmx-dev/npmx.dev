@@ -344,7 +344,7 @@
   "connector": {
     "status": {
       "connecting": "підключення...",
-      "connected_as": "підключений як {'@'}{user}",
+      "connected_as": "підключений як ~{user}",
       "connected": "підключено",
       "connect_cli": "підключити локальний CLI",
       "aria_connecting": "Підключення до локального сполучника",

@@ -1,6 +1,6 @@
 import type { OAuthClientMetadataInput, OAuthSession } from '@atproto/oauth-client-node'
 import type { EventHandlerRequest, H3Event, SessionManager } from 'h3'
-import { NodeOAuthClient } from '@atproto/oauth-client-node'
+import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client-node'
 import { parse } from 'valibot'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
@@ -10,6 +10,13 @@ import { OAuthMetadataSchema } from '#shared/schemas/oauth'
 import { clientUri } from '#oauth/config'
 // TODO: If you add writing a new record you will need to add a scope for it
 export const scope = `atproto ${LIKES_SCOPE}`
+
+/**
+ * Resolves a did to a handle via DoH or via the http website calls
+ */
+export const handleResolver = new AtprotoDohHandleResolver({
+  dohEndpoint: 'https://cloudflare-dns.com/dns-query',
+})
 
 export function getOauthClientMetadata() {
   const dev = import.meta.dev
@@ -42,10 +49,13 @@ type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
   serverSession: SessionManager,
 ) => Promise<D>
 
-async function getOAuthSession(event: H3Event): Promise<OAuthSession | undefined> {
+async function getOAuthSession(
+  event: H3Event,
+): Promise<{ oauthSession: OAuthSession | undefined; serverSession: SessionManager }> {
+  const serverSession = await useServerSession(event)
+
   try {
     const clientMetadata = getOauthClientMetadata()
-    const serverSession = await useServerSession(event)
     const { stateStore, sessionStore } = useOAuthStorage(serverSession)
 
     const client = new NodeOAuthClient({
@@ -53,13 +63,14 @@ async function getOAuthSession(event: H3Event): Promise<OAuthSession | undefined
       sessionStore,
       clientMetadata,
       requestLock: getOAuthLock(),
+      handleResolver,
     })
 
-    const currentSession = await sessionStore.get()
-    if (!currentSession) return undefined
+    const currentSession = serverSession.data
+    if (!currentSession) return { oauthSession: undefined, serverSession }
 
-    // restore using the subject
-    return await client.restore(currentSession.tokenSet.sub)
+    const oauthSession = await client.restore(currentSession.public.did)
+    return { oauthSession, serverSession }
   } catch (error) {
     // Log error safely without using util.inspect on potentially problematic objects
     // The @atproto library creates error objects with getters that crash Node's util.inspect
@@ -68,7 +79,7 @@ async function getOAuthSession(event: H3Event): Promise<OAuthSession | undefined
       '[oauth] Failed to get session:',
       error instanceof Error ? error.message : 'Unknown error',
     )
-    return undefined
+    return { oauthSession: undefined, serverSession }
   }
 }
 
@@ -93,9 +104,7 @@ export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
   handler: EventHandlerWithOAuthSession<T, D>,
 ) {
   return defineEventHandler(async event => {
-    const serverSession = await useServerSession(event)
-
-    const oAuthSession = await getOAuthSession(event)
-    return await handler(event, oAuthSession, serverSession)
+    const { oauthSession, serverSession } = await getOAuthSession(event)
+    return await handler(event, oauthSession, serverSession)
   })
 }

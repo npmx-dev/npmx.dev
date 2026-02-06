@@ -392,7 +392,7 @@
   "connector": {
     "status": {
       "connecting": "conectando...",
-      "connected_as": "conectado como {'@'}{user}",
+      "connected_as": "conectado como ~{user}",
       "connected": "conectado",
       "connect_cli": "conectar CLI local",
       "aria_connecting": "Conectando al conector local",

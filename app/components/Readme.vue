@@ -61,7 +61,15 @@ function handleClick(event: MouseEvent) {
 <template>
   <article
     class="readme prose prose-invert max-w-[70ch] lg:max-w-none px-1"
+    dir="auto"
     v-html="html"
+    :style="{
+      '--i18n-note': '\'' + $t('package.readme.callout.note') + '\'',
+      '--i18n-tip': '\'' + $t('package.readme.callout.tip') + '\'',
+      '--i18n-important': '\'' + $t('package.readme.callout.important') + '\'',
+      '--i18n-warning': '\'' + $t('package.readme.callout.warning') + '\'',
+      '--i18n-caution': '\'' + $t('package.readme.callout.caution') + '\'',
+    }"
     @click="handleClick"
   />
 </template>
@@ -78,6 +86,8 @@ function handleClick(event: MouseEvent) {
   /* Contain all children */
   overflow: hidden;
   min-width: 0;
+  /* Contain all children z-index values inside this container */
+  isolation: isolate;
 }
 
 /* README headings - styled by visual level (data-level), not semantic level */
@@ -158,48 +168,7 @@ function handleClick(event: MouseEvent) {
 }
 
 .readme :deep(.readme-code-block) {
-  display: block;
-  width: 100%;
-  position: relative;
-}
-
-.readme :deep(.readme-copy-button) {
-  position: absolute;
-  top: 0.4rem;
-  inset-inline-end: 0.4rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--bg-subtle) 80%, transparent);
-  border: 1px solid var(--border);
-  color: var(--fg-subtle);
-  opacity: 0;
-  transition:
-    opacity 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.readme :deep(.readme-code-block:hover .readme-copy-button),
-.readme :deep(.readme-copy-button:focus-visible) {
-  opacity: 1;
-}
-
-.readme :deep(.readme-copy-button:hover) {
-  color: var(--fg);
-  border-color: var(--border-hover);
-}
-
-.readme :deep(.readme-copy-button > span) {
-  width: 1rem;
-  height: 1rem;
-  display: inline-block;
-  pointer-events: none;
-}
-
-.readme :deep(.readme-code-block) {
+  @apply bg-bg-subtle;
   display: block;
   width: 100%;
   position: relative;
@@ -333,7 +302,7 @@ function handleClick(event: MouseEvent) {
   background: rgba(59, 130, 246, 0.05);
 }
 .readme :deep(blockquote[data-callout='note']::before) {
-  content: 'Note';
+  content: var(--i18n-note, 'Note');
   color: #3b82f6;
 }
 .readme :deep(blockquote[data-callout='note']::after) {
@@ -348,7 +317,7 @@ function handleClick(event: MouseEvent) {
   background: rgba(34, 197, 94, 0.05);
 }
 .readme :deep(blockquote[data-callout='tip']::before) {
-  content: 'Tip';
+  content: var(--i18n-tip, 'Tip');
   color: #22c55e;
 }
 .readme :deep(blockquote[data-callout='tip']::after) {
@@ -363,7 +332,7 @@ function handleClick(event: MouseEvent) {
   background: rgba(168, 85, 247, 0.05);
 }
 .readme :deep(blockquote[data-callout='important']::before) {
-  content: 'Important';
+  content: var(--i18n-important, 'Important');
   color: var(--syntax-fn);
 }
 .readme :deep(blockquote[data-callout='important']::after) {
@@ -378,7 +347,7 @@ function handleClick(event: MouseEvent) {
   background: rgba(234, 179, 8, 0.05);
 }
 .readme :deep(blockquote[data-callout='warning']::before) {
-  content: 'Warning';
+  content: var(--i18n-warning, 'Warning');
   color: #eab308;
 }
 .readme :deep(blockquote[data-callout='warning']::after) {
@@ -393,7 +362,7 @@ function handleClick(event: MouseEvent) {
   background: rgba(239, 68, 68, 0.05);
 }
 .readme :deep(blockquote[data-callout='caution']::before) {
-  content: 'Caution';
+  content: var(--i18n-caution, 'Caution');
   color: #ef4444;
 }
 .readme :deep(blockquote[data-callout='caution']::after) {
@@ -436,6 +405,8 @@ function handleClick(event: MouseEvent) {
   display: revert-layer;
   border-radius: 8px;
   margin: 1rem 0;
+  position: relative;
+  z-index: 1;
 }
 
 .readme :deep(video) {

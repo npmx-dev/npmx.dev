@@ -23,6 +23,12 @@ definePageMeta({
   alias: ['/:package(.*)*'],
 })
 
+defineOgImageComponent('Package', {
+  name: () => packageName.value,
+  version: () => requestedVersion.value ?? '',
+  primaryColor: '#60a5fa',
+})
+
 const router = useRouter()
 
 const header = useTemplateRef('header')
@@ -53,8 +59,6 @@ const activePmId = computed(() => selectedPM.value ?? 'npm')
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
-
-const { data: downloads } = usePackageDownloads(packageName, 'last-week')
 
 // Fetch README for specific version if requested, otherwise latest
 const { data: readmeData } = useLazyFetch<ReadmeResponse>(
@@ -137,7 +141,7 @@ const {
   data: pkg,
   status,
   error,
-} = usePackage(packageName, resolvedVersion.value ?? requestedVersion)
+} = usePackage(packageName, resolvedVersion.value ?? requestedVersion.value)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
 // Process package description
@@ -421,19 +425,28 @@ const likeAction = async () => {
 
   isLikeActionPending.value = true
 
-  const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
+  try {
+    const result = await togglePackageLike(packageName.value, currentlyLiked, user.value?.handle)
 
-  isLikeActionPending.value = false
+    isLikeActionPending.value = false
 
-  if (result.success) {
-    // Update with server response
-    likesData.value = result.data
-  } else {
+    if (result.success) {
+      // Update with server response
+      likesData.value = result.data
+    } else {
+      // Revert on error
+      likesData.value = {
+        totalLikes: currentLikes,
+        userHasLiked: currentlyLiked,
+      }
+    }
+  } catch {
     // Revert on error
     likesData.value = {
       totalLikes: currentLikes,
       userHasLiked: currentlyLiked,
     }
+    isLikeActionPending.value = false
   }
 }
 
@@ -443,7 +456,11 @@ useHead({
 
 useSeoMeta({
   title: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
+  ogTitle: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
+  twitterTitle: () => (pkg.value?.name ? `${pkg.value.name} - npmx` : 'Package - npmx'),
   description: () => pkg.value?.description ?? '',
+  ogDescription: () => pkg.value?.description ?? '',
+  twitterDescription: () => pkg.value?.description ?? '',
 })
 
 onKeyStroke(
@@ -479,15 +496,6 @@ onKeyStroke(
     router.push({ path: '/compare', query: { packages: pkg.value.name } })
   },
 )
-
-defineOgImageComponent('Package', {
-  name: () => pkg.value?.name ?? 'Package',
-  version: () => resolvedVersion.value ?? '',
-  downloads: () => (downloads.value ? $n(downloads.value.downloads) : ''),
-  license: () => pkg.value?.license ?? '',
-  stars: () => stars.value ?? 0,
-  primaryColor: '#60a5fa',
-})
 </script>
 
 <template>
@@ -585,8 +593,8 @@ defineOgImageComponent('Package', {
           </span>
 
           <!-- Package metrics (module format, types) -->
-          <ClientOnly>
-            <div class="flex gap-2 sm:gap-3 flex-wrap">
+          <div class="flex gap-2 sm:gap-3 flex-wrap">
+            <ClientOnly>
               <PackageMetricsBadges
                 v-if="resolvedVersion"
                 :package-name="pkg.name"
@@ -596,33 +604,49 @@ defineOgImageComponent('Package', {
               />
 
               <!-- Package likes -->
-              <button
-                @click="likeAction"
-                type="button"
-                class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
-                :title="$t('package.links.like')"
+              <TooltipApp
+                :text="
+                  likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
+                "
+                position="bottom"
               >
-                <span
-                  :class="
-                    likesData?.userHasLiked
-                      ? 'i-lucide-heart-minus text-red-500'
-                      : 'i-lucide-heart-plus'
+                <button
+                  @click="likeAction"
+                  type="button"
+                  :title="
+                    likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
                   "
-                  class="w-4 h-4"
-                  aria-hidden="true"
-                />
-                <span>{{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}</span>
-              </button>
-            </div>
-
-            <template #fallback>
-              <div class="flex items-center gap-1.5 self-baseline ms-1 sm:ms-2">
-                <SkeletonBlock class="w-8 h-5 rounded" />
-                <SkeletonBlock class="w-12 h-5 rounded" />
-                <SkeletonBlock class="w-5 h-5 rounded" />
-              </div>
-            </template>
-          </ClientOnly>
+                  class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
+                  :aria-label="
+                    likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
+                  "
+                >
+                  <span
+                    :class="
+                      likesData?.userHasLiked
+                        ? 'i-lucide-heart-minus text-red-500'
+                        : 'i-lucide-heart-plus'
+                    "
+                    class="w-4 h-4"
+                    aria-hidden="true"
+                  />
+                  <span>{{
+                    formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 })
+                  }}</span>
+                </button>
+              </TooltipApp>
+              <template #fallback>
+                <div
+                  class="flex items-center gap-1.5 list-none m-0 p-0 relative top-[5px] self-baseline ms-1 sm:ms-2"
+                >
+                  <SkeletonBlock class="w-16 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded" />
+                  <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
+                </div>
+              </template>
+            </ClientOnly>
+          </div>
 
           <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
           <nav
@@ -858,26 +882,28 @@ defineOgImageComponent('Package', {
               <span class="text-fg-muted">{{ getDependencyCount(displayVersion) }}</span>
 
               <!-- Separator and total transitive deps -->
-              <span class="text-fg-subtle mx-1">/</span>
+              <template v-if="getDependencyCount(displayVersion) !== totalDepsCount">
+                <span class="text-fg-subtle mx-1">/</span>
 
-              <ClientOnly>
-                <span
-                  v-if="
-                    vulnTreeStatus === 'pending' || (installSizeStatus === 'pending' && !vulnTree)
-                  "
-                  class="inline-flex items-center gap-1 text-fg-subtle"
-                >
+                <ClientOnly>
                   <span
-                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                    aria-hidden="true"
-                  />
-                </span>
-                <span v-else-if="totalDepsCount !== null">{{ totalDepsCount }}</span>
-                <span v-else class="text-fg-subtle">-</span>
-                <template #fallback>
-                  <span class="text-fg-subtle">-</span>
-                </template>
-              </ClientOnly>
+                    v-if="
+                      vulnTreeStatus === 'pending' || (installSizeStatus === 'pending' && !vulnTree)
+                    "
+                    class="inline-flex items-center gap-1 text-fg-subtle"
+                  >
+                    <span
+                      class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span v-else-if="totalDepsCount !== null">{{ totalDepsCount }}</span>
+                  <span v-else class="text-fg-subtle">-</span>
+                  <template #fallback>
+                    <span class="text-fg-subtle">-</span>
+                  </template>
+                </ClientOnly>
+              </template>
 
               <a
                 v-if="getDependencyCount(displayVersion) > 0"
@@ -927,21 +953,23 @@ defineOgImageComponent('Package', {
               </span>
 
               <!-- Separator and install size -->
-              <span class="text-fg-subtle mx-1">/</span>
+              <template v-if="getDependencyCount(displayVersion) > 0">
+                <span class="text-fg-subtle mx-1">/</span>
 
-              <span
-                v-if="installSizeStatus === 'pending'"
-                class="inline-flex items-center gap-1 text-fg-subtle"
-              >
                 <span
-                  class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                  aria-hidden="true"
-                />
-              </span>
-              <span v-else-if="installSize?.totalSize">
-                {{ formatBytes(installSize.totalSize) }}
-              </span>
-              <span v-else class="text-fg-subtle">-</span>
+                  v-if="installSizeStatus === 'pending'"
+                  class="inline-flex items-center gap-1 text-fg-subtle"
+                >
+                  <span
+                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
+                    aria-hidden="true"
+                  />
+                </span>
+                <span v-else-if="installSize?.totalSize">
+                  {{ formatBytes(installSize.totalSize) }}
+                </span>
+                <span v-else class="text-fg-subtle">-</span>
+              </template>
             </dd>
           </div>
 
@@ -1092,11 +1120,11 @@ defineOgImageComponent('Package', {
 
       <!-- README -->
       <section id="readme" class="area-readme min-w-0 scroll-mt-20">
-        <div class="flex flex-wrap items-center justify-between mb-4 px-1">
+        <div class="flex flex-wrap items-center justify-between mb-3 px-1">
           <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
             <a
               href="#readme"
-              class="inline-flex py-4 px-2 items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
+              class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
             >
               {{ $t('package.readme.title') }}
               <span
@@ -1162,18 +1190,12 @@ defineOgImageComponent('Package', {
       <div class="area-sidebar">
         <!-- Sidebar -->
         <div
-          class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pr-2.5 hover:pr-0.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"
+          class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"
         >
-          <!-- Maintainers (with admin actions when connected) -->
-          <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
-
           <!-- Team access controls (for scoped packages when connected) -->
           <ClientOnly>
             <PackageAccessControls :package-name="pkg.name" />
           </ClientOnly>
-
-          <!-- Keywords -->
-          <PackageKeywords :keywords="displayVersion?.keywords" />
 
           <!-- Agent Skills -->
           <ClientOnly>
@@ -1225,6 +1247,12 @@ defineOgImageComponent('Package', {
             :peer-dependencies-meta="displayVersion.peerDependenciesMeta"
             :optional-dependencies="displayVersion.optionalDependencies"
           />
+
+          <!-- Keywords -->
+          <PackageKeywords :keywords="displayVersion?.keywords" />
+
+          <!-- Maintainers (with admin actions when connected) -->
+          <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
         </div>
       </div>
     </article>
@@ -1319,28 +1347,28 @@ defineOgImageComponent('Package', {
 @media (min-width: 1024px) {
   .sidebar-scroll {
     scrollbar-gutter: stable;
-    scrollbar-width: none;
+    scrollbar-width: 8px;
+    scrollbar-color: transparent transparent;
   }
 
   .sidebar-scroll::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-
-  .sidebar-scroll:hover,
-  .sidebar-scroll:focus-within {
-    scrollbar-width: auto;
-  }
-
-  .sidebar-scroll:hover::-webkit-scrollbar,
-  .sidebar-scroll:focus-within::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
+  .sidebar-scroll::-webkit-scrollbar-track,
+  .sidebar-scroll::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+
+  .sidebar-scroll:hover,
+  .sidebar-scroll:focus-within {
+    scrollbar-color: var(--border) transparent;
+  }
+
   .sidebar-scroll:hover::-webkit-scrollbar-thumb,
   .sidebar-scroll:focus-within::-webkit-scrollbar-thumb {
-    background-color: #cecece;
+    background-color: var(--border);
     border-radius: 9999px;
   }
 

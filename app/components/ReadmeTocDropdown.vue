@@ -69,7 +69,7 @@ function handleScroll(event: Event) {
   }
   close()
 }
-useEventListener('scroll', handleScroll, true)
+useEventListener('scroll', handleScroll, { passive: true })
 
 // Generate unique ID for accessibility
 const inputId = useId()

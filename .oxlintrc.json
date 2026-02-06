@@ -1,6 +1,7 @@
 {
   "$schema": "https://unpkg.com/oxlint/configuration_schema.json",
   "plugins": ["unicorn", "typescript", "oxc", "vue", "vitest"],
+  "jsPlugins": ["@e18e/eslint-plugin"],
   "categories": {
     "correctness": "error",
     "suspicious": "warn",
@@ -11,8 +12,27 @@
     "no-await-in-loop": "off",
     "unicorn/no-array-sort": "off",
     "no-restricted-globals": "error",
-    "typescript/consistent-type-imports": "error"
+    "typescript/consistent-type-imports": "error",
+    "e18e/prefer-array-from-map": "error",
+    "e18e/prefer-timer-args": "error",
+    "e18e/prefer-date-now": "error",
+    "e18e/prefer-regex-test": "error",
+    "e18e/prefer-array-some": "error"
   },
+  "overrides": [
+    {
+      "files": [
+        "server/**/*",
+        "cli/**/*",
+        "scripts/**/*",
+        "modules/**/*",
+        "app/components/OgImage/*"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ],
   "ignorePatterns": [
     ".output/**",
     ".data/**",

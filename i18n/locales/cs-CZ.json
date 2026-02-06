@@ -386,7 +386,7 @@
   "connector": {
     "status": {
       "connecting": "připojování...",
-      "connected_as": "připojeno jako {'@'}{user}",
+      "connected_as": "připojeno jako ~{user}",
       "connected": "připojeno",
       "connect_cli": "připojit lokální CLI",
       "aria_connecting": "Připojování k lokálnímu konektoru",
