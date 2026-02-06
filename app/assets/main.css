@@ -181,9 +181,13 @@ body {
   line-height: 1.6;
 }
 
-*:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+*:focus-visible,
+:-moz-focusring {
+  /* weird Firefox behavior makes it necessary to add `!important` 
+  or otherwise the selector would need to be more specific,
+  which it explicitly should note be. */
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
 }
 
 /* Reset dd margin (browser default is margin-left: 40px) */
