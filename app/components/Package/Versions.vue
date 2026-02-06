@@ -360,7 +360,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <div class="flex items-center gap-2">
                 <NuxtLink
                   :to="versionRoute(row.primaryVersion.version)"
-                  class="block font-mono text-sm transition-colors duration-200 truncate inline-flex items-center gap-1 focus-visible:text-accent after:absolute after:inset-0 after:content-['']"
+                  class="font-mono text-sm transition-colors duration-200 truncate inline-flex items-center gap-1 focus-visible:text-accent after:absolute after:inset-0 after:content-['']"
                   :class="
                     row.primaryVersion.deprecated
                       ? 'text-red-400 group-hover/version-row:text-red-300'
@@ -434,7 +434,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <div class="flex items-center gap-2 min-w-0">
                 <NuxtLink
                   :to="versionRoute(v.version)"
-                  class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
+                  class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
                   :class="
                     v.deprecated
                       ? 'text-red-400 group-hover/version-row:text-red-300'
@@ -548,7 +548,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <div class="flex items-center gap-2 min-w-0">
                 <NuxtLink
                   :to="versionRoute(row.primaryVersion.version)"
-                  class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
+                  class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
                   :class="
                     row.primaryVersion.deprecated
                       ? 'text-red-400 group-hover/version-row:text-red-300'
@@ -635,7 +635,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <NuxtLink
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 group-hover/version-row:text-red-300'
@@ -704,7 +704,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <NuxtLink
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 group-hover/version-row:text-red-300'
@@ -776,7 +776,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <div class="flex items-center gap-2 min-w-0">
                       <NuxtLink
                         :to="versionRoute(v.version)"
-                        class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
+                        class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1 after:absolute after:inset-0 after:content-['']"
                         :class="
                           v.deprecated
                             ? 'text-red-400 group-hover/version-row:text-red-300'
