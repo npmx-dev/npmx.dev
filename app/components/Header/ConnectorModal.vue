@@ -108,6 +108,7 @@ function handleDisconnect() {
 
       <div
         class="flex items-center p-3 bg-bg-muted border border-border rounded-lg font-mono text-sm"
+        dir="ltr"
       >
         <span class="text-fg-subtle">$</span>
         <span class="text-fg-subtle ms-2">pnpm npmx-connector</span>

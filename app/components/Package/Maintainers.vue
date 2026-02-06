@@ -190,10 +190,13 @@ watch(
               params: { username: maintainer.name },
             }"
             class="link-subtle font-mono text-sm shrink-0"
+            dir="ltr"
           >
             ~{{ maintainer.name }}
           </NuxtLink>
-          <span v-else class="font-mono text-sm text-fg-muted">{{ maintainer.email }}</span>
+          <span v-else class="font-mono text-sm text-fg-muted" dir="ltr">{{
+            maintainer.email
+          }}</span>
 
           <!-- Access source badges -->
           <span
