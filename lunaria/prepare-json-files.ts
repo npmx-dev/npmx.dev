@@ -37,13 +37,19 @@ export async function prepareJsonFiles() {
   await Promise.all(currentLocales.map(l => mergeLocale(l)))
 }
 
-export async function mergeLocaleObject(locale: LocaleObject) {
+export async function mergeLocaleObject(locale: LocaleObject, copy = false) {
   const files = locale.files ?? []
   if (locale.file || files.length === 1) {
-    const json = locale.file ?? (files[0] ? getFileName(files[0]) : undefined)
+    const json =
+      (locale.file ? getFileName(locale.file) : undefined) ??
+      (files[0] ? getFileName(files[0]) : undefined)
     if (!json) return
-    await fs.cp(path.resolve(`${localesFolder}/${json}`), path.resolve(`${destFolder}/${json}`))
-    return
+    if (copy) {
+      await fs.cp(path.resolve(`${localesFolder}/${json}`), path.resolve(`${destFolder}/${json}`))
+      return
+    } else {
+      return await loadJsonFile(json)
+    }
   }
 
   const firstFile = files[0]
@@ -69,9 +75,14 @@ function getFileName(file: string | { path: string }): string {
 }
 
 async function mergeLocale(locale: LocaleObject) {
-  const source = await mergeLocaleObject(locale)
+  const source = await mergeLocaleObject(locale, true)
+  if (!source) {
+    return
+  }
+
   await fs.writeFile(
     path.resolve(`${destFolder}/${locale.code}.json`),
     JSON.stringify(source, null, 2),
+    'utf-8',
   )
 }
