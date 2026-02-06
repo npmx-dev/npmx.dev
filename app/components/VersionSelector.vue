@@ -476,7 +476,7 @@ watch(
       @click="isOpen = !isOpen"
       @keydown="handleButtonKeydown"
     >
-      <span>{{ currentVersion }}</span>
+      <span dir="ltr">{{ currentVersion }}</span>
       <span
         v-if="currentVersion === latestVersion"
         class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium"
@@ -558,7 +558,9 @@ watch(
               class="flex-1 truncate hover:text-fg transition-colors"
               @click="isOpen = false"
             >
-              {{ group.primaryVersion.version }}
+              <span dir="ltr">
+                {{ group.primaryVersion.version }}
+              </span>
             </NuxtLink>
 
             <!-- Tags -->
@@ -597,7 +599,7 @@ watch(
                 ]"
                 @click="isOpen = false"
               >
-                <span class="truncate">{{ v.version }}</span>
+                <span class="truncate" dir="ltr">{{ v.version }}</span>
                 <span v-if="v.tags?.length" class="flex items-center gap-1 shrink-0">
                   <span
                     v-for="tag in v.tags"

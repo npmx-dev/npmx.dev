@@ -13,6 +13,7 @@
  * - /docs/*         → /package-docs/*
  */
 const pages = [
+  '/oauth-client-metadata.json',
   '/200.html',
   '/about',
   '/compare',

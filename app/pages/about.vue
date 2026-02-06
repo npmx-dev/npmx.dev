@@ -21,7 +21,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
   title: 'About npmx',
-  description: 'A better browser for the **npm registry**',
+  description: 'a fast, modern browser for the **npm registry**',
 })
 
 const pmLinks = {
@@ -223,6 +223,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
                 />
                 <span
                   class="pointer-events-none absolute -top-9 inset-is-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 text-xs px-2 py-1 shadow-lg opacity-0 scale-95 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100"
+                  dir="ltr"
                 >
                   @{{ contributor.login }}
                 </span>

@@ -336,13 +336,16 @@ defineOgImageComponent('Default', {
             v{{ version }}
           </span>
           <span class="text-fg-subtle shrink-0">/</span>
-          <span class="font-mono text-sm text-fg-muted shrink-0">code</span>
+          <span class="font-mono text-sm text-fg-muted shrink-0">{{
+            $t('package.links.code')
+          }}</span>
         </div>
 
         <!-- Breadcrumb navigation -->
         <nav
           :aria-label="$t('code.file_path')"
           class="flex items-center gap-1 font-mono text-sm overflow-x-auto"
+          dir="ltr"
         >
           <NuxtLink
             v-if="filePath"
@@ -390,7 +393,7 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Main content: file tree + file viewer -->
-    <div v-else-if="fileTree" class="flex flex-1">
+    <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
         class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
@@ -436,7 +439,7 @@ defineOgImageComponent('Default', {
                 </button>
               </div>
               <div class="flex items-center gap-3 text-sm">
-                <span class="text-fg-muted">{{
+                <span class="text-fg-muted" dir="auto">{{
                   $t('code.lines', { count: fileContent.lines })
                 }}</span>
                 <span v-if="currentNode?.size" class="text-fg-subtle">{{

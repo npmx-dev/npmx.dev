@@ -35,7 +35,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
   title: 'npmx',
-  description: 'A better browser for the **npm registry**',
+  description: 'a fast, modern browser for the **npm registry**',
 })
 </script>
 
