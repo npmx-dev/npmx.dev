@@ -40,6 +40,10 @@ export default defineConfig({
       mono: "'Geist Mono', monospace",
       sans: "'Geist', system-ui, -apple-system, sans-serif",
     },
+    text: {
+      // This should add to the existing Wind4 preset text sizes
+      xxs: { fontSize: '0.5rem' },
+    },
     colors: {
       // Minimal black & white palette with subtle grays
       bg: {
