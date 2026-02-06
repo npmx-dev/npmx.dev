@@ -191,7 +191,7 @@
     },
     "get_started": {
       "title": "Kom i gang",
-      "pm_label": "Pakkabehandler",
+      "pm_label": "Pakkebehandler",
       "copy_command": "Kopier installeringskommando",
       "view_types": "Vis {package}"
     },
