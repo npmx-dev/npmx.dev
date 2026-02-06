@@ -14,13 +14,13 @@ const isHome = computed(() => route.name === 'index')
           <BuildEnvironment v-if="!isHome" footer />
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
-        <div class="hidden sm:flex items-center gap-6">
+        <div class="hidden sm:flex items-center gap-6 min-h-11">
           <NuxtLink :to="{ name: 'about' }" class="link-subtle font-mono text-xs flex items-center">
             {{ $t('footer.about') }}
           </NuxtLink>
           <NuxtLink
             :to="{ name: 'privacy' }"
-            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1"
+            class="link-subtle font-mono text-xs flex items-center gap-1"
           >
             {{ $t('privacy_policy.title') }}
           </NuxtLink>
