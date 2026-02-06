@@ -69,7 +69,7 @@ export default defineEventHandler(async event => {
 
   if (!query.code) {
     // Validate returnTo is a safe relative path (prevent open redirect)
-    // Only set cookie on initial auth request, not the callback
+    // Store in session on initial auth request, not the callback
     let redirectPath = '/'
     try {
       const clientOrigin = new URL(clientUri).origin
@@ -81,12 +81,7 @@ export default defineEventHandler(async event => {
       // Invalid URL, fall back to root
     }
 
-    setCookie(event, 'auth_return_to', redirectPath, {
-      maxAge: 60 * 5,
-      httpOnly: true,
-      // secure only if NOT in dev mode
-      secure: !import.meta.dev,
-    })
+    await session.update({ returnTo: redirectPath })
     try {
       const handle = query.handle?.toString()
       const create = query.create?.toString()
@@ -148,8 +143,8 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const returnToURL = getCookie(event, 'auth_return_to') || '/'
-  deleteCookie(event, 'auth_return_to')
+  const returnToURL = session.data.returnTo || '/'
+  await session.update({ returnTo: undefined })
 
   return sendRedirect(event, returnToURL)
 })

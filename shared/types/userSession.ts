@@ -12,4 +12,6 @@ export interface UserServerSession {
   // multiple did logins per server session
   oauthSession: NodeSavedSession | undefined
   oauthState: NodeSavedState | undefined
+  // Temporary storage for post-auth redirect path during OAuth flow
+  returnTo?: string
 }

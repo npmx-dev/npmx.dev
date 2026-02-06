@@ -1,4 +1,5 @@
 import * as v from 'valibot'
+import { hash } from 'ohash'
 import { createError, getRouterParam, getQuery, setHeader } from 'h3'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { CACHE_MAX_AGE_ONE_HOUR, ERROR_NPM_FETCH_FAILED } from '#shared/utils/constants'
@@ -11,11 +12,13 @@ const OSV_QUERY_API = 'https://api.osv.dev/v1/query'
 const BUNDLEPHOBIA_API = 'https://bundlephobia.com/api/size'
 const NPMS_API = 'https://api.npms.io/v2/package'
 
+const SafeStringSchema = v.pipe(v.string(), v.regex(/^[^<>"&]*$/, 'Invalid characters'))
+
 const QUERY_SCHEMA = v.object({
-  color: v.optional(v.string()),
+  color: v.optional(SafeStringSchema),
   name: v.optional(v.string()),
-  labelColor: v.optional(v.string()),
-  label: v.optional(v.string()),
+  labelColor: v.optional(SafeStringSchema),
+  label: v.optional(SafeStringSchema),
 })
 
 const COLORS = {
@@ -338,7 +341,7 @@ export default defineCachedEventHandler(
       const type = getRouterParam(event, 'type') ?? 'version'
       const pkg = getRouterParam(event, 'pkg') ?? ''
       const query = getQuery(event)
-      return `badge:${type}:${pkg}:${JSON.stringify(query)}`
+      return `badge:${type}:${pkg}:${hash(query)}`
     },
   },
 )

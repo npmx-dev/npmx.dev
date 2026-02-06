@@ -83,6 +83,7 @@
     "nuxt": "4.3.0",
     "nuxt-og-image": "5.1.13",
     "ofetch": "1.5.1",
+    "ohash": "2.0.11",
     "perfect-debounce": "2.1.0",
     "sanitize-html": "2.17.0",
     "semver": "7.7.3",
