@@ -273,7 +273,7 @@ export default defineNuxtConfig({
       Markdown({
         include: [/\.(md|markdown)($|\?)/],
         wrapperComponent: 'BlogPostWrapper',
-        wrapperClasses: 'prose dark:prose-invert mx-auto',
+        wrapperClasses: 'text-fg-muted leading-relaxed',
         async markdownItSetup(md) {
           const shiki = await import('@shikijs/markdown-it')
           md.use(
