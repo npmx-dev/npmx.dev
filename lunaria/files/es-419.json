@@ -935,5 +935,36 @@
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
       }
     }
+  },
+  "a11y": {
+    "title": "declaración de accesibilidad",
+    "footer_title": "accesibilidad",
+    "welcome": "Nos comprometemos a hacer que el sitio {app} sea accesible para todos.",
+    "commitment": {
+      "title": "Compromiso con la Accesibilidad",
+      "p1": "Trabajamos continuamente para mejorar la experiencia del usuario para todos, aplicando los estándares de accesibilidad pertinentes para garantizar que nuestro portal pueda ser utilizado por la audiencia más amplia posible, independientemente de sus habilidades."
+    },
+    "compliance": {
+      "title": "Marco Normativo y Estado de Cumplimiento",
+      "p1": "Este sitio web ha sido desarrollado para cumplir con las {guidelines} del World Wide Web Consortium (W3C), con el objetivo de alcanzar un nivel de conformidad {aa}.",
+      "guidelines": "Pautas de Accesibilidad para el Contenido Web (WCAG 2.1)",
+      "aa": "Doble-A (AA)",
+      "wcag_alt": "Sitio web de Conformidad W3C WAI-AA WCAG 2.1 (se abre en una nueva ventana)"
+    },
+    "implementation": {
+      "title": "Medidas de Implementación",
+      "p1": "Además de seguir el marco normativo, hemos tomado las siguientes medidas para garantizar la accesibilidad de este sitio web:",
+      "li1": "La semántica de la página se ha construido utilizando HTML5 estándar y roles ARIA donde es necesario.",
+      "li2": "Los tamaños de texto son relativos, permitiendo al usuario ajustar su tamaño desde el navegador.",
+      "li3": "El diseño es responsivo y permite una ampliación (zoom) de hasta el 250% sin pérdida de contenido o funcionalidad, superando el mínimo del 200% requerido por WCAG 2.1.",
+      "li4": "La paleta de colores cumple con los ratios de contraste de Nivel AA en sus temas estándar.",
+      "li5": "La navegación por teclado es lógica y predecible.",
+      "li6": "Las animaciones y transiciones se reducen o eliminan para los usuarios que han solicitado movimiento reducido en las preferencias de su sistema operativo o del navegador."
+    },
+    "contact": {
+      "title": "Contacto y Retroalimentación",
+      "p1": "La accesibilidad es un esfuerzo continuo. Si encuentras alguna barrera o tienes alguna sugerencia para mejorar la accesibilidad de {app}, por favor no dudes en contactarnos abriendo un problema (issue) en nuestro {link}.",
+      "link": "repositorio de GitHub"
+    }
   }
 }

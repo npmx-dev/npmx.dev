@@ -1052,5 +1052,36 @@
       "title": "Changes to this policy",
       "p1": "We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
     }
+  },
+  "a11y": {
+    "title": "accessibility statement",
+    "footer_title": "a11y",
+    "welcome": "We are committed to making the {app} site accessible to everyone.",
+    "commitment": {
+      "title": "Commitment to Accessibility",
+      "p1": "We continuously work to improve the user experience for everyone, applying relevant accessibility standards to ensure our site can be used by the widest possible audience, regardless of their abilities."
+    },
+    "compliance": {
+      "title": "Regulatory Framework and Compliance Status",
+      "p1": "This site has been developed to comply with the {guidelines} of the World Wide Web Consortium (W3C), aiming for a {aa} conformance level.",
+      "guidelines": "Web Content Accessibility Guidelines (WCAG 2.1)",
+      "aa": "Double-A (AA)",
+      "wcag_alt": "W3C WAI-AA WCAG 2.1 Conformance site (opens in a new window)"
+    },
+    "implementation": {
+      "title": "Implementation Measures",
+      "p1": "In addition to following the regulatory framework, we have taken the following measures to ensure the accessibility of this site:",
+      "li1": "The page semantics have been built using standard HTML5 and ARIA roles where necessary.",
+      "li2": "Text sizes are relative, allowing the user to adjust their size from the browser.",
+      "li3": "The design is responsive and allows for magnification (zoom) up to 250% without loss of content or functionality, exceeding the 200% minimum required by WCAG 2.1.",
+      "li4": "The color palette meets Level AA contrast ratios in its standard themes.",
+      "li5": "Keyboard navigation is logical and predictable.",
+      "li6": "Animations and transitions are reduced or eliminated for users who have requested reduced motion in their operating system or browser preferences."
+    },
+    "contact": {
+      "title": "Contact and Feedback",
+      "p1": "Accessibility is an ongoing effort. If you encounter any barriers or have any suggestions to improve the accessibility of {app}, please do not hesitate to contact us by opening an issue on our {link}.",
+      "link": "GitHub repository"
+    }
   }
 }

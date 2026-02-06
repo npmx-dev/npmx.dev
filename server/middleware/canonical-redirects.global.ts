@@ -14,6 +14,7 @@
  */
 const pages = [
   '/200.html',
+  '/accessibility',
   '/about',
   '/compare',
   '/org',
