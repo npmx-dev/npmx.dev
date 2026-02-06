@@ -149,7 +149,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
               ></code
             >
             <NuxtLink
-              :to="`/package/${typesPackageName}`"
+              :to="packageRoute(typesPackageName!)"
               class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none"
               :title="$t('package.get_started.view_types', { package: typesPackageName })"
             >
@@ -202,7 +202,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
               :text="$t('package.create.view', { packageName: createPackageInfo.packageName })"
             >
               <NuxtLink
-                :to="`/package/${createPackageInfo.packageName}`"
+                :to="packageRoute(createPackageInfo.packageName)"
                 class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
               >
                 <span class="i-carbon:information w-3 h-3" aria-hidden="true" />

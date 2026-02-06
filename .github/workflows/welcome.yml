@@ -1,0 +1,52 @@
+name: welcome
+
+on:
+  pull_request_target:
+    types:
+      - closed
+
+permissions: {}
+
+jobs:
+  welcome:
+    permissions:
+      pull-requests: write # to comment on PRs
+    if: github.repository == 'npmx-dev/npmx.dev' && github.event.pull_request.merged == true
+    runs-on: ubuntu-slim
+    name: 🎉 Welcome new contributor
+    steps:
+      - name: 🎉 Welcome new contributor
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const author = pr.user.login;
+
+            // Check if this is the author's first merged PR
+            const { data: prs } = await github.rest.search.issuesAndPullRequests({
+              q: `repo:${context.repo.owner}/${context.repo.repo} type:pr is:merged author:${author}`,
+            });
+
+            // If the only merged PR is this one, it's their first contribution
+            if (prs.total_count !== 1) {
+              console.log(`@${author} already has ${prs.total_count} merged PRs — skipping welcome comment.`);
+              return;
+            }
+
+            const emojis = ['🎉', '🥳', '🎊', '🚀', '⭐', '💫', '✨', '💪', '👏', '🙌', '🤩', '💥'];
+            const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+            const body = [
+              `Thanks for your first contribution, @${author}! ${emoji}`,
+              '',
+              `We'd love to welcome you to the npmx community. Come and say hi on [Discord](https://chat.npmx.dev)! And once you've joined, visit [npmx.wamellow.com](https://npmx.wamellow.com/) to claim the **contributor** role.`,
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body,
+            });
+
+            console.log(`Welcomed new contributor @${author} on PR #${pr.number}`);

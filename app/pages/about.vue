@@ -21,7 +21,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
   title: 'About npmx',
-  description: 'A better browser for the **npm registry**',
+  description: 'a fast, modern browser for the **npm registry**',
 })
 
 const pmLinks = {
