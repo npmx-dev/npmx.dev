@@ -9,14 +9,25 @@ const props = defineProps<{
 }>()
 
 const chartModal = useModal('chart-modal')
-
+const hasChartModalTransitioned = shallowRef(false)
 const isChartModalOpen = shallowRef(false)
+
 async function openChartModal() {
   isChartModalOpen.value = true
+  hasChartModalTransitioned.value = false
   // ensure the component renders before opening the dialog
   await nextTick()
   await nextTick()
   chartModal.open()
+}
+
+function handleModalClose() {
+  isChartModalOpen.value = false
+  hasChartModalTransitioned.value = false
+}
+
+function handleModalTransitioned() {
+  hasChartModalTransitioned.value = true
 }
 
 const { fetchPackageDownloadEvolution } = useCharts()
@@ -249,15 +260,44 @@ const config = computed(() => {
     </CollapsibleSection>
   </div>
 
-  <PackageChartModal v-if="isChartModalOpen" @close="isChartModalOpen = false">
-    <PackageDownloadAnalytics
-      :weeklyDownloads="weeklyDownloads"
-      :inModal="true"
-      :packageName="props.packageName"
-      :createdIso="createdIso"
+  <PackageChartModal @close="handleModalClose" @transitioned="handleModalTransitioned">
+    <!-- The Chart is mounted after the dialog has transitioned -->
+    <!-- This avoids flaky behavior that hides the chart's minimap half of the time -->
+    <Transition name="opacity" mode="out-in">
+      <PackageDownloadAnalytics
+        v-if="hasChartModalTransitioned"
+        :weeklyDownloads="weeklyDownloads"
+        :inModal="true"
+        :packageName="props.packageName"
+        :createdIso="createdIso"
+      />
+    </Transition>
+
+    <!-- This placeholder bears the same dimensions as the PackageDownloadAnalytics component -->
+    <!-- Avoids CLS when the dialog has transitioned -->
+    <div
+      v-if="!hasChartModalTransitioned"
+      class="w-full aspect-[390/634.5] sm:aspect-[718/622.797]"
     />
   </PackageChartModal>
 </template>
+
+<style scoped>
+.opacity-enter-active,
+.opacity-leave-active {
+  transition: opacity 200ms ease;
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
+}
+
+.opacity-enter-to,
+.opacity-leave-from {
+  opacity: 1;
+}
+</style>
 
 <style>
 /** Overrides */
