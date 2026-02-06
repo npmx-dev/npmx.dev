@@ -8,7 +8,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   primaryColor: '#60a5fa',
   title: 'npmx',
-  description: 'A fast, modern browser for the **npm registry**',
+  description: 'a fast, modern browser for the **npm registry**',
 })
 </script>
 
