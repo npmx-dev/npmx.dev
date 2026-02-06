@@ -15,8 +15,11 @@ const isHome = computed(() => route.name === 'index')
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
         <div class="hidden sm:flex items-center gap-6">
-          <LinkBase :to="{ name: 'privacy' }">
+          <LinkBase :to="{ name: 'about' }">
             {{ $t('footer.about') }}
+          </LinkBase>
+          <LinkBase :to="{ name: 'privacy' }">
+            {{ $t('privacy_policy.title') }}
           </LinkBase>
           <LinkBase to="https://docs.npmx.dev">
             {{ $t('footer.docs') }}
