@@ -61,7 +61,7 @@ const allMaintainersText = computed(() => {
 
     <!-- Version -->
     <td v-if="isColumnVisible('version')" class="py-2 px-3 font-mono text-xs text-fg-subtle">
-      {{ pkg.version }}
+      <span dir="ltr">{{ pkg.version }}</span>
     </td>
 
     <!-- Description -->

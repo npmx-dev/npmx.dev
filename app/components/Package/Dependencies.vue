@@ -244,6 +244,7 @@ const sortedOptionalDependencies = computed(() => {
           <NuxtLink
             :to="{ name: 'package', params: { package: dep.split('/') } }"
             class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0 flex-1"
+            dir="ltr"
           >
             {{ dep }}
           </NuxtLink>
@@ -254,6 +255,7 @@ const sortedOptionalDependencies = computed(() => {
             }"
             class="font-mono text-xs text-fg-subtle max-w-[40%] text-end truncate"
             :title="version"
+            dir="ltr"
           >
             {{ version }}
           </NuxtLink>

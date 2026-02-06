@@ -194,7 +194,9 @@ watch(
           >
             ~{{ maintainer.name }}
           </NuxtLink>
-          <span v-else class="font-mono text-sm text-fg-muted">{{ maintainer.email }}</span>
+          <span v-else class="font-mono text-sm text-fg-muted" dir="ltr">{{
+            maintainer.email
+          }}</span>
 
           <!-- Access source badges -->
           <span
