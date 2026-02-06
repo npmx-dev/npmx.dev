@@ -107,7 +107,19 @@ const loadJson = async ({ filePath, mergeLocale, locale }: LocaleInfo): Promise<
     return JSON.parse(readFileSync(filePath, 'utf-8')) as NestedObject
   }
 
-  return await mergeLocaleObject(currentLocales.find(l => l.code === locale)!)
+  const localeObject = currentLocales.find(l => l.code === locale)
+  if (!localeObject) {
+    console.error(
+      `${COLORS.red}Error: Locale "${locale}" not found in currentLocales${COLORS.reset}`,
+    )
+    process.exit(1)
+  }
+  const merged = await mergeLocaleObject(localeObject)
+  if (!merged) {
+    console.error(`${COLORS.red}Error: Failed to merge locale "${locale}"${COLORS.reset}`)
+    process.exit(1)
+  }
+  return merged as NestedObject
 }
 
 type SyncStats = {
@@ -328,6 +340,7 @@ const runAllLocales = async (referenceContent: NestedObject, fix = false): Promi
 }
 
 const run = async (): Promise<void> => {
+  populateLocaleCountries()
   const referenceFilePath = join(LOCALES_DIRECTORY, REFERENCE_FILE_NAME)
   const referenceContent = await loadJson({
     filePath: referenceFilePath,
@@ -338,8 +351,6 @@ const run = async (): Promise<void> => {
   const args = process.argv.slice(2)
   const fix = args.includes('--fix')
   const targetLocale = args.find(arg => !arg.startsWith('--'))
-
-  populateLocaleCountries()
 
   if (targetLocale) {
     // Single locale mode
