@@ -2,13 +2,13 @@
   "seo": {
     "home": {
       "title": "npmx - Paket-Browser für die npm Registry",
-      "description": "Ein besserer Browser für die npm Registry. Pakete suchen, durchstöbern und erkunden mit einer modernen Oberfläche."
+      "description": "Ein schnellerer, modernerer Browser für die npm Registry. Pakete suchen, durchstöbern und erkunden mit einer modernen Oberfläche."
     }
   },
   "version": "Version",
   "built_at": "erstellt {0}",
   "alt_logo": "npmx Logo",
-  "tagline": "ein besserer Browser für die npm Registry",
+  "tagline": "ein schnellerer, modernerer Browser für die npm Registry",
   "non_affiliation_disclaimer": "nicht verbunden mit npm, Inc.",
   "trademark_disclaimer": "npm ist eine eingetragene Marke von npm, Inc. Diese Seite ist nicht mit npm, Inc. verbunden.",
   "footer": {
@@ -319,7 +319,7 @@
     },
     "playgrounds": {
       "title": "Ausprobieren",
-      "choose": "Playground wählen"
+      "choose": "Testumgebung wählen"
     },
     "metrics": {
       "esm": "ES-Module unterstützt",
@@ -450,26 +450,26 @@
   },
   "operations": {
     "queue": {
-      "title": "Operations-Warteschlange",
+      "title": "Aktions-Warteschlange",
       "clear_all": "Alle löschen",
-      "refresh": "Operationen aktualisieren",
-      "empty": "Keine Operationen in der Warteschlange",
-      "empty_hint": "Füge Operationen von Paket- oder Org-Seiten hinzu",
-      "active_label": "Aktive Operationen",
+      "refresh": "Aktionen aktualisieren",
+      "empty": "Keine Aktionen in der Warteschlange",
+      "empty_hint": "Füge Aktionen von Paket- oder Org-Seiten hinzu",
+      "active_label": "Aktive Aktionen",
       "otp_required": "OTP erforderlich",
       "otp_prompt": "OTP eingeben, um fortzufahren",
       "otp_placeholder": "OTP-Code eingeben...",
       "otp_label": "Einmalpasswort",
       "retry_otp": "Mit OTP wiederholen",
       "retrying": "Wird wiederholt...",
-      "approve_operation": "Operation genehmigen",
-      "remove_operation": "Operation entfernen",
+      "approve_operation": "Aktion genehmigen",
+      "remove_operation": "Aktion entfernen",
       "approve_all": "Alle genehmigen",
       "execute": "Ausführen",
       "executing": "Wird ausgeführt...",
-      "log": "Log",
-      "log_label": "Log abgeschlossener Operationen",
-      "remove_from_log": "Aus Log entfernen"
+      "log": "Protokoll",
+      "log_label": "Protokoll abgeschlossener Aktionen",
+      "remove_from_log": "Aus Protokoll entfernen"
     }
   },
   "org": {
@@ -764,14 +764,14 @@
       "title": "Was wir sind",
       "better_ux_dx": "Bessere UX/DX",
       "admin_ui": "Admin-UI",
-      "description": "npmx ist eine {betterUxDx} für die npm-Paket-Registry und Tooling. Wir bieten eine schnelle, moderne Oberfläche zum Erkunden von Paketen mit Features wie Dark Mode, Tastaturnavigation, Code-Browsing und Verbindungen zu alternativen Registries wie {jsr}.",
+      "description": "npmx ist eine {betterUxDx} für die npm-Paket-Registry und Tooling. Wir bieten eine schnelle, moderne Oberfläche zum Erkunden von Paketen mit Funktionen wie Dark Mode, Tastaturnavigation, Code-Browsing und Verbindungen zu alternativen Registries wie {jsr}.",
       "admin_description": "Wir wollen auch eine bessere {adminUi} zum Verwalten deiner Pakete, Teams und Organisationen bieten — alles im Browser, angetrieben von deiner lokalen npm CLI."
     },
     "what_we_are_not": {
       "title": "Was wir nicht sind",
       "not_package_manager": "Kein Paketmanager.",
       "not_registry": "Keine Registry.",
-      "registry_description": "Wir hosten keine Pakete. Wir sind nur ein besserer Weg, sie zu durchstöbern.",
+      "registry_description": "Wir hosten keine Pakete. Wir sind nur ein schnellerer, modernerer Weg, sie zu durchstöbern.",
       "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
       "words": {
         "already": "Es gibt",

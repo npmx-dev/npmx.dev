@@ -26,7 +26,7 @@ const isHome = computed(() => route.name === 'index')
           </NuxtLink>
           <NuxtLink
             :to="{ name: 'privacy' }"
-            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1 lowercase"
+            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1"
           >
             {{ $t('privacy_policy.title') }}
           </NuxtLink>
