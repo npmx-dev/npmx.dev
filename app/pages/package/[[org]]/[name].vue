@@ -649,6 +649,7 @@ onKeyStroke(
           <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
           <ButtonGroup
             v-if="resolvedVersion"
+            as="div"
             :aria-label="$t('package.navigation')"
             class="hidden sm:flex"
           >
