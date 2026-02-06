@@ -152,22 +152,12 @@ onKeyStroke(
       <!-- End: Desktop nav items + Mobile menu button -->
       <div class="flex-shrink-0 flex items-center gap-0.5 sm:gap-2">
         <!-- Desktop: Compare link -->
-        <LinkBase
-          variant="button-secondary"
-          to="/compare"
-          class="inline-flex items-center gap-2"
-          keyshortcut="c"
-        >
+        <LinkBase variant="button-secondary" to="/compare" keyshortcut="c">
           {{ $t('nav.compare') }}
         </LinkBase>
 
         <!-- Desktop: Settings link -->
-        <LinkBase
-          variant="button-secondary"
-          to="/settings"
-          class="inline-flex items-center gap-2"
-          keyshortcut=","
-        >
+        <LinkBase variant="button-secondary" to="/settings" keyshortcut=",">
           {{ $t('nav.settings') }}
         </LinkBase>
 

@@ -123,7 +123,7 @@ defineOgImageComponent('Default', {
           <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
             <LinkBase
               :to="{ name: 'package', params: { package: [framework.package] } }"
-              class="inline-flex items-center gap-2 group"
+              class="gap-2"
             >
               <span
                 class="w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
