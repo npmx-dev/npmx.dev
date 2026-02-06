@@ -14,7 +14,11 @@ defineProps<{
 <template>
   <BaseCard :isExactMatch="isExactMatch">
     <NuxtLink
-      :to="type === 'user' ? `/~${name}` : `/@${name}`"
+      :to="
+        type === 'user'
+          ? { name: '~username', params: { username: name } }
+          : { name: 'org', params: { org: name } }
+      "
       :data-suggestion-index="index"
       class="flex items-center gap-4 focus-visible:outline-none after:content-[''] after:absolute after:inset-0"
     >

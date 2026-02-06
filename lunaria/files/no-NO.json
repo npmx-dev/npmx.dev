@@ -1,0 +1,940 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - Pakkeleser for npm-registeret",
+      "description": "En bedre leser for npm-registeret. Søk, bla gjennom og utforsk pakker med et moderne grensesnitt."
+    }
+  },
+  "version": "Versjon",
+  "built_at": "bygget {0}",
+  "alt_logo": "npmx logo",
+  "tagline": "en bedre leser for npm-registeret",
+  "non_affiliation_disclaimer": "ikke tilknyttet npm, Inc.",
+  "trademark_disclaimer": "npm er et registrert varemerke for npm, Inc. Dette nettstedet er ikke tilknyttet npm, Inc.",
+  "footer": {
+    "about": "om",
+    "docs": "dokumentasjon",
+    "source": "kildekode",
+    "social": "sosialt",
+    "chat": "chat"
+  },
+  "search": {
+    "label": "Søk etter npm-pakker",
+    "placeholder": "søk etter pakker...",
+    "button": "søk",
+    "clear": "Tøm søk",
+    "searching": "Søker...",
+    "found_packages": "Ingen pakker funnet | Fant 1 pakke | Fant {count} pakker",
+    "updating": "(oppdaterer...)",
+    "no_results": "Ingen pakker funnet for \"{query}\"",
+    "title": "søk",
+    "title_search": "søk: {search}",
+    "title_packages": "søk pakker",
+    "meta_description": "Søkeresultater for '{search}'",
+    "meta_description_packages": "Søk etter npm-pakker",
+    "not_taken": "{name} er ledig",
+    "claim_prompt": "Gjør krav på dette pakkenavnet på npm",
+    "claim_button": "Gjør krav på \"{name}\"",
+    "want_to_claim": "Vil du gjøre krav på dette pakkenavnet?",
+    "start_typing": "Begynn å skrive for å søke etter pakker",
+    "exact_match": "eksakt",
+    "suggestion": {
+      "user": "bruker",
+      "org": "org",
+      "view_user_packages": "Vis pakker fra denne brukeren",
+      "view_org_packages": "Vis pakker fra denne organisasjonen"
+    }
+  },
+  "nav": {
+    "main_navigation": "Hovedmeny",
+    "popular_packages": "Populære pakker",
+    "search": "søk",
+    "settings": "innstillinger",
+    "compare": "sammenlign",
+    "back": "tilbake",
+    "menu": "Meny",
+    "mobile_menu": "Navigasjonsmeny",
+    "open_menu": "Åpne meny",
+    "links": "Lenker",
+    "tap_to_search": "Trykk for å søke"
+  },
+  "settings": {
+    "title": "innstillinger",
+    "tagline": "tilpass din npmx-opplevelse",
+    "meta_description": "Tilpass din npmx.dev-opplevelse med tema, språk og visningspreferanser.",
+    "sections": {
+      "appearance": "Utseende",
+      "display": "Visning",
+      "language": "Språk"
+    },
+    "relative_dates": "Relative datoer",
+    "relative_dates_description": "Vis \"3 dager siden\" i stedet for fullstendige datoer",
+    "include_types": "Inkluder {'@'}types ved installasjon",
+    "include_types_description": "Legg til {'@'}types-pakken i installasjonskommandoer for pakker uten typer",
+    "hide_platform_packages": "Skjul plattformspesifikke pakker i søk",
+    "hide_platform_packages_description": "Skjul binærpakker som {'@'}esbuild/linux-x64 fra resultatene",
+    "theme": "Tema",
+    "theme_light": "Lys",
+    "theme_dark": "Mørk",
+    "theme_system": "System",
+    "language": "Språk",
+    "help_translate": "Hjelp med å oversette npmx",
+    "accent_colors": "Aksentfarger",
+    "clear_accent": "Fjern aksentfarge",
+    "translation_progress": "Oversettelsesfremdrift",
+    "background_themes": "Bakgrunnsnyanse"
+  },
+  "i18n": {
+    "missing_keys": "{count} manglende oversettelse | {count} manglende oversettelser",
+    "copy_keys": "Kopier nøkler",
+    "show_more_keys": "Vis {count} til...",
+    "contribute_hint": "Hjelp til med å forbedre denne oversettelsen ved å legge til de manglende nøklene.",
+    "edit_on_github": "Rediger på GitHub",
+    "view_guide": "Oversettelsesguide"
+  },
+  "common": {
+    "loading": "Laster...",
+    "loading_more": "Laster mer...",
+    "loading_packages": "Laster pakker...",
+    "end_of_results": "Slutt på resultater",
+    "try_again": "Prøv igjen",
+    "close": "Lukk",
+    "retry": "Prøv på nytt",
+    "copy": "kopier",
+    "copied": "kopiert!",
+    "skip_link": "Gå til hovedinnhold",
+    "close_modal": "Lukk modal",
+    "show_more": "vis mer",
+    "warnings": "Advarsler:",
+    "go_back_home": "Gå tilbake til start",
+    "view_on_npm": "vis på npm",
+    "per_week": "/ uke",
+    "vanity_downloads_hint": "Visningstall: ingen pakker vist | Visningstall: for den viste pakken | Visningstall: Sum av {count} viste pakker",
+    "sort": {
+      "name": "navn",
+      "role": "rolle",
+      "members": "medlemmer"
+    },
+    "scroll_to_top": "Rull til toppen"
+  },
+  "package": {
+    "not_found": "Pakke ikke funnet",
+    "not_found_message": "Pakken kunne ikke finnes.",
+    "no_description": "Ingen beskrivelse gitt",
+    "show_full_description": "Vis full beskrivelse",
+    "not_latest": "(ikke nyeste)",
+    "verified_provenance": "Verifisert opprinnelse",
+    "view_permalink": "Vis permalenke for denne versjonen",
+    "navigation": "Pakke",
+    "copy_name": "Kopier pakkenavn",
+    "deprecation": {
+      "package": "Denne pakken er utfaset.",
+      "version": "Denne versjonen er utfaset.",
+      "no_reason": "Ingen årsak oppgitt"
+    },
+    "replacement": {
+      "title": "Du trenger kanskje ikke denne avhengigheten.",
+      "native": "Denne kan erstattes med {replacement}, tilgjengelig siden Node {nodeVersion}.",
+      "simple": "{community} har flagget denne pakken som overflødig, med rådet: {replacement}.",
+      "documented": "{community} har flagget denne pakken da det finnes alternativer med bedre ytelse.",
+      "none": "Denne pakken er flagget som ikke lenger nødvendig, og funksjonaliteten er sannsynligvis tilgjengelig innebygd i alle motorer.",
+      "learn_more": "Lær mer",
+      "mdn": "MDN",
+      "community": "fellesskapet"
+    },
+    "stats": {
+      "license": "Lisens",
+      "deps": "Avh.",
+      "install_size": "Installasjonsstr.",
+      "vulns": "Sårbarheter",
+      "published": "Publisert",
+      "published_tooltip": "Dato {package}{'@'}{version} ble publisert",
+      "skills": "Ferdigheter",
+      "view_dependency_graph": "Vis avhengighetsgraf",
+      "inspect_dependency_tree": "Inspiser avhengighetstre",
+      "size_tooltip": {
+        "unpacked": "{size} utpakket størrelse (denne pakken)",
+        "total": "{size} total utpakket størrelse (inkludert {count} avhengighet for linux-x64) | {size} total utpakket størrelse (inkludert alle {count} avhengigheter for linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "Agentferdigheter",
+      "skills_available": "{count} ferdighet tilgjengelig | {count} ferdigheter tilgjengelig",
+      "view": "Vis",
+      "compatible_with": "Kompatibel med {tool}",
+      "install": "Installer",
+      "installation_method": "Installasjonsmetode",
+      "learn_more": "Lær mer",
+      "available_skills": "Tilgjengelige ferdigheter",
+      "click_to_expand": "Klikk for å utvide",
+      "no_description": "Ingen beskrivelse",
+      "file_counts": {
+        "scripts": "{count} skript | {count} skript",
+        "refs": "{count} ref | {count} referanser",
+        "assets": "{count} ressurs | {count} ressurser"
+      },
+      "view_source": "Vis kildekode"
+    },
+    "links": {
+      "repo": "repo",
+      "homepage": "hjemmeside",
+      "issues": "saker",
+      "jsr": "jsr",
+      "code": "kode",
+      "docs": "dok",
+      "fund": "støtt",
+      "compare": "sammenlign"
+    },
+    "docs": {
+      "not_available": "Dokumentasjon ikke tilgjengelig",
+      "not_available_detail": "Vi kunne ikke generere dokumentasjon for denne versjonen."
+    },
+    "get_started": {
+      "title": "Kom i gang",
+      "pm_label": "Pakkebehandler",
+      "copy_command": "Kopier installeringskommando",
+      "view_types": "Vis {package}"
+    },
+    "create": {
+      "title": "Opprett nytt prosjekt",
+      "copy_command": "Kopier opprettelseskommando",
+      "view": "{packageName} har samme vedlikeholder. Klikk for flere detaljer."
+    },
+    "run": {
+      "title": "Kjør",
+      "locally": "Kjør lokalt"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "Ingen README tilgjengelig.",
+      "view_on_github": "Vis på GitHub",
+      "toc_title": "Innhold"
+    },
+    "keywords_title": "Nøkkelord",
+    "compatibility": "Kompatibilitet",
+    "card": {
+      "publisher": "Utgiver",
+      "published": "Publisert",
+      "weekly_downloads": "Ukentlige nedlastinger",
+      "keywords": "Nøkkelord",
+      "license": "Lisens"
+    },
+    "versions": {
+      "title": "Versjoner",
+      "collapse": "Skjul {tag}",
+      "expand": "Vis {tag}",
+      "collapse_other": "Skjul andre versjoner",
+      "expand_other": "Vis andre versjoner",
+      "collapse_major": "Skjul major {major}",
+      "expand_major": "Vis major {major}",
+      "other_versions": "Andre versjoner",
+      "more_tagged": "{count} flere tagget",
+      "all_covered": "Alle versjoner dekkes av taggene over",
+      "deprecated_title": "{version} (utfaset)",
+      "view_all": "Vis {count} versjon | Vis alle {count} versjoner"
+    },
+    "dependencies": {
+      "title": "Avhengighet ({count}) | Avhengigheter ({count})",
+      "list_label": "Pakkeavhengigheter",
+      "show_all": "vis {count} avh. | vis alle {count} avh.",
+      "optional": "valgfri",
+      "view_vulnerabilities": "Vis sårbarheter",
+      "outdated_major": "{count} major-versjon bak (nyeste: {latest}) | {count} major-versjoner bak (nyeste: {latest})",
+      "outdated_minor": "{count} minor-versjon bak (nyeste: {latest}) | {count} minor-versjoner bak (nyeste: {latest})",
+      "outdated_patch": "Patch-oppdatering tilgjengelig (nyeste: {latest})"
+    },
+    "peer_dependencies": {
+      "title": "Peer-avhengighet ({count}) | Peer-avhengigheter ({count})",
+      "list_label": "Pakkens peer-avhengigheter",
+      "show_all": "vis {count} peer-avh. | vis alle {count} peer-avh."
+    },
+    "optional_dependencies": {
+      "title": "Valgfri avhengighet ({count}) | Valgfrie avhengigheter ({count})",
+      "list_label": "Pakkens valgfrie avhengigheter",
+      "show_all": "vis {count} valgfri avh. | vis alle {count} valgfrie avh."
+    },
+    "maintainers": {
+      "title": "Vedlikeholdere",
+      "list_label": "Pakkens vedlikeholdere",
+      "you": "(deg)",
+      "via": "via {teams}",
+      "remove_owner": "Fjern {name} som eier",
+      "username_to_add": "Brukernavn å legge til som eier",
+      "username_placeholder": "brukernavn...",
+      "add_button": "legg til",
+      "cancel_add": "Avbryt å legge til eier",
+      "add_owner": "+ Legg til eier",
+      "show_more": "(vis {count} flere)",
+      "show_less": "(vis færre)"
+    },
+    "downloads": {
+      "title": "Ukentlige nedlastinger",
+      "date_range": "{start} til {end}",
+      "date_range_multiline": "{start}\ntil {end}",
+      "analyze": "Analyser nedlastinger",
+      "community_distribution": "Vis distribusjon av bruk i fellesskapet",
+      "modal_title": "Nedlastinger",
+      "granularity": "Oppløsning",
+      "granularity_daily": "Daglig",
+      "granularity_weekly": "Ukentlig",
+      "granularity_monthly": "Månedlig",
+      "granularity_yearly": "Årlig",
+      "start_date": "Start",
+      "end_date": "Slutt",
+      "no_data": "Ingen nedlastingsdata tilgjengelig",
+      "loading": "Laster...",
+      "y_axis_label": "{granularity} nedlastinger",
+      "download_file": "Last ned {fileType}",
+      "toggle_annotator": "Veksle annotering"
+    },
+    "install_scripts": {
+      "title": "Installasjonsskript",
+      "script_label": "(skript)",
+      "npx_packages": "{count} npx-pakke | {count} npx-pakker",
+      "currently": "for tiden {version}"
+    },
+    "playgrounds": {
+      "title": "Prøv den",
+      "choose": "velg playground"
+    },
+    "metrics": {
+      "esm": "ES Modules støttet",
+      "cjs": "CommonJS støttet",
+      "no_esm": "Ingen ES Modules-støtte",
+      "types_label": "Typer",
+      "types_included": "Typer inkludert",
+      "types_available": "Typer tilgjengelig via {package}",
+      "no_types": "Ingen TypeScript-typer"
+    },
+    "license": {
+      "view_spdx": "Vis lisenstekst på SPDX",
+      "none": "Ingen"
+    },
+    "vulnerabilities": {
+      "no_description": "Ingen beskrivelse tilgjengelig",
+      "found": "{count} sårbarhet funnet | {count} sårbarheter funnet",
+      "deps_found": "{count} sårbarhet funnet | {count} sårbarheter funnet",
+      "deps_affected": "{count} avhengighet påvirket | {count} avhengigheter påvirket",
+      "tree_found": "{vulns} sårbarhet i {packages}/{total} pakker | {vulns} sårbarheter i {packages}/{total} pakker",
+      "scanning_tree": "Skanner avhengighetstre...",
+      "show_all_packages": "vis {count} påvirket pakke | vis alle {count} påvirkede pakker",
+      "no_summary": "Ingen oppsummering",
+      "view_details": "Vis sårbarhetsdetaljer",
+      "path": "sti",
+      "more": "+{count} flere",
+      "packages_failed": "{count} pakke kunne ikke sjekkes | {count} pakker kunne ikke sjekkes",
+      "no_known": "Ingen kjente sårbarheter i {count} pakke | Ingen kjente sårbarheter i {count} pakker",
+      "scan_failed": "Kunne ikke skanne for sårbarheter",
+      "depth": {
+        "root": "Denne pakken",
+        "direct": "Direkte avhengighet",
+        "transitive": "Transitiv avhengighet (indirekte)"
+      },
+      "severity": {
+        "critical": "kritisk",
+        "high": "høy",
+        "moderate": "moderat",
+        "low": "lav"
+      }
+    },
+    "deprecated": {
+      "label": "Utfaset",
+      "tree_found": "{count} utfaset avhengighet | {count} utfasede avhengigheter",
+      "show_all": "vis {count} utfaset pakke | vis alle {count} utfasede pakker"
+    },
+    "access": {
+      "title": "Teamtilgang",
+      "refresh": "Oppdater teamtilgang",
+      "list_label": "Liste over teamtilganger",
+      "owner": "eier",
+      "rw": "lese/skrive",
+      "ro": "kun-lese",
+      "revoke_access": "Tilbakekall tilgang for {name}",
+      "no_access": "Ingen teamtilgang konfigurert",
+      "select_team_label": "Velg team",
+      "loading_teams": "Laster team...",
+      "select_team": "Velg team",
+      "permission_label": "Tilgangsnivå",
+      "permission": {
+        "read_only": "skrivebeskyttet",
+        "read_write": "lese-skrive"
+      },
+      "grant_button": "gi tilgang",
+      "cancel_grant": "Avbryt tildeling av tilgang",
+      "grant_access": "+ Gi teamtilgang"
+    },
+    "list": {
+      "filter_label": "Filtrer pakker",
+      "filter_placeholder": "Filtrer pakker...",
+      "sort_label": "Sorter pakker",
+      "showing_count": "Viser {filtered} av {total} pakker"
+    },
+    "skeleton": {
+      "loading": "Laster pakkedetaljer",
+      "license": "Lisens",
+      "weekly": "Ukentlig",
+      "size": "Størrelse",
+      "deps": "Avh.",
+      "published": "Publisert",
+      "get_started": "Kom i gang",
+      "readme": "Readme",
+      "maintainers": "Vedlikeholdere",
+      "keywords": "Nøkkelord",
+      "versions": "Versjoner",
+      "dependencies": "Avhengigheter"
+    },
+    "sort": {
+      "downloads": "Mest lastet ned",
+      "published": "Nylig publisert",
+      "name_asc": "Navn (A-Å)",
+      "name_desc": "Navn (Å-A)"
+    }
+  },
+  "connector": {
+    "status": {
+      "connecting": "kobler til...",
+      "connected_as": "koblet til som ~{user}",
+      "connected": "tilkoblet",
+      "connect_cli": "koble til lokal CLI",
+      "aria_connecting": "Kobler til lokal connector",
+      "aria_connected": "Koblet til lokal connector",
+      "aria_click_to_connect": "Klikk for å koble til lokal connector",
+      "avatar_alt": "{user}s avatar"
+    },
+    "modal": {
+      "title": "Lokal Connector",
+      "contributor_badge": "Kun for bidragsytere",
+      "contributor_notice": "Connectoren er ennå ikke publisert til npm. Se {link} for hvordan du kjører den lokalt.",
+      "contributor_link": "bidragsguiden",
+      "connected": "Tilkoblet",
+      "connected_as_user": "Koblet til som ~{user}",
+      "connected_hint": "Du kan nå administrere pakker og organisasjoner fra nettleseren.",
+      "disconnect": "Koble fra",
+      "run_hint": "Kjør connectoren på maskinen din for å aktivere administratorfunksjoner.",
+      "copy_command": "Kopier kommando",
+      "copied": "Kopiert",
+      "paste_token": "Lim deretter inn tokenet nedenfor for å koble til:",
+      "token_label": "Token",
+      "token_placeholder": "lim inn token her...",
+      "advanced": "Avanserte alternativer",
+      "port_label": "Port",
+      "warning": "ADVARSEL",
+      "warning_text": "Dette gir npmx tilgang til din npm CLI. Koble kun til nettsteder du stoler på.",
+      "connect": "Koble til",
+      "connecting": "Kobler til..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Operasjonskø",
+      "clear_all": "tøm alle",
+      "refresh": "Oppdater operasjoner",
+      "empty": "Ingen operasjoner i kø",
+      "empty_hint": "Legg til operasjoner fra pakke- eller org-sider",
+      "active_label": "Aktive operasjoner",
+      "otp_required": "OTP påkrevd",
+      "otp_prompt": "Skriv inn OTP for å fortsette",
+      "otp_placeholder": "Skriv inn OTP-kode...",
+      "otp_label": "Engangskode (OTP)",
+      "retry_otp": "Prøv igjen med OTP",
+      "retrying": "Prøver på nytt...",
+      "approve_operation": "Godkjenn operasjon",
+      "remove_operation": "Fjern operasjon",
+      "approve_all": "Godkjenn alle",
+      "execute": "Utfør",
+      "executing": "Utfører...",
+      "log": "Logg",
+      "log_label": "Fullførte operasjoner logg",
+      "remove_from_log": "Fjern fra logg"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Team",
+      "refresh": "Oppdater team",
+      "filter_label": "Filtrer team",
+      "filter_placeholder": "Filtrer team...",
+      "sort_by": "Sorter etter",
+      "loading": "Laster team...",
+      "no_teams": "Ingen team funnet",
+      "list_label": "Organisasjonens team",
+      "delete_team": "Slett team {name}",
+      "member_count": "{count} medlem | {count} medlemmer",
+      "members_of": "Medlemmer av {team}",
+      "no_members": "Ingen medlemmer",
+      "remove_user": "Fjern {user} fra team",
+      "username_to_add": "Brukernavn å legge til i {team}",
+      "username_placeholder": "brukernavn...",
+      "add_button": "legg til",
+      "cancel_add_user": "Avbryt å legge til bruker",
+      "add_member": "+ Legg til medlem",
+      "team_name_label": "Teamnavn",
+      "team_name_placeholder": "team-navn...",
+      "create_button": "opprett",
+      "no_match": "Ingen team matcher \"{query}\"",
+      "cancel_create": "Avbryt oppretting av team",
+      "create_team": "+ Opprett team"
+    },
+    "members": {
+      "title": "Medlemmer",
+      "refresh": "Oppdater medlemmer",
+      "filter_label": "Filtrer medlemmer",
+      "filter_placeholder": "Filtrer medlemmer...",
+      "filter_by_role": "Filtrer etter rolle",
+      "filter_by_team": "Filtrer etter team",
+      "all_teams": "alle team",
+      "sort_by": "Sorter etter",
+      "loading": "Laster medlemmer...",
+      "no_members": "Ingen medlemmer funnet",
+      "list_label": "Organisasjonens medlemmer",
+      "change_role_for": "Endre rolle for {name}",
+      "remove_from_org": "Fjern {name} fra org",
+      "view_team": "Vis {team}-teamet",
+      "no_match": "Ingen medlemmer matcher filtrene dine",
+      "username_label": "Brukernavn",
+      "username_placeholder": "brukernavn...",
+      "role_label": "Rolle",
+      "role": {
+        "all": "alle",
+        "developer": "utvikler",
+        "admin": "admin",
+        "owner": "eier"
+      },
+      "team_label": "Team",
+      "no_team": "ingen team",
+      "add_button": "legg til",
+      "cancel_add": "Avbryt å legge til medlem",
+      "add_member": "+ Legg til medlem"
+    },
+    "public_packages": "{count} offentlig pakke | {count} offentlige pakker",
+    "page": {
+      "packages_title": "Pakker",
+      "members_tab": "Medlemmer",
+      "teams_tab": "Team",
+      "no_packages": "Ingen offentlige pakker funnet for",
+      "no_packages_hint": "Denne organisasjonen finnes kanskje ikke, eller har ingen offentlige pakker.",
+      "failed_to_load": "Kunne ikke laste organisasjonens pakker",
+      "no_match": "Ingen pakker matcher \"{query}\"",
+      "not_found": "Organisasjon ikke funnet",
+      "not_found_message": "Organisasjonen \"{'@'}{name}\" finnes ikke på npm",
+      "filter_placeholder": "Filtrer {count} pakke... | Filtrer {count} pakker..."
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(vil også legge til i org)",
+      "press_enter_to_add": "Trykk Enter for å legge til {'@'}{username}",
+      "default_placeholder": "brukernavn...",
+      "suggestions_label": "Brukerforslag"
+    },
+    "page": {
+      "packages_title": "Pakker",
+      "no_packages": "Ingen offentlige pakker funnet for",
+      "no_packages_hint": "Denne brukeren finnes kanskje ikke, eller har ingen offentlige pakker.",
+      "failed_to_load": "Kunne ikke laste brukerpakker",
+      "no_match": "Ingen pakker matcher \"{query}\"",
+      "filter_placeholder": "Filtrer {count} pakke... | Filtrer {count} pakker..."
+    },
+    "orgs_page": {
+      "title": "Organisasjoner",
+      "back_to_profile": "Tilbake til profil",
+      "connect_required": "Koble til den lokale CLI-en for å se dine organisasjoner.",
+      "connect_hint_prefix": "Kjør",
+      "connect_hint_suffix": "for å komme i gang.",
+      "own_orgs_only": "Du kan bare se dine egne organisasjoner.",
+      "view_your_orgs": "Vis dine organisasjoner",
+      "loading": "Laster organisasjoner...",
+      "empty": "Ingen organisasjoner funnet.",
+      "empty_hint": "Organisasjoner oppdages fra dine scoped-pakker.",
+      "count": "{count} Organisasjon | {count} Organisasjoner",
+      "packages_count": "{count} pakke | {count} pakker"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Gjør krav på pakkenavn",
+      "success": "Pakkenavn reservert!",
+      "success_detail": "{name}{'@'}0.0.0 har blitt publisert til npm.",
+      "success_hint": "Du kan nå publisere nye versjoner til denne pakken med npm publish.",
+      "view_package": "Vis Pakke",
+      "invalid_name": "Ugyldig pakkenavn:",
+      "available": "Dette navnet er ledig!",
+      "taken": "Dette navnet er allerede opptatt.",
+      "similar_warning": "Lignende pakker finnes - npm kan avvise dette navnet:",
+      "related": "Relaterte pakker:",
+      "scope_warning_title": "Vurder å bruke en scoped pakke i stedet",
+      "scope_warning_text": "Pakkenavn uten scope er en delt ressurs. Gjør kun krav på et navn hvis du har til hensikt å publisere og vedlikeholde en pakke. For personlige prosjekter eller organisasjonsprosjekter, bruk et navn med scope som {'@'}{username}/{name}.",
+      "connect_required": "Koble til lokal connector for å gjøre krav på dette pakkenavnet.",
+      "connect_button": "Koble til Connector",
+      "publish_hint": "Dette vil publisere en minimal plassholderpakke.",
+      "preview_json": "Forhåndsvis package.json",
+      "claim_button": "Gjør krav på pakkenavn",
+      "publishing": "Publiserer...",
+      "checking": "Sjekker tilgjengelighet...",
+      "failed_to_check": "Kunne ikke sjekke navnetilgjengelighet",
+      "failed_to_claim": "Kunne ikke gjøre krav på pakke"
+    }
+  },
+  "code": {
+    "files_label": "Filer",
+    "no_files": "Ingen filer i denne mappen",
+    "select_version": "Velg versjon",
+    "root": "rot",
+    "lines": "{count} linje | {count} linjer",
+    "toggle_tree": "Veksle filtre",
+    "close_tree": "Lukk filtre",
+    "copy_link": "Kopier lenke",
+    "raw": "Rå",
+    "view_raw": "Vis råfil",
+    "file_too_large": "Filen er for stor til å forhåndsvises",
+    "file_size_warning": "{size} overstiger grensen på 500KB for syntaksmarkering",
+    "load_anyway": "Last likevel",
+    "failed_to_load": "Kunne ikke laste fil",
+    "unavailable_hint": "Filen kan være for stor eller utilgjengelig",
+    "version_required": "Versjon er påkrevd for å bla i koden",
+    "go_to_package": "Gå til pakke",
+    "loading_tree": "Laster filtre...",
+    "failed_to_load_tree": "Kunne ikke laste filer for denne pakkeversjonen",
+    "back_to_package": "Tilbake til pakke",
+    "table": {
+      "name": "Navn",
+      "size": "Størrelse"
+    },
+    "markdown_view_mode": {
+      "preview": "forhåndsvisning",
+      "code": "kode"
+    },
+    "file_path": "Filsti"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "verifisert",
+      "verified_title": "Verifisert opprinnelse",
+      "verified_via": "Verifisert: publisert via {provider}"
+    },
+    "jsr": {
+      "title": "også tilgjengelig på JSR",
+      "label": "jsr"
+    }
+  },
+  "filters": {
+    "title": "Filtre",
+    "search": "Søk",
+    "search_scope": "Søkeomfang",
+    "search_placeholder_name": "Filtrer etter pakkenavn...",
+    "search_placeholder_description": "Filtrer etter beskrivelse...",
+    "search_placeholder_keywords": "Filtrer etter nøkkelord...",
+    "search_placeholder_all": "Søk alt eller bruk navn: besk: nøkkelord:",
+    "scope_name": "Navn",
+    "scope_name_description": "Søk kun i pakkenavn",
+    "scope_description": "Beskrivelse",
+    "scope_description_description": "Søk kun i beskrivelser",
+    "scope_keywords": "Nøkkelord",
+    "scope_keywords_description": "Søk kun i nøkkelord",
+    "scope_all": "Alt",
+    "scope_all_description": "Søk i alle felt, støtter name: desc: kw: operatorer",
+    "weekly_downloads": "Ukentlige nedlastinger",
+    "updated_within": "Oppdatert innen",
+    "security": "Sikkerhet",
+    "keywords": "Nøkkelord",
+    "more_keywords": "+{count} flere",
+    "clear_all": "Fjern alle",
+    "remove_filter": "Fjern {label} filter",
+    "chips": {
+      "search": "Søk",
+      "downloads": "Nedlastinger",
+      "keyword": "Nøkkelord",
+      "security": "Sikkerhet",
+      "updated": "Oppdatert"
+    },
+    "download_range": {
+      "any": "Hvilken som helst",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Når som helst",
+      "week": "Siste uke",
+      "month": "Siste måned",
+      "quarter": "Siste 3 måneder",
+      "year": "Siste år"
+    },
+    "security_options": {
+      "all": "Alle pakker",
+      "secure": "Uten advarsler",
+      "insecure": "Med advarsler"
+    },
+    "sort": {
+      "label": "Sorter pakker",
+      "toggle_direction": "Veksle sorteringsrekkefølge",
+      "ascending": "Stigende",
+      "descending": "Synkende",
+      "relevance": "Relevans",
+      "downloads_week": "Nedlastinger/uke",
+      "downloads_day": "Nedlastinger/dag",
+      "downloads_month": "Nedlastinger/mnd",
+      "downloads_year": "Nedlastinger/år",
+      "published": "Sist publisert",
+      "name": "Navn",
+      "quality": "Kvalitet",
+      "popularity": "Popularitet",
+      "maintenance": "Vedlikehold",
+      "score": "Poengsum"
+    },
+    "columns": {
+      "title": "Kolonner",
+      "show": "Vis kolonner",
+      "reset": "Tilbakestill til standard",
+      "coming_soon": "Kommer snart",
+      "name": "Navn",
+      "version": "Versjon",
+      "description": "Beskrivelse",
+      "downloads": "Nedlastinger/uke",
+      "published": "Sist publisert",
+      "maintainers": "Vedlikeholdere",
+      "keywords": "Nøkkelord",
+      "quality_score": "Kvalitetspoeng",
+      "popularity_score": "Popularitetspoeng",
+      "maintenance_score": "Vedlikeholdspoeng",
+      "combined_score": "Kombinert poengsum",
+      "security": "Sikkerhet"
+    },
+    "view_mode": {
+      "label": "Visningsmodus",
+      "cards": "Kortvisning",
+      "table": "Tabellvisning"
+    },
+    "pagination": {
+      "mode_label": "Sideinndelingsmodus",
+      "infinite": "Uendelig",
+      "paginated": "Sideinndelt",
+      "items_per_page": "Elementer per side",
+      "per_page": "{count} / side",
+      "all_yolo": "Alt (YOLO)",
+      "showing": "{start}-{end} av {total}",
+      "previous": "Forrige side",
+      "next": "Neste side",
+      "nav_label": "Sideinndeling"
+    },
+    "count": {
+      "showing_filtered": "{filtered} av {count} pakke | {filtered} av {count} pakker",
+      "showing_all": "{count} pakke | {count} pakker",
+      "showing_paginated": "{pageSize} av {count} pakke | {pageSize} av {count} pakker"
+    },
+    "table": {
+      "security_warning": "Sikkerhetsadvarsel",
+      "secure": "Sikker",
+      "no_packages": "Ingen pakker funnet"
+    }
+  },
+  "about": {
+    "title": "Om",
+    "heading": "om",
+    "meta_description": "npmx er en rask, moderne leser for npm-registeret. En bedre UX/DX for å utforske npm-pakker.",
+    "back_home": "tilbake til start",
+    "what_we_are": {
+      "title": "Hva vi er",
+      "better_ux_dx": "bedre UX/DX",
+      "admin_ui": "admin-grensesnitt",
+      "description": "npmx er en {betterUxDx} for npm-pakkeregisteret og verktøyene. Vi tilbyr et raskt, moderne grensesnitt for å utforske pakker, med funksjoner som mørk modus, tastaturnavigasjon, kodesurfing og tilkoblinger til alternative registre som {jsr}.",
+      "admin_description": "Vi har også som mål å tilby et bedre {adminUi} for å administrere pakkene, teamene og organisasjonene dine – alt fra nettleseren, drevet av din lokale npm CLI."
+    },
+    "what_we_are_not": {
+      "title": "Hva vi ikke er",
+      "not_package_manager": "Ikke en pakkebehandler.",
+      "not_registry": "Ikke et register.",
+      "registry_description": "Vi hoster ikke pakker. Vi er bare en bedre måte å bla i dem på.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Det finnes",
+        "people": "allerede",
+        "building": "folk som",
+        "really": "bygger",
+        "cool": "veldig",
+        "package": "kule",
+        "managers": "pakkebehandlere"
+      }
+    },
+    "contributors": {
+      "title": "{count} Bidragsyter | {count} Bidragsytere",
+      "description": "npmx er fullstendig åpen kildekode, bygget av et fantastisk fellesskap av bidragsytere. Bli med oss og la oss bygge npm-opplevelsen vi alltid har ønsket oss, sammen.",
+      "loading": "Laster bidragsytere...",
+      "error": "Kunne ikke laste bidragsytere",
+      "view_profile": "Vis {name}s GitHub-profil"
+    },
+    "get_involved": {
+      "title": "Bli involvert",
+      "contribute": {
+        "title": "Bidra",
+        "description": "Hjelp oss med å bygge en bedre npm-opplevelse.",
+        "cta": "Vis på GitHub"
+      },
+      "community": {
+        "title": "Bli med i fellesskapet",
+        "description": "Chat, still spørsmål og del ideer.",
+        "cta": "Bli med på Discord"
+      },
+      "follow": {
+        "title": "Hold deg oppdatert",
+        "description": "Få med deg det siste om npmx.",
+        "cta": "Følg på Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "koble til",
+    "account": "Konto",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Administrer pakker og orgs",
+    "atmosphere_desc": "Sosiale funksjoner og identitet",
+    "connect_npm_cli": "Koble til npm CLI",
+    "connect_atmosphere": "Koble til Atmosphere",
+    "connecting": "Kobler til...",
+    "ops": "{count} op | {count} ops",
+    "disconnect": "Koble fra"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Koblet til som {'@'}{handle}",
+      "disconnect": "Koble fra",
+      "connect_prompt": "Koble til med din Atmosphere-konto",
+      "handle_label": "Brukernavn (handle)",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Koble til",
+      "create_account": "Opprett en ny konto",
+      "connect_bluesky": "Koble til med Bluesky",
+      "what_is_atmosphere": "Hva er en Atmosphere-konto?",
+      "atmosphere_explanation": "{npmx} bruker {atproto} for å drive mange av sine sosiale funksjoner, slik at brukere kan eie sine egne data og bruke én konto for alle kompatible applikasjoner. Når du oppretter en konto, kan du bruke andre apper som {bluesky} og {tangled} med samme konto."
+    }
+  },
+  "header": {
+    "home": "npmx hjem",
+    "github": "GitHub",
+    "packages": "pakker",
+    "packages_dropdown": {
+      "title": "Dine pakker",
+      "loading": "Laster...",
+      "error": "Kunne ikke laste pakker",
+      "empty": "Ingen pakker funnet",
+      "view_all": "Vis alle"
+    },
+    "orgs": "orgs",
+    "orgs_dropdown": {
+      "title": "Dine organisasjoner",
+      "loading": "Laster...",
+      "error": "Kunne ikke laste organisasjoner",
+      "empty": "Ingen organisasjoner funnet",
+      "view_all": "Vis alle"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "sammenlign pakker",
+      "tagline": "sammenlign npm-pakker side-om-side for å hjelpe deg å velge den rette.",
+      "meta_title": "Sammenlign {packages} - npmx",
+      "meta_title_empty": "Sammenlign pakker - npmx",
+      "meta_description": "Side-om-side sammenligning av {packages}",
+      "meta_description_empty": "Sammenlign npm-pakker side-om-side",
+      "section_packages": "Pakker",
+      "section_facets": "Fasetter",
+      "section_comparison": "Sammenligning",
+      "loading": "Laster pakkedata...",
+      "error": "Kunne ikke laste pakkedata. Vennligst prøv igjen.",
+      "empty_title": "Velg pakker å sammenligne",
+      "empty_description": "Søk og legg til minst 2 pakker ovenfor for å se en side-om-side sammenligning av deres metrikker."
+    },
+    "selector": {
+      "search_label": "Søk etter pakker",
+      "search_first": "Søk etter en pakke...",
+      "search_add": "Legg til en annen pakke...",
+      "searching": "Søker...",
+      "remove_package": "Fjern {package}",
+      "packages_selected": "{count}/{max} pakker valgt.",
+      "add_hint": "Legg til minst 2 pakker for å sammenligne.",
+      "loading_versions": "Laster versjoner...",
+      "select_version": "Velg versjon"
+    },
+    "facets": {
+      "group_label": "Sammenligningsfasetter",
+      "all": "alle",
+      "none": "ingen",
+      "coming_soon": "Kommer snart",
+      "select_all": "Velg alle fasetter",
+      "deselect_all": "Fravelg alle fasetter",
+      "select_category": "Velg alle {category}-fasetter",
+      "deselect_category": "Fravelg alle {category}-fasetter",
+      "binary_only_tooltip": "Denne pakken eksponerer binærfiler og ingen eksporter",
+      "categories": {
+        "performance": "Ytelse",
+        "health": "Helsetilstand",
+        "compatibility": "Kompatibilitet",
+        "security": "Sikkerhet og samsvar"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Pakkestørrelse",
+          "description": "Størrelse på selve pakken (utpakket)"
+        },
+        "installSize": {
+          "label": "Installasjonsstr.",
+          "description": "Total installasjonsstørrelse inkludert alle avhengigheter"
+        },
+        "dependencies": {
+          "label": "Direkte avh.",
+          "description": "Antall direkte avhengigheter"
+        },
+        "totalDependencies": {
+          "label": "Totale avh.",
+          "description": "Totalt antall avhengigheter inkludert transitive"
+        },
+        "downloads": {
+          "label": "Nedlastinger/uke",
+          "description": "Ukentlig nedlastingstall"
+        },
+        "lastUpdated": {
+          "label": "Publisert",
+          "description": "Når denne versjonen ble publisert"
+        },
+        "deprecated": {
+          "label": "Utfaset?",
+          "description": "Om pakken er utfaset (deprecated)"
+        },
+        "engines": {
+          "label": "Motorer",
+          "description": "Krav til Node.js-versjon"
+        },
+        "types": {
+          "label": "Typer",
+          "description": "TypeScript typedefinisjoner"
+        },
+        "moduleFormat": {
+          "label": "Modulformat",
+          "description": "Støtte for ESM/CJS"
+        },
+        "license": {
+          "label": "Lisens",
+          "description": "Pakkelisens"
+        },
+        "vulnerabilities": {
+          "label": "Sårbarheter",
+          "description": "Kjente sikkerhetssårbarheter"
+        }
+      },
+      "values": {
+        "any": "Enhver",
+        "none": "Ingen",
+        "unknown": "Ukjent",
+        "deprecated": "Utfaset",
+        "not_deprecated": "Nei",
+        "types_included": "Inkludert",
+        "types_none": "Ingen",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+      }
+    }
+  }
+}
