@@ -1276,15 +1276,15 @@ onKeyStroke(
   display: grid;
   gap: 2rem;
 
-  /* Mobile: single column, sidebar above readme */
+  /* Mobile: single column */
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
     'header'
     'details'
     'install'
     'vulns'
-    'sidebar'
-    'readme';
+    'readme'
+    'sidebar';
 }
 
 /* Tablet/medium: header/install/vulns full width, readme+sidebar side by side */
