@@ -73,7 +73,7 @@ defineExpose({
 
           <button
             type="submit"
-            class="absolute hidden @xs:block group inset-ie-2.5 font-mono text-sm transition-[background-color,transform] duration-200 active:scale-95 focus-visible:outline-accent/70"
+            class="absolute hidden @xs:block group inset-ie-2.5 font-mono text-sm transition-[background-color,transform] duration-200 active:scale-95"
             :class="
               compact
                 ? 'px-1.5 py-0.5 @md:ps-4 @md:pe-4'
