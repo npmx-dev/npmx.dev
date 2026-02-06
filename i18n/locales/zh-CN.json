@@ -86,7 +86,7 @@
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",
-    "copy_keys": "拷贝键值",
+    "copy_keys": "复制键值",
     "show_more_keys": "显示其它 {count} 条…",
     "contribute_hint": "补充缺失的键值以帮助改进翻译。",
     "edit_on_github": "在 GitHub 上编辑",
@@ -100,8 +100,8 @@
     "try_again": "再试一次",
     "close": "关闭",
     "retry": "重试",
-    "copy": "拷贝",
-    "copied": "已拷贝！",
+    "copy": "复制",
+    "copied": "已复制！",
     "skip_link": "跳转到主界面",
     "close_modal": "关闭对话框",
     "show_more": "展示更多",
@@ -126,7 +126,7 @@
     "verified_provenance": "已验证的来源",
     "view_permalink": "查看这个版本的链接",
     "navigation": "包导航",
-    "copy_name": "拷贝包名",
+    "copy_name": "复制包名",
     "deprecation": {
       "package": "这个包已经被弃用。",
       "version": "这个版本已经被弃用。",
@@ -196,12 +196,12 @@
     "get_started": {
       "title": "开始使用",
       "pm_label": "包管理器",
-      "copy_command": "拷贝安装命令",
+      "copy_command": "复制安装命令",
       "view_types": "查看 {package}"
     },
     "create": {
       "title": "创建新项目",
-      "copy_command": "拷贝创建命令",
+      "copy_command": "复制创建命令",
       "view": "{packageName} 由同一位维护者维护，点击查看详情"
     },
     "run": {
@@ -433,8 +433,8 @@
       "connected_hint": "现在你可以通过 Web UI 管理包和组织。",
       "disconnect": "断开连接",
       "run_hint": "在你的机器上运行连接器以启用管理功能。",
-      "copy_command": "拷贝命令",
-      "copied": "已拷贝",
+      "copy_command": "复制命令",
+      "copied": "已复制",
       "paste_token": "再在下方粘贴令牌以连接：",
       "token_label": "令牌",
       "token_placeholder": "粘贴令牌…",
@@ -605,7 +605,7 @@
     "lines": "{count} 行",
     "toggle_tree": "切换文件树",
     "close_tree": "关闭文件树",
-    "copy_link": "拷贝链接",
+    "copy_link": "复制链接",
     "raw": "原始文件",
     "view_raw": "查看原始文件",
     "file_too_large": "文件过大，无法预览",
