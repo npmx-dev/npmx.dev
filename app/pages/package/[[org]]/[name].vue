@@ -692,13 +692,9 @@ onKeyStroke(
           </div>
 
           <!-- External links -->
-          <ul class="flex flex-wrap items-center gap-1 sm:gap-2 list-none m-0 p-0 mt-3">
+          <ul class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3">
             <li v-if="repositoryUrl">
-              <LinkBase
-                variant="button-secondary"
-                :to="repositoryUrl"
-                :classicon="repoProviderIcon"
-              >
+              <LinkBase :to="repositoryUrl" :classicon="repoProviderIcon">
                 <span v-if="repoRef">
                   {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
                 </span>
@@ -706,32 +702,27 @@ onKeyStroke(
               </LinkBase>
             </li>
             <li v-if="repositoryUrl && repoMeta && starsLink">
-              <LinkBase variant="button-secondary" :to="starsLink" classicon="i-carbon:star">
+              <LinkBase :to="starsLink" classicon="i-carbon:star">
                 {{ formatCompactNumber(stars, { decimals: 1 }) }}
               </LinkBase>
             </li>
             <li v-if="forks && forksLink">
-              <LinkBase variant="button-secondary" :to="forksLink" classicon="i-carbon:fork">
+              <LinkBase :to="forksLink" classicon="i-carbon:fork">
                 {{ formatCompactNumber(forks, { decimals: 1 }) }}
               </LinkBase>
             </li>
             <li v-if="homepageUrl">
-              <LinkBase variant="button-secondary" :to="homepageUrl" classicon="i-carbon:link">
+              <LinkBase :to="homepageUrl" classicon="i-carbon:link">
                 {{ $t('package.links.homepage') }}
               </LinkBase>
             </li>
             <li v-if="displayVersion?.bugs?.url">
-              <LinkBase
-                variant="button-secondary"
-                :to="displayVersion.bugs.url"
-                classicon="i-carbon:warning"
-              >
+              <LinkBase :to="displayVersion.bugs.url" classicon="i-carbon:warning">
                 {{ $t('package.links.issues') }}
               </LinkBase>
             </li>
             <li>
               <LinkBase
-                variant="button-secondary"
                 :to="`https://www.npmjs.com/package/${pkg.name}`"
                 :title="$t('common.view_on_npm')"
                 classicon="i-carbon:logo-npm"
@@ -741,7 +732,6 @@ onKeyStroke(
             </li>
             <li v-if="jsrInfo?.exists && jsrInfo.url">
               <LinkBase
-                variant="button-secondary"
                 :to="jsrInfo.url"
                 :title="$t('badges.jsr.title')"
                 classicon="i-simple-icons:jsr"
@@ -750,19 +740,18 @@ onKeyStroke(
               </LinkBase>
             </li>
             <li v-if="fundingUrl">
-              <LinkBase variant="button-secondary" :to="fundingUrl" classicon="i-carbon:favorite">
+              <LinkBase :to="fundingUrl" classicon="i-carbon:favorite">
                 {{ $t('package.links.fund') }}
               </LinkBase>
             </li>
             <!-- Mobile-only: Docs + Code + Compare links -->
             <li v-if="docsLink && displayVersion" class="sm:hidden">
-              <LinkBase variant="button-secondary" :to="docsLink" classicon="i-carbon:document">
+              <LinkBase :to="docsLink" classicon="i-carbon:document">
                 {{ $t('package.links.docs') }}
               </LinkBase>
             </li>
             <li v-if="resolvedVersion" class="sm:hidden">
               <LinkBase
-                variant="button-secondary"
                 :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
                 classicon="i-carbon:code"
               >
@@ -771,7 +760,6 @@ onKeyStroke(
             </li>
             <li class="sm:hidden">
               <LinkBase
-                variant="button-secondary"
                 :to="{ name: 'compare', query: { packages: pkg.name } }"
                 classicon="i-carbon:compare"
               >
@@ -1189,7 +1177,9 @@ onKeyStroke(
       <p class="text-fg-muted mb-8">
         {{ error?.message ?? $t('package.not_found_message') }}
       </p>
-      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{ $t('common.go_back_home') }}</LinkBase>
+      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{
+        $t('common.go_back_home')
+      }}</LinkBase>
     </div>
   </main>
 </template>
