@@ -152,7 +152,7 @@
       "license": "Lizenz",
       "deps": "Abhängigkeiten",
       "install_size": "Installationsgröße",
-      "vulns": "Sicherheitslücken",
+      "vulns": "Sicherheits&shy;lücken&nbsp;verfügungs&shy;gesetz",
       "published": "Veröffentlicht",
       "published_tooltip": "Datum, an dem {package}{'@'}{version} veröffentlicht wurde",
       "skills": "Fähigkeiten",
