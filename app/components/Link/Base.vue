@@ -61,13 +61,13 @@ const props = withDefaults(
     :class="{
       'text-fg underline-offset-[0.2rem] underline decoration-1 decoration-fg/50 hover:(no-underline text-accent) focus-visible:(no-underline text-accent) transition-colors duration-200':
         variant === 'link',
-      'gap-x-1 font-mono border border-border rounded-md transition-all duration-200 aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
+      'font-mono border border-border rounded-md transition-all duration-200 aria-current:(bg-fg text-bg border-fg hover:(text-bg/50)) bg-gradient-to-t dark:bg-gradient-to-b':
         variant !== 'link',
       'text-sm px-4 py-2': variant !== 'tag' && variant !== 'link',
       'text-xs px-2 py-0.5': variant === 'tag',
-      'bg-transparent text-fg hover:(bg-accent/30 border-fg) focus-visible:(bg-accent/30 border-fg)':
+      'from-fg/10 via-transparent to-transparent text-fg hover:(bg-accent/20 border-accent) focus-visible:(bg-accent/20 border-accent)':
         variant === 'tag' || variant === 'button-secondary',
-      'text-bg bg-fg hover:(bg-accent/90) focus-visible:(bg-accent/90)':
+      'text-black from-accent via-accent to-accent/30 hover:(bg-accent/50) focus-visible:(bg-accent/50)':
         variant === 'button-primary',
     }"
     :to="to"
