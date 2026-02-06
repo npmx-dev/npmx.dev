@@ -114,6 +114,7 @@
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
     "fast-check": "4.5.3",
+    "h3": "1.15.5",
     "knip": "5.83.0",
     "lint-staged": "16.2.7",
     "oxfmt": "0.27.0",
