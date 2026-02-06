@@ -285,8 +285,7 @@
     },
     "downloads": {
       "title": "Pobrania tygodniowe",
-      "analyze": "Analizuj pobrania",
-      "modal_title": "Pobrania"
+      "analyze": "Analizuj pobrania"
     },
     "install_scripts": {
       "title": "Skrypty instalacji",

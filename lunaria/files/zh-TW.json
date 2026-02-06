@@ -303,8 +303,7 @@
     "downloads": {
       "title": "每週下載量",
       "analyze": "分析下載量",
-      "community_distribution": "檢視社群採用分布",
-      "modal_title": "下載量"
+      "community_distribution": "檢視社群採用分布"
     },
     "install_scripts": {
       "title": "安裝腳本",

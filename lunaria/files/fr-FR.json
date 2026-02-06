@@ -329,15 +329,17 @@
       "legend_estimation": "Estimation",
       "no_data": "Données non disponibles",
       "y_axis_label": "{facet} {granularity}",
+      "facet": "Facette",
+      "title": "Tendances",
       "items": {
-        "downloads": "Téléchargements"
+        "downloads": "Téléchargements",
+        "likes": "J'aime"
       }
     },
     "downloads": {
       "title": "Téléchargements hebdomadaires",
       "analyze": "Analyser les téléchargements",
-      "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
-      "modal_title": "Téléchargements"
+      "community_distribution": "Voir la distribution des versions téléchargées par la communauté"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -969,7 +971,7 @@
         "up_to_you": "À vous de décider !"
       },
       "trends": {
-        "title": "Téléchargements hebdomadaires"
+        "title": "Comparer les tendances"
       }
     }
   },

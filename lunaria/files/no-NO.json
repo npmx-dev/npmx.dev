@@ -284,8 +284,7 @@
     "downloads": {
       "title": "Ukentlige nedlastinger",
       "analyze": "Analyser nedlastinger",
-      "community_distribution": "Vis distribusjon av bruk i fellesskapet",
-      "modal_title": "Nedlastinger"
+      "community_distribution": "Vis distribusjon av bruk i fellesskapet"
     },
     "install_scripts": {
       "title": "Installasjonsskript",

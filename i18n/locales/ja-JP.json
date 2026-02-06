@@ -307,8 +307,7 @@
     "downloads": {
       "title": "週間ダウンロード数",
       "analyze": "ダウンロード数を分析",
-      "community_distribution": "コミュニティの採用分布を表示",
-      "modal_title": "ダウンロード数"
+      "community_distribution": "コミュニティの採用分布を表示"
     },
     "install_scripts": {
       "title": "インストールスクリプト",

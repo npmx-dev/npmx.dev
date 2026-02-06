@@ -329,8 +329,7 @@
     "downloads": {
       "title": "Wöchentliche Downloads",
       "analyze": "Downloads analysieren",
-      "community_distribution": "Community-Adoptionsverteilung ansehen",
-      "modal_title": "Downloads"
+      "community_distribution": "Community-Adoptionsverteilung ansehen"
     },
     "install_scripts": {
       "title": "Installationsskripte",

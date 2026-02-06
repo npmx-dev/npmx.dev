@@ -337,8 +337,7 @@
     "downloads": {
       "title": "Téléchargements hebdomadaires",
       "analyze": "Analyser les téléchargements",
-      "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
-      "modal_title": "Téléchargements"
+      "community_distribution": "Voir la distribution des versions téléchargées par la communauté"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -421,6 +420,29 @@
       "published": "Récemment publié",
       "name_asc": "Nom (A-Z)",
       "name_desc": "Nom (Z-A)"
+    },
+    "trends": {
+      "granularity": "Granularité",
+      "granularity_daily": "Quotidien",
+      "granularity_weekly": "Hebdomadaire",
+      "granularity_monthly": "Mensuel",
+      "granularity_yearly": "Annuel",
+      "start_date": "Début",
+      "end_date": "Fin",
+      "loading": "Chargement...",
+      "date_range": "{start} au {end}",
+      "date_range_multiline": "{start}\nau {end}",
+      "download_file": "Télécharger {fileType}",
+      "toggle_annotator": "Afficher/Masquer l'annotateur",
+      "legend_estimation": "Estimation",
+      "no_data": "Données non disponibles",
+      "y_axis_label": "{facet} {granularity}",
+      "facet": "Facette",
+      "title": "Tendances",
+      "items": {
+        "downloads": "Téléchargements",
+        "likes": "J'aime"
+      }
     },
     "size": {
       "b": "{size} o",
@@ -970,7 +992,7 @@
         "up_to_you": "À vous de décider !"
       },
       "trends": {
-        "title": "Téléchargements hebdomadaires"
+        "title": "Comparer les tendances"
       }
     }
   },

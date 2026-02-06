@@ -86,7 +86,7 @@ const pulseColor = computed(() => {
   return isDarkMode.value ? accent.value : lightenOklch(accent.value, 0.5)
 })
 
-const weeklyDownloads = shallowRef<WeeklyDownloadPoint[]>([])
+const weeklyDownloads = shallowRef<WeeklyDataPoint[]>([])
 const isLoadingWeeklyDownloads = shallowRef(true)
 const hasWeeklyDownloads = computed(() => weeklyDownloads.value.length > 0)
 
@@ -111,7 +111,7 @@ async function loadWeeklyDownloads() {
       () => props.createdIso,
       () => ({ granularity: 'week' as const, weeks: 52 }),
     )
-    weeklyDownloads.value = (result as WeeklyDownloadPoint[]) ?? []
+    weeklyDownloads.value = (result as WeeklyDataPoint[]) ?? []
   } catch {
     weeklyDownloads.value = []
   } finally {
@@ -130,7 +130,7 @@ watch(
 
 const dataset = computed(() =>
   weeklyDownloads.value.map(d => ({
-    value: d?.downloads ?? 0,
+    value: d?.value ?? 0,
     period: $t('package.trends.date_range', {
       start: d.weekStart ?? '-',
       end: d.weekEnd ?? '-',
@@ -277,16 +277,17 @@ const config = computed(() => {
     <!-- The Chart is mounted after the dialog has transitioned -->
     <!-- This avoids flaky behavior that hides the chart's minimap half of the time -->
     <Transition name="opacity" mode="out-in">
-      <PackageDownloadAnalytics
+      <PackageTrendsChart
         v-if="hasChartModalTransitioned"
         :weeklyDownloads="weeklyDownloads"
         :inModal="true"
         :packageName="props.packageName"
         :createdIso="createdIso"
+        show-facet-selector
       />
     </Transition>
 
-    <!-- This placeholder bears the same dimensions as the PackageDownloadAnalytics component -->
+    <!-- This placeholder bears the same dimensions as the PackageTrendsChart component -->
     <!-- Avoids CLS when the dialog has transitioned -->
     <div
       v-if="!hasChartModalTransitioned"

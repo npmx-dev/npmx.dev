@@ -306,8 +306,7 @@
     "downloads": {
       "title": "Descargas Semanales",
       "analyze": "Analizar descargas",
-      "community_distribution": "Ver distribución de adopción comunitaria",
-      "modal_title": "Descargas"
+      "community_distribution": "Ver distribución de adopción comunitaria"
     },
     "install_scripts": {
       "title": "Scripts de Instalación",
