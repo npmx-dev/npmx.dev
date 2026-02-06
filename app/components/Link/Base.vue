@@ -100,7 +100,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
     <slot />
     <!-- automatically show icon indicating external link -->
     <span
-      v-if="isLinkExternal"
+      v-if="isLinkExternal && !classicon"
       class="i-carbon:launch rtl-flip w-3 h-3 opacity-50"
       aria-hidden="true"
     />
