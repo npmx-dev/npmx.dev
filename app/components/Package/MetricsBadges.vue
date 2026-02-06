@@ -58,7 +58,13 @@ const typesHref = computed(() => {
     <!-- TypeScript types badge -->
     <li v-if="!props.isBinary" class="contents">
       <TooltipApp :text="typesTooltip">
-        <LinkBase v-if="typesHref" variant="tag" :to="typesHref" classicon="i-carbon-checkmark">
+        <LinkBase
+          v-if="typesHref"
+          variant="button-secondary"
+          size="small"
+          :to="typesHref"
+          classicon="i-carbon-checkmark"
+        >
           {{ $t('package.metrics.types_label') }}
         </LinkBase>
         <TagStatic

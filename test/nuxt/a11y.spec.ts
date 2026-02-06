@@ -317,9 +317,9 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violations as tag', async () => {
+    it('should have no accessibility violations with size small', async () => {
       const component = await mountSuspended(ButtonBase, {
-        props: { variant: 'tag' },
+        props: { size: 'small' },
         slots: { default: 'Button content' },
       })
       const results = await runAxe(component)
@@ -373,9 +373,14 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violations as tag', async () => {
+    it('should have no accessibility violations as small button', async () => {
       const component = await mountSuspended(LinkBase, {
-        props: { to: 'http://example.com', disabled: true, variant: 'tag' },
+        props: {
+          to: 'http://example.com',
+          disabled: true,
+          variant: 'button-secondary',
+          size: 'small',
+        },
         slots: { default: 'Button link content' },
       })
       const results = await runAxe(component)

@@ -165,7 +165,7 @@ const pkgDescription = useMarkdown(() => ({
       <ButtonBase
         v-for="keyword in result.package.keywords.slice(0, 5)"
         class="pointer-events-auto"
-        variant="tag"
+        size="small"
         :key="keyword"
         :aria-pressed="props.filters?.keywords.includes(keyword)"
         :title="`Filter by ${keyword}`"

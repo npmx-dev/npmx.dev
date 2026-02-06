@@ -573,7 +573,8 @@ onKeyStroke(
                 position="bottom"
               >
                 <LinkBase
-                  variant="tag"
+                  variant="button-secondary"
+                  size="small"
                   to="#provenance"
                   :aria-label="$t('package.provenance_section.view_more_details')"
                   classicon="i-lucide-shield-check"
@@ -607,7 +608,7 @@ onKeyStroke(
               >
                 <ButtonBase
                   @click="likeAction"
-                  variant="tag"
+                  size="small"
                   :title="
                     likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
                   "
@@ -839,7 +840,8 @@ onKeyStroke(
 
               <span class="flex items-center gap-1">
                 <LinkBase
-                  variant="tag"
+                  variant="button-secondary"
+                  size="small"
                   v-if="getDependencyCount(displayVersion) > 0"
                   :to="`https://npmgraph.js.org/?q=${pkg.name}`"
                   :title="$t('package.stats.view_dependency_graph')"
@@ -849,7 +851,8 @@ onKeyStroke(
                 </LinkBase>
 
                 <LinkBase
-                  variant="tag"
+                  variant="button-secondary"
+                  size="small"
                   v-if="getDependencyCount(displayVersion) > 0"
                   :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                   :title="$t('package.stats.inspect_dependency_tree')"

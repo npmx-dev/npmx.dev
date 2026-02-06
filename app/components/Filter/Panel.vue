@@ -310,7 +310,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             <ButtonBase
               v-for="keyword in displayedKeywords"
               :key="keyword"
-              variant="tag"
+              size="small"
               :aria-pressed="filters.keywords.includes(keyword)"
               @click="emit('toggleKeyword', keyword)"
             >

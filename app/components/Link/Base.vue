@@ -10,7 +10,8 @@ const props = withDefaults(
        * `type` should never be used, because this will always be a link.
        * */
       'type'?: never
-      'variant'?: 'button-primary' | 'button-secondary' | 'tag' | 'link'
+      'variant'?: 'button-primary' | 'button-secondary' | 'link'
+      'size'?: 'small' | 'medium'
 
       'keyshortcut'?: string
 
@@ -37,7 +38,7 @@ const props = withDefaults(
       'href'?: never
     } & NuxtLinkProps
   >(),
-  { variant: 'link' },
+  { variant: 'link', size: 'medium' },
 )
 
 const isLinkExternal = computed(
@@ -49,6 +50,12 @@ const isLinkExternal = computed(
 const isLinkAnchor = computed(
   () => !!props.to && typeof props.to === 'string' && props.to.startsWith('#'),
 )
+
+/** size is only applicable for button like links */
+const isLink = computed(() => props.variant === 'link')
+const isButton = computed(() => props.variant !== 'link')
+const isButtonSmall = computed(() => props.size === 'small' && props.variant !== 'link')
+const isButtonMedium = computed(() => props.size === 'medium' && props.variant !== 'link')
 </script>
 
 <template>
@@ -56,10 +63,9 @@ const isLinkAnchor = computed(
     v-if="disabled"
     :class="{
       'opacity-50 inline-flex gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
-        variant !== 'link',
-      'text-sm px-4 py-2': variant !== 'tag' && variant !== 'link',
-      'text-xs px-2 py-0.5': variant === 'tag',
-      'bg-bg-muted text-fg-muted': variant === 'tag',
+        isButton,
+      'text-sm px-4 py-2': isButtonMedium,
+      'text-xs px-2 py-0.5': isButtonSmall,
       'text-bg bg-fg': variant === 'button-primary',
       'bg-transparent text-fg': variant === 'button-secondary',
     }"
@@ -69,16 +75,15 @@ const isLinkAnchor = computed(
     v-else
     class="group inline-flex gap-x-1 items-center justify-center"
     :class="{
-      'underline-offset-[0.2rem] underline decoration-1 decoration-fg/50':
-        !isLinkAnchor && variant === 'link',
+      'underline-offset-[0.2rem] underline decoration-1 decoration-fg/50': !isLinkAnchor && isLink,
       'text-fg hover:(no-underline text-accent) focus-visible:(no-underline text-accent) transition-colors duration-200':
-        variant === 'link',
+        isLink,
       'font-mono border border-border rounded-md transition-all duration-200 aria-current:(bg-fg text-bg border-fg hover:(text-bg/50)) bg-gradient-to-t dark:bg-gradient-to-b':
-        variant !== 'link',
-      'text-sm px-4 py-2': variant !== 'tag' && variant !== 'link',
-      'text-xs px-2 py-0.5': variant === 'tag',
+        isButton,
+      'text-sm px-4 py-2': isButtonMedium,
+      'text-xs px-2 py-0.5': isButtonSmall,
       'from-fg/10 via-transparent to-transparent text-fg hover:(bg-accent/20 border-accent) focus-visible:(bg-accent/20 border-accent)':
-        variant === 'tag' || variant === 'button-secondary',
+        variant === 'button-secondary',
       'text-black from-accent via-accent to-accent/30 hover:(bg-accent/50) focus-visible:(bg-accent/50)':
         variant === 'button-primary',
     }"
@@ -91,7 +96,7 @@ const isLinkAnchor = computed(
   >
     <span
       v-if="classicon"
-      :class="[variant === 'tag' ? 'size-3' : 'size-4', classicon]"
+      :class="[isButtonSmall ? 'size-3' : 'size-4', classicon]"
       aria-hidden="true"
     />
     <slot />
@@ -102,7 +107,7 @@ const isLinkAnchor = computed(
       aria-hidden="true"
     />
     <span
-      v-else-if="isLinkAnchor && variant === 'link'"
+      v-else-if="isLinkAnchor && isLink"
       class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
       aria-hidden="true"
     />
