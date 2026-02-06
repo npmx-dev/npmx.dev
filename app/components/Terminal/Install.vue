@@ -104,7 +104,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
         <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
       </div>
-      <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1 overflow-x-auto">
+      <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1 overflow-x-auto" dir="ltr">
         <!-- Install command - render all PM variants, CSS controls visibility -->
         <div
           v-for="pm in packageManagers"
@@ -162,7 +162,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
         <!-- Run command (only if package has executables) - render all PM variants -->
         <template v-if="executableInfo?.hasExecutable">
           <!-- Comment line -->
-          <div class="flex items-center gap-2 pt-1">
+          <div class="flex items-center gap-2 pt-1" dir="auto">
             <span class="text-fg-subtle font-mono text-sm select-none"
               ># {{ $t('package.run.locally') }}</span
             >
@@ -196,7 +196,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
         <!-- Create command (for packages with associated create-* package) - render all PM variants -->
         <template v-if="createPackageInfo">
           <!-- Comment line -->
-          <div class="flex items-center gap-2 pt-1 select-none">
+          <div class="flex items-center gap-2 pt-1 select-none" dir="auto">
             <span class="text-fg-subtle font-mono text-sm"># {{ $t('package.create.title') }}</span>
             <TooltipApp
               :text="$t('package.create.view', { packageName: createPackageInfo.packageName })"
