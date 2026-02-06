@@ -620,7 +620,11 @@ onKeyStroke(
               <!-- Package likes -->
               <TooltipApp
                 :text="
-                  likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
+                  isLoadingLikeData
+                    ? $t('common.loading')
+                    : likesData?.userHasLiked
+                      ? $t('package.likes.unlike')
+                      : $t('package.likes.like')
                 "
                 position="bottom"
                 class="items-center"
