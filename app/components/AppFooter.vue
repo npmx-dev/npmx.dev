@@ -20,19 +20,15 @@ const isHome = computed(() => route.name === 'index')
           </LinkBase>
           <LinkBase href="https://docs.npmx.dev" target="_blank" rel="noopener noreferrer">
             {{ $t('footer.docs') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
           </LinkBase>
           <LinkBase href="https://repo.npmx.dev" target="_blank" rel="noopener noreferrer">
             {{ $t('footer.source') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
           </LinkBase>
           <LinkBase href="https://social.npmx.dev" target="_blank" rel="noopener noreferrer">
             {{ $t('footer.social') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
           </LinkBase>
           <LinkBase href="https://chat.npmx.dev" target="_blank" rel="noopener noreferrer">
             {{ $t('footer.chat') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
           </LinkBase>
         </div>
       </div>

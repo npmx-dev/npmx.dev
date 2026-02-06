@@ -47,11 +47,11 @@ const props = withDefaults(
   /></span>
   <NuxtLink
     v-else
-    class="group"
+    class="group inline-flex gap-x-1 items-center justify-center"
     :class="{
       'text-fg underline-offset-4 underline decoration-1 decoration-fg/50 hover:(no-underline text-fg/80) transition-colors duration-200':
         variant === 'link',
-      'gap-x-1 inline-flex gap-x-1 items-center justify-center font-mono border border-border rounded-md transition-all duration-200 aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
+      'gap-x-1 font-mono border border-border rounded-md transition-all duration-200 aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
         variant !== 'link',
       'text-sm px-4 py-2': variant !== 'tag' && variant !== 'link',
       'text-xs px-2 py-0.5': variant === 'tag',
@@ -69,6 +69,8 @@ const props = withDefaults(
       aria-hidden="true"
     />
     <slot />
+    <!-- automatically show icon indicating external link -->
+    <span v-if="href" class="i-carbon:launch rtl-flip w-3 h-3 opacity-50" aria-hidden="true" />
     <kbd
       v-if="keyshortcut"
       class="inline-flex items-center justify-center w-4 h-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
