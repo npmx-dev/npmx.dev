@@ -114,3 +114,37 @@ export function extractInstallScriptsInfo(
     npxDependencies: extractNpxDependencies(scripts),
   }
 }
+
+/**
+ * Pattern to match scripts that are just `node <file-path>`
+ * Captures the file path (relative paths with alphanumeric chars, dots, hyphens, underscores, and slashes)
+ */
+const NODE_SCRIPT_PATTERN = /^node\s+([\w./-]+)$/
+
+/**
+ * Get the file path for an install script link.
+ * - If the script is `node <file-path>`, returns that file path
+ * - Otherwise, returns 'package.json'
+ *
+ * @param scriptContent - The content of the script
+ * @returns The file path to link to in the code tab
+ */
+export function getInstallScriptFilePath(scriptContent: string): string {
+  const match = NODE_SCRIPT_PATTERN.exec(scriptContent)
+
+  if (match?.[1]) {
+    // Script is `node <file-path>`, link to that file
+    // Normalize path: strip leading ./
+    const filePath = match[1].replace(/^\.\//, '')
+
+    // Fall back to package.json if path contains navigational elements (the client-side routing can't handle these well)
+    if (filePath.includes('../') || filePath.includes('./')) {
+      return 'package.json'
+    }
+
+    return filePath
+  }
+
+  // Default: link to package.json
+  return 'package.json'
+}

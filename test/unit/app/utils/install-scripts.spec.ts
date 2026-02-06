@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { extractInstallScriptsInfo } from '../../../../app/utils/install-scripts'
+import {
+  extractInstallScriptsInfo,
+  getInstallScriptFilePath,
+} from '../../../../app/utils/install-scripts'
 
 describe('extractInstallScriptsInfo', () => {
   it('returns null when no install scripts exist', () => {
@@ -73,5 +76,24 @@ describe('extractInstallScriptsInfo', () => {
         '@scope/pkg.name': 'latest',
       },
     })
+  })
+})
+
+describe('getInstallScriptFilePath', () => {
+  it('returns file path when script is `node <file-path>`', () => {
+    expect(getInstallScriptFilePath('node scripts/postinstall.js')).toBe('scripts/postinstall.js')
+  })
+
+  it('returns package.json when script is not a simple node command', () => {
+    expect(getInstallScriptFilePath('npx prisma generate')).toBe('package.json')
+  })
+
+  it('strips leading ./ from relative paths', () => {
+    expect(getInstallScriptFilePath('node ./scripts/setup.js')).toBe('scripts/setup.js')
+  })
+
+  it('falls back to package.json for parent directory references', () => {
+    expect(getInstallScriptFilePath('node ../scripts/setup.js')).toBe('package.json')
+    expect(getInstallScriptFilePath('node ./scripts/../lib/setup.js')).toBe('package.json')
   })
 })

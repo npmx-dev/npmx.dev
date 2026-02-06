@@ -3,12 +3,18 @@ import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-depend
 
 const props = defineProps<{
   packageName: string
+  version: string
   installScripts: {
     scripts: ('preinstall' | 'install' | 'postinstall')[]
     content?: Record<string, string>
     npxDependencies: Record<string, string>
   }
 }>()
+
+function getCodeLink(scriptContent: string): string {
+  const filePath = getInstallScriptFilePath(scriptContent)
+  return `/code/${props.packageName}/v/${props.version}/${filePath}`
+}
 
 const outdatedNpxDeps = useOutdatedDependencies(() => props.installScripts.npxDependencies)
 const hasNpxDeps = computed(() => Object.keys(props.installScripts.npxDependencies).length > 0)
@@ -34,7 +40,14 @@ const isExpanded = shallowRef(false)
           class="font-mono text-sm text-fg-subtle m-0 truncate focus:whitespace-normal focus:overflow-visible cursor-help rounded focus-visible:(outline-2 outline-accent outline-offset-2)"
           :title="installScripts.content?.[scriptName]"
         >
-          {{ installScripts.content?.[scriptName] || $t('package.install_scripts.script_label') }}
+          <NuxtLink
+            v-if="installScripts.content?.[scriptName]"
+            :to="getCodeLink(installScripts.content[scriptName])"
+            class="hover:text-fg transition-colors duration-200"
+          >
+            {{ installScripts.content[scriptName] }}
+          </NuxtLink>
+          <span v-else>{{ $t('package.install_scripts.script_label') }}</span>
         </dd>
       </div>
     </dl>
