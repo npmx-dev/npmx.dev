@@ -82,7 +82,7 @@ const pkgDescription = useMarkdown(() => ({
         <p v-if="pkgDescription" class="text-fg-muted text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-3">
           <span v-html="pkgDescription" />
         </p>
-        <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 text-xs text-fg-subtle">
+        <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 text-xs text-fg-muted">
           <dl v-if="showPublisher || result.package.date" class="flex items-center gap-4 m-0">
             <div
               v-if="showPublisher && result.package.publisher?.username"
@@ -111,7 +111,7 @@ const pkgDescription = useMarkdown(() => ({
         <!-- Mobile: downloads on separate row -->
         <dl
           v-if="result.downloads?.weekly"
-          class="sm:hidden flex items-center gap-4 mt-2 text-xs text-fg-subtle m-0"
+          class="sm:hidden flex items-center gap-4 mt-2 text-xs text-fg-muted m-0"
         >
           <div class="flex items-center gap-1.5">
             <dt class="sr-only">{{ $t('package.card.weekly_downloads') }}</dt>

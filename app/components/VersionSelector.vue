@@ -506,7 +506,7 @@ watch(
         :aria-activedescendant="
           focusedIndex >= 0 ? `version-${flatItems[focusedIndex]?.version?.version}` : undefined
         "
-        class="absolute top-full inset-is-0 mt-2 min-w-[220px] bg-bg-elevated border border-border rounded-lg shadow-lg z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
+        class="absolute top-full inset-is-0 mt-2 min-w-[220px] bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-fg-subtle/10 z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
         @keydown="handleListboxKeydown"
       >
         <!-- Version groups -->

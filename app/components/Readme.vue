@@ -141,7 +141,7 @@ function handleClick(event: MouseEvent) {
   transition: text-decoration-color 0.2s ease;
 }
 
-.readme a:hover {
+.readme :deep(a:hover) {
   text-decoration-color: var(--accent);
 }
 

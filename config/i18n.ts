@@ -157,6 +157,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     name: 'हिंदी',
   },
   {
+    code: 'te-IN',
+    file: 'te-IN.json',
+    name: 'తెలుగు',
+  },
+  {
     code: 'mr-IN',
     file: 'mr-IN.json',
     name: 'मराठी',
