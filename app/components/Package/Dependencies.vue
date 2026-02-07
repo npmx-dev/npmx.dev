@@ -76,9 +76,13 @@ const numberFormatter = useNumberFormatter()
       v-if="sortedDependencies.length > 0"
       id="dependencies"
       :title="
-        $t('package.dependencies.title', {
-          count: numberFormatter.format(sortedDependencies.length),
-        })
+        $t(
+          'package.dependencies.title',
+          {
+            count: numberFormatter.format(sortedDependencies.length),
+          },
+          sortedDependencies.length,
+        )
       "
     >
       <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
@@ -143,9 +147,13 @@ const numberFormatter = useNumberFormatter()
         @click="depsExpanded = true"
       >
         {{
-          $t('package.dependencies.show_all', {
-            count: numberFormatter.format(sortedDependencies.length),
-          })
+          $t(
+            'package.dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedDependencies.length),
+            },
+            sortedDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>
@@ -191,9 +199,13 @@ const numberFormatter = useNumberFormatter()
         @click="peerDepsExpanded = true"
       >
         {{
-          $t('package.peer_dependencies.show_all', {
-            count: numberFormatter.format(sortedPeerDependencies.length),
-          })
+          $t(
+            'package.peer_dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedPeerDependencies.length),
+            },
+            sortedPeerDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>
@@ -203,9 +215,13 @@ const numberFormatter = useNumberFormatter()
       v-if="sortedOptionalDependencies.length > 0"
       id="optional-dependencies"
       :title="
-        $t('package.optional_dependencies.title', {
-          count: numberFormatter.format(sortedOptionalDependencies.length),
-        })
+        $t(
+          'package.optional_dependencies.title',
+          {
+            count: numberFormatter.format(sortedOptionalDependencies.length),
+          },
+          sortedOptionalDependencies.length,
+        )
       "
     >
       <ul
@@ -235,9 +251,13 @@ const numberFormatter = useNumberFormatter()
         @click="optionalDepsExpanded = true"
       >
         {{
-          $t('package.optional_dependencies.show_all', {
-            count: sortedOptionalDependencies.length,
-          })
+          $t(
+            'package.optional_dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedOptionalDependencies.length),
+            },
+            sortedOptionalDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>
