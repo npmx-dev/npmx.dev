@@ -216,17 +216,15 @@ const processLocale = async (
   const filePath = join(LOCALES_DIRECTORY, localeFile)
   const localeInfo = checkJsonName(filePath)
 
-  if (fix) {
-    // prevent updating wrong locale file:
-    // - language locale files at countries allowed: e.g. es.json
-    // - country locale file forbidden: e.g. es-ES.json
-    // - target locale file forbidden: e.g. es-419.json
-    if (localeInfo.mergeLocale) {
-      console.error(
-        `${COLORS.red}Error: Locale "${localeInfo.locale}" cannot be fixed, fix the ${localeInfo.lang} locale instead!.${COLORS.reset}`,
-      )
-      process.exit(1)
-    }
+  // prevent updating wrong locale file:
+  // - language locale files at countries allowed: e.g. es.json
+  // - country locale file forbidden: e.g. es-ES.json
+  // - target locale file forbidden: e.g. es-419.json
+  if (fix && localeInfo.mergeLocale) {
+    console.error(
+      `${COLORS.red}Error: Locale "${localeInfo.locale}" cannot be fixed, fix the ${localeInfo.lang} locale instead!.${COLORS.reset}`,
+    )
+    process.exit(1)
   }
 
   const targetContent = await loadJson(localeInfo)
