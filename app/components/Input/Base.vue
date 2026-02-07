@@ -23,7 +23,7 @@ const emit = defineEmits<{
 const el = useTemplateRef('el')
 
 const model = computed({
-  get: () => props.modelValue ?? '',
+  get: () => props.modelValue,
   set: (value: string) => emit('update:modelValue', value),
 })
 
