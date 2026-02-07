@@ -915,7 +915,7 @@ const chartConfig = computed(() => {
                   </svg>
                 </div>
 
-                <span class="text-[10px] uppercase tracking-wide text-[var(--fg)]/70 truncate">
+                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
                   ${label}
                 </span>
 
@@ -962,7 +962,7 @@ const chartConfig = computed(() => {
         <div class="flex flex-col gap-1 sm:shrink-0">
           <label
             for="granularity"
-            class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
+            class="text-3xs font-mono text-fg-subtle tracking-wide uppercase"
           >
             {{ $t('package.downloads.granularity') }}
           </label>
@@ -988,7 +988,7 @@ const chartConfig = computed(() => {
           <div class="flex flex-col gap-1">
             <label
               for="startDate"
-              class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
+              class="text-3xs font-mono text-fg-subtle tracking-wide uppercase"
             >
               {{ $t('package.downloads.start_date') }}
             </label>
@@ -1007,10 +1007,7 @@ const chartConfig = computed(() => {
           </div>
 
           <div class="flex flex-col gap-1">
-            <label
-              for="endDate"
-              class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
-            >
+            <label for="endDate" class="text-3xs font-mono text-fg-subtle tracking-wide uppercase">
               {{ $t('package.downloads.end_date') }}
             </label>
             <div

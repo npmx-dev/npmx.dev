@@ -321,7 +321,7 @@ watch(isExecuting, executing => {
             <!-- Show error output for failed operations -->
             <pre
               v-if="op.status === 'failed' && op.result?.stderr"
-              class="mt-1 text-red-400/70 whitespace-pre-wrap text-[11px]"
+              class="mt-1 text-red-400/70 whitespace-pre-wrap text-2xs"
               >{{ op.result.stderr }}</pre
             >
           </div>

@@ -379,7 +379,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <span
                   v-for="tag in row.tags"
                   :key="tag"
-                  class="text-[9px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[150px]"
+                  class="text-4xs font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[150px]"
                   :title="tag"
                 >
                   {{ tag }}
@@ -431,7 +431,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <DateTime
                   v-if="v.time"
                   :datetime="v.time"
-                  class="text-[10px] text-fg-subtle"
+                  class="text-3xs text-fg-subtle"
                   year="numeric"
                   month="short"
                   day="numeric"
@@ -451,7 +451,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <span
                 v-for="tag in filterExcludedTags(v.tags, row.tags)"
                 :key="tag"
-                class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
+                class="text-5xs font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
                 :title="tag"
               >
                 {{ tag }}
@@ -532,7 +532,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 <DateTime
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
-                  class="text-[10px] text-fg-subtle"
+                  class="text-3xs text-fg-subtle"
                   year="numeric"
                   month="short"
                   day="numeric"
@@ -543,7 +543,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <span
                 v-for="tag in row.tags"
                 :key="tag"
-                class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
+                class="text-5xs font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
                 :title="tag"
               >
                 {{ tag }}
@@ -609,7 +609,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <DateTime
                       v-if="group.versions[0]?.time"
                       :datetime="group.versions[0]?.time"
-                      class="text-[10px] text-fg-subtle"
+                      class="text-3xs text-fg-subtle"
                       year="numeric"
                       month="short"
                       day="numeric"
@@ -629,7 +629,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   <span
                     v-for="tag in group.versions[0].tags"
                     :key="tag"
-                    class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
+                    class="text-5xs font-semibold text-fg-subtle uppercase tracking-wide truncate max-w-[120px]"
                     :title="tag"
                   >
                     {{ tag }}
@@ -670,7 +670,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <DateTime
                       v-if="group.versions[0]?.time"
                       :datetime="group.versions[0]?.time"
-                      class="text-[10px] text-fg-subtle"
+                      class="text-3xs text-fg-subtle"
                       year="numeric"
                       month="short"
                       day="numeric"
@@ -687,7 +687,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   <span
                     v-for="tag in group.versions[0].tags"
                     :key="tag"
-                    class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide"
+                    class="text-5xs font-semibold text-fg-subtle uppercase tracking-wide"
                   >
                     {{ tag }}
                   </span>
@@ -720,7 +720,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       <DateTime
                         v-if="v.time"
                         :datetime="v.time"
-                        class="text-[10px] text-fg-subtle"
+                        class="text-3xs text-fg-subtle"
                         year="numeric"
                         month="short"
                         day="numeric"
@@ -737,7 +737,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <span
                       v-for="tag in v.tags"
                       :key="tag"
-                      class="text-[8px] font-semibold text-fg-subtle uppercase tracking-wide"
+                      class="text-5xs font-semibold text-fg-subtle uppercase tracking-wide"
                     >
                       {{ tag }}
                     </span>

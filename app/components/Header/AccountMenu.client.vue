@@ -120,7 +120,7 @@ function openAuthModal() {
       <!-- Operation count badge (when npm connected with pending ops) -->
       <span
         v-if="isNpmConnected && operationCount > 0"
-        class="absolute -top-1 -inset-ie-1 min-w-[1rem] h-4 px-1 flex items-center justify-center font-mono text-[10px] rounded-full"
+        class="absolute -top-1 -inset-ie-1 min-w-[1rem] h-4 px-1 flex items-center justify-center font-mono text-3xs rounded-full"
         :class="hasPendingOperations ? 'bg-yellow-500 text-black' : 'bg-blue-500 text-white'"
         aria-hidden="true"
       >
