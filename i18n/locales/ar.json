@@ -5,7 +5,6 @@
       "description": "متصفح أفضل لسجل npm. ابحث عن الحزم واستعرضها واستكشفها عبر واجهة حديثة."
     }
   },
-  "version": "الإصدار",
   "built_at": "تم البناء {0}",
   "alt_logo": "شعار npmx",
   "tagline": "متصفح أفضل لسجل npm",
@@ -22,7 +21,6 @@
     "label": "ابحث عن حزم npm",
     "placeholder": "ابحث عن الحزم…",
     "button": "بحث",
-    "clear": "مسح البحث",
     "searching": "جارٍ البحث…",
     "found_packages": "تم العثور على {count} حزمة | تم العثور على حزمة واحدة | تم العثور على حزمتين | تم العثور على {count} حزم | تم العثور على {count} حزمة | تم العثور على {count} حزمة",
     "updating": "(جارٍ التحديث…)",
@@ -48,7 +46,6 @@
   "nav": {
     "main_navigation": "الصفحة الرئيسية",
     "popular_packages": "الحزم الشائعة",
-    "search": "بحث",
     "settings": "الإعدادات",
     "compare": "مقارنة",
     "back": "عودة",
@@ -68,7 +65,6 @@
       "language": "اللغة"
     },
     "relative_dates": "تواريخ نسبية",
-    "relative_dates_description": "عرض التواريخ مثل \"منذ 3 أيام\" بدلًا من التاريخ كاملًا.",
     "include_types": "تضمين {'@'}types في التثبيت",
     "include_types_description": "إضافة حزمة {'@'}types إلى أوامر التثبيت للحزم غير المرفقة بأنواع TypeScript.",
     "hide_platform_packages": "إخفاء الحزم الخاصة بالمنصة في البحث",
@@ -103,8 +99,6 @@
     "copy": "نسخ",
     "copied": "تم النسخ!",
     "skip_link": "تخطي إلى المحتوى الرئيسي",
-    "close_modal": "إغلاق النافذة",
-    "show_more": "عرض المزيد",
     "warnings": "تحذيرات:",
     "go_back_home": "العودة إلى الصفحة الرئيسية",
     "view_on_npm": "عرض على npm",
@@ -121,7 +115,6 @@
     "not_found": "لم يتم العثور على الحزمة",
     "not_found_message": "تعذّر العثور على الحزمة.",
     "no_description": "لا يوجد وصف",
-    "show_full_description": "عرض الوصف بالكامل",
     "not_latest": "(ليست الأحدث)",
     "verified_provenance": "مصدر موثّق",
     "view_permalink": "عرض الرابط الدائم لهذا الإصدار",
@@ -151,7 +144,6 @@
       "vulns": "الثغرات",
       "published": "تاريخ النشر",
       "published_tooltip": "تاريخ نشر {package}{'@'}{version}",
-      "skills": "المهارات",
       "view_dependency_graph": "عرض مخطط التبعيات",
       "inspect_dependency_tree": "فحص شجرة التبعيات",
       "size_tooltip": {
@@ -162,7 +154,6 @@
     "skills": {
       "title": "مهارات العميل (Agent Skills)",
       "skills_available": "{count} مهارة متاحة | مهارة واحدة متاحة | ترجمتان متاحتان | {count} مهارات متاحة | {count} مهارة متاحة | {count} مهارة متاحة",
-      "view": "عرض",
       "compatible_with": "متوافق مع {tool}",
       "install": "تثبيت",
       "installation_method": "طريقة التثبيت",
@@ -335,25 +326,12 @@
       "none": "لا شيء"
     },
     "vulnerabilities": {
-      "no_description": "لا يتوفر وصف",
-      "found": "تم العثور على {count} ثغرة | تم العثور على ثغرة واحدة | تم العثور على ثغرتين | تم العثور على {count} ثغرات | تم العثور على {count} ثغرة | تم العثور على {count} ثغرة",
-      "deps_found": "تم العثور على {count} ثغرة | تم العثور على ثغرة واحدة | تم العثور على ثغرتين | تم العثور على {count} ثغرات | تم العثور على {count} ثغرة | تم العثور على {count} ثغرة",
-      "deps_affected": "تأثرت {count} تبعية | تأثرت تبعية واحدة | تأثرت تبعيتان | تأثرت {count} تبعيات | تأثرت {count} تبعية | تأثرت {count} تبعية",
       "tree_found": "{vulns} ثغرة في {packages}/{total} حزمة | ثغرة واحدة في {packages}/{total} حزمة | ثغرتان في {packages}/{total} حزمة | {vulns} ثغرات في {packages}/{total} حزمة | {vulns} ثغرة في {packages}/{total} حزمة | {vulns} ثغرة في {packages}/{total} حزمة",
-      "scanning_tree": "جارٍ فحص شجرة التبعيات…",
       "show_all_packages": "عرض كل الحزم المتأثرة ({count})",
-      "no_summary": "لا يوجد ملخص",
-      "view_details": "عرض تفاصيل الثغرة",
       "path": "المسار",
       "more": "+{count} أخرى",
       "packages_failed": "تعذر فحص {count} حزمة | تعذر فحص الحزمة | تعذر فحص الحزمتين | تعذر فحص {count} حزم | تعذر فحص {count} حزمة | تعذر فحص {count} حزمة",
-      "no_known": "لا توجد ثغرات معروفة في {count} حزمة | لا توجد ثغرات معروفة في الحزمة | لا توجد ثغرات معروفة في الحزمتين | لا توجد ثغرات معروفة في {count} حزم | لا توجد ثغرات معروفة في {count} حزمة | لا توجد ثغرات معروفة في {count} حزمة",
       "scan_failed": "تعذر فحص الثغرات",
-      "depth": {
-        "root": "هذه الحزمة",
-        "direct": "تبعية مباشرة",
-        "transitive": "تبعية غير مباشرة"
-      },
       "severity": {
         "critical": "حرجة",
         "high": "عالية",
@@ -395,13 +373,7 @@
     },
     "skeleton": {
       "loading": "جارٍ تحميل تفاصيل الحزمة",
-      "license": "الترخيص",
       "weekly": "أسبوعيًا",
-      "size": "الحجم",
-      "deps": "التبعيات",
-      "published": "تاريخ النشر",
-      "get_started": "ابدأ",
-      "readme": "README",
       "maintainers": "المشرفون",
       "keywords": "الكلمات المفتاحية",
       "versions": "الإصدارات",
@@ -415,16 +387,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "جارٍ الاتصال…",
-      "connected_as": "متصل كـ ~{user}",
-      "connected": "متصل",
-      "connect_cli": "ربط واجهة سطر الأوامر المحلية",
-      "aria_connecting": "جارٍ الاتصال بالموصل المحلي",
-      "aria_connected": "تم الاتصال بالموصل المحلي",
-      "aria_click_to_connect": "انقر للاتصال بالموصل المحلي",
-      "avatar_alt": "صورة {user} الرمزية"
-    },
     "modal": {
       "title": "الموصل المحلي",
       "contributor_badge": "للمساهمين فقط",
@@ -540,8 +502,7 @@
       "failed_to_load": "فشل تحميل حزم المؤسسة",
       "no_match": "لا توجد حزم تطابق \"{query}\"",
       "not_found": "لم يتم العثور على المؤسسة",
-      "not_found_message": "المؤسسة \"{'@'}{name}\" غير موجودة على npm",
-      "filter_placeholder": "فلتر {count} حزمة…"
+      "not_found_message": "المؤسسة \"{'@'}{name}\" غير موجودة على npm"
     }
   },
   "user": {
@@ -602,7 +563,6 @@
   "code": {
     "files_label": "الملفات",
     "no_files": "لا توجد ملفات في هذا المجلد",
-    "select_version": "اختر إصدارًا",
     "root": "الجذر",
     "lines": "{count} سطر",
     "toggle_tree": "إظهار/إخفاء شجرة الملفات",
@@ -612,7 +572,6 @@
     "view_raw": "عرض الملف الخام (Raw)",
     "file_too_large": "الملف كبير جدًا للمعاينة",
     "file_size_warning": "{size} يتجاوز حد 500KB للتظليل النحوي (syntax highlighting)",
-    "load_anyway": "تحميل على أي حال",
     "failed_to_load": "فشل تحميل الملف",
     "unavailable_hint": "قد يكون الملف كبيرًا جدًا أو غير متاح",
     "version_required": "الإصدار مطلوب لتصفح الكود",
@@ -634,12 +593,10 @@
     "provenance": {
       "verified": "موثّق",
       "verified_title": "مصدر موثّق",
-      "verified_via": "موثّق: تم النشر عبر {provider}",
-      "view_more_details": "عرض المزيد من التفاصيل"
+      "verified_via": "موثّق: تم النشر عبر {provider}"
     },
     "jsr": {
-      "title": "متوفر أيضًا على JSR",
-      "label": "jsr"
+      "title": "متوفر أيضًا على JSR"
     }
   },
   "filters": {
@@ -759,7 +716,6 @@
     "title": "حول",
     "heading": "حول",
     "meta_description": "npmx هو متصفح سريع وحديث لسجل npm. تجربة مستخدم أفضل لاستكشاف حزم npm.",
-    "back_home": "العودة إلى الصفحة الرئيسية",
     "what_we_are": {
       "title": "ما هو npmx",
       "better_ux_dx": "تجربة مستخدم/مطور أفضل",
@@ -819,8 +775,7 @@
     "connect_npm_cli": "الاتصال بـ npm CLI",
     "connect_atmosphere": "الاتصال بـ Atmosphere",
     "connecting": "جارٍ الاتصال…",
-    "ops": "{count} عملية | عملية واحدة | عمليتان | {count} عمليات | {count} عملية | {count} عملية",
-    "disconnect": "قطع الاتصال"
+    "ops": "{count} عملية | عملية واحدة | عمليتان | {count} عمليات | {count} عملية | {count} عملية"
   },
   "auth": {
     "modal": {
@@ -839,7 +794,6 @@
   },
   "header": {
     "home": "الصفحة الرئيسية لـ npmx",
-    "github": "GitHub",
     "packages": "الحزم",
     "packages_dropdown": {
       "title": "حزمك",
@@ -880,9 +834,7 @@
       "searching": "جارٍ البحث…",
       "remove_package": "إزالة {package}",
       "packages_selected": "{count}/{max} حزمة محددة.",
-      "add_hint": "أضف حزمتين على الأقل للمقارنة.",
-      "loading_versions": "جارٍ تحميل الإصدارات…",
-      "select_version": "اختر إصدارًا"
+      "add_hint": "أضف حزمتين على الأقل للمقارنة."
     },
     "no_dependency": {
       "label": "(بدون تبعية)",
@@ -977,7 +929,6 @@
     "last_updated": "آخر تحديث: {date}",
     "welcome": "مرحبًا بك في {app}. نحن ملتزمون بحماية خصوصيتك. تشرح هذه السياسة البيانات التي نجمعها، وكيف نستخدمها، وحقوقك المتعلقة بمعلوماتك.",
     "cookies": {
-      "title": "ملفات تعريف الارتباط (Cookies)",
       "what_are": {
         "title": "ما هي ملفات تعريف الارتباط؟",
         "p1": "ملفات تعريف الارتباط أو الكوكيز (Cookies) هي ملفات نصية صغيرة تُخزن على جهازك عند زيارة موقع ويب. الغرض منها هو تحسين تجربتك في التصفح من خلال تذكر بعض التفضيلات والإعدادات."

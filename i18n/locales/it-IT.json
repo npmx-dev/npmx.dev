@@ -5,7 +5,6 @@
       "description": "Un browser migliore per il registro npm. Cerca, naviga ed esplora i pacchetti con un'interfaccia moderna."
     }
   },
-  "version": "Versione",
   "built_at": "compilato {0}",
   "alt_logo": "logo npmx",
   "tagline": "un browser migliore per il registro npm",
@@ -22,7 +21,6 @@
     "label": "Cerca i pacchetti npm",
     "placeholder": "cerca i pacchetti...",
     "button": "cerca",
-    "clear": "Cancella ricerca",
     "searching": "Cercando...",
     "found_packages": "Trovati {count} pacchetti",
     "updating": "(aggiornando...)",
@@ -48,7 +46,6 @@
   "nav": {
     "main_navigation": "Principale",
     "popular_packages": "Pacchetti popolari",
-    "search": "cerca",
     "settings": "impostazioni",
     "compare": "confronta",
     "back": "indietro",
@@ -68,7 +65,6 @@
       "language": "Lingua"
     },
     "relative_dates": "Date relative",
-    "relative_dates_description": "Mostra \"3 giorni fa\" invece di date complete",
     "include_types": "Includi {'@'}types durante l'installazione",
     "include_types_description": "Aggiungi il pacchetto {'@'}types al comando install per i pacchetti senza tipo",
     "hide_platform_packages": "Nascondi pacchetti specifici della piattaforma nella ricerca",
@@ -103,8 +99,6 @@
     "copy": "copia",
     "copied": "copiato!",
     "skip_link": "Salta al contenuto principale",
-    "close_modal": "Chiudi",
-    "show_more": "mostra di più",
     "warnings": "Avvisi:",
     "go_back_home": "Torna alla home",
     "view_on_npm": "vedi su npm",
@@ -121,7 +115,6 @@
     "not_found": "Pacchetto Non Trovato",
     "not_found_message": "Impossibile trovare il pacchetto.",
     "no_description": "Nessuna descrizione fornita",
-    "show_full_description": "Mostra descrizione lunga",
     "not_latest": "(non recente)",
     "verified_provenance": "Provenienza verificata",
     "view_permalink": "Vedi il link permanente per questa versione",
@@ -151,7 +144,6 @@
       "vulns": "Vulns",
       "published": "Pubblicato",
       "published_tooltip": "Data {package}{'@'}{version} è stato pubblicato",
-      "skills": "Competenze",
       "view_dependency_graph": "Vedi il grafico delle dipendenze",
       "inspect_dependency_tree": "Ispeziona l'albero delle dipendenze",
       "size_tooltip": {
@@ -162,7 +154,6 @@
     "skills": {
       "title": "Competenze dell'agente",
       "skills_available": "{count} competenza disponibile | {count} competenze disponibili",
-      "view": "Visualizza",
       "compatible_with": "Compatibile con {tool}",
       "install": "Installa",
       "installation_method": "Metodo di installazione",
@@ -336,25 +327,12 @@
       "none": "Nessuno"
     },
     "vulnerabilities": {
-      "no_description": "Nessuna descrizione disponibile",
-      "found": "{count} vulnerabilità trovata | {count} vulnerabilità trovate",
-      "deps_found": "{count} vulnerabilità trovata | {count} vulnerabilità trovate",
-      "deps_affected": "{count} dipendenza interessata | {count} dipendenze interessate",
       "tree_found": "{vulns} vulnerabilità in {packages}/{total} pacchetti | {vulns} vulnerabilità in {packages}/{total} pacchetti",
-      "scanning_tree": "Scansione dell'albero delle dipendenze...",
       "show_all_packages": "mostra tutti i {count} pacchetti interessati",
-      "no_summary": "Nessun riassunto",
-      "view_details": "Vedi dettagli sulle vulnerabilitá",
       "path": "percorso",
       "more": "+{count} altri",
       "packages_failed": "{count} pacchetto non ha potuto essere verificato | {count} pacchetti non hanno potuto essere verificati",
-      "no_known": "Nessuna vulnerabilità nota in {count} pacchetti",
       "scan_failed": "Impossibile analizzare le vulnerabilità",
-      "depth": {
-        "root": "Questo pacchetto",
-        "direct": "Dipendenza diretta",
-        "transitive": "Dipendenza transitiva (indiretta)"
-      },
       "severity": {
         "critical": "critica",
         "high": "alta",
@@ -396,13 +374,7 @@
     },
     "skeleton": {
       "loading": "Caricamento dettagli pacchetto",
-      "license": "Licenza",
       "weekly": "Settimanale",
-      "size": "Misura",
-      "deps": "Deps",
-      "published": "Pubblicato",
-      "get_started": "Inizia",
-      "readme": "Readme",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
       "versions": "Versioni",
@@ -416,16 +388,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "connettendo...",
-      "connected_as": "connesso come ~{user}",
-      "connected": "connesso",
-      "connect_cli": "connetti CLI locale",
-      "aria_connecting": "Connessione al connettore locale in corso",
-      "aria_connected": "Connesso al connettore locale",
-      "aria_click_to_connect": "Fare clic per connettersi al connettore locale",
-      "avatar_alt": "Avatar di {user}"
-    },
     "modal": {
       "title": "Connettore locale",
       "contributor_badge": "Solo collaboratori",
@@ -541,8 +503,7 @@
       "failed_to_load": "Impossibile caricare i pacchetti dell'organizzazione",
       "no_match": "Nessun pacchetto trovato per \"{query}\"",
       "not_found": "Organizazzione non trovata",
-      "not_found_message": "L'organizzazione \"{'@'}{name}\" non esiste su npm",
-      "filter_placeholder": "Filtra {count} pacchetti..."
+      "not_found_message": "L'organizzazione \"{'@'}{name}\" non esiste su npm"
     }
   },
   "user": {
@@ -603,7 +564,6 @@
   "code": {
     "files_label": "File",
     "no_files": "Nessun file in questa directory",
-    "select_version": "Seleziona versione",
     "root": "root",
     "lines": "{count} riga | {count} righe",
     "toggle_tree": "Attiva/disattiva albero dei file",
@@ -613,7 +573,6 @@
     "view_raw": "Visualizza file raw",
     "file_too_large": "File troppo grande per visualizzare l'anteprima",
     "file_size_warning": "{size} supera il limite di 500 KB per l'evidenziatore di sintassi",
-    "load_anyway": "Carica comunque",
     "failed_to_load": "Caricamento del file non riuscito",
     "unavailable_hint": "Il file potrebbe essere troppo grande o non disponibile",
     "version_required": "La versione è necessaria per sfogliare il codice",
@@ -635,12 +594,10 @@
     "provenance": {
       "verified": "verificato",
       "verified_title": "Provenienza verificata",
-      "verified_via": "Verificato: pubblicato tramite {provider}",
-      "view_more_details": "Visualizza più dettagli"
+      "verified_via": "Verificato: pubblicato tramite {provider}"
     },
     "jsr": {
-      "title": "disponibile anche su JSR",
-      "label": "jsr"
+      "title": "disponibile anche su JSR"
     }
   },
   "filters": {
@@ -760,7 +717,6 @@
     "title": "Info",
     "heading": "info",
     "meta_description": "npmx è un browser veloce e moderno per il registro npm. Una migliore UX/DX per esplorare i pacchetti npm.",
-    "back_home": "torna alla home",
     "what_we_are": {
       "title": "Cosa siamo",
       "better_ux_dx": "migliore UX/DX",
@@ -820,8 +776,7 @@
     "connect_npm_cli": "Connetti a npm CLI",
     "connect_atmosphere": "Connetti ad Atmosphere",
     "connecting": "Connettendo...",
-    "ops": "{count} op | {count} op",
-    "disconnect": "Disconnetti"
+    "ops": "{count} op | {count} op"
   },
   "auth": {
     "modal": {
@@ -840,7 +795,6 @@
   },
   "header": {
     "home": "npmx home",
-    "github": "GitHub",
     "packages": "pacchetti",
     "packages_dropdown": {
       "title": "I tuoi pacchetti",
@@ -881,9 +835,7 @@
       "searching": "Cercando...",
       "remove_package": "Rimuovi {package}",
       "packages_selected": "{count}/{max} pacchetti selezionati.",
-      "add_hint": "Aggiungi almeno 2 pacchetti da confrontare.",
-      "loading_versions": "Caricamento versioni...",
-      "select_version": "Seleziona versione"
+      "add_hint": "Aggiungi almeno 2 pacchetti da confrontare."
     },
     "no_dependency": {
       "label": "Nessuna dipendenza",
@@ -978,7 +930,6 @@
     "last_updated": "Ultimo aggiornamento: {date}",
     "welcome": "Benvenuti su {app}. Ci impegniamo a proteggere la tua privacy. Questa informativa spiega quali dati raccogliamo, come li utilizziamo e i tuoi diritti riguardo alle tue informazioni.",
     "cookies": {
-      "title": "Cookies",
       "what_are": {
         "title": "Cosa sono i cookies?",
         "p1": "I cookies sono piccoli file di testo memorizzati sul tuo dispositivo quando visiti un sito web. Il loro scopo è migliorare la tua esperienza di navigazione ricordando alcune preferenze e impostazioni."

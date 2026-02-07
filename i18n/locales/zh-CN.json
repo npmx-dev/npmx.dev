@@ -5,7 +5,6 @@
       "description": "更好的 npm 仓库浏览工具。通过更现代化的用户界面搜索，浏览，并探索软件包。"
     }
   },
-  "version": "版本",
   "built_at": "构建于 {0}",
   "alt_logo": "npmx 标志",
   "tagline": "更好的 npm 仓库浏览工具",
@@ -22,7 +21,6 @@
     "label": "搜索 npm 包",
     "placeholder": "搜索包…",
     "button": "搜索",
-    "clear": "清除搜索",
     "searching": "搜索中…",
     "found_packages": "共找到 {count} 个包",
     "updating": "（更新中…）",
@@ -48,7 +46,6 @@
   "nav": {
     "main_navigation": "主页",
     "popular_packages": "热门软件包",
-    "search": "搜索",
     "settings": "设置",
     "compare": "比较包",
     "back": "返回",
@@ -68,7 +65,6 @@
       "language": "语言"
     },
     "relative_dates": "相对时间",
-    "relative_dates_description": "显示“3 天前”而不是完整日期",
     "include_types": "在安装时包含 {'@'}types",
     "include_types_description": "为未提供类型定义的包自动添加 {'@'}types 包到安装命令",
     "hide_platform_packages": "在搜索结果隐藏平台特定包",
@@ -103,8 +99,6 @@
     "copy": "复制",
     "copied": "已复制！",
     "skip_link": "跳转到主界面",
-    "close_modal": "关闭对话框",
-    "show_more": "展示更多",
     "warnings": "警告：",
     "go_back_home": "返回首页",
     "view_on_npm": "在 npm 上查看",
@@ -121,7 +115,6 @@
     "not_found": "没有找到包",
     "not_found_message": "找不到这个包。",
     "no_description": "没有提供描述",
-    "show_full_description": "展示全部描述",
     "not_latest": "（不是最新）",
     "verified_provenance": "已验证的来源",
     "view_permalink": "查看这个版本的链接",
@@ -151,7 +144,6 @@
       "vulns": "漏洞",
       "published": "发布于",
       "published_tooltip": "日期 {package}{'@'}{version} 发布",
-      "skills": "技能",
       "view_dependency_graph": "查看依赖图",
       "inspect_dependency_tree": "查看依赖树",
       "size_tooltip": {
@@ -162,7 +154,6 @@
     "skills": {
       "title": "代理技能",
       "skills_available": "{count} 个技能可用 | {count} 个技能可用",
-      "view": "查看",
       "compatible_with": "兼容 {tool}",
       "install": "安装",
       "installation_method": "安装方法",
@@ -336,25 +327,12 @@
       "none": "无"
     },
     "vulnerabilities": {
-      "no_description": "没有可用的描述",
-      "found": "{count} 个漏洞",
-      "deps_found": "{count} 个漏洞",
-      "deps_affected": "{count} 个受影响的依赖",
       "tree_found": "在 {packages}/{total} 个包中发现 {vulns} 个漏洞",
-      "scanning_tree": "正在扫描依赖树…",
       "show_all_packages": "显示全部 {count} 个受影响的包",
-      "no_summary": "没有总结",
-      "view_details": "查看漏洞详情",
       "path": "路径",
       "more": "+{count} 更多",
       "packages_failed": "{count} 个包无法检查",
-      "no_known": "在 {count} 个包中未发现已知漏洞",
       "scan_failed": "无法扫描漏洞",
-      "depth": {
-        "root": "此包",
-        "direct": "直接依赖",
-        "transitive": "间接依赖（传递性）"
-      },
       "severity": {
         "critical": "严重",
         "high": "高",
@@ -396,13 +374,7 @@
     },
     "skeleton": {
       "loading": "加载包详情",
-      "license": "许可证",
       "weekly": "每周",
-      "size": "大小",
-      "deps": "依赖",
-      "published": "发布于",
-      "get_started": "开始使用",
-      "readme": "Readme",
       "maintainers": "维护者",
       "keywords": "关键词",
       "versions": "版本",
@@ -416,16 +388,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "连接中…",
-      "connected_as": "已连接为 ~{user}",
-      "connected": "已连接",
-      "connect_cli": "连接本地 CLI",
-      "aria_connecting": "连接到本地连接器中",
-      "aria_connected": "已连接到本地连接器",
-      "aria_click_to_connect": "点击连接到本地连接器",
-      "avatar_alt": "{user} 的头像"
-    },
     "modal": {
       "title": "本地连接器",
       "contributor_badge": "贡献者专用",
@@ -541,8 +503,7 @@
       "failed_to_load": "加载组织包失败",
       "no_match": "未找到匹配“{query}”的包",
       "not_found": "未找到组织",
-      "not_found_message": "“{'@'}{name}” 组织在 npm 上不存在",
-      "filter_placeholder": "筛选 {count} 个包…"
+      "not_found_message": "“{'@'}{name}” 组织在 npm 上不存在"
     }
   },
   "user": {
@@ -603,7 +564,6 @@
   "code": {
     "files_label": "文件",
     "no_files": "这个目录中没有文件",
-    "select_version": "选择版本",
     "root": "根目录",
     "lines": "{count} 行",
     "toggle_tree": "切换文件树",
@@ -613,7 +573,6 @@
     "view_raw": "查看原始文件",
     "file_too_large": "文件过大，无法预览",
     "file_size_warning": "{size} 超出了 500KB 的语法高亮限制",
-    "load_anyway": "仍要加载",
     "failed_to_load": "加载文件失败",
     "unavailable_hint": "文件可能太大或不可用",
     "version_required": "需要版本来浏览代码",
@@ -635,12 +594,10 @@
     "provenance": {
       "verified": "已验证",
       "verified_title": "已验证的来源",
-      "verified_via": "已验证：通过 {provider} 发布",
-      "view_more_details": "查看更多详情"
+      "verified_via": "已验证：通过 {provider} 发布"
     },
     "jsr": {
-      "title": "也适用于 JSR",
-      "label": "jsr"
+      "title": "也适用于 JSR"
     }
   },
   "filters": {
@@ -760,7 +717,6 @@
     "title": "关于",
     "heading": "关于",
     "meta_description": "npmx 是一个快速、现代的 npm 仓库浏览器。为探索 npm 包提供更好的用户体验和开发者体验。",
-    "back_home": "返回首页",
     "what_we_are": {
       "title": "我们在做什么",
       "better_ux_dx": "更好的用户体验和开发者体验",
@@ -820,8 +776,7 @@
     "connect_npm_cli": "连接到 npm CLI",
     "connect_atmosphere": "连接到 Atmosphere",
     "connecting": "连接中…",
-    "ops": "ops",
-    "disconnect": "断开连接"
+    "ops": "ops"
   },
   "auth": {
     "modal": {
@@ -840,7 +795,6 @@
   },
   "header": {
     "home": "npmx 主页",
-    "github": "GitHub",
     "packages": "包",
     "packages_dropdown": {
       "title": "你的包",
@@ -881,9 +835,7 @@
       "searching": "搜索中…",
       "remove_package": "移除 {package}",
       "packages_selected": "已选择 {count}/{max} 个包。",
-      "add_hint": "至少添加 2 个包以进行比较。",
-      "loading_versions": "正在加载版本…",
-      "select_version": "选择版本"
+      "add_hint": "至少添加 2 个包以进行比较。"
     },
     "no_dependency": {
       "label": "(不使用依赖)",

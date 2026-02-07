@@ -1,12 +1,11 @@
 import process from 'node:process'
-import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
 import { safeParse } from 'valibot'
 import * as site from '../shared/types/lexicons/site'
 import { BlogPostSchema } from '../shared/schemas/blog'
 import { NPMX_SITE } from '../shared/utils/constants'
-import { parseBasicFrontmatter } from '../shared/utils/parse-basic-frontmatter'
+import { read } from 'gray-matter'
 import { TID } from '@atproto/common'
 import { Client } from '@atproto/lex'
 
@@ -77,8 +76,7 @@ export default defineNuxtModule({
  * WARN: DOES NOT CATCH ERRORS, THIS MUST BE HANDLED
  */
 const syncFile = async (filePath: string, siteUrl: string, client: Client) => {
-  const fileContent = readFileSync(filePath, 'utf-8')
-  const frontmatter = parseBasicFrontmatter(fileContent)
+  const { data: frontmatter } = read(filePath)
 
   // Schema expects 'path' & frontmatter provides 'slug'
   const normalizedFrontmatter = {

@@ -5,7 +5,6 @@
       "description": "Lepší prohlížeč pro registr npm. Vyhledávejte, prohlížejte a objevujte balíčky v moderním rozhraní."
     }
   },
-  "version": "Verze",
   "built_at": "sestaveno {0}",
   "alt_logo": "npmx logo",
   "tagline": "lepší prohlížeč pro registr npm",
@@ -22,7 +21,6 @@
     "label": "Hledat npm balíčky",
     "placeholder": "Hledat balíčky...",
     "button": "Hledat",
-    "clear": "Vymazat hledání",
     "searching": "Hledání...",
     "found_packages": "Nalezen {count} balíček | Nalezeny {count} balíčky | Nalezeno {count} balíčků",
     "updating": "(aktualizace...)",
@@ -44,7 +42,6 @@
   "nav": {
     "main_navigation": "Hlavní",
     "popular_packages": "Populární balíčky",
-    "search": "vyhledávání",
     "settings": "nastavení",
     "compare": "porovnat",
     "back": "zpět",
@@ -64,7 +61,6 @@
       "language": "Jazyk"
     },
     "relative_dates": "Relativní data",
-    "relative_dates_description": "Zobrazit \"před 3 dny\" místo celého data",
     "include_types": "Zahrnout {'@'}types při instalaci",
     "include_types_description": "Přidat balíček {'@'}types do instalačních příkazů pro balíčky bez integrovaných typů",
     "hide_platform_packages": "Skrýt platformně specifické balíčky ve vyhledávání",
@@ -99,8 +95,6 @@
     "copy": "zkopírovat",
     "copied": "zkopírováno!",
     "skip_link": "Přejít na hlavní obsah",
-    "close_modal": "Zavřít okno",
-    "show_more": "zobrazit více",
     "warnings": "Varování:",
     "go_back_home": "Zpět na začátek",
     "view_on_npm": "Zobrazit na npm",
@@ -117,7 +111,6 @@
     "not_found": "Balíček nenalezen",
     "not_found_message": "Balíček nebyl nalezen.",
     "no_description": "Není k dispozici žádný popis",
-    "show_full_description": "Zobrazit celý popis",
     "not_latest": "(není nejnovější)",
     "verified_provenance": "Ověřený původ",
     "view_permalink": "Zobrazit trvalý odkaz na tuto verzi",
@@ -145,7 +138,6 @@
       "vulns": "Zranitelnosti",
       "published": "Publikováno",
       "published_tooltip": "Datum publikace verze {package}{'@'}{version}",
-      "skills": "Dovednosti",
       "view_dependency_graph": "Zobrazit graf závislostí",
       "inspect_dependency_tree": "Prozkoumat strom závislostí",
       "size_tooltip": {
@@ -156,7 +148,6 @@
     "skills": {
       "title": "Dovednosti agentů",
       "skills_available": "{count} dostupná dovednost | {count} dostupné dovednosti | {count} dostupných dovedností",
-      "view": "Zobrazit",
       "compatible_with": "Kompatibilní s {tool}",
       "install": "Nainstalovat",
       "installation_method": "Metoda instalace",
@@ -304,25 +295,12 @@
       "none": "Žádná"
     },
     "vulnerabilities": {
-      "no_description": "Popis není k dispozici",
-      "found": "nalezena {count} zranitelnost | nalezeny {count} zranitelnosti | nalezeno {count} zranitelností",
-      "deps_found": "nalezena {count} zranitelnost | nalezeny {count} zranitelnosti | nalezeno {count} zranitelností",
-      "deps_affected": "postihuje {count} závislost | postihuje {count} závislosti | postihuje {count} závislostí",
       "tree_found": "{vulns} zranitelnost v {packages}/{total} balíčcích | {vulns} zranitelnosti v {packages}/{total} balíčcích | {vulns} zranitelností v {packages}/{total} balíčcích",
-      "scanning_tree": "Prohledávání stromu závislostí...",
       "show_all_packages": "zobrazit všechny {count} ovlivněné balíčky",
-      "no_summary": "Žádné shrnutí",
-      "view_details": "Zobrazit podrobnosti o zranitelnosti",
       "path": "cesta",
       "more": "+{count} další | +{count} další | +{count} dalších",
       "packages_failed": "{count} balíček nemohl být zkontrolován | {count} balíčky nemohly být zkontrolovány | {count} balíčků nemohlo být zkontrolováno",
-      "no_known": "Žádné známé zranitelnosti",
       "scan_failed": "Nepodařilo se provést kontrolu zranitelností",
-      "depth": {
-        "root": "Tento balíček",
-        "direct": "Přímá závislost",
-        "transitive": "Nepřímá závislost (transitivní)"
-      },
       "severity": {
         "critical": "kritická",
         "high": "vysoká",
@@ -364,13 +342,7 @@
     },
     "skeleton": {
       "loading": "Načítání detailů balíčku",
-      "license": "Licence",
       "weekly": "Týdenní",
-      "size": "Velikost",
-      "deps": "Závislosti",
-      "published": "Publikováno",
-      "get_started": "Začínáme",
-      "readme": "Readme",
       "maintainers": "Správci",
       "keywords": "Klíčová slova",
       "versions": "Verze",
@@ -384,16 +356,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "připojování...",
-      "connected_as": "připojeno jako ~{user}",
-      "connected": "připojeno",
-      "connect_cli": "připojit lokální CLI",
-      "aria_connecting": "Připojování k lokálnímu konektoru",
-      "aria_connected": "Připojeno k lokálnímu konektoru",
-      "aria_click_to_connect": "Klikněte pro připojení k lokálnímu konektoru",
-      "avatar_alt": "Avatar uživatele {user}"
-    },
     "modal": {
       "title": "Lokální konektor",
       "contributor_badge": "Pouze přispěvatelé",
@@ -509,8 +471,7 @@
       "failed_to_load": "Nepodařilo se načíst balíčky organizace",
       "no_match": "Nebyly nalezeny žádné balíčky odpovídající \"{query}\"",
       "not_found": "Organizace nenalezena",
-      "not_found_message": "Organizace \"{'@'}{name}\" neexistuje na npm",
-      "filter_placeholder": "Filtrovat {count} balíčků..."
+      "not_found_message": "Organizace \"{'@'}{name}\" neexistuje na npm"
     }
   },
   "user": {
@@ -571,7 +532,6 @@
   "code": {
     "files_label": "Soubory",
     "no_files": "Žádné soubory v této složce",
-    "select_version": "Vyberte verzi",
     "root": "kořen",
     "lines": "{count} řádků",
     "toggle_tree": "Přepnout strom souborů",
@@ -581,7 +541,6 @@
     "view_raw": "Zobrazit raw soubor",
     "file_too_large": "Soubor je příliš velký pro náhled",
     "file_size_warning": "{size} překračuje limit 500KB pro zvýraznění syntaxe",
-    "load_anyway": "Načíst přesto",
     "failed_to_load": "Nepodařilo se načíst soubor",
     "unavailable_hint": "Soubor může být příliš velký nebo nedostupný",
     "version_required": "Pro prohlížení kódu je vyžadována verze",
@@ -606,8 +565,7 @@
       "verified_via": "Ověřeno: publikováno přes {provider}"
     },
     "jsr": {
-      "title": "také dostupné na JSR",
-      "label": "jsr"
+      "title": "také dostupné na JSR"
     }
   },
   "filters": {
@@ -727,7 +685,6 @@
     "title": "O projektu",
     "heading": "o projektu",
     "meta_description": "npmx je rychlý, moderní prohlížeč pro registr npm. Lepší UX/DX pro prozkoumávání balíčků npm.",
-    "back_home": "zpět na domovskou stránku",
     "what_we_are": {
       "title": "Co jsme",
       "better_ux_dx": "lepší UX/DX",
@@ -787,8 +744,7 @@
     "connect_npm_cli": "Připojit k npm CLI",
     "connect_atmosphere": "Připojit k Atmosphere",
     "connecting": "Připojování...",
-    "ops": "{count} operace | {count} operace | {count} operací",
-    "disconnect": "Odpojit"
+    "ops": "{count} operace | {count} operace | {count} operací"
   },
   "auth": {
     "modal": {
@@ -807,7 +763,6 @@
   },
   "header": {
     "home": "npmx",
-    "github": "GitHub",
     "packages": "balíčky",
     "packages_dropdown": {
       "title": "Vaše balíčky",
@@ -848,9 +803,7 @@
       "searching": "Vyhledávání...",
       "remove_package": "Odebrat {package}",
       "packages_selected": "Vybrané balíčky: {count}/{max}.",
-      "add_hint": "Přidejte alespoň 2 balíčky ke srovnání.",
-      "loading_versions": "Načítání verzí...",
-      "select_version": "Vybrat verzi"
+      "add_hint": "Přidejte alespoň 2 balíčky ke srovnání."
     },
     "facets": {
       "group_label": "Kategorie vlastností",

@@ -5,7 +5,6 @@
       "description": "Um navegador melhor para o registro npm. Pesquise, navegue e explore pacotes com uma interface moderna."
     }
   },
-  "version": "Versão",
   "built_at": "construído {0}",
   "alt_logo": "logo npmx",
   "tagline": "um navegador melhor para o registro npm",
@@ -22,7 +21,6 @@
     "label": "Pesquisar pacotes npm",
     "placeholder": "pesquisar pacotes...",
     "button": "pesquisar",
-    "clear": "Limpar pesquisa",
     "searching": "Pesquisando...",
     "found_packages": "Nenhum pacote encontrado | 1 pacote encontrado | {count} pacotes encontrados",
     "updating": "(atualizando...)",
@@ -44,7 +42,6 @@
   "nav": {
     "main_navigation": "Principal",
     "popular_packages": "Pacotes populares",
-    "search": "pesquisa",
     "settings": "configurações",
     "compare": "comparar",
     "back": "voltar",
@@ -64,7 +61,6 @@
       "language": "Idioma"
     },
     "relative_dates": "Datas relativas",
-    "relative_dates_description": "Mostrar \"há 3 dias\" em vez de datas completas",
     "include_types": "Incluir {'@'}types na instalação",
     "include_types_description": "Adicionar pacote {'@'}types aos comandos de instalação para pacotes sem tipo",
     "hide_platform_packages": "Ocultar pacotes específicos de plataforma na pesquisa",
@@ -98,8 +94,6 @@
     "copy": "copiar",
     "copied": "copiado!",
     "skip_link": "Pular para o conteúdo principal",
-    "close_modal": "Fechar modal",
-    "show_more": "mostrar mais",
     "warnings": "Avisos:",
     "go_back_home": "Voltar para a página inicial",
     "view_on_npm": "visualizar no npm",
@@ -116,7 +110,6 @@
     "not_found": "Pacote não encontrado",
     "not_found_message": "O pacote não pôde ser encontrado.",
     "no_description": "Nenhuma descrição fornecida",
-    "show_full_description": "Mostrar descrição completa",
     "not_latest": "(não é a mais recente)",
     "verified_provenance": "Proveniência verificada",
     "view_permalink": "Ver link permanente para esta versão",
@@ -142,7 +135,6 @@
       "deps": "Deps",
       "install_size": "Tamanho de Instalação",
       "vulns": "Vulnerabilidades",
-      "skills": "Habilidades",
       "view_dependency_graph": "Ver gráfico de dependências",
       "inspect_dependency_tree": "Inspecionar árvore de dependências",
       "size_tooltip": {
@@ -153,7 +145,6 @@
     "skills": {
       "title": "Habilidades do Agente",
       "skills_available": "{count} habilidade disponível | {count} habilidades disponíveis",
-      "view": "Ver",
       "compatible_with": "Compatível com {tool}",
       "install": "Instalar",
       "installation_method": "Método de Instalação",
@@ -300,25 +291,12 @@
       "none": "Nenhuma"
     },
     "vulnerabilities": {
-      "no_description": "Nenhuma descrição disponível",
-      "found": "{count} vulnerabilidade encontrada | {count} vulnerabilidades encontradas",
-      "deps_found": "{count} vulnerabilidade encontrada | {count} vulnerabilidades encontradas",
-      "deps_affected": "{count} dependência afetada | {count} dependências afetadas",
       "tree_found": "{vulns} vulnerabilidade em {packages}/{total} pacotes | {vulns} vulnerabilidades em {packages}/{total} pacotes",
-      "scanning_tree": "Verificando árvore de dependências...",
       "show_all_packages": "mostrar todos os {count} pacotes afetados",
-      "no_summary": "Sem resumo",
-      "view_details": "Ver detalhes da vulnerabilidade",
       "path": "caminho",
       "more": "+{count} mais",
       "packages_failed": "{count} pacote não pôde ser verificado | {count} pacotes não puderam ser verificados",
-      "no_known": "Nenhuma vulnerabilidade conhecida em {count} pacotes",
       "scan_failed": "Não foi possível verificar vulnerabilidades",
-      "depth": {
-        "root": "Este pacote",
-        "direct": "Dependência direta",
-        "transitive": "Dependência transitória (indireta)"
-      },
       "severity": {
         "critical": "crítica",
         "high": "alta",
@@ -360,12 +338,7 @@
     },
     "skeleton": {
       "loading": "Carregando detalhes do pacote",
-      "license": "Licença",
       "weekly": "Semanal",
-      "size": "Tamanho",
-      "deps": "Deps",
-      "get_started": "Comece agora",
-      "readme": "Readme",
       "maintainers": "Mantenedores",
       "keywords": "Palavras-chave",
       "versions": "Versões",
@@ -378,16 +351,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "conectando...",
-      "connected_as": "conectado como ~{user}",
-      "connected": "conectado",
-      "connect_cli": "conectar CLI local",
-      "aria_connecting": "Conectando ao conector local",
-      "aria_connected": "Conectado ao conector local",
-      "aria_click_to_connect": "Clique para conectar ao conector local",
-      "avatar_alt": "Avatar de {user}"
-    },
     "modal": {
       "title": "Conector Local",
       "contributor_badge": "Apenas contribuidores",
@@ -503,8 +466,7 @@
       "failed_to_load": "Falha ao carregar pacotes da organização",
       "no_match": "Nenhum pacote corresponde a \"{query}\"",
       "not_found": "Organização não encontrada",
-      "not_found_message": "A organização \"{'@'}{name}\" não existe no npm",
-      "filter_placeholder": "Filtrar {count} pacotes..."
+      "not_found_message": "A organização \"{'@'}{name}\" não existe no npm"
     }
   },
   "user": {
@@ -565,7 +527,6 @@
   "code": {
     "files_label": "Arquivos",
     "no_files": "Nenhum arquivo neste diretório",
-    "select_version": "Selecionar versão",
     "root": "raiz",
     "lines": "{count} linhas",
     "toggle_tree": "Alternar árvore de arquivos",
@@ -575,7 +536,6 @@
     "view_raw": "Ver arquivo bruto",
     "file_too_large": "Arquivo muito grande para visualizar",
     "file_size_warning": "{size} excede o limite de 500KB para destaque de sintaxe",
-    "load_anyway": "Carregar mesmo assim",
     "failed_to_load": "Falha ao carregar arquivo",
     "unavailable_hint": "O arquivo pode ser muito grande ou indisponível",
     "version_required": "Versão é obrigatória para navegar pelo código",
@@ -600,8 +560,7 @@
       "verified_via": "Verificado: publicado via {provider}"
     },
     "jsr": {
-      "title": "também disponível no JSR",
-      "label": "jsr"
+      "title": "também disponível no JSR"
     }
   },
   "filters": {
@@ -712,7 +671,6 @@
     "title": "Sobre",
     "heading": "sobre",
     "meta_description": "npmx é um navegador rápido e moderno para o registro npm. Uma melhor UX/DX para explorar pacotes npm.",
-    "back_home": "voltar para a página inicial",
     "what_we_are": {
       "title": "O que somos",
       "better_ux_dx": "melhor UX/DX",
@@ -772,8 +730,7 @@
     "connect_npm_cli": "Conectar ao CLI npm",
     "connect_atmosphere": "Conectar à Atmosfera",
     "connecting": "Conectando...",
-    "ops": "{count} op | {count} ops",
-    "disconnect": "Desconectar"
+    "ops": "{count} op | {count} ops"
   },
   "auth": {
     "modal": {
@@ -792,7 +749,6 @@
   },
   "header": {
     "home": "página inicial npmx",
-    "github": "GitHub",
     "packages": "pacotes",
     "packages_dropdown": {
       "title": "Seus Pacotes",
@@ -833,9 +789,7 @@
       "searching": "Pesquisando...",
       "remove_package": "Remover {package}",
       "packages_selected": "{count}/{max} pacotes selecionados.",
-      "add_hint": "Adicione pelo menos 2 pacotes para comparar.",
-      "loading_versions": "Carregando versões...",
-      "select_version": "Selecionar versão"
+      "add_hint": "Adicione pelo menos 2 pacotes para comparar."
     },
     "facets": {
       "group_label": "Aspectos de comparação",

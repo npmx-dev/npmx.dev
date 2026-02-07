@@ -26,9 +26,6 @@
       "grant_button": "otorgar",
       "cancel_grant": "Cancelar otorgar acceso",
       "grant_access": "+ Otorgar acceso de equipo"
-    },
-    "skeleton": {
-      "readme": "Léame"
     }
   }
 }
