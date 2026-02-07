@@ -413,6 +413,11 @@
       "published": "Recently published",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {

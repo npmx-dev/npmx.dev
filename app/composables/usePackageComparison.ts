@@ -9,7 +9,6 @@ import type { PackageLikes } from '#shared/types/social'
 import { encodePackageName } from '#shared/utils/npm'
 import type { PackageAnalysisResponse } from './usePackageAnalysis'
 import { isBinaryOnlyPackage } from '#shared/utils/binary-detection'
-import { formatBytes } from '~/utils/formatters'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 
 /** Special identifier for the "What Would James Do?" comparison column */
@@ -71,6 +70,8 @@ export interface PackageComparisonData {
  */
 export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const { t } = useI18n()
+  const compactNumberFormatter = useCompactNumberFormatter()
+  const bytesFormatter = useBytesFormatter()
   const packages = computed(() => toValue(packageNames))
 
   // Cache of fetched data by package name (source of truth)
@@ -260,7 +261,13 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
-      return computeFacetValue(facet, pkg, t)
+      return computeFacetValue(
+        facet,
+        pkg,
+        compactNumberFormatter.value.format,
+        bytesFormatter.format,
+        t,
+      )
     })
   }
 
@@ -342,6 +349,8 @@ function resolveNoDependencyDisplay(
 function computeFacetValue(
   facet: ComparisonFacet,
   data: PackageComparisonData,
+  formatCompactNumber: (num: number) => string,
+  formatBytes: (num: number) => string,
   t: (key: string, params?: Record<string, unknown>) => string,
 ): FacetValue | null {
   const { isNoDependency } = data

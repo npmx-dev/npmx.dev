@@ -2,7 +2,6 @@
 import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import { getFileIcon } from '~/utils/file-icons'
-import { formatBytes } from '~/utils/formatters'
 
 const props = defineProps<{
   tree: PackageFileTree[]
@@ -51,6 +50,8 @@ function getCodeRoute(nodePath?: string): RouteLocationRaw {
     params: { path: pathSegments as [string, ...string[]] },
   }
 }
+
+const bytesFormatter = useBytesFormatter()
 </script>
 
 <template>
@@ -108,7 +109,7 @@ function getCodeRoute(nodePath?: string): RouteLocationRaw {
           </td>
           <td class="py-2 px-4 text-end font-mono text-xs text-fg-subtle">
             <span v-if="node.type === 'file' && node.size">
-              {{ formatBytes(node.size) }}
+              {{ bytesFormatter.format(node.size) }}
             </span>
           </td>
         </tr>

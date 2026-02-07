@@ -53,6 +53,8 @@ const filteredResults = computed(() => {
     .filter(r => !packages.value.includes(r.name))
 })
 
+const numberFormatter = useNumberFormatter()
+
 function addPackage(name: string) {
   if (packages.value.length >= maxPackages.value) return
   if (packages.value.includes(name)) return
@@ -209,8 +211,8 @@ function handleBlur() {
     <p class="text-xs text-fg-subtle">
       {{
         $t('compare.selector.packages_selected', {
-          count: packages.length,
-          max: maxPackages,
+          count: numberFormatter.format(packages.length),
+          max: numberFormatter.format(maxPackages),
         })
       }}
       <span v-if="packages.length < 2">{{ $t('compare.selector.add_hint') }}</span>
