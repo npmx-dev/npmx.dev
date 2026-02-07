@@ -31,10 +31,9 @@ export function formatCompactNumber(
 
   const fmt = (n: number) => {
     if (decimals <= 0) return Math.round(n).toString()
-    return n
-      .toFixed(decimals)
-      .replace(/\.0+$/, '')
-      .replace(/(\.\d*?)0+$/, '$1')
+    const fixed = n.toFixed(decimals)
+    // Remove trailing zeros after decimal point
+    return fixed.includes('.') ? fixed.replace(/0+$/, '').replace(/\.$/, '') : fixed
   }
 
   const join = (suffix: string, n: number) => `${sign}${fmt(n)}${space ? ' ' : ''}${suffix}`

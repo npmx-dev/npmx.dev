@@ -1,5 +1,5 @@
 export function parseBasicFrontmatter(fileContent: string): Record<string, unknown> {
-  const match = fileContent.match(/^---\s*\n([\s\S]*?)\n---\s*(?:\n|$)/)
+  const match = fileContent.match(/^---[ \t]*\n([\s\S]*?)\n---[ \t]*(?:\n|$)/)
   if (!match?.[1]) return {}
 
   return match[1].split('\n').reduce<Record<string, unknown>>((acc, line) => {

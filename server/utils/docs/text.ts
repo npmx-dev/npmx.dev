@@ -54,7 +54,7 @@ export function cleanSymbolName(name: string): string {
  * Create a URL-safe HTML anchor ID for a symbol.
  */
 export function createSymbolId(kind: string, name: string): string {
-  return `${kind}-${name}`.replace(/[^a-zA-Z0-9-]/g, '_')
+  return `${kind}-${name}`.replace(/[^a-z0-9-]/gi, '_')
 }
 
 /**
@@ -70,7 +70,7 @@ export function createSymbolId(kind: string, name: string): string {
 export function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): string {
   let result = escapeHtml(text)
 
-  result = result.replace(/\{@link\s+([^\s}]+)(?:\s+([^}]+))?\}/g, (_, target, label) => {
+  result = result.replace(/\{@link\s+([^\s}]+)(?:\s+([^\s}]*))?\}/g, (_, target, label) => {
     const displayText = label || target
 
     // External URL
@@ -105,7 +105,7 @@ export async function renderMarkdown(text: string, symbolLookup: SymbolLookup): 
   // - \r\n, \n, or \r line endings
   const codeBlockData: Array<{ lang: string; code: string }> = []
   let result = text.replace(
-    /```[ \t]*(\w*)[ \t]*(?:\r\n|\r|\n)([\s\S]*?)(?:\r\n|\r|\n)?```/g,
+    /```[ \t]*(\w*)(?:\r\n|\r|\n)([\s\S]*?)(?:\r\n|\r|\n)?```/g,
     (_, lang, code) => {
       const index = codeBlockData.length
       codeBlockData.push({ lang: lang || 'text', code: code.trim() })
@@ -126,7 +126,7 @@ export async function renderMarkdown(text: string, symbolLookup: SymbolLookup): 
   result = result
     .replace(/`([^`]+)`/g, '<code class="docs-inline-code">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n\n+/g, '<br><br>')
+    .replace(/\n{2,}/g, '<br><br>')
     .replace(/\n/g, '<br>')
 
   // Highlight and restore code blocks
