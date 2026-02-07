@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { FileDiffResponse, FileChange, DiffHunk } from '#shared/types'
 import { createDiff, insertSkipBlocks, countDiffStats } from '#shared/utils/diff'
-// @ts-expect-error: (tasky): idk why this is type-erroring even if it has types? /shrug
 import { motion } from 'motion-v'
 
 const props = defineProps<{

@@ -111,8 +111,12 @@ const toVersionUrlPattern = computed(() => {
 
 function packageRoute(ver?: string | null) {
   const segments = packageName.value.split('/')
-  if (ver) segments.push('v', ver)
-  return { name: 'package' as const, params: { package: segments } }
+  const org = segments.length > 1 ? segments[0] : undefined
+  const name = segments.length > 1 ? segments[1]! : segments[0]!
+  if (ver) {
+    return { name: 'package-version' as const, params: { org, name, version: ver } }
+  }
+  return { name: 'package' as const, params: { org, name } }
 }
 
 useSeoMeta({

@@ -142,7 +142,7 @@ const {
   data: pkg,
   status,
   error,
-} = usePackage(packageName, resolvedVersion.value ?? requestedVersion.value)
+} = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
 // Process package description
