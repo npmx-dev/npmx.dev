@@ -60,7 +60,7 @@ defineExpose({
     <slot />
     <kbd
       v-if="keyshortcut"
-      class="inline-flex items-center justify-center w-4 h-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
+      class="ms-2 inline-flex items-center justify-center w-4 h-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
       aria-hidden="true"
     >
       {{ keyshortcut }}
