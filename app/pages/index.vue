@@ -35,7 +35,7 @@ useSeoMeta({
 defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
   title: 'npmx',
-  description: 'A better browser for the **npm registry**',
+  description: 'a fast, modern browser for the **npm registry**',
 })
 </script>
 
@@ -56,7 +56,7 @@ defineOgImageComponent('Default', {
         </h1>
 
         <p
-          class="text-fg-muted text-lg sm:text-xl max-w-md mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
+          class="text-fg-muted text-lg sm:text-xl max-w-xl mb-12 lg:mb-14 motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.1s"
         >
           {{ $t('tagline') }}
@@ -96,18 +96,16 @@ defineOgImageComponent('Default', {
                   @input="handleInput"
                 />
 
-                <button
+                <ButtonBase
                   type="submit"
-                  class="absolute group inset-ie-2.5 px-2.5 sm:ps-4 sm:pe-4 py-2 font-mono text-sm text-bg bg-fg/90 rounded-md transition-[background-color,transform] duration-200 hover:bg-fg! group-focus-within:bg-fg/80 active:scale-95 focus-visible:outline-accent/70"
+                  variant="primary"
+                  class="absolute inset-ie-2"
+                  classicon="i-carbon:search"
                 >
-                  <span
-                    class="inline-block i-carbon:search align-middle w-4 h-4 sm:me-2"
-                    aria-hidden="true"
-                  ></span>
                   <span class="sr-only sm:not-sr-only">
                     {{ $t('search.button') }}
                   </span>
-                </button>
+                </ButtonBase>
               </div>
             </div>
           </form>
@@ -123,15 +121,12 @@ defineOgImageComponent('Default', {
       >
         <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
           <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
-            <NuxtLink
-              :to="{ name: 'package', params: { package: [framework.package] } }"
-              class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
-            >
+            <LinkBase :to="packageRoute(framework.package)" class="gap-2 text-sm">
               <span
                 class="w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
               />
               {{ framework.name }}
-            </NuxtLink>
+            </LinkBase>
           </li>
         </ul>
       </nav>

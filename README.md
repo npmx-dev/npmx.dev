@@ -116,7 +116,7 @@ npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev
 | `npmjs.com/org/nuxt`            | [`npmx.dev/org/nuxt`](https://npmx.dev/org/nuxt)                       |
 
 > [!TIP]
-> Want automatic redirects? Try the [npmx-replace browser extension](https://github.com/tylersayshi/npmx-replace-extension).
+> Want automatic redirects? Try the [npmx-replace browser extension](https://github.com/tylersayshi/npmx-replace-extension) (Chrome only for now).
 
 #### Not yet supported
 
@@ -150,13 +150,14 @@ We welcome contributions &ndash; please do feel free to explore the project and 
 
 ## Related projects
 
-- [npmx-replace-extension](https://github.com/tylersayshi/npmx-replace-extension) &ndash; Browser extension to redirect npmjs.com to npmx.dev
+- [npmx-replace-extension](https://github.com/tylersayshi/npmx-replace-extension) &ndash; Browser extension to redirect npmjs.com to npmx.dev (Chrome only for now)
 - [JSR](https://jsr.io/) &ndash; The open-source package registry for modern JavaScript and TypeScript
 - [npm-userscript](https://github.com/bluwy/npm-userscript) &ndash; Browser userscript with various improvements and fixes for npmjs.com
 - [npm-alt](https://npm.willow.sh/) &ndash; An alternative npm package browser
 - [npkg.lorypelli.dev](https://npkg.lorypelli.dev/) &ndash; An alternative frontend to npm made with as little client-side JavaScript as possible
 - [vscode-npmx](https://github.com/npmx-dev/vscode-npmx) &ndash; VSCode extension for npmx
 - [nxjt](https://nxjt.netlify.app) &ndash; npmx Jump To: Quickly navigate to npmx common webpages.
+- [npmx-weekly](https://npmx-weekly.trueberryless.org/) &ndash; A weekly newsletter for the npmx ecosystem. Add your own content via suggestions in the weekly PR on [GitHub](https://github.com/trueberryless-org/npmx-weekly/pulls?q=is%3Aopen+is%3Apr+label%3A%22%F0%9F%95%94+weekly+post%22).
 - [npmx-digest](https://npmx-digest.trueberryless.org/) &ndash; An automated news aggregation website that summarizes npmx activity from GitHub and Bluesky every 8 hours.
 
 If you're building something cool, let us know! 🙏

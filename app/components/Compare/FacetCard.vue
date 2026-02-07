@@ -131,7 +131,9 @@ function getShortName(header: string): string {
                 :datetime="value.display"
                 date-style="medium"
               />
-              <template v-else>{{ value.display }}</template>
+              <template v-else>
+                <span dir="auto">{{ value.display }}</span>
+              </template>
             </span>
           </template>
         </span>

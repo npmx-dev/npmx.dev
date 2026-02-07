@@ -303,7 +303,7 @@ function isValidNpmName(name: string): boolean {
   // Must start with alphanumeric
   if (!/^[a-z0-9]/i.test(name)) return false
   // Can contain alphanumeric, hyphen, underscore
-  return /^[a-z0-9_-]+$/i.test(name)
+  return /^[\w-]+$/.test(name)
 }
 
 /** Validated user/org suggestion */
@@ -315,8 +315,6 @@ interface ValidatedSuggestion {
 
 /** Cache for existence checks to avoid repeated API calls */
 const existenceCache = ref<Record<string, boolean | 'pending'>>({})
-
-const NPM_REGISTRY = 'https://registry.npmjs.org'
 
 interface NpmSearchResponse {
   total: number
@@ -543,10 +541,7 @@ function focusElement(el: HTMLElement) {
 
 // Navigate to package page
 async function navigateToPackage(packageName: string) {
-  await navigateTo({
-    name: 'package',
-    params: { package: packageName.split('/') },
-  })
+  await navigateTo(packageRoute(packageName))
 }
 
 // Track the input value when user pressed Enter (for navigating when results arrive)

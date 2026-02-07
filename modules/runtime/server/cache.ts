@@ -1,3 +1,4 @@
+import process from 'node:process'
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
 import { createFetch } from 'ofetch'
 

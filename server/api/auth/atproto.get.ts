@@ -108,6 +108,7 @@ export default defineEventHandler(async event => {
 
       return handleApiError(error, {
         statusCode: 401,
+        statusMessage: 'Unauthorized',
         message: `${message}. Please login and try again.`,
       })
     }

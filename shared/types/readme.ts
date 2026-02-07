@@ -30,6 +30,8 @@ export interface TocItem {
 export interface ReadmeResponse {
   /** Rendered HTML content */
   html: string
+  /** Original markdown content */
+  md: string
   /** Extracted playground/demo links */
   playgroundLinks: PlaygroundLink[]
   /** Table of contents extracted from headings */

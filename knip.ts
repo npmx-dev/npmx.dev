@@ -32,16 +32,18 @@ const config: KnipConfig = {
         '@vercel/kv',
         '@voidzero-dev/vite-plus-core',
         'vite-plus!',
-        'h3',
+        'puppeteer',
         /** Needs to be explicitly installed, even though it is not imported, to avoid type errors. */
         'unplugin-vue-router',
         'vite-plugin-pwa',
+        '@vueuse/shared',
 
         /** Some components import types from here, but installing it directly could lead to a version mismatch */
         'vue-router',
 
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
+        'eslint-plugin-regexp',
       ],
       ignoreUnresolved: ['#components', '#oauth/config'],
     },

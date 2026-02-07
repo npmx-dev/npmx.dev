@@ -40,6 +40,12 @@ export default defineConfig({
       mono: "'Geist Mono', monospace",
       sans: "'Geist', system-ui, -apple-system, sans-serif",
     },
+    text: {
+      '2xs': { fontSize: '0.6875rem' }, // 11px
+      '3xs': { fontSize: '0.625rem' }, // 10px
+      '4xs': { fontSize: '0.5625rem' }, // 9px
+      '5xs': { fontSize: '0.5rem' }, // 8px
+    },
     colors: {
       // Minimal black & white palette with subtle grays
       bg: {
@@ -126,21 +132,6 @@ export default defineConfig({
     // Focus states - subtle but accessible
     ['focus-ring', 'outline-none focus-visible:(ring-2 ring-fg/50 ring-offset-2)'],
 
-    // Buttons
-    [
-      'btn',
-      'inline-flex items-center justify-center px-4 py-2 font-mono text-sm border border-border rounded-md bg-transparent text-fg transition-all duration-200 hover:(bg-fg hover:text-bg border-fg) focus-ring active:scale-98 disabled:(opacity-40 cursor-not-allowed hover:bg-transparent hover:text-fg)',
-    ],
-    [
-      'btn-ghost',
-      'inline-flex items-center justify-center px-3 py-1.5 font-mono text-sm text-fg-muted bg-transparent transition-all duration-200 hover:text-fg focus-ring',
-    ],
-
-    // Links
-    [
-      'link',
-      'text-fg underline-offset-4 decoration-border hover:(decoration-fg underline) transition-colors duration-200 focus-ring',
-    ],
     ['link-subtle', 'text-fg-muted hover:text-fg transition-colors duration-200 focus-ring'],
 
     // badges

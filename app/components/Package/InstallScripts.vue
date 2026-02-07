@@ -72,12 +72,12 @@ const isExpanded = shallowRef(false)
           :key="dep"
           class="flex items-center justify-between py-0.5 text-sm gap-2"
         >
-          <NuxtLink
-            :to="{ name: 'package', params: { package: dep.split('/') } }"
+          <LinkBase
+            :to="packageRoute(dep)"
             class="font-mono text-fg-muted hover:text-fg transition-colors duration-200 truncate min-w-0"
           >
             {{ dep }}
-          </NuxtLink>
+          </LinkBase>
           <span class="flex items-center gap-1">
             <span
               v-if="

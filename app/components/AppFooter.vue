@@ -14,52 +14,25 @@ const isHome = computed(() => route.name === 'index')
           <BuildEnvironment v-if="!isHome" footer />
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
-        <div class="hidden sm:flex items-center gap-6">
-          <NuxtLink to="/about" class="link-subtle font-mono text-xs flex items-center">
+        <div class="hidden sm:flex items-center gap-6 min-h-11 text-xs">
+          <LinkBase :to="{ name: 'about' }">
             {{ $t('footer.about') }}
-          </NuxtLink>
-          <NuxtLink
-            to="/privacy"
-            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1 lowercase"
-          >
+          </LinkBase>
+          <LinkBase :to="{ name: 'privacy' }">
             {{ $t('privacy_policy.title') }}
-          </NuxtLink>
-          <a
-            href="https://docs.npmx.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs flex items-center gap-1"
-          >
+          </LinkBase>
+          <LinkBase to="https://docs.npmx.dev">
             {{ $t('footer.docs') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
-          </a>
-          <a
-            href="https://repo.npmx.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs flex items-center gap-1"
-          >
+          </LinkBase>
+          <LinkBase to="https://repo.npmx.dev">
             {{ $t('footer.source') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
-          </a>
-          <a
-            href="https://social.npmx.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs flex items-center gap-1"
-          >
+          </LinkBase>
+          <LinkBase to="https://social.npmx.dev">
             {{ $t('footer.social') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
-          </a>
-          <a
-            href="https://chat.npmx.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs flex items-center gap-1"
-          >
+          </LinkBase>
+          <LinkBase to="https://chat.npmx.dev">
             {{ $t('footer.chat') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
-          </a>
+          </LinkBase>
         </div>
       </div>
       <p class="text-xs text-fg-muted text-center sm:text-start m-0">

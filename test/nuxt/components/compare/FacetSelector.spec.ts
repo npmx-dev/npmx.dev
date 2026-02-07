@@ -31,6 +31,7 @@ const facetLabels: Record<ComparisonFacet, { label: string; description: string 
     description: 'Total number of dependencies including transitive',
   },
   deprecated: { label: 'Deprecated?', description: 'Whether the package is deprecated' },
+  totalLikes: { label: 'Likes', description: 'Number of likes' },
 }
 
 const categoryLabels: Record<string, string> = {

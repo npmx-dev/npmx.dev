@@ -19,7 +19,7 @@ export function isEditableElement(target: EventTarget | null): boolean {
  */
 export function isKeyWithoutModifiers(event: KeyboardEvent, key: string): boolean {
   return (
-    event.key.toLowerCase() === key.toLowerCase() &&
+    event.key?.toLowerCase() === key.toLowerCase() &&
     !event.altKey &&
     !event.ctrlKey &&
     !event.metaKey &&

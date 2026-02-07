@@ -16,7 +16,9 @@ onPrehydrate(el => {
 </script>
 
 <template>
-  <fieldset class="flex items-center gap-4">
+  <fieldset
+    class="flex items-center gap-4 has-[input:focus-visible]:(outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
+  >
     <legend class="sr-only">{{ $t('settings.accent_colors') }}</legend>
     <label
       v-for="color in accentColors"
@@ -35,7 +37,7 @@ onPrehydrate(el => {
       />
     </label>
     <label
-      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 cursor-pointer has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) flex items-center justify-center bg-accent-fallback"
+      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 cursor-pointer has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) flex items-center justify-center bg-fg"
     >
       <input
         type="radio"

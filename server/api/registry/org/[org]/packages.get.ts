@@ -3,7 +3,7 @@ import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
 const NPM_REGISTRY = 'https://registry.npmjs.org'
 
 // Validation pattern for npm org names (alphanumeric with hyphens)
-const NPM_ORG_NAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/i
+const NPM_ORG_NAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
 
 function validateOrgName(name: string): void {
   if (!name || name.length > 50 || !NPM_ORG_NAME_RE.test(name)) {

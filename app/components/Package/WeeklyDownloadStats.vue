@@ -9,14 +9,25 @@ const props = defineProps<{
 }>()
 
 const chartModal = useModal('chart-modal')
-
+const hasChartModalTransitioned = shallowRef(false)
 const isChartModalOpen = shallowRef(false)
+
 async function openChartModal() {
   isChartModalOpen.value = true
+  hasChartModalTransitioned.value = false
   // ensure the component renders before opening the dialog
   await nextTick()
   await nextTick()
   chartModal.open()
+}
+
+function handleModalClose() {
+  isChartModalOpen.value = false
+  hasChartModalTransitioned.value = false
+}
+
+function handleModalTransitioned() {
+  hasChartModalTransitioned.value = true
 }
 
 const { fetchPackageDownloadEvolution } = useCharts()
@@ -200,15 +211,15 @@ const config = computed(() => {
   <div class="space-y-8">
     <CollapsibleSection id="downloads" :title="$t('package.downloads.title')">
       <template #actions>
-        <button
+        <ButtonBase
           type="button"
           @click="openChartModal"
           class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
           :title="$t('package.downloads.analyze')"
+          classicon="i-carbon:data-analytics"
         >
-          <span class="i-carbon:data-analytics w-4 h-4" aria-hidden="true" />
           <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
-        </button>
+        </ButtonBase>
       </template>
 
       <div class="w-full overflow-hidden">
@@ -249,15 +260,44 @@ const config = computed(() => {
     </CollapsibleSection>
   </div>
 
-  <PackageChartModal v-if="isChartModalOpen" @close="isChartModalOpen = false">
-    <PackageDownloadAnalytics
-      :weeklyDownloads="weeklyDownloads"
-      :inModal="true"
-      :packageName="props.packageName"
-      :createdIso="createdIso"
+  <PackageChartModal @close="handleModalClose" @transitioned="handleModalTransitioned">
+    <!-- The Chart is mounted after the dialog has transitioned -->
+    <!-- This avoids flaky behavior that hides the chart's minimap half of the time -->
+    <Transition name="opacity" mode="out-in">
+      <PackageDownloadAnalytics
+        v-if="hasChartModalTransitioned"
+        :weeklyDownloads="weeklyDownloads"
+        :inModal="true"
+        :packageName="props.packageName"
+        :createdIso="createdIso"
+      />
+    </Transition>
+
+    <!-- This placeholder bears the same dimensions as the PackageDownloadAnalytics component -->
+    <!-- Avoids CLS when the dialog has transitioned -->
+    <div
+      v-if="!hasChartModalTransitioned"
+      class="w-full aspect-[390/634.5] sm:aspect-[718/622.797]"
     />
   </PackageChartModal>
 </template>
+
+<style scoped>
+.opacity-enter-active,
+.opacity-leave-active {
+  transition: opacity 200ms ease;
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
+}
+
+.opacity-enter-to,
+.opacity-leave-from {
+  opacity: 1;
+}
+</style>
 
 <style>
 /** Overrides */

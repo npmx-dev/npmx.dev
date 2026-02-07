@@ -9,6 +9,8 @@ const status = computed(() => props.error.statusCode || 500)
 const statusText = computed(() => {
   if (props.error.statusMessage) return props.error.statusMessage
   switch (status.value) {
+    case 401:
+      return 'Unauthorized'
     case 404:
       return 'Page not found'
     case 500:

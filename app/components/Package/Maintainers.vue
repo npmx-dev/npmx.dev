@@ -183,17 +183,20 @@ watch(
         class="flex items-center justify-between gap-2"
       >
         <div class="flex items-center gap-2 min-w-0">
-          <NuxtLink
+          <LinkBase
             v-if="maintainer.name"
             :to="{
               name: '~username',
               params: { username: maintainer.name },
             }"
             class="link-subtle font-mono text-sm shrink-0"
+            dir="ltr"
           >
             ~{{ maintainer.name }}
-          </NuxtLink>
-          <span v-else class="font-mono text-sm text-fg-muted">{{ maintainer.email }}</span>
+          </LinkBase>
+          <span v-else class="font-mono text-sm text-fg-muted" dir="ltr">{{
+            maintainer.email
+          }}</span>
 
           <!-- Access source badges -->
           <span
@@ -214,10 +217,10 @@ watch(
         </div>
 
         <!-- Remove button (only when can manage and not self) -->
-        <button
+        <ButtonBase
           v-if="canManageOwners && maintainer.name && maintainer.name !== npmUser"
           type="button"
-          class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 shrink-0 rounded focus-visible:outline-accent/70"
+          class="hover:text-red-400"
           :aria-label="
             $t('package.maintainers.remove_owner', {
               name: maintainer.name,
@@ -226,15 +229,13 @@ watch(
           @click="handleRemoveOwner(maintainer.name)"
         >
           <span class="i-carbon-close w-3.5 h-3.5" aria-hidden="true" />
-        </button>
+        </ButtonBase>
       </li>
     </ul>
 
     <!-- Show more/less toggle (only when not managing and there are hidden maintainers) -->
-    <button
+    <ButtonBase
       v-if="!canManageOwners && hiddenMaintainersCount > 0"
-      type="button"
-      class="mt-2 text-xs text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
       @click="showAllMaintainers = !showAllMaintainers"
     >
       {{
@@ -244,7 +245,7 @@ watch(
               count: hiddenMaintainersCount,
             })
       }}
-    </button>
+    </ButtonBase>
 
     <!-- Add owner form (only when can manage) -->
     <div v-if="canManageOwners" class="mt-3">
@@ -262,31 +263,19 @@ watch(
             v-bind="noCorrect"
             class="flex-1 px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
           />
-          <button
-            type="submit"
-            :disabled="!newOwnerUsername.trim() || isAdding"
-            class="px-2 py-1 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
-          >
+          <ButtonBase type="submit" :disabled="!newOwnerUsername.trim() || isAdding">
             {{ isAdding ? '…' : $t('package.maintainers.add_button') }}
-          </button>
-          <button
-            type="button"
-            class="p-1 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
+          </ButtonBase>
+          <ButtonBase
             :aria-label="$t('package.maintainers.cancel_add')"
             @click="showAddOwner = false"
-          >
-            <span class="i-carbon-close w-4 h-4" aria-hidden="true" />
-          </button>
+            classicon="i-carbon-close"
+          />
         </form>
       </div>
-      <button
-        v-else
-        type="button"
-        class="w-full px-3 py-1.5 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
-        @click="showAddOwner = true"
-      >
+      <ButtonBase v-else type="button" @click="showAddOwner = true">
         {{ $t('package.maintainers.add_owner') }}
-      </button>
+      </ButtonBase>
     </div>
   </CollapsibleSection>
 </template>

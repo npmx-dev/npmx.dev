@@ -566,43 +566,18 @@ const tangledAdapter: ProviderAdapter = {
   },
 
   async fetchMeta(cachedFetch, ref, links, options = {}) {
-    // Tangled doesn't have a public JSON API, but we can scrape the star count
-    // from the HTML page (it's in the hx-post URL as countHint=N)
     try {
-      const { data: html } = await cachedFetch<string>(
-        `https://tangled.org/${ref.owner}/${ref.repo}`,
-        {
-          headers: { 'User-Agent': 'npmx', 'Accept': 'text/html', ...options.headers },
-          ...options,
-        },
+      const { data } = await cachedFetch<{ stars: number; forks: number }>(
+        `/api/atproto/tangled-stats/${ref.owner}/${ref.repo}`,
+        options,
         REPO_META_TTL,
       )
-      // Extracts the at-uri used in atproto
-      const atUriMatch = html.match(/data-star-subject-at="([^"]+)"/)
-      // Extract star count from: hx-post="/star?subject=...&countHint=23"
-      const starMatch = html.match(/countHint=(\d+)/)
-      //We'll set the stars from tangled's repo page and may override it with constellation if successful
-      let stars = starMatch?.[1] ? parseInt(starMatch[1], 10) : 0
-      let forks = 0
-      const atUri = atUriMatch?.[1]
-
-      if (atUri) {
-        try {
-          const constellation = new Constellation(cachedFetch)
-          //Get counts of records that reference this repo in the atmosphere using constellation
-          const { data: allLinks } = await constellation.getAllLinks(atUri)
-          stars = allLinks.links['sh.tangled.feed.star']?.['.subject']?.distinct_dids ?? stars
-          forks = allLinks.links['sh.tangled.repo']?.['.source']?.distinct_dids ?? stars
-        } catch {
-          //failing silently since this is just an enhancement to the information already showing
-        }
-      }
 
       return {
         provider: 'tangled',
         url: links.repo,
-        stars,
-        forks,
+        stars: data.stars,
+        forks: data.forks,
         links,
       }
     } catch {

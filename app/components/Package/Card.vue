@@ -34,6 +34,8 @@ const pkgDescription = useMarkdown(() => ({
   plain: true,
   packageName: props.result.package.name,
 }))
+
+const numberFormatter = useNumberFormatter()
 </script>
 
 <template>
@@ -44,10 +46,11 @@ const pkgDescription = useMarkdown(() => ({
         class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors duration-200 min-w-0 break-all"
       >
         <NuxtLink
-          :to="{ name: 'package', params: { package: result.package.name.split('/') } }"
+          :to="packageRoute(result.package.name)"
           :prefetch-on="prefetch ? 'visibility' : 'interaction'"
           class="decoration-none scroll-mt-48 scroll-mb-6 after:content-[''] after:absolute after:inset-0"
           :data-result-index="index"
+          dir="ltr"
           >{{ result.package.name }}</NuxtLink
         >
         <span
@@ -81,7 +84,7 @@ const pkgDescription = useMarkdown(() => ({
         <p v-if="pkgDescription" class="text-fg-muted text-xs sm:text-sm line-clamp-2 mb-2 sm:mb-3">
           <span v-html="pkgDescription" />
         </p>
-        <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 text-xs text-fg-subtle">
+        <div class="flex flex-wrap items-center gap-x-3 sm:gap-x-4 gap-y-2 text-xs text-fg-muted">
           <dl v-if="showPublisher || result.package.date" class="flex items-center gap-4 m-0">
             <div
               v-if="showPublisher && result.package.publisher?.username"
@@ -110,7 +113,7 @@ const pkgDescription = useMarkdown(() => ({
         <!-- Mobile: downloads on separate row -->
         <dl
           v-if="result.downloads?.weekly"
-          class="sm:hidden flex items-center gap-4 mt-2 text-xs text-fg-subtle m-0"
+          class="sm:hidden flex items-center gap-4 mt-2 text-xs text-fg-muted m-0"
         >
           <div class="flex items-center gap-1.5">
             <dt class="sr-only">{{ $t('package.card.weekly_downloads') }}</dt>
@@ -162,23 +165,24 @@ const pkgDescription = useMarkdown(() => ({
       :aria-label="$t('package.card.keywords')"
       class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0 pointer-events-none items-center"
     >
-      <TagButton
+      <ButtonBase
         v-for="keyword in result.package.keywords.slice(0, 5)"
         class="pointer-events-auto"
+        size="small"
         :key="keyword"
-        :pressed="props.filters?.keywords.includes(keyword)"
+        :aria-pressed="props.filters?.keywords.includes(keyword)"
         :title="`Filter by ${keyword}`"
         :data-result-index="index"
         @click.stop="emit('clickKeyword', keyword)"
       >
         {{ keyword }}
-      </TagButton>
+      </ButtonBase>
       <span
         v-if="result.package.keywords.length > 5"
         class="text-fg-subtle text-xs pointer-events-auto"
         :title="result.package.keywords.slice(5).join(', ')"
       >
-        +{{ result.package.keywords.length - 5 }}
+        +{{ numberFormatter.format(result.package.keywords.length - 5) }}
       </span>
     </div>
   </BaseCard>

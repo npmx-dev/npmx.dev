@@ -5,7 +5,6 @@ import { debounce } from 'perfect-debounce'
 
 definePageMeta({
   name: 'org',
-  alias: ['/org/:org()'],
 })
 
 const route = useRoute('org')
@@ -245,7 +244,9 @@ defineOgImageComponent('Default', {
       <p class="text-fg-muted mb-4">
         {{ error?.message ?? $t('org.page.failed_to_load') }}
       </p>
-      <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
+      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{
+        $t('common.go_back_home')
+      }}</LinkBase>
     </div>
 
     <!-- Empty state -->

@@ -2,13 +2,12 @@
   "seo": {
     "home": {
       "title": "npmx - npmレジストリのためのパッケージブラウザ",
-      "description": "優れたnpmレジストリブラウザ。モダンなインターフェイスでパッケージの検索、閲覧、探索が可能です。"
+      "description": "高速でモダンなnpmレジストリブラウザ。モダンなインターフェイスでパッケージの検索、閲覧、探索が可能です。"
     }
   },
-  "version": "バージョン",
   "built_at": "ビルド {0}",
   "alt_logo": "npmxロゴ",
-  "tagline": "優れたnpmレジストリブラウザ",
+  "tagline": "高速でモダンなnpmレジストリブラウザ",
   "non_affiliation_disclaimer": "npm, Inc.とは関係ありません。",
   "trademark_disclaimer": "npmはnpm, Inc.の登録商標です。当サイトはnpm, Inc.とは関係ありません。",
   "footer": {
@@ -22,7 +21,6 @@
     "label": "npmパッケージを検索",
     "placeholder": "パッケージを検索...",
     "button": "検索",
-    "clear": "検索をクリア",
     "searching": "検索中...",
     "found_packages": "{count} 個のパッケージが見つかりました",
     "updating": "（更新中...）",
@@ -48,7 +46,6 @@
   "nav": {
     "main_navigation": "メイン",
     "popular_packages": "人気のパッケージ",
-    "search": "検索",
     "settings": "設定",
     "compare": "比較",
     "back": "戻る",
@@ -68,7 +65,6 @@
       "language": "言語"
     },
     "relative_dates": "日付を相対表記",
-    "relative_dates_description": "完全な日付の代わりに「3日前」のように表示します",
     "include_types": "インストール時に {'@'}types を含める",
     "include_types_description": "型定義のないパッケージのインストールコマンドに {'@'}types パッケージを追加します",
     "hide_platform_packages": "検索でプラットフォーム固有のパッケージを非表示",
@@ -103,8 +99,6 @@
     "copy": "コピー",
     "copied": "コピー完了！",
     "skip_link": "メインコンテンツにスキップ",
-    "close_modal": "モーダルを閉じる",
-    "show_more": "もっと見る",
     "warnings": "警告:",
     "go_back_home": "ホームへ戻る",
     "view_on_npm": "npmで表示",
@@ -121,7 +115,6 @@
     "not_found": "パッケージが見つかりません",
     "not_found_message": "パッケージが見つかりませんでした。",
     "no_description": "説明はありません",
-    "show_full_description": "詳細な説明を表示",
     "not_latest": "（最新ではありません）",
     "verified_provenance": "検証済みprovenance",
     "view_permalink": "このバージョンのパーマリンクを表示",
@@ -136,11 +129,13 @@
       "title": "この依存関係は不要な可能性があります。",
       "native": "これは Node {nodeVersion} 以降で利用可能な {replacement} で置き換え可能です。",
       "simple": "{community} はこのパッケージを冗長としてフラグを立てており、次のアドバイスがあります: {replacement}",
-      "documented": "{community} は、このパッケージによりパフォーマンスの高い代替手段があると報告しています。",
+      "documented": "{community} により、このパッケージにはよりパフォーマンスの高い代替手段があることが報告されています。",
       "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
       "learn_more": "詳細はこちら",
+      "learn_more_above": "詳細は上記を確認してください。",
       "mdn": "MDN",
-      "community": "コミュニティ"
+      "community": "コミュニティ",
+      "consider_no_dep": "+ 依存関係なしを検討しますか？"
     },
     "stats": {
       "license": "ライセンス",
@@ -149,7 +144,6 @@
       "vulns": "脆弱性",
       "published": "公開日",
       "published_tooltip": "{package}{'@'}{version} が公開された日付",
-      "skills": "スキル",
       "view_dependency_graph": "依存関係グラフを表示",
       "inspect_dependency_tree": "依存関係ツリーを検査",
       "size_tooltip": {
@@ -160,7 +154,6 @@
     "skills": {
       "title": "エージェント スキル",
       "skills_available": "{count} 個のスキルが利用可能",
-      "view": "表示",
       "compatible_with": "{tool} と互換あり",
       "install": "インストール",
       "installation_method": "インストール方法",
@@ -184,6 +177,10 @@
       "docs": "ドキュメント",
       "fund": "資金援助",
       "compare": "比較"
+    },
+    "likes": {
+      "like": "このパッケージをいいねする",
+      "unlike": "このパッケージのいいねを解除する"
     },
     "docs": {
       "not_available": "ドキュメントは利用できません",
@@ -215,7 +212,8 @@
         "important": "重要",
         "warning": "警告",
         "caution": "注意"
-      }
+      },
+      "copy_as_markdown": "READMEをMarkdownとしてコピーする"
     },
     "provenance_section": {
       "title": "Provenance",
@@ -329,25 +327,12 @@
       "none": "なし"
     },
     "vulnerabilities": {
-      "no_description": "説明はありません",
-      "found": "{count} 件の脆弱性が見つかりました",
-      "deps_found": "{count} 件の脆弱性が見つかりました",
-      "deps_affected": "{count} 個の依存関係が影響を受けています",
       "tree_found": "{packages}/{total} 個のパッケージに {vulns} 件の脆弱性",
-      "scanning_tree": "依存関係ツリーをスキャン中...",
       "show_all_packages": "影響を受ける全 {count} 個のパッケージを表示",
-      "no_summary": "概要なし",
-      "view_details": "脆弱性の詳細を表示",
       "path": "パス",
       "more": "+他 {count} 個",
       "packages_failed": "{count} 個のパッケージをチェックできませんでした",
-      "no_known": "{count} 個のパッケージに既知の脆弱性はありません",
       "scan_failed": "脆弱性をスキャンできませんでした",
-      "depth": {
-        "root": "このパッケージ",
-        "direct": "直接の依存関係",
-        "transitive": "推移的な依存関係（間接）"
-      },
       "severity": {
         "critical": "緊急",
         "high": "高",
@@ -389,13 +374,7 @@
     },
     "skeleton": {
       "loading": "パッケージ詳細を読み込み中",
-      "license": "ライセンス",
       "weekly": "週間",
-      "size": "サイズ",
-      "deps": "依存関係",
-      "published": "公開済み",
-      "get_started": "はじめに",
-      "readme": "Readme",
       "maintainers": "メンテナ",
       "keywords": "キーワード",
       "versions": "バージョン",
@@ -409,16 +388,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "接続中...",
-      "connected_as": "~{user} として接続済み",
-      "connected": "接続済み",
-      "connect_cli": "ローカルCLIに接続",
-      "aria_connecting": "ローカルコネクタに接続中",
-      "aria_connected": "ローカルコネクタに接続済み",
-      "aria_click_to_connect": "クリックしてローカルコネクタに接続",
-      "avatar_alt": "{user} のアバター"
-    },
     "modal": {
       "title": "ローカルコネクタ",
       "contributor_badge": "コントリビューター専用",
@@ -534,8 +503,7 @@
       "failed_to_load": "Organizationのパッケージの読み込みに失敗しました",
       "no_match": "\"{query}\" に一致するパッケージはありません",
       "not_found": "Organizationが見つかりません",
-      "not_found_message": "Organization \"{'@'}{name}\" はnpmに存在しません",
-      "filter_placeholder": "{count} 個のパッケージを絞り込む..."
+      "not_found_message": "Organization \"{'@'}{name}\" はnpmに存在しません"
     }
   },
   "user": {
@@ -596,7 +564,6 @@
   "code": {
     "files_label": "ファイル",
     "no_files": "このディレクトリにファイルはありません",
-    "select_version": "バージョンを選択",
     "root": "ルート",
     "lines": "{count} 行",
     "toggle_tree": "ファイルツリーを切り替え",
@@ -606,7 +573,6 @@
     "view_raw": "RAWファイルを表示",
     "file_too_large": "ファイルが大きすぎるためプレビューできません",
     "file_size_warning": "{size} は構文強調表示の制限である500KBを超えています",
-    "load_anyway": "強制的に読み込む",
     "failed_to_load": "ファイルの読み込みに失敗しました",
     "unavailable_hint": "ファイルが大きすぎるか、利用できない可能性があります",
     "version_required": "コードを閲覧するにはバージョン指定が必要です",
@@ -628,12 +594,10 @@
     "provenance": {
       "verified": "検証済み",
       "verified_title": "検証済みprovenance",
-      "verified_via": "検証済み: {provider} 経由で公開",
-      "view_more_details": "詳細を表示"
+      "verified_via": "検証済み: {provider} 経由で公開"
     },
     "jsr": {
-      "title": "JSRでも利用可能",
-      "label": "jsr"
+      "title": "JSRでも利用可能"
     }
   },
   "filters": {
@@ -753,7 +717,6 @@
     "title": "npmxについて",
     "heading": "このサイトについて",
     "meta_description": "npmxは高速でモダンなnpmレジストリブラウザです。npmパッケージを探索するためのより優れたUX/DXを提供します。",
-    "back_home": "ホームへ戻る",
     "what_we_are": {
       "title": "npmxとは",
       "better_ux_dx": "より優れたUX/DX",
@@ -813,8 +776,7 @@
     "connect_npm_cli": "npm CLIに接続",
     "connect_atmosphere": "Atmosphereに接続",
     "connecting": "接続中...",
-    "ops": "{count} 件の操作",
-    "disconnect": "切断"
+    "ops": "{count} 件の操作"
   },
   "auth": {
     "modal": {
@@ -828,12 +790,11 @@
       "create_account": "アカウントを新規作成",
       "connect_bluesky": "Blueskyで接続",
       "what_is_atmosphere": "Atmosphereアカウントとは？",
-      "atmosphere_explanation": "{npmx} は多くのソーシャル機能に {atproto} を利用しています。{atproto}により、ユーザーは自分自身のデータを所有し、1つのアカウントで{atproto}に対応するすべてのアプリケーションを利用できるようになります。アカウントを作成すると、{bluesky} や {tangled} などの他のアプリでも同じアカウントを使用できます。"
+      "atmosphere_explanation": "{npmx} は多くのソーシャル機能に {atproto} を利用しています。AT Protocolにより、ユーザーは自分自身のデータを所有し、1つのアカウントでAT Protocolに対応するすべてのアプリケーションを利用できるようになります。アカウントを作成すると、{bluesky} や {tangled} などの他のアプリでも同じアカウントを使用できます。"
     }
   },
   "header": {
     "home": "ホーム",
-    "github": "GitHub",
     "packages": "パッケージ",
     "packages_dropdown": {
       "title": "あなたのパッケージ",
@@ -874,9 +835,16 @@
       "searching": "検索中...",
       "remove_package": "{package} を削除",
       "packages_selected": "{count}/{max} パッケージ選択中。",
-      "add_hint": "比較するには少なくとも2つのパッケージを追加してください。",
-      "loading_versions": "バージョンを読み込み中...",
-      "select_version": "バージョンを選択"
+      "add_hint": "比較するには少なくとも2つのパッケージを追加してください。"
+    },
+    "no_dependency": {
+      "label": "(依存関係なし)",
+      "typeahead_title": "Jamesならどうする？",
+      "typeahead_description": "依存関係を使用しない場合と比較します！e18eも承認済みです。",
+      "tooltip_title": "依存関係は不要かもしれません",
+      "tooltip_description": "依存関係を使用しない場合と比較してください！{link}は、ネイティブAPIやよりシンプルな代替手段に置き換え可能なパッケージのリストをメンテナンスしています。",
+      "e18e_community": "e18eコミュニティ",
+      "add_column": "比較項目に「依存関係なし」カラムを追加"
     },
     "facets": {
       "group_label": "比較項目",
@@ -915,6 +883,10 @@
           "label": "ダウンロード数/週",
           "description": "1週間のダウンロード数"
         },
+        "totalLikes": {
+          "label": "いいね",
+          "description": "いいねの合計数"
+        },
         "lastUpdated": {
           "label": "公開日",
           "description": "このバージョンが公開された日付"
@@ -952,8 +924,89 @@
         "not_deprecated": "いいえ",
         "types_included": "同梱",
         "types_none": "なし",
-        "vulnerabilities_summary": "{count} 件 ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} 件 ({critical}C/{high}H)",
+        "up_to_you": "あなた次第！"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "プライバシーポリシー",
+    "last_updated": "最終更新日: {date}",
+    "welcome": "{app}へようこそ。私たちはあなたのプライバシーの保護に努めています。本ポリシーでは、どんなデータを収集するか、どのように使用するか、そして、あなたの情報に関するあなたが持つ権利について説明します。",
+    "cookies": {
+      "what_are": {
+        "title": "Cookieとは？",
+        "p1": "Cookieは、ウェブサイト訪問時にデバイスに保存される小さなテキストファイルです。特定の好みや設定を記憶することで、ブラウジング体験を向上させることを目的としています。"
+      },
+      "types": {
+        "title": "使用しているCookie",
+        "p1": "サイトの機能に厳密に必要な目的のために{bold}のみを使用します。サードパーティCookieや広告用Cookieは使用しません。",
+        "bold": "必須の技術的なCookie",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "このCookieは、ホスティングプロバイダー（Vercel）がスキュー保護のために使用します。ブラウジング中に新しいアップデートがリリースされた場合でも、正しいデプロイバージョンからアセットを取得できるようにします。あなたの行動の追跡には利用されません。",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "これはセキュアなセッションCookieです。Atmosphereアカウント接続時にOAuthアクセストークンを保存します。認証セッションの維持に不可欠です。"
+      },
+      "local_storage": {
+        "title": "ローカルストレージ",
+        "p1": "セッションCookieに加えて、ブラウザの{bold}を使用して表示設定を保存します。これにより、選択したテーマ（ライト/ダーク）やその他の{settings}を記憶し、サイトの訪問のたびに再設定する手間を省きます。",
+        "bold": "ローカルストレージ",
+        "p2": "この情報は純粋に機能的なものであり、あなたのデバイスにのみ保存され、{bold2}。ウェブサイトでの体験向上のためにのみ使用されます。",
+        "bold2": "個人データを含まず、あなたの追跡にも使用されません",
+        "settings": "設定"
+      },
+      "management": {
+        "title": "Cookieの管理",
+        "p1": "あなたは、自身の好みに合わせて、Cookieの受け入れ、拒否、または削除をブラウザで設定できます。ただし、{bold}場合があるため、注意してください。",
+        "bold": "必須Cookieを拒否するとアプリケーションの一部機能が制限される",
+        "p2": "主要なブラウザにおけるCookieの管理手順は、以下のリンクから確認できます。",
+        "chrome": "Google Chrome（別ウィンドウで開く）",
+        "firefox": "Mozilla Firefox（別ウィンドウで開く）",
+        "edge": "Microsoft Edge（別ウィンドウで開く）"
+      }
+    },
+    "analytics": {
+      "title": "分析",
+      "p1": "訪問者のウェブサイト利用状況を把握するために{bold}を使用しています。この分析は、ユーザー体験の向上や問題の特定に役立ちます。",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analyticsは、以下のようにプライバシーに配慮して設計されています。",
+      "li1": "Cookieを使用しません",
+      "li2": "個人を識別できる情報を収集しません",
+      "li3": "複数のサイトを横断したユーザー追跡を行いません",
+      "li4": "すべてのデータは集計および匿名化されます",
+      "p3": "収集される情報は、ページURL、リファラ、国/地域、デバイスの種類、ブラウザ、OSのみです。これらのデータから個人を特定することはできません。"
+    },
+    "authenticated": {
+      "title": "認証済みユーザー",
+      "p1": "{bold}アカウントをnpmxに接続すると、OAuthアクセストークンがセキュアなHTTP-onlyセッションCookieに保存されます。このトークンは、代理でリクエストを認証するためだけに制限的に使用されます。",
+      "bold": "Atmosphere",
+      "p2": "認証情報は保存しません。また、機能提供に必要な範囲を超えたデータへのアクセスも行いません。アカウントの接続解除は、いつでも{settings}ページから行えます。",
+      "settings": "設定"
+    },
+    "data_retention": {
+      "title": "データ保持",
+      "p1": "セッションCookieは、ブラウザを閉じるか一定期間操作がない場合に自動的に削除されます。ローカルストレージの設定は、ブラウザデータを消去するまでデバイスに残ります。分析データは集計された形式で保持され、個々のユーザーに関連付けられることはありません。"
+    },
+    "your_rights": {
+      "title": "ユーザーの権利",
+      "p1": "あなたには以下の権利があります。",
+      "li1": "私たちが収集したデータに関する情報にアクセスする権利",
+      "li2": "いつでもローカルストレージとCookieを消去する権利",
+      "li3": "認証済みセッションを切断する権利",
+      "li4": "データ取り扱いに関する情報を要求する権利",
+      "p2": "私たちは個人情報を収集していないため、通常、削除やエクスポートの対象となる個人情報はありません。"
+    },
+    "contact": {
+      "title": "問い合わせ",
+      "p1": "本プライバシーポリシーに関する質問や懸念がある場合は、{link}でIssueを作成して連絡してください。",
+      "link": "GitHubリポジトリ"
+    },
+    "changes": {
+      "title": "ポリシーの変更",
+      "p1": "本プライバシーポリシーは随時更新されることがあります。変更は、更新日とともに本ページで公開されます。"
     }
   }
 }

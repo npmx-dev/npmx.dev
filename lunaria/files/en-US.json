@@ -2,13 +2,12 @@
   "seo": {
     "home": {
       "title": "npmx - Package Browser for the npm Registry",
-      "description": "A better browser for the npm registry. Search, browse, and explore packages with a modern interface."
+      "description": "a fast, modern browser for the npm registry. Search, browse, and explore packages with a modern interface."
     }
   },
-  "version": "Version",
   "built_at": "built {0}",
   "alt_logo": "npmx logo",
-  "tagline": "a better browser for the npm registry",
+  "tagline": "a fast, modern browser for the npm registry",
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
@@ -22,7 +21,6 @@
     "label": "Search npm packages",
     "placeholder": "search packages...",
     "button": "search",
-    "clear": "Clear search",
     "searching": "Searching...",
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
@@ -48,7 +46,6 @@
   "nav": {
     "main_navigation": "Main",
     "popular_packages": "Popular packages",
-    "search": "search",
     "settings": "settings",
     "compare": "compare",
     "back": "back",
@@ -68,7 +65,6 @@
       "language": "Language"
     },
     "relative_dates": "Relative dates",
-    "relative_dates_description": "Show \"3 days ago\" instead of full dates",
     "include_types": "Include {'@'}types in install",
     "include_types_description": "Add {'@'}types package to install commands for untyped packages",
     "hide_platform_packages": "Hide platform-specific packages in search",
@@ -103,8 +99,6 @@
     "copy": "copy",
     "copied": "copied!",
     "skip_link": "Skip to main content",
-    "close_modal": "Close modal",
-    "show_more": "show more",
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
     "view_on_npm": "view on npm",
@@ -121,7 +115,6 @@
     "not_found": "Package Not Found",
     "not_found_message": "The package could not be found.",
     "no_description": "No description provided",
-    "show_full_description": "Show full description",
     "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
@@ -151,7 +144,6 @@
       "vulns": "Vulns",
       "published": "Published",
       "published_tooltip": "Date {package}{'@'}{version} was published",
-      "skills": "Skills",
       "view_dependency_graph": "View dependency graph",
       "inspect_dependency_tree": "Inspect dependency tree",
       "size_tooltip": {
@@ -162,7 +154,6 @@
     "skills": {
       "title": "Agent Skills",
       "skills_available": "{count} skill available | {count} skills available",
-      "view": "View",
       "compatible_with": "Compatible with {tool}",
       "install": "Install",
       "installation_method": "Installation method",
@@ -221,7 +212,8 @@
         "important": "Important",
         "warning": "Warning",
         "caution": "Caution"
-      }
+      },
+      "copy_as_markdown": "Copy README as Markdown"
     },
     "provenance_section": {
       "title": "Provenance",
@@ -309,7 +301,8 @@
       "loading": "Loading...",
       "y_axis_label": "{granularity} downloads",
       "download_file": "Download {fileType}",
-      "toggle_annotator": "Toggle annotator"
+      "toggle_annotator": "Toggle annotator",
+      "legend_estimation": "Estimation"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -335,25 +328,12 @@
       "none": "None"
     },
     "vulnerabilities": {
-      "no_description": "No description available",
-      "found": "{count} vulnerability found | {count} vulnerabilities found",
-      "deps_found": "{count} vulnerability found | {count} vulnerabilities found",
-      "deps_affected": "{count} dependency affected | {count} dependencies affected",
       "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",
-      "scanning_tree": "Scanning dependency tree...",
       "show_all_packages": "show {count} affected package | show all {count} affected packages",
-      "no_summary": "No summary",
-      "view_details": "View vulnerability details",
       "path": "path",
       "more": "+{count} more",
       "packages_failed": "{count} package could not be checked | {count} packages could not be checked",
-      "no_known": "No known vulnerabilities in {count} package | No known vulnerabilities in {count} packages",
       "scan_failed": "Could not scan for vulnerabilities",
-      "depth": {
-        "root": "This package",
-        "direct": "Direct dependency",
-        "transitive": "Transitive dependency (indirect)"
-      },
       "severity": {
         "critical": "critical",
         "high": "high",
@@ -395,13 +375,7 @@
     },
     "skeleton": {
       "loading": "Loading package details",
-      "license": "License",
       "weekly": "Weekly",
-      "size": "Size",
-      "deps": "Deps",
-      "published": "Published",
-      "get_started": "Get started",
-      "readme": "Readme",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "versions": "Versions",
@@ -412,19 +386,14 @@
       "published": "Recently published",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
-    "status": {
-      "connecting": "connecting...",
-      "connected_as": "connected as ~{user}",
-      "connected": "connected",
-      "connect_cli": "connect local CLI",
-      "aria_connecting": "Connecting to local connector",
-      "aria_connected": "Connected to local connector",
-      "aria_click_to_connect": "Click to connect to local connector",
-      "avatar_alt": "{user}'s avatar"
-    },
     "modal": {
       "title": "Local Connector",
       "contributor_badge": "Contributors only",
@@ -540,8 +509,7 @@
       "failed_to_load": "Failed to load organization packages",
       "no_match": "No packages match \"{query}\"",
       "not_found": "Organization not found",
-      "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm",
-      "filter_placeholder": "Filter {count} package... | Filter {count} packages..."
+      "not_found_message": "The organization \"{'@'}{name}\" does not exist on npm"
     }
   },
   "user": {
@@ -602,7 +570,6 @@
   "code": {
     "files_label": "Files",
     "no_files": "No files in this directory",
-    "select_version": "Select version",
     "root": "root",
     "lines": "{count} line | {count} lines",
     "toggle_tree": "Toggle file tree",
@@ -612,7 +579,6 @@
     "view_raw": "View raw file",
     "file_too_large": "File too large to preview",
     "file_size_warning": "{size} exceeds the 500KB limit for syntax highlighting",
-    "load_anyway": "Load anyway",
     "failed_to_load": "Failed to load file",
     "unavailable_hint": "The file may be too large or unavailable",
     "version_required": "Version is required to browse code",
@@ -634,12 +600,10 @@
     "provenance": {
       "verified": "verified",
       "verified_title": "Verified provenance",
-      "verified_via": "Verified: published via {provider}",
-      "view_more_details": "View more details"
+      "verified_via": "Verified: published via {provider}"
     },
     "jsr": {
-      "title": "also available on JSR",
-      "label": "jsr"
+      "title": "also available on JSR"
     }
   },
   "filters": {
@@ -759,7 +723,6 @@
     "title": "About",
     "heading": "about",
     "meta_description": "npmx is a fast, modern browser for the npm registry. A better UX/DX for exploring npm packages.",
-    "back_home": "back to home",
     "what_we_are": {
       "title": "What we are",
       "better_ux_dx": "better UX/DX",
@@ -819,8 +782,7 @@
     "connect_npm_cli": "Connect to npm CLI",
     "connect_atmosphere": "Connect to Atmosphere",
     "connecting": "Connecting...",
-    "ops": "{count} op | {count} ops",
-    "disconnect": "Disconnect"
+    "ops": "{count} op | {count} ops"
   },
   "auth": {
     "modal": {
@@ -839,7 +801,6 @@
   },
   "header": {
     "home": "npmx home",
-    "github": "GitHub",
     "packages": "packages",
     "packages_dropdown": {
       "title": "Your Packages",
@@ -880,9 +841,7 @@
       "searching": "Searching...",
       "remove_package": "Remove {package}",
       "packages_selected": "{count}/{max} packages selected.",
-      "add_hint": "Add at least 2 packages to compare.",
-      "loading_versions": "Loading versions...",
-      "select_version": "Select version"
+      "add_hint": "Add at least 2 packages to compare."
     },
     "no_dependency": {
       "label": "(No dependency)",
@@ -929,6 +888,10 @@
         "downloads": {
           "label": "Downloads/wk",
           "description": "Weekly download count"
+        },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Number of likes"
         },
         "lastUpdated": {
           "label": "Published",
@@ -977,7 +940,6 @@
     "last_updated": "Last updated: {date}",
     "welcome": "Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
     "cookies": {
-      "title": "Cookies",
       "what_are": {
         "title": "What are cookies?",
         "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
