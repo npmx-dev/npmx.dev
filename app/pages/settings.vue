@@ -52,6 +52,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             type="button"
             class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0 p-1.5 -mx-1.5"
             @click="router.back()"
+            v-show="router.options.history.state.back !== null"
           >
             <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>

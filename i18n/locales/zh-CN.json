@@ -139,8 +139,10 @@
       "documented": "社区标记此包存在性能更优的替代方案",
       "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
+      "learn_more_above": "在上方了解更多。",
       "mdn": "MDN",
-      "community": "社区"
+      "community": "社区",
+      "consider_no_dep": "+ 不使用依赖?"
     },
     "stats": {
       "license": "许可证",
@@ -219,7 +221,8 @@
         "important": "重要",
         "warning": "警告",
         "caution": "当心"
-      }
+      },
+      "copy_as_markdown": "以 Markdown 格式复制 README"
     },
     "provenance_section": {
       "title": "来源",
@@ -882,6 +885,15 @@
       "loading_versions": "正在加载版本…",
       "select_version": "选择版本"
     },
+    "no_dependency": {
+      "label": "(不使用依赖)",
+      "typeahead_title": "James 会怎么做？",
+      "typeahead_description": "与不使用依赖比较！由 e18e 推荐。",
+      "tooltip_title": "你可能不需要依赖",
+      "tooltip_description": "与不使用依赖比较！{link} 维护了一个软件包列表，其中的包可以使用原生 API 或者更简单的方案来替换。",
+      "e18e_community": "e18e 社区",
+      "add_column": "添加与“不使用依赖”的比较"
+    },
     "facets": {
       "group_label": "比较维度",
       "all": "全选",
@@ -956,8 +968,13 @@
         "not_deprecated": "未弃用",
         "types_included": "包含类型",
         "types_none": "无",
-        "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）"
+        "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）",
+        "up_to_you": "由你决定!"
       }
     }
+  },
+  "privacy_policy": {
+    "title": "隐私政策",
+    "last_updated": "上次更新：{date}"
   }
 }

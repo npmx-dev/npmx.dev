@@ -3,7 +3,7 @@ import validateNpmPackageName from 'validate-npm-package-name'
 
 // Validation pattern for npm usernames/org names
 // These follow similar rules: lowercase alphanumeric with hyphens, can't start/end with hyphen
-const NPM_USERNAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/i
+const NPM_USERNAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
 
 // ============================================================================
 // Base Schemas
