@@ -409,7 +409,7 @@ defineOgImageComponent('Default', {
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
       <div
-        class="flex-1 min-w-0 md:sticky md:top-28 md:self-start md:h-[calc(100vh-7rem)] md:overflow-y-auto"
+        class="flex-1 min-w-0 overflow-x-hidden sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <!-- File viewer -->
         <template v-if="isViewingFile && fileContent">
