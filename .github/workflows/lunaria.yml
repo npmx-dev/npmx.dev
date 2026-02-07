@@ -18,7 +18,7 @@ permissions:
 jobs:
   lunaria-overview:
     name: 🌝 Generate Lunaria Overview
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-4vcpu-ubuntu-2404-arm
 
     steps:
       - name: Checkout

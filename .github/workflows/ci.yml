@@ -22,7 +22,7 @@ permissions:
 jobs:
   lint:
     name: 🔠 Lint project
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-4vcpu-ubuntu-2404-arm
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -44,7 +44,7 @@ jobs:
 
   types:
     name: 💪 Type check
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-4vcpu-ubuntu-2404-arm
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -66,7 +66,7 @@ jobs:
 
   unit:
     name: 🧪 Unit tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-4vcpu-ubuntu-2404-arm
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -94,7 +94,9 @@ jobs:
 
   test:
     name: 🧪 Component tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-4vcpu-ubuntu-2404-arm
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.0-noble
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -131,7 +133,7 @@ jobs:
 
   browser:
     name: 🖥️ Browser tests
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-4vcpu-ubuntu-2404-arm
     container:
       image: mcr.microsoft.com/playwright:v1.58.0-noble
 
@@ -160,7 +162,7 @@ jobs:
 
   a11y:
     name: ♿ Accessibility audit
-    runs-on: ubuntu-latest # See https://github.com/GoogleChrome/lighthouse/discussions/16834
+    runs-on: blacksmith-4vcpu-ubuntu-2404 # See https://github.com/GoogleChrome/lighthouse/discussions/16834
     strategy:
       matrix:
         mode: [dark, light]
@@ -191,7 +193,7 @@ jobs:
 
   knip:
     name: 🧹 Unused code check
-    runs-on: ubuntu-24.04-arm
+    runs-on: blacksmith-4vcpu-ubuntu-2404-arm
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
