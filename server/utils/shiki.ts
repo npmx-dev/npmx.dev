@@ -1,12 +1,34 @@
+import type { ThemeRegistration } from 'shiki'
 import { createHighlighterCore, type HighlighterCore } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 
 let highlighter: HighlighterCore | null = null
 
+function replaceThemeColors(
+  theme: ThemeRegistration,
+  replacements: Record<string, string>,
+): ThemeRegistration {
+  let themeString = JSON.stringify(theme)
+  for (const [oldColor, newColor] of Object.entries(replacements)) {
+    themeString = themeString.replaceAll(oldColor, newColor)
+    themeString = themeString.replaceAll(oldColor.toLowerCase(), newColor)
+    themeString = themeString.replaceAll(oldColor.toUpperCase(), newColor)
+  }
+  return JSON.parse(themeString)
+}
+
 export async function getShikiHighlighter(): Promise<HighlighterCore> {
   if (!highlighter) {
     highlighter = await createHighlighterCore({
-      themes: [import('@shikijs/themes/github-dark'), import('@shikijs/themes/github-light')],
+      themes: [
+        import('@shikijs/themes/github-dark'),
+        import('@shikijs/themes/github-light').then(t =>
+          replaceThemeColors(t.default ?? t, {
+            '#22863A': '#227436', // green
+            '#B31D28': '#AC222F', // red
+          }),
+        ),
+      ],
       langs: [
         // Core web languages
         import('@shikijs/langs/javascript'),
