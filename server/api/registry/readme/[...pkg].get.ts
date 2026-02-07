@@ -34,12 +34,9 @@ async function fetchReadmeFromJsdelivr(
   for (const filename of readmeFilenames) {
     try {
       const url = `https://cdn.jsdelivr.net/npm/${packageName}${versionSuffix}/${filename}`
-      const response = await fetch(url)
-      if (response.ok) {
-        return await response.text()
-      }
+      return await $fetch<string>(url, { responseType: 'text' })
     } catch {
-      // Try next filename
+      // Try next filename ($fetch throws on 404, so we continue to the next)
     }
   }
 

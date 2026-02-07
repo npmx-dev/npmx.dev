@@ -35,9 +35,7 @@ interface PackageJson {
 async function fetchPackageJson(packageName: string, version: string): Promise<PackageJson | null> {
   try {
     const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/package.json`
-    const response = await fetch(url)
-    if (!response.ok) return null
-    return (await response.json()) as PackageJson
+    return await $fetch<PackageJson>(url)
   } catch {
     return null
   }
@@ -52,10 +50,38 @@ async function fetchFileContent(
   filePath: string,
 ): Promise<string> {
   const url = `https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`
-  const response = await fetch(url)
 
-  if (!response.ok) {
-    if (response.status === 404) {
+  try {
+    const content = await $fetch<string>(url, {
+      responseType: 'text',
+      onResponse({ response }) {
+        const contentLength = response.headers.get('content-length')
+        if (contentLength && parseInt(contentLength, 10) > MAX_FILE_SIZE) {
+          throw createError({
+            statusCode: 413,
+            message: `File too large (${(parseInt(contentLength, 10) / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
+          })
+        }
+      },
+    })
+
+    // Double-check size after fetching (in case content-length wasn't set)
+    if (content.length > MAX_FILE_SIZE) {
+      throw createError({
+        statusCode: 413,
+        message: `File too large (${(content.length / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
+      })
+    }
+
+    return content
+  } catch (error: unknown) {
+    // Re-throw H3 errors (including our 413 from above)
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      throw error
+    }
+    // ofetch throws FetchError for non-2xx responses
+    const fetchError = error as { response?: { status?: number } }
+    if (fetchError.response?.status === 404) {
       throw createError({ statusCode: 404, message: 'File not found' })
     }
     throw createError({
@@ -63,27 +89,6 @@ async function fetchFileContent(
       message: 'Failed to fetch file from jsDelivr',
     })
   }
-
-  // Check content-length header if available
-  const contentLength = response.headers.get('content-length')
-  if (contentLength && parseInt(contentLength, 10) > MAX_FILE_SIZE) {
-    throw createError({
-      statusCode: 413,
-      message: `File too large (${(parseInt(contentLength, 10) / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
-    })
-  }
-
-  const content = await response.text()
-
-  // Double-check size after fetching (in case content-length wasn't set)
-  if (content.length > MAX_FILE_SIZE) {
-    throw createError({
-      statusCode: 413,
-      message: `File too large (${(content.length / 1024 / 1024).toFixed(1)}MB). Maximum size is ${MAX_FILE_SIZE / 1024}KB.`,
-    })
-  }
-
-  return content
 }
 
 /**

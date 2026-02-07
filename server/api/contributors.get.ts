@@ -13,24 +13,24 @@ export default defineCachedEventHandler(
     const perPage = 100
 
     while (true) {
-      const response = await fetch(
-        `https://api.github.com/repos/npmx-dev/npmx.dev/contributors?per_page=${perPage}&page=${page}`,
-        {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'npmx',
+      let contributors: GitHubContributor[]
+      try {
+        contributors = await $fetch<GitHubContributor[]>(
+          `https://api.github.com/repos/npmx-dev/npmx.dev/contributors?per_page=${perPage}&page=${page}`,
+          {
+            headers: {
+              'Accept': 'application/vnd.github.v3+json',
+              'User-Agent': 'npmx',
+            },
           },
-        },
-      )
-
-      if (!response.ok) {
+        )
+      } catch (error: unknown) {
+        const fetchError = error as { response?: { status?: number } }
         throw createError({
-          statusCode: response.status,
+          statusCode: fetchError.response?.status ?? 502,
           message: 'Failed to fetch contributors',
         })
       }
-
-      const contributors = (await response.json()) as GitHubContributor[]
 
       if (contributors.length === 0) {
         break

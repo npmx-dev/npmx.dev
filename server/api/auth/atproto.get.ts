@@ -120,14 +120,13 @@ export default defineEventHandler(async event => {
   const agent = new Agent(authSession)
   event.context.agent = agent
 
-  const response = await fetch(
-    `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${agent.did}`,
-    { headers: { 'User-Agent': 'npmx' } },
-  )
-  if (response.ok) {
-    const miniDoc: PublicUserSession = await response.json()
+  try {
+    const miniDoc = await $fetch<PublicUserSession>(
+      `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${agent.did}`,
+      { headers: { 'User-Agent': 'npmx' } },
+    )
 
-    let avatar: string | undefined = await getAvatar(authSession.did, miniDoc.pds)
+    const avatar: string | undefined = await getAvatar(authSession.did, miniDoc.pds)
 
     await session.update({
       public: {
@@ -135,10 +134,10 @@ export default defineEventHandler(async event => {
         avatar,
       },
     })
-  } else {
+  } catch {
     //If slingshot fails we still want to set some key info we need.
     const pdsBase = (await authSession.getTokenInfo()).aud
-    let avatar: string | undefined = await getAvatar(authSession.did, pdsBase)
+    const avatar: string | undefined = await getAvatar(authSession.did, pdsBase)
     await session.update({
       public: {
         did: authSession.did,

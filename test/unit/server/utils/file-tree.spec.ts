@@ -9,20 +9,14 @@ import {
 const getChildren = (node?: PackageFileTree): PackageFileTree[] => node?.children ?? []
 
 const mockFetchOk = <T>(body: T) => {
-  const fetchMock = vi.fn().mockResolvedValue({
-    ok: true,
-    json: async () => body,
-  })
-  vi.stubGlobal('fetch', fetchMock)
+  const fetchMock = vi.fn().mockResolvedValue(body)
+  vi.stubGlobal('$fetch', fetchMock)
   return fetchMock
 }
 
 const mockFetchError = (status: number) => {
-  const fetchMock = vi.fn().mockResolvedValue({
-    ok: false,
-    status,
-  })
-  vi.stubGlobal('fetch', fetchMock)
+  const fetchMock = vi.fn().mockRejectedValue({ response: { status } })
+  vi.stubGlobal('$fetch', fetchMock)
   return fetchMock
 }
 

@@ -77,8 +77,9 @@ async function fetchDownloads(
   period: 'last-day' | 'last-week' | 'last-month' | 'last-year',
 ): Promise<number> {
   try {
-    const response = await fetch(`${NPM_DOWNLOADS_API}/${period}/${packageName}`)
-    const data = await response.json()
+    const data = await $fetch<{ downloads?: number }>(
+      `${NPM_DOWNLOADS_API}/${period}/${packageName}`,
+    )
     return data.downloads ?? 0
   } catch {
     return 0
@@ -87,8 +88,7 @@ async function fetchDownloads(
 
 async function fetchNpmsScore(packageName: string) {
   try {
-    const response = await fetch(`${NPMS_API}/${encodeURIComponent(packageName)}`)
-    const data = await response.json()
+    const data = await $fetch<{ score: any }>(`${NPMS_API}/${encodeURIComponent(packageName)}`)
     return data.score
   } catch {
     return null
@@ -97,14 +97,13 @@ async function fetchNpmsScore(packageName: string) {
 
 async function fetchVulnerabilities(packageName: string, version: string): Promise<number> {
   try {
-    const response = await fetch(OSV_QUERY_API, {
+    const data = await $fetch<{ vulns?: unknown[] }>(OSV_QUERY_API, {
       method: 'POST',
-      body: JSON.stringify({
+      body: {
         version,
         package: { name: packageName, ecosystem: 'npm' },
-      }),
+      },
     })
-    const data = await response.json()
     return data.vulns?.length ?? 0
   } catch {
     return 0
@@ -113,8 +112,9 @@ async function fetchVulnerabilities(packageName: string, version: string): Promi
 
 async function fetchInstallSize(packageName: string, version: string): Promise<number | null> {
   try {
-    const response = await fetch(`${BUNDLEPHOBIA_API}?package=${packageName}@${version}`)
-    const data = await response.json()
+    const data = await $fetch<{ size?: number }>(
+      `${BUNDLEPHOBIA_API}?package=${packageName}@${version}`,
+    )
     return data.size ?? null
   } catch {
     return null

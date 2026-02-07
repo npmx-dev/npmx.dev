@@ -14,16 +14,15 @@ export async function fetchFileTree(
   version: string,
 ): Promise<JsDelivrPackageResponse> {
   const url = `https://data.jsdelivr.com/v1/packages/npm/${packageName}@${version}`
-  const response = await fetch(url)
-
-  if (!response.ok) {
-    if (response.status === 404) {
+  try {
+    return await $fetch<JsDelivrPackageResponse>(url)
+  } catch (error: unknown) {
+    const fetchError = error as { response?: { status?: number } }
+    if (fetchError.response?.status === 404) {
       throw createError({ statusCode: 404, message: 'Package or version not found' })
     }
     throw createError({ statusCode: 502, message: 'Failed to fetch file list from jsDelivr' })
   }
-
-  return response.json()
 }
 
 /**
