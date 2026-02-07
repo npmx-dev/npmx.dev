@@ -992,16 +992,18 @@ const chartConfig = computed(() => {
             >
               {{ $t('package.downloads.start_date') }}
             </label>
-            <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
-            >
-              <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
-              <input
+            <div class="relative flex items-center">
+              <span
+                class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0"
+                aria-hidden="true"
+              />
+              <InputBase
                 id="startDate"
                 v-model="startDate"
                 :disabled="pending"
                 type="date"
-                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:light] dark:[color-scheme:dark]"
+                class="w-full min-w-0 bg-transparent ps-7"
+                size="small"
               />
             </div>
           </div>
@@ -1013,16 +1015,18 @@ const chartConfig = computed(() => {
             >
               {{ $t('package.downloads.end_date') }}
             </label>
-            <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
-            >
-              <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
-              <input
+            <div class="relative flex items-center">
+              <span
+                class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0"
+                aria-hidden="true"
+              />
+              <InputBase
                 id="endDate"
                 v-model="endDate"
                 :disabled="pending"
                 type="date"
-                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:light] dark:[color-scheme:dark]"
+                class="w-full min-w-0 bg-transparent ps-7"
+                size="small"
               />
             </div>
           </div>

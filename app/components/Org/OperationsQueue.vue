@@ -242,7 +242,7 @@ watch(isExecuting, executing => {
       </div>
       <form class="flex items-center gap-2" @submit.prevent="handleRetryWithOtp">
         <label for="otp-input" class="sr-only">{{ $t('operations.queue.otp_label') }}</label>
-        <input
+        <InputBase
           id="otp-input"
           v-model="otpInput"
           type="text"
@@ -252,12 +252,13 @@ watch(isExecuting, executing => {
           :placeholder="$t('operations.queue.otp_placeholder')"
           autocomplete="one-time-code"
           spellcheck="false"
-          class="flex-1 px-3 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
+          class="flex-1 min-w-25"
+          size="small"
         />
         <button
           type="submit"
           :disabled="!otpInput.trim() || isExecuting"
-          class="px-3 py-1.5 font-mono text-xs text-bg bg-amber-500 rounded transition-all duration-200 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50"
+          class="px-3 py-2 font-mono text-xs text-bg bg-amber-500 rounded transition-all duration-200 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50"
         >
           {{ isExecuting ? $t('operations.queue.retrying') : $t('operations.queue.retry_otp') }}
         </button>

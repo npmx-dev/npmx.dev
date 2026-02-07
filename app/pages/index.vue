@@ -3,8 +3,7 @@ import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
 const searchQuery = shallowRef('')
-const searchInputRef = useTemplateRef('searchInputRef')
-const { focused: isSearchFocused } = useFocus(searchInputRef)
+const isSearchFocused = shallowRef(false)
 
 async function search() {
   const query = searchQuery.value.trim()
@@ -73,7 +72,7 @@ defineOgImageComponent('Default', {
 
             <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
               <div
-                class="absolute -inset-px rounded-lg bg-gradient-to-r from-fg/0 via-fg/5 to-fg/0 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
+                class="absolute z-1 -inset-px pointer-events-none rounded-lg bg-gradient-to-r from-fg/0 to-accent/5 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
               />
 
               <div class="search-box relative flex items-center">
@@ -83,16 +82,18 @@ defineOgImageComponent('Default', {
                   /
                 </span>
 
-                <input
+                <InputBase
                   id="home-search"
-                  ref="searchInputRef"
                   v-model="searchQuery"
                   type="search"
                   name="q"
                   autofocus
                   :placeholder="$t('search.placeholder')"
-                  v-bind="noCorrect"
-                  class="w-full bg-bg-subtle border border-border rounded-xl ps-8 pe-24 h-14 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 motion-reduce:transition-none hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+                  noCorrect
+                  size="large"
+                  class="w-full ps-8 pe-24"
+                  @focus="isSearchFocused = true"
+                  @blur="isSearchFocused = false"
                   @input="handleInput"
                 />
 

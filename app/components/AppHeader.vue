@@ -122,8 +122,12 @@ onKeyStroke(
 
       <!-- Center: Search bar + nav items -->
       <div
-        class="flex-1 flex items-center justify-center md:gap-6"
-        :class="{ 'hidden sm:flex': !isSearchExpanded }"
+        class="flex-1 flex items-center md:gap-6"
+        :class="{
+          'hidden sm:flex': !isSearchExpanded,
+          'justify-end': isOnHomePage,
+          'justify-center': !isOnHomePage,
+        }"
       >
         <!-- Search bar (hidden on mobile unless expanded) -->
         <HeaderSearchBox

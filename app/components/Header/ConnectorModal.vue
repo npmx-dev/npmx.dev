@@ -161,14 +161,15 @@ function handleDisconnect() {
           >
             {{ $t('connector.modal.token_label') }}
           </label>
-          <input
+          <InputBase
             id="connector-token"
             v-model="tokenInput"
             type="password"
             name="connector-token"
             :placeholder="$t('connector.modal.token_placeholder')"
-            v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 hover:border-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
+            noCorrect
+            class="w-full"
+            size="medium"
           />
         </div>
 
@@ -185,14 +186,15 @@ function handleDisconnect() {
             >
               {{ $t('connector.modal.port_label') }}
             </label>
-            <input
+            <InputBase
               id="connector-port"
               v-model="portInput"
               type="text"
               name="connector-port"
               inputmode="numeric"
               autocomplete="off"
-              class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg transition-colors duration-200 hover:border-fg-subtle focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
+              class="w-full"
+              size="medium"
             />
           </div>
         </details>
