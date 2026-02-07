@@ -303,7 +303,7 @@ function isValidNpmName(name: string): boolean {
   // Must start with alphanumeric
   if (!/^[a-z0-9]/i.test(name)) return false
   // Can contain alphanumeric, hyphen, underscore
-  return /^[a-z0-9_-]+$/i.test(name)
+  return /^[\w-]+$/.test(name)
 }
 
 /** Validated user/org suggestion */

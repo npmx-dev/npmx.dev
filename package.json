@@ -101,7 +101,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.7"
+    "vue-data-ui": "3.14.8"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.1.4",
@@ -116,6 +116,7 @@
     "@vitest/coverage-v8": "4.0.18",
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
+    "eslint-plugin-regexp": "3.0.0",
     "fast-check": "4.5.3",
     "h3": "1.15.5",
     "knip": "5.83.0",

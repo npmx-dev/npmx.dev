@@ -42,6 +42,7 @@ const config: KnipConfig = {
 
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
+        'eslint-plugin-regexp',
       ],
       ignoreUnresolved: ['#components', '#oauth/config'],
     },
