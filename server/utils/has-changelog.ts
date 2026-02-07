@@ -24,7 +24,7 @@ export async function detectHasChangelog(
     return true
   }
 
-  return null
+  return false
 }
 
 /**

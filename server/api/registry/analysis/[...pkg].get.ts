@@ -19,7 +19,6 @@ import {
 } from '#shared/utils/constants'
 import { parseRepoUrl } from '#shared/utils/git-providers'
 import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
-import { detectHasChangelog } from '~~/server/utils/has-changelog'
 
 export default defineCachedEventHandler(
   async event => {
@@ -54,13 +53,10 @@ export default defineCachedEventHandler(
       const createPackage = await findAssociatedCreatePackage(packageName, pkg)
 
       const analysis = analyzePackage(pkg, { typesPackage, createPackage })
-      // TODO move this to it's own endpoint
-      const hasChangelog = await detectHasChangelog(pkg)
       return {
         package: packageName,
         version: pkg.version ?? version ?? 'latest',
         ...analysis,
-        hasChangelog,
       } satisfies PackageAnalysisResponse
     } catch (error: unknown) {
       handleApiError(error, {
@@ -218,5 +214,4 @@ function hasSameRepositoryOwner(
 export interface PackageAnalysisResponse extends PackageAnalysis {
   package: string
   version: string
-  hasChangelog: boolean | null
 }

@@ -10,8 +10,6 @@ export interface PackageAnalysisResponse {
     npm?: string
   }
   createPackage?: CreatePackageInfo
-  // TODO move this to it's own composable
-  hasChangelog?: boolean
 }
 
 /**
