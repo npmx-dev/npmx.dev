@@ -292,7 +292,7 @@ watch(isExecuting, executing => {
     <!-- Completed operations log (collapsed by default) -->
     <details v-if="hasCompletedOperations" class="mt-4 border-t border-border pt-4">
       <summary
-        class="flex items-center gap-2 font-mono text-xs text-fg-muted cursor-pointer hover:text-fg transition-colors duration-200 select-none"
+        class="flex items-center gap-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 select-none"
       >
         <span
           class="i-carbon:chevron-right rtl-flip w-3 h-3 transition-transform duration-200 [[open]>&]:rotate-90"

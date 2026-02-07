@@ -173,9 +173,7 @@ function handleDisconnect() {
         </div>
 
         <details class="text-sm">
-          <summary
-            class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200"
-          >
+          <summary class="text-fg-subtle hover:text-fg-muted transition-colors duration-200">
             {{ $t('connector.modal.advanced') }}
           </summary>
           <div class="mt-3">

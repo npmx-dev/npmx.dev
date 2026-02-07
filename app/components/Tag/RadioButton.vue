@@ -36,7 +36,7 @@ const onChange = () => {
       class="peer sr-only"
     />
     <label
-      class="bg-bg-muted text-fg-muted border-border hover:(text-fg border-border-hover) inline-flex items-center px-2 py-0.5 text-xs font-mono border rounded transition-colors duration-200 peer-focus-visible:(outline-2 outline-accent/70 outline-offset-2) border-none cursor-pointer peer-checked:(bg-fg text-bg border-fg hover:(text-text-bg/50)) peer-disabled:(opacity-50 pointer-events-none)"
+      class="bg-bg-muted text-fg-muted border-border hover:(text-fg border-border-hover) inline-flex items-center px-2 py-0.5 text-xs font-mono border rounded transition-colors duration-200 peer-focus-visible:(outline-2 outline-accent/70 outline-offset-2) border-none peer-checked:(bg-fg text-bg border-fg hover:(text-text-bg/50)) peer-disabled:(opacity-50 pointer-events-none)"
       :htmlFor="internalId"
     >
       <slot />
