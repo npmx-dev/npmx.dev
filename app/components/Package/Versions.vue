@@ -17,6 +17,7 @@ const props = defineProps<{
   versions: Record<string, SlimVersion>
   distTags: Record<string, string>
   time: Record<string, string>
+  selectedVersion?: string
 }>()
 
 /** Maximum number of dist-tag rows to show before collapsing into "Other versions" */
@@ -38,6 +39,10 @@ function versionRoute(version: string): RouteLocationRaw {
 
 // Version to tags lookup (supports multiple tags per version)
 const versionToTags = computed(() => buildVersionToTagsMap(props.distTags))
+
+const effectiveCurrentVersion = computed(
+  () => props.selectedVersion ?? props.distTags.latest ?? undefined,
+)
 
 // All tag rows derived from props (SSR-safe)
 // Deduplicates so each version appears only once, with all its tags
@@ -295,6 +300,65 @@ function toggleMajorGroup(groupKey: string) {
 function getTagVersions(tag: string): VersionDisplay[] {
   return tagVersions.value.get(tag) ?? []
 }
+
+function findClaimingTag(version: string): string | null {
+  const versionChannel = getPrereleaseChannel(version)
+
+  // First matching tag claims the version
+  for (const row of allTagRows.value) {
+    const tagVersion = props.distTags[row.tag]
+    if (!tagVersion) continue
+
+    const tagChannel = getPrereleaseChannel(tagVersion)
+
+    if (isSameVersionGroup(version, tagVersion) && versionChannel === tagChannel) {
+      return row.tag
+    }
+  }
+
+  return null
+}
+
+// Whether this row should be highlighted for the current version
+function rowContainsCurrentVersion(row: (typeof visibleTagRows.value)[0]): boolean {
+  if (!effectiveCurrentVersion.value) return false
+
+  if (row.primaryVersion.version === effectiveCurrentVersion.value) return true
+
+  if (getTagVersions(row.tag).some(v => v.version === effectiveCurrentVersion.value)) return true
+
+  const claimingTag = findClaimingTag(effectiveCurrentVersion.value)
+  return claimingTag === row.tag
+}
+
+function otherVersionsContainsCurrent(): boolean {
+  if (!effectiveCurrentVersion.value) return false
+
+  const claimingTag = findClaimingTag(effectiveCurrentVersion.value)
+
+  // If a tag claims it, check if that tag is in visibleTagRows
+  if (claimingTag) {
+    const isInVisibleTags = visibleTagRows.value.some(row => row.tag === claimingTag)
+    if (!isInVisibleTags) return true
+    return false
+  }
+
+  // No tag claims it - it would be in otherMajorGroups
+  return true
+}
+
+function hiddenRowContainsCurrent(row: (typeof hiddenTagRows.value)[0]): boolean {
+  if (!effectiveCurrentVersion.value) return false
+  if (row.primaryVersion.version === effectiveCurrentVersion.value) return true
+
+  const claimingTag = findClaimingTag(effectiveCurrentVersion.value)
+  return claimingTag === row.tag
+}
+
+function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): boolean {
+  if (!effectiveCurrentVersion.value) return false
+  return group.versions.some(v => v.version === effectiveCurrentVersion.value)
+}
 </script>
 
 <template>
@@ -318,7 +382,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
       <div v-for="row in visibleTagRows" :key="row.id">
         <div
           class="flex items-center gap-2 pe-2 px-1"
-          :class="row.tag === 'latest' ? 'bg-bg-subtle rounded-lg' : ''"
+          :class="rowContainsCurrentVersion(row) ? 'bg-bg-subtle rounded-lg' : ''"
         >
           <!-- Expand button (only if there are more versions to show) -->
           <button
@@ -410,7 +474,12 @@ function getTagVersions(tag: string): VersionDisplay[] {
           v-if="expandedTags.has(row.tag) && getTagVersions(row.tag).length > 1"
           class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
         >
-          <div v-for="v in getTagVersions(row.tag).slice(1)" :key="v.version" class="py-1">
+          <div
+            v-for="v in getTagVersions(row.tag).slice(1)"
+            :key="v.version"
+            class="py-1"
+            :class="v.version === effectiveCurrentVersion ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
+          >
             <div class="flex items-center justify-between gap-2">
               <LinkBase
                 :to="versionRoute(v.version)"
@@ -465,7 +534,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
       <div class="p-1">
         <button
           type="button"
-          class="flex items-center gap-2 text-start rounded-sm"
+          class="flex items-center gap-2 text-start rounded-sm w-full"
+          :class="otherVersionsContainsCurrent() ? 'bg-bg-subtle' : ''"
           :aria-expanded="otherVersionsExpanded"
           :aria-label="
             otherVersionsExpanded
@@ -507,7 +577,12 @@ function getTagVersions(tag: string): VersionDisplay[] {
         <!-- Expanded other versions -->
         <div v-if="otherVersionsExpanded" class="ms-4 ps-2 border-is border-border space-y-0.5">
           <!-- Hidden tag rows (overflow from visible tags) -->
-          <div v-for="row in hiddenTagRows" :key="row.id" class="py-1">
+          <div
+            v-for="row in hiddenTagRows"
+            :key="row.id"
+            class="py-1"
+            :class="hiddenRowContainsCurrent(row) ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
+          >
             <div class="flex items-center justify-between gap-2">
               <LinkBase
                 :to="versionRoute(row.primaryVersion.version)"
@@ -555,7 +630,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
           <template v-if="otherMajorGroups.length > 0">
             <div v-for="group in otherMajorGroups" :key="group.groupKey">
               <!-- Version group header -->
-              <div v-if="group.versions.length > 1" class="py-1">
+              <div
+                v-if="group.versions.length > 1"
+                class="py-1"
+                :class="majorGroupContainsCurrent(group) ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
+              >
                 <div class="flex items-center justify-between gap-2">
                   <div class="flex items-center gap-2 min-w-0">
                     <button
@@ -637,7 +716,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 </div>
               </div>
               <!-- Single version (no expand needed) -->
-              <div v-else class="py-1">
+              <div
+                v-else
+                class="py-1"
+                :class="majorGroupContainsCurrent(group) ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
+              >
                 <div class="flex items-center justify-between gap-2">
                   <div class="flex items-center gap-2 min-w-0">
                     <span class="w-4 shrink-0" />
@@ -699,7 +782,14 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 v-if="expandedMajorGroups.has(group.groupKey) && group.versions.length > 1"
                 class="ms-6 space-y-0.5"
               >
-                <div v-for="v in group.versions.slice(1)" :key="v.version" class="py-1">
+                <div
+                  v-for="v in group.versions.slice(1)"
+                  :key="v.version"
+                  class="py-1"
+                  :class="
+                    v.version === effectiveCurrentVersion ? 'rounded bg-bg-subtle px-2 -mx-2' : ''
+                  "
+                >
                   <div class="flex items-center justify-between gap-2">
                     <LinkBase
                       :to="versionRoute(v.version)"
