@@ -114,6 +114,13 @@ export default defineNuxtConfig({
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
     '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
     '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
+    // PWA manifest
+    '/manifest.webmanifest': {
+      headers: {
+        'Content-Type': 'application/manifest+json',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
+    },
   },
 
   experimental: {
@@ -193,10 +200,13 @@ export default defineNuxtConfig({
   },
 
   pwa: {
-    // Disable service worker
-    disable: true,
-    pwaAssets: {
-      config: false,
+    injectRegister: false,
+    client: {
+      // Disable service worker
+      registerPlugin: false,
+    },
+    devOptions: {
+      enabled: true,
     },
     manifest: {
       name: 'npmx',

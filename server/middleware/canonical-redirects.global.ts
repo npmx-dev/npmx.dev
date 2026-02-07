@@ -24,6 +24,7 @@ const pages = [
   '/privacy',
   '/search',
   '/settings',
+  '/manifest.webmanifest',
 ]
 
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
