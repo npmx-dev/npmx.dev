@@ -1,5 +1,5 @@
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
-import defu from 'defu'
+import { defu } from 'defu'
 
 /**
  * Get the cachedFetch function from the current request context.
