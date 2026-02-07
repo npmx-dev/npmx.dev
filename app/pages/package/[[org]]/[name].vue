@@ -857,11 +857,10 @@ onKeyStroke(
                   </ClientOnly>
                 </template>
               </span>
-              <ButtonGroup>
+              <ButtonGroup v-if="getDependencyCount(displayVersion) > 0">
                 <LinkBase
                   variant="button-secondary"
                   size="small"
-                  v-if="getDependencyCount(displayVersion) > 0"
                   :to="`https://npmgraph.js.org/?q=${pkg.name}`"
                   :title="$t('package.stats.view_dependency_graph')"
                   classicon="i-carbon:network-3"
@@ -872,7 +871,6 @@ onKeyStroke(
                 <LinkBase
                   variant="button-secondary"
                   size="small"
-                  v-if="getDependencyCount(displayVersion) > 0"
                   :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                   :title="$t('package.stats.inspect_dependency_tree')"
                   classicon="i-carbon:tree-view"
