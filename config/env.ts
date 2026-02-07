@@ -40,8 +40,7 @@ export const gitBranch = process.env.BRANCH || process.env.VERCEL_GIT_COMMIT_REF
  */
 export const isPreview =
   isPR ||
-  process.env.CONTEXT === 'deploy-preview' ||
-  process.env.CONTEXT === 'dev' ||
+  (process.env.CONTEXT && process.env.CONTEXT !== 'production') ||
   process.env.VERCEL_ENV === 'preview' ||
   process.env.VERCEL_ENV === 'development'
 export const isProduction =
