@@ -50,7 +50,7 @@ async function run(): Promise<void> {
 
   printSection('Missing keys', missingKeys, hasMissingKeys ? 'error' : 'success')
 
-  printSection('Unused keys', unusedKeys, hasUnusedKeys ? 'warning' : 'success')
+  printSection('Unused keys', unusedKeys, hasUnusedKeys ? 'error' : 'success')
 
   printSection(
     'Dynamic keys (cannot be statically analyzed)',
@@ -64,7 +64,7 @@ async function run(): Promise<void> {
   const shouldFail = hasMissingKeys || hasDynamicKeys || hasUnusedKeys
 
   if (shouldFail) {
-    console.log(colors.red('\n❌ Build failed: missing or dynamic keys detected'))
+    console.log(colors.red('\n❌ Build failed: missing, unused or dynamic keys detected'))
     console.log(colors.dim('   Fix missing keys by adding them to the locale file'))
     console.log(colors.dim('   Fix dynamic keys by using static translation keys\n'))
     console.log(

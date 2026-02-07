@@ -306,7 +306,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   })
 
   // i18n key mappings for filter chip values
-  const downloadRangeKeys = computed<Record<DownloadRange, string>>(() => ({
+  const downloadRangeLabels = computed<Record<DownloadRange, string>>(() => ({
     'any': t('filters.download_range.any'),
     'lt100': t('filters.download_range.lt100'),
     '100-1k': t('filters.download_range.100_1k'),
@@ -315,13 +315,13 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
     'gt100k': t('filters.download_range.gt100k'),
   }))
 
-  const securityKeys = computed<Record<SecurityFilter, string>>(() => ({
+  const securityLabels = computed<Record<SecurityFilter, string>>(() => ({
     all: t('filters.security_options.all'),
     secure: t('filters.security_options.secure'),
     warnings: t('filters.security_options.insecure'),
   }))
 
-  const updatedWithinKeys = computed<Record<UpdatedWithin, string>>(() => ({
+  const updatedWithinLabels = computed<Record<UpdatedWithin, string>>(() => ({
     any: t('filters.updated.any'),
     week: t('filters.updated.week'),
     month: t('filters.updated.month'),
@@ -347,7 +347,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'downloadRange',
         type: 'downloadRange',
         label: t('filters.chips.downloads'),
-        value: downloadRangeKeys.value[filters.value.downloadRange],
+        value: downloadRangeLabels.value[filters.value.downloadRange],
       })
     }
 
@@ -365,7 +365,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'security',
         type: 'security',
         label: t('filters.chips.security'),
-        value: securityKeys.value[filters.value.security],
+        value: securityLabels.value[filters.value.security],
       })
     }
 
@@ -374,7 +374,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'updatedWithin',
         type: 'updatedWithin',
         label: t('filters.chips.updated'),
-        value: updatedWithinKeys.value[filters.value.updatedWithin],
+        value: updatedWithinLabels.value[filters.value.updatedWithin],
       })
     }
 
