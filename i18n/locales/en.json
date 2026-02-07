@@ -301,7 +301,8 @@
       "loading": "Loading...",
       "y_axis_label": "{granularity} downloads",
       "download_file": "Download {fileType}",
-      "toggle_annotator": "Toggle annotator"
+      "toggle_annotator": "Toggle annotator",
+      "legend_estimation": "Estimation"
     },
     "install_scripts": {
       "title": "Install Scripts",

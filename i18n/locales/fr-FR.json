@@ -274,7 +274,8 @@
       "loading": "Chargement...",
       "y_axis_label": "Téléchargements {granularity}",
       "download_file": "Télécharger {fileType}",
-      "toggle_annotator": "Afficher/Masquer l'annotateur"
+      "toggle_annotator": "Afficher/Masquer l'annotateur",
+      "legend_estimation": "Estimation"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
