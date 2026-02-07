@@ -2,19 +2,11 @@
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createI18NReport, type I18NItem } from 'vue-i18n-extract'
+import { colors } from './utils/colors.ts'
 
 const LOCALES_DIRECTORY = fileURLToPath(new URL('../i18n/locales', import.meta.url))
 const REFERENCE_FILE_NAME = 'en.json'
 const VUE_FILES_GLOB = './app/**/*.?(vue|ts|js)'
-
-const colors = {
-  red: (text: string) => `\x1b[31m${text}\x1b[0m`,
-  green: (text: string) => `\x1b[32m${text}\x1b[0m`,
-  yellow: (text: string) => `\x1b[33m${text}\x1b[0m`,
-  cyan: (text: string) => `\x1b[36m${text}\x1b[0m`,
-  dim: (text: string) => `\x1b[2m${text}\x1b[0m`,
-  bold: (text: string) => `\x1b[1m${text}\x1b[0m`,
-}
 
 function printSection(
   title: string,
@@ -56,34 +48,31 @@ async function run(): Promise<void> {
   const hasUnusedKeys = unusedKeys.length > 0
   const hasDynamicKeys = maybeDynamicKeys.length > 0
 
-  // Display missing keys (critical - causes build failure)
   printSection('Missing keys', missingKeys, hasMissingKeys ? 'error' : 'success')
 
-  // Display dynamic keys (critical - causes build failure)
+  printSection('Unused keys', unusedKeys, hasUnusedKeys ? 'error' : 'success')
+
   printSection(
     'Dynamic keys (cannot be statically analyzed)',
     maybeDynamicKeys,
     hasDynamicKeys ? 'error' : 'success',
   )
 
-  // Display unused keys (warning only - does not cause build failure)
-  printSection('Unused keys', unusedKeys, hasUnusedKeys ? 'warning' : 'success')
-
   // Summary
   console.log('\n' + colors.dim('─'.repeat(50)))
 
-  const shouldFail = hasMissingKeys || hasDynamicKeys
+  const shouldFail = hasMissingKeys || hasDynamicKeys || hasUnusedKeys
 
   if (shouldFail) {
-    console.log(colors.red('\n❌ Build failed: missing or dynamic keys detected'))
+    console.log(colors.red('\n❌ Build failed: missing, unused or dynamic keys detected'))
     console.log(colors.dim('   Fix missing keys by adding them to the locale file'))
     console.log(colors.dim('   Fix dynamic keys by using static translation keys\n'))
+    console.log(
+      colors.dim(
+        '   Fix unused keys by removing them from the locale file (pnpm run i18n:report:fix)\n',
+      ),
+    )
     process.exit(1)
-  }
-
-  if (hasUnusedKeys) {
-    console.log(colors.yellow('\n⚠️  Build passed with warnings: unused keys detected'))
-    console.log(colors.dim('   Consider removing unused keys from locale files\n'))
   } else {
     console.log(colors.green('\n✅ All translations are valid!\n'))
   }

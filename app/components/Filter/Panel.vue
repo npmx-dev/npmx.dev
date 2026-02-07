@@ -27,6 +27,8 @@ const emit = defineEmits<{
   'toggleKeyword': [keyword: string]
 }>()
 
+const { t } = useI18n()
+
 const isExpanded = shallowRef(false)
 const showAllKeywords = shallowRef(false)
 
@@ -55,62 +57,77 @@ const hasMoreKeywords = computed(() => {
 })
 
 // i18n mappings for filter options
-const scopeLabelKeys = {
-  name: 'filters.scope_name',
-  description: 'filters.scope_description',
-  keywords: 'filters.scope_keywords',
-  all: 'filters.scope_all',
-} as const
+const scopeLabelKeys = computed(
+  () =>
+    ({
+      name: t('filters.scope_name'),
+      description: t('filters.scope_description'),
+      keywords: t('filters.scope_keywords'),
+      all: t('filters.scope_all'),
+    }) as const,
+)
 
-const scopeDescriptionKeys = {
-  name: 'filters.scope_name_description',
-  description: 'filters.scope_description_description',
-  keywords: 'filters.scope_keywords_description',
-  all: 'filters.scope_all_description',
-} as const
+const scopeDescriptionKeys = computed(
+  () =>
+    ({
+      name: t('filters.scope_name_description'),
+      description: t('filters.scope_description_description'),
+      keywords: t('filters.scope_keywords_description'),
+      all: t('filters.scope_all_description'),
+    }) as const,
+)
 
-const downloadRangeLabelKeys = {
-  'any': 'filters.download_range.any',
-  'lt100': 'filters.download_range.lt100',
-  '100-1k': 'filters.download_range.100_1k',
-  '1k-10k': 'filters.download_range.1k_10k',
-  '10k-100k': 'filters.download_range.10k_100k',
-  'gt100k': 'filters.download_range.gt100k',
-} as const
+const downloadRangeLabelKeys = computed(
+  () =>
+    ({
+      'any': t('filters.download_range.any'),
+      'lt100': t('filters.download_range.lt100'),
+      '100-1k': t('filters.download_range.100_1k'),
+      '1k-10k': t('filters.download_range.1k_10k'),
+      '10k-100k': t('filters.download_range.10k_100k'),
+      'gt100k': t('filters.download_range.gt100k'),
+    }) as const,
+)
 
-const updatedWithinLabelKeys = {
-  any: 'filters.updated.any',
-  week: 'filters.updated.week',
-  month: 'filters.updated.month',
-  quarter: 'filters.updated.quarter',
-  year: 'filters.updated.year',
-} as const
+const updatedWithinLabelKeys = computed(
+  () =>
+    ({
+      any: t('filters.updated.any'),
+      week: t('filters.updated.week'),
+      month: t('filters.updated.month'),
+      quarter: t('filters.updated.quarter'),
+      year: t('filters.updated.year'),
+    }) as const,
+)
 
-const securityLabelKeys = {
-  all: 'filters.security_options.all',
-  secure: 'filters.security_options.secure',
-  warnings: 'filters.security_options.insecure',
-} as const
+const securityLabelKeys = computed(
+  () =>
+    ({
+      all: t('filters.security_options.all'),
+      secure: t('filters.security_options.secure'),
+      warnings: t('filters.security_options.insecure'),
+    }) as const,
+)
 
 // Type-safe accessor functions
 function getScopeLabelKey(value: SearchScope): string {
-  return scopeLabelKeys[value]
+  return scopeLabelKeys.value[value]
 }
 
 function getScopeDescriptionKey(value: SearchScope): string {
-  return scopeDescriptionKeys[value]
+  return scopeDescriptionKeys.value[value]
 }
 
 function getDownloadRangeLabelKey(value: DownloadRange): string {
-  return downloadRangeLabelKeys[value]
+  return downloadRangeLabelKeys.value[value]
 }
 
 function getUpdatedWithinLabelKey(value: UpdatedWithin): string {
-  return updatedWithinLabelKeys[value]
+  return updatedWithinLabelKeys.value[value]
 }
 
 function getSecurityLabelKey(value: SecurityFilter): string {
-  return securityLabelKeys[value]
+  return securityLabelKeys.value[value]
 }
 
 function handleTextInput(event: Event) {
@@ -215,10 +232,10 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
                     : 'text-fg-muted hover:text-fg'
                 "
                 :aria-pressed="filters.searchScope === scope"
-                :title="$t(getScopeDescriptionKey(scope))"
+                :title="getScopeDescriptionKey(scope)"
                 @click="emit('update:searchScope', scope)"
               >
-                {{ $t(getScopeLabelKey(scope)) }}
+                {{ getScopeLabelKey(scope) }}
               </button>
             </div>
           </div>
@@ -251,7 +268,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               @update:modelValue="emit('update:downloadRange', $event as DownloadRange)"
               name="range"
             >
-              {{ $t(getDownloadRangeLabelKey(range.value)) }}
+              {{ getDownloadRangeLabelKey(range.value) }}
             </TagRadioButton>
           </div>
         </fieldset>
@@ -274,7 +291,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               name="updatedWithin"
               @update:modelValue="emit('update:updatedWithin', $event as UpdatedWithin)"
             >
-              {{ $t(getUpdatedWithinLabelKey(option.value)) }}
+              {{ getUpdatedWithinLabelKey(option.value) }}
             </TagRadioButton>
           </div>
         </fieldset>
@@ -296,7 +313,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               :value="security"
               name="security"
             >
-              {{ $t(getSecurityLabelKey(security)) }}
+              {{ getSecurityLabelKey(security) }}
             </TagRadioButton>
           </div>
         </fieldset>

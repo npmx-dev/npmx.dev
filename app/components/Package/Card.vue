@@ -34,6 +34,8 @@ const pkgDescription = useMarkdown(() => ({
   plain: true,
   packageName: props.result.package.name,
 }))
+
+const numberFormatter = useNumberFormatter()
 </script>
 
 <template>
@@ -180,7 +182,7 @@ const pkgDescription = useMarkdown(() => ({
         class="text-fg-subtle text-xs pointer-events-auto"
         :title="result.package.keywords.slice(5).join(', ')"
       >
-        +{{ result.package.keywords.length - 5 }}
+        +{{ numberFormatter.format(result.package.keywords.length - 5) }}
       </span>
     </div>
   </BaseCard>

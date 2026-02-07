@@ -65,6 +65,8 @@ const sortedOptionalDependencies = computed(() => {
   if (!props.optionalDependencies) return []
   return Object.entries(props.optionalDependencies).sort(([a], [b]) => a.localeCompare(b))
 })
+
+const numberFormatter = useNumberFormatter()
 </script>
 
 <template>
@@ -73,7 +75,15 @@ const sortedOptionalDependencies = computed(() => {
     <CollapsibleSection
       v-if="sortedDependencies.length > 0"
       id="dependencies"
-      :title="$t('package.dependencies.title', { count: sortedDependencies.length })"
+      :title="
+        $t(
+          'package.dependencies.title',
+          {
+            count: numberFormatter.format(sortedDependencies.length),
+          },
+          sortedDependencies.length,
+        )
+      "
     >
       <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
@@ -137,9 +147,13 @@ const sortedOptionalDependencies = computed(() => {
         @click="depsExpanded = true"
       >
         {{
-          $t('package.dependencies.show_all', {
-            count: sortedDependencies.length,
-          })
+          $t(
+            'package.dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedDependencies.length),
+            },
+            sortedDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>
@@ -150,7 +164,7 @@ const sortedOptionalDependencies = computed(() => {
       id="peer-dependencies"
       :title="
         $t('package.peer_dependencies.title', {
-          count: sortedPeerDependencies.length,
+          count: numberFormatter.format(sortedPeerDependencies.length),
         })
       "
     >
@@ -185,9 +199,13 @@ const sortedOptionalDependencies = computed(() => {
         @click="peerDepsExpanded = true"
       >
         {{
-          $t('package.peer_dependencies.show_all', {
-            count: sortedPeerDependencies.length,
-          })
+          $t(
+            'package.peer_dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedPeerDependencies.length),
+            },
+            sortedPeerDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>
@@ -197,9 +215,13 @@ const sortedOptionalDependencies = computed(() => {
       v-if="sortedOptionalDependencies.length > 0"
       id="optional-dependencies"
       :title="
-        $t('package.optional_dependencies.title', {
-          count: sortedOptionalDependencies.length,
-        })
+        $t(
+          'package.optional_dependencies.title',
+          {
+            count: numberFormatter.format(sortedOptionalDependencies.length),
+          },
+          sortedOptionalDependencies.length,
+        )
       "
     >
       <ul
@@ -229,9 +251,13 @@ const sortedOptionalDependencies = computed(() => {
         @click="optionalDepsExpanded = true"
       >
         {{
-          $t('package.optional_dependencies.show_all', {
-            count: sortedOptionalDependencies.length,
-          })
+          $t(
+            'package.optional_dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedOptionalDependencies.length),
+            },
+            sortedOptionalDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>

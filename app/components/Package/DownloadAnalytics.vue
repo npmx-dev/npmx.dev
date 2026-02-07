@@ -750,8 +750,6 @@ const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: number
   return { dataset, dates }
 })
 
-const formatter = ({ value }: { value: number }) => formatCompactNumber(value, { decimals: 1 })
-
 const loadFile = (link: string, filename: string) => {
   const a = document.createElement('a')
   a.href = link
@@ -799,6 +797,8 @@ const granularityLabels = computed(() => ({
 function getGranularityLabel(granularity: ChartTimeGranularity) {
   return granularityLabels.value[granularity]
 }
+
+const compactNumberFormatter = useCompactNumberFormatter()
 
 // VueUiXy chart component configuration
 const chartConfig = computed(() => {
@@ -867,7 +867,7 @@ const chartConfig = computed(() => {
             },
           },
           yAxis: {
-            formatter,
+            formatter: compactNumberFormatter.value.format,
             useNiceScale: true,
             gap: 24, // vertical gap between individual series in stacked mode
           },
@@ -899,7 +899,7 @@ const chartConfig = computed(() => {
             .map((d: any) => {
               const label = String(d?.name ?? '').trim()
               const raw = Number(d?.value ?? 0)
-              const v = formatter({ value: Number.isFinite(raw) ? raw : 0 })
+              const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
 
               if (!hasMultipleItems) {
                 // We don't need the name of the package in this case, since it is shown in the xAxis label

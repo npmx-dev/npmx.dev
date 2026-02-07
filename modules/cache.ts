@@ -1,5 +1,5 @@
 import process from 'node:process'
-import { defineNuxtModule } from 'nuxt/kit'
+import { defineNuxtModule, useRuntimeConfig } from 'nuxt/kit'
 import { provider } from 'std-env'
 
 // Storage key for fetch cache - must match shared/utils/fetch-cache-config.ts
@@ -14,8 +14,16 @@ export default defineNuxtModule({
       return
     }
 
+    const config = useRuntimeConfig()
+
     nuxt.hook('nitro:config', nitroConfig => {
       nitroConfig.storage = nitroConfig.storage || {}
+
+      const upstash = {
+        driver: 'upstash' as const,
+        url: config.upstash.redisRestUrl,
+        token: config.upstash.redisRestToken,
+      }
 
       // Main cache storage (for defineCachedFunction, etc.)
       nitroConfig.storage.cache = {
@@ -30,9 +38,8 @@ export default defineNuxtModule({
       }
 
       const env = process.env.VERCEL_ENV
-      nitroConfig.storage.atproto = {
-        driver: env === 'production' ? 'vercel-kv' : 'vercel-runtime-cache',
-      }
+      nitroConfig.storage.atproto =
+        env === 'production' ? upstash : { driver: 'vercel-runtime-cache' }
     })
   },
 })

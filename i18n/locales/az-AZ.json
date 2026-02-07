@@ -19,7 +19,6 @@
     "label": "npm paketlərini axtar",
     "placeholder": "paket axtar...",
     "button": "axtar",
-    "clear": "Axtarışı təmizlə",
     "searching": "Axtarılır...",
     "found_packages": "Paket tapılmadı | 1 paket tapıldı | {count} paket tapıldı",
     "updating": "(yenilənir...)",
@@ -40,7 +39,6 @@
   "nav": {
     "main_navigation": "Əsas",
     "popular_packages": "Populyar paketlər",
-    "search": "axtar",
     "settings": "tənzimləmələr",
     "back": "geri"
   },
@@ -54,7 +52,6 @@
       "language": "Dil"
     },
     "relative_dates": "Nisbi tarixlər",
-    "relative_dates_description": "Tam tarix əvəzinə \"3 gün əvvəl\" göstər",
     "include_types": "Quraşdırmaya {'@'}types daxil et",
     "include_types_description": "Tipsiz paketlər üçün quraşdırma əmrlərinə {'@'}types paketi əlavə et",
     "hide_platform_packages": "Axtarışda platforma-spesifik paketləri gizlət",
@@ -88,8 +85,6 @@
     "copy": "kopyala",
     "copied": "kopyalandı!",
     "skip_link": "Əsas məzmuna keç",
-    "close_modal": "Pəncərəni bağla",
-    "show_more": "daha çox göstər",
     "warnings": "Xəbərdarlıqlar:",
     "go_back_home": "Ana səhifəyə qayıt",
     "view_on_npm": "npm-də bax",
@@ -105,7 +100,6 @@
     "not_found": "Paket Tapılmadı",
     "not_found_message": "Paket tapıla bilmədi.",
     "no_description": "Təsvir verilməyib",
-    "show_full_description": "Tam təsviri göstər",
     "not_latest": "(son deyil)",
     "verified_provenance": "Təsdiqlənmiş mənşə",
     "view_permalink": "Bu versiya üçün daimi keçidə bax",
@@ -264,25 +258,12 @@
       "view_spdx": "SPDX-də lisenziya mətnini göstər"
     },
     "vulnerabilities": {
-      "no_description": "Təsvir mövcud deyil",
-      "found": "{count} zəiflik tapıldı | {count} zəiflik tapıldı",
-      "deps_found": "{count} zəiflik tapıldı | {count} zəiflik tapıldı",
-      "deps_affected": "{count} asılılıq təsirləndı | {count} asılılıq təsirləndi",
       "tree_found": "{packages}/{total} paketdə {vulns} zəiflik | {packages}/{total} paketdə {vulns} zəiflik",
-      "scanning_tree": "Asılılıq ağacı skan edilir...",
       "show_all_packages": "bütün {count} təsirlənmiş paketi göstər",
-      "no_summary": "Xülasə yoxdur",
-      "view_details": "Zəiflik detallarını göstər",
       "path": "yol",
       "more": "+{count} daha çox",
       "packages_failed": "{count} paket yoxlana bilmədi | {count} paket yoxlana bilmədi",
-      "no_known": "{count} paketdə bilinən zəiflik yoxdur",
       "scan_failed": "Zəifliklər üçün skan edilə bilmədi",
-      "depth": {
-        "root": "Bu paket",
-        "direct": "Birbaşa asılılıq",
-        "transitive": "Dolayı asılılıq (birbaşa olmayan)"
-      },
       "severity": {
         "critical": "kritik",
         "high": "yüksək",
@@ -324,12 +305,7 @@
     },
     "skeleton": {
       "loading": "Paket detalları yüklənir",
-      "license": "Lisenziya",
       "weekly": "Həftəlik",
-      "size": "Həcm",
-      "deps": "Asılılıqlar",
-      "get_started": "Başla",
-      "readme": "Readme",
       "maintainers": "Dəstəkçilər",
       "keywords": "Açar sözlər",
       "versions": "Versiyalar",
@@ -342,16 +318,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "qoşulur...",
-      "connected_as": "~{user} olaraq qoşulub",
-      "connected": "qoşulub",
-      "connect_cli": "lokal CLI qoş",
-      "aria_connecting": "Lokal konnektora qoşulur",
-      "aria_connected": "Lokal konnektora qoşulub",
-      "aria_click_to_connect": "Lokal konnektora qoşulmaq üçün klikləyin",
-      "avatar_alt": "{user} avatarı"
-    },
     "modal": {
       "title": "Lokal Konnektor",
       "connected": "Qoşulub",
@@ -463,8 +429,7 @@
       "failed_to_load": "Təşkilat paketləri yüklənə bilmədi",
       "no_match": "\"{query}\" ilə uyğun paket yoxdur",
       "not_found": "Təşkilat tapılmadı",
-      "not_found_message": "\"{'@'}{name}\" təşkilatı npm-də mövcud deyil",
-      "filter_placeholder": "{count} paketi süz..."
+      "not_found_message": "\"{'@'}{name}\" təşkilatı npm-də mövcud deyil"
     }
   },
   "user": {
@@ -525,7 +490,6 @@
   "code": {
     "files_label": "Fayllar",
     "no_files": "Bu qovluqda fayl yoxdur",
-    "select_version": "Versiya seçin",
     "root": "kök",
     "lines": "{count} sətir",
     "toggle_tree": "Fayl ağacını keçir",
@@ -535,7 +499,6 @@
     "view_raw": "Xam faylı göstər",
     "file_too_large": "Fayl önbaxış üçün çox böyükdür",
     "file_size_warning": "{size} sintaksis vurğulama üçün 500KB limitini keçir",
-    "load_anyway": "Hər halda yüklə",
     "failed_to_load": "Fayl yüklənə bilmədi",
     "unavailable_hint": "Fayl çox böyük ola bilər və ya mövcud deyil",
     "version_required": "Kodu baxmaq üçün versiya tələb olunur",
@@ -559,8 +522,7 @@
       "verified_via": "Təsdiqlənmiş: {provider} vasitəsilə dərc edilib"
     },
     "jsr": {
-      "title": "JSR-də də mövcuddur",
-      "label": "jsr"
+      "title": "JSR-də də mövcuddur"
     }
   },
   "filters": {
@@ -671,7 +633,6 @@
     "title": "Haqqında",
     "heading": "haqqında",
     "meta_description": "npmx npm reyestri üçün sürətli, müasir brauzerdir. npm paketlərini kəşf etmək üçün daha yaxşı UX/DX.",
-    "back_home": "ana səhifəyə qayıt",
     "what_we_are": {
       "title": "Biz nəyik",
       "better_ux_dx": "daha yaxşı UX/DX",
@@ -727,7 +688,6 @@
   },
   "header": {
     "home": "npmx ana səhifə",
-    "github": "GitHub",
     "packages": "paketlər",
     "packages_dropdown": {
       "title": "Paketləriniz",

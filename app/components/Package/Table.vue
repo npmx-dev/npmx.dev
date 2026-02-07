@@ -16,6 +16,8 @@ const props = defineProps<{
   isLoading?: boolean
 }>()
 
+const { t } = useI18n()
+
 const sortOption = defineModel<SortOption>('sortOption')
 
 const emit = defineEmits<{
@@ -87,23 +89,23 @@ function toggleSort(id: string) {
 }
 
 // Map column IDs to i18n keys
-const columnLabelKeys: Record<ColumnId, string> = {
-  name: 'filters.columns.name',
-  version: 'filters.columns.version',
-  description: 'filters.columns.description',
-  downloads: 'filters.columns.downloads',
-  updated: 'filters.columns.published',
-  maintainers: 'filters.columns.maintainers',
-  keywords: 'filters.columns.keywords',
-  qualityScore: 'filters.columns.quality_score',
-  popularityScore: 'filters.columns.popularity_score',
-  maintenanceScore: 'filters.columns.maintenance_score',
-  combinedScore: 'filters.columns.combined_score',
-  security: 'filters.columns.security',
-}
+const columnLabels = computed(() => ({
+  name: t('filters.columns.name'),
+  version: t('filters.columns.version'),
+  description: t('filters.columns.description'),
+  downloads: t('filters.columns.downloads'),
+  updated: t('filters.columns.published'),
+  maintainers: t('filters.columns.maintainers'),
+  keywords: t('filters.columns.keywords'),
+  qualityScore: t('filters.columns.quality_score'),
+  popularityScore: t('filters.columns.popularity_score'),
+  maintenanceScore: t('filters.columns.maintenance_score'),
+  combinedScore: t('filters.columns.combined_score'),
+  security: t('filters.columns.security'),
+}))
 
-function getColumnLabelKey(id: ColumnId): string {
-  return columnLabelKeys[id]
+function getColumnLabel(id: ColumnId): string {
+  return columnLabels.value[id]
 }
 </script>
 
@@ -133,7 +135,7 @@ function getColumnLabelKey(id: ColumnId): string {
             @keydown.space.prevent="toggleSort('name')"
           >
             <span class="inline-flex items-center gap-1">
-              {{ $t(getColumnLabelKey('name')) }}
+              {{ getColumnLabel('name') }}
               <template v-if="isSortable('name')">
                 <span
                   v-if="isColumnSorted('name')"
@@ -151,7 +153,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none"
           >
-            {{ $t(getColumnLabelKey('version')) }}
+            {{ getColumnLabel('version') }}
           </th>
 
           <th
@@ -159,7 +161,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none"
           >
-            {{ $t(getColumnLabelKey('description')) }}
+            {{ getColumnLabel('description') }}
           </th>
 
           <th
@@ -184,7 +186,7 @@ function getColumnLabelKey(id: ColumnId): string {
             @keydown.space.prevent="toggleSort('downloads')"
           >
             <span class="inline-flex items-center gap-1 justify-end">
-              {{ $t(getColumnLabelKey('downloads')) }}
+              {{ getColumnLabel('downloads') }}
               <template v-if="isSortable('downloads')">
                 <span
                   v-if="isColumnSorted('downloads')"
@@ -218,7 +220,7 @@ function getColumnLabelKey(id: ColumnId): string {
             @keydown.space.prevent="toggleSort('updated')"
           >
             <span class="inline-flex items-center gap-1">
-              {{ $t(getColumnLabelKey('updated')) }}
+              {{ getColumnLabel('updated') }}
               <template v-if="isSortable('updated')">
                 <span
                   v-if="isColumnSorted('updated')"
@@ -236,7 +238,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
           >
-            {{ $t(getColumnLabelKey('maintainers')) }}
+            {{ getColumnLabel('maintainers') }}
           </th>
 
           <th
@@ -244,7 +246,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
           >
-            {{ $t(getColumnLabelKey('keywords')) }}
+            {{ getColumnLabel('keywords') }}
           </th>
 
           <th
@@ -252,7 +254,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
           >
-            {{ $t(getColumnLabelKey('qualityScore')) }}
+            {{ getColumnLabel('qualityScore') }}
           </th>
 
           <th
@@ -260,7 +262,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
           >
-            {{ $t(getColumnLabelKey('popularityScore')) }}
+            {{ getColumnLabel('popularityScore') }}
           </th>
 
           <th
@@ -268,7 +270,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
           >
-            {{ $t(getColumnLabelKey('maintenanceScore')) }}
+            {{ getColumnLabel('maintenanceScore') }}
           </th>
 
           <th
@@ -276,7 +278,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
           >
-            {{ $t(getColumnLabelKey('combinedScore')) }}
+            {{ getColumnLabel('combinedScore') }}
           </th>
 
           <th
@@ -284,7 +286,7 @@ function getColumnLabelKey(id: ColumnId): string {
             scope="col"
             class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end"
           >
-            {{ $t(getColumnLabelKey('security')) }}
+            {{ getColumnLabel('security') }}
           </th>
         </tr>
       </thead>
