@@ -113,6 +113,15 @@ onUnmounted(deactivate)
                 </NuxtLink>
 
                 <NuxtLink
+                  :to="{ name: 'blog' }"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:information w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('footer.blog') }}
+                </NuxtLink>
+
+                <NuxtLink
                   :to="{ name: 'privacy' }"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"
