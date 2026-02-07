@@ -51,6 +51,10 @@
     "links": "Liens",
     "tap_to_search": "Toucher pour rechercher"
   },
+  "blog": {
+    "title": "Blog",
+    "author": {}
+  },
   "settings": {
     "title": "paramètres",
     "tagline": "personnalisez votre expérience npmx",
@@ -174,6 +178,7 @@
       "fund": "donner",
       "compare": "comparer"
     },
+    "likes": {},
     "docs": {
       "not_available": "Documentation non disponible",
       "not_available_detail": "Nous n'avons pas pu générer la documentation pour cette version."
@@ -198,8 +203,10 @@
       "no_readme": "Aucun README disponible.",
       "view_on_github": "Voir sur GitHub",
       "toc_title": "Sommaire",
+      "callout": {},
       "copy_as_markdown": "Copier le README en markdown"
     },
+    "provenance_section": {},
     "keywords_title": "Mots-clés",
     "compatibility": "Compatibilité",
     "card": {
@@ -901,5 +908,19 @@
         "up_to_you": "À vous de décider !"
       }
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

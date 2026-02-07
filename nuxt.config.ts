@@ -1,8 +1,10 @@
 import process from 'node:process'
 import { currentLocales } from './config/i18n'
+import Markdown from 'unplugin-vue-markdown/vite'
 import { isCI, provider } from 'std-env'
 
 export default defineNuxtConfig({
+  extensions: ['.md'],
   modules: [
     // Workaround for Nuxt 4.3.0 regression: https://github.com/nuxt/nuxt/issues/34140
     // shared-imports.d.ts pulls in app composables during type-checking of shared context,
@@ -124,6 +126,7 @@ export default defineNuxtConfig({
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
     // proxy for insights
+    '/blog/**': { isr: true, prerender: true },
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
     '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
@@ -265,6 +268,27 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    vue: {
+      include: [/\.vue($|\?)/, /\.(md|markdown)($|\?)/],
+    },
+    plugins: [
+      Markdown({
+        include: [/\.(md|markdown)($|\?)/],
+        wrapperComponent: 'BlogPostWrapper',
+        wrapperClasses: 'text-fg-muted leading-relaxed',
+        async markdownItSetup(md) {
+          const shiki = await import('@shikijs/markdown-it')
+          md.use(
+            await shiki.default({
+              themes: {
+                dark: 'github-dark',
+                light: 'github-light',
+              },
+            }),
+          )
+        },
+      }),
+    ],
     optimizeDeps: {
       include: [
         '@vueuse/core',
