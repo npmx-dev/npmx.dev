@@ -504,7 +504,6 @@ watch(lastExecutionTime, () => {
               {{ orgName }}:
             </span>
             <label for="new-team-name" class="sr-only">{{ $t('org.teams.team_name_label') }}</label>
-            <!-- rtl-check-ignore -->
             <InputBase
               id="new-team-name"
               v-model="newTeamName"
