@@ -834,7 +834,7 @@
       "create_account": "アカウントを新規作成",
       "connect_bluesky": "Blueskyで接続",
       "what_is_atmosphere": "Atmosphereアカウントとは？",
-      "atmosphere_explanation": "{npmx} は多くのソーシャル機能に {atproto} を利用しています。{atproto}により、ユーザーは自分自身のデータを所有し、1つのアカウントで{atproto}に対応するすべてのアプリケーションを利用できるようになります。アカウントを作成すると、{bluesky} や {tangled} などの他のアプリでも同じアカウントを使用できます。"
+      "atmosphere_explanation": "{npmx} は多くのソーシャル機能に {atproto} を利用しています。AT Protocolにより、ユーザーは自分自身のデータを所有し、1つのアカウントでAT Protocolに対応するすべてのアプリケーションを利用できるようになります。アカウントを作成すると、{bluesky} や {tangled} などの他のアプリでも同じアカウントを使用できます。"
     }
   },
   "header": {
