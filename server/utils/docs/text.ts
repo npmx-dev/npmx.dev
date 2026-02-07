@@ -70,6 +70,7 @@ export function createSymbolId(kind: string, name: string): string {
  */
 export function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): string {
   let result = escapeHtml(text)
+
   result = result.replace(/\{@link\s+([^\s}]+)(?:\s+([^}]+))?\}/g, (_, target, label) => {
     const displayText = label || target
 
