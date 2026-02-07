@@ -142,7 +142,9 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
               $fetch<VulnerabilityTreeResult>(
                 `/api/registry/vulnerabilities/${encodePackageName(name)}`,
               ).catch(() => null),
-              $fetch<PackageLikes>(`/api/social/likes/${name}`).catch(() => null),
+              $fetch<PackageLikes>(`/api/social/likes/${encodePackageName(name)}`).catch(
+                () => null,
+              ),
             ])
             const versionData = pkgData.versions[latestVersion]
             const packageSize = versionData?.dist?.unpackedSize

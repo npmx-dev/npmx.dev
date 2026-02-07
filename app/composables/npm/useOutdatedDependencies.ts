@@ -1,3 +1,4 @@
+import type { NuxtApp } from '#app'
 import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
 import type { Packument } from '#shared/types'
 import { mapWithConcurrency } from '#shared/utils/async'
@@ -7,7 +8,6 @@ import {
   isNonSemverConstraint,
   constraintIncludesPrerelease,
 } from '~/utils/npm/outdated-dependencies'
-import { NPM_REGISTRY } from '~/utils/npm/common'
 
 // Cache for packument fetches to avoid duplicate requests across components
 const packumentCache = new Map<string, Promise<Packument | null>>()
@@ -18,6 +18,7 @@ const packumentCache = new Map<string, Promise<Packument | null>>()
  */
 async function checkDependencyOutdated(
   cachedFetch: CachedFetchFunction,
+  $npmRegistry: NuxtApp['$npmRegistry'],
   packageName: string,
   constraint: string,
 ): Promise<OutdatedDependencyInfo | null> {
@@ -31,7 +32,7 @@ async function checkDependencyOutdated(
   if (cached) {
     packument = await cached
   } else {
-    const promise = cachedFetch<Packument>(`${NPM_REGISTRY}/${encodePackageName(packageName)}`)
+    const promise = $npmRegistry<Packument>(`/${encodePackageName(packageName)}`)
       .then(({ data }) => data)
       .catch(() => null)
     packumentCache.set(packageName, promise)
@@ -92,6 +93,7 @@ async function checkDependencyOutdated(
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
 ) {
+  const { $npmRegistry } = useNuxtApp()
   const cachedFetch = useCachedFetch()
   const outdated = shallowRef<Record<string, OutdatedDependencyInfo>>({})
 
@@ -105,7 +107,7 @@ export function useOutdatedDependencies(
     const batchResults = await mapWithConcurrency(
       entries,
       async ([name, constraint]) => {
-        const info = await checkDependencyOutdated(cachedFetch, name, constraint)
+        const info = await checkDependencyOutdated(cachedFetch, $npmRegistry, name, constraint)
         return [name, info] as const
       },
       5,

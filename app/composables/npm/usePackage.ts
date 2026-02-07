@@ -1,5 +1,4 @@
 import type { Packument, SlimPackument, SlimVersion, SlimPackumentVersion } from '#shared/types'
-import { NPM_REGISTRY } from '~/utils/npm/common'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 
 /** Number of recent versions to include in initial payload */
@@ -98,13 +97,11 @@ export function usePackage(
   name: MaybeRefOrGetter<string>,
   requestedVersion?: MaybeRefOrGetter<string | null>,
 ) {
-  const cachedFetch = useCachedFetch()
-
   const asyncData = useLazyAsyncData(
     () => `package:${toValue(name)}:${toValue(requestedVersion) ?? ''}`,
-    async (_nuxtApp, { signal }) => {
+    async ({ $npmRegistry }, { signal }) => {
       const encodedName = encodePackageName(toValue(name))
-      const { data: r, isStale } = await cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`, {
+      const { data: r, isStale } = await $npmRegistry<Packument>(`/${encodedName}`, {
         signal,
       })
       const reqVer = toValue(requestedVersion)

@@ -25,16 +25,18 @@ export default defineNuxtModule({
         token: config.upstash.redisRestToken,
       }
 
-      // Main cache storage (for defineCachedFunction, etc.)
-      nitroConfig.storage.cache = {
-        ...nitroConfig.storage.cache,
-        driver: 'vercel-runtime-cache',
-      }
+      if (process.env.RUNTIME_CACHE) {
+        // Main cache storage (for defineCachedFunction, etc.)
+        nitroConfig.storage.cache = {
+          ...nitroConfig.storage.cache,
+          driver: 'vercel-runtime-cache',
+        }
 
-      // Fetch cache storage (for SWR fetch caching)
-      nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
-        ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
-        driver: 'vercel-runtime-cache',
+        // Fetch cache storage (for SWR fetch caching)
+        nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
+          ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
+          driver: 'vercel-runtime-cache',
+        }
       }
 
       const env = process.env.VERCEL_ENV

@@ -77,6 +77,7 @@
     "@vueuse/integrations": "14.2.0",
     "@vueuse/nuxt": "14.2.0",
     "@vueuse/router": "^14.2.0",
+    "@vueuse/shared": "14.2.0",
     "defu": "6.1.4",
     "fast-npm-meta": "1.0.0",
     "focus-trap": "^7.8.0",
@@ -104,7 +105,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.8"
+    "vue-data-ui": "3.14.9"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.1.4",
@@ -119,6 +120,7 @@
     "@vitest/coverage-v8": "4.0.18",
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
+    "defu": "6.1.4",
     "eslint-plugin-regexp": "3.0.0",
     "fast-check": "4.5.3",
     "h3": "1.15.5",

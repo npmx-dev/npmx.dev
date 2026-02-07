@@ -316,8 +316,6 @@ interface ValidatedSuggestion {
 /** Cache for existence checks to avoid repeated API calls */
 const existenceCache = ref<Record<string, boolean | 'pending'>>({})
 
-const NPM_REGISTRY = 'https://registry.npmjs.org'
-
 interface NpmSearchResponse {
   total: number
   objects: Array<{ package: { name: string } }>

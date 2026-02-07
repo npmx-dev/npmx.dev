@@ -30,8 +30,8 @@ export default defineNuxtConfig({
     sessionPassword: '',
     // Upstash Redis for distributed OAuth token refresh locking in production
     upstash: {
-      redisRestUrl: process.env.KV_REST_API_URL || '',
-      redisRestToken: process.env.KV_REST_API_TOKEN || '',
+      redisRestUrl: process.env.UPSTASH_KV_REST_API_URL || process.env.KV_REST_API_URL || '',
+      redisRestToken: process.env.UPSTASH_KV_REST_API_TOKEN || process.env.KV_REST_API_TOKEN || '',
     },
   },
 
@@ -255,6 +255,7 @@ export default defineNuxtConfig({
       include: [
         '@vueuse/core',
         '@vueuse/integrations/useFocusTrap',
+        '@vueuse/integrations/useFocusTrap/component',
         'vue-data-ui/vue-ui-sparkline',
         'vue-data-ui/vue-ui-xy',
         'virtua/vue',

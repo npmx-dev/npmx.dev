@@ -128,6 +128,7 @@ import {
   PackageMetricsBadges,
   PackagePlaygrounds,
   PackageReplacement,
+  PackageSidebar,
   PackageSkeleton,
   PackageSkillsCard,
   PackageTable,
@@ -2022,6 +2023,18 @@ describe('component accessibility audits', () => {
             moduleName: 'moment',
             docPath: 'moment',
           },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageSidebar', () => {
+    it('should have no accessibility violations with slot content', async () => {
+      const component = await mountSuspended(PackageSidebar, {
+        slots: {
+          default: () => h('div', 'Sidebar content'),
         },
       })
       const results = await runAxe(component)

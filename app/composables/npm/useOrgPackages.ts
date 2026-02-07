@@ -1,6 +1,6 @@
+import type { NuxtApp } from '#app'
 import type { NpmSearchResponse, NpmSearchResult, MinimalPackument } from '#shared/types'
 import { emptySearchResponse, packumentToSearchResult } from './useNpmSearch'
-import { NPM_REGISTRY, NPM_API } from '~/utils/npm/common'
 import { mapWithConcurrency } from '#shared/utils/async'
 
 /**
@@ -10,6 +10,7 @@ import { mapWithConcurrency } from '#shared/utils/async'
  * Note: npm bulk downloads API does not support scoped packages.
  */
 async function fetchBulkDownloads(
+  $npmApi: NuxtApp['$npmApi'],
   packageNames: string[],
   options: Parameters<typeof $fetch>[1] = {},
 ): Promise<Map<string, number>> {
@@ -28,11 +29,11 @@ async function fetchBulkDownloads(
     bulkPromises.push(
       (async () => {
         try {
-          const response = await $fetch<Record<string, { downloads: number } | null>>(
-            `${NPM_API}/downloads/point/last-week/${chunk.join(',')}`,
+          const response = await $npmApi<Record<string, { downloads: number } | null>>(
+            `/downloads/point/last-week/${chunk.join(',')}`,
             options,
           )
-          for (const [name, data] of Object.entries(response)) {
+          for (const [name, data] of Object.entries(response.data)) {
             if (data?.downloads !== undefined) {
               downloads.set(name, data.downloads)
             }
@@ -54,8 +55,8 @@ async function fetchBulkDownloads(
         const results = await Promise.allSettled(
           batch.map(async name => {
             const encoded = encodePackageName(name)
-            const data = await $fetch<{ downloads: number }>(
-              `${NPM_API}/downloads/point/last-week/${encoded}`,
+            const { data } = await $npmApi<{ downloads: number }>(
+              `/downloads/point/last-week/${encoded}`,
             )
             return { name, downloads: data.downloads }
           }),
@@ -80,11 +81,9 @@ async function fetchBulkDownloads(
  * Returns search-result-like objects for compatibility with PackageList
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
-  const cachedFetch = useCachedFetch()
-
   const asyncData = useLazyAsyncData(
     () => `org-packages:${toValue(orgName)}`,
-    async (_nuxtApp, { signal }) => {
+    async ({ $npmRegistry, $npmApi }, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
         return emptySearchResponse
@@ -93,8 +92,8 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       // Get all package names in the org
       let packageNames: string[]
       try {
-        const { data } = await cachedFetch<Record<string, string>>(
-          `${NPM_REGISTRY}/-/org/${encodeURIComponent(org)}/package`,
+        const { data } = await $npmRegistry<Record<string, string>>(
+          `/-/org/${encodeURIComponent(org)}/package`,
           { signal },
         )
         packageNames = Object.keys(data)
@@ -124,10 +123,9 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
             async name => {
               try {
                 const encoded = encodePackageName(name)
-                const { data: pkg } = await cachedFetch<MinimalPackument>(
-                  `${NPM_REGISTRY}/${encoded}`,
-                  { signal },
-                )
+                const { data: pkg } = await $npmRegistry<MinimalPackument>(`/${encoded}`, {
+                  signal,
+                })
                 return pkg
               } catch {
                 return null
@@ -141,7 +139,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
           )
         })(),
         // Fetch downloads in bulk
-        fetchBulkDownloads(packageNames, { signal }),
+        fetchBulkDownloads($npmApi, packageNames, { signal }),
       ])
 
       // Convert to search results with download data
