@@ -60,7 +60,7 @@ describe('getPreviewUrl', () => {
     [
       'Netlify preview-server',
       {
-        CONTEXT: 'branch-deploy',
+        CONTEXT: 'preview-server',
         URL: 'https://my-feat--preview.example.com',
       },
       'https://my-feat--preview.example.com',
