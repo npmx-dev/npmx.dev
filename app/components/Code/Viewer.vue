@@ -65,7 +65,7 @@ watch(
   <div class="code-viewer flex min-h-full max-w-full">
     <!-- Line numbers column -->
     <div
-      class="line-numbers shrink-0 bg-bg-subtle border-r border-solid border-border text-end select-none relative"
+      class="line-numbers shrink-0 bg-bg-subtle border-ie border-solid border-border text-end select-none relative"
       :style="{ minWidth: lineNumberWidth }"
       aria-hidden="true"
     >
