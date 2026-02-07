@@ -136,13 +136,13 @@
       "title": "この依存関係は不要な可能性があります。",
       "native": "これは Node {nodeVersion} 以降で利用可能な {replacement} で置き換え可能です。",
       "simple": "{community} はこのパッケージを冗長としてフラグを立てており、次のアドバイスがあります: {replacement}",
-      "documented": "{community} は、このパッケージによりパフォーマンスの高い代替手段があると報告しています。",
+      "documented": "{community} により、このパッケージにはよりパフォーマンスの高い代替手段があることが報告されています。",
       "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
       "learn_more": "詳細はこちら",
-      "learn_more_above": "EN TEXT TO REPLACE: Learn more above.",
+      "learn_more_above": "詳細は上記を確認してください。",
       "mdn": "MDN",
       "community": "コミュニティ",
-      "consider_no_dep": "EN TEXT TO REPLACE: + Consider no dep?"
+      "consider_no_dep": "+ 依存関係なしを検討しますか？"
     },
     "stats": {
       "license": "ライセンス",
@@ -188,8 +188,8 @@
       "compare": "比較"
     },
     "likes": {
-      "like": "EN TEXT TO REPLACE: Like this package",
-      "unlike": "EN TEXT TO REPLACE: Unlike this package"
+      "like": "このパッケージをいいねする",
+      "unlike": "このパッケージのいいねを解除する"
     },
     "docs": {
       "not_available": "ドキュメントは利用できません",
@@ -885,13 +885,13 @@
       "select_version": "バージョンを選択"
     },
     "no_dependency": {
-      "label": "EN TEXT TO REPLACE: (No dependency)",
-      "typeahead_title": "EN TEXT TO REPLACE: What Would James Do?",
-      "typeahead_description": "EN TEXT TO REPLACE: Compare against not using a dependency! e18e approved.",
-      "tooltip_title": "EN TEXT TO REPLACE: You might not need a dependency",
-      "tooltip_description": "EN TEXT TO REPLACE: Compare against not using a dependency! The {link} maintains a list of packages that can be replaced with native APIs or simpler alternatives.",
-      "e18e_community": "EN TEXT TO REPLACE: e18e community",
-      "add_column": "EN TEXT TO REPLACE: Add no dependency column to comparison"
+      "label": "(依存関係なし)",
+      "typeahead_title": "Jamesならどうする？",
+      "typeahead_description": "依存関係を使用しない場合と比較します！e18eも承認済みです。",
+      "tooltip_title": "依存関係は不要かもしれません",
+      "tooltip_description": "依存関係を使用しない場合と比較してください！{link}は、ネイティブAPIやよりシンプルな代替手段に置き換え可能なパッケージのリストをメンテナンスしています。",
+      "e18e_community": "e18eコミュニティ",
+      "add_column": "比較項目に「依存関係なし」カラムを追加"
     },
     "facets": {
       "group_label": "比較項目",
@@ -968,89 +968,89 @@
         "types_included": "同梱",
         "types_none": "なし",
         "vulnerabilities_summary": "{count} 件 ({critical}C/{high}H)",
-        "up_to_you": "EN TEXT TO REPLACE: Up to you!"
+        "up_to_you": "あなた次第！"
       }
     }
   },
   "privacy_policy": {
-    "title": "EN TEXT TO REPLACE: privacy policy",
-    "last_updated": "EN TEXT TO REPLACE: Last updated: {date}",
-    "welcome": "EN TEXT TO REPLACE: Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
+    "title": "プライバシーポリシー",
+    "last_updated": "最終更新日: {date}",
+    "welcome": "{app}へようこそ。私たちはあなたのプライバシーの保護に努めています。本ポリシーでは、どんなデータを収集するか、どのように使用するか、そして、あなたの情報に関するあなたが持つ権利について説明します。",
     "cookies": {
-      "title": "EN TEXT TO REPLACE: Cookies",
+      "title": "Cookie",
       "what_are": {
-        "title": "EN TEXT TO REPLACE: What are cookies?",
-        "p1": "EN TEXT TO REPLACE: Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."
+        "title": "Cookieとは？",
+        "p1": "Cookieは、ウェブサイト訪問時にデバイスに保存される小さなテキストファイルです。特定の好みや設定を記憶することで、ブラウジング体験を向上させることを目的としています。"
       },
       "types": {
-        "title": "EN TEXT TO REPLACE: What cookies do we use?",
-        "p1": "EN TEXT TO REPLACE: We only use {bold} for purposes strictly necessary for the site's functionality. We do not use third-party or advertising cookies.",
-        "bold": "EN TEXT TO REPLACE: essential technical cookies",
-        "li1": "EN TEXT TO REPLACE: {li11}{separator} {li12}",
-        "li2": "EN TEXT TO REPLACE: {li21}{separator} {li22}",
-        "separator": "EN TEXT TO REPLACE: :",
-        "cookie_vdpl": "EN TEXT TO REPLACE: __vdpl",
-        "cookie_vdpl_desc": "EN TEXT TO REPLACE: This cookie is used by our hosting provider (Vercel) for skew protection. It ensures you fetch assets from the correct deployment version if a new update is released while you are browsing. It does not track you.",
-        "cookie_h3": "EN TEXT TO REPLACE: h3",
-        "cookie_h3_desc": "EN TEXT TO REPLACE: This is our secure session cookie. It stores the OAuth access token when you connect your Atmosphere account. It is essential for maintaining your authenticated session."
+        "title": "使用しているCookie",
+        "p1": "サイトの機能に厳密に必要な目的のために{bold}のみを使用します。サードパーティCookieや広告用Cookieは使用しません。",
+        "bold": "必須の技術的なCookie",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "このCookieは、ホスティングプロバイダー（Vercel）がスキュー保護のために使用します。ブラウジング中に新しいアップデートがリリースされた場合でも、正しいデプロイバージョンからアセットを取得できるようにします。あなたの行動の追跡には利用されません。",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "これはセキュアなセッションCookieです。Atmosphereアカウント接続時にOAuthアクセストークンを保存します。認証セッションの維持に不可欠です。"
       },
       "local_storage": {
-        "title": "EN TEXT TO REPLACE: Local storage",
-        "p1": "EN TEXT TO REPLACE: In addition to session cookies, we use your browser's {bold} to save your display preferences. This allows us to remember the theme (light/dark) and some other {settings} you have selected, so you don't have to reconfigure them on each visit.",
-        "bold": "EN TEXT TO REPLACE: Local Storage",
-        "p2": "EN TEXT TO REPLACE: This information is purely functional, stored only on your device, and {bold2}. We use it exclusively to improve your experience on our website.",
-        "bold2": "EN TEXT TO REPLACE: contains no personal data nor is it used to track you",
-        "settings": "EN TEXT TO REPLACE: settings"
+        "title": "ローカルストレージ",
+        "p1": "セッションCookieに加えて、ブラウザの{bold}を使用して表示設定を保存します。これにより、選択したテーマ（ライト/ダーク）やその他の{settings}を記憶し、サイトの訪問のたびに再設定する手間を省きます。",
+        "bold": "ローカルストレージ",
+        "p2": "この情報は純粋に機能的なものであり、あなたのデバイスにのみ保存され、{bold2}。ウェブサイトでの体験向上のためにのみ使用されます。",
+        "bold2": "個人データを含まず、あなたの追跡にも使用されません",
+        "settings": "設定"
       },
       "management": {
-        "title": "EN TEXT TO REPLACE: Managing cookies",
-        "p1": "EN TEXT TO REPLACE: You can configure your browser to accept, reject, or delete cookies according to your preferences. However, please note that {bold}.",
-        "bold": "EN TEXT TO REPLACE: rejecting essential cookies may prevent full access to the application",
-        "p2": "EN TEXT TO REPLACE: Below are links with instructions for cookie management in the most commonly used browsers:",
-        "chrome": "EN TEXT TO REPLACE: Google Chrome (opens in a new window)",
-        "firefox": "EN TEXT TO REPLACE: Mozilla Firefox (opens in a new window)",
-        "edge": "EN TEXT TO REPLACE: Microsoft Edge (opens in a new window)"
+        "title": "Cookieの管理",
+        "p1": "あなたは、自身の好みに合わせて、Cookieの受け入れ、拒否、または削除をブラウザで設定できます。ただし、{bold}場合があるため、注意してください。",
+        "bold": "必須Cookieを拒否するとアプリケーションの一部機能が制限される",
+        "p2": "主要なブラウザにおけるCookieの管理手順は、以下のリンクから確認できます。",
+        "chrome": "Google Chrome（別ウィンドウで開く）",
+        "firefox": "Mozilla Firefox（別ウィンドウで開く）",
+        "edge": "Microsoft Edge（別ウィンドウで開く）"
       }
     },
     "analytics": {
-      "title": "EN TEXT TO REPLACE: Analytics",
-      "p1": "EN TEXT TO REPLACE: We use {bold} to understand how visitors use our website. This helps us improve the user experience and identify issues.",
-      "bold": "EN TEXT TO REPLACE: Vercel Web Analytics",
-      "p2": "EN TEXT TO REPLACE: Vercel Analytics is designed with privacy in mind:",
-      "li1": "EN TEXT TO REPLACE: It does not use cookies",
-      "li2": "EN TEXT TO REPLACE: It does not collect personal identifiers",
-      "li3": "EN TEXT TO REPLACE: It does not track users across websites",
-      "li4": "EN TEXT TO REPLACE: All data is aggregated and anonymised",
-      "p3": "EN TEXT TO REPLACE: The only information collected includes: page URLs, referrer, country/region, device type, browser, and operating system. This data cannot be used to identify individual users."
+      "title": "分析",
+      "p1": "訪問者のウェブサイト利用状況を把握するために{bold}を使用しています。この分析は、ユーザー体験の向上や問題の特定に役立ちます。",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analyticsは、以下のようにプライバシーに配慮して設計されています。",
+      "li1": "Cookieを使用しません",
+      "li2": "個人を識別できる情報を収集しません",
+      "li3": "複数のサイトを横断したユーザー追跡を行いません",
+      "li4": "すべてのデータは集計および匿名化されます",
+      "p3": "収集される情報は、ページURL、リファラ、国/地域、デバイスの種類、ブラウザ、OSのみです。これらのデータから個人を特定することはできません。"
     },
     "authenticated": {
-      "title": "EN TEXT TO REPLACE: Authenticated users",
-      "p1": "EN TEXT TO REPLACE: When you connect your {bold} account to npmx, we store your OAuth access token in a secure, HTTP-only session cookie. This token is used solely to authenticate requests on your behalf.",
-      "bold": "EN TEXT TO REPLACE: Atmosphere",
-      "p2": "EN TEXT TO REPLACE: We do not store your credentials, and we do not access any data beyond what is necessary to provide the features you use. You can disconnect your account at any time from the {settings} page.",
-      "settings": "EN TEXT TO REPLACE: settings"
+      "title": "認証済みユーザー",
+      "p1": "{bold}アカウントをnpmxに接続すると、OAuthアクセストークンがセキュアなHTTP-onlyセッションCookieに保存されます。このトークンは、代理でリクエストを認証するためだけに制限的に使用されます。",
+      "bold": "Atmosphere",
+      "p2": "認証情報は保存しません。また、機能提供に必要な範囲を超えたデータへのアクセスも行いません。アカウントの接続解除は、いつでも{settings}ページから行えます。",
+      "settings": "設定"
     },
     "data_retention": {
-      "title": "EN TEXT TO REPLACE: Data retention",
-      "p1": "EN TEXT TO REPLACE: Session cookies are automatically deleted when you close your browser or after a period of inactivity. Local storage preferences remain on your device until you clear your browser data. Analytics data is retained in aggregate form and cannot be linked to individual users."
+      "title": "データ保持",
+      "p1": "セッションCookieは、ブラウザを閉じるか一定期間操作がない場合に自動的に削除されます。ローカルストレージの設定は、ブラウザデータを消去するまでデバイスに残ります。分析データは集計された形式で保持され、個々のユーザーに関連付けられることはありません。"
     },
     "your_rights": {
-      "title": "EN TEXT TO REPLACE: Your rights",
-      "p1": "EN TEXT TO REPLACE: You have the right to:",
-      "li1": "EN TEXT TO REPLACE: Access information about what data we collect",
-      "li2": "EN TEXT TO REPLACE: Clear your local storage and cookies at any time",
-      "li3": "EN TEXT TO REPLACE: Disconnect your authenticated session",
-      "li4": "EN TEXT TO REPLACE: Request information about our data practices",
-      "p2": "EN TEXT TO REPLACE: Since we do not collect personal data, there is typically no personal information to delete or export."
+      "title": "ユーザーの権利",
+      "p1": "あなたには以下の権利があります。",
+      "li1": "私たちが収集したデータに関する情報にアクセスする権利",
+      "li2": "いつでもローカルストレージとCookieを消去する権利",
+      "li3": "認証済みセッションを切断する権利",
+      "li4": "データ取り扱いに関する情報を要求する権利",
+      "p2": "私たちは個人情報を収集していないため、通常、削除やエクスポートの対象となる個人情報はありません。"
     },
     "contact": {
-      "title": "EN TEXT TO REPLACE: Contact us",
-      "p1": "EN TEXT TO REPLACE: For any questions or concerns about this privacy policy, you can contact us by opening an issue on our {link}.",
-      "link": "EN TEXT TO REPLACE: GitHub repository"
+      "title": "問い合わせ",
+      "p1": "本プライバシーポリシーに関する質問や懸念がある場合は、{link}でIssueを作成して連絡してください。",
+      "link": "GitHubリポジトリ"
     },
     "changes": {
-      "title": "EN TEXT TO REPLACE: Changes to this policy",
-      "p1": "EN TEXT TO REPLACE: We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
+      "title": "ポリシーの変更",
+      "p1": "本プライバシーポリシーは随時更新されることがあります。変更は、更新日とともに本ページで公開されます。"
     }
   }
 }
