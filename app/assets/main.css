@@ -161,6 +161,47 @@
     forced-color-adjust: none;
     color: CanvasText;
   }
+
+  /* Settings page: keep accent/background radio swatches visible in forced colors. */
+  :where(
+      fieldset:has(input[type='radio'][name='accent-color']),
+      fieldset:has(input[type='radio'][name='background-theme'])
+    )
+    > label {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+  }
+
+  :where(
+      fieldset:has(input[type='radio'][name='accent-color']),
+      fieldset:has(input[type='radio'][name='background-theme'])
+    )
+    > label:has(> input:checked) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  /* Settings page: make toggle tracks and thumb visible in forced colors. */
+  button[role='switch'] > span:last-of-type {
+    forced-color-adjust: none;
+    background: ButtonFace;
+    border-color: ButtonText;
+  }
+
+  button[role='switch'][aria-checked='true'] > span:last-of-type {
+    background: Highlight;
+    border-color: Highlight;
+  }
+
+  button[role='switch'] > span:last-of-type > span {
+    background: Canvas;
+  }
+
+  /* Homepage tag dots are custom spans, not list markers. */
+  :where([class~='bg-accent'][class~='rounded-full'][class~='w-1'][class~='h-1']) {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
 }
 
 html {
