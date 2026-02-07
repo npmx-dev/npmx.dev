@@ -192,7 +192,7 @@ const numberFormatter = useNumberFormatter()
       >
         {{
           $t('package.peer_dependencies.show_all', {
-            count: sortedPeerDependencies.length,
+            count: numberFormatter.format(sortedPeerDependencies.length),
           })
         }}
       </button>

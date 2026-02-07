@@ -70,6 +70,7 @@ export interface PackageComparisonData {
  */
 export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const { t } = useI18n()
+  const numberFormatter = useNumberFormatter()
   const compactNumberFormatter = useCompactNumberFormatter()
   const bytesFormatter = useBytesFormatter()
   const packages = computed(() => toValue(packageNames))
@@ -264,6 +265,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
       return computeFacetValue(
         facet,
         pkg,
+        numberFormatter.value.format,
         compactNumberFormatter.value.format,
         bytesFormatter.format,
         t,
@@ -349,6 +351,7 @@ function resolveNoDependencyDisplay(
 function computeFacetValue(
   facet: ComparisonFacet,
   data: PackageComparisonData,
+  formatNumber: (num: number) => string,
   formatCompactNumber: (num: number) => string,
   formatBytes: (num: number) => string,
   t: (key: string, params?: Record<string, unknown>) => string,
@@ -522,7 +525,7 @@ function computeFacetValue(
       if (depCount == null) return null
       return {
         raw: depCount,
-        display: String(depCount),
+        display: formatNumber(depCount),
         status: depCount > 10 ? 'warning' : 'neutral',
       }
     }
@@ -541,7 +544,7 @@ function computeFacetValue(
       const totalDepCount = data.installSize.dependencyCount
       return {
         raw: totalDepCount,
-        display: String(totalDepCount),
+        display: formatNumber(totalDepCount),
         status: totalDepCount > 50 ? 'warning' : 'neutral',
       }
     }
