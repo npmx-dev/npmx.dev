@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { debounce } from 'perfect-debounce'
 import { isEditableElement } from '~/utils/input'
 
 withDefaults(
@@ -16,30 +17,31 @@ const showFullSearch = shallowRef(false)
 const showMobileMenu = shallowRef(false)
 
 // On mobile, clicking logo+search button expands search
-const route = useRoute()
 const isMobile = useIsMobile()
 const isSearchExpandedManually = shallowRef(false)
 const searchBoxRef = useTemplateRef('searchBoxRef')
 
-const searchQuery = shallowRef('')
+const route = useRoute()
+const searchQuery = shallowRef<string>(normalizeSearchParam(route.query.q))
+
 watch(
   () => route.query.q,
   queryValue => {
-    searchQuery.value = normalizeSearchParam(queryValue)
+    if (queryValue !== searchQuery.value) {
+      searchQuery.value = normalizeSearchParam(queryValue)
+    }
   },
-  { immediate: true },
 )
 
-async function handleSearchSubmit() {
-  if (!searchQuery.value) {
-    return
+const router = useRouter()
+const onSearchQueryUpdate = debounce((newSearchQuery: string) => {
+  if (newSearchQuery !== searchQuery.value) {
+    router.replace({
+      name: 'search',
+      query: { q: newSearchQuery === '' ? undefined : newSearchQuery },
+    })
   }
-
-  await navigateTo({
-    name: 'search',
-    query: { q: searchQuery.value },
-  })
-}
+}, 500)
 
 // On search page, always show search expanded on mobile
 const isOnHomePage = computed(() => route.name === 'index')
@@ -147,8 +149,8 @@ onKeyStroke(
           ref="searchBoxRef"
           class="max-w-sm"
           compact
-          v-model="searchQuery"
-          @submit="handleSearchSubmit"
+          :model-value="searchQuery"
+          @update:model-value="onSearchQueryUpdate"
           @focus="handleSearchFocus"
           @blur="handleSearchBlur"
         />
