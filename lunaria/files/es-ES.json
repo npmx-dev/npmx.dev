@@ -132,8 +132,10 @@
       "documented": "La {community} ha señalado que este paquete tiene alternativas con mejor rendimiento.",
       "none": "Este paquete se ha marcado como ya no necesario y es probable que su funcionalidad esté disponible de forma nativa en todos los motores.",
       "learn_more": "Más información",
+      "learn_more_above": "Más información arriba.",
       "mdn": "MDN",
-      "community": "comunidad"
+      "community": "comunidad",
+      "consider_no_dep": "+ ¿Considerar sin dependencia?"
     },
     "stats": {
       "license": "Licencia",
@@ -176,6 +178,10 @@
       "fund": "financiar",
       "compare": "comparar"
     },
+    "likes": {
+      "like": "Me gusta este paquete",
+      "unlike": "Ya no me gusta este paquete"
+    },
     "docs": {
       "not_available": "Documentación no disponible",
       "not_available_detail": "No pudimos generar documentación para esta versión."
@@ -200,7 +206,25 @@
       "no_readme": "No hay README disponible.",
       "view_on_github": "Ver en GitHub",
       "toc_title": "Índice",
+      "callout": {
+        "note": "Nota",
+        "tip": "Consejo",
+        "important": "Importante",
+        "warning": "Advertencia",
+        "caution": "Precaución"
+      },
       "copy_as_markdown": "Copiar README como Markdown"
+    },
+    "provenance_section": {
+      "title": "Procedencia",
+      "built_and_signed_on": "Construido y firmado en {provider}",
+      "view_build_summary": "Ver resumen de construcción",
+      "source_commit": "Commit fuente",
+      "build_file": "Archivo de compilación",
+      "public_ledger": "Registro público",
+      "transparency_log_entry": "Entrada de registro de transparencia",
+      "view_more_details": "Ver más detalles",
+      "error_loading": "Error al cargar detalles de procedencia"
     },
     "keywords_title": "Palabras clave",
     "compatibility": "Compatibilidad",
@@ -264,6 +288,7 @@
       "date_range": "{start} a {end}",
       "date_range_multiline": "{start}\na {end}",
       "analyze": "Analizar descargas",
+      "community_distribution": "Ver distribución de adopción comunitaria",
       "modal_title": "Descargas",
       "granularity": "Granularidad",
       "granularity_daily": "Diaria",
@@ -360,6 +385,11 @@
       "published": "Recientemente publicado",
       "name_asc": "Nombre (A-Z)",
       "name_desc": "Nombre (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
@@ -812,6 +842,15 @@
       "packages_selected": "{count}/{max} paquetes seleccionados.",
       "add_hint": "Añade al menos 2 paquetes para comparar."
     },
+    "no_dependency": {
+      "label": "(Sin dependencia)",
+      "typeahead_title": "¿Qué haría James?",
+      "typeahead_description": "¡Compara contra no usar una dependencia! Aprobado por e18e.",
+      "tooltip_title": "Quizás no necesites una dependencia",
+      "tooltip_description": "¡Compara contra no usar una dependencia! La {link} mantiene una lista de paquetes que pueden ser reemplazados con APIs nativas o alternativas más simples.",
+      "e18e_community": "comunidad e18e",
+      "add_column": "Añadir columna sin dependencia a la comparación"
+    },
     "facets": {
       "group_label": "Facetas de comparación",
       "all": "todas",
@@ -848,6 +887,10 @@
         "downloads": {
           "label": "Descargas/sem",
           "description": "Recuento de descargas semanales"
+        },
+        "totalLikes": {
+          "label": "Me gusta",
+          "description": "Número de me gusta"
         },
         "lastUpdated": {
           "label": "Publicado",
@@ -886,8 +929,89 @@
         "not_deprecated": "No",
         "types_included": "Incluido",
         "types_none": "Ninguno",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "¡Depende de ti!"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "política de privacidad",
+    "last_updated": "Última actualización: {date}",
+    "welcome": "Bienvenido a {app}. Estamos comprometidos con la protección de tu privacidad. Esta política explica qué datos recopilamos, cómo los usamos y tus derechos con respecto a tu información.",
+    "cookies": {
+      "what_are": {
+        "title": "¿Qué son las cookies?",
+        "p1": "Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Su propósito es mejorar tu experiencia de navegación recordando ciertas preferencias y configuraciones."
+      },
+      "types": {
+        "title": "¿Qué cookies utilizamos?",
+        "p1": "Solo utilizamos {bold} para fines estrictamente necesarios para el funcionamiento del sitio. No utilizamos cookies de terceros ni publicitarias.",
+        "bold": "cookies técnicas esenciales",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Esta cookie es utilizada por nuestro proveedor de alojamiento (Vercel) para la protección contra sesgos (skew protection). Asegura que obtengas los recursos de la versión de despliegue correcta si se lanza una nueva actualización mientras navegas. No te rastrea.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Esta es nuestra cookie de sesión segura. Almacena el token de acceso OAuth cuando conectas tu cuenta de Atmosphere. Es esencial para mantener tu sesión autenticada."
+      },
+      "local_storage": {
+        "title": "Almacenamiento local",
+        "p1": "Además de las cookies de sesión, utilizamos el {bold} de tu navegador para guardar tus preferencias de visualización. Esto nos permite recordar el tema (claro/oscuro) y algunos otros {settings} que hayas seleccionado, para que no tengas que reconfigurarlos en cada visita.",
+        "bold": "Almacenamiento Local (Local Storage)",
+        "p2": "Esta información es puramente funcional, se almacena solo en tu dispositivo y {bold2}. La utilizamos exclusivamente para mejorar tu experiencia en nuestro sitio web.",
+        "bold2": "no contiene datos personales ni se utiliza para rastrearte",
+        "settings": "ajustes"
+      },
+      "management": {
+        "title": "Gestión de cookies",
+        "p1": "Puedes configurar tu navegador para aceptar, rechazar o eliminar cookies según tus preferencias. Sin embargo, ten en cuenta que {bold}.",
+        "bold": "rechazar cookies esenciales puede impedir el acceso completo a la aplicación",
+        "p2": "A continuación se muestran enlaces con instrucciones para la gestión de cookies en los navegadores más utilizados:",
+        "chrome": "Google Chrome (se abre en una nueva ventana)",
+        "firefox": "Mozilla Firefox (se abre en una nueva ventana)",
+        "edge": "Microsoft Edge (se abre en una nueva ventana)"
+      }
+    },
+    "analytics": {
+      "title": "Analítica",
+      "p1": "Utilizamos {bold} para entender cómo los visitantes usan nuestro sitio web. Esto nos ayuda a mejorar la experiencia del usuario e identificar problemas.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics está diseñado teniendo en cuenta la privacidad:",
+      "li1": "No utiliza cookies",
+      "li2": "No recopila identificadores personales",
+      "li3": "No rastrea a los usuarios a través de sitios web",
+      "li4": "Todos los datos son agregados y anonimizados",
+      "p3": "La única información recopilada incluye: URLs de páginas, referente, país/región, tipo de dispositivo, navegador y sistema operativo. Estos datos no pueden utilizarse para identificar a usuarios individuales."
+    },
+    "authenticated": {
+      "title": "Usuarios autenticados",
+      "p1": "Cuando conectas tu cuenta de {bold} a npmx, almacenamos tu token de acceso OAuth en una cookie de sesión segura y solo HTTP. Este token se utiliza únicamente para autenticar solicitudes en tu nombre.",
+      "bold": "Atmosphere",
+      "p2": "No almacenamos tus credenciales y no accedemos a ningún dato más allá de lo necesario para proporcionar las funciones que utilizas. Puedes desconectar tu cuenta en cualquier momento desde la página de {settings}.",
+      "settings": "ajustes"
+    },
+    "data_retention": {
+      "title": "Retención de datos",
+      "p1": "Las cookies de sesión se eliminan automáticamente cuando cierras tu navegador o después de un período de inactividad. Las preferencias de almacenamiento local permanecen en tu dispositivo hasta que borres los datos de tu navegador. Los datos analíticos se conservan de forma agregada y no pueden vincularse a usuarios individuales."
+    },
+    "your_rights": {
+      "title": "Tus derechos",
+      "p1": "Tienes derecho a:",
+      "li1": "Acceder a la información sobre qué datos recopilamos",
+      "li2": "Borrar tu almacenamiento local y cookies en cualquier momento",
+      "li3": "Desconectar tu sesión autenticada",
+      "li4": "Solicitar información sobre nuestras prácticas de datos",
+      "p2": "Dado que no recopilamos datos personales, normalmente no hay información personal que eliminar o exportar."
+    },
+    "contact": {
+      "title": "Contáctanos",
+      "p1": "Para cualquier pregunta o inquietud sobre esta política de privacidad, puedes contactarnos abriendo un problema (issue) en nuestro {link}.",
+      "link": "repositorio de GitHub"
+    },
+    "changes": {
+      "title": "Cambios en esta política",
+      "p1": "Podemos actualizar esta política de privacidad ocasionalmente. Cualquier cambio se publicará en esta página con una fecha de revisión actualizada."
     }
   }
 }
