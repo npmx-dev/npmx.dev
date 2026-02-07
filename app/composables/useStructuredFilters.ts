@@ -42,7 +42,7 @@ export function parseSearchOperators(input: string): ParsedSearchOperators {
 
   // Regex to match operators: name:value, desc:value, description:value, kw:value, keyword:value
   // Value continues until whitespace or next operator
-  const operatorRegex = /\b(name|desc|description|kw|keyword):([^\s]+)/gi
+  const operatorRegex = /\b(name|desc|description|kw|keyword):(\S+)/gi
 
   let remaining = input
   let match

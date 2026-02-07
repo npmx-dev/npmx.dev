@@ -1,4 +1,5 @@
 import { defineNuxtModule, useNuxt, addServerTemplate } from 'nuxt/kit'
+import process from 'node:process'
 import { join } from 'node:path'
 import { appendFileSync, existsSync, readFileSync } from 'node:fs'
 import { randomUUID } from 'node:crypto'

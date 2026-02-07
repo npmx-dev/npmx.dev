@@ -3,18 +3,10 @@ import process from 'node:process'
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { COLORS } from './utils.ts'
 
 const LOCALES_DIRECTORY = fileURLToPath(new URL('../i18n/locales', import.meta.url))
 const REFERENCE_FILE_NAME = 'en.json'
-
-const COLORS = {
-  reset: '\x1b[0m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  magenta: '\x1b[35m',
-  cyan: '\x1b[36m',
-} as const
 
 type NestedObject = { [key: string]: unknown }
 

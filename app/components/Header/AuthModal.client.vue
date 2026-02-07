@@ -6,6 +6,12 @@ const handleInput = shallowRef('')
 const route = useRoute()
 const { user, logout } = useAtproto()
 
+// https://atproto.com supports 4 locales as of 2026-02-07
+const { locale } = useI18n()
+const currentLang = locale.value.split('-')[0] ?? 'en'
+const localeSubPath = ['ko', 'pt', 'ja'].includes(currentLang) ? currentLang : ''
+const atprotoLink = `https://atproto.com/${localeSubPath}`
+
 async function handleBlueskySignIn() {
   await authRedirect('https://bsky.social', { redirectTo: route.fullPath })
 }
@@ -60,7 +66,7 @@ async function handleLogin() {
             name="handle"
             :placeholder="$t('auth.modal.handle_placeholder')"
             v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 hover:border-fg-subtle focus:border-accent focus-visible:(outline-2 outline-accent/70)"
           />
         </div>
 
@@ -76,7 +82,7 @@ async function handleLogin() {
                 <span class="font-bold">npmx.dev</span>
               </template>
               <template #atproto>
-                <a href="https://atproto.com" target="_blank" class="text-blue-400 hover:underline">
+                <a :href="atprotoLink" target="_blank" class="text-blue-400 hover:underline">
                   AT Protocol
                 </a>
               </template>
