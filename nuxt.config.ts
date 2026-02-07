@@ -255,6 +255,7 @@ export default defineNuxtConfig({
       include: [
         '@vueuse/core',
         '@vueuse/integrations/useFocusTrap',
+        '@vueuse/integrations/useFocusTrap/component',
         'vue-data-ui/vue-ui-sparkline',
         'vue-data-ui/vue-ui-xy',
         'virtua/vue',
