@@ -104,7 +104,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.8"
+    "vue-data-ui": "3.14.9"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.1.4",
