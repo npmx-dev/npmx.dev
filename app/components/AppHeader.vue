@@ -116,7 +116,8 @@ onKeyStroke(
           <AppLogo class="w-8 h-8 rounded-lg" />
           <span>npmx</span>
           <sup class="text-sm ms--1.5 italic text-fg-muted">
-            {{ env === 'release' ? 'alpha' : env }}
+            <!-- TODO: improve styling and show 'alpha' until March 3 annoucement -->
+            {{ env === 'release' ? '' : env }}
           </sup>
         </NuxtLink>
       </div>
