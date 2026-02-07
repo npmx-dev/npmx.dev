@@ -1,35 +1,11 @@
 import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
 import { ACCENT_COLORS } from '#shared/utils/constants'
-import type { LocaleObject } from '@nuxtjs/i18n'
 import { BACKGROUND_THEMES } from '#shared/utils/constants'
-
-type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
-
-type AccentColorId = keyof typeof ACCENT_COLORS.light
-
-/**
- * Application settings stored in localStorage
- */
-export interface AppSettings {
-  /** Display dates as relative (e.g., "3 days ago") instead of absolute */
-  relativeDates: boolean
-  /** Include @types/* package in install command for packages without built-in types */
-  includeTypesInInstall: boolean
-  /** Accent color theme */
-  accentColorId: AccentColorId | null
-  /** Preferred background shade */
-  preferredBackgroundTheme: BackgroundThemeId | null
-  /** Hide platform-specific packages (e.g., @scope/pkg-linux-x64) from search results */
-  hidePlatformPackages: boolean
-  /** User-selected locale */
-  selectedLocale: LocaleObject['code'] | null
-  sidebar: {
-    collapsed: string[]
-  }
-}
+import type { AccentColorId, BackgroundThemeId, AppSettings } from '#shared/schemas/app-settings'
 
 const DEFAULT_SETTINGS: AppSettings = {
+  theme: 'system',
   relativeDates: false,
   includeTypesInInstall: true,
   accentColorId: null,
@@ -39,6 +15,14 @@ const DEFAULT_SETTINGS: AppSettings = {
   sidebar: {
     collapsed: [],
   },
+}
+
+export const syncSettings = async (settings: AppSettings) => {
+  // DO some error handling
+  await $fetch('/api/auth/settings', {
+    method: 'POST',
+    body: settings,
+  })
 }
 
 const STORAGE_KEY = 'npmx-settings'

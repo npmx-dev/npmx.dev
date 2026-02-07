@@ -5,6 +5,37 @@ import { authRedirect } from '~/utils/atproto/helpers'
 const handleInput = shallowRef('')
 const route = useRoute()
 const { user, logout } = useAtproto()
+const { settings } = useSettings()
+const colorMode = useColorMode()
+const { setLocale, locales, locale } = useI18n()
+
+//TODO need to check them all and idk if this is the spot for it
+watch(
+  user,
+  async loggedInUser => {
+    if (!loggedInUser) return
+
+    const remote = await $fetch('/api/auth/settings')
+    if (!remote) return
+
+    Object.assign(settings.value, remote)
+
+    // Sync theme with colorMode
+    if (remote.theme) {
+      colorMode.preference = remote.theme
+    }
+
+    // Sync locale if it's valid and different from current
+    if (
+      remote.selectedLocale &&
+      remote.selectedLocale !== locale.value &&
+      locales.value.map(l => l.code).includes(remote.selectedLocale)
+    ) {
+      setLocale(remote.selectedLocale)
+    }
+  },
+  { immediate: true },
+)
 
 // https://atproto.com supports 4 locales as of 2026-02-07
 const { locale } = useI18n()

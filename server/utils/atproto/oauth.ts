@@ -43,12 +43,6 @@ export function getOauthClientMetadata() {
   }) as OAuthClientMetadataInput
 }
 
-type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
-  event: H3Event<T>,
-  session: OAuthSession | undefined,
-  serverSession: SessionManager,
-) => Promise<D>
-
 async function getOAuthSession(
   event: H3Event,
 ): Promise<{ oauthSession: OAuthSession | undefined; serverSession: SessionManager }> {
@@ -100,11 +94,23 @@ export async function throwOnMissingOAuthScope(oAuthSession: OAuthSession, requi
   }
 }
 
+type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
+  event: H3Event<T>,
+  session: OAuthSession | undefined,
+  serverSession: SessionManager,
+) => Promise<D>
+
+/**
+ * Handler with a valid OAuth session that is ready to be used
+ * @param handler
+ * @returns
+ */
 export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
   handler: EventHandlerWithOAuthSession<T, D>,
 ) {
   return defineEventHandler(async event => {
     const { oauthSession, serverSession } = await getOAuthSession(event)
+
     return await handler(event, oauthSession, serverSession)
   })
 }
