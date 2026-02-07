@@ -85,7 +85,7 @@ const allMaintainersText = computed(() => {
       v-if="isColumnVisible('updated')"
       class="py-2 px-3 font-mono text-end text-xs text-fg-muted"
     >
-      <DateTime
+      <DateTimeButton
         v-if="updatedDate"
         :datetime="updatedDate"
         year="numeric"

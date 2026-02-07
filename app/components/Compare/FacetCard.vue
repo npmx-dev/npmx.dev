@@ -126,7 +126,7 @@ function getShortName(header: string): string {
           <template v-else>
             <span class="font-mono text-sm tabular-nums" :class="getStatusClass(value.status)">
               <!-- Date values use DateTime component for i18n and user settings -->
-              <DateTime
+              <DateTimeButton
                 v-if="value.type === 'date'"
                 :datetime="value.display"
                 date-style="medium"
