@@ -337,6 +337,8 @@ export interface PackageFileTree {
   path: string
   /** Node type */
   type: 'file' | 'directory'
+  /** File hash (only for files) */
+  hash?: string
   /** File size in bytes (only for files) */
   size?: number
   /** Child nodes (only for directories) */

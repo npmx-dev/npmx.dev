@@ -47,6 +47,9 @@ importers:
       '@iconify-json/lucide':
         specifier: 1.2.87
         version: 1.2.87
+      '@iconify-json/octicon':
+        specifier: 1.2.20
+        version: 1.2.20
       '@iconify-json/simple-icons':
         specifier: 1.2.68
         version: 1.2.68
@@ -56,6 +59,9 @@ importers:
       '@iconify-json/vscode-icons':
         specifier: 1.2.40
         version: 1.2.40
+      '@intlify/core-base':
+        specifier: 11.2.8
+        version: 11.2.8
       '@intlify/shared':
         specifier: 11.2.8
         version: 11.2.8
@@ -122,6 +128,9 @@ importers:
       defu:
         specifier: 6.1.4
         version: 6.1.4
+      diff:
+        specifier: ^8.0.3
+        version: 8.0.3
       fast-npm-meta:
         specifier: 1.0.0
         version: 1.0.0
@@ -137,6 +146,9 @@ importers:
       module-replacements:
         specifier: 2.11.0
         version: 2.11.0
+      motion-v:
+        specifier: 1.10.2
+        version: 1.10.2(@vueuse/core@14.2.0(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
       nuxt:
         specifier: 4.3.0
         version: 4.3.0(@parcel/watcher@2.5.6)(@types/node@24.10.9)(@upstash/redis@1.36.1)(@vercel/kv@3.0.0)(@vue/compiler-sfc@3.5.27)(better-sqlite3@12.6.2)(cac@6.7.14)(db0@0.3.4(better-sqlite3@12.6.2))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.2)(magicast@0.5.1)(optionator@0.9.4)(oxlint@1.42.0(oxlint-tsgolint@0.11.3))(rolldown@1.0.0-rc.1)(rollup@4.57.0)(terser@5.46.0)(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))(vue-tsc@3.2.4(typescript@5.9.3))(yaml@2.8.2)
@@ -207,9 +219,6 @@ importers:
       '@e18e/eslint-plugin':
         specifier: 0.1.4
         version: 0.1.4(eslint@9.39.2(jiti@2.6.1))
-      '@intlify/core-base':
-        specifier: 11.2.8
-        version: 11.2.8
       '@npm/types':
         specifier: 2.1.0
         version: 2.1.0
@@ -1484,6 +1493,9 @@ packages:
   '@iconify-json/lucide@1.2.87':
     resolution: {integrity: sha512-wxYIAp0f8Uw0rJa6BMWMaRbiHk3yV4XczA38GKXFlqyZtTdmHM1QOF4NZw5xpMlRDzbh2MnB7wjteLeFnn/ciQ==}
 
+  '@iconify-json/octicon@1.2.20':
+    resolution: {integrity: sha512-BCIWoh06jlOKMY3JCDx547g+4a0TOj96cdrtD1N4gz3oNlWF7yXdrK9WbqYN4ykmDl+KdJYRtOYIFP1AvGXgVA==}
+
   '@iconify-json/simple-icons@1.2.68':
     resolution: {integrity: sha512-bQPl1zuZlX6AnofreA1v7J+hoPncrFMppqGboe/SH54jZO37meiBUGBqNOxEpc0HKfZGxJaVVJwZd4gdMYu3hw==}
 
@@ -1814,7 +1826,7 @@ packages:
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
 
   '@lunariajs/core@https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3':
-    resolution: {tarball: https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3}
+    resolution: {integrity: sha512-gjrzNz3XLFOUrDcmBxgaaF8Flh2yDpn8/RQyt+kyQen3sCjT04BnqJXLweper+xWyfvpOFK4Cqmy3wHvTyC1ww==, tarball: https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3}
     version: 0.1.1
     engines: {node: '>=18.17.0'}
 
@@ -2016,7 +2028,7 @@ packages:
         optional: true
 
   '@nuxt/test-utils@https://pkg.pr.new/@nuxt/test-utils@1499a48':
-    resolution: {tarball: https://pkg.pr.new/@nuxt/test-utils@1499a48}
+    resolution: {integrity: sha512-T7DnXM09HsMWu43qcXpeNW1KsH230b/OYlvpRD49RKocyv/6XjATiQw1zWeNnOVw4fPULIeMlrrL5TX3c1jGWg==, tarball: https://pkg.pr.new/@nuxt/test-utils@1499a48}
     version: 3.23.0
     engines: {node: ^20.11.1 || ^22.0.0 || >=24.0.0}
     peerDependencies:
@@ -6002,6 +6014,7 @@ packages:
 
   glob@10.5.0:
     resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@11.1.0:
@@ -11033,6 +11046,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/lucide@1.2.87':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/octicon@1.2.20':
     dependencies:
       '@iconify/types': 2.0.0
 

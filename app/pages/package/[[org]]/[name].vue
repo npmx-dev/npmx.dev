@@ -141,7 +141,7 @@ const {
   data: pkg,
   status,
   error,
-} = usePackage(packageName, resolvedVersion.value ?? requestedVersion.value)
+} = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
 
 // Process package description
@@ -698,6 +698,16 @@ onKeyStroke(
             >
               {{ $t('package.links.compare') }}
             </LinkBase>
+            <LinkBase
+              v-if="
+                displayVersion && latestVersion && displayVersion.version !== latestVersion.version
+              "
+              variant="button-secondary"
+              :to="`/diff/${pkg.name}/v/${displayVersion.version}...${latestVersion.version}`"
+              classicon="i-carbon-text-align-mixed"
+            >
+              {{ $t('compare.compare_versions') }}
+            </LinkBase>
           </ButtonGroup>
         </div>
       </header>
@@ -791,6 +801,20 @@ onKeyStroke(
               >
                 {{ $t('package.links.compare') }}
               </LinkBase>
+            </li>
+            <li
+              v-if="
+                displayVersion && latestVersion && displayVersion.version !== latestVersion.version
+              "
+              class="sm:hidden"
+            >
+              <NuxtLink
+                :to="`/diff/${pkg.name}/v/${displayVersion.version}...${latestVersion.version}`"
+                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              >
+                <span class="i-carbon-text-align-mixed w-4 h-4" aria-hidden="true" />
+                {{ $t('compare.compare_versions') }}
+              </NuxtLink>
             </li>
           </ul>
         </div>

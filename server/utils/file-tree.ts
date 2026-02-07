@@ -12,9 +12,10 @@ import type {
 export async function fetchFileTree(
   packageName: string,
   version: string,
+  signal?: AbortSignal,
 ): Promise<JsDelivrPackageResponse> {
   const url = `https://data.jsdelivr.com/v1/packages/npm/${packageName}@${version}`
-  const response = await fetch(url)
+  const response = await fetch(url, { signal })
 
   if (!response.ok) {
     if (response.status === 404) {
@@ -50,6 +51,7 @@ export function convertToFileTree(
         name: node.name,
         path,
         type: 'file',
+        hash: node.hash,
         size: node.size,
       })
     }
@@ -73,8 +75,9 @@ export function convertToFileTree(
 export async function getPackageFileTree(
   packageName: string,
   version: string,
+  signal?: AbortSignal,
 ): Promise<PackageFileTreeResponse> {
-  const jsDelivrData = await fetchFileTree(packageName, version)
+  const jsDelivrData = await fetchFileTree(packageName, version, signal)
   const tree = convertToFileTree(jsDelivrData.files)
 
   return {
