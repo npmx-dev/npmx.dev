@@ -79,8 +79,8 @@ function toggle() {
   if (isOpen.value) {
     close()
   } else {
-    if (triggerRef.value) {
-      const rect = triggerRef.value.getBoundingClientRect()
+    if (triggerRef.value?.buttonRef) {
+      const rect = triggerRef.value.buttonRef.getBoundingClientRect()
       dropdownPosition.value = {
         top: rect.bottom + 4,
         right: rect.right,
@@ -101,7 +101,7 @@ function close() {
 function select(id: string) {
   scrollToAnchor(id, { scrollFn: props.scrollToHeading })
   close()
-  triggerRef.value?.focus()
+  triggerRef.value?.buttonRef?.focus()
 }
 
 function getIndex(id: string): number {
@@ -138,25 +138,25 @@ function handleKeydown(event: KeyboardEvent) {
     }
     case 'Escape':
       close()
-      triggerRef.value?.focus()
+      triggerRef.value?.buttonRef?.focus()
       break
   }
 }
 </script>
 
 <template>
-  <button
+  <ButtonBase
     ref="triggerRef"
     type="button"
-    class="flex items-center gap-1.5 px-2 py-2 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover hover:text-fg"
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.readme.toc_title')"
     :aria-controls="listboxId"
     @click="toggle"
     @keydown="handleKeydown"
+    classicon="i-carbon:list"
+    class="px-2.5 flex items-center"
   >
-    <span class="i-carbon:list w-3.5 h-3.5" aria-hidden="true" />
     <span
       class="i-carbon:chevron-down w-3 h-3"
       :class="[
@@ -165,7 +165,7 @@ function handleKeydown(event: KeyboardEvent) {
       ]"
       aria-hidden="true"
     />
-  </button>
+  </ButtonBase>
 
   <Teleport to="body">
     <Transition

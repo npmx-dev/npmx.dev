@@ -25,6 +25,7 @@ const el = useTemplateRef('el')
 
 defineExpose({
   focus: () => el.value?.focus(),
+  buttonRef: el,
 })
 </script>
 
