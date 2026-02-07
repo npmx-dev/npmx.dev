@@ -151,19 +151,29 @@ onKeyStroke(
       </div>
 
       <!-- End: Desktop nav items + Mobile menu button -->
-      <ButtonGroup class="hidden sm:flex flex-shrink-0">
+      <div class="hidden sm:flex flex-shrink-0">
         <!-- Desktop: Compare link -->
-        <LinkBase variant="button-secondary" :to="{ name: 'compare' }" keyshortcut="c">
+        <LinkBase
+          class="border-none"
+          variant="button-secondary"
+          :to="{ name: 'compare' }"
+          keyshortcut="c"
+        >
           {{ $t('nav.compare') }}
         </LinkBase>
 
         <!-- Desktop: Settings link -->
-        <LinkBase variant="button-secondary" :to="{ name: 'settings' }" keyshortcut=",">
+        <LinkBase
+          class="border-none"
+          variant="button-secondary"
+          :to="{ name: 'settings' }"
+          keyshortcut=","
+        >
           {{ $t('nav.settings') }}
         </LinkBase>
 
         <HeaderAccountMenu />
-      </ButtonGroup>
+      </div>
 
       <!-- Mobile: Menu button (always visible, click to open menu) -->
       <ButtonBase
