@@ -12,16 +12,8 @@ export default defineNuxtModule({
   async setup() {
     const nuxt = useNuxt()
 
-    const { env, previewUrl, productionUrl } = await getEnv(nuxt.options.dev)
-
-    let clientUri: string
-    if (env === 'preview' && previewUrl) {
-      clientUri = previewUrl
-    } else if (env === 'release' && productionUrl) {
-      clientUri = productionUrl
-    } else {
-      clientUri = 'http://127.0.0.1:3000'
-    }
+    const { previewUrl, productionUrl } = await getEnv(nuxt.options.dev)
+    const clientUri = productionUrl || previewUrl || 'http://127.0.0.1:3000'
 
     // bake it into a virtual file
     addServerTemplate({
