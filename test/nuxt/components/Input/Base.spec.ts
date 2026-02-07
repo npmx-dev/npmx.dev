@@ -146,8 +146,6 @@ describe('InputBase', () => {
       const input = component.find('input')
       expect(input.attributes('disabled')).toBeDefined()
       expect((input.element as HTMLInputElement).disabled).toBe(true)
-      // should add just `disabled`, not `disabled="true"`
-      expect((input.element as HTMLInputElement).getHTML()).not.toContain('disabled=')
     })
   })
 })

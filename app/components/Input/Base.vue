@@ -3,6 +3,7 @@ import { noCorrect } from '~/utils/input'
 
 const props = withDefaults(
   defineProps<{
+    disabled?: boolean
     modelValue?: string
     size?: 'small' | 'medium' | 'large'
     noCorrect?: boolean
@@ -47,5 +48,9 @@ defineExpose({
       'text-sm px-3 py-2.5 h-10 rounded-lg': size === 'medium',
       'text-base px-6 py-3.5 h-14 rounded-xl': size === 'large',
     }"
+    :disabled="
+      /** Catching Vue render-bug of invalid `disabled=false` attribute in the final HTML */
+      disabled ? true : undefined
+    "
   />
 </template>
