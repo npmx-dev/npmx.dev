@@ -25,6 +25,19 @@ async function handleLogin() {
     await authRedirect(handleInput.value)
   }
 }
+
+watch(handleInput, newHandleInput => {
+  if (!newHandleInput) return
+
+  const normalized = newHandleInput
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9.-]/g, '')
+
+  if (normalized !== newHandleInput) {
+    handleInput.value = normalized
+  }
+})
 </script>
 
 <template>
