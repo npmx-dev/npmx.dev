@@ -1,9 +1,9 @@
-import process from 'node:process'
 import { defineNuxtModule, useNuxt } from 'nuxt/kit'
 import { execSync } from 'node:child_process'
 import { join } from 'node:path'
 import { existsSync, mkdirSync } from 'node:fs'
 import { isCI, isTest } from 'std-env'
+import { getEnv } from '../config/env.ts'
 
 export default defineNuxtModule({
   meta: {
@@ -33,9 +33,10 @@ export default defineNuxtModule({
             cwd: nuxt.options.rootDir,
           })
         } catch (e) {
-          // do not throw when building for staging
-          const env = process.env.VERCEL_ENV
-          if (!isCI || (env && env === 'production')) {
+          // Always throw in local dev.
+          // In CI, only throw if building for production.
+          const { env } = await getEnv(!isCI)
+          if (env === 'dev' || env === 'release') {
             throw e
           }
         }
