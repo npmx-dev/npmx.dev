@@ -393,7 +393,7 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Main content: file tree + file viewer -->
-    <div v-else-if="fileTree" class="flex flex-1 overflow-hidden" dir="ltr">
+    <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
         class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
@@ -408,7 +408,7 @@ defineOgImageComponent('Default', {
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
       <div
-        class="flex-1 min-w-0 overflow-x-hidden md:sticky md:top-28 md:self-start md:h-[calc(100vh-7rem)] md:overflow-y-auto"
+        class="flex-1 min-w-0 overflow-x-hidden sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <!-- File viewer -->
         <template v-if="isViewingFile && fileContent">
