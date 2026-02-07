@@ -190,6 +190,15 @@ export default defineNuxtConfig({
     defaults: {
       component: 'Default',
     },
+    fonts: [
+      { name: 'Geist', weight: 400, path: '/fonts/Geist-Regular.ttf' },
+      { name: 'Geist', weight: 500, path: '/fonts/Geist-Medium.ttf' },
+      { name: 'Geist', weight: 600, path: '/fonts/Geist-SemiBold.ttf' },
+      { name: 'Geist', weight: 700, path: '/fonts/Geist-Bold.ttf' },
+      { name: 'Geist Mono', weight: 400, path: '/fonts/GeistMono-Regular.ttf' },
+      { name: 'Geist Mono', weight: 500, path: '/fonts/GeistMono-Medium.ttf' },
+      { name: 'Geist Mono', weight: 700, path: '/fonts/GeistMono-Bold.ttf' },
+    ],
   },
 
   pwa: {
