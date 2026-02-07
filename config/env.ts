@@ -1,3 +1,5 @@
+// TODO(serhalp): Extract most of this module to https://github.com/unjs/std-env.
+
 import Git from 'simple-git'
 import * as process from 'node:process'
 
@@ -27,12 +29,14 @@ export const gitBranch = process.env.BRANCH || process.env.VERCEL_GIT_COMMIT_REF
 
 /**
  * Environment variable `CONTEXT` provided by Netlify.
+ * `dev`, `production`, `deploy-preview`, `branch-deploy`, `preview-server`, or a branch name
  * @see {@link https://docs.netlify.com/build/configure-builds/environment-variables/#build-metadata}
  *
  * Environment variable `VERCEL_ENV` provided by Vercel.
+ * `production`, `preview`, or `development`
  * @see {@link https://vercel.com/docs/environment-variables/system-environment-variables#VERCEL_ENV}
  *
- * Whether triggered by PR, `deploy-preview` or `dev`.
+ * Whether this is some sort of preview environment.
  */
 export const isPreview =
   isPR ||
