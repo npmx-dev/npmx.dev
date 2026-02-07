@@ -79,8 +79,8 @@ function toggle() {
   if (isOpen.value) {
     close()
   } else {
-    if (triggerRef.value?.buttonRef) {
-      const rect = triggerRef.value.buttonRef.getBoundingClientRect()
+    const rect = triggerRef.value?.getBoundingClientRect()
+    if (rect) {
       dropdownPosition.value = {
         top: rect.bottom + 4,
         right: rect.right,
@@ -101,7 +101,7 @@ function close() {
 function select(id: string) {
   scrollToAnchor(id, { scrollFn: props.scrollToHeading })
   close()
-  triggerRef.value?.buttonRef?.focus()
+  triggerRef.value?.focus()
 }
 
 function getIndex(id: string): number {
@@ -138,7 +138,7 @@ function handleKeydown(event: KeyboardEvent) {
     }
     case 'Escape':
       close()
-      triggerRef.value?.buttonRef?.focus()
+      triggerRef.value?.focus()
       break
   }
 }
