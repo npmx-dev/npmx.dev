@@ -24,6 +24,13 @@ const isHome = computed(() => route.name === 'index')
           >
             {{ $t('privacy_policy.title') }}
           </NuxtLink>
+          <NuxtLink
+            :to="{ name: 'accessibility' }"
+            :title="$t('a11y.title')"
+            class="link-subtle font-mono text-xs flex items-center"
+          >
+            {{ $t('a11y.footer_title') }}
+          </NuxtLink>
           <a
             href="https://docs.npmx.dev"
             target="_blank"
