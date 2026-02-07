@@ -1,6 +1,6 @@
 <script setup lang="ts">
-defineProps<{
-  label?: string
+const props = defineProps<{
+  label: string
   description?: string
   class?: string
 }>()
@@ -8,47 +8,127 @@ defineProps<{
 const checked = defineModel<boolean>({
   default: false,
 })
+const id = 'toggle-' + props.label
 </script>
 
 <template>
-  <button
-    type="button"
-    class="w-full flex items-center justify-between gap-4 group focus-visible:outline-none py-1 -my-1"
-    role="switch"
-    :aria-checked="checked"
-    @click="checked = !checked"
-    :class="class"
-  >
-    <span v-if="label" class="text-sm text-fg font-medium text-start">
-      {{ label }}
-    </span>
-    <span
-      class="inline-flex items-center h-6 w-11 shrink-0 rounded-full border p-0.25 transition-colors duration-200 shadow-sm ease-in-out motion-reduce:transition-none cursor-pointer group-focus-visible:(outline-accent/70 outline-offset-2 outline-solid)"
-      :class="
-        checked
-          ? 'bg-accent border-accent group-hover:bg-accent/80'
-          : 'bg-fg/50 border-fg/50 group-hover:bg-fg/70'
-      "
-      aria-hidden="true"
-    >
-      <span
-        class="block h-5 w-5 rounded-full bg-bg shadow-sm transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-      />
-    </span>
-  </button>
+  <label :for="id">
+    <span class="toggle--label-text">{{ label }}</span>
+    <input
+      role="switch"
+      type="checkbox"
+      :id
+      class="toggle--checkbox"
+      :aria-checked="checked"
+      :checked="checked"
+      @click="checked = !checked"
+    />
+    <span class="toggle--background"></span>
+  </label>
   <p v-if="description" class="text-sm text-fg-muted mt-2">
     {{ description }}
   </p>
 </template>
 
 <style scoped>
-button[aria-checked='false'] > span:last-of-type > span {
-  translate: 0;
+@keyframes reverse {
+  0% {
+    left: 20px;
+    width: 20px;
+  }
+  60% {
+    left: 3px;
+    width: 40px;
+  }
+  100% {
+    left: 3px;
+  }
 }
-button[aria-checked='true'] > span:last-of-type > span {
-  translate: calc(100%);
+
+@keyframes switch {
+  0% {
+    left: 3px;
+  }
+  60% {
+    left: 3px;
+    width: 40px;
+  }
+  100% {
+    left: 20px;
+    width: 20px;
+  }
 }
-html[dir='rtl'] button[aria-checked='true'] > span:last-of-type > span {
-  translate: calc(-100%);
+
+.toggle--label-text {
+  grid-area: label-text;
+}
+
+.toggle--background {
+  grid-area: toggle-background;
+  justify-self: end;
+}
+
+.toggle--checkbox {
+  opacity: 0;
+}
+
+label {
+  display: grid;
+  grid-template-areas: 'label-text . toggle-background';
+}
+
+input {
+  grid-row: 1;
+  grid-column: 3;
+  justify-self: end;
+}
+
+label:has(input:focus) .toggle--background {
+  outline: solid 1px #030712;
+  outline-offset: 2px;
+  transition: outline 100ms ease-in;
+}
+label:has(input:hover) .toggle--background {
+  background: #6b7280;
+}
+
+/* background */
+.toggle--background {
+  width: 44px;
+  height: 24px;
+  background: #9ca3af;
+  border-radius: 100px;
+  border: 1px solid #030712;
+  display: flex;
+  position: relative;
+  transition: all 350ms ease-in;
+}
+
+label:has(input:checked) .toggle--background {
+  background: #030712;
+  border-color: #030712;
+}
+
+/* Circle that moves */
+.toggle--checkbox:checked + .toggle--background:before {
+  animation-name: reverse;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
+  transition: all 360ms ease-in;
+  background: #f9fafb;
+}
+
+.toggle--background:before {
+  animation-name: switch;
+  animation-duration: 350ms;
+  animation-fill-mode: forwards;
+  content: '';
+  width: 20px;
+  height: 20px;
+  top: 1px;
+  left: 3px;
+  position: absolute;
+  border-radius: 20px;
+  background: #f9fafb;
 }
 </style>
