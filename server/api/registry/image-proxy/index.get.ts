@@ -56,7 +56,10 @@ export default defineCachedEventHandler(
       const contentType = response.headers.get('content-type') || 'application/octet-stream'
 
       // Only allow image content types
-      if (!contentType.startsWith('image/') && !contentType.startsWith('application/octet-stream')) {
+      if (
+        !contentType.startsWith('image/') &&
+        !contentType.startsWith('application/octet-stream')
+      ) {
         throw createError({
           statusCode: 400,
           message: 'URL does not point to an image.',

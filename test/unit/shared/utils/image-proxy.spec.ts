@@ -8,11 +8,15 @@ import {
 describe('Image Proxy Utils', () => {
   describe('isTrustedImageDomain', () => {
     it('trusts GitHub raw content URLs', () => {
-      expect(isTrustedImageDomain('https://raw.githubusercontent.com/owner/repo/main/img.png')).toBe(true)
+      expect(
+        isTrustedImageDomain('https://raw.githubusercontent.com/owner/repo/main/img.png'),
+      ).toBe(true)
     })
 
     it('trusts GitHub user images', () => {
-      expect(isTrustedImageDomain('https://user-images.githubusercontent.com/123/image.png')).toBe(true)
+      expect(isTrustedImageDomain('https://user-images.githubusercontent.com/123/image.png')).toBe(
+        true,
+      )
     })
 
     it('trusts shields.io badge URLs', () => {
