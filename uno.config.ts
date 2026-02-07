@@ -41,9 +41,10 @@ export default defineConfig({
       sans: "'Geist', system-ui, -apple-system, sans-serif",
     },
     text: {
-      '2xs': { fontSize: '0.625rem' },
-      '3xs': { fontSize: '0.5625rem' },
-      '4xs': { fontSize: '0.5rem' },
+      '2xs': { fontSize: '0.6875rem' }, // 11px
+      '3xs': { fontSize: '0.625rem' }, // 10px
+      '4xs': { fontSize: '0.5625rem' }, // 9px
+      '5xs': { fontSize: '0.5rem' }, // 8px
     },
     colors: {
       // Minimal black & white palette with subtle grays
