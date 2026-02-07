@@ -208,7 +208,8 @@
       "title": "Léame",
       "no_readme": "No hay README disponible.",
       "view_on_github": "Ver en GitHub",
-      "toc_title": "Índice"
+      "toc_title": "Índice",
+      "copy_as_markdown": "Copiar README como Markdown"
     },
     "keywords_title": "Palabras clave",
     "compatibility": "Compatibilidad",

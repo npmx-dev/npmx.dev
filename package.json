@@ -12,11 +12,13 @@
   "scripts": {
     "build": "nuxt build",
     "build:lunaria": "node ./lunaria/lunaria.ts",
-    "build:playwright": "NODE_ENV=test pnpm build",
+    "build:test": "NODE_ENV=test pnpm build",
     "dev": "nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "i18n:check": "node scripts/compare-translations.ts",
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
+    "rtl:check": "node scripts/rtl-checker.ts",
+    "i18n:report": "node scripts/find-invalid-translations.ts",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint && oxfmt --check",
@@ -29,10 +31,10 @@
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
-    "test:browser": "pnpm build:playwright && pnpm test:browser:prebuilt",
+    "test:browser": "pnpm build:test && pnpm test:browser:prebuilt",
     "test:browser:prebuilt": "playwright test",
-    "test:browser:ui": "pnpm build:playwright && pnpm test:browser:prebuilt --ui",
-    "test:browser:update": "pnpm build:playwright && pnpm test:browser:prebuilt --update-snapshots",
+    "test:browser:ui": "pnpm build:test && pnpm test:browser:prebuilt --ui",
+    "test:browser:update": "pnpm build:test && pnpm test:browser:prebuilt --update-snapshots",
     "test:nuxt": "vite test --project nuxt",
     "test:types": "pnpm generate:lexicons && nuxt prepare && vue-tsc -b --noEmit && pnpm --filter npmx-connector test:types",
     "test:unit": "vite test --project unit",
@@ -81,6 +83,7 @@
     "nuxt": "4.3.0",
     "nuxt-og-image": "5.1.13",
     "ofetch": "1.5.1",
+    "ohash": "2.0.11",
     "perfect-debounce": "2.1.0",
     "sanitize-html": "2.17.0",
     "semver": "7.7.3",
@@ -98,7 +101,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.7"
+    "vue-data-ui": "3.14.8"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.1.4",
@@ -113,7 +116,9 @@
     "@vitest/coverage-v8": "4.0.18",
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
+    "eslint-plugin-regexp": "3.0.0",
     "fast-check": "4.5.3",
+    "h3": "1.15.5",
     "knip": "5.83.0",
     "lint-staged": "16.2.7",
     "oxfmt": "0.27.0",
@@ -123,6 +128,7 @@
     "typescript": "5.9.3",
     "vitest": "npm:@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vitest-environment-nuxt": "1.0.1",
+    "vue-i18n-extract": "2.0.7",
     "vue-tsc": "3.2.4"
   },
   "engines": {

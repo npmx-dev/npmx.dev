@@ -1,5 +1,5 @@
+import { styleText } from 'node:util'
 import * as p from '@clack/prompts'
-import pc from 'picocolors'
 import { createDebug } from 'obug'
 
 let isInitialized = false
@@ -10,35 +10,35 @@ let isInitialized = false
 export function initLogger(): void {
   if (isInitialized) return
   isInitialized = true
-  p.intro(pc.bgCyan(pc.black(' npmx connector ')))
+  p.intro(styleText(['bgCyan', 'black'], ' npmx connector '))
 }
 
 /**
  * Log when starting to execute a command
  */
 export function logCommand(command: string): void {
-  p.log.step(pc.dim('$ ') + pc.cyan(command))
+  p.log.step(`${styleText('dim', '$ ')}${styleText('cyan', command)}`)
 }
 
 /**
  * Log successful command completion
  */
 export function logSuccess(message: string): void {
-  p.log.success(pc.green(message))
+  p.log.success(styleText('green', message))
 }
 
 /**
  * Log command failure
  */
 export function logError(message: string): void {
-  p.log.error(pc.red(message))
+  p.log.error(styleText('red', message))
 }
 
 /**
  * Log warning
  */
 export function logWarning(message: string): void {
-  p.log.warn(pc.yellow(message))
+  p.log.warn(styleText('yellow', message))
 }
 
 /**
@@ -61,9 +61,9 @@ export function showToken(token: string, port: number, frontendUrl: string): voi
 
   p.note(
     [
-      `Open: ${pc.bold(pc.underline(pc.cyan(connectUrl)))}`,
+      `Open: ${styleText(['bold', 'underline', 'cyan'], connectUrl)}`,
       '',
-      pc.dim(`Or paste token manually: ${token}`),
+      styleText('dim', `Or paste token manually: ${token}`),
     ].join('\n'),
     'Click to connect',
   )

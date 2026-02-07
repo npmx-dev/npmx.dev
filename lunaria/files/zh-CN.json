@@ -86,7 +86,7 @@
   },
   "i18n": {
     "missing_keys": "{count} 项缺少翻译",
-    "copy_keys": "拷贝键值",
+    "copy_keys": "复制键值",
     "show_more_keys": "显示其它 {count} 条…",
     "contribute_hint": "补充缺失的键值以帮助改进翻译。",
     "edit_on_github": "在 GitHub 上编辑",
@@ -100,8 +100,8 @@
     "try_again": "再试一次",
     "close": "关闭",
     "retry": "重试",
-    "copy": "拷贝",
-    "copied": "已拷贝！",
+    "copy": "复制",
+    "copied": "已复制！",
     "skip_link": "跳转到主界面",
     "close_modal": "关闭对话框",
     "show_more": "展示更多",
@@ -126,7 +126,7 @@
     "verified_provenance": "已验证的来源",
     "view_permalink": "查看这个版本的链接",
     "navigation": "包导航",
-    "copy_name": "拷贝包名",
+    "copy_name": "复制包名",
     "deprecation": {
       "package": "这个包已经被弃用。",
       "version": "这个版本已经被弃用。",
@@ -139,8 +139,10 @@
       "documented": "社区标记此包存在性能更优的替代方案",
       "none": "此包已被标记为不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
+      "learn_more_above": "在上方了解更多。",
       "mdn": "MDN",
-      "community": "社区"
+      "community": "社区",
+      "consider_no_dep": "+ 不使用依赖?"
     },
     "stats": {
       "license": "许可证",
@@ -196,12 +198,12 @@
     "get_started": {
       "title": "开始使用",
       "pm_label": "包管理器",
-      "copy_command": "拷贝安装命令",
+      "copy_command": "复制安装命令",
       "view_types": "查看 {package}"
     },
     "create": {
       "title": "创建新项目",
-      "copy_command": "拷贝创建命令",
+      "copy_command": "复制创建命令",
       "view": "{packageName} 由同一位维护者维护，点击查看详情"
     },
     "run": {
@@ -219,7 +221,8 @@
         "important": "重要",
         "warning": "警告",
         "caution": "当心"
-      }
+      },
+      "copy_as_markdown": "以 Markdown 格式复制 README"
     },
     "provenance_section": {
       "title": "来源",
@@ -433,8 +436,8 @@
       "connected_hint": "现在你可以通过 Web UI 管理包和组织。",
       "disconnect": "断开连接",
       "run_hint": "在你的机器上运行连接器以启用管理功能。",
-      "copy_command": "拷贝命令",
-      "copied": "已拷贝",
+      "copy_command": "复制命令",
+      "copied": "已复制",
       "paste_token": "再在下方粘贴令牌以连接：",
       "token_label": "令牌",
       "token_placeholder": "粘贴令牌…",
@@ -605,7 +608,7 @@
     "lines": "{count} 行",
     "toggle_tree": "切换文件树",
     "close_tree": "关闭文件树",
-    "copy_link": "拷贝链接",
+    "copy_link": "复制链接",
     "raw": "原始文件",
     "view_raw": "查看原始文件",
     "file_too_large": "文件过大，无法预览",
@@ -882,6 +885,15 @@
       "loading_versions": "正在加载版本…",
       "select_version": "选择版本"
     },
+    "no_dependency": {
+      "label": "(不使用依赖)",
+      "typeahead_title": "James 会怎么做？",
+      "typeahead_description": "与不使用依赖比较！由 e18e 推荐。",
+      "tooltip_title": "你可能不需要依赖",
+      "tooltip_description": "与不使用依赖比较！{link} 维护了一个软件包列表，其中的包可以使用原生 API 或者更简单的方案来替换。",
+      "e18e_community": "e18e 社区",
+      "add_column": "添加与“不使用依赖”的比较"
+    },
     "facets": {
       "group_label": "比较维度",
       "all": "全选",
@@ -956,8 +968,13 @@
         "not_deprecated": "未弃用",
         "types_included": "包含类型",
         "types_none": "无",
-        "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）"
+        "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）",
+        "up_to_you": "由你决定!"
       }
     }
+  },
+  "privacy_policy": {
+    "title": "隐私政策",
+    "last_updated": "上次更新：{date}"
   }
 }

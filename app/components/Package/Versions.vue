@@ -33,10 +33,7 @@ interface VersionDisplay {
 
 // Build route object for package version link
 function versionRoute(version: string): RouteLocationRaw {
-  return {
-    name: 'package',
-    params: { package: [...props.packageName.split('/'), 'v', version] },
-  }
+  return packageRoute(props.packageName, version)
 }
 
 // Version to tags lookup (supports multiple tags per version)
@@ -362,7 +359,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <div>
                 <NuxtLink
                   :to="versionRoute(row.primaryVersion.version)"
-                  class="block font-mono text-sm transition-colors duration-200 truncate inline-flex items-center gap-1 focus-visible:outline-none focus-visible:text-accent"
+                  class="font-mono text-sm transition-colors duration-200 truncate inline-flex items-center gap-1 focus-visible:outline-none focus-visible:text-accent"
                   :class="
                     row.primaryVersion.deprecated
                       ? 'text-red-400 hover:text-red-300'
@@ -381,7 +378,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     class="i-carbon-warning-hex w-3.5 h-3.5 shrink-0"
                     aria-hidden="true"
                   />
-                  {{ row.primaryVersion.version }}
+                  <span dir="ltr">
+                    {{ row.primaryVersion.version }}
+                  </span>
                 </NuxtLink>
               </div>
               <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
@@ -423,7 +422,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(v.version)"
-                class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
+                class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                 :class="
                   v.deprecated
                     ? 'text-red-400 hover:text-red-300'
@@ -440,7 +439,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   class="i-carbon-warning-hex w-3 h-3 shrink-0"
                   aria-hidden="true"
                 />
-                {{ v.version }}
+                <span dir="ltr">
+                  {{ v.version }}
+                </span>
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0">
                 <DateTime
@@ -526,7 +527,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <NuxtLink
                 :to="versionRoute(row.primaryVersion.version)"
-                class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
+                class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                 :class="
                   row.primaryVersion.deprecated
                     ? 'text-red-400 hover:text-red-300'
@@ -545,7 +546,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   class="i-carbon-warning-hex w-3 h-3 shrink-0"
                   aria-hidden="true"
                 />
-                {{ row.primaryVersion.version }}
+                <span dir="ltr">
+                  {{ row.primaryVersion.version }}
+                </span>
               </NuxtLink>
               <div class="flex items-center gap-2 shrink-0 pe-2">
                 <DateTime
@@ -602,7 +605,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <NuxtLink
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -621,7 +624,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         class="i-carbon-warning-hex w-3 h-3 shrink-0"
                         aria-hidden="true"
                       />
-                      {{ group.versions[0]?.version }}
+                      <span dir="ltr">
+                        {{ group.versions[0]?.version }}
+                      </span>
                     </NuxtLink>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
@@ -663,7 +668,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <NuxtLink
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -682,7 +687,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         class="i-carbon-warning-hex w-3 h-3 shrink-0"
                         aria-hidden="true"
                       />
-                      {{ group.versions[0]?.version }}
+                      <span dir="ltr">
+                        {{ group.versions[0]?.version }}
+                      </span>
                     </NuxtLink>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
@@ -722,7 +729,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   <div class="flex items-center justify-between gap-2">
                     <NuxtLink
                       :to="versionRoute(v.version)"
-                      class="block font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
+                      class="font-mono text-xs transition-colors duration-200 truncate inline-flex items-center gap-1"
                       :class="
                         v.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -739,7 +746,9 @@ function getTagVersions(tag: string): VersionDisplay[] {
                         class="i-carbon-warning-hex w-3 h-3 shrink-0"
                         aria-hidden="true"
                       />
-                      {{ v.version }}
+                      <span dir="ltr">
+                        {{ v.version }}
+                      </span>
                     </NuxtLink>
                     <div class="flex items-center gap-2 shrink-0 pe-2">
                       <DateTime

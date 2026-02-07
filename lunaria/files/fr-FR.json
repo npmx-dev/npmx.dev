@@ -206,7 +206,8 @@
       "title": "Readme",
       "no_readme": "Aucun README disponible.",
       "view_on_github": "Voir sur GitHub",
-      "toc_title": "Sommaire"
+      "toc_title": "Sommaire",
+      "copy_as_markdown": "Copier le README en markdown"
     },
     "keywords_title": "Mots-clés",
     "compatibility": "Compatibilité",

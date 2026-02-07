@@ -41,24 +41,24 @@ onKeyDown(
 const toggleableColumns = computed(() => props.columns.filter(col => col.id !== 'name'))
 
 // Map column IDs to i18n keys
-const columnLabelKey: Record<string, string> = {
-  name: 'filters.columns.name',
-  version: 'filters.columns.version',
-  description: 'filters.columns.description',
-  downloads: 'filters.columns.downloads',
-  updated: 'filters.columns.published',
-  maintainers: 'filters.columns.maintainers',
-  keywords: 'filters.columns.keywords',
-  qualityScore: 'filters.columns.quality_score',
-  popularityScore: 'filters.columns.popularity_score',
-  maintenanceScore: 'filters.columns.maintenance_score',
-  combinedScore: 'filters.columns.combined_score',
-  security: 'filters.columns.security',
-}
+const columnLabelKey = computed(() => ({
+  name: $t('filters.columns.name'),
+  version: $t('filters.columns.version'),
+  description: $t('filters.columns.description'),
+  downloads: $t('filters.columns.downloads'),
+  updated: $t('filters.columns.published'),
+  maintainers: $t('filters.columns.maintainers'),
+  keywords: $t('filters.columns.keywords'),
+  qualityScore: $t('filters.columns.quality_score'),
+  popularityScore: $t('filters.columns.popularity_score'),
+  maintenanceScore: $t('filters.columns.maintenance_score'),
+  combinedScore: $t('filters.columns.combined_score'),
+  security: $t('filters.columns.security'),
+}))
 
-function getColumnLabel(id: string): string {
-  const key = columnLabelKey[id]
-  return key ? $t(key) : id
+function getColumnLabel(id: ColumnId): string {
+  const key = columnLabelKey.value[id]
+  return key ?? id
 }
 
 function handleReset() {
@@ -87,7 +87,7 @@ function handleReset() {
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute inset-is-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute top-full inset-ie-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >

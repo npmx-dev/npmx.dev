@@ -198,6 +198,12 @@ function getCodeUrl(path?: string): string {
   return path ? `${base}/${path}` : base
 }
 
+// Base path segments for route objects (e.g., ['nuxt', 'v', '4.2.0'] or ['@nuxt', 'kit', 'v', '1.0.0'])
+const basePath = computed(() => {
+  const segments = packageName.value.split('/')
+  return [...segments, 'v', version.value ?? '']
+})
+
 // Extract org name from scoped package
 const orgName = computed(() => {
   const name = packageName.value
@@ -205,15 +211,6 @@ const orgName = computed(() => {
   const match = name.match(/^@([^/]+)\//)
   return match ? match[1] : null
 })
-
-// Build route object for package link (with optional version)
-function packageRoute(ver?: string | null) {
-  const segments = packageName.value.split('/')
-  if (ver) {
-    segments.push('v', ver)
-  }
-  return { name: 'package' as const, params: { package: segments } }
-}
 
 // Line number click handler - update URL hash without scrolling
 function handleLineClick(lineNum: number, event: MouseEvent) {
@@ -315,7 +312,7 @@ defineOgImageComponent('Default', {
         <!-- Package info and navigation -->
         <div class="flex items-center gap-2 mb-3 flex-wrap min-w-0">
           <NuxtLink
-            :to="packageRoute(version)"
+            :to="packageRoute(packageName, version)"
             class="font-mono text-lg font-medium hover:text-fg transition-colors min-w-0 truncate max-w-[60vw] sm:max-w-none"
             :title="packageName"
           >
@@ -339,13 +336,16 @@ defineOgImageComponent('Default', {
             v{{ version }}
           </span>
           <span class="text-fg-subtle shrink-0">/</span>
-          <span class="font-mono text-sm text-fg-muted shrink-0">code</span>
+          <span class="font-mono text-sm text-fg-muted shrink-0">{{
+            $t('package.links.code')
+          }}</span>
         </div>
 
         <!-- Breadcrumb navigation -->
         <nav
           :aria-label="$t('code.file_path')"
           class="flex items-center gap-1 font-mono text-sm overflow-x-auto"
+          dir="ltr"
         >
           <NuxtLink
             v-if="filePath"
@@ -373,7 +373,9 @@ defineOgImageComponent('Default', {
     <!-- Error: no version -->
     <div v-if="!version" class="container py-20 text-center">
       <p class="text-fg-muted mb-4">{{ $t('code.version_required') }}</p>
-      <NuxtLink :to="packageRoute()" class="btn">{{ $t('code.go_to_package') }}</NuxtLink>
+      <NuxtLink :to="packageRoute(packageName)" class="btn">{{
+        $t('code.go_to_package')
+      }}</NuxtLink>
     </div>
 
     <!-- Loading state -->
@@ -385,11 +387,13 @@ defineOgImageComponent('Default', {
     <!-- Error state -->
     <div v-else-if="treeStatus === 'error'" class="container py-20 text-center" role="alert">
       <p class="text-fg-muted mb-4">{{ $t('code.failed_to_load_tree') }}</p>
-      <NuxtLink :to="packageRoute(version)" class="btn">{{ $t('code.back_to_package') }}</NuxtLink>
+      <NuxtLink :to="packageRoute(packageName, version)" class="btn">{{
+        $t('code.back_to_package')
+      }}</NuxtLink>
     </div>
 
     <!-- Main content: file tree + file viewer -->
-    <div v-else-if="fileTree" class="flex flex-1">
+    <div v-else-if="fileTree" class="flex flex-1" dir="ltr">
       <!-- File tree sidebar - sticky with internal scroll -->
       <aside
         class="w-64 lg:w-72 border-ie border-border shrink-0 hidden md:block bg-bg-subtle sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
@@ -398,6 +402,7 @@ defineOgImageComponent('Default', {
           :tree="fileTree.tree"
           :current-path="filePath ?? ''"
           :base-url="getCodeUrl()"
+          :base-path="basePath"
         />
       </aside>
 
@@ -434,7 +439,7 @@ defineOgImageComponent('Default', {
                 </button>
               </div>
               <div class="flex items-center gap-3 text-sm">
-                <span class="text-fg-muted">{{
+                <span class="text-fg-muted" dir="auto">{{
                   $t('code.lines', { count: fileContent.lines })
                 }}</span>
                 <span v-if="currentNode?.size" class="text-fg-subtle">{{
@@ -557,6 +562,7 @@ defineOgImageComponent('Default', {
             :tree="fileTree.tree"
             :current-path="filePath ?? ''"
             :base-url="getCodeUrl()"
+            :base-path="basePath"
           />
         </template>
       </div>
@@ -570,6 +576,7 @@ defineOgImageComponent('Default', {
           :tree="fileTree.tree"
           :current-path="filePath ?? ''"
           :base-url="getCodeUrl()"
+          :base-path="basePath"
         />
       </Teleport>
     </ClientOnly>

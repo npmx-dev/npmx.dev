@@ -134,7 +134,7 @@ defineOgImageComponent('Default', {
       <!-- Back link -->
       <nav aria-labelledby="back-to-profile">
         <NuxtLink
-          :to="`/~${username}`"
+          :to="{ name: '~username', params: { username } }"
           id="back-to-profile"
           class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
         >
@@ -158,9 +158,11 @@ defineOgImageComponent('Default', {
       <!-- Not own profile state -->
       <div v-else-if="!isOwnProfile" class="py-12 text-center">
         <p class="text-fg-muted">{{ $t('user.orgs_page.own_orgs_only') }}</p>
-        <NuxtLink :to="`/~${npmUser}/orgs`" class="btn mt-4">{{
-          $t('user.orgs_page.view_your_orgs')
-        }}</NuxtLink>
+        <NuxtLink
+          :to="{ name: '~username-orgs', params: { username: npmUser! } }"
+          class="btn mt-4"
+          >{{ $t('user.orgs_page.view_your_orgs') }}</NuxtLink
+        >
       </div>
 
       <!-- Loading state -->
@@ -189,7 +191,7 @@ defineOgImageComponent('Default', {
         <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <li v-for="org in orgs" :key="org.name">
             <NuxtLink
-              :to="`/@${org.name}`"
+              :to="{ name: 'org', params: { org: org.name } }"
               class="block p-5 bg-bg-subtle border border-border rounded-lg hover:border-fg-subtle transition-colors h-full"
             >
               <div class="flex items-start gap-4 mb-4">

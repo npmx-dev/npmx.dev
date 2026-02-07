@@ -2,6 +2,9 @@
 import type { NewOperation } from '~/composables/useConnector'
 import { buildScopeTeam } from '~/utils/npm/common'
 
+type MemberRole = 'developer' | 'admin' | 'owner'
+type MemberRoleFilter = MemberRole | 'all'
+
 const props = defineProps<{
   orgName: string
 }>()
@@ -21,7 +24,7 @@ const {
 } = useConnector()
 
 // Members data: { username: role }
-const members = shallowRef<Record<string, 'developer' | 'admin' | 'owner'>>({})
+const members = shallowRef<Record<string, MemberRole>>({})
 const isLoading = shallowRef(false)
 const error = shallowRef<string | null>(null)
 
@@ -31,7 +34,7 @@ const isLoadingTeams = shallowRef(false)
 
 // Search/filter
 const searchQuery = shallowRef('')
-const filterRole = shallowRef<'all' | 'developer' | 'admin' | 'owner'>('all')
+const filterRole = shallowRef<MemberRoleFilter>('all')
 const filterTeam = shallowRef<string | null>(null)
 const sortBy = shallowRef<'name' | 'role'>('name')
 const sortOrder = shallowRef<'asc' | 'desc'>('asc')
@@ -39,7 +42,7 @@ const sortOrder = shallowRef<'asc' | 'desc'>('asc')
 // Add member form
 const showAddMember = shallowRef(false)
 const newUsername = shallowRef('')
-const newRole = shallowRef<'developer' | 'admin' | 'owner'>('developer')
+const newRole = shallowRef<MemberRole>('developer')
 const newTeam = shallowRef<string>('') // Empty string means "developers" (default)
 const isAddingMember = shallowRef(false)
 
@@ -259,6 +262,17 @@ function getRoleBadgeClass(role: string): string {
   }
 }
 
+const roleLabels = computed(() => ({
+  owner: $t('org.members.role.owner'),
+  admin: $t('org.members.role.admin'),
+  developer: $t('org.members.role.developer'),
+  all: $t('org.members.role.all'),
+}))
+
+function getRoleLabel(role: MemberRoleFilter): string {
+  return roleLabels.value[role]
+}
+
 // Click on team badge to switch to teams tab and highlight
 function handleTeamClick(teamName: string) {
   emit('select-team', teamName)
@@ -341,7 +355,7 @@ watch(lastExecutionTime, () => {
           :aria-pressed="filterRole === role"
           @click="filterRole = role"
         >
-          {{ $t(`org.members.role.${role}`) }}
+          {{ getRoleLabel(role) }}
           <span v-if="role !== 'all'" class="text-fg-subtle">({{ roleCounts[role] }})</span>
         </button>
       </div>
@@ -439,7 +453,7 @@ watch(lastExecutionTime, () => {
               class="px-1.5 py-0.5 font-mono text-xs border rounded"
               :class="getRoleBadgeClass(member.role)"
             >
-              {{ member.role }}
+              {{ getRoleLabel(member.role) }}
             </span>
           </div>
           <div class="flex items-center gap-1">
@@ -459,9 +473,9 @@ watch(lastExecutionTime, () => {
                 )
               "
             >
-              <option value="developer">{{ $t('org.members.role.developer') }}</option>
-              <option value="admin">{{ $t('org.members.role.admin') }}</option>
-              <option value="owner">{{ $t('org.members.role.owner') }}</option>
+              <option value="developer">{{ getRoleLabel('developer') }}</option>
+              <option value="admin">{{ getRoleLabel('admin') }}</option>
+              <option value="owner">{{ getRoleLabel('owner') }}</option>
             </select>
             <!-- Remove button -->
             <button
