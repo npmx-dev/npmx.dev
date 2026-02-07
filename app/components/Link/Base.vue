@@ -81,7 +81,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
       'font-mono border border-border rounded-md transition-all duration-200': isButton,
       'text-sm px-4 py-2': isButtonMedium,
       'text-xs px-2 py-0.5': isButtonSmall,
-      'bg-transparent text-fg hover:(bg-fg/10) focus-visible:(bg-fg/10)':
+      'text-fg bg-transparent hover:(bg-fg/10 border-fg/10) focus-visible:(bg-fg/10)':
         variant === 'button-secondary',
       'text-bg bg-fg hover:(bg-fg/50) focus-visible:(bg-fg/50)': variant === 'button-primary',
     }"
@@ -91,6 +91,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
   >
     <span
       v-if="classicon"
+      class="text-fg"
       :class="[isButtonSmall ? 'size-3' : 'size-4', classicon]"
       aria-hidden="true"
     />
@@ -108,7 +109,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
     />
     <kbd
       v-if="keyshortcut"
-      class="ms-2 inline-flex items-center justify-center w-4 h-4 text-xs text-fg bg-bg-muted border border-border rounded no-underline"
+      class="ms-2 inline-flex items-center justify-center w-4 h-4 text-xs group-hover:text-accent bg-bg-muted border border-border rounded no-underline"
       aria-hidden="true"
     >
       {{ keyshortcut }}

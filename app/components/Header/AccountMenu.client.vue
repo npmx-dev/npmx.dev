@@ -225,10 +225,12 @@ function openAuthModal() {
               v-if="!isNpmConnected"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full px-3 py-2.5 group flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openConnectorModal"
             >
-              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
+              <span
+                class="w-8 h-8 rounded-full bg-bg-muted group-hover:bg-bg-subtle flex items-center justify-center"
+              >
                 <span
                   v-if="isNpmConnecting"
                   class="i-carbon-circle-dash w-4 h-4 text-yellow-500 animate-spin"
@@ -252,10 +254,12 @@ function openAuthModal() {
               v-if="!atprotoUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full px-3 py-2.5 group flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openAuthModal"
             >
-              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
+              <span
+                class="w-8 h-8 rounded-full bg-bg-muted group-hover:bg-bg-subtle flex items-center justify-center"
+              >
                 <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
               <div class="flex-1 min-w-0">
