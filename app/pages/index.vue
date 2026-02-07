@@ -22,6 +22,7 @@ async function search() {
 const handleInput = isTouchDevice()
   ? search
   : debounce(search, 250, { leading: true, trailing: true })
+const { env } = useAppConfig().buildInfo
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
@@ -53,6 +54,10 @@ defineOgImageComponent('Default', {
             class="w-12 h-12 -ms-3 sm:w-20 sm:h-20 sm:-ms-5 md:w-24 md:h-24 md:-ms-6 rounded-2xl sm:rounded-3xl"
           />
           <span class="pb-4">npmx</span>
+          <sup class="text-3xl italic text-fg-muted">
+            <!-- TODO: improve styling and show 'alpha' until March 3 annoucement -->
+            {{ env === 'release' ? '' : env }}
+          </sup>
         </h1>
 
         <p
