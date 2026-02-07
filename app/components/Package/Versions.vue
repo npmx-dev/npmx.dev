@@ -408,7 +408,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
         <!-- Expanded versions -->
         <div
           v-if="expandedTags.has(row.tag) && getTagVersions(row.tag).length > 1"
-          class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
+          class="ms-4 ps-2 pe-2 border-is border-border space-y-0.5 lg:max-h-48 lg:overflow-y-auto"
         >
           <div v-for="v in getTagVersions(row.tag).slice(1)" :key="v.version" class="py-1">
             <div class="flex items-center justify-between gap-2">
@@ -505,7 +505,10 @@ function getTagVersions(tag: string): VersionDisplay[] {
         </button>
 
         <!-- Expanded other versions -->
-        <div v-if="otherVersionsExpanded" class="ms-4 ps-2 border-is border-border space-y-0.5">
+        <div
+          v-if="otherVersionsExpanded"
+          class="ms-4 ps-2 pe-1 border-is border-border space-y-0.5 lg:max-h-48 lg:overflow-y-auto"
+        >
           <!-- Hidden tag rows (overflow from visible tags) -->
           <div v-for="row in hiddenTagRows" :key="row.id" class="py-1">
             <div class="flex items-center justify-between gap-2">
