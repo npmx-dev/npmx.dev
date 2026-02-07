@@ -21,6 +21,26 @@ const isMobile = useIsMobile()
 const isSearchExpandedManually = shallowRef(false)
 const searchBoxRef = useTemplateRef('searchBoxRef')
 
+const searchQuery = shallowRef('')
+watch(
+  () => route.query.q,
+  queryValue => {
+    searchQuery.value = normalizeSearchParam(queryValue)
+  },
+  { immediate: true },
+)
+
+async function handleSearchSubmit() {
+  if (!searchQuery.value) {
+    return
+  }
+
+  await navigateTo({
+    name: 'search',
+    query: { q: searchQuery.value },
+  })
+}
+
 // On search page, always show search expanded on mobile
 const isOnHomePage = computed(() => route.name === 'index')
 const isOnSearchPage = computed(() => route.name === 'search')
@@ -89,7 +109,7 @@ onKeyStroke(
     <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />
     <nav
       :aria-label="$t('nav.main_navigation')"
-      class="relative container min-h-14 flex items-center gap-2 z-1"
+      class="relative container min-h-14 flex items-center gap-4 z-1"
       :class="isOnHomePage ? 'justify-end' : 'justify-between'"
     >
       <!-- Mobile: Logo + search button (expands search, doesn't navigate) -->
@@ -120,18 +140,19 @@ onKeyStroke(
       <span v-else class="hidden sm:block w-1" />
 
       <!-- Center: Search bar + nav items -->
-      <div
-        class="flex-1 flex items-center justify-center md:gap-6"
-        :class="{ 'hidden sm:flex': !isSearchExpanded }"
-      >
+      <div class="flex-1 flex max-w-md md:gap-6" :class="{ 'hidden sm:flex': !isSearchExpanded }">
         <!-- Search bar (hidden on mobile unless expanded) -->
-        <HeaderSearchBox
+        <SearchBox
+          v-if="!isOnHomePage"
           ref="searchBoxRef"
-          :inputClass="isSearchExpanded ? 'w-full' : ''"
-          :class="{ 'max-w-md': !isSearchExpanded }"
+          class="max-w-sm"
+          compact
+          v-model="searchQuery"
+          @submit="handleSearchSubmit"
           @focus="handleSearchFocus"
           @blur="handleSearchBlur"
         />
+
         <ul
           v-if="!isSearchExpanded && isConnected && npmUser"
           :class="{ hidden: showFullSearch }"

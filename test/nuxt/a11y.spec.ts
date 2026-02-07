@@ -101,7 +101,7 @@ import {
   FilterPanel,
   HeaderAccountMenu,
   HeaderConnectorModal,
-  HeaderSearchBox,
+  SearchBox,
   LicenseDisplay,
   LoadingSpinner,
   PackageProvenanceSection,
@@ -2077,9 +2077,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('HeaderSearchBox', () => {
+  describe('SearchBox', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(HeaderSearchBox)
+      const component = await mountSuspended(SearchBox)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
@@ -2274,7 +2274,7 @@ describe('background theme accessibility', () => {
   const components = [
     { name: 'AppHeader', mount: () => mountSuspended(AppHeader) },
     { name: 'AppFooter', mount: () => mountSuspended(AppFooter) },
-    { name: 'HeaderSearchBox', mount: () => mountSuspended(HeaderSearchBox) },
+    { name: 'SearchBox', mount: () => mountSuspended(SearchBox) },
     {
       name: 'LoadingSpinner',
       mount: () => mountSuspended(LoadingSpinner, { props: { text: 'Loading...' } }),

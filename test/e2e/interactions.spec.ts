@@ -88,24 +88,19 @@ test.describe('Search Pages', () => {
   test('/ (homepage) → search, keeps focus on search input', async ({ page, goto }) => {
     await goto('/', { waitUntil: 'hydration' })
 
-    const homeSearchInput = page.locator('#home-search')
-    await homeSearchInput.click()
+    const searchInput = page.locator('#search-box')
+    await searchInput.click()
     await page.keyboard.type('vue')
+    await page.keyboard.press('Enter')
 
-    // Wait for navigation to /search (debounce is 250ms)
     await expect(page).toHaveURL(/\/search/, { timeout: 10000 })
 
     await expect(page.locator('[data-result-index="0"]').first()).toBeVisible({
       timeout: 15000,
     })
 
-    // Home search input should be gone (we're on /search now)
-    await expect(homeSearchInput).not.toBeVisible()
-
-    // Header search input should now exist and be focused
-    const headerSearchInput = page.locator('#header-search')
-    await expect(headerSearchInput).toBeVisible()
-    await expect(headerSearchInput).toBeFocused()
+    await expect(searchInput).toBeVisible()
+    await expect(searchInput).toBeFocused()
   })
 
   test('/settings → search, keeps focus on search input', async ({ page, goto }) => {
@@ -116,6 +111,7 @@ test.describe('Search Pages', () => {
 
     await searchInput.click()
     await searchInput.fill('vue')
+    await page.keyboard.press('Enter')
 
     await expect(page).toHaveURL(/\/search/, { timeout: 10000 })
 
@@ -123,7 +119,7 @@ test.describe('Search Pages', () => {
       timeout: 15000,
     })
 
-    const headerSearchInput = page.locator('#header-search')
+    const headerSearchInput = page.locator('#search-box')
     await expect(headerSearchInput).toBeFocused()
   })
 })
@@ -167,15 +163,15 @@ test.describe('Keyboard Shortcuts', () => {
   test('"c" does not navigate when search input is focused', async ({ page, goto }) => {
     await goto('/settings', { waitUntil: 'hydration' })
 
-    const searchInput = page.locator('#header-search')
+    const searchInput = page.locator('#search-box')
     await searchInput.focus()
     await expect(searchInput).toBeFocused()
 
     await page.keyboard.press('c')
 
-    // Should still be on settings, not navigated to compare
+    // // Should still be on settings, not navigated to compare
     await expect(page).toHaveURL(/\/settings/)
-    // The 'c' should have been typed into the input
+    // // The 'c' should have been typed into the input
     await expect(searchInput).toHaveValue('c')
   })
 
@@ -208,7 +204,7 @@ test.describe('Keyboard Shortcuts', () => {
   test('"," does not navigate when any modifier key is pressed', async ({ page, goto }) => {
     await goto('/settings', { waitUntil: 'hydration' })
 
-    const searchInput = page.locator('#header-search')
+    const searchInput = page.locator('#search-box')
     await searchInput.focus()
     await expect(searchInput).toBeFocused()
 
@@ -227,7 +223,7 @@ test.describe('Keyboard Shortcuts', () => {
   test('"," does not navigate when search input is focused', async ({ page, goto }) => {
     await goto('/compare', { waitUntil: 'hydration' })
 
-    const searchInput = page.locator('#header-search')
+    const searchInput = page.locator('#search-box')
     await searchInput.focus()
     await expect(searchInput).toBeFocused()
 

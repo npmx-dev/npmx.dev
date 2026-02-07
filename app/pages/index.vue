@@ -1,27 +1,17 @@
 <script setup lang="ts">
-import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
 const searchQuery = shallowRef('')
-const searchInputRef = useTemplateRef('searchInputRef')
-const { focused: isSearchFocused } = useFocus(searchInputRef)
-
-async function search() {
-  const query = searchQuery.value.trim()
-  if (!query) return
-  await navigateTo({
-    path: '/search',
-    query: query ? { q: query } : undefined,
-  })
-  const newQuery = searchQuery.value.trim()
-  if (newQuery !== query) {
-    await search()
+async function handleSearchSubmit() {
+  if (!searchQuery.value) {
+    return
   }
-}
 
-const handleInput = isTouchDevice()
-  ? search
-  : debounce(search, 250, { leading: true, trailing: true })
+  await navigateTo({
+    name: 'search',
+    query: { q: searchQuery.value },
+  })
+}
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
@@ -62,56 +52,12 @@ defineOgImageComponent('Default', {
           {{ $t('tagline') }}
         </p>
 
-        <search
-          class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
+        <SearchBox
+          class="max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
-        >
-          <form method="GET" action="/search" class="relative" @submit.prevent.trim="search">
-            <label for="home-search" class="sr-only">
-              {{ $t('search.label') }}
-            </label>
-
-            <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
-              <div
-                class="absolute -inset-px rounded-lg bg-gradient-to-r from-fg/0 via-fg/5 to-fg/0 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
-              />
-
-              <div class="search-box relative flex items-center">
-                <span
-                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
-                >
-                  /
-                </span>
-
-                <input
-                  id="home-search"
-                  ref="searchInputRef"
-                  v-model="searchQuery"
-                  type="search"
-                  name="q"
-                  autofocus
-                  :placeholder="$t('search.placeholder')"
-                  v-bind="noCorrect"
-                  class="w-full bg-bg-subtle border border-border rounded-xl ps-8 pe-24 h-14 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 motion-reduce:transition-none hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
-                  @input="handleInput"
-                />
-
-                <button
-                  type="submit"
-                  class="absolute group inset-ie-2.5 px-2.5 sm:ps-4 sm:pe-4 py-2 font-mono text-sm text-bg bg-fg/90 rounded-md transition-[background-color,transform] duration-200 hover:bg-fg! group-focus-within:bg-fg/80 active:scale-95 focus-visible:outline-accent/70"
-                >
-                  <span
-                    class="inline-block i-carbon:search align-middle w-4 h-4 sm:me-2"
-                    aria-hidden="true"
-                  ></span>
-                  <span class="sr-only sm:not-sr-only">
-                    {{ $t('search.button') }}
-                  </span>
-                </button>
-              </div>
-            </div>
-          </form>
-        </search>
+          v-model="searchQuery"
+          @submit="handleSearchSubmit"
+        />
 
         <BuildEnvironment class="mt-4" />
       </header>
