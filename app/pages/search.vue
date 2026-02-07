@@ -573,24 +573,6 @@ watch(displayResults, results => {
 })
 
 function handleResultsKeydown(e: KeyboardEvent) {
-  // If the active element is an input, navigate to exact match or wait for results
-  if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
-    // Get value directly from input (not from route query, which may be debounced)
-    const inputValue = (document.activeElement as HTMLInputElement).value.trim()
-    if (!inputValue) return
-
-    // Check if first result matches the input value exactly
-    const firstResult = displayResults.value[0]
-    if (firstResult?.package.name === inputValue) {
-      pendingEnterQuery.value = null
-      return navigateToPackage(firstResult.package.name)
-    }
-
-    // No match yet - store input value, watcher will handle navigation when results arrive
-    pendingEnterQuery.value = inputValue
-    return
-  }
-
   if (totalSelectableCount.value <= 0) return
 
   const elements = getFocusableElements()
