@@ -22,7 +22,7 @@ async function handleCreateAccount() {
 
 async function handleLogin() {
   if (handleInput.value) {
-    await authRedirect(handleInput.value)
+    await authRedirect(handleInput.value.trim().replace('@', ''))
   }
 }
 </script>
