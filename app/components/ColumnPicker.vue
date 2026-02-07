@@ -87,7 +87,7 @@ function handleReset() {
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute top-full right-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute top-full inset-ie-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >
