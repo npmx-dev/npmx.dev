@@ -29,7 +29,6 @@ const config: KnipConfig = {
       project: ['**/*.{ts,vue,cjs,mjs}', '!test/fixtures/**'],
       ignoreDependencies: [
         '@iconify-json/*',
-        '@vercel/kv',
         '@voidzero-dev/vite-plus-core',
         'vite-plus!',
         'puppeteer',
@@ -52,7 +51,7 @@ const config: KnipConfig = {
     },
     'docs': {
       entry: ['app/**/*.{ts,vue}'],
-      ignoreDependencies: ['docus', 'better-sqlite3', 'nuxt!'],
+      ignoreDependencies: ['docus', 'better-sqlite3', '@nuxtjs/mdc', 'nuxt!'],
     },
   },
 }
