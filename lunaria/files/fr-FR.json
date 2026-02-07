@@ -363,8 +363,7 @@
       "no_data": "Aucune donnée de {facet} disponible",
       "y_axis_label": "{facet} {granularity}",
       "items": {
-        "downloads": "Téléchargements",
-        "likes": "J'aime"
+        "downloads": "Téléchargements"
       }
     }
   },
