@@ -16,11 +16,9 @@ const lineNumbers = computed(() => {
   return Array.from({ length: props.lines }, (_, i) => i + 1)
 })
 
-// Dynamically compute line number column width based on digit count
-const lineNumberWidth = computed(() => {
-  const digits = String(props.lines).length
-  // ch unit matches monospace digit width + 1.5rem for px-3 padding
-  return `calc(${digits}ch + 1.5rem)`
+// Used for CSS calculation of line number column width
+const lineDigits = computed(() => {
+  return String(props.lines).length
 })
 
 // Check if a line is selected
@@ -66,7 +64,7 @@ watch(
     <!-- Line numbers column -->
     <div
       class="line-numbers shrink-0 bg-bg-subtle border-ie border-solid border-border text-end select-none relative"
-      :style="{ minWidth: lineNumberWidth }"
+      :style="{ '--line-digits': lineDigits }"
       aria-hidden="true"
     >
       <a
@@ -99,6 +97,11 @@ watch(
 <style scoped>
 .code-viewer {
   font-size: 14px;
+}
+
+.line-numbers {
+  /* 1ch per digit + 1.5rem (px-3 * 2) padding */
+  min-width: calc(var(--line-digits) * 1ch + 1.5rem);
 }
 
 .code-content :deep(pre) {
