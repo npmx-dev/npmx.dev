@@ -7,6 +7,11 @@ export interface UserServerSession {
     pds: string
     avatar?: string
   }
+  profile: {
+    website?: string
+    description?: string
+    displayName?: string
+  }
   // Only to be used in the atproto session and state stores
   // Will need to change to Record<string, T> and add a current logged in user if we ever want to support
   // multiple did logins per server session
