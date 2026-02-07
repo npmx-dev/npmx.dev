@@ -174,6 +174,7 @@ function formatXyDataset(
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
+          useArea: true,
         },
       ],
       dates: dataset.map(d => d.timestampEnd),
@@ -187,6 +188,7 @@ function formatXyDataset(
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
+          useArea: true,
         },
       ],
       dates: dataset.map(d => d.timestamp),
@@ -200,6 +202,7 @@ function formatXyDataset(
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
+          useArea: true,
         },
       ],
       dates: dataset.map(d => d.timestamp),
@@ -213,6 +216,7 @@ function formatXyDataset(
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
+          useArea: true,
         },
       ],
       dates: dataset.map(d => d.timestamp),
@@ -1044,6 +1048,14 @@ const chartConfig = computed(() => {
       <ClientOnly v-if="chartData.dataset">
         <div>
           <VueUiXy :dataset="chartData.dataset" :config="chartConfig" class="[direction:ltr]">
+            <!-- Subtle gradient applied for a unique series (chart modal) -->
+            <template #area-gradient="{ series: chartModalSeries, id: gradientId }">
+              <linearGradient :id="gradientId" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" :stop-color="chartModalSeries.color" stop-opacity="0.2" />
+                <stop offset="100%" :stop-color="colors.bg" stop-opacity="0" />
+              </linearGradient>
+            </template>
+
             <!-- Custom legend for multiple series -->
             <template v-if="isMultiPackageMode" #legend="{ legend }">
               <div class="flex gap-4 flex-wrap justify-center">
