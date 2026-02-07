@@ -28,6 +28,10 @@ export function useFacetSelection(queryParam = 'facets') {
       label: t(`compare.facets.items.downloads.label`),
       description: t(`compare.facets.items.downloads.description`),
     },
+    totalLikes: {
+      label: t(`compare.facets.items.totalLikes.label`),
+      description: t(`compare.facets.items.totalLikes.description`),
+    },
     packageSize: {
       label: t(`compare.facets.items.packageSize.label`),
       description: t(`compare.facets.items.packageSize.description`),
