@@ -166,7 +166,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <select
                   id="search-provider-select"
                   :value="settings.searchProvider"
-                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-accent/70 cursor-pointer duration-200 transition-colors hover:border-fg-subtle"
+                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg cursor-pointer duration-200 transition-colors hover:border-fg-subtle"
                   @change="
                     settings.searchProvider = ($event.target as HTMLSelectElement)
                       .value as typeof settings.searchProvider

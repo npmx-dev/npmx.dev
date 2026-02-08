@@ -23,6 +23,7 @@ const MAX_RESULTS = 250
  */
 export function useUserPackages(username: MaybeRefOrGetter<string>) {
   const { searchProvider } = useSearchProvider()
+  // this is only used in npm path, but we need to extract it when the composable runs
   const { $npmRegistry } = useNuxtApp()
   const { searchByOwner } = useAlgoliaSearch()
 
@@ -103,7 +104,11 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     { default: () => emptySearchResponse },
   )
   // --- Fetch more (npm path only) ---
-  async function fetchMore(): Promise<void> {
+  /**
+   * Fetch the next page of results from npm registry.
+   * @param manageLoadingState - When false, caller manages isLoadingMore (used by loadAll to prevent flicker)
+   */
+  async function fetchMore(manageLoadingState = true): Promise<void> {
     const user = toValue(username)
     const provider = searchProvider.value
     if (!user || provider !== 'npm') return
@@ -119,7 +124,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
     if (currentCount >= total) return
 
-    isLoadingMore.value = true
+    if (manageLoadingState) isLoadingMore.value = true
 
     try {
       const from = currentCount
@@ -155,7 +160,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
         }
       }
     } finally {
-      isLoadingMore.value = false
+      if (manageLoadingState) isLoadingMore.value = false
     }
   }
 
@@ -173,7 +178,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     isLoadingMore.value = true
     try {
       while (hasMore.value) {
-        await fetchMore()
+        await fetchMore(false)
       }
     } finally {
       isLoadingMore.value = false
@@ -184,7 +189,6 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
   watch(searchProvider, () => {
     cache.value = null
     currentPage.value = 1
-    asyncData.refresh()
   })
 
   // Computed data that uses cache
