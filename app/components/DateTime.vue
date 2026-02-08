@@ -9,8 +9,8 @@
  */
 const props = withDefaults(
   defineProps<{
-    /** The datetime value (ISO string or Date) */
-    datetime: string | Date
+    /** The datetime value (ISO string or Date or timestamp) */
+    datetime: string | Date | number
     /** Override title (defaults to datetime) */
     title?: string
     /** Date style for absolute display */
@@ -31,7 +31,7 @@ const props = withDefaults(
 
 const { locale } = useI18n()
 
-const relativeDates = useRelativeDates()
+const { relativeDates } = useRelativeDates()
 
 const dateFormatter = new Intl.DateTimeFormat(locale.value, {
   month: 'short',

@@ -962,7 +962,7 @@ onKeyStroke(
               {{ $t('package.stats.published') }}
             </dt>
             <dd class="font-mono text-sm text-fg">
-              <DateTime :datetime="pkg.time[resolvedVersion]!" date-style="medium" />
+              <DateTimeButton :datetime="pkg.time[resolvedVersion]!" date-style="medium" />
             </dd>
           </div>
         </dl>

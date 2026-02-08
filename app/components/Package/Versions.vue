@@ -387,7 +387,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
               </div>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-              <DateTime
+              <DateTimeButton
                 v-if="row.primaryVersion.time"
                 :datetime="row.primaryVersion.time"
                 year="numeric"
@@ -428,7 +428,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 </span>
               </LinkBase>
               <div class="flex items-center gap-2 shrink-0">
-                <DateTime
+                <DateTimeButton
                   v-if="v.time"
                   :datetime="v.time"
                   class="text-3xs text-fg-subtle"
@@ -529,7 +529,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                 </span>
               </LinkBase>
               <div class="flex items-center gap-2 shrink-0 pe-2">
-                <DateTime
+                <DateTimeButton
                   v-if="row.primaryVersion.time"
                   :datetime="row.primaryVersion.time"
                   class="text-3xs text-fg-subtle"
@@ -606,7 +606,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     </LinkBase>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
-                    <DateTime
+                    <DateTimeButton
                       v-if="group.versions[0]?.time"
                       :datetime="group.versions[0]?.time"
                       class="text-3xs text-fg-subtle"
@@ -667,7 +667,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     </LinkBase>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
-                    <DateTime
+                    <DateTimeButton
                       v-if="group.versions[0]?.time"
                       :datetime="group.versions[0]?.time"
                       class="text-3xs text-fg-subtle"
@@ -717,7 +717,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                       </span>
                     </LinkBase>
                     <div class="flex items-center gap-2 shrink-0 pe-2">
-                      <DateTime
+                      <DateTimeButton
                         v-if="v.time"
                         :datetime="v.time"
                         class="text-3xs text-fg-subtle"

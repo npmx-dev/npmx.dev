@@ -74,7 +74,15 @@ export function useSettings() {
  */
 export function useRelativeDates() {
   const { settings } = useSettings()
-  return computed(() => settings.value.relativeDates)
+
+  function toggleRelativeDates() {
+    settings.value.relativeDates = !settings.value.relativeDates
+  }
+
+  return {
+    relativeDates: computed(() => settings.value.relativeDates),
+    toggleRelativeDates,
+  }
 }
 
 /**
