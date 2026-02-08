@@ -316,14 +316,13 @@ interface ValidatedSuggestion {
 /** Cache for existence checks to avoid repeated API calls */
 const existenceCache = ref<Record<string, boolean | 'pending'>>({})
 
-interface NpmSearchResponse {
-  total: number
-  objects: Array<{ package: { name: string } }>
-}
+const { search: algoliaSearch } = useAlgoliaSearch()
+const { isAlgolia } = useSearchProvider()
 
 /**
- * Check if an org exists by searching for packages with @orgname scope
- * Uses the search API which has CORS enabled
+ * Check if an org exists by searching for scoped packages (@orgname/...).
+ * When Algolia is active, searches for `@name/` scoped packages via text query.
+ * Falls back to npm registry search API otherwise.
  */
 async function checkOrgExists(name: string): Promise<boolean> {
   const cacheKey = `org:${name.toLowerCase()}`
@@ -333,12 +332,24 @@ async function checkOrgExists(name: string): Promise<boolean> {
   }
   existenceCache.value[cacheKey] = 'pending'
   try {
-    // Search for packages in the @org scope
-    const response = await $fetch<NpmSearchResponse>(`${NPM_REGISTRY}/-/v1/search`, {
-      query: { text: `@${name}`, size: 5 },
-    })
-    // Verify at least one result actually starts with @orgname/
     const scopePrefix = `@${name.toLowerCase()}/`
+
+    if (isAlgolia.value) {
+      // Algolia: search for scoped packages — use the scope as a text query
+      // and verify a result actually starts with @name/
+      const response = await algoliaSearch(`@${name}`, { size: 5 })
+      const exists = response.objects.some(obj =>
+        obj.package.name.toLowerCase().startsWith(scopePrefix),
+      )
+      existenceCache.value[cacheKey] = exists
+      return exists
+    }
+
+    // npm registry: search for packages in the @org scope
+    const response = await $fetch<{ total: number; objects: Array<{ package: { name: string } }> }>(
+      `${NPM_REGISTRY}/-/v1/search`,
+      { query: { text: `@${name}`, size: 5 } },
+    )
     const exists = response.objects.some(obj =>
       obj.package.name.toLowerCase().startsWith(scopePrefix),
     )
@@ -351,8 +362,10 @@ async function checkOrgExists(name: string): Promise<boolean> {
 }
 
 /**
- * Check if a user exists by searching for packages they maintain
- * Uses the search API which has CORS enabled
+ * Check if a user exists by searching for packages they maintain.
+ * Always uses the npm registry `maintainer:` search because Algolia's
+ * `owner.name` field represents the org/account, not individual maintainers,
+ * and cannot reliably distinguish users from orgs.
  */
 async function checkUserExists(name: string): Promise<boolean> {
   const cacheKey = `user:${name.toLowerCase()}`
@@ -418,8 +431,8 @@ const parsedQuery = computed<ParsedQuery>(() => {
 const validatedSuggestions = ref<ValidatedSuggestion[]>([])
 const suggestionsLoading = shallowRef(false)
 
-/** Debounced function to validate suggestions */
-const validateSuggestions = debounce(async (parsed: ParsedQuery) => {
+/** Validate suggestions (check org/user existence) */
+async function validateSuggestionsImpl(parsed: ParsedQuery) {
   if (!parsed.type || !parsed.name) {
     validatedSuggestions.value = []
     return
@@ -458,16 +471,35 @@ const validateSuggestions = debounce(async (parsed: ParsedQuery) => {
   }
 
   validatedSuggestions.value = suggestions
-}, 200)
+}
+
+// Debounce lightly for npm (extra API calls are slower), skip debounce for Algolia (fast)
+const validateSuggestionsDebounced = debounce(validateSuggestionsImpl, 100)
 
 // Validate suggestions when query changes
 watch(
   parsedQuery,
   parsed => {
-    validateSuggestions(parsed)
+    if (isAlgolia.value) {
+      // Algolia existence checks are fast - fire immediately
+      validateSuggestionsImpl(parsed)
+    } else {
+      validateSuggestionsDebounced(parsed)
+    }
   },
   { immediate: true },
 )
+
+// Re-validate suggestions and clear caches when provider changes
+watch(isAlgolia, () => {
+  // Clear existence cache since results may differ between providers
+  existenceCache.value = {}
+  // Re-validate with current query
+  const parsed = parsedQuery.value
+  if (parsed.type) {
+    validateSuggestionsImpl(parsed)
+  }
+})
 
 /** Check if there's an exact package match in results */
 const hasExactPackageMatch = computed(() => {
