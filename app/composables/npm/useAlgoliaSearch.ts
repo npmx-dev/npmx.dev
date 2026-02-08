@@ -7,14 +7,17 @@ import {
 
 /**
  * Algolia search client for npm packages.
- * Uses npm's public Algolia index (same as npmjs.com).
+ * Credentials and index name come from runtimeConfig.public.algolia.
  */
 let _searchClient: LiteClient | null = null
+let _configuredAppId: string | null = null
 
 function getAlgoliaClient(): LiteClient {
-  if (!_searchClient) {
-    // npm's public search-only Algolia credentials (same as npmjs.com uses)
-    _searchClient = algoliasearch('OFCNCOG2CU', 'f54e21fa3a2a0160595bb058179bfb1e')
+  const { algolia } = useRuntimeConfig().public
+  // Re-create client if app ID changed (shouldn't happen, but be safe)
+  if (!_searchClient || _configuredAppId !== algolia.appId) {
+    _searchClient = algoliasearch(algolia.appId, algolia.apiKey)
+    _configuredAppId = algolia.appId
   }
   return _searchClient
 }
