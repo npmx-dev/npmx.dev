@@ -101,6 +101,7 @@ import {
   DependencyPathPopup,
   FilterChips,
   FilterPanel,
+  ImpactDependencyBar,
   HeaderAccountMenu,
   HeaderConnectorModal,
   HeaderSearchBox,
@@ -550,6 +551,30 @@ describe('component accessibility audits', () => {
   // Note: PackageWeeklyDownloadStats tests are skipped because vue-data-ui VueUiSparkline
   // component has issues in the test environment (requires DOM measurements that aren't
   // available during SSR-like test mounting).
+
+  describe('ImpactDependencyBar', () => {
+    const mockPackages = [
+      { name: 'vue', version: '3.5.0', size: 2048000 },
+      { name: 'lodash', version: '4.17.21', size: 1024000 },
+      { name: '@vue/reactivity', version: '3.5.0', size: 512000 },
+    ]
+
+    it('should have no accessibility violations with packages', async () => {
+      const component = await mountSuspended(ImpactDependencyBar, {
+        props: { packages: mockPackages, packageName: 'vue' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with empty packages', async () => {
+      const component = await mountSuspended(ImpactDependencyBar, {
+        props: { packages: [], packageName: 'vue' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
 
   describe('PackageChartModal', () => {
     it('should have no accessibility violations when closed', async () => {

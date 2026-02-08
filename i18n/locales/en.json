@@ -175,6 +175,7 @@
       "jsr": "jsr",
       "code": "code",
       "docs": "docs",
+      "impact": "impact",
       "fund": "fund",
       "compare": "compare"
     },
@@ -595,6 +596,37 @@
       "code": "code"
     },
     "file_path": "File path"
+  },
+  "impact": {
+    "title": "Bundle Impact",
+    "analyzing": "Analyzing bundle...",
+    "version_required": "Version is required to analyze bundle impact",
+    "go_to_package": "Go to package",
+    "install_size": "Install Size",
+    "total_unpacked": "total from {count} packages",
+    "subpath": "Entry Point",
+    "bundle_size": "Bundle Size",
+    "size": {
+      "minified": "Minified",
+      "gzip": "Gzip",
+      "brotli": "Brotli",
+      "zstd": "Zstd"
+    },
+    "exports_cjs_notice": "CommonJS modules cannot be tree-shaken",
+    "exports": "Exports",
+    "select_all": "All",
+    "select_none": "None",
+    "rebundling": "Rebundling...",
+    "dependencies": "Dependencies by Size",
+    "peer_dependencies": "Peer Dependencies",
+    "and_more": "and {count} more...",
+    "progress": {
+      "resolve": "Resolving {name}...",
+      "fetch": "Downloading ({current}/{total})...",
+      "bundle": "Bundling...",
+      "compress": "Compressing..."
+    },
+    "error": "Failed to analyze bundle"
   },
   "badges": {
     "provenance": {

@@ -326,6 +326,18 @@ const docsLink = computed(() => {
   }
 })
 
+// Impact URL: bundle size analysis
+const impactLink = computed(() => {
+  if (!resolvedVersion.value) return null
+
+  return {
+    name: 'impact' as const,
+    params: {
+      path: [pkg.value!.name, 'v', resolvedVersion.value] satisfies [string, string, string],
+    },
+  }
+})
+
 const fundingUrl = computed(() => {
   let funding = displayVersion.value?.funding
   if (Array.isArray(funding)) funding = funding[0]
@@ -504,6 +516,16 @@ onKeyStroke(
 )
 
 onKeyStroke(
+  e => isKeyWithoutModifiers(e, 'i') && !isEditableElement(e.target),
+  e => {
+    if (!impactLink.value) return
+    e.preventDefault()
+    navigateTo(impactLink.value)
+  },
+  { dedupe: true },
+)
+
+onKeyStroke(
   e => isKeyWithoutModifiers(e, 'c') && !isEditableElement(e.target),
   e => {
     if (!pkg.value) return
@@ -666,7 +688,7 @@ onKeyStroke(
             </ClientOnly>
           </div>
 
-          <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
+          <!-- Internal navigation: Docs, Code, Impact, Compare (hidden on mobile, shown in external links instead) -->
           <ButtonGroup
             v-if="resolvedVersion"
             as="nav"
@@ -689,6 +711,15 @@ onKeyStroke(
               classicon="i-carbon:code"
             >
               {{ $t('package.links.code') }}
+            </LinkBase>
+            <LinkBase
+              variant="button-secondary"
+              v-if="impactLink"
+              :to="impactLink"
+              keyshortcut="i"
+              classicon="i-carbon:chart-treemap"
+            >
+              {{ $t('package.links.impact') }}
             </LinkBase>
             <LinkBase
               variant="button-secondary"
@@ -770,7 +801,7 @@ onKeyStroke(
                 {{ $t('package.links.fund') }}
               </LinkBase>
             </li>
-            <!-- Mobile-only: Docs + Code + Compare links -->
+            <!-- Mobile-only: Docs, Code, Impact, Compare links -->
             <li v-if="docsLink && displayVersion" class="sm:hidden">
               <LinkBase :to="docsLink" classicon="i-carbon:document">
                 {{ $t('package.links.docs') }}
@@ -782,6 +813,11 @@ onKeyStroke(
                 classicon="i-carbon:code"
               >
                 {{ $t('package.links.code') }}
+              </LinkBase>
+            </li>
+            <li v-if="impactLink" class="sm:hidden">
+              <LinkBase :to="impactLink" classicon="i-carbon:chart-treemap">
+                {{ $t('package.links.impact') }}
               </LinkBase>
             </li>
             <li class="sm:hidden">

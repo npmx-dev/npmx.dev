@@ -109,6 +109,13 @@ export default defineNuxtConfig({
     '/privacy': { prerender: true },
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
+    '/impact/**': {
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Resource-Policy': 'same-origin',
+      },
+    },
     // proxy for insights
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
@@ -265,6 +272,20 @@ export default defineNuxtConfig({
         'fast-npm-meta',
         '@floating-ui/vue',
       ],
+      // Exclude rolldown from optimization - it has WASM that needs special handling
+      exclude: ['@rolldown/browser'],
+    },
+    worker: {
+      format: 'es',
+    },
+    server: {
+      headers: {
+        // Required for cross-origin isolation (SharedArrayBuffer)
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        // Allow same-origin resources to be loaded under COEP
+        'Cross-Origin-Resource-Policy': 'same-origin',
+      },
     },
   },
 
