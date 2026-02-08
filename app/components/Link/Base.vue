@@ -76,9 +76,10 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
       'font-mono border border-border rounded-md transition-all duration-200': isButton,
       'text-sm px-4 py-2': isButtonMedium,
       'text-xs px-2 py-0.5': isButtonSmall,
-      'bg-transparent text-fg hover:(bg-fg/10) focus-visible:(bg-fg/10)':
+      'bg-transparent text-fg hover:(bg-fg/10) focus-visible:(bg-fg/10) aria-[current=true]:(bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
         variant === 'button-secondary',
-      'text-bg bg-fg hover:(bg-fg/50) focus-visible:(bg-fg/50)': variant === 'button-primary',
+      'text-bg bg-fg hover:(bg-fg/50) focus-visible:(bg-fg/50) aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
+        variant === 'button-primary',
     }"
     :to="to"
     :aria-keyshortcuts="ariaKeyshortcuts"
