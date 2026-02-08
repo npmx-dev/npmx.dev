@@ -1,50 +1,42 @@
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
-import { onClickOutside, onKeyDown } from '@vueuse/core'
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { ref, computed } from 'vue'
+import { onKeyDown } from '@vueuse/core'
+import Modal from './Modal.client.vue'
 
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
 
 const triggerRef = ref<HTMLElement | null>(null)
-const popoverRef = useTemplateRef<HTMLElement>('popoverRef')
-const showPopover = ref(false)
+const modalRef = ref<any>(null)
+const modalOpen = ref(false)
 
 const togglePopover = (e?: Event) => {
   e?.stopPropagation()
-  showPopover.value = !showPopover.value
+  if (!modalOpen.value) {
+    modalRef.value?.showModal?.()
+    modalOpen.value = true
+  } else {
+    modalRef.value?.close?.()
+    modalOpen.value = false
+  }
 }
-
-onClickOutside(
-  popoverRef,
-  () => {
-    showPopover.value = false
-  },
-  { ignore: [triggerRef] },
-)
 
 onKeyDown(
   'Escape',
   (e: KeyboardEvent) => {
-    if (!showPopover.value) return
+    if (!modalOpen.value) return
     e.preventDefault()
     e.stopImmediatePropagation()
-    showPopover.value = false
+    modalRef.value?.close?.()
+    modalOpen.value = false
   },
   { dedupe: true },
 )
 
-const { activate, deactivate } = useFocusTrap(popoverRef, { allowOutsideClick: true })
-watch(showPopover, async open => {
-  if (open) {
-    await nextTick()
-    activate()
-    popoverRef.value?.focus?.()
-  } else {
-    deactivate()
-    triggerRef.value?.focus?.()
-  }
-})
+function onModalClosed() {
+  modalOpen.value = false
+  triggerRef.value?.focus?.()
+}
 </script>
 
 <template>
@@ -83,112 +75,79 @@ watch(showPopover, async open => {
             type="button"
             class="group inline-flex gap-x-1 items-center justify-center underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200"
             @click.prevent="togglePopover"
-            :aria-expanded="showPopover ? 'true' : 'false'"
+            :aria-expanded="modalOpen ? 'true' : 'false'"
             aria-haspopup="dialog"
           >
             {{ $t('footer.keyboard_shortcuts') }}
           </button>
 
-          <Teleport to="body">
-            <Transition
-              enter-active-class="transition-opacity duration-0 motion-reduce:transition-none"
-              leave-active-class="transition-opacity duration-0 motion-reduce:transition-none"
-              enter-from-class="opacity-0"
-              leave-to-class="opacity-0"
-            >
-              <div v-show="showPopover">
-                <div
-                  class="fixed inset-0 bg-bg-elevated/70 dark:bg-bg-elevated/90 z-[9998]"
-                  @click="showPopover = false"
-                  aria-hidden="true"
-                ></div>
-
-                <div class="fixed inset-0 z-[9999] flex items-center justify-center">
-                  <div
-                    ref="popoverRef"
-                    tabindex="-1"
-                    class="mx-4 max-w-lg w-full p-6 bg-bg border border-border rounded-lg shadow-xl text-sm text-fg"
-                    role="dialog"
-                    :aria-label="$t('footer.keyboard_shortcuts')"
-                  >
-                    <div class="flex justify-between mb-8">
-                      <p class="m-0 font-mono text-fg-subtle">
-                        {{ $t('footer.keyboard_shortcuts') }}
-                      </p>
-                      <button
-                        class="text-xs text-link hover:underline flex items-center gap-2"
-                        type="button"
-                        @click="showPopover = false"
-                      >
-                        <span aria-hidden="true" class="size-5 i-lucide-x" />
-                        <span class="sr-only">{{ $t('common.close') }}</span>
-                      </button>
-                    </div>
-                    <p class="mb-2 font-mono text-fg-subtle">
-                      {{ $t('shortcuts.section.global') }}
-                    </p>
-                    <ul class="mb-8 flex flex-col gap-2">
-                      <li class="flex gap-2 items-center">
-                        <kbd
-                          class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
-                          >,</kbd
-                        ><span>{{ $t('shortcuts.settings') }}</span>
-                      </li>
-                      <li class="flex gap-2 items-center">
-                        <kbd
-                          class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
-                          >c</kbd
-                        ><span>{{ $t('shortcuts.compare') }}</span>
-                      </li>
-                    </ul>
-                    <p class="mb-2 font-mono text-fg-subtle">
-                      {{ $t('shortcuts.section.search') }}
-                    </p>
-                    <ul class="mb-8 flex flex-col gap-2">
-                      <li class="flex gap-2 items-center">
-                        <kbd
-                          class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
-                          >↑</kbd
-                        >/<kbd
-                          class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
-                          >↓</kbd
-                        ><span>{{ $t('shortcuts.navigate_results') }}</span>
-                      </li>
-                      <li class="flex gap-2 items-center">
-                        <kbd
-                          class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
-                          >Enter</kbd
-                        ><span>{{ $t('shortcuts.go_to_result') }}</span>
-                      </li>
-                    </ul>
-                    <p class="mb-2 font-mono text-fg-subtle">
-                      {{ $t('shortcuts.section.package') }}
-                    </p>
-                    <ul class="mb-0 flex flex-col gap-2">
-                      <li class="flex gap-2 items-center">
-                        <kbd
-                          class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
-                          >.</kbd
-                        ><span>{{ $t('shortcuts.open_code_view') }}</span>
-                      </li>
-                      <li class="flex gap-2 items-center">
-                        <kbd
-                          class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
-                          >d</kbd
-                        ><span>{{ $t('shortcuts.open_docs') }}</span>
-                      </li>
-                      <li class="flex gap-2 items-center">
-                        <kbd
-                          class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
-                          >c</kbd
-                        ><span>{{ $t('shortcuts.open_compare_prefilled') }}</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </Transition>
-          </Teleport>
+          <Modal
+            ref="modalRef"
+            @close="onModalClosed"
+            :modalTitle="$t('footer.keyboard_shortcuts')"
+            class="w-auto max-w-lg"
+          >
+            <p class="mb-2 font-mono text-fg-subtle">
+              {{ $t('shortcuts.section.global') }}
+            </p>
+            <ul class="mb-6 flex flex-col gap-2">
+              <li class="flex gap-2 items-center">
+                <kbd
+                  class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
+                  >,</kbd
+                ><span>{{ $t('shortcuts.settings') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd
+                  class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
+                  >c</kbd
+                ><span>{{ $t('shortcuts.compare') }}</span>
+              </li>
+            </ul>
+            <p class="mb-2 font-mono text-fg-subtle">
+              {{ $t('shortcuts.section.search') }}
+            </p>
+            <ul class="mb-6 flex flex-col gap-2">
+              <li class="flex gap-2 items-center">
+                <kbd
+                  class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
+                  >↑</kbd
+                >/<kbd
+                  class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
+                  >↓</kbd
+                ><span>{{ $t('shortcuts.navigate_results') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd
+                  class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
+                  >Enter</kbd
+                ><span>{{ $t('shortcuts.go_to_result') }}</span>
+              </li>
+            </ul>
+            <p class="mb-2 font-mono text-fg-subtle">
+              {{ $t('shortcuts.section.package') }}
+            </p>
+            <ul class="mb-6 flex flex-col gap-2">
+              <li class="flex gap-2 items-center">
+                <kbd
+                  class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
+                  >.</kbd
+                ><span>{{ $t('shortcuts.open_code_view') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd
+                  class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
+                  >d</kbd
+                ><span>{{ $t('shortcuts.open_docs') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd
+                  class="items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2"
+                  >c</kbd
+                ><span>{{ $t('shortcuts.open_compare_prefilled') }}</span>
+              </li>
+            </ul>
+          </Modal>
         </div>
       </div>
       <p class="text-xs text-fg-muted text-center sm:text-start m-0">
