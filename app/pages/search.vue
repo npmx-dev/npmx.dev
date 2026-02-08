@@ -9,6 +9,9 @@ import { normalizeSearchParam } from '#shared/utils/url'
 const route = useRoute()
 const router = useRouter()
 
+// Search provider
+const { isAlgolia } = useSearchProvider()
+
 // Preferences (persisted to localStorage)
 const {
   viewMode,
@@ -661,9 +664,12 @@ defineOgImageComponent('Default', {
 <template>
   <main class="flex-1 py-8" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
     <div class="container-sm">
-      <h1 class="font-mono text-2xl sm:text-3xl font-medium mb-4">
-        {{ $t('search.title') }}
-      </h1>
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h1 class="font-mono text-2xl sm:text-3xl font-medium">
+          {{ $t('search.title') }}
+        </h1>
+        <SearchProviderToggle />
+      </div>
 
       <section v-if="query">
         <!-- Initial loading (only after user interaction, not during view transition) -->
@@ -746,6 +752,15 @@ defineOgImageComponent('Default', {
               <span v-if="status === 'pending'" class="text-fg-subtle">{{
                 $t('search.updating')
               }}</span>
+              <a
+                v-if="isAlgolia"
+                href="https://www.algolia.com/developers"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-fg-subtle hover:text-fg-muted text-xs ms-2"
+              >
+                {{ $t('search.algolia_disclaimer') }}
+              </a>
             </p>
             <!-- Show "x of y packages" (paginated/table mode only) -->
             <p

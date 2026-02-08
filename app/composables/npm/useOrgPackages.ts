@@ -1,6 +1,7 @@
 import type { NuxtApp } from '#app'
 import type { NpmSearchResponse, NpmSearchResult, MinimalPackument } from '#shared/types'
 import { emptySearchResponse, packumentToSearchResult } from './useNpmSearch'
+import { searchAlgoliaByOwner } from './useAlgoliaSearch'
 import { mapWithConcurrency } from '#shared/utils/async'
 
 /**
@@ -77,19 +78,33 @@ async function fetchBulkDownloads(
 }
 
 /**
- * Fetch all packages for an npm organization
- * Returns search-result-like objects for compatibility with PackageList
+ * Fetch all packages for an npm organization.
+ *
+ * When the user has Algolia search enabled, uses Algolia's `owner.name` filter
+ * for a much faster lookup (single request vs N+1 packument fetches).
+ * Falls back to the npm registry API when using the npm search provider.
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
+  const { searchProvider } = useSearchProvider()
+
   const asyncData = useLazyAsyncData(
-    () => `org-packages:${toValue(orgName)}`,
+    () => `org-packages:${searchProvider.value}:${toValue(orgName)}`,
     async ({ $npmRegistry, $npmApi }, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
         return emptySearchResponse
       }
 
-      // Get all package names in the org
+      // --- Algolia fast path ---
+      if (searchProvider.value === 'algolia') {
+        try {
+          return await searchAlgoliaByOwner(org)
+        } catch {
+          // Fall through to npm registry path on Algolia failure
+        }
+      }
+
+      // --- npm registry path ---
       let packageNames: string[]
       try {
         const { data } = await $npmRegistry<Record<string, string>>(

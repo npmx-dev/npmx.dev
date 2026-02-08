@@ -5,6 +5,8 @@ import type {
   NpmDownloadCount,
   MinimalPackument,
 } from '#shared/types'
+import type { SearchProvider } from '~/composables/useSettings'
+import { searchAlgolia } from './useAlgoliaSearch'
 
 /**
  * Convert packument to search result format for display
@@ -55,10 +57,12 @@ export function useNpmSearch(
   options: MaybeRefOrGetter<NpmSearchOptions> = {},
 ) {
   const { $npmRegistry } = useNuxtApp()
+  const { searchProvider } = useSearchProvider()
 
   // Client-side cache
   const cache = shallowRef<{
     query: string
+    provider: SearchProvider
     objects: NpmSearchResult[]
     total: number
   } | null>(null)
@@ -69,9 +73,10 @@ export function useNpmSearch(
   let lastSearch: NpmSearchResponse | undefined = undefined
 
   const asyncData = useLazyAsyncData(
-    () => `search:incremental:${toValue(query)}`,
+    () => `search:${searchProvider.value}:${toValue(query)}`,
     async ({ $npmRegistry, $npmApi }, { signal }) => {
       const q = toValue(query)
+      const provider = searchProvider.value
 
       if (!q.trim()) {
         return emptySearchResponse
@@ -79,13 +84,32 @@ export function useNpmSearch(
 
       const opts = toValue(options)
 
-      // This only runs for initial load or query changes
-      // Reset cache for new query
+      // Reset cache for new query or provider change
       cache.value = null
 
+      // --- Algolia path (client-side only) ---
+      if (provider === 'algolia') {
+        const response = await searchAlgolia(q, {
+          size: opts.size ?? 25,
+        })
+
+        if (q !== toValue(query)) {
+          return emptySearchResponse
+        }
+
+        cache.value = {
+          query: q,
+          provider,
+          objects: response.objects,
+          total: response.total,
+        }
+
+        return response
+      }
+
+      // --- npm registry path ---
       const params = new URLSearchParams()
       params.set('text', q)
-      // Use requested size for initial fetch
       params.set('size', String(opts.size ?? 25))
 
       if (q.length === 1) {
@@ -110,6 +134,7 @@ export function useNpmSearch(
 
         cache.value = {
           query: q,
+          provider,
           objects: [result],
           total: 1,
         }
@@ -135,6 +160,7 @@ export function useNpmSearch(
 
       cache.value = {
         query: q,
+        provider,
         objects: response.objects,
         total: response.total,
       }
@@ -144,16 +170,18 @@ export function useNpmSearch(
     { default: () => lastSearch || emptySearchResponse },
   )
 
-  // Fetch more results incrementally (only used in incremental mode)
+  // Fetch more results incrementally
   async function fetchMore(targetSize: number): Promise<void> {
     const q = toValue(query).trim()
+    const provider = searchProvider.value
+
     if (!q) {
       cache.value = null
       return
     }
 
-    // If query changed, reset cache (shouldn't happen, but safety check)
-    if (cache.value && cache.value.query !== q) {
+    // If query or provider changed, reset cache
+    if (cache.value && (cache.value.query !== q || cache.value.provider !== provider)) {
       cache.value = null
       await asyncData.refresh()
       return
@@ -170,40 +198,65 @@ export function useNpmSearch(
     isLoadingMore.value = true
 
     try {
-      // Fetch from where we left off - calculate size needed
       const from = currentCount
       const size = Math.min(targetSize - currentCount, total - currentCount)
 
-      const params = new URLSearchParams()
-      params.set('text', q)
-      params.set('size', String(size))
-      params.set('from', String(from))
+      if (provider === 'algolia') {
+        // Algolia incremental fetch
+        const response = await searchAlgolia(q, { size, from })
 
-      const { data: response } = await $npmRegistry<NpmSearchResponse>(
-        `/-/v1/search?${params.toString()}`,
-        {},
-        60,
-      )
-
-      // Update cache
-      if (cache.value && cache.value.query === q) {
-        const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
-        const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
-        cache.value = {
-          query: q,
-          objects: [...cache.value.objects, ...newObjects],
-          total: response.total,
+        if (cache.value && cache.value.query === q && cache.value.provider === provider) {
+          const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
+          const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
+          cache.value = {
+            query: q,
+            provider,
+            objects: [...cache.value.objects, ...newObjects],
+            total: response.total,
+          }
+        } else {
+          cache.value = {
+            query: q,
+            provider,
+            objects: response.objects,
+            total: response.total,
+          }
         }
       } else {
-        cache.value = {
-          query: q,
-          objects: response.objects,
-          total: response.total,
+        // npm registry incremental fetch
+        const params = new URLSearchParams()
+        params.set('text', q)
+        params.set('size', String(size))
+        params.set('from', String(from))
+
+        const { data: response } = await $npmRegistry<NpmSearchResponse>(
+          `/-/v1/search?${params.toString()}`,
+          {},
+          60,
+        )
+
+        if (cache.value && cache.value.query === q && cache.value.provider === provider) {
+          const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
+          const newObjects = response.objects.filter(obj => !existingNames.has(obj.package.name))
+          cache.value = {
+            query: q,
+            provider,
+            objects: [...cache.value.objects, ...newObjects],
+            total: response.total,
+          }
+        } else {
+          cache.value = {
+            query: q,
+            provider,
+            objects: response.objects,
+            total: response.total,
+          }
         }
       }
 
       // If we still need more, fetch again recursively
       if (
+        cache.value &&
         cache.value.objects.length < targetSize &&
         cache.value.objects.length < cache.value.total
       ) {
@@ -214,7 +267,7 @@ export function useNpmSearch(
     }
   }
 
-  // Watch for size increases in incremental mode
+  // Watch for size increases
   watch(
     () => toValue(options).size,
     async (newSize, oldSize) => {
@@ -225,7 +278,13 @@ export function useNpmSearch(
     },
   )
 
-  // Computed data that uses cache in incremental mode
+  // Re-search when provider changes
+  watch(searchProvider, () => {
+    cache.value = null
+    asyncData.refresh()
+  })
+
+  // Computed data that uses cache
   const data = computed<NpmSearchResponse | null>(() => {
     if (cache.value) {
       return {
@@ -244,7 +303,7 @@ export function useNpmSearch(
     })
   }
 
-  // Whether there are more results available on the server (incremental mode only)
+  // Whether there are more results available
   const hasMore = computed(() => {
     if (!cache.value) return true
     return cache.value.objects.length < cache.value.total
@@ -254,11 +313,11 @@ export function useNpmSearch(
     ...asyncData,
     /** Reactive search results (uses cache in incremental mode) */
     data,
-    /** Whether currently loading more results (incremental mode only) */
+    /** Whether currently loading more results */
     isLoadingMore,
-    /** Whether there are more results available (incremental mode only) */
+    /** Whether there are more results available */
     hasMore,
-    /** Manually fetch more results up to target size (incremental mode only) */
+    /** Manually fetch more results up to target size */
     fetchMore,
   }
 }

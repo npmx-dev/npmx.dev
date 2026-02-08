@@ -138,6 +138,7 @@ import {
   ProvenanceBadge,
   Readme,
   ReadmeTocDropdown,
+  SearchProviderToggle,
   SearchSuggestionCard,
   SettingsAccentColorPicker,
   SettingsBgThemePicker,
@@ -159,6 +160,7 @@ import {
 import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import PackageDownloadAnalytics from '~/components/Package/DownloadAnalytics.vue'
+import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -2160,6 +2162,22 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(SearchSuggestionCard, {
         props: { type: 'user', name: 'exactuser', isExactMatch: true },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SearchProviderToggle', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SearchProviderToggle)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('SearchProviderToggle.server', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(SearchProviderToggleServer)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

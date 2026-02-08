@@ -147,6 +147,72 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </div>
         </section>
 
+        <!-- DATA SOURCE Section -->
+        <section>
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+            {{ $t('settings.sections.search') }}
+          </h2>
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6">
+            <div class="space-y-2">
+              <label for="search-provider-select" class="block text-sm text-fg font-medium">
+                {{ $t('settings.search_provider') }}
+              </label>
+              <p class="text-xs text-fg-muted mb-3">
+                {{ $t('settings.search_provider_description') }}
+              </p>
+
+              <ClientOnly>
+                <select
+                  id="search-provider-select"
+                  :value="settings.searchProvider"
+                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg focus-visible:outline-accent/70 cursor-pointer duration-200 transition-colors hover:border-fg-subtle"
+                  @change="
+                    settings.searchProvider = ($event.target as HTMLSelectElement)
+                      .value as typeof settings.searchProvider
+                  "
+                >
+                  <option value="npm">
+                    {{ $t('settings.search_provider_npm') }}
+                  </option>
+                  <option value="algolia">
+                    {{ $t('settings.search_provider_algolia') }}
+                  </option>
+                </select>
+                <template #fallback>
+                  <select
+                    id="search-provider-select"
+                    disabled
+                    class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg opacity-50 cursor-wait duration-200 transition-colors hover:border-fg-subtle"
+                  >
+                    <option>{{ $t('common.loading') }}</option>
+                  </select>
+                </template>
+              </ClientOnly>
+
+              <!-- Provider description -->
+              <p class="text-xs text-fg-subtle mt-2">
+                {{
+                  settings.searchProvider === 'algolia'
+                    ? $t('settings.search_provider_algolia_description')
+                    : $t('settings.search_provider_npm_description')
+                }}
+              </p>
+
+              <!-- Algolia attribution -->
+              <a
+                v-if="settings.searchProvider === 'algolia'"
+                href="https://www.algolia.com/developers"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg-muted transition-colors mt-2"
+              >
+                {{ $t('search.algolia_disclaimer') }}
+                <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </section>
+
         <section>
           <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.language') }}
