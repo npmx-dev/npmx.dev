@@ -47,6 +47,7 @@ if (import.meta.env.PROD) {
   denylist = [
     // search page
     /^\/search$/,
+    /^\/search?/,
     /^\/~/,
     /^\/org\//,
     // api calls
