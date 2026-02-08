@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { onKeyDown } from '@vueuse/core'
-import Modal from './Modal.client.vue'
 
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
 
-const triggerRef = ref<HTMLElement | null>(null)
-const modalRef = useTemplateRef<HTMLElement>('modalRef')
+const triggerRef = useTemplateRef('triggerRef')
+const modalRef = useTemplateRef('modalRef')
 const modalOpen = ref(false)
 
 const togglePopover = (e?: Event) => {
