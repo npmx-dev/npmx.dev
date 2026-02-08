@@ -77,19 +77,27 @@ async function fetchBulkDownloads(
 }
 
 /**
- * Fetch all packages for an npm organization
- * Returns search-result-like objects for compatibility with PackageList
+ * Fetch all packages for an npm organization.
+ *
+ * Always uses the npm registry's org endpoint as the source of truth for which
+ * packages belong to the org. When Algolia is enabled, uses it to quickly fetch
+ * metadata for those packages (instead of N+1 packument fetches).
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
+  const { searchProvider } = useSearchProvider()
+  const { searchByOwner } = useAlgoliaSearch()
+
   const asyncData = useLazyAsyncData(
-    () => `org-packages:${toValue(orgName)}`,
-    async ({ $npmRegistry, $npmApi }, { signal }) => {
+    () => `org-packages:${searchProvider.value}:${toValue(orgName)}`,
+    async ({ $npmRegistry, $npmApi, ssrContext }, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
         return emptySearchResponse
       }
 
-      // Get all package names in the org
+      // Always get the authoritative package list from the npm registry.
+      // Algolia's owner.name filter doesn't precisely match npm org membership
+      // (e.g. it includes @nuxtjs/* packages for the @nuxt org).
       let packageNames: string[]
       try {
         const { packages } = await $fetch<{ packages: string[]; count: number }>(
@@ -100,11 +108,15 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       } catch (err) {
         // Check if this is a 404 (org not found)
         if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {
-          throw createError({
+          const error = createError({
             statusCode: 404,
             statusMessage: 'Organization not found',
             message: `The organization "@${org}" does not exist on npm`,
           })
+          if (import.meta.server) {
+            ssrContext!.payload.error = error
+          }
+          throw error
         }
         // For other errors (network, etc.), return empty array to be safe
         packageNames = []
@@ -114,9 +126,33 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         return emptySearchResponse
       }
 
-      // Fetch packuments and downloads in parallel
+      // --- Algolia fast path: use Algolia to get metadata for known packages ---
+      if (searchProvider.value === 'algolia') {
+        try {
+          const response = await searchByOwner(org)
+          if (response.objects.length > 0) {
+            // Filter Algolia results to only include packages that are
+            // actually in the org (per the npm registry's authoritative list)
+            const orgPackageSet = new Set(packageNames.map(n => n.toLowerCase()))
+            const filtered = response.objects.filter(obj =>
+              orgPackageSet.has(obj.package.name.toLowerCase()),
+            )
+
+            if (filtered.length > 0) {
+              return {
+                ...response,
+                objects: filtered,
+                total: filtered.length,
+              }
+            }
+          }
+        } catch {
+          // Fall through to npm registry path
+        }
+      }
+
+      // --- npm registry path: fetch packuments individually ---
       const [packuments, downloads] = await Promise.all([
-        // Fetch packuments with concurrency limit
         (async () => {
           const results = await mapWithConcurrency(
             packageNames,
@@ -133,16 +169,13 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
             },
             10,
           )
-          // Filter out any unpublished packages (missing dist-tags)
           return results.filter(
             (pkg): pkg is MinimalPackument => pkg !== null && !!pkg['dist-tags'],
           )
         })(),
-        // Fetch downloads in bulk
         fetchBulkDownloads($npmApi, packageNames, { signal }),
       ])
 
-      // Convert to search results with download data
       const results: NpmSearchResult[] = packuments.map(pkg =>
         packumentToSearchResult(pkg, downloads.get(pkg.name)),
       )

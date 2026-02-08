@@ -520,7 +520,7 @@ watch(
               flatItems[focusedIndex]?.groupId === group.id &&
               flatItems[focusedIndex]?.type === 'group'
             "
-            class="flex items-center gap-2 px-3 py-2 text-sm font-mono hover:bg-bg-muted transition-[color,background-color] focus-visible:outline-none cursor-pointer"
+            class="flex items-center gap-2 px-3 py-2 text-sm font-mono hover:bg-bg-muted transition-[color,background-color] focus-visible:outline-none"
             :class="[
               group.primaryVersion.isCurrent ? 'text-fg bg-bg-muted' : 'text-fg-muted',
               flatItems[focusedIndex]?.groupId === group.id &&

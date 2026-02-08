@@ -236,11 +236,6 @@ dd {
   margin: 0;
 }
 
-/* Reset button styles */
-button {
-  cursor: pointer;
-}
-
 /* Selection */
 ::selection {
   background-color: var(--fg-muted);

@@ -51,6 +51,7 @@
     "claim_button": "Claim \"{name}\"",
     "want_to_claim": "Want to claim this package name?",
     "start_typing": "Start typing to search packages",
+    "algolia_disclaimer": "Powered by Algolia",
     "exact_match": "exact",
     "suggestion": {
       "user": "user",
@@ -78,7 +79,16 @@
     "sections": {
       "appearance": "Appearance",
       "display": "Display",
+      "search": "Data source",
       "language": "Language"
+    },
+    "data_source": {
+      "label": "Data source",
+      "description": "Choose where npmx gets search data. Individual package pages always use the npm registry directly.",
+      "npm": "npm Registry",
+      "npm_description": "Fetches search, org and user listings directly from the official npm registry. Authoritative, but can be slower.",
+      "algolia": "Algolia",
+      "algolia_description": "Uses Algolia for faster search, org and user pages."
     },
     "relative_dates": "Relative dates",
     "include_types": "Include {'@'}types in install",

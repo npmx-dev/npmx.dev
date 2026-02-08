@@ -162,7 +162,7 @@ function getSortKeyLabelKey(key: SortKey): string {
             <select
               id="sort-select"
               :value="currentSort.key"
-              class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1.5 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover"
+              class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1.5 font-mono text-sm text-fg transition-colors duration-200 hover:border-border-hover"
               @change="handleSortKeyChange"
             >
               <option
