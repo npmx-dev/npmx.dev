@@ -293,7 +293,7 @@ watch(lastExecutionTime, () => {
           type="search"
           name="teams-search"
           :placeholder="$t('org.teams.filter_placeholder')"
-          noCorrect
+          no-correct
           class="w-full min-w-25 ps-7"
           size="medium"
         />
@@ -453,7 +453,7 @@ watch(lastExecutionTime, () => {
                 type="text"
                 :name="`add-user-${teamName}`"
                 :placeholder="$t('org.teams.username_placeholder')"
-                noCorrect
+                no-correct
                 class="flex-1 min-w-25"
                 size="medium"
               />
@@ -510,7 +510,7 @@ watch(lastExecutionTime, () => {
               type="text"
               name="new-team-name"
               :placeholder="$t('org.teams.team_name_placeholder')"
-              noCorrect
+              no-correct
               class="flex-1 min-w-25 rounded-is-none"
               size="medium"
             />

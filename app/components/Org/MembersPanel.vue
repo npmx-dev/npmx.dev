@@ -337,7 +337,7 @@ watch(lastExecutionTime, () => {
           type="search"
           name="members-search"
           :placeholder="$t('org.members.filter_placeholder')"
-          noCorrect
+          no-correct
           class="w-full min-w-25 ps-7"
           size="small"
         />
@@ -523,7 +523,7 @@ watch(lastExecutionTime, () => {
             type="text"
             name="new-member-username"
             :placeholder="$t('org.members.username_placeholder')"
-            noCorrect
+            no-correct
             class="w-full min-w-25"
             size="small"
           />

@@ -119,14 +119,6 @@ describe('InputBase', () => {
       expect(document.activeElement).not.toBe(input.element)
       container.remove()
     })
-
-    it('exposes getBoundingClientRect()', async () => {
-      const component = await mountSuspended(InputBase)
-      const rect = component.vm.getBoundingClientRect()
-      expect(rect).toBeDefined()
-      expect(typeof rect?.width).toBe('number')
-      expect(typeof rect?.height).toBe('number')
-    })
   })
 
   describe('accessibility (attrs fallthrough)', () => {

@@ -157,7 +157,7 @@ function handleBlur() {
               ? $t('compare.selector.search_first')
               : $t('compare.selector.search_add')
           "
-          noCorrect
+          no-correct
           size="medium"
           class="w-full min-w-25 ps-7"
           aria-autocomplete="list"

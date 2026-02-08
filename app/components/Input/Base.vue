@@ -1,37 +1,30 @@
 <script setup lang="ts">
 import { noCorrect } from '~/utils/input'
 
+const model = defineModel<string>({ default: '' })
+
 const props = withDefaults(
   defineProps<{
     disabled?: boolean
-    modelValue?: string
     size?: 'small' | 'medium' | 'large'
     noCorrect?: boolean
   }>(),
   {
-    modelValue: '',
     size: 'medium',
     noCorrect: true,
   },
 )
 
 const emit = defineEmits<{
-  'update:modelValue': [value: string]
-  'focus': [event: FocusEvent]
-  'blur': [event: FocusEvent]
+  focus: [event: FocusEvent]
+  blur: [event: FocusEvent]
 }>()
 
 const el = useTemplateRef('el')
 
-const model = computed({
-  get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value),
-})
-
 defineExpose({
   focus: () => el.value?.focus(),
   blur: () => el.value?.blur(),
-  getBoundingClientRect: () => el.value?.getBoundingClientRect(),
 })
 </script>
 

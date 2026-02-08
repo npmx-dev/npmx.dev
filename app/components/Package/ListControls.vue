@@ -66,7 +66,7 @@ const showFilteredCount = computed(() => {
         v-model="filterValue"
         type="search"
         :placeholder="placeholder ?? $t('package.list.filter_placeholder')"
-        noCorrect
+        no-correct
         class="w-full min-w-25 ps-10"
         size="medium"
       />

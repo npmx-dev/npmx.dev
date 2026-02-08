@@ -260,7 +260,7 @@ watch(
             type="text"
             name="add-owner-username"
             :placeholder="$t('package.maintainers.username_placeholder')"
-            noCorrect
+            no-correct
             class="flex-1 min-w-25 m-1"
             size="small"
           />

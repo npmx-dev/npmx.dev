@@ -247,7 +247,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             autocomplete="off"
             class="w-full min-w-25"
             size="medium"
-            noCorrect
+            no-correct
             @input="handleTextInput"
           />
         </div>

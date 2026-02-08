@@ -95,7 +95,7 @@ watch(handleInput, newHandleInput => {
             type="text"
             name="handle"
             :placeholder="$t('auth.modal.handle_placeholder')"
-            noCorrect
+            no-correct
             class="w-full"
             size="medium"
           />

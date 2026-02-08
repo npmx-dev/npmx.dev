@@ -112,7 +112,7 @@ defineExpose({ focus })
             type="search"
             name="q"
             :placeholder="$t('search.placeholder')"
-            noCorrect
+            no-correct
             class="w-full min-w-25 ps-7"
             @focus="isSearchFocused = true"
             @blur="isSearchFocused = false"

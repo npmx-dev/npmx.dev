@@ -167,7 +167,7 @@ function handleDisconnect() {
             type="password"
             name="connector-token"
             :placeholder="$t('connector.modal.token_placeholder')"
-            noCorrect
+            no-correct
             class="w-full"
             size="medium"
           />
