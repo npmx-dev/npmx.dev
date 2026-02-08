@@ -1,10 +1,10 @@
+import type { NuxtLinkProps } from '#app'
+
 export type NavigationLink = {
   name: string
   label: string
   iconClass?: string
-  to?: {
-    name?: string
-  }
+  to?: NuxtLinkProps['to'] & { name?: string }
   href?: string
   target?: string
   keyshortcut?: string
