@@ -12,6 +12,7 @@ export const NPMX_SITE = 'https://npmx.dev'
 export const BLUESKY_API = 'https://public.api.bsky.app/xrpc/'
 export const BLUESKY_COMMENTS_REQUEST = '/api/atproto/bluesky-comments'
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
+export const NPM_API = 'https://api.npmjs.org'
 export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
 export const ERROR_PACKAGE_REQUIREMENTS_FAILED =

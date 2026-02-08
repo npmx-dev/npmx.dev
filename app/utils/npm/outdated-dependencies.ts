@@ -20,7 +20,7 @@ export interface OutdatedDependencyInfo {
  */
 export function constraintIncludesPrerelease(constraint: string): boolean {
   return (
-    /-(alpha|beta|rc|next|canary|dev|preview|pre|experimental)/i.test(constraint) ||
+    /-(?:alpha|beta|rc|next|canary|dev|preview|pre|experimental)/i.test(constraint) ||
     /-\d/.test(constraint)
   )
 }

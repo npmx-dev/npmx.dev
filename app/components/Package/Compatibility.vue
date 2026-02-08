@@ -14,6 +14,8 @@ const engineIcons: Record<string, string> = {
   bun: 'i-simple-icons:bun',
   node: 'i-simple-icons:nodedotjs',
   npm: 'i-simple-icons:npm',
+  pnpm: 'i-simple-icons:pnpm',
+  yarn: 'i-simple-icons:yarn',
 }
 
 function getName(engine: string): string {
@@ -48,7 +50,7 @@ const sortedEngines = computed(() => {
           />
           {{ getName(engine) }}
         </dt>
-        <dd class="font-mono text-sm text-fg text-end" :title="version">
+        <dd class="font-mono text-sm text-fg text-end" :title="version" dir="ltr">
           {{ version }}
         </dd>
       </div>

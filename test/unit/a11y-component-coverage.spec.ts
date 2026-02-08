@@ -43,6 +43,7 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'UserCombobox.vue': 'Unused component - intended for future admin features',
   'SkeletonBlock.vue': 'Already covered indirectly via other component tests',
   'SkeletonInline.vue': 'Already covered indirectly via other component tests',
+  'Button/Group.vue': "Wrapper component, tests wouldn't make much sense here",
 }
 
 /**

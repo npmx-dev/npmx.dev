@@ -8,6 +8,9 @@ type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
 
 type AccentColorId = keyof typeof ACCENT_COLORS.light
 
+/** Available search providers */
+export type SearchProvider = 'npm' | 'algolia'
+
 /**
  * Application settings stored in localStorage
  */
@@ -24,6 +27,8 @@ export interface AppSettings {
   hidePlatformPackages: boolean
   /** User-selected locale */
   selectedLocale: LocaleObject['code'] | null
+  /** Search provider for package search */
+  searchProvider: SearchProvider
   sidebar: {
     collapsed: string[]
   }
@@ -36,6 +41,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   hidePlatformPackages: true,
   selectedLocale: null,
   preferredBackgroundTheme: null,
+  searchProvider: import.meta.test ? 'npm' : 'algolia',
   sidebar: {
     collapsed: [],
   },
@@ -91,29 +97,43 @@ export function useAccentColor() {
 
   function setAccentColor(id: AccentColorId | null) {
     if (id) {
-      const isDark = colorMode.value === 'dark'
-      const color = isDark ? ACCENT_COLORS.dark[id] : ACCENT_COLORS.light[id]
-      document.documentElement.style.setProperty('--accent-color', color)
+      document.documentElement.style.setProperty('--accent-color', `var(--swatch-${id})`)
     } else {
       document.documentElement.style.removeProperty('--accent-color')
     }
     settings.value.accentColorId = id
   }
 
-  // Update accent color when color mode changes
-  watch(
-    () => colorMode.value,
-    () => {
-      if (settings.value.accentColorId) {
-        setAccentColor(settings.value.accentColorId)
-      }
-    },
-  )
-
   return {
     accentColors,
     selectedAccentColor: computed(() => settings.value.accentColorId),
     setAccentColor,
+  }
+}
+
+/**
+ * Composable for managing the search provider setting.
+ */
+export function useSearchProvider() {
+  const { settings } = useSettings()
+
+  const searchProvider = computed({
+    get: () => settings.value.searchProvider,
+    set: (value: SearchProvider) => {
+      settings.value.searchProvider = value
+    },
+  })
+
+  const isAlgolia = computed(() => searchProvider.value === 'algolia')
+
+  function toggle() {
+    searchProvider.value = searchProvider.value === 'npm' ? 'algolia' : 'npm'
+  }
+
+  return {
+    searchProvider,
+    isAlgolia,
+    toggle,
   }
 }
 

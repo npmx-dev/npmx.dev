@@ -14,8 +14,8 @@ const maxPackages = computed(() => props.max ?? 4)
 const inputValue = shallowRef('')
 const isInputFocused = shallowRef(false)
 
-// Use the shared npm search composable
-const { data: searchData, status } = useNpmSearch(inputValue, { size: 15 })
+// Use the shared search composable (supports both npm and Algolia providers)
+const { data: searchData, status } = useSearch(inputValue, { size: 15 })
 
 const isSearching = computed(() => status.value === 'pending')
 
@@ -53,6 +53,8 @@ const filteredResults = computed(() => {
     .filter(r => !packages.value.includes(r.name))
 })
 
+const numberFormatter = useNumberFormatter()
+
 function addPackage(name: string) {
   if (packages.value.length >= maxPackages.value) return
   if (packages.value.includes(name)) return
@@ -75,9 +77,18 @@ function removePackage(name: string) {
 }
 
 function handleKeydown(e: KeyboardEvent) {
-  if (e.key === 'Enter' && inputValue.value.trim()) {
+  const inputValueTrim = inputValue.value.trim()
+  const hasMatchInPackages = filteredResults.value.find(result => {
+    return result.name === inputValueTrim
+  })
+
+  if (e.key === 'Enter' && inputValueTrim) {
     e.preventDefault()
-    addPackage(inputValue.value.trim())
+    if (showNoDependencyOption.value) {
+      addPackage(NO_DEPENDENCY_ID)
+    } else if (hasMatchInPackages) {
+      addPackage(inputValueTrim)
+    }
   }
 }
 
@@ -106,7 +117,7 @@ function handleBlur() {
         </template>
         <NuxtLink
           v-else
-          :to="`/package/${pkg}`"
+          :to="packageRoute(pkg)"
           class="font-mono text-sm text-fg hover:text-accent transition-colors"
         >
           {{ pkg }}
@@ -128,17 +139,16 @@ function handleBlur() {
 
     <!-- Add package input -->
     <div v-if="packages.length < maxPackages" class="relative">
-      <div class="relative group">
+      <div class="relative group flex items-center">
         <label for="package-search" class="sr-only">
           {{ $t('compare.selector.search_label') }}
         </label>
         <span
-          class="absolute inset-y-0 start-3 flex items-center text-fg-subtle pointer-events-none group-focus-within:text-accent"
-          aria-hidden="true"
+          class="absolute inset-is-3 text-fg-subtle font-mono text-md pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
         >
-          <span class="i-carbon:search w-4 h-4" />
+          /
         </span>
-        <input
+        <InputBase
           id="package-search"
           v-model="inputValue"
           type="text"
@@ -147,7 +157,9 @@ function handleBlur() {
               ? $t('compare.selector.search_first')
               : $t('compare.selector.search_add')
           "
-          class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2.5 font-mono text-sm text-fg placeholder:text-fg-subtle motion-reduce:transition-none duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+          no-correct
+          size="medium"
+          class="w-full min-w-25 ps-7"
           aria-autocomplete="list"
           @focus="isInputFocused = true"
           @blur="handleBlur"
@@ -209,8 +221,8 @@ function handleBlur() {
     <p class="text-xs text-fg-subtle">
       {{
         $t('compare.selector.packages_selected', {
-          count: packages.length,
-          max: maxPackages,
+          count: numberFormatter.format(packages.length),
+          max: numberFormatter.format(maxPackages),
         })
       }}
       <span v-if="packages.length < 2">{{ $t('compare.selector.add_hint') }}</span>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
+
+const modalRef = useTemplateRef('modalRef')
+const showModal = () => modalRef.value?.showModal?.()
 </script>
 
 <template>
@@ -11,57 +14,97 @@ const isHome = computed(() => route.name === 'index')
       >
         <div>
           <p class="font-mono text-balance m-0 hidden sm:block">{{ $t('tagline') }}</p>
-          <BuildEnvironment v-if="!isHome" footer />
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
-        <div class="hidden sm:flex items-center gap-6">
-          <NuxtLink to="/about" class="link-subtle font-mono text-xs flex items-center">
+        <div class="hidden sm:flex items-center gap-6 min-h-11 text-xs">
+          <LinkBase :to="{ name: 'about' }">
             {{ $t('footer.about') }}
-          </NuxtLink>
-          <NuxtLink
-            to="/privacy"
-            class="link-subtle font-mono text-xs min-h-11 flex items-center gap-1 lowercase"
-          >
+          </LinkBase>
+          <LinkBase :to="{ name: 'privacy' }">
             {{ $t('privacy_policy.title') }}
-          </NuxtLink>
-          <a
-            href="https://docs.npmx.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs flex items-center gap-1"
-          >
+          </LinkBase>
+          <LinkBase to="https://docs.npmx.dev">
             {{ $t('footer.docs') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
-          </a>
-          <a
-            href="https://repo.npmx.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs flex items-center gap-1"
-          >
+          </LinkBase>
+          <LinkBase to="https://repo.npmx.dev">
             {{ $t('footer.source') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
-          </a>
-          <a
-            href="https://social.npmx.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs flex items-center gap-1"
-          >
+          </LinkBase>
+          <LinkBase to="https://social.npmx.dev">
             {{ $t('footer.social') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
-          </a>
-          <a
-            href="https://chat.npmx.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-subtle font-mono text-xs flex items-center gap-1"
-          >
+          </LinkBase>
+          <LinkBase to="https://chat.npmx.dev">
             {{ $t('footer.chat') }}
-            <span class="i-carbon:launch rtl-flip w-3 h-3" aria-hidden="true" />
-          </a>
+          </LinkBase>
+
+          <button
+            type="button"
+            class="group inline-flex gap-x-1 items-center justify-center underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200"
+            @click.prevent="showModal"
+            aria-haspopup="dialog"
+          >
+            {{ $t('footer.keyboard_shortcuts') }}
+          </button>
+
+          <Modal
+            ref="modalRef"
+            :modalTitle="$t('footer.keyboard_shortcuts')"
+            class="w-auto max-w-lg"
+          >
+            <p class="mb-2 font-mono text-fg-subtle">
+              {{ $t('shortcuts.section.global') }}
+            </p>
+            <ul class="mb-6 flex flex-col gap-2">
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">/</kbd>
+                <span>{{ $t('shortcuts.focus_search') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">?</kbd>
+                <span>{{ $t('shortcuts.show_kbd_hints') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">,</kbd>
+                <span>{{ $t('shortcuts.settings') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">c</kbd>
+                <span>{{ $t('shortcuts.compare') }}</span>
+              </li>
+            </ul>
+            <p class="mb-2 font-mono text-fg-subtle">
+              {{ $t('shortcuts.section.search') }}
+            </p>
+            <ul class="mb-6 flex flex-col gap-2">
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">↑</kbd>/<kbd class="kbd">↓</kbd>
+                <span>{{ $t('shortcuts.navigate_results') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">Enter</kbd>
+                <span>{{ $t('shortcuts.go_to_result') }}</span>
+              </li>
+            </ul>
+            <p class="mb-2 font-mono text-fg-subtle">
+              {{ $t('shortcuts.section.package') }}
+            </p>
+            <ul class="mb-6 flex flex-col gap-2">
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">.</kbd>
+                <span>{{ $t('shortcuts.open_code_view') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">d</kbd>
+                <span>{{ $t('shortcuts.open_docs') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">c</kbd>
+                <span>{{ $t('shortcuts.compare_from_package') }}</span>
+              </li>
+            </ul>
+          </Modal>
         </div>
       </div>
+      <BuildEnvironment v-if="!isHome" footer />
       <p class="text-xs text-fg-muted text-center sm:text-start m-0">
         <span class="sm:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
         <span class="hidden sm:inline">{{ $t('trademark_disclaimer') }}</span>
@@ -69,3 +112,9 @@ const isHome = computed(() => route.name === 'index')
     </div>
   </footer>
 </template>
+
+<style scoped>
+.kbd {
+  @apply items-center justify-center text-sm text-fg bg-bg-muted border border-border rounded px-2;
+}
+</style>

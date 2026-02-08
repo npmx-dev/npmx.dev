@@ -14,6 +14,7 @@ defineOgImageComponent('Default', {
 })
 
 const router = useRouter()
+const canGoBack = useCanGoBack()
 const buildInfo = useAppConfig().buildInfo
 const { locale } = useI18n()
 </script>
@@ -28,12 +29,12 @@ const { locale } = useI18n()
           </h1>
           <button
             type="button"
-            :title="$t('nav.back')"
             class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
+            v-if="canGoBack"
           >
             <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+            <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
           </button>
         </div>
         <i18n-t
@@ -86,7 +87,7 @@ const { locale } = useI18n()
           </p>
           <ul class="space-y-3 text-fg-muted list-none p-0">
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>
                 <i18n-t keypath="privacy_policy.cookies.types.li1" tag="span">
                   <template #li11>
@@ -104,7 +105,7 @@ const { locale } = useI18n()
               </span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>
                 <i18n-t keypath="privacy_policy.cookies.types.li2" tag="span">
                   <template #li21>
@@ -138,7 +139,7 @@ const { locale } = useI18n()
               </template>
               <template #settings>
                 <NuxtLink
-                  to="/settings"
+                  :to="{ name: 'settings' }"
                   class="text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
                 >
                   {{ $t('privacy_policy.cookies.local_storage.settings') }}
@@ -174,7 +175,7 @@ const { locale } = useI18n()
           </p>
           <ul class="space-y-3 text-fg-muted list-none p-0">
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <a
                 href="https://support.google.com/chrome/answer/95647?hl=en"
                 target="_blank"
@@ -186,7 +187,7 @@ const { locale } = useI18n()
               </a>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <a
                 href="https://support.mozilla.org/en-US/kb/clear-cookies-and-site-data-firefox"
                 target="_blank"
@@ -198,7 +199,7 @@ const { locale } = useI18n()
               </a>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <a
                 href="https://support.microsoft.com/en-us/windows/manage-cookies-in-microsoft-edge-view-allow-block-delete-and-use-168dab11-0753-043d-7c16-ede5947fc64d"
                 target="_blank"
@@ -229,19 +230,19 @@ const { locale } = useI18n()
           </p>
           <ul class="space-y-3 text-fg-muted list-none p-0 mb-4">
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>{{ $t('privacy_policy.analytics.li1') }}</span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>{{ $t('privacy_policy.analytics.li2') }}</span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>{{ $t('privacy_policy.analytics.li3') }}</span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>{{ $t('privacy_policy.analytics.li4') }}</span>
             </li>
           </ul>
@@ -266,7 +267,7 @@ const { locale } = useI18n()
             <i18n-t keypath="privacy_policy.authenticated.p2" tag="span" scope="global">
               <template #settings>
                 <NuxtLink
-                  to="/settings"
+                  :to="{ name: 'settings' }"
                   class="text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
                 >
                   {{ $t('privacy_policy.authenticated.settings') }}
@@ -296,19 +297,19 @@ const { locale } = useI18n()
           </p>
           <ul class="space-y-3 text-fg-muted list-none p-0 mb-4">
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>{{ $t('privacy_policy.your_rights.li1') }}</span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>{{ $t('privacy_policy.your_rights.li2') }}</span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>{{ $t('privacy_policy.your_rights.li3') }}</span>
             </li>
             <li class="flex items-start gap-3">
-              <span class="text-fg-subtle shrink-0 mt-1">&mdash;</span>
+              <span class="text-fg-subtle shrink-0">&mdash;</span>
               <span>{{ $t('privacy_policy.your_rights.li4') }}</span>
             </li>
           </ul>

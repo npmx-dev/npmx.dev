@@ -18,7 +18,7 @@ const standardReadmeFilenames = [
 ]
 
 /** Matches standard README filenames (case-insensitive, for checking registry metadata) */
-const standardReadmePattern = /^readme(\.md|\.markdown)?$/i
+const standardReadmePattern = /^readme(?:\.md|\.markdown)?$/i
 
 /**
  * Fetch README from jsdelivr CDN for a specific package version.

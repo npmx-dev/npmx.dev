@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NuxtLink } from '#components'
+import { LinkBase, TagStatic } from '#components'
 
 const props = defineProps<{
   packageName: string
@@ -58,35 +58,29 @@ const typesHref = computed(() => {
     <!-- TypeScript types badge -->
     <li v-if="!props.isBinary" class="contents">
       <TooltipApp :text="typesTooltip">
-        <component
-          :is="typesHref ? NuxtLink : 'span'"
+        <LinkBase
+          v-if="typesHref"
+          variant="button-secondary"
+          size="small"
           :to="typesHref"
-          :tabindex="!typesHref ? 0 : undefined"
-          class="flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200 focus-visible:(outline-2 outline-accent)"
-          :class="[
-            isLoading
-              ? 'text-fg-subtle bg-bg-subtle border border-border-subtle'
-              : hasTypes
-                ? 'text-fg-muted bg-bg-muted border border-border'
-                : 'text-fg-subtle bg-bg-subtle border border-border-subtle',
-            typesHref
-              ? 'hover:text-fg hover:border-border-hover focus-visible:outline-accent/70'
-              : '',
-          ]"
+          classicon="i-carbon-checkmark"
         >
-          <span
-            v-if="isLoading"
-            class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
-            aria-hidden="true"
-          />
-          <span
-            v-else
-            class="w-3 h-3"
-            :class="hasTypes ? 'i-carbon-checkmark' : 'i-carbon-close'"
-            aria-hidden="true"
-          />
           {{ $t('package.metrics.types_label') }}
-        </component>
+        </LinkBase>
+        <TagStatic
+          v-else
+          :variant="hasTypes && !isLoading ? 'default' : 'ghost'"
+          :tabindex="0"
+          :classicon="
+            isLoading
+              ? 'i-carbon-circle-dash motion-safe:animate-spin'
+              : hasTypes
+                ? 'i-carbon-checkmark'
+                : 'i-carbon-close'
+          "
+        >
+          {{ $t('package.metrics.types_label') }}
+        </TagStatic>
       </TooltipApp>
     </li>
 
@@ -95,53 +89,34 @@ const typesHref = computed(() => {
       <TooltipApp
         :text="isLoading ? '' : hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')"
       >
-        <span
+        <TagStatic
           tabindex="0"
-          class="flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200 focus-visible:(outline-2 outline-accent)"
-          :class="
+          :variant="hasEsm && !isLoading ? 'default' : 'ghost'"
+          :classicon="
             isLoading
-              ? 'text-fg-subtle bg-bg-subtle border border-border-subtle'
+              ? 'i-carbon-circle-dash motion-safe:animate-spin'
               : hasEsm
-                ? 'text-fg-muted bg-bg-muted border border-border'
-                : 'text-fg-subtle bg-bg-subtle border border-border-subtle'
+                ? 'i-carbon-checkmark'
+                : 'i-carbon-close'
           "
         >
-          <span
-            v-if="isLoading"
-            class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
-            aria-hidden="true"
-          />
-          <span
-            v-else
-            class="w-3 h-3"
-            :class="hasEsm ? 'i-carbon-checkmark' : 'i-carbon-close'"
-            aria-hidden="true"
-          />
           ESM
-        </span>
+        </TagStatic>
       </TooltipApp>
     </li>
 
     <!-- CJS badge -->
     <li v-if="isLoading || hasCjs" class="contents">
       <TooltipApp :text="isLoading ? '' : $t('package.metrics.cjs')">
-        <span
+        <TagStatic
           tabindex="0"
-          class="flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded transition-colors duration-200 focus-visible:(outline-2 outline-accent)"
-          :class="
-            isLoading
-              ? 'text-fg-subtle bg-bg-subtle border border-border-subtle'
-              : 'text-fg-muted bg-bg-muted border border-border'
+          :variant="isLoading ? 'ghost' : 'default'"
+          :classicon="
+            isLoading ? 'i-carbon-circle-dash motion-safe:animate-spin' : 'i-carbon-checkmark'
           "
         >
-          <span
-            v-if="isLoading"
-            class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
-            aria-hidden="true"
-          />
-          <span v-else class="i-carbon-checkmark w-3 h-3" aria-hidden="true" />
           CJS
-        </span>
+        </TagStatic>
       </TooltipApp>
     </li>
   </ul>

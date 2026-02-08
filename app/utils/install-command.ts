@@ -54,9 +54,9 @@ export const packageManagers = [
     id: 'vlt',
     label: 'vlt',
     action: 'install',
-    executeLocal: 'vlt x',
-    executeRemote: 'vlt x',
-    create: 'vlt x',
+    executeLocal: 'vlx',
+    executeRemote: 'vlx',
+    create: 'vlx',
     icon: 'i-custom-vlt',
   },
 ] as const

@@ -1,49 +1,19 @@
+import type { PackageVersionsInfo } from 'fast-npm-meta'
+import { getVersionsBatch } from 'fast-npm-meta'
 import { maxSatisfying, prerelease, major, minor, diff, gt } from 'semver'
-import type { Packument } from '#shared/types'
-import { mapWithConcurrency } from '#shared/utils/async'
-import type { CachedFetchFunction } from '#shared/utils/fetch-cache-config'
 import {
   type OutdatedDependencyInfo,
   isNonSemverConstraint,
   constraintIncludesPrerelease,
 } from '~/utils/npm/outdated-dependencies'
-import { NPM_REGISTRY } from '~/utils/npm/common'
 
-// Cache for packument fetches to avoid duplicate requests across components
-const packumentCache = new Map<string, Promise<Packument | null>>()
+const BATCH_SIZE = 50
 
-/**
- * Check if a dependency is outdated.
- * Returns null if up-to-date or if we can't determine.
- */
-async function checkDependencyOutdated(
-  cachedFetch: CachedFetchFunction,
-  packageName: string,
+function resolveOutdated(
+  versions: string[],
+  latestTag: string,
   constraint: string,
-): Promise<OutdatedDependencyInfo | null> {
-  if (isNonSemverConstraint(constraint)) {
-    return null
-  }
-
-  // Check in-memory cache first
-  let packument: Packument | null
-  const cached = packumentCache.get(packageName)
-  if (cached) {
-    packument = await cached
-  } else {
-    const promise = cachedFetch<Packument>(`${NPM_REGISTRY}/${encodePackageName(packageName)}`)
-      .then(({ data }) => data)
-      .catch(() => null)
-    packumentCache.set(packageName, promise)
-    packument = await promise
-  }
-
-  if (!packument) return null
-
-  const latestTag = packument['dist-tags']?.latest
-  if (!latestTag) return null
-
-  // Handle "latest" constraint specially - return info with current version
+): OutdatedDependencyInfo | null {
   if (constraint === 'latest') {
     return {
       resolved: latestTag,
@@ -54,20 +24,17 @@ async function checkDependencyOutdated(
     }
   }
 
-  let versions = Object.keys(packument.versions)
-  const includesPrerelease = constraintIncludesPrerelease(constraint)
-
-  if (!includesPrerelease) {
-    versions = versions.filter(v => !prerelease(v))
+  let filteredVersions = versions
+  if (!constraintIncludesPrerelease(constraint)) {
+    filteredVersions = versions.filter(v => !prerelease(v))
   }
 
-  const resolved = maxSatisfying(versions, constraint)
+  const resolved = maxSatisfying(filteredVersions, constraint)
   if (!resolved) return null
 
   if (resolved === latestTag) return null
 
-  // If resolved version is newer than latest, not outdated
-  // (e.g., using ^2.0.0-rc when latest is 1.x)
+  // Resolved is newer than latest (e.g. ^2.0.0-rc when latest is 1.x)
   if (gt(resolved, latestTag)) {
     return null
   }
@@ -86,13 +53,12 @@ async function checkDependencyOutdated(
 }
 
 /**
- * Composable to check for outdated dependencies.
+ * Check for outdated dependencies via fast-npm-meta batch version lookups.
  * Returns a reactive map of dependency name to outdated info.
  */
 export function useOutdatedDependencies(
   dependencies: MaybeRefOrGetter<Record<string, string> | undefined>,
 ) {
-  const cachedFetch = useCachedFetch()
   const outdated = shallowRef<Record<string, OutdatedDependencyInfo>>({})
 
   async function fetchOutdatedInfo(deps: Record<string, string> | undefined) {
@@ -101,18 +67,42 @@ export function useOutdatedDependencies(
       return
     }
 
-    const entries = Object.entries(deps)
-    const batchResults = await mapWithConcurrency(
-      entries,
-      async ([name, constraint]) => {
-        const info = await checkDependencyOutdated(cachedFetch, name, constraint)
-        return [name, info] as const
-      },
-      5,
+    const semverEntries = Object.entries(deps).filter(
+      ([, constraint]) => !isNonSemverConstraint(constraint),
     )
 
+    if (semverEntries.length === 0) {
+      outdated.value = {}
+      return
+    }
+
+    const packageNames = semverEntries.map(([name]) => name)
+
+    const chunks: string[][] = []
+    for (let i = 0; i < packageNames.length; i += BATCH_SIZE) {
+      chunks.push(packageNames.slice(i, i + BATCH_SIZE))
+    }
+    const batchResults = await Promise.all(
+      chunks.map(chunk => getVersionsBatch(chunk, { throw: false })),
+    )
+    const allVersionData = batchResults.flat()
+
+    // Build a lookup map from package name to version data
+    const versionMap = new Map<string, PackageVersionsInfo>()
+    for (const data of allVersionData) {
+      if ('error' in data) continue
+      versionMap.set(data.name, data)
+    }
+
     const results: Record<string, OutdatedDependencyInfo> = {}
-    for (const [name, info] of batchResults) {
+    for (const [name, constraint] of semverEntries) {
+      const data = versionMap.get(name)
+      if (!data) continue
+
+      const latestTag = data.distTags.latest
+      if (!latestTag) continue
+
+      const info = resolveOutdated(data.versions, latestTag, constraint)
       if (info) {
         results[name] = info
       }
@@ -124,7 +114,9 @@ export function useOutdatedDependencies(
   watch(
     () => toValue(dependencies),
     deps => {
-      fetchOutdatedInfo(deps)
+      fetchOutdatedInfo(deps).catch(() => {
+        // Network failure or fast-npm-meta outage — leave stale results in place
+      })
     },
     { immediate: true },
   )

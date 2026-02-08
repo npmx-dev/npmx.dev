@@ -58,7 +58,7 @@ function handleKeydown(event: KeyboardEvent) {
     @keydown="handleKeydown"
   >
     <NuxtLink
-      :to="`/~${username}`"
+      :to="{ name: '~username', params: { username } }"
       class="link-subtle font-mono text-sm inline-flex items-center gap-1"
     >
       {{ $t('header.packages') }}
@@ -94,7 +94,7 @@ function handleKeydown(event: KeyboardEvent) {
           <ul v-else-if="packages.length > 0" class="py-1 max-h-80 overflow-y-auto">
             <li v-for="pkg in packages" :key="pkg">
               <NuxtLink
-                :to="`/package/${pkg}`"
+                :to="packageRoute(pkg)"
                 class="block px-3 py-2 font-mono text-sm text-fg hover:bg-bg-subtle transition-colors truncate"
               >
                 {{ pkg }}
@@ -108,7 +108,7 @@ function handleKeydown(event: KeyboardEvent) {
 
           <div class="px-3 py-2 border-t border-border">
             <NuxtLink
-              :to="`/~${username}`"
+              :to="{ name: '~username', params: { username } }"
               class="link-subtle font-mono text-xs inline-flex items-center gap-1"
             >
               {{ $t('header.packages_dropdown.view_all') }}
