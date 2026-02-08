@@ -59,7 +59,9 @@ export function transformPackument(
     includedVersions.add(requestedVersion)
   }
 
-  const securityVersions = Object.entries(pkg.versions).map(([version, metadata]) => {
+  // Build security metadata for all versions, but only include in payload
+  // when the package has mixed trust levels (i.e. a downgrade could exist)
+  const securityVersionEntries = Object.entries(pkg.versions).map(([version, metadata]) => {
     const trustLevel = getTrustLevel(metadata)
     return {
       version,
@@ -69,6 +71,10 @@ export function transformPackument(
       deprecated: metadata.deprecated,
     }
   })
+
+  const trustLevels = new Set(securityVersionEntries.map(v => v.trustLevel))
+  const hasMixedTrust = trustLevels.size > 1
+  const securityVersions = hasMixedTrust ? securityVersionEntries : undefined
 
   // Build filtered versions object with install scripts info per version
   const filteredVersions: Record<string, SlimVersion> = {}

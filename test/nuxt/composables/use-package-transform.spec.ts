@@ -115,6 +115,49 @@ describe('transformPackument', () => {
     expect(transformed.securityVersions).toHaveLength(8)
   })
 
+  it('omits securityVersions when all versions have the same trust level', () => {
+    const packument = createPackument(
+      {
+        '1.0.0': createVersion('1.0.0'),
+        '1.0.1': createVersion('1.0.1'),
+        '1.0.2': createVersion('1.0.2'),
+      },
+      {
+        'created': '2026-01-01T00:00:00.000Z',
+        'modified': '2026-01-03T00:00:00.000Z',
+        '1.0.0': '2026-01-01T00:00:00.000Z',
+        '1.0.1': '2026-01-02T00:00:00.000Z',
+        '1.0.2': '2026-01-03T00:00:00.000Z',
+      },
+      '1.0.2',
+    )
+
+    const transformed = transformPackument(packument, '1.0.2')
+
+    // All versions have trustLevel 'none', so no mixed trust — omit the array
+    expect(transformed.securityVersions).toBeUndefined()
+  })
+
+  it('includes securityVersions when package has mixed trust levels', () => {
+    const packument = createPackument(
+      {
+        '1.0.0': createVersion('1.0.0', true),
+        '1.0.1': createVersion('1.0.1'),
+      },
+      {
+        'created': '2026-01-01T00:00:00.000Z',
+        'modified': '2026-01-02T00:00:00.000Z',
+        '1.0.0': '2026-01-01T00:00:00.000Z',
+        '1.0.1': '2026-01-02T00:00:00.000Z',
+      },
+      '1.0.1',
+    )
+
+    const transformed = transformPackument(packument, '1.0.1')
+
+    expect(transformed.securityVersions).toHaveLength(2)
+  })
+
   it('works with downgrade detection for viewed version', () => {
     const packument = createPackument(
       {

@@ -1,10 +1,11 @@
 import type { PackageVersionInfo, PublishTrustLevel } from '#shared/types'
-import { compare } from 'semver'
+import { compare, major } from 'semver'
 
 export interface PublishSecurityDowngrade {
   downgradedVersion: string
   downgradedPublishedAt?: string
-  trustedVersion: string
+  /** Recommended trusted version within the same major, if one exists */
+  trustedVersion?: string
   trustedPublishedAt?: string
 }
 
@@ -22,7 +23,9 @@ const TRUST_RANK: Record<PublishTrustLevel, number> = {
 
 function getTrustRank(version: PackageVersionInfo): number {
   if (version.trustLevel) return TRUST_RANK[version.trustLevel]
-  return version.hasProvenance ? TRUST_RANK.provenance : TRUST_RANK.none
+  // Fallback for legacy data: hasProvenance only indicates non-'none' trust,
+  // so map it to trustedPublisher (the lower rank) to avoid over-ranking
+  return version.hasProvenance ? TRUST_RANK.trustedPublisher : TRUST_RANK.none
 }
 
 function toTimestamp(time?: string): number {
@@ -73,22 +76,39 @@ export function detectPublishSecurityDowngradeForVersion(
   const currentIndex = sorted.findIndex(version => version.version === viewedVersion)
   if (currentIndex === -1) return null
 
-  const current = sorted.at(currentIndex)
+  const current = sorted[currentIndex]
   if (!current) return null
 
-  let strongestOlder: VersionWithIndex | null = null
+  const currentMajor = major(current.version)
+
+  // Find the strongest older version across all majors (for detection)
+  // and the strongest within the same major (for recommendation)
+  let strongestOlderAny: VersionWithIndex | null = null
+  let strongestOlderSameMajor: VersionWithIndex | null = null
   for (const version of sorted.slice(currentIndex + 1)) {
-    if (!strongestOlder || version.trustRank > strongestOlder.trustRank) {
-      strongestOlder = version
+    // Skip deprecated versions — recommending a deprecated version is misleading
+    if (version.deprecated) continue
+    if (!strongestOlderAny || version.trustRank > strongestOlderAny.trustRank) {
+      strongestOlderAny = version
+    }
+    if (major(version.version) === currentMajor) {
+      if (!strongestOlderSameMajor || version.trustRank > strongestOlderSameMajor.trustRank) {
+        strongestOlderSameMajor = version
+      }
     }
   }
 
+  // Use same-major for recommendation if available, otherwise any-major for detection only
+  const strongestOlder = strongestOlderSameMajor ?? strongestOlderAny
   if (!strongestOlder || strongestOlder.trustRank <= current.trustRank) return null
+
+  // Only recommend a specific version if it's in the same major
+  const recommendation = strongestOlderSameMajor
 
   return {
     downgradedVersion: current.version,
     downgradedPublishedAt: current.time,
-    trustedVersion: strongestOlder.version,
-    trustedPublishedAt: strongestOlder.time,
+    trustedVersion: recommendation?.version,
+    trustedPublishedAt: recommendation?.time,
   }
 }

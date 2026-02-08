@@ -1124,7 +1124,7 @@ onKeyStroke(
             <p class="mt-2 mb-0 text-sm">
               {{ $t('package.security_downgrade.description') }}
             </p>
-            <p class="mt-2 mb-0 text-sm">
+            <p v-if="publishSecurityDowngrade.trustedVersion" class="mt-2 mb-0 text-sm">
               {{
                 $t('package.security_downgrade.fallback_install', {
                   version: publishSecurityDowngrade.trustedVersion,
