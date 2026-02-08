@@ -98,7 +98,12 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       // --- Algolia fast path ---
       if (searchProvider.value === 'algolia') {
         try {
-          return await searchByOwner(org)
+          const response = await searchByOwner(org)
+          // If Algolia returns no results, the org may not exist — fall through
+          // to npm registry path which can properly detect a 404
+          if (response.objects.length > 0) {
+            return response
+          }
         } catch {
           // Fall through to npm registry path on Algolia failure
         }

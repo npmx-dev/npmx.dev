@@ -57,12 +57,17 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
             return emptySearchResponse
           }
 
-          cache.value = {
-            username: user,
-            objects: response.objects,
-            total: response.total,
+          // If Algolia returns results, use them. If empty, fall through to npm
+          // registry which uses `maintainer:` search (matches all maintainers,
+          // not just the primary owner that Algolia's owner.name indexes).
+          if (response.objects.length > 0) {
+            cache.value = {
+              username: user,
+              objects: response.objects,
+              total: response.total,
+            }
+            return response
           }
-          return response
         } catch {
           // Fall through to npm registry path on Algolia failure
         }

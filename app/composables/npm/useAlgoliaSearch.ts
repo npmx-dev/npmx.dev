@@ -181,6 +181,7 @@ export function useAlgoliaSearch() {
 
     const allHits: AlgoliaHit[] = []
     let offset = 0
+    let serverTotal = 0
     const batchSize = 200
 
     // Algolia supports up to 1000 results per query with offset/length pagination
@@ -205,10 +206,11 @@ export function useAlgoliaSearch() {
       const response = results[0] as SearchResponse<AlgoliaHit> | undefined
       if (!response) break
 
+      serverTotal = response.nbHits ?? 0
       allHits.push(...response.hits)
 
       // If we got fewer than requested, we've exhausted all results
-      if (response.hits.length < length || allHits.length >= (response.nbHits ?? 0)) {
+      if (response.hits.length < length || allHits.length >= serverTotal) {
         break
       }
 
@@ -218,7 +220,8 @@ export function useAlgoliaSearch() {
     return {
       isStale: false,
       objects: allHits.map(hitToSearchResult),
-      total: allHits.length,
+      // Use server total so callers can detect truncation (allHits.length < total)
+      total: serverTotal,
       time: new Date().toISOString(),
     }
   }

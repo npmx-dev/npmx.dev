@@ -492,6 +492,8 @@ watch(
 
 // Re-validate suggestions and clear caches when provider changes
 watch(isAlgolia, () => {
+  // Cancel any pending debounced validation from the previous provider
+  validateSuggestionsDebounced.cancel?.()
   // Clear existence cache since results may differ between providers
   existenceCache.value = {}
   // Re-validate with current query
