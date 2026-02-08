@@ -239,13 +239,15 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
               </button>
             </div>
           </div>
-          <input
+          <InputBase
             id="filter-search"
             type="text"
             :value="filters.text"
             :placeholder="searchPlaceholder"
             autocomplete="off"
-            class="w-full bg-bg-subtle border border-border rounded-md px-4 py-3 font-mono text-sm text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+            class="w-full min-w-25"
+            size="medium"
+            no-correct
             @input="handleTextInput"
           />
         </div>

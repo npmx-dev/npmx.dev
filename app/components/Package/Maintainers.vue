@@ -254,14 +254,15 @@ watch(
           <label for="add-owner-username" class="sr-only">{{
             $t('package.maintainers.username_to_add')
           }}</label>
-          <input
+          <InputBase
             id="add-owner-username"
             v-model="newOwnerUsername"
             type="text"
             name="add-owner-username"
             :placeholder="$t('package.maintainers.username_placeholder')"
-            v-bind="noCorrect"
-            class="flex-1 px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
+            no-correct
+            class="flex-1 min-w-25 m-1"
+            size="small"
           />
           <ButtonBase type="submit" :disabled="!newOwnerUsername.trim() || isAdding">
             {{ isAdding ? '…' : $t('package.maintainers.add_button') }}

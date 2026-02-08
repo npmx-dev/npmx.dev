@@ -139,6 +139,7 @@ import {
   HeaderAccountMenu,
   HeaderConnectorModal,
   HeaderSearchBox,
+  InputBase,
   LicenseDisplay,
   LoadingSpinner,
   PackageProvenanceSection,
@@ -2171,6 +2172,59 @@ describe('component accessibility audits', () => {
   describe('HeaderSearchBox', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(HeaderSearchBox)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('InputBase', () => {
+    it('should have no accessibility violations (with aria-label)', async () => {
+      const component = await mountSuspended(InputBase, {
+        attrs: { 'aria-label': 'Search input' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with placeholder', async () => {
+      const component = await mountSuspended(InputBase, {
+        attrs: { 'placeholder': 'Search...', 'aria-label': 'Search' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations when disabled', async () => {
+      const component = await mountSuspended(InputBase, {
+        attrs: { 'disabled': '', 'aria-label': 'Disabled input' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with size small', async () => {
+      const component = await mountSuspended(InputBase, {
+        props: { size: 'small' },
+        attrs: { 'aria-label': 'Small input' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with size large', async () => {
+      const component = await mountSuspended(InputBase, {
+        props: { size: 'large' },
+        attrs: { 'aria-label': 'Large input' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations with noCorrect false', async () => {
+      const component = await mountSuspended(InputBase, {
+        props: { noCorrect: false },
+        attrs: { 'aria-label': 'Input with corrections' },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

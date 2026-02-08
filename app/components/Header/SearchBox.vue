@@ -54,15 +54,6 @@ watch(
   },
 )
 
-function handleSearchBlur() {
-  isSearchFocused.value = false
-  emit('blur')
-}
-function handleSearchFocus() {
-  isSearchFocused.value = true
-  emit('focus')
-}
-
 function handleSubmit() {
   const query = searchQuery.value.trim()
   if (pagesWithLocalFilter.has(route.name)) {
@@ -109,17 +100,18 @@ defineExpose({ focus })
             /
           </span>
 
-          <input
+          <InputBase
             id="header-search"
             ref="inputRef"
             v-model="searchQuery"
             type="search"
             name="q"
             :placeholder="$t('search.placeholder')"
-            v-bind="noCorrect"
-            class="w-full min-w-25 bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
-            @focus="handleSearchFocus"
-            @blur="handleSearchBlur"
+            no-correct
+            class="w-full min-w-25 ps-7"
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+            size="small"
           />
           <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
         </div>

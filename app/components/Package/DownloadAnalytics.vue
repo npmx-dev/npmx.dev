@@ -1489,7 +1489,7 @@ const chartConfig = computed(() => {
               id="granularity"
               v-model="selectedGranularity"
               :disabled="pending"
-              class="w-full px-2.5 py-1.75 bg-bg-subtle font-mono text-sm text-fg outline-none appearance-none focus-visible:outline-accent/70"
+              class="w-full px-4 py-3 leading-none bg-bg-subtle font-mono text-sm text-fg outline-none appearance-none focus-visible:outline-accent/70"
             >
               <option value="daily">
                 {{ $t('package.trends.granularity_daily') }}
@@ -1515,16 +1515,18 @@ const chartConfig = computed(() => {
             >
               {{ $t('package.trends.start_date') }}
             </label>
-            <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
-            >
-              <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
-              <input
+            <div class="relative flex items-center">
+              <span
+                class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
+                aria-hidden="true"
+              />
+              <InputBase
                 id="startDate"
                 v-model="startDate"
                 :disabled="pending"
                 type="date"
-                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:light] dark:[color-scheme:dark]"
+                class="w-full min-w-0 bg-transparent ps-7"
+                size="medium"
               />
             </div>
           </div>
@@ -1533,16 +1535,18 @@ const chartConfig = computed(() => {
             <label for="endDate" class="text-3xs font-mono text-fg-subtle tracking-wide uppercase">
               {{ $t('package.trends.end_date') }}
             </label>
-            <div
-              class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
-            >
-              <span class="i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0" aria-hidden="true" />
-              <input
+            <div class="relative flex items-center">
+              <span
+                class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
+                aria-hidden="true"
+              />
+              <InputBase
                 id="endDate"
                 v-model="endDate"
                 :disabled="pending"
                 type="date"
-                class="w-full min-w-0 bg-transparent font-mono text-sm text-fg outline-none [color-scheme:light] dark:[color-scheme:dark]"
+                class="w-full min-w-0 bg-transparent ps-7"
+                size="medium"
               />
             </div>
           </div>

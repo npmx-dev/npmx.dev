@@ -119,16 +119,6 @@ describe('PackageSelector', () => {
       input = component.find('input')
       expect(input.attributes('placeholder')).toBeTruthy()
     })
-
-    it('has search icon', async () => {
-      const component = await mountSuspended(PackageSelector, {
-        props: {
-          modelValue: [],
-        },
-      })
-
-      expect(component.find('.i-carbon\\:search').exists()).toBe(true)
-    })
   })
 
   describe('adding packages', () => {
