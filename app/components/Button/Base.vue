@@ -47,7 +47,7 @@ defineExpose({
     :aria-keyshortcuts="keyshortcut"
   >
     <span
-      class="group cursor-pointer inline-flex gap-x-1.5 relative items-center justify-center rounded-md active:rounded-4xl font-mono border border-solid transition-[background-color,color,border,outline] duration-200 transition-[border-radius_100ms] after:(content-[''] absolute inset--0.5 rounded-md) outline-transparent group-focus-visible:(outline-2 outline-accent outline-offset-2)"
+      class="group cursor-pointer inline-flex gap-x-1.5 relative items-center justify-center rounded-md hover:rounded-xl active:rounded-xl font-mono border border-solid transition-[background-color,color,border,outline] duration-200 transition-[border-radius_100ms] after:(content-[''] absolute inset--0.5 rounded-md) outline-transparent group-focus-visible:(outline-2 outline-accent outline-offset-2)"
       :class="{
         'text-sm px-4 py-2': size === 'medium',
         'text-xs px-2 py-0.5': size === 'small',
