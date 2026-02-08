@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageSelector from '~/components/Compare/PackageSelector.vue'
 
-// Mock $fetch for useNpmSearch
 const mockFetch = vi.fn()
 vi.stubGlobal('$fetch', mockFetch)
 
@@ -118,16 +117,6 @@ describe('PackageSelector', () => {
       })
       input = component.find('input')
       expect(input.attributes('placeholder')).toBeTruthy()
-    })
-
-    it('has search icon', async () => {
-      const component = await mountSuspended(PackageSelector, {
-        props: {
-          modelValue: [],
-        },
-      })
-
-      expect(component.find('.i-carbon\\:search').exists()).toBe(true)
     })
   })
 

@@ -61,13 +61,14 @@ const showFilteredCount = computed(() => {
       >
         <div class="i-carbon:search w-4 h-4" />
       </div>
-      <input
+      <InputBase
         id="package-filter"
         v-model="filterValue"
         type="search"
         :placeholder="placeholder ?? $t('package.list.filter_placeholder')"
-        v-bind="noCorrect"
-        class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+        no-correct
+        class="w-full min-w-25 ps-10"
+        size="medium"
       />
     </div>
 
@@ -78,7 +79,7 @@ const showFilteredCount = computed(() => {
         <select
           id="package-sort"
           v-model="sortValue"
-          class="appearance-none bg-bg-subtle border border-border rounded-lg ps-3 pe-8 py-2 font-mono text-sm text-fg transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
+          class="appearance-none bg-bg-subtle border border-border rounded-lg ps-3 pe-8 py-3 leading-none font-mono text-sm text-fg transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
         >
           <option v-for="option in sortOptions" :key="option.value" :value="option.value">
             {{ option.label }}

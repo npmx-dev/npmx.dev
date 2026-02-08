@@ -15,7 +15,24 @@
     "docs": "docs",
     "source": "source",
     "social": "social",
-    "chat": "chat"
+    "chat": "chat",
+    "keyboard_shortcuts": "keyboard shortcuts"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Global",
+      "search": "Search",
+      "package": "Package"
+    },
+    "focus_search": "Focus search",
+    "show_kbd_hints": "Highlight keyboard hints",
+    "settings": "Open settings",
+    "compare": "Open compare",
+    "compare_from_package": "Open compare (prefilled with current package)",
+    "navigate_results": "Navigate results",
+    "go_to_result": "Go to result",
+    "open_code_view": "Open code view",
+    "open_docs": "Open docs"
   },
   "search": {
     "label": "Search npm packages",
@@ -23,6 +40,7 @@
     "button": "search",
     "searching": "Searching...",
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
+    "found_packages_sorted": "Sorting top {count} result | Sorting top {count} results",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "rate_limited": "Hit npm rate limit, try again in a moment",

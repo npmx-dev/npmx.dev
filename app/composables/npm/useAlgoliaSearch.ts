@@ -229,10 +229,50 @@ export function useAlgoliaSearch() {
     }
   }
 
+  /**
+   * Fetch metadata for specific packages by exact name.
+   * Uses Algolia's getObjects REST API to look up packages by objectID
+   * (which equals the package name in the npm-search index).
+   */
+  async function getPackagesByName(packageNames: string[]): Promise<NpmSearchResponse> {
+    if (packageNames.length === 0) {
+      return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
+    }
+
+    // Algolia getObjects REST API: fetch up to 1000 objects by ID in a single request
+    const response = await $fetch<{ results: (AlgoliaHit | null)[] }>(
+      `https://${algolia.appId}-dsn.algolia.net/1/indexes/*/objects`,
+      {
+        method: 'POST',
+        headers: {
+          'x-algolia-api-key': algolia.apiKey,
+          'x-algolia-application-id': algolia.appId,
+        },
+        body: {
+          requests: packageNames.map(name => ({
+            indexName,
+            objectID: name,
+            attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
+          })),
+        },
+      },
+    )
+
+    const hits = response.results.filter((r): r is AlgoliaHit => r !== null && 'name' in r)
+    return {
+      isStale: false,
+      objects: hits.map(hitToSearchResult),
+      total: hits.length,
+      time: new Date().toISOString(),
+    }
+  }
+
   return {
     /** Search packages by text query */
     search,
     /** Fetch all packages for an owner (org or user) */
     searchByOwner,
+    /** Fetch metadata for specific packages by exact name */
+    getPackagesByName,
   }
 }

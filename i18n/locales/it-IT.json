@@ -25,6 +25,7 @@
     "found_packages": "Trovati {count} pacchetti",
     "updating": "(aggiornando...)",
     "no_results": "Nessun pacchetto trovato per \"{query}\"",
+    "rate_limited": "Limite di richiesta ad npm raggiunto, riprova tra poco",
     "title": "cerca",
     "title_search": "cerca: {search}",
     "title_packages": "cerca pacchetti",
@@ -372,6 +373,11 @@
       "name_asc": "Nome (A-Z)",
       "name_desc": "Nome (Z-A)"
     },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    },
     "trends": {
       "granularity": "Granularità",
       "granularity_daily": "Giornaliero",
@@ -384,7 +390,13 @@
       "date_range": "{start} a {end}",
       "date_range_multiline": "{start}\na {end}",
       "download_file": "Scarica {fileType}",
-      "toggle_annotator": "Attiva/disattiva annotatore"
+      "toggle_annotator": "Attiva/disattiva annotatore",
+      "legend_estimation": "Stima",
+      "no_data": "Nessun dato disponibile",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Download"
+      }
     }
   },
   "connector": {
@@ -790,7 +802,8 @@
       "create_account": "Crea un nuovo account",
       "connect_bluesky": "Connetti con Bluesky",
       "what_is_atmosphere": "Cos'è un account Atmosphere?",
-      "atmosphere_explanation": "{npmx} utilizza {atproto} per potenziare molte delle sue funzionalità sociali, consentendo agli utenti di possedere i loro dati e utilizzare un account per tutte le applicazioni compatibili. Una volta creato un account, puoi utilizzare altre app come {bluesky} e {tangled} con lo stesso account."
+      "atmosphere_explanation": "{npmx} utilizza {atproto} per potenziare molte delle sue funzionalità sociali, consentendo agli utenti di possedere i loro dati e utilizzare un account per tutte le applicazioni compatibili. Una volta creato un account, puoi utilizzare altre app come {bluesky} e {tangled} con lo stesso account.",
+      "default_input_error": "Inserisci un handle valido, DID o URL PDS completo"
     }
   },
   "header": {
@@ -882,6 +895,10 @@
         "downloads": {
           "label": "Download/settimana",
           "description": "Conteggio download settimanale"
+        },
+        "totalLikes": {
+          "label": "Mi piace",
+          "description": "Numero di mi piace"
         },
         "lastUpdated": {
           "label": "Pubblicato",

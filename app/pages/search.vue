@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { FilterChip } from '#shared/types/preferences'
+import type { FilterChip, SortKey } from '#shared/types/preferences'
+import { parseSortOption, PROVIDER_SORT_KEYS } from '#shared/types/preferences'
 import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
@@ -8,6 +9,10 @@ import { normalizeSearchParam } from '#shared/utils/url'
 
 const route = useRoute()
 const router = useRouter()
+
+// Search provider
+const { search: algoliaSearch } = useAlgoliaSearch()
+const { isAlgolia } = useSearchProvider()
 
 // Preferences (persisted to localStorage)
 const {
@@ -45,13 +50,6 @@ onMounted(() => {
 const pageSize = 25
 const currentPage = shallowRef(1)
 
-// Calculate how many results we need based on current page and preferred page size
-const requestedSize = computed(() => {
-  const numericPrefSize = preferredPageSize.value === 'all' ? 250 : preferredPageSize.value
-  // Always fetch at least enough for the current page
-  return Math.max(pageSize, currentPage.value * numericPrefSize)
-})
-
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
   const p = Number.parseInt(normalizeSearchParam(route.query.page), 10)
@@ -64,18 +62,6 @@ onMounted(() => {
     currentPage.value = initialPage.value
   }
 })
-
-// Use incremental search with client-side caching
-const {
-  data: results,
-  status,
-  isLoadingMore,
-  hasMore,
-  fetchMore,
-  isRateLimited,
-} = useNpmSearch(query, () => ({
-  size: requestedSize.value,
-}))
 
 // Results to display (directly from incremental search)
 const rawVisibleResults = computed(() => results.value)
@@ -125,11 +111,30 @@ const visibleResults = computed(() => {
 // Use structured filters for client-side refinement of search results
 const resultsArray = computed(() => visibleResults.value?.objects ?? [])
 
+// All possible non-relevance sort keys
+const ALL_SORT_KEYS: SortKey[] = [
+  'downloads-week',
+  'downloads-day',
+  'downloads-month',
+  'downloads-year',
+  'updated',
+  'name',
+  'quality',
+  'popularity',
+  'maintenance',
+  'score',
+]
+
+// Disable sort keys the current provider can't meaningfully sort by
+const disabledSortKeys = computed<SortKey[]>(() => {
+  const supported = PROVIDER_SORT_KEYS[isAlgolia.value ? 'algolia' : 'npm']
+  return ALL_SORT_KEYS.filter(k => !supported.has(k))
+})
+
 // Minimal structured filters usage for search context (no client-side filtering)
 const {
   filters,
   sortOption,
-  sortedPackages,
   availableKeywords,
   activeFilters,
   setTextFilter,
@@ -148,18 +153,97 @@ const {
   initialSort: 'relevance-desc', // Default to search relevance
 })
 
-// Client-side filtered/sorted results for display
-// In search context, we always use server order (relevance) - no client-side filtering
+const isRelevanceSort = computed(
+  () => sortOption.value === 'relevance-desc' || sortOption.value === 'relevance-asc',
+)
+
+// Maximum eager-load sizes per provider for client-side sorting.
+// Algolia supports up to 1000 with offset/length pagination.
+// npm supports pagination via `from` parameter (no hard cap, but diminishing relevance).
+const EAGER_LOAD_SIZE = { algolia: 500, npm: 500 } as const
+
+// Calculate how many results we need based on current page and preferred page size
+const requestedSize = computed(() => {
+  const numericPrefSize = preferredPageSize.value === 'all' ? 250 : preferredPageSize.value
+  const base = Math.max(pageSize, currentPage.value * numericPrefSize)
+  // When sorting by something other than relevance, fetch a large batch
+  // so client-side sorting operates on a meaningful pool of matching results
+  if (!isRelevanceSort.value) {
+    const cap = isAlgolia.value ? EAGER_LOAD_SIZE.algolia : EAGER_LOAD_SIZE.npm
+    return Math.max(base, cap)
+  }
+  return base
+})
+
+// Reset to relevance sort when switching to a provider that doesn't support the current sort key
+watch(isAlgolia, algolia => {
+  const { key } = parseSortOption(sortOption.value)
+  const supported = PROVIDER_SORT_KEYS[algolia ? 'algolia' : 'npm']
+  if (!supported.has(key)) {
+    sortOption.value = 'relevance-desc'
+  }
+})
+
+// Use incremental search with client-side caching
+const {
+  data: results,
+  status,
+  isLoadingMore,
+  hasMore,
+  fetchMore,
+  isRateLimited,
+} = useSearch(query, () => ({
+  size: requestedSize.value,
+}))
+
+// Client-side sorted results for display
+// The search API already handles text filtering, so we only need to sort.
 const displayResults = computed(() => {
-  // When using relevance sort, return original server-sorted results
-  if (sortOption.value === 'relevance-desc' || sortOption.value === 'relevance-asc') {
+  if (isRelevanceSort.value) {
     return resultsArray.value
   }
 
-  return sortedPackages.value
+  // Sort the fetched results client-side — neither Algolia nor npm support
+  // arbitrary sort orders server-side, so we fetch a large batch and sort here
+  const { key, direction } = parseSortOption(sortOption.value)
+  const multiplier = direction === 'asc' ? 1 : -1
+
+  return [...resultsArray.value].sort((a, b) => {
+    let diff: number
+    switch (key) {
+      case 'downloads-week':
+      case 'downloads-day':
+      case 'downloads-month':
+      case 'downloads-year':
+        diff = (a.downloads?.weekly ?? 0) - (b.downloads?.weekly ?? 0)
+        break
+      case 'updated':
+        diff = new Date(a.package.date).getTime() - new Date(b.package.date).getTime()
+        break
+      case 'name':
+        diff = a.package.name.localeCompare(b.package.name)
+        break
+      default:
+        diff = 0
+    }
+    return diff * multiplier
+  })
 })
 
 const resultCount = computed(() => displayResults.value.length)
+
+/**
+ * The effective total for display and pagination purposes.
+ * When sorting by non-relevance, we're working with a fetched subset (e.g. 250),
+ * not the full Algolia total (e.g. 92,324). Show the actual working set size.
+ */
+const effectiveTotal = computed(() => {
+  if (isRelevanceSort.value) {
+    return visibleResults.value?.total ?? 0
+  }
+  // When sorting, the total is the number of results we actually fetched and sorted
+  return displayResults.value.length
+})
 
 // Handle filter chip removal
 function handleClearFilter(chip: FilterChip) {
@@ -315,9 +399,6 @@ interface ValidatedSuggestion {
 
 /** Cache for existence checks to avoid repeated API calls */
 const existenceCache = ref<Record<string, boolean | 'pending'>>({})
-
-const { search: algoliaSearch } = useAlgoliaSearch()
-const { isAlgolia } = useSearchProvider()
 
 /**
  * Check if an org exists by searching for scoped packages (@orgname/...).
@@ -773,10 +854,11 @@ defineOgImageComponent('Default', {
               :columns="columns"
               v-model:pagination-mode="paginationMode"
               v-model:page-size="preferredPageSize"
-              :total-count="visibleResults.total"
+              :total-count="effectiveTotal"
               :filtered-count="displayResults.length"
               :available-keywords="availableKeywords"
               :active-filters="activeFilters"
+              :disabled-sort-keys="disabledSortKeys"
               search-context
               @toggle-column="toggleColumn"
               @reset-columns="resetColumns"
@@ -789,24 +871,31 @@ defineOgImageComponent('Default', {
               @update:updated-within="setUpdatedWithin"
               @toggle-keyword="toggleKeyword"
             />
-            <!-- Show "Found X packages" (infinite scroll mode only) -->
+            <!-- Show count status (infinite scroll mode only) -->
             <p
               v-if="viewMode === 'cards' && paginationMode === 'infinite'"
               role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
-              {{
-                $t(
-                  'search.found_packages',
-                  { count: $n(visibleResults.total) },
-                  visibleResults.total,
-                )
-              }}
+              <template v-if="isRelevanceSort">
+                {{
+                  $t(
+                    'search.found_packages',
+                    { count: $n(visibleResults.total) },
+                    visibleResults.total,
+                  )
+                }}
+              </template>
+              <template v-else>
+                {{
+                  $t('search.found_packages_sorted', { count: $n(effectiveTotal) }, effectiveTotal)
+                }}
+              </template>
               <span v-if="status === 'pending'" class="text-fg-subtle">{{
                 $t('search.updating')
               }}</span>
             </p>
-            <!-- Show "x of y packages" (paginated/table mode only) -->
+            <!-- Show "x of y" (paginated/table mode only) -->
             <p
               v-if="viewMode === 'table' || paginationMode === 'paginated'"
               role="status"
@@ -816,18 +905,17 @@ defineOgImageComponent('Default', {
                 $t(
                   'filters.count.showing_paginated',
                   {
-                    pageSize:
-                      preferredPageSize === 'all' ? $n(visibleResults.total) : preferredPageSize,
-                    count: $n(visibleResults.total),
+                    pageSize: preferredPageSize === 'all' ? $n(effectiveTotal) : preferredPageSize,
+                    count: $n(effectiveTotal),
                   },
-                  visibleResults.total,
+                  effectiveTotal,
                 )
               }}
             </p>
           </div>
 
           <!-- No results found -->
-          <div v-else-if="status !== 'pending'" role="status" class="py-12">
+          <div v-else-if="status === 'success' || status === 'error'" role="status" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.no_results', { query }) }}
             </p>
@@ -890,7 +978,7 @@ defineOgImageComponent('Default', {
             v-model:mode="paginationMode"
             v-model:page-size="preferredPageSize"
             v-model:current-page="currentPage"
-            :total-items="visibleResults?.total ?? displayResults.length"
+            :total-items="effectiveTotal"
             :view-mode="viewMode"
           />
         </div>

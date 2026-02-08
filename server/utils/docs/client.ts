@@ -9,6 +9,7 @@
 
 import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
+import { isBuiltin } from 'node:module'
 
 // =============================================================================
 // Configuration
@@ -81,12 +82,9 @@ function createLoader(): (
     _cacheSetting?: string,
     _checksum?: string,
   ) => {
-    let url: URL
-    try {
-      url = new URL(specifier)
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e)
+    const url = URL.parse(specifier)
+
+    if (url === null) {
       return undefined
     }
 
@@ -139,7 +137,11 @@ function createResolver(): (specifier: string, referrer: string) => string {
     }
 
     // Handle bare specifiers - resolve through esm.sh
-    if (!specifier.startsWith('http://') && !specifier.startsWith('https://')) {
+    if (
+      !specifier.startsWith('http://') &&
+      !specifier.startsWith('https://') &&
+      !isBuiltin(specifier)
+    ) {
       // Try to resolve bare specifier relative to esm.sh base
       const baseUrl = new URL(referrer)
       if (baseUrl.hostname === 'esm.sh') {

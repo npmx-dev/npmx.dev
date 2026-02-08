@@ -12,6 +12,7 @@ const props = withDefaults(
       'type'?: never
       'variant'?: 'button-primary' | 'button-secondary' | 'link'
       'size'?: 'small' | 'medium'
+      'iconSize'?: 'sm' | 'md' | 'lg'
 
       'keyshortcut'?: string
 
@@ -51,11 +52,21 @@ const isLinkAnchor = computed(
   () => !!props.to && typeof props.to === 'string' && props.to.startsWith('#'),
 )
 
+const ICON_SIZE_MAP = {
+  sm: 'size-3 min-w-3',
+  md: 'size-4 min-w-4',
+  lg: 'size-5 min-w-5',
+}
+
 /** size is only applicable for button like links */
 const isLink = computed(() => props.variant === 'link')
 const isButton = computed(() => props.variant !== 'link')
 const isButtonSmall = computed(() => props.size === 'small' && props.variant !== 'link')
 const isButtonMedium = computed(() => props.size === 'medium' && props.variant !== 'link')
+
+const iconSizeClass = computed(
+  () => ICON_SIZE_MAP[props.iconSize || (isButtonSmall.value && 'sm') || 'md'],
+)
 </script>
 
 <template>
@@ -89,11 +100,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
     :aria-keyshortcuts="keyshortcut"
     :target="isLinkExternal ? '_blank' : undefined"
   >
-    <span
-      v-if="classicon"
-      :class="[isButtonSmall ? 'size-3' : 'size-4', classicon]"
-      aria-hidden="true"
-    />
+    <span v-if="classicon" class="me-1" :class="[iconSizeClass, classicon]" aria-hidden="true" />
     <slot />
     <!-- automatically show icon indicating external link -->
     <span

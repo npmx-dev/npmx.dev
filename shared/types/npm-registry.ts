@@ -379,3 +379,26 @@ export interface MinimalPackument {
   'time': Record<string, string>
   'maintainers'?: NpmPerson[]
 }
+
+/**
+ * Lightweight package metadata returned by /api/registry/package-meta/.
+ * Contains only the fields needed for search result cards, extracted
+ * server-side from the full packument + downloads API.
+ */
+export interface PackageMetaResponse {
+  name: string
+  version: string
+  description?: string
+  keywords?: string[]
+  license?: string
+  date: string
+  links: {
+    npm: string
+    homepage?: string
+    repository?: string
+    bugs?: string
+  }
+  author?: NpmPerson
+  maintainers?: NpmPerson[]
+  weeklyDownloads?: number
+}

@@ -257,7 +257,7 @@ useSeoMeta({
       <!-- Empty state -->
       <section
         v-else
-        class="text-center px-1.5 py-16 border border-dashed border-border rounded-lg"
+        class="text-center px-1.5 py-16 border border-dashed border-border-hover rounded-lg"
       >
         <div class="i-carbon:compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
         <h2 class="font-mono text-lg text-fg-muted mb-2">

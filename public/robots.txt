@@ -2,7 +2,59 @@
 User-agent: *
 Allow: /$
 Allow: /about$
-Allow: /search$
-Allow: /settings$
+Allow: /privacy$
 Allow: /__og-image__/*
+Disallow: /
+
+# User-agent: *
+# Allow: /
+
+# Search pages: infinite query-param combinations
+Disallow: /search
+
+# User utilities
+Disallow: /settings
+Disallow: /compare
+
+# Auth flows
+Disallow: /auth/
+
+# Code explorer & generated API docs
+Disallow: /package-code/
+Disallow: /code/
+Disallow: /package-docs/
+Disallow: /docs/
+
+# Internal API
+Disallow: /api/
+
+# OpenSearch endpoint
+Disallow: /opensearch.xml
+
+# Vercel internal proxy routes
+Disallow: /_v/
+
+# Block AI training crawlers from scraping package content
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: cohere-ai
 Disallow: /
