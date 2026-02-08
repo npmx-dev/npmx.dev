@@ -80,7 +80,7 @@ export default defineNuxtConfig({
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/__og-image__/**': { isr: getISRConfig(60) },
+    '/__og-image__/**': getISRConfig(60),
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
@@ -95,14 +95,14 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/package/:name': { isr: getISRConfig(60, { fallback: 'html' }) },
-    '/package/:name/_payload.json': { isr: getISRConfig(60, { fallback: 'json' }) },
-    '/package/:name/v/:version': { isr: getISRConfig(60, { fallback: 'html' }) },
-    '/package/:name/v/:version/_payload.json': { isr: getISRConfig(60, { fallback: 'json' }) },
-    '/package/:org/:name': { isr: getISRConfig(60, { fallback: 'html' }) },
-    '/package/:org/:name/_payload.json': { isr: getISRConfig(60, { fallback: 'json' }) },
-    '/package/:org/:name/v/:version': { isr: getISRConfig(60, { fallback: 'html' }) },
-    '/package/:org/:name/v/:version/_payload.json': { isr: getISRConfig(60, { fallback: 'json' }) },
+    '/package/:name': getISRConfig(60, { fallback: 'html' }),
+    '/package/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
+    '/package/:name/v/:version': getISRConfig(60, { fallback: 'html' }),
+    '/package/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
+    '/package/:org/:name': getISRConfig(60, { fallback: 'html' }),
+    '/package/:org/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
+    '/package/:org/:name/v/:version': getISRConfig(60, { fallback: 'html' }),
+    '/package/:org/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
     // infinite cache (versioned - doesn't change)
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/package-docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -291,12 +291,23 @@ interface ISRConfigOptions {
 function getISRConfig(expirationSeconds: number, options: ISRConfigOptions = {}) {
   if (options.fallback) {
     return {
-      expiration: expirationSeconds,
-      fallback:
-        options.fallback === 'html' ? 'spa.prerender-fallback.html' : 'payload-fallback.json',
-    } as { expiration: number }
+      ...(options.fallback === 'json'
+        ? {
+            headers: {
+              'content-type': 'application/json',
+            },
+          }
+        : {}),
+      isr: {
+        expiration: expirationSeconds,
+        fallback:
+          options.fallback === 'html' ? 'spa.prerender-fallback.html' : 'payload-fallback.json',
+      } as { expiration: number },
+    }
   }
   return {
-    expiration: expirationSeconds,
+    isr: {
+      expiration: expirationSeconds,
+    },
   }
 }
