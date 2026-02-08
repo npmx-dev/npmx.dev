@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { NewOperation } from '~/composables/useConnector'
 import type Modal from '~/components/Modal.client.vue'
+import { PackageDeprecateParamsSchema, safeParse } from '~~/cli/src/schemas'
+
+const DEPRECATE_MESSAGE_MAX_LENGTH = 500
 
 const props = withDefaults(
   defineProps<{
@@ -30,31 +33,41 @@ const modalTitle = computed(() =>
 
 async function handleDeprecate() {
   const message = deprecateMessage.value.trim()
-  if (!message || !isConnected.value) return
+  if (!isConnected.value) return
+
+  const params: Record<string, string> = {
+    pkg: props.packageName,
+    message,
+  }
+  if (deprecateVersion.value.trim()) {
+    params.version = deprecateVersion.value.trim()
+  }
+
+  const parsed = safeParse(PackageDeprecateParamsSchema, params)
+  if (!parsed.success) {
+    deprecateError.value = parsed.error
+    return
+  }
 
   isDeprecating.value = true
   deprecateError.value = null
 
   try {
-    const params: Record<string, string> = {
-      pkg: props.packageName,
-      message,
-    }
-    if (deprecateVersion.value.trim()) {
-      params.version = deprecateVersion.value.trim()
-    }
-
-    const escapedMessage = message.replace(/"/g, '\\"')
-    const command = params.version
-      ? `npm deprecate ${props.packageName}@${params.version} "${escapedMessage}"`
-      : `npm deprecate ${props.packageName} "${escapedMessage}"`
+    const escapedMessage = parsed.data.message.replace(/"/g, '\\"')
+    const command = parsed.data.version
+      ? `npm deprecate ${parsed.data.pkg}@${parsed.data.version} "${escapedMessage}"`
+      : `npm deprecate ${parsed.data.pkg} "${escapedMessage}"`
 
     const operation = await addOperation({
       type: 'package:deprecate',
-      params,
-      description: params.version
-        ? `Deprecate ${props.packageName}@${params.version}`
-        : `Deprecate ${props.packageName}`,
+      params: {
+        pkg: parsed.data.pkg,
+        message: parsed.data.message,
+        ...(parsed.data.version && { version: parsed.data.version }),
+      },
+      description: parsed.data.version
+        ? `Deprecate ${parsed.data.pkg}@${parsed.data.version}`
+        : `Deprecate ${parsed.data.pkg}`,
       command,
     } as NewOperation)
 
@@ -138,9 +151,22 @@ defineExpose({ open, close })
           id="deprecate-message"
           v-model="deprecateMessage"
           rows="3"
+          :maxlength="DEPRECATE_MESSAGE_MAX_LENGTH"
           class="w-full px-3 py-2 font-mono text-sm bg-bg border border-border rounded-md text-fg placeholder:text-fg-muted focus:outline-none focus:ring-2 focus:ring-fg/50"
           :placeholder="$t('package.deprecation.modal.reason_placeholder')"
+          :aria-describedby="
+            deprecateMessage.length >= DEPRECATE_MESSAGE_MAX_LENGTH
+              ? 'deprecate-message-hint'
+              : undefined
+          "
         />
+        <p
+          v-if="deprecateMessage.length >= DEPRECATE_MESSAGE_MAX_LENGTH * 0.9"
+          id="deprecate-message-hint"
+          class="mt-1 text-xs text-fg-muted"
+        >
+          {{ deprecateMessage.length }} / {{ DEPRECATE_MESSAGE_MAX_LENGTH }}
+        </p>
       </div>
       <div>
         <label for="deprecate-version" class="block text-sm font-medium text-fg mb-1">

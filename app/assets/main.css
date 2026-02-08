@@ -5,17 +5,18 @@
   box-sizing: border-box;
 }
 
+:root:not([data-theme='light']),
 :root[data-theme='dark'] {
   /* background colors */
-  --bg: var(--bg-color, oklch(0.145 0 0));
-  --bg-subtle: var(--bg-subtle-color, oklch(0.178 0 0));
-  --bg-muted: var(--bg-muted-color, oklch(0.218 0 0));
-  --bg-elevated: var(--bg-elevated-color, oklch(0.252 0 0));
+  --bg: var(--bg-color, oklch(0.171 0 0));
+  --bg-subtle: var(--bg-subtle-color, oklch(0.198 0 0));
+  --bg-muted: var(--bg-muted-color, oklch(0.236 0 0));
+  --bg-elevated: var(--bg-elevated-color, oklch(0.266 0 0));
 
   /* text colors */
-  --fg: oklch(0.985 0 0);
-  --fg-muted: oklch(0.709 0 0);
-  --fg-subtle: oklch(0.633 0 0);
+  --fg: oklch(0.982 0 0);
+  --fg-muted: oklch(0.749 0 0);
+  --fg-subtle: oklch(0.673 0 0);
 
   /* border, separator colors */
   --border: oklch(0.269 0 0);
@@ -25,6 +26,14 @@
   /* accent color, set by user from settings */
   --accent: var(--accent-color, oklch(1 0 0));
   --accent-muted: var(--accent-color, oklch(0.922 0 0));
+
+  /* accent colors */
+  --swatch-coral: oklch(0.704 0.177 14.75);
+  --swatch-amber: oklch(0.828 0.165 84.429);
+  --swatch-emerald: oklch(0.792 0.153 166.95);
+  --swatch-sky: oklch(0.787 0.128 230.318);
+  --swatch-violet: oklch(0.78 0.148 286.067);
+  --swatch-magenta: oklch(0.78 0.15 330);
 
   /* syntax highlighting colors */
   --syntax-fn: oklch(0.727 0.137 299.149);
@@ -44,24 +53,24 @@
 }
 
 :root[data-theme='dark'][data-bg-theme='slate'] {
-  --bg: oklch(0.129 0.012 264.695);
-  --bg-subtle: oklch(0.159 0.022 262.421);
-  --bg-muted: oklch(0.204 0.033 261.234);
-  --bg-elevated: oklch(0.259 0.041 260.031);
+  --bg: oklch(0.151 0.018 264.695);
+  --bg-subtle: oklch(0.179 0.015 262.421);
+  --bg-muted: oklch(0.214 0.018 261.234);
+  --bg-elevated: oklch(0.259 0.021 260.031);
 }
 
 :root[data-theme='dark'][data-bg-theme='zinc'] {
-  --bg: oklch(0.141 0.005 285.823);
-  --bg-subtle: oklch(0.168 0.005 285.894);
-  --bg-muted: oklch(0.209 0.005 285.929);
+  --bg: oklch(0.158 0.005 285.823);
+  --bg-subtle: oklch(0.188 0.005 285.894);
+  --bg-muted: oklch(0.219 0.005 285.929);
   --bg-elevated: oklch(0.256 0.006 286.033);
 }
 
 :root[data-theme='dark'][data-bg-theme='stone'] {
-  --bg: oklch(0.147 0.004 49.25);
-  --bg-subtle: oklch(0.178 0.004 49.321);
-  --bg-muted: oklch(0.218 0.004 49.386);
-  --bg-elevated: oklch(0.252 0.007 34.298);
+  --bg: oklch(0.164 0.004 89.25);
+  --bg-subtle: oklch(0.198 0.008 89.321);
+  --bg-muted: oklch(0.228 0.015 89.386);
+  --bg-elevated: oklch(0.252 0.018 84.298);
 }
 
 :root[data-theme='dark'][data-bg-theme='black'] {
@@ -74,12 +83,12 @@
 :root[data-theme='light'] {
   --bg: var(--bg-color, oklch(1 0 0));
   --bg-subtle: var(--bg-subtle-color, oklch(0.979 0.001 286.375));
-  --bg-muted: var(--bg-muted-color, oklch(0.955 0 0));
-  --bg-elevated: var(--bg-elevated-color, oklch(0.94 0 0));
+  --bg-muted: var(--bg-muted-color, oklch(0.955 0.001 286.76));
+  --bg-elevated: var(--bg-elevated-color, oklch(0.94 0.002 287.29));
 
-  --fg: oklch(0.145 0 0);
-  --fg-muted: oklch(0.439 0 0);
-  --fg-subtle: oklch(0.52 0 0);
+  --fg: oklch(0.146 0 0);
+  --fg-muted: oklch(0.398 0 0);
+  --fg-subtle: oklch(0.48 0 0);
 
   --border: oklch(0.8514 0 0);
   --border-subtle: oklch(0.922 0 0);
@@ -87,6 +96,14 @@
 
   --accent: var(--accent-color, oklch(0.145 0 0));
   --accent-muted: var(--accent-color, oklch(0.205 0 0));
+
+  /* accent colors */
+  --swatch-coral: oklch(0.7 0.19 14.75);
+  --swatch-amber: oklch(0.8 0.25 84.429);
+  --swatch-emerald: oklch(0.7 0.17 166.95);
+  --swatch-sky: oklch(0.7 0.15 230.318);
+  --swatch-violet: oklch(0.7 0.17 286.067);
+  --swatch-magenta: oklch(0.75 0.18 330);
 
   --syntax-fn: oklch(0.502 0.188 294.988);
   --syntax-str: oklch(0.425 0.152 252);
@@ -105,9 +122,9 @@
 
 :root[data-theme='light'][data-bg-theme='slate'] {
   --bg: oklch(1 0 0);
-  --bg-subtle: oklch(0.982 0.006 264.62);
-  --bg-muted: oklch(0.96 0.041 261.234);
-  --bg-elevated: oklch(0.943 0.013 255.52);
+  --bg-subtle: oklch(0.982 0.008 269.62);
+  --bg-muted: oklch(0.96 0.008 261.234);
+  --bg-elevated: oklch(0.943 0.012 255.52);
 }
 
 :root[data-theme='light'][data-bg-theme='zinc'] {
@@ -119,9 +136,13 @@
 
 :root[data-theme='light'][data-bg-theme='stone'] {
   --bg: oklch(1 0 0);
-  --bg-subtle: oklch(0.979 0.005 48.762);
-  --bg-muted: oklch(0.958 0.005 48.743);
-  --bg-elevated: oklch(0.943 0.005 48.731);
+  --bg-subtle: oklch(0.979 0.004 88.762);
+  --bg-muted: oklch(0.958 0.005 88.743);
+  --bg-elevated: oklch(0.943 0.005 88.731);
+}
+
+:root[data-theme='light'][data-bg-theme='black'] {
+  --bg-subtle: var(--bg-subtle-color, oklch(0.979 0 0));
 }
 
 @media (prefers-contrast: more) {
@@ -154,7 +175,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  scroll-padding-top: 5rem; /* Offset for fixed header - otherwise anchor headers are cutted */
+  /* Offset for fixed header - otherwise anchor headers are cutted */
+  scroll-padding-top: 5rem;
+  scrollbar-gutter: stable;
 }
 
 /*
@@ -179,26 +202,13 @@ body {
   line-height: 1.6;
 }
 
-/* Default link styling for accessibility on dark background */
-a {
-  color: var(--fg);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--fg-subtle);
-  transition:
-    color 0.2s ease,
-    text-decoration-color 0.2s ease;
-}
-
-a:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
-}
-
-a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 4px;
+:focus-visible,
+:-moz-focusring {
+  /* weird Firefox behavior makes it necessary to add `!important` 
+  or otherwise the selector would need to be more specific,
+  which it explicitly should not be. */
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
 }
 
 /* Reset dd margin (browser default is margin-left: 40px) */
@@ -208,18 +218,7 @@ dd {
 
 /* Reset button styles */
 button {
-  background: transparent;
-  border: none;
   cursor: pointer;
-  font: inherit;
-  padding: 0;
-}
-
-button:focus-visible,
-select:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 4px;
 }
 
 /* Selection */
@@ -229,6 +228,10 @@ select:focus-visible {
 }
 
 /* Scrollbar styling */
+* {
+  scrollbar-color: var(--border) var(--bg);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -244,14 +247,13 @@ select:focus-visible {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #404040;
+  background: var(--border-hover);
 }
 
 /* Scrollbar styling for Firefox */
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--border) var(--bg);
   }
 }
 

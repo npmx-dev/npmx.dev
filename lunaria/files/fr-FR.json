@@ -5,7 +5,6 @@
       "description": "Un meilleur explorateur du registre npm. Recherchez, parcourez et explorez les paquets avec une interface moderne."
     }
   },
-  "version": "Version",
   "built_at": "compilé {0}",
   "alt_logo": "Logo npmx",
   "tagline": "un meilleur explorateur du registre npm",
@@ -22,7 +21,6 @@
     "label": "Rechercher des paquets npm",
     "placeholder": "rechercher des paquets...",
     "button": "rechercher",
-    "clear": "Effacer la recherche",
     "searching": "Recherche en cours...",
     "found_packages": "{count} paquets trouvés",
     "updating": "(mise à jour...)",
@@ -44,7 +42,6 @@
   "nav": {
     "main_navigation": "Barre de navigation",
     "popular_packages": "Paquets populaires",
-    "search": "recherche",
     "settings": "paramètres",
     "compare": "comparer",
     "back": "Retour",
@@ -64,7 +61,6 @@
       "language": "Langue"
     },
     "relative_dates": "Dates relatives",
-    "relative_dates_description": "Afficher « il y a 3 jours » au lieu des dates complètes",
     "include_types": "Inclure {'@'}types à la commande d'installation",
     "include_types_description": "Inclure les paquets {'@'}types à la commande d'installation pour les paquets non typés",
     "hide_platform_packages": "Masquer les paquets spécifiques à la plateforme dans la recherche",
@@ -99,8 +95,6 @@
     "copy": "copier",
     "copied": "copié !",
     "skip_link": "Passer au contenu principal",
-    "close_modal": "Fermer la fenêtre",
-    "show_more": "afficher plus",
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
     "view_on_npm": "voir sur npm",
@@ -117,7 +111,6 @@
     "not_found": "Paquet introuvable",
     "not_found_message": "Le paquet n'a pas pu être trouvé.",
     "no_description": "Aucune description fournie",
-    "show_full_description": "Afficher la description complète",
     "not_latest": "(pas la dernière)",
     "verified_provenance": "Provenance vérifiée",
     "view_permalink": "Voir le lien permanent pour cette version",
@@ -135,8 +128,10 @@
       "documented": "La {community} a signalé que ce paquet a des alternatives plus performantes.",
       "none": "Ce paquet a été signalé comme n'étant plus nécessaire, et sa fonctionnalité est probablement disponible nativement dans tous les moteurs.",
       "learn_more": "En savoir plus",
+      "learn_more_above": "En savoir plus ci-dessus.",
       "mdn": "MDN",
-      "community": "communauté"
+      "community": "communauté",
+      "consider_no_dep": "+ Envisager sans dépendance ?"
     },
     "stats": {
       "license": "Licence",
@@ -145,7 +140,6 @@
       "vulns": "Vulnérabilités",
       "published": "Publié",
       "published_tooltip": "Date de publication de {package}{'@'}{version}",
-      "skills": "Compétences de l'agent",
       "view_dependency_graph": "Voir le graphe de dépendances",
       "inspect_dependency_tree": "Inspecter l'arbre de dépendances",
       "size_tooltip": {
@@ -156,7 +150,6 @@
     "skills": {
       "title": "Compétences de l'agent",
       "skills_available": "{count} compétence disponible | {count} compétences disponibles",
-      "view": "Voir",
       "compatible_with": "Compatible avec {tool}",
       "install": "Installer",
       "installation_method": "Méthode d'installation",
@@ -204,7 +197,8 @@
       "title": "Readme",
       "no_readme": "Aucun README disponible.",
       "view_on_github": "Voir sur GitHub",
-      "toc_title": "Sommaire"
+      "toc_title": "Sommaire",
+      "copy_as_markdown": "Copier le README en markdown"
     },
     "keywords_title": "Mots-clés",
     "compatibility": "Compatibilité",
@@ -280,7 +274,8 @@
       "loading": "Chargement...",
       "y_axis_label": "Téléchargements {granularity}",
       "download_file": "Télécharger {fileType}",
-      "toggle_annotator": "Afficher/Masquer l'annotateur"
+      "toggle_annotator": "Afficher/Masquer l'annotateur",
+      "legend_estimation": "Estimation"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -306,25 +301,12 @@
       "none": "Aucune"
     },
     "vulnerabilities": {
-      "no_description": "Aucune description disponible",
-      "found": "{count} vulnérabilité trouvée | {count} vulnérabilités trouvées",
-      "deps_found": "{count} vulnérabilité trouvée | {count} vulnérabilités trouvées",
-      "deps_affected": "{count} dépendance affectée | {count} dépendances affectées",
       "tree_found": "{vulns} vulnérabilité dans {packages}/{total} paquets | {vulns} vulnérabilités dans {packages}/{total} paquets",
-      "scanning_tree": "Analyse de l'arbre des dépendances...",
       "show_all_packages": "afficher les {count} paquets affectés",
-      "no_summary": "Aucun résumé",
-      "view_details": "Voir les détails de la vulnérabilité",
       "path": "chemin",
       "more": "+{count} de plus",
       "packages_failed": "{count} paquet n'a pas pu être vérifié | {count} paquets n'ont pas pu être vérifiés",
-      "no_known": "Aucune vulnérabilité connue dans {count} paquets",
       "scan_failed": "Impossible d'analyser les vulnérabilités",
-      "depth": {
-        "root": "Ce paquet",
-        "direct": "Dépendance directe",
-        "transitive": "Dépendance transitive (indirecte)"
-      },
       "severity": {
         "critical": "critique",
         "high": "élevée",
@@ -366,13 +348,7 @@
     },
     "skeleton": {
       "loading": "Chargement des détails du paquet",
-      "license": "Licence",
       "weekly": "Hebdo",
-      "size": "Taille",
-      "deps": "Dépendances",
-      "published": "Publié",
-      "get_started": "Commencer",
-      "readme": "Readme",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
       "versions": "Versions",
@@ -386,16 +362,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "connexion...",
-      "connected_as": "connecté·e en tant que {'@'}{user}",
-      "connected": "connecté·e",
-      "connect_cli": "connecter le CLI local",
-      "aria_connecting": "Connexion au connecteur local",
-      "aria_connected": "Connecté au connecteur local",
-      "aria_click_to_connect": "Cliquer pour se connecter au connecteur local",
-      "avatar_alt": "Avatar de {user}"
-    },
     "modal": {
       "title": "Connecteur local",
       "contributor_badge": "Contributeurs uniquement",
@@ -511,8 +477,7 @@
       "failed_to_load": "Échec du chargement des paquets de l'organisation",
       "no_match": "Aucun paquet ne correspond à « {query} »",
       "not_found": "Organisation introuvable",
-      "not_found_message": "L'organisation « {'@'}{name} » n'existe pas sur npm",
-      "filter_placeholder": "Filtrer {count} paquets..."
+      "not_found_message": "L'organisation « {'@'}{name} » n'existe pas sur npm"
     }
   },
   "user": {
@@ -573,7 +538,6 @@
   "code": {
     "files_label": "Fichiers",
     "no_files": "Aucun fichier dans ce répertoire",
-    "select_version": "Sélectionner la version",
     "root": "racine",
     "lines": "{count} lignes",
     "toggle_tree": "Basculer l'arborescence",
@@ -583,7 +547,6 @@
     "view_raw": "Voir le fichier brut",
     "file_too_large": "Fichier trop volumineux pour l'aperçu",
     "file_size_warning": "{size} dépasse la limite de 500 Ko pour la coloration syntaxique",
-    "load_anyway": "Charger quand même",
     "failed_to_load": "Échec du chargement du fichier",
     "unavailable_hint": "Le fichier est peut-être trop volumineux ou indisponible",
     "version_required": "La version est requise pour parcourir le code",
@@ -608,8 +571,7 @@
       "verified_via": "Vérifié : publié via {provider}"
     },
     "jsr": {
-      "title": "aussi disponible sur JSR",
-      "label": "jsr"
+      "title": "aussi disponible sur JSR"
     }
   },
   "filters": {
@@ -729,7 +691,6 @@
     "title": "À propos",
     "heading": "à propos",
     "meta_description": "npmx est un navigateur rapide et moderne pour le registre npm. Une meilleure UX/DX pour explorer les paquets npm.",
-    "back_home": "retour à l'accueil",
     "what_we_are": {
       "title": "Ce que nous sommes",
       "better_ux_dx": "meilleure UX/DX",
@@ -789,8 +750,7 @@
     "connect_npm_cli": "Connexion à npm CLI",
     "connect_atmosphere": "Connexion à Atmosphère",
     "connecting": "Connexion en cours...",
-    "ops": "{count} op | {count} ops",
-    "disconnect": "Déconnexion"
+    "ops": "{count} op | {count} ops"
   },
   "auth": {
     "modal": {
@@ -809,7 +769,6 @@
   },
   "header": {
     "home": "accueil npmx",
-    "github": "GitHub",
     "packages": "paquets",
     "packages_dropdown": {
       "title": "Vos paquets",
@@ -850,9 +809,16 @@
       "searching": "Recherche...",
       "remove_package": "Supprimer {package}",
       "packages_selected": "{count}/{max} paquets sélectionnés.",
-      "add_hint": "Ajoutez au moins 2 paquets à comparer.",
-      "loading_versions": "Chargement des versions...",
-      "select_version": "Sélectionner une version"
+      "add_hint": "Ajoutez au moins 2 paquets à comparer."
+    },
+    "no_dependency": {
+      "label": "(Sans dépendance)",
+      "typeahead_title": "Et sans dépendance ?",
+      "typeahead_description": "Comparer avec l'absence de dépendance ! Approuvé par e18e.",
+      "tooltip_title": "Vous n'avez peut-être pas besoin d'une dépendance",
+      "tooltip_description": "Comparer avec l'absence de dépendance ! La {link} maintient une liste de paquets pouvant être remplacés par des API natives ou des alternatives plus simples.",
+      "e18e_community": "communauté e18e",
+      "add_column": "Ajouter la colonne sans dépendance à la comparaison"
     },
     "facets": {
       "group_label": "Facettes de comparaison",
@@ -891,6 +857,10 @@
           "label": "Téléch./semaine",
           "description": "Nombre de téléchargements par semaine"
         },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Nombre de likes"
+        },
         "lastUpdated": {
           "label": "Publié",
           "description": "Quand cette version a été publiée"
@@ -928,7 +898,8 @@
         "not_deprecated": "Non",
         "types_included": "Inclus",
         "types_none": "Aucun",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "À vous de décider !"
       }
     }
   }

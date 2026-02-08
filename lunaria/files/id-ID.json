@@ -5,7 +5,6 @@
       "description": "Cara yang lebih baik untuk menjelajahi registri npm. Cari, telusuri, dan pelajari paket dengan antarmuka modern."
     }
   },
-  "version": "Versi",
   "built_at": "dibuat {0}",
   "alt_logo": "logo npmx",
   "tagline": "cara lebih baik menjelajahi registri npm",
@@ -22,7 +21,6 @@
     "label": "Cari paket npm",
     "placeholder": "cari paket...",
     "button": "cari",
-    "clear": "Hapus pencarian",
     "searching": "Mencari...",
     "found_packages": "Paket tidak ditemukan | Ditemukan 1 paket | Ditemukan {count} paket",
     "updating": "(memperbarui...)",
@@ -43,7 +41,6 @@
   "nav": {
     "main_navigation": "Utama",
     "popular_packages": "Paket populer",
-    "search": "cari",
     "settings": "pengaturan",
     "compare": "bandingkan",
     "back": "kembali",
@@ -63,7 +60,6 @@
       "language": "Bahasa"
     },
     "relative_dates": "Format tanggal relatif",
-    "relative_dates_description": "Tampilkan \"3 hari yang lalu\" alih-alih tanggal lengkap",
     "include_types": "Sertakan {'@'}types saat instal",
     "include_types_description": "Tambahkan paket {'@'}types ke perintah instalasi untuk paket tanpa tipe",
     "hide_platform_packages": "Sembunyikan paket spesifik-platform",
@@ -97,8 +93,6 @@
     "copy": "salin",
     "copied": "tersalin!",
     "skip_link": "Lanjut ke konten utama",
-    "close_modal": "Tutup modal",
-    "show_more": "lihat lebih banyak",
     "warnings": "Peringatan:",
     "go_back_home": "Kembali ke Beranda",
     "view_on_npm": "lihat di npm",
@@ -115,7 +109,6 @@
     "not_found": "Paket Tidak Ditemukan",
     "not_found_message": "Paket tidak dapat ditemukan.",
     "no_description": "Tidak ada deskripsi",
-    "show_full_description": "Tampilkan deskripsi lengkap",
     "not_latest": "(bukan versi terbaru)",
     "verified_provenance": "Provenans terverifikasi",
     "view_permalink": "Lihat permalink untuk versi ini",
@@ -282,25 +275,12 @@
       "view_spdx": "Lihat teks lisensi di SPDX"
     },
     "vulnerabilities": {
-      "no_description": "Deskripsi tidak tersedia",
-      "found": "{count} kerentanan ditemukan | {count} kerentanan ditemukan",
-      "deps_found": "{count} kerentanan ditemukan | {count} kerentanan ditemukan",
-      "deps_affected": "{count} dependensi terdampak | {count} dependensi terdampak",
       "tree_found": "{vulns} kerentanan di {packages}/{total} paket | {vulns} kerentanan di {packages}/{total} paket",
-      "scanning_tree": "Memindai pohon dependensi...",
       "show_all_packages": "tampilkan semua {count} paket terdampak",
-      "no_summary": "Tanpa ringkasan",
-      "view_details": "Lihat detail kerentanan",
       "path": "path",
       "more": "+{count} lagi",
       "packages_failed": "{count} paket tidak dapat diperiksa | {count} paket tidak dapat diperiksa",
-      "no_known": "Tidak ada kerentanan yang diketahui di {count} paket",
       "scan_failed": "Gagal memindai kerentanan",
-      "depth": {
-        "root": "Paket ini",
-        "direct": "Dependensi langsung",
-        "transitive": "Dependensi transitif (tidak langsung)"
-      },
       "severity": {
         "critical": "kritis",
         "high": "tinggi",
@@ -342,12 +322,7 @@
     },
     "skeleton": {
       "loading": "Memuat detail paket",
-      "license": "Lisensi",
       "weekly": "Mingguan",
-      "size": "Ukuran",
-      "deps": "Dep",
-      "get_started": "Memulai",
-      "readme": "Readme",
       "maintainers": "Pemelihara",
       "keywords": "Kata kunci",
       "versions": "Versi",
@@ -360,16 +335,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "menghubungkan...",
-      "connected_as": "terhubung sebagai ~{user}",
-      "connected": "terhubung",
-      "connect_cli": "hubungkan CLI lokal",
-      "aria_connecting": "Menghubungkan ke konektor lokal",
-      "aria_connected": "Terhubung ke konektor lokal",
-      "aria_click_to_connect": "Klik untuk terhubung ke konektor lokal",
-      "avatar_alt": "avatar {user}"
-    },
     "modal": {
       "title": "Konektor Lokal",
       "contributor_badge": "Hanya untuk kontributor",
@@ -485,8 +450,7 @@
       "failed_to_load": "Gagal memuat paket organisasi",
       "no_match": "Tidak ada paket yang cocok dengan \"{query}\"",
       "not_found": "Organisasi tidak ditemukan",
-      "not_found_message": "Organisasi \"{'@'}{name}\" tidak ada di npm",
-      "filter_placeholder": "Filter {count} paket..."
+      "not_found_message": "Organisasi \"{'@'}{name}\" tidak ada di npm"
     }
   },
   "user": {
@@ -547,7 +511,6 @@
   "code": {
     "files_label": "Berkas",
     "no_files": "Tidak ada berkas di direktori ini",
-    "select_version": "Pilih versi",
     "root": "root",
     "lines": "{count} baris",
     "toggle_tree": "Ganti pohon berkas",
@@ -557,7 +520,6 @@
     "view_raw": "Lihat berkas mentah",
     "file_too_large": "Berkas terlalu besar untuk pratinjau",
     "file_size_warning": "{size} melebihi batas 500KB untuk penyorotan sintaksis",
-    "load_anyway": "Tetap muat",
     "failed_to_load": "Gagal memuat berkas",
     "unavailable_hint": "Berkas mungkin terlalu besar atau tidak tersedia",
     "version_required": "Versi diperlukan untuk menjelajahi kode",
@@ -582,8 +544,7 @@
       "verified_via": "Terverifikasi: diterbitkan via {provider}"
     },
     "jsr": {
-      "title": "juga tersedia di JSR",
-      "label": "jsr"
+      "title": "juga tersedia di JSR"
     }
   },
   "filters": {
@@ -694,7 +655,6 @@
     "title": "Tentang",
     "heading": "tentang",
     "meta_description": "npmx adalah penjelajah cepat dan modern untuk registri npm. UX/DX yang lebih baik untuk mencari paket npm.",
-    "back_home": "kembali ke beranda",
     "what_we_are": {
       "title": "Apa itu npmx",
       "better_ux_dx": "UX/DX yang lebih baik",
@@ -754,8 +714,7 @@
     "connect_npm_cli": "Hubungkan ke npm CLI",
     "connect_atmosphere": "Hubungkan ke Atmosphere",
     "connecting": "Menghubungkan...",
-    "ops": "{count} op | {count} op",
-    "disconnect": "Putuskan"
+    "ops": "{count} op | {count} op"
   },
   "auth": {
     "modal": {
@@ -774,7 +733,6 @@
   },
   "header": {
     "home": "beranda npmx",
-    "github": "GitHub",
     "packages": "paket",
     "packages_dropdown": {
       "title": "Paket Anda",
@@ -815,9 +773,7 @@
       "searching": "Mencari...",
       "remove_package": "Hapus {package}",
       "packages_selected": "{count}/{max} paket dipilih.",
-      "add_hint": "Tambah setidaknya 2 paket untuk dibandingkan.",
-      "loading_versions": "Memuat versi...",
-      "select_version": "Pilih versi"
+      "add_hint": "Tambah setidaknya 2 paket untuk dibandingkan."
     },
     "facets": {
       "group_label": "Aspek perbandingan",

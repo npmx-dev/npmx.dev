@@ -33,10 +33,14 @@ jobs:
 
       - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         name: 🟧 Install pnpm
-        # pnpm cache skipped deliberately as the project is not actually installed here
+        with:
+          cache: true
+
+      - name: 📦 Install dependencies (root only, no scripts)
+        run: pnpm install --filter . --ignore-scripts
 
       - name: 🔠 Lint project
-        run: node scripts/lint.ts
+        run: pnpm lint
 
   types:
     name: 💪 Type check
@@ -113,11 +117,12 @@ jobs:
       - name: 🧪 Component tests
         run: pnpm test:nuxt run --coverage --reporter=junit --outputFile=test-report.junit.xml
 
-      - name: ⬆︎ Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@0fa95f0e1eeaafde2c782583b36b28ad0d8c77d3 # v1
+      - name: ⬆︎ Upload coverage reports to Codecov
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          report_type: test_results
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: ⬆︎ Upload coverage reports to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
@@ -146,7 +151,9 @@ jobs:
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: pnpm build:playwright
+        run: pnpm build:test
+        env:
+          VALIDATE_HTML: true
 
       - name: 🖥️ Test project (browser)
         run: pnpm test:browser:prebuilt
@@ -174,10 +181,10 @@ jobs:
         run: pnpm install
 
       - name: 🏗️ Build project
-        run: NODE_ENV=test pnpm build
+        run: pnpm build:test
 
       - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
-        run: ./scripts/lighthouse-a11y.sh
+        run: pnpm test:a11y:prebuilt
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LIGHTHOUSE_COLOR_MODE: ${{ matrix.mode }}
@@ -206,3 +213,25 @@ jobs:
 
       - name: 🧹 Check for unused production code
         run: pnpm knip --production
+
+  i18n:
+    name: 🌐 i18n validation
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: true
+
+      - name: 📦 Install dependencies (root only, no scripts)
+        run: pnpm install --filter . --ignore-scripts
+
+      - name: 🌐 Check for missing or dynamic i18n keys
+        run: pnpm i18n:report

@@ -91,24 +91,12 @@ export function useAccentColor() {
 
   function setAccentColor(id: AccentColorId | null) {
     if (id) {
-      const isDark = colorMode.value === 'dark'
-      const color = isDark ? ACCENT_COLORS.dark[id] : ACCENT_COLORS.light[id]
-      document.documentElement.style.setProperty('--accent-color', color)
+      document.documentElement.style.setProperty('--accent-color', `var(--swatch-${id})`)
     } else {
       document.documentElement.style.removeProperty('--accent-color')
     }
     settings.value.accentColorId = id
   }
-
-  // Update accent color when color mode changes
-  watch(
-    () => colorMode.value,
-    () => {
-      if (settings.value.accentColorId) {
-        setAccentColor(settings.value.accentColorId)
-      }
-    },
-  )
 
   return {
     accentColors,

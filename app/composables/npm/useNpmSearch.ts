@@ -5,7 +5,6 @@ import type {
   NpmDownloadCount,
   MinimalPackument,
 } from '#shared/types'
-import { NPM_REGISTRY, NPM_API } from '~/utils/npm/common'
 
 /**
  * Convert packument to search result format for display
@@ -55,7 +54,8 @@ export function useNpmSearch(
   query: MaybeRefOrGetter<string>,
   options: MaybeRefOrGetter<NpmSearchOptions> = {},
 ) {
-  const cachedFetch = useCachedFetch()
+  const { $npmRegistry } = useNuxtApp()
+
   // Client-side cache
   const cache = shallowRef<{
     query: string
@@ -70,7 +70,7 @@ export function useNpmSearch(
 
   const asyncData = useLazyAsyncData(
     () => `search:incremental:${toValue(query)}`,
-    async (_nuxtApp, { signal }) => {
+    async ({ $npmRegistry, $npmApi }, { signal }) => {
       const q = toValue(query)
 
       if (!q.trim()) {
@@ -91,8 +91,8 @@ export function useNpmSearch(
       if (q.length === 1) {
         const encodedName = encodePackageName(q)
         const [{ data: pkg, isStale }, { data: downloads }] = await Promise.all([
-          cachedFetch<Packument>(`${NPM_REGISTRY}/${encodedName}`, { signal }),
-          cachedFetch<NpmDownloadCount>(`${NPM_API}/downloads/point/last-week/${encodedName}`, {
+          $npmRegistry<Packument>(`/${encodedName}`, { signal }),
+          $npmApi<NpmDownloadCount>(`/downloads/point/last-week/${encodedName}`, {
             signal,
           }),
         ])
@@ -122,8 +122,8 @@ export function useNpmSearch(
         }
       }
 
-      const { data: response, isStale } = await cachedFetch<NpmSearchResponse>(
-        `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
+      const { data: response, isStale } = await $npmRegistry<NpmSearchResponse>(
+        `/-/v1/search?${params.toString()}`,
         { signal },
         60,
       )
@@ -179,8 +179,8 @@ export function useNpmSearch(
       params.set('size', String(size))
       params.set('from', String(from))
 
-      const { data: response } = await cachedFetch<NpmSearchResponse>(
-        `${NPM_REGISTRY}/-/v1/search?${params.toString()}`,
+      const { data: response } = await $npmRegistry<NpmSearchResponse>(
+        `/-/v1/search?${params.toString()}`,
         {},
         60,
       )

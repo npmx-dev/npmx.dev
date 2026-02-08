@@ -16,6 +16,7 @@ export type ComparisonFacet =
   | 'dependencies'
   | 'totalDependencies'
   | 'deprecated'
+  | 'totalLikes'
 
 /** Facet metadata for UI display */
 export interface FacetInfo {
@@ -44,6 +45,9 @@ export const FACET_INFO: Record<ComparisonFacet, Omit<FacetInfo, 'id'>> = {
   },
   // Health
   downloads: {
+    category: 'health',
+  },
+  totalLikes: {
     category: 'health',
   },
   lastUpdated: {

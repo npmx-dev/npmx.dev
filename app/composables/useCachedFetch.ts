@@ -1,4 +1,5 @@
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
+import { defu } from 'defu'
 
 /**
  * Get the cachedFetch function from the current request context.
@@ -34,9 +35,12 @@ export function useCachedFetch(): CachedFetchFunction {
     return async <T = unknown>(
       url: string,
       options: Parameters<typeof $fetch>[1] = {},
-      _ttl?: number,
+      _ttl: number = FETCH_CACHE_DEFAULT_TTL,
     ): Promise<CachedFetchResult<T>> => {
-      const data = (await $fetch<T>(url, options)) as T
+      const defaultFetchOptions: Parameters<typeof $fetch>[1] = {
+        cache: 'force-cache',
+      }
+      const data = (await $fetch<T>(url, defu(options, defaultFetchOptions))) as T
       return { data, isStale: false, cachedAt: null }
     }
   }
@@ -55,9 +59,12 @@ export function useCachedFetch(): CachedFetchFunction {
   return async <T = unknown>(
     url: string,
     options: Parameters<typeof $fetch>[1] = {},
-    _ttl?: number,
+    _ttl: number = FETCH_CACHE_DEFAULT_TTL,
   ): Promise<CachedFetchResult<T>> => {
-    const data = (await $fetch<T>(url, options)) as T
+    const defaultFetchOptions: Parameters<typeof $fetch>[1] = {
+      cache: 'force-cache',
+    }
+    const data = (await $fetch<T>(url, defu(options, defaultFetchOptions))) as T
     return { data, isStale: false, cachedAt: null }
   }
 }

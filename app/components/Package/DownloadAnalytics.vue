@@ -25,15 +25,20 @@ const props = defineProps<{
   createdIso?: string | null
 }>()
 
-const shouldFetch = computed(() => true)
-
 const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
 const colorMode = useColorMode()
 const resolvedMode = shallowRef<'light' | 'dark'>('light')
 const rootEl = shallowRef<HTMLElement | null>(null)
+const isZoomed = shallowRef(false)
+
+function setIsZoom({ isZoom }: { isZoom: boolean }) {
+  isZoomed.value = isZoom
+}
 
 const { width } = useElementSize(rootEl)
+
+const compactNumberFormatter = useCompactNumberFormatter()
 
 onMounted(async () => {
   rootEl.value = document.documentElement
@@ -140,6 +145,29 @@ function isYearlyDataset(data: unknown): data is YearlyDownloadPoint[] {
   )
 }
 
+/**
+ * Formats a single evolution dataset into the structure expected by `VueUiXy`
+ * for single-series charts.
+ *
+ * The dataset is interpreted based on the selected time granularity:
+ * - **daily**   → uses `timestamp`
+ * - **weekly**  → uses `timestampEnd`
+ * - **monthly** → uses `timestamp`
+ * - **yearly**  → uses `timestamp`
+ *
+ * Only datasets matching the expected shape for the given granularity are
+ * accepted. If the dataset does not match, an empty result is returned.
+ *
+ * The returned structure includes:
+ * - a single line-series dataset with a consistent color
+ * - a list of timestamps used as the x-axis values
+ *
+ * @param selectedGranularity - Active chart time granularity
+ * @param dataset - Raw evolution dataset to format
+ * @param seriesName - Display name for the resulting series
+ * @returns An object containing a formatted dataset and its associated dates,
+ *          or `{ dataset: null, dates: [] }` when the input is incompatible
+ */
 function formatXyDataset(
   selectedGranularity: ChartTimeGranularity,
   dataset: EvolutionData,
@@ -153,6 +181,7 @@ function formatXyDataset(
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
+          useArea: true,
         },
       ],
       dates: dataset.map(d => d.timestampEnd),
@@ -166,6 +195,7 @@ function formatXyDataset(
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
+          useArea: true,
         },
       ],
       dates: dataset.map(d => d.timestamp),
@@ -179,6 +209,7 @@ function formatXyDataset(
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
+          useArea: true,
         },
       ],
       dates: dataset.map(d => d.timestamp),
@@ -192,6 +223,7 @@ function formatXyDataset(
           type: 'line',
           series: dataset.map(d => d.downloads),
           color: accent.value,
+          useArea: true,
         },
       ],
       dates: dataset.map(d => d.timestamp),
@@ -200,6 +232,30 @@ function formatXyDataset(
   return { dataset: null, dates: [] }
 }
 
+/**
+ * Extracts normalized time-series points from an evolution dataset based on
+ * the selected time granularity.
+ *
+ * Each returned point contains:
+ * - `timestamp`: the numeric time value used for x-axis alignment
+ * - `downloads`: the corresponding value at that time
+ *
+ * The timestamp field is selected according to granularity:
+ * - **daily**   → `timestamp`
+ * - **weekly**  → `timestampEnd`
+ * - **monthly** → `timestamp`
+ * - **yearly**  → `timestamp`
+ *
+ * If the dataset does not match the expected shape for the given granularity,
+ * an empty array is returned.
+ *
+ * This helper is primarily used in multi-package mode to align multiple
+ * datasets on a shared time axis.
+ *
+ * @param selectedGranularity - Active chart time granularity
+ * @param dataset - Raw evolution dataset to extract points from
+ * @returns An array of normalized `{ timestamp, downloads }` points
+ */
 function extractSeriesPoints(
   selectedGranularity: ChartTimeGranularity,
   dataset: EvolutionData,
@@ -259,10 +315,53 @@ const xAxisLabel = computed(() => {
 const selectedGranularity = shallowRef<ChartTimeGranularity>('weekly')
 const displayedGranularity = shallowRef<ChartTimeGranularity>('weekly')
 
+const isEndDateOnPeriodEnd = computed(() => {
+  const g = selectedGranularity.value
+  if (g !== 'monthly' && g !== 'yearly') return false
+
+  const iso = String(endDate.value ?? '').slice(0, 10)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return false
+
+  const [year, month, day] = iso.split('-').map(Number)
+  if (!year || !month || !day) return false
+
+  // Monthly: endDate is the last day of its month (UTC)
+  if (g === 'monthly') {
+    const lastDayOfMonth = new Date(Date.UTC(year, month, 0)).getUTCDate()
+    return day === lastDayOfMonth
+  }
+
+  // Yearly: endDate is the last day of the year (UTC)
+  return month === 12 && day === 31
+})
+
+const isEstimationGranularity = computed(
+  () => displayedGranularity.value === 'monthly' || displayedGranularity.value === 'yearly',
+)
+const shouldRenderEstimationOverlay = computed(
+  () => !pending.value && isEstimationGranularity.value,
+)
+
 const startDate = shallowRef<string>('') // YYYY-MM-DD
 const endDate = shallowRef<string>('') // YYYY-MM-DD
 const hasUserEditedDates = shallowRef(false)
 
+/**
+ * Initializes the date range from the provided weeklyDownloads dataset.
+ *
+ * The range is inferred directly from the dataset boundaries:
+ * - `startDate` is set from the `weekStart` of the first entry
+ * - `endDate` is set from the `weekEnd` of the last entry
+ *
+ * Dates are normalized to `YYYY-MM-DD` and validated before assignment.
+ *
+ * This function is a no-op when:
+ * - the user has already edited the date range
+ * - no weekly download data is available
+ *
+ * The inferred range takes precedence over client-side fallbacks but does not
+ * override user-defined dates.
+ */
 function initDateRangeFromWeekly() {
   if (hasUserEditedDates.value) return
   if (!props.weeklyDownloads?.length) return
@@ -275,6 +374,20 @@ function initDateRangeFromWeekly() {
   if (isValidIsoDateOnly(end)) endDate.value = end
 }
 
+/**
+ * Initializes a default date range on the client when no explicit dates
+ * have been provided and the user has not manually edited the range, typically
+ * when weeklyDownloads is not provided.
+ *
+ * The range is computed in UTC to avoid timezone-related off-by-one errors:
+ * - `endDate` is set to yesterday (UTC)
+ * - `startDate` is set to 29 days before yesterday (UTC), yielding a 30-day range
+ *
+ * This function is a no-op when:
+ * - the user has already edited the date range
+ * - the code is running on the server
+ * - both `startDate` and `endDate` are already defined
+ */
 function initDateRangeFallbackClient() {
   if (hasUserEditedDates.value) return
   if (!import.meta.client) return
@@ -297,11 +410,31 @@ function initDateRangeFallbackClient() {
 function toUtcDateOnly(date: Date): string {
   return date.toISOString().slice(0, 10)
 }
+
 function addUtcDays(date: Date, days: number): Date {
   const next = new Date(date)
   next.setUTCDate(next.getUTCDate() + days)
   return next
 }
+
+/**
+ * Initializes a default date range for multi-package mode using a fixed
+ * 52-week rolling window.
+ *
+ * The range is computed in UTC to ensure consistent boundaries across
+ * timezones:
+ * - `endDate` is set to yesterday (UTC)
+ * - `startDate` is set to the first day of the 52-week window ending yesterday
+ *
+ * This function is intended for multi-package comparisons where no explicit
+ * date range or dataset-derived range is available.
+ *
+ * This function is a no-op when:
+ * - the user has already edited the date range
+ * - the code is running on the server
+ * - the component is not in multi-package mode
+ * - both `startDate` and `endDate` are already defined
+ */
 function initDateRangeForMultiPackageWeekly52() {
   if (hasUserEditedDates.value) return
   if (!import.meta.client) return
@@ -364,6 +497,24 @@ const options = shallowRef<
   | { granularity: 'year'; startDate?: string; endDate?: string }
 >({ granularity: 'week', weeks: 52 })
 
+/**
+ * Applies the current date range (`startDate` / `endDate`) to a base options
+ * object, returning a new object augmented with validated date fields.
+ *
+ * Dates are normalized to `YYYY-MM-DD`, validated, and ordered to ensure
+ * logical consistency:
+ * - When both dates are valid, the earliest is assigned to `startDate` and
+ *   the latest to `endDate`
+ * - When only one valid date is present, only that boundary is applied
+ * - Invalid or empty dates are omitted from the result
+ *
+ * The input object is not mutated.
+ *
+ * @typeParam T - Base options type to extend with date range fields
+ * @param base - Base options object to which the date range should be applied
+ * @returns A new options object including the applicable `startDate` and/or
+ *          `endDate` fields
+ */
 function applyDateRange<T extends Record<string, unknown>>(base: T): T & DateRangeFields {
   const next: T & DateRangeFields = { ...base }
 
@@ -396,6 +547,16 @@ const pending = shallowRef(false)
 const isMounted = shallowRef(false)
 let requestToken = 0
 
+// Watches granularity and date inputs to keep request options in sync and
+// manage the loading state.
+//
+// This watcher does NOT perform the fetch itself. Its responsibilities are:
+// - derive the correct API options from the selected granularity
+// - apply the current validated date range to those options
+// - determine whether a loading indicator should be shown
+//
+// Fetching is debounced separately to avoid excessive
+// network requests while the user is interacting with controls.
 watch(
   [selectedGranularity, startDate, endDate],
   ([granularityValue]) => {
@@ -410,7 +571,7 @@ watch(
     if (!isMounted.value) return
 
     const packageNames = effectivePackageNames.value
-    if (!import.meta.client || !shouldFetch.value || !packageNames.length) {
+    if (!import.meta.client || !packageNames.length) {
       pending.value = false
       return
     }
@@ -434,9 +595,27 @@ watch(
   { immediate: true },
 )
 
+/**
+ * Fetches download evolution data based on the current granularity,
+ * date range, and package selection.
+ *
+ * This function:
+ * - runs only on the client
+ * - supports both single-package and multi-package modes
+ * - applies request de-duplication via a request token to avoid race conditions
+ * - updates the appropriate reactive stores with fetched data
+ * - manages the `pending` loading state
+ *
+ * Behavior details:
+ * - In multi-package mode, all packages are fetched in parallel and partial
+ *   failures are tolerated using `Promise.allSettled`
+ * - In single-package mode, weekly data is reused from `weeklyDownloads`
+ *   when available and no explicit date range is requested
+ * - Outdated responses are discarded when a newer request supersedes them
+ *
+ */
 async function loadNow() {
   if (!import.meta.client) return
-  if (!shouldFetch.value) return
 
   const packageNames = effectivePackageNames.value
   if (!packageNames.length) return
@@ -498,6 +677,13 @@ async function loadNow() {
   }
 }
 
+// Debounced wrapper around `loadNow` to avoid triggering a network request
+// on every intermediate state change while the user is interacting with inputs
+//
+// This 'arbitrary' 1000 ms delay:
+// - gives enough time for the user to finish changing granularity or dates
+// - prevents unnecessary API load and visual flicker of the loading state
+//
 const debouncedLoadNow = useDebounceFn(() => {
   loadNow()
 }, 1000)
@@ -506,7 +692,6 @@ const fetchTriggerKey = computed(() => {
   const names = effectivePackageNames.value.join(',')
   const o = options.value as any
   return [
-    shouldFetch.value ? '1' : '0',
     isMultiPackageMode.value ? 'M' : 'S',
     names,
     String(props.createdIso ?? ''),
@@ -536,6 +721,28 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
   return evolution.value
 })
 
+/**
+ * Normalized chart data derived from the fetched evolution datasets.
+ *
+ * This computed value adapts its behavior based on the current mode:
+ *
+ * - **Single-package mode**
+ *   - Delegates formatting to `formatXyDataset`
+ *   - Produces a single series with its corresponding timestamps
+ *
+ * - **Multi-package mode**
+ *   - Merges multiple package datasets into a shared time axis
+ *   - Aligns all series on the same sorted list of timestamps
+ *   - Fills missing datapoints with `0` to keep series lengths consistent
+ *   - Assigns framework-specific colors when applicable
+ *
+ * The returned structure matches the expectations of `VueUiXy`:
+ * - `dataset`: array of series definitions, or `null` when no data is available
+ * - `dates`: sorted list of timestamps used as the x-axis reference
+ *
+ * Returning `dataset: null` explicitly signals the absence of data and allows
+ * the template to handle empty states without ambiguity.
+ */
 const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: number[] }>(() => {
   if (!isMultiPackageMode.value) {
     const pkg = effectivePackageNames.value[0] ?? props.packageName ?? ''
@@ -558,7 +765,7 @@ const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: number
   const dates = Array.from(timestampSet).sort((a, b) => a - b)
   if (!dates.length) return { dataset: null, dates: [] }
 
-  const dataset: VueUiXyDatasetItem[] = names.map((pkg, index) => {
+  const dataset: VueUiXyDatasetItem[] = names.map(pkg => {
     const points = pointsByPackage.get(pkg) ?? []
     const map = new Map<number, number>()
     for (const p of points) map.set(p.timestamp, p.downloads)
@@ -577,7 +784,78 @@ const chartData = computed<{ dataset: VueUiXyDatasetItem[] | null; dates: number
   return { dataset, dates }
 })
 
-const formatter = ({ value }: { value: number }) => formatCompactNumber(value, { decimals: 1 })
+/**
+ * Maximum estimated value across all series when the chart is
+ * displaying a partially completed time bucket (monthly or yearly).
+ *
+ * Used to determine whether the Y-axis upper bound must be extended to accommodate extrapolated values.
+ * It does not mutate chart state or rendering directly.
+ *
+ * Behavior:
+ * - Returns `0` when:
+ *   - the chart is loading (`pending === true`)
+ *   - the current granularity is not `monthly` or `yearly`
+ *   - the dataset is empty or has fewer than two points
+ *   - the last bucket is fully completed
+ *
+ * - For partially completed buckets:
+ *   - Computes the bucket completion ratio using UTC boundaries
+ *   - Linearly extrapolates the last datapoint of each series
+ *   - Returns the maximum extrapolated value across all series
+ *
+ * The reference time used for completion is:
+ * - the end of `endDate` (UTC) when provided, or
+ * - the current time (`Date.now()`) otherwise
+ *
+ * @returns The maximum extrapolated value across all series, or `0` when
+ * estimation is not applicable.
+ */
+const estimatedMaxFromData = computed<number>(() => {
+  if (pending.value) return 0
+  if (!isEstimationGranularity.value) return 0
+
+  const dataset = chartData.value.dataset
+  const dates = chartData.value.dates
+  if (!dataset?.length || dates.length < 2) return 0
+
+  const lastBucketTimestampMs = dates[dates.length - 1] ?? 0
+  const endDateMs = endDate.value ? endDateOnlyToUtcMs(endDate.value) : null
+  const referenceMs = endDateMs ?? Date.now()
+
+  const completionRatio = getCompletionRatioForBucket({
+    bucketTimestampMs: lastBucketTimestampMs,
+    granularity: displayedGranularity.value as 'monthly' | 'yearly',
+    referenceMs,
+  })
+
+  if (!(completionRatio > 0 && completionRatio < 1)) return 0
+
+  let maxEstimated = 0
+
+  for (const serie of dataset) {
+    const values = Array.isArray((serie as any).series) ? ((serie as any).series as number[]) : []
+    if (values.length < 2) continue
+
+    const lastValue = Number(values[values.length - 1])
+    if (!Number.isFinite(lastValue) || lastValue <= 0) continue
+
+    const estimated = lastValue / completionRatio
+    if (Number.isFinite(estimated) && estimated > maxEstimated) maxEstimated = estimated
+  }
+
+  return maxEstimated
+})
+
+const yAxisScaleMax = computed<number | undefined>(() => {
+  if (!isEstimationGranularity.value || pending.value) return undefined
+
+  const datasetMax = getDatasetMaxValue(chartData.value.dataset)
+  const estimatedMax = estimatedMaxFromData.value
+  const candidateMax = Math.max(datasetMax, estimatedMax)
+
+  const niceMax = candidateMax > 0 ? niceMaxScale(candidateMax) : 0
+  return niceMax > datasetMax ? niceMax : undefined
+})
 
 const loadFile = (link: string, filename: string) => {
   const a = document.createElement('a')
@@ -616,12 +894,430 @@ function buildExportFilename(extension: string): string {
   return `${sanitise(label ?? '')}-${g}_${range}.${extension}`
 }
 
-const config = computed(() => {
+const granularityLabels = computed(() => ({
+  daily: $t('package.downloads.granularity_daily'),
+  weekly: $t('package.downloads.granularity_weekly'),
+  monthly: $t('package.downloads.granularity_monthly'),
+  yearly: $t('package.downloads.granularity_yearly'),
+}))
+
+function getGranularityLabel(granularity: ChartTimeGranularity) {
+  return granularityLabels.value[granularity]
+}
+
+function clampRatio(value: number): number {
+  if (value < 0) return 0
+  if (value > 1) return 1
+  return value
+}
+
+/**
+ * Convert a `YYYY-MM-DD` date to UTC timestamp representing the end of that day.
+ * The returned timestamp corresponds to `23:59:59.999` in UTC
+ *
+ * @param endDateOnly - ISO-like date string (`YYYY-MM-DD`)
+ * @returns The UTC timestamp in milliseconds for the end of the given day,
+ * or `null` if the input is invalid.
+ */
+function endDateOnlyToUtcMs(endDateOnly: string): number | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(endDateOnly)) return null
+  const [y, m, d] = endDateOnly.split('-').map(Number)
+  if (!y || !m || !d) return null
+  return Date.UTC(y, m - 1, d, 23, 59, 59, 999)
+}
+
+/**
+ * Computes the UTC timestamp corresponding to the start of the time bucket
+ * that contains the given timestamp.
+ *
+ * This function is used to derive period boundaries when computing completion
+ * ratios or extrapolating values for partially completed periods.
+ *
+ * Bucket boundaries are defined in UTC:
+ * - **monthly** : first day of the month at `00:00:00.000` UTC
+ * - **yearly** : January 1st of the year at `00:00:00.000` UTC
+ *
+ * @param timestampMs - Reference timestamp in milliseconds
+ * @param granularity - Bucket granularity (`monthly` or `yearly`)
+ * @returns The UTC timestamp representing the start of the corresponding
+ * time bucket.
+ */
+function getBucketStartUtc(timestampMs: number, granularity: 'monthly' | 'yearly'): number {
+  const date = new Date(timestampMs)
+  if (granularity === 'yearly') return Date.UTC(date.getUTCFullYear(), 0, 1, 0, 0, 0, 0)
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1, 0, 0, 0, 0)
+}
+
+/**
+ * Computes the UTC timestamp corresponding to the end of the time
+ * bucket that contains the given timestamp. This end timestamp is paired with `getBucketStartUtc` to define
+ * a half-open interval `[start, end)` when computing elapsed time or completion
+ * ratios within a period.
+ *
+ * Bucket boundaries are defined in UTC and are **exclusive**:
+ * - **monthly** : first day of the following month at `00:00:00.000` UTC
+ * - **yearly** : January 1st of the following year at `00:00:00.000` UTC
+ *
+ * @param timestampMs - Reference timestamp in milliseconds
+ * @param granularity - Bucket granularity (`monthly` or `yearly`)
+ * @returns The UTC timestamp (in milliseconds) representing the exclusive end
+ * of the corresponding time bucket.
+ */
+function getBucketEndUtc(timestampMs: number, granularity: 'monthly' | 'yearly'): number {
+  const date = new Date(timestampMs)
+  if (granularity === 'yearly') return Date.UTC(date.getUTCFullYear() + 1, 0, 1, 0, 0, 0, 0)
+  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 1, 0, 0, 0, 0)
+}
+
+/**
+ * Computes the completion ratio of a time bucket relative to a reference time.
+ *
+ * The ratio represents how much of the bucket’s duration has elapsed at
+ * `referenceMs`, expressed as a normalized value in the range `[0, 1]`.
+ *
+ * The bucket is defined by the calendar period (monthly or yearly) that
+ * contains `bucketTimestampMs`, using UTC boundaries:
+ * - start: `getBucketStartUtc(...)`
+ * - end: `getBucketEndUtc(...)`
+ *
+ * The returned value is clamped to `[0, 1]`:
+ * - `0`: reference time is at or before the start of the bucket
+ * - `1`: reference time is at or after the end of the bucket
+ *
+ * This function is used to detect partially completed periods and to
+ * extrapolate full period values from partial data.
+ *
+ * @param params.bucketTimestampMs - Timestamp belonging to the bucket
+ * @param params.granularity - Bucket granularity (`monthly` or `yearly`)
+ * @param params.referenceMs - Reference timestamp used to measure progress
+ * @returns A normalized completion ratio in the range `[0, 1]`.
+ */
+function getCompletionRatioForBucket(params: {
+  bucketTimestampMs: number
+  granularity: 'monthly' | 'yearly'
+  referenceMs: number
+}): number {
+  const start = getBucketStartUtc(params.bucketTimestampMs, params.granularity)
+  const end = getBucketEndUtc(params.bucketTimestampMs, params.granularity)
+  const total = end - start
+  if (total <= 0) return 1
+  return clampRatio((params.referenceMs - start) / total)
+}
+
+/**
+ * Returns a "nice" rounded upper bound for a positive value, suitable for
+ * chart axis scaling.
+ *
+ * The value is converted to a power-of-ten range and then rounded up to the
+ * next monotonic step within that decade (1, 1.25, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10).
+ *
+ * VueUiXy computes its own nice scale from the dataset.
+ * However, when injecting an estimation for partial datapoints, the scale must be forced to avoid
+ * overflowing the estimation if it were to become the max value. This scale is fed into the `scaleMax`
+ * config attribute of VueUiXy.
+ *
+ * Examples:
+ * - `niceMaxScale(2_340)` returns `2_500`
+ * - `niceMaxScale(7_100)` returns `8_000`
+ * - `niceMaxScale(12)` returns `12.5`
+ *
+ * @param value - Candidate maximum value
+ * @returns A nice maximum >= `value`, or `0` when `value` is not finite or <= 0.
+ */
+function niceMaxScale(value: number): number {
+  const v = Number(value)
+  if (!Number.isFinite(v) || v <= 0) return 0
+
+  const exponent = Math.floor(Math.log10(v))
+  const base = 10 ** exponent
+  const fraction = v / base
+
+  // Monotonic scale steps
+  if (fraction <= 1) return 1 * base
+  if (fraction <= 1.25) return 1.25 * base
+  if (fraction <= 1.5) return 1.5 * base
+  if (fraction <= 2) return 2 * base
+  if (fraction <= 2.5) return 2.5 * base
+  if (fraction <= 3) return 3 * base
+  if (fraction <= 4) return 4 * base
+  if (fraction <= 5) return 5 * base
+  if (fraction <= 6) return 6 * base
+  if (fraction <= 8) return 8 * base
+  return 10 * base
+}
+
+/**
+ * Extrapolates the last datapoint of a series when it belongs to a partially
+ * completed time bucket (monthly or yearly).
+ *
+ * The extrapolation assumes that the observed value of the last datapoint
+ * grows linearly with time within its bucket. The value is scaled by the
+ * inverse of the bucket completion ratio, and the corresponding y
+ * coordinate is computed by projecting along the segment defined by the
+ * previous and last datapoints.
+ *
+ * Extrapolation is performed only when:
+ * - the granularity is `monthly` or `yearly`
+ * - the bucket completion ratio is strictly between `0` and `1`
+ *
+ * In all other cases, the original `lastPoint` is returned unchanged.
+ *
+ * The reference time used to compute the completion ratio is:
+ * - the end of `endDateOnly` (UTC) when provided, or
+ * - the current time (`Date.now()`) otherwise
+ *
+ * @param params.previousPoint - Datapoint immediately preceding the last one
+ * @param params.lastPoint - Last observed datapoint (potentially incomplete)
+ * @param params.lastBucketTimestampMs - Timestamp identifying the bucket of the last datapoint
+ * @param params.granularity - Chart granularity
+ * @param params.endDateOnly - Optional `YYYY-MM-DD` end date used as a fixed reference time
+ * @returns A new datapoint representing the extrapolated estimate, or the
+ *          original `lastPoint` when extrapolation is not applicable.
+ */
+function extrapolateIncompleteLastPoint(params: {
+  previousPoint: { x: number; y: number; value: number }
+  lastPoint: { x: number; y: number; value: number; comment?: string }
+  lastBucketTimestampMs: number
+  granularity: ChartTimeGranularity
+  endDateOnly?: string
+}) {
+  if (params.granularity !== 'monthly' && params.granularity !== 'yearly')
+    return { ...params.lastPoint }
+
+  const endDateMs = params.endDateOnly ? endDateOnlyToUtcMs(params.endDateOnly) : null
+  const referenceMs = endDateMs ?? Date.now()
+
+  const completionRatio = getCompletionRatioForBucket({
+    bucketTimestampMs: params.lastBucketTimestampMs,
+    granularity: params.granularity,
+    referenceMs,
+  })
+
+  if (!(completionRatio > 0 && completionRatio < 1)) return { ...params.lastPoint }
+
+  const extrapolatedValue = params.lastPoint.value / completionRatio
+  if (!Number.isFinite(extrapolatedValue)) return { ...params.lastPoint }
+
+  const valueDelta = params.lastPoint.value - params.previousPoint.value
+  const yDelta = params.lastPoint.y - params.previousPoint.y
+
+  if (valueDelta === 0)
+    return { ...params.lastPoint, value: extrapolatedValue, comment: 'extrapolated' }
+
+  const valueToYPixelRatio = yDelta / valueDelta
+  const extrapolatedY =
+    params.previousPoint.y + (extrapolatedValue - params.previousPoint.value) * valueToYPixelRatio
+
+  return {
+    x: params.lastPoint.x,
+    y: extrapolatedY,
+    value: extrapolatedValue,
+    comment: 'extrapolated',
+  }
+}
+
+/**
+ * Compute the max value across all series in a `VueUiXy` dataset.
+ *
+ * @param dataset - Array of `VueUiXyDatasetItem` objects, or `null`
+ * @returns The maximum finite value found across all series, or `0` when
+ * the dataset is empty or absent.
+ */
+function getDatasetMaxValue(dataset: VueUiXyDatasetItem[] | null): number {
+  if (!dataset?.length) return 0
+  let max = 0
+  for (const serie of dataset) {
+    const values = Array.isArray((serie as any).series) ? ((serie as any).series as number[]) : []
+    for (const v of values) {
+      const n = Number(v)
+      if (Number.isFinite(n) && n > max) max = n
+    }
+  }
+  return max
+}
+
+/**
+ * Build and return svg markup for estimation overlays on the chart.
+ *
+ * This function is used in the `#svg` slot of `VueUiXy` to visually indicate
+ * estimated values for partially completed monthly or yearly periods.
+ *
+ * For each series:
+ * - extrapolates the last datapoint when it belongs to an incomplete time bucket
+ * - draws a dashed line from the previous datapoint to the extrapolated position
+ * - masks the original line segment to avoid visual overlap
+ * - renders marker circles at relevant points
+ * - displays a formatted label for the estimated value
+ *
+ * While computing estimations, the function also evaluates whether the Y-axis
+ * scale needs to be extended to accommodate estimated values. When required,
+ * it commits a deferred `scaleMax` update using `commitYAxisScaleMaxLater`.
+ *
+ * The function returns an empty string when:
+ * - estimation overlays are disabled
+ * - no valid series or datapoints are available
+ *
+ * @param svg - svg context object provided by `VueUiXy` via the `#svg` slot
+ * @returns A string containing SVG elements to be injected, or an empty string
+ * when no estimation overlay should be rendered.
+ */
+function drawEstimationLine(svg: Record<string, any>) {
+  if (!shouldRenderEstimationOverlay.value) return ''
+
+  const data = Array.isArray(svg?.data) ? svg.data : []
+  if (!data.length) return ''
+
+  // Collect per-series estimates and a global max candidate for the y-axis
+  const lines: string[] = []
+
+  // Use the last bucket timestamp once (shared x-axis dates)
+  const lastBucketTimestampMs = chartData.value?.dates?.at(-1) ?? 0
+
+  for (const serie of data) {
+    const plots = serie?.plots
+    if (!Array.isArray(plots) || plots.length < 2) continue
+
+    const previousPoint = plots.at(-2)
+    const lastPoint = plots.at(-1)
+    if (!previousPoint || !lastPoint) continue
+
+    const estimationPoint = extrapolateIncompleteLastPoint({
+      previousPoint,
+      lastPoint,
+      lastBucketTimestampMs,
+      granularity: displayedGranularity.value,
+      endDateOnly: endDate.value,
+    })
+
+    const stroke = String(serie?.color ?? colors.value.fg)
+
+    /**
+     * The following svg elements are injected in the #svg slot of VueUiXy:
+     * - a dashed line connecting the last datapoint to its ancestor
+     * - a line overlay covering the path segment of 'real data' between last datapoint and its ancestor
+     * - circles on the estimation coordinates, and another on the ancestor to mitigate the line overlay
+     * - the formatted data label
+     */
+
+    lines.push(`
+      <line 
+        x1="${previousPoint.x}" 
+        y1="${previousPoint.y}" 
+        x2="${lastPoint.x}" 
+        y2="${estimationPoint.y}" 
+        stroke="${stroke}" 
+        stroke-width="3"
+        stroke-dasharray="4 8"
+        stroke-linecap="round"
+      />
+      <line
+        x1="${previousPoint.x}" 
+        y1="${previousPoint.y}" 
+        x2="${lastPoint.x}" 
+        y2="${lastPoint.y}" 
+        stroke="${colors.value.bg}" 
+        stroke-width="3"
+        opacity="0.7"
+      />
+      <circle
+        cx="${lastPoint.x}"
+        cy="${lastPoint.y}"
+        r="4"
+        fill="${colors.value.bg}"
+        opacity="0.7"
+      />
+      <circle
+        cx="${lastPoint.x}"
+        cy="${estimationPoint.y}"
+        r="4"
+        fill="${stroke}"
+        stroke="${colors.value.bg}"
+        stroke-width="2"
+      />
+      <circle
+        cx="${previousPoint.x}"
+        cy="${previousPoint.y}"
+        r="4"
+        fill="${stroke}"
+        stroke="${colors.value.bg}"
+        stroke-width="2"
+      />
+      <text
+        text-anchor="start"
+        dominant-baseline="middle"
+        x="${lastPoint.x + 12}"
+        y="${estimationPoint.y}"
+        font-size="24"
+        fill="${colors.value.fg}"
+        stroke="${colors.value.bg}"
+        stroke-width="1"
+        paint-order="stroke fill"
+      >
+        ${compactNumberFormatter.value.format(Number.isFinite(estimationPoint.value) ? estimationPoint.value : 0)}
+      </text>
+    `)
+  }
+
+  if (!lines.length) return ''
+
+  return lines.join('\n')
+}
+
+/**
+ * Build and return svg text label for the last datapoint of each series.
+ *
+ * This function is used in the `#svg` slot of `VueUiXy` to render a value label
+ * next to the final datapoint of each series when the data represents fully
+ * completed periods (for example, daily or weekly granularities).
+ *
+ * For each series:
+ * - retrieves the last plotted point
+ * - renders a text label slightly offset to the right of the point
+ * - formats the value using the compact number formatter
+ *
+ * Return an empty string when no series data is available.
+ *
+ * @param svg - SVG context object provided by `VueUiXy` via the `#svg` slot
+ * @returns A string containing SVG `<text>` elements, or an empty string when
+ * no labels should be rendered.
+ */
+function drawLastDatapointLabel(svg: Record<string, any>) {
+  const data = Array.isArray(svg?.data) ? svg.data : []
+  if (!data.length) return ''
+
+  const dataLabels: string[] = []
+
+  for (const serie of data) {
+    const lastPlot = serie.plots.at(-1)
+
+    dataLabels.push(`
+      <text
+        text-anchor="start"
+        dominant-baseline="middle"
+        x="${lastPlot.x + 12}"
+        y="${lastPlot.y}"
+        font-size="24"
+        fill="${colors.value.fg}"
+        stroke="${colors.value.bg}"
+        stroke-width="1"
+        paint-order="stroke fill"
+      >
+        ${compactNumberFormatter.value.format(Number.isFinite(lastPlot.value) ? lastPlot.value : 0)}
+      </text>
+    `)
+  }
+
+  return dataLabels.join('\n')
+}
+
+// VueUiXy chart component configuration
+const chartConfig = computed(() => {
   return {
     theme: isDarkMode.value ? 'dark' : 'default',
     chart: {
       height: isMobile.value ? 950 : 600,
-      padding: { bottom: 36 },
+      backgroundColor: colors.value.bg,
+      padding: { bottom: 36, right: 100 }, // padding right is set to leave space of last datapoint label(s)
       userOptions: {
         buttons: { pdf: false, labels: false, fullscreen: false, table: false, tooltip: false },
         buttonTitles: {
@@ -658,14 +1354,14 @@ const config = computed(() => {
           },
         },
       },
-      backgroundColor: colors.value.bg,
       grid: {
         stroke: colors.value.border,
         labels: {
           fontSize: isMobile.value ? 24 : 16,
+          color: pending.value ? colors.value.border : colors.value.fgSubtle,
           axis: {
             yLabel: $t('package.downloads.y_axis_label', {
-              granularity: $t(`package.downloads.granularity_${selectedGranularity.value}`),
+              granularity: getGranularityLabel(selectedGranularity.value),
             }),
             xLabel: isMultiPackageMode.value ? '' : xAxisLabel.value, // for multiple series, names are displayed in the chart's legend
             yLabelOffsetX: 12,
@@ -682,8 +1378,11 @@ const config = computed(() => {
             },
           },
           yAxis: {
-            formatter,
-            useNiceScale: true,
+            formatter: ({ value }: { value: number }) => {
+              return compactNumberFormatter.value.format(Number.isFinite(value) ? value : 0)
+            },
+            useNiceScale: !isEstimationGranularity.value || pending.value, // daily/weekly -> true, monthly/yearly -> false
+            scaleMax: yAxisScaleMax.value,
             gap: 24, // vertical gap between individual series in stacked mode
           },
         },
@@ -711,10 +1410,10 @@ const config = computed(() => {
           const hasMultipleItems = items.length > 1
 
           const rows = items
-            .map((d: any) => {
+            .map((d: Record<string, any>) => {
               const label = String(d?.name ?? '').trim()
               const raw = Number(d?.value ?? 0)
-              const v = formatter({ value: Number.isFinite(raw) ? raw : 0 })
+              const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
 
               if (!hasMultipleItems) {
                 // We don't need the name of the package in this case, since it is shown in the xAxis label
@@ -730,11 +1429,11 @@ const config = computed(() => {
                   </svg>
                 </div>
 
-                <span class="text-[10px] uppercase tracking-wide text-[var(--fg)]/70 truncate">
+                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70 truncate">
                   ${label}
                 </span>
 
-                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-right">
+                <span class="text-base text-[var(--fg)] font-mono tabular-nums text-end">
                   ${v}
                 </span>
               </div>`
@@ -777,12 +1476,14 @@ const config = computed(() => {
         <div class="flex flex-col gap-1 sm:shrink-0">
           <label
             for="granularity"
-            class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
+            class="text-3xs font-mono text-fg-subtle tracking-wide uppercase"
           >
             {{ $t('package.downloads.granularity') }}
           </label>
 
-          <div class="flex items-center bg-bg-subtle border border-border rounded-md">
+          <div
+            class="flex items-center bg-bg-subtle border border-border rounded-md overflow-hidden"
+          >
             <select
               id="granularity"
               v-model="selectedGranularity"
@@ -801,7 +1502,7 @@ const config = computed(() => {
           <div class="flex flex-col gap-1">
             <label
               for="startDate"
-              class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
+              class="text-3xs font-mono text-fg-subtle tracking-wide uppercase"
             >
               {{ $t('package.downloads.start_date') }}
             </label>
@@ -820,10 +1521,7 @@ const config = computed(() => {
           </div>
 
           <div class="flex flex-col gap-1">
-            <label
-              for="endDate"
-              class="text-[10px] font-mono text-fg-subtle tracking-wide uppercase"
-            >
+            <label for="endDate" class="text-3xs font-mono text-fg-subtle tracking-wide uppercase">
               {{ $t('package.downloads.end_date') }}
             </label>
             <div
@@ -859,33 +1557,109 @@ const config = computed(() => {
 
     <div role="region" aria-labelledby="download-analytics-title">
       <ClientOnly v-if="chartData.dataset">
-        <div>
-          <VueUiXy :dataset="chartData.dataset" :config="config" class="[direction:ltr]">
+        <div :data-pending="pending">
+          <VueUiXy
+            :dataset="chartData.dataset"
+            :config="chartConfig"
+            class="[direction:ltr]"
+            @zoomStart="setIsZoom"
+            @zoomEnd="setIsZoom"
+            @zoomReset="isZoomed = false"
+          >
+            <!-- Injecting custom svg elements -->
+            <template #svg="{ svg }">
+              <!-- Estimation lines for monthly & yearly granularities when the end date induces a downwards trend -->
+              <g
+                v-if="
+                  !pending &&
+                  ['monthly', 'yearly'].includes(displayedGranularity) &&
+                  !isEndDateOnPeriodEnd &&
+                  !isZoomed
+                "
+                v-html="drawEstimationLine(svg)"
+              />
+
+              <!-- Last value label for all other cases -->
+              <g
+                v-if="
+                  !pending &&
+                  (['daily', 'weekly'].includes(displayedGranularity) ||
+                    isEndDateOnPeriodEnd ||
+                    isZoomed)
+                "
+                v-html="drawLastDatapointLabel(svg)"
+              />
+
+              <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
+              <rect
+                v-if="pending"
+                :x="svg.drawingArea.left"
+                :y="svg.drawingArea.top - 12"
+                :width="svg.drawingArea.width + 12"
+                :height="svg.drawingArea.height + 24"
+                :fill="colors.bg"
+              />
+            </template>
+
+            <!-- Subtle gradient applied for a unique series (chart modal) -->
+            <template #area-gradient="{ series: chartModalSeries, id: gradientId }">
+              <linearGradient :id="gradientId" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" :stop-color="chartModalSeries.color" stop-opacity="0.2" />
+                <stop offset="100%" :stop-color="colors.bg" stop-opacity="0" />
+              </linearGradient>
+            </template>
+
             <!-- Custom legend for multiple series -->
-            <template v-if="isMultiPackageMode" #legend="{ legend }">
+            <template
+              v-if="isMultiPackageMode || ['monthly', 'yearly'].includes(displayedGranularity)"
+              #legend="{ legend }"
+            >
               <div class="flex gap-4 flex-wrap justify-center">
-                <button
-                  v-for="datapoint in legend"
-                  :key="datapoint.name"
-                  :aria-pressed="datapoint.isSegregated"
-                  :aria-label="datapoint.name"
-                  type="button"
-                  class="flex gap-1 place-items-center"
-                  @click="datapoint.segregate()"
-                >
-                  <div class="h-3 w-3">
-                    <svg viewBox="0 0 2 2" class="w-full">
-                      <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="datapoint.color" />
-                    </svg>
-                  </div>
-                  <span
-                    :style="{
-                      textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
-                    }"
+                <template v-if="isMultiPackageMode">
+                  <button
+                    v-for="datapoint in legend"
+                    :key="datapoint.name"
+                    :aria-pressed="datapoint.isSegregated"
+                    :aria-label="datapoint.name"
+                    type="button"
+                    class="flex gap-1 place-items-center"
+                    @click="datapoint.segregate()"
                   >
-                    {{ datapoint.name }}
-                  </span>
-                </button>
+                    <div class="h-3 w-3">
+                      <svg viewBox="0 0 2 2" class="w-full">
+                        <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="datapoint.color" />
+                      </svg>
+                    </div>
+                    <span
+                      :style="{
+                        textDecoration: datapoint.isSegregated ? 'line-through' : undefined,
+                      }"
+                    >
+                      {{ datapoint.name }}
+                    </span>
+                  </button>
+                </template>
+
+                <!-- Estimation extra legend item -->
+                <div
+                  class="flex gap-1 place-items-center"
+                  v-if="['monthly', 'yearly'].includes(selectedGranularity)"
+                >
+                  <svg viewBox="0 0 20 2" width="20">
+                    <line
+                      x1="0"
+                      y1="1"
+                      x2="20"
+                      y2="1"
+                      :stroke="colors.fg"
+                      stroke-dasharray="4"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  <span class="text-fg-subtle">{{
+                    $t('package.downloads.legend_estimation')
+                  }}</span>
+                </div>
               </div>
             </template>
 
@@ -970,7 +1744,7 @@ const config = computed(() => {
     </div>
 
     <div
-      v-if="shouldFetch && !chartData.dataset && !pending"
+      v-if="!chartData.dataset && !pending"
       class="min-h-[260px] flex items-center justify-center text-fg-subtle font-mono text-sm"
     >
       {{ $t('package.downloads.no_data') }}
@@ -1008,5 +1782,9 @@ const config = computed(() => {
     top: -0.6rem !important;
     left: calc(100% + 2rem) !important;
   }
+}
+
+[data-pending='true'] .vue-data-ui-zoom {
+  opacity: 0.1;
 }
 </style>

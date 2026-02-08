@@ -58,7 +58,7 @@ function handleKeydown(event: KeyboardEvent) {
     @keydown="handleKeydown"
   >
     <NuxtLink
-      :to="`/~${username}/orgs`"
+      :to="{ name: '~username-orgs', params: { username } }"
       class="link-subtle font-mono text-sm inline-flex items-center gap-1"
     >
       {{ $t('header.orgs') }}
@@ -94,7 +94,7 @@ function handleKeydown(event: KeyboardEvent) {
           <ul v-else-if="orgs.length > 0" class="py-1 max-h-80 overflow-y-auto">
             <li v-for="org in orgs" :key="org">
               <NuxtLink
-                :to="`/@${org}`"
+                :to="{ name: 'org', params: { org } }"
                 class="block px-3 py-2 font-mono text-sm text-fg hover:bg-bg-subtle transition-colors"
               >
                 @{{ org }}
@@ -108,7 +108,7 @@ function handleKeydown(event: KeyboardEvent) {
 
           <div class="px-3 py-2 border-t border-border">
             <NuxtLink
-              :to="`/~${username}/orgs`"
+              :to="{ name: '~username-orgs', params: { username } }"
               class="link-subtle font-mono text-xs inline-flex items-center gap-1"
             >
               {{ $t('header.orgs_dropdown.view_all') }}

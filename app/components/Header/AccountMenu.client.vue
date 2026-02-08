@@ -57,12 +57,12 @@ function openAuthModal() {
 
 <template>
   <div ref="accountMenuRef" class="relative flex min-w-24 justify-end">
-    <button
+    <ButtonBase
       type="button"
-      class="relative flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors duration-200 hover:bg-bg-subtle hover:text-accent focus-visible:outline-accent/70"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       @click="isOpen = !isOpen"
+      class="border-none"
     >
       <!-- Stacked avatars when connected -->
       <div
@@ -77,7 +77,7 @@ function openAuthModal() {
           :alt="npmUser || $t('account_menu.npm_cli')"
           width="24"
           height="24"
-          class="w-6 h-6 rounded-full ring-2 ring-bg"
+          class="w-6 h-6 rounded-full ring-2 ring-bg object-cover"
         />
         <span
           v-else-if="isNpmConnected"
@@ -93,7 +93,7 @@ function openAuthModal() {
           :alt="atprotoUser.handle"
           width="24"
           height="24"
-          class="w-6 h-6 rounded-full ring-2 ring-bg"
+          class="w-6 h-6 rounded-full ring-2 ring-bg object-cover"
           :class="hasBothConnections ? 'relative z-10' : ''"
         />
         <span
@@ -120,13 +120,13 @@ function openAuthModal() {
       <!-- Operation count badge (when npm connected with pending ops) -->
       <span
         v-if="isNpmConnected && operationCount > 0"
-        class="absolute -top-1 -inset-ie-1 min-w-[1rem] h-4 px-1 flex items-center justify-center font-mono text-[10px] rounded-full"
+        class="absolute -top-1 -inset-ie-1 min-w-[1rem] h-4 px-1 flex items-center justify-center font-mono text-3xs rounded-full"
         :class="hasPendingOperations ? 'bg-yellow-500 text-black' : 'bg-blue-500 text-white'"
         aria-hidden="true"
       >
         {{ operationCount }}
       </span>
-    </button>
+    </ButtonBase>
 
     <!-- Dropdown menu -->
     <Transition
@@ -136,7 +136,9 @@ function openAuthModal() {
       leave-to-class="opacity-0 translate-y-1"
     >
       <div v-if="isOpen" class="absolute inset-ie-0 top-full pt-2 w-72 z-50" role="menu">
-        <div class="bg-bg-elevated border border-border rounded-lg shadow-lg overflow-hidden px-1">
+        <div
+          class="bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/50 overflow-hidden px-1"
+        >
           <!-- Connected accounts section -->
           <div v-if="hasAnyConnection" class="py-1">
             <!-- npm CLI connection -->
@@ -144,7 +146,7 @@ function openAuthModal() {
               v-if="isNpmConnected && npmUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openConnectorModal"
             >
               <img
@@ -153,7 +155,7 @@ function openAuthModal() {
                 :alt="npmUser"
                 width="32"
                 height="32"
-                class="w-8 h-8 rounded-full"
+                class="w-8 h-8 rounded-full object-cover"
               />
               <span
                 v-else
@@ -187,7 +189,7 @@ function openAuthModal() {
               v-if="atprotoUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openAuthModal"
             >
               <img
@@ -196,7 +198,7 @@ function openAuthModal() {
                 :alt="atprotoUser.handle"
                 width="32"
                 height="32"
-                class="w-8 h-8 rounded-full"
+                class="w-8 h-8 rounded-full object-cover"
               />
               <span
                 v-else
@@ -223,7 +225,7 @@ function openAuthModal() {
               v-if="!isNpmConnected"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openConnectorModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
@@ -250,7 +252,7 @@ function openAuthModal() {
               v-if="!atprotoUser"
               type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-subtle transition-colors text-start rounded-md"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
               @click="openAuthModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">

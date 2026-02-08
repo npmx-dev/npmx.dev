@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
+
 const packages = defineModel<string[]>({ required: true })
 
 const props = defineProps<{
@@ -17,6 +19,29 @@ const { data: searchData, status } = useNpmSearch(inputValue, { size: 15 })
 
 const isSearching = computed(() => status.value === 'pending')
 
+// Trigger strings for "What Would James Do?" typeahead Easter egg
+// Intentionally not localized
+const EASTER_EGG_TRIGGERS = new Set([
+  'no dep',
+  'none',
+  'vanilla',
+  'diy',
+  'zero',
+  'nothing',
+  '0',
+  "don't",
+  'native',
+  'use the platform',
+])
+
+// Check if "no dependency" option should show in typeahead
+const showNoDependencyOption = computed(() => {
+  if (packages.value.includes(NO_DEPENDENCY_ID)) return false
+  const input = inputValue.value.toLowerCase().trim()
+  if (!input) return false
+  return EASTER_EGG_TRIGGERS.has(input)
+})
+
 // Filter out already selected packages
 const filteredResults = computed(() => {
   if (!searchData.value?.objects) return []
@@ -28,11 +53,22 @@ const filteredResults = computed(() => {
     .filter(r => !packages.value.includes(r.name))
 })
 
+const numberFormatter = useNumberFormatter()
+
 function addPackage(name: string) {
   if (packages.value.length >= maxPackages.value) return
   if (packages.value.includes(name)) return
 
-  packages.value = [...packages.value, name]
+  // Keep NO_DEPENDENCY_ID always last
+  if (name === NO_DEPENDENCY_ID) {
+    packages.value = [...packages.value, name]
+  } else if (packages.value.includes(NO_DEPENDENCY_ID)) {
+    // Insert before the no-dep entry
+    const withoutNoDep = packages.value.filter(p => p !== NO_DEPENDENCY_ID)
+    packages.value = [...withoutNoDep, name, NO_DEPENDENCY_ID]
+  } else {
+    packages.value = [...packages.value, name]
+  }
   inputValue.value = ''
 }
 
@@ -63,16 +99,28 @@ function handleBlur() {
         :key="pkg"
         class="inline-flex items-center gap-2 px-3 py-1.5 bg-bg-subtle border border-border rounded-md"
       >
+        <!-- No dependency display -->
+        <template v-if="pkg === NO_DEPENDENCY_ID">
+          <span class="text-sm text-accent italic flex items-center gap-1.5">
+            <span class="i-carbon:clean w-3.5 h-3.5" aria-hidden="true" />
+            {{ $t('compare.no_dependency.label') }}
+          </span>
+        </template>
         <NuxtLink
-          :to="`/package/${pkg}`"
+          v-else
+          :to="packageRoute(pkg)"
           class="font-mono text-sm text-fg hover:text-accent transition-colors"
         >
           {{ pkg }}
         </NuxtLink>
         <button
           type="button"
-          class="text-fg-subtle hover:text-fg transition-colors focus-visible:outline-accent/70 rounded"
-          :aria-label="$t('compare.selector.remove_package', { package: pkg })"
+          class="text-fg-subtle hover:text-fg transition-colors rounded"
+          :aria-label="
+            $t('compare.selector.remove_package', {
+              package: pkg === NO_DEPENDENCY_ID ? $t('compare.no_dependency.label') : pkg,
+            })
+          "
           @click="removePackage(pkg)"
         >
           <span class="i-carbon:close flex items-center w-3.5 h-3.5" aria-hidden="true" />
@@ -118,9 +166,28 @@ function handleBlur() {
         leave-to-class="opacity-0"
       >
         <div
-          v-if="isInputFocused && (filteredResults.length > 0 || isSearching)"
+          v-if="
+            isInputFocused && (filteredResults.length > 0 || isSearching || showNoDependencyOption)
+          "
           class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
+          <!-- No dependency option (easter egg with James) -->
+          <button
+            v-if="showNoDependencyOption"
+            type="button"
+            class="w-full text-start px-4 py-2.5 hover:bg-bg-muted transition-colors focus-visible:outline-none focus-visible:bg-bg-muted border-b border-border/50"
+            :aria-label="$t('compare.no_dependency.add_column')"
+            @click="addPackage(NO_DEPENDENCY_ID)"
+          >
+            <div class="text-sm text-accent italic flex items-center gap-2">
+              <span class="i-carbon:clean w-4 h-4" aria-hidden="true" />
+              {{ $t('compare.no_dependency.typeahead_title') }}
+            </div>
+            <div class="text-xs text-fg-muted truncate mt-0.5">
+              {{ $t('compare.no_dependency.typeahead_description') }}
+            </div>
+          </button>
+
           <div v-if="isSearching" class="px-4 py-3 text-sm text-fg-muted">
             {{ $t('compare.selector.searching') }}
           </div>
@@ -128,7 +195,7 @@ function handleBlur() {
             v-for="result in filteredResults"
             :key="result.name"
             type="button"
-            class="w-full text-left px-4 py-2.5 hover:bg-bg-muted transition-colors focus-visible:outline-none focus-visible:bg-bg-muted"
+            class="w-full text-start px-4 py-2.5 hover:bg-bg-muted transition-colors focus-visible:outline-none focus-visible:bg-bg-muted"
             @click="addPackage(result.name)"
           >
             <div class="font-mono text-sm text-fg">{{ result.name }}</div>
@@ -142,7 +209,12 @@ function handleBlur() {
 
     <!-- Hint -->
     <p class="text-xs text-fg-subtle">
-      {{ $t('compare.selector.packages_selected', { count: packages.length, max: maxPackages }) }}
+      {{
+        $t('compare.selector.packages_selected', {
+          count: numberFormatter.format(packages.length),
+          max: numberFormatter.format(maxPackages),
+        })
+      }}
       <span v-if="packages.length < 2">{{ $t('compare.selector.add_hint') }}</span>
     </p>
   </div>

@@ -1,22 +1,9 @@
 import process from 'node:process'
 import { currentLocales } from './config/i18n'
+import { isCI, provider } from 'std-env'
 
 export default defineNuxtConfig({
   modules: [
-    // Workaround for Nuxt 4.3.0 regression: https://github.com/nuxt/nuxt/issues/34140
-    // shared-imports.d.ts pulls in app composables during type-checking of shared context,
-    // but the shared context doesn't have access to auto-import globals.
-    // TODO: Remove when Nuxt fixes this upstream
-    function (_, nuxt) {
-      nuxt.hook('prepare:types', ({ sharedReferences }) => {
-        const idx = sharedReferences.findIndex(
-          ref => 'path' in ref && ref.path.endsWith('shared-imports.d.ts'),
-        )
-        if (idx !== -1) {
-          sharedReferences.splice(idx, 1)
-        }
-      })
-    },
     '@unocss/nuxt',
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
@@ -43,8 +30,8 @@ export default defineNuxtConfig({
     sessionPassword: '',
     // Upstash Redis for distributed OAuth token refresh locking in production
     upstash: {
-      redisRestUrl: process.env.KV_REST_API_URL || '',
-      redisRestToken: process.env.KV_REST_API_TOKEN || '',
+      redisRestUrl: process.env.UPSTASH_KV_REST_API_URL || process.env.KV_REST_API_URL || '',
+      redisRestToken: process.env.UPSTASH_KV_REST_API_TOKEN || process.env.KV_REST_API_TOKEN || '',
     },
   },
 
@@ -68,6 +55,7 @@ export default defineNuxtConfig({
           href: '/opensearch.xml',
         },
       ],
+      meta: [{ name: 'twitter:card', content: 'summary_large_image' }],
     },
   },
 
@@ -84,36 +72,43 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: true },
-    '/opensearch.xml': { isr: true },
-    '/**': { isr: getISRConfig(60, true) },
+    // API routes
     '/api/**': { isr: 60 },
-    '/200.html': { prerender: true },
-    '/package/**': { isr: getISRConfig(60, true) },
-    '/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
-    // never cache
-    '/search': { isr: false, cache: false },
-    '/api/auth/**': { isr: false, cache: false },
-    '/api/social/**': { isr: false, cache: false },
-    // infinite cache (versioned - doesn't change)
-    '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/package-docs/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/package-docs/:scope/:pkg/v/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/files/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
-    '/_avatar/**': {
-      isr: 3600,
-      proxy: {
-        to: 'https://www.gravatar.com/avatar/**',
+    '/:pkg/.well-known/skills/**': { isr: 3600 },
+    '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
+    '/__og-image__/**': { isr: getISRConfig(60) },
+    '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
+    '/opensearch.xml': { isr: true },
+    '/oauth-client-metadata.json': { prerender: true },
+    // never cache
+    '/api/auth/**': { isr: false, cache: false },
+    '/api/social/**': { isr: false, cache: false },
+    '/api/opensearch/suggestions': {
+      isr: {
+        expiration: 60 * 60 * 24 /* one day */,
+        passQuery: true,
+        allowQuery: ['q'],
       },
     },
+    // pages
+    '/package/:name': { isr: getISRConfig(60, true) },
+    '/package/:name/v/:version': { isr: getISRConfig(60, true) },
+    '/package/:org/:name': { isr: getISRConfig(60, true) },
+    '/package/:org/:name/v/:version': { isr: getISRConfig(60, true) },
+    // infinite cache (versioned - doesn't change)
+    '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
+    '/package-docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     // static pages
+    '/': { prerender: true },
+    '/200.html': { prerender: true },
     '/about': { prerender: true },
+    '/privacy': { prerender: true },
+    '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
-    '/oauth-client-metadata.json': { prerender: true },
     // proxy for insights
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
@@ -123,6 +118,7 @@ export default defineNuxtConfig({
 
   experimental: {
     entryImportMap: false,
+    typescriptPlugin: true,
     viteEnvironmentApi: true,
     viewTransition: true,
     typedPages: true,
@@ -186,6 +182,7 @@ export default defineNuxtConfig({
   },
 
   htmlValidator: {
+    enabled: !isCI || (provider !== 'vercel' && !!process.env.VALIDATE_HTML),
     failOnError: true,
   },
 
@@ -257,12 +254,16 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: [
         '@vueuse/core',
+        '@vueuse/integrations/useFocusTrap',
+        '@vueuse/integrations/useFocusTrap/component',
         'vue-data-ui/vue-ui-sparkline',
         'vue-data-ui/vue-ui-xy',
         'virtua/vue',
         'semver',
         'validate-npm-package-name',
         '@atproto/lex',
+        'fast-npm-meta',
+        '@floating-ui/vue',
       ],
     },
   },

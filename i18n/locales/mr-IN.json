@@ -5,7 +5,6 @@
       "description": "npm नोंदणीसाठी एक चांगला ब्राउझर. आधुनिक इंटरफेससह पॅकेजेस शोधा, ब्राउझ करा आणि एक्सप्लोर करा."
     }
   },
-  "version": "आवृत्ती",
   "built_at": "{0} ला तयार केले",
   "alt_logo": "npmx लोगो",
   "tagline": "npm नोंदणीसाठी एक चांगला ब्राउझर",
@@ -22,7 +21,6 @@
     "label": "npm पॅकेजेस शोधा",
     "placeholder": "पॅकेजेस शोधा...",
     "button": "शोधा",
-    "clear": "शोध साफ करा",
     "searching": "शोधत आहे...",
     "found_packages": "कोणतेही पॅकेज सापडले नाही | 1 पॅकेज सापडले | {count} पॅकेजेस सापडल्या",
     "updating": "(अद्यतनित करत आहे...)",
@@ -44,7 +42,6 @@
   "nav": {
     "main_navigation": "मुख्य",
     "popular_packages": "लोकप्रिय पॅकेजेस",
-    "search": "शोध",
     "settings": "सेटिंग्ज",
     "compare": "तुलना करा",
     "back": "मागे",
@@ -64,7 +61,6 @@
       "language": "भाषा"
     },
     "relative_dates": "सापेक्ष तारखा",
-    "relative_dates_description": "पूर्ण तारखांऐवजी \"3 दिवसांपूर्वी\" दर्शवा",
     "include_types": "स्थापनेत {'@'}types समाविष्ट करा",
     "include_types_description": "अनटाइप केलेल्या पॅकेजसाठी स्थापना आदेशात {'@'}types पॅकेज जोडा",
     "hide_platform_packages": "शोधात प्लॅटफॉर्म-विशिष्ट पॅकेजेस लपवा",
@@ -99,8 +95,6 @@
     "copy": "कॉपी करा",
     "copied": "कॉपी झाले!",
     "skip_link": "मुख्य सामग्रीवर जा",
-    "close_modal": "मोडल बंद करा",
-    "show_more": "अधिक दर्शवा",
     "warnings": "चेतावण्या:",
     "go_back_home": "मुख्यपृष्ठावर परत जा",
     "view_on_npm": "npm वर पहा",
@@ -117,7 +111,6 @@
     "not_found": "पॅकेज सापडले नाही",
     "not_found_message": "पॅकेज सापडले नाही.",
     "no_description": "कोणतेही वर्णन प्रदान केलेले नाही",
-    "show_full_description": "संपूर्ण वर्णन दर्शवा",
     "not_latest": "(नवीनतम नाही)",
     "verified_provenance": "सत्यापित उत्पत्ती",
     "view_permalink": "या आवृत्तीसाठी परमालिंक पहा",
@@ -145,7 +138,6 @@
       "vulns": "असुरक्षितता",
       "published": "प्रकाशित",
       "published_tooltip": "{package}{'@'}{version} प्रकाशित झाल्याची तारीख",
-      "skills": "कौशल्ये",
       "view_dependency_graph": "निर्भरता आलेख पहा",
       "inspect_dependency_tree": "निर्भरता वृक्षाची तपासणी करा",
       "size_tooltip": {
@@ -156,7 +148,6 @@
     "skills": {
       "title": "एजंट कौशल्ये",
       "skills_available": "{count} कौशल्य उपलब्ध | {count} कौशल्ये उपलब्ध",
-      "view": "पहा",
       "compatible_with": "{tool} शी सुसंगत",
       "install": "स्थापित करा",
       "installation_method": "स्थापना पद्धत",
@@ -181,6 +172,7 @@
       "fund": "निधी",
       "compare": "तुलना करा"
     },
+    "likes": {},
     "docs": {
       "not_available": "दस्तऐवज उपलब्ध नाहीत",
       "not_available_detail": "आम्ही या आवृत्तीसाठी दस्तऐवज तयार करू शकलो नाही."
@@ -200,7 +192,10 @@
       "title": "चालवा",
       "locally": "स्थानिकरित्या चालवा"
     },
-    "readme": {},
+    "readme": {
+      "callout": {}
+    },
+    "provenance_section": {},
     "keywords_title": "कीवर्ड",
     "compatibility": "सुसंगतता",
     "card": {},
@@ -215,7 +210,6 @@
     "metrics": {},
     "license": {},
     "vulnerabilities": {
-      "depth": {},
       "severity": {}
     },
     "deprecated": {},
@@ -227,7 +221,6 @@
     "sort": {}
   },
   "connector": {
-    "status": {},
     "modal": {}
   },
   "operations": {
@@ -297,6 +290,7 @@
   "compare": {
     "packages": {},
     "selector": {},
+    "no_dependency": {},
     "facets": {
       "categories": {},
       "items": {
@@ -305,6 +299,7 @@
         "dependencies": {},
         "totalDependencies": {},
         "downloads": {},
+        "totalLikes": {},
         "lastUpdated": {},
         "deprecated": {},
         "engines": {},
@@ -315,5 +310,19 @@
       },
       "values": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

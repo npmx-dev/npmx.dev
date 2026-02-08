@@ -5,6 +5,10 @@ const props = defineProps<{
 
 const dialogRef = useTemplateRef('dialogRef')
 
+const emit = defineEmits<{
+  (e: 'transitioned'): void
+}>()
+
 const modalTitleId = computed(() => {
   const id = getCurrentInstance()?.attrs.id
   return id ? `${id}-title` : undefined
@@ -12,6 +16,20 @@ const modalTitleId = computed(() => {
 
 function handleModalClose() {
   dialogRef.value?.close()
+}
+
+/**
+ * Emits `transitioned` once the dialog has finished its open opacity transition.
+ * This is used by consumers that need to run layout-sensitive logic (for example
+ * dispatching a resize) only after the modal is fully displayed.
+ */
+function onDialogTransitionEnd(event: TransitionEvent) {
+  const el = dialogRef.value
+  if (!el) return
+  if (!el.open) return
+  if (event.target !== el) return
+  if (event.propertyName !== 'opacity') return
+  emit('transitioned')
 }
 
 defineExpose({
@@ -25,23 +43,22 @@ defineExpose({
     <dialog
       ref="dialogRef"
       closedby="any"
-      class="w-full bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain m-0 m-auto p-6 text-fg focus-visible:outline focus-visible:outline-accent/70"
+      class="w-[calc(100%-2rem)] bg-bg border border-border rounded-lg shadow-xl max-h-[90vh] overflow-y-auto overscroll-contain m-0 m-auto p-6 text-fg focus-visible:outline focus-visible:outline-accent/70"
       :aria-labelledby="modalTitleId"
       v-bind="$attrs"
+      @transitionend="onDialogTransitionEnd"
     >
       <!-- Modal top header section -->
       <div class="flex items-center justify-between mb-6">
         <h2 :id="modalTitleId" class="font-mono text-lg font-medium">
           {{ modalTitle }}
         </h2>
-        <button
+        <ButtonBase
           type="button"
-          class="text-fg-subtle w-5 h-5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
           :aria-label="$t('common.close')"
           @click="handleModalClose"
-        >
-          <span class="i-carbon-close w-5 h-5" aria-hidden="true" />
-        </button>
+          classicon="i-carbon-close"
+        />
       </div>
       <!-- Modal body content -->
       <slot />
@@ -52,7 +69,7 @@ defineExpose({
 <style scoped>
 /* Backdrop styling when any of the modals are open */
 dialog:modal::backdrop {
-  @apply bg-black/60;
+  @apply bg-bg-elevated/70;
 }
 
 dialog::backdrop {

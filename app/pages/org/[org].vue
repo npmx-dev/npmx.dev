@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { FilterChip, SortOption } from '#shared/types/preferences'
-import { debounce } from 'perfect-debounce'
 import { normalizeSearchParam } from '#shared/utils/url'
+import { debounce } from 'perfect-debounce'
 
 definePageMeta({
   name: 'org',
-  alias: ['/org/:org()'],
 })
 
 const route = useRoute('org')
@@ -15,16 +14,23 @@ const orgName = computed(() => route.params.org)
 
 const { isConnected } = useConnector()
 
-// Fetch all packages in this org using the org packages API
-const { data: results, status, error } = await useOrgPackages(orgName)
+// Fetch all packages in this org using the org packages API (lazy to not block navigation)
+const { data: results, status, error } = useOrgPackages(orgName)
 
-if (status.value === 'error' && error.value?.statusCode === 404) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: $t('org.page.not_found'),
-    message: $t('org.page.not_found_message', { name: orgName.value }),
-  })
-}
+// Handle 404 errors reactively (since we're not awaiting)
+watch(
+  [status, error],
+  ([newStatus, newError]) => {
+    if (newStatus === 'error' && newError?.statusCode === 404) {
+      showError({
+        statusCode: 404,
+        statusMessage: $t('org.page.not_found'),
+        message: $t('org.page.not_found_message', { name: orgName.value }),
+      })
+    }
+  },
+  { immediate: true },
+)
 
 const packages = computed(() => results.value?.objects ?? [])
 const packageCount = computed(() => packages.value.length)
@@ -131,7 +137,11 @@ useHead({
 
 useSeoMeta({
   title: () => `@${orgName.value} - npmx`,
+  ogTitle: () => `@${orgName.value} - npmx`,
+  twitterTitle: () => `@${orgName.value} - npmx`,
   description: () => `npm packages published by the ${orgName.value} organization`,
+  ogDescription: () => `npm packages published by the ${orgName.value} organization`,
+  twitterDescription: () => `npm packages published by the ${orgName.value} organization`,
 })
 
 defineOgImageComponent('Default', {
@@ -234,7 +244,9 @@ defineOgImageComponent('Default', {
       <p class="text-fg-muted mb-4">
         {{ error?.message ?? $t('org.page.failed_to_load') }}
       </p>
-      <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
+      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{
+        $t('common.go_back_home')
+      }}</LinkBase>
     </div>
 
     <!-- Empty state -->

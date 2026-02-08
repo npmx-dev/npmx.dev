@@ -9,14 +9,16 @@ const props = defineProps<{
 }>()
 
 const chartModal = useModal('chart-modal')
-
+const hasChartModalTransitioned = shallowRef(false)
 const isChartModalOpen = shallowRef(false)
-async function openChartModal() {
-  isChartModalOpen.value = true
-  // ensure the component renders before opening the dialog
-  await nextTick()
-  await nextTick()
-  chartModal.open()
+
+function handleModalClose() {
+  isChartModalOpen.value = false
+  hasChartModalTransitioned.value = false
+}
+
+function handleModalTransitioned() {
+  hasChartModalTransitioned.value = true
 }
 
 const { fetchPackageDownloadEvolution } = useCharts()
@@ -85,10 +87,24 @@ const pulseColor = computed(() => {
 })
 
 const weeklyDownloads = shallowRef<WeeklyDownloadPoint[]>([])
+const isLoadingWeeklyDownloads = shallowRef(true)
+const hasWeeklyDownloads = computed(() => weeklyDownloads.value.length > 0)
+
+async function openChartModal() {
+  if (!hasWeeklyDownloads.value) return
+
+  isChartModalOpen.value = true
+  hasChartModalTransitioned.value = false
+  // ensure the component renders before opening the dialog
+  await nextTick()
+  await nextTick()
+  chartModal.open()
+}
 
 async function loadWeeklyDownloads() {
   if (!import.meta.client) return
 
+  isLoadingWeeklyDownloads.value = true
   try {
     const result = await fetchPackageDownloadEvolution(
       () => props.packageName,
@@ -98,6 +114,8 @@ async function loadWeeklyDownloads() {
     weeklyDownloads.value = (result as WeeklyDownloadPoint[]) ?? []
   } catch {
     weeklyDownloads.value = []
+  } finally {
+    isLoadingWeeklyDownloads.value = false
   }
 }
 
@@ -165,14 +183,15 @@ const config = computed(() => {
       line: {
         color: colors.value.borderHover,
         pulse: {
-          show: true,
+          show: true, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
           loop: true, // runs only once if false
-          radius: 2,
+          radius: 1.5,
           color: pulseColor.value,
           easing: 'ease-in-out',
           trail: {
             show: true,
-            length: 6,
+            length: 20,
+            opacity: 0.75,
           },
         },
       },
@@ -199,64 +218,103 @@ const config = computed(() => {
   <div class="space-y-8">
     <CollapsibleSection id="downloads" :title="$t('package.downloads.title')">
       <template #actions>
-        <button
+        <ButtonBase
+          v-if="hasWeeklyDownloads"
           type="button"
           @click="openChartModal"
           class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
           :title="$t('package.downloads.analyze')"
+          classicon="i-carbon:data-analytics"
         >
-          <span class="i-carbon:data-analytics w-4 h-4" aria-hidden="true" />
           <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
-        </button>
+        </ButtonBase>
       </template>
 
       <div class="w-full overflow-hidden">
-        <ClientOnly>
-          <VueUiSparkline class="w-full max-w-xs" :dataset :config>
-            <template #skeleton>
-              <!-- This empty div overrides the default built-in scanning animation on load -->
-              <div />
+        <template v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads">
+          <ClientOnly>
+            <VueUiSparkline class="w-full max-w-xs" :dataset :config>
+              <template #skeleton>
+                <!-- This empty div overrides the default built-in scanning animation on load -->
+                <div />
+              </template>
+            </VueUiSparkline>
+            <template #fallback>
+              <!-- Skeleton matching sparkline layout: title row + chart with data label -->
+              <div class="min-h-[75.195px]">
+                <!-- Title row: date range (24px height) -->
+                <div class="h-6 flex items-center ps-3">
+                  <SkeletonInline class="h-3 w-36" />
+                </div>
+                <!-- Chart area: data label left, sparkline right -->
+                <div class="aspect-[500/80] flex items-center">
+                  <!-- Data label (covers ~42% width) -->
+                  <div class="w-[42%] flex items-center ps-0.5">
+                    <SkeletonInline class="h-7 w-24" />
+                  </div>
+                  <!-- Sparkline area (~58% width) -->
+                  <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
+                    <SkeletonInline
+                      v-for="i in 16"
+                      :key="i"
+                      class="flex-1 rounded-sm"
+                      :style="{ height: `${25 + ((i * 7) % 50)}%` }"
+                    />
+                  </div>
+                </div>
+              </div>
             </template>
-          </VueUiSparkline>
-          <template #fallback>
-            <!-- Skeleton matching sparkline layout: title row + chart with data label -->
-            <div class="min-h-[75.195px]">
-              <!-- Title row: date range (24px height) -->
-              <div class="h-6 flex items-center ps-3">
-                <SkeletonInline class="h-3 w-36" />
-              </div>
-              <!-- Chart area: data label left, sparkline right -->
-              <div class="aspect-[500/80] flex items-center">
-                <!-- Data label (covers ~42% width) -->
-                <div class="w-[42%] flex items-center ps-0.5">
-                  <SkeletonInline class="h-7 w-24" />
-                </div>
-                <!-- Sparkline area (~58% width) -->
-                <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
-                  <SkeletonInline
-                    v-for="i in 16"
-                    :key="i"
-                    class="flex-1 rounded-sm"
-                    :style="{ height: `${25 + ((i * 7) % 50)}%` }"
-                  />
-                </div>
-              </div>
-            </div>
-          </template>
-        </ClientOnly>
+          </ClientOnly>
+        </template>
+        <p v-else class="py-2 text-sm font-mono text-fg-subtle">
+          {{ $t('package.downloads.no_data') }}
+        </p>
       </div>
     </CollapsibleSection>
   </div>
 
-  <PackageChartModal v-if="isChartModalOpen" @close="isChartModalOpen = false">
-    <PackageDownloadAnalytics
-      :weeklyDownloads="weeklyDownloads"
-      :inModal="true"
-      :packageName="props.packageName"
-      :createdIso="createdIso"
+  <PackageChartModal
+    v-if="isChartModalOpen && hasWeeklyDownloads"
+    @close="handleModalClose"
+    @transitioned="handleModalTransitioned"
+  >
+    <!-- The Chart is mounted after the dialog has transitioned -->
+    <!-- This avoids flaky behavior that hides the chart's minimap half of the time -->
+    <Transition name="opacity" mode="out-in">
+      <PackageDownloadAnalytics
+        v-if="hasChartModalTransitioned"
+        :weeklyDownloads="weeklyDownloads"
+        :inModal="true"
+        :packageName="props.packageName"
+        :createdIso="createdIso"
+      />
+    </Transition>
+
+    <!-- This placeholder bears the same dimensions as the PackageDownloadAnalytics component -->
+    <!-- Avoids CLS when the dialog has transitioned -->
+    <div
+      v-if="!hasChartModalTransitioned"
+      class="w-full aspect-[390/634.5] sm:aspect-[718/622.797]"
     />
   </PackageChartModal>
 </template>
+
+<style scoped>
+.opacity-enter-active,
+.opacity-leave-active {
+  transition: opacity 200ms ease;
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
+}
+
+.opacity-enter-to,
+.opacity-leave-from {
+  opacity: 1;
+}
+</style>
 
 <style>
 /** Overrides */

@@ -1,13 +1,19 @@
 coverage:
   status:
+    changes:
+      default:
+        only_pulls: true
+        informational: true
     project:
       default:
+        only_pulls: true
         informational: true
     patch:
       default:
+        only_pulls: true
         informational: true
 
 comment:
-  layout: 'reach,diff,flags,tree,components,tests,build'
+  layout: 'reach,diff,flags,tree,components'
   behavior: default
   require_changes: false

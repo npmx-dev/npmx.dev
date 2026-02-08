@@ -303,7 +303,7 @@ function isValidNpmName(name: string): boolean {
   // Must start with alphanumeric
   if (!/^[a-z0-9]/i.test(name)) return false
   // Can contain alphanumeric, hyphen, underscore
-  return /^[a-z0-9_-]+$/i.test(name)
+  return /^[\w-]+$/.test(name)
 }
 
 /** Validated user/org suggestion */
@@ -315,8 +315,6 @@ interface ValidatedSuggestion {
 
 /** Cache for existence checks to avoid repeated API calls */
 const existenceCache = ref<Record<string, boolean | 'pending'>>({})
-
-const NPM_REGISTRY = 'https://registry.npmjs.org'
 
 interface NpmSearchResponse {
   total: number
@@ -541,7 +539,56 @@ function focusElement(el: HTMLElement) {
   el.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
 }
 
+// Navigate to package page
+async function navigateToPackage(packageName: string) {
+  await navigateTo(packageRoute(packageName))
+}
+
+// Track the input value when user pressed Enter (for navigating when results arrive)
+const pendingEnterQuery = shallowRef<string | null>(null)
+
+// Watch for results to navigate when Enter was pressed before results arrived
+watch(displayResults, results => {
+  if (!pendingEnterQuery.value) return
+
+  // Check if input is still focused (user hasn't started navigating or clicked elsewhere)
+  if (document.activeElement?.tagName !== 'INPUT') {
+    pendingEnterQuery.value = null
+    return
+  }
+
+  // Navigate if first result matches the query that was entered
+  const firstResult = results[0]
+  // eslint-disable-next-line no-console
+  console.log('[search] watcher fired', {
+    pending: pendingEnterQuery.value,
+    firstResult: firstResult?.package.name,
+  })
+  if (firstResult?.package.name === pendingEnterQuery.value) {
+    pendingEnterQuery.value = null
+    navigateToPackage(firstResult.package.name)
+  }
+})
+
 function handleResultsKeydown(e: KeyboardEvent) {
+  // If the active element is an input, navigate to exact match or wait for results
+  if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
+    // Get value directly from input (not from route query, which may be debounced)
+    const inputValue = (document.activeElement as HTMLInputElement).value.trim()
+    if (!inputValue) return
+
+    // Check if first result matches the input value exactly
+    const firstResult = displayResults.value[0]
+    if (firstResult?.package.name === inputValue) {
+      pendingEnterQuery.value = null
+      return navigateToPackage(firstResult.package.name)
+    }
+
+    // No match yet - store input value, watcher will handle navigation when results arrive
+    pendingEnterQuery.value = inputValue
+    return
+  }
+
   if (totalSelectableCount.value <= 0) return
 
   const elements = getFocusableElements()
@@ -583,7 +630,19 @@ onKeyDown(['ArrowDown', 'ArrowUp', 'Enter'], handleResultsKeydown)
 useSeoMeta({
   title: () =>
     `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  ogTitle: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  twitterTitle: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
   description: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
+  ogDescription: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
+  twitterDescription: () =>
     query.value
       ? $t('search.meta_description', { search: query.value })
       : $t('search.meta_description_packages'),

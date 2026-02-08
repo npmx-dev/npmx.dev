@@ -5,16 +5,19 @@ onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
   const id = settings.preferredBackgroundTheme
   if (id) {
-    const input = el.querySelector<HTMLInputElement>(`input[value="${id || 'neutral'}"]`)
+    const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
       input.checked = true
+      input.setAttribute('checked', '')
     }
   }
 })
 </script>
 
 <template>
-  <fieldset class="flex items-center gap-4">
+  <fieldset
+    class="flex items-center gap-4 has-[input:focus-visible]:(outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
+  >
     <legend class="sr-only">{{ $t('settings.background_themes') }}</legend>
     <label
       v-for="theme in backgroundThemes"

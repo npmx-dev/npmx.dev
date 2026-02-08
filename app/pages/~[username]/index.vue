@@ -163,7 +163,11 @@ watch(username, () => {
 
 useSeoMeta({
   title: () => `~${username.value} - npmx`,
+  ogTitle: () => `~${username.value} - npmx`,
+  twitterTitle: () => `~${username.value} - npmx`,
   description: () => `npm packages maintained by ${username.value}`,
+  ogDescription: () => `npm packages maintained by ${username.value}`,
+  twitterDescription: () => `npm packages maintained by ${username.value}`,
 })
 
 defineOgImageComponent('Default', {
@@ -224,7 +228,9 @@ defineOgImageComponent('Default', {
       <p class="text-fg-muted mb-4">
         {{ error?.message ?? $t('user.page.failed_to_load') }}
       </p>
-      <NuxtLink to="/" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
+      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{
+        $t('common.go_back_home')
+      }}</LinkBase>
     </div>
 
     <!-- Package list -->

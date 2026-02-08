@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ColumnConfig, ColumnId } from '#shared/types/preferences'
+import { onKeyDown } from '@vueuse/core'
 
 const props = defineProps<{
   columns: ColumnConfig[]
@@ -26,35 +27,38 @@ onClickOutside(
   },
 )
 
-// Close on Escape key
-useEventListener('keydown', event => {
-  if (event.key === 'Escape' && isOpen.value) {
+onKeyDown(
+  'Escape',
+  e => {
+    if (!isOpen.value) return
     isOpen.value = false
     buttonRef.value?.focus()
-  }
-})
+  },
+  { dedupe: true },
+)
+
 // Columns that can be toggled (name is always visible)
 const toggleableColumns = computed(() => props.columns.filter(col => col.id !== 'name'))
 
 // Map column IDs to i18n keys
-const columnLabelKey: Record<string, string> = {
-  name: 'filters.columns.name',
-  version: 'filters.columns.version',
-  description: 'filters.columns.description',
-  downloads: 'filters.columns.downloads',
-  updated: 'filters.columns.published',
-  maintainers: 'filters.columns.maintainers',
-  keywords: 'filters.columns.keywords',
-  qualityScore: 'filters.columns.quality_score',
-  popularityScore: 'filters.columns.popularity_score',
-  maintenanceScore: 'filters.columns.maintenance_score',
-  combinedScore: 'filters.columns.combined_score',
-  security: 'filters.columns.security',
-}
+const columnLabels = computed(() => ({
+  name: $t('filters.columns.name'),
+  version: $t('filters.columns.version'),
+  description: $t('filters.columns.description'),
+  downloads: $t('filters.columns.downloads'),
+  updated: $t('filters.columns.published'),
+  maintainers: $t('filters.columns.maintainers'),
+  keywords: $t('filters.columns.keywords'),
+  qualityScore: $t('filters.columns.quality_score'),
+  popularityScore: $t('filters.columns.popularity_score'),
+  maintenanceScore: $t('filters.columns.maintenance_score'),
+  combinedScore: $t('filters.columns.combined_score'),
+  security: $t('filters.columns.security'),
+}))
 
-function getColumnLabel(id: string): string {
-  const key = columnLabelKey[id]
-  return key ? $t(key) : id
+function getColumnLabel(id: ColumnId): string {
+  const key = columnLabels.value[id]
+  return key ?? id
 }
 
 function handleReset() {
@@ -65,25 +69,23 @@ function handleReset() {
 
 <template>
   <div class="relative">
-    <button
+    <ButtonBase
       ref="buttonRef"
-      type="button"
-      class="btn-ghost inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-md hover:border-border-hover focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       :aria-controls="menuId"
       @click.stop="isOpen = !isOpen"
+      classicon="i-carbon-column"
     >
-      <span class="i-carbon-column w-4 h-4" aria-hidden="true" />
-      <span class="font-mono text-sm">{{ $t('filters.columns.title') }}</span>
-    </button>
+      {{ $t('filters.columns.title') }}
+    </ButtonBase>
 
     <Transition name="dropdown">
       <div
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute inset-is-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute top-full inset-ie-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >
@@ -132,13 +134,9 @@ function handleReset() {
           </div>
 
           <div class="border-t border-border py-1">
-            <button
-              type="button"
-              class="w-full px-3 py-2 text-start text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
-              @click="handleReset"
-            >
+            <ButtonBase @click="handleReset">
               {{ $t('filters.columns.reset') }}
-            </button>
+            </ButtonBase>
           </div>
         </div>
       </div>

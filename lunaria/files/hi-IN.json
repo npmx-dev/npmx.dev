@@ -5,7 +5,6 @@
       "description": "npm रजिस्ट्री के लिए एक बेहतर ब्राउज़र। आधुनिक अंतरापृष्ठ के साथ पैकेज खोजें, ब्राउज़ करें और अन्वेषण करें।"
     }
   },
-  "version": "संस्करण",
   "built_at": "{0} को बनाया गया",
   "alt_logo": "npmx लोगो",
   "tagline": "npm रजिस्ट्री के लिए एक बेहतर ब्राउज़र",
@@ -22,7 +21,6 @@
     "label": "npm पैकेज खोजें",
     "placeholder": "पैकेज खोजें...",
     "button": "खोजें",
-    "clear": "खोज साफ़ करें",
     "searching": "खोज रहे हैं...",
     "found_packages": "कोई पैकेज नहीं मिला | 1 पैकेज मिला | {count} पैकेज मिले",
     "updating": "(अद्यतन हो रहा है...)",
@@ -43,7 +41,6 @@
   "nav": {
     "main_navigation": "मुख्य",
     "popular_packages": "लोकप्रिय पैकेज",
-    "search": "खोजें",
     "settings": "सेटिंग्स",
     "compare": "तुलना करें",
     "back": "वापस",
@@ -63,7 +60,6 @@
       "language": "भाषा"
     },
     "relative_dates": "सापेक्ष तिथियाँ",
-    "relative_dates_description": "पूर्ण तिथियों के बजाय \"3 दिन पहले\" दिखाएं",
     "include_types": "इंस्टॉल में {'@'}types शामिल करें",
     "include_types_description": "अनटाइप्ड पैकेज के लिए इंस्टॉल कमांड में {'@'}types पैकेज जोड़ें",
     "hide_platform_packages": "खोज में प्लेटफ़ॉर्म-विशिष्ट पैकेज छिपाएं",
@@ -97,8 +93,6 @@
     "copy": "अनुकरण करें",
     "copied": "अनुकरण हो गया!",
     "skip_link": "मुख्य सामग्री पर जाएं",
-    "close_modal": "मोडल बंद करें",
-    "show_more": "और दिखाएं",
     "warnings": "चेतावनियाँ:",
     "go_back_home": "होम पर वापस जाएं",
     "view_on_npm": "npm पर देखें",
@@ -115,7 +109,6 @@
     "not_found": "पैकेज नहीं मिला",
     "not_found_message": "पैकेज नहीं मिल सका।",
     "no_description": "कोई विवरण प्रदान नहीं किया गया",
-    "show_full_description": "पूर्ण विवरण दिखाएं",
     "not_latest": "(नवीनतम नहीं)",
     "verified_provenance": "सत्यापित प्रोवेनेंस",
     "view_permalink": "इस संस्करण का परमालिंक देखें",
@@ -141,7 +134,6 @@
       "deps": "निर्भरता",
       "install_size": "इंस्टॉल साइज़",
       "vulns": "कमजोरियाँ",
-      "skills": "स्किल्स",
       "view_dependency_graph": "निर्भरता ग्राफ़ देखें",
       "inspect_dependency_tree": "निर्भरता ट्री का निरीक्षण करें",
       "size_tooltip": {
@@ -152,7 +144,6 @@
     "skills": {
       "title": "एजेंट स्किल्स",
       "skills_available": "{count} स्किल उपलब्ध है | {count} स्किल्स उपलब्ध हैं",
-      "view": "देखें",
       "compatible_with": "{tool} के साथ संगत",
       "install": "इंस्टॉल करें",
       "installation_method": "इंस्टॉलेशन विधि",
@@ -299,25 +290,12 @@
       "none": "कोई नहीं"
     },
     "vulnerabilities": {
-      "no_description": "कोई विवरण उपलब्ध नहीं",
-      "found": "{count} कमजोरी मिली | {count} कमजोरियाँ मिलीं",
-      "deps_found": "{count} कमजोरी मिली | {count} कमजोरियाँ मिलीं",
-      "deps_affected": "{count} निर्भरता प्रभावित | {count} निर्भरता प्रभावित",
       "tree_found": "{packages}/{total} पैकेज में {vulns} कमजोरी | {packages}/{total} पैकेज में {vulns} कमजोरियाँ",
-      "scanning_tree": "निर्भरता ट्री स्कैन कर रहे हैं...",
       "show_all_packages": "सभी {count} प्रभावित पैकेज दिखाएं",
-      "no_summary": "कोई सारांश नहीं",
-      "view_details": "कमजोरी विवरण देखें",
       "path": "पाथ",
       "more": "+{count} और",
       "packages_failed": "{count} पैकेज की जाँच नहीं की जा सकी | {count} पैकेज की जाँच नहीं की जा सकी",
-      "no_known": "{count} पैकेज में कोई ज्ञात कमजोरियाँ नहीं",
       "scan_failed": "कमजोरियों के लिए स्कैन नहीं किया जा सका",
-      "depth": {
-        "root": "यह पैकेज",
-        "direct": "प्रत्यक्ष निर्भरता",
-        "transitive": "ट्रांजिटिव निर्भरता (अप्रत्यक्ष)"
-      },
       "severity": {
         "critical": "गंभीर",
         "high": "उच्च",
@@ -359,12 +337,7 @@
     },
     "skeleton": {
       "loading": "पैकेज विवरण लोड हो रहे हैं",
-      "license": "अनुज्ञप्ति",
       "weekly": "साप्ताहिक",
-      "size": "साइज़",
-      "deps": "निर्भरताएँ",
-      "get_started": "शुरू करें",
-      "readme": "रीडमी",
       "maintainers": "अनुरक्षक",
       "keywords": "कीवर्ड्स",
       "versions": "संस्करण",
@@ -377,16 +350,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "कनेक्ट हो रहा है...",
-      "connected_as": "~{user} के रूप में कनेक्ट किया गया",
-      "connected": "कनेक्ट किया गया",
-      "connect_cli": "लोकल CLI कनेक्ट करें",
-      "aria_connecting": "लोकल कनेक्टर से कनेक्ट हो रहा है",
-      "aria_connected": "लोकल कनेक्टर से कनेक्ट किया गया",
-      "aria_click_to_connect": "लोकल कनेक्टर से कनेक्ट करने के लिए क्लिक करें",
-      "avatar_alt": "{user} का अवतार"
-    },
     "modal": {
       "title": "लोकल कनेक्टर",
       "contributor_badge": "केवल योगदानकर्ताओं के लिए",
@@ -502,8 +465,7 @@
       "failed_to_load": "संगठन पैकेज लोड करने में विफल",
       "no_match": "कोई पैकेज \"{query}\" से मेल नहीं खाते",
       "not_found": "संगठन नहीं मिला",
-      "not_found_message": "संगठन \"{'@'}{name}\" npm पर मौजूद नहीं है",
-      "filter_placeholder": "{count} पैकेज फ़िल्टर करें..."
+      "not_found_message": "संगठन \"{'@'}{name}\" npm पर मौजूद नहीं है"
     }
   },
   "user": {
@@ -564,7 +526,6 @@
   "code": {
     "files_label": "फ़ाइलें",
     "no_files": "इस डायरेक्टरी में कोई फ़ाइलें नहीं",
-    "select_version": "संस्करण चुनें",
     "root": "रूट",
     "lines": "{count} पंक्तियाँ",
     "toggle_tree": "फ़ाइल ट्री टॉगल करें",
@@ -574,7 +535,6 @@
     "view_raw": "रॉ फ़ाइल देखें",
     "file_too_large": "फ़ाइल पूर्वावलोकन के लिए बहुत बड़ी है",
     "file_size_warning": "{size} सिंटैक्स हाइलाइटिंग के लिए 500KB सीमा से अधिक है",
-    "load_anyway": "फिर भी लोड करें",
     "failed_to_load": "फ़ाइल लोड करने में विफल",
     "unavailable_hint": "फ़ाइल बहुत बड़ी या अनुपलब्ध हो सकती है",
     "version_required": "कोड ब्राउज़ करने के लिए संस्करण आवश्यक है",
@@ -599,8 +559,7 @@
       "verified_via": "सत्यापित: {provider} के माध्यम से प्रकाशित"
     },
     "jsr": {
-      "title": "JSR पर भी उपलब्ध",
-      "label": "jsr"
+      "title": "JSR पर भी उपलब्ध"
     }
   },
   "filters": {
@@ -711,7 +670,6 @@
     "title": "हमारे बारे में जानकारी",
     "heading": "हमारे बारे में जानकारी",
     "meta_description": "npmx npm रजिस्ट्री के लिए एक तेज़, आधुनिक ब्राउज़र है। npm पैकेज अन्वेषण करने के लिए बेहतर UX/DX।",
-    "back_home": "होम पर वापस जाएं",
     "what_we_are": {
       "title": "हम क्या हैं",
       "better_ux_dx": "बेहतर UX/DX",
@@ -771,8 +729,7 @@
     "connect_npm_cli": "npm CLI से कनेक्ट करें",
     "connect_atmosphere": "Atmosphere से कनेक्ट करें",
     "connecting": "कनेक्ट हो रहा है...",
-    "ops": "{count} op | {count} ops",
-    "disconnect": "डिस्कनेक्ट करें"
+    "ops": "{count} op | {count} ops"
   },
   "auth": {
     "modal": {
@@ -791,7 +748,6 @@
   },
   "header": {
     "home": "npmx home",
-    "github": "GitHub",
     "packages": "पैकेज",
     "packages_dropdown": {
       "title": "आपके पैकेज",
@@ -832,9 +788,7 @@
       "searching": "खोज रहे हैं...",
       "remove_package": "{package} हटाएं",
       "packages_selected": "{count}/{max} पैकेज चुने गए।",
-      "add_hint": "तुलना करने के लिए कम से कम 2 पैकेज जोड़ें।",
-      "loading_versions": "संस्करण लोड हो रहे हैं...",
-      "select_version": "संस्करण चुनें"
+      "add_hint": "तुलना करने के लिए कम से कम 2 पैकेज जोड़ें।"
     },
     "facets": {
       "group_label": "तुलना फेसेट्स",

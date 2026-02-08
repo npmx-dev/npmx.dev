@@ -476,7 +476,7 @@ watch(
       @click="isOpen = !isOpen"
       @keydown="handleButtonKeydown"
     >
-      <span>{{ currentVersion }}</span>
+      <span dir="ltr">{{ currentVersion }}</span>
       <span
         v-if="currentVersion === latestVersion"
         class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium"
@@ -506,7 +506,7 @@ watch(
         :aria-activedescendant="
           focusedIndex >= 0 ? `version-${flatItems[focusedIndex]?.version?.version}` : undefined
         "
-        class="absolute top-full inset-is-0 mt-2 min-w-[220px] bg-bg-elevated border border-border rounded-lg shadow-lg z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
+        class="absolute top-full inset-is-0 mt-2 min-w-[220px] bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-fg-subtle/10 z-50 py-1 max-h-[400px] overflow-y-auto overscroll-contain focus-visible:outline-none"
         @keydown="handleListboxKeydown"
       >
         <!-- Version groups -->
@@ -558,7 +558,9 @@ watch(
               class="flex-1 truncate hover:text-fg transition-colors"
               @click="isOpen = false"
             >
-              {{ group.primaryVersion.version }}
+              <span dir="ltr">
+                {{ group.primaryVersion.version }}
+              </span>
             </NuxtLink>
 
             <!-- Tags -->
@@ -597,12 +599,12 @@ watch(
                 ]"
                 @click="isOpen = false"
               >
-                <span class="truncate">{{ v.version }}</span>
+                <span class="truncate" dir="ltr">{{ v.version }}</span>
                 <span v-if="v.tags?.length" class="flex items-center gap-1 shrink-0">
                   <span
                     v-for="tag in v.tags"
                     :key="tag"
-                    class="text-[9px] px-1 py-0.5 rounded font-sans font-medium"
+                    class="text-4xs px-1 py-0.5 rounded font-sans font-medium"
                     :class="
                       tag === 'latest'
                         ? 'bg-emerald-500/10 text-emerald-400'
@@ -620,7 +622,7 @@ watch(
         <!-- Link to package page for full version list -->
         <div class="border-t border-border mt-1 pt-1 px-3 py-2">
           <NuxtLink
-            :to="`/package/${packageName}`"
+            :to="packageRoute(packageName)"
             class="text-xs text-fg-subtle hover:text-fg transition-[color] focus-visible:outline-none focus-visible:text-fg"
             @click="isOpen = false"
           >

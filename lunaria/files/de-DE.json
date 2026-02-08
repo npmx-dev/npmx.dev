@@ -2,13 +2,12 @@
   "seo": {
     "home": {
       "title": "npmx - Paket-Browser für die npm Registry",
-      "description": "Ein besserer Browser für die npm Registry. Pakete suchen, durchstöbern und erkunden mit einer modernen Oberfläche."
+      "description": "Ein schnellerer, modernerer Browser für die npm Registry. Pakete suchen, durchstöbern und erkunden mit einer modernen Oberfläche."
     }
   },
-  "version": "Version",
   "built_at": "erstellt {0}",
   "alt_logo": "npmx Logo",
-  "tagline": "ein besserer Browser für die npm Registry",
+  "tagline": "ein schnellerer, modernerer Browser für die npm Registry",
   "non_affiliation_disclaimer": "nicht verbunden mit npm, Inc.",
   "trademark_disclaimer": "npm ist eine eingetragene Marke von npm, Inc. Diese Seite ist nicht mit npm, Inc. verbunden.",
   "footer": {
@@ -22,12 +21,15 @@
     "label": "npm-Pakete durchsuchen",
     "placeholder": "Pakete suchen...",
     "button": "Suchen",
-    "clear": "Suche löschen",
     "searching": "Suche läuft...",
     "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
     "title": "Suche",
+    "title_search": "Suche: {search}",
+    "title_packages": "Suche Pakete",
+    "meta_description": "Suchergebnisse für '{search}'",
+    "meta_description_packages": "Suche nach npm-Paketen",
     "not_taken": "{name} ist noch frei",
     "claim_prompt": "Diesen Paketnamen auf npm beanspruchen",
     "claim_button": "\"{name}\" beanspruchen",
@@ -44,7 +46,6 @@
   "nav": {
     "main_navigation": "Hauptnavigation",
     "popular_packages": "Beliebte Pakete",
-    "search": "Suche",
     "settings": "Einstellungen",
     "compare": "Vergleichen",
     "back": "Zurück",
@@ -64,7 +65,6 @@
       "language": "Sprache"
     },
     "relative_dates": "Relative Datumsangaben",
-    "relative_dates_description": "Zeige „vor 3 Tagen“ anstelle von vollständigen Datumsangaben an",
     "include_types": "{'@'}types bei Installation einschließen",
     "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Paket) automatisch zu Installationsbefehlen für Pakete ohne Typen hinzufügen",
     "hide_platform_packages": "Plattformspezifische Pakete in der Suche ausblenden",
@@ -99,8 +99,6 @@
     "copy": "Kopieren",
     "copied": "Kopiert!",
     "skip_link": "Zum Hauptinhalt springen",
-    "close_modal": "Modal schließen",
-    "show_more": "Mehr anzeigen",
     "warnings": "Warnungen:",
     "go_back_home": "Zur Startseite",
     "view_on_npm": "Auf npm ansehen",
@@ -117,7 +115,6 @@
     "not_found": "Paket nicht gefunden",
     "not_found_message": "Das Paket konnte nicht gefunden werden.",
     "no_description": "Keine Beschreibung vorhanden",
-    "show_full_description": "Vollständige Beschreibung anzeigen",
     "not_latest": "(nicht aktuell)",
     "verified_provenance": "Verifizierte Herkunft",
     "view_permalink": "Permalink für diese Version anzeigen",
@@ -135,8 +132,14 @@
       "documented": "Die {community} hat dieses Paket als eines mit leistungsstärkeren Alternativen markiert.",
       "none": "Dieses Paket wurde als nicht mehr nötig markiert, und seine Funktionen sind wahrscheinlich in allen Engines nativ verfügbar.",
       "learn_more": "Mehr erfahren",
+      "learn_more_above": "Erfahre oben mehr.",
       "mdn": "MDN",
-      "community": "Community"
+      "community": "Community",
+      "consider_no_dep": "+ Ohne Abhängigkeit lösen?"
+    },
+    "likes": {
+      "like": "Dieses Paket liken",
+      "unlike": "Like entfernen"
     },
     "stats": {
       "license": "Lizenz",
@@ -145,7 +148,6 @@
       "vulns": "Sicherheitslücken",
       "published": "Veröffentlicht",
       "published_tooltip": "Datum, an dem {package}{'@'}{version} veröffentlicht wurde",
-      "skills": "Fähigkeiten",
       "view_dependency_graph": "Abhängigkeitsgraph anzeigen",
       "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen",
       "size_tooltip": {
@@ -156,7 +158,6 @@
     "skills": {
       "title": "Agentenfähigkeiten",
       "skills_available": "{count} Fähigkeit verfügbar | {count} Fähigkeiten verfügbar",
-      "view": "Ansehen",
       "compatible_with": "Kompatibel mit {tool}",
       "install": "Installieren",
       "installation_method": "Installationsmethode",
@@ -204,7 +205,26 @@
       "title": "Readme",
       "no_readme": "Keine README verfügbar.",
       "view_on_github": "Auf GitHub ansehen",
-      "toc_title": "Gliederung"
+      "toc_title": "Gliederung",
+      "callout": {
+        "note": "Notiz",
+        "tip": "Tipp",
+        "important": "Wichtig",
+        "warning": "Warnung",
+        "caution": "Vorsicht"
+      },
+      "copy_as_markdown": "README als Markdown kopieren"
+    },
+    "provenance_section": {
+      "title": "Herkunft",
+      "built_and_signed_on": "Erstellt und signiert via {provider}",
+      "view_build_summary": "Build-Zusammenfassung anzeigen",
+      "source_commit": "Quell-Commit",
+      "build_file": "Build-Datei",
+      "public_ledger": "Öffentliches Hauptbuch",
+      "transparency_log_entry": "Transparenzprotokolleintrag",
+      "view_more_details": "Weitere Details anzeigen",
+      "error_loading": "Fehler beim Laden der Herkunftsdaten"
     },
     "keywords_title": "Schlüsselwörter",
     "compatibility": "Kompatibilität",
@@ -268,6 +288,7 @@
       "date_range": "{start} bis {end}",
       "date_range_multiline": "{start}\nbis {end}",
       "analyze": "Downloads analysieren",
+      "community_distribution": "Community-Adoptionsverteilung ansehen",
       "modal_title": "Downloads",
       "granularity": "Granularität",
       "granularity_daily": "Täglich",
@@ -290,7 +311,7 @@
     },
     "playgrounds": {
       "title": "Ausprobieren",
-      "choose": "Playground wählen"
+      "choose": "Testumgebung wählen"
     },
     "metrics": {
       "esm": "ES-Module unterstützt",
@@ -306,25 +327,12 @@
       "none": "Keine"
     },
     "vulnerabilities": {
-      "no_description": "Keine Beschreibung verfügbar",
-      "found": "{count} Sicherheitslücke gefunden | {count} Sicherheitslücken gefunden",
-      "deps_found": "{count} Sicherheitslücke gefunden | {count} Sicherheitslücken gefunden",
-      "deps_affected": "{count} betroffene Abhängigkeit | {count} betroffene Abhängigkeiten",
       "tree_found": "{vulns} Sicherheitslücke in {packages}/{total} Paketen | {vulns} Sicherheitslücken in {packages}/{total} Paketen",
-      "scanning_tree": "Abhängigkeitsbaum wird gescannt...",
       "show_all_packages": "{count} betroffenes Paket anzeigen | Alle {count} betroffenen Pakete anzeigen",
-      "no_summary": "Keine Zusammenfassung",
-      "view_details": "Details zur Sicherheitslücke anzeigen",
       "path": "Pfad",
       "more": "+{count} weitere",
       "packages_failed": "{count} Paket konnte nicht geprüft werden | {count} Pakete konnten nicht geprüft werden",
-      "no_known": "Keine bekannten Sicherheitslücken in {count} Paket | Keine bekannten Sicherheitslücken in {count} Paketen",
       "scan_failed": "Sicherheits-Scan fehlgeschlagen",
-      "depth": {
-        "root": "Dieses Paket",
-        "direct": "Direkte Abhängigkeit",
-        "transitive": "Transitive Abhängigkeit (indirekt)"
-      },
       "severity": {
         "critical": "Kritisch",
         "high": "Hoch",
@@ -366,13 +374,7 @@
     },
     "skeleton": {
       "loading": "Paketdetails werden geladen",
-      "license": "Lizenz",
       "weekly": "Wöchentlich",
-      "size": "Größe",
-      "deps": "Abhängigkeiten",
-      "published": "Veröffentlicht",
-      "get_started": "Erste Schritte",
-      "readme": "Readme",
       "maintainers": "Maintainer",
       "keywords": "Schlüsselwörter",
       "versions": "Versionen",
@@ -386,16 +388,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "Verbinde...",
-      "connected_as": "Verbunden als ~{user}",
-      "connected": "Verbunden",
-      "connect_cli": "Lokale CLI verbinden",
-      "aria_connecting": "Verbindung zum lokalen Connector wird hergestellt",
-      "aria_connected": "Mit lokalem Connector verbunden",
-      "aria_click_to_connect": "Klicken, um mit lokalem Connector zu verbinden",
-      "avatar_alt": "Avatar von {user}"
-    },
     "modal": {
       "title": "Lokaler Connector",
       "contributor_badge": "Nur für Mitwirkende",
@@ -421,26 +413,26 @@
   },
   "operations": {
     "queue": {
-      "title": "Operations-Warteschlange",
+      "title": "Aktions-Warteschlange",
       "clear_all": "Alle löschen",
-      "refresh": "Operationen aktualisieren",
-      "empty": "Keine Operationen in der Warteschlange",
-      "empty_hint": "Füge Operationen von Paket- oder Org-Seiten hinzu",
-      "active_label": "Aktive Operationen",
+      "refresh": "Aktionen aktualisieren",
+      "empty": "Keine Aktionen in der Warteschlange",
+      "empty_hint": "Füge Aktionen von Paket- oder Org-Seiten hinzu",
+      "active_label": "Aktive Aktionen",
       "otp_required": "OTP erforderlich",
       "otp_prompt": "OTP eingeben, um fortzufahren",
       "otp_placeholder": "OTP-Code eingeben...",
       "otp_label": "Einmalpasswort",
       "retry_otp": "Mit OTP wiederholen",
       "retrying": "Wird wiederholt...",
-      "approve_operation": "Operation genehmigen",
-      "remove_operation": "Operation entfernen",
+      "approve_operation": "Aktion genehmigen",
+      "remove_operation": "Aktion entfernen",
       "approve_all": "Alle genehmigen",
       "execute": "Ausführen",
       "executing": "Wird ausgeführt...",
-      "log": "Log",
-      "log_label": "Log abgeschlossener Operationen",
-      "remove_from_log": "Aus Log entfernen"
+      "log": "Protokoll",
+      "log_label": "Protokoll abgeschlossener Aktionen",
+      "remove_from_log": "Aus Protokoll entfernen"
     }
   },
   "org": {
@@ -511,8 +503,7 @@
       "failed_to_load": "Organisation-Pakete konnten nicht geladen werden",
       "no_match": "Keine Pakete entsprechen \"{query}\"",
       "not_found": "Organisation nicht gefunden",
-      "not_found_message": "Die Organisation \"{'@'}{name}\" existiert nicht auf npm",
-      "filter_placeholder": "{count} Paket filtern... | {count} Pakete filtern..."
+      "not_found_message": "Die Organisation \"{'@'}{name}\" existiert nicht auf npm"
     }
   },
   "user": {
@@ -573,7 +564,6 @@
   "code": {
     "files_label": "Dateien",
     "no_files": "Keine Dateien in diesem Verzeichnis",
-    "select_version": "Version auswählen",
     "root": "Wurzel",
     "lines": "{count} Zeile | {count} Zeilen",
     "toggle_tree": "Dateibaum umschalten",
@@ -583,7 +573,6 @@
     "view_raw": "Rohdatei anzeigen",
     "file_too_large": "Datei zu groß für Vorschau",
     "file_size_warning": "{size} überschreitet das 500KB-Limit für Syntax-Highlighting",
-    "load_anyway": "Trotzdem laden",
     "failed_to_load": "Datei konnte nicht geladen werden",
     "unavailable_hint": "Die Datei ist möglicherweise zu groß oder nicht verfügbar",
     "version_required": "Version erforderlich, um Code zu durchsuchen",
@@ -608,8 +597,7 @@
       "verified_via": "Verifiziert: veröffentlicht via {provider}"
     },
     "jsr": {
-      "title": "auch auf JSR verfügbar",
-      "label": "JSR"
+      "title": "auch auf JSR verfügbar"
     }
   },
   "filters": {
@@ -729,19 +717,18 @@
     "title": "Über uns",
     "heading": "Über uns",
     "meta_description": "npmx ist ein schneller, moderner Browser für die npm Registry. Ein besseres UX/DX zum Erkunden von npm-Paketen.",
-    "back_home": "Zurück zur Startseite",
     "what_we_are": {
       "title": "Was wir sind",
       "better_ux_dx": "Bessere UX/DX",
       "admin_ui": "Admin-UI",
-      "description": "npmx ist eine {betterUxDx} für die npm-Paket-Registry und Tooling. Wir bieten eine schnelle, moderne Oberfläche zum Erkunden von Paketen mit Features wie Dark Mode, Tastaturnavigation, Code-Browsing und Verbindungen zu alternativen Registries wie {jsr}.",
+      "description": "npmx ist eine {betterUxDx} für die npm-Paket-Registry und Tooling. Wir bieten eine schnelle, moderne Oberfläche zum Erkunden von Paketen mit Funktionen wie Dark Mode, Tastaturnavigation, Code-Browsing und Verbindungen zu alternativen Registries wie {jsr}.",
       "admin_description": "Wir wollen auch eine bessere {adminUi} zum Verwalten deiner Pakete, Teams und Organisationen bieten — alles im Browser, angetrieben von deiner lokalen npm CLI."
     },
     "what_we_are_not": {
       "title": "Was wir nicht sind",
       "not_package_manager": "Kein Paketmanager.",
       "not_registry": "Keine Registry.",
-      "registry_description": "Wir hosten keine Pakete. Wir sind nur ein besserer Weg, sie zu durchstöbern.",
+      "registry_description": "Wir hosten keine Pakete. Wir sind nur ein schnellerer, modernerer Weg, sie zu durchstöbern.",
       "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
       "words": {
         "already": "Es gibt",
@@ -789,8 +776,7 @@
     "connect_npm_cli": "Mit npm-CLI verbinden",
     "connect_atmosphere": "Mit Atmosphere verbinden",
     "connecting": "Verbinde...",
-    "ops": "{count} Operation | {count} Operationen",
-    "disconnect": "Trennen"
+    "ops": "{count} Operation | {count} Operationen"
   },
   "auth": {
     "modal": {
@@ -809,7 +795,6 @@
   },
   "header": {
     "home": "npmx Startseite",
-    "github": "GitHub",
     "packages": "Pakete",
     "packages_dropdown": {
       "title": "Deine Pakete",
@@ -850,9 +835,16 @@
       "searching": "Suche läuft...",
       "remove_package": "{package} entfernen",
       "packages_selected": "{count}/{max} Pakete ausgewählt.",
-      "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu.",
-      "loading_versions": "Versionen werden geladen...",
-      "select_version": "Version auswählen"
+      "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu."
+    },
+    "no_dependency": {
+      "label": "(Keine Abhängigkeit)",
+      "typeahead_title": "Was würde James tun?",
+      "typeahead_description": "Vergleiche mit der Option, gar keine Abhängigkeit zu nutzen! e18e-geprüft.",
+      "tooltip_title": "Du brauchst vielleicht keine Abhängigkeit",
+      "tooltip_description": "Vergleiche mit dem Verzicht auf eine Abhängigkeit! Die {link} pflegt eine Liste von Paketen, die durch native APIs oder einfachere Alternativen ersetzt werden können.",
+      "e18e_community": "e18e Community",
+      "add_column": "Spalte „Keine Abhängigkeit“ zum Vergleich hinzufügen"
     },
     "facets": {
       "group_label": "Vergleichsfacetten",
@@ -928,8 +920,89 @@
         "not_deprecated": "Nein",
         "types_included": "Enthalten",
         "types_none": "Keine",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Deine Entscheidung!"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "Datenschutzerklärung",
+    "last_updated": "Zuletzt aktualisiert: {date}",
+    "welcome": "Willkommen bei {app}. Wir setzen uns für den Schutz deiner Privatsphäre ein. Diese Richtlinie erklärt, welche Daten wir sammeln, wie wir sie verwenden und welche Rechte du in Bezug auf deine Informationen hast.",
+    "cookies": {
+      "what_are": {
+        "title": "Was sind Cookies?",
+        "p1": "Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert werden, wenn du eine Website besuchst. Ihr Zweck ist es, dein Surferlebnis zu verbessern, indem sie bestimmte Präferenzen und Einstellungen speichern."
+      },
+      "types": {
+        "title": "Welche Cookies verwenden wir?",
+        "p1": "Wir verwenden ausschließlich {bold} für Zwecke, die für die Funktionalität der Seite unbedingt erforderlich sind. Wir verwenden keine Cookies von Drittanbietern oder für Werbezwecke.",
+        "bold": "technisch notwendige Cookies",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Dieser Cookie wird von unserem Hosting-Anbieter (Vercel) zum Schutz vor Skew-Effekten verwendet. Er stellt sicher, dass du Assets der korrekten Deployment-Version lädst, wenn während deines Besuchs ein neues Update veröffentlicht wird. Er dient nicht dem Tracking.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Dies ist unser sicheres Sitzungs-Cookie. Es speichert den OAuth-Access-Token, wenn du dein Atmosphere-Konto verbindest. Es ist unerlässlich, um deine authentifizierte Sitzung aufrechtzuerhalten."
+      },
+      "local_storage": {
+        "title": "Lokaler Speicher",
+        "p1": "Zusätzlich zu Sitzungs-Cookies nutzen wir den {bold} deines Browsers, um deine Anzeige-Präferenzen zu speichern. Dies ermöglicht uns, das Design (Hell/Dunkel) und andere von dir gewählte {settings} zu speichern, damit du sie nicht bei jedem Besuch neu konfigurieren musst.",
+        "bold": "Local Storage",
+        "p2": "Diese Informationen sind rein funktional, werden nur auf deinem Gerät gespeichert und {bold2}. Wir nutzen sie ausschließlich, um deine Erfahrung auf unserer Website zu verbessern.",
+        "bold2": "enthalten keine persönlichen Daten und werden nicht zum Tracking verwendet",
+        "settings": "Einstellungen"
+      },
+      "management": {
+        "title": "Verwalten von Cookies",
+        "p1": "Du kannst deinen Browser so konfigurieren, dass Cookies nach deinen Wünschen akzeptiert, abgelehnt oder gelöscht werden. Bitte beachte jedoch, dass {bold}.",
+        "bold": "das Ablehnen notwendiger Cookies den vollständigen Zugriff auf die Anwendung verhindern kann",
+        "p2": "Nachfolgend findest du Links mit Anleitungen zur Cookie-Verwaltung in den gängigsten Browsern:",
+        "chrome": "Google Chrome (öffnet in einem neuen Fenster)",
+        "firefox": "Mozilla Firefox (öffnet in einem neuen Fenster)",
+        "edge": "Microsoft Edge (öffnet in einem neuen Fenster)"
+      }
+    },
+    "analytics": {
+      "title": "Analyse",
+      "p1": "Wir verwenden {bold}, um zu verstehen, wie Besucher unsere Website nutzen. Dies hilft uns, die Benutzererfahrung zu verbessern und Probleme zu identifizieren.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics wurde mit Fokus auf Datenschutz entwickelt:",
+      "li1": "Es werden keine Cookies verwendet",
+      "li2": "Es werden keine persönlichen Identifikationsmerkmale gesammelt",
+      "li3": "Nutzer werden nicht über verschiedene Websites hinweg verfolgt",
+      "li4": "Alle Daten werden aggregiert und anonymisiert",
+      "p3": "Die einzigen gesammelten Informationen umfassen: Seiten-URLs, Referrer, Land/Region, Gerätetyp, Browser und Betriebssystem. Diese Daten können nicht zur Identifizierung einzelner Nutzer verwendet werden."
+    },
+    "authenticated": {
+      "title": "Authentifizierte Benutzer",
+      "p1": "Wenn du dein {bold}-Konto mit npmx verbindest, speichern wir deinen OAuth-Access-Token in einem sicheren, HTTP-only Sitzungs-Cookie. Dieser Token wird ausschließlich dazu verwendet, Anfragen in deinem Namen zu authentifizieren.",
+      "bold": "Atmosphere",
+      "p2": "Wir speichern keine Anmeldedaten und greifen auf keine Daten zu, die über das hinausgehen, was für die Bereitstellung der von dir genutzten Funktionen erforderlich ist. Du kannst dein Konto jederzeit auf der Seite {settings} trennen.",
+      "settings": "Einstellungen"
+    },
+    "data_retention": {
+      "title": "Datenspeicherung",
+      "p1": "Sitzungs-Cookies werden automatisch gelöscht, wenn du deinen Browser schließt oder nach einer gewissen Zeit der Inaktivität. Local-Storage-Präferenzen bleiben auf deinem Gerät, bis du deine Browserdaten löschst. Analysedaten werden in aggregierter Form gespeichert und können nicht mit einzelnen Nutzern verknüpft werden."
+    },
+    "your_rights": {
+      "title": "Deine Rechte",
+      "p1": "Du hast das Recht:",
+      "li1": "Informationen darüber zu erhalten, welche Daten wir sammeln",
+      "li2": "Deinen Local Storage und deine Cookies jederzeit zu löschen",
+      "li3": "Deine authentifizierte Sitzung zu beenden",
+      "li4": "Auskunft über unsere Datenpraktiken zu verlangen",
+      "p2": "Da wir keine personenbezogenen Daten sammeln, gibt es in der Regel keine persönlichen Informationen, die gelöscht oder exportiert werden könnten."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "p1": "Bei Fragen oder Bedenken zu dieser Datenschutzerklärung kannst du uns kontaktieren, indem du ein Issue in unserem {link} eröffnest.",
+      "link": "GitHub-Repository"
+    },
+    "changes": {
+      "title": "Änderungen an dieser Richtlinie",
+      "p1": "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Alle Änderungen werden auf dieser Seite mit einem aktualisierten Revisionsdatum veröffentlicht."
     }
   }
 }
