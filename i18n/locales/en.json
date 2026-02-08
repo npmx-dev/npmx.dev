@@ -25,6 +25,7 @@
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
+    "rate_limited": "Hit npm rate limit, try again in a moment",
     "title": "search",
     "title_search": "search: {search}",
     "title_packages": "search packages",
