@@ -185,7 +185,8 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     }
   }
 
-  // Re-fetch when provider changes
+  // asyncdata will automatically rerun due to key, but we need to reset caache/page
+  // when provider changes
   watch(searchProvider, () => {
     cache.value = null
     currentPage.value = 1
