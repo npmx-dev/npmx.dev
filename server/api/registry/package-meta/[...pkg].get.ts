@@ -24,11 +24,12 @@ export default defineCachedEventHandler(
       throw createError({ statusCode: 404, message: 'Package name is required' })
     }
 
-    const encodedName = encodePackageName(pkgParam)
+    const packageName = decodeURIComponent(pkgParam)
+    const encodedName = encodePackageName(packageName)
 
     try {
       const [packument, downloads] = await Promise.all([
-        fetchNpmPackage(pkgParam),
+        fetchNpmPackage(packageName),
         $fetch<NpmDownloadCount>(`${NPM_API}/downloads/point/last-week/${encodedName}`).catch(
           () => null,
         ),

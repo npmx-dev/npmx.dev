@@ -281,6 +281,67 @@ async function processSingleFastNpmMeta(
   return result
 }
 
+/**
+ * Process a single package for the /versions/ endpoint.
+ * Returns PackageVersionsInfo shape: { name, distTags, versions, specifier, time, lastSynced }
+ */
+async function processSingleVersionsMeta(
+  packageQuery: string,
+  storage: ReturnType<typeof useStorage>,
+  metadata: boolean,
+): Promise<Record<string, unknown>> {
+  let packageName = packageQuery
+  let specifier = '*'
+
+  if (packageName.startsWith('@')) {
+    const atIndex = packageName.indexOf('@', 1)
+    if (atIndex !== -1) {
+      specifier = packageName.slice(atIndex + 1)
+      packageName = packageName.slice(0, atIndex)
+    }
+  } else {
+    const atIndex = packageName.indexOf('@')
+    if (atIndex !== -1) {
+      specifier = packageName.slice(atIndex + 1)
+      packageName = packageName.slice(0, atIndex)
+    }
+  }
+
+  if (packageName.includes('does-not-exist') || packageName.includes('nonexistent')) {
+    return { name: packageName, error: 'not_found' }
+  }
+
+  const fixturePath = getFixturePath('packument', packageName)
+  const packument = await storage.getItem<any>(fixturePath)
+
+  if (!packument) {
+    return { name: packageName, error: 'not_found' }
+  }
+
+  const result: Record<string, unknown> = {
+    name: packageName,
+    specifier,
+    distTags: packument['dist-tags'] || {},
+    versions: Object.keys(packument.versions || {}),
+    time: packument.time || {},
+    lastSynced: Date.now(),
+  }
+
+  if (metadata) {
+    const versionsMeta: Record<string, Record<string, unknown>> = {}
+    for (const [ver, data] of Object.entries(packument.versions || {})) {
+      const meta: Record<string, unknown> = { version: ver }
+      const vData = data as Record<string, unknown>
+      if (vData.deprecated) meta.deprecated = vData.deprecated
+      if (packument.time?.[ver]) meta.time = packument.time[ver]
+      versionsMeta[ver] = meta
+    }
+    result.versionsMeta = versionsMeta
+  }
+
+  return result
+}
+
 async function handleFastNpmMeta(
   url: string,
   storage: ReturnType<typeof useStorage>,
@@ -296,22 +357,27 @@ async function handleFastNpmMeta(
 
   if (host !== 'npm.antfu.dev') return null
 
-  const pathPart = decodeURIComponent(pathname.slice(1))
-  if (!pathPart) return null
+  const rawPath = decodeURIComponent(pathname.slice(1))
+  if (!rawPath) return null
 
   const metadata = searchParams.get('metadata') === 'true'
+
+  // Determine if this is a /versions/ request
+  const isVersions = rawPath.startsWith('versions/')
+  const pathPart = isVersions ? rawPath.slice('versions/'.length) : rawPath
+  const processFn = isVersions
+    ? (pkg: string) => processSingleVersionsMeta(pkg, storage, metadata)
+    : (pkg: string) => processSingleFastNpmMeta(pkg, storage, metadata)
 
   // Handle batch requests (package1+package2+...)
   if (pathPart.includes('+')) {
     const packages = pathPart.split('+')
-    const results = await Promise.all(
-      packages.map(pkg => processSingleFastNpmMeta(pkg, storage, metadata)),
-    )
+    const results = await Promise.all(packages.map(processFn))
     return { data: results }
   }
 
   // Handle single package request
-  const result = await processSingleFastNpmMeta(pathPart, storage, metadata)
+  const result = await processFn(pathPart)
   if ('error' in result) {
     return { data: null }
   }
