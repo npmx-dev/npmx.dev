@@ -200,12 +200,15 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     return asyncData.data.value
   })
 
-  /** Whether there are more results available to load */
+  /** Whether there are more results available to load (npm path only) */
   const hasMore = computed(() => {
-    // Algolia fetches everything in one go
+    // Non-npm providers fetch everything in one request
     if (searchProvider.value !== 'npm') return false
     if (!cache.value) return true
-    return cache.value.objects.length < Math.min(cache.value.total, MAX_RESULTS)
+    // npm path: more available if we haven't hit the server total or our cap
+    const fetched = cache.value.objects.length
+    const available = cache.value.total
+    return fetched < available && fetched < MAX_RESULTS
   })
 
   return {

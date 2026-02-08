@@ -175,14 +175,14 @@ defineOgImageComponent('Default', {
       </div>
     </header>
 
-    <!-- Loading state -->
+    <!-- Loading state (only on initial load, not when we already have data) -->
     <LoadingSpinner
-      v-if="status === 'pending' && packages.length === 0"
+      v-if="status === 'pending' && packages.length === 0 && !error"
       :text="$t('common.loading_packages')"
     />
 
     <!-- Error state -->
-    <div v-else-if="status === 'error'" role="alert" class="py-12 text-center">
+    <div v-else-if="error || status === 'error'" role="alert" class="py-12 text-center">
       <p class="text-fg-muted mb-4">
         {{ error?.message ?? $t('user.page.failed_to_load') }}
       </p>

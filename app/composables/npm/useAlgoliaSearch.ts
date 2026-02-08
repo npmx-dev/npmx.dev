@@ -158,7 +158,7 @@ export function useAlgoliaSearch() {
 
     const response = results[0] as SearchResponse<AlgoliaHit> | undefined
     if (!response) {
-      return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
+      throw new Error('Algolia returned an empty response')
     }
 
     return {
@@ -186,7 +186,10 @@ export function useAlgoliaSearch() {
 
     // Algolia supports up to 1000 results per query with offset/length pagination
     while (offset < max) {
-      const length = Math.min(batchSize, max - offset)
+      // Cap at both the configured max and the server's actual total (once known)
+      const remaining = serverTotal > 0 ? Math.min(max, serverTotal) - offset : max - offset
+      if (remaining <= 0) break
+      const length = Math.min(batchSize, remaining)
 
       const { results } = await client.search([
         {

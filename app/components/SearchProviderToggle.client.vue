@@ -74,7 +74,7 @@ useEventListener('keydown', event => {
           <button
             type="button"
             role="menuitem"
-            class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted"
+            class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted mt-1"
             :class="[isAlgolia ? 'bg-bg-muted' : '']"
             @click="
               () => {
