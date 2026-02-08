@@ -151,7 +151,7 @@ onKeyStroke(
       </div>
 
       <!-- End: Desktop nav items + Mobile menu button -->
-      <div class="hidden sm:flex flex-shrink-0">
+      <div class="hidden sm:flex flex-shrink-0 space-x-0.5 md:space-x-2">
         <!-- Desktop: Compare link -->
         <LinkBase
           class="border-none"
