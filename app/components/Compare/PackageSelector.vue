@@ -77,7 +77,7 @@ function removePackage(name: string) {
 }
 
 function handleKeydown(e: KeyboardEvent) {
-  if (e.key === 'Enter' && inputValue.value.trim()) {
+  if (e.key === 'Enter' && inputValue.value.trim() && filteredResults.value.length) {
     e.preventDefault()
     addPackage(inputValue.value.trim())
   }
