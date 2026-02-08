@@ -114,6 +114,7 @@ watch(showPopover, async open => {
                       </p>
                       <button
                         class="text-xs text-link hover:underline flex items-center gap-2"
+                        type="button"
                         @click="showPopover = false"
                       >
                         <span aria-hidden="true" class="size-5 i-lucide-x" />
