@@ -95,10 +95,14 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/package/:name': { isr: getISRConfig(60, true) },
-    '/package/:name/v/:version': { isr: getISRConfig(60, true) },
-    '/package/:org/:name': { isr: getISRConfig(60, true) },
-    '/package/:org/:name/v/:version': { isr: getISRConfig(60, true) },
+    '/package/:name': { isr: getISRConfig(60, { fallback: 'html' }) },
+    '/package/:name/_payload.json': { isr: getISRConfig(60, { fallback: 'json' }) },
+    '/package/:name/v/:version': { isr: getISRConfig(60, { fallback: 'html' }) },
+    '/package/:name/v/:version/_payload.json': { isr: getISRConfig(60, { fallback: 'json' }) },
+    '/package/:org/:name': { isr: getISRConfig(60, { fallback: 'html' }) },
+    '/package/:org/:name/_payload.json': { isr: getISRConfig(60, { fallback: 'json' }) },
+    '/package/:org/:name/v/:version': { isr: getISRConfig(60, { fallback: 'html' }) },
+    '/package/:org/:name/v/:version/_payload.json': { isr: getISRConfig(60, { fallback: 'json' }) },
     // infinite cache (versioned - doesn't change)
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/package-docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -281,11 +285,15 @@ export default defineNuxtConfig({
   },
 })
 
-function getISRConfig(expirationSeconds: number, fallback = false) {
-  if (fallback) {
+interface ISRConfigOptions {
+  fallback?: 'html' | 'json'
+}
+function getISRConfig(expirationSeconds: number, options: ISRConfigOptions = {}) {
+  if (options.fallback) {
     return {
       expiration: expirationSeconds,
-      fallback: 'spa.prerender-fallback.html',
+      fallback:
+        options.fallback === 'html' ? 'spa.prerender-fallback.html' : 'payload-fallback.json',
     } as { expiration: number }
   }
   return {
