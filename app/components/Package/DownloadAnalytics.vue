@@ -1488,7 +1488,7 @@ const chartConfig = computed(() => {
               id="granularity"
               v-model="selectedGranularity"
               :disabled="pending"
-              class="w-full px-2.5 py-1.75 bg-bg-subtle font-mono text-sm text-fg outline-none appearance-none focus-visible:outline-accent/70"
+              class="w-full px-4 py-3 leading-none bg-bg-subtle font-mono text-sm text-fg outline-none appearance-none focus-visible:outline-accent/70"
             >
               <option value="daily">{{ $t('package.downloads.granularity_daily') }}</option>
               <option value="weekly">{{ $t('package.downloads.granularity_weekly') }}</option>
@@ -1508,7 +1508,7 @@ const chartConfig = computed(() => {
             </label>
             <div class="relative flex items-center">
               <span
-                class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0"
+                class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
                 aria-hidden="true"
               />
               <InputBase
@@ -1517,7 +1517,7 @@ const chartConfig = computed(() => {
                 :disabled="pending"
                 type="date"
                 class="w-full min-w-0 bg-transparent ps-7"
-                size="small"
+                size="medium"
               />
             </div>
           </div>
@@ -1528,7 +1528,7 @@ const chartConfig = computed(() => {
             </label>
             <div class="relative flex items-center">
               <span
-                class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0"
+                class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
                 aria-hidden="true"
               />
               <InputBase
@@ -1537,7 +1537,7 @@ const chartConfig = computed(() => {
                 :disabled="pending"
                 type="date"
                 class="w-full min-w-0 bg-transparent ps-7"
-                size="small"
+                size="medium"
               />
             </div>
           </div>
