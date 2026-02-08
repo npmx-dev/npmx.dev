@@ -34,7 +34,7 @@ const updateUrlQuery = debounce((value: string) => {
   }
 }, 250)
 
-watch(searchQuery, (value) => {
+watch(searchQuery, value => {
   if (route.name === 'search') {
     updateUrlQuery(value)
   }
@@ -43,7 +43,7 @@ watch(searchQuery, (value) => {
 // Sync input with URL when navigating (e.g., back button)
 watch(
   () => route.query.q,
-  (urlQuery) => {
+  urlQuery => {
     if (pagesWithLocalFilter.has(route.name)) {
       return
     }
