@@ -13,6 +13,7 @@ const config: KnipConfig = {
         'app/middleware/**/*.ts!',
         'app/plugins/**/*.ts!',
         'app/utils/**/*.ts!',
+        'app/service-worker.ts!',
         'server/**/*.ts!',
         'modules/**/*.ts!',
         'config/**/*.ts!',
