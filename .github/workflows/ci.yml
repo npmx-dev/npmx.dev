@@ -184,7 +184,7 @@ jobs:
         run: pnpm build:test
 
       - name: ♿ Accessibility audit (Lighthouse - ${{ matrix.mode }} mode)
-        run: ./scripts/lighthouse-a11y.sh
+        run: pnpm test:a11y:prebuilt
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LIGHTHOUSE_COLOR_MODE: ${{ matrix.mode }}

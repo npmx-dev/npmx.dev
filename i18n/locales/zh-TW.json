@@ -5,7 +5,6 @@
       "description": "更好的 npm 套件註冊表瀏覽工具。使用更現代化的介面來搜尋、瀏覽與探索套件。"
     }
   },
-  "version": "版本",
   "built_at": "建置於 {0}",
   "alt_logo": "npmx 標誌",
   "tagline": "更好的 npm 套件註冊表瀏覽工具",
@@ -22,7 +21,6 @@
     "label": "搜尋 npm 套件",
     "placeholder": "搜尋套件…",
     "button": "搜尋",
-    "clear": "清除搜尋",
     "searching": "搜尋中…",
     "found_packages": "共找到 {count} 個套件",
     "updating": "（更新中…）",
@@ -48,7 +46,6 @@
   "nav": {
     "main_navigation": "首頁",
     "popular_packages": "熱門套件",
-    "search": "搜尋",
     "settings": "設定",
     "compare": "比較",
     "back": "返回",
@@ -68,7 +65,6 @@
       "language": "語言"
     },
     "relative_dates": "相對時間",
-    "relative_dates_description": "顯示「3 天前」而非完整日期",
     "include_types": "安裝時包含 {'@'}types",
     "include_types_description": "對未提供型別定義的套件，自動在安裝指令加入 {'@'}types 套件",
     "hide_platform_packages": "在搜尋結果中隱藏平台特定套件",
@@ -103,8 +99,6 @@
     "copy": "複製",
     "copied": "已複製！",
     "skip_link": "跳至主要內容",
-    "close_modal": "關閉對話框",
-    "show_more": "顯示更多",
     "warnings": "警告：",
     "go_back_home": "回到首頁",
     "view_on_npm": "在 npm 上檢視",
@@ -121,7 +115,6 @@
     "not_found": "找不到套件",
     "not_found_message": "找不到此套件。",
     "no_description": "未提供描述",
-    "show_full_description": "顯示完整描述",
     "not_latest": "（非最新）",
     "verified_provenance": "已驗證的來源",
     "view_permalink": "檢視此版本的永久連結",
@@ -149,7 +142,6 @@
       "vulns": "漏洞",
       "published": "發布於",
       "published_tooltip": "{package}{'@'}{version} 的發布日期",
-      "skills": "技能",
       "view_dependency_graph": "檢視相依關係圖",
       "inspect_dependency_tree": "檢視相依樹",
       "size_tooltip": {
@@ -160,7 +152,6 @@
     "skills": {
       "title": "代理技能",
       "skills_available": "{count} 個技能可用 | {count} 個技能可用",
-      "view": "檢視",
       "compatible_with": "相容 {tool}",
       "install": "安裝",
       "installation_method": "安裝方式",
@@ -333,25 +324,12 @@
       "none": "無"
     },
     "vulnerabilities": {
-      "no_description": "沒有可用的描述",
-      "found": "{count} 個漏洞",
-      "deps_found": "{count} 個漏洞",
-      "deps_affected": "{count} 個受影響的相依套件",
       "tree_found": "在 {packages}/{total} 個套件中發現 {vulns} 個漏洞",
-      "scanning_tree": "正在掃描相依樹…",
       "show_all_packages": "顯示全部 {count} 個受影響的套件",
-      "no_summary": "沒有摘要",
-      "view_details": "檢視漏洞詳情",
       "path": "路徑",
       "more": "+{count} 更多",
       "packages_failed": "{count} 個套件無法檢查",
-      "no_known": "在 {count} 個套件中未發現已知漏洞",
       "scan_failed": "無法掃描漏洞",
-      "depth": {
-        "root": "此套件",
-        "direct": "直接相依",
-        "transitive": "間接相依（傳遞）"
-      },
       "severity": {
         "critical": "嚴重",
         "high": "高",
@@ -393,13 +371,7 @@
     },
     "skeleton": {
       "loading": "載入套件詳細資訊",
-      "license": "授權",
       "weekly": "每週",
-      "size": "大小",
-      "deps": "相依",
-      "published": "發布於",
-      "get_started": "開始使用",
-      "readme": "README",
       "maintainers": "維護者",
       "keywords": "關鍵字",
       "versions": "版本",
@@ -413,16 +385,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "連線中…",
-      "connected_as": "已連線為 ~{user}",
-      "connected": "已連線",
-      "connect_cli": "連線本機 CLI",
-      "aria_connecting": "正在連線到本機連線器",
-      "aria_connected": "已連線到本機連線器",
-      "aria_click_to_connect": "點擊以連線到本機連線器",
-      "avatar_alt": "{user} 的頭像"
-    },
     "modal": {
       "title": "本機連線器",
       "contributor_badge": "僅限貢獻者",
@@ -538,8 +500,7 @@
       "failed_to_load": "載入組織套件失敗",
       "no_match": "找不到符合「{query}」的套件",
       "not_found": "找不到組織",
-      "not_found_message": "「{'@'}{name}」組織在 npm 上不存在",
-      "filter_placeholder": "篩選 {count} 個套件…"
+      "not_found_message": "「{'@'}{name}」組織在 npm 上不存在"
     }
   },
   "user": {
@@ -600,7 +561,6 @@
   "code": {
     "files_label": "檔案",
     "no_files": "此目錄中沒有檔案",
-    "select_version": "選擇版本",
     "root": "根目錄",
     "lines": "{count} 行",
     "toggle_tree": "切換檔案樹",
@@ -610,7 +570,6 @@
     "view_raw": "檢視原始檔",
     "file_too_large": "檔案太大無法預覽",
     "file_size_warning": "{size} 超過 500KB 的語法高亮限制",
-    "load_anyway": "仍要載入",
     "failed_to_load": "載入檔案失敗",
     "unavailable_hint": "檔案可能太大或不可用",
     "version_required": "瀏覽原始碼需要版本",
@@ -632,12 +591,10 @@
     "provenance": {
       "verified": "已驗證",
       "verified_title": "已驗證的來源",
-      "verified_via": "已驗證：透過 {provider} 發布",
-      "view_more_details": "檢視更多細節"
+      "verified_via": "已驗證：透過 {provider} 發布"
     },
     "jsr": {
-      "title": "也適用於 JSR",
-      "label": "jsr"
+      "title": "也適用於 JSR"
     }
   },
   "filters": {
@@ -757,7 +714,6 @@
     "title": "關於",
     "heading": "關於",
     "meta_description": "npmx 是一個快速、現代的 npm 套件註冊表瀏覽器，為探索 npm 套件提供更好的使用者體驗與開發者體驗。",
-    "back_home": "返回首頁",
     "what_we_are": {
       "title": "我們在做什麼",
       "better_ux_dx": "更好的使用者體驗與開發者體驗",
@@ -817,8 +773,7 @@
     "connect_npm_cli": "連線到 npm CLI",
     "connect_atmosphere": "連線到 Atmosphere",
     "connecting": "連線中…",
-    "ops": "操作",
-    "disconnect": "中斷連線"
+    "ops": "操作"
   },
   "auth": {
     "modal": {
@@ -837,7 +792,6 @@
   },
   "header": {
     "home": "npmx 首頁",
-    "github": "GitHub",
     "packages": "套件",
     "packages_dropdown": {
       "title": "你的套件",
@@ -878,9 +832,7 @@
       "searching": "搜尋中…",
       "remove_package": "移除 {package}",
       "packages_selected": "已選擇 {count}/{max} 個套件。",
-      "add_hint": "至少新增 2 個套件以進行比較。",
-      "loading_versions": "正在載入版本…",
-      "select_version": "選擇版本"
+      "add_hint": "至少新增 2 個套件以進行比較。"
     },
     "facets": {
       "group_label": "比較維度",

@@ -5,7 +5,6 @@
       "description": "高速でモダンなnpmレジストリブラウザ。モダンなインターフェイスでパッケージの検索、閲覧、探索が可能です。"
     }
   },
-  "version": "バージョン",
   "built_at": "ビルド {0}",
   "alt_logo": "npmxロゴ",
   "tagline": "高速でモダンなnpmレジストリブラウザ",
@@ -22,7 +21,6 @@
     "label": "npmパッケージを検索",
     "placeholder": "パッケージを検索...",
     "button": "検索",
-    "clear": "検索をクリア",
     "searching": "検索中...",
     "found_packages": "{count} 個のパッケージが見つかりました",
     "updating": "（更新中...）",
@@ -48,7 +46,6 @@
   "nav": {
     "main_navigation": "メイン",
     "popular_packages": "人気のパッケージ",
-    "search": "検索",
     "settings": "設定",
     "compare": "比較",
     "back": "戻る",
@@ -68,7 +65,6 @@
       "language": "言語"
     },
     "relative_dates": "日付を相対表記",
-    "relative_dates_description": "完全な日付の代わりに「3日前」のように表示します",
     "include_types": "インストール時に {'@'}types を含める",
     "include_types_description": "型定義のないパッケージのインストールコマンドに {'@'}types パッケージを追加します",
     "hide_platform_packages": "検索でプラットフォーム固有のパッケージを非表示",
@@ -103,8 +99,6 @@
     "copy": "コピー",
     "copied": "コピー完了！",
     "skip_link": "メインコンテンツにスキップ",
-    "close_modal": "モーダルを閉じる",
-    "show_more": "もっと見る",
     "warnings": "警告:",
     "go_back_home": "ホームへ戻る",
     "view_on_npm": "npmで表示",
@@ -121,7 +115,6 @@
     "not_found": "パッケージが見つかりません",
     "not_found_message": "パッケージが見つかりませんでした。",
     "no_description": "説明はありません",
-    "show_full_description": "詳細な説明を表示",
     "not_latest": "（最新ではありません）",
     "verified_provenance": "検証済みprovenance",
     "view_permalink": "このバージョンのパーマリンクを表示",
@@ -151,7 +144,6 @@
       "vulns": "脆弱性",
       "published": "公開日",
       "published_tooltip": "{package}{'@'}{version} が公開された日付",
-      "skills": "スキル",
       "view_dependency_graph": "依存関係グラフを表示",
       "inspect_dependency_tree": "依存関係ツリーを検査",
       "size_tooltip": {
@@ -162,7 +154,6 @@
     "skills": {
       "title": "エージェント スキル",
       "skills_available": "{count} 個のスキルが利用可能",
-      "view": "表示",
       "compatible_with": "{tool} と互換あり",
       "install": "インストール",
       "installation_method": "インストール方法",
@@ -336,25 +327,12 @@
       "none": "なし"
     },
     "vulnerabilities": {
-      "no_description": "説明はありません",
-      "found": "{count} 件の脆弱性が見つかりました",
-      "deps_found": "{count} 件の脆弱性が見つかりました",
-      "deps_affected": "{count} 個の依存関係が影響を受けています",
       "tree_found": "{packages}/{total} 個のパッケージに {vulns} 件の脆弱性",
-      "scanning_tree": "依存関係ツリーをスキャン中...",
       "show_all_packages": "影響を受ける全 {count} 個のパッケージを表示",
-      "no_summary": "概要なし",
-      "view_details": "脆弱性の詳細を表示",
       "path": "パス",
       "more": "+他 {count} 個",
       "packages_failed": "{count} 個のパッケージをチェックできませんでした",
-      "no_known": "{count} 個のパッケージに既知の脆弱性はありません",
       "scan_failed": "脆弱性をスキャンできませんでした",
-      "depth": {
-        "root": "このパッケージ",
-        "direct": "直接の依存関係",
-        "transitive": "推移的な依存関係（間接）"
-      },
       "severity": {
         "critical": "緊急",
         "high": "高",
@@ -396,13 +374,7 @@
     },
     "skeleton": {
       "loading": "パッケージ詳細を読み込み中",
-      "license": "ライセンス",
       "weekly": "週間",
-      "size": "サイズ",
-      "deps": "依存関係",
-      "published": "公開済み",
-      "get_started": "はじめに",
-      "readme": "Readme",
       "maintainers": "メンテナ",
       "keywords": "キーワード",
       "versions": "バージョン",
@@ -416,16 +388,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "接続中...",
-      "connected_as": "~{user} として接続済み",
-      "connected": "接続済み",
-      "connect_cli": "ローカルCLIに接続",
-      "aria_connecting": "ローカルコネクタに接続中",
-      "aria_connected": "ローカルコネクタに接続済み",
-      "aria_click_to_connect": "クリックしてローカルコネクタに接続",
-      "avatar_alt": "{user} のアバター"
-    },
     "modal": {
       "title": "ローカルコネクタ",
       "contributor_badge": "コントリビューター専用",
@@ -541,8 +503,7 @@
       "failed_to_load": "Organizationのパッケージの読み込みに失敗しました",
       "no_match": "\"{query}\" に一致するパッケージはありません",
       "not_found": "Organizationが見つかりません",
-      "not_found_message": "Organization \"{'@'}{name}\" はnpmに存在しません",
-      "filter_placeholder": "{count} 個のパッケージを絞り込む..."
+      "not_found_message": "Organization \"{'@'}{name}\" はnpmに存在しません"
     }
   },
   "user": {
@@ -603,7 +564,6 @@
   "code": {
     "files_label": "ファイル",
     "no_files": "このディレクトリにファイルはありません",
-    "select_version": "バージョンを選択",
     "root": "ルート",
     "lines": "{count} 行",
     "toggle_tree": "ファイルツリーを切り替え",
@@ -613,7 +573,6 @@
     "view_raw": "RAWファイルを表示",
     "file_too_large": "ファイルが大きすぎるためプレビューできません",
     "file_size_warning": "{size} は構文強調表示の制限である500KBを超えています",
-    "load_anyway": "強制的に読み込む",
     "failed_to_load": "ファイルの読み込みに失敗しました",
     "unavailable_hint": "ファイルが大きすぎるか、利用できない可能性があります",
     "version_required": "コードを閲覧するにはバージョン指定が必要です",
@@ -635,12 +594,10 @@
     "provenance": {
       "verified": "検証済み",
       "verified_title": "検証済みprovenance",
-      "verified_via": "検証済み: {provider} 経由で公開",
-      "view_more_details": "詳細を表示"
+      "verified_via": "検証済み: {provider} 経由で公開"
     },
     "jsr": {
-      "title": "JSRでも利用可能",
-      "label": "jsr"
+      "title": "JSRでも利用可能"
     }
   },
   "filters": {
@@ -760,7 +717,6 @@
     "title": "npmxについて",
     "heading": "このサイトについて",
     "meta_description": "npmxは高速でモダンなnpmレジストリブラウザです。npmパッケージを探索するためのより優れたUX/DXを提供します。",
-    "back_home": "ホームへ戻る",
     "what_we_are": {
       "title": "npmxとは",
       "better_ux_dx": "より優れたUX/DX",
@@ -820,8 +776,7 @@
     "connect_npm_cli": "npm CLIに接続",
     "connect_atmosphere": "Atmosphereに接続",
     "connecting": "接続中...",
-    "ops": "{count} 件の操作",
-    "disconnect": "切断"
+    "ops": "{count} 件の操作"
   },
   "auth": {
     "modal": {
@@ -840,7 +795,6 @@
   },
   "header": {
     "home": "ホーム",
-    "github": "GitHub",
     "packages": "パッケージ",
     "packages_dropdown": {
       "title": "あなたのパッケージ",
@@ -881,9 +835,7 @@
       "searching": "検索中...",
       "remove_package": "{package} を削除",
       "packages_selected": "{count}/{max} パッケージ選択中。",
-      "add_hint": "比較するには少なくとも2つのパッケージを追加してください。",
-      "loading_versions": "バージョンを読み込み中...",
-      "select_version": "バージョンを選択"
+      "add_hint": "比較するには少なくとも2つのパッケージを追加してください。"
     },
     "no_dependency": {
       "label": "(依存関係なし)",
@@ -982,7 +934,6 @@
     "last_updated": "最終更新日: {date}",
     "welcome": "{app}へようこそ。私たちはあなたのプライバシーの保護に努めています。本ポリシーでは、どんなデータを収集するか、どのように使用するか、そして、あなたの情報に関するあなたが持つ権利について説明します。",
     "cookies": {
-      "title": "Cookie",
       "what_are": {
         "title": "Cookieとは？",
         "p1": "Cookieは、ウェブサイト訪問時にデバイスに保存される小さなテキストファイルです。特定の好みや設定を記憶することで、ブラウジング体験を向上させることを目的としています。"

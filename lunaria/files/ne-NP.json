@@ -5,7 +5,6 @@
       "description": "npm रजिस्ट्रीका लागि अझ राम्रो ब्राउजर। आधुनिक इन्टरफेससँग प्याकेजहरू खोज्नुहोस्, ब्राउज गर्नुहोस्, र अन्वेषण गर्नुहोस्।"
     }
   },
-  "version": "संस्करण",
   "built_at": "बिल्ड गरिएको {0}",
   "alt_logo": "npmx लोगो",
   "tagline": "npm रजिस्ट्रीका लागि अझ राम्रो ब्राउजर",
@@ -22,7 +21,6 @@
     "label": "npm प्याकेजहरू खोज्नुहोस्",
     "placeholder": "प्याकेज खोज्नुहोस्...",
     "button": "खोज",
-    "clear": "खोज खाली गर्नुहोस्",
     "searching": "खोजिँदैछ...",
     "found_packages": "कुनै प्याकेज फेला परेन | {count} प्याकेज फेला पर्यो | {count} प्याकेज फेला परे",
     "updating": "(अपडेट हुँदैछ...)",
@@ -43,7 +41,6 @@
   "nav": {
     "main_navigation": "मुख्य",
     "popular_packages": "लोकप्रिय प्याकेजहरू",
-    "search": "खोज",
     "settings": "सेटिङ्स",
     "compare": "तुलना",
     "back": "पछाडि",
@@ -63,7 +60,6 @@
       "language": "भाषा"
     },
     "relative_dates": "सापेक्ष मितिहरू",
-    "relative_dates_description": "पूर्ण मिति सट्टा \"३ दिन अगाडि\" देखाउनुहोस्",
     "include_types": "इन्स्टलमा {'@'}types समावेश गर्नुहोस्",
     "include_types_description": "टाइप नभएका प्याकेजका इन्स्टल कमाण्डहरूमा {'@'}types प्याकेज थप्नुहोस्",
     "hide_platform_packages": "खोजमा प्लेटफर्म-विशेष प्याकेजहरू लुकाउनुहोस्",
@@ -97,8 +93,6 @@
     "copy": "कपी",
     "copied": "कपी भयो!",
     "skip_link": "मुख्य सामग्रीमा जानुहोस्",
-    "close_modal": "मोडल बन्द गर्नुहोस्",
-    "show_more": "अझै देखाउनुहोस्",
     "warnings": "चेतावनीहरू:",
     "go_back_home": "होममा फर्कनुहोस्",
     "view_on_npm": "npm मा हेर्नुहोस्",
@@ -115,7 +109,6 @@
     "not_found": "प्याकेज फेला परेन",
     "not_found_message": "प्याकेज फेला पार्न सकिएन।",
     "no_description": "विवरण उपलब्ध छैन",
-    "show_full_description": "पूरा विवरण देखाउनुहोस्",
     "not_latest": "(नवीनतम होइन)",
     "verified_provenance": "प्रमाणित प्रुभेनेन्स",
     "view_permalink": "यस संस्करणको पर्मालिङ्क हेर्नुहोस्",
@@ -282,25 +275,12 @@
       "view_spdx": "SPDX मा लाइसेन्स टेक्स्ट हेर्नुहोस्"
     },
     "vulnerabilities": {
-      "no_description": "विवरण उपलब्ध छैन",
-      "found": "{count} कमजोरी फेला पर्‍यो | {count} कमजोरीहरू फेला परे",
-      "deps_found": "{count} कमजोरी फेला पर्‍यो | {count} कमजोरीहरू फेला परे",
-      "deps_affected": "{count} डिपेन्डेन्सी प्रभावित | {count} डिपेन्डेन्सीहरू प्रभावित",
       "tree_found": "{packages}/{total} प्याकेजमा {vulns} कमजोरी | {packages}/{total} प्याकेजमा {vulns} कमजोरीहरू",
-      "scanning_tree": "डिपेन्डेन्सी ट्री स्क्यान हुँदैछ...",
       "show_all_packages": "प्रभावित सबै {count} प्याकेज देखाउनुहोस्",
-      "no_summary": "सारांश छैन",
-      "view_details": "कमजोरी विवरण हेर्नुहोस्",
       "path": "पथ",
       "more": "+{count} थप",
       "packages_failed": "{count} प्याकेज जाँच गर्न सकिएन | {count} प्याकेजहरू जाँच गर्न सकिएन",
-      "no_known": "{count} प्याकेजमा ज्ञात कमजोरी छैन",
       "scan_failed": "कमजोरीका लागि स्क्यान गर्न सकिएन",
-      "depth": {
-        "root": "यो प्याकेज",
-        "direct": "प्रत्यक्ष डिपेन्डेन्सी",
-        "transitive": "ट्रान्जिटिभ डिपेन्डेन्सी (अप्रत्यक्ष)"
-      },
       "severity": {
         "critical": "अत्यन्त गम्भीर",
         "high": "उच्च",
@@ -342,12 +322,7 @@
     },
     "skeleton": {
       "loading": "प्याकेज विवरण लोड हुँदैछ",
-      "license": "लाइसेन्स",
       "weekly": "साप्ताहिक",
-      "size": "साइज",
-      "deps": "डिपेन्डेन्सी",
-      "get_started": "सुरु गर्नुहोस्",
-      "readme": "README",
       "maintainers": "मेन्टेनरहरू",
       "keywords": "किवर्ड्स",
       "versions": "संस्करणहरू",
@@ -360,16 +335,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "जोडिँदैछ...",
-      "connected_as": "~{user} रूपमा जोडियो",
-      "connected": "जोडियो",
-      "connect_cli": "लोकल CLI जोड्नुहोस्",
-      "aria_connecting": "लोकल कनेक्टरसँग जोडिँदैछ",
-      "aria_connected": "लोकल कनेक्टरसँग जोडियो",
-      "aria_click_to_connect": "लोकल कनेक्टरसँग जोड्न क्लिक गर्नुहोस्",
-      "avatar_alt": "{user} को अवतार"
-    },
     "modal": {
       "title": "लोकल कनेक्टर",
       "contributor_badge": "कन्ट्रिब्युटर मात्र",
@@ -485,8 +450,7 @@
       "failed_to_load": "संगठनका प्याकेजहरू लोड गर्न असफल",
       "no_match": "\"{query}\" सँग मिल्ने प्याकेज छैन",
       "not_found": "संगठन फेला परेन",
-      "not_found_message": "संगठन \"{'@'}{name}\" npm मा अस्तित्वमा छैन",
-      "filter_placeholder": "{count} प्याकेज फिल्टर गर्नुहोस्..."
+      "not_found_message": "संगठन \"{'@'}{name}\" npm मा अस्तित्वमा छैन"
     }
   },
   "user": {
@@ -547,7 +511,6 @@
   "code": {
     "files_label": "फाइलहरू",
     "no_files": "यो डाइरेक्टरीमा कुनै फाइल छैन",
-    "select_version": "संस्करण चयन गर्नुहोस्",
     "root": "root",
     "lines": "{count} लाइन",
     "toggle_tree": "फाइल ट्री टगल",
@@ -557,7 +520,6 @@
     "view_raw": "raw फाइल हेर्नुहोस्",
     "file_too_large": "प्रिभ्यू गर्न फाइल धेरै ठूलो छ",
     "file_size_warning": "syntax highlighting का लागि 500KB सीमा भन्दा {size} ठूलो छ",
-    "load_anyway": "जसरी पनि लोड",
     "failed_to_load": "फाइल लोड गर्न असफल",
     "unavailable_hint": "फाइल धेरै ठूलो हुन सक्छ वा उपलब्ध नहुन सक्छ",
     "version_required": "कोड ब्राउज गर्न संस्करण चाहिन्छ",
@@ -582,8 +544,7 @@
       "verified_via": "प्रमाणित: {provider} मार्फत प्रकाशित"
     },
     "jsr": {
-      "title": "JSR मा पनि उपलब्ध",
-      "label": "jsr"
+      "title": "JSR मा पनि उपलब्ध"
     }
   },
   "filters": {
@@ -694,7 +655,6 @@
     "title": "बारेमा",
     "heading": "बारेमा",
     "meta_description": "npmx, npm रजिस्ट्रीका लागि छिटो र आधुनिक ब्राउजर हो। npm प्याकेजहरू अन्वेषण गर्न अझ राम्रो UX/DX।",
-    "back_home": "होममा फर्कनुहोस्",
     "what_we_are": {
       "title": "हामी के हौं",
       "better_ux_dx": "अझ राम्रो UX/DX",
@@ -754,8 +714,7 @@
     "connect_npm_cli": "npm CLI कनेक्ट गर्नुहोस्",
     "connect_atmosphere": "Atmosphere कनेक्ट गर्नुहोस्",
     "connecting": "कनेक्ट हुँदैछ...",
-    "ops": "{count} अपरेसन | {count} अपरेसनहरू",
-    "disconnect": "डिस्कनेक्ट"
+    "ops": "{count} अपरेसन | {count} अपरेसनहरू"
   },
   "auth": {
     "modal": {
@@ -774,7 +733,6 @@
   },
   "header": {
     "home": "npmx होम",
-    "github": "GitHub",
     "packages": "प्याकेजहरू",
     "packages_dropdown": {
       "title": "तपाईंका प्याकेजहरू",
@@ -815,9 +773,7 @@
       "searching": "खोजिँदैछ...",
       "remove_package": "{package} हटाउनुहोस्",
       "packages_selected": "{count}/{max} प्याकेज चयन गरियो।",
-      "add_hint": "तुलना गर्न कम्तिमा २ प्याकेज थप्नुहोस्।",
-      "loading_versions": "संस्करणहरू लोड हुँदैछन्...",
-      "select_version": "संस्करण चयन गर्नुहोस्"
+      "add_hint": "तुलना गर्न कम्तिमा २ प्याकेज थप्नुहोस्।"
     },
     "facets": {
       "group_label": "तुलना पक्षहरू",

@@ -11,7 +11,6 @@ import { assertValidPackageName } from '#shared/utils/npm'
 import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
-import { formatBytes } from '~/utils/formatters'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
@@ -232,12 +231,12 @@ const sizeTooltip = computed(() => {
     displayVersion.value &&
       displayVersion.value.dist.unpackedSize &&
       $t('package.stats.size_tooltip.unpacked', {
-        size: formatBytes(displayVersion.value.dist.unpackedSize),
+        size: bytesFormatter.format(displayVersion.value.dist.unpackedSize),
       }),
     installSize.value &&
       installSize.value.dependencyCount &&
       $t('package.stats.size_tooltip.total', {
-        size: formatBytes(installSize.value.totalSize),
+        size: bytesFormatter.format(installSize.value.totalSize),
         count: installSize.value.dependencyCount,
       }),
   ]
@@ -264,7 +263,7 @@ const hasVulnerabilities = computed(() => vulnCount.value > 0)
 // Subtract 1 to exclude the root package itself
 const totalDepsCount = computed(() => {
   if (vulnTree.value) {
-    return vulnTree.value.totalPackages - 1
+    return vulnTree.value.totalPackages ? vulnTree.value.totalPackages - 1 : 0
   }
   if (installSize.value) {
     return installSize.value.dependencyCount
@@ -463,6 +462,10 @@ const likeAction = async () => {
   }
 }
 
+const numberFormatter = useNumberFormatter()
+const compactNumberFormatter = useCompactNumberFormatter()
+const bytesFormatter = useBytesFormatter()
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -648,7 +651,7 @@ onKeyStroke(
                       : 'i-lucide-heart-plus'
                   "
                 >
-                  {{ formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 }) }}
+                  {{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}
                 </ButtonBase>
               </TooltipApp>
               <template #fallback>
@@ -727,12 +730,12 @@ onKeyStroke(
             </li>
             <li v-if="repositoryUrl && repoMeta && starsLink">
               <LinkBase :to="starsLink" classicon="i-carbon:star">
-                {{ formatCompactNumber(stars, { decimals: 1 }) }}
+                {{ compactNumberFormatter.format(stars) }}
               </LinkBase>
             </li>
             <li v-if="forks && forksLink">
               <LinkBase :to="forksLink" classicon="i-carbon:fork">
-                {{ formatCompactNumber(forks, { decimals: 1 }) }}
+                {{ compactNumberFormatter.format(forks) }}
               </LinkBase>
             </li>
             <li v-if="homepageUrl">
@@ -841,7 +844,9 @@ onKeyStroke(
             <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
               <span class="flex items-center gap-1">
                 <!-- Direct deps (muted) -->
-                <span class="text-fg-muted">{{ getDependencyCount(displayVersion) }}</span>
+                <span class="text-fg-muted">{{
+                  numberFormatter.format(getDependencyCount(displayVersion))
+                }}</span>
 
                 <!-- Separator and total transitive deps -->
                 <template v-if="getDependencyCount(displayVersion) !== totalDepsCount">
@@ -860,7 +865,9 @@ onKeyStroke(
                         aria-hidden="true"
                       />
                     </span>
-                    <span v-else-if="totalDepsCount !== null">{{ totalDepsCount }}</span>
+                    <span v-else-if="totalDepsCount !== null">{{
+                      numberFormatter.format(totalDepsCount)
+                    }}</span>
                     <span v-else class="text-fg-subtle">-</span>
                     <template #fallback>
                       <span class="text-fg-subtle">-</span>
@@ -908,7 +915,7 @@ onKeyStroke(
               <!-- Package size (greyed out) -->
               <span class="text-fg-muted" dir="ltr">
                 <span v-if="displayVersion?.dist?.unpackedSize">
-                  {{ formatBytes(displayVersion.dist.unpackedSize) }}
+                  {{ bytesFormatter.format(displayVersion.dist.unpackedSize) }}
                 </span>
                 <span v-else>-</span>
               </span>
@@ -927,7 +934,7 @@ onKeyStroke(
                   />
                 </span>
                 <span v-else-if="installSize?.totalSize" dir="ltr">
-                  {{ formatBytes(installSize.totalSize) }}
+                  {{ bytesFormatter.format(installSize.totalSize) }}
                 </span>
                 <span v-else class="text-fg-subtle">-</span>
               </template>
@@ -951,10 +958,12 @@ onKeyStroke(
                   />
                 </span>
                 <span v-else-if="vulnTreeStatus === 'success'">
-                  <span v-if="hasVulnerabilities" class="text-amber-500">{{ vulnCount }}</span>
+                  <span v-if="hasVulnerabilities" class="text-amber-500">
+                    {{ numberFormatter.format(vulnCount) }}
+                  </span>
                   <span v-else class="inline-flex items-center gap-1 text-fg-muted">
                     <span class="i-carbon:checkmark w-3 h-3" aria-hidden="true" />
-                    0
+                    {{ numberFormatter.format(0) }}
                   </span>
                 </span>
                 <span v-else class="text-fg-subtle">-</span>

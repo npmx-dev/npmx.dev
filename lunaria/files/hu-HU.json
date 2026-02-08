@@ -19,7 +19,6 @@
     "label": "Npm csomagok keresése",
     "placeholder": "csomagok keresése...",
     "button": "keresés",
-    "clear": "Keresés törlése",
     "searching": "Keresés...",
     "found_packages": "Nincs találat | 1 csomag található | {count} csomag található",
     "updating": "(frissítés...)",
@@ -40,7 +39,6 @@
   "nav": {
     "main_navigation": "Főmenü",
     "popular_packages": "Népszerű csomagok",
-    "search": "keresés",
     "settings": "beállítások",
     "back": "vissza"
   },
@@ -54,7 +52,6 @@
       "language": "Nyelv"
     },
     "relative_dates": "Relatív dátumok",
-    "relative_dates_description": "Mutassa a dátumokat így: \"3 napja\", a teljes dátum helyett",
     "include_types": "{'@'}types hozzáadása telepítéskor",
     "include_types_description": "Adja hozzá a {'@'}types csomagot a telepítési parancshoz típus nélküli csomagoknál",
     "hide_platform_packages": "Platform-specifikus csomagok elrejtése a keresőben",
@@ -88,8 +85,6 @@
     "copy": "másolás",
     "copied": "másolva!",
     "skip_link": "Ugrás a tartalomra",
-    "close_modal": "Ablak bezárása",
-    "show_more": "több megjelenítése",
     "warnings": "Figyelmeztetések:",
     "go_back_home": "Vissza a főoldalra",
     "view_on_npm": "megtekintés npm-en",
@@ -105,7 +100,6 @@
     "not_found": "Csomag Nem Található",
     "not_found_message": "A keresett csomag nem található.",
     "no_description": "Nincs leírás",
-    "show_full_description": "Teljes leírás megjelenítése",
     "not_latest": "(nem a legfrissebb)",
     "verified_provenance": "Hitelesített eredet",
     "view_permalink": "Verzió permalinkjének megtekintése",
@@ -263,25 +257,12 @@
       "view_spdx": "Licenc szöveg megtekintése (SPDX)"
     },
     "vulnerabilities": {
-      "no_description": "Nincs elérhető leírás",
-      "found": "{count} sebezhetőség található",
-      "deps_found": "{count} sebezhetőség található",
-      "deps_affected": "{count} érintett függőség",
       "tree_found": "{vulns} sebezhetőség {packages}/{total} csomagban",
-      "scanning_tree": "Függőségi fa vizsgálata...",
       "show_all_packages": "az összes ({count}) érintett csomag mutatása",
-      "no_summary": "Nincs összefoglaló",
-      "view_details": "Részletek megtekintése",
       "path": "útvonal",
       "more": "+{count} további",
       "packages_failed": "{count} csomagot nem sikerült ellenőrizni",
-      "no_known": "Nincs ismert sebezhetőség {count} csomagban",
       "scan_failed": "A sebezhetőségi vizsgálat sikertelen",
-      "depth": {
-        "root": "Ez a csomag",
-        "direct": "Közvetlen függőség",
-        "transitive": "Tranzitív függőség (közvetett)"
-      },
       "severity": {
         "critical": "kritikus",
         "high": "magas",
@@ -323,11 +304,7 @@
     },
     "skeleton": {
       "loading": "Részletek betöltése",
-      "license": "Licenc",
       "weekly": "Heti",
-      "size": "Méret",
-      "deps": "Függ.",
-      "readme": "Readme",
       "maintainers": "Karbantartók",
       "keywords": "Kulcsszavak",
       "versions": "Verziók",
@@ -340,16 +317,6 @@
     }
   },
   "connector": {
-    "status": {
-      "connecting": "kapcsolódás...",
-      "connected_as": "csatlakoztatva: ~{user}",
-      "connected": "csatlakoztatva",
-      "connect_cli": "helyi CLI csatlakoztatása",
-      "aria_connecting": "Kapcsolódás a helyi connectorhoz",
-      "aria_connected": "Csatlakoztatva a helyi connectorhoz",
-      "aria_click_to_connect": "Kattints a csatlakozáshoz",
-      "avatar_alt": "{user} avatarja"
-    },
     "modal": {
       "title": "Helyi Connector",
       "connected": "Csatlakoztatva",
@@ -461,8 +428,7 @@
       "failed_to_load": "Nem sikerült betölteni a szervezet csomagjait",
       "no_match": "Nincs találat a következőre: \"{query}\"",
       "not_found": "Szervezet nem található",
-      "not_found_message": "A(z) \"{'@'}{name}\" szervezet nem létezik az npm-en",
-      "filter_placeholder": "{count} csomag szűrése..."
+      "not_found_message": "A(z) \"{'@'}{name}\" szervezet nem létezik az npm-en"
     }
   },
   "user": {
@@ -523,7 +489,6 @@
   "code": {
     "files_label": "Fájlok",
     "no_files": "Nincsenek fájlok ebben a könyvtárban",
-    "select_version": "Válassz verziót",
     "root": "gyökér",
     "lines": "{count} sor",
     "toggle_tree": "Fájlfa kapcsolása",
@@ -533,7 +498,6 @@
     "view_raw": "Nyers fájl megtekintése",
     "file_too_large": "A fájl túl nagy az előnézethez",
     "file_size_warning": "{size} meghaladja az 500KB-os limitet a szintaxis alapú formázáshoz",
-    "load_anyway": "Betöltés mindenképp",
     "failed_to_load": "Nem sikerült betölteni a fájlt",
     "unavailable_hint": "A fájl túl nagy vagy nem elérhető",
     "version_required": "A verzió kiválasztása kötelező a kód böngészéséhez",
@@ -557,8 +521,7 @@
       "verified_via": "Ellenőrizve: közzétéve a következőn keresztül: {provider}"
     },
     "jsr": {
-      "title": "elérhető JSR-en is",
-      "label": "jsr"
+      "title": "elérhető JSR-en is"
     }
   },
   "filters": {
@@ -669,7 +632,6 @@
     "title": "Rólunk",
     "heading": "rólunk",
     "meta_description": "Az npmx egy gyors, modern böngésző az npm regiszterhez. Jobb UX/DX az npm csomagok felfedezéséhez.",
-    "back_home": "vissza a főoldalra",
     "what_we_are": {
       "title": "Mik vagyunk",
       "better_ux_dx": "jobb UX/DX",
@@ -725,7 +687,6 @@
   },
   "header": {
     "home": "npmx kezdőlap",
-    "github": "GitHub",
     "packages": "csomagok",
     "packages_dropdown": {
       "title": "Csomagjaid",

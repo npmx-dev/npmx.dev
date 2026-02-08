@@ -32,6 +32,8 @@ const props = defineProps<{
   searchContext?: boolean
 }>()
 
+const { t } = useI18n()
+
 const sortOption = defineModel<SortOption>('sortOption', { required: true })
 const viewMode = defineModel<ViewMode>('viewMode', { required: true })
 const paginationMode = defineModel<PaginationMode>('paginationMode', { required: true })
@@ -85,22 +87,22 @@ function handleToggleDirection() {
 }
 
 // Map sort key to i18n key
-const sortKeyLabelKeys: Record<SortKey, string> = {
-  'relevance': 'filters.sort.relevance',
-  'downloads-week': 'filters.sort.downloads_week',
-  'downloads-day': 'filters.sort.downloads_day',
-  'downloads-month': 'filters.sort.downloads_month',
-  'downloads-year': 'filters.sort.downloads_year',
-  'updated': 'filters.sort.published',
-  'name': 'filters.sort.name',
-  'quality': 'filters.sort.quality',
-  'popularity': 'filters.sort.popularity',
-  'maintenance': 'filters.sort.maintenance',
-  'score': 'filters.sort.score',
-}
+const sortKeyLabelKeys = computed<Record<SortKey, string>>(() => ({
+  'relevance': t('filters.sort.relevance'),
+  'downloads-week': t('filters.sort.downloads_week'),
+  'downloads-day': t('filters.sort.downloads_day'),
+  'downloads-month': t('filters.sort.downloads_month'),
+  'downloads-year': t('filters.sort.downloads_year'),
+  'updated': t('filters.sort.published'),
+  'name': t('filters.sort.name'),
+  'quality': t('filters.sort.quality'),
+  'popularity': t('filters.sort.popularity'),
+  'maintenance': t('filters.sort.maintenance'),
+  'score': t('filters.sort.score'),
+}))
 
 function getSortKeyLabelKey(key: SortKey): string {
-  return sortKeyLabelKeys[key]
+  return sortKeyLabelKeys.value[key]
 }
 </script>
 
@@ -169,7 +171,7 @@ function getSortKeyLabelKey(key: SortKey): string {
                 :value="keyConfig.key"
                 :disabled="keyConfig.disabled"
               >
-                {{ $t(getSortKeyLabelKey(keyConfig.key)) }}
+                {{ getSortKeyLabelKey(keyConfig.key) }}
               </option>
             </select>
             <div
