@@ -16,8 +16,7 @@ const emit = defineEmits<{
 
 const docUrl = computed(() => {
   if (props.replacement.type !== 'documented' || !props.replacement.docPath) return null
-  // TODO(serhalp): Once the e18e docs site is complete, link there instead
-  return `https://github.com/es-tooling/module-replacements/blob/main/docs/modules/${props.replacement.docPath}.md`
+  return `https://e18e.dev/docs/replacements/${props.replacement.docPath}.html`
 })
 </script>
 
