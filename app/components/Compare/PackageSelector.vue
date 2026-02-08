@@ -82,9 +82,13 @@ function handleKeydown(e: KeyboardEvent) {
     return result.name === inputValueTrim
   })
 
-  if (e.key === 'Enter' && inputValueTrim && hasMatchInPackages) {
+  if (e.key === 'Enter' && inputValueTrim) {
     e.preventDefault()
-    addPackage(inputValueTrim)
+    if (showNoDependencyOption.value) {
+      addPackage(NO_DEPENDENCY_ID)
+    } else if (hasMatchInPackages) {
+      addPackage(inputValueTrim)
+    }
   }
 }
 
