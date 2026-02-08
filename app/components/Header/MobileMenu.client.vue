@@ -201,7 +201,7 @@ onUnmounted(deactivate)
                       :href="link.href"
                       :target="link.target"
                       class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                      @click="link?.to && closeMenu()"
+                      @click="closeMenu"
                     >
                       <span
                         :class="link.iconClass"
