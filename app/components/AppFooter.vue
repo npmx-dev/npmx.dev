@@ -1,41 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { onKeyDown } from '@vueuse/core'
-
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
 
-const triggerRef = useTemplateRef('triggerRef')
 const modalRef = useTemplateRef('modalRef')
-const modalOpen = ref(false)
-
-const togglePopover = (e?: Event) => {
-  e?.stopPropagation()
-  if (!modalOpen.value) {
-    modalRef.value?.showModal?.()
-    modalOpen.value = true
-  } else {
-    modalRef.value?.close?.()
-    modalOpen.value = false
-  }
-}
-
-onKeyDown(
-  'Escape',
-  (e: KeyboardEvent) => {
-    if (!modalOpen.value) return
-    e.preventDefault()
-    e.stopImmediatePropagation()
-    modalRef.value?.close?.()
-    modalOpen.value = false
-  },
-  { dedupe: true },
-)
-
-function onModalClosed() {
-  modalOpen.value = false
-  triggerRef.value?.focus?.()
-}
+const showModal = () => modalRef.value?.showModal?.()
 </script>
 
 <template>
@@ -70,11 +38,9 @@ function onModalClosed() {
           </LinkBase>
 
           <button
-            ref="triggerRef"
             type="button"
             class="group inline-flex gap-x-1 items-center justify-center underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200"
-            @click.prevent="togglePopover"
-            :aria-expanded="modalOpen ? 'true' : 'false'"
+            @click.prevent="showModal"
             aria-haspopup="dialog"
           >
             {{ $t('footer.keyboard_shortcuts') }}
@@ -82,7 +48,6 @@ function onModalClosed() {
 
           <Modal
             ref="modalRef"
-            @close="onModalClosed"
             :modalTitle="$t('footer.keyboard_shortcuts')"
             class="w-auto max-w-lg"
           >
