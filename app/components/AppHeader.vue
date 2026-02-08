@@ -22,23 +22,17 @@ const isMobile = useIsMobile()
 const isSearchExpandedManually = shallowRef(false)
 const searchBoxRef = useTemplateRef('searchBoxRef')
 
-const searchQuery = shallowRef('')
-watch(
-  () => route.query.q,
-  queryValue => {
-    searchQuery.value = normalizeSearchParam(queryValue)
-  },
-  { immediate: true },
-)
+const { searchQuery, updateSearchQuery } = usePackageSearchQuery()
 
-async function handleSearchSubmit() {
-  if (!searchQuery.value) {
+const router = useRouter()
+function handleSubmitSearch() {
+  if (searchQuery.value === '') {
     return
   }
 
-  await navigateTo({
+  router.replace({
     name: 'search',
-    query: { q: searchQuery.value },
+    query: { ...route.query, q: searchQuery.value },
   })
 }
 
@@ -148,8 +142,9 @@ onKeyStroke(
           ref="searchBoxRef"
           class="max-w-sm"
           compact
-          v-model="searchQuery"
-          @submit="handleSearchSubmit"
+          :model-value="searchQuery"
+          @update:model-value="updateSearchQuery"
+          @submit="handleSubmitSearch"
           @focus="handleSearchFocus"
           @blur="handleSearchBlur"
         />

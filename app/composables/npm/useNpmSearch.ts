@@ -41,6 +41,7 @@ export function packumentToSearchResult(
 export interface NpmSearchOptions {
   /** Number of results to fetch */
   size?: number
+  onSuccess?: (result: { query: string }) => void
 }
 
 export const emptySearchResponse = {
@@ -150,6 +151,8 @@ export function useNpmSearch(
 
         // Success - clear rate limit flag
         isRateLimited.value = false
+
+        opts.onSuccess?.({ query: q })
 
         return { ...response, isStale }
       } catch (error: unknown) {

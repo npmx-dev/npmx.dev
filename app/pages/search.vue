@@ -29,8 +29,7 @@ const updateUrlPage = debounce((page: number) => {
   })
 }, 500)
 
-// The actual search query (from URL, used for API calls)
-const query = computed(() => normalizeSearchParam(route.query.q))
+const { searchQuery: query } = usePackageSearchQuery()
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
@@ -76,6 +75,12 @@ const {
 } = useNpmSearch(query, () => ({
   size: requestedSize.value,
   incremental: true,
+  onSuccess: data => {
+    router.replace({
+      name: 'search',
+      query: { ...route.query, q: data.query },
+    })
+  },
 }))
 
 // Results to display (directly from incremental search)
