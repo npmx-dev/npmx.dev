@@ -1,103 +1,27 @@
-import type { NuxtApp } from '#app'
 import type { NpmSearchResponse, NpmSearchResult, MinimalPackument } from '#shared/types'
 import { emptySearchResponse, packumentToSearchResult } from './useNpmSearch'
 import { mapWithConcurrency } from '#shared/utils/async'
 
 /**
- * Fetch downloads for multiple packages.
- * Returns a map of package name -> weekly downloads.
- * Uses bulk API for unscoped packages, parallel individual requests for scoped.
- * Note: npm bulk downloads API does not support scoped packages.
- */
-async function fetchBulkDownloads(
-  $npmApi: NuxtApp['$npmApi'],
-  packageNames: string[],
-  options: Parameters<typeof $fetch>[1] = {},
-): Promise<Map<string, number>> {
-  const downloads = new Map<string, number>()
-  if (packageNames.length === 0) return downloads
-
-  // Separate scoped and unscoped packages
-  const scopedPackages = packageNames.filter(n => n.startsWith('@'))
-  const unscopedPackages = packageNames.filter(n => !n.startsWith('@'))
-
-  // Fetch unscoped packages via bulk API (max 128 per request)
-  const bulkPromises: Promise<void>[] = []
-  const chunkSize = 100
-  for (let i = 0; i < unscopedPackages.length; i += chunkSize) {
-    const chunk = unscopedPackages.slice(i, i + chunkSize)
-    bulkPromises.push(
-      (async () => {
-        try {
-          const response = await $npmApi<Record<string, { downloads: number } | null>>(
-            `/downloads/point/last-week/${chunk.join(',')}`,
-            options,
-          )
-          for (const [name, data] of Object.entries(response.data)) {
-            if (data?.downloads !== undefined) {
-              downloads.set(name, data.downloads)
-            }
-          }
-        } catch {
-          // Ignore errors - downloads are optional
-        }
-      })(),
-    )
-  }
-
-  // Fetch scoped packages in parallel batches (concurrency limit to avoid overwhelming the API)
-  // Use Promise.allSettled to not fail on individual errors
-  const scopedBatchSize = 20 // Concurrent requests per batch
-  for (let i = 0; i < scopedPackages.length; i += scopedBatchSize) {
-    const batch = scopedPackages.slice(i, i + scopedBatchSize)
-    bulkPromises.push(
-      (async () => {
-        const results = await Promise.allSettled(
-          batch.map(async name => {
-            const encoded = encodePackageName(name)
-            const { data } = await $npmApi<{ downloads: number }>(
-              `/downloads/point/last-week/${encoded}`,
-            )
-            return { name, downloads: data.downloads }
-          }),
-        )
-        for (const result of results) {
-          if (result.status === 'fulfilled' && result.value.downloads !== undefined) {
-            downloads.set(result.value.name, result.value.downloads)
-          }
-        }
-      })(),
-    )
-  }
-
-  // Wait for all fetches to complete
-  await Promise.all(bulkPromises)
-
-  return downloads
-}
-
-/**
  * Fetch all packages for an npm organization.
  *
- * Always uses the npm registry's org endpoint as the source of truth for which
- * packages belong to the org. When Algolia is enabled, uses it to quickly fetch
- * metadata for those packages (instead of N+1 packument fetches).
+ * 1. Gets the authoritative package list from the npm registry (single request)
+ * 2. Fetches metadata from Algolia by exact name (single request)
+ * 3. Falls back to individual packument fetches when Algolia is unavailable
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const { searchProvider } = useSearchProvider()
-  const { searchByOwner } = useAlgoliaSearch()
+  const { getPackagesByName } = useAlgoliaSearch()
 
   const asyncData = useLazyAsyncData(
     () => `org-packages:${searchProvider.value}:${toValue(orgName)}`,
-    async ({ $npmRegistry, $npmApi, ssrContext }, { signal }) => {
+    async ({ $npmRegistry, ssrContext }, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
         return emptySearchResponse
       }
 
-      // Always get the authoritative package list from the npm registry.
-      // Algolia's owner.name filter doesn't precisely match npm org membership
-      // (e.g. it includes @nuxtjs/* packages for the @nuxt org).
+      // Get the authoritative package list from the npm registry (single request)
       let packageNames: string[]
       try {
         const { packages } = await $fetch<{ packages: string[]; count: number }>(
@@ -126,59 +50,40 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         return emptySearchResponse
       }
 
-      // --- Algolia fast path: use Algolia to get metadata for known packages ---
+      // Fetch metadata + downloads from Algolia (single request via getObjects)
       if (searchProvider.value === 'algolia') {
         try {
-          const response = await searchByOwner(org)
+          const response = await getPackagesByName(packageNames)
           if (response.objects.length > 0) {
-            // Filter Algolia results to only include packages that are
-            // actually in the org (per the npm registry's authoritative list)
-            const orgPackageSet = new Set(packageNames.map(n => n.toLowerCase()))
-            const filtered = response.objects.filter(obj =>
-              orgPackageSet.has(obj.package.name.toLowerCase()),
-            )
-
-            if (filtered.length > 0) {
-              return {
-                ...response,
-                objects: filtered,
-                total: filtered.length,
-              }
-            }
+            return response
           }
         } catch {
           // Fall through to npm registry path
         }
       }
 
-      // --- npm registry path: fetch packuments individually ---
-      const [packuments, downloads] = await Promise.all([
-        (async () => {
-          const results = await mapWithConcurrency(
-            packageNames,
-            async name => {
-              try {
-                const encoded = encodePackageName(name)
-                const { data: pkg } = await $npmRegistry<MinimalPackument>(`/${encoded}`, {
-                  signal,
-                })
-                return pkg
-              } catch {
-                return null
-              }
-            },
-            10,
-          )
-          return results.filter(
-            (pkg): pkg is MinimalPackument => pkg !== null && !!pkg['dist-tags'],
-          )
-        })(),
-        fetchBulkDownloads($npmApi, packageNames, { signal }),
-      ])
-
-      const results: NpmSearchResult[] = packuments.map(pkg =>
-        packumentToSearchResult(pkg, downloads.get(pkg.name)),
+      // npm fallback: fetch packuments individually
+      const packuments = await mapWithConcurrency(
+        packageNames,
+        async name => {
+          try {
+            const encoded = encodePackageName(name)
+            const { data: pkg } = await $npmRegistry<MinimalPackument>(`/${encoded}`, {
+              signal,
+            })
+            return pkg
+          } catch {
+            return null
+          }
+        },
+        10,
       )
+
+      const validPackuments = packuments.filter(
+        (pkg): pkg is MinimalPackument => pkg !== null && !!pkg['dist-tags'],
+      )
+
+      const results: NpmSearchResult[] = validPackuments.map(pkg => packumentToSearchResult(pkg))
 
       return {
         isStale: false,
