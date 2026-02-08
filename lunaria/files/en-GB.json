@@ -25,6 +25,7 @@
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
+    "rate_limited": "Hit npm rate limit, try again in a moment",
     "title": "search",
     "title_search": "search: {search}",
     "title_packages": "search packages",
@@ -283,13 +284,7 @@
       "show_more": "(show {count} more)",
       "show_less": "(show fewer)"
     },
-    "downloads": {
-      "title": "Weekly Downloads",
-      "date_range": "{start} to {end}",
-      "date_range_multiline": "{start}\nto {end}",
-      "analyze": "Analyze downloads",
-      "community_distribution": "View community adoption distribution",
-      "modal_title": "Downloads",
+    "trends": {
       "granularity": "Granularity",
       "granularity_daily": "Daily",
       "granularity_weekly": "Weekly",
@@ -297,12 +292,23 @@
       "granularity_yearly": "Yearly",
       "start_date": "Start",
       "end_date": "End",
-      "no_data": "No download data available",
       "loading": "Loading...",
-      "y_axis_label": "{granularity} downloads",
+      "date_range": "{start} to {end}",
+      "date_range_multiline": "{start}\nto {end}",
       "download_file": "Download {fileType}",
       "toggle_annotator": "Toggle annotator",
-      "legend_estimation": "Estimation"
+      "legend_estimation": "Estimation",
+      "no_data": "No data available",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Downloads"
+      }
+    },
+    "downloads": {
+      "title": "Weekly Downloads",
+      "analyze": "Analyze downloads",
+      "community_distribution": "View community adoption distribution",
+      "modal_title": "Downloads"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -796,7 +802,8 @@
       "create_account": "Create a new account",
       "connect_bluesky": "Connect with Bluesky",
       "what_is_atmosphere": "What is an Atmosphere account?",
-      "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account."
+      "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account.",
+      "default_input_error": "Please enter a valid handle, DID, or a full PDS URL"
     }
   },
   "header": {
@@ -932,6 +939,9 @@
         "types_none": "None",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "Up to you!"
+      },
+      "trends": {
+        "title": "Weekly Downloads"
       }
     }
   },

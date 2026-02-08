@@ -247,12 +247,9 @@
       "show_more": "({count} మరిన్ని చూపించండి)",
       "show_less": "(తక్కువ చూపించండి)"
     },
-    "downloads": {
-      "title": "వారపు డౌన్‌లోడ్‌లు",
+    "trends": {
       "date_range": "{start} నుండి {end}",
       "date_range_multiline": "{start}\nనుండి {end}",
-      "analyze": "డౌన్‌లోడ్‌లను విశ్లేషించండి",
-      "modal_title": "డౌన్‌లోడ్‌లు",
       "granularity": "గ్రాన్యులారిటీ",
       "granularity_daily": "రోజువారీ",
       "granularity_weekly": "వారపు",
@@ -260,11 +257,14 @@
       "granularity_yearly": "సంవత్సరపు",
       "start_date": "ప్రారంభం",
       "end_date": "ముగింపు",
-      "no_data": "డౌన్‌లోడ్ డేటా అందుబాటులో లేదు",
       "loading": "లోడ్ అవుతున్నది...",
-      "y_axis_label": "{granularity} డౌన్‌లోడ్‌లు",
       "download_file": "{fileType} డౌన్‌లోడ్ చేయండి",
       "toggle_annotator": "అనోటేటర్‌ను టాగుల్ చేయండి"
+    },
+    "downloads": {
+      "title": "వారపు డౌన్‌లోడ్‌లు",
+      "analyze": "డౌన్‌లోడ్‌లను విశ్లేషించండి",
+      "modal_title": "డౌన్‌లోడ్‌లు"
     },
     "install_scripts": {
       "title": "ఇన్‌స్టాల్ స్క్రిప్ట్‌లు",

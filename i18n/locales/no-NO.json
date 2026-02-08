@@ -258,13 +258,9 @@
       "show_more": "(vis {count} flere)",
       "show_less": "(vis færre)"
     },
-    "downloads": {
-      "title": "Ukentlige nedlastinger",
+    "trends": {
       "date_range": "{start} til {end}",
       "date_range_multiline": "{start}\ntil {end}",
-      "analyze": "Analyser nedlastinger",
-      "community_distribution": "Vis distribusjon av bruk i fellesskapet",
-      "modal_title": "Nedlastinger",
       "granularity": "Oppløsning",
       "granularity_daily": "Daglig",
       "granularity_weekly": "Ukentlig",
@@ -272,11 +268,15 @@
       "granularity_yearly": "Årlig",
       "start_date": "Start",
       "end_date": "Slutt",
-      "no_data": "Ingen nedlastingsdata tilgjengelig",
       "loading": "Laster...",
-      "y_axis_label": "{granularity} nedlastinger",
       "download_file": "Last ned {fileType}",
       "toggle_annotator": "Veksle annotering"
+    },
+    "downloads": {
+      "title": "Ukentlige nedlastinger",
+      "analyze": "Analyser nedlastinger",
+      "community_distribution": "Vis distribusjon av bruk i fellesskapet",
+      "modal_title": "Nedlastinger"
     },
     "install_scripts": {
       "title": "Installasjonsskript",

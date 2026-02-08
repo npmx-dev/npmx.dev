@@ -131,7 +131,7 @@ watch(
 const dataset = computed(() =>
   weeklyDownloads.value.map(d => ({
     value: d?.downloads ?? 0,
-    period: $t('package.downloads.date_range', {
+    period: $t('package.trends.date_range', {
       start: d.weekStart ?? '-',
       end: d.weekEnd ?? '-',
     }),
@@ -267,7 +267,7 @@ const config = computed(() => {
           </ClientOnly>
         </template>
         <p v-else class="py-2 text-sm font-mono text-fg-subtle">
-          {{ $t('package.downloads.no_data') }}
+          {{ $t('package.trends.no_data') }}
         </p>
       </div>
     </CollapsibleSection>

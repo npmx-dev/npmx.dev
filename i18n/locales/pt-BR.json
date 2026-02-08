@@ -250,22 +250,8 @@
     },
     "downloads": {
       "title": "Downloads Semanais",
-      "date_range": "{start} a {end}",
-      "date_range_multiline": "{start}\npara {end}",
       "analyze": "Analisar downloads",
-      "modal_title": "Downloads",
-      "granularity": "Granularidade",
-      "granularity_daily": "Diária",
-      "granularity_weekly": "Semanal",
-      "granularity_monthly": "Mensal",
-      "granularity_yearly": "Anual",
-      "start_date": "Início",
-      "end_date": "Fim",
-      "no_data": "Nenhum dado de download disponível",
-      "loading": "Carregando...",
-      "y_axis_label": "downloads {granularity}",
-      "download_file": "Baixar {fileType}",
-      "toggle_annotator": "Alternar anotador"
+      "modal_title": "Downloads"
     },
     "install_scripts": {
       "title": "Scripts de Instalação",
@@ -348,6 +334,20 @@
       "downloads": "Mais baixados",
       "name_asc": "Nome (A-Z)",
       "name_desc": "Nome (Z-A)"
+    },
+    "trends": {
+      "granularity": "Granularidade",
+      "granularity_daily": "Diária",
+      "granularity_weekly": "Semanal",
+      "granularity_monthly": "Mensal",
+      "granularity_yearly": "Anual",
+      "start_date": "Início",
+      "end_date": "Fim",
+      "loading": "Carregando...",
+      "date_range": "{start} a {end}",
+      "date_range_multiline": "{start}\npara {end}",
+      "download_file": "Baixar {fileType}",
+      "toggle_annotator": "Alternar anotador"
     }
   },
   "connector": {

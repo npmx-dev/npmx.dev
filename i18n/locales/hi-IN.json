@@ -249,22 +249,8 @@
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड्स",
-      "date_range": "{start} से {end}",
-      "date_range_multiline": "{start}\nसे {end}",
       "analyze": "डाउनलोड्स का विश्लेषण करें",
-      "modal_title": "डाउनलोड्स",
-      "granularity": "ग्रैन्युलैरिटी",
-      "granularity_daily": "दैनिक",
-      "granularity_weekly": "साप्ताहिक",
-      "granularity_monthly": "मासिक",
-      "granularity_yearly": "वार्षिक",
-      "start_date": "शुरू",
-      "end_date": "अंत",
-      "no_data": "कोई डाउनलोड डेटा उपलब्ध नहीं",
-      "loading": "लोड हो रहा है...",
-      "y_axis_label": "{granularity} डाउनलोड्स",
-      "download_file": "{fileType} डाउनलोड करें",
-      "toggle_annotator": "एनोटेटर टॉगल करें"
+      "modal_title": "डाउनलोड्स"
     },
     "install_scripts": {
       "title": "इंस्टॉल स्क्रिप्ट्स",
@@ -347,6 +333,20 @@
       "downloads": "सबसे अधिक डाउनलोड किए गए",
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
+    },
+    "trends": {
+      "granularity": "ग्रैन्युलैरिटी",
+      "granularity_daily": "दैनिक",
+      "granularity_weekly": "साप्ताहिक",
+      "granularity_monthly": "मासिक",
+      "granularity_yearly": "वार्षिक",
+      "start_date": "शुरू",
+      "end_date": "अंत",
+      "loading": "लोड हो रहा है...",
+      "date_range": "{start} से {end}",
+      "date_range_multiline": "{start}\nसे {end}",
+      "download_file": "{fileType} डाउनलोड करें",
+      "toggle_annotator": "एनोटेटर टॉगल करें"
     }
   },
   "connector": {

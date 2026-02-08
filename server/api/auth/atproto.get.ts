@@ -13,6 +13,9 @@ import { ensureValidAtIdentifier } from '@atproto/syntax'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
 
+//I did not have luck with other ones than these. I got this list from the PDS language picker
+const OAUTH_LOCALES = new Set(['en', 'fr-FR', 'ja-JP'])
+
 /**
  * Fetch the user's profile record to get their avatar blob reference
  * @param did
@@ -98,9 +101,13 @@ export default defineEventHandler(async event => {
         })
       }
 
+      const localeFromQuery = query.locale?.toString() ?? 'en'
+      const locale = OAUTH_LOCALES.has(localeFromQuery) ? localeFromQuery : 'en'
+
       const redirectUrl = await atclient.authorize(handle, {
         scope,
         prompt: create ? 'create' : undefined,
+        ui_locales: locale,
       })
       return sendRedirect(event, redirectUrl.toString())
     } catch (error) {

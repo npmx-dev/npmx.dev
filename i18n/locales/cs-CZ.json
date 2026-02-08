@@ -254,22 +254,8 @@
     },
     "downloads": {
       "title": "Týdenní stažení",
-      "date_range": "od {start} do {end}",
-      "date_range_multiline": "od {start}\ndo {end}",
       "analyze": "Analyzovat stažení",
-      "modal_title": "Stažení",
-      "granularity": "Rozlišení",
-      "granularity_daily": "Denně",
-      "granularity_weekly": "Týdně",
-      "granularity_monthly": "Měsíčně",
-      "granularity_yearly": "Ročně",
-      "start_date": "Od",
-      "end_date": "Do",
-      "no_data": "Žádná data o stažení nejsou k dispozici",
-      "loading": "Načítání...",
-      "y_axis_label": "Stažení {granularity}",
-      "download_file": "Stáhnout {fileType}",
-      "toggle_annotator": "Přepnout popisovač"
+      "modal_title": "Stažení"
     },
     "install_scripts": {
       "title": "Instalační skripty",
@@ -353,6 +339,20 @@
       "published": "Nedávno publikováno",
       "name_asc": "Název (A-Z)",
       "name_desc": "Název (Z-A)"
+    },
+    "trends": {
+      "granularity": "Rozlišení",
+      "granularity_daily": "Denně",
+      "granularity_weekly": "Týdně",
+      "granularity_monthly": "Měsíčně",
+      "granularity_yearly": "Ročně",
+      "start_date": "Od",
+      "end_date": "Do",
+      "loading": "Načítání...",
+      "date_range": "od {start} do {end}",
+      "date_range_multiline": "od {start}\ndo {end}",
+      "download_file": "Stáhnout {fileType}",
+      "toggle_annotator": "Přepnout popisovač"
     }
   },
   "connector": {

@@ -285,24 +285,9 @@
     },
     "downloads": {
       "title": "每周下载量",
-      "date_range": "{start} 到 {end}",
-      "date_range_multiline": "{start}\n到 {end}",
       "analyze": "分析下载量",
       "community_distribution": "查看社区采用分布",
-      "modal_title": "下载量",
-      "granularity": "周期",
-      "granularity_daily": "每日",
-      "granularity_weekly": "每周",
-      "granularity_monthly": "每月",
-      "granularity_yearly": "每年",
-      "start_date": "开始",
-      "end_date": "结束",
-      "no_data": "没有下载数据",
-      "loading": "加载中…",
-      "y_axis_label": "{granularity}下载量",
-      "download_file": "下载 {fileType}",
-      "toggle_annotator": "切换标注工具",
-      "legend_estimation": "估算值"
+      "modal_title": "下载量"
     },
     "install_scripts": {
       "title": "安装脚本",
@@ -391,6 +376,21 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
+    },
+    "trends": {
+      "granularity": "周期",
+      "granularity_daily": "每日",
+      "granularity_weekly": "每周",
+      "granularity_monthly": "每月",
+      "granularity_yearly": "每年",
+      "start_date": "开始",
+      "end_date": "结束",
+      "loading": "加载中…",
+      "date_range": "{start} 到 {end}",
+      "date_range_multiline": "{start}\n到 {end}",
+      "download_file": "下载 {fileType}",
+      "toggle_annotator": "切换标注工具",
+      "legend_estimation": "估算值"
     }
   },
   "connector": {

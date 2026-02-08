@@ -264,22 +264,8 @@
     },
     "downloads": {
       "title": "Pobrania tygodniowe",
-      "date_range": "{start} do {end}",
-      "date_range_multiline": "{start}\ndo {end}",
       "analyze": "Analizuj pobrania",
-      "modal_title": "Pobrania",
-      "granularity": "Agregacja",
-      "granularity_daily": "Dzienna",
-      "granularity_weekly": "Tygodniowa",
-      "granularity_monthly": "Miesięczna",
-      "granularity_yearly": "Roczna",
-      "start_date": "Od",
-      "end_date": "Do",
-      "no_data": "Brak danych o pobraniach",
-      "loading": "Ładowanie...",
-      "y_axis_label": "Pobrania ({granularity})",
-      "download_file": "Pobierz {fileType}",
-      "toggle_annotator": "Przełącz adnotacje"
+      "modal_title": "Pobrania"
     },
     "install_scripts": {
       "title": "Skrypty instalacji",
@@ -363,6 +349,20 @@
       "published": "Ostatnio opublikowane",
       "name_asc": "Nazwa (A-Z)",
       "name_desc": "Nazwa (Z-A)"
+    },
+    "trends": {
+      "granularity": "Agregacja",
+      "granularity_daily": "Dzienna",
+      "granularity_weekly": "Tygodniowa",
+      "granularity_monthly": "Miesięczna",
+      "granularity_yearly": "Roczna",
+      "start_date": "Od",
+      "end_date": "Do",
+      "loading": "Ładowanie...",
+      "date_range": "{start} do {end}",
+      "date_range_multiline": "{start}\ndo {end}",
+      "download_file": "Pobierz {fileType}",
+      "toggle_annotator": "Przełącz adnotacje"
     }
   },
   "connector": {
