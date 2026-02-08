@@ -77,9 +77,14 @@ function removePackage(name: string) {
 }
 
 function handleKeydown(e: KeyboardEvent) {
-  if (e.key === 'Enter' && inputValue.value.trim() && filteredResults.value.length) {
+  const inputValueTrim = inputValue.value.trim()
+  const hasMatchInPackages = filteredResults.value.find(result => {
+    return result.name === inputValueTrim
+  })
+
+  if (e.key === 'Enter' && inputValueTrim && hasMatchInPackages) {
     e.preventDefault()
-    addPackage(inputValue.value.trim())
+    addPackage(inputValueTrim)
   }
 }
 
