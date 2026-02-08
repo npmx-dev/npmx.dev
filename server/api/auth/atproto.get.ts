@@ -127,21 +127,57 @@ export default defineEventHandler(async event => {
   const agent = new Agent(authSession)
   event.context.agent = agent
 
-  const response = await fetch(
-    `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${agent.did}`,
+  const miniDocResponse = await fetch(
+    `https://${SLINGSHOT_HOST}/xrpc/blue.microcosm.identity.resolveMiniDoc?identifier=${agent.did}`,
     { headers: { 'User-Agent': 'npmx' } },
   )
-  if (response.ok) {
-    const miniDoc: PublicUserSession = await response.json()
+
+  if (miniDocResponse.ok) {
+    const miniDoc: PublicUserSession = await miniDocResponse.json()
 
     let avatar: string | undefined = await getAvatar(authSession.did, miniDoc.pds)
 
-    await session.update({
-      public: {
-        ...miniDoc,
-        avatar,
-      },
-    })
+    // get existing npmx profile OR create a new one
+    const profileUri = `at://${agent.did}/dev.npmx.actor.profile/self`
+    const profileResponse = await fetch(
+      `https://${SLINGSHOT_HOST}/xrpc/blue.microcosm.repo.getRecordByUri?at_uri=${profileUri}`,
+      { headers: { 'User-Agent': 'npmx' } },
+    )
+
+    if (profileResponse.ok) {
+      const profile = await profileResponse.json()
+      await session.update({
+        public: {
+          ...miniDoc,
+          avatar,
+        },
+        profile: profile.value,
+      })
+    } else {
+      const profile = {
+        website: '',
+        displayName: miniDoc.handle,
+        description: '',
+      }
+
+      await agent.com.atproto.repo.createRecord({
+        repo: miniDoc.handle,
+        collection: 'dev.npmx.actor.profile',
+        rkey: 'self',
+        record: {
+          $type: 'dev.npmx.actor.profile',
+          ...profile,
+        },
+      })
+
+      await session.update({
+        public: {
+          ...miniDoc,
+          avatar,
+        },
+        profile: profile,
+      })
+    }
   } else {
     //If slingshot fails we still want to set some key info we need.
     const pdsBase = (await authSession.getTokenInfo()).aud

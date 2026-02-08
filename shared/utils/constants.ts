@@ -44,6 +44,7 @@ export const PACKAGE_SUBJECT_REF = (packageName: string) =>
   `https://npmx.dev/package/${packageName}`
 // OAuth scopes as we add new ones we need to check these on certain actions. If not redirect the user to login again to upgrade the scopes
 export const LIKES_SCOPE = `repo:${dev.npmx.feed.like.$nsid}`
+export const PROFILE_SCOPE = `repo:${dev.npmx.actor.profile.$nsid}`
 
 // Theming
 export const ACCENT_COLORS = {
