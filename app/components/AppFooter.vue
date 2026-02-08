@@ -56,6 +56,14 @@ const showModal = () => modalRef.value?.showModal?.()
             </p>
             <ul class="mb-6 flex flex-col gap-2">
               <li class="flex gap-2 items-center">
+                <kbd class="kbd">/</kbd>
+                <span>{{ $t('shortcuts.focus_search') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
+                <kbd class="kbd">?</kbd>
+                <span>{{ $t('shortcuts.show_kbd_hints') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
                 <kbd class="kbd">,</kbd>
                 <span>{{ $t('shortcuts.settings') }}</span>
               </li>
@@ -91,7 +99,7 @@ const showModal = () => modalRef.value?.showModal?.()
               </li>
               <li class="flex gap-2 items-center">
                 <kbd class="kbd">c</kbd>
-                <span>{{ $t('shortcuts.open_compare_prefilled') }}</span>
+                <span>{{ $t('shortcuts.compare_from_package') }}</span>
               </li>
             </ul>
           </Modal>

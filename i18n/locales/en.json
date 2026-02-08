@@ -24,13 +24,15 @@
       "search": "Search",
       "package": "Package"
     },
+    "focus_search": "Focus search",
+    "show_kbd_hints": "Highlight keyboard hints",
     "settings": "Open settings",
     "compare": "Open compare",
+    "compare_from_package": "Open compare (prefilled with current package)",
     "navigate_results": "Navigate results",
     "go_to_result": "Go to result",
     "open_code_view": "Open code view",
-    "open_docs": "Open docs",
-    "open_compare_prefilled": "Open compare (prefilled with current package)"
+    "open_docs": "Open docs"
   },
   "search": {
     "label": "Search npm packages",
