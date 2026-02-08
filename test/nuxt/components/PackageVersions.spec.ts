@@ -215,7 +215,7 @@ describe('PackageVersions', () => {
         .findAll('a')
         .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
       expect(versionLinks.length).toBeGreaterThan(0)
-      expect(versionLinks[0]?.classes()).toContain('text-red-')
+      expect(versionLinks[0]?.classes()).toContain('text-red-800')
     })
 
     it('shows deprecated version in title attribute', async () => {
