@@ -60,12 +60,13 @@ if (import.meta.env.PROD) {
   ]
 
   registerRoute(
-    ({ sameOrigin, url }) => sameOrigin && url.pathname.startsWith('/package/'),
+    ({ sameOrigin, url }) =>
+      sameOrigin && (url.pathname.startsWith('/package/') || url.pathname.startsWith('/api/')),
     new NetworkFirst({
       cacheName: cacheNames[0],
       plugins: [
         new CacheableResponsePlugin({ statuses: [200] }),
-        new ExpirationPlugin({ maxEntries: 100, maxAgeSeconds: 60 }),
+        new ExpirationPlugin({ maxEntries: 1000, maxAgeSeconds: 60 }),
       ],
     }),
   )
@@ -77,7 +78,7 @@ if (import.meta.env.PROD) {
       cacheName: cacheNames[1],
       plugins: [
         new CacheableResponsePlugin({ statuses: [200] }),
-        new ExpirationPlugin({ maxEntries: 100, maxAgeSeconds: 365 * 24 * 60 * 60 }),
+        new ExpirationPlugin({ maxEntries: 1000, maxAgeSeconds: 365 * 24 * 60 * 60 }),
       ],
     }),
   )
