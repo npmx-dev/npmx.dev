@@ -36,7 +36,7 @@ const isChecking = computed(() => {
 })
 
 const mergedError = computed(() => {
-  return checkResult !== null
+  return checkResult.value !== null
     ? null
     : (publishError.value ??
         (checkError.value instanceof Error
