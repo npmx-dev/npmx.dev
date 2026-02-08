@@ -140,32 +140,32 @@ export const SORT_KEYS: SortKeyConfig[] = [
   { key: 'downloads-year', defaultDirection: 'desc', disabled: true },
   { key: 'updated', defaultDirection: 'desc' },
   { key: 'name', defaultDirection: 'asc' },
-  { key: 'quality', defaultDirection: 'desc' },
-  { key: 'popularity', defaultDirection: 'desc' },
-  { key: 'maintenance', defaultDirection: 'desc' },
-  { key: 'score', defaultDirection: 'desc' },
+  // quality/popularity/maintenance: npm returns 1 for all, Algolia returns synthetic values.
+  // Neither provider produces meaningful values for these.
+  { key: 'quality', defaultDirection: 'desc', disabled: true },
+  { key: 'popularity', defaultDirection: 'desc', disabled: true },
+  { key: 'maintenance', defaultDirection: 'desc', disabled: true },
+  // score.final === searchScore (identical to relevance), redundant sort key
+  { key: 'score', defaultDirection: 'desc', disabled: true },
 ]
 
 /**
  * Sort keys each search provider can meaningfully sort by.
  *
- * Algolia: has download counts and dates but synthetic/zeroed score values
- *   - quality is 0 or 1 (boolean `popular` flag), maintenance is always 0, score is always 0
- *   - popularity is `downloadsRatio` (a meaningful float)
+ * Both providers support: relevance (server-side order), updated, name.
  *
- * npm: has real score values and dates but no download counts in search results
+ * Algolia: has `downloadsLast30Days` for download sorting.
+ *
+ * npm: the search API now includes `downloads.weekly` and `downloads.monthly`
+ * directly in results, so download sorting works here too.
+ *
+ * Neither provider returns useful quality/popularity/maintenance/score values:
+ * - npm returns 1 for all detail scores, and score.final === searchScore (= relevance)
+ * - Algolia returns synthetic values (quality: 0|1, maintenance: 0, score: 0)
  */
 export const PROVIDER_SORT_KEYS: Record<'algolia' | 'npm', Set<SortKey>> = {
-  algolia: new Set<SortKey>(['relevance', 'downloads-week', 'updated', 'name', 'popularity']),
-  npm: new Set<SortKey>([
-    'relevance',
-    'updated',
-    'name',
-    'quality',
-    'popularity',
-    'maintenance',
-    'score',
-  ]),
+  algolia: new Set<SortKey>(['relevance', 'downloads-week', 'updated', 'name']),
+  npm: new Set<SortKey>(['relevance', 'downloads-week', 'updated', 'name']),
 }
 
 /** All valid sort keys for validation */

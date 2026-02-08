@@ -223,18 +223,6 @@ const displayResults = computed(() => {
       case 'name':
         diff = a.package.name.localeCompare(b.package.name)
         break
-      case 'quality':
-        diff = (a.score?.detail?.quality ?? 0) - (b.score?.detail?.quality ?? 0)
-        break
-      case 'popularity':
-        diff = (a.score?.detail?.popularity ?? 0) - (b.score?.detail?.popularity ?? 0)
-        break
-      case 'maintenance':
-        diff = (a.score?.detail?.maintenance ?? 0) - (b.score?.detail?.maintenance ?? 0)
-        break
-      case 'score':
-        diff = (a.score?.final ?? 0) - (b.score?.final ?? 0)
-        break
       default:
         diff = 0
     }
