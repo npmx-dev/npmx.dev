@@ -179,7 +179,7 @@ export const analyzeDependencyTree = defineCachedFunction(
     const resolved = await resolveDependencyTree(name, version, { trackDepth: true })
 
     // Convert to array with query info
-    const packages: PackageQueryInfo[] = [...resolved.values()].map(pkg => ({
+    const packages: PackageQueryInfo[] = Array.from(resolved.values(), pkg => ({
       name: pkg.name,
       version: pkg.version,
       depth: pkg.depth!,

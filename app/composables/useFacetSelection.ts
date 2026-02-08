@@ -23,13 +23,70 @@ export interface FacetInfoWithLabels extends Omit<FacetInfo, 'id'> {
 export function useFacetSelection(queryParam = 'facets') {
   const { t } = useI18n()
 
+  const facetLabels = computed(
+    (): Record<ComparisonFacet, { label: string; description: string }> => ({
+      downloads: {
+        label: t(`compare.facets.items.downloads.label`),
+        description: t(`compare.facets.items.downloads.description`),
+      },
+      totalLikes: {
+        label: t(`compare.facets.items.totalLikes.label`),
+        description: t(`compare.facets.items.totalLikes.description`),
+      },
+      packageSize: {
+        label: t(`compare.facets.items.packageSize.label`),
+        description: t(`compare.facets.items.packageSize.description`),
+      },
+      installSize: {
+        label: t(`compare.facets.items.installSize.label`),
+        description: t(`compare.facets.items.installSize.description`),
+      },
+      moduleFormat: {
+        label: t(`compare.facets.items.moduleFormat.label`),
+        description: t(`compare.facets.items.moduleFormat.description`),
+      },
+      types: {
+        label: t(`compare.facets.items.types.label`),
+        description: t(`compare.facets.items.types.description`),
+      },
+      engines: {
+        label: t(`compare.facets.items.engines.label`),
+        description: t(`compare.facets.items.engines.description`),
+      },
+      vulnerabilities: {
+        label: t(`compare.facets.items.vulnerabilities.label`),
+        description: t(`compare.facets.items.vulnerabilities.description`),
+      },
+      lastUpdated: {
+        label: t(`compare.facets.items.lastUpdated.label`),
+        description: t(`compare.facets.items.lastUpdated.description`),
+      },
+      license: {
+        label: t(`compare.facets.items.license.label`),
+        description: t(`compare.facets.items.license.description`),
+      },
+      dependencies: {
+        label: t(`compare.facets.items.dependencies.label`),
+        description: t(`compare.facets.items.dependencies.description`),
+      },
+      totalDependencies: {
+        label: t(`compare.facets.items.totalDependencies.label`),
+        description: t(`compare.facets.items.totalDependencies.description`),
+      },
+      deprecated: {
+        label: t(`compare.facets.items.deprecated.label`),
+        description: t(`compare.facets.items.deprecated.description`),
+      },
+    }),
+  )
+
   // Helper to build facet info with i18n labels
   function buildFacetInfo(facet: ComparisonFacet): FacetInfoWithLabels {
     return {
       id: facet,
       ...FACET_INFO[facet],
-      label: t(`compare.facets.items.${facet}.label`),
-      description: t(`compare.facets.items.${facet}.description`),
+      label: facetLabels.value[facet].label,
+      description: facetLabels.value[facet].description,
     }
   }
 
@@ -130,9 +187,16 @@ export function useFacetSelection(queryParam = 'facets') {
   // Check if only one facet is selected (minimum)
   const isNoneSelected = computed(() => selectedFacetIds.value.length === 1)
 
+  const facetCategories = {
+    performance: t(`compare.facets.categories.performance`),
+    health: t(`compare.facets.categories.health`),
+    compatibility: t(`compare.facets.categories.compatibility`),
+    security: t(`compare.facets.categories.security`),
+  }
+
   // Get translated category name
   function getCategoryLabel(category: FacetInfo['category']): string {
-    return t(`compare.facets.categories.${category}`)
+    return facetCategories[category]
   }
 
   // All facets with their info and i18n labels, grouped by category

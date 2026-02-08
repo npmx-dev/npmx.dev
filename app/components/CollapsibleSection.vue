@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { shallowRef, computed } from 'vue'
+import { LinkBase } from '#components'
 
 interface Props {
   title: string
@@ -18,7 +19,6 @@ const appSettings = useSettings()
 
 const buttonId = `${props.id}-collapsible-button`
 const contentId = `${props.id}-collapsible-content`
-const headingId = `${props.id}-heading`
 
 const isOpen = shallowRef(true)
 
@@ -75,11 +75,10 @@ useHead({
 </script>
 
 <template>
-  <section class="scroll-mt-20" :data-anchor-id="id">
+  <section :id="id" :data-anchor-id="id" class="scroll-mt-20 xl:scroll-mt-0">
     <div class="flex items-center justify-between mb-3 px-1">
       <component
         :is="headingLevel"
-        :id="headingId"
         class="group text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-2"
       >
         <button
@@ -104,17 +103,9 @@ useHead({
           />
         </button>
 
-        <a
-          :href="`#${id}`"
-          class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-        >
-          <span v-if="icon" :class="icon" aria-hidden="true" />
+        <LinkBase :to="`#${id}`" class="">
           {{ title }}
-          <span
-            class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            aria-hidden="true"
-          />
-        </a>
+        </LinkBase>
       </component>
 
       <!-- Actions slot for buttons or other elements -->

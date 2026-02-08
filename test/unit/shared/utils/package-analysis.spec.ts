@@ -217,12 +217,17 @@ describe('analyzePackage', () => {
       name: 'test',
       main: 'index.js',
       engines: {
+        bun: '>=1.0.0',
         node: '>=18',
         npm: '>=9',
       },
     })
 
-    expect(result.engines).toEqual({ node: '>=18', npm: '>=9' })
+    expect(result.engines).toEqual({
+      bun: '>=1.0.0',
+      node: '>=18',
+      npm: '>=9',
+    })
   })
 
   it('detects @types package when typesPackage info is provided', () => {

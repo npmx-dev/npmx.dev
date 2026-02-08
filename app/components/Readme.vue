@@ -47,6 +47,13 @@ function handleClick(event: MouseEvent) {
   const href = anchor.getAttribute('href')
   if (!href) return
 
+  // Handle relative anchor links
+  if (href.startsWith('#')) {
+    event.preventDefault()
+    router.push(href)
+    return
+  }
+
   const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
   if (!match || !match[1]) return
 
@@ -61,6 +68,7 @@ function handleClick(event: MouseEvent) {
 <template>
   <article
     class="readme prose prose-invert max-w-[70ch] lg:max-w-none px-1"
+    dir="auto"
     v-html="html"
     :style="{
       '--i18n-note': '\'' + $t('package.readme.callout.note') + '\'',
@@ -85,6 +93,8 @@ function handleClick(event: MouseEvent) {
   /* Contain all children */
   overflow: hidden;
   min-width: 0;
+  /* Contain all children z-index values inside this container */
+  isolation: isolate;
 }
 
 /* README headings - styled by visual level (data-level), not semantic level */
@@ -92,8 +102,8 @@ function handleClick(event: MouseEvent) {
 .readme :deep(h4),
 .readme :deep(h5),
 .readme :deep(h6) {
+  @apply font-mono scroll-mt-20;
   color: var(--fg);
-  @apply font-mono;
   font-weight: 500;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -138,7 +148,7 @@ function handleClick(event: MouseEvent) {
   transition: text-decoration-color 0.2s ease;
 }
 
-.readme a:hover {
+.readme :deep(a:hover) {
   text-decoration-color: var(--accent);
 }
 
@@ -402,6 +412,8 @@ function handleClick(event: MouseEvent) {
   display: revert-layer;
   border-radius: 8px;
   margin: 1rem 0;
+  position: relative;
+  z-index: 1;
 }
 
 .readme :deep(video) {

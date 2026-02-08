@@ -16,6 +16,11 @@ const lineNumbers = computed(() => {
   return Array.from({ length: props.lines }, (_, i) => i + 1)
 })
 
+// Used for CSS calculation of line number column width
+const lineDigits = computed(() => {
+  return String(props.lines).length
+})
+
 // Check if a line is selected
 function isLineSelected(lineNum: number): boolean {
   if (!props.selectedLines) return false
@@ -55,10 +60,11 @@ watch(
 </script>
 
 <template>
-  <div class="code-viewer flex min-h-full">
+  <div class="code-viewer flex min-h-full max-w-full">
     <!-- Line numbers column -->
     <div
-      class="line-numbers shrink-0 bg-bg-subtle border-ie border-border text-end select-none"
+      class="line-numbers shrink-0 bg-bg-subtle border-ie border-solid border-border text-end select-none relative"
+      :style="{ '--line-digits': lineDigits }"
       aria-hidden="true"
     >
       <a
@@ -94,7 +100,8 @@ watch(
 }
 
 .line-numbers {
-  min-width: 3.5rem;
+  /* 1ch per digit + 1.5rem (px-3 * 2) padding */
+  min-width: calc(var(--line-digits) * 1ch + 1.5rem);
 }
 
 .code-content :deep(pre) {

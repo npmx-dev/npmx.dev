@@ -99,21 +99,86 @@ onUnmounted(deactivate)
               </button>
             </div>
 
+            <!-- Account section -->
+            <div class="px-2 py-2">
+              <span
+                class="px-3 py-2 block font-mono text-xs text-fg-subtle uppercase tracking-wider"
+              >
+                {{ $t('account_menu.account') }}
+              </span>
+
+              <!-- npm CLI connection status (only show if connected) -->
+              <button
+                v-if="isConnected && npmUser"
+                type="button"
+                class="w-full flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200 text-start"
+                @click="handleShowConnector"
+              >
+                <img
+                  v-if="npmAvatar"
+                  :src="npmAvatar"
+                  :alt="npmUser"
+                  width="20"
+                  height="20"
+                  class="w-5 h-5 rounded-full object-cover"
+                />
+                <span
+                  v-else
+                  class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center"
+                >
+                  <span class="i-carbon-terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
+                </span>
+                <span class="flex-1">~{{ npmUser }}</span>
+                <span class="w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
+              </button>
+
+              <!-- Atmosphere connection status -->
+              <button
+                v-if="atprotoUser"
+                type="button"
+                class="w-full flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200 text-start"
+                @click="handleShowAuth"
+              >
+                <img
+                  v-if="atprotoUser.avatar"
+                  :src="atprotoUser.avatar"
+                  :alt="atprotoUser.handle"
+                  width="20"
+                  height="20"
+                  class="w-5 h-5 rounded-full object-cover"
+                />
+                <span
+                  v-else
+                  class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center"
+                >
+                  <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
+                </span>
+                <span class="flex-1 truncate">@{{ atprotoUser.handle }}</span>
+              </button>
+
+              <!-- Connect Atmosphere button (show if not connected) -->
+              <button
+                v-else
+                type="button"
+                class="w-full flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200 text-start"
+                @click="handleShowAuth"
+              >
+                <span class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center">
+                  <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
+                </span>
+                <span class="flex-1">{{ $t('account_menu.connect_atmosphere') }}</span>
+              </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="mx-4 my-2 border-t border-border" />
+
             <!-- Navigation links -->
             <div class="flex-1 overflow-y-auto overscroll-contain py-2">
-              <!-- Main navigation -->
+              <!-- App navigation -->
               <div class="px-2 py-2">
                 <NuxtLink
-                  to="/about"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                  @click="closeMenu"
-                >
-                  <span class="i-carbon:information w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('footer.about') }}
-                </NuxtLink>
-
-                <NuxtLink
-                  to="/compare"
+                  :to="{ name: 'compare' }"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"
                 >
@@ -122,7 +187,7 @@ onUnmounted(deactivate)
                 </NuxtLink>
 
                 <NuxtLink
-                  to="/settings"
+                  :to="{ name: 'settings' }"
                   class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                   @click="closeMenu"
                 >
@@ -133,7 +198,7 @@ onUnmounted(deactivate)
                 <!-- Connected user links -->
                 <template v-if="isConnected && npmUser">
                   <NuxtLink
-                    :to="`/~${npmUser}`"
+                    :to="{ name: '~username', params: { username: npmUser } }"
                     class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                     @click="closeMenu"
                   >
@@ -142,7 +207,7 @@ onUnmounted(deactivate)
                   </NuxtLink>
 
                   <NuxtLink
-                    :to="`/~${npmUser}/orgs`"
+                    :to="{ name: '~username-orgs', params: { username: npmUser } }"
                     class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
                     @click="closeMenu"
                   >
@@ -155,7 +220,31 @@ onUnmounted(deactivate)
               <!-- Divider -->
               <div class="mx-4 my-2 border-t border-border" />
 
-              <!-- External links (from footer) -->
+              <!-- Informational links -->
+              <div class="px-2 py-2">
+                <NuxtLink
+                  :to="{ name: 'about' }"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:information w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('footer.about') }}
+                </NuxtLink>
+
+                <NuxtLink
+                  :to="{ name: 'privacy' }"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:security w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('privacy_policy.title') }}
+                </NuxtLink>
+              </div>
+
+              <!-- Divider -->
+              <div class="mx-4 my-2 border-t border-border" />
+
+              <!-- External links -->
               <div class="px-2 py-2">
                 <span class="px-3 py-2 font-mono text-xs text-fg-subtle uppercase tracking-wider">
                   {{ $t('nav.links') }}
@@ -217,76 +306,6 @@ onUnmounted(deactivate)
                   />
                 </a>
               </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="mx-4 my-2 border-t border-border" />
-
-            <!-- Account section -->
-            <div class="px-2 py-2">
-              <span
-                class="px-3 py-2 block font-mono text-xs text-fg-subtle uppercase tracking-wider"
-              >
-                {{ $t('account_menu.account') }}
-              </span>
-
-              <!-- npm CLI connection status (only show if connected) -->
-              <button
-                v-if="isConnected && npmUser"
-                type="button"
-                class="w-full flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200 text-start"
-                @click="handleShowConnector"
-              >
-                <img
-                  v-if="npmAvatar"
-                  :src="npmAvatar"
-                  :alt="npmUser"
-                  width="20"
-                  height="20"
-                  class="w-5 h-5 rounded-full"
-                />
-                <span
-                  v-else
-                  class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center"
-                >
-                  <span class="i-carbon-terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
-                </span>
-                <span class="flex-1">~{{ npmUser }}</span>
-                <span class="w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
-              </button>
-
-              <!-- Atmosphere connection status -->
-              <button
-                v-if="atprotoUser"
-                type="button"
-                class="w-full flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200 text-start"
-                @click="handleShowAuth"
-              >
-                <span class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center">
-                  <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
-                </span>
-                <span class="flex-1 truncate">@{{ atprotoUser.handle }}</span>
-              </button>
-
-              <!-- Connect Atmosphere button (show if not connected) -->
-              <button
-                v-else
-                type="button"
-                class="w-full flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200 text-start"
-                @click="handleShowAuth"
-              >
-                <span class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center">
-                  <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
-                </span>
-                <span class="flex-1">{{ $t('account_menu.connect_atmosphere') }}</span>
-              </button>
-            </div>
-
-            <!-- Footer -->
-            <div class="p-4 border-t border-border mt-auto">
-              <p class="font-mono text-xs text-fg-subtle text-center">
-                {{ $t('non_affiliation_disclaimer') }}
-              </p>
             </div>
           </nav>
         </Transition>

@@ -36,12 +36,12 @@ const isChecking = computed(() => {
 })
 
 const mergedError = computed(() => {
-  return (
-    publishError.value ??
-    (checkError.value instanceof Error
-      ? checkError.value.message
-      : $t('claim.modal.failed_to_check'))
-  )
+  return checkResult.value !== null
+    ? null
+    : (publishError.value ??
+        (checkError.value instanceof Error
+          ? checkError.value.message
+          : $t('claim.modal.failed_to_check')))
 })
 
 const connectorModal = useModal('connector-modal')
@@ -173,7 +173,7 @@ const previewPackageJson = computed(() => {
 
       <div class="flex gap-3">
         <NuxtLink
-          :to="`/package/${packageName}`"
+          :to="packageRoute(packageName)"
           class="flex-1 px-4 py-2 font-mono text-sm text-center text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
           @click="close"
         >
@@ -277,7 +277,7 @@ const previewPackageJson = computed(() => {
               <span v-else class="w-4 h-4 shrink-0" />
               <div class="min-w-0">
                 <NuxtLink
-                  :to="`/package/${pkg.name}`"
+                  :to="packageRoute(pkg.name)"
                   class="font-mono text-sm text-fg hover:underline focus-visible:outline-accent/70 rounded"
                   target="_blank"
                 >
@@ -344,7 +344,7 @@ const previewPackageJson = computed(() => {
           <!-- Expandable package.json preview -->
           <details class="border border-border rounded-md overflow-hidden">
             <summary
-              class="px-3 py-2 text-sm text-fg-muted bg-bg-subtle cursor-pointer hover:text-fg transition-colors select-none"
+              class="px-3 py-2 text-sm text-fg-muted bg-bg-subtle hover:text-fg transition-colors select-none"
             >
               {{ $t('claim.modal.preview_json') }}
             </summary>

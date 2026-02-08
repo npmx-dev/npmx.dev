@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
+import type { RouteLocationRaw } from 'vue-router'
 import { getFileIcon } from '~/utils/file-icons'
 
 const props = defineProps<{
   tree: PackageFileTree[]
   currentPath: string
   baseUrl: string
+  /** Base path segments for the code route (e.g., ['nuxt', 'v', '4.2.0']) */
+  basePath: string[]
   depth?: number
 }>()
 
@@ -16,6 +19,15 @@ function isNodeActive(node: PackageFileTree): boolean {
   if (props.currentPath === node.path) return true
   if (props.currentPath.startsWith(node.path + '/')) return true
   return false
+}
+
+// Build route object for a file path
+function getFileRoute(nodePath: string): RouteLocationRaw {
+  const pathSegments = [...props.basePath, ...nodePath.split('/')]
+  return {
+    name: 'code',
+    params: { path: pathSegments as [string, ...string[]] },
+  }
 }
 
 const { toggleDir, isExpanded, autoExpandAncestors } = useFileTreeState(props.baseUrl)
@@ -63,6 +75,7 @@ watch(
           :tree="node.children"
           :current-path="currentPath"
           :base-url="baseUrl"
+          :base-path="basePath"
           :depth="depth + 1"
         />
       </template>
@@ -70,7 +83,7 @@ watch(
       <!-- File -->
       <template v-else>
         <NuxtLink
-          :to="`${baseUrl}/${node.path}`"
+          :to="getFileRoute(node.path)"
           class="flex items-center gap-1.5 py-1.5 px-3 font-mono text-sm transition-colors hover:bg-bg-muted"
           :class="currentPath === node.path ? 'bg-bg-muted text-fg' : 'text-fg-muted'"
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"

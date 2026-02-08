@@ -46,8 +46,12 @@ if (import.meta.server && !requestedVersion.value && packageName.value) {
   const version = await fetchLatestVersion(packageName.value)
   if (version) {
     setResponseHeader(useRequestEvent()!, 'Cache-Control', 'no-cache')
+    const pathSegments = [...packageName.value.split('/'), 'v', version]
     app.runWithContext(() =>
-      navigateTo('/package-docs/' + packageName.value + '/v/' + version, { redirectCode: 302 }),
+      navigateTo(
+        { name: 'docs', params: { path: pathSegments as [string, ...string[]] } },
+        { redirectCode: 302 },
+      ),
     )
   }
 }
@@ -56,7 +60,8 @@ watch(
   [requestedVersion, latestVersion, packageName],
   ([version, latest, name]) => {
     if (!version && latest && name) {
-      router.replace(`/package-docs/${name}/v/${latest}`)
+      const pathSegments = [...name.split('/'), 'v', latest]
+      router.replace({ name: 'docs', params: { path: pathSegments as [string, ...string[]] } })
     }
   },
   { immediate: true },
@@ -95,6 +100,11 @@ const pageTitle = computed(() => {
 
 useSeoMeta({
   title: () => pageTitle.value,
+  ogTitle: () => pageTitle.value,
+  twitterTitle: () => pageTitle.value,
+  description: () => pkg.value?.license ?? '',
+  ogDescription: () => pkg.value?.license ?? '',
+  twitterDescription: () => pkg.value?.license ?? '',
 })
 
 defineOgImageComponent('Default', {
@@ -115,14 +125,15 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
     <!-- Sticky header - positioned below AppHeader -->
     <header
       aria-label="Package documentation header"
-      class="docs-header sticky z-10 bg-bg/95 backdrop-blur border-b border-border"
+      class="docs-header sticky z-10 border-b border-border"
     >
-      <div class="px-4 sm:px-6 lg:px-8 py-4">
+      <div class="absolute inset-0 bg-bg/90 backdrop-blur" />
+      <div class="relative px-4 sm:px-6 lg:px-8 py-4 z-1">
         <div class="flex items-center justify-between gap-4">
           <div class="flex items-center gap-3 min-w-0">
             <NuxtLink
               v-if="packageName"
-              :to="{ name: 'package', params: { package: [packageName] } }"
+              :to="packageRoute(packageName)"
               class="font-mono text-lg sm:text-xl font-semibold text-fg hover:text-fg-muted transition-colors truncate"
             >
               {{ packageName }}
@@ -148,7 +159,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
       </div>
     </header>
 
-    <div class="flex">
+    <div class="flex" dir="ltr">
       <!-- Sidebar TOC -->
       <aside
         v-if="docsData?.toc && !showEmptyState"
@@ -181,7 +192,7 @@ const showEmptyState = computed(() => docsData.value?.status !== 'ok')
             <div class="flex gap-4 mt-4">
               <NuxtLink
                 v-if="packageName"
-                :to="{ name: 'package', params: { package: [packageName] } }"
+                :to="packageRoute(packageName)"
                 class="link-subtle font-mono text-sm"
               >
                 View package

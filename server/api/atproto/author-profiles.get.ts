@@ -49,11 +49,7 @@ export default defineCachedEventHandler(
 
     if (handles.length === 0) {
       return {
-        authors: authors.map(author => ({
-          ...author,
-          avatar: null,
-          profileUrl: null,
-        })),
+        authors: authors.map(author => Object.assign(author, { avatar: null, profileUrl: null })),
       }
     }
 
@@ -68,11 +64,14 @@ export default defineCachedEventHandler(
       }
     }
 
-    const resolvedAuthors: ResolvedAuthor[] = authors.map(author => ({
-      ...author,
-      avatar: author.blueskyHandle ? avatarMap.get(author.blueskyHandle) || null : null,
-      profileUrl: author.blueskyHandle ? `https://bsky.app/profile/${author.blueskyHandle}` : null,
-    }))
+    const resolvedAuthors: ResolvedAuthor[] = authors.map(author =>
+      Object.assign(author, {
+        avatar: author.blueskyHandle ? avatarMap.get(author.blueskyHandle) || null : null,
+        profileUrl: author.blueskyHandle
+          ? `https://bsky.app/profile/${author.blueskyHandle}`
+          : null,
+      }),
+    )
 
     return { authors: resolvedAuthors }
   },

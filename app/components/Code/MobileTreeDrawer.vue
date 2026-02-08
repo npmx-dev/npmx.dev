@@ -5,6 +5,8 @@ defineProps<{
   tree: PackageFileTree[]
   currentPath: string
   baseUrl: string
+  /** Base path segments for the code route (e.g., ['nuxt', 'v', '4.2.0']) */
+  basePath: string[]
 }>()
 
 const isOpen = shallowRef(false)
@@ -73,7 +75,12 @@ watch(isOpen, open => (isLocked.value = open))
           <span class="i-carbon:close w-5 h-5" />
         </button>
       </div>
-      <CodeFileTree :tree="tree" :current-path="currentPath" :base-url="baseUrl" />
+      <CodeFileTree
+        :tree="tree"
+        :current-path="currentPath"
+        :base-url="baseUrl"
+        :base-path="basePath"
+      />
     </aside>
   </Transition>
 </template>

@@ -15,11 +15,13 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "generate": "nuxt generate",
+    "postinstall": "pnpm rebuild better-sqlite3",
     "preview": "nuxt preview"
   },
   "dependencies": {
+    "@nuxtjs/mdc": "0.20.1",
     "better-sqlite3": "12.5.0",
     "docus": "5.4.4",
-    "nuxt": "4.3.0"
+    "nuxt": "4.3.1"
   }
 }

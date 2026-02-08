@@ -1,5 +1,6 @@
 import type { Packument, PackumentVersion, DependencyDepth } from '#shared/types'
 import { mapWithConcurrency } from '#shared/utils/async'
+import { encodePackageName } from '#shared/utils/npm'
 import { maxSatisfying } from 'semver'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
@@ -21,11 +22,7 @@ export const TARGET_PLATFORM = {
 export const fetchPackument = defineCachedFunction(
   async (name: string): Promise<Packument | null> => {
     try {
-      const encodedName = name.startsWith('@')
-        ? `@${encodeURIComponent(name.slice(1))}`
-        : encodeURIComponent(name)
-
-      return await $fetch<Packument>(`https://registry.npmjs.org/${encodedName}`)
+      return await $fetch<Packument>(`https://registry.npmjs.org/${encodePackageName(name)}`)
     } catch (error) {
       if (import.meta.dev) {
         // oxlint-disable-next-line no-console -- log npm registry failures for debugging

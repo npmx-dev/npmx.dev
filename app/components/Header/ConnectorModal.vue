@@ -108,17 +108,18 @@ function handleDisconnect() {
 
       <div
         class="flex items-center p-3 bg-bg-muted border border-border rounded-lg font-mono text-sm"
+        dir="ltr"
       >
         <span class="text-fg-subtle">$</span>
         <span class="text-fg-subtle ms-2">pnpm npmx-connector</span>
         <button
           type="button"
           :aria-label="copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')"
-          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+          class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
           @click="copy('pnpm npmx-connector')"
         >
-          <span v-if="!copied" class="i-carbon:copy w-5 h-5" aria-hidden="true" />
-          <span v-else class="i-carbon:checkmark w-5 h-5 text-green-500" aria-hidden="true" />
+          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
+          <span v-else class="i-carbon:checkmark block w-5 h-5 text-green-500" aria-hidden="true" />
         </button>
       </div>
 
@@ -136,13 +137,13 @@ function handleDisconnect() {
                           :aria-label="
                             copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
                           "
-                          class="ms-auto text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+                          class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
                           @click="copyCommand"
                         >
-                          <span v-if="!copied" class="i-carbon:copy w-5 h-5" aria-hidden="true" />
+                          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
                           <span
                             v-else
-                            class="i-carbon:checkmark w-5 h-5 text-green-500"
+                            class="i-carbon:checkmark block w-5 h-5 text-green-500"
                             aria-hidden="true"
                           />
                         </button>
@@ -160,21 +161,20 @@ function handleDisconnect() {
           >
             {{ $t('connector.modal.token_label') }}
           </label>
-          <input
+          <InputBase
             id="connector-token"
             v-model="tokenInput"
             type="password"
             name="connector-token"
             :placeholder="$t('connector.modal.token_placeholder')"
-            v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
+            no-correct
+            class="w-full"
+            size="medium"
           />
         </div>
 
         <details class="text-sm">
-          <summary
-            class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200"
-          >
+          <summary class="text-fg-subtle hover:text-fg-muted transition-colors duration-200">
             {{ $t('connector.modal.advanced') }}
           </summary>
           <div class="mt-3">
@@ -184,14 +184,15 @@ function handleDisconnect() {
             >
               {{ $t('connector.modal.port_label') }}
             </label>
-            <input
+            <InputBase
               id="connector-port"
               v-model="portInput"
               type="text"
               name="connector-port"
               inputmode="numeric"
               autocomplete="off"
-              class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
+              class="w-full"
+              size="medium"
             />
           </div>
         </details>
@@ -214,18 +215,19 @@ function handleDisconnect() {
         <p class="inline-block text-xs font-bold uppercase tracking-wider text-fg rounded">
           {{ $t('connector.modal.warning') }}
         </p>
-        <p class="text-sm text-fg-muted">
+        <p class="text-sm text-fg-muted mt-1">
           {{ $t('connector.modal.warning_text') }}
         </p>
       </div>
 
-      <button
+      <ButtonBase
         type="submit"
+        variant="primary"
         :disabled="!tokenInput.trim() || isConnecting"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+        class="w-full"
       >
         {{ isConnecting ? $t('connector.modal.connecting') : $t('connector.modal.connect') }}
-      </button>
+      </ButtonBase>
     </form>
   </Modal>
 </template>
