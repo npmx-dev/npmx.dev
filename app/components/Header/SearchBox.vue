@@ -116,6 +116,7 @@ defineExpose({ focus })
             class="w-full min-w-25 ps-7"
             @focus="isSearchFocused = true"
             @blur="isSearchFocused = false"
+            size="small"
           />
           <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
         </div>
