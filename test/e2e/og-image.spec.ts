@@ -1,5 +1,6 @@
 import { expect, test } from './test-utils'
 
+// TODO(serhalp): The nuxt@3.20.2 fixture has no stars. Update fixture to have stars coverage here.
 const paths = ['/', '/package/nuxt/v/3.20.2']
 
 for (const path of paths) {
