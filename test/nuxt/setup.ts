@@ -23,4 +23,14 @@ if (typeof window !== 'undefined') {
       removeColorScheme: () => {},
     }
   }
+
+  // force npm search provider in tests for compatibility with our mocks
+  const settingsKey = 'npmx-settings'
+  try {
+    const existing = JSON.parse(localStorage.getItem(settingsKey) || '{}')
+    existing.searchProvider = 'npm'
+    localStorage.setItem(settingsKey, JSON.stringify(existing))
+  } catch {
+    localStorage.setItem(settingsKey, JSON.stringify({ searchProvider: 'npm' }))
+  }
 }
