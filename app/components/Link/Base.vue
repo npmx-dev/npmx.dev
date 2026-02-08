@@ -75,7 +75,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
   </span>
   <NuxtLink
     v-else
-    class="group inline-flex gap-x-1 items-center justify-center rounded-sm outline-transparent focus-visible:(outline-2 outline-accent)"
+    class="group inline-flex gap-x-1 items-center justify-center rounded-sm outline-transparent active:scale-[0.98] focus-visible:(outline-2 outline-accent)"
     :class="[
       {
         'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30':
