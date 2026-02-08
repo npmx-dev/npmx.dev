@@ -19,11 +19,11 @@
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
     "i18n:report": "node scripts/find-invalid-translations.ts",
     "i18n:report:fix": "node scripts/remove-unused-translations.ts",
-    "rtl:check": "node scripts/rtl-checker.ts",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint && oxfmt --check",
     "lint:fix": "oxlint --fix && oxfmt",
+    "lint:css": "node scripts/unocss-checker.ts",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
     "generate-pwa-icons": "pwa-assets-generator",
@@ -150,6 +150,9 @@
     ],
     "*.{js,ts,mjs,cjs,vue}": [
       "pnpm oxlint --fix"
+    ],
+    "*.vue": [
+      "pnpm lint:css"
     ],
     "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
       "pnpm oxfmt"
