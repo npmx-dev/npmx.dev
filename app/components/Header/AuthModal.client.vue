@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { authRedirect } from '~/utils/atproto/helpers'
+import { ensureValidAtIdentifier } from '@atproto/syntax'
 
 const handleInput = shallowRef('')
+const errorMessage = shallowRef('')
 const route = useRoute()
 const { user, logout } = useAtproto()
 
@@ -22,17 +24,25 @@ async function handleCreateAccount() {
 
 async function handleLogin() {
   if (handleInput.value) {
+    // URLS to PDSs are valid for oauth redirects
+    if (!handleInput.value.startsWith('https://')) {
+      try {
+        ensureValidAtIdentifier(handleInput.value)
+      } catch (error) {
+        errorMessage.value =
+          error instanceof Error ? error.message : $t('auth.modal.default_input_error')
+        return
+      }
+    }
     await authRedirect(handleInput.value)
   }
 }
 
 watch(handleInput, newHandleInput => {
+  errorMessage.value = ''
   if (!newHandleInput) return
 
-  const normalized = newHandleInput
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9.-]/g, '')
+  const normalized = newHandleInput.trim().toLowerCase().replace(/@/g, '')
 
   if (normalized !== newHandleInput) {
     handleInput.value = normalized
@@ -81,6 +91,9 @@ watch(handleInput, newHandleInput => {
             v-bind="noCorrect"
             class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 hover:border-fg-subtle focus:border-accent focus-visible:(outline-2 outline-accent/70)"
           />
+          <p v-if="errorMessage" class="text-red-500 text-xs mt-1" role="alert">
+            {{ errorMessage }}
+          </p>
         </div>
 
         <details class="text-sm">
