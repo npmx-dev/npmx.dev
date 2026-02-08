@@ -69,6 +69,10 @@ export function useNpmSearch(
 
   const isLoadingMore = shallowRef(false)
 
+  // Track rate limit errors separately for better UX
+  // Using ref instead of shallowRef to ensure reactivity triggers properly
+  const isRateLimited = ref(false)
+
   // Standard (non-incremental) search implementation
   let lastSearch: NpmSearchResponse | undefined = undefined
 
@@ -79,12 +83,14 @@ export function useNpmSearch(
       const provider = searchProvider.value
 
       if (!q.trim()) {
+        isRateLimited.value = false
         return emptySearchResponse
       }
 
       const opts = toValue(options)
 
-      // Reset cache for new query or provider change
+      // This only runs for initial load or query changes
+      // Reset cache for new query (but don't reset rate limit yet - only on success)
       cache.value = null
 
       // --- Algolia path (client-side only) ---
@@ -96,6 +102,8 @@ export function useNpmSearch(
         if (q !== toValue(query)) {
           return emptySearchResponse
         }
+
+        isRateLimited.value = false
 
         cache.value = {
           query: q,
@@ -112,20 +120,50 @@ export function useNpmSearch(
       params.set('text', q)
       params.set('size', String(opts.size ?? 25))
 
-      if (q.length === 1) {
-        const encodedName = encodePackageName(q)
-        const [{ data: pkg, isStale }, { data: downloads }] = await Promise.all([
-          $npmRegistry<Packument>(`/${encodedName}`, { signal }),
-          $npmApi<NpmDownloadCount>(`/downloads/point/last-week/${encodedName}`, {
-            signal,
-          }),
-        ])
+      try {
+        if (q.length === 1) {
+          const encodedName = encodePackageName(q)
+          const [{ data: pkg, isStale }, { data: downloads }] = await Promise.all([
+            $npmRegistry<Packument>(`/${encodedName}`, { signal }),
+            $npmApi<NpmDownloadCount>(`/downloads/point/last-week/${encodedName}`, {
+              signal,
+            }),
+          ])
 
-        if (!pkg) {
-          return emptySearchResponse
+          if (!pkg) {
+            return emptySearchResponse
+          }
+
+          const result = packumentToSearchResult(pkg, downloads?.downloads)
+
+          // If query changed/outdated, return empty search response
+          if (q !== toValue(query)) {
+            return emptySearchResponse
+          }
+
+          cache.value = {
+            query: q,
+            provider,
+            objects: [result],
+            total: 1,
+          }
+
+          // Success - clear rate limit flag
+          isRateLimited.value = false
+
+          return {
+            objects: [result],
+            total: 1,
+            isStale,
+            time: new Date().toISOString(),
+          }
         }
 
-        const result = packumentToSearchResult(pkg, downloads?.downloads)
+        const { data: response, isStale } = await $npmRegistry<NpmSearchResponse>(
+          `/-/v1/search?${params.toString()}`,
+          { signal },
+          60,
+        )
 
         // If query changed/outdated, return empty search response
         if (q !== toValue(query)) {
@@ -135,37 +173,27 @@ export function useNpmSearch(
         cache.value = {
           query: q,
           provider,
-          objects: [result],
-          total: 1,
+          objects: response.objects,
+          total: response.total,
         }
 
-        return {
-          objects: [result],
-          total: 1,
-          isStale,
-          time: new Date().toISOString(),
+        // Success - clear rate limit flag
+        isRateLimited.value = false
+
+        return { ...response, isStale }
+      } catch (error: unknown) {
+        // Detect rate limit errors. npm's 429 response doesn't include CORS headers,
+        // so the browser reports "Failed to fetch" instead of the actual status code.
+        const errorMessage = (error as { message?: string })?.message || String(error)
+        const isRateLimitError =
+          errorMessage.includes('Failed to fetch') || errorMessage.includes('429')
+
+        if (isRateLimitError) {
+          isRateLimited.value = true
+          return emptySearchResponse
         }
+        throw error
       }
-
-      const { data: response, isStale } = await $npmRegistry<NpmSearchResponse>(
-        `/-/v1/search?${params.toString()}`,
-        { signal },
-        60,
-      )
-
-      // If query changed/outdated, return empty search response
-      if (q !== toValue(query)) {
-        return emptySearchResponse
-      }
-
-      cache.value = {
-        query: q,
-        provider,
-        objects: response.objects,
-        total: response.total,
-      }
-
-      return { ...response, isStale }
     },
     { default: () => lastSearch || emptySearchResponse },
   )
@@ -319,5 +347,7 @@ export function useNpmSearch(
     hasMore,
     /** Manually fetch more results up to target size */
     fetchMore,
+    /** Whether the search was rate limited by npm (429 error) */
+    isRateLimited: readonly(isRateLimited),
   }
 }

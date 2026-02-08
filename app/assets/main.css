@@ -171,6 +171,26 @@
   }
 }
 
+/*
+ * Forced Colors Mode (WHCM) Override for Icons
+ *
+ * By default, `forced-color-adjust: preserve-parent-color` (from UnoConfig) works fine
+ * for most icons as they inherit the correct text color.
+ *
+ * However, if icons disappear in specific contexts (e.g., inside buttons with
+ * complex backgrounds or transparent states), uncomment the following block
+ * to enforce visibility using `CanvasText`.
+ */
+/* 
+@media (forced-colors: active) {
+  [class^='i-'],
+  [class*=' i-'] {
+    forced-color-adjust: none !important;
+    color: CanvasText !important;
+  }
+}
+*/
+
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

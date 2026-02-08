@@ -525,7 +525,7 @@ onKeyStroke(
         :class="{ 'border-b': isHeaderPinned }"
       >
         <!-- Package name and version -->
-        <div class="flex items-baseline gap-2 sm:gap-3 flex-wrap min-w-0">
+        <div class="flex items-baseline gap-x-2 gap-y-1 sm:gap-x-3 flex-wrap min-w-0">
           <div class="group relative flex flex-col items-start min-w-0">
             <h1
               class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
@@ -605,15 +605,49 @@ onKeyStroke(
             >
           </span>
 
-          <!-- Package metrics (module format, types) -->
-          <div class="flex gap-2 sm:gap-3 flex-wrap">
+          <!-- Docs + Code + Compare — inline on desktop, floating bottom bar on mobile -->
+          <ButtonGroup
+            v-if="resolvedVersion"
+            as="nav"
+            :aria-label="$t('package.navigation')"
+            class="package-nav hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-50% max-sm:-translate-x-50% max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
+          >
+            <LinkBase
+              variant="button-secondary"
+              v-if="docsLink"
+              :to="docsLink"
+              keyshortcut="d"
+              classicon="i-carbon:document"
+            >
+              {{ $t('package.links.docs') }}
+            </LinkBase>
+            <LinkBase
+              variant="button-secondary"
+              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
+              keyshortcut="."
+              classicon="i-carbon:code"
+            >
+              {{ $t('package.links.code') }}
+            </LinkBase>
+            <LinkBase
+              variant="button-secondary"
+              :to="{ name: 'compare', query: { packages: pkg.name } }"
+              keyshortcut="c"
+              classicon="i-carbon:compare"
+            >
+              {{ $t('package.links.compare') }}
+            </LinkBase>
+          </ButtonGroup>
+
+          <!-- Package metrics -->
+          <div class="basis-full flex gap-2 sm:gap-3 flex-wrap">
             <ClientOnly>
               <PackageMetricsBadges
                 v-if="resolvedVersion"
                 :package-name="pkg.name"
                 :version="resolvedVersion"
                 :is-binary="isBinaryOnly"
-                class="self-baseline ms-1 sm:ms-2"
+                class="self-baseline"
               />
 
               <!-- Package likes -->
@@ -654,9 +688,7 @@ onKeyStroke(
                 </ButtonBase>
               </TooltipApp>
               <template #fallback>
-                <div
-                  class="flex items-center gap-1.5 list-none m-0 p-0 relative top-[5px] self-baseline ms-1 sm:ms-2"
-                >
+                <div class="flex items-center gap-1.5 list-none m-0 p-0 self-baseline">
                   <SkeletonBlock class="w-16 h-5.5 rounded" />
                   <SkeletonBlock class="w-13 h-5.5 rounded" />
                   <SkeletonBlock class="w-13 h-5.5 rounded" />
@@ -665,40 +697,6 @@ onKeyStroke(
               </template>
             </ClientOnly>
           </div>
-
-          <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
-          <ButtonGroup
-            v-if="resolvedVersion"
-            as="nav"
-            :aria-label="$t('package.navigation')"
-            class="hidden sm:flex"
-          >
-            <LinkBase
-              variant="button-secondary"
-              v-if="docsLink"
-              :to="docsLink"
-              keyshortcut="d"
-              classicon="i-carbon:document"
-            >
-              {{ $t('package.links.docs') }}
-            </LinkBase>
-            <LinkBase
-              variant="button-secondary"
-              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
-              keyshortcut="."
-              classicon="i-carbon:code"
-            >
-              {{ $t('package.links.code') }}
-            </LinkBase>
-            <LinkBase
-              variant="button-secondary"
-              :to="{ name: 'compare', query: { packages: pkg.name } }"
-              keyshortcut="c"
-              classicon="i-carbon:compare"
-            >
-              {{ $t('package.links.compare') }}
-            </LinkBase>
-          </ButtonGroup>
         </div>
       </header>
 
@@ -768,28 +766,6 @@ onKeyStroke(
             <li v-if="fundingUrl">
               <LinkBase :to="fundingUrl" classicon="i-carbon:favorite">
                 {{ $t('package.links.fund') }}
-              </LinkBase>
-            </li>
-            <!-- Mobile-only: Docs + Code + Compare links -->
-            <li v-if="docsLink && displayVersion" class="sm:hidden">
-              <LinkBase :to="docsLink" classicon="i-carbon:document">
-                {{ $t('package.links.docs') }}
-              </LinkBase>
-            </li>
-            <li v-if="resolvedVersion" class="sm:hidden">
-              <LinkBase
-                :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
-                classicon="i-carbon:code"
-              >
-                {{ $t('package.links.code') }}
-              </LinkBase>
-            </li>
-            <li class="sm:hidden">
-              <LinkBase
-                :to="{ name: 'compare', query: { packages: pkg.name } }"
-                classicon="i-carbon:compare"
-              >
-                {{ $t('package.links.compare') }}
               </LinkBase>
             </li>
           </ul>
@@ -1371,6 +1347,21 @@ onKeyStroke(
 @media (hover: none) {
   .copy-button {
     display: none;
+  }
+}
+
+/* Mobile floating nav: safe-area positioning + kbd hiding */
+@media (max-width: 639.9px) {
+  .package-nav {
+    bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .package-nav > :deep(a kbd) {
+    display: none;
+  }
+
+  .package-page {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
 </style>

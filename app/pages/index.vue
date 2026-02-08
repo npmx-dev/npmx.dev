@@ -123,7 +123,7 @@ defineOgImageComponent('Default', {
           <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
             <LinkBase :to="packageRoute(framework.package)" class="gap-2 text-sm">
               <span
-                class="w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
+                class="home-tag-dot w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
               />
               {{ framework.name }}
             </LinkBase>
@@ -139,3 +139,13 @@ defineOgImageComponent('Default', {
     </section>
   </main>
 </template>
+
+<style scoped>
+/* Windows High Contrast Mode support */
+@media (forced-colors: active) {
+  .home-tag-dot {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+}
+</style>

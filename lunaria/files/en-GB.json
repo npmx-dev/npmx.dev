@@ -25,6 +25,7 @@
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
+    "rate_limited": "Hit npm rate limit, try again in a moment",
     "title": "search",
     "title_search": "search: {search}",
     "title_packages": "search packages",
@@ -804,7 +805,8 @@
       "create_account": "Create a new account",
       "connect_bluesky": "Connect with Bluesky",
       "what_is_atmosphere": "What is an Atmosphere account?",
-      "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account."
+      "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account.",
+      "default_input_error": "Please enter a valid handle, DID, or a full PDS URL"
     }
   },
   "header": {

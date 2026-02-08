@@ -107,11 +107,11 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       // --- npm registry path ---
       let packageNames: string[]
       try {
-        const { data } = await $npmRegistry<Record<string, string>>(
-          `/-/org/${encodeURIComponent(org)}/package`,
+        const { packages } = await $fetch<{ packages: string[]; count: number }>(
+          `/api/registry/org/${encodeURIComponent(org)}/packages`,
           { signal },
         )
-        packageNames = Object.keys(data)
+        packageNames = packages
       } catch (err) {
         // Check if this is a 404 (org not found)
         if (err && typeof err === 'object' && 'statusCode' in err && err.statusCode === 404) {

@@ -8,7 +8,7 @@
   >
     <!-- Package header — matches area-header in [...name].vue -->
     <header class="area-header sticky top-14 z-1 bg-[--bg] py-2">
-      <div class="flex items-baseline gap-2 sm:gap-3 flex-wrap min-w-0">
+      <div class="flex items-baseline gap-x-2 gap-y-1 sm:gap-x-3 flex-wrap min-w-0">
         <!-- Package name -->
         <div class="min-w-0">
           <h1 class="font-mono text-2xl sm:text-3xl font-medium">
@@ -19,8 +19,8 @@
         <span class="inline-flex items-baseline font-mono text-base sm:text-lg shrink-0">
           <SkeletonInline class="h-6 w-20" />
         </span>
-        <!-- Metrics badges placeholder -->
-        <div class="flex items-center gap-1.5 relative top-[5px] self-baseline ms-1 sm:ms-2">
+        <!-- Metrics badges -->
+        <div class="basis-full flex items-center gap-1.5 self-baseline">
           <SkeletonBlock class="w-16 h-5.5 rounded" />
           <SkeletonBlock class="w-13 h-5.5 rounded" />
           <SkeletonBlock class="w-13 h-5.5 rounded" />
