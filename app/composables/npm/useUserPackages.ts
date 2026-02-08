@@ -215,6 +215,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
   /** Whether there are more results available to load (npm path only) */
   const hasMore = computed(() => {
+    if (!toValue(username)) return false
     // Algolia fetches everything in one request; only npm needs pagination
     if (activeProvider.value !== 'npm') return false
     if (!cache.value) return true
