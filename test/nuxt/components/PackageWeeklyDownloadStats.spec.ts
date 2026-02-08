@@ -40,7 +40,7 @@ describe('PackageWeeklyDownloadStats', () => {
     })
 
     expect(component.text()).toContain('Weekly Downloads')
-    expect(component.text()).toContain('No download data available')
+    expect(component.text()).toContain('No data available')
   })
 
   it('shows the section when weekly downloads exist', async () => {
@@ -60,6 +60,6 @@ describe('PackageWeeklyDownloadStats', () => {
     })
 
     expect(component.text()).toContain('Weekly Downloads')
-    expect(component.text()).not.toContain('No download data available')
+    expect(component.text()).not.toContain('No data available')
   })
 })

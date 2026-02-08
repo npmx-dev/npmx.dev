@@ -360,7 +360,7 @@
       "download_file": "Télécharger {fileType}",
       "toggle_annotator": "Afficher/Masquer l'annotateur",
       "legend_estimation": "Estimation",
-      "no_data": "Aucune donnée de {facet} disponible",
+      "no_data": "Données non disponibles",
       "y_axis_label": "{facet} {granularity}",
       "items": {
         "downloads": "Téléchargements"
