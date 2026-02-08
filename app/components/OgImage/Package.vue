@@ -147,7 +147,7 @@ try {
         </span>
 
         <!-- License (if any) -->
-        <span v-if="pkg?.license" class="flex items-center gap-2">
+        <span v-if="pkg?.license" class="flex items-center gap-2" data-testid="license">
           <svg
             viewBox="0 0 32 32"
             :fill="primaryColor"
@@ -172,7 +172,7 @@ try {
         </span>
 
         <!-- Stars (if any) -->
-        <span v-if="formattedStars" class="flex items-center gap-2">
+        <span v-if="formattedStars" class="flex items-center gap-2" data-testid="stars">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 32 32"
@@ -191,7 +191,7 @@ try {
         </span>
 
         <!-- Likes (if any) -->
-        <span v-if="likes.totalLikes > 0" class="flex items-center gap-2">
+        <span v-if="likes.totalLikes > 0" class="flex items-center gap-2" data-testid="likes">
           <svg
             width="32"
             height="32"
