@@ -65,6 +65,8 @@ const sortedOptionalDependencies = computed(() => {
   if (!props.optionalDependencies) return []
   return Object.entries(props.optionalDependencies).sort(([a], [b]) => a.localeCompare(b))
 })
+
+const numberFormatter = useNumberFormatter()
 </script>
 
 <template>
@@ -73,7 +75,15 @@ const sortedOptionalDependencies = computed(() => {
     <CollapsibleSection
       v-if="sortedDependencies.length > 0"
       id="dependencies"
-      :title="$t('package.dependencies.title', { count: sortedDependencies.length })"
+      :title="
+        $t(
+          'package.dependencies.title',
+          {
+            count: numberFormatter.format(sortedDependencies.length),
+          },
+          sortedDependencies.length,
+        )
+      "
     >
       <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
@@ -81,7 +91,7 @@ const sortedOptionalDependencies = computed(() => {
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
@@ -115,7 +125,7 @@ const sortedOptionalDependencies = computed(() => {
             </LinkBase>
             <LinkBase
               :to="packageRoute(dep, version)"
-              class="truncate"
+              class="block truncate"
               :class="getVersionClass(outdatedDeps[dep])"
               :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep], $t) : version"
             >
@@ -137,9 +147,13 @@ const sortedOptionalDependencies = computed(() => {
         @click="depsExpanded = true"
       >
         {{
-          $t('package.dependencies.show_all', {
-            count: sortedDependencies.length,
-          })
+          $t(
+            'package.dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedDependencies.length),
+            },
+            sortedDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>
@@ -150,7 +164,7 @@ const sortedOptionalDependencies = computed(() => {
       id="peer-dependencies"
       :title="
         $t('package.peer_dependencies.title', {
-          count: sortedPeerDependencies.length,
+          count: numberFormatter.format(sortedPeerDependencies.length),
         })
       "
     >
@@ -161,7 +175,7 @@ const sortedOptionalDependencies = computed(() => {
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-1 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="truncate" dir="ltr">
+            <LinkBase :to="packageRoute(peer.name)" class="block truncate" dir="ltr">
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -170,7 +184,7 @@ const sortedOptionalDependencies = computed(() => {
           </div>
           <LinkBase
             :to="packageRoute(peer.name, peer.version)"
-            class="truncate"
+            class="block truncate max-w-[40%]"
             :title="peer.version"
             dir="ltr"
           >
@@ -185,9 +199,13 @@ const sortedOptionalDependencies = computed(() => {
         @click="peerDepsExpanded = true"
       >
         {{
-          $t('package.peer_dependencies.show_all', {
-            count: sortedPeerDependencies.length,
-          })
+          $t(
+            'package.peer_dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedPeerDependencies.length),
+            },
+            sortedPeerDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>
@@ -197,9 +215,13 @@ const sortedOptionalDependencies = computed(() => {
       v-if="sortedOptionalDependencies.length > 0"
       id="optional-dependencies"
       :title="
-        $t('package.optional_dependencies.title', {
-          count: sortedOptionalDependencies.length,
-        })
+        $t(
+          'package.optional_dependencies.title',
+          {
+            count: numberFormatter.format(sortedOptionalDependencies.length),
+          },
+          sortedOptionalDependencies.length,
+        )
       "
     >
       <ul
@@ -214,10 +236,15 @@ const sortedOptionalDependencies = computed(() => {
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="truncate" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
             {{ dep }}
           </LinkBase>
-          <LinkBase :to="packageRoute(dep, version)" class="truncate" :title="version" dir="ltr">
+          <LinkBase
+            :to="packageRoute(dep, version)"
+            class="block truncate"
+            :title="version"
+            dir="ltr"
+          >
             {{ version }}
           </LinkBase>
         </li>
@@ -229,9 +256,13 @@ const sortedOptionalDependencies = computed(() => {
         @click="optionalDepsExpanded = true"
       >
         {{
-          $t('package.optional_dependencies.show_all', {
-            count: sortedOptionalDependencies.length,
-          })
+          $t(
+            'package.optional_dependencies.show_all',
+            {
+              count: numberFormatter.format(sortedOptionalDependencies.length),
+            },
+            sortedOptionalDependencies.length,
+          )
         }}
       </button>
     </CollapsibleSection>

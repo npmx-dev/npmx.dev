@@ -23,7 +23,7 @@ const checked = defineModel<boolean>({
       {{ label }}
     </span>
     <span
-      class="inline-flex items-center h-6 w-11 shrink-0 rounded-full border p-0.25 transition-colors duration-200 shadow-sm ease-in-out motion-reduce:transition-none cursor-pointer group-focus-visible:(outline-accent/70 outline-offset-2 outline-solid)"
+      class="inline-flex items-center h-6 w-11 shrink-0 rounded-full border p-0.25 transition-colors duration-200 shadow-sm ease-in-out motion-reduce:transition-none group-focus-visible:(outline-accent/70 outline-offset-2 outline-solid)"
       :class="
         checked
           ? 'bg-accent border-accent group-hover:bg-accent/80'
@@ -50,5 +50,32 @@ button[aria-checked='true'] > span:last-of-type > span {
 }
 html[dir='rtl'] button[aria-checked='true'] > span:last-of-type > span {
   translate: calc(-100%);
+}
+
+@media (forced-colors: active) {
+  /* make toggle tracks and thumb visible in forced colors. */
+  button[role='switch'] {
+    & > span:last-of-type {
+      forced-color-adjust: none;
+    }
+
+    &[aria-checked='false'] > span:last-of-type {
+      background: Canvas;
+      border-color: CanvasText;
+
+      & > span {
+        background: CanvasText;
+      }
+    }
+
+    &[aria-checked='true'] > span:last-of-type {
+      background: Highlight;
+      border-color: Highlight;
+
+      & > span {
+        background: HighlightText;
+      }
+    }
+  }
 }
 </style>

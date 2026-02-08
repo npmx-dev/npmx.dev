@@ -41,7 +41,7 @@ onKeyDown(
 const toggleableColumns = computed(() => props.columns.filter(col => col.id !== 'name'))
 
 // Map column IDs to i18n keys
-const columnLabelKey = computed(() => ({
+const columnLabels = computed(() => ({
   name: $t('filters.columns.name'),
   version: $t('filters.columns.version'),
   description: $t('filters.columns.description'),
@@ -57,7 +57,7 @@ const columnLabelKey = computed(() => ({
 }))
 
 function getColumnLabel(id: ColumnId): string {
-  const key = columnLabelKey.value[id]
+  const key = columnLabels.value[id]
   return key ?? id
 }
 
@@ -102,11 +102,7 @@ function handleReset() {
               v-for="column in toggleableColumns"
               :key="column.id"
               class="flex gap-2 items-center px-3 py-2 transition-colors duration-200"
-              :class="
-                column.disabled
-                  ? 'opacity-50 cursor-not-allowed'
-                  : 'hover:bg-bg-muted cursor-pointer'
-              "
+              :class="column.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-bg-muted'"
             >
               <input
                 type="checkbox"

@@ -32,8 +32,8 @@ jobs:
       - name: 📦 Install dependencies
         run: pnpm install
 
-      - name: 🎨 Check for non-RTL CSS classes
-        run: pnpm rtl:check
+      - name: 🎨 Check for non-RTL/non-a11y CSS classes
+        run: pnpm lint:css
 
       - name: 🌐 Compare translations
         run: pnpm i18n:check

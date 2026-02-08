@@ -88,7 +88,7 @@ async function mergeLocale(locale: LocaleObject): Promise<void> {
 
   await fs.writeFile(
     path.resolve(`${destFolder}/${locale.code}.json`),
-    JSON.stringify(source, null, 2),
+    `${JSON.stringify(source, null, 2)}\n`,
     'utf-8',
   )
 }

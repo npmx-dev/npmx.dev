@@ -3,26 +3,17 @@ import process from 'node:process'
 import { join } from 'node:path'
 import { appendFileSync, existsSync, readFileSync } from 'node:fs'
 import { randomUUID } from 'node:crypto'
+import { getEnv } from '../config/env.ts'
 
 export default defineNuxtModule({
   meta: {
     name: 'oauth',
   },
-  setup() {
+  async setup() {
     const nuxt = useNuxt()
 
-    const env = process.env.NUXT_ENV_VERCEL_ENV
-    const previewUrl = process.env.NUXT_ENV_VERCEL_URL
-    const prodUrl = process.env.NUXT_ENV_VERCEL_PROJECT_PRODUCTION_URL
-
-    let clientUri: string
-    if (env === 'preview' && previewUrl) {
-      clientUri = `https://${previewUrl}`
-    } else if (env === 'production' && prodUrl) {
-      clientUri = `https://${prodUrl}`
-    } else {
-      clientUri = 'http://127.0.0.1:3000'
-    }
+    const { previewUrl, productionUrl } = await getEnv(nuxt.options.dev)
+    const clientUri = productionUrl || previewUrl || 'http://127.0.0.1:3000'
 
     // bake it into a virtual file
     addServerTemplate({

@@ -114,3 +114,67 @@ export function extractInstallScriptsInfo(
     npxDependencies: extractNpxDependencies(scripts),
   }
 }
+
+/**
+ * Pattern to match scripts that are just `node <file-path>`
+ * Captures the file path (relative paths with alphanumeric chars, dots, hyphens, underscores, and slashes)
+ */
+const NODE_SCRIPT_PATTERN = /^node\s+([\w./-]+)$/
+
+/**
+ * Get the file path for an install script link.
+ * - If the script is `node <file-path>`, returns that file path
+ * - Otherwise, returns 'package.json'
+ *
+ * @param scriptContent - The content of the script
+ * @returns The file path to link to in the code tab
+ */
+export function getInstallScriptFilePath(scriptContent: string): string {
+  const match = NODE_SCRIPT_PATTERN.exec(scriptContent)
+
+  if (match?.[1]) {
+    // Script is `node <file-path>`, link to that file
+    // Normalize path: strip leading ./
+    const filePath = match[1].replace(/^\.\//, '')
+
+    // Fall back to package.json if path contains navigational elements (the client-side routing can't handle these well)
+    if (filePath.includes('../') || filePath.includes('./')) {
+      return 'package.json'
+    }
+
+    return filePath
+  }
+
+  // Default: link to package.json
+  return 'package.json'
+}
+
+/**
+ * Parse an install script into a prefix and a linkable file path.
+ * - If the script is `node <file-path>`, returns { prefix: 'node ', filePath: '<file-path>' }
+ *   so only the file path portion can be rendered as a link.
+ * - Otherwise, returns null (the entire script content should link to package.json).
+ *
+ * @param scriptContent - The content of the script
+ * @returns Parsed parts, or null if no node file path was extracted
+ */
+export function parseNodeScript(
+  scriptContent: string,
+): { prefix: string; filePath: string } | null {
+  const match = NODE_SCRIPT_PATTERN.exec(scriptContent)
+
+  if (match?.[1]) {
+    const filePath = match[1].replace(/^\.\//, '')
+
+    // Fall back if path contains navigational elements
+    if (filePath.includes('../') || filePath.includes('./')) {
+      return null
+    }
+
+    // Reconstruct the prefix (everything before the captured file path)
+    const prefix = scriptContent.slice(0, match.index + match[0].indexOf(match[1]))
+    return { prefix, filePath }
+  }
+
+  return null
+}

@@ -12,6 +12,7 @@ const props = withDefaults(
       'type'?: never
       'variant'?: 'button-primary' | 'button-secondary' | 'link'
       'size'?: 'small' | 'medium'
+      'iconSize'?: 'sm' | 'md' | 'lg'
 
       'keyshortcut'?: string
 
@@ -51,11 +52,21 @@ const isLinkAnchor = computed(
   () => !!props.to && typeof props.to === 'string' && props.to.startsWith('#'),
 )
 
+const ICON_SIZE_MAP = {
+  sm: 'size-3 min-w-3',
+  md: 'size-4 min-w-4',
+  lg: 'size-5 min-w-5',
+}
+
 /** size is only applicable for button like links */
 const isLink = computed(() => props.variant === 'link')
 const isButton = computed(() => props.variant !== 'link')
 const isButtonSmall = computed(() => props.size === 'small' && props.variant !== 'link')
 const isButtonMedium = computed(() => props.size === 'medium' && props.variant !== 'link')
+
+const iconSizeClass = computed(
+  () => ICON_SIZE_MAP[props.iconSize || (isButtonSmall.value && 'sm') || 'md'],
+)
 </script>
 
 <template>
@@ -73,7 +84,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
   /></span>
   <NuxtLink
     v-else
-    class="group inline-flex gap-x-1 items-center justify-center"
+    class="group/link inline-flex gap-x-1 items-center justify-center"
     :class="{
       'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30': !isLinkAnchor && isLink,
       'font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200':
@@ -89,11 +100,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
     :aria-keyshortcuts="keyshortcut"
     :target="isLinkExternal ? '_blank' : undefined"
   >
-    <span
-      v-if="classicon"
-      :class="[isButtonSmall ? 'size-3' : 'size-4', classicon]"
-      aria-hidden="true"
-    />
+    <span v-if="classicon" class="me-1" :class="[iconSizeClass, classicon]" aria-hidden="true" />
     <slot />
     <!-- automatically show icon indicating external link -->
     <span
@@ -103,7 +110,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
     />
     <span
       v-else-if="isLinkAnchor && isLink"
-      class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      class="i-carbon:link w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-200"
       aria-hidden="true"
     />
     <kbd

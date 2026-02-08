@@ -99,138 +99,6 @@ onUnmounted(deactivate)
               </button>
             </div>
 
-            <!-- Navigation links -->
-            <div class="flex-1 overflow-y-auto overscroll-contain py-2">
-              <!-- Main navigation -->
-              <div class="px-2 py-2">
-                <NuxtLink
-                  :to="{ name: 'about' }"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                  @click="closeMenu"
-                >
-                  <span class="i-carbon:information w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('footer.about') }}
-                </NuxtLink>
-
-                <NuxtLink
-                  :to="{ name: 'privacy' }"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                  @click="closeMenu"
-                >
-                  <span class="i-carbon:security w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('privacy_policy.title') }}
-                </NuxtLink>
-
-                <NuxtLink
-                  :to="{ name: 'compare' }"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                  @click="closeMenu"
-                >
-                  <span class="i-carbon:compare w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('nav.compare') }}
-                </NuxtLink>
-
-                <NuxtLink
-                  :to="{ name: 'settings' }"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                  @click="closeMenu"
-                >
-                  <span class="i-carbon:settings w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('nav.settings') }}
-                </NuxtLink>
-
-                <!-- Connected user links -->
-                <template v-if="isConnected && npmUser">
-                  <NuxtLink
-                    :to="{ name: '~username', params: { username: npmUser } }"
-                    class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                    @click="closeMenu"
-                  >
-                    <span class="i-carbon:package w-5 h-5 text-fg-muted" aria-hidden="true" />
-                    {{ $t('header.packages') }}
-                  </NuxtLink>
-
-                  <NuxtLink
-                    :to="{ name: '~username-orgs', params: { username: npmUser } }"
-                    class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                    @click="closeMenu"
-                  >
-                    <span class="i-carbon:enterprise w-5 h-5 text-fg-muted" aria-hidden="true" />
-                    {{ $t('header.orgs') }}
-                  </NuxtLink>
-                </template>
-              </div>
-
-              <!-- Divider -->
-              <div class="mx-4 my-2 border-t border-border" />
-
-              <!-- External links (from footer) -->
-              <div class="px-2 py-2">
-                <span class="px-3 py-2 font-mono text-xs text-fg-subtle uppercase tracking-wider">
-                  {{ $t('nav.links') }}
-                </span>
-
-                <a
-                  href="https://docs.npmx.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                >
-                  <span class="i-carbon:document w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('footer.docs') }}
-                  <span
-                    class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
-                    aria-hidden="true"
-                  />
-                </a>
-
-                <a
-                  href="https://repo.npmx.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                >
-                  <span class="i-carbon:logo-github w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('footer.source') }}
-                  <span
-                    class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
-                    aria-hidden="true"
-                  />
-                </a>
-
-                <a
-                  href="https://social.npmx.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                >
-                  <span class="i-simple-icons:bluesky w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('footer.social') }}
-                  <span
-                    class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
-                    aria-hidden="true"
-                  />
-                </a>
-
-                <a
-                  href="https://chat.npmx.dev"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
-                >
-                  <span class="i-carbon:chat w-5 h-5 text-fg-muted" aria-hidden="true" />
-                  {{ $t('footer.chat') }}
-                  <span
-                    class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
-                    aria-hidden="true"
-                  />
-                </a>
-              </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="mx-4 my-2 border-t border-border" />
-
             <!-- Account section -->
             <div class="px-2 py-2">
               <span
@@ -300,6 +168,144 @@ onUnmounted(deactivate)
                 </span>
                 <span class="flex-1">{{ $t('account_menu.connect_atmosphere') }}</span>
               </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="mx-4 my-2 border-t border-border" />
+
+            <!-- Navigation links -->
+            <div class="flex-1 overflow-y-auto overscroll-contain py-2">
+              <!-- App navigation -->
+              <div class="px-2 py-2">
+                <NuxtLink
+                  :to="{ name: 'compare' }"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:compare w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('nav.compare') }}
+                </NuxtLink>
+
+                <NuxtLink
+                  :to="{ name: 'settings' }"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:settings w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('nav.settings') }}
+                </NuxtLink>
+
+                <!-- Connected user links -->
+                <template v-if="isConnected && npmUser">
+                  <NuxtLink
+                    :to="{ name: '~username', params: { username: npmUser } }"
+                    class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                    @click="closeMenu"
+                  >
+                    <span class="i-carbon:package w-5 h-5 text-fg-muted" aria-hidden="true" />
+                    {{ $t('header.packages') }}
+                  </NuxtLink>
+
+                  <NuxtLink
+                    :to="{ name: '~username-orgs', params: { username: npmUser } }"
+                    class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                    @click="closeMenu"
+                  >
+                    <span class="i-carbon:enterprise w-5 h-5 text-fg-muted" aria-hidden="true" />
+                    {{ $t('header.orgs') }}
+                  </NuxtLink>
+                </template>
+              </div>
+
+              <!-- Divider -->
+              <div class="mx-4 my-2 border-t border-border" />
+
+              <!-- Informational links -->
+              <div class="px-2 py-2">
+                <NuxtLink
+                  :to="{ name: 'about' }"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:information w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('footer.about') }}
+                </NuxtLink>
+
+                <NuxtLink
+                  :to="{ name: 'privacy' }"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                  @click="closeMenu"
+                >
+                  <span class="i-carbon:security w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('privacy_policy.title') }}
+                </NuxtLink>
+              </div>
+
+              <!-- Divider -->
+              <div class="mx-4 my-2 border-t border-border" />
+
+              <!-- External links -->
+              <div class="px-2 py-2">
+                <span class="px-3 py-2 font-mono text-xs text-fg-subtle uppercase tracking-wider">
+                  {{ $t('nav.links') }}
+                </span>
+
+                <a
+                  href="https://docs.npmx.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                >
+                  <span class="i-carbon:document w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('footer.docs') }}
+                  <span
+                    class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
+                    aria-hidden="true"
+                  />
+                </a>
+
+                <a
+                  href="https://repo.npmx.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                >
+                  <span class="i-carbon:logo-github w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('footer.source') }}
+                  <span
+                    class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
+                    aria-hidden="true"
+                  />
+                </a>
+
+                <a
+                  href="https://social.npmx.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                >
+                  <span class="i-simple-icons:bluesky w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('footer.social') }}
+                  <span
+                    class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
+                    aria-hidden="true"
+                  />
+                </a>
+
+                <a
+                  href="https://chat.npmx.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 px-3 py-3 rounded-md font-mono text-sm text-fg hover:bg-bg-subtle transition-colors duration-200"
+                >
+                  <span class="i-carbon:chat w-5 h-5 text-fg-muted" aria-hidden="true" />
+                  {{ $t('footer.chat') }}
+                  <span
+                    class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
+                    aria-hidden="true"
+                  />
+                </a>
+              </div>
             </div>
           </nav>
         </Transition>

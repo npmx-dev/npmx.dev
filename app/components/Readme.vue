@@ -47,6 +47,13 @@ function handleClick(event: MouseEvent) {
   const href = anchor.getAttribute('href')
   if (!href) return
 
+  // Handle relative anchor links
+  if (href.startsWith('#')) {
+    event.preventDefault()
+    router.push(href)
+    return
+  }
+
   const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
   if (!match || !match[1]) return
 
@@ -95,8 +102,8 @@ function handleClick(event: MouseEvent) {
 .readme :deep(h4),
 .readme :deep(h5),
 .readme :deep(h6) {
+  @apply font-mono scroll-mt-20;
   color: var(--fg);
-  @apply font-mono;
   font-weight: 500;
   margin-top: 1rem;
   margin-bottom: 1rem;

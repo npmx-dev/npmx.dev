@@ -4,7 +4,6 @@ import type {
   PackageFileTreeResponse,
   PackageFileContentResponse,
 } from '#shared/types'
-import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'code',
@@ -269,6 +268,8 @@ const markdownViewModes = [
 
 const markdownViewMode = shallowRef<(typeof markdownViewModes)[number]['key']>('preview')
 
+const bytesFormatter = useBytesFormatter()
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -408,7 +409,7 @@ defineOgImageComponent('Default', {
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
       <div
-        class="flex-1 min-w-0 md:sticky md:top-28 md:self-start md:h-[calc(100vh-7rem)] md:overflow-y-auto"
+        class="flex-1 min-w-0 overflow-x-hidden sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <!-- File viewer -->
         <template v-if="isViewingFile && fileContent">
@@ -443,7 +444,7 @@ defineOgImageComponent('Default', {
                   $t('code.lines', { count: fileContent.lines })
                 }}</span>
                 <span v-if="currentNode?.size" class="text-fg-subtle">{{
-                  formatBytes(currentNode.size)
+                  bytesFormatter.format(currentNode.size)
                 }}</span>
               </div>
             </div>
@@ -489,7 +490,9 @@ defineOgImageComponent('Default', {
           <div class="i-carbon:document w-12 h-12 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
-            {{ $t('code.file_size_warning', { size: formatBytes(currentNode?.size ?? 0) }) }}
+            {{
+              $t('code.file_size_warning', { size: bytesFormatter.format(currentNode?.size ?? 0) })
+            }}
           </p>
           <LinkBase
             variant="button-secondary"

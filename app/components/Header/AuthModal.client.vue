@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { authRedirect } from '~/utils/atproto/helpers'
+import { ensureValidAtIdentifier } from '@atproto/syntax'
 
 const handleInput = shallowRef('')
+const errorMessage = shallowRef('')
 const route = useRoute()
 const { user, logout } = useAtproto()
 
@@ -13,18 +15,46 @@ const localeSubPath = ['ko', 'pt', 'ja'].includes(currentLang) ? currentLang : '
 const atprotoLink = `https://atproto.com/${localeSubPath}`
 
 async function handleBlueskySignIn() {
-  await authRedirect('https://bsky.social', { redirectTo: route.fullPath })
+  await authRedirect('https://bsky.social', { redirectTo: route.fullPath, locale: locale.value })
 }
 
 async function handleCreateAccount() {
-  await authRedirect('https://npmx.social', { create: true, redirectTo: route.fullPath })
+  await authRedirect('https://npmx.social', {
+    create: true,
+    redirectTo: route.fullPath,
+    locale: locale.value,
+  })
 }
 
 async function handleLogin() {
   if (handleInput.value) {
-    await authRedirect(handleInput.value)
+    // URLS to PDSs are valid for oauth redirects
+    if (!handleInput.value.startsWith('https://')) {
+      try {
+        ensureValidAtIdentifier(handleInput.value)
+      } catch (error) {
+        errorMessage.value =
+          error instanceof Error ? error.message : $t('auth.modal.default_input_error')
+        return
+      }
+    }
+    await authRedirect(handleInput.value, {
+      redirectTo: route.fullPath,
+      locale: locale.value,
+    })
   }
 }
+
+watch(handleInput, newHandleInput => {
+  errorMessage.value = ''
+  if (!newHandleInput) return
+
+  const normalized = newHandleInput.trim().toLowerCase().replace(/@/g, '')
+
+  if (normalized !== newHandleInput) {
+    handleInput.value = normalized
+  }
+})
 </script>
 
 <template>
@@ -59,20 +89,24 @@ async function handleLogin() {
           >
             {{ $t('auth.modal.handle_label') }}
           </label>
-          <input
+          <InputBase
             id="handle-input"
             v-model="handleInput"
             type="text"
             name="handle"
             :placeholder="$t('auth.modal.handle_placeholder')"
-            v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 hover:border-fg-subtle focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+            no-correct
+            class="w-full"
+            size="medium"
           />
+          <p v-if="errorMessage" class="text-red-500 text-xs mt-1" role="alert">
+            {{ errorMessage }}
+          </p>
         </div>
 
         <details class="text-sm">
           <summary
-            class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200 focus-visible:(outline-2 outline-accent/70)"
+            class="text-fg-subtle hover:text-fg-muted transition-colors duration-200 focus-visible:(outline-2 outline-accent/70)"
           >
             {{ $t('auth.modal.what_is_atmosphere') }}
           </summary>

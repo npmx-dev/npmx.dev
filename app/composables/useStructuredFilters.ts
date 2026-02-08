@@ -306,28 +306,28 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   })
 
   // i18n key mappings for filter chip values
-  const downloadRangeKeys: Record<DownloadRange, string> = {
-    'any': 'filters.download_range.any',
-    'lt100': 'filters.download_range.lt100',
-    '100-1k': 'filters.download_range.100_1k',
-    '1k-10k': 'filters.download_range.1k_10k',
-    '10k-100k': 'filters.download_range.10k_100k',
-    'gt100k': 'filters.download_range.gt100k',
-  }
+  const downloadRangeLabels = computed<Record<DownloadRange, string>>(() => ({
+    'any': t('filters.download_range.any'),
+    'lt100': t('filters.download_range.lt100'),
+    '100-1k': t('filters.download_range.100_1k'),
+    '1k-10k': t('filters.download_range.1k_10k'),
+    '10k-100k': t('filters.download_range.10k_100k'),
+    'gt100k': t('filters.download_range.gt100k'),
+  }))
 
-  const securityKeys: Record<SecurityFilter, string> = {
-    all: 'filters.security_options.all',
-    secure: 'filters.security_options.secure',
-    warnings: 'filters.security_options.insecure',
-  }
+  const securityLabels = computed<Record<SecurityFilter, string>>(() => ({
+    all: t('filters.security_options.all'),
+    secure: t('filters.security_options.secure'),
+    warnings: t('filters.security_options.insecure'),
+  }))
 
-  const updatedWithinKeys: Record<UpdatedWithin, string> = {
-    any: 'filters.updated.any',
-    week: 'filters.updated.week',
-    month: 'filters.updated.month',
-    quarter: 'filters.updated.quarter',
-    year: 'filters.updated.year',
-  }
+  const updatedWithinLabels = computed<Record<UpdatedWithin, string>>(() => ({
+    any: t('filters.updated.any'),
+    week: t('filters.updated.week'),
+    month: t('filters.updated.month'),
+    quarter: t('filters.updated.quarter'),
+    year: t('filters.updated.year'),
+  }))
 
   // Active filter chips for display
   const activeFilters = computed<FilterChip[]>(() => {
@@ -347,7 +347,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'downloadRange',
         type: 'downloadRange',
         label: t('filters.chips.downloads'),
-        value: t(downloadRangeKeys[filters.value.downloadRange]),
+        value: downloadRangeLabels.value[filters.value.downloadRange],
       })
     }
 
@@ -365,7 +365,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'security',
         type: 'security',
         label: t('filters.chips.security'),
-        value: t(securityKeys[filters.value.security]),
+        value: securityLabels.value[filters.value.security],
       })
     }
 
@@ -374,7 +374,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'updatedWithin',
         type: 'updatedWithin',
         label: t('filters.chips.updated'),
-        value: t(updatedWithinKeys[filters.value.updatedWithin]),
+        value: updatedWithinLabels.value[filters.value.updatedWithin],
       })
     }
 

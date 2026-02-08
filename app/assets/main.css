@@ -27,6 +27,14 @@
   --accent: var(--accent-color, oklch(1 0 0));
   --accent-muted: var(--accent-color, oklch(0.922 0 0));
 
+  /* accent colors */
+  --swatch-coral: oklch(0.704 0.177 14.75);
+  --swatch-amber: oklch(0.828 0.165 84.429);
+  --swatch-emerald: oklch(0.792 0.153 166.95);
+  --swatch-sky: oklch(0.787 0.128 230.318);
+  --swatch-violet: oklch(0.78 0.148 286.067);
+  --swatch-magenta: oklch(0.78 0.15 330);
+
   /* syntax highlighting colors */
   --syntax-fn: oklch(0.727 0.137 299.149);
   --syntax-str: oklch(0.829 0.088 252.458);
@@ -88,6 +96,14 @@
 
   --accent: var(--accent-color, oklch(0.145 0 0));
   --accent-muted: var(--accent-color, oklch(0.205 0 0));
+
+  /* accent colors */
+  --swatch-coral: oklch(0.7 0.19 14.75);
+  --swatch-amber: oklch(0.8 0.25 84.429);
+  --swatch-emerald: oklch(0.7 0.17 166.95);
+  --swatch-sky: oklch(0.7 0.15 230.318);
+  --swatch-violet: oklch(0.7 0.17 286.067);
+  --swatch-magenta: oklch(0.75 0.18 330);
 
   --syntax-fn: oklch(0.502 0.188 294.988);
   --syntax-str: oklch(0.425 0.152 252);
@@ -155,12 +171,32 @@
   }
 }
 
+/*
+ * Forced Colors Mode (WHCM) Override for Icons
+ *
+ * By default, `forced-color-adjust: preserve-parent-color` (from UnoConfig) works fine
+ * for most icons as they inherit the correct text color.
+ *
+ * However, if icons disappear in specific contexts (e.g., inside buttons with
+ * complex backgrounds or transparent states), uncomment the following block
+ * to enforce visibility using `CanvasText`.
+ */
+/* 
+@media (forced-colors: active) {
+  [class^='i-'],
+  [class*=' i-'] {
+    forced-color-adjust: none !important;
+    color: CanvasText !important;
+  }
+}
+*/
+
 html {
+  @apply scroll-pt-20;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   /* Offset for fixed header - otherwise anchor headers are cutted */
-  scroll-padding-top: 5rem;
   scrollbar-gutter: stable;
 }
 
@@ -198,11 +234,6 @@ body {
 /* Reset dd margin (browser default is margin-left: 40px) */
 dd {
   margin: 0;
-}
-
-/* Reset button styles */
-button {
-  cursor: pointer;
 }
 
 /* Selection */
