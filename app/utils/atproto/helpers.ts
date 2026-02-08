@@ -4,13 +4,14 @@ import type { LocationQueryRaw } from 'vue-router'
 interface AuthRedirectOptions {
   create?: boolean
   redirectTo?: string
+  locale?: string
 }
 
 /**
  * Redirect user to ATProto authentication
  */
 export async function authRedirect(identifier: string, options: AuthRedirectOptions = {}) {
-  let query: LocationQueryRaw = { handle: identifier }
+  let query: LocationQueryRaw = { handle: identifier, locale: options.locale || 'en' }
   if (options.create) {
     query = { ...query, create: 'true' }
   }

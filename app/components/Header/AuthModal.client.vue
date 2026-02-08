@@ -15,11 +15,15 @@ const localeSubPath = ['ko', 'pt', 'ja'].includes(currentLang) ? currentLang : '
 const atprotoLink = `https://atproto.com/${localeSubPath}`
 
 async function handleBlueskySignIn() {
-  await authRedirect('https://bsky.social', { redirectTo: route.fullPath })
+  await authRedirect('https://bsky.social', { redirectTo: route.fullPath, locale: locale.value })
 }
 
 async function handleCreateAccount() {
-  await authRedirect('https://npmx.social', { create: true, redirectTo: route.fullPath })
+  await authRedirect('https://npmx.social', {
+    create: true,
+    redirectTo: route.fullPath,
+    locale: locale.value,
+  })
 }
 
 async function handleLogin() {
@@ -34,7 +38,10 @@ async function handleLogin() {
         return
       }
     }
-    await authRedirect(handleInput.value)
+    await authRedirect(handleInput.value, {
+      redirectTo: route.fullPath,
+      locale: locale.value,
+    })
   }
 }
 
