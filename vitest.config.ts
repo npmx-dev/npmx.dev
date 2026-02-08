@@ -16,7 +16,7 @@ export default defineConfig({
         },
         test: {
           name: 'unit',
-          include: ['test/unit/*.{test,spec}.ts'],
+          include: ['test/unit/**/*.{test,spec}.ts'],
           environment: 'node',
         },
       },
@@ -25,12 +25,17 @@ export default defineConfig({
           name: 'nuxt',
           include: ['test/nuxt/**/*.{test,spec}.ts'],
           environment: 'nuxt',
+          setupFiles: ['./test/nuxt/setup.ts'],
           environmentOptions: {
             nuxt: {
               rootDir: fileURLToPath(new URL('.', import.meta.url)),
               overrides: {
                 experimental: {
+                  payloadExtraction: false,
                   viteEnvironmentApi: false,
+                },
+                pwa: {
+                  pwaAssets: { disabled: true },
                 },
                 ogImage: { enabled: false },
               },
@@ -39,7 +44,7 @@ export default defineConfig({
           browser: {
             enabled: true,
             provider: playwright(),
-            instances: [{ browser: 'chromium' }],
+            instances: [{ browser: 'chromium', headless: true }],
           },
         },
       }),
@@ -59,6 +64,7 @@ export default defineConfig({
         'shared/utils/spdx.ts',
         'shared/utils/url.ts',
         'server/utils/readme.ts',
+        'server/utils/docs/text.ts',
         'server/utils/code-highlight.ts',
         'server/utils/npm.ts',
         'server/utils/shiki.ts',

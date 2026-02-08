@@ -1,8 +1,10 @@
 import { marked, type Tokens } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
-import type { ReadmeResponse } from '#shared/types/readme'
-import { convertBlobToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import type { ReadmeResponse, TocItem } from '#shared/types/readme'
+import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import { highlightCodeSync } from './shiki'
+import { convertToEmoji } from '#shared/utils/emoji'
 
 /**
  * Playground provider configuration
@@ -133,38 +135,63 @@ const ALLOWED_TAGS = [
   'sub',
   'kbd',
   'mark',
+  'button',
 ]
 
 const ALLOWED_ATTR: Record<string, string[]> = {
-  a: ['href', 'title', 'target', 'rel'],
-  img: ['src', 'alt', 'title', 'width', 'height'],
-  source: ['src', 'srcset', 'type', 'media'],
-  th: ['colspan', 'rowspan', 'align'],
-  td: ['colspan', 'rowspan', 'align'],
-  h3: ['id', 'data-level'],
-  h4: ['id', 'data-level'],
-  h5: ['id', 'data-level'],
-  h6: ['id', 'data-level'],
-  blockquote: ['data-callout'],
-  details: ['open'],
-  code: ['class'],
-  pre: ['class', 'style'],
-  span: ['class', 'style'],
-  div: ['class', 'style'],
+  '*': ['id'], // Allow id on all tags
+  'a': ['href', 'title', 'target', 'rel'],
+  'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
+  'source': ['src', 'srcset', 'type', 'media'],
+  'button': ['class', 'title', 'type', 'aria-label', 'data-copy'],
+  'th': ['colspan', 'rowspan', 'align'],
+  'td': ['colspan', 'rowspan', 'align'],
+  'h3': ['data-level', 'align'],
+  'h4': ['data-level', 'align'],
+  'h5': ['data-level', 'align'],
+  'h6': ['data-level', 'align'],
+  'blockquote': ['data-callout'],
+  'details': ['open'],
+  'code': ['class'],
+  'pre': ['class', 'style'],
+  'span': ['class', 'style'],
+  'div': ['class', 'style', 'align'],
+  'p': ['align'],
 }
 
 // GitHub-style callout types
 // Format: > [!NOTE], > [!TIP], > [!IMPORTANT], > [!WARNING], > [!CAUTION]
 
 /**
+ * Generate a GitHub-style slug from heading text.
+ * - Convert to lowercase
+ * - Remove HTML tags
+ * - Replace spaces with hyphens
+ * - Remove special characters (keep alphanumeric, hyphens, underscores)
+ * - Collapse multiple hyphens
+ */
+function slugify(text: string): string {
+  return text
+    .replace(/<[^>]*>/g, '') // Strip HTML tags
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Spaces to hyphens
+    .replace(/[^\w\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff-]/g, '') // Keep alphanumeric, CJK, hyphens
+    .replace(/-+/g, '-') // Collapse multiple hyphens
+    .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
+}
+
+/**
  * Resolve a relative URL to an absolute URL.
  * If repository info is available, resolve to provider's raw file URLs.
- * Otherwise, fall back to jsdelivr CDN.
+ * For markdown files (.md), use blob URLs so they render properly.
+ * Otherwise, fall back to jsdelivr CDN (except for .md files which are left unchanged).
  */
 function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   if (!url) return url
   if (url.startsWith('#')) {
-    return url
+    // Prefix anchor links to match heading IDs (avoids collision with page IDs)
+    return `#user-content-${url.slice(1)}`
   }
   if (hasProtocol(url, { acceptRelative: true })) {
     try {
@@ -182,7 +209,10 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
     // for non-HTTP protocols (javascript:, data:, etc.), don't return, treat as relative
   }
 
-  // Use provider's raw URL base when repository info is available
+  // Check if this is a markdown file link
+  const isMarkdownFile = /\.md$/i.test(url.split('?')[0]?.split('#')[0] ?? '')
+
+  // Use provider's URL base when repository info is available
   // This handles assets that exist in the repo but not in the npm tarball
   if (repoInfo?.rawBaseUrl) {
     // Normalize the relative path (remove leading ./)
@@ -207,7 +237,16 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
       }
     }
 
-    return `${repoInfo.rawBaseUrl}/${relativePath}`
+    // For markdown files, use blob URL so they render on the provider's site
+    // For other files, use raw URL for direct access
+    const baseUrl = isMarkdownFile ? repoInfo.blobBaseUrl : repoInfo.rawBaseUrl
+    return `${baseUrl}/${relativePath}`
+  }
+
+  // For markdown files without repo info, leave unchanged (like npm does)
+  // This avoids 404s from jsdelivr which doesn't render markdown
+  if (isMarkdownFile) {
+    return url
   }
 
   // Fallback: relative URLs → jsdelivr CDN (may 404 if asset not in npm tarball)
@@ -220,9 +259,17 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
 function resolveImageUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   const resolved = resolveUrl(url, packageName, repoInfo)
   if (repoInfo?.provider) {
-    return convertBlobToRawUrl(resolved, repoInfo.provider)
+    return convertBlobOrFileToRawUrl(resolved, repoInfo.provider)
   }
   return resolved
+}
+
+// Helper to prefix id attributes with 'user-content-'
+function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
+  if (attribs.id && !attribs.id.startsWith('user-content-')) {
+    attribs.id = `user-content-${attribs.id}`
+  }
+  return { tagName, attribs }
 }
 
 export async function renderReadmeHtml(
@@ -230,7 +277,7 @@ export async function renderReadmeHtml(
   packageName: string,
   repoInfo?: RepositoryInfo,
 ): Promise<ReadmeResponse> {
-  if (!content) return { html: '', playgroundLinks: [] }
+  if (!content) return { html: '', md: '', playgroundLinks: [], toc: [] }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
@@ -238,6 +285,12 @@ export async function renderReadmeHtml(
   // Collect playground links during parsing
   const collectedLinks: PlaygroundLink[] = []
   const seenUrls = new Set<string>()
+
+  // Collect table of contents items during parsing
+  const toc: TocItem[] = []
+
+  // Track used heading slugs to handle duplicates (GitHub-style: foo, foo-1, foo-2)
+  const usedSlugs = new Map<string, number>()
 
   // Track heading hierarchy to ensure sequential order for accessibility
   // Page h1 = package name, h2 = "Readme" section heading
@@ -261,29 +314,40 @@ export async function renderReadmeHtml(
 
     lastSemanticLevel = semanticLevel
     const text = this.parser.parseInline(tokens)
-    return `<h${semanticLevel} data-level="${depth}">${text}</h${semanticLevel}>\n`
+
+    // Generate GitHub-style slug for anchor links
+    let slug = slugify(text)
+    if (!slug) slug = 'heading' // Fallback for empty headings
+
+    // Handle duplicate slugs (GitHub-style: foo, foo-1, foo-2)
+    const count = usedSlugs.get(slug) ?? 0
+    usedSlugs.set(slug, count + 1)
+    const uniqueSlug = count === 0 ? slug : `${slug}-${count}`
+
+    // Prefix with 'user-content-' to avoid collisions with page IDs
+    // (e.g., #install, #dependencies, #versions are used by the package page)
+    const id = `user-content-${uniqueSlug}`
+
+    // Collect TOC item with plain text (HTML stripped)
+    const plainText = text.replace(/<[^>]*>/g, '').trim()
+    if (plainText) {
+      toc.push({ text: plainText, id, depth })
+    }
+
+    return `<h${semanticLevel} id="${id}" data-level="${depth}">${text}</h${semanticLevel}>\n`
   }
 
   // Syntax highlighting for code blocks (uses shared highlighter)
   renderer.code = ({ text, lang }: Tokens.Code) => {
-    const language = lang || 'text'
-    const loadedLangs = shiki.getLoadedLanguages()
-
-    // Use Shiki if language is loaded, otherwise fall back to plain
-    if (loadedLangs.includes(language as never)) {
-      try {
-        return shiki.codeToHtml(text, {
-          lang: language,
-          theme: 'github-dark',
-        })
-      } catch {
-        // Fall back to plain code block
-      }
-    }
-
-    // Plain code block for unknown languages
-    const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    return `<pre><code class="language-${language}">${escaped}</code></pre>\n`
+    const html = highlightCodeSync(shiki, text, lang || 'text')
+    // Add copy button
+    return `<div class="readme-code-block" >
+<button type="button" class="readme-copy-button" aria-label="Copy code" check-icon="i-carbon:checkmark" copy-icon="i-carbon:copy" data-copy>
+<span class="i-carbon:copy" aria-hidden="true"></span>
+<span class="sr-only">Copy code</span>
+</button>
+${html}
+</div>`
   }
 
   // Resolve image URLs (with GitHub blob → raw conversion)
@@ -354,6 +418,25 @@ export async function renderReadmeHtml(
         }
         return { tagName, attribs }
       },
+      source: (tagName, attribs) => {
+        if (attribs.src) {
+          attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)
+        }
+        if (attribs.srcset) {
+          attribs.srcset = attribs.srcset
+            .split(',')
+            .map(entry => {
+              const parts = entry.trim().split(/\s+/)
+              const url = parts[0]
+              if (!url) return entry.trim()
+              const descriptor = parts[1]
+              const resolvedUrl = resolveImageUrl(url, packageName, repoInfo)
+              return descriptor ? `${resolvedUrl} ${descriptor}` : resolvedUrl
+            })
+            .join(', ')
+        }
+        return { tagName, attribs }
+      },
       a: (tagName, attribs) => {
         // Add security attributes for external links
         if (attribs.href && hasProtocol(attribs.href, { acceptRelative: true })) {
@@ -362,11 +445,18 @@ export async function renderReadmeHtml(
         }
         return { tagName, attribs }
       },
+      div: prefixId,
+      p: prefixId,
+      span: prefixId,
+      section: prefixId,
+      article: prefixId,
     },
   })
 
   return {
-    html: sanitized,
+    html: convertToEmoji(sanitized),
+    md: content,
     playgroundLinks: collectedLinks,
+    toc,
   }
 }

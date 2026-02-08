@@ -1,0 +1,715 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - npm Reyestri üçün Paket Brauzeri",
+      "description": "npm reyestri üçün daha yaxşı brauzer. Müasir interfeys ilə paketləri axtarın, kəşf edin."
+    }
+  },
+  "tagline": "npm reyestri üçün daha yaxşı brauzer",
+  "non_affiliation_disclaimer": "npm, Inc. ilə əlaqəli deyil.",
+  "trademark_disclaimer": "npm, npm, Inc.-in qeydiyyatlı ticarət markasıdır. Bu sayt npm, Inc. ilə əlaqəli deyil.",
+  "footer": {
+    "about": "haqqında",
+    "docs": "sənədlər",
+    "source": "mənbə",
+    "social": "sosial",
+    "chat": "söhbət"
+  },
+  "search": {
+    "label": "npm paketlərini axtar",
+    "placeholder": "paket axtar...",
+    "button": "axtar",
+    "searching": "Axtarılır...",
+    "found_packages": "Paket tapılmadı | 1 paket tapıldı | {count} paket tapıldı",
+    "updating": "(yenilənir...)",
+    "no_results": "\"{query}\" üçün paket tapılmadı",
+    "not_taken": "{name} tutulmayıb",
+    "claim_prompt": "Bu paket adını npm-də tutun",
+    "claim_button": "\"{name}\" adını tut",
+    "want_to_claim": "Bu paket adını tutmaq istəyirsiniz?",
+    "start_typing": "Paketləri axtarmaq üçün yazmağa başlayın",
+    "exact_match": "dəqiq",
+    "suggestion": {
+      "user": "istifadəçi",
+      "org": "təşkilat",
+      "view_user_packages": "Bu istifadəçinin paketlərinə bax",
+      "view_org_packages": "Bu təşkilatın paketlərinə bax"
+    }
+  },
+  "nav": {
+    "main_navigation": "Əsas",
+    "popular_packages": "Populyar paketlər",
+    "settings": "tənzimləmələr",
+    "back": "geri"
+  },
+  "settings": {
+    "title": "tənzimləmələr",
+    "tagline": "npmx təcrübənizi fərdiləşdirin",
+    "meta_description": "Tema, dil və görüntüləmə seçimləri ilə npmx.dev təcrübənizi fərdiləşdirin.",
+    "sections": {
+      "appearance": "Görünüş",
+      "display": "Ekran",
+      "language": "Dil"
+    },
+    "relative_dates": "Nisbi tarixlər",
+    "include_types": "Quraşdırmaya {'@'}types daxil et",
+    "include_types_description": "Tipsiz paketlər üçün quraşdırma əmrlərinə {'@'}types paketi əlavə et",
+    "hide_platform_packages": "Axtarışda platforma-spesifik paketləri gizlət",
+    "hide_platform_packages_description": "Nəticələrdə {'@'}esbuild/linux-x64 kimi yerli binar paketləri gizlət",
+    "theme": "Tema",
+    "theme_light": "Açıq",
+    "theme_dark": "Tünd",
+    "theme_system": "Sistem",
+    "language": "Dil",
+    "help_translate": "npmx-i tərcümə etməyə kömək edin",
+    "accent_colors": "Vurğu rəngləri",
+    "clear_accent": "Vurğu rəngini təmizlə",
+    "translation_progress": "Tərcümə irəliləyişi"
+  },
+  "i18n": {
+    "missing_keys": "{count} çatışmayan tərcümə | {count} çatışmayan tərcümə",
+    "copy_keys": "Açarları kopyala",
+    "show_more_keys": "Daha {count} göstər...",
+    "contribute_hint": "Çatışmayan açarları əlavə edərək bu tərcüməni yaxşılaşdırmağa kömək edin.",
+    "edit_on_github": "GitHub-da redaktə et",
+    "view_guide": "Tərcümə bələdçisi"
+  },
+  "common": {
+    "loading": "Yüklənir...",
+    "loading_more": "Daha çox yüklənir...",
+    "loading_packages": "Paketlər yüklənir...",
+    "end_of_results": "Nəticələrin sonu",
+    "try_again": "Yenidən cəhd et",
+    "close": "Bağla",
+    "retry": "Yenidən cəhd et",
+    "copy": "kopyala",
+    "copied": "kopyalandı!",
+    "skip_link": "Əsas məzmuna keç",
+    "warnings": "Xəbərdarlıqlar:",
+    "go_back_home": "Ana səhifəyə qayıt",
+    "view_on_npm": "npm-də bax",
+    "per_week": "/ həftə",
+    "sort": {
+      "name": "ad",
+      "role": "rol",
+      "members": "üzvlər"
+    },
+    "scroll_to_top": "Yuxarı qayıt"
+  },
+  "package": {
+    "not_found": "Paket Tapılmadı",
+    "not_found_message": "Paket tapıla bilmədi.",
+    "no_description": "Təsvir verilməyib",
+    "not_latest": "(son deyil)",
+    "verified_provenance": "Təsdiqlənmiş mənşə",
+    "view_permalink": "Bu versiya üçün daimi keçidə bax",
+    "navigation": "Paket",
+    "deprecation": {
+      "package": "Bu paket köhnəlmişdir.",
+      "version": "Bu versiya köhnəlmişdir.",
+      "no_reason": "Səbəb göstərilməyib"
+    },
+    "replacement": {
+      "title": "Bu asılılığa ehtiyacınız olmaya bilər.",
+      "native": "Bu, Node {nodeVersion}-dən bəri mövcud olan {replacement} ilə əvəz edilə bilər.",
+      "simple": "İcma bu paketi artıq lazımsız olaraq qeyd edib, tövsiyəsi: {replacement}.",
+      "documented": "İcma bu paketin daha performanslı alternativlərinin olduğunu qeyd edib.",
+      "none": "Bu paket artıq lazımsız olaraq qeyd edilib və funksionallığı bütün mühərriklərdə yerli olaraq mövcuddur.",
+      "learn_more": "Ətraflı öyrən",
+      "mdn": "MDN"
+    },
+    "stats": {
+      "license": "Lisenziya",
+      "deps": "Asılılıqlar",
+      "install_size": "Quraşdırma Həcmi",
+      "vulns": "Zəifliklər",
+      "view_dependency_graph": "Asılılıq qrafikini göstər",
+      "inspect_dependency_tree": "Asılılıq ağacını yoxla",
+      "size_tooltip": {
+        "unpacked": "{size} açılmış həcm (bu paket)",
+        "total": "{size} ümumi açılmış həcm (linux-x64 üçün bütün {count} asılılıq daxil olmaqla)"
+      }
+    },
+    "skills": {
+      "file_counts": {}
+    },
+    "links": {
+      "repo": "repo",
+      "homepage": "ana səhifə",
+      "issues": "xətalar",
+      "jsr": "jsr",
+      "code": "kod",
+      "docs": "sənədlər",
+      "fund": "maliyyələşdirmə"
+    },
+    "docs": {
+      "not_available": "Sənədlər mövcud deyil",
+      "not_available_detail": "Bu versiya üçün sənədlər yaradıla bilmədi."
+    },
+    "get_started": {
+      "title": "Başla",
+      "pm_label": "Paket meneceri",
+      "copy_command": "Quraşdırma əmrini kopyala",
+      "view_types": "{package} paketinə bax"
+    },
+    "create": {
+      "title": "Yeni layihə yarat",
+      "copy_command": "Yaratma əmrini kopyala"
+    },
+    "run": {
+      "title": "İşə sal",
+      "locally": "Lokal işə sal"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "README mövcud deyil.",
+      "view_on_github": "GitHub-da bax"
+    },
+    "keywords_title": "Açar sözlər",
+    "compatibility": "Uyğunluq",
+    "card": {
+      "publisher": "Naşir",
+      "weekly_downloads": "Həftəlik endirmələr",
+      "keywords": "Açar sözlər",
+      "license": "Lisenziya"
+    },
+    "versions": {
+      "title": "Versiyalar",
+      "collapse": "{tag} yığ",
+      "expand": "{tag} aç",
+      "collapse_other": "Digər versiyaları yığ",
+      "expand_other": "Digər versiyaları aç",
+      "collapse_major": "Major {major} yığ",
+      "expand_major": "Major {major} aç",
+      "other_versions": "Digər versiyalar",
+      "more_tagged": "Daha {count} etiketlənmiş",
+      "all_covered": "Bütün versiyalar yuxarıdakı etiketlər tərəfindən əhatə olunub",
+      "deprecated_title": "{version} (köhnəlmiş)"
+    },
+    "dependencies": {
+      "title": "Asılılıqlar ({count})",
+      "list_label": "Paket asılılıqları",
+      "show_all": "bütün {count} asılılığı göstər",
+      "optional": "əlavə",
+      "view_vulnerabilities": "Zəiflikləri göstər"
+    },
+    "peer_dependencies": {
+      "title": "Peer Asılılıqlar ({count})",
+      "list_label": "Paket peer asılılıqları",
+      "show_all": "bütün {count} peer asılılığı göstər"
+    },
+    "optional_dependencies": {
+      "title": "Əlavə Asılılıqlar ({count})",
+      "list_label": "Paket əlavə asılılıqları",
+      "show_all": "bütün {count} əlavə asılılığı göstər"
+    },
+    "maintainers": {
+      "title": "Dəstəkçilər",
+      "list_label": "Paket dəstəkçiləri",
+      "you": "(siz)",
+      "via": "{teams} vasitəsilə",
+      "remove_owner": "{name} sahibliyini sil",
+      "username_to_add": "Sahib kimi əlavə ediləcək istifadəçi adı",
+      "username_placeholder": "istifadəçi adı...",
+      "add_button": "əlavə et",
+      "cancel_add": "Sahib əlavə etməni ləğv et",
+      "add_owner": "+ Sahib əlavə et",
+      "show_more": "(daha {count} göstər)",
+      "show_less": "(daha az göstər)"
+    },
+    "downloads": {
+      "title": "Həftəlik Endirmələr",
+      "date_range": "{start} - {end}",
+      "date_range_multiline": "{start}\n- {end}",
+      "analyze": "Endirmələri təhlil et",
+      "modal_title": "Endirmələr",
+      "granularity": "Dərəcəlilik",
+      "granularity_daily": "Günlük",
+      "granularity_weekly": "Həftəlik",
+      "granularity_monthly": "Aylıq",
+      "granularity_yearly": "İllik",
+      "start_date": "Başlanğıc",
+      "end_date": "Son",
+      "no_data": "Endirmə məlumatı mövcud deyil",
+      "loading": "Yüklənir...",
+      "y_axis_label": "{granularity} endirmələr",
+      "download_file": "{fileType} endir",
+      "toggle_annotator": "Annotator keçid"
+    },
+    "install_scripts": {
+      "title": "Quraşdırma Skriptləri",
+      "script_label": "(skript)",
+      "npx_packages": "{count} npx paketi | {count} npx paketi",
+      "currently": "hazırda {version}"
+    },
+    "playgrounds": {
+      "title": "Sınayın",
+      "choose": "oyun meydançası seçin"
+    },
+    "metrics": {
+      "esm": "ES Modulları dəstəklənir",
+      "cjs": "CommonJS dəstəklənir",
+      "no_esm": "ES Modulları dəstəklənmir",
+      "types_included": "Tiplər daxildir",
+      "types_available": "Tiplər {package} vasitəsilə mövcuddur",
+      "no_types": "TypeScript tipləri yoxdur"
+    },
+    "license": {
+      "view_spdx": "SPDX-də lisenziya mətnini göstər"
+    },
+    "vulnerabilities": {
+      "tree_found": "{packages}/{total} paketdə {vulns} zəiflik | {packages}/{total} paketdə {vulns} zəiflik",
+      "show_all_packages": "bütün {count} təsirlənmiş paketi göstər",
+      "path": "yol",
+      "more": "+{count} daha çox",
+      "packages_failed": "{count} paket yoxlana bilmədi | {count} paket yoxlana bilmədi",
+      "scan_failed": "Zəifliklər üçün skan edilə bilmədi",
+      "severity": {
+        "critical": "kritik",
+        "high": "yüksək",
+        "moderate": "orta",
+        "low": "aşağı"
+      }
+    },
+    "deprecated": {
+      "label": "Köhnəlmiş",
+      "tree_found": "{count} köhnəlmiş asılılıq | {count} köhnəlmiş asılılıq",
+      "show_all": "bütün {count} köhnəlmiş paketi göstər"
+    },
+    "access": {
+      "title": "Komanda Girişi",
+      "refresh": "Komanda girişini yenilə",
+      "list_label": "Komanda girişi siyahısı",
+      "owner": "sahib",
+      "rw": "oxu-yaz",
+      "ro": "yalnız oxu",
+      "revoke_access": "{name} girişini ləğv et",
+      "no_access": "Komanda girişi tənzimlənməyib",
+      "select_team_label": "Komanda seçin",
+      "loading_teams": "Komandalar yüklənir...",
+      "select_team": "Komanda seçin",
+      "permission_label": "İcazə səviyyəsi",
+      "permission": {
+        "read_only": "yalnız oxu",
+        "read_write": "oxu-yaz"
+      },
+      "grant_button": "ver",
+      "cancel_grant": "Giriş verməni ləğv et",
+      "grant_access": "+ Komanda girişi ver"
+    },
+    "list": {
+      "filter_label": "Paketləri süz",
+      "filter_placeholder": "Paketləri süz...",
+      "sort_label": "Paketləri sırala",
+      "showing_count": "{total} paketdən {filtered} göstərilir"
+    },
+    "skeleton": {
+      "loading": "Paket detalları yüklənir",
+      "weekly": "Həftəlik",
+      "maintainers": "Dəstəkçilər",
+      "keywords": "Açar sözlər",
+      "versions": "Versiyalar",
+      "dependencies": "Asılılıqlar"
+    },
+    "sort": {
+      "downloads": "Ən çox endirilən",
+      "name_asc": "Ad (A-Z)",
+      "name_desc": "Ad (Z-A)"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Lokal Konnektor",
+      "connected": "Qoşulub",
+      "connected_hint": "İndi veb interfeysdən paketləri və təşkilatları idarə edə bilərsiniz.",
+      "disconnect": "Ayrıl",
+      "run_hint": "Admin funksiyalarını aktivləşdirmək üçün konnektoru kompüterinizdə işə salın.",
+      "copy_command": "Əmri kopyala",
+      "copied": "Kopyalandı",
+      "paste_token": "Sonra qoşulmaq üçün tokeni aşağıya yapışdırın:",
+      "token_label": "Token",
+      "token_placeholder": "tokeni bura yapışdırın...",
+      "advanced": "Əlavə seçimlər",
+      "port_label": "Port",
+      "warning": "XƏBƏRDARLIQ",
+      "warning_text": "Bu, npmx-ə npm CLI-nızı istifadə etməyə icazə verir. Yalnız etibar etdiyiniz saytlara qoşulun.",
+      "connect": "Qoşul",
+      "connecting": "Qoşulur..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Əməliyyat Növbəsi",
+      "clear_all": "hamısını təmizlə",
+      "refresh": "Əməliyyatları yenilə",
+      "empty": "Növbədə əməliyyat yoxdur",
+      "empty_hint": "Paket və ya təşkilat səhifələrindən əməliyyat əlavə edin",
+      "active_label": "Aktiv əməliyyatlar",
+      "otp_required": "OTP tələb olunur",
+      "otp_prompt": "Davam etmək üçün OTP daxil edin",
+      "otp_placeholder": "OTP kodunu daxil edin...",
+      "otp_label": "Birdəfəlik şifrə",
+      "retry_otp": "OTP ilə yenidən cəhd et",
+      "retrying": "Yenidən cəhd edilir...",
+      "approve_operation": "Əməliyyatı təsdiqlə",
+      "remove_operation": "Əməliyyatı sil",
+      "approve_all": "Hamısını Təsdiqlə",
+      "execute": "İcra et",
+      "executing": "İcra edilir...",
+      "log": "Jurnal",
+      "log_label": "Tamamlanmış əməliyyat jurnalı",
+      "remove_from_log": "Jurnaldan sil"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Komandalar",
+      "refresh": "Komandaları yenilə",
+      "filter_label": "Komandaları süz",
+      "filter_placeholder": "Komandaları süz...",
+      "sort_by": "Sırala",
+      "loading": "Komandalar yüklənir...",
+      "no_teams": "Komanda tapılmadı",
+      "list_label": "Təşkilat komandaları",
+      "delete_team": "{name} komandasını sil",
+      "member_count": "{count} üzv | {count} üzv",
+      "members_of": "{team} üzvləri",
+      "no_members": "Üzv yoxdur",
+      "remove_user": "{user} komandadan çıxar",
+      "username_to_add": "{team} komandasına əlavə ediləcək istifadəçi adı",
+      "username_placeholder": "istifadəçi adı...",
+      "add_button": "əlavə et",
+      "cancel_add_user": "İstifadəçi əlavəsini ləğv et",
+      "add_member": "+ Üzv əlavə et",
+      "team_name_label": "Komanda adı",
+      "team_name_placeholder": "komanda-adı...",
+      "create_button": "yarat",
+      "no_match": "\"{query}\" ilə uyğun komanda yoxdur",
+      "cancel_create": "Komanda yaratmanı ləğv et",
+      "create_team": "+ Komanda yarat"
+    },
+    "members": {
+      "title": "Üzvlər",
+      "refresh": "Üzvləri yenilə",
+      "filter_label": "Üzvləri süz",
+      "filter_placeholder": "Üzvləri süz...",
+      "filter_by_role": "Rola görə süz",
+      "filter_by_team": "Komandaya görə süz",
+      "all_teams": "bütün komandalar",
+      "sort_by": "Sırala",
+      "loading": "Üzvlər yüklənir...",
+      "no_members": "Üzv tapılmadı",
+      "list_label": "Təşkilat üzvləri",
+      "change_role_for": "{name} üçün rolu dəyişdir",
+      "remove_from_org": "{name} təşkilatdan çıxar",
+      "view_team": "{team} komandasını göstər",
+      "no_match": "Filtrlərinizə uyğun üzv yoxdur",
+      "username_label": "İstifadəçi adı",
+      "username_placeholder": "istifadəçi adı...",
+      "role_label": "Rol",
+      "role": {
+        "all": "hamısı",
+        "developer": "developer",
+        "admin": "admin",
+        "owner": "sahib"
+      },
+      "team_label": "Komanda",
+      "no_team": "komanda yoxdur",
+      "add_button": "əlavə et",
+      "cancel_add": "Üzv əlavəsini ləğv et",
+      "add_member": "+ Üzv əlavə et"
+    },
+    "public_packages": "{count} açıq paket | {count} açıq paket",
+    "page": {
+      "packages_title": "Paketlər",
+      "members_tab": "Üzvlər",
+      "teams_tab": "Komandalar",
+      "no_packages": "Açıq paket tapılmadı:",
+      "no_packages_hint": "Bu təşkilat mövcud olmaya bilər və ya açıq paketləri yoxdur.",
+      "failed_to_load": "Təşkilat paketləri yüklənə bilmədi",
+      "no_match": "\"{query}\" ilə uyğun paket yoxdur",
+      "not_found": "Təşkilat tapılmadı",
+      "not_found_message": "\"{'@'}{name}\" təşkilatı npm-də mövcud deyil"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(təşkilata da əlavə ediləcək)",
+      "press_enter_to_add": "{'@'}{username} əlavə etmək üçün Enter basın",
+      "default_placeholder": "istifadəçi adı...",
+      "suggestions_label": "İstifadəçi təklifləri"
+    },
+    "page": {
+      "packages_title": "Paketlər",
+      "no_packages": "Açıq paket tapılmadı:",
+      "no_packages_hint": "Bu istifadəçi mövcud olmaya bilər və ya açıq paketləri yoxdur.",
+      "failed_to_load": "İstifadəçi paketləri yüklənə bilmədi",
+      "no_match": "\"{query}\" ilə uyğun paket yoxdur",
+      "filter_placeholder": "{count} paketi süz..."
+    },
+    "orgs_page": {
+      "title": "Təşkilatlar",
+      "back_to_profile": "Profilə qayıt",
+      "connect_required": "Təşkilatlarınızı görmək üçün lokal CLI qoşun.",
+      "connect_hint_prefix": "Başlamaq üçün",
+      "connect_hint_suffix": "işə salın.",
+      "own_orgs_only": "Yalnız öz təşkilatlarınızı görə bilərsiniz.",
+      "view_your_orgs": "Təşkilatlarınızı göstər",
+      "loading": "Təşkilatlar yüklənir...",
+      "empty": "Təşkilat tapılmadı.",
+      "empty_hint": "Təşkilatlar sizin scope-lu paketlərinizdən aşkar edilir.",
+      "count": "{count} Təşkilat | {count} Təşkilat",
+      "packages_count": "{count} paket | {count} paket"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Paket Adını Tut",
+      "success": "Paket tutuldu!",
+      "success_detail": "{name}{'@'}0.0.0 npm-ə dərc edildi.",
+      "success_hint": "İndi npm publish istifadə edərək bu paketə yeni versiyalar dərc edə bilərsiniz.",
+      "view_package": "Paketə Bax",
+      "invalid_name": "Yanlış paket adı:",
+      "available": "Bu ad mövcuddur!",
+      "taken": "Bu ad artıq tutulub.",
+      "similar_warning": "Oxşar paketlər mövcuddur - npm bu adı rədd edə bilər:",
+      "related": "Əlaqəli paketlər:",
+      "scope_warning_title": "Bunun əvəzinə scope-lu paket istifadə etməyi düşünün",
+      "scope_warning_text": "Scope-suz paket adları paylaşılan resursdur. Adı yalnız paket dərc edib saxlamaq niyyətindəsinizsə tutun. Şəxsi və ya təşkilat layihələri üçün {'@'}{username}/{name} kimi scope-lu ad istifadə edin.",
+      "connect_required": "Bu paket adını tutmaq üçün lokal konnektora qoşulun.",
+      "connect_button": "Konnektora Qoşul",
+      "publish_hint": "Bu, minimal placeholder paket dərc edəcək.",
+      "preview_json": "package.json önbaxış",
+      "claim_button": "Paket Adını Tut",
+      "publishing": "Dərc edilir...",
+      "checking": "Mövcudluq yoxlanılır...",
+      "failed_to_check": "Ad mövcudluğu yoxlanıla bilmədi",
+      "failed_to_claim": "Paket tutula bilmədi"
+    }
+  },
+  "code": {
+    "files_label": "Fayllar",
+    "no_files": "Bu qovluqda fayl yoxdur",
+    "root": "kök",
+    "lines": "{count} sətir",
+    "toggle_tree": "Fayl ağacını keçir",
+    "close_tree": "Fayl ağacını bağla",
+    "copy_link": "Linki kopyala",
+    "raw": "Xam",
+    "view_raw": "Xam faylı göstər",
+    "file_too_large": "Fayl önbaxış üçün çox böyükdür",
+    "file_size_warning": "{size} sintaksis vurğulama üçün 500KB limitini keçir",
+    "failed_to_load": "Fayl yüklənə bilmədi",
+    "unavailable_hint": "Fayl çox böyük ola bilər və ya mövcud deyil",
+    "version_required": "Kodu baxmaq üçün versiya tələb olunur",
+    "go_to_package": "Paketə keç",
+    "loading_tree": "Fayl ağacı yüklənir...",
+    "failed_to_load_tree": "Bu paket versiyası üçün fayllar yüklənə bilmədi",
+    "back_to_package": "Paketə qayıt",
+    "table": {
+      "name": "Ad",
+      "size": "Həcm"
+    },
+    "markdown_view_mode": {
+      "preview": "önbaxış",
+      "code": "kod"
+    }
+  },
+  "badges": {
+    "provenance": {
+      "verified": "təsdiqlənmiş",
+      "verified_title": "Təsdiqlənmiş mənşə",
+      "verified_via": "Təsdiqlənmiş: {provider} vasitəsilə dərc edilib"
+    },
+    "jsr": {
+      "title": "JSR-də də mövcuddur"
+    }
+  },
+  "filters": {
+    "title": "Filtrlər",
+    "search": "Axtar",
+    "search_scope": "Axtarış əhatəsi",
+    "search_placeholder_name": "Paket adına görə süz...",
+    "search_placeholder_description": "Təsvirə görə süz...",
+    "search_placeholder_keywords": "Açar sözlərə görə süz...",
+    "search_placeholder_all": "Hamısında axtar və ya name: desc: kw: istifadə et",
+    "scope_name": "Ad",
+    "scope_name_description": "Yalnız paket adlarında axtar",
+    "scope_description": "Təsvir",
+    "scope_description_description": "Yalnız təsvirlərdə axtar",
+    "scope_keywords": "Açar sözlər",
+    "scope_keywords_description": "Yalnız açar sözlərdə axtar",
+    "scope_all": "Hamısı",
+    "scope_all_description": "Bütün sahələrdə axtar, name: desc: kw: operatorlarını dəstəkləyir",
+    "weekly_downloads": "Həftəlik endirmələr",
+    "updated_within": "Yenilənmə müddəti",
+    "security": "Təhlükəsizlik",
+    "keywords": "Açar sözlər",
+    "more_keywords": "+{count} daha çox",
+    "clear_all": "Hamısını təmizlə",
+    "remove_filter": "{label} filtrini sil",
+    "download_range": {
+      "any": "İstənilən",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "İstənilən vaxt",
+      "week": "Son həftə",
+      "month": "Son ay",
+      "quarter": "Son 3 ay",
+      "year": "Son il"
+    },
+    "security_options": {
+      "all": "Bütün paketlər",
+      "secure": "Xəbərdarlıqsız",
+      "insecure": "Xəbərdarlıqlı"
+    },
+    "sort": {
+      "label": "Paketləri sırala",
+      "toggle_direction": "Sıralama istiqamətini dəyişdir",
+      "ascending": "Artan",
+      "descending": "Azalan",
+      "relevance": "Uyğunluq",
+      "downloads_week": "Endirmələr/həftə",
+      "downloads_day": "Endirmələr/gün",
+      "downloads_month": "Endirmələr/ay",
+      "downloads_year": "Endirmələr/il",
+      "name": "Ad",
+      "quality": "Keyfiyyət",
+      "popularity": "Populyarlıq",
+      "maintenance": "Baxım",
+      "score": "Xal"
+    },
+    "columns": {
+      "title": "Sütunlar",
+      "show": "Sütunları göstər",
+      "reset": "Standart vəziyyətə qaytar",
+      "coming_soon": "Tezliklə",
+      "name": "Ad",
+      "version": "Versiya",
+      "description": "Təsvir",
+      "downloads": "Endirmələr/həftə",
+      "maintainers": "Dəstəkçilər",
+      "keywords": "Açar sözlər",
+      "quality_score": "Keyfiyyət xalı",
+      "popularity_score": "Populyarlıq xalı",
+      "maintenance_score": "Baxım xalı",
+      "combined_score": "Ümumi xal",
+      "security": "Təhlükəsizlik"
+    },
+    "view_mode": {
+      "label": "Görünüş rejimi",
+      "cards": "Kart görünüşü",
+      "table": "Cədvəl görünüşü"
+    },
+    "pagination": {
+      "mode_label": "Səhifələmə rejimi",
+      "infinite": "Sonsuz",
+      "paginated": "Səhifələnmiş",
+      "items_per_page": "Səhifə başına element",
+      "per_page": "{count} / səhifə",
+      "all_yolo": "Hamısı (YOLO)",
+      "showing": "{start}-{end} / {total}",
+      "previous": "Əvvəlki səhifə",
+      "next": "Növbəti səhifə",
+      "nav_label": "Səhifələmə"
+    },
+    "count": {
+      "showing_filtered": "{count} paketdən {filtered}",
+      "showing_all": "{count} paket",
+      "showing_paginated": "{count} paketdən {pageSize}"
+    },
+    "table": {
+      "security_warning": "Təhlükəsizlik xəbərdarlığı",
+      "secure": "Təhlükəsiz",
+      "no_packages": "Paket tapılmadı"
+    }
+  },
+  "about": {
+    "title": "Haqqında",
+    "heading": "haqqında",
+    "meta_description": "npmx npm reyestri üçün sürətli, müasir brauzerdir. npm paketlərini kəşf etmək üçün daha yaxşı UX/DX.",
+    "what_we_are": {
+      "title": "Biz nəyik",
+      "better_ux_dx": "daha yaxşı UX/DX",
+      "admin_ui": "admin UI",
+      "description": "npmx npm paket reyestri və alətləri üçün {betterUxDx} təqdim edir. Biz tünd tema, klaviatura naviqasiyası, kod baxışı və {jsr} kimi alternativ reyestrlərlə əlaqə kimi xüsusiyyətlərlə paketləri kəşf etmək üçün sürətli, müasir interfeys təqdim edirik.",
+      "admin_description": "Həmçinin paketlərinizi, komandalarınızı və təşkilatlarınızı idarə etmək üçün daha yaxşı {adminUi} təqdim etməyi hədəfləyirik — hamısı brauzerdən, lokal npm CLI ilə."
+    },
+    "what_we_are_not": {
+      "title": "Biz nə deyilik",
+      "not_package_manager": "Paket meneceri deyil.",
+      "not_registry": "Reyestr deyil.",
+      "registry_description": "Biz paketləri saxlamırıq. Sadəcə onlara baxmağın daha yaxşı yoluyuq.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Artıq",
+        "people": "həqiqətən",
+        "building": "gözəl",
+        "really": "paket menecerləri",
+        "cool": "hazırlayan",
+        "package": "insanlar",
+        "managers": "var"
+      }
+    },
+    "contributors": {
+      "title": "Əməkdaşlar",
+      "description": "npmx tam açıq mənbəlidir, möhtəşəm əməkdaşlar icması tərəfindən hazırlanır. Bizə qoşulun və həmişə istədiyimiz npm baxış təcrübəsini birlikdə quraq.",
+      "loading": "Əməkdaşlar yüklənir...",
+      "error": "Əməkdaşlar yüklənə bilmədi",
+      "view_profile": "{name} GitHub profilinə bax"
+    },
+    "get_involved": {
+      "title": "Qatılın",
+      "contribute": {
+        "title": "Töhfə verin",
+        "description": "Daha yaxşı npm təcrübəsi qurmağımıza kömək edin.",
+        "cta": "GitHub-da bax"
+      },
+      "community": {
+        "title": "İcmaya qoşulun",
+        "description": "Söhbət edin, suallar verin və fikirlər paylaşın.",
+        "cta": "Discord-a qoşul"
+      },
+      "follow": {
+        "title": "Yeniliklərdən xəbərdar olun",
+        "description": "npmx haqqında son yenilikləri öyrənin.",
+        "cta": "Bluesky-da izlə"
+      }
+    }
+  },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
+  "header": {
+    "home": "npmx ana səhifə",
+    "packages": "paketlər",
+    "packages_dropdown": {
+      "title": "Paketləriniz",
+      "loading": "Yüklənir...",
+      "error": "Paketlər yüklənə bilmədi",
+      "empty": "Paket tapılmadı",
+      "view_all": "Hamısını göstər"
+    },
+    "orgs": "təşkilatlar",
+    "orgs_dropdown": {
+      "title": "Təşkilatlarınız",
+      "loading": "Yüklənir...",
+      "error": "Təşkilatlar yüklənə bilmədi",
+      "empty": "Təşkilat tapılmadı",
+      "view_all": "Hamısını göstər"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
+    }
+  }
+}

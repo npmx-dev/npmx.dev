@@ -3,17 +3,19 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import DateTime from '~/components/DateTime.vue'
 
 // Mock the useRelativeDates composable
-const mockRelativeDates = ref(false)
+const mockRelativeDates = shallowRef(false)
 vi.mock('~/composables/useSettings', () => ({
   useRelativeDates: () => mockRelativeDates,
   useSettings: () => ({
     settings: ref({ relativeDates: mockRelativeDates.value }),
   }),
+  useAccentColor: () => ({}),
 }))
 
 describe('DateTime', () => {
   const testDate = '2024-01-15T12:00:00.000Z'
   const testDateObject = new Date('2024-06-15T10:30:00.000Z')
+  const testYear = testDateObject.getUTCFullYear()
 
   beforeEach(() => {
     mockRelativeDates.value = false
@@ -59,12 +61,12 @@ describe('DateTime', () => {
   })
 
   describe('title attribute', () => {
-    it('uses datetime string as title by default', async () => {
+    it('has title with formatted date by default', async () => {
       const component = await mountSuspended(DateTime, {
         props: { datetime: testDate },
       })
       const timeEl = component.find('time')
-      expect(timeEl.attributes('title')).toBe(testDate)
+      expect(timeEl.attributes('title')).toContain(testYear)
     })
 
     it('uses custom title when provided', async () => {
@@ -79,12 +81,12 @@ describe('DateTime', () => {
       expect(timeEl.attributes('title')).toBe(customTitle)
     })
 
-    it('converts Date object to ISO string for title', async () => {
+    it('converts Date object to formatted date in title', async () => {
       const component = await mountSuspended(DateTime, {
         props: { datetime: testDateObject },
       })
       const timeEl = component.find('time')
-      expect(timeEl.attributes('title')).toBe(testDateObject.toISOString())
+      expect(timeEl.attributes('title')).toContain(testYear)
     })
   })
 
@@ -117,14 +119,14 @@ describe('DateTime', () => {
       let component = await mountSuspended(DateTime, {
         props: { datetime: testDate },
       })
-      expect(component.find('time').attributes('title')).toBe(testDate)
+      expect(component.find('time').attributes('title')).toContain(testYear)
 
       // Test with relative dates on
       mockRelativeDates.value = true
       component = await mountSuspended(DateTime, {
         props: { datetime: testDate },
       })
-      expect(component.find('time').attributes('title')).toBe(testDate)
+      expect(component.find('time').attributes('title')).toContain(testYear)
     })
   })
 

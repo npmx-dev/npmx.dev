@@ -1,0 +1,1012 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - npmレジストリのためのパッケージブラウザ",
+      "description": "高速でモダンなnpmレジストリブラウザ。モダンなインターフェイスでパッケージの検索、閲覧、探索が可能です。"
+    }
+  },
+  "built_at": "ビルド {0}",
+  "alt_logo": "npmxロゴ",
+  "tagline": "高速でモダンなnpmレジストリブラウザ",
+  "non_affiliation_disclaimer": "npm, Inc.とは関係ありません。",
+  "trademark_disclaimer": "npmはnpm, Inc.の登録商標です。当サイトはnpm, Inc.とは関係ありません。",
+  "footer": {
+    "about": "npmxについて",
+    "docs": "ドキュメント",
+    "source": "ソースコード",
+    "social": "ソーシャル",
+    "chat": "チャット"
+  },
+  "search": {
+    "label": "npmパッケージを検索",
+    "placeholder": "パッケージを検索...",
+    "button": "検索",
+    "searching": "検索中...",
+    "found_packages": "{count} 個のパッケージが見つかりました",
+    "updating": "（更新中...）",
+    "no_results": "\"{query}\" に一致するパッケージは見つかりませんでした",
+    "title": "検索",
+    "title_search": "検索: {search}",
+    "title_packages": "パッケージを検索",
+    "meta_description": "'{search}' の検索結果",
+    "meta_description_packages": "npmパッケージを検索",
+    "not_taken": "{name} は使用可能です",
+    "claim_prompt": "このパッケージ名をnpmで取得する",
+    "claim_button": "\"{name}\" を取得",
+    "want_to_claim": "このパッケージ名を取得しますか？",
+    "start_typing": "入力を開始してパッケージを検索",
+    "exact_match": "完全一致",
+    "suggestion": {
+      "user": "ユーザー",
+      "org": "Organization",
+      "view_user_packages": "このユーザーのパッケージを表示",
+      "view_org_packages": "このOrganizationのパッケージを表示"
+    }
+  },
+  "nav": {
+    "main_navigation": "メイン",
+    "popular_packages": "人気のパッケージ",
+    "settings": "設定",
+    "compare": "比較",
+    "back": "戻る",
+    "menu": "メニュー",
+    "mobile_menu": "ナビゲーションメニュー",
+    "open_menu": "メニューを開く",
+    "links": "リンク",
+    "tap_to_search": "タップして検索"
+  },
+  "settings": {
+    "title": "設定",
+    "tagline": "npmxの体験をカスタマイズ",
+    "meta_description": "テーマ、言語、表示設定でnpmx.devの体験をカスタマイズします。",
+    "sections": {
+      "appearance": "外観",
+      "display": "表示",
+      "language": "言語"
+    },
+    "relative_dates": "日付を相対表記",
+    "include_types": "インストール時に {'@'}types を含める",
+    "include_types_description": "型定義のないパッケージのインストールコマンドに {'@'}types パッケージを追加します",
+    "hide_platform_packages": "検索でプラットフォーム固有のパッケージを非表示",
+    "hide_platform_packages_description": "検索結果から {'@'}esbuild/linux-x64 のようなネイティブバイナリパッケージを非表示にします",
+    "theme": "テーマ",
+    "theme_light": "ライト",
+    "theme_dark": "ダーク",
+    "theme_system": "システム",
+    "language": "言語",
+    "help_translate": "npmxの翻訳に協力する",
+    "accent_colors": "アクセントカラー",
+    "clear_accent": "アクセントカラーをクリア",
+    "translation_progress": "翻訳の進捗状況",
+    "background_themes": "背景シェード"
+  },
+  "i18n": {
+    "missing_keys": "{count} 件の未翻訳項目",
+    "copy_keys": "キーをコピー",
+    "show_more_keys": "他 {count} 件を表示...",
+    "contribute_hint": "不足しているキーを追加して翻訳の改善にご協力ください。",
+    "edit_on_github": "GitHubで編集",
+    "view_guide": "翻訳ガイド"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "loading_more": "さらに読み込み中...",
+    "loading_packages": "パッケージを読み込み中...",
+    "end_of_results": "結果の最後です",
+    "try_again": "もう一度お試しください",
+    "close": "閉じる",
+    "retry": "再試行",
+    "copy": "コピー",
+    "copied": "コピー完了！",
+    "skip_link": "メインコンテンツにスキップ",
+    "warnings": "警告:",
+    "go_back_home": "ホームへ戻る",
+    "view_on_npm": "npmで表示",
+    "per_week": "/ 週",
+    "vanity_downloads_hint": "バニティ番号: パッケージが表示されていません | バニティ番号: 表示されているパッケージの数値 | バニティ番号: 表示されている {count} 個のパッケージの合計",
+    "sort": {
+      "name": "名前",
+      "role": "役割",
+      "members": "メンバー"
+    },
+    "scroll_to_top": "トップへ戻る"
+  },
+  "package": {
+    "not_found": "パッケージが見つかりません",
+    "not_found_message": "パッケージが見つかりませんでした。",
+    "no_description": "説明はありません",
+    "not_latest": "（最新ではありません）",
+    "verified_provenance": "検証済みprovenance",
+    "view_permalink": "このバージョンのパーマリンクを表示",
+    "navigation": "パッケージナビゲーション",
+    "copy_name": "パッケージ名をコピー",
+    "deprecation": {
+      "package": "このパッケージは非推奨になりました。",
+      "version": "このバージョンは非推奨になりました。",
+      "no_reason": "理由は提供されていません"
+    },
+    "replacement": {
+      "title": "この依存関係は不要な可能性があります。",
+      "native": "これは Node {nodeVersion} 以降で利用可能な {replacement} で置き換え可能です。",
+      "simple": "{community} はこのパッケージを冗長としてフラグを立てており、次のアドバイスがあります: {replacement}",
+      "documented": "{community} により、このパッケージにはよりパフォーマンスの高い代替手段があることが報告されています。",
+      "none": "このパッケージは不要になったとフラグが立てられています。その機能はすべてのエンジンでネイティブに利用できる可能性があります。",
+      "learn_more": "詳細はこちら",
+      "learn_more_above": "詳細は上記を確認してください。",
+      "mdn": "MDN",
+      "community": "コミュニティ",
+      "consider_no_dep": "+ 依存関係なしを検討しますか？"
+    },
+    "stats": {
+      "license": "ライセンス",
+      "deps": "依存関係",
+      "install_size": "インストールサイズ",
+      "vulns": "脆弱性",
+      "published": "公開日",
+      "published_tooltip": "{package}{'@'}{version} が公開された日付",
+      "view_dependency_graph": "依存関係グラフを表示",
+      "inspect_dependency_tree": "依存関係ツリーを検査",
+      "size_tooltip": {
+        "unpacked": "展開サイズ: {size} (このパッケージ)",
+        "total": "総展開サイズ: {size} (linux-x64向けの全 {count} 個の依存関係を含む)"
+      }
+    },
+    "skills": {
+      "title": "エージェント スキル",
+      "skills_available": "{count} 個のスキルが利用可能",
+      "compatible_with": "{tool} と互換あり",
+      "install": "インストール",
+      "installation_method": "インストール方法",
+      "learn_more": "詳細はこちら",
+      "available_skills": "利用可能なスキル",
+      "click_to_expand": "クリックして展開",
+      "no_description": "説明なし",
+      "file_counts": {
+        "scripts": "{count} 個のスクリプト",
+        "refs": "{count} 個の参照",
+        "assets": "{count} 個のアセット"
+      },
+      "view_source": "ソースを表示"
+    },
+    "links": {
+      "repo": "リポジトリ",
+      "homepage": "ホームページ",
+      "issues": "Issues",
+      "jsr": "jsr",
+      "code": "コード",
+      "docs": "ドキュメント",
+      "fund": "資金援助",
+      "compare": "比較"
+    },
+    "likes": {
+      "like": "このパッケージをいいねする",
+      "unlike": "このパッケージのいいねを解除する"
+    },
+    "docs": {
+      "not_available": "ドキュメントは利用できません",
+      "not_available_detail": "このバージョンのドキュメントを生成できませんでした。"
+    },
+    "get_started": {
+      "title": "はじめに",
+      "pm_label": "パッケージマネージャー",
+      "copy_command": "インストールコマンドをコピー",
+      "view_types": "{package} を表示"
+    },
+    "create": {
+      "title": "新しいプロジェクトを作成",
+      "copy_command": "作成コマンドをコピー",
+      "view": "{packageName} は同じメンテナにより管理されています。詳細を確認するにはクリックしてください。"
+    },
+    "run": {
+      "title": "実行",
+      "locally": "ローカルで実行"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "READMEはありません。",
+      "view_on_github": "GitHubで表示",
+      "toc_title": "目次",
+      "callout": {
+        "note": "メモ",
+        "tip": "ヒント",
+        "important": "重要",
+        "warning": "警告",
+        "caution": "注意"
+      },
+      "copy_as_markdown": "READMEをMarkdownとしてコピーする"
+    },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "{provider} でビルドおよび署名済み",
+      "view_build_summary": "ビルドサマリーを表示",
+      "source_commit": "ソースコミット",
+      "build_file": "ビルドファイル",
+      "public_ledger": "パブリックレジャー",
+      "transparency_log_entry": "透明性ログエントリ",
+      "view_more_details": "詳細を表示",
+      "error_loading": "provenance詳細情報の読み込みに失敗しました"
+    },
+    "keywords_title": "キーワード",
+    "compatibility": "互換性",
+    "card": {
+      "publisher": "パブリッシャー",
+      "published": "公開済み",
+      "weekly_downloads": "週間ダウンロード数",
+      "keywords": "キーワード",
+      "license": "ライセンス"
+    },
+    "versions": {
+      "title": "バージョン",
+      "collapse": "{tag} を折りたたむ",
+      "expand": "{tag} を展開",
+      "collapse_other": "他のバージョンを折りたたむ",
+      "expand_other": "他のバージョンを展開",
+      "collapse_major": "メジャーバージョン {major} を折りたたむ",
+      "expand_major": "メジャーバージョン {major} を展開",
+      "other_versions": "他のバージョン",
+      "more_tagged": "他 {count} 個のタグ付き",
+      "all_covered": "すべてのバージョンが上記のタグに含まれています",
+      "deprecated_title": "{version}（非推奨）",
+      "view_all": "{count} 個のバージョンを表示|{count} 個のすべてのバージョンを表示"
+    },
+    "dependencies": {
+      "title": "依存関係（{count}）",
+      "list_label": "パッケージの依存関係",
+      "show_all": "全 {count} 個の依存関係を表示",
+      "optional": "オプション",
+      "view_vulnerabilities": "脆弱性情報を表示",
+      "outdated_major": "最新から {count} 個のメジャーバージョン遅れています (最新: {latest})",
+      "outdated_minor": "最新から {count} 個のマイナーバージョン遅れています (最新: {latest})",
+      "outdated_patch": "パッチアップデートがあります (最新: {latest})"
+    },
+    "peer_dependencies": {
+      "title": "ピア依存関係（{count}）",
+      "list_label": "パッケージのピア依存関係",
+      "show_all": "全 {count} 個のピア依存関係を表示"
+    },
+    "optional_dependencies": {
+      "title": "オプションの依存関係（{count}）",
+      "list_label": "パッケージのオプションの依存関係",
+      "show_all": "全 {count} 個のオプションの依存関係を表示"
+    },
+    "maintainers": {
+      "title": "メンテナ",
+      "list_label": "パッケージのメンテナ",
+      "you": "（あなた）",
+      "via": "{teams} 経由",
+      "remove_owner": "{name} をオーナーから削除",
+      "username_to_add": "オーナーに追加するユーザー名",
+      "username_placeholder": "ユーザー名...",
+      "add_button": "追加",
+      "cancel_add": "オーナーの追加をキャンセル",
+      "add_owner": "+ オーナーを追加",
+      "show_more": "（他 {count} 個を表示）",
+      "show_less": "（表示を減らす）"
+    },
+    "downloads": {
+      "title": "週間ダウンロード数",
+      "date_range": "{start} から {end}",
+      "date_range_multiline": "{start}\nから {end}",
+      "analyze": "ダウンロード数を分析",
+      "community_distribution": "コミュニティの採用分布を表示",
+      "modal_title": "ダウンロード数",
+      "granularity": "粒度",
+      "granularity_daily": "日次",
+      "granularity_weekly": "週次",
+      "granularity_monthly": "月次",
+      "granularity_yearly": "年次",
+      "start_date": "開始日",
+      "end_date": "終了日",
+      "no_data": "ダウンロードデータはありません",
+      "loading": "読み込み中...",
+      "y_axis_label": "{granularity} ダウンロード数",
+      "download_file": "{fileType} をダウンロード",
+      "toggle_annotator": "アノテーターを切り替え"
+    },
+    "install_scripts": {
+      "title": "インストールスクリプト",
+      "script_label": "（スクリプト）",
+      "npx_packages": "{count} 個の npx パッケージ",
+      "currently": "現在 {version}"
+    },
+    "playgrounds": {
+      "title": "試してみる",
+      "choose": "プレイグラウンドを選択"
+    },
+    "metrics": {
+      "esm": "ESモジュール対応",
+      "cjs": "CommonJS対応",
+      "no_esm": "ESモジュール非対応",
+      "types_label": "型定義",
+      "types_included": "型定義同梱",
+      "types_available": "{package} 経由で型定義を利用可能",
+      "no_types": "TypeScript型定義なし"
+    },
+    "license": {
+      "view_spdx": "SPDXでライセンス条文を表示",
+      "none": "なし"
+    },
+    "vulnerabilities": {
+      "tree_found": "{packages}/{total} 個のパッケージに {vulns} 件の脆弱性",
+      "show_all_packages": "影響を受ける全 {count} 個のパッケージを表示",
+      "path": "パス",
+      "more": "+他 {count} 個",
+      "packages_failed": "{count} 個のパッケージをチェックできませんでした",
+      "scan_failed": "脆弱性をスキャンできませんでした",
+      "severity": {
+        "critical": "緊急",
+        "high": "高",
+        "moderate": "中",
+        "low": "低"
+      }
+    },
+    "deprecated": {
+      "label": "非推奨",
+      "tree_found": "{count} 件の非推奨の依存関係",
+      "show_all": "{count} 件の非推奨パッケージをすべて表示"
+    },
+    "access": {
+      "title": "チームアクセス",
+      "refresh": "チームアクセスを更新",
+      "list_label": "チームアクセスリスト",
+      "owner": "オーナー",
+      "rw": "読み書き可（rw）",
+      "ro": "読み取り専用（ro）",
+      "revoke_access": "{name} のアクセス権を削除",
+      "no_access": "チームアクセスは設定されていません",
+      "select_team_label": "チームを選択",
+      "loading_teams": "チームを読み込み中...",
+      "select_team": "チームを選択",
+      "permission_label": "権限レベル",
+      "permission": {
+        "read_only": "読み取り専用",
+        "read_write": "読み書き可"
+      },
+      "grant_button": "許可",
+      "cancel_grant": "アクセス権の付与をキャンセル",
+      "grant_access": "+ チームアクセスを付与"
+    },
+    "list": {
+      "filter_label": "パッケージを絞り込む",
+      "filter_placeholder": "パッケージを絞り込む...",
+      "sort_label": "パッケージを並べ替える",
+      "showing_count": "{total} 個中 {filtered} 個のパッケージを表示中"
+    },
+    "skeleton": {
+      "loading": "パッケージ詳細を読み込み中",
+      "weekly": "週間",
+      "maintainers": "メンテナ",
+      "keywords": "キーワード",
+      "versions": "バージョン",
+      "dependencies": "依存関係"
+    },
+    "sort": {
+      "downloads": "ダウンロード数順",
+      "published": "最近の公開",
+      "name_asc": "名前順（A-Z）",
+      "name_desc": "名前順（Z-A）"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "ローカルコネクタ",
+      "contributor_badge": "コントリビューター専用",
+      "contributor_notice": "コネクタはまだ npm に公開されていません。ローカルでの実行方法については {link} を参照してください。",
+      "contributor_link": "コントリビューションガイド",
+      "connected": "接続済み",
+      "connected_as_user": "~{user} として接続済み",
+      "connected_hint": "Web UIからパッケージとOrganizationを管理できるようになりました。",
+      "disconnect": "切断",
+      "run_hint": "管理機能を有効にするには、ローカル環境でコネクタを実行します。",
+      "copy_command": "コマンドをコピー",
+      "copied": "コピーしました",
+      "paste_token": "そして、以下にトークンを貼り付けて接続します。",
+      "token_label": "トークン",
+      "token_placeholder": "ここにトークンを貼り付け...",
+      "advanced": "詳細オプション",
+      "port_label": "ポート",
+      "warning": "警告",
+      "warning_text": "これによりnpmxがnpm CLIにアクセスできるようになります。信頼できるサイトにのみ接続してください。",
+      "connect": "接続",
+      "connecting": "接続中..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "操作キュー",
+      "clear_all": "すべてクリア",
+      "refresh": "操作を更新",
+      "empty": "キューにある操作はありません",
+      "empty_hint": "パッケージやOrganizationのページから操作を追加してください",
+      "active_label": "実行中の操作",
+      "otp_required": "OTPが必要です",
+      "otp_prompt": "続行するにはOTPを入力してください",
+      "otp_placeholder": "OTPコードを入力...",
+      "otp_label": "ワンタイムパスワード",
+      "retry_otp": "OTPで再試行",
+      "retrying": "再試行中...",
+      "approve_operation": "操作を承認",
+      "remove_operation": "操作を削除",
+      "approve_all": "すべて承認",
+      "execute": "実行",
+      "executing": "実行中...",
+      "log": "ログ",
+      "log_label": "完了した操作のログ",
+      "remove_from_log": "ログから削除"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "チーム",
+      "refresh": "チームを更新",
+      "filter_label": "チームを絞り込む",
+      "filter_placeholder": "チームを絞り込む...",
+      "sort_by": "並べ替え",
+      "loading": "チームを読み込み中...",
+      "no_teams": "チームは見つかりませんでした",
+      "list_label": "Organizationのチーム",
+      "delete_team": "チーム {name} を削除",
+      "member_count": "{count} 人のメンバー",
+      "members_of": "{team} のメンバー",
+      "no_members": "メンバーはいません",
+      "remove_user": "ユーザー {user} をチームから削除",
+      "username_to_add": "{team} に追加するユーザー名",
+      "username_placeholder": "ユーザー名...",
+      "add_button": "追加",
+      "cancel_add_user": "ユーザーの追加をキャンセル",
+      "add_member": "+ メンバーを追加",
+      "team_name_label": "チーム名",
+      "team_name_placeholder": "チーム名...",
+      "create_button": "作成",
+      "no_match": "\"{query}\" に一致するチームはありません",
+      "cancel_create": "チーム作成をキャンセル",
+      "create_team": "+ チームを作成"
+    },
+    "members": {
+      "title": "メンバー",
+      "refresh": "メンバーを更新",
+      "filter_label": "メンバーを絞り込む",
+      "filter_placeholder": "メンバーを絞り込む...",
+      "filter_by_role": "役割で絞り込む",
+      "filter_by_team": "チームで絞り込む",
+      "all_teams": "すべてのチーム",
+      "sort_by": "並べ替え",
+      "loading": "メンバーを読み込み中...",
+      "no_members": "メンバーは見つかりませんでした",
+      "list_label": "Organizationのメンバー",
+      "change_role_for": "{name} の役割を変更",
+      "remove_from_org": "{name} をOrganizationから削除",
+      "view_team": "{team} チームを表示",
+      "no_match": "フィルターに一致するメンバーはいません",
+      "username_label": "ユーザー名",
+      "username_placeholder": "ユーザー名...",
+      "role_label": "役割",
+      "role": {
+        "all": "すべて",
+        "developer": "デベロッパー",
+        "admin": "管理者",
+        "owner": "オーナー"
+      },
+      "team_label": "チーム",
+      "no_team": "チームなし",
+      "add_button": "追加",
+      "cancel_add": "メンバーの追加をキャンセル",
+      "add_member": "+ メンバーを追加"
+    },
+    "public_packages": "{count} 個の公開パッケージ",
+    "page": {
+      "packages_title": "パッケージ",
+      "members_tab": "メンバー",
+      "teams_tab": "チーム",
+      "no_packages": "公開パッケージは見つかりませんでした: ",
+      "no_packages_hint": "このOrganizationは存在しないか、公開パッケージがない可能性があります。",
+      "failed_to_load": "Organizationのパッケージの読み込みに失敗しました",
+      "no_match": "\"{query}\" に一致するパッケージはありません",
+      "not_found": "Organizationが見つかりません",
+      "not_found_message": "Organization \"{'@'}{name}\" はnpmに存在しません"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "（Organizationにも追加されます）",
+      "press_enter_to_add": "Enterキーを押して {'@'}{username} を追加",
+      "default_placeholder": "ユーザー名...",
+      "suggestions_label": "ユーザーの提案"
+    },
+    "page": {
+      "packages_title": "パッケージ",
+      "no_packages": "公開パッケージは見つかりませんでした: ",
+      "no_packages_hint": "このユーザーは存在しないか、公開パッケージがない可能性があります。",
+      "failed_to_load": "ユーザーのパッケージの読み込みに失敗しました",
+      "no_match": "\"{query}\" に一致するパッケージはありません",
+      "filter_placeholder": "{count} 個のパッケージを絞り込む..."
+    },
+    "orgs_page": {
+      "title": "Organization",
+      "back_to_profile": "プロフィールに戻る",
+      "connect_required": "Organizationを表示するには、ローカルCLIに接続してください。",
+      "connect_hint_prefix": "開始するには",
+      "connect_hint_suffix": "を実行してください。",
+      "own_orgs_only": "自分のOrganizationのみ表示できます。",
+      "view_your_orgs": "自分のOrganizationを表示",
+      "loading": "Organizationを読み込み中...",
+      "empty": "Organizationは見つかりませんでした。",
+      "empty_hint": "Organizationは、自身のスコープ付きパッケージから検出されます。",
+      "count": "{count} 個のOrganization",
+      "packages_count": "{count} 個のパッケージ"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "パッケージ名を取得",
+      "success": "パッケージ名を取得しました！",
+      "success_detail": "{name}{'@'}0.0.0 がnpmに公開されました。",
+      "success_hint": "npm publish を使用して、このパッケージの新しいバージョンを公開できるようになりました。",
+      "view_package": "パッケージを表示",
+      "invalid_name": "無効なパッケージ名:",
+      "available": "この名前は使用可能です！",
+      "taken": "この名前はすでに使用されています。",
+      "similar_warning": "似た名前のパッケージが存在します。npmによって拒否される可能性があります:",
+      "related": "関連パッケージ:",
+      "scope_warning_title": "スコープ付きパッケージの使用を検討してください",
+      "scope_warning_text": "スコープなしのパッケージ名は共有リソースです。パッケージを公開し、維持する意思がある場合にのみ取得してください。個人やOrganizationのプロジェクトには、{'@'}{username}/{name} のようなスコープ付きの名前を使用してください。",
+      "connect_required": "パッケージ名を取得するには、ローカルコネクタに接続してください。",
+      "connect_button": "コネクタに接続",
+      "publish_hint": "これにより、最小限のプレースホルダーパッケージが公開されます。",
+      "preview_json": "package.json をプレビュー",
+      "claim_button": "パッケージ名を取得",
+      "publishing": "公開中...",
+      "checking": "空き状況を確認中...",
+      "failed_to_check": "名前の空き状況の確認に失敗しました",
+      "failed_to_claim": "パッケージの取得に失敗しました"
+    }
+  },
+  "code": {
+    "files_label": "ファイル",
+    "no_files": "このディレクトリにファイルはありません",
+    "root": "ルート",
+    "lines": "{count} 行",
+    "toggle_tree": "ファイルツリーを切り替え",
+    "close_tree": "ファイルツリーを閉じる",
+    "copy_link": "リンクをコピー",
+    "raw": "RAW",
+    "view_raw": "RAWファイルを表示",
+    "file_too_large": "ファイルが大きすぎるためプレビューできません",
+    "file_size_warning": "{size} は構文強調表示の制限である500KBを超えています",
+    "failed_to_load": "ファイルの読み込みに失敗しました",
+    "unavailable_hint": "ファイルが大きすぎるか、利用できない可能性があります",
+    "version_required": "コードを閲覧するにはバージョン指定が必要です",
+    "go_to_package": "パッケージへ移動",
+    "loading_tree": "ファイルツリーを読み込み中...",
+    "failed_to_load_tree": "このパッケージバージョンのファイルの読み込みに失敗しました",
+    "back_to_package": "パッケージに戻る",
+    "table": {
+      "name": "名前",
+      "size": "サイズ"
+    },
+    "markdown_view_mode": {
+      "preview": "プレビュー",
+      "code": "コード"
+    },
+    "file_path": "ファイルパス"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "検証済み",
+      "verified_title": "検証済みprovenance",
+      "verified_via": "検証済み: {provider} 経由で公開"
+    },
+    "jsr": {
+      "title": "JSRでも利用可能"
+    }
+  },
+  "filters": {
+    "title": "フィルター",
+    "search": "検索",
+    "search_scope": "検索スコープ",
+    "search_placeholder_name": "パッケージ名で絞り込む...",
+    "search_placeholder_description": "説明で絞り込む...",
+    "search_placeholder_keywords": "キーワードで絞り込む...",
+    "search_placeholder_all": "すべて検索、または name: desc: kw: を使用",
+    "scope_name": "名前",
+    "scope_name_description": "パッケージ名のみ検索",
+    "scope_description": "説明",
+    "scope_description_description": "説明のみ検索",
+    "scope_keywords": "キーワード",
+    "scope_keywords_description": "キーワードのみ検索",
+    "scope_all": "すべて",
+    "scope_all_description": "全フィールドを検索。name: desc: kw: 演算子をサポート",
+    "weekly_downloads": "週間ダウンロード数",
+    "updated_within": "更新時期",
+    "security": "セキュリティ",
+    "keywords": "キーワード",
+    "more_keywords": "+他 {count} 個",
+    "clear_all": "すべてクリア",
+    "remove_filter": "{label} フィルターを削除",
+    "chips": {
+      "search": "検索",
+      "downloads": "ダウンロード数",
+      "keyword": "キーワード",
+      "security": "セキュリティ",
+      "updated": "更新日"
+    },
+    "download_range": {
+      "any": "指定なし",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "指定なし",
+      "week": "1週間以内",
+      "month": "1ヶ月以内",
+      "quarter": "3ヶ月以内",
+      "year": "1年以内"
+    },
+    "security_options": {
+      "all": "すべてのパッケージ",
+      "secure": "警告なし",
+      "insecure": "警告あり"
+    },
+    "sort": {
+      "label": "パッケージ一覧を並び替える",
+      "toggle_direction": "並び順を切り替える",
+      "ascending": "昇順",
+      "descending": "降順",
+      "relevance": "関連度",
+      "downloads_week": "ダウンロード数/週",
+      "downloads_day": "ダウンロード数/日",
+      "downloads_month": "ダウンロード数/月",
+      "downloads_year": "ダウンロード数/年",
+      "published": "最新の公開日",
+      "name": "パッケージ名",
+      "quality": "品質",
+      "popularity": "人気度",
+      "maintenance": "メンテナンス",
+      "score": "スコア"
+    },
+    "columns": {
+      "title": "列",
+      "show": "表示する列",
+      "reset": "デフォルトに戻す",
+      "coming_soon": "近日公開",
+      "name": "名前",
+      "version": "バージョン",
+      "description": "説明",
+      "downloads": "ダウンロード数/週",
+      "published": "最新の公開",
+      "maintainers": "メンテナ",
+      "keywords": "キーワード",
+      "quality_score": "品質スコア",
+      "popularity_score": "人気度スコア",
+      "maintenance_score": "メンテナンススコア",
+      "combined_score": "総合スコア",
+      "security": "セキュリティ"
+    },
+    "view_mode": {
+      "label": "表示モード",
+      "cards": "カード表示",
+      "table": "テーブル表示"
+    },
+    "pagination": {
+      "mode_label": "ページネーションモード",
+      "infinite": "無限スクロール",
+      "paginated": "ページ分割",
+      "items_per_page": "1ページあたりの項目数",
+      "per_page": "{count} / ページ",
+      "all_yolo": "すべて表示 (YOLO)",
+      "showing": "{total} 件中 {start}-{end}",
+      "previous": "前のページ",
+      "next": "次のページ",
+      "nav_label": "ページネーション"
+    },
+    "count": {
+      "showing_filtered": "{count} 件中 {filtered} 件を表示",
+      "showing_all": "{count} 件のパッケージ",
+      "showing_paginated": "{count} 件中 {pageSize} 件を表示"
+    },
+    "table": {
+      "security_warning": "セキュリティ警告",
+      "secure": "セキュア",
+      "no_packages": "パッケージが見つかりませんでした"
+    }
+  },
+  "about": {
+    "title": "npmxについて",
+    "heading": "このサイトについて",
+    "meta_description": "npmxは高速でモダンなnpmレジストリブラウザです。npmパッケージを探索するためのより優れたUX/DXを提供します。",
+    "what_we_are": {
+      "title": "npmxとは",
+      "better_ux_dx": "より優れたUX/DX",
+      "admin_ui": "管理UI",
+      "description": "npmxは、npmパッケージレジストリとツール群のための、{betterUxDx}を持つブラウザです。ダークモード、キーボードナビゲーション、コード閲覧、{jsr}などの代替レジストリへの接続機能を備えた、高速でモダンなインターフェイスを提供します。",
+      "admin_description": "また、ブラウザからパッケージ、チーム、Organizationを管理するための、より優れた{adminUi}の提供を目指しています。これは、ローカルのnpm CLIを活用して動作します。"
+    },
+    "what_we_are_not": {
+      "title": "npmxではないもの",
+      "not_package_manager": "パッケージマネージャーではありません。",
+      "not_registry": "レジストリではありません。",
+      "registry_description": "パッケージのホスティングは行っていません。閲覧するためのより良い手段を提供しています。",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}。",
+      "words": {
+        "already": "すでに",
+        "people": "素晴らしい",
+        "building": "パッケージ",
+        "really": "マネージャーを",
+        "cool": "作っている",
+        "package": "人たちが",
+        "managers": "存在します"
+      }
+    },
+    "contributors": {
+      "title": "コントリビューター",
+      "description": "npmxは完全にオープンソースです。素晴らしいコントリビューターのコミュニティにより開発されています。",
+      "loading": "コントリビューターを読み込み中...",
+      "error": "コントリビューターの読み込みに失敗しました",
+      "view_profile": "{name} のGitHubプロフィールを表示"
+    },
+    "get_involved": {
+      "title": "参加するには",
+      "contribute": {
+        "title": "貢献する",
+        "description": "より良いnpm体験の開発に協力してください。",
+        "cta": "GitHubで表示"
+      },
+      "community": {
+        "title": "コミュニティに参加",
+        "description": "チャット、質問、アイデアの共有。",
+        "cta": "Discordに参加"
+      },
+      "follow": {
+        "title": "最新情報を入手",
+        "description": "npmxの最新情報をお届けします。",
+        "cta": "Blueskyでフォロー"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "接続",
+    "account": "アカウント",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "パッケージとOrganizationの管理",
+    "atmosphere_desc": "ソーシャル機能とID",
+    "connect_npm_cli": "npm CLIに接続",
+    "connect_atmosphere": "Atmosphereに接続",
+    "connecting": "接続中...",
+    "ops": "{count} 件の操作"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "{'@'}{handle} として接続済み",
+      "disconnect": "切断",
+      "connect_prompt": "Atmosphereアカウントで接続",
+      "handle_label": "ハンドル",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "接続",
+      "create_account": "アカウントを新規作成",
+      "connect_bluesky": "Blueskyで接続",
+      "what_is_atmosphere": "Atmosphereアカウントとは？",
+      "atmosphere_explanation": "{npmx} は多くのソーシャル機能に {atproto} を利用しています。AT Protocolにより、ユーザーは自分自身のデータを所有し、1つのアカウントでAT Protocolに対応するすべてのアプリケーションを利用できるようになります。アカウントを作成すると、{bluesky} や {tangled} などの他のアプリでも同じアカウントを使用できます。"
+    }
+  },
+  "header": {
+    "home": "ホーム",
+    "packages": "パッケージ",
+    "packages_dropdown": {
+      "title": "あなたのパッケージ",
+      "loading": "読み込み中...",
+      "error": "パッケージの読み込みに失敗しました",
+      "empty": "パッケージは見つかりませんでした",
+      "view_all": "すべて表示"
+    },
+    "orgs": "Organization",
+    "orgs_dropdown": {
+      "title": "あなたのOrganization",
+      "loading": "読み込み中...",
+      "error": "Organizationの読み込みに失敗しました",
+      "empty": "Organizationは見つかりませんでした",
+      "view_all": "すべて表示"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "パッケージ比較",
+      "tagline": "npmパッケージを並べて比較し、適切なパッケージの選択を助けます。",
+      "meta_title": "{packages} の比較 - npmx",
+      "meta_title_empty": "パッケージ比較 - npmx",
+      "meta_description": "{packages} の詳細比較",
+      "meta_description_empty": "npmパッケージを並べて比較します",
+      "section_packages": "パッケージ",
+      "section_facets": "比較項目",
+      "section_comparison": "比較",
+      "loading": "パッケージデータを読み込み中...",
+      "error": "パッケージデータの読み込みに失敗しました。もう一度お試しください。",
+      "empty_title": "比較するパッケージを選択",
+      "empty_description": "上から検索から2つ以上のパッケージを追加すると、メトリクスを並べて比較できます。"
+    },
+    "selector": {
+      "search_label": "パッケージを検索",
+      "search_first": "パッケージを検索...",
+      "search_add": "パッケージを追加...",
+      "searching": "検索中...",
+      "remove_package": "{package} を削除",
+      "packages_selected": "{count}/{max} パッケージ選択中。",
+      "add_hint": "比較するには少なくとも2つのパッケージを追加してください。"
+    },
+    "no_dependency": {
+      "label": "(依存関係なし)",
+      "typeahead_title": "Jamesならどうする？",
+      "typeahead_description": "依存関係を使用しない場合と比較します！e18eも承認済みです。",
+      "tooltip_title": "依存関係は不要かもしれません",
+      "tooltip_description": "依存関係を使用しない場合と比較してください！{link}は、ネイティブAPIやよりシンプルな代替手段に置き換え可能なパッケージのリストをメンテナンスしています。",
+      "e18e_community": "e18eコミュニティ",
+      "add_column": "比較項目に「依存関係なし」カラムを追加"
+    },
+    "facets": {
+      "group_label": "比較項目",
+      "all": "すべて",
+      "none": "なし",
+      "coming_soon": "近日公開",
+      "select_all": "すべての項目を選択",
+      "deselect_all": "すべての項目の選択を解除",
+      "select_category": "{category} のすべての項目を選択",
+      "deselect_category": "{category} のすべての項目の選択を解除",
+      "binary_only_tooltip": "このパッケージはバイナリのみを提供し、エクスポートを含みません",
+      "categories": {
+        "performance": "パフォーマンス",
+        "health": "ヘルス",
+        "compatibility": "互換性",
+        "security": "セキュリティとコンプライアンス"
+      },
+      "items": {
+        "packageSize": {
+          "label": "パッケージサイズ",
+          "description": "パッケージ自体のサイズ（展開時）"
+        },
+        "installSize": {
+          "label": "インストールサイズ",
+          "description": "すべての依存関係を含む総インストールサイズ"
+        },
+        "dependencies": {
+          "label": "直接の依存関係",
+          "description": "直接の依存関係の数"
+        },
+        "totalDependencies": {
+          "label": "すべての依存関係",
+          "description": "推移的な依存関係を含む総数"
+        },
+        "downloads": {
+          "label": "ダウンロード数/週",
+          "description": "1週間のダウンロード数"
+        },
+        "totalLikes": {
+          "label": "いいね",
+          "description": "いいねの合計数"
+        },
+        "lastUpdated": {
+          "label": "公開日",
+          "description": "このバージョンが公開された日付"
+        },
+        "deprecated": {
+          "label": "非推奨？",
+          "description": "パッケージが非推奨かどうか"
+        },
+        "engines": {
+          "label": "エンジン",
+          "description": "Node.jsのバージョン要件"
+        },
+        "types": {
+          "label": "型定義",
+          "description": "TypeScriptの型定義"
+        },
+        "moduleFormat": {
+          "label": "モジュール形式",
+          "description": "ESM/CJSのサポート状況"
+        },
+        "license": {
+          "label": "ライセンス",
+          "description": "パッケージのライセンス"
+        },
+        "vulnerabilities": {
+          "label": "脆弱性",
+          "description": "既知のセキュリティ脆弱性"
+        }
+      },
+      "values": {
+        "any": "指定なし",
+        "none": "なし",
+        "unknown": "不明",
+        "deprecated": "非推奨",
+        "not_deprecated": "いいえ",
+        "types_included": "同梱",
+        "types_none": "なし",
+        "vulnerabilities_summary": "{count} 件 ({critical}C/{high}H)",
+        "up_to_you": "あなた次第！"
+      }
+    }
+  },
+  "privacy_policy": {
+    "title": "プライバシーポリシー",
+    "last_updated": "最終更新日: {date}",
+    "welcome": "{app}へようこそ。私たちはあなたのプライバシーの保護に努めています。本ポリシーでは、どんなデータを収集するか、どのように使用するか、そして、あなたの情報に関するあなたが持つ権利について説明します。",
+    "cookies": {
+      "what_are": {
+        "title": "Cookieとは？",
+        "p1": "Cookieは、ウェブサイト訪問時にデバイスに保存される小さなテキストファイルです。特定の好みや設定を記憶することで、ブラウジング体験を向上させることを目的としています。"
+      },
+      "types": {
+        "title": "使用しているCookie",
+        "p1": "サイトの機能に厳密に必要な目的のために{bold}のみを使用します。サードパーティCookieや広告用Cookieは使用しません。",
+        "bold": "必須の技術的なCookie",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "このCookieは、ホスティングプロバイダー（Vercel）がスキュー保護のために使用します。ブラウジング中に新しいアップデートがリリースされた場合でも、正しいデプロイバージョンからアセットを取得できるようにします。あなたの行動の追跡には利用されません。",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "これはセキュアなセッションCookieです。Atmosphereアカウント接続時にOAuthアクセストークンを保存します。認証セッションの維持に不可欠です。"
+      },
+      "local_storage": {
+        "title": "ローカルストレージ",
+        "p1": "セッションCookieに加えて、ブラウザの{bold}を使用して表示設定を保存します。これにより、選択したテーマ（ライト/ダーク）やその他の{settings}を記憶し、サイトの訪問のたびに再設定する手間を省きます。",
+        "bold": "ローカルストレージ",
+        "p2": "この情報は純粋に機能的なものであり、あなたのデバイスにのみ保存され、{bold2}。ウェブサイトでの体験向上のためにのみ使用されます。",
+        "bold2": "個人データを含まず、あなたの追跡にも使用されません",
+        "settings": "設定"
+      },
+      "management": {
+        "title": "Cookieの管理",
+        "p1": "あなたは、自身の好みに合わせて、Cookieの受け入れ、拒否、または削除をブラウザで設定できます。ただし、{bold}場合があるため、注意してください。",
+        "bold": "必須Cookieを拒否するとアプリケーションの一部機能が制限される",
+        "p2": "主要なブラウザにおけるCookieの管理手順は、以下のリンクから確認できます。",
+        "chrome": "Google Chrome（別ウィンドウで開く）",
+        "firefox": "Mozilla Firefox（別ウィンドウで開く）",
+        "edge": "Microsoft Edge（別ウィンドウで開く）"
+      }
+    },
+    "analytics": {
+      "title": "分析",
+      "p1": "訪問者のウェブサイト利用状況を把握するために{bold}を使用しています。この分析は、ユーザー体験の向上や問題の特定に役立ちます。",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analyticsは、以下のようにプライバシーに配慮して設計されています。",
+      "li1": "Cookieを使用しません",
+      "li2": "個人を識別できる情報を収集しません",
+      "li3": "複数のサイトを横断したユーザー追跡を行いません",
+      "li4": "すべてのデータは集計および匿名化されます",
+      "p3": "収集される情報は、ページURL、リファラ、国/地域、デバイスの種類、ブラウザ、OSのみです。これらのデータから個人を特定することはできません。"
+    },
+    "authenticated": {
+      "title": "認証済みユーザー",
+      "p1": "{bold}アカウントをnpmxに接続すると、OAuthアクセストークンがセキュアなHTTP-onlyセッションCookieに保存されます。このトークンは、代理でリクエストを認証するためだけに制限的に使用されます。",
+      "bold": "Atmosphere",
+      "p2": "認証情報は保存しません。また、機能提供に必要な範囲を超えたデータへのアクセスも行いません。アカウントの接続解除は、いつでも{settings}ページから行えます。",
+      "settings": "設定"
+    },
+    "data_retention": {
+      "title": "データ保持",
+      "p1": "セッションCookieは、ブラウザを閉じるか一定期間操作がない場合に自動的に削除されます。ローカルストレージの設定は、ブラウザデータを消去するまでデバイスに残ります。分析データは集計された形式で保持され、個々のユーザーに関連付けられることはありません。"
+    },
+    "your_rights": {
+      "title": "ユーザーの権利",
+      "p1": "あなたには以下の権利があります。",
+      "li1": "私たちが収集したデータに関する情報にアクセスする権利",
+      "li2": "いつでもローカルストレージとCookieを消去する権利",
+      "li3": "認証済みセッションを切断する権利",
+      "li4": "データ取り扱いに関する情報を要求する権利",
+      "p2": "私たちは個人情報を収集していないため、通常、削除やエクスポートの対象となる個人情報はありません。"
+    },
+    "contact": {
+      "title": "問い合わせ",
+      "p1": "本プライバシーポリシーに関する質問や懸念がある場合は、{link}でIssueを作成して連絡してください。",
+      "link": "GitHubリポジトリ"
+    },
+    "changes": {
+      "title": "ポリシーの変更",
+      "p1": "本プライバシーポリシーは随時更新されることがあります。変更は、更新日とともに本ページで公開されます。"
+    }
+  }
+}

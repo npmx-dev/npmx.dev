@@ -21,6 +21,8 @@ const EXTENSION_MAP: Record<string, string> = {
   vue: 'vue',
   svelte: 'svelte',
   astro: 'astro',
+  gjs: 'glimmer-js',
+  gts: 'glimmer-ts',
 
   // Data formats
   json: 'json',
@@ -185,10 +187,10 @@ function linkifyImports(html: string, options?: LinkifyOptions): string {
     const dep = dependencies?.[packageName]
     if (dep) {
       // Link to code browser with resolved version
-      return `/code/${packageName}/v/${dep.version}`
+      return `/package-code/${packageName}/v/${dep.version}`
     }
     // Fall back to package page if not a known dependency
-    return `/${packageName}`
+    return `/package/${packageName}`
   }
 
   // Match: from keyword span followed by string span containing module specifier
@@ -219,11 +221,20 @@ function linkifyImports(html: string, options?: LinkifyOptions): string {
   // or: <span>import</span><span>(</span><span>'module'</span>
   // Note: require often has a leading space in the span from Shiki
   result = result.replace(
-    /(<span[^>]*>)\s*(require|import)(<\/span>)(<span[^>]*>\(<\/span>)(<span[^>]*>)(['"][^'"]+['"])<\/span>/g,
-    (match, spanOpen, keyword, spanClose, parenSpan, stringSpanOpen, moduleSpecifier) => {
+    /(<span[^>]*>)(\s*)(require|import)(<\/span>)(<span[^>]*>\(<\/span>)(<span[^>]*>)(['"][^'"]+['"])<\/span>/g,
+    (
+      match,
+      spanOpen,
+      whitespace,
+      keyword,
+      spanClose,
+      parenSpan,
+      stringSpanOpen,
+      moduleSpecifier,
+    ) => {
       const href = getHref(moduleSpecifier)
       if (!href) return match
-      return `${spanOpen}${keyword}${spanClose}${parenSpan}${stringSpanOpen}<a href="${href}" class="import-link">${moduleSpecifier}</a></span>`
+      return `${spanOpen}${whitespace}${keyword}${spanClose}${parenSpan}${stringSpanOpen}<a href="${href}" class="import-link">${moduleSpecifier}</a></span>`
     },
   )
 
@@ -265,8 +276,12 @@ export async function highlightCode(
     try {
       let html = shiki.codeToHtml(code, {
         lang: language,
-        theme: 'github-dark',
+        themes: { light: 'github-light', dark: 'github-dark' },
+        defaultColor: 'dark',
       })
+
+      // Shiki doesn't encode > in text content (e.g., arrow functions)
+      html = escapeRawGt(html)
 
       // Make import statements clickable for JS/TS languages
       if (IMPORT_LANGUAGES.has(language)) {

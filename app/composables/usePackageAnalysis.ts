@@ -1,4 +1,4 @@
-import type { ModuleFormat, TypesStatus } from '#shared/utils/package-analysis'
+import type { ModuleFormat, TypesStatus, CreatePackageInfo } from '#shared/utils/package-analysis'
 
 export interface PackageAnalysisResponse {
   package: string
@@ -9,6 +9,7 @@ export interface PackageAnalysisResponse {
     node?: string
     npm?: string
   }
+  createPackage?: CreatePackageInfo
 }
 
 /**

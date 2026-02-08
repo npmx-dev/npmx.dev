@@ -29,37 +29,58 @@ const props = withDefaults(
   },
 )
 
+const { locale } = useI18n()
+
 const relativeDates = useRelativeDates()
+
+const dateFormatter = new Intl.DateTimeFormat(locale.value, {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  timeZoneName: 'short',
+})
 
 // Compute the title - always show full date for accessibility
 const titleValue = computed(() => {
   if (props.title) return props.title
-  if (typeof props.datetime === 'string') return props.datetime
-  return props.datetime.toISOString()
+  const date = typeof props.datetime === 'string' ? new Date(props.datetime) : props.datetime
+  return dateFormatter.format(date)
 })
 </script>
 
 <template>
-  <ClientOnly>
-    <NuxtTime v-if="relativeDates" :datetime="datetime" :title="titleValue" relative />
-    <NuxtTime
-      v-else
-      :datetime="datetime"
-      :title="titleValue"
-      :date-style="dateStyle"
-      :year="year"
-      :month="month"
-      :day="day"
-    />
-    <template #fallback>
+  <span>
+    <ClientOnly>
       <NuxtTime
+        v-if="relativeDates"
+        :datetime="datetime"
+        :title="titleValue"
+        relative
+        :locale="locale"
+      />
+      <NuxtTime
+        v-else
         :datetime="datetime"
         :title="titleValue"
         :date-style="dateStyle"
         :year="year"
         :month="month"
         :day="day"
+        :locale="locale"
       />
-    </template>
-  </ClientOnly>
+      <template #fallback>
+        <NuxtTime
+          :datetime="datetime"
+          :title="titleValue"
+          :date-style="dateStyle"
+          :year="year"
+          :month="month"
+          :day="day"
+          :locale="locale"
+        />
+      </template>
+    </ClientOnly>
+  </span>
 </template>

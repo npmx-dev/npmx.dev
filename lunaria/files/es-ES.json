@@ -1,0 +1,1017 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - Explorador de Paquetes para el Registro npm",
+      "description": "Un mejor explorador para el registro npm. Busca, navega y explora paquetes con una interfaz moderna."
+    }
+  },
+  "built_at": "construido {0}",
+  "alt_logo": "logotipo de npmx",
+  "tagline": "un mejor explorador para el registro npm",
+  "non_affiliation_disclaimer": "no afiliado con npm, Inc.",
+  "trademark_disclaimer": "npm es una marca registrada de npm, Inc. Este sitio no está afiliado con npm, Inc.",
+  "footer": {
+    "about": "acerca de",
+    "docs": "documentación",
+    "source": "código fuente",
+    "social": "social",
+    "chat": "chat"
+  },
+  "search": {
+    "label": "Buscar paquetes npm",
+    "placeholder": "buscar paquetes...",
+    "button": "buscar",
+    "searching": "Buscando...",
+    "found_packages": "No se encontraron paquetes | Se encontró 1 paquete | Se encontraron {count} paquetes",
+    "updating": "(actualizando...)",
+    "no_results": "No se encontraron paquetes para \"{query}\"",
+    "title": "búsqueda",
+    "title_search": "búsqueda: {search}",
+    "title_packages": "búsqueda de paquetes",
+    "meta_description": "Resultado de la búsqueda para '{search}'",
+    "meta_description_packages": "Búsqueda de paquetes npm",
+    "not_taken": "{name} no está ocupado",
+    "claim_prompt": "Reclamar este nombre de paquete en npm",
+    "claim_button": "Reclamar \"{name}\"",
+    "want_to_claim": "¿Quieres reclamar este nombre de paquete?",
+    "start_typing": "Empieza a escribir para buscar paquetes",
+    "exact_match": "exacto",
+    "suggestion": {
+      "user": "usuario",
+      "org": "organización",
+      "view_user_packages": "Ver paquetes de este usuario",
+      "view_org_packages": "Ver paquetes de esta organización"
+    }
+  },
+  "nav": {
+    "main_navigation": "Principal",
+    "popular_packages": "Paquetes populares",
+    "settings": "configuración",
+    "compare": "comparar",
+    "back": "atrás",
+    "menu": "Menú",
+    "mobile_menu": "Menú de navegación",
+    "open_menu": "Abrir menú",
+    "links": "Enlaces",
+    "tap_to_search": "Toca para buscar"
+  },
+  "settings": {
+    "title": "configuración",
+    "tagline": "personaliza tu experiencia en npmx",
+    "meta_description": "Personaliza tu experiencia en npmx.dev con preferencias de tema, idioma y visualización.",
+    "sections": {
+      "appearance": "Apariencia",
+      "display": "Visualización",
+      "language": "Idioma"
+    },
+    "relative_dates": "Fechas relativas",
+    "include_types": "Incluir {'@'}types en la instalación",
+    "include_types_description": "Añadir paquete {'@'}types a los comandos de instalación para paquetes sin tipos",
+    "hide_platform_packages": "Ocultar paquetes específicos de plataforma en la búsqueda",
+    "hide_platform_packages_description": "Ocultar paquetes binarios nativos como {'@'}esbuild/linux-x64 de los resultados",
+    "theme": "Tema",
+    "theme_light": "Claro",
+    "theme_dark": "Oscuro",
+    "theme_system": "Sistema",
+    "language": "Idioma",
+    "help_translate": "Ayuda a traducir npmx",
+    "accent_colors": "Colores de acento",
+    "clear_accent": "Limpiar color de acento",
+    "translation_progress": "Progreso de traducción",
+    "background_themes": "Tema de fondo"
+  },
+  "i18n": {
+    "missing_keys": "{count} traducción faltante | {count} traducciones faltantes",
+    "copy_keys": "Copiar claves",
+    "show_more_keys": "Mostrar {count} más...",
+    "contribute_hint": "Ayuda a mejorar esta traducción añadiendo las claves faltantes.",
+    "edit_on_github": "Editar en GitHub",
+    "view_guide": "Guía de traducción"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "loading_more": "Cargando más...",
+    "loading_packages": "Cargando paquetes...",
+    "end_of_results": "Fin de los resultados",
+    "try_again": "Intentar de nuevo",
+    "close": "Cerrar",
+    "retry": "Reintentar",
+    "copy": "copiar",
+    "copied": "¡copiado!",
+    "skip_link": "Saltar al contenido principal",
+    "warnings": "Advertencias:",
+    "go_back_home": "Volver al inicio",
+    "view_on_npm": "ver en npm",
+    "per_week": "/ semana",
+    "vanity_downloads_hint": "Número de vanidad: no se muestran paquetes | Número de vanidad: para el paquete mostrado | Número de vanidad: Suma de {count} paquetes mostrados",
+    "sort": {
+      "name": "nombre",
+      "role": "rol",
+      "members": "miembros"
+    },
+    "scroll_to_top": "Volver arriba"
+  },
+  "package": {
+    "not_found": "Paquete no encontrado",
+    "not_found_message": "No se pudo encontrar el paquete.",
+    "no_description": "Sin descripción proporcionada",
+    "not_latest": "(no es la última versión)",
+    "verified_provenance": "Procedencia verificada",
+    "view_permalink": "Ver enlace permanente para esta versión",
+    "navigation": "Navegación del paquete",
+    "copy_name": "Copiar nombre del paquete",
+    "deprecation": {
+      "package": "Este paquete ha sido obsoleto.",
+      "version": "Esta versión ha sido obsoleta.",
+      "no_reason": "Sin razón proporcionada"
+    },
+    "replacement": {
+      "title": "Es posible que no necesite esta dependencia.",
+      "native": "Esto se puede reemplazar con {replacement}, disponible desde Node {nodeVersion}.",
+      "simple": "La {community} ha marcado este paquete como redundante, con el siguiente consejo: {replacement}.",
+      "documented": "La {community} ha señalado que este paquete tiene alternativas con mejor rendimiento.",
+      "none": "Este paquete se ha marcado como ya no necesario y es probable que su funcionalidad esté disponible de forma nativa en todos los motores.",
+      "learn_more": "Más información",
+      "learn_more_above": "Más información arriba.",
+      "mdn": "MDN",
+      "community": "comunidad",
+      "consider_no_dep": "+ ¿Considerar sin dependencia?"
+    },
+    "stats": {
+      "license": "Licencia",
+      "deps": "Dependencias",
+      "install_size": "Tamaño de instalación",
+      "vulns": "Vulnerabilidades",
+      "published": "Publicado",
+      "published_tooltip": "Fecha en que se publicó {package}{'@'}{version}",
+      "view_dependency_graph": "Ver gráfico de dependencias",
+      "inspect_dependency_tree": "Inspeccionar árbol de dependencias",
+      "size_tooltip": {
+        "unpacked": "{size} tamaño desempaquetado (este paquete)",
+        "total": "{size} tamaño total desempaquetado (incluidas las {count} dependencias para Linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "Habilidades del Agente",
+      "skills_available": "{count} habilidad disponible | {count} habilidades disponibles",
+      "compatible_with": "Compatible con {tool}",
+      "install": "Instalar",
+      "installation_method": "Método de instalación",
+      "learn_more": "Más información",
+      "available_skills": "Habilidades Disponibles",
+      "click_to_expand": "Clic para expandir",
+      "no_description": "Sin descripción",
+      "file_counts": {
+        "scripts": "{count} script | {count} scripts",
+        "refs": "{count} referencia | {count} referencias",
+        "assets": "{count} recurso | {count} recursos"
+      },
+      "view_source": "Ver fuente"
+    },
+    "links": {
+      "repo": "repo",
+      "homepage": "página de inicio",
+      "issues": "problemas",
+      "jsr": "jsr",
+      "code": "código",
+      "docs": "documentación",
+      "fund": "financiar",
+      "compare": "comparar"
+    },
+    "likes": {
+      "like": "Me gusta este paquete",
+      "unlike": "Ya no me gusta este paquete"
+    },
+    "docs": {
+      "not_available": "Documentación no disponible",
+      "not_available_detail": "No pudimos generar documentación para esta versión."
+    },
+    "get_started": {
+      "title": "Empezar",
+      "pm_label": "Gestor de paquetes",
+      "copy_command": "Copiar comando de instalación",
+      "view_types": "Ver {package}"
+    },
+    "create": {
+      "title": "Crear nuevo proyecto",
+      "copy_command": "Copiar comando de creación",
+      "view": "{packageName} tiene el mismo mantenedor. Haz clic para más detalles."
+    },
+    "run": {
+      "title": "Ejecutar",
+      "locally": "Ejecutar localmente"
+    },
+    "readme": {
+      "title": "Léeme",
+      "no_readme": "No hay README disponible.",
+      "view_on_github": "Ver en GitHub",
+      "toc_title": "Índice",
+      "callout": {
+        "note": "Nota",
+        "tip": "Consejo",
+        "important": "Importante",
+        "warning": "Advertencia",
+        "caution": "Precaución"
+      },
+      "copy_as_markdown": "Copiar README como Markdown"
+    },
+    "provenance_section": {
+      "title": "Procedencia",
+      "built_and_signed_on": "Construido y firmado en {provider}",
+      "view_build_summary": "Ver resumen de construcción",
+      "source_commit": "Commit fuente",
+      "build_file": "Archivo de compilación",
+      "public_ledger": "Registro público",
+      "transparency_log_entry": "Entrada de registro de transparencia",
+      "view_more_details": "Ver más detalles",
+      "error_loading": "Error al cargar detalles de procedencia"
+    },
+    "keywords_title": "Palabras clave",
+    "compatibility": "Compatibilidad",
+    "card": {
+      "publisher": "Publicador",
+      "published": "Publicado",
+      "weekly_downloads": "Descargas semanales",
+      "keywords": "Palabras clave",
+      "license": "Licencia"
+    },
+    "versions": {
+      "title": "Versiones",
+      "collapse": "Colapsar {tag}",
+      "expand": "Expandir {tag}",
+      "collapse_other": "Colapsar otras versiones",
+      "expand_other": "Expandir otras versiones",
+      "collapse_major": "Colapsar mayor {major}",
+      "expand_major": "Expandir mayor {major}",
+      "other_versions": "Otras versiones",
+      "more_tagged": "{count} más etiquetada | {count} más etiquetadas",
+      "all_covered": "Todas las versiones están cubiertas por las etiquetas anteriores",
+      "deprecated_title": "{version} (obsoleto)",
+      "view_all": "Ver {count} versión | Ver todas las {count} versiones"
+    },
+    "dependencies": {
+      "title": "Dependencias ({count})",
+      "list_label": "Dependencias del paquete",
+      "show_all": "mostrar {count} dependencia | mostrar todas las {count} dependencias",
+      "optional": "opcional",
+      "view_vulnerabilities": "Ver vulnerabilidades",
+      "outdated_major": "{count} versión mayor por detrás (última: {latest}) | {count} versiones mayores por detrás (última: {latest})",
+      "outdated_minor": "{count} versión menor por detrás (última: {latest}) | {count} versiones menores por detrás (última: {latest})",
+      "outdated_patch": "Actualización de parche disponible (última: {latest})"
+    },
+    "peer_dependencies": {
+      "title": "Dependencias Peer ({count})",
+      "list_label": "Dependencias peer del paquete",
+      "show_all": "mostrar {count} dependencia peer | mostrar todas las {count} dependencias peer"
+    },
+    "optional_dependencies": {
+      "title": "Dependencias Opcionales ({count})",
+      "list_label": "Dependencias opcionales del paquete",
+      "show_all": "mostrar {count} dependencia opcional | mostrar todas las {count} dependencias opcionales"
+    },
+    "maintainers": {
+      "title": "Mantenedores",
+      "list_label": "Mantenedores del paquete",
+      "you": "(tú)",
+      "via": "vía {teams}",
+      "remove_owner": "Eliminar a {name} como propietario",
+      "username_to_add": "Nombre de usuario para añadir como propietario",
+      "username_placeholder": "nombre de usuario...",
+      "add_button": "añadir",
+      "cancel_add": "Cancelar añadir propietario",
+      "add_owner": "+ Añadir propietario",
+      "show_more": "(mostrar {count} más)",
+      "show_less": "(mostrar menos)"
+    },
+    "downloads": {
+      "title": "Descargas Semanales",
+      "date_range": "{start} a {end}",
+      "date_range_multiline": "{start}\na {end}",
+      "analyze": "Analizar descargas",
+      "community_distribution": "Ver distribución de adopción comunitaria",
+      "modal_title": "Descargas",
+      "granularity": "Granularidad",
+      "granularity_daily": "Diaria",
+      "granularity_weekly": "Semanal",
+      "granularity_monthly": "Mensual",
+      "granularity_yearly": "Anual",
+      "start_date": "Inicio",
+      "end_date": "Fin",
+      "no_data": "No hay datos de descargas disponibles",
+      "loading": "Cargando...",
+      "y_axis_label": "Descargas {granularity}",
+      "download_file": "Descargar {fileType}",
+      "toggle_annotator": "Alternar anotador"
+    },
+    "install_scripts": {
+      "title": "Scripts de Instalación",
+      "script_label": "(script)",
+      "npx_packages": "{count} paquete npx | {count} paquetes npx",
+      "currently": "actualmente {version}"
+    },
+    "playgrounds": {
+      "title": "Pruébalo",
+      "choose": "elegir playground"
+    },
+    "metrics": {
+      "esm": "Módulos ES soportados",
+      "cjs": "CommonJS soportado",
+      "no_esm": "Sin soporte de Módulos ES",
+      "types_label": "Tipos",
+      "types_included": "Tipos incluidos",
+      "types_available": "Tipos disponibles vía {package}",
+      "no_types": "Sin tipos TypeScript"
+    },
+    "license": {
+      "view_spdx": "Ver texto de licencia en SPDX",
+      "none": "Ninguna"
+    },
+    "vulnerabilities": {
+      "tree_found": "{vulns} vulnerabilidad en {packages}/{total} paquetes | {vulns} vulnerabilidades en {packages}/{total} paquetes",
+      "show_all_packages": "mostrar todos los {count} paquetes afectados",
+      "path": "ruta",
+      "more": "+{count} más",
+      "packages_failed": "{count} paquete no pudo ser verificado | {count} paquetes no pudieron ser verificados",
+      "scan_failed": "No se pudo escanear en busca de vulnerabilidades",
+      "severity": {
+        "critical": "crítica",
+        "high": "alta",
+        "moderate": "moderada",
+        "low": "baja"
+      }
+    },
+    "deprecated": {
+      "label": "Obsoleto",
+      "tree_found": "{count} dependencia obsoleta | {count} dependencias obsoletas",
+      "show_all": "mostrar {count} paquete obsoleto | mostrar todos los {count} paquetes obsoletos"
+    },
+    "access": {
+      "title": "Acceso de Equipo",
+      "refresh": "Actualizar acceso de equipo",
+      "list_label": "Lista de acceso de equipo",
+      "owner": "propietario",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "Revocar acceso de {name}",
+      "no_access": "No hay acceso de equipo configurado",
+      "select_team_label": "Seleccionar equipo",
+      "loading_teams": "Cargando equipos...",
+      "select_team": "Seleccionar equipo",
+      "permission_label": "Nivel de permiso",
+      "permission": {
+        "read_only": "solo lectura",
+        "read_write": "lectura-escritura"
+      },
+      "grant_button": "conceder",
+      "cancel_grant": "Cancelar concesión de acceso",
+      "grant_access": "+ Conceder acceso de equipo"
+    },
+    "list": {
+      "filter_label": "Filtrar paquetes",
+      "filter_placeholder": "Filtrar paquetes...",
+      "sort_label": "Ordenar paquetes",
+      "showing_count": "Mostrando {filtered} de {total} paquetes"
+    },
+    "skeleton": {
+      "loading": "Cargando detalles del paquete",
+      "weekly": "Semanal",
+      "maintainers": "Mantenedores",
+      "keywords": "Palabras clave",
+      "versions": "Versiones",
+      "dependencies": "Dependencias"
+    },
+    "sort": {
+      "downloads": "Más descargados",
+      "published": "Recientemente publicado",
+      "name_asc": "Nombre (A-Z)",
+      "name_desc": "Nombre (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Conector Local",
+      "contributor_badge": "Solo colaboradores",
+      "contributor_notice": "El conector aún no está publicado en npm. Consulta la {link} para saber cómo ejecutarlo localmente.",
+      "contributor_link": "guía de contribución",
+      "connected": "Conectado",
+      "connected_as_user": "Conectado como ~{user}",
+      "connected_hint": "Ahora puedes gestionar paquetes y organizaciones desde la interfaz web.",
+      "disconnect": "Desconectar",
+      "run_hint": "Ejecuta el conector en tu máquina para habilitar funciones de administración.",
+      "copy_command": "Copiar comando",
+      "copied": "Copiado",
+      "paste_token": "Luego pega el token a continuación para conectar:",
+      "token_label": "Token",
+      "token_placeholder": "pega el token aquí...",
+      "advanced": "Opciones avanzadas",
+      "port_label": "Puerto",
+      "warning": "ADVERTENCIA",
+      "warning_text": "Esto permite a npmx acceder a tu CLI de npm. Conéctate solo a sitios en los que confíes.",
+      "connect": "Conectar",
+      "connecting": "Conectando..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Cola de Operaciones",
+      "clear_all": "limpiar todo",
+      "refresh": "Actualizar operaciones",
+      "empty": "No hay operaciones en cola",
+      "empty_hint": "Añade operaciones desde las páginas de paquetes u organizaciones",
+      "active_label": "Operaciones activas",
+      "otp_required": "OTP requerido",
+      "otp_prompt": "Introduce OTP para continuar",
+      "otp_placeholder": "Introduce código OTP...",
+      "otp_label": "Contraseña de un solo uso",
+      "retry_otp": "Reintentar con OTP",
+      "retrying": "Reintentando...",
+      "approve_operation": "Aprobar operación",
+      "remove_operation": "Eliminar operación",
+      "approve_all": "Aprobar Todo",
+      "execute": "Ejecutar",
+      "executing": "Ejecutando...",
+      "log": "Registro",
+      "log_label": "Registro de operaciones completadas",
+      "remove_from_log": "Eliminar del registro"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Equipos",
+      "refresh": "Actualizar equipos",
+      "filter_label": "Filtrar equipos",
+      "filter_placeholder": "Filtrar equipos...",
+      "sort_by": "Ordenar por",
+      "loading": "Cargando equipos...",
+      "no_teams": "No se encontraron equipos",
+      "list_label": "Equipos de la organización",
+      "delete_team": "Eliminar equipo {name}",
+      "member_count": "{count} miembro | {count} miembros",
+      "members_of": "Miembros de {team}",
+      "no_members": "Sin miembros",
+      "remove_user": "Eliminar a {user} del equipo",
+      "username_to_add": "Nombre de usuario para añadir a {team}",
+      "username_placeholder": "nombre de usuario...",
+      "add_button": "añadir",
+      "cancel_add_user": "Cancelar añadir usuario",
+      "add_member": "+ Añadir miembro",
+      "team_name_label": "Nombre del equipo",
+      "team_name_placeholder": "nombre-del-equipo...",
+      "create_button": "crear",
+      "no_match": "No hay equipos que coincidan con \"{query}\"",
+      "cancel_create": "Cancelar crear equipo",
+      "create_team": "+ Crear equipo"
+    },
+    "members": {
+      "title": "Miembros",
+      "refresh": "Actualizar miembros",
+      "filter_label": "Filtrar miembros",
+      "filter_placeholder": "Filtrar miembros...",
+      "filter_by_role": "Filtrar por rol",
+      "filter_by_team": "Filtrar por equipo",
+      "all_teams": "todos los equipos",
+      "sort_by": "Ordenar por",
+      "loading": "Cargando miembros...",
+      "no_members": "No se encontraron miembros",
+      "list_label": "Miembros de la organización",
+      "change_role_for": "Cambiar rol para {name}",
+      "remove_from_org": "Eliminar a {name} de la organización",
+      "view_team": "Ver equipo {team}",
+      "no_match": "No hay miembros que coincidan con tus filtros",
+      "username_label": "Nombre de usuario",
+      "username_placeholder": "nombre de usuario...",
+      "role_label": "Rol",
+      "role": {
+        "all": "todos",
+        "developer": "desarrollador",
+        "admin": "admin",
+        "owner": "propietario"
+      },
+      "team_label": "Equipo",
+      "no_team": "sin equipo",
+      "add_button": "añadir",
+      "cancel_add": "Cancelar añadir miembro",
+      "add_member": "+ Añadir miembro"
+    },
+    "public_packages": "{count} paquete público | {count} paquetes públicos",
+    "page": {
+      "packages_title": "Paquetes",
+      "members_tab": "Miembros",
+      "teams_tab": "Equipos",
+      "no_packages": "No se encontraron paquetes públicos para",
+      "no_packages_hint": "Esta organización puede no existir o no tener paquetes públicos.",
+      "failed_to_load": "Error al cargar paquetes de la organización",
+      "no_match": "No hay paquetes que coincidan con \"{query}\"",
+      "not_found": "Organización no encontrada",
+      "not_found_message": "La organización \"{'@'}{name}\" no existe en npm"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(también se añadirá a la org)",
+      "press_enter_to_add": "Presiona Enter para añadir a {'@'}{username}",
+      "default_placeholder": "nombre de usuario...",
+      "suggestions_label": "Sugerencias de usuario"
+    },
+    "page": {
+      "packages_title": "Paquetes",
+      "no_packages": "No se encontraron paquetes públicos para",
+      "no_packages_hint": "Este usuario puede no existir o no tener paquetes públicos.",
+      "failed_to_load": "Error al cargar paquetes del usuario",
+      "no_match": "No hay paquetes que coincidan con \"{query}\"",
+      "filter_placeholder": "Filtrar {count} paquetes..."
+    },
+    "orgs_page": {
+      "title": "Organizaciones",
+      "back_to_profile": "Volver al perfil",
+      "connect_required": "Conecta el CLI local para ver tus organizaciones.",
+      "connect_hint_prefix": "Ejecuta",
+      "connect_hint_suffix": "para empezar.",
+      "own_orgs_only": "Solo puedes ver tus propias organizaciones.",
+      "view_your_orgs": "Ver tus organizaciones",
+      "loading": "Cargando organizaciones...",
+      "empty": "No se encontraron organizaciones.",
+      "empty_hint": "Las organizaciones se detectan a partir de tus paquetes con ámbito.",
+      "count": "{count} Organización | {count} Organizaciones",
+      "packages_count": "{count} paquete | {count} paquetes"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Reclamar Nombre de Paquete",
+      "success": "¡Paquete reclamado!",
+      "success_detail": "{name}{'@'}0.0.0 ha sido publicado en npm.",
+      "success_hint": "Ahora puedes publicar nuevas versiones de este paquete usando npm publish.",
+      "view_package": "Ver Paquete",
+      "invalid_name": "Nombre de paquete inválido:",
+      "available": "¡Este nombre está disponible!",
+      "taken": "Este nombre ya está ocupado.",
+      "similar_warning": "Existen paquetes similares - npm puede rechazar este nombre:",
+      "related": "Paquetes relacionados:",
+      "scope_warning_title": "Considera usar un paquete con ámbito en su lugar",
+      "scope_warning_text": "Los nombres de paquetes sin ámbito son un recurso compartido. Solo reclama un nombre si tienes la intención de publicar y mantener un paquete. Para proyectos personales u organizacionales, usa un nombre con ámbito como {'@'}{username}/{name}.",
+      "connect_required": "Conecta al conector local para reclamar este nombre de paquete.",
+      "connect_button": "Conectar al Conector",
+      "publish_hint": "Esto publicará un paquete de marcador de posición mínimo.",
+      "preview_json": "Previsualizar package.json",
+      "claim_button": "Reclamar Nombre de Paquete",
+      "publishing": "Publicando...",
+      "checking": "Comprobando disponibilidad...",
+      "failed_to_check": "Error al comprobar disponibilidad del nombre",
+      "failed_to_claim": "Error al reclamar paquete"
+    }
+  },
+  "code": {
+    "files_label": "Archivos",
+    "no_files": "No hay archivos en este directorio",
+    "root": "raíz",
+    "lines": "{count} líneas",
+    "toggle_tree": "Alternar árbol de archivos",
+    "close_tree": "Cerrar árbol de archivos",
+    "copy_link": "Copiar enlace",
+    "raw": "Crudo",
+    "view_raw": "Ver archivo crudo",
+    "file_too_large": "Archivo demasiado grande para previsualizar",
+    "file_size_warning": "{size} excede el límite de 500KB para resaltado de sintaxis",
+    "failed_to_load": "Error al cargar archivo",
+    "unavailable_hint": "El archivo puede ser demasiado grande o no estar disponible",
+    "version_required": "Se requiere versión para explorar código",
+    "go_to_package": "Ir al paquete",
+    "loading_tree": "Cargando árbol de archivos...",
+    "failed_to_load_tree": "Error al cargar archivos para esta versión del paquete",
+    "back_to_package": "Volver al paquete",
+    "table": {
+      "name": "Nombre",
+      "size": "Tamaño"
+    },
+    "markdown_view_mode": {
+      "preview": "vista previa",
+      "code": "código"
+    },
+    "file_path": "Ruta del archivo"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "verificado",
+      "verified_title": "Procedencia verificada",
+      "verified_via": "Verificado: publicado vía {provider}"
+    },
+    "jsr": {
+      "title": "también disponible en JSR"
+    }
+  },
+  "filters": {
+    "title": "Filtros",
+    "search": "Búsqueda",
+    "search_scope": "Ámbito de búsqueda",
+    "search_placeholder_name": "Filtrar por nombre de paquete...",
+    "search_placeholder_description": "Filtrar por descripción...",
+    "search_placeholder_keywords": "Filtrar por palabras clave...",
+    "search_placeholder_all": "Buscar todo o usar operadores name: desc: kw:",
+    "scope_name": "Nombre",
+    "scope_name_description": "Buscar solo nombres de paquetes",
+    "scope_description": "Descripción",
+    "scope_description_description": "Buscar solo descripciones",
+    "scope_keywords": "Palabras clave",
+    "scope_keywords_description": "Buscar solo palabras clave",
+    "scope_all": "Todo",
+    "scope_all_description": "Buscar en todos los campos, soporta operadores name: desc: kw:",
+    "weekly_downloads": "Descargas semanales",
+    "updated_within": "Actualizado dentro de",
+    "security": "Seguridad",
+    "keywords": "Palabras clave",
+    "more_keywords": "+{count} más",
+    "clear_all": "Limpiar todo",
+    "remove_filter": "Eliminar filtro {label}",
+    "chips": {
+      "search": "Búsqueda",
+      "downloads": "Descargas",
+      "keyword": "Palabra clave",
+      "security": "Seguridad",
+      "updated": "Actualizado"
+    },
+    "download_range": {
+      "any": "Cualquiera",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Cualquier momento",
+      "week": "Semana pasada",
+      "month": "Mes pasado",
+      "quarter": "Últimos 3 meses",
+      "year": "Año pasado"
+    },
+    "security_options": {
+      "all": "Todos los paquetes",
+      "secure": "Sin advertencias",
+      "insecure": "Con advertencias"
+    },
+    "sort": {
+      "label": "Ordenar paquetes",
+      "toggle_direction": "Alternar dirección de ordenamiento",
+      "ascending": "Ascendente",
+      "descending": "Descendente",
+      "relevance": "Relevancia",
+      "downloads_week": "Descargas/sem",
+      "downloads_day": "Descargas/día",
+      "downloads_month": "Descargas/mes",
+      "downloads_year": "Descargas/año",
+      "published": "Última publicación",
+      "name": "Nombre",
+      "quality": "Calidad",
+      "popularity": "Popularidad",
+      "maintenance": "Mantenimiento",
+      "score": "Puntuación"
+    },
+    "columns": {
+      "title": "Columnas",
+      "show": "Mostrar columnas",
+      "reset": "Restablecer a valores predeterminados",
+      "coming_soon": "Próximamente",
+      "name": "Nombre",
+      "version": "Versión",
+      "description": "Descripción",
+      "downloads": "Descargas/sem",
+      "published": "Última publicación",
+      "maintainers": "Mantenedores",
+      "keywords": "Palabras clave",
+      "quality_score": "Puntuación de calidad",
+      "popularity_score": "Puntuación de popularidad",
+      "maintenance_score": "Puntuación de mantenimiento",
+      "combined_score": "Puntuación combinada",
+      "security": "Seguridad"
+    },
+    "view_mode": {
+      "label": "Modo de vista",
+      "cards": "Vista de tarjetas",
+      "table": "Vista de tabla"
+    },
+    "pagination": {
+      "mode_label": "Modo de paginación",
+      "infinite": "Infinito",
+      "paginated": "Paginado",
+      "items_per_page": "Elementos por página",
+      "per_page": "{count} / página",
+      "all_yolo": "Todo (YOLO)",
+      "showing": "{start}-{end} de {total}",
+      "previous": "Página anterior",
+      "next": "Página siguiente",
+      "nav_label": "Paginación"
+    },
+    "count": {
+      "showing_filtered": "{filtered} de {count} paquete | {filtered} de {count} paquetes",
+      "showing_all": "{count} paquete | {count} paquetes",
+      "showing_paginated": "{pageSize} de {count} paquete | {pageSize} de {count} paquetes"
+    },
+    "table": {
+      "security_warning": "Advertencia de seguridad",
+      "secure": "Seguro",
+      "no_packages": "No se encontraron paquetes"
+    }
+  },
+  "about": {
+    "title": "Acerca de",
+    "heading": "acerca de",
+    "meta_description": "npmx es un explorador rápido y moderno para el registro npm. Una mejor UX/DX para explorar paquetes npm.",
+    "what_we_are": {
+      "title": "Lo que somos",
+      "better_ux_dx": "mejor UX/DX",
+      "admin_ui": "UI de administración",
+      "description": "npmx es una {betterUxDx} para el registro de paquetes npm y herramientas. Proporcionamos una interfaz rápida y moderna para explorar paquetes, con características como modo oscuro, navegación por teclado, exploración de código y conexiones a registros alternativos como {jsr}.",
+      "admin_description": "También aspiramos a proporcionar una mejor {adminUi} para gestionar tus paquetes, equipos y organizaciones — todo desde el navegador, impulsado por tu CLI de npm local."
+    },
+    "what_we_are_not": {
+      "title": "Lo que no somos",
+      "not_package_manager": "No es un gestor de paquetes.",
+      "not_registry": "No es un registro.",
+      "registry_description": "No alojamos paquetes. Solo somos una mejor manera de explorarlos.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Ya hay",
+        "people": "gente",
+        "building": "construyendo",
+        "really": "gestores de",
+        "cool": "paquetes",
+        "package": "realmente",
+        "managers": "geniales"
+      }
+    },
+    "contributors": {
+      "title": "{count} Colaborador | {count} Colaboradores",
+      "description": "npmx es completamente de código abierto, construido por una increíble comunidad de colaboradores. Únete a nosotros y construyamos juntos la experiencia de navegación de npm que siempre quisimos.",
+      "loading": "Cargando colaboradores...",
+      "error": "Error al cargar colaboradores",
+      "view_profile": "Ver perfil de GitHub de {name}"
+    },
+    "get_involved": {
+      "title": "Involúcrate",
+      "contribute": {
+        "title": "Contribuir",
+        "description": "Ayúdanos a construir una mejor experiencia npm.",
+        "cta": "Ver en GitHub"
+      },
+      "community": {
+        "title": "Únete a la comunidad",
+        "description": "Chatea, haz preguntas y comparte ideas.",
+        "cta": "Únete a Discord"
+      },
+      "follow": {
+        "title": "Mantente actualizado",
+        "description": "Entérate de lo último en npmx.",
+        "cta": "Síguenos en Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "conectar",
+    "account": "Cuenta",
+    "npm_cli": "CLI de npm",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Gestionar paquetes y organizaciones",
+    "atmosphere_desc": "Características sociales e identidad",
+    "connect_npm_cli": "Conectar a la CLI de npm",
+    "connect_atmosphere": "Conectar a la Atmosphere",
+    "connecting": "Conectando...",
+    "ops": "{count} op | {count} ops"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Conectado como {'@'}{handle}",
+      "disconnect": "Desconectar",
+      "connect_prompt": "Conectar con tu cuenta de la Atmosphere",
+      "handle_label": "Nombre de usuario",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Conectar",
+      "create_account": "Crear una nueva cuenta",
+      "connect_bluesky": "Conectar con Bluesky",
+      "what_is_atmosphere": "¿Qué es una cuenta de la Atmosphere?",
+      "atmosphere_explanation": "{npmx} utiliza {atproto} para proporcionar muchas de sus funciones sociales, lo que permite a los usuarios ser propietarios de sus datos y utilizar una cuenta para todas las aplicaciones compatibles. Una vez que crea una cuenta, puede usar otras aplicaciones como {bluesky} y {tangled} con la misma cuenta."
+    }
+  },
+  "header": {
+    "home": "inicio npmx",
+    "packages": "paquetes",
+    "packages_dropdown": {
+      "title": "Tus Paquetes",
+      "loading": "Cargando...",
+      "error": "Error al cargar paquetes",
+      "empty": "No se encontraron paquetes",
+      "view_all": "Ver todo"
+    },
+    "orgs": "orgs",
+    "orgs_dropdown": {
+      "title": "Tus Organizaciones",
+      "loading": "Cargando...",
+      "error": "Error al cargar organizaciones",
+      "empty": "No se encontraron organizaciones",
+      "view_all": "Ver todo"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "comparar paquetes",
+      "tagline": "compara paquetes npm lado a lado para ayudarte a elegir el correcto.",
+      "meta_title": "Comparar {packages} - npmx",
+      "meta_title_empty": "Comparar Paquetes - npmx",
+      "meta_description": "Comparación lado a lado de {packages}",
+      "meta_description_empty": "Compara paquetes npm lado a lado",
+      "section_packages": "Paquetes",
+      "section_facets": "Facetas",
+      "section_comparison": "Comparación",
+      "loading": "Cargando datos del paquete...",
+      "error": "Error al cargar datos del paquete. Por favor, inténtalo de nuevo.",
+      "empty_title": "Selecciona paquetes para comparar",
+      "empty_description": "Busca y añade al menos 2 paquetes arriba para ver una comparación lado a lado de sus métricas."
+    },
+    "selector": {
+      "search_label": "Buscar paquetes",
+      "search_first": "Buscar un paquete...",
+      "search_add": "Añadir otro paquete...",
+      "searching": "Buscando...",
+      "remove_package": "Eliminar {package}",
+      "packages_selected": "{count}/{max} paquetes seleccionados.",
+      "add_hint": "Añade al menos 2 paquetes para comparar."
+    },
+    "no_dependency": {
+      "label": "(Sin dependencia)",
+      "typeahead_title": "¿Qué haría James?",
+      "typeahead_description": "¡Compara contra no usar una dependencia! Aprobado por e18e.",
+      "tooltip_title": "Quizás no necesites una dependencia",
+      "tooltip_description": "¡Compara contra no usar una dependencia! La {link} mantiene una lista de paquetes que pueden ser reemplazados con APIs nativas o alternativas más simples.",
+      "e18e_community": "comunidad e18e",
+      "add_column": "Añadir columna sin dependencia a la comparación"
+    },
+    "facets": {
+      "group_label": "Facetas de comparación",
+      "all": "todas",
+      "none": "ninguna",
+      "coming_soon": "Próximamente",
+      "select_all": "Seleccionar todas las facetas",
+      "deselect_all": "Deseleccionar todas las facetas",
+      "select_category": "Seleccionar todas las facetas de {category}",
+      "deselect_category": "Deseleccionar todas las facetas de {category}",
+      "binary_only_tooltip": "Este paquete expone binarios y no exportaciones",
+      "categories": {
+        "performance": "Rendimiento",
+        "health": "Salud",
+        "compatibility": "Compatibilidad",
+        "security": "Seguridad y Cumplimiento"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Tamaño del Paquete",
+          "description": "Tamaño del paquete en sí (desempaquetado)"
+        },
+        "installSize": {
+          "label": "Tamaño de Instalación",
+          "description": "Tamaño total de instalación incluyendo todas las dependencias"
+        },
+        "dependencies": {
+          "label": "Dependencias Directas",
+          "description": "Número de dependencias directas"
+        },
+        "totalDependencies": {
+          "label": "Dependencias Totales",
+          "description": "Número total de dependencias incluyendo transitivas"
+        },
+        "downloads": {
+          "label": "Descargas/sem",
+          "description": "Recuento de descargas semanales"
+        },
+        "totalLikes": {
+          "label": "Me gusta",
+          "description": "Número de me gusta"
+        },
+        "lastUpdated": {
+          "label": "Publicado",
+          "description": "Cuándo se publicó esta versión"
+        },
+        "deprecated": {
+          "label": "¿Obsoleto?",
+          "description": "Si el paquete está obsoleto"
+        },
+        "engines": {
+          "label": "Motores",
+          "description": "Requisitos de versión de Node.js"
+        },
+        "types": {
+          "label": "Tipos",
+          "description": "Definiciones de tipos TypeScript"
+        },
+        "moduleFormat": {
+          "label": "Formato de Módulo",
+          "description": "Soporte ESM/CJS"
+        },
+        "license": {
+          "label": "Licencia",
+          "description": "Licencia del paquete"
+        },
+        "vulnerabilities": {
+          "label": "Vulnerabilidades",
+          "description": "Vulnerabilidades de seguridad conocidas"
+        }
+      },
+      "values": {
+        "any": "Cualquiera",
+        "none": "Ninguna",
+        "unknown": "Desconocido",
+        "deprecated": "Obsoleto",
+        "not_deprecated": "No",
+        "types_included": "Incluido",
+        "types_none": "Ninguno",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "¡Depende de ti!"
+      }
+    }
+  },
+  "privacy_policy": {
+    "title": "política de privacidad",
+    "last_updated": "Última actualización: {date}",
+    "welcome": "Bienvenido a {app}. Estamos comprometidos con la protección de tu privacidad. Esta política explica qué datos recopilamos, cómo los usamos y tus derechos con respecto a tu información.",
+    "cookies": {
+      "what_are": {
+        "title": "¿Qué son las cookies?",
+        "p1": "Las cookies son pequeños archivos de texto que se almacenan en tu dispositivo cuando visitas un sitio web. Su propósito es mejorar tu experiencia de navegación recordando ciertas preferencias y configuraciones."
+      },
+      "types": {
+        "title": "¿Qué cookies utilizamos?",
+        "p1": "Solo utilizamos {bold} para fines estrictamente necesarios para el funcionamiento del sitio. No utilizamos cookies de terceros ni publicitarias.",
+        "bold": "cookies técnicas esenciales",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Esta cookie es utilizada por nuestro proveedor de alojamiento (Vercel) para la protección contra sesgos (skew protection). Asegura que obtengas los recursos de la versión de despliegue correcta si se lanza una nueva actualización mientras navegas. No te rastrea.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Esta es nuestra cookie de sesión segura. Almacena el token de acceso OAuth cuando conectas tu cuenta de Atmosphere. Es esencial para mantener tu sesión autenticada."
+      },
+      "local_storage": {
+        "title": "Almacenamiento local",
+        "p1": "Además de las cookies de sesión, utilizamos el {bold} de tu navegador para guardar tus preferencias de visualización. Esto nos permite recordar el tema (claro/oscuro) y algunos otros {settings} que hayas seleccionado, para que no tengas que reconfigurarlos en cada visita.",
+        "bold": "Almacenamiento Local (Local Storage)",
+        "p2": "Esta información es puramente funcional, se almacena solo en tu dispositivo y {bold2}. La utilizamos exclusivamente para mejorar tu experiencia en nuestro sitio web.",
+        "bold2": "no contiene datos personales ni se utiliza para rastrearte",
+        "settings": "ajustes"
+      },
+      "management": {
+        "title": "Gestión de cookies",
+        "p1": "Puedes configurar tu navegador para aceptar, rechazar o eliminar cookies según tus preferencias. Sin embargo, ten en cuenta que {bold}.",
+        "bold": "rechazar cookies esenciales puede impedir el acceso completo a la aplicación",
+        "p2": "A continuación se muestran enlaces con instrucciones para la gestión de cookies en los navegadores más utilizados:",
+        "chrome": "Google Chrome (se abre en una nueva ventana)",
+        "firefox": "Mozilla Firefox (se abre en una nueva ventana)",
+        "edge": "Microsoft Edge (se abre en una nueva ventana)"
+      }
+    },
+    "analytics": {
+      "title": "Analítica",
+      "p1": "Utilizamos {bold} para entender cómo los visitantes usan nuestro sitio web. Esto nos ayuda a mejorar la experiencia del usuario e identificar problemas.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics está diseñado teniendo en cuenta la privacidad:",
+      "li1": "No utiliza cookies",
+      "li2": "No recopila identificadores personales",
+      "li3": "No rastrea a los usuarios a través de sitios web",
+      "li4": "Todos los datos son agregados y anonimizados",
+      "p3": "La única información recopilada incluye: URLs de páginas, referente, país/región, tipo de dispositivo, navegador y sistema operativo. Estos datos no pueden utilizarse para identificar a usuarios individuales."
+    },
+    "authenticated": {
+      "title": "Usuarios autenticados",
+      "p1": "Cuando conectas tu cuenta de {bold} a npmx, almacenamos tu token de acceso OAuth en una cookie de sesión segura y solo HTTP. Este token se utiliza únicamente para autenticar solicitudes en tu nombre.",
+      "bold": "Atmosphere",
+      "p2": "No almacenamos tus credenciales y no accedemos a ningún dato más allá de lo necesario para proporcionar las funciones que utilizas. Puedes desconectar tu cuenta en cualquier momento desde la página de {settings}.",
+      "settings": "ajustes"
+    },
+    "data_retention": {
+      "title": "Retención de datos",
+      "p1": "Las cookies de sesión se eliminan automáticamente cuando cierras tu navegador o después de un período de inactividad. Las preferencias de almacenamiento local permanecen en tu dispositivo hasta que borres los datos de tu navegador. Los datos analíticos se conservan de forma agregada y no pueden vincularse a usuarios individuales."
+    },
+    "your_rights": {
+      "title": "Tus derechos",
+      "p1": "Tienes derecho a:",
+      "li1": "Acceder a la información sobre qué datos recopilamos",
+      "li2": "Borrar tu almacenamiento local y cookies en cualquier momento",
+      "li3": "Desconectar tu sesión autenticada",
+      "li4": "Solicitar información sobre nuestras prácticas de datos",
+      "p2": "Dado que no recopilamos datos personales, normalmente no hay información personal que eliminar o exportar."
+    },
+    "contact": {
+      "title": "Contáctanos",
+      "p1": "Para cualquier pregunta o inquietud sobre esta política de privacidad, puedes contactarnos abriendo un problema (issue) en nuestro {link}.",
+      "link": "repositorio de GitHub"
+    },
+    "changes": {
+      "title": "Cambios en esta política",
+      "p1": "Podemos actualizar esta política de privacidad ocasionalmente. Cualquier cambio se publicará en esta página con una fecha de revisión actualizada."
+    }
+  }
+}

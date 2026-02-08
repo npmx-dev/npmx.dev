@@ -18,7 +18,7 @@ const standardReadmeFilenames = [
 ]
 
 /** Matches standard README filenames (case-insensitive, for checking registry metadata) */
-const standardReadmePattern = /^readme(\.md|\.markdown)?$/i
+const standardReadmePattern = /^readme(?:\.md|\.markdown)?$/i
 
 /**
  * Fetch README from jsdelivr CDN for a specific package version.
@@ -107,7 +107,7 @@ export default defineCachedEventHandler(
       }
 
       if (!readmeContent || readmeContent === NPM_MISSING_README_SENTINEL) {
-        return { html: '', playgroundLinks: [] }
+        return { html: '', playgroundLinks: [], toc: [] }
       }
 
       // Parse repository info for resolving relative URLs to GitHub
@@ -126,7 +126,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `readme:v4:${pkg.replace(/\/+$/, '').trim()}`
+      return `readme:v8:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )

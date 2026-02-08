@@ -1,0 +1,715 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - Браузер пакетів для реєстру npm",
+      "description": "Кращий браузер для реєстру npm. Пошук, перегляд та дослідження пакетів за допомогою сучасного інтерфейсу."
+    }
+  },
+  "tagline": "кращий браузер для реєстру npm",
+  "non_affiliation_disclaimer": "не пов'язаний з npm, Inc.",
+  "trademark_disclaimer": "npm є зареєстрованою торговою маркою npm, Inc. Цей сайт не пов'язаний з npm, Inc.",
+  "footer": {
+    "about": "про",
+    "docs": "документація",
+    "source": "джерело",
+    "social": "соціальні мережі",
+    "chat": "чат"
+  },
+  "search": {
+    "label": "Пошук пакетів npm",
+    "placeholder": "пошук пакетів...",
+    "button": "пошук",
+    "searching": "Пошук...",
+    "found_packages": "Пакетів не знайдено | Знайдено 1 пакет | Знайдено {count} пакетів",
+    "updating": "(оновлення...)",
+    "no_results": "Пакетів не знайдено для \"{query}\"",
+    "not_taken": "\"{name}\" не зайнято",
+    "claim_prompt": "Зарезервуйте цю назву пакета на npm",
+    "claim_button": "Зарезервувати \"{name}\"",
+    "want_to_claim": "Хочете зарезервувати цю назву пакета?",
+    "start_typing": "Почніть вводити для пошуку пакетів",
+    "exact_match": "точний",
+    "suggestion": {
+      "user": "користувач",
+      "org": "організація",
+      "view_user_packages": "Переглянути пакети цього користувача",
+      "view_org_packages": "Переглянути пакети цієї організації"
+    }
+  },
+  "nav": {
+    "main_navigation": "Головна",
+    "popular_packages": "Популярні пакети",
+    "settings": "параметри",
+    "back": "назад"
+  },
+  "settings": {
+    "title": "параметри",
+    "tagline": "налаштуйте ваше середовище npmx",
+    "meta_description": "Налаштуйте ваше середовище npmx.dev за допомогою параметрів теми, мови та дисплея.",
+    "sections": {
+      "appearance": "Зовнішній вигляд",
+      "display": "Дисплей",
+      "language": "Мова"
+    },
+    "relative_dates": "Відносні дати",
+    "include_types": "Включити {'@'}types у встановлення",
+    "include_types_description": "Додавайте пакет {'@'}types до команд встановлення для пакетів без типів",
+    "hide_platform_packages": "Приховати пакети для конкретної платформи в пошуку",
+    "hide_platform_packages_description": "Приховувати пакети з нативними двійковими файлами, наприклад {'@'}esbuild/linux-x64, від результатів",
+    "theme": "Тема",
+    "theme_light": "Світла",
+    "theme_dark": "Темна",
+    "theme_system": "Системна",
+    "language": "Мова",
+    "help_translate": "Допоможіть перекласти npmx",
+    "accent_colors": "Колірні акценти",
+    "clear_accent": "Очистити колір акценту",
+    "translation_progress": "Прогрес перекладу"
+  },
+  "i18n": {
+    "missing_keys": "Відсутній 1 переклад | Відсутні {count} переклади",
+    "copy_keys": "Копіювати ключі",
+    "show_more_keys": "Показати ще {count}...",
+    "contribute_hint": "Допоможіть поліпшити цей переклад, додавши відсутні ключі.",
+    "edit_on_github": "Редагувати на GitHub",
+    "view_guide": "Керівництво перекладу"
+  },
+  "common": {
+    "loading": "Завантаження...",
+    "loading_more": "Завантаження ще...",
+    "loading_packages": "Завантаження пакетів...",
+    "end_of_results": "Кінець результатів",
+    "try_again": "Спробувати ще раз",
+    "close": "Закрити",
+    "retry": "Повторити",
+    "copy": "копіювати",
+    "copied": "скопійовано!",
+    "skip_link": "Перейти до основного змісту",
+    "warnings": "Попередження:",
+    "go_back_home": "Повернутися на головну",
+    "view_on_npm": "переглянути на npm",
+    "per_week": "/ тиждень",
+    "sort": {
+      "name": "ім'я",
+      "role": "роль",
+      "members": "учасники"
+    },
+    "scroll_to_top": "Прокрутити на верх"
+  },
+  "package": {
+    "not_found": "Пакет не знайдено",
+    "not_found_message": "Пакет не вдалося знайти.",
+    "no_description": "Опис не надано",
+    "not_latest": "(не найновіший)",
+    "verified_provenance": "Перевірене походження",
+    "view_permalink": "Переглянути постійне посилання на цю версію",
+    "navigation": "Пакет",
+    "deprecation": {
+      "package": "Цей пакет було припинено.",
+      "version": "Цю версію було припинено.",
+      "no_reason": "Причина не надана"
+    },
+    "replacement": {
+      "title": "Можливо вам не потрібна ця залежність.",
+      "native": "Це можна замінити на {replacement}, доступне з Node {nodeVersion}.",
+      "simple": "Спільнота позначила цей пакет як надлишковий із рекомендацією: {replacement}.",
+      "documented": "Спільнота позначила цей пакет як такий, що має більш ефективні альтернативи.",
+      "none": "Цей пакет було позначено як більш ненеобхідний, і його функціональність, ймовірно, доступна в усіх механізмах.",
+      "learn_more": "Дізнатися більше",
+      "mdn": "MDN"
+    },
+    "stats": {
+      "license": "Ліцензія",
+      "deps": "Залежності",
+      "install_size": "Розмір встановлення",
+      "vulns": "Вразливості",
+      "view_dependency_graph": "Переглянути граф залежностей",
+      "inspect_dependency_tree": "Дослідити дерево залежностей",
+      "size_tooltip": {
+        "unpacked": "{size} розпаковано розмір (цей пакет)",
+        "total": "{size} загальний розпаковано розмір (включаючи всі {count} залежностей для linux-x64)"
+      }
+    },
+    "skills": {
+      "file_counts": {}
+    },
+    "links": {
+      "repo": "репозиторій",
+      "homepage": "головна сторінка",
+      "issues": "проблеми",
+      "jsr": "jsr",
+      "code": "код",
+      "docs": "документація",
+      "fund": "фінансування"
+    },
+    "docs": {
+      "not_available": "Документація недоступна",
+      "not_available_detail": "Ми не змогли згенерувати документацію для цієї версії."
+    },
+    "get_started": {
+      "title": "Розпочніть роботу",
+      "pm_label": "Менеджер пакетів",
+      "copy_command": "Копіювати команду встановлення",
+      "view_types": "Переглянути {package}"
+    },
+    "create": {
+      "title": "Створити новий проект",
+      "copy_command": "Копіювати команду створення"
+    },
+    "run": {
+      "title": "Запустити",
+      "locally": "Запустити локально"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "README недоступна.",
+      "view_on_github": "Переглянути на GitHub"
+    },
+    "keywords_title": "Ключові слова",
+    "compatibility": "Сумісність",
+    "card": {
+      "publisher": "Видавець",
+      "weekly_downloads": "Завантажень на тиждень",
+      "keywords": "Ключові слова",
+      "license": "Ліцензія"
+    },
+    "versions": {
+      "title": "Версії",
+      "collapse": "Згорнути {tag}",
+      "expand": "Розгорнути {tag}",
+      "collapse_other": "Згорнути інші версії",
+      "expand_other": "Розгорнути інші версії",
+      "collapse_major": "Згорнути основну версію {major}",
+      "expand_major": "Розгорнути основну версію {major}",
+      "other_versions": "Інші версії",
+      "more_tagged": "Ще {count} позначено",
+      "all_covered": "Усі версії охоплені тегами вище",
+      "deprecated_title": "{version} (припинено)"
+    },
+    "dependencies": {
+      "title": "Залежності ({count})",
+      "list_label": "Залежності пакета",
+      "show_all": "показати всі {count} залежностей",
+      "optional": "опціональні",
+      "view_vulnerabilities": "Переглянути вразливості"
+    },
+    "peer_dependencies": {
+      "title": "Залежності однорівневих об'єктів ({count})",
+      "list_label": "Залежності однорівневих об'єктів пакета",
+      "show_all": "показати всі {count} залежностей однорівневих об'єктів"
+    },
+    "optional_dependencies": {
+      "title": "Опціональні залежності ({count})",
+      "list_label": "Опціональні залежності пакета",
+      "show_all": "показати всі {count} опціональних залежностей"
+    },
+    "maintainers": {
+      "title": "Супроводжувачі",
+      "list_label": "Супроводжувачі пакета",
+      "you": "(ви)",
+      "via": "через {teams}",
+      "remove_owner": "Видалити {name} як власника",
+      "username_to_add": "Ім'я користувача для додавання як власника",
+      "username_placeholder": "ім'я користувача...",
+      "add_button": "додати",
+      "cancel_add": "Скасувати додавання власника",
+      "add_owner": "+ Додати власника",
+      "show_more": "(показати ще {count})",
+      "show_less": "(показати менше)"
+    },
+    "downloads": {
+      "title": "Завантажень на тиждень",
+      "date_range": "{start} до {end}",
+      "date_range_multiline": "{start}\nдо {end}",
+      "analyze": "Проаналізувати завантаження",
+      "modal_title": "Завантаження",
+      "granularity": "Детальність",
+      "granularity_daily": "Щоденно",
+      "granularity_weekly": "Щотижня",
+      "granularity_monthly": "Щомісячно",
+      "granularity_yearly": "Щороку",
+      "start_date": "Початок",
+      "end_date": "Кінець",
+      "no_data": "Дані завантажень недоступні",
+      "loading": "Завантаження...",
+      "y_axis_label": "Завантажень за {granularity}",
+      "download_file": "Завантажити {fileType}",
+      "toggle_annotator": "Перемикати анотатор"
+    },
+    "install_scripts": {
+      "title": "Скрипти встановлення",
+      "script_label": "(скрипт)",
+      "npx_packages": "{count} пакет npx | {count} пакети npx",
+      "currently": "зараз {version}"
+    },
+    "playgrounds": {
+      "title": "Спробуйте",
+      "choose": "виберіть майданчик"
+    },
+    "metrics": {
+      "esm": "Підтримка ES Modules",
+      "cjs": "Підтримка CommonJS",
+      "no_esm": "Без підтримки ES Modules",
+      "types_included": "Типи включені",
+      "types_available": "Типи доступні через {package}",
+      "no_types": "Немає типів TypeScript"
+    },
+    "license": {
+      "view_spdx": "Переглянути текст ліцензії на SPDX"
+    },
+    "vulnerabilities": {
+      "tree_found": "{vulns} вразливість в {packages}/{total} пакетах | {vulns} вразливостей в {packages}/{total} пакетах",
+      "show_all_packages": "показати всі {count} постраждалих пакетів",
+      "path": "шлях",
+      "more": "+{count} більше",
+      "packages_failed": "1 пакет не вдалося перевірити | {count} пакетів не вдалося перевірити",
+      "scan_failed": "Не вдалося сканувати на вразливості",
+      "severity": {
+        "critical": "критична",
+        "high": "висока",
+        "moderate": "середня",
+        "low": "низька"
+      }
+    },
+    "deprecated": {
+      "label": "Припинено",
+      "tree_found": "1 припинена залежність | {count} припинених залежностей",
+      "show_all": "показати всі {count} припинених пакетів"
+    },
+    "access": {
+      "title": "Доступ команди",
+      "refresh": "Оновити доступ команди",
+      "list_label": "Список доступу команди",
+      "owner": "власник",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "Скасувати доступ {name}",
+      "no_access": "Доступ команди не налаштований",
+      "select_team_label": "Виберіть команду",
+      "loading_teams": "Завантаження команд...",
+      "select_team": "Виберіть команду",
+      "permission_label": "Рівень дозволу",
+      "permission": {
+        "read_only": "тільки для читання",
+        "read_write": "читання-запис"
+      },
+      "grant_button": "надати",
+      "cancel_grant": "Скасувати надання доступу",
+      "grant_access": "+ Надати доступ команди"
+    },
+    "list": {
+      "filter_label": "Фільтрувати пакети",
+      "filter_placeholder": "Фільтрувати пакети...",
+      "sort_label": "Сортувати пакети",
+      "showing_count": "Показано {filtered} з {total} пакетів"
+    },
+    "skeleton": {
+      "loading": "Завантаження деталей пакета",
+      "weekly": "Щотижнева",
+      "maintainers": "Супроводжувачі",
+      "keywords": "Ключові слова",
+      "versions": "Версії",
+      "dependencies": "Залежності"
+    },
+    "sort": {
+      "downloads": "Найбільше завантажено",
+      "name_asc": "Ім'я (A-Z)",
+      "name_desc": "Ім'я (Z-A)"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Локальний сполучник",
+      "connected": "Підключено",
+      "connected_hint": "Тепер ви можете керувати пакетами та організаціями з веб-інтерфейсу.",
+      "disconnect": "Відключити",
+      "run_hint": "Запустіть сполучник на своєму комп'ютері, щоб увімкнути функції адміністратора.",
+      "copy_command": "Копіювати команду",
+      "copied": "Скопійовано",
+      "paste_token": "Потім вставте токен нижче для підключення:",
+      "token_label": "Токен",
+      "token_placeholder": "вставте токен тут...",
+      "advanced": "Додаткові параметри",
+      "port_label": "Порт",
+      "warning": "ПОПЕРЕДЖЕННЯ",
+      "warning_text": "Це дозволяє npmx отримати доступ до вашого npm CLI. Підключайтеся лише до сайтів, яким ви довіряєте.",
+      "connect": "Підключити",
+      "connecting": "Підключення..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Черга операцій",
+      "clear_all": "очистити все",
+      "refresh": "Оновити операції",
+      "empty": "Жодних операцій не в черзі",
+      "empty_hint": "Додавайте операції зі сторінок пакетів або організацій",
+      "active_label": "Активні операції",
+      "otp_required": "Вимагається OTP",
+      "otp_prompt": "Введіть OTP для продовження",
+      "otp_placeholder": "Введіть код OTP...",
+      "otp_label": "Одноразовий пароль",
+      "retry_otp": "Повторити з OTP",
+      "retrying": "Повтор...",
+      "approve_operation": "Затвердити операцію",
+      "remove_operation": "Видалити операцію",
+      "approve_all": "Затвердити все",
+      "execute": "Виконати",
+      "executing": "Виконання...",
+      "log": "Журнал",
+      "log_label": "Журнал завершених операцій",
+      "remove_from_log": "Видалити з журналу"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Команди",
+      "refresh": "Оновити команди",
+      "filter_label": "Фільтрувати команди",
+      "filter_placeholder": "Фільтрувати команди...",
+      "sort_by": "Сортувати за",
+      "loading": "Завантаження команд...",
+      "no_teams": "Команди не знайдені",
+      "list_label": "Команди організації",
+      "delete_team": "Видалити команду {name}",
+      "member_count": "{count} учасник | {count} учасники",
+      "members_of": "Учасники {team}",
+      "no_members": "Немає учасників",
+      "remove_user": "Видалити {user} з команди",
+      "username_to_add": "Ім'я користувача для додавання до {team}",
+      "username_placeholder": "ім'я користувача...",
+      "add_button": "додати",
+      "cancel_add_user": "Скасувати додавання користувача",
+      "add_member": "+ Додати учасника",
+      "team_name_label": "Ім'я команди",
+      "team_name_placeholder": "назва-команди...",
+      "create_button": "створити",
+      "no_match": "Команди не збігаються з \"{query}\"",
+      "cancel_create": "Скасувати створення команди",
+      "create_team": "+ Створити команду"
+    },
+    "members": {
+      "title": "Учасники",
+      "refresh": "Оновити учасників",
+      "filter_label": "Фільтрувати учасників",
+      "filter_placeholder": "Фільтрувати учасників...",
+      "filter_by_role": "Фільтрувати за роллю",
+      "filter_by_team": "Фільтрувати за командою",
+      "all_teams": "всі команди",
+      "sort_by": "Сортувати за",
+      "loading": "Завантаження учасників...",
+      "no_members": "Учасники не знайдені",
+      "list_label": "Учасники організації",
+      "change_role_for": "Змінити роль для {name}",
+      "remove_from_org": "Видалити {name} з організації",
+      "view_team": "Переглянути команду {team}",
+      "no_match": "Учасники не збігаються з вашими фільтрами",
+      "username_label": "Ім'я користувача",
+      "username_placeholder": "ім'я користувача...",
+      "role_label": "Роль",
+      "role": {
+        "all": "всі",
+        "developer": "розробник",
+        "admin": "адміністратор",
+        "owner": "власник"
+      },
+      "team_label": "Команда",
+      "no_team": "без команди",
+      "add_button": "додати",
+      "cancel_add": "Скасувати додавання учасника",
+      "add_member": "+ Додати учасника"
+    },
+    "public_packages": "{count} публічний пакет | {count} публічні пакети",
+    "page": {
+      "packages_title": "Пакети",
+      "members_tab": "Учасники",
+      "teams_tab": "Команди",
+      "no_packages": "Публічні пакети не знайдені для",
+      "no_packages_hint": "Цієї організації може не існувати або у неї немає публічних пакетів.",
+      "failed_to_load": "Не вдалося завантажити пакети організації",
+      "no_match": "Пакети не збігаються з \"{query}\"",
+      "not_found": "Організацію не знайдено",
+      "not_found_message": "Організація \"{'@'}{name}\" не існує на npm"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(також буде додано до організації)",
+      "press_enter_to_add": "Натисніть Enter, щоб додати {'@'}{username}",
+      "default_placeholder": "ім'я користувача...",
+      "suggestions_label": "Пропозиції користувачів"
+    },
+    "page": {
+      "packages_title": "Пакети",
+      "no_packages": "Публічні пакети не знайдені для",
+      "no_packages_hint": "Цього користувача може не існувати або у нього немає публічних пакетів.",
+      "failed_to_load": "Не вдалося завантажити пакети користувача",
+      "no_match": "Пакети не збігаються з \"{query}\"",
+      "filter_placeholder": "Фільтрувати {count} пакетів..."
+    },
+    "orgs_page": {
+      "title": "Організації",
+      "back_to_profile": "Назад до профілю",
+      "connect_required": "Підключіть локальний CLI, щоб переглянути свої організації.",
+      "connect_hint_prefix": "Запустіть",
+      "connect_hint_suffix": "щоб розпочати.",
+      "own_orgs_only": "Ви можете переглядати тільки свої організації.",
+      "view_your_orgs": "Переглянути свої організації",
+      "loading": "Завантаження організацій...",
+      "empty": "Організації не знайдені.",
+      "empty_hint": "Організації виявляються з ваших пакетів з обсягом.",
+      "count": "{count} організація | {count} організації",
+      "packages_count": "{count} пакет | {count} пакети"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Зарезервувати назву пакета",
+      "success": "Пакет зарезервовано!",
+      "success_detail": "{name}{'@'}0.0.0 було опубліковано на npm.",
+      "success_hint": "Тепер ви можете опублікувати нові версії цього пакета за допомогою npm publish.",
+      "view_package": "Переглянути пакет",
+      "invalid_name": "Невірна назва пакета:",
+      "available": "Ця назва доступна!",
+      "taken": "Ця назва вже зайнята.",
+      "similar_warning": "Існують подібні пакети - npm може відхилити цю назву:",
+      "related": "Пов'язані пакети:",
+      "scope_warning_title": "Розглянути використання пакета з обсягом",
+      "scope_warning_text": "Назви пакетів без обсягу є спільним ресурсом. Зарезервуйте назву лише якщо ви маєте намір опублікувати та підтримувати пакет. Для особистих або організаційних проектів використовуйте назву з обсягом, як-от {'@'}{username}/{name}.",
+      "connect_required": "Підключіться до локального сполучника, щоб зарезервувати цю назву пакета.",
+      "connect_button": "Підключитися до сполучника",
+      "publish_hint": "Це опублікує мінімальний пакет-заповнювач.",
+      "preview_json": "Переглянути package.json",
+      "claim_button": "Зарезервувати назву пакета",
+      "publishing": "Опублікування...",
+      "checking": "Перевірка доступності...",
+      "failed_to_check": "Не вдалося перевірити доступність назви",
+      "failed_to_claim": "Не вдалося зарезервувати пакет"
+    }
+  },
+  "code": {
+    "files_label": "Файли",
+    "no_files": "Немає файлів у цій папці",
+    "root": "корінь",
+    "lines": "{count} рядків",
+    "toggle_tree": "Переключити дерево файлів",
+    "close_tree": "Закрити дерево файлів",
+    "copy_link": "Копіювати посилання",
+    "raw": "Необроблено",
+    "view_raw": "Переглянути необроблений файл",
+    "file_too_large": "Файл занадто великий для попереду",
+    "file_size_warning": "{size} перевищує ліміт 500KB для виділення синтаксису",
+    "failed_to_load": "Не вдалося завантажити файл",
+    "unavailable_hint": "Файл може бути занадто великим або недоступним",
+    "version_required": "Для перегляду коду потрібна версія",
+    "go_to_package": "Перейти до пакета",
+    "loading_tree": "Завантаження дерева файлів...",
+    "failed_to_load_tree": "Не вдалося завантажити файли для цієї версії пакета",
+    "back_to_package": "Назад до пакета",
+    "table": {
+      "name": "Ім'я",
+      "size": "Розмір"
+    },
+    "markdown_view_mode": {
+      "preview": "попередній перегляд",
+      "code": "код"
+    }
+  },
+  "badges": {
+    "provenance": {
+      "verified": "перевірено",
+      "verified_title": "Перевірене походження",
+      "verified_via": "Перевірено: опубліковано через {provider}"
+    },
+    "jsr": {
+      "title": "також доступно на JSR"
+    }
+  },
+  "filters": {
+    "title": "Фільтри",
+    "search": "Пошук",
+    "search_scope": "Обсяг пошуку",
+    "search_placeholder_name": "Фільтрувати за назвою пакета...",
+    "search_placeholder_description": "Фільтрувати за описом...",
+    "search_placeholder_keywords": "Фільтрувати за ключовими словами...",
+    "search_placeholder_all": "Пошук усіх або використовуйте name: desc: kw:",
+    "scope_name": "Ім'я",
+    "scope_name_description": "Пошук тільки в назвах пакетів",
+    "scope_description": "Опис",
+    "scope_description_description": "Пошук тільки в описах",
+    "scope_keywords": "Ключові слова",
+    "scope_keywords_description": "Пошук тільки в ключових словах",
+    "scope_all": "Все",
+    "scope_all_description": "Пошук у всіх полях, підтримує оператори name: desc: kw:",
+    "weekly_downloads": "Завантажень на тиждень",
+    "updated_within": "Оновлено в",
+    "security": "Безпека",
+    "keywords": "Ключові слова",
+    "more_keywords": "+{count} більше",
+    "clear_all": "Очистити все",
+    "remove_filter": "Видалити фільтр {label}",
+    "download_range": {
+      "any": "Будь-які",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Будь-коли",
+      "week": "За останній тиждень",
+      "month": "За останній місяць",
+      "quarter": "За останні 3 місяці",
+      "year": "За останній рік"
+    },
+    "security_options": {
+      "all": "Усі пакети",
+      "secure": "Без попереджень",
+      "insecure": "З попередженнями"
+    },
+    "sort": {
+      "label": "Сортувати пакети",
+      "toggle_direction": "Переключити напрямок сортування",
+      "ascending": "За зростанням",
+      "descending": "За спаданням",
+      "relevance": "Релевантність",
+      "downloads_week": "Завантажень/тиж",
+      "downloads_day": "Завантажень/день",
+      "downloads_month": "Завантажень/міс",
+      "downloads_year": "Завантажень/рік",
+      "name": "Ім'я",
+      "quality": "Якість",
+      "popularity": "Популярність",
+      "maintenance": "Обслуговування",
+      "score": "Оцінка"
+    },
+    "columns": {
+      "title": "Колонки",
+      "show": "Показати колонки",
+      "reset": "Скинути до значень за замовчуванням",
+      "coming_soon": "Незабаром",
+      "name": "Ім'я",
+      "version": "Версія",
+      "description": "Опис",
+      "downloads": "Завантажень/тиж",
+      "maintainers": "Супроводжувачі",
+      "keywords": "Ключові слова",
+      "quality_score": "Оцінка якості",
+      "popularity_score": "Оцінка популярності",
+      "maintenance_score": "Оцінка обслуговування",
+      "combined_score": "Комбінована оцінка",
+      "security": "Безпека"
+    },
+    "view_mode": {
+      "label": "Режим перегляду",
+      "cards": "Перегляд карток",
+      "table": "Перегляд таблиці"
+    },
+    "pagination": {
+      "mode_label": "Режим нумерації сторінок",
+      "infinite": "Нескінченна",
+      "paginated": "За сторінками",
+      "items_per_page": "Елементів на сторінку",
+      "per_page": "{count} / сторінка",
+      "all_yolo": "Усі (YOLO)",
+      "showing": "{start}-{end} з {total}",
+      "previous": "Попередня сторінка",
+      "next": "Наступна сторінка",
+      "nav_label": "Нумерація сторінок"
+    },
+    "count": {
+      "showing_filtered": "{filtered} з {count} пакетів",
+      "showing_all": "{count} пакетів",
+      "showing_paginated": "{pageSize} з {count} пакетів"
+    },
+    "table": {
+      "security_warning": "Попередження безпеки",
+      "secure": "Безпечно",
+      "no_packages": "Пакети не знайдені"
+    }
+  },
+  "about": {
+    "title": "Про",
+    "heading": "про",
+    "meta_description": "npmx - це швидкий, сучасний браузер для реєстру npm. Кращий UX/DX для дослідження пакетів npm.",
+    "what_we_are": {
+      "title": "Що ми таке",
+      "better_ux_dx": "кращий UX/DX",
+      "admin_ui": "адміністративний інтерфейс",
+      "description": "npmx - це {betterUxDx} для реєстру пакетів npm і інструментів. Ми надаємо швидкий, сучасний інтерфейс для дослідження пакетів із функціями, такими як темний режим, навігація клавіатурою, перегляд коду та з'єднання з альтернативними реєстрами, як-от {jsr}.",
+      "admin_description": "Ми також прагнемо надати кращий {adminUi} для керування вашими пакетами, командами та організаціями — усе з браузера, забезпечене вашим локальним npm CLI."
+    },
+    "what_we_are_not": {
+      "title": "Що ми не таке",
+      "not_package_manager": "Не менеджер пакетів.",
+      "not_registry": "Не реєстр.",
+      "registry_description": "Ми не розміщуємо пакети. Ми просто кращий спосіб їх переглядання.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Вже існують",
+        "people": "люди",
+        "building": "які створюють",
+        "really": "дійсно",
+        "cool": "цікаві",
+        "package": "менеджери",
+        "managers": "пакетів"
+      }
+    },
+    "contributors": {
+      "title": "Учасники",
+      "description": "npmx повністю відкритого коду, створений дивовижною спільнотою учасників. Приєднайтеся до нас і давайте разом створювати досвід перегляду npm, який ми завжди хотіли.",
+      "loading": "Завантаження учасників...",
+      "error": "Не вдалося завантажити учасників",
+      "view_profile": "Переглянути профіль {name} на GitHub"
+    },
+    "get_involved": {
+      "title": "Залучіться",
+      "contribute": {
+        "title": "Внесок",
+        "description": "Допоможіть нам побудувати кращий досвід npm.",
+        "cta": "Переглянути на GitHub"
+      },
+      "community": {
+        "title": "Приєднатися до спільноти",
+        "description": "Чатьте, ставте питання та поділіться ідеями.",
+        "cta": "Приєднатися до Discord"
+      },
+      "follow": {
+        "title": "Залишайтеся в курсі",
+        "description": "Дізнайтеся останні новини про npmx.",
+        "cta": "Слідкувати на Bluesky"
+      }
+    }
+  },
+  "account_menu": {},
+  "auth": {
+    "modal": {}
+  },
+  "header": {
+    "home": "головна npmx",
+    "packages": "пакети",
+    "packages_dropdown": {
+      "title": "Ваші пакети",
+      "loading": "Завантаження...",
+      "error": "Не вдалося завантажити пакети",
+      "empty": "Пакети не знайдені",
+      "view_all": "Переглянути все"
+    },
+    "orgs": "організації",
+    "orgs_dropdown": {
+      "title": "Ваші організації",
+      "loading": "Завантаження...",
+      "error": "Не вдалося завантажити організації",
+      "empty": "Організації не знайдені",
+      "view_all": "Переглянути все"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
+    }
+  }
+}

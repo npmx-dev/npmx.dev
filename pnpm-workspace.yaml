@@ -1,24 +1,38 @@
 packages:
-  - '.'
-  - 'cli'
+  - .
+  - cli
+  - docs
+
+ignoreDepScripts: true
+
+ignoreWorkspaceRootCheck: true
+
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - core-js
+  - esbuild
+  - unrs-resolver
+  - vue-demi
+
+onlyBuiltDependencies:
+  - '@resvg/resvg-js'
+  - better-sqlite3
+  - sharp@0.34.5
+  - simple-git-hooks@2.13.1
 
 overrides:
   sharp: 0.34.5
-  vite: npm:@voidzero-dev/vite-plus-core@latest
-  vitest: npm:@voidzero-dev/vite-plus-test@latest
+  vite: npm:@voidzero-dev/vite-plus-core@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
+  vitest: npm:@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
 
 packageExtensions:
   '@nuxt/scripts':
     dependencies:
-      'estree-walker': '^3.0.3'
+      estree-walker: ^3.0.3
 
-ignoredBuiltDependencies:
-  - '@parcel/watcher'
-  - esbuild
-  - unrs-resolver
+patchedDependencies:
+  '@jsr/deno__doc@0.189.1': patches/@jsr__deno__doc@0.189.1.patch
 
-onlyBuiltDependencies:
-  - sharp@0.34.5
-  - simple-git-hooks@2.13.1
+savePrefix: ''
 
-ignoreWorkspaceRootCheck: true
+shellEmulator: true

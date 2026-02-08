@@ -1,0 +1,732 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx — Браузер пакетов для реестра npm",
+      "description": "Лучший браузер для реестра npm. Ищите, просматривайте и изучайте пакеты с помощью современного интерфейса."
+    }
+  },
+  "tagline": "лучший браузер для реестра npm",
+  "non_affiliation_disclaimer": "не аффилирован с npm, Inc.",
+  "trademark_disclaimer": "npm является зарегистрированной торговой маркой npm, Inc. Этот сайт не аффилирован с npm, Inc.",
+  "footer": {
+    "about": "о проекте",
+    "docs": "документация",
+    "source": "исходный код",
+    "social": "соцсети",
+    "chat": "чат"
+  },
+  "search": {
+    "label": "Поиск пакетов npm",
+    "placeholder": "поиск пакетов...",
+    "button": "поиск",
+    "searching": "Поиск...",
+    "found_packages": "Пакетов не найдено | Найден 1 пакет | Найдено {count} пакетов",
+    "updating": "(обновление...)",
+    "no_results": "Пакетов по запросу \"{query}\" не найдено",
+    "not_taken": "{name} не занято",
+    "claim_prompt": "Занять это имя пакета в npm",
+    "claim_button": "Занять \"{name}\"",
+    "want_to_claim": "Хотите занять это имя пакета?",
+    "start_typing": "Начните печатать для поиска пакетов",
+    "exact_match": "точное совпадение",
+    "suggestion": {
+      "user": "пользователь",
+      "org": "организация",
+      "view_user_packages": "Посмотреть пакеты этого пользователя",
+      "view_org_packages": "Посмотреть пакеты этой организации"
+    }
+  },
+  "nav": {
+    "main_navigation": "Главное",
+    "popular_packages": "Популярные пакеты",
+    "settings": "настройки",
+    "back": "назад"
+  },
+  "settings": {
+    "title": "настройки",
+    "tagline": "сделайте npmx удобным для себя",
+    "meta_description": "Настройте npmx.dev под себя: тема, язык и параметры отображения.",
+    "sections": {
+      "appearance": "Внешний вид",
+      "display": "Отображение",
+      "language": "Язык"
+    },
+    "relative_dates": "Относительные даты",
+    "include_types": "Включать {'@'}types при установке",
+    "include_types_description": "Добавлять пакет {'@'}types в команды установки для нетипизированных пакетов",
+    "hide_platform_packages": "Скрывать платформо-зависимые пакеты в поиске",
+    "hide_platform_packages_description": "Скрывать нативные бинарные пакеты, такие как {'@'}esbuild/linux-x64, из результатов",
+    "theme": "Тема",
+    "theme_light": "Светлая",
+    "theme_dark": "Тёмная",
+    "theme_system": "Системная",
+    "language": "Язык",
+    "help_translate": "Помочь с переводом npmx",
+    "accent_colors": "Акцентные цвета",
+    "clear_accent": "Сбросить акцентный цвет",
+    "translation_progress": "Прогресс перевода"
+  },
+  "i18n": {
+    "missing_keys": "{count} отсутствующий перевод | {count} отсутствующих перевода | {count} отсутствующих переводов",
+    "copy_keys": "Скопировать ключи",
+    "show_more_keys": "Показать ещё {count}...",
+    "contribute_hint": "Помогите улучшить этот перевод, добавив недостающие ключи.",
+    "edit_on_github": "Редактировать на GitHub",
+    "view_guide": "Руководство по переводу"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "loading_more": "Загрузить ещё...",
+    "loading_packages": "Загрузка пакетов...",
+    "end_of_results": "Конец результатов",
+    "try_again": "Попробовать снова",
+    "close": "Закрыть",
+    "retry": "Повторить",
+    "copy": "копировать",
+    "copied": "скопировано!",
+    "skip_link": "Перейти к основному контенту",
+    "warnings": "Предупреждения:",
+    "go_back_home": "Вернуться на главную",
+    "view_on_npm": "посмотреть на npm",
+    "per_week": "/ неделю",
+    "sort": {
+      "name": "имя",
+      "role": "роль",
+      "members": "участники"
+    },
+    "scroll_to_top": "Прокрутить наверх"
+  },
+  "package": {
+    "not_found": "Пакет не найден",
+    "not_found_message": "Пакет не удалось найти.",
+    "no_description": "Описание отсутствует",
+    "not_latest": "(не последняя)",
+    "verified_provenance": "Подтвержденное происхождение",
+    "view_permalink": "Посмотреть постоянную ссылку на эту версию",
+    "navigation": "Навигация по пакету",
+    "deprecation": {
+      "package": "Этот пакет устарел.",
+      "version": "Эта версия устарела.",
+      "no_reason": "Причина не указана"
+    },
+    "replacement": {
+      "title": "Возможно, вам не нужна эта зависимость.",
+      "native": "Это можно заменить на {replacement}, доступный начиная с Node {nodeVersion}.",
+      "simple": "Сообщество отметило этот пакет как избыточный, совет: {replacement}.",
+      "documented": "Сообщество отметило, что у этого пакета есть более производительные альтернативы.",
+      "none": "Этот пакет был отмечен как ненужный, так как его функциональность, вероятно, доступна нативно во всех движках.",
+      "learn_more": "Подробнее",
+      "mdn": "MDN"
+    },
+    "stats": {
+      "license": "Лицензия",
+      "deps": "Зависимости",
+      "install_size": "Размер установки",
+      "vulns": "Уязвимости",
+      "view_dependency_graph": "Посмотреть граф зависимостей",
+      "inspect_dependency_tree": "Изучить дерево зависимостей",
+      "size_tooltip": {}
+    },
+    "skills": {
+      "file_counts": {}
+    },
+    "links": {
+      "repo": "репозиторий",
+      "homepage": "сайт",
+      "issues": "issues",
+      "jsr": "jsr",
+      "code": "код",
+      "docs": "доки",
+      "fund": "поддержать"
+    },
+    "docs": {
+      "not_available": "Документация недоступна",
+      "not_available_detail": "Мы не смогли сгенерировать документацию для этой версии."
+    },
+    "get_started": {
+      "title": "Начало работы",
+      "pm_label": "Пакетный менеджер",
+      "copy_command": "Скопировать команду установки",
+      "view_types": "Посмотреть {package}"
+    },
+    "create": {
+      "title": "Создать новый проект",
+      "copy_command": "Скопировать команду создания"
+    },
+    "run": {
+      "title": "Запуск",
+      "locally": "Запустить локально"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "README недоступен.",
+      "view_on_github": "Посмотреть на GitHub"
+    },
+    "keywords_title": "Ключевые слова",
+    "compatibility": "Совместимость",
+    "card": {
+      "publisher": "Издатель",
+      "weekly_downloads": "Еженедельные загрузки",
+      "keywords": "Ключевые слова",
+      "license": "Лицензия"
+    },
+    "versions": {
+      "title": "Версии",
+      "collapse": "Свернуть {tag}",
+      "expand": "Развернуть {tag}",
+      "collapse_other": "Свернуть остальные версии",
+      "expand_other": "Развернуть остальные версии",
+      "collapse_major": "Свернуть мажорную {major}",
+      "expand_major": "Развернуть мажорную {major}",
+      "other_versions": "Другие версии",
+      "more_tagged": "ещё {count} с тегом",
+      "all_covered": "Все версии охвачены тегами выше",
+      "deprecated_title": "{version} (устарела)"
+    },
+    "dependencies": {
+      "title": "Зависимости ({count})",
+      "list_label": "Зависимости пакета",
+      "show_all": "показать все ({count})",
+      "optional": "опционально",
+      "view_vulnerabilities": "Посмотреть уязвимости"
+    },
+    "peer_dependencies": {
+      "title": "Peer-зависимости ({count})",
+      "list_label": "Peer-зависимости пакета",
+      "show_all": "показать все ({count})"
+    },
+    "optional_dependencies": {
+      "title": "Опциональные зависимости ({count})",
+      "list_label": "Опциональные зависимости пакета",
+      "show_all": "показать все ({count})"
+    },
+    "maintainers": {
+      "title": "Мейнтейнеры",
+      "list_label": "Мейнтейнеры пакета",
+      "you": "(вы)",
+      "via": "через {teams}",
+      "remove_owner": "Убрать {name} из владельцев",
+      "username_to_add": "Имя пользователя для добавления во владельцы",
+      "username_placeholder": "имя пользователя...",
+      "add_button": "добавить",
+      "cancel_add": "Отменить добавление владельца",
+      "add_owner": "+ Добавить владельца",
+      "show_more": "(показать ещё {count})",
+      "show_less": "(показать меньше)"
+    },
+    "downloads": {
+      "title": "Загрузки за неделю",
+      "date_range": "С {start} по {end}",
+      "date_range_multiline": "С {start}\nпо {end}",
+      "analyze": "Анализировать загрузки",
+      "modal_title": "Загрузки",
+      "granularity": "Детализация",
+      "granularity_daily": "По дням",
+      "granularity_weekly": "По неделям",
+      "granularity_monthly": "По месяцам",
+      "granularity_yearly": "По годам",
+      "start_date": "Начало",
+      "end_date": "Конец",
+      "no_data": "Нет данных о загрузках",
+      "loading": "Загрузка...",
+      "y_axis_label": "{granularity} загрузки",
+      "download_file": "Скачать {fileType}",
+      "toggle_annotator": "Переключить аннотации"
+    },
+    "install_scripts": {
+      "title": "Скрипты установки",
+      "script_label": "(скрипт)",
+      "npx_packages": "{count} пакет npx | {count} пакета npx | {count} пакетов npx",
+      "currently": "сейчас {version}"
+    },
+    "playgrounds": {
+      "title": "Попробовать",
+      "choose": "выберите песочницу"
+    },
+    "metrics": {
+      "esm": "Поддержка ES-модулей",
+      "cjs": "Поддержка CommonJS",
+      "no_esm": "Нет поддержки ES-модулей",
+      "types_included": "Типы включены",
+      "types_available": "Типы доступны через {package}",
+      "no_types": "Нет типов TypeScript"
+    },
+    "license": {
+      "view_spdx": "Посмотреть текст лицензии на SPDX"
+    },
+    "vulnerabilities": {
+      "tree_found": "{vulns} уязвимость в {packages}/{total} пакетах | {vulns} уязвимостей в {packages}/{total} пакетах",
+      "show_all_packages": "показать все затронутые пакеты ({count})",
+      "path": "путь",
+      "more": "ещё +{count}",
+      "packages_failed": "{count} пакет не удалось проверить | {count} пакета не удалось проверить | {count} пакетов не удалось проверить",
+      "scan_failed": "Не удалось выполнить сканирование на уязвимости",
+      "severity": {
+        "critical": "критическая",
+        "high": "высокая",
+        "moderate": "средняя",
+        "low": "низкая"
+      }
+    },
+    "deprecated": {
+      "label": "Устаревшие",
+      "tree_found": "{count} устаревшая зависимость | {count} устаревших зависимостей",
+      "show_all": "показать все устаревшие пакеты ({count})"
+    },
+    "access": {
+      "title": "Доступ команды",
+      "refresh": "Обновить доступ команды",
+      "list_label": "Список доступа команды",
+      "owner": "владелец",
+      "rw": "чтение-запись",
+      "ro": "только чтение",
+      "revoke_access": "Отозвать доступ у {name}",
+      "no_access": "Доступ команд не настроен",
+      "select_team_label": "Выберите команду",
+      "loading_teams": "Загрузка команд...",
+      "select_team": "Выберите команду",
+      "permission_label": "Уровень доступа",
+      "permission": {
+        "read_only": "только чтение",
+        "read_write": "чтение и запись"
+      },
+      "grant_button": "предоставить",
+      "cancel_grant": "Отменить предоставление доступа",
+      "grant_access": "+ Предоставить доступ команде"
+    },
+    "list": {
+      "filter_label": "Фильтр пакетов",
+      "filter_placeholder": "Фильтровать пакеты...",
+      "sort_label": "Сортировка пакетов",
+      "showing_count": "Показано {filtered} из {total}"
+    },
+    "skeleton": {
+      "loading": "Загрузка информации о пакете",
+      "weekly": "В неделю",
+      "maintainers": "Мейнтейнеры",
+      "keywords": "Ключевые слова",
+      "versions": "Версии",
+      "dependencies": "Зависимости"
+    },
+    "sort": {
+      "downloads": "Больше всего скачиваний",
+      "name_asc": "Имя (А-Я)",
+      "name_desc": "Имя (Я-А)"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Локальный коннектор",
+      "connected": "Подключено",
+      "connected_hint": "Теперь вы можете управлять пакетами и организациями из веб-интерфейса.",
+      "disconnect": "Отключить",
+      "run_hint": "Запустите коннектор на вашем компьютере, чтобы включить функции администратора.",
+      "copy_command": "Скопировать команду",
+      "copied": "Скопировано",
+      "paste_token": "Затем вставьте токен ниже для подключения:",
+      "token_label": "Токен",
+      "token_placeholder": "вставьте токен сюда...",
+      "advanced": "Расширенные опции",
+      "port_label": "Порт",
+      "warning": "ВНИМАНИЕ",
+      "warning_text": "Это позволяет npmx получить доступ к вашему npm CLI. Подключайтесь только к сайтам, которым доверяете.",
+      "connect": "Подключить",
+      "connecting": "Подключение..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Очередь операций",
+      "clear_all": "очистить все",
+      "refresh": "Обновить операции",
+      "empty": "Очередь операций пуста",
+      "empty_hint": "Добавьте операции со страниц пакетов или организаций",
+      "active_label": "Активные операции",
+      "otp_required": "Требуется OTP",
+      "otp_prompt": "Введите OTP для продолжения",
+      "otp_placeholder": "Введите код OTP...",
+      "otp_label": "Одноразовый пароль",
+      "retry_otp": "Повторить с OTP",
+      "retrying": "Повторная попытка...",
+      "approve_operation": "Подтвердить операцию",
+      "remove_operation": "Удалить операцию",
+      "approve_all": "Подтвердить все",
+      "execute": "Выполнить",
+      "executing": "Выполнение...",
+      "log": "Журнал",
+      "log_label": "Журнал завершенных операций",
+      "remove_from_log": "Удалить из журнала"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Команды",
+      "refresh": "Обновить команды",
+      "filter_label": "Фильтр команд",
+      "filter_placeholder": "Фильтровать команды...",
+      "sort_by": "Сортировать по",
+      "loading": "Загрузка команд...",
+      "no_teams": "Команды не найдены",
+      "list_label": "Команды организации",
+      "delete_team": "Удалить команду {name}",
+      "member_count": "{count} участник | {count} участника | {count} участников",
+      "members_of": "Участники {team}",
+      "no_members": "Нет участников",
+      "remove_user": "Удалить {user} из команды",
+      "username_to_add": "Имя пользователя для добавления в {team}",
+      "username_placeholder": "имя пользователя...",
+      "add_button": "добавить",
+      "cancel_add_user": "Отменить добавление пользователя",
+      "add_member": "+ Добавить участника",
+      "team_name_label": "Название команды",
+      "team_name_placeholder": "название-команды...",
+      "create_button": "создать",
+      "no_match": "Нет команд, соответствующих запросу \"{query}\"",
+      "cancel_create": "Отменить создание команды",
+      "create_team": "+ Создать команду"
+    },
+    "members": {
+      "title": "Участники",
+      "refresh": "Обновить участников",
+      "filter_label": "Фильтр участников",
+      "filter_placeholder": "Фильтровать участников...",
+      "filter_by_role": "Фильтр по роли",
+      "filter_by_team": "Фильтр по команде",
+      "all_teams": "все команды",
+      "sort_by": "Сортировать по",
+      "loading": "Загрузка участников...",
+      "no_members": "Участники не найдены",
+      "list_label": "Участники организации",
+      "change_role_for": "Изменить роль для {name}",
+      "remove_from_org": "Удалить {name} из организации",
+      "view_team": "Посмотреть команду {team}",
+      "no_match": "Нет участников, соответствующих фильтрам",
+      "username_label": "Имя пользователя",
+      "username_placeholder": "имя пользователя...",
+      "role_label": "Роль",
+      "role": {
+        "all": "все",
+        "developer": "разработчик",
+        "admin": "администратор",
+        "owner": "владелец"
+      },
+      "team_label": "Команда",
+      "no_team": "без команды",
+      "add_button": "добавить",
+      "cancel_add": "Отменить добавление участника",
+      "add_member": "+ Добавить участника"
+    },
+    "public_packages": "{count} публичный пакет | {count} публичных пакета | {count} публичных пакетов",
+    "page": {
+      "packages_title": "Пакеты",
+      "members_tab": "Участники",
+      "teams_tab": "Команды",
+      "no_packages": "Не найдено публичных пакетов для",
+      "no_packages_hint": "Эта организация может не существовать или у нее нет публичных пакетов.",
+      "failed_to_load": "Не удалось загрузить пакеты организации",
+      "no_match": "Нет пакетов, соответствующих \"{query}\"",
+      "not_found": "Организация не найдена",
+      "not_found_message": "Организация \"{'@'}{name}\" не существует в npm"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(также добавит в организацию)",
+      "press_enter_to_add": "Нажмите Enter, чтобы добавить {'@'}{username}",
+      "default_placeholder": "имя пользователя...",
+      "suggestions_label": "Предложения пользователей"
+    },
+    "page": {
+      "packages_title": "Пакеты",
+      "no_packages": "Не найдено публичных пакетов для",
+      "no_packages_hint": "Этот пользователь может не существовать или у него нет публичных пакетов.",
+      "failed_to_load": "Не удалось загрузить пакеты пользователя",
+      "no_match": "Нет пакетов, соответствующих \"{query}\"",
+      "filter_placeholder": "Фильтровать {count} пакет... | Фильтровать {count} пакета... | Фильтровать {count} пакетов..."
+    },
+    "orgs_page": {
+      "title": "Организации",
+      "back_to_profile": "Вернуться в профиль",
+      "connect_required": "Подключите локальный CLI, чтобы просматривать ваши организации.",
+      "connect_hint_prefix": "Запустите",
+      "connect_hint_suffix": "чтобы начать.",
+      "own_orgs_only": "Вы можете просматривать только свои организации.",
+      "view_your_orgs": "Посмотреть ваши организации",
+      "loading": "Загрузка организаций...",
+      "empty": "Организации не найдены.",
+      "empty_hint": "Организации определяются по вашим scoped-пакетам.",
+      "count": "{count} организация | {count} организации | {count} организаций",
+      "packages_count": "{count} пакет | {count} пакета | {count} пакетов"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Занять имя пакета",
+      "success": "Пакет занят!",
+      "success_detail": "{name}{'@'}0.0.0 был опубликован в npm.",
+      "success_hint": "Теперь вы можете публиковать новые версии этого пакета с помощью npm publish.",
+      "view_package": "Посмотреть пакет",
+      "invalid_name": "Недопустимое имя пакета:",
+      "available": "Это имя доступно!",
+      "taken": "Это имя уже занято.",
+      "similar_warning": "Существуют похожие пакеты — npm может отклонить это имя:",
+      "related": "Связанные пакеты:",
+      "scope_warning_title": "Рассмотрите использование scoped-пакета",
+      "scope_warning_text": "Имена пакетов без области видимости (unscoped) — это общий ресурс. Занимайте имя только если собираетесь публиковать и поддерживать пакет. Для личных проектов или проектов организации используйте имя с областью видимости, например {'@'}{username}/{name}.",
+      "connect_required": "Подключитесь к локальному коннектору, чтобы занять это имя пакета.",
+      "connect_button": "Подключиться к коннектору",
+      "publish_hint": "Это опубликует минимальный пакет-заглушку.",
+      "preview_json": "Предпросмотр package.json",
+      "claim_button": "Занять имя пакета",
+      "publishing": "Публикация...",
+      "checking": "Проверка доступности...",
+      "failed_to_check": "Не удалось проверить доступность имени",
+      "failed_to_claim": "Не удалось занять пакет"
+    }
+  },
+  "code": {
+    "files_label": "Файлы",
+    "no_files": "В этой директории нет файлов",
+    "root": "корневая директория",
+    "lines": "{count} строк",
+    "toggle_tree": "Переключить дерево файлов",
+    "close_tree": "Закрыть дерево файлов",
+    "copy_link": "Скопировать ссылку",
+    "raw": "Raw",
+    "view_raw": "Посмотреть исходный файл",
+    "file_too_large": "Файл слишком большой для предпросмотра",
+    "file_size_warning": "{size} превышает лимит в 500 КБ для подсветки синтаксиса",
+    "failed_to_load": "Не удалось загрузить файл",
+    "unavailable_hint": "Файл может быть слишком большим или недоступным",
+    "version_required": "Для просмотра кода требуется версия",
+    "go_to_package": "Перейти к пакету",
+    "loading_tree": "Загрузка дерева файлов...",
+    "failed_to_load_tree": "Не удалось загрузить файлы для этой версии пакета",
+    "back_to_package": "Назад к пакету",
+    "table": {
+      "name": "Имя",
+      "size": "Размер"
+    },
+    "markdown_view_mode": {}
+  },
+  "badges": {
+    "provenance": {
+      "verified": "подтверждено",
+      "verified_title": "Подтвержденное происхождение",
+      "verified_via": "Подтверждено: опубликовано через {provider}"
+    },
+    "jsr": {
+      "title": "также доступно на JSR"
+    }
+  },
+  "filters": {
+    "title": "Фильтры",
+    "search": "Поиск",
+    "search_scope": "Область поиска",
+    "search_placeholder_name": "Фильтр по имени пакета...",
+    "search_placeholder_description": "Фильтр по описанию...",
+    "search_placeholder_keywords": "Фильтр по ключевым словам...",
+    "search_placeholder_all": "Искать везде или использовать операторы name: desc: kw:",
+    "scope_name": "Имя",
+    "scope_name_description": "Искать только по именам пакетов",
+    "scope_description": "Описание",
+    "scope_description_description": "Искать только по описаниям",
+    "scope_keywords": "Ключевые слова",
+    "scope_keywords_description": "Искать только по ключевым словам",
+    "scope_all": "Везде",
+    "scope_all_description": "Искать во всех полях, поддерживает операторы name: desc: kw:",
+    "weekly_downloads": "Загрузок в неделю",
+    "updated_within": "Обновлено за",
+    "security": "Безопасность",
+    "keywords": "Ключевые слова",
+    "more_keywords": "ещё +{count}",
+    "clear_all": "Очистить все",
+    "remove_filter": "Удалить фильтр {label}",
+    "download_range": {
+      "any": "Любое кол-во",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "Любое время",
+      "week": "За неделю",
+      "month": "За месяц",
+      "quarter": "За 3 месяца",
+      "year": "За год"
+    },
+    "security_options": {
+      "all": "Все пакеты",
+      "secure": "Без предупреждений",
+      "insecure": "С предупреждениями"
+    },
+    "sort": {
+      "label": "Сортировка пакетов",
+      "toggle_direction": "Переключить направление сортировки",
+      "ascending": "По возрастанию",
+      "descending": "По убыванию",
+      "relevance": "Релевантность",
+      "downloads_week": "Загрузок/нед",
+      "downloads_day": "Загрузок/день",
+      "downloads_month": "Загрузок/мес",
+      "downloads_year": "Загрузок/год",
+      "name": "Имя",
+      "quality": "Качество",
+      "popularity": "Популярность",
+      "maintenance": "Поддержка",
+      "score": "Оценка"
+    },
+    "columns": {
+      "title": "Столбцы",
+      "show": "Показать столбцы",
+      "reset": "Сбросить по умолчанию",
+      "coming_soon": "Скоро будет",
+      "name": "Имя",
+      "version": "Версия",
+      "description": "Описание",
+      "downloads": "Загрузок/нед",
+      "maintainers": "Мейнтейнеры",
+      "keywords": "Ключевые слова",
+      "quality_score": "Оценка качества",
+      "popularity_score": "Оценка популярности",
+      "maintenance_score": "Оценка поддержки",
+      "combined_score": "Общая оценка",
+      "security": "Безопасность"
+    },
+    "view_mode": {
+      "label": "Режим просмотра",
+      "cards": "Карточки",
+      "table": "Таблица"
+    },
+    "pagination": {
+      "mode_label": "Режим пагинации",
+      "infinite": "Бесконечный",
+      "paginated": "Страничный",
+      "items_per_page": "Элементов на странице",
+      "per_page": "{count} / стр.",
+      "all_yolo": "Все (YOLO)",
+      "showing": "{start}-{end} из {total}",
+      "previous": "Предыдущая страница",
+      "next": "Следующая страница",
+      "nav_label": "Пагинация"
+    },
+    "count": {
+      "showing_filtered": "{filtered} из {count}",
+      "showing_all": "{count}",
+      "showing_paginated": "{pageSize} из {count}"
+    },
+    "table": {
+      "security_warning": "Предупреждение безопасности",
+      "secure": "Безопасно",
+      "no_packages": "Пакетов не найдено"
+    }
+  },
+  "about": {
+    "title": "О проекте",
+    "heading": "о проекте",
+    "meta_description": "npmx — это быстрый, современный браузер для реестра npm. Лучший UX/DX для изучения пакетов npm.",
+    "what_we_are": {
+      "title": "Кто мы",
+      "better_ux_dx": "лучший UX/DX",
+      "admin_ui": "интерфейс администратора",
+      "description": "npmx — это {betterUxDx} для реестра пакетов npm и инструментов. Мы предоставляем быстрый, современный интерфейс для изучения пакетов, с такими функциями, как тёмная тема, навигация с клавиатуры, просмотр кода и подключение к альтернативным реестрам, таким как {jsr}.",
+      "admin_description": "Мы также стремимся предоставить лучший {adminUi} для управления вашими пакетами, командами и организациями — прямо из браузера, используя ваш локальный npm CLI."
+    },
+    "what_we_are_not": {
+      "title": "Чем мы не являемся",
+      "not_package_manager": "Не пакетный менеджер.",
+      "not_registry": "Не реестр.",
+      "registry_description": "Мы не хостим пакеты. Мы просто лучший способ их просматривать.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Уже",
+        "people": "есть",
+        "building": "люди,",
+        "really": "создающие",
+        "cool": "действительно",
+        "package": "крутые",
+        "managers": "пакетные менеджеры"
+      }
+    },
+    "contributors": {
+      "title": "Контрибьюторы",
+      "description": "npmx полностью открыт, он создан потрясающим сообществом контрибьюторов. Присоединяйтесь, и давайте вместе создадим опыт просмотра npm, о котором мы всегда мечтали.",
+      "loading": "Загрузка контрибьюторов...",
+      "error": "Не удалось загрузить контрибьюторов",
+      "view_profile": "Посмотреть профиль {name} на GitHub"
+    },
+    "get_involved": {
+      "title": "Присоединяйтесь",
+      "contribute": {
+        "title": "Внести вклад",
+        "description": "Помогите нам улучшить опыт работы с npm.",
+        "cta": "Посмотреть на GitHub"
+      },
+      "community": {
+        "title": "Вступить в сообщество",
+        "description": "Общайтесь, задавайте вопросы и делитесь идеями.",
+        "cta": "Присоединиться к Discord"
+      },
+      "follow": {
+        "title": "Будьте в курсе",
+        "description": "Узнавайте последние новости об npmx.",
+        "cta": "Подписаться в Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "подключить",
+    "account": "Аккаунт",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Управление пакетами и организациями",
+    "atmosphere_desc": "Социальные функции и идентификация",
+    "connect_npm_cli": "Подключиться к npm CLI",
+    "connect_atmosphere": "Подключиться к Atmosphere",
+    "connecting": "Подключение...",
+    "ops": "{count} операция | {count} операции | {count} операций"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Вы вошли как {'@'}{handle}",
+      "disconnect": "Выйти",
+      "connect_prompt": "Войдите через аккаунт Atmosphere",
+      "handle_label": "Хендл",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Подключить",
+      "create_account": "Создать новый аккаунт",
+      "connect_bluesky": "Войти через Bluesky",
+      "what_is_atmosphere": "Что такое аккаунт Atmosphere?",
+      "atmosphere_explanation": "{npmx} использует протокол {atproto} для работы многих социальных функций, позволяя пользователям владеть своими данными и использовать единый аккаунт для всех совместимых приложений. Создав аккаунт, вы сможете использовать другие приложения, такие как {bluesky} и {tangled}, с той же учетной записью."
+    }
+  },
+  "header": {
+    "home": "npmx главная",
+    "packages": "пакеты",
+    "packages_dropdown": {
+      "title": "Ваши пакеты",
+      "loading": "Загрузка...",
+      "error": "Не удалось загрузить пакеты",
+      "empty": "Пакеты не найдены",
+      "view_all": "Посмотреть все"
+    },
+    "orgs": "организации",
+    "orgs_dropdown": {
+      "title": "Ваши организации",
+      "loading": "Загрузка...",
+      "error": "Не удалось загрузить организации",
+      "empty": "Организации не найдены",
+      "view_all": "Посмотреть все"
+    }
+  },
+  "compare": {
+    "packages": {},
+    "selector": {},
+    "facets": {
+      "categories": {}
+    }
+  }
+}

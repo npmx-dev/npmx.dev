@@ -5,38 +5,43 @@ on:
   pull_request:
     branches:
       - main
+  merge_group:
+    branches:
+      - main
 
 permissions:
   contents: read
 
 jobs:
   code:
-    runs-on: ubuntu-latest
+    name: 🤖 Autofix code
+    runs-on: ubuntu-24.04-arm
 
     steps:
-      - uses: actions/checkout@v6
-      - run: corepack enable
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
         with:
           node-version: lts/*
-          cache: 'pnpm'
+
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: true
 
       - name: 📦 Install dependencies
         run: pnpm install
 
-      - name: 📦 Install browsers
-        run: pnpm playwright install
+      - name: 🎨 Check for non-RTL CSS classes
+        run: pnpm rtl:check
+
+      - name: 🌐 Compare translations
+        run: pnpm i18n:check
+
+      - name: 🌍 Update lunaria data
+        run: pnpm build:lunaria
 
       - name: 🔠 Fix lint errors
         run: pnpm lint:fix
 
-      - name: 🧪 Update unit test snapshots
-        run: pnpm test:unit -u
-
-      - name: 🏃 Update component test snapshots
-        run: pnpm test:nuxt -u
-
-      - name: 🖥️ Update browser test snapshots
-        run: pnpm test:browser --update-snapshots
-
-      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
+      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # 635ffb0c9798bd160680f18fd73371e355b85f27

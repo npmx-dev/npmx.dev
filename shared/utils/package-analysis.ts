@@ -12,10 +12,9 @@ export type TypesStatus =
 export interface PackageAnalysis {
   moduleFormat: ModuleFormat
   types: TypesStatus
-  engines?: {
-    node?: string
-    npm?: string
-  }
+  engines?: Record<string, string>
+  /** Associated create-* package if it exists */
+  createPackage?: CreatePackageInfo
 }
 
 /**
@@ -35,6 +34,10 @@ export interface ExtendedPackageJson {
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
+  /** npm maintainers (returned by registry API) */
+  maintainers?: Array<{ name: string; email?: string }>
+  /** Repository info (returned by registry API) */
+  repository?: { url?: string; type?: string; directory?: string }
 }
 
 export type PackageExports = string | null | { [key: string]: PackageExports } | PackageExports[]
@@ -169,12 +172,49 @@ function mergeExportsAnalysis(target: ExportsAnalysis, source: ExportsAnalysis):
   target.hasTypes = target.hasTypes || source.hasTypes
 }
 
-/**
- * Options for @types package info
- */
-export interface TypesPackageInfo {
+/** Info about a related package (@types or create-*) */
+export interface RelatedPackageInfo {
   packageName: string
   deprecated?: string
+}
+
+export type TypesPackageInfo = RelatedPackageInfo
+export type CreatePackageInfo = RelatedPackageInfo
+
+/**
+ * Get the create-* package name for a given package.
+ * e.g., "vite" -> "create-vite", "@scope/foo" -> "@scope/create-foo"
+ */
+export function getCreatePackageName(packageName: string): string {
+  if (packageName.startsWith('@')) {
+    // Scoped package: @scope/name -> @scope/create-name
+    const slashIndex = packageName.indexOf('/')
+    const scope = packageName.slice(0, slashIndex)
+    const name = packageName.slice(slashIndex + 1)
+    return `${scope}/create-${name}`
+  }
+  return `create-${packageName}`
+}
+
+/**
+ * Extract the short name from a create-* package for display.
+ * e.g., "create-vite" -> "vite", "@scope/create-foo" -> "foo"
+ */
+export function getCreateShortName(createPackageName: string): string {
+  if (createPackageName.startsWith('@')) {
+    // @scope/create-foo -> foo
+    const slashIndex = createPackageName.indexOf('/')
+    const name = createPackageName.slice(slashIndex + 1)
+    if (name.startsWith('create-')) {
+      return name.slice('create-'.length)
+    }
+    return name
+  }
+  // create-vite -> vite
+  if (createPackageName.startsWith('create-')) {
+    return createPackageName.slice('create-'.length)
+  }
+  return createPackageName
 }
 
 /**
@@ -246,6 +286,7 @@ export function getTypesPackageName(packageName: string): string {
  */
 export interface AnalyzePackageOptions {
   typesPackage?: TypesPackageInfo
+  createPackage?: CreatePackageInfo
 }
 
 /**
@@ -262,11 +303,7 @@ export function analyzePackage(
   return {
     moduleFormat,
     types,
-    engines: pkg.engines
-      ? {
-          node: pkg.engines.node,
-          npm: pkg.engines.npm,
-        }
-      : undefined,
+    engines: pkg.engines,
+    createPackage: options?.createPackage,
   }
 }

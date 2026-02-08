@@ -136,3 +136,46 @@ export function filterExcludedTags(tags: string[], excludeTags: string[]): strin
   const excludeSet = new Set(excludeTags)
   return tags.filter(tag => !excludeSet.has(tag))
 }
+
+/**
+ * Get a grouping key for a version that handles 0.x versions specially.
+ *
+ * Per semver spec, versions below 1.0.0 can have breaking changes in minor bumps,
+ * so 0.9.x should be in a separate group from 0.10.x.
+ *
+ * @param version - The version string (e.g., "0.9.3", "1.2.3")
+ * @returns A grouping key string (e.g., "0.9", "1")
+ */
+export function getVersionGroupKey(version: string): string {
+  const parsed = parseVersion(version)
+  if (parsed.major === 0) {
+    // For 0.x versions, group by major.minor
+    return `0.${parsed.minor}`
+  }
+  // For 1.x+, group by major only
+  return String(parsed.major)
+}
+
+/**
+ * Get a display label for a version group key.
+ *
+ * @param groupKey - The group key from getVersionGroupKey()
+ * @returns A display label (e.g., "0.9.x", "1.x")
+ */
+export function getVersionGroupLabel(groupKey: string): string {
+  return `${groupKey}.x`
+}
+
+/**
+ * Check if two versions belong to the same version group.
+ *
+ * For versions >= 1.0.0, same major = same group.
+ * For versions < 1.0.0, same major.minor = same group.
+ *
+ * @param versionA - First version string
+ * @param versionB - Second version string
+ * @returns true if both versions are in the same group
+ */
+export function isSameVersionGroup(versionA: string, versionB: string): boolean {
+  return getVersionGroupKey(versionA) === getVersionGroupKey(versionB)
+}

@@ -27,6 +27,8 @@ const EXTENSION_ICONS: Record<string, string> = {
   'vue': 'i-vscode-icons-file-type-vue',
   'svelte': 'i-vscode-icons-file-type-svelte',
   'astro': 'i-vscode-icons-file-type-astro',
+  'gjs': 'i-vscode-icons-file-type-glimmer',
+  'gts': 'i-vscode-icons-file-type-glimmer',
 
   // Config/Data
   'json': 'i-vscode-icons-file-type-json',
@@ -45,8 +47,8 @@ const EXTENSION_ICONS: Record<string, string> = {
   'md': 'i-vscode-icons-file-type-markdown',
   'mdx': 'i-vscode-icons-file-type-mdx',
   'txt': 'i-vscode-icons-file-type-text',
-  'rst': 'i-vscode-icons-file-type-rst',
-  'pdf': 'i-vscode-icons-file-type-pdf',
+  'rst': 'i-vscode-icons-file-type-text',
+  'pdf': 'i-vscode-icons-file-type-pdf2',
 
   // Shell/Scripts
   'sh': 'i-vscode-icons-file-type-shell',
@@ -123,7 +125,7 @@ const EXTENSION_ICONS: Record<string, string> = {
 
   // Other
   'log': 'i-vscode-icons-file-type-log',
-  'lock': 'i-vscode-icons-file-type-lock',
+  'lock': 'i-vscode-icons-file-type-json',
   'map': 'i-vscode-icons-file-type-map',
   'wrl': 'i-vscode-icons-file-type-binary',
   'bin': 'i-vscode-icons-file-type-binary',
@@ -175,7 +177,7 @@ const FILENAME_ICONS: Record<string, string> = {
   'svelte.config.js': 'i-vscode-icons-file-type-svelte',
   'astro.config.mjs': 'i-vscode-icons-file-type-astro',
   'astro.config.ts': 'i-vscode-icons-file-type-astro',
-  'remix.config.js': 'i-vscode-icons-file-type-remix',
+  'remix.config.js': 'i-vscode-icons-file-type-js-official',
   'angular.json': 'i-vscode-icons-file-type-angular',
   'nest-cli.json': 'i-vscode-icons-file-type-nestjs',
 
@@ -219,8 +221,8 @@ const FILENAME_ICONS: Record<string, string> = {
   '.travis.yml': 'i-vscode-icons-file-type-travis',
   '.gitlab-ci.yml': 'i-vscode-icons-file-type-gitlab',
   'Jenkinsfile': 'i-vscode-icons-file-type-jenkins',
-  'azure-pipelines.yml': 'i-vscode-icons-file-type-azure-pipelines',
-  'cloudbuild.yaml': 'i-vscode-icons-file-type-gcp',
+  'azure-pipelines.yml': 'i-vscode-icons-file-type-azurepipelines',
+  'cloudbuild.yaml': 'i-vscode-icons-file-type-yaml',
   'vercel.json': 'i-vscode-icons-file-type-vercel',
   'netlify.toml': 'i-vscode-icons-file-type-netlify',
 
@@ -301,8 +303,8 @@ const COMPOUND_EXTENSIONS: Record<string, string> = {
   '.stories.ts': 'i-vscode-icons-file-type-storybook',
   '.stories.jsx': 'i-vscode-icons-file-type-storybook',
   '.stories.js': 'i-vscode-icons-file-type-storybook',
-  '.min.js': 'i-vscode-icons-file-type-jsmin',
-  '.min.css': 'i-vscode-icons-file-type-cssmin',
+  '.min.js': 'i-vscode-icons-file-type-js-official',
+  '.min.css': 'i-vscode-icons-file-type-css',
 }
 
 // Default icon for unknown files

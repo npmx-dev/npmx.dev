@@ -1,0 +1,325 @@
+/* Base reset and defaults */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root:not([data-theme='light']),
+:root[data-theme='dark'] {
+  /* background colors */
+  --bg: var(--bg-color, oklch(0.171 0 0));
+  --bg-subtle: var(--bg-subtle-color, oklch(0.198 0 0));
+  --bg-muted: var(--bg-muted-color, oklch(0.236 0 0));
+  --bg-elevated: var(--bg-elevated-color, oklch(0.266 0 0));
+
+  /* text colors */
+  --fg: oklch(0.982 0 0);
+  --fg-muted: oklch(0.749 0 0);
+  --fg-subtle: oklch(0.673 0 0);
+
+  /* border, separator colors */
+  --border: oklch(0.269 0 0);
+  --border-subtle: oklch(0.239 0 0);
+  --border-hover: oklch(0.371 0 0);
+
+  /* accent color, set by user from settings */
+  --accent: var(--accent-color, oklch(1 0 0));
+  --accent-muted: var(--accent-color, oklch(0.922 0 0));
+
+  /* accent colors */
+  --swatch-coral: oklch(0.704 0.177 14.75);
+  --swatch-amber: oklch(0.828 0.165 84.429);
+  --swatch-emerald: oklch(0.792 0.153 166.95);
+  --swatch-sky: oklch(0.787 0.128 230.318);
+  --swatch-violet: oklch(0.78 0.148 286.067);
+  --swatch-magenta: oklch(0.78 0.15 330);
+
+  /* syntax highlighting colors */
+  --syntax-fn: oklch(0.727 0.137 299.149);
+  --syntax-str: oklch(0.829 0.088 252.458);
+  --syntax-kw: oklch(0.721 0.162 15.494);
+  --syntax-comment: oklch(0.551 0.019 250.976);
+
+  /* badge colors for background & text */
+  --badge-orange: oklch(0.67 0.185 55);
+  --badge-yellow: oklch(0.588 0.183 91);
+  --badge-green: oklch(0.566 0.202 165);
+  --badge-cyan: oklch(0.571 0.181 210);
+  --badge-blue: oklch(0.579 0.191 252);
+  --badge-indigo: oklch(0.573 0.262 276.966);
+  --badge-purple: oklch(0.495 0.172 295);
+  --badge-pink: oklch(0.584 0.189 343);
+}
+
+:root[data-theme='dark'][data-bg-theme='slate'] {
+  --bg: oklch(0.151 0.018 264.695);
+  --bg-subtle: oklch(0.179 0.015 262.421);
+  --bg-muted: oklch(0.214 0.018 261.234);
+  --bg-elevated: oklch(0.259 0.021 260.031);
+}
+
+:root[data-theme='dark'][data-bg-theme='zinc'] {
+  --bg: oklch(0.158 0.005 285.823);
+  --bg-subtle: oklch(0.188 0.005 285.894);
+  --bg-muted: oklch(0.219 0.005 285.929);
+  --bg-elevated: oklch(0.256 0.006 286.033);
+}
+
+:root[data-theme='dark'][data-bg-theme='stone'] {
+  --bg: oklch(0.164 0.004 89.25);
+  --bg-subtle: oklch(0.198 0.008 89.321);
+  --bg-muted: oklch(0.228 0.015 89.386);
+  --bg-elevated: oklch(0.252 0.018 84.298);
+}
+
+:root[data-theme='dark'][data-bg-theme='black'] {
+  --bg: oklch(0 0 0);
+  --bg-subtle: oklch(0.148 0 0);
+  --bg-muted: oklch(0.204 0 0);
+  --bg-elevated: oklch(0.264 0 0);
+}
+
+:root[data-theme='light'] {
+  --bg: var(--bg-color, oklch(1 0 0));
+  --bg-subtle: var(--bg-subtle-color, oklch(0.979 0.001 286.375));
+  --bg-muted: var(--bg-muted-color, oklch(0.955 0.001 286.76));
+  --bg-elevated: var(--bg-elevated-color, oklch(0.94 0.002 287.29));
+
+  --fg: oklch(0.146 0 0);
+  --fg-muted: oklch(0.398 0 0);
+  --fg-subtle: oklch(0.48 0 0);
+
+  --border: oklch(0.8514 0 0);
+  --border-subtle: oklch(0.922 0 0);
+  --border-hover: oklch(0.715 0 0);
+
+  --accent: var(--accent-color, oklch(0.145 0 0));
+  --accent-muted: var(--accent-color, oklch(0.205 0 0));
+
+  /* accent colors */
+  --swatch-coral: oklch(0.7 0.19 14.75);
+  --swatch-amber: oklch(0.8 0.25 84.429);
+  --swatch-emerald: oklch(0.7 0.17 166.95);
+  --swatch-sky: oklch(0.7 0.15 230.318);
+  --swatch-violet: oklch(0.7 0.17 286.067);
+  --swatch-magenta: oklch(0.75 0.18 330);
+
+  --syntax-fn: oklch(0.502 0.188 294.988);
+  --syntax-str: oklch(0.425 0.152 252);
+  --syntax-kw: oklch(0.588 0.193 20.469);
+  --syntax-comment: oklch(0.551 0.019 250.976);
+
+  --badge-blue: oklch(0.579 0.191 252);
+  --badge-yellow: oklch(0.588 0.183 91);
+  --badge-green: oklch(0.566 0.202 165);
+  --badge-indigo: oklch(0.457 0.24 277.023);
+  --badge-purple: oklch(0.495 0.172 295);
+  --badge-orange: oklch(0.67 0.185 55);
+  --badge-pink: oklch(0.584 0.189 343);
+  --badge-cyan: oklch(0.571 0.181 210);
+}
+
+:root[data-theme='light'][data-bg-theme='slate'] {
+  --bg: oklch(1 0 0);
+  --bg-subtle: oklch(0.982 0.008 269.62);
+  --bg-muted: oklch(0.96 0.008 261.234);
+  --bg-elevated: oklch(0.943 0.012 255.52);
+}
+
+:root[data-theme='light'][data-bg-theme='zinc'] {
+  --bg: oklch(1 0 0);
+  --bg-subtle: oklch(0.979 0.004 286.53);
+  --bg-muted: oklch(0.958 0.004 286.39);
+  --bg-elevated: oklch(0.939 0.004 286.32);
+}
+
+:root[data-theme='light'][data-bg-theme='stone'] {
+  --bg: oklch(1 0 0);
+  --bg-subtle: oklch(0.979 0.004 88.762);
+  --bg-muted: oklch(0.958 0.005 88.743);
+  --bg-elevated: oklch(0.943 0.005 88.731);
+}
+
+:root[data-theme='light'][data-bg-theme='black'] {
+  --bg-subtle: var(--bg-subtle-color, oklch(0.979 0 0));
+}
+
+@media (prefers-contrast: more) {
+  :root[data-theme='dark'] {
+    /* text colors */
+    --fg: oklch(1 0 0);
+    --fg-muted: oklch(0.769 0 0);
+    --fg-subtle: oklch(0.693 0 0);
+
+    /* border, separator colors */
+    --border: oklch(0.769 0 0);
+    --border-subtle: oklch(0.739 0 0);
+    --border-hover: oklch(0.771 0 0);
+  }
+
+  :root[data-theme='light'] {
+    /* text colors */
+    --fg: oklch(0 0 0);
+    --fg-muted: oklch(0.329 0 0);
+    --fg-subtle: oklch(0.4 0 0);
+
+    /* border, separator colors */
+    --border: oklch(0.3514 0 0);
+    --border-subtle: oklch(0.422 0 0);
+    --border-hover: oklch(0.315 0 0);
+  }
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Offset for fixed header - otherwise anchor headers are cutted */
+  scroll-padding-top: 5rem;
+  scrollbar-gutter: stable;
+}
+
+/*
+ * Enable CSS scroll-state container queries for the document
+ * This allows the footer to query the scroll state using pure CSS
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/@container#scroll-state_container_descriptors
+ */
+@supports (container-type: scroll-state) {
+  html {
+    container-type: scroll-state;
+  }
+}
+
+html[dir='rtl'] .rtl-flip {
+  transform: scale(-1, 1);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+}
+
+:focus-visible,
+:-moz-focusring {
+  /* weird Firefox behavior makes it necessary to add `!important` 
+  or otherwise the selector would need to be more specific,
+  which it explicitly should not be. */
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* Reset dd margin (browser default is margin-left: 40px) */
+dd {
+  margin: 0;
+}
+
+/* Reset button styles */
+button {
+  cursor: pointer;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--fg-muted);
+  color: var(--bg-subtle);
+}
+
+/* Scrollbar styling */
+* {
+  scrollbar-color: var(--border) var(--bg);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* Scrollbar styling for Firefox */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+  }
+}
+
+/* Shiki theme colors */
+html.light .shiki,
+html.light .shiki span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
+/* Inline code in package descriptions */
+p > span > code,
+.line-clamp-2 code {
+  @apply font-mono;
+  font-size: 0.85em;
+  background: var(--bg-muted);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+
+/* View transition for search box (includes / and input) */
+.search-box {
+  view-transition-name: search-box;
+}
+
+/* Safari search input fixes */
+input[type='search'] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+@media screen and (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Disable the default fade transition on page navigation */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* Customize the view transition animations for specific elements */
+::view-transition-old(search-box),
+::view-transition-new(search-box) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Locking the scroll whenever any of the modals are open */
+html:has(dialog:modal) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}

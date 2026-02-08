@@ -1,0 +1,37 @@
+{
+  "built_at": "generado {0}",
+  "alt_logo": "logo de npmx",
+  "connector": {
+    "modal": {
+      "connected_hint": "Ahora puedes administrar paquetes y organizaciones desde la interfaz web.",
+      "run_hint": "Ejecuta el conector en tu computadora para habilitar funciones de administración."
+    }
+  },
+  "about": {
+    "what_we_are": {
+      "admin_description": "También aspiramos a proporcionar una mejor {adminUi} para administrar tus paquetes, equipos y organizaciones — todo desde el navegador, impulsado por tu CLI de npm local."
+    }
+  },
+  "claim": {
+    "modal": {
+      "checking": "Verificando disponibilidad...",
+      "failed_to_check": "Error al verificar disponibilidad del nombre"
+    }
+  },
+  "package": {
+    "readme": {
+      "title": "Léame"
+    },
+    "access": {
+      "grant_button": "otorgar",
+      "cancel_grant": "Cancelar otorgar acceso",
+      "grant_access": "+ Otorgar acceso de equipo"
+    }
+  },
+  "compare": {
+    "no_dependency": {
+      "typeahead_description": "¡Compara contra no usar una dependencia! Aprobado por e18e.",
+      "tooltip_description": "¡Compara contra no usar una dependencia! La {link} mantiene una lista de paquetes que pueden ser reemplazados con APIs nativas o alternativas más simples."
+    }
+  }
+}
