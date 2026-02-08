@@ -33,6 +33,14 @@ export default defineNuxtConfig({
       redisRestUrl: process.env.UPSTASH_KV_REST_API_URL || process.env.KV_REST_API_URL || '',
       redisRestToken: process.env.UPSTASH_KV_REST_API_TOKEN || process.env.KV_REST_API_TOKEN || '',
     },
+    public: {
+      // Algolia npm-search index (maintained by Algolia & jsDelivr, used by yarnpkg.com et al.)
+      algolia: {
+        appId: 'OFCNCOG2CU',
+        apiKey: 'f54e21fa3a2a0160595bb058179bfb1e',
+        indexName: 'npm-search',
+      },
+    },
   },
 
   devtools: { enabled: true },
@@ -69,6 +77,12 @@ export default defineNuxtConfig({
     url: 'https://npmx.dev',
     name: 'npmx',
     description: 'A fast, modern browser for the npm registry',
+  },
+
+  router: {
+    options: {
+      scrollBehaviorType: 'smooth',
+    },
   },
 
   routeRules: {
@@ -120,7 +134,6 @@ export default defineNuxtConfig({
     entryImportMap: false,
     typescriptPlugin: true,
     viteEnvironmentApi: true,
-    viewTransition: true,
     typedPages: true,
   },
 

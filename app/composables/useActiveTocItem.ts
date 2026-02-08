@@ -1,13 +1,12 @@
 import type { TocItem } from '#shared/types/readme'
 import type { Ref } from 'vue'
-import { scrollToAnchor } from '~/utils/scrollToAnchor'
 
 /**
  * Composable for tracking the currently visible heading in a TOC.
  * Uses IntersectionObserver to detect which heading is at the top of the viewport.
  *
  * @param toc - Reactive array of TOC items
- * @returns Object containing activeId and scrollToHeading function
+ * @returns Object containing activeId
  * @public
  */
 export function useActiveTocItem(toc: Ref<TocItem[]>) {
@@ -16,12 +15,11 @@ export function useActiveTocItem(toc: Ref<TocItem[]>) {
   // Only run observer logic on client
   if (import.meta.server) {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    return { activeId, scrollToHeading: (_id: string) => {} }
+    return { activeId }
   }
 
   let observer: IntersectionObserver | null = null
   const headingElements = new Map<string, Element>()
-  let scrollCleanup: (() => void) | null = null
 
   const setupObserver = () => {
     // Clean up previous observer
@@ -92,84 +90,6 @@ export function useActiveTocItem(toc: Ref<TocItem[]>) {
     }
   }
 
-  // Scroll to a heading with observer disconnection during scroll
-  const scrollToHeading = (id: string) => {
-    if (!document.getElementById(id)) return
-
-    // Clean up any previous scroll monitoring
-    if (scrollCleanup) {
-      scrollCleanup()
-      scrollCleanup = null
-    }
-
-    // Immediately set activeId
-    activeId.value = id
-
-    // Disconnect observer to prevent interference during scroll
-    if (observer) {
-      observer.disconnect()
-    }
-
-    // Scroll, but do not update url until scroll ends
-    scrollToAnchor(id, { updateUrl: false })
-
-    const handleScrollEnd = () => {
-      history.replaceState(null, '', `#${id}`)
-      setupObserver()
-      scrollCleanup = null
-    }
-
-    // Check for scrollend support (Chrome 114+, Firefox 109+, Safari 18+)
-    const supportsScrollEnd = 'onscrollend' in window
-
-    if (supportsScrollEnd) {
-      window.addEventListener('scrollend', handleScrollEnd, { once: true })
-      scrollCleanup = () => window.removeEventListener('scrollend', handleScrollEnd)
-    } else {
-      // Fallback: use RAF polling for older browsers
-      let lastScrollY = window.scrollY
-      let stableFrames = 0
-      let rafId: number | null = null
-      const STABLE_THRESHOLD = 5 // Number of frames with no movement to consider settled
-
-      const checkScrollSettled = () => {
-        const currentScrollY = window.scrollY
-
-        if (Math.abs(currentScrollY - lastScrollY) < 1) {
-          stableFrames++
-          if (stableFrames >= STABLE_THRESHOLD) {
-            handleScrollEnd()
-            return
-          }
-        } else {
-          stableFrames = 0
-        }
-
-        lastScrollY = currentScrollY
-        rafId = requestAnimationFrame(checkScrollSettled)
-      }
-
-      rafId = requestAnimationFrame(checkScrollSettled)
-
-      scrollCleanup = () => {
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId)
-          rafId = null
-        }
-      }
-    }
-
-    // Safety timeout - reconnect observer after max scroll time
-    setTimeout(() => {
-      if (scrollCleanup) {
-        scrollCleanup()
-        scrollCleanup = null
-        history.replaceState(null, '', `#${id}`)
-        setupObserver()
-      }
-    }, 1000)
-  }
-
   // Set up observer when TOC changes
   watch(
     toc,
@@ -182,15 +102,11 @@ export function useActiveTocItem(toc: Ref<TocItem[]>) {
 
   // Clean up on unmount
   onUnmounted(() => {
-    if (scrollCleanup) {
-      scrollCleanup()
-      scrollCleanup = null
-    }
     if (observer) {
       observer.disconnect()
       observer = null
     }
   })
 
-  return { activeId, scrollToHeading }
+  return { activeId }
 }

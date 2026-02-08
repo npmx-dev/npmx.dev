@@ -139,17 +139,16 @@ function handleBlur() {
 
     <!-- Add package input -->
     <div v-if="packages.length < maxPackages" class="relative">
-      <div class="relative group">
+      <div class="relative group flex items-center">
         <label for="package-search" class="sr-only">
           {{ $t('compare.selector.search_label') }}
         </label>
         <span
-          class="absolute inset-y-0 start-3 flex items-center text-fg-subtle pointer-events-none group-focus-within:text-accent"
-          aria-hidden="true"
+          class="absolute inset-is-3 text-fg-subtle font-mono text-md pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
         >
-          <span class="i-carbon:search w-4 h-4" />
+          /
         </span>
-        <input
+        <InputBase
           id="package-search"
           v-model="inputValue"
           type="text"
@@ -158,7 +157,9 @@ function handleBlur() {
               ? $t('compare.selector.search_first')
               : $t('compare.selector.search_add')
           "
-          class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2.5 font-mono text-sm text-fg placeholder:text-fg-subtle motion-reduce:transition-none duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+          no-correct
+          size="medium"
+          class="w-full min-w-25 ps-7"
           aria-autocomplete="list"
           @focus="isInputFocused = true"
           @blur="handleBlur"

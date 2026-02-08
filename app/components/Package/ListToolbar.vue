@@ -30,6 +30,8 @@ const props = defineProps<{
   activeFilters: FilterChip[]
   /** When true, shows search-specific UI (relevance sort, no filters) */
   searchContext?: boolean
+  /** Sort keys to force-disable (e.g. when the current provider doesn't support them) */
+  disabledSortKeys?: SortKey[]
 }>()
 
 const { t } = useI18n()
@@ -58,17 +60,20 @@ const showingFiltered = computed(() => props.filteredCount !== props.totalCount)
 const currentSort = computed(() => parseSortOption(sortOption.value))
 
 // Get available sort keys based on context
+const disabledSet = computed(() => new Set(props.disabledSortKeys ?? []))
+
 const availableSortKeys = computed(() => {
+  const applyDisabled = (k: (typeof SORT_KEYS)[number]) => ({
+    ...k,
+    disabled: k.disabled || disabledSet.value.has(k.key),
+  })
+
   if (props.searchContext) {
-    // In search context: show relevance (enabled) and others (disabled)
-    return SORT_KEYS.filter(k => !k.searchOnly || k.key === 'relevance').map(k =>
-      Object.assign({}, k, {
-        disabled: k.key !== 'relevance',
-      }),
-    )
+    // In search context: show relevance + non-disabled sorts (downloads, updated, name)
+    return SORT_KEYS.filter(k => !k.searchOnly || k.key === 'relevance').map(applyDisabled)
   }
   // In org/user context: hide search-only sorts
-  return SORT_KEYS.filter(k => !k.searchOnly)
+  return SORT_KEYS.filter(k => !k.searchOnly).map(applyDisabled)
 })
 
 // Handle sort key change from dropdown
@@ -162,7 +167,7 @@ function getSortKeyLabelKey(key: SortKey): string {
             <select
               id="sort-select"
               :value="currentSort.key"
-              class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1.5 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover"
+              class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1.5 font-mono text-sm text-fg transition-colors duration-200 hover:border-border-hover"
               @change="handleSortKeyChange"
             >
               <option
@@ -182,9 +187,9 @@ function getSortKeyLabelKey(key: SortKey): string {
             </div>
           </div>
 
-          <!-- Sort direction toggle (hidden in search context) -->
+          <!-- Sort direction toggle -->
           <button
-            v-if="!searchContext"
+            v-if="!searchContext || currentSort.key !== 'relevance'"
             type="button"
             class="p-1.5 rounded border border-border bg-bg-subtle text-fg-muted hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             :aria-label="$t('filters.sort.toggle_direction')"

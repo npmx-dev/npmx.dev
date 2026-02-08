@@ -135,7 +135,14 @@ onKeyStroke(
       <span v-else class="hidden sm:block w-1" />
 
       <!-- Center: Search bar + nav items -->
-      <div class="flex-1 flex max-w-md md:gap-6" :class="{ 'hidden sm:flex': !isSearchExpanded }">
+      <div
+        class="flex-1 flex items-center md:gap-6"
+        :class="{
+          'hidden sm:flex': !isSearchExpanded,
+          'justify-end': isOnHomePage,
+          'justify-center': !isOnHomePage,
+        }"
+      >
         <!-- Search bar (hidden on mobile unless expanded) -->
         <SearchBox
           v-if="!isOnHomePage"

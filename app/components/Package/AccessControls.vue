@@ -281,7 +281,7 @@ watch(
           <button
             type="submit"
             :disabled="!selectedTeam || isGranting"
-            class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
+            class="px-3 py-2 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
           >
             {{ isGranting ? '…' : $t('package.access.grant_button') }}
           </button>

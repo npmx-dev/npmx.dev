@@ -89,14 +89,15 @@ watch(handleInput, newHandleInput => {
           >
             {{ $t('auth.modal.handle_label') }}
           </label>
-          <input
+          <InputBase
             id="handle-input"
             v-model="handleInput"
             type="text"
             name="handle"
             :placeholder="$t('auth.modal.handle_placeholder')"
-            v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 hover:border-fg-subtle focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+            no-correct
+            class="w-full"
+            size="medium"
           />
           <p v-if="errorMessage" class="text-red-500 text-xs mt-1" role="alert">
             {{ errorMessage }}
@@ -105,7 +106,7 @@ watch(handleInput, newHandleInput => {
 
         <details class="text-sm">
           <summary
-            class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200 focus-visible:(outline-2 outline-accent/70)"
+            class="text-fg-subtle hover:text-fg-muted transition-colors duration-200 focus-visible:(outline-2 outline-accent/70)"
           >
             {{ $t('auth.modal.what_is_atmosphere') }}
           </summary>

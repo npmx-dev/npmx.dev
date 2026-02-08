@@ -344,7 +344,7 @@ const previewPackageJson = computed(() => {
           <!-- Expandable package.json preview -->
           <details class="border border-border rounded-md overflow-hidden">
             <summary
-              class="px-3 py-2 text-sm text-fg-muted bg-bg-subtle cursor-pointer hover:text-fg transition-colors select-none"
+              class="px-3 py-2 text-sm text-fg-muted bg-bg-subtle hover:text-fg transition-colors select-none"
             >
               {{ $t('claim.modal.preview_json') }}
             </summary>
