@@ -211,11 +211,11 @@ export default defineNuxtConfig({
     srcDir: '.',
     filename: 'service-worker.ts',
     client: {
-      installPrompt: true,
       periodicSyncForUpdates: 3_600, // Check for updates every hour
     },
     injectManifest: {
       minify: process.env.VITE_DEV_PWA !== 'true',
+      sourcemap: process.env.VITE_DEV_PWA !== 'true',
       enableWorkboxModulesLogs: process.env.VITE_DEV_PWA === 'true' ? true : undefined,
       globPatterns: ['**/*.{js,json,css,html,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm}'],
       globIgnores: ['manifest**.webmanifest'],
