@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { JsrPackageInfo } from '#shared/types/jsr'
+import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 import type { PackageManagerId } from '~/utils/install-command'
 
 const props = defineProps<{
@@ -7,7 +8,7 @@ const props = defineProps<{
   requestedVersion?: string | null
   installVersionOverride?: string | null
   jsrInfo?: JsrPackageInfo | null
-  readmeHtml?: string | null
+  devDependencySuggestion?: DevDependencySuggestion | null
   typesPackageName?: string | null
   executableInfo?: { hasExecutable: boolean; primaryCommand?: string } | null
   createPackageInfo?: { packageName: string } | null
@@ -31,8 +32,8 @@ function getInstallPartsForPM(pmId: PackageManagerId) {
   })
 }
 
-const devDependencySuggestion = computed(() =>
-  getDevDependencySuggestion(props.packageName, props.readmeHtml),
+const devDependencySuggestion = computed(
+  () => props.devDependencySuggestion ?? { recommended: false as const },
 )
 
 function getDevInstallPartsForPM(pmId: PackageManagerId) {

@@ -5,7 +5,6 @@ import {
   getPackageSpecifier,
   getExecuteCommand,
   getExecuteCommandParts,
-  getDevDependencySuggestion,
   getDevDependencyFlag,
 } from '../../../../app/utils/install-command'
 import type { JsrPackageInfo } from '../../../../shared/types/jsr'
@@ -282,55 +281,6 @@ describe('install command generation', () => {
       const parts = getInstallCommandParts(options)
       const command = getInstallCommand(options)
       expect(parts.join(' ')).toBe(command)
-    })
-  })
-
-  describe('dev dependency suggestion heuristic', () => {
-    it('suggests dev dependency for known tooling packages', () => {
-      expect(getDevDependencySuggestion('eslint')).toEqual({
-        recommended: true,
-        reason: 'known-package',
-      })
-      expect(getDevDependencySuggestion('@types/node')).toEqual({
-        recommended: true,
-        reason: 'known-package',
-      })
-      expect(getDevDependencySuggestion('@typescript-eslint/parser')).toEqual({
-        recommended: true,
-        reason: 'known-package',
-      })
-    })
-
-    it('suggests dev dependency from README install command hints', () => {
-      const readmeHtml = '<p>Install with <code>npm install --save-dev some-tool</code></p>'
-
-      expect(getDevDependencySuggestion('some-tool', readmeHtml)).toEqual({
-        recommended: true,
-        reason: 'readme-hint',
-      })
-    })
-
-    it('suggests dev dependency from README --dev flag hints', () => {
-      const readmeHtml = '<p><code>yarn add --dev some-tool</code></p>'
-
-      expect(getDevDependencySuggestion('some-tool', readmeHtml)).toEqual({
-        recommended: true,
-        reason: 'readme-hint',
-      })
-    })
-
-    it('does not suggest dev dependency for runtime packages without hints', () => {
-      expect(getDevDependencySuggestion('react')).toEqual({
-        recommended: false,
-      })
-    })
-
-    it('does not suggest dev dependency when README hint targets a different package', () => {
-      const readmeHtml = '<p>Install with <code>yarn add -D bar</code></p>'
-
-      expect(getDevDependencySuggestion('foo', readmeHtml)).toEqual({
-        recommended: false,
-      })
     })
   })
 
