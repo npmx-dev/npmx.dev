@@ -36,12 +36,12 @@ const isChecking = computed(() => {
 })
 
 const mergedError = computed(() => {
-  return (
-    publishError.value ??
-    (checkError.value instanceof Error
-      ? checkError.value.message
-      : $t('claim.modal.failed_to_check'))
-  )
+  return checkResult !== null
+    ? null
+    : (publishError.value ??
+        (checkError.value instanceof Error
+          ? checkError.value.message
+          : $t('claim.modal.failed_to_check')))
 })
 
 const connectorModal = useModal('connector-modal')
