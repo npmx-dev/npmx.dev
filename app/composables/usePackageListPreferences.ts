@@ -11,18 +11,18 @@ import type {
 } from '#shared/types/preferences'
 import { DEFAULT_COLUMNS, DEFAULT_PREFERENCES } from '#shared/types/preferences'
 
+const STORAGE_KEY = 'npmx-list-prefs'
+
 /**
  * Composable for managing package list display preferences
  * Persists to localStorage and provides reactive state
- *
  */
 export function usePackageListPreferences() {
   const {
     data: preferences,
-    isHydrated,
     save,
     reset,
-  } = usePreferencesProvider<PackageListPreferences>(DEFAULT_PREFERENCES)
+  } = useLocalStorageHashProvider<PackageListPreferences>(STORAGE_KEY, DEFAULT_PREFERENCES)
 
   // Computed accessors for common properties
   const viewMode = computed({
@@ -90,7 +90,6 @@ export function usePackageListPreferences() {
   return {
     // Raw preferences
     preferences,
-    isHydrated,
 
     // Individual properties with setters
     viewMode,
