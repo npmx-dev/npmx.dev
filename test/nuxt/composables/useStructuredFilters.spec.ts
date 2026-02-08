@@ -186,6 +186,28 @@ describe('hasSearchOperators', () => {
   })
 })
 
+describe('keyword deduplication', () => {
+  it('deduplicates same keyword from kw: and keyword: operators', () => {
+    const result = parseSearchOperators('kw:react keyword:react')
+    expect(result.keywords).toEqual(['react'])
+  })
+
+  it('deduplicates case-insensitively', () => {
+    const result = parseSearchOperators('kw:React keyword:REACT kw:react')
+    expect(result.keywords).toEqual(['React'])
+  })
+
+  it('preserves different keywords', () => {
+    const result = parseSearchOperators('kw:react keyword:vue')
+    expect(result.keywords).toEqual(['react', 'vue'])
+  })
+
+  it('deduplicates within comma-separated values', () => {
+    const result = parseSearchOperators('kw:react,vue keyword:react,angular')
+    expect(result.keywords).toEqual(['react', 'vue', 'angular'])
+  })
+})
+
 describe('keyword clearing scenarios', () => {
   it('returns keywords when kw: operator is present', () => {
     const result = parseSearchOperators('test kw:react')

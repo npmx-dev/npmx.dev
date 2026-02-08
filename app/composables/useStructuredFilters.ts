@@ -75,6 +75,17 @@ export function parseSearchOperators(input: string): ParsedSearchOperators {
     result.text = cleanedText
   }
 
+  // Deduplicate keywords (case-insensitive)
+  if (result.keywords) {
+    const seen = new Set<string>()
+    result.keywords = result.keywords.filter(kw => {
+      const lower = kw.toLowerCase()
+      if (seen.has(lower)) return false
+      seen.add(lower)
+      return true
+    })
+  }
+
   return result
 }
 
@@ -83,6 +94,13 @@ export function parseSearchOperators(input: string): ParsedSearchOperators {
  */
 export function hasSearchOperators(parsed: ParsedSearchOperators): boolean {
   return !!(parsed.name?.length || parsed.description?.length || parsed.keywords?.length)
+}
+
+/**
+ * Escape special regex characters in a string
+ */
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 interface UseStructuredFiltersOptions {
@@ -140,7 +158,8 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
       const parsed = parseSearchOperators(value)
 
       filters.value.text = parsed.text ?? ''
-      filters.value.keywords = [...(parsed.keywords ?? [])]
+      // Deduplicate keywords (in case of both kw: and keyword: for same value)
+      filters.value.keywords = parsed.keywords ?? []
 
       // Note: We intentionally don't reset other filters (security, downloadRange, etc.)
       // as those are not typically driven by the search query string structure
@@ -423,7 +442,38 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
 
   function removeKeyword(keyword: string) {
     filters.value.keywords = filters.value.keywords.filter(k => k !== keyword)
-    const newQ = searchQuery.value.replace(new RegExp(`keyword:${keyword}($| )`, 'g'), '').trim()
+
+    // Need to handle both kw:xxx and keyword:xxx formats
+    // Also handle comma-separated values like kw:foo,bar,baz
+    let newQ = searchQuery.value
+
+    // First, try to remove standalone keyword:xxx or kw:xxx
+    // Match: (kw|keyword):value followed by space or end of string
+    newQ = newQ.replace(new RegExp(`\\b(?:kw|keyword):${escapeRegExp(keyword)}(?=\\s|$)`, 'gi'), '')
+
+    // Handle comma-separated values: remove the keyword from within a list
+    // e.g., "kw:foo,bar,baz" should become "kw:foo,baz" if removing "bar"
+    newQ = newQ.replace(
+      new RegExp(
+        `\\b((?:kw|keyword):)([^\\s]*,)?${escapeRegExp(keyword)}(,[^\\s]*)?(?=\\s|$)`,
+        'gi',
+      ),
+      (match, prefix, before, after) => {
+        const beforePart = before?.replace(/,$/, '') ?? ''
+        const afterPart = after?.replace(/^,/, '') ?? ''
+        if (!beforePart && !afterPart) {
+          // This was the only keyword in the operator
+          return ''
+        }
+        // Reconstruct with remaining keywords
+        const separator = beforePart && afterPart ? ',' : ''
+        return `${prefix}${beforePart}${separator}${afterPart}`
+      },
+    )
+
+    // Clean up any double spaces and trim
+    newQ = newQ.replace(/\s+/g, ' ').trim()
+
     router.replace({ query: { ...route.query, q: newQ || undefined } })
   }
 
