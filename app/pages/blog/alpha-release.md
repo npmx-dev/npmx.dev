@@ -107,4 +107,6 @@ start, Salma Alam-Naylor has put together
 to help you get started. Below this post, you'll also find a collection of articles written by contributors to the npmx
 project from a wide variety of perspectives and experiences.
 
-something something closing
+The alpha release of npmx is intentionally early. We want real-world feedback from _you_ to guide our roadmap and priorities. Try [npmx](https://npmx.dev) today, let us know what you think and share your use-cases and missing features at [chat.npmx.dev](https://chat.npmx.dev). [Open an issue on GitHub](https://github.com/npmx-dev/npmx.dev/issues) or submit a pull request, and [follow npmx.dev on Bluesky](https://bsky.app/profile/npmx.dex) to keep up to date with what we're working on.
+
+And thank you: thank you to every single human who has contributed to npmx so far, whether that's in the form of code, documentation, testing, community activities, and more. You are the people building npmx; you are the people building the future we want.
