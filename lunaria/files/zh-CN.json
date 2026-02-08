@@ -301,7 +301,8 @@
       "loading": "加载中…",
       "y_axis_label": "{granularity}下载量",
       "download_file": "下载 {fileType}",
-      "toggle_annotator": "切换标注工具"
+      "toggle_annotator": "切换标注工具",
+      "legend_estimation": "估算值"
     },
     "install_scripts": {
       "title": "安装脚本",
@@ -385,6 +386,11 @@
       "published": "最近发布",
       "name_asc": "名称（A-Z）",
       "name_desc": "名称（Z-A）"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
@@ -883,6 +889,10 @@
           "label": "每周下载量",
           "description": "每周下载次数"
         },
+        "totalLikes": {
+          "label": "点赞数",
+          "description": "点赞数量"
+        },
         "lastUpdated": {
           "label": "发布日期",
           "description": "此版本的发布日期"
@@ -927,6 +937,82 @@
   },
   "privacy_policy": {
     "title": "隐私政策",
-    "last_updated": "上次更新：{date}"
+    "last_updated": "上次更新：{date}",
+    "welcome": "欢迎使用 {app}。我们致力于保护你的隐私。本政策说明了我们收集哪些数据、如何使用这些数据以及你对自己信息的权利。",
+    "cookies": {
+      "what_are": {
+        "title": "什么是 Cookie？",
+        "p1": "Cookie 是你访问网站时存储在设备上的小型文本文件。其目的是通过记住某些偏好设置来增强你的浏览体验。"
+      },
+      "types": {
+        "title": "我们使用哪些 Cookie？",
+        "p1": "我们仅将 {bold} 用于网站功能严格必要的目的。我们不使用第三方或广告 Cookie。",
+        "bold": "必要的技术性 Cookie",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": "：",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "此 Cookie 由我们的托管提供商（Vercel）用于倾斜保护。它确保在你浏览时如果发布了新更新，你能从正确的部署版本获取资源。它不会追踪你。",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "这是我们的安全会话 Cookie。当你连接 Atmosphere 账户时，它存储 OAuth 访问令牌。它对于维护你的认证会话是必需的。"
+      },
+      "local_storage": {
+        "title": "本地存储",
+        "p1": "除了会话 Cookie，我们还使用浏览器的 {bold} 来保存你的显示偏好设置。这使我们能够记住你选择的主题（浅色/深色）和一些其他 {settings}，这样你就不需要每次访问时重新配置它们。",
+        "bold": "本地存储",
+        "p2": "这些信息纯粹是功能性的，仅存储在你的设备上，且 {bold2}。我们专门用它来改善你在我们网站上的体验。",
+        "bold2": "不包含个人数据，也不用于追踪你",
+        "settings": "设置"
+      },
+      "management": {
+        "title": "管理 Cookie",
+        "p1": "你可以根据偏好配置浏览器来接受、拒绝或删除 Cookie。但是请注意，{bold}。",
+        "bold": "拒绝必要 Cookie 可能会阻止对应用程序的完全访问",
+        "p2": "以下是常用浏览器中 Cookie 管理的说明链接：",
+        "chrome": "Google Chrome（在新窗口中打开）",
+        "firefox": "Mozilla Firefox（在新窗口中打开）",
+        "edge": "Microsoft Edge（在新窗口中打开）"
+      }
+    },
+    "analytics": {
+      "title": "分析",
+      "p1": "我们使用 {bold} 来了解访客如何使用我们的网站。这有助于我们改善用户体验并识别问题。",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics 在设计时就考虑了隐私：",
+      "li1": "它不使用 Cookie",
+      "li2": "它不收集个人标识符",
+      "li3": "它不跨网站追踪用户",
+      "li4": "所有数据都是汇总和匿名的",
+      "p3": "收集的唯一信息包括：页面 URL、引荐来源、国家/地区、设备类型、浏览器和操作系统。这些数据不能用于识别个人用户。"
+    },
+    "authenticated": {
+      "title": "已认证用户",
+      "p1": "当你将 {bold} 账户连接到 npmx 时，我们将你的 OAuth 访问令牌存储在安全的、仅限 HTTP 的会话 Cookie 中。此令牌仅用于代表你验证请求。",
+      "bold": "Atmosphere",
+      "p2": "我们不存储你的凭证，也不访问提供你使用的功能所必需的任何数据。你可以随时从 {settings} 页面断开账户连接。",
+      "settings": "设置"
+    },
+    "data_retention": {
+      "title": "数据保留",
+      "p1": "会话 Cookie 在你关闭浏览器或不活动一段时间后自动删除。本地存储偏好设置会一直保留在你的设备上，直到你清除浏览器数据。分析数据以汇总形式保留，无法与单个用户关联。"
+    },
+    "your_rights": {
+      "title": "你的权利",
+      "p1": "你有权：",
+      "li1": "访问关于我们收集哪些数据的信息",
+      "li2": "随时清除你的本地存储和 Cookie",
+      "li3": "断开你的认证会话",
+      "li4": "请求有关我们数据实践的信息",
+      "p2": "由于我们不收集个人数据，通常没有需要删除或导出的个人信息。"
+    },
+    "contact": {
+      "title": "联系我们",
+      "p1": "对于本隐私政策的任何问题或疑虑，你可以通过在我们的 {link} 上提交 issue 来联系我们。",
+      "link": "GitHub 仓库"
+    },
+    "changes": {
+      "title": "本政策的变更",
+      "p1": "我们可能会不时更新本隐私政策。任何更改都将发布在此页面上，并附有更新的修订日期。"
+    }
   }
 }
