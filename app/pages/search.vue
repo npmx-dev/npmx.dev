@@ -9,9 +9,6 @@ import { normalizeSearchParam } from '#shared/utils/url'
 const route = useRoute()
 const router = useRouter()
 
-// Search provider
-const { isAlgolia } = useSearchProvider()
-
 // Preferences (persisted to localStorage)
 const {
   viewMode,
@@ -760,15 +757,6 @@ defineOgImageComponent('Default', {
               <span v-if="status === 'pending'" class="text-fg-subtle">{{
                 $t('search.updating')
               }}</span>
-              <a
-                v-if="isAlgolia"
-                href="https://www.algolia.com/developers"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg-muted text-xs ms-2"
-              >
-                {{ $t('search.algolia_disclaimer') }}
-              </a>
             </p>
             <!-- Show "x of y packages" (paginated/table mode only) -->
             <p

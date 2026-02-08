@@ -17,16 +17,15 @@ useEventListener('keydown', event => {
 
 <template>
   <div ref="toggleRef" class="relative">
-    <button
-      type="button"
-      class="flex items-center justify-center w-8 h-8 rounded-md text-fg-subtle hover:text-fg hover:bg-bg-elevated transition-colors duration-200 focus-visible:outline-accent/70"
+    <ButtonBase
       :aria-label="$t('settings.search_provider')"
       :aria-expanded="isOpen"
       aria-haspopup="true"
+      size="small"
+      class="border-none w-8 h-8 !px-0 justify-center"
+      classicon="i-carbon:settings"
       @click="isOpen = !isOpen"
-    >
-      <span class="i-carbon:settings w-4 h-4" aria-hidden="true" />
-    </button>
+    />
 
     <Transition
       enter-active-class="transition-all duration-150"

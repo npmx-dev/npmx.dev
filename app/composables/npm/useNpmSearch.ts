@@ -6,7 +6,6 @@ import type {
   MinimalPackument,
 } from '#shared/types'
 import type { SearchProvider } from '~/composables/useSettings'
-import { searchAlgolia } from './useAlgoliaSearch'
 
 /**
  * Convert packument to search result format for display
@@ -58,6 +57,7 @@ export function useNpmSearch(
 ) {
   const { $npmRegistry } = useNuxtApp()
   const { searchProvider } = useSearchProvider()
+  const { search: searchAlgolia } = useAlgoliaSearch()
 
   // Client-side cache
   const cache = shallowRef<{

@@ -1,7 +1,6 @@
 import type { NuxtApp } from '#app'
 import type { NpmSearchResponse, NpmSearchResult, MinimalPackument } from '#shared/types'
 import { emptySearchResponse, packumentToSearchResult } from './useNpmSearch'
-import { searchAlgoliaByOwner } from './useAlgoliaSearch'
 import { mapWithConcurrency } from '#shared/utils/async'
 
 /**
@@ -86,6 +85,7 @@ async function fetchBulkDownloads(
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const { searchProvider } = useSearchProvider()
+  const { searchByOwner } = useAlgoliaSearch()
 
   const asyncData = useLazyAsyncData(
     () => `org-packages:${searchProvider.value}:${toValue(orgName)}`,
@@ -98,7 +98,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       // --- Algolia fast path ---
       if (searchProvider.value === 'algolia') {
         try {
-          return await searchAlgoliaByOwner(org)
+          return await searchByOwner(org)
         } catch {
           // Fall through to npm registry path on Algolia failure
         }

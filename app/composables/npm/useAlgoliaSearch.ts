@@ -6,18 +6,15 @@ import {
 } from 'algoliasearch/lite'
 
 /**
- * Algolia search client for npm packages.
- * Credentials and index name come from runtimeConfig.public.algolia.
+ * Singleton Algolia client, keyed by appId to handle config changes.
  */
 let _searchClient: LiteClient | null = null
 let _configuredAppId: string | null = null
 
-function getAlgoliaClient(): LiteClient {
-  const { algolia } = useRuntimeConfig().public
-  // Re-create client if app ID changed (shouldn't happen, but be safe)
-  if (!_searchClient || _configuredAppId !== algolia.appId) {
-    _searchClient = algoliasearch(algolia.appId, algolia.apiKey)
-    _configuredAppId = algolia.appId
+function getOrCreateClient(appId: string, apiKey: string): LiteClient {
+  if (!_searchClient || _configuredAppId !== appId) {
+    _searchClient = algoliasearch(appId, apiKey)
+    _configuredAppId = appId
   }
   return _searchClient
 }
@@ -125,70 +122,33 @@ export interface AlgoliaSearchOptions {
 }
 
 /**
- * Search npm packages via Algolia.
- * Returns results in the same NpmSearchResponse format as the npm registry API.
- */
-export async function searchAlgolia(
-  query: string,
-  options: AlgoliaSearchOptions = {},
-): Promise<NpmSearchResponse> {
-  const client = getAlgoliaClient()
-
-  const { results } = await client.search([
-    {
-      indexName: 'npm-search',
-      params: {
-        query,
-        offset: options.from,
-        length: options.size,
-        filters: options.filters || '',
-        analyticsTags: ['npmx.dev'],
-        attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
-        attributesToHighlight: [],
-      },
-    },
-  ])
-
-  const response = results[0] as SearchResponse<AlgoliaHit>
-
-  return {
-    isStale: false,
-    objects: response.hits.map(hitToSearchResult),
-    total: response.nbHits!,
-    time: new Date().toISOString(),
-  }
-}
-
-/**
- * Fetch all packages in an Algolia scope (org or user).
- * Uses facet filters for efficient server-side filtering.
+ * Composable that provides Algolia search functions for npm packages.
  *
- * For orgs: filters by `owner.name:orgname` which matches scoped packages.
- * For users: filters by `owner.name:username` which matches maintainer.
+ * Must be called during component setup (or inside another composable)
+ * because it reads from `useRuntimeConfig()`. The returned functions
+ * are safe to call at any time (event handlers, async callbacks, etc.).
  */
-export async function searchAlgoliaByOwner(
-  ownerName: string,
-  options: { maxResults?: number } = {},
-): Promise<NpmSearchResponse> {
-  const client = getAlgoliaClient()
-  const max = options.maxResults ?? 1000
+export function useAlgoliaSearch() {
+  const { algolia } = useRuntimeConfig().public
+  const client = getOrCreateClient(algolia.appId, algolia.apiKey)
+  const indexName = algolia.indexName
 
-  const allHits: AlgoliaHit[] = []
-  let offset = 0
-  const batchSize = 200
-
-  // Algolia supports up to 1000 results per query with offset/length pagination
-  while (offset < max) {
-    const length = Math.min(batchSize, max - offset)
-
+  /**
+   * Search npm packages via Algolia.
+   * Returns results in the same NpmSearchResponse format as the npm registry API.
+   */
+  async function search(
+    query: string,
+    options: AlgoliaSearchOptions = {},
+  ): Promise<NpmSearchResponse> {
     const { results } = await client.search([
       {
-        indexName: 'npm-search',
+        indexName,
         params: {
-          query: '',
-          offset,
-          length,
-          filters: `owner.name:${ownerName}`,
+          query,
+          offset: options.from,
+          length: options.size,
+          filters: options.filters || '',
           analyticsTags: ['npmx.dev'],
           attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
           attributesToHighlight: [],
@@ -196,21 +156,77 @@ export async function searchAlgoliaByOwner(
       },
     ])
 
-    const response = results[0] as SearchResponse<AlgoliaHit>
-    allHits.push(...response.hits)
-
-    // If we got fewer than requested, we've exhausted all results
-    if (response.hits.length < length || allHits.length >= response.nbHits!) {
-      break
+    const response = results[0] as SearchResponse<AlgoliaHit> | undefined
+    if (!response) {
+      return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
     }
 
-    offset += length
+    return {
+      isStale: false,
+      objects: response.hits.map(hitToSearchResult),
+      total: response.nbHits ?? 0,
+      time: new Date().toISOString(),
+    }
+  }
+
+  /**
+   * Fetch all packages for an Algolia owner (org or user).
+   * Uses `owner.name` filter for efficient server-side filtering.
+   */
+  async function searchByOwner(
+    ownerName: string,
+    options: { maxResults?: number } = {},
+  ): Promise<NpmSearchResponse> {
+    const max = options.maxResults ?? 1000
+
+    const allHits: AlgoliaHit[] = []
+    let offset = 0
+    const batchSize = 200
+
+    // Algolia supports up to 1000 results per query with offset/length pagination
+    while (offset < max) {
+      const length = Math.min(batchSize, max - offset)
+
+      const { results } = await client.search([
+        {
+          indexName,
+          params: {
+            query: '',
+            offset,
+            length,
+            filters: `owner.name:${ownerName}`,
+            analyticsTags: ['npmx.dev'],
+            attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
+            attributesToHighlight: [],
+          },
+        },
+      ])
+
+      const response = results[0] as SearchResponse<AlgoliaHit> | undefined
+      if (!response) break
+
+      allHits.push(...response.hits)
+
+      // If we got fewer than requested, we've exhausted all results
+      if (response.hits.length < length || allHits.length >= (response.nbHits ?? 0)) {
+        break
+      }
+
+      offset += length
+    }
+
+    return {
+      isStale: false,
+      objects: allHits.map(hitToSearchResult),
+      total: allHits.length,
+      time: new Date().toISOString(),
+    }
   }
 
   return {
-    isStale: false,
-    objects: allHits.map(hitToSearchResult),
-    total: allHits.length,
-    time: new Date().toISOString(),
+    /** Search packages by text query */
+    search,
+    /** Fetch all packages for an owner (org or user) */
+    searchByOwner,
   }
 }

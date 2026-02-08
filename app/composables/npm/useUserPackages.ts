@@ -1,6 +1,5 @@
 import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
 import { emptySearchResponse } from './useNpmSearch'
-import { searchAlgoliaByOwner } from './useAlgoliaSearch'
 
 /** Default page size for incremental loading (npm registry path) */
 const PAGE_SIZE = 50 as const
@@ -25,6 +24,7 @@ const MAX_RESULTS = 250
 export function useUserPackages(username: MaybeRefOrGetter<string>) {
   const { searchProvider } = useSearchProvider()
   const { $npmRegistry } = useNuxtApp()
+  const { searchByOwner } = useAlgoliaSearch()
 
   // --- Incremental loading state (npm path) ---
   const currentPage = shallowRef(1)
@@ -50,7 +50,13 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
       // --- Algolia: fetch all at once ---
       if (provider === 'algolia') {
         try {
-          const response = await searchAlgoliaByOwner(user)
+          const response = await searchByOwner(user)
+
+          // Guard against stale response (user/provider changed during await)
+          if (user !== toValue(username) || provider !== searchProvider.value) {
+            return emptySearchResponse
+          }
+
           cache.value = {
             username: user,
             objects: response.objects,
@@ -76,6 +82,11 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
         60,
       )
 
+      // Guard against stale response (user/provider changed during await)
+      if (user !== toValue(username) || provider !== searchProvider.value) {
+        return emptySearchResponse
+      }
+
       cache.value = {
         username: user,
         objects: response.objects,
@@ -89,7 +100,8 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
   // --- Fetch more (npm path only) ---
   async function fetchMore(): Promise<void> {
     const user = toValue(username)
-    if (!user || searchProvider.value !== 'npm') return
+    const provider = searchProvider.value
+    if (!user || provider !== 'npm') return
 
     if (cache.value && cache.value.username !== user) {
       cache.value = null
@@ -118,6 +130,9 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
         {},
         60,
       )
+
+      // Guard against stale response
+      if (user !== toValue(username) || provider !== searchProvider.value) return
 
       if (cache.value && cache.value.username === user) {
         const existingNames = new Set(cache.value.objects.map(obj => obj.package.name))
