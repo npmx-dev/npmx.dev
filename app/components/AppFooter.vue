@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, nextTick } from 'vue'
+import { onClickOutside, onKeyDown } from '@vueuse/core'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
@@ -13,25 +15,32 @@ const togglePopover = (e?: Event) => {
   showPopover.value = !showPopover.value
 }
 
-const onDocClick = (e: Event) => {
-  const t = e.target as Node
-  if (!popoverRef.value || !triggerRef.value) return
-  if (!popoverRef.value.contains(t) && !triggerRef.value.contains(t)) {
+onClickOutside(
+  popoverRef,
+  () => {
     showPopover.value = false
+  },
+  { ignore: [triggerRef] },
+)
+
+onKeyDown(
+  'Escape',
+  () => {
+    if (showPopover.value) showPopover.value = false
+  },
+  { dedupe: true },
+)
+
+const { activate, deactivate } = useFocusTrap(popoverRef, { allowOutsideClick: true })
+watch(showPopover, async open => {
+  if (open) {
+    await nextTick()
+    activate()
+    popoverRef.value?.focus?.()
+  } else {
+    deactivate()
+    triggerRef.value?.focus?.()
   }
-}
-
-const onKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape') showPopover.value = false
-}
-
-onMounted(() => {
-  document.addEventListener('click', onDocClick)
-  document.addEventListener('keydown', onKeydown)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener('click', onDocClick)
-  document.removeEventListener('keydown', onKeydown)
 })
 </script>
 
@@ -79,21 +88,22 @@ onBeforeUnmount(() => {
 
           <Teleport to="body">
             <Transition
-              enter-active-class="transition-opacity duration-150 motion-reduce:transition-none"
-              leave-active-class="transition-opacity duration-100 motion-reduce:transition-none"
+              enter-active-class="transition-opacity duration-0 motion-reduce:transition-none"
+              leave-active-class="transition-opacity duration-0 motion-reduce:transition-none"
               enter-from-class="opacity-0"
               leave-to-class="opacity-0"
             >
-              <div v-if="showPopover">
+              <div v-show="showPopover">
                 <div
-                  class="fixed inset-0 bg-bg-elevated/70 dark:bg-bg-elevated/90 z-40"
+                  class="fixed inset-0 bg-bg-elevated/70 dark:bg-bg-elevated/90 z-[9998]"
                   @click="showPopover = false"
                   aria-hidden="true"
                 ></div>
 
-                <div class="fixed inset-0 z-50 flex items-center justify-center">
+                <div class="fixed inset-0 z-[9999] flex items-center justify-center">
                   <div
                     ref="popoverRef"
+                    tabindex="-1"
                     class="mx-4 max-w-lg w-full p-6 bg-bg border border-border rounded-lg shadow-xl text-sm text-fg"
                     role="dialog"
                     :aria-label="$t('footer.keyboard_shortcuts')"
@@ -107,7 +117,7 @@ onBeforeUnmount(() => {
                         @click="showPopover = false"
                       >
                         <span aria-hidden="true" class="size-5 i-lucide-x" />
-                        <span class="sr-only">{{ $t('close') }}</span>
+                        <span class="sr-only">{{ $t('common.close') }}</span>
                       </button>
                     </div>
                     <p class="mb-2 font-mono text-fg-subtle">
