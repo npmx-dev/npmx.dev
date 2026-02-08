@@ -610,7 +610,7 @@ onKeyStroke(
             v-if="resolvedVersion"
             as="nav"
             :aria-label="$t('package.navigation')"
-            class="package-nav hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:left-50% max-sm:-translate-x-50% max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
+            class="package-nav hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-50% max-sm:-translate-x-50% max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
           >
             <LinkBase
               variant="button-secondary"
