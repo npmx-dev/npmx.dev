@@ -192,11 +192,11 @@
 */
 
 html {
+  @apply scroll-pt-20;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   /* Offset for fixed header - otherwise anchor headers are cutted */
-  scroll-padding-top: 5rem;
   scrollbar-gutter: stable;
 }
 

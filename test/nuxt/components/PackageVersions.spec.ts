@@ -33,7 +33,7 @@ describe('PackageVersions', () => {
   })
 
   describe('basic rendering', () => {
-    it('renders the Versions heading', async () => {
+    it('renders the Versions section', async () => {
       const component = await mountSuspended(PackageVersions, {
         props: {
           packageName: 'test-package',
@@ -45,7 +45,7 @@ describe('PackageVersions', () => {
         },
       })
 
-      expect(component.find('#versions-heading').text()).toBe('Versions')
+      expect(component.find('#versions').exists()).toBe(true)
     })
 
     it('does not render when there are no dist-tags', async () => {

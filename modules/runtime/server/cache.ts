@@ -710,12 +710,17 @@ export default defineNitroPlugin(nitroApp => {
   const originalFetch = globalThis.fetch
   const original$fetch = globalThis.$fetch
 
-  // Override native fetch for esm.sh requests
+  // Override native fetch for esm.sh requests and to inject test fixture responses
   globalThis.fetch = async (input: URL | RequestInfo, init?: RequestInit): Promise<Response> => {
     const urlStr =
       typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url
 
-    if (urlStr.startsWith('/') || urlStr.includes('woff') || urlStr.includes('fonts')) {
+    if (
+      urlStr.startsWith('/') ||
+      urlStr.startsWith('data:') ||
+      urlStr.includes('woff') ||
+      urlStr.includes('fonts')
+    ) {
       return await originalFetch(input, init)
     }
 

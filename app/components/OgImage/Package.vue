@@ -53,10 +53,12 @@ const { data: likes, refresh: refreshLikes } = useFetch(() => `/api/social/likes
 const { stars, refresh: refreshRepoMeta } = useRepoMeta(repositoryUrl)
 
 const formattedStars = computed(() =>
-  Intl.NumberFormat('en', {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(stars.value),
+  stars.value > 0
+    ? Intl.NumberFormat('en', {
+        notation: 'compact',
+        maximumFractionDigits: 1,
+      }).format(stars.value)
+    : '',
 )
 
 try {
@@ -75,6 +77,7 @@ try {
     class="h-full w-full flex flex-col justify-center px-20 bg-[#050505] text-[#fafafa] relative overflow-hidden"
   >
     <div class="relative z-10 flex flex-col gap-6">
+      <!-- Package name -->
       <div class="flex items-start gap-4">
         <div
           class="flex items-center justify-center w-16 h-16 p-4 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
@@ -107,6 +110,7 @@ try {
         </h1>
       </div>
 
+      <!-- Version -->
       <div
         class="flex items-center gap-5 text-4xl font-light text-[#a3a3a3]"
         style="font-family: 'Geist Sans', sans-serif"
@@ -122,6 +126,8 @@ try {
         >
           {{ resolvedVersion }}
         </span>
+
+        <!-- Downloads (if any) -->
         <span v-if="downloads" class="flex items-center gap-2">
           <svg
             width="30"
@@ -139,7 +145,9 @@ try {
           </svg>
           <span>{{ $n(downloads.downloads) }}/wk</span>
         </span>
-        <span v-if="pkg?.license" class="flex items-center gap-2">
+
+        <!-- License (if any) -->
+        <span v-if="pkg?.license" class="flex items-center gap-2" data-testid="license">
           <svg
             viewBox="0 0 32 32"
             :fill="primaryColor"
@@ -162,7 +170,9 @@ try {
             {{ pkg.license }}
           </span>
         </span>
-        <span class="flex items-center gap-2">
+
+        <!-- Stars (if any) -->
+        <span v-if="formattedStars" class="flex items-center gap-2" data-testid="stars">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 32 32"
@@ -179,7 +189,9 @@ try {
             {{ formattedStars }}
           </span>
         </span>
-        <span class="flex items-center gap-2">
+
+        <!-- Likes (if any) -->
+        <span v-if="likes.totalLikes > 0" class="flex items-center gap-2" data-testid="likes">
           <svg
             width="32"
             height="32"

@@ -72,7 +72,7 @@ const { copied: copiedReadme, copy: copyReadme } = useClipboard({
 
 // Track active TOC item based on scroll position
 const tocItems = computed(() => readmeData.value?.toc ?? [])
-const { activeId: activeTocId, scrollToHeading } = useActiveTocItem(tocItems)
+const { activeId: activeTocId } = useActiveTocItem(tocItems)
 
 // Check if package exists on JSR (only for scoped packages)
 const { data: jsrInfo } = useLazyFetch<JsrPackageInfo>(() => `/api/jsr/${packageName.value}`, {
@@ -1079,7 +1079,6 @@ onKeyStroke(
                 v-if="readmeData?.toc && readmeData.toc.length > 1"
                 :toc="readmeData.toc"
                 :active-id="activeTocId"
-                :scroll-to-heading="scrollToHeading"
               />
             </div>
           </ClientOnly>

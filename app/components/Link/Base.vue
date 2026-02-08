@@ -73,7 +73,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
   /></span>
   <NuxtLink
     v-else
-    class="group inline-flex gap-x-1 items-center justify-center"
+    class="group/link inline-flex gap-x-1 items-center justify-center"
     :class="{
       'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30': !isLinkAnchor && isLink,
       'font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200':
@@ -103,7 +103,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
     />
     <span
       v-else-if="isLinkAnchor && isLink"
-      class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      class="i-carbon:link w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-200"
       aria-hidden="true"
     />
     <kbd

@@ -18,6 +18,8 @@ export default defineConfig<ConfigOptions>({
     reuseExistingServer: false,
     timeout: 60_000,
   },
+  // We currently only test on one browser on one platform
+  snapshotPathTemplate: '{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}{ext}',
   use: {
     baseURL,
     trace: 'on-first-retry',
