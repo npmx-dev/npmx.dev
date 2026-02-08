@@ -307,9 +307,13 @@ export function useNpmSearch(
   )
 
   // Re-search when provider changes
-  watch(searchProvider, () => {
+  watch(searchProvider, async () => {
     cache.value = null
-    asyncData.refresh()
+    await asyncData.refresh()
+    const targetSize = toValue(options).size
+    if (targetSize) {
+      await fetchMore(targetSize)
+    }
   })
 
   // Computed data that uses cache

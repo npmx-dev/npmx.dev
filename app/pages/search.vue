@@ -915,7 +915,7 @@ defineOgImageComponent('Default', {
           </div>
 
           <!-- No results found -->
-          <div v-else-if="status !== 'pending'" role="status" class="py-12">
+          <div v-else-if="status === 'success' || status === 'error'" role="status" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.no_results', { query }) }}
             </p>
