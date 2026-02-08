@@ -69,11 +69,12 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
       'text-bg bg-fg': variant === 'button-primary',
       'bg-transparent text-fg': variant === 'button-secondary',
     }"
-    ><slot
-  /></span>
+  >
+    <slot />
+  </span>
   <NuxtLink
     v-else
-    class="group inline-flex gap-x-1 items-center justify-center"
+    class="group inline-flex gap-x-1 items-center justify-center rounded-sm focus-visible:(outline-2 outline-accent)"
     :class="{
       'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30': !isLinkAnchor && isLink,
       'font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200':
