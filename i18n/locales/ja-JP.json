@@ -285,23 +285,9 @@
     },
     "downloads": {
       "title": "週間ダウンロード数",
-      "date_range": "{start} から {end}",
-      "date_range_multiline": "{start}\nから {end}",
       "analyze": "ダウンロード数を分析",
       "community_distribution": "コミュニティの採用分布を表示",
-      "modal_title": "ダウンロード数",
-      "granularity": "粒度",
-      "granularity_daily": "日次",
-      "granularity_weekly": "週次",
-      "granularity_monthly": "月次",
-      "granularity_yearly": "年次",
-      "start_date": "開始日",
-      "end_date": "終了日",
-      "no_data": "ダウンロードデータはありません",
-      "loading": "読み込み中...",
-      "y_axis_label": "{granularity} ダウンロード数",
-      "download_file": "{fileType} をダウンロード",
-      "toggle_annotator": "アノテーターを切り替え"
+      "modal_title": "ダウンロード数"
     },
     "install_scripts": {
       "title": "インストールスクリプト",
@@ -385,6 +371,20 @@
       "published": "最近の公開",
       "name_asc": "名前順（A-Z）",
       "name_desc": "名前順（Z-A）"
+    },
+    "trends": {
+      "granularity": "粒度",
+      "granularity_daily": "日次",
+      "granularity_weekly": "週次",
+      "granularity_monthly": "月次",
+      "granularity_yearly": "年次",
+      "start_date": "開始日",
+      "end_date": "終了日",
+      "loading": "読み込み中...",
+      "date_range": "{start} から {end}",
+      "date_range_multiline": "{start}\nから {end}",
+      "download_file": "{fileType} をダウンロード",
+      "toggle_annotator": "アノテーターを切り替え"
     }
   },
   "connector": {

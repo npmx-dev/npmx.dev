@@ -284,13 +284,7 @@
       "show_more": "(show {count} more)",
       "show_less": "(show fewer)"
     },
-    "downloads": {
-      "title": "Weekly Downloads",
-      "date_range": "{start} to {end}",
-      "date_range_multiline": "{start}\nto {end}",
-      "analyze": "Analyze downloads",
-      "community_distribution": "View community adoption distribution",
-      "modal_title": "Downloads",
+    "trends": {
       "granularity": "Granularity",
       "granularity_daily": "Daily",
       "granularity_weekly": "Weekly",
@@ -298,12 +292,23 @@
       "granularity_yearly": "Yearly",
       "start_date": "Start",
       "end_date": "End",
-      "no_data": "No download data available",
       "loading": "Loading...",
-      "y_axis_label": "{granularity} downloads",
+      "date_range": "{start} to {end}",
+      "date_range_multiline": "{start}\nto {end}",
       "download_file": "Download {fileType}",
       "toggle_annotator": "Toggle annotator",
-      "legend_estimation": "Estimation"
+      "legend_estimation": "Estimation",
+      "no_data": "No data available",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Downloads"
+      }
+    },
+    "downloads": {
+      "title": "Weekly Downloads",
+      "analyze": "Analyze downloads",
+      "community_distribution": "View community adoption distribution",
+      "modal_title": "Downloads"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -934,6 +939,9 @@
         "types_none": "None",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "Up to you!"
+      },
+      "trends": {
+        "title": "Weekly Downloads"
       }
     }
   },

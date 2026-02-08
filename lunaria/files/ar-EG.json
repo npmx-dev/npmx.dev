@@ -284,23 +284,9 @@
     },
     "downloads": {
       "title": "التنزيلات الأسبوعية",
-      "date_range": "من {start} إلى {end}",
-      "date_range_multiline": "من {start}\nإلى {end}",
       "analyze": "تحليل التنزيلات",
       "community_distribution": "عرض توزيع تبنّي المجتمع",
-      "modal_title": "التنزيلات",
-      "granularity": "مستوى التفصيل",
-      "granularity_daily": "يومي",
-      "granularity_weekly": "أسبوعي",
-      "granularity_monthly": "شهري",
-      "granularity_yearly": "سنوي",
-      "start_date": "البداية",
-      "end_date": "النهاية",
-      "no_data": "لا تتوفر بيانات تنزيل",
-      "loading": "جارٍ التحميل…",
-      "y_axis_label": "تنزيلات {granularity}ة",
-      "download_file": "تنزيل {fileType}",
-      "toggle_annotator": "إظهار/إخفاء الشروح التوضيحية"
+      "modal_title": "التنزيلات"
     },
     "install_scripts": {
       "title": "سكربتات التثبيت",
@@ -384,6 +370,20 @@
       "published": "الأحدث نشرًا",
       "name_asc": "الاسم (A-Z)",
       "name_desc": "الاسم (Z-A)"
+    },
+    "trends": {
+      "granularity": "مستوى التفصيل",
+      "granularity_daily": "يومي",
+      "granularity_weekly": "أسبوعي",
+      "granularity_monthly": "شهري",
+      "granularity_yearly": "سنوي",
+      "start_date": "البداية",
+      "end_date": "النهاية",
+      "loading": "جارٍ التحميل…",
+      "date_range": "من {start} إلى {end}",
+      "date_range_multiline": "من {start}\nإلى {end}",
+      "download_file": "تنزيل {fileType}",
+      "toggle_annotator": "إظهار/إخفاء الشروح التوضيحية"
     }
   },
   "connector": {

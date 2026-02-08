@@ -216,22 +216,8 @@
     },
     "downloads": {
       "title": "Загрузки за неделю",
-      "date_range": "С {start} по {end}",
-      "date_range_multiline": "С {start}\nпо {end}",
       "analyze": "Анализировать загрузки",
-      "modal_title": "Загрузки",
-      "granularity": "Детализация",
-      "granularity_daily": "По дням",
-      "granularity_weekly": "По неделям",
-      "granularity_monthly": "По месяцам",
-      "granularity_yearly": "По годам",
-      "start_date": "Начало",
-      "end_date": "Конец",
-      "no_data": "Нет данных о загрузках",
-      "loading": "Загрузка...",
-      "y_axis_label": "{granularity} загрузки",
-      "download_file": "Скачать {fileType}",
-      "toggle_annotator": "Переключить аннотации"
+      "modal_title": "Загрузки"
     },
     "install_scripts": {
       "title": "Скрипты установки",
@@ -312,6 +298,20 @@
       "downloads": "Больше всего скачиваний",
       "name_asc": "Имя (А-Я)",
       "name_desc": "Имя (Я-А)"
+    },
+    "trends": {
+      "granularity": "Детализация",
+      "granularity_daily": "По дням",
+      "granularity_weekly": "По неделям",
+      "granularity_monthly": "По месяцам",
+      "granularity_yearly": "По годам",
+      "start_date": "Начало",
+      "end_date": "Конец",
+      "loading": "Загрузка...",
+      "date_range": "С {start} по {end}",
+      "date_range_multiline": "С {start}\nпо {end}",
+      "download_file": "Скачать {fileType}",
+      "toggle_annotator": "Переключить аннотации"
     }
   },
   "connector": {

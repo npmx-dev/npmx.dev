@@ -285,23 +285,9 @@
     },
     "downloads": {
       "title": "Wöchentliche Downloads",
-      "date_range": "{start} bis {end}",
-      "date_range_multiline": "{start}\nbis {end}",
       "analyze": "Downloads analysieren",
       "community_distribution": "Community-Adoptionsverteilung ansehen",
-      "modal_title": "Downloads",
-      "granularity": "Granularität",
-      "granularity_daily": "Täglich",
-      "granularity_weekly": "Wöchentlich",
-      "granularity_monthly": "Monatlich",
-      "granularity_yearly": "Jährlich",
-      "start_date": "Start",
-      "end_date": "Ende",
-      "no_data": "Keine Download-Daten verfügbar",
-      "loading": "Lädt...",
-      "y_axis_label": "{granularity} Downloads",
-      "download_file": "{fileType} herunterladen",
-      "toggle_annotator": "Annotation umschalten"
+      "modal_title": "Downloads"
     },
     "install_scripts": {
       "title": "Installationsskripte",
@@ -385,6 +371,20 @@
       "published": "Zuletzt veröffentlicht",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
+    },
+    "trends": {
+      "granularity": "Granularität",
+      "granularity_daily": "Täglich",
+      "granularity_weekly": "Wöchentlich",
+      "granularity_monthly": "Monatlich",
+      "granularity_yearly": "Jährlich",
+      "start_date": "Start",
+      "end_date": "Ende",
+      "loading": "Lädt...",
+      "date_range": "{start} bis {end}",
+      "date_range_multiline": "{start}\nbis {end}",
+      "download_file": "{fileType} herunterladen",
+      "toggle_annotator": "Annotation umschalten"
     }
   },
   "connector": {

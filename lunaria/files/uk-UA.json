@@ -219,22 +219,8 @@
     },
     "downloads": {
       "title": "Завантажень на тиждень",
-      "date_range": "{start} до {end}",
-      "date_range_multiline": "{start}\nдо {end}",
       "analyze": "Проаналізувати завантаження",
-      "modal_title": "Завантаження",
-      "granularity": "Детальність",
-      "granularity_daily": "Щоденно",
-      "granularity_weekly": "Щотижня",
-      "granularity_monthly": "Щомісячно",
-      "granularity_yearly": "Щороку",
-      "start_date": "Початок",
-      "end_date": "Кінець",
-      "no_data": "Дані завантажень недоступні",
-      "loading": "Завантаження...",
-      "y_axis_label": "Завантажень за {granularity}",
-      "download_file": "Завантажити {fileType}",
-      "toggle_annotator": "Перемикати анотатор"
+      "modal_title": "Завантаження"
     },
     "install_scripts": {
       "title": "Скрипти встановлення",
@@ -315,6 +301,20 @@
       "downloads": "Найбільше завантажено",
       "name_asc": "Ім'я (A-Z)",
       "name_desc": "Ім'я (Z-A)"
+    },
+    "trends": {
+      "granularity": "Детальність",
+      "granularity_daily": "Щоденно",
+      "granularity_weekly": "Щотижня",
+      "granularity_monthly": "Щомісячно",
+      "granularity_yearly": "Щороку",
+      "start_date": "Початок",
+      "end_date": "Кінець",
+      "loading": "Завантаження...",
+      "date_range": "{start} до {end}",
+      "date_range_multiline": "{start}\nдо {end}",
+      "download_file": "Завантажити {fileType}",
+      "toggle_annotator": "Перемикати анотатор"
     }
   },
   "connector": {

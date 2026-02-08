@@ -219,21 +219,8 @@
     },
     "downloads": {
       "title": "Heti letöltések",
-      "date_range": "{start} - {end}",
       "analyze": "Letöltések elemzése",
-      "modal_title": "Letöltések",
-      "granularity": "Bontás",
-      "granularity_daily": "Napi",
-      "granularity_weekly": "Heti",
-      "granularity_monthly": "Havi",
-      "granularity_yearly": "Éves",
-      "start_date": "Kezdet",
-      "end_date": "Vége",
-      "no_data": "Nincs elérhető letöltési adat",
-      "loading": "Betöltés...",
-      "y_axis_label": "{granularity} letöltések",
-      "download_file": "{fileType} letöltése",
-      "toggle_annotator": "Magyarázó kapcsolása"
+      "modal_title": "Letöltések"
     },
     "install_scripts": {
       "title": "Telepítő scriptek",
@@ -314,6 +301,19 @@
       "downloads": "Legtöbbször letöltött",
       "name_asc": "Név (A-Z)",
       "name_desc": "Név (Z-A)"
+    },
+    "trends": {
+      "granularity": "Bontás",
+      "granularity_daily": "Napi",
+      "granularity_weekly": "Heti",
+      "granularity_monthly": "Havi",
+      "granularity_yearly": "Éves",
+      "start_date": "Kezdet",
+      "end_date": "Vége",
+      "loading": "Betöltés...",
+      "date_range": "{start} - {end}",
+      "download_file": "{fileType} letöltése",
+      "toggle_annotator": "Magyarázó kapcsolása"
     }
   },
   "connector": {

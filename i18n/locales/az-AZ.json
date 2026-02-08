@@ -219,22 +219,8 @@
     },
     "downloads": {
       "title": "Həftəlik Endirmələr",
-      "date_range": "{start} - {end}",
-      "date_range_multiline": "{start}\n- {end}",
       "analyze": "Endirmələri təhlil et",
-      "modal_title": "Endirmələr",
-      "granularity": "Dərəcəlilik",
-      "granularity_daily": "Günlük",
-      "granularity_weekly": "Həftəlik",
-      "granularity_monthly": "Aylıq",
-      "granularity_yearly": "İllik",
-      "start_date": "Başlanğıc",
-      "end_date": "Son",
-      "no_data": "Endirmə məlumatı mövcud deyil",
-      "loading": "Yüklənir...",
-      "y_axis_label": "{granularity} endirmələr",
-      "download_file": "{fileType} endir",
-      "toggle_annotator": "Annotator keçid"
+      "modal_title": "Endirmələr"
     },
     "install_scripts": {
       "title": "Quraşdırma Skriptləri",
@@ -315,6 +301,20 @@
       "downloads": "Ən çox endirilən",
       "name_asc": "Ad (A-Z)",
       "name_desc": "Ad (Z-A)"
+    },
+    "trends": {
+      "granularity": "Dərəcəlilik",
+      "granularity_daily": "Günlük",
+      "granularity_weekly": "Həftəlik",
+      "granularity_monthly": "Aylıq",
+      "granularity_yearly": "İllik",
+      "start_date": "Başlanğıc",
+      "end_date": "Son",
+      "loading": "Yüklənir...",
+      "date_range": "{start} - {end}",
+      "date_range_multiline": "{start}\n- {end}",
+      "download_file": "{fileType} endir",
+      "toggle_annotator": "Annotator keçid"
     }
   },
   "connector": {

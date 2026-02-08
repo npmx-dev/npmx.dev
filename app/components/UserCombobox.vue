@@ -185,7 +185,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
           :key="username"
           role="option"
           :aria-selected="highlightedIndex === index"
-          class="px-2 py-1 font-mono text-sm cursor-pointer transition-colors duration-100"
+          class="px-2 py-1 font-mono text-sm transition-colors duration-100"
           :class="
             highlightedIndex === index
               ? 'bg-bg-muted text-fg'

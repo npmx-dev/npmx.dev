@@ -235,22 +235,8 @@
     },
     "downloads": {
       "title": "Unduhan Mingguan",
-      "date_range": "{start} sampai {end}",
-      "date_range_multiline": "{start}\nsampai {end}",
       "analyze": "Analisis unduhan",
-      "modal_title": "Unduhan",
-      "granularity": "Granularitas",
-      "granularity_daily": "Harian",
-      "granularity_weekly": "Mingguan",
-      "granularity_monthly": "Bulanan",
-      "granularity_yearly": "Tahunan",
-      "start_date": "Mulai",
-      "end_date": "Selesai",
-      "no_data": "Data unduhan tidak tersedia",
-      "loading": "Memuat...",
-      "y_axis_label": "Unduhan {granularity}",
-      "download_file": "Unduh {fileType}",
-      "toggle_annotator": "Ganti anotator"
+      "modal_title": "Unduhan"
     },
     "install_scripts": {
       "title": "Skrip Instalasi",
@@ -332,6 +318,20 @@
       "downloads": "Paling banyak diunduh",
       "name_asc": "Nama (A-Z)",
       "name_desc": "Nama (Z-A)"
+    },
+    "trends": {
+      "granularity": "Granularitas",
+      "granularity_daily": "Harian",
+      "granularity_weekly": "Mingguan",
+      "granularity_monthly": "Bulanan",
+      "granularity_yearly": "Tahunan",
+      "start_date": "Mulai",
+      "end_date": "Selesai",
+      "loading": "Memuat...",
+      "date_range": "{start} sampai {end}",
+      "date_range_multiline": "{start}\nsampai {end}",
+      "download_file": "Unduh {fileType}",
+      "toggle_annotator": "Ganti anotator"
     }
   },
   "connector": {

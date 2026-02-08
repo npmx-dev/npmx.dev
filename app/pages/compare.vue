@@ -243,7 +243,7 @@ useSeoMeta({
             id="comparison-heading"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
           >
-            {{ $t('package.downloads.title') }}
+            {{ $t('compare.facets.trends.title') }}
           </h2>
 
           <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />

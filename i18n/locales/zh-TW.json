@@ -282,23 +282,9 @@
     },
     "downloads": {
       "title": "每週下載量",
-      "date_range": "{start} 到 {end}",
-      "date_range_multiline": "{start}\n到 {end}",
       "analyze": "分析下載量",
       "community_distribution": "檢視社群採用分布",
-      "modal_title": "下載量",
-      "granularity": "週期",
-      "granularity_daily": "每日",
-      "granularity_weekly": "每週",
-      "granularity_monthly": "每月",
-      "granularity_yearly": "每年",
-      "start_date": "開始",
-      "end_date": "結束",
-      "no_data": "沒有下載資料",
-      "loading": "載入中…",
-      "y_axis_label": "{granularity} 下載量",
-      "download_file": "下載 {fileType}",
-      "toggle_annotator": "切換標註工具"
+      "modal_title": "下載量"
     },
     "install_scripts": {
       "title": "安裝腳本",
@@ -382,6 +368,20 @@
       "published": "最近發布",
       "name_asc": "名稱（A-Z）",
       "name_desc": "名稱（Z-A）"
+    },
+    "trends": {
+      "granularity": "週期",
+      "granularity_daily": "每日",
+      "granularity_weekly": "每週",
+      "granularity_monthly": "每月",
+      "granularity_yearly": "每年",
+      "start_date": "開始",
+      "end_date": "結束",
+      "loading": "載入中…",
+      "date_range": "{start} 到 {end}",
+      "date_range_multiline": "{start}\n到 {end}",
+      "download_file": "下載 {fileType}",
+      "toggle_annotator": "切換標註工具"
     }
   },
   "connector": {

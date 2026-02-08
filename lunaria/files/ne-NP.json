@@ -235,22 +235,8 @@
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड",
-      "date_range": "{start} देखि {end}",
-      "date_range_multiline": "{start}\nदेखि {end}",
       "analyze": "डाउनलोड विश्लेषण",
-      "modal_title": "डाउनलोडहरू",
-      "granularity": "सूक्ष्मता",
-      "granularity_daily": "दैनिक",
-      "granularity_weekly": "साप्ताहिक",
-      "granularity_monthly": "मासिक",
-      "granularity_yearly": "वार्षिक",
-      "start_date": "सुरु",
-      "end_date": "अन्त्य",
-      "no_data": "डाउनलोड डेटा उपलब्ध छैन",
-      "loading": "लोड हुँदैछ...",
-      "y_axis_label": "{granularity} डाउनलोड",
-      "download_file": "{fileType} डाउनलोड गर्नुहोस्",
-      "toggle_annotator": "एनोटेटर टगल गर्नुहोस्"
+      "modal_title": "डाउनलोडहरू"
     },
     "install_scripts": {
       "title": "इन्स्टल स्क्रिप्टहरू",
@@ -332,6 +318,20 @@
       "downloads": "धेरै डाउनलोड भएका",
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
+    },
+    "trends": {
+      "granularity": "सूक्ष्मता",
+      "granularity_daily": "दैनिक",
+      "granularity_weekly": "साप्ताहिक",
+      "granularity_monthly": "मासिक",
+      "granularity_yearly": "वार्षिक",
+      "start_date": "सुरु",
+      "end_date": "अन्त्य",
+      "loading": "लोड हुँदैछ...",
+      "date_range": "{start} देखि {end}",
+      "date_range_multiline": "{start}\nदेखि {end}",
+      "download_file": "{fileType} डाउनलोड गर्नुहोस्",
+      "toggle_annotator": "एनोटेटर टगल गर्नुहोस्"
     }
   },
   "connector": {

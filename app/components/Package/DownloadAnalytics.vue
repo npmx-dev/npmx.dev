@@ -895,10 +895,10 @@ function buildExportFilename(extension: string): string {
 }
 
 const granularityLabels = computed(() => ({
-  daily: $t('package.downloads.granularity_daily'),
-  weekly: $t('package.downloads.granularity_weekly'),
-  monthly: $t('package.downloads.granularity_monthly'),
-  yearly: $t('package.downloads.granularity_yearly'),
+  daily: $t('package.trends.granularity_daily'),
+  weekly: $t('package.trends.granularity_weekly'),
+  monthly: $t('package.trends.granularity_monthly'),
+  yearly: $t('package.trends.granularity_yearly'),
 }))
 
 function getGranularityLabel(granularity: ChartTimeGranularity) {
@@ -1321,10 +1321,10 @@ const chartConfig = computed(() => {
       userOptions: {
         buttons: { pdf: false, labels: false, fullscreen: false, table: false, tooltip: false },
         buttonTitles: {
-          csv: $t('package.downloads.download_file', { fileType: 'CSV' }),
-          img: $t('package.downloads.download_file', { fileType: 'PNG' }),
-          svg: $t('package.downloads.download_file', { fileType: 'SVG' }),
-          annotator: $t('package.downloads.toggle_annotator'),
+          csv: $t('package.trends.download_file', { fileType: 'CSV' }),
+          img: $t('package.trends.download_file', { fileType: 'PNG' }),
+          svg: $t('package.trends.download_file', { fileType: 'SVG' }),
+          annotator: $t('package.trends.toggle_annotator'),
         },
         callbacks: {
           img: ({ imageUri }: { imageUri: string }) => {
@@ -1332,7 +1332,7 @@ const chartConfig = computed(() => {
           },
           csv: (csvStr: string) => {
             const PLACEHOLDER_CHAR = '\0'
-            const multilineDateTemplate = $t('package.downloads.date_range_multiline', {
+            const multilineDateTemplate = $t('package.trends.date_range_multiline', {
               start: PLACEHOLDER_CHAR,
               end: PLACEHOLDER_CHAR,
             })
@@ -1360,8 +1360,9 @@ const chartConfig = computed(() => {
           fontSize: isMobile.value ? 24 : 16,
           color: pending.value ? colors.value.border : colors.value.fgSubtle,
           axis: {
-            yLabel: $t('package.downloads.y_axis_label', {
+            yLabel: $t('package.trends.y_axis_label', {
               granularity: getGranularityLabel(selectedGranularity.value),
+              facet: $t('package.trends.items.downloads'),
             }),
             xLabel: isMultiPackageMode.value ? '' : xAxisLabel.value, // for multiple series, names are displayed in the chart's legend
             yLabelOffsetX: 12,
@@ -1478,7 +1479,7 @@ const chartConfig = computed(() => {
             for="granularity"
             class="text-3xs font-mono text-fg-subtle tracking-wide uppercase"
           >
-            {{ $t('package.downloads.granularity') }}
+            {{ $t('package.trends.granularity') }}
           </label>
 
           <div
@@ -1490,10 +1491,18 @@ const chartConfig = computed(() => {
               :disabled="pending"
               class="w-full px-2.5 py-1.75 bg-bg-subtle font-mono text-sm text-fg outline-none appearance-none focus-visible:outline-accent/70"
             >
-              <option value="daily">{{ $t('package.downloads.granularity_daily') }}</option>
-              <option value="weekly">{{ $t('package.downloads.granularity_weekly') }}</option>
-              <option value="monthly">{{ $t('package.downloads.granularity_monthly') }}</option>
-              <option value="yearly">{{ $t('package.downloads.granularity_yearly') }}</option>
+              <option value="daily">
+                {{ $t('package.trends.granularity_daily') }}
+              </option>
+              <option value="weekly">
+                {{ $t('package.trends.granularity_weekly') }}
+              </option>
+              <option value="monthly">
+                {{ $t('package.trends.granularity_monthly') }}
+              </option>
+              <option value="yearly">
+                {{ $t('package.trends.granularity_yearly') }}
+              </option>
             </select>
           </div>
         </div>
@@ -1504,7 +1513,7 @@ const chartConfig = computed(() => {
               for="startDate"
               class="text-3xs font-mono text-fg-subtle tracking-wide uppercase"
             >
-              {{ $t('package.downloads.start_date') }}
+              {{ $t('package.trends.start_date') }}
             </label>
             <div
               class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
@@ -1522,7 +1531,7 @@ const chartConfig = computed(() => {
 
           <div class="flex flex-col gap-1">
             <label for="endDate" class="text-3xs font-mono text-fg-subtle tracking-wide uppercase">
-              {{ $t('package.downloads.end_date') }}
+              {{ $t('package.trends.end_date') }}
             </label>
             <div
               class="flex items-center gap-2 px-2.5 py-1.75 bg-bg-subtle border border-border rounded-md focus-within:(border-border-hover ring-2 ring-accent/70)"
@@ -1656,9 +1665,7 @@ const chartConfig = computed(() => {
                       stroke-linecap="round"
                     />
                   </svg>
-                  <span class="text-fg-subtle">{{
-                    $t('package.downloads.legend_estimation')
-                  }}</span>
+                  <span class="text-fg-subtle">{{ $t('package.trends.legend_estimation') }}</span>
                 </div>
               </div>
             </template>
@@ -1747,7 +1754,11 @@ const chartConfig = computed(() => {
       v-if="!chartData.dataset && !pending"
       class="min-h-[260px] flex items-center justify-center text-fg-subtle font-mono text-sm"
     >
-      {{ $t('package.downloads.no_data') }}
+      {{
+        $t('package.trends.no_data', {
+          facet: $t('package.trends.items.downloads'),
+        })
+      }}
     </div>
 
     <div
@@ -1756,7 +1767,7 @@ const chartConfig = computed(() => {
       aria-live="polite"
       class="absolute top-1/2 inset-is-1/2 -translate-x-1/2 -translate-y-1/2 text-xs text-fg-subtle font-mono bg-bg/70 backdrop-blur px-3 py-2 rounded-md border border-border"
     >
-      {{ $t('package.downloads.loading') }}
+      {{ $t('package.trends.loading') }}
     </div>
   </div>
 </template>

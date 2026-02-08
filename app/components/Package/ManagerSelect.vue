@@ -150,7 +150,7 @@ function handleKeydown(event: KeyboardEvent) {
           :key="pm.id"
           role="option"
           :aria-selected="selectedPM === pm.id"
-          class="flex items-center gap-2 px-3 py-1.5 font-mono text-xs cursor-pointer transition-colors duration-150"
+          class="flex items-center gap-2 px-3 py-1.5 font-mono text-xs transition-colors duration-150"
           :class="[
             selectedPM === pm.id ? 'text-fg' : 'text-fg-subtle',
             highlightedIndex === index ? 'bg-bg-elevated' : 'hover:bg-bg-elevated',
