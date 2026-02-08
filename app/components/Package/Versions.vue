@@ -19,6 +19,35 @@ const props = defineProps<{
   time: Record<string, string>
 }>()
 
+const chartModal = useModal('chart-modal')
+const hasDistributionModalTransitioned = shallowRef(false)
+const isDistributionModalOpen = shallowRef(false)
+
+async function openDistributionModal() {
+  isDistributionModalOpen.value = true
+  hasDistributionModalTransitioned.value = false
+  // ensure the component renders before opening the dialog
+  await nextTick()
+  await nextTick()
+  chartModal.open()
+
+  // Fallback: Force mount if transition event doesn't fire
+  setTimeout(() => {
+    if (!hasDistributionModalTransitioned.value) {
+      hasDistributionModalTransitioned.value = true
+    }
+  }, 500)
+}
+
+function closeDistributionModal() {
+  isDistributionModalOpen.value = false
+  hasDistributionModalTransitioned.value = false
+}
+
+function handleDistributionModalTransitioned() {
+  hasDistributionModalTransitioned.value = true
+}
+
 /** Maximum number of dist-tag rows to show before collapsing into "Other versions" */
 const MAX_VISIBLE_TAGS = 10
 
@@ -304,14 +333,15 @@ function getTagVersions(tag: string): VersionDisplay[] {
     id="versions"
   >
     <template #actions>
-      <LinkBase
-        variant="button-secondary"
-        :to="`https://majors.nullvoxpopuli.com/q?packages=${packageName}`"
+      <ButtonBase
+        variant="secondary"
+        class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
         :title="$t('package.downloads.community_distribution')"
         classicon="i-carbon:load-balancer-network"
+        @click="openDistributionModal"
       >
         <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
-      </LinkBase>
+      </ButtonBase>
     </template>
     <div class="space-y-0.5 min-w-0">
       <!-- Dist-tag rows (limited to MAX_VISIBLE_TAGS) -->
@@ -756,4 +786,41 @@ function getTagVersions(tag: string): VersionDisplay[] {
       </div>
     </div>
   </CollapsibleSection>
+
+  <!-- Version Distribution Modal -->
+  <PackageChartModal
+    v-if="isDistributionModalOpen"
+    title-key="package.versions.distribution_modal_title"
+    @close="closeDistributionModal"
+    @transitioned="handleDistributionModalTransitioned"
+  >
+    <!-- The Chart is mounted after the dialog has transitioned -->
+    <!-- This avoids flaky behavior and ensures proper modal lifecycle -->
+    <Transition name="opacity" mode="out-in">
+      <PackageVersionDistribution
+        v-if="hasDistributionModalTransitioned"
+        :package-name="packageName"
+        :in-modal="true"
+      />
+    </Transition>
+
+    <!-- This placeholder bears the same dimensions as the VersionDistribution component -->
+    <!-- Avoids CLS when the dialog has transitioned -->
+    <div
+      v-if="!hasDistributionModalTransitioned"
+      class="w-full aspect-[287/612] sm:aspect-[718/512]"
+    />
+  </PackageChartModal>
 </template>
+
+<style scoped>
+.opacity-enter-active,
+.opacity-leave-active {
+  transition: opacity 200ms ease;
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
+}
+</style>

@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import TooltipApp from '~/components/Tooltip/App.vue'
+
 defineProps<{
   label?: string
   description?: string
-  class?: string
+  tooltip?: string
+  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right'
+  class?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
 }>()
 
 const checked = defineModel<boolean>({
@@ -13,13 +17,21 @@ const checked = defineModel<boolean>({
 <template>
   <button
     type="button"
-    class="w-full flex items-center justify-between gap-4 group focus-visible:outline-none py-1 -my-1"
+    class="w-full flex items-center justify-start gap-3 group focus-visible:outline-none py-1 -my-1"
     role="switch"
     :aria-checked="checked"
     @click="checked = !checked"
     :class="class"
   >
-    <span v-if="label" class="text-sm text-fg font-medium text-start">
+    <TooltipApp v-if="tooltip && label" :text="tooltip" :position="tooltipPosition ?? 'top'">
+      <span class="text-sm font-mono text-fg group-hover:text-fg/80 transition-colors select-none">
+        {{ label }}
+      </span>
+    </TooltipApp>
+    <span
+      v-else-if="label"
+      class="text-sm font-mono text-fg group-hover:text-fg/80 transition-colors select-none"
+    >
       {{ label }}
     </span>
     <span
