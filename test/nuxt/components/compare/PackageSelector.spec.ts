@@ -1,7 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ref } from 'vue'
+import { flushPromises } from '@vue/test-utils'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageSelector from '~/components/Compare/PackageSelector.vue'
+
+// Mock checkPackageExists
+vi.mock('~/utils/package-name', () => ({
+  checkPackageExists: vi.fn(),
+}))
+
+import { checkPackageExists } from '~/utils/package-name'
+const mockCheckPackageExists = vi.mocked(checkPackageExists)
 
 // Mock $fetch for useNpmSearch
 const mockFetch = vi.fn()
@@ -10,6 +19,7 @@ vi.stubGlobal('$fetch', mockFetch)
 describe('PackageSelector', () => {
   beforeEach(() => {
     mockFetch.mockReset()
+    mockCheckPackageExists.mockReset()
     mockFetch.mockResolvedValue({
       objects: [
         { package: { name: 'lodash', description: 'Lodash modular utilities' } },
@@ -18,6 +28,7 @@ describe('PackageSelector', () => {
       total: 2,
       time: new Date().toISOString(),
     })
+    mockCheckPackageExists.mockResolvedValue(true)
   })
 
   describe('selected packages display', () => {
@@ -132,7 +143,9 @@ describe('PackageSelector', () => {
   })
 
   describe('adding packages', () => {
-    it('adds package on Enter key', async () => {
+    it('adds package on Enter key when package exists', async () => {
+      mockCheckPackageExists.mockResolvedValue(true)
+
       const component = await mountSuspended(PackageSelector, {
         props: {
           modelValue: [],
@@ -142,6 +155,7 @@ describe('PackageSelector', () => {
       const input = component.find('input')
       await input.setValue('lodash')
       await input.trigger('keydown', { key: 'Enter' })
+      await flushPromises()
 
       const emitted = component.emitted('update:modelValue')
       expect(emitted).toBeTruthy()
@@ -165,6 +179,8 @@ describe('PackageSelector', () => {
     })
 
     it('clears input after adding package', async () => {
+      mockCheckPackageExists.mockResolvedValue(true)
+
       const component = await mountSuspended(PackageSelector, {
         props: {
           modelValue: [],
@@ -174,9 +190,29 @@ describe('PackageSelector', () => {
       const input = component.find('input')
       await input.setValue('lodash')
       await input.trigger('keydown', { key: 'Enter' })
+      await flushPromises()
 
       // Input should be cleared
       expect((input.element as HTMLInputElement).value).toBe('')
+    })
+
+    it('does not add non-existent packages', async () => {
+      mockCheckPackageExists.mockResolvedValue(false)
+
+      const component = await mountSuspended(PackageSelector, {
+        props: {
+          modelValue: [],
+        },
+      })
+
+      const input = component.find('input')
+      await input.setValue('nonexistent-pkg')
+      await input.trigger('keydown', { key: 'Enter' })
+      await flushPromises()
+
+      const emitted = component.emitted('update:modelValue')
+      expect(emitted).toBeFalsy()
+      expect(component.find('[role="alert"]').exists()).toBe(true)
     })
 
     it('does not add duplicate packages', async () => {

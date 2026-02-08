@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
+import { checkPackageExists } from '~/utils/package-name'
 
 const packages = defineModel<string[]>({ required: true })
 
@@ -13,6 +14,12 @@ const maxPackages = computed(() => props.max ?? 4)
 // Input state
 const inputValue = shallowRef('')
 const isInputFocused = shallowRef(false)
+const isCheckingPackage = shallowRef(false)
+const packageError = shallowRef('')
+
+watch(inputValue, () => {
+  packageError.value = ''
+})
 
 // Use the shared npm search composable
 const { data: searchData, status } = useNpmSearch(inputValue, { size: 15 })
@@ -76,19 +83,42 @@ function removePackage(name: string) {
   packages.value = packages.value.filter(p => p !== name)
 }
 
-function handleKeydown(e: KeyboardEvent) {
-  const inputValueTrim = inputValue.value.trim()
-  const hasMatchInPackages = filteredResults.value.find(result => {
-    return result.name === inputValueTrim
-  })
+async function handleKeydown(e: KeyboardEvent) {
+  if (e.key !== 'Enter' || !inputValue.value.trim() || isCheckingPackage.value) return
+  e.preventDefault()
 
-  if (e.key === 'Enter' && inputValueTrim) {
-    e.preventDefault()
-    if (showNoDependencyOption.value) {
-      addPackage(NO_DEPENDENCY_ID)
-    } else if (hasMatchInPackages) {
-      addPackage(inputValueTrim)
+  const name = inputValue.value.trim()
+  if (packages.value.length >= maxPackages.value) return
+  if (packages.value.includes(name)) return
+
+  // Easter egg: "no dependency" option
+  if (showNoDependencyOption.value) {
+    addPackage(NO_DEPENDENCY_ID)
+    return
+  }
+
+  // If it matches a dropdown result, add immediately (already confirmed to exist)
+  const exactMatch = filteredResults.value.find(r => r.name === name)
+  if (exactMatch) {
+    addPackage(exactMatch.name)
+    return
+  }
+
+  // Otherwise, verify it exists on npm
+  isCheckingPackage.value = true
+  packageError.value = ''
+  try {
+    const exists = await checkPackageExists(name)
+    if (name !== inputValue.value.trim()) return // stale guard
+    if (exists) {
+      addPackage(name)
+    } else {
+      packageError.value = `Package "${name}" was not found on npm.`
     }
+  } catch {
+    packageError.value = 'Could not verify package. Please try again.'
+  } finally {
+    isCheckingPackage.value = false
   }
 }
 
@@ -147,7 +177,8 @@ function handleBlur() {
           class="absolute inset-y-0 start-3 flex items-center text-fg-subtle pointer-events-none group-focus-within:text-accent"
           aria-hidden="true"
         >
-          <span class="i-carbon:search w-4 h-4" />
+          <span v-if="isCheckingPackage" class="i-carbon:renew w-4 h-4 animate-spin" />
+          <span v-else class="i-carbon:search w-4 h-4" />
         </span>
         <input
           id="package-search"
@@ -158,7 +189,8 @@ function handleBlur() {
               ? $t('compare.selector.search_first')
               : $t('compare.selector.search_add')
           "
-          class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2.5 font-mono text-sm text-fg placeholder:text-fg-subtle motion-reduce:transition-none duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+          :disabled="isCheckingPackage"
+          class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2.5 font-mono text-sm text-fg placeholder:text-fg-subtle motion-reduce:transition-none duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70) disabled:opacity-60 disabled:cursor-wait"
           aria-autocomplete="list"
           @focus="isInputFocused = true"
           @blur="handleBlur"
@@ -214,6 +246,11 @@ function handleBlur() {
           </button>
         </div>
       </Transition>
+
+      <!-- Package not found error -->
+      <p v-if="packageError" class="text-xs text-red-400 mt-1" role="alert">
+        {{ packageError }}
+      </p>
     </div>
 
     <!-- Hint -->
