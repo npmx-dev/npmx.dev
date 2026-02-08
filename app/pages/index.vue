@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
-import {
-  getHighestSeverity,
-  SEVERITY_COLORS,
-  SEVERITY_TEXT_COLORS,
-} from '#shared/utils/severity.ts'
 
 const searchQuery = shallowRef('')
 const searchInputRef = useTemplateRef('searchInputRef')
@@ -66,57 +61,6 @@ defineOgImageComponent('Default', {
         >
           {{ $t('tagline') }}
         </p>
-
-        <LinkBase
-          to="#"
-          class="shrink-0"
-          :class="SEVERITY_TEXT_COLORS.critical"
-          title="arrgggg"
-          classicon="i-carbon:security"
-        >
-          <span>{{ $t('package.dependencies.view_vulnerabilities') }}</span>
-        </LinkBase>
-
-        <LinkBase
-          to="#"
-          class="shrink-0"
-          :class="SEVERITY_TEXT_COLORS.high"
-          title="arrgggg"
-          classicon="i-carbon:security"
-        >
-          <span>{{ $t('package.dependencies.view_vulnerabilities') }}</span>
-        </LinkBase>
-
-        <LinkBase
-          to="#"
-          class="shrink-0"
-          :class="SEVERITY_TEXT_COLORS.moderate"
-          title="arrgggg"
-          classicon="i-carbon:security"
-        >
-          <span>{{ $t('package.dependencies.view_vulnerabilities') }}</span>
-        </LinkBase>
-
-        <LinkBase
-          to="#"
-          class="shrink-0"
-          :class="SEVERITY_TEXT_COLORS.low"
-          title="arrgggg"
-          classicon="i-carbon:security"
-        >
-          <span>{{ $t('package.dependencies.view_vulnerabilities') }}</span>
-        </LinkBase>
-
-        <LinkBase
-          to="#"
-          class="shrink-0"
-          :class="SEVERITY_TEXT_COLORS.unknown"
-          title="arrgggg"
-          classicon="i-carbon:security"
-        >
-          <span>{{ $t('package.dependencies.view_vulnerabilities') }}</span>
-        </LinkBase>
-
         <search
           class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
