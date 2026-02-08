@@ -13,6 +13,7 @@
     "build": "nuxt build",
     "build:lunaria": "node ./lunaria/lunaria.ts",
     "build:test": "NODE_ENV=test pnpm build",
+    "build:local:pwa": "VITE_DEV_PWA=true nuxt build",
     "dev": "nuxt dev",
     "dev:pwa": "VITE_DEV_PWA=true nuxt dev",
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
