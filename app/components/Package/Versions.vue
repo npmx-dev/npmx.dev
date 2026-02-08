@@ -642,12 +642,11 @@ function getTagVersions(tag: string): VersionDisplay[] {
               <div v-else class="py-1">
                 <div class="flex items-center justify-between gap-2">
                   <div class="flex items-center gap-2 min-w-0">
-                    <span class="w-4 shrink-0" />
                     <LinkBase
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
                       variant="link-block"
-                      class="text-xs"
+                      class="text-xs ms-6"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 hover:text-red-300'
