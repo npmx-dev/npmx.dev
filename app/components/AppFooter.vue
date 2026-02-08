@@ -25,8 +25,11 @@ onClickOutside(
 
 onKeyDown(
   'Escape',
-  () => {
-    if (showPopover.value) showPopover.value = false
+  (e: KeyboardEvent) => {
+    if (!showPopover.value) return
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    showPopover.value = false
   },
   { dedupe: true },
 )
