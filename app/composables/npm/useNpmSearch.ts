@@ -2,41 +2,50 @@ import type { NpmSearchResponse, PackageMetaResponse } from '#shared/types'
 import { emptySearchResponse, metaToSearchResult } from './search-utils'
 
 export interface NpmSearchOptions {
-  /** Number of results */
   size?: number
-  /** Offset for pagination */
   from?: number
 }
 
+async function checkOrgExists(name: string): Promise<boolean> {
+  try {
+    const scopePrefix = `@${name.toLowerCase()}/`
+    const response = await $fetch<{
+      total: number
+      objects: Array<{ package: { name: string } }>
+    }>(`${NPM_REGISTRY}/-/v1/search`, { query: { text: `@${name}`, size: 5 } })
+    return response.objects.some(obj => obj.package.name.toLowerCase().startsWith(scopePrefix))
+  } catch {
+    return false
+  }
+}
+
+async function checkUserExists(name: string): Promise<boolean> {
+  try {
+    const response = await $fetch<{ total: number }>(`${NPM_REGISTRY}/-/v1/search`, {
+      query: { text: `maintainer:${name}`, size: 1 },
+    })
+    return response.total > 0
+  } catch {
+    return false
+  }
+}
+
 /**
- * Composable that provides npm registry search functions.
- *
- * Mirrors the API shape of `useAlgoliaSearch` so that `useSearch` can
- * swap between providers without branching on implementation details.
- *
- * Must be called during component setup (or inside another composable)
- * because it reads from `useNuxtApp()`. The returned functions are safe
- * to call at any time (event handlers, async callbacks, etc.).
+ * Composable providing npm registry search.
+ * Must be called during component setup.
  */
 export function useNpmSearch() {
   const { $npmRegistry } = useNuxtApp()
 
   /**
-   * Search npm packages via the npm registry API.
-   * Returns results in the same `NpmSearchResponse` format as `useAlgoliaSearch`.
-   *
-   * Single-character queries are handled specially: they fetch lightweight
-   * metadata from a server-side proxy instead of a search, because the
-   * search API returns poor results for single-char terms. The proxy
-   * fetches the full packument + download counts server-side and returns
-   * only the fields needed for package cards.
+   * Search npm packages. Single-character queries fetch lightweight metadata
+   * via a server proxy since the search API returns poor results for them.
    */
   async function search(
     query: string,
     options: NpmSearchOptions = {},
     signal?: AbortSignal,
   ): Promise<NpmSearchResponse> {
-    // Single-character: fetch lightweight metadata via server proxy
     if (query.length === 1) {
       try {
         const meta = await $fetch<PackageMetaResponse>(
@@ -57,7 +66,6 @@ export function useNpmSearch() {
       }
     }
 
-    // Standard search
     const params = new URLSearchParams()
     params.set('text', query)
     params.set('size', String(options.size ?? 25))
@@ -75,7 +83,8 @@ export function useNpmSearch() {
   }
 
   return {
-    /** Search packages by text query */
     search,
+    checkOrgExists,
+    checkUserExists,
   }
 }

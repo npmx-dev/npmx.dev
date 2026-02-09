@@ -259,7 +259,7 @@ onKeyStroke(
           class="border-none"
           variant="button-secondary"
           :to="link.to"
-          :keyshortcut="link.keyshortcut"
+          :aria-keyshortcuts="link.keyshortcut"
         >
           {{ link.label }}
         </LinkBase>
@@ -270,7 +270,7 @@ onKeyStroke(
       <!-- Mobile: Menu button (always visible, click to open menu) -->
       <ButtonBase
         type="button"
-        class="sm:hidden flex"
+        class="sm:hidden"
         :aria-label="$t('nav.open_menu')"
         :aria-expanded="showMobileMenu"
         @click="showMobileMenu = !showMobileMenu"

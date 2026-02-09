@@ -108,32 +108,32 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
                 >
                   <template #already>{{ $t('about.what_we_are_not.words.already') }}</template>
                   <template #people>
-                    <LinkBase :to="pmLinks.npm">{{
+                    <LinkBase :to="pmLinks.npm" class="font-sans">{{
                       $t('about.what_we_are_not.words.people')
                     }}</LinkBase>
                   </template>
                   <template #building>
-                    <LinkBase :to="pmLinks.pnpm">{{
+                    <LinkBase :to="pmLinks.pnpm" class="font-sans">{{
                       $t('about.what_we_are_not.words.building')
                     }}</LinkBase>
                   </template>
                   <template #really>
-                    <LinkBase :to="pmLinks.yarn">{{
+                    <LinkBase :to="pmLinks.yarn" class="font-sans">{{
                       $t('about.what_we_are_not.words.really')
                     }}</LinkBase>
                   </template>
                   <template #cool>
-                    <LinkBase :to="pmLinks.bun">{{
+                    <LinkBase :to="pmLinks.bun" class="font-sans">{{
                       $t('about.what_we_are_not.words.cool')
                     }}</LinkBase>
                   </template>
                   <template #package>
-                    <LinkBase :to="pmLinks.deno">{{
+                    <LinkBase :to="pmLinks.deno" class="font-sans">{{
                       $t('about.what_we_are_not.words.package')
                     }}</LinkBase>
                   </template>
                   <template #managers>
-                    <LinkBase :to="pmLinks.vlt">{{
+                    <LinkBase :to="pmLinks.vlt" class="font-sans">{{
                       $t('about.what_we_are_not.words.managers')
                     }}</LinkBase>
                   </template>

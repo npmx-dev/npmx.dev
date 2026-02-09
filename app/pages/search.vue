@@ -3,7 +3,7 @@ import type { FilterChip, SortKey } from '#shared/types/preferences'
 import { parseSortOption, PROVIDER_SORT_KEYS } from '#shared/types/preferences'
 import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
-import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
+import { isValidNewPackageName } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
 import { normalizeSearchParam } from '#shared/utils/url'
 
@@ -11,7 +11,6 @@ const route = useRoute()
 const router = useRouter()
 
 // Search provider
-const { search: algoliaSearch } = useAlgoliaSearch()
 const { isAlgolia } = useSearchProvider()
 
 // Preferences (persisted to localStorage)
@@ -184,7 +183,7 @@ watch(isAlgolia, algolia => {
   }
 })
 
-// Use incremental search with client-side caching
+// Use incremental search with client-side caching + org/user suggestions
 const {
   data: results,
   status,
@@ -192,9 +191,15 @@ const {
   hasMore,
   fetchMore,
   isRateLimited,
-} = useSearch(query, () => ({
-  size: requestedSize.value,
-}))
+  suggestions: validatedSuggestions,
+  packageAvailability,
+} = useSearch(
+  query,
+  () => ({
+    size: requestedSize.value,
+  }),
+  { suggestions: true },
+)
 
 // Client-side sorted results for display
 // The search API already handles text filtering, so we only need to sort.
@@ -280,41 +285,6 @@ watch(query, () => {
 // Check if current query could be a valid package name
 const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim()))
 
-// Check if package name is available (doesn't exist on npm)
-const packageAvailability = shallowRef<{ name: string; available: boolean } | null>(null)
-
-// Debounced check for package availability
-const checkAvailability = debounce(async (name: string) => {
-  if (!isValidNewPackageName(name)) {
-    packageAvailability.value = null
-    return
-  }
-
-  try {
-    const exists = await checkPackageExists(name)
-    // Only update if this is still the current query
-    if (name === query.value.trim()) {
-      packageAvailability.value = { name, available: !exists }
-    }
-  } catch {
-    packageAvailability.value = null
-  }
-}, 300)
-
-// Trigger availability check when query changes
-watch(
-  query,
-  q => {
-    const trimmed = q.trim()
-    if (isValidNewPackageName(trimmed)) {
-      checkAvailability(trimmed)
-    } else {
-      packageAvailability.value = null
-    }
-  },
-  { immediate: true },
-)
-
 // Get connector state
 const { isConnected, npmUser, listOrgUsers } = useConnector()
 
@@ -376,227 +346,6 @@ const showClaimPrompt = computed(() => {
 })
 
 const claimPackageModalRef = useTemplateRef('claimPackageModalRef')
-
-/**
- * Check if a string is a valid npm username/org name
- * npm usernames: 1-214 characters, lowercase, alphanumeric, hyphen, underscore
- * Must not start with hyphen or underscore
- */
-function isValidNpmName(name: string): boolean {
-  if (!name || name.length === 0 || name.length > 214) return false
-  // Must start with alphanumeric
-  if (!/^[a-z0-9]/i.test(name)) return false
-  // Can contain alphanumeric, hyphen, underscore
-  return /^[\w-]+$/.test(name)
-}
-
-/** Validated user/org suggestion */
-interface ValidatedSuggestion {
-  type: 'user' | 'org'
-  name: string
-  exists: boolean
-}
-
-/** Cache for existence checks to avoid repeated API calls */
-const existenceCache = ref<Record<string, boolean | 'pending'>>({})
-
-/**
- * Check if an org exists by searching for scoped packages (@orgname/...).
- * When Algolia is active, searches for `@name/` scoped packages via text query.
- * Falls back to npm registry search API otherwise.
- */
-async function checkOrgExists(name: string): Promise<boolean> {
-  const cacheKey = `org:${name.toLowerCase()}`
-  if (cacheKey in existenceCache.value) {
-    const cached = existenceCache.value[cacheKey]
-    return cached === true
-  }
-  existenceCache.value[cacheKey] = 'pending'
-  try {
-    const scopePrefix = `@${name.toLowerCase()}/`
-
-    if (isAlgolia.value) {
-      // Algolia: search for scoped packages — use the scope as a text query
-      // and verify a result actually starts with @name/
-      const response = await algoliaSearch(`@${name}`, { size: 5 })
-      const exists = response.objects.some(obj =>
-        obj.package.name.toLowerCase().startsWith(scopePrefix),
-      )
-      existenceCache.value[cacheKey] = exists
-      return exists
-    }
-
-    // npm registry: search for packages in the @org scope
-    const response = await $fetch<{ total: number; objects: Array<{ package: { name: string } }> }>(
-      `${NPM_REGISTRY}/-/v1/search`,
-      { query: { text: `@${name}`, size: 5 } },
-    )
-    const exists = response.objects.some(obj =>
-      obj.package.name.toLowerCase().startsWith(scopePrefix),
-    )
-    existenceCache.value[cacheKey] = exists
-    return exists
-  } catch {
-    existenceCache.value[cacheKey] = false
-    return false
-  }
-}
-
-/**
- * Check if a user exists by searching for packages they maintain.
- * Always uses the npm registry `maintainer:` search because Algolia's
- * `owner.name` field represents the org/account, not individual maintainers,
- * and cannot reliably distinguish users from orgs.
- */
-async function checkUserExists(name: string): Promise<boolean> {
-  const cacheKey = `user:${name.toLowerCase()}`
-  if (cacheKey in existenceCache.value) {
-    const cached = existenceCache.value[cacheKey]
-    return cached === true
-  }
-  existenceCache.value[cacheKey] = 'pending'
-  try {
-    const response = await $fetch<{ total: number }>(`${NPM_REGISTRY}/-/v1/search`, {
-      query: { text: `maintainer:${name}`, size: 1 },
-    })
-    const exists = response.total > 0
-    existenceCache.value[cacheKey] = exists
-    return exists
-  } catch {
-    existenceCache.value[cacheKey] = false
-    return false
-  }
-}
-
-/**
- * Parse the search query to extract potential user/org name
- */
-interface ParsedQuery {
-  type: 'user' | 'org' | 'both' | null
-  name: string
-}
-
-const parsedQuery = computed<ParsedQuery>(() => {
-  const q = query.value.trim()
-  if (!q) return { type: null, name: '' }
-
-  // Query starts with ~ - explicit user search
-  if (q.startsWith('~')) {
-    const name = q.slice(1)
-    if (isValidNpmName(name)) {
-      return { type: 'user', name }
-    }
-    return { type: null, name: '' }
-  }
-
-  // Query starts with @ - org search (without slash)
-  if (q.startsWith('@')) {
-    // If it contains a slash, it's a scoped package search
-    if (q.includes('/')) return { type: null, name: '' }
-    const name = q.slice(1)
-    if (isValidNpmName(name)) {
-      return { type: 'org', name }
-    }
-    return { type: null, name: '' }
-  }
-
-  // Plain query - could be user, org, or package
-  if (isValidNpmName(q)) {
-    return { type: 'both', name: q }
-  }
-
-  return { type: null, name: '' }
-})
-
-/** Validated suggestions (only those that exist) */
-const validatedSuggestions = ref<ValidatedSuggestion[]>([])
-const suggestionsLoading = shallowRef(false)
-
-/** Counter to discard stale async results when query changes rapidly */
-let suggestionRequestId = 0
-
-/** Validate suggestions (check org/user existence) */
-async function validateSuggestionsImpl(parsed: ParsedQuery) {
-  const requestId = ++suggestionRequestId
-
-  if (!parsed.type || !parsed.name) {
-    validatedSuggestions.value = []
-    suggestionsLoading.value = false
-    return
-  }
-
-  suggestionsLoading.value = true
-  const suggestions: ValidatedSuggestion[] = []
-
-  try {
-    if (parsed.type === 'user') {
-      const exists = await checkUserExists(parsed.name)
-      if (requestId !== suggestionRequestId) return
-      if (exists) {
-        suggestions.push({ type: 'user', name: parsed.name, exists: true })
-      }
-    } else if (parsed.type === 'org') {
-      const exists = await checkOrgExists(parsed.name)
-      if (requestId !== suggestionRequestId) return
-      if (exists) {
-        suggestions.push({ type: 'org', name: parsed.name, exists: true })
-      }
-    } else if (parsed.type === 'both') {
-      // Check both in parallel
-      const [orgExists, userExists] = await Promise.all([
-        checkOrgExists(parsed.name),
-        checkUserExists(parsed.name),
-      ])
-      if (requestId !== suggestionRequestId) return
-      // Org first (more common)
-      if (orgExists) {
-        suggestions.push({ type: 'org', name: parsed.name, exists: true })
-      }
-      if (userExists) {
-        suggestions.push({ type: 'user', name: parsed.name, exists: true })
-      }
-    }
-  } finally {
-    // Only clear loading if this is still the active request
-    if (requestId === suggestionRequestId) {
-      suggestionsLoading.value = false
-    }
-  }
-
-  if (requestId === suggestionRequestId) {
-    validatedSuggestions.value = suggestions
-  }
-}
-
-// Debounce lightly for npm (extra API calls are slower), skip debounce for Algolia (fast)
-const validateSuggestionsDebounced = debounce(validateSuggestionsImpl, 100)
-
-// Validate suggestions when query changes
-watch(
-  parsedQuery,
-  parsed => {
-    if (isAlgolia.value) {
-      // Algolia existence checks are fast - fire immediately
-      validateSuggestionsImpl(parsed)
-    } else {
-      validateSuggestionsDebounced(parsed)
-    }
-  },
-  { immediate: true },
-)
-
-// Re-validate suggestions and clear caches when provider changes
-watch(isAlgolia, () => {
-  // Cancel any pending debounced validation from the previous provider
-  validateSuggestionsDebounced.cancel?.()
-  // Clear existence cache since results may differ between providers
-  existenceCache.value = {}
-  // Re-validate with current query
-  const parsed = parsedQuery.value
-  if (parsed.type) {
-    validateSuggestionsImpl(parsed)
-  }
-})
 
 /** Check if there's an exact package match in results */
 const hasExactPackageMatch = computed(() => {

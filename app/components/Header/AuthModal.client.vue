@@ -142,12 +142,7 @@ watch(handleInput, newHandleInput => {
         {{ $t('auth.modal.create_account') }}
       </ButtonBase>
       <hr class="color-border" />
-      <ButtonBase
-        type="button"
-        variant="primary"
-        class="w-full flex items-center justify-center gap-2"
-        @click="handleBlueskySignIn"
-      >
+      <ButtonBase type="button" variant="primary" class="w-full" @click="handleBlueskySignIn" block>
         {{ $t('auth.modal.connect_bluesky') }}
         <svg fill="none" viewBox="0 0 64 57" width="20" style="width: 20px">
           <path

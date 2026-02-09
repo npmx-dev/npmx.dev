@@ -63,26 +63,18 @@ const docUrl = computed(() => {
     </div>
 
     <!-- No dependency action button -->
-    <button
+    <ButtonBase
       v-if="variant === 'nodep' && showAction !== false"
-      type="button"
-      class="flex-shrink-0 px-2 py-1 text-xs font-medium bg-amber-500/20 hover:bg-amber-500/30 rounded transition-colors"
+      size="small"
       :aria-label="$t('compare.no_dependency.add_column')"
       @click="emit('addNoDep')"
     >
       {{ $t('package.replacement.consider_no_dep') }}
-    </button>
+    </ButtonBase>
 
     <!-- Info link -->
-    <a
-      v-else-if="docUrl"
-      :href="docUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="flex-shrink-0 px-2 py-1 text-xs font-medium bg-blue-500/20 hover:bg-blue-500/30 rounded transition-colors inline-flex items-center gap-1"
-    >
+    <LinkBase v-else-if="docUrl" :to="docUrl" variant="button-secondary" size="small">
       {{ $t('package.replacement.learn_more') }}
-      <span class="i-carbon:launch w-3 h-3" />
-    </a>
+    </LinkBase>
   </div>
 </template>

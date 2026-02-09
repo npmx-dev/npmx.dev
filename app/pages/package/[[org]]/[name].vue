@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {
   NpmVersionDist,
+  PackageVersionInfo,
   PackumentVersion,
   ProvenanceDetails,
   ReadmeResponse,
@@ -12,6 +13,7 @@ import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
+import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
@@ -141,8 +143,20 @@ const {
   data: pkg,
   status,
   error,
-} = usePackage(packageName, resolvedVersion.value ?? requestedVersion.value)
+} = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
+const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
+  if (!pkg.value) return []
+  if (pkg.value.securityVersions?.length) return pkg.value.securityVersions
+
+  return Object.entries(pkg.value.versions).map(([version, metadata]) => ({
+    version,
+    time: pkg.value?.time?.[version],
+    hasProvenance: !!metadata.hasProvenance,
+    trustLevel: metadata.trustLevel,
+    deprecated: metadata.deprecated,
+  }))
+})
 
 // Process package description
 const pkgDescription = useMarkdown(() => ({
@@ -224,6 +238,30 @@ const deprecationNotice = computed(() => {
 const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
 }))
+
+const publishSecurityDowngrade = computed(() => {
+  const currentVersion = displayVersion.value?.version
+  if (!currentVersion) return null
+  return detectPublishSecurityDowngradeForVersion(versionSecurityMetadata.value, currentVersion)
+})
+
+const installVersionOverride = computed(
+  () => publishSecurityDowngrade.value?.trustedVersion ?? null,
+)
+
+const downgradeFallbackInstallText = computed(() => {
+  const d = publishSecurityDowngrade.value
+  if (!d?.trustedVersion) return null
+  if (d.trustedTrustLevel === 'provenance')
+    return $t('package.security_downgrade.fallback_install_provenance', {
+      version: d.trustedVersion,
+    })
+  if (d.trustedTrustLevel === 'trustedPublisher')
+    return $t('package.security_downgrade.fallback_install_trustedPublisher', {
+      version: d.trustedVersion,
+    })
+  return null
+})
 
 const sizeTooltip = computed(() => {
   const chunks = [
@@ -618,7 +656,7 @@ onKeyStroke(
               variant="button-secondary"
               v-if="docsLink"
               :to="docsLink"
-              keyshortcut="d"
+              aria-keyshortcuts="d"
               classicon="i-carbon:document"
             >
               {{ $t('package.links.docs') }}
@@ -626,7 +664,7 @@ onKeyStroke(
             <LinkBase
               variant="button-secondary"
               :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
-              keyshortcut="."
+              aria-keyshortcuts="."
               classicon="i-carbon:code"
             >
               {{ $t('package.links.code') }}
@@ -634,7 +672,7 @@ onKeyStroke(
             <LinkBase
               variant="button-secondary"
               :to="{ name: 'compare', query: { packages: pkg.name } }"
-              keyshortcut="c"
+              aria-keyshortcuts="c"
               classicon="i-carbon:compare"
             >
               {{ $t('package.links.compare') }}
@@ -1020,9 +1058,96 @@ onKeyStroke(
           :id="`pm-panel-${activePmId}`"
           :aria-labelledby="`pm-tab-${activePmId}`"
         >
+          <div
+            v-if="publishSecurityDowngrade"
+            role="alert"
+            class="mb-4 rounded-lg border border-amber-600/40 bg-amber-500/10 px-4 py-3 text-amber-700 dark:text-amber-400"
+          >
+            <h3 class="m-0 flex items-center gap-2 font-mono text-sm font-medium">
+              <span class="i-carbon:warning-alt w-4 h-4 shrink-0" aria-hidden="true" />
+              {{ $t('package.security_downgrade.title') }}
+            </h3>
+            <p class="mt-2 mb-0 text-sm">
+              <i18n-t
+                v-if="
+                  publishSecurityDowngrade.downgradedTrustLevel === 'none' &&
+                  publishSecurityDowngrade.trustedTrustLevel === 'provenance'
+                "
+                keypath="package.security_downgrade.description_to_none_provenance"
+                tag="span"
+                scope="global"
+              >
+                <template #provenance>
+                  <a
+                    href="https://docs.npmjs.com/generating-provenance-statements"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    >{{ $t('package.security_downgrade.provenance_link_text')
+                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                  /></a>
+                </template>
+              </i18n-t>
+              <i18n-t
+                v-else-if="
+                  publishSecurityDowngrade.downgradedTrustLevel === 'none' &&
+                  publishSecurityDowngrade.trustedTrustLevel === 'trustedPublisher'
+                "
+                keypath="package.security_downgrade.description_to_none_trustedPublisher"
+                tag="span"
+                scope="global"
+              >
+                <template #trustedPublishing>
+                  <a
+                    href="https://docs.npmjs.com/adding-a-trusted-publisher-to-a-package"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    >{{ $t('package.security_downgrade.trusted_publishing_link_text')
+                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                  /></a>
+                </template>
+              </i18n-t>
+              <i18n-t
+                v-else-if="
+                  publishSecurityDowngrade.downgradedTrustLevel === 'provenance' &&
+                  publishSecurityDowngrade.trustedTrustLevel === 'trustedPublisher'
+                "
+                keypath="package.security_downgrade.description_to_provenance_trustedPublisher"
+                tag="span"
+                scope="global"
+              >
+                <template #provenance>
+                  <a
+                    href="https://docs.npmjs.com/generating-provenance-statements"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    >{{ $t('package.security_downgrade.provenance_link_text')
+                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                  /></a>
+                </template>
+                <template #trustedPublishing>
+                  <a
+                    href="https://docs.npmjs.com/adding-a-trusted-publisher-to-a-package"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    >{{ $t('package.security_downgrade.trusted_publishing_link_text')
+                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                  /></a>
+                </template>
+              </i18n-t>
+              {{ ' ' }}
+              <template v-if="downgradeFallbackInstallText">
+                {{ downgradeFallbackInstallText }}
+              </template>
+            </p>
+          </div>
           <TerminalInstall
             :package-name="pkg.name"
             :requested-version="requestedVersion"
+            :install-version-override="installVersionOverride"
             :jsr-info="jsrInfo"
             :types-package-name="typesPackageName"
             :executable-info="executableInfo"

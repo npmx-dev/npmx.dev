@@ -1,8 +1,29 @@
-import type { Packument, SlimPackument, SlimVersion, SlimPackumentVersion } from '#shared/types'
+import type {
+  Packument,
+  SlimPackument,
+  SlimVersion,
+  SlimPackumentVersion,
+  PackumentVersion,
+  PublishTrustLevel,
+} from '#shared/types'
 import { extractInstallScriptsInfo } from '~/utils/install-scripts'
 
 /** Number of recent versions to include in initial payload */
 const RECENT_VERSIONS_COUNT = 5
+
+function hasAttestations(version: PackumentVersion): boolean {
+  return Boolean(version.dist.attestations)
+}
+
+function hasTrustedPublisher(version: PackumentVersion): boolean {
+  return Boolean(version._npmUser?.trustedPublisher)
+}
+
+function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
+  if (hasAttestations(version)) return 'provenance'
+  if (hasTrustedPublisher(version)) return 'trustedPublisher'
+  return 'none'
+}
 
 /**
  * Transform a full Packument into a slimmed version for client-side use.
@@ -11,7 +32,10 @@ const RECENT_VERSIONS_COUNT = 5
  * - Including only: 5 most recent versions + one version per dist-tag + requested version
  * - Stripping unnecessary fields from version objects
  */
-function transformPackument(pkg: Packument, requestedVersion?: string | null): SlimPackument {
+export function transformPackument(
+  pkg: Packument,
+  requestedVersion?: string | null,
+): SlimPackument {
   // Get versions pointed to by dist-tags
   const distTagVersions = new Set(Object.values(pkg['dist-tags'] ?? {}))
 
@@ -34,6 +58,23 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
     includedVersions.add(requestedVersion)
   }
 
+  // Build security metadata for all versions, but only include in payload
+  // when the package has mixed trust levels (i.e. a downgrade could exist)
+  const securityVersionEntries = Object.entries(pkg.versions).map(([version, metadata]) => {
+    const trustLevel = getTrustLevel(metadata)
+    return {
+      version,
+      time: pkg.time[version],
+      hasProvenance: trustLevel !== 'none',
+      trustLevel,
+      deprecated: metadata.deprecated,
+    }
+  })
+
+  const trustLevels = new Set(securityVersionEntries.map(v => v.trustLevel))
+  const hasMixedTrust = trustLevels.size > 1
+  const securityVersions = hasMixedTrust ? securityVersionEntries : undefined
+
   // Build filtered versions object with install scripts info per version
   const filteredVersions: Record<string, SlimVersion> = {}
   let versionData: SlimPackumentVersion | null = null
@@ -51,8 +92,12 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
           installScripts: installScripts ?? undefined,
         }
       }
+      const trustLevel = getTrustLevel(version)
+      const hasProvenance = trustLevel !== 'none'
+
       filteredVersions[v] = {
-        ...((version?.dist as { attestations?: unknown }) ? { hasProvenance: true } : {}),
+        hasProvenance,
+        trustLevel,
         version: version.version,
         deprecated: version.deprecated,
         tags: version.tags as string[],
@@ -90,6 +135,7 @@ function transformPackument(pkg: Packument, requestedVersion?: string | null): S
     'bugs': pkg.bugs,
     'requestedVersion': versionData,
     'versions': filteredVersions,
+    'securityVersions': securityVersions,
   }
 }
 

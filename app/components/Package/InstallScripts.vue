@@ -115,18 +115,18 @@ const isExpanded = shallowRef(false)
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1">
-            <span
+            <TooltipApp
               v-if="
                 outdatedNpxDeps[dep] &&
                 outdatedNpxDeps[dep].resolved !== outdatedNpxDeps[dep].latest
               "
-              class="shrink-0"
+              class="shrink-0 p-2 -m-2"
               :class="getVersionClass(outdatedNpxDeps[dep])"
-              :title="getOutdatedTooltip(outdatedNpxDeps[dep], $t)"
               aria-hidden="true"
+              :text="getOutdatedTooltip(outdatedNpxDeps[dep], $t)"
             >
               <span class="i-carbon:warning-alt w-3 h-3" />
-            </span>
+            </TooltipApp>
             <span
               class="font-mono text-xs text-end truncate"
               :class="getVersionClass(outdatedNpxDeps[dep])"

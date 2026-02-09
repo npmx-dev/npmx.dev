@@ -95,15 +95,15 @@ const numberFormatter = useNumberFormatter()
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
-            <span
+            <TooltipApp
               v-if="outdatedDeps[dep]"
-              class="shrink-0"
+              class="shrink-0 p-2 -m-2"
               :class="getVersionClass(outdatedDeps[dep])"
-              :title="getOutdatedTooltip(outdatedDeps[dep], $t)"
               aria-hidden="true"
+              :text="getOutdatedTooltip(outdatedDeps[dep], $t)"
             >
               <span class="i-carbon:warning-alt w-3 h-3" />
-            </span>
+            </TooltipApp>
             <LinkBase
               v-if="getVulnerableDepInfo(dep)"
               :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"

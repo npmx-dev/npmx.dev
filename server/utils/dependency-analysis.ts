@@ -8,9 +8,12 @@ import type {
   PackageVulnerabilityInfo,
   VulnerabilityTreeResult,
   DeprecatedPackageInfo,
+  OsvAffected,
+  OsvRange,
 } from '#shared/types/dependency-analysis'
 import { mapWithConcurrency } from '#shared/utils/async'
 import { resolveDependencyTree } from './dependency-resolver'
+import * as semver from 'semver'
 
 /** Maximum concurrent requests for fetching vulnerability details */
 const OSV_DETAIL_CONCURRENCY = 25
@@ -115,6 +118,7 @@ async function queryOsvDetails(pkg: PackageQueryInfo): Promise<PackageVulnerabil
         severity,
         aliases: vuln.aliases || [],
         url: getVulnerabilityUrl(vuln),
+        fixedIn: getFixedVersion(vuln.affected, pkg.name, pkg.version),
       })
     }
 
@@ -142,6 +146,89 @@ function getVulnerabilityUrl(vuln: OsvVulnerability): string {
     return `https://nvd.nist.gov/vuln/detail/${cveAlias}`
   }
   return `https://osv.dev/vulnerability/${vuln.id}`
+}
+
+/**
+ * Parse OSV range events into introduced/fixed pairs.
+ * OSV events form a timeline: [introduced, fixed, introduced, fixed, ...]
+ * A single range can have multiple introduced/fixed pairs representing
+ * periods where the vulnerability was active, was fixed, and was reintroduced.
+ * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
+ */
+function parseRangeIntervals(range: OsvRange): Array<{ introduced: string; fixed?: string }> {
+  const intervals: Array<{ introduced: string; fixed?: string }> = []
+  let currentIntroduced: string | undefined
+
+  for (const event of range.events) {
+    if (event.introduced !== undefined) {
+      // Start a new interval (close previous open one if any)
+      if (currentIntroduced !== undefined) {
+        intervals.push({ introduced: currentIntroduced })
+      }
+      currentIntroduced = event.introduced
+    } else if (event.fixed !== undefined && currentIntroduced !== undefined) {
+      intervals.push({ introduced: currentIntroduced, fixed: event.fixed })
+      currentIntroduced = undefined
+    }
+  }
+
+  // Handle trailing introduced with no fixed (still vulnerable)
+  if (currentIntroduced !== undefined) {
+    intervals.push({ introduced: currentIntroduced })
+  }
+
+  return intervals
+}
+
+/**
+ * Extract the fixed version for a specific package version from vulnerability data.
+ * Finds all intervals that contain the current version and returns the closest fix,
+ * preferring a nearby backport over a distant major-version bump.
+ * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
+ */
+function getFixedVersion(
+  affected: OsvAffected[] | undefined,
+  packageName: string,
+  currentVersion: string,
+): string | undefined {
+  if (!affected) return undefined
+
+  // Find all affected entries for this specific package
+  const packageAffectedEntries = affected.filter(
+    a => a.package.ecosystem === 'npm' && a.package.name === packageName,
+  )
+
+  // Collect all matching fixed versions across all ranges
+  const matchingFixedVersions: string[] = []
+
+  for (const entry of packageAffectedEntries) {
+    if (!entry.ranges) continue
+
+    for (const range of entry.ranges) {
+      // Only handle SEMVER ranges (most common for npm)
+      if (range.type !== 'SEMVER') continue
+
+      const intervals = parseRangeIntervals(range)
+      for (const interval of intervals) {
+        const introVersion = interval.introduced === '0' ? '0.0.0' : interval.introduced
+        try {
+          const afterIntro = semver.gte(currentVersion, introVersion)
+          const beforeFixed = !interval.fixed || semver.lt(currentVersion, interval.fixed)
+          if (afterIntro && beforeFixed && interval.fixed) {
+            matchingFixedVersions.push(interval.fixed)
+          }
+        } catch {
+          continue
+        }
+      }
+    }
+  }
+
+  if (matchingFixedVersions.length === 0) return undefined
+  if (matchingFixedVersions.length === 1) return matchingFixedVersions[0]
+
+  // Return the lowest (closest) fixed version — the smallest bump from the current version
+  return matchingFixedVersions.sort(semver.compare)[0]
 }
 
 function getSeverityLevel(vuln: OsvVulnerability): OsvSeverityLevel {

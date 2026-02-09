@@ -255,6 +255,16 @@
       "view_more_details": "View more details",
       "error_loading": "Failed to load provenance details"
     },
+    "security_downgrade": {
+      "title": "Trust downgrade",
+      "description_to_none_provenance": "This version was published without {provenance}.",
+      "description_to_none_trustedPublisher": "This version was published without {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "This version uses {provenance} but not {trustedPublishing}.",
+      "fallback_install_provenance": "Install commands are pinned to {version}, the last version with provenance.",
+      "fallback_install_trustedPublisher": "Install commands are pinned to {version}, the last version with trusted publishing.",
+      "provenance_link_text": "provenance",
+      "trusted_publishing_link_text": "trusted publishing"
+    },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
     "card": {
@@ -382,7 +392,8 @@
         "high": "high",
         "moderate": "moderate",
         "low": "low"
-      }
+      },
+      "fixed_in_title": "Fixed in version {version}"
     },
     "deprecated": {
       "label": "Deprecated",

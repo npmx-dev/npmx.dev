@@ -15,12 +15,13 @@ const props = withDefaults(
     interactive?: boolean
     /** attributes for tooltip element */
     tooltipAttr?: HTMLAttributes
-    /** Teleport target selector (defaults to 'body') */
-    teleportTo?: string
+    /** Teleport target for the tooltip content (defaults to 'body') */
+    to?: string | HTMLElement
     /** Offset distance in pixels (default: 4) */
     offset?: number
   }>(),
   {
+    to: 'body',
     offset: 4,
   },
 )
@@ -41,7 +42,7 @@ const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
   <div ref="triggerRef" class="inline-flex">
     <slot />
 
-    <Teleport :to="teleportTo ?? 'body'">
+    <Teleport :to="props.to">
       <Transition
         enter-active-class="transition-opacity duration-150 motion-reduce:transition-none"
         leave-active-class="transition-opacity duration-100 motion-reduce:transition-none"

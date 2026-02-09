@@ -6,8 +6,8 @@ const props = defineProps<{
   position?: 'top' | 'bottom' | 'left' | 'right'
   /** Enable interactive tooltip (pointer events + hide delay for clickable content) */
   interactive?: boolean
-  /** Teleport target selector (defaults to 'body') */
-  teleportTo?: string
+  /** Teleport target for the tooltip content (defaults to 'body') */
+  to?: string | HTMLElement
   /** Offset distance in pixels (default: 4) */
   offset?: number
 }>()
@@ -51,7 +51,7 @@ const tooltipAttrs = computed(() => {
     :isVisible
     :position
     :interactive
-    :teleportTo
+    :to
     :offset
     :tooltip-attr="tooltipAttrs"
     @mouseenter="show"
