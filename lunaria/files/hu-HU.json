@@ -1,5 +1,4 @@
 {
-  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Csomagböngésző az npm regiszterhez",

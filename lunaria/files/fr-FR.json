@@ -1,5 +1,4 @@
 {
-  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Explorateur de paquets pour le registre npm",

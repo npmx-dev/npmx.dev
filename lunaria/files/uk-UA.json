@@ -1,5 +1,4 @@
 {
-  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Браузер пакетів для реєстру npm",

@@ -1,5 +1,4 @@
 {
-  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - npm రిజిస్ట్రీకి ప్యాకేజ్ బ్రౌజర్",
