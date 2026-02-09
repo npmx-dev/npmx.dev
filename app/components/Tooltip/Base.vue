@@ -3,18 +3,25 @@ import type { HTMLAttributes } from 'vue'
 import type { Placement } from '@floating-ui/vue'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 
-const props = defineProps<{
-  /** Tooltip text (optional when using content slot) */
-  text?: string
-  /** Position: 'top' | 'bottom' | 'left' | 'right' */
-  position?: 'top' | 'bottom' | 'left' | 'right'
-  /** is tooltip visible */
-  isVisible: boolean
-  /** Allow pointer events on tooltip (for interactive content like links) */
-  interactive?: boolean
-  /** attributes for tooltip element */
-  tooltipAttr?: HTMLAttributes
-}>()
+const props = withDefaults(
+  defineProps<{
+    /** Tooltip text (optional when using content slot) */
+    text?: string
+    /** Position: 'top' | 'bottom' | 'left' | 'right' */
+    position?: 'top' | 'bottom' | 'left' | 'right'
+    /** is tooltip visible */
+    isVisible: boolean
+    /** Allow pointer events on tooltip (for interactive content like links) */
+    interactive?: boolean
+    /** attributes for tooltip element */
+    tooltipAttr?: HTMLAttributes
+    /** Teleport target for the tooltip content (defaults to 'body') */
+    to?: string | HTMLElement
+  }>(),
+  {
+    to: 'body',
+  },
+)
 
 const triggerRef = useTemplateRef('triggerRef')
 const tooltipRef = useTemplateRef('tooltipRef')
@@ -32,7 +39,7 @@ const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
   <div ref="triggerRef" class="inline-flex">
     <slot />
 
-    <Teleport to="body">
+    <Teleport :to="props.to">
       <Transition
         enter-active-class="transition-opacity duration-150 motion-reduce:transition-none"
         leave-active-class="transition-opacity duration-100 motion-reduce:transition-none"
