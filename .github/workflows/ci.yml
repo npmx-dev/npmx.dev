@@ -235,3 +235,8 @@ jobs:
 
       - name: 🌐 Check for missing or dynamic i18n keys
         run: pnpm i18n:report
+
+      - name: 🌐 Check i18n schema is up to date
+        run: |
+          pnpm i18n:schema
+          git diff --exit-code i18n/schema.json

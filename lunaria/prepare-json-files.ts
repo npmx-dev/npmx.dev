@@ -39,41 +39,37 @@ export async function prepareJsonFiles(): Promise<void> {
 
 type NestedObject = Record<string, unknown>
 
-export async function mergeLocaleObject(
-  locale: LocaleObject,
-  options: { copy?: boolean } = {},
-): Promise<NestedObject | undefined> {
-  const { copy = false } = options
+export async function mergeLocaleObject(locale: LocaleObject): Promise<NestedObject | undefined> {
   const files = locale.files ?? []
   if (locale.file || files.length === 1) {
     const json =
       (locale.file ? getFileName(locale.file) : undefined) ??
       (files[0] ? getFileName(files[0]) : undefined)
     if (!json) return undefined
-    if (copy) {
-      await fs.cp(path.resolve(`${localesFolder}/${json}`), path.resolve(`${destFolder}/${json}`))
-      return undefined
-    }
 
-    return await loadJsonFile<NestedObject>(json)
+    return await loadLocaleSourceJson<NestedObject>(json)
   }
 
   const firstFile = files[0]
   if (!firstFile) return undefined
-  const source = await loadJsonFile<NestedObject>(getFileName(firstFile))
+  const source = await loadLocaleSourceJson<NestedObject>(getFileName(firstFile))
   let currentSource: unknown
   for (let i = 1; i < files.length; i++) {
     const file = files[i]
     if (!file) continue
-    currentSource = await loadJsonFile(getFileName(file))
+    currentSource = await loadLocaleSourceJson(getFileName(file))
     deepCopy(currentSource, source)
   }
 
   return source
 }
 
-async function loadJsonFile<T = unknown>(name: string): Promise<T> {
-  return JSON.parse(await fs.readFile(path.resolve(`${localesFolder}/${name}`), 'utf8'))
+async function loadLocaleSourceJson<T = unknown>(name: string): Promise<T> {
+  const rawJson = JSON.parse(await fs.readFile(path.resolve(`${localesFolder}/${name}`), 'utf8'))
+  // Exclude $schema since it isn't useful in generated files and the relative path
+  // would be wrong anyway
+  const { $schema: _, ...rest } = rawJson
+  return rest
 }
 
 function getFileName(file: string | { path: string }): string {
@@ -81,7 +77,7 @@ function getFileName(file: string | { path: string }): string {
 }
 
 async function mergeLocale(locale: LocaleObject): Promise<void> {
-  const source = await mergeLocaleObject(locale, { copy: true })
+  const source = await mergeLocaleObject(locale)
   if (!source) {
     return
   }

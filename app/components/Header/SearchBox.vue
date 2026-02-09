@@ -15,6 +15,7 @@ const emit = defineEmits(['blur', 'focus'])
 
 const router = useRouter()
 const route = useRoute()
+const { isAlgolia } = useSearchProvider()
 
 const isSearchFocused = shallowRef(false)
 
@@ -28,8 +29,7 @@ const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
 // Pages that have their own local filter using ?q
 const pagesWithLocalFilter = new Set(['~username', 'org'])
 
-// Debounced URL update for search query
-const updateUrlQuery = debounce((value: string) => {
+function updateUrlQueryImpl(value: string) {
   // Don't navigate away from pages that use ?q for local filtering
   if (pagesWithLocalFilter.has(route.name as string)) {
     return
@@ -48,9 +48,18 @@ const updateUrlQuery = debounce((value: string) => {
       q: value,
     },
   })
-}, 250)
+}
 
-// Watch input and debounce URL updates
+const updateUrlQueryNpm = debounce(updateUrlQueryImpl, 250)
+const updateUrlQueryAlgolia = debounce(updateUrlQueryImpl, 80)
+
+const updateUrlQuery = Object.assign(
+  (value: string) => (isAlgolia.value ? updateUrlQueryAlgolia : updateUrlQueryNpm)(value),
+  {
+    flush: () => (isAlgolia.value ? updateUrlQueryAlgolia : updateUrlQueryNpm).flush(),
+  },
+)
+
 watch(searchQuery, value => {
   updateUrlQuery(value)
 })

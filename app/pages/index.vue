@@ -2,6 +2,8 @@
 import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
+const { isAlgolia } = useSearchProvider()
+
 const searchQuery = shallowRef('')
 const isSearchFocused = shallowRef(false)
 
@@ -18,9 +20,18 @@ async function search() {
   }
 }
 
-const handleInput = isTouchDevice()
-  ? search
-  : debounce(search, 250, { leading: true, trailing: true })
+const handleInputNpm = debounce(search, 250, { leading: true, trailing: true })
+const handleInputAlgolia = debounce(search, 80, { leading: true, trailing: true })
+
+function handleInput() {
+  if (isTouchDevice()) {
+    search()
+  } else if (isAlgolia.value) {
+    handleInputAlgolia()
+  } else {
+    handleInputNpm()
+  }
+}
 
 useSeoMeta({
   title: () => $t('seo.home.title'),

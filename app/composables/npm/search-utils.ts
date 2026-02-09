@@ -1,8 +1,5 @@
 import type { NpmSearchResponse, NpmSearchResult, PackageMetaResponse } from '#shared/types'
 
-/**
- * Convert a lightweight package-meta API response to a search result for display.
- */
 export function metaToSearchResult(meta: PackageMetaResponse): NpmSearchResult {
   return {
     package: {
@@ -30,4 +27,37 @@ export function emptySearchResponse(): NpmSearchResponse {
     isStale: false,
     time: new Date().toISOString(),
   }
+}
+
+export interface SearchSuggestion {
+  type: 'user' | 'org'
+  name: string
+  exists: boolean
+}
+
+export type SuggestionIntent = 'user' | 'org' | 'both' | null
+
+export function isValidNpmName(name: string): boolean {
+  if (!name || name.length === 0 || name.length > 214) return false
+  if (!/^[a-z0-9]/i.test(name)) return false
+  return /^[\w-]+$/.test(name)
+}
+
+/** Parse a search query into a suggestion intent (`~user`, `@org`, or plain `both`). */
+export function parseSuggestionIntent(query: string): { intent: SuggestionIntent; name: string } {
+  const q = query.trim()
+  if (!q) return { intent: null, name: '' }
+
+  if (q.startsWith('~')) {
+    const name = q.slice(1)
+    return isValidNpmName(name) ? { intent: 'user', name } : { intent: null, name: '' }
+  }
+
+  if (q.startsWith('@')) {
+    if (q.includes('/')) return { intent: null, name: '' }
+    const name = q.slice(1)
+    return isValidNpmName(name) ? { intent: 'org', name } : { intent: null, name: '' }
+  }
+
+  return isValidNpmName(q) ? { intent: 'both', name: q } : { intent: null, name: '' }
 }

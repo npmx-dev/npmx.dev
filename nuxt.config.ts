@@ -286,6 +286,7 @@ export default defineNuxtConfig({
         '@atproto/syntax',
         'fast-npm-meta',
         '@floating-ui/vue',
+        'algoliasearch/lite',
       ],
     },
   },

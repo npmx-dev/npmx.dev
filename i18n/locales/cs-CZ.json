@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Prohlížeč balíčků pro registr npm",

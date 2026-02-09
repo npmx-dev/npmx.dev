@@ -5,6 +5,7 @@ import type { PackageManagerId } from '~/utils/install-command'
 const props = defineProps<{
   packageName: string
   requestedVersion?: string | null
+  installVersionOverride?: string | null
   jsrInfo?: JsrPackageInfo | null
   typesPackageName?: string | null
   executableInfo?: { hasExecutable: boolean; primaryCommand?: string } | null
@@ -16,6 +17,7 @@ const { selectedPM, showTypesInInstall, copied, copyInstallCommand } = useInstal
   () => props.requestedVersion ?? null,
   () => props.jsrInfo ?? null,
   () => props.typesPackageName ?? null,
+  () => props.installVersionOverride ?? null,
 )
 
 // Generate install command parts for a specific package manager
@@ -23,7 +25,7 @@ function getInstallPartsForPM(pmId: PackageManagerId) {
   return getInstallCommandParts({
     packageName: props.packageName,
     packageManager: pmId,
-    version: props.requestedVersion,
+    version: props.installVersionOverride ?? props.requestedVersion,
     jsrInfo: props.jsrInfo,
   })
 }
