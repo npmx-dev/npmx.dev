@@ -12,8 +12,6 @@ const props = withDefaults(
       'type'?: never
       'variant'?: 'button-primary' | 'button-secondary' | 'link'
       'size'?: 'small' | 'medium'
-      'class'?: string
-
       'keyshortcut'?: string
 
       /**
@@ -76,21 +74,17 @@ const isButtonMedium = computed(() => props.size === 'medium' && props.variant !
   <NuxtLink
     v-else
     class="group inline-flex gap-x-1 items-center justify-center rounded-sm outline-transparent active:scale-[0.98] focus-visible:(outline-2 outline-accent)"
-    :class="[
-      {
-        'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30':
-          !isLinkAnchor && isLink,
-        'font-mono text-fg hover:(decoration-accent) focus-visible:(decoration-accent outline-offset-2 text-accent) transition-colors duration-200':
-          isLink,
-        'border border-solid border-border rounded-md transition-all duration-200 focus-visible:outline-offset-2':
-          isButton,
-        'text-sm px-4 py-2': isButtonMedium,
-        'text-xs px-2 py-0.5': isButtonSmall,
-        'text-fg bg-bg hover:(bg-fg/10 border-fg/10)': variant === 'button-secondary',
-        'text-bg bg-fg border-fg hover:(bg-fg/80)': variant === 'button-primary',
-      },
-      props.class,
-    ]"
+    :class="{
+      'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30': !isLinkAnchor && isLink,
+      'font-mono text-fg hover:(decoration-accent) focus-visible:(decoration-accent outline-offset-2 text-accent) transition-colors duration-200':
+        isLink,
+      'border border-solid border-border rounded-md transition-all duration-200 focus-visible:outline-offset-2':
+        isButton,
+      'text-sm px-4 py-2': isButtonMedium,
+      'text-xs px-2 py-0.5': isButtonSmall,
+      'text-fg bg-bg hover:(bg-fg/10 border-fg/10)': variant === 'button-secondary',
+      'text-bg bg-fg border-fg hover:(bg-fg/80)': variant === 'button-primary',
+    }"
     :to="to"
     :aria-keyshortcuts="keyshortcut"
     :target="isLinkExternal ? '_blank' : undefined"

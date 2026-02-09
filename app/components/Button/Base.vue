@@ -4,7 +4,6 @@ const props = withDefaults(
     'disabled'?: boolean
     'type'?: 'button' | 'submit'
     'variant'?: 'primary' | 'secondary'
-    'class'?: string
     'size'?: 'small' | 'medium'
     'keyshortcut'?: string
 
@@ -34,7 +33,6 @@ defineExpose({
   <button
     ref="el"
     class="rounded-md outline-none group"
-    :class="props.class"
     :type="props.type"
     :disabled="
       /**
