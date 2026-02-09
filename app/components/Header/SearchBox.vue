@@ -76,7 +76,6 @@ function handleSubmit() {
   }
 
   if (route.name === 'search') {
-    updateUrlQuery.flush()
     return
   }
 
