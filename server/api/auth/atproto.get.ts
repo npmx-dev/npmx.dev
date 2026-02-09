@@ -70,6 +70,15 @@ export default defineEventHandler(async event => {
     handleResolver,
   })
 
+  const error = query.error
+
+  // user cancelled explicitly
+  if (error === 'access_denied') {
+    const returnToURL = getCookie(event, 'auth_return_to') || '/'
+    deleteCookie(event, 'auth_return_to', { path: '/' })
+    return sendRedirect(event, returnToURL)
+  }
+
   if (!query.code) {
     // Validate returnTo is a safe relative path (prevent open redirect)
     // Only set cookie on initial auth request, not the callback
