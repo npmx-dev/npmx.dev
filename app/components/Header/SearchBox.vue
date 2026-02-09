@@ -104,13 +104,24 @@ defineExpose({ focus })
       <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
         <div class="search-box relative flex items-center">
           <span
-            class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1">
+            class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
+          >
             /
           </span>
 
-          <InputBase id="header-search" ref="inputRef" v-model="searchQuery" type="search" name="q"
-            :placeholder="$t('search.placeholder')" no-correct class="w-full min-w-25 ps-7"
-            @focus="isSearchFocused = true" @blur="isSearchFocused = false" size="small" />
+          <InputBase
+            id="header-search"
+            ref="inputRef"
+            v-model="searchQuery"
+            type="search"
+            name="q"
+            :placeholder="$t('search.placeholder')"
+            no-correct
+            class="w-full min-w-25 ps-7"
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+            size="small"
+          />
           <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
         </div>
       </div>
