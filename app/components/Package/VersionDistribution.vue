@@ -206,6 +206,7 @@ const xAxisLabels = computed(() => {
 
 // Handle keyboard navigation for semver group toggle
 function handleGroupingKeydown(event: KeyboardEvent) {
+  if (pending.value) return
   if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault()
     // Toggle between major and minor
