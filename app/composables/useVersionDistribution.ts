@@ -5,12 +5,10 @@ import type {
   VersionGroupDownloads,
   VersionGroupingMode,
 } from '#shared/types/version-downloads'
-import { useAccentColor } from './useSettings'
 
 interface ChartDataItem {
   name: string
   downloads: number
-  color?: string
 }
 
 /**
@@ -23,8 +21,6 @@ interface ChartDataItem {
  * @returns Reactive state and computed chart data
  */
 export function useVersionDistribution(packageName: MaybeRefOrGetter<string>) {
-  const { accentColors } = useAccentColor()
-
   const groupingMode = ref<VersionGroupingMode>('major')
   const hideSmallVersions = ref(false)
   const pending = ref(false)
@@ -111,20 +107,13 @@ export function useVersionDistribution(packageName: MaybeRefOrGetter<string>) {
     })
   })
 
-  const chartColors = computed<string[]>(() => {
-    return accentColors.value.map(color => color.value)
-  })
-
   const chartDataset = computed<ChartDataItem[]>(() => {
     const groups = filteredGroups.value
     if (!groups.length) return []
 
-    const colors = chartColors.value
-
-    return groups.map((group, index) => ({
+    return groups.map(group => ({
       name: group.label,
       downloads: group.downloads,
-      color: colors[index % colors.length] ?? colors[0],
     }))
   })
 
