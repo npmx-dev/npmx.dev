@@ -2,9 +2,9 @@
 const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBackgroundTheme()
 
 onPrehydrate(el => {
-  const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  const preferences = JSON.parse(localStorage.getItem('npmx-user-preferences') || '{}')
   const defaultId = 'neutral'
-  const id = settings.preferredBackgroundTheme
+  const id = preferences.preferredBackgroundTheme
   if (id) {
     const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
