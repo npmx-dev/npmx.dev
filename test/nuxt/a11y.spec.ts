@@ -2301,7 +2301,7 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(SelectField, {
         props: {
           id: 'a11y-select-3',
-          attrs: { 'aria-label': 'Disabled select' },
+          selectAttrs: { 'aria-label': 'Disabled select' },
           items: [{ label: 'Option 1', value: 'option1' }],
           disabled: true,
         },
@@ -2314,7 +2314,7 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(SelectField, {
         props: {
           id: 'a11y-select-4',
-          attrs: { 'aria-label': 'Small select' },
+          selectAttrs: { 'aria-label': 'Disabled select' },
           items: [{ label: 'Option 1', value: 'option1' }],
           size: 'sm',
         },

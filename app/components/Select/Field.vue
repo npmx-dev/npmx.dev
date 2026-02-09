@@ -22,9 +22,10 @@ const model = defineModel<string | undefined>({ default: undefined })
 export interface SelectFieldProps extends SelectBaseProps {
   items: { label: string; value: string; disabled?: boolean }[]
   size?: keyof typeof SELECT_FIELD_SIZES
-  inputAttrs?: HTMLSelectElement['attributes'] & Omit<SelectBaseProps, 'size' | 'id'>
+  selectAttrs?: Omit<SelectBaseProps, 'size' | 'id'> &
+    Record<string, string | number | boolean | undefined>
   label?: string
-  labelAttrs?: HTMLSelectElement['attributes'] & Omit<SelectBaseProps, 'size' | 'id'>
+  labelAttrs?: Record<string, string | number | boolean | undefined>
   /** Visually hide label */
   hiddenLabel?: boolean
   id: string
@@ -54,7 +55,7 @@ const props = withDefaults(defineProps<SelectFieldProps>(), {
         class="appearance-none group-hover/select:border-fg-muted"
         :class="[SELECT_FIELD_SIZES[size], block ? 'w-full' : 'w-fit']"
         v-model="model"
-        v-bind="inputAttrs"
+        v-bind="selectAttrs"
         :id="id"
       >
         <option
