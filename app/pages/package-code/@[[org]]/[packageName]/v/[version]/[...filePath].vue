@@ -7,8 +7,11 @@ import type {
 
 definePageMeta({
   name: 'code',
-  path: '/package-code/:path+',
-  alias: ['/package/code/:path+', '/code/:path+'],
+  path: '/package-code/@:org?/:packageName/v/:version/:filePath(.*)?',
+  alias: [
+    '/package/code/@:org?/:packageName/v/:version/:filePath(.*)?',
+    '/code/@:org?/:packageName/v/:version/:filePath(.*)?',
+  ],
 })
 
 const route = useRoute('code')
@@ -19,23 +22,11 @@ const route = useRoute('code')
 //   /code/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0", filePath: "src/index.ts"
 //   /code/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0", filePath: null
 const parsedRoute = computed(() => {
-  const segments = route.params.path
-
-  // Find the /v/ separator for version
-  const vIndex = segments.indexOf('v')
-  if (vIndex === -1 || vIndex >= segments.length - 1) {
-    // No version specified - redirect or error
-    return {
-      packageName: segments.join('/'),
-      version: null as string | null,
-      filePath: null as string | null,
-    }
-  }
-
-  const packageName = segments.slice(0, vIndex).join('/')
-  const afterVersion = segments.slice(vIndex + 1)
-  const version = afterVersion[0] ?? null
-  const filePath = afterVersion.length > 1 ? afterVersion.slice(1).join('/') : null
+  const packageName = route.params.org
+    ? `@${route.params.org}/${route.params.packageName}`
+    : route.params.packageName
+  const version = route.params.version
+  const filePath = route.params.filePath || null
 
   return { packageName, version, filePath }
 })
@@ -46,8 +37,15 @@ const filePathOrig = computed(() => parsedRoute.value.filePath)
 const filePath = computed(() => parsedRoute.value.filePath?.replace(/\/$/, ''))
 
 // Navigation helper - build URL for a path
-function getCodeUrl(args: { packageName: string; version: string; filePath?: string }): string {
-  const base = `/package-code/${args.packageName}/v/${args.version}`
+function getCodeUrl(args: {
+  org?: string
+  packageName: string
+  version: string
+  filePath?: string
+}): string {
+  const base = args.org
+    ? `/package-code/@${args.org}/${args.packageName}/v/${args.version}`
+    : `/package-code/${args.packageName}/v/${args.version}`
   return args.filePath ? `${base}/${args.filePath}` : base
 }
 
@@ -203,17 +201,12 @@ const breadcrumbs = computed(() => {
 // Navigation helper - build URL for a path
 function getCurrentCodeUrl(path?: string): string {
   return getCodeUrl({
+    org: route.params.org,
     packageName: packageName.value,
     version: version.value!,
     filePath: path,
   })
 }
-
-// Base path segments for route objects (e.g., ['nuxt', 'v', '4.2.0'] or ['@nuxt', 'kit', 'v', '1.0.0'])
-const basePath = computed(() => {
-  const segments = packageName.value.split('/')
-  return [...segments, 'v', version.value ?? '']
-})
 
 // Extract org name from scoped package
 const orgName = computed(() => {
@@ -409,7 +402,7 @@ defineOgImageComponent('Default', {
           :tree="fileTree.tree"
           :current-path="filePath ?? ''"
           :base-url="getCurrentCodeUrl()"
-          :base-path="basePath"
+          :base-route="route"
         />
       </aside>
 
@@ -565,7 +558,7 @@ defineOgImageComponent('Default', {
             :tree="fileTree.tree"
             :current-path="filePath ?? ''"
             :base-url="getCurrentCodeUrl()"
-            :base-path="basePath"
+            :base-route="route"
           />
         </template>
       </div>
@@ -579,7 +572,7 @@ defineOgImageComponent('Default', {
           :tree="fileTree.tree"
           :current-path="filePath ?? ''"
           :base-url="getCurrentCodeUrl()"
-          :base-path="basePath"
+          :base-route="route"
         />
       </Teleport>
     </ClientOnly>

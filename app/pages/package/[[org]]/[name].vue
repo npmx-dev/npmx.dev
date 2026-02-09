@@ -516,17 +516,29 @@ useSeoMeta({
   twitterDescription: () => pkg.value?.description ?? '',
 })
 
+const linkCode = computed((): Parameters<typeof navigateTo>[0] | null => {
+  if (pkg.value == null || resolvedVersion.value == null) {
+    return null
+  }
+  const split = pkg.value.name.split('/')
+  return {
+    name: 'code',
+    params: {
+      org: split.length === 2 ? split[0]?.replace(/^@/, '') : undefined,
+      packageName: split.length === 2 ? split[1]! : split[0]!,
+      version: resolvedVersion.value,
+      filePath: '',
+    },
+  }
+})
+
 onKeyStroke(
   e => isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
   e => {
-    if (pkg.value == null || resolvedVersion.value == null) return
+    if (linkCode.value === null) return
     e.preventDefault()
-    navigateTo({
-      name: 'code',
-      params: {
-        path: [pkg.value.name, 'v', resolvedVersion.value],
-      },
-    })
+
+    navigateTo(linkCode.value)
   },
   { dedupe: true },
 )
@@ -662,8 +674,9 @@ onKeyStroke(
               {{ $t('package.links.docs') }}
             </LinkBase>
             <LinkBase
+              v-if="linkCode"
               variant="button-secondary"
-              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
+              :to="linkCode"
               aria-keyshortcuts="."
               classicon="i-carbon:code"
             >
