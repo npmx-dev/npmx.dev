@@ -15,7 +15,24 @@
     "docs": "文档",
     "source": "源码",
     "social": "社交媒体",
-    "chat": "聊天"
+    "chat": "聊天",
+    "keyboard_shortcuts": "键盘快捷键"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "全局",
+      "search": "搜索",
+      "package": "包"
+    },
+    "focus_search": "聚焦搜索",
+    "show_kbd_hints": "高亮键盘提示",
+    "settings": "打开设置",
+    "compare": "打开比较",
+    "compare_from_package": "打开比较（使用当前包预填充）",
+    "navigate_results": "导航结果",
+    "go_to_result": "跳转到结果",
+    "open_code_view": "打开代码视图",
+    "open_docs": "打开文档"
   },
   "search": {
     "label": "搜索 npm 包",
@@ -23,8 +40,10 @@
     "button": "搜索",
     "searching": "搜索中…",
     "found_packages": "共找到 {count} 个包",
+    "found_packages_sorted": "正在排序前 {count} 个结果",
     "updating": "（更新中…）",
     "no_results": "未找到匹配“{query}”的包",
+    "rate_limited": "已达到 npm 请求限制，请稍后再试",
     "title": "搜索",
     "title_search": "搜索：{search}",
     "title_packages": "搜索包",
@@ -35,6 +54,7 @@
     "claim_button": "声明“{name}”",
     "want_to_claim": "想要声明这个包名吗？",
     "start_typing": "输入以搜索软件包",
+    "algolia_disclaimer": "由 Algolia 提供支持",
     "exact_match": "精确匹配",
     "suggestion": {
       "user": "用户",
@@ -62,7 +82,16 @@
     "sections": {
       "appearance": "外观",
       "display": "显示",
+      "search": "搜索",
       "language": "语言"
+    },
+    "data_source": {
+      "label": "数据来源",
+      "description": "选择 npmx 从哪里获取搜索数据。单独的包页面始终直接使用 npm registry。",
+      "npm": "npm Registry",
+      "npm_description": "直接从 npm 官方注册表获取搜索、组织和用户列表。权威可靠，但速度可能较慢。",
+      "algolia": "Algolia",
+      "algolia_description": "使用 Algolia 来实现更快的搜索，适用于组织页和用户页。"
     },
     "relative_dates": "相对时间",
     "include_types": "在安装时包含 {'@'}types",
@@ -390,7 +419,12 @@
       "date_range_multiline": "{start}\n到 {end}",
       "download_file": "下载 {fileType}",
       "toggle_annotator": "切换标注工具",
-      "legend_estimation": "估算值"
+      "legend_estimation": "估算值",
+      "no_data": "无可用数据",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "下载量"
+      }
     }
   },
   "connector": {
@@ -796,7 +830,8 @@
       "create_account": "创建一个新账户",
       "connect_bluesky": "使用 Bluesky 账户登录",
       "what_is_atmosphere": "什么是 Atmosphere 账户？",
-      "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账户登录所有兼容的应用。一旦创建账户，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。"
+      "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账户登录所有兼容的应用。一旦创建账户，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。",
+      "default_input_error": "请输入有效的 handle、DID 或完整的 PDS URL"
     }
   },
   "header": {
@@ -932,6 +967,9 @@
         "types_none": "无",
         "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）",
         "up_to_you": "由你决定!"
+      },
+      "trends": {
+        "title": "每周下载量"
       }
     }
   },
