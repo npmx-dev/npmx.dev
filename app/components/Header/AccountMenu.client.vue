@@ -62,7 +62,6 @@ function openAuthModal() {
       :aria-expanded="isOpen"
       aria-haspopup="true"
       @click="isOpen = !isOpen"
-      class="border-none"
     >
       <!-- Stacked avatars when connected -->
       <div
@@ -106,7 +105,7 @@ function openAuthModal() {
       </div>
 
       <!-- "connect" text when not connected -->
-      <span v-if="!hasAnyConnection" class="font-mono text-sm">
+      <span v-if="!hasAnyConnection" class="font-sans text-sm">
         {{ $t('account_menu.connect') }}
       </span>
 
