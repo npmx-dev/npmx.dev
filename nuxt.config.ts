@@ -159,6 +159,11 @@ export default defineNuxtConfig({
       ],
       external: ['@deno/doc'],
     },
+    esbuild: {
+      options: {
+        target: 'es2024',
+      },
+    },
     rollupConfig: {
       output: {
         paths: {
