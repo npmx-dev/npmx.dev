@@ -1,4 +1,3 @@
-import { Agent } from '@atproto/api'
 import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { createError, getQuery, sendRedirect } from 'h3'
 import { getOAuthLock } from '#server/utils/atproto/lock'
@@ -9,7 +8,7 @@ import type { PublicUserSession } from '#shared/schemas/publicUserSession'
 import { handleResolver } from '#server/utils/atproto/oauth'
 import { Client } from '@atproto/lex'
 import * as app from '#shared/types/lexicons/app'
-import { ensureValidAtIdentifier } from '@atproto/syntax'
+import { isAtIdentifierString } from '@atproto/lex'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
 
@@ -23,12 +22,15 @@ const OAUTH_LOCALES = new Set(['en', 'fr-FR', 'ja-JP'])
  * @returns
  */
 async function getAvatar(did: string, pds: string) {
+  if (!isAtIdentifierString(did)) {
+    return undefined
+  }
+
   let avatar: string | undefined
   try {
     const pdsUrl = new URL(pds)
     // Only fetch from HTTPS PDS endpoints to prevent SSRF
     if (did && pdsUrl.protocol === 'https:') {
-      ensureValidAtIdentifier(did)
       const client = new Client(pdsUrl)
       const profileResponse = await client.get(app.bsky.actor.profile, {
         repo: did,
@@ -133,11 +135,9 @@ export default defineEventHandler(async event => {
   const { session: authSession } = await atclient.callback(
     new URLSearchParams(query as Record<string, string>),
   )
-  const agent = new Agent(authSession)
-  event.context.agent = agent
 
   const response = await fetch(
-    `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${agent.did}`,
+    `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${authSession.did}`,
     { headers: { 'User-Agent': 'npmx' } },
   )
   if (response.ok) {
