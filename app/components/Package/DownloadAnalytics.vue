@@ -314,13 +314,6 @@ const effectivePackageNames = computed<string[]>(() => {
   return single ? [single] : []
 })
 
-const xAxisLabel = computed(() => {
-  if (!isMultiPackageMode.value) return props.packageName ?? ''
-  const names = effectivePackageNames.value
-  if (names.length === 1) return names[0]
-  return 'packages'
-})
-
 const selectedGranularity = shallowRef<ChartTimeGranularity>('weekly')
 const displayedGranularity = shallowRef<ChartTimeGranularity>('weekly')
 
