@@ -39,3 +39,8 @@ test-results/
 
 # generated files
 shared/types/lexicons
+
+**/__screenshots__/**
+
+# output
+.vercel

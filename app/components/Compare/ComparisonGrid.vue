@@ -2,8 +2,8 @@
 import type { ModuleReplacement } from 'module-replacements'
 
 export interface ComparisonGridColumn {
-  /** Display text (e.g. "lodash@4.17.21") */
-  header: string
+  name: string
+  version?: string
   /** Module replacement data for this package (if available) */
   replacement?: ModuleReplacement | null
 }
@@ -38,18 +38,14 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
         <div class="comparison-label" />
 
         <!-- Package columns -->
-        <div
-          v-for="col in columns"
-          :key="col.header"
-          class="comparison-cell comparison-cell-header"
-        >
+        <div v-for="col in columns" :key="col.name" class="comparison-cell comparison-cell-header">
           <span class="inline-flex items-center gap-1.5 truncate">
             <NuxtLink
-              :to="`/package/${col.header}`"
+              :to="packageRoute(col.name, col.version)"
               class="link-subtle font-mono text-sm font-medium text-fg truncate"
-              :title="col.header"
+              :title="col.version ? `${col.name}@${col.version}` : col.name"
             >
-              {{ col.header }}
+              {{ col.name }}<template v-if="col.version">@{{ col.version }}</template>
             </NuxtLink>
             <TooltipApp v-if="col.replacement" :text="getReplacementTooltip(col)" position="bottom">
               <span

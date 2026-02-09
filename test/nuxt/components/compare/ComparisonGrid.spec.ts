@@ -3,7 +3,10 @@ import { mountSuspended } from '@nuxt/test-utils/runtime'
 import ComparisonGrid from '~/components/Compare/ComparisonGrid.vue'
 
 function cols(...headers: string[]) {
-  return headers.map(header => ({ header }))
+  return headers.map(header => {
+    const [name, version] = header.split('@')
+    return { name: name!, version }
+  })
 }
 
 describe('ComparisonGrid', () => {

@@ -1,4 +1,6 @@
 import validatePackageName from 'validate-npm-package-name'
+import { NPM_REGISTRY } from '#shared/utils/constants'
+import { encodePackageName } from '#shared/utils/npm'
 
 /**
  * Normalize a package name for comparison by removing common variations.
@@ -70,18 +72,12 @@ export interface CheckNameResult {
   similarPackages?: SimilarPackage[]
 }
 
-const NPM_REGISTRY = 'https://registry.npmjs.org'
-
 export async function checkPackageExists(
   name: string,
   options: Parameters<typeof $fetch>[1] = {},
 ): Promise<boolean> {
   try {
-    const encodedName = name.startsWith('@')
-      ? `@${encodeURIComponent(name.slice(1))}`
-      : encodeURIComponent(name)
-
-    await $fetch(`${NPM_REGISTRY}/${encodedName}`, {
+    await $fetch(`${NPM_REGISTRY}/${encodePackageName(name)}`, {
       ...options,
       method: 'HEAD',
     })

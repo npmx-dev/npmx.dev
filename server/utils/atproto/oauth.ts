@@ -67,7 +67,10 @@ async function getOAuthSession(
     })
 
     const currentSession = serverSession.data
-    if (!currentSession) return { oauthSession: undefined, serverSession }
+    // TODO (jg): why can a session be `{}`?
+    if (!currentSession || !currentSession.public?.did) {
+      return { oauthSession: undefined, serverSession }
+    }
 
     const oauthSession = await client.restore(currentSession.public.did)
     return { oauthSession, serverSession }

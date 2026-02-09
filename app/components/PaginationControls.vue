@@ -116,7 +116,7 @@ function handlePageSizeChange(event: Event) {
   <!-- Only show when in paginated mode (table view or explicit paginated mode) -->
   <div
     v-if="shouldShowControls"
-    class="flex flex-wrap items-center justify-between gap-4 py-4 border-t border-border mt-6"
+    class="flex flex-wrap items-center justify-between gap-4 py-4 mt-2"
   >
     <!-- Left: Mode toggle and page size -->
     <div class="flex items-center gap-4">
@@ -153,7 +153,7 @@ function handlePageSizeChange(event: Event) {
         <select
           id="page-size"
           :value="pageSize"
-          class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 hover:border-border-hover"
+          class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1 font-mono text-sm text-fg transition-colors duration-200 hover:border-border-hover"
           @change="handlePageSizeChange"
         >
           <option v-for="size in PAGE_SIZE_OPTIONS" :key="size" :value="size">
@@ -200,7 +200,7 @@ function handlePageSizeChange(event: Event) {
           :aria-label="$t('filters.pagination.previous')"
           @click="goPrev"
         >
-          <span class="i-carbon-chevron-left w-4 h-4" aria-hidden="true" />
+          <span class="i-carbon-chevron-left block rtl-flip w-4 h-4" aria-hidden="true" />
         </button>
 
         <!-- Page numbers -->
@@ -230,7 +230,7 @@ function handlePageSizeChange(event: Event) {
           :aria-label="$t('filters.pagination.next')"
           @click="goNext"
         >
-          <span class="i-carbon-chevron-right w-4 h-4" aria-hidden="true" />
+          <span class="i-carbon-chevron-right block rtl-flip w-4 h-4" aria-hidden="true" />
         </button>
       </nav>
     </div>

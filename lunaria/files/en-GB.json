@@ -2,13 +2,12 @@
   "seo": {
     "home": {
       "title": "npmx - Package Browser for the npm Registry",
-      "description": "A better browser for the npm registry. Search, browse, and explore packages with a modern interface."
+      "description": "a fast, modern browser for the npm registry. Search, browse, and explore packages with a modern interface."
     }
   },
-  "version": "Version",
   "built_at": "built {0}",
   "alt_logo": "npmx logo",
-  "tagline": "a better browser for the npm registry",
+  "tagline": "a fast, modern browser for the npm registry",
   "non_affiliation_disclaimer": "not affiliated with npm, Inc.",
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
@@ -16,17 +15,35 @@
     "docs": "docs",
     "source": "source",
     "social": "social",
-    "chat": "chat"
+    "chat": "chat",
+    "keyboard_shortcuts": "keyboard shortcuts"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Global",
+      "search": "Search",
+      "package": "Package"
+    },
+    "focus_search": "Focus search",
+    "show_kbd_hints": "Highlight keyboard hints",
+    "settings": "Open settings",
+    "compare": "Open compare",
+    "compare_from_package": "Open compare (prefilled with current package)",
+    "navigate_results": "Navigate results",
+    "go_to_result": "Go to result",
+    "open_code_view": "Open code view",
+    "open_docs": "Open docs"
   },
   "search": {
     "label": "Search npm packages",
     "placeholder": "search packages...",
     "button": "search",
-    "clear": "Clear search",
     "searching": "Searching...",
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
+    "found_packages_sorted": "Sorting top {count} result | Sorting top {count} results",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
+    "rate_limited": "Hit npm rate limit, try again in a moment",
     "title": "search",
     "title_search": "search: {search}",
     "title_packages": "search packages",
@@ -37,6 +54,7 @@
     "claim_button": "Claim \"{name}\"",
     "want_to_claim": "Want to claim this package name?",
     "start_typing": "Start typing to search packages",
+    "algolia_disclaimer": "Powered by Algolia",
     "exact_match": "exact",
     "suggestion": {
       "user": "user",
@@ -48,7 +66,6 @@
   "nav": {
     "main_navigation": "Main",
     "popular_packages": "Popular packages",
-    "search": "search",
     "settings": "settings",
     "compare": "compare",
     "back": "back",
@@ -65,10 +82,18 @@
     "sections": {
       "appearance": "Appearance",
       "display": "Display",
+      "search": "Data source",
       "language": "Language"
     },
+    "data_source": {
+      "label": "Data source",
+      "description": "Choose where npmx gets search data. Individual package pages always use the npm registry directly.",
+      "npm": "npm Registry",
+      "npm_description": "Fetches search, org and user listings directly from the official npm registry. Authoritative, but can be slower.",
+      "algolia": "Algolia",
+      "algolia_description": "Uses Algolia for faster search, org and user pages."
+    },
     "relative_dates": "Relative dates",
-    "relative_dates_description": "Show \"3 days ago\" instead of full dates",
     "include_types": "Include {'@'}types in install",
     "include_types_description": "Add {'@'}types package to install commands for untyped packages",
     "hide_platform_packages": "Hide platform-specific packages in search",
@@ -103,8 +128,6 @@
     "copy": "copy",
     "copied": "copied!",
     "skip_link": "Skip to main content",
-    "close_modal": "Close modal",
-    "show_more": "show more",
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
     "view_on_npm": "view on npm",
@@ -121,7 +144,6 @@
     "not_found": "Package Not Found",
     "not_found_message": "The package could not be found.",
     "no_description": "No description provided",
-    "show_full_description": "Show full description",
     "not_latest": "(not latest)",
     "verified_provenance": "Verified provenance",
     "view_permalink": "View permalink for this version",
@@ -151,7 +173,6 @@
       "vulns": "Vulns",
       "published": "Published",
       "published_tooltip": "Date {package}{'@'}{version} was published",
-      "skills": "Skills",
       "view_dependency_graph": "View dependency graph",
       "inspect_dependency_tree": "Inspect dependency tree",
       "size_tooltip": {
@@ -162,7 +183,6 @@
     "skills": {
       "title": "Agent Skills",
       "skills_available": "{count} skill available | {count} skills available",
-      "view": "View",
       "compatible_with": "Compatible with {tool}",
       "install": "Install",
       "installation_method": "Installation method",
@@ -221,7 +241,8 @@
         "important": "Important",
         "warning": "Warning",
         "caution": "Caution"
-      }
+      },
+      "copy_as_markdown": "Copy README as Markdown"
     },
     "provenance_section": {
       "title": "Provenance",
@@ -296,13 +317,7 @@
       "show_more": "(show {count} more)",
       "show_less": "(show fewer)"
     },
-    "downloads": {
-      "title": "Weekly Downloads",
-      "date_range": "{start} to {end}",
-      "date_range_multiline": "{start}\nto {end}",
-      "analyze": "Analyze downloads",
-      "community_distribution": "View community adoption distribution",
-      "modal_title": "Downloads",
+    "trends": {
       "granularity": "Granularity",
       "granularity_daily": "Daily",
       "granularity_weekly": "Weekly",
@@ -310,11 +325,23 @@
       "granularity_yearly": "Yearly",
       "start_date": "Start",
       "end_date": "End",
-      "no_data": "No download data available",
       "loading": "Loading...",
-      "y_axis_label": "{granularity} downloads",
+      "date_range": "{start} to {end}",
+      "date_range_multiline": "{start}\nto {end}",
       "download_file": "Download {fileType}",
-      "toggle_annotator": "Toggle annotator"
+      "toggle_annotator": "Toggle annotator",
+      "legend_estimation": "Estimation",
+      "no_data": "No data available",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Downloads"
+      }
+    },
+    "downloads": {
+      "title": "Weekly Downloads",
+      "analyze": "Analyze downloads",
+      "community_distribution": "View community adoption distribution",
+      "modal_title": "Downloads"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -340,25 +367,12 @@
       "none": "None"
     },
     "vulnerabilities": {
-      "no_description": "No description available",
-      "found": "{count} vulnerability found | {count} vulnerabilities found",
-      "deps_found": "{count} vulnerability found | {count} vulnerabilities found",
-      "deps_affected": "{count} dependency affected | {count} dependencies affected",
       "tree_found": "{vulns} vulnerability in {packages}/{total} packages | {vulns} vulnerabilities in {packages}/{total} packages",
-      "scanning_tree": "Scanning dependency tree...",
       "show_all_packages": "show {count} affected package | show all {count} affected packages",
-      "no_summary": "No summary",
-      "view_details": "View vulnerability details",
       "path": "path",
       "more": "+{count} more",
       "packages_failed": "{count} package could not be checked | {count} packages could not be checked",
-      "no_known": "No known vulnerabilities in {count} package | No known vulnerabilities in {count} packages",
       "scan_failed": "Could not scan for vulnerabilities",
-      "depth": {
-        "root": "This package",
-        "direct": "Direct dependency",
-        "transitive": "Transitive dependency (indirect)"
-      },
       "severity": {
         "critical": "critical",
         "high": "high",
@@ -400,13 +414,7 @@
     },
     "skeleton": {
       "loading": "Loading package details",
-      "license": "License",
       "weekly": "Weekly",
-      "size": "Size",
-      "deps": "Deps",
-      "published": "Published",
-      "get_started": "Get started",
-      "readme": "Readme",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "versions": "Versions",
@@ -417,19 +425,14 @@
       "published": "Recently published",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
-    "status": {
-      "connecting": "connecting...",
-      "connected_as": "connected as ~{user}",
-      "connected": "connected",
-      "connect_cli": "connect local CLI",
-      "aria_connecting": "Connecting to local connector",
-      "aria_connected": "Connected to local connector",
-      "aria_click_to_connect": "Click to connect to local connector",
-      "avatar_alt": "{user}'s avatar"
-    },
     "modal": {
       "title": "Local Connector",
       "contributor_badge": "Contributors only",
@@ -545,8 +548,7 @@
       "failed_to_load": "Failed to load organisation packages",
       "no_match": "No packages match \"{query}\"",
       "not_found": "Organization not found",
-      "not_found_message": "The organisation \"{'@'}{name}\" does not exist on npm",
-      "filter_placeholder": "Filter {count} package... | Filter {count} packages..."
+      "not_found_message": "The organisation \"{'@'}{name}\" does not exist on npm"
     }
   },
   "user": {
@@ -607,7 +609,6 @@
   "code": {
     "files_label": "Files",
     "no_files": "No files in this directory",
-    "select_version": "Select version",
     "root": "root",
     "lines": "{count} line | {count} lines",
     "toggle_tree": "Toggle file tree",
@@ -617,7 +618,6 @@
     "view_raw": "View raw file",
     "file_too_large": "File too large to preview",
     "file_size_warning": "{size} exceeds the 500KB limit for syntax highlighting",
-    "load_anyway": "Load anyway",
     "failed_to_load": "Failed to load file",
     "unavailable_hint": "The file may be too large or unavailable",
     "version_required": "Version is required to browse code",
@@ -639,12 +639,10 @@
     "provenance": {
       "verified": "verified",
       "verified_title": "Verified provenance",
-      "verified_via": "Verified: published via {provider}",
-      "view_more_details": "View more details"
+      "verified_via": "Verified: published via {provider}"
     },
     "jsr": {
-      "title": "also available on JSR",
-      "label": "jsr"
+      "title": "also available on JSR"
     }
   },
   "filters": {
@@ -764,7 +762,6 @@
     "title": "About",
     "heading": "about",
     "meta_description": "npmx is a fast, modern browser for the npm registry. A better UX/DX for exploring npm packages.",
-    "back_home": "back to home",
     "what_we_are": {
       "title": "What we are",
       "better_ux_dx": "better UX/DX",
@@ -824,8 +821,7 @@
     "connect_npm_cli": "Connect to npm CLI",
     "connect_atmosphere": "Connect to Atmosphere",
     "connecting": "Connecting...",
-    "ops": "{count} op | {count} ops",
-    "disconnect": "Disconnect"
+    "ops": "{count} op | {count} ops"
   },
   "auth": {
     "modal": {
@@ -839,12 +835,12 @@
       "create_account": "Create a new account",
       "connect_bluesky": "Connect with Bluesky",
       "what_is_atmosphere": "What is an Atmosphere account?",
-      "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account."
+      "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account.",
+      "default_input_error": "Please enter a valid handle, DID, or a full PDS URL"
     }
   },
   "header": {
     "home": "npmx home",
-    "github": "GitHub",
     "packages": "packages",
     "packages_dropdown": {
       "title": "Your Packages",
@@ -885,9 +881,7 @@
       "searching": "Searching...",
       "remove_package": "Remove {package}",
       "packages_selected": "{count}/{max} packages selected.",
-      "add_hint": "Add at least 2 packages to compare.",
-      "loading_versions": "Loading versions...",
-      "select_version": "Select version"
+      "add_hint": "Add at least 2 packages to compare."
     },
     "no_dependency": {
       "label": "(No dependency)",
@@ -935,6 +929,10 @@
           "label": "Downloads/wk",
           "description": "Weekly download count"
         },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Number of likes"
+        },
         "lastUpdated": {
           "label": "Published",
           "description": "When this version was published"
@@ -974,6 +972,9 @@
         "types_none": "None",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "Up to you!"
+      },
+      "trends": {
+        "title": "Weekly Downloads"
       }
     }
   },
@@ -982,7 +983,6 @@
     "last_updated": "Last updated: {date}",
     "welcome": "Welcome to {app}. We are committed to protecting your privacy. This policy explains what data we collect, how we use it, and your rights regarding your information.",
     "cookies": {
-      "title": "Cookies",
       "what_are": {
         "title": "What are cookies?",
         "p1": "Cookies are small text files stored on your device when you visit a website. Their purpose is to enhance your browsing experience by remembering certain preferences and settings."

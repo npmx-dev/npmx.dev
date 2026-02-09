@@ -84,10 +84,7 @@ function getDepthStyle(depth: DependencyDepth) {
               <DependencyPathPopup v-if="pkg.path && pkg.path.length > 1" :path="pkg.path" />
 
               <NuxtLink
-                :to="{
-                  name: 'package',
-                  params: { package: [...pkg.name.split('/'), 'v', pkg.version] },
-                }"
+                :to="packageRoute(pkg.name, pkg.version)"
                 class="font-mono text-sm font-medium hover:underline truncate py-4"
                 :class="getDepthStyle(pkg.depth).text"
               >

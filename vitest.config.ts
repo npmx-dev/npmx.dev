@@ -30,6 +30,9 @@ export default defineConfig({
             nuxt: {
               rootDir: fileURLToPath(new URL('.', import.meta.url)),
               overrides: {
+                vue: {
+                  runtimeCompiler: true,
+                },
                 experimental: {
                   payloadExtraction: false,
                   viteEnvironmentApi: false,
