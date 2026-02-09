@@ -178,7 +178,7 @@ function handleBlur() {
             :aria-label="$t('compare.no_dependency.add_column')"
             @click="addPackage(NO_DEPENDENCY_ID)"
           >
-            <span class="text-sm text-accent italic flex items-center gap-2">
+            <span class="text-sm text-accent italic flex items-center gap-2 block">
               <span class="i-carbon:clean w-4 h-4" aria-hidden="true" />
               {{ $t('compare.no_dependency.typeahead_title') }}
             </span>
@@ -196,7 +196,7 @@ function handleBlur() {
             class="block w-full text-start"
             @click="addPackage(result.name)"
           >
-            <span class="font-mono text-sm text-fg">{{ result.name }}</span>
+            <span class="font-mono text-sm text-fg block">{{ result.name }}</span>
             <span v-if="result.description" class="text-xs text-fg-muted truncate mt-0.5">
               {{ result.description }}
             </span>
