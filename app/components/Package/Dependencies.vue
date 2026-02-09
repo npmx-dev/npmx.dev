@@ -85,7 +85,7 @@ const numberFormatter = useNumberFormatter()
         )
       "
     >
-      <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
+      <ul class="px-1 space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
@@ -168,7 +168,10 @@ const numberFormatter = useNumberFormatter()
         })
       "
     >
-      <ul class="space-y-1 list-none m-0" :aria-label="$t('package.peer_dependencies.list_label')">
+      <ul
+        class="px-1 space-y-1 list-none m-0"
+        :aria-label="$t('package.peer_dependencies.list_label')"
+      >
         <li
           v-for="peer in sortedPeerDependencies.slice(0, peerDepsExpanded ? undefined : 10)"
           :key="peer.name"
@@ -225,7 +228,7 @@ const numberFormatter = useNumberFormatter()
       "
     >
       <ul
-        class="space-y-1 list-none m-0"
+        class="px-1 space-y-1 list-none m-0"
         :aria-label="$t('package.optional_dependencies.list_label')"
       >
         <li
