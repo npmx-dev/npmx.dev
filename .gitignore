@@ -45,3 +45,6 @@ file-tree-sprite.svg
 
 # output
 .vercel
+
+*storybook.log
+storybook-static

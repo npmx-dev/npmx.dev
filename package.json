@@ -46,7 +46,9 @@
     "test:nuxt": "vite test --project nuxt",
     "test:types": "pnpm generate:lexicons && nuxt prepare && vue-tsc -b --noEmit && pnpm --filter npmx-connector test:types",
     "test:unit": "vite test --project unit",
-    "start:playwright:webserver": "NODE_ENV=test pnpm preview --port 5678"
+    "start:playwright:webserver": "NODE_ENV=test pnpm preview --port 5678",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@atproto/common": "0.5.10",
@@ -115,7 +117,10 @@
     "@e18e/eslint-plugin": "0.1.4",
     "@intlify/core-base": "11.2.8",
     "@npm/types": "2.1.0",
+    "@nuxtjs/storybook": "^9.0.1",
     "@playwright/test": "1.58.1",
+    "@storybook/addon-a11y": "^10.2.7",
+    "@storybook/addon-docs": "^10.2.7",
     "@types/node": "24.10.9",
     "@types/sanitize-html": "2.16.0",
     "@types/semver": "7.7.1",
@@ -135,6 +140,7 @@
     "oxlint": "1.42.0",
     "schema-dts": "1.1.5",
     "simple-git-hooks": "2.13.1",
+    "storybook": "^10.2.7",
     "typescript": "5.9.3",
     "vitest": "npm:@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vitest-environment-nuxt": "1.0.1",
