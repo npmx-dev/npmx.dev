@@ -102,6 +102,11 @@ export function toProxiedImageUrl(url: string): string {
     return url
   }
 
+  // Protocol-relative URLs should be treated as HTTPS for proxying purposes
+  if (url.startsWith('//')) {
+    url = `https:${url}`
+  }
+
   const parsed = URL.parse(url)
   if (!parsed || (parsed.protocol !== 'http:' && parsed.protocol !== 'https:')) {
     return url
