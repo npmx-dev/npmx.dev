@@ -14,8 +14,8 @@ const maxPackages = computed(() => props.max ?? 4)
 const inputValue = shallowRef('')
 const isInputFocused = shallowRef(false)
 
-// Use the shared npm search composable
-const { data: searchData, status } = useNpmSearch(inputValue, { size: 15 })
+// Use the shared search composable (supports both npm and Algolia providers)
+const { data: searchData, status } = useSearch(inputValue, { size: 15 })
 
 const isSearching = computed(() => status.value === 'pending')
 
@@ -103,11 +103,7 @@ function handleBlur() {
   <div class="space-y-3">
     <!-- Selected packages -->
     <div v-if="packages.length > 0" class="flex flex-wrap gap-2">
-      <div
-        v-for="pkg in packages"
-        :key="pkg"
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-bg-subtle border border-border rounded-md"
-      >
+      <TagStatic v-for="pkg in packages" :key="pkg">
         <!-- No dependency display -->
         <template v-if="pkg === NO_DEPENDENCY_ID">
           <span class="text-sm text-accent italic flex items-center gap-1.5">
@@ -115,26 +111,20 @@ function handleBlur() {
             {{ $t('compare.no_dependency.label') }}
           </span>
         </template>
-        <NuxtLink
-          v-else
-          :to="packageRoute(pkg)"
-          class="font-mono text-sm text-fg hover:text-accent transition-colors"
-        >
+        <LinkBase v-else :to="packageRoute(pkg)" class="text-sm">
           {{ pkg }}
-        </NuxtLink>
-        <button
-          type="button"
-          class="text-fg-subtle hover:text-fg transition-colors rounded"
+        </LinkBase>
+        <ButtonBase
+          size="small"
           :aria-label="
             $t('compare.selector.remove_package', {
               package: pkg === NO_DEPENDENCY_ID ? $t('compare.no_dependency.label') : pkg,
             })
           "
           @click="removePackage(pkg)"
-        >
-          <span class="i-carbon:close flex items-center w-3.5 h-3.5" aria-hidden="true" />
-        </button>
-      </div>
+          classicon="i-carbon:close"
+        />
+      </TagStatic>
     </div>
 
     <!-- Add package input -->
@@ -182,10 +172,9 @@ function handleBlur() {
           class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
           <!-- No dependency option (easter egg with James) -->
-          <button
+          <ButtonBase
             v-if="showNoDependencyOption"
-            type="button"
-            class="w-full text-start px-4 py-2.5 hover:bg-bg-muted transition-colors focus-visible:outline-none focus-visible:bg-bg-muted border-b border-border/50"
+            class="block w-full text-start"
             :aria-label="$t('compare.no_dependency.add_column')"
             @click="addPackage(NO_DEPENDENCY_ID)"
           >
@@ -196,23 +185,22 @@ function handleBlur() {
             <div class="text-xs text-fg-muted truncate mt-0.5">
               {{ $t('compare.no_dependency.typeahead_description') }}
             </div>
-          </button>
+          </ButtonBase>
 
           <div v-if="isSearching" class="px-4 py-3 text-sm text-fg-muted">
             {{ $t('compare.selector.searching') }}
           </div>
-          <button
+          <ButtonBase
             v-for="result in filteredResults"
             :key="result.name"
-            type="button"
-            class="w-full text-start px-4 py-2.5 hover:bg-bg-muted transition-colors focus-visible:outline-none focus-visible:bg-bg-muted"
+            class="block w-full text-start"
             @click="addPackage(result.name)"
           >
             <div class="font-mono text-sm text-fg">{{ result.name }}</div>
             <div v-if="result.description" class="text-xs text-fg-muted truncate mt-0.5">
               {{ result.description }}
             </div>
-          </button>
+          </ButtonBase>
         </div>
       </Transition>
     </div>

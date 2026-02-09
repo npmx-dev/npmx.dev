@@ -1,5 +1,5 @@
 import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
-import { emptySearchResponse } from './useNpmSearch'
+import { emptySearchResponse } from './search-utils'
 
 /** Default page size for incremental loading (npm registry path) */
 const PAGE_SIZE = 50 as const
@@ -47,7 +47,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
     async ({ $npmRegistry }, { signal }) => {
       const user = toValue(username)
       if (!user) {
-        return emptySearchResponse
+        return emptySearchResponse()
       }
 
       const provider = searchProvider.value
@@ -59,7 +59,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
           // Guard against stale response (user/provider changed during await)
           if (user !== toValue(username) || provider !== searchProvider.value) {
-            return emptySearchResponse
+            return emptySearchResponse()
           }
 
           // If Algolia returns results, use them. If empty, fall through to npm
@@ -96,7 +96,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
       // Guard against stale response (user/provider changed during await)
       if (user !== toValue(username) || provider !== searchProvider.value) {
-        return emptySearchResponse
+        return emptySearchResponse()
       }
 
       cache.value = {
@@ -107,7 +107,7 @@ export function useUserPackages(username: MaybeRefOrGetter<string>) {
 
       return { ...response, isStale }
     },
-    { default: () => emptySearchResponse },
+    { default: emptySearchResponse },
   )
   // --- Fetch more (npm path only) ---
   /**

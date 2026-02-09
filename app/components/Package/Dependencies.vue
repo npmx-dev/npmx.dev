@@ -91,7 +91,7 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
@@ -125,7 +125,7 @@ const numberFormatter = useNumberFormatter()
             </LinkBase>
             <LinkBase
               :to="packageRoute(dep, version)"
-              class="truncate"
+              class="block truncate"
               :class="getVersionClass(outdatedDeps[dep])"
               :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep], $t) : version"
             >
@@ -175,7 +175,7 @@ const numberFormatter = useNumberFormatter()
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-1 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="truncate" dir="ltr">
+            <LinkBase :to="packageRoute(peer.name)" class="block truncate" dir="ltr">
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -184,7 +184,7 @@ const numberFormatter = useNumberFormatter()
           </div>
           <LinkBase
             :to="packageRoute(peer.name, peer.version)"
-            class="truncate"
+            class="block truncate max-w-[40%]"
             :title="peer.version"
             dir="ltr"
           >
@@ -236,10 +236,15 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="truncate" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
             {{ dep }}
           </LinkBase>
-          <LinkBase :to="packageRoute(dep, version)" class="truncate" :title="version" dir="ltr">
+          <LinkBase
+            :to="packageRoute(dep, version)"
+            class="block truncate"
+            :title="version"
+            dir="ltr"
+          >
             {{ version }}
           </LinkBase>
         </li>

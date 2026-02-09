@@ -152,7 +152,8 @@ function handleKeydown(event: KeyboardEvent) {
     @click="toggle"
     @keydown="handleKeydown"
     classicon="i-carbon:list"
-    class="px-2.5 flex items-center"
+    class="px-2.5"
+    block
   >
     <span
       class="i-carbon:chevron-down w-3 h-3"

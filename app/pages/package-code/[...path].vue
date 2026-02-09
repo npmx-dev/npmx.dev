@@ -497,7 +497,6 @@ defineOgImageComponent('Default', {
           <LinkBase
             variant="button-secondary"
             :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-            class="inline-flex items-center gap-2"
           >
             {{ $t('code.view_raw') }}
           </LinkBase>
@@ -549,7 +548,6 @@ defineOgImageComponent('Default', {
           <LinkBase
             variant="button-secondary"
             :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-            class="inline-flex items-center gap-2"
           >
             {{ $t('code.view_raw') }}
           </LinkBase>

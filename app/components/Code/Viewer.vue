@@ -67,6 +67,7 @@ watch(
       :style="{ '--line-digits': lineDigits }"
       aria-hidden="true"
     >
+      <!-- This needs to be a native <a> element, because `LinkBase` (or specifically `NuxtLink`) does not seem to work when trying to prevent default behavior (jumping to the anchor) -->
       <a
         v-for="lineNum in lineNumbers"
         :id="`L${lineNum}`"

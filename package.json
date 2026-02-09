@@ -19,6 +19,7 @@
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
     "i18n:report": "node scripts/find-invalid-translations.ts",
     "i18n:report:fix": "node scripts/remove-unused-translations.ts",
+    "i18n:schema": "node scripts/generate-i18n-schema.ts",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint && oxfmt --check",
@@ -32,8 +33,8 @@
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
-    "test:a11y": "pnpm build:test && pnpm test:a11y:prebuilt",
-    "test:a11y:prebuilt": "LIGHTHOUSE_COLOR_MODE=dark ./scripts/lighthouse-a11y.sh && LIGHTHOUSE_COLOR_MODE=light ./scripts/lighthouse-a11y.sh",
+    "test:a11y": "pnpm build:test && LIGHTHOUSE_COLOR_MODE=dark pnpm test:a11y:prebuilt && LIGHTHOUSE_COLOR_MODE=light pnpm test:a11y:prebuilt",
+    "test:a11y:prebuilt": "./scripts/lighthouse-a11y.sh",
     "test:browser": "pnpm build:test && pnpm test:browser:prebuilt",
     "test:browser:prebuilt": "playwright test",
     "test:browser:ui": "pnpm build:test && pnpm test:browser:prebuilt --ui",
@@ -145,9 +146,12 @@
   },
   "lint-staged": {
     "i18n/locales/*": [
-      "pnpm build:lunaria",
+      "node ./lunaria/lunaria.ts",
       "pnpm oxfmt lunaria/files/",
-      "git add lunaria/files/"
+      "git add lunaria/files/",
+      "node scripts/generate-i18n-schema.ts",
+      "pnpm oxfmt i18n/schema.json",
+      "git add i18n/schema.json"
     ],
     "*.{js,ts,mjs,cjs,vue}": [
       "pnpm oxlint --fix"

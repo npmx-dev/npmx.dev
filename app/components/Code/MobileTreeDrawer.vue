@@ -27,14 +27,13 @@ watch(isOpen, open => (isLocked.value = open))
 
 <template>
   <!-- Toggle button (mobile only) -->
-  <button
-    type="button"
-    class="md:hidden fixed bottom-4 inset-ie-4 z-40 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors"
+  <ButtonBase
+    variant="primary"
+    class="md:hidden fixed bottom-4 inset-ie-4 z-45"
     :aria-label="$t('code.toggle_tree')"
     @click="isOpen = !isOpen"
-  >
-    <span class="w-5 h-5" :class="isOpen ? 'i-carbon:close' : 'i-carbon:folder'" />
-  </button>
+    :classicon="isOpen ? 'i-carbon:close' : 'i-carbon:folder'"
+  />
 
   <!-- Backdrop -->
   <Transition
@@ -66,14 +65,11 @@ watch(isOpen, open => (isLocked.value = open))
       >
         <span class="font-mono text-sm text-fg-muted">{{ $t('code.files_label') }}</span>
         <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
-        <button
-          type="button"
-          class="text-fg-muted hover:text-fg transition-colors"
+        <ButtonBase
           :aria-label="$t('code.close_tree')"
           @click="isOpen = false"
-        >
-          <span class="i-carbon:close w-5 h-5" />
-        </button>
+          classicon="i-carbon-close"
+        />
       </div>
       <CodeFileTree
         :tree="tree"

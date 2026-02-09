@@ -1,5 +1,5 @@
-import type { NpmSearchResponse, NpmSearchResult, MinimalPackument } from '#shared/types'
-import { emptySearchResponse, packumentToSearchResult } from './useNpmSearch'
+import type { NpmSearchResponse, NpmSearchResult, PackageMetaResponse } from '#shared/types'
+import { emptySearchResponse, metaToSearchResult } from './search-utils'
 import { mapWithConcurrency } from '#shared/utils/async'
 
 /**
@@ -7,7 +7,7 @@ import { mapWithConcurrency } from '#shared/utils/async'
  *
  * 1. Gets the authoritative package list from the npm registry (single request)
  * 2. Fetches metadata from Algolia by exact name (single request)
- * 3. Falls back to individual packument fetches when Algolia is unavailable
+ * 3. Falls back to lightweight server-side package-meta lookups
  */
 export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
   const { searchProvider } = useSearchProvider()
@@ -15,10 +15,10 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
 
   const asyncData = useLazyAsyncData(
     () => `org-packages:${searchProvider.value}:${toValue(orgName)}`,
-    async ({ $npmRegistry, ssrContext }, { signal }) => {
+    async ({ ssrContext }, { signal }) => {
       const org = toValue(orgName)
       if (!org) {
-        return emptySearchResponse
+        return emptySearchResponse()
       }
 
       // Get the authoritative package list from the npm registry (single request)
@@ -47,7 +47,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
       }
 
       if (packageNames.length === 0) {
-        return emptySearchResponse
+        return emptySearchResponse()
       }
 
       // Fetch metadata + downloads from Algolia (single request via getObjects)
@@ -62,16 +62,15 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         }
       }
 
-      // npm fallback: fetch packuments individually
-      const packuments = await mapWithConcurrency(
+      // npm fallback: fetch lightweight metadata via server proxy
+      const metaResults = await mapWithConcurrency(
         packageNames,
         async name => {
           try {
-            const encoded = encodePackageName(name)
-            const { data: pkg } = await $npmRegistry<MinimalPackument>(`/${encoded}`, {
-              signal,
-            })
-            return pkg
+            return await $fetch<PackageMetaResponse>(
+              `/api/registry/package-meta/${encodePackageName(name)}`,
+              { signal },
+            )
           } catch {
             return null
           }
@@ -79,11 +78,9 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         10,
       )
 
-      const validPackuments = packuments.filter(
-        (pkg): pkg is MinimalPackument => pkg !== null && !!pkg['dist-tags'],
-      )
-
-      const results: NpmSearchResult[] = validPackuments.map(pkg => packumentToSearchResult(pkg))
+      const results: NpmSearchResult[] = metaResults
+        .filter((meta): meta is PackageMetaResponse => meta !== null)
+        .map(metaToSearchResult)
 
       return {
         isStale: false,
@@ -92,7 +89,7 @@ export function useOrgPackages(orgName: MaybeRefOrGetter<string>) {
         time: new Date().toISOString(),
       } satisfies NpmSearchResponse
     },
-    { default: () => emptySearchResponse },
+    { default: emptySearchResponse },
   )
 
   return asyncData

@@ -192,7 +192,7 @@ const {
   hasMore,
   fetchMore,
   isRateLimited,
-} = useNpmSearch(query, () => ({
+} = useSearch(query, () => ({
   size: requestedSize.value,
 }))
 

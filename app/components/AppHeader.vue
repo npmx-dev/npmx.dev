@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { LinkBase } from '#components'
+import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
 import { isEditableElement } from '~/utils/input'
 
 withDefaults(
@@ -12,6 +13,106 @@ withDefaults(
 )
 
 const { isConnected, npmUser } = useConnector()
+
+const desktopLinks = computed<NavigationConfig>(() => [
+  {
+    name: 'Compare',
+    label: $t('nav.compare'),
+    to: { name: 'compare' },
+    keyshortcut: 'c',
+    type: 'link',
+    external: false,
+    iconClass: 'i-carbon:compare',
+  },
+  {
+    name: 'Settings',
+    label: $t('nav.settings'),
+    to: { name: 'settings' },
+    keyshortcut: ',',
+    type: 'link',
+    external: false,
+    iconClass: 'i-carbon:settings',
+  },
+])
+
+const mobileLinks = computed<NavigationConfigWithGroups>(() => [
+  {
+    name: 'Desktop Links',
+    type: 'group',
+    items: [...desktopLinks.value],
+  },
+  {
+    type: 'separator',
+  },
+  {
+    name: 'About & Policies',
+    type: 'group',
+    items: [
+      {
+        name: 'About',
+        label: $t('footer.about'),
+        to: { name: 'about' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-carbon:information',
+      },
+      {
+        name: 'Privacy Policy',
+        label: $t('privacy_policy.title'),
+        to: { name: 'privacy' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-carbon:security',
+      },
+    ],
+  },
+  {
+    type: 'separator',
+  },
+  {
+    name: 'External Links',
+    type: 'group',
+    label: $t('nav.links'),
+    items: [
+      {
+        name: 'Docs',
+        label: $t('footer.docs'),
+        href: 'https://docs.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-carbon:document',
+      },
+      {
+        name: 'Source',
+        label: $t('footer.source'),
+        href: 'https://repo.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-carbon:logo-github',
+      },
+      {
+        name: 'Social',
+        label: $t('footer.social'),
+        href: 'https://social.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-simple-icons:bluesky',
+      },
+      {
+        name: 'Chat',
+        label: $t('footer.chat'),
+        href: 'https://chat.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-carbon:chat',
+      },
+    ],
+  },
+])
 
 const showFullSearch = shallowRef(false)
 const showMobileMenu = shallowRef(false)
@@ -63,23 +164,18 @@ function handleSearchFocus() {
 }
 
 onKeyStroke(
-  e => isKeyWithoutModifiers(e, ',') && !isEditableElement(e.target),
   e => {
-    e.preventDefault()
-    navigateTo({ name: 'settings' })
-  },
-  { dedupe: true },
-)
+    if (isEditableElement(e.target)) {
+      return
+    }
 
-onKeyStroke(
-  e =>
-    isKeyWithoutModifiers(e, 'c') &&
-    !isEditableElement(e.target) &&
-    // Allow more specific handlers to take precedence
-    !e.defaultPrevented,
-  e => {
-    e.preventDefault()
-    navigateTo({ name: 'compare' })
+    for (const link of desktopLinks.value) {
+      if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
+        e.preventDefault()
+        navigateTo(link.to.name)
+        break
+      }
+    }
   },
   { dedupe: true },
 )
@@ -156,24 +252,16 @@ onKeyStroke(
 
       <!-- End: Desktop nav items + Mobile menu button -->
       <div class="hidden sm:flex flex-shrink-0">
-        <!-- Desktop: Compare link -->
+        <!-- Desktop: Explore link -->
         <LinkBase
+          v-for="link in desktopLinks"
+          :key="link.name"
           class="border-none"
           variant="button-secondary"
-          :to="{ name: 'compare' }"
-          keyshortcut="c"
+          :to="link.to"
+          :aria-keyshortcuts="link.keyshortcut"
         >
-          {{ $t('nav.compare') }}
-        </LinkBase>
-
-        <!-- Desktop: Settings link -->
-        <LinkBase
-          class="border-none"
-          variant="button-secondary"
-          :to="{ name: 'settings' }"
-          keyshortcut=","
-        >
-          {{ $t('nav.settings') }}
+          {{ link.label }}
         </LinkBase>
 
         <HeaderAccountMenu />
@@ -182,7 +270,7 @@ onKeyStroke(
       <!-- Mobile: Menu button (always visible, click to open menu) -->
       <ButtonBase
         type="button"
-        class="sm:hidden flex"
+        class="sm:hidden"
         :aria-label="$t('nav.open_menu')"
         :aria-expanded="showMobileMenu"
         @click="showMobileMenu = !showMobileMenu"
@@ -191,6 +279,6 @@ onKeyStroke(
     </nav>
 
     <!-- Mobile menu -->
-    <HeaderMobileMenu v-model:open="showMobileMenu" />
+    <HeaderMobileMenu :links="mobileLinks" v-model:open="showMobileMenu" />
   </header>
 </template>

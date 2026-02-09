@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Penjelajah Paket untuk Registri npm",

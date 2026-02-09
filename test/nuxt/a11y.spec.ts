@@ -1993,6 +1993,7 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(PackageInstallScripts, {
         props: {
           packageName: 'esbuild',
+          version: '0.25.0',
           installScripts: {
             scripts: ['postinstall'],
             content: { postinstall: 'node install.js' },
@@ -2008,6 +2009,7 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(PackageInstallScripts, {
         props: {
           packageName: 'husky',
+          version: '9.1.0',
           installScripts: {
             scripts: ['postinstall'],
             content: { postinstall: 'husky install' },
