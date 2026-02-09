@@ -107,7 +107,11 @@
     "accent_colors": "Accent colors",
     "clear_accent": "Clear accent color",
     "translation_progress": "Translation progress",
-    "background_themes": "Background shade"
+    "background_themes": "Background shade",
+    "syncing": "Syncing...",
+    "synced": "Settings synced",
+    "sync_error": "Sync failed",
+    "sync_enabled": "Cloud sync enabled"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",

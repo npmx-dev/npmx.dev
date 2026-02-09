@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
   headingLevel: 'h2',
 })
 
-const appSettings = useSettings()
+const { sidebarPreferences } = usePackageSidebarPreferences()
 
 const buttonId = `${props.id}-collapsible-button`
 const contentId = `${props.id}-collapsible-content`
@@ -23,8 +23,8 @@ const contentId = `${props.id}-collapsible-content`
 const isOpen = shallowRef(true)
 
 onPrehydrate(() => {
-  const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
-  const collapsed: string[] = settings?.sidebar?.collapsed || []
+  const sidebar = JSON.parse(localStorage.getItem('npmx-sidebar-preferences') || '{}')
+  const collapsed: string[] = sidebar?.collapsed || []
   for (const id of collapsed) {
     if (!document.documentElement.dataset.collapsed?.split(' ').includes(id)) {
       document.documentElement.dataset.collapsed = (
@@ -47,17 +47,16 @@ onMounted(() => {
 function toggle() {
   isOpen.value = !isOpen.value
 
-  const removed = appSettings.settings.value.sidebar.collapsed.filter(c => c !== props.id)
+  const removed = sidebarPreferences.value.collapsed.filter(c => c !== props.id)
 
   if (isOpen.value) {
-    appSettings.settings.value.sidebar.collapsed = removed
+    sidebarPreferences.value.collapsed = removed
   } else {
     removed.push(props.id)
-    appSettings.settings.value.sidebar.collapsed = removed
+    sidebarPreferences.value.collapsed = removed
   }
 
-  document.documentElement.dataset.collapsed =
-    appSettings.settings.value.sidebar.collapsed.join(' ')
+  document.documentElement.dataset.collapsed = sidebarPreferences.value.collapsed.join(' ')
 }
 
 const ariaLabel = computed(() => {

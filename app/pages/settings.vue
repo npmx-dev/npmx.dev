@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const router = useRouter()
 const canGoBack = useCanGoBack()
-const { settings } = useSettings()
+const { preferences, isAuthenticated, isSyncing, isSynced, hasError } = useUserPreferences()
+const { colorModePreference, setColorMode } = useColorModePreference()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
-const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 
 // Escape to go back (but not when focused on form elements or modal is open)
@@ -35,7 +35,7 @@ defineOgImageComponent('Default', {
 })
 
 const setLocale: typeof setNuxti18nLocale = locale => {
-  settings.value.selectedLocale = locale
+  preferences.value.selectedLocale = locale
   return setNuxti18nLocale(locale)
 }
 </script>
@@ -62,6 +62,30 @@ const setLocale: typeof setNuxti18nLocale = locale => {
         <p class="text-fg-muted text-lg">
           {{ $t('settings.tagline') }}
         </p>
+        <!-- Sync status indicator for authenticated users -->
+        <ClientOnly>
+          <div v-if="isAuthenticated" class="mt-4 flex items-center gap-2 text-sm">
+            <template v-if="isSyncing">
+              <span
+                class="i-carbon:cloud-upload w-4 h-4 text-fg-muted animate-pulse"
+                aria-hidden="true"
+              />
+              <span class="text-fg-muted">{{ $t('settings.syncing') }}</span>
+            </template>
+            <template v-else-if="isSynced">
+              <span class="i-carbon:checkmark-filled w-4 h-4 text-green-500" aria-hidden="true" />
+              <span class="text-fg-muted">{{ $t('settings.synced') }}</span>
+            </template>
+            <template v-else-if="hasError">
+              <span class="i-carbon:warning-filled w-4 h-4 text-amber-500" aria-hidden="true" />
+              <span class="text-fg-muted">{{ $t('settings.sync_error') }}</span>
+            </template>
+            <template v-else>
+              <span class="i-carbon:cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
+              <span class="text-fg-muted">{{ $t('settings.sync_enabled') }}</span>
+            </template>
+          </div>
+        </ClientOnly>
       </header>
 
       <!-- Settings sections -->
@@ -77,18 +101,33 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               <label for="theme-select" class="block text-sm text-fg font-medium">
                 {{ $t('settings.theme') }}
               </label>
-              <SelectField
-                id="theme-select"
-                v-model="colorMode.preference"
-                block
-                size="sm"
-                class="max-w-48"
-                :items="[
-                  { label: $t('settings.theme_system'), value: 'system' },
-                  { label: $t('settings.theme_light'), value: 'light' },
-                  { label: $t('settings.theme_dark'), value: 'dark' },
-                ]"
-              />
+              <ClientOnly>
+                <select
+                  id="theme-select"
+                  :value="colorModePreference"
+                  class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg cursor-pointer duration-200 transition-colors hover:border-fg-subtle"
+                  @change="
+                    setColorMode(
+                      ($event.target as HTMLSelectElement).value as 'light' | 'dark' | 'system',
+                    )
+                  "
+                >
+                  <option value="system">
+                    {{ $t('settings.theme_system') }}
+                  </option>
+                  <option value="light">{{ $t('settings.theme_light') }}</option>
+                  <option value="dark">{{ $t('settings.theme_dark') }}</option>
+                </select>
+                <template #fallback>
+                  <select
+                    id="theme-select"
+                    disabled
+                    class="w-full sm:w-auto min-w-48 bg-bg border border-border rounded-md px-3 py-2 text-sm text-fg opacity-50 cursor-wait duration-200 transition-colors hover:border-fg-subtle"
+                  >
+                    <option>{{ $t('settings.theme_system') }}</option>
+                  </select>
+                </template>
+              </ClientOnly>
             </div>
 
             <!-- Accent colors -->
@@ -118,7 +157,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Relative dates toggle -->
             <SettingsToggle
               :label="$t('settings.relative_dates')"
-              v-model="settings.relativeDates"
+              v-model="preferences.relativeDates"
             />
 
             <!-- Divider -->
@@ -128,7 +167,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <SettingsToggle
               :label="$t('settings.include_types')"
               :description="$t('settings.include_types_description')"
-              v-model="settings.includeTypesInInstall"
+              v-model="preferences.includeTypesInInstall"
             />
 
             <!-- Divider -->
@@ -138,7 +177,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <SettingsToggle
               :label="$t('settings.hide_platform_packages')"
               :description="$t('settings.hide_platform_packages_description')"
-              v-model="settings.hidePlatformPackages"
+              v-model="preferences.hidePlatformPackages"
             />
           </div>
         </section>

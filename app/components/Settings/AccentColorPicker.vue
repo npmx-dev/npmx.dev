@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useAccentColor } from '~/composables/useSettings'
+import { useAccentColor } from '~/composables/useUserPreferences'
 
 const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
 
 onPrehydrate(el => {
-  const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
-  const id = settings.accentColorId
+  const preferences = JSON.parse(localStorage.getItem('npmx-user-preferences') || '{}')
+  const id = preferences.accentColorId
   if (id) {
     const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {

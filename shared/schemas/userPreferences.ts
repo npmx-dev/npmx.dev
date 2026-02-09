@@ -5,6 +5,8 @@ const AccentColorIdSchema = picklist(Object.keys(ACCENT_COLORS.light) as [string
 
 const BackgroundThemeIdSchema = picklist(Object.keys(BACKGROUND_THEMES) as [string, ...string[]])
 
+const ColorModePreferenceSchema = picklist(['light', 'dark', 'system'])
+
 export const UserPreferencesSchema = object({
   /** Display dates as relative (e.g., "3 days ago") instead of absolute */
   relativeDates: optional(boolean()),
@@ -18,6 +20,8 @@ export const UserPreferencesSchema = object({
   hidePlatformPackages: optional(boolean()),
   /** User-selected locale code (e.g., "en", "de", "ja") */
   selectedLocale: optional(nullable(string())),
+  /** Color mode preference: 'light', 'dark', or 'system' */
+  colorModePreference: optional(nullable(ColorModePreferenceSchema)),
   /** Timestamp of last update (ISO 8601) - managed by server */
   updatedAt: optional(string()),
 })
@@ -26,6 +30,7 @@ export type UserPreferences = InferOutput<typeof UserPreferencesSchema>
 
 export type AccentColorId = keyof typeof ACCENT_COLORS.light
 export type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
+export type ColorModePreference = 'light' | 'dark' | 'system'
 
 /**
  * Default user preferences.
@@ -38,6 +43,7 @@ export const DEFAULT_USER_PREFERENCES: Required<Omit<UserPreferences, 'updatedAt
   preferredBackgroundTheme: null,
   hidePlatformPackages: true,
   selectedLocale: null,
+  colorModePreference: null,
 }
 
 export const USER_PREFERENCES_STORAGE_BASE = 'npmx-kv-user-preferences'
