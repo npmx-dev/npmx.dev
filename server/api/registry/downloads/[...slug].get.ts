@@ -65,13 +65,13 @@ export default defineCachedEventHandler(
       })
     }
 
-    const query = getQuery(event)
-    const parsed = v.parse(QuerySchema, query)
-    const mode = parsed.mode
-    const filterThreshold = parsed.filterThreshold ?? 1
-    const filterOldVersionsBool = parsed.filterOldVersions === 'true'
-
     try {
+      const query = getQuery(event)
+      const parsed = v.parse(QuerySchema, query)
+      const mode = parsed.mode
+      const filterThreshold = parsed.filterThreshold ?? 1
+      const filterOldVersionsBool = parsed.filterOldVersions === 'true'
+
       const url = `https://api.npmjs.org/versions/${rawPackageName}/last-week`
       const npmResponse = await fetch(url)
 
