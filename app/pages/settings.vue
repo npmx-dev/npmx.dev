@@ -51,7 +51,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </h1>
           <button
             type="button"
-            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0 p-1.5 -mx-1.5"
+            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0 p-1.5 -mx-1.5"
             @click="router.back()"
             v-if="canGoBack"
           >
