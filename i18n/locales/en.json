@@ -281,8 +281,8 @@
       "distribution_modal_title": "Versions",
       "grouping_major": "Major",
       "grouping_minor": "Minor",
-      "hide_old_versions": "Hide old versions",
-      "hide_old_versions_tooltip": "Hide versions older than 1 year",
+      "show_old_versions": "Show old versions",
+      "show_old_versions_tooltip": "Show versions older than 1 year",
       "show_low_usage": "Show low usage versions",
       "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads",
       "date_range_tooltip": "Last week of version distributions only"

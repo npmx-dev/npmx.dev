@@ -70,7 +70,7 @@ const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpoin
 
 const {
   groupingMode,
-  hideSmallVersions,
+  showOldVersions,
   showLowUsageVersions,
   pending,
   error,
@@ -113,7 +113,7 @@ const chartConfig = computed(() => {
             useNiceScale: true,
           },
           xAxisLabels: {
-            show: true,
+            show: xAxisLabels.value.length <= 25,
             values: xAxisLabels.value,
             fontSize: isMobile.value ? 14 : 12,
             color: colors.value.fgSubtle,
@@ -365,9 +365,9 @@ const endDate = computed(() => {
 
       <div class="flex flex-col gap-4 w-full max-w-1/2">
         <SettingsToggle
-          v-model="hideSmallVersions"
-          :label="$t('package.versions.hide_old_versions')"
-          :tooltip="$t('package.versions.hide_old_versions_tooltip')"
+          v-model="showOldVersions"
+          :label="$t('package.versions.show_old_versions')"
+          :tooltip="$t('package.versions.show_old_versions_tooltip')"
           tooltip-position="bottom"
           :tooltip-teleport-to="inModal ? '#chart-modal' : undefined"
           :tooltip-offset="8"

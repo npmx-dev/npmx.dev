@@ -22,7 +22,7 @@ interface ChartDataItem {
  */
 export function useVersionDistribution(packageName: MaybeRefOrGetter<string>) {
   const groupingMode = ref<VersionGroupingMode>('major')
-  const hideSmallVersions = ref(false)
+  const showOldVersions = ref(false)
   const showLowUsageVersions = ref(false)
   const pending = ref(false)
   const error = ref<Error | null>(null)
@@ -48,7 +48,7 @@ export function useVersionDistribution(packageName: MaybeRefOrGetter<string>) {
         {
           query: {
             mode,
-            filterOldVersions: hideSmallVersions.value ? 'true' : 'false',
+            filterOldVersions: showOldVersions.value ? 'false' : 'true',
             filterThreshold: showLowUsageVersions.value ? '0' : '1',
           },
         },
@@ -73,7 +73,7 @@ export function useVersionDistribution(packageName: MaybeRefOrGetter<string>) {
     let groups = data.value.groups
 
     // Filter using server-provided recent versions list
-    if (hideSmallVersions.value && data.value.recentVersions) {
+    if (!showOldVersions.value && data.value.recentVersions) {
       const recentVersionsSet = new Set(data.value.recentVersions)
 
       groups = groups.filter(group => {
@@ -130,7 +130,7 @@ export function useVersionDistribution(packageName: MaybeRefOrGetter<string>) {
   })
 
   // Refetch when filter changes - no immediate since we already have data
-  watch(hideSmallVersions, () => {
+  watch(showOldVersions, () => {
     fetchDistribution()
   })
 
@@ -159,7 +159,7 @@ export function useVersionDistribution(packageName: MaybeRefOrGetter<string>) {
   return {
     // State
     groupingMode,
-    hideSmallVersions,
+    showOldVersions,
     showLowUsageVersions,
     pending,
     error,
