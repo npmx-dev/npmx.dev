@@ -795,7 +795,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
   <!-- Version Distribution Modal -->
   <PackageChartModal
     v-if="isDistributionModalOpen"
-    title-key="package.versions.distribution_modal_title"
+    :title="$t('package.versions.distribution_modal_title')"
     @close="closeDistributionModal"
     @transitioned="handleDistributionModalTransitioned"
   >

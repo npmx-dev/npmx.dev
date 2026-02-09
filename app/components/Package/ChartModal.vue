@@ -1,12 +1,7 @@
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<{
-    titleKey?: string
-  }>(),
-  {
-    titleKey: 'package.downloads.modal_title',
-  },
-)
+const props = defineProps<{
+  title: string
+}>()
 
 const emit = defineEmits<{
   (e: 'transitioned'): void
@@ -15,7 +10,7 @@ const emit = defineEmits<{
 
 <template>
   <Modal
-    :modalTitle="$t(titleKey)"
+    :modalTitle="title"
     id="chart-modal"
     class="h-full sm:h-min sm:border sm:border-border sm:rounded-lg shadow-xl sm:max-h-[90vh] sm:max-w-3xl"
     @transitioned="emit('transitioned')"
