@@ -78,7 +78,6 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 {{ $t('settings.theme') }}
               </label>
               <SelectField
-                :value="colorMode.preference"
                 id="theme-select"
                 v-model="colorMode.preference"
                 block
@@ -222,7 +221,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                   id="language-select"
                   :items="locales.map(loc => ({ label: loc.name ?? '', value: loc.code }))"
                   v-model="locale"
-                  @change="setLocale(($event.target as HTMLSelectElement).value as typeof locale)"
+                  @update:modelValue="setLocale($event as typeof locale)"
                   block
                   size="sm"
                   class="max-w-48"

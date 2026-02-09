@@ -467,7 +467,7 @@ watch(lastExecutionTime, () => {
               :label="$t('org.members.change_role_for', { name: member.name })"
               hidden-label
               :id="`role-${member.name}`"
-              v-model="member.role"
+              :model-value="member.role"
               :name="`role-${member.name}`"
               block
               size="sm"
@@ -477,12 +477,7 @@ watch(lastExecutionTime, () => {
                 { label: getRoleLabel('owner'), value: 'owner' },
               ]"
               :value="member.role"
-              @change="
-                handleChangeRole(
-                  member.name,
-                  ($event.target as HTMLSelectElement).value as 'developer' | 'admin' | 'owner',
-                )
-              "
+              @update:modelValue="value => handleChangeRole(member.name, value as MemberRole)"
             />
             <!-- Remove button -->
             <button

@@ -77,13 +77,14 @@ const availableSortKeys = computed(() => {
 })
 
 // Handle sort key change from dropdown
-function handleSortKeyChange(event: Event) {
-  const target = event.target as HTMLSelectElement
-  const newKey = target.value as SortKey
-  const config = SORT_KEYS.find(k => k.key === newKey)
-  const direction = config?.defaultDirection ?? 'desc'
-  sortOption.value = buildSortOption(newKey, direction)
-}
+const sortKeyModel = computed<SortKey>({
+  get: () => currentSort.value.key,
+  set: newKey => {
+    const config = SORT_KEYS.find(k => k.key === newKey)
+    const direction = config?.defaultDirection ?? 'desc'
+    sortOption.value = buildSortOption(newKey, direction)
+  },
+})
 
 // Toggle sort direction
 function handleToggleDirection() {
@@ -166,8 +167,7 @@ function getSortKeyLabelKey(key: SortKey): string {
             :label="$t('filters.sort.label')"
             hidden-label
             id="sort-select"
-            v-model="currentSort.key"
-            @change="handleSortKeyChange"
+            v-model="sortKeyModel"
             :items="
               availableSortKeys.map(keyConfig => ({
                 label: getSortKeyLabelKey(keyConfig.key),
