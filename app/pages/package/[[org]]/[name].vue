@@ -453,7 +453,7 @@ const isLoadingLikeData = computed(
   () => likeStatus.value !== 'error' && likeStatus.value !== 'success',
 )
 
-const isLikeActionPending = ref(false)
+const isLikeActionPending = shallowRef(false)
 
 const likeAction = async () => {
   if (user.value?.handle == null) {

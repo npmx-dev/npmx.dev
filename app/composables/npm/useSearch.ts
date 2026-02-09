@@ -38,7 +38,7 @@ export function useSearch(
   } | null>(null)
 
   const isLoadingMore = shallowRef(false)
-  const isRateLimited = ref(false)
+  const isRateLimited = shallowRef(false)
 
   const suggestions = shallowRef<SearchSuggestion[]>([])
   const suggestionsLoading = shallowRef(false)
