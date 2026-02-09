@@ -249,6 +249,7 @@ const xAxisLabels = computed(() => {
         :tooltip="$t('package.versions.hide_old_versions_tooltip')"
         tooltip-position="right"
         :tooltip-teleport-to="inModal ? '#chart-modal' : undefined"
+        justify="start"
         :class="{ 'opacity-50 pointer-events-none': pending }"
       />
     </div>

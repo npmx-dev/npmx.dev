@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import TooltipApp from '~/components/Tooltip/App.vue'
 
-defineProps<{
-  label?: string
-  description?: string
-  tooltip?: string
-  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right'
-  tooltipTeleportTo?: string
-  class?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
-}>()
+withDefaults(
+  defineProps<{
+    label?: string
+    description?: string
+    class?: string
+    justify?: 'between' | 'start'
+    tooltip?: string
+    tooltipPosition?: 'top' | 'bottom' | 'left' | 'right'
+    tooltipTeleportTo?: string
+  }>(),
+  {
+    justify: 'between',
+  },
+)
 
 const checked = defineModel<boolean>({
   default: false,
@@ -18,11 +24,11 @@ const checked = defineModel<boolean>({
 <template>
   <button
     type="button"
-    class="w-full flex items-center justify-start gap-3 group focus-visible:outline-none py-1 -my-1"
+    class="w-full flex items-center gap-4 group focus-visible:outline-none py-1 -my-1"
+    :class="[justify === 'start' ? 'justify-start' : 'justify-between', $props.class]"
     role="switch"
     :aria-checked="checked"
     @click="checked = !checked"
-    :class="class"
   >
     <TooltipApp
       v-if="tooltip && label"
@@ -30,14 +36,11 @@ const checked = defineModel<boolean>({
       :position="tooltipPosition ?? 'top'"
       :teleportTo="tooltipTeleportTo"
     >
-      <span class="text-sm font-mono text-fg group-hover:text-fg/80 transition-colors select-none">
+      <span class="text-sm text-fg font-medium text-start">
         {{ label }}
       </span>
     </TooltipApp>
-    <span
-      v-else-if="label"
-      class="text-sm font-mono text-fg group-hover:text-fg/80 transition-colors select-none"
-    >
+    <span v-else-if="label" class="text-sm text-fg font-medium text-start">
       {{ label }}
     </span>
     <span
