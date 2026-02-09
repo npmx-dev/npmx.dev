@@ -28,7 +28,6 @@ async function openDistributionModal() {
   hasDistributionModalTransitioned.value = false
   // ensure the component renders before opening the dialog
   await nextTick()
-  await nextTick()
   chartModal.open()
 
   // Fallback: Force mount if transition event doesn't fire
@@ -813,7 +812,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
     <!-- Avoids CLS when the dialog has transitioned -->
     <div
       v-if="!hasDistributionModalTransitioned"
-      class="w-full aspect-[287/612] sm:aspect-[718/512]"
+      class="w-full aspect-[136/391] sm:aspect-[359/278]"
     />
   </PackageChartModal>
 </template>
