@@ -783,6 +783,74 @@ describe('dependency-analysis', () => {
       expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBe('1.6.0')
     })
 
+    it('suggests closest fixedIn when multiple ranges match (backport fix preferred)', async () => {
+      const mockResolved = new Map([
+        [
+          'example@3.4.6',
+          {
+            name: 'example',
+            version: '3.4.6',
+            size: 1000,
+            optional: false,
+            depth: 'root' as const,
+            path: ['example@3.4.6'],
+          },
+        ],
+      ])
+      vi.mocked(resolveDependencyTree).mockResolvedValue(mockResolved)
+
+      // Two affected ranges:
+      //   Range 1 (broad): >= 3.4.5-foo.2, < 3.5.9-foo.15 (fix: 3.5.9-foo.15)
+      //   Range 2 (narrow backport): >= 3.4.5-foo.2, < 3.4.8 (fix: 3.4.8)
+      //
+      // Version 3.4.6 falls in BOTH ranges.
+      // The broad range is listed first, so the current early-return picks 3.5.9-foo.15.
+      // But 3.4.8 is the closer/more appropriate fix for someone on 3.4.x.
+      mockOsvApi(
+        [{ vulns: [{ id: 'GHSA-backport', modified: '2024-01-01' }] }],
+        new Map([
+          [
+            'example@3.4.6',
+            {
+              vulns: [
+                {
+                  id: 'GHSA-backport',
+                  summary: 'Vulnerability with backported fix',
+                  database_specific: { severity: 'HIGH' },
+                  affected: [
+                    {
+                      package: { ecosystem: 'npm', name: 'example' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '3.4.5-foo.2' }, { fixed: '3.5.9-foo.15' }],
+                        },
+                      ],
+                    },
+                    {
+                      package: { ecosystem: 'npm', name: 'example' },
+                      ranges: [
+                        {
+                          type: 'SEMVER',
+                          events: [{ introduced: '3.4.5-foo.2' }, { fixed: '3.4.8' }],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        ]),
+      )
+
+      const result = await analyzeDependencyTree('example', '3.4.6')
+
+      expect(result.vulnerablePackages).toHaveLength(1)
+      // Should suggest 3.4.8 (the closest fix), not 3.5.9-foo.15
+      expect(result.vulnerablePackages[0]?.vulnerabilities[0]?.fixedIn).toBe('3.4.8')
+    })
+
     it('returns undefined fixedIn when no matching range has a fixed version', async () => {
       const mockResolved = new Map([
         [

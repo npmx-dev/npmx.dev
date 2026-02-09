@@ -182,8 +182,8 @@ function parseRangeIntervals(range: OsvRange): Array<{ introduced: string; fixed
 
 /**
  * Extract the fixed version for a specific package version from vulnerability data.
- * Finds the interval that contains the current version and returns its fixed version
- * Finds the interval that contains the current version and returns its fixed version.
+ * Finds all intervals that contain the current version and returns the closest fix,
+ * preferring a nearby backport over a distant major-version bump.
  * @see https://ossf.github.io/osv-schema/#affectedrangesevents-fields
  */
 function getFixedVersion(
@@ -198,7 +198,9 @@ function getFixedVersion(
     a => a.package.ecosystem === 'npm' && a.package.name === packageName,
   )
 
-  // Check each entry's ranges to find the interval that contains the current version
+  // Collect all matching fixed versions across all ranges
+  const matchingFixedVersions: string[] = []
+
   for (const entry of packageAffectedEntries) {
     if (!entry.ranges) continue
 
@@ -213,7 +215,7 @@ function getFixedVersion(
           const afterIntro = semver.gte(currentVersion, introVersion)
           const beforeFixed = !interval.fixed || semver.lt(currentVersion, interval.fixed)
           if (afterIntro && beforeFixed && interval.fixed) {
-            return interval.fixed
+            matchingFixedVersions.push(interval.fixed)
           }
         } catch {
           continue
@@ -222,7 +224,11 @@ function getFixedVersion(
     }
   }
 
-  return undefined
+  if (matchingFixedVersions.length === 0) return undefined
+  if (matchingFixedVersions.length === 1) return matchingFixedVersions[0]
+
+  // Return the lowest (closest) fixed version — the smallest bump from the current version
+  return matchingFixedVersions.sort(semver.compare)[0]
 }
 
 function getSeverityLevel(vuln: OsvVulnerability): OsvSeverityLevel {
