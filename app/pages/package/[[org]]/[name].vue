@@ -1047,10 +1047,10 @@ onKeyStroke(
           <div
             v-if="publishSecurityDowngrade"
             role="alert"
-            class="mb-4 rounded-lg border border-red-600/40 bg-red-500/10 px-4 py-3 text-red-800 dark:text-red-300"
+            class="mb-4 rounded-lg border border-amber-600/40 bg-amber-500/10 px-4 py-3 text-amber-700 dark:text-amber-400"
           >
-            <h3 class="m-0 flex items-center gap-2 font-mono text-sm font-semibold tracking-wide">
-              <span class="i-carbon-warning-filled w-4 h-4 shrink-0" aria-hidden="true" />
+            <h3 class="m-0 flex items-center gap-2 font-mono text-sm font-medium">
+              <span class="i-carbon:warning-alt w-4 h-4 shrink-0" aria-hidden="true" />
               {{ $t('package.security_downgrade.title') }}
             </h3>
             <p class="mt-2 mb-0 text-sm">
@@ -1062,6 +1062,17 @@ onKeyStroke(
                   version: publishSecurityDowngrade.trustedVersion,
                 })
               }}
+            </p>
+            <p class="mt-2 mb-0 text-sm">
+              <a
+                href="https://docs.npmjs.com/generating-provenance-statements"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+              >
+                {{ $t('package.security_downgrade.learn_more') }}
+                <span class="i-carbon-launch w-3 h-3" aria-hidden="true" />
+              </a>
             </p>
           </div>
           <TerminalInstall
