@@ -1,9 +1,18 @@
 <script setup lang="ts">
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
-import type { VueUiXyDatasetItem } from 'vue-data-ui'
+import type {
+  VueUiXyDatasetItem,
+  VueUiXyDatasetBarItem,
+  VueUiXyDatapointItem,
+  MinimalCustomFormatParams,
+} from 'vue-data-ui'
 import { useElementSize } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
+
+type TooltipParams = MinimalCustomFormatParams<VueUiXyDatapointItem[]> & {
+  bars: VueUiXyDatasetBarItem[]
+}
 
 const props = defineProps<{
   packageName: string
@@ -119,7 +128,7 @@ const chartConfig = computed(() => {
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
-        customFormat: (params: any) => {
+        customFormat: (params: TooltipParams) => {
           const { datapoint, absoluteIndex, bars } = params
           if (!datapoint) return ''
 
@@ -129,7 +138,7 @@ const chartConfig = computed(() => {
 
           if (!chartItem) return ''
 
-          const barValue = bars?.[0]?.values?.[index]
+          const barValue = bars?.[0]?.series?.[index]
           const raw = Number(barValue ?? chartItem.downloads ?? 0)
           const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
 
