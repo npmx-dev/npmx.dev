@@ -4,10 +4,7 @@ import type { Comment, CommentEmbed } from '#shared/types/blog-post'
 import * as app from '#shared/types/lexicons/app'
 import { CACHE_MAX_AGE_ONE_MINUTE, BLUESKY_API, AT_URI_REGEX } from '#shared/utils/constants'
 
-const blueskyClient = new Client({
-  service: BLUESKY_API,
-  fetch: $fetch,
-})
+const blueskyClient = new Client({ service: BLUESKY_API })
 
 /**
  * Provides both build and runtime comments refreshes

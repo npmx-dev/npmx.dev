@@ -137,7 +137,7 @@ export default defineEventHandler(async event => {
   )
 
   const response = await fetch(
-    `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${authSession.did}`,
+    `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${encodeURIComponent(authSession.did)}`,
     { headers: { 'User-Agent': 'npmx' } },
   )
   if (response.ok) {
