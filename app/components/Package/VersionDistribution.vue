@@ -305,9 +305,7 @@ const xAxisLabels = computed(() => {
 
 <style scoped>
 /* Disable all transitions on SVG elements to prevent repositioning animation */
-:deep(.vue-ui-xy) svg rect,
-:deep(.serie_bar_0) rect,
-:deep(svg) rect {
+:deep(.vue-ui-xy) svg rect {
   transition: none !important;
 }
 
