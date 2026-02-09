@@ -166,9 +166,8 @@ describe('DeprecatePackageModal', () => {
         ...mountOptions,
       })
 
-      const buttons = component.findAll('button[type="button"]')
-      const submitBtn = buttons.find(b => b.attributes('disabled') !== undefined)
-      expect(submitBtn).toBeDefined()
+      const submitBtn = component.get('[data-testid="deprecate-submit"]')
+      expect(submitBtn.attributes('disabled')).toBeUndefined()
     })
 
     it('deprecate button is enabled when message is filled and connected', async () => {
@@ -181,9 +180,8 @@ describe('DeprecatePackageModal', () => {
       await component.find('#deprecate-message').setValue('Deprecated, use foo instead')
       await component.vm.$nextTick()
 
-      const buttons = component.findAll('button[type="button"]')
-      const submitBtn = buttons.find(b => b.attributes('disabled') === undefined)
-      expect(submitBtn).toBeDefined()
+      const submitBtn = component.get('[data-testid="deprecate-submit"]')
+      expect(submitBtn.attributes('disabled')).toBeUndefined()
     })
 
     it('handleDeprecate does nothing when not connected', async () => {
