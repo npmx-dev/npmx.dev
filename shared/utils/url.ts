@@ -1,3 +1,4 @@
+import type { LocationQueryValue } from 'vue-router'
 import { withoutProtocol, withoutTrailingSlash } from 'ufo'
 
 /**
@@ -24,4 +25,12 @@ export function normalizeUrlForComparison(url: string): string {
  */
 export function areUrlsEquivalent(url1: string, url2: string): boolean {
   return normalizeUrlForComparison(url1) === normalizeUrlForComparison(url2)
+}
+
+export function normalizeSearchParam(query?: LocationQueryValue | LocationQueryValue[]): string {
+  if (!query) return ''
+
+  if (typeof query === 'string') return query
+
+  return normalizeSearchParam(query[0])
 }

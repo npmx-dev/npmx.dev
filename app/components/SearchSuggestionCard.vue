@@ -4,39 +4,23 @@ defineProps<{
   type: 'user' | 'org'
   /** The name (username or org name) */
   name: string
-  /** Whether this suggestion is currently selected (keyboard nav) */
-  selected?: boolean
   /** Whether this is an exact match for the query */
   isExactMatch?: boolean
   /** Index for keyboard navigation */
   index?: number
 }>()
-
-const emit = defineEmits<{
-  focus: [index: number]
-}>()
 </script>
 
 <template>
-  <article
-    class="group card-interactive relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50"
-    :class="{
-      'bg-bg-muted border-border-hover': selected,
-      'border-accent/30 bg-accent/5': isExactMatch,
-    }"
-  >
-    <!-- Glow effect for exact matches -->
-    <div
-      v-if="isExactMatch"
-      class="absolute -inset-px rounded-lg bg-gradient-to-r from-accent/0 via-accent/20 to-accent/0 opacity-100 blur-sm -z-1 pointer-events-none motion-reduce:opacity-50"
-      aria-hidden="true"
-    />
+  <BaseCard :isExactMatch="isExactMatch">
     <NuxtLink
-      :to="type === 'user' ? `/~${name}` : `/@${name}`"
+      :to="
+        type === 'user'
+          ? { name: '~username', params: { username: name } }
+          : { name: 'org', params: { org: name } }
+      "
       :data-suggestion-index="index"
       class="flex items-center gap-4 focus-visible:outline-none after:content-[''] after:absolute after:inset-0"
-      @focus="index != null && emit('focus', index)"
-      @mouseenter="index != null && emit('focus', index)"
     >
       <!-- Avatar placeholder -->
       <div
@@ -51,6 +35,7 @@ const emit = defineEmits<{
         <div class="flex items-center gap-2">
           <span
             class="font-mono text-sm sm:text-base font-medium text-fg group-hover:text-fg transition-colors"
+            dir="ltr"
           >
             {{ type === 'user' ? '~' : '@' }}{{ name }}
           </span>
@@ -77,9 +62,9 @@ const emit = defineEmits<{
       </div>
 
       <span
-        class="i-carbon-arrow-right w-4 h-4 text-fg-subtle group-hover:text-fg transition-colors shrink-0"
+        class="i-carbon:arrow-right rtl-flip w-4 h-4 text-fg-subtle group-hover:text-fg transition-colors shrink-0"
         aria-hidden="true"
       />
     </NuxtLink>
-  </article>
+  </BaseCard>
 </template>

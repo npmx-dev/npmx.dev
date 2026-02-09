@@ -1,19 +1,22 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
+import { fetchNpmDownloadsRange } from '~/utils/npm/api'
 
 export type PackumentLikeForTime = {
   time?: Record<string, string>
 }
 
-export type DailyDownloadPoint = { downloads: number; day: string }
+export type DailyDownloadPoint = { downloads: number; day: string; timestamp: number }
 export type WeeklyDownloadPoint = {
   downloads: number
   weekKey: string
   weekStart: string
   weekEnd: string
+  timestampStart: number
+  timestampEnd: number
 }
-export type MonthlyDownloadPoint = { downloads: number; month: string }
-export type YearlyDownloadPoint = { downloads: number; year: string }
+export type MonthlyDownloadPoint = { downloads: number; month: string; timestamp: number }
+export type YearlyDownloadPoint = { downloads: number; year: string; timestamp: number }
 
 type PackageDownloadEvolutionOptionsBase = {
   startDate?: string
@@ -42,12 +45,6 @@ export type PackageDownloadEvolutionOptions =
   | PackageDownloadEvolutionOptionsYear
 
 type DailyDownloadsResponse = { downloads: Array<{ day: string; downloads: number }> }
-
-declare function fetchNpmDownloadsRange(
-  packageName: string,
-  startIso: string,
-  endIso: string,
-): Promise<DailyDownloadsResponse>
 
 function toIsoDateString(date: Date): string {
   return date.toISOString().slice(0, 10)
@@ -124,11 +121,16 @@ function mergeDailyPoints(
 
 function buildDailyEvolutionFromDaily(
   daily: Array<{ day: string; downloads: number }>,
-): DailyDownloadPoint[] {
+): Array<{ day: string; downloads: number; timestamp: number }> {
   return daily
     .slice()
     .sort((a, b) => a.day.localeCompare(b.day))
-    .map(item => ({ day: item.day, downloads: item.downloads }))
+    .map(item => {
+      const dayDate = parseIsoDateOnly(item.day)
+      const timestamp = dayDate.getTime()
+
+      return { day: item.day, downloads: item.downloads, timestamp }
+    })
 }
 
 function buildRollingWeeklyEvolutionFromDaily(
@@ -164,18 +166,23 @@ function buildRollingWeeklyEvolutionFromDaily(
       const weekStartIso = toIsoDateString(weekStartDate)
       const weekEndIso = toIsoDateString(clampedWeekEndDate)
 
+      const timestampStart = weekStartDate.getTime()
+      const timestampEnd = clampedWeekEndDate.getTime()
+
       return {
         downloads,
         weekKey: `${weekStartIso}_${weekEndIso}`,
         weekStart: weekStartIso,
         weekEnd: weekEndIso,
+        timestampStart,
+        timestampEnd,
       }
     })
 }
 
 function buildMonthlyEvolutionFromDaily(
   daily: Array<{ day: string; downloads: number }>,
-): MonthlyDownloadPoint[] {
+): Array<{ month: string; downloads: number; timestamp: number }> {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
   const downloadsByMonth = new Map<string, number>()
 
@@ -186,12 +193,16 @@ function buildMonthlyEvolutionFromDaily(
 
   return Array.from(downloadsByMonth.entries())
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([month, downloads]) => ({ month, downloads }))
+    .map(([month, downloads]) => {
+      const monthStartDate = parseIsoDateOnly(`${month}-01`)
+      const timestamp = monthStartDate.getTime()
+      return { month, downloads, timestamp }
+    })
 }
 
 function buildYearlyEvolutionFromDaily(
   daily: Array<{ day: string; downloads: number }>,
-): YearlyDownloadPoint[] {
+): Array<{ year: string; downloads: number; timestamp: number }> {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
   const downloadsByYear = new Map<string, number>()
 
@@ -202,7 +213,11 @@ function buildYearlyEvolutionFromDaily(
 
   return Array.from(downloadsByYear.entries())
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([year, downloads]) => ({ year, downloads }))
+    .map(([year, downloads]) => {
+      const yearStartDate = parseIsoDateOnly(`${year}-01-01`)
+      const timestamp = yearStartDate.getTime()
+      return { year, downloads, timestamp }
+    })
 }
 
 function getClientDailyRangePromiseCache() {
@@ -297,11 +312,11 @@ export function useCharts() {
     )
 
     const endDateOnly = toDateOnly(downloadEvolutionOptions.endDate)
-    const end = endDateOnly ? new Date(`${endDateOnly}T00:00:00.000Z`) : yesterday
+    const end = endDateOnly ? parseIsoDateOnly(endDateOnly) : yesterday
 
     const startDateOnly = toDateOnly(downloadEvolutionOptions.startDate)
     if (startDateOnly) {
-      const start = new Date(`${startDateOnly}T00:00:00.000Z`)
+      const start = parseIsoDateOnly(startDateOnly)
       return { start, end }
     }
 

@@ -301,8 +301,6 @@ export const CustomStyles = html`
       --ln-color-missing: var(--ln-color-black);
       --ln-color-outdated: #fb923c;
       --ln-color-done: #c084fc;
-  
-      color-scheme: dark;
     }
   
     html {

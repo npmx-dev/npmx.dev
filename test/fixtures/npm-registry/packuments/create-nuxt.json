@@ -1,0 +1,934 @@
+{
+  "_id": "create-nuxt",
+  "_rev": "39-b5a10f8d76f5c7f7c08c20203b388422",
+  "name": "create-nuxt",
+  "description": "Create a Nuxt app in seconds",
+  "dist-tags": {
+    "latest": "3.32.0"
+  },
+  "versions": {
+    "3.32.0": {
+      "name": "create-nuxt",
+      "type": "module",
+      "version": "3.32.0",
+      "description": "Create a Nuxt app in seconds",
+      "license": "MIT",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nuxt/cli.git",
+        "directory": "packages/create-nuxt"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "types": "./dist/index.d.ts",
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "scripts": {
+        "build": "tsdown",
+        "prepack": "tsdown"
+      },
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "devDependencies": {
+        "@bomb.sh/tab": "^0.0.11",
+        "@types/node": "^24.10.4",
+        "rollup": "^4.55.1",
+        "rollup-plugin-visualizer": "^6.0.5",
+        "tsdown": "^0.18.4",
+        "typescript": "^5.9.3",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "gitHead": "8bcd09b5cf477980869fb46572d24f8453437b9f",
+      "_id": "create-nuxt@3.32.0",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "_nodeVersion": "25.2.1",
+      "_npmVersion": "11.6.2",
+      "dist": {
+        "integrity": "sha512-YlhRc8n8WT180+qiH8tQqG3Nio5L4IILij1wJHAbgDzZ3Qo44b/p2OrGe/0p21r6orZkpEtYIPP/ic7BLvZtJQ==",
+        "shasum": "22d159c3c143bc108da3ab3c370b6de2cbef4565",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.32.0.tgz",
+        "fileCount": 14,
+        "unpackedSize": 2431648,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.32.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQC+k3HFSC+KEhK9ni5QK17diTnc08MYDUAswTwJF/JeFQIhANIXws37mauH75tC+u+HZEyNFUu5FLl5gWVDdozJo5Bd"
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/create-nuxt_3.32.0_1767716343655_0.27373663374976154"
+      },
+      "_hasShrinkwrap": false
+    },
+    "3.31.3": {
+      "name": "create-nuxt",
+      "version": "3.31.3",
+      "license": "MIT",
+      "_id": "create-nuxt@3.31.3",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "bb2bc5bafb941628bd97232cc20c08c563e84dfb",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.31.3.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-d96qxkzbGRWJSwmHbowNZ0yOCAgz9AVNTOCLk8rwZRmYfuJgI/l+8qF4Jxo65xn3bFuom+YkhT8CaJ/rNOJDPw==",
+        "signatures": [
+          {
+            "sig": "MEUCIDdKT0qyDG3NfYG+dZDBPhe62nL8DgHCiWc99AMPgawOAiEA2Z40c3wT23LFDRP4O+9lSIAgcHBMILgxnRH10vYLYYM=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.31.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2441933
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "b317d77b29999474735b917a8295695d552204c8",
+      "scripts": {
+        "build": "tsdown",
+        "prepack": "tsdown"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "25.2.1",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.53.4",
+        "tsdown": "^0.18.0",
+        "typescript": "^5.9.3",
+        "@types/node": "^24.10.4",
+        "@bomb.sh/tab": "^0.0.10",
+        "rollup-plugin-visualizer": "^6.0.5",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.31.3_1766011548176_0.3293491819856069",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.31.2": {
+      "name": "create-nuxt",
+      "version": "3.31.2",
+      "license": "MIT",
+      "_id": "create-nuxt@3.31.2",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "809c5df668489a4481a4f4cdd9d3d12d7c1748f9",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.31.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-KjHsjxpsCE7WCsHyr5Gcxc6p7dvMIC81Erk22CY0BDWsNH/qm9qVyybG9TrLeTucPdpZKXZo7cwTtEruizAYcw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD7HRiGe3Dj0OTW0detaOCgwPk66loVO9hOCAynHm3LTgIgejzYQvE9sn+6VrB/Bx/OHAP/B/pzOn6v4HXpde21Agc=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.31.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2441428
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "d02b6b452751910b0173d24481fd1149df161ce1",
+      "scripts": {
+        "build": "tsdown",
+        "prepack": "tsdown"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "25.2.1",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.53.3",
+        "tsdown": "^0.17.1",
+        "typescript": "^5.9.3",
+        "@types/node": "^24.10.1",
+        "@bomb.sh/tab": "^0.0.9",
+        "rollup-plugin-visualizer": "^6.0.5",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.31.2_1765298805046_0.35453536652713713",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.31.1": {
+      "name": "create-nuxt",
+      "version": "3.31.1",
+      "license": "MIT",
+      "_id": "create-nuxt@3.31.1",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "90e22207beb07605e0766021d122a942bf8599ca",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.31.1.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-4uMdUxuJOhuc/rvwwZM3w2Ddhi+9FEBP7z4SQD2h/vxT7yd4r34WFpxMMJ0xU8lrXuT10uGMB3KMPK4bYdwGSw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDt7EqHhR/Kr3Dj09YepL67OKp7s/zoGDC4Y58f4xkdFQIhAMiLHttNtTXl2E4X8SDnXzyRX1rTAvVfIc27EqYg2rXT",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.31.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2441428
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "91b2d2396a5c5e466d9e43e416d7355e34270cf8",
+      "scripts": {
+        "build": "tsdown",
+        "prepack": "tsdown"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "25.2.1",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.53.3",
+        "tsdown": "^0.16.8",
+        "typescript": "^5.9.3",
+        "@types/node": "^24.10.1",
+        "@bomb.sh/tab": "^0.0.9",
+        "rollup-plugin-visualizer": "^6.0.5",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.31.1_1764933276322_0.7807745314200094",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.31.0": {
+      "name": "create-nuxt",
+      "version": "3.31.0",
+      "license": "MIT",
+      "_id": "create-nuxt@3.31.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "91496cac4d805f3fc43ad172182224526aaf76c0",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.31.0.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-H9Uh6epsJLci3tjoa2mUVukDUTq4GJkTSxAO2GcmZr9gFOFbSzKPrI+Pr9+Lwrsby/RRmgA7/6/xzfAJYLeVDg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCBjOHOvvd7Jcxanyl6Gvn7sUj0M3nL6jpk+FqggwnONwIhAMxUfdh1Z+yJJJZ1OvknwUPiiTY829CfOCMZ67HfLPEl",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.31.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2441390
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "22cf07b32a66008b9072c4c470409a7e8781b0b3",
+      "scripts": {
+        "build": "tsdown",
+        "prepack": "tsdown"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "25.2.1",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.53.3",
+        "tsdown": "^0.16.8",
+        "typescript": "^5.9.3",
+        "@types/node": "^24.10.1",
+        "@bomb.sh/tab": "^0.0.9",
+        "rollup-plugin-visualizer": "^6.0.5",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.31.0_1764867311690_0.14991040028410652",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.30.0": {
+      "name": "create-nuxt",
+      "version": "3.30.0",
+      "license": "MIT",
+      "_id": "create-nuxt@3.30.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "d9f3ad8582cceec41364ca2e120eb90f28bea30d",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.30.0.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-iNJDSKe7ndBBtGlQslZVixgaC3yhrbq81Ka8Iek2xBUEbS4DXjPhNBkUipvja41UY/RZK6tIe6qpWrFwTjfj2w==",
+        "signatures": [
+          {
+            "sig": "MEUCIGPDi6dywuklyXN7Unic49BJNnwhOORyGzxc2X1Y5yLVAiEAx6iDWZn1nAznvedysyUFqM2z+B3QV+HtNUxvCBL7Cmo=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.30.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2390731
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "a82954d3550ba7a1dea9fa30f80fdd723de44f04",
+      "scripts": {
+        "build": "tsdown",
+        "prepack": "tsdown"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "25.1.0",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.52.5",
+        "tsdown": "^0.15.12",
+        "typescript": "^5.9.3",
+        "@types/node": "^24.10.0",
+        "rollup-plugin-visualizer": "^6.0.5",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.30.0_1762175500868_0.854024007608926",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.29.3": {
+      "name": "create-nuxt",
+      "version": "3.29.3",
+      "license": "MIT",
+      "_id": "create-nuxt@3.29.3",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user4@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "fc2ec8e1640f9237001958c8f65d7212fa5db799",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.29.3.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-J3kKtKQQJe3EufMPvCiNPgwaiu3Vqu7v00MZor7lIRn1mrENjDGFyxC5G+Gn8Lqxf2kkwBrv+9d2GcUD/0louw==",
+        "signatures": [
+          {
+            "sig": "MEQCIG4J97zUI6zMJ29rtZsrI+r/yZDEhEWJm4ZM0nSGNa6aAiBfHcYhHR6KBx5IIQ55x72H4HEaDBOXiLn/v9OGVawR4g==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.29.3",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2242571
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "d8e89aac0b8465ef2ecb52bfbe95f5b3cd927fa8",
+      "scripts": {
+        "build": "unbuild",
+        "prepack": "unbuild",
+        "dev:prepare": "unbuild --stub"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.1",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "24.10.0",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.52.4",
+        "unbuild": "^3.6.1",
+        "typescript": "^5.9.3",
+        "@types/node": "^22.18.8",
+        "rollup-plugin-visualizer": "^6.0.4",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.29.3_1760030339841_0.37919935587200615",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.29.2": {
+      "name": "create-nuxt",
+      "version": "3.29.2",
+      "license": "MIT",
+      "_id": "create-nuxt@3.29.2",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user4@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "7287f53b756ab83c1a8ef9270022428c45bfd652",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.29.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-gXJCpwwvdSJGOqMRCiWaYrLvJAcok6/beZwiK6zVxFmBYMqpXd6+B/5RHYRXy7TJb9MN941wNgXnMaXr/8N0Qg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDA5VQC+LE5G5UfU+TR4iyqg5H3YmXuV6VGu/4wRCRhswIhAJ1GWS6Ou5KL0NJ2EUidwNccTBiSKGn/4V8qQskJBBnB",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.29.2",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2242571
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "e15ea223044914575a7d0c260391222deba8f0da",
+      "scripts": {
+        "build": "unbuild",
+        "prepack": "unbuild",
+        "dev:prepare": "unbuild --stub"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "24.9.0",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.52.4",
+        "unbuild": "^3.6.1",
+        "typescript": "^5.9.3",
+        "@types/node": "^22.18.8",
+        "rollup-plugin-visualizer": "^6.0.4",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.29.2_1759863097433_0.4654544088719532",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.29.1": {
+      "name": "create-nuxt",
+      "version": "3.29.1",
+      "license": "MIT",
+      "_id": "create-nuxt@3.29.1",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user4@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "8df37dbad9672342f8ffee749d7ebc754111a44a",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.29.1.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-RfQjrPFGri83+DdjsMThifvqcRxt9L8tLvgIu77bOyoGNzqSVB6W04/16PFqt8PTbkMg9t4fDtC9SvHCXK3cwg==",
+        "signatures": [
+          {
+            "sig": "MEQCIHP7GkCIo+iF4Z00DsldhlKBh/ZV2Pr/ULta1xM4xBVQAiAIE2aI4GwZTiZi6krfG82tZzSOrrg3Jjigrd5MhxcPow==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.29.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2242571
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "f46bd3784823727a50857b3bff255b213f8c1ff0",
+      "scripts": {
+        "build": "unbuild",
+        "prepack": "unbuild",
+        "dev:prepare": "unbuild --stub"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "24.9.0",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.52.4",
+        "unbuild": "^3.6.1",
+        "typescript": "^5.9.3",
+        "@types/node": "^22.18.8",
+        "rollup-plugin-visualizer": "^6.0.4",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.29.1_1759832437205_0.8433789173592081",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "3.29.0": {
+      "name": "create-nuxt",
+      "version": "3.29.0",
+      "license": "MIT",
+      "_id": "create-nuxt@3.29.0",
+      "maintainers": [
+        {
+          "name": "nuxtbot",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "atinux",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user4@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt/cli#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt/cli/issues"
+      },
+      "bin": {
+        "create-nuxt": "bin/create-nuxt.mjs"
+      },
+      "dist": {
+        "shasum": "f75179e2b7319388c4ae3794c718602169f4a376",
+        "tarball": "https://registry.npmjs.org/create-nuxt/-/create-nuxt-3.29.0.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-A7DsNDM0wvGb50PBM4GNJQ7ac/PlTRPIW0GxGQ42iQxuBE86bYj2x3ti1ILjjSUL2zRPfvHNAq1IdZMsWHfziA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD4gVkVzgaupZQJiWOfpkm4YGyY4DFY4rOhnJ8ykAGUfAIgLkLIwuzhroBgMXUuPkypnDn16rjxxS0FwGrW035lAV4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-nuxt@3.29.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2242571
+      },
+      "type": "module",
+      "types": "./dist/index.d.ts",
+      "engines": {
+        "node": "^16.10.0 || >=18.0.0"
+      },
+      "exports": {
+        ".": "./dist/index.mjs",
+        "./cli": "./bin/create-nuxt.mjs"
+      },
+      "gitHead": "da29084e6cc6f771c78a1586046ba5d7b769b07e",
+      "scripts": {
+        "build": "unbuild",
+        "prepack": "unbuild",
+        "dev:prepare": "unbuild --stub"
+      },
+      "_npmUser": {
+        "name": "GitHub Actions",
+        "email": "user1@example.com",
+        "trustedPublisher": {
+          "id": "github",
+          "oidcConfigId": "oidc:c8c62c56-aa39-4e01-b52b-a81c77ed6e2e"
+        }
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt/cli.git",
+        "type": "git",
+        "directory": "packages/create-nuxt"
+      },
+      "_npmVersion": "11.6.0",
+      "description": "Create a Nuxt app in seconds",
+      "directories": {},
+      "_nodeVersion": "24.9.0",
+      "dependencies": {
+        "citty": "^0.1.6"
+      },
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "rollup": "^4.52.4",
+        "unbuild": "^3.6.1",
+        "typescript": "^5.9.3",
+        "@types/node": "^22.18.8",
+        "rollup-plugin-visualizer": "^6.0.4",
+        "unplugin-purge-polyfills": "^0.1.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-nuxt_3.29.0_1759757275531_0.45241639573160497",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-01-06T16:19:04.274Z",
+    "created": "2020-11-18T13:49:57.821Z",
+    "3.32.0": "2026-01-06T16:19:03.840Z",
+    "3.31.3": "2025-12-17T22:45:48.400Z",
+    "3.31.2": "2025-12-09T16:46:45.272Z",
+    "3.31.1": "2025-12-05T11:14:36.522Z",
+    "3.31.0": "2025-12-04T16:55:11.868Z",
+    "3.30.0": "2025-11-03T13:11:41.124Z",
+    "3.29.3": "2025-10-09T17:19:00.056Z",
+    "3.29.2": "2025-10-07T18:51:37.639Z",
+    "3.29.1": "2025-10-07T10:20:37.454Z",
+    "3.29.0": "2025-10-06T13:27:55.747Z"
+  },
+  "maintainers": [
+    {
+      "name": "nuxtbot",
+      "email": "user2@example.com"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nuxt/cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nuxt/cli.git",
+    "directory": "packages/create-nuxt"
+  },
+  "bugs": {
+    "url": "https://github.com/nuxt/cli/issues"
+  },
+  "readme": "ERROR: No README data found!",
+  "readmeFilename": ""
+}

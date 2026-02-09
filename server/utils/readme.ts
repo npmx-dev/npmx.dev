@@ -1,9 +1,10 @@
 import { marked, type Tokens } from 'marked'
 import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
-import type { ReadmeResponse } from '#shared/types/readme'
-import { convertBlobToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
+import type { ReadmeResponse, TocItem } from '#shared/types/readme'
+import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
 import { highlightCodeSync } from './shiki'
+import { convertToEmoji } from '#shared/utils/emoji'
 
 /**
  * Playground provider configuration
@@ -134,24 +135,28 @@ const ALLOWED_TAGS = [
   'sub',
   'kbd',
   'mark',
+  'button',
 ]
 
 const ALLOWED_ATTR: Record<string, string[]> = {
-  a: ['href', 'title', 'target', 'rel'],
-  img: ['src', 'alt', 'title', 'width', 'height'],
-  source: ['src', 'srcset', 'type', 'media'],
-  th: ['colspan', 'rowspan', 'align'],
-  td: ['colspan', 'rowspan', 'align'],
-  h3: ['id', 'data-level'],
-  h4: ['id', 'data-level'],
-  h5: ['id', 'data-level'],
-  h6: ['id', 'data-level'],
-  blockquote: ['data-callout'],
-  details: ['open'],
-  code: ['class'],
-  pre: ['class', 'style'],
-  span: ['class', 'style'],
-  div: ['class', 'style', 'align'],
+  '*': ['id'], // Allow id on all tags
+  'a': ['href', 'title', 'target', 'rel'],
+  'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
+  'source': ['src', 'srcset', 'type', 'media'],
+  'button': ['class', 'title', 'type', 'aria-label', 'data-copy'],
+  'th': ['colspan', 'rowspan', 'align'],
+  'td': ['colspan', 'rowspan', 'align'],
+  'h3': ['data-level', 'align'],
+  'h4': ['data-level', 'align'],
+  'h5': ['data-level', 'align'],
+  'h6': ['data-level', 'align'],
+  'blockquote': ['data-callout'],
+  'details': ['open'],
+  'code': ['class'],
+  'pre': ['class', 'style'],
+  'span': ['class', 'style'],
+  'div': ['class', 'style', 'align'],
+  'p': ['align'],
 }
 
 // GitHub-style callout types
@@ -179,7 +184,8 @@ function slugify(text: string): string {
 /**
  * Resolve a relative URL to an absolute URL.
  * If repository info is available, resolve to provider's raw file URLs.
- * Otherwise, fall back to jsdelivr CDN.
+ * For markdown files (.md), use blob URLs so they render properly.
+ * Otherwise, fall back to jsdelivr CDN (except for .md files which are left unchanged).
  */
 function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   if (!url) return url
@@ -203,7 +209,10 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
     // for non-HTTP protocols (javascript:, data:, etc.), don't return, treat as relative
   }
 
-  // Use provider's raw URL base when repository info is available
+  // Check if this is a markdown file link
+  const isMarkdownFile = /\.md$/i.test(url.split('?')[0]?.split('#')[0] ?? '')
+
+  // Use provider's URL base when repository info is available
   // This handles assets that exist in the repo but not in the npm tarball
   if (repoInfo?.rawBaseUrl) {
     // Normalize the relative path (remove leading ./)
@@ -228,7 +237,16 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
       }
     }
 
-    return `${repoInfo.rawBaseUrl}/${relativePath}`
+    // For markdown files, use blob URL so they render on the provider's site
+    // For other files, use raw URL for direct access
+    const baseUrl = isMarkdownFile ? repoInfo.blobBaseUrl : repoInfo.rawBaseUrl
+    return `${baseUrl}/${relativePath}`
+  }
+
+  // For markdown files without repo info, leave unchanged (like npm does)
+  // This avoids 404s from jsdelivr which doesn't render markdown
+  if (isMarkdownFile) {
+    return url
   }
 
   // Fallback: relative URLs → jsdelivr CDN (may 404 if asset not in npm tarball)
@@ -241,9 +259,17 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
 function resolveImageUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   const resolved = resolveUrl(url, packageName, repoInfo)
   if (repoInfo?.provider) {
-    return convertBlobToRawUrl(resolved, repoInfo.provider)
+    return convertBlobOrFileToRawUrl(resolved, repoInfo.provider)
   }
   return resolved
+}
+
+// Helper to prefix id attributes with 'user-content-'
+function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
+  if (attribs.id && !attribs.id.startsWith('user-content-')) {
+    attribs.id = `user-content-${attribs.id}`
+  }
+  return { tagName, attribs }
 }
 
 export async function renderReadmeHtml(
@@ -251,7 +277,7 @@ export async function renderReadmeHtml(
   packageName: string,
   repoInfo?: RepositoryInfo,
 ): Promise<ReadmeResponse> {
-  if (!content) return { html: '', playgroundLinks: [] }
+  if (!content) return { html: '', md: '', playgroundLinks: [], toc: [] }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
@@ -259,6 +285,9 @@ export async function renderReadmeHtml(
   // Collect playground links during parsing
   const collectedLinks: PlaygroundLink[] = []
   const seenUrls = new Set<string>()
+
+  // Collect table of contents items during parsing
+  const toc: TocItem[] = []
 
   // Track used heading slugs to handle duplicates (GitHub-style: foo, foo-1, foo-2)
   const usedSlugs = new Map<string, number>()
@@ -299,12 +328,26 @@ export async function renderReadmeHtml(
     // (e.g., #install, #dependencies, #versions are used by the package page)
     const id = `user-content-${uniqueSlug}`
 
+    // Collect TOC item with plain text (HTML stripped)
+    const plainText = text.replace(/<[^>]*>/g, '').trim()
+    if (plainText) {
+      toc.push({ text: plainText, id, depth })
+    }
+
     return `<h${semanticLevel} id="${id}" data-level="${depth}">${text}</h${semanticLevel}>\n`
   }
 
   // Syntax highlighting for code blocks (uses shared highlighter)
   renderer.code = ({ text, lang }: Tokens.Code) => {
-    return highlightCodeSync(shiki, text, lang || 'text')
+    const html = highlightCodeSync(shiki, text, lang || 'text')
+    // Add copy button
+    return `<div class="readme-code-block" >
+<button type="button" class="readme-copy-button" aria-label="Copy code" check-icon="i-carbon:checkmark" copy-icon="i-carbon:copy" data-copy>
+<span class="i-carbon:copy" aria-hidden="true"></span>
+<span class="sr-only">Copy code</span>
+</button>
+${html}
+</div>`
   }
 
   // Resolve image URLs (with GitHub blob → raw conversion)
@@ -402,11 +445,18 @@ export async function renderReadmeHtml(
         }
         return { tagName, attribs }
       },
+      div: prefixId,
+      p: prefixId,
+      span: prefixId,
+      section: prefixId,
+      article: prefixId,
     },
   })
 
   return {
-    html: sanitized,
+    html: convertToEmoji(sanitized),
+    md: content,
     playgroundLinks: collectedLinks,
+    toc,
   }
 }

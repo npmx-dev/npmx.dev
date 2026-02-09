@@ -184,7 +184,10 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
     lines.push(`<div class="docs-deprecated">`)
     lines.push(`<strong>Deprecated</strong>`)
     if (deprecated.doc) {
-      lines.push(`<p>${parseJsDocLinks(deprecated.doc, symbolLookup)}</p>`)
+      // We remove new lines because they look weird when rendered into the deprecated block
+      // I think markdown is actually supposed to collapse single new lines automatically but this function doesn't do that so if that changes remove this
+      const renderedMessage = await renderMarkdown(deprecated.doc.replace(/\n/g, ' '), symbolLookup)
+      lines.push(`<div class="docs-deprecated-message">${renderedMessage}</div>`)
     }
     lines.push(`</div>`)
   }
@@ -405,7 +408,7 @@ export function renderToc(symbols: MergedSymbol[]): string {
     )
 
     const showSymbols = kindSymbols.slice(0, MAX_TOC_ITEMS_PER_KIND)
-    lines.push(`<ul class="pl-3 space-y-0.5 border-l border-border/50">`)
+    lines.push(`<ul class="ps-3 space-y-0.5 border-is border-border/50">`)
     for (const symbol of showSymbols) {
       const id = createSymbolId(symbol.kind, symbol.name)
       lines.push(

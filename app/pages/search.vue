@@ -1,18 +1,27 @@
 <script setup lang="ts">
-import { formatNumber } from '#imports'
+import type { FilterChip, SortKey } from '#shared/types/preferences'
+import { parseSortOption, PROVIDER_SORT_KEYS } from '#shared/types/preferences'
+import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
-import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
+import { isValidNewPackageName } from '~/utils/package-name'
+import { isPlatformSpecificPackage } from '~/utils/platform-packages'
+import { normalizeSearchParam } from '#shared/utils/url'
 
 const route = useRoute()
 const router = useRouter()
 
-// Local input value (updates immediately as user types)
-const inputValue = ref((route.query.q as string) ?? '')
+// Search provider
+const { isAlgolia } = useSearchProvider()
 
-// Debounced URL update for search query
-const updateUrlQuery = debounce((value: string) => {
-  router.replace({ query: { q: value || undefined } })
-}, 250)
+// Preferences (persisted to localStorage)
+const {
+  viewMode,
+  paginationMode,
+  pageSize: preferredPageSize,
+  columns,
+  toggleColumn,
+  resetColumns,
+} = usePackageListPreferences()
 
 // Debounced URL update for page (less aggressive to avoid too many URL changes)
 const updateUrlPage = debounce((page: number) => {
@@ -24,36 +33,11 @@ const updateUrlPage = debounce((page: number) => {
   })
 }, 500)
 
-// Watch input and debounce URL updates
-watch(inputValue, value => {
-  updateUrlQuery(value)
-})
-
 // The actual search query (from URL, used for API calls)
-const query = computed(() => (route.query.q as string) ?? '')
-
-// Sync input with URL when navigating (e.g., back button)
-watch(
-  () => route.query.q,
-  urlQuery => {
-    const value = (urlQuery as string) ?? ''
-    if (inputValue.value !== value) {
-      inputValue.value = value
-    }
-  },
-)
-
-// For glow effect
-const isSearchFocused = ref(false)
-const searchInputRef = useTemplateRef('searchInputRef')
-
-const selectedIndex = ref(0)
-const packageListRef = useTemplateRef('packageListRef')
-
-const resultCount = computed(() => visibleResults.value?.objects.length ?? 0)
+const query = computed(() => normalizeSearchParam(route.query.q))
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
-const hasInteracted = ref(false)
+const hasInteracted = shallowRef(false)
 onMounted(() => {
   // Small delay to let view transition complete
   setTimeout(() => {
@@ -61,82 +45,57 @@ onMounted(() => {
   }, 300)
 })
 
-// Infinite scroll state
-const pageSize = 20
-const loadedPages = ref(1)
-const isLoadingMore = ref(false)
+// Infinite scroll / pagination state
+const pageSize = 25
+const currentPage = shallowRef(1)
 
 // Get initial page from URL (for scroll restoration on reload)
 const initialPage = computed(() => {
-  const p = Number.parseInt(route.query.page as string, 10)
+  const p = Number.parseInt(normalizeSearchParam(route.query.page), 10)
   return Number.isNaN(p) ? 1 : Math.max(1, p)
 })
 
-// Initialize loaded pages from URL on mount
+// Initialize current page from URL on mount
 onMounted(() => {
   if (initialPage.value > 1) {
-    // Load enough pages to show the initial page
-    loadedPages.value = initialPage.value
-  }
-  // Focus search input
-  searchInputRef.value?.focus()
-})
-
-// fetch all pages up to current
-const { data: results, status } = useNpmSearch(query, () => ({
-  size: pageSize * loadedPages.value,
-  from: 0,
-}))
-
-// Keep track of previous results to show while loading
-// Use useState so the value persists from SSR to client hydration
-const previousQuery = useState('search-previous-query', () => query.value)
-const cachedResults = ref(results.value)
-
-// Update cached results smartly
-watch([results, query], ([newResults, newQuery]) => {
-  if (newResults) {
-    cachedResults.value = newResults
-    previousQuery.value = newQuery
+    currentPage.value = initialPage.value
   }
 })
 
-// Determine if we should show previous results while loading
-// (when new query is a continuation of the old one)
-const isQueryContinuation = computed(() => {
-  const current = query.value.toLowerCase()
-  const previous = previousQuery.value.toLowerCase()
-  return previous && current.startsWith(previous)
-})
+// Results to display (directly from incremental search)
+const rawVisibleResults = computed(() => results.value)
 
-const resultsMatchQuery = computed(() => {
-  return previousQuery.value === query.value
-})
-
-// Show cached results while loading if it's a continuation query
-const rawVisibleResults = computed(() => {
-  if (status.value === 'pending' && isQueryContinuation.value && cachedResults.value) {
-    return cachedResults.value
-  }
-  return results.value
-})
+// Settings for platform package filtering
+const { settings } = useSettings()
 
 /**
- * Reorder results to put exact package name match at the top
+ * Reorder results to put exact package name match at the top,
+ * and optionally filter out platform-specific packages.
  */
 const visibleResults = computed(() => {
   const raw = rawVisibleResults.value
   if (!raw) return raw
 
+  let objects = raw.objects
+
+  // Filter out platform-specific packages if setting is enabled
+  if (settings.value.hidePlatformPackages) {
+    objects = objects.filter(r => !isPlatformSpecificPackage(r.package.name))
+  }
+
   const q = query.value.trim().toLowerCase()
-  if (!q) return raw
+  if (!q) {
+    return objects === raw.objects ? raw : { ...raw, objects }
+  }
 
   // Find exact match index
-  const exactIdx = raw.objects.findIndex(r => r.package.name.toLowerCase() === q)
-  if (exactIdx <= 0) return raw // Already at top or not found
+  const exactIdx = objects.findIndex(r => r.package.name.toLowerCase() === q)
+  if (exactIdx <= 0) {
+    return objects === raw.objects ? raw : { ...raw, objects }
+  }
 
   // Move exact match to top
-  const reordered = [...raw.objects]
+  const reordered = [...objects]
   const [exactMatch] = reordered.splice(exactIdx, 1)
   if (exactMatch) {
     reordered.unshift(exactMatch)
@@ -148,36 +107,168 @@ const visibleResults = computed(() => {
   }
 })
 
+// Use structured filters for client-side refinement of search results
+const resultsArray = computed(() => visibleResults.value?.objects ?? [])
+
+// All possible non-relevance sort keys
+const ALL_SORT_KEYS: SortKey[] = [
+  'downloads-week',
+  'downloads-day',
+  'downloads-month',
+  'downloads-year',
+  'updated',
+  'name',
+  'quality',
+  'popularity',
+  'maintenance',
+  'score',
+]
+
+// Disable sort keys the current provider can't meaningfully sort by
+const disabledSortKeys = computed<SortKey[]>(() => {
+  const supported = PROVIDER_SORT_KEYS[isAlgolia.value ? 'algolia' : 'npm']
+  return ALL_SORT_KEYS.filter(k => !supported.has(k))
+})
+
+// Minimal structured filters usage for search context (no client-side filtering)
+const {
+  filters,
+  sortOption,
+  availableKeywords,
+  activeFilters,
+  setTextFilter,
+  setSearchScope,
+  setDownloadRange,
+  setSecurity,
+  setUpdatedWithin,
+  toggleKeyword,
+  clearFilter,
+  clearAllFilters,
+} = useStructuredFilters({
+  packages: resultsArray,
+  initialFilters: {
+    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
+  },
+  initialSort: 'relevance-desc', // Default to search relevance
+})
+
+const isRelevanceSort = computed(
+  () => sortOption.value === 'relevance-desc' || sortOption.value === 'relevance-asc',
+)
+
+// Maximum eager-load sizes per provider for client-side sorting.
+// Algolia supports up to 1000 with offset/length pagination.
+// npm supports pagination via `from` parameter (no hard cap, but diminishing relevance).
+const EAGER_LOAD_SIZE = { algolia: 500, npm: 500 } as const
+
+// Calculate how many results we need based on current page and preferred page size
+const requestedSize = computed(() => {
+  const numericPrefSize = preferredPageSize.value === 'all' ? 250 : preferredPageSize.value
+  const base = Math.max(pageSize, currentPage.value * numericPrefSize)
+  // When sorting by something other than relevance, fetch a large batch
+  // so client-side sorting operates on a meaningful pool of matching results
+  if (!isRelevanceSort.value) {
+    const cap = isAlgolia.value ? EAGER_LOAD_SIZE.algolia : EAGER_LOAD_SIZE.npm
+    return Math.max(base, cap)
+  }
+  return base
+})
+
+// Reset to relevance sort when switching to a provider that doesn't support the current sort key
+watch(isAlgolia, algolia => {
+  const { key } = parseSortOption(sortOption.value)
+  const supported = PROVIDER_SORT_KEYS[algolia ? 'algolia' : 'npm']
+  if (!supported.has(key)) {
+    sortOption.value = 'relevance-desc'
+  }
+})
+
+// Use incremental search with client-side caching + org/user suggestions
+const {
+  data: results,
+  status,
+  isLoadingMore,
+  hasMore,
+  fetchMore,
+  isRateLimited,
+  suggestions: validatedSuggestions,
+  packageAvailability,
+} = useSearch(
+  query,
+  () => ({
+    size: requestedSize.value,
+  }),
+  { suggestions: true },
+)
+
+// Client-side sorted results for display
+// The search API already handles text filtering, so we only need to sort.
+const displayResults = computed(() => {
+  if (isRelevanceSort.value) {
+    return resultsArray.value
+  }
+
+  // Sort the fetched results client-side — neither Algolia nor npm support
+  // arbitrary sort orders server-side, so we fetch a large batch and sort here
+  const { key, direction } = parseSortOption(sortOption.value)
+  const multiplier = direction === 'asc' ? 1 : -1
+
+  return [...resultsArray.value].sort((a, b) => {
+    let diff: number
+    switch (key) {
+      case 'downloads-week':
+      case 'downloads-day':
+      case 'downloads-month':
+      case 'downloads-year':
+        diff = (a.downloads?.weekly ?? 0) - (b.downloads?.weekly ?? 0)
+        break
+      case 'updated':
+        diff = new Date(a.package.date).getTime() - new Date(b.package.date).getTime()
+        break
+      case 'name':
+        diff = a.package.name.localeCompare(b.package.name)
+        break
+      default:
+        diff = 0
+    }
+    return diff * multiplier
+  })
+})
+
+const resultCount = computed(() => displayResults.value.length)
+
+/**
+ * The effective total for display and pagination purposes.
+ * When sorting by non-relevance, we're working with a fetched subset (e.g. 250),
+ * not the full Algolia total (e.g. 92,324). Show the actual working set size.
+ */
+const effectiveTotal = computed(() => {
+  if (isRelevanceSort.value) {
+    return visibleResults.value?.total ?? 0
+  }
+  // When sorting, the total is the number of results we actually fetched and sorted
+  return displayResults.value.length
+})
+
+// Handle filter chip removal
+function handleClearFilter(chip: FilterChip) {
+  clearFilter(chip)
+}
+
 // Should we show the loading spinner?
 const showSearching = computed(() => {
   // Don't show during initial page load (view transition)
   if (!hasInteracted.value) return false
-  // Don't show if we're displaying cached results
-  if (status.value === 'pending' && isQueryContinuation.value && cachedResults.value) return false
-  // Show if pending on first page
-  return status.value === 'pending' && loadedPages.value === 1
-})
-
-const totalPages = computed(() => {
-  if (!visibleResults.value) return 0
-  return Math.ceil(visibleResults.value.total / pageSize)
-})
-
-const hasMore = computed(() => {
-  return loadedPages.value < totalPages.value
+  // Show if pending and no results yet
+  return status.value === 'pending' && displayResults.value.length === 0
 })
 
 // Load more when triggered by infinite scroll
-function loadMore() {
+async function loadMore() {
   if (isLoadingMore.value || !hasMore.value) return
-
-  isLoadingMore.value = true
-  loadedPages.value++
-
-  // Reset loading state after data updates
-  nextTick(() => {
-    isLoadingMore.value = false
-  })
+  // Increase requested size to trigger fetch
+  currentPage.value++
+  await fetchMore(requestedSize.value)
 }
 
 // Update URL when page changes from scrolling
@@ -185,54 +276,14 @@ function handlePageChange(page: number) {
   updateUrlPage(page)
 }
 
-// Reset pages when query changes
+// Reset page when query changes
 watch(query, () => {
-  loadedPages.value = 1
+  currentPage.value = 1
   hasInteracted.value = true
-})
-
-// Reset selection when query changes (new search)
-watch(query, () => {
-  selectedIndex.value = 0
 })
 
 // Check if current query could be a valid package name
 const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim()))
-
-// Check if package name is available (doesn't exist on npm)
-const packageAvailability = ref<{ name: string; available: boolean } | null>(null)
-
-// Debounced check for package availability
-const checkAvailability = debounce(async (name: string) => {
-  if (!isValidNewPackageName(name)) {
-    packageAvailability.value = null
-    return
-  }
-
-  try {
-    const exists = await checkPackageExists(name)
-    // Only update if this is still the current query
-    if (name === query.value.trim()) {
-      packageAvailability.value = { name, available: !exists }
-    }
-  } catch {
-    packageAvailability.value = null
-  }
-}, 300)
-
-// Trigger availability check when query changes
-watch(
-  query,
-  q => {
-    const trimmed = q.trim()
-    if (isValidNewPackageName(trimmed)) {
-      checkAvailability(trimmed)
-    } else {
-      packageAvailability.value = null
-    }
-  },
-  { immediate: true },
-)
 
 // Get connector state
 const { isConnected, npmUser, listOrgUsers } = useConnector()
@@ -294,186 +345,7 @@ const showClaimPrompt = computed(() => {
   )
 })
 
-// Modal state for claiming a package
-const claimModalOpen = ref(false)
-
-/**
- * Check if a string is a valid npm username/org name
- * npm usernames: 1-214 characters, lowercase, alphanumeric, hyphen, underscore
- * Must not start with hyphen or underscore
- */
-function isValidNpmName(name: string): boolean {
-  if (!name || name.length === 0 || name.length > 214) return false
-  // Must start with alphanumeric
-  if (!/^[a-z0-9]/i.test(name)) return false
-  // Can contain alphanumeric, hyphen, underscore
-  return /^[a-z0-9_-]+$/i.test(name)
-}
-
-/** Validated user/org suggestion */
-interface ValidatedSuggestion {
-  type: 'user' | 'org'
-  name: string
-  exists: boolean
-}
-
-/** Cache for existence checks to avoid repeated API calls */
-const existenceCache = ref<Record<string, boolean | 'pending'>>({})
-
-const NPM_REGISTRY = 'https://registry.npmjs.org'
-
-interface NpmSearchResponse {
-  total: number
-  objects: Array<{ package: { name: string } }>
-}
-
-/**
- * Check if an org exists by searching for packages with @orgname scope
- * Uses the search API which has CORS enabled
- */
-async function checkOrgExists(name: string): Promise<boolean> {
-  const cacheKey = `org:${name.toLowerCase()}`
-  if (cacheKey in existenceCache.value) {
-    const cached = existenceCache.value[cacheKey]
-    return cached === true
-  }
-  existenceCache.value[cacheKey] = 'pending'
-  try {
-    // Search for packages in the @org scope
-    const response = await $fetch<NpmSearchResponse>(`${NPM_REGISTRY}/-/v1/search`, {
-      query: { text: `@${name}`, size: 5 },
-    })
-    // Verify at least one result actually starts with @orgname/
-    const scopePrefix = `@${name.toLowerCase()}/`
-    const exists = response.objects.some(obj =>
-      obj.package.name.toLowerCase().startsWith(scopePrefix),
-    )
-    existenceCache.value[cacheKey] = exists
-    return exists
-  } catch {
-    existenceCache.value[cacheKey] = false
-    return false
-  }
-}
-
-/**
- * Check if a user exists by searching for packages they maintain
- * Uses the search API which has CORS enabled
- */
-async function checkUserExists(name: string): Promise<boolean> {
-  const cacheKey = `user:${name.toLowerCase()}`
-  if (cacheKey in existenceCache.value) {
-    const cached = existenceCache.value[cacheKey]
-    return cached === true
-  }
-  existenceCache.value[cacheKey] = 'pending'
-  try {
-    const response = await $fetch<{ total: number }>(`${NPM_REGISTRY}/-/v1/search`, {
-      query: { text: `maintainer:${name}`, size: 1 },
-    })
-    const exists = response.total > 0
-    existenceCache.value[cacheKey] = exists
-    return exists
-  } catch {
-    existenceCache.value[cacheKey] = false
-    return false
-  }
-}
-
-/**
- * Parse the search query to extract potential user/org name
- */
-interface ParsedQuery {
-  type: 'user' | 'org' | 'both' | null
-  name: string
-}
-
-const parsedQuery = computed<ParsedQuery>(() => {
-  const q = query.value.trim()
-  if (!q) return { type: null, name: '' }
-
-  // Query starts with ~ - explicit user search
-  if (q.startsWith('~')) {
-    const name = q.slice(1)
-    if (isValidNpmName(name)) {
-      return { type: 'user', name }
-    }
-    return { type: null, name: '' }
-  }
-
-  // Query starts with @ - org search (without slash)
-  if (q.startsWith('@')) {
-    // If it contains a slash, it's a scoped package search
-    if (q.includes('/')) return { type: null, name: '' }
-    const name = q.slice(1)
-    if (isValidNpmName(name)) {
-      return { type: 'org', name }
-    }
-    return { type: null, name: '' }
-  }
-
-  // Plain query - could be user, org, or package
-  if (isValidNpmName(q)) {
-    return { type: 'both', name: q }
-  }
-
-  return { type: null, name: '' }
-})
-
-/** Validated suggestions (only those that exist) */
-const validatedSuggestions = ref<ValidatedSuggestion[]>([])
-const suggestionsLoading = ref(false)
-
-/** Debounced function to validate suggestions */
-const validateSuggestions = debounce(async (parsed: ParsedQuery) => {
-  if (!parsed.type || !parsed.name) {
-    validatedSuggestions.value = []
-    return
-  }
-
-  suggestionsLoading.value = true
-  const suggestions: ValidatedSuggestion[] = []
-
-  try {
-    if (parsed.type === 'user') {
-      const exists = await checkUserExists(parsed.name)
-      if (exists) {
-        suggestions.push({ type: 'user', name: parsed.name, exists: true })
-      }
-    } else if (parsed.type === 'org') {
-      const exists = await checkOrgExists(parsed.name)
-      if (exists) {
-        suggestions.push({ type: 'org', name: parsed.name, exists: true })
-      }
-    } else if (parsed.type === 'both') {
-      // Check both in parallel
-      const [orgExists, userExists] = await Promise.all([
-        checkOrgExists(parsed.name),
-        checkUserExists(parsed.name),
-      ])
-      // Org first (more common)
-      if (orgExists) {
-        suggestions.push({ type: 'org', name: parsed.name, exists: true })
-      }
-      if (userExists) {
-        suggestions.push({ type: 'user', name: parsed.name, exists: true })
-      }
-    }
-  } finally {
-    suggestionsLoading.value = false
-  }
-
-  validatedSuggestions.value = suggestions
-}, 200)
-
-// Validate suggestions when query changes
-watch(
-  parsedQuery,
-  parsed => {
-    validateSuggestions(parsed)
-  },
-  { immediate: true },
-)
+const claimPackageModalRef = useTemplateRef('claimPackageModalRef')
 
 /** Check if there's an exact package match in results */
 const hasExactPackageMatch = computed(() => {
@@ -513,164 +385,117 @@ const exactMatchType = computed<'package' | 'org' | 'user' | null>(() => {
   return null
 })
 
-/**
- * Selection uses negative indices for suggestions, positive for packages
- * -2 = first suggestion, -1 = second suggestion, 0+ = package indices
- */
 const suggestionCount = computed(() => validatedSuggestions.value.length)
 const totalSelectableCount = computed(() => suggestionCount.value + resultCount.value)
 
-/** Unified selected index: negative for suggestions, 0+ for packages */
-const unifiedSelectedIndex = ref(0)
-const userHasNavigated = ref(false)
-
-/** Convert unified index to suggestion index (0-based) or null */
-function toSuggestionIndex(unified: number): number | null {
-  if (unified < 0 && unified >= -suggestionCount.value) {
-    return suggestionCount.value + unified
-  }
-  return null
-}
-
-/** Convert unified index to package index or null */
-function toPackageIndex(unified: number): number | null {
-  if (unified >= 0 && unified < resultCount.value) {
-    return unified
-  }
-  return null
-}
-
-/** Clamp unified index to valid range */
-function clampUnifiedIndex(next: number): number {
-  const min = -suggestionCount.value
-  const max = Math.max(0, resultCount.value - 1)
-  if (totalSelectableCount.value <= 0) return 0
-  return Math.max(min, Math.min(max, next))
-}
-
-// Keep legacy selectedIndex in sync for PackageList
-watch(unifiedSelectedIndex, unified => {
-  const pkgIndex = toPackageIndex(unified)
-  selectedIndex.value = pkgIndex ?? -1
-})
-
-// Initialize selection to exact match when results load
-watch(
-  [visibleResults, validatedSuggestions, exactMatchType],
-  () => {
-    if (userHasNavigated.value) {
-      unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value)
-      return
-    }
-
-    if (exactMatchType.value === 'package') {
-      // Find the exact match package index
-      const q = query.value.trim().toLowerCase()
-      const idx =
-        visibleResults.value?.objects.findIndex(r => r.package.name.toLowerCase() === q) ?? -1
-      if (idx >= 0) {
-        unifiedSelectedIndex.value = idx
-        return
-      }
-    }
-    if (exactMatchType.value === 'org') {
-      // Select the org suggestion
-      const orgIdx = validatedSuggestions.value.findIndex(s => s.type === 'org')
-      if (orgIdx >= 0) {
-        unifiedSelectedIndex.value = -(suggestionCount.value - orgIdx)
-        return
-      }
-    }
-    if (exactMatchType.value === 'user') {
-      // Select the user suggestion
-      const userIdx = validatedSuggestions.value.findIndex(s => s.type === 'user')
-      if (userIdx >= 0) {
-        unifiedSelectedIndex.value = -(suggestionCount.value - userIdx)
-        return
-      }
-    }
-    // Default to first item (first suggestion if any, else first package)
-    unifiedSelectedIndex.value = suggestionCount.value > 0 ? -suggestionCount.value : 0
-  },
-  { immediate: true },
-)
-
-// Reset selection and navigation flag when query changes
-watch(query, () => {
-  userHasNavigated.value = false
-  // Will be re-initialized by the watch above when results load
-  unifiedSelectedIndex.value = 0
-})
-
-function scrollToSelectedItem() {
-  const pkgIndex = toPackageIndex(unifiedSelectedIndex.value)
-  if (pkgIndex !== null) {
-    packageListRef.value?.scrollToIndex(pkgIndex)
-  }
-}
-
-function focusSelectedItem() {
-  const suggIdx = toSuggestionIndex(unifiedSelectedIndex.value)
-  const pkgIdx = toPackageIndex(unifiedSelectedIndex.value)
-
-  nextTick(() => {
-    if (suggIdx !== null) {
-      const el = document.querySelector<HTMLElement>(`[data-suggestion-index="${suggIdx}"]`)
-      el?.focus()
-    } else if (pkgIdx !== null) {
-      scrollToSelectedItem()
-      nextTick(() => {
-        const el = document.querySelector<HTMLElement>(`[data-result-index="${pkgIdx}"]`)
-        el?.focus()
-      })
-    }
+/**
+ * Get all focusable result elements in DOM order (suggestions first, then packages)
+ */
+function getFocusableElements(): HTMLElement[] {
+  const suggestions = Array.from(
+    document.querySelectorAll<HTMLElement>('[data-suggestion-index]'),
+  ).sort((a, b) => {
+    const aIdx = Number.parseInt(a.dataset.suggestionIndex ?? '0', 10)
+    const bIdx = Number.parseInt(b.dataset.suggestionIndex ?? '0', 10)
+    return aIdx - bIdx
   })
+  const packages = Array.from(document.querySelectorAll<HTMLElement>('[data-result-index]')).sort(
+    (a, b) => {
+      const aIdx = Number.parseInt(a.dataset.resultIndex ?? '0', 10)
+      const bIdx = Number.parseInt(b.dataset.resultIndex ?? '0', 10)
+      return aIdx - bIdx
+    },
+  )
+  return [...suggestions, ...packages]
 }
+
+/**
+ * Focus an element and scroll it into view
+ */
+function focusElement(el: HTMLElement) {
+  el.focus()
+  el.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+}
+
+// Navigate to package page
+async function navigateToPackage(packageName: string) {
+  await navigateTo(packageRoute(packageName))
+}
+
+// Track the input value when user pressed Enter (for navigating when results arrive)
+const pendingEnterQuery = shallowRef<string | null>(null)
+
+// Watch for results to navigate when Enter was pressed before results arrived
+watch(displayResults, results => {
+  if (!pendingEnterQuery.value) return
+
+  // Check if input is still focused (user hasn't started navigating or clicked elsewhere)
+  if (document.activeElement?.tagName !== 'INPUT') {
+    pendingEnterQuery.value = null
+    return
+  }
+
+  // Navigate if first result matches the query that was entered
+  const firstResult = results[0]
+  // eslint-disable-next-line no-console
+  console.log('[search] watcher fired', {
+    pending: pendingEnterQuery.value,
+    firstResult: firstResult?.package.name,
+  })
+  if (firstResult?.package.name === pendingEnterQuery.value) {
+    pendingEnterQuery.value = null
+    navigateToPackage(firstResult.package.name)
+  }
+})
 
 function handleResultsKeydown(e: KeyboardEvent) {
+  // If the active element is an input, navigate to exact match or wait for results
+  if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
+    // Get value directly from input (not from route query, which may be debounced)
+    const inputValue = (document.activeElement as HTMLInputElement).value.trim()
+    if (!inputValue) return
+
+    // Check if first result matches the input value exactly
+    const firstResult = displayResults.value[0]
+    if (firstResult?.package.name === inputValue) {
+      pendingEnterQuery.value = null
+      return navigateToPackage(firstResult.package.name)
+    }
+
+    // No match yet - store input value, watcher will handle navigation when results arrive
+    pendingEnterQuery.value = inputValue
+    return
+  }
+
   if (totalSelectableCount.value <= 0) return
 
-  const isFromInput = (e.target as HTMLElement).tagName === 'INPUT'
+  const elements = getFocusableElements()
+  if (elements.length === 0) return
+
+  const currentIndex = elements.findIndex(el => el === document.activeElement)
 
   if (e.key === 'ArrowDown') {
     e.preventDefault()
-    userHasNavigated.value = true
-    unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value + 1)
-    if (isFromInput) {
-      scrollToSelectedItem()
-    } else {
-      focusSelectedItem()
-    }
+    const nextIndex = currentIndex < 0 ? 0 : Math.min(currentIndex + 1, elements.length - 1)
+    const el = elements[nextIndex]
+    if (el) focusElement(el)
     return
   }
 
   if (e.key === 'ArrowUp') {
     e.preventDefault()
-    userHasNavigated.value = true
-    unifiedSelectedIndex.value = clampUnifiedIndex(unifiedSelectedIndex.value - 1)
-    if (isFromInput) {
-      scrollToSelectedItem()
-    } else {
-      focusSelectedItem()
-    }
+    const nextIndex = currentIndex < 0 ? 0 : Math.max(currentIndex - 1, 0)
+    const el = elements[nextIndex]
+    if (el) focusElement(el)
     return
   }
 
   if (e.key === 'Enter') {
-    if (!resultsMatchQuery.value) return
-
-    const suggIdx = toSuggestionIndex(unifiedSelectedIndex.value)
-    const pkgIdx = toPackageIndex(unifiedSelectedIndex.value)
-
-    if (suggIdx !== null) {
-      const el = document.querySelector<HTMLElement>(`[data-suggestion-index="${suggIdx}"]`)
-      if (el) {
-        e.preventDefault()
-        el.click()
-      }
-    } else if (pkgIdx !== null) {
-      const el = document.querySelector<HTMLElement>(`[data-result-index="${pkgIdx}"]`)
-      if (el) {
+    // Browser handles Enter on focused links naturally, but handle for non-link elements
+    if (document.activeElement && elements.includes(document.activeElement as HTMLElement)) {
+      const el = document.activeElement as HTMLElement
+      // Only prevent default and click if it's not already a link (links handle Enter natively)
+      if (el.tagName !== 'A') {
         e.preventDefault()
         el.click()
       }
@@ -678,84 +503,51 @@ function handleResultsKeydown(e: KeyboardEvent) {
   }
 }
 
-function handleSuggestionSelect(index: number) {
-  // Convert suggestion index to unified index
-  unifiedSelectedIndex.value = -(suggestionCount.value - index)
-}
-
-function handlePackageSelect(index: number) {
-  if (index < 0) return
-  unifiedSelectedIndex.value = index
-}
+onKeyDown(['ArrowDown', 'ArrowUp', 'Enter'], handleResultsKeydown)
 
 useSeoMeta({
-  title: () => (query.value ? `Search: ${query.value} - npmx` : 'Search Packages - npmx'),
+  title: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  ogTitle: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  twitterTitle: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  description: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
+  ogDescription: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
+  twitterDescription: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
 })
 
 defineOgImageComponent('Default', {
-  title: 'npmx',
-  description: () => (query.value ? `Search results for "${query.value}"` : 'Search npm packages'),
+  title: () =>
+    `${query.value ? $t('search.title_search', { search: query.value }) : $t('search.title_packages')} - npmx`,
+  description: () =>
+    query.value
+      ? $t('search.meta_description', { search: query.value })
+      : $t('search.meta_description_packages'),
+  primaryColor: '#60a5fa',
 })
 </script>
 
 <template>
-  <main class="overflow-x-hidden">
-    <!-- Sticky search header - positioned below AppHeader (h-14 = 56px) -->
-    <header class="sticky top-14 z-40 bg-bg/95 backdrop-blur-sm border-b border-border">
-      <div class="container-sm py-4">
-        <h1 class="font-mono text-xl sm:text-2xl font-medium mb-4">search</h1>
-
-        <search>
-          <form role="search" method="GET" action="/search" class="relative" @submit.prevent>
-            <label for="search-input" class="sr-only">{{ $t('search.label') }}</label>
-
-            <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
-              <!-- Subtle glow effect -->
-              <div
-                class="absolute -inset-px rounded-lg bg-gradient-to-r from-fg/0 via-fg/5 to-fg/0 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100 motion-reduce:transition-none"
-              />
-
-              <div class="search-box relative flex items-center">
-                <span
-                  class="absolute left-4 text-fg-subtle font-mono text-base pointer-events-none transition-colors duration-200 group-focus-within:text-accent"
-                  aria-hidden="true"
-                >
-                  /
-                </span>
-                <input
-                  id="search-input"
-                  ref="searchInputRef"
-                  v-model="inputValue"
-                  type="search"
-                  name="q"
-                  :placeholder="$t('search.placeholder')"
-                  v-bind="noCorrect"
-                  class="w-full max-w-full bg-bg-subtle border border-border rounded-lg pl-8 pr-10 py-3 font-mono text-base text-fg placeholder:text-fg-subtle transition-colors duration-300 focus:border-accent focus-visible:outline-none appearance-none"
-                  @focus="isSearchFocused = true"
-                  @blur="isSearchFocused = false"
-                  @keydown="handleResultsKeydown"
-                />
-                <button
-                  v-show="inputValue"
-                  type="button"
-                  class="absolute right-3 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 rounded"
-                  :aria-label="$t('search.clear')"
-                  @click="inputValue = ''"
-                >
-                  <span class="i-carbon-close-large block w-3.5 h-3.5" aria-hidden="true" />
-                </button>
-                <!-- Hidden submit button for accessibility (form must have submit button per WCAG) -->
-                <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
-              </div>
-            </div>
-          </form>
-        </search>
+  <main class="flex-1 py-8" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
+    <div class="container-sm">
+      <div class="flex items-center justify-between gap-4 mb-4">
+        <h1 class="font-mono text-2xl sm:text-3xl font-medium">
+          {{ $t('search.title') }}
+        </h1>
+        <SearchProviderToggle />
       </div>
-    </header>
 
-    <!-- Results area with container padding -->
-    <div class="container-sm pt-20 pb-6">
-      <section v-if="query" aria-label="Search results" @keydown="handleResultsKeydown">
+      <section v-if="query">
         <!-- Initial loading (only after user interaction, not during view transition) -->
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
@@ -768,12 +560,10 @@ defineOgImageComponent('Default', {
               :type="suggestion.type"
               :name="suggestion.name"
               :index="idx"
-              :selected="toSuggestionIndex(unifiedSelectedIndex) === idx"
               :is-exact-match="
                 (exactMatchType === 'org' && suggestion.type === 'org') ||
                 (exactMatchType === 'user' && suggestion.type === 'user')
               "
-              @focus="handleSuggestionSelect"
             />
           </div>
 
@@ -790,26 +580,94 @@ defineOgImageComponent('Default', {
             </div>
             <button
               type="button"
-              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-              @click="claimModalOpen = true"
+              class="shrink-0 px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md motion-safe:transition-colors motion-safe:duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
+              @click="claimPackageModalRef?.open()"
             >
               {{ $t('search.claim_button', { name: query }) }}
             </button>
           </div>
 
-          <p
-            v-if="visibleResults.total > 0"
-            role="status"
-            class="text-fg-muted text-sm mb-6 font-mono"
-          >
-            {{ $t('search.found_packages', { count: formatNumber(visibleResults.total) }) }}
-            <span v-if="status === 'pending'" class="text-fg-subtle">{{
-              $t('search.updating')
-            }}</span>
-          </p>
+          <!-- Rate limited by npm - check FIRST before showing any results -->
+          <div v-if="isRateLimited" role="status" class="py-12">
+            <p class="text-fg-muted font-mono mb-6 text-center">
+              {{ $t('search.rate_limited') }}
+            </p>
+          </div>
+
+          <!-- Enhanced toolbar -->
+          <div v-else-if="visibleResults.total > 0" class="mb-6">
+            <PackageListToolbar
+              :filters="filters"
+              v-model:sort-option="sortOption"
+              v-model:view-mode="viewMode"
+              :columns="columns"
+              v-model:pagination-mode="paginationMode"
+              v-model:page-size="preferredPageSize"
+              :total-count="effectiveTotal"
+              :filtered-count="displayResults.length"
+              :available-keywords="availableKeywords"
+              :active-filters="activeFilters"
+              :disabled-sort-keys="disabledSortKeys"
+              search-context
+              @toggle-column="toggleColumn"
+              @reset-columns="resetColumns"
+              @clear-filter="handleClearFilter"
+              @clear-all-filters="clearAllFilters"
+              @update:text="setTextFilter"
+              @update:search-scope="setSearchScope"
+              @update:download-range="setDownloadRange"
+              @update:security="setSecurity"
+              @update:updated-within="setUpdatedWithin"
+              @toggle-keyword="toggleKeyword"
+            />
+            <!-- Show count status (infinite scroll mode only) -->
+            <p
+              v-if="viewMode === 'cards' && paginationMode === 'infinite'"
+              role="status"
+              class="text-fg-muted text-sm mt-4 font-mono"
+            >
+              <template v-if="isRelevanceSort">
+                {{
+                  $t(
+                    'search.found_packages',
+                    { count: $n(visibleResults.total) },
+                    visibleResults.total,
+                  )
+                }}
+              </template>
+              <template v-else>
+                {{
+                  $t('search.found_packages_sorted', { count: $n(effectiveTotal) }, effectiveTotal)
+                }}
+              </template>
+              <span v-if="status === 'pending'" class="text-fg-subtle">{{
+                $t('search.updating')
+              }}</span>
+            </p>
+            <!-- Show "x of y" (paginated/table mode only) -->
+            <p
+              v-if="viewMode === 'table' || paginationMode === 'paginated'"
+              role="status"
+              class="text-fg-muted text-sm mt-4 font-mono"
+            >
+              {{
+                $t(
+                  'filters.count.showing_paginated',
+                  {
+                    pageSize:
+                      preferredPageSize === 'all'
+                        ? $n(effectiveTotal)
+                        : Math.min(preferredPageSize, effectiveTotal),
+                    count: $n(effectiveTotal),
+                  },
+                  effectiveTotal,
+                )
+              }}
+            </p>
+          </div>
 
           <!-- No results found -->
-          <div v-else-if="status !== 'pending'" role="status" class="py-12">
+          <div v-else-if="status === 'success' || status === 'error'" role="status" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.no_results', { query }) }}
             </p>
@@ -822,12 +680,10 @@ defineOgImageComponent('Default', {
                 :type="suggestion.type"
                 :name="suggestion.name"
                 :index="idx"
-                :selected="toSuggestionIndex(unifiedSelectedIndex) === idx"
                 :is-exact-match="
                   (exactMatchType === 'org' && suggestion.type === 'org') ||
                   (exactMatchType === 'user' && suggestion.type === 'user')
                 "
-                @focus="handleSuggestionSelect"
               />
             </div>
 
@@ -837,8 +693,8 @@ defineOgImageComponent('Default', {
                 <p class="text-sm text-fg-muted mb-3">{{ $t('search.want_to_claim') }}</p>
                 <button
                   type="button"
-                  class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50"
-                  @click="claimModalOpen = true"
+                  class="px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-colors duration-200 hover:bg-fg/90 focus-visible:outline-accent/70"
+                  @click="claimPackageModalRef?.open()"
                 >
                   {{ $t('search.claim_button', { name: query }) }}
                 </button>
@@ -847,20 +703,35 @@ defineOgImageComponent('Default', {
           </div>
 
           <PackageList
-            v-if="visibleResults.objects.length > 0"
-            ref="packageListRef"
-            :results="visibleResults.objects"
-            :selected-index="selectedIndex"
+            v-if="displayResults.length > 0 && !isRateLimited"
+            :results="displayResults"
             :search-query="query"
+            :filters="filters"
+            search-context
             heading-level="h2"
             show-publisher
             :has-more="hasMore"
-            :is-loading="isLoadingMore || (status === 'pending' && loadedPages > 1)"
-            :page-size="pageSize"
+            :is-loading="isLoadingMore"
+            :page-size="preferredPageSize"
             :initial-page="initialPage"
+            :view-mode="viewMode"
+            :columns="columns"
+            v-model:sort-option="sortOption"
+            :pagination-mode="paginationMode"
+            :current-page="currentPage"
             @load-more="loadMore"
             @page-change="handlePageChange"
-            @select="handlePackageSelect"
+            @click-keyword="toggleKeyword"
+          />
+
+          <!-- Pagination controls -->
+          <PaginationControls
+            v-if="displayResults.length > 0 && !isRateLimited"
+            v-model:mode="paginationMode"
+            v-model:page-size="preferredPageSize"
+            v-model:current-page="currentPage"
+            :total-items="effectiveTotal"
+            :view-mode="viewMode"
           />
         </div>
       </section>
@@ -871,6 +742,6 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Claim package modal -->
-    <ClaimPackageModal v-model:open="claimModalOpen" :package-name="query" />
+    <PackageClaimPackageModal ref="claimPackageModalRef" :package-name="query" />
   </main>
 </template>

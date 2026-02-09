@@ -5,7 +5,8 @@ import { CACHE_MAX_AGE_ONE_HOUR } from '#shared/utils/constants'
 /**
  * GET /api/registry/vulnerabilities/:name or /api/registry/vulnerabilities/:name/v/:version
  *
- * Analyze entire dependency tree for vulnerabilities.
+ * Analyze entire dependency tree for vulnerabilities and deprecated dependencies.
+ * I does not rename this endpoint for backward compatibility.
  */
 export default defineCachedEventHandler(
   async event => {
@@ -14,24 +15,24 @@ export default defineCachedEventHandler(
 
     try {
       const { packageName, version: requestedVersion } = v.parse(PackageRouteParamsSchema, {
-        packageName: rawPackageName,
+        packageName: decodeURIComponent(rawPackageName),
         version: rawVersion,
       })
 
-      // If no version specified, resolve to latest
-      let version = requestedVersion
+      // If no version specified, resolve to latest using fast-npm-meta (lightweight)
+      let version: string | undefined = requestedVersion
       if (!version) {
-        const packument = await fetchNpmPackage(packageName)
-        version = packument['dist-tags']?.latest
-        if (!version) {
+        const latestVersion = await fetchLatestVersionWithFallback(packageName)
+        if (!latestVersion) {
           throw createError({
             statusCode: 404,
             message: 'No latest version found',
           })
         }
+        version = latestVersion
       }
 
-      return await analyzeVulnerabilityTree(packageName, version)
+      return await analyzeDependencyTree(packageName, version)
     } catch (error: unknown) {
       handleApiError(error, {
         statusCode: 502,

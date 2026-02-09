@@ -1,5 +1,10 @@
 import type { Packument, PackumentVersion, DependencyDepth } from '#shared/types'
+import { mapWithConcurrency } from '#shared/utils/async'
+import { encodePackageName } from '#shared/utils/npm'
 import { maxSatisfying } from 'semver'
+
+/** Concurrency limit for fetching packuments during dependency resolution */
+const PACKUMENT_FETCH_CONCURRENCY = 20
 
 /**
  * Target platform for dependency resolution.
@@ -17,14 +22,10 @@ export const TARGET_PLATFORM = {
 export const fetchPackument = defineCachedFunction(
   async (name: string): Promise<Packument | null> => {
     try {
-      const encodedName = name.startsWith('@')
-        ? `@${encodeURIComponent(name.slice(1))}`
-        : encodeURIComponent(name)
-
-      return await $fetch<Packument>(`https://registry.npmjs.org/${encodedName}`)
+      return await $fetch<Packument>(`https://registry.npmjs.org/${encodePackageName(name)}`)
     } catch (error) {
-      // oxlint-disable-next-line no-console -- log npm registry failures for debugging
       if (import.meta.dev) {
+        // oxlint-disable-next-line no-console -- log npm registry failures for debugging
         console.warn(`[dep-resolver] Failed to fetch packument for ${name}:`, error)
       }
       return null
@@ -111,6 +112,8 @@ export interface ResolvedPackage {
   depth?: DependencyDepth
   /** Dependency path from root (only when trackDepth is enabled) */
   path?: string[]
+  /** Deprecation message if the version is deprecated */
+  deprecated?: string
 }
 
 /**
@@ -140,60 +143,61 @@ export async function resolveDependencyTree(
       seen.add(name)
     }
 
-    // Process current level in batches
+    // Process current level with concurrency limit
     const entries = [...currentLevel.entries()]
-    for (let i = 0; i < entries.length; i += 20) {
-      const batch = entries.slice(i, i + 20)
+    await mapWithConcurrency(
+      entries,
+      async ([name, { range, optional, path }]) => {
+        const packument = await fetchPackument(name)
+        if (!packument) return
 
-      await Promise.all(
-        batch.map(async ([name, { range, optional, path }]) => {
-          const packument = await fetchPackument(name)
-          if (!packument) return
+        const versions = Object.keys(packument.versions)
+        const version = resolveVersion(range, versions)
+        if (!version) return
 
-          const versions = Object.keys(packument.versions)
-          const version = resolveVersion(range, versions)
-          if (!version) return
+        const versionData = packument.versions[version]
+        if (!versionData) return
 
-          const versionData = packument.versions[version]
-          if (!versionData) return
+        if (!matchesPlatform(versionData)) return
 
-          if (!matchesPlatform(versionData)) return
+        const size = (versionData.dist as { unpackedSize?: number })?.unpackedSize ?? 0
+        const key = `${name}@${version}`
 
-          const size = (versionData.dist as { unpackedSize?: number })?.unpackedSize ?? 0
-          const key = `${name}@${version}`
+        // Build path for this package (path to parent + this package with version)
+        const currentPath = [...path, `${name}@${version}`]
 
-          // Build path for this package (path to parent + this package with version)
-          const currentPath = [...path, `${name}@${version}`]
-
-          if (!resolved.has(key)) {
-            const pkg: ResolvedPackage = { name, version, size, optional }
-            if (options.trackDepth) {
-              pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
-              pkg.path = currentPath
-            }
-            resolved.set(key, pkg)
+        if (!resolved.has(key)) {
+          const pkg: ResolvedPackage = { name, version, size, optional }
+          if (options.trackDepth) {
+            pkg.depth = level === 0 ? 'root' : level === 1 ? 'direct' : 'transitive'
+            pkg.path = currentPath
           }
-
-          // Collect dependencies for next level
-          if (versionData.dependencies) {
-            for (const [depName, depRange] of Object.entries(versionData.dependencies)) {
-              if (!seen.has(depName) && !nextLevel.has(depName)) {
-                nextLevel.set(depName, { range: depRange, optional: false, path: currentPath })
-              }
-            }
+          if (versionData.deprecated) {
+            pkg.deprecated = versionData.deprecated
           }
+          resolved.set(key, pkg)
+        }
 
-          // Collect optional dependencies
-          if (versionData.optionalDependencies) {
-            for (const [depName, depRange] of Object.entries(versionData.optionalDependencies)) {
-              if (!seen.has(depName) && !nextLevel.has(depName)) {
-                nextLevel.set(depName, { range: depRange, optional: true, path: currentPath })
-              }
+        // Collect dependencies for next level
+        if (versionData.dependencies) {
+          for (const [depName, depRange] of Object.entries(versionData.dependencies)) {
+            if (!seen.has(depName) && !nextLevel.has(depName)) {
+              nextLevel.set(depName, { range: depRange, optional: false, path: currentPath })
             }
           }
-        }),
-      )
-    }
+        }
+
+        // Collect optional dependencies
+        if (versionData.optionalDependencies) {
+          for (const [depName, depRange] of Object.entries(versionData.optionalDependencies)) {
+            if (!seen.has(depName) && !nextLevel.has(depName)) {
+              nextLevel.set(depName, { range: depRange, optional: true, path: currentPath })
+            }
+          }
+        }
+      },
+      PACKUMENT_FETCH_CONCURRENCY,
+    )
 
     currentLevel = nextLevel
     level++

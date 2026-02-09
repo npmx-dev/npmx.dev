@@ -5,6 +5,8 @@
  * using Nitro's storage layer (backed by Vercel's runtime cache in production).
  */
 
+import { CONSTELLATION_HOST, SLINGSHOT_HOST } from './constants'
+
 /**
  * Domains that should have their fetch responses cached.
  * Only requests to these domains will be intercepted and cached.
@@ -24,6 +26,9 @@ export const FETCH_CACHE_ALLOWED_DOMAINS = [
   'api.bitbucket.org', // Bitbucket API
   'codeberg.org', // Codeberg (Gitea-based)
   'gitee.com', // Gitee API
+  // microcosm endpoints for atproto data
+  CONSTELLATION_HOST,
+  SLINGSHOT_HOST,
 ] as const
 
 /**
@@ -80,3 +85,26 @@ export function isCacheEntryStale(entry: CachedFetchEntry): boolean {
   const expiresAt = entry.cachedAt + entry.ttl * 1000
   return now > expiresAt
 }
+
+/**
+ * Result returned by cachedFetch with staleness metadata.
+ * This allows consumers to know if the data came from stale cache
+ * and potentially trigger client-side revalidation.
+ */
+export interface CachedFetchResult<T> {
+  /** The response data */
+  data: T
+  /** Whether the data came from stale cache (past TTL) */
+  isStale: boolean
+  /** Unix timestamp when the data was cached, or null if fresh fetch */
+  cachedAt: number | null
+}
+
+/**
+ * Type for the cachedFetch function attached to event context.
+ */
+export type CachedFetchFunction = <T = unknown>(
+  url: string,
+  options?: Parameters<typeof $fetch>[1],
+  ttl?: number,
+) => Promise<CachedFetchResult<T>>

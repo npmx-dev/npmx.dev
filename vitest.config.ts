@@ -16,7 +16,7 @@ export default defineConfig({
         },
         test: {
           name: 'unit',
-          include: ['test/unit/*.{test,spec}.ts'],
+          include: ['test/unit/**/*.{test,spec}.ts'],
           environment: 'node',
         },
       },
@@ -25,13 +25,19 @@ export default defineConfig({
           name: 'nuxt',
           include: ['test/nuxt/**/*.{test,spec}.ts'],
           environment: 'nuxt',
-          setupFiles: ['./test/nuxt/setup.ts'],
           environmentOptions: {
             nuxt: {
               rootDir: fileURLToPath(new URL('.', import.meta.url)),
               overrides: {
+                vue: {
+                  runtimeCompiler: true,
+                },
                 experimental: {
+                  payloadExtraction: false,
                   viteEnvironmentApi: false,
+                },
+                pwa: {
+                  pwaAssets: { disabled: true },
                 },
                 ogImage: { enabled: false },
               },
@@ -40,7 +46,7 @@ export default defineConfig({
           browser: {
             enabled: true,
             provider: playwright(),
-            instances: [{ browser: 'chromium' }],
+            instances: [{ browser: 'chromium', headless: true }],
           },
         },
       }),

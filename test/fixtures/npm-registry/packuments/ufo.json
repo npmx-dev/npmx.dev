@@ -1,0 +1,1056 @@
+{
+  "_id": "ufo",
+  "_rev": "107-deea7eb5436998dad8ad4c176ee72c3c",
+  "name": "ufo",
+  "description": "URL utils for humans",
+  "dist-tags": {
+    "0.6x": "0.6.12",
+    "0.5x": "0.5.5",
+    "latest": "1.6.3"
+  },
+  "versions": {
+    "1.6.3": {
+      "name": "ufo",
+      "version": "1.6.3",
+      "description": "URL utils for humans",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/unjs/ufo.git"
+      },
+      "license": "MIT",
+      "sideEffects": false,
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs",
+          "default": "./dist/index.mjs"
+        },
+        "./*": "./*"
+      },
+      "main": "./dist/index.cjs",
+      "module": "./dist/index.mjs",
+      "types": "./dist/index.d.ts",
+      "scripts": {
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "dev": "vitest",
+        "lint": "eslint . && prettier -c src test",
+        "lint:fix": "eslint --fix . && prettier -w src test",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "test": "pnpm lint && vitest run --typecheck"
+      },
+      "devDependencies": {
+        "@types/node": "^25.0.8",
+        "@vitest/coverage-v8": "^4.0.17",
+        "automd": "^0.4.2",
+        "changelogen": "^0.6.2",
+        "eslint": "^9.39.2",
+        "eslint-config-unjs": "^0.6.2",
+        "jiti": "^2.6.1",
+        "prettier": "^3.7.4",
+        "typescript": "^5.9.3",
+        "unbuild": "^3.6.1",
+        "untyped": "^2.0.0",
+        "vitest": "^4.0.17"
+      },
+      "packageManager": "pnpm@10.28.0",
+      "gitHead": "11308c0bb5cb4a4bc3bfcbdc5c03177b097423e6",
+      "_id": "ufo@1.6.3",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "_nodeVersion": "24.11.1",
+      "_npmVersion": "11.6.2",
+      "dist": {
+        "integrity": "sha512-yDJTmhydvl5lJzBmy/hyOAA0d+aqCBuwl818haVdYCRrWV84o7YyeVm4QlVHStqNrrJSTb6jKuFAVqAFsr+K3Q==",
+        "shasum": "799666e4e88c122a9659805e30b9dc071c3aed4f",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.6.3.tgz",
+        "fileCount": 8,
+        "unpackedSize": 112253,
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQDZ5bhrq3AM3kE5qzKeQvaC7XhI/mudMVTks9RxeZiLnQIhAPWq4ykENLXdX1XFgZk+0u0XErRO5t8E/Q8Yy7liJjKH"
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/ufo_1.6.3_1768434395615_0.2826429576780347"
+      },
+      "_hasShrinkwrap": false
+    },
+    "1.6.2": {
+      "name": "ufo",
+      "version": "1.6.2",
+      "license": "MIT",
+      "_id": "ufo@1.6.2",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "aaf4d46b98425b2fb5031abe8d65ca069e93e755",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.6.2.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-heMioaxBcG9+Znsda5Q8sQbWnLJSl98AFDXTO80wELWEzX3hordXsTdxrIfMQoO9IY1MEnoGoPjpoKpMj+Yx0Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDndcTA1PSg1wpuISP71OWeBkqN14DM02AhSkshat8s3wIhAIGWVdwdHrJEoruOOG9HOvxhBdQVlPs4gyB9wbgjcwgA",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 111791
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "default": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "7da3795f204bc89d9b7da00e16853a62f402b245",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "11.6.2",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "24.11.1",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@10.27.0",
+      "devDependencies": {
+        "jiti": "^2.6.1",
+        "automd": "^0.4.2",
+        "eslint": "^9.39.2",
+        "vitest": "^4.0.16",
+        "unbuild": "^3.6.1",
+        "untyped": "^2.0.0",
+        "prettier": "^3.7.4",
+        "typescript": "^5.9.3",
+        "@types/node": "^25.0.3",
+        "changelogen": "^0.6.2",
+        "eslint-config-unjs": "^0.6.2",
+        "@vitest/coverage-v8": "^4.0.16"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.6.2_1767698894172_0.766658404688803",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "1.6.1": {
+      "name": "ufo",
+      "version": "1.6.1",
+      "license": "MIT",
+      "_id": "ufo@1.6.1",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "ac2db1d54614d1b22c1d603e3aef44a85d8f146b",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.6.1.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCzXhoiLwX2CwJuy03Ic3KB6wOKIiKd8twAKvMU7i5HIQIgRGcrj1kPqESMfBgpBOqUzW0phe6lkeIZnVdJviW46hs=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 104757
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "b83cbea04b7cabdfb0592f357520c08f1bf647c4",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.9.2",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "22.14.0",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@10.7.1",
+      "devDependencies": {
+        "jiti": "^2.4.2",
+        "automd": "^0.4.0",
+        "eslint": "^9.24.0",
+        "vitest": "^3.1.1",
+        "unbuild": "^3.5.0",
+        "untyped": "^2.0.0",
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.3",
+        "@types/node": "^22.14.0",
+        "changelogen": "^0.6.1",
+        "eslint-config-unjs": "^0.4.2",
+        "@vitest/coverage-v8": "^3.1.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.6.1_1744099878367_0.8333590075231165",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "1.6.0": {
+      "name": "ufo",
+      "version": "1.6.0",
+      "license": "MIT",
+      "_id": "ufo@1.6.0",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "97c0729950279476b94b4ccdfd264a7206f7c872",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.6.0.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-AkgU2cV/+Xb4Uz6cic0kMZbtM42nbltnGvTVOt/8gMCbO2/z64nE47TOygh7HjgFPkUkVRBEyNFqpqi3zo+BJA==",
+        "signatures": [
+          {
+            "sig": "MEUCIEadfPSDmb6SskM73DYhqy2g1QUvZE5z+0ZSNN3DEsChAiEA5yD/IyHPmO43hspHvMVpxmHweD42WnpCHoUWqOwvroQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 105013
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "5b87427f05d0f34f484b1c9559175d65573b8e1c",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.9.2",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "22.14.0",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@10.7.1",
+      "devDependencies": {
+        "jiti": "^2.4.2",
+        "automd": "^0.4.0",
+        "eslint": "^9.24.0",
+        "vitest": "^3.1.1",
+        "unbuild": "^3.5.0",
+        "untyped": "^2.0.0",
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.3",
+        "@types/node": "^22.14.0",
+        "changelogen": "^0.6.1",
+        "eslint-config-unjs": "^0.4.2",
+        "@vitest/coverage-v8": "^3.1.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.6.0_1744036315026_0.816824429828733",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "1.5.4": {
+      "name": "ufo",
+      "version": "1.5.4",
+      "license": "MIT",
+      "_id": "ufo@1.5.4",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "16d6949674ca0c9e0fbbae1fa20a71d7b1ded754",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.5.4.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIE4sz7kB9rTpZMvYwXQkBwO76QlLx+IuTZjY/FnoF+jRAiBmGh2rWWJgjwA4oe++qFciBR0EKLrOWNIcjwAk90pVAg==",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 103218
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "0f15ddc67f06c7abe16ef863d71a58b0c615b477",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.7.0",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "20.15.0",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@9.5.0",
+      "devDependencies": {
+        "jiti": "^1.21.6",
+        "automd": "^0.3.8",
+        "eslint": "^9.7.0",
+        "vitest": "^2.0.3",
+        "unbuild": "^2.0.0",
+        "untyped": "^1.4.2",
+        "prettier": "^3.3.3",
+        "typescript": "^5.5.3",
+        "@types/node": "^20.14.10",
+        "changelogen": "^0.5.5",
+        "eslint-config-unjs": "^0.3.2",
+        "@vitest/coverage-v8": "^2.0.3"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.5.4_1721154578635_0.45845732604627387",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "1.5.3": {
+      "name": "ufo",
+      "version": "1.5.3",
+      "license": "MIT",
+      "_id": "ufo@1.5.3",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "3325bd3c977b6c6cd3160bf4ff52989adc9d3344",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.5.3.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-Y7HYmWaFwPUmkoQCUIAYpKqkOf+SbVj/2fJJZ4RJMCfZp0rTGwRbzQD+HghfnhKOjL9E01okqz+ncJskGYfBNw==",
+        "signatures": [
+          {
+            "sig": "MEQCIFT+/YX1YSAGjHHc24dqbQCwh9XNhUCR+SGScqcc7oOlAiB3nyhbu2EFUi343M4uLAAJVjeXT6qbD+u/DR0B/nRwuQ==",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 103050
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "27573123da6c36b9837fbc9cb021c3f1e4b1a340",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint --ext .ts . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix --ext .ts . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "20.11.1",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@8.15.5",
+      "devDependencies": {
+        "jiti": "^1.21.0",
+        "automd": "^0.3.6",
+        "eslint": "^8.57.0",
+        "vitest": "^1.4.0",
+        "unbuild": "^2.0.0",
+        "untyped": "^1.4.2",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.2",
+        "@types/node": "^20.11.30",
+        "changelogen": "^0.5.5",
+        "eslint-config-unjs": "^0.2.1",
+        "@vitest/coverage-v8": "^1.4.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.5.3_1710934383275_0.783797114821752",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "1.5.2": {
+      "name": "ufo",
+      "version": "1.5.2",
+      "license": "MIT",
+      "_id": "ufo@1.5.2",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "e547561ac56896fc8b9a3f2fb2552169f3629035",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.5.2.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-eiutMaL0J2MKdhcOM1tUy13pIrYnyR87fEd8STJQFrrAwImwvlXkxlZEjaKah8r2viPohld08lt73QfLG1NxMg==",
+        "signatures": [
+          {
+            "sig": "MEQCIHHK2VDkvHXn10oYAeJfsFK8WZfT0HzuPBAh4scbrZKfAiAVOxadXViqW25IXUjDMcuNNhMT9bz4hgdT+JSWkANPIQ==",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 102722
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "c84812a178d07168d44e6ad29ad3e2da9b9a06ea",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint --ext .ts . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix --ext .ts . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "20.11.1",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@8.15.5",
+      "devDependencies": {
+        "jiti": "^1.21.0",
+        "automd": "^0.3.6",
+        "eslint": "^8.57.0",
+        "vitest": "^1.4.0",
+        "unbuild": "^2.0.0",
+        "untyped": "^1.4.2",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.2",
+        "@types/node": "^20.11.28",
+        "changelogen": "^0.5.5",
+        "eslint-config-unjs": "^0.2.1",
+        "@vitest/coverage-v8": "^1.4.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.5.2_1710762313815_0.6530492906322849",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "1.5.1": {
+      "name": "ufo",
+      "version": "1.5.1",
+      "license": "MIT",
+      "_id": "ufo@1.5.1",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "ec42543a918def8d0ce185e498d080016f35daf6",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.5.1.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-HGyF79+/qZ4soRvM+nHERR2pJ3VXDZ/8sL1uLahdgEDf580NkgiWOxLk33FetExqOWp352JZRsgXbG/4MaGOSg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDxS9e4bpcFHJ3QAi466Wy13PFZ1zv5ll30YePEZPY2cgIgP0aWlFHedzrEw+IoD8NU/4fTYXqMXkZBMuXMXbGK9Xo=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 102718
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "2dd616e5dcf8f62a85b2dc742ee72454f393b577",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint --ext .ts . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix --ext .ts . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "20.11.1",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@8.15.4",
+      "devDependencies": {
+        "jiti": "^1.21.0",
+        "automd": "^0.3.6",
+        "eslint": "^8.57.0",
+        "vitest": "^1.3.1",
+        "unbuild": "^2.0.0",
+        "untyped": "^1.4.2",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.2",
+        "@types/node": "^20.11.25",
+        "changelogen": "^0.5.5",
+        "eslint-config-unjs": "^0.2.1",
+        "@vitest/coverage-v8": "^1.3.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.5.1_1710542955298_0.2472652173005898",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "1.5.0": {
+      "name": "ufo",
+      "version": "1.5.0",
+      "license": "MIT",
+      "_id": "ufo@1.5.0",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "a6f358bf16d4f847d830f23395768638bc21c632",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.5.0.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-c7SxU8XB0LTO7hALl6CcE1Q92ZrLzr1iE0IVIsUa9SlFfkn2B2p6YLO6dLxOj7qCWY98PB3Q3EZbN6bEu8p7jA==",
+        "signatures": [
+          {
+            "sig": "MEUCIAnxZco2PfVUskB64NpI6B0Em9P0UETu1nXPChPHofnjAiEA1ALrcy9R5y/cps2qXPzXmQUJ3sQ2KM3y77Syb9jKzQo=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 102394
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "bd65b41b50ef22a0c7c44cf349a16e1271996431",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint --ext .ts . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix --ext .ts . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "20.11.1",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@8.15.4",
+      "devDependencies": {
+        "jiti": "^1.21.0",
+        "automd": "^0.3.6",
+        "eslint": "^8.57.0",
+        "vitest": "^1.3.1",
+        "unbuild": "^2.0.0",
+        "untyped": "^1.4.2",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.2",
+        "@types/node": "^20.11.25",
+        "changelogen": "^0.5.5",
+        "eslint-config-unjs": "^0.2.1",
+        "@vitest/coverage-v8": "^1.3.1"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.5.0_1710519951693_0.8039681560311991",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "1.4.0": {
+      "name": "ufo",
+      "version": "1.4.0",
+      "license": "MIT",
+      "_id": "ufo@1.4.0",
+      "maintainers": [
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "39845b31be81b4f319ab1d99fd20c56cac528d32",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-1.4.0.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-Hhy+BhRBleFjpJ2vchUNN40qgkh0366FWJGqVLYBHev0vpHTrXSA0ryT+74UiW6KWsldNurQMKGqCm1M2zBciQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDGkoL/LBslx4m6vUoRTggiLUcjNbfc+aE4j55MKbXARgIgEVvmczktgJmlgCQBMfZB4TVSXhnRaPAELLC4GFxRvos=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 97753
+      },
+      "main": "./dist/index.cjs",
+      "types": "./dist/index.d.ts",
+      "module": "./dist/index.mjs",
+      "exports": {
+        ".": {
+          "types": "./dist/index.d.ts",
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.cjs"
+        },
+        "./*": "./*"
+      },
+      "gitHead": "541bc6255ad8f3fcaf299949de48e1c4579abd4c",
+      "scripts": {
+        "dev": "vitest",
+        "lint": "eslint --ext .ts . && prettier -c src test",
+        "test": "pnpm lint && vitest run --typecheck",
+        "build": "automd && unbuild",
+        "automd": "automd",
+        "prepack": "pnpm build",
+        "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
+        "lint:fix": "eslint --fix --ext .ts . && prettier -w src test"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "10.2.4",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "20.11.0",
+      "_hasShrinkwrap": false,
+      "packageManager": "pnpm@8.15.1",
+      "devDependencies": {
+        "jiti": "^1.21.0",
+        "automd": "^0.1.1",
+        "eslint": "^8.56.0",
+        "vitest": "^1.2.2",
+        "unbuild": "^2.0.0",
+        "untyped": "^1.4.2",
+        "prettier": "^3.2.5",
+        "typescript": "^5.3.3",
+        "@types/node": "^20.11.16",
+        "changelogen": "^0.5.5",
+        "eslint-config-unjs": "^0.2.1",
+        "@vitest/coverage-v8": "^1.2.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_1.4.0_1707214853534_0.5340583449561194",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "0.6.12": {
+      "name": "ufo",
+      "version": "0.6.12",
+      "license": "MIT",
+      "_id": "ufo@0.6.12",
+      "maintainers": [
+        {
+          "name": "atinux",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/unjs/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/unjs/ufo/issues"
+      },
+      "dist": {
+        "shasum": "10a4c8875e5bbe19bf85250b47805d74f37350af",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-0.6.12.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-+Sg92qbu7XRaqO1y2DKEDuT83ggmYN/PhymUk6XrApJ0XOTs5LFODQt7aPqhRGB7jkKKhJatcOSi3OOxVAzRAw==",
+        "signatures": [
+          {
+            "sig": "MEUCIBQw2Lua3zAgose5Bi19RaNT7O6Mil2z2HCpIYkUBN5TAiEA851Bm+1dtRtQ0qk8ObS21uwf/e+MwxMEUc48hGLZ76M=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 34964,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJh98u5CRA9TVsSAnZWagAAwY0P/1jnLs4Jcf+cHDK5NNMB\n+BC5/8hwt7mcQR6CfdWIqjqP2nSRtc0Os9BjDl09meuGhU2E8LdZqsTyyWZL\nGA7GDHm7n/k7Ii+7pmBoeRGPOSueRpphv1mzt7OKx0UQwPGCj47iC6Z0IVxu\nctpqQ+FlqBkd9KFz+YAMIUk33/0qRssTSdsk+Z/rAsWbzOxsjmsdnIjeno59\nnu1o7fnnL4Yt/hPpXODTCto0fKmgp9UmqLEyQxNS3/9lTd4ZaXHevPnbUjq3\nBnRYaUE7RbG5BRaI1PSw2+Q2jenG37ixpjNHh3WMgA+n8bVi2BTWTAsQ/8Op\ndWXDqYVAeWuCdg1ADeDtVV+U5FUD3K8BFvW/2WbaYx2mto2N+3nROCxHg3Xz\nc/RMOjAZEDB3RvdSd6qjQ8lBa6CfsTw5ZzDOpTDgQ6ZghsCIfXCBw3duedmc\nPkwuLbGfgv3lsg0/szqJtbjejrSzNpk/soYl4T8zgk03adRkFqYL0UASsqIl\n85QgdTe5djM3ZW6aNYu65+3ttfWAJl2vWPHS20rhrI8qk+uqB1rTuCLpU72D\nfU02VS0nWY20FQOv+9w6Qp8JAybayXpEZgQS3qdkOWA/CA2rJaZNRivVRZve\nY4bnRbj/lWKic0JkTUCrki3T7QQwqMXxTKeAE5DH5Gny2Q6ygAIBO1zvD9iG\nSPaC\r\n=wPOx\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "main": "dist/index.js",
+      "types": "dist/index.d.ts",
+      "module": "dist/index.mjs",
+      "gitHead": "fc9960ede2f8ecdc9ff1b9790f8fedbff03494ce",
+      "scripts": {
+        "lint": "eslint --ext .ts .",
+        "test": "yarn lint && jest",
+        "build": "siroc build",
+        "release": "yarn test && standard-version && git push --follow-tags && npm publish",
+        "prepublishOnly": "yarn build"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/unjs/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "8.3.0",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "14.18.2",
+      "dependencies": {},
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "jest": "latest",
+        "siroc": "latest",
+        "eslint": "latest",
+        "ts-jest": "latest",
+        "typescript": "latest",
+        "@types/flat": "latest",
+        "@types/jest": "latest",
+        "@types/node": "latest",
+        "standard-version": "latest",
+        "@nuxtjs/eslint-config-typescript": "latest"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_0.6.12_1643629497737_0.7422518587691196",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "0.5.5": {
+      "name": "ufo",
+      "version": "0.5.5",
+      "license": "MIT",
+      "_id": "ufo@0.5.5",
+      "maintainers": [
+        {
+          "name": "atinux",
+          "email": "user2@example.com"
+        },
+        {
+          "name": "pi0",
+          "email": "user1@example.com"
+        },
+        {
+          "name": "danielroe",
+          "email": "user3@example.com"
+        }
+      ],
+      "homepage": "https://github.com/nuxt-contrib/ufo#readme",
+      "bugs": {
+        "url": "https://github.com/nuxt-contrib/ufo/issues"
+      },
+      "dist": {
+        "shasum": "5183a87d7d58af35d446352cf9fe187a8a20b4bd",
+        "tarball": "https://registry.npmjs.org/ufo/-/ufo-0.5.5.tgz",
+        "fileCount": 6,
+        "integrity": "sha512-C+VZCzo9JSBbLX5AklKIdWRYXghVM00PXFmIfG23++y2XsmV6C70L8KQg6IvGNdGI2txE+j8ywzKpYzv81sn1Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQC+Z5aXLTw29TrSfLi7E5EUOcHX+aUFa8ijtE+NRCy4xQIhAMWaUweqeQMifwUj8XAqFstdOAXzCJIu3e+3SBH63qj+",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 31152,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJh98xQCRA9TVsSAnZWagAAeSkP/RChgRBP0wJnPn+lPClc\n/EpqhpC3tsN3vm3KR/u0Yu+kBD/JEe1yIapBnfjlTn+hncvKWvCYQbWA1J0F\n3SMpmZ+AjXO9CjfgVG0/4R9L/oovu+cBFI3o2U5eIh/VY+80QFO3+8W7cGFR\nBe+xS7asu5lUoYIEva8IGxsAk2mPifv/d3tbUUTdQeCfTd6Q7FeHQVCZexby\nJRGDhNmj9a/MUPDXIdgdJ1NmVk9o2StOMXBk/HSWUaLEYCqR4T9iqwrgoadV\nZgkTZxhwKgL1PZFTNetIz5Ee+WWYtTg6kw04jao+QBuHdAS0iW+erXUB71Bz\nLwfkH1xqrn0uxd+V8uTQqqFgJCFTgYV4w1S8N0iRg6ZVuJwLJrDA3qGnol9d\nw7QrXqdSlSzW9/lRG4SkQMljRcW1ICraQLCBM479Ut4lH7JG4rAL8JskXsDR\nz68XwRd3sgC7WLg2kp1Nnp0YurScTAVeSZTvc7TWI3bLpgb84MoZtVcS4arI\ngHCCrGb1ImNCgzWY4pSoT4FhCIr4bIJDo9/tr2q2NHhUUqjSAhWmG/leZ3PZ\nKVOtZPFonr/B9HtAAnykUK0py1bQ+/Kk5VxYwZ7HZJTgbsw9eYqQcjsW0V0u\narOqEMzrdlLFWZ0CM4tK68ba4rFy2w+OrBMcTlKH8ogSxs8r/WpUyOkNXlFJ\nZ/Ur\r\n=gMcn\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "main": "dist/index.js",
+      "types": "dist/index.d.ts",
+      "module": "dist/index.mjs",
+      "exports": {
+        ".": {
+          "import": "./dist/index.mjs",
+          "require": "./dist/index.js"
+        },
+        "./": "./"
+      },
+      "gitHead": "752de3c257533a9de15b53e913cec79c6d3eaffd",
+      "scripts": {
+        "lint": "eslint --ext .ts .",
+        "test": "yarn lint && jest",
+        "build": "siroc build",
+        "release": "yarn test && yarn build && standard-version && git push --follow-tags && npm publish"
+      },
+      "_npmUser": {
+        "name": "pi0",
+        "email": "user1@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/nuxt-contrib/ufo.git",
+        "type": "git"
+      },
+      "_npmVersion": "8.3.0",
+      "description": "URL utils for humans",
+      "directories": {},
+      "sideEffects": false,
+      "_nodeVersion": "14.18.2",
+      "dependencies": {},
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "jest": "latest",
+        "siroc": "latest",
+        "eslint": "latest",
+        "ts-jest": "latest",
+        "typescript": "latest",
+        "@types/flat": "latest",
+        "@types/jest": "latest",
+        "@types/node": "latest",
+        "standard-version": "latest",
+        "@nuxtjs/eslint-config-typescript": "latest"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/ufo_0.5.5_1643629648404_0.4787205181556702",
+        "host": "s3://npm-registry-packages"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-01-14T23:46:35.935Z",
+    "created": "2012-05-16T09:27:54.537Z",
+    "1.6.3": "2026-01-14T23:46:35.800Z",
+    "1.6.2": "2026-01-06T11:28:14.312Z",
+    "1.6.1": "2025-04-08T08:11:18.539Z",
+    "1.6.0": "2025-04-07T14:31:55.190Z",
+    "1.5.4": "2024-07-16T18:29:38.850Z",
+    "1.5.3": "2024-03-20T11:33:03.453Z",
+    "1.5.2": "2024-03-18T11:45:13.967Z",
+    "1.5.1": "2024-03-15T22:49:15.474Z",
+    "1.5.0": "2024-03-15T16:25:51.911Z",
+    "1.4.0": "2024-02-06T10:20:53.702Z",
+    "0.6.12": "2022-01-31T11:44:57.880Z",
+    "0.5.5": "2022-01-31T11:47:28.561Z"
+  },
+  "maintainers": [
+    {
+      "name": "pi0",
+      "email": "user1@example.com"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/unjs/ufo#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unjs/ufo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/unjs/ufo/issues"
+  },
+  "readme": "# ufo\n\n[![npm version][npm-version-src]][npm-version-href]\n[![npm downloads][npm-downloads-src]][npm-downloads-href]\n[![bundle][bundle-src]][bundle-href]\n[![Codecov][codecov-src]][codecov-href]\n\nURL utils for humans.\n\n## Install\n\nInstall using npm or your favourite package manager:\n\nInstall package:\n\n```sh\n# npm\nnpm install ufo\n\n# yarn\nyarn add ufo\n\n# pnpm\npnpm install ufo\n\n# bun\nbun install ufo\n```\n\nImport utils:\n\n```js\n// ESM\nimport { normalizeURL, joinURL } from \"ufo\";\n\n// CommonJS\nconst { normalizeURL, joinURL } = require(\"ufo\");\n\n// Deno\nimport { parseURL } from \"https://unpkg.com/ufo/dist/index.mjs\";\n```\n\n<!-- automd:jsdocs src=./src defaultGroup=utils -->\n\n## Encoding Utils\n\n### `decode(text)`\n\nDecodes text using `decodeURIComponent`. Returns the original text if it fails.\n\n### `decodePath(text)`\n\nDecodes path section of URL (consistent with encodePath for slash encoding).\n\n### `decodeQueryKey(text)`\n\nDecodes query key (consistent with `encodeQueryKey` for plus encoding).\n\n### `decodeQueryValue(text)`\n\nDecodes query value (consistent with `encodeQueryValue` for plus encoding).\n\n### `encode(text)`\n\nEncodes characters that need to be encoded in the path, search and hash sections of the URL.\n\n### `encodeHash(text)`\n\nEncodes characters that need to be encoded in the hash section of the URL.\n\n### `encodeHost(name)`\n\nEncodes hostname with punycode encoding.\n\n### `encodeParam(text)`\n\nEncodes characters that need to be encoded in the path section of the URL as a param. This function encodes everything `encodePath` does plus the slash (`/`) character.\n\n### `encodePath(text)`\n\nEncodes characters that need to be encoded in the path section of the URL.\n\n### `encodeQueryKey(text)`\n\nEncodes characters that need to be encoded for query values in the query section of the URL and also encodes the `=` character.\n\n### `encodeQueryValue(input)`\n\nEncodes characters that need to be encoded for query values in the query section of the URL.\n\n## Parsing Utils\n\n### `parseAuth(input)`\n\nTakes a string of the form `username:password` and returns an object with the username and password decoded.\n\n### `parseFilename(input, opts?: { strict? })`\n\nParses a URL and returns last segment in path as filename.\n\nIf `{ strict: true }` is passed as the second argument, it will only return the last segment only if ending with an extension.\n\n**Example:**\n\n```js\n// Result: filename.ext\nparseFilename(\"http://example.com/path/to/filename.ext\");\n\n// Result: undefined\nparseFilename(\"/path/to/.hidden-file\", { strict: true });\n```\n\n### `parseHost(input)`\n\nTakes a string, and returns an object with two properties: `hostname` and `port`.\n\n**Example:**\n\n```js\nparseHost(\"foo.com:8080\");\n// { hostname: 'foo.com', port: '8080' }\n```\n\n### `parsePath(input)`\n\nSplits the input string into three parts, and returns an object with those three parts.\n\n**Example:**\n\n```js\nparsePath(\"http://foo.com/foo?test=123#token\");\n// { pathname: 'http://foo.com/foo', search: '?test=123', hash: '#token' }\n```\n\n### `parseURL(input, defaultProto?)`\n\nTakes a URL string and returns an object with the URL's `protocol`, `auth`, `host`, `pathname`, `search`, and `hash`.\n\n**Example:**\n\n```js\nparseURL(\"http://foo.com/foo?test=123#token\");\n// { protocol: 'http:', auth: '', host: 'foo.com', pathname: '/foo', search: '?test=123', hash: '#token' }\n\nparseURL(\"foo.com/foo?test=123#token\");\n// { pathname: 'foo.com/foo', search: '?test=123', hash: '#token' }\n\nparseURL(\"foo.com/foo?test=123#token\", \"https://\");\n// { protocol: 'https:', auth: '', host: 'foo.com', pathname: '/foo', search: '?test=123', hash: '#token' }\n```\n\n### `stringifyParsedURL(parsed)`\n\nTakes a `ParsedURL` object and returns the stringified URL.\n\n**Example:**\n\n```js\nconst obj = parseURL(\"http://foo.com/foo?test=123#token\");\nobj.host = \"bar.com\";\n\nstringifyParsedURL(obj); // \"http://bar.com/foo?test=123#token\"\n```\n\n## Query Utils\n\n### `encodeQueryItem(key, value)`\n\nEncodes a pair of key and value into a url query string value.\n\nIf the value is an array, it will be encoded as multiple key-value pairs with the same key.\n\n**Example:**\n\n```js\nencodeQueryItem('message', 'Hello World')\n// 'message=Hello+World'\n\nencodeQueryItem('tags', ['javascript', 'web', 'dev'])\n// 'tags=javascript&tags=web&tags=dev'\n```\n\n### `parseQuery(parametersString)`\n\nParses and decodes a query string into an object.\n\nThe input can be a query string with or without the leading `?`.\n\n**Example:**\n\n```js\nparseQuery(\"?foo=bar&baz=qux\");\n// { foo: \"bar\", baz: \"qux\" }\n\nparseQuery(\"tags=javascript&tags=web&tags=dev\");\n// { tags: [\"javascript\", \"web\", \"dev\"] }\n```\n\n### `stringifyQuery(query)`\n\nStringfies and encodes a query object into a query string.\n\n**Example:**\n\n```js\nstringifyQuery({ foo: 'bar', baz: 'qux' })\n// 'foo=bar&baz=qux'\n\nstringifyQuery({ foo: 'bar', baz: undefined })\n// 'foo=bar'\n```\n\n## Utils\n\n### `$URL()`\n\n### `cleanDoubleSlashes(input)`\n\nRemoves double slashes from the URL.\n\n**Example:**\n\n```js\ncleanDoubleSlashes(\"//foo//bar//\"); // \"/foo/bar/\"\n\ncleanDoubleSlashes(\"http://example.com/analyze//http://localhost:3000//\");\n// Returns \"http://example.com/analyze/http://localhost:3000/\"\n```\n\n### `filterQuery(input, predicate)`\n\nRemoves the query section of the URL.\n\n**Example:**\n\n```js\nfilterQuery(\"/foo?bar=1&baz=2\", (key) => key !== \"bar\"); // \"/foo?baz=2\"\n```\n\n### `getQuery(input)`\n\nParses and decodes the query object of an input URL into an object.\n\n**Example:**\n\n```js\ngetQuery(\"http://foo.com/foo?test=123&unicode=%E5%A5%BD\");\n// { test: \"123\", unicode: \"好\" }\n```\n\n### `hasLeadingSlash(input)`\n\nChecks if the input has a leading slash (e.g. `/foo`).\n\n### `hasProtocol(inputString, opts)`\n\nChecks if the input has a protocol.\n\nYou can use `{ acceptRelative: true }` to accept relative URLs as valid protocol.\n\n**Example:**\n\n```js\nhasProtocol('https://example.com'); // true\n\nhasProtocol(\"//example.com\"); // false\n\nhasProtocol('//example.com', { acceptRelative: true });  // true\n\nhasProtocol(\"ftp://example.com\"); // true\n\nhasProtocol('data:text/plain'); // true\n\nhasProtocol('data:text/plain', { strict: true }); // false\n```\n\n### `hasTrailingSlash(input, respectQueryAndFragment?)`\n\nChecks if the input has a trailing slash.\n\n**Example:**\n\n```js\nhasTrailingSlash(\"/foo/\"); // true\n\nhasTrailingSlash(\"/foo\"); // false\n\nhasTrailingSlash(\"/foo?query=true\", true); // false\n\nhasTrailingSlash(\"/foo/?query=true\", true); // true\n```\n\n### `isEmptyURL(url)`\n\nChecks if the input URL is empty or `/`.\n\n### `isEqual(a, b, options)`\n\nChecks if two paths are equal regardless of encoding, trailing slash, and leading slash differences.\n\nYou can make slash check strict by setting `{ trailingSlash: true, leadingSlash: true }` as options.\n\nYou can make encoding check strict by setting `{ encoding: true }` as options.\n\n**Example:**\n\n```js\nisEqual(\"/foo\", \"foo\"); // true\nisEqual(\"foo/\", \"foo\"); // true\nisEqual(\"/foo bar\", \"/foo%20bar\"); // true\n\n// Strict compare\nisEqual(\"/foo\", \"foo\", { leadingSlash: true }); // false\nisEqual(\"foo/\", \"foo\", { trailingSlash: true }); // false\nisEqual(\"/foo bar\", \"/foo%20bar\", { encoding: true }); // false\n```\n\n### `isNonEmptyURL(url)`\n\nChecks if the input URL is neither empty nor `/`.\n\n### `isRelative(inputString)`\n\nCheck if a path starts with `./` or `../`.\n\n**Example:**\n\n```js\nisRelative(\"./foo\"); // true\n```\n\n### `isSamePath(p1, p2)`\n\nCheck if two paths are equal or not. Trailing slash and encoding are normalized before comparison.\n\n**Example:**\n\n```js\nisSamePath(\"/foo\", \"/foo/\"); // true\n```\n\n### `isScriptProtocol(protocol?)`\n\nChecks if the input protocol is any of the dangerous `blob:`, `data:`, `javascript`: or `vbscript:` protocols.\n\n**Example:**\n\n```js\nisScriptProtocol(\"javascript:alert(1)\"); // true\n\nisScriptProtocol(\"data:text/html,hello\"); // true\n\nisScriptProtocol(\"blob:hello\"); // true\n\nisScriptProtocol(\"vbscript:alert(1)\"); // true\n\nisScriptProtocol(\"https://example.com\"); // false\n```\n\n### `joinRelativeURL()`\n\nJoins multiple URL segments into a single URL and also handles relative paths with `./` and `../`.\n\n**Example:**\n\n```js\njoinRelativeURL(\"/a\", \"../b\", \"./c\"); // \"/b/c\"\n```\n\n### `joinURL(base)`\n\nJoins multiple URL segments into a single URL.\n\n**Example:**\n\n```js\njoinURL(\"a\", \"/b\", \"/c\"); // \"a/b/c\"\n```\n\n### `normalizeURL(input)`\n\nNormalizes the input URL:\n\n- Ensures the URL is properly encoded - Ensures pathname starts with a slash - Preserves protocol/host if provided\n\n**Example:**\n\n```js\nnormalizeURL(\"test?query=123 123#hash, test\");\n// Returns \"test?query=123%20123#hash,%20test\"\n\nnormalizeURL(\"http://localhost:3000\");\n// Returns \"http://localhost:3000\"\n```\n\n### `resolveURL(base)`\n\nResolves multiple URL segments into a single URL.\n\n**Example:**\n\n```js\nresolveURL(\"http://foo.com/foo?test=123#token\", \"bar\", \"baz\");\n// Returns \"http://foo.com/foo/bar/baz?test=123#token\"\n```\n\n### `withBase(input, base)`\n\nEnsures the URL or pathname starts with base.\n\nIf input already starts with base, it will not be added again.\n\n**Example:**\n\n```js\nwithBase(\"/foo/bar\", \"/foo\"); // \"/foo/bar\"\n\nwithBase(\"/foo/bar\", \"/baz\"); // \"/baz/foo/bar\"\n```\n\n### `withFragment(input, hash)`\n\nAdds or replaces the fragment section of the URL.\n\n**Example:**\n\n```js\nwithFragment(\"/foo\", \"bar\"); // \"/foo#bar\"\nwithFragment(\"/foo#bar\", \"baz\"); // \"/foo#baz\"\nwithFragment(\"/foo#bar\", \"\"); // \"/foo\"\n```\n\n### `withHttp(input)`\n\nAdds or replaces the URL protocol to `http://`.\n\n**Example:**\n\n```js\nwithHttp(\"https://example.com\"); // http://example.com\n```\n\n### `withHttps(input)`\n\nAdds or replaces the URL protocol to `https://`.\n\n**Example:**\n\n```js\nwithHttps(\"http://example.com\"); // https://example.com\n```\n\n### `withLeadingSlash(input)`\n\nEnsures the URL or pathname has a leading slash.\n\n**Example:**\n\n```js\nwithLeadingSlash(\"foo\"); // \"/foo\"\n```\n\n### `withoutBase(input, base)`\n\nRemoves the base from the URL or pathname.\n\nIf input does not start with base, it will not be removed.\n\n**Example:**\n\n```js\nwithoutBase(\"/foo/bar\", \"/foo\"); // \"/bar\"\n```\n\n### `withoutFragment(input)`\n\nRemoves the fragment section from the URL.\n\n**Example:**\n\n```js\nwithoutFragment(\"http://example.com/foo?q=123#bar\")\n// Returns \"http://example.com/foo?q=123\"\n```\n\n### `withoutHost(input)`\n\nRemoves the host from the URL while preserving everything else.\n\n**Example:**\n\n```js\nwithoutHost(\"http://example.com/foo?q=123#bar\")\n// Returns \"/foo?q=123#bar\"\n```\n\n### `withoutLeadingSlash(input)`\n\nRemoves leading slash from the URL or pathname.\n\n**Example:**\n\n```js\nwithoutLeadingSlash(\"/foo\"); // \"foo\"\n```\n\n### `withoutProtocol(input)`\n\nRemoves the protocol from the input.\n\n**Example:**\n\n```js\nwithoutProtocol(\"http://example.com\"); // \"example.com\"\n```\n\n### `withoutTrailingSlash(input, respectQueryAndFragment?)`\n\nRemoves the trailing slash from the URL or pathname.\n\nIf second argument is `true`, it will only remove the trailing slash if it's not part of the query or fragment with cost of more expensive operations.\n\n**Example:**\n\n```js\nwithoutTrailingSlash(\"/foo/\"); // \"/foo\"\n\nwithoutTrailingSlash(\"/path/?query=true\", true); // \"/path?query=true\"\n```\n\n### `withProtocol(input, protocol)`\n\nAdds or replaces protocol of the input URL.\n\n**Example:**\n\n```js\nwithProtocol(\"http://example.com\", \"ftp://\"); // \"ftp://example.com\"\n```\n\n### `withQuery(input, query)`\n\nAdd/Replace the query section of the URL.\n\n**Example:**\n\n```js\nwithQuery(\"/foo?page=a\", { token: \"secret\" }); // \"/foo?page=a&token=secret\"\n```\n\n### `withTrailingSlash(input, respectQueryAndFragment?)`\n\nEnsures the URL ends with a trailing slash.\n\nIf second argument is `true`, it will only add the trailing slash if it's not part of the query or fragment with cost of more expensive operation.\n\n**Example:**\n\n```js\nwithTrailingSlash(\"/foo\"); // \"/foo/\"\n\nwithTrailingSlash(\"/path?query=true\", true); // \"/path/?query=true\"\n```\n\n<!-- /automd -->\n\n## License\n\n[MIT](./LICENSE)\n\nSpecial thanks to Eduardo San Martin Morote ([posva](https://github.com/posva)) for [encoding utilities](https://github.com/vuejs/vue-router-next/blob/v4.0.1/src/encoding.ts)\n\n<!-- Badges -->\n\n[npm-version-src]: https://img.shields.io/npm/v/ufo?style=flat&colorA=18181B&colorB=F0DB4F\n[npm-version-href]: https://npmjs.com/package/ufo\n[npm-downloads-src]: https://img.shields.io/npm/dm/ufo?style=flat&colorA=18181B&colorB=F0DB4F\n[npm-downloads-href]: https://npmjs.com/package/ufo\n[codecov-src]: https://img.shields.io/codecov/c/gh/unjs/ufo/main?style=flat&colorA=18181B&colorB=F0DB4F\n[codecov-href]: https://codecov.io/gh/unjs/ufo\n[bundle-src]: https://img.shields.io/bundlephobia/minzip/ufo?style=flat&colorA=18181B&colorB=F0DB4F\n[bundle-href]: https://bundlephobia.com/result?p=ufo\n",
+  "readmeFilename": "README.md"
+}

@@ -1,31 +1,16 @@
 import { defineConfig } from '@lunariajs/core/config'
+import { locales, sourceLocale } from './lunaria/prepare-json-files.ts'
 
 export default defineConfig({
   repository: {
     name: 'npmx-dev/npmx.dev',
   },
-  sourceLocale: {
-    label: 'English',
-    lang: 'en',
-  },
-  locales: [
-    {
-      label: 'Français',
-      lang: 'fr',
-    },
-    {
-      label: 'Italiano',
-      lang: 'it',
-    },
-    {
-      label: '简体中文',
-      lang: 'zh-CN',
-    },
-  ],
+  sourceLocale,
+  locales,
   files: [
     {
-      include: ['i18n/locales/en.json'],
-      pattern: 'i18n/locales/@lang.json',
+      include: ['lunaria/files/en-US.json'],
+      pattern: 'lunaria/files/@lang.json',
       type: 'dictionary',
     },
   ],

@@ -6,16 +6,29 @@
  * @see https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md
  */
 
-import type { PackumentVersion } from '@npm/types'
+import type {
+  Packument as PackumentWithoutLicenseObjects,
+  PackumentVersion as PackumentVersionWithoutAttestations,
+  Contact,
+} from '@npm/types'
+import type { ReadmeResponse } from './readme'
 
 // Re-export official npm types for packument/manifest
-export type {
-  Packument,
-  PackumentVersion,
-  Manifest,
-  ManifestVersion,
-  PackageJSON,
-} from '@npm/types'
+export type { Manifest, ManifestVersion, PackageJSON } from '@npm/types'
+
+type NpmTrustedPublisherEvidence = NpmSearchTrustedPublisher | NpmTrustedPublisher | true
+
+export interface PackumentVersion extends PackumentVersionWithoutAttestations {
+  _npmUser?: Contact & { trustedPublisher?: NpmTrustedPublisherEvidence }
+  dist: PackumentVersionWithoutAttestations['dist'] & { attestations?: NpmVersionAttestations }
+}
+
+export type Packument = Omit<PackumentWithoutLicenseObjects, 'license' | 'versions'> & {
+  // Fix for license field being incorrectly typed in @npm/types
+  // TODO: Remove this type override when @npm/types fixes the license field typing
+  license?: string | { type: string; url?: string }
+  versions: Record<string, PackumentVersion>
+}
 
 /** Install scripts info (preinstall, install, postinstall) */
 export interface InstallScriptsInfo {
@@ -27,6 +40,13 @@ export interface InstallScriptsInfo {
 /** PackumentVersion with additional install scripts info */
 export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
+}
+
+export type PublishTrustLevel = 'none' | 'trustedPublisher' | 'provenance'
+
+export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {
+  hasProvenance?: boolean
+  trustLevel?: PublishTrustLevel
 }
 
 /**
@@ -42,7 +62,19 @@ export interface SlimPackument {
   'name': string
   'description'?: string
   'dist-tags': { latest?: string } & Record<string, string>
-  /** Only includes time for dist-tag versions + modified/created */
+  /**
+   * Timestamps for package versions.
+   *
+   * **IMPORTANT**: Use `time[version]` to get the publish date of a specific version.
+   *
+   * **DO NOT use `time.modified`** - it can be updated by metadata changes (e.g., maintainer
+   * additions/removals) without any code being published, making it misleading for users
+   * trying to assess package maintenance activity.
+   *
+   * - `time[version]` - When that specific version was published (use this!)
+   * - `time.created` - When the package was first created
+   * - `time.modified` - Last metadata change (misleading - avoid using)
+   */
   'time': { modified?: string; created?: string } & Record<string, string>
   'maintainers'?: NpmPerson[]
   'author'?: NpmPerson
@@ -51,8 +83,12 @@ export interface SlimPackument {
   'keywords'?: string[]
   'repository'?: { type?: string; url?: string; directory?: string }
   'bugs'?: { url?: string; email?: string }
+  /** current version */
+  'requestedVersion': SlimPackumentVersion | null
   /** Only includes dist-tag versions (with installScripts info added per version) */
-  'versions': Record<string, SlimPackumentVersion>
+  'versions': Record<string, SlimVersion>
+  /** Lightweight security metadata for all versions */
+  'securityVersions'?: PackageVersionInfo[]
 }
 
 /**
@@ -62,6 +98,7 @@ export interface PackageVersionInfo {
   version: string
   time?: string
   hasProvenance: boolean
+  trustLevel?: PublishTrustLevel
   deprecated?: string
 }
 
@@ -82,6 +119,7 @@ export interface NpmPerson {
  * Note: Not covered by @npm/types (see https://github.com/npm/types/issues/28)
  */
 export interface NpmSearchResponse {
+  isStale: boolean
   objects: NpmSearchResult[]
   total: number
   time: string
@@ -190,6 +228,30 @@ export interface NpmVersionDist {
   }>
   /** Attestations/provenance (present if published with provenance) */
   attestations?: NpmVersionAttestations
+}
+
+/**
+ * Parsed provenance details for display (from attestation bundle SLSA predicate).
+ * Used by the provenance API and PackageProvenanceSection.
+ * @public
+ */
+export interface ProvenanceDetails {
+  /** Provider ID (e.g. "github", "gitlab") */
+  provider: string
+  /** Human-readable provider label (e.g. "GitHub Actions") */
+  providerLabel: string
+  /** Link to build run summary (e.g. GitHub Actions run URL) */
+  buildSummaryUrl?: string
+  /** Link to source commit in repository */
+  sourceCommitUrl?: string
+  /** Source commit SHA (short or full) */
+  sourceCommitSha?: string
+  /** Link to workflow/build config file in repo */
+  buildFileUrl?: string
+  /** Workflow path (e.g. ".github/workflows/release.yml") */
+  buildFilePath?: string
+  /** Link to transparency log entry (e.g. Sigstore search) */
+  publicLedgerUrl?: string
 }
 
 /**
@@ -320,4 +382,41 @@ export interface PackageFileContentResponse {
   content: string
   html: string
   lines: number
+  markdownHtml?: ReadmeResponse
+}
+
+/**
+ * Minimal packument data needed for package cards
+ */
+export interface MinimalPackument {
+  'name': string
+  'description'?: string
+  'keywords'?: string[]
+  // `dist-tags` can be missing in some later unpublished packages
+  'dist-tags'?: Record<string, string>
+  'time': Record<string, string>
+  'maintainers'?: NpmPerson[]
+}
+
+/**
+ * Lightweight package metadata returned by /api/registry/package-meta/.
+ * Contains only the fields needed for search result cards, extracted
+ * server-side from the full packument + downloads API.
+ */
+export interface PackageMetaResponse {
+  name: string
+  version: string
+  description?: string
+  keywords?: string[]
+  license?: string
+  date: string
+  links: {
+    npm: string
+    homepage?: string
+    repository?: string
+    bugs?: string
+  }
+  author?: NpmPerson
+  maintainers?: NpmPerson[]
+  weeklyDownloads?: number
 }

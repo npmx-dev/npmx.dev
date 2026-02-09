@@ -154,7 +154,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
       :aria-activedescendant="
         highlightedIndex >= 0 ? `${listboxId}-option-${highlightedIndex}` : undefined
       "
-      class="w-full px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fg/50 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="w-full px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70 disabled:opacity-50 disabled:cursor-not-allowed"
       @input="handleInput"
       @focus="handleFocus"
       @blur="handleBlur"
@@ -185,7 +185,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
           :key="username"
           role="option"
           :aria-selected="highlightedIndex === index"
-          class="px-2 py-1 font-mono text-sm cursor-pointer transition-colors duration-100"
+          class="px-2 py-1 font-mono text-sm transition-colors duration-100"
           :class="
             highlightedIndex === index
               ? 'bg-bg-muted text-fg'
@@ -204,10 +204,7 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
           role="status"
           aria-live="polite"
         >
-          <span
-            class="i-carbon-information w-3 h-3 inline-block mr-1 align-middle"
-            aria-hidden="true"
-          />
+          <span class="i-carbon:information w-3 h-3 me-1 align-middle" aria-hidden="true" />
           {{
             $t('user.combobox.press_enter_to_add', {
               username: inputValue.trim().replace(/^@/, ''),

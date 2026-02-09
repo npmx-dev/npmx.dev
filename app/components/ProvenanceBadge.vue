@@ -35,10 +35,7 @@ const title = computed(() =>
     class="inline-flex items-center justify-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
     :title="title"
   >
-    <span
-      class="i-solar-shield-check-outline shrink-0"
-      :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
-    />
+    <span class="i-lucide-shield-check shrink-0" :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'" />
     <span v-if="!compact" class="sr-only sm:not-sr-only">{{
       $t('badges.provenance.verified')
     }}</span>
@@ -48,10 +45,7 @@ const title = computed(() =>
     class="inline-flex items-center gap-1 text-xs font-mono text-fg-muted"
     :title="title"
   >
-    <span
-      class="i-solar-shield-check-outline shrink-0"
-      :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'"
-    />
+    <span class="i-lucide-shield-check shrink-0" :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'" />
     <span v-if="!compact" class="sr-only sm:not-sr-only">{{
       $t('badges.provenance.verified')
     }}</span>

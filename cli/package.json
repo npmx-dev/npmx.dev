@@ -27,15 +27,15 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "dev": "NPMX_CLI_DEV=true node --experimental-strip-types src/cli.ts",
+    "dev": "NPMX_CLI_DEV=true node src/cli.ts",
+    "dev:debug": "DEBUG=npmx-connector NPMX_CLI_DEV=true node src/cli.ts",
     "test:types": "tsc --noEmit"
   },
   "dependencies": {
-    "@clack/prompts": "1.0.0-alpha.9",
+    "@clack/prompts": "^1.0.0",
     "citty": "^0.2.0",
     "h3-next": "npm:h3@^2.0.1-rc.11",
     "obug": "^2.1.1",
-    "picocolors": "^1.1.1",
     "srvx": "^0.10.1",
     "valibot": "^1.2.0",
     "validate-npm-package-name": "^7.0.2"
@@ -45,5 +45,8 @@
     "@types/validate-npm-package-name": "4.0.2",
     "tsdown": "0.20.1",
     "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }

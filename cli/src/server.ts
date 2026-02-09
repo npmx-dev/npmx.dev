@@ -53,7 +53,7 @@ function generateOperationId(): string {
 }
 
 const corsOptions: CorsOptions = {
-  origin: ['https://npmx.dev', /^http:\/\/localhost:\d+$/],
+  origin: ['https://npmx.dev', /^http:\/\/localhost:\d+$/, /^http:\/\/127.0.0.1:\d+$/],
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization'],
 }

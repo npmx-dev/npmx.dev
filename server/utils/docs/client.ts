@@ -7,8 +7,9 @@
  * @module server/utils/docs/client
  */
 
-import { doc } from '@deno/doc'
+import { doc, type DocNode } from '@deno/doc'
 import type { DenoDocNode, DenoDocResult } from '#shared/types/deno-doc'
+import { isBuiltin } from 'node:module'
 
 // =============================================================================
 // Configuration
@@ -33,10 +34,15 @@ export async function getDocNodes(packageName: string, version: string): Promise
   }
 
   // Generate docs using @deno/doc WASM
-  const result = await doc([typesUrl], {
-    load: createLoader(),
-    resolve: createResolver(),
-  })
+  let result: Record<string, DocNode[]>
+  try {
+    result = await doc([typesUrl], {
+      load: createLoader(),
+      resolve: createResolver(),
+    })
+  } catch {
+    return { version: 1, nodes: [] }
+  }
 
   // Collect all nodes from all specifiers
   const allNodes: DenoDocNode[] = []
@@ -76,10 +82,9 @@ function createLoader(): (
     _cacheSetting?: string,
     _checksum?: string,
   ) => {
-    let url: URL
-    try {
-      url = new URL(specifier)
-    } catch {
+    const url = URL.parse(specifier)
+
+    if (url === null) {
       return undefined
     }
 
@@ -88,21 +93,18 @@ function createLoader(): (
       return undefined
     }
 
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
-
     try {
-      const response = await fetch(url.toString(), {
+      const response = await $fetch.raw<Blob>(url.toString(), {
+        method: 'GET',
+        timeout: FETCH_TIMEOUT_MS,
         redirect: 'follow',
-        signal: controller.signal,
       })
-      clearTimeout(timeoutId)
 
       if (response.status !== 200) {
         return undefined
       }
 
-      const content = await response.text()
+      const content = (await response._data?.text()) ?? ''
       const headers: Record<string, string> = {}
       for (const [key, value] of response.headers) {
         headers[key.toLowerCase()] = value
@@ -110,12 +112,13 @@ function createLoader(): (
 
       return {
         kind: 'module',
-        specifier: response.url,
+        specifier: response.url || specifier,
         headers,
         content,
       }
-    } catch {
-      clearTimeout(timeoutId)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
       return undefined
     }
   }
@@ -134,7 +137,11 @@ function createResolver(): (specifier: string, referrer: string) => string {
     }
 
     // Handle bare specifiers - resolve through esm.sh
-    if (!specifier.startsWith('http://') && !specifier.startsWith('https://')) {
+    if (
+      !specifier.startsWith('http://') &&
+      !specifier.startsWith('https://') &&
+      !isBuiltin(specifier)
+    ) {
       // Try to resolve bare specifier relative to esm.sh base
       const baseUrl = new URL(referrer)
       if (baseUrl.hostname === 'esm.sh') {
@@ -156,18 +163,15 @@ function createResolver(): (specifier: string, referrer: string) => string {
 async function getTypesUrl(packageName: string, version: string): Promise<string | null> {
   const url = `https://esm.sh/${packageName}@${version}`
 
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
-
   try {
-    const response = await fetch(url, {
+    const response = await $fetch.raw(url, {
       method: 'HEAD',
-      signal: controller.signal,
+      timeout: FETCH_TIMEOUT_MS,
     })
-    clearTimeout(timeoutId)
     return response.headers.get('x-typescript-types')
-  } catch {
-    clearTimeout(timeoutId)
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
     return null
   }
 }

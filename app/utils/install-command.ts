@@ -25,7 +25,9 @@ export const packageManagers = [
     id: 'yarn',
     label: 'yarn',
     action: 'add',
-    executeLocal: 'yarn',
+    // For both yarn v1 and v2+ support
+    // local exec defers to npx instead
+    executeLocal: 'npx',
     executeRemote: 'yarn dlx',
     create: 'yarn create',
     icon: 'i-simple-icons:yarn',
@@ -52,9 +54,9 @@ export const packageManagers = [
     id: 'vlt',
     label: 'vlt',
     action: 'install',
-    executeLocal: 'vlt x',
-    executeRemote: 'vlt x',
-    create: 'vlt x',
+    executeLocal: 'vlx',
+    executeRemote: 'vlx',
+    create: 'vlx',
     icon: 'i-custom-vlt',
   },
 ] as const

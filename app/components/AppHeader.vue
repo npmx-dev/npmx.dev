@@ -1,111 +1,243 @@
 <script setup lang="ts">
+import { LinkBase } from '#components'
+import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
+import { isEditableElement } from '~/utils/input'
+
 withDefaults(
   defineProps<{
     showLogo?: boolean
-    showConnector?: boolean
   }>(),
   {
     showLogo: true,
-    showConnector: true,
   },
 )
 
 const { isConnected, npmUser } = useConnector()
 
-const router = useRouter()
+const desktopLinks = computed<NavigationConfig>(() => [
+  {
+    name: 'Compare',
+    label: $t('nav.compare'),
+    to: { name: 'compare' },
+    keyshortcut: 'c',
+    type: 'link',
+    external: false,
+    iconClass: 'i-carbon:compare',
+  },
+  {
+    name: 'Settings',
+    label: $t('nav.settings'),
+    to: { name: 'settings' },
+    keyshortcut: ',',
+    type: 'link',
+    external: false,
+    iconClass: 'i-carbon:settings',
+  },
+])
+
+const mobileLinks = computed<NavigationConfigWithGroups>(() => [
+  {
+    name: 'Desktop Links',
+    type: 'group',
+    items: [...desktopLinks.value],
+  },
+  {
+    type: 'separator',
+  },
+  {
+    name: 'About & Policies',
+    type: 'group',
+    items: [
+      {
+        name: 'About',
+        label: $t('footer.about'),
+        to: { name: 'about' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-carbon:information',
+      },
+      {
+        name: 'Privacy Policy',
+        label: $t('privacy_policy.title'),
+        to: { name: 'privacy' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-carbon:security',
+      },
+    ],
+  },
+  {
+    type: 'separator',
+  },
+  {
+    name: 'External Links',
+    type: 'group',
+    label: $t('nav.links'),
+    items: [
+      {
+        name: 'Docs',
+        label: $t('footer.docs'),
+        href: 'https://docs.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-carbon:document',
+      },
+      {
+        name: 'Source',
+        label: $t('footer.source'),
+        href: 'https://repo.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-carbon:logo-github',
+      },
+      {
+        name: 'Social',
+        label: $t('footer.social'),
+        href: 'https://social.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-simple-icons:bluesky',
+      },
+      {
+        name: 'Chat',
+        label: $t('footer.chat'),
+        href: 'https://chat.npmx.dev',
+        target: '_blank',
+        type: 'link',
+        external: true,
+        iconClass: 'i-carbon:chat',
+      },
+    ],
+  },
+])
+
+const showFullSearch = shallowRef(false)
+const showMobileMenu = shallowRef(false)
+
+// On mobile, clicking logo+search button expands search
 const route = useRoute()
+const isMobile = useIsMobile()
+const isSearchExpandedManually = shallowRef(false)
+const searchBoxRef = useTemplateRef('searchBoxRef')
 
-const searchQuery = ref('')
-const isSearchFocused = ref(false)
+// On search page, always show search expanded on mobile
+const isOnHomePage = computed(() => route.name === 'index')
+const isOnSearchPage = computed(() => route.name === 'search')
+const isSearchExpanded = computed(() => isOnSearchPage.value || isSearchExpandedManually.value)
 
-const showSearchBar = computed(() => {
-  return route.name !== 'search' && route.name !== 'index'
-})
-
-async function handleSearchInput() {
-  const query = searchQuery.value.trim()
-  await router.push({
-    name: 'search',
-    query: query ? { q: query } : undefined,
+function expandMobileSearch() {
+  isSearchExpandedManually.value = true
+  nextTick(() => {
+    searchBoxRef.value?.focus()
   })
-  searchQuery.value = ''
 }
 
-onKeyStroke(',', e => {
-  // Don't trigger if user is typing in an input
-  const target = e.target as HTMLElement
-  if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
-    return
-  }
+watch(
+  isOnSearchPage,
+  visible => {
+    if (!visible) return
 
-  e.preventDefault()
-  router.push('/settings')
-})
+    searchBoxRef.value?.focus()
+    nextTick(() => {
+      searchBoxRef.value?.focus()
+    })
+  },
+  { flush: 'sync' },
+)
+
+function handleSearchBlur() {
+  showFullSearch.value = false
+  // Collapse expanded search on mobile after blur (with delay for click handling)
+  // But don't collapse if we're on the search page
+  if (isMobile.value && !isOnSearchPage.value) {
+    setTimeout(() => {
+      isSearchExpandedManually.value = false
+    }, 150)
+  }
+}
+
+function handleSearchFocus() {
+  showFullSearch.value = true
+}
+
+onKeyStroke(
+  e => {
+    if (isEditableElement(e.target)) {
+      return
+    }
+
+    for (const link of desktopLinks.value) {
+      if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
+        e.preventDefault()
+        navigateTo(link.to.name)
+        break
+      }
+    }
+  },
+  { dedupe: true },
+)
 </script>
 
 <template>
-  <header
-    aria-label="Site header"
-    class="sticky top-0 z-50 bg-bg/80 backdrop-blur-md border-b border-border"
-  >
-    <nav aria-label="Main navigation" class="container h-14 flex items-center">
-      <!-- Left: Logo -->
-      <div class="flex-shrink-0">
+  <header class="sticky top-0 z-50 border-b border-border">
+    <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />
+    <nav
+      :aria-label="$t('nav.main_navigation')"
+      class="relative container min-h-14 flex items-center gap-2 z-1"
+      :class="isOnHomePage ? 'justify-end' : 'justify-between'"
+    >
+      <!-- Mobile: Logo + search button (expands search, doesn't navigate) -->
+      <button
+        v-if="!isSearchExpanded && !isOnHomePage"
+        type="button"
+        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 rounded"
+        :aria-label="$t('nav.tap_to_search')"
+        @click="expandMobileSearch"
+      >
+        <AppLogo class="w-8 h-8 rounded-lg" />
+        <span class="i-carbon:search w-4 h-4 text-fg-subtle" aria-hidden="true" />
+      </button>
+
+      <!-- Desktop: Logo (navigates home) -->
+      <div v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
         <NuxtLink
-          v-if="showLogo"
-          to="/"
+          :to="{ name: 'index' }"
           :aria-label="$t('header.home')"
-          class="header-logo font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring rounded"
+          dir="ltr"
+          class="inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded"
         >
-          <span class="text-accent"><span class="-tracking-0.2em">.</span>/</span>npmx
+          <AppLogo class="w-8 h-8 rounded-lg" />
+          <span>npmx</span>
         </NuxtLink>
-        <!-- Spacer when logo is hidden -->
-        <span v-else class="w-1" />
       </div>
+      <!-- Spacer when logo is hidden on desktop -->
+      <span v-else class="hidden sm:block w-1" />
 
       <!-- Center: Search bar + nav items -->
-      <div class="flex-1 flex items-center justify-center gap-4 sm:gap-6">
-        <!-- Search bar (shown on all pages except home and search) -->
-        <search v-if="showSearchBar" class="hidden sm:block flex-1 max-w-md">
-          <form
-            role="search"
-            method="GET"
-            action="/search"
-            class="relative"
-            @submit.prevent="handleSearchInput"
-          >
-            <label for="header-search" class="sr-only">
-              {{ $t('search.label') }}
-            </label>
-
-            <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
-              <div class="search-box relative flex items-center">
-                <span
-                  class="absolute left-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none group-focus-within:text-accent z-1"
-                >
-                  /
-                </span>
-
-                <input
-                  id="header-search"
-                  v-model="searchQuery"
-                  type="search"
-                  name="q"
-                  :placeholder="$t('search.placeholder')"
-                  v-bind="noCorrect"
-                  class="w-full bg-bg-subtle border border-border rounded-md pl-7 pr-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-border-color duration-300 motion-reduce:transition-none focus:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
-                  autocomplete="off"
-                  @input="handleSearchInput"
-                  @focus="isSearchFocused = true"
-                  @blur="isSearchFocused = false"
-                />
-                <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
-              </div>
-            </div>
-          </form>
-        </search>
-
-        <ul class="flex items-center gap-4 sm:gap-6 list-none m-0 p-0">
+      <div
+        class="flex-1 flex items-center md:gap-6"
+        :class="{
+          'hidden sm:flex': !isSearchExpanded,
+          'justify-end': isOnHomePage,
+          'justify-center': !isOnHomePage,
+        }"
+      >
+        <!-- Search bar (hidden on mobile unless expanded) -->
+        <HeaderSearchBox
+          ref="searchBoxRef"
+          :inputClass="isSearchExpanded ? 'w-full' : ''"
+          :class="{ 'max-w-md': !isSearchExpanded }"
+          @focus="handleSearchFocus"
+          @blur="handleSearchBlur"
+        />
+        <ul
+          v-if="!isSearchExpanded && isConnected && npmUser"
+          :class="{ hidden: showFullSearch }"
+          class="hidden sm:flex items-center gap-4 sm:gap-6 list-none m-0 p-0"
+        >
           <!-- Packages dropdown (when connected) -->
           <li v-if="isConnected && npmUser" class="flex items-center">
             <HeaderPackagesDropdown :username="npmUser" />
@@ -118,33 +250,35 @@ onKeyStroke(',', e => {
         </ul>
       </div>
 
-      <!-- Right: User status + GitHub -->
-      <div class="flex-shrink-0 flex items-center gap-4 sm:gap-6 ml-auto sm:ml-0">
-        <NuxtLink
-          to="/about"
-          class="sm:hidden link-subtle font-mono text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
+      <!-- End: Desktop nav items + Mobile menu button -->
+      <div class="hidden sm:flex flex-shrink-0">
+        <!-- Desktop: Explore link -->
+        <LinkBase
+          v-for="link in desktopLinks"
+          :key="link.name"
+          class="border-none"
+          variant="button-secondary"
+          :to="link.to"
+          :aria-keyshortcuts="link.keyshortcut"
         >
-          {{ $t('footer.about') }}
-        </NuxtLink>
+          {{ link.label }}
+        </LinkBase>
 
-        <NuxtLink
-          to="/settings"
-          class="link-subtle font-mono text-sm inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 rounded"
-          aria-keyshortcuts=","
-        >
-          {{ $t('nav.settings') }}
-          <kbd
-            class="hidden sm:inline-flex items-center justify-center w-5 h-5 text-xs bg-bg-muted border border-border rounded"
-            aria-hidden="true"
-          >
-            ,
-          </kbd>
-        </NuxtLink>
-
-        <div v-if="showConnector" class="hidden sm:block">
-          <ConnectorStatus />
-        </div>
+        <HeaderAccountMenu />
       </div>
+
+      <!-- Mobile: Menu button (always visible, click to open menu) -->
+      <ButtonBase
+        type="button"
+        class="sm:hidden"
+        :aria-label="$t('nav.open_menu')"
+        :aria-expanded="showMobileMenu"
+        @click="showMobileMenu = !showMobileMenu"
+        classicon="i-carbon:menu"
+      />
     </nav>
+
+    <!-- Mobile menu -->
+    <HeaderMobileMenu :links="mobileLinks" v-model:open="showMobileMenu" />
   </header>
 </template>

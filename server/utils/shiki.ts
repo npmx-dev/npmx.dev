@@ -24,6 +24,8 @@ export async function getShikiHighlighter(): Promise<HighlighterCore> {
         import('@shikijs/langs/tsx'),
         import('@shikijs/langs/svelte'),
         import('@shikijs/langs/astro'),
+        import('@shikijs/langs/glimmer-js'),
+        import('@shikijs/langs/glimmer-ts'),
 
         // Shell/CLI
         import('@shikijs/langs/bash'),
@@ -43,6 +45,10 @@ export async function getShikiHighlighter(): Promise<HighlighterCore> {
         import('@shikijs/langs/rust'),
         import('@shikijs/langs/go'),
       ],
+      langAlias: {
+        gjs: 'glimmer-js',
+        gts: 'glimmer-ts',
+      },
       engine: createJavaScriptRegexEngine(),
     })
   }
@@ -70,7 +76,7 @@ export function highlightCodeSync(shiki: HighlighterCore, code: string, language
         defaultColor: 'dark',
       })
       // Remove inline style from <pre> tag so CSS can control appearance
-      html = html.replace(/<pre([^>]*)\s+style="[^"]*"/, '<pre$1')
+      html = html.replace(/<pre([^>]*) style="[^"]*"/, '<pre$1')
       // Shiki doesn't encode > in text content (e.g., arrow functions =>)
       // We need to encode them for HTML validation
       return escapeRawGt(html)

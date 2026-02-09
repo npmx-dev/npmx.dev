@@ -1,0 +1,2525 @@
+{
+  "_id": "create-next-app",
+  "_rev": "3183-c8ca3881417ff4bc33e9932def305559",
+  "name": "create-next-app",
+  "description": "Create Next.js-powered React apps with one command",
+  "dist-tags": {
+    "next-11": "11.1.4",
+    "next-12-2-6": "12.2.6",
+    "next-14-1": "14.1.1",
+    "rc": "15.0.0-rc.1",
+    "next-13": "13.5.11",
+    "next-12-3-2": "12.3.7",
+    "beta": "16.0.0-beta.0",
+    "next-14": "14.2.35",
+    "next-15-3": "15.3.9",
+    "next-15-2": "15.2.9",
+    "next-15-0": "15.1.12",
+    "next-15-0-0": "15.0.8",
+    "latest": "16.1.6",
+    "backport": "15.5.11",
+    "canary": "16.2.0-canary.24"
+  },
+  "versions": {
+    "16.2.0-canary.24": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.24",
+      "keywords": ["react", "next", "next.js"],
+      "description": "Create Next.js-powered React apps with one command",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vercel/next.js.git",
+        "directory": "packages/create-next-app"
+      },
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "prepublishOnly": "cd ../../ && turbo run build",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'"
+      },
+      "devDependencies": {
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "@types/node": "20.14.2",
+        "@types/prompts": "2.4.2",
+        "@types/validate-npm-package-name": "4.0.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "ci-info": "4.0.0",
+        "commander": "12.1.0",
+        "conf": "13.0.1",
+        "cross-spawn": "7.0.3",
+        "fast-glob": "3.3.1",
+        "picocolors": "1.0.0",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "prompts": "2.4.2",
+        "tar": "7.5.7",
+        "update-check": "1.5.4",
+        "validate-npm-package-name": "5.0.1"
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "_id": "create-next-app@16.2.0-canary.24",
+      "readmeFilename": "README.md",
+      "gitHead": "b91cf900ed2fac0bbaae17d1bbee8d8eb650a2f1",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "_nodeVersion": "20.20.0",
+      "_npmVersion": "10.4.0",
+      "dist": {
+        "integrity": "sha512-idpLAIOUi2fAGSKPXxOs6GhMhpPaF/9IaRnKd77C5lLmolisomCytYdf4Vd+ljsw1ujpFqYa+7rAcia1PaXxsw==",
+        "shasum": "03bddaa100be750caf9b114c56b17bd9752aeaa7",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.24.tgz",
+        "fileCount": 238,
+        "unpackedSize": 955159,
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.24",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "signatures": [
+          {
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+            "sig": "MEYCIQCh0HzsoxgLqiczUffIKuN6qZDLObyGC5swPN5sGq3oXQIhAOFklaYVEeNv0N1nBiWgnflOgI0fk7YUYqVY5InQJSSp"
+          }
+        ]
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "directories": {},
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "_npmOperationalInternal": {
+        "host": "s3://npm-registry-packages-npm-production",
+        "tmp": "tmp/create-next-app_16.2.0-canary.24_1770075308120_0.41750589761769774"
+      },
+      "_hasShrinkwrap": false
+    },
+    "16.2.0-canary.23": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.23",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.23",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "dabcd914d9dc86b23e77afef5b92d3002421b935",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.23.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-l8DjSWsWcCkTayhFyKhfgqR6z/D3pTGfonRRcvRLCFBDk+WuECCtORwHn8xZbt4BHuwuebarZCZpueFZ/ldOWw==",
+        "signatures": [
+          {
+            "sig": "MEQCIF6nAnVt5zx2pWY/yMvLbN80Oegy7qhqxRMNLzbltQ+aAiAD6DW4m6QHPU0k4qEngErMgvx2Br7adE7/H4K0DvuT/g==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.23",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 955159
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "d77e3d4cf3ba60457c5f764c4f73bebcb57c800f",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.5.7",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.23_1769902421082_0.2928856441535692",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.2.0-canary.22": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.22",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.22",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "c905ff36c62569190874a5c71caeaa681070b81a",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.22.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-MyVoMYcrSczbbFA/WYBPBVuA4HreblmZE/PymSyLhilruBumYM//biRWnsHJnnTqPmpuq4v98FActJThWeSQyw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDEdrPBSwy4nOtcyhnrx6CfyqM3gvTz127AJH4lJD/GbAIgOkJ6NSiRJXRhsoJ4IXkGqUs5GnDTmCe1WhRt9WQOXAI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.22",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 955159
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "fc60622f89b34b9a7534c664248ee94f19046135",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.5.7",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.22_1769816273757_0.6411066597372395",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.2.0-canary.21": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.21",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.21",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "63f43cfa309cec22955049e8ecca7b5612637267",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.21.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-bC5fsd5AtI9luUYEeGMoy3O/CQ5kMCI4ylwKx9e0AzRUzgYI2Ocl6bxZlZr7WymipqFRxlqOiCt2TICTVbaPtQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIH93FLUE9CUkzqp+R4Kcf5rN/yPgeHaGCGWSzkGMeQadAiBV7/4GWq/Ufz6AnGBGRQyOV0POybzXG2Vb2XKsopXGeg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.21",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 955159
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "cf7cfe27ecbfdec8ae95188bc16685772a2b2945",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.5.7",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.21_1769814256230_0.43684939750022633",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.2.0-canary.20": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.20",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.20",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "227aa814ee0fcb24be3b70c4bbbebefd6f22d677",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.20.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-dqHuBgZ4wZ8XzoLZbY36rpsc3XRTsuEDQvKHYHuzphxh4qEkYV4PxIVKhKA0bP897IXSegZ44ZsERQmlPr1eYw==",
+        "signatures": [
+          {
+            "sig": "MEUCIAX7ltdKhRuFx/2VGYetE8yuCYsJxpknM0O+bFx285/rAiEA9Nq7fO8p3rMQVYz0Y8kzfRnmDOtgEIBW0btAHGNWb98=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.20",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 955159
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "7e33c44ba900871163286e389e814e12c93cb3c2",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.5.7",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.20_1769807940498_0.7722149211658245",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.2.0-canary.19": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.19",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.19",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "84276f09f7470ff948e4e1e118d4ff21e9e9ef1a",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.19.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-sZv+SKm1G6kgKwscPzDGpz+jOJkWTdWP+yHRYzj8lUS3Wa6JnVKhpdMl9veRtuAd4ewdFNPF4xLbzqYYz3Je4Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD/MoDB2b3UhveOlwKVr1qjSMg2wexJwyn5wrjp4b8P1QIhAO3SWEmoI5cZe48HdiJ5wTyvwQOy8KwHY1uK5PSMJfUG",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.19",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 955159
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "eb828c684e9aa964b1545f064b17af5ef36079aa",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.5.7",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.19_1769800870599_0.5144034783614675",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.2.0-canary.18": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.18",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.18",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "6cac0e5c35da257c78c312746584e708620291c4",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.18.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-AABG76v1ucOuJmsYmiiQ+62Jn5qbuo2D9Blk3reos8Ssbv5sIgBhWRkUVjJnZYlsrmuONt3Mx6rcl13VisNSiw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDXysPCEuIiu+0fxd7jiiYO+sG6pEEPwUfFhWvll/CKjgIgZQZaNuuH/QKC9HS5LBAKIbTUa0FRQ9vw3jPCm3bqkTY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.18",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 955159
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "7517e3ec264e26fdc34c39d5669912c8d9a2d6db",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.5.7",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.18_1769786020242_0.26816942221371143",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.2.0-canary.17": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.17",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.17",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "4b3e10c89587bdf0d46c299a094076818d58ec30",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.17.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-jCulEKJVHri67qRZiffrAriGAD8XulNTMqcG/A8T0bYgddUM2ysmySbvWV/6oBBQZSUcaTcV1soJ+kUns2UIfA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD2kQyjbw73p3jeCUuO+byb8JPfcwD0uQueujiZQigbYQIgPQozGEp0vBvOG6NgrsNxi1DqGmGd30yAvDMSEi4UyNg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.17",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 954887
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "2b0edf628e201b56bdeacc62a5fb3d2597132761",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.5.7",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.17_1769728483453_0.8900087098964886",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.2.0-canary.16": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.16",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.16",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "195b8539b16d3a3e320b89c208cdf9eaa85274ad",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.16.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-sidQ7MXQPcE9Ne3hBUL1qwYE3FM9Z0MGprInob9G1Fe7q39GDcwoy+nZSQVzMHcfebKBivVrbqG1wn1Kk5HteQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQC5WJiI2Xff5yCCwsr39/cBg3whgPs4oRUjL5OJPRL4xAIhAKY9iiSuHExgaj5Qv9xNXnMw/kN2TQM6ph5yifSQZLdz",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.16",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 957187
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "b5c46080448317ad7f3a9390721b5ac84f828ad6",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.16_1769660756291_0.10381678176649878",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.2.0-canary.15": {
+      "name": "create-next-app",
+      "version": "16.2.0-canary.15",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.2.0-canary.15",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "35ff7afb9235a5d9bd98fbd83ae1bafe3fac4dcf",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.2.0-canary.15.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-gZVibq6PbXsub2CvDS13kgAprsy6AiIcRhHsmsH5NuObds6OHowMgWRXwA8nunKgqilc2UGflkSRSRWn5Osk6w==",
+        "signatures": [
+          {
+            "sig": "MEQCIF38sE68LRbx/HT8vX0R8sRyIqrRan2iltM9CISjUowmAiBV3Y4wavxN7B0NRYPYdMRjo1H4xWf7OCbMP1Rq0/QZZw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.2.0-canary.15",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 957187
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "fcbcb6dc930da5d49b1f4a026fd8d6a1a7fc2e7e",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.2.0-canary.15_1769652093327_0.8048317109774146",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "11.1.4": {
+      "name": "create-next-app",
+      "version": "11.1.4",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@11.1.4",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "zeit-bot",
+          "email": "user6@example.com"
+        },
+        {
+          "name": "redacted-vercel",
+          "email": "user7@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "5c37a9b82a937704d5e7e060c06791acbe81de99",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-11.1.4.tgz",
+        "fileCount": 29,
+        "integrity": "sha512-WngvC/C5G9yGVbdtSqqNVKh/KBO2fPEPBL84JTIKaIWCadtrc7MUL2yvozVohnjviiP8d4vlPb8Y3z34SnZoUg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDegFcCS3IzzCcgmCVqqhXPtP8Aed648yZmFg2oOoZqMQIgSnqvPpQuxWHMwRdgXGLOEW8+Rw17j6pOWwvv+nrgBwM=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 717928,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.13\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJh8f2ZCRA9TVsSAnZWagAAgQUP/1HuB/Zy6dwsv+qlucU6\n3gHaFO9bWpckxH9fzojwfg1W1d1JbvWZaNj03cIpQG/OMK8fMCjw/pTaMMoU\nBe5PMth/gQmqJDK/X66gjERGPe2SZh8fASO2w5bwbOK4g7JQ8laLb4b2GLmI\nwqXgghjLBQWV71nR3rLETXLwMvIpw76drQZS0jEw1P7c7BoYWVUMc6MhpPfu\ns85FQ0tLsoZKjmPbLdoc1yCvRfb6nVlgLdeOj1O2s9h6YIOtFEgT+QO0t2HX\nxVQFwAMTkbObKXbYdv+DyDawZcLPJ/z2zUtJVjaIs84u2MOOZvbc+P8346Iu\nk7s7119VH55ybtZRPGqiDNqBBjtNox77fN7scOKWC3QYJ9s0WxXizezStB2V\nsWoTMOQ/ErnqWmAteQf+MZRT0vKz0sBfKAaRfwa7YGJOJHrVxi2KEhdr0P2r\nEuHZAI27fLdrRez9lfyYqmGQoNEQg66HnjDGPiXsfYzbFv09pLpDpxrJAI/F\nIvjKK49w3feKA6105i2LvL2keBJxmePwvKKEbeLC/5V0r5TnKvRNAuQMLQWq\nNqBWqmxgiqzAct9ZK8My+V3srnUDnNA4f8qyCLFBGG+jg6EX4RvxoFp9bZkb\ncXJA4gqgdAxrNiVtvKeIUMsAMc5fs/xNOOXe89Q45tyEW7NglCW7ee7o62t/\n2lI9\r\n=02dZ\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "engines": {
+        "node": ">=12.0.0"
+      },
+      "gitHead": "75b7a57e0f0044d9315eb6adbd4231b67799d0b1",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "prepublish": "yarn release",
+        "prerelease": "rimraf ./dist/"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "lerna/4.0.0/node@v14.18.3+x64 (linux)",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "14.18.3",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "cpy": "7.3.0",
+        "got": "10.7.0",
+        "tar": "4.4.10",
+        "chalk": "2.4.2",
+        "rimraf": "3.0.0",
+        "prompts": "2.1.0",
+        "commander": "2.20.0",
+        "@types/tar": "4.0.3",
+        "typescript": "4.3.4",
+        "@types/node": "^12.6.8",
+        "@vercel/ncc": "0.25.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "6.0.5",
+        "update-check": "1.5.4",
+        "@types/rimraf": "3.0.0",
+        "@types/prompts": "2.0.1",
+        "@types/async-retry": "1.4.2",
+        "validate-npm-package-name": "3.0.0",
+        "@types/validate-npm-package-name": "3.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_11.1.4_1643249049159_0.933744611660899",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "12.2.6": {
+      "name": "create-next-app",
+      "version": "12.2.6",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@12.2.6",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user5@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "468173ee6b7eb32d43c21f3f238634fb0a256cc2",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-12.2.6.tgz",
+        "fileCount": 28,
+        "integrity": "sha512-3+7bPfdSJiG9FcyOnkCRblwjOCnIF0DiYSzKYb0G+KX2+BY79CKQje+r6s4aKrMmxCZxnrr5UPRSioSBe82++Q==",
+        "signatures": [
+          {
+            "sig": "MEUCIAg6WVqxEiI/NuuNa6XhPOOioOuI9PYNWtvTxq0TtUPbAiEAz3jSfs0nmxVlarznq6FFeTAx93SW+ddBgBSCOsPG6jg=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "unpackedSize": 693029,
+        "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v4.10.10\r\nComment: https://openpgpjs.org\r\n\r\nwsFzBAEBCAAGBQJjNiEKACEJED1NWxICdlZqFiEECWMYAoorWMhJKdjhPU1b\r\nEgJ2VmofSA/+IRusR8BwQjY/0ANXSwZxUeviJUx2G2PtxTzHGJiEPqyhhPgP\r\nXr3KIA/341Wu4CM87C7piXMK7hge2LbJ6Rtcai+TqwPaQwU5+eEP+f5hC8DR\r\nyX6OYtC0/Stdc4qtfgU3qEZNNBe4r/NIZds3KR6C4g3PG7gmfa1jtRRyyWfz\r\n/bVNwNk+IRqyqVIz0xyAZ6HxFdfcFNE9/vAuXez3w+U9/Aey68eYuIxFcOQx\r\n963zDBCEv26WwKHFa7BEyEE3sgPfUOHenSyYVAiCB60cZxC3dUzUDTwyHPGA\r\nbwIbNuCIG3Am7rSCDduCrLHyWwQbVODuw0bRfpGYanZf07qJO/uJJvWhr1yP\r\npUqeO2v5WBj2kvWD+vMjuPB2ORhy6eei7oq04peACiBMBvSWXQ8BL1rarFYz\r\n/atyyAbZbx19tLfKlNtySvPqR0K/Tc4OX6nFlzTwYTM2yYizFN2yi4jVHMch\r\nHCLz1g/f2bFyZpQ9hSRFwNsQh59Bs0zY4Lpwl1ndnjDC+JuRv44adR3OTFOy\r\nd7H0N0ByK86i26V6ir2nN4UxDBn7EHhY0lROQDJK933Y4NWY23esuoYYDM8v\r\nmzhVhlKExaIfwPzUfW/31fflQPASYJ7sw7+anNyol1TwEdo4rAcfK1R2iep2\r\n10G4nLOZ7BZnRTcpRuyjBToQxqU7gRAFq0c=\r\n=Bofs\r\n-----END PGP SIGNATURE-----\r\n"
+      },
+      "engines": {
+        "node": ">=12.22.0"
+      },
+      "gitHead": "63fe37140159f7bdc33e7eafbd66496faadddd87",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "prerelease": "rimraf ./dist/",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "8.15.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "16.17.1",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "cpy": "7.3.0",
+        "got": "10.7.0",
+        "tar": "4.4.10",
+        "chalk": "2.4.2",
+        "rimraf": "3.0.2",
+        "prompts": "2.1.0",
+        "commander": "2.20.0",
+        "@types/tar": "4.0.3",
+        "@types/node": "^12.6.8",
+        "@vercel/ncc": "0.33.4",
+        "async-retry": "1.3.1",
+        "cross-spawn": "6.0.5",
+        "update-check": "1.5.4",
+        "@types/rimraf": "3.0.0",
+        "@types/prompts": "2.0.1",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "3.0.0",
+        "@types/validate-npm-package-name": "3.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_12.2.6_1664491786144_0.8874056549390648",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "14.1.1": {
+      "name": "create-next-app",
+      "version": "14.1.1",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@14.1.1",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "63afab78a5e74e78002f2a529467bfd1389a5805",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-14.1.1.tgz",
+        "fileCount": 115,
+        "integrity": "sha512-ZiJZc9p8SyrUFoRuthRiuhNORKbSTrs337UNet7ZCOHN+Sk/GrF+bgHUO1MH7wXBwhPDQBF+TkjEM2TPRpCB6w==",
+        "signatures": [
+          {
+            "sig": "MEQCIH2T+ZAcs53o4TxfdMh9oQsE8D1mBf8ekFh2UPyaFmJKAiBTpZX/k7TuK3Fwz3bflnepNMh8Ng0epBEbnyPpmbRwEA==",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@14.1.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v0.2"
+          }
+        },
+        "unpackedSize": 876798
+      },
+      "engines": {
+        "node": ">=18.17.0"
+      },
+      "gitHead": "5f59ee5f197a09275da7a9fa876986f22f4b7711",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "9.6.7",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.11.1",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tar": "6.1.15",
+        "conf": "10.2.0",
+        "ci-info": "github:watson/ci-info#f43f6a1cefff47fb361c88cf4b943fdbcaafe540",
+        "prompts": "2.4.2",
+        "commander": "2.20.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.5",
+        "picocolors": "1.0.0",
+        "@types/node": "^20.2.5",
+        "@vercel/ncc": "0.34.0",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/ci-info": "2.0.0",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "3.0.0",
+        "prettier-plugin-tailwindcss": "0.3.0",
+        "@types/validate-npm-package-name": "3.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_14.1.1_1709245474638_0.9117050170819034",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "15.0.0-rc.1": {
+      "name": "create-next-app",
+      "version": "15.0.0-rc.1",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@15.0.0-rc.1",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "40a4b5dfbdb984c2c4e1dfd0c072147ff80303f6",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-15.0.0-rc.1.tgz",
+        "fileCount": 231,
+        "integrity": "sha512-rpu90dkSB35B8nuc1PquueOURSq/fVzqbCZdtxCY4MxefjUp0nEemcIGq1d75qLRnu2xquYxO0V8Aol34Dq95w==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCoQZvmsvn1gKjd0vs+ZX9dWLypVlAGTS0/WkJfm265bgIgCzkCVZvNGLJXOUDAZ05CwWOvZoW86bpiUQ1ugsa17DY=",
+            "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@15.0.0-rc.1",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2010233
+      },
+      "engines": {
+        "node": ">=18.18.0"
+      },
+      "gitHead": "a6e74c3c5195267ea30e6aab0c7cdd487e65b432",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.18.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_15.0.0-rc.1_1729019826718_0.8020382920244808",
+        "host": "s3://npm-registry-packages"
+      }
+    },
+    "13.5.11": {
+      "name": "create-next-app",
+      "version": "13.5.11",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@13.5.11",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "5f258f63fcdfb56d7326b2e42a309923298fe8b4",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-13.5.11.tgz",
+        "fileCount": 115,
+        "integrity": "sha512-uKQwVqvdmMEYeFN/LaJzglIsiifMH39Il11FOgbc1UWbeR77t6jWdUHz5DeuHY8QZIFFT2D/lhcgI/HUixUavw==",
+        "signatures": [
+          {
+            "sig": "MEUCICmj2ZZDoN86RKXS0qFsZ/0ei0rR7yLQghJI87Kl2IRzAiEAiOU3IQrhizrhPaRuDZNP6OivG9+2/Liejl98JNj0rCQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@13.5.11",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v0.2"
+          }
+        },
+        "unpackedSize": 948897
+      },
+      "engines": {
+        "node": ">=16.14.0"
+      },
+      "gitHead": "492b7fb1e1b6026f5b2cc4caa5a5d739ef5039d1",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "9.6.7",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.19.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "got": "10.7.0",
+        "tar": "6.1.15",
+        "conf": "10.2.0",
+        "ci-info": "github:watson/ci-info#f43f6a1cefff47fb361c88cf4b943fdbcaafe540",
+        "prompts": "2.1.0",
+        "commander": "2.20.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.5",
+        "picocolors": "1.0.0",
+        "@types/node": "^20.2.5",
+        "@vercel/ncc": "0.34.0",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/ci-info": "2.0.0",
+        "@types/prompts": "2.0.1",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "3.0.0",
+        "prettier-plugin-tailwindcss": "0.3.0",
+        "@types/validate-npm-package-name": "3.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_13.5.11_1743035829202_0.844654946648643",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "12.3.7": {
+      "name": "create-next-app",
+      "version": "12.3.7",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@12.3.7",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "1112e06764cab5bd217e4bbc7bbdbac67e1b2525",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-12.3.7.tgz",
+        "fileCount": 29,
+        "integrity": "sha512-eE8lVQT3HrAsZjSt+QmQe1GLjWaDBj/I84B+itQxXIjLsVHYL1YBAh0mN00Z/76tWiDutG42anQkJ31M5AY8zg==",
+        "signatures": [
+          {
+            "sig": "MEUCICBvrhhheFmf0Zu9PoZ02FMDMakECYXngJoP5EvfKDxaAiEA8Rwl2G/egDZS8gwbONVZ726QTjQfpogzw+PMW6x7qZ4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 694417
+      },
+      "engines": {
+        "node": ">=12.22.0"
+      },
+      "gitHead": "febd1d74afa11aeacb13a68f2664f4b152716fe1",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "prerelease": "rimraf ./dist/"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "lerna/4.0.0/node@v18.20.8+x64 (linux)",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "18.20.8",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "cpy": "7.3.0",
+        "got": "10.7.0",
+        "tar": "4.4.10",
+        "chalk": "2.4.2",
+        "rimraf": "3.0.2",
+        "prompts": "2.1.0",
+        "commander": "2.20.0",
+        "@types/tar": "4.0.3",
+        "@types/node": "^12.6.8",
+        "@vercel/ncc": "0.34.0",
+        "async-retry": "1.3.1",
+        "cross-spawn": "6.0.5",
+        "update-check": "1.5.4",
+        "@types/rimraf": "3.0.0",
+        "@types/prompts": "2.0.1",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "3.0.0",
+        "@types/validate-npm-package-name": "3.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_12.3.7_1743199781512_0.6459313413292018",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.0.0-beta.0": {
+      "name": "create-next-app",
+      "version": "16.0.0-beta.0",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.0.0-beta.0",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "9871732f492d428106a3a1e11db8c9ee527996b9",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.0.0-beta.0.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-BxOMIPC3fMV+JZxnRaqyfDswJq7O3kNXcJHqNiUdgCEmUf1CfnIRmdsynHyQpR4PnpVYSSVZrfxd8oWR5SzW5w==",
+        "signatures": [
+          {
+            "sig": "MEQCIG1tlmcLsDiTMk7uoZR9xjN3F9JkMVji+aeTA0rYdBuPAiAtu70a8PJ2dw9gpjtT3jdu3EmAd0tuc1Uujwex/SpjSA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.0.0-beta.0",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 957937
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "80b42729f17b577888a9ae8616de99f12c7baa12",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.19.5",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.0.0-beta.0_1760064942429_0.9731978918730688",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "14.2.35": {
+      "name": "create-next-app",
+      "version": "14.2.35",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@14.2.35",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user8@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "5ca1b6ef4a47da1aabd759570be83383f4009fa8",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-14.2.35.tgz",
+        "fileCount": 115,
+        "integrity": "sha512-C/JXNvofzMhW/NHUOBHpKSJg1ynK9KPy8vy2sxtnfBHDHxNxgP8fIw2h2bzqKaUillKvwqdA59LGbIRrx30JDQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIFkFDDGefYX9ZF3gf7pdgArKuLzYVeDJDFyffS51p3iLAiBnIV77vUtCFveMU3QJeOrGOrm3jMk7F8fWiIhaNK+UBg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@14.2.35",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 1917380
+      },
+      "engines": {
+        "node": ">=18.17.0"
+      },
+      "gitHead": "7b940d9ce96faddb9f92ff40f5e35c34ace04eb2",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.19.6",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "6.1.15",
+        "conf": "10.2.0",
+        "ci-info": "github:watson/ci-info#f43f6a1cefff47fb361c88cf4b943fdbcaafe540",
+        "prompts": "2.4.2",
+        "commander": "2.20.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.5",
+        "picocolors": "1.0.0",
+        "@types/node": "^20.2.5",
+        "@vercel/ncc": "0.34.0",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/ci-info": "2.0.0",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "3.0.0",
+        "prettier-plugin-tailwindcss": "0.3.0",
+        "@types/validate-npm-package-name": "3.0.0"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_14.2.35_1765496129617_0.06892373461879875",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "15.3.9": {
+      "name": "create-next-app",
+      "version": "15.3.9",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@15.3.9",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "e0c51f3ac729c602462e4cbdc233c53f066cb38e",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-15.3.9.tgz",
+        "fileCount": 220,
+        "integrity": "sha512-3rxRAZ20naU4FZRbQNvrGNX8ti039KHpPyWPK3OszaEnhcte7kULBD2DStdjWH6hLpLdHr8/x1nKS/1jIgt3Ow==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDjCXhzAstvkEnYSC+mzOdiidyF3OPfDibcvg8jT0+mSwIhAK+gSpyuvN4WrhsfrNjnW9mk72c+F8Tz56fewF0nG5Yo",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@15.3.9",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 946681
+      },
+      "engines": {
+        "node": ">=18.18.0"
+      },
+      "gitHead": "f16232810366a2187687e1cb9e0e18d83e8f24d3",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_15.3.9_1769452746623_0.013174737756798338",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "15.2.9": {
+      "name": "create-next-app",
+      "version": "15.2.9",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@15.2.9",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "a75bc294ac6611732ebe8b55214df22f73c79fbb",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-15.2.9.tgz",
+        "fileCount": 220,
+        "integrity": "sha512-bcbxKy8oUebwQnJ19GI/a38OBpr+1tCx9RSn0wkqFueda9eYJgB1d6uHhdZDSma46hjx04DuKf+punkmneBMxA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDXARcLe7gxd2iMNkD7WUx47xkwZRbtyIznZIGTkqaerwIhAOPY5dPutO3P5UBXff3PUT/MtKlYd7mjDIYAN+qiNxK7",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@15.2.9",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 946537
+      },
+      "engines": {
+        "node": ">=18.18.0"
+      },
+      "gitHead": "a3dc8deaadbda95be996ec914f899aa06751b511",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_15.2.9_1769452870711_0.8451752845239859",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "15.1.12": {
+      "name": "create-next-app",
+      "version": "15.1.12",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@15.1.12",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "eedbc74622e6e13828b29c36e5e956891252fc24",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-15.1.12.tgz",
+        "fileCount": 215,
+        "integrity": "sha512-gbVgSdZkPU9lJN5y0J/uvfIhhZlmHKyQDACs9ZBQgqhmSZ4kBy5YIBHv1Kj4OSkWndP/qZUE/OfTHe5g2e6bvg==",
+        "signatures": [
+          {
+            "sig": "MEUCIA0Azbk6foYRWcUnw3Yxu4bhgjCg6E1SF8H3Io+c7oqWAiEArMM8CVCuh1ID/q8E52xp/JlmRyNq3vjbMtC81gJ2Kt8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@15.1.12",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 942397
+      },
+      "engines": {
+        "node": ">=18.18.0"
+      },
+      "gitHead": "b3aab81a4d8274e669139b74f1c3aa3956865abd",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_15.1.12_1769453078282_0.9323944686005654",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "15.0.8": {
+      "name": "create-next-app",
+      "version": "15.0.8",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@15.0.8",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "818b0b9f065aabb7090a3f508ef5c76d03ea1816",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-15.0.8.tgz",
+        "fileCount": 231,
+        "integrity": "sha512-KJdlz2YlFR6c5oW8zZRZUK/if85hne4bDK98Ds+9obNmtx2Q2UHGVz+8pleVYidqCPej2MutaemNZSNX9QKlWw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCZxDnaZytdGeSiJi3WW+M+Q+uL7ZywXzbRpgEi24pBoQIgS848CFMkVbgCZgRRoQpxcGbBargE8z5PKqYH+UqbimY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@15.0.8",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 2010235
+      },
+      "engines": {
+        "node": ">=18.18.0"
+      },
+      "gitHead": "16eb2af3da89b036fd4783f77631cb6bf5c1fe9f",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_15.0.8_1769453205838_0.03892389574741917",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "16.1.6": {
+      "name": "create-next-app",
+      "version": "16.1.6",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@16.1.6",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "d7b4f751709e455c183a22f15a984be929a97f24",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-16.1.6.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-ooYZENRuYgkcA0HPFBLubaXejIpdsXmuppP9r2aZGQB/Douih2mi6ntvWfNsk5nYH/Ms0NCqLkev/ygNdZYp9g==",
+        "signatures": [
+          {
+            "sig": "MEUCIGhb2S1MmxjA4iw2dfMqzkPlEsPxjGlCtWMjk4cE27KBAiEArQG5MRjrimtKM5Z0Klkx0OYKxS6l4r80J+AVN8sfePs=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@16.1.6",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 956991
+      },
+      "engines": {
+        "node": ">=20.9.0"
+      },
+      "gitHead": "adf8c612adddd103647c90ff0f511ea35c57076e",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prebuild": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_16.1.6_1769550808754_0.4689535283921815",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    },
+    "15.5.11": {
+      "name": "create-next-app",
+      "version": "15.5.11",
+      "keywords": ["react", "next", "next.js"],
+      "author": {
+        "name": "Next.js Team",
+        "email": "user1@example.com"
+      },
+      "license": "MIT",
+      "_id": "create-next-app@15.5.11",
+      "maintainers": [
+        {
+          "name": "timneutkens",
+          "email": "user3@example.com"
+        },
+        {
+          "name": "timer",
+          "email": "user4@example.com"
+        },
+        {
+          "name": "vercel-release-bot",
+          "email": "user2@example.com"
+        }
+      ],
+      "homepage": "https://github.com/vercel/next.js#readme",
+      "bugs": {
+        "url": "https://github.com/vercel/next.js/issues"
+      },
+      "bin": {
+        "create-next-app": "dist/index.js"
+      },
+      "dist": {
+        "shasum": "a60cc46e93a41ba3cf0447ac2981aabb8103b528",
+        "tarball": "https://registry.npmjs.org/create-next-app/-/create-next-app-15.5.11.tgz",
+        "fileCount": 238,
+        "integrity": "sha512-j6bTQE5EqxbSFf16Cxa2h9BsqAiFfqqQMm9FNVoTb5m/Q9CXhQiL0u67vqjBQ0q2Wn+LBQEB3aOiV5uIDBekLA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD2dTVPCHCrw0x1d7nnvtrWVPfhYQd7Ef43mq/eYjYdZQIgEvNU6cAJ3tTygXZc9c6heqC0iMrYVFITycIMmuG6KmM=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "attestations": {
+          "url": "https://registry.npmjs.org/-/npm/v1/attestations/create-next-app@15.5.11",
+          "provenance": {
+            "predicateType": "https://slsa.dev/provenance/v1"
+          }
+        },
+        "unpackedSize": 962142
+      },
+      "engines": {
+        "node": ">=18.18.0"
+      },
+      "gitHead": "bbfd4e313d4bc9024ec340d9de419a0e4357f898",
+      "scripts": {
+        "dev": "ncc build ./index.ts -w -o dist/",
+        "build": "pnpm release",
+        "release": "ncc build ./index.ts -o ./dist/ --minify --no-cache --no-source-map-register",
+        "lint-fix": "pnpm prettier -w --plugin prettier-plugin-tailwindcss 'templates/*-tw/{ts,js}/{app,pages}/**/*.{js,ts,tsx}'",
+        "prerelease": "node ../../scripts/rm.mjs dist",
+        "prepublishOnly": "cd ../../ && turbo run build"
+      },
+      "_npmUser": {
+        "name": "vercel-release-bot",
+        "email": "user2@example.com"
+      },
+      "repository": {
+        "url": "git+https://github.com/vercel/next.js.git",
+        "type": "git",
+        "directory": "packages/create-next-app"
+      },
+      "_npmVersion": "10.4.0",
+      "description": "Create Next.js-powered React apps with one command",
+      "directories": {},
+      "_nodeVersion": "20.20.0",
+      "_hasShrinkwrap": false,
+      "readmeFilename": "README.md",
+      "devDependencies": {
+        "tar": "7.4.3",
+        "conf": "13.0.1",
+        "ci-info": "4.0.0",
+        "prompts": "2.4.2",
+        "commander": "12.1.0",
+        "fast-glob": "3.3.1",
+        "@types/tar": "6.1.13",
+        "picocolors": "1.0.0",
+        "@types/node": "20.14.2",
+        "@vercel/ncc": "0.38.1",
+        "async-retry": "1.3.1",
+        "cross-spawn": "7.0.3",
+        "update-check": "1.5.4",
+        "@types/prompts": "2.4.2",
+        "@types/async-retry": "1.4.2",
+        "@types/cross-spawn": "6.0.0",
+        "validate-npm-package-name": "5.0.1",
+        "prettier-plugin-tailwindcss": "0.6.2",
+        "@types/validate-npm-package-name": "4.0.2"
+      },
+      "_npmOperationalInternal": {
+        "tmp": "tmp/create-next-app_15.5.11_1769642186209_0.004817818881424962",
+        "host": "s3://npm-registry-packages-npm-production"
+      }
+    }
+  },
+  "time": {
+    "modified": "2026-02-02T23:35:08.578Z",
+    "created": "2017-01-14T11:50:27.328Z",
+    "16.2.0-canary.24": "2026-02-02T23:35:08.289Z",
+    "16.2.0-canary.23": "2026-01-31T23:33:41.342Z",
+    "16.2.0-canary.22": "2026-01-30T23:37:53.969Z",
+    "16.2.0-canary.21": "2026-01-30T23:04:16.487Z",
+    "16.2.0-canary.20": "2026-01-30T21:19:00.731Z",
+    "16.2.0-canary.19": "2026-01-30T19:21:10.819Z",
+    "16.2.0-canary.18": "2026-01-30T15:13:40.457Z",
+    "16.2.0-canary.17": "2026-01-29T23:14:43.633Z",
+    "16.2.0-canary.16": "2026-01-29T04:25:56.489Z",
+    "16.2.0-canary.15": "2026-01-29T02:01:33.610Z",
+    "11.1.4": "2022-01-27T02:04:09.339Z",
+    "12.2.6": "2022-09-29T22:49:46.380Z",
+    "14.1.1": "2024-02-29T22:24:34.791Z",
+    "15.0.0-rc.1": "2024-10-15T19:17:07.036Z",
+    "13.5.11": "2025-03-27T00:37:09.644Z",
+    "12.3.7": "2025-03-28T22:09:41.752Z",
+    "16.0.0-beta.0": "2025-10-10T02:55:42.734Z",
+    "14.2.35": "2025-12-11T23:35:29.888Z",
+    "15.3.9": "2026-01-26T18:39:06.872Z",
+    "15.2.9": "2026-01-26T18:41:10.922Z",
+    "15.1.12": "2026-01-26T18:44:38.419Z",
+    "15.0.8": "2026-01-26T18:46:46.072Z",
+    "16.1.6": "2026-01-27T21:53:28.973Z",
+    "15.5.11": "2026-01-28T23:16:26.455Z"
+  },
+  "maintainers": [
+    {
+      "name": "timneutkens",
+      "email": "user3@example.com"
+    },
+    {
+      "name": "timer",
+      "email": "user4@example.com"
+    },
+    {
+      "name": "vercel-release-bot",
+      "email": "user2@example.com"
+    }
+  ],
+  "author": {
+    "name": "Next.js Team",
+    "email": "user1@example.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/vercel/next.js#readme",
+  "keywords": ["react", "next", "next.js"],
+  "repository": {
+    "url": "git+https://github.com/vercel/next.js.git",
+    "type": "git",
+    "directory": "packages/create-next-app"
+  },
+  "bugs": {
+    "url": "https://github.com/vercel/next.js/issues"
+  },
+  "readme": "",
+  "readmeFilename": ""
+}

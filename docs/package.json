@@ -12,14 +12,16 @@
     "url": "https://github.com/npmx-dev/npmx.dev/issues"
   },
   "scripts": {
-    "dev": "nuxt dev --extends docus",
-    "build": "nuxt build --extends docus",
-    "generate": "nuxt generate --extends docus",
-    "preview": "nuxt preview --extends docus"
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "postinstall": "pnpm rebuild better-sqlite3",
+    "preview": "nuxt preview"
   },
   "dependencies": {
-    "docus": "latest",
+    "@nuxtjs/mdc": "0.20.1",
     "better-sqlite3": "12.5.0",
-    "nuxt": "^4.2.2"
+    "docus": "5.4.4",
+    "nuxt": "4.3.1"
   }
 }

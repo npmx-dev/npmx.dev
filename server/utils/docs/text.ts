@@ -1,3 +1,4 @@
+/* oxlint-disable regexp/no-super-linear-backtracking */
 /**
  * Text Processing Utilities
  *
@@ -54,7 +55,7 @@ export function cleanSymbolName(name: string): string {
  * Create a URL-safe HTML anchor ID for a symbol.
  */
 export function createSymbolId(kind: string, name: string): string {
-  return `${kind}-${name}`.replace(/[^a-zA-Z0-9-]/g, '_')
+  return `${kind}-${name}`.replace(/[^a-z0-9-]/gi, '_')
 }
 
 /**
@@ -75,7 +76,7 @@ export function parseJsDocLinks(text: string, symbolLookup: SymbolLookup): strin
 
     // External URL
     if (target.startsWith('http://') || target.startsWith('https://')) {
-      return `<a href="${target}" target="_blank" rel="noopener" class="docs-link">${displayText}</a>`
+      return `<a href="${target}" target="_blank" rel="noreferrer" class="docs-link">${displayText}</a>`
     }
 
     // Internal symbol reference
@@ -116,11 +117,17 @@ export async function renderMarkdown(text: string, symbolLookup: SymbolLookup): 
   // Now process the rest (JSDoc links, HTML escaping, etc.)
   result = parseJsDocLinks(result, symbolLookup)
 
+  // Markdown links - i.e. [text](url)
+  result = result.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noreferrer" class="docs-link">$1</a>',
+  )
+
   // Handle inline code (single backticks) - won't interfere with fenced blocks
   result = result
     .replace(/`([^`]+)`/g, '<code class="docs-inline-code">$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\n\n+/g, '<br><br>')
+    .replace(/\n{2,}/g, '<br><br>')
     .replace(/\n/g, '<br>')
 
   // Highlight and restore code blocks
