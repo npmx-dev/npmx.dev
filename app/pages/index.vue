@@ -100,7 +100,7 @@ defineOgImageComponent('Default', {
                 <ButtonBase
                   type="submit"
                   variant="primary"
-                  class="absolute inset-ie-2"
+                  class="absolute inset-ie-2 border-transparent"
                   classicon="i-carbon:search"
                 >
                   <span class="sr-only sm:not-sr-only">
