@@ -1099,7 +1099,7 @@ onKeyStroke(
               >
                 <template #trustedPublishing>
                   <a
-                    href="https://docs.npmjs.com/adding-a-trusted-publisher-to-a-package"
+                    href="https://docs.npmjs.com/trusted-publishers"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
@@ -1129,7 +1129,7 @@ onKeyStroke(
                 </template>
                 <template #trustedPublishing>
                   <a
-                    href="https://docs.npmjs.com/adding-a-trusted-publisher-to-a-package"
+                    href="https://docs.npmjs.com/trusted-publishers"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"

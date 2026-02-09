@@ -20,8 +20,9 @@ function hasTrustedPublisher(version: PackumentVersion): boolean {
 }
 
 function getTrustLevel(version: PackumentVersion): PublishTrustLevel {
-  if (hasAttestations(version)) return 'provenance'
+  // trusted publishing automatically generates provenance attestations
   if (hasTrustedPublisher(version)) return 'trustedPublisher'
+  if (hasAttestations(version)) return 'provenance'
   return 'none'
 }
 
