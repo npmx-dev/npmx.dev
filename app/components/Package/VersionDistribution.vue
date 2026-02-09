@@ -133,12 +133,14 @@ const chartConfig = computed(() => {
           if (!datapoint) return ''
 
           // Use absoluteIndex to get the correct version from chartDataset
-          const index = Number(absoluteIndex ?? 0)
+          const index = Number(absoluteIndex)
+          if (!Number.isInteger(index) || index < 0 || index >= chartDataset.value.length) return ''
           const chartItem = chartDataset.value[index]
 
           if (!chartItem) return ''
 
-          const barValue = bars?.[0]?.series?.[index]
+          const barSeries = Array.isArray(bars?.[0]?.series) ? bars[0].series : []
+          const barValue = index < barSeries.length ? barSeries[index] : undefined
           const raw = Number(barValue ?? chartItem.downloads ?? 0)
           const v = compactNumberFormatter.value.format(Number.isFinite(raw) ? raw : 0)
 
