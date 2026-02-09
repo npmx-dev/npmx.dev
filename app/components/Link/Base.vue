@@ -75,14 +75,14 @@ const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
   </span>
   <NuxtLink
     v-else
-    class="group inline-flex gap-x-1 items-center justify-center rounded-sm outline-transparent active:scale-[0.98] focus-visible:(outline-2 outline-accent)"
+    class="group cursor-pointer inline-flex gap-x-1 items-center justify-center rounded-sm outline-transparent active:scale-[0.98] focus-visible:(outline-2 outline-accent)"
     :class="{
       'flex': block,
       'inline-flex': !block,
       'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30': !isLinkAnchor && isLink,
       'font-mono text-fg hover:(decoration-accent) focus-visible:(decoration-accent outline-offset-2 text-accent) transition-colors duration-200':
         isLink,
-      'border border-solid border-border rounded-md transition-all duration-200 focus-visible:outline-offset-2':
+      'justify-center border border-solid border-border rounded-md transition-all duration-200 focus-visible:outline-offset-2':
         isButton,
       'text-sm px-4 py-2': isButtonMedium,
       'text-xs px-2 py-0.5': isButtonSmall,

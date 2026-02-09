@@ -27,7 +27,7 @@ defineExpose({
 <template>
   <button
     ref="el"
-    class="group cursor-pointer inline-flex gap-x-1.5 relative items-center justify-center rounded-md active:scale-[0.98] font-mono border border-solid border-border transition-[background-color,color,border,outline] duration-200 outline-transparent focus-visible:(outline-2 outline-accent outline-offset-2)"
+    class="group cursor-pointer gap-x-1.5 relative items-center justify-center rounded-md active:scale-[0.98] font-mono border border-solid border-border transition-[background-color,color,border,outline] duration-200 outline-transparent focus-visible:(outline-2 outline-accent outline-offset-2) disabled:(opacity-40 cursor-not-allowed border-transparent)"
     :class="{
       'inline-flex': !block,
       'flex': block,
