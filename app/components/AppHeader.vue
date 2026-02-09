@@ -25,14 +25,14 @@ const searchBoxRef = useTemplateRef('searchBoxRef')
 const { searchQuery, updateSearchQuery } = usePackageSearchQuery()
 
 const router = useRouter()
-function handleSubmitSearch() {
-  if (searchQuery.value === '') {
+function handleSubmitSearch(queryValue: string) {
+  if (queryValue === '') {
     return
   }
 
   router.replace({
     name: 'search',
-    query: { ...route.query, q: searchQuery.value },
+    query: { ...route.query, q: queryValue },
   })
 }
 
