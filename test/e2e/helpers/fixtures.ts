@@ -1,12 +1,58 @@
 /**
  * Playwright test fixtures for connector-related tests.
  *
- * These fixtures extend the base Nuxt test utilities with
- * connector-specific helpers.
+ * These fixtures extend the shared test base (which includes external API
+ * mocking) with connector-specific helpers for authenticated features.
  */
 
-import { test as base } from '@nuxt/test-utils/playwright'
+import type { Page, Route } from '@playwright/test'
+import { test as nuxtBase } from '@nuxt/test-utils/playwright'
+import { createRequire } from 'node:module'
 import { DEFAULT_TEST_CONFIG } from './mock-connector'
+
+// ---------------------------------------------------------------------------
+// External API mocking (same as test-utils.ts — needed so connector tests
+// don't hit real npm registry, fast-npm-meta, etc.)
+// ---------------------------------------------------------------------------
+
+const require = createRequire(import.meta.url)
+const mockRoutes = require('../../fixtures/mock-routes.cjs')
+
+function failUnmockedRequest(route: Route, apiName: string): never {
+  throw new Error(
+    `UNMOCKED EXTERNAL API REQUEST DETECTED\n` +
+      `API: ${apiName}\nURL: ${route.request().url()}\n` +
+      `Add a fixture or update test/fixtures/mock-routes.cjs`,
+  )
+}
+
+async function setupRouteMocking(page: Page): Promise<void> {
+  for (const routeDef of mockRoutes.routes) {
+    await page.route(routeDef.pattern, async (route: Route) => {
+      const url = route.request().url()
+      const result = mockRoutes.matchRoute(url)
+      if (result) {
+        await route.fulfill({
+          status: result.response.status,
+          contentType: result.response.contentType,
+          body: result.response.body,
+        })
+      } else {
+        failUnmockedRequest(route, routeDef.name)
+      }
+    })
+  }
+}
+
+const base = nuxtBase.extend<{ mockExternalApis: void }>({
+  mockExternalApis: [
+    async ({ page }, use) => {
+      await setupRouteMocking(page)
+      await use()
+    },
+    { auto: true },
+  ],
+})
 
 /** The test token for authentication */
 const TEST_TOKEN = DEFAULT_TEST_CONFIG.token
