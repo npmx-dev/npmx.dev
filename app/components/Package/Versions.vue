@@ -821,7 +821,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
     <!-- Avoids CLS when the dialog has transitioned -->
     <div
       v-if="!hasDistributionModalTransitioned"
-      class="w-full aspect-[136/391] sm:aspect-[359/278]"
+      class="w-full aspect-[272/609] sm:aspect-[671/516]"
     />
   </PackageChartModal>
 </template>

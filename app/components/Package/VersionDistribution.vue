@@ -9,6 +9,10 @@ import type {
 import { useElementSize } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
+import {
+  drawSvgPrintLegend,
+  drawNpmxLogoAndTaglineWatermark,
+} from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
 
 type TooltipParams = MinimalCustomFormatParams<VueUiXyDatapointItem[]> & {
@@ -64,6 +68,12 @@ const accent = computed(() => {
     : (colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK)
 })
 
+const watermarkColors = computed(() => ({
+  fg: colors.value.fg ?? OKLCH_NEUTRAL_FALLBACK,
+  bg: colors.value.bg ?? OKLCH_NEUTRAL_FALLBACK,
+  fgSubtle: colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK,
+}))
+
 const { width } = useElementSize(rootEl)
 const mobileBreakpointWidth = 640
 const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
@@ -80,6 +90,9 @@ const {
 
 const compactNumberFormatter = useCompactNumberFormatter()
 
+// Show loading indicator immediately to maintain stable layout
+const showLoadingIndicator = computed(() => pending.value)
+
 const chartConfig = computed(() => {
   return {
     theme: isDarkMode.value ? 'dark' : 'default',
@@ -89,11 +102,17 @@ const chartConfig = computed(() => {
       padding: {
         top: 24,
         right: 24,
-        bottom: xAxisLabels.value.length > 10 ? 100 : 72, // More space for rotated labels
+        bottom: xAxisLabels.value.length > 10 ? 100 : 88, // Space for rotated labels + watermark
         left: isMobile.value ? 60 : 80,
       },
       userOptions: {
-        buttons: { pdf: false, labels: false, fullscreen: false, table: false, tooltip: false },
+        buttons: {
+          pdf: false,
+          labels: false,
+          fullscreen: false,
+          table: false,
+          tooltip: false,
+        },
       },
       grid: {
         stroke: colors.value.border,
@@ -102,7 +121,6 @@ const chartConfig = computed(() => {
           color: pending.value ? colors.value.border : colors.value.fgSubtle,
           axis: {
             yLabel: 'Downloads',
-            xLabel: props.packageName,
             yLabelOffsetX: 12,
             fontSize: isMobile.value ? 32 : 24,
           },
@@ -115,17 +133,14 @@ const chartConfig = computed(() => {
           xAxisLabels: {
             show: xAxisLabels.value.length <= 25,
             values: xAxisLabels.value,
-            fontSize: isMobile.value ? 14 : 12,
+            fontSize: isMobile.value ? 16 : 14,
             color: colors.value.fgSubtle,
             rotation: xAxisLabels.value.length > 10 ? 45 : 0,
           },
         },
       },
-      timeTag: {
-        show: false,
-      },
       highlighter: { useLine: false },
-      legend: { show: false },
+      legend: { show: false, position: 'top' },
       bar: {
         periodGap: 16,
         innerGap: 8,
@@ -184,9 +199,6 @@ const chartConfig = computed(() => {
         },
       },
     },
-    userOptions: {
-      show: false,
-    },
     table: {
       show: false,
     },
@@ -199,7 +211,7 @@ const xyDataset = computed<VueUiXyDatasetItem[]>(() => {
 
   return [
     {
-      name: 'Downloads',
+      name: props.packageName,
       series: chartDataset.value.map(item => item.downloads),
       type: 'bar' as const,
       color: accent.value,
@@ -247,8 +259,7 @@ const endDate = computed(() => {
 
 <template>
   <div
-    class="w-full relative"
-    :class="isMobile ? 'min-h-[600px]' : 'min-h-[500px]'"
+    class="w-full flex flex-col"
     id="version-distribution"
     :aria-busy="pending ? 'true' : 'false'"
   >
@@ -395,44 +406,165 @@ const endDate = computed(() => {
     <div
       role="region"
       aria-labelledby="version-distribution-title"
-      class="relative flex items-center justify-center"
+      class="relative"
       :class="isMobile ? 'min-h-[500px]' : 'min-h-[400px]'"
     >
+      <!-- Chart content -->
+      <ClientOnly v-if="xyDataset.length > 0 && !error">
+        <div class="chart-container w-full" :key="groupingMode">
+          <VueUiXy :dataset="xyDataset" :config="chartConfig" class="[direction:ltr]">
+            <!-- Injecting custom svg elements -->
+            <template #svg="{ svg }">
+              <!-- Inject legend during SVG print only -->
+              <g v-if="svg.isPrintingSvg" v-html="drawSvgPrintLegend(svg, watermarkColors)" />
+
+              <!-- Inject npmx logo & tagline during SVG and PNG print -->
+              <g
+                v-if="svg.isPrintingSvg || svg.isPrintingImg"
+                v-html="
+                  drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'belowDrawingArea')
+                "
+              />
+            </template>
+
+            <!-- Custom legend for single series (non-interactive) -->
+            <template #legend="{ legend }">
+              <div class="flex gap-4 flex-wrap justify-center">
+                <template v-if="legend.length > 0">
+                  <div class="flex gap-1 place-items-center">
+                    <div class="h-3 w-3">
+                      <svg viewBox="0 0 2 2" class="w-full">
+                        <rect x="0" y="0" width="2" height="2" rx="0.3" :fill="legend[0]?.color" />
+                      </svg>
+                    </div>
+                    <span>
+                      {{ legend[0]?.name }}
+                    </span>
+                  </div>
+                </template>
+              </div>
+            </template>
+
+            <!-- Contextual menu icon -->
+            <template #menuIcon="{ isOpen }">
+              <span v-if="isOpen" class="i-carbon:close w-6 h-6" aria-hidden="true" />
+              <span v-else class="i-carbon:overflow-menu-vertical w-6 h-6" aria-hidden="true" />
+            </template>
+
+            <!-- Export options -->
+            <template #optionCsv>
+              <span
+                class="i-carbon:csv w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
+
+            <template #optionImg>
+              <span
+                class="i-carbon:png w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
+
+            <template #optionSvg>
+              <span
+                class="i-carbon:svg w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
+
+            <!-- Annotator action icons -->
+            <template #annotator-action-close>
+              <span
+                class="i-carbon:close w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
+
+            <template #annotator-action-color="{ color }">
+              <span class="i-carbon:color-palette w-6 h-6" :style="{ color }" aria-hidden="true" />
+            </template>
+
+            <template #annotator-action-undo>
+              <span
+                class="i-carbon:undo w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
+
+            <template #annotator-action-redo>
+              <span
+                class="i-carbon:redo w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
+
+            <template #annotator-action-delete>
+              <span
+                class="i-carbon:trash-can w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
+
+            <template #optionAnnotator="{ isAnnotator }">
+              <span
+                v-if="isAnnotator"
+                class="i-carbon:edit-off w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+              <span
+                v-else
+                class="i-carbon:edit w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
+          </VueUiXy>
+        </div>
+
+        <template #fallback>
+          <div />
+        </template>
+      </ClientOnly>
+
+      <!-- No-data state -->
+      <div v-if="!hasData && !pending && !error" class="flex items-center justify-center h-full">
+        <div class="text-sm text-fg-subtle font-mono text-center flex flex-col items-center gap-2">
+          <span class="i-carbon:data-vis-4 w-8 h-8" />
+          <p>{{ $t('package.trends.no_data') }}</p>
+        </div>
+      </div>
+
+      <!-- Error state -->
+      <div v-if="error" class="flex items-center justify-center h-full" role="alert">
+        <div class="text-sm text-fg-subtle font-mono text-center flex flex-col items-center gap-2">
+          <span class="i-carbon:warning-hex w-8 h-8 text-red-400" />
+          <p>{{ error.message }}</p>
+          <p class="text-xs">Package: {{ packageName }}</p>
+        </div>
+      </div>
+
+      <!-- Loading indicator as true overlay -->
       <div
-        v-if="pending"
+        v-if="showLoadingIndicator"
         role="status"
         aria-live="polite"
-        class="text-xs text-fg-subtle font-mono bg-bg/70 backdrop-blur px-3 py-2 rounded-md border border-border"
+        class="absolute top-1/2 inset-is-1/2 -translate-x-1/2 -translate-y-1/2"
       >
-        {{ $t('common.loading') }}
-      </div>
-
-      <div
-        v-else-if="error"
-        class="text-sm text-fg-subtle font-mono text-center flex flex-col items-center gap-2"
-        role="alert"
-      >
-        <span class="i-carbon:warning-hex w-8 h-8 text-red-400" />
-        <p>{{ error.message }}</p>
-        <p class="text-xs">Package: {{ packageName }}</p>
-      </div>
-
-      <div
-        v-else-if="!hasData"
-        class="text-sm text-fg-subtle font-mono text-center flex flex-col items-center gap-2"
-      >
-        <span class="i-carbon:data-vis-4 w-8 h-8" />
-        <p>{{ $t('package.trends.no_data') }}</p>
-      </div>
-
-      <ClientOnly v-else-if="xyDataset.length > 0">
         <div
-          class="chart-container w-full h-[400px] sm:h-[400px]"
-          :class="{ 'h-[500px]': isMobile }"
+          class="text-xs text-fg-subtle font-mono bg-bg/70 backdrop-blur px-3 py-2 rounded-md border border-border"
         >
-          <VueUiXy :dataset="xyDataset" :config="chartConfig" class="[direction:ltr]" />
+          {{ $t('common.loading') }}
         </div>
-      </ClientOnly>
+      </div>
     </div>
   </div>
 </template>
