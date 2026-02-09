@@ -22,13 +22,13 @@
     "section": {
       "global": "Allgemein",
       "search": "Suche",
-      "package": "Packete"
+      "package": "Pakete"
     },
     "focus_search": "Suche fokusieren",
     "show_kbd_hints": "Tastenkombination hervorheben",
     "settings": "Einstellungen öffnen",
     "compare": "Vergleichen öffnen",
-    "compare_from_package": "Vergleichen öffnen (mit aktuellem Packet vorausgefüllt)",
+    "compare_from_package": "Vergleichen öffnen (mit aktuellem Paket vorausgefüllt)",
     "navigate_results": "Ergebnisse navigieren",
     "go_to_result": "Ergebnis aufrufen",
     "open_code_view": "Code-Ansicht öffnen",
