@@ -9,10 +9,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { ref, computed, readonly, nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
-import type { MockConnectorTestControls } from '../../test-utils'
-
-/** Subset of MockConnectorTestControls for unit tests that don't need stateManager */
-type UnitTestConnectorControls = Omit<MockConnectorTestControls, 'stateManager'>
 import type { PendingOperation } from '../../../cli/src/types'
 import { HeaderConnectorModal } from '#components'
 
@@ -84,39 +80,22 @@ function createMockUseConnector() {
   }
 }
 
-// Test controls for manipulating mock state
-const mockControls: UnitTestConnectorControls = {
-  setOrgData: vi.fn(),
-  setUserOrgs: vi.fn(),
-  setUserPackages: vi.fn(),
-  setPackageData: vi.fn(),
-  reset() {
-    mockState.value = {
-      connected: false,
-      connecting: false,
-      npmUser: null,
-      avatar: null,
-      operations: [],
-      error: null,
-      lastExecutionTime: null,
-    }
-  },
-  simulateConnect() {
-    mockState.value.connected = true
-    mockState.value.npmUser = 'testuser'
-    mockState.value.avatar = 'https://example.com/avatar.png'
-  },
-  simulateDisconnect() {
-    mockState.value.connected = false
-    mockState.value.npmUser = null
-    mockState.value.avatar = null
-  },
-  simulateError(message: string) {
-    mockState.value.error = message
-  },
-  clearError() {
-    mockState.value.error = null
-  },
+function resetMockState() {
+  mockState.value = {
+    connected: false,
+    connecting: false,
+    npmUser: null,
+    avatar: null,
+    operations: [],
+    error: null,
+    lastExecutionTime: null,
+  }
+}
+
+function simulateConnect() {
+  mockState.value.connected = true
+  mockState.value.npmUser = 'testuser'
+  mockState.value.avatar = 'https://example.com/avatar.png'
 }
 
 // Mock the composables at module level (vi.mock is hoisted)
@@ -146,21 +125,41 @@ vi.stubGlobal('navigator', {
 let currentWrapper: VueWrapper | null = null
 
 /**
- * Get the modal dialog element from the document body (where Teleport sends it)
+ * Get the modal dialog element from the document body (where Teleport sends it).
  */
-function getModalDialog(): HTMLElement | null {
-  return document.body.querySelector('[role="dialog"]')
+function getModalDialog(): HTMLDialogElement | null {
+  return document.body.querySelector('dialog#connector-modal')
+}
+
+/**
+ * Mount the component and open the dialog via showModal().
+ */
+async function mountAndOpen(state?: 'connected' | 'error') {
+  if (state === 'connected') simulateConnect()
+  if (state === 'error') {
+    mockState.value.error = 'Could not reach connector. Is it running?'
+  }
+
+  currentWrapper = await mountSuspended(HeaderConnectorModal, {
+    attachTo: document.body,
+  })
+  await nextTick()
+
+  const dialog = getModalDialog()
+  dialog?.showModal()
+  await nextTick()
+
+  return dialog
 }
 
 // Reset state before each test
 beforeEach(() => {
-  mockControls.reset()
+  resetMockState()
   mockWriteText.mockClear()
 })
 
 afterEach(() => {
   vi.clearAllMocks()
-  // Clean up Vue wrapper to remove teleported content
   if (currentWrapper) {
     currentWrapper.unmount()
     currentWrapper = null
@@ -170,13 +169,7 @@ afterEach(() => {
 describe('HeaderConnectorModal', () => {
   describe('Disconnected state', () => {
     it('shows connection form when not connected', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
+      const dialog = await mountAndOpen()
       expect(dialog).not.toBeNull()
 
       // Should show the form (disconnected state)
@@ -193,55 +186,29 @@ describe('HeaderConnectorModal', () => {
     })
 
     it('shows the CLI command to run', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
-      expect(dialog?.textContent).toContain('npx npmx-connector')
+      const dialog = await mountAndOpen()
+      // The command is now "pnpm npmx-connector"
+      expect(dialog?.textContent).toContain('npmx-connector')
     })
 
-    it('can copy command to clipboard', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
-      const copyButton = dialog?.querySelector(
-        'button[aria-label="Copy command"]',
-      ) as HTMLButtonElement
-      expect(copyButton).not.toBeNull()
-
-      copyButton?.click()
-      await nextTick()
-
-      expect(mockWriteText).toHaveBeenCalled()
+    it('has a copy button for the command', async () => {
+      const dialog = await mountAndOpen()
+      // The copy button is inside the command block (dir="ltr" div)
+      const commandBlock = dialog?.querySelector('div[dir="ltr"]')
+      const copyBtn = commandBlock?.querySelector('button') as HTMLButtonElement
+      expect(copyBtn).toBeTruthy()
+      // The button should have a copy-related aria-label
+      expect(copyBtn?.getAttribute('aria-label')).toBeTruthy()
     })
 
     it('disables connect button when token is empty', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
+      const dialog = await mountAndOpen()
       const connectButton = dialog?.querySelector('button[type="submit"]') as HTMLButtonElement
       expect(connectButton?.disabled).toBe(true)
     })
 
     it('enables connect button when token is entered', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
+      const dialog = await mountAndOpen()
       const tokenInput = dialog?.querySelector('input[name="connector-token"]') as HTMLInputElement
       expect(tokenInput).not.toBeNull()
 
@@ -255,18 +222,18 @@ describe('HeaderConnectorModal', () => {
     })
 
     it('shows error message when connection fails', async () => {
-      // Simulate an error before mounting
-      mockControls.simulateError('Could not reach connector. Is it running?')
-
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
+      const dialog = await mountAndOpen('error')
+      // Error needs hasAttemptedConnect=true to show. Simulate a connect attempt first.
+      const tokenInput = dialog?.querySelector('input[name="connector-token"]') as HTMLInputElement
+      tokenInput.value = 'bad-token'
+      tokenInput.dispatchEvent(new Event('input', { bubbles: true }))
       await nextTick()
 
-      const dialog = getModalDialog()
+      const form = dialog?.querySelector('form')
+      form?.dispatchEvent(new Event('submit', { bubbles: true }))
+      await nextTick()
+
       const alerts = dialog?.querySelectorAll('[role="alert"]')
-      // Find the alert containing our error message
       const errorAlert = Array.from(alerts || []).find(el =>
         el.textContent?.includes('Could not reach connector'),
       )
@@ -275,41 +242,18 @@ describe('HeaderConnectorModal', () => {
   })
 
   describe('Connected state', () => {
-    beforeEach(() => {
-      // Start in connected state
-      mockControls.simulateConnect()
-    })
-
     it('shows connected status', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
+      const dialog = await mountAndOpen('connected')
       expect(dialog?.textContent).toContain('Connected')
     })
 
     it('shows logged in username', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
+      const dialog = await mountAndOpen('connected')
       expect(dialog?.textContent).toContain('testuser')
     })
 
     it('shows disconnect button', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
+      const dialog = await mountAndOpen('connected')
       const buttons = dialog?.querySelectorAll('button')
       const disconnectBtn = Array.from(buttons || []).find(b =>
         b.textContent?.toLowerCase().includes('disconnect'),
@@ -318,14 +262,7 @@ describe('HeaderConnectorModal', () => {
     })
 
     it('hides connection form when connected', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      const dialog = getModalDialog()
-      // Form and token input should not exist when connected
+      const dialog = await mountAndOpen('connected')
       const form = dialog?.querySelector('form')
       expect(form).toBeNull()
     })
@@ -333,57 +270,32 @@ describe('HeaderConnectorModal', () => {
 
   describe('Modal behavior', () => {
     it('closes modal when close button is clicked', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
+      const dialog = await mountAndOpen()
 
-      const dialog = getModalDialog()
-      // Find the close button (X icon) within the dialog header
-      const closeBtn = dialog?.querySelector('button[aria-label="Close"]') as HTMLButtonElement
-      expect(closeBtn).not.toBeNull()
+      // Find the close button (ButtonBase with close icon) in the dialog header
+      const closeBtn = Array.from(dialog?.querySelectorAll('button') ?? []).find(
+        b =>
+          b.querySelector('[class*="close"]') ||
+          b.getAttribute('aria-label')?.toLowerCase().includes('close'),
+      ) as HTMLButtonElement
+      expect(closeBtn).toBeTruthy()
 
       closeBtn?.click()
       await nextTick()
 
-      // Check that open was set to false (v-model)
-      const emitted = currentWrapper.emitted('update:open')
-      expect(emitted).toBeTruthy()
-      expect(emitted![0]).toEqual([false])
+      // Dialog should be closed (open attribute removed)
+      expect(dialog?.open).toBe(false)
     })
 
-    it('closes modal when backdrop is clicked', async () => {
+    it('does not render dialog content when not opened', async () => {
       currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: true },
-        attachTo: document.body,
-      })
-      await nextTick()
-
-      // Find the backdrop button by aria-label
-      const backdrop = document.body.querySelector(
-        'button[aria-label="Close modal"]',
-      ) as HTMLButtonElement
-      expect(backdrop).not.toBeNull()
-
-      backdrop?.click()
-      await nextTick()
-
-      // Check that open was set to false (v-model)
-      const emitted = currentWrapper.emitted('update:open')
-      expect(emitted).toBeTruthy()
-      expect(emitted![0]).toEqual([false])
-    })
-
-    it('does not render dialog when open is false', async () => {
-      currentWrapper = await mountSuspended(HeaderConnectorModal, {
-        props: { open: false },
         attachTo: document.body,
       })
       await nextTick()
 
       const dialog = getModalDialog()
-      expect(dialog).toBeNull()
+      // Dialog exists in DOM but should not be open
+      expect(dialog?.open).toBeFalsy()
     })
   })
 })

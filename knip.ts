@@ -26,7 +26,12 @@ const config: KnipConfig = {
         'uno-preset-rtl.ts!',
         'scripts/**/*.ts',
       ],
-      project: ['**/*.{ts,vue,cjs,mjs}', '!test/fixtures/**'],
+      project: [
+        '**/*.{ts,vue,cjs,mjs}',
+        '!test/fixtures/**',
+        '!test/test-utils/**',
+        '!test/e2e/helpers/**',
+      ],
       ignoreDependencies: [
         '@iconify-json/*',
         '@voidzero-dev/vite-plus-core',
@@ -43,6 +48,9 @@ const config: KnipConfig = {
         /** Oxlint plugins don't get picked up yet */
         '@e18e/eslint-plugin',
         'eslint-plugin-regexp',
+
+        /** Used in test/e2e/helpers/ which is excluded from knip project scope */
+        'h3-next',
       ],
       ignoreUnresolved: ['#components', '#oauth/config'],
     },
