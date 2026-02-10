@@ -228,6 +228,7 @@ const config = computed(() => {
         >
           <span class="sr-only">{{ $t('package.downloads.analyze') }}</span>
         </ButtonBase>
+        <span v-else-if="isLoadingWeeklyDownloads" class="min-w-6 min-h-6 -m-1 p-1" />
       </template>
 
       <div class="w-full overflow-hidden">
@@ -240,26 +241,21 @@ const config = computed(() => {
               </template>
             </VueUiSparkline>
             <template #fallback>
-              <!-- Skeleton matching sparkline layout: title row + chart with data label -->
-              <div class="min-h-[75.195px]">
-                <!-- Title row: date range (24px height) -->
+              <!-- Skeleton matching VueUiSparkline layout (title 24px + SVG aspect 500:80) -->
+              <div class="max-w-xs">
+                <!-- Title row: fontSize * 2 = 24px -->
                 <div class="h-6 flex items-center ps-3">
                   <SkeletonInline class="h-3 w-36" />
                 </div>
-                <!-- Chart area: data label left, sparkline right -->
+                <!-- Chart area: matches SVG viewBox 500:80 -->
                 <div class="aspect-[500/80] flex items-center">
-                  <!-- Data label (covers ~42% width) -->
+                  <!-- Data label (covers ~42% width, matching dataLabel.offsetX) -->
                   <div class="w-[42%] flex items-center ps-0.5">
                     <SkeletonInline class="h-7 w-24" />
                   </div>
-                  <!-- Sparkline area (~58% width) -->
-                  <div class="flex-1 flex items-end gap-0.5 h-4/5 pe-3">
-                    <SkeletonInline
-                      v-for="i in 16"
-                      :key="i"
-                      class="flex-1 rounded-sm"
-                      :style="{ height: `${25 + ((i * 7) % 50)}%` }"
-                    />
+                  <!-- Sparkline line placeholder -->
+                  <div class="flex-1 flex items-end pe-3">
+                    <SkeletonInline class="h-px w-full" />
                   </div>
                 </div>
               </div>
