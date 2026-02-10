@@ -98,6 +98,12 @@ if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
 
+const { data: packageJson } = useLazyFetch<{ storybook?: { title: string; url: string } }>(() => {
+  const version = requestedVersion.value ?? 'latest'
+  const url = `https://cdn.jsdelivr.net/npm/${packageName.value}@${version}/package.json`
+  return url
+})
+
 // Fetch README for specific version if requested, otherwise latest
 const { data: readmeData } = useLazyFetch<ReadmeResponse>(
   () => {
@@ -180,7 +186,9 @@ const {
     immediate: false,
   },
 )
-onMounted(() => fetchInstallSize())
+onMounted(() => {
+  fetchInstallSize()
+})
 
 const { data: skillsData } = useLazyFetch<SkillsListResponse>(
   () => {
@@ -1381,6 +1389,19 @@ const showSkeleton = shallowRef(false)
             v-if="readmeData?.playgroundLinks?.length"
             :links="readmeData.playgroundLinks"
           />
+
+          <!-- <StorybookPlaygrounds
+            v-if="readmeData?.storybookPlaygrounds?.length"
+            :links="readmeData.storybookPlaygroundLinks"
+          /> -->
+
+          <a v-if="packageJson?.storybook" :href="packageJson.storybook.url">storybook</a>
+          <a
+            v-if="packageJson?.storybook"
+            :href="`/package-stories/${pkg.name}/v/${resolvedVersion}`"
+            >sb internal</a
+          >
+          <!-- :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }" -->
 
           <PackageCompatibility :engines="displayVersion?.engines" />
 
