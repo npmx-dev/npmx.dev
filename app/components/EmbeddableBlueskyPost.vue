@@ -50,33 +50,35 @@ function onPostMessage(event: MessageEvent) {
 </script>
 
 <template>
-  <article class="bluesky-embed-container">
-    <!-- Loading state -->
-    <LoadingSpinner
-      v-if="isLoading"
-      :text="$t('blog.atproto.loading_bluesky_post')"
-      aria-label="Loading Bluesky post..."
-      class="loading-spinner"
-    />
-
-    <!-- Success state -->
-    <div v-else-if="embedUrl" class="bluesky-embed-container">
-      <iframe
-        title="Bluesky Post"
-        :data-bluesky-id="embeddedId"
-        :src="embedUrl"
-        width="100%"
-        :height="iframeHeight"
-        frameborder="0"
-        scrolling="no"
+  <ClientOnly>
+    <article class="bluesky-embed-container">
+      <!-- Loading state -->
+      <LoadingSpinner
+        v-if="isLoading"
+        :text="$t('blog.atproto.loading_bluesky_post')"
+        aria-label="Loading Bluesky post..."
+        class="loading-spinner"
       />
-    </div>
 
-    <!-- Fallback state -->
-    <a v-else :href="url" target="_blank" rel="noopener noreferrer">
-      {{ $t('blog.atproto.view_on_bluesky') }}
-    </a>
-  </article>
+      <!-- Success state -->
+      <div v-else-if="embedUrl" class="bluesky-embed-container">
+        <iframe
+          title="Bluesky Post"
+          :data-bluesky-id="embeddedId"
+          :src="embedUrl"
+          width="100%"
+          :height="iframeHeight"
+          frameborder="0"
+          scrolling="no"
+        />
+      </div>
+
+      <!-- Fallback state -->
+      <a v-else :href="url" target="_blank" rel="noopener noreferrer">
+        {{ $t('blog.atproto.view_on_bluesky') }}
+      </a>
+    </article>
+  </ClientOnly>
 </template>
 
 <style scoped>

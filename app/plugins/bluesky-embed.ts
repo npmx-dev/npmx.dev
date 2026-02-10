@@ -1,4 +1,4 @@
-import EmbeddableBlueskyPost from '~/components/EmbeddableBlueskyPost.client.vue'
+import EmbeddableBlueskyPost from '~/components/EmbeddableBlueskyPost.vue'
 
 /**
  * INFO: .md files are transformed into Vue SFCs by unplugin-vue-markdown during the Vite transform pipeline
