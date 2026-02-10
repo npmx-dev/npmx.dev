@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
-const { isAlgolia } = useSearchProvider()
-
 const searchQuery = shallowRef('')
 const isSearchFocused = shallowRef(false)
 
