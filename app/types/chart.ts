@@ -22,3 +22,8 @@ export type EvolutionData =
   | WeeklyDataPoint[]
   | MonthlyDataPoint[]
   | YearlyDataPoint[]
+
+export type EvolutionOptionsBase = {
+  startDate?: string
+  endDate?: string
+}

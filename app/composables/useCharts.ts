@@ -2,6 +2,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
 import type {
   DailyDataPoint,
+  EvolutionOptionsBase,
   MonthlyDataPoint,
   WeeklyDataPoint,
   YearlyDataPoint,
@@ -10,11 +11,6 @@ import { fetchNpmDownloadsRange } from '~/utils/npm/api'
 
 export type PackumentLikeForTime = {
   time?: Record<string, string>
-}
-
-type EvolutionOptionsBase = {
-  startDate?: string
-  endDate?: string
 }
 
 export type EvolutionOptionsDay = EvolutionOptionsBase & {
