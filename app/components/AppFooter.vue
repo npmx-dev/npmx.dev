@@ -14,7 +14,6 @@ const showModal = () => modalRef.value?.showModal?.()
       >
         <div>
           <p class="font-mono text-balance m-0 hidden sm:block">{{ $t('tagline') }}</p>
-          <BuildEnvironment v-if="!isHome" footer />
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
         <div class="hidden sm:flex items-center gap-6 min-h-11 text-xs">
@@ -27,22 +26,9 @@ const showModal = () => modalRef.value?.showModal?.()
           <LinkBase :to="{ name: 'privacy' }">
             {{ $t('privacy_policy.title') }}
           </LinkBase>
-          <LinkBase to="https://docs.npmx.dev">
-            {{ $t('footer.docs') }}
-          </LinkBase>
-          <LinkBase to="https://repo.npmx.dev">
-            {{ $t('footer.source') }}
-          </LinkBase>
-          <LinkBase to="https://social.npmx.dev">
-            {{ $t('footer.social') }}
-          </LinkBase>
-          <LinkBase to="https://chat.npmx.dev">
-            {{ $t('footer.chat') }}
-          </LinkBase>
-
           <button
             type="button"
-            class="group inline-flex gap-x-1 items-center justify-center underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200"
+            class="cursor-pointer group inline-flex gap-x-1 items-center justify-center underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200"
             @click.prevent="showModal"
             aria-haspopup="dialog"
           >
@@ -106,8 +92,21 @@ const showModal = () => modalRef.value?.showModal?.()
               </li>
             </ul>
           </Modal>
+          <LinkBase to="https://docs.npmx.dev">
+            {{ $t('footer.docs') }}
+          </LinkBase>
+          <LinkBase to="https://repo.npmx.dev">
+            {{ $t('footer.source') }}
+          </LinkBase>
+          <LinkBase to="https://social.npmx.dev">
+            {{ $t('footer.social') }}
+          </LinkBase>
+          <LinkBase to="https://chat.npmx.dev">
+            {{ $t('footer.chat') }}
+          </LinkBase>
         </div>
       </div>
+      <BuildEnvironment v-if="!isHome" footer />
       <p class="text-xs text-fg-muted text-center sm:text-start m-0">
         <span class="sm:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
         <span class="hidden sm:inline">{{ $t('trademark_disclaimer') }}</span>

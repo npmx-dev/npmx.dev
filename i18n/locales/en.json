@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Package Browser for the npm Registry",
@@ -82,6 +83,10 @@
     "meta_description": "Insights and updates from the npmx community",
     "author": {
       "view_profile": "View {name}'s profile on Bluesky"
+    },
+    "atproto": {
+      "loading_bluesky_post": "Loading Bluesky post...",
+      "view_on_bluesky": "View this post on Bluesky"
     }
   },
   "settings": {
@@ -264,6 +269,16 @@
       "view_more_details": "View more details",
       "error_loading": "Failed to load provenance details"
     },
+    "security_downgrade": {
+      "title": "Trust downgrade",
+      "description_to_none_provenance": "This version was published without {provenance}.",
+      "description_to_none_trustedPublisher": "This version was published without {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "This version uses {provenance} but not {trustedPublishing}.",
+      "fallback_install_provenance": "Install commands are pinned to {version}, the last version with provenance.",
+      "fallback_install_trustedPublisher": "Install commands are pinned to {version}, the last version with trusted publishing.",
+      "provenance_link_text": "provenance",
+      "trusted_publishing_link_text": "trusted publishing"
+    },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
     "card": {
@@ -337,15 +352,17 @@
       "legend_estimation": "Estimation",
       "no_data": "No data available",
       "y_axis_label": "{granularity} {facet}",
+      "facet": "Facet",
+      "title": "Trends",
       "items": {
-        "downloads": "Downloads"
+        "downloads": "Downloads",
+        "likes": "Likes"
       }
     },
     "downloads": {
       "title": "Weekly Downloads",
       "analyze": "Analyze downloads",
-      "community_distribution": "View community adoption distribution",
-      "modal_title": "Downloads"
+      "community_distribution": "View community adoption distribution"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -382,7 +399,8 @@
         "high": "high",
         "moderate": "moderate",
         "low": "low"
-      }
+      },
+      "fixed_in_title": "Fixed in version {version}"
     },
     "deprecated": {
       "label": "Deprecated",
@@ -418,7 +436,6 @@
     },
     "skeleton": {
       "loading": "Loading package details",
-      "weekly": "Weekly",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "versions": "Versions",
@@ -978,7 +995,7 @@
         "up_to_you": "Up to you!"
       },
       "trends": {
-        "title": "Weekly Downloads"
+        "title": "Compare Trends"
       }
     }
   },

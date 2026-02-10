@@ -75,6 +75,7 @@ export function useBlogPostBlueskyLink(slug: MaybeRefOrGetter<string | null | un
           }
         }
       } catch (error: unknown) {
+        // TODO: Will need to remove this console error to satisfy linting scan
         // Constellation unavailable or error - fail silently
         // But during dev we will get an error
         if (import.meta.dev) console.error('[Bluesky] Constellation error:', error)

@@ -12,7 +12,7 @@ const mdnUrl = computed(() => {
 
 const docPath = computed(() => {
   if (props.replacement.type !== 'documented' || !props.replacement.docPath) return null
-  return `https://e18e.dev/docs/replacements/${props.replacement.docPath}`
+  return `https://e18e.dev/docs/replacements/${props.replacement.docPath}.html`
 })
 </script>
 

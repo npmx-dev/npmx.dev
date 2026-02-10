@@ -77,13 +77,14 @@ const availableSortKeys = computed(() => {
 })
 
 // Handle sort key change from dropdown
-function handleSortKeyChange(event: Event) {
-  const target = event.target as HTMLSelectElement
-  const newKey = target.value as SortKey
-  const config = SORT_KEYS.find(k => k.key === newKey)
-  const direction = config?.defaultDirection ?? 'desc'
-  sortOption.value = buildSortOption(newKey, direction)
-}
+const sortKeyModel = computed<SortKey>({
+  get: () => currentSort.value.key,
+  set: newKey => {
+    const config = SORT_KEYS.find(k => k.key === newKey)
+    const direction = config?.defaultDirection ?? 'desc'
+    sortOption.value = buildSortOption(newKey, direction)
+  },
+})
 
 // Toggle sort direction
 function handleToggleDirection() {
@@ -146,7 +147,7 @@ function getSortKeyLabelKey(key: SortKey): string {
           $t(
             'filters.count.showing_paginated',
             {
-              pageSize: pageSize === 'all' ? $n(filteredCount) : pageSize,
+              pageSize: pageSize === 'all' ? $n(filteredCount) : Math.min(pageSize, filteredCount),
               count: $n(filteredCount),
             },
             filteredCount,
@@ -162,30 +163,19 @@ function getSortKeyLabelKey(key: SortKey): string {
         <!-- Sort controls -->
         <div class="flex items-center gap-1 shrink-0 order-1 sm:order-1">
           <!-- Sort key dropdown -->
-          <div class="relative">
-            <label for="sort-select" class="sr-only">{{ $t('filters.sort.label') }}</label>
-            <select
-              id="sort-select"
-              :value="currentSort.key"
-              class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1.5 font-mono text-sm text-fg transition-colors duration-200 hover:border-border-hover"
-              @change="handleSortKeyChange"
-            >
-              <option
-                v-for="keyConfig in availableSortKeys"
-                :key="keyConfig.key"
-                :value="keyConfig.key"
-                :disabled="keyConfig.disabled"
-              >
-                {{ getSortKeyLabelKey(keyConfig.key) }}
-              </option>
-            </select>
-            <div
-              class="flex items-center absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
-              aria-hidden="true"
-            >
-              <span class="i-carbon-chevron-down w-4 h-4" />
-            </div>
-          </div>
+          <SelectField
+            :label="$t('filters.sort.label')"
+            hidden-label
+            id="sort-select"
+            v-model="sortKeyModel"
+            :items="
+              availableSortKeys.map(keyConfig => ({
+                label: getSortKeyLabelKey(keyConfig.key),
+                value: keyConfig.key,
+                disabled: keyConfig.disabled,
+              }))
+            "
+          />
 
           <!-- Sort direction toggle -->
           <button

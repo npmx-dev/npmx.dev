@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "built_at": "generado {0}",
   "alt_logo": "logo de npmx",
   "connector": {

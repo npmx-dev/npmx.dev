@@ -51,6 +51,11 @@ export const SHOWCASED_FRAMEWORKS = [
     package: '@angular/core',
     color: 'oklch(0.626 0.2663 310.4)',
   },
+  {
+    name: 'solid',
+    package: 'solid-js',
+    color: 'oklch(0.4237 0.0857 255.45)',
+  },
 ]
 
 export type FrameworkPackageName = (typeof SHOWCASED_FRAMEWORKS)[number]['package']

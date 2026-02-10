@@ -243,41 +243,39 @@ watch(
     <div v-if="showGrantAccess">
       <form class="space-y-2" @submit.prevent="handleGrantAccess">
         <div class="flex items-center gap-2">
-          <label for="grant-team-select" class="sr-only">{{
-            $t('package.access.select_team_label')
-          }}</label>
-          <select
+          <SelectField
+            :label="$t('package.access.select_team_label')"
+            hidden-label
             id="grant-team-select"
             v-model="selectedTeam"
             name="grant-team"
-            class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
+            block
+            size="sm"
             :disabled="isLoadingTeams"
-          >
-            <option value="" disabled>
-              {{
-                isLoadingTeams
+            :items="[
+              {
+                label: isLoadingTeams
                   ? $t('package.access.loading_teams')
-                  : $t('package.access.select_team')
-              }}
-            </option>
-            <option v-for="team in teams" :key="team" :value="team">
-              {{ orgName }}:{{ team }}
-            </option>
-          </select>
-        </div>
-        <div class="flex items-center gap-2">
-          <label for="grant-permission-select" class="sr-only">{{
-            $t('package.access.permission_label')
-          }}</label>
-          <select
+                  : $t('package.access.select_team'),
+                value: '',
+                disabled: true,
+              },
+              ...teams.map(team => ({ label: `${orgName}:${team}`, value: team })),
+            ]"
+          />
+          <SelectField
+            :label="$t('package.access.permission_label')"
+            hidden-label
             id="grant-permission-select"
             v-model="permission"
             name="grant-permission"
-            class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
-          >
-            <option value="read-only">{{ $t('package.access.permission.read_only') }}</option>
-            <option value="read-write">{{ $t('package.access.permission.read_write') }}</option>
-          </select>
+            block
+            size="sm"
+            :items="[
+              { label: $t('package.access.permission.read_only'), value: 'read-only' },
+              { label: $t('package.access.permission.read_write'), value: 'read-write' },
+            ]"
+          />
           <button
             type="submit"
             :disabled="!selectedTeam || isGranting"

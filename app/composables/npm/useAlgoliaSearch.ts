@@ -2,12 +2,10 @@ import type { NpmSearchResponse, NpmSearchResult } from '#shared/types'
 import {
   liteClient as algoliasearch,
   type LiteClient,
+  type SearchQuery,
   type SearchResponse,
 } from 'algoliasearch/lite'
 
-/**
- * Singleton Algolia client, keyed by appId to handle config changes.
- */
 let _searchClient: LiteClient | null = null
 let _configuredAppId: string | null = null
 
@@ -36,10 +34,7 @@ interface AlgoliaRepo {
   branch?: string
 }
 
-/**
- * Shape of a hit from the Algolia `npm-search` index.
- * Only includes fields we retrieve via `attributesToRetrieve`.
- */
+/** Shape of a hit from the Algolia `npm-search` index. */
 interface AlgoliaHit {
   objectID: string
   name: string
@@ -58,7 +53,6 @@ interface AlgoliaHit {
   license: string | null
 }
 
-/** Fields we always request from Algolia to keep payload small */
 const ATTRIBUTES_TO_RETRIEVE = [
   'name',
   'version',
@@ -75,6 +69,8 @@ const ATTRIBUTES_TO_RETRIEVE = [
   'isDeprecated',
   'license',
 ]
+
+const EXISTENCE_CHECK_ATTRS = ['name']
 
 function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
   return {
@@ -113,38 +109,43 @@ function hitToSearchResult(hit: AlgoliaHit): NpmSearchResult {
 }
 
 export interface AlgoliaSearchOptions {
-  /** Number of results */
   size?: number
-  /** Offset for pagination */
   from?: number
-  /** Algolia filters expression (e.g. 'owner.name:username') */
   filters?: string
 }
 
+/** Extra checks bundled into a single multi-search request. */
+export interface AlgoliaMultiSearchChecks {
+  name?: string
+  checkOrg?: boolean
+  checkUser?: boolean
+  checkPackage?: string
+}
+
+export interface AlgoliaSearchWithSuggestionsResult {
+  search: NpmSearchResponse
+  orgExists: boolean
+  userExists: boolean
+  packageExists: boolean | null
+}
+
 /**
- * Composable that provides Algolia search functions for npm packages.
- *
- * Must be called during component setup (or inside another composable)
- * because it reads from `useRuntimeConfig()`. The returned functions
- * are safe to call at any time (event handlers, async callbacks, etc.).
+ * Composable providing Algolia search for npm packages.
+ * Must be called during component setup.
  */
 export function useAlgoliaSearch() {
   const { algolia } = useRuntimeConfig().public
   const client = getOrCreateClient(algolia.appId, algolia.apiKey)
   const indexName = algolia.indexName
 
-  /**
-   * Search npm packages via Algolia.
-   * Returns results in the same NpmSearchResponse format as the npm registry API.
-   */
   async function search(
     query: string,
     options: AlgoliaSearchOptions = {},
   ): Promise<NpmSearchResponse> {
-    const { results } = await client.search([
-      {
-        indexName,
-        params: {
+    const { results } = await client.search({
+      requests: [
+        {
+          indexName,
           query,
           offset: options.from,
           length: options.size,
@@ -152,9 +153,9 @@ export function useAlgoliaSearch() {
           analyticsTags: ['npmx.dev'],
           attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
           attributesToHighlight: [],
-        },
-      },
-    ])
+        } satisfies SearchQuery,
+      ],
+    })
 
     const response = results[0] as SearchResponse<AlgoliaHit> | undefined
     if (!response) {
@@ -169,10 +170,7 @@ export function useAlgoliaSearch() {
     }
   }
 
-  /**
-   * Fetch all packages for an Algolia owner (org or user).
-   * Uses `owner.name` filter for efficient server-side filtering.
-   */
+  /** Fetch all packages for an owner using `owner.name` filter with pagination. */
   async function searchByOwner(
     ownerName: string,
     options: { maxResults?: number } = {},
@@ -184,17 +182,15 @@ export function useAlgoliaSearch() {
     let serverTotal = 0
     const batchSize = 200
 
-    // Algolia supports up to 1000 results per query with offset/length pagination
     while (offset < max) {
-      // Cap at both the configured max and the server's actual total (once known)
       const remaining = serverTotal > 0 ? Math.min(max, serverTotal) - offset : max - offset
       if (remaining <= 0) break
       const length = Math.min(batchSize, remaining)
 
-      const { results } = await client.search([
-        {
-          indexName,
-          params: {
+      const { results } = await client.search({
+        requests: [
+          {
+            indexName,
             query: '',
             offset,
             length,
@@ -202,9 +198,9 @@ export function useAlgoliaSearch() {
             analyticsTags: ['npmx.dev'],
             attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
             attributesToHighlight: [],
-          },
-        },
-      ])
+          } satisfies SearchQuery,
+        ],
+      })
 
       const response = results[0] as SearchResponse<AlgoliaHit> | undefined
       if (!response) break
@@ -212,7 +208,6 @@ export function useAlgoliaSearch() {
       serverTotal = response.nbHits ?? 0
       allHits.push(...response.hits)
 
-      // If we got fewer than requested, we've exhausted all results
       if (response.hits.length < length || allHits.length >= serverTotal) {
         break
       }
@@ -223,23 +218,17 @@ export function useAlgoliaSearch() {
     return {
       isStale: false,
       objects: allHits.map(hitToSearchResult),
-      // Use server total so callers can detect truncation (allHits.length < total)
       total: serverTotal,
       time: new Date().toISOString(),
     }
   }
 
-  /**
-   * Fetch metadata for specific packages by exact name.
-   * Uses Algolia's getObjects REST API to look up packages by objectID
-   * (which equals the package name in the npm-search index).
-   */
+  /** Fetch metadata for specific packages by exact name using Algolia's getObjects API. */
   async function getPackagesByName(packageNames: string[]): Promise<NpmSearchResponse> {
     if (packageNames.length === 0) {
       return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
     }
 
-    // Algolia getObjects REST API: fetch up to 1000 objects by ID in a single request
     const response = await $fetch<{ results: (AlgoliaHit | null)[] }>(
       `https://${algolia.appId}-dsn.algolia.net/1/indexes/*/objects`,
       {
@@ -267,12 +256,107 @@ export function useAlgoliaSearch() {
     }
   }
 
+  /**
+   * Combined search + org/user/package existence checks in a single
+   * Algolia multi-search request.
+   */
+  async function searchWithSuggestions(
+    query: string,
+    options: AlgoliaSearchOptions = {},
+    checks?: AlgoliaMultiSearchChecks,
+  ): Promise<AlgoliaSearchWithSuggestionsResult> {
+    const requests: SearchQuery[] = [
+      {
+        indexName,
+        query,
+        offset: options.from,
+        length: options.size,
+        filters: options.filters || '',
+        analyticsTags: ['npmx.dev'],
+        attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
+        attributesToHighlight: [],
+      },
+    ]
+
+    const orgQueryIndex = checks?.checkOrg && checks.name ? requests.length : -1
+    if (checks?.checkOrg && checks.name) {
+      requests.push({
+        indexName,
+        query: `"@${checks.name}"`,
+        length: 1,
+        analyticsTags: ['npmx.dev'],
+        attributesToRetrieve: EXISTENCE_CHECK_ATTRS,
+        attributesToHighlight: [],
+      })
+    }
+
+    const userQueryIndex = checks?.checkUser && checks.name ? requests.length : -1
+    if (checks?.checkUser && checks.name) {
+      requests.push({
+        indexName,
+        query: '',
+        filters: `owner.name:${checks.name}`,
+        length: 1,
+        analyticsTags: ['npmx.dev'],
+        attributesToRetrieve: EXISTENCE_CHECK_ATTRS,
+        attributesToHighlight: [],
+      })
+    }
+
+    const packageQueryIndex = checks?.checkPackage ? requests.length : -1
+    if (checks?.checkPackage) {
+      requests.push({
+        indexName,
+        query: '',
+        filters: `objectID:${checks.checkPackage}`,
+        length: 1,
+        analyticsTags: ['npmx.dev'],
+        attributesToRetrieve: EXISTENCE_CHECK_ATTRS,
+        attributesToHighlight: [],
+      })
+    }
+
+    const { results } = await client.search({ requests })
+
+    const mainResponse = results[0] as SearchResponse<AlgoliaHit> | undefined
+    if (!mainResponse) {
+      throw new Error('Algolia returned an empty response')
+    }
+
+    const searchResult: NpmSearchResponse = {
+      isStale: false,
+      objects: mainResponse.hits.map(hitToSearchResult),
+      total: mainResponse.nbHits ?? 0,
+      time: new Date().toISOString(),
+    }
+
+    let orgExists = false
+    if (orgQueryIndex >= 0 && checks?.name) {
+      const orgResponse = results[orgQueryIndex] as SearchResponse<AlgoliaHit> | undefined
+      const scopePrefix = `@${checks.name.toLowerCase()}/`
+      orgExists =
+        orgResponse?.hits?.some(h => h.name?.toLowerCase().startsWith(scopePrefix)) ?? false
+    }
+
+    let userExists = false
+    if (userQueryIndex >= 0) {
+      const userResponse = results[userQueryIndex] as SearchResponse<AlgoliaHit> | undefined
+      userExists = (userResponse?.nbHits ?? 0) > 0
+    }
+
+    let packageExists: boolean | null = null
+    if (packageQueryIndex >= 0) {
+      const pkgResponse = results[packageQueryIndex] as SearchResponse<AlgoliaHit> | undefined
+      packageExists = (pkgResponse?.nbHits ?? 0) > 0
+    }
+
+    return { search: searchResult, orgExists, userExists, packageExists }
+  }
+
   return {
-    /** Search packages by text query */
     search,
-    /** Fetch all packages for an owner (org or user) */
+    searchWithSuggestions,
     searchByOwner,
-    /** Fetch metadata for specific packages by exact name */
     getPackagesByName,
   }
 }

@@ -85,25 +85,25 @@ const numberFormatter = useNumberFormatter()
         )
       "
     >
-      <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
+      <ul class="px-1 space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
-            <span
+            <TooltipApp
               v-if="outdatedDeps[dep]"
-              class="shrink-0"
+              class="shrink-0 p-2 -m-2"
               :class="getVersionClass(outdatedDeps[dep])"
-              :title="getOutdatedTooltip(outdatedDeps[dep], $t)"
               aria-hidden="true"
+              :text="getOutdatedTooltip(outdatedDeps[dep], $t)"
             >
               <span class="i-carbon:warning-alt w-3 h-3" />
-            </span>
+            </TooltipApp>
             <LinkBase
               v-if="getVulnerableDepInfo(dep)"
               :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
@@ -125,7 +125,7 @@ const numberFormatter = useNumberFormatter()
             </LinkBase>
             <LinkBase
               :to="packageRoute(dep, version)"
-              class="truncate"
+              class="block truncate"
               :class="getVersionClass(outdatedDeps[dep])"
               :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep], $t) : version"
             >
@@ -168,14 +168,17 @@ const numberFormatter = useNumberFormatter()
         })
       "
     >
-      <ul class="space-y-1 list-none m-0" :aria-label="$t('package.peer_dependencies.list_label')">
+      <ul
+        class="px-1 space-y-1 list-none m-0"
+        :aria-label="$t('package.peer_dependencies.list_label')"
+      >
         <li
           v-for="peer in sortedPeerDependencies.slice(0, peerDepsExpanded ? undefined : 10)"
           :key="peer.name"
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-1 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="truncate" dir="ltr">
+            <LinkBase :to="packageRoute(peer.name)" class="block truncate" dir="ltr">
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -184,7 +187,7 @@ const numberFormatter = useNumberFormatter()
           </div>
           <LinkBase
             :to="packageRoute(peer.name, peer.version)"
-            class="truncate"
+            class="block truncate max-w-[40%]"
             :title="peer.version"
             dir="ltr"
           >
@@ -225,7 +228,7 @@ const numberFormatter = useNumberFormatter()
       "
     >
       <ul
-        class="space-y-1 list-none m-0"
+        class="px-1 space-y-1 list-none m-0"
         :aria-label="$t('package.optional_dependencies.list_label')"
       >
         <li
@@ -236,10 +239,15 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="truncate" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
             {{ dep }}
           </LinkBase>
-          <LinkBase :to="packageRoute(dep, version)" class="truncate" :title="version" dir="ltr">
+          <LinkBase
+            :to="packageRoute(dep, version)"
+            class="block truncate"
+            :title="version"
+            dir="ltr"
+          >
             {{ version }}
           </LinkBase>
         </li>

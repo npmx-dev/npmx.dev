@@ -10,11 +10,10 @@ import type { Ref } from 'vue'
  * @public
  */
 export function useActiveTocItem(toc: Ref<TocItem[]>) {
-  const activeId = ref<string | null>(null)
+  const activeId = shallowRef<string | null>(null)
 
   // Only run observer logic on client
   if (import.meta.server) {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     return { activeId }
   }
 

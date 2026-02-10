@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { authRedirect } from '~/utils/atproto/helpers'
-import { ensureValidAtIdentifier } from '@atproto/syntax'
+import { isAtIdentifierString } from '@atproto/lex'
 
 const handleInput = shallowRef('')
 const errorMessage = shallowRef('')
@@ -28,20 +28,15 @@ async function handleCreateAccount() {
 
 async function handleLogin() {
   if (handleInput.value) {
-    // URLS to PDSs are valid for oauth redirects
-    if (!handleInput.value.startsWith('https://')) {
-      try {
-        ensureValidAtIdentifier(handleInput.value)
-      } catch (error) {
-        errorMessage.value =
-          error instanceof Error ? error.message : $t('auth.modal.default_input_error')
-        return
-      }
+    // URLS to PDSs are valid for initiating oauth flows
+    if (handleInput.value.startsWith('https://') || isAtIdentifierString(handleInput.value)) {
+      await authRedirect(handleInput.value, {
+        redirectTo: route.fullPath,
+        locale: locale.value,
+      })
+    } else {
+      errorMessage.value = $t('auth.modal.default_input_error')
     }
-    await authRedirect(handleInput.value, {
-      redirectTo: route.fullPath,
-      locale: locale.value,
-    })
   }
 }
 
@@ -142,12 +137,7 @@ watch(handleInput, newHandleInput => {
         {{ $t('auth.modal.create_account') }}
       </ButtonBase>
       <hr class="color-border" />
-      <ButtonBase
-        type="button"
-        variant="primary"
-        class="w-full flex items-center justify-center gap-2"
-        @click="handleBlueskySignIn"
-      >
+      <ButtonBase type="button" variant="primary" class="w-full" @click="handleBlueskySignIn" block>
         {{ $t('auth.modal.connect_bluesky') }}
         <svg fill="none" viewBox="0 0 64 57" width="20" style="width: 20px">
           <path

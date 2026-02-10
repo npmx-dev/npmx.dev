@@ -15,7 +15,24 @@
     "docs": "文件",
     "source": "原始碼",
     "social": "社群媒體",
-    "chat": "聊天"
+    "chat": "聊天",
+    "keyboard_shortcuts": "鍵盤快捷鍵"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "全域",
+      "search": "搜尋",
+      "package": "套件"
+    },
+    "focus_search": "焦點搜尋",
+    "show_kbd_hints": "顯示鍵盤快速鍵提示",
+    "settings": "開啟設定",
+    "compare": "開啟比較",
+    "compare_from_package": "開啟比較 (預填目前套件)",
+    "navigate_results": "瀏覽搜尋結果",
+    "go_to_result": "前往搜尋結果",
+    "open_code_view": "開啟程式碼檢視",
+    "open_docs": "開啟文件"
   },
   "search": {
     "label": "搜尋 npm 套件",
@@ -23,8 +40,10 @@
     "button": "搜尋",
     "searching": "搜尋中…",
     "found_packages": "共找到 {count} 個套件",
+    "found_packages_sorted": "正在對前 {count} 個結果進行排序",
     "updating": "（更新中…）",
     "no_results": "找不到符合「{query}」的套件",
+    "rate_limited": "已達到 npm 速率限制，請稍後再試",
     "title": "搜尋",
     "title_search": "搜尋：{search}",
     "title_packages": "搜尋套件",
@@ -35,6 +54,7 @@
     "claim_button": "認領「{name}」",
     "want_to_claim": "想要認領這個套件名稱嗎？",
     "start_typing": "開始輸入以搜尋套件",
+    "algolia_disclaimer": "由 Algolia 提供技術支持",
     "exact_match": "精確比對",
     "suggestion": {
       "user": "使用者",
@@ -62,7 +82,16 @@
     "sections": {
       "appearance": "外觀",
       "display": "顯示",
+      "search": "搜尋套件庫",
       "language": "語言"
+    },
+    "data_source": {
+      "label": "搜尋套件庫",
+      "description": "選擇 npmx 獲取搜尋結果的資料庫。個別套件頁面直接使用 npm Registry。",
+      "npm": "npm Registry",
+      "npm_description": "直接從 npm Registry 搜尋套件、組織及使用者。官方來源，但速度可能較慢。",
+      "algolia": "Algolia",
+      "algolia_description": "使用 Algolia 以更快速的搜尋套件、組織及使用者。"
     },
     "relative_dates": "相對時間",
     "include_types": "安裝時包含 {'@'}types",
@@ -132,8 +161,10 @@
       "documented": "社群標記此套件有更高效能的替代方案",
       "none": "此套件已被標記為不再需要，其功能很可能已由所有引擎原生提供。",
       "learn_more": "了解更多",
+      "learn_more_above": "參閱上方說明",
       "mdn": "MDN",
-      "community": "社群"
+      "community": "社群",
+      "consider_no_dep": "+ 考慮不使用相依套件？"
     },
     "stats": {
       "license": "授權",
@@ -210,7 +241,8 @@
         "important": "重要",
         "warning": "警告",
         "caution": "小心"
-      }
+      },
+      "copy_as_markdown": "複製 README 為 Markdown 格式"
     },
     "provenance_section": {
       "title": "來源",
@@ -222,6 +254,16 @@
       "transparency_log_entry": "透明度日誌條目",
       "view_more_details": "檢視更多細節",
       "error_loading": "載入來源詳情失敗"
+    },
+    "security_downgrade": {
+      "title": "信任等級調降",
+      "description_to_none_provenance": "此版本發佈時未包含 {provenance}。",
+      "description_to_none_trustedPublisher": "此版本發佈時未包含 {trustedPublishing}。",
+      "description_to_provenance_trustedPublisher": "此版本使用了 {provenance}，但未使用 {trustedPublishing}。",
+      "fallback_install_provenance": "安裝指令已固定在 {version}，這是最後一個具有來源證明 (provenance) 的版本。",
+      "fallback_install_trustedPublisher": "安裝指令已固定在 {version}，這是最後一個具有信任發佈 (trusted publishing) 的版本。",
+      "provenance_link_text": "來源證明 (provenance)",
+      "trusted_publishing_link_text": "信任發佈 (trusted publishing)"
     },
     "keywords_title": "關鍵字",
     "compatibility": "相容性",
@@ -280,11 +322,30 @@
       "show_more": "（顯示另外 {count} 個）",
       "show_less": "（收合）"
     },
+    "trends": {
+      "granularity": "週期",
+      "granularity_daily": "每日",
+      "granularity_weekly": "每週",
+      "granularity_monthly": "每月",
+      "granularity_yearly": "每年",
+      "start_date": "開始",
+      "end_date": "結束",
+      "loading": "載入中…",
+      "date_range": "{start} 到 {end}",
+      "date_range_multiline": "{start}\n到 {end}",
+      "download_file": "下載 {fileType}",
+      "toggle_annotator": "切換標註工具",
+      "legend_estimation": "估計值",
+      "no_data": "無可用資料",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "下載次數"
+      }
+    },
     "downloads": {
       "title": "每週下載量",
       "analyze": "分析下載量",
-      "community_distribution": "檢視社群採用分布",
-      "modal_title": "下載量"
+      "community_distribution": "檢視社群採用分布"
     },
     "install_scripts": {
       "title": "安裝腳本",
@@ -321,7 +382,8 @@
         "high": "高",
         "moderate": "中等",
         "low": "低"
-      }
+      },
+      "fixed_in_title": "已於 {version} 版本修復"
     },
     "deprecated": {
       "label": "已棄用",
@@ -357,7 +419,6 @@
     },
     "skeleton": {
       "loading": "載入套件詳細資訊",
-      "weekly": "每週",
       "maintainers": "維護者",
       "keywords": "關鍵字",
       "versions": "版本",
@@ -369,19 +430,10 @@
       "name_asc": "名稱（A-Z）",
       "name_desc": "名稱（Z-A）"
     },
-    "trends": {
-      "granularity": "週期",
-      "granularity_daily": "每日",
-      "granularity_weekly": "每週",
-      "granularity_monthly": "每月",
-      "granularity_yearly": "每年",
-      "start_date": "開始",
-      "end_date": "結束",
-      "loading": "載入中…",
-      "date_range": "{start} 到 {end}",
-      "date_range_multiline": "{start}\n到 {end}",
-      "download_file": "下載 {fileType}",
-      "toggle_annotator": "切換標註工具"
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
@@ -787,7 +839,8 @@
       "create_account": "建立新帳戶",
       "connect_bluesky": "使用 Bluesky 連線",
       "what_is_atmosphere": "什麼是 Atmosphere 帳戶？",
-      "atmosphere_explanation": "{npmx} 使用 {atproto} 為其多項社交功能提供支援，讓使用者真正擁有自己的資料並使用一個帳戶登入所有相容的應用程式。一旦建立帳戶，你便可以使用其他應用程式，例如 {bluesky} 和 {tangled}。"
+      "atmosphere_explanation": "{npmx} 使用 {atproto} 為其多項社交功能提供支援，讓使用者真正擁有自己的資料並使用一個帳戶登入所有相容的應用程式。一旦建立帳戶，你便可以使用其他應用程式，例如 {bluesky} 和 {tangled}。",
+      "default_input_error": "請輸入有效的 Bluesky 用戶名、DID（去中心化識別） 或完整的 PDS URL"
     }
   },
   "header": {
@@ -834,6 +887,15 @@
       "packages_selected": "已選擇 {count}/{max} 個套件。",
       "add_hint": "至少新增 2 個套件以進行比較。"
     },
+    "no_dependency": {
+      "label": "(無相依套件)",
+      "typeahead_title": "如果是 James Garbutt 會怎麼做？",
+      "typeahead_description": "試試看不使用套件會如何！由 e18e 認證。",
+      "tooltip_title": "你可能不需要相依套件",
+      "tooltip_description": "試試看不使用套件會如何！這份 {link} 維護了一系列清單，列出可被原生 API 或更簡單的替代方案所取代的套件。",
+      "e18e_community": "e18e 社群",
+      "add_column": "在比較中加入「無相依套件」欄位"
+    },
     "facets": {
       "group_label": "比較維度",
       "all": "全選",
@@ -870,6 +932,10 @@
         "downloads": {
           "label": "每週下載量",
           "description": "每週下載次數"
+        },
+        "totalLikes": {
+          "label": "喜歡",
+          "description": "喜歡總數"
         },
         "lastUpdated": {
           "label": "發布日期",
@@ -908,8 +974,92 @@
         "not_deprecated": "否",
         "types_included": "包含",
         "types_none": "無",
-        "vulnerabilities_summary": "{count}（{critical} 嚴重/{high} 高）"
+        "vulnerabilities_summary": "{count}（{critical} 嚴重/{high} 高）",
+        "up_to_you": "你來做主！"
+      },
+      "trends": {
+        "title": "每週下載"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "隱私權政策",
+    "last_updated": "最後更新時間: {date}",
+    "welcome": "歡迎來到 {app}. 我們致力於保護你的隱私。本政策解釋了我們收集哪些資訊、我們如何使用這些資訊、以及你對你的資訊擁有哪些權利。",
+    "cookies": {
+      "what_are": {
+        "title": "甚麼是 Cookies?",
+        "p1": "Cookies 是你造訪網站時儲存在你設備上的小文本文件。它們的目的是通過記住某些偏好和設置來改善你的瀏覽體驗。"
+      },
+      "types": {
+        "title": "我們使用哪些 Cookies？",
+        "p1": "我們僅使用 {bold} 維持網站功能所絕對必要之用途。我們不使用第三方或廣告追蹤 Cookies。",
+        "bold": "技術上必要的 Cookies",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "此 Cookie 由我們的託管服務商 (Vercel) 用於偏斜保護 (Skew Protection)。其目的是確保當你在瀏覽網頁時若有新版本發布，系統能引導你從正確的佈署版本獲取資源。此 Cookie 不具備任何追蹤功能。",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "此為我們的安全工作階段 (Secure Session) Cookie。當你連接 Atmosphere 帳戶時，它會儲存你的 OAuth 存取權杖 (Access Token)。此 Cookie 對於維持你的登入驗證狀態十分重要。"
+      },
+      "local_storage": {
+        "title": "本地儲存",
+        "p1": "除了工作階段 Cookies 外，我們還會利用你的瀏覽器的 {bold} 來儲存顯示偏好。這讓我們能夠記住你所選擇的主題（淺色/深色）及其他 {settings}，讓你在每次造訪網站時無需重新設定。",
+        "bold": "本地儲存空間 (Local Storage)",
+        "p2": "此資訊純屬功能性質，僅儲存在你的裝置中，且 {bold2}。我們僅將其用於提升你在本網站的使用體驗。",
+        "bold2": "不包含個人資料，亦不會用於追蹤你的行為",
+        "settings": "設定"
+      },
+      "management": {
+        "title": "管理 Cookies",
+        "p1": "你可以根據個人偏好，設定瀏覽器接受、拒絕或刪除 Cookie。但請注意：{bold}。",
+        "bold": "拒絕必要 Cookie 可能會導致你無法使用應用程式的完整功能",
+        "p2": "以下是常用瀏覽器的 Cookie 管理說明連結：",
+        "chrome": "Google Chrome (在新視窗開啟)",
+        "firefox": "Mozilla Firefox (在新視窗開啟)",
+        "edge": "Microsoft Edge (在新視窗開啟)"
+      }
+    },
+    "analytics": {
+      "title": "分析",
+      "p1": "我們使用 {bold} 來瞭解訪客如何使用本網站。此分析有助於提升使用者體驗並發現潛在問題。",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics 的設計充分考慮了隱私保護，具備以下特點：",
+      "li1": "不使用 Cookie",
+      "li2": "不收集個人識別資訊",
+      "li3": "不進行跨網站的使用者追蹤",
+      "li4": "所有數據均經過彙整與匿名處理",
+      "p3": "收集的資訊僅限於：頁面網址 (URL)、來源網址 (Referrer)、國家/地區、裝置類型、瀏覽器以及作業系統。這些數據無法用於識別特定個人身分。"
+    },
+    "authenticated": {
+      "title": "已驗證使用者",
+      "p1": "當你將 {bold} 帳戶連結至 npmx 時，我們會將你的 OAuth 存取權杖 (Access Token) 儲存在安全的 HTTP-only 工作階段 Cookie 中。此權杖僅用於代表你進行請求驗證。",
+      "bold": "Atmosphere",
+      "p2": "我們不會儲存你的登入驗證資訊，也不會存取超出提供功能所需範圍外的任何資料。你可以隨時從 {settings} 頁面取消連結你的帳戶。",
+      "settings": "設定"
+    },
+    "data_retention": {
+      "title": "資料保留",
+      "p1": "當你關閉瀏覽器或在一段時間未操作後，工作階段 (Session) Cookie 將會自動刪除。本地儲存 (Local storage) 的偏好設定則會保留在你的裝置中，直到你清除瀏覽器數據為止。分析數據則以彙整形式保留，且不會與個別使用者產生關聯。"
+    },
+    "your_rights": {
+      "title": "你的權利",
+      "p1": "你有權要求:",
+      "li1": "查閱我們所收集之數據的相關資訊",
+      "li2": "隨時清除你的本地儲存空間 (Local Storage) 與 Cookies",
+      "li3": "中斷你的已驗證工作階段 (Authenticated Session)",
+      "li4": "向我們索取數據處理的相關資訊",
+      "p2": "由於我們不收集個人資料，因此通常沒有可供刪除或匯出的個人資訊。"
+    },
+    "contact": {
+      "title": "聯絡我們",
+      "p1": "若對本隱私權政策有任何疑問或疑慮，歡迎在我們的 {link} 建立 Issue 與我們聯絡。",
+      "link": "GitHub 儲存庫"
+    },
+    "changes": {
+      "title": "政策變更",
+      "p1": "我們可能會不定期更新本隱私權政策。任何變更都將發布於本頁面，並標明更新日期。"
     }
   }
 }

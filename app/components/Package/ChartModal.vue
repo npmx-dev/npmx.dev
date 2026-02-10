@@ -1,8 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps<{
+  modalTitle?: string
+}>()
+</script>
 
 <template>
   <Modal
-    :modalTitle="$t('package.downloads.modal_title')"
+    :modalTitle="modalTitle ?? $t('package.trends.title')"
     id="chart-modal"
     class="h-full sm:h-min sm:border sm:border-border sm:rounded-lg shadow-xl sm:max-h-[90vh] sm:max-w-3xl"
   >

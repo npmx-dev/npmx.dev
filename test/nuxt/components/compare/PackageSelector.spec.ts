@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import PackageSelector from '~/components/Compare/PackageSelector.vue'
 
-// Mock $fetch for useNpmSearch
 const mockFetch = vi.fn()
 vi.stubGlobal('$fetch', mockFetch)
 

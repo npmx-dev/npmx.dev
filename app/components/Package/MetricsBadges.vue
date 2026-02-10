@@ -57,7 +57,7 @@ const typesHref = computed(() => {
   <ul class="flex items-center gap-1.5 list-none m-0 p-0">
     <!-- TypeScript types badge -->
     <li v-if="!props.isBinary" class="contents">
-      <TooltipApp :text="typesTooltip">
+      <TooltipApp :text="typesTooltip" strategy="fixed">
         <LinkBase
           v-if="typesHref"
           variant="button-secondary"
@@ -88,6 +88,7 @@ const typesHref = computed(() => {
     <li class="contents">
       <TooltipApp
         :text="isLoading ? '' : hasEsm ? $t('package.metrics.esm') : $t('package.metrics.no_esm')"
+        strategy="fixed"
       >
         <TagStatic
           tabindex="0"
@@ -107,7 +108,7 @@ const typesHref = computed(() => {
 
     <!-- CJS badge -->
     <li v-if="isLoading || hasCjs" class="contents">
-      <TooltipApp :text="isLoading ? '' : $t('package.metrics.cjs')">
+      <TooltipApp :text="isLoading ? '' : $t('package.metrics.cjs')" strategy="fixed">
         <TagStatic
           tabindex="0"
           :variant="isLoading ? 'ghost' : 'default'"

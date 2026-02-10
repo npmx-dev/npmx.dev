@@ -204,36 +204,54 @@ function matchOsvApi(urlString) {
 }
 
 /**
- * @param {string} urlString
- * @returns {MockResponse | null}
+ * Parse a package query string into name and specifier.
+ * Handles scoped packages: "@scope/name@specifier" and "name@specifier".
+ *
+ * @param {string} query
+ * @param {string} defaultSpecifier
+ * @returns {{ name: string; specifier: string }}
  */
-function matchFastNpmMeta(urlString) {
-  const url = new URL(urlString)
-  let packageName = decodeURIComponent(url.pathname.slice(1))
-
-  if (!packageName) return null
-
-  let specifier = 'latest'
-  if (packageName.startsWith('@')) {
-    const atIndex = packageName.indexOf('@', 1)
+function parsePackageQuery(query, defaultSpecifier) {
+  let name = query
+  let specifier = defaultSpecifier
+  if (name.startsWith('@')) {
+    const atIndex = name.indexOf('@', 1)
     if (atIndex !== -1) {
-      specifier = packageName.slice(atIndex + 1)
-      packageName = packageName.slice(0, atIndex)
+      specifier = name.slice(atIndex + 1)
+      name = name.slice(0, atIndex)
     }
   } else {
-    const atIndex = packageName.indexOf('@')
+    const atIndex = name.indexOf('@')
     if (atIndex !== -1) {
-      specifier = packageName.slice(atIndex + 1)
-      packageName = packageName.slice(0, atIndex)
+      specifier = name.slice(atIndex + 1)
+      name = name.slice(0, atIndex)
+    }
+  }
+  return { name, specifier }
+}
+
+/**
+ * Build a latest-version response for a single package (GET /:pkg endpoint).
+ *
+ * @param {string} query
+ * @returns {object}
+ */
+function resolveSingleLatest(query) {
+  const { name, specifier } = parsePackageQuery(query, 'latest')
+  const packument = readFixture(packageToFixturePath(name))
+
+  if (!packument) {
+    return {
+      name,
+      specifier,
+      version: '0.0.0',
+      publishedAt: new Date().toISOString(),
+      lastSynced: Date.now(),
     }
   }
 
-  const packument = readFixture(packageToFixturePath(packageName))
-  if (!packument) return null
-
   const distTags = packument['dist-tags']
   const versions = packument.versions
-  const time = packument.time
 
   let version
   if (specifier === 'latest' || !specifier) {
@@ -246,15 +264,72 @@ function matchFastNpmMeta(urlString) {
     version = distTags && distTags.latest
   }
 
-  if (!version) return null
+  if (!version) {
+    return {
+      name,
+      specifier,
+      version: '0.0.0',
+      publishedAt: new Date().toISOString(),
+      lastSynced: Date.now(),
+    }
+  }
 
-  return json({
-    name: packageName,
+  return {
+    name,
     specifier,
     version,
-    publishedAt: (time && time[version]) || new Date().toISOString(),
+    publishedAt: (packument.time && packument.time[version]) || new Date().toISOString(),
     lastSynced: Date.now(),
-  })
+  }
+}
+
+/**
+ * Build a versions response for a single package (GET /versions/:pkg endpoint).
+ *
+ * @param {string} query
+ * @returns {object}
+ */
+function resolveSingleVersions(query) {
+  const { name, specifier } = parsePackageQuery(query, '*')
+  const packument = readFixture(packageToFixturePath(name))
+
+  if (!packument) {
+    return { name, error: `"https://registry.npmjs.org/${name}": 404 Not Found` }
+  }
+
+  return {
+    name,
+    specifier,
+    distTags: packument['dist-tags'] || {},
+    versions: Object.keys(packument.versions || {}),
+    time: packument.time || {},
+    lastSynced: Date.now(),
+  }
+}
+
+/**
+ * @param {string} urlString
+ * @returns {MockResponse | null}
+ */
+function matchFastNpmMeta(urlString) {
+  const url = new URL(urlString)
+  let pathPart = decodeURIComponent(url.pathname.slice(1))
+
+  if (!pathPart) return null
+
+  // /versions/ endpoint returns version lists (used by getVersionsBatch)
+  const isVersions = pathPart.startsWith('versions/')
+  if (isVersions) pathPart = pathPart.slice('versions/'.length)
+
+  const resolveFn = isVersions ? resolveSingleVersions : resolveSingleLatest
+
+  // Batch requests: package1+package2+...
+  if (pathPart.includes('+')) {
+    const results = pathPart.split('+').map(resolveFn)
+    return json(results)
+  }
+
+  return json(resolveFn(pathPart))
 }
 
 /**
