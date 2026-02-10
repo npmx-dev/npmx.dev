@@ -192,6 +192,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             <button
               type="button"
               class="p-1 ms-1 flex items-center font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border border-solid rounded transition-colors duration-200 hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70"
+              :aria-label="$t('package.run.locally')"
               @click.stop="copyRunCommand(executableInfo?.primaryCommand)"
             >
               <span
