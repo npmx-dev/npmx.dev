@@ -405,7 +405,7 @@ ${html}
       ? `<span
       class="i-carbon:launch inline-block rtl-flip ms-1 size-[1em] opacity-50"
       aria-hidden="true"
-    />`
+    ></span>`
       : ''
 
     // Check if this is a playground link
