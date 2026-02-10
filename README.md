@@ -117,7 +117,8 @@ npmx.dev supports npm permalinks &ndash; just replace `npmjs.com` with `npmx.dev
 
 > [!TIP]
 > Want automatic redirects? Try the [npmx-replace browser extension](https://github.com/tylersayshi/npmx-replace-extension) (Chrome only for now) or the separate [npmx-redirect extension](https://github.com/iaverages/npmx-redirect) for [Chrome](https://chromewebstore.google.com/detail/lbhjgfgpnlihfmobnohoipeljollhlnb) / [Firefox](https://addons.mozilla.org/en-GB/firefox/addon/npmx-redirect/).
->>>>>>> conflict 1 of 1 ends
+>
+> > > > > > > conflict 1 of 1 ends
 
 #### Not yet supported
 
