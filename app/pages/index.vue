@@ -15,19 +15,6 @@ async function search() {
   })
 }
 
-const handleInputNpm = debounce(search, 250, { leading: true, trailing: true })
-const handleInputAlgolia = debounce(search, 80, { leading: true, trailing: true })
-
-function handleInput() {
-  if (isTouchDevice()) {
-    search()
-  } else if (isAlgolia.value) {
-    handleInputAlgolia()
-  } else {
-    handleInputNpm()
-  }
-}
-
 useSeoMeta({
   title: () => $t('seo.home.title'),
   ogTitle: () => $t('seo.home.title'),
