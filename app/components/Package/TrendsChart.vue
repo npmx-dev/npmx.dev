@@ -38,7 +38,6 @@ const props = defineProps<{
   showFacetSelector?: boolean
   permalink?: boolean
 }>()
-const emit = defineEmits(['update:startDate', 'update:endDate'])
 
 const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
