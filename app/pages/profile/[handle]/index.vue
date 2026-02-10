@@ -5,6 +5,14 @@ import { normalizeSearchParam } from '#shared/utils/url'
 const route = useRoute('/profile/[handle]')
 const router = useRouter()
 
+type LikesResult = {
+  records: {
+    value: {
+      subjectRef: string
+    }
+  }[]
+}
+
 const handle = computed(() => route.params.handle)
 
 const { data: profile }: { data?: NPMXProfile } = useFetch(
@@ -15,10 +23,17 @@ const { data: profile }: { data?: NPMXProfile } = useFetch(
   },
 )
 
+const { data: likes, status } = await useProfileLikes(handle)
+
 useSeoMeta({
   title: () => `${handle.value} - npmx`,
   description: () => `npmx profile by ${handle.value}`,
 })
+
+function extractPackageFromRef(ref: string) {
+  const { pkg } = /https:\/\/npmx.dev\/package\/(?<pkg>.*)/.exec(ref).groups
+  return pkg
+}
 
 /**
 defineOgImageComponent('Default', {
@@ -42,14 +57,36 @@ defineOgImageComponent('Default', {
       </div>
     </header>
 
-    <!-- Empty state (no packages found for user) -->
-    <div class="flex-1 flex items-center justify-center">
-      <div class="text-center">
-        <p class="text-fg-muted font-mono">
-          {{ $t('user.page.no_packages') }} <span class="text-fg">~{{ handle }}</span>
-        </p>
-        <p class="text-fg-subtle text-sm mt-2">{{ $t('user.page.no_packages_hint') }}</p>
+    <section class="flex flex-col gap-3">
+      <h1
+        class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
+        :title="Likes"
+        dir="ltr"
+      >
+        Likes <span v-if="status === 'success'">({{ likes.likes.records.length ?? 0 }})</span>
+      </h1>
+      <div v-if="status === 'pending'">
+        <p>Loading...</p>
       </div>
-    </div>
+      <div v-else-if="status === 'error'">
+        <p>Error</p>
+      </div>
+      <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <NuxtLink
+          :to="{
+            name: 'package-pkg',
+            params: { pkg: extractPackageFromRef(like.value.subjectRef) },
+          }"
+          v-for="like in likes.likes.records"
+        >
+          <BaseCard class="group font-mono flex justify-between">
+            <p>
+              {{ extractPackageFromRef(like.value.subjectRef) }}
+            </p>
+            <p class="transition-transform duration-150 group-hover:rotate-45">↗</p>
+          </BaseCard>
+        </NuxtLink>
+      </div>
+    </section>
   </main>
 </template>

@@ -38,7 +38,6 @@ export class ProfileUtils {
       miniDoc = cachedMiniDoc
     } else {
       const resolveUrl = `https://${SLINGSHOT_HOST}/xrpc/blue.microcosm.identity.resolveMiniDoc?identifier=${encodeURIComponent(handle)}`
-      console.log({ resolveUrl })
       const response = await fetch(resolveUrl, {
         headers: { 'User-Agent': 'npmx' },
       })
@@ -47,7 +46,6 @@ export class ProfileUtils {
       miniDoc = value
       await this.cache.set(miniDocKey, value, CACHE_MAX_AGE)
     }
-    console.log({ miniDoc })
 
     return miniDoc
   }

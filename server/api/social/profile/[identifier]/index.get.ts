@@ -9,6 +9,5 @@ export default defineEventHandler(async event => {
 
   const profileUtil = new ProfileUtils()
   const profile = await profileUtil.getProfile(identifier)
-  console.log('ENDPOINT', { identifier, profile })
   return profile
 })

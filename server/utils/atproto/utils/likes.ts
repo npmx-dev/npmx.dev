@@ -265,10 +265,11 @@ export class PackageLikesUtils {
     const client = new Client(miniDoc.pds, {
       headers: { 'User-Agent': 'npmx' },
     })
-    const result = client.list(dev.npmx.feed.like, {
+    const result = await client.list(dev.npmx.feed.like, {
       limit,
       repo: miniDoc.did,
     })
+
     return result
   }
 }
