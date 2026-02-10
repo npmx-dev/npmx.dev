@@ -73,7 +73,7 @@ const docUrl = computed(() => {
     </ButtonBase>
 
     <!-- Info link -->
-    <LinkBase v-else-if="docUrl" :to="docUrl" variant="button-secondary" size="small">
+    <LinkBase v-else-if="docUrl" :to="docUrl" type="button" size="xs">
       {{ $t('package.replacement.learn_more') }}
     </LinkBase>
   </div>

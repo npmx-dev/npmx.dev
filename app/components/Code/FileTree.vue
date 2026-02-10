@@ -80,11 +80,12 @@ watch(
       <!-- File -->
       <template v-else>
         <LinkBase
-          variant="button-secondary"
+          type="button"
           :to="getFileRoute(node.path)"
           :aria-current="currentPath === node.path"
           class="w-full justify-start! rounded-none! border-none!"
-          block
+          :inline="false"
+          size="sm"
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
           :classicon="getFileIcon(node.name)"
         >

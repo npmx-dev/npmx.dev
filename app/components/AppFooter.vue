@@ -17,10 +17,10 @@ const showModal = () => modalRef.value?.showModal?.()
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
         <div class="hidden sm:flex items-center gap-6 min-h-11 text-xs">
-          <LinkBase :to="{ name: 'about' }">
+          <LinkBase :to="{ name: 'about' }" size="xs">
             {{ $t('footer.about') }}
           </LinkBase>
-          <LinkBase :to="{ name: 'privacy' }">
+          <LinkBase :to="{ name: 'privacy' }" size="xs">
             {{ $t('privacy_policy.title') }}
           </LinkBase>
           <button
@@ -32,6 +32,7 @@ const showModal = () => modalRef.value?.showModal?.()
             {{ $t('footer.keyboard_shortcuts') }}
           </button>
 
+          <!-- Keyboard Shortcuts Modal -->
           <Modal
             ref="modalRef"
             :modalTitle="$t('footer.keyboard_shortcuts')"
@@ -89,16 +90,16 @@ const showModal = () => modalRef.value?.showModal?.()
               </li>
             </ul>
           </Modal>
-          <LinkBase to="https://docs.npmx.dev">
+          <LinkBase to="https://docs.npmx.dev" size="xs">
             {{ $t('footer.docs') }}
           </LinkBase>
-          <LinkBase to="https://repo.npmx.dev">
+          <LinkBase to="https://repo.npmx.dev" size="xs">
             {{ $t('footer.source') }}
           </LinkBase>
-          <LinkBase to="https://social.npmx.dev">
+          <LinkBase to="https://social.npmx.dev" size="xs">
             {{ $t('footer.social') }}
           </LinkBase>
-          <LinkBase to="https://chat.npmx.dev">
+          <LinkBase to="https://chat.npmx.dev" size="xs">
             {{ $t('footer.chat') }}
           </LinkBase>
         </div>

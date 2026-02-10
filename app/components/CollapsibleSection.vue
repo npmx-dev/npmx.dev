@@ -103,7 +103,7 @@ useHead({
           />
         </button>
 
-        <LinkBase :to="`#${id}`">
+        <LinkBase :to="`#${id}`" size="xs">
           {{ title }}
         </LinkBase>
       </component>

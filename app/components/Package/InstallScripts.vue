@@ -59,10 +59,10 @@ const isExpanded = shallowRef(false)
         >
           <template v-if="installScripts.content?.[scriptName] && scriptParts[scriptName]">
             <template v-if="scriptParts[scriptName].prefix">
-              {{ scriptParts[scriptName].prefix
-              }}<LinkBase :to="scriptParts[scriptName].link">{{
-                scriptParts[scriptName].filePath
-              }}</LinkBase>
+              {{ scriptParts[scriptName].prefix }}
+              <LinkBase :to="scriptParts[scriptName].link" size="sm">
+                {{ scriptParts[scriptName].filePath }}
+              </LinkBase>
             </template>
             <LinkBase v-else :to="scriptParts[scriptName].link">
               {{ installScripts.content[scriptName] }}

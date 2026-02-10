@@ -257,9 +257,10 @@ onKeyStroke(
           v-for="link in desktopLinks"
           :key="link.name"
           class="border-none"
-          variant="button-secondary"
+          type="button"
           :to="link.to"
           :aria-keyshortcuts="link.keyshortcut"
+          size="sm"
         >
           {{ link.label }}
         </LinkBase>

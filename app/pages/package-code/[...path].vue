@@ -374,9 +374,9 @@ defineOgImageComponent('Default', {
     <!-- Error: no version -->
     <div v-if="!version" class="container py-20 text-center">
       <p class="text-fg-muted mb-4">{{ $t('code.version_required') }}</p>
-      <LinkBase variant="button-secondary" :to="packageRoute(packageName)">{{
-        $t('code.go_to_package')
-      }}</LinkBase>
+      <LinkBase type="button" :to="packageRoute(packageName)">
+        {{ $t('code.go_to_package') }}
+      </LinkBase>
     </div>
 
     <!-- Loading state -->
@@ -388,9 +388,9 @@ defineOgImageComponent('Default', {
     <!-- Error state -->
     <div v-else-if="treeStatus === 'error'" class="container py-20 text-center" role="alert">
       <p class="text-fg-muted mb-4">{{ $t('code.failed_to_load_tree') }}</p>
-      <LinkBase variant="button-secondary" :to="packageRoute(packageName, version)">{{
-        $t('code.back_to_package')
-      }}</LinkBase>
+      <LinkBase type="button" :to="packageRoute(packageName, version)">
+        {{ $t('code.back_to_package') }}
+      </LinkBase>
     </div>
 
     <!-- Main content: file tree + file viewer -->
@@ -495,7 +495,7 @@ defineOgImageComponent('Default', {
             }}
           </p>
           <LinkBase
-            variant="button-secondary"
+            type="button"
             :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
           >
             {{ $t('code.view_raw') }}
@@ -546,7 +546,7 @@ defineOgImageComponent('Default', {
           <p class="text-fg-muted mb-2">{{ $t('code.failed_to_load') }}</p>
           <p class="text-fg-subtle text-sm mb-4">{{ $t('code.unavailable_hint') }}</p>
           <LinkBase
-            variant="button-secondary"
+            type="button"
             :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
           >
             {{ $t('code.view_raw') }}

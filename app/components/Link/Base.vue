@@ -7,12 +7,11 @@ const props = withDefaults(
       /** Disabled links will be displayed as plain text */
       disabled?: boolean
       /**
-       * `type` should never be used, because this will always be a link.
-       * */
-      type?: never
-      variant?: 'button-primary' | 'button-secondary' | 'link'
-      size?: 'small' | 'medium'
-      block?: boolean
+       * Controls whether the link is styled as text or as a button.
+       */
+      type?: 'button' | 'link'
+      size?: 'xs' | 'sm' | 'md' | 'lg'
+      inline?: boolean
 
       ariaKeyshortcuts?: string
 
@@ -37,7 +36,7 @@ const props = withDefaults(
       noUnderline?: boolean
     } & NuxtLinkProps
   >(),
-  { variant: 'link', size: 'medium' },
+  { type: 'link', size: 'md', inline: true },
 )
 
 const isLinkExternal = computed(
@@ -50,47 +49,66 @@ const isLinkAnchor = computed(
   () => !!props.to && typeof props.to === 'string' && props.to.startsWith('#'),
 )
 
-/** size is only applicable for button like links */
-const isLink = computed(() => props.variant === 'link')
-const isButton = computed(() => !isLink.value)
-const isButtonSmall = computed(() => props.size === 'small' && !isLink.value)
-const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
+const isLink = computed(() => props.type === 'link')
+const isButton = computed(() => props.type === 'button')
+const sizeClass = computed(() => {
+  if (isButton.value) {
+    switch (props.size) {
+      case 'xs':
+        return 'text-xs px-2 py-0.5'
+      case 'sm':
+        return 'text-sm px-4 py-2'
+      case 'md':
+        return 'text-base px-5 py-2.5'
+      case 'lg':
+        return 'text-lg px-6 py-3'
+    }
+  }
+
+  switch (props.size) {
+    case 'xs':
+      return 'text-xs'
+    case 'sm':
+      return 'text-sm'
+    case 'md':
+      return 'text-base'
+    case 'lg':
+      return 'text-lg'
+  }
+})
 </script>
 
 <template>
   <span
     v-if="disabled"
-    :class="{
-      'flex': block,
-      'inline-flex': !block,
-      'opacity-50 gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
-        isButton,
-      'text-sm px-4 py-2': isButtonMedium,
-      'text-xs px-2 py-0.5': isButtonSmall,
-      'text-bg bg-fg': variant === 'button-primary',
-      'bg-transparent text-fg': variant === 'button-secondary',
-    }"
+    :class="[
+      inline ? 'inline-flex' : 'flex',
+      sizeClass,
+      {
+        'opacity-50 gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
+          isButton,
+        'bg-transparent text-fg': isButton,
+      },
+    ]"
     ><slot
   /></span>
   <NuxtLink
     v-else
     class="group/link gap-x-1 items-center"
-    :class="{
-      'flex': block,
-      'inline-flex': !block,
-      'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30':
-        !isLinkAnchor && isLink && !noUnderline,
-      'justify-start font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200':
-        isLink,
-      'justify-center font-mono border border-border rounded-md transition-all duration-200':
-        isButton,
-      'text-sm px-4 py-2': isButtonMedium,
-      'text-xs px-2 py-0.5': isButtonSmall,
-      'bg-transparent text-fg hover:(bg-fg/10 text-accent) focus-visible:(bg-fg/10 text-accent) aria-[current=true]:(bg-fg/10 text-accent border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
-        variant === 'button-secondary',
-      'text-bg bg-fg hover:(bg-fg/50 text-accent) focus-visible:(bg-fg/50) aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
-        variant === 'button-primary',
-    }"
+    :class="[
+      inline ? 'inline-flex' : 'flex',
+      sizeClass,
+      {
+        'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30':
+          !isLinkAnchor && isLink && !noUnderline,
+        'justify-start font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200':
+          isLink,
+        'justify-center font-mono border border-border rounded-md transition-all duration-200':
+          isButton,
+        'bg-transparent text-fg hover:(bg-fg/10 text-accent) focus-visible:(bg-fg/10 text-accent) aria-[current=true]:(bg-fg/10 text-accent border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
+          isButton,
+      },
+    ]"
     :to="to"
     :aria-keyshortcuts="ariaKeyshortcuts"
     :target="isLinkExternal ? '_blank' : undefined"

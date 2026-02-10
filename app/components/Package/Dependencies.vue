@@ -91,7 +91,7 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" :inline="false" class="truncate" dir="ltr" size="sm">
             {{ dep }}
           </LinkBase>
           <span class="flex items-center gap-1 max-w-[40%]" dir="ltr">
@@ -111,6 +111,7 @@ const numberFormatter = useNumberFormatter()
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
               :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
               classicon="i-carbon:security"
+              size="sm"
             >
               <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
             </LinkBase>
@@ -120,6 +121,7 @@ const numberFormatter = useNumberFormatter()
               class="shrink-0 text-purple-500"
               :title="getDeprecatedDepInfo(dep)!.message"
               classicon="i-carbon:warning-hex"
+              size="sm"
             >
               <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </LinkBase>
@@ -128,6 +130,7 @@ const numberFormatter = useNumberFormatter()
               class="block truncate"
               :class="getVersionClass(outdatedDeps[dep])"
               :title="outdatedDeps[dep] ? getOutdatedTooltip(outdatedDeps[dep], $t) : version"
+              size="sm"
             >
               {{ version }}
             </LinkBase>
@@ -178,7 +181,13 @@ const numberFormatter = useNumberFormatter()
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-1 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="block truncate" dir="ltr">
+            <LinkBase
+              :to="packageRoute(peer.name)"
+              :inline="false"
+              class="truncate"
+              dir="ltr"
+              size="sm"
+            >
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -187,9 +196,11 @@ const numberFormatter = useNumberFormatter()
           </div>
           <LinkBase
             :to="packageRoute(peer.name, peer.version)"
-            class="block truncate max-w-[40%]"
+            :inline="false"
+            class="truncate max-w-[40%]"
             :title="peer.version"
             dir="ltr"
+            size="sm"
           >
             {{ peer.version }}
           </LinkBase>
@@ -239,14 +250,16 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" :inline="false" class="truncate" dir="ltr" size="sm">
             {{ dep }}
           </LinkBase>
           <LinkBase
             :to="packageRoute(dep, version)"
-            class="block truncate"
+            :inline="false"
+            class="truncate"
             :title="version"
             dir="ltr"
+            size="sm"
           >
             {{ version }}
           </LinkBase>

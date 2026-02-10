@@ -380,7 +380,8 @@ describe('component accessibility audits', () => {
 
     it("should have no accessibility violations when it's the current link", async () => {
       const component = await mountSuspended(LinkBase, {
-        props: { to: 'http://example.com', current: true },
+        props: { to: 'http://example.com' },
+        attrs: { 'aria-current': 'page' },
         slots: { default: 'Button link content' },
       })
       const results = await runAxe(component)
@@ -396,18 +397,18 @@ describe('component accessibility audits', () => {
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violations as secondary button', async () => {
+    it('should have no accessibility violations as button link', async () => {
       const component = await mountSuspended(LinkBase, {
-        props: { to: 'http://example.com', disabled: true, variant: 'button-secondary' },
+        props: { to: 'http://example.com', disabled: true, type: 'button' },
         slots: { default: 'Button link content' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
 
-    it('should have no accessibility violations as primary button', async () => {
+    it('should have no accessibility violations as button link (large)', async () => {
       const component = await mountSuspended(LinkBase, {
-        props: { to: 'http://example.com', disabled: true, variant: 'button-primary' },
+        props: { to: 'http://example.com', disabled: true, type: 'button', size: 'lg' },
         slots: { default: 'Button link content' },
       })
       const results = await runAxe(component)
@@ -419,8 +420,22 @@ describe('component accessibility audits', () => {
         props: {
           to: 'http://example.com',
           disabled: true,
-          variant: 'button-secondary',
-          size: 'small',
+          type: 'button',
+          size: 'sm',
+        },
+        slots: { default: 'Button link content' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations as extra-small button', async () => {
+      const component = await mountSuspended(LinkBase, {
+        props: {
+          to: 'http://example.com',
+          disabled: true,
+          type: 'button',
+          size: 'xs',
         },
         slots: { default: 'Button link content' },
       })

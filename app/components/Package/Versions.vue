@@ -305,7 +305,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
   >
     <template #actions>
       <LinkBase
-        variant="button-secondary"
+        type="button"
+        size="sm"
         :to="`https://majors.nullvoxpopuli.com/q?packages=${packageName}`"
         :title="$t('package.downloads.community_distribution')"
         classicon="i-carbon:load-balancer-network"
@@ -356,8 +357,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="overflow-hidden">
               <LinkBase
                 :to="versionRoute(row.primaryVersion.version)"
-                block
-                class="text-sm"
+                :inline="false"
+                size="sm"
                 :class="
                   row.primaryVersion.deprecated ? 'text-red-400 hover:text-red-300' : undefined
                 "
@@ -413,8 +414,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <LinkBase
                 :to="versionRoute(v.version)"
-                block
-                class="text-xs"
+                :inline="false"
+                size="xs"
                 :class="v.deprecated ? 'text-red-400 hover:text-red-300' : undefined"
                 :title="
                   v.deprecated
@@ -511,8 +512,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
             <div class="flex items-center justify-between gap-2">
               <LinkBase
                 :to="versionRoute(row.primaryVersion.version)"
-                block
-                class="text-xs"
+                :inline="false"
+                size="xs"
                 :class="
                   row.primaryVersion.deprecated ? 'text-red-400 hover:text-red-300' : undefined
                 "
@@ -584,8 +585,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <LinkBase
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      block
-                      class="text-xs"
+                      :inline="false"
+                      size="xs"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-400 hover:text-red-300'
@@ -645,7 +646,7 @@ function getTagVersions(tag: string): VersionDisplay[] {
                     <LinkBase
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
-                      block
+                      :inline="false"
                       class="text-xs ms-6"
                       :class="
                         group.versions[0]?.deprecated
@@ -705,8 +706,8 @@ function getTagVersions(tag: string): VersionDisplay[] {
                   <div class="flex items-center justify-between gap-2">
                     <LinkBase
                       :to="versionRoute(v.version)"
-                      block
-                      class="text-xs"
+                      :inline="false"
+                      size="xs"
                       :class="v.deprecated ? 'text-red-400 hover:text-red-300' : undefined"
                       :title="
                         v.deprecated

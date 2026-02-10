@@ -121,9 +121,9 @@ if (import.meta.client) {
 <template>
   <div class="min-h-screen flex flex-col bg-bg text-fg">
     <NuxtPwaAssets />
-    <LinkBase to="#main-content" variant="button-primary" class="skip-link">{{
-      $t('common.skip_link')
-    }}</LinkBase>
+    <LinkBase to="#main-content" type="button" class="skip-link" size="sm">
+      {{ $t('common.skip_link') }}
+    </LinkBase>
 
     <AppHeader :show-logo="!isHomepage" />
 

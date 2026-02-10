@@ -42,8 +42,9 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
           <span class="inline-flex items-center gap-1.5 truncate">
             <LinkBase
               :to="packageRoute(col.name, col.version)"
-              class="text-sm truncate"
-              block
+              class="truncate"
+              :inline="false"
+              size="sm"
               :title="col.version ? `${col.name}@${col.version}` : col.name"
             >
               {{ col.name }}<template v-if="col.version">@{{ col.version }}</template>
@@ -80,9 +81,9 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
                 <p class="text-xs text-fg-muted">
                   <i18n-t keypath="compare.no_dependency.tooltip_description" tag="span">
                     <template #link>
-                      <LinkBase to="https://e18e.dev/docs/replacements/">{{
-                        $t('compare.no_dependency.e18e_community')
-                      }}</LinkBase>
+                      <LinkBase to="https://e18e.dev/docs/replacements/" size="xs">
+                        {{ $t('compare.no_dependency.e18e_community') }}
+                      </LinkBase>
                     </template>
                   </i18n-t>
                 </p>

@@ -161,11 +161,12 @@ defineOgImageComponent('Default', {
       <div v-else-if="!isOwnProfile" class="py-12 text-center">
         <p class="text-fg-muted">{{ $t('user.orgs_page.own_orgs_only') }}</p>
         <LinkBase
-          variant="button-secondary"
+          type="button"
           :to="{ name: '~username-orgs', params: { username: npmUser! } }"
           class="mt-4"
-          >{{ $t('user.orgs_page.view_your_orgs') }}</LinkBase
         >
+          {{ $t('user.orgs_page.view_your_orgs') }}
+        </LinkBase>
       </div>
 
       <!-- Loading state -->

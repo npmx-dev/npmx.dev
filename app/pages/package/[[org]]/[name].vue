@@ -566,7 +566,11 @@ onKeyStroke(
               :title="pkg.name"
               dir="ltr"
             >
-              <LinkBase v-if="orgName" :to="{ name: 'org', params: { org: orgName } }">
+              <LinkBase
+                v-if="orgName"
+                :to="{ name: 'org', params: { org: orgName } }"
+                class="text-2xl sm:text-3xl"
+              >
                 @{{ orgName }}
               </LinkBase>
               <span v-if="orgName">/</span>
@@ -609,8 +613,9 @@ onKeyStroke(
               :to="packageRoute(pkg.name, resolvedVersion)"
               :title="$t('package.view_permalink')"
               dir="ltr"
-              >{{ resolvedVersion }}</LinkBase
             >
+              {{ resolvedVersion }}
+            </LinkBase>
             <span dir="ltr" v-else>v{{ resolvedVersion }}</span>
 
             <template v-if="hasProvenance(displayVersion)">
@@ -626,8 +631,8 @@ onKeyStroke(
                 strategy="fixed"
               >
                 <LinkBase
-                  variant="button-secondary"
-                  size="small"
+                  type="button"
+                  size="xs"
                   to="#provenance"
                   :aria-label="$t('package.provenance_section.view_more_details')"
                   classicon="i-lucide-shield-check"
@@ -650,27 +655,30 @@ onKeyStroke(
             :class="$style.packageNav"
           >
             <LinkBase
-              variant="button-secondary"
+              type="button"
               v-if="docsLink"
               :to="docsLink"
               aria-keyshortcuts="d"
               classicon="i-carbon:document"
+              size="sm"
             >
               {{ $t('package.links.docs') }}
             </LinkBase>
             <LinkBase
-              variant="button-secondary"
+              type="button"
               :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
               aria-keyshortcuts="."
               classicon="i-carbon:code"
+              size="sm"
             >
               {{ $t('package.links.code') }}
             </LinkBase>
             <LinkBase
-              variant="button-secondary"
+              type="button"
               :to="{ name: 'compare', query: { packages: pkg.name } }"
               aria-keyshortcuts="c"
               classicon="i-carbon:compare"
+              size="sm"
             >
               {{ $t('package.links.compare') }}
             </LinkBase>
@@ -747,7 +755,7 @@ onKeyStroke(
             class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3 text-sm"
           >
             <li v-if="repositoryUrl">
-              <LinkBase :to="repositoryUrl" :classicon="repoProviderIcon">
+              <LinkBase :to="repositoryUrl" :classicon="repoProviderIcon" size="sm">
                 <span v-if="repoRef">
                   {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
                 </span>
@@ -755,23 +763,23 @@ onKeyStroke(
               </LinkBase>
             </li>
             <li v-if="repositoryUrl && repoMeta && starsLink">
-              <LinkBase :to="starsLink" classicon="i-carbon:star">
+              <LinkBase :to="starsLink" classicon="i-carbon:star" size="sm">
                 {{ compactNumberFormatter.format(stars) }}
               </LinkBase>
             </li>
             <li v-if="forks && forksLink">
-              <LinkBase :to="forksLink" classicon="i-carbon:fork">
+              <LinkBase :to="forksLink" classicon="i-carbon:fork" size="sm">
                 {{ compactNumberFormatter.format(forks) }}
               </LinkBase>
             </li>
             <li class="basis-full sm:hidden" />
             <li v-if="homepageUrl">
-              <LinkBase :to="homepageUrl" classicon="i-carbon:link">
+              <LinkBase :to="homepageUrl" classicon="i-carbon:link" size="sm">
                 {{ $t('package.links.homepage') }}
               </LinkBase>
             </li>
             <li v-if="displayVersion?.bugs?.url">
-              <LinkBase :to="displayVersion.bugs.url" classicon="i-carbon:warning">
+              <LinkBase :to="displayVersion.bugs.url" classicon="i-carbon:warning" size="sm">
                 {{ $t('package.links.issues') }}
               </LinkBase>
             </li>
@@ -780,6 +788,7 @@ onKeyStroke(
                 :to="`https://www.npmjs.com/package/${pkg.name}`"
                 :title="$t('common.view_on_npm')"
                 classicon="i-carbon:logo-npm"
+                size="sm"
               >
                 npm
               </LinkBase>
@@ -789,12 +798,13 @@ onKeyStroke(
                 :to="jsrInfo.url"
                 :title="$t('badges.jsr.title')"
                 classicon="i-simple-icons:jsr"
+                size="sm"
               >
                 {{ $t('package.links.jsr') }}
               </LinkBase>
             </li>
             <li v-if="fundingUrl">
-              <LinkBase :to="fundingUrl" classicon="i-carbon:favorite">
+              <LinkBase :to="fundingUrl" classicon="i-carbon:favorite" size="sm">
                 {{ $t('package.links.fund') }}
               </LinkBase>
             </li>
@@ -874,8 +884,8 @@ onKeyStroke(
               </span>
               <ButtonGroup v-if="getDependencyCount(displayVersion) > 0">
                 <LinkBase
-                  variant="button-secondary"
-                  size="small"
+                  type="button"
+                  size="xs"
                   :to="`https://npmgraph.js.org/?q=${pkg.name}`"
                   :title="$t('package.stats.view_dependency_graph')"
                   classicon="i-carbon:network-3"
@@ -884,8 +894,8 @@ onKeyStroke(
                 </LinkBase>
 
                 <LinkBase
-                  variant="button-secondary"
-                  size="small"
+                  type="button"
+                  size="xs"
                   :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                   :title="$t('package.stats.inspect_dependency_tree')"
                   classicon="i-carbon:tree-view"
@@ -1026,7 +1036,7 @@ onKeyStroke(
             id="get-started-heading"
             class="group text-xs text-fg-subtle uppercase tracking-wider"
           >
-            <LinkBase to="#get-started">
+            <LinkBase to="#get-started" size="xs">
               {{ $t('package.get_started.title') }}
             </LinkBase>
           </h2>
@@ -1159,7 +1169,7 @@ onKeyStroke(
       <section id="readme" class="min-w-0 scroll-mt-20" :class="$style.areaReadme">
         <div class="flex flex-wrap items-center justify-between mb-3 px-1">
           <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
-            <LinkBase to="#readme">
+            <LinkBase to="#readme" size="xs">
               {{ $t('package.readme.title') }}
             </LinkBase>
           </h2>
@@ -1317,9 +1327,9 @@ onKeyStroke(
       <p class="text-fg-muted mb-8">
         {{ error?.message ?? $t('package.not_found_message') }}
       </p>
-      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{
-        $t('common.go_back_home')
-      }}</LinkBase>
+      <LinkBase type="button" :to="{ name: 'index' }">
+        {{ $t('common.go_back_home') }}
+      </LinkBase>
     </div>
   </main>
 </template>
