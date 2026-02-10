@@ -220,8 +220,6 @@ export default defineNuxtConfig({
 
   htmlValidator: {
     enabled: !isCI || (provider !== 'vercel' && !!process.env.VALIDATE_HTML),
-    ignore:
-      !isCI || (provider !== 'vercel' && !!process.env.VALIDATE_HTML) ? ['/compare'] : undefined,
     failOnError: true,
   },
 
