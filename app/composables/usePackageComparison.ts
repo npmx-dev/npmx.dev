@@ -269,7 +269,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   // Compute values for each facet
   function getFacetValues(facet: ComparisonFacet): (FacetValue | null)[] {
     // If not ready or no data, return array of nulls to render skeletons
-    if (!packagesData.value || packagesData.value.length === 0) {
+    if (nuxt.isHydrating || !packagesData.value || packagesData.value.length === 0) {
       return Array.from({ length: packages.value.length }, () => null)
     }
 
@@ -288,7 +288,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
   // Check if a facet depends on slow-loading data
   function isFacetLoading(facet: ComparisonFacet): boolean {
-    if (!ready.value || !installSizeLoading.value) return false
+    if (nuxt.isHydrating || !installSizeLoading.value) return false
     // These facets depend on install-size API
     return facet === 'installSize' || facet === 'totalDependencies'
   }
