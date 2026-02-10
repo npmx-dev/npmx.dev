@@ -28,6 +28,7 @@ const router = useRouter()
 
 const header = useTemplateRef('header')
 const isHeaderPinned = shallowRef(false)
+const navExtraOffset = shallowRef(0)
 
 function checkHeaderPosition() {
   const el = header.value
@@ -40,12 +41,36 @@ function checkHeaderPosition() {
   isHeaderPinned.value = Math.abs(rect.top - top) < 1
 }
 
+let footerEl: HTMLElement | null = null
+let footerObserver: IntersectionObserver | null = null
+
 useEventListener('scroll', checkHeaderPosition, { passive: true })
 useEventListener('resize', checkHeaderPosition)
 
 onMounted(() => {
   checkHeaderPosition()
+  footerEl = document.querySelector('footer')
+  if (!footerEl) return
+  const thresholdValues = Array.from({ length: 101 }, (_, index) => index / 100)
+  footerObserver = new IntersectionObserver(
+    entries => {
+      const entry = entries[0]
+      if (!entry) return
+      navExtraOffset.value = entry.isIntersecting ? entry.intersectionRect.height : 0
+    },
+    { threshold: thresholdValues },
+  )
+  footerObserver.observe(footerEl)
 })
+
+onBeforeUnmount(() => {
+  footerObserver?.disconnect()
+  footerObserver = null
+})
+
+const navExtraOffsetStyle = computed(() => ({
+  '--package-nav-extra': `${navExtraOffset.value}px`,
+}))
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
 const selectedPM = useSelectedPackageManager()
@@ -647,6 +672,7 @@ onKeyStroke(
             as="nav"
             :aria-label="$t('package.navigation')"
             class="hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-1/2 max-sm:-translate-x-1/2 max-sm:rtl:translate-x-1/2 max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
+            :style="navExtraOffsetStyle"
             :class="$style.packageNav"
           >
             <LinkBase
@@ -1460,7 +1486,7 @@ onKeyStroke(
 /* Mobile floating nav: safe-area positioning + kbd hiding */
 @media (max-width: 639.9px) {
   .packageNav {
-    bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(1.25rem + var(--package-nav-extra, 0px) + env(safe-area-inset-bottom, 0px));
   }
 
   .packageNav > :global(a kbd) {
