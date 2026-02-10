@@ -56,7 +56,7 @@ function openAuthModal() {
 </script>
 
 <template>
-  <div ref="accountMenuRef" class="relative flex min-w-24 justify-end">
+  <div ref="accountMenuRef" class="relative flex min-w-28 justify-end">
     <ButtonBase
       type="button"
       :aria-expanded="isOpen"

@@ -17,6 +17,9 @@
     "social": "सामाजिक",
     "chat": "च्याट"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "npm प्याकेजहरू खोज्नुहोस्",
     "placeholder": "प्याकेज खोज्नुहोस्...",
@@ -59,6 +62,7 @@
       "display": "डिस्प्ले",
       "language": "भाषा"
     },
+    "data_source": {},
     "relative_dates": "सापेक्ष मितिहरू",
     "include_types": "इन्स्टलमा {'@'}types समावेश गर्नुहोस्",
     "include_types_description": "टाइप नभएका प्याकेजका इन्स्टल कमाण्डहरूमा {'@'}types प्याकेज थप्नुहोस्",
@@ -154,6 +158,7 @@
       "fund": "फन्ड",
       "compare": "तुलना"
     },
+    "likes": {},
     "docs": {
       "not_available": "डकुमेन्टेसन उपलब्ध छैन",
       "not_available_detail": "यस संस्करणका लागि डकुमेन्टेसन तयार गर्न सकिएन।"
@@ -175,8 +180,11 @@
     "readme": {
       "title": "README",
       "no_readme": "README उपलब्ध छैन।",
-      "view_on_github": "GitHub मा हेर्नुहोस्"
+      "view_on_github": "GitHub मा हेर्नुहोस्",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "किवर्ड्स",
     "compatibility": "कम्प्याटिबिलिटी",
     "card": {
@@ -232,6 +240,21 @@
       "add_owner": "+ ओनर थप्नुहोस्",
       "show_more": "(अझै {count} देखाउनुहोस्)",
       "show_less": "(कम देखाउनुहोस्)"
+    },
+    "trends": {
+      "granularity": "सूक्ष्मता",
+      "granularity_daily": "दैनिक",
+      "granularity_weekly": "साप्ताहिक",
+      "granularity_monthly": "मासिक",
+      "granularity_yearly": "वार्षिक",
+      "start_date": "सुरु",
+      "end_date": "अन्त्य",
+      "loading": "लोड हुँदैछ...",
+      "date_range": "{start} देखि {end}",
+      "date_range_multiline": "{start}\nदेखि {end}",
+      "download_file": "{fileType} डाउनलोड गर्नुहोस्",
+      "toggle_annotator": "एनोटेटर टगल गर्नुहोस्",
+      "items": {}
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड",
@@ -308,7 +331,6 @@
     },
     "skeleton": {
       "loading": "प्याकेज विवरण लोड हुँदैछ",
-      "weekly": "साप्ताहिक",
       "maintainers": "मेन्टेनरहरू",
       "keywords": "किवर्ड्स",
       "versions": "संस्करणहरू",
@@ -319,20 +341,7 @@
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     },
-    "trends": {
-      "granularity": "सूक्ष्मता",
-      "granularity_daily": "दैनिक",
-      "granularity_weekly": "साप्ताहिक",
-      "granularity_monthly": "मासिक",
-      "granularity_yearly": "वार्षिक",
-      "start_date": "सुरु",
-      "end_date": "अन्त्य",
-      "loading": "लोड हुँदैछ...",
-      "date_range": "{start} देखि {end}",
-      "date_range_multiline": "{start}\nदेखि {end}",
-      "download_file": "{fileType} डाउनलोड गर्नुहोस्",
-      "toggle_annotator": "एनोटेटर टगल गर्नुहोस्"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -570,6 +579,7 @@
     "more_keywords": "+{count} थप",
     "clear_all": "सबै हटाउनुहोस्",
     "remove_filter": "{label} फिल्टर हटाउनुहोस्",
+    "chips": {},
     "download_range": {
       "any": "कुनै पनि",
       "lt100": "< 100",
@@ -775,6 +785,7 @@
       "packages_selected": "{count}/{max} प्याकेज चयन गरियो।",
       "add_hint": "तुलना गर्न कम्तिमा २ प्याकेज थप्नुहोस्।"
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "तुलना पक्षहरू",
       "all": "सबै",
@@ -789,7 +800,38 @@
         "health": "हेल्थ",
         "compatibility": "कम्प्याटिबिलिटी",
         "security": "सिक्युरिटी र कम्प्लायन्स"
-      }
+      },
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

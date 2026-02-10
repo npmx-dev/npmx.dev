@@ -18,6 +18,9 @@
     "social": "sociální sítě",
     "chat": "chat"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Hledat npm balíčky",
     "placeholder": "Hledat balíčky...",
@@ -61,6 +64,7 @@
       "display": "Zobrazení",
       "language": "Jazyk"
     },
+    "data_source": {},
     "relative_dates": "Relativní data",
     "include_types": "Zahrnout {'@'}types při instalaci",
     "include_types_description": "Přidat balíček {'@'}types do instalačních příkazů pro balíčky bez integrovaných typů",
@@ -173,6 +177,7 @@
       "fund": "financovat",
       "compare": "porovnat"
     },
+    "likes": {},
     "docs": {
       "not_available": "Dokumentace není k dispozici",
       "not_available_detail": "Nepodařilo se nám vygenerovat dokumentaci pro tuto verzi."
@@ -194,8 +199,11 @@
     "readme": {
       "title": "ČTI MĚ",
       "no_readme": "Žádné ČTI MĚ NENÍ k dispozici.",
-      "view_on_github": "Zobrazit na GitHubu"
+      "view_on_github": "Zobrazit na GitHubu",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Klíčová slova",
     "compatibility": "Kompatibilita",
     "card": {
@@ -252,6 +260,21 @@
       "add_owner": "+ Přidat vlastníka",
       "show_more": "(zobrazit {count} dalšího) | (zobrazit {count} další) | (zobrazit {count} dalších)",
       "show_less": "(zobrazit méně)"
+    },
+    "trends": {
+      "granularity": "Rozlišení",
+      "granularity_daily": "Denně",
+      "granularity_weekly": "Týdně",
+      "granularity_monthly": "Měsíčně",
+      "granularity_yearly": "Ročně",
+      "start_date": "Od",
+      "end_date": "Do",
+      "loading": "Načítání...",
+      "date_range": "od {start} do {end}",
+      "date_range_multiline": "od {start}\ndo {end}",
+      "download_file": "Stáhnout {fileType}",
+      "toggle_annotator": "Přepnout popisovač",
+      "items": {}
     },
     "downloads": {
       "title": "Týdenní stažení",
@@ -329,7 +352,6 @@
     },
     "skeleton": {
       "loading": "Načítání detailů balíčku",
-      "weekly": "Týdenní",
       "maintainers": "Správci",
       "keywords": "Klíčová slova",
       "versions": "Verze",
@@ -341,20 +363,7 @@
       "name_asc": "Název (A-Z)",
       "name_desc": "Název (Z-A)"
     },
-    "trends": {
-      "granularity": "Rozlišení",
-      "granularity_daily": "Denně",
-      "granularity_weekly": "Týdně",
-      "granularity_monthly": "Měsíčně",
-      "granularity_yearly": "Ročně",
-      "start_date": "Od",
-      "end_date": "Do",
-      "loading": "Načítání...",
-      "date_range": "od {start} do {end}",
-      "date_range_multiline": "od {start}\ndo {end}",
-      "download_file": "Stáhnout {fileType}",
-      "toggle_annotator": "Přepnout popisovač"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -806,6 +815,7 @@
       "packages_selected": "Vybrané balíčky: {count}/{max}.",
       "add_hint": "Přidejte alespoň 2 balíčky ke srovnání."
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "Kategorie vlastností",
       "all": "Vše",
@@ -843,6 +853,7 @@
           "label": "Stažení/týden",
           "description": "Počet stažení za týden"
         },
+        "totalLikes": {},
         "lastUpdated": {
           "label": "Publikováno",
           "description": "Kdy byla tato verze publikována"
@@ -881,7 +892,22 @@
         "types_included": "Zahrnuté",
         "types_none": "Žádné",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
-      }
+      },
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

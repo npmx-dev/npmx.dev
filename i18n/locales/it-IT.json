@@ -18,6 +18,9 @@
     "social": "social",
     "chat": "chat"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Cerca i pacchetti npm",
     "placeholder": "cerca i pacchetti...",
@@ -66,6 +69,7 @@
       "display": "Visualizzazione",
       "language": "Lingua"
     },
+    "data_source": {},
     "relative_dates": "Date relative",
     "include_types": "Includi {'@'}types durante l'installazione",
     "include_types_description": "Aggiungi il pacchetto {'@'}types al comando install per i pacchetti senza tipo",
@@ -228,6 +232,7 @@
       "view_more_details": "Visualizza più dettagli",
       "error_loading": "Impossibile caricare i dettagli della provenienza"
     },
+    "security_downgrade": {},
     "keywords_title": "Keywords",
     "compatibility": "Compatibilità",
     "card": {
@@ -284,6 +289,26 @@
       "add_owner": "+ Aggiungi proprietario",
       "show_more": "(mostra altri {count})",
       "show_less": "(mostra meno)"
+    },
+    "trends": {
+      "granularity": "Granularità",
+      "granularity_daily": "Giornaliero",
+      "granularity_weekly": "Settimanale",
+      "granularity_monthly": "Mensile",
+      "granularity_yearly": "Annuale",
+      "start_date": "Inizio",
+      "end_date": "Fine",
+      "loading": "Caricando...",
+      "date_range": "{start} a {end}",
+      "date_range_multiline": "{start}\na {end}",
+      "download_file": "Scarica {fileType}",
+      "toggle_annotator": "Attiva/disattiva annotatore",
+      "legend_estimation": "Stima",
+      "no_data": "Nessun dato disponibile",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Download"
+      }
     },
     "downloads": {
       "title": "Download settimanali",
@@ -362,7 +387,6 @@
     },
     "skeleton": {
       "loading": "Caricamento dettagli pacchetto",
-      "weekly": "Settimanale",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
       "versions": "Versioni",
@@ -378,26 +402,6 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "trends": {
-      "granularity": "Granularità",
-      "granularity_daily": "Giornaliero",
-      "granularity_weekly": "Settimanale",
-      "granularity_monthly": "Mensile",
-      "granularity_yearly": "Annuale",
-      "start_date": "Inizio",
-      "end_date": "Fine",
-      "loading": "Caricando...",
-      "date_range": "{start} a {end}",
-      "date_range_multiline": "{start}\na {end}",
-      "download_file": "Scarica {fileType}",
-      "toggle_annotator": "Attiva/disattiva annotatore",
-      "legend_estimation": "Stima",
-      "no_data": "Nessun dato disponibile",
-      "y_axis_label": "{granularity} {facet}",
-      "items": {
-        "downloads": "Download"
-      }
     }
   },
   "connector": {
@@ -940,7 +944,8 @@
         "types_none": "Nessuno",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "A tua scelta!"
-      }
+      },
+      "trends": {}
     }
   },
   "privacy_policy": {

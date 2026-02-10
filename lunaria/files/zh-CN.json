@@ -255,6 +255,7 @@
       "view_more_details": "查看更多详情",
       "error_loading": "加载来源详情失败"
     },
+    "security_downgrade": {},
     "keywords_title": "关键词",
     "compatibility": "兼容性",
     "card": {
@@ -311,6 +312,26 @@
       "add_owner": "+ 添加拥有者",
       "show_more": "（显示另外 {count} 个）",
       "show_less": "（收起）"
+    },
+    "trends": {
+      "granularity": "周期",
+      "granularity_daily": "每日",
+      "granularity_weekly": "每周",
+      "granularity_monthly": "每月",
+      "granularity_yearly": "每年",
+      "start_date": "开始",
+      "end_date": "结束",
+      "loading": "加载中…",
+      "date_range": "{start} 到 {end}",
+      "date_range_multiline": "{start}\n到 {end}",
+      "download_file": "下载 {fileType}",
+      "toggle_annotator": "切换标注工具",
+      "legend_estimation": "估算值",
+      "no_data": "无可用数据",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "下载量"
+      }
     },
     "downloads": {
       "title": "每周下载量",
@@ -389,7 +410,6 @@
     },
     "skeleton": {
       "loading": "加载包详情",
-      "weekly": "每周",
       "maintainers": "维护者",
       "keywords": "关键词",
       "versions": "版本",
@@ -405,26 +425,6 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "trends": {
-      "granularity": "周期",
-      "granularity_daily": "每日",
-      "granularity_weekly": "每周",
-      "granularity_monthly": "每月",
-      "granularity_yearly": "每年",
-      "start_date": "开始",
-      "end_date": "结束",
-      "loading": "加载中…",
-      "date_range": "{start} 到 {end}",
-      "date_range_multiline": "{start}\n到 {end}",
-      "download_file": "下载 {fileType}",
-      "toggle_annotator": "切换标注工具",
-      "legend_estimation": "估算值",
-      "no_data": "无可用数据",
-      "y_axis_label": "{granularity} {facet}",
-      "items": {
-        "downloads": "下载量"
-      }
     }
   },
   "connector": {

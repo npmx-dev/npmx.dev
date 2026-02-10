@@ -421,7 +421,6 @@
     },
     "skeleton": {
       "loading": "Loading package details",
-      "weekly": "Weekly",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "versions": "Versions",

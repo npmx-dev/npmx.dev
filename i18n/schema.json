@@ -1267,9 +1267,6 @@
             "loading": {
               "type": "string"
             },
-            "weekly": {
-              "type": "string"
-            },
             "maintainers": {
               "type": "string"
             },
