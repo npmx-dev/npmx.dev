@@ -4,9 +4,5 @@
   "singleQuote": true,
   "arrowParens": "avoid",
   "quoteProps": "consistent",
-  "experimentalSortPackageJson": false,
-  "ignorePatterns": [
-    // Docus MDC content - formatter breaks component syntax
-    "docs/content/**/*.md"
-  ]
+  "experimentalSortPackageJson": false
 }
