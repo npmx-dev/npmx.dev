@@ -32,10 +32,6 @@ export default defineNuxtConfig({
 
   css: ['~/assets/main.css', 'vue-data-ui/style.css'],
 
-  unocss: {
-    mode: "dist-chunk",
-  },
-
   runtimeConfig: {
     sessionPassword: '',
     // Upstash Redis for distributed OAuth token refresh locking in production
