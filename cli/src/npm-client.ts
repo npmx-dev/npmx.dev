@@ -1,3 +1,4 @@
+import './node-pty.d.ts'
 import crypto from 'node:crypto'
 import process from 'node:process'
 import { execFile } from 'node:child_process'

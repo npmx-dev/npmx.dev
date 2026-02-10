@@ -26,7 +26,12 @@ function startAuthPolling() {
   stopAuthPolling()
   let remaining = AUTH_POLL_COUNT
   authPollTimer = setInterval(async () => {
-    await refreshState()
+    try {
+      await refreshState()
+    } catch {
+      stopAuthPolling()
+      return
+    }
     remaining--
     if (remaining <= 0) {
       stopAuthPolling()
@@ -128,7 +133,6 @@ function handleDisconnect() {
           :label="$t('connector.modal.auto_open_url')"
           v-model="settings.connector.autoOpenURL"
           :class="!settings.connector.webAuth ? 'opacity-50 pointer-events-none' : ''"
-          :aria-disabled="!settings.connector.webAuth"
         />
       </div>
 
@@ -145,7 +149,7 @@ function handleDisconnect() {
       <button
         v-if="authUrl"
         type="button"
-        class="flex items-center justify-center gap-2 w-full px-4 py-2 font-mono text-sm text-accent bg-accent/10 border border-accent/30 rounded-md transition-colors duration-200 hover:bg-accent/20 focus-visible:outline-accent/70"
+        class="flex items-center justify-center gap-2 w-full px-4 py-2 font-mono text-sm text-accent bg-accent/10 border border-accent/30 rounded-md transition-colors duration-200 hover:bg-accent/20"
         @click="handleOpenAuthUrl"
       >
         <span class="i-carbon:launch w-4 h-4" aria-hidden="true" />
@@ -289,7 +293,6 @@ function handleDisconnect() {
                 :label="$t('connector.modal.auto_open_url')"
                 v-model="settings.connector.autoOpenURL"
                 :class="!settings.connector.webAuth ? 'opacity-50 pointer-events-none' : ''"
-                :aria-disabled="!settings.connector.webAuth"
               />
             </div>
           </div>

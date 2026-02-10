@@ -1,18 +1,24 @@
-// @lydell/node-pty package.json does not export its types so for nodenext target we need to add them (very minimal version)
+// @lydell/node-pty package.json does not export its types so for nodenext target we need to add them
 declare module '@lydell/node-pty' {
+  interface IDisposable {
+    dispose(): void
+  }
+
+  interface IEvent<T> {
+    (listener: (e: T) => any): IDisposable
+  }
+
   interface IPty {
     readonly pid: number
-    readonly onData: (listener: (data: string) => void) => { dispose(): void }
-    readonly onExit: (listener: (e: { exitCode: number; signal?: number }) => void) => {
-      dispose(): void
-    }
-    write(data: string): void
+    readonly onData: IEvent<string>
+    readonly onExit: IEvent<{ exitCode: number; signal?: number }>
+    write(data: string | Buffer): void
     kill(signal?: string): void
   }
 
   export function spawn(
     file: string,
-    args: string[],
+    args: string[] | string,
     options: {
       name?: string
       cols?: number

@@ -281,7 +281,7 @@ watch(isExecuting, executing => {
         v-if="settings.connector.webAuth"
         type="button"
         :disabled="isExecuting"
-        class="w-full mt-2 px-3 py-2 font-mono text-xs text-fg bg-bg-subtle border border-border rounded transition-all duration-200 hover:text-fg hover:border-border-hover disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
+        class="w-full mt-2 px-3 py-2 font-mono text-xs text-fg bg-bg-subtle border border-border rounded transition-all duration-200 hover:text-fg hover:border-border-hover disabled:opacity-50 disabled:cursor-not-allowed"
         @click="handleRetryWithWebAuth"
       >
         {{ isExecuting ? $t('operations.queue.retrying') : $t('operations.queue.retry_web_auth') }}
