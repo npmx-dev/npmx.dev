@@ -11,7 +11,7 @@ export function usePermalinkValue<T extends string | number = string>(
   const localValue = shallowRef<T>(defaultValue)
   const routeValue = useRouteQuery<T>(queryKey, defaultValue)
 
-  const parmalinkValue = computed({
+  const permalinkValue = computed({
     get: () => (permanent ? routeValue.value : localValue.value),
     set: (value: T) => {
       if (permanent) {
@@ -22,5 +22,5 @@ export function usePermalinkValue<T extends string | number = string>(
     },
   })
 
-  return parmalinkValue
+  return permalinkValue
 }
