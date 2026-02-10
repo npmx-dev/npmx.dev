@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
-import { getFileIcon } from '~/utils/file-icons'
+import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
 
 const props = defineProps<{
   tree: PackageFileTree[]
