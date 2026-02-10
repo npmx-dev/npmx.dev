@@ -15,7 +15,7 @@ const props = withDefaults(
   },
 )
 
-const { resolvedAuthors } = useAuthorProfiles(props.authors)
+const { resolvedAuthors } = useBlueskyAuthorProfiles(props.authors)
 
 const formattedDate = computed(() => {
   if (!props.date) return ''

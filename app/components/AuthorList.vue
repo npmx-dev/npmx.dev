@@ -6,7 +6,7 @@ const props = defineProps<{
   variant?: 'compact' | 'expanded'
 }>()
 
-const { resolvedAuthors } = useAuthorProfiles(props.authors)
+const { resolvedAuthors } = useBlueskyAuthorProfiles(props.authors)
 </script>
 
 <template>
