@@ -79,15 +79,24 @@ defineProps<{
 }
 
 .readme :deep(a) {
-  color: var(--fg);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--fg-subtle);
-  transition: text-decoration-color 0.2s ease;
+  @apply underline-offset-[0.2rem]
+  @apply underline
+  @apply decoration-1
+  @apply decoration-fg/30
+  @apply font-mono
+  @apply text-fg
+  @apply transition-colors
+  @apply duration-200;
 }
 
 .readme :deep(a:hover) {
-  text-decoration-color: var(--accent);
+  @apply decoration-accent
+  @apply text-accent;
+}
+
+.readme :deep(a:focus-visible) {
+  @apply decoration-accent
+  @apply text-accent;
 }
 
 .readme :deep(code) {
