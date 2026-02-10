@@ -138,6 +138,7 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/200.html': { prerender: true },
     '/about': { prerender: true },
+    '/accessibility': { prerender: true },
     '/privacy': { prerender: true },
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },

@@ -3,7 +3,6 @@ defineProps<{
   html: string
 }>()
 
-const router = useRouter()
 const { copy } = useClipboard()
 
 // Combined click handler for:
@@ -12,6 +11,10 @@ const { copy } = useClipboard()
 function handleClick(event: MouseEvent) {
   const target = event.target as HTMLElement | undefined
   if (!target) return
+
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button) {
+    return
+  }
 
   // Handle copy button clicks
   const copyTarget = target.closest('[data-copy]')
@@ -48,19 +51,10 @@ function handleClick(event: MouseEvent) {
   if (!href) return
 
   // Handle relative anchor links
-  if (href.startsWith('#')) {
+  if (href.startsWith('#') || href.startsWith('/')) {
     event.preventDefault()
-    router.push(href)
+    navigateTo(href)
     return
-  }
-
-  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
-  if (!match || !match[1]) return
-
-  const route = router.resolve(match[1])
-  if (route) {
-    event.preventDefault()
-    router.push(route)
   }
 }
 </script>
@@ -141,15 +135,19 @@ function handleClick(event: MouseEvent) {
 }
 
 .readme :deep(a) {
-  color: var(--fg);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--fg-subtle);
-  transition: text-decoration-color 0.2s ease;
+  @apply underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg transition-colors duration-200;
+}
+.readme :deep(a:hover) {
+  @apply decoration-accent text-accent;
+}
+.readme :deep(a:focus-visible) {
+  @apply decoration-accent text-accent;
 }
 
-.readme :deep(a:hover) {
-  text-decoration-color: var(--accent);
+.readme :deep(a[target='_blank']::after) {
+  /* I don't know what kind of sorcery this is, but it ensures this icon can't wrap to a new line on its own. */
+  content: '__';
+  @apply inline i-carbon:launch rtl-flip ms-1 opacity-50;
 }
 
 .readme :deep(code) {

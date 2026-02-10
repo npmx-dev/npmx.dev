@@ -1065,5 +1065,35 @@
       "title": "Changes to this policy",
       "p1": "We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
     }
+  },
+  "a11y": {
+    "title": "accessibility",
+    "footer_title": "a11y",
+    "welcome": "We want {app} to be usable by as many people as possible.",
+    "approach": {
+      "title": "Our approach",
+      "p1": "We try to follow the Web Content Accessibility Guidelines (WCAG) 2.2 and use them as a reference when building features. We don't claim full conformance with any level of WCAG — accessibility is a continual process and there is always more work to do.",
+      "p2": "This site is an {about}. Accessibility improvements are made incrementally as part of our regular development.",
+      "about_link": "open-source, community-driven project"
+    },
+    "measures": {
+      "title": "What we do",
+      "p1": "Some of the things we aim to do across the site:",
+      "li1": "Use semantic HTML and ARIA attributes where appropriate.",
+      "li2": "Use relative text sizes so you can adjust them in your browser.",
+      "li3": "Support keyboard navigation throughout the interface.",
+      "li4": "Respect the prefers-reduced-motion and prefers-color-scheme media queries.",
+      "li5": "Design with sufficient color contrast in mind.",
+      "li6": "Ensure essential content is available without JavaScript, though some interactive features require it."
+    },
+    "limitations": {
+      "title": "Known limitations",
+      "p1": "Some parts of the site — particularly third-party content like package READMEs — may not meet accessibility standards. We are working to improve these areas over time."
+    },
+    "contact": {
+      "title": "Feedback",
+      "p1": "If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
+      "link": "GitHub repository"
+    }
   }
 }

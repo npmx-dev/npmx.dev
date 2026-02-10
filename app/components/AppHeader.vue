@@ -64,6 +64,14 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         external: false,
         iconClass: 'i-carbon:security',
       },
+      {
+        name: 'Accessibility',
+        label: $t('a11y.title'),
+        to: { name: 'accessibility' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-carbon:accessibility-alt',
+      },
     ],
   },
   {
