@@ -13,6 +13,12 @@ useSeoMeta({
   ogType: 'article',
 })
 
+defineOgImageComponent('BlogPost', {
+  title: props.frontmatter.title,
+  authors: props.frontmatter.authors,
+  date: props.frontmatter.date,
+})
+
 const slug = computed(() => props.frontmatter.slug)
 
 // Use Constellation to find the Bluesky post linking to this blog post
