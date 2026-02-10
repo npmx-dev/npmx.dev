@@ -767,8 +767,10 @@ Format: `type(scope): description`
 - `fix(i18n): update French translations`
 - `chore(deps): update vite to v6`
 
+Where front end changes are made, please include before and after screenshots in your pull request description.
+
 > [!NOTE]
-> The subject must start with a lowercase letter. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
+> Use lowercase letters in your pull request title. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
 
 ### PR descriptions
 
