@@ -843,9 +843,7 @@ onKeyStroke(
             <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
               <span class="flex items-center gap-1">
                 <!-- Direct deps (muted) -->
-                <span class="text-fg-muted">{{
-                  numberFormatter.format(dependencyCount)
-                }}</span>
+                <span class="text-fg-muted">{{ numberFormatter.format(dependencyCount) }}</span>
 
                 <!-- Separator and total transitive deps -->
                 <template v-if="dependencyCount > 0 && dependencyCount !== totalDepsCount">
