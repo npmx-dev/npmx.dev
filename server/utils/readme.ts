@@ -393,7 +393,6 @@ ${html}
   // Resolve link URLs, add security attributes, and collect playground links
   renderer.link = function ({ href, title, tokens }: Tokens.Link) {
     const resolvedHref = resolveUrl(href, packageName, repoInfo)
-    console.log({ resolvedHref })
     const text = this.parser.parseInline(tokens)
     const titleAttr = title ? ` title="${title}"` : ''
 
