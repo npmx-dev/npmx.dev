@@ -101,14 +101,14 @@ function getShortName(header: string): string {
 
         <!-- Package name -->
         <span
-          class="relative font-mono text-xs text-fg-muted truncate flex-shrink min-w-0"
+          class="relative font-mono text-xs text-fg-muted truncate flex-shrink-0"
           :title="headers[index]"
         >
           {{ getShortName(headers[index] ?? '') }}
         </span>
 
         <!-- Value -->
-        <span class="relative flex-shrink-0">
+        <span class="relative min-w-0 text-end">
           <!-- Loading state -->
           <template v-if="isCellLoading(index)">
             <span
@@ -131,7 +131,9 @@ function getShortName(header: string): string {
                 :datetime="value.display"
                 date-style="medium"
               />
-              <template v-else>{{ value.display }}</template>
+              <template v-else>
+                <span dir="auto">{{ value.display }}</span>
+              </template>
             </span>
           </template>
         </span>

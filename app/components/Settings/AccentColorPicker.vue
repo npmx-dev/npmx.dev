@@ -10,6 +10,13 @@ onPrehydrate(el => {
     const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
       input.checked = true
+      input.setAttribute('checked', '')
+    }
+    // Remove checked from the server-default (clear button, value="")
+    const clearInput = el.querySelector<HTMLInputElement>('input[value=""]')
+    if (clearInput) {
+      clearInput.checked = false
+      clearInput.removeAttribute('checked')
     }
   }
 })
@@ -23,8 +30,8 @@ onPrehydrate(el => {
     <label
       v-for="color in accentColors"
       :key="color.id"
-      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 cursor-pointer has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle)"
-      :style="{ backgroundColor: color.value }"
+      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle)"
+      :style="{ backgroundColor: `var(--swatch-${color.id})` }"
     >
       <input
         type="radio"
@@ -37,7 +44,7 @@ onPrehydrate(el => {
       />
     </label>
     <label
-      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 cursor-pointer has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) flex items-center justify-center bg-fg"
+      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) flex items-center justify-center bg-fg"
     >
       <input
         type="radio"
@@ -52,3 +59,18 @@ onPrehydrate(el => {
     </label>
   </fieldset>
 </template>
+
+<style scoped>
+@media (forced-colors: active) {
+  /* keep accent radio swatches visible in forced colors. */
+  label {
+    forced-color-adjust: none;
+    border: 1px solid CanvasText;
+
+    &:has(> input:checked) {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+}
+</style>

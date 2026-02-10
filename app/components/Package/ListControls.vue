@@ -61,37 +61,26 @@ const showFilteredCount = computed(() => {
       >
         <div class="i-carbon:search w-4 h-4" />
       </div>
-      <input
+      <InputBase
         id="package-filter"
         v-model="filterValue"
         type="search"
         :placeholder="placeholder ?? $t('package.list.filter_placeholder')"
-        v-bind="noCorrect"
-        class="w-full bg-bg-subtle border border-border rounded-lg ps-10 pe-4 py-2 font-mono text-sm text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+        no-correct
+        class="w-full min-w-25 ps-10"
+        size="medium"
       />
     </div>
 
     <!-- Sort select -->
-    <div class="relative shrink-0 flex">
-      <label for="package-sort" class="sr-only">{{ $t('package.list.sort_label') }}</label>
-      <div class="relative">
-        <select
-          id="package-sort"
-          v-model="sortValue"
-          class="appearance-none bg-bg-subtle border border-border rounded-lg ps-3 pe-8 py-2 font-mono text-sm text-fg cursor-pointer transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
-        >
-          <option v-for="option in sortOptions" :key="option.value" :value="option.value">
-            {{ option.label }}
-          </option>
-        </select>
-        <div
-          class="absolute inset-ie-3 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
-          aria-hidden="true"
-        >
-          <div class="i-carbon:chevron-down w-4 h-4" />
-        </div>
-      </div>
-    </div>
+    <SelectField
+      :label="$t('package.list.sort_label')"
+      hidden-label
+      id="package-sort"
+      class="relative shrink-0"
+      v-model="sortValue"
+      :items="sortOptions.map(option => ({ label: option.label, value: option.value }))"
+    />
   </div>
 
   <!-- Filtered count indicator -->

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
-import { getFileIcon } from '~/utils/file-icons'
-import { formatBytes } from '~/utils/formatters'
+import type { RouteLocationRaw } from 'vue-router'
+import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
 
 const props = defineProps<{
   tree: PackageFileTree[]
   currentPath: string
   baseUrl: string
+  /** Base path segments for the code route (e.g., ['nuxt', 'v', '4.2.0']) */
+  basePath: string[]
 }>()
 
 // Get the current directory's contents
@@ -36,6 +38,20 @@ const parentPath = computed(() => {
   if (parts.length <= 1) return ''
   return parts.slice(0, -1).join('/')
 })
+
+// Build route object for a path
+function getCodeRoute(nodePath?: string): RouteLocationRaw {
+  if (!nodePath) {
+    return { name: 'code', params: { path: props.basePath as [string, ...string[]] } }
+  }
+  const pathSegments = [...props.basePath, ...nodePath.split('/')]
+  return {
+    name: 'code',
+    params: { path: pathSegments as [string, ...string[]] },
+  }
+}
+
+const bytesFormatter = useBytesFormatter()
 </script>
 
 <template>
@@ -59,16 +75,23 @@ const parentPath = computed(() => {
           v-if="parentPath !== null"
           class="border-b border-border hover:bg-bg-subtle transition-colors"
         >
-          <td class="py-2 px-4">
-            <NuxtLink
-              :to="parentPath ? `${baseUrl}/${parentPath}` : baseUrl"
-              class="flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors"
+          <td colspan="2">
+            <LinkBase
+              :to="getCodeRoute(parentPath || undefined)"
+              class="py-2 px-4 font-mono text-sm w-full"
+              no-underline
             >
-              <span class="i-carbon:folder w-4 h-4 text-yellow-600" />
-              <span>..</span>
-            </NuxtLink>
+              <svg
+                class="size-[1em] me-1 shrink-0 text-yellow-600"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <use :href="`/file-tree-sprite.svg#${ADDITIONAL_ICONS['folder']}`" />
+              </svg>
+              <span class="w-full flex justify-self-stretch items-center gap-2"> .. </span>
+            </LinkBase>
           </td>
-          <td />
         </tr>
 
         <!-- Directory/file rows -->
@@ -77,24 +100,33 @@ const parentPath = computed(() => {
           :key="node.path"
           class="border-b border-border hover:bg-bg-subtle transition-colors"
         >
-          <td class="py-2 px-4">
-            <NuxtLink
-              :to="`${baseUrl}/${node.path}`"
-              class="flex items-center gap-2 font-mono text-sm hover:text-fg transition-colors"
-              :class="node.type === 'directory' ? 'text-fg' : 'text-fg-muted'"
+          <td colspan="2">
+            <LinkBase
+              :to="getCodeRoute(node.path)"
+              class="py-2 px-4 font-mono text-sm w-full"
+              no-underline
             >
-              <span
-                v-if="node.type === 'directory'"
-                class="i-carbon:folder w-4 h-4 text-yellow-600"
-              />
-              <span v-else class="w-4 h-4" :class="getFileIcon(node.name)" />
-              <span>{{ node.name }}</span>
-            </NuxtLink>
-          </td>
-          <td class="py-2 px-4 text-end font-mono text-xs text-fg-subtle">
-            <span v-if="node.type === 'file' && node.size">
-              {{ formatBytes(node.size) }}
-            </span>
+              <svg
+                class="size-[1em] me-1 shrink-0"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                :class="node.type === 'directory' ? 'text-yellow-600' : undefined"
+                aria-hidden="true"
+              >
+                <use
+                  :href="`/file-tree-sprite.svg#${node.type === 'directory' ? ADDITIONAL_ICONS['folder'] : getFileIcon(node.name)}`"
+                />
+              </svg>
+              <span class="w-full flex justify-self-stretch items-center gap-2">
+                <span class="flex-1">{{ node.name }}</span>
+                <span
+                  v-if="node.type === 'file' && node.size"
+                  class="text-end text-xs text-fg-subtle"
+                >
+                  {{ bytesFormatter.format(node.size) }}
+                </span>
+              </span>
+            </LinkBase>
           </td>
         </tr>
       </tbody>

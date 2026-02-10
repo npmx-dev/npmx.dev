@@ -31,42 +31,60 @@ export const locales: [{ label: string; lang: string }, ...{ label: string; lang
   })),
 ]
 
-export async function prepareJsonFiles() {
+export async function prepareJsonFiles(): Promise<void> {
   await fs.rm(destFolder, { recursive: true, force: true })
   await fs.mkdir(destFolder)
   await Promise.all(currentLocales.map(l => mergeLocale(l)))
 }
 
-async function loadJsonFile(name: string) {
-  return JSON.parse(await fs.readFile(path.resolve(`${localesFolder}/${name}`), 'utf8'))
+type NestedObject = Record<string, unknown>
+
+export async function mergeLocaleObject(locale: LocaleObject): Promise<NestedObject | undefined> {
+  const files = locale.files ?? []
+  if (locale.file || files.length === 1) {
+    const json =
+      (locale.file ? getFileName(locale.file) : undefined) ??
+      (files[0] ? getFileName(files[0]) : undefined)
+    if (!json) return undefined
+
+    return await loadLocaleSourceJson<NestedObject>(json)
+  }
+
+  const firstFile = files[0]
+  if (!firstFile) return undefined
+  const source = await loadLocaleSourceJson<NestedObject>(getFileName(firstFile))
+  let currentSource: unknown
+  for (let i = 1; i < files.length; i++) {
+    const file = files[i]
+    if (!file) continue
+    currentSource = await loadLocaleSourceJson(getFileName(file))
+    deepCopy(currentSource, source)
+  }
+
+  return source
+}
+
+async function loadLocaleSourceJson<T = unknown>(name: string): Promise<T> {
+  const rawJson = JSON.parse(await fs.readFile(path.resolve(`${localesFolder}/${name}`), 'utf8'))
+  // Exclude $schema since it isn't useful in generated files and the relative path
+  // would be wrong anyway
+  const { $schema: _, ...rest } = rawJson
+  return rest
 }
 
 function getFileName(file: string | { path: string }): string {
   return typeof file === 'string' ? file : file.path
 }
 
-async function mergeLocale(locale: LocaleObject) {
-  const files = locale.files ?? []
-  if (locale.file || files.length === 1) {
-    const json = locale.file ?? (files[0] ? getFileName(files[0]) : undefined)
-    if (!json) return
-    await fs.cp(path.resolve(`${localesFolder}/${json}`), path.resolve(`${destFolder}/${json}`))
+async function mergeLocale(locale: LocaleObject): Promise<void> {
+  const source = await mergeLocaleObject(locale)
+  if (!source) {
     return
-  }
-
-  const firstFile = files[0]
-  if (!firstFile) return
-  const source = await loadJsonFile(getFileName(firstFile))
-  let currentSource: unknown
-  for (let i = 1; i < files.length; i++) {
-    const file = files[i]
-    if (!file) continue
-    currentSource = await loadJsonFile(getFileName(file))
-    deepCopy(currentSource, source)
   }
 
   await fs.writeFile(
     path.resolve(`${destFolder}/${locale.code}.json`),
-    JSON.stringify(source, null, 2),
+    `${JSON.stringify(source, null, 2)}\n`,
+    'utf-8',
   )
 }

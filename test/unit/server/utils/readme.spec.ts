@@ -306,4 +306,48 @@ describe('Markdown File URL Resolution', () => {
       )
     })
   })
+
+  describe('npm.js urls', () => {
+    it('redirects npmjs.com urls to local', async () => {
+      const markdown = `[Some npmjs.com link](https://www.npmjs.com/package/test-pkg)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="/package/test-pkg"')
+    })
+
+    it('redirects npmjs.com urls to local (no www and http)', async () => {
+      const markdown = `[Some npmjs.com link](http://npmjs.com/package/test-pkg)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="/package/test-pkg"')
+    })
+
+    it('does not redirect npmjs.com to local if they are in the list of exceptions', async () => {
+      const markdown = `[Root Contributing](https://www.npmjs.com/products)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="https://www.npmjs.com/products"')
+    })
+  })
+})
+
+describe('Markdown Content Extraction', () => {
+  describe('Markdown', () => {
+    it('returns original markdown content unchanged', async () => {
+      const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.md).toBe(markdown)
+    })
+  })
+  describe('HTML', () => {
+    it('returns sanitized html', async () => {
+      const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toBe(`<h3 id="user-content-title" data-level="1">Title</h3>
+<p>Some <strong>bold</strong> text and a <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">link</a>.</p>
+`)
+    })
+  })
 })

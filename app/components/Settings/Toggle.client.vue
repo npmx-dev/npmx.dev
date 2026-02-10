@@ -118,4 +118,31 @@ label:has(input:hover) .toggle--background {
 .toggle--checkbox:checked.rtl + .toggle--background:before {
   transform: translate(-17px);
 }
+
+@media (forced-colors: active) {
+  /* make toggle tracks and thumb visible in forced colors. */
+  button[role='switch'] {
+    & > span:last-of-type {
+      forced-color-adjust: none;
+    }
+
+    &[aria-checked='false'] > span:last-of-type {
+      background: Canvas;
+      border-color: CanvasText;
+
+      & > span {
+        background: CanvasText;
+      }
+    }
+
+    &[aria-checked='true'] > span:last-of-type {
+      background: Highlight;
+      border-color: Highlight;
+
+      & > span {
+        background: HighlightText;
+      }
+    }
+  }
+}
 </style>

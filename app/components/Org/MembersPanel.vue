@@ -2,6 +2,9 @@
 import type { NewOperation } from '~/composables/useConnector'
 import { buildScopeTeam } from '~/utils/npm/common'
 
+type MemberRole = 'developer' | 'admin' | 'owner'
+type MemberRoleFilter = MemberRole | 'all'
+
 const props = defineProps<{
   orgName: string
 }>()
@@ -21,7 +24,7 @@ const {
 } = useConnector()
 
 // Members data: { username: role }
-const members = shallowRef<Record<string, 'developer' | 'admin' | 'owner'>>({})
+const members = shallowRef<Record<string, MemberRole>>({})
 const isLoading = shallowRef(false)
 const error = shallowRef<string | null>(null)
 
@@ -31,15 +34,15 @@ const isLoadingTeams = shallowRef(false)
 
 // Search/filter
 const searchQuery = shallowRef('')
-const filterRole = shallowRef<'all' | 'developer' | 'admin' | 'owner'>('all')
-const filterTeam = shallowRef<string | null>(null)
+const filterRole = shallowRef<MemberRoleFilter>('all')
+const filterTeam = shallowRef<string>('')
 const sortBy = shallowRef<'name' | 'role'>('name')
 const sortOrder = shallowRef<'asc' | 'desc'>('asc')
 
 // Add member form
 const showAddMember = shallowRef(false)
 const newUsername = shallowRef('')
-const newRole = shallowRef<'developer' | 'admin' | 'owner'>('developer')
+const newRole = shallowRef<MemberRole>('developer')
 const newTeam = shallowRef<string>('') // Empty string means "developers" (default)
 const isAddingMember = shallowRef(false)
 
@@ -259,6 +262,17 @@ function getRoleBadgeClass(role: string): string {
   }
 }
 
+const roleLabels = computed(() => ({
+  owner: $t('org.members.role.owner'),
+  admin: $t('org.members.role.admin'),
+  developer: $t('org.members.role.developer'),
+  all: $t('org.members.role.all'),
+}))
+
+function getRoleLabel(role: MemberRoleFilter): string {
+  return roleLabels.value[role]
+}
+
 // Click on team badge to switch to teams tab and highlight
 function handleTeamClick(teamName: string) {
   emit('select-team', teamName)
@@ -317,14 +331,15 @@ watch(lastExecutionTime, () => {
           aria-hidden="true"
         />
         <label for="members-search" class="sr-only">{{ $t('org.members.filter_label') }}</label>
-        <input
+        <InputBase
           id="members-search"
           v-model="searchQuery"
           type="search"
           name="members-search"
           :placeholder="$t('org.members.filter_placeholder')"
-          v-bind="noCorrect"
-          class="w-full ps-7 pe-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+          no-correct
+          class="w-full min-w-25 ps-7"
+          size="small"
         />
       </div>
       <div
@@ -341,24 +356,25 @@ watch(lastExecutionTime, () => {
           :aria-pressed="filterRole === role"
           @click="filterRole = role"
         >
-          {{ $t(`org.members.role.${role}`) }}
+          {{ getRoleLabel(role) }}
           <span v-if="role !== 'all'" class="text-fg-subtle">({{ roleCounts[role] }})</span>
         </button>
       </div>
       <!-- Team filter -->
       <div v-if="teamNames.length > 0">
-        <label for="team-filter" class="sr-only">{{ $t('org.members.filter_by_team') }}</label>
-        <select
+        <SelectField
+          :label="$t('org.members.filter_by_team')"
+          hidden-label
           id="team-filter"
           v-model="filterTeam"
           name="team-filter"
-          class="px-2 py-1 font-mono text-xs bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
-        >
-          <option :value="null">{{ $t('org.members.all_teams') }}</option>
-          <option v-for="team in teamNames" :key="team" :value="team">
-            {{ team }}
-          </option>
-        </select>
+          block
+          size="sm"
+          :items="[
+            { label: $t('org.members.all_teams'), value: '' },
+            ...teamNames.map(team => ({ label: team, value: team })),
+          ]"
+        />
       </div>
       <div
         class="flex items-center gap-1 text-xs"
@@ -439,7 +455,7 @@ watch(lastExecutionTime, () => {
               class="px-1.5 py-0.5 font-mono text-xs border rounded"
               :class="getRoleBadgeClass(member.role)"
             >
-              {{ member.role }}
+              {{ getRoleLabel(member.role) }}
             </span>
           </div>
           <div class="flex items-center gap-1">
@@ -447,22 +463,22 @@ watch(lastExecutionTime, () => {
             <label :for="`role-${member.name}`" class="sr-only">{{
               $t('org.members.change_role_for', { name: member.name })
             }}</label>
-            <select
+            <SelectField
+              :label="$t('org.members.change_role_for', { name: member.name })"
+              hidden-label
               :id="`role-${member.name}`"
-              :value="member.role"
+              :model-value="member.role"
               :name="`role-${member.name}`"
-              class="px-1.5 py-0.5 font-mono text-xs bg-bg-subtle border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
-              @change="
-                handleChangeRole(
-                  member.name,
-                  ($event.target as HTMLSelectElement).value as 'developer' | 'admin' | 'owner',
-                )
-              "
-            >
-              <option value="developer">{{ $t('org.members.role.developer') }}</option>
-              <option value="admin">{{ $t('org.members.role.admin') }}</option>
-              <option value="owner">{{ $t('org.members.role.owner') }}</option>
-            </select>
+              block
+              size="sm"
+              :items="[
+                { label: getRoleLabel('developer'), value: 'developer' },
+                { label: getRoleLabel('admin'), value: 'admin' },
+                { label: getRoleLabel('owner'), value: 'owner' },
+              ]"
+              :value="member.role"
+              @update:modelValue="value => handleChangeRole(member.name, value as MemberRole)"
+            />
             <!-- Remove button -->
             <button
               type="button"
@@ -502,44 +518,51 @@ watch(lastExecutionTime, () => {
           <label for="new-member-username" class="sr-only">{{
             $t('org.members.username_label')
           }}</label>
-          <input
+          <InputBase
             id="new-member-username"
             v-model="newUsername"
             type="text"
             name="new-member-username"
             :placeholder="$t('org.members.username_placeholder')"
-            v-bind="noCorrect"
-            class="w-full px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
+            no-correct
+            class="w-full min-w-25"
+            size="small"
           />
           <div class="flex items-center gap-2">
-            <label for="new-member-role" class="sr-only">{{ $t('org.members.role_label') }}</label>
-            <select
+            <SelectField
+              :label="$t('org.members.role_label')"
+              hidden-label
               id="new-member-role"
               v-model="newRole"
               name="new-member-role"
-              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
-            >
-              <option value="developer">{{ $t('org.members.role.developer') }}</option>
-              <option value="admin">{{ $t('org.members.role.admin') }}</option>
-              <option value="owner">{{ $t('org.members.role.owner') }}</option>
-            </select>
+              block
+              class="flex-1"
+              size="sm"
+              :items="[
+                { label: $t('org.members.role.developer'), value: 'developer' },
+                { label: $t('org.members.role.admin'), value: 'admin' },
+                { label: $t('org.members.role.owner'), value: 'owner' },
+              ]"
+            />
             <!-- Team selection -->
-            <label for="new-member-team" class="sr-only">{{ $t('org.members.team_label') }}</label>
-            <select
+            <SelectField
+              :label="$t('org.members.team_label')"
+              hidden-label
               id="new-member-team"
               v-model="newTeam"
               name="new-member-team"
-              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded text-fg transition-colors duration-200 focus:border-border-hover"
-            >
-              <option value="">{{ $t('org.members.no_team') }}</option>
-              <option v-for="team in teamNames" :key="team" :value="team">
-                {{ team }}
-              </option>
-            </select>
+              block
+              class="flex-1"
+              size="sm"
+              :items="[
+                { label: $t('org.members.no_team'), value: '' },
+                ...teamNames.map(team => ({ label: team, value: team })),
+              ]"
+            />
             <button
               type="submit"
               :disabled="!newUsername.trim() || isAddingMember"
-              class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
+              class="px-3 py-2 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
             >
               {{ isAddingMember ? '…' : $t('org.members.add_button') }}
             </button>

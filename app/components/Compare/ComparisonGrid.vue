@@ -2,8 +2,8 @@
 import type { ModuleReplacement } from 'module-replacements'
 
 export interface ComparisonGridColumn {
-  /** Display text (e.g. "lodash@4.17.21") */
-  header: string
+  name: string
+  version?: string
   /** Module replacement data for this package (if available) */
   replacement?: ModuleReplacement | null
 }
@@ -38,19 +38,16 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
         <div class="comparison-label" />
 
         <!-- Package columns -->
-        <div
-          v-for="col in columns"
-          :key="col.header"
-          class="comparison-cell comparison-cell-header"
-        >
+        <div v-for="col in columns" :key="col.name" class="comparison-cell comparison-cell-header">
           <span class="inline-flex items-center gap-1.5 truncate">
-            <NuxtLink
-              :to="`/package/${col.header}`"
-              class="link-subtle font-mono text-sm font-medium text-fg truncate"
-              :title="col.header"
+            <LinkBase
+              :to="packageRoute(col.name, col.version)"
+              class="text-sm truncate"
+              block
+              :title="col.version ? `${col.name}@${col.version}` : col.name"
             >
-              {{ col.header }}
-            </NuxtLink>
+              {{ col.name }}<template v-if="col.version">@{{ col.version }}</template>
+            </LinkBase>
             <TooltipApp v-if="col.replacement" :text="getReplacementTooltip(col)" position="bottom">
               <span
                 class="i-carbon:idea w-3.5 h-3.5 text-amber-500 shrink-0 cursor-help"
@@ -83,13 +80,9 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
                 <p class="text-xs text-fg-muted">
                   <i18n-t keypath="compare.no_dependency.tooltip_description" tag="span">
                     <template #link>
-                      <a
-                        href="https://e18e.dev/docs/replacements/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="text-accent hover:underline"
-                        >{{ $t('compare.no_dependency.e18e_community') }}</a
-                      >
+                      <LinkBase to="https://e18e.dev/docs/replacements/">{{
+                        $t('compare.no_dependency.e18e_community')
+                      }}</LinkBase>
                     </template>
                   </i18n-t>
                 </p>

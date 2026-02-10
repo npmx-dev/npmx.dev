@@ -15,6 +15,7 @@ ignoredBuiltDependencies:
   - vue-demi
 
 onlyBuiltDependencies:
+  - '@resvg/resvg-js'
   - better-sqlite3
   - sharp@0.34.5
   - simple-git-hooks@2.13.1

@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "built_at": "generado {0}",
   "alt_logo": "logo de npmx",
   "connector": {
@@ -26,9 +27,12 @@
       "grant_button": "otorgar",
       "cancel_grant": "Cancelar otorgar acceso",
       "grant_access": "+ Otorgar acceso de equipo"
-    },
-    "skeleton": {
-      "readme": "Léame"
+    }
+  },
+  "compare": {
+    "no_dependency": {
+      "typeahead_description": "¡Compara contra no usar una dependencia! Aprobado por e18e.",
+      "tooltip_description": "¡Compara contra no usar una dependencia! La {link} mantiene una lista de paquetes que pueden ser reemplazados con APIs nativas o alternativas más simples."
     }
   }
 }

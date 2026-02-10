@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { defineNuxtModule } from 'nuxt/kit'
 import { provider } from 'std-env'
@@ -13,16 +13,25 @@ export default defineNuxtModule({
     }
 
     nuxt.hook('nitro:init', nitro => {
+      const htmlFallback = 'spa.prerender-fallback.html'
+      const jsonFallback = 'payload-fallback.json'
       nitro.hooks.hook('compiled', () => {
         const spaTemplate = readFileSync(nitro.options.output.publicDir + '/200.html', 'utf-8')
-        for (const path of ['package', '']) {
-          const outputPath = resolve(
-            nitro.options.output.serverDir,
-            '..',
-            path,
-            'spa.prerender-fallback.html',
-          )
+        for (const path of [
+          'package',
+          'package/[name]',
+          'package/[name]/v',
+          'package/[name]/v/[version]',
+          'package/[org]',
+          'package/[org]/[name]',
+          'package/[org]/[name]/v',
+          'package/[org]/[name]/v/[version]',
+          '',
+        ]) {
+          const outputPath = resolve(nitro.options.output.serverDir, '..', path, htmlFallback)
+          mkdirSync(resolve(nitro.options.output.serverDir, '..', path), { recursive: true })
           writeFileSync(outputPath, spaTemplate)
+          writeFileSync(outputPath.replace(htmlFallback, jsonFallback), '{}')
         }
       })
     })

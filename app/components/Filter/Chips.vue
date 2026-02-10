@@ -14,14 +14,14 @@ const emit = defineEmits<{
 <template>
   <div v-if="chips.length > 0" class="flex flex-wrap items-center gap-2">
     <TransitionGroup name="chip">
-      <TagStatic v-for="chip in chips" :key="chip.id" class="gap-1">
+      <TagStatic v-for="chip in chips" :key="chip.id" class="gap-2 pe-1">
         <span class="text-fg-subtle text-xs">{{ chip.label }}:</span>
         <span class="max-w-32 truncate">{{
           Array.isArray(chip.value) ? chip.value.join(', ') : chip.value
         }}</span>
         <button
           type="button"
-          class="flex items-center ms-0.5 hover:text-fg rounded-full p-0.5 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="flex items-center p-1 -m-1 hover:text-fg rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
           :aria-label="$t('filters.remove_filter', { label: chip.label })"
           @click="emit('remove', chip)"
         >
@@ -33,7 +33,7 @@ const emit = defineEmits<{
     <button
       v-if="chips.length > 1"
       type="button"
-      class="text-sm text-fg-subtle hover:text-fg underline transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2"
+      class="text-sm p-0.5 text-fg-muted hover:text-fg underline transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2"
       @click="emit('clearAll')"
     >
       {{ $t('filters.clear_all') }}

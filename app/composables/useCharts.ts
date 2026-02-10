@@ -6,45 +6,45 @@ export type PackumentLikeForTime = {
   time?: Record<string, string>
 }
 
-export type DailyDownloadPoint = { downloads: number; day: string; timestamp: number }
-export type WeeklyDownloadPoint = {
-  downloads: number
+export type DailyDataPoint = { value: number; day: string; timestamp: number }
+export type WeeklyDataPoint = {
+  value: number
   weekKey: string
   weekStart: string
   weekEnd: string
   timestampStart: number
   timestampEnd: number
 }
-export type MonthlyDownloadPoint = { downloads: number; month: string; timestamp: number }
-export type YearlyDownloadPoint = { downloads: number; year: string; timestamp: number }
+export type MonthlyDataPoint = { value: number; month: string; timestamp: number }
+export type YearlyDataPoint = { value: number; year: string; timestamp: number }
 
-type PackageDownloadEvolutionOptionsBase = {
+type EvolutionOptionsBase = {
   startDate?: string
   endDate?: string
 }
 
-export type PackageDownloadEvolutionOptionsDay = PackageDownloadEvolutionOptionsBase & {
+export type EvolutionOptionsDay = EvolutionOptionsBase & {
   granularity: 'day'
 }
-export type PackageDownloadEvolutionOptionsWeek = PackageDownloadEvolutionOptionsBase & {
+export type EvolutionOptionsWeek = EvolutionOptionsBase & {
   granularity: 'week'
   weeks?: number
 }
-export type PackageDownloadEvolutionOptionsMonth = PackageDownloadEvolutionOptionsBase & {
+export type EvolutionOptionsMonth = EvolutionOptionsBase & {
   granularity: 'month'
   months?: number
 }
-export type PackageDownloadEvolutionOptionsYear = PackageDownloadEvolutionOptionsBase & {
+export type EvolutionOptionsYear = EvolutionOptionsBase & {
   granularity: 'year'
 }
 
-export type PackageDownloadEvolutionOptions =
-  | PackageDownloadEvolutionOptionsDay
-  | PackageDownloadEvolutionOptionsWeek
-  | PackageDownloadEvolutionOptionsMonth
-  | PackageDownloadEvolutionOptionsYear
+export type EvolutionOptions =
+  | EvolutionOptionsDay
+  | EvolutionOptionsWeek
+  | EvolutionOptionsMonth
+  | EvolutionOptionsYear
 
-type DailyDownloadsResponse = { downloads: Array<{ day: string; downloads: number }> }
+type DailyRawPoint = { day: string; value: number }
 
 function toIsoDateString(date: Date): string {
   return date.toISOString().slice(0, 10)
@@ -105,23 +105,19 @@ function splitIsoRangeIntoChunksInclusive(
   return chunks
 }
 
-function mergeDailyPoints(
-  points: Array<{ day: string; downloads: number }>,
-): Array<{ day: string; downloads: number }> {
-  const downloadsByDay = new Map<string, number>()
+function mergeDailyPoints(points: DailyRawPoint[]): DailyRawPoint[] {
+  const valuesByDay = new Map<string, number>()
 
   for (const point of points) {
-    downloadsByDay.set(point.day, (downloadsByDay.get(point.day) ?? 0) + point.downloads)
+    valuesByDay.set(point.day, (valuesByDay.get(point.day) ?? 0) + point.value)
   }
 
-  return Array.from(downloadsByDay.entries())
+  return Array.from(valuesByDay.entries())
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([day, downloads]) => ({ day, downloads }))
+    .map(([day, value]) => ({ day, value }))
 }
 
-function buildDailyEvolutionFromDaily(
-  daily: Array<{ day: string; downloads: number }>,
-): Array<{ day: string; downloads: number; timestamp: number }> {
+export function buildDailyEvolutionFromDaily(daily: DailyRawPoint[]): DailyDataPoint[] {
   return daily
     .slice()
     .sort((a, b) => a.day.localeCompare(b.day))
@@ -129,15 +125,15 @@ function buildDailyEvolutionFromDaily(
       const dayDate = parseIsoDateOnly(item.day)
       const timestamp = dayDate.getTime()
 
-      return { day: item.day, downloads: item.downloads, timestamp }
+      return { day: item.day, value: item.value, timestamp }
     })
 }
 
-function buildRollingWeeklyEvolutionFromDaily(
-  daily: Array<{ day: string; downloads: number }>,
+export function buildRollingWeeklyEvolutionFromDaily(
+  daily: DailyRawPoint[],
   rangeStartIso: string,
   rangeEndIso: string,
-): WeeklyDownloadPoint[] {
+): WeeklyDataPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
   const rangeStartDate = parseIsoDateOnly(rangeStartIso)
   const rangeEndDate = parseIsoDateOnly(rangeEndIso)
@@ -150,12 +146,12 @@ function buildRollingWeeklyEvolutionFromDaily(
     if (dayOffset < 0) continue
 
     const weekIndex = Math.floor(dayOffset / 7)
-    groupedByIndex.set(weekIndex, (groupedByIndex.get(weekIndex) ?? 0) + item.downloads)
+    groupedByIndex.set(weekIndex, (groupedByIndex.get(weekIndex) ?? 0) + item.value)
   }
 
   return Array.from(groupedByIndex.entries())
     .sort(([a], [b]) => a - b)
-    .map(([weekIndex, downloads]) => {
+    .map(([weekIndex, value]) => {
       const weekStartDate = addDays(rangeStartDate, weekIndex * 7)
       const weekEndDate = addDays(weekStartDate, 6)
 
@@ -170,7 +166,7 @@ function buildRollingWeeklyEvolutionFromDaily(
       const timestampEnd = clampedWeekEndDate.getTime()
 
       return {
-        downloads,
+        value,
         weekKey: `${weekStartIso}_${weekEndIso}`,
         weekStart: weekStartIso,
         weekEnd: weekEndIso,
@@ -180,66 +176,59 @@ function buildRollingWeeklyEvolutionFromDaily(
     })
 }
 
-function buildMonthlyEvolutionFromDaily(
-  daily: Array<{ day: string; downloads: number }>,
-): Array<{ month: string; downloads: number; timestamp: number }> {
+export function buildMonthlyEvolutionFromDaily(daily: DailyRawPoint[]): MonthlyDataPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
-  const downloadsByMonth = new Map<string, number>()
+  const valuesByMonth = new Map<string, number>()
 
   for (const item of sorted) {
     const month = item.day.slice(0, 7)
-    downloadsByMonth.set(month, (downloadsByMonth.get(month) ?? 0) + item.downloads)
+    valuesByMonth.set(month, (valuesByMonth.get(month) ?? 0) + item.value)
   }
 
-  return Array.from(downloadsByMonth.entries())
+  return Array.from(valuesByMonth.entries())
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([month, downloads]) => {
+    .map(([month, value]) => {
       const monthStartDate = parseIsoDateOnly(`${month}-01`)
       const timestamp = monthStartDate.getTime()
-      return { month, downloads, timestamp }
+      return { month, value, timestamp }
     })
 }
 
-function buildYearlyEvolutionFromDaily(
-  daily: Array<{ day: string; downloads: number }>,
-): Array<{ year: string; downloads: number; timestamp: number }> {
+export function buildYearlyEvolutionFromDaily(daily: DailyRawPoint[]): YearlyDataPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
-  const downloadsByYear = new Map<string, number>()
+  const valuesByYear = new Map<string, number>()
 
   for (const item of sorted) {
     const year = item.day.slice(0, 4)
-    downloadsByYear.set(year, (downloadsByYear.get(year) ?? 0) + item.downloads)
+    valuesByYear.set(year, (valuesByYear.get(year) ?? 0) + item.value)
   }
 
-  return Array.from(downloadsByYear.entries())
+  return Array.from(valuesByYear.entries())
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([year, downloads]) => {
+    .map(([year, value]) => {
       const yearStartDate = parseIsoDateOnly(`${year}-01-01`)
       const timestamp = yearStartDate.getTime()
-      return { year, downloads, timestamp }
+      return { year, value, timestamp }
     })
 }
 
-function getClientDailyRangePromiseCache() {
-  if (!import.meta.client) return null
+const npmDailyRangeCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
+const likesEvolutionCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
 
-  const globalScope = globalThis as unknown as {
-    __npmDailyRangePromiseCache?: Map<string, Promise<Array<{ day: string; downloads: number }>>>
-  }
-
-  if (!globalScope.__npmDailyRangePromiseCache) {
-    globalScope.__npmDailyRangePromiseCache = new Map()
-  }
-
-  return globalScope.__npmDailyRangePromiseCache
+/** Clears client-side promise caches. Exported for use in tests. */
+export function clearClientCaches() {
+  npmDailyRangeCache?.clear()
+  likesEvolutionCache?.clear()
 }
 
 async function fetchDailyRangeCached(packageName: string, startIso: string, endIso: string) {
-  const cache = getClientDailyRangePromiseCache()
+  const cache = npmDailyRangeCache
 
   if (!cache) {
     const response = await fetchNpmDownloadsRange(packageName, startIso, endIso)
-    return [...response.downloads].sort((a, b) => a.day.localeCompare(b.day))
+    return [...response.downloads]
+      .sort((a, b) => a.day.localeCompare(b.day))
+      .map(d => ({ day: d.day, value: d.downloads }))
   }
 
   const cacheKey = `${packageName}:${startIso}:${endIso}`
@@ -247,8 +236,10 @@ async function fetchDailyRangeCached(packageName: string, startIso: string, endI
   if (cachedPromise) return cachedPromise
 
   const promise = fetchNpmDownloadsRange(packageName, startIso, endIso)
-    .then((response: DailyDownloadsResponse) =>
-      [...response.downloads].sort((a, b) => a.day.localeCompare(b.day)),
+    .then(response =>
+      [...response.downloads]
+        .sort((a, b) => a.day.localeCompare(b.day))
+        .map(d => ({ day: d.day, value: d.downloads })),
     )
     .catch(error => {
       cache.delete(cacheKey)
@@ -272,7 +263,7 @@ async function fetchDailyRangeChunked(packageName: string, startIso: string, end
     return fetchDailyRangeCached(packageName, startIso, endIso)
   }
 
-  const all: Array<{ day: string; downloads: number }> = []
+  const all: DailyRawPoint[] = []
 
   for (const range of ranges) {
     const part = await fetchDailyRangeCached(packageName, range.startIso, range.endIso)
@@ -288,7 +279,7 @@ function toDateOnly(value?: string): string | null {
   return /^\d{4}-\d{2}-\d{2}$/.test(dateOnly) ? dateOnly : null
 }
 
-function getNpmPackageCreationDate(packument: PackumentLikeForTime): string | null {
+export function getNpmPackageCreationDate(packument: PackumentLikeForTime): string | null {
   const time = packument.time
   if (!time) return null
   if (time.created) return time.created
@@ -303,7 +294,7 @@ function getNpmPackageCreationDate(packument: PackumentLikeForTime): string | nu
 
 export function useCharts() {
   function resolveDateRange(
-    downloadEvolutionOptions: PackageDownloadEvolutionOptions,
+    evolutionOptions: EvolutionOptions,
     packageCreatedIso: string | null,
   ): { start: Date; end: Date } {
     const today = new Date()
@@ -311,25 +302,25 @@ export function useCharts() {
       Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - 1),
     )
 
-    const endDateOnly = toDateOnly(downloadEvolutionOptions.endDate)
-    const end = endDateOnly ? new Date(`${endDateOnly}T00:00:00.000Z`) : yesterday
+    const endDateOnly = toDateOnly(evolutionOptions.endDate)
+    const end = endDateOnly ? parseIsoDateOnly(endDateOnly) : yesterday
 
-    const startDateOnly = toDateOnly(downloadEvolutionOptions.startDate)
+    const startDateOnly = toDateOnly(evolutionOptions.startDate)
     if (startDateOnly) {
-      const start = new Date(`${startDateOnly}T00:00:00.000Z`)
+      const start = parseIsoDateOnly(startDateOnly)
       return { start, end }
     }
 
     let start: Date
 
-    if (downloadEvolutionOptions.granularity === 'year') {
+    if (evolutionOptions.granularity === 'year') {
       if (packageCreatedIso) {
         start = startOfUtcYear(new Date(packageCreatedIso))
       } else {
         start = addDays(end, -(5 * 365) + 1)
       }
-    } else if (downloadEvolutionOptions.granularity === 'month') {
-      const monthCount = downloadEvolutionOptions.months ?? 12
+    } else if (evolutionOptions.granularity === 'month') {
+      const monthCount = evolutionOptions.months ?? 12
       const firstOfThisMonth = startOfUtcMonth(end)
       start = new Date(
         Date.UTC(
@@ -338,8 +329,8 @@ export function useCharts() {
           1,
         ),
       )
-    } else if (downloadEvolutionOptions.granularity === 'week') {
-      const weekCount = downloadEvolutionOptions.weeks ?? 52
+    } else if (evolutionOptions.granularity === 'week') {
+      const weekCount = evolutionOptions.weeks ?? 52
 
       // Full rolling weeks ending on `end` (yesterday by default)
       // Range length is exactly weekCount * 7 days (inclusive)
@@ -354,13 +345,11 @@ export function useCharts() {
   async function fetchPackageDownloadEvolution(
     packageName: MaybeRefOrGetter<string>,
     createdIso: MaybeRefOrGetter<string | null | undefined>,
-    downloadEvolutionOptions: MaybeRefOrGetter<PackageDownloadEvolutionOptions>,
-  ): Promise<
-    DailyDownloadPoint[] | WeeklyDownloadPoint[] | MonthlyDownloadPoint[] | YearlyDownloadPoint[]
-  > {
+    evolutionOptions: MaybeRefOrGetter<EvolutionOptions>,
+  ): Promise<DailyDataPoint[] | WeeklyDataPoint[] | MonthlyDataPoint[] | YearlyDataPoint[]> {
     const resolvedPackageName = toValue(packageName)
     const resolvedCreatedIso = toValue(createdIso) ?? null
-    const resolvedOptions = toValue(downloadEvolutionOptions)
+    const resolvedOptions = toValue(evolutionOptions)
 
     const { start, end } = resolveDateRange(resolvedOptions, resolvedCreatedIso)
 
@@ -376,8 +365,53 @@ export function useCharts() {
     return buildYearlyEvolutionFromDaily(sortedDaily)
   }
 
+  async function fetchPackageLikesEvolution(
+    packageName: MaybeRefOrGetter<string>,
+    evolutionOptions: MaybeRefOrGetter<EvolutionOptions>,
+  ): Promise<DailyDataPoint[] | WeeklyDataPoint[] | MonthlyDataPoint[] | YearlyDataPoint[]> {
+    const resolvedPackageName = toValue(packageName)
+    const resolvedOptions = toValue(evolutionOptions)
+
+    // Fetch daily likes data (with client-side promise caching)
+    const cache = likesEvolutionCache
+    const cacheKey = resolvedPackageName
+
+    let dailyLikesPromise: Promise<DailyRawPoint[]>
+
+    if (cache?.has(cacheKey)) {
+      dailyLikesPromise = cache.get(cacheKey)!
+    } else {
+      dailyLikesPromise = $fetch<Array<{ day: string; likes: number }>>(
+        `/api/social/likes-evolution/${resolvedPackageName}`,
+      )
+        .then(data => (data ?? []).map(d => ({ day: d.day, value: d.likes })))
+        .catch(error => {
+          cache?.delete(cacheKey)
+          throw error
+        })
+
+      cache?.set(cacheKey, dailyLikesPromise)
+    }
+
+    const sortedDaily = await dailyLikesPromise
+
+    const { start, end } = resolveDateRange(resolvedOptions, null)
+    const startIso = toIsoDateString(start)
+    const endIso = toIsoDateString(end)
+
+    const filteredDaily = sortedDaily.filter(d => d.day >= startIso && d.day <= endIso)
+
+    if (resolvedOptions.granularity === 'day') return buildDailyEvolutionFromDaily(filteredDaily)
+    if (resolvedOptions.granularity === 'week')
+      return buildRollingWeeklyEvolutionFromDaily(filteredDaily, startIso, endIso)
+    if (resolvedOptions.granularity === 'month')
+      return buildMonthlyEvolutionFromDaily(filteredDaily)
+    return buildYearlyEvolutionFromDaily(filteredDaily)
+  }
+
   return {
     fetchPackageDownloadEvolution,
+    fetchPackageLikesEvolution,
     getNpmPackageCreationDate,
   }
 }

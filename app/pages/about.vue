@@ -1,13 +1,6 @@
 <script setup lang="ts">
 const router = useRouter()
-
-interface GitHubContributor {
-  login: string
-  id: number
-  avatar_url: string
-  html_url: string
-  contributions: number
-}
+const canGoBack = useCanGoBack()
 
 useSeoMeta({
   title: () => `${$t('about.title')} - npmx`,
@@ -20,8 +13,8 @@ useSeoMeta({
 
 defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
-  title: 'About npmx',
-  description: 'A better browser for the **npm registry**',
+  title: 'about npmx',
+  description: 'a fast, modern browser for the **npm registry**',
 })
 
 const pmLinks = {
@@ -33,12 +26,7 @@ const pmLinks = {
   vlt: 'https://www.vlt.sh/',
 }
 
-const { data: contributors, status: contributorsStatus } = useFetch<GitHubContributor[]>(
-  '/api/contributors',
-  {
-    lazy: true,
-  },
-)
+const { data: contributors, status: contributorsStatus } = useLazyFetch('/api/contributors')
 </script>
 
 <template>
@@ -51,8 +39,9 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
           </h1>
           <button
             type="button"
-            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
+            v-if="canGoBack"
           >
             <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
@@ -74,13 +63,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
                 <strong class="text-fg">{{ $t('about.what_we_are.better_ux_dx') }}</strong>
               </template>
               <template #jsr>
-                <a
-                  href="https://jsr.io/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="link text-fg"
-                  >JSR</a
-                >
+                <LinkBase to="https://jsr.io/">JSR</LinkBase>
               </template>
             </i18n-t>
           </p>
@@ -112,58 +95,34 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
                 >
                   <template #already>{{ $t('about.what_we_are_not.words.already') }}</template>
                   <template #people>
-                    <a
-                      :href="pmLinks.npm"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
-                      >{{ $t('about.what_we_are_not.words.people') }}</a
-                    >
+                    <LinkBase :to="pmLinks.npm" class="font-sans">{{
+                      $t('about.what_we_are_not.words.people')
+                    }}</LinkBase>
                   </template>
                   <template #building>
-                    <a
-                      :href="pmLinks.pnpm"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
-                      >{{ $t('about.what_we_are_not.words.building') }}</a
-                    >
+                    <LinkBase :to="pmLinks.pnpm" class="font-sans">{{
+                      $t('about.what_we_are_not.words.building')
+                    }}</LinkBase>
                   </template>
                   <template #really>
-                    <a
-                      :href="pmLinks.yarn"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
-                      >{{ $t('about.what_we_are_not.words.really') }}</a
-                    >
+                    <LinkBase :to="pmLinks.yarn" class="font-sans">{{
+                      $t('about.what_we_are_not.words.really')
+                    }}</LinkBase>
                   </template>
                   <template #cool>
-                    <a
-                      :href="pmLinks.bun"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
-                      >{{ $t('about.what_we_are_not.words.cool') }}</a
-                    >
+                    <LinkBase :to="pmLinks.bun" class="font-sans">{{
+                      $t('about.what_we_are_not.words.cool')
+                    }}</LinkBase>
                   </template>
                   <template #package>
-                    <a
-                      :href="pmLinks.deno"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
-                      >{{ $t('about.what_we_are_not.words.package') }}</a
-                    >
+                    <LinkBase :to="pmLinks.deno" class="font-sans">{{
+                      $t('about.what_we_are_not.words.package')
+                    }}</LinkBase>
                   </template>
                   <template #managers>
-                    <a
-                      :href="pmLinks.vlt"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
-                      >{{ $t('about.what_we_are_not.words.managers') }}</a
-                    >
+                    <LinkBase :to="pmLinks.vlt" class="font-sans">{{
+                      $t('about.what_we_are_not.words.managers')
+                    }}</LinkBase>
                   </template>
                 </i18n-t>
               </span>
@@ -223,6 +182,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
                 />
                 <span
                   class="pointer-events-none absolute -top-9 inset-is-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 text-xs px-2 py-1 shadow-lg opacity-0 scale-95 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100"
+                  dir="ltr"
                 >
                   @{{ contributor.login }}
                 </span>

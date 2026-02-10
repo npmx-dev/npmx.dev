@@ -1,12 +1,36 @@
+import type { ThemeRegistration } from 'shiki'
 import { createHighlighterCore, type HighlighterCore } from 'shiki/core'
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
 
 let highlighter: HighlighterCore | null = null
 
+function replaceThemeColors(
+  theme: ThemeRegistration,
+  replacements: Record<string, string>,
+): ThemeRegistration {
+  let themeString = JSON.stringify(theme)
+  for (const [oldColor, newColor] of Object.entries(replacements)) {
+    themeString = themeString.replaceAll(oldColor, newColor)
+    themeString = themeString.replaceAll(oldColor.toLowerCase(), newColor)
+    themeString = themeString.replaceAll(oldColor.toUpperCase(), newColor)
+  }
+  return JSON.parse(themeString)
+}
+
 export async function getShikiHighlighter(): Promise<HighlighterCore> {
   if (!highlighter) {
     highlighter = await createHighlighterCore({
-      themes: [import('@shikijs/themes/github-dark'), import('@shikijs/themes/github-light')],
+      themes: [
+        import('@shikijs/themes/github-dark'),
+        import('@shikijs/themes/github-light').then(t =>
+          replaceThemeColors(t.default ?? t, {
+            '#22863A': '#227436', // green
+            '#E36209': '#BA4D02', // orange
+            '#D73A49': '#CD3443', // red
+            '#B31D28': '#AC222F', // red
+          }),
+        ),
+      ],
       langs: [
         // Core web languages
         import('@shikijs/langs/javascript'),
@@ -76,7 +100,7 @@ export function highlightCodeSync(shiki: HighlighterCore, code: string, language
         defaultColor: 'dark',
       })
       // Remove inline style from <pre> tag so CSS can control appearance
-      html = html.replace(/<pre([^>]*)\s+style="[^"]*"/, '<pre$1')
+      html = html.replace(/<pre([^>]*) style="[^"]*"/, '<pre$1')
       // Shiki doesn't encode > in text content (e.g., arrow functions =>)
       // We need to encode them for HTML validation
       return escapeRawGt(html)

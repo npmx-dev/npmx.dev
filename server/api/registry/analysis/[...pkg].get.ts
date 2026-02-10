@@ -18,6 +18,7 @@ import {
   ERROR_PACKAGE_ANALYSIS_FAILED,
 } from '#shared/utils/constants'
 import { parseRepoUrl } from '#shared/utils/git-providers'
+import { encodePackageName } from '#shared/utils/npm'
 import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
 
 export default defineCachedEventHandler(
@@ -75,13 +76,6 @@ export default defineCachedEventHandler(
     },
   },
 )
-
-function encodePackageName(name: string): string {
-  if (name.startsWith('@')) {
-    return `@${encodeURIComponent(name.slice(1))}`
-  }
-  return encodeURIComponent(name)
-}
 
 /**
  * Fetch @types package info including deprecation status using fast-npm-meta.

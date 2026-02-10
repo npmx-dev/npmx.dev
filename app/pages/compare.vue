@@ -7,6 +7,7 @@ definePageMeta({
 })
 
 const router = useRouter()
+const canGoBack = useCanGoBack()
 
 // Sync packages with URL query param (stable ref - doesn't change on other query changes)
 const packagesParam = useRouteQuery<string>('packages', '', { mode: 'replace' })
@@ -47,13 +48,9 @@ const gridColumns = computed(() =>
     .filter(({ pkg }) => pkg !== NO_DEPENDENCY_ID)
     .map(({ pkg, originalIndex }) => {
       const data = packagesData.value?.[originalIndex]
-      const header = data
-        ? data.package.version
-          ? `${data.package.name}@${data.package.version}`
-          : data.package.name
-        : pkg
       return {
-        header,
+        name: data?.package.name || pkg,
+        version: data?.package.version,
         replacement: replacements.value.get(pkg) ?? null,
       }
     }),
@@ -78,7 +75,9 @@ const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoadin
 const canCompare = computed(() => packages.value.length >= 2)
 
 // Extract headers from columns for facet rows
-const gridHeaders = computed(() => gridColumns.value.map(col => col.header))
+const gridHeaders = computed(() =>
+  gridColumns.value.map(col => (col.version ? `${col.name}@${col.version}` : col.name)),
+)
 
 useSeoMeta({
   title: () =>
@@ -118,8 +117,9 @@ useSeoMeta({
           </h1>
           <button
             type="button"
-            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
+            v-if="canGoBack"
           >
             <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
@@ -168,27 +168,25 @@ useSeoMeta({
           <h2 id="facets-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             {{ $t('compare.packages.section_facets') }}
           </h2>
-          <button
-            type="button"
-            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
-            :class="isAllSelected ? 'text-fg-muted' : 'text-fg-muted/60 hover:text-fg-muted'"
+          <ButtonBase
+            size="small"
+            :aria-pressed="isAllSelected"
             :disabled="isAllSelected"
             :aria-label="$t('compare.facets.select_all')"
             @click="selectAll"
           >
             {{ $t('compare.facets.all') }}
-          </button>
-          <span class="text-[10px] text-fg-muted/40" aria-hidden="true">/</span>
-          <button
-            type="button"
-            class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
-            :class="isNoneSelected ? 'text-fg-muted' : 'text-fg-muted/60 hover:text-fg-muted'"
+          </ButtonBase>
+          <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
+          <ButtonBase
+            size="small"
+            :aria-pressed="isNoneSelected"
             :disabled="isNoneSelected"
             :aria-label="$t('compare.facets.deselect_all')"
             @click="deselectAll"
           >
             {{ $t('compare.facets.none') }}
-          </button>
+          </ButtonBase>
         </div>
         <CompareFacetSelector />
       </section>
@@ -243,7 +241,7 @@ useSeoMeta({
             id="comparison-heading"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
           >
-            {{ $t('package.downloads.title') }}
+            {{ $t('compare.facets.trends.title') }}
           </h2>
 
           <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
@@ -257,7 +255,7 @@ useSeoMeta({
       <!-- Empty state -->
       <section
         v-else
-        class="text-center px-1.5 py-16 border border-dashed border-border rounded-lg"
+        class="text-center px-1.5 py-16 border border-dashed border-border-hover rounded-lg"
       >
         <div class="i-carbon:compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
         <h2 class="font-mono text-lg text-fg-muted mb-2">
