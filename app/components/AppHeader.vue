@@ -256,7 +256,7 @@ onKeyStroke(
         <LinkBase
           v-for="link in desktopLinks"
           :key="link.name"
-          class="border-none"
+          class="border-0"
           variant="button-secondary"
           :to="link.to"
           :aria-keyshortcuts="link.keyshortcut"

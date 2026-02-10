@@ -56,9 +56,10 @@ function openAuthModal() {
 </script>
 
 <template>
-  <div ref="accountMenuRef" class="relative flex min-w-28 justify-end">
+  <div ref="accountMenuRef">
     <ButtonBase
       type="button"
+      class="border-0"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       @click="isOpen = !isOpen"
@@ -136,7 +137,7 @@ function openAuthModal() {
     >
       <div v-if="isOpen" class="absolute inset-ie-0 top-full pt-2 w-72 z-50" role="menu">
         <div
-          class="bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/50 overflow-hidden px-1"
+          class="bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/10 overflow-hidden px-1"
         >
           <!-- Connected accounts section -->
           <div v-if="hasAnyConnection" class="py-1">
