@@ -356,6 +356,7 @@
     },
     "downloads": {
       "title": "Weekly Downloads",
+      "modal_title": "Weekly Downloads",
       "analyze": "Analyze downloads",
       "community_distribution": "View community adoption distribution"
     },
