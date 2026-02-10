@@ -8,7 +8,7 @@ defineEmits(['update:modelValue'])
 const checked = defineModel<boolean>({
   required: true,
 })
-const id = 'toggle-' + props.label
+const id = useId()
 const { locale, locales } = useI18n()
 const dir = computed(() => {
   const localeObj = locales.value.find(item => item.code === locale.value)
