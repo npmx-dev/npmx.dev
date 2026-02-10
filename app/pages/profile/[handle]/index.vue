@@ -23,17 +23,12 @@ const { data: profile }: { data?: NPMXProfile } = useFetch(
   },
 )
 
-const { data: likes, status } = await useProfileLikes(handle)
+const { data: likesData, status } = await useProfileLikes(handle)
 
 useSeoMeta({
   title: () => `${handle.value} - npmx`,
   description: () => `npmx profile by ${handle.value}`,
 })
-
-function extractPackageFromRef(ref: string) {
-  const { pkg } = /https:\/\/npmx.dev\/package\/(?<pkg>.*)/.exec(ref).groups
-  return pkg
-}
 
 /**
 defineOgImageComponent('Default', {
@@ -57,13 +52,13 @@ defineOgImageComponent('Default', {
       </div>
     </header>
 
-    <section class="flex flex-col gap-3">
+    <section class="flex flex-col gap-8">
       <h1
         class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
         :title="Likes"
         dir="ltr"
       >
-        Likes <span v-if="status === 'success'">({{ likes.likes.records.length ?? 0 }})</span>
+        Likes <span v-if="likesData">({{ likesData.likes.records.length ?? 0 }})</span>
       </h1>
       <div v-if="status === 'pending'">
         <p>Loading...</p>
@@ -72,20 +67,11 @@ defineOgImageComponent('Default', {
         <p>Error</p>
       </div>
       <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <NuxtLink
-          :to="{
-            name: 'package-pkg',
-            params: { pkg: extractPackageFromRef(like.value.subjectRef) },
-          }"
-          v-for="like in likes.likes.records"
-        >
-          <BaseCard class="group font-mono flex justify-between">
-            <p>
-              {{ extractPackageFromRef(like.value.subjectRef) }}
-            </p>
-            <p class="transition-transform duration-150 group-hover:rotate-45">↗</p>
-          </BaseCard>
-        </NuxtLink>
+        <PackageBasicCard
+          v-if="likesData.likes.records"
+          v-for="like in likesData.likes.records"
+          :packageName="like.value.subjectRef"
+        />
       </div>
     </section>
   </main>
