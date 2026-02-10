@@ -17,6 +17,9 @@
     "social": "社群媒體",
     "chat": "聊天"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "搜尋 npm 套件",
     "placeholder": "搜尋套件…",
@@ -64,6 +67,7 @@
       "display": "顯示",
       "language": "語言"
     },
+    "data_source": {},
     "relative_dates": "相對時間",
     "include_types": "安裝時包含 {'@'}types",
     "include_types_description": "對未提供型別定義的套件，自動在安裝指令加入 {'@'}types 套件",
@@ -223,6 +227,7 @@
       "view_more_details": "檢視更多細節",
       "error_loading": "載入來源詳情失敗"
     },
+    "security_downgrade": {},
     "keywords_title": "關鍵字",
     "compatibility": "相容性",
     "card": {
@@ -279,6 +284,21 @@
       "add_owner": "+ 新增擁有者",
       "show_more": "（顯示另外 {count} 個）",
       "show_less": "（收合）"
+    },
+    "trends": {
+      "granularity": "週期",
+      "granularity_daily": "每日",
+      "granularity_weekly": "每週",
+      "granularity_monthly": "每月",
+      "granularity_yearly": "每年",
+      "start_date": "開始",
+      "end_date": "結束",
+      "loading": "載入中…",
+      "date_range": "{start} 到 {end}",
+      "date_range_multiline": "{start}\n到 {end}",
+      "download_file": "下載 {fileType}",
+      "toggle_annotator": "切換標註工具",
+      "items": {}
     },
     "downloads": {
       "title": "每週下載量",
@@ -357,7 +377,6 @@
     },
     "skeleton": {
       "loading": "載入套件詳細資訊",
-      "weekly": "每週",
       "maintainers": "維護者",
       "keywords": "關鍵字",
       "versions": "版本",
@@ -369,20 +388,7 @@
       "name_asc": "名稱（A-Z）",
       "name_desc": "名稱（Z-A）"
     },
-    "trends": {
-      "granularity": "週期",
-      "granularity_daily": "每日",
-      "granularity_weekly": "每週",
-      "granularity_monthly": "每月",
-      "granularity_yearly": "每年",
-      "start_date": "開始",
-      "end_date": "結束",
-      "loading": "載入中…",
-      "date_range": "{start} 到 {end}",
-      "date_range_multiline": "{start}\n到 {end}",
-      "download_file": "下載 {fileType}",
-      "toggle_annotator": "切換標註工具"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -834,6 +840,7 @@
       "packages_selected": "已選擇 {count}/{max} 個套件。",
       "add_hint": "至少新增 2 個套件以進行比較。"
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "比較維度",
       "all": "全選",
@@ -871,6 +878,7 @@
           "label": "每週下載量",
           "description": "每週下載次數"
         },
+        "totalLikes": {},
         "lastUpdated": {
           "label": "發布日期",
           "description": "此版本的發布日期"
@@ -909,7 +917,22 @@
         "types_included": "包含",
         "types_none": "無",
         "vulnerabilities_summary": "{count}（{critical} 嚴重/{high} 高）"
-      }
+      },
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

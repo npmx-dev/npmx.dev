@@ -17,6 +17,9 @@
     "social": "redes sociais",
     "chat": "chat"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Pesquisar pacotes npm",
     "placeholder": "pesquisar pacotes...",
@@ -60,6 +63,7 @@
       "display": "Exibição",
       "language": "Idioma"
     },
+    "data_source": {},
     "relative_dates": "Datas relativas",
     "include_types": "Incluir {'@'}types na instalação",
     "include_types_description": "Adicionar pacote {'@'}types aos comandos de instalação para pacotes sem tipo",
@@ -169,6 +173,7 @@
       "fund": "financiar",
       "compare": "comparar"
     },
+    "likes": {},
     "docs": {
       "not_available": "Documentação não disponível",
       "not_available_detail": "Não conseguimos gerar documentação para esta versão."
@@ -190,8 +195,11 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README não disponível.",
-      "view_on_github": "Ver no GitHub"
+      "view_on_github": "Ver no GitHub",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Palavras-chave",
     "compatibility": "Compatibilidade",
     "card": {
@@ -247,6 +255,21 @@
       "add_owner": "+ Adicionar proprietário",
       "show_more": "(mostrar {count} mais)",
       "show_less": "(mostrar menos)"
+    },
+    "trends": {
+      "granularity": "Granularidade",
+      "granularity_daily": "Diária",
+      "granularity_weekly": "Semanal",
+      "granularity_monthly": "Mensal",
+      "granularity_yearly": "Anual",
+      "start_date": "Início",
+      "end_date": "Fim",
+      "loading": "Carregando...",
+      "date_range": "{start} a {end}",
+      "date_range_multiline": "{start}\npara {end}",
+      "download_file": "Baixar {fileType}",
+      "toggle_annotator": "Alternar anotador",
+      "items": {}
     },
     "downloads": {
       "title": "Downloads Semanais",
@@ -324,7 +347,6 @@
     },
     "skeleton": {
       "loading": "Carregando detalhes do pacote",
-      "weekly": "Semanal",
       "maintainers": "Mantenedores",
       "keywords": "Palavras-chave",
       "versions": "Versões",
@@ -335,20 +357,7 @@
       "name_asc": "Nome (A-Z)",
       "name_desc": "Nome (Z-A)"
     },
-    "trends": {
-      "granularity": "Granularidade",
-      "granularity_daily": "Diária",
-      "granularity_weekly": "Semanal",
-      "granularity_monthly": "Mensal",
-      "granularity_yearly": "Anual",
-      "start_date": "Início",
-      "end_date": "Fim",
-      "loading": "Carregando...",
-      "date_range": "{start} a {end}",
-      "date_range_multiline": "{start}\npara {end}",
-      "download_file": "Baixar {fileType}",
-      "toggle_annotator": "Alternar anotador"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -586,6 +595,7 @@
     "more_keywords": "+{count} mais",
     "clear_all": "Limpar tudo",
     "remove_filter": "Remover filtro {label}",
+    "chips": {},
     "download_range": {
       "any": "Qualquer",
       "lt100": "< 100",
@@ -791,6 +801,7 @@
       "packages_selected": "{count}/{max} pacotes selecionados.",
       "add_hint": "Adicione pelo menos 2 pacotes para comparar."
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "Aspectos de comparação",
       "all": "todos",
@@ -805,7 +816,38 @@
         "health": "Saúde",
         "compatibility": "Compatibilidade",
         "security": "Segurança e Conformidade"
-      }
+      },
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

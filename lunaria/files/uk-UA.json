@@ -15,6 +15,9 @@
     "social": "соціальні мережі",
     "chat": "чат"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Пошук пакетів npm",
     "placeholder": "пошук пакетів...",
@@ -51,6 +54,7 @@
       "display": "Дисплей",
       "language": "Мова"
     },
+    "data_source": {},
     "relative_dates": "Відносні дати",
     "include_types": "Включити {'@'}types у встановлення",
     "include_types_description": "Додавайте пакет {'@'}types до команд встановлення для пакетів без типів",
@@ -142,6 +146,7 @@
       "docs": "документація",
       "fund": "фінансування"
     },
+    "likes": {},
     "docs": {
       "not_available": "Документація недоступна",
       "not_available_detail": "Ми не змогли згенерувати документацію для цієї версії."
@@ -163,8 +168,11 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README недоступна.",
-      "view_on_github": "Переглянути на GitHub"
+      "view_on_github": "Переглянути на GitHub",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Ключові слова",
     "compatibility": "Сумісність",
     "card": {
@@ -216,6 +224,21 @@
       "add_owner": "+ Додати власника",
       "show_more": "(показати ще {count})",
       "show_less": "(показати менше)"
+    },
+    "trends": {
+      "granularity": "Детальність",
+      "granularity_daily": "Щоденно",
+      "granularity_weekly": "Щотижня",
+      "granularity_monthly": "Щомісячно",
+      "granularity_yearly": "Щороку",
+      "start_date": "Початок",
+      "end_date": "Кінець",
+      "loading": "Завантаження...",
+      "date_range": "{start} до {end}",
+      "date_range_multiline": "{start}\nдо {end}",
+      "download_file": "Завантажити {fileType}",
+      "toggle_annotator": "Перемикати анотатор",
+      "items": {}
     },
     "downloads": {
       "title": "Завантажень на тиждень",
@@ -291,7 +314,6 @@
     },
     "skeleton": {
       "loading": "Завантаження деталей пакета",
-      "weekly": "Щотижнева",
       "maintainers": "Супроводжувачі",
       "keywords": "Ключові слова",
       "versions": "Версії",
@@ -302,20 +324,7 @@
       "name_asc": "Ім'я (A-Z)",
       "name_desc": "Ім'я (Z-A)"
     },
-    "trends": {
-      "granularity": "Детальність",
-      "granularity_daily": "Щоденно",
-      "granularity_weekly": "Щотижня",
-      "granularity_monthly": "Щомісячно",
-      "granularity_yearly": "Щороку",
-      "start_date": "Початок",
-      "end_date": "Кінець",
-      "loading": "Завантаження...",
-      "date_range": "{start} до {end}",
-      "date_range_multiline": "{start}\nдо {end}",
-      "download_file": "Завантажити {fileType}",
-      "toggle_annotator": "Перемикати анотатор"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -548,6 +557,7 @@
     "more_keywords": "+{count} більше",
     "clear_all": "Очистити все",
     "remove_filter": "Видалити фільтр {label}",
+    "chips": {},
     "download_range": {
       "any": "Будь-які",
       "lt100": "< 100",
@@ -708,8 +718,40 @@
   "compare": {
     "packages": {},
     "selector": {},
+    "no_dependency": {},
     "facets": {
-      "categories": {}
+      "categories": {},
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

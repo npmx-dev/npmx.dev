@@ -18,6 +18,9 @@
     "social": "اجتماعي",
     "chat": "الدردشة"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "ابحث عن حزم npm",
     "placeholder": "ابحث عن الحزم…",
@@ -65,6 +68,7 @@
       "display": "العرض",
       "language": "اللغة"
     },
+    "data_source": {},
     "relative_dates": "تواريخ نسبية",
     "include_types": "تضمين {'@'}types في التثبيت",
     "include_types_description": "إضافة حزمة {'@'}types إلى أوامر التثبيت للحزم غير المرفقة بأنواع TypeScript.",
@@ -226,6 +230,7 @@
       "view_more_details": "عرض المزيد من التفاصيل",
       "error_loading": "فشل تحميل تفاصيل إثبات المصدر"
     },
+    "security_downgrade": {},
     "keywords_title": "الكلمات المفتاحية",
     "compatibility": "التوافق",
     "card": {
@@ -282,6 +287,21 @@
       "add_owner": "+ إضافة مالك",
       "show_more": "(عرض المزيد ({count}))",
       "show_less": "(عرض أقل)"
+    },
+    "trends": {
+      "granularity": "مستوى التفصيل",
+      "granularity_daily": "يومي",
+      "granularity_weekly": "أسبوعي",
+      "granularity_monthly": "شهري",
+      "granularity_yearly": "سنوي",
+      "start_date": "البداية",
+      "end_date": "النهاية",
+      "loading": "جارٍ التحميل…",
+      "date_range": "من {start} إلى {end}",
+      "date_range_multiline": "من {start}\nإلى {end}",
+      "download_file": "تنزيل {fileType}",
+      "toggle_annotator": "إظهار/إخفاء الشروح التوضيحية",
+      "items": {}
     },
     "downloads": {
       "title": "التنزيلات الأسبوعية",
@@ -360,7 +380,6 @@
     },
     "skeleton": {
       "loading": "جارٍ تحميل تفاصيل الحزمة",
-      "weekly": "أسبوعيًا",
       "maintainers": "المشرفون",
       "keywords": "الكلمات المفتاحية",
       "versions": "الإصدارات",
@@ -372,20 +391,7 @@
       "name_asc": "الاسم (A-Z)",
       "name_desc": "الاسم (Z-A)"
     },
-    "trends": {
-      "granularity": "مستوى التفصيل",
-      "granularity_daily": "يومي",
-      "granularity_weekly": "أسبوعي",
-      "granularity_monthly": "شهري",
-      "granularity_yearly": "سنوي",
-      "start_date": "البداية",
-      "end_date": "النهاية",
-      "loading": "جارٍ التحميل…",
-      "date_range": "من {start} إلى {end}",
-      "date_range_multiline": "من {start}\nإلى {end}",
-      "download_file": "تنزيل {fileType}",
-      "toggle_annotator": "إظهار/إخفاء الشروح التوضيحية"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -883,6 +889,7 @@
           "label": "التنزيلات/أسبوع",
           "description": "عدد التنزيلات الأسبوعية"
         },
+        "totalLikes": {},
         "lastUpdated": {
           "label": "تاريخ النشر",
           "description": "متى نُشر هذا الإصدار"
@@ -922,7 +929,8 @@
         "types_none": "الأنواع غير مضمّنة",
         "vulnerabilities_summary": "{count} ({critical} حرجة/{high} عالية)",
         "up_to_you": "الأمر متروك لك!"
-      }
+      },
+      "trends": {}
     }
   },
   "privacy_policy": {

@@ -17,6 +17,9 @@
     "social": "সোশ্যাল",
     "chat": "চ্যাট"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "npm প্যাকেজ অনুসন্ধান করুন",
     "placeholder": "প্যাকেজ অনুসন্ধান করুন...",
@@ -59,6 +62,7 @@
       "display": "প্রদর্শন",
       "language": "ভাষা"
     },
+    "data_source": {},
     "relative_dates": "আপেক্ষিক তারিখ",
     "include_types": "ইনস্টলে {'@'}types অন্তর্ভুক্ত করুন",
     "include_types_description": "নন-টাইপড প্যাকেজের ইনস্টল কমান্ডে {'@'}types প্যাকেজ যুক্ত করুন",
@@ -168,6 +172,7 @@
       "fund": "অর্থায়ন করুন",
       "compare": "তুলনা করুন"
     },
+    "likes": {},
     "docs": {
       "not_available": "ডকুমেন্টেশন উপলব্ধ নেই",
       "not_available_detail": "আমরা এই ভার্সনের জন্য ডকুমেন্টেশন তৈরি করতে পারিনি।"
@@ -189,8 +194,11 @@
     "readme": {
       "title": "রিডমি",
       "no_readme": "README উপলব্ধ নেই।",
-      "view_on_github": "GitHub এ দেখুন"
+      "view_on_github": "GitHub এ দেখুন",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "কীওয়ার্ড",
     "compatibility": "সামঞ্জস্য",
     "card": {
@@ -248,8 +256,6 @@
       "show_less": "(কম দেখান)"
     },
     "trends": {
-      "date_range": "{start} থেকে {end}",
-      "date_range_multiline": "{start}\nথেকে {end}",
       "granularity": "বিস্তৃতি",
       "granularity_daily": "দৈনিক",
       "granularity_weekly": "সাপ্তাহিক",
@@ -258,8 +264,11 @@
       "start_date": "শুরু",
       "end_date": "শেষ",
       "loading": "লোড হচ্ছে...",
+      "date_range": "{start} থেকে {end}",
+      "date_range_multiline": "{start}\nথেকে {end}",
       "download_file": "{fileType} ডাউনলোড করুন",
-      "toggle_annotator": "অ্যানোটেটর টগল করুন"
+      "toggle_annotator": "অ্যানোটেটর টগল করুন",
+      "items": {}
     },
     "downloads": {
       "title": "সাপ্তাহিক ডাউনলোড",
@@ -337,7 +346,6 @@
     },
     "skeleton": {
       "loading": "প্যাকেজের বিবরণ লোড হচ্ছে",
-      "weekly": "সাপ্তাহিক",
       "maintainers": "রক্ষণাবেক্ষণকারী",
       "keywords": "কীওয়ার্ড",
       "versions": "ভার্সন",
@@ -347,7 +355,8 @@
       "downloads": "সবচেয়ে বেশি ডাউনলোডকৃত",
       "name_asc": "নাম (A-Z)",
       "name_desc": "নাম (Z-A)"
-    }
+    },
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -585,6 +594,7 @@
     "more_keywords": "+{count}টি আরো",
     "clear_all": "সব সাফ করুন",
     "remove_filter": "{label} ফিল্টার সরান",
+    "chips": {},
     "download_range": {
       "any": "যেকোনো",
       "lt100": "< 100",
@@ -790,6 +800,7 @@
       "packages_selected": "{count}/{max}টি প্যাকেজ নির্বাচিত।",
       "add_hint": "তুলনা করার জন্য কমপক্ষে ২টি প্যাকেজ যোগ করুন।"
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "তুলনা ফ্যাসেট",
       "all": "সব",
@@ -804,7 +815,38 @@
         "health": "স্বাস্থ্য",
         "compatibility": "সামঞ্জস্য",
         "security": "নিরাপত্তা এবং সম্মতি"
-      }
+      },
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

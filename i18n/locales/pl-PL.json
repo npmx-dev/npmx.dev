@@ -18,6 +18,9 @@
     "social": "social",
     "chat": "czat"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Szukaj pakietów npm",
     "placeholder": "szukaj pakietów...",
@@ -61,6 +64,7 @@
       "display": "Widok",
       "language": "Język"
     },
+    "data_source": {},
     "relative_dates": "Daty względne",
     "include_types": "Dodaj {'@'}types do instalacji",
     "include_types_description": "Dodawaj pakiet {'@'}types do komend instalacji dla pakietów bez typów",
@@ -173,6 +177,7 @@
       "fund": "wesprzyj",
       "compare": "porównaj"
     },
+    "likes": {},
     "docs": {
       "not_available": "Dokumentacja niedostępna",
       "not_available_detail": "Nie mogliśmy wygenerować dokumentacji dla tej wersji."
@@ -206,6 +211,7 @@
       }
     },
     "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Słowa kluczowe",
     "compatibility": "Zgodność",
     "card": {
@@ -262,6 +268,21 @@
       "add_owner": "+ Dodaj właściciela",
       "show_more": "(pokaż jeszcze {count})",
       "show_less": "(pokaż mniej)"
+    },
+    "trends": {
+      "granularity": "Agregacja",
+      "granularity_daily": "Dzienna",
+      "granularity_weekly": "Tygodniowa",
+      "granularity_monthly": "Miesięczna",
+      "granularity_yearly": "Roczna",
+      "start_date": "Od",
+      "end_date": "Do",
+      "loading": "Ładowanie...",
+      "date_range": "{start} do {end}",
+      "date_range_multiline": "{start}\ndo {end}",
+      "download_file": "Pobierz {fileType}",
+      "toggle_annotator": "Przełącz adnotacje",
+      "items": {}
     },
     "downloads": {
       "title": "Pobrania tygodniowe",
@@ -339,7 +360,6 @@
     },
     "skeleton": {
       "loading": "Ładowanie szczegółów pakietu",
-      "weekly": "Tygodniowo",
       "maintainers": "Opiekunowie",
       "keywords": "Słowa kluczowe",
       "versions": "Wersje",
@@ -351,20 +371,7 @@
       "name_asc": "Nazwa (A-Z)",
       "name_desc": "Nazwa (Z-A)"
     },
-    "trends": {
-      "granularity": "Agregacja",
-      "granularity_daily": "Dzienna",
-      "granularity_weekly": "Tygodniowa",
-      "granularity_monthly": "Miesięczna",
-      "granularity_yearly": "Roczna",
-      "start_date": "Od",
-      "end_date": "Do",
-      "loading": "Ładowanie...",
-      "date_range": "{start} do {end}",
-      "date_range_multiline": "{start}\ndo {end}",
-      "download_file": "Pobierz {fileType}",
-      "toggle_annotator": "Przełącz adnotacje"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -816,6 +823,7 @@
       "packages_selected": "Wybrano pakiety: {count}/{max}.",
       "add_hint": "Dodaj co najmniej 2 pakiety do porównania."
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "Aspekty porównania",
       "all": "wszystkie",
@@ -853,6 +861,7 @@
           "label": "Pobrania/tydz.",
           "description": "Tygodniowa liczba pobrań"
         },
+        "totalLikes": {},
         "lastUpdated": {
           "label": "Opublikowano",
           "description": "Kiedy ta wersja została opublikowana"
@@ -891,7 +900,22 @@
         "types_included": "Wbudowane",
         "types_none": "Brak",
         "vulnerabilities_summary": "{count} ({critical}K/{high}W)"
-      }
+      },
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

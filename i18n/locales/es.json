@@ -18,6 +18,9 @@
     "social": "social",
     "chat": "chat"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Buscar paquetes npm",
     "placeholder": "buscar paquetes...",
@@ -65,6 +68,7 @@
       "display": "Visualización",
       "language": "Idioma"
     },
+    "data_source": {},
     "relative_dates": "Fechas relativas",
     "include_types": "Incluir {'@'}types en la instalación",
     "include_types_description": "Añadir paquete {'@'}types a los comandos de instalación para paquetes sin tipos",
@@ -227,6 +231,7 @@
       "view_more_details": "Ver más detalles",
       "error_loading": "Error al cargar detalles de procedencia"
     },
+    "security_downgrade": {},
     "keywords_title": "Palabras clave",
     "compatibility": "Compatibilidad",
     "card": {
@@ -283,6 +288,21 @@
       "add_owner": "+ Añadir propietario",
       "show_more": "(mostrar {count} más)",
       "show_less": "(mostrar menos)"
+    },
+    "trends": {
+      "granularity": "Granularidad",
+      "granularity_daily": "Diaria",
+      "granularity_weekly": "Semanal",
+      "granularity_monthly": "Mensual",
+      "granularity_yearly": "Anual",
+      "start_date": "Inicio",
+      "end_date": "Fin",
+      "loading": "Cargando...",
+      "date_range": "{start} a {end}",
+      "date_range_multiline": "{start}\na {end}",
+      "download_file": "Descargar {fileType}",
+      "toggle_annotator": "Alternar anotador",
+      "items": {}
     },
     "downloads": {
       "title": "Descargas Semanales",
@@ -361,7 +381,6 @@
     },
     "skeleton": {
       "loading": "Cargando detalles del paquete",
-      "weekly": "Semanal",
       "maintainers": "Mantenedores",
       "keywords": "Palabras clave",
       "versions": "Versiones",
@@ -377,20 +396,6 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "trends": {
-      "granularity": "Granularidad",
-      "granularity_daily": "Diaria",
-      "granularity_weekly": "Semanal",
-      "granularity_monthly": "Mensual",
-      "granularity_yearly": "Anual",
-      "start_date": "Inicio",
-      "end_date": "Fin",
-      "loading": "Cargando...",
-      "date_range": "{start} a {end}",
-      "date_range_multiline": "{start}\na {end}",
-      "download_file": "Descargar {fileType}",
-      "toggle_annotator": "Alternar anotador"
     }
   },
   "connector": {
@@ -932,7 +937,8 @@
         "types_none": "Ninguno",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "¡Depende de ti!"
-      }
+      },
+      "trends": {}
     }
   },
   "privacy_policy": {

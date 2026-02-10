@@ -15,6 +15,9 @@
     "social": "соцсети",
     "chat": "чат"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Поиск пакетов npm",
     "placeholder": "поиск пакетов...",
@@ -51,6 +54,7 @@
       "display": "Отображение",
       "language": "Язык"
     },
+    "data_source": {},
     "relative_dates": "Относительные даты",
     "include_types": "Включать {'@'}types при установке",
     "include_types_description": "Добавлять пакет {'@'}types в команды установки для нетипизированных пакетов",
@@ -139,6 +143,7 @@
       "docs": "доки",
       "fund": "поддержать"
     },
+    "likes": {},
     "docs": {
       "not_available": "Документация недоступна",
       "not_available_detail": "Мы не смогли сгенерировать документацию для этой версии."
@@ -160,8 +165,11 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README недоступен.",
-      "view_on_github": "Посмотреть на GitHub"
+      "view_on_github": "Посмотреть на GitHub",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Ключевые слова",
     "compatibility": "Совместимость",
     "card": {
@@ -213,6 +221,21 @@
       "add_owner": "+ Добавить владельца",
       "show_more": "(показать ещё {count})",
       "show_less": "(показать меньше)"
+    },
+    "trends": {
+      "granularity": "Детализация",
+      "granularity_daily": "По дням",
+      "granularity_weekly": "По неделям",
+      "granularity_monthly": "По месяцам",
+      "granularity_yearly": "По годам",
+      "start_date": "Начало",
+      "end_date": "Конец",
+      "loading": "Загрузка...",
+      "date_range": "С {start} по {end}",
+      "date_range_multiline": "С {start}\nпо {end}",
+      "download_file": "Скачать {fileType}",
+      "toggle_annotator": "Переключить аннотации",
+      "items": {}
     },
     "downloads": {
       "title": "Загрузки за неделю",
@@ -288,7 +311,6 @@
     },
     "skeleton": {
       "loading": "Загрузка информации о пакете",
-      "weekly": "В неделю",
       "maintainers": "Мейнтейнеры",
       "keywords": "Ключевые слова",
       "versions": "Версии",
@@ -299,20 +321,7 @@
       "name_asc": "Имя (А-Я)",
       "name_desc": "Имя (Я-А)"
     },
-    "trends": {
-      "granularity": "Детализация",
-      "granularity_daily": "По дням",
-      "granularity_weekly": "По неделям",
-      "granularity_monthly": "По месяцам",
-      "granularity_yearly": "По годам",
-      "start_date": "Начало",
-      "end_date": "Конец",
-      "loading": "Загрузка...",
-      "date_range": "С {start} по {end}",
-      "date_range_multiline": "С {start}\nпо {end}",
-      "download_file": "Скачать {fileType}",
-      "toggle_annotator": "Переключить аннотации"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -542,6 +551,7 @@
     "more_keywords": "ещё +{count}",
     "clear_all": "Очистить все",
     "remove_filter": "Удалить фильтр {label}",
+    "chips": {},
     "download_range": {
       "any": "Любое кол-во",
       "lt100": "< 100",
@@ -725,8 +735,40 @@
   "compare": {
     "packages": {},
     "selector": {},
+    "no_dependency": {},
     "facets": {
-      "categories": {}
+      "categories": {},
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

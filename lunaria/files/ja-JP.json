@@ -17,6 +17,9 @@
     "social": "ソーシャル",
     "chat": "チャット"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "npmパッケージを検索",
     "placeholder": "パッケージを検索...",
@@ -64,6 +67,7 @@
       "display": "表示",
       "language": "言語"
     },
+    "data_source": {},
     "relative_dates": "日付を相対表記",
     "include_types": "インストール時に {'@'}types を含める",
     "include_types_description": "型定義のないパッケージのインストールコマンドに {'@'}types パッケージを追加します",
@@ -226,6 +230,7 @@
       "view_more_details": "詳細を表示",
       "error_loading": "provenance詳細情報の読み込みに失敗しました"
     },
+    "security_downgrade": {},
     "keywords_title": "キーワード",
     "compatibility": "互換性",
     "card": {
@@ -282,6 +287,21 @@
       "add_owner": "+ オーナーを追加",
       "show_more": "（他 {count} 個を表示）",
       "show_less": "（表示を減らす）"
+    },
+    "trends": {
+      "granularity": "粒度",
+      "granularity_daily": "日次",
+      "granularity_weekly": "週次",
+      "granularity_monthly": "月次",
+      "granularity_yearly": "年次",
+      "start_date": "開始日",
+      "end_date": "終了日",
+      "loading": "読み込み中...",
+      "date_range": "{start} から {end}",
+      "date_range_multiline": "{start}\nから {end}",
+      "download_file": "{fileType} をダウンロード",
+      "toggle_annotator": "アノテーターを切り替え",
+      "items": {}
     },
     "downloads": {
       "title": "週間ダウンロード数",
@@ -360,7 +380,6 @@
     },
     "skeleton": {
       "loading": "パッケージ詳細を読み込み中",
-      "weekly": "週間",
       "maintainers": "メンテナ",
       "keywords": "キーワード",
       "versions": "バージョン",
@@ -372,20 +391,7 @@
       "name_asc": "名前順（A-Z）",
       "name_desc": "名前順（Z-A）"
     },
-    "trends": {
-      "granularity": "粒度",
-      "granularity_daily": "日次",
-      "granularity_weekly": "週次",
-      "granularity_monthly": "月次",
-      "granularity_yearly": "年次",
-      "start_date": "開始日",
-      "end_date": "終了日",
-      "loading": "読み込み中...",
-      "date_range": "{start} から {end}",
-      "date_range_multiline": "{start}\nから {end}",
-      "download_file": "{fileType} をダウンロード",
-      "toggle_annotator": "アノテーターを切り替え"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -926,7 +932,8 @@
         "types_none": "なし",
         "vulnerabilities_summary": "{count} 件 ({critical}C/{high}H)",
         "up_to_you": "あなた次第！"
-      }
+      },
+      "trends": {}
     }
   },
   "privacy_policy": {

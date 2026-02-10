@@ -85,6 +85,7 @@
       "search": "Datenquelle",
       "language": "Sprache"
     },
+    "data_source": {},
     "relative_dates": "Relative Datumsangaben",
     "include_types": "{'@'}types bei Installation einschließen",
     "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Paket) automatisch zu Installationsbefehlen für Pakete ohne Typen hinzufügen",
@@ -247,6 +248,7 @@
       "view_more_details": "Weitere Details anzeigen",
       "error_loading": "Fehler beim Laden der Herkunftsdaten"
     },
+    "security_downgrade": {},
     "keywords_title": "Schlüsselwörter",
     "compatibility": "Kompatibilität",
     "card": {
@@ -402,7 +404,6 @@
     },
     "skeleton": {
       "loading": "Paketdetails werden geladen",
-      "weekly": "Wöchentlich",
       "maintainers": "Maintainer",
       "keywords": "Schlüsselwörter",
       "versions": "Versionen",

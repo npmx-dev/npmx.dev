@@ -15,6 +15,9 @@
     "social": "közösség",
     "chat": "chat"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Npm csomagok keresése",
     "placeholder": "csomagok keresése...",
@@ -51,6 +54,7 @@
       "display": "Kijelző",
       "language": "Nyelv"
     },
+    "data_source": {},
     "relative_dates": "Relatív dátumok",
     "include_types": "{'@'}types hozzáadása telepítéskor",
     "include_types_description": "Adja hozzá a {'@'}types csomagot a telepítési parancshoz típus nélküli csomagoknál",
@@ -142,6 +146,7 @@
       "docs": "dokumentáció",
       "fund": "támogatás"
     },
+    "likes": {},
     "docs": {
       "not_available": "Dokumentáció nem elérhető",
       "not_available_detail": "Nem sikerült legenerálni a dokumentációt ehhez a verzióhoz."
@@ -163,8 +168,11 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Nincs elérhető README.",
-      "view_on_github": "Megtekintés GitHubon"
+      "view_on_github": "Megtekintés GitHubon",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Kulcsszavak",
     "compatibility": "Kompatibilitás",
     "card": {
@@ -216,6 +224,20 @@
       "add_owner": "+ Tulajdonos hozzáadása",
       "show_more": "(további {count} megjelenítése)",
       "show_less": "(kevesebb megjelenítése)"
+    },
+    "trends": {
+      "granularity": "Bontás",
+      "granularity_daily": "Napi",
+      "granularity_weekly": "Heti",
+      "granularity_monthly": "Havi",
+      "granularity_yearly": "Éves",
+      "start_date": "Kezdet",
+      "end_date": "Vége",
+      "loading": "Betöltés...",
+      "date_range": "{start} - {end}",
+      "download_file": "{fileType} letöltése",
+      "toggle_annotator": "Magyarázó kapcsolása",
+      "items": {}
     },
     "downloads": {
       "title": "Heti letöltések",
@@ -291,7 +313,6 @@
     },
     "skeleton": {
       "loading": "Részletek betöltése",
-      "weekly": "Heti",
       "maintainers": "Karbantartók",
       "keywords": "Kulcsszavak",
       "versions": "Verziók",
@@ -302,19 +323,7 @@
       "name_asc": "Név (A-Z)",
       "name_desc": "Név (Z-A)"
     },
-    "trends": {
-      "granularity": "Bontás",
-      "granularity_daily": "Napi",
-      "granularity_weekly": "Heti",
-      "granularity_monthly": "Havi",
-      "granularity_yearly": "Éves",
-      "start_date": "Kezdet",
-      "end_date": "Vége",
-      "loading": "Betöltés...",
-      "date_range": "{start} - {end}",
-      "download_file": "{fileType} letöltése",
-      "toggle_annotator": "Magyarázó kapcsolása"
-    }
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -547,6 +556,7 @@
     "more_keywords": "+{count} további",
     "clear_all": "Összes törlése",
     "remove_filter": "{label} szűrő eltávolítása",
+    "chips": {},
     "download_range": {
       "any": "Bármennyi",
       "lt100": "< 100",
@@ -707,8 +717,40 @@
   "compare": {
     "packages": {},
     "selector": {},
+    "no_dependency": {},
     "facets": {
-      "categories": {}
+      "categories": {},
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

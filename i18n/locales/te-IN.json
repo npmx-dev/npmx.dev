@@ -18,6 +18,9 @@
     "social": "సోషల్",
     "chat": "చాట్"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "npm ప్యాకేజ్‌ను శోధించండి",
     "placeholder": "ప్యాకేజ్‌ను శోధించండి...",
@@ -60,6 +63,7 @@
       "display": "ప్రదర్శన",
       "language": "భాష"
     },
+    "data_source": {},
     "relative_dates": "సాపేక్ష తేదీలు",
     "include_types": "ఇన్‌స్టాల్‌లో {'@'}types చేర్చండి",
     "include_types_description": "టైప్ చేయని ప్యాకేజ్‌కు ఇన్‌స్టాల్ కమాండ్‌లో {'@'}types ప్యాకేజ్‌ను జోడించండి",
@@ -169,6 +173,7 @@
       "fund": "దానం చేయండి",
       "compare": "పోల్చండి"
     },
+    "likes": {},
     "docs": {
       "not_available": "డాక్యుమెంటేషన్ అందుబాటులో లేదు",
       "not_available_detail": "మేము ఈ వెర్షన్ కోసం డాక్యుమెంటేషన్‌ను జెనరేట్ చేయలేకపోయాము."
@@ -190,8 +195,11 @@
     "readme": {
       "title": "రీడ్మీ",
       "no_readme": "README అందుబాటులో లేదు.",
-      "view_on_github": "GitHub లో వీక్షించండి"
+      "view_on_github": "GitHub లో వీక్షించండి",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "కీవర్డ్‌లు",
     "compatibility": "అనుకూలత",
     "card": {
@@ -249,8 +257,6 @@
       "show_less": "(తక్కువ చూపించండి)"
     },
     "trends": {
-      "date_range": "{start} నుండి {end}",
-      "date_range_multiline": "{start}\nనుండి {end}",
       "granularity": "గ్రాన్యులారిటీ",
       "granularity_daily": "రోజువారీ",
       "granularity_weekly": "వారపు",
@@ -259,8 +265,11 @@
       "start_date": "ప్రారంభం",
       "end_date": "ముగింపు",
       "loading": "లోడ్ అవుతున్నది...",
+      "date_range": "{start} నుండి {end}",
+      "date_range_multiline": "{start}\nనుండి {end}",
       "download_file": "{fileType} డౌన్‌లోడ్ చేయండి",
-      "toggle_annotator": "అనోటేటర్‌ను టాగుల్ చేయండి"
+      "toggle_annotator": "అనోటేటర్‌ను టాగుల్ చేయండి",
+      "items": {}
     },
     "downloads": {
       "title": "వారపు డౌన్‌లోడ్‌లు",
@@ -338,7 +347,6 @@
     },
     "skeleton": {
       "loading": "ప్యాకేజ్ వివరాలు లోడ్ అవుతున్నాయి",
-      "weekly": "వారపు",
       "maintainers": "నిర్వహకులు",
       "keywords": "కీవర్డ్‌లు",
       "versions": "వెర్షన్‌లు",
@@ -348,7 +356,8 @@
       "downloads": "అత్యధికంగా డౌన్‌లోడ్ చేయబడినవి",
       "name_asc": "పేరు (A-Z)",
       "name_desc": "పేరు (Z-A)"
-    }
+    },
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -586,6 +595,7 @@
     "more_keywords": "+{count} మరిన్ని",
     "clear_all": "అన్నింటిని క్లియర్ చేయండి",
     "remove_filter": "{label} ఫిల్టర్‌ను తీసివేయండి",
+    "chips": {},
     "download_range": {
       "any": "ఏదైనా",
       "lt100": "< 100",
@@ -791,6 +801,7 @@
       "packages_selected": "{count}/{max} ప్యాకేజ్‌లు ఎంచుకోబడ్డాయి.",
       "add_hint": "పోల్చడానికి కనీసం 2 ప్యాకేజ్‌లను జోడించండి."
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "పోలిక ఫేసెట్‌లు",
       "all": "అన్నీ",
@@ -805,7 +816,38 @@
         "health": "ఆరోగ్యం",
         "compatibility": "అనుకూలత",
         "security": "భద్రత మరియు అనుసరణ"
-      }
+      },
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

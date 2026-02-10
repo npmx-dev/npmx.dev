@@ -256,6 +256,7 @@
       "view_more_details": "Voir plus de détails",
       "error_loading": "Échec du chargement des détails de provenance"
     },
+    "security_downgrade": {},
     "keywords_title": "Mots-clés",
     "compatibility": "Compatibilité",
     "card": {
@@ -312,6 +313,26 @@
       "add_owner": "+ Ajouter un propriétaire",
       "show_more": "(afficher {count} de plus)",
       "show_less": "(afficher moins)"
+    },
+    "trends": {
+      "granularity": "Granularité",
+      "granularity_daily": "Quotidien",
+      "granularity_weekly": "Hebdomadaire",
+      "granularity_monthly": "Mensuel",
+      "granularity_yearly": "Annuel",
+      "start_date": "Début",
+      "end_date": "Fin",
+      "loading": "Chargement...",
+      "date_range": "{start} au {end}",
+      "date_range_multiline": "{start}\nau {end}",
+      "download_file": "Télécharger {fileType}",
+      "toggle_annotator": "Afficher/Masquer l'annotateur",
+      "legend_estimation": "Estimation",
+      "no_data": "Données non disponibles",
+      "y_axis_label": "{facet} {granularity}",
+      "items": {
+        "downloads": "Téléchargements"
+      }
     },
     "downloads": {
       "title": "Téléchargements hebdomadaires",
@@ -390,7 +411,6 @@
     },
     "skeleton": {
       "loading": "Chargement des détails du paquet",
-      "weekly": "Hebdo",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
       "versions": "Versions",
@@ -401,26 +421,6 @@
       "published": "Récemment publié",
       "name_asc": "Nom (A-Z)",
       "name_desc": "Nom (Z-A)"
-    },
-    "trends": {
-      "granularity": "Granularité",
-      "granularity_daily": "Quotidien",
-      "granularity_weekly": "Hebdomadaire",
-      "granularity_monthly": "Mensuel",
-      "granularity_yearly": "Annuel",
-      "start_date": "Début",
-      "end_date": "Fin",
-      "loading": "Chargement...",
-      "date_range": "{start} au {end}",
-      "date_range_multiline": "{start}\nau {end}",
-      "download_file": "Télécharger {fileType}",
-      "toggle_annotator": "Afficher/Masquer l'annotateur",
-      "legend_estimation": "Estimation",
-      "no_data": "Données non disponibles",
-      "y_axis_label": "{facet} {granularity}",
-      "items": {
-        "downloads": "Téléchargements"
-      }
     },
     "size": {
       "b": "{size} o",

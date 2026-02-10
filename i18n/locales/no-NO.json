@@ -18,6 +18,9 @@
     "social": "sosialt",
     "chat": "chat"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Søk etter npm-pakker",
     "placeholder": "søk etter pakker...",
@@ -65,6 +68,7 @@
       "display": "Visning",
       "language": "Språk"
     },
+    "data_source": {},
     "relative_dates": "Relative datoer",
     "include_types": "Inkluder {'@'}types ved installasjon",
     "include_types_description": "Legg til {'@'}types-pakken i installasjonskommandoer for pakker uten typer",
@@ -177,6 +181,7 @@
       "fund": "støtt",
       "compare": "sammenlign"
     },
+    "likes": {},
     "docs": {
       "not_available": "Dokumentasjon ikke tilgjengelig",
       "not_available_detail": "Vi kunne ikke generere dokumentasjon for denne versjonen."
@@ -200,8 +205,11 @@
       "title": "Readme",
       "no_readme": "Ingen README tilgjengelig.",
       "view_on_github": "Vis på GitHub",
-      "toc_title": "Innhold"
+      "toc_title": "Innhold",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Nøkkelord",
     "compatibility": "Kompatibilitet",
     "card": {
@@ -260,8 +268,6 @@
       "show_less": "(vis færre)"
     },
     "trends": {
-      "date_range": "{start} til {end}",
-      "date_range_multiline": "{start}\ntil {end}",
       "granularity": "Oppløsning",
       "granularity_daily": "Daglig",
       "granularity_weekly": "Ukentlig",
@@ -270,8 +276,11 @@
       "start_date": "Start",
       "end_date": "Slutt",
       "loading": "Laster...",
+      "date_range": "{start} til {end}",
+      "date_range_multiline": "{start}\ntil {end}",
       "download_file": "Last ned {fileType}",
-      "toggle_annotator": "Veksle annotering"
+      "toggle_annotator": "Veksle annotering",
+      "items": {}
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
@@ -350,7 +359,6 @@
     },
     "skeleton": {
       "loading": "Laster pakkedetaljer",
-      "weekly": "Ukentlig",
       "maintainers": "Vedlikeholdere",
       "keywords": "Nøkkelord",
       "versions": "Versjoner",
@@ -361,7 +369,8 @@
       "published": "Nylig publisert",
       "name_asc": "Navn (A-Å)",
       "name_desc": "Navn (Å-A)"
-    }
+    },
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -813,6 +822,7 @@
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Legg til minst 2 pakker for å sammenligne."
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "Sammenligningsfasetter",
       "all": "alle",
@@ -850,6 +860,7 @@
           "label": "Nedlastinger/uke",
           "description": "Ukentlig nedlastingstall"
         },
+        "totalLikes": {},
         "lastUpdated": {
           "label": "Publisert",
           "description": "Når denne versjonen ble publisert"
@@ -888,7 +899,22 @@
         "types_included": "Inkludert",
         "types_none": "Ingen",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
-      }
+      },
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }
