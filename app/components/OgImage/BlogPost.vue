@@ -121,7 +121,8 @@ const formattedAuthorNames = computed(() => {
           <!-- +N badge -->
           <span
             v-if="extraCount > 0"
-            class="flex items-center justify-center text-lg font-medium text-[#a3a3a3] rounded-full border border-[#050505] bg-[#262626] overflow-hidden ms-[-20px] w-12 h-12"
+            class="flex items-center justify-center text-lg font-medium text-[#a3a3a3] rounded-full border border-[#050505] bg-[#262626] overflow-hidden w-12 h-12"
+            :style="{ marginLeft: '-20px' }"
           >
             +{{ extraCount }}
           </span>
