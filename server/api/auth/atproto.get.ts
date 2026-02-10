@@ -1,17 +1,20 @@
 import type { OAuthSession } from '@atproto/oauth-client-node'
 import { NodeOAuthClient, OAuthCallbackError } from '@atproto/oauth-client-node'
-import { createError, getQuery, sendRedirect } from 'h3'
+import { createError, getQuery, sendRedirect, setCookie, getCookie, deleteCookie } from 'h3'
 import type { H3Event } from 'h3'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import { handleResolver } from '#server/utils/atproto/oauth'
+import { handleApiError } from '#server/utils/error-handler'
 import type { DidString } from '@atproto/lex'
 import { Client } from '@atproto/lex'
 import * as com from '#shared/types/lexicons/com'
 import * as app from '#shared/types/lexicons/app'
 import { isAtIdentifierString } from '@atproto/lex'
+import { scope, getOauthClientMetadata } from '#server/utils/atproto/oauth'
+import { UNSET_NUXT_SESSION_PASSWORD } from '#shared/utils/constants'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
 
@@ -121,7 +124,7 @@ type OAuthStateData = {
   redirectPath: string
 }
 
-const SID_COOKIE_NAME = 'atproto_oauth_sid'
+const SID_COOKIE_PREFIX = 'atproto_oauth_sid'
 const SID_COOKIE_VALUE = '1'
 
 /**
@@ -145,11 +148,13 @@ const SID_COOKIE_VALUE = '1'
  */
 function encodeOAuthState(event: H3Event, data: OAuthStateData): string {
   const sid = generateRandomHexString()
-  setCookie(event, `${SID_COOKIE_NAME}:${sid}`, SID_COOKIE_VALUE, {
+  setCookie(event, `${SID_COOKIE_PREFIX}_${sid}`, SID_COOKIE_VALUE, {
     maxAge: 60 * 5,
     httpOnly: true,
     // secure only if NOT in dev mode
     secure: !import.meta.dev,
+    sameSite: 'lax',
+    path: event.path,
   })
   return JSON.stringify({ data, sid })
 }
@@ -184,11 +189,13 @@ function decodeOAuthState(event: H3Event, state: string | null): OAuthStateData 
   // against JSON parsing since the StateStore should ensure it's integrity.
   const decoded = JSON.parse(state) as { data: OAuthStateData; sid: string }
 
-  const sid = getCookie(event, `${SID_COOKIE_NAME}:${decoded.sid}`)
+  const sid = getCookie(event, `${SID_COOKIE_PREFIX}_${decoded.sid}`)
   if (sid === SID_COOKIE_VALUE) {
-    deleteCookie(event, `${SID_COOKIE_NAME}:${decoded.sid}`, {
+    deleteCookie(event, `${SID_COOKIE_PREFIX}_${decoded.sid}`, {
       httpOnly: true,
       secure: !import.meta.dev,
+      sameSite: 'lax',
+      path: event.path,
     })
   } else {
     throw createError({
@@ -254,10 +261,11 @@ async function getAvatar(did: DidString, pds: string) {
       })
 
       const validatedResponse = app.bsky.actor.profile.main.validate(profileResponse.value)
+      const cid = validatedResponse.avatar?.ref
 
-      if (validatedResponse.avatar?.ref) {
+      if (cid) {
         // Use Bluesky CDN for faster image loading
-        avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${validatedResponse.avatar?.ref}@jpeg`
+        avatar = `https://cdn.bsky.app/img/feed_thumbnail/plain/${did}/${cid}@jpeg`
       }
     }
   } catch {
