@@ -29,6 +29,7 @@ const router = useRouter()
 const header = useTemplateRef('header')
 const isHeaderPinned = shallowRef(false)
 const navExtraOffset = shallowRef(0)
+const isMobile = useMediaQuery('(max-width: 639.9px)')
 
 function checkHeaderPosition() {
   const el = header.value
@@ -41,57 +42,48 @@ function checkHeaderPosition() {
   isHeaderPinned.value = Math.abs(rect.top - top) < 1
 }
 
-let footerEl: HTMLElement | null = null
-let footerObserver: IntersectionObserver | null = null
-let footerMediaQuery: MediaQueryList | null = null
-const footerMediaHandler = (event: MediaQueryListEvent) => {
-  if (event.matches) {
-    setupFooterObserver()
-  } else {
-    teardownFooterObserver()
-  }
-}
-
-function setupFooterObserver() {
-  if (!footerEl) return
-  const thresholdValues = Array.from({ length: 101 }, (_, index) => index / 100)
-  footerObserver = new IntersectionObserver(
-    entries => {
-      const entry = entries[0]
-      if (!entry) return
-      navExtraOffset.value = entry.isIntersecting ? entry.intersectionRect.height : 0
-    },
-    { threshold: thresholdValues },
-  )
-  footerObserver.observe(footerEl)
-}
-
-function teardownFooterObserver() {
-  footerObserver?.disconnect()
-  footerObserver = null
-  navExtraOffset.value = 0
-}
-
 useEventListener('scroll', checkHeaderPosition, { passive: true })
 useEventListener('resize', checkHeaderPosition)
 
+const footerTarget = ref<HTMLElement | null>(null)
+const footerThresholds = Array.from({ length: 11 }, (_, i) => i / 10)
+
+const { pause: pauseFooterObserver, resume: resumeFooterObserver } = useIntersectionObserver(
+  footerTarget,
+  ([entry]) => {
+    if (!entry) return
+
+    navExtraOffset.value = entry.isIntersecting ? entry.intersectionRect.height : 0
+  },
+  {
+    threshold: footerThresholds,
+    immediate: false,
+  },
+)
+
+function initFooterObserver() {
+  footerTarget.value = document.querySelector('footer')
+  if (!footerTarget.value) return
+
+  pauseFooterObserver()
+
+  watch(
+    isMobile,
+    value => {
+      if (value) {
+        resumeFooterObserver()
+      } else {
+        pauseFooterObserver()
+        navExtraOffset.value = 0
+      }
+    },
+    { immediate: true },
+  )
+}
+
 onMounted(() => {
   checkHeaderPosition()
-  footerEl = document.querySelector('footer')
-  if (!footerEl) return
-  footerMediaQuery = window.matchMedia('(max-width: 639.9px)')
-  if (footerMediaQuery.matches) {
-    setupFooterObserver()
-  } else {
-    teardownFooterObserver()
-  }
-  footerMediaQuery.addEventListener('change', footerMediaHandler)
-})
-
-onBeforeUnmount(() => {
-  teardownFooterObserver()
-  footerMediaQuery?.removeEventListener('change', footerMediaHandler)
-  footerMediaQuery = null
+  initFooterObserver()
 })
 
 const navExtraOffsetStyle = computed(() => ({
