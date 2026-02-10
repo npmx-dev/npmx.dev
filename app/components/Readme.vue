@@ -13,6 +13,10 @@ function handleClick(event: MouseEvent) {
   const target = event.target as HTMLElement | undefined
   if (!target) return
 
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button) {
+    return
+  }
+
   // Handle copy button clicks
   const copyTarget = target.closest('[data-copy]')
   if (copyTarget) {
