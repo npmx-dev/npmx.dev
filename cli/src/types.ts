@@ -1,3 +1,5 @@
+import './node-pty.d.ts'
+
 export interface ConnectorConfig {
   port: number
   host: string
