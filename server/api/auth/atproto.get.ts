@@ -1,15 +1,14 @@
-import { Agent } from '@atproto/api'
 import { NodeOAuthClient } from '@atproto/oauth-client-node'
 import { createError, getQuery, sendRedirect } from 'h3'
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
-import type { PublicUserSession } from '#shared/schemas/publicUserSession'
 import { handleResolver } from '#server/utils/atproto/oauth'
 import { Client } from '@atproto/lex'
+import * as com from '#shared/types/lexicons/com'
 import * as app from '#shared/types/lexicons/app'
-import { ensureValidAtIdentifier } from '@atproto/syntax'
+import { isAtIdentifierString } from '@atproto/lex'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
 
@@ -23,12 +22,15 @@ const OAUTH_LOCALES = new Set(['en', 'fr-FR', 'ja-JP'])
  * @returns
  */
 async function getAvatar(did: string, pds: string) {
+  if (!isAtIdentifierString(did)) {
+    return undefined
+  }
+
   let avatar: string | undefined
   try {
     const pdsUrl = new URL(pds)
     // Only fetch from HTTPS PDS endpoints to prevent SSRF
-    if (did && pdsUrl.protocol === 'https:') {
-      ensureValidAtIdentifier(did)
+    if (pdsUrl.protocol === 'https:') {
       const client = new Client(pdsUrl)
       const profileResponse = await client.get(app.bsky.actor.profile, {
         repo: did,
@@ -69,6 +71,15 @@ export default defineEventHandler(async event => {
     requestLock: getOAuthLock(),
     handleResolver,
   })
+
+  const error = query.error
+
+  // user cancelled explicitly
+  if (error === 'access_denied') {
+    const returnToURL = getCookie(event, 'auth_return_to') || '/'
+    deleteCookie(event, 'auth_return_to', { path: '/' })
+    return sendRedirect(event, returnToURL)
+  }
 
   if (!query.code) {
     // Validate returnTo is a safe relative path (prevent open redirect)
@@ -124,15 +135,14 @@ export default defineEventHandler(async event => {
   const { session: authSession } = await atclient.callback(
     new URLSearchParams(query as Record<string, string>),
   )
-  const agent = new Agent(authSession)
-  event.context.agent = agent
 
-  const response = await fetch(
-    `https://${SLINGSHOT_HOST}/xrpc/com.bad-example.identity.resolveMiniDoc?identifier=${agent.did}`,
-    { headers: { 'User-Agent': 'npmx' } },
-  )
-  if (response.ok) {
-    const miniDoc: PublicUserSession = await response.json()
+  const client = new Client({ service: `https://${SLINGSHOT_HOST}` })
+  const response = await client.xrpcSafe(com['bad-example'].identity.resolveMiniDoc, {
+    headers: { 'User-Agent': 'npmx' },
+    params: { identifier: authSession.did },
+  })
+  if (response.success) {
+    const miniDoc = response.body
 
     let avatar: string | undefined = await getAvatar(authSession.did, miniDoc.pds)
 

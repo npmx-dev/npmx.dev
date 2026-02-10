@@ -15,7 +15,24 @@
     "docs": "docs",
     "source": "source",
     "social": "réseaux sociaux",
-    "chat": "espace de discussion"
+    "chat": "espace de discussion",
+    "keyboard_shortcuts": "raccourcis clavier"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Général",
+      "search": "Recherche",
+      "package": "Paquet"
+    },
+    "focus_search": "Aller à la recherche",
+    "show_kbd_hints": "Afficher les raccourcis clavier",
+    "settings": "Ouvrir les paramètres",
+    "compare": "Ouvrir la comparaison",
+    "compare_from_package": "Ouvrir la comparaison (pré-rempli avec le paquet actuel)",
+    "navigate_results": "Parcourir les résultats",
+    "go_to_result": "Aller au résultat",
+    "open_code_view": "Ouvrir la vue code",
+    "open_docs": "Ouvrir la doc"
   },
   "search": {
     "label": "Rechercher des paquets npm",
@@ -23,14 +40,21 @@
     "button": "rechercher",
     "searching": "Recherche en cours...",
     "found_packages": "{count} paquets trouvés",
+    "found_packages_sorted": "Tri du top {count} résultat | Tri des top {count} résultats",
     "updating": "(mise à jour...)",
     "no_results": "Aucun paquet trouvé pour « {query} »",
+    "rate_limited": "Limite de requêtes npm atteinte, réessayez dans un instant",
     "title": "Recherche",
+    "title_search": "recherche : {search}",
+    "title_packages": "rechercher des paquets",
+    "meta_description": "Résultats de recherche pour « {search} »",
+    "meta_description_packages": "Rechercher des paquets npm",
     "not_taken": "{name} n'est pas pris",
     "claim_prompt": "Réserver ce nom de paquet sur npm",
     "claim_button": "Réserver « {name} »",
     "want_to_claim": "Vous souhaitez réserver ce nom de paquet ?",
     "start_typing": "Commencez à taper pour rechercher des paquets",
+    "algolia_disclaimer": "Propulsé par Algolia",
     "exact_match": "exact",
     "suggestion": {
       "user": "utilisateur",
@@ -58,7 +82,16 @@
     "sections": {
       "appearance": "Apparence",
       "display": "Affichage",
+      "search": "Source de données",
       "language": "Langue"
+    },
+    "data_source": {
+      "label": "Source de données",
+      "description": "Choisissez d'où npmx obtient ses données de recherche. Les pages de paquets utilisent toujours directement le registre npm.",
+      "npm": "Registre npm",
+      "npm_description": "Recherche, organisations et utilisateurs récupérés directement depuis le registre npm officiel. Fiable, mais peut être plus lent.",
+      "algolia": "Algolia",
+      "algolia_description": "Utilise Algolia pour accélérer la recherche et les pages d'organisations et d'utilisateurs."
     },
     "relative_dates": "Dates relatives",
     "include_types": "Inclure {'@'}types à la commande d'installation",
@@ -174,6 +207,10 @@
       "fund": "donner",
       "compare": "comparer"
     },
+    "likes": {
+      "like": "Liker ce paquet",
+      "unlike": "Retirer le like"
+    },
     "docs": {
       "not_available": "Documentation non disponible",
       "not_available_detail": "Nous n'avons pas pu générer la documentation pour cette version."
@@ -198,8 +235,27 @@
       "no_readme": "Aucun README disponible.",
       "view_on_github": "Voir sur GitHub",
       "toc_title": "Sommaire",
+      "callout": {
+        "note": "Note",
+        "tip": "Astuce",
+        "important": "Important",
+        "warning": "Avertissement",
+        "caution": "Attention"
+      },
       "copy_as_markdown": "Copier le README en markdown"
     },
+    "provenance_section": {
+      "title": "Provenance",
+      "built_and_signed_on": "Compilé et signé sur {provider}",
+      "view_build_summary": "Voir le résumé du build",
+      "source_commit": "Commit source",
+      "build_file": "Fichier de build",
+      "public_ledger": "Registre public",
+      "transparency_log_entry": "Entrée du journal de transparence",
+      "view_more_details": "Voir plus de détails",
+      "error_loading": "Échec du chargement des détails de provenance"
+    },
+    "security_downgrade": {},
     "keywords_title": "Mots-clés",
     "compatibility": "Compatibilité",
     "card": {
@@ -257,12 +313,7 @@
       "show_more": "(afficher {count} de plus)",
       "show_less": "(afficher moins)"
     },
-    "downloads": {
-      "title": "Téléchargements hebdomadaires",
-      "date_range": "{start} au {end}",
-      "date_range_multiline": "{start}\nau {end}",
-      "analyze": "Analyser les téléchargements",
-      "modal_title": "Téléchargements",
+    "trends": {
       "granularity": "Granularité",
       "granularity_daily": "Quotidien",
       "granularity_weekly": "Hebdomadaire",
@@ -270,12 +321,23 @@
       "granularity_yearly": "Annuel",
       "start_date": "Début",
       "end_date": "Fin",
-      "no_data": "Aucune donnée de téléchargement disponible",
       "loading": "Chargement...",
-      "y_axis_label": "Téléchargements {granularity}",
+      "date_range": "{start} au {end}",
+      "date_range_multiline": "{start}\nau {end}",
       "download_file": "Télécharger {fileType}",
       "toggle_annotator": "Afficher/Masquer l'annotateur",
-      "legend_estimation": "Estimation"
+      "legend_estimation": "Estimation",
+      "no_data": "Données non disponibles",
+      "y_axis_label": "{facet} {granularity}",
+      "items": {
+        "downloads": "Téléchargements"
+      }
+    },
+    "downloads": {
+      "title": "Téléchargements hebdomadaires",
+      "analyze": "Analyser les téléchargements",
+      "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
+      "modal_title": "Téléchargements"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -348,7 +410,6 @@
     },
     "skeleton": {
       "loading": "Chargement des détails du paquet",
-      "weekly": "Hebdo",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
       "versions": "Versions",
@@ -359,6 +420,11 @@
       "published": "Récemment publié",
       "name_asc": "Nom (A-Z)",
       "name_desc": "Nom (Z-A)"
+    },
+    "size": {
+      "b": "{size} o",
+      "kb": "{size} ko",
+      "mb": "{size} Mo"
     }
   },
   "connector": {
@@ -744,27 +810,28 @@
     "connect": "connexion",
     "account": "Compte",
     "npm_cli": "npm CLI",
-    "atmosphere": "Atmosphère",
+    "atmosphere": "Atmosphere",
     "npm_cli_desc": "Gérer les paquets et orgs",
     "atmosphere_desc": "Fonctionnalités sociales et identité",
     "connect_npm_cli": "Connexion à npm CLI",
-    "connect_atmosphere": "Connexion à Atmosphère",
+    "connect_atmosphere": "Connexion à Atmosphere",
     "connecting": "Connexion en cours...",
     "ops": "{count} op | {count} ops"
   },
   "auth": {
     "modal": {
-      "title": "Atmosphère",
+      "title": "Atmosphere",
       "connected_as": "Connecté·e en tant que {'@'}{handle}",
       "disconnect": "Déconnexion",
-      "connect_prompt": "Connectez-vous avec votre compte Atmosphère",
+      "connect_prompt": "Connectez-vous avec votre compte Atmosphere",
       "handle_label": "Identifiant",
       "handle_placeholder": "alice.npmx.social",
       "connect": "Connexion",
       "create_account": "Créer un nouveau compte",
       "connect_bluesky": "Connexion avec Bluesky",
-      "what_is_atmosphere": "Qu'est-ce qu'un compte Atmosphère ?",
-      "atmosphere_explanation": "{npmx} utilise {atproto} pour alimenter plusieurs de ses fonctionnalités sociales, permettant aux utilisateurs de posséder leurs données et d'utiliser un seul compte pour toutes les applications compatibles. Une fois votre compte créé, vous pouvez utiliser d'autres applications comme {bluesky} ou {tangled} avec le même compte."
+      "what_is_atmosphere": "Qu'est-ce qu'un compte Atmosphere ?",
+      "atmosphere_explanation": "{npmx} utilise {atproto} pour alimenter plusieurs de ses fonctionnalités sociales, permettant aux utilisateurs de posséder leurs données et d'utiliser un seul compte pour toutes les applications compatibles. Une fois votre compte créé, vous pouvez utiliser d'autres applications comme {bluesky} ou {tangled} avec le même compte.",
+      "default_input_error": "Veuillez entrer un identifiant, DID ou URL PDS valide"
     }
   },
   "header": {
@@ -900,7 +967,90 @@
         "types_none": "Aucun",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "À vous de décider !"
+      },
+      "trends": {
+        "title": "Téléchargements hebdomadaires"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "politique de confidentialité",
+    "last_updated": "Dernière mise à jour : {date}",
+    "welcome": "Bienvenue sur {app}. Nous nous engageons à protéger votre vie privée. Cette politique explique quelles données nous collectons, comment nous les utilisons, et vos droits concernant vos informations.",
+    "cookies": {
+      "what_are": {
+        "title": "Que sont les cookies ?",
+        "p1": "Les cookies sont de petits fichiers texte stockés sur votre appareil lorsque vous visitez un site web. Leur but est d'améliorer votre expérience de navigation en mémorisant certaines préférences et paramètres."
+      },
+      "types": {
+        "title": "Quels cookies utilisons-nous ?",
+        "p1": "Nous utilisons uniquement des {bold} strictement nécessaires au fonctionnement du site. Nous n'utilisons pas de cookies tiers ni publicitaires.",
+        "bold": "cookies techniques essentiels",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": " :",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Ce cookie est utilisé par notre hébergeur (Vercel) pour la protection contre les décalages de version. Il garantit que vous récupérez les ressources de la bonne version du déploiement si une mise à jour est publiée pendant votre navigation. Il ne vous piste pas.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "C'est notre cookie de session sécurisé. Il stocke le jeton d'accès OAuth lorsque vous connectez votre compte Atmosphere. Il est essentiel au maintien de votre session authentifiée."
+      },
+      "local_storage": {
+        "title": "Stockage local",
+        "p1": "En plus des cookies de session, nous utilisons le {bold} de votre navigateur pour sauvegarder vos préférences d'affichage. Cela nous permet de mémoriser le thème (clair/sombre) et d'autres {settings} que vous avez sélectionnés, pour ne pas avoir à les reconfigurer à chaque visite.",
+        "bold": "stockage local",
+        "p2": "Ces informations sont purement fonctionnelles, stockées uniquement sur votre appareil, et {bold2}. Nous les utilisons exclusivement pour améliorer votre expérience sur notre site.",
+        "bold2": "ne contiennent aucune donnée personnelle et ne servent pas à vous pister",
+        "settings": "paramètres"
+      },
+      "management": {
+        "title": "Gestion des cookies",
+        "p1": "Vous pouvez configurer votre navigateur pour accepter, refuser ou supprimer les cookies selon vos préférences. Toutefois, veuillez noter que {bold}.",
+        "bold": "le refus des cookies essentiels peut empêcher l'accès complet à l'application",
+        "p2": "Voici les liens avec les instructions de gestion des cookies pour les navigateurs les plus courants :",
+        "chrome": "Google Chrome (ouvre dans une nouvelle fenêtre)",
+        "firefox": "Mozilla Firefox (ouvre dans une nouvelle fenêtre)",
+        "edge": "Microsoft Edge (ouvre dans une nouvelle fenêtre)"
+      }
+    },
+    "analytics": {
+      "title": "Analytique",
+      "p1": "Nous utilisons {bold} pour comprendre comment les visiteurs utilisent notre site. Cela nous aide à améliorer l'expérience utilisateur et à identifier les problèmes.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics est conçu dans le respect de la vie privée :",
+      "li1": "N'utilise pas de cookies",
+      "li2": "Ne collecte pas d'identifiants personnels",
+      "li3": "Ne piste pas les utilisateurs entre les sites",
+      "li4": "Toutes les données sont agrégées et anonymisées",
+      "p3": "Les seules informations collectées sont : les URLs des pages, le référent, le pays/région, le type d'appareil, le navigateur et le système d'exploitation. Ces données ne permettent pas d'identifier des utilisateurs individuels."
+    },
+    "authenticated": {
+      "title": "Utilisateurs authentifiés",
+      "p1": "Lorsque vous connectez votre compte {bold} à npmx, nous stockons votre jeton d'accès OAuth dans un cookie de session sécurisé (HTTP-only). Ce jeton sert uniquement à authentifier les requêtes en votre nom.",
+      "bold": "Atmosphere",
+      "p2": "Nous ne stockons pas vos identifiants et n'accédons à aucune donnée au-delà de ce qui est nécessaire aux fonctionnalités que vous utilisez. Vous pouvez déconnecter votre compte à tout moment depuis la page des {settings}.",
+      "settings": "paramètres"
+    },
+    "data_retention": {
+      "title": "Conservation des données",
+      "p1": "Les cookies de session sont automatiquement supprimés lorsque vous fermez votre navigateur ou après une période d'inactivité. Les préférences du stockage local restent sur votre appareil jusqu'à ce que vous effaciez les données de votre navigateur. Les données analytiques sont conservées sous forme agrégée et ne peuvent pas être liées à des utilisateurs individuels."
+    },
+    "your_rights": {
+      "title": "Vos droits",
+      "p1": "Vous avez le droit de :",
+      "li1": "Accéder aux informations sur les données que nous collectons",
+      "li2": "Effacer votre stockage local et vos cookies à tout moment",
+      "li3": "Déconnecter votre session authentifiée",
+      "li4": "Demander des informations sur nos pratiques en matière de données",
+      "p2": "Puisque nous ne collectons pas de données personnelles, il n'y a généralement aucune information personnelle à supprimer ou exporter."
+    },
+    "contact": {
+      "title": "Nous contacter",
+      "p1": "Pour toute question ou préoccupation concernant cette politique de confidentialité, vous pouvez nous contacter en ouvrant une issue sur notre {link}.",
+      "link": "dépôt GitHub"
+    },
+    "changes": {
+      "title": "Modifications de cette politique",
+      "p1": "Nous pouvons mettre à jour cette politique de confidentialité de temps en temps. Toute modification sera publiée sur cette page avec une date de révision mise à jour."
     }
   }
 }

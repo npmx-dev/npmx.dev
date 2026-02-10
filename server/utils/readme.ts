@@ -97,9 +97,11 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
   return null
 }
 
-// only allow h3-h6 since we shift README headings down by 2 levels
+// allow h1-h6, but replace h1-h2 later since we shift README headings down by 2 levels
 // (page h1 = package name, h2 = "Readme" section, so README h1 → h3)
 const ALLOWED_TAGS = [
+  'h1',
+  'h2',
   'h3',
   'h4',
   'h5',
@@ -272,6 +274,15 @@ function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
   return { tagName, attribs }
 }
 
+// README h1 always becomes h3
+// For deeper levels, ensure sequential order
+// Don't allow jumping more than 1 level deeper than previous
+function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
+  if (depth === 1) return 3
+  const maxAllowed = Math.min(lastSemanticLevel + 1, 6)
+  return Math.min(depth + 2, maxAllowed)
+}
+
 export async function renderReadmeHtml(
   content: string,
   packageName: string,
@@ -301,17 +312,7 @@ export async function renderReadmeHtml(
     // Calculate the target semantic level based on document structure
     // Start at h3 (since page h1 + section h2 already exist)
     // But ensure we never skip levels - can only go down by 1 or stay same/go up
-    let semanticLevel: number
-    if (depth === 1) {
-      // README h1 always becomes h3
-      semanticLevel = 3
-    } else {
-      // For deeper levels, ensure sequential order
-      // Don't allow jumping more than 1 level deeper than previous
-      const maxAllowed = Math.min(lastSemanticLevel + 1, 6)
-      semanticLevel = Math.min(depth + 2, maxAllowed)
-    }
-
+    const semanticLevel = calculateSemanticDepth(depth, lastSemanticLevel)
     lastSemanticLevel = semanticLevel
     const text = this.parser.parseInline(tokens)
 
@@ -384,7 +385,9 @@ ${html}
       })
     }
 
-    return `<a href="${resolvedHref}"${titleAttr}${relAttr}${targetAttr}>${text}</a>`
+    const hrefValue = resolvedHref.startsWith('#') ? resolvedHref.toLowerCase() : resolvedHref
+
+    return `<a href="${hrefValue}"${titleAttr}${relAttr}${targetAttr}>${text}</a>`
   }
 
   // GitHub-style callouts: > [!NOTE], > [!TIP], etc.
@@ -412,6 +415,28 @@ ${html}
     allowedSchemes: ['http', 'https', 'mailto'],
     // Transform img src URLs (GitHub blob → raw, relative → GitHub raw)
     transformTags: {
+      h1: (_, attribs) => {
+        return { tagName: 'h3', attribs: { ...attribs, 'data-level': '1' } }
+      },
+      h2: (_, attribs) => {
+        return { tagName: 'h4', attribs: { ...attribs, 'data-level': '2' } }
+      },
+      h3: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h3', attribs: attribs }
+        return { tagName: 'h5', attribs: { ...attribs, 'data-level': '3' } }
+      },
+      h4: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h4', attribs: attribs }
+        return { tagName: 'h6', attribs: { ...attribs, 'data-level': '4' } }
+      },
+      h5: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h5', attribs: attribs }
+        return { tagName: 'h6', attribs: { ...attribs, 'data-level': '5' } }
+      },
+      h6: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h6', attribs: attribs }
+        return { tagName: 'h6', attribs: { ...attribs, 'data-level': '6' } }
+      },
       img: (tagName, attribs) => {
         if (attribs.src) {
           attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)

@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - npm Reyestri üçün Paket Brauzeri",
@@ -14,6 +15,9 @@
     "source": "mənbə",
     "social": "sosial",
     "chat": "söhbət"
+  },
+  "shortcuts": {
+    "section": {}
   },
   "search": {
     "label": "npm paketlərini axtar",
@@ -51,6 +55,7 @@
       "display": "Ekran",
       "language": "Dil"
     },
+    "data_source": {},
     "relative_dates": "Nisbi tarixlər",
     "include_types": "Quraşdırmaya {'@'}types daxil et",
     "include_types_description": "Tipsiz paketlər üçün quraşdırma əmrlərinə {'@'}types paketi əlavə et",
@@ -142,6 +147,7 @@
       "docs": "sənədlər",
       "fund": "maliyyələşdirmə"
     },
+    "likes": {},
     "docs": {
       "not_available": "Sənədlər mövcud deyil",
       "not_available_detail": "Bu versiya üçün sənədlər yaradıla bilmədi."
@@ -163,8 +169,11 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README mövcud deyil.",
-      "view_on_github": "GitHub-da bax"
+      "view_on_github": "GitHub-da bax",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Açar sözlər",
     "compatibility": "Uyğunluq",
     "card": {
@@ -217,12 +226,7 @@
       "show_more": "(daha {count} göstər)",
       "show_less": "(daha az göstər)"
     },
-    "downloads": {
-      "title": "Həftəlik Endirmələr",
-      "date_range": "{start} - {end}",
-      "date_range_multiline": "{start}\n- {end}",
-      "analyze": "Endirmələri təhlil et",
-      "modal_title": "Endirmələr",
+    "trends": {
       "granularity": "Dərəcəlilik",
       "granularity_daily": "Günlük",
       "granularity_weekly": "Həftəlik",
@@ -230,11 +234,17 @@
       "granularity_yearly": "İllik",
       "start_date": "Başlanğıc",
       "end_date": "Son",
-      "no_data": "Endirmə məlumatı mövcud deyil",
       "loading": "Yüklənir...",
-      "y_axis_label": "{granularity} endirmələr",
+      "date_range": "{start} - {end}",
+      "date_range_multiline": "{start}\n- {end}",
       "download_file": "{fileType} endir",
-      "toggle_annotator": "Annotator keçid"
+      "toggle_annotator": "Annotator keçid",
+      "items": {}
+    },
+    "downloads": {
+      "title": "Həftəlik Endirmələr",
+      "analyze": "Endirmələri təhlil et",
+      "modal_title": "Endirmələr"
     },
     "install_scripts": {
       "title": "Quraşdırma Skriptləri",
@@ -305,7 +315,6 @@
     },
     "skeleton": {
       "loading": "Paket detalları yüklənir",
-      "weekly": "Həftəlik",
       "maintainers": "Dəstəkçilər",
       "keywords": "Açar sözlər",
       "versions": "Versiyalar",
@@ -315,7 +324,8 @@
       "downloads": "Ən çox endirilən",
       "name_asc": "Ad (A-Z)",
       "name_desc": "Ad (Z-A)"
-    }
+    },
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -548,6 +558,7 @@
     "more_keywords": "+{count} daha çox",
     "clear_all": "Hamısını təmizlə",
     "remove_filter": "{label} filtrini sil",
+    "chips": {},
     "download_range": {
       "any": "İstənilən",
       "lt100": "< 100",
@@ -708,8 +719,40 @@
   "compare": {
     "packages": {},
     "selector": {},
+    "no_dependency": {},
     "facets": {
-      "categories": {}
+      "categories": {},
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

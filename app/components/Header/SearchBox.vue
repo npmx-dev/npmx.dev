@@ -15,6 +15,7 @@ const emit = defineEmits(['blur', 'focus'])
 
 const router = useRouter()
 const route = useRoute()
+const { isAlgolia } = useSearchProvider()
 
 const isSearchFocused = shallowRef(false)
 
@@ -28,8 +29,7 @@ const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
 // Pages that have their own local filter using ?q
 const pagesWithLocalFilter = new Set(['~username', 'org'])
 
-// Debounced URL update for search query
-const updateUrlQuery = debounce((value: string) => {
+function updateUrlQueryImpl(value: string) {
   // Don't navigate away from pages that use ?q for local filtering
   if (pagesWithLocalFilter.has(route.name as string)) {
     return
@@ -48,9 +48,18 @@ const updateUrlQuery = debounce((value: string) => {
       q: value,
     },
   })
-}, 250)
+}
 
-// Watch input and debounce URL updates
+const updateUrlQueryNpm = debounce(updateUrlQueryImpl, 250)
+const updateUrlQueryAlgolia = debounce(updateUrlQueryImpl, 80)
+
+const updateUrlQuery = Object.assign(
+  (value: string) => (isAlgolia.value ? updateUrlQueryAlgolia : updateUrlQueryNpm)(value),
+  {
+    flush: () => (isAlgolia.value ? updateUrlQueryAlgolia : updateUrlQueryNpm).flush(),
+  },
+)
+
 watch(searchQuery, value => {
   updateUrlQuery(value)
 })
@@ -69,15 +78,6 @@ watch(
     }
   },
 )
-
-function handleSearchBlur() {
-  isSearchFocused.value = false
-  emit('blur')
-}
-function handleSearchFocus() {
-  isSearchFocused.value = true
-  emit('focus')
-}
 
 function handleSubmit() {
   if (pagesWithLocalFilter.has(route.name as string)) {
@@ -114,17 +114,18 @@ defineExpose({ focus })
             /
           </span>
 
-          <input
+          <InputBase
             id="header-search"
             ref="inputRef"
             v-model="searchQuery"
             type="search"
             name="q"
             :placeholder="$t('search.placeholder')"
-            v-bind="noCorrect"
-            class="w-full min-w-25 bg-bg-subtle border border-border rounded-md ps-7 pe-3 py-1.5 font-mono text-sm text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
-            @focus="handleSearchFocus"
-            @blur="handleSearchBlur"
+            no-correct
+            class="w-full min-w-25 ps-7"
+            @focus="isSearchFocused = true"
+            @blur="isSearchFocused = false"
+            size="small"
           />
           <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
         </div>

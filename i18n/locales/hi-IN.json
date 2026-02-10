@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - npm रजिस्ट्री के लिए पैकेज ब्राउज़र",
@@ -16,6 +17,9 @@
     "source": "स्रोत",
     "social": "सोशल",
     "chat": "चैट"
+  },
+  "shortcuts": {
+    "section": {}
   },
   "search": {
     "label": "npm पैकेज खोजें",
@@ -59,6 +63,7 @@
       "display": "प्रदर्शन",
       "language": "भाषा"
     },
+    "data_source": {},
     "relative_dates": "सापेक्ष तिथियाँ",
     "include_types": "इंस्टॉल में {'@'}types शामिल करें",
     "include_types_description": "अनटाइप्ड पैकेज के लिए इंस्टॉल कमांड में {'@'}types पैकेज जोड़ें",
@@ -168,6 +173,7 @@
       "fund": "दान करें",
       "compare": "तुलना करें"
     },
+    "likes": {},
     "docs": {
       "not_available": "दस्तावेज़ उपलब्ध नहीं",
       "not_available_detail": "हम इस संस्करण के लिए दस्तावेज़ जेनरेट नहीं कर सके।"
@@ -189,8 +195,11 @@
     "readme": {
       "title": "रीडमी",
       "no_readme": "कोई README उपलब्ध नहीं है।",
-      "view_on_github": "GitHub पर देखें"
+      "view_on_github": "GitHub पर देखें",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "कीवर्ड्स",
     "compatibility": "संगतता",
     "card": {
@@ -247,12 +256,7 @@
       "show_more": "({count} और दिखाएं)",
       "show_less": "(कम दिखाएं)"
     },
-    "downloads": {
-      "title": "साप्ताहिक डाउनलोड्स",
-      "date_range": "{start} से {end}",
-      "date_range_multiline": "{start}\nसे {end}",
-      "analyze": "डाउनलोड्स का विश्लेषण करें",
-      "modal_title": "डाउनलोड्स",
+    "trends": {
       "granularity": "ग्रैन्युलैरिटी",
       "granularity_daily": "दैनिक",
       "granularity_weekly": "साप्ताहिक",
@@ -260,11 +264,17 @@
       "granularity_yearly": "वार्षिक",
       "start_date": "शुरू",
       "end_date": "अंत",
-      "no_data": "कोई डाउनलोड डेटा उपलब्ध नहीं",
       "loading": "लोड हो रहा है...",
-      "y_axis_label": "{granularity} डाउनलोड्स",
+      "date_range": "{start} से {end}",
+      "date_range_multiline": "{start}\nसे {end}",
       "download_file": "{fileType} डाउनलोड करें",
-      "toggle_annotator": "एनोटेटर टॉगल करें"
+      "toggle_annotator": "एनोटेटर टॉगल करें",
+      "items": {}
+    },
+    "downloads": {
+      "title": "साप्ताहिक डाउनलोड्स",
+      "analyze": "डाउनलोड्स का विश्लेषण करें",
+      "modal_title": "डाउनलोड्स"
     },
     "install_scripts": {
       "title": "इंस्टॉल स्क्रिप्ट्स",
@@ -337,7 +347,6 @@
     },
     "skeleton": {
       "loading": "पैकेज विवरण लोड हो रहे हैं",
-      "weekly": "साप्ताहिक",
       "maintainers": "अनुरक्षक",
       "keywords": "कीवर्ड्स",
       "versions": "संस्करण",
@@ -347,7 +356,8 @@
       "downloads": "सबसे अधिक डाउनलोड किए गए",
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
-    }
+    },
+    "size": {}
   },
   "connector": {
     "modal": {
@@ -585,6 +595,7 @@
     "more_keywords": "+{count} और",
     "clear_all": "सभी साफ़ करें",
     "remove_filter": "{label} फ़िल्टर हटाएं",
+    "chips": {},
     "download_range": {
       "any": "कोई भी",
       "lt100": "< 100",
@@ -790,6 +801,7 @@
       "packages_selected": "{count}/{max} पैकेज चुने गए।",
       "add_hint": "तुलना करने के लिए कम से कम 2 पैकेज जोड़ें।"
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "तुलना फेसेट्स",
       "all": "सभी",
@@ -804,7 +816,38 @@
         "health": "स्वास्थ्य",
         "compatibility": "संगतता",
         "security": "सुरक्षा और अनुपालन"
-      }
+      },
+      "items": {
+        "packageSize": {},
+        "installSize": {},
+        "dependencies": {},
+        "totalDependencies": {},
+        "downloads": {},
+        "totalLikes": {},
+        "lastUpdated": {},
+        "deprecated": {},
+        "engines": {},
+        "types": {},
+        "moduleFormat": {},
+        "license": {},
+        "vulnerabilities": {}
+      },
+      "values": {},
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

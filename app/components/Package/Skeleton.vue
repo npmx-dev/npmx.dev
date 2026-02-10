@@ -19,20 +19,27 @@
         <span class="inline-flex items-baseline font-mono text-base sm:text-lg shrink-0">
           <SkeletonInline class="h-6 w-20" />
         </span>
-        <!-- Metrics badges -->
-        <div class="basis-full flex items-center gap-1.5 self-baseline">
-          <SkeletonBlock class="w-16 h-5.5 rounded" />
-          <SkeletonBlock class="w-13 h-5.5 rounded" />
-          <SkeletonBlock class="w-13 h-5.5 rounded" />
-          <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
-        </div>
-        <!-- Internal navigation placeholder (hidden on mobile) -->
+
+        <!-- Docs + Code + Compare nav placeholder (hidden on mobile) -->
         <div
           class="hidden sm:flex items-center gap-0.5 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
         >
-          <SkeletonInline class="h-7 w-16 rounded" />
-          <SkeletonInline class="h-7 w-14 rounded" />
+          <SkeletonInline class="h-7 w-22 rounded" />
           <SkeletonInline class="h-7 w-20 rounded" />
+          <SkeletonInline class="h-7 w-26 rounded" />
+        </div>
+
+        <!-- Metrics badges + likes — matches basis-full flex row -->
+        <div class="basis-full flex gap-2 sm:gap-3 flex-wrap items-stretch">
+          <!-- Badge row (Types, ESM, CJS, CJS-ghost) -->
+          <div class="flex items-center gap-1.5 self-baseline">
+            <SkeletonBlock class="w-16 h-5.5 rounded" />
+            <SkeletonBlock class="w-13 h-5.5 rounded" />
+            <SkeletonBlock class="w-13 h-5.5 rounded" />
+            <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
+          </div>
+          <!-- Likes button placeholder -->
+          <SkeletonBlock class="w-14 h-5.5 rounded self-baseline" />
         </div>
       </div>
     </header>
@@ -40,8 +47,8 @@
     <!-- Package details — matches area-details in [...name].vue -->
     <section class="area-details">
       <div class="mb-4">
-        <!-- Description container with min-height to prevent CLS -->
-        <div class="max-w-2xl min-h-[4.5rem]">
+        <!-- Description -->
+        <div class="max-w-2xl">
           <div class="space-y-2">
             <SkeletonBlock class="h-5 w-full" />
             <SkeletonBlock class="h-5 w-4/5" />
@@ -50,7 +57,9 @@
         </div>
 
         <!-- External links -->
-        <ul class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3">
+        <ul
+          class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3 text-sm"
+        >
           <li><SkeletonInline class="h-5 w-28" /></li>
           <li><SkeletonInline class="h-5 w-14" /></li>
           <li><SkeletonInline class="h-5 w-16" /></li>
@@ -115,20 +124,44 @@
     <!-- Install section — matches area-install in [...name].vue -->
     <section class="area-install scroll-mt-20">
       <div class="flex flex-wrap items-center justify-between mb-3">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider">
+        <h2 class="text-xs font-mono text-fg-subtle uppercase tracking-wider">
           {{ $t('package.get_started.title') }}
         </h2>
         <!-- Package manager select placeholder -->
         <SkeletonInline class="h-7 w-24 rounded" />
       </div>
-      <!-- Install command code block -->
-      <div class="relative">
-        <div
-          class="bg-bg-muted border border-border rounded-md p-4 font-mono text-sm overflow-x-auto pe-16"
-        >
-          <SkeletonInline class="h-5 w-52" />
+      <!-- Terminal-style install command — matches TerminalInstall.vue -->
+      <div class="bg-bg-subtle border border-border rounded-lg overflow-hidden">
+        <div class="flex gap-1.5 px-3 pt-2 sm:px-4 sm:pt-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
+          <span class="w-2.5 h-2.5 rounded-full bg-fg-subtle" />
         </div>
-        <SkeletonInline class="absolute top-3 inset-ie-3 h-6 w-12 rounded" />
+        <div class="px-3 pt-2 pb-3 sm:px-4 sm:pt-3 sm:pb-4 space-y-1">
+          <!-- $ install command -->
+          <div class="flex items-center gap-2">
+            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+            <SkeletonInline class="h-5 w-40" />
+          </div>
+          <!-- # Run locally -->
+          <div class="flex items-center gap-2 pt-1">
+            <SkeletonInline class="h-4 w-24" />
+          </div>
+          <!-- $ run command -->
+          <div class="flex items-center gap-2">
+            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+            <SkeletonInline class="h-5 w-28" />
+          </div>
+          <!-- # Create new project -->
+          <div class="flex items-center gap-2 pt-1">
+            <SkeletonInline class="h-4 w-36" />
+          </div>
+          <!-- $ create command -->
+          <div class="flex items-center gap-2">
+            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+            <SkeletonInline class="h-5 w-32" />
+          </div>
+        </div>
       </div>
     </section>
 
@@ -138,7 +171,7 @@
     <!-- README — matches area-readme in [...name].vue -->
     <section class="area-readme min-w-0 scroll-mt-20">
       <div class="flex flex-wrap items-center justify-between mb-3 px-1">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider">
+        <h2 class="text-xs font-mono text-fg-subtle uppercase tracking-wider">
           {{ $t('package.readme.title') }}
         </h2>
       </div>
@@ -165,96 +198,177 @@
     <!-- Sidebar — matches area-sidebar in [...name].vue -->
     <div class="area-sidebar">
       <div
-        class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"
+        class="sticky top-30 xl:top-14 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(pt-2 max-h-[calc(100dvh-6rem)])"
       >
-        <!-- Download stats -->
-        <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-            {{ $t('package.skeleton.weekly') }}
-          </h2>
-          <!-- Chart placeholder -->
-          <SkeletonBlock class="h-32 w-full rounded-lg" />
-        </section>
+        <div class="flex flex-col gap-4 sm:gap-6 xl:(pt-2)">
+          <!-- Download stats — matches CollapsibleSection + sparkline skeleton -->
+          <section>
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2
+                class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
+              >
+                <span class="w-4 h-4 flex items-center justify-center shrink-0">
+                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                </span>
+                {{ $t('package.downloads.title') }}
+              </h2>
+            </div>
+            <div class="ms-6 max-w-xs">
+              <!-- Title row: fontSize * 2 = 24px -->
+              <div class="h-6 flex items-center ps-3">
+                <SkeletonInline class="h-3 w-36" />
+              </div>
+              <!-- Chart area: matches SVG viewBox 500:80 -->
+              <div class="aspect-[500/80] flex items-center">
+                <div class="w-[42%] flex items-center ps-0.5">
+                  <SkeletonInline class="h-7 w-24" />
+                </div>
+                <div class="flex-1 flex items-end pe-3">
+                  <SkeletonInline class="h-px w-full" />
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <!-- Versions -->
-        <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-            {{ $t('package.skeleton.versions') }}
-          </h2>
-          <div class="space-y-1">
-            <div class="flex items-center justify-between py-1.5 text-sm">
-              <SkeletonInline class="h-4 w-16" />
-              <SkeletonInline class="h-4 w-24" />
-            </div>
-            <div class="flex items-center justify-between py-1.5 text-sm">
-              <SkeletonInline class="h-4 w-14" />
-              <SkeletonInline class="h-4 w-24" />
-            </div>
-            <div class="flex items-center justify-between py-1.5 text-sm">
-              <SkeletonInline class="h-4 w-18" />
-              <SkeletonInline class="h-4 w-24" />
-            </div>
-            <div class="flex items-center justify-between py-1.5 text-sm">
-              <SkeletonInline class="h-4 w-14" />
-              <SkeletonInline class="h-4 w-24" />
-            </div>
-            <div class="flex items-center justify-between py-1.5 text-sm">
-              <SkeletonInline class="h-4 w-16" />
-              <SkeletonInline class="h-4 w-24" />
-            </div>
-          </div>
-        </section>
+          <!-- Playgrounds — matches PackagePlaygrounds (not CollapsibleSection) -->
+          <section class="px-1">
+            <h2 class="text-xs font-mono text-fg-subtle uppercase tracking-wider mb-3">
+              {{ $t('package.playgrounds.title') }}
+            </h2>
+            <SkeletonBlock class="w-full h-9 rounded-md" />
+          </section>
 
-        <!-- Dependencies -->
-        <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-            {{ $t('package.skeleton.dependencies') }}
-          </h2>
-          <ul class="space-y-1 list-none m-0 p-0">
-            <li class="flex items-center justify-between py-1 text-sm">
-              <SkeletonInline class="h-4 w-24" />
-              <SkeletonInline class="h-4 w-12" />
-            </li>
-            <li class="flex items-center justify-between py-1 text-sm">
-              <SkeletonInline class="h-4 w-32" />
-              <SkeletonInline class="h-4 w-10" />
-            </li>
-            <li class="flex items-center justify-between py-1 text-sm">
-              <SkeletonInline class="h-4 w-20" />
-              <SkeletonInline class="h-4 w-14" />
-            </li>
-            <li class="flex items-center justify-between py-1 text-sm">
-              <SkeletonInline class="h-4 w-28" />
-              <SkeletonInline class="h-4 w-12" />
-            </li>
-          </ul>
-        </section>
+          <!-- Compatibility — matches CollapsibleSection -->
+          <section>
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2
+                class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
+              >
+                <span class="w-4 h-4 flex items-center justify-center shrink-0">
+                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                </span>
+                {{ $t('package.compatibility') }}
+              </h2>
+            </div>
+            <div class="ms-6 space-y-2">
+              <div class="flex justify-between gap-4 py-1">
+                <SkeletonInline class="h-4 w-16" />
+                <SkeletonInline class="h-4 w-20" />
+              </div>
+            </div>
+          </section>
 
-        <!-- Keywords -->
-        <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-            {{ $t('package.skeleton.keywords') }}
-          </h2>
-          <ul class="flex flex-wrap gap-1.5 list-none m-0 p-0">
-            <li><SkeletonInline class="h-6 w-16 rounded" /></li>
-            <li><SkeletonInline class="h-6 w-12 rounded" /></li>
-            <li><SkeletonInline class="h-6 w-20 rounded" /></li>
-            <li><SkeletonInline class="h-6 w-14 rounded" /></li>
-            <li><SkeletonInline class="h-6 w-18 rounded" /></li>
-            <li><SkeletonInline class="h-6 w-10 rounded" /></li>
-          </ul>
-        </section>
+          <!-- Versions — matches CollapsibleSection + PackageVersions -->
+          <section>
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2
+                class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
+              >
+                <span class="w-4 h-4 flex items-center justify-center shrink-0">
+                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                </span>
+                {{ $t('package.skeleton.versions') }}
+              </h2>
+            </div>
+            <div class="ms-6 space-y-0.5 min-w-0">
+              <!-- Version rows with expand chevron + version + tag + date -->
+              <div v-for="i in 4" :key="i" class="flex items-center gap-2 px-1">
+                <span class="w-4 h-4 flex items-center justify-center shrink-0">
+                  <span class="i-carbon:chevron-right w-3 h-3 text-fg-subtle" aria-hidden="true" />
+                </span>
+                <div class="flex-1 py-1.5 min-w-0 flex gap-2 justify-between items-center">
+                  <div>
+                    <SkeletonInline
+                      class="h-4"
+                      :class="i === 1 ? 'w-12' : i === 2 ? 'w-22' : i === 3 ? 'w-26' : 'w-14'"
+                    />
+                    <SkeletonInline class="h-2.5 w-10 mt-0.5" />
+                  </div>
+                  <SkeletonInline class="h-3 w-20 shrink-0" />
+                </div>
+              </div>
+              <!-- Other versions row -->
+              <div class="flex items-center gap-2 p-1">
+                <span class="w-4 h-4 flex items-center justify-center shrink-0">
+                  <span class="i-carbon:chevron-right w-3 h-3 text-fg-subtle" aria-hidden="true" />
+                </span>
+                <SkeletonInline class="h-3 w-28" />
+              </div>
+            </div>
+          </section>
 
-        <!-- Maintainers -->
-        <section>
-          <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-            {{ $t('package.skeleton.maintainers') }}
-          </h2>
-          <ul class="space-y-2 list-none m-0 p-0">
-            <li><SkeletonInline class="h-5 w-28" /></li>
-            <li><SkeletonInline class="h-5 w-24" /></li>
-          </ul>
-        </section>
+          <!-- Dependencies — matches CollapsibleSection -->
+          <section>
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2
+                class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
+              >
+                <span class="w-4 h-4 flex items-center justify-center shrink-0">
+                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                </span>
+                {{ $t('package.skeleton.dependencies') }}
+              </h2>
+            </div>
+            <ul class="ms-6 px-1 space-y-1 list-none m-0 p-0">
+              <li class="flex items-center justify-between py-1 text-sm">
+                <SkeletonInline class="h-4 w-24" />
+                <SkeletonInline class="h-4 w-12" />
+              </li>
+              <li class="flex items-center justify-between py-1 text-sm">
+                <SkeletonInline class="h-4 w-32" />
+                <SkeletonInline class="h-4 w-10" />
+              </li>
+              <li class="flex items-center justify-between py-1 text-sm">
+                <SkeletonInline class="h-4 w-20" />
+                <SkeletonInline class="h-4 w-14" />
+              </li>
+              <li class="flex items-center justify-between py-1 text-sm">
+                <SkeletonInline class="h-4 w-28" />
+                <SkeletonInline class="h-4 w-12" />
+              </li>
+            </ul>
+          </section>
+
+          <!-- Keywords — matches CollapsibleSection -->
+          <section>
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2
+                class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
+              >
+                <span class="w-4 h-4 flex items-center justify-center shrink-0">
+                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                </span>
+                {{ $t('package.skeleton.keywords') }}
+              </h2>
+            </div>
+            <ul class="ms-6 flex flex-wrap gap-1.5 list-none m-0 p-1">
+              <li><SkeletonInline class="h-6 w-16 rounded" /></li>
+              <li><SkeletonInline class="h-6 w-12 rounded" /></li>
+              <li><SkeletonInline class="h-6 w-20 rounded" /></li>
+              <li><SkeletonInline class="h-6 w-14 rounded" /></li>
+              <li><SkeletonInline class="h-6 w-18 rounded" /></li>
+              <li><SkeletonInline class="h-6 w-10 rounded" /></li>
+            </ul>
+          </section>
+
+          <!-- Maintainers — matches CollapsibleSection -->
+          <section>
+            <div class="flex items-center justify-between mb-3 px-1">
+              <h2
+                class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
+              >
+                <span class="w-4 h-4 flex items-center justify-center shrink-0">
+                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                </span>
+                {{ $t('package.skeleton.maintainers') }}
+              </h2>
+            </div>
+            <ul class="ms-6 space-y-2 list-none my-1 px-1">
+              <li><SkeletonInline class="h-5 w-28" /></li>
+              <li><SkeletonInline class="h-5 w-24" /></li>
+            </ul>
+          </section>
+        </div>
       </div>
     </div>
   </article>

@@ -15,7 +15,24 @@
     "docs": "Doku",
     "source": "Quellcode",
     "social": "Social",
-    "chat": "Chat"
+    "chat": "Chat",
+    "keyboard_shortcuts": "Tastenkombination"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Allgemein",
+      "search": "Suche",
+      "package": "Pakete"
+    },
+    "focus_search": "Suche fokusieren",
+    "show_kbd_hints": "Tastenkombination hervorheben",
+    "settings": "Einstellungen öffnen",
+    "compare": "Vergleichen öffnen",
+    "compare_from_package": "Vergleichen öffnen (mit aktuellem Paket vorausgefüllt)",
+    "navigate_results": "Ergebnisse navigieren",
+    "go_to_result": "Ergebnis aufrufen",
+    "open_code_view": "Code-Ansicht öffnen",
+    "open_docs": "Dokumentation öffnen"
   },
   "search": {
     "label": "npm-Pakete durchsuchen",
@@ -23,8 +40,10 @@
     "button": "Suchen",
     "searching": "Suche läuft...",
     "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
+    "found_packages_sorted": "Sortiere bestes Resultat | Sortiere beste {count} Resultate",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
+    "rate_limited": "npm Ratenbegrenzung erreicht, versuche es später erneut",
     "title": "Suche",
     "title_search": "Suche: {search}",
     "title_packages": "Suche Pakete",
@@ -62,8 +81,10 @@
     "sections": {
       "appearance": "Erscheinungsbild",
       "display": "Anzeige",
+      "search": "Datenquelle",
       "language": "Sprache"
     },
+    "data_source": {},
     "relative_dates": "Relative Datumsangaben",
     "include_types": "{'@'}types bei Installation einschließen",
     "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Paket) automatisch zu Installationsbefehlen für Pakete ohne Typen hinzufügen",
@@ -137,10 +158,6 @@
       "community": "Community",
       "consider_no_dep": "+ Ohne Abhängigkeit lösen?"
     },
-    "likes": {
-      "like": "Dieses Paket liken",
-      "unlike": "Like entfernen"
-    },
     "stats": {
       "license": "Lizenz",
       "deps": "Abhängigkeiten",
@@ -181,6 +198,10 @@
       "docs": "Doku",
       "fund": "Spenden",
       "compare": "Vergleichen"
+    },
+    "likes": {
+      "like": "Dieses Paket liken",
+      "unlike": "Like entfernen"
     },
     "docs": {
       "not_available": "Dokumentation nicht verfügbar",
@@ -226,6 +247,7 @@
       "view_more_details": "Weitere Details anzeigen",
       "error_loading": "Fehler beim Laden der Herkunftsdaten"
     },
+    "security_downgrade": {},
     "keywords_title": "Schlüsselwörter",
     "compatibility": "Kompatibilität",
     "card": {
@@ -283,13 +305,7 @@
       "show_more": "({count} weitere anzeigen)",
       "show_less": "(weniger anzeigen)"
     },
-    "downloads": {
-      "title": "Wöchentliche Downloads",
-      "date_range": "{start} bis {end}",
-      "date_range_multiline": "{start}\nbis {end}",
-      "analyze": "Downloads analysieren",
-      "community_distribution": "Community-Adoptionsverteilung ansehen",
-      "modal_title": "Downloads",
+    "trends": {
       "granularity": "Granularität",
       "granularity_daily": "Täglich",
       "granularity_weekly": "Wöchentlich",
@@ -297,11 +313,23 @@
       "granularity_yearly": "Jährlich",
       "start_date": "Start",
       "end_date": "Ende",
-      "no_data": "Keine Download-Daten verfügbar",
       "loading": "Lädt...",
-      "y_axis_label": "{granularity} Downloads",
+      "date_range": "{start} bis {end}",
+      "date_range_multiline": "{start}\nbis {end}",
       "download_file": "{fileType} herunterladen",
-      "toggle_annotator": "Annotation umschalten"
+      "toggle_annotator": "Annotation umschalten",
+      "legend_estimation": "Schätzung",
+      "no_data": "Keine Daten vorhanden",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Downloads"
+      }
+    },
+    "downloads": {
+      "title": "Wöchentliche Downloads",
+      "analyze": "Downloads analysieren",
+      "community_distribution": "Community-Adoptionsverteilung ansehen",
+      "modal_title": "Downloads"
     },
     "install_scripts": {
       "title": "Installationsskripte",
@@ -338,7 +366,8 @@
         "high": "Hoch",
         "moderate": "Mittel",
         "low": "Niedrig"
-      }
+      },
+      "fixed_in_title": "Behoben in Version {version}"
     },
     "deprecated": {
       "label": "Veraltet",
@@ -374,7 +403,6 @@
     },
     "skeleton": {
       "loading": "Paketdetails werden geladen",
-      "weekly": "Wöchentlich",
       "maintainers": "Maintainer",
       "keywords": "Schlüsselwörter",
       "versions": "Versionen",
@@ -385,6 +413,11 @@
       "published": "Zuletzt veröffentlicht",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
@@ -883,6 +916,10 @@
           "label": "Downloads/Woche",
           "description": "Wöchentliche Downloadzahlen"
         },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Anzahl der Likes"
+        },
         "lastUpdated": {
           "label": "Veröffentlicht",
           "description": "Wann diese Version veröffentlicht wurde"
@@ -922,6 +959,9 @@
         "types_none": "Keine",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "Deine Entscheidung!"
+      },
+      "trends": {
+        "title": "Wöchentliche Downloads"
       }
     }
   },

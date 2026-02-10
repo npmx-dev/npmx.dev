@@ -168,11 +168,15 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
             aria-hidden="true"
           />
           <span class="font-mono text-sm text-fg-muted">{{ skill.name }}</span>
-          <span
+          <TooltipApp
             v-if="skill.warnings?.length"
-            class="i-carbon:warning w-3.5 h-3.5 text-amber-500 shrink-0"
-            :title="getWarningTooltip(skill)"
-          />
+            class="shrink-0 p-2 -m-2"
+            aria-hidden="true"
+            :text="getWarningTooltip(skill)"
+            to="#skills-modal"
+          >
+            <span class="i-carbon:warning w-3.5 h-3.5 text-amber-500" />
+          </TooltipApp>
         </button>
 
         <!-- Expandable details -->

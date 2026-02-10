@@ -54,6 +54,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Unit tests](#unit-tests)
   - [Component accessibility tests](#component-accessibility-tests)
   - [Lighthouse accessibility tests](#lighthouse-accessibility-tests)
+  - [Lighthouse performance tests](#lighthouse-performance-tests)
   - [End to end tests](#end-to-end-tests)
   - [Test fixtures (mocking external APIs)](#test-fixtures-mocking-external-apis)
 - [Submitting changes](#submitting-changes)
@@ -114,6 +115,7 @@ pnpm test:unit        # Unit tests only
 pnpm test:nuxt        # Nuxt component tests
 pnpm test:browser     # Playwright E2E tests
 pnpm test:a11y        # Lighthouse accessibility audits
+pnpm test:perf        # Lighthouse performance audits (CLS)
 ```
 
 ### Project structure
@@ -641,18 +643,38 @@ pnpm test:a11y:prebuilt
 
 # Or run a single color mode manually
 pnpm build:test
-LIGHTHOUSE_COLOR_MODE=dark ./scripts/lighthouse-a11y.sh
+LIGHTHOUSE_COLOR_MODE=dark ./scripts/lighthouse.sh
 ```
 
 This requires Chrome or Chromium to be installed. The script will auto-detect common installation paths. Results are printed to the terminal and saved in `.lighthouseci/`.
 
 #### Configuration
 
-| File                         | Purpose                                                   |
-| ---------------------------- | --------------------------------------------------------- |
-| `.lighthouserc.cjs`          | Lighthouse CI config (URLs, assertions, Chrome path)      |
-| `lighthouse-setup.cjs`       | Puppeteer script for color mode + client-side API mocking |
-| `scripts/lighthouse-a11y.sh` | Shell wrapper that runs the audit for a given color mode  |
+| File                    | Purpose                                                   |
+| ----------------------- | --------------------------------------------------------- |
+| `.lighthouserc.cjs`     | Lighthouse CI config (URLs, assertions, Chrome path)      |
+| `lighthouse-setup.cjs`  | Puppeteer script for color mode + client-side API mocking |
+| `scripts/lighthouse.sh` | Shell wrapper that runs the audit for a given color mode  |
+
+### Lighthouse performance tests
+
+The project also runs Lighthouse performance audits to enforce zero Cumulative Layout Shift (CLS). These run separately from the accessibility audits and test the same set of URLs.
+
+#### How it works
+
+The same `.lighthouserc.cjs` config is shared between accessibility and performance audits. When the `LH_PERF` environment variable is set, the config switches from the `accessibility` category to the `performance` category and asserts that CLS is exactly 0.
+
+#### Running locally
+
+```bash
+# Build + run performance audit
+pnpm test:perf
+
+# Or against an existing test build
+pnpm test:perf:prebuilt
+```
+
+Unlike the accessibility audits, performance audits do not run in separate light/dark modes.
 
 ### End to end tests
 

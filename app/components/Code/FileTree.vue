@@ -49,17 +49,14 @@ watch(
     <li v-for="node in tree" :key="node.path">
       <!-- Directory -->
       <template v-if="node.type === 'directory'">
-        <button
-          type="button"
-          class="w-full flex items-center gap-1.5 py-1.5 px-3 text-start font-mono text-sm transition-colors hover:bg-bg-muted"
-          :class="isNodeActive(node) ? 'text-fg' : 'text-fg-muted'"
+        <ButtonBase
+          class="w-full justify-start! rounded-none! border-none!"
+          block
+          :aria-pressed="isNodeActive(node)"
           :style="{ paddingLeft: `${depth * 12 + 12}px` }"
           @click="toggleDir(node.path)"
+          :classicon="isExpanded(node.path) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right'"
         >
-          <span
-            class="w-4 h-4 shrink-0 transition-transform"
-            :class="[isExpanded(node.path) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right']"
-          />
           <span
             class="w-4 h-4 shrink-0"
             :class="
@@ -69,7 +66,7 @@ watch(
             "
           />
           <span class="truncate">{{ node.name }}</span>
-        </button>
+        </ButtonBase>
         <CodeFileTree
           v-if="isExpanded(node.path) && node.children"
           :tree="node.children"
@@ -82,15 +79,17 @@ watch(
 
       <!-- File -->
       <template v-else>
-        <NuxtLink
+        <LinkBase
+          variant="button-secondary"
           :to="getFileRoute(node.path)"
-          class="flex items-center gap-1.5 py-1.5 px-3 font-mono text-sm transition-colors hover:bg-bg-muted"
-          :class="currentPath === node.path ? 'bg-bg-muted text-fg' : 'text-fg-muted'"
+          :aria-current="currentPath === node.path"
+          class="w-full justify-start! rounded-none! border-none!"
+          block
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
+          :classicon="getFileIcon(node.name)"
         >
-          <span class="w-4 h-4 shrink-0" :class="getFileIcon(node.name)" />
           <span class="truncate">{{ node.name }}</span>
-        </NuxtLink>
+        </LinkBase>
       </template>
     </li>
   </ul>

@@ -312,11 +312,11 @@ export function useCharts() {
     )
 
     const endDateOnly = toDateOnly(downloadEvolutionOptions.endDate)
-    const end = endDateOnly ? new Date(`${endDateOnly}T00:00:00.000Z`) : yesterday
+    const end = endDateOnly ? parseIsoDateOnly(endDateOnly) : yesterday
 
     const startDateOnly = toDateOnly(downloadEvolutionOptions.startDate)
     if (startDateOnly) {
-      const start = new Date(`${startDateOnly}T00:00:00.000Z`)
+      const start = parseIsoDateOnly(startDateOnly)
       return { start, end }
     }
 

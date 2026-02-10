@@ -15,7 +15,24 @@
     "docs": "docs",
     "source": "source",
     "social": "social",
-    "chat": "chat"
+    "chat": "chat",
+    "keyboard_shortcuts": "keyboard shortcuts"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Global",
+      "search": "Search",
+      "package": "Package"
+    },
+    "focus_search": "Focus search",
+    "show_kbd_hints": "Highlight keyboard hints",
+    "settings": "Open settings",
+    "compare": "Open compare",
+    "compare_from_package": "Open compare (prefilled with current package)",
+    "navigate_results": "Navigate results",
+    "go_to_result": "Go to result",
+    "open_code_view": "Open code view",
+    "open_docs": "Open docs"
   },
   "search": {
     "label": "Search npm packages",
@@ -23,6 +40,7 @@
     "button": "search",
     "searching": "Searching...",
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
+    "found_packages_sorted": "Sorting top {count} result | Sorting top {count} results",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "rate_limited": "Hit npm rate limit, try again in a moment",
@@ -36,6 +54,7 @@
     "claim_button": "Claim \"{name}\"",
     "want_to_claim": "Want to claim this package name?",
     "start_typing": "Start typing to search packages",
+    "algolia_disclaimer": "Powered by Algolia",
     "exact_match": "exact",
     "suggestion": {
       "user": "user",
@@ -63,7 +82,16 @@
     "sections": {
       "appearance": "Appearance",
       "display": "Display",
+      "search": "Data source",
       "language": "Language"
+    },
+    "data_source": {
+      "label": "Data source",
+      "description": "Choose where npmx gets search data. Individual package pages always use the npm registry directly.",
+      "npm": "npm Registry",
+      "npm_description": "Fetches search, org and user listings directly from the official npm registry. Authoritative, but can be slower.",
+      "algolia": "Algolia",
+      "algolia_description": "Uses Algolia for faster search, org and user pages."
     },
     "relative_dates": "Relative dates",
     "include_types": "Include {'@'}types in install",
@@ -227,6 +255,16 @@
       "view_more_details": "View more details",
       "error_loading": "Failed to load provenance details"
     },
+    "security_downgrade": {
+      "title": "Trust downgrade",
+      "description_to_none_provenance": "This version was published without {provenance}.",
+      "description_to_none_trustedPublisher": "This version was published without {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "This version uses {provenance} but not {trustedPublishing}.",
+      "fallback_install_provenance": "Install commands are pinned to {version}, the last version with provenance.",
+      "fallback_install_trustedPublisher": "Install commands are pinned to {version}, the last version with trusted publishing.",
+      "provenance_link_text": "provenance",
+      "trusted_publishing_link_text": "trusted publishing"
+    },
     "keywords_title": "Keywords",
     "compatibility": "Compatibility",
     "card": {
@@ -284,13 +322,7 @@
       "show_more": "(show {count} more)",
       "show_less": "(show fewer)"
     },
-    "downloads": {
-      "title": "Weekly Downloads",
-      "date_range": "{start} to {end}",
-      "date_range_multiline": "{start}\nto {end}",
-      "analyze": "Analyze downloads",
-      "community_distribution": "View community adoption distribution",
-      "modal_title": "Downloads",
+    "trends": {
       "granularity": "Granularity",
       "granularity_daily": "Daily",
       "granularity_weekly": "Weekly",
@@ -298,12 +330,23 @@
       "granularity_yearly": "Yearly",
       "start_date": "Start",
       "end_date": "End",
-      "no_data": "No download data available",
       "loading": "Loading...",
-      "y_axis_label": "{granularity} downloads",
+      "date_range": "{start} to {end}",
+      "date_range_multiline": "{start}\nto {end}",
       "download_file": "Download {fileType}",
       "toggle_annotator": "Toggle annotator",
-      "legend_estimation": "Estimation"
+      "legend_estimation": "Estimation",
+      "no_data": "No data available",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Downloads"
+      }
+    },
+    "downloads": {
+      "title": "Weekly Downloads",
+      "analyze": "Analyze downloads",
+      "community_distribution": "View community adoption distribution",
+      "modal_title": "Downloads"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -340,7 +383,8 @@
         "high": "high",
         "moderate": "moderate",
         "low": "low"
-      }
+      },
+      "fixed_in_title": "Fixed in version {version}"
     },
     "deprecated": {
       "label": "Deprecated",
@@ -376,7 +420,6 @@
     },
     "skeleton": {
       "loading": "Loading package details",
-      "weekly": "Weekly",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "versions": "Versions",
@@ -934,6 +977,9 @@
         "types_none": "None",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "Up to you!"
+      },
+      "trends": {
+        "title": "Weekly Downloads"
       }
     }
   },

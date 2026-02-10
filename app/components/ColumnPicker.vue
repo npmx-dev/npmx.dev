@@ -102,11 +102,7 @@ function handleReset() {
               v-for="column in toggleableColumns"
               :key="column.id"
               class="flex gap-2 items-center px-3 py-2 transition-colors duration-200"
-              :class="
-                column.disabled
-                  ? 'opacity-50 cursor-not-allowed'
-                  : 'hover:bg-bg-muted cursor-pointer'
-              "
+              :class="column.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-bg-muted'"
             >
               <input
                 type="checkbox"

@@ -230,17 +230,21 @@ const processLocale = async (
 
   const targetContent = await loadJson(localeInfo)
 
+  // $schema is a JSON Schema reference, not a translation key — preserve it but exclude from comparison
+  const { $schema: targetSchema, ...targetWithoutSchema } = targetContent
+
   const stats: SyncStats = {
     missing: [],
     extra: [],
     referenceKeys: [],
   }
 
-  const newContent = syncLocaleData(referenceContent, targetContent, stats, fix)
+  const newContent = syncLocaleData(referenceContent, targetWithoutSchema, stats, fix)
 
   // Write if there are removals (always) or we are in fix mode
   if (!localeInfo.mergeLocale && (stats.extra.length > 0 || fix)) {
-    writeFileSync(filePath, JSON.stringify(newContent, null, 2) + '\n', 'utf-8')
+    const output = targetSchema ? { $schema: targetSchema, ...newContent } : newContent
+    writeFileSync(filePath, JSON.stringify(output, null, 2) + '\n', 'utf-8')
   }
 
   return stats
@@ -380,6 +384,9 @@ const run = async (): Promise<void> => {
     locale: 'en',
     lang: 'en',
   })
+
+  // $schema is a JSON Schema reference, not a translation key
+  delete referenceContent.$schema
 
   const args = process.argv.slice(2)
   const fix = args.includes('--fix')

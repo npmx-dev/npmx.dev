@@ -116,6 +116,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'az-AZ.json',
     name: 'Azərbaycanca',
   },
+  {
+    code: 'bn-IN',
+    file: 'bn-IN.json',
+    name: 'বাংলা',
+  },
   /*{
     code: 'ckb',
     file: 'ckb.json',

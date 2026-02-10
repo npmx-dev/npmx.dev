@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "settings": {
     "tagline": "customise your npmx experience",
     "clear_accent": "Clear accent colour"

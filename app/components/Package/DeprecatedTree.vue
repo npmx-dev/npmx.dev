@@ -53,12 +53,12 @@ function getDepthStyle(depth: DependencyDepth) {
         aria-controls="deprecated-tree-details"
         @click="isExpanded = !isExpanded"
       >
-        <div class="flex items-center gap-2 min-w-0">
+        <span class="flex items-center gap-2 min-w-0 block">
           <span class="i-carbon-warning-hex w-4 h-4 shrink-0" aria-hidden="true" />
           <span class="font-mono text-sm font-medium truncate">
             {{ $t('package.deprecated.tree_found', analysisData!.deprecatedPackages.length) }}
           </span>
-        </div>
+        </span>
         <span
           class="i-carbon-chevron-down w-4 h-4 transition-transform duration-200 shrink-0"
           :class="{ 'rotate-180': isExpanded }"

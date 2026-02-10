@@ -287,14 +287,15 @@ watch(lastExecutionTime, () => {
           aria-hidden="true"
         />
         <label for="teams-search" class="sr-only">{{ $t('org.teams.filter_label') }}</label>
-        <input
+        <InputBase
           id="teams-search"
           v-model="searchQuery"
           type="search"
           name="teams-search"
           :placeholder="$t('org.teams.filter_placeholder')"
-          v-bind="noCorrect"
-          class="w-full ps-7 pe-2 py-1.5 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+          no-correct
+          class="w-full min-w-25 ps-7"
+          size="medium"
         />
       </div>
       <div
@@ -425,7 +426,7 @@ watch(lastExecutionTime, () => {
               >
                 ~{{ user }}
               </NuxtLink>
-              <span class="font-mono text-sm text-fg">{{ teamName }}</span>
+              <span class="font-mono text-sm text-fg mx-2">{{ teamName }}</span>
               <button
                 type="button"
                 class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-accent/70"
@@ -446,14 +447,15 @@ watch(lastExecutionTime, () => {
               <label :for="`add-user-${teamName}`" class="sr-only">{{
                 $t('org.teams.username_to_add', { team: teamName })
               }}</label>
-              <input
+              <InputBase
                 :id="`add-user-${teamName}`"
                 v-model="newUserUsername"
                 type="text"
                 :name="`add-user-${teamName}`"
                 :placeholder="$t('org.teams.username_placeholder')"
-                v-bind="noCorrect"
-                class="flex-1 px-2 py-1 font-mono text-sm bg-bg-subtle border border-border rounded text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
+                no-correct
+                class="flex-1 min-w-25"
+                size="medium"
               />
               <button
                 type="submit"
@@ -497,25 +499,26 @@ watch(lastExecutionTime, () => {
         <form class="flex items-center gap-2" @submit.prevent="handleCreateTeam">
           <div class="flex-1 flex items-center">
             <span
-              class="px-2 py-1.5 font-mono text-sm text-fg-subtle bg-bg border border-ie-0 border-border rounded-is"
+              class="px-2 py-3 leading-none font-mono text-sm text-fg-subtle bg-bg border border-ie-0 border-border rounded-is"
             >
               {{ orgName }}:
             </span>
             <label for="new-team-name" class="sr-only">{{ $t('org.teams.team_name_label') }}</label>
-            <input
+            <InputBase
               id="new-team-name"
               v-model="newTeamName"
               type="text"
               name="new-team-name"
               :placeholder="$t('org.teams.team_name_placeholder')"
-              v-bind="noCorrect"
-              class="flex-1 px-2 py-1.5 font-mono text-sm bg-bg border border-border rounded-ie text-fg placeholder:text-fg-subtle transition-colors duration-200 focus:border-border-hover focus-visible:outline-accent/70"
+              no-correct
+              class="flex-1 min-w-25 rounded-is-none"
+              size="medium"
             />
           </div>
           <button
             type="submit"
             :disabled="!newTeamName.trim() || isCreatingTeam"
-            class="px-3 py-1.5 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
+            class="px-3 py-2 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
           >
             {{ isCreatingTeam ? '…' : $t('org.teams.create_button') }}
           </button>

@@ -4,9 +4,11 @@ import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import { createGenerator } from 'unocss'
 import { presetRtl } from '../uno-preset-rtl.ts'
+import { presetA11y } from '../uno-preset-a11y.ts'
 import { COLORS } from './utils.ts'
 import { presetWind4 } from 'unocss'
 
+const argvFiles = process.argv.slice(2)
 const APP_DIRECTORY = fileURLToPath(new URL('../app', import.meta.url))
 
 async function checkFile(path: Dirent): Promise<string | undefined> {
@@ -33,6 +35,17 @@ async function checkFile(path: Dirent): Promise<string | undefined> {
           `${COLORS.red} ❌ [RTL] ${filename}:${idx}${ruleIdx > -1 ? `:${ruleIdx + 1}` : ''} - ${warning}${COLORS.reset}`,
         )
       }),
+      presetA11y((warning, rule) => {
+        let entry = warnings.get(idx)
+        if (!entry) {
+          entry = []
+          warnings.set(idx, entry)
+        }
+        const ruleIdx = line.indexOf(rule)
+        entry.push(
+          `${COLORS.red} ❌ [A11y] ${filename}:${idx}${ruleIdx > -1 ? `:${ruleIdx + 1}` : ''} - ${warning}${COLORS.reset}`,
+        )
+      }),
     ],
   })
   const lines = file.split('\n')
@@ -46,7 +59,10 @@ async function checkFile(path: Dirent): Promise<string | undefined> {
 }
 
 async function check(): Promise<void> {
-  const dir = glob('**/*.vue', { withFileTypes: true, cwd: APP_DIRECTORY })
+  const dir = glob(argvFiles.length > 0 ? argvFiles : '**/*.vue', {
+    withFileTypes: true,
+    cwd: APP_DIRECTORY,
+  })
   let hasErrors = false
   for await (const file of dir) {
     const result = await checkFile(file)
@@ -61,7 +77,7 @@ async function check(): Promise<void> {
     process.exit(1)
   } else {
     // oxlint-disable-next-line no-console -- success logging
-    console.log(`${COLORS.green}✅ CSS RTL check passed!${COLORS.reset}`)
+    console.log(`${COLORS.green}✅ CSS check passed!${COLORS.reset}`)
   }
 }
 

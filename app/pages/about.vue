@@ -2,14 +2,6 @@
 const router = useRouter()
 const canGoBack = useCanGoBack()
 
-interface GitHubContributor {
-  login: string
-  id: number
-  avatar_url: string
-  html_url: string
-  contributions: number
-}
-
 useSeoMeta({
   title: () => `${$t('about.title')} - npmx`,
   ogTitle: () => `${$t('about.title')} - npmx`,
@@ -34,12 +26,7 @@ const pmLinks = {
   vlt: 'https://www.vlt.sh/',
 }
 
-const { data: contributors, status: contributorsStatus } = useFetch<GitHubContributor[]>(
-  '/api/contributors',
-  {
-    lazy: true,
-  },
-)
+const { data: contributors, status: contributorsStatus } = useLazyFetch('/api/contributors')
 </script>
 
 <template>
@@ -52,7 +39,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
           </h1>
           <button
             type="button"
-            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >
@@ -108,32 +95,32 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
                 >
                   <template #already>{{ $t('about.what_we_are_not.words.already') }}</template>
                   <template #people>
-                    <LinkBase :to="pmLinks.npm">{{
+                    <LinkBase :to="pmLinks.npm" class="font-sans">{{
                       $t('about.what_we_are_not.words.people')
                     }}</LinkBase>
                   </template>
                   <template #building>
-                    <LinkBase :to="pmLinks.pnpm">{{
+                    <LinkBase :to="pmLinks.pnpm" class="font-sans">{{
                       $t('about.what_we_are_not.words.building')
                     }}</LinkBase>
                   </template>
                   <template #really>
-                    <LinkBase :to="pmLinks.yarn">{{
+                    <LinkBase :to="pmLinks.yarn" class="font-sans">{{
                       $t('about.what_we_are_not.words.really')
                     }}</LinkBase>
                   </template>
                   <template #cool>
-                    <LinkBase :to="pmLinks.bun">{{
+                    <LinkBase :to="pmLinks.bun" class="font-sans">{{
                       $t('about.what_we_are_not.words.cool')
                     }}</LinkBase>
                   </template>
                   <template #package>
-                    <LinkBase :to="pmLinks.deno">{{
+                    <LinkBase :to="pmLinks.deno" class="font-sans">{{
                       $t('about.what_we_are_not.words.package')
                     }}</LinkBase>
                   </template>
                   <template #managers>
-                    <LinkBase :to="pmLinks.vlt">{{
+                    <LinkBase :to="pmLinks.vlt" class="font-sans">{{
                       $t('about.what_we_are_not.words.managers')
                     }}</LinkBase>
                   </template>

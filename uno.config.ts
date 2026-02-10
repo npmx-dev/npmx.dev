@@ -7,6 +7,7 @@ import {
 } from 'unocss'
 import type { Theme } from '@unocss/preset-wind4/theme'
 import { presetRtl } from './uno-preset-rtl'
+import { presetA11y } from './uno-preset-a11y'
 
 const customIcons = {
   'agent-skills':
@@ -32,7 +33,7 @@ export default defineConfig({
       },
     }),
     // keep this preset last
-    ...(process.env.CI ? [] : [presetRtl()]),
+    ...(process.env.CI ? [] : [presetRtl(), presetA11y()]),
   ].filter(Boolean),
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
