@@ -20,7 +20,7 @@ export function resetRtlWarnings() {
 }
 
 function reportWarning(match: string, suggestedClass: string, checker?: CollectorChecker) {
-  const message = `${checker ? 'a' : 'A'}void using '${match}', use '${suggestedClass}' instead.`
+  const message = `${checker ? 'a' : 'A'}void using '${match}', use '${suggestedClass}' instead, or 'force-${match}' to keep physical direction.`
   if (checker) {
     checker(message, match)
   } else {
@@ -90,6 +90,20 @@ function handlerBorderSize([, a = '', b = '1']: string[]): CSSEntries | undefine
   if (directions && v != null) return directions.map(i => [`border${i}-width`, v])
 }
 
+function handlerForceDirectionSize(
+  propertyPrefix: string,
+  [, direction, size]: string[],
+  { theme }: RuleContext<any>,
+): CSSEntries | undefined {
+  const v =
+    theme.spacing?.[size || 'DEFAULT'] ?? h.bracket?.cssvar?.global?.auto?.fraction?.rem?.(size!)
+  const directions = directionMap[direction!]
+
+  if (v != null && directions) {
+    return directions.map(i => [`${propertyPrefix}${i}`, v])
+  }
+}
+
 /**
  * CSS RTL support to detect, replace and warn wrong left/right usages.
  */
@@ -101,6 +115,51 @@ export function presetRtl(checker?: CollectorChecker): Preset {
       ['text-right', 'text-end x-rtl-end'],
     ],
     rules: [
+      // Force physical directions (bypass RTL logic)
+      [
+        /^force-p([rl])-(.+)?$/,
+        (match, context) => handlerForceDirectionSize('padding', match, context),
+        { autocomplete: 'force-p(l|r)-<num>' },
+      ],
+      [
+        /^force-m([rl])-(.+)?$/,
+        (match, context) => handlerForceDirectionSize('margin', match, context),
+        { autocomplete: 'force-m(l|r)-<num>' },
+      ],
+      [
+        /^force-(?:position-|pos-)?(left|right)-(.+)$/,
+        ([_, direction, size], context) => {
+          // Map 'left'/'right' to 'l'/'r' for directionMap lookup if needed,
+          // but directionMap has 'left'/'right' keys? No, it has 'l'/'r'.
+          // Wait, directionMap keys are 'l', 'r'.
+          // But inset usually uses 'left', 'right' properties directly.
+          // Let's use a custom handler for inset to be safe.
+          const v =
+            (context.theme as unknown as any).spacing?.[size || 'DEFAULT'] ??
+            h.bracket?.cssvar?.global?.auto?.fraction?.rem?.(size!)
+          if (v != null) {
+            return [[direction === 'left' ? 'left' : 'right', v]]
+          }
+        },
+        { autocomplete: 'force-(left|right)-<num>' },
+      ],
+      [
+        /^force-text-(left|right)$/,
+        ([, direction]) => ({ 'text-align': direction }),
+        { autocomplete: 'force-text-(left|right)' },
+      ],
+      [
+        /^force-rounded-([rl])(?:-(.+))?$/,
+        ([, direction, size], context) =>
+          handlerRounded(['', direction!, size ?? 'DEFAULT'], context),
+        { autocomplete: 'force-rounded-(l|r)-<num>' },
+      ],
+      [
+        /^force-border-([rl])(?:-(.+))?$/,
+        ([, direction, size]) => handlerBorderSize(['', direction!, size || '1']),
+        { autocomplete: 'force-border-(l|r)-<num>' },
+      ],
+
       // RTL overrides
       // We need to move the dash out of the capturing group to avoid capturing it in the direction
       [

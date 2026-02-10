@@ -2,7 +2,6 @@
 import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import { getFileIcon } from '~/utils/file-icons'
-import { formatBytes } from '~/utils/formatters'
 
 const props = defineProps<{
   tree: PackageFileTree[]
@@ -51,6 +50,8 @@ function getCodeRoute(nodePath?: string): RouteLocationRaw {
     params: { path: pathSegments as [string, ...string[]] },
   }
 }
+
+const bytesFormatter = useBytesFormatter()
 </script>
 
 <template>
@@ -74,16 +75,16 @@ function getCodeRoute(nodePath?: string): RouteLocationRaw {
           v-if="parentPath !== null"
           class="border-b border-border hover:bg-bg-subtle transition-colors"
         >
-          <td class="py-2 px-4">
-            <NuxtLink
+          <td colspan="2">
+            <LinkBase
               :to="getCodeRoute(parentPath || undefined)"
-              class="flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors"
+              class="py-2 px-4 font-mono text-sm w-full"
+              no-underline
+              classicon="i-carbon:folder text-yellow-600"
             >
-              <span class="i-carbon:folder w-4 h-4 text-yellow-600" />
-              <span>..</span>
-            </NuxtLink>
+              <span class="w-full flex justify-self-stretch items-center gap-2"> .. </span>
+            </LinkBase>
           </td>
-          <td />
         </tr>
 
         <!-- Directory/file rows -->
@@ -92,24 +93,27 @@ function getCodeRoute(nodePath?: string): RouteLocationRaw {
           :key="node.path"
           class="border-b border-border hover:bg-bg-subtle transition-colors"
         >
-          <td class="py-2 px-4">
-            <NuxtLink
+          <td colspan="2">
+            <LinkBase
               :to="getCodeRoute(node.path)"
-              class="flex items-center gap-2 font-mono text-sm hover:text-fg transition-colors"
-              :class="node.type === 'directory' ? 'text-fg' : 'text-fg-muted'"
+              class="py-2 px-4 font-mono text-sm w-full"
+              no-underline
+              :classicon="
+                node.type === 'directory'
+                  ? 'i-carbon:folder text-yellow-600'
+                  : getFileIcon(node.name)
+              "
             >
-              <span
-                v-if="node.type === 'directory'"
-                class="i-carbon:folder w-4 h-4 text-yellow-600"
-              />
-              <span v-else class="w-4 h-4" :class="getFileIcon(node.name)" />
-              <span>{{ node.name }}</span>
-            </NuxtLink>
-          </td>
-          <td class="py-2 px-4 text-end font-mono text-xs text-fg-subtle">
-            <span v-if="node.type === 'file' && node.size">
-              {{ formatBytes(node.size) }}
-            </span>
+              <span class="w-full flex justify-self-stretch items-center gap-2">
+                <span class="flex-1">{{ node.name }}</span>
+                <span
+                  v-if="node.type === 'file' && node.size"
+                  class="text-end text-xs text-fg-subtle"
+                >
+                  {{ bytesFormatter.format(node.size) }}
+                </span>
+              </span>
+            </LinkBase>
           </td>
         </tr>
       </tbody>

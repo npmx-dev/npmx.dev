@@ -4,7 +4,6 @@ import type {
   PackageFileTreeResponse,
   PackageFileContentResponse,
 } from '#shared/types'
-import { formatBytes } from '~/utils/formatters'
 
 definePageMeta({
   name: 'code',
@@ -269,6 +268,8 @@ const markdownViewModes = [
 
 const markdownViewMode = shallowRef<(typeof markdownViewModes)[number]['key']>('preview')
 
+const bytesFormatter = useBytesFormatter()
+
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
 })
@@ -373,9 +374,9 @@ defineOgImageComponent('Default', {
     <!-- Error: no version -->
     <div v-if="!version" class="container py-20 text-center">
       <p class="text-fg-muted mb-4">{{ $t('code.version_required') }}</p>
-      <NuxtLink :to="packageRoute(packageName)" class="btn">{{
+      <LinkBase variant="button-secondary" :to="packageRoute(packageName)">{{
         $t('code.go_to_package')
-      }}</NuxtLink>
+      }}</LinkBase>
     </div>
 
     <!-- Loading state -->
@@ -387,9 +388,9 @@ defineOgImageComponent('Default', {
     <!-- Error state -->
     <div v-else-if="treeStatus === 'error'" class="container py-20 text-center" role="alert">
       <p class="text-fg-muted mb-4">{{ $t('code.failed_to_load_tree') }}</p>
-      <NuxtLink :to="packageRoute(packageName, version)" class="btn">{{
+      <LinkBase variant="button-secondary" :to="packageRoute(packageName, version)">{{
         $t('code.back_to_package')
-      }}</NuxtLink>
+      }}</LinkBase>
     </div>
 
     <!-- Main content: file tree + file viewer -->
@@ -408,7 +409,7 @@ defineOgImageComponent('Default', {
 
       <!-- File content / Directory listing - sticky with internal scroll on desktop -->
       <div
-        class="flex-1 min-w-0 md:sticky md:top-28 md:self-start md:h-[calc(100vh-7rem)] md:overflow-y-auto"
+        class="flex-1 min-w-0 overflow-x-hidden sticky top-28 self-start h-[calc(100vh-7rem)] overflow-y-auto"
       >
         <!-- File viewer -->
         <template v-if="isViewingFile && fileContent">
@@ -443,7 +444,7 @@ defineOgImageComponent('Default', {
                   $t('code.lines', { count: fileContent.lines })
                 }}</span>
                 <span v-if="currentNode?.size" class="text-fg-subtle">{{
-                  formatBytes(currentNode.size)
+                  bytesFormatter.format(currentNode.size)
                 }}</span>
               </div>
             </div>
@@ -489,17 +490,16 @@ defineOgImageComponent('Default', {
           <div class="i-carbon:document w-12 h-12 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
-            {{ $t('code.file_size_warning', { size: formatBytes(currentNode?.size ?? 0) }) }}
+            {{
+              $t('code.file_size_warning', { size: bytesFormatter.format(currentNode?.size ?? 0) })
+            }}
           </p>
-          <a
-            :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn inline-flex items-center gap-2"
+          <LinkBase
+            variant="button-secondary"
+            :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
           >
             {{ $t('code.view_raw') }}
-            <span class="i-carbon:launch w-4 h-4" />
-          </a>
+          </LinkBase>
         </div>
 
         <!-- Loading file content -->
@@ -545,15 +545,12 @@ defineOgImageComponent('Default', {
           <div class="i-carbon:warning-alt w-8 h-8 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.failed_to_load') }}</p>
           <p class="text-fg-subtle text-sm mb-4">{{ $t('code.unavailable_hint') }}</p>
-          <a
-            :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn inline-flex items-center gap-2"
+          <LinkBase
+            variant="button-secondary"
+            :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
           >
             {{ $t('code.view_raw') }}
-            <span class="i-carbon:launch w-4 h-4" />
-          </a>
+          </LinkBase>
         </div>
 
         <!-- Directory listing (when no file selected or viewing a directory) -->

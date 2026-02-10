@@ -41,7 +41,7 @@ onKeyDown(
 const toggleableColumns = computed(() => props.columns.filter(col => col.id !== 'name'))
 
 // Map column IDs to i18n keys
-const columnLabelKey = computed(() => ({
+const columnLabels = computed(() => ({
   name: $t('filters.columns.name'),
   version: $t('filters.columns.version'),
   description: $t('filters.columns.description'),
@@ -57,7 +57,7 @@ const columnLabelKey = computed(() => ({
 }))
 
 function getColumnLabel(id: ColumnId): string {
-  const key = columnLabelKey.value[id]
+  const key = columnLabels.value[id]
   return key ?? id
 }
 
@@ -69,25 +69,23 @@ function handleReset() {
 
 <template>
   <div class="relative">
-    <button
+    <ButtonBase
       ref="buttonRef"
-      type="button"
-      class="btn-ghost inline-flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-md hover:border-border-hover focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       :aria-controls="menuId"
       @click.stop="isOpen = !isOpen"
+      classicon="i-carbon-column"
     >
-      <span class="i-carbon-column w-4 h-4" aria-hidden="true" />
-      <span class="font-mono text-sm">{{ $t('filters.columns.title') }}</span>
-    </button>
+      {{ $t('filters.columns.title') }}
+    </ButtonBase>
 
     <Transition name="dropdown">
       <div
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute inset-is-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute top-full inset-ie-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >
@@ -104,11 +102,7 @@ function handleReset() {
               v-for="column in toggleableColumns"
               :key="column.id"
               class="flex gap-2 items-center px-3 py-2 transition-colors duration-200"
-              :class="
-                column.disabled
-                  ? 'opacity-50 cursor-not-allowed'
-                  : 'hover:bg-bg-muted cursor-pointer'
-              "
+              :class="column.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-bg-muted'"
             >
               <input
                 type="checkbox"
@@ -136,13 +130,9 @@ function handleReset() {
           </div>
 
           <div class="border-t border-border py-1">
-            <button
-              type="button"
-              class="w-full px-3 py-2 text-start text-sm font-mono text-fg-muted hover:bg-bg-muted hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
-              @click="handleReset"
-            >
+            <ButtonBase @click="handleReset">
               {{ $t('filters.columns.reset') }}
-            </button>
+            </ButtonBase>
           </div>
         </div>
       </div>

@@ -1,11 +1,11 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Pakkeleser for npm-registeret",
       "description": "En bedre leser for npm-registeret. Søk, bla gjennom og utforsk pakker med et moderne grensesnitt."
     }
   },
-  "version": "Versjon",
   "built_at": "bygget {0}",
   "alt_logo": "npmx logo",
   "tagline": "en bedre leser for npm-registeret",
@@ -18,11 +18,13 @@
     "social": "sosialt",
     "chat": "chat"
   },
+  "shortcuts": {
+    "section": {}
+  },
   "search": {
     "label": "Søk etter npm-pakker",
     "placeholder": "søk etter pakker...",
     "button": "søk",
-    "clear": "Tøm søk",
     "searching": "Søker...",
     "found_packages": "Ingen pakker funnet | Fant 1 pakke | Fant {count} pakker",
     "updating": "(oppdaterer...)",
@@ -48,7 +50,6 @@
   "nav": {
     "main_navigation": "Hovedmeny",
     "popular_packages": "Populære pakker",
-    "search": "søk",
     "settings": "innstillinger",
     "compare": "sammenlign",
     "back": "tilbake",
@@ -67,8 +68,8 @@
       "display": "Visning",
       "language": "Språk"
     },
+    "data_source": {},
     "relative_dates": "Relative datoer",
-    "relative_dates_description": "Vis \"3 dager siden\" i stedet for fullstendige datoer",
     "include_types": "Inkluder {'@'}types ved installasjon",
     "include_types_description": "Legg til {'@'}types-pakken i installasjonskommandoer for pakker uten typer",
     "hide_platform_packages": "Skjul plattformspesifikke pakker i søk",
@@ -103,8 +104,6 @@
     "copy": "kopier",
     "copied": "kopiert!",
     "skip_link": "Gå til hovedinnhold",
-    "close_modal": "Lukk modal",
-    "show_more": "vis mer",
     "warnings": "Advarsler:",
     "go_back_home": "Gå tilbake til start",
     "view_on_npm": "vis på npm",
@@ -121,7 +120,6 @@
     "not_found": "Pakke ikke funnet",
     "not_found_message": "Pakken kunne ikke finnes.",
     "no_description": "Ingen beskrivelse gitt",
-    "show_full_description": "Vis full beskrivelse",
     "not_latest": "(ikke nyeste)",
     "verified_provenance": "Verifisert opprinnelse",
     "view_permalink": "Vis permalenke for denne versjonen",
@@ -149,7 +147,6 @@
       "vulns": "Sårbarheter",
       "published": "Publisert",
       "published_tooltip": "Dato {package}{'@'}{version} ble publisert",
-      "skills": "Ferdigheter",
       "view_dependency_graph": "Vis avhengighetsgraf",
       "inspect_dependency_tree": "Inspiser avhengighetstre",
       "size_tooltip": {
@@ -160,7 +157,6 @@
     "skills": {
       "title": "Agentferdigheter",
       "skills_available": "{count} ferdighet tilgjengelig | {count} ferdigheter tilgjengelig",
-      "view": "Vis",
       "compatible_with": "Kompatibel med {tool}",
       "install": "Installer",
       "installation_method": "Installasjonsmetode",
@@ -185,6 +181,7 @@
       "fund": "støtt",
       "compare": "sammenlign"
     },
+    "likes": {},
     "docs": {
       "not_available": "Dokumentasjon ikke tilgjengelig",
       "not_available_detail": "Vi kunne ikke generere dokumentasjon for denne versjonen."
@@ -208,8 +205,11 @@
       "title": "Readme",
       "no_readme": "Ingen README tilgjengelig.",
       "view_on_github": "Vis på GitHub",
-      "toc_title": "Innhold"
+      "toc_title": "Innhold",
+      "callout": {}
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Nøkkelord",
     "compatibility": "Kompatibilitet",
     "card": {
@@ -267,13 +267,7 @@
       "show_more": "(vis {count} flere)",
       "show_less": "(vis færre)"
     },
-    "downloads": {
-      "title": "Ukentlige nedlastinger",
-      "date_range": "{start} til {end}",
-      "date_range_multiline": "{start}\ntil {end}",
-      "analyze": "Analyser nedlastinger",
-      "community_distribution": "Vis distribusjon av bruk i fellesskapet",
-      "modal_title": "Nedlastinger",
+    "trends": {
       "granularity": "Oppløsning",
       "granularity_daily": "Daglig",
       "granularity_weekly": "Ukentlig",
@@ -281,11 +275,17 @@
       "granularity_yearly": "Årlig",
       "start_date": "Start",
       "end_date": "Slutt",
-      "no_data": "Ingen nedlastingsdata tilgjengelig",
       "loading": "Laster...",
-      "y_axis_label": "{granularity} nedlastinger",
+      "date_range": "{start} til {end}",
+      "date_range_multiline": "{start}\ntil {end}",
       "download_file": "Last ned {fileType}",
-      "toggle_annotator": "Veksle annotering"
+      "toggle_annotator": "Veksle annotering",
+      "items": {}
+    },
+    "downloads": {
+      "title": "Ukentlige nedlastinger",
+      "analyze": "Analyser nedlastinger",
+      "community_distribution": "Vis distribusjon av bruk i fellesskapet"
     },
     "install_scripts": {
       "title": "Installasjonsskript",
@@ -311,25 +311,12 @@
       "none": "Ingen"
     },
     "vulnerabilities": {
-      "no_description": "Ingen beskrivelse tilgjengelig",
-      "found": "{count} sårbarhet funnet | {count} sårbarheter funnet",
-      "deps_found": "{count} sårbarhet funnet | {count} sårbarheter funnet",
-      "deps_affected": "{count} avhengighet påvirket | {count} avhengigheter påvirket",
       "tree_found": "{vulns} sårbarhet i {packages}/{total} pakker | {vulns} sårbarheter i {packages}/{total} pakker",
-      "scanning_tree": "Skanner avhengighetstre...",
       "show_all_packages": "vis {count} påvirket pakke | vis alle {count} påvirkede pakker",
-      "no_summary": "Ingen oppsummering",
-      "view_details": "Vis sårbarhetsdetaljer",
       "path": "sti",
       "more": "+{count} flere",
       "packages_failed": "{count} pakke kunne ikke sjekkes | {count} pakker kunne ikke sjekkes",
-      "no_known": "Ingen kjente sårbarheter i {count} pakke | Ingen kjente sårbarheter i {count} pakker",
       "scan_failed": "Kunne ikke skanne for sårbarheter",
-      "depth": {
-        "root": "Denne pakken",
-        "direct": "Direkte avhengighet",
-        "transitive": "Transitiv avhengighet (indirekte)"
-      },
       "severity": {
         "critical": "kritisk",
         "high": "høy",
@@ -371,13 +358,6 @@
     },
     "skeleton": {
       "loading": "Laster pakkedetaljer",
-      "license": "Lisens",
-      "weekly": "Ukentlig",
-      "size": "Størrelse",
-      "deps": "Avh.",
-      "published": "Publisert",
-      "get_started": "Kom i gang",
-      "readme": "Readme",
       "maintainers": "Vedlikeholdere",
       "keywords": "Nøkkelord",
       "versions": "Versjoner",
@@ -388,19 +368,10 @@
       "published": "Nylig publisert",
       "name_asc": "Navn (A-Å)",
       "name_desc": "Navn (Å-A)"
-    }
+    },
+    "size": {}
   },
   "connector": {
-    "status": {
-      "connecting": "kobler til...",
-      "connected_as": "koblet til som ~{user}",
-      "connected": "tilkoblet",
-      "connect_cli": "koble til lokal CLI",
-      "aria_connecting": "Kobler til lokal connector",
-      "aria_connected": "Koblet til lokal connector",
-      "aria_click_to_connect": "Klikk for å koble til lokal connector",
-      "avatar_alt": "{user}s avatar"
-    },
     "modal": {
       "title": "Lokal Connector",
       "contributor_badge": "Kun for bidragsytere",
@@ -516,8 +487,7 @@
       "failed_to_load": "Kunne ikke laste organisasjonens pakker",
       "no_match": "Ingen pakker matcher \"{query}\"",
       "not_found": "Organisasjon ikke funnet",
-      "not_found_message": "Organisasjonen \"{'@'}{name}\" finnes ikke på npm",
-      "filter_placeholder": "Filtrer {count} pakke... | Filtrer {count} pakker..."
+      "not_found_message": "Organisasjonen \"{'@'}{name}\" finnes ikke på npm"
     }
   },
   "user": {
@@ -578,7 +548,6 @@
   "code": {
     "files_label": "Filer",
     "no_files": "Ingen filer i denne mappen",
-    "select_version": "Velg versjon",
     "root": "rot",
     "lines": "{count} linje | {count} linjer",
     "toggle_tree": "Veksle filtre",
@@ -588,7 +557,6 @@
     "view_raw": "Vis råfil",
     "file_too_large": "Filen er for stor til å forhåndsvises",
     "file_size_warning": "{size} overstiger grensen på 500KB for syntaksmarkering",
-    "load_anyway": "Last likevel",
     "failed_to_load": "Kunne ikke laste fil",
     "unavailable_hint": "Filen kan være for stor eller utilgjengelig",
     "version_required": "Versjon er påkrevd for å bla i koden",
@@ -613,8 +581,7 @@
       "verified_via": "Verifisert: publisert via {provider}"
     },
     "jsr": {
-      "title": "også tilgjengelig på JSR",
-      "label": "jsr"
+      "title": "også tilgjengelig på JSR"
     }
   },
   "filters": {
@@ -734,7 +701,6 @@
     "title": "Om",
     "heading": "om",
     "meta_description": "npmx er en rask, moderne leser for npm-registeret. En bedre UX/DX for å utforske npm-pakker.",
-    "back_home": "tilbake til start",
     "what_we_are": {
       "title": "Hva vi er",
       "better_ux_dx": "bedre UX/DX",
@@ -794,8 +760,7 @@
     "connect_npm_cli": "Koble til npm CLI",
     "connect_atmosphere": "Koble til Atmosphere",
     "connecting": "Kobler til...",
-    "ops": "{count} op | {count} ops",
-    "disconnect": "Koble fra"
+    "ops": "{count} op | {count} ops"
   },
   "auth": {
     "modal": {
@@ -814,7 +779,6 @@
   },
   "header": {
     "home": "npmx hjem",
-    "github": "GitHub",
     "packages": "pakker",
     "packages_dropdown": {
       "title": "Dine pakker",
@@ -855,10 +819,9 @@
       "searching": "Søker...",
       "remove_package": "Fjern {package}",
       "packages_selected": "{count}/{max} pakker valgt.",
-      "add_hint": "Legg til minst 2 pakker for å sammenligne.",
-      "loading_versions": "Laster versjoner...",
-      "select_version": "Velg versjon"
+      "add_hint": "Legg til minst 2 pakker for å sammenligne."
     },
+    "no_dependency": {},
     "facets": {
       "group_label": "Sammenligningsfasetter",
       "all": "alle",
@@ -896,6 +859,7 @@
           "label": "Nedlastinger/uke",
           "description": "Ukentlig nedlastingstall"
         },
+        "totalLikes": {},
         "lastUpdated": {
           "label": "Publisert",
           "description": "Når denne versjonen ble publisert"
@@ -934,7 +898,22 @@
         "types_included": "Inkludert",
         "types_none": "Ingen",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
-      }
+      },
+      "trends": {}
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

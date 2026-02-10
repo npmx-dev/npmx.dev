@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {
   NpmVersionDist,
+  PackageVersionInfo,
   PackumentVersion,
   ProvenanceDetails,
   ReadmeResponse,
@@ -11,9 +12,8 @@ import { assertValidPackageName } from '#shared/utils/npm'
 import { joinURL } from 'ufo'
 import { areUrlsEquivalent } from '#shared/utils/url'
 import { isEditableElement } from '~/utils/input'
-import { formatBytes } from '~/utils/formatters'
 import { getDependencyCount } from '~/utils/npm/dependency-count'
-import { NuxtLink } from '#components'
+import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-security'
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
@@ -73,7 +73,7 @@ const { copied: copiedReadme, copy: copyReadme } = useClipboard({
 
 // Track active TOC item based on scroll position
 const tocItems = computed(() => readmeData.value?.toc ?? [])
-const { activeId: activeTocId, scrollToHeading } = useActiveTocItem(tocItems)
+const { activeId: activeTocId } = useActiveTocItem(tocItems)
 
 // Check if package exists on JSR (only for scoped packages)
 const { data: jsrInfo } = useLazyFetch<JsrPackageInfo>(() => `/api/jsr/${packageName.value}`, {
@@ -142,8 +142,20 @@ const {
   data: pkg,
   status,
   error,
-} = usePackage(packageName, resolvedVersion.value ?? requestedVersion.value)
+} = usePackage(packageName, () => resolvedVersion.value ?? requestedVersion.value)
 const displayVersion = computed(() => pkg.value?.requestedVersion ?? null)
+const versionSecurityMetadata = computed<PackageVersionInfo[]>(() => {
+  if (!pkg.value) return []
+  if (pkg.value.securityVersions?.length) return pkg.value.securityVersions
+
+  return Object.entries(pkg.value.versions).map(([version, metadata]) => ({
+    version,
+    time: pkg.value?.time?.[version],
+    hasProvenance: !!metadata.hasProvenance,
+    trustLevel: metadata.trustLevel,
+    deprecated: metadata.deprecated,
+  }))
+})
 
 // Process package description
 const pkgDescription = useMarkdown(() => ({
@@ -192,10 +204,7 @@ if (import.meta.client) {
   )
 }
 
-const provenanceBadgeMounted = shallowRef(false)
-onMounted(() => {
-  provenanceBadgeMounted.value = true
-})
+const isMounted = useMounted()
 
 // Keep latestVersion for comparison (to show "(latest)" badge)
 const latestVersion = computed(() => {
@@ -226,17 +235,41 @@ const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
 }))
 
+const publishSecurityDowngrade = computed(() => {
+  const currentVersion = displayVersion.value?.version
+  if (!currentVersion) return null
+  return detectPublishSecurityDowngradeForVersion(versionSecurityMetadata.value, currentVersion)
+})
+
+const installVersionOverride = computed(
+  () => publishSecurityDowngrade.value?.trustedVersion ?? null,
+)
+
+const downgradeFallbackInstallText = computed(() => {
+  const d = publishSecurityDowngrade.value
+  if (!d?.trustedVersion) return null
+  if (d.trustedTrustLevel === 'provenance')
+    return $t('package.security_downgrade.fallback_install_provenance', {
+      version: d.trustedVersion,
+    })
+  if (d.trustedTrustLevel === 'trustedPublisher')
+    return $t('package.security_downgrade.fallback_install_trustedPublisher', {
+      version: d.trustedVersion,
+    })
+  return null
+})
+
 const sizeTooltip = computed(() => {
   const chunks = [
     displayVersion.value &&
       displayVersion.value.dist.unpackedSize &&
       $t('package.stats.size_tooltip.unpacked', {
-        size: formatBytes(displayVersion.value.dist.unpackedSize),
+        size: bytesFormatter.format(displayVersion.value.dist.unpackedSize),
       }),
     installSize.value &&
       installSize.value.dependencyCount &&
       $t('package.stats.size_tooltip.total', {
-        size: formatBytes(installSize.value.totalSize),
+        size: bytesFormatter.format(installSize.value.totalSize),
         count: installSize.value.dependencyCount,
       }),
   ]
@@ -263,7 +296,7 @@ const hasVulnerabilities = computed(() => vulnCount.value > 0)
 // Subtract 1 to exclude the root package itself
 const totalDepsCount = computed(() => {
   if (vulnTree.value) {
-    return vulnTree.value.totalPackages - 1
+    return vulnTree.value.totalPackages ? vulnTree.value.totalPackages - 1 : 0
   }
   if (installSize.value) {
     return installSize.value.dependencyCount
@@ -413,10 +446,10 @@ const { data: likesData, status: likeStatus } = useFetch(
   },
 )
 const isLoadingLikeData = computed(
-  () => likeStatus.value !== 'error' && likeStatus.value !== 'success',
+  () => likeStatus.value === 'pending' || likeStatus.value === 'idle',
 )
 
-const isLikeActionPending = ref(false)
+const isLikeActionPending = shallowRef(false)
 
 const likeAction = async () => {
   if (user.value?.handle == null) {
@@ -461,6 +494,10 @@ const likeAction = async () => {
     isLikeActionPending.value = false
   }
 }
+
+const numberFormatter = useNumberFormatter()
+const compactNumberFormatter = useCompactNumberFormatter()
+const bytesFormatter = useBytesFormatter()
 
 useHead({
   link: [{ rel: 'canonical', href: canonicalUrl }],
@@ -514,28 +551,24 @@ onKeyStroke(
   <main class="container flex-1 w-full py-8">
     <PackageSkeleton v-if="status === 'pending'" />
 
-    <article v-else-if="status === 'success' && pkg" class="package-page">
+    <article v-else-if="status === 'success' && pkg" :class="$style.packagePage">
       <!-- Package header -->
       <header
-        class="area-header sticky top-14 z-1 bg-[--bg] py-2 border-border"
+        class="sticky top-14 z-1 bg-[--bg] py-2 border-border"
         ref="header"
-        :class="{ 'border-b': isHeaderPinned }"
+        :class="[$style.areaHeader, { 'border-b': isHeaderPinned }]"
       >
         <!-- Package name and version -->
-        <div class="flex items-baseline gap-2 sm:gap-3 flex-wrap min-w-0">
+        <div class="flex items-baseline gap-x-2 gap-y-1 sm:gap-x-3 flex-wrap min-w-0">
           <div class="group relative flex flex-col items-start min-w-0">
             <h1
               class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
               :title="pkg.name"
               dir="ltr"
             >
-              <NuxtLink
-                v-if="orgName"
-                :to="{ name: 'org', params: { org: orgName } }"
-                class="text-fg-muted hover:text-fg transition-colors duration-200"
-              >
+              <LinkBase v-if="orgName" :to="{ name: 'org', params: { org: orgName } }">
                 @{{ orgName }}
-              </NuxtLink>
+              </LinkBase>
               <span v-if="orgName">/</span>
               <span :class="{ 'text-fg-muted': orgName }">
                 {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
@@ -546,10 +579,11 @@ onKeyStroke(
             <button
               type="button"
               @click="copyPkgName()"
-              class="copy-button absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
-              :class="
-                copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border'
-              "
+              class="absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
+              :class="[
+                $style.copyButton,
+                copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border',
+              ]"
               :aria-label="copiedPkgName ? $t('common.copied') : $t('package.copy_name')"
             >
               <span
@@ -570,16 +604,16 @@ onKeyStroke(
               <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
             </template>
 
-            <NuxtLink
+            <LinkBase
               v-if="requestedVersion && resolvedVersion !== requestedVersion"
               :to="packageRoute(pkg.name, resolvedVersion)"
               :title="$t('package.view_permalink')"
               dir="ltr"
-              >{{ resolvedVersion }}</NuxtLink
+              >{{ resolvedVersion }}</LinkBase
             >
             <span dir="ltr" v-else>v{{ resolvedVersion }}</span>
 
-            <template v-if="hasProvenance(displayVersion) && provenanceBadgeMounted">
+            <template v-if="hasProvenance(displayVersion)">
               <TooltipApp
                 :text="
                   provenanceData && provenanceStatus !== 'pending'
@@ -589,14 +623,15 @@ onKeyStroke(
                     : $t('package.verified_provenance')
                 "
                 position="bottom"
+                strategy="fixed"
               >
-                <a
-                  href="#provenance"
+                <LinkBase
+                  variant="button-secondary"
+                  size="small"
+                  to="#provenance"
                   :aria-label="$t('package.provenance_section.view_more_details')"
-                  class="inline-flex items-center justify-center gap-1.5 text-fg-muted hover:text-emerald-500 transition-colors duration-200 min-w-6 min-h-6"
-                >
-                  <span class="i-lucide-shield-check w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-                </a>
+                  classicon="i-lucide-shield-check"
+                />
               </TooltipApp>
             </template>
             <span
@@ -606,131 +641,99 @@ onKeyStroke(
             >
           </span>
 
-          <!-- Package metrics (module format, types) -->
-          <div class="flex gap-2 sm:gap-3 flex-wrap">
-            <ClientOnly>
-              <PackageMetricsBadges
-                v-if="resolvedVersion"
-                :package-name="pkg.name"
-                :version="resolvedVersion"
-                :is-binary="isBinaryOnly"
-                class="self-baseline ms-1 sm:ms-2"
-              />
+          <!-- Docs + Code + Compare — inline on desktop, floating bottom bar on mobile -->
+          <ButtonGroup
+            v-if="resolvedVersion"
+            as="nav"
+            :aria-label="$t('package.navigation')"
+            class="hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-1/2 max-sm:-translate-x-1/2 max-sm:rtl:translate-x-1/2 max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
+            :class="$style.packageNav"
+          >
+            <LinkBase
+              variant="button-secondary"
+              v-if="docsLink"
+              :to="docsLink"
+              aria-keyshortcuts="d"
+              classicon="i-carbon:document"
+            >
+              {{ $t('package.links.docs') }}
+            </LinkBase>
+            <LinkBase
+              variant="button-secondary"
+              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
+              aria-keyshortcuts="."
+              classicon="i-carbon:code"
+            >
+              {{ $t('package.links.code') }}
+            </LinkBase>
+            <LinkBase
+              variant="button-secondary"
+              :to="{ name: 'compare', query: { packages: pkg.name } }"
+              aria-keyshortcuts="c"
+              classicon="i-carbon:compare"
+            >
+              {{ $t('package.links.compare') }}
+            </LinkBase>
+          </ButtonGroup>
 
-              <!-- Package likes -->
-              <TooltipApp
-                :text="
-                  isLoadingLikeData
-                    ? $t('common.loading')
-                    : likesData?.userHasLiked
-                      ? $t('package.likes.unlike')
-                      : $t('package.likes.like')
+          <!-- Package metrics -->
+          <div class="basis-full flex gap-2 sm:gap-3 flex-wrap items-stretch">
+            <PackageMetricsBadges
+              v-if="resolvedVersion"
+              :package-name="pkg.name"
+              :version="resolvedVersion"
+              :is-binary="isBinaryOnly"
+              class="self-baseline"
+            />
+
+            <!-- Package likes -->
+            <TooltipApp
+              :text="
+                isLoadingLikeData
+                  ? $t('common.loading')
+                  : likesData?.userHasLiked
+                    ? $t('package.likes.unlike')
+                    : $t('package.likes.like')
+              "
+              position="bottom"
+              class="items-center"
+              strategy="fixed"
+            >
+              <ButtonBase
+                @click="likeAction"
+                size="small"
+                :title="
+                  likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
                 "
-                position="bottom"
-                class="items-center"
+                :aria-label="
+                  likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
+                "
+                :aria-pressed="likesData?.userHasLiked"
+                :classicon="
+                  likesData?.userHasLiked
+                    ? 'i-lucide-heart-minus text-red-500'
+                    : 'i-lucide-heart-plus'
+                "
               >
                 <span
                   v-if="isLoadingLikeData"
-                  class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin"
+                  class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin my-0.5"
                   aria-hidden="true"
                 />
-                <button
-                  v-else
-                  @click="likeAction"
-                  type="button"
-                  :title="
-                    likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
-                  "
-                  class="inline-flex items-center gap-1.5 font-mono text-sm text-fg hover:text-fg-muted transition-colors duration-200"
-                  :aria-label="
-                    likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')
-                  "
-                >
-                  <span
-                    :class="
-                      likesData?.userHasLiked
-                        ? 'i-lucide-heart-minus text-red-500'
-                        : 'i-lucide-heart-plus'
-                    "
-                    class="w-4 h-4"
-                    aria-hidden="true"
-                  />
-                  <span>{{
-                    formatCompactNumber(likesData?.totalLikes ?? 0, { decimals: 1 })
-                  }}</span>
-                </button>
-              </TooltipApp>
-              <template #fallback>
-                <div
-                  class="flex items-center gap-1.5 list-none m-0 p-0 relative top-[5px] self-baseline ms-1 sm:ms-2"
-                >
-                  <SkeletonBlock class="w-16 h-5.5 rounded" />
-                  <SkeletonBlock class="w-13 h-5.5 rounded" />
-                  <SkeletonBlock class="w-13 h-5.5 rounded" />
-                  <SkeletonBlock class="w-13 h-5.5 rounded bg-bg-subtle" />
-                </div>
-              </template>
-            </ClientOnly>
+                <span v-else>
+                  {{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}
+                </span>
+              </ButtonBase>
+            </TooltipApp>
           </div>
-
-          <!-- Internal navigation: Docs + Code + Compare (hidden on mobile, shown in external links instead) -->
-          <nav
-            v-if="resolvedVersion"
-            :aria-label="$t('package.navigation')"
-            class="hidden sm:flex items-center gap-0.5 p-0.5 bg-bg-subtle border border-border-subtle rounded-md shrink-0 ms-auto self-center"
-          >
-            <NuxtLink
-              v-if="docsLink"
-              :to="docsLink"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
-              aria-keyshortcuts="d"
-            >
-              <span class="i-carbon:document w-3 h-3" aria-hidden="true" />
-              {{ $t('package.links.docs') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                aria-hidden="true"
-              >
-                d
-              </kbd>
-            </NuxtLink>
-            <NuxtLink
-              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
-              aria-keyshortcuts="."
-            >
-              <span class="i-carbon:code w-3 h-3" aria-hidden="true" />
-              {{ $t('package.links.code') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                aria-hidden="true"
-              >
-                .
-              </kbd>
-            </NuxtLink>
-            <NuxtLink
-              :to="{ name: 'compare', query: { packages: pkg.name } }"
-              class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 border border-transparent text-fg-subtle hover:text-fg hover:bg-bg hover:shadow hover:border-border inline-flex items-center gap-1.5"
-              aria-keyshortcuts="c"
-            >
-              <span class="i-carbon:compare w-3 h-3" aria-hidden="true" />
-              {{ $t('package.links.compare') }}
-              <kbd
-                class="inline-flex items-center justify-center w-4 h-4 text-xs bg-bg-muted border border-border rounded"
-                aria-hidden="true"
-              >
-                c
-              </kbd>
-            </NuxtLink>
-          </nav>
         </div>
       </header>
 
       <!-- Package details -->
-      <section class="area-details">
+      <section :class="$style.areaDetails">
         <div class="mb-4">
           <!-- Description container with min-height to prevent CLS -->
-          <div class="max-w-2xl min-h-[4.5rem]">
+          <div class="max-w-2xl">
             <p v-if="pkgDescription" class="text-fg-muted text-base m-0">
               <span v-html="pkgDescription" />
             </p>
@@ -740,127 +743,60 @@ onKeyStroke(
           </div>
 
           <!-- External links -->
-          <ul class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3">
+          <ul
+            class="flex flex-wrap items-center gap-x-3 gap-y-1.5 sm:gap-4 list-none m-0 p-0 mt-3 text-sm"
+          >
             <li v-if="repositoryUrl">
-              <a
-                :href="repositoryUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="w-4 h-4" :class="repoProviderIcon" aria-hidden="true" />
+              <LinkBase :to="repositoryUrl" :classicon="repoProviderIcon">
                 <span v-if="repoRef">
                   {{ repoRef.owner }}<span class="opacity-50">/</span>{{ repoRef.repo }}
                 </span>
                 <span v-else>{{ $t('package.links.repo') }}</span>
-              </a>
+              </LinkBase>
             </li>
             <li v-if="repositoryUrl && repoMeta && starsLink">
-              <a
-                :href="starsLink"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="w-4 h-4 i-carbon:star" aria-hidden="true" />
-                {{ formatCompactNumber(stars, { decimals: 1 }) }}
-              </a>
+              <LinkBase :to="starsLink" classicon="i-carbon:star">
+                {{ compactNumberFormatter.format(stars) }}
+              </LinkBase>
             </li>
             <li v-if="forks && forksLink">
-              <a
-                :href="forksLink"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:fork w-4 h-4" aria-hidden="true" />
-                {{ formatCompactNumber(forks, { decimals: 1 }) }}
-              </a>
+              <LinkBase :to="forksLink" classicon="i-carbon:fork">
+                {{ compactNumberFormatter.format(forks) }}
+              </LinkBase>
             </li>
+            <li class="basis-full sm:hidden" />
             <li v-if="homepageUrl">
-              <a
-                :href="homepageUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:link w-4 h-4" aria-hidden="true" />
+              <LinkBase :to="homepageUrl" classicon="i-carbon:link">
                 {{ $t('package.links.homepage') }}
-              </a>
+              </LinkBase>
             </li>
             <li v-if="displayVersion?.bugs?.url">
-              <a
-                :href="displayVersion.bugs.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:warning w-4 h-4" aria-hidden="true" />
+              <LinkBase :to="displayVersion.bugs.url" classicon="i-carbon:warning">
                 {{ $t('package.links.issues') }}
-              </a>
+              </LinkBase>
             </li>
             <li>
-              <a
-                :href="`https://www.npmjs.com/package/${pkg.name}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              <LinkBase
+                :to="`https://www.npmjs.com/package/${pkg.name}`"
                 :title="$t('common.view_on_npm')"
+                classicon="i-carbon:logo-npm"
               >
-                <span class="i-carbon:logo-npm w-4 h-4" aria-hidden="true" />
                 npm
-              </a>
+              </LinkBase>
             </li>
             <li v-if="jsrInfo?.exists && jsrInfo.url">
-              <a
-                :href="jsrInfo.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+              <LinkBase
+                :to="jsrInfo.url"
                 :title="$t('badges.jsr.title')"
+                classicon="i-simple-icons:jsr"
               >
-                <span class="i-simple-icons:jsr w-4 h-4" aria-hidden="true" />
                 {{ $t('package.links.jsr') }}
-              </a>
+              </LinkBase>
             </li>
             <li v-if="fundingUrl">
-              <a
-                :href="fundingUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:favorite w-4 h-4" aria-hidden="true" />
+              <LinkBase :to="fundingUrl" classicon="i-carbon:favorite">
                 {{ $t('package.links.fund') }}
-              </a>
-            </li>
-            <!-- Mobile-only: Docs + Code + Compare links -->
-            <li v-if="docsLink && displayVersion" class="sm:hidden">
-              <NuxtLink
-                :to="docsLink"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:document w-4 h-4" aria-hidden="true" />
-                {{ $t('package.links.docs') }}
-              </NuxtLink>
-            </li>
-            <li v-if="resolvedVersion" class="sm:hidden">
-              <NuxtLink
-                :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:code w-4 h-4" aria-hidden="true" />
-                {{ $t('package.links.code') }}
-              </NuxtLink>
-            </li>
-            <li class="sm:hidden">
-              <NuxtLink
-                :to="{ name: 'compare', query: { packages: pkg.name } }"
-                class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
-              >
-                <span class="i-carbon:compare w-4 h-4" aria-hidden="true" />
-                {{ $t('package.links.compare') }}
-              </NuxtLink>
+              </LinkBase>
             </li>
           </ul>
         </div>
@@ -903,56 +839,60 @@ onKeyStroke(
               {{ $t('package.stats.deps') }}
             </dt>
             <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
-              <!-- Direct deps (muted) -->
-              <span class="text-fg-muted">{{ getDependencyCount(displayVersion) }}</span>
+              <span class="flex items-center gap-1">
+                <!-- Direct deps (muted) -->
+                <span class="text-fg-muted">{{
+                  numberFormatter.format(getDependencyCount(displayVersion))
+                }}</span>
 
-              <!-- Separator and total transitive deps -->
-              <template v-if="getDependencyCount(displayVersion) !== totalDepsCount">
-                <span class="text-fg-subtle mx-1">/</span>
+                <!-- Separator and total transitive deps -->
+                <template v-if="getDependencyCount(displayVersion) !== totalDepsCount">
+                  <span class="text-fg-subtle">/</span>
 
-                <ClientOnly>
-                  <span
-                    v-if="
-                      vulnTreeStatus === 'pending' || (installSizeStatus === 'pending' && !vulnTree)
-                    "
-                    class="inline-flex items-center gap-1 text-fg-subtle"
-                  >
+                  <ClientOnly>
                     <span
-                      class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                      aria-hidden="true"
-                    />
-                  </span>
-                  <span v-else-if="totalDepsCount !== null">{{ totalDepsCount }}</span>
-                  <span v-else class="text-fg-subtle">-</span>
-                  <template #fallback>
-                    <span class="text-fg-subtle">-</span>
-                  </template>
-                </ClientOnly>
-              </template>
+                      v-if="
+                        vulnTreeStatus === 'pending' ||
+                        (installSizeStatus === 'pending' && !vulnTree)
+                      "
+                      class="inline-flex items-center gap-1 text-fg-subtle"
+                    >
+                      <span
+                        class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
+                        aria-hidden="true"
+                      />
+                    </span>
+                    <span v-else-if="totalDepsCount !== null">{{
+                      numberFormatter.format(totalDepsCount)
+                    }}</span>
+                    <span v-else class="text-fg-subtle">-</span>
+                    <template #fallback>
+                      <span class="text-fg-subtle">-</span>
+                    </template>
+                  </ClientOnly>
+                </template>
+              </span>
+              <ButtonGroup v-if="getDependencyCount(displayVersion) > 0">
+                <LinkBase
+                  variant="button-secondary"
+                  size="small"
+                  :to="`https://npmgraph.js.org/?q=${pkg.name}`"
+                  :title="$t('package.stats.view_dependency_graph')"
+                  classicon="i-carbon:network-3"
+                >
+                  <span class="sr-only">{{ $t('package.stats.view_dependency_graph') }}</span>
+                </LinkBase>
 
-              <a
-                v-if="getDependencyCount(displayVersion) > 0"
-                :href="`https://npmgraph.js.org/?q=${pkg.name}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
-                :title="$t('package.stats.view_dependency_graph')"
-              >
-                <span class="i-carbon:network-3 w-3.5 h-3.5" aria-hidden="true" />
-                <span class="sr-only">{{ $t('package.stats.view_dependency_graph') }}</span>
-              </a>
-
-              <a
-                v-if="getDependencyCount(displayVersion) > 0"
-                :href="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
-                :title="$t('package.stats.inspect_dependency_tree')"
-              >
-                <span class="i-lucide-view w-3.5 h-3.5" aria-hidden="true" />
-                <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
-              </a>
+                <LinkBase
+                  variant="button-secondary"
+                  size="small"
+                  :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
+                  :title="$t('package.stats.inspect_dependency_tree')"
+                  classicon="i-carbon:tree-view"
+                >
+                  <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
+                </LinkBase>
+              </ButtonGroup>
             </dd>
           </div>
 
@@ -972,7 +912,7 @@ onKeyStroke(
               <!-- Package size (greyed out) -->
               <span class="text-fg-muted" dir="ltr">
                 <span v-if="displayVersion?.dist?.unpackedSize">
-                  {{ formatBytes(displayVersion.dist.unpackedSize) }}
+                  {{ bytesFormatter.format(displayVersion.dist.unpackedSize) }}
                 </span>
                 <span v-else>-</span>
               </span>
@@ -991,7 +931,7 @@ onKeyStroke(
                   />
                 </span>
                 <span v-else-if="installSize?.totalSize" dir="ltr">
-                  {{ formatBytes(installSize.totalSize) }}
+                  {{ bytesFormatter.format(installSize.totalSize) }}
                 </span>
                 <span v-else class="text-fg-subtle">-</span>
               </template>
@@ -999,40 +939,32 @@ onKeyStroke(
           </div>
 
           <!-- Vulnerabilities count -->
-          <ClientOnly>
-            <div class="space-y-1 sm:col-span-2">
-              <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-                {{ $t('package.stats.vulns') }}
-              </dt>
-              <dd class="font-mono text-sm text-fg">
+          <div class="space-y-1 sm:col-span-2">
+            <dt class="text-xs text-fg-subtle uppercase tracking-wider">
+              {{ $t('package.stats.vulns') }}
+            </dt>
+            <dd class="font-mono text-sm text-fg">
+              <span
+                v-if="vulnTreeStatus === 'pending' || vulnTreeStatus === 'idle'"
+                class="inline-flex items-center gap-1 text-fg-subtle"
+              >
                 <span
-                  v-if="vulnTreeStatus === 'pending' || vulnTreeStatus === 'idle'"
-                  class="inline-flex items-center gap-1 text-fg-subtle"
-                >
-                  <span
-                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                    aria-hidden="true"
-                  />
+                  class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
+                  aria-hidden="true"
+                />
+              </span>
+              <span v-else-if="vulnTreeStatus === 'success'">
+                <span v-if="hasVulnerabilities" class="text-amber-500">
+                  {{ numberFormatter.format(vulnCount) }}
                 </span>
-                <span v-else-if="vulnTreeStatus === 'success'">
-                  <span v-if="hasVulnerabilities" class="text-amber-500">{{ vulnCount }}</span>
-                  <span v-else class="inline-flex items-center gap-1 text-fg-muted">
-                    <span class="i-carbon:checkmark w-3 h-3" aria-hidden="true" />
-                    0
-                  </span>
+                <span v-else class="inline-flex items-center gap-1 text-fg-muted">
+                  <span class="i-carbon:checkmark w-3 h-3" aria-hidden="true" />
+                  {{ numberFormatter.format(0) }}
                 </span>
-                <span v-else class="text-fg-subtle">-</span>
-              </dd>
-            </div>
-            <template #fallback>
-              <div class="space-y-1 sm:col-span-2">
-                <dt class="text-xs text-fg-subtle uppercase tracking-wider">
-                  {{ $t('package.stats.vulns') }}
-                </dt>
-                <dd class="font-mono text-sm text-fg-subtle">-</dd>
-              </div>
-            </template>
-          </ClientOnly>
+              </span>
+              <span v-else class="text-fg-subtle">-</span>
+            </dd>
+          </div>
 
           <div
             v-if="resolvedVersion && pkg.time?.[resolvedVersion]"
@@ -1066,7 +998,7 @@ onKeyStroke(
       </section>
 
       <!-- Binary-only packages: Show only execute command (no install) -->
-      <section v-if="isBinaryOnly" class="area-install scroll-mt-20">
+      <section v-if="isBinaryOnly" class="scroll-mt-20" :class="$style.areaInstall">
         <div class="flex flex-wrap items-center justify-between mb-3">
           <h2 id="run-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             {{ $t('package.run.title') }}
@@ -1088,22 +1020,15 @@ onKeyStroke(
       </section>
 
       <!-- Regular packages: Install command with optional run command -->
-      <section v-else id="get-started" class="area-install scroll-mt-20">
+      <section v-else id="get-started" class="scroll-mt-20" :class="$style.areaInstall">
         <div class="flex flex-wrap items-center justify-between mb-3">
           <h2
             id="get-started-heading"
             class="group text-xs text-fg-subtle uppercase tracking-wider"
           >
-            <a
-              href="#get-started"
-              class="inline-flex items-center gap-1.5 py-1 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline"
-            >
+            <LinkBase to="#get-started">
               {{ $t('package.get_started.title') }}
-              <span
-                class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                aria-hidden="true"
-              />
-            </a>
+            </LinkBase>
           </h2>
           <!-- Package manager dropdown -->
           <PackageManagerSelect />
@@ -1113,9 +1038,96 @@ onKeyStroke(
           :id="`pm-panel-${activePmId}`"
           :aria-labelledby="`pm-tab-${activePmId}`"
         >
+          <div
+            v-if="publishSecurityDowngrade"
+            role="alert"
+            class="mb-4 rounded-lg border border-amber-600/40 bg-amber-500/10 px-4 py-3 text-amber-700 dark:text-amber-400"
+          >
+            <h3 class="m-0 flex items-center gap-2 font-mono text-sm font-medium">
+              <span class="i-carbon:warning-alt w-4 h-4 shrink-0" aria-hidden="true" />
+              {{ $t('package.security_downgrade.title') }}
+            </h3>
+            <p class="mt-2 mb-0 text-sm">
+              <i18n-t
+                v-if="
+                  publishSecurityDowngrade.downgradedTrustLevel === 'none' &&
+                  publishSecurityDowngrade.trustedTrustLevel === 'provenance'
+                "
+                keypath="package.security_downgrade.description_to_none_provenance"
+                tag="span"
+                scope="global"
+              >
+                <template #provenance>
+                  <a
+                    href="https://docs.npmjs.com/generating-provenance-statements"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    >{{ $t('package.security_downgrade.provenance_link_text')
+                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                  /></a>
+                </template>
+              </i18n-t>
+              <i18n-t
+                v-else-if="
+                  publishSecurityDowngrade.downgradedTrustLevel === 'none' &&
+                  publishSecurityDowngrade.trustedTrustLevel === 'trustedPublisher'
+                "
+                keypath="package.security_downgrade.description_to_none_trustedPublisher"
+                tag="span"
+                scope="global"
+              >
+                <template #trustedPublishing>
+                  <a
+                    href="https://docs.npmjs.com/trusted-publishers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    >{{ $t('package.security_downgrade.trusted_publishing_link_text')
+                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                  /></a>
+                </template>
+              </i18n-t>
+              <i18n-t
+                v-else-if="
+                  publishSecurityDowngrade.downgradedTrustLevel === 'provenance' &&
+                  publishSecurityDowngrade.trustedTrustLevel === 'trustedPublisher'
+                "
+                keypath="package.security_downgrade.description_to_provenance_trustedPublisher"
+                tag="span"
+                scope="global"
+              >
+                <template #provenance>
+                  <a
+                    href="https://docs.npmjs.com/generating-provenance-statements"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    >{{ $t('package.security_downgrade.provenance_link_text')
+                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                  /></a>
+                </template>
+                <template #trustedPublishing>
+                  <a
+                    href="https://docs.npmjs.com/trusted-publishers"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    >{{ $t('package.security_downgrade.trusted_publishing_link_text')
+                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                  /></a>
+                </template>
+              </i18n-t>
+              {{ ' ' }}
+              <template v-if="downgradeFallbackInstallText">
+                {{ downgradeFallbackInstallText }}
+              </template>
+            </p>
+          </div>
           <TerminalInstall
             :package-name="pkg.name"
             :requested-version="requestedVersion"
+            :install-version-override="installVersionOverride"
             :jsr-info="jsrInfo"
             :types-package-name="typesPackageName"
             :executable-info="executableInfo"
@@ -1124,7 +1136,7 @@ onKeyStroke(
         </div>
       </section>
 
-      <div class="area-vulns space-y-6">
+      <div class="space-y-6" :class="$style.areaVulns">
         <!-- Bad package warning -->
         <PackageReplacement v-if="moduleReplacement" :replacement="moduleReplacement" />
         <!-- Vulnerability scan -->
@@ -1144,55 +1156,37 @@ onKeyStroke(
       </div>
 
       <!-- README -->
-      <section id="readme" class="area-readme min-w-0 scroll-mt-20">
+      <section id="readme" class="min-w-0 scroll-mt-20" :class="$style.areaReadme">
         <div class="flex flex-wrap items-center justify-between mb-3 px-1">
           <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
-            <a
-              href="#readme"
-              class="inline-flex items-center gap-1.5 text-fg-subtle hover:text-fg-muted transition-colors duration-200 no-underline mt-1"
-            >
+            <LinkBase to="#readme">
               {{ $t('package.readme.title') }}
-              <span
-                class="i-carbon:link w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                aria-hidden="true"
-              />
-            </a>
+            </LinkBase>
           </h2>
-          <ClientOnly>
-            <div class="flex items-center gap-2">
-              <!-- Copy readme as Markdown button -->
-              <TooltipApp
-                v-if="readmeData?.md"
-                :text="$t('package.readme.copy_as_markdown')"
-                position="bottom"
+          <div class="flex gap-2">
+            <!-- Copy readme as Markdown button -->
+            <TooltipApp
+              v-if="readmeData?.md"
+              :text="$t('package.readme.copy_as_markdown')"
+              position="bottom"
+            >
+              <ButtonBase
+                @click="copyReadme()"
+                :aria-pressed="copiedReadme"
+                :aria-label="
+                  copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
+                "
+                :classicon="copiedReadme ? 'i-carbon:checkmark' : 'i-simple-icons:markdown'"
               >
-                <button
-                  type="button"
-                  @click="copyReadme()"
-                  class="px-2 py-1.5 font-mono text-xs rounded transition-colors duration-150 inline-flex items-center gap-1.5"
-                  :class="
-                    copiedReadme ? 'text-accent bg-accent/10' : 'text-fg-subtle bg-bg hover:text-fg'
-                  "
-                  :aria-label="
-                    copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
-                  "
-                >
-                  <span
-                    :class="copiedReadme ? 'i-carbon:checkmark' : 'i-simple-icons:markdown'"
-                    class="size-3"
-                    aria-hidden="true"
-                  />
-                  {{ copiedReadme ? $t('common.copied') : $t('common.copy') }}
-                </button>
-              </TooltipApp>
-              <ReadmeTocDropdown
-                v-if="readmeData?.toc && readmeData.toc.length > 1"
-                :toc="readmeData.toc"
-                :active-id="activeTocId"
-                :scroll-to-heading="scrollToHeading"
-              />
-            </div>
-          </ClientOnly>
+                {{ copiedReadme ? $t('common.copied') : $t('common.copy') }}
+              </ButtonBase>
+            </TooltipApp>
+            <ReadmeTocDropdown
+              v-if="readmeData?.toc && readmeData.toc.length > 1"
+              :toc="readmeData.toc"
+              :active-id="activeTocId"
+            />
+          </div>
         </div>
 
         <!-- eslint-disable vue/no-v-html -- HTML is sanitized server-side -->
@@ -1210,7 +1204,7 @@ onKeyStroke(
         </p>
 
         <section
-          v-if="hasProvenance(displayVersion) && provenanceBadgeMounted"
+          v-if="hasProvenance(displayVersion) && isMounted"
           id="provenance"
           class="scroll-mt-20"
         >
@@ -1239,14 +1233,15 @@ onKeyStroke(
           </div>
         </section>
       </section>
-      <div class="area-sidebar">
-        <!-- Sidebar -->
-        <div
-          class="sidebar-scroll sticky top-34 space-y-6 sm:space-y-8 min-w-0 overflow-y-auto pe-2.5 lg:(max-h-[calc(100dvh-8.5rem)] overscroll-contain) xl:(top-22 pt-2 max-h-[calc(100dvh-6rem)])"
-        >
+
+      <PackageSidebar :class="$style.areaSidebar">
+        <div class="flex flex-col gap-4 sm:gap-6 xl:(pt-2)">
           <!-- Team access controls (for scoped packages when connected) -->
           <ClientOnly>
             <PackageAccessControls :package-name="pkg.name" />
+            <template #fallback>
+              <!-- Show skeleton loaders when SSR or access controls are loading -->
+            </template>
           </ClientOnly>
 
           <!-- Agent Skills -->
@@ -1257,6 +1252,9 @@ onKeyStroke(
               :package-name="pkg.name"
               :version="resolvedVersion || undefined"
             />
+            <template #fallback>
+              <!-- Show skeleton loaders when SSR or access controls are loading -->
+            </template>
           </ClientOnly>
 
           <!-- Download stats -->
@@ -1284,6 +1282,7 @@ onKeyStroke(
           <PackageInstallScripts
             v-if="displayVersion?.installScripts"
             :package-name="pkg.name"
+            :version="displayVersion.version"
             :install-scripts="displayVersion.installScripts"
           />
 
@@ -1304,7 +1303,7 @@ onKeyStroke(
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
         </div>
-      </div>
+      </PackageSidebar>
     </article>
 
     <!-- Error state -->
@@ -1319,15 +1318,20 @@ onKeyStroke(
       <p class="text-fg-muted mb-8">
         {{ error?.message ?? $t('package.not_found_message') }}
       </p>
-      <NuxtLink :to="{ name: 'index' }" class="btn">{{ $t('common.go_back_home') }}</NuxtLink>
+      <LinkBase variant="button-secondary" :to="{ name: 'index' }">{{
+        $t('common.go_back_home')
+      }}</LinkBase>
     </div>
   </main>
 </template>
 
-<style scoped>
-.package-page {
+<style module>
+.packagePage {
   display: grid;
   gap: 2rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 
   /* Mobile: single column, sidebar above readme */
   grid-template-columns: minmax(0, 1fr);
@@ -1342,7 +1346,7 @@ onKeyStroke(
 
 /* Tablet/medium: header/install/vulns full width, readme+sidebar side by side */
 @media (min-width: 1024px) {
-  .package-page {
+  .packagePage {
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
       'header  header'
@@ -1356,7 +1360,7 @@ onKeyStroke(
 
 /* Desktop: floating sidebar alongside all content */
 @media (min-width: 1280px) {
-  .package-page {
+  .packagePage {
     grid-template-columns: 1fr 20rem;
     grid-template-areas:
       'header  sidebar'
@@ -1367,100 +1371,61 @@ onKeyStroke(
   }
 }
 
-.area-header {
+/* Ensure all children respect max-width */
+.packagePage > * {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.areaHeader {
   grid-area: header;
 }
 
-.area-details {
-  grid-area: details;
-}
-
-.area-install {
-  grid-area: install;
-}
-
-.area-vulns {
-  grid-area: vulns;
-  overflow-x: hidden;
-}
-
-.area-readme {
-  grid-area: readme;
-  overflow-x: hidden;
-}
-
-.area-sidebar {
-  grid-area: sidebar;
-}
-
-/* Sidebar scrollbar: hidden by default, shown on hover/focus */
-@media (min-width: 1024px) {
-  .sidebar-scroll {
-    scrollbar-gutter: stable;
-    scrollbar-width: 8px;
-    scrollbar-color: transparent transparent;
-  }
-
-  .sidebar-scroll::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  .sidebar-scroll::-webkit-scrollbar-track,
-  .sidebar-scroll::-webkit-scrollbar-thumb {
-    background: transparent;
-  }
-
-  .sidebar-scroll:hover,
-  .sidebar-scroll:focus-within {
-    scrollbar-color: var(--border) transparent;
-  }
-
-  .sidebar-scroll:hover::-webkit-scrollbar-thumb,
-  .sidebar-scroll:focus-within::-webkit-scrollbar-thumb {
-    background-color: var(--border);
-    border-radius: 9999px;
-  }
-
-  .sidebar-scroll:hover::-webkit-scrollbar-track,
-  .sidebar-scroll:focus-within::-webkit-scrollbar-track {
-    background: transparent;
-  }
-}
-
 /* Improve package name wrapping for narrow screens */
-.area-header h1 {
+.areaHeader h1 {
   overflow-wrap: anywhere;
 }
 
 /* Ensure description text wraps properly */
-.area-header p {
+.areaHeader p {
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
 }
 
+.areaDetails {
+  grid-area: details;
+}
+
+.areaInstall {
+  grid-area: install;
+}
+
 /* Allow install command text to break on narrow screens */
-.area-install code {
+.areaInstall code {
   word-break: break-word;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
 
-/* Ensure all text content wraps on narrow screens */
-.package-page {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
+.areaVulns {
+  grid-area: vulns;
+  overflow-x: hidden;
 }
 
-/* Ensure all children respect max-width */
-.package-page > * {
-  max-width: 100%;
-  min-width: 0;
+.areaReadme {
+  grid-area: readme;
 }
 
-.copy-button {
+.areaReadme > :global(.readme) {
+  overflow-x: hidden;
+}
+
+.areaSidebar {
+  grid-area: sidebar;
+}
+
+.copyButton {
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
@@ -1475,8 +1440,8 @@ onKeyStroke(
     width 0.01s 0.34s allow-discrete;
 }
 
-.group:hover .copy-button,
-.copy-button:focus-visible {
+:global(.group):hover .copyButton,
+.copyButton:focus-visible {
   clip: auto;
   clip-path: none;
   height: auto;
@@ -1488,8 +1453,23 @@ onKeyStroke(
 }
 
 @media (hover: none) {
-  .copy-button {
+  .copyButton {
     display: none;
+  }
+}
+
+/* Mobile floating nav: safe-area positioning + kbd hiding */
+@media (max-width: 639.9px) {
+  .packageNav {
+    bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .packageNav > :global(a kbd) {
+    display: none;
+  }
+
+  .packagePage {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
 </style>

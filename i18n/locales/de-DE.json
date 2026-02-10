@@ -1,11 +1,11 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Paket-Browser für die npm Registry",
       "description": "Ein schnellerer, modernerer Browser für die npm Registry. Pakete suchen, durchstöbern und erkunden mit einer modernen Oberfläche."
     }
   },
-  "version": "Version",
   "built_at": "erstellt {0}",
   "alt_logo": "npmx Logo",
   "tagline": "ein schnellerer, modernerer Browser für die npm Registry",
@@ -16,17 +16,35 @@
     "docs": "Doku",
     "source": "Quellcode",
     "social": "Social",
-    "chat": "Chat"
+    "chat": "Chat",
+    "keyboard_shortcuts": "Tastenkombination"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Allgemein",
+      "search": "Suche",
+      "package": "Pakete"
+    },
+    "focus_search": "Suche fokusieren",
+    "show_kbd_hints": "Tastenkombination hervorheben",
+    "settings": "Einstellungen öffnen",
+    "compare": "Vergleichen öffnen",
+    "compare_from_package": "Vergleichen öffnen (mit aktuellem Paket vorausgefüllt)",
+    "navigate_results": "Ergebnisse navigieren",
+    "go_to_result": "Ergebnis aufrufen",
+    "open_code_view": "Code-Ansicht öffnen",
+    "open_docs": "Dokumentation öffnen"
   },
   "search": {
     "label": "npm-Pakete durchsuchen",
     "placeholder": "Pakete suchen...",
     "button": "Suchen",
-    "clear": "Suche löschen",
     "searching": "Suche läuft...",
     "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
+    "found_packages_sorted": "Sortiere bestes Resultat | Sortiere beste {count} Resultate",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
+    "rate_limited": "npm Ratenbegrenzung erreicht, versuche es später erneut",
     "title": "Suche",
     "title_search": "Suche: {search}",
     "title_packages": "Suche Pakete",
@@ -37,6 +55,7 @@
     "claim_button": "\"{name}\" beanspruchen",
     "want_to_claim": "Möchtest du diesen Paketnamen beanspruchen?",
     "start_typing": "Tippe, um Pakete zu suchen",
+    "algolia_disclaimer": "Powered by Algolia",
     "exact_match": "exakt",
     "suggestion": {
       "user": "Benutzer",
@@ -48,7 +67,6 @@
   "nav": {
     "main_navigation": "Hauptnavigation",
     "popular_packages": "Beliebte Pakete",
-    "search": "Suche",
     "settings": "Einstellungen",
     "compare": "Vergleichen",
     "back": "Zurück",
@@ -65,10 +83,18 @@
     "sections": {
       "appearance": "Erscheinungsbild",
       "display": "Anzeige",
+      "search": "Datenquelle",
       "language": "Sprache"
     },
+    "data_source": {
+      "label": "Datenquelle",
+      "description": "Wähle, woher npmx Suchdaten abruft. Einzelne Paketseiten verwenden immer direkt die npm Registry.",
+      "npm": "npm Registry",
+      "npm_description": "Ruft Suche, Org- und Benutzerlisten direkt von der offiziellen npm Registry ab. Maßgeblich, aber kann langsamer sein.",
+      "algolia": "Algolia",
+      "algolia_description": "Nutzt Algolia für schnellere Suche, Org- und Benutzerseiten."
+    },
     "relative_dates": "Relative Datumsangaben",
-    "relative_dates_description": "Zeige „vor 3 Tagen“ anstelle von vollständigen Datumsangaben an",
     "include_types": "{'@'}types bei Installation einschließen",
     "include_types_description": "TypeScript-Typdefinitionen ({'@'}types-Paket) automatisch zu Installationsbefehlen für Pakete ohne Typen hinzufügen",
     "hide_platform_packages": "Plattformspezifische Pakete in der Suche ausblenden",
@@ -103,8 +129,6 @@
     "copy": "Kopieren",
     "copied": "Kopiert!",
     "skip_link": "Zum Hauptinhalt springen",
-    "close_modal": "Modal schließen",
-    "show_more": "Mehr anzeigen",
     "warnings": "Warnungen:",
     "go_back_home": "Zur Startseite",
     "view_on_npm": "Auf npm ansehen",
@@ -121,7 +145,6 @@
     "not_found": "Paket nicht gefunden",
     "not_found_message": "Das Paket konnte nicht gefunden werden.",
     "no_description": "Keine Beschreibung vorhanden",
-    "show_full_description": "Vollständige Beschreibung anzeigen",
     "not_latest": "(nicht aktuell)",
     "verified_provenance": "Verifizierte Herkunft",
     "view_permalink": "Permalink für diese Version anzeigen",
@@ -144,10 +167,6 @@
       "community": "Community",
       "consider_no_dep": "+ Ohne Abhängigkeit lösen?"
     },
-    "likes": {
-      "like": "Dieses Paket liken",
-      "unlike": "Like entfernen"
-    },
     "stats": {
       "license": "Lizenz",
       "deps": "Abhängigkeiten",
@@ -155,7 +174,6 @@
       "vulns": "Sicherheitslücken",
       "published": "Veröffentlicht",
       "published_tooltip": "Datum, an dem {package}{'@'}{version} veröffentlicht wurde",
-      "skills": "Fähigkeiten",
       "view_dependency_graph": "Abhängigkeitsgraph anzeigen",
       "inspect_dependency_tree": "Abhängigkeitsbaum untersuchen",
       "size_tooltip": {
@@ -166,7 +184,6 @@
     "skills": {
       "title": "Agentenfähigkeiten",
       "skills_available": "{count} Fähigkeit verfügbar | {count} Fähigkeiten verfügbar",
-      "view": "Ansehen",
       "compatible_with": "Kompatibel mit {tool}",
       "install": "Installieren",
       "installation_method": "Installationsmethode",
@@ -190,6 +207,10 @@
       "docs": "Doku",
       "fund": "Spenden",
       "compare": "Vergleichen"
+    },
+    "likes": {
+      "like": "Dieses Paket liken",
+      "unlike": "Like entfernen"
     },
     "docs": {
       "not_available": "Dokumentation nicht verfügbar",
@@ -234,6 +255,16 @@
       "transparency_log_entry": "Transparenzprotokolleintrag",
       "view_more_details": "Weitere Details anzeigen",
       "error_loading": "Fehler beim Laden der Herkunftsdaten"
+    },
+    "security_downgrade": {
+      "title": "Vertrauensabbau",
+      "description_to_none_provenance": "Diese Version wurde ohne {provenance} veröffentlicht.",
+      "description_to_none_trustedPublisher": "Diese Version wurde ohne {trustedPublishing} veröffentlicht.",
+      "description_to_provenance_trustedPublisher": "Diese Version verwendet {provenance}, aber nicht {trustedPublishing}.",
+      "fallback_install_provenance": "Installationsbefehle sind auf {version} fixiert, die letzte Version mit {provenance}.",
+      "fallback_install_trustedPublisher": "Installationsbefehle sind auf {version} fixiert, die letzte Version mit vertrauenswürdigem Publishing.",
+      "provenance_link_text": "Herkunft",
+      "trusted_publishing_link_text": "vertrauenswürdiges Publishing"
     },
     "keywords_title": "Schlüsselwörter",
     "compatibility": "Kompatibilität",
@@ -292,13 +323,7 @@
       "show_more": "({count} weitere anzeigen)",
       "show_less": "(weniger anzeigen)"
     },
-    "downloads": {
-      "title": "Wöchentliche Downloads",
-      "date_range": "{start} bis {end}",
-      "date_range_multiline": "{start}\nbis {end}",
-      "analyze": "Downloads analysieren",
-      "community_distribution": "Community-Adoptionsverteilung ansehen",
-      "modal_title": "Downloads",
+    "trends": {
       "granularity": "Granularität",
       "granularity_daily": "Täglich",
       "granularity_weekly": "Wöchentlich",
@@ -306,11 +331,25 @@
       "granularity_yearly": "Jährlich",
       "start_date": "Start",
       "end_date": "Ende",
-      "no_data": "Keine Download-Daten verfügbar",
       "loading": "Lädt...",
-      "y_axis_label": "{granularity} Downloads",
+      "date_range": "{start} bis {end}",
+      "date_range_multiline": "{start}\nbis {end}",
       "download_file": "{fileType} herunterladen",
-      "toggle_annotator": "Annotation umschalten"
+      "toggle_annotator": "Annotation umschalten",
+      "legend_estimation": "Schätzung",
+      "no_data": "Keine Daten vorhanden",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Facette",
+      "title": "Trends",
+      "items": {
+        "downloads": "Downloads",
+        "likes": "Likes"
+      }
+    },
+    "downloads": {
+      "title": "Wöchentliche Downloads",
+      "analyze": "Downloads analysieren",
+      "community_distribution": "Community-Adoptionsverteilung ansehen"
     },
     "install_scripts": {
       "title": "Installationsskripte",
@@ -336,31 +375,19 @@
       "none": "Keine"
     },
     "vulnerabilities": {
-      "no_description": "Keine Beschreibung verfügbar",
-      "found": "{count} Sicherheitslücke gefunden | {count} Sicherheitslücken gefunden",
-      "deps_found": "{count} Sicherheitslücke gefunden | {count} Sicherheitslücken gefunden",
-      "deps_affected": "{count} betroffene Abhängigkeit | {count} betroffene Abhängigkeiten",
       "tree_found": "{vulns} Sicherheitslücke in {packages}/{total} Paketen | {vulns} Sicherheitslücken in {packages}/{total} Paketen",
-      "scanning_tree": "Abhängigkeitsbaum wird gescannt...",
       "show_all_packages": "{count} betroffenes Paket anzeigen | Alle {count} betroffenen Pakete anzeigen",
-      "no_summary": "Keine Zusammenfassung",
-      "view_details": "Details zur Sicherheitslücke anzeigen",
       "path": "Pfad",
       "more": "+{count} weitere",
       "packages_failed": "{count} Paket konnte nicht geprüft werden | {count} Pakete konnten nicht geprüft werden",
-      "no_known": "Keine bekannten Sicherheitslücken in {count} Paket | Keine bekannten Sicherheitslücken in {count} Paketen",
       "scan_failed": "Sicherheits-Scan fehlgeschlagen",
-      "depth": {
-        "root": "Dieses Paket",
-        "direct": "Direkte Abhängigkeit",
-        "transitive": "Transitive Abhängigkeit (indirekt)"
-      },
       "severity": {
         "critical": "Kritisch",
         "high": "Hoch",
         "moderate": "Mittel",
         "low": "Niedrig"
-      }
+      },
+      "fixed_in_title": "Behoben in Version {version}"
     },
     "deprecated": {
       "label": "Veraltet",
@@ -396,13 +423,6 @@
     },
     "skeleton": {
       "loading": "Paketdetails werden geladen",
-      "license": "Lizenz",
-      "weekly": "Wöchentlich",
-      "size": "Größe",
-      "deps": "Abhängigkeiten",
-      "published": "Veröffentlicht",
-      "get_started": "Erste Schritte",
-      "readme": "Readme",
       "maintainers": "Maintainer",
       "keywords": "Schlüsselwörter",
       "versions": "Versionen",
@@ -413,19 +433,14 @@
       "published": "Zuletzt veröffentlicht",
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
-    "status": {
-      "connecting": "Verbinde...",
-      "connected_as": "Verbunden als ~{user}",
-      "connected": "Verbunden",
-      "connect_cli": "Lokale CLI verbinden",
-      "aria_connecting": "Verbindung zum lokalen Connector wird hergestellt",
-      "aria_connected": "Mit lokalem Connector verbunden",
-      "aria_click_to_connect": "Klicken, um mit lokalem Connector zu verbinden",
-      "avatar_alt": "Avatar von {user}"
-    },
     "modal": {
       "title": "Lokaler Connector",
       "contributor_badge": "Nur für Mitwirkende",
@@ -541,8 +556,7 @@
       "failed_to_load": "Organisation-Pakete konnten nicht geladen werden",
       "no_match": "Keine Pakete entsprechen \"{query}\"",
       "not_found": "Organisation nicht gefunden",
-      "not_found_message": "Die Organisation \"{'@'}{name}\" existiert nicht auf npm",
-      "filter_placeholder": "{count} Paket filtern... | {count} Pakete filtern..."
+      "not_found_message": "Die Organisation \"{'@'}{name}\" existiert nicht auf npm"
     }
   },
   "user": {
@@ -603,7 +617,6 @@
   "code": {
     "files_label": "Dateien",
     "no_files": "Keine Dateien in diesem Verzeichnis",
-    "select_version": "Version auswählen",
     "root": "Wurzel",
     "lines": "{count} Zeile | {count} Zeilen",
     "toggle_tree": "Dateibaum umschalten",
@@ -613,7 +626,6 @@
     "view_raw": "Rohdatei anzeigen",
     "file_too_large": "Datei zu groß für Vorschau",
     "file_size_warning": "{size} überschreitet das 500KB-Limit für Syntax-Highlighting",
-    "load_anyway": "Trotzdem laden",
     "failed_to_load": "Datei konnte nicht geladen werden",
     "unavailable_hint": "Die Datei ist möglicherweise zu groß oder nicht verfügbar",
     "version_required": "Version erforderlich, um Code zu durchsuchen",
@@ -635,12 +647,10 @@
     "provenance": {
       "verified": "verifiziert",
       "verified_title": "Verifizierte Herkunft",
-      "verified_via": "Verifiziert: veröffentlicht via {provider}",
-      "view_more_details": "Weitere Details anzeigen"
+      "verified_via": "Verifiziert: veröffentlicht via {provider}"
     },
     "jsr": {
-      "title": "auch auf JSR verfügbar",
-      "label": "JSR"
+      "title": "auch auf JSR verfügbar"
     }
   },
   "filters": {
@@ -760,7 +770,6 @@
     "title": "Über uns",
     "heading": "Über uns",
     "meta_description": "npmx ist ein schneller, moderner Browser für die npm Registry. Ein besseres UX/DX zum Erkunden von npm-Paketen.",
-    "back_home": "Zurück zur Startseite",
     "what_we_are": {
       "title": "Was wir sind",
       "better_ux_dx": "Bessere UX/DX",
@@ -820,8 +829,7 @@
     "connect_npm_cli": "Mit npm-CLI verbinden",
     "connect_atmosphere": "Mit Atmosphere verbinden",
     "connecting": "Verbinde...",
-    "ops": "{count} Operation | {count} Operationen",
-    "disconnect": "Trennen"
+    "ops": "{count} Operation | {count} Operationen"
   },
   "auth": {
     "modal": {
@@ -835,12 +843,12 @@
       "create_account": "Neues Konto erstellen",
       "connect_bluesky": "Mit Bluesky verbinden",
       "what_is_atmosphere": "Was ist ein Atmosphere-Konto?",
-      "atmosphere_explanation": "{npmx} nutzt das {atproto}, um viele seiner sozialen Funktionen zu betreiben. So können Nutzer ihre Daten selbst verwalten und ein einziges Konto für alle kompatiblen Anwendungen nutzen. Sobald du ein Konto erstellt hast, kannst du andere Apps wie {bluesky} und {tangled} mit demselben Konto nutzen."
+      "atmosphere_explanation": "{npmx} nutzt das {atproto}, um viele seiner sozialen Funktionen zu betreiben. So können Nutzer ihre Daten selbst verwalten und ein einziges Konto für alle kompatiblen Anwendungen nutzen. Sobald du ein Konto erstellt hast, kannst du andere Apps wie {bluesky} und {tangled} mit demselben Konto nutzen.",
+      "default_input_error": "Bitte geben Sie einen gültigen Handle, eine DID oder eine vollständige PDS-URL ein"
     }
   },
   "header": {
     "home": "npmx Startseite",
-    "github": "GitHub",
     "packages": "Pakete",
     "packages_dropdown": {
       "title": "Deine Pakete",
@@ -881,9 +889,7 @@
       "searching": "Suche läuft...",
       "remove_package": "{package} entfernen",
       "packages_selected": "{count}/{max} Pakete ausgewählt.",
-      "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu.",
-      "loading_versions": "Versionen werden geladen...",
-      "select_version": "Version auswählen"
+      "add_hint": "Füge mindestens 2 Pakete zum Vergleichen hinzu."
     },
     "no_dependency": {
       "label": "(Keine Abhängigkeit)",
@@ -931,6 +937,10 @@
           "label": "Downloads/Woche",
           "description": "Wöchentliche Downloadzahlen"
         },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Anzahl der Likes"
+        },
         "lastUpdated": {
           "label": "Veröffentlicht",
           "description": "Wann diese Version veröffentlicht wurde"
@@ -970,6 +980,9 @@
         "types_none": "Keine",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "Deine Entscheidung!"
+      },
+      "trends": {
+        "title": "Trends vergleichen"
       }
     }
   },
@@ -978,7 +991,6 @@
     "last_updated": "Zuletzt aktualisiert: {date}",
     "welcome": "Willkommen bei {app}. Wir setzen uns für den Schutz deiner Privatsphäre ein. Diese Richtlinie erklärt, welche Daten wir sammeln, wie wir sie verwenden und welche Rechte du in Bezug auf deine Informationen hast.",
     "cookies": {
-      "title": "Cookies",
       "what_are": {
         "title": "Was sind Cookies?",
         "p1": "Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert werden, wenn du eine Website besuchst. Ihr Zweck ist es, dein Surferlebnis zu verbessern, indem sie bestimmte Präferenzen und Einstellungen speichern."

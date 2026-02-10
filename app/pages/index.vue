@@ -2,9 +2,10 @@
 import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
+const { isAlgolia } = useSearchProvider()
+
 const searchQuery = shallowRef('')
-const searchInputRef = useTemplateRef('searchInputRef')
-const { focused: isSearchFocused } = useFocus(searchInputRef)
+const isSearchFocused = shallowRef(false)
 
 async function search() {
   const query = searchQuery.value.trim()
@@ -19,9 +20,18 @@ async function search() {
   }
 }
 
-const handleInput = isTouchDevice()
-  ? search
-  : debounce(search, 250, { leading: true, trailing: true })
+const handleInputNpm = debounce(search, 250, { leading: true, trailing: true })
+const handleInputAlgolia = debounce(search, 80, { leading: true, trailing: true })
+
+function handleInput() {
+  if (isTouchDevice()) {
+    search()
+  } else if (isAlgolia.value) {
+    handleInputAlgolia()
+  } else {
+    handleInputNpm()
+  }
+}
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
@@ -73,7 +83,7 @@ defineOgImageComponent('Default', {
 
             <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
               <div
-                class="absolute -inset-px rounded-lg bg-gradient-to-r from-fg/0 via-fg/5 to-fg/0 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
+                class="absolute z-1 -inset-px pointer-events-none rounded-lg bg-gradient-to-r from-fg/0 to-accent/5 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
               />
 
               <div class="search-box relative flex items-center">
@@ -83,31 +93,31 @@ defineOgImageComponent('Default', {
                   /
                 </span>
 
-                <input
+                <InputBase
                   id="home-search"
-                  ref="searchInputRef"
                   v-model="searchQuery"
                   type="search"
                   name="q"
                   autofocus
                   :placeholder="$t('search.placeholder')"
-                  v-bind="noCorrect"
-                  class="w-full bg-bg-subtle border border-border rounded-xl ps-8 pe-24 h-14 py-4 font-mono text-base text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 motion-reduce:transition-none hover:border-fg-subtle outline-2 outline-transparent focus:border-accent focus-visible:(outline-2 outline-accent/70)"
+                  no-correct
+                  size="large"
+                  class="w-full ps-8 pe-24"
+                  @focus="isSearchFocused = true"
+                  @blur="isSearchFocused = false"
                   @input="handleInput"
                 />
 
-                <button
+                <ButtonBase
                   type="submit"
-                  class="absolute group inset-ie-2.5 px-2.5 sm:ps-4 sm:pe-4 py-2 font-mono text-sm text-bg bg-fg/90 rounded-md transition-[background-color,transform] duration-200 hover:bg-fg! group-focus-within:bg-fg/80 active:scale-95 focus-visible:outline-accent/70"
+                  variant="primary"
+                  class="absolute inset-ie-2"
+                  classicon="i-carbon:search"
                 >
-                  <span
-                    class="inline-block i-carbon:search align-middle w-4 h-4 sm:me-2"
-                    aria-hidden="true"
-                  ></span>
                   <span class="sr-only sm:not-sr-only">
                     {{ $t('search.button') }}
                   </span>
-                </button>
+                </ButtonBase>
               </div>
             </div>
           </form>
@@ -123,15 +133,12 @@ defineOgImageComponent('Default', {
       >
         <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
           <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
-            <NuxtLink
-              :to="packageRoute(framework.package)"
-              class="link-subtle font-mono text-sm inline-flex items-center gap-2 group"
-            >
+            <LinkBase :to="packageRoute(framework.package)" class="gap-2 text-sm">
               <span
-                class="w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
+                class="home-tag-dot w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
               />
               {{ framework.name }}
-            </NuxtLink>
+            </LinkBase>
           </li>
         </ul>
       </nav>
@@ -144,3 +151,13 @@ defineOgImageComponent('Default', {
     </section>
   </main>
 </template>
+
+<style scoped>
+/* Windows High Contrast Mode support */
+@media (forced-colors: active) {
+  .home-tag-dot {
+    forced-color-adjust: none;
+    background-color: CanvasText;
+  }
+}
+</style>

@@ -62,6 +62,15 @@ export class Constellation {
     filterByDids: [string][] = [],
     ttl: number | undefined = undefined,
   ) {
+    // Note that using Client from @atproto/lex here is kinda "hard" because it
+    // expects a native fetch implementation, which is "hard" to provide using
+    // this.cachedFetch as underlying fetch implementation. In addition to this,
+    // blue.microcosm.links.getBacklinks is not a published lexicon, meaning
+    // that we cannot install it using `pnpm exec lex install
+    // blue.microcosm.links.getBacklinks` and get generated type definitions,
+    // which kinda defeats the purpose of using Client in the first place. For
+    // these reasons, we are using this.cachedFetch directly to call the
+    // constellation API endpoint, and type casting the response.
     const source = encodeURIComponent(`${collection}:${recordPath}`)
     let urlToCall = `https://${CONSTELLATION_HOST}/xrpc/blue.microcosm.links.getBacklinks?subject=${encodeURIComponent(subject)}&source=${source}&limit=${limit}`
     if (cursor) urlToCall += `&cursor=${cursor}`

@@ -121,7 +121,9 @@ if (import.meta.client) {
 <template>
   <div class="min-h-screen flex flex-col bg-bg text-fg">
     <NuxtPwaAssets />
-    <a href="#main-content" class="skip-link font-mono">{{ $t('common.skip_link') }}</a>
+    <LinkBase to="#main-content" variant="button-primary" class="skip-link">{{
+      $t('common.skip_link')
+    }}</LinkBase>
 
     <AppHeader :show-logo="!isHomepage" />
 
@@ -140,19 +142,9 @@ if (import.meta.client) {
 .skip-link {
   position: fixed;
   top: -100%;
-  inset-inline-start: 0;
-  padding: 0.5rem 1rem;
-  background: var(--fg);
-  color: var(--bg);
-  font-size: 0.875rem;
   z-index: 100;
-  transition: top 0.2s ease;
 }
 
-.skip-link:hover {
-  color: var(--bg);
-  text-decoration: underline;
-}
 .skip-link:focus {
   top: 0;
 }

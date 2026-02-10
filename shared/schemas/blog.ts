@@ -1,9 +1,15 @@
-import { object, string, optional, array, boolean, pipe, isoDate } from 'valibot'
+import { isAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
+import { custom, object, string, optional, array, boolean, pipe, isoDate } from 'valibot'
 import type { InferOutput } from 'valibot'
 
 export const AuthorSchema = object({
   name: string(),
-  blueskyHandle: optional(string()),
+  blueskyHandle: optional(
+    pipe(
+      string(),
+      custom<AtIdentifierString>(v => typeof v === 'string' && isAtIdentifierString(v)),
+    ),
+  ),
 })
 
 export const BlogPostSchema = object({
