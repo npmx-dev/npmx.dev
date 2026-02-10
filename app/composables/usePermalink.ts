@@ -2,7 +2,7 @@
  * Creates a computed property that uses route query parameters by default,
  * with an option to use local state instead.
  */
-export function usePermalinkValue<T extends string | number = string>(
+export function usePermalink<T extends string | number = string>(
   queryKey: string,
   defaultValue: T = '' as T,
   options: { permanent?: boolean } = {},

@@ -319,13 +319,9 @@ const effectivePackageNames = computed<string[]>(() => {
   return single ? [single] : []
 })
 
-const selectedGranularity = usePermalinkValue<ChartTimeGranularity>(
-  'granularity',
-  DEFAULT_GRANULARITY,
-  {
-    permanent: props.permalink,
-  },
-)
+const selectedGranularity = usePermalink<ChartTimeGranularity>('granularity', DEFAULT_GRANULARITY, {
+  permanent: props.permalink,
+})
 
 const displayedGranularity = shallowRef<ChartTimeGranularity>(DEFAULT_GRANULARITY)
 
@@ -356,10 +352,10 @@ const shouldRenderEstimationOverlay = computed(
   () => !pending.value && isEstimationGranularity.value,
 )
 
-const startDate = usePermalinkValue<string>('start', '', {
+const startDate = usePermalink<string>('start', '', {
   permanent: props.permalink,
 })
-const endDate = usePermalinkValue<string>('end', '', {
+const endDate = usePermalink<string>('end', '', {
   permanent: props.permalink,
 })
 
@@ -587,7 +583,7 @@ const METRICS = computed<MetricDef[]>(() => [
   },
 ])
 
-const selectedMetric = usePermalinkValue<MetricId>('facet', DEFAULT_METRIC_ID, {
+const selectedMetric = usePermalink<MetricId>('facet', DEFAULT_METRIC_ID, {
   permanent: props.permalink,
 })
 
