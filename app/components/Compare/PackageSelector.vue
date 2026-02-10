@@ -204,7 +204,10 @@ function handleFocus() {
             @click="addPackage(result.name)"
           >
             <span class="font-mono text-sm text-fg block">{{ result.name }}</span>
-            <span v-if="result.description" class="text-xs text-fg-muted truncate mt-0.5">
+            <span
+              v-if="result.description"
+              class="text-xs text-fg-muted truncate mt-0.5 w-full block"
+            >
               {{ result.description }}
             </span>
           </ButtonBase>
