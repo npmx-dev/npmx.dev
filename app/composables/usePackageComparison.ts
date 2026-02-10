@@ -75,11 +75,15 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const bytesFormatter = useBytesFormatter()
   const packages = computed(() => toValue(packageNames))
 
+  const ready = shallowRef(false)
+
   // Cache of fetched data by package name (source of truth)
   const cache = shallowRef(new Map<string, PackageComparisonData>())
 
   // Derived array in current package order
-  const packagesData = computed(() => packages.value.map(name => cache.value.get(name) ?? null))
+  const packagesData = computed(
+    () => ready.value && packages.value.map(name => cache.value.get(name) ?? null),
+  )
 
   const status = shallowRef<'idle' | 'pending' | 'success' | 'error'>('idle')
   const error = shallowRef<Error | null>(null)
@@ -249,18 +253,24 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
   // Watch for package changes and refetch (client-side only)
   if (import.meta.client) {
-    watch(
-      packages,
-      newPackages => {
-        fetchPackages(newPackages)
-      },
-      { immediate: true },
-    )
+    useNuxtApp().hook('app:suspense:resolve', () => {
+      ready.value = true
+      watch(
+        packages,
+        newPackages => {
+          fetchPackages(newPackages)
+        },
+        { immediate: true },
+      )
+    })
   }
 
   // Compute values for each facet
   function getFacetValues(facet: ComparisonFacet): (FacetValue | null)[] {
-    if (!packagesData.value || packagesData.value.length === 0) return []
+    // If not ready or no data, return array of nulls to render skeletons
+    if (!ready.value || !packagesData.value || packagesData.value.length === 0) {
+      return Array.from({ length: packages.value.length }, () => null)
+    }
 
     return packagesData.value.map(pkg => {
       if (!pkg) return null
@@ -277,7 +287,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
 
   // Check if a facet depends on slow-loading data
   function isFacetLoading(facet: ComparisonFacet): boolean {
-    if (!installSizeLoading.value) return false
+    if (!ready.value || !installSizeLoading.value) return false
     // These facets depend on install-size API
     return facet === 'installSize' || facet === 'totalDependencies'
   }

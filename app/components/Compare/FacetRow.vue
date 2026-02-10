@@ -120,9 +120,9 @@ function isCellLoading(index: number): boolean {
         />
       </template>
 
-      <!-- No data -->
+      <!-- No data (Skeleton) -->
       <template v-else-if="!value">
-        <span class="text-fg-subtle text-sm">-</span>
+        <SkeletonInline class="w-16 h-4" />
       </template>
 
       <!-- Value display -->

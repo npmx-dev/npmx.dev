@@ -47,7 +47,11 @@ const gridColumns = computed(() =>
     .map((pkg, i) => ({ pkg, originalIndex: i }))
     .filter(({ pkg }) => pkg !== NO_DEPENDENCY_ID)
     .map(({ pkg, originalIndex }) => {
-      const data = packagesData.value?.[originalIndex]
+      // packagesData can be false (not ready) or array with nulls (loading)
+      // Ensure we handle the boolean case safely for TS
+      const list = packagesData.value
+      const data = Array.isArray(list) ? list[originalIndex] : null
+
       return {
         name: data?.package.name || pkg,
         version: data?.package.version,
@@ -80,10 +84,12 @@ const gridHeaders = computed(() =>
 )
 
 useSeoMeta({
-  title: () =>
-    packages.value.length > 0
-      ? $t('compare.packages.meta_title', { packages: packages.value.join(' vs ') })
-      : $t('compare.packages.meta_title_empty'),
+  title: () => {
+    if (packages.value.length === 0) return $t('compare.packages.meta_title_empty')
+    const title = $t('compare.packages.meta_title', { packages: packages.value.join(' vs ') })
+    // Avoid long titles (SEO/HTML validation)
+    return title.length > 60 ? $t('compare.packages.meta_title_empty') : title
+  },
   ogTitle: () =>
     packages.value.length > 0
       ? $t('compare.packages.meta_title', { packages: packages.value.join(' vs ') })
@@ -135,31 +141,38 @@ useSeoMeta({
         <h2 id="packages-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
           {{ $t('compare.packages.section_packages') }}
         </h2>
-        <ComparePackageSelector v-model="packages" :max="4" />
+        <ClientOnly>
+          <ComparePackageSelector v-model="packages" :max="4" />
+          <template #fallback>
+            <SkeletonBlock class="min-h-[42px]" />
+          </template>
+        </ClientOnly>
 
-        <!-- "No dep" replacement suggestions (native, simple) -->
-        <div v-if="noDepSuggestions.length > 0" class="mt-3 space-y-2">
-          <CompareReplacementSuggestion
-            v-for="suggestion in noDepSuggestions"
-            :key="suggestion.forPackage"
-            :package-name="suggestion.forPackage"
-            :replacement="suggestion.replacement"
-            variant="nodep"
-            :show-action="canAddNoDep"
-            @add-no-dep="addNoDep"
-          />
-        </div>
+        <ClientOnly>
+          <!-- "No dep" replacement suggestions (native, simple) -->
+          <div v-if="noDepSuggestions.length > 0" class="mt-3 space-y-2">
+            <CompareReplacementSuggestion
+              v-for="suggestion in noDepSuggestions"
+              :key="suggestion.forPackage"
+              :package-name="suggestion.forPackage"
+              :replacement="suggestion.replacement"
+              variant="nodep"
+              :show-action="canAddNoDep"
+              @add-no-dep="addNoDep"
+            />
+          </div>
 
-        <!-- Informational replacement suggestions (documented) -->
-        <div v-if="infoSuggestions.length > 0" class="mt-3 space-y-2">
-          <CompareReplacementSuggestion
-            v-for="suggestion in infoSuggestions"
-            :key="suggestion.forPackage"
-            :package-name="suggestion.forPackage"
-            :replacement="suggestion.replacement"
-            variant="info"
-          />
-        </div>
+          <!-- Informational replacement suggestions (documented) -->
+          <div v-if="infoSuggestions.length > 0" class="mt-3 space-y-2">
+            <CompareReplacementSuggestion
+              v-for="suggestion in infoSuggestions"
+              :key="suggestion.forPackage"
+              :package-name="suggestion.forPackage"
+              :replacement="suggestion.replacement"
+              variant="info"
+            />
+          </div>
+        </ClientOnly>
       </section>
 
       <!-- Facet selector -->
@@ -168,47 +181,86 @@ useSeoMeta({
           <h2 id="facets-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             {{ $t('compare.packages.section_facets') }}
           </h2>
-          <ButtonBase
-            size="small"
-            :aria-pressed="isAllSelected"
-            :disabled="isAllSelected"
-            :aria-label="$t('compare.facets.select_all')"
-            @click="selectAll"
-          >
-            {{ $t('compare.facets.all') }}
-          </ButtonBase>
-          <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
-          <ButtonBase
-            size="small"
-            :aria-pressed="isNoneSelected"
-            :disabled="isNoneSelected"
-            :aria-label="$t('compare.facets.deselect_all')"
-            @click="deselectAll"
-          >
-            {{ $t('compare.facets.none') }}
-          </ButtonBase>
+          <ClientOnly>
+            <div class="contents">
+              <ButtonBase
+                size="small"
+                :aria-pressed="isAllSelected"
+                :disabled="isAllSelected"
+                :aria-label="$t('compare.facets.select_all')"
+                @click="selectAll"
+              >
+                {{ $t('compare.facets.all') }}
+              </ButtonBase>
+              <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
+              <ButtonBase
+                size="small"
+                :aria-pressed="isNoneSelected"
+                :disabled="isNoneSelected"
+                :aria-label="$t('compare.facets.deselect_all')"
+                @click="deselectAll"
+              >
+                {{ $t('compare.facets.none') }}
+              </ButtonBase>
+            </div>
+            <template #fallback>
+              <div class="flex gap-2 items-center">
+                <SkeletonBlock class="w-8 h-6" />
+                <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
+                <SkeletonBlock class="w-10 h-6" />
+              </div>
+            </template>
+          </ClientOnly>
         </div>
-        <CompareFacetSelector />
+        <ClientOnly>
+          <CompareFacetSelector />
+          <template #fallback>
+            <div class="space-y-3">
+              <div v-for="i in 4" :key="i">
+                <div class="flex items-center gap-2 mb-2">
+                  <SkeletonBlock class="w-20 h-3" />
+                  <SkeletonBlock class="w-8 h-6" />
+                  <span class="text-2xs text-fg-muted/40">/</span>
+                  <SkeletonBlock class="w-10 h-6" />
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <SkeletonBlock v-for="j in 3" :key="j" class="w-24 h-6" />
+                </div>
+              </div>
+            </div>
+          </template>
+        </ClientOnly>
       </section>
 
-      <!-- Comparison grid -->
-      <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
-        <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
-          {{ $t('compare.packages.section_comparison') }}
-        </h2>
+      <ClientOnly>
+        <!-- Comparison grid -->
+        <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
+          <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+            {{ $t('compare.packages.section_comparison') }}
+          </h2>
 
-        <div
-          v-if="status === 'pending' && (!packagesData || packagesData.every(p => p === null))"
-          class="flex items-center justify-center py-12"
-        >
-          <LoadingSpinner :text="$t('compare.packages.loading')" />
-        </div>
+          <!-- Show grid if we have packages, even if loading (skeletons) -->
+          <div v-if="packages.length > 0">
+            <!-- Desktop: Grid layout -->
+            <div class="hidden md:block overflow-x-auto">
+              <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
+                <CompareFacetRow
+                  v-for="facet in selectedFacets"
+                  :key="facet.id"
+                  :label="facet.label"
+                  :description="facet.description"
+                  :values="getFacetValues(facet.id)"
+                  :facet-loading="isFacetLoading(facet.id)"
+                  :column-loading="columnLoading"
+                  :bar="facet.id !== 'lastUpdated'"
+                  :headers="gridHeaders"
+                />
+              </CompareComparisonGrid>
+            </div>
 
-        <div v-else-if="packagesData && packagesData.some(p => p !== null)">
-          <!-- Desktop: Grid layout -->
-          <div class="hidden md:block overflow-x-auto">
-            <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
-              <CompareFacetRow
+            <!-- Mobile: Card-based layout -->
+            <div class="md:hidden space-y-3">
+              <CompareFacetCard
                 v-for="facet in selectedFacets"
                 :key="facet.id"
                 :label="facet.label"
@@ -219,52 +271,55 @@ useSeoMeta({
                 :bar="facet.id !== 'lastUpdated'"
                 :headers="gridHeaders"
               />
-            </CompareComparisonGrid>
+            </div>
+
+            <h2
+              id="comparison-heading"
+              class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
+            >
+              {{ $t('compare.facets.trends.title') }}
+            </h2>
+
+            <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
           </div>
 
-          <!-- Mobile: Card-based layout -->
-          <div class="md:hidden space-y-3">
-            <CompareFacetCard
-              v-for="facet in selectedFacets"
-              :key="facet.id"
-              :label="facet.label"
-              :description="facet.description"
-              :values="getFacetValues(facet.id)"
-              :facet-loading="isFacetLoading(facet.id)"
-              :column-loading="columnLoading"
-              :bar="facet.id !== 'lastUpdated'"
-              :headers="gridHeaders"
-            />
+          <div v-else-if="status === 'error'" class="text-center py-12" role="alert">
+            <p class="text-fg-muted">{{ $t('compare.packages.error') }}</p>
           </div>
+        </section>
 
-          <h2
-            id="comparison-heading"
-            class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
-          >
-            {{ $t('compare.facets.trends.title') }}
+        <!-- Empty state -->
+        <section
+          v-else
+          class="text-center px-1.5 py-16 border border-dashed border-border-hover rounded-lg"
+        >
+          <div class="i-carbon:compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
+          <h2 class="font-mono text-lg text-fg-muted mb-2">
+            {{ $t('compare.packages.empty_title') }}
           </h2>
+          <p class="text-sm text-fg-subtle max-w-md mx-auto">
+            {{ $t('compare.packages.empty_description') }}
+          </p>
+        </section>
 
-          <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
-        </div>
-
-        <div v-else class="text-center py-12" role="alert">
-          <p class="text-fg-muted">{{ $t('compare.packages.error') }}</p>
-        </div>
-      </section>
-
-      <!-- Empty state -->
-      <section
-        v-else
-        class="text-center px-1.5 py-16 border border-dashed border-border-hover rounded-lg"
-      >
-        <div class="i-carbon:compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
-        <h2 class="font-mono text-lg text-fg-muted mb-2">
-          {{ $t('compare.packages.empty_title') }}
-        </h2>
-        <p class="text-sm text-fg-subtle max-w-md mx-auto">
-          {{ $t('compare.packages.empty_description') }}
-        </p>
-      </section>
+        <template #fallback>
+          <!-- Generic loading state for the whole grid section if needed, or rely on inner skeletons -->
+          <div class="mt-10 space-y-4">
+            <SkeletonBlock class="w-32 h-4 mb-4" />
+            <div class="border border-border rounded-lg p-4 space-y-4">
+              <div class="flex gap-4">
+                <SkeletonBlock class="w-1/4 h-8" />
+                <SkeletonBlock class="w-1/4 h-8" />
+                <SkeletonBlock class="w-1/4 h-8" />
+                <SkeletonBlock class="w-1/4 h-8" />
+              </div>
+              <div v-for="i in 5" :key="i" class="flex gap-4">
+                <SkeletonBlock class="w-full h-12" />
+              </div>
+            </div>
+          </div>
+        </template>
+      </ClientOnly>
     </div>
   </main>
 </template>
