@@ -9,7 +9,7 @@ export const CACHE_MAX_AGE_ONE_YEAR = 60 * 60 * 24 * 365
 
 // API Strings
 export const NPMX_SITE = 'https://npmx.dev'
-export const BLUESKY_API = 'https://public.api.bsky.app/xrpc/'
+export const BLUESKY_API = 'https://public.api.bsky.app'
 export const BLUESKY_COMMENTS_REQUEST = '/api/atproto/bluesky-comments'
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
 export const NPM_API = 'https://api.npmjs.org'
@@ -74,4 +74,5 @@ export const BACKGROUND_THEMES = {
 } as const
 
 // Regex
-export const AT_URI_REGEX = /^at:\/\/(did:plc:[a-z0-9]+)\/app\.bsky\.feed\.post\/([a-z0-9]+)$/
+export const BSKY_POST_AT_URI_REGEX =
+  /^at:\/\/(did:plc:[a-z0-9]+)\/app\.bsky\.feed\.post\/([a-z0-9]+)$/

@@ -4,6 +4,7 @@ const config: KnipConfig = {
   workspaces: {
     '.': {
       entry: [
+        'app/router.options.ts!',
         'app/app.vue!',
         'app/error.vue!',
         'app/pages/**/*.vue!',

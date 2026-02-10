@@ -1021,10 +1021,19 @@
             "y_axis_label": {
               "type": "string"
             },
+            "facet": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
             "items": {
               "type": "object",
               "properties": {
                 "downloads": {
+                  "type": "string"
+                },
+                "likes": {
                   "type": "string"
                 }
               },
@@ -1043,9 +1052,6 @@
               "type": "string"
             },
             "community_distribution": {
-              "type": "string"
-            },
-            "modal_title": {
               "type": "string"
             }
           },
@@ -1265,9 +1271,6 @@
           "type": "object",
           "properties": {
             "loading": {
-              "type": "string"
-            },
-            "weekly": {
               "type": "string"
             },
             "maintainers": {

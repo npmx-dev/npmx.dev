@@ -57,6 +57,31 @@ watch(
   },
   { immediate: true },
 )
+
+// Use Nuxt's `navigateTo` for the rendered import links
+function handleImportLinkNavigate() {
+  if (!codeRef.value) return
+
+  const anchors = codeRef.value.querySelectorAll('a.import-link')
+  anchors.forEach(anchor => {
+    // NOTE: We do not need to remove previous listeners because we re-create the entire HTML content on each html update
+    anchor.addEventListener('click', event => {
+      const href = anchor.getAttribute('href')
+      if (href) {
+        event.preventDefault()
+        navigateTo(href)
+      }
+    })
+  })
+}
+
+watch(
+  () => props.html,
+  () => {
+    nextTick(handleImportLinkNavigate)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

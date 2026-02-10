@@ -6,9 +6,9 @@ const { footer = false, buildInfo: buildInfoProp } = defineProps<{
   buildInfo?: BuildInfo
 }>()
 
-const { locale } = useI18n()
 const appConfig = useAppConfig()
 const buildInfo = computed(() => buildInfoProp || appConfig.buildInfo)
+const buildTime = computed(() => new Date(buildInfo.value.time))
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const buildInfo = computed(() => buildInfoProp || appConfig.buildInfo)
     style="animation-delay: 0.05s"
   >
     <i18n-t keypath="built_at" scope="global">
-      <NuxtTime :datetime="buildInfo.time" :locale="locale" relative />
+      <DateTime :datetime="buildTime" year="numeric" month="short" day="numeric" />
     </i18n-t>
     <span>&middot;</span>
     <LinkBase

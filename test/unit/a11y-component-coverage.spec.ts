@@ -36,7 +36,7 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Modal.client.vue':
     'Base modal component - tested via specific modals like ChartModal, ConnectorModal',
   'Package/SkillsModal.vue': 'Complex modal with tabs - requires modal context and state',
-  'ScrollToTop.vue': 'Requires scroll position and CSS scroll-state queries',
+  'ScrollToTop.client.vue': 'Requires scroll position and CSS scroll-state queries',
   'Settings/TranslationHelper.vue': 'i18n helper component - requires specific locale status data',
   'Package/WeeklyDownloadStats.vue':
     'Uses vue-data-ui VueUiSparkline - has DOM measurement issues in test environment',

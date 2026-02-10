@@ -338,15 +338,17 @@
       "legend_estimation": "Estimation",
       "no_data": "No data available",
       "y_axis_label": "{granularity} {facet}",
+      "facet": "Facet",
+      "title": "Trends",
       "items": {
-        "downloads": "Downloads"
+        "downloads": "Downloads",
+        "likes": "Likes"
       }
     },
     "downloads": {
       "title": "Weekly Downloads",
       "analyze": "Analyze downloads",
-      "community_distribution": "View community adoption distribution",
-      "modal_title": "Downloads"
+      "community_distribution": "View community adoption distribution"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -420,7 +422,6 @@
     },
     "skeleton": {
       "loading": "Loading package details",
-      "weekly": "Weekly",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "versions": "Versions",
@@ -980,7 +981,7 @@
         "up_to_you": "Up to you!"
       },
       "trends": {
-        "title": "Weekly Downloads"
+        "title": "Compare Trends"
       }
     }
   },

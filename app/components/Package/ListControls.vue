@@ -73,26 +73,14 @@ const showFilteredCount = computed(() => {
     </div>
 
     <!-- Sort select -->
-    <div class="relative shrink-0 flex">
-      <label for="package-sort" class="sr-only">{{ $t('package.list.sort_label') }}</label>
-      <div class="relative">
-        <select
-          id="package-sort"
-          v-model="sortValue"
-          class="appearance-none bg-bg-subtle border border-border rounded-lg ps-3 pe-8 py-3 leading-none font-mono text-sm text-fg transition-colors duration-200 focus:(border-border-hover outline-none) hover:border-border-hover"
-        >
-          <option v-for="option in sortOptions" :key="option.value" :value="option.value">
-            {{ option.label }}
-          </option>
-        </select>
-        <div
-          class="absolute inset-ie-3 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
-          aria-hidden="true"
-        >
-          <div class="i-carbon:chevron-down w-4 h-4" />
-        </div>
-      </div>
-    </div>
+    <SelectField
+      :label="$t('package.list.sort_label')"
+      hidden-label
+      id="package-sort"
+      class="relative shrink-0"
+      v-model="sortValue"
+      :items="sortOptions.map(option => ({ label: option.label, value: option.value }))"
+    />
   </div>
 
   <!-- Filtered count indicator -->

@@ -213,7 +213,7 @@ describe('transformPackument', () => {
     expect(detectPublishSecurityDowngradeForVersion(infos, '1.0.1')?.trustedVersion).toBe('1.0.0')
   })
 
-  it('prefers provenance trust level when both trustedPublisher and attestations exist', () => {
+  it('prefers trustedPublisher trust level when both trustedPublisher and attestations exist', () => {
     const packument = createPackument(
       {
         '1.0.0': createTrustedPublisherWithAttestationsVersion('1.0.0'),
@@ -230,7 +230,34 @@ describe('transformPackument', () => {
 
     const transformed = transformPackument(packument, '1.0.1')
 
-    expect(transformed.versions['1.0.0']?.trustLevel).toBe('provenance')
+    expect(transformed.versions['1.0.0']?.trustLevel).toBe('trustedPublisher')
+  })
+
+  // https://github.com/npmx-dev/npmx.dev/issues/1292
+  it('does not flag false downgrade when trusted publisher version also has attestations', () => {
+    // Trusted publishing automatically generates provenance attestations,
+    // so a version with both should be classified as trustedPublisher, not provenance.
+    const packument = createPackument(
+      {
+        '7.0.0': createTrustedPublisherWithAttestationsVersion('7.0.0'),
+        '7.0.1': createTrustedPublisherWithAttestationsVersion('7.0.1'),
+      },
+      {
+        'created': '2026-01-01T00:00:00.000Z',
+        'modified': '2026-01-02T00:00:00.000Z',
+        '7.0.0': '2026-01-01T00:00:00.000Z',
+        '7.0.1': '2026-01-02T00:00:00.000Z',
+      },
+      '7.0.1',
+    )
+
+    const transformed = transformPackument(packument, '7.0.1')
+    const infos = toVersionInfos(transformed)
+
+    // Both versions should be trustedPublisher — no downgrade
+    expect(infos.find(v => v.version === '7.0.0')?.trustLevel).toBe('trustedPublisher')
+    expect(infos.find(v => v.version === '7.0.1')?.trustLevel).toBe('trustedPublisher')
+    expect(detectPublishSecurityDowngradeForVersion(infos, '7.0.1')).toBeNull()
   })
 
   it('flags non-direct downgrade chain until trust is restored', () => {

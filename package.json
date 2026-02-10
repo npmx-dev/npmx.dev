@@ -34,7 +34,9 @@
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
     "test:a11y": "pnpm build:test && LIGHTHOUSE_COLOR_MODE=dark pnpm test:a11y:prebuilt && LIGHTHOUSE_COLOR_MODE=light pnpm test:a11y:prebuilt",
-    "test:a11y:prebuilt": "./scripts/lighthouse-a11y.sh",
+    "test:a11y:prebuilt": "./scripts/lighthouse.sh",
+    "test:perf": "pnpm build:test && pnpm test:perf:prebuilt",
+    "test:perf:prebuilt": "LH_PERF=1 ./scripts/lighthouse.sh",
     "test:browser": "pnpm build:test && pnpm test:browser:prebuilt",
     "test:browser:prebuilt": "playwright test",
     "test:browser:ui": "pnpm build:test && pnpm test:browser:prebuilt --ui",
@@ -45,11 +47,9 @@
     "start:playwright:webserver": "NODE_ENV=test pnpm preview --port 5678"
   },
   "dependencies": {
-    "@atproto/api": "^0.18.17",
     "@atproto/common": "0.5.10",
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
-    "@atproto/syntax": "0.4.3",
     "@deno/doc": "jsr:^0.189.1",
     "@floating-ui/vue": "1.1.10",
     "@iconify-json/carbon": "1.2.18",
