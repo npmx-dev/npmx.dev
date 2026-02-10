@@ -128,7 +128,7 @@ function handleClick(event: MouseEvent) {
 
 .readme :deep(a[target='_blank']::after) {
   content: '';
-  @apply i-carbon:launch rtl-flip ms-1 size-[1em] opacity-50;
+  @apply i-carbon:launch rtl-flip ms-1 -align-10% size-[1em] opacity-50;
 }
 
 .readme :deep(code) {
