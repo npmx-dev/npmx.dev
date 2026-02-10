@@ -13,6 +13,8 @@ export default defineNuxtModule({
     }
 
     nuxt.hook('nitro:init', nitro => {
+      const htmlFallback = 'spa.prerender-fallback.html'
+      const jsonFallback = 'payload-fallback.json'
       nitro.hooks.hook('compiled', () => {
         const spaTemplate = readFileSync(nitro.options.output.publicDir + '/200.html', 'utf-8')
         for (const path of [
@@ -26,14 +28,10 @@ export default defineNuxtModule({
           'package/[org]/[name]/v/[version]',
           '',
         ]) {
-          const outputPath = resolve(
-            nitro.options.output.serverDir,
-            '..',
-            path,
-            'spa.prerender-fallback.html',
-          )
+          const outputPath = resolve(nitro.options.output.serverDir, '..', path, htmlFallback)
           mkdirSync(resolve(nitro.options.output.serverDir, '..', path), { recursive: true })
           writeFileSync(outputPath, spaTemplate)
+          writeFileSync(outputPath.replace(htmlFallback, jsonFallback), '{}')
         }
       })
     })

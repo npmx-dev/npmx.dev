@@ -1,4 +1,5 @@
 {
+  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - Pakkeleser for npm-registeret",
@@ -255,6 +256,8 @@
       "view_more_details": "Vis flere detaljer",
       "error_loading": "Kunne ikke laste opprinnelsesdetaljer"
     },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Nøkkelord",
     "compatibility": "Kompatibilitet",
     "card": {
@@ -313,8 +316,6 @@
       "show_less": "(vis færre)"
     },
     "trends": {
-      "date_range": "{start} til {end}",
-      "date_range_multiline": "{start}\ntil {end}",
       "granularity": "Oppløsning",
       "granularity_daily": "Daglig",
       "granularity_weekly": "Ukentlig",
@@ -323,6 +324,8 @@
       "start_date": "Start",
       "end_date": "Slutt",
       "loading": "Laster...",
+      "date_range": "{start} til {end}",
+      "date_range_multiline": "{start}\ntil {end}",
       "download_file": "Last ned {fileType}",
       "toggle_annotator": "Veksle annotering",
       "legend_estimation": "Estimat",
@@ -335,8 +338,7 @@
     "downloads": {
       "title": "Ukentlige nedlastinger",
       "analyze": "Analyser nedlastinger",
-      "community_distribution": "Vis distribusjon av bruk i fellesskapet",
-      "modal_title": "Nedlastinger"
+      "community_distribution": "Vis distribusjon av bruk i fellesskapet"
     },
     "install_scripts": {
       "title": "Installasjonsskript",
@@ -409,7 +411,6 @@
     },
     "skeleton": {
       "loading": "Laster pakkedetaljer",
-      "weekly": "Ukentlig",
       "maintainers": "Vedlikeholdere",
       "keywords": "Nøkkelord",
       "versions": "Versjoner",
@@ -1052,5 +1053,19 @@
       "title": "Endringer i denne erklæringen",
       "p1": "Vi kan oppdatere denne personvernerklæringen fra tid til annen. Eventuelle endringer vil bli publisert på denne siden med en oppdatert revisjonsdato."
     }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }

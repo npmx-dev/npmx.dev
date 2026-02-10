@@ -15,7 +15,24 @@
     "docs": "Doku",
     "source": "Quellcode",
     "social": "Social",
-    "chat": "Chat"
+    "chat": "Chat",
+    "keyboard_shortcuts": "Tastenkombination"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Allgemein",
+      "search": "Suche",
+      "package": "Pakete"
+    },
+    "focus_search": "Suche fokusieren",
+    "show_kbd_hints": "Tastenkombination hervorheben",
+    "settings": "Einstellungen öffnen",
+    "compare": "Vergleichen öffnen",
+    "compare_from_package": "Vergleichen öffnen (mit aktuellem Paket vorausgefüllt)",
+    "navigate_results": "Ergebnisse navigieren",
+    "go_to_result": "Ergebnis aufrufen",
+    "open_code_view": "Code-Ansicht öffnen",
+    "open_docs": "Dokumentation öffnen"
   },
   "search": {
     "label": "npm-Pakete durchsuchen",
@@ -23,8 +40,10 @@
     "button": "Suchen",
     "searching": "Suche läuft...",
     "found_packages": "Keine Pakete gefunden | 1 Paket gefunden | {count} Pakete gefunden",
+    "found_packages_sorted": "Sortiere bestes Resultat | Sortiere beste {count} Resultate",
     "updating": "(wird aktualisiert...)",
     "no_results": "Keine Pakete gefunden für \"{query}\"",
+    "rate_limited": "npm Ratenbegrenzung erreicht, versuche es später erneut",
     "title": "Suche",
     "title_search": "Suche: {search}",
     "title_packages": "Suche Pakete",
@@ -35,6 +54,7 @@
     "claim_button": "\"{name}\" beanspruchen",
     "want_to_claim": "Möchtest du diesen Paketnamen beanspruchen?",
     "start_typing": "Tippe, um Pakete zu suchen",
+    "algolia_disclaimer": "Powered by Algolia",
     "exact_match": "exakt",
     "suggestion": {
       "user": "Benutzer",
@@ -62,7 +82,16 @@
     "sections": {
       "appearance": "Erscheinungsbild",
       "display": "Anzeige",
+      "search": "Datenquelle",
       "language": "Sprache"
+    },
+    "data_source": {
+      "label": "Datenquelle",
+      "description": "Wähle, woher npmx Suchdaten abruft. Einzelne Paketseiten verwenden immer direkt die npm Registry.",
+      "npm": "npm Registry",
+      "npm_description": "Ruft Suche, Org- und Benutzerlisten direkt von der offiziellen npm Registry ab. Maßgeblich, aber kann langsamer sein.",
+      "algolia": "Algolia",
+      "algolia_description": "Nutzt Algolia für schnellere Suche, Org- und Benutzerseiten."
     },
     "relative_dates": "Relative Datumsangaben",
     "include_types": "{'@'}types bei Installation einschließen",
@@ -137,10 +166,6 @@
       "community": "Community",
       "consider_no_dep": "+ Ohne Abhängigkeit lösen?"
     },
-    "likes": {
-      "like": "Dieses Paket liken",
-      "unlike": "Like entfernen"
-    },
     "stats": {
       "license": "Lizenz",
       "deps": "Abhängigkeiten",
@@ -181,6 +206,10 @@
       "docs": "Doku",
       "fund": "Spenden",
       "compare": "Vergleichen"
+    },
+    "likes": {
+      "like": "Dieses Paket liken",
+      "unlike": "Like entfernen"
     },
     "docs": {
       "not_available": "Dokumentation nicht verfügbar",
@@ -225,6 +254,16 @@
       "transparency_log_entry": "Transparenzprotokolleintrag",
       "view_more_details": "Weitere Details anzeigen",
       "error_loading": "Fehler beim Laden der Herkunftsdaten"
+    },
+    "security_downgrade": {
+      "title": "Vertrauensabbau",
+      "description_to_none_provenance": "Diese Version wurde ohne {provenance} veröffentlicht.",
+      "description_to_none_trustedPublisher": "Diese Version wurde ohne {trustedPublishing} veröffentlicht.",
+      "description_to_provenance_trustedPublisher": "Diese Version verwendet {provenance}, aber nicht {trustedPublishing}.",
+      "fallback_install_provenance": "Installationsbefehle sind auf {version} fixiert, die letzte Version mit {provenance}.",
+      "fallback_install_trustedPublisher": "Installationsbefehle sind auf {version} fixiert, die letzte Version mit vertrauenswürdigem Publishing.",
+      "provenance_link_text": "Herkunft",
+      "trusted_publishing_link_text": "vertrauenswürdiges Publishing"
     },
     "keywords_title": "Schlüsselwörter",
     "compatibility": "Kompatibilität",
@@ -283,11 +322,33 @@
       "show_more": "({count} weitere anzeigen)",
       "show_less": "(weniger anzeigen)"
     },
+    "trends": {
+      "granularity": "Granularität",
+      "granularity_daily": "Täglich",
+      "granularity_weekly": "Wöchentlich",
+      "granularity_monthly": "Monatlich",
+      "granularity_yearly": "Jährlich",
+      "start_date": "Start",
+      "end_date": "Ende",
+      "loading": "Lädt...",
+      "date_range": "{start} bis {end}",
+      "date_range_multiline": "{start}\nbis {end}",
+      "download_file": "{fileType} herunterladen",
+      "toggle_annotator": "Annotation umschalten",
+      "legend_estimation": "Schätzung",
+      "no_data": "Keine Daten vorhanden",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Facette",
+      "title": "Trends",
+      "items": {
+        "downloads": "Downloads",
+        "likes": "Likes"
+      }
+    },
     "downloads": {
       "title": "Wöchentliche Downloads",
       "analyze": "Downloads analysieren",
-      "community_distribution": "Community-Adoptionsverteilung ansehen",
-      "modal_title": "Downloads"
+      "community_distribution": "Community-Adoptionsverteilung ansehen"
     },
     "install_scripts": {
       "title": "Installationsskripte",
@@ -324,7 +385,8 @@
         "high": "Hoch",
         "moderate": "Mittel",
         "low": "Niedrig"
-      }
+      },
+      "fixed_in_title": "Behoben in Version {version}"
     },
     "deprecated": {
       "label": "Veraltet",
@@ -360,7 +422,6 @@
     },
     "skeleton": {
       "loading": "Paketdetails werden geladen",
-      "weekly": "Wöchentlich",
       "maintainers": "Maintainer",
       "keywords": "Schlüsselwörter",
       "versions": "Versionen",
@@ -372,19 +433,10 @@
       "name_asc": "Name (A-Z)",
       "name_desc": "Name (Z-A)"
     },
-    "trends": {
-      "granularity": "Granularität",
-      "granularity_daily": "Täglich",
-      "granularity_weekly": "Wöchentlich",
-      "granularity_monthly": "Monatlich",
-      "granularity_yearly": "Jährlich",
-      "start_date": "Start",
-      "end_date": "Ende",
-      "loading": "Lädt...",
-      "date_range": "{start} bis {end}",
-      "date_range_multiline": "{start}\nbis {end}",
-      "download_file": "{fileType} herunterladen",
-      "toggle_annotator": "Annotation umschalten"
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
@@ -790,7 +842,8 @@
       "create_account": "Neues Konto erstellen",
       "connect_bluesky": "Mit Bluesky verbinden",
       "what_is_atmosphere": "Was ist ein Atmosphere-Konto?",
-      "atmosphere_explanation": "{npmx} nutzt das {atproto}, um viele seiner sozialen Funktionen zu betreiben. So können Nutzer ihre Daten selbst verwalten und ein einziges Konto für alle kompatiblen Anwendungen nutzen. Sobald du ein Konto erstellt hast, kannst du andere Apps wie {bluesky} und {tangled} mit demselben Konto nutzen."
+      "atmosphere_explanation": "{npmx} nutzt das {atproto}, um viele seiner sozialen Funktionen zu betreiben. So können Nutzer ihre Daten selbst verwalten und ein einziges Konto für alle kompatiblen Anwendungen nutzen. Sobald du ein Konto erstellt hast, kannst du andere Apps wie {bluesky} und {tangled} mit demselben Konto nutzen.",
+      "default_input_error": "Bitte geben Sie einen gültigen Handle, eine DID oder eine vollständige PDS-URL ein"
     }
   },
   "header": {
@@ -883,6 +936,10 @@
           "label": "Downloads/Woche",
           "description": "Wöchentliche Downloadzahlen"
         },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Anzahl der Likes"
+        },
         "lastUpdated": {
           "label": "Veröffentlicht",
           "description": "Wann diese Version veröffentlicht wurde"
@@ -922,6 +979,9 @@
         "types_none": "Keine",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "Deine Entscheidung!"
+      },
+      "trends": {
+        "title": "Trends vergleichen"
       }
     }
   },

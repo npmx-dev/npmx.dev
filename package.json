@@ -19,6 +19,7 @@
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
     "i18n:report": "node scripts/find-invalid-translations.ts",
     "i18n:report:fix": "node scripts/remove-unused-translations.ts",
+    "i18n:schema": "node scripts/generate-i18n-schema.ts",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint && oxfmt --check",
@@ -33,7 +34,9 @@
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
     "test:a11y": "pnpm build:test && LIGHTHOUSE_COLOR_MODE=dark pnpm test:a11y:prebuilt && LIGHTHOUSE_COLOR_MODE=light pnpm test:a11y:prebuilt",
-    "test:a11y:prebuilt": "./scripts/lighthouse-a11y.sh",
+    "test:a11y:prebuilt": "./scripts/lighthouse.sh",
+    "test:perf": "pnpm build:test && pnpm test:perf:prebuilt",
+    "test:perf:prebuilt": "LH_PERF=1 ./scripts/lighthouse.sh",
     "test:browser": "pnpm build:test && pnpm test:browser:prebuilt",
     "test:browser:prebuilt": "playwright test",
     "test:browser:ui": "pnpm build:test && pnpm test:browser:prebuilt --ui",
@@ -44,11 +47,9 @@
     "start:playwright:webserver": "NODE_ENV=test pnpm preview --port 5678"
   },
   "dependencies": {
-    "@atproto/api": "^0.18.17",
     "@atproto/common": "0.5.10",
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
-    "@atproto/syntax": "0.4.3",
     "@deno/doc": "jsr:^0.189.1",
     "@floating-ui/vue": "1.1.10",
     "@iconify-json/carbon": "1.2.18",
@@ -106,7 +107,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.9"
+    "vue-data-ui": "3.14.10"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.1.4",
@@ -145,9 +146,12 @@
   },
   "lint-staged": {
     "i18n/locales/*": [
-      "pnpm build:lunaria",
+      "node ./lunaria/lunaria.ts",
       "pnpm oxfmt lunaria/files/",
-      "git add lunaria/files/"
+      "git add lunaria/files/",
+      "node scripts/generate-i18n-schema.ts",
+      "pnpm oxfmt i18n/schema.json",
+      "git add i18n/schema.json"
     ],
     "*.{js,ts,mjs,cjs,vue}": [
       "pnpm oxlint --fix"

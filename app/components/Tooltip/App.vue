@@ -6,6 +6,8 @@ const props = defineProps<{
   position?: 'top' | 'bottom' | 'left' | 'right'
   /** Enable interactive tooltip (pointer events + hide delay for clickable content) */
   interactive?: boolean
+  /** Teleport target for the tooltip content (defaults to 'body') */
+  to?: string | HTMLElement
 }>()
 
 const isVisible = shallowRef(false)
@@ -48,6 +50,7 @@ const tooltipAttrs = computed(() => {
     :position
     :interactive
     :tooltip-attr="tooltipAttrs"
+    :to="props.to"
     @mouseenter="show"
     @mouseleave="hide"
     @focusin="show"

@@ -12,6 +12,8 @@ const mode = defineModel<PaginationMode>('mode', { required: true })
 const pageSize = defineModel<PageSize>('pageSize', { required: true })
 const currentPage = defineModel<number>('currentPage', { required: true })
 
+const pageSizeSelectValue = computed(() => String(pageSize.value))
+
 // Whether we should show pagination controls (table view always uses pagination)
 const shouldShowControls = computed(() => props.viewMode === 'table' || mode.value === 'paginated')
 
@@ -149,21 +151,22 @@ function handlePageSizeChange(event: Event) {
 
       <!-- Page size (shown when paginated or table view) -->
       <div v-if="effectiveMode === 'paginated'" class="relative shrink-0">
-        <label for="page-size" class="sr-only">{{ $t('filters.pagination.items_per_page') }}</label>
-        <select
+        <SelectField
+          :label="$t('filters.pagination.items_per_page')"
+          hidden-label
           id="page-size"
-          :value="pageSize"
-          class="appearance-none bg-bg-subtle border border-border rounded-md ps-3 pe-8 py-1 font-mono text-sm text-fg transition-colors duration-200 hover:border-border-hover"
+          v-model="pageSizeSelectValue"
           @change="handlePageSizeChange"
-        >
-          <option v-for="size in PAGE_SIZE_OPTIONS" :key="size" :value="size">
-            {{
-              size === 'all'
-                ? $t('filters.pagination.all_yolo')
-                : $t('filters.pagination.per_page', { count: size })
-            }}
-          </option>
-        </select>
+          :items="
+            PAGE_SIZE_OPTIONS.map(size => ({
+              label:
+                size === 'all'
+                  ? $t('filters.pagination.all_yolo')
+                  : $t('filters.pagination.per_page', { count: size }),
+              value: String(size),
+            }))
+          "
+        />
         <div
           class="flex items-center absolute inset-ie-2 top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none"
           aria-hidden="true"

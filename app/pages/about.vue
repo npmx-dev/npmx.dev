@@ -2,14 +2,6 @@
 const router = useRouter()
 const canGoBack = useCanGoBack()
 
-interface GitHubContributor {
-  login: string
-  id: number
-  avatar_url: string
-  html_url: string
-  contributions: number
-}
-
 useSeoMeta({
   title: () => `${$t('about.title')} - npmx`,
   ogTitle: () => `${$t('about.title')} - npmx`,
@@ -34,12 +26,7 @@ const pmLinks = {
   vlt: 'https://www.vlt.sh/',
 }
 
-const { data: contributors, status: contributorsStatus } = useFetch<GitHubContributor[]>(
-  '/api/contributors',
-  {
-    lazy: true,
-  },
-)
+const { data: contributors, status: contributorsStatus } = useLazyFetch('/api/contributors')
 </script>
 
 <template>
@@ -52,7 +39,7 @@ const { data: contributors, status: contributorsStatus } = useFetch<GitHubContri
           </h1>
           <button
             type="button"
-            class="inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >

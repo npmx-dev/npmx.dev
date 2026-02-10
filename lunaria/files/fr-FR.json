@@ -255,6 +255,7 @@
       "view_more_details": "Voir plus de détails",
       "error_loading": "Échec du chargement des détails de provenance"
     },
+    "security_downgrade": {},
     "keywords_title": "Mots-clés",
     "compatibility": "Compatibilité",
     "card": {
@@ -315,8 +316,7 @@
     "downloads": {
       "title": "Téléchargements hebdomadaires",
       "analyze": "Analyser les téléchargements",
-      "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
-      "modal_title": "Téléchargements"
+      "community_distribution": "Voir la distribution des versions téléchargées par la communauté"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -389,7 +389,6 @@
     },
     "skeleton": {
       "loading": "Chargement des détails du paquet",
-      "weekly": "Hebdo",
       "maintainers": "Mainteneurs",
       "keywords": "Mots-clés",
       "versions": "Versions",
@@ -417,8 +416,11 @@
       "legend_estimation": "Estimation",
       "no_data": "Données non disponibles",
       "y_axis_label": "{facet} {granularity}",
+      "facet": "Facette",
+      "title": "Tendances",
       "items": {
-        "downloads": "Téléchargements"
+        "downloads": "Téléchargements",
+        "likes": "J'aime"
       }
     },
     "size": {
@@ -969,7 +971,7 @@
         "up_to_you": "À vous de décider !"
       },
       "trends": {
-        "title": "Téléchargements hebdomadaires"
+        "title": "Comparer les tendances"
       }
     }
   },

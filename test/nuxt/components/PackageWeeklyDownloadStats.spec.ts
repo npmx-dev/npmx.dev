@@ -51,7 +51,7 @@ describe('PackageWeeklyDownloadStats', () => {
         weekEnd: '2026-01-07',
         timestampStart: 1767225600000,
         timestampEnd: 1767744000000,
-        downloads: 42,
+        value: 42,
       },
     ])
 

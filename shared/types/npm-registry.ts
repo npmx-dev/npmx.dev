@@ -6,16 +6,28 @@
  * @see https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md
  */
 
-import type { Packument as PackumentWithoutLicenseObjects, PackumentVersion } from '@npm/types'
+import type {
+  Packument as PackumentWithoutLicenseObjects,
+  PackumentVersion as PackumentVersionWithoutAttestations,
+  Contact,
+} from '@npm/types'
 import type { ReadmeResponse } from './readme'
 
 // Re-export official npm types for packument/manifest
-export type { PackumentVersion, Manifest, ManifestVersion, PackageJSON } from '@npm/types'
+export type { Manifest, ManifestVersion, PackageJSON } from '@npm/types'
 
-// TODO: Remove this type override when @npm/types fixes the license field typing
-export type Packument = Omit<PackumentWithoutLicenseObjects, 'license'> & {
+type NpmTrustedPublisherEvidence = NpmSearchTrustedPublisher | NpmTrustedPublisher | true
+
+export interface PackumentVersion extends PackumentVersionWithoutAttestations {
+  _npmUser?: Contact & { trustedPublisher?: NpmTrustedPublisherEvidence }
+  dist: PackumentVersionWithoutAttestations['dist'] & { attestations?: NpmVersionAttestations }
+}
+
+export type Packument = Omit<PackumentWithoutLicenseObjects, 'license' | 'versions'> & {
   // Fix for license field being incorrectly typed in @npm/types
+  // TODO: Remove this type override when @npm/types fixes the license field typing
   license?: string | { type: string; url?: string }
+  versions: Record<string, PackumentVersion>
 }
 
 /** Install scripts info (preinstall, install, postinstall) */
@@ -30,8 +42,11 @@ export type SlimPackumentVersion = PackumentVersion & {
   installScripts?: InstallScriptsInfo
 }
 
+export type PublishTrustLevel = 'none' | 'trustedPublisher' | 'provenance'
+
 export type SlimVersion = Pick<SlimPackumentVersion, 'version' | 'deprecated' | 'tags'> & {
-  hasProvenance?: true
+  hasProvenance?: boolean
+  trustLevel?: PublishTrustLevel
 }
 
 /**
@@ -72,6 +87,8 @@ export interface SlimPackument {
   'requestedVersion': SlimPackumentVersion | null
   /** Only includes dist-tag versions (with installScripts info added per version) */
   'versions': Record<string, SlimVersion>
+  /** Lightweight security metadata for all versions */
+  'securityVersions'?: PackageVersionInfo[]
 }
 
 /**
@@ -81,6 +98,7 @@ export interface PackageVersionInfo {
   version: string
   time?: string
   hasProvenance: boolean
+  trustLevel?: PublishTrustLevel
   deprecated?: string
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex min-w-24 justify-end">
+  <div class="relative flex min-w-28 justify-end">
     <div
       class="inline-flex gap-x-1 items-center justify-center font-mono border border-border rounded-md text-sm px-4 py-2 bg-transparent text-fg border-none"
     >

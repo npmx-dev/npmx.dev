@@ -89,13 +89,22 @@ function handleKeydown(e: KeyboardEvent) {
     } else if (hasMatchInPackages) {
       addPackage(inputValueTrim)
     }
+  } else if (e.key === 'Escape') {
+    inputValue.value = ''
   }
 }
 
+const { start, stop } = useTimeoutFn(() => {
+  isInputFocused.value = false
+}, 200)
+
 function handleBlur() {
-  useTimeoutFn(() => {
-    isInputFocused.value = false
-  }, 200)
+  start()
+}
+
+function handleFocus() {
+  stop()
+  isInputFocused.value = true
 }
 </script>
 
@@ -151,7 +160,7 @@ function handleBlur() {
           size="medium"
           class="w-full min-w-25 ps-7"
           aria-autocomplete="list"
-          @focus="isInputFocused = true"
+          @focus="handleFocus"
           @blur="handleBlur"
           @keydown="handleKeydown"
         />
@@ -178,13 +187,13 @@ function handleBlur() {
             :aria-label="$t('compare.no_dependency.add_column')"
             @click="addPackage(NO_DEPENDENCY_ID)"
           >
-            <div class="text-sm text-accent italic flex items-center gap-2">
+            <span class="text-sm text-accent italic flex items-center gap-2">
               <span class="i-carbon:clean w-4 h-4" aria-hidden="true" />
               {{ $t('compare.no_dependency.typeahead_title') }}
-            </div>
-            <div class="text-xs text-fg-muted truncate mt-0.5">
+            </span>
+            <span class="text-xs text-fg-muted truncate mt-0.5">
               {{ $t('compare.no_dependency.typeahead_description') }}
-            </div>
+            </span>
           </ButtonBase>
 
           <div v-if="isSearching" class="px-4 py-3 text-sm text-fg-muted">
@@ -196,10 +205,13 @@ function handleBlur() {
             class="block w-full text-start"
             @click="addPackage(result.name)"
           >
-            <div class="font-mono text-sm text-fg">{{ result.name }}</div>
-            <div v-if="result.description" class="text-xs text-fg-muted truncate mt-0.5">
+            <span class="font-mono text-sm text-fg block">{{ result.name }}</span>
+            <span
+              v-if="result.description"
+              class="text-xs text-fg-muted truncate mt-0.5 w-full block"
+            >
               {{ result.description }}
-            </div>
+            </span>
           </ButtonBase>
         </div>
       </Transition>

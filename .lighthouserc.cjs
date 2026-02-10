@@ -35,14 +35,18 @@ module.exports = {
       chromePath: findChrome(),
       puppeteerScript: './lighthouse-setup.cjs',
       settings: {
-        onlyCategories: ['accessibility'],
+        onlyCategories: process.env.LH_PERF ? ['performance'] : ['accessibility'],
         skipAudits: ['valid-source-maps'],
       },
     },
     assert: {
-      assertions: {
-        'categories:accessibility': ['error', { minScore: 1 }],
-      },
+      assertions: process.env.LH_PERF
+        ? {
+            'cumulative-layout-shift': ['error', { maxNumericValue: 0 }],
+          }
+        : {
+            'categories:accessibility': ['error', { minScore: 1 }],
+          },
     },
     upload: {
       target: 'temporary-public-storage',

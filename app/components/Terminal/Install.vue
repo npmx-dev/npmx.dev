@@ -5,6 +5,7 @@ import type { PackageManagerId } from '~/utils/install-command'
 const props = defineProps<{
   packageName: string
   requestedVersion?: string | null
+  installVersionOverride?: string | null
   jsrInfo?: JsrPackageInfo | null
   typesPackageName?: string | null
   executableInfo?: { hasExecutable: boolean; primaryCommand?: string } | null
@@ -16,6 +17,7 @@ const { selectedPM, showTypesInInstall, copied, copyInstallCommand } = useInstal
   () => props.requestedVersion ?? null,
   () => props.jsrInfo ?? null,
   () => props.typesPackageName ?? null,
+  () => props.installVersionOverride ?? null,
 )
 
 // Generate install command parts for a specific package manager
@@ -23,7 +25,7 @@ function getInstallPartsForPM(pmId: PackageManagerId) {
   return getInstallCommandParts({
     packageName: props.packageName,
     packageManager: pmId,
-    version: props.requestedVersion,
+    version: props.installVersionOverride ?? props.requestedVersion,
     jsrInfo: props.jsrInfo,
   })
 }
@@ -112,7 +114,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
           :data-pm-cmd="pm.id"
           class="flex items-center gap-2 group/installcmd min-w-0"
         >
-          <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+          <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
           <code class="font-mono text-sm min-w-0"
             ><span
               v-for="(part, i) in getInstallPartsForPM(pm.id)"
@@ -139,7 +141,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             :data-pm-cmd="pm.id"
             class="flex items-center gap-2 min-w-0"
           >
-            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+            <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
             <code class="font-mono text-sm min-w-0"
               ><span
                 v-for="(part, i) in getTypesInstallPartsForPM(pm.id)"
@@ -174,7 +176,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             :data-pm-cmd="pm.id"
             class="flex items-center gap-2 group/runcmd"
           >
-            <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+            <span class="self-start text-fg-subtle font-mono text-sm select-none">$</span>
             <code class="font-mono text-sm"
               ><span
                 v-for="(part, i) in getRunPartsForPM(pm.id, executableInfo?.primaryCommand)"
@@ -219,7 +221,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             :data-pm-cmd="pm.id"
             class="flex items-center gap-2 group/createcmd"
           >
-            <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+            <span class="self-start text-fg-subtle font-mono text-sm select-none">$</span>
             <code class="font-mono text-sm"
               ><span
                 v-for="(part, i) in getCreatePartsForPM(pm.id)"

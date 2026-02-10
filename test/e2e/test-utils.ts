@@ -1,5 +1,5 @@
-import type { Page, Route } from '@playwright/test'
-import { test as base } from '@nuxt/test-utils/playwright'
+import type { ConsoleMessage, Page, Route } from '@playwright/test'
+import { test as base, expect } from '@nuxt/test-utils/playwright'
 import { createRequire } from 'node:module'
 
 const require = createRequire(import.meta.url)
@@ -50,12 +50,40 @@ async function setupRouteMocking(page: Page): Promise<void> {
 }
 
 /**
- * Extended test fixture with automatic external API mocking.
+ * Patterns that indicate a Vue hydration mismatch in console output.
+ *
+ * Vue always emits `console.error("Hydration completed but contains mismatches.")`
+ * in production builds when a hydration mismatch occurs.
+ *
+ * When `debug.hydration: true` is enabled (sets `__VUE_PROD_HYDRATION_MISMATCH_DETAILS__`),
+ * Vue also emits more detailed warnings (text content mismatch, node mismatch, etc.).
+ * We catch both the summary error and the detailed warnings.
+ */
+const HYDRATION_MISMATCH_PATTERNS = [
+  'Hydration completed but contains mismatches',
+  'Hydration text content mismatch',
+  'Hydration node mismatch',
+  'Hydration children mismatch',
+  'Hydration attribute mismatch',
+  'Hydration class mismatch',
+  'Hydration style mismatch',
+]
+
+function isHydrationMismatch(message: ConsoleMessage): boolean {
+  const text = message.text()
+  return HYDRATION_MISMATCH_PATTERNS.some(pattern => text.includes(pattern))
+}
+
+/**
+ * Extended test fixture with automatic external API mocking and hydration mismatch detection.
  *
  * All external API requests are intercepted and served from fixtures.
  * If a request cannot be mocked, the test will fail with a clear error.
+ *
+ * Hydration mismatches are detected via Vue's console.error output, which is always
+ * emitted in production builds when server-rendered HTML doesn't match client expectations.
  */
-export const test = base.extend<{ mockExternalApis: void }>({
+export const test = base.extend<{ mockExternalApis: void; hydrationErrors: string[] }>({
   mockExternalApis: [
     async ({ page }, use) => {
       await setupRouteMocking(page)
@@ -63,6 +91,18 @@ export const test = base.extend<{ mockExternalApis: void }>({
     },
     { auto: true },
   ],
+
+  hydrationErrors: async ({ page }, use) => {
+    const errors: string[] = []
+
+    page.on('console', message => {
+      if (isHydrationMismatch(message)) {
+        errors.push(message.text())
+      }
+    })
+
+    await use(errors)
+  },
 })
 
-export { expect } from '@nuxt/test-utils/playwright'
+export { expect }

@@ -17,6 +17,12 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
   ],
 
+  $test: {
+    debug: {
+      hydration: true,
+    },
+  },
+
   colorMode: {
     preference: 'system',
     fallback: 'dark',
@@ -102,7 +108,7 @@ export default defineNuxtConfig({
     '/api/registry/package-meta/**': { isr: 300 },
     '/:pkg/.well-known/skills/**': { isr: 3600 },
     '/:scope/:pkg/.well-known/skills/**': { isr: 3600 },
-    '/__og-image__/**': { isr: getISRConfig(60) },
+    '/__og-image__/**': getISRConfig(60),
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
@@ -117,10 +123,14 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/package/:name': { isr: getISRConfig(60, true) },
-    '/package/:name/v/:version': { isr: getISRConfig(60, true) },
-    '/package/:org/:name': { isr: getISRConfig(60, true) },
-    '/package/:org/:name/v/:version': { isr: getISRConfig(60, true) },
+    '/package/:name': getISRConfig(60, { fallback: 'html' }),
+    '/package/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
+    '/package/:name/v/:version': getISRConfig(60, { fallback: 'html' }),
+    '/package/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
+    '/package/:org/:name': getISRConfig(60, { fallback: 'html' }),
+    '/package/:org/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
+    '/package/:org/:name/v/:version': getISRConfig(60, { fallback: 'html' }),
+    '/package/:org/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
     // infinite cache (versioned - doesn't change)
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/package-docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -158,6 +168,11 @@ export default defineNuxtConfig({
         '@shikijs/core',
       ],
       external: ['@deno/doc'],
+    },
+    esbuild: {
+      options: {
+        target: 'es2024',
+      },
     },
     rollupConfig: {
       output: {
@@ -283,9 +298,9 @@ export default defineNuxtConfig({
         'semver',
         'validate-npm-package-name',
         '@atproto/lex',
-        '@atproto/syntax',
         'fast-npm-meta',
         '@floating-ui/vue',
+        'algoliasearch/lite',
       ],
     },
   },
@@ -303,14 +318,23 @@ export default defineNuxtConfig({
   },
 })
 
-function getISRConfig(expirationSeconds: number, fallback = false) {
-  if (fallback) {
+interface ISRConfigOptions {
+  fallback?: 'html' | 'json'
+}
+function getISRConfig(expirationSeconds: number, options: ISRConfigOptions = {}) {
+  if (options.fallback) {
     return {
-      expiration: expirationSeconds,
-      fallback: 'spa.prerender-fallback.html',
-    } as { expiration: number }
+      isr: {
+        expiration: expirationSeconds,
+        fallback:
+          options.fallback === 'html' ? 'spa.prerender-fallback.html' : 'payload-fallback.json',
+        initialHeaders: options.fallback === 'json' ? { 'content-type': 'application/json' } : {},
+      } as { expiration: number },
+    }
   }
   return {
-    expiration: expirationSeconds,
+    isr: {
+      expiration: expirationSeconds,
+    },
   }
 }
