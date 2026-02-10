@@ -80,8 +80,15 @@ const bytesFormatter = useBytesFormatter()
               :to="getCodeRoute(parentPath || undefined)"
               class="py-2 px-4 font-mono text-sm w-full"
               no-underline
-              classicon="i-carbon:folder text-yellow-600"
             >
+              <svg
+                class="w-4 h-4 me-1 shrink-0 text-yellow-600"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <use :href="`/file-tree-sprite.svg#${ADDITIONAL_ICONS['folder']}`" />
+              </svg>
               <span class="w-full flex justify-self-stretch items-center gap-2"> .. </span>
             </LinkBase>
           </td>
@@ -98,12 +105,18 @@ const bytesFormatter = useBytesFormatter()
               :to="getCodeRoute(node.path)"
               class="py-2 px-4 font-mono text-sm w-full"
               no-underline
-              :classicon="
-                node.type === 'directory'
-                  ? 'i-carbon:folder text-yellow-600'
-                  : getFileIcon(node.name)
-              "
             >
+              <svg
+                class="w-4 h-4 me-1 shrink-0"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                :class="node.type === 'directory' ? 'text-yellow-600' : undefined"
+                aria-hidden="true"
+              >
+                <use
+                  :href="`/file-tree-sprite.svg#${node.type === 'directory' ? ADDITIONAL_ICONS['folder'] : getFileIcon(node.name)}`"
+                />
+              </svg>
               <span class="w-full flex justify-self-stretch items-center gap-2">
                 <span class="flex-1">{{ node.name }}</span>
                 <span
