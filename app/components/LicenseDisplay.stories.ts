@@ -3,7 +3,6 @@ import Component from './LicenseDisplay.vue'
 
 const meta = {
   component: Component,
-  tags: ['autodocs'],
   argTypes: {
     license: {
       control: { type: 'text' },

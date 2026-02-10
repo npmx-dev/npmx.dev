@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@nuxtjs/storybook'
-import { expect, fn, userEvent, within } from '@storybook/test'
+import { expect, fn, userEvent, within } from 'storybook/test'
 import Component from './Base.vue'
 
 const meta = {
@@ -76,8 +76,7 @@ export const NoCorrect: Story = {
   args: {
     noCorrect: true,
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+  play: async ({ canvas }) => {
     const input = canvas.getByRole('textbox')
 
     await expect(input).toHaveAttribute('autocapitalize', 'off')

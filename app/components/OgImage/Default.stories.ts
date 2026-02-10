@@ -3,7 +3,6 @@ import Component from './Default.vue'
 
 const meta = {
   component: Component,
-  tags: ['autodocs'],
   decorators: [
     () => ({
       template: '<div style="width:1200px;height:630px; outline:1px solid red"><story/></div>',

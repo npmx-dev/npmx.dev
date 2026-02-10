@@ -4,7 +4,6 @@ import type { WeeklyDownloadPoint } from '~/composables/useCharts'
 
 const meta = {
   component: Component,
-  tags: ['autodocs'],
   argTypes: {
     weeklyDownloads: {
       control: { type: 'object' },

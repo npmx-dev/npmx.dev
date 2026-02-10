@@ -1,13 +1,36 @@
 <script setup lang="ts">
 const props = withDefaults(
   defineProps<{
+    /**
+     * Whether the button is disabled
+     */
     disabled?: boolean
+    /**
+     * HTML button type attribute
+     * @default "button"
+     */
     type?: 'button' | 'submit'
+    /**
+     * Button visual style variant
+     * @default "secondary"
+     */
     variant?: 'primary' | 'secondary'
+    /**
+     * Button size
+     * @default "medium"
+     */
     size?: 'small' | 'medium'
+    /**
+     * Keyboard shortcut hint
+     */
     ariaKeyshortcuts?: string
+    /**
+     * Whether the button should take full width
+     */
     block?: boolean
-
+    /**
+     * Icon class (e.g., i-carbon-add)
+     */
     classicon?: string
   }>(),
   {
