@@ -600,3 +600,13 @@ const endDate = computed(() => {
   animation: fadeInUp 350ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 </style>
+
+<style>
+/* Override default placement of the refresh button to have it to the minimap's side */
+@media screen and (min-width: 767px) {
+  #version-distribution .vue-data-ui-refresh-button {
+    top: -0.6rem !important;
+    left: calc(100% + 2rem) !important;
+  }
+}
+</style>
