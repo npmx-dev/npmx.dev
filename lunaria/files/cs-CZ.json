@@ -890,8 +890,7 @@
         "types_included": "Zahrnuté",
         "types_none": "Žádné",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
-      },
-      "trends": {}
+      }
     }
   },
   "privacy_policy": {

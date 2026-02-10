@@ -942,8 +942,7 @@
         "types_none": "Nessuno",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "A tua scelta!"
-      },
-      "trends": {}
+      }
     }
   },
   "privacy_policy": {

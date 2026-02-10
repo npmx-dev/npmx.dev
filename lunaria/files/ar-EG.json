@@ -927,8 +927,7 @@
         "types_none": "الأنواع غير مضمّنة",
         "vulnerabilities_summary": "{count} ({critical} حرجة/{high} عالية)",
         "up_to_you": "الأمر متروك لك!"
-      },
-      "trends": {}
+      }
     }
   },
   "privacy_policy": {

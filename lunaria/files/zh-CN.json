@@ -966,9 +966,6 @@
         "types_none": "无",
         "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）",
         "up_to_you": "由你决定!"
-      },
-      "trends": {
-        "title": "每周下载量"
       }
     }
   },

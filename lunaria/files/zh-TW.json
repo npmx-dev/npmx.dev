@@ -916,8 +916,7 @@
         "types_included": "包含",
         "types_none": "無",
         "vulnerabilities_summary": "{count}（{critical} 嚴重/{high} 高）"
-      },
-      "trends": {}
+      }
     }
   },
   "privacy_policy": {

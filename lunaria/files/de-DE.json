@@ -958,9 +958,6 @@
         "types_none": "Keine",
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "Deine Entscheidung!"
-      },
-      "trends": {
-        "title": "Wöchentliche Downloads"
       }
     }
   },
