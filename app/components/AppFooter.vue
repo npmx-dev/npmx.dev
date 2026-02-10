@@ -23,7 +23,7 @@ const showModal = () => modalRef.value?.showModal?.()
           <LinkBase :to="{ name: 'privacy' }">
             {{ $t('privacy_policy.title') }}
           </LinkBase>
-          <LinkBase :to="{ name: 'accessibility' }" :title="$t('a11y.title')">
+          <LinkBase :to="{ name: 'accessibility' }">
             {{ $t('a11y.footer_title') }}
           </LinkBase>
           <button
