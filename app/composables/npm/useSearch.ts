@@ -4,6 +4,14 @@ import type { AlgoliaMultiSearchChecks } from './useAlgoliaSearch'
 import { type SearchSuggestion, emptySearchResponse, parseSuggestionIntent } from './search-utils'
 import { isValidNewPackageName, checkPackageExists } from '~/utils/package-name'
 
+function emptySearchPayload() {
+  return {
+    searchResponse: emptySearchResponse(),
+    suggestions: [] as SearchSuggestion[],
+    packageAvailability: null as { name: string; available: boolean } | null,
+  }
+}
+
 export interface SearchOptions {
   size?: number
 }
@@ -142,7 +150,7 @@ export function useSearch(
 
       if (!q.trim()) {
         isRateLimited.value = false
-        return emptySearchResponse()
+        return emptySearchPayload()
       }
 
       const opts = toValue(options)
@@ -156,29 +164,37 @@ export function useSearch(
           const result = await algoliaMultiSearch(q, { size: opts.size ?? 25 }, checks)
 
           if (q !== toValue(query)) {
-            return emptySearchResponse()
+            return emptySearchPayload()
           }
 
           isRateLimited.value = false
           processAlgoliaChecks(q, checks, result)
-          return result.search
+          return {
+            searchResponse: result.search,
+            suggestions: suggestions.value,
+            packageAvailability: packageAvailability.value,
+          }
         }
 
         const response = await searchAlgolia(q, { size: opts.size ?? 25 })
 
         if (q !== toValue(query)) {
-          return emptySearchResponse()
+          return emptySearchPayload()
         }
 
         isRateLimited.value = false
-        return response
+        return {
+          searchResponse: response,
+          suggestions: [],
+          packageAvailability: null,
+        }
       }
 
       try {
         const response = await searchNpm(q, { size: opts.size ?? 25 }, signal)
 
         if (q !== toValue(query)) {
-          return emptySearchResponse()
+          return emptySearchPayload()
         }
 
         cache.value = {
@@ -189,7 +205,11 @@ export function useSearch(
         }
 
         isRateLimited.value = false
-        return response
+        return {
+          searchResponse: response,
+          suggestions: [],
+          packageAvailability: null,
+        }
       } catch (error: unknown) {
         const errorMessage = (error as { message?: string })?.message || String(error)
         const isRateLimitError =
@@ -197,12 +217,29 @@ export function useSearch(
 
         if (isRateLimitError) {
           isRateLimited.value = true
-          return emptySearchResponse()
+          return emptySearchPayload()
         }
         throw error
       }
     },
-    { default: emptySearchResponse },
+    { default: emptySearchPayload },
+  )
+
+  watch(
+    [() => asyncData.data.value.suggestions, () => suggestions.value],
+    ([payloadSuggestions, localSuggestions]) => {
+      if (!payloadSuggestions.length && !localSuggestions.length) return
+      suggestions.value = payloadSuggestions.length ? payloadSuggestions : localSuggestions
+    },
+    { immediate: true },
+  )
+
+  watch(
+    [() => asyncData.data.value?.packageAvailability, () => packageAvailability.value],
+    ([payloadPackageAvailability, localPackageAvailability]) => {
+      packageAvailability.value = payloadPackageAvailability || localPackageAvailability
+    },
+    { immediate: true },
   )
 
   async function fetchMore(targetSize: number): Promise<void> {
@@ -222,12 +259,12 @@ export function useSearch(
 
     // Seed cache from asyncData for Algolia (which skips cache on initial fetch)
     if (!cache.value && asyncData.data.value) {
-      const d = asyncData.data.value
+      const { searchResponse } = asyncData.data.value
       cache.value = {
         query: q,
         provider,
-        objects: [...d.objects],
-        total: d.total,
+        objects: [...searchResponse.objects],
+        total: searchResponse.total,
       }
     }
 
@@ -306,10 +343,10 @@ export function useSearch(
         time: new Date().toISOString(),
       }
     }
-    return asyncData.data.value
+    return asyncData.data.value?.searchResponse ?? null
   })
 
-  if (import.meta.client && asyncData.data.value?.isStale) {
+  if (import.meta.client && asyncData.data.value?.searchResponse.isStale) {
     onMounted(() => {
       asyncData.refresh()
     })
