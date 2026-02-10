@@ -16,28 +16,33 @@ import type {
   YearlyDataPoint,
 } from '~/types/chart'
 
-const props = defineProps<{
-  // For single package downloads history
-  weeklyDownloads?: WeeklyDataPoint[]
-  inModal?: boolean
+const props = withDefaults(
+  defineProps<{
+    // For single package downloads history
+    weeklyDownloads?: WeeklyDataPoint[]
+    inModal?: boolean
 
-  /**
-   * Backward compatible single package mode.
-   * Used when `weeklyDownloads` is provided.
-   */
-  packageName?: string
+    /**
+     * Backward compatible single package mode.
+     * Used when `weeklyDownloads` is provided.
+     */
+    packageName?: string
 
-  /**
-   * Multi-package mode.
-   * Used when `weeklyDownloads` is not provided.
-   */
-  packageNames?: string[]
-  createdIso?: string | null
+    /**
+     * Multi-package mode.
+     * Used when `weeklyDownloads` is not provided.
+     */
+    packageNames?: string[]
+    createdIso?: string | null
 
-  /** When true, shows facet selector (e.g. Downloads / Likes). */
-  showFacetSelector?: boolean
-  permalink?: boolean
-}>()
+    /** When true, shows facet selector (e.g. Downloads / Likes). */
+    showFacetSelector?: boolean
+    permalink?: boolean
+  }>(),
+  {
+    permalink: false,
+  },
+)
 
 const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
