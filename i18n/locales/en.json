@@ -1067,34 +1067,32 @@
     }
   },
   "a11y": {
-    "title": "accessibility statement",
+    "title": "accessibility",
     "footer_title": "a11y",
-    "welcome": "We are committed to making the {app} site accessible to everyone.",
-    "commitment": {
-      "title": "Commitment to Accessibility",
-      "p1": "We continuously work to improve the user experience for everyone, applying relevant accessibility standards to ensure our site can be used by the widest possible audience, regardless of their abilities."
+    "welcome": "We want {app} to be usable by as many people as possible.",
+    "approach": {
+      "title": "Our approach",
+      "p1": "We try to follow the Web Content Accessibility Guidelines (WCAG) 2.2 and use them as a reference when building features. We don't claim full conformance with any level of WCAG — accessibility is a continual process and there is always more work to do.",
+      "p2": "This site is an {about}. Accessibility improvements are made incrementally as part of our regular development.",
+      "about_link": "open-source, community-driven project"
     },
-    "compliance": {
-      "title": "Regulatory Framework and Compliance Status",
-      "p1": "This site has been developed to comply with the {guidelines} of the World Wide Web Consortium (W3C), aiming for a {aa} conformance level.",
-      "guidelines": "Web Content Accessibility Guidelines (WCAG 2.1)",
-      "aa": "Double-A (AA)",
-      "wcag_alt": "W3C WAI-AA WCAG 2.1 Conformance site (opens in a new window)"
+    "measures": {
+      "title": "What we do",
+      "p1": "Some of the things we aim to do across the site:",
+      "li1": "Use semantic HTML and ARIA attributes where appropriate.",
+      "li2": "Use relative text sizes so you can adjust them in your browser.",
+      "li3": "Support keyboard navigation throughout the interface.",
+      "li4": "Respect the prefers-reduced-motion and prefers-color-scheme media queries.",
+      "li5": "Design with sufficient color contrast in mind.",
+      "li6": "Ensure essential content is available without JavaScript, though some interactive features require it."
     },
-    "implementation": {
-      "title": "Implementation Measures",
-      "p1": "In addition to following the regulatory framework, we have taken the following measures to ensure the accessibility of this site:",
-      "li1": "The page semantics have been built using standard HTML5 and ARIA roles where necessary.",
-      "li2": "Text sizes are relative, allowing the user to adjust their size from the browser.",
-      "li3": "The design is responsive and allows for magnification (zoom) up to 250% without loss of content or functionality, exceeding the 200% minimum required by WCAG 2.1.",
-      "li4": "The color palette meets Level AA contrast ratios in its standard themes.",
-      "li5": "Keyboard navigation is logical and predictable.",
-      "li6": "Animations and transitions are reduced or eliminated for users who have requested reduced motion in their operating system or browser preferences.",
-      "li7": "The site employs progressive enhancement, ensuring essential content remains accessible without JavaScript, although some personalization features may require it."
+    "limitations": {
+      "title": "Known limitations",
+      "p1": "Some parts of the site — particularly third-party content like package READMEs — may not meet accessibility standards. We are working to improve these areas over time."
     },
     "contact": {
-      "title": "Contact and Feedback",
-      "p1": "Accessibility is an ongoing effort. If you encounter any barriers or have any suggestions to improve the accessibility of {app}, please do not hesitate to contact us by opening an issue on our {link}.",
+      "title": "Feedback",
+      "p1": "If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
       "link": "GitHub repository"
     }
   }
