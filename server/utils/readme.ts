@@ -183,6 +183,33 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
 }
 
+/** These path on npmjs.com don't belong to packages or search, so we shouldn't try to replace them with npmx.dev urls */
+const reservedPathsNpmJs = [
+  'products',
+  'login',
+  'signup',
+  'advisories',
+  'blog',
+  'about',
+  'press',
+  'policies',
+]
+
+const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
+  if (url.host !== 'www.npmjs.com' && url.host !== 'npmjs.com') {
+    return false
+  }
+
+  if (
+    url.pathname === '/' ||
+    reservedPathsNpmJs.some(path => url.pathname.startsWith(`/${path}`))
+  ) {
+    return false
+  }
+
+  return true
+}
+
 /**
  * Resolve a relative URL to an absolute URL.
  * If repository info is available, resolve to provider's raw file URLs.
@@ -199,6 +226,11 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
     try {
       const parsed = new URL(url, 'https://example.com')
       if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        // Redirect npmjs urls to ourself
+        console.log({ isnpm: isNpmJsUrlThatCanBeRedirected(parsed) })
+        if (isNpmJsUrlThatCanBeRedirected(parsed)) {
+          return parsed.pathname + parsed.search + parsed.hash
+        }
         return url
       }
     } catch {
@@ -362,6 +394,7 @@ ${html}
   // Resolve link URLs, add security attributes, and collect playground links
   renderer.link = function ({ href, title, tokens }: Tokens.Link) {
     const resolvedHref = resolveUrl(href, packageName, repoInfo)
+    console.log({ resolvedHref })
     const text = this.parser.parseInline(tokens)
     const titleAttr = title ? ` title="${title}"` : ''
 

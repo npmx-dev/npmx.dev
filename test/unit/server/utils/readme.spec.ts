@@ -306,6 +306,29 @@ describe('Markdown File URL Resolution', () => {
       )
     })
   })
+
+  describe('npm.js urls', () => {
+    it('redirects npmjs.com urls to local', async () => {
+      const markdown = `[Some npmjs.com link](https://www.npmjs.com/package/test-pkg)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="/package/test-pkg"')
+    })
+
+    it('redirects npmjs.com urls to local (no www and http)', async () => {
+      const markdown = `[Some npmjs.com link](http://npmjs.com/package/test-pkg)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="/package/test-pkg"')
+    })
+
+    it('does not redirect npmjs.com to local if they are in the list of exceptions', async () => {
+      const markdown = `[Root Contributing](https://www.npmjs.com/products)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="https://www.npmjs.com/products"')
+    })
+  })
 })
 
 describe('Markdown Content Extraction', () => {
