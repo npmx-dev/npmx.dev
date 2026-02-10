@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
-import { getFileIcon } from '~/utils/file-icons'
+import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
 
 const props = defineProps<{
   tree: PackageFileTree[]
@@ -57,14 +57,17 @@ watch(
           @click="toggleDir(node.path)"
           :classicon="isExpanded(node.path) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right'"
         >
-          <span
-            class="w-4 h-4 shrink-0"
-            :class="
-              isExpanded(node.path)
-                ? 'i-carbon:folder-open text-yellow-500'
-                : 'i-carbon:folder text-yellow-600'
-            "
-          />
+          <svg
+            class="size-[1em] me-1 shrink-0"
+            :class="isExpanded(node.path) ? 'text-yellow-500' : 'text-yellow-600'"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <use
+              :href="`/file-tree-sprite.svg#${isExpanded(node.path) ? ADDITIONAL_ICONS['folder-open'] : ADDITIONAL_ICONS['folder']}`"
+            />
+          </svg>
           <span class="truncate">{{ node.name }}</span>
         </ButtonBase>
         <CodeFileTree
@@ -86,8 +89,15 @@ watch(
           class="w-full justify-start! rounded-none! border-none!"
           block
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
-          :classicon="getFileIcon(node.name)"
         >
+          <svg
+            class="size-[1em] me-1 shrink-0"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <use :href="`/file-tree-sprite.svg#${getFileIcon(node.name)}`" />
+          </svg>
           <span class="truncate">{{ node.name }}</span>
         </LinkBase>
       </template>

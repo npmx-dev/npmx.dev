@@ -333,9 +333,9 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       name: 'Cymraeg',
     },*/
   {
-    code: 'no-NO',
-    file: 'no-NO.json',
-    name: 'Norsk',
+    code: 'nb-NO',
+    file: 'nb-NO.json',
+    name: 'Norsk (Bokmål)',
   },
 ]
 
