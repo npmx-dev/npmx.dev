@@ -144,33 +144,30 @@ const id = useId()
 @media (forced-colors: active) {
   label > span {
     background: Canvas;
-    color: var(--bg);
+    color: var(--fg);
     forced-color-adjust: none;
   }
 
   label:has(.toggle:checked) > span {
     background: Highlight;
-    color: var(--fg);
+    color: var(--bg);
   }
 
   .toggle::before {
     forced-color-adjust: none;
+    background-color: Highlight;
   }
 
   @media (prefers-color-scheme: dark) {
-    .toggle::before {
-      background-color: Highlight;
-    }
-
     label > span {
       background: Canvas;
-      color: var(--fg);
+      color: var(--bg);
       forced-color-adjust: none;
     }
 
     label:has(.toggle:checked) > span {
       background: Highlight;
-      color: var(--bg);
+      color: var(--fg);
     }
   }
 
