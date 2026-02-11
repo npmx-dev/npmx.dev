@@ -494,7 +494,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                     })
                   "
                   class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
-                ></LinkBase>
+                />
               </div>
               <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
                 <span
@@ -563,11 +563,9 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                   v-if="getMatchedRelease(v.version, props.releases ?? [])"
                   :to="getMatchedRelease(v.version, props.releases ?? [])!.url"
                   :title="$t('package.releases.view_release_for_version', { version: v.version })"
+                  classicon="i-carbon-catalog size-3"
                   class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
-                >
-                  <span class="i-carbon-catalog size-3" aria-hidden="true" />
-                  <span class="sr-only">{{ $t('package.releases.view_release') }}</span>
-                </LinkBase>
+                />
               </div>
               <div class="flex items-center gap-2 shrink-0">
                 <DateTime
