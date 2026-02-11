@@ -107,7 +107,7 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
     const version = requestedVersion.value
     return version ? `${base}/v/${version}` : base
   },
-  { default: () => ({ html: '', md: '', playgroundLinks: [], toc: [] }) },
+  { default: () => ({ html: '', mdExists: false, playgroundLinks: [], toc: [] }) },
 )
 
 const {
