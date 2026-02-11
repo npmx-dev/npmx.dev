@@ -13,7 +13,8 @@ import { resolvePackageReadmeSource } from '#server/utils/readme-loaders'
 export default defineCachedEventHandler(
   async event => {
     try {
-      const { packageName, markdown, repoInfo } = await resolvePackageReadmeSource(event)
+      const packagePath = getRouterParam(event, 'pkg') ?? ''
+      const { packageName, markdown, repoInfo } = await resolvePackageReadmeSource(packagePath)
 
       if (!markdown) {
         return { html: '', mdExists: false, playgroundLinks: [], toc: [] }

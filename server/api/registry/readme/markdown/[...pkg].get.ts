@@ -4,7 +4,8 @@ import { resolvePackageReadmeSource } from '#server/utils/readme-loaders'
 
 export default async function getMarkdownReadme(event: H3Event) {
   try {
-    return await resolvePackageReadmeSource(event)
+    const packagePath = getRouterParam(event, 'pkg') ?? ''
+    return await resolvePackageReadmeSource(packagePath)
   } catch (error: unknown) {
     handleApiError(error, {
       statusCode: 502,

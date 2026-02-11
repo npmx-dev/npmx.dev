@@ -46,9 +46,9 @@ export async function fetchReadmeFromJsdelivr(
   return null
 }
 
-export const resolvePackageReadmeSource = defineCachedEventHandler(
-  async event => {
-    const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
+export const resolvePackageReadmeSource = defineCachedFunction(
+  async (packagePath: string) => {
+    const pkgParamSegments = packagePath.split('/')
 
     const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
 
@@ -107,9 +107,6 @@ export const resolvePackageReadmeSource = defineCachedEventHandler(
   {
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
-    getKey: event => {
-      const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `readme-source:v8:${pkg.replace(/\/+$/, '').trim()}`
-    },
+    getKey: (packagePath: string) => packagePath,
   },
 )
