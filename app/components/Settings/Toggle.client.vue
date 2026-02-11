@@ -86,7 +86,6 @@ label:has(input:hover) .toggle--background {
 
 /* Circle that moves */
 .toggle--checkbox:checked + .toggle--background:before {
-  animation-fill-mode: forwards;
   transition: transform 200ms ease-in-out;
 }
 
