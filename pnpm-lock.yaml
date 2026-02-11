@@ -131,6 +131,9 @@ importers:
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
+      ipaddr.js:
+        specifier: 2.3.0
+        version: 2.3.0
       marked:
         specifier: 17.0.1
         version: 17.0.1

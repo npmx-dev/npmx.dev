@@ -5,6 +5,7 @@ import type { ReadmeResponse, TocItem } from '#shared/types/readme'
 import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
 import { highlightCodeSync } from './shiki'
 import { convertToEmoji } from '#shared/utils/emoji'
+import { toProxiedImageUrl } from '#server/utils/image-proxy'
 
 /**
  * Playground provider configuration
@@ -289,12 +290,16 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
 // Convert blob/src URLs to raw URLs for images across all providers
 // e.g. https://github.com/nuxt/nuxt/blob/main/.github/assets/banner.svg
 //   → https://github.com/nuxt/nuxt/raw/main/.github/assets/banner.svg
+//
+// External images are proxied through /api/registry/image-proxy to prevent
+// third-party servers from collecting visitor IP addresses and User-Agent data.
+// See: https://github.com/npmx-dev/npmx.dev/issues/1138
 function resolveImageUrl(url: string, packageName: string, repoInfo?: RepositoryInfo): string {
   const resolved = resolveUrl(url, packageName, repoInfo)
-  if (repoInfo?.provider) {
-    return convertBlobOrFileToRawUrl(resolved, repoInfo.provider)
-  }
-  return resolved
+  const rawUrl = repoInfo?.provider
+    ? convertBlobOrFileToRawUrl(resolved, repoInfo.provider)
+    : resolved
+  return toProxiedImageUrl(rawUrl)
 }
 
 // Helper to prefix id attributes with 'user-content-'
