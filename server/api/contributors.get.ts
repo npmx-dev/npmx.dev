@@ -6,6 +6,24 @@ export interface GitHubContributor {
   contributions: number
 }
 
+// TODO: stub - need to fetch list of role members from somewhere to avoid hardcoding (
+type Role = 'stewards' | 'core' | 'maintainers'
+const roleMembers: Record<Role, GitHubContributor['login'][]> = {
+  stewards: ['danielroe', 'patak-dev'],
+  core: [],
+  maintainers: [],
+}
+
+function getRoleOrder(login: GitHubContributor['login']) {
+  return roleMembers.stewards.includes(login)
+    ? 0
+    : roleMembers.core.includes(login)
+      ? 1
+      : roleMembers.maintainers.includes(login)
+        ? 2
+        : 3
+}
+
 export default defineCachedEventHandler(
   async (): Promise<GitHubContributor[]> => {
     const allContributors: GitHubContributor[] = []
@@ -46,8 +64,14 @@ export default defineCachedEventHandler(
       page++
     }
 
-    // Filter out bots
-    return allContributors.filter(c => !c.login.includes('[bot]'))
+    return (
+      allContributors
+        // Filter out bots
+        .filter(c => !c.login.includes('[bot]'))
+
+        // Sort by role (steward > core > maintainer > contributor)
+        .sort((a, b) => getRoleOrder(a.login) - getRoleOrder(b.login))
+    )
   },
   {
     maxAge: 3600, // Cache for 1 hour
