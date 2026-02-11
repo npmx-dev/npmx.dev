@@ -307,7 +307,7 @@ export const useConnector = createSharedComposable(function useConnector() {
       method: 'POST',
       body: {
         otp,
-        interactive: settings.value.connector.webAuth,
+        interactive: !otp,
         openUrls: settings.value.connector.autoOpenURL,
       },
     })

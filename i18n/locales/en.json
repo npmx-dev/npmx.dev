@@ -125,6 +125,7 @@
     "end_of_results": "End of results",
     "try_again": "Try again",
     "close": "Close",
+    "or": "or",
     "retry": "Retry",
     "copy": "copy",
     "copied": "copied!",
@@ -472,7 +473,6 @@
       "warning_text": "This allows npmx to access your npm CLI. Only connect to sites you trust.",
       "connect": "Connect",
       "connecting": "Connecting...",
-      "web_auth": "Use web authentication",
       "auto_open_url": "Automatically open auth page"
     }
   },
