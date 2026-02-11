@@ -1433,6 +1433,7 @@ watch(selectedMetric, value => {
           v-if="showFacetSelector"
           id="trends-metric-select"
           v-model="selectedMetric"
+          :disabled="activeMetricState.pending"
           :items="METRICS.map(m => ({ label: m.label, value: m.id }))"
           :label="$t('package.trends.facet')"
         />
@@ -1466,7 +1467,6 @@ watch(selectedMetric, value => {
               <InputBase
                 id="startDate"
                 v-model="startDate"
-                :disabled="activeMetricState.pending"
                 type="date"
                 class="w-full min-w-0 bg-transparent ps-7"
                 size="medium"
@@ -1486,7 +1486,6 @@ watch(selectedMetric, value => {
               <InputBase
                 id="endDate"
                 v-model="endDate"
-                :disabled="activeMetricState.pending"
                 type="date"
                 class="w-full min-w-0 bg-transparent ps-7"
                 size="medium"
