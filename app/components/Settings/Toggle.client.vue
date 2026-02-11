@@ -58,7 +58,7 @@ input {
   position: relative;
 }
 
-label:has(input:focus) .toggle--background {
+label:has(input:focus-visible) .toggle--background {
   outline: solid 2px var(--fg);
   outline-offset: 2px;
 }
