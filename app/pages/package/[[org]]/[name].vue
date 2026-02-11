@@ -611,7 +611,7 @@ onKeyStroke(
   e => {
     if (!currentVersionRelease.value) return
     e.preventDefault()
-    navigateTo(currentVersionRelease.value.url)
+    navigateTo(currentVersionRelease.value.url, { external: true })
   },
   { dedupe: true },
 )
@@ -764,7 +764,7 @@ const showSkeleton = shallowRef(false)
               variant="button-secondary"
               :to="currentVersionRelease.url"
               aria-keyshortcuts="r"
-              classicon="i-carbon-catalog"
+              classicon="i-carbon:catalog"
             >
               {{ $t('package.links.release') }}
             </LinkBase>
