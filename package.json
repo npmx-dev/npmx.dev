@@ -27,6 +27,7 @@
     "lint:css": "node scripts/unocss-checker.ts",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
+    "mock-connector": "pnpm --filter npmx-connector dev:mock",
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
     "postinstall": "pnpm rebuild @resvg/resvg-js && pnpm generate:lexicons && nuxt prepare && simple-git-hooks",

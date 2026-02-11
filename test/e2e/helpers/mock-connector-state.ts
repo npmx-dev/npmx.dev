@@ -1,37 +1,14 @@
-/**
- * Re-export from shared test utilities for backward compatibility.
- * The actual implementation is in shared/test-utils/ for use by both
- * Playwright E2E tests and Vitest browser tests.
- */
+/** Singleton state management for E2E tests. */
 
-export {
-  // Types
-  type OrgRole,
-  type AccessLevel,
-  type MockConnectorConfig,
-  type MockOrgData,
-  type MockPackageData,
-  type MockConnectorStateData as MockConnectorState,
-  type NewOperationInput,
-  type ExecuteOptions,
-  type ExecuteResult,
-  type PendingOperation,
-  type OperationType,
-  type OperationResult,
-
-  // State management
-  MockConnectorStateManager,
-  createMockConnectorState,
-  DEFAULT_MOCK_CONFIG,
-} from '../../test-utils'
-
-// Singleton management for the mock server
 import {
   MockConnectorStateManager,
   createMockConnectorState,
   DEFAULT_MOCK_CONFIG,
   type MockConnectorConfig,
-} from '../../test-utils'
+} from '../../../cli/src/mock-state.ts'
+
+export { MockConnectorStateManager, createMockConnectorState, DEFAULT_MOCK_CONFIG }
+export type { MockConnectorConfig }
 
 let globalStateManager: MockConnectorStateManager | null = null
 

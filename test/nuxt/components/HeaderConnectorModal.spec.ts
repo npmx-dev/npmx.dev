@@ -1,10 +1,3 @@
-/**
- * Tests for HeaderConnectorModal component.
- *
- * Uses the mock connector composable to test various states
- * without needing an actual HTTP server.
- */
-
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { ref, computed, readonly, nextTick } from 'vue'
@@ -41,10 +34,18 @@ function createMockUseConnector() {
       mockState.value.operations.filter(op => op.status === 'approved'),
     ),
     completedOperations: computed(() =>
-      mockState.value.operations.filter(op => op.status === 'completed'),
+      mockState.value.operations.filter(
+        op => op.status === 'completed' || (op.status === 'failed' && !op.result?.requiresOtp),
+      ),
     ),
     activeOperations: computed(() =>
-      mockState.value.operations.filter(op => op.status !== 'completed'),
+      mockState.value.operations.filter(
+        op =>
+          op.status === 'pending' ||
+          op.status === 'approved' ||
+          op.status === 'running' ||
+          (op.status === 'failed' && op.result?.requiresOtp),
+      ),
     ),
     hasOperations: computed(() => mockState.value.operations.length > 0),
     hasPendingOperations: computed(() =>
@@ -54,10 +55,18 @@ function createMockUseConnector() {
       mockState.value.operations.some(op => op.status === 'approved'),
     ),
     hasActiveOperations: computed(() =>
-      mockState.value.operations.some(op => op.status !== 'completed'),
+      mockState.value.operations.some(
+        op =>
+          op.status === 'pending' ||
+          op.status === 'approved' ||
+          op.status === 'running' ||
+          (op.status === 'failed' && op.result?.requiresOtp),
+      ),
     ),
     hasCompletedOperations: computed(() =>
-      mockState.value.operations.some(op => op.status === 'completed'),
+      mockState.value.operations.some(
+        op => op.status === 'completed' || (op.status === 'failed' && !op.result?.requiresOtp),
+      ),
     ),
     connect: vi.fn().mockResolvedValue(true),
     reconnect: vi.fn().mockResolvedValue(true),

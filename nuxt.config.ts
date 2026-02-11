@@ -272,6 +272,9 @@ export default defineNuxtConfig({
       compilerOptions: {
         noUnusedLocals: true,
         allowImportingTsExtensions: true,
+        paths: {
+          '#cli/*': ['../cli/src/*'],
+        },
       },
       include: ['../test/unit/app/**/*.ts'],
     },
@@ -281,8 +284,13 @@ export default defineNuxtConfig({
     nodeTsConfig: {
       compilerOptions: {
         allowImportingTsExtensions: true,
+        paths: {
+          '#cli/*': ['../cli/src/*'],
+          '#server/*': ['../server/*'],
+          '#shared/*': ['../shared/*'],
+        },
       },
-      include: ['../*.ts'],
+      include: ['../*.ts', '../test/e2e/**/*.ts'],
     },
   },
 

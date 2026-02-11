@@ -1,63 +1,13 @@
 /**
- * Playwright test fixtures for connector-related tests.
- *
- * These fixtures extend the shared test base (which includes external API
- * mocking) with connector-specific helpers for authenticated features.
+ * Playwright fixtures for connector E2E tests. Extends test-utils.ts
+ * (which includes external API mocking) with connector-specific helpers.
  */
 
-import type { Page, Route } from '@playwright/test'
-import { test as nuxtBase } from '@nuxt/test-utils/playwright'
-import { createRequire } from 'node:module'
-import { DEFAULT_TEST_CONFIG } from './mock-connector'
+import { test as base } from '../test-utils'
+import { DEFAULT_MOCK_CONFIG } from './mock-connector'
 
-// ---------------------------------------------------------------------------
-// External API mocking (same as test-utils.ts — needed so connector tests
-// don't hit real npm registry, fast-npm-meta, etc.)
-// ---------------------------------------------------------------------------
-
-const require = createRequire(import.meta.url)
-const mockRoutes = require('../../fixtures/mock-routes.cjs')
-
-function failUnmockedRequest(route: Route, apiName: string): never {
-  throw new Error(
-    `UNMOCKED EXTERNAL API REQUEST DETECTED\n` +
-      `API: ${apiName}\nURL: ${route.request().url()}\n` +
-      `Add a fixture or update test/fixtures/mock-routes.cjs`,
-  )
-}
-
-async function setupRouteMocking(page: Page): Promise<void> {
-  for (const routeDef of mockRoutes.routes) {
-    await page.route(routeDef.pattern, async (route: Route) => {
-      const url = route.request().url()
-      const result = mockRoutes.matchRoute(url)
-      if (result) {
-        await route.fulfill({
-          status: result.response.status,
-          contentType: result.response.contentType,
-          body: result.response.body,
-        })
-      } else {
-        failUnmockedRequest(route, routeDef.name)
-      }
-    })
-  }
-}
-
-const base = nuxtBase.extend<{ mockExternalApis: void }>({
-  mockExternalApis: [
-    async ({ page }, use) => {
-      await setupRouteMocking(page)
-      await use()
-    },
-    { auto: true },
-  ],
-})
-
-/** The test token for authentication */
-const TEST_TOKEN = DEFAULT_TEST_CONFIG.token
-/** The connector port */
-const TEST_PORT = DEFAULT_TEST_CONFIG.port ?? 31415
+const TEST_TOKEN = DEFAULT_MOCK_CONFIG.token
+const TEST_PORT = DEFAULT_MOCK_CONFIG.port ?? 31415
 
 /**
  * Helper to make requests to the mock connector server.
@@ -89,7 +39,6 @@ export class MockConnectorClient {
     return response.json() as Promise<T>
   }
 
-  /** Make a fire-and-forget POST to a test-only endpoint, throwing on failure. */
   private async testEndpoint(path: string, body: unknown): Promise<void> {
     const response = await fetch(`${this.baseUrl}${path}`, {
       method: 'POST',
@@ -103,14 +52,11 @@ export class MockConnectorClient {
     }
   }
 
-  /** Reset the mock connector state */
   async reset(): Promise<void> {
     await this.testEndpoint('/__test__/reset', {})
-    // Connect to establish session
     await this.testEndpoint('/connect', { token: this.token })
   }
 
-  /** Set org data */
   async setOrgData(
     org: string,
     data: {
@@ -122,17 +68,14 @@ export class MockConnectorClient {
     await this.testEndpoint('/__test__/org', { org, ...data })
   }
 
-  /** Set user orgs */
   async setUserOrgs(orgs: string[]): Promise<void> {
     await this.testEndpoint('/__test__/user-orgs', { orgs })
   }
 
-  /** Set user packages */
   async setUserPackages(packages: Record<string, 'read-only' | 'read-write'>): Promise<void> {
     await this.testEndpoint('/__test__/user-packages', { packages })
   }
 
-  /** Set package data */
   async setPackageData(
     pkg: string,
     data: { collaborators?: Record<string, 'read-only' | 'read-write'> },
@@ -140,7 +83,6 @@ export class MockConnectorClient {
     await this.testEndpoint('/__test__/package', { package: pkg, ...data })
   }
 
-  /** Add an operation */
   async addOperation(operation: {
     type: string
     params: Record<string, string>
@@ -158,7 +100,6 @@ export class MockConnectorClient {
     return result.data
   }
 
-  /** Get all operations */
   async getOperations(): Promise<
     Array<{ id: string; type: string; status: string; params: Record<string, string> }>
   > {
@@ -178,26 +119,16 @@ export class MockConnectorClient {
 }
 
 export interface ConnectorFixtures {
-  /** Client to interact with the mock connector server */
   mockConnector: MockConnectorClient
-  /** The test token for authentication */
   testToken: string
-  /** The connector port */
   connectorPort: number
-  /**
-   * Navigate to a page with connector credentials in URL params.
-   * This triggers auto-connection on page load.
-   */
+  /** Navigate to a page pre-authenticated with connector credentials. */
   gotoConnected: (path: string) => Promise<void>
 }
 
-/**
- * Extended test with connector fixtures.
- */
 export const test = base.extend<ConnectorFixtures>({
   mockConnector: async ({ page: _ }, use) => {
     const client = new MockConnectorClient(TEST_TOKEN, TEST_PORT)
-    // Reset state before each test
     await client.reset()
     await use(client)
   },
@@ -208,7 +139,6 @@ export const test = base.extend<ConnectorFixtures>({
 
   gotoConnected: async ({ goto, testToken, connectorPort }, use) => {
     const navigateConnected = async (path: string) => {
-      // Remove leading slash if present for clean URL construction
       const cleanPath = path.startsWith('/') ? path : `/${path}`
       const separator = cleanPath.includes('?') ? '&' : '?'
       const urlWithParams = `${cleanPath}${separator}token=${testToken}&port=${connectorPort}`

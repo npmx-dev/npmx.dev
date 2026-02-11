@@ -1,26 +1,65 @@
 /**
- * Core state management for the mock connector.
- * This can be used by both the HTTP server (E2E tests) and
- * the composable mock (Vitest browser tests).
+ * Mock connector state management. Canonical source used by the mock server,
+ * E2E tests, and Vitest composable mocks.
  */
 
 import type {
-  MockConnectorConfig,
-  MockConnectorStateData,
-  MockOrgData,
-  MockPackageData,
-  NewOperationInput,
-  ExecuteOptions,
-  ExecuteResult,
-  OrgRole,
-  AccessLevel,
   PendingOperation,
+  OperationType,
   OperationResult,
-} from './mock-connector-types'
+  OrgRole,
+  AccessPermission,
+} from './types.ts'
 
-/**
- * Creates a new mock connector state with default values.
- */
+export interface MockConnectorConfig {
+  token: string
+  npmUser: string
+  avatar?: string | null
+  port?: number
+}
+
+export interface MockOrgData {
+  users: Record<string, OrgRole>
+  teams: string[]
+  /** team name -> member usernames */
+  teamMembers: Record<string, string[]>
+}
+
+export interface MockPackageData {
+  collaborators: Record<string, AccessPermission>
+}
+
+export interface MockConnectorStateData {
+  config: MockConnectorConfig
+  connected: boolean
+  connectedAt: number | null
+  orgs: Record<string, MockOrgData>
+  packages: Record<string, MockPackageData>
+  userPackages: Record<string, AccessPermission>
+  userOrgs: string[]
+  operations: PendingOperation[]
+  operationIdCounter: number
+}
+
+export interface NewOperationInput {
+  type: OperationType
+  params: Record<string, string>
+  description: string
+  command: string
+  dependsOn?: string
+}
+
+export interface ExecuteOptions {
+  otp?: string
+  /** Per-operation results for testing failures. */
+  results?: Record<string, Partial<OperationResult>>
+}
+
+export interface ExecuteResult {
+  results: Array<{ id: string; result: OperationResult }>
+  otpRequired?: boolean
+}
+
 export function createMockConnectorState(config: MockConnectorConfig): MockConnectorStateData {
   return {
     config: {
@@ -40,8 +79,7 @@ export function createMockConnectorState(config: MockConnectorConfig): MockConne
 }
 
 /**
- * State manipulation class for the mock connector.
- * This is the core logic shared between HTTP server and composable mock.
+ * Mock connector state, shared between the HTTP server and composable mock.
  */
 export class MockConnectorStateManager {
   public state: MockConnectorStateData
@@ -50,7 +88,7 @@ export class MockConnectorStateManager {
     this.state = initialState
   }
 
-  // ============ Configuration ============
+  // -- Configuration --
 
   get config(): MockConnectorConfig {
     return this.state.config
@@ -64,7 +102,7 @@ export class MockConnectorStateManager {
     return this.state.config.port ?? 31415
   }
 
-  // ============ Connection ============
+  // -- Connection --
 
   connect(token: string): boolean {
     if (token !== this.state.config.token) {
@@ -85,7 +123,7 @@ export class MockConnectorStateManager {
     return this.state.connected
   }
 
-  // ============ Org Data ============
+  // -- Org data --
 
   setOrgData(org: string, data: Partial<MockOrgData>): void {
     const existing = this.state.orgs[org] ?? { users: {}, teams: [], teamMembers: {} }
@@ -97,7 +135,6 @@ export class MockConnectorStateManager {
   }
 
   getOrgUsers(org: string): Record<string, OrgRole> | null {
-    // Normalize: handle with or without @ prefix
     const normalizedOrg = org.startsWith('@') ? org : `@${org}`
     return this.state.orgs[normalizedOrg]?.users ?? null
   }
@@ -108,26 +145,25 @@ export class MockConnectorStateManager {
   }
 
   getTeamUsers(scope: string, team: string): string[] | null {
-    // scope should be like "@org" or "org"
     const normalizedScope = scope.startsWith('@') ? scope : `@${scope}`
     const org = this.state.orgs[normalizedScope]
     if (!org) return null
     return org.teamMembers[team] ?? null
   }
 
-  // ============ Package Data ============
+  // -- Package data --
 
   setPackageData(pkg: string, data: MockPackageData): void {
     this.state.packages[pkg] = data
   }
 
-  getPackageCollaborators(pkg: string): Record<string, AccessLevel> | null {
+  getPackageCollaborators(pkg: string): Record<string, AccessPermission> | null {
     return this.state.packages[pkg]?.collaborators ?? null
   }
 
-  // ============ User Data ============
+  // -- User data --
 
-  setUserPackages(packages: Record<string, AccessLevel>): void {
+  setUserPackages(packages: Record<string, AccessPermission>): void {
     this.state.userPackages = packages
   }
 
@@ -135,7 +171,7 @@ export class MockConnectorStateManager {
     this.state.userOrgs = orgs
   }
 
-  getUserPackages(): Record<string, AccessLevel> {
+  getUserPackages(): Record<string, AccessPermission> {
     return this.state.userPackages
   }
 
@@ -143,7 +179,7 @@ export class MockConnectorStateManager {
     return this.state.userOrgs
   }
 
-  // ============ Operations Queue ============
+  // -- Operations queue --
 
   addOperation(operation: NewOperationInput): PendingOperation {
     const id = `op-${++this.state.operationIdCounter}`
@@ -216,12 +252,9 @@ export class MockConnectorStateManager {
     return op
   }
 
-  /**
-   * Executes all approved operations.
-   * In the mock, this transitions them to completed status.
-   */
+  /** Execute all approved operations (mock: instant success unless configured otherwise). */
   executeOperations(options?: ExecuteOptions): ExecuteResult {
-    const results: OperationResult[] = []
+    const results: Array<{ id: string; result: OperationResult }> = []
     const approved = this.state.operations.filter(op => op.status === 'approved')
 
     // Sort by dependencies
@@ -251,7 +284,7 @@ export class MockConnectorStateManager {
         }
         op.result = result
         op.status = result.exitCode === 0 ? 'completed' : 'failed'
-        results.push(result)
+        results.push({ id: op.id, result })
 
         if (result.requiresOtp && !options?.otp) {
           return { results, otpRequired: true }
@@ -265,7 +298,7 @@ export class MockConnectorStateManager {
         }
         op.result = result
         op.status = 'completed'
-        results.push(result)
+        results.push({ id: op.id, result })
 
         // Apply the operation's effects to mock state
         this.applyOperationEffect(op)
@@ -275,14 +308,13 @@ export class MockConnectorStateManager {
     return { results }
   }
 
-  /**
-   * Applies the side effects of a successful operation to the mock state.
-   */
+  /** Apply side effects of a completed operation. Param keys match schemas.ts. */
   private applyOperationEffect(op: PendingOperation): void {
     const { type, params } = op
 
     switch (type) {
       case 'org:add-user': {
+        // Params: { org, user, role } — OrgAddUserParamsSchema
         const org = params['org']
         const user = params['user']
         const role = (params['role'] as OrgRole) ?? 'developer'
@@ -296,6 +328,7 @@ export class MockConnectorStateManager {
         break
       }
       case 'org:rm-user': {
+        // Params: { org, user } — OrgRemoveUserParamsSchema
         const org = params['org']
         const user = params['user']
         if (org && user) {
@@ -307,6 +340,7 @@ export class MockConnectorStateManager {
         break
       }
       case 'org:set-role': {
+        // Params: { org, user, role } — reuses OrgAddUserParamsSchema
         const org = params['org']
         const user = params['user']
         const role = params['role'] as OrgRole
@@ -319,35 +353,42 @@ export class MockConnectorStateManager {
         break
       }
       case 'team:create': {
-        const org = params['org']
-        const team = params['team']
-        if (org && team) {
-          const normalizedOrg = org.startsWith('@') ? org : `@${org}`
-          if (!this.state.orgs[normalizedOrg]) {
-            this.state.orgs[normalizedOrg] = { users: {}, teams: [], teamMembers: {} }
+        // Params: { scopeTeam } — TeamCreateParamsSchema
+        const scopeTeam = params['scopeTeam']
+        if (scopeTeam) {
+          const [scope, team] = scopeTeam.split(':')
+          if (scope && team) {
+            const normalizedScope = scope.startsWith('@') ? scope : `@${scope}`
+            if (!this.state.orgs[normalizedScope]) {
+              this.state.orgs[normalizedScope] = { users: {}, teams: [], teamMembers: {} }
+            }
+            if (!this.state.orgs[normalizedScope].teams.includes(team)) {
+              this.state.orgs[normalizedScope].teams.push(team)
+            }
+            this.state.orgs[normalizedScope].teamMembers[team] = []
           }
-          if (!this.state.orgs[normalizedOrg].teams.includes(team)) {
-            this.state.orgs[normalizedOrg].teams.push(team)
-          }
-          this.state.orgs[normalizedOrg].teamMembers[team] = []
         }
         break
       }
       case 'team:destroy': {
-        const org = params['org']
-        const team = params['team']
-        if (org && team) {
-          const normalizedOrg = org.startsWith('@') ? org : `@${org}`
-          if (this.state.orgs[normalizedOrg]) {
-            this.state.orgs[normalizedOrg].teams = this.state.orgs[normalizedOrg].teams.filter(
-              t => t !== team,
-            )
-            delete this.state.orgs[normalizedOrg].teamMembers[team]
+        // Params: { scopeTeam } — TeamDestroyParamsSchema
+        const scopeTeam = params['scopeTeam']
+        if (scopeTeam) {
+          const [scope, team] = scopeTeam.split(':')
+          if (scope && team) {
+            const normalizedScope = scope.startsWith('@') ? scope : `@${scope}`
+            if (this.state.orgs[normalizedScope]) {
+              this.state.orgs[normalizedScope].teams = this.state.orgs[
+                normalizedScope
+              ].teams.filter(t => t !== team)
+              delete this.state.orgs[normalizedScope].teamMembers[team]
+            }
           }
         }
         break
       }
       case 'team:add-user': {
+        // Params: { scopeTeam, user } — TeamAddUserParamsSchema
         const scopeTeam = params['scopeTeam']
         const user = params['user']
         if (scopeTeam && user) {
@@ -366,6 +407,7 @@ export class MockConnectorStateManager {
         break
       }
       case 'team:rm-user': {
+        // Params: { scopeTeam, user } — TeamRemoveUserParamsSchema
         const scopeTeam = params['scopeTeam']
         const user = params['user']
         if (scopeTeam && user) {
@@ -383,27 +425,30 @@ export class MockConnectorStateManager {
         break
       }
       case 'access:grant': {
-        const pkg = params['package']
-        const user = params['user']
-        const level = (params['level'] as AccessLevel) ?? 'read-write'
-        if (pkg && user) {
+        // Params: { permission, scopeTeam, pkg } — AccessGrantParamsSchema
+        const pkg = params['pkg']
+        const scopeTeam = params['scopeTeam']
+        const permission = (params['permission'] as AccessPermission) ?? 'read-write'
+        if (pkg && scopeTeam) {
           if (!this.state.packages[pkg]) {
             this.state.packages[pkg] = { collaborators: {} }
           }
-          this.state.packages[pkg].collaborators[user] = level
+          this.state.packages[pkg].collaborators[scopeTeam] = permission
         }
         break
       }
       case 'access:revoke': {
-        const pkg = params['package']
-        const user = params['user']
-        if (pkg && user && this.state.packages[pkg]) {
-          delete this.state.packages[pkg].collaborators[user]
+        // Params: { scopeTeam, pkg } — AccessRevokeParamsSchema
+        const pkg = params['pkg']
+        const scopeTeam = params['scopeTeam']
+        if (pkg && scopeTeam && this.state.packages[pkg]) {
+          delete this.state.packages[pkg].collaborators[scopeTeam]
         }
         break
       }
       case 'owner:add': {
-        const pkg = params['package']
+        // Params: { user, pkg } — OwnerAddParamsSchema
+        const pkg = params['pkg']
         const user = params['user']
         if (pkg && user) {
           if (!this.state.packages[pkg]) {
@@ -414,7 +459,8 @@ export class MockConnectorStateManager {
         break
       }
       case 'owner:rm': {
-        const pkg = params['package']
+        // Params: { user, pkg } — OwnerRemoveParamsSchema
+        const pkg = params['pkg']
         const user = params['user']
         if (pkg && user && this.state.packages[pkg]) {
           delete this.state.packages[pkg].collaborators[user]
@@ -422,21 +468,20 @@ export class MockConnectorStateManager {
         break
       }
       case 'package:init': {
-        const pkg = params['package']
-        if (pkg) {
-          this.state.packages[pkg] = {
+        // Params: { name, author? } — PackageInitParamsSchema
+        const name = params['name']
+        if (name) {
+          this.state.packages[name] = {
             collaborators: { [this.state.config.npmUser]: 'read-write' },
           }
-          this.state.userPackages[pkg] = 'read-write'
+          this.state.userPackages[name] = 'read-write'
         }
         break
       }
     }
   }
 
-  /**
-   * Sort operations by dependencies (topological sort).
-   */
+  /** Topological sort by dependsOn. */
   private sortByDependencies(operations: PendingOperation[]): PendingOperation[] {
     const result: PendingOperation[] = []
     const visited = new Set<string>()
@@ -460,11 +505,6 @@ export class MockConnectorStateManager {
     return result
   }
 
-  // ============ Reset ============
-
-  /**
-   * Resets the state to initial values while keeping the config.
-   */
   reset(): void {
     this.state.connected = false
     this.state.connectedAt = null

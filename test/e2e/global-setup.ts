@@ -5,12 +5,14 @@
  * sharing state between setup and teardown via closure).
  */
 
-import { MockConnectorServer, DEFAULT_TEST_CONFIG } from './helpers/mock-connector'
+// eslint-disable no-console
+
+import { MockConnectorServer, DEFAULT_MOCK_CONFIG } from './helpers/mock-connector'
 
 export default async function globalSetup() {
   console.log('[Global Setup] Starting mock connector server...')
 
-  const mockServer = new MockConnectorServer(DEFAULT_TEST_CONFIG)
+  const mockServer = new MockConnectorServer(DEFAULT_MOCK_CONFIG)
 
   try {
     await mockServer.start()
