@@ -93,17 +93,37 @@ const compactNumberFormatter = useCompactNumberFormatter()
 // Show loading indicator immediately to maintain stable layout
 const showLoadingIndicator = computed(() => pending.value)
 
+const loadFile = (link: string, filename: string) => {
+  const a = document.createElement('a')
+  a.href = link
+  a.download = filename
+  a.click()
+  a.remove()
+}
+
+const sanitise = (value: string) =>
+  value
+    .replace(/^@/, '')
+    .replace(/[\\/:"*?<>|]/g, '-')
+    .replace(/\//g, '-')
+
+function buildExportFilename(extension: string): string {
+  const range = `${startDate.value}_${endDate.value}`
+
+  const label = props.packageName
+  return `${sanitise(label ?? '')}_${range}.${extension}`
+}
+
 const chartConfig = computed(() => {
   return {
     theme: isDarkMode.value ? 'dark' : 'default',
     chart: {
-      height: isMobile.value ? 500 : 400,
+      height: isMobile.value ? 750 : 500,
       backgroundColor: colors.value.bg,
       padding: {
         top: 24,
         right: 24,
-        bottom: xAxisLabels.value.length > 10 ? 100 : 88, // Space for rotated labels + watermark
-        left: isMobile.value ? 60 : 80,
+        bottom: xAxisLabels.value.length > 10 ? 84 : 72, // Space for rotated labels + watermark
       },
       userOptions: {
         buttons: {
@@ -113,9 +133,43 @@ const chartConfig = computed(() => {
           table: false,
           tooltip: false,
         },
+        buttonTitles: {
+          csv: $t('package.trends.download_file', { fileType: 'CSV' }),
+          img: $t('package.trends.download_file', { fileType: 'PNG' }),
+          svg: $t('package.trends.download_file', { fileType: 'SVG' }),
+          annotator: $t('package.trends.toggle_annotator'),
+        },
+        callbacks: {
+          img: ({ imageUri }: { imageUri: string }) => {
+            loadFile(imageUri, buildExportFilename('png'))
+          },
+          csv: (csvStr: string) => {
+            const PLACEHOLDER_CHAR = '\0'
+            const multilineDateTemplate = $t('package.trends.date_range_multiline', {
+              start: PLACEHOLDER_CHAR,
+              end: PLACEHOLDER_CHAR,
+            })
+              .replaceAll(PLACEHOLDER_CHAR, '')
+              .trim()
+            const blob = new Blob([
+              csvStr
+                .replace('data:text/csv;charset=utf-8,', '')
+                .replaceAll(`\n${multilineDateTemplate}`, ` ${multilineDateTemplate}`),
+            ])
+            const url = URL.createObjectURL(blob)
+            loadFile(url, buildExportFilename('csv'))
+            URL.revokeObjectURL(url)
+          },
+          svg: ({ blob }: { blob: Blob }) => {
+            const url = URL.createObjectURL(blob)
+            loadFile(url, buildExportFilename('svg'))
+            URL.revokeObjectURL(url)
+          },
+        },
       },
       grid: {
         stroke: colors.value.border,
+        showHorizontalLines: true,
         labels: {
           fontSize: isMobile.value ? 24 : 16,
           color: pending.value ? colors.value.border : colors.value.fgSubtle,
@@ -133,9 +187,8 @@ const chartConfig = computed(() => {
           xAxisLabels: {
             show: xAxisLabels.value.length <= 25,
             values: xAxisLabels.value,
-            fontSize: isMobile.value ? 16 : 14,
+            fontSize: 16,
             color: colors.value.fgSubtle,
-            rotation: xAxisLabels.value.length > 10 ? 45 : 0,
           },
         },
       },
@@ -170,7 +223,7 @@ const chartConfig = computed(() => {
           return `<div class="font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
             <div class="flex flex-col gap-2">
               <div class="flex items-center justify-between gap-4">
-                <span class="text-3xs uppercase tracking-wide text-[var(--fg)]/70">
+                <span class="text-3xs tracking-wide text-[var(--fg)]/70">
                   ${chartItem.name}
                 </span>
                 <span class="text-base text-[var(--fg)] font-mono tabular-nums">
@@ -415,7 +468,7 @@ const endDate = computed(() => {
       role="region"
       aria-labelledby="version-distribution-title"
       class="relative"
-      :class="isMobile ? 'min-h-[500px]' : 'min-h-[400px]'"
+      :class="isMobile ? 'min-h-[260px]' : 'min-h-[400px]'"
     >
       <!-- Chart content -->
       <ClientOnly v-if="xyDataset.length > 0 && !error">
@@ -429,9 +482,7 @@ const endDate = computed(() => {
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
                 v-if="svg.isPrintingSvg || svg.isPrintingImg"
-                v-html="
-                  drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'belowDrawingArea')
-                "
+                v-html="drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'bottom')"
               />
             </template>
 

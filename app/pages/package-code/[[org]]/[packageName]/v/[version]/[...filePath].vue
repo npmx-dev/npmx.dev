@@ -7,8 +7,12 @@ import type {
 
 definePageMeta({
   name: 'code',
-  path: '/package-code/:path+',
-  alias: ['/package/code/:path+', '/code/:path+'],
+  path: '/package-code/:org?/:packageName/v/:version/:filePath(.*)?',
+  alias: [
+    '/package/code/:org?/:packageName/v/:version/:filePath(.*)?',
+    '/package/code/:packageName/v/:version/:filePath(.*)?',
+    // '/code/@:org?/:packageName/v/:version/:filePath(.*)?',
+  ],
 })
 
 const route = useRoute('code')
@@ -19,23 +23,11 @@ const route = useRoute('code')
 //   /code/nuxt/v/4.2.0/src/index.ts → packageName: "nuxt", version: "4.2.0", filePath: "src/index.ts"
 //   /code/@nuxt/kit/v/1.0.0 → packageName: "@nuxt/kit", version: "1.0.0", filePath: null
 const parsedRoute = computed(() => {
-  const segments = route.params.path
-
-  // Find the /v/ separator for version
-  const vIndex = segments.indexOf('v')
-  if (vIndex === -1 || vIndex >= segments.length - 1) {
-    // No version specified - redirect or error
-    return {
-      packageName: segments.join('/'),
-      version: null as string | null,
-      filePath: null as string | null,
-    }
-  }
-
-  const packageName = segments.slice(0, vIndex).join('/')
-  const afterVersion = segments.slice(vIndex + 1)
-  const version = afterVersion[0] ?? null
-  const filePath = afterVersion.length > 1 ? afterVersion.slice(1).join('/') : null
+  const packageName = route.params.org
+    ? `${route.params.org}/${route.params.packageName}`
+    : route.params.packageName
+  const version = route.params.version
+  const filePath = route.params.filePath || null
 
   return { packageName, version, filePath }
 })
@@ -45,14 +37,31 @@ const version = computed(() => parsedRoute.value.version)
 const filePathOrig = computed(() => parsedRoute.value.filePath)
 const filePath = computed(() => parsedRoute.value.filePath?.replace(/\/$/, ''))
 
+// Navigation helper - build URL for a path
+function getCodeUrl(args: {
+  org?: string
+  packageName: string
+  version: string
+  filePath?: string
+}): string {
+  const base = args.org
+    ? `/package-code/${args.org}/${args.packageName}/v/${args.version}`
+    : `/package-code/${args.packageName}/v/${args.version}`
+  return args.filePath ? `${base}/${args.filePath}` : base
+}
+
 // Fetch package data for version list
 const { data: pkg } = usePackage(packageName)
 
 // URL pattern for version selector - includes file path if present
-const versionUrlPattern = computed(() => {
-  const base = `/package-code/${packageName.value}/v/{version}`
-  return filePath.value ? `${base}/${filePath.value}` : base
-})
+const versionUrlPattern = computed(() =>
+  getCodeUrl({
+    org: route.params.org,
+    packageName: route.params.packageName,
+    version: '{version}',
+    filePath: filePath.value,
+  }),
+)
 
 // Fetch file tree
 const { data: fileTree, status: treeStatus } = useFetch<PackageFileTreeResponse>(
@@ -192,16 +201,12 @@ const breadcrumbs = computed(() => {
 })
 
 // Navigation helper - build URL for a path
-function getCodeUrl(path?: string): string {
-  const base = `/package-code/${packageName.value}/v/${version.value}`
-  return path ? `${base}/${path}` : base
+function getCurrentCodeUrlWithPath(path?: string): string {
+  return getCodeUrl({
+    ...route.params,
+    filePath: path,
+  })
 }
-
-// Base path segments for route objects (e.g., ['nuxt', 'v', '4.2.0'] or ['@nuxt', 'kit', 'v', '1.0.0'])
-const basePath = computed(() => {
-  const segments = packageName.value.split('/')
-  return [...segments, 'v', version.value ?? '']
-})
 
 // Extract org name from scoped package
 const orgName = computed(() => {
@@ -244,13 +249,7 @@ function copyPermalinkUrl() {
 }
 
 // Canonical URL for this code page
-const canonicalUrl = computed(() => {
-  let url = `https://npmx.dev/package-code/${packageName.value}/v/${version.value}`
-  if (filePath.value) {
-    url += `/${filePath.value}`
-  }
-  return url
-})
+const canonicalUrl = computed(() => `https://npmx.dev${getCodeUrl(route.params)}`)
 
 // Toggle markdown view mode
 const markdownViewModes = [
@@ -350,7 +349,7 @@ defineOgImageComponent('Default', {
         >
           <NuxtLink
             v-if="filePath"
-            :to="getCodeUrl()"
+            :to="getCurrentCodeUrlWithPath()"
             class="text-fg-muted hover:text-fg transition-colors shrink-0"
           >
             {{ $t('code.root') }}
@@ -360,7 +359,7 @@ defineOgImageComponent('Default', {
             <span class="text-fg-subtle">/</span>
             <NuxtLink
               v-if="i < breadcrumbs.length - 1"
-              :to="getCodeUrl(crumb.path)"
+              :to="getCurrentCodeUrlWithPath(crumb.path)"
               class="text-fg-muted hover:text-fg transition-colors"
             >
               {{ crumb.name }}
@@ -402,8 +401,8 @@ defineOgImageComponent('Default', {
         <CodeFileTree
           :tree="fileTree.tree"
           :current-path="filePath ?? ''"
-          :base-url="getCodeUrl()"
-          :base-path="basePath"
+          :base-url="getCurrentCodeUrlWithPath()"
+          :base-route="route"
         />
       </aside>
 
@@ -558,8 +557,8 @@ defineOgImageComponent('Default', {
           <CodeDirectoryListing
             :tree="fileTree.tree"
             :current-path="filePath ?? ''"
-            :base-url="getCodeUrl()"
-            :base-path="basePath"
+            :base-url="getCurrentCodeUrlWithPath()"
+            :base-route="route"
           />
         </template>
       </div>
@@ -572,8 +571,8 @@ defineOgImageComponent('Default', {
           v-if="fileTree"
           :tree="fileTree.tree"
           :current-path="filePath ?? ''"
-          :base-url="getCodeUrl()"
-          :base-path="basePath"
+          :base-url="getCurrentCodeUrlWithPath()"
+          :base-route="route"
         />
       </Teleport>
     </ClientOnly>

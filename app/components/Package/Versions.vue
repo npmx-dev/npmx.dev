@@ -923,7 +923,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
     <!-- Avoids CLS when the dialog has transitioned -->
     <div
       v-if="!hasDistributionModalTransitioned"
-      class="w-full aspect-[272/609] sm:aspect-[671/516]"
+      class="w-full aspect-[272/609] sm:aspect-[718/571]"
     />
   </PackageChartModal>
 </template>

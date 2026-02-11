@@ -6,29 +6,45 @@ import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+import type {
+  ChartTimeGranularity,
+  DailyDataPoint,
+  DateRangeFields,
+  EvolutionData,
+  EvolutionOptions,
+  MonthlyDataPoint,
+  WeeklyDataPoint,
+  YearlyDataPoint,
+} from '~/types/chart'
 import { DATE_INPUT_MAX } from '~/utils/input'
 
-const props = defineProps<{
-  // For single package downloads history
-  weeklyDownloads?: WeeklyDataPoint[]
-  inModal?: boolean
+const props = withDefaults(
+  defineProps<{
+    // For single package downloads history
+    weeklyDownloads?: WeeklyDataPoint[]
+    inModal?: boolean
 
-  /**
-   * Backward compatible single package mode.
-   * Used when `weeklyDownloads` is provided.
-   */
-  packageName?: string
+    /**
+     * Backward compatible single package mode.
+     * Used when `weeklyDownloads` is provided.
+     */
+    packageName?: string
 
-  /**
-   * Multi-package mode.
-   * Used when `weeklyDownloads` is not provided.
-   */
-  packageNames?: string[]
-  createdIso?: string | null
+    /**
+     * Multi-package mode.
+     * Used when `weeklyDownloads` is not provided.
+     */
+    packageNames?: string[]
+    createdIso?: string | null
 
-  /** When true, shows facet selector (e.g. Downloads / Likes). */
-  showFacetSelector?: boolean
-}>()
+    /** When true, shows facet selector (e.g. Downloads / Likes). */
+    showFacetSelector?: boolean
+    permalink?: boolean
+  }>(),
+  {
+    permalink: false,
+  },
+)
 
 const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
@@ -111,14 +127,7 @@ const watermarkColors = computed(() => ({
 const mobileBreakpointWidth = 640
 const isMobile = computed(() => width.value > 0 && width.value < mobileBreakpointWidth)
 
-type ChartTimeGranularity = 'daily' | 'weekly' | 'monthly' | 'yearly'
 const DEFAULT_GRANULARITY: ChartTimeGranularity = 'weekly'
-type EvolutionData = DailyDataPoint[] | WeeklyDataPoint[] | MonthlyDataPoint[] | YearlyDataPoint[]
-
-type DateRangeFields = {
-  startDate?: string
-  endDate?: string
-}
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null
@@ -323,7 +332,10 @@ const effectivePackageNames = computed<string[]>(() => {
   return single ? [single] : []
 })
 
-const selectedGranularity = shallowRef<ChartTimeGranularity>(DEFAULT_GRANULARITY)
+const selectedGranularity = usePermalink<ChartTimeGranularity>('granularity', DEFAULT_GRANULARITY, {
+  permanent: props.permalink,
+})
+
 const displayedGranularity = shallowRef<ChartTimeGranularity>(DEFAULT_GRANULARITY)
 
 const isEndDateOnPeriodEnd = computed(() => {
@@ -353,8 +365,13 @@ const shouldRenderEstimationOverlay = computed(
   () => !pending.value && isEstimationGranularity.value,
 )
 
-const startDate = shallowRef<string>('') // YYYY-MM-DD
-const endDate = shallowRef<string>('') // YYYY-MM-DD
+const startDate = usePermalink<string>('start', '', {
+  permanent: props.permalink,
+})
+const endDate = usePermalink<string>('end', '', {
+  permanent: props.permalink,
+})
+
 const hasUserEditedDates = shallowRef(false)
 
 /**
@@ -579,7 +596,9 @@ const METRICS = computed<MetricDef[]>(() => [
   },
 ])
 
-const selectedMetric = shallowRef<MetricId>(DEFAULT_METRIC_ID)
+const selectedMetric = usePermalink<MetricId>('facet', DEFAULT_METRIC_ID, {
+  permanent: props.permalink,
+})
 
 // Per-metric state keyed by metric id
 const metricStates = reactive<

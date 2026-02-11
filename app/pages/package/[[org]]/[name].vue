@@ -17,6 +17,7 @@ import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-securi
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
+import type { RouteLocationRaw } from 'vue-router'
 
 defineOgImageComponent('Package', {
   name: () => packageName.value,
@@ -28,6 +29,8 @@ const router = useRouter()
 
 const header = useTemplateRef('header')
 const isHeaderPinned = shallowRef(false)
+const navExtraOffset = shallowRef(0)
+const isMobile = useMediaQuery('(max-width: 639.9px)')
 
 function checkHeaderPosition() {
   const el = header.value
@@ -43,9 +46,50 @@ function checkHeaderPosition() {
 useEventListener('scroll', checkHeaderPosition, { passive: true })
 useEventListener('resize', checkHeaderPosition)
 
+const footerTarget = ref<HTMLElement | null>(null)
+const footerThresholds = Array.from({ length: 11 }, (_, i) => i / 10)
+
+const { pause: pauseFooterObserver, resume: resumeFooterObserver } = useIntersectionObserver(
+  footerTarget,
+  ([entry]) => {
+    if (!entry) return
+
+    navExtraOffset.value = entry.isIntersecting ? entry.intersectionRect.height : 0
+  },
+  {
+    threshold: footerThresholds,
+    immediate: false,
+  },
+)
+
+function initFooterObserver() {
+  footerTarget.value = document.querySelector('footer')
+  if (!footerTarget.value) return
+
+  pauseFooterObserver()
+
+  watch(
+    isMobile,
+    value => {
+      if (value) {
+        resumeFooterObserver()
+      } else {
+        pauseFooterObserver()
+        navExtraOffset.value = 0
+      }
+    },
+    { immediate: true },
+  )
+}
+
 onMounted(() => {
   checkHeaderPosition()
+  initFooterObserver()
 })
+
+const navExtraOffsetStyle = computed(() => ({
+  '--package-nav-extra': `${navExtraOffset.value}px`,
+}))
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
 const selectedPM = useSelectedPackageManager()
@@ -514,17 +558,29 @@ useSeoMeta({
   twitterDescription: () => pkg.value?.description ?? '',
 })
 
+const codeLink = computed((): RouteLocationRaw | null => {
+  if (pkg.value == null || resolvedVersion.value == null) {
+    return null
+  }
+  const split = pkg.value.name.split('/')
+  return {
+    name: 'code',
+    params: {
+      org: split.length === 2 ? split[0] : undefined,
+      packageName: split.length === 2 ? split[1]! : split[0]!,
+      version: resolvedVersion.value,
+      filePath: '',
+    },
+  }
+})
+
 onKeyStroke(
   e => isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
   e => {
-    if (pkg.value == null || resolvedVersion.value == null) return
+    if (codeLink.value === null) return
     e.preventDefault()
-    navigateTo({
-      name: 'code',
-      params: {
-        path: [pkg.value.name, 'v', resolvedVersion.value],
-      },
-    })
+
+    navigateTo(codeLink.value)
   },
   { dedupe: true },
 )
@@ -663,6 +719,7 @@ const showSkeleton = shallowRef(false)
             as="nav"
             :aria-label="$t('package.navigation')"
             class="hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-1/2 max-sm:-translate-x-1/2 max-sm:rtl:translate-x-1/2 max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
+            :style="navExtraOffsetStyle"
             :class="$style.packageNav"
           >
             <LinkBase
@@ -675,8 +732,9 @@ const showSkeleton = shallowRef(false)
               {{ $t('package.links.docs') }}
             </LinkBase>
             <LinkBase
+              v-if="codeLink"
               variant="button-secondary"
-              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
+              :to="codeLink"
               aria-keyshortcuts="."
               classicon="i-carbon:code"
             >
@@ -1475,7 +1533,7 @@ const showSkeleton = shallowRef(false)
 /* Mobile floating nav: safe-area positioning + kbd hiding */
 @media (max-width: 639.9px) {
   .packageNav {
-    bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(1.25rem + var(--package-nav-extra, 0px) + env(safe-area-inset-bottom, 0px));
   }
 
   .packageNav > :global(a kbd) {

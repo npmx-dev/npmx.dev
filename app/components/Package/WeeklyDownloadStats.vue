@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 import { useCssVariables } from '~/composables/useColors'
+import type { WeeklyDataPoint } from '~/types/chart'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
 
 const props = defineProps<{
@@ -8,13 +9,28 @@ const props = defineProps<{
   createdIso: string | null
 }>()
 
+const router = useRouter()
+const route = useRoute()
+
 const chartModal = useModal('chart-modal')
 const hasChartModalTransitioned = shallowRef(false)
-const isChartModalOpen = shallowRef(false)
+
+const isChartModalOpen = shallowRef<boolean>(false)
 
 function handleModalClose() {
   isChartModalOpen.value = false
   hasChartModalTransitioned.value = false
+
+  router.replace({
+    query: {
+      ...route.query,
+      modal: undefined,
+      granularity: undefined,
+      end: undefined,
+      start: undefined,
+      facet: undefined,
+    },
+  })
 }
 
 function handleModalTransitioned() {
@@ -95,6 +111,14 @@ async function openChartModal() {
 
   isChartModalOpen.value = true
   hasChartModalTransitioned.value = false
+
+  await router.replace({
+    query: {
+      ...route.query,
+      modal: 'chart',
+    },
+  })
+
   // ensure the component renders before opening the dialog
   await nextTick()
   await nextTick()
@@ -119,8 +143,16 @@ async function loadWeeklyDownloads() {
   }
 }
 
-onMounted(() => {
-  loadWeeklyDownloads()
+onMounted(async () => {
+  await loadWeeklyDownloads()
+
+  if (route.query.modal === 'chart') {
+    isChartModalOpen.value = true
+  }
+
+  if (isChartModalOpen.value && hasWeeklyDownloads.value) {
+    openChartModal()
+  }
 })
 
 watch(
@@ -284,6 +316,7 @@ const config = computed(() => {
         :inModal="true"
         :packageName="props.packageName"
         :createdIso="createdIso"
+        permalink
         show-facet-selector
       />
     </Transition>

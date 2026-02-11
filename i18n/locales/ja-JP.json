@@ -16,10 +16,24 @@
     "docs": "ドキュメント",
     "source": "ソースコード",
     "social": "ソーシャル",
-    "chat": "チャット"
+    "chat": "チャット",
+    "keyboard_shortcuts": "キーボードショートカット"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "グローバル",
+      "search": "検索",
+      "package": "パッケージ"
+    },
+    "focus_search": "検索にフォーカス",
+    "show_kbd_hints": "キーボードヒントをハイライト",
+    "settings": "設定を開く",
+    "compare": "比較を開く",
+    "compare_from_package": "比較を開く（現在のパッケージを自動入力）",
+    "navigate_results": "検索結果を移動",
+    "go_to_result": "結果に移動",
+    "open_code_view": "コードビューを開く",
+    "open_docs": "ドキュメントを開く"
   },
   "search": {
     "label": "npmパッケージを検索",
@@ -27,8 +41,10 @@
     "button": "検索",
     "searching": "検索中...",
     "found_packages": "{count} 個のパッケージが見つかりました",
+    "found_packages_sorted": "上位 {count} 件の結果をソート中",
     "updating": "（更新中...）",
     "no_results": "\"{query}\" に一致するパッケージは見つかりませんでした",
+    "rate_limited": "npmのレート制限に達しました。しばらくしてから再試行してください",
     "title": "検索",
     "title_search": "検索: {search}",
     "title_packages": "パッケージを検索",
@@ -39,6 +55,7 @@
     "claim_button": "\"{name}\" を取得",
     "want_to_claim": "このパッケージ名を取得しますか？",
     "start_typing": "入力を開始してパッケージを検索",
+    "algolia_disclaimer": "Algoliaにより提供",
     "exact_match": "完全一致",
     "suggestion": {
       "user": "ユーザー",
@@ -66,9 +83,17 @@
     "sections": {
       "appearance": "外観",
       "display": "表示",
+      "search": "データソース",
       "language": "言語"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "データソース",
+      "description": "npmxが検索データを取得する先を選択します。個別のパッケージページは常にnpmレジストリから直接取得します。",
+      "npm": "npmレジストリ",
+      "npm_description": "公式npmレジストリから検索、Organization、ユーザー一覧を直接取得します。正確ですが、やや遅い場合があります。",
+      "algolia": "Algolia",
+      "algolia_description": "Algoliaを使用して検索、Organization、ユーザーページをより高速に取得します。"
+    },
     "relative_dates": "日付を相対表記",
     "include_types": "インストール時に {'@'}types を含める",
     "include_types_description": "型定義のないパッケージのインストールコマンドに {'@'}types パッケージを追加します",
@@ -231,7 +256,16 @@
       "view_more_details": "詳細を表示",
       "error_loading": "provenance詳細情報の読み込みに失敗しました"
     },
-    "security_downgrade": {},
+    "security_downgrade": {
+      "title": "信頼性の低下",
+      "description_to_none_provenance": "このバージョンは {provenance} なしで公開されました。",
+      "description_to_none_trustedPublisher": "このバージョンは {trustedPublishing} なしで公開されました。",
+      "description_to_provenance_trustedPublisher": "このバージョンは {provenance} を使用していますが、{trustedPublishing} は使用していません。",
+      "fallback_install_provenance": "インストールコマンドは、provenanceが付与された最後のバージョン {version} に固定されています。",
+      "fallback_install_trustedPublisher": "インストールコマンドは、trusted publishingされた最後のバージョン {version} に固定されています。",
+      "provenance_link_text": "provenance",
+      "trusted_publishing_link_text": "trusted publishing"
+    },
     "keywords_title": "キーワード",
     "compatibility": "互換性",
     "card": {
@@ -253,7 +287,16 @@
       "more_tagged": "他 {count} 個のタグ付き",
       "all_covered": "すべてのバージョンが上記のタグに含まれています",
       "deprecated_title": "{version}（非推奨）",
-      "view_all": "{count} 個のバージョンを表示|{count} 個のすべてのバージョンを表示"
+      "view_all": "{count} 個のバージョンを表示|{count} 個のすべてのバージョンを表示",
+      "distribution_title": "Semverグループ",
+      "distribution_modal_title": "バージョン",
+      "grouping_major": "メジャー",
+      "grouping_minor": "マイナー",
+      "recent_versions_only": "最近のバージョンのみ",
+      "recent_versions_only_tooltip": "過去1年以内に公開されたバージョンのみ表示します。",
+      "show_low_usage": "利用率の低いバージョンを表示",
+      "show_low_usage_tooltip": "総ダウンロード数の1%未満のバージョングループも含めます。",
+      "date_range_tooltip": "直近1週間のバージョン分布のみ"
     },
     "dependencies": {
       "title": "依存関係（{count}）",
@@ -302,10 +345,19 @@
       "date_range_multiline": "{start}\nから {end}",
       "download_file": "{fileType} をダウンロード",
       "toggle_annotator": "アノテーターを切り替え",
-      "items": {}
+      "legend_estimation": "推定値",
+      "no_data": "データがありません",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "指標",
+      "title": "トレンド",
+      "items": {
+        "downloads": "ダウンロード数",
+        "likes": "いいね数"
+      }
     },
     "downloads": {
       "title": "週間ダウンロード数",
+      "modal_title": "週間ダウンロード数",
       "analyze": "ダウンロード数を分析",
       "community_distribution": "コミュニティの採用分布を表示"
     },
@@ -344,7 +396,8 @@
         "high": "高",
         "moderate": "中",
         "low": "低"
-      }
+      },
+      "fixed_in_title": "{version} で修正済み"
     },
     "deprecated": {
       "label": "非推奨",
@@ -391,7 +444,11 @@
       "name_asc": "名前順（A-Z）",
       "name_desc": "名前順（Z-A）"
     },
-    "size": {}
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    }
   },
   "connector": {
     "modal": {
@@ -796,7 +853,8 @@
       "create_account": "アカウントを新規作成",
       "connect_bluesky": "Blueskyで接続",
       "what_is_atmosphere": "Atmosphereアカウントとは？",
-      "atmosphere_explanation": "{npmx} は多くのソーシャル機能に {atproto} を利用しています。AT Protocolにより、ユーザーは自分自身のデータを所有し、1つのアカウントでAT Protocolに対応するすべてのアプリケーションを利用できるようになります。アカウントを作成すると、{bluesky} や {tangled} などの他のアプリでも同じアカウントを使用できます。"
+      "atmosphere_explanation": "{npmx} は多くのソーシャル機能に {atproto} を利用しています。AT Protocolにより、ユーザーは自分自身のデータを所有し、1つのアカウントでAT Protocolに対応するすべてのアプリケーションを利用できるようになります。アカウントを作成すると、{bluesky} や {tangled} などの他のアプリでも同じアカウントを使用できます。",
+      "default_input_error": "有効なハンドル、DID、または完全なPDS URLを入力してください"
     }
   },
   "header": {
@@ -933,7 +991,9 @@
         "vulnerabilities_summary": "{count} 件 ({critical}C/{high}H)",
         "up_to_you": "あなた次第！"
       },
-      "trends": {}
+      "trends": {
+        "title": "トレンド比較"
+      }
     }
   },
   "privacy_policy": {
@@ -1014,6 +1074,36 @@
     "changes": {
       "title": "ポリシーの変更",
       "p1": "本プライバシーポリシーは随時更新されることがあります。変更は、更新日とともに本ページで公開されます。"
+    }
+  },
+  "a11y": {
+    "title": "アクセシビリティ",
+    "footer_title": "a11y",
+    "welcome": "{app} をできるだけ多くの人が使えるようにすることを目指しています。",
+    "approach": {
+      "title": "私たちのアプローチ",
+      "p1": "私たちはWeb Content Accessibility Guidelines (WCAG) 2.2に準拠するよう努め、機能開発時の指針として活用しています。WCAGのいかなるレベルへの完全な準拠を主張するものではありません。アクセシビリティは継続的な取り組みであり、常に改善の余地があります。",
+      "p2": "このサイトは{about}です。アクセシビリティの改善は、通常の開発の一環として段階的におこなっています。",
+      "about_link": "オープンソースのコミュニティ主導プロジェクト"
+    },
+    "measures": {
+      "title": "私たちの取り組み",
+      "p1": "サイト全体で以下のことに取り組んでいます：",
+      "li1": "適切な箇所でセマンティックHTMLとARIA属性を使用する。",
+      "li2": "ブラウザで調整可能な相対的なテキストサイズを使用する。",
+      "li3": "インターフェース全体でキーボード操作をサポートする。",
+      "li4": "prefers-reduced-motionおよびprefers-color-schemeメディアクエリを尊重する。",
+      "li5": "十分なカラーコントラストを考慮してデザインする。",
+      "li6": "一部のインタラクティブ機能はJavaScriptが必要ですが、重要なコンテンツはJavaScriptなしでも利用できるようにする。"
+    },
+    "limitations": {
+      "title": "既知の制限事項",
+      "p1": "サイトの一部、特にパッケージのREADMEなどのサードパーティコンテンツは、アクセシビリティ基準を満たしていない場合があります。これらの領域は時間をかけて改善に取り組んでいます。"
+    },
+    "contact": {
+      "title": "フィードバック",
+      "p1": "{app} でアクセシビリティに関する問題を見つけた場合は、{link}でIssueを作成してお知らせください。報告は真剣に受け止め、できる限り対応します。",
+      "link": "GitHubリポジトリ"
     }
   }
 }
