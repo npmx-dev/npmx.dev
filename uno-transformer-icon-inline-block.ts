@@ -20,7 +20,7 @@ export function transformerIconInlineBlock(): SourceCodeTransformer {
         if (/^\s+inline-block\b/.test(code.slice(end))) {
           continue
         }
-        s.appendRight(end, ' inline-block')
+        s.appendRight(end, ' inline-block w-[1.2em] h-[1.2em]')
       }
     },
   }
