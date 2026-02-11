@@ -3322,6 +3322,114 @@
       },
       "additionalProperties": false
     },
+    "vacations": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "illustration_alt": {
+          "type": "string"
+        },
+        "poke_log": {
+          "type": "string"
+        },
+        "intro": {
+          "type": "object",
+          "properties": {
+            "p1": {
+              "type": "string"
+            },
+            "some": {
+              "type": "string"
+            },
+            "all": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "what": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "dates": {
+              "type": "string"
+            },
+            "discord": {
+              "type": "string"
+            },
+            "garden": {
+              "type": "string"
+            },
+            "site": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "meantime": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "repo_link": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "return": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            },
+            "social_link": {
+              "type": "string"
+            },
+            "add_to_calendar": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "$schema": {
       "type": "string"
     }
