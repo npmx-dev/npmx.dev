@@ -6,6 +6,7 @@ import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
+import { DATE_INPUT_MAX } from '~/utils/input'
 
 const props = defineProps<{
   // For single package downloads history
@@ -1468,6 +1469,7 @@ watch(selectedMetric, value => {
                 id="startDate"
                 v-model="startDate"
                 type="date"
+                :max="DATE_INPUT_MAX"
                 class="w-full min-w-0 bg-transparent ps-7"
                 size="medium"
               />
@@ -1487,6 +1489,7 @@ watch(selectedMetric, value => {
                 id="endDate"
                 v-model="endDate"
                 type="date"
+                :max="DATE_INPUT_MAX"
                 class="w-full min-w-0 bg-transparent ps-7"
                 size="medium"
               />
