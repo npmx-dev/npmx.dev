@@ -8,7 +8,7 @@ export class OAuthSessionStore implements NodeSavedSessionStore {
   private readonly storage = useStorage(OAUTH_CACHE_STORAGE_BASE)
 
   constructor(session: SessionManager<UserServerSession>) {
-    this.serverSession = this.serverSession = session
+    this.serverSession = session
   }
 
   private createStorageKey(did: string, sessionId: string) {
@@ -32,7 +32,7 @@ export class OAuthSessionStore implements NodeSavedSessionStore {
   async set(key: string, val: NodeSavedSession) {
     const serverSessionData = this.serverSession.data
     let sessionId
-    if (!serverSessionData.oauthSessionId) {
+    if (!serverSessionData?.oauthSessionId) {
       sessionId = crypto.randomUUID()
       await this.serverSession.update({
         oauthSessionId: sessionId,

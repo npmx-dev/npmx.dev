@@ -26,7 +26,7 @@ export const handleResolver = new AtprotoDohHandleResolver({
 })
 
 /**
- * Generates the OAuth client metadata. pkAlg is used to signify that the OAuth client is confendital
+ * Generates the OAuth client metadata. pkAlg is used to signify that the OAuth client is confidential
  */
 export function getOauthClientMetadata(pkAlg: string | undefined = undefined): OAuthClientMetadata {
   const dev = import.meta.dev
@@ -43,7 +43,7 @@ export function getOauthClientMetadata(pkAlg: string | undefined = undefined): O
     ? `http://localhost?redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}`
     : `${client_uri}/oauth-client-metadata.json`
 
-  // If anything changes here, please make zsure to also update /shared/schemas/oauth.ts to match
+  // If anything changes here, please make sure to also update /shared/schemas/oauth.ts to match
   return {
     client_name: 'npmx.dev',
     client_id,
@@ -56,7 +56,7 @@ export function getOauthClientMetadata(pkAlg: string | undefined = undefined): O
     response_types: ['code'],
     subject_type: 'public',
     authorization_signed_response_alg: 'RS256',
-    // confendital client values
+    // confidential client values
     token_endpoint_auth_method: pkAlg ? 'private_key_jwt' : 'none',
     jwks_uri,
     token_endpoint_auth_signing_alg: pkAlg,
