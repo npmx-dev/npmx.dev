@@ -34,6 +34,7 @@
     "generate:sprite": "node scripts/generate-file-tree-sprite.ts",
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
+    "generate:jwk": "node scripts/gen-jwk.ts",
     "test": "vite test",
     "test:a11y": "pnpm build:test && LIGHTHOUSE_COLOR_MODE=dark pnpm test:a11y:prebuilt && LIGHTHOUSE_COLOR_MODE=light pnpm test:a11y:prebuilt",
     "test:a11y:prebuilt": "./scripts/lighthouse.sh",
