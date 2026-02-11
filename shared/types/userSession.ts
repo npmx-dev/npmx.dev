@@ -7,6 +7,7 @@ export interface UserServerSession {
         handle: string
         pds: string
         avatar?: string
+        relogin?: boolean
       }
     | undefined
   // These values are tied to the users browser session and used by atproto OAuth

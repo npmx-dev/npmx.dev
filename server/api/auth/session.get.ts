@@ -8,5 +8,17 @@ export default defineEventHandler(async event => {
     return null
   }
 
+  // A one time redirect to upgrade the previous sessions.
+  // Can remove in 2 weeks from merge if we'd like
+  if (serverSession.data.oauthSession && serverSession.data?.public?.did) {
+    await serverSession.update({
+      oauthSession: undefined,
+    })
+    return {
+      ...result.output,
+      relogin: true,
+    }
+  }
+
   return result.output
 })

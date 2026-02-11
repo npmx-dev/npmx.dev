@@ -157,11 +157,6 @@ export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
   return defineEventHandler(async event => {
     const { oauthSession, serverSession } = await getOAuthSession(event)
 
-    //A one time redirect to upgrade the previous sessions. Can remove in 2 weeks from merge if we'd like
-    if (serverSession.data.oauthSession && serverSession.data?.public?.did) {
-      return sendRedirect(event, `/api/auth/atproto?hanlde=${serverSession.data?.public?.did}`)
-    }
-
     return await handler(event, oauthSession, serverSession)
   })
 }
