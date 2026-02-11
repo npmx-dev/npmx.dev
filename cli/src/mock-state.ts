@@ -517,7 +517,7 @@ export class MockConnectorStateManager {
   }
 }
 
-/** Default test configuration */
+/** @internal */
 export const DEFAULT_MOCK_CONFIG: MockConnectorConfig = {
   token: 'test-token-e2e-12345',
   npmUser: 'testuser',

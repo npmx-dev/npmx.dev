@@ -3,13 +3,8 @@
  * with global singleton state for Playwright test isolation.
  */
 
-import {
-  createMockConnectorApp,
-  MockConnectorServer as BaseMockConnectorServer,
-} from '../../../cli/src/mock-app.ts'
+import { MockConnectorServer as BaseMockConnectorServer } from '../../../cli/src/mock-app.ts'
 import { type MockConnectorConfig, initGlobalMockState } from './mock-connector-state'
-
-export { createMockConnectorApp }
 
 export class MockConnectorServer {
   private baseServer: BaseMockConnectorServer

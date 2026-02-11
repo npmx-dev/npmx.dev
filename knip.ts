@@ -32,6 +32,7 @@ const config: KnipConfig = {
         '!test/fixtures/**',
         '!test/test-utils/**',
         '!test/e2e/helpers/**',
+        '!cli/src/**',
       ],
       ignoreDependencies: [
         '@iconify-json/*',
@@ -56,7 +57,7 @@ const config: KnipConfig = {
       ignoreUnresolved: ['#components', '#oauth/config'],
     },
     'cli': {
-      project: ['src/**/*.ts!'],
+      project: ['src/**/*.ts!', '!src/mock-*.ts'],
     },
     'docs': {
       entry: ['app/**/*.{ts,vue}'],

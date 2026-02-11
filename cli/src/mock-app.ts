@@ -42,7 +42,7 @@ const corsOptions: CorsOptions = {
   allowHeaders: ['Content-Type', 'Authorization'],
 }
 
-export function createMockConnectorApp(stateManager: MockConnectorStateManager) {
+function createMockConnectorApp(stateManager: MockConnectorStateManager) {
   const app = new H3()
 
   app.use((event: H3Event) => {
