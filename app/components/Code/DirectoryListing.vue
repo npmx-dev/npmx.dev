@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
+import type { RouteNamedMap } from 'vue-router/auto-routes'
 import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
 
 const props = defineProps<{
   tree: PackageFileTree[]
   currentPath: string
   baseUrl: string
-  /** Base path segments for the code route (e.g., ['nuxt', 'v', '4.2.0']) */
-  basePath: string[]
+  baseRoute: Pick<RouteNamedMap['code'], 'params'>
 }>()
 
 // Get the current directory's contents
@@ -41,13 +41,14 @@ const parentPath = computed(() => {
 
 // Build route object for a path
 function getCodeRoute(nodePath?: string): RouteLocationRaw {
-  if (!nodePath) {
-    return { name: 'code', params: { path: props.basePath as [string, ...string[]] } }
-  }
-  const pathSegments = [...props.basePath, ...nodePath.split('/')]
   return {
     name: 'code',
-    params: { path: pathSegments as [string, ...string[]] },
+    params: {
+      org: props.baseRoute.params.org,
+      packageName: props.baseRoute.params.packageName,
+      version: props.baseRoute.params.version,
+      filePath: nodePath ?? '',
+    },
   }
 }
 

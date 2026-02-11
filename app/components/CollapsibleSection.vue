@@ -26,7 +26,7 @@ onPrehydrate(() => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
   const collapsed: string[] = settings?.sidebar?.collapsed || []
   for (const id of collapsed) {
-    if (!document.documentElement.dataset.collapsed?.includes(id)) {
+    if (!document.documentElement.dataset.collapsed?.split(' ').includes(id)) {
       document.documentElement.dataset.collapsed = (
         document.documentElement.dataset.collapsed +
         ' ' +
@@ -38,7 +38,9 @@ onPrehydrate(() => {
 
 onMounted(() => {
   if (document?.documentElement) {
-    isOpen.value = !(document.documentElement.dataset.collapsed?.includes(props.id) ?? false)
+    isOpen.value = !(
+      document.documentElement.dataset.collapsed?.split(' ').includes(props.id) ?? false
+    )
   }
 })
 

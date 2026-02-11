@@ -3,7 +3,34 @@ import { H3, HTTPError, handleCors, type H3Event } from 'h3-next'
 import type { CorsOptions } from 'h3-next'
 import * as v from 'valibot'
 
-import type { ConnectorState, PendingOperation, ApiResponse } from './types.ts'
+import type {
+  ConnectorState,
+  PendingOperation,
+  ApiResponse,
+  ConnectorEndpoints,
+  AssertEndpointsImplemented,
+} from './types.ts'
+
+// Endpoint completeness check — errors if this list diverges from ConnectorEndpoints.
+const _endpointCheck: AssertEndpointsImplemented<
+  | 'POST /connect'
+  | 'GET /state'
+  | 'POST /operations'
+  | 'POST /operations/batch'
+  | 'DELETE /operations'
+  | 'DELETE /operations/all'
+  | 'POST /approve'
+  | 'POST /approve-all'
+  | 'POST /retry'
+  | 'POST /execute'
+  | 'GET /org/:org/users'
+  | 'GET /org/:org/teams'
+  | 'GET /team/:scopeTeam/users'
+  | 'GET /package/:pkg/collaborators'
+  | 'GET /user/packages'
+  | 'GET /user/orgs'
+> = true
+void _endpointCheck
 import { logDebug, logError } from './logger.ts'
 import {
   getNpmUser,
@@ -108,7 +135,7 @@ export function createConnectorApp(expectedToken: string) {
         avatar,
         connectedAt: state.session.connectedAt,
       },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /connect']['data']>
   })
 
   app.get('/state', event => {
@@ -124,7 +151,7 @@ export function createConnectorApp(expectedToken: string) {
         avatar: state.session.avatar,
         operations: state.operations,
       },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['GET /state']['data']>
   })
 
   app.post('/operations', async event => {
@@ -164,7 +191,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: operation,
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /operations']['data']>
   })
 
   app.post('/operations/batch', async event => {
@@ -212,7 +239,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: created,
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /operations/batch']['data']>
   })
 
   app.post('/approve', event => {
@@ -246,7 +273,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: operation,
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /approve']['data']>
   })
 
   app.post('/approve-all', event => {
@@ -263,7 +290,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: { approved: pendingOps.length },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /approve-all']['data']>
   })
 
   app.post('/retry', event => {
@@ -299,7 +326,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: operation,
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /retry']['data']>
   })
 
   app.post('/execute', async event => {
@@ -397,7 +424,7 @@ export function createConnectorApp(expectedToken: string) {
         otpRequired,
         authFailure,
       },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['POST /execute']['data']>
   })
 
   app.delete('/operations', event => {
@@ -429,7 +456,7 @@ export function createConnectorApp(expectedToken: string) {
 
     state.operations.splice(index, 1)
 
-    return { success: true } as ApiResponse
+    return { success: true } satisfies ApiResponse<ConnectorEndpoints['DELETE /operations']['data']>
   })
 
   app.delete('/operations/all', event => {
@@ -444,7 +471,7 @@ export function createConnectorApp(expectedToken: string) {
     return {
       success: true,
       data: { removed },
-    } as ApiResponse
+    } satisfies ApiResponse<ConnectorEndpoints['DELETE /operations/all']['data']>
   })
 
   // List endpoints (read-only data fetching)
@@ -474,7 +501,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: users,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /org/:org/users']['data']>
     } catch {
       return {
         success: false,
@@ -508,7 +535,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: teams,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /org/:org/teams']['data']>
     } catch {
       return {
         success: false,
@@ -554,7 +581,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: users,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /team/:scopeTeam/users']['data']>
     } catch {
       return {
         success: false,
@@ -595,7 +622,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: collaborators,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /package/:pkg/collaborators']['data']>
     } catch {
       return {
         success: false,
@@ -634,7 +661,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: packages,
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /user/packages']['data']>
     } catch {
       return {
         success: false,
@@ -686,7 +713,7 @@ export function createConnectorApp(expectedToken: string) {
       return {
         success: true,
         data: Array.from(orgs).sort(),
-      } as ApiResponse
+      } satisfies ApiResponse<ConnectorEndpoints['GET /user/orgs']['data']>
     } catch {
       return {
         success: false,

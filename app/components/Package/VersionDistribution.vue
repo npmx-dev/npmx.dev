@@ -321,7 +321,7 @@ const endDate = computed(() => {
   >
     <div class="w-full mb-4 flex flex-col gap-3">
       <div class="flex flex-col sm:flex-row gap-3 sm:gap-2 sm:items-end">
-        <div class="flex flex-col gap-1 sm:shrink-0">
+        <div class="flex flex-col gap-1 w-fit sm:shrink-0">
           <label class="text-3xs font-mono text-fg-subtle tracking-wide uppercase">
             {{ $t('package.versions.distribution_title') }}
           </label>
@@ -430,7 +430,7 @@ const endDate = computed(() => {
         </div>
       </div>
 
-      <div class="flex flex-col gap-4 w-full max-w-1/2">
+      <div class="flex flex-col gap-4 w-full">
         <TooltipApp
           :text="$t('package.versions.recent_versions_only_tooltip')"
           position="bottom"

@@ -331,23 +331,52 @@ describe('Markdown File URL Resolution', () => {
   })
 })
 
-describe('Markdown Content Extraction', () => {
-  describe('Markdown', () => {
-    it('returns original markdown content unchanged', async () => {
-      const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
-      const result = await renderReadmeHtml(markdown, 'test-pkg')
+describe('ReadmeResponse shape (HTML route contract)', () => {
+  it('returns ReadmeResponse with html, mdExists, playgroundLinks, toc', async () => {
+    const markdown = `# Title\n\nSome **bold** text.`
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
 
-      expect(result.md).toBe(markdown)
+    expect(result).toMatchObject({
+      html: expect.any(String),
+      mdExists: true,
+      playgroundLinks: [],
+      toc: expect.any(Array),
     })
+    expect(result.html).toContain('Title')
+    expect(result.html).toContain('bold')
   })
-  describe('HTML', () => {
-    it('returns sanitized html', async () => {
-      const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
-      const result = await renderReadmeHtml(markdown, 'test-pkg')
 
-      expect(result.html).toBe(`<h3 id="user-content-title" data-level="1">Title</h3>
+  it('returns empty-state shape when content is empty', async () => {
+    const result = await renderReadmeHtml('', 'test-pkg')
+
+    expect(result).toMatchObject({
+      html: '',
+      playgroundLinks: [],
+      toc: [],
+    })
+    expect(result.playgroundLinks).toHaveLength(0)
+    expect(result.toc).toHaveLength(0)
+  })
+
+  it('extracts toc from headings', async () => {
+    const markdown = `# Install\n\n## CLI\n\n## API`
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(3)
+    expect(result.toc[0]).toMatchObject({ text: 'Install', depth: 1 })
+    expect(result.toc[1]).toMatchObject({ text: 'CLI', depth: 2 })
+    expect(result.toc[2]).toMatchObject({ text: 'API', depth: 2 })
+    expect(result.toc.every(t => t.id.startsWith('user-content-'))).toBe(true)
+  })
+})
+
+describe('HTML output', () => {
+  it('returns sanitized html', async () => {
+    const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.html).toBe(`<h3 id="user-content-title" data-level="1">Title</h3>
 <p>Some <strong>bold</strong> text and a <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">link</a>.</p>
 `)
-    })
   })
 })

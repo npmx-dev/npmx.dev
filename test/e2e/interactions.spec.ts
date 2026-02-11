@@ -68,9 +68,9 @@ test.describe('Search Pages', () => {
     await page.keyboard.press('ArrowUp')
 
     // Enter navigates to the selected result
-    // URL is /package/vue not /vue
+    // URL is /package/vue or /org/vue or /user/vue. Not /vue
     await page.keyboard.press('Enter')
-    await expect(page).toHaveURL(/\/package\/vue/)
+    await expect(page).toHaveURL(/\/(package|org|user)\/vue/)
   })
 
   test('/search?q=vue → "/" focuses the search input from results', async ({ page, goto }) => {

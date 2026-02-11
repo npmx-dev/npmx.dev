@@ -5,6 +5,7 @@ import type {
   PackumentVersion,
   ProvenanceDetails,
   ReadmeResponse,
+  ReadmeMarkdownResponse,
   SkillsListResponse,
 } from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
@@ -17,6 +18,7 @@ import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-securi
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
+import type { RouteLocationRaw } from 'vue-router'
 
 defineOgImageComponent('Package', {
   name: () => packageName.value,
@@ -105,14 +107,46 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
     const version = requestedVersion.value
     return version ? `${base}/v/${version}` : base
   },
-  { default: () => ({ html: '', md: '', playgroundLinks: [], toc: [] }) },
+  { default: () => ({ html: '', mdExists: false, playgroundLinks: [], toc: [] }) },
+)
+
+const {
+  data: readmeMarkdownData,
+  status: readmeMarkdownStatus,
+  execute: fetchReadmeMarkdown,
+} = useLazyFetch<ReadmeMarkdownResponse>(
+  () => {
+    const base = `/api/registry/readme/markdown/${packageName.value}`
+    const version = requestedVersion.value
+    return version ? `${base}/v/${version}` : base
+  },
+  {
+    server: false,
+    immediate: false,
+    default: () => ({}),
+  },
 )
 
 //copy README file as Markdown
 const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: () => readmeData.value?.md ?? '',
+  source: () => '',
   copiedDuring: 2000,
 })
+
+function prefetchReadmeMarkdown() {
+  if (readmeMarkdownStatus.value === 'idle') {
+    fetchReadmeMarkdown()
+  }
+}
+
+async function copyReadmeHandler() {
+  await fetchReadmeMarkdown()
+
+  const markdown = readmeMarkdownData.value?.markdown
+  if (!markdown) return
+
+  await copyReadme(markdown)
+}
 
 // Track active TOC item based on scroll position
 const tocItems = computed(() => readmeData.value?.toc ?? [])
@@ -557,17 +591,29 @@ useSeoMeta({
   twitterDescription: () => pkg.value?.description ?? '',
 })
 
+const codeLink = computed((): RouteLocationRaw | null => {
+  if (pkg.value == null || resolvedVersion.value == null) {
+    return null
+  }
+  const split = pkg.value.name.split('/')
+  return {
+    name: 'code',
+    params: {
+      org: split.length === 2 ? split[0] : undefined,
+      packageName: split.length === 2 ? split[1]! : split[0]!,
+      version: resolvedVersion.value,
+      filePath: '',
+    },
+  }
+})
+
 onKeyStroke(
   e => isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
   e => {
-    if (pkg.value == null || resolvedVersion.value == null) return
+    if (codeLink.value === null) return
     e.preventDefault()
-    navigateTo({
-      name: 'code',
-      params: {
-        path: [pkg.value.name, 'v', resolvedVersion.value],
-      },
-    })
+
+    navigateTo(codeLink.value)
   },
   { dedupe: true },
 )
@@ -719,8 +765,9 @@ const showSkeleton = shallowRef(false)
               {{ $t('package.links.docs') }}
             </LinkBase>
             <LinkBase
+              v-if="codeLink"
               variant="button-secondary"
-              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
+              :to="codeLink"
               aria-keyshortcuts="."
               classicon="i-carbon:code"
             >
@@ -1224,12 +1271,14 @@ const showSkeleton = shallowRef(false)
           <div class="flex gap-2">
             <!-- Copy readme as Markdown button -->
             <TooltipApp
-              v-if="readmeData?.md"
+              v-if="readmeData?.mdExists"
               :text="$t('package.readme.copy_as_markdown')"
               position="bottom"
             >
               <ButtonBase
-                @click="copyReadme()"
+                @mouseenter="prefetchReadmeMarkdown"
+                @focus="prefetchReadmeMarkdown"
+                @click="copyReadmeHandler()"
                 :aria-pressed="copiedReadme"
                 :aria-label="
                   copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
