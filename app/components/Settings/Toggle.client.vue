@@ -91,7 +91,6 @@ label:has(input:hover) .toggle--background {
 }
 
 .toggle--background:before {
-  animation-fill-mode: forwards;
   transition: transform 200ms ease-in-out;
   content: '';
   width: 20px;
