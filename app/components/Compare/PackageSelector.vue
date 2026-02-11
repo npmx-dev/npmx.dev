@@ -262,11 +262,12 @@ function handleFocus() {
           class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
           <!-- No dependency option (easter egg with James) -->
-          <div
+          <ButtonBase
             v-if="showNoDependencyOption"
             data-navigable
-            class="cursor-pointer px-4 py-3 transition-colors duration-100"
-            :class="highlightedIndex === 0 ? 'bg-accent/15 text-fg' : 'hover:bg-bg-subtle'"
+            class="block w-full text-start"
+            :class="highlightedIndex === 0 ? '!bg-accent/15' : ''"
+            :aria-label="$t('compare.no_dependency.add_column')"
             @mouseenter="highlightedIndex = 0"
             @click="addPackage(NO_DEPENDENCY_ID)"
           >
@@ -277,7 +278,7 @@ function handleFocus() {
             <span class="text-xs text-fg-muted truncate mt-0.5">
               {{ $t('compare.no_dependency.typeahead_description') }}
             </span>
-          </div>
+          </ButtonBase>
 
           <div
             v-if="isSearching && navigableItems.length === 0"
@@ -285,16 +286,12 @@ function handleFocus() {
           >
             {{ $t('compare.selector.searching') }}
           </div>
-          <div
+          <ButtonBase
             v-for="(result, index) in filteredResults"
             :key="result.name"
             data-navigable
-            class="cursor-pointer block w-full text-start px-4 py-3 transition-colors duration-100"
-            :class="
-              highlightedIndex === index + resultIndexOffset
-                ? 'bg-accent/15 text-fg'
-                : 'hover:bg-bg-subtle'
-            "
+            class="block w-full text-start"
+            :class="highlightedIndex === index + resultIndexOffset ? '!bg-accent/15' : ''"
             @mouseenter="highlightedIndex = index + resultIndexOffset"
             @click="addPackage(result.name)"
           >
@@ -305,7 +302,7 @@ function handleFocus() {
             >
               {{ result.description }}
             </span>
-          </div>
+          </ButtonBase>
         </div>
       </Transition>
     </div>
