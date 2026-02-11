@@ -102,7 +102,7 @@ const chartConfig = computed(() => {
       padding: {
         top: 24,
         right: 24,
-        bottom: xAxisLabels.value.length > 10 ? 100 : 88, // Space for rotated labels + watermark
+        bottom: xAxisLabels.value.length > 10 ? 84 : 72, // Space for rotated labels + watermark
         left: isMobile.value ? 60 : 80,
       },
       userOptions: {
@@ -429,9 +429,7 @@ const endDate = computed(() => {
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
                 v-if="svg.isPrintingSvg || svg.isPrintingImg"
-                v-html="
-                  drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'belowDrawingArea')
-                "
+                v-html="drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'bottom')"
               />
             </template>
 

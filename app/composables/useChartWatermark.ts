@@ -64,7 +64,7 @@ export function drawNpmxLogoAndTaglineWatermark(
   // Position watermark based on the positioning strategy
   const watermarkY =
     positioning === 'belowDrawingArea'
-      ? svg.drawingArea.top + svg.drawingArea.height + 48
+      ? svg.drawingArea.top + svg.drawingArea.height + 58
       : svg.height - npmxLogoHeight
 
   const taglineY =
