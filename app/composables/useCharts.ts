@@ -1,50 +1,18 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { toValue } from 'vue'
+import type {
+  DailyDataPoint,
+  DailyRawPoint,
+  EvolutionOptions,
+  MonthlyDataPoint,
+  WeeklyDataPoint,
+  YearlyDataPoint,
+} from '~/types/chart'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
 
 export type PackumentLikeForTime = {
   time?: Record<string, string>
 }
-
-export type DailyDataPoint = { value: number; day: string; timestamp: number }
-export type WeeklyDataPoint = {
-  value: number
-  weekKey: string
-  weekStart: string
-  weekEnd: string
-  timestampStart: number
-  timestampEnd: number
-}
-export type MonthlyDataPoint = { value: number; month: string; timestamp: number }
-export type YearlyDataPoint = { value: number; year: string; timestamp: number }
-
-type EvolutionOptionsBase = {
-  startDate?: string
-  endDate?: string
-}
-
-export type EvolutionOptionsDay = EvolutionOptionsBase & {
-  granularity: 'day'
-}
-export type EvolutionOptionsWeek = EvolutionOptionsBase & {
-  granularity: 'week'
-  weeks?: number
-}
-export type EvolutionOptionsMonth = EvolutionOptionsBase & {
-  granularity: 'month'
-  months?: number
-}
-export type EvolutionOptionsYear = EvolutionOptionsBase & {
-  granularity: 'year'
-}
-
-export type EvolutionOptions =
-  | EvolutionOptionsDay
-  | EvolutionOptionsWeek
-  | EvolutionOptionsMonth
-  | EvolutionOptionsYear
-
-type DailyRawPoint = { day: string; value: number }
 
 function toIsoDateString(date: Date): string {
   return date.toISOString().slice(0, 10)

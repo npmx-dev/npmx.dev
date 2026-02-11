@@ -17,10 +17,7 @@
     "npmx-connector": "./dist/cli.mjs"
   },
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.mts"
-    }
+    ".": "./dist/index.mjs"
   },
   "files": [
     "dist"
@@ -29,6 +26,7 @@
     "build": "tsdown",
     "dev": "NPMX_CLI_DEV=true node src/cli.ts",
     "dev:debug": "DEBUG=npmx-connector NPMX_CLI_DEV=true node src/cli.ts",
+    "dev:mock": "NPMX_CLI_DEV=true node src/mock-server.ts",
     "test:types": "tsc --noEmit"
   },
   "dependencies": {

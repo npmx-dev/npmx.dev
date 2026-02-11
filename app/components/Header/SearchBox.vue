@@ -40,6 +40,7 @@ function updateUrlQuery(value: string) {
     name: 'search',
     query: {
       q: value,
+      p: provider === 'npm' ? 'npm' : undefined,
     },
   })
 }

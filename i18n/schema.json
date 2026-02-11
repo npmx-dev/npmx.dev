@@ -867,6 +867,33 @@
             },
             "view_all": {
               "type": "string"
+            },
+            "distribution_title": {
+              "type": "string"
+            },
+            "distribution_modal_title": {
+              "type": "string"
+            },
+            "grouping_major": {
+              "type": "string"
+            },
+            "grouping_minor": {
+              "type": "string"
+            },
+            "recent_versions_only": {
+              "type": "string"
+            },
+            "recent_versions_only_tooltip": {
+              "type": "string"
+            },
+            "show_low_usage": {
+              "type": "string"
+            },
+            "show_low_usage_tooltip": {
+              "type": "string"
+            },
+            "date_range_tooltip": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1046,6 +1073,9 @@
           "type": "object",
           "properties": {
             "title": {
+              "type": "string"
+            },
+            "modal_title": {
               "type": "string"
             },
             "analyze": {
