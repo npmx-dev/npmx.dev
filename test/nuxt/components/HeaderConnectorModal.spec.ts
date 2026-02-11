@@ -100,7 +100,6 @@ function resetMockState() {
     lastExecutionTime: null,
   }
   mockSettings.value.connector = {
-    webAuth: false,
     autoOpenURL: false,
   }
 }
@@ -125,7 +124,6 @@ const mockSettings = ref({
   preferredBackgroundTheme: null,
   searchProvider: 'npm',
   connector: {
-    webAuth: false,
     autoOpenURL: false,
   },
   sidebar: {
