@@ -2,9 +2,7 @@
 const props = defineProps<{
   label: string
   description?: string
-  class?: string
 }>()
-defineEmits(['update:modelValue'])
 const checked = defineModel<boolean>({
   required: true,
 })
@@ -13,9 +11,9 @@ const id = useId()
 
 <template>
   <label :for="id">
-    <span class="toggle--label-text">{{ label }}</span>
-    <input role="switch" type="checkbox" :id class="toggle--checkbox" v-model="checked" />
-    <span class="toggle--background"></span>
+    <span class="label-text">{{ label }}</span>
+    <input role="switch" type="checkbox" :id class="checkbox" v-model="checked" />
+    <span class="background"></span>
   </label>
   <p v-if="description" class="text-sm text-fg-muted mt-2">
     {{ description }}
@@ -23,16 +21,16 @@ const id = useId()
 </template>
 
 <style scoped>
-.toggle--label-text {
+.label-text {
   grid-area: label-text;
 }
 
-.toggle--background {
+.background {
   grid-area: toggle-background;
   justify-self: end;
 }
 
-.toggle--checkbox {
+.checkbox {
   opacity: 0;
 }
 
@@ -48,7 +46,7 @@ input {
 }
 
 /* background */
-.toggle--background {
+.background {
   width: 44px;
   height: 24px;
   background: var(--fg-subtle);
@@ -58,22 +56,22 @@ input {
   position: relative;
 }
 
-label:has(input:focus-visible) .toggle--background {
+label:has(input:focus-visible) .background {
   outline: solid 2px var(--fg);
   outline-offset: 2px;
 }
 
-label:has(input:checked) .toggle--background {
+label:has(input:checked) .background {
   background: var(--fg);
   border-color: var(--fg);
 }
 
-label:has(input:hover) .toggle--background {
+label:has(input:hover) .background {
   background: var(--fg-muted);
 }
 
 /* Circle that moves */
-.toggle--background::before {
+.background::before {
   transition: transform 200ms ease-in-out;
   content: '';
   width: 20px;
@@ -86,11 +84,11 @@ label:has(input:hover) .toggle--background {
 }
 
 /* Support rtl locales */
-:dir(ltr) .toggle--checkbox:checked + .toggle--background::before {
+:dir(ltr) .checkbox:checked + .background::before {
   transform: translate(20px);
 }
 
-:dir(rtl) .toggle--checkbox:checked + .toggle--background::before {
+:dir(rtl) .checkbox:checked + .background::before {
   transform: translate(-20px);
 }
 </style>
