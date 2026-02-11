@@ -15,7 +15,12 @@ const emit = defineEmits(['blur', 'focus'])
 
 const router = useRouter()
 const route = useRoute()
-const { isAlgolia } = useSearchProvider()
+const { searchProvider } = useSearchProvider()
+const searchProviderValue = computed(() => {
+  const p = normalizeSearchParam(route.query.p)
+  if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
+  return 'algolia'
+})
 
 const isSearchFocused = shallowRef(false)
 
@@ -29,13 +34,13 @@ const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
 // Pages that have their own local filter using ?q
 const pagesWithLocalFilter = new Set(['~username', 'org'])
 
-function updateUrlQueryImpl(value: string) {
+function updateUrlQueryImpl(value: string, provider: 'npm' | 'algolia') {
   // Don't navigate away from pages that use ?q for local filtering
   if (pagesWithLocalFilter.has(route.name as string)) {
     return
   }
   if (route.name === 'search') {
-    router.replace({ query: { q: value || undefined } })
+    router.replace({ query: { q: value || undefined, p: provider === 'npm' ? 'npm' : undefined } })
     return
   }
   if (!value) {
@@ -46,6 +51,7 @@ function updateUrlQueryImpl(value: string) {
     name: 'search',
     query: {
       q: value,
+      p: provider === 'npm' ? 'npm' : undefined,
     },
   })
 }
@@ -54,9 +60,14 @@ const updateUrlQueryNpm = debounce(updateUrlQueryImpl, 250)
 const updateUrlQueryAlgolia = debounce(updateUrlQueryImpl, 80)
 
 const updateUrlQuery = Object.assign(
-  (value: string) => (isAlgolia.value ? updateUrlQueryAlgolia : updateUrlQueryNpm)(value),
+  (value: string) =>
+    (searchProviderValue.value === 'algolia' ? updateUrlQueryAlgolia : updateUrlQueryNpm)(
+      value,
+      searchProviderValue.value,
+    ),
   {
-    flush: () => (isAlgolia.value ? updateUrlQueryAlgolia : updateUrlQueryNpm).flush(),
+    flush: () =>
+      (searchProviderValue.value === 'algolia' ? updateUrlQueryAlgolia : updateUrlQueryNpm).flush(),
   },
 )
 
@@ -85,6 +96,7 @@ function handleSubmit() {
       name: 'search',
       query: {
         q: searchQuery.value,
+        p: searchProviderValue.value === 'npm' ? 'npm' : undefined,
       },
     })
   } else {

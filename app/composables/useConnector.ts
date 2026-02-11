@@ -1,4 +1,4 @@
-import type { PendingOperation, OperationStatus, OperationType } from '../../cli/src/types'
+import type { PendingOperation, OperationStatus, OperationType } from '#cli/types'
 import { $fetch } from 'ofetch'
 
 export interface NewOperation {

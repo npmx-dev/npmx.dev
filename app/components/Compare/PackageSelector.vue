@@ -20,7 +20,8 @@ const listRef = useTemplateRef('listRef')
 const PAGE_JUMP = 5
 
 // Use the shared search composable (supports both npm and Algolia providers)
-const { data: searchData, status } = useSearch(inputValue, { size: 15 })
+const { searchProvider } = useSearchProvider()
+const { data: searchData, status } = useSearch(inputValue, searchProvider, { size: 15 })
 
 const isSearching = computed(() => status.value === 'pending')
 

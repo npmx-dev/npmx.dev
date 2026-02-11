@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
+import type { RouteLocationRaw } from 'vue-router'
 
 const props = defineProps<{
   packageName: string
@@ -11,12 +12,25 @@ const props = defineProps<{
   }
 }>()
 
-function getCodeLink(filePath: string): string {
-  return `/code/${props.packageName}/v/${props.version}/${filePath}`
+function getCodeLink(filePath: string): RouteLocationRaw {
+  const split = props.packageName.split('/')
+
+  return {
+    name: 'code',
+    params: {
+      org: split.length === 2 ? split[0] : null,
+      packageName: split.length === 2 ? split[1]! : split[0]!,
+      version: props.version,
+      filePath: filePath,
+    },
+  }
 }
 
 const scriptParts = computed(() => {
-  const parts: Record<string, { prefix: string | null; filePath: string | null; link: string }> = {}
+  const parts: Record<
+    string,
+    { prefix: string | null; filePath: string | null; link: RouteLocationRaw }
+  > = {}
   for (const scriptName of props.installScripts.scripts) {
     const content = props.installScripts.content?.[scriptName]
     if (!content) continue
