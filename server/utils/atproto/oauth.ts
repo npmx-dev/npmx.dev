@@ -10,11 +10,11 @@ import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { LIKES_SCOPE } from '#shared/utils/constants'
-import { type NitroRuntimeConfig } from 'nitropack/types'
-
+import type { RuntimeConfig } from 'nuxt/schema'
+import type { UserServerSession } from '#shared/types/userSession'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
-import type { UserServerSession } from '~~/shared/types/userSession'
+
 // TODO: If you add writing a new record you will need to add a scope for it
 export const scope = `atproto ${LIKES_SCOPE}`
 
@@ -71,7 +71,7 @@ type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
 
 export async function getNodeOAuthClient(
   serverSession: SessionManager,
-  config: NitroRuntimeConfig,
+  config: RuntimeConfig,
 ): Promise<NodeOAuthClient> {
   const { stateStore, sessionStore } = useOAuthStorage(serverSession)
 
@@ -91,7 +91,7 @@ export async function getNodeOAuthClient(
   })
 }
 
-export async function loadJWKs(config: NitroRuntimeConfig): Promise<Keyset | undefined> {
+export async function loadJWKs(config: RuntimeConfig): Promise<Keyset | undefined> {
   // If we ever need to add multiple JWKs to rotate keys we will need to add a new one
   // under a new variable and update here
   const jwkOne = config.oauthJwkOne
