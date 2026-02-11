@@ -319,7 +319,7 @@ export async function renderReadmeHtml(
   packageName: string,
   repoInfo?: RepositoryInfo,
 ): Promise<ReadmeResponse> {
-  if (!content) return { html: '', md: '', playgroundLinks: [], toc: [] }
+  if (!content) return { html: '', playgroundLinks: [], toc: [] }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
@@ -511,7 +511,7 @@ ${html}
 
   return {
     html: convertToEmoji(sanitized),
-    md: content,
+    mdExists: Boolean(content),
     playgroundLinks: collectedLinks,
     toc,
   }

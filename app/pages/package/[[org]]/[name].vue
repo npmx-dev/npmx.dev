@@ -5,6 +5,7 @@ import type {
   PackumentVersion,
   ProvenanceDetails,
   ReadmeResponse,
+  ReadmeMarkdownResponse,
   SkillsListResponse,
 } from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
@@ -109,11 +110,43 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
   { default: () => ({ html: '', md: '', playgroundLinks: [], toc: [] }) },
 )
 
+const {
+  data: readmeMarkdownData,
+  status: readmeMarkdownStatus,
+  execute: fetchReadmeMarkdown,
+} = useLazyFetch<ReadmeMarkdownResponse>(
+  () => {
+    const base = `/api/registry/readme/markdown/${packageName.value}`
+    const version = requestedVersion.value
+    return version ? `${base}/v/${version}` : base
+  },
+  {
+    server: false,
+    immediate: false,
+    default: () => ({}),
+  },
+)
+
 //copy README file as Markdown
 const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: () => readmeData.value?.md ?? '',
+  source: () => '',
   copiedDuring: 2000,
 })
+
+function prefetchReadmeMarkdown() {
+  if (readmeMarkdownStatus.value === 'idle') {
+    fetchReadmeMarkdown()
+  }
+}
+
+async function copyReadmeHandler() {
+  await fetchReadmeMarkdown()
+
+  const markdown = readmeMarkdownData.value?.markdown
+  if (!markdown) return
+
+  await copyReadme(markdown)
+}
 
 // Track active TOC item based on scroll position
 const tocItems = computed(() => readmeData.value?.toc ?? [])
@@ -1238,12 +1271,14 @@ const showSkeleton = shallowRef(false)
           <div class="flex gap-2">
             <!-- Copy readme as Markdown button -->
             <TooltipApp
-              v-if="readmeData?.md"
+              v-if="readmeData?.mdExists"
               :text="$t('package.readme.copy_as_markdown')"
               position="bottom"
             >
               <ButtonBase
-                @click="copyReadme()"
+                @mouseenter="prefetchReadmeMarkdown"
+                @focus="prefetchReadmeMarkdown"
+                @click="copyReadmeHandler()"
                 :aria-pressed="copiedReadme"
                 :aria-label="
                   copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
