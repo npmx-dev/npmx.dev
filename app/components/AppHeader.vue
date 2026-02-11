@@ -180,7 +180,7 @@ onKeyStroke(
     for (const link of desktopLinks.value) {
       if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
         e.preventDefault()
-        navigateTo(link.to.name)
+        navigateTo(link.to)
         break
       }
     }

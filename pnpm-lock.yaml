@@ -249,6 +249,9 @@ importers:
       h3:
         specifier: 1.15.5
         version: 1.15.5
+      h3-next:
+        specifier: npm:h3@2.0.1-rc.11
+        version: h3@2.0.1-rc.11
       knip:
         specifier: 5.83.0
         version: 5.83.0(@types/node@24.10.9)(typescript@5.9.3)

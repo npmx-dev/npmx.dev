@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
+import type { RouteNamedMap } from 'vue-router/auto-routes'
 
 defineProps<{
   tree: PackageFileTree[]
   currentPath: string
   baseUrl: string
-  /** Base path segments for the code route (e.g., ['nuxt', 'v', '4.2.0']) */
-  basePath: string[]
+  baseRoute: Pick<RouteNamedMap['code'], 'params'>
 }>()
 
 const isOpen = shallowRef(false)
@@ -61,7 +61,7 @@ watch(isOpen, open => (isLocked.value = open))
       class="md:hidden fixed inset-y-0 inset-is-0 z-50 w-72 bg-bg-subtle border-ie border-border overflow-y-auto"
     >
       <div
-        class="sticky top-0 bg-bg-subtle border-b border-border px-4 py-3 flex items-center justify-start"
+        class="sticky top-0 z-10 bg-bg-subtle border-b border-border px-4 py-3 flex items-center justify-start"
       >
         <span class="font-mono text-sm text-fg-muted">{{ $t('code.files_label') }}</span>
         <span aria-hidden="true" class="flex-shrink-1 flex-grow-1" />
@@ -75,7 +75,7 @@ watch(isOpen, open => (isLocked.value = open))
         :tree="tree"
         :current-path="currentPath"
         :base-url="baseUrl"
-        :base-path="basePath"
+        :base-route="baseRoute"
       />
     </aside>
   </Transition>

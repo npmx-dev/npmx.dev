@@ -16,10 +16,24 @@
     "docs": "documentación",
     "source": "código fuente",
     "social": "social",
-    "chat": "chat"
+    "chat": "chat",
+    "keyboard_shortcuts": "atajos de teclado"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "Global",
+      "search": "Búsqueda",
+      "package": "Paquete"
+    },
+    "focus_search": "Enfocar búsqueda",
+    "show_kbd_hints": "Resaltar atajos de teclado",
+    "settings": "Abrir ajustes",
+    "compare": "Abrir comparador",
+    "compare_from_package": "Abrir comparador (con el paquete actual)",
+    "navigate_results": "Navegar resultados",
+    "go_to_result": "Ir al resultado",
+    "open_code_view": "Abrir vista de código",
+    "open_docs": "Abrir documentación"
   },
   "search": {
     "label": "Buscar paquetes npm",
@@ -27,8 +41,10 @@
     "button": "buscar",
     "searching": "Buscando...",
     "found_packages": "No se encontraron paquetes | Se encontró 1 paquete | Se encontraron {count} paquetes",
+    "found_packages_sorted": "No se encontraron resultados | Ordenando el mejor resultado | Ordenando los {count} mejores resultados",
     "updating": "(actualizando...)",
     "no_results": "No se encontraron paquetes para \"{query}\"",
+    "rate_limited": "Límite de peticiones a npm alcanzado, inténtalo de nuevo dentro de un momento",
     "title": "búsqueda",
     "title_search": "búsqueda: {search}",
     "title_packages": "búsqueda de paquetes",
@@ -39,6 +55,7 @@
     "claim_button": "Reclamar \"{name}\"",
     "want_to_claim": "¿Quieres reclamar este nombre de paquete?",
     "start_typing": "Empieza a escribir para buscar paquetes",
+    "algolia_disclaimer": "Con tecnología de Algolia",
     "exact_match": "exacto",
     "suggestion": {
       "user": "usuario",
@@ -66,9 +83,17 @@
     "sections": {
       "appearance": "Apariencia",
       "display": "Visualización",
+      "search": "Fuente de datos",
       "language": "Idioma"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "Fuente de datos",
+      "description": "Elige de dónde obtiene npmx los datos para las búsquedas. Las páginas de paquetes individuales siempre usan el registro de npm directamente.",
+      "npm": "Registro npm",
+      "npm_description": "Obtiene búsquedas, organizaciones y usuarios directamente del registro oficial de npm. Es la fuente autorizada, pero puede ser más lenta.",
+      "algolia": "Algolia",
+      "algolia_description": "Usa Algolia para búsquedas y páginas de organizaciones y usuarios más rápidas."
+    },
     "relative_dates": "Fechas relativas",
     "include_types": "Incluir {'@'}types en la instalación",
     "include_types_description": "Añadir paquete {'@'}types a los comandos de instalación para paquetes sin tipos",
@@ -231,7 +256,16 @@
       "view_more_details": "Ver más detalles",
       "error_loading": "Error al cargar detalles de procedencia"
     },
-    "security_downgrade": {},
+    "security_downgrade": {
+      "title": "Reducción de confianza",
+      "description_to_none_provenance": "Esta versión se publicó sin {provenance}.",
+      "description_to_none_trustedPublisher": "Esta versión se publicó sin {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "Esta versión usa {provenance} pero no {trustedPublishing}.",
+      "fallback_install_provenance": "Los comandos de instalación están fijados a la versión {version}, la última con procedencia verificada.",
+      "fallback_install_trustedPublisher": "Los comandos de instalación están fijados a la versión {version}, la última con publicación de confianza.",
+      "provenance_link_text": "procedencia",
+      "trusted_publishing_link_text": "publicación de confianza"
+    },
     "keywords_title": "Palabras clave",
     "compatibility": "Compatibilidad",
     "card": {
@@ -253,7 +287,16 @@
       "more_tagged": "{count} más etiquetada | {count} más etiquetadas",
       "all_covered": "Todas las versiones están cubiertas por las etiquetas anteriores",
       "deprecated_title": "{version} (obsoleto)",
-      "view_all": "Ver {count} versión | Ver todas las {count} versiones"
+      "view_all": "Ver {count} versión | Ver todas las {count} versiones",
+      "distribution_title": "Grupo Semver",
+      "distribution_modal_title": "Versiones",
+      "grouping_major": "Mayor",
+      "grouping_minor": "Menor",
+      "recent_versions_only": "Solo versiones recientes",
+      "recent_versions_only_tooltip": "Mostrar solo versiones publicadas en el último año.",
+      "show_low_usage": "Mostrar versiones de bajo uso",
+      "show_low_usage_tooltip": "Incluir grupos de versiones con menos del 1% de las descargas totales.",
+      "date_range_tooltip": "Solo la última semana de distribución de versiones"
     },
     "dependencies": {
       "title": "Dependencias ({count})",
@@ -302,10 +345,19 @@
       "date_range_multiline": "{start}\na {end}",
       "download_file": "Descargar {fileType}",
       "toggle_annotator": "Alternar anotador",
-      "items": {}
+      "legend_estimation": "Estimación",
+      "no_data": "No hay datos disponibles",
+      "y_axis_label": "{facet} {granularity}",
+      "facet": "Faceta",
+      "title": "Tendencias",
+      "items": {
+        "downloads": "Descargas",
+        "likes": "Me gusta"
+      }
     },
     "downloads": {
       "title": "Descargas Semanales",
+      "modal_title": "Descargas semanales",
       "analyze": "Analizar descargas",
       "community_distribution": "Ver distribución de adopción comunitaria"
     },
@@ -344,7 +396,8 @@
         "high": "alta",
         "moderate": "moderada",
         "low": "baja"
-      }
+      },
+      "fixed_in_title": "Corregido en la versión {version}"
     },
     "deprecated": {
       "label": "Obsoleto",
@@ -800,7 +853,8 @@
       "create_account": "Crear una nueva cuenta",
       "connect_bluesky": "Conectar con Bluesky",
       "what_is_atmosphere": "¿Qué es una cuenta de la Atmosphere?",
-      "atmosphere_explanation": "{npmx} utiliza {atproto} para proporcionar muchas de sus funciones sociales, lo que permite a los usuarios ser propietarios de sus datos y utilizar una cuenta para todas las aplicaciones compatibles. Una vez que crea una cuenta, puede usar otras aplicaciones como {bluesky} y {tangled} con la misma cuenta."
+      "atmosphere_explanation": "{npmx} utiliza {atproto} para proporcionar muchas de sus funciones sociales, lo que permite a los usuarios ser propietarios de sus datos y utilizar una cuenta para todas las aplicaciones compatibles. Una vez que crea una cuenta, puede usar otras aplicaciones como {bluesky} y {tangled} con la misma cuenta.",
+      "default_input_error": "Por favor, introduce un handle, DID o URL de PDS válido"
     }
   },
   "header": {
@@ -937,7 +991,9 @@
         "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
         "up_to_you": "¡Depende de ti!"
       },
-      "trends": {}
+      "trends": {
+        "title": "Tendencias comparativas"
+      }
     }
   },
   "privacy_policy": {
@@ -1018,6 +1074,36 @@
     "changes": {
       "title": "Cambios en esta política",
       "p1": "Podemos actualizar esta política de privacidad ocasionalmente. Cualquier cambio se publicará en esta página con una fecha de revisión actualizada."
+    }
+  },
+  "a11y": {
+    "title": "accesibilidad",
+    "footer_title": "a11y",
+    "welcome": "Queremos que {app} sea utilizable por el mayor número de personas posible.",
+    "approach": {
+      "title": "Nuestro enfoque",
+      "p1": "Intentamos seguir las Pautas de Accesibilidad para el Contenido Web (WCAG) 2.2 y usarlas como referencia al desarrollar funcionalidades. No afirmamos cumplir totalmente con ningún nivel de WCAG; la accesibilidad es un proceso continuo y siempre hay más trabajo por hacer.",
+      "p2": "Este sitio es un {about}. Las mejoras de accesibilidad se realizan de forma incremental como parte de nuestro desarrollo habitual.",
+      "about_link": "proyecto de código abierto impulsado por la comunidad"
+    },
+    "measures": {
+      "title": "Qué hacemos",
+      "p1": "Algunas de las cosas que intentamos hacer en todo el sitio web:",
+      "li1": "Usar HTML semántico y atributos ARIA cuando sea apropiado.",
+      "li2": "Usar tamaños de texto relativos para que puedas ajustarlos en tu navegador.",
+      "li3": "Soportar la navegación por teclado en toda la interfaz.",
+      "li4": "Respetar las preferencias de reducción de movimiento y esquema de color.",
+      "li5": "Diseñar teniendo en cuenta un contraste de color suficiente.",
+      "li6": "Asegurar que el contenido esencial esté disponible sin JavaScript, aunque algunas funciones interactivas lo requieran."
+    },
+    "limitations": {
+      "title": "Limitaciones conocidas",
+      "p1": "Algunas partes del sitio, particularmente el contenido de terceros como los README de los paquetes, pueden no cumplir con los estándares de accesibilidad. Estamos trabajando para mejorar estas áreas con el tiempo."
+    },
+    "contact": {
+      "title": "Comentarios",
+      "p1": "Si encuentras una barrera de accesibilidad en {app}, por favor háznoslo saber abriendo una incidencia en nuestro {link}. Nos tomamos estos informes muy en serio y haremos todo lo posible para abordarlos.",
+      "link": "repositorio de GitHub"
     }
   }
 }
