@@ -1,5 +1,3 @@
-import type { NodeSavedSession, NodeSavedState } from '@atproto/oauth-client-node'
-
 export interface UserServerSession {
   public?:
     | {
@@ -9,13 +7,7 @@ export interface UserServerSession {
         avatar?: string
       }
     | undefined
-  // Only to be used in the atproto session and state stores
-  // Will need to change to Record<string, T> and add a current logged in user if we ever want to support
-  // multiple did logins per server session
-  oauthSession?: NodeSavedSession | undefined
-  oauthState?: NodeSavedState | undefined
-  // TODO: This todo is a place holder to rememebr to clean this up after this current oauth change
-  //
-  // Will most likely be crypto.randomUUID() and the did
+  // These values are tied to the users browser session and used by atproto OAuth
   oauthSessionId?: string | undefined
+  oauthStateId?: string | undefined
 }

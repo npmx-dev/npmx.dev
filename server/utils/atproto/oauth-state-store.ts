@@ -11,26 +11,35 @@ export class OAuthStateStore implements NodeSavedStateStore {
     this.serverSession = session
   }
 
-  private createAKey(did: string, sessionId: string) {
+  private createStorageKey(did: string, sessionId: string) {
     return `state:${did}:${sessionId}`
   }
 
-  async get(): Promise<NodeSavedState | undefined> {
+  async get(key: string): Promise<NodeSavedState | undefined> {
     const serverSessionData = this.serverSession.data
     if (!serverSessionData) return undefined
-    return serverSessionData.oauthState
+    if (!serverSessionData.oauthStateId) return undefined
+    const state = await this.storage.getItem<NodeSavedState>(
+      this.createStorageKey(key, serverSessionData.oauthStateId),
+    )
+    return state ?? undefined
   }
 
   async set(key: string, val: NodeSavedState) {
-    // We are ignoring the key since the mapping is already done in the session
+    let stateId = crypto.randomUUID()
     await this.serverSession.update({
-      oauthState: val,
+      oauthStateId: stateId,
     })
+    await this.storage.setItem<NodeSavedState>(this.createStorageKey(key, stateId), val)
   }
 
-  async del() {
+  async del(key: string) {
+    const serverSessionData = this.serverSession.data
+    if (!serverSessionData) return undefined
+    if (!serverSessionData.oauthStateId) return undefined
+    await this.storage.removeItem(this.createStorageKey(key, serverSessionData.oauthStateId))
     await this.serverSession.update({
-      oauthState: undefined,
+      oauthStateId: undefined,
     })
   }
 }
