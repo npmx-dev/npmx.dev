@@ -339,18 +339,22 @@ export function useSearch(
     const { intent, name } = parseSuggestionIntent(q)
     let availability: { name: string; available: boolean } | null = null
 
+    const promises: Promise<void>[] = []
+
     const trimmed = q.trim()
     if (isValidNewPackageName(trimmed)) {
-      checkPackageExists(trimmed)
-        .then(exists => {
-          if (trimmed === toValue(query).trim()) {
-            availability = { name: trimmed, available: !exists }
-            packageAvailability.value = availability
-          }
-        })
-        .catch(() => {
-          availability = null
-        })
+      promises.push(
+        checkPackageExists(trimmed)
+          .then(exists => {
+            if (trimmed === toValue(query).trim()) {
+              availability = { name: trimmed, available: !exists }
+              packageAvailability.value = availability
+            }
+          })
+          .catch(() => {
+            availability = null
+          }),
+      )
     } else {
       availability = null
     }
@@ -367,8 +371,6 @@ export function useSearch(
     try {
       const wantOrg = intent === 'org' || intent === 'both'
       const wantUser = intent === 'user' || intent === 'both'
-
-      const promises: Promise<void>[] = []
 
       if (wantOrg && existenceCache.value[`org:${lowerName}`] === undefined) {
         promises.push(
