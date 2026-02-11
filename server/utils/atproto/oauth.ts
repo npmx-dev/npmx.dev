@@ -10,10 +10,11 @@ import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { LIKES_SCOPE } from '#shared/utils/constants'
-import type { NitroRuntimeConfig } from 'nitropack/types'
+import { type NitroRuntimeConfig } from 'nitropack/types'
 
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
+import type { UserServerSession } from '~~/shared/types/userSession'
 // TODO: If you add writing a new record you will need to add a scope for it
 export const scope = `atproto ${LIKES_SCOPE}`
 
@@ -42,7 +43,7 @@ export function getOauthClientMetadata(pkAlg: string | undefined = undefined): O
     ? `http://localhost?redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}`
     : `${client_uri}/oauth-client-metadata.json`
 
-  // If anything changes here, please make sure to also update /shared/schemas/oauth.ts to match
+  // If anything changes here, please make zsure to also update /shared/schemas/oauth.ts to match
   return {
     client_name: 'npmx.dev',
     client_id,
@@ -78,7 +79,6 @@ export async function getNodeOAuthClient(
   const keyset = await loadJWKs(config)
   // @ts-expect-error Taken from statusphere-example-app. Throws a ts error
   const pk = keyset?.findPrivateKey({ use: 'sig' })
-  console.log(pk)
   const clientMetadata = getOauthClientMetadata(pk?.alg)
 
   return new NodeOAuthClient({
@@ -104,9 +104,10 @@ export async function loadJWKs(config: NitroRuntimeConfig): Promise<Keyset | und
   return new Keyset([keys])
 }
 
-async function getOAuthSession(
-  event: H3Event,
-): Promise<{ oauthSession: OAuthSession | undefined; serverSession: SessionManager }> {
+async function getOAuthSession(event: H3Event): Promise<{
+  oauthSession: OAuthSession | undefined
+  serverSession: SessionManager<UserServerSession>
+}> {
   const serverSession = await useServerSession(event)
   const config = useRuntimeConfig(event)
 
@@ -117,10 +118,6 @@ async function getOAuthSession(
     // TODO (jg): why can a session be `{}`?
     if (!currentSession || !currentSession.public?.did) {
       return { oauthSession: undefined, serverSession }
-    }
-
-    if (currentSession.oauthSession && currentSession.public.did) {
-      //TODO clear and redirect to login to clean up old sessions
     }
 
     const oauthSession = await client.restore(currentSession.public.did)
@@ -159,6 +156,12 @@ export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
 ) {
   return defineEventHandler(async event => {
     const { oauthSession, serverSession } = await getOAuthSession(event)
+
+    //A one time redirect to upgrade the previous sessions. Can remove in 2 weeks from merge if we'd like
+    if (serverSession.data.oauthSession && serverSession.data?.public?.did) {
+      return sendRedirect(event, `/api/auth/atproto?hanlde=${serverSession.data?.public?.did}`)
+    }
+
     return await handler(event, oauthSession, serverSession)
   })
 }

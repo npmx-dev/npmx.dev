@@ -13,7 +13,7 @@ export interface UserServerSession {
   oauthSessionId?: string | undefined
   oauthStateId?: string | undefined
 
+  // DO NOT USE
   // Here for historic reasons to redirect users logged in with the previous oauth to login again
-  // TODO: actually make it do that
   oauthSession?: NodeSavedSession | undefined
 }
