@@ -893,7 +893,7 @@
     "no_dependency": {
       "label": "(brak zależności)",
       "typeahead_title": "Co zrobiłby James?",
-      "typeahead_description": "Porównaj z brakiem używania dodatkowej zależności! polecane przez e18e.",
+      "typeahead_description": "Porównaj z brakiem używania dodatkowej zależności! Polecane przez e18e.",
       "tooltip_title": "Możliwe, że nie potrzebujesz dodatkowej zależności",
       "tooltip_description": "Porównaj z brakiem używania dodatkowej zależności! {link} zarządza listą pakietów, które można zastąpić wbudowanymi funkcjami lub prostszymi alternatywami.",
       "e18e_community": "społeczność e18e",
