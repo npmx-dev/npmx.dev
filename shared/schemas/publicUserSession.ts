@@ -1,12 +1,13 @@
-import { object, string, pipe, url, optional } from 'valibot'
+import * as v from 'valibot'
 import type { InferOutput } from 'valibot'
 
-export const PublicUserSessionSchema = object({
+export const PublicUserSessionSchema = v.object({
   // Safe to pass to the frontend
-  did: string(),
-  handle: string(),
-  pds: pipe(string(), url()),
-  avatar: optional(pipe(string(), url())),
+  did: v.string(),
+  handle: v.string(),
+  pds: v.pipe(v.string(), v.url()),
+  avatar: v.optional(v.pipe(v.string(), v.url())),
+  relogin: v.optional(v.boolean()),
 })
 
 export type PublicUserSession = InferOutput<typeof PublicUserSessionSchema>
