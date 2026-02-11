@@ -545,11 +545,25 @@ onKeyStroke(
     router.push({ name: 'compare', query: { packages: pkg.value.name } })
   },
 )
+
+const showSkeleton = shallowRef(false)
 </script>
 
 <template>
+  <DevOnly>
+    <ButtonBase
+      class="fixed bottom-4 inset-is-4 z-50 shadow-lg rounded-full! px-3! py-2!"
+      classicon="i-simple-icons:skeleton"
+      variant="primary"
+      title="Toggle skeleton loader (development only)"
+      :aria-pressed="showSkeleton"
+      @click="showSkeleton = !showSkeleton"
+    >
+      <span class="text-xs">Skeleton</span>
+    </ButtonBase>
+  </DevOnly>
   <main class="container flex-1 w-full py-8">
-    <PackageSkeleton v-if="status === 'pending'" />
+    <PackageSkeleton v-if="showSkeleton || status === 'pending'" />
 
     <article v-else-if="status === 'success' && pkg" :class="$style.packagePage">
       <!-- Package header -->
