@@ -109,7 +109,7 @@ label:has(input:hover) .toggle--background {
   right: 1px;
 }
 
-.toggle--checkbox:checked.ltr + .toggle--background:before {
+.toggle--checkbox:checked.ltr + .toggle--background::before {
   transform: translate(19px);
 }
 
