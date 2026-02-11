@@ -104,18 +104,18 @@ label:has(input:hover) .toggle--background {
 
 /* Support rtl locales */
 .toggle--checkbox.ltr + .toggle--background:before {
-  left: 3px;
+  left: 1px;
 }
 
 .toggle--checkbox.rtl + .toggle--background:before {
-  right: 3px;
+  right: 1px;
 }
 
 .toggle--checkbox:checked.ltr + .toggle--background:before {
-  transform: translate(17px);
+  transform: translate(19px);
 }
 
 .toggle--checkbox:checked.rtl + .toggle--background:before {
-  transform: translate(-17px);
+  transform: translate(-19px);
 }
 </style>
