@@ -106,12 +106,14 @@ const id = useId()
 /* Track transition */
 .toggle {
   transition:
-    background-color 100ms ease-in,
-    border-color 100ms ease-in;
+    background-color 100ms ease-in-out,
+    border-color 100ms ease-in-out;
 }
 
 .toggle::before {
-  transition: translate 200ms ease-in-out;
+  transition:
+    background-color 50ms ease-in-out,
+    translate 200ms ease-in-out;
 }
 
 /* Hover states */
@@ -144,31 +146,18 @@ const id = useId()
 @media (forced-colors: active) {
   label > span {
     background: Canvas;
-    color: var(--fg);
+    color: Highlight;
     forced-color-adjust: none;
   }
 
   label:has(.toggle:checked) > span {
     background: Highlight;
-    color: var(--bg);
+    color: Canvas;
   }
 
   .toggle::before {
     forced-color-adjust: none;
     background-color: Highlight;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    label > span {
-      background: Canvas;
-      color: var(--bg);
-      forced-color-adjust: none;
-    }
-
-    label:has(.toggle:checked) > span {
-      background: Highlight;
-      color: var(--fg);
-    }
   }
 
   .toggle,
@@ -180,7 +169,7 @@ const id = useId()
   .toggle:checked,
   .toggle:checked:hover {
     background: Highlight;
-    border-color: HighlightText;
+    border-color: CanvasText;
   }
 
   .toggle:checked::before {
