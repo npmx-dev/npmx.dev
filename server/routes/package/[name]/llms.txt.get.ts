@@ -5,23 +5,24 @@ import { handleApiError } from '#server/utils/error-handler'
 import { handleLlmsTxt } from '#server/utils/llms-txt'
 
 /**
- * Serves llms.txt for an npm package — a single LLM-friendly markdown document
- * aggregating README and agent instruction files (CLAUDE.md, AGENTS.md, etc.).
+ * Serves llms.txt for an npm package.
  *
- * URL patterns:
- * - /api/registry/llms-txt/nuxt              → latest version
- * - /api/registry/llms-txt/@nuxt/kit         → scoped, latest
- * - /api/registry/llms-txt/nuxt/v/3.12.0    → specific version
- * - /api/registry/llms-txt/@nuxt/kit/v/1.0.0 → scoped, specific version
+ * Handles all URL shapes via re-exports:
+ * - /package/:name/llms.txt
+ * - /package/:org/:name/llms.txt
+ * - /package/:name/v/:version/llms.txt
+ * - /package/:org/:name/v/:version/llms.txt
  */
 export default defineCachedEventHandler(
   async event => {
-    const pkgParamSegments = getRouterParam(event, 'pkg')?.split('/') ?? []
-    if (pkgParamSegments.length === 0) {
+    const org = getRouterParam(event, 'org')
+    const name = getRouterParam(event, 'name')
+    const rawVersion = getRouterParam(event, 'version')
+    if (!name) {
       throw createError({ statusCode: 404, message: 'Package name is required.' })
     }
 
-    const { rawPackageName, rawVersion } = parsePackageParams(pkgParamSegments)
+    const rawPackageName = org ? `${org}/${name}` : name
 
     try {
       const { packageName, version } = v.parse(PackageRouteParamsSchema, {
@@ -43,8 +44,11 @@ export default defineCachedEventHandler(
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
     getKey: event => {
-      const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `llms-txt:${pkg.replace(/\/+$/, '').trim()}`
+      const org = getRouterParam(event, 'org')
+      const name = getRouterParam(event, 'name')
+      const version = getRouterParam(event, 'version')
+      const pkg = org ? `${org}/${name}` : name
+      return version ? `llms-txt:${pkg}@${version}` : `llms-txt:${pkg}`
     },
   },
 )
