@@ -1,74 +1,14 @@
 <script setup lang="ts">
-const {
-  isConnected,
-  isConnecting,
-  npmUser,
-  error,
-  hasOperations,
-  operations,
-  connect,
-  disconnect,
-  refreshState,
-} = useConnector()
+const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disconnect } =
+  useConnector()
 
 const { settings } = useSettings()
-
-const authUrl = computed(() => {
-  const op = operations.value.find(o => o.status === 'running' && o.authUrl)
-  return op?.authUrl ?? null
-})
-
-const AUTH_POLL_INTERVAL = 20_000
-const AUTH_POLL_COUNT = 3
-let authPollTimer: ReturnType<typeof setInterval> | null = null
-
-function startAuthPolling() {
-  stopAuthPolling()
-  let remaining = AUTH_POLL_COUNT
-  authPollTimer = setInterval(async () => {
-    try {
-      await refreshState()
-    } catch {
-      stopAuthPolling()
-      return
-    }
-    remaining--
-    if (remaining <= 0) {
-      stopAuthPolling()
-    }
-  }, AUTH_POLL_INTERVAL)
-}
-
-function stopAuthPolling() {
-  if (authPollTimer) {
-    clearInterval(authPollTimer)
-    authPollTimer = null
-  }
-}
-
-onUnmounted(stopAuthPolling)
-
-function handleOpenAuthUrl() {
-  if (authUrl.value) {
-    window.open(authUrl.value, '_blank', 'noopener,noreferrer')
-    startAuthPolling()
-  }
-}
 
 const tokenInput = shallowRef('')
 const portInput = shallowRef('31415')
 const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
 const hasAttemptedConnect = shallowRef(false)
-
-watch(
-  () => settings.value.connector.webAuth,
-  webAuth => {
-    if (!webAuth) {
-      settings.value.connector.autoOpenURL = false
-    }
-  },
-)
 
 watch(isConnected, connected => {
   if (!connected) {
@@ -126,13 +66,8 @@ function handleDisconnect() {
       <!-- Connector preferences -->
       <div class="flex flex-col gap-2">
         <SettingsToggle
-          :label="$t('connector.modal.web_auth')"
-          v-model="settings.connector.webAuth"
-        />
-        <SettingsToggle
           :label="$t('connector.modal.auto_open_url')"
           v-model="settings.connector.autoOpenURL"
-          :class="!settings.connector.webAuth ? 'opacity-50 pointer-events-none' : ''"
         />
       </div>
 
@@ -144,17 +79,6 @@ function handleDisconnect() {
       <div v-if="!hasOperations" class="text-sm text-fg-muted">
         {{ $t('connector.modal.connected_hint') }}
       </div>
-
-      <!-- Web auth link -->
-      <button
-        v-if="authUrl"
-        type="button"
-        class="flex items-center justify-center gap-2 w-full px-4 py-2 font-mono text-sm text-accent bg-accent/10 border border-accent/30 rounded-md transition-colors duration-200 hover:bg-accent/20"
-        @click="handleOpenAuthUrl"
-      >
-        <span class="i-carbon:launch w-4 h-4" aria-hidden="true" />
-        {{ $t('operations.queue.open_web_auth') }}
-      </button>
 
       <button
         type="button"
@@ -286,13 +210,8 @@ function handleDisconnect() {
             <div class="border-t border-border my-3" />
             <div class="flex flex-col gap-2">
               <SettingsToggle
-                :label="$t('connector.modal.web_auth')"
-                v-model="settings.connector.webAuth"
-              />
-              <SettingsToggle
                 :label="$t('connector.modal.auto_open_url')"
                 v-model="settings.connector.autoOpenURL"
-                :class="!settings.connector.webAuth ? 'opacity-50 pointer-events-none' : ''"
               />
             </div>
           </div>
