@@ -25,6 +25,7 @@ const pages = [
   '/privacy',
   '/search',
   '/settings',
+  '/vacations',
 ]
 
 const cacheControl = 's-maxage=3600, stale-while-revalidate=36000'
