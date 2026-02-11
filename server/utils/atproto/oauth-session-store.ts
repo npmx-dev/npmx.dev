@@ -31,12 +31,10 @@ export class OAuthSessionStore implements NodeSavedSessionStore {
 
   async set(key: string, val: NodeSavedSession) {
     let sessionId = crypto.randomUUID()
-
     try {
       await this.serverSession.update({
         oauthSessionId: sessionId,
       })
-
       await this.storage.setItem<NodeSavedSession>(this.createStorageKey(key, sessionId), val)
     } catch (error) {
       // Not sure if this has been happening. But helps with debugging
