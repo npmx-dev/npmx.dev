@@ -18,6 +18,8 @@ export default defineConfig<ConfigOptions>({
     reuseExistingServer: false,
     timeout: 60_000,
   },
+  // Start/stop mock connector server before/after all tests (teardown via returned closure)
+  globalSetup: fileURLToPath(new URL('./test/e2e/global-setup.ts', import.meta.url)),
   // We currently only test on one browser on one platform
   snapshotPathTemplate: '{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}{ext}',
   use: {

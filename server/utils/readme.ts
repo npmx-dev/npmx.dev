@@ -97,9 +97,11 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
   return null
 }
 
-// only allow h3-h6 since we shift README headings down by 2 levels
+// allow h1-h6, but replace h1-h2 later since we shift README headings down by 2 levels
 // (page h1 = package name, h2 = "Readme" section, so README h1 → h3)
 const ALLOWED_TAGS = [
+  'h1',
+  'h2',
   'h3',
   'h4',
   'h5',
@@ -144,8 +146,8 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
   'source': ['src', 'srcset', 'type', 'media'],
   'button': ['class', 'title', 'type', 'aria-label', 'data-copy'],
-  'th': ['colspan', 'rowspan', 'align'],
-  'td': ['colspan', 'rowspan', 'align'],
+  'th': ['colspan', 'rowspan', 'align', 'valign', 'width'],
+  'td': ['colspan', 'rowspan', 'align', 'valign', 'width'],
   'h3': ['data-level', 'align'],
   'h4': ['data-level', 'align'],
   'h5': ['data-level', 'align'],
@@ -181,6 +183,33 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
 }
 
+/** These path on npmjs.com don't belong to packages or search, so we shouldn't try to replace them with npmx.dev urls */
+const reservedPathsNpmJs = [
+  'products',
+  'login',
+  'signup',
+  'advisories',
+  'blog',
+  'about',
+  'press',
+  'policies',
+]
+
+const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
+  if (url.host !== 'www.npmjs.com' && url.host !== 'npmjs.com') {
+    return false
+  }
+
+  if (
+    url.pathname === '/' ||
+    reservedPathsNpmJs.some(path => url.pathname.startsWith(`/${path}`))
+  ) {
+    return false
+  }
+
+  return true
+}
+
 /**
  * Resolve a relative URL to an absolute URL.
  * If repository info is available, resolve to provider's raw file URLs.
@@ -197,6 +226,10 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
     try {
       const parsed = new URL(url, 'https://example.com')
       if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        // Redirect npmjs urls to ourself
+        if (isNpmJsUrlThatCanBeRedirected(parsed)) {
+          return parsed.pathname + parsed.search + parsed.hash
+        }
         return url
       }
     } catch {
@@ -272,6 +305,15 @@ function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
   return { tagName, attribs }
 }
 
+// README h1 always becomes h3
+// For deeper levels, ensure sequential order
+// Don't allow jumping more than 1 level deeper than previous
+function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
+  if (depth === 1) return 3
+  const maxAllowed = Math.min(lastSemanticLevel + 1, 6)
+  return Math.min(depth + 2, maxAllowed)
+}
+
 export async function renderReadmeHtml(
   content: string,
   packageName: string,
@@ -301,17 +343,7 @@ export async function renderReadmeHtml(
     // Calculate the target semantic level based on document structure
     // Start at h3 (since page h1 + section h2 already exist)
     // But ensure we never skip levels - can only go down by 1 or stay same/go up
-    let semanticLevel: number
-    if (depth === 1) {
-      // README h1 always becomes h3
-      semanticLevel = 3
-    } else {
-      // For deeper levels, ensure sequential order
-      // Don't allow jumping more than 1 level deeper than previous
-      const maxAllowed = Math.min(lastSemanticLevel + 1, 6)
-      semanticLevel = Math.min(depth + 2, maxAllowed)
-    }
-
+    const semanticLevel = calculateSemanticDepth(depth, lastSemanticLevel)
     lastSemanticLevel = semanticLevel
     const text = this.parser.parseInline(tokens)
 
@@ -414,6 +446,28 @@ ${html}
     allowedSchemes: ['http', 'https', 'mailto'],
     // Transform img src URLs (GitHub blob → raw, relative → GitHub raw)
     transformTags: {
+      h1: (_, attribs) => {
+        return { tagName: 'h3', attribs: { ...attribs, 'data-level': '1' } }
+      },
+      h2: (_, attribs) => {
+        return { tagName: 'h4', attribs: { ...attribs, 'data-level': '2' } }
+      },
+      h3: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h3', attribs: attribs }
+        return { tagName: 'h5', attribs: { ...attribs, 'data-level': '3' } }
+      },
+      h4: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h4', attribs: attribs }
+        return { tagName: 'h6', attribs: { ...attribs, 'data-level': '4' } }
+      },
+      h5: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h5', attribs: attribs }
+        return { tagName: 'h6', attribs: { ...attribs, 'data-level': '5' } }
+      },
+      h6: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h6', attribs: attribs }
+        return { tagName: 'h6', attribs: { ...attribs, 'data-level': '6' } }
+      },
       img: (tagName, attribs) => {
         if (attribs.src) {
           attribs.src = resolveImageUrl(attribs.src, packageName, repoInfo)

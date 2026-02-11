@@ -867,6 +867,33 @@
             },
             "view_all": {
               "type": "string"
+            },
+            "distribution_title": {
+              "type": "string"
+            },
+            "distribution_modal_title": {
+              "type": "string"
+            },
+            "grouping_major": {
+              "type": "string"
+            },
+            "grouping_minor": {
+              "type": "string"
+            },
+            "recent_versions_only": {
+              "type": "string"
+            },
+            "recent_versions_only_tooltip": {
+              "type": "string"
+            },
+            "show_low_usage": {
+              "type": "string"
+            },
+            "show_low_usage_tooltip": {
+              "type": "string"
+            },
+            "date_range_tooltip": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1021,10 +1048,19 @@
             "y_axis_label": {
               "type": "string"
             },
+            "facet": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
             "items": {
               "type": "object",
               "properties": {
                 "downloads": {
+                  "type": "string"
+                },
+                "likes": {
                   "type": "string"
                 }
               },
@@ -1039,13 +1075,13 @@
             "title": {
               "type": "string"
             },
+            "modal_title": {
+              "type": "string"
+            },
             "analyze": {
               "type": "string"
             },
             "community_distribution": {
-              "type": "string"
-            },
-            "modal_title": {
               "type": "string"
             }
           },
@@ -1265,9 +1301,6 @@
           "type": "object",
           "properties": {
             "loading": {
-              "type": "string"
-            },
-            "weekly": {
               "type": "string"
             },
             "maintainers": {
@@ -3191,6 +3224,96 @@
               "type": "string"
             },
             "p1": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "a11y": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "footer_title": {
+          "type": "string"
+        },
+        "welcome": {
+          "type": "string"
+        },
+        "approach": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            },
+            "about_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "measures": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "li1": {
+              "type": "string"
+            },
+            "li2": {
+              "type": "string"
+            },
+            "li3": {
+              "type": "string"
+            },
+            "li4": {
+              "type": "string"
+            },
+            "li5": {
+              "type": "string"
+            },
+            "li6": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "limitations": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "link": {
               "type": "string"
             }
           },

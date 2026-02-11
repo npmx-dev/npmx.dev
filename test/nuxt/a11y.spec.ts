@@ -197,8 +197,8 @@ import {
 // The #components import automatically provides the client variant
 import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
-import PackageDownloadAnalytics from '~/components/Package/DownloadAnalytics.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
+import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -594,8 +594,8 @@ describe('component accessibility audits', () => {
   describe('PackageChartModal', () => {
     it('should have no accessibility violations when closed', async () => {
       const component = await mountSuspended(PackageChartModal, {
-        props: { open: false },
-        slots: { title: 'Downloads', default: '<div>Chart content</div>' },
+        props: { open: false, title: 'Downloads' },
+        slots: { default: '<div>Chart content</div>' },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -607,10 +607,10 @@ describe('component accessibility audits', () => {
     // inherently provided by the native <dialog> element with aria-labelledby.
   })
 
-  describe('PackageDownloadAnalytics', () => {
+  describe('PackageTrendsChart', () => {
     const mockWeeklyDownloads = [
       {
-        downloads: 1000,
+        value: 1000,
         weekKey: '2024-W01',
         weekStart: '2024-01-01',
         weekEnd: '2024-01-07',
@@ -618,7 +618,7 @@ describe('component accessibility audits', () => {
         timestampEnd: 1704585600,
       },
       {
-        downloads: 1200,
+        value: 1200,
         weekKey: '2024-W02',
         weekStart: '2024-01-08',
         weekEnd: '2024-01-14',
@@ -626,7 +626,7 @@ describe('component accessibility audits', () => {
         timestampEnd: 1705190400,
       },
       {
-        downloads: 1500,
+        value: 1500,
         weekKey: '2024-W03',
         weekStart: '2024-01-15',
         weekEnd: '2024-01-21',
@@ -636,7 +636,7 @@ describe('component accessibility audits', () => {
     ]
 
     it('should have no accessibility violations (non-modal)', async () => {
-      const wrapper = await mountSuspended(PackageDownloadAnalytics, {
+      const wrapper = await mountSuspended(PackageTrendsChart, {
         props: {
           weeklyDownloads: mockWeeklyDownloads,
           packageName: 'vue',
@@ -650,7 +650,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations with empty data', async () => {
-      const wrapper = await mountSuspended(PackageDownloadAnalytics, {
+      const wrapper = await mountSuspended(PackageTrendsChart, {
         props: {
           weeklyDownloads: [],
           packageName: 'vue',
@@ -921,7 +921,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: '',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -934,7 +936,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: 'src',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -959,7 +963,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: '',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -972,7 +978,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: 'src/index.ts',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -1222,7 +1230,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: '',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -1609,8 +1619,8 @@ describe('component accessibility audits', () => {
         props: { packages: [] },
         global: {
           stubs: {
-            DownloadAnalytics: {
-              template: '<div data-test-id="download-analytics-stub"></div>',
+            TrendsChart: {
+              template: '<div data-test-id="trends-chart-stub"></div>',
             },
           },
         },
@@ -1624,8 +1634,8 @@ describe('component accessibility audits', () => {
         props: { packages: ['vue', 'react'] },
         global: {
           stubs: {
-            DownloadAnalytics: {
-              template: '<div data-test-id="download-analytics-stub"></div>',
+            TrendsChart: {
+              template: '<div data-test-id="trends-chart-stub"></div>',
             },
           },
         },

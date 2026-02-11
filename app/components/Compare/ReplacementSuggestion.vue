@@ -25,7 +25,7 @@ const docUrl = computed(() => {
     class="flex items-start gap-2 px-3 py-2 rounded-lg text-sm"
     :class="
       variant === 'nodep'
-        ? 'bg-amber-500/10 border border-amber-600/30 text-amber-700 dark:text-amber-400'
+        ? 'bg-amber-500/10 border border-amber-600/30 text-amber-800 dark:text-amber-400'
         : 'bg-blue-500/10 border border-blue-600/30 text-blue-700 dark:text-blue-400'
     "
   >

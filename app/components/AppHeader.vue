@@ -64,6 +64,14 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         external: false,
         iconClass: 'i-carbon:security',
       },
+      {
+        name: 'Accessibility',
+        label: $t('a11y.title'),
+        to: { name: 'accessibility' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-carbon:accessibility-alt',
+      },
     ],
   },
   {
@@ -172,7 +180,7 @@ onKeyStroke(
     for (const link of desktopLinks.value) {
       if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
         e.preventDefault()
-        navigateTo(link.to.name)
+        navigateTo(link.to)
         break
       }
     }

@@ -33,6 +33,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Available commands](#available-commands)
   - [Project structure](#project-structure)
   - [Local connector CLI](#local-connector-cli)
+  - [Mock connector (for local development)](#mock-connector-for-local-development)
 - [Code style](#code-style)
   - [TypeScript](#typescript)
   - [Server API patterns](#server-api-patterns)
@@ -54,6 +55,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Unit tests](#unit-tests)
   - [Component accessibility tests](#component-accessibility-tests)
   - [Lighthouse accessibility tests](#lighthouse-accessibility-tests)
+  - [Lighthouse performance tests](#lighthouse-performance-tests)
   - [End to end tests](#end-to-end-tests)
   - [Test fixtures (mocking external APIs)](#test-fixtures-mocking-external-apis)
 - [Submitting changes](#submitting-changes)
@@ -103,6 +105,10 @@ pnpm dev              # Start development server
 pnpm build            # Production build
 pnpm preview          # Preview production build
 
+# Connector
+pnpm npmx-connector   # Start the real connector (requires npm login)
+pnpm mock-connector   # Start the mock connector (no npm login needed)
+
 # Code Quality
 pnpm lint             # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
@@ -114,6 +120,7 @@ pnpm test:unit        # Unit tests only
 pnpm test:nuxt        # Nuxt component tests
 pnpm test:browser     # Playwright E2E tests
 pnpm test:a11y        # Lighthouse accessibility audits
+pnpm test:perf        # Lighthouse performance audits (CLS)
 ```
 
 ### Project structure
@@ -154,6 +161,36 @@ pnpm npmx-connector
 ```
 
 The connector will check your npm authentication, generate a connection token, and listen for requests from npmx.dev.
+
+### Mock connector (for local development)
+
+If you're working on admin features (org management, package access controls, operations queue) and don't want to use your real npm account, you can run the mock connector instead:
+
+```bash
+pnpm mock-connector
+```
+
+This starts a mock connector server pre-populated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
+
+The mock connector prints a connection URL to the terminal, just like the real connector. Click it (or paste the token manually) to connect the UI.
+
+**Options:**
+
+```bash
+pnpm mock-connector                # default: port 31415, user "mock-user", sample data
+pnpm mock-connector --port 9999    # custom port
+pnpm mock-connector --user alice   # custom username
+pnpm mock-connector --empty        # start with no pre-populated data
+```
+
+**Default sample data:**
+
+- **@nuxt**: 4 members (mock-user, danielroe, pi0, antfu), 3 teams (core, docs, triage)
+- **@unjs**: 2 members (mock-user, pi0), 1 team (maintainers)
+- **Packages**: @nuxt/kit, @nuxt/schema, @unjs/nitro with team-based access controls
+
+> [!TIP]
+> Run `pnpm dev` in a separate terminal to start the Nuxt dev server, then click the connection URL from the mock connector to connect.
 
 ## Code style
 
@@ -641,18 +678,38 @@ pnpm test:a11y:prebuilt
 
 # Or run a single color mode manually
 pnpm build:test
-LIGHTHOUSE_COLOR_MODE=dark ./scripts/lighthouse-a11y.sh
+LIGHTHOUSE_COLOR_MODE=dark ./scripts/lighthouse.sh
 ```
 
 This requires Chrome or Chromium to be installed. The script will auto-detect common installation paths. Results are printed to the terminal and saved in `.lighthouseci/`.
 
 #### Configuration
 
-| File                         | Purpose                                                   |
-| ---------------------------- | --------------------------------------------------------- |
-| `.lighthouserc.cjs`          | Lighthouse CI config (URLs, assertions, Chrome path)      |
-| `lighthouse-setup.cjs`       | Puppeteer script for color mode + client-side API mocking |
-| `scripts/lighthouse-a11y.sh` | Shell wrapper that runs the audit for a given color mode  |
+| File                    | Purpose                                                   |
+| ----------------------- | --------------------------------------------------------- |
+| `.lighthouserc.cjs`     | Lighthouse CI config (URLs, assertions, Chrome path)      |
+| `lighthouse-setup.cjs`  | Puppeteer script for color mode + client-side API mocking |
+| `scripts/lighthouse.sh` | Shell wrapper that runs the audit for a given color mode  |
+
+### Lighthouse performance tests
+
+The project also runs Lighthouse performance audits to enforce zero Cumulative Layout Shift (CLS). These run separately from the accessibility audits and test the same set of URLs.
+
+#### How it works
+
+The same `.lighthouserc.cjs` config is shared between accessibility and performance audits. When the `LH_PERF` environment variable is set, the config switches from the `accessibility` category to the `performance` category and asserts that CLS is exactly 0.
+
+#### Running locally
+
+```bash
+# Build + run performance audit
+pnpm test:perf
+
+# Or against an existing test build
+pnpm test:perf:prebuilt
+```
+
+Unlike the accessibility audits, performance audits do not run in separate light/dark modes.
 
 ### End to end tests
 
@@ -730,6 +787,74 @@ You need to either:
 1. Add a fixture file for that package/endpoint
 2. Update the mock handlers in `test/fixtures/mock-routes.cjs` (client) or `modules/runtime/server/cache.ts` (server)
 
+### Testing connector features
+
+Features that require authentication through the local connector (org management, package collaborators, operations queue) are tested using a mock connector server.
+
+#### Architecture
+
+The mock connector infrastructure is shared between the CLI, E2E tests, and Vitest component tests:
+
+```
+cli/src/
+├── types.ts           # ConnectorEndpoints contract (shared by real + mock)
+├── mock-state.ts      # MockConnectorStateManager (canonical source)
+├── mock-app.ts        # H3 mock app + MockConnectorServer class
+└── mock-server.ts     # CLI entry point (pnpm mock-connector)
+
+test/test-utils/       # Re-exports from cli/src/ for test convenience
+test/e2e/helpers/      # E2E-specific wrappers (fixtures, global setup)
+```
+
+Both the real server (`cli/src/server.ts`) and the mock server (`cli/src/mock-app.ts`) conform to the `ConnectorEndpoints` interface defined in `cli/src/types.ts`. This ensures the API contract is enforced by TypeScript. When adding a new endpoint, update `ConnectorEndpoints` first, then implement it in both servers.
+
+#### Vitest component tests (`test/nuxt/`)
+
+- Mock the `useConnector` composable with reactive state
+- Use `document.body` queries for components using Teleport
+- See `test/nuxt/components/HeaderConnectorModal.spec.ts` for an example
+
+```typescript
+// Create mock state
+const mockState = ref({ connected: false, npmUser: null, ... })
+
+// Mock the composable
+vi.mock('~/composables/useConnector', () => ({
+  useConnector: () => ({
+    isConnected: computed(() => mockState.value.connected),
+    // ... other properties
+  }),
+}))
+```
+
+#### Playwright E2E tests (`test/e2e/`)
+
+- A mock HTTP server starts automatically via Playwright's global setup
+- Use the `mockConnector` fixture to set up test data and the `gotoConnected` helper to navigate with authentication
+
+```typescript
+test('shows org members', async ({ page, gotoConnected, mockConnector }) => {
+  // Set up test data
+  await mockConnector.setOrgData('@testorg', {
+    users: { testuser: 'owner', member1: 'admin' },
+  })
+
+  // Navigate with connector authentication
+  await gotoConnected('/@testorg')
+
+  // Test assertions
+  await expect(page.getByRole('link', { name: '@testuser' })).toBeVisible()
+})
+```
+
+The mock connector supports test endpoints for state manipulation:
+
+- `/__test__/reset` - Reset all mock state
+- `/__test__/org` - Set org users, teams, and team members
+- `/__test__/user-orgs` - Set user's organizations
+- `/__test__/user-packages` - Set user's packages
+- `/__test__/package` - Set package collaborators
+
 ## Submitting changes
 
 ### Before submitting
@@ -767,8 +892,10 @@ Format: `type(scope): description`
 - `fix(i18n): update French translations`
 - `chore(deps): update vite to v6`
 
+Where front end changes are made, please include before and after screenshots in your pull request description.
+
 > [!NOTE]
-> The subject must start with a lowercase letter. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
+> Use lowercase letters in your pull request title. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
 
 ### PR descriptions
 

@@ -41,7 +41,7 @@
     "button": "search",
     "searching": "Searching...",
     "found_packages": "No packages found | Found 1 package | Found {count} packages",
-    "found_packages_sorted": "Sorting top {count} result | Sorting top {count} results",
+    "found_packages_sorted": "No results found | Sorting top {count} result | Sorting top {count} results",
     "updating": "(updating...)",
     "no_results": "No packages found for \"{query}\"",
     "rate_limited": "Hit npm rate limit, try again in a moment",
@@ -287,7 +287,16 @@
       "more_tagged": "{count} more tagged",
       "all_covered": "All versions are covered by tags above",
       "deprecated_title": "{version} (deprecated)",
-      "view_all": "View {count} version | View all {count} versions"
+      "view_all": "View {count} version | View all {count} versions",
+      "distribution_title": "Semver Group",
+      "distribution_modal_title": "Versions",
+      "grouping_major": "Major",
+      "grouping_minor": "Minor",
+      "recent_versions_only": "Recent versions only",
+      "recent_versions_only_tooltip": "Show only versions published within the last year.",
+      "show_low_usage": "Show low usage versions",
+      "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads.",
+      "date_range_tooltip": "Last week of version distributions only"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
@@ -339,15 +348,18 @@
       "legend_estimation": "Estimation",
       "no_data": "No data available",
       "y_axis_label": "{granularity} {facet}",
+      "facet": "Facet",
+      "title": "Trends",
       "items": {
-        "downloads": "Downloads"
+        "downloads": "Downloads",
+        "likes": "Likes"
       }
     },
     "downloads": {
       "title": "Weekly Downloads",
+      "modal_title": "Weekly Downloads",
       "analyze": "Analyze downloads",
-      "community_distribution": "View community adoption distribution",
-      "modal_title": "Downloads"
+      "community_distribution": "View community adoption distribution"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -421,7 +433,6 @@
     },
     "skeleton": {
       "loading": "Loading package details",
-      "weekly": "Weekly",
       "maintainers": "Maintainers",
       "keywords": "Keywords",
       "versions": "Versions",
@@ -981,7 +992,7 @@
         "up_to_you": "Up to you!"
       },
       "trends": {
-        "title": "Weekly Downloads"
+        "title": "Compare Trends"
       }
     }
   },
@@ -1063,6 +1074,36 @@
     "changes": {
       "title": "Changes to this policy",
       "p1": "We may update this privacy policy from time to time. Any changes will be published on this page with an updated revision date."
+    }
+  },
+  "a11y": {
+    "title": "accessibility",
+    "footer_title": "a11y",
+    "welcome": "We want {app} to be usable by as many people as possible.",
+    "approach": {
+      "title": "Our approach",
+      "p1": "We try to follow the Web Content Accessibility Guidelines (WCAG) 2.2 and use them as a reference when building features. We don't claim full conformance with any level of WCAG — accessibility is a continual process and there is always more work to do.",
+      "p2": "This site is an {about}. Accessibility improvements are made incrementally as part of our regular development.",
+      "about_link": "open-source, community-driven project"
+    },
+    "measures": {
+      "title": "What we do",
+      "p1": "Some of the things we aim to do across the site:",
+      "li1": "Use semantic HTML and ARIA attributes where appropriate.",
+      "li2": "Use relative text sizes so you can adjust them in your browser.",
+      "li3": "Support keyboard navigation throughout the interface.",
+      "li4": "Respect the prefers-reduced-motion and prefers-color-scheme media queries.",
+      "li5": "Design with sufficient color contrast in mind.",
+      "li6": "Ensure essential content is available without JavaScript, though some interactive features require it."
+    },
+    "limitations": {
+      "title": "Known limitations",
+      "p1": "Some parts of the site — particularly third-party content like package READMEs — may not meet accessibility standards. We are working to improve these areas over time."
+    },
+    "contact": {
+      "title": "Feedback",
+      "p1": "If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
+      "link": "GitHub repository"
     }
   }
 }

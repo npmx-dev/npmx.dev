@@ -40,6 +40,8 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Settings/TranslationHelper.vue': 'i18n helper component - requires specific locale status data',
   'Package/WeeklyDownloadStats.vue':
     'Uses vue-data-ui VueUiSparkline - has DOM measurement issues in test environment',
+  'Package/VersionDistribution.vue':
+    'Uses vue-data-ui VueUiXy - has DOM measurement issues in test environment',
   'UserCombobox.vue': 'Unused component - intended for future admin features',
   'SkeletonBlock.vue': 'Already covered indirectly via other component tests',
   'SkeletonInline.vue': 'Already covered indirectly via other component tests',

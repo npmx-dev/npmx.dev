@@ -18,7 +18,7 @@ const docPath = computed(() => {
 
 <template>
   <div
-    class="border border-amber-600/40 bg-amber-500/10 rounded-lg px-3 py-2 text-base text-amber-700 dark:text-amber-400"
+    class="border border-amber-600/40 bg-amber-500/10 rounded-lg px-3 py-2 text-base text-amber-800 dark:text-amber-400"
   >
     <h2 class="font-medium mb-1 flex items-center gap-2">
       <span class="i-carbon-idea w-4 h-4" aria-hidden="true" />

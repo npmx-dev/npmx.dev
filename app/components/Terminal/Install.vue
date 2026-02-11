@@ -114,7 +114,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
           :data-pm-cmd="pm.id"
           class="flex items-center gap-2 group/installcmd min-w-0"
         >
-          <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+          <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
           <code class="font-mono text-sm min-w-0"
             ><span
               v-for="(part, i) in getInstallPartsForPM(pm.id)"
@@ -141,7 +141,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             :data-pm-cmd="pm.id"
             class="flex items-center gap-2 min-w-0"
           >
-            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+            <span class="self-start text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
             <code class="font-mono text-sm min-w-0"
               ><span
                 v-for="(part, i) in getTypesInstallPartsForPM(pm.id)"
@@ -176,7 +176,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             :data-pm-cmd="pm.id"
             class="flex items-center gap-2 group/runcmd"
           >
-            <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+            <span class="self-start text-fg-subtle font-mono text-sm select-none">$</span>
             <code class="font-mono text-sm"
               ><span
                 v-for="(part, i) in getRunPartsForPM(pm.id, executableInfo?.primaryCommand)"
@@ -221,7 +221,7 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             :data-pm-cmd="pm.id"
             class="flex items-center gap-2 group/createcmd"
           >
-            <span class="text-fg-subtle font-mono text-sm select-none">$</span>
+            <span class="self-start text-fg-subtle font-mono text-sm select-none">$</span>
             <code class="font-mono text-sm"
               ><span
                 v-for="(part, i) in getCreatePartsForPM(pm.id)"

@@ -117,7 +117,7 @@ const numberFormatter = useNumberFormatter()
             <LinkBase
               v-if="getDeprecatedDepInfo(dep)"
               :to="packageRoute(dep, getDeprecatedDepInfo(dep)!.version)"
-              class="shrink-0 text-purple-500"
+              class="shrink-0 text-purple-700 dark:text-purple-500"
               :title="getDeprecatedDepInfo(dep)!.message"
               classicon="i-carbon:warning-hex"
             >

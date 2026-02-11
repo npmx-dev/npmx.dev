@@ -16,7 +16,24 @@
     "docs": "dokumentasjon",
     "source": "kildekode",
     "social": "sosialt",
-    "chat": "chat"
+    "chat": "chat",
+    "keyboard_shortcuts": "tastatursnarveier"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Globalt",
+      "search": "Søk",
+      "package": "Pakke"
+    },
+    "focus_search": "Fokuser søk",
+    "show_kbd_hints": "Vis tastaturtips",
+    "settings": "Åpne innstillinger",
+    "compare": "Åpne sammenligning",
+    "compare_from_package": "Åpne sammenligning (forhåndsutfylt med nåværende pakke)",
+    "navigate_results": "Naviger resultater",
+    "go_to_result": "Gå til resultat",
+    "open_code_view": "Åpne kodevisning",
+    "open_docs": "Åpne dokumentasjon"
   },
   "search": {
     "label": "Søk etter npm-pakker",
@@ -24,8 +41,10 @@
     "button": "søk",
     "searching": "Søker...",
     "found_packages": "Ingen pakker funnet | Fant 1 pakke | Fant {count} pakker",
+    "found_packages_sorted": "Sorterer topp {count} resultat | Sorterer topp {count} resultater",
     "updating": "(oppdaterer...)",
     "no_results": "Ingen pakker funnet for \"{query}\"",
+    "rate_limited": "Traff npm-hastighetsgrense, prøv igjen om et øyeblikk",
     "title": "søk",
     "title_search": "søk: {search}",
     "title_packages": "søk pakker",
@@ -36,6 +55,7 @@
     "claim_button": "Gjør krav på \"{name}\"",
     "want_to_claim": "Vil du gjøre krav på dette pakkenavnet?",
     "start_typing": "Begynn å skrive for å søke etter pakker",
+    "algolia_disclaimer": "Drevet av Algolia",
     "exact_match": "eksakt",
     "suggestion": {
       "user": "bruker",
@@ -63,7 +83,16 @@
     "sections": {
       "appearance": "Utseende",
       "display": "Visning",
+      "search": "Datakilde",
       "language": "Språk"
+    },
+    "data_source": {
+      "label": "Datakilde",
+      "description": "Velg hvor npmx henter søkedata. Individuelle pakkesider bruker alltid npm-registeret direkte.",
+      "npm": "npm-registeret",
+      "npm_description": "Henter søk, org- og brukerlister direkte fra det offisielle npm-registeret. Autoritativt, men kan være tregere.",
+      "algolia": "Algolia",
+      "algolia_description": "Bruker Algolia for raskere søk, org- og brukersider."
     },
     "relative_dates": "Relative datoer",
     "include_types": "Inkluder {'@'}types ved installasjon",
@@ -133,8 +162,10 @@
       "documented": "{community} har flagget denne pakken da det finnes alternativer med bedre ytelse.",
       "none": "Denne pakken er flagget som ikke lenger nødvendig, og funksjonaliteten er sannsynligvis tilgjengelig innebygd i alle motorer.",
       "learn_more": "Lær mer",
+      "learn_more_above": "Lær mer ovenfor.",
       "mdn": "MDN",
-      "community": "fellesskapet"
+      "community": "fellesskapet",
+      "consider_no_dep": "+ Vurdere ingen avhengighet?"
     },
     "stats": {
       "license": "Lisens",
@@ -177,6 +208,10 @@
       "fund": "støtt",
       "compare": "sammenlign"
     },
+    "likes": {
+      "like": "Lik denne pakken",
+      "unlike": "Fjern like fra denne pakken"
+    },
     "docs": {
       "not_available": "Dokumentasjon ikke tilgjengelig",
       "not_available_detail": "Vi kunne ikke generere dokumentasjon for denne versjonen."
@@ -200,8 +235,29 @@
       "title": "Readme",
       "no_readme": "Ingen README tilgjengelig.",
       "view_on_github": "Vis på GitHub",
-      "toc_title": "Innhold"
+      "toc_title": "Innhold",
+      "callout": {
+        "note": "Merk",
+        "tip": "Tips",
+        "important": "Viktig",
+        "warning": "Advarsel",
+        "caution": "Forsiktig"
+      },
+      "copy_as_markdown": "Kopier README som Markdown"
     },
+    "provenance_section": {
+      "title": "Opprinnelse",
+      "built_and_signed_on": "Bygget og signert på {provider}",
+      "view_build_summary": "Vis byggeoppsummering",
+      "source_commit": "Kilde-commit",
+      "build_file": "Byggefil",
+      "public_ledger": "Offentlig hovedbok",
+      "transparency_log_entry": "Åpenhetsloggoppføring",
+      "view_more_details": "Vis flere detaljer",
+      "error_loading": "Kunne ikke laste opprinnelsesdetaljer"
+    },
+    "provenance_section": {},
+    "security_downgrade": {},
     "keywords_title": "Nøkkelord",
     "compatibility": "Kompatibilitet",
     "card": {
@@ -260,8 +316,6 @@
       "show_less": "(vis færre)"
     },
     "trends": {
-      "date_range": "{start} til {end}",
-      "date_range_multiline": "{start}\ntil {end}",
       "granularity": "Oppløsning",
       "granularity_daily": "Daglig",
       "granularity_weekly": "Ukentlig",
@@ -270,14 +324,21 @@
       "start_date": "Start",
       "end_date": "Slutt",
       "loading": "Laster...",
+      "date_range": "{start} til {end}",
+      "date_range_multiline": "{start}\ntil {end}",
       "download_file": "Last ned {fileType}",
-      "toggle_annotator": "Veksle annotering"
+      "toggle_annotator": "Veksle annotering",
+      "legend_estimation": "Estimat",
+      "no_data": "Ingen data tilgjengelig",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Nedlastinger"
+      }
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
       "analyze": "Analyser nedlastinger",
-      "community_distribution": "Vis distribusjon av bruk i fellesskapet",
-      "modal_title": "Nedlastinger"
+      "community_distribution": "Vis distribusjon av bruk i fellesskapet"
     },
     "install_scripts": {
       "title": "Installasjonsskript",
@@ -350,7 +411,6 @@
     },
     "skeleton": {
       "loading": "Laster pakkedetaljer",
-      "weekly": "Ukentlig",
       "maintainers": "Vedlikeholdere",
       "keywords": "Nøkkelord",
       "versions": "Versjoner",
@@ -361,6 +421,11 @@
       "published": "Nylig publisert",
       "name_asc": "Navn (A-Å)",
       "name_desc": "Navn (Å-A)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
     }
   },
   "connector": {
@@ -766,7 +831,8 @@
       "create_account": "Opprett en ny konto",
       "connect_bluesky": "Koble til med Bluesky",
       "what_is_atmosphere": "Hva er en Atmosphere-konto?",
-      "atmosphere_explanation": "{npmx} bruker {atproto} for å drive mange av sine sosiale funksjoner, slik at brukere kan eie sine egne data og bruke én konto for alle kompatible applikasjoner. Når du oppretter en konto, kan du bruke andre apper som {bluesky} og {tangled} med samme konto."
+      "atmosphere_explanation": "{npmx} bruker {atproto} for å drive mange av sine sosiale funksjoner, slik at brukere kan eie sine egne data og bruke én konto for alle kompatible applikasjoner. Når du oppretter en konto, kan du bruke andre apper som {bluesky} og {tangled} med samme konto.",
+      "default_input_error": "Vennligst skriv inn et gyldig brukernavn, DID eller en full PDS-URL"
     }
   },
   "header": {
@@ -813,6 +879,15 @@
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Legg til minst 2 pakker for å sammenligne."
     },
+    "no_dependency": {
+      "label": "(Ingen avhengighet)",
+      "typeahead_title": "Hva ville James gjort?",
+      "typeahead_description": "Sammenlign mot å ikke bruke en avhengighet! e18e-godkjent.",
+      "tooltip_title": "Du trenger kanskje ikke en avhengighet",
+      "tooltip_description": "Sammenlign mot å ikke bruke en avhengighet! {link} vedlikeholder en liste over pakker som kan erstattes med native API-er eller enklere alternativer.",
+      "e18e_community": "e18e-fellesskapet",
+      "add_column": "Legg til ingen avhengighet-kolonne i sammenligningen"
+    },
     "facets": {
       "group_label": "Sammenligningsfasetter",
       "all": "alle",
@@ -849,6 +924,10 @@
         "downloads": {
           "label": "Nedlastinger/uke",
           "description": "Ukentlig nedlastingstall"
+        },
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Antall likes"
         },
         "lastUpdated": {
           "label": "Publisert",
@@ -887,8 +966,106 @@
         "not_deprecated": "Nei",
         "types_included": "Inkludert",
         "types_none": "Ingen",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Opp til deg!"
+      },
+      "trends": {
+        "title": "Ukentlige nedlastinger"
       }
     }
+  },
+  "privacy_policy": {
+    "title": "personvernerklæring",
+    "last_updated": "Sist oppdatert: {date}",
+    "welcome": "Velkommen til {app}. Vi er forpliktet til å beskytte ditt personvern. Denne erklæringen forklarer hvilke data vi samler inn, hvordan vi bruker dem, og dine rettigheter angående informasjonen din.",
+    "cookies": {
+      "what_are": {
+        "title": "Hva er informasjonskapsler?",
+        "p1": "Informasjonskapsler er små tekstfiler som lagres på enheten din når du besøker et nettsted. Formålet er å forbedre nettleseropplevelsen din ved å huske visse preferanser og innstillinger."
+      },
+      "types": {
+        "title": "Hvilke informasjonskapsler bruker vi?",
+        "p1": "Vi bruker kun {bold} for formål som er strengt nødvendige for nettstedets funksjonalitet. Vi bruker ikke tredjeparts- eller reklamekapsler.",
+        "bold": "essensielle tekniske informasjonskapsler",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Denne informasjonskapselen brukes av vår hostingleverandør (Vercel) for skjevhetsbeskyttelse. Den sikrer at du henter ressurser fra riktig utrullingsversjon hvis en ny oppdatering lanseres mens du surfer. Den sporer deg ikke.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Dette er vår sikre øktkapsel. Den lagrer OAuth-tilgangstokenet når du kobler til Atmosphere-kontoen din. Den er essensiell for å opprettholde din autentiserte økt."
+      },
+      "local_storage": {
+        "title": "Lokal lagring",
+        "p1": "I tillegg til øktkapsler bruker vi nettleserens {bold} for å lagre visningspreferansene dine. Dette lar oss huske temaet (lys/mørk) og noen andre {settings} du har valgt, slik at du ikke trenger å konfigurere dem på nytt ved hvert besøk.",
+        "bold": "lokale lagring",
+        "p2": "Denne informasjonen er rent funksjonell, lagres kun på enheten din, og {bold2}. Vi bruker den utelukkende for å forbedre opplevelsen din på nettstedet vårt.",
+        "bold2": "inneholder ingen personopplysninger og brukes ikke til å spore deg",
+        "settings": "innstillinger"
+      },
+      "management": {
+        "title": "Administrere informasjonskapsler",
+        "p1": "Du kan konfigurere nettleseren din til å godta, avvise eller slette informasjonskapsler etter dine preferanser. Vær imidlertid oppmerksom på at {bold}.",
+        "bold": "avvisning av essensielle kapsler kan forhindre full tilgang til applikasjonen",
+        "p2": "Nedenfor er lenker med instruksjoner for kapseladministrasjon i de mest brukte nettleserne:",
+        "chrome": "Google Chrome (åpnes i nytt vindu)",
+        "firefox": "Mozilla Firefox (åpnes i nytt vindu)",
+        "edge": "Microsoft Edge (åpnes i nytt vindu)"
+      }
+    },
+    "analytics": {
+      "title": "Analyse",
+      "p1": "Vi bruker {bold} for å forstå hvordan besøkende bruker nettstedet vårt. Dette hjelper oss med å forbedre brukeropplevelsen og identifisere problemer.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics er designet med personvern i tankene:",
+      "li1": "Den bruker ikke informasjonskapsler",
+      "li2": "Den samler ikke inn personlige identifikatorer",
+      "li3": "Den sporer ikke brukere på tvers av nettsteder",
+      "li4": "Alle data er aggregert og anonymisert",
+      "p3": "Den eneste informasjonen som samles inn inkluderer: side-URL-er, henviser, land/region, enhetstype, nettleser og operativsystem. Disse dataene kan ikke brukes til å identifisere individuelle brukere."
+    },
+    "authenticated": {
+      "title": "Autentiserte brukere",
+      "p1": "Når du kobler {bold}-kontoen din til npmx, lagrer vi OAuth-tilgangstokenet ditt i en sikker, HTTP-only øktkapsel. Dette tokenet brukes utelukkende til å autentisere forespørsler på dine vegne.",
+      "bold": "Atmosphere",
+      "p2": "Vi lagrer ikke legitimasjonen din, og vi får ikke tilgang til data utover det som er nødvendig for å levere funksjonene du bruker. Du kan koble fra kontoen din når som helst fra {settings}-siden.",
+      "settings": "innstillinger"
+    },
+    "data_retention": {
+      "title": "Dataoppbevaring",
+      "p1": "Øktkapsler slettes automatisk når du lukker nettleseren eller etter en periode med inaktivitet. Lokale lagringspreferanser forblir på enheten din til du tømmer nettleserdata. Analysedata beholdes i aggregert form og kan ikke kobles til individuelle brukere."
+    },
+    "your_rights": {
+      "title": "Dine rettigheter",
+      "p1": "Du har rett til å:",
+      "li1": "Få tilgang til informasjon om hvilke data vi samler inn",
+      "li2": "Tømme lokal lagring og informasjonskapsler når som helst",
+      "li3": "Koble fra den autentiserte økten din",
+      "li4": "Be om informasjon om våre datapraksiser",
+      "p2": "Siden vi ikke samler inn personopplysninger, er det vanligvis ingen personlig informasjon å slette eller eksportere."
+    },
+    "contact": {
+      "title": "Kontakt oss",
+      "p1": "For spørsmål eller bekymringer om denne personvernerklæringen kan du kontakte oss ved å åpne en sak på vårt {link}.",
+      "link": "GitHub-repositorium"
+    },
+    "changes": {
+      "title": "Endringer i denne erklæringen",
+      "p1": "Vi kan oppdatere denne personvernerklæringen fra tid til annen. Eventuelle endringer vil bli publisert på denne siden med en oppdatert revisjonsdato."
+    }
+  },
+  "privacy_policy": {
+    "cookies": {
+      "what_are": {},
+      "types": {},
+      "local_storage": {},
+      "management": {}
+    },
+    "analytics": {},
+    "authenticated": {},
+    "data_retention": {},
+    "your_rights": {},
+    "contact": {},
+    "changes": {}
   }
 }
