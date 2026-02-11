@@ -14,4 +14,8 @@ export interface UserServerSession {
   // multiple did logins per server session
   oauthSession?: NodeSavedSession | undefined
   oauthState?: NodeSavedState | undefined
+  // TODO: This todo is a place holder to rememebr to clean this up after this current oauth change
+  //
+  // Will most likely be crypto.randomUUID() and the did
+  oauthSessionId?: string | undefined
 }
