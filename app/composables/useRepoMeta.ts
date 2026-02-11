@@ -4,11 +4,19 @@ import { parseRepoUrl, GITLAB_HOSTS } from '#shared/utils/git-providers'
 // TTL for git repo metadata (10 minutes - repo stats don't change frequently)
 const REPO_META_TTL = 60 * 10
 
+export interface Release {
+  tag: string // Release tag (e.g., "v1.0.0")
+  url: string // URL to this specific release
+  name?: string // Release name/title (optional)
+  publishedAt?: string // ISO8601 date (optional)
+}
+
 export type RepoMetaLinks = {
   repo: string
   stars: string
   forks: string
   watchers?: string
+  releases?: string // Link to releases page
 }
 
 export type RepoMeta = {
@@ -30,6 +38,11 @@ type UnghRepoResponse = {
     watchers?: number
     defaultBranch?: string
   } | null
+  releases?: Array<{
+    tag: string
+    name: string
+    publishedAt: string
+  }> | null
 }
 
 /** GitLab API response for project details */
@@ -85,6 +98,30 @@ type RadicleProjectResponse = {
   issues?: { open: number; closed: number }
 }
 
+/** GitLab releases API response */
+type GitLabReleaseResponse = Array<{
+  tag_name: string
+  name: string
+  released_at: string
+}>
+
+/** Gitea/Forgejo releases API response */
+type GiteaReleaseResponse = Array<{
+  tag_name: string
+  name: string
+  html_url: string
+  published_at: string
+  draft: boolean
+  prerelease: boolean
+}>
+
+/** Bitbucket tags API response (used as releases) */
+type BitbucketTagResponse = {
+  values: Array<{
+    name: string
+  }>
+}
+
 type ProviderAdapter = {
   id: ProviderId
   parse(url: URL): RepoRef | null
@@ -95,6 +132,11 @@ type ProviderAdapter = {
     links: RepoMetaLinks,
     options?: Parameters<typeof $fetch>[1],
   ): Promise<RepoMeta | null>
+  fetchReleases(
+    cachedFetch: CachedFetchFunction,
+    ref: RepoRef,
+    options?: Parameters<typeof $fetch>[1],
+  ): Promise<Release[]>
 }
 
 const githubAdapter: ProviderAdapter = {
@@ -124,6 +166,7 @@ const githubAdapter: ProviderAdapter = {
       stars: `${base}/stargazers`,
       forks: `${base}/forks`,
       watchers: `${base}/watchers`,
+      releases: `${base}/releases`,
     }
   },
 
@@ -153,6 +196,29 @@ const githubAdapter: ProviderAdapter = {
       description: repo.description ?? null,
       defaultBranch: repo.defaultBranch,
       links,
+    }
+  },
+
+  async fetchReleases(cachedFetch, ref, options = {}) {
+    // Using UNGH to avoid API limitations of the Github API
+    try {
+      const { data } = await cachedFetch<UnghRepoResponse>(
+        `https://ungh.cc/repos/${ref.owner}/${ref.repo}/releases`,
+        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        REPO_META_TTL,
+      )
+
+      const releases = data.releases
+      if (!releases) return []
+
+      return releases.map(release => ({
+        tag: release.tag,
+        url: `https://github.com/${ref.owner}/${ref.repo}/releases/tag/${release.tag}`,
+        name: release.name,
+        publishedAt: release.publishedAt,
+      }))
+    } catch {
+      return []
     }
   },
 }
@@ -189,6 +255,7 @@ const gitlabAdapter: ProviderAdapter = {
       repo: base,
       stars: `${base}/-/starrers`,
       forks: `${base}/-/forks`,
+      releases: `${base}/-/releases`,
     }
   },
 
@@ -219,6 +286,27 @@ const gitlabAdapter: ProviderAdapter = {
       links,
     }
   },
+
+  async fetchReleases(cachedFetch, ref, options = {}) {
+    const baseHost = ref.host ?? 'gitlab.com'
+    const projectPath = encodeURIComponent(`${ref.owner}/${ref.repo}`)
+    try {
+      const { data } = await cachedFetch<GitLabReleaseResponse>(
+        `https://${baseHost}/api/v4/projects/${projectPath}/releases?per_page=30`,
+        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        REPO_META_TTL,
+      )
+
+      return data.map(release => ({
+        tag: release.tag_name,
+        url: `https://${baseHost}/${ref.owner}/${ref.repo}/-/releases/${release.tag_name}`,
+        name: release.name,
+        publishedAt: release.released_at,
+      }))
+    } catch {
+      return []
+    }
+  },
 }
 
 const bitbucketAdapter: ProviderAdapter = {
@@ -247,6 +335,7 @@ const bitbucketAdapter: ProviderAdapter = {
       repo: base,
       stars: base, // Bitbucket doesn't have public stars
       forks: `${base}/forks`,
+      releases: `${base}/downloads`,
     }
   },
 
@@ -274,6 +363,23 @@ const bitbucketAdapter: ProviderAdapter = {
       description: res.description ?? null,
       defaultBranch: res.mainbranch?.name,
       links,
+    }
+  },
+
+  async fetchReleases(cachedFetch, ref, options = {}) {
+    try {
+      const { data } = await cachedFetch<BitbucketTagResponse>(
+        `https://api.bitbucket.org/2.0/repositories/${ref.owner}/${ref.repo}/refs/tags?pagelen=30`,
+        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        REPO_META_TTL,
+      )
+
+      return data.values.map(tag => ({
+        tag: tag.name,
+        url: `https://bitbucket.org/${ref.owner}/${ref.repo}/src/${tag.name}`,
+      }))
+    } catch {
+      return []
     }
   },
 }
@@ -305,6 +411,7 @@ const codebergAdapter: ProviderAdapter = {
       stars: base, // Codeberg doesn't have a separate stargazers page
       forks: `${base}/forks`,
       watchers: base,
+      releases: `${base}/releases`,
     }
   },
 
@@ -332,6 +439,25 @@ const codebergAdapter: ProviderAdapter = {
       description: res.description ?? null,
       defaultBranch: res.default_branch,
       links,
+    }
+  },
+
+  async fetchReleases(cachedFetch, ref, options = {}) {
+    try {
+      const { data } = await cachedFetch<GiteaReleaseResponse>(
+        `https://codeberg.org/api/v1/repos/${ref.owner}/${ref.repo}/releases?limit=30`,
+        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        REPO_META_TTL,
+      )
+
+      return data.map(release => ({
+        tag: release.tag_name,
+        url: release.html_url,
+        name: release.name,
+        publishedAt: release.published_at,
+      }))
+    } catch {
+      return []
     }
   },
 }
@@ -363,6 +489,7 @@ const giteeAdapter: ProviderAdapter = {
       stars: `${base}/stargazers`,
       forks: `${base}/members`,
       watchers: `${base}/watchers`,
+      releases: `${base}/releases`,
     }
   },
 
@@ -390,6 +517,25 @@ const giteeAdapter: ProviderAdapter = {
       description: res.description ?? null,
       defaultBranch: res.default_branch,
       links,
+    }
+  },
+
+  async fetchReleases(cachedFetch, ref, options = {}) {
+    try {
+      const { data } = await cachedFetch<GiteaReleaseResponse>(
+        `https://gitee.com/api/v5/repos/${ref.owner}/${ref.repo}/releases?per_page=30`,
+        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        REPO_META_TTL,
+      )
+
+      return data.map(release => ({
+        tag: release.tag_name,
+        url: release.html_url,
+        name: release.name,
+        publishedAt: release.published_at,
+      }))
+    } catch {
+      return []
     }
   },
 }
@@ -450,6 +596,7 @@ const giteaAdapter: ProviderAdapter = {
       stars: base,
       forks: `${base}/forks`,
       watchers: base,
+      releases: `${base}/releases`,
     }
   },
 
@@ -483,6 +630,27 @@ const giteaAdapter: ProviderAdapter = {
       links,
     }
   },
+
+  async fetchReleases(cachedFetch, ref, options = {}) {
+    if (!ref.host) return []
+
+    try {
+      const { data } = await cachedFetch<GiteaReleaseResponse>(
+        `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}/releases?limit=30`,
+        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        REPO_META_TTL,
+      )
+
+      return data.map(release => ({
+        tag: release.tag_name,
+        url: release.html_url,
+        name: release.name,
+        publishedAt: release.published_at,
+      }))
+    } catch {
+      return []
+    }
+  },
 }
 
 const sourcehutAdapter: ProviderAdapter = {
@@ -512,6 +680,7 @@ const sourcehutAdapter: ProviderAdapter = {
       repo: base,
       stars: base, // Sourcehut doesn't have stars
       forks: base,
+      releases: `${base}/refs`,
     }
   },
 
@@ -525,6 +694,11 @@ const sourcehutAdapter: ProviderAdapter = {
       forks: 0,
       links,
     }
+  },
+
+  async fetchReleases() {
+    // Sourcehut doesn't have a public API for releases
+    return []
   },
 }
 
@@ -562,6 +736,7 @@ const tangledAdapter: ProviderAdapter = {
       repo: base,
       stars: base, // Tangled shows stars on the repo page
       forks: `${base}/fork`,
+      releases: `${base}/releases`,
     }
   },
 
@@ -590,6 +765,11 @@ const tangledAdapter: ProviderAdapter = {
       }
     }
   },
+
+  async fetchReleases() {
+    // Tangled doesn't have a public API for releases
+    return []
+  },
 }
 
 const radicleAdapter: ProviderAdapter = {
@@ -616,6 +796,7 @@ const radicleAdapter: ProviderAdapter = {
       repo: base,
       stars: base, // Radicle doesn't have stars, shows seeding count
       forks: base,
+      releases: `${base}/patches`,
     }
   },
 
@@ -644,6 +825,11 @@ const radicleAdapter: ProviderAdapter = {
       defaultBranch: res.defaultBranch,
       links,
     }
+  },
+
+  async fetchReleases() {
+    // Radicle doesn't have a public API for releases
+    return []
   },
 }
 
@@ -680,6 +866,7 @@ const forgejoAdapter: ProviderAdapter = {
       stars: base,
       forks: `${base}/forks`,
       watchers: base,
+      releases: `${base}/releases`,
     }
   },
 
@@ -709,6 +896,27 @@ const forgejoAdapter: ProviderAdapter = {
       description: res.description ?? null,
       defaultBranch: res.default_branch,
       links,
+    }
+  },
+
+  async fetchReleases(cachedFetch, ref, options = {}) {
+    if (!ref.host) return []
+
+    try {
+      const { data } = await cachedFetch<GiteaReleaseResponse>(
+        `https://${ref.host}/api/v1/repos/${ref.owner}/${ref.repo}/releases?limit=30`,
+        { headers: { 'User-Agent': 'npmx', ...options.headers }, ...options },
+        REPO_META_TTL,
+      )
+
+      return data.map(release => ({
+        tag: release.tag_name,
+        url: release.html_url,
+        name: release.name,
+        publishedAt: release.published_at,
+      }))
+    } catch {
+      return []
     }
   },
 }
@@ -758,6 +966,30 @@ export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | unde
 
   const meta = computed<RepoMeta | null>(() => data.value ?? null)
 
+  // Separate releases fetch
+  const {
+    data: releasesData,
+    pending: releasesPending,
+    error: releasesError,
+    refresh: refreshReleases,
+  } = useLazyAsyncData<Release[]>(
+    () =>
+      repoRef.value
+        ? `repo-releases:${repoRef.value.provider}:${repoRef.value.owner}/${repoRef.value.repo}`
+        : 'repo-releases:none',
+    async (_nuxtApp, { signal }) => {
+      const ref = repoRef.value
+      if (!ref) return []
+
+      const adapter = providers.find(provider => provider.id === ref.provider)
+      if (!adapter) return []
+
+      return await adapter.fetchReleases(cachedFetch, ref, { signal })
+    },
+  )
+
+  const releases = computed<Release[]>(() => releasesData.value ?? [])
+
   return {
     repoRef,
     meta,
@@ -772,6 +1004,13 @@ export function useRepoMeta(repositoryUrl: MaybeRefOrGetter<string | null | unde
     forksLink: computed(() => meta.value?.links.forks ?? null),
     watchersLink: computed(() => meta.value?.links.watchers ?? null),
     repoLink: computed(() => meta.value?.links.repo ?? null),
+    releasesLink: computed(() => meta.value?.links.releases ?? null),
+
+    // Releases data and loading state
+    releases,
+    releasesPending,
+    releasesError,
+    refreshReleases,
 
     pending,
     error,

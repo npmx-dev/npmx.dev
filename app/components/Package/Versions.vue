@@ -11,6 +11,8 @@ import {
   getVersionGroupLabel,
   isSameVersionGroup,
 } from '~/utils/versions'
+import { getMatchedRelease } from '~/utils/releases'
+import type { Release } from '~/composables/useRepoMeta'
 
 const props = defineProps<{
   packageName: string
@@ -18,6 +20,7 @@ const props = defineProps<{
   distTags: Record<string, string>
   time: Record<string, string>
   selectedVersion?: string
+  releases?: Release[]
 }>()
 
 const chartModal = useModal('chart-modal')
@@ -458,28 +461,41 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           <!-- Version info -->
           <div class="flex-1 py-1.5 min-w-0 flex gap-2 justify-between items-center">
             <div class="overflow-hidden">
-              <LinkBase
-                :to="versionRoute(row.primaryVersion.version)"
-                block
-                class="text-sm"
-                :class="
-                  row.primaryVersion.deprecated
-                    ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
-                    : undefined
-                "
-                :title="
-                  row.primaryVersion.deprecated
-                    ? $t('package.versions.deprecated_title', {
-                        version: row.primaryVersion.version,
-                      })
-                    : row.primaryVersion.version
-                "
-                :classicon="row.primaryVersion.deprecated ? 'i-carbon-warning-hex' : undefined"
-              >
-                <span dir="ltr" class="block truncate">
-                  {{ row.primaryVersion.version }}
-                </span>
-              </LinkBase>
+              <div class="flex items-center gap-1.5">
+                <LinkBase
+                  :to="versionRoute(row.primaryVersion.version)"
+                  block
+                  class="text-sm"
+                  :class="
+                    row.primaryVersion.deprecated
+                      ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
+                      : undefined
+                  "
+                  :title="
+                    row.primaryVersion.deprecated
+                      ? $t('package.versions.deprecated_title', {
+                          version: row.primaryVersion.version,
+                        })
+                      : row.primaryVersion.version
+                  "
+                  :classicon="row.primaryVersion.deprecated ? 'i-carbon-warning-hex' : undefined"
+                >
+                  <span dir="ltr" class="block truncate">
+                    {{ row.primaryVersion.version }}
+                  </span>
+                </LinkBase>
+                <LinkBase
+                  v-if="getMatchedRelease(row.primaryVersion.version, props.releases ?? [])"
+                  :to="getMatchedRelease(row.primaryVersion.version, props.releases ?? [])!.url"
+                  classicon="i-carbon-catalog size-3.5"
+                  :title="
+                    $t('package.releases.view_release_for_version', {
+                      version: row.primaryVersion.version,
+                    })
+                  "
+                  class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
+                />
+              </div>
               <div v-if="row.tags.length" class="flex items-center gap-1 mt-0.5 flex-wrap">
                 <span
                   v-for="tag in row.tags"
@@ -522,26 +538,35 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
             :class="v.version === effectiveCurrentVersion ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
           >
             <div class="flex items-center justify-between gap-2">
-              <LinkBase
-                :to="versionRoute(v.version)"
-                block
-                class="text-xs"
-                :class="
-                  v.deprecated
-                    ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
-                    : undefined
-                "
-                :title="
-                  v.deprecated
-                    ? $t('package.versions.deprecated_title', { version: v.version })
-                    : v.version
-                "
-                :classicon="v.deprecated ? 'i-carbon-warning-hex' : undefined"
-              >
-                <span dir="ltr" class="block truncate">
-                  {{ v.version }}
-                </span>
-              </LinkBase>
+              <div class="flex items-center gap-1.5 min-w-0">
+                <LinkBase
+                  :to="versionRoute(v.version)"
+                  block
+                  class="text-xs"
+                  :class="
+                    v.deprecated
+                      ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
+                      : undefined
+                  "
+                  :title="
+                    v.deprecated
+                      ? $t('package.versions.deprecated_title', { version: v.version })
+                      : v.version
+                  "
+                  :classicon="v.deprecated ? 'i-carbon-warning-hex' : undefined"
+                >
+                  <span dir="ltr" class="block truncate">
+                    {{ v.version }}
+                  </span>
+                </LinkBase>
+                <LinkBase
+                  v-if="getMatchedRelease(v.version, props.releases ?? [])"
+                  :to="getMatchedRelease(v.version, props.releases ?? [])!.url"
+                  :title="$t('package.releases.view_release_for_version', { version: v.version })"
+                  classicon="i-carbon-catalog size-3"
+                  class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
+                />
+              </div>
               <div class="flex items-center gap-2 shrink-0">
                 <DateTime
                   v-if="v.time"
@@ -630,28 +655,41 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
             :class="hiddenRowContainsCurrent(row) ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
           >
             <div class="flex items-center justify-between gap-2">
-              <LinkBase
-                :to="versionRoute(row.primaryVersion.version)"
-                block
-                class="text-xs"
-                :class="
-                  row.primaryVersion.deprecated
-                    ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
-                    : undefined
-                "
-                :title="
-                  row.primaryVersion.deprecated
-                    ? $t('package.versions.deprecated_title', {
-                        version: row.primaryVersion.version,
-                      })
-                    : row.primaryVersion.version
-                "
-                :classicon="row.primaryVersion.deprecated ? 'i-carbon-warning-hex' : undefined"
-              >
-                <span dir="ltr" class="block truncate">
-                  {{ row.primaryVersion.version }}
-                </span>
-              </LinkBase>
+              <div class="flex items-center gap-1.5 min-w-0">
+                <LinkBase
+                  :to="versionRoute(row.primaryVersion.version)"
+                  block
+                  class="text-xs"
+                  :class="
+                    row.primaryVersion.deprecated
+                      ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
+                      : undefined
+                  "
+                  :title="
+                    row.primaryVersion.deprecated
+                      ? $t('package.versions.deprecated_title', {
+                          version: row.primaryVersion.version,
+                        })
+                      : row.primaryVersion.version
+                  "
+                  :classicon="row.primaryVersion.deprecated ? 'i-carbon-warning-hex' : undefined"
+                >
+                  <span dir="ltr" class="block truncate">
+                    {{ row.primaryVersion.version }}
+                  </span>
+                </LinkBase>
+                <LinkBase
+                  v-if="getMatchedRelease(row.primaryVersion.version, props.releases ?? [])"
+                  :to="getMatchedRelease(row.primaryVersion.version, props.releases ?? [])!.url"
+                  :title="
+                    $t('package.releases.view_release_for_version', {
+                      version: row.primaryVersion.version,
+                    })
+                  "
+                  classicon="i-carbon-catalog size-3"
+                  class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
+                />
+              </div>
               <div class="flex items-center gap-2 shrink-0 pe-2">
                 <DateTime
                   v-if="row.primaryVersion.time"
@@ -708,31 +746,49 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                         aria-hidden="true"
                       />
                     </button>
-                    <LinkBase
-                      v-if="group.versions[0]?.version"
-                      :to="versionRoute(group.versions[0]?.version)"
-                      block
-                      class="text-xs"
-                      :class="
-                        group.versions[0]?.deprecated
-                          ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
-                          : undefined
-                      "
-                      :title="
-                        group.versions[0]?.deprecated
-                          ? $t('package.versions.deprecated_title', {
-                              version: group.versions[0]?.version,
-                            })
-                          : group.versions[0]?.version
-                      "
-                      :classicon="
-                        group.versions[0]?.deprecated ? 'i-carbon-warning-hex' : undefined
-                      "
-                    >
-                      <span dir="ltr" class="block truncate">
-                        {{ group.versions[0]?.version }}
-                      </span>
-                    </LinkBase>
+                    <div class="flex items-center gap-1.5 min-w-0">
+                      <LinkBase
+                        v-if="group.versions[0]?.version"
+                        :to="versionRoute(group.versions[0]?.version)"
+                        block
+                        class="text-xs"
+                        :class="
+                          group.versions[0]?.deprecated
+                            ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
+                            : undefined
+                        "
+                        :title="
+                          group.versions[0]?.deprecated
+                            ? $t('package.versions.deprecated_title', {
+                                version: group.versions[0]?.version,
+                              })
+                            : group.versions[0]?.version
+                        "
+                        :classicon="
+                          group.versions[0]?.deprecated ? 'i-carbon-warning-hex' : undefined
+                        "
+                      >
+                        <span dir="ltr" class="block truncate">
+                          {{ group.versions[0]?.version }}
+                        </span>
+                      </LinkBase>
+                      <LinkBase
+                        v-if="
+                          group.versions[0]?.version &&
+                          getMatchedRelease(group.versions[0]?.version, props.releases ?? [])
+                        "
+                        :to="
+                          getMatchedRelease(group.versions[0]?.version, props.releases ?? [])!.url
+                        "
+                        :title="
+                          $t('package.releases.view_release_for_version', {
+                            version: group.versions[0]?.version,
+                          })
+                        "
+                        classicon="i-carbon-catalog size-3"
+                        class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
+                      />
+                    </div>
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
                     <DateTime
@@ -772,12 +828,12 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                 :class="majorGroupContainsCurrent(group) ? 'rounded bg-bg-subtle px-2 -mx-2' : ''"
               >
                 <div class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2 min-w-0">
+                  <div class="flex items-center gap-1.5 min-w-0 ms-6">
                     <LinkBase
                       v-if="group.versions[0]?.version"
                       :to="versionRoute(group.versions[0]?.version)"
                       block
-                      class="text-xs ms-6"
+                      class="text-xs"
                       :class="
                         group.versions[0]?.deprecated
                           ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
@@ -798,6 +854,20 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                         {{ group.versions[0]?.version }}
                       </span>
                     </LinkBase>
+                    <LinkBase
+                      v-if="
+                        group.versions[0]?.version &&
+                        getMatchedRelease(group.versions[0]?.version, props.releases ?? [])
+                      "
+                      :to="getMatchedRelease(group.versions[0]?.version, props.releases ?? [])!.url"
+                      :title="
+                        $t('package.releases.view_release_for_version', {
+                          version: group.versions[0]?.version,
+                        })
+                      "
+                      classicon="i-carbon-catalog size-3"
+                      class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
+                    />
                   </div>
                   <div class="flex items-center gap-2 shrink-0 pe-2">
                     <DateTime
@@ -841,26 +911,37 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                   "
                 >
                   <div class="flex items-center justify-between gap-2">
-                    <LinkBase
-                      :to="versionRoute(v.version)"
-                      block
-                      class="text-xs"
-                      :class="
-                        v.deprecated
-                          ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
-                          : undefined
-                      "
-                      :title="
-                        v.deprecated
-                          ? $t('package.versions.deprecated_title', { version: v.version })
-                          : v.version
-                      "
-                      :classicon="v.deprecated ? 'i-carbon-warning-hex' : undefined"
-                    >
-                      <span dir="ltr" class="block truncate">
-                        {{ v.version }}
-                      </span>
-                    </LinkBase>
+                    <div class="flex items-center gap-1.5 min-w-0">
+                      <LinkBase
+                        :to="versionRoute(v.version)"
+                        block
+                        class="text-xs"
+                        :class="
+                          v.deprecated
+                            ? 'text-red-800 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'
+                            : undefined
+                        "
+                        :title="
+                          v.deprecated
+                            ? $t('package.versions.deprecated_title', { version: v.version })
+                            : v.version
+                        "
+                        :classicon="v.deprecated ? 'i-carbon-warning-hex' : undefined"
+                      >
+                        <span dir="ltr" class="block truncate">
+                          {{ v.version }}
+                        </span>
+                      </LinkBase>
+                      <LinkBase
+                        v-if="getMatchedRelease(v.version, props.releases ?? [])"
+                        :to="getMatchedRelease(v.version, props.releases ?? [])!.url"
+                        :title="
+                          $t('package.releases.view_release_for_version', { version: v.version })
+                        "
+                        classicon="i-carbon-catalog size-3"
+                        class="inline-flex items-center text-fg-muted hover:text-fg transition-colors shrink-0"
+                      />
+                    </div>
                     <div class="flex items-center gap-2 shrink-0 pe-2">
                       <DateTime
                         v-if="v.time"

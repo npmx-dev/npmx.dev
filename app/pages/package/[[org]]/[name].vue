@@ -17,6 +17,7 @@ import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-securi
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
+import { getMatchedRelease } from '~/utils/releases'
 
 defineOgImageComponent('Package', {
   name: () => packageName.value,
@@ -358,7 +359,21 @@ const repositoryUrl = computed(() => {
   return url
 })
 
-const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
+const {
+  meta: repoMeta,
+  repoRef,
+  stars,
+  starsLink,
+  forks,
+  forksLink,
+  releases,
+} = useRepoMeta(repositoryUrl)
+
+const currentVersionRelease = computed(() => {
+  const version = resolvedVersion.value ?? displayVersion.value?.version
+  if (!version || !releases.value.length) return null
+  return getMatchedRelease(version, releases.value)
+})
 
 const PROVIDER_ICONS: Record<string, string> = {
   github: 'i-carbon:logo-github',
@@ -591,6 +606,16 @@ onKeyStroke(
   },
 )
 
+onKeyStroke(
+  e => isKeyWithoutModifiers(e, 'r') && !isEditableElement(e.target),
+  e => {
+    if (!currentVersionRelease.value) return
+    e.preventDefault()
+    navigateTo(currentVersionRelease.value.url, { external: true })
+  },
+  { dedupe: true },
+)
+
 const showSkeleton = shallowRef(false)
 </script>
 
@@ -733,6 +758,15 @@ const showSkeleton = shallowRef(false)
               classicon="i-carbon:compare"
             >
               {{ $t('package.links.compare') }}
+            </LinkBase>
+            <LinkBase
+              v-if="currentVersionRelease"
+              variant="button-secondary"
+              :to="currentVersionRelease.url"
+              aria-keyshortcuts="r"
+              classicon="i-carbon:catalog"
+            >
+              {{ $t('package.links.release') }}
             </LinkBase>
           </ButtonGroup>
 
@@ -1334,6 +1368,7 @@ const showSkeleton = shallowRef(false)
             :dist-tags="pkg['dist-tags'] ?? {}"
             :time="pkg.time"
             :selected-version="resolvedVersion ?? pkg['dist-tags']?.['latest']"
+            :releases="releases"
           />
 
           <!-- Install Scripts Warning -->
