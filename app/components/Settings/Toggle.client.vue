@@ -89,7 +89,7 @@ label:has(input:hover) .toggle--background {
   transition: transform 200ms ease-in-out;
 }
 
-.toggle--background:before {
+.toggle--background::before {
   transition: transform 200ms ease-in-out;
   content: '';
   width: 20px;
