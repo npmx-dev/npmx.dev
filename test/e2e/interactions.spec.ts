@@ -92,6 +92,8 @@ test.describe('Search Pages', () => {
     await homeSearchInput.click()
     await page.keyboard.type('vue')
 
+    await page.keyboard.press('Enter')
+
     // Wait for navigation to /search (debounce is 250ms)
     await expect(page).toHaveURL(/\/search/, { timeout: 10000 })
 
@@ -116,6 +118,8 @@ test.describe('Search Pages', () => {
 
     await searchInput.click()
     await searchInput.fill('vue')
+
+    await page.keyboard.press('Enter')
 
     await expect(page).toHaveURL(/\/search/, { timeout: 10000 })
 
