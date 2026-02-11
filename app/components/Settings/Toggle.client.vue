@@ -106,13 +106,13 @@ const id = useId()
 /* Track transition */
 .toggle {
   transition:
-    background-color 100ms ease-in-out,
+    background-color 200ms ease-in-out,
     border-color 100ms ease-in-out;
 }
 
 .toggle::before {
   transition:
-    background-color 50ms ease-in-out,
+    background-color 200ms ease-in-out,
     translate 200ms ease-in-out;
 }
 
