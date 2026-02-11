@@ -441,9 +441,9 @@ export function useSearch(
 
   watch(
     [() => asyncData.data.value.suggestions, () => npmSuggestions.data.value.suggestions],
-    ([algoliaSuggestions, npmSuggestions]) => {
-      if (algoliaSuggestions.length || npmSuggestions.length) {
-        suggestions.value = algoliaSuggestions.length ? algoliaSuggestions : npmSuggestions
+    ([algoliaSuggestions, npmSuggestionsValue]) => {
+      if (algoliaSuggestions.length || npmSuggestionsValue.length) {
+        suggestions.value = algoliaSuggestions.length ? algoliaSuggestions : npmSuggestionsValue
       }
     },
     { immediate: true },
