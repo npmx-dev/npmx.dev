@@ -12,7 +12,7 @@ async function search() {
   if (!query) return
   await navigateTo({
     path: '/search',
-    query: query ? { q: query, p: searchProvider.value } : undefined,
+    query: query ? { q: query, p: searchProvider.value === 'npm' ? 'npm' : undefined } : undefined,
   })
   const newQuery = searchQuery.value.trim()
   if (newQuery !== query) {

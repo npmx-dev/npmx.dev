@@ -41,7 +41,9 @@ function updateUrlQueryImpl(value: string) {
     return
   }
   if (route.name === 'search') {
-    router.replace({ query: { q: value || undefined, p: searchProviderValue.value } })
+    router.replace({
+      query: { q: value || undefined, p: searchProviderValue.value === 'npm' ? 'npm' : undefined },
+    })
     return
   }
   if (!value) {
@@ -52,7 +54,7 @@ function updateUrlQueryImpl(value: string) {
     name: 'search',
     query: {
       q: value,
-      p: searchProviderValue.value,
+      p: searchProviderValue.value === 'npm' ? 'npm' : undefined,
     },
   })
 }

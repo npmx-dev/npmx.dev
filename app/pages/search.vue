@@ -34,7 +34,7 @@ const updateUrlPage = debounce((page: number) => {
     query: {
       ...route.query,
       page: page > 1 ? page : undefined,
-      p: searchProviderValue.value,
+      p: searchProviderValue.value === 'npm' ? 'npm' : undefined,
     },
   })
 }, 500)

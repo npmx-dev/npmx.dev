@@ -90,7 +90,7 @@ useEventListener('keydown', event => {
             @click="
               () => {
                 searchProvider = 'algolia'
-                router.push({ query: { ...route.query, p: 'algolia' } })
+                router.push({ query: { ...route.query, p: undefined } })
                 isOpen = false
               }
             "
