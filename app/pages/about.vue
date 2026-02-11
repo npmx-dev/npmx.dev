@@ -138,7 +138,48 @@ const { data: contributors, status: contributorsStatus } = useLazyFetch('/api/co
         </div>
 
         <div>
-          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">
+          <h2 class="text-lg text-fg-subtle uppercase tracking-wider mb-4">Team</h2>
+          <p class="text-fg-muted leading-relaxed mb-6">
+            {{ $t('about.contributors.description') }}
+          </p>
+
+          <!-- TODO: update string and maintainers list -->
+          <div v-if="contributors?.some(c => c.role !== 'contributor')" class="mb-12">
+            <h3 class="text-sm text-fg-subtle uppercase tracking-wider mb-4">Governance</h3>
+            <p class="text-fg-muted leading-relaxed mb-6">
+              TODO: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+              <a
+                v-for="person in contributors
+                  .filter(c => c.role !== 'contributor')
+                  .concat(contributors.filter(c => c.role !== 'contributor'))
+                  .concat(contributors.filter(c => c.role !== 'contributor'))
+                  .concat(contributors.filter(c => c.role !== 'contributor'))
+                  .concat(contributors.filter(c => c.role !== 'contributor'))"
+                :key="person.id"
+                :href="person.html_url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-3 p-2 border border-border rounded-lg hover:bg-fg/5 transition-colors group"
+              >
+                <img
+                  :src="`${person.avatar_url}&s=64`"
+                  alt=""
+                  class="w-10 h-10 rounded-md ring-1 ring-border group-hover:ring-accent"
+                />
+                <div class="min-w-0">
+                  <div class="font-mono text-sm text-fg truncate">@{{ person.login }}</div>
+                  <div class="text-sm text-fg-muted tracking-tight">{{ person.role }}</div>
+                </div>
+              </a>
+              TODO: add other maintainers
+            </div>
+          </div>
+
+          <h3 class="text-sm text-fg-subtle uppercase tracking-wider mb-4">
             {{
               $t(
                 'about.contributors.title',
@@ -146,9 +187,10 @@ const { data: contributors, status: contributorsStatus } = useLazyFetch('/api/co
                 contributors?.length ?? 0,
               )
             }}
-          </h2>
+          </h3>
           <p class="text-fg-muted leading-relaxed mb-6">
-            {{ $t('about.contributors.description') }}
+            TODO: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.
           </p>
 
           <!-- Contributors cloud -->
