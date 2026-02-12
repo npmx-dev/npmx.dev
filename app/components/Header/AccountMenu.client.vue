@@ -56,16 +56,16 @@ function openAuthModal() {
 </script>
 
 <template>
-  <div ref="accountMenuRef" class="relative flex min-w-24 justify-end">
-    <button
+  <div ref="accountMenuRef" class="relative flex min-w-28 justify-end">
+    <ButtonBase
       type="button"
-      class="relative flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors duration-200 hover:bg-bg-subtle hover:text-accent focus-visible:outline-accent/70"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       @click="isOpen = !isOpen"
+      class="border-none"
     >
       <!-- Stacked avatars when connected -->
-      <div
+      <span
         v-if="hasAnyConnection"
         class="flex items-center"
         :class="hasBothConnections ? '-space-x-2' : ''"
@@ -103,7 +103,7 @@ function openAuthModal() {
         >
           <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
         </span>
-      </div>
+      </span>
 
       <!-- "connect" text when not connected -->
       <span v-if="!hasAnyConnection" class="font-mono text-sm">
@@ -120,13 +120,13 @@ function openAuthModal() {
       <!-- Operation count badge (when npm connected with pending ops) -->
       <span
         v-if="isNpmConnected && operationCount > 0"
-        class="absolute -top-1 -inset-ie-1 min-w-[1rem] h-4 px-1 flex items-center justify-center font-mono text-[10px] rounded-full"
+        class="absolute -top-1 -inset-ie-1 min-w-[1rem] h-4 px-1 flex items-center justify-center font-mono text-3xs rounded-full"
         :class="hasPendingOperations ? 'bg-yellow-500 text-black' : 'bg-blue-500 text-white'"
         aria-hidden="true"
       >
         {{ operationCount }}
       </span>
-    </button>
+    </ButtonBase>
 
     <!-- Dropdown menu -->
     <Transition
@@ -163,10 +163,10 @@ function openAuthModal() {
               >
                 <span class="i-carbon-terminal w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
-              <div class="flex-1 min-w-0">
-                <div class="font-mono text-sm text-fg truncate">~{{ npmUser }}</div>
-                <div class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli') }}</div>
-              </div>
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg truncate block">~{{ npmUser }}</span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli') }}</span>
+              </span>
               <span
                 v-if="operationCount > 0"
                 class="px-1.5 py-0.5 font-mono text-xs rounded"
@@ -206,10 +206,12 @@ function openAuthModal() {
               >
                 <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
-              <div class="flex-1 min-w-0">
-                <div class="font-mono text-sm text-fg truncate">@{{ atprotoUser.handle }}</div>
-                <div class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere') }}</div>
-              </div>
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg truncate block"
+                  >@{{ atprotoUser.handle }}</span
+                >
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere') }}</span>
+              </span>
             </button>
           </div>
 
@@ -236,16 +238,16 @@ function openAuthModal() {
                 />
                 <span v-else class="i-carbon-terminal w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
-              <div class="flex-1 min-w-0">
-                <div class="font-mono text-sm text-fg">
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg block">
                   {{
                     isNpmConnecting
                       ? $t('account_menu.connecting')
                       : $t('account_menu.connect_npm_cli')
                   }}
-                </div>
-                <div class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli_desc') }}</div>
-              </div>
+                </span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli_desc') }}</span>
+              </span>
             </button>
 
             <button
@@ -258,12 +260,12 @@ function openAuthModal() {
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
                 <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
-              <div class="flex-1 min-w-0">
-                <div class="font-mono text-sm text-fg">
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg block">
                   {{ $t('account_menu.connect_atmosphere') }}
-                </div>
-                <div class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere_desc') }}</div>
-              </div>
+                </span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere_desc') }}</span>
+              </span>
             </button>
           </div>
         </div>

@@ -1,3 +1,5 @@
+import './node-pty.d.ts'
+
 export interface ConnectorConfig {
   port: number
   host: string
@@ -41,6 +43,8 @@ export interface OperationResult {
   requiresOtp?: boolean
   /** True if the operation failed due to authentication failure (not logged in or token expired) */
   authFailure?: boolean
+  /** URLs detected in the command output (stdout + stderr) */
+  urls?: string[]
 }
 
 export interface PendingOperation {
@@ -54,6 +58,8 @@ export interface PendingOperation {
   result?: OperationResult
   /** ID of operation this depends on (must complete successfully first) */
   dependsOn?: string
+  /** Auth URL detected during interactive execution (set while operation is still running) */
+  authUrl?: string
 }
 
 export interface ConnectorState {
@@ -66,3 +72,87 @@ export interface ApiResponse<T = unknown> {
   data?: T
   error?: string
 }
+
+// -- Connector API contract (shared by real + mock server) -------------------
+
+export type OrgRole = 'developer' | 'admin' | 'owner'
+
+export type AccessPermission = 'read-only' | 'read-write'
+
+/** POST /connect response data */
+export interface ConnectResponseData {
+  npmUser: string | null
+  avatar: string | null
+  connectedAt: number
+}
+
+/** GET /state response data */
+export interface StateResponseData {
+  npmUser: string | null
+  avatar: string | null
+  operations: PendingOperation[]
+}
+
+/** POST /execute response data */
+export interface ExecuteResponseData {
+  results: Array<{ id: string; result: OperationResult }>
+  otpRequired?: boolean
+  authFailure?: boolean
+  urls?: string[]
+}
+
+/** POST /approve-all response data */
+export interface ApproveAllResponseData {
+  approved: number
+}
+
+/** DELETE /operations/all response data */
+export interface ClearOperationsResponseData {
+  removed: number
+}
+
+/** Request body for POST /operations */
+export interface CreateOperationBody {
+  type: OperationType
+  params: Record<string, string>
+  description: string
+  command: string
+  dependsOn?: string
+}
+
+/**
+ * Connector API endpoint contract. Both server.ts and mock-app.ts must
+ * conform to these shapes, enforced via `satisfies` and `AssertEndpointsImplemented`.
+ */
+export interface ConnectorEndpoints {
+  'POST /connect': { body: { token: string }; data: ConnectResponseData }
+  'GET /state': { body: never; data: StateResponseData }
+  'POST /operations': { body: CreateOperationBody; data: PendingOperation }
+  'POST /operations/batch': { body: CreateOperationBody[]; data: PendingOperation[] }
+  'DELETE /operations': { body: never; data: void }
+  'DELETE /operations/all': { body: never; data: ClearOperationsResponseData }
+  'POST /approve': { body: never; data: PendingOperation }
+  'POST /approve-all': { body: never; data: ApproveAllResponseData }
+  'POST /retry': { body: never; data: PendingOperation }
+  'POST /execute': {
+    body: { otp?: string; interactive?: boolean; openUrls?: boolean }
+    data: ExecuteResponseData
+  }
+  'GET /org/:org/users': { body: never; data: Record<string, OrgRole> }
+  'GET /org/:org/teams': { body: never; data: string[] }
+  'GET /team/:scopeTeam/users': { body: never; data: string[] }
+  'GET /package/:pkg/collaborators': { body: never; data: Record<string, AccessPermission> }
+  'GET /user/packages': { body: never; data: Record<string, AccessPermission> }
+  'GET /user/orgs': { body: never; data: string[] }
+}
+
+/** Compile-time check that a server implements exactly the ConnectorEndpoints keys. */
+type IsExact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false
+export type AssertEndpointsImplemented<Implemented extends string> =
+  IsExact<Implemented, keyof ConnectorEndpoints> extends true
+    ? true
+    : {
+        error: 'Endpoint mismatch'
+        missing: Exclude<keyof ConnectorEndpoints, Implemented>
+        extra: Exclude<Implemented, keyof ConnectorEndpoints>
+      }

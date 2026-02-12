@@ -16,6 +16,7 @@ const pages = [
   '/oauth-client-metadata.json',
   '/200.html',
   '/about',
+  '/accessibility',
   '/compare',
   '/org',
   '/package',

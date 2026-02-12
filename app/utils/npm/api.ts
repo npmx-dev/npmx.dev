@@ -1,7 +1,6 @@
 import type { PackageVersionInfo } from '#shared/types'
 import { getVersions } from 'fast-npm-meta'
 import { compare } from 'semver'
-import { NPM_API } from './common'
 
 type NpmDownloadsRangeResponse = {
   start: string
@@ -19,10 +18,11 @@ export async function fetchNpmDownloadsRange(
   start: string,
   end: string,
 ): Promise<NpmDownloadsRangeResponse> {
+  const { $npmApi } = useNuxtApp()
   const encodedName = encodePackageName(packageName)
-  return await $fetch<NpmDownloadsRangeResponse>(
-    `${NPM_API}/downloads/range/${start}:${end}/${encodedName}`,
-  )
+  return (
+    await $npmApi<NpmDownloadsRangeResponse>(`/downloads/range/${start}:${end}/${encodedName}`)
+  ).data
 }
 
 // ============================================================================

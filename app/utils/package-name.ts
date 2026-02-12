@@ -1,4 +1,5 @@
 import validatePackageName from 'validate-npm-package-name'
+import { NPM_REGISTRY } from '#shared/utils/constants'
 import { encodePackageName } from '#shared/utils/npm'
 
 /**
@@ -70,8 +71,6 @@ export interface CheckNameResult {
   validationWarnings?: string[]
   similarPackages?: SimilarPackage[]
 }
-
-const NPM_REGISTRY = 'https://registry.npmjs.org'
 
 export async function checkPackageExists(
   name: string,

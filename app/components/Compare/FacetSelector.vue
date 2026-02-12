@@ -29,75 +29,68 @@ function isCategoryNoneSelected(category: string): boolean {
     <div v-for="category in categoryOrder" :key="category">
       <!-- Category header with all/none buttons -->
       <div class="flex items-center gap-2 mb-2">
-        <span class="text-[10px] text-fg-subtle uppercase tracking-wider">
+        <span class="text-3xs text-fg-subtle uppercase tracking-wider">
           {{ getCategoryLabel(category) }}
         </span>
-        <button
-          type="button"
-          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
-          :class="
-            isCategoryAllSelected(category)
-              ? 'text-fg-muted'
-              : 'text-fg-muted/60 hover:text-fg-muted'
-          "
+        <!-- TODO: These should be radios, since they are mutually exclusive, and currently this behavior is faked with buttons -->
+        <ButtonBase
           :aria-label="
             $t('compare.facets.select_category', { category: getCategoryLabel(category) })
           "
+          :aria-pressed="isCategoryAllSelected(category)"
           :disabled="isCategoryAllSelected(category)"
           @click="selectCategory(category)"
+          size="small"
         >
           {{ $t('compare.facets.all') }}
-        </button>
-        <span class="text-[10px] text-fg-muted/40">/</span>
-        <button
-          type="button"
-          class="text-[10px] transition-colors focus-visible:outline-none focus-visible:underline focus-visible:underline-accent"
-          :class="
-            isCategoryNoneSelected(category)
-              ? 'text-fg-muted'
-              : 'text-fg-muted/60 hover:text-fg-muted'
-          "
+        </ButtonBase>
+        <span class="text-2xs text-fg-muted/40">/</span>
+        <ButtonBase
           :aria-label="
             $t('compare.facets.deselect_category', { category: getCategoryLabel(category) })
           "
+          :aria-pressed="isCategoryNoneSelected(category)"
           :disabled="isCategoryNoneSelected(category)"
           @click="deselectCategory(category)"
+          size="small"
         >
           {{ $t('compare.facets.none') }}
-        </button>
+        </ButtonBase>
       </div>
 
       <!-- Facet buttons -->
       <div class="flex items-center gap-1.5 flex-wrap" role="group">
-        <button
+        <!-- TODO: These should be checkboxes -->
+        <ButtonBase
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
-          type="button"
+          size="small"
           :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
           :disabled="facet.comingSoon"
           :aria-pressed="isFacetSelected(facet.id)"
           :aria-label="facet.label"
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded border transition-colors duration-200 focus-visible:outline-accent/70"
+          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
           :class="
             facet.comingSoon
               ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
               : isFacetSelected(facet.id)
-                ? 'text-fg-muted bg-bg-muted border-border'
+                ? 'text-fg-muted bg-bg-muted'
                 : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border'
           "
           @click="!facet.comingSoon && toggleFacet(facet.id)"
+          :classicon="
+            facet.comingSoon
+              ? undefined
+              : isFacetSelected(facet.id)
+                ? 'i-carbon:checkmark'
+                : 'i-carbon:add'
+          "
         >
-          <span
-            v-if="!facet.comingSoon"
-            class="w-3 h-3"
-            :class="isFacetSelected(facet.id) ? 'i-carbon:checkmark' : 'i-carbon:add'"
-            aria-hidden="true"
-          />
           {{ facet.label }}
-          <span v-if="facet.comingSoon" class="text-[9px]"
+          <span v-if="facet.comingSoon" class="text-4xs"
             >({{ $t('compare.facets.coming_soon') }})</span
           >
-        </button>
+        </ButtonBase>
       </div>
     </div>
   </div>

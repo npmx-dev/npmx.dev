@@ -17,20 +17,28 @@
     "dev:docs": "pnpm run --filter npmx-docs dev --port=3001",
     "i18n:check": "node scripts/compare-translations.ts",
     "i18n:check:fix": "node scripts/compare-translations.ts --fix",
-    "rtl:check": "node scripts/rtl-checker.ts",
     "i18n:report": "node scripts/find-invalid-translations.ts",
+    "i18n:report:fix": "node scripts/remove-unused-translations.ts",
+    "i18n:schema": "node scripts/generate-i18n-schema.ts",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint && oxfmt --check",
     "lint:fix": "oxlint --fix && oxfmt",
+    "lint:css": "node scripts/unocss-checker.ts",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
+    "mock-connector": "pnpm --filter npmx-connector dev:mock",
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
-    "postinstall": "pnpm rebuild @resvg/resvg-js && pnpm generate:lexicons && nuxt prepare && simple-git-hooks",
+    "postinstall": "pnpm rebuild @resvg/resvg-js && pnpm generate:lexicons && pnpm generate:sprite && nuxt prepare && simple-git-hooks",
+    "generate:sprite": "node scripts/generate-file-tree-sprite.ts",
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
     "test": "vite test",
+    "test:a11y": "pnpm build:test && LIGHTHOUSE_COLOR_MODE=dark pnpm test:a11y:prebuilt && LIGHTHOUSE_COLOR_MODE=light pnpm test:a11y:prebuilt",
+    "test:a11y:prebuilt": "./scripts/lighthouse.sh",
+    "test:perf": "pnpm build:test && pnpm test:perf:prebuilt",
+    "test:perf:prebuilt": "LH_PERF=1 ./scripts/lighthouse.sh",
     "test:browser": "pnpm build:test && pnpm test:browser:prebuilt",
     "test:browser:prebuilt": "playwright test",
     "test:browser:ui": "pnpm build:test && pnpm test:browser:prebuilt --ui",
@@ -41,11 +49,9 @@
     "start:playwright:webserver": "NODE_ENV=test pnpm preview --port 5678"
   },
   "dependencies": {
-    "@atproto/api": "^0.18.17",
     "@atproto/common": "0.5.10",
     "@atproto/lex": "0.0.13",
     "@atproto/oauth-client-node": "^0.3.15",
-    "@atproto/syntax": "0.4.3",
     "@deno/doc": "jsr:^0.189.1",
     "@floating-ui/vue": "1.1.10",
     "@iconify-json/carbon": "1.2.18",
@@ -58,16 +64,15 @@
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "0.13.0",
     "@nuxt/scripts": "0.13.2",
-    "@nuxt/test-utils": "https://pkg.pr.new/@nuxt/test-utils@1499a48",
+    "@nuxt/test-utils": "4.0.0",
     "@nuxtjs/color-mode": "4.0.0",
     "@nuxtjs/html-validator": "2.1.0",
-    "@nuxtjs/i18n": "10.2.1",
+    "@nuxtjs/i18n": "10.2.3",
     "@shikijs/langs": "3.21.0",
     "@shikijs/themes": "3.21.0",
     "@unocss/nuxt": "66.6.0",
     "@unocss/preset-wind4": "66.6.0",
     "@upstash/redis": "1.36.1",
-    "@vercel/kv": "3.0.0",
     "@vite-pwa/assets-generator": "1.0.2",
     "@vite-pwa/nuxt": "1.1.0",
     "@voidzero-dev/vite-plus-core": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
@@ -75,14 +80,18 @@
     "@vueuse/integrations": "14.2.0",
     "@vueuse/nuxt": "14.2.0",
     "@vueuse/router": "^14.2.0",
+    "@vueuse/shared": "14.2.0",
+    "algoliasearch": "5.48.0",
     "defu": "6.1.4",
     "fast-npm-meta": "1.0.0",
     "focus-trap": "^7.8.0",
+    "gray-matter": "4.0.3",
     "marked": "17.0.1",
     "module-replacements": "2.11.0",
-    "nuxt": "4.3.0",
+    "nuxt": "4.3.1",
     "nuxt-og-image": "5.1.13",
     "ofetch": "1.5.1",
+    "ohash": "2.0.11",
     "perfect-debounce": "2.1.0",
     "sanitize-html": "2.17.0",
     "semver": "7.7.3",
@@ -100,7 +109,7 @@
     "vite-plugin-pwa": "1.2.0",
     "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
     "vue": "3.5.27",
-    "vue-data-ui": "3.14.7"
+    "vue-data-ui": "3.14.10"
   },
   "devDependencies": {
     "@e18e/eslint-plugin": "0.1.4",
@@ -115,8 +124,11 @@
     "@vitest/coverage-v8": "4.0.18",
     "@vue/test-utils": "2.4.6",
     "axe-core": "4.11.1",
+    "defu": "6.1.4",
+    "eslint-plugin-regexp": "3.0.0",
     "fast-check": "4.5.3",
     "h3": "1.15.5",
+    "h3-next": "npm:h3@2.0.1-rc.11",
     "knip": "5.83.0",
     "lint-staged": "16.2.7",
     "oxfmt": "0.27.0",
@@ -130,19 +142,25 @@
     "vue-tsc": "3.2.4"
   },
   "engines": {
-    "node": ">=24"
+    "node": "24"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "i18n/locales/*": [
-      "pnpm build:lunaria",
+      "node ./lunaria/lunaria.ts",
       "pnpm oxfmt lunaria/files/",
-      "git add lunaria/files/"
+      "git add lunaria/files/",
+      "node scripts/generate-i18n-schema.ts",
+      "pnpm oxfmt i18n/schema.json",
+      "git add i18n/schema.json"
     ],
     "*.{js,ts,mjs,cjs,vue}": [
       "pnpm oxlint --fix"
+    ],
+    "*.vue": [
+      "pnpm lint:css"
     ],
     "*.{js,ts,mjs,cjs,vue,json,yml,md,html,css}": [
       "pnpm oxfmt"

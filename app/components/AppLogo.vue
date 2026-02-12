@@ -24,6 +24,7 @@ defineProps<{
       font-size="420"
       font-weight="500"
       text-anchor="middle"
+      style="user-select: none"
     >
       <tspan>/</tspan>
     </text>

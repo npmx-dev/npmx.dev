@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { TocItem } from '#shared/types/readme'
 import { onClickOutside, useEventListener } from '@vueuse/core'
-import { scrollToAnchor } from '~/utils/scrollToAnchor'
 
 const props = defineProps<{
   toc: TocItem[]
   activeId?: string | null
-  scrollToHeading?: (id: string) => void
 }>()
 
 interface TocNode extends TocItem {
@@ -79,8 +77,8 @@ function toggle() {
   if (isOpen.value) {
     close()
   } else {
-    if (triggerRef.value) {
-      const rect = triggerRef.value.getBoundingClientRect()
+    const rect = triggerRef.value?.getBoundingClientRect()
+    if (rect) {
       dropdownPosition.value = {
         top: rect.bottom + 4,
         right: rect.right,
@@ -98,8 +96,7 @@ function close() {
   highlightedIndex.value = -1
 }
 
-function select(id: string) {
-  scrollToAnchor(id, { scrollFn: props.scrollToHeading })
+function select() {
   close()
   triggerRef.value?.focus()
 }
@@ -132,7 +129,7 @@ function handleKeydown(event: KeyboardEvent) {
       event.preventDefault()
       const item = props.toc[highlightedIndex.value]
       if (item) {
-        select(item.id)
+        select()
       }
       break
     }
@@ -145,18 +142,19 @@ function handleKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <button
+  <ButtonBase
     ref="triggerRef"
     type="button"
-    class="flex items-center gap-1.5 px-2 py-2 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover focus-visible:outline-accent/70 hover:text-fg"
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.readme.toc_title')"
     :aria-controls="listboxId"
     @click="toggle"
     @keydown="handleKeydown"
+    classicon="i-carbon:list"
+    class="px-2.5"
+    block
   >
-    <span class="i-carbon:list w-3.5 h-3.5" aria-hidden="true" />
     <span
       class="i-carbon:chevron-down w-3 h-3"
       :class="[
@@ -165,7 +163,7 @@ function handleKeydown(event: KeyboardEvent) {
       ]"
       aria-hidden="true"
     />
-  </button>
+  </ButtonBase>
 
   <Teleport to="body">
     <Transition
@@ -189,8 +187,9 @@ function handleKeydown(event: KeyboardEvent) {
         class="fixed bg-bg-subtle border border-border rounded-md shadow-lg z-50 max-h-80 overflow-y-auto w-56 overscroll-contain"
       >
         <template v-for="node in tocTree" :key="node.id">
-          <div
+          <NuxtLink
             :id="`${listboxId}-${node.id}`"
+            :to="`#${node.id}`"
             role="option"
             :aria-selected="activeId === node.id"
             class="flex items-center gap-2 px-3 py-1.5 text-sm cursor-pointer transition-colors duration-150"
@@ -199,15 +198,16 @@ function handleKeydown(event: KeyboardEvent) {
               highlightedIndex === getIndex(node.id) ? 'bg-bg-elevated' : 'hover:bg-bg-elevated',
             ]"
             dir="auto"
-            @click="select(node.id)"
+            @click="select()"
             @mouseenter="highlightedIndex = getIndex(node.id)"
           >
             <span class="truncate">{{ node.text }}</span>
-          </div>
+          </NuxtLink>
 
           <template v-for="child in node.children" :key="child.id">
-            <div
+            <NuxtLink
               :id="`${listboxId}-${child.id}`"
+              :to="`#${child.id}`"
               role="option"
               :aria-selected="activeId === child.id"
               class="flex items-center gap-2 px-3 py-1.5 ps-6 text-sm cursor-pointer transition-colors duration-150"
@@ -216,15 +216,16 @@ function handleKeydown(event: KeyboardEvent) {
                 highlightedIndex === getIndex(child.id) ? 'bg-bg-elevated' : 'hover:bg-bg-elevated',
               ]"
               dir="auto"
-              @click="select(child.id)"
+              @click="select()"
               @mouseenter="highlightedIndex = getIndex(child.id)"
             >
               <span class="truncate">{{ child.text }}</span>
-            </div>
+            </NuxtLink>
 
-            <div
+            <NuxtLink
               v-for="grandchild in child.children"
               :id="`${listboxId}-${grandchild.id}`"
+              :to="`#${grandchild.id}`"
               :key="grandchild.id"
               role="option"
               :aria-selected="activeId === grandchild.id"
@@ -236,11 +237,11 @@ function handleKeydown(event: KeyboardEvent) {
                   : 'hover:bg-bg-elevated',
               ]"
               dir="auto"
-              @click="select(grandchild.id)"
+              @click="select()"
               @mouseenter="highlightedIndex = getIndex(grandchild.id)"
             >
               <span class="truncate">{{ grandchild.text }}</span>
-            </div>
+            </NuxtLink>
           </template>
         </template>
       </div>

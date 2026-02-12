@@ -42,7 +42,7 @@ export function parseSearchOperators(input: string): ParsedSearchOperators {
 
   // Regex to match operators: name:value, desc:value, description:value, kw:value, keyword:value
   // Value continues until whitespace or next operator
-  const operatorRegex = /\b(name|desc|description|kw|keyword):([^\s]+)/gi
+  const operatorRegex = /\b(name|desc|description|kw|keyword):(\S+)/gi
 
   let remaining = input
   let match
@@ -87,6 +87,7 @@ export function hasSearchOperators(parsed: ParsedSearchOperators): boolean {
 
 interface UseStructuredFiltersOptions {
   packages: Ref<NpmSearchResult[]>
+  searchQueryModel?: Ref<string>
   initialFilters?: Partial<StructuredFilters>
   initialSort?: SortOption
 }
@@ -114,7 +115,7 @@ function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolea
 export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   const route = useRoute()
   const router = useRouter()
-  const { packages, initialFilters, initialSort } = options
+  const { packages, initialFilters, initialSort, searchQueryModel } = options
   const { t } = useI18n()
 
   const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
@@ -306,28 +307,28 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   })
 
   // i18n key mappings for filter chip values
-  const downloadRangeKeys: Record<DownloadRange, string> = {
-    'any': 'filters.download_range.any',
-    'lt100': 'filters.download_range.lt100',
-    '100-1k': 'filters.download_range.100_1k',
-    '1k-10k': 'filters.download_range.1k_10k',
-    '10k-100k': 'filters.download_range.10k_100k',
-    'gt100k': 'filters.download_range.gt100k',
-  }
+  const downloadRangeLabels = computed<Record<DownloadRange, string>>(() => ({
+    'any': t('filters.download_range.any'),
+    'lt100': t('filters.download_range.lt100'),
+    '100-1k': t('filters.download_range.100_1k'),
+    '1k-10k': t('filters.download_range.1k_10k'),
+    '10k-100k': t('filters.download_range.10k_100k'),
+    'gt100k': t('filters.download_range.gt100k'),
+  }))
 
-  const securityKeys: Record<SecurityFilter, string> = {
-    all: 'filters.security_options.all',
-    secure: 'filters.security_options.secure',
-    warnings: 'filters.security_options.insecure',
-  }
+  const securityLabels = computed<Record<SecurityFilter, string>>(() => ({
+    all: t('filters.security_options.all'),
+    secure: t('filters.security_options.secure'),
+    warnings: t('filters.security_options.insecure'),
+  }))
 
-  const updatedWithinKeys: Record<UpdatedWithin, string> = {
-    any: 'filters.updated.any',
-    week: 'filters.updated.week',
-    month: 'filters.updated.month',
-    quarter: 'filters.updated.quarter',
-    year: 'filters.updated.year',
-  }
+  const updatedWithinLabels = computed<Record<UpdatedWithin, string>>(() => ({
+    any: t('filters.updated.any'),
+    week: t('filters.updated.week'),
+    month: t('filters.updated.month'),
+    quarter: t('filters.updated.quarter'),
+    year: t('filters.updated.year'),
+  }))
 
   // Active filter chips for display
   const activeFilters = computed<FilterChip[]>(() => {
@@ -347,7 +348,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'downloadRange',
         type: 'downloadRange',
         label: t('filters.chips.downloads'),
-        value: t(downloadRangeKeys[filters.value.downloadRange]),
+        value: downloadRangeLabels.value[filters.value.downloadRange],
       })
     }
 
@@ -365,7 +366,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'security',
         type: 'security',
         label: t('filters.chips.security'),
-        value: t(securityKeys[filters.value.security]),
+        value: securityLabels.value[filters.value.security],
       })
     }
 
@@ -374,7 +375,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         id: 'updatedWithin',
         type: 'updatedWithin',
         label: t('filters.chips.updated'),
-        value: t(updatedWithinKeys[filters.value.updatedWithin]),
+        value: updatedWithinLabels.value[filters.value.updatedWithin],
       })
     }
 
@@ -404,6 +405,8 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         ? `${searchQuery.value.trim()} keyword:${keyword}`
         : `keyword:${keyword}`
       router.replace({ query: { ...route.query, q: newQ } })
+
+      if (searchQueryModel) searchQueryModel.value = newQ
     }
   }
 
@@ -411,6 +414,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
     filters.value.keywords = filters.value.keywords.filter(k => k !== keyword)
     const newQ = searchQuery.value.replace(new RegExp(`keyword:${keyword}($| )`, 'g'), '').trim()
     router.replace({ query: { ...route.query, q: newQ || undefined } })
+    if (searchQueryModel) searchQueryModel.value = newQ
   }
 
   function toggleKeyword(keyword: string) {

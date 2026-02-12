@@ -2,6 +2,8 @@
 const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disconnect } =
   useConnector()
 
+const { settings } = useSettings()
+
 const tokenInput = shallowRef('')
 const portInput = shallowRef('31415')
 const { copied, copy } = useClipboard({ copiedDuring: 2000 })
@@ -60,6 +62,16 @@ function handleDisconnect() {
           </p>
         </div>
       </div>
+
+      <!-- Connector preferences -->
+      <div class="flex flex-col gap-2">
+        <SettingsToggle
+          :label="$t('connector.modal.auto_open_url')"
+          v-model="settings.connector.autoOpenURL"
+        />
+      </div>
+
+      <div class="border-t border-border my-3" />
 
       <!-- Operations Queue -->
       <OrgOperationsQueue />
@@ -161,21 +173,20 @@ function handleDisconnect() {
           >
             {{ $t('connector.modal.token_label') }}
           </label>
-          <input
+          <InputBase
             id="connector-token"
             v-model="tokenInput"
             type="password"
             name="connector-token"
             :placeholder="$t('connector.modal.token_placeholder')"
-            v-bind="noCorrect"
-            class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg placeholder:text-fg-subtle transition-colors duration-200 hover:border-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
+            no-correct
+            class="w-full"
+            size="medium"
           />
         </div>
 
         <details class="text-sm">
-          <summary
-            class="text-fg-subtle cursor-pointer hover:text-fg-muted transition-colors duration-200"
-          >
+          <summary class="text-fg-subtle hover:text-fg-muted transition-colors duration-200">
             {{ $t('connector.modal.advanced') }}
           </summary>
           <div class="mt-3">
@@ -185,15 +196,24 @@ function handleDisconnect() {
             >
               {{ $t('connector.modal.port_label') }}
             </label>
-            <input
+            <InputBase
               id="connector-port"
               v-model="portInput"
               type="text"
               name="connector-port"
               inputmode="numeric"
               autocomplete="off"
-              class="w-full px-3 py-2 font-mono text-sm bg-bg-subtle border border-border rounded-md text-fg transition-colors duration-200 hover:border-fg-subtle focus:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:outline-accent/70"
+              class="w-full"
+              size="medium"
             />
+
+            <div class="border-t border-border my-3" />
+            <div class="flex flex-col gap-2">
+              <SettingsToggle
+                :label="$t('connector.modal.auto_open_url')"
+                v-model="settings.connector.autoOpenURL"
+              />
+            </div>
           </div>
         </details>
       </div>
@@ -220,13 +240,14 @@ function handleDisconnect() {
         </p>
       </div>
 
-      <button
+      <ButtonBase
         type="submit"
+        variant="primary"
         :disabled="!tokenInput.trim() || isConnecting"
-        class="w-full px-4 py-2 font-mono text-sm text-bg bg-fg rounded-md transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+        class="w-full"
       >
         {{ isConnecting ? $t('connector.modal.connecting') : $t('connector.modal.connect') }}
-      </button>
+      </ButtonBase>
     </form>
   </Modal>
 </template>

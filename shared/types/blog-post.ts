@@ -1,20 +1,15 @@
-import type {
-  AppBskyActorDefs,
-  AppBskyRichtextFacet,
-  AppBskyEmbedImages,
-  AppBskyEmbedExternal,
-} from '@atproto/api'
+import type * as app from '#shared/types/lexicons/app'
 
 export type CommentEmbed =
-  | { type: 'images'; images: AppBskyEmbedImages.ViewImage[] }
-  | { type: 'external'; external: AppBskyEmbedExternal.ViewExternal }
+  | { type: 'images'; images: app.bsky.embed.images.ViewImage[] }
+  | { type: 'external'; external: app.bsky.embed.external.ViewExternal }
 
 export interface Comment {
   uri: string
   cid: string
-  author: Pick<AppBskyActorDefs.ProfileViewBasic, 'did' | 'handle' | 'displayName' | 'avatar'>
+  author: Pick<app.bsky.actor.defs.ProfileViewBasic, 'did' | 'handle' | 'displayName' | 'avatar'>
   text: string
-  facets?: AppBskyRichtextFacet.Main[]
+  facets?: app.bsky.richtext.facet.Main[]
   embed?: CommentEmbed
   createdAt: string
   likeCount: number

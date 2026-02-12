@@ -39,6 +39,10 @@ test-results/
 
 # generated files
 shared/types/lexicons
+file-tree-sprite.svg
+
+**/__screenshots__/**
 
 # output
 .vercel
+.nvmrc

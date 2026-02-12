@@ -33,6 +33,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Available commands](#available-commands)
   - [Project structure](#project-structure)
   - [Local connector CLI](#local-connector-cli)
+  - [Mock connector (for local development)](#mock-connector-for-local-development)
 - [Code style](#code-style)
   - [TypeScript](#typescript)
   - [Server API patterns](#server-api-patterns)
@@ -43,6 +44,7 @@ This focus helps guide our project decisions as a community and what we choose t
 - [RTL Support](#rtl-support)
 - [Localization (i18n)](#localization-i18n)
   - [Approach](#approach)
+  - [i18n commands](#i18n-commands)
   - [Adding a new locale](#adding-a-new-locale)
   - [Update translation](#update-translation)
   - [Adding translations](#adding-translations)
@@ -52,6 +54,8 @@ This focus helps guide our project decisions as a community and what we choose t
 - [Testing](#testing)
   - [Unit tests](#unit-tests)
   - [Component accessibility tests](#component-accessibility-tests)
+  - [Lighthouse accessibility tests](#lighthouse-accessibility-tests)
+  - [Lighthouse performance tests](#lighthouse-performance-tests)
   - [End to end tests](#end-to-end-tests)
   - [Test fixtures (mocking external APIs)](#test-fixtures-mocking-external-apis)
 - [Submitting changes](#submitting-changes)
@@ -101,6 +105,10 @@ pnpm dev              # Start development server
 pnpm build            # Production build
 pnpm preview          # Preview production build
 
+# Connector
+pnpm npmx-connector   # Start the real connector (requires npm login)
+pnpm mock-connector   # Start the mock connector (no npm login needed)
+
 # Code Quality
 pnpm lint             # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
@@ -111,6 +119,8 @@ pnpm test             # Run all Vitest tests
 pnpm test:unit        # Unit tests only
 pnpm test:nuxt        # Nuxt component tests
 pnpm test:browser     # Playwright E2E tests
+pnpm test:a11y        # Lighthouse accessibility audits
+pnpm test:perf        # Lighthouse performance audits (CLS)
 ```
 
 ### Project structure
@@ -151,6 +161,36 @@ pnpm npmx-connector
 ```
 
 The connector will check your npm authentication, generate a connection token, and listen for requests from npmx.dev.
+
+### Mock connector (for local development)
+
+If you're working on admin features (org management, package access controls, operations queue) and don't want to use your real npm account, you can run the mock connector instead:
+
+```bash
+pnpm mock-connector
+```
+
+This starts a mock connector server pre-populated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
+
+The mock connector prints a connection URL to the terminal, just like the real connector. Click it (or paste the token manually) to connect the UI.
+
+**Options:**
+
+```bash
+pnpm mock-connector                # default: port 31415, user "mock-user", sample data
+pnpm mock-connector --port 9999    # custom port
+pnpm mock-connector --user alice   # custom username
+pnpm mock-connector --empty        # start with no pre-populated data
+```
+
+**Default sample data:**
+
+- **@nuxt**: 4 members (mock-user, danielroe, pi0, antfu), 3 teams (core, docs, triage)
+- **@unjs**: 2 members (mock-user, pi0), 1 team (maintainers)
+- **Packages**: @nuxt/kit, @nuxt/schema, @unjs/nitro with team-based access controls
+
+> [!TIP]
+> Run `pnpm dev` in a separate terminal to start the Nuxt dev server, then click the connection URL from the mock connector to connect.
 
 ## Code style
 
@@ -376,7 +416,18 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 - All user-facing strings should use translation keys via `$t()` in templates and script
 - Translation files live in [`i18n/locales/`](i18n/locales) (e.g., `en-US.json`)
 - We use the `no_prefix` strategy (no `/en-US/` or `/fr-FR/` in URLs)
-- Locale preference is stored in cookies and respected on subsequent visits
+- Locale preference is stored in `localStorage` and respected on subsequent visits
+
+### i18n commands
+
+The following scripts help manage translation files. `en.json` is the reference locale.
+
+| Command                        | Description                                                                                                                                                                             |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm i18n:check [locale]`     | Compares `en.json` with other locale files. Shows missing and extra keys. Optionally filter output by locale (e.g. `pnpm i18n:check ja-JP`).                                            |
+| `pnpm i18n:check:fix [locale]` | Same as check, but adds missing keys to other locales with English placeholders.                                                                                                        |
+| `pnpm i18n:report`             | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
+| `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
 
 ### Adding a new locale
 
@@ -421,25 +472,7 @@ Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essential
 We track the current progress of translations with [Lunaria](https://lunaria.dev/) on this site: https://i18n.npmx.dev/
 If you see any outdated translations in your language, feel free to update the keys to match the English version.
 
-In order to make sure you have everything up-to-date, you can run:
-
-```bash
-pnpm i18n:check <country-code>
-```
-
-For example to check if all Japanese translation keys are up-to-date, run:
-
-```bash
-pnpm i18n:check ja-JP
-```
-
-To automatically add missing keys with English placeholders, use `--fix`:
-
-```bash
-pnpm i18n:check:fix fr-FR
-```
-
-This will add missing keys with `"EN TEXT TO REPLACE: {english text}"` as placeholder values, making it easier to see what needs translation.
+Use `pnpm i18n:check` and `pnpm i18n:check:fix` to verify and fix your locale (see [i18n commands](#i18n-commands) above for details).
 
 #### Country variants (advanced)
 
@@ -527,6 +560,32 @@ See how `es`, `es-ES`, and `es-419` are configured in [config/i18n.ts](./config/
 - Use `common.*` for shared strings (loading, retry, close, etc.)
 - Use component-specific prefixes: `package.card.*`, `settings.*`, `nav.*`
 - Do not use dashes (`-`) in translation keys; always use underscore (`_`): e.g., `privacy_policy` instead of `privacy-policy`
+- **Always use static string literals as translation keys.** Our i18n scripts (`pnpm i18n:report`) rely on static analysis to detect unused and missing keys. Dynamic keys cannot be analyzed and will be flagged as errors.
+
+  **Bad:**
+
+  ```vue
+  <!-- Template literal -->
+  <p>{{ $t(`package.tabs.${tab}`) }}</p>
+
+  <!-- Variable -->
+  <p>{{ $t(myKey) }}</p>
+  ```
+
+  **Good:**
+
+  ```typescript
+  const { t } = useI18n()
+
+  const tabLabels = computed(() => ({
+    readme: t('package.tabs.readme'),
+    versions: t('package.tabs.versions'),
+  }))
+  ```
+
+  ```vue
+  <p>{{ tabLabels[tab] }}</p>
+  ```
 
 ### Using i18n-ally (recommended)
 
@@ -598,6 +657,60 @@ A coverage test in `test/unit/a11y-component-coverage.spec.ts` ensures all compo
 > [!IMPORTANT]
 > Just because axe-core doesn't find any obvious issues, it does not mean a component is accessible. Please do additional checks and use best practices.
 
+### Lighthouse accessibility tests
+
+In addition to component-level axe audits, the project runs full-page accessibility audits using [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci). These test the rendered pages in both light and dark mode against Lighthouse's accessibility category, requiring a perfect score.
+
+#### How it works
+
+1. The project is built in test mode (`pnpm build:test`), which activates server-side fixture mocking
+2. Lighthouse CI starts a preview server and audits three URLs: `/`, `/search?q=nuxt`, and `/package/nuxt`
+3. A Puppeteer setup script (`lighthouse-setup.cjs`) runs before each audit to set the color mode and intercept client-side API requests using the same fixtures as the E2E tests
+
+#### Running locally
+
+```bash
+# Build + run both light and dark audits
+pnpm test:a11y
+
+# Or against an existing test build
+pnpm test:a11y:prebuilt
+
+# Or run a single color mode manually
+pnpm build:test
+LIGHTHOUSE_COLOR_MODE=dark ./scripts/lighthouse.sh
+```
+
+This requires Chrome or Chromium to be installed. The script will auto-detect common installation paths. Results are printed to the terminal and saved in `.lighthouseci/`.
+
+#### Configuration
+
+| File                    | Purpose                                                   |
+| ----------------------- | --------------------------------------------------------- |
+| `.lighthouserc.cjs`     | Lighthouse CI config (URLs, assertions, Chrome path)      |
+| `lighthouse-setup.cjs`  | Puppeteer script for color mode + client-side API mocking |
+| `scripts/lighthouse.sh` | Shell wrapper that runs the audit for a given color mode  |
+
+### Lighthouse performance tests
+
+The project also runs Lighthouse performance audits to enforce zero Cumulative Layout Shift (CLS). These run separately from the accessibility audits and test the same set of URLs.
+
+#### How it works
+
+The same `.lighthouserc.cjs` config is shared between accessibility and performance audits. When the `LH_PERF` environment variable is set, the config switches from the `accessibility` category to the `performance` category and asserts that CLS is exactly 0.
+
+#### Running locally
+
+```bash
+# Build + run performance audit
+pnpm test:perf
+
+# Or against an existing test build
+pnpm test:perf:prebuilt
+```
+
+Unlike the accessibility audits, performance audits do not run in separate light/dark modes.
+
 ### End to end tests
 
 Write end-to-end tests using Playwright:
@@ -619,10 +732,12 @@ E2E tests use a fixture system to mock external API requests, ensuring tests are
 - Serves pre-recorded fixture data from `test/fixtures/`
 - Enabled via `NUXT_TEST_FIXTURES=true` or Nuxt test mode
 
-**Client-side mocking** (`test/e2e/test-utils.ts`):
+**Client-side mocking** (`test/fixtures/mock-routes.cjs`):
 
-- Uses Playwright's route interception to mock browser requests
-- All test files import from `./test-utils` instead of `@nuxt/test-utils/playwright`
+- Shared URL matching and response generation logic used by both Playwright E2E tests and Lighthouse CI
+- Playwright tests (`test/e2e/test-utils.ts`) use this via `page.route()` interception
+- Lighthouse tests (`lighthouse-setup.cjs`) use this via Puppeteer request interception
+- All E2E test files import from `./test-utils` instead of `@nuxt/test-utils/playwright`
 - Throws a clear error if an unmocked external request is detected
 
 #### Fixture files
@@ -670,7 +785,75 @@ URL:  https://registry.npmjs.org/some-package
 You need to either:
 
 1. Add a fixture file for that package/endpoint
-2. Update the mock handlers in `test/e2e/test-utils.ts` (client) or `modules/runtime/server/cache.ts` (server)
+2. Update the mock handlers in `test/fixtures/mock-routes.cjs` (client) or `modules/runtime/server/cache.ts` (server)
+
+### Testing connector features
+
+Features that require authentication through the local connector (org management, package collaborators, operations queue) are tested using a mock connector server.
+
+#### Architecture
+
+The mock connector infrastructure is shared between the CLI, E2E tests, and Vitest component tests:
+
+```
+cli/src/
+├── types.ts           # ConnectorEndpoints contract (shared by real + mock)
+├── mock-state.ts      # MockConnectorStateManager (canonical source)
+├── mock-app.ts        # H3 mock app + MockConnectorServer class
+└── mock-server.ts     # CLI entry point (pnpm mock-connector)
+
+test/test-utils/       # Re-exports from cli/src/ for test convenience
+test/e2e/helpers/      # E2E-specific wrappers (fixtures, global setup)
+```
+
+Both the real server (`cli/src/server.ts`) and the mock server (`cli/src/mock-app.ts`) conform to the `ConnectorEndpoints` interface defined in `cli/src/types.ts`. This ensures the API contract is enforced by TypeScript. When adding a new endpoint, update `ConnectorEndpoints` first, then implement it in both servers.
+
+#### Vitest component tests (`test/nuxt/`)
+
+- Mock the `useConnector` composable with reactive state
+- Use `document.body` queries for components using Teleport
+- See `test/nuxt/components/HeaderConnectorModal.spec.ts` for an example
+
+```typescript
+// Create mock state
+const mockState = ref({ connected: false, npmUser: null, ... })
+
+// Mock the composable
+vi.mock('~/composables/useConnector', () => ({
+  useConnector: () => ({
+    isConnected: computed(() => mockState.value.connected),
+    // ... other properties
+  }),
+}))
+```
+
+#### Playwright E2E tests (`test/e2e/`)
+
+- A mock HTTP server starts automatically via Playwright's global setup
+- Use the `mockConnector` fixture to set up test data and the `gotoConnected` helper to navigate with authentication
+
+```typescript
+test('shows org members', async ({ page, gotoConnected, mockConnector }) => {
+  // Set up test data
+  await mockConnector.setOrgData('@testorg', {
+    users: { testuser: 'owner', member1: 'admin' },
+  })
+
+  // Navigate with connector authentication
+  await gotoConnected('/@testorg')
+
+  // Test assertions
+  await expect(page.getByRole('link', { name: '@testuser' })).toBeVisible()
+})
+```
+
+The mock connector supports test endpoints for state manipulation:
+
+- `/__test__/reset` - Reset all mock state
+- `/__test__/org` - Set org users, teams, and team members
+- `/__test__/user-orgs` - Set user's organizations
+- `/__test__/user-packages` - Set user's packages
+- `/__test__/package` - Set package collaborators
 
 ## Submitting changes
 
@@ -709,8 +892,10 @@ Format: `type(scope): description`
 - `fix(i18n): update French translations`
 - `chore(deps): update vite to v6`
 
+Where front end changes are made, please include before and after screenshots in your pull request description.
+
 > [!NOTE]
-> The subject must start with a lowercase letter. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
+> Use lowercase letters in your pull request title. Individual commit messages within your PR don't need to follow this format since they'll be squashed.
 
 ### PR descriptions
 

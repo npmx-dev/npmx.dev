@@ -33,7 +33,7 @@ describe('PackageVersions', () => {
   })
 
   describe('basic rendering', () => {
-    it('renders the Versions heading', async () => {
+    it('renders the Versions section', async () => {
       const component = await mountSuspended(PackageVersions, {
         props: {
           packageName: 'test-package',
@@ -45,7 +45,7 @@ describe('PackageVersions', () => {
         },
       })
 
-      expect(component.find('#versions-heading').text()).toBe('Versions')
+      expect(component.find('#versions').exists()).toBe(true)
     })
 
     it('does not render when there are no dist-tags', async () => {
@@ -215,7 +215,7 @@ describe('PackageVersions', () => {
         .findAll('a')
         .filter(a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank')
       expect(versionLinks.length).toBeGreaterThan(0)
-      expect(versionLinks[0]?.classes()).toContain('text-red-400')
+      expect(versionLinks[0]?.classes()).toContain('text-red-800')
     })
 
     it('shows deprecated version in title attribute', async () => {

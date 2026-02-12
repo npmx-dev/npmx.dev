@@ -1,20 +1,33 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { Placement } from '@floating-ui/vue'
+import type { Placement, Strategy } from '@floating-ui/vue'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 
-const props = defineProps<{
-  /** Tooltip text (optional when using content slot) */
-  text?: string
-  /** Position: 'top' | 'bottom' | 'left' | 'right' */
-  position?: 'top' | 'bottom' | 'left' | 'right'
-  /** is tooltip visible */
-  isVisible: boolean
-  /** Allow pointer events on tooltip (for interactive content like links) */
-  interactive?: boolean
-  /** attributes for tooltip element */
-  tooltipAttr?: HTMLAttributes
-}>()
+const props = withDefaults(
+  defineProps<{
+    /** Tooltip text (optional when using content slot) */
+    text?: string
+    /** Position: 'top' | 'bottom' | 'left' | 'right' */
+    position?: 'top' | 'bottom' | 'left' | 'right'
+    /** is tooltip visible */
+    isVisible: boolean
+    /** Allow pointer events on tooltip (for interactive content like links) */
+    interactive?: boolean
+    /** attributes for tooltip element */
+    tooltipAttr?: HTMLAttributes
+    /** Teleport target for the tooltip content (defaults to 'body') */
+    to?: string | HTMLElement
+    /** Offset distance in pixels (default: 4) */
+    offset?: number
+    /** Strategy for the tooltip - prefer fixed for sticky containers (defaults to 'absolute') */
+    strategy?: Strategy
+  }>(),
+  {
+    to: 'body',
+    offset: 4,
+    strategy: 'absolute',
+  },
+)
 
 const triggerRef = useTemplateRef('triggerRef')
 const tooltipRef = useTemplateRef('tooltipRef')
@@ -24,7 +37,8 @@ const placement = computed<Placement>(() => props.position || 'bottom')
 const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
   placement,
   whileElementsMounted: autoUpdate,
-  middleware: [offset(4), flip(), shift({ padding: 8 })],
+  strategy: props.strategy,
+  middleware: [offset(props.offset), flip(), shift({ padding: 8 })],
 })
 </script>
 
@@ -32,7 +46,7 @@ const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
   <div ref="triggerRef" class="inline-flex">
     <slot />
 
-    <Teleport to="body">
+    <Teleport :to="props.to">
       <Transition
         enter-active-class="transition-opacity duration-150 motion-reduce:transition-none"
         leave-active-class="transition-opacity duration-100 motion-reduce:transition-none"

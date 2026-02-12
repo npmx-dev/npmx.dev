@@ -36,12 +36,12 @@ const isChecking = computed(() => {
 })
 
 const mergedError = computed(() => {
-  return (
-    publishError.value ??
-    (checkError.value instanceof Error
-      ? checkError.value.message
-      : $t('claim.modal.failed_to_check'))
-  )
+  return checkResult.value !== null
+    ? null
+    : (publishError.value ??
+        (checkError.value instanceof Error
+          ? checkError.value.message
+          : $t('claim.modal.failed_to_check')))
 })
 
 const connectorModal = useModal('connector-modal')
@@ -344,7 +344,7 @@ const previewPackageJson = computed(() => {
           <!-- Expandable package.json preview -->
           <details class="border border-border rounded-md overflow-hidden">
             <summary
-              class="px-3 py-2 text-sm text-fg-muted bg-bg-subtle cursor-pointer hover:text-fg transition-colors select-none"
+              class="px-3 py-2 text-sm text-fg-muted bg-bg-subtle hover:text-fg transition-colors select-none"
             >
               {{ $t('claim.modal.preview_json') }}
             </summary>

@@ -1,18 +1,134 @@
 <script setup lang="ts">
-defineProps<{
-  label?: string
-  description?: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    label: string
+    description?: string
+    justify?: 'between' | 'start'
+    reverseOrder?: boolean
+  }>(),
+  {
+    justify: 'between',
+    reverseOrder: false,
+  },
+)
 </script>
 
 <template>
-  <div class="w-full flex items-center justify-between gap-4">
-    <span v-if="label" class="text-sm text-fg font-medium text-start">
-      {{ label }}
-    </span>
-    <SkeletonBlock class="h-6 w-11 shrink-0 rounded-full" />
+  <div
+    class="grid items-center gap-4 py-1 -my-1 grid-cols-[auto_1fr_auto]"
+    :class="[justify === 'start' ? 'justify-start' : '']"
+    :style="
+      props.reverseOrder
+        ? 'grid-template-areas: \'toggle . label-text\''
+        : 'grid-template-areas: \'label-text . toggle\''
+    "
+  >
+    <template v-if="props.reverseOrder">
+      <SkeletonBlock class="h-6 w-11 shrink-0 rounded-full" style="grid-area: toggle" />
+      <span
+        v-if="label"
+        class="text-sm text-fg font-medium text-start"
+        style="grid-area: label-text"
+      >
+        {{ label }}
+      </span>
+    </template>
+    <template v-else>
+      <span
+        v-if="label"
+        class="text-sm text-fg font-medium text-start"
+        style="grid-area: label-text"
+      >
+        {{ label }}
+      </span>
+      <SkeletonBlock
+        class="h-6 w-11 shrink-0 rounded-full"
+        style="grid-area: toggle; justify-self: end"
+      />
+    </template>
   </div>
-  <p v-if="description" class="text-sm text-fg-muted">
+  <p v-if="description" class="text-sm text-fg-muted mt-2">
     {{ description }}
   </p>
 </template>
+
+<style scoped>
+/* Thumb position: logical property for RTL support */
+.toggle::before {
+  inset-inline-start: 1px;
+}
+
+/* Track transition */
+.toggle {
+  transition:
+    background-color 200ms ease-in-out,
+    border-color 100ms ease-in-out;
+}
+
+.toggle::before {
+  transition:
+    background-color 200ms ease-in-out,
+    translate 200ms ease-in-out;
+}
+
+/* Hover states */
+.toggle:hover:not(:checked) {
+  background: var(--fg-muted);
+}
+
+.toggle:checked:hover {
+  background: var(--fg-muted);
+  border-color: var(--fg-muted);
+}
+
+/* RTL-aware checked thumb position */
+:dir(ltr) .toggle:checked::before {
+  translate: 20px;
+}
+
+:dir(rtl) .toggle:checked::before {
+  translate: -20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .toggle::before {
+    transition: none;
+  }
+}
+
+/* Support forced colors */
+@media (forced-colors: active) {
+  label > span {
+    background: Canvas;
+    color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  label:has(.toggle:checked) > span {
+    background: Highlight;
+    color: Canvas;
+  }
+
+  .toggle::before {
+    forced-color-adjust: none;
+    background-color: Highlight;
+  }
+
+  .toggle,
+  .toggle:hover {
+    background: Canvas;
+    border-color: CanvasText;
+  }
+
+  .toggle:checked,
+  .toggle:checked:hover {
+    background: Highlight;
+    border-color: CanvasText;
+  }
+
+  .toggle:checked::before {
+    background: Canvas;
+  }
+}
+</style>

@@ -1,16 +1,9 @@
 import * as v from 'valibot'
 import { CACHE_MAX_AGE_ONE_DAY, BLUESKY_API } from '#shared/utils/constants'
 import { AuthorSchema } from '#shared/schemas/blog'
+import { Client } from '@atproto/lex'
 import type { Author, ResolvedAuthor } from '#shared/schemas/blog'
-
-type ProfilesResponse = {
-  profiles: Array<{
-    did: string
-    handle: string
-    displayName?: string
-    avatar?: string
-  }>
-}
+import * as app from '#shared/types/lexicons/app'
 
 export default defineCachedEventHandler(
   async event => {
@@ -45,7 +38,7 @@ export default defineCachedEventHandler(
       return { authors: [] }
     }
 
-    const handles = authors.filter(a => a.blueskyHandle).map(a => a.blueskyHandle as string)
+    const handles = authors.map(a => a.blueskyHandle).filter(v => v != null)
 
     if (handles.length === 0) {
       return {
@@ -53,9 +46,10 @@ export default defineCachedEventHandler(
       }
     }
 
-    const response = await $fetch<ProfilesResponse>(`${BLUESKY_API}app.bsky.actor.getProfiles`, {
-      query: { actors: handles },
-    }).catch(() => ({ profiles: [] }))
+    const client = new Client({ service: BLUESKY_API })
+    const response = await client
+      .call(app.bsky.actor.getProfiles, { actors: handles })
+      .catch(() => ({ profiles: [] }))
 
     const avatarMap = new Map<string, string>()
     for (const profile of response.profiles) {

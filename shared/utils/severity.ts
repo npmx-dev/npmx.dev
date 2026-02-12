@@ -7,10 +7,11 @@ import { SEVERITY_LEVELS } from '../types'
  * Color classes for severity levels (banner style)
  */
 export const SEVERITY_COLORS: Record<OsvSeverityLevel, string> = {
-  critical: 'text-red-500 bg-red-500/10 border-red-500/50',
-  high: 'text-red-400 bg-red-500/10 border-red-500/30',
-  moderate: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
-  low: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
+  critical: 'text-red-700 dark:text-red-500 bg-red-800/10 dark:bg-red-500/10 border-red-500/50',
+  high: 'text-red-800 dark:text-red-400 bg-red-800/10 dark:bg-red-500/10 border-red-500/30',
+  moderate:
+    'text-orange-800 dark:text-orange-400 bg-orange-600/10 dark:bg-orange-500/10 border-orange-500/30',
+  low: 'text-yellow-700 dark:text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
   unknown: 'text-fg-muted bg-bg-subtle border-border',
 }
 
@@ -18,10 +19,10 @@ export const SEVERITY_COLORS: Record<OsvSeverityLevel, string> = {
  * Color classes for inline severity indicators
  */
 export const SEVERITY_TEXT_COLORS: Record<OsvSeverityLevel, string> = {
-  critical: 'text-red-500',
-  high: 'text-orange-500',
-  moderate: 'text-yellow-500',
-  low: 'text-blue-500',
+  critical: 'text-red-700 dark:text-red-500',
+  high: 'text-orange-700 dark:text-orange-500',
+  moderate: 'text-yellow-700 dark:text-yellow-500',
+  low: 'text-blue-700 dark:text-blue-500',
   unknown: 'text-fg-subtle',
 }
 

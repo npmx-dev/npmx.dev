@@ -1,0 +1,50 @@
+{
+  "id": "com.bad-example.identity.resolveMiniDoc",
+  "defs": {
+    "main": {
+      "type": "query",
+      "output": {
+        "schema": {
+          "type": "object",
+          "required": ["did", "handle", "pds", "signing_key"],
+          "properties": {
+            "did": {
+              "type": "string",
+              "format": "did",
+              "description": "DID, bi-directionally verified if a handle was provided in the query."
+            },
+            "pds": {
+              "type": "string",
+              "format": "uri",
+              "description": "The identity's PDS URL"
+            },
+            "handle": {
+              "type": "string",
+              "format": "handle",
+              "description": "The validated handle of the account or `handle.invalid` if the handle\ndid not bi-directionally match the DID document."
+            },
+            "signing_key": {
+              "type": "string",
+              "description": "The atproto signing key publicKeyMultibase\n\nLegacy key encoding not supported. the key is returned directly; `id`,\n`type`, and `controller` are omitted."
+            }
+          }
+        },
+        "encoding": "application/json"
+      },
+      "parameters": {
+        "type": "params",
+        "required": ["identifier"],
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "format": "at-identifier",
+            "description": "Handle or DID to resolve"
+          }
+        }
+      },
+      "description": "Like [com.atproto.identity.resolveIdentity](https://docs.bsky.app/docs/api/com-atproto-identity-resolve-identity) but instead of the full `didDoc` it returns an atproto-relevant subset."
+    }
+  },
+  "$type": "com.atproto.lexicon.schema",
+  "lexicon": 1
+}

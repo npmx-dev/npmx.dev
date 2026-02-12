@@ -110,7 +110,10 @@ function focusMenuItem(index: number) {
 
 <template>
   <section v-if="links.length > 0" class="px-1">
-    <h2 id="playgrounds-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
+    <h2
+      id="playgrounds-heading"
+      class="text-xs font-mono text-fg-subtle uppercase tracking-wider text-white mb-3"
+    >
       {{ $t('package.playgrounds.title') }}
     </h2>
 

@@ -3,7 +3,6 @@ defineProps<{
   html: string
 }>()
 
-const router = useRouter()
 const { copy } = useClipboard()
 
 // Combined click handler for:
@@ -12,6 +11,10 @@ const { copy } = useClipboard()
 function handleClick(event: MouseEvent) {
   const target = event.target as HTMLElement | undefined
   if (!target) return
+
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button) {
+    return
+  }
 
   // Handle copy button clicks
   const copyTarget = target.closest('[data-copy]')
@@ -47,13 +50,11 @@ function handleClick(event: MouseEvent) {
   const href = anchor.getAttribute('href')
   if (!href) return
 
-  const match = href.match(/^(?:https?:\/\/)?(?:www\.)?npmjs\.(?:com|org)(\/.+)$/)
-  if (!match || !match[1]) return
-
-  const route = router.resolve(match[1])
-  if (route) {
+  // Handle relative anchor links
+  if (href.startsWith('#') || href.startsWith('/')) {
     event.preventDefault()
-    router.push(route)
+    navigateTo(href)
+    return
   }
 }
 </script>
@@ -95,8 +96,8 @@ function handleClick(event: MouseEvent) {
 .readme :deep(h4),
 .readme :deep(h5),
 .readme :deep(h6) {
+  @apply font-mono scroll-mt-20;
   color: var(--fg);
-  @apply font-mono;
   font-weight: 500;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -134,15 +135,19 @@ function handleClick(event: MouseEvent) {
 }
 
 .readme :deep(a) {
-  color: var(--fg);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-color: var(--fg-subtle);
-  transition: text-decoration-color 0.2s ease;
+  @apply underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg transition-colors duration-200;
+}
+.readme :deep(a:hover) {
+  @apply decoration-accent text-accent;
+}
+.readme :deep(a:focus-visible) {
+  @apply decoration-accent text-accent;
 }
 
-.readme :deep(a:hover) {
-  text-decoration-color: var(--accent);
+.readme :deep(a[target='_blank']:not(:has(img))::after) {
+  /* I don't know what kind of sorcery this is, but it ensures this icon can't wrap to a new line on its own. */
+  content: '__';
+  @apply inline i-carbon:launch rtl-flip ms-1 opacity-50;
 }
 
 .readme :deep(code) {
@@ -286,6 +291,7 @@ function handleClick(event: MouseEvent) {
   height: 1.25rem;
   position: absolute;
   top: 1rem;
+  left: 1rem;
 }
 
 .readme :deep(blockquote[data-callout] > p:first-child) {

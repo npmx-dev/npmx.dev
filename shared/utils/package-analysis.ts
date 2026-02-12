@@ -124,7 +124,7 @@ function analyzeExports(exports: PackageExports, depth = 0): ExportsAnalysis {
 
   if (typeof exports === 'string') {
     // Check file extension for format hints
-    if (exports.endsWith('.mjs') || exports.endsWith('.mts')) {
+    if (exports.endsWith('.mjs') || exports.endsWith('.mts') || exports.endsWith('.json')) {
       result.hasImport = true
     } else if (exports.endsWith('.cjs') || exports.endsWith('.cts')) {
       result.hasRequire = true
