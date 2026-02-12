@@ -7,9 +7,6 @@ import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
 import { drawNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import type { RepoRef } from '#shared/utils/git-providers'
-import { parseRepoUrl } from '#shared/utils/git-providers'
-import type { PackageMetaResponse } from '#shared/types'
-import { encodePackageName } from '#shared/utils/npm'
 import type {
   ChartTimeGranularity,
   DailyDataPoint,
@@ -337,52 +334,28 @@ const effectivePackageNames = computed<string[]>(() => {
   return single ? [single] : []
 })
 
-const repoRefsByPackage = shallowRef<Record<string, RepoRef | undefined>>({})
+const {
+  fetchPackageDownloadEvolution,
+  fetchPackageLikesEvolution,
+  fetchRepoContributorsEvolution,
+  fetchRepoRefsForPackages,
+} = useCharts()
+
+const repoRefsByPackage = shallowRef<Record<string, RepoRef | null>>({})
 const repoRefsRequestToken = shallowRef(0)
-
-async function loadRepoRefsForPackages(packages: string[]) {
-  if (!import.meta.client) return
-  if (!packages.length) {
-    repoRefsByPackage.value = {}
-    return
-  }
-
-  const currentToken = ++repoRefsRequestToken.value
-
-  const settled = await Promise.allSettled(
-    packages.map(async name => {
-      const encoded = encodePackageName(name)
-      const meta = await $fetch<PackageMetaResponse>(`/api/registry/package-meta/${encoded}`)
-      const repoUrl = meta?.links?.repository
-      const ref = repoUrl ? parseRepoUrl(repoUrl) : undefined
-      return { name, ref }
-    }),
-  )
-
-  if (currentToken !== repoRefsRequestToken.value) return
-
-  const next: Record<string, RepoRef | undefined> = {}
-  for (const [index, entry] of settled.entries()) {
-    const name = packages[index]
-    if (!name) continue
-    if (entry.status === 'fulfilled') {
-      next[name] = entry.value.ref ?? undefined
-    } else {
-      next[name] = undefined
-    }
-  }
-  repoRefsByPackage.value = next
-}
 
 watch(
   () => effectivePackageNames.value,
-  names => {
+  async names => {
     if (!import.meta.client) return
     if (!isMultiPackageMode.value) {
       repoRefsByPackage.value = {}
       return
     }
-    loadRepoRefsForPackages(names)
+    const currentToken = ++repoRefsRequestToken.value
+    const refs = await fetchRepoRefsForPackages(names)
+    if (currentToken !== repoRefsRequestToken.value) return
+    repoRefsByPackage.value = refs
   },
   { immediate: true },
 )
@@ -626,18 +599,12 @@ function applyDateRange<T extends Record<string, unknown>>(base: T): T & DateRan
   return next
 }
 
-const {
-  fetchPackageDownloadEvolution,
-  fetchPackageLikesEvolution,
-  fetchRepoContributorsEvolution,
-} = useCharts()
-
 type MetricId = 'downloads' | 'likes' | 'contributors'
 const DEFAULT_METRIC_ID: MetricId = 'downloads'
 
 type MetricContext = {
   packageName: string
-  repoRef?: RepoRef | undefined | null
+  repoRef?: RepoRef | null
 }
 
 type MetricDef = {
@@ -681,7 +648,7 @@ const METRICS = computed<MetricDef[]>(() => {
       id: 'contributors',
       label: $t('package.trends.items.contributors'),
       fetch: ({ repoRef }, opts) => fetchRepoContributorsEvolution(repoRef, opts),
-      supportsMulti: false,
+      supportsMulti: true,
     })
   }
 
@@ -697,6 +664,16 @@ const effectivePackageNamesForMetric = computed<string[]>(() => {
   if (selectedMetric.value !== 'contributors') return effectivePackageNames.value
   return effectivePackageNames.value.filter(
     name => repoRefsByPackage.value[name]?.provider === 'github',
+  )
+})
+
+const skippedPackagesWithoutGitHub = computed(() => {
+  if (!isMultiPackageMode.value) return []
+  if (selectedMetric.value !== 'contributors') return []
+  if (!effectivePackageNames.value.length) return []
+
+  return effectivePackageNames.value.filter(
+    name => repoRefsByPackage.value[name]?.provider !== 'github',
   )
 })
 
@@ -856,7 +833,7 @@ async function loadMetric(metricId: MetricId) {
 
       const settled = await Promise.allSettled(
         packageNames.map(async pkg => {
-          const repoRef = metricId === 'contributors' ? repoRefsByPackage.value[pkg] : undefined
+          const repoRef = metricId === 'contributors' ? repoRefsByPackage.value[pkg] : null
           const result = await fetchFn({ packageName: pkg, repoRef })
           return { pkg, result: (result ?? []) as EvolutionData }
         }),
@@ -1692,6 +1669,11 @@ watch(selectedMetric, value => {
           <span class="i-carbon:reset w-5 h-5" aria-hidden="true" />
         </button>
       </div>
+
+      <p v-if="skippedPackagesWithoutGitHub.length > 0" class="text-2xs font-mono text-fg-subtle">
+        {{ $t('package.trends.contributors_skip', { count: skippedPackagesWithoutGitHub.length }) }}
+        {{ skippedPackagesWithoutGitHub.join(', ') }}
+      </p>
     </div>
 
     <h2 id="trends-chart-title" class="sr-only">

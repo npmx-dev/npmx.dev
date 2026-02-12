@@ -351,6 +351,7 @@
       "y_axis_label": "{granularity} {facet}",
       "facet": "Facet",
       "title": "Trends",
+      "contributors_skip": "Not shown in Contributors (no GitHub repo):",
       "items": {
         "downloads": "Downloads",
         "likes": "Likes",

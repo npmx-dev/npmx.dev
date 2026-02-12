@@ -9,6 +9,9 @@ import type {
   YearlyDataPoint,
 } from '~/types/chart'
 import type { RepoRef } from '#shared/utils/git-providers'
+import { parseRepoUrl } from '#shared/utils/git-providers'
+import type { PackageMetaResponse } from '#shared/types'
+import { encodePackageName } from '#shared/utils/npm'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
 
 export type PackumentLikeForTime = {
@@ -186,12 +189,14 @@ const likesEvolutionCache = import.meta.client ? new Map<string, Promise<DailyRa
 const contributorsEvolutionCache = import.meta.client
   ? new Map<string, Promise<GitHubContributorStats[]>>()
   : null
+const repoMetaCache = import.meta.client ? new Map<string, Promise<RepoRef | null>>() : null
 
 /** Clears client-side promise caches. Exported for use in tests. */
 export function clearClientCaches() {
   npmDailyRangeCache?.clear()
   likesEvolutionCache?.clear()
   contributorsEvolutionCache?.clear()
+  repoMetaCache?.clear()
 }
 
 type GitHubContributorWeek = {
@@ -563,10 +568,63 @@ export function useCharts() {
     return []
   }
 
+  async function fetchRepoRefsForPackages(
+    packageNames: MaybeRefOrGetter<string[]>,
+  ): Promise<Record<string, RepoRef | null>> {
+    const names = (toValue(packageNames) ?? []).map(n => String(n).trim()).filter(Boolean)
+    if (!import.meta.client || !names.length) return {}
+
+    const settled = await Promise.allSettled(
+      names.map(async name => {
+        const cacheKey = name
+        const cache = repoMetaCache
+        if (cache?.has(cacheKey)) {
+          const ref = await cache.get(cacheKey)!
+          return { name, ref }
+        }
+
+        const promise = $fetch<PackageMetaResponse>(
+          `/api/registry/package-meta/${encodePackageName(name)}`,
+        )
+          .then(meta => {
+            console.log('name', name)
+            if (name === 'create-cedar-app') {
+              console.log('create-cedar-app returns null')
+              return null
+            }
+            const repoUrl = meta?.links?.repository
+            return repoUrl ? parseRepoUrl(repoUrl) : null
+          })
+          .catch(error => {
+            cache?.delete(cacheKey)
+            throw error
+          })
+
+        cache?.set(cacheKey, promise)
+        const ref = await promise
+        return { name, ref }
+      }),
+    )
+
+    const next: Record<string, RepoRef | null> = {}
+    for (const [index, entry] of settled.entries()) {
+      const name = names[index]
+      if (!name) continue
+      if (entry.status === 'fulfilled') {
+        next[name] = entry.value.ref ?? null
+      } else {
+        next[name] = null
+      }
+    }
+
+    return next
+  }
+
   return {
     fetchPackageDownloadEvolution,
     fetchPackageLikesEvolution,
     fetchRepoContributorsEvolution,
+    fetchRepoRefsForPackages,
     getNpmPackageCreationDate,
   }
 }
