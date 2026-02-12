@@ -4,6 +4,7 @@ import {
   discoverAgentFiles,
   fetchAgentFiles,
   generateLlmsTxt,
+  generateRootLlmsTxt,
 } from '../../../../server/utils/llms-txt'
 
 describe('discoverAgentFiles', () => {
@@ -297,5 +298,38 @@ describe('generateLlmsTxt', () => {
 
     expect(output).toContain('# @nuxt/kit@1.0.0')
     expect(output).toContain('- npm: https://www.npmjs.com/package/@nuxt/kit/v/1.0.0')
+  })
+})
+
+describe('generateRootLlmsTxt', () => {
+  it('includes all route patterns', () => {
+    const output = generateRootLlmsTxt('https://npmx.dev')
+
+    expect(output).toContain('# npmx.dev')
+    expect(output).toContain('https://npmx.dev/package/<name>/llms.txt')
+    expect(output).toContain('https://npmx.dev/package/<name>/v/<version>/llms.txt')
+    expect(output).toContain('https://npmx.dev/package/@<org>/<name>/llms.txt')
+    expect(output).toContain('https://npmx.dev/package/@<org>/<name>/v/<version>/llms.txt')
+    expect(output).toContain('https://npmx.dev/package/<name>/llms_full.txt')
+    expect(output).toContain('https://npmx.dev/package/@<org>/llms.txt')
+  })
+
+  it('includes example links', () => {
+    const output = generateRootLlmsTxt('https://npmx.dev')
+
+    expect(output).toContain('[nuxt llms.txt](https://npmx.dev/package/nuxt/llms.txt)')
+    expect(output).toContain('[@nuxt org packages](https://npmx.dev/package/@nuxt/llms.txt)')
+  })
+
+  it('uses provided base URL', () => {
+    const output = generateRootLlmsTxt('http://localhost:3000')
+
+    expect(output).toContain('http://localhost:3000/package/<name>/llms.txt')
+    expect(output).not.toContain('https://npmx.dev')
+  })
+
+  it('ends with newline', () => {
+    const output = generateRootLlmsTxt('https://npmx.dev')
+    expect(output.endsWith('\n')).toBe(true)
   })
 })
