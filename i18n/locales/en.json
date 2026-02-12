@@ -297,7 +297,8 @@
       "recent_versions_only_tooltip": "Show only versions published within the last year.",
       "show_low_usage": "Show low usage versions",
       "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads.",
-      "date_range_tooltip": "Last week of version distributions only"
+      "date_range_tooltip": "Last week of version distributions only",
+      "y_axis_label": "Downloads"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
