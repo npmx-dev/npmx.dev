@@ -70,6 +70,7 @@ export default defineNuxtConfig({
         },
       ],
       meta: [{ name: 'twitter:card', content: 'summary_large_image' }],
+      noscript: [{ innerHTML: '<meta http-equiv="refresh" content="2">' }],
     },
   },
 
