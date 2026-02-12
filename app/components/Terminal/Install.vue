@@ -183,16 +183,17 @@ const copyDevInstallCommand = () =>
                 >{{ i > 0 ? ' ' : '' }}{{ part }}</span
               ></code
             >
-            <button
+            <ButtonBase
               type="button"
-              class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/devinstallcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+              size="small"
+              class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
               :aria-label="$t('package.get_started.copy_dev_command')"
               @click.stop="copyDevInstallCommand"
             >
               <span aria-live="polite">{{
                 devInstallCopied ? $t('common.copied') : $t('common.copy')
               }}</span>
-            </button>
+            </ButtonBase>
           </div>
         </template>
 

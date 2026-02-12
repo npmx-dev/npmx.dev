@@ -25,6 +25,10 @@ import { parseRepoUrl } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
 import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
 
+interface AnalysisPackageJson extends ExtendedPackageJson {
+  readme?: string
+}
+
 export default defineCachedEventHandler(
   async event => {
     // Parse package name and optional version from path
@@ -42,7 +46,7 @@ export default defineCachedEventHandler(
       // Fetch package data
       const encodedName = encodePackageName(packageName)
       const versionSuffix = version ? `/${version}` : '/latest'
-      const pkg = await $fetch<ExtendedPackageJson>(
+      const pkg = await $fetch<AnalysisPackageJson>(
         `${NPM_REGISTRY}/${encodedName}${versionSuffix}`,
       )
 

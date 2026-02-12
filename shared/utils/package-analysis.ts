@@ -34,8 +34,6 @@ export interface ExtendedPackageJson {
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
-  readme?: string
-  readmeFilename?: string
   /** npm maintainers (returned by registry API) */
   maintainers?: Array<{ name: string; email?: string }>
   /** Repository info (returned by registry API) */

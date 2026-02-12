@@ -667,6 +667,12 @@
             "copy_command": {
               "type": "string"
             },
+            "copy_dev_command": {
+              "type": "string"
+            },
+            "dev_dependency_hint": {
+              "type": "string"
+            },
             "view_types": {
               "type": "string"
             }
