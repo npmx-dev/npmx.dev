@@ -1,4 +1,3 @@
-import type { CachedFetchFunction, CachedFetchResult } from '#shared/utils/fetch-cache-config'
 import { CACHE_MAX_AGE_ONE_DAY } from '#shared/utils/constants'
 
 type GitHubContributorWeek = {
@@ -25,33 +24,40 @@ export default defineCachedEventHandler(
       })
     }
 
-    let cachedFetch: CachedFetchFunction
-    if (event.context.cachedFetch) {
-      cachedFetch = event.context.cachedFetch
-    } else {
-      cachedFetch = async <T = unknown>(
-        url: string,
-        options: Parameters<typeof $fetch>[1] = {},
-        _ttl?: number,
-      ): Promise<CachedFetchResult<T>> => {
-        const data = (await $fetch<T>(url, options)) as T
-        return { data, isStale: false, cachedAt: null }
-      }
+    const url = `https://api.github.com/repos/${owner}/${repo}/stats/contributors`
+    const headers = {
+      'User-Agent': 'npmx',
+      'Accept': 'application/vnd.github+json',
     }
 
-    try {
-      const { data } = await cachedFetch<GitHubContributorStats[]>(
-        `https://api.github.com/repos/${owner}/${repo}/stats/contributors`,
-        {
-          headers: {
-            'User-Agent': 'npmx',
-            'Accept': 'application/vnd.github+json',
-          },
-        },
-        CACHE_MAX_AGE_ONE_DAY,
-      )
+    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+    const maxAttempts = 6
+    let delayMs = 1000
 
-      return Array.isArray(data) ? data : []
+    try {
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        const response = await $fetch.raw<GitHubContributorStats[]>(url, { headers })
+        const status = response.status
+
+        if (status === 200) {
+          return Array.isArray(response._data) ? response._data : []
+        }
+
+        if (status === 204) {
+          return []
+        }
+
+        if (status === 202) {
+          if (attempt === maxAttempts - 1) return []
+          await sleep(delayMs)
+          delayMs = Math.min(delayMs * 2, 16_000)
+          continue
+        }
+
+        return []
+      }
+
+      return []
     } catch {
       return []
     }
