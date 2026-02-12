@@ -147,6 +147,7 @@ const {
     ...parseSearchOperators(normalizeSearchParam(route.query.q)),
   },
   initialSort: 'relevance-desc', // Default to search relevance
+  searchQueryModel: searchQuery,
 })
 
 const isRelevanceSort = computed(
