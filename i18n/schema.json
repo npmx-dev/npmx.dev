@@ -382,6 +382,9 @@
         "close": {
           "type": "string"
         },
+        "or": {
+          "type": "string"
+        },
         "retry": {
           "type": "string"
         },
@@ -870,6 +873,36 @@
             },
             "view_all": {
               "type": "string"
+            },
+            "distribution_title": {
+              "type": "string"
+            },
+            "distribution_modal_title": {
+              "type": "string"
+            },
+            "grouping_major": {
+              "type": "string"
+            },
+            "grouping_minor": {
+              "type": "string"
+            },
+            "recent_versions_only": {
+              "type": "string"
+            },
+            "recent_versions_only_tooltip": {
+              "type": "string"
+            },
+            "show_low_usage": {
+              "type": "string"
+            },
+            "show_low_usage_tooltip": {
+              "type": "string"
+            },
+            "date_range_tooltip": {
+              "type": "string"
+            },
+            "y_axis_label": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1049,6 +1082,9 @@
           "type": "object",
           "properties": {
             "title": {
+              "type": "string"
+            },
+            "modal_title": {
               "type": "string"
             },
             "analyze": {
@@ -1392,6 +1428,9 @@
             },
             "connecting": {
               "type": "string"
+            },
+            "auto_open_url": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1438,7 +1477,13 @@
             "retry_otp": {
               "type": "string"
             },
+            "retry_web_auth": {
+              "type": "string"
+            },
             "retrying": {
+              "type": "string"
+            },
+            "open_web_auth": {
               "type": "string"
             },
             "approve_operation": {

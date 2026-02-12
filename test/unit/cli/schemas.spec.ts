@@ -245,6 +245,50 @@ describe('ExecuteBodySchema', () => {
   it('rejects invalid OTP', () => {
     expect(v.safeParse(ExecuteBodySchema, { otp: '12345' }).success).toBe(false)
   })
+
+  it('accepts interactive flag', () => {
+    const result = v.safeParse(ExecuteBodySchema, { interactive: true })
+    expect(result.success).toBe(true)
+    expect((result as { output: { interactive: boolean } }).output.interactive).toBe(true)
+  })
+
+  it('accepts openUrls flag', () => {
+    const result = v.safeParse(ExecuteBodySchema, { openUrls: true })
+    expect(result.success).toBe(true)
+    expect((result as { output: { openUrls: boolean } }).output.openUrls).toBe(true)
+  })
+
+  it('accepts all fields together', () => {
+    const result = v.safeParse(ExecuteBodySchema, {
+      otp: '123456',
+      interactive: true,
+      openUrls: false,
+    })
+    expect(result.success).toBe(true)
+    const output = (result as { output: { otp: string; interactive: boolean; openUrls: boolean } })
+      .output
+    expect(output.otp).toBe('123456')
+    expect(output.interactive).toBe(true)
+    expect(output.openUrls).toBe(false)
+  })
+
+  it('interactive and openUrls are optional (undefined when omitted)', () => {
+    const result = v.safeParse(ExecuteBodySchema, { otp: '123456' })
+    expect(result.success).toBe(true)
+    const output = (result as { output: Record<string, unknown> }).output
+    expect(output.interactive).toBeUndefined()
+    expect(output.openUrls).toBeUndefined()
+  })
+
+  it('rejects non-boolean values for interactive', () => {
+    expect(v.safeParse(ExecuteBodySchema, { interactive: 'true' }).success).toBe(false)
+    expect(v.safeParse(ExecuteBodySchema, { interactive: 1 }).success).toBe(false)
+  })
+
+  it('rejects non-boolean values for openUrls', () => {
+    expect(v.safeParse(ExecuteBodySchema, { openUrls: 'true' }).success).toBe(false)
+    expect(v.safeParse(ExecuteBodySchema, { openUrls: 1 }).success).toBe(false)
+  })
 })
 
 describe('CreateOperationBodySchema', () => {

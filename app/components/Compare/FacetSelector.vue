@@ -69,7 +69,7 @@ function isCategoryNoneSelected(category: string): boolean {
           :disabled="facet.comingSoon"
           :aria-pressed="isFacetSelected(facet.id)"
           :aria-label="facet.label"
-          class="gap-1 px-1.5 rounded"
+          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
           :class="
             facet.comingSoon
               ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'

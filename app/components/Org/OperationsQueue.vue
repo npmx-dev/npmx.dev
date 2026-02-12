@@ -7,6 +7,7 @@ const {
   approvedOperations,
   completedOperations,
   activeOperations,
+  operations,
   hasOperations,
   hasPendingOperations,
   hasApprovedOperations,
@@ -23,11 +24,53 @@ const {
 
 const isExecuting = shallowRef(false)
 const otpInput = shallowRef('')
+const otpError = shallowRef('')
 
-/** Check if any active operation needs OTP */
+const authUrl = computed(() => {
+  const op = operations.value.find(o => o.status === 'running' && o.authUrl)
+  return op?.authUrl ?? null
+})
+
+const authPollTimer = shallowRef<ReturnType<typeof setInterval> | null>(null)
+
+function startAuthPolling() {
+  stopAuthPolling()
+  let remaining = 3
+  authPollTimer.value = setInterval(async () => {
+    try {
+      await refreshState()
+    } catch {
+      stopAuthPolling()
+      return
+    }
+    remaining--
+    if (remaining <= 0) {
+      stopAuthPolling()
+    }
+  }, 20000)
+}
+
+function stopAuthPolling() {
+  if (authPollTimer.value) {
+    clearInterval(authPollTimer.value)
+    authPollTimer.value = null
+  }
+}
+
+onUnmounted(stopAuthPolling)
+
+function handleOpenAuthUrl() {
+  if (authUrl.value) {
+    window.open(authUrl.value, '_blank', 'noopener,noreferrer')
+    startAuthPolling()
+  }
+}
+
+/** Check if any active operation needs OTP (fallback for web auth failures) */
 const hasOtpFailures = computed(() =>
   activeOperations.value.some(
-    (op: PendingOperation) => op.status === 'failed' && op.result?.requiresOtp,
+    (op: PendingOperation) =>
+      op.status === 'failed' && (op.result?.requiresOtp || op.result?.authFailure),
   ),
 )
 
@@ -46,14 +89,25 @@ async function handleExecute(otp?: string) {
 
 /** Retry all OTP-failed operations with the provided OTP */
 async function handleRetryWithOtp() {
-  if (!otpInput.value.trim()) return
-
   const otp = otpInput.value.trim()
+
+  if (!otp) {
+    otpError.value = 'OTP required'
+    return
+  }
+
+  if (!/^\d{6}$/.test(otp)) {
+    otpError.value = 'OTP must be a 6-digit code'
+    return
+  }
+
+  otpError.value = ''
   otpInput.value = ''
 
-  // First, re-approve all OTP-failed operations
+  // First, re-approve all OTP/auth-failed operations
   const otpFailedOps = activeOperations.value.filter(
-    (op: PendingOperation) => op.status === 'failed' && op.result?.requiresOtp,
+    (op: PendingOperation) =>
+      op.status === 'failed' && (op.result?.requiresOtp || op.result?.authFailure),
   )
   for (const op of otpFailedOps) {
     await retryOperation(op.id)
@@ -63,9 +117,25 @@ async function handleRetryWithOtp() {
   await handleExecute(otp)
 }
 
+/** Retry failed operations with web auth (no OTP) */
+async function handleRetryWebAuth() {
+  // Find all failed operations that need auth retry
+  const failedOps = activeOperations.value.filter(
+    (op: PendingOperation) =>
+      op.status === 'failed' && (op.result?.requiresOtp || op.result?.authFailure),
+  )
+
+  for (const op of failedOps) {
+    await retryOperation(op.id)
+  }
+
+  await handleExecute()
+}
+
 async function handleClearAll() {
   await clearOperations()
   otpInput.value = ''
+  otpError.value = ''
 }
 
 function getStatusColor(status: string): string {
@@ -228,7 +298,7 @@ watch(isExecuting, executing => {
       </li>
     </ul>
 
-    <!-- Inline OTP prompt (appears when operations need OTP) -->
+    <!-- Inline OTP prompt (appears when web auth fails and OTP is needed as fallback) -->
     <div
       v-if="hasOtpFailures"
       class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg"
@@ -240,29 +310,49 @@ watch(isExecuting, executing => {
           {{ $t('operations.queue.otp_prompt') }}
         </span>
       </div>
-      <form class="flex items-center gap-2" @submit.prevent="handleRetryWithOtp">
-        <label for="otp-input" class="sr-only">{{ $t('operations.queue.otp_label') }}</label>
-        <InputBase
-          id="otp-input"
-          v-model="otpInput"
-          type="text"
-          name="otp-code"
-          inputmode="numeric"
-          pattern="[0-9]*"
-          :placeholder="$t('operations.queue.otp_placeholder')"
-          autocomplete="one-time-code"
-          spellcheck="false"
-          class="flex-1 min-w-25"
-          size="small"
-        />
-        <button
-          type="submit"
-          :disabled="!otpInput.trim() || isExecuting"
-          class="px-3 py-2 font-mono text-xs text-bg bg-amber-500 rounded transition-all duration-200 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50"
-        >
-          {{ isExecuting ? $t('operations.queue.retrying') : $t('operations.queue.retry_otp') }}
-        </button>
+      <form class="flex flex-col gap-1" @submit.prevent="handleRetryWithOtp">
+        <div class="flex items-center gap-2">
+          <label for="otp-input" class="sr-only">{{ $t('operations.queue.otp_label') }}</label>
+          <InputBase
+            id="otp-input"
+            v-model="otpInput"
+            type="text"
+            name="otp-code"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="6"
+            :placeholder="$t('operations.queue.otp_placeholder')"
+            autocomplete="one-time-code"
+            spellcheck="false"
+            :class="['flex-1 min-w-25', otpError ? 'border-red-500 focus:outline-red-500' : '']"
+            size="small"
+            @input="otpError = ''"
+          />
+          <button
+            type="submit"
+            :disabled="isExecuting"
+            class="px-3 py-2 font-mono text-xs text-bg bg-amber-500 rounded transition-all duration-200 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50"
+          >
+            {{ isExecuting ? $t('operations.queue.retrying') : $t('operations.queue.retry_otp') }}
+          </button>
+        </div>
+        <p v-if="otpError" class="text-xs text-red-400 font-mono">
+          {{ otpError }}
+        </p>
       </form>
+      <div class="flex items-center gap-2 my-3">
+        <div class="flex-1 h-px bg-amber-500/30" />
+        <span class="text-xs text-amber-400 font-mono uppercase">{{ $t('common.or') }}</span>
+        <div class="flex-1 h-px bg-amber-500/30" />
+      </div>
+      <button
+        type="button"
+        :disabled="isExecuting"
+        class="w-full px-3 py-2 font-mono text-xs text-fg bg-bg-subtle border border-border rounded transition-all duration-200 hover:text-fg hover:border-border-hover disabled:opacity-50 disabled:cursor-not-allowed"
+        @click="handleRetryWebAuth"
+      >
+        {{ isExecuting ? $t('operations.queue.retrying') : $t('operations.queue.retry_web_auth') }}
+      </button>
     </div>
 
     <!-- Action buttons -->
@@ -287,6 +377,15 @@ watch(isExecuting, executing => {
             ? $t('operations.queue.executing')
             : `${$t('operations.queue.execute')} (${approvedOperations.length})`
         }}
+      </button>
+      <button
+        v-if="authUrl"
+        type="button"
+        class="flex-1 px-4 py-2 font-mono text-sm text-accent bg-accent/10 border border-accent/30 rounded-md transition-colors duration-200 hover:bg-accent/20"
+        @click="handleOpenAuthUrl"
+      >
+        <span class="i-carbon:launch w-4 h-4 inline-block me-1" aria-hidden="true" />
+        {{ $t('operations.queue.open_web_auth') }}
       </button>
     </div>
 

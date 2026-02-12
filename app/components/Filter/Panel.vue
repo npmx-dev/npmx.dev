@@ -32,6 +32,11 @@ const { t } = useI18n()
 const isExpanded = shallowRef(false)
 const showAllKeywords = shallowRef(false)
 
+const filterText = computed({
+  get: () => props.filters.text,
+  set: value => emit('update:text', value),
+})
+
 const displayedKeywords = computed(() => {
   const keywords = props.availableKeywords ?? []
   return showAllKeywords.value ? keywords : keywords.slice(0, 20)
@@ -128,11 +133,6 @@ function getUpdatedWithinLabelKey(value: UpdatedWithin): string {
 
 function getSecurityLabelKey(value: SecurityFilter): string {
   return securityLabelKeys.value[value]
-}
-
-function handleTextInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  emit('update:text', target.value)
 }
 
 // Compact summary of active filters for collapsed header using operator syntax
@@ -242,13 +242,12 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
           <InputBase
             id="filter-search"
             type="text"
-            :value="filters.text"
+            v-model="filterText"
             :placeholder="searchPlaceholder"
             autocomplete="off"
             class="w-full min-w-25"
             size="medium"
             no-correct
-            @input="handleTextInput"
           />
         </div>
 

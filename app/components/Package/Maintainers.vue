@@ -189,7 +189,7 @@ watch(
               name: '~username',
               params: { username: maintainer.name },
             }"
-            class="link-subtle font-mono text-sm shrink-0"
+            class="link-subtle text-sm shrink-0"
             dir="ltr"
           >
             ~{{ maintainer.name }}
