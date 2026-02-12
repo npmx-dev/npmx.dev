@@ -168,7 +168,7 @@ const stats = {
       <div
         class="relative mb-12 px-4 border border-border rounded-lg bg-bg-subtle overflow-hidden select-none"
         :aria-label="$t('vacations.illustration_alt')"
-        role="img"
+        role="group"
       >
         <div class="flex items-center gap-4 sm:gap-5 py-3 sm:py-4 w-max">
           <template v-for="n in 4" :key="`set-${n}`">
@@ -193,6 +193,7 @@ const stats = {
               :key="`${n}-${i}`"
               class="shrink-0 w-5 h-5 sm:w-6 sm:h-6 opacity-40"
               :class="icon"
+              aria-hidden="true"
             />
           </template>
         </div>
