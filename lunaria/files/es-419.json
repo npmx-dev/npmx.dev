@@ -124,6 +124,7 @@
     "end_of_results": "Fin de los resultados",
     "try_again": "Intentar de nuevo",
     "close": "Cerrar",
+    "or": "o",
     "retry": "Reintentar",
     "copy": "copiar",
     "copied": "¡copiado!",
@@ -295,7 +296,8 @@
       "recent_versions_only_tooltip": "Mostrar solo versiones publicadas en el último año.",
       "show_low_usage": "Mostrar versiones de bajo uso",
       "show_low_usage_tooltip": "Incluir grupos de versiones con menos del 1% de las descargas totales.",
-      "date_range_tooltip": "Solo la última semana de distribución de versiones"
+      "date_range_tooltip": "Solo la última semana de distribución de versiones",
+      "y_axis_label": "Descargas"
     },
     "dependencies": {
       "title": "Dependencias ({count})",
@@ -470,7 +472,8 @@
       "warning": "ADVERTENCIA",
       "warning_text": "Esto permite a npmx acceder a tu CLI de npm. Conéctate solo a sitios en los que confíes.",
       "connect": "Conectar",
-      "connecting": "Conectando..."
+      "connecting": "Conectando...",
+      "auto_open_url": "Abrir automáticamente la página de autenticación"
     }
   },
   "operations": {
@@ -486,7 +489,9 @@
       "otp_placeholder": "Introduce código OTP...",
       "otp_label": "Contraseña de un solo uso",
       "retry_otp": "Reintentar con OTP",
+      "retry_web_auth": "Reintentar con autenticación web",
       "retrying": "Reintentando...",
+      "open_web_auth": "Abrir enlace de autenticación web",
       "approve_operation": "Aprobar operación",
       "remove_operation": "Eliminar operación",
       "approve_all": "Aprobar Todo",
