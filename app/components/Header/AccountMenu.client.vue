@@ -59,7 +59,7 @@ function openAuthModal() {
   <div ref="accountMenuRef">
     <ButtonBase
       type="button"
-      class="border-0"
+      class="border-0 min-w-28"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       @click="isOpen = !isOpen"
