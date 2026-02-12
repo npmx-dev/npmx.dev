@@ -287,7 +287,8 @@
       "more_tagged": "jeszcze {count}",
       "all_covered": "Wszystkie wersje są objęte powyższymi tagami",
       "deprecated_title": "{version} (przestarzała)",
-      "view_all": "Zobacz wszystkie {count} wersje | Zobacz {count} wersję | Zobacz {count} wersje | Zobacz {count} wersji | Zobacz {count} wersji"
+      "view_all": "Zobacz wszystkie {count} wersje | Zobacz {count} wersję | Zobacz {count} wersje | Zobacz {count} wersji | Zobacz {count} wersji",
+      "y_axis_label": "Pobrania"
     },
     "dependencies": {
       "title": "Zależności ({count})",
