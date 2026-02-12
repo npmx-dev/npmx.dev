@@ -300,6 +300,12 @@ const stats = {
   animation: bounce 3s infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce-slow {
+    animation: none;
+  }
+}
+
 @keyframes bounce {
   0%,
   100% {
