@@ -1,6 +1,13 @@
+import * as v from 'valibot'
 import type { Packument } from '@npm/types'
 import type { JsDelivrFileNode, AgentFile, LlmsTxtResult } from '#shared/types'
-import { NPM_MISSING_README_SENTINEL } from '#shared/utils/constants'
+import { PackageRouteParamsSchema } from '#shared/schemas/package'
+import {
+  NPM_MISSING_README_SENTINEL,
+  NPM_REGISTRY,
+  CACHE_MAX_AGE_ONE_HOUR,
+} from '#shared/utils/constants'
+import { handleApiError } from '#server/utils/error-handler'
 
 /** Well-known agent instruction files at the package root */
 const ROOT_AGENT_FILES: Record<string, string> = {
@@ -116,7 +123,7 @@ export async function fetchAgentFiles(
  * - Blockquote description (if available)
  * - Metadata list (homepage, repository, npm)
  * - README section
- * - Agent Instructions section (one sub-heading per file)
+ * - Agent Instructions section (one sub-heading per file, full mode only)
  */
 export function generateLlmsTxt(result: LlmsTxtResult): string {
   const lines: string[] = []
@@ -204,12 +211,18 @@ function parseRepoUrl(
 
 /**
  * Orchestrates fetching all data and generating llms.txt for a package.
- * Shared by both versioned and unversioned route handlers.
+ *
+ * When `includeAgentFiles` is false (default, for llms.txt), skips the file tree
+ * fetch and agent file discovery entirely — only returns README + metadata.
+ * When true (for llms_full.txt), includes agent instruction files.
  */
 export async function handleLlmsTxt(
   packageName: string,
   requestedVersion?: string,
+  options?: { includeAgentFiles?: boolean },
 ): Promise<string> {
+  const includeAgentFiles = options?.includeAgentFiles ?? false
+
   const packageData = await fetchNpmPackage(packageName)
   const resolvedVersion = requestedVersion ?? packageData['dist-tags']?.latest
 
@@ -220,17 +233,24 @@ export async function handleLlmsTxt(
   // Extract README from packument (sync)
   const readmeFromPackument = getReadmeFromPackument(packageData, requestedVersion)
 
-  // Fetch file tree (and README from CDN if packument didn't have one)
-  const [fileTreeData, cdnReadme] = await Promise.all([
-    fetchFileTree(packageName, resolvedVersion),
-    readmeFromPackument ? null : fetchReadmeFromCdn(packageName, resolvedVersion),
-  ])
+  let agentFiles: AgentFile[] = []
+  let cdnReadme: string | null = null
+
+  if (includeAgentFiles) {
+    // Full mode: fetch file tree for agent discovery + README fallback in parallel
+    const [fileTreeData, readme] = await Promise.all([
+      fetchFileTree(packageName, resolvedVersion),
+      readmeFromPackument ? null : fetchReadmeFromCdn(packageName, resolvedVersion),
+    ])
+    cdnReadme = readme
+    const agentFilePaths = discoverAgentFiles(fileTreeData.files)
+    agentFiles = await fetchAgentFiles(packageName, resolvedVersion, agentFilePaths)
+  } else if (!readmeFromPackument) {
+    // Standard mode: only fetch README from CDN if packument lacks it
+    cdnReadme = await fetchReadmeFromCdn(packageName, resolvedVersion)
+  }
 
   const readme = readmeFromPackument ?? cdnReadme ?? undefined
-
-  // Discover and fetch agent files
-  const agentFilePaths = discoverAgentFiles(fileTreeData.files)
-  const agentFiles = await fetchAgentFiles(packageName, resolvedVersion, agentFilePaths)
 
   const result: LlmsTxtResult = {
     packageName,
@@ -243,4 +263,160 @@ export async function handleLlmsTxt(
   }
 
   return generateLlmsTxt(result)
+}
+
+// Validation for org names (matches server/api/registry/org/[org]/packages.get.ts)
+const NPM_ORG_NAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
+
+/**
+ * Generate llms.txt for an npm organization/scope.
+ * Lists all packages in the org with links to their llms.txt pages.
+ */
+export async function handleOrgLlmsTxt(orgName: string, baseUrl: string): Promise<string> {
+  if (!orgName || orgName.length > 50 || !NPM_ORG_NAME_RE.test(orgName)) {
+    throw createError({ statusCode: 404, message: `Invalid org name: ${orgName}` })
+  }
+
+  const data = await $fetch<Record<string, string>>(
+    `${NPM_REGISTRY}/-/org/${encodeURIComponent(orgName)}/package`,
+  )
+
+  const packages = Object.keys(data).sort()
+
+  if (packages.length === 0) {
+    throw createError({ statusCode: 404, message: `No packages found for @${orgName}` })
+  }
+
+  const lines: string[] = []
+
+  lines.push(`# @${orgName}`)
+  lines.push('')
+  lines.push(`> npm packages published under the @${orgName} scope`)
+  lines.push('')
+  lines.push(`- npm: https://www.npmjs.com/org/${orgName}`)
+  lines.push('')
+  lines.push('## Packages')
+  lines.push('')
+
+  for (const pkg of packages) {
+    const encodedPkg = pkg.replace('/', '/')
+    lines.push(`- [${pkg}](${baseUrl}/package/${encodedPkg}/llms.txt)`)
+  }
+
+  lines.push('')
+
+  return lines.join('\n').trimEnd() + '\n'
+}
+
+/**
+ * Generate the root /llms.txt explaining available routes.
+ */
+export function generateRootLlmsTxt(baseUrl: string): string {
+  const lines: string[] = []
+
+  lines.push('# npmx.dev')
+  lines.push('')
+  lines.push('> A fast, modern browser for the npm registry')
+  lines.push('')
+  lines.push('This site provides LLM-friendly documentation for npm packages.')
+  lines.push('')
+  lines.push('## Available Routes')
+  lines.push('')
+  lines.push('### Package Documentation (llms.txt)')
+  lines.push('')
+  lines.push('README and package metadata in markdown format.')
+  lines.push('')
+  lines.push(`- \`${baseUrl}/package/<name>/llms.txt\` — unscoped package (latest version)`)
+  lines.push(
+    `- \`${baseUrl}/package/<name>/v/<version>/llms.txt\` — unscoped package (specific version)`,
+  )
+  lines.push(`- \`${baseUrl}/package/@<org>/<name>/llms.txt\` — scoped package (latest version)`)
+  lines.push(
+    `- \`${baseUrl}/package/@<org>/<name>/v/<version>/llms.txt\` — scoped package (specific version)`,
+  )
+  lines.push('')
+  lines.push('### Full Package Documentation (llms_full.txt)')
+  lines.push('')
+  lines.push(
+    'README, package metadata, and agent instruction files (CLAUDE.md, .cursorrules, etc.).',
+  )
+  lines.push('')
+  lines.push(`- \`${baseUrl}/package/<name>/llms_full.txt\` — unscoped package (latest version)`)
+  lines.push(
+    `- \`${baseUrl}/package/<name>/v/<version>/llms_full.txt\` — unscoped package (specific version)`,
+  )
+  lines.push(
+    `- \`${baseUrl}/package/@<org>/<name>/llms_full.txt\` — scoped package (latest version)`,
+  )
+  lines.push(
+    `- \`${baseUrl}/package/@<org>/<name>/v/<version>/llms_full.txt\` — scoped package (specific version)`,
+  )
+  lines.push('')
+  lines.push('### Organization Packages (llms.txt)')
+  lines.push('')
+  lines.push('List of all packages under an npm scope with links to their documentation.')
+  lines.push('')
+  lines.push(`- \`${baseUrl}/package/@<org>/llms.txt\` — organization package listing`)
+  lines.push('')
+  lines.push('## Examples')
+  lines.push('')
+  lines.push(`- [nuxt llms.txt](${baseUrl}/package/nuxt/llms.txt)`)
+  lines.push(`- [nuxt llms_full.txt](${baseUrl}/package/nuxt/llms_full.txt)`)
+  lines.push(`- [@nuxt/kit llms.txt](${baseUrl}/package/@nuxt/kit/llms.txt)`)
+  lines.push(`- [@nuxt org packages](${baseUrl}/package/@nuxt/llms.txt)`)
+  lines.push('')
+
+  return lines.join('\n').trimEnd() + '\n'
+}
+
+/**
+ * Create a cached event handler for package-level llms.txt or llms_full.txt.
+ *
+ * Each route file should call this factory and `export default` the result.
+ * This avoids the re-export pattern that Nitro doesn't register as routes.
+ */
+export function createPackageLlmsTxtHandler(options?: { full?: boolean }) {
+  const full = options?.full ?? false
+
+  return defineCachedEventHandler(
+    async event => {
+      const org = getRouterParam(event, 'org')
+      const name = getRouterParam(event, 'name')
+      const rawVersion = getRouterParam(event, 'version')
+
+      if (!name) {
+        throw createError({ statusCode: 404, message: 'Package name is required.' })
+      }
+
+      const rawPackageName = org ? `${org}/${name}` : name
+
+      try {
+        const { packageName, version } = v.parse(PackageRouteParamsSchema, {
+          packageName: rawPackageName,
+          version: rawVersion,
+        })
+
+        const content = await handleLlmsTxt(packageName, version, { includeAgentFiles: full })
+        setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
+        return content
+      } catch (error: unknown) {
+        handleApiError(error, {
+          statusCode: 502,
+          message: `Failed to generate ${full ? 'llms_full.txt' : 'llms.txt'}.`,
+        })
+      }
+    },
+    {
+      maxAge: CACHE_MAX_AGE_ONE_HOUR,
+      swr: true,
+      getKey: event => {
+        const org = getRouterParam(event, 'org')
+        const name = getRouterParam(event, 'name')
+        const version = getRouterParam(event, 'version')
+        const pkg = org ? `${org}/${name}` : name
+        const prefix = full ? 'llms-full-txt' : 'llms-txt'
+        return version ? `${prefix}:${pkg}@${version}` : `${prefix}:${pkg}`
+      },
+    },
+  )
 }
