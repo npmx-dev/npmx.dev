@@ -378,7 +378,7 @@ export async function renderReadmeHtml(
     }
 
     /** The link href uses the unique slug WITHOUT the 'user-content-' prefix, because that will later be added for all links. */
-    return `<h${semanticLevel} id="${id}" data-level="${depth}"><a href="#${uniqueSlug}">${text}</a></h${semanticLevel}>\n`
+    return `<h${semanticLevel} id="${id}" data-level="${depth}"><a href="#${uniqueSlug}">${plainText}</a></h${semanticLevel}>\n`
   }
 
   // Syntax highlighting for code blocks (uses shared highlighter)
