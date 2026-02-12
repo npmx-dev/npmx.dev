@@ -79,7 +79,7 @@ function downloadIcs() {
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//npmx//holiday//EN',
+    'PRODID:-//npmx//recharging//EN',
     'BEGIN:VEVENT',
     `DTSTART:${fmt(start)}`,
     `DTEND:${fmt(end)}`,

@@ -149,7 +149,7 @@ export default defineNuxtConfig({
     '/privacy': { prerender: true },
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
-    '/holiday': { prerender: true },
+    '/recharging': { prerender: true },
     // proxy for insights
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
