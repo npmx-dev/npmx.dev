@@ -67,10 +67,10 @@ defineOgImageComponent('Default', {
         <p>Error</p>
       </div>
       <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <PackageBasicCard
+        <PackageLikeCard
           v-if="likesData.likes.records"
           v-for="like in likesData.likes.records"
-          :packageName="like.value.subjectRef"
+          :packageUrl="like.value.subjectRef"
         />
       </div>
     </section>
