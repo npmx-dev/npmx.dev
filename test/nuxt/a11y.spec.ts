@@ -115,6 +115,7 @@ import {
   AppHeader,
   AppLogo,
   BaseCard,
+  BlueskyPostEmbed,
   BuildEnvironment,
   ButtonBase,
   LinkBase,
@@ -2460,6 +2461,18 @@ describe('component accessibility audits', () => {
           versions: mockVersions,
           distTags: mockDistTags,
           urlPattern: '/package/vue/v/{version}',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('BlueskyPostEmbed', () => {
+    it('should have no accessibility violations in pending state', async () => {
+      const component = await mountSuspended(BlueskyPostEmbed, {
+        props: {
+          uri: 'at://did:plc:u5zp7npt5kpueado77kuihyz/app.bsky.feed.post/3mejzn5mrcc2g',
         },
       })
       const results = await runAxe(component)
