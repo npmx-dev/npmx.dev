@@ -3,20 +3,27 @@ import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { handleApiError } from '#server/utils/error-handler'
 import { handleLlmsTxt, handleOrgLlmsTxt, generateRootLlmsTxt } from '#server/utils/llms-txt'
 
+const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
+
 /**
- * Middleware to handle llms.txt / llms_full.txt routes that can't be served
- * by Nitro's file-based routing (versioned paths hit a radix3 limitation
- * where parameterized intermediate segments don't resolve literal children).
+ * Middleware to handle ALL llms.txt / llms_full.txt routes.
+ *
+ * All llms.txt handling lives here rather than in file-based routes because
+ * Vercel's ISR route rules with glob patterns (e.g. `/package/ ** /llms.txt`)
+ * create catch-all serverless functions that interfere with Nitro's file-based
+ * route resolution — scoped packages and versioned paths fail to match.
  *
  * Handles:
- * - /llms.txt (root — file-based route is blocked by canonical-redirects)
- * - /package/:name/v/:version/llms.txt
- * - /package/:name/v/:version/llms_full.txt
- * - /package/@:org/:name/v/:version/llms.txt
- * - /package/@:org/:name/v/:version/llms_full.txt
- * - /package/@:org/llms.txt (org listing)
- *
- * Non-versioned package routes are left to file-based handlers.
+ * - /llms.txt (root discovery page)
+ * - /package/@:org/llms.txt (org package listing)
+ * - /package/:name/llms.txt (unscoped, latest)
+ * - /package/:name/llms_full.txt (unscoped, latest, full)
+ * - /package/@:org/:name/llms.txt (scoped, latest)
+ * - /package/@:org/:name/llms_full.txt (scoped, latest, full)
+ * - /package/:name/v/:version/llms.txt (unscoped, versioned)
+ * - /package/:name/v/:version/llms_full.txt (unscoped, versioned, full)
+ * - /package/@:org/:name/v/:version/llms.txt (scoped, versioned)
+ * - /package/@:org/:name/v/:version/llms_full.txt (scoped, versioned, full)
  */
 export default defineEventHandler(async event => {
   const path = event.path.split('?')[0]
@@ -31,7 +38,7 @@ export default defineEventHandler(async event => {
     const url = getRequestURL(event)
     const baseUrl = `${url.protocol}//${url.host}`
     setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
-    setHeader(event, 'Cache-Control', 's-maxage=3600, stale-while-revalidate=86400')
+    setHeader(event, 'Cache-Control', CACHE_HEADER)
     return generateRootLlmsTxt(baseUrl)
   }
 
@@ -48,32 +55,36 @@ export default defineEventHandler(async event => {
       const baseUrl = `${url.protocol}//${url.host}`
       const content = await handleOrgLlmsTxt(orgName, baseUrl)
       setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
-      setHeader(event, 'Cache-Control', 's-maxage=3600, stale-while-revalidate=86400')
+      setHeader(event, 'Cache-Control', CACHE_HEADER)
       return content
     } catch (error: unknown) {
       handleApiError(error, { statusCode: 502, message: 'Failed to generate org llms.txt.' })
     }
   }
 
-  // Versioned paths — only handle if /v/ is present (non-versioned are handled by file routes)
-  if (!inner.includes('/v/')) return
-
+  // Parse package name and optional version from inner path
   let rawPackageName: string
-  let rawVersion: string
+  let rawVersion: string | undefined
 
-  if (inner.startsWith('@')) {
-    // Scoped: @org/name/v/version
-    const match = inner.match(/^(@[^/]+\/[^/]+)\/v\/(.+)$/)
-    if (!match) return
-    rawPackageName = match[1]
-    rawVersion = match[2]
+  if (inner.includes('/v/')) {
+    // Versioned path
+    if (inner.startsWith('@')) {
+      const match = inner.match(/^(@[^/]+\/[^/]+)\/v\/(.+)$/)
+      if (!match) return
+      rawPackageName = match[1]
+      rawVersion = match[2]
+    } else {
+      const match = inner.match(/^([^/]+)\/v\/(.+)$/)
+      if (!match) return
+      rawPackageName = match[1]
+      rawVersion = match[2]
+    }
   } else {
-    // Unscoped: name/v/version
-    const match = inner.match(/^([^/]+)\/v\/(.+)$/)
-    if (!match) return
-    rawPackageName = match[1]
-    rawVersion = match[2]
+    // Latest version — inner is just the package name
+    rawPackageName = inner
   }
+
+  if (!rawPackageName) return
 
   try {
     const { packageName, version } = v.parse(PackageRouteParamsSchema, {
@@ -83,7 +94,7 @@ export default defineEventHandler(async event => {
 
     const content = await handleLlmsTxt(packageName, version, { includeAgentFiles: full })
     setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
-    setHeader(event, 'Cache-Control', 's-maxage=3600, stale-while-revalidate=86400')
+    setHeader(event, 'Cache-Control', CACHE_HEADER)
     return content
   } catch (error: unknown) {
     handleApiError(error, {

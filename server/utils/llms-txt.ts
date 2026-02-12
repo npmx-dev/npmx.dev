@@ -1,13 +1,6 @@
-import * as v from 'valibot'
 import type { Packument } from '@npm/types'
 import type { JsDelivrFileNode, AgentFile, LlmsTxtResult } from '#shared/types'
-import { PackageRouteParamsSchema } from '#shared/schemas/package'
-import {
-  NPM_MISSING_README_SENTINEL,
-  NPM_REGISTRY,
-  CACHE_MAX_AGE_ONE_HOUR,
-} from '#shared/utils/constants'
-import { handleApiError } from '#server/utils/error-handler'
+import { NPM_MISSING_README_SENTINEL, NPM_REGISTRY } from '#shared/utils/constants'
 
 /** Well-known agent instruction files at the package root */
 const ROOT_AGENT_FILES: Record<string, string> = {
@@ -367,56 +360,4 @@ export function generateRootLlmsTxt(baseUrl: string): string {
   lines.push('')
 
   return lines.join('\n').trimEnd() + '\n'
-}
-
-/**
- * Create a cached event handler for package-level llms.txt or llms_full.txt.
- *
- * Each route file should call this factory and `export default` the result.
- * This avoids the re-export pattern that Nitro doesn't register as routes.
- */
-export function createPackageLlmsTxtHandler(options?: { full?: boolean }) {
-  const full = options?.full ?? false
-
-  return defineCachedEventHandler(
-    async event => {
-      const org = getRouterParam(event, 'org')
-      const name = getRouterParam(event, 'name')
-      const rawVersion = getRouterParam(event, 'version')
-
-      if (!name) {
-        throw createError({ statusCode: 404, message: 'Package name is required.' })
-      }
-
-      const rawPackageName = org ? `${org}/${name}` : name
-
-      try {
-        const { packageName, version } = v.parse(PackageRouteParamsSchema, {
-          packageName: rawPackageName,
-          version: rawVersion,
-        })
-
-        const content = await handleLlmsTxt(packageName, version, { includeAgentFiles: full })
-        setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
-        return content
-      } catch (error: unknown) {
-        handleApiError(error, {
-          statusCode: 502,
-          message: `Failed to generate ${full ? 'llms_full.txt' : 'llms.txt'}.`,
-        })
-      }
-    },
-    {
-      maxAge: CACHE_MAX_AGE_ONE_HOUR,
-      swr: true,
-      getKey: event => {
-        const org = getRouterParam(event, 'org')
-        const name = getRouterParam(event, 'name')
-        const version = getRouterParam(event, 'version')
-        const pkg = org ? `${org}/${name}` : name
-        const prefix = full ? 'llms-full-txt' : 'llms-txt'
-        return version ? `${prefix}:${pkg}@${version}` : `${prefix}:${pkg}`
-      },
-    },
-  )
 }
