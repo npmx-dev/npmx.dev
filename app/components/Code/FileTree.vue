@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { PackageFileTree } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
-import { getFileIcon } from '~/utils/file-icons'
+import type { RouteNamedMap } from 'vue-router/auto-routes'
+import { ADDITIONAL_ICONS, getFileIcon } from '~/utils/file-icons'
 
 const props = defineProps<{
   tree: PackageFileTree[]
   currentPath: string
   baseUrl: string
-  /** Base path segments for the code route (e.g., ['nuxt', 'v', '4.2.0']) */
-  basePath: string[]
+  baseRoute: Pick<RouteNamedMap['code'], 'params'>
   depth?: number
 }>()
 
@@ -23,10 +23,14 @@ function isNodeActive(node: PackageFileTree): boolean {
 
 // Build route object for a file path
 function getFileRoute(nodePath: string): RouteLocationRaw {
-  const pathSegments = [...props.basePath, ...nodePath.split('/')]
   return {
     name: 'code',
-    params: { path: pathSegments as [string, ...string[]] },
+    params: {
+      org: props.baseRoute.params.org,
+      packageName: props.baseRoute.params.packageName,
+      version: props.baseRoute.params.version,
+      filePath: nodePath ?? '',
+    },
   }
 }
 
@@ -57,14 +61,17 @@ watch(
           @click="toggleDir(node.path)"
           :classicon="isExpanded(node.path) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right'"
         >
-          <span
-            class="w-4 h-4 shrink-0"
-            :class="
-              isExpanded(node.path)
-                ? 'i-carbon:folder-open text-yellow-500'
-                : 'i-carbon:folder text-yellow-600'
-            "
-          />
+          <svg
+            class="size-[1em] me-1 shrink-0"
+            :class="isExpanded(node.path) ? 'text-yellow-500' : 'text-yellow-600'"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <use
+              :href="`/file-tree-sprite.svg#${isExpanded(node.path) ? ADDITIONAL_ICONS['folder-open'] : ADDITIONAL_ICONS['folder']}`"
+            />
+          </svg>
           <span class="truncate">{{ node.name }}</span>
         </ButtonBase>
         <CodeFileTree
@@ -72,7 +79,7 @@ watch(
           :tree="node.children"
           :current-path="currentPath"
           :base-url="baseUrl"
-          :base-path="basePath"
+          :base-route="baseRoute"
           :depth="depth + 1"
         />
       </template>
@@ -86,8 +93,15 @@ watch(
           class="w-full justify-start! rounded-none! border-none!"
           block
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
-          :classicon="getFileIcon(node.name)"
         >
+          <svg
+            class="size-[1em] me-1 shrink-0"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <use :href="`/file-tree-sprite.svg#${getFileIcon(node.name)}`" />
+          </svg>
           <span class="truncate">{{ node.name }}</span>
         </LinkBase>
       </template>

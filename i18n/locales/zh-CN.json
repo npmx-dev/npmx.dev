@@ -125,6 +125,7 @@
     "end_of_results": "没有更多结果",
     "try_again": "再试一次",
     "close": "关闭",
+    "or": "或",
     "retry": "重试",
     "copy": "复制",
     "copied": "已复制！",
@@ -142,18 +143,18 @@
     "scroll_to_top": "回到顶部"
   },
   "package": {
-    "not_found": "没有找到包",
-    "not_found_message": "找不到这个包。",
-    "no_description": "没有提供描述",
-    "not_latest": "（不是最新）",
-    "verified_provenance": "已验证的来源",
-    "view_permalink": "查看这个版本的链接",
+    "not_found": "未找到包",
+    "not_found_message": "找不到此包。",
+    "no_description": "未提供描述",
+    "not_latest": "（非最新）",
+    "verified_provenance": "已验证来源",
+    "view_permalink": "查看此版本的链接",
     "navigation": "包导航",
     "copy_name": "复制包名",
     "deprecation": {
-      "package": "这个包已经被弃用。",
-      "version": "这个版本已经被弃用。",
-      "no_reason": "没有提供原因"
+      "package": "此包已废弃。",
+      "version": "此版本已废弃。",
+      "no_reason": "未提供原因"
     },
     "replacement": {
       "title": "你可能不需要这个依赖。",
@@ -209,8 +210,8 @@
       "compare": "比较"
     },
     "likes": {
-      "like": "喜欢这个包",
-      "unlike": "取消喜欢这个包"
+      "like": "点赞此包",
+      "unlike": "取消点赞"
     },
     "docs": {
       "not_available": "文档不可用",
@@ -232,10 +233,10 @@
       "locally": "本地运行"
     },
     "readme": {
-      "title": "Readme",
-      "no_readme": "没有可用的 README。",
+      "title": "自述文件",
+      "no_readme": "无可用自述文件。",
       "view_on_github": "在 GitHub 上查看",
-      "toc_title": "大纲",
+      "toc_title": "目录",
       "callout": {
         "note": "注意",
         "tip": "提示",
@@ -243,7 +244,7 @@
         "warning": "警告",
         "caution": "当心"
       },
-      "copy_as_markdown": "以 Markdown 格式复制 README"
+      "copy_as_markdown": "复制为 Markdown"
     },
     "provenance_section": {
       "title": "来源",
@@ -256,7 +257,16 @@
       "view_more_details": "查看更多详情",
       "error_loading": "加载来源详情失败"
     },
-    "security_downgrade": {},
+    "security_downgrade": {
+      "title": "信任度降低",
+      "description_to_none_provenance": "此版本发布时未包含 {provenance}。",
+      "description_to_none_trustedPublisher": "此版本发布时未包含 {trustedPublishing}。",
+      "description_to_provenance_trustedPublisher": "此版本使用了 {provenance} 但未包含 {trustedPublishing}。",
+      "fallback_install_provenance": "安装命令已锁定为 {version}，这是最后一个具有来源的版本。",
+      "fallback_install_trustedPublisher": "安装命令已锁定为 {version}，这是最后一个具有可信发布的版本。",
+      "provenance_link_text": "来源",
+      "trusted_publishing_link_text": "可信发布"
+    },
     "keywords_title": "关键词",
     "compatibility": "兼容性",
     "card": {
@@ -278,7 +288,16 @@
       "more_tagged": "还有 {count} 个标签",
       "all_covered": "所有版本均已包含于上方标签中。",
       "deprecated_title": "{version}（已弃用）",
-      "view_all": "查看全部 {count} 个版本"
+      "view_all": "查看全部 {count} 个版本",
+      "distribution_title": "语义化版本分组",
+      "distribution_modal_title": "版本",
+      "grouping_major": "主版本",
+      "grouping_minor": "次版本",
+      "recent_versions_only": "仅显示最近版本",
+      "recent_versions_only_tooltip": "仅显示在过去一年内发布的版本。",
+      "show_low_usage": "显示低使用率版本",
+      "show_low_usage_tooltip": "包括下载量低于 1% 的版本组。",
+      "date_range_tooltip": "仅显示最近一周的版本分布情况"
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
@@ -330,12 +349,16 @@
       "legend_estimation": "估算值",
       "no_data": "无可用数据",
       "y_axis_label": "{granularity} {facet}",
+      "facet": "维度",
+      "title": "趋势",
       "items": {
-        "downloads": "下载量"
+        "downloads": "下载量",
+        "likes": "喜欢"
       }
     },
     "downloads": {
       "title": "每周下载量",
+      "modal_title": "每周下载量",
       "analyze": "分析下载量",
       "community_distribution": "查看社区采用分布"
     },
@@ -374,7 +397,8 @@
         "high": "高",
         "moderate": "中等",
         "low": "低"
-      }
+      },
+      "fixed_in_title": "修复于版本 {version}"
     },
     "deprecated": {
       "label": "已弃用",
@@ -448,7 +472,8 @@
       "warning": "警告",
       "warning_text": "这将允许 npmx 访问你的 npm CLI。请仅连接你信任的站点。",
       "connect": "连接",
-      "connecting": "连接中…"
+      "connecting": "连接中…",
+      "auto_open_url": "自动打开认证页面"
     }
   },
   "operations": {
@@ -464,7 +489,9 @@
       "otp_placeholder": "输入 OTP 代码…",
       "otp_label": "一次性代码",
       "retry_otp": "使用 OTP 重试",
+      "retry_web_auth": "使用网页认证重试",
       "retrying": "重试中…",
+      "open_web_auth": "打开网页认证链接",
       "approve_operation": "批准操作",
       "remove_operation": "移除操作",
       "approve_all": "批准所有",
@@ -816,7 +843,7 @@
     "connect_npm_cli": "连接到 npm CLI",
     "connect_atmosphere": "连接到 Atmosphere",
     "connecting": "连接中…",
-    "ops": "ops"
+    "ops": "{count} 个操作"
   },
   "auth": {
     "modal": {
@@ -967,6 +994,9 @@
         "types_none": "无",
         "vulnerabilities_summary": "{count}（{critical} 严重/{high} 高）",
         "up_to_you": "由你决定!"
+      },
+      "trends": {
+        "title": "比较趋势"
       }
     }
   },
@@ -1048,6 +1078,36 @@
     "changes": {
       "title": "本政策的变更",
       "p1": "我们可能会不时更新本隐私政策。任何更改都将发布在此页面上，并附有更新的修订日期。"
+    }
+  },
+  "a11y": {
+    "title": "无障碍",
+    "footer_title": "无障碍",
+    "welcome": "我们希望 {app} 能够被尽可能多的人使用。",
+    "approach": {
+      "title": "我们的做法",
+      "p1": "我们尝试遵循 Web 内容无障碍指南（WCAG）2.2，并在构建功能时将其作为参考。我们不声称完全符合任何级别的 WCAG——无障碍是一个持续的过程，总是有更多的工作要做。",
+      "p2": "此站点是一个 {about}。无障碍改进是我们常规开发的一部分，逐步进行。",
+      "about_link": "开源、社区驱动的项目"
+    },
+    "measures": {
+      "title": "具体措施",
+      "p1": "我们在全站致力于落实以下措施：",
+      "li1": "在适当时使用语义化 HTML 和 ARIA 属性。",
+      "li2": "使用相对字号，以便用户在浏览器中调整。",
+      "li3": "支持全站键盘导航。",
+      "li4": "遵循 prefers-reduced-motion 和 prefers-color-scheme 媒体查询。",
+      "li5": "设计时确保足够的颜色对比度。",
+      "li6": "确保在禁用 JavaScript 时仍可访问基本内容（部分交互功能除外）。"
+    },
+    "limitations": {
+      "title": "已知限制",
+      "p1": "网站的某些部分，特别是第三方内容（如包的自述文件），可能不符合无障碍标准。我们正在努力改善这些问题。"
+    },
+    "contact": {
+      "title": "反馈",
+      "p1": "如果你在 {app} 上遇到无障碍问题，请通过在我们的 {link} 上提交问题来告诉我们。我们会认真对待这些报告，并尽力解决它们。",
+      "link": "GitHub 仓库"
     }
   }
 }

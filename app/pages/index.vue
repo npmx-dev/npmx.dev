@@ -2,9 +2,9 @@
 import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
-const { isAlgolia } = useSearchProvider()
+const { searchProvider } = useSearchProvider()
 
-const searchQuery = shallowRef('')
+const searchQuery = useGlobalSearchQuery()
 const isSearchFocused = shallowRef(false)
 
 async function search() {
@@ -12,7 +12,7 @@ async function search() {
   if (!query) return
   await navigateTo({
     path: '/search',
-    query: query ? { q: query } : undefined,
+    query: query ? { q: query, p: searchProvider.value === 'npm' ? 'npm' : undefined } : undefined,
   })
   const newQuery = searchQuery.value.trim()
   if (newQuery !== query) {
@@ -26,7 +26,7 @@ const handleInputAlgolia = debounce(search, 80, { leading: true, trailing: true 
 function handleInput() {
   if (isTouchDevice()) {
     search()
-  } else if (isAlgolia.value) {
+  } else if (searchProvider.value === 'algolia') {
     handleInputAlgolia()
   } else {
     handleInputNpm()

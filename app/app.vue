@@ -127,7 +127,7 @@ if (import.meta.client) {
 
     <AppHeader :show-logo="!isHomepage" />
 
-    <div id="main-content" class="flex-1 flex flex-col">
+    <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
       <NuxtPage />
     </div>
 

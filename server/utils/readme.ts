@@ -13,6 +13,7 @@ interface PlaygroundProvider {
   id: string // Provider identifier
   name: string
   domains: string[] // Associated domains
+  path?: string
   icon?: string // Provider icon name
 }
 
@@ -74,6 +75,13 @@ const PLAYGROUND_PROVIDERS: PlaygroundProvider[] = [
     domains: ['vite.new'],
     icon: 'vite',
   },
+  {
+    id: 'typescript-playground',
+    name: 'TypeScript Playground',
+    domains: ['typescriptlang.org'],
+    path: '/play',
+    icon: 'typescript',
+  },
 ]
 
 /**
@@ -86,7 +94,10 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
 
     for (const provider of PLAYGROUND_PROVIDERS) {
       for (const domain of provider.domains) {
-        if (hostname === domain || hostname.endsWith(`.${domain}`)) {
+        if (
+          (hostname === domain || hostname.endsWith(`.${domain}`)) &&
+          (!provider.path || parsed.pathname.startsWith(provider.path))
+        ) {
           return provider
         }
       }
@@ -210,6 +221,16 @@ const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
   return true
 }
 
+const replaceHtmlLink = (html: string) => {
+  return html.replace(/href="([^"]+)"/g, (match, href) => {
+    if (isNpmJsUrlThatCanBeRedirected(new URL(href, 'https://www.npmjs.com'))) {
+      const newHref = href.replace(/^https?:\/\/(www\.)?npmjs\.com/, '')
+      return `href="${newHref}"`
+    }
+    return match
+  })
+}
+
 /**
  * Resolve a relative URL to an absolute URL.
  * If repository info is available, resolve to provider's raw file URLs.
@@ -319,7 +340,7 @@ export async function renderReadmeHtml(
   packageName: string,
   repoInfo?: RepositoryInfo,
 ): Promise<ReadmeResponse> {
-  if (!content) return { html: '', md: '', playgroundLinks: [], toc: [] }
+  if (!content) return { html: '', playgroundLinks: [], toc: [] }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
@@ -390,35 +411,15 @@ ${html}
     return `<img src="${resolvedHref}"${altAttr}${titleAttr}>`
   }
 
-  // Resolve link URLs, add security attributes, and collect playground links
+  // // Resolve link URLs, add security attributes, and collect playground links
   renderer.link = function ({ href, title, tokens }: Tokens.Link) {
-    const resolvedHref = resolveUrl(href, packageName, repoInfo)
     const text = this.parser.parseInline(tokens)
     const titleAttr = title ? ` title="${title}"` : ''
+    const plainText = text.replace(/<[^>]*>/g, '').trim()
 
-    const isExternal = resolvedHref.startsWith('http://') || resolvedHref.startsWith('https://')
-    const relAttr = isExternal ? ' rel="nofollow noreferrer noopener"' : ''
-    const targetAttr = isExternal ? ' target="_blank"' : ''
+    const intermediateTitleAttr = `${` data-title-intermediate="${plainText || title}"`}`
 
-    // Check if this is a playground link
-    const provider = matchPlaygroundProvider(resolvedHref)
-    if (provider && !seenUrls.has(resolvedHref)) {
-      seenUrls.add(resolvedHref)
-
-      // Extract label from link text (strip HTML tags for plain text)
-      const plainText = text.replace(/<[^>]*>/g, '').trim()
-
-      collectedLinks.push({
-        url: resolvedHref,
-        provider: provider.id,
-        providerName: provider.name,
-        label: plainText || title || provider.name,
-      })
-    }
-
-    const hrefValue = resolvedHref.startsWith('#') ? resolvedHref.toLowerCase() : resolvedHref
-
-    return `<a href="${hrefValue}"${titleAttr}${relAttr}${targetAttr}>${text}</a>`
+    return `<a href="${href}"${titleAttr}${intermediateTitleAttr}>${text}</a>`
   }
 
   // GitHub-style callouts: > [!NOTE], > [!TIP], etc.
@@ -436,7 +437,14 @@ ${html}
     return `<blockquote>${body}</blockquote>\n`
   }
 
-  marked.setOptions({ renderer })
+  marked.setOptions({
+    renderer,
+    walkTokens: token => {
+      if (token.type === 'html') {
+        token.text = replaceHtmlLink(token.text)
+      }
+    },
+  })
 
   const rawHtml = marked.parse(content) as string
 
@@ -494,11 +502,35 @@ ${html}
         return { tagName, attribs }
       },
       a: (tagName, attribs) => {
+        if (!attribs.href) {
+          return { tagName, attribs }
+        }
+
+        const resolvedHref = resolveUrl(attribs.href, packageName, repoInfo)
+
+        const provider = matchPlaygroundProvider(resolvedHref)
+        if (provider && !seenUrls.has(resolvedHref)) {
+          seenUrls.add(resolvedHref)
+
+          collectedLinks.push({
+            url: resolvedHref,
+            provider: provider.id,
+            providerName: provider.name,
+            /**
+             * We need to set some data attribute before hand because `transformTags` doesn't
+             * provide the text of the element. This will automatically be removed, because there
+             * is an allow list for link attributes.
+             * */
+            label: attribs['data-title-intermediate'] || provider.name,
+          })
+        }
+
         // Add security attributes for external links
-        if (attribs.href && hasProtocol(attribs.href, { acceptRelative: true })) {
+        if (resolvedHref && hasProtocol(resolvedHref, { acceptRelative: true })) {
           attribs.rel = 'nofollow noreferrer noopener'
           attribs.target = '_blank'
         }
+        attribs.href = resolvedHref
         return { tagName, attribs }
       },
       div: prefixId,
@@ -511,7 +543,7 @@ ${html}
 
   return {
     html: convertToEmoji(sanitized),
-    md: content,
+    mdExists: Boolean(content),
     playgroundLinks: collectedLinks,
     toc,
   }

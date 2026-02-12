@@ -28,12 +28,17 @@ export interface TocItem {
  * Response from README API endpoint
  */
 export interface ReadmeResponse {
+  /** Whether the README exists */
+  mdExists?: boolean
   /** Rendered HTML content */
   html: string
-  /** Original markdown content */
-  md: string
   /** Extracted playground/demo links */
   playgroundLinks: PlaygroundLink[]
   /** Table of contents extracted from headings */
   toc: TocItem[]
+}
+
+export interface ReadmeMarkdownResponse {
+  /** Original markdown content */
+  markdown?: string
 }

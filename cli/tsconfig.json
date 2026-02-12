@@ -8,6 +8,7 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "declaration": true,
+    "types": ["node"],
     "declarationMap": true
   },
   "include": ["src/**/*.ts"],

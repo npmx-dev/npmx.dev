@@ -88,7 +88,7 @@ function handleKeydown(event: KeyboardEvent) {
   <button
     ref="triggerRef"
     type="button"
-    class="cursor-pointer flex items-center gap-1.5 px-2 py-2 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover focus-visible:outline-accent/70 hover:text-fg"
+    class="cursor-pointer flex items-center gap-1.5 px-2 py-2 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover focus-visible:outline-accent/70"
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.get_started.pm_label')"
