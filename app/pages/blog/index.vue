@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const router = useRouter()
-
 import type { BlogPostFrontmatter } from '#shared/schemas/blog'
 
 const blogModules = import.meta.glob<BlogPostFrontmatter>('./*.md', { eager: true })

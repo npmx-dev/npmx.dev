@@ -13,7 +13,7 @@ const iframeHeight = ref(300)
 const { data: embedData, status } = useLazyAsyncData<BlueskyOEmbedResponse>(
   `bluesky-embed-${embeddedId}`,
   () =>
-    $fetch('/api/atproto/bluesky-oembed', {
+    $fetch<BlueskyOEmbedResponse>('/api/atproto/bluesky-oembed', {
       query: { url, colorMode: 'system' },
     }),
   {
