@@ -1,5 +1,5 @@
+import { array, boolean, custom, isoTimestamp, object, optional, pipe, string } from 'valibot'
 import { isAtIdentifierString, type AtIdentifierString } from '@atproto/lex'
-import { custom, object, string, optional, array, boolean, pipe, isoDate } from 'valibot'
 import type { InferOutput } from 'valibot'
 
 export const AuthorSchema = object({
@@ -15,7 +15,7 @@ export const AuthorSchema = object({
 export const BlogPostSchema = object({
   authors: array(AuthorSchema),
   title: string(),
-  date: pipe(string(), isoDate()),
+  date: pipe(string(), isoTimestamp()),
   description: string(),
   path: string(),
   slug: string(),

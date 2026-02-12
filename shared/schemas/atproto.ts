@@ -1,16 +1,32 @@
 import {
-  object,
-  string,
-  startsWith,
+  boolean,
   minLength,
-  regex,
-  pipe,
   nonEmpty,
+  object,
   optional,
   picklist,
+  pipe,
+  regex,
+  startsWith,
+  string,
 } from 'valibot'
 import type { InferOutput } from 'valibot'
 import { AT_URI_REGEX, BLUESKY_URL_REGEX, ERROR_BLUESKY_URL_FAILED } from '#shared/utils/constants'
+
+/**
+ * INFO: Validates AT Protocol createSession response
+ * Used for authenticating PDS sessions.
+ */
+export const PDSSessionSchema = object({
+  did: string(),
+  handle: string(),
+  accessJwt: string(),
+  refreshJwt: string(),
+  email: string(),
+  emailConfirmed: boolean(),
+})
+
+export type PDSSessionResponse = InferOutput<typeof PDSSessionSchema>
 
 /**
  * INFO: Validates AT Protocol URI format (at://did:plc:.../app.bsky.feed.post/...)

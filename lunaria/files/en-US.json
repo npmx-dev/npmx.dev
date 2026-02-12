@@ -80,6 +80,10 @@
     "title": "Blog",
     "heading": "blog",
     "meta_description": "Insights and updates from the npmx community",
+    "atproto": {
+      "loading_bluesky_post": "Loading Bluesky post...",
+      "view_on_bluesky": "View this post on Bluesky"
+    },
     "author": {
       "view_profile": "View {name}'s profile on Bluesky"
     },
