@@ -27,6 +27,7 @@
     "lint:css": "node scripts/unocss-checker.ts",
     "generate": "nuxt generate",
     "npmx-connector": "pnpm --filter npmx-connector dev",
+    "mock-connector": "pnpm --filter npmx-connector dev:mock",
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
     "postinstall": "pnpm rebuild @resvg/resvg-js && pnpm generate:lexicons && pnpm generate:sprite && nuxt prepare && simple-git-hooks",
@@ -127,6 +128,7 @@
     "eslint-plugin-regexp": "3.0.0",
     "fast-check": "4.5.3",
     "h3": "1.15.5",
+    "h3-next": "npm:h3@2.0.1-rc.11",
     "knip": "5.83.0",
     "lint-staged": "16.2.7",
     "oxfmt": "0.27.0",
@@ -140,7 +142,7 @@
     "vue-tsc": "3.2.4"
   },
   "engines": {
-    "node": ">=24"
+    "node": "24"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

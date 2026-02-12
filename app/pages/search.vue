@@ -10,9 +10,6 @@ import { normalizeSearchParam } from '#shared/utils/url'
 const route = useRoute()
 const router = useRouter()
 
-// Search provider
-const { isAlgolia } = useSearchProvider()
-
 // Preferences (persisted to localStorage)
 const {
   viewMode,
@@ -33,8 +30,8 @@ const updateUrlPage = debounce((page: number) => {
   })
 }, 500)
 
-// The actual search query (from URL, used for API calls)
-const query = computed(() => normalizeSearchParam(route.query.q))
+const { model: searchQuery, provider: searchProvider } = useGlobalSearch()
+const query = computed(() => searchQuery.value)
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
@@ -126,7 +123,7 @@ const ALL_SORT_KEYS: SortKey[] = [
 
 // Disable sort keys the current provider can't meaningfully sort by
 const disabledSortKeys = computed<SortKey[]>(() => {
-  const supported = PROVIDER_SORT_KEYS[isAlgolia.value ? 'algolia' : 'npm']
+  const supported = PROVIDER_SORT_KEYS[searchProvider.value]
   return ALL_SORT_KEYS.filter(k => !supported.has(k))
 })
 
@@ -150,6 +147,7 @@ const {
     ...parseSearchOperators(normalizeSearchParam(route.query.q)),
   },
   initialSort: 'relevance-desc', // Default to search relevance
+  searchQueryModel: searchQuery,
 })
 
 const isRelevanceSort = computed(
@@ -168,16 +166,16 @@ const requestedSize = computed(() => {
   // When sorting by something other than relevance, fetch a large batch
   // so client-side sorting operates on a meaningful pool of matching results
   if (!isRelevanceSort.value) {
-    const cap = isAlgolia.value ? EAGER_LOAD_SIZE.algolia : EAGER_LOAD_SIZE.npm
+    const cap = EAGER_LOAD_SIZE[searchProvider.value]
     return Math.max(base, cap)
   }
   return base
 })
 
 // Reset to relevance sort when switching to a provider that doesn't support the current sort key
-watch(isAlgolia, algolia => {
+watch(searchProvider, provider => {
   const { key } = parseSortOption(sortOption.value)
-  const supported = PROVIDER_SORT_KEYS[algolia ? 'algolia' : 'npm']
+  const supported = PROVIDER_SORT_KEYS[provider]
   if (!supported.has(key)) {
     sortOption.value = 'relevance-desc'
   }
@@ -195,6 +193,7 @@ const {
   packageAvailability,
 } = useSearch(
   query,
+  searchProvider,
   () => ({
     size: requestedSize.value,
   }),

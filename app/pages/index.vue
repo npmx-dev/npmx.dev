@@ -1,37 +1,14 @@
 <script setup lang="ts">
-import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
-const { isAlgolia } = useSearchProvider()
-
-const searchQuery = shallowRef('')
+const { model: searchQuery, flushUpdateUrlQuery } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
 
 async function search() {
-  const query = searchQuery.value.trim()
-  if (!query) return
-  await navigateTo({
-    path: '/search',
-    query: query ? { q: query } : undefined,
-  })
-  const newQuery = searchQuery.value.trim()
-  if (newQuery !== query) {
-    await search()
-  }
+  flushUpdateUrlQuery()
 }
 
-const handleInputNpm = debounce(search, 250, { leading: true, trailing: true })
-const handleInputAlgolia = debounce(search, 80, { leading: true, trailing: true })
-
-function handleInput() {
-  if (isTouchDevice()) {
-    search()
-  } else if (isAlgolia.value) {
-    handleInputAlgolia()
-  } else {
-    handleInputNpm()
-  }
-}
+const { env } = useAppConfig().buildInfo
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
@@ -57,12 +34,18 @@ defineOgImageComponent('Default', {
       >
         <h1
           dir="ltr"
-          class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+          class="relative flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
         >
           <AppLogo
             class="w-12 h-12 -ms-3 sm:w-20 sm:h-20 sm:-ms-5 md:w-24 md:h-24 md:-ms-6 rounded-2xl sm:rounded-3xl"
           />
           <span class="pb-4">npmx</span>
+          <span
+            aria-hidden="true"
+            class="scale-15 transform-origin-br font-mono tracking-widest text-accent absolute bottom-3 -inset-ie-1.5"
+          >
+            {{ env === 'release' ? 'alpha' : env }}
+          </span>
         </h1>
 
         <p
@@ -104,13 +87,12 @@ defineOgImageComponent('Default', {
                   class="w-full ps-8 pe-24"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
-                  @input="handleInput"
                 />
 
                 <ButtonBase
                   type="submit"
                   variant="primary"
-                  class="absolute inset-ie-2"
+                  class="absolute inset-ie-2 border-transparent"
                   classicon="i-carbon:search"
                 >
                   <span class="sr-only sm:not-sr-only">

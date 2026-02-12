@@ -2,6 +2,8 @@
 const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disconnect } =
   useConnector()
 
+const { settings } = useSettings()
+
 const tokenInput = shallowRef('')
 const portInput = shallowRef('31415')
 const { copied, copy } = useClipboard({ copiedDuring: 2000 })
@@ -60,6 +62,16 @@ function handleDisconnect() {
           </p>
         </div>
       </div>
+
+      <!-- Connector preferences -->
+      <div class="flex flex-col gap-2">
+        <SettingsToggle
+          :label="$t('connector.modal.auto_open_url')"
+          v-model="settings.connector.autoOpenURL"
+        />
+      </div>
+
+      <div class="border-t border-border my-3" />
 
       <!-- Operations Queue -->
       <OrgOperationsQueue />
@@ -194,6 +206,14 @@ function handleDisconnect() {
               class="w-full"
               size="medium"
             />
+
+            <div class="border-t border-border my-3" />
+            <div class="flex flex-col gap-2">
+              <SettingsToggle
+                :label="$t('connector.modal.auto_open_url')"
+                v-model="settings.connector.autoOpenURL"
+              />
+            </div>
           </div>
         </details>
       </div>

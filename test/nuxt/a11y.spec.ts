@@ -115,6 +115,7 @@ import {
   AppHeader,
   AppLogo,
   BaseCard,
+  BlueskyPostEmbed,
   BuildEnvironment,
   ButtonBase,
   LinkBase,
@@ -921,7 +922,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: '',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -934,7 +937,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: 'src',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -959,7 +964,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: '',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -972,7 +979,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: 'src/index.ts',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -1222,7 +1231,9 @@ describe('component accessibility audits', () => {
           tree: mockTree,
           currentPath: '',
           baseUrl: '/package-code/vue',
-          basePath: ['vue', 'v', '3.0.0'],
+          baseRoute: {
+            params: { packageName: 'vue', version: '3.0.0', filePath: '' },
+          },
         },
       })
       const results = await runAxe(component)
@@ -2390,7 +2401,7 @@ describe('component accessibility audits', () => {
   describe('Toggle', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(SettingsToggle, {
-        props: { label: 'Enable feature' },
+        props: { label: 'Enable feature', modelValue: false },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
@@ -2401,6 +2412,7 @@ describe('component accessibility audits', () => {
         props: {
           label: 'Enable feature',
           description: 'This enables the feature',
+          modelValue: false,
         },
       })
       const results = await runAxe(component)
@@ -2449,6 +2461,18 @@ describe('component accessibility audits', () => {
           versions: mockVersions,
           distTags: mockDistTags,
           urlPattern: '/package/vue/v/{version}',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('BlueskyPostEmbed', () => {
+    it('should have no accessibility violations in pending state', async () => {
+      const component = await mountSuspended(BlueskyPostEmbed, {
+        props: {
+          uri: 'at://did:plc:u5zp7npt5kpueado77kuihyz/app.bsky.feed.post/3mejzn5mrcc2g',
         },
       })
       const results = await runAxe(component)
@@ -2538,7 +2562,7 @@ describe('background theme accessibility', () => {
       name: 'SettingsToggle',
       mount: () =>
         mountSuspended(SettingsToggle, {
-          props: { label: 'Feature', description: 'Desc' },
+          props: { label: 'Feature', description: 'Desc', modelValue: false },
         }),
     },
     {

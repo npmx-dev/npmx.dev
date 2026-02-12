@@ -151,10 +151,15 @@ export const ConnectBodySchema = v.object({
 })
 
 /**
- * Schema for /execute request body
+ * Schema for /execute request body.
+ * - `otp`: optional 6-digit OTP code for 2FA
+ * - `interactive`: when true, commands run via a real PTY (node-pty) instead of execFile, so npm's OTP handler can activate.
+ * - `openUrls`: when true (default), npm opens auth URLs in the user's browser automatically. When false, URLs are suppressed on the connector side and only returned in the response / exposed in /state
  */
 export const ExecuteBodySchema = v.object({
   otp: OtpSchema,
+  interactive: v.optional(v.boolean()),
+  openUrls: v.optional(v.boolean()),
 })
 
 /**

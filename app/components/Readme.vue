@@ -144,7 +144,7 @@ function handleClick(event: MouseEvent) {
   @apply decoration-accent text-accent;
 }
 
-.readme :deep(a[target='_blank']::after) {
+.readme :deep(a[target='_blank']:not(:has(img))::after) {
   /* I don't know what kind of sorcery this is, but it ensures this icon can't wrap to a new line on its own. */
   content: '__';
   @apply inline i-carbon:launch rtl-flip ms-1 opacity-50;
@@ -291,6 +291,7 @@ function handleClick(event: MouseEvent) {
   height: 1.25rem;
   position: absolute;
   top: 1rem;
+  left: 1rem;
 }
 
 .readme :deep(blockquote[data-callout] > p:first-child) {

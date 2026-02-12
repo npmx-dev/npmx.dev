@@ -33,6 +33,7 @@ This focus helps guide our project decisions as a community and what we choose t
   - [Available commands](#available-commands)
   - [Project structure](#project-structure)
   - [Local connector CLI](#local-connector-cli)
+  - [Mock connector (for local development)](#mock-connector-for-local-development)
 - [Code style](#code-style)
   - [TypeScript](#typescript)
   - [Server API patterns](#server-api-patterns)
@@ -104,6 +105,10 @@ pnpm dev              # Start development server
 pnpm build            # Production build
 pnpm preview          # Preview production build
 
+# Connector
+pnpm npmx-connector   # Start the real connector (requires npm login)
+pnpm mock-connector   # Start the mock connector (no npm login needed)
+
 # Code Quality
 pnpm lint             # Run linter (oxlint + oxfmt)
 pnpm lint:fix         # Auto-fix lint issues
@@ -156,6 +161,36 @@ pnpm npmx-connector
 ```
 
 The connector will check your npm authentication, generate a connection token, and listen for requests from npmx.dev.
+
+### Mock connector (for local development)
+
+If you're working on admin features (org management, package access controls, operations queue) and don't want to use your real npm account, you can run the mock connector instead:
+
+```bash
+pnpm mock-connector
+```
+
+This starts a mock connector server pre-populated with sample data (orgs, teams, members, packages). No npm login is required &mdash; operations succeed immediately without making real npm CLI calls.
+
+The mock connector prints a connection URL to the terminal, just like the real connector. Click it (or paste the token manually) to connect the UI.
+
+**Options:**
+
+```bash
+pnpm mock-connector                # default: port 31415, user "mock-user", sample data
+pnpm mock-connector --port 9999    # custom port
+pnpm mock-connector --user alice   # custom username
+pnpm mock-connector --empty        # start with no pre-populated data
+```
+
+**Default sample data:**
+
+- **@nuxt**: 4 members (mock-user, danielroe, pi0, antfu), 3 teams (core, docs, triage)
+- **@unjs**: 2 members (mock-user, pi0), 1 team (maintainers)
+- **Packages**: @nuxt/kit, @nuxt/schema, @unjs/nitro with team-based access controls
+
+> [!TIP]
+> Run `pnpm dev` in a separate terminal to start the Nuxt dev server, then click the connection URL from the mock connector to connect.
 
 ## Code style
 
@@ -381,7 +416,7 @@ npmx.dev uses [@nuxtjs/i18n](https://i18n.nuxtjs.org/) for internationalization.
 - All user-facing strings should use translation keys via `$t()` in templates and script
 - Translation files live in [`i18n/locales/`](i18n/locales) (e.g., `en-US.json`)
 - We use the `no_prefix` strategy (no `/en-US/` or `/fr-FR/` in URLs)
-- Locale preference is stored in cookies and respected on subsequent visits
+- Locale preference is stored in `localStorage` and respected on subsequent visits
 
 ### i18n commands
 
@@ -751,6 +786,74 @@ You need to either:
 
 1. Add a fixture file for that package/endpoint
 2. Update the mock handlers in `test/fixtures/mock-routes.cjs` (client) or `modules/runtime/server/cache.ts` (server)
+
+### Testing connector features
+
+Features that require authentication through the local connector (org management, package collaborators, operations queue) are tested using a mock connector server.
+
+#### Architecture
+
+The mock connector infrastructure is shared between the CLI, E2E tests, and Vitest component tests:
+
+```
+cli/src/
+├── types.ts           # ConnectorEndpoints contract (shared by real + mock)
+├── mock-state.ts      # MockConnectorStateManager (canonical source)
+├── mock-app.ts        # H3 mock app + MockConnectorServer class
+└── mock-server.ts     # CLI entry point (pnpm mock-connector)
+
+test/test-utils/       # Re-exports from cli/src/ for test convenience
+test/e2e/helpers/      # E2E-specific wrappers (fixtures, global setup)
+```
+
+Both the real server (`cli/src/server.ts`) and the mock server (`cli/src/mock-app.ts`) conform to the `ConnectorEndpoints` interface defined in `cli/src/types.ts`. This ensures the API contract is enforced by TypeScript. When adding a new endpoint, update `ConnectorEndpoints` first, then implement it in both servers.
+
+#### Vitest component tests (`test/nuxt/`)
+
+- Mock the `useConnector` composable with reactive state
+- Use `document.body` queries for components using Teleport
+- See `test/nuxt/components/HeaderConnectorModal.spec.ts` for an example
+
+```typescript
+// Create mock state
+const mockState = ref({ connected: false, npmUser: null, ... })
+
+// Mock the composable
+vi.mock('~/composables/useConnector', () => ({
+  useConnector: () => ({
+    isConnected: computed(() => mockState.value.connected),
+    // ... other properties
+  }),
+}))
+```
+
+#### Playwright E2E tests (`test/e2e/`)
+
+- A mock HTTP server starts automatically via Playwright's global setup
+- Use the `mockConnector` fixture to set up test data and the `gotoConnected` helper to navigate with authentication
+
+```typescript
+test('shows org members', async ({ page, gotoConnected, mockConnector }) => {
+  // Set up test data
+  await mockConnector.setOrgData('@testorg', {
+    users: { testuser: 'owner', member1: 'admin' },
+  })
+
+  // Navigate with connector authentication
+  await gotoConnected('/@testorg')
+
+  // Test assertions
+  await expect(page.getByRole('link', { name: '@testuser' })).toBeVisible()
+})
+```
+
+The mock connector supports test endpoints for state manipulation:
+
+- `/__test__/reset` - Reset all mock state
+- `/__test__/org` - Set org users, teams, and team members
+- `/__test__/user-orgs` - Set user's organizations
+- `/__test__/user-packages` - Set user's packages
+- `/__test__/package` - Set package collaborators
 
 ## Submitting changes
 

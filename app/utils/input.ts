@@ -26,3 +26,5 @@ export function isKeyWithoutModifiers(event: KeyboardEvent, key: string): boolea
     !event.shiftKey
   )
 }
+
+export const DATE_INPUT_MAX = '9999-12-31'
