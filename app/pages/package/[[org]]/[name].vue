@@ -246,6 +246,12 @@ const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   copiedDuring: 2000,
 })
 
+//copy package name
+const { copied: copiedVersion, copy: copyVersion } = useClipboard({
+  source: resolvedVersion.value ?? '',
+  copiedDuring: 2000,
+})
+
 // Fetch dependency analysis (lazy, client-side)
 // This is the same composable used by PackageVulnerabilityTree and PackageDeprecatedTree
 const { data: vulnTree, status: vulnTreeStatus } = useDependencyAnalysis(
@@ -716,7 +722,17 @@ const showSkeleton = shallowRef(false)
               dir="ltr"
               >{{ resolvedVersion }}</LinkBase
             >
-            <span dir="ltr" v-else>v{{ resolvedVersion }}</span>
+            <span dir="ltr" v-else class="inline-flex items-center gap-1"
+              >v{{ resolvedVersion }}
+
+              <ButtonBase
+                size="small"
+                class="opacity-50 hover:opacity-100 transition-opacity"
+                :classicon="copiedVersion ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+                :title="copiedVersion ? $t('common.copied') : $t('package.copy_version')"
+                @click="copyVersion()"
+              />
+            </span>
 
             <template v-if="hasProvenance(displayVersion)">
               <TooltipApp
