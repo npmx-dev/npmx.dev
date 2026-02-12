@@ -332,4 +332,19 @@ describe('generateRootLlmsTxt', () => {
     const output = generateRootLlmsTxt('https://npmx.dev')
     expect(output.endsWith('\n')).toBe(true)
   })
+
+  it('includes .md route patterns', () => {
+    const output = generateRootLlmsTxt('https://npmx.dev')
+
+    expect(output).toContain('https://npmx.dev/package/<name>.md')
+    expect(output).toContain('https://npmx.dev/package/<name>/v/<version>.md')
+    expect(output).toContain('https://npmx.dev/package/@<org>/<name>.md')
+    expect(output).toContain('https://npmx.dev/package/@<org>/<name>/v/<version>.md')
+  })
+
+  it('includes .md example links', () => {
+    const output = generateRootLlmsTxt('https://npmx.dev')
+
+    expect(output).toContain('[nuxt README](https://npmx.dev/package/nuxt.md)')
+  })
 })
