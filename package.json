@@ -142,7 +142,7 @@
     "vue-tsc": "3.2.4"
   },
   "engines": {
-    "node": ">=24"
+    "node": "24"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
