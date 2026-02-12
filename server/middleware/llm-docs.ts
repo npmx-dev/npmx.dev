@@ -1,7 +1,7 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { handleApiError } from '#server/utils/error-handler'
-import { handleLlmsTxt, handleOrgLlmsTxt, generateRootLlmsTxt } from '#server/utils/llms-txt'
+import { handleLlmsTxt, handleOrgLlmsTxt, generateRootLlmsTxt } from '#server/utils/llm-docs'
 
 const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
 

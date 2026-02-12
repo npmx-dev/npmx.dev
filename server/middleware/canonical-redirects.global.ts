@@ -46,7 +46,7 @@ export default defineEventHandler(async event => {
     return
   }
 
-  // /llms.txt at root is handled by the llms-txt middleware
+  // /llms.txt at root is handled by the llm-docs middleware
   if (path === '/llms.txt') {
     return
   }
