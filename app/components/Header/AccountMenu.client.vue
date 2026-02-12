@@ -18,9 +18,6 @@ const isOpen = shallowRef(false)
 /** Check if connected to at least one service */
 const hasAnyConnection = computed(() => isNpmConnected.value || !!atprotoUser.value)
 
-/** Check if connected to both services */
-const hasBothConnections = computed(() => isNpmConnected.value && !!atprotoUser.value)
-
 /** Only show count of active (pending/approved/running) operations */
 const operationCount = computed(() => activeOperations.value.length)
 
@@ -66,7 +63,7 @@ function openAuthModal() {
     >
       <span v-if="hasAnyConnection" class="flex items-center">
         <img
-          v-if="isNpmConnected && npmAvatar && !hasBothConnections"
+          v-if="npmAvatar && !atprotoUser?.avatar"
           :src="npmAvatar"
           :alt="npmUser || $t('account_menu.npm_cli')"
           width="24"
@@ -74,7 +71,7 @@ function openAuthModal() {
           class="w-6 h-6 rounded-full ring-2 ring-bg object-cover"
         />
         <img
-          v-else-if="atprotoUser?.avatar && !hasBothConnections"
+          v-else-if="atprotoUser?.avatar && !npmAvatar"
           :src="atprotoUser.avatar"
           :alt="atprotoUser.handle"
           width="24"
