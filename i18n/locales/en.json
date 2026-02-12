@@ -125,6 +125,7 @@
     "end_of_results": "End of results",
     "try_again": "Try again",
     "close": "Close",
+    "or": "or",
     "retry": "Retry",
     "copy": "copy",
     "copied": "copied!",
@@ -297,7 +298,8 @@
       "recent_versions_only_tooltip": "Show only versions published within the last year.",
       "show_low_usage": "Show low usage versions",
       "show_low_usage_tooltip": "Include version groups with less than 1% of total downloads.",
-      "date_range_tooltip": "Last week of version distributions only"
+      "date_range_tooltip": "Last week of version distributions only",
+      "y_axis_label": "Downloads"
     },
     "dependencies": {
       "title": "Dependency ({count}) | Dependencies ({count})",
@@ -472,7 +474,8 @@
       "warning": "WARNING",
       "warning_text": "This allows npmx to access your npm CLI. Only connect to sites you trust.",
       "connect": "Connect",
-      "connecting": "Connecting..."
+      "connecting": "Connecting...",
+      "auto_open_url": "Automatically open auth page"
     }
   },
   "operations": {
@@ -488,7 +491,9 @@
       "otp_placeholder": "Enter OTP code...",
       "otp_label": "One-time password",
       "retry_otp": "Retry with OTP",
+      "retry_web_auth": "Retry with web auth",
       "retrying": "Retrying...",
+      "open_web_auth": "Open web auth link",
       "approve_operation": "Approve operation",
       "remove_operation": "Remove operation",
       "approve_all": "Approve All",
@@ -1105,6 +1110,41 @@
       "title": "Feedback",
       "p1": "If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
       "link": "GitHub repository"
+    }
+  },
+  "vacations": {
+    "title": "on vacation",
+    "meta_description": "The npmx team is recharging. Discord reopens in a week.",
+    "heading": "recharging",
+    "subtitle": "we've been building npmx at a pace that has cost {some} of us sleep. we don't want that to be the norm! so we are taking a week off. together.",
+    "illustration_alt": "a single row of cosy icons",
+    "poke_log": "Poke the campfire",
+    "what": {
+      "title": "what's happening",
+      "p1": "discord is closed {dates}.",
+      "dates": "February 14 – 21",
+      "p2": "all invite links are gone and channels are locked – except {garden}, which stays open for folks who want to keep hanging out.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "in the meantime",
+      "p1": "{site} and {repo} stay open – dig in, file issues, open PRs. we'll get to everything when we're back. just don't expect a fast review. we'll be somewhere near a cosy fireplace.",
+      "repo_link": "the repo"
+    },
+    "return": {
+      "title": "see you soon",
+      "p1": "we'll come back recharged and ready for the final push to March 3rd. {social} for updates.",
+      "social_link": "follow us on Bluesky",
+      "add_to_calendar": "remind me when Discord reopens"
+    },
+    "stats": {
+      "contributors": "Contributors",
+      "commits": "Commits",
+      "pr": "PRs Merged",
+      "subtitle": {
+        "some": "some",
+        "all": "all"
+      }
     }
   }
 }

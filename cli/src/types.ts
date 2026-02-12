@@ -1,3 +1,5 @@
+import './node-pty.d.ts'
+
 export interface ConnectorConfig {
   port: number
   host: string
@@ -41,6 +43,8 @@ export interface OperationResult {
   requiresOtp?: boolean
   /** True if the operation failed due to authentication failure (not logged in or token expired) */
   authFailure?: boolean
+  /** URLs detected in the command output (stdout + stderr) */
+  urls?: string[]
 }
 
 export interface PendingOperation {
@@ -54,6 +58,8 @@ export interface PendingOperation {
   result?: OperationResult
   /** ID of operation this depends on (must complete successfully first) */
   dependsOn?: string
+  /** Auth URL detected during interactive execution (set while operation is still running) */
+  authUrl?: string
 }
 
 export interface ConnectorState {
@@ -92,6 +98,7 @@ export interface ExecuteResponseData {
   results: Array<{ id: string; result: OperationResult }>
   otpRequired?: boolean
   authFailure?: boolean
+  urls?: string[]
 }
 
 /** POST /approve-all response data */
@@ -127,7 +134,10 @@ export interface ConnectorEndpoints {
   'POST /approve': { body: never; data: PendingOperation }
   'POST /approve-all': { body: never; data: ApproveAllResponseData }
   'POST /retry': { body: never; data: PendingOperation }
-  'POST /execute': { body: { otp?: string }; data: ExecuteResponseData }
+  'POST /execute': {
+    body: { otp?: string; interactive?: boolean; openUrls?: boolean }
+    data: ExecuteResponseData
+  }
   'GET /org/:org/users': { body: never; data: Record<string, OrgRole> }
   'GET /org/:org/teams': { body: never; data: string[] }
   'GET /team/:scopeTeam/users': { body: never; data: string[] }

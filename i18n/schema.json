@@ -379,6 +379,9 @@
         "close": {
           "type": "string"
         },
+        "or": {
+          "type": "string"
+        },
         "retry": {
           "type": "string"
         },
@@ -893,6 +896,9 @@
               "type": "string"
             },
             "date_range_tooltip": {
+              "type": "string"
+            },
+            "y_axis_label": {
               "type": "string"
             }
           },
@@ -1419,6 +1425,9 @@
             },
             "connecting": {
               "type": "string"
+            },
+            "auto_open_url": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1465,7 +1474,13 @@
             "retry_otp": {
               "type": "string"
             },
+            "retry_web_auth": {
+              "type": "string"
+            },
             "retrying": {
+              "type": "string"
+            },
+            "open_web_auth": {
               "type": "string"
             },
             "approve_operation": {
@@ -3315,6 +3330,111 @@
             },
             "link": {
               "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "vacations": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "illustration_alt": {
+          "type": "string"
+        },
+        "poke_log": {
+          "type": "string"
+        },
+        "what": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "dates": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            },
+            "garden": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "meantime": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "repo_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "return": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "social_link": {
+              "type": "string"
+            },
+            "add_to_calendar": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "contributors": {
+              "type": "string"
+            },
+            "commits": {
+              "type": "string"
+            },
+            "pr": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "object",
+              "properties": {
+                "some": {
+                  "type": "string"
+                },
+                "all": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false

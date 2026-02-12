@@ -3,9 +3,8 @@ import TooltipApp from '~/components/Tooltip/App.vue'
 
 const props = withDefaults(
   defineProps<{
-    label?: string
+    label: string
     description?: string
-    class?: string
     justify?: 'between' | 'start'
     tooltip?: string
     tooltipPosition?: 'top' | 'bottom' | 'left' | 'right'
@@ -20,33 +19,31 @@ const props = withDefaults(
 )
 
 const checked = defineModel<boolean>({
-  default: false,
+  required: true,
 })
+const id = useId()
 </script>
 
 <template>
-  <button
-    type="button"
-    class="w-full flex items-center gap-4 group focus-visible:outline-none py-1 -my-1"
-    :class="[justify === 'start' ? 'justify-start' : 'justify-between', $props.class]"
-    role="switch"
-    :aria-checked="checked"
-    @click="checked = !checked"
+  <label
+    :for="id"
+    class="grid items-center gap-4 py-1 -my-1 grid-cols-[auto_1fr_auto]"
+    :class="[justify === 'start' ? 'justify-start' : '']"
+    :style="
+      props.reverseOrder
+        ? 'grid-template-areas: \'toggle . label-text\''
+        : 'grid-template-areas: \'label-text . toggle\''
+    "
   >
     <template v-if="props.reverseOrder">
-      <span
-        class="inline-flex items-center h-6 w-11 shrink-0 rounded-full border p-0.25 transition-colors duration-200 shadow-sm ease-in-out motion-reduce:transition-none group-focus-visible:(outline-accent/70 outline-offset-2 outline-solid)"
-        :class="
-          checked
-            ? 'bg-accent border-accent group-hover:bg-accent/80'
-            : 'bg-fg/50 border-fg/50 group-hover:bg-fg/70'
-        "
-        aria-hidden="true"
-      >
-        <span
-          class="block h-5 w-5 rounded-full bg-bg shadow-sm transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-        />
-      </span>
+      <input
+        role="switch"
+        type="checkbox"
+        :id
+        v-model="checked"
+        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle checked:bg-fg checked:border-fg focus-visible:(outline-2 outline-fg outline-offset-2) before:content-[''] before:absolute before:h-5 before:w-5 before:top-1px before:rounded-full before:bg-bg"
+        style="grid-area: toggle"
+      />
       <TooltipApp
         v-if="tooltip && label"
         :text="tooltip"
@@ -54,11 +51,15 @@ const checked = defineModel<boolean>({
         :to="tooltipTo"
         :offset="tooltipOffset"
       >
-        <span class="text-sm text-fg font-medium text-start">
+        <span class="text-sm text-fg font-medium text-start" style="grid-area: label-text">
           {{ label }}
         </span>
       </TooltipApp>
-      <span v-else-if="label" class="text-sm text-fg font-medium text-start">
+      <span
+        v-else-if="label"
+        class="text-sm text-fg font-medium text-start"
+        style="grid-area: label-text"
+      >
         {{ label }}
       </span>
     </template>
@@ -70,83 +71,109 @@ const checked = defineModel<boolean>({
         :to="tooltipTo"
         :offset="tooltipOffset"
       >
-        <span class="text-sm text-fg font-medium text-start">
+        <span class="text-sm text-fg font-medium text-start" style="grid-area: label-text">
           {{ label }}
         </span>
       </TooltipApp>
-      <span v-else-if="label" class="text-sm text-fg font-medium text-start">
+      <span
+        v-else-if="label"
+        class="text-sm text-fg font-medium text-start"
+        style="grid-area: label-text"
+      >
         {{ label }}
       </span>
-      <span
-        class="inline-flex items-center h-6 w-11 shrink-0 rounded-full border p-0.25 transition-colors duration-200 shadow-sm ease-in-out motion-reduce:transition-none group-focus-visible:(outline-accent/70 outline-offset-2 outline-solid)"
-        :class="
-          checked
-            ? 'bg-accent border-accent group-hover:bg-accent/80'
-            : 'bg-fg/50 border-fg/50 group-hover:bg-fg/70'
-        "
-        aria-hidden="true"
-      >
-        <span
-          class="block h-5 w-5 rounded-full bg-bg shadow-sm transition-transform duration-200 ease-in-out motion-reduce:transition-none"
-        />
-      </span>
+      <input
+        role="switch"
+        type="checkbox"
+        :id
+        v-model="checked"
+        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle checked:bg-fg checked:border-fg focus-visible:(outline-2 outline-fg outline-offset-2) before:content-[''] before:absolute before:h-5 before:w-5 before:top-1px before:rounded-full before:bg-bg"
+        style="grid-area: toggle; justify-self: end"
+      />
     </template>
-  </button>
+  </label>
   <p v-if="description" class="text-sm text-fg-muted mt-2">
     {{ description }}
   </p>
 </template>
 
 <style scoped>
-/* Default order: label first, toggle last */
-button[aria-checked='false'] > span:last-of-type > span {
-  translate: 0;
-}
-button[aria-checked='true'] > span:last-of-type > span {
-  translate: calc(100%);
-}
-html[dir='rtl'] button[aria-checked='true'] > span:last-of-type > span {
-  translate: calc(-100%);
+/* Thumb position: logical property for RTL support */
+.toggle::before {
+  inset-inline-start: 1px;
 }
 
-/* Reverse order: toggle first, label last */
-button[aria-checked='false'] > span:first-of-type > span {
-  translate: 0;
-}
-button[aria-checked='true'] > span:first-of-type > span {
-  translate: calc(100%);
-}
-html[dir='rtl'] button[aria-checked='true'] > span:first-of-type > span {
-  translate: calc(-100%);
+/* Track transition */
+.toggle {
+  transition:
+    background-color 200ms ease-in-out,
+    border-color 100ms ease-in-out;
 }
 
+.toggle::before {
+  transition:
+    background-color 200ms ease-in-out,
+    translate 200ms ease-in-out;
+}
+
+/* Hover states */
+.toggle:hover:not(:checked) {
+  background: var(--fg-muted);
+}
+
+.toggle:checked:hover {
+  background: var(--fg-muted);
+  border-color: var(--fg-muted);
+}
+
+/* RTL-aware checked thumb position */
+:dir(ltr) .toggle:checked::before {
+  translate: 20px;
+}
+
+:dir(rtl) .toggle:checked::before {
+  translate: -20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle,
+  .toggle::before {
+    transition: none;
+  }
+}
+
+/* Support forced colors */
 @media (forced-colors: active) {
-  /* make toggle tracks and thumb visible in forced colors. */
-  button[role='switch'] {
-    & > span:last-of-type,
-    & > span:first-of-type {
-      forced-color-adjust: none;
-    }
+  label > span {
+    background: Canvas;
+    color: Highlight;
+    forced-color-adjust: none;
+  }
 
-    &[aria-checked='false'] > span:last-of-type,
-    &[aria-checked='false'] > span:first-of-type {
-      background: Canvas;
-      border-color: CanvasText;
+  label:has(.toggle:checked) > span {
+    background: Highlight;
+    color: Canvas;
+  }
 
-      & > span {
-        background: CanvasText;
-      }
-    }
+  .toggle::before {
+    forced-color-adjust: none;
+    background-color: Highlight;
+  }
 
-    &[aria-checked='true'] > span:last-of-type,
-    &[aria-checked='true'] > span:first-of-type {
-      background: Highlight;
-      border-color: Highlight;
+  .toggle,
+  .toggle:hover {
+    background: Canvas;
+    border-color: CanvasText;
+  }
 
-      & > span {
-        background: HighlightText;
-      }
-    }
+  .toggle:checked,
+  .toggle:checked:hover {
+    background: Highlight;
+    border-color: CanvasText;
+  }
+
+  .toggle:checked::before {
+    background: Canvas;
   }
 }
 </style>

@@ -69,12 +69,12 @@ function isCategoryNoneSelected(category: string): boolean {
           :disabled="facet.comingSoon"
           :aria-pressed="isFacetSelected(facet.id)"
           :aria-label="facet.label"
-          class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs rounded border transition-colors duration-200 focus-visible:outline-accent/70"
+          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
           :class="
             facet.comingSoon
               ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
               : isFacetSelected(facet.id)
-                ? 'text-fg-muted bg-bg-muted border-border'
+                ? 'text-fg-muted bg-bg-muted'
                 : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border'
           "
           @click="!facet.comingSoon && toggleFacet(facet.id)"

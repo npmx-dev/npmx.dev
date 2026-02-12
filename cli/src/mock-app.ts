@@ -230,13 +230,18 @@ function createMockConnectorApp(stateManager: MockConnectorStateManager) {
     requireAuth(event)
 
     const body = await event.req.json().catch(() => ({}))
-    const otp = (body as { otp?: string })?.otp
+    const { otp } = body as { otp?: string; interactive?: boolean; openUrls?: boolean }
 
-    const { results, otpRequired } = stateManager.executeOperations({ otp })
+    const { results, otpRequired, authFailure, urls } = stateManager.executeOperations({ otp })
 
     return {
       success: true,
-      data: { results, otpRequired },
+      data: {
+        results,
+        otpRequired,
+        authFailure,
+        urls,
+      },
     } satisfies ApiResponse<ConnectorEndpoints['POST /execute']['data']>
   })
 

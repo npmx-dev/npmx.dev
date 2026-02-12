@@ -149,6 +149,7 @@ export default defineNuxtConfig({
     '/privacy': { prerender: true },
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
+    '/recharging': { prerender: true },
     // proxy for insights
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
@@ -227,6 +228,9 @@ export default defineNuxtConfig({
 
   htmlValidator: {
     enabled: !isCI || (provider !== 'vercel' && !!process.env.VALIDATE_HTML),
+    options: {
+      rules: { 'meta-refresh': 'off' },
+    },
     failOnError: true,
   },
 

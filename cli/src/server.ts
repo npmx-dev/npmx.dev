@@ -51,6 +51,8 @@ import {
   ownerRemove,
   packageInit,
   listUserPackages,
+  extractUrls,
+  type ExecNpmOptions,
   type NpmExecResult,
 } from './npm-client.ts'
 import {
@@ -335,8 +337,10 @@ export function createConnectorApp(expectedToken: string) {
       throw new HTTPError({ statusCode: 401, message: 'Unauthorized' })
     }
 
-    // OTP can be passed directly in the request body for this execution
+    // OTP, interactive flag, and openUrls can be passed in the request body
     let otp: string | undefined
+    let interactive = false
+    let openUrls = false
     try {
       const rawBody = await event.req.json()
       if (rawBody) {
@@ -345,6 +349,8 @@ export function createConnectorApp(expectedToken: string) {
           throw new HTTPError({ statusCode: 400, message: parsed.error })
         }
         otp = parsed.data.otp
+        interactive = parsed.data.interactive ?? false
+        openUrls = parsed.data.openUrls ?? false
       }
     } catch (err) {
       // Re-throw HTTPError, ignore JSON parse errors (empty body is fine)
@@ -356,6 +362,9 @@ export function createConnectorApp(expectedToken: string) {
     let otpRequired = false
     const completedIds = new Set<string>()
     const failedIds = new Set<string>()
+
+    // Collect all URLs across all operations in this execution batch
+    const allUrls: string[] = []
 
     // Execute operations in waves, respecting dependencies
     // Each wave contains operations whose dependencies are satisfied
@@ -393,8 +402,9 @@ export function createConnectorApp(expectedToken: string) {
       // Execute ready operations in parallel
       const runningOps = readyOps.map(async op => {
         op.status = 'running'
-        const result = await executeOperation(op, otp)
+        const result = await executeOperation(op, { otp, interactive, openUrls })
         op.result = result
+        op.authUrl = undefined
         op.status = result.exitCode === 0 ? 'completed' : 'failed'
 
         if (result.exitCode === 0) {
@@ -408,6 +418,11 @@ export function createConnectorApp(expectedToken: string) {
           otpRequired = true
         }
 
+        // Collect URLs from this operation's output
+        if (result.urls && result.urls.length > 0) {
+          allUrls.push(...result.urls)
+        }
+
         results.push({ id: op.id, result })
       })
 
@@ -417,12 +432,15 @@ export function createConnectorApp(expectedToken: string) {
     // Check if any operation had an auth failure
     const authFailure = results.some(r => r.result.authFailure)
 
+    const urls = [...new Set(allUrls)]
+
     return {
       success: true,
       data: {
         results,
         otpRequired,
         authFailure,
+        urls: urls.length > 0 ? urls : undefined,
       },
     } satisfies ApiResponse<ConnectorEndpoints['POST /execute']['data']>
   })
@@ -725,42 +743,76 @@ export function createConnectorApp(expectedToken: string) {
   return app
 }
 
-async function executeOperation(op: PendingOperation, otp?: string): Promise<NpmExecResult> {
+async function executeOperation(
+  op: PendingOperation,
+  options: { otp?: string; interactive?: boolean; openUrls?: boolean } = {},
+): Promise<NpmExecResult> {
   const { type, params } = op
+
+  // Build exec options that get passed through to execNpm, which
+  // internally routes to either execFile or PTY-based execution.
+  const execOptions: ExecNpmOptions = {
+    otp: options.otp,
+    interactive: options.interactive,
+    openUrls: options.openUrls,
+    onAuthUrl: options.interactive
+      ? url => {
+          // Set authUrl on the operation so /state exposes it to the
+          // frontend while npm is still polling for authentication.
+          op.authUrl = url
+        }
+      : undefined,
+  }
+
+  let result: NpmExecResult
 
   switch (type) {
     case 'org:add-user':
-      return orgAddUser(
+    case 'org:set-role':
+      result = await orgAddUser(
         params.org,
         params.user,
         params.role as 'developer' | 'admin' | 'owner',
-        otp,
+        execOptions,
       )
+      break
     case 'org:rm-user':
-      return orgRemoveUser(params.org, params.user, otp)
+      result = await orgRemoveUser(params.org, params.user, execOptions)
+      break
     case 'team:create':
-      return teamCreate(params.scopeTeam, otp)
+      result = await teamCreate(params.scopeTeam, execOptions)
+      break
     case 'team:destroy':
-      return teamDestroy(params.scopeTeam, otp)
+      result = await teamDestroy(params.scopeTeam, execOptions)
+      break
     case 'team:add-user':
-      return teamAddUser(params.scopeTeam, params.user, otp)
+      result = await teamAddUser(params.scopeTeam, params.user, execOptions)
+      break
     case 'team:rm-user':
-      return teamRemoveUser(params.scopeTeam, params.user, otp)
+      result = await teamRemoveUser(params.scopeTeam, params.user, execOptions)
+      break
     case 'access:grant':
-      return accessGrant(
+      result = await accessGrant(
         params.permission as 'read-only' | 'read-write',
         params.scopeTeam,
         params.pkg,
-        otp,
+        execOptions,
       )
+      break
     case 'access:revoke':
-      return accessRevoke(params.scopeTeam, params.pkg, otp)
+      result = await accessRevoke(params.scopeTeam, params.pkg, execOptions)
+      break
     case 'owner:add':
-      return ownerAdd(params.user, params.pkg, otp)
+      result = await ownerAdd(params.user, params.pkg, execOptions)
+      break
     case 'owner:rm':
-      return ownerRemove(params.user, params.pkg, otp)
+      result = await ownerRemove(params.user, params.pkg, execOptions)
+      break
     case 'package:init':
-      return packageInit(params.name, params.author, otp)
+      // package:init has its own special execution path (temp dir + publish)
+      // and does not support interactive mode
+      result = await packageInit(params.name, params.author, options.otp)
+      break
     default:
       return {
         stdout: '',
@@ -768,6 +820,14 @@ async function executeOperation(op: PendingOperation, otp?: string): Promise<Npm
         exitCode: 1,
       }
   }
+
+  // Extract URLs from output if not already populated
+  if (!result.urls) {
+    const urls = extractUrls((result.stdout || '') + '\n' + (result.stderr || ''))
+    if (urls.length > 0) result.urls = urls
+  }
+
+  return result
 }
 
 export { generateToken }

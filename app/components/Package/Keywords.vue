@@ -2,6 +2,8 @@
 defineProps<{
   keywords?: string[]
 }>()
+
+const { model } = useGlobalSearch()
 </script>
 <template>
   <CollapsibleSection v-if="keywords?.length" :title="$t('package.keywords_title')" id="keywords">
@@ -10,7 +12,8 @@ defineProps<{
         <LinkBase
           variant="button-secondary"
           size="small"
-          :to="{ name: 'search', query: { q: `keywords:${keyword}` } }"
+          :to="{ name: 'search', query: { q: `keyword:${keyword}` } }"
+          @click="model = `keyword:${keyword}`"
         >
           {{ keyword }}
         </LinkBase>

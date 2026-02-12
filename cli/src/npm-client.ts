@@ -68,6 +68,8 @@ export interface NpmExecResult {
   requiresOtp?: boolean
   /** True if the operation failed due to authentication failure (not logged in or token expired) */
   authFailure?: boolean
+  /** URLs detected in the command output (stdout + stderr) */
+  urls?: string[]
 }
 
 function detectOtpRequired(stderr: string): boolean {
@@ -116,10 +118,200 @@ function filterNpmWarnings(stderr: string): string {
     .trim()
 }
 
-async function execNpm(
+const URL_RE = /https?:\/\/[^\s<>"{}|\\^`[\]]+/g
+
+export function extractUrls(text: string): string[] {
+  const matches = text.match(URL_RE)
+  if (!matches) return []
+
+  const cleaned = matches.map(url => url.replace(/[.,;:!?)]+$/, ''))
+  return [...new Set(cleaned)]
+}
+
+// Patterns to detect npm's OTP prompt in pty output
+const OTP_PROMPT_RE = /Enter OTP:/i
+// Patterns to detect npm's web auth URL prompt in pty output
+const AUTH_URL_PROMPT_RE = /Press ENTER to open in the browser/i
+// npm prints "Authenticate your account at:\n<url>" — capture the URL on the next line
+const AUTH_URL_TITLE_RE = /Authenticate your account at:\s*(https?:\/\/\S+)/
+
+function stripAnsi(text: string): string {
+  // eslint disabled because we need escape characters in regex
+  // eslint-disable-next-line no-control-regex, regexp/no-obscure-range
+  return text.replace(/\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g, '')
+}
+
+const AUTH_URL_TIMEOUT_MS = 90_000
+
+export interface ExecNpmOptions {
+  otp?: string
+  silent?: boolean
+  /** When true, use PTY-based interactive execution instead of execFile. */
+  interactive?: boolean
+  /** When true, npm opens auth URLs in the user's browser.
+   *  When false, browser opening is suppressed via npm_config_browser=false.
+   *  Only relevant when `interactive` is true. */
+  openUrls?: boolean
+  /** Called when an auth URL is detected in the pty output, while npm is still running (polling doneUrl). Lets the caller expose the URL to the frontend via /state before the execute response comes back.
+   *  Only relevant when `interactive` is true. */
+  onAuthUrl?: (url: string) => void
+}
+
+/**
+ * PTY-based npm execution for interactive commands (uses node-pty).
+ *
+ * - Web OTP - either open URL in browser if openUrls is true or passes the URL to frontend. If no auth happend within AUTH_URL_TIMEOUT_MS kills the process to unlock the connector.
+ *
+ * - CLI OTP - if we get a classic OTP prompt will either return OTP request to the frontend or will pass sent OTP if its provided
+ */
+async function execNpmInteractive(
   args: string[],
-  options: { otp?: string; silent?: boolean } = {},
+  options: ExecNpmOptions = {},
 ): Promise<NpmExecResult> {
+  const openUrls = options.openUrls === true
+
+  // Lazy-load node-pty so the native addon is only required when interactive mode is actually used.
+  const pty = await import('@lydell/node-pty')
+
+  return new Promise(resolve => {
+    const npmArgs = options.otp ? [...args, '--otp', options.otp] : args
+
+    if (!options.silent) {
+      const displayCmd = options.otp
+        ? ['npm', ...args, '--otp', '******'].join(' ')
+        : ['npm', ...args].join(' ')
+      logCommand(`${displayCmd} (interactive/pty)`)
+    }
+
+    let output = ''
+    let resolved = false
+    let otpPromptSeen = false
+    let authUrlSeen = false
+    let enterSent = false
+    let authUrlTimeout: ReturnType<typeof setTimeout> | null = null
+    let authUrlTimedOut = false
+
+    const env: Record<string, string> = {
+      ...(process.env as Record<string, string>),
+      FORCE_COLOR: '0',
+    }
+
+    // When openUrls is false, tell npm not to open the browser.
+    // npm still prints the auth URL and polls doneUrl
+    if (!openUrls) {
+      env.npm_config_browser = 'false'
+    }
+
+    const child = pty.spawn('npm', npmArgs, {
+      name: 'xterm-256color',
+      cols: 120,
+      rows: 30,
+      env,
+    })
+
+    // General timeout: 5 minutes (covers non-auth interactive commands)
+    const timeout = setTimeout(() => {
+      if (resolved) return
+      logDebug('Interactive command timed out', { output })
+      child.kill()
+    }, 300000)
+
+    child.onData((data: string) => {
+      output += data
+      const clean = stripAnsi(data)
+      logDebug('pty data:', { text: clean.trim() })
+
+      const cleanAll = stripAnsi(output)
+
+      // Detect auth URL in output and notify the caller.
+      if (!authUrlSeen) {
+        const urlMatch = cleanAll.match(AUTH_URL_TITLE_RE)
+
+        if (urlMatch && urlMatch[1]) {
+          authUrlSeen = true
+          const authUrl = urlMatch[1].replace(/[.,;:!?)]+$/, '')
+          logDebug('Auth URL detected:', { authUrl, openUrls })
+          options.onAuthUrl?.(authUrl)
+
+          authUrlTimeout = setTimeout(() => {
+            if (resolved) return
+            authUrlTimedOut = true
+            logDebug('Auth URL timeout (90s) — killing process')
+            logError('Authentication timed out after 90 seconds')
+            child.kill()
+          }, AUTH_URL_TIMEOUT_MS)
+        }
+      }
+
+      if (authUrlSeen && openUrls && !enterSent && AUTH_URL_PROMPT_RE.test(cleanAll)) {
+        enterSent = true
+        logDebug('Web auth prompt detected, pressing ENTER')
+        child.write('\r')
+      }
+
+      if (!otpPromptSeen && OTP_PROMPT_RE.test(cleanAll)) {
+        otpPromptSeen = true
+        if (options.otp) {
+          logDebug('OTP prompt detected, writing OTP')
+          child.write(options.otp + '\r')
+        } else {
+          logDebug('OTP prompt detected but no OTP provided, killing process')
+          child.kill()
+        }
+      }
+    })
+
+    child.onExit(({ exitCode }) => {
+      if (resolved) return
+      resolved = true
+      clearTimeout(timeout)
+      if (authUrlTimeout) clearTimeout(authUrlTimeout)
+
+      const cleanOutput = stripAnsi(output)
+      logDebug('Interactive command exited:', { exitCode, output: cleanOutput })
+
+      const requiresOtp =
+        authUrlTimedOut || (otpPromptSeen && !options.otp) || detectOtpRequired(cleanOutput)
+      const authFailure = detectAuthFailure(cleanOutput)
+      const urls = extractUrls(cleanOutput)
+
+      if (!options.silent) {
+        if (exitCode === 0) {
+          logSuccess('Done')
+        } else if (requiresOtp) {
+          logError('OTP required')
+        } else if (authFailure) {
+          logError('Authentication required - please run "npm login" and restart the connector')
+        } else {
+          const firstLine = filterNpmWarnings(cleanOutput).split('\n')[0] || 'Command failed'
+          logError(firstLine)
+        }
+      }
+
+      // If auth URL timed out, force a non-zero exit code so it's marked as failed
+      const finalExitCode = authUrlTimedOut ? 1 : exitCode
+
+      resolve({
+        stdout: cleanOutput.trim(),
+        stderr: requiresOtp
+          ? 'This operation requires a one-time password (OTP).'
+          : authFailure
+            ? 'Authentication failed. Please run "npm login" and restart the connector.'
+            : filterNpmWarnings(cleanOutput),
+        exitCode: finalExitCode,
+        requiresOtp,
+        authFailure,
+        urls: urls.length > 0 ? urls : undefined,
+      })
+    })
+  })
+}
+
+async function execNpm(args: string[], options: ExecNpmOptions = {}): Promise<NpmExecResult> {
+  if (options.interactive) {
+    return execNpmInteractive(args, options)
+  }
+
   // Build the full args array including OTP if provided
   const npmArgs = options.otp ? [...args, '--otp', options.otp] : args
 
@@ -230,84 +422,98 @@ export async function orgAddUser(
   org: string,
   user: string,
   role: 'developer' | 'admin' | 'owner',
-  otp?: string,
+  options?: ExecNpmOptions,
 ): Promise<NpmExecResult> {
   validateOrgName(org)
   validateUsername(user)
-  return execNpm(['org', 'set', org, user, role], { otp })
+  return execNpm(['org', 'set', org, user, role], options)
 }
 
 export async function orgRemoveUser(
   org: string,
   user: string,
-  otp?: string,
+  options?: ExecNpmOptions,
 ): Promise<NpmExecResult> {
   validateOrgName(org)
   validateUsername(user)
-  return execNpm(['org', 'rm', org, user], { otp })
+  return execNpm(['org', 'rm', org, user], options)
 }
 
-export async function teamCreate(scopeTeam: string, otp?: string): Promise<NpmExecResult> {
+export async function teamCreate(
+  scopeTeam: string,
+  options?: ExecNpmOptions,
+): Promise<NpmExecResult> {
   validateScopeTeam(scopeTeam)
-  return execNpm(['team', 'create', scopeTeam], { otp })
+  return execNpm(['team', 'create', scopeTeam], options)
 }
 
-export async function teamDestroy(scopeTeam: string, otp?: string): Promise<NpmExecResult> {
+export async function teamDestroy(
+  scopeTeam: string,
+  options?: ExecNpmOptions,
+): Promise<NpmExecResult> {
   validateScopeTeam(scopeTeam)
-  return execNpm(['team', 'destroy', scopeTeam], { otp })
+  return execNpm(['team', 'destroy', scopeTeam], options)
 }
 
 export async function teamAddUser(
   scopeTeam: string,
   user: string,
-  otp?: string,
+  options?: ExecNpmOptions,
 ): Promise<NpmExecResult> {
   validateScopeTeam(scopeTeam)
   validateUsername(user)
-  return execNpm(['team', 'add', scopeTeam, user], { otp })
+  return execNpm(['team', 'add', scopeTeam, user], options)
 }
 
 export async function teamRemoveUser(
   scopeTeam: string,
   user: string,
-  otp?: string,
+  options?: ExecNpmOptions,
 ): Promise<NpmExecResult> {
   validateScopeTeam(scopeTeam)
   validateUsername(user)
-  return execNpm(['team', 'rm', scopeTeam, user], { otp })
+  return execNpm(['team', 'rm', scopeTeam, user], options)
 }
 
 export async function accessGrant(
   permission: 'read-only' | 'read-write',
   scopeTeam: string,
   pkg: string,
-  otp?: string,
+  options?: ExecNpmOptions,
 ): Promise<NpmExecResult> {
   validateScopeTeam(scopeTeam)
   validatePackageName(pkg)
-  return execNpm(['access', 'grant', permission, scopeTeam, pkg], { otp })
+  return execNpm(['access', 'grant', permission, scopeTeam, pkg], options)
 }
 
 export async function accessRevoke(
   scopeTeam: string,
   pkg: string,
-  otp?: string,
+  options?: ExecNpmOptions,
 ): Promise<NpmExecResult> {
   validateScopeTeam(scopeTeam)
   validatePackageName(pkg)
-  return execNpm(['access', 'revoke', scopeTeam, pkg], { otp })
+  return execNpm(['access', 'revoke', scopeTeam, pkg], options)
 }
 
-export async function ownerAdd(user: string, pkg: string, otp?: string): Promise<NpmExecResult> {
+export async function ownerAdd(
+  user: string,
+  pkg: string,
+  options?: ExecNpmOptions,
+): Promise<NpmExecResult> {
   validateUsername(user)
   validatePackageName(pkg)
-  return execNpm(['owner', 'add', user, pkg], { otp })
+  return execNpm(['owner', 'add', user, pkg], options)
 }
 
-export async function ownerRemove(user: string, pkg: string, otp?: string): Promise<NpmExecResult> {
+export async function ownerRemove(
+  user: string,
+  pkg: string,
+  options?: ExecNpmOptions,
+): Promise<NpmExecResult> {
   validateUsername(user)
   validatePackageName(pkg)
-  return execNpm(['owner', 'rm', user, pkg], { otp })
+  return execNpm(['owner', 'rm', user, pkg], options)
 }
 
 // List functions (for reading data) - silent since they're not user-triggered operations

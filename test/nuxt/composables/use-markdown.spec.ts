@@ -318,4 +318,36 @@ describe('useMarkdown', () => {
       expect(processed.value).toBe('bold and <strong>also bold</strong>')
     })
   })
+
+  describe('HTML comment stripping', () => {
+    it('strips HTML comments', () => {
+      const processed = useMarkdown({ text: '<!-- automd:badges color=yellow -->A library' })
+      expect(processed.value).toBe('A library')
+    })
+
+    it('strips HTML comments from the middle of text', () => {
+      const processed = useMarkdown({ text: 'Before <!-- comment --> after' })
+      expect(processed.value).toBe('Before  after')
+    })
+
+    it('strips multiple HTML comments', () => {
+      const processed = useMarkdown({ text: '<!-- first -->Text <!-- second -->here' })
+      expect(processed.value).toBe('Text here')
+    })
+
+    it('strips multiline HTML comments', () => {
+      const processed = useMarkdown({ text: '<!-- multi\nline\ncomment -->Text' })
+      expect(processed.value).toBe('Text')
+    })
+
+    it('returns empty string when description is only a comment', () => {
+      const processed = useMarkdown({ text: '<!-- automd:badges color=yellow -->' })
+      expect(processed.value).toBe('')
+    })
+
+    it('strips unclosed HTML comments (truncated)', () => {
+      const processed = useMarkdown({ text: 'A library <!-- automd:badges color=yel' })
+      expect(processed.value).toBe('A library ')
+    })
+  })
 })

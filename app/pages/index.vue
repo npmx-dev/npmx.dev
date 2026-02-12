@@ -1,36 +1,11 @@
 <script setup lang="ts">
-import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
-const { searchProvider } = useSearchProvider()
-
-const searchQuery = shallowRef('')
+const { model: searchQuery, flushUpdateUrlQuery } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
 
 async function search() {
-  const query = searchQuery.value.trim()
-  if (!query) return
-  await navigateTo({
-    path: '/search',
-    query: query ? { q: query, p: searchProvider.value === 'npm' ? 'npm' : undefined } : undefined,
-  })
-  const newQuery = searchQuery.value.trim()
-  if (newQuery !== query) {
-    await search()
-  }
-}
-
-const handleInputNpm = debounce(search, 250, { leading: true, trailing: true })
-const handleInputAlgolia = debounce(search, 80, { leading: true, trailing: true })
-
-function handleInput() {
-  if (isTouchDevice()) {
-    search()
-  } else if (searchProvider.value === 'algolia') {
-    handleInputAlgolia()
-  } else {
-    handleInputNpm()
-  }
+  flushUpdateUrlQuery()
 }
 
 useSeoMeta({
@@ -104,13 +79,12 @@ defineOgImageComponent('Default', {
                   class="w-full ps-8 pe-24"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
-                  @input="handleInput"
                 />
 
                 <ButtonBase
                   type="submit"
                   variant="primary"
-                  class="absolute inset-ie-2"
+                  class="absolute inset-ie-2 border-transparent"
                   classicon="i-carbon:search"
                 >
                   <span class="sr-only sm:not-sr-only">

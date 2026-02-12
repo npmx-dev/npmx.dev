@@ -58,6 +58,8 @@ export interface ExecuteOptions {
 export interface ExecuteResult {
   results: Array<{ id: string; result: OperationResult }>
   otpRequired?: boolean
+  authFailure?: boolean
+  urls?: string[]
 }
 
 export function createMockConnectorState(config: MockConnectorConfig): MockConnectorStateData {
@@ -281,6 +283,7 @@ export class MockConnectorStateManager {
           exitCode: configuredResult.exitCode ?? 1,
           requiresOtp: configuredResult.requiresOtp,
           authFailure: configuredResult.authFailure,
+          urls: configuredResult.urls,
         }
         op.result = result
         op.status = result.exitCode === 0 ? 'completed' : 'failed'
@@ -305,7 +308,15 @@ export class MockConnectorStateManager {
       }
     }
 
-    return { results }
+    const authFailure = results.some(r => r.result.authFailure)
+    const allUrls = results.flatMap(r => r.result.urls ?? [])
+    const urls = [...new Set(allUrls)]
+
+    return {
+      results,
+      authFailure: authFailure || undefined,
+      urls: urls.length > 0 ? urls : undefined,
+    }
   }
 
   /** Apply side effects of a completed operation. Param keys match schemas.ts. */

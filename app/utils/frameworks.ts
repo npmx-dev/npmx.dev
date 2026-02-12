@@ -52,6 +52,11 @@ export const SHOWCASED_FRAMEWORKS = [
     color: 'oklch(0.626 0.2663 310.4)',
   },
   {
+    name: 'analog',
+    package: '@analogjs/platform',
+    color: 'oklch(0.5205 0.2035 21.88)',
+  },
+  {
     name: 'solid',
     package: 'solid-js',
     color: 'oklch(0.4237 0.0857 255.45)',
