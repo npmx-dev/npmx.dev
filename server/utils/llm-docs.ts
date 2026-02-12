@@ -261,6 +261,34 @@ export async function handleLlmsTxt(
   return generateLlmsTxt(result)
 }
 
+/**
+ * Fetch raw README markdown for a package.
+ * Returns only the README content with no metadata wrapper.
+ */
+export async function handlePackageMd(
+  packageName: string,
+  requestedVersion?: string,
+): Promise<string> {
+  const packageData = await fetchNpmPackage(packageName)
+  const resolvedVersion = requestedVersion ?? packageData['dist-tags']?.latest
+
+  if (!resolvedVersion) {
+    throw createError({ statusCode: 404, message: 'Could not resolve package version.' })
+  }
+
+  const readmeFromPackument = getReadmeFromPackument(packageData, requestedVersion)
+  const readme = readmeFromPackument ?? (await fetchReadmeFromCdn(packageName, resolvedVersion))
+
+  if (!readme) {
+    throw createError({
+      statusCode: 404,
+      message: `No README found for ${packageName}@${resolvedVersion}.`,
+    })
+  }
+
+  return readme
+}
+
 // Validation for org names (matches server/api/registry/org/[org]/packages.get.ts)
 const NPM_ORG_NAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
 
@@ -354,12 +382,24 @@ export function generateRootLlmsTxt(baseUrl: string): string {
   lines.push('')
   lines.push(`- \`${baseUrl}/package/@<org>/llms.txt\` — organization package listing`)
   lines.push('')
+  lines.push('### Raw README Markdown (.md)')
+  lines.push('')
+  lines.push('Raw README content for a package, with no metadata wrapper.')
+  lines.push('')
+  lines.push(`- \`${baseUrl}/package/<name>.md\` — unscoped package (latest version)`)
+  lines.push(`- \`${baseUrl}/package/<name>/v/<version>.md\` — unscoped package (specific version)`)
+  lines.push(`- \`${baseUrl}/package/@<org>/<name>.md\` — scoped package (latest version)`)
+  lines.push(
+    `- \`${baseUrl}/package/@<org>/<name>/v/<version>.md\` — scoped package (specific version)`,
+  )
+  lines.push('')
   lines.push('## Examples')
   lines.push('')
   lines.push(`- [nuxt llms.txt](${baseUrl}/package/nuxt/llms.txt)`)
   lines.push(`- [nuxt llms_full.txt](${baseUrl}/package/nuxt/llms_full.txt)`)
   lines.push(`- [@nuxt/kit llms.txt](${baseUrl}/package/@nuxt/kit/llms.txt)`)
   lines.push(`- [@nuxt org packages](${baseUrl}/package/@nuxt/llms.txt)`)
+  lines.push(`- [nuxt README](${baseUrl}/package/nuxt.md)`)
   lines.push('')
 
   return lines.join('\n').trimEnd() + '\n'
