@@ -47,22 +47,36 @@ if (import.meta.server) {
   setJsonLd(createWebSiteSchema())
 }
 
+function focusSearchOrNavigate() {
+  const searchInput = document.querySelector<HTMLInputElement>(
+    'input[type="search"], input[name="q"]',
+  )
+
+  if (searchInput) {
+    searchInput.focus()
+    return
+  }
+
+  router.push({ name: 'search' })
+}
+
 onKeyDown(
   '/',
   e => {
     if (isEditableElement(e.target)) return
     e.preventDefault()
+    focusSearchOrNavigate()
+  },
+  { dedupe: true },
+)
 
-    const searchInput = document.querySelector<HTMLInputElement>(
-      'input[type="search"], input[name="q"]',
-    )
-
-    if (searchInput) {
-      searchInput.focus()
-      return
-    }
-
-    router.push({ name: 'search' })
+onKeyDown(
+  // Explicitly check Ctrl+K for broader compatibility (especially Firefox)
+  e => e.ctrlKey && e.key === 'k',
+  e => {
+    if (isEditableElement(e.target)) return
+    e.preventDefault()
+    focusSearchOrNavigate()
   },
   { dedupe: true },
 )

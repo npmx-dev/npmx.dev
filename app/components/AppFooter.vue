@@ -49,6 +49,10 @@ const showModal = () => modalRef.value?.showModal?.()
                 <span>{{ $t('shortcuts.focus_search') }}</span>
               </li>
               <li class="flex gap-2 items-center">
+                <kbd class="kbd">Ctrl</kbd>+<kbd class="kbd">K</kbd>
+                <span>{{ $t('shortcuts.focus_search') }}</span>
+              </li>
+              <li class="flex gap-2 items-center">
                 <kbd class="kbd">?</kbd>
                 <span>{{ $t('shortcuts.show_kbd_hints') }}</span>
               </li>
