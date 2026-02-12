@@ -897,6 +897,9 @@
             },
             "date_range_tooltip": {
               "type": "string"
+            },
+            "y_axis_label": {
+              "type": "string"
             }
           },
           "additionalProperties": false
