@@ -298,6 +298,7 @@ function handleClick(event: MouseEvent) {
   height: 1.25rem;
   position: absolute;
   top: 1rem;
+  left: 1rem;
 }
 
 .readme :deep(blockquote[data-callout] > p:first-child) {
