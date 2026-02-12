@@ -31,6 +31,7 @@
     "generate-pwa-icons": "pwa-assets-generator",
     "preview": "nuxt preview",
     "postinstall": "pnpm rebuild @resvg/resvg-js && pnpm generate:lexicons && pnpm generate:sprite && nuxt prepare && simple-git-hooks",
+    "conf": "simple-git-hooks",
     "generate:sprite": "node scripts/generate-file-tree-sprite.ts",
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
@@ -145,7 +146,7 @@
     "node": "24"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "[ -n \"$NO_VERIFY\" ] && exit 0\nnpx lint-staged"
   },
   "lint-staged": {
     "i18n/locales/*": [
