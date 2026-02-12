@@ -39,7 +39,7 @@ const props = withDefaults(
      * Used when `weeklyDownloads` is not provided.
      */
     packageNames?: string[]
-    repoRef?: RepoRef
+    repoRef?: RepoRef | null | undefined
     createdIso?: string | null
 
     /** When true, shows facet selector (e.g. Downloads / Likes). */
@@ -637,7 +637,7 @@ const DEFAULT_METRIC_ID: MetricId = 'downloads'
 
 type MetricContext = {
   packageName: string
-  repoRef: RepoRef | undefined
+  repoRef?: RepoRef | undefined | null
 }
 
 type MetricDef = {

@@ -8,7 +8,7 @@ import type { RepoRef } from '#shared/utils/git-providers'
 const props = defineProps<{
   packageName: string
   createdIso: string | null
-  repoRef?: RepoRef
+  repoRef?: RepoRef | null | undefined
 }>()
 
 const router = useRouter()
