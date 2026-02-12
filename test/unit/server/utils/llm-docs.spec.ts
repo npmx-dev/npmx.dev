@@ -5,7 +5,7 @@ import {
   fetchAgentFiles,
   generateLlmsTxt,
   generateRootLlmsTxt,
-} from '../../../../server/utils/llms-txt'
+} from '../../../../server/utils/llm-docs'
 
 describe('discoverAgentFiles', () => {
   it('discovers root-level agent files', () => {
