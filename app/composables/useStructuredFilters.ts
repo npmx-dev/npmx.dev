@@ -412,7 +412,9 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
 
   function removeKeyword(keyword: string) {
     filters.value.keywords = filters.value.keywords.filter(k => k !== keyword)
-    const newQ = searchQuery.value.replace(new RegExp(`keyword:${keyword}($| )`, 'g'), '').trim()
+    const newQ = searchQuery.value
+      .replace(new RegExp(`keyword:${RegExp.escape(keyword)}($| )`, 'g'), '')
+      .trim()
     router.replace({ query: { ...route.query, q: newQ || undefined } })
     if (searchQueryModel) searchQueryModel.value = newQ
   }

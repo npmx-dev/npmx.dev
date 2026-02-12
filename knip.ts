@@ -55,6 +55,7 @@ const config: KnipConfig = {
         'h3-next',
       ],
       ignoreUnresolved: ['#components', '#oauth/config'],
+      ignoreFiles: ['global.d.ts'],
     },
     'cli': {
       project: ['src/**/*.ts!', '!src/mock-*.ts'],

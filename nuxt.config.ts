@@ -203,7 +203,7 @@ export default defineNuxtConfig({
     },
     typescript: {
       tsConfig: {
-        include: ['../test/unit/server/**/*.ts'],
+        include: ['../test/unit/server/**/*.ts', '../global.d.ts'],
       },
     },
   },
@@ -287,10 +287,10 @@ export default defineNuxtConfig({
           '#cli/*': ['../cli/src/*'],
         },
       },
-      include: ['../test/unit/app/**/*.ts'],
+      include: ['../test/unit/app/**/*.ts', '../global.d.ts'],
     },
     sharedTsConfig: {
-      include: ['../test/unit/shared/**/*.ts'],
+      include: ['../test/unit/shared/**/*.ts', '../global.d.ts'],
     },
     nodeTsConfig: {
       compilerOptions: {
@@ -301,7 +301,7 @@ export default defineNuxtConfig({
           '#shared/*': ['../shared/*'],
         },
       },
-      include: ['../*.ts', '../test/e2e/**/*.ts'],
+      include: ['../*.ts', '../test/e2e/**/*.ts', '../global.d.ts'],
     },
   },
 

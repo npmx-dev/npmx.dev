@@ -1907,7 +1907,7 @@ const emojis = {
 
 const emojisKeysRegex = new RegExp(
   Object.keys(emojis)
-    .map(key => `:${key}:`)
+    .map(key => `:${RegExp.escape(key)}:`)
     .join('|'),
   'g',
 )
