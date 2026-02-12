@@ -39,7 +39,7 @@ const props = withDefaults(
      * Used when `weeklyDownloads` is not provided.
      */
     packageNames?: string[]
-    repoRef?: RepoRef | null
+    repoRef?: RepoRef
     createdIso?: string | null
 
     /** When true, shows facet selector (e.g. Downloads / Likes). */
@@ -337,7 +337,7 @@ const effectivePackageNames = computed<string[]>(() => {
   return single ? [single] : []
 })
 
-const repoRefsByPackage = shallowRef<Record<string, RepoRef | null>>({})
+const repoRefsByPackage = shallowRef<Record<string, RepoRef | undefined>>({})
 const repoRefsRequestToken = shallowRef(0)
 
 async function loadRepoRefsForPackages(packages: string[]) {
@@ -354,21 +354,21 @@ async function loadRepoRefsForPackages(packages: string[]) {
       const encoded = encodePackageName(name)
       const meta = await $fetch<PackageMetaResponse>(`/api/registry/package-meta/${encoded}`)
       const repoUrl = meta?.links?.repository
-      const ref = repoUrl ? parseRepoUrl(repoUrl) : null
+      const ref = repoUrl ? parseRepoUrl(repoUrl) : undefined
       return { name, ref }
     }),
   )
 
   if (currentToken !== repoRefsRequestToken.value) return
 
-  const next: Record<string, RepoRef | null> = {}
+  const next: Record<string, RepoRef | undefined> = {}
   for (const [index, entry] of settled.entries()) {
     const name = packages[index]
     if (!name) continue
     if (entry.status === 'fulfilled') {
-      next[name] = entry.value.ref ?? null
+      next[name] = entry.value.ref ?? undefined
     } else {
-      next[name] = null
+      next[name] = undefined
     }
   }
   repoRefsByPackage.value = next
@@ -637,7 +637,7 @@ const DEFAULT_METRIC_ID: MetricId = 'downloads'
 
 type MetricContext = {
   packageName: string
-  repoRef: RepoRef | null
+  repoRef: RepoRef | undefined
 }
 
 type MetricDef = {
@@ -856,7 +856,7 @@ async function loadMetric(metricId: MetricId) {
 
       const settled = await Promise.allSettled(
         packageNames.map(async pkg => {
-          const repoRef = metricId === 'contributors' ? repoRefsByPackage.value[pkg] : null
+          const repoRef = metricId === 'contributors' ? repoRefsByPackage.value[pkg] : undefined
           const result = await fetchFn({ packageName: pkg, repoRef })
           return { pkg, result: (result ?? []) as EvolutionData }
         }),
@@ -898,7 +898,7 @@ async function loadMetric(metricId: MetricId) {
       }
     }
 
-    const result = await fetchFn({ packageName: pkg, repoRef: props.repoRef ?? null })
+    const result = await fetchFn({ packageName: pkg, repoRef: props.repoRef })
     if (currentToken !== state.requestToken) return
 
     state.evolution = (result ?? []) as EvolutionData
@@ -1498,7 +1498,7 @@ const chartConfig = computed(() => {
           axis: {
             yLabel: $t('package.trends.y_axis_label', {
               granularity: getGranularityLabel(selectedGranularity.value),
-              facet: activeMetricDef.value.label,
+              facet: activeMetricDef.value?.label,
             }),
             yLabelOffsetX: 12,
             fontSize: isMobile.value ? 32 : 24,
@@ -1695,7 +1695,7 @@ watch(selectedMetric, value => {
     </div>
 
     <h2 id="trends-chart-title" class="sr-only">
-      {{ $t('package.trends.title') }} — {{ activeMetricDef.label }}
+      {{ $t('package.trends.title') }} — {{ activeMetricDef?.label }}
     </h2>
 
     <!-- Chart panel (active metric) -->

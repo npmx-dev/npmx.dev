@@ -8,7 +8,7 @@ import type { RepoRef } from '#shared/utils/git-providers'
 const props = defineProps<{
   packageName: string
   createdIso: string | null
-  repoRef?: RepoRef | null
+  repoRef?: RepoRef
 }>()
 
 const router = useRouter()
@@ -317,7 +317,7 @@ const config = computed(() => {
         :weeklyDownloads="weeklyDownloads"
         :inModal="true"
         :packageName="props.packageName"
-        :repoRef="props.repoRef ?? null"
+        :repoRef="props.repoRef"
         :createdIso="createdIso"
         permalink
         show-facet-selector
