@@ -43,23 +43,33 @@ defineOgImageComponent('Default', {
   <main class="container flex-1 flex flex-col py-8 sm:py-12 w-full">
     <!-- Header -->
     <header class="mb-8 pb-8 border-b border-border">
-      <div class="flex flex-wrap items-center gap-4">
-        <div>
-          <h1 class="font-mono text-2xl sm:text-3xl font-medium">{{ profile.displayName }}</h1>
+      <div class="flex flex-col flex-wrap gap-4">
+        <h1 class="font-mono text-2xl sm:text-3xl font-medium">{{ profile.displayName }}</h1>
+        <p v-if="profile.description">{{ profile.description }}</p>
+        <div class="flex gap-4">
           <h2>@{{ handle }}</h2>
-          <p v-if="profile.description">{{ profile.description }}</p>
+          <a
+            v-if="profile.website"
+            :href="profile.website"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-subtle font-mono text-sm inline-flex items-center gap-1.5"
+          >
+            <span class="i-carbon:link w-4 h-4" aria-hidden="true" />
+            {{ profile.website }}
+          </a>
         </div>
       </div>
     </header>
 
     <section class="flex flex-col gap-8">
-      <h1
+      <h2
         class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
         :title="Likes"
         dir="ltr"
       >
         Likes <span v-if="likesData">({{ likesData.likes.records.length ?? 0 }})</span>
-      </h1>
+      </h2>
       <div v-if="status === 'pending'">
         <p>Loading...</p>
       </div>
