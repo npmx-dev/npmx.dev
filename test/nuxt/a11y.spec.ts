@@ -114,6 +114,13 @@ import {
   AppFooter,
   AppHeader,
   AppLogo,
+  AuthorAvatar,
+  AuthorList,
+  BlogPostListCard,
+  BlogPostWrapper,
+  BlueskyComment,
+  BlueskyComments,
+  EmbeddableBlueskyPost,
   BaseCard,
   BuildEnvironment,
   ButtonBase,
@@ -2486,6 +2493,129 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations with long username', async () => {
       const component = await mountSuspended(UserAvatar, {
         props: { username: 'verylongusernameexample' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('AuthorAvatar', () => {
+    it('should have no accessibility violations with fallback text', async () => {
+      const component = await mountSuspended(AuthorAvatar, {
+        props: {
+          author: {
+            name: 'Daniel Roe',
+            blueskyHandle: 'danielroe.dev',
+            avatar: null,
+            profileUrl: 'https://bsky.app/profile/danielroe.dev',
+          },
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('AuthorList', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(AuthorList, {
+        props: {
+          authors: [
+            { name: 'Daniel Roe', blueskyHandle: 'danielroe.dev' },
+            { name: 'Salma Alam-Naylor' },
+          ],
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('BlogPostWrapper', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(BlogPostWrapper, {
+        props: {
+          frontmatter: {
+            authors: [{ name: 'Daniel Roe', blueskyHandle: 'danielroe.dev' }],
+            title: 'Building Accessible Vue Components',
+            date: '2024-06-15',
+            description: 'A guide to building accessible components in Vue.js applications.',
+            path: '/blog/building-accessible-vue-components',
+            slug: 'building-accessible-vue-components',
+          },
+        },
+        slots: { default: '<p>Blog post content here.</p>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('BlueskyComment', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(BlueskyComment, {
+        props: {
+          comment: {
+            uri: 'at://did:plc:2gkh62xvzokhlf6li4ol3b3d/app.bsky.feed.post/3mcg7k75fdc2k',
+            cid: 'bafyreigincphooxt7zox3blbocf6hnczzv36fkuj2zi5iuzpjgq6gk6pju',
+            author: {
+              did: 'did:plc:2gkh62xvzokhlf6li4ol3b3d',
+              handle: 'patak.dev',
+              displayName: 'patak',
+              avatar:
+                'https://cdn.bsky.app/img/avatar/plain/did:plc:2gkh62xvzokhlf6li4ol3b3d/bafkreifgzl4e5jqlakd77ajvnilsb5tufsv24h2sxfwmitkzxrh3sk6mhq@jpeg',
+            },
+            text: 'our kids will need these new stories, thanks for writing this Daniel',
+            createdAt: '2026-01-14T23:22:05.257Z',
+            likeCount: 13,
+            replyCount: 0,
+            repostCount: 0,
+            replies: [],
+          },
+          depth: 0,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('BlueskyComments', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(BlueskyComments, {
+        props: {
+          postUri: 'at://did:plc:jbeaa5kdaladzwq3r7f5xgwe/app.bsky.feed.post/3mcg6svsgsm2k',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('EmbeddableBlueskyPost', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(EmbeddableBlueskyPost, {
+        props: {
+          url: 'https://bsky.app/profile/patak.dev/post/3mcg7k75fdc2k',
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('BlogPostListCard', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(BlogPostListCard, {
+        props: {
+          authors: [{ name: 'Daniel Roe', blueskyHandle: 'danielroe.dev' }],
+          title: 'Building Accessible Vue Components',
+          topics: ['accessibility', 'vue'],
+          excerpt: 'A guide to building accessible components in Vue.js applications.',
+          published: '2024-06-15',
+          path: 'building-accessible-vue-components',
+          index: 0,
+        },
       })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
