@@ -1,7 +1,12 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
 import { handleApiError } from '#server/utils/error-handler'
-import { handleLlmsTxt, handleOrgLlmsTxt, generateRootLlmsTxt } from '#server/utils/llm-docs'
+import {
+  handleLlmsTxt,
+  handleOrgLlmsTxt,
+  generateRootLlmsTxt,
+  handlePackageMd,
+} from '#server/utils/llm-docs'
 
 const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
 
@@ -27,6 +32,49 @@ const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
  */
 export default defineEventHandler(async event => {
   const path = event.path.split('?')[0] ?? '/'
+
+  // Handle .md routes — raw README markdown
+  if (path.startsWith('/package/') && path.endsWith('.md')) {
+    const inner = path.slice('/package/'.length, -'.md'.length)
+
+    let rawPackageName: string
+    let rawVersion: string | undefined
+
+    if (inner.includes('/v/')) {
+      if (inner.startsWith('@')) {
+        const match = inner.match(/^(@[^/]+\/[^/]+)\/v\/(.+)$/)
+        if (!match?.[1] || !match[2]) return
+        rawPackageName = match[1]
+        rawVersion = match[2]
+      } else {
+        const match = inner.match(/^([^/]+)\/v\/(.+)$/)
+        if (!match?.[1] || !match[2]) return
+        rawPackageName = match[1]
+        rawVersion = match[2]
+      }
+    } else {
+      rawPackageName = inner
+    }
+
+    if (!rawPackageName) return
+
+    try {
+      const { packageName, version } = v.parse(PackageRouteParamsSchema, {
+        packageName: rawPackageName,
+        version: rawVersion,
+      })
+
+      const content = await handlePackageMd(packageName, version)
+      setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
+      setHeader(event, 'Cache-Control', CACHE_HEADER)
+      return content
+    } catch (error: unknown) {
+      handleApiError(error, {
+        statusCode: 502,
+        message: 'Failed to generate package markdown.',
+      })
+    }
+  }
 
   if (!path.endsWith('/llms.txt') && !path.endsWith('/llms_full.txt')) return
 
