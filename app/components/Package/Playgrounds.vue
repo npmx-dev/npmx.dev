@@ -33,7 +33,7 @@ const providerColors: Record<string, string> = {
 }
 
 function getIcon(provider: string): string {
-  return providerIcons[provider] || 'i-carbon:play'
+  return providerIcons[provider] || 'i-lucide:play'
 }
 
 function getColor(provider: string): string {
@@ -145,7 +145,7 @@ function focusMenuItem(index: number) {
         @keydown="handleKeydown"
       >
         <span class="flex items-center gap-2">
-          <span class="i-carbon:play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
+          <span class="i-lucide:play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
           <span class="text-fg-muted"
             >{{ $t('package.playgrounds.choose') }} ({{ links.length }})</span
           >
