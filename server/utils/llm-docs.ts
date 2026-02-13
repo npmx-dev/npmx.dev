@@ -386,11 +386,7 @@ export function generateRootLlmsTxt(baseUrl: string): string {
   lines.push('Raw README content for a package, with no metadata wrapper.')
   lines.push('')
   lines.push(`- \`${baseUrl}/package/<name>.md\` — unscoped package (latest version)`)
-  lines.push(`- \`${baseUrl}/package/<name>/v/<version>.md\` — unscoped package (specific version)`)
   lines.push(`- \`${baseUrl}/package/@<org>/<name>.md\` — scoped package (latest version)`)
-  lines.push(
-    `- \`${baseUrl}/package/@<org>/<name>/v/<version>.md\` — scoped package (specific version)`,
-  )
   lines.push('')
   lines.push('## Examples')
   lines.push('')

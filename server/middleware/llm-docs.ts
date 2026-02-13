@@ -22,8 +22,6 @@ const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
  * - /llms.txt (root discovery page)
  * - /package/:name.md (unscoped, latest, raw README)
  * - /package/@:org/:name.md (scoped, latest, raw README)
- * - /package/:name/v/:version.md (unscoped, versioned, raw README)
- * - /package/@:org/:name/v/:version.md (scoped, versioned, raw README)
  * - /package/@:org/llms.txt (org package listing)
  * - /package/:name/llms.txt (unscoped, latest)
  * - /package/:name/llms_full.txt (unscoped, latest, full)
@@ -37,38 +35,18 @@ const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
 export default defineEventHandler(async event => {
   const path = event.path.split('?')[0] ?? '/'
 
-  // Handle .md routes — raw README markdown
-  if (path.startsWith('/package/') && path.endsWith('.md')) {
-    const inner = path.slice('/package/'.length, -'.md'.length)
-
-    let rawPackageName: string
-    let rawVersion: string | undefined
-
-    if (inner.includes('/v/')) {
-      if (inner.startsWith('@')) {
-        const match = inner.match(/^(@[^/]+\/[^/]+)\/v\/(.+)$/)
-        if (!match?.[1] || !match[2]) return
-        rawPackageName = match[1]
-        rawVersion = match[2]
-      } else {
-        const match = inner.match(/^([^/]+)\/v\/(.+)$/)
-        if (!match?.[1] || !match[2]) return
-        rawPackageName = match[1]
-        rawVersion = match[2]
-      }
-    } else {
-      rawPackageName = inner
-    }
+  // Handle .md routes — raw README markdown (latest version only)
+  if (path.startsWith('/package/') && path.endsWith('.md') && !path.includes('/v/')) {
+    const rawPackageName = path.slice('/package/'.length, -'.md'.length)
 
     if (!rawPackageName) return
 
     try {
-      const { packageName, version } = v.parse(PackageRouteParamsSchema, {
+      const { packageName } = v.parse(PackageRouteParamsSchema, {
         packageName: rawPackageName,
-        version: rawVersion,
       })
 
-      const content = await handlePackageMd(packageName, version)
+      const content = await handlePackageMd(packageName)
       setHeader(event, 'Content-Type', 'text/markdown; charset=utf-8')
       setHeader(event, 'Cache-Control', CACHE_HEADER)
       return content
