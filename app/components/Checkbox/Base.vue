@@ -8,6 +8,8 @@ const props = withDefaults(
     hideRadio?: boolean
     value: string
 
+    indeterminate?: boolean
+
     /**
      * type should never be used, because this will always be a radio button.
      *
@@ -47,6 +49,7 @@ const internalId = `checkbox-${uid}`
       :id="internalId"
       :disabled="props.disabled ? true : undefined"
       @change="$emit('update:modelValue', !model)"
+      :indeterminate="props.indeterminate"
       class="size-[1em] bg-bg-muted border-border rounded disabled:opacity-50 me-1"
     />
     <slot />
