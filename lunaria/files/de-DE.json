@@ -1113,7 +1113,7 @@
       "p1": "Einige der Dinge, die wir auf der gesamten Seite anstreben:",
       "li1": "Verwendung von semantischem HTML und ARIA-Attributen, wo angemessen.",
       "li2": "Verwendung relativer Textgrößen, damit du sie im Browser anpassen kannst.",
-      "li3": "Unterstütze die Tastaturnavigation in der ganzen Benutzeroberfläche.",
+      "li3": "Unterstützung der Tastaturnavigation in der gesamten Benutzeroberfläche.",
       "li4": "Berücksichtigung der Media-Queries prefers-reduced-motion und prefers-color-scheme.",
       "li5": "Design mit ausreichendem Farbkontrast im Blick.",
       "li6": "Sicherstellung, dass wesentliche Inhalte ohne JavaScript verfügbar sind, auch wenn einige interaktive Funktionen es erfordern."
