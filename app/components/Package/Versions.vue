@@ -440,7 +440,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           >
             <span
               v-if="loadingTags.has(row.tag)"
-              class="i-carbon:rotate-180 w-3 h-3 motion-safe:animate-spin"
+              class="i-i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
               data-testid="loading-spinner"
               aria-hidden="true"
             />
@@ -595,7 +595,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           >
             <span
               v-if="otherVersionsLoading"
-              class="i-carbon:rotate-180 w-3 h-3 motion-safe:animate-spin"
+              class="i-i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
               data-testid="loading-spinner"
               aria-hidden="true"
             />

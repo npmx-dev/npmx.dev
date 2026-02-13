@@ -329,7 +329,7 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoadingTeams && teams.length === 0" class="p-8 text-center">
       <span
-        class="i-carbon:rotate-180 w-5 h-5 text-fg-muted motion-safe:animate-spin mx-auto"
+        class="i-i-svg-spinners:ring-resize w-5 h-5 text-fg-muted motion-safe:animate-spin mx-auto"
         aria-hidden="true"
       />
       <p class="font-mono text-sm text-fg-muted mt-2">{{ $t('org.teams.loading') }}</p>
@@ -388,7 +388,7 @@ watch(lastExecutionTime, () => {
             </span>
             <span
               v-if="isLoadingUsers[teamName]"
-              class="i-carbon:rotate-180 w-3 h-3 text-fg-muted motion-safe:animate-spin"
+              class="i-i-svg-spinners:ring-resize w-3 h-3 text-fg-muted motion-safe:animate-spin"
               aria-hidden="true"
             />
           </button>
