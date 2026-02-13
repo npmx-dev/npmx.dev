@@ -68,11 +68,11 @@ function parsePackageString(pkg: string): { name: string; version: string } {
     <!-- Path badge button -->
     <button
       type="button"
-      class="path-badge font-mono text-3xs px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-400 transition-all duration-200 ease-out whitespace-nowrap flex items-center gap-1 hover:bg-amber-500/20 hover:border-amber-500/50"
+      class="path-badge font-mono text-3xs px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-400 transition-all duration-200 ease-out whitespace-nowrap flex items-center gap-1 hover:bg-amber-500/20 hover:border-amber-500/50"
       :aria-expanded="isOpen"
       @click.stop="togglePopup"
     >
-      <span class="i-carbon:tree-view w-3 h-3" aria-hidden="true" />
+      <span class="i-lucide:network w-3 h-3" aria-hidden="true" />
       <span>{{ $t('package.vulnerabilities.path') }}</span>
     </button>
 

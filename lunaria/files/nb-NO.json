@@ -15,10 +15,24 @@
     "docs": "dokumentasjon",
     "source": "kildekode",
     "social": "sosialt",
-    "chat": "chat"
+    "chat": "chat",
+    "keyboard_shortcuts": "tastatursnarveier"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "Globalt",
+      "search": "Søk",
+      "package": "Pakke"
+    },
+    "focus_search": "Fokuser søk",
+    "show_kbd_hints": "Vis tastaturtips",
+    "settings": "Åpne innstillinger",
+    "compare": "Åpne sammenligning",
+    "compare_from_package": "Åpne sammenligning (forhåndsutfylt med nåværende pakke)",
+    "navigate_results": "Naviger resultater",
+    "go_to_result": "Gå til resultat",
+    "open_code_view": "Åpne kodevisning",
+    "open_docs": "Åpne dokumentasjon"
   },
   "search": {
     "label": "Søk etter npm-pakker",
@@ -26,8 +40,10 @@
     "button": "søk",
     "searching": "Søker...",
     "found_packages": "Ingen pakker funnet | Fant 1 pakke | Fant {count} pakker",
+    "found_packages_sorted": "Sorterer topp {count} resultat | Sorterer topp {count} resultater",
     "updating": "(oppdaterer...)",
     "no_results": "Ingen pakker funnet for \"{query}\"",
+    "rate_limited": "Traff npm-hastighetsgrense, prøv igjen om et øyeblikk",
     "title": "søk",
     "title_search": "søk: {search}",
     "title_packages": "søk pakker",
@@ -38,6 +54,7 @@
     "claim_button": "Gjør krav på \"{name}\"",
     "want_to_claim": "Vil du gjøre krav på dette pakkenavnet?",
     "start_typing": "Begynn å skrive for å søke etter pakker",
+    "algolia_disclaimer": "Drevet av Algolia",
     "exact_match": "eksakt",
     "suggestion": {
       "user": "bruker",
@@ -65,9 +82,17 @@
     "sections": {
       "appearance": "Utseende",
       "display": "Visning",
+      "search": "Datakilde",
       "language": "Språk"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "Datakilde",
+      "description": "Velg hvor npmx henter søkedata. Individuelle pakkesider bruker alltid npm-registeret direkte.",
+      "npm": "npm-registeret",
+      "npm_description": "Henter søk, org- og brukerlister direkte fra det offisielle npm-registeret. Autoritativt, men kan være tregere.",
+      "algolia": "Algolia",
+      "algolia_description": "Bruker Algolia for raskere søk, org- og brukersider."
+    },
     "relative_dates": "Relative datoer",
     "include_types": "Inkluder {'@'}types ved installasjon",
     "include_types_description": "Legg til {'@'}types-pakken i installasjonskommandoer for pakker uten typer",
@@ -136,8 +161,10 @@
       "documented": "{community} har flagget denne pakken da det finnes alternativer med bedre ytelse.",
       "none": "Denne pakken er flagget som ikke lenger nødvendig, og funksjonaliteten er sannsynligvis tilgjengelig innebygd i alle motorer.",
       "learn_more": "Lær mer",
+      "learn_more_above": "Lær mer ovenfor.",
       "mdn": "MDN",
-      "community": "fellesskapet"
+      "community": "fellesskapet",
+      "consider_no_dep": "+ Vurdere ingen avhengighet?"
     },
     "stats": {
       "license": "Lisens",
@@ -180,7 +207,10 @@
       "fund": "støtt",
       "compare": "sammenlign"
     },
-    "likes": {},
+    "likes": {
+      "like": "Lik denne pakken",
+      "unlike": "Fjern like fra denne pakken"
+    },
     "docs": {
       "not_available": "Dokumentasjon ikke tilgjengelig",
       "not_available_detail": "Vi kunne ikke generere dokumentasjon for denne versjonen."
@@ -205,7 +235,14 @@
       "no_readme": "Ingen README tilgjengelig.",
       "view_on_github": "Vis på GitHub",
       "toc_title": "Innhold",
-      "callout": {}
+      "callout": {
+        "note": "Merk",
+        "tip": "Tips",
+        "important": "Viktig",
+        "warning": "Advarsel",
+        "caution": "Forsiktig"
+      },
+      "copy_as_markdown": "Kopier README som Markdown"
     },
     "provenance_section": {},
     "security_downgrade": {},
@@ -279,13 +316,17 @@
       "date_range_multiline": "{start}\ntil {end}",
       "download_file": "Last ned {fileType}",
       "toggle_annotator": "Veksle annotering",
-      "items": {}
+      "legend_estimation": "Estimat",
+      "no_data": "Ingen data tilgjengelig",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "Nedlastinger"
+      }
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
       "analyze": "Analyser nedlastinger",
-      "community_distribution": "Vis distribusjon av bruk i fellesskapet",
-      "modal_title": "Nedlastinger"
+      "community_distribution": "Vis distribusjon av bruk i fellesskapet"
     },
     "install_scripts": {
       "title": "Installasjonsskript",
@@ -369,7 +410,11 @@
       "name_asc": "Navn (A-Å)",
       "name_desc": "Navn (Å-A)"
     },
-    "size": {}
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    }
   },
   "connector": {
     "modal": {
@@ -774,7 +819,8 @@
       "create_account": "Opprett en ny konto",
       "connect_bluesky": "Koble til med Bluesky",
       "what_is_atmosphere": "Hva er en Atmosphere-konto?",
-      "atmosphere_explanation": "{npmx} bruker {atproto} for å drive mange av sine sosiale funksjoner, slik at brukere kan eie sine egne data og bruke én konto for alle kompatible applikasjoner. Når du oppretter en konto, kan du bruke andre apper som {bluesky} og {tangled} med samme konto."
+      "atmosphere_explanation": "{npmx} bruker {atproto} for å drive mange av sine sosiale funksjoner, slik at brukere kan eie sine egne data og bruke én konto for alle kompatible applikasjoner. Når du oppretter en konto, kan du bruke andre apper som {bluesky} og {tangled} med samme konto.",
+      "default_input_error": "Vennligst skriv inn et gyldig brukernavn, DID eller en full PDS-URL"
     }
   },
   "header": {
@@ -821,7 +867,15 @@
       "packages_selected": "{count}/{max} pakker valgt.",
       "add_hint": "Legg til minst 2 pakker for å sammenligne."
     },
-    "no_dependency": {},
+    "no_dependency": {
+      "label": "(Ingen avhengighet)",
+      "typeahead_title": "Hva ville James gjort?",
+      "typeahead_description": "Sammenlign mot å ikke bruke en avhengighet! e18e-godkjent.",
+      "tooltip_title": "Du trenger kanskje ikke en avhengighet",
+      "tooltip_description": "Sammenlign mot å ikke bruke en avhengighet! {link} vedlikeholder en liste over pakker som kan erstattes med native API-er eller enklere alternativer.",
+      "e18e_community": "e18e-fellesskapet",
+      "add_column": "Legg til ingen avhengighet-kolonne i sammenligningen"
+    },
     "facets": {
       "group_label": "Sammenligningsfasetter",
       "all": "alle",
@@ -859,7 +913,10 @@
           "label": "Nedlastinger/uke",
           "description": "Ukentlig nedlastingstall"
         },
-        "totalLikes": {},
+        "totalLikes": {
+          "label": "Likes",
+          "description": "Antall likes"
+        },
         "lastUpdated": {
           "label": "Publisert",
           "description": "Når denne versjonen ble publisert"
@@ -897,9 +954,12 @@
         "not_deprecated": "Nei",
         "types_included": "Inkludert",
         "types_none": "Ingen",
-        "vulnerabilities_summary": "{count} ({critical}C/{high}H)"
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Opp til deg!"
       },
-      "trends": {}
+      "trends": {
+        "title": "Ukentlige nedlastinger"
+      }
     }
   },
   "privacy_policy": {

@@ -277,8 +277,7 @@
     },
     "downloads": {
       "title": "Týdenní stažení",
-      "analyze": "Analyzovat stažení",
-      "modal_title": "Stažení"
+      "analyze": "Analyzovat stažení"
     },
     "install_scripts": {
       "title": "Instalační skripty",

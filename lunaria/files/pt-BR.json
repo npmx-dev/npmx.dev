@@ -273,8 +273,7 @@
     },
     "downloads": {
       "title": "Downloads Semanais",
-      "analyze": "Analisar downloads",
-      "modal_title": "Downloads"
+      "analyze": "Analisar downloads"
     },
     "install_scripts": {
       "title": "Scripts de Instalação",

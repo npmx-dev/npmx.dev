@@ -88,7 +88,7 @@ function handleKeydown(event: KeyboardEvent) {
   <button
     ref="triggerRef"
     type="button"
-    class="flex items-center gap-1.5 px-2 py-2 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover focus-visible:outline-accent/70 hover:text-fg"
+    class="cursor-pointer flex items-center gap-1.5 px-2 py-2 font-mono text-xs text-fg-muted bg-bg-subtle border border-border-subtle border-solid rounded-md transition-colors duration-150 hover:(text-fg border-border-hover) active:scale-95 focus:border-border-hover focus-visible:outline-accent/70"
     :aria-expanded="isOpen"
     aria-haspopup="listbox"
     :aria-label="$t('package.get_started.pm_label')"
@@ -111,7 +111,7 @@ function handleKeydown(event: KeyboardEvent) {
       >
     </template>
     <span
-      class="i-carbon:chevron-down w-3 h-3"
+      class="i-lucide:chevron-down w-3 h-3"
       :class="[
         { 'rotate-180': isOpen },
         prefersReducedMotion ? '' : 'transition-transform duration-200',
@@ -150,7 +150,7 @@ function handleKeydown(event: KeyboardEvent) {
           :key="pm.id"
           role="option"
           :aria-selected="selectedPM === pm.id"
-          class="flex items-center gap-2 px-3 py-1.5 font-mono text-xs transition-colors duration-150"
+          class="cursor-pointer flex items-center gap-2 px-3 py-1.5 font-mono text-xs transition-colors duration-150"
           :class="[
             selectedPM === pm.id ? 'text-fg' : 'text-fg-subtle',
             highlightedIndex === index ? 'bg-bg-elevated' : 'hover:bg-bg-elevated',
@@ -162,7 +162,7 @@ function handleKeydown(event: KeyboardEvent) {
           <span>{{ pm.label }}</span>
           <span
             v-if="selectedPM === pm.id"
-            class="i-carbon:checkmark w-3 h-3 text-accent ms-auto"
+            class="i-lucide:check w-3 h-3 text-accent ms-auto"
             aria-hidden="true"
           />
         </li>

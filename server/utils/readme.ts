@@ -13,6 +13,7 @@ interface PlaygroundProvider {
   id: string // Provider identifier
   name: string
   domains: string[] // Associated domains
+  path?: string
   icon?: string // Provider icon name
 }
 
@@ -74,6 +75,13 @@ const PLAYGROUND_PROVIDERS: PlaygroundProvider[] = [
     domains: ['vite.new'],
     icon: 'vite',
   },
+  {
+    id: 'typescript-playground',
+    name: 'TypeScript Playground',
+    domains: ['typescriptlang.org'],
+    path: '/play',
+    icon: 'typescript',
+  },
 ]
 
 /**
@@ -86,7 +94,10 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
 
     for (const provider of PLAYGROUND_PROVIDERS) {
       for (const domain of provider.domains) {
-        if (hostname === domain || hostname.endsWith(`.${domain}`)) {
+        if (
+          (hostname === domain || hostname.endsWith(`.${domain}`)) &&
+          (!provider.path || parsed.pathname.startsWith(provider.path))
+        ) {
           return provider
         }
       }
@@ -146,8 +157,8 @@ const ALLOWED_ATTR: Record<string, string[]> = {
   'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
   'source': ['src', 'srcset', 'type', 'media'],
   'button': ['class', 'title', 'type', 'aria-label', 'data-copy'],
-  'th': ['colspan', 'rowspan', 'align'],
-  'td': ['colspan', 'rowspan', 'align'],
+  'th': ['colspan', 'rowspan', 'align', 'valign', 'width'],
+  'td': ['colspan', 'rowspan', 'align', 'valign', 'width'],
   'h3': ['data-level', 'align'],
   'h4': ['data-level', 'align'],
   'h5': ['data-level', 'align'],
@@ -183,6 +194,43 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
 }
 
+/** These path on npmjs.com don't belong to packages or search, so we shouldn't try to replace them with npmx.dev urls */
+const reservedPathsNpmJs = [
+  'products',
+  'login',
+  'signup',
+  'advisories',
+  'blog',
+  'about',
+  'press',
+  'policies',
+]
+
+const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
+  if (url.host !== 'www.npmjs.com' && url.host !== 'npmjs.com') {
+    return false
+  }
+
+  if (
+    url.pathname === '/' ||
+    reservedPathsNpmJs.some(path => url.pathname.startsWith(`/${path}`))
+  ) {
+    return false
+  }
+
+  return true
+}
+
+const replaceHtmlLink = (html: string) => {
+  return html.replace(/href="([^"]+)"/g, (match, href) => {
+    if (isNpmJsUrlThatCanBeRedirected(new URL(href, 'https://www.npmjs.com'))) {
+      const newHref = href.replace(/^https?:\/\/(www\.)?npmjs\.com/, '')
+      return `href="${newHref}"`
+    }
+    return match
+  })
+}
+
 /**
  * Resolve a relative URL to an absolute URL.
  * If repository info is available, resolve to provider's raw file URLs.
@@ -199,6 +247,10 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
     try {
       const parsed = new URL(url, 'https://example.com')
       if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        // Redirect npmjs urls to ourself
+        if (isNpmJsUrlThatCanBeRedirected(parsed)) {
+          return parsed.pathname + parsed.search + parsed.hash
+        }
         return url
       }
     } catch {
@@ -288,7 +340,7 @@ export async function renderReadmeHtml(
   packageName: string,
   repoInfo?: RepositoryInfo,
 ): Promise<ReadmeResponse> {
-  if (!content) return { html: '', md: '', playgroundLinks: [], toc: [] }
+  if (!content) return { html: '', playgroundLinks: [], toc: [] }
 
   const shiki = await getShikiHighlighter()
   const renderer = new marked.Renderer()
@@ -343,8 +395,8 @@ export async function renderReadmeHtml(
     const html = highlightCodeSync(shiki, text, lang || 'text')
     // Add copy button
     return `<div class="readme-code-block" >
-<button type="button" class="readme-copy-button" aria-label="Copy code" check-icon="i-carbon:checkmark" copy-icon="i-carbon:copy" data-copy>
-<span class="i-carbon:copy" aria-hidden="true"></span>
+<button type="button" class="readme-copy-button" aria-label="Copy code" check-icon="i-lucide:check" copy-icon="i-lucide:copy" data-copy>
+<span class="i-lucide:copy" aria-hidden="true"></span>
 <span class="sr-only">Copy code</span>
 </button>
 ${html}
@@ -359,35 +411,21 @@ ${html}
     return `<img src="${resolvedHref}"${altAttr}${titleAttr}>`
   }
 
-  // Resolve link URLs, add security attributes, and collect playground links
+  // // Resolve link URLs, add security attributes, and collect playground links
   renderer.link = function ({ href, title, tokens }: Tokens.Link) {
-    const resolvedHref = resolveUrl(href, packageName, repoInfo)
     const text = this.parser.parseInline(tokens)
     const titleAttr = title ? ` title="${title}"` : ''
+    let plainText = text.replace(/<[^>]*>/g, '').trim()
 
-    const isExternal = resolvedHref.startsWith('http://') || resolvedHref.startsWith('https://')
-    const relAttr = isExternal ? ' rel="nofollow noreferrer noopener"' : ''
-    const targetAttr = isExternal ? ' target="_blank"' : ''
-
-    // Check if this is a playground link
-    const provider = matchPlaygroundProvider(resolvedHref)
-    if (provider && !seenUrls.has(resolvedHref)) {
-      seenUrls.add(resolvedHref)
-
-      // Extract label from link text (strip HTML tags for plain text)
-      const plainText = text.replace(/<[^>]*>/g, '').trim()
-
-      collectedLinks.push({
-        url: resolvedHref,
-        provider: provider.id,
-        providerName: provider.name,
-        label: plainText || title || provider.name,
-      })
+    // If plain text is empty, check if we have an image with alt text
+    if (!plainText && tokens.length === 1 && tokens[0]?.type === 'image') {
+      plainText = tokens[0].text
     }
 
-    const hrefValue = resolvedHref.startsWith('#') ? resolvedHref.toLowerCase() : resolvedHref
+    const intermediateTitleAttr =
+      plainText || title ? ` data-title-intermediate="${plainText || title}"` : ''
 
-    return `<a href="${hrefValue}"${titleAttr}${relAttr}${targetAttr}>${text}</a>`
+    return `<a href="${href}"${titleAttr}${intermediateTitleAttr}>${text}</a>`
   }
 
   // GitHub-style callouts: > [!NOTE], > [!TIP], etc.
@@ -405,7 +443,14 @@ ${html}
     return `<blockquote>${body}</blockquote>\n`
   }
 
-  marked.setOptions({ renderer })
+  marked.setOptions({
+    renderer,
+    walkTokens: token => {
+      if (token.type === 'html') {
+        token.text = replaceHtmlLink(token.text)
+      }
+    },
+  })
 
   const rawHtml = marked.parse(content) as string
 
@@ -463,11 +508,35 @@ ${html}
         return { tagName, attribs }
       },
       a: (tagName, attribs) => {
+        if (!attribs.href) {
+          return { tagName, attribs }
+        }
+
+        const resolvedHref = resolveUrl(attribs.href, packageName, repoInfo)
+
+        const provider = matchPlaygroundProvider(resolvedHref)
+        if (provider && !seenUrls.has(resolvedHref)) {
+          seenUrls.add(resolvedHref)
+
+          collectedLinks.push({
+            url: resolvedHref,
+            provider: provider.id,
+            providerName: provider.name,
+            /**
+             * We need to set some data attribute before hand because `transformTags` doesn't
+             * provide the text of the element. This will automatically be removed, because there
+             * is an allow list for link attributes.
+             * */
+            label: attribs['data-title-intermediate'] || provider.name,
+          })
+        }
+
         // Add security attributes for external links
-        if (attribs.href && hasProtocol(attribs.href, { acceptRelative: true })) {
+        if (resolvedHref && hasProtocol(resolvedHref, { acceptRelative: true })) {
           attribs.rel = 'nofollow noreferrer noopener'
           attribs.target = '_blank'
         }
+        attribs.href = resolvedHref
         return { tagName, attribs }
       },
       div: prefixId,
@@ -480,7 +549,7 @@ ${html}
 
   return {
     html: convertToEmoji(sanitized),
-    md: content,
+    mdExists: Boolean(content),
     playgroundLinks: collectedLinks,
     toc,
   }

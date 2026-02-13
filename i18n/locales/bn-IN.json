@@ -74,7 +74,7 @@
     "theme_system": "সিস্টেম",
     "language": "ভাষা",
     "help_translate": "npmx অনুবাদে সাহায্য করুন",
-    "accent_colors": "এক্সেন্ট রংগ",
+    "accent_colors": "এক্সেন্ট রং",
     "clear_accent": "এক্সেন্ট রং সাফ করুন",
     "translation_progress": "অনুবাদের অগ্রগতি"
   },
@@ -272,8 +272,7 @@
     },
     "downloads": {
       "title": "সাপ্তাহিক ডাউনলোড",
-      "analyze": "ডাউনলোড বিশ্লেষণ করুন",
-      "modal_title": "ডাউনলোড"
+      "analyze": "ডাউনলোড বিশ্লেষণ করুন"
     },
     "install_scripts": {
       "title": "ইনস্টল স্ক্রিপ্ট",

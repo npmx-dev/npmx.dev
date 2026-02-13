@@ -42,7 +42,7 @@ onMounted(() => {
     :aria-label="$t('common.scroll_to_top')"
     @click="scrollToTop"
   >
-    <span class="i-carbon:arrow-up w-5 h-5" aria-hidden="true" />
+    <span class="i-lucide:arrow-up w-5 h-5" aria-hidden="true" />
   </button>
 
   <!-- JS fallback for browsers without scroll-state support -->
@@ -62,7 +62,7 @@ onMounted(() => {
       :aria-label="$t('common.scroll_to_top')"
       @click="scrollToTop"
     >
-      <span class="i-carbon:arrow-up w-5 h-5" aria-hidden="true" />
+      <span class="i-lucide:arrow-up w-5 h-5" aria-hidden="true" />
     </button>
   </Transition>
 </template>

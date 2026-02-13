@@ -87,6 +87,7 @@ export function hasSearchOperators(parsed: ParsedSearchOperators): boolean {
 
 interface UseStructuredFiltersOptions {
   packages: Ref<NpmSearchResult[]>
+  searchQueryModel?: Ref<string>
   initialFilters?: Partial<StructuredFilters>
   initialSort?: SortOption
 }
@@ -114,7 +115,7 @@ function matchesSecurity(pkg: NpmSearchResult, security: SecurityFilter): boolea
 export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   const route = useRoute()
   const router = useRouter()
-  const { packages, initialFilters, initialSort } = options
+  const { packages, initialFilters, initialSort, searchQueryModel } = options
   const { t } = useI18n()
 
   const searchQuery = shallowRef(normalizeSearchParam(route.query.q))
@@ -404,6 +405,8 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
         ? `${searchQuery.value.trim()} keyword:${keyword}`
         : `keyword:${keyword}`
       router.replace({ query: { ...route.query, q: newQ } })
+
+      if (searchQueryModel) searchQueryModel.value = newQ
     }
   }
 
@@ -411,6 +414,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
     filters.value.keywords = filters.value.keywords.filter(k => k !== keyword)
     const newQ = searchQuery.value.replace(new RegExp(`keyword:${keyword}($| )`, 'g'), '').trim()
     router.replace({ query: { ...route.query, q: newQ || undefined } })
+    if (searchQueryModel) searchQueryModel.value = newQ
   }
 
   function toggleKeyword(keyword: string) {

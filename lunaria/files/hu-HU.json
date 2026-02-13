@@ -241,8 +241,7 @@
     },
     "downloads": {
       "title": "Heti letöltések",
-      "analyze": "Letöltések elemzése",
-      "modal_title": "Letöltések"
+      "analyze": "Letöltések elemzése"
     },
     "install_scripts": {
       "title": "Telepítő scriptek",

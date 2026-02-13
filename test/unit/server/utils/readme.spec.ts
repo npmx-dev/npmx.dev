@@ -62,6 +62,19 @@ describe('Playground Link Extraction', () => {
       expect(result.playgroundLinks).toHaveLength(1)
       expect(result.playgroundLinks[0]!.provider).toBe('codesandbox')
     })
+
+    it('extracts label from image link', async () => {
+      const markdown = `[![Edit CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/example-abc123)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.playgroundLinks).toHaveLength(1)
+      expect(result.playgroundLinks[0]).toMatchObject({
+        provider: 'codesandbox',
+        providerName: 'CodeSandbox',
+        label: 'Edit CodeSandbox',
+        url: 'https://codesandbox.io/s/example-abc123',
+      })
+    })
   })
 
   describe('Other Providers', () => {
@@ -306,25 +319,77 @@ describe('Markdown File URL Resolution', () => {
       )
     })
   })
-})
 
-describe('Markdown Content Extraction', () => {
-  describe('Markdown', () => {
-    it('returns original markdown content unchanged', async () => {
-      const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
+  describe('npm.js urls', () => {
+    it('redirects npmjs.com urls to local', async () => {
+      const markdown = `[Some npmjs.com link](https://www.npmjs.com/package/test-pkg)`
       const result = await renderReadmeHtml(markdown, 'test-pkg')
 
-      expect(result.md).toBe(markdown)
+      expect(result.html).toContain('href="/package/test-pkg"')
+    })
+
+    it('redirects npmjs.com urls to local (no www and http)', async () => {
+      const markdown = `[Some npmjs.com link](http://npmjs.com/package/test-pkg)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="/package/test-pkg"')
+    })
+
+    it('does not redirect npmjs.com to local if they are in the list of exceptions', async () => {
+      const markdown = `[Root Contributing](https://www.npmjs.com/products)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.html).toContain('href="https://www.npmjs.com/products"')
     })
   })
-  describe('HTML', () => {
-    it('returns sanitized html', async () => {
-      const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
-      const result = await renderReadmeHtml(markdown, 'test-pkg')
+})
 
-      expect(result.html).toBe(`<h3 id="user-content-title" data-level="1">Title</h3>
+describe('ReadmeResponse shape (HTML route contract)', () => {
+  it('returns ReadmeResponse with html, mdExists, playgroundLinks, toc', async () => {
+    const markdown = `# Title\n\nSome **bold** text.`
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result).toMatchObject({
+      html: expect.any(String),
+      mdExists: true,
+      playgroundLinks: [],
+      toc: expect.any(Array),
+    })
+    expect(result.html).toContain('Title')
+    expect(result.html).toContain('bold')
+  })
+
+  it('returns empty-state shape when content is empty', async () => {
+    const result = await renderReadmeHtml('', 'test-pkg')
+
+    expect(result).toMatchObject({
+      html: '',
+      playgroundLinks: [],
+      toc: [],
+    })
+    expect(result.playgroundLinks).toHaveLength(0)
+    expect(result.toc).toHaveLength(0)
+  })
+
+  it('extracts toc from headings', async () => {
+    const markdown = `# Install\n\n## CLI\n\n## API`
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(3)
+    expect(result.toc[0]).toMatchObject({ text: 'Install', depth: 1 })
+    expect(result.toc[1]).toMatchObject({ text: 'CLI', depth: 2 })
+    expect(result.toc[2]).toMatchObject({ text: 'API', depth: 2 })
+    expect(result.toc.every(t => t.id.startsWith('user-content-'))).toBe(true)
+  })
+})
+
+describe('HTML output', () => {
+  it('returns sanitized html', async () => {
+    const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.html).toBe(`<h3 id="user-content-title" data-level="1">Title</h3>
 <p>Some <strong>bold</strong> text and a <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">link</a>.</p>
 `)
-    })
   })
 })

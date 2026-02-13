@@ -5,6 +5,7 @@ import type {
   PackumentVersion,
   ProvenanceDetails,
   ReadmeResponse,
+  ReadmeMarkdownResponse,
   SkillsListResponse,
 } from '#shared/types'
 import type { JsrPackageInfo } from '#shared/types/jsr'
@@ -17,6 +18,7 @@ import { detectPublishSecurityDowngradeForVersion } from '~/utils/publish-securi
 import { useModal } from '~/composables/useModal'
 import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
+import type { RouteLocationRaw } from 'vue-router'
 
 defineOgImageComponent('Package', {
   name: () => packageName.value,
@@ -28,6 +30,8 @@ const router = useRouter()
 
 const header = useTemplateRef('header')
 const isHeaderPinned = shallowRef(false)
+const navExtraOffset = shallowRef(0)
+const isMobile = useMediaQuery('(max-width: 639.9px)')
 
 function checkHeaderPosition() {
   const el = header.value
@@ -43,9 +47,50 @@ function checkHeaderPosition() {
 useEventListener('scroll', checkHeaderPosition, { passive: true })
 useEventListener('resize', checkHeaderPosition)
 
+const footerTarget = ref<HTMLElement | null>(null)
+const footerThresholds = Array.from({ length: 11 }, (_, i) => i / 10)
+
+const { pause: pauseFooterObserver, resume: resumeFooterObserver } = useIntersectionObserver(
+  footerTarget,
+  ([entry]) => {
+    if (!entry) return
+
+    navExtraOffset.value = entry.isIntersecting ? entry.intersectionRect.height : 0
+  },
+  {
+    threshold: footerThresholds,
+    immediate: false,
+  },
+)
+
+function initFooterObserver() {
+  footerTarget.value = document.querySelector('footer')
+  if (!footerTarget.value) return
+
+  pauseFooterObserver()
+
+  watch(
+    isMobile,
+    value => {
+      if (value) {
+        resumeFooterObserver()
+      } else {
+        pauseFooterObserver()
+        navExtraOffset.value = 0
+      }
+    },
+    { immediate: true },
+  )
+}
+
 onMounted(() => {
   checkHeaderPosition()
+  initFooterObserver()
 })
+
+const navExtraOffsetStyle = computed(() => ({
+  '--package-nav-extra': `${navExtraOffset.value}px`,
+}))
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
 const selectedPM = useSelectedPackageManager()
@@ -62,14 +107,46 @@ const { data: readmeData } = useLazyFetch<ReadmeResponse>(
     const version = requestedVersion.value
     return version ? `${base}/v/${version}` : base
   },
-  { default: () => ({ html: '', md: '', playgroundLinks: [], toc: [] }) },
+  { default: () => ({ html: '', mdExists: false, playgroundLinks: [], toc: [] }) },
+)
+
+const {
+  data: readmeMarkdownData,
+  status: readmeMarkdownStatus,
+  execute: fetchReadmeMarkdown,
+} = useLazyFetch<ReadmeMarkdownResponse>(
+  () => {
+    const base = `/api/registry/readme/markdown/${packageName.value}`
+    const version = requestedVersion.value
+    return version ? `${base}/v/${version}` : base
+  },
+  {
+    server: false,
+    immediate: false,
+    default: () => ({}),
+  },
 )
 
 //copy README file as Markdown
 const { copied: copiedReadme, copy: copyReadme } = useClipboard({
-  source: () => readmeData.value?.md ?? '',
+  source: () => '',
   copiedDuring: 2000,
 })
+
+function prefetchReadmeMarkdown() {
+  if (readmeMarkdownStatus.value === 'idle') {
+    fetchReadmeMarkdown()
+  }
+}
+
+async function copyReadmeHandler() {
+  await fetchReadmeMarkdown()
+
+  const markdown = readmeMarkdownData.value?.markdown
+  if (!markdown) return
+
+  await copyReadme(markdown)
+}
 
 // Track active TOC item based on scroll position
 const tocItems = computed(() => readmeData.value?.toc ?? [])
@@ -166,6 +243,12 @@ const pkgDescription = useMarkdown(() => ({
 //copy package name
 const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   source: packageName,
+  copiedDuring: 2000,
+})
+
+//copy version name
+const { copied: copiedVersion, copy: copyVersion } = useClipboard({
+  source: resolvedVersion.value ?? '',
   copiedDuring: 2000,
 })
 
@@ -318,7 +401,7 @@ const repositoryUrl = computed(() => {
 const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
 
 const PROVIDER_ICONS: Record<string, string> = {
-  github: 'i-carbon:logo-github',
+  github: 'i-simple-icons:github',
   gitlab: 'i-simple-icons:gitlab',
   bitbucket: 'i-simple-icons:bitbucket',
   codeberg: 'i-simple-icons:codeberg',
@@ -327,13 +410,13 @@ const PROVIDER_ICONS: Record<string, string> = {
   gitee: 'i-simple-icons:gitee',
   sourcehut: 'i-simple-icons:sourcehut',
   tangled: 'i-custom:tangled',
-  radicle: 'i-carbon:network-3', // Radicle is a P2P network, using network icon
+  radicle: 'i-lucide:network', // Radicle is a P2P network, using network icon
 }
 
 const repoProviderIcon = computed(() => {
   const provider = repoRef.value?.provider
-  if (!provider) return 'i-carbon:logo-github'
-  return PROVIDER_ICONS[provider] ?? 'i-carbon:code'
+  if (!provider) return 'i-simple-icons:github'
+  return PROVIDER_ICONS[provider] ?? 'i-lucide:code'
 })
 
 const homepageUrl = computed(() => {
@@ -495,6 +578,8 @@ const likeAction = async () => {
   }
 }
 
+const dependencyCount = computed(() => getDependencyCount(displayVersion.value))
+
 const numberFormatter = useNumberFormatter()
 const compactNumberFormatter = useCompactNumberFormatter()
 const bytesFormatter = useBytesFormatter()
@@ -512,17 +597,29 @@ useSeoMeta({
   twitterDescription: () => pkg.value?.description ?? '',
 })
 
+const codeLink = computed((): RouteLocationRaw | null => {
+  if (pkg.value == null || resolvedVersion.value == null) {
+    return null
+  }
+  const split = pkg.value.name.split('/')
+  return {
+    name: 'code',
+    params: {
+      org: split.length === 2 ? split[0] : undefined,
+      packageName: split.length === 2 ? split[1]! : split[0]!,
+      version: resolvedVersion.value,
+      filePath: '',
+    },
+  }
+})
+
 onKeyStroke(
   e => isKeyWithoutModifiers(e, '.') && !isEditableElement(e.target),
   e => {
-    if (pkg.value == null || resolvedVersion.value == null) return
+    if (codeLink.value === null) return
     e.preventDefault()
-    navigateTo({
-      name: 'code',
-      params: {
-        path: [pkg.value.name, 'v', resolvedVersion.value],
-      },
-    })
+
+    navigateTo(codeLink.value)
   },
   { dedupe: true },
 )
@@ -545,11 +642,25 @@ onKeyStroke(
     router.push({ name: 'compare', query: { packages: pkg.value.name } })
   },
 )
+
+const showSkeleton = shallowRef(false)
 </script>
 
 <template>
+  <DevOnly>
+    <ButtonBase
+      class="fixed bottom-4 inset-is-4 z-50 shadow-lg rounded-full! px-3! py-2!"
+      classicon="i-simple-icons:skeleton"
+      variant="primary"
+      title="Toggle skeleton loader (development only)"
+      :aria-pressed="showSkeleton"
+      @click="showSkeleton = !showSkeleton"
+    >
+      <span class="text-xs">Skeleton</span>
+    </ButtonBase>
+  </DevOnly>
   <main class="container flex-1 w-full py-8">
-    <PackageSkeleton v-if="status === 'pending'" />
+    <PackageSkeleton v-if="showSkeleton || status === 'pending'" />
 
     <article v-else-if="status === 'success' && pkg" :class="$style.packagePage">
       <!-- Package header -->
@@ -575,7 +686,7 @@ onKeyStroke(
               </span>
             </h1>
 
-            <!-- Floating copy button -->
+            <!-- Floating copy name button -->
             <button
               type="button"
               @click="copyPkgName()"
@@ -587,21 +698,22 @@ onKeyStroke(
               :aria-label="copiedPkgName ? $t('common.copied') : $t('package.copy_name')"
             >
               <span
-                :class="copiedPkgName ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+                :class="copiedPkgName ? 'i-lucide:check' : 'i-lucide:copy'"
                 class="w-3.5 h-3.5"
                 aria-hidden="true"
               />
               {{ copiedPkgName ? $t('common.copied') : $t('package.copy_name') }}
             </button>
           </div>
+
           <span
             v-if="resolvedVersion"
-            class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0"
+            class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0 relative group"
           >
             <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
             <template v-if="requestedVersion && resolvedVersion !== requestedVersion">
               <span class="font-mono text-fg-muted text-sm" dir="ltr">{{ requestedVersion }}</span>
-              <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
+              <span class="i-lucide:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
             </template>
 
             <LinkBase
@@ -623,13 +735,14 @@ onKeyStroke(
                     : $t('package.verified_provenance')
                 "
                 position="bottom"
+                strategy="fixed"
               >
                 <LinkBase
                   variant="button-secondary"
                   size="small"
                   to="#provenance"
                   :aria-label="$t('package.provenance_section.view_more_details')"
-                  classicon="i-lucide-shield-check"
+                  classicon="i-lucide:shield-check"
                 />
               </TooltipApp>
             </template>
@@ -638,6 +751,25 @@ onKeyStroke(
               class="text-fg-subtle text-sm shrink-0"
               >{{ $t('package.not_latest') }}</span
             >
+
+            <!-- Floating copy version button -->
+            <button
+              type="button"
+              @click="copyVersion()"
+              class="absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
+              :class="[
+                $style.copyButton,
+                copiedVersion ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border',
+              ]"
+              :aria-label="copiedVersion ? $t('common.copied') : $t('package.copy_version')"
+            >
+              <span
+                :class="copiedVersion ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+                class="w-3.5 h-3.5"
+                aria-hidden="true"
+              />
+              {{ copiedVersion ? $t('common.copied') : $t('package.copy_version') }}
+            </button>
           </span>
 
           <!-- Docs + Code + Compare — inline on desktop, floating bottom bar on mobile -->
@@ -645,7 +777,8 @@ onKeyStroke(
             v-if="resolvedVersion"
             as="nav"
             :aria-label="$t('package.navigation')"
-            class="hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-50% max-sm:-translate-x-50% max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
+            class="hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-1/2 max-sm:-translate-x-1/2 max-sm:rtl:translate-x-1/2 max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
+            :style="navExtraOffsetStyle"
             :class="$style.packageNav"
           >
             <LinkBase
@@ -653,15 +786,16 @@ onKeyStroke(
               v-if="docsLink"
               :to="docsLink"
               aria-keyshortcuts="d"
-              classicon="i-carbon:document"
+              classicon="i-lucide:file-text"
             >
               {{ $t('package.links.docs') }}
             </LinkBase>
             <LinkBase
+              v-if="codeLink"
               variant="button-secondary"
-              :to="{ name: 'code', params: { path: [pkg.name, 'v', resolvedVersion] } }"
+              :to="codeLink"
               aria-keyshortcuts="."
-              classicon="i-carbon:code"
+              classicon="i-lucide:code"
             >
               {{ $t('package.links.code') }}
             </LinkBase>
@@ -669,7 +803,7 @@ onKeyStroke(
               variant="button-secondary"
               :to="{ name: 'compare', query: { packages: pkg.name } }"
               aria-keyshortcuts="c"
-              classicon="i-carbon:compare"
+              classicon="i-lucide:git-compare"
             >
               {{ $t('package.links.compare') }}
             </LinkBase>
@@ -696,6 +830,7 @@ onKeyStroke(
               "
               position="bottom"
               class="items-center"
+              strategy="fixed"
             >
               <ButtonBase
                 @click="likeAction"
@@ -709,13 +844,13 @@ onKeyStroke(
                 :aria-pressed="likesData?.userHasLiked"
                 :classicon="
                   likesData?.userHasLiked
-                    ? 'i-lucide-heart-minus text-red-500'
-                    : 'i-lucide-heart-plus'
+                    ? 'i-lucide:heart-minus text-red-500'
+                    : 'i-lucide:heart-plus'
                 "
               >
                 <span
                   v-if="isLoadingLikeData"
-                  class="i-carbon-circle-dash w-3 h-3 motion-safe:animate-spin my-0.5"
+                  class="i-svg-spinners:ring-resize w-3 h-3 my-0.5"
                   aria-hidden="true"
                 />
                 <span v-else>
@@ -753,23 +888,23 @@ onKeyStroke(
               </LinkBase>
             </li>
             <li v-if="repositoryUrl && repoMeta && starsLink">
-              <LinkBase :to="starsLink" classicon="i-carbon:star">
+              <LinkBase :to="starsLink" classicon="i-lucide:star">
                 {{ compactNumberFormatter.format(stars) }}
               </LinkBase>
             </li>
             <li v-if="forks && forksLink">
-              <LinkBase :to="forksLink" classicon="i-carbon:fork">
+              <LinkBase :to="forksLink" classicon="i-lucide:git-fork">
                 {{ compactNumberFormatter.format(forks) }}
               </LinkBase>
             </li>
             <li class="basis-full sm:hidden" />
             <li v-if="homepageUrl">
-              <LinkBase :to="homepageUrl" classicon="i-carbon:link">
+              <LinkBase :to="homepageUrl" classicon="i-lucide:link">
                 {{ $t('package.links.homepage') }}
               </LinkBase>
             </li>
             <li v-if="displayVersion?.bugs?.url">
-              <LinkBase :to="displayVersion.bugs.url" classicon="i-carbon:warning">
+              <LinkBase :to="displayVersion.bugs.url" classicon="i-lucide:circle-alert">
                 {{ $t('package.links.issues') }}
               </LinkBase>
             </li>
@@ -777,7 +912,7 @@ onKeyStroke(
               <LinkBase
                 :to="`https://www.npmjs.com/package/${pkg.name}`"
                 :title="$t('common.view_on_npm')"
-                classicon="i-carbon:logo-npm"
+                classicon="i-simple-icons:npm"
               >
                 npm
               </LinkBase>
@@ -792,7 +927,7 @@ onKeyStroke(
               </LinkBase>
             </li>
             <li v-if="fundingUrl">
-              <LinkBase :to="fundingUrl" classicon="i-carbon:favorite">
+              <LinkBase :to="fundingUrl" classicon="i-lucide:heart">
                 {{ $t('package.links.fund') }}
               </LinkBase>
             </li>
@@ -801,7 +936,7 @@ onKeyStroke(
 
         <div
           v-if="deprecationNotice"
-          class="border border-red-400 bg-red-400/10 rounded-lg px-3 py-2 text-base text-red-400"
+          class="border border-red-700 dark:border-red-400 bg-red-400/10 rounded-lg px-3 py-2 text-base text-red-700 dark:text-red-400"
         >
           <h2 class="font-medium mb-2">
             {{
@@ -839,12 +974,10 @@ onKeyStroke(
             <dd class="font-mono text-sm text-fg flex items-center justify-start gap-2">
               <span class="flex items-center gap-1">
                 <!-- Direct deps (muted) -->
-                <span class="text-fg-muted">{{
-                  numberFormatter.format(getDependencyCount(displayVersion))
-                }}</span>
+                <span class="text-fg-muted">{{ numberFormatter.format(dependencyCount) }}</span>
 
                 <!-- Separator and total transitive deps -->
-                <template v-if="getDependencyCount(displayVersion) !== totalDepsCount">
+                <template v-if="dependencyCount > 0 && dependencyCount !== totalDepsCount">
                   <span class="text-fg-subtle">/</span>
 
                   <ClientOnly>
@@ -855,10 +988,7 @@ onKeyStroke(
                       "
                       class="inline-flex items-center gap-1 text-fg-subtle"
                     >
-                      <span
-                        class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                        aria-hidden="true"
-                      />
+                      <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
                     </span>
                     <span v-else-if="totalDepsCount !== null">{{
                       numberFormatter.format(totalDepsCount)
@@ -870,13 +1000,13 @@ onKeyStroke(
                   </ClientOnly>
                 </template>
               </span>
-              <ButtonGroup v-if="getDependencyCount(displayVersion) > 0">
+              <ButtonGroup v-if="dependencyCount > 0">
                 <LinkBase
                   variant="button-secondary"
                   size="small"
                   :to="`https://npmgraph.js.org/?q=${pkg.name}`"
                   :title="$t('package.stats.view_dependency_graph')"
-                  classicon="i-carbon:network-3"
+                  classicon="i-lucide:network -rotate-90"
                 >
                   <span class="sr-only">{{ $t('package.stats.view_dependency_graph') }}</span>
                 </LinkBase>
@@ -886,7 +1016,7 @@ onKeyStroke(
                   size="small"
                   :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                   :title="$t('package.stats.inspect_dependency_tree')"
-                  classicon="i-carbon:tree-view"
+                  classicon="i-lucide:table"
                 >
                   <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
                 </LinkBase>
@@ -902,7 +1032,7 @@ onKeyStroke(
                   tabindex="0"
                   class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
                 >
-                  <span class="i-carbon:information w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:info w-3 h-3" aria-hidden="true" />
                 </span>
               </TooltipApp>
             </dt>
@@ -916,17 +1046,14 @@ onKeyStroke(
               </span>
 
               <!-- Separator and install size -->
-              <template v-if="getDependencyCount(displayVersion) > 0">
+              <template v-if="displayVersion?.dist?.unpackedSize !== installSize?.totalSize">
                 <span class="text-fg-subtle mx-1">/</span>
 
                 <span
                   v-if="installSizeStatus === 'pending'"
                   class="inline-flex items-center gap-1 text-fg-subtle"
                 >
-                  <span
-                    class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                    aria-hidden="true"
-                  />
+                  <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
                 </span>
                 <span v-else-if="installSize?.totalSize" dir="ltr">
                   {{ bytesFormatter.format(installSize.totalSize) }}
@@ -946,17 +1073,14 @@ onKeyStroke(
                 v-if="vulnTreeStatus === 'pending' || vulnTreeStatus === 'idle'"
                 class="inline-flex items-center gap-1 text-fg-subtle"
               >
-                <span
-                  class="i-carbon:circle-dash w-3 h-3 motion-safe:animate-spin"
-                  aria-hidden="true"
-                />
+                <span class="i-svg-spinners:ring-resize w-3 h-3" aria-hidden="true" />
               </span>
               <span v-else-if="vulnTreeStatus === 'success'">
-                <span v-if="hasVulnerabilities" class="text-amber-500">
+                <span v-if="hasVulnerabilities" class="text-amber-700 dark:text-amber-500">
                   {{ numberFormatter.format(vulnCount) }}
                 </span>
                 <span v-else class="inline-flex items-center gap-1 text-fg-muted">
-                  <span class="i-carbon:checkmark w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:check w-3 h-3" aria-hidden="true" />
                   {{ numberFormatter.format(0) }}
                 </span>
               </span>
@@ -1042,7 +1166,7 @@ onKeyStroke(
             class="mb-4 rounded-lg border border-amber-600/40 bg-amber-500/10 px-4 py-3 text-amber-700 dark:text-amber-400"
           >
             <h3 class="m-0 flex items-center gap-2 font-mono text-sm font-medium">
-              <span class="i-carbon:warning-alt w-4 h-4 shrink-0" aria-hidden="true" />
+              <span class="i-lucide:circle-alert w-4 h-4 shrink-0" aria-hidden="true" />
               {{ $t('package.security_downgrade.title') }}
             </h3>
             <p class="mt-2 mb-0 text-sm">
@@ -1062,7 +1186,7 @@ onKeyStroke(
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
                     >{{ $t('package.security_downgrade.provenance_link_text')
-                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                    }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                   /></a>
                 </template>
               </i18n-t>
@@ -1082,7 +1206,7 @@ onKeyStroke(
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
                     >{{ $t('package.security_downgrade.trusted_publishing_link_text')
-                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                    }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                   /></a>
                 </template>
               </i18n-t>
@@ -1102,7 +1226,7 @@ onKeyStroke(
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
                     >{{ $t('package.security_downgrade.provenance_link_text')
-                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                    }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                   /></a>
                 </template>
                 <template #trustedPublishing>
@@ -1112,7 +1236,7 @@ onKeyStroke(
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
                     >{{ $t('package.security_downgrade.trusted_publishing_link_text')
-                    }}<span class="i-carbon-launch w-3 h-3" aria-hidden="true"
+                    }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                   /></a>
                 </template>
               </i18n-t>
@@ -1127,6 +1251,7 @@ onKeyStroke(
             :requested-version="requestedVersion"
             :install-version-override="installVersionOverride"
             :jsr-info="jsrInfo"
+            :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
             :types-package-name="typesPackageName"
             :executable-info="executableInfo"
             :create-package-info="createPackageInfo"
@@ -1164,17 +1289,19 @@ onKeyStroke(
           <div class="flex gap-2">
             <!-- Copy readme as Markdown button -->
             <TooltipApp
-              v-if="readmeData?.md"
+              v-if="readmeData?.mdExists"
               :text="$t('package.readme.copy_as_markdown')"
               position="bottom"
             >
               <ButtonBase
-                @click="copyReadme()"
+                @mouseenter="prefetchReadmeMarkdown"
+                @focus="prefetchReadmeMarkdown"
+                @click="copyReadmeHandler()"
                 :aria-pressed="copiedReadme"
                 :aria-label="
                   copiedReadme ? $t('common.copied') : $t('package.readme.copy_as_markdown')
                 "
-                :classicon="copiedReadme ? 'i-carbon:checkmark' : 'i-simple-icons:markdown'"
+                :classicon="copiedReadme ? 'i-lucide:check' : 'i-simple-icons:markdown'"
               >
                 {{ copiedReadme ? $t('common.copied') : $t('common.copy') }}
               </ButtonBase>
@@ -1210,10 +1337,7 @@ onKeyStroke(
             v-if="provenanceStatus === 'pending'"
             class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
           >
-            <span
-              class="i-carbon-circle-dash w-4 h-4 motion-safe:animate-spin"
-              aria-hidden="true"
-            />
+            <span class="i-svg-spinners:ring-resize w-4 h-4" aria-hidden="true" />
             <span>{{ $t('package.provenance_section.title') }}…</span>
           </div>
           <PackageProvenanceSection
@@ -1226,7 +1350,7 @@ onKeyStroke(
             v-else-if="provenanceStatus === 'error'"
             class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
           >
-            <span class="i-carbon:warning w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:circle-alert w-4 h-4" aria-hidden="true" />
             <span>{{ $t('package.provenance_section.error_loading') }}</span>
           </div>
         </section>
@@ -1273,6 +1397,7 @@ onKeyStroke(
             :versions="pkg.versions"
             :dist-tags="pkg['dist-tags'] ?? {}"
             :time="pkg.time"
+            :selected-version="resolvedVersion ?? pkg['dist-tags']?.['latest']"
           />
 
           <!-- Install Scripts Warning -->
@@ -1458,7 +1583,7 @@ onKeyStroke(
 /* Mobile floating nav: safe-area positioning + kbd hiding */
 @media (max-width: 639.9px) {
   .packageNav {
-    bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(1.25rem + var(--package-nav-extra, 0px) + env(safe-area-inset-bottom, 0px));
   }
 
   .packageNav > :global(a kbd) {

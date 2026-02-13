@@ -3,6 +3,7 @@ import {
   buildTaggedVersionRows,
   buildVersionToTagsMap,
   filterExcludedTags,
+  filterVersions,
   getPrereleaseChannel,
   getVersionGroupKey,
   getVersionGroupLabel,
@@ -419,5 +420,49 @@ describe('isSameVersionGroup', () => {
     expect(isSameVersionGroup('0.5.0-beta.1', '0.5.0')).toBe(true)
     expect(isSameVersionGroup('0.5.0-alpha.1', '0.5.3')).toBe(true)
     expect(isSameVersionGroup('0.5.0-beta.1', '0.6.0')).toBe(false)
+  })
+})
+
+describe('filterVersions', () => {
+  const versions = ['1.0.0', '1.1.0', '1.5.3', '2.0.0', '2.1.0', '3.0.0-beta.1']
+
+  it('returns all versions for empty range', () => {
+    expect(filterVersions(versions, '')).toEqual(new Set(versions))
+  })
+
+  it('returns all versions for whitespace-only range', () => {
+    expect(filterVersions(versions, '   ')).toEqual(new Set(versions))
+  })
+
+  it('matches exact version', () => {
+    expect(filterVersions(versions, '1.0.0')).toEqual(new Set(['1.0.0']))
+  })
+
+  it('matches caret range', () => {
+    expect(filterVersions(versions, '^1.0.0')).toEqual(new Set(['1.0.0', '1.1.0', '1.5.3']))
+  })
+
+  it('matches tilde range', () => {
+    expect(filterVersions(versions, '~1.0.0')).toEqual(new Set(['1.0.0']))
+    expect(filterVersions(versions, '~1.1.0')).toEqual(new Set(['1.1.0']))
+  })
+
+  it('matches complex range', () => {
+    // 3.0.0-beta.1 is included because with includePrerelease it is < 3.0.0
+    expect(filterVersions(versions, '>=2.0.0 <3.0.0')).toEqual(
+      new Set(['2.0.0', '2.1.0', '3.0.0-beta.1']),
+    )
+  })
+
+  it('matches prerelease versions with includePrerelease', () => {
+    expect(filterVersions(versions, '>=3.0.0-beta.0')).toEqual(new Set(['3.0.0-beta.1']))
+  })
+
+  it('returns empty set for invalid range', () => {
+    expect(filterVersions(versions, 'not-a-range!!!')).toEqual(new Set())
+  })
+
+  it('returns empty set for empty versions array', () => {
+    expect(filterVersions([], '^1.0.0')).toEqual(new Set())
   })
 })

@@ -55,7 +55,7 @@ onPrehydrate(el => {
         :aria-label="$t('settings.clear_accent')"
         @change="setAccentColor(null)"
       />
-      <span class="i-carbon-error size-4 text-bg" aria-hidden="true" />
+      <span class="i-lucide:ban size-4 text-bg" aria-hidden="true" />
     </label>
   </fieldset>
 </template>

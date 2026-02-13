@@ -189,7 +189,7 @@ watch(
               name: '~username',
               params: { username: maintainer.name },
             }"
-            class="link-subtle font-mono text-sm shrink-0"
+            class="link-subtle text-sm shrink-0"
             dir="ltr"
           >
             ~{{ maintainer.name }}
@@ -228,7 +228,7 @@ watch(
           "
           @click="handleRemoveOwner(maintainer.name)"
         >
-          <span class="i-carbon-close w-3.5 h-3.5" aria-hidden="true" />
+          <span class="i-lucide:x w-3.5 h-3.5" aria-hidden="true" />
         </ButtonBase>
       </li>
     </ul>
@@ -270,7 +270,7 @@ watch(
           <ButtonBase
             :aria-label="$t('package.maintainers.cancel_add')"
             @click="showAddOwner = false"
-            classicon="i-carbon-close"
+            classicon="i-lucide:x"
           />
         </form>
       </div>

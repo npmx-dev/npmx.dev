@@ -93,7 +93,7 @@ function isCellLoading(index: number): boolean {
     <div class="comparison-label flex items-center gap-1.5 px-4 py-3 border-b border-border">
       <span class="text-xs text-fg-muted uppercase tracking-wider">{{ label }}</span>
       <TooltipApp v-if="description" :text="description" position="top">
-        <span class="i-carbon:information w-3 h-3 text-fg-subtle cursor-help" aria-hidden="true" />
+        <span class="i-lucide:info w-3 h-3 text-fg-subtle cursor-help" aria-hidden="true" />
       </TooltipApp>
     </div>
 
@@ -114,10 +114,7 @@ function isCellLoading(index: number): boolean {
 
       <!-- Loading state -->
       <template v-if="isCellLoading(index)">
-        <span
-          class="i-carbon:circle-dash w-4 h-4 text-fg-subtle motion-safe:animate-spin"
-          aria-hidden="true"
-        />
+        <span class="i-svg-spinners:ring-resize w-4 h-4 text-fg-subtle" aria-hidden="true" />
       </template>
 
       <!-- No data -->

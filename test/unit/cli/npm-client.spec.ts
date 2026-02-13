@@ -4,6 +4,7 @@ import {
   validateOrgName,
   validateScopeTeam,
   validatePackageName,
+  extractUrls,
 } from '../../../cli/src/npm-client.ts'
 
 describe('validateUsername', () => {
@@ -128,5 +129,58 @@ describe('validatePackageName', () => {
 
   it('rejects empty package names', () => {
     expect(() => validatePackageName('')).toThrow('Invalid package name')
+  })
+})
+
+describe('extractUrls', () => {
+  it('extracts HTTP URLs from text', () => {
+    const text = 'Visit http://example.com for more info'
+    expect(extractUrls(text)).toEqual(['http://example.com'])
+  })
+
+  it('extracts HTTPS URLs from text', () => {
+    const text = 'Visit https://example.com/path for more info'
+    expect(extractUrls(text)).toEqual(['https://example.com/path'])
+  })
+
+  it('extracts multiple URLs from text', () => {
+    const text = 'See https://example.com and http://other.org/page'
+    expect(extractUrls(text)).toEqual(['https://example.com', 'http://other.org/page'])
+  })
+
+  it('strips trailing punctuation from URLs', () => {
+    expect(extractUrls('Go to https://example.com.')).toEqual(['https://example.com'])
+    expect(extractUrls('Go to https://example.com,')).toEqual(['https://example.com'])
+    expect(extractUrls('Go to https://example.com;')).toEqual(['https://example.com'])
+    expect(extractUrls('Go to https://example.com:')).toEqual(['https://example.com'])
+    expect(extractUrls('Go to https://example.com!')).toEqual(['https://example.com'])
+    expect(extractUrls('Go to https://example.com?')).toEqual(['https://example.com'])
+    expect(extractUrls('Go to https://example.com)')).toEqual(['https://example.com'])
+  })
+
+  it('strips multiple trailing punctuation characters', () => {
+    expect(extractUrls('See https://example.com/path).')).toEqual(['https://example.com/path'])
+  })
+
+  it('preserves query strings and fragments', () => {
+    expect(extractUrls('Go to https://example.com/path?q=1&b=2#anchor')).toEqual([
+      'https://example.com/path?q=1&b=2#anchor',
+    ])
+  })
+
+  it('returns empty array when no URLs found', () => {
+    expect(extractUrls('No URLs here')).toEqual([])
+    expect(extractUrls('')).toEqual([])
+  })
+
+  it('deduplicates identical URLs', () => {
+    const text = 'Visit https://example.com and again https://example.com'
+    expect(extractUrls(text)).toEqual(['https://example.com'])
+  })
+
+  it('extracts URLs from npm auth output', () => {
+    const npmOutput =
+      'Authenticate your account at:\nhttps://www.npmjs.com/login?next=/login/cli/abc123'
+    expect(extractUrls(npmOutput)).toEqual(['https://www.npmjs.com/login?next=/login/cli/abc123'])
   })
 })

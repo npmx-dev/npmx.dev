@@ -379,6 +379,9 @@
         "close": {
           "type": "string"
         },
+        "or": {
+          "type": "string"
+        },
         "retry": {
           "type": "string"
         },
@@ -452,6 +455,9 @@
           "type": "string"
         },
         "copy_name": {
+          "type": "string"
+        },
+        "copy_version": {
           "type": "string"
         },
         "deprecation": {
@@ -664,6 +670,12 @@
             "copy_command": {
               "type": "string"
             },
+            "copy_dev_command": {
+              "type": "string"
+            },
+            "dev_dependency_hint": {
+              "type": "string"
+            },
             "view_types": {
               "type": "string"
             }
@@ -867,6 +879,54 @@
             },
             "view_all": {
               "type": "string"
+            },
+            "distribution_title": {
+              "type": "string"
+            },
+            "distribution_modal_title": {
+              "type": "string"
+            },
+            "grouping_major": {
+              "type": "string"
+            },
+            "grouping_minor": {
+              "type": "string"
+            },
+            "recent_versions_only": {
+              "type": "string"
+            },
+            "recent_versions_only_tooltip": {
+              "type": "string"
+            },
+            "show_low_usage": {
+              "type": "string"
+            },
+            "show_low_usage_tooltip": {
+              "type": "string"
+            },
+            "date_range_tooltip": {
+              "type": "string"
+            },
+            "y_axis_label": {
+              "type": "string"
+            },
+            "filter_placeholder": {
+              "type": "string"
+            },
+            "filter_invalid": {
+              "type": "string"
+            },
+            "filter_help": {
+              "type": "string"
+            },
+            "filter_tooltip": {
+              "type": "string"
+            },
+            "filter_tooltip_link": {
+              "type": "string"
+            },
+            "no_matches": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -896,6 +956,9 @@
               "type": "string"
             },
             "outdated_patch": {
+              "type": "string"
+            },
+            "has_replacement": {
               "type": "string"
             }
           },
@@ -1021,10 +1084,19 @@
             "y_axis_label": {
               "type": "string"
             },
+            "facet": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
             "items": {
               "type": "object",
               "properties": {
                 "downloads": {
+                  "type": "string"
+                },
+                "likes": {
                   "type": "string"
                 }
               },
@@ -1039,13 +1111,13 @@
             "title": {
               "type": "string"
             },
+            "modal_title": {
+              "type": "string"
+            },
             "analyze": {
               "type": "string"
             },
             "community_distribution": {
-              "type": "string"
-            },
-            "modal_title": {
               "type": "string"
             }
           },
@@ -1383,6 +1455,9 @@
             },
             "connecting": {
               "type": "string"
+            },
+            "auto_open_url": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1429,7 +1504,13 @@
             "retry_otp": {
               "type": "string"
             },
+            "retry_web_auth": {
+              "type": "string"
+            },
             "retrying": {
+              "type": "string"
+            },
+            "open_web_auth": {
               "type": "string"
             },
             "approve_operation": {
@@ -2377,6 +2458,30 @@
           },
           "additionalProperties": false
         },
+        "team": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "governance": {
+              "type": "string"
+            },
+            "role_steward": {
+              "type": "string"
+            },
+            "role_maintainer": {
+              "type": "string"
+            },
+            "sponsor": {
+              "type": "string"
+            },
+            "sponsor_aria": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "contributors": {
           "type": "object",
           "properties": {
@@ -3189,6 +3294,201 @@
             },
             "p1": {
               "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "a11y": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "footer_title": {
+          "type": "string"
+        },
+        "welcome": {
+          "type": "string"
+        },
+        "approach": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            },
+            "about_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "measures": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "li1": {
+              "type": "string"
+            },
+            "li2": {
+              "type": "string"
+            },
+            "li3": {
+              "type": "string"
+            },
+            "li4": {
+              "type": "string"
+            },
+            "li5": {
+              "type": "string"
+            },
+            "li6": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "limitations": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "vacations": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "illustration_alt": {
+          "type": "string"
+        },
+        "poke_log": {
+          "type": "string"
+        },
+        "what": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "dates": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            },
+            "garden": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "meantime": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "repo_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "return": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "social_link": {
+              "type": "string"
+            },
+            "add_to_calendar": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "contributors": {
+              "type": "string"
+            },
+            "commits": {
+              "type": "string"
+            },
+            "pr": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "object",
+              "properties": {
+                "some": {
+                  "type": "string"
+                },
+                "all": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false

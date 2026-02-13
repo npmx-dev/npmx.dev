@@ -34,6 +34,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     sessionPassword: '',
+    github: {
+      orgToken: '',
+    },
     // Upstash Redis for distributed OAuth token refresh locking in production
     upstash: {
       redisRestUrl: process.env.UPSTASH_KV_REST_API_URL || process.env.KV_REST_API_URL || '',
@@ -101,6 +104,13 @@ export default defineNuxtConfig({
         allowQuery: ['color', 'labelColor', 'label', 'name'],
       },
     },
+    '/api/registry/downloads/**': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: ['mode', 'filterOldVersions', 'filterThreshold'],
+      },
+    },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/file/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/api/registry/provenance/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -138,14 +148,22 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/200.html': { prerender: true },
     '/about': { prerender: true },
+    '/accessibility': { prerender: true },
     '/privacy': { prerender: true },
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
+    '/recharging': { prerender: true },
     // proxy for insights
     '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
     '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
     '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
+    // lunaria status.json
+    '/lunaria/status.json': {
+      headers: {
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
+    },
   },
 
   experimental: {
@@ -219,6 +237,9 @@ export default defineNuxtConfig({
 
   htmlValidator: {
     enabled: !isCI || (provider !== 'vercel' && !!process.env.VALIDATE_HTML),
+    options: {
+      rules: { 'meta-refresh': 'off' },
+    },
     failOnError: true,
   },
 
@@ -272,6 +293,9 @@ export default defineNuxtConfig({
       compilerOptions: {
         noUnusedLocals: true,
         allowImportingTsExtensions: true,
+        paths: {
+          '#cli/*': ['../cli/src/*'],
+        },
       },
       include: ['../test/unit/app/**/*.ts'],
     },
@@ -281,8 +305,13 @@ export default defineNuxtConfig({
     nodeTsConfig: {
       compilerOptions: {
         allowImportingTsExtensions: true,
+        paths: {
+          '#cli/*': ['../cli/src/*'],
+          '#server/*': ['../server/*'],
+          '#shared/*': ['../shared/*'],
+        },
       },
-      include: ['../*.ts'],
+      include: ['../*.ts', '../test/e2e/**/*.ts'],
     },
   },
 

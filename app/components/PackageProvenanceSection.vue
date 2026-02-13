@@ -18,7 +18,7 @@ defineProps<{
       <div class="space-y-1">
         <p class="flex items-start gap-2 text-sm text-fg m-0">
           <span
-            class="i-lucide-shield-check w-4 h-4 shrink-0 text-emerald-500 mt-0.5"
+            class="i-lucide:shield-check w-4 h-4 shrink-0 text-emerald-500 mt-0.5"
             aria-hidden="true"
           />
           <i18n-t keypath="package.provenance_section.built_and_signed_on" tag="span">

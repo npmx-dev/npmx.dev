@@ -110,7 +110,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
         class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg transition-colors shrink-0"
       >
         {{ $t('package.skills.learn_more') }}
-        <span class="i-carbon:arrow-right w-3 h-3" />
+        <span class="i-lucide:arrow-right w-3 h-3" />
       </a>
     </div>
 
@@ -159,7 +159,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
           @click="toggleSkill(skill.dirName)"
         >
           <span
-            class="i-carbon:chevron-right w-3 h-3 text-fg-subtle shrink-0 transition-transform duration-200"
+            class="i-lucide:chevron-right w-3 h-3 text-fg-subtle shrink-0 transition-transform duration-200"
             :class="{ 'rotate-90': expandedSkills.has(skill.dirName) }"
             aria-hidden="true"
           />
@@ -171,7 +171,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
             :text="getWarningTooltip(skill)"
             to="#skills-modal"
           >
-            <span class="i-carbon:warning w-3.5 h-3.5 text-amber-500" />
+            <span class="i-lucide:circle-alert w-3.5 h-3.5 text-amber-500" />
           </TooltipApp>
         </button>
 
@@ -193,7 +193,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
               <!-- File counts & warnings -->
               <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                 <span v-if="skill.fileCounts?.scripts" class="text-fg-subtle">
-                  <span class="i-carbon:script size-3 align-[-2px] me-0.5" />{{
+                  <span class="i-lucide:file-code size-3 align-[-2px] me-0.5" />{{
                     $t(
                       'package.skills.file_counts.scripts',
                       { count: skill.fileCounts.scripts },
@@ -202,7 +202,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                   }}
                 </span>
                 <span v-if="skill.fileCounts?.references" class="text-fg-subtle">
-                  <span class="i-carbon:document size-3 align-[-2px] me-0.5" />{{
+                  <span class="i-lucide:file-text size-3 align-[-2px] me-0.5" />{{
                     $t(
                       'package.skills.file_counts.refs',
                       { count: skill.fileCounts.references },
@@ -211,7 +211,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                   }}
                 </span>
                 <span v-if="skill.fileCounts?.assets" class="text-fg-subtle">
-                  <span class="i-carbon:image size-3 align-[-2px] me-0.5" />{{
+                  <span class="i-lucide:image size-3 align-[-2px] me-0.5" />{{
                     $t(
                       'package.skills.file_counts.assets',
                       { count: skill.fileCounts.assets },
@@ -221,7 +221,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                 </span>
                 <template v-for="warning in skill.warnings" :key="warning.message">
                   <span class="text-amber-500">
-                    <span class="i-carbon:warning size-3 align-[-2px] me-0.5" />{{
+                    <span class="i-lucide:circle-alert size-3 align-[-2px] me-0.5" />{{
                       warning.message
                     }}
                   </span>
@@ -234,7 +234,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                 class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg transition-colors"
                 @click.stop
               >
-                <span class="i-carbon:code size-3" />{{ $t('package.skills.view_source') }}
+                <span class="i-lucide:code size-3" />{{ $t('package.skills.view_source') }}
               </NuxtLink>
             </div>
           </div>

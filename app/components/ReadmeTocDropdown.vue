@@ -151,12 +151,12 @@ function handleKeydown(event: KeyboardEvent) {
     :aria-controls="listboxId"
     @click="toggle"
     @keydown="handleKeydown"
-    classicon="i-carbon:list"
+    classicon="i-lucide:list"
     class="px-2.5"
     block
   >
     <span
-      class="i-carbon:chevron-down w-3 h-3"
+      class="i-lucide:chevron-down w-3 h-3"
       :class="[
         { 'rotate-180': isOpen },
         prefersReducedMotion ? '' : 'transition-transform duration-200',

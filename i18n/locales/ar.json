@@ -306,8 +306,7 @@
     "downloads": {
       "title": "التنزيلات الأسبوعية",
       "analyze": "تحليل التنزيلات",
-      "community_distribution": "عرض توزيع تبنّي المجتمع",
-      "modal_title": "التنزيلات"
+      "community_distribution": "عرض توزيع تبنّي المجتمع"
     },
     "install_scripts": {
       "title": "سكربتات التثبيت",

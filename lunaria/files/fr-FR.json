@@ -277,7 +277,13 @@
       "more_tagged": "{count} de plus avec tag",
       "all_covered": "Toutes les versions sont couvertes par les tags ci-dessus",
       "deprecated_title": "{version} (dépréciée)",
-      "view_all": "Voir la version | Voir les {count} versions"
+      "view_all": "Voir la version | Voir les {count} versions",
+      "filter_placeholder": "Filtrer par plage semver (ex. ^3.0.0)",
+      "filter_invalid": "Plage semver invalide",
+      "filter_help": "Infos sur le filtre de plage semver",
+      "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
+      "filter_tooltip_link": "plage semver",
+      "no_matches": "Aucune version ne correspond à cette plage"
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -313,31 +319,10 @@
       "show_more": "(afficher {count} de plus)",
       "show_less": "(afficher moins)"
     },
-    "trends": {
-      "granularity": "Granularité",
-      "granularity_daily": "Quotidien",
-      "granularity_weekly": "Hebdomadaire",
-      "granularity_monthly": "Mensuel",
-      "granularity_yearly": "Annuel",
-      "start_date": "Début",
-      "end_date": "Fin",
-      "loading": "Chargement...",
-      "date_range": "{start} au {end}",
-      "date_range_multiline": "{start}\nau {end}",
-      "download_file": "Télécharger {fileType}",
-      "toggle_annotator": "Afficher/Masquer l'annotateur",
-      "legend_estimation": "Estimation",
-      "no_data": "Données non disponibles",
-      "y_axis_label": "{facet} {granularity}",
-      "items": {
-        "downloads": "Téléchargements"
-      }
-    },
     "downloads": {
       "title": "Téléchargements hebdomadaires",
       "analyze": "Analyser les téléchargements",
-      "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
-      "modal_title": "Téléchargements"
+      "community_distribution": "Voir la distribution des versions téléchargées par la communauté"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -420,6 +405,29 @@
       "published": "Récemment publié",
       "name_asc": "Nom (A-Z)",
       "name_desc": "Nom (Z-A)"
+    },
+    "trends": {
+      "granularity": "Granularité",
+      "granularity_daily": "Quotidien",
+      "granularity_weekly": "Hebdomadaire",
+      "granularity_monthly": "Mensuel",
+      "granularity_yearly": "Annuel",
+      "start_date": "Début",
+      "end_date": "Fin",
+      "loading": "Chargement...",
+      "date_range": "{start} au {end}",
+      "date_range_multiline": "{start}\nau {end}",
+      "download_file": "Télécharger {fileType}",
+      "toggle_annotator": "Afficher/Masquer l'annotateur",
+      "legend_estimation": "Estimation",
+      "no_data": "Données non disponibles",
+      "y_axis_label": "{facet} {granularity}",
+      "facet": "Facette",
+      "title": "Tendances",
+      "items": {
+        "downloads": "Téléchargements",
+        "likes": "J'aime"
+      }
     },
     "size": {
       "b": "{size} o",
@@ -969,7 +977,7 @@
         "up_to_you": "À vous de décider !"
       },
       "trends": {
-        "title": "Téléchargements hebdomadaires"
+        "title": "Comparer les tendances"
       }
     }
   },

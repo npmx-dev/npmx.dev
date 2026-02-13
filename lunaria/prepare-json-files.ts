@@ -66,9 +66,11 @@ export async function mergeLocaleObject(locale: LocaleObject): Promise<NestedObj
 
 async function loadLocaleSourceJson<T = unknown>(name: string): Promise<T> {
   const rawJson = JSON.parse(await fs.readFile(path.resolve(`${localesFolder}/${name}`), 'utf8'))
-  // Exclude $schema since it isn't useful in generated files and the relative path
+  // Exclude $schema since it isn't useful in generated files and the relative
+
+  // TODO: removing vacations entry key for temporal recharging page
   // would be wrong anyway
-  const { $schema: _, ...rest } = rawJson
+  const { $schema: _, vacations: __, ...rest } = rawJson
   return rest
 }
 
