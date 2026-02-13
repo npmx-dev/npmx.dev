@@ -96,7 +96,7 @@ useEventListener('keydown', event => {
             "
           >
             <span
-              class="i-lucide:search w-4 h-4 mt-0.5 shrink-0"
+              class="i-simple-icons:algolia w-4 h-4 mt-0.5 shrink-0"
               :class="searchProviderValue === 'algolia' ? 'text-accent' : 'text-fg-muted'"
               aria-hidden="true"
             />
