@@ -515,7 +515,7 @@ const endDate = computed(() => {
             <!-- Contextual menu icon -->
             <template #menuIcon="{ isOpen }">
               <span v-if="isOpen" class="i-lucide:circle-x w-6 h-6" aria-hidden="true" />
-              <span v-else class="i-carbon:overflow-menu-vertical w-6 h-6" aria-hidden="true" />
+              <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
             </template>
 
             <!-- Export options -->
