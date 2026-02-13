@@ -75,6 +75,10 @@
     "links": "Liens",
     "tap_to_search": "Toucher pour rechercher"
   },
+  "blog": {
+    "title": "Blog",
+    "author": {}
+  },
   "settings": {
     "title": "paramètres",
     "tagline": "personnalisez votre expérience npmx",

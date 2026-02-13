@@ -1,8 +1,10 @@
 import process from 'node:process'
 import { currentLocales } from './config/i18n'
+import Markdown from 'unplugin-vue-markdown/vite'
 import { isCI, provider } from 'std-env'
 
 export default defineNuxtConfig({
+  extensions: ['.md'],
   modules: [
     '@unocss/nuxt',
     '@nuxtjs/html-validator',
@@ -154,7 +156,10 @@ export default defineNuxtConfig({
     '/settings': { prerender: true },
     '/recharging': { prerender: true },
     // proxy for insights
-    '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
+    '/blog/**': { isr: true, prerender: true },
+    '/_v/script.js': {
+      proxy: 'https://npmx.dev/_vercel/insights/script.js',
+    },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
     '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
     '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
@@ -310,6 +315,28 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    vue: {
+      include: [/\.vue($|\?)/, /\.(md|markdown)($|\?)/],
+    },
+    plugins: [
+      Markdown({
+        include: [/\.(md|markdown)($|\?)/],
+        wrapperComponent: 'BlogPostWrapper',
+        wrapperClasses: 'text-fg-muted leading-relaxed',
+        async markdownItSetup(md) {
+          const shiki = await import('@shikijs/markdown-it')
+          md.use(
+            await shiki.default({
+              themes: {
+                dark: 'github-dark',
+                light: 'github-light',
+              },
+            }),
+          )
+        },
+      }),
+    ],
+
     optimizeDeps: {
       include: [
         '@vueuse/core',

@@ -52,6 +52,7 @@ export default defineCachedEventHandler(
       .catch(() => ({ profiles: [] }))
 
     const avatarMap = new Map<string, string>()
+
     for (const profile of response.profiles) {
       if (profile.avatar) {
         avatarMap.set(profile.handle, profile.avatar)

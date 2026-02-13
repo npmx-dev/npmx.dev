@@ -10,6 +10,7 @@
     "app.bsky.feed.getPostThread",
     "app.bsky.feed.getPosts",
     "app.bsky.feed.post",
+    "com.atproto.identity.resolveHandle",
     "com.bad-example.identity.resolveMiniDoc",
     "site.standard.document"
   ],
@@ -97,6 +98,10 @@
     "app.bsky.richtext.facet": {
       "uri": "at://did:plc:4v4y5r3lwsbtmsxhile2ljac/com.atproto.lexicon.schema/app.bsky.richtext.facet",
       "cid": "bafyreidg56eo7zynf6ihz4xb627vwoqf5idnevkmwp7sxc4tijg6xngbu4"
+    },
+    "com.atproto.identity.resolveHandle": {
+      "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.identity.resolveHandle",
+      "cid": "bafyreigckmqtt3jrtzd7tvigjatnz6ajqyafs26h5pwcudwag2anedxnmu"
     },
     "com.atproto.label.defs": {
       "uri": "at://did:plc:6msi3pj7krzih5qxqtryxlzw/com.atproto.lexicon.schema/com.atproto.label.defs",

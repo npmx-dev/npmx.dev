@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
     "about": "about",
+    "blog": "blog",
     "docs": "docs",
     "source": "source",
     "social": "social",
@@ -75,6 +76,18 @@
     "open_menu": "Open menu",
     "links": "Links",
     "tap_to_search": "Tap to search"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Insights and updates from the npmx community",
+    "author": {
+      "view_profile": "View {name}'s profile on Bluesky"
+    },
+    "atproto": {
+      "loading_bluesky_post": "Loading Bluesky post...",
+      "view_on_bluesky": "View this post on Bluesky"
+    }
   },
   "settings": {
     "title": "settings",

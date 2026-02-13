@@ -57,6 +57,14 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         iconClass: 'i-carbon:information',
       },
       {
+        name: 'Blog',
+        label: $t('footer.blog'),
+        to: { name: 'blog' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-carbon:blog',
+      },
+      {
         name: 'Privacy Policy',
         label: $t('privacy_policy.title'),
         to: { name: 'privacy' },
