@@ -256,7 +256,7 @@ const markdownViewModes = [
   {
     key: 'preview',
     label: $t('code.markdown_view_mode.preview'),
-    icon: 'i-carbon:view',
+    icon: 'i-lucide:eye',
   },
   {
     key: 'code',
