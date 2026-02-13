@@ -100,7 +100,7 @@ try {
       <!-- Package name -->
       <div class="flex items-start gap-4">
         <div
-          class="flex items-center justify-center w-16 h-16 p-4 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
+          class="flex items-center justify-center w-16 h-16 p-3.5 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
           :style="{ backgroundColor: primaryColor }"
         >
           <svg
@@ -128,8 +128,8 @@ try {
         >
           <span
             :style="{ color: primaryColor }"
-            class="opacity-80"
-            style="margin-left: -0.5rem; margin-right: 0.5rem"
+            class="opacity-80 tracking-[-0.1em]"
+            style="margin-left: -0.5rem; margin-right: 1rem"
             >./</span
           >{{ titleTruncated }}
         </h1>
