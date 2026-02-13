@@ -18,9 +18,6 @@ const isOpen = shallowRef(false)
 /** Check if connected to at least one service */
 const hasAnyConnection = computed(() => isNpmConnected.value || !!atprotoUser.value)
 
-/** Check if connected to both services */
-const hasBothConnections = computed(() => isNpmConnected.value && !!atprotoUser.value)
-
 /** Only show count of active (pending/approved/running) operations */
 const operationCount = computed(() => activeOperations.value.length)
 
@@ -64,53 +61,34 @@ function openAuthModal() {
       @click="isOpen = !isOpen"
       class="border-none"
     >
-      <!-- Stacked avatars when connected -->
-      <span
-        v-if="hasAnyConnection"
-        class="flex items-center"
-        :class="hasBothConnections ? '-space-x-2' : ''"
-      >
-        <!-- npm avatar (first/back) -->
+      <span v-if="hasAnyConnection" class="flex items-center">
         <img
-          v-if="isNpmConnected && npmAvatar"
+          v-if="npmAvatar && !atprotoUser?.avatar"
           :src="npmAvatar"
           :alt="npmUser || $t('account_menu.npm_cli')"
           width="24"
           height="24"
           class="w-6 h-6 rounded-full ring-2 ring-bg object-cover"
         />
-        <span
-          v-else-if="isNpmConnected"
-          class="w-6 h-6 rounded-full bg-bg-muted ring-2 ring-bg flex items-center justify-center"
-        >
-          <span class="i-carbon-terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
-        </span>
-
-        <!-- Atmosphere avatar (second/front, overlapping) -->
         <img
-          v-if="atprotoUser?.avatar"
+          v-else-if="atprotoUser?.avatar && !npmAvatar"
           :src="atprotoUser.avatar"
           :alt="atprotoUser.handle"
           width="24"
           height="24"
           class="w-6 h-6 rounded-full ring-2 ring-bg object-cover"
-          :class="hasBothConnections ? 'relative z-10' : ''"
         />
         <span
-          v-else-if="atprotoUser"
+          v-else
           class="w-6 h-6 rounded-full bg-bg-muted ring-2 ring-bg flex items-center justify-center"
-          :class="hasBothConnections ? 'relative z-10' : ''"
         >
           <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
         </span>
       </span>
-
-      <!-- "connect" text when not connected -->
-      <span v-if="!hasAnyConnection" class="font-mono text-sm">
+      <span v-else class="font-mono text-sm">
         {{ $t('account_menu.connect') }}
       </span>
 
-      <!-- Chevron -->
       <span
         class="i-carbon-chevron-down w-3 h-3 transition-transform duration-200"
         :class="{ 'rotate-180': isOpen }"
@@ -139,9 +117,8 @@ function openAuthModal() {
         <div
           class="bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/50 overflow-hidden px-1"
         >
-          <!-- Connected accounts section -->
-          <div v-if="hasAnyConnection" class="py-1">
-            <!-- npm CLI connection -->
+          <div class="py-1">
+            <!-- npm CLI - Connected or Connect option -->
             <button
               v-if="isNpmConnected && npmUser"
               type="button"
@@ -184,7 +161,34 @@ function openAuthModal() {
               </span>
             </button>
 
-            <!-- Atmosphere connection -->
+            <button
+              v-else
+              type="button"
+              role="menuitem"
+              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              @click="openConnectorModal"
+            >
+              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
+                <span
+                  v-if="isNpmConnecting"
+                  class="i-carbon-circle-dash w-4 h-4 text-yellow-500 animate-spin"
+                  aria-hidden="true"
+                />
+                <span v-else class="i-carbon-terminal w-4 h-4 text-fg-muted" aria-hidden="true" />
+              </span>
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg block">
+                  {{
+                    isNpmConnecting
+                      ? $t('account_menu.connecting')
+                      : $t('account_menu.connect_npm_cli')
+                  }}
+                </span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli_desc') }}</span>
+              </span>
+            </button>
+
+            <!-- Atmosphere - Connected or Connect option -->
             <button
               v-if="atprotoUser"
               type="button"
@@ -213,45 +217,9 @@ function openAuthModal() {
                 <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere') }}</span>
               </span>
             </button>
-          </div>
-
-          <!-- Divider (only if we have connections AND options to connect) -->
-          <div
-            v-if="hasAnyConnection && (!isNpmConnected || !atprotoUser)"
-            class="border-t border-border"
-          />
-
-          <!-- Connect options -->
-          <div v-if="!isNpmConnected || !atprotoUser" class="py-1">
-            <button
-              v-if="!isNpmConnected"
-              type="button"
-              role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
-              @click="openConnectorModal"
-            >
-              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
-                <span
-                  v-if="isNpmConnecting"
-                  class="i-carbon-circle-dash w-4 h-4 text-yellow-500 animate-spin"
-                  aria-hidden="true"
-                />
-                <span v-else class="i-carbon-terminal w-4 h-4 text-fg-muted" aria-hidden="true" />
-              </span>
-              <span class="flex-1 min-w-0">
-                <span class="font-mono text-sm text-fg block">
-                  {{
-                    isNpmConnecting
-                      ? $t('account_menu.connecting')
-                      : $t('account_menu.connect_npm_cli')
-                  }}
-                </span>
-                <span class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli_desc') }}</span>
-              </span>
-            </button>
 
             <button
-              v-if="!atprotoUser"
+              v-else
               type="button"
               role="menuitem"
               class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"

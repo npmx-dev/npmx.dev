@@ -130,7 +130,7 @@ onUnmounted(deactivate)
                   v-else
                   class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center"
                 >
-                  <span class="i-carbon-terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
+                  <span class="i-carbon:terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
                 </span>
                 <span class="flex-1">~{{ npmUser }}</span>
                 <span class="w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
@@ -155,7 +155,7 @@ onUnmounted(deactivate)
                   v-else
                   class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center"
                 >
-                  <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
+                  <span class="i-carbon:cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
                 </span>
                 <span class="flex-1 truncate">@{{ atprotoUser.handle }}</span>
               </button>
@@ -168,7 +168,7 @@ onUnmounted(deactivate)
                 @click="handleShowAuth"
               >
                 <span class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center">
-                  <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
+                  <span class="i-carbon:cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
                 </span>
                 <span class="flex-1">{{ $t('account_menu.connect_atmosphere') }}</span>
               </button>
