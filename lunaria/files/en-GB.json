@@ -1141,7 +1141,6 @@
     "by_locale": "Translation progress by locale",
     "by_file": "Translation progress by file",
     "locale_summary": "{name} ({id})",
-    "locale_summary_status": "{doneicon} {donetext} {done}, {missingicon} {missingtext} {missing}",
     "complete_text": "This translation is complete, amazing job!",
     "done_text": "done",
     "missing_text": "missing",

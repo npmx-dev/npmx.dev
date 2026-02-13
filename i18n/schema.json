@@ -3430,9 +3430,6 @@
         "locale_summary": {
           "type": "string"
         },
-        "locale_summary_status": {
-          "type": "string"
-        },
         "complete_text": {
           "type": "string"
         },

@@ -1139,7 +1139,6 @@
     "by_locale": "Progreso de la traducción por idioma",
     "by_file": "Progreso de la traducción por archivo",
     "locale_summary": "{name} ({id})",
-    "locale_summary_status": "{doneicon} {donetext} {done}, {missingicon} {missingtext} {missing}",
     "complete_text": "¡La traducción está completa, un trabajo increíble!",
     "done_text": "traducidas",
     "missing_text": "sin traducir",
