@@ -102,7 +102,8 @@ export function useOutdatedDependencies(
       let latestStable = data.distTags.latest
       if (!latestStable) continue
 
-      // If latest tag is a prerelease, find the latest stable version instead
+      // If latest tag is a prerelease, find the latest stable version instead. Take note that this
+      // overrides the latest distTag.
       if (prerelease(latestStable)) {
         const stableVersions = data.versions.filter(v => !prerelease(v))
         if (stableVersions.length > 0) {
