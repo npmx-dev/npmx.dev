@@ -11,7 +11,7 @@ import {
 const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
 
 /**
- * Middleware to handle ALL llms.txt / llms_full.txt routes.
+ * Middleware to handle ALL llms.txt / llms_full.txt / .md routes.
  *
  * All llms.txt handling lives here rather than in file-based routes because
  * Vercel's ISR route rules with glob patterns (e.g. `/package/ ** /llms.txt`)
@@ -20,6 +20,10 @@ const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
  *
  * Handles:
  * - /llms.txt (root discovery page)
+ * - /package/:name.md (unscoped, latest, raw README)
+ * - /package/@:org/:name.md (scoped, latest, raw README)
+ * - /package/:name/v/:version.md (unscoped, versioned, raw README)
+ * - /package/@:org/:name/v/:version.md (scoped, versioned, raw README)
  * - /package/@:org/llms.txt (org package listing)
  * - /package/:name/llms.txt (unscoped, latest)
  * - /package/:name/llms_full.txt (unscoped, latest, full)
