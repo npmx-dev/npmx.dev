@@ -110,7 +110,7 @@ const numberFormatter = useNumberFormatter()
               class="shrink-0"
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
               :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
-              classicon="i-carbon:security"
+              classicon="i-lucide:shield-check"
             >
               <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
             </LinkBase>

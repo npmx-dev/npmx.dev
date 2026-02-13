@@ -62,7 +62,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         to: { name: 'privacy' },
         type: 'link',
         external: false,
-        iconClass: 'i-carbon:security',
+        iconClass: 'i-lucide:shield-check',
       },
       {
         name: 'Accessibility',
