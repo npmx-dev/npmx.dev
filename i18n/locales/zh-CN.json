@@ -1128,5 +1128,40 @@
       "p1": "如果你在 {app} 上遇到无障碍问题，请通过在我们的 {link} 上提交问题来告诉我们。我们会认真对待这些报告，并尽力解决它们。",
       "link": "GitHub 仓库"
     }
+  },
+  "vacations": {
+    "title": "休假中",
+    "meta_description": "npmx 团队正在充电。Discord 社区将于一周后重新开放。",
+    "heading": "充电中",
+    "subtitle": "我们最近为了 npmx 没日没夜地赶进度。已经让{some}都快没觉睡了！我们可不想让这变成常态！所以，我们决定集体放假一周。",
+    "illustration_alt": "一排温馨的图标",
+    "poke_log": "拨弄一下营火",
+    "what": {
+      "title": "发生什么事了",
+      "p1": "Discord 在 {dates} 关闭。",
+      "dates": "2 月 14 日至 21 日",
+      "p2": "所有邀请链接都已删除，频道已锁定⸺除了 {garden}，供想继续留在这里的伙伴们闲聊。",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "在此期间",
+      "p1": "{site} 和 {repo} 保持开放⸺欢迎研究代码、提交 issue 和 PR。我们回来后会处理所有问题。只是别指望很快就能通过审核，我们可能正窝在舒适的壁炉旁呢。",
+      "repo_link": "代码仓库"
+    },
+    "return": {
+      "title": "稍后见",
+      "p1": "我们会带着满满的能量归来，为 3 月 3 日的冲刺做好准备。请在 {social} 了解我们的最新动态。",
+      "social_link": "Bluesky 上关注我们",
+      "add_to_calendar": "Discord 重新开放时提醒我"
+    },
+    "stats": {
+      "contributors": "贡献者",
+      "commits": "提交",
+      "pr": "合并 PR",
+      "subtitle": {
+        "some": "某些",
+        "all": "所有人"
+      }
+    }
   }
 }
