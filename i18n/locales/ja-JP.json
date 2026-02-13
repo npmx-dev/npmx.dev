@@ -1119,5 +1119,40 @@
       "p1": "{app} でアクセシビリティに関する問題を見つけた場合は、{link}でIssueを作成してお知らせください。報告は真剣に受け止め、できる限り対応します。",
       "link": "GitHubリポジトリ"
     }
+  },
+  "vacations": {
+    "title": "EN TEXT TO REPLACE:on vacation",
+    "meta_description": "EN TEXT TO REPLACE:The npmx team is recharging. Discord reopens in a week.",
+    "heading": "EN TEXT TO REPLACE:recharging",
+    "subtitle": "EN TEXT TO REPLACE:we've been building npmx at a pace that has cost {some} of us sleep. we don't want that to be the norm! so we are taking a week off. together.",
+    "illustration_alt": "EN TEXT TO REPLACE:a single row of cosy icons",
+    "poke_log": "EN TEXT TO REPLACE:Poke the campfire",
+    "what": {
+      "title": "EN TEXT TO REPLACE:what's happening",
+      "p1": "EN TEXT TO REPLACE:discord is closed {dates}.",
+      "dates": "EN TEXT TO REPLACE:February 14 – 21",
+      "p2": "EN TEXT TO REPLACE:all invite links are gone and channels are locked – except {garden}, which stays open for folks who want to keep hanging out.",
+      "garden": "EN TEXT TO REPLACE:#garden"
+    },
+    "meantime": {
+      "title": "EN TEXT TO REPLACE:in the meantime",
+      "p1": "EN TEXT TO REPLACE:{site} and {repo} stay open – dig in, file issues, open PRs. we'll get to everything when we're back. just don't expect a fast review. we'll be somewhere near a cosy fireplace.",
+      "repo_link": "EN TEXT TO REPLACE:the repo"
+    },
+    "return": {
+      "title": "EN TEXT TO REPLACE:see you soon",
+      "p1": "EN TEXT TO REPLACE:we'll come back recharged and ready for the final push to March 3rd. {social} for updates.",
+      "social_link": "EN TEXT TO REPLACE:follow us on Bluesky",
+      "add_to_calendar": "EN TEXT TO REPLACE:remind me when Discord reopens"
+    },
+    "stats": {
+      "contributors": "EN TEXT TO REPLACE:Contributors",
+      "commits": "EN TEXT TO REPLACE:Commits",
+      "pr": "EN TEXT TO REPLACE:PRs Merged",
+      "subtitle": {
+        "some": "EN TEXT TO REPLACE:some",
+        "all": "EN TEXT TO REPLACE:all"
+      }
+    }
   }
 }
