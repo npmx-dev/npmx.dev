@@ -83,7 +83,7 @@ function isCategoryNoneSelected(category: string): boolean {
               ? undefined
               : isFacetSelected(facet.id)
                 ? 'i-lucide:check'
-                : 'i-carbon:add'
+                : 'i-lucide:plus'
           "
         >
           {{ facet.label }}
