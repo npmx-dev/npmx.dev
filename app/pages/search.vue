@@ -10,13 +10,6 @@ import { normalizeSearchParam } from '#shared/utils/url'
 const route = useRoute()
 const router = useRouter()
 
-const { searchProvider } = useSearchProvider()
-const searchProviderValue = computed(() => {
-  const p = normalizeSearchParam(route.query.p)
-  if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
-  return 'algolia'
-})
-
 // Preferences (persisted to localStorage)
 const {
   viewMode,
@@ -33,12 +26,11 @@ const updateUrlPage = debounce((page: number) => {
     query: {
       ...route.query,
       page: page > 1 ? page : undefined,
-      p: searchProviderValue.value === 'npm' ? 'npm' : undefined,
     },
   })
 }, 500)
 
-const searchQuery = useGlobalSearchQuery()
+const { model: searchQuery, provider: searchProvider } = useGlobalSearch()
 const query = computed(() => searchQuery.value)
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
@@ -131,7 +123,7 @@ const ALL_SORT_KEYS: SortKey[] = [
 
 // Disable sort keys the current provider can't meaningfully sort by
 const disabledSortKeys = computed<SortKey[]>(() => {
-  const supported = PROVIDER_SORT_KEYS[searchProviderValue.value]
+  const supported = PROVIDER_SORT_KEYS[searchProvider.value]
   return ALL_SORT_KEYS.filter(k => !supported.has(k))
 })
 
@@ -155,6 +147,7 @@ const {
     ...parseSearchOperators(normalizeSearchParam(route.query.q)),
   },
   initialSort: 'relevance-desc', // Default to search relevance
+  searchQueryModel: searchQuery,
 })
 
 const isRelevanceSort = computed(
@@ -173,14 +166,14 @@ const requestedSize = computed(() => {
   // When sorting by something other than relevance, fetch a large batch
   // so client-side sorting operates on a meaningful pool of matching results
   if (!isRelevanceSort.value) {
-    const cap = EAGER_LOAD_SIZE[searchProviderValue.value]
+    const cap = EAGER_LOAD_SIZE[searchProvider.value]
     return Math.max(base, cap)
   }
   return base
 })
 
 // Reset to relevance sort when switching to a provider that doesn't support the current sort key
-watch(searchProviderValue, provider => {
+watch(searchProvider, provider => {
   const { key } = parseSortOption(sortOption.value)
   const supported = PROVIDER_SORT_KEYS[provider]
   if (!supported.has(key)) {
@@ -200,7 +193,7 @@ const {
   packageAvailability,
 } = useSearch(
   query,
-  searchProviderValue,
+  searchProvider,
   () => ({
     size: requestedSize.value,
   }),

@@ -385,6 +385,9 @@ const run = async (): Promise<void> => {
     lang: 'en',
   })
 
+  // TODO: removing vacations entry key for temporal recharging page
+  delete referenceContent.vacations
+
   // $schema is a JSON Schema reference, not a translation key
   delete referenceContent.$schema
 

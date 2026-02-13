@@ -16,7 +16,9 @@ export function initPreferencesOnPrehydrate() {
     const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt'])
 
     // Read settings from localStorage
-    const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+    const settings = JSON.parse(
+      localStorage.getItem('npmx-settings') || '{}',
+    ) as Partial<AppSettings>
 
     const accentColorId = settings.accentColorId
     if (accentColorId && accentColorIds.has(accentColorId)) {

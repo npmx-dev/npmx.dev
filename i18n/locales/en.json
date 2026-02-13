@@ -221,6 +221,8 @@
       "title": "Get started",
       "pm_label": "Package manager",
       "copy_command": "Copy install command",
+      "copy_dev_command": "Copy dev install command",
+      "dev_dependency_hint": "Usually installed as a dev dependency",
       "view_types": "View {package}"
     },
     "create": {
@@ -808,8 +810,16 @@
         "managers": "package managers"
       }
     },
+    "team": {
+      "title": "Team",
+      "governance": "Governance",
+      "role_steward": "steward",
+      "role_maintainer": "maintainer",
+      "sponsor": "sponsor",
+      "sponsor_aria": "Sponsor {name} on GitHub"
+    },
     "contributors": {
-      "title": "{count} Contributor | {count} Contributors",
+      "title": "... and {count} more contributor | ... and {count} more contributors",
       "description": "npmx is fully open source, built by an amazing community of contributors. Join us and let's build the npm browsing experience we always wanted, together.",
       "loading": "Loading contributors...",
       "error": "Failed to load contributors",
@@ -1109,6 +1119,41 @@
       "title": "Feedback",
       "p1": "If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
       "link": "GitHub repository"
+    }
+  },
+  "vacations": {
+    "title": "on vacation",
+    "meta_description": "The npmx team is recharging. Discord reopens in a week.",
+    "heading": "recharging",
+    "subtitle": "we've been building npmx at a pace that has cost {some} of us sleep. we don't want that to be the norm! so we are taking a week off. together.",
+    "illustration_alt": "a single row of cosy icons",
+    "poke_log": "Poke the campfire",
+    "what": {
+      "title": "what's happening",
+      "p1": "discord is closed {dates}.",
+      "dates": "February 14 – 21",
+      "p2": "all invite links are gone and channels are locked – except {garden}, which stays open for folks who want to keep hanging out.",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "in the meantime",
+      "p1": "{site} and {repo} stay open – dig in, file issues, open PRs. we'll get to everything when we're back. just don't expect a fast review. we'll be somewhere near a cosy fireplace.",
+      "repo_link": "the repo"
+    },
+    "return": {
+      "title": "see you soon",
+      "p1": "we'll come back recharged and ready for the final push to March 3rd. {social} for updates.",
+      "social_link": "follow us on Bluesky",
+      "add_to_calendar": "remind me when Discord reopens"
+    },
+    "stats": {
+      "contributors": "Contributors",
+      "commits": "Commits",
+      "pr": "PRs Merged",
+      "subtitle": {
+        "some": "some",
+        "all": "all"
+      }
     }
   }
 }

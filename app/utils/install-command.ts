@@ -68,6 +68,11 @@ export interface InstallCommandOptions {
   packageManager: PackageManagerId
   version?: string | null
   jsrInfo?: JsrPackageInfo | null
+  dev?: boolean
+}
+
+export function getDevDependencyFlag(packageManager: PackageManagerId): '-D' | '-d' {
+  return packageManager === 'bun' ? '-d' : '-D'
 }
 
 /**
@@ -108,8 +113,9 @@ export function getInstallCommandParts(options: InstallCommandOptions): string[]
 
   const spec = getPackageSpecifier(options)
   const version = options.version ? `@${options.version}` : ''
+  const devFlag = options.dev ? [getDevDependencyFlag(options.packageManager)] : []
 
-  return [pm.label, pm.action, `${spec}${version}`]
+  return [pm.label, pm.action, ...devFlag, `${spec}${version}`]
 }
 
 export interface ExecuteCommandOptions extends InstallCommandOptions {
