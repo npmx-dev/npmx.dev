@@ -560,7 +560,7 @@ const endDate = computed(() => {
 
             <template #annotator-action-delete>
               <span
-                class="i-lucide:trash-can w-6 h-6 text-fg-subtle"
+                class="i-lucide:trash w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />

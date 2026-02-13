@@ -399,7 +399,7 @@ watch(lastExecutionTime, () => {
             :aria-label="$t('org.teams.delete_team', { name: teamName })"
             @click.stop="handleDestroyTeam(teamName)"
           >
-            <span class="i-lucide:trash-can w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:trash w-4 h-4" aria-hidden="true" />
           </button>
         </div>
 
