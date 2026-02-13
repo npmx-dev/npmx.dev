@@ -215,7 +215,7 @@ const roleLabels = computed(
                   </LinkBase>
                 </div>
                 <span
-                  class="i-carbon:launch rtl-flip w-3.5 h-3.5 text-fg-muted opacity-50 shrink-0 self-start mt-0.5"
+                  class="i-lucide:external-link rtl-flip w-3.5 h-3.5 text-fg-muted opacity-50 shrink-0 self-start mt-0.5"
                   aria-hidden="true"
                 />
               </li>

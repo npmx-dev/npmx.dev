@@ -384,7 +384,7 @@ watch(isExecuting, executing => {
         class="flex-1 px-4 py-2 font-mono text-sm text-accent bg-accent/10 border border-accent/30 rounded-md transition-colors duration-200 hover:bg-accent/20"
         @click="handleOpenAuthUrl"
       >
-        <span class="i-carbon:launch w-4 h-4 inline-block me-1" aria-hidden="true" />
+        <span class="i-lucide:external-link w-4 h-4 inline-block me-1" aria-hidden="true" />
         {{ $t('operations.queue.open_web_auth') }}
       </button>
     </div>

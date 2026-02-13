@@ -211,7 +211,7 @@ onUnmounted(deactivate)
                       {{ link.label }}
                       <span
                         v-if="link.external"
-                        class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
+                        class="i-lucide:external-link rtl-flip w-3 h-3 ms-auto text-fg-subtle"
                         aria-hidden="true"
                       />
                     </NuxtLink>

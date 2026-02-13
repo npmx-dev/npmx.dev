@@ -125,7 +125,7 @@ useEventListener('keydown', event => {
               class="text-xs text-fg-subtle hover:text-fg-muted transition-colors inline-flex items-center gap-1 px-2"
             >
               {{ $t('search.algolia_disclaimer') }}
-              <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+              <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
             </a>
           </div>
         </div>

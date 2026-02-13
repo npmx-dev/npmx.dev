@@ -463,7 +463,7 @@ defineOgImageComponent('Default', {
                 class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1"
               >
                 {{ $t('code.raw') }}
-                <span class="i-carbon:launch w-3 h-3" />
+                <span class="i-lucide:external-link w-3 h-3" />
               </a>
             </div>
           </div>

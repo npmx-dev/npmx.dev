@@ -50,7 +50,7 @@ const docPath = computed(() => {
             class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
           >
             {{ $t('package.replacement.community') }}
-            <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+            <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
           </a>
         </template>
         <template #replacement>
@@ -70,7 +70,7 @@ const docPath = computed(() => {
             class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
           >
             {{ $t('package.replacement.community') }}
-            <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+            <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
           </a>
         </template>
       </i18n-t>
@@ -85,7 +85,7 @@ const docPath = computed(() => {
         class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
       >
         {{ $t('package.replacement.mdn') }}
-        <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+        <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
       </a>
       <a
         v-if="docPath"
@@ -95,7 +95,7 @@ const docPath = computed(() => {
         class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
       >
         {{ $t('package.replacement.learn_more') }}
-        <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+        <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
       </a>
     </p>
   </div>

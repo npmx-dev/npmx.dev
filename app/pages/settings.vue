@@ -199,7 +199,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg-muted transition-colors mt-2"
               >
                 {{ $t('search.algolia_disclaimer') }}
-                <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+                <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
               </a>
             </div>
           </div>
