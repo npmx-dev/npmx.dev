@@ -70,7 +70,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         to: { name: 'accessibility' },
         type: 'link',
         external: false,
-        iconClass: 'i-lucide:person-standing',
+        iconClass: 'i-lucide:person-standing border rounded-full',
       },
     ],
   },
