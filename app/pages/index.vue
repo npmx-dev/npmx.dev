@@ -93,7 +93,7 @@ defineOgImageComponent('Default', {
                   type="submit"
                   variant="primary"
                   class="absolute inset-ie-2 border-transparent"
-                  classicon="i-carbon:search"
+                  classicon="i-lucide:search"
                 >
                   <span class="sr-only sm:not-sr-only">
                     {{ $t('search.button') }}

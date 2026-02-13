@@ -287,7 +287,7 @@ onKeyStroke(
         :aria-expanded="showMobileMenu"
         @click="expandMobileSearch"
         v-if="!isSearchExpanded && !isOnHomePage"
-        classicon="i-carbon:search"
+        classicon="i-lucide:search"
       />
 
       <!-- Mobile: Menu button (always visible, click to open menu) -->

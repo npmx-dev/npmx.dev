@@ -327,7 +327,7 @@ watch(lastExecutionTime, () => {
     <div class="flex flex-wrap items-center gap-2 p-3 border-b border-border bg-bg">
       <div class="flex-1 min-w-[150px] relative">
         <span
-          class="absolute inset-is-2 top-1/2 -translate-y-1/2 i-carbon:search w-3.5 h-3.5 text-fg-subtle"
+          class="absolute inset-is-2 top-1/2 -translate-y-1/2 i-lucide:search w-3.5 h-3.5 text-fg-subtle"
           aria-hidden="true"
         />
         <label for="members-search" class="sr-only">{{ $t('org.members.filter_label') }}</label>
