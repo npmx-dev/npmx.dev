@@ -13,6 +13,8 @@ export interface UserServerSession {
   // These values are tied to the users browser session and used by atproto OAuth
   oauthSessionId?: string | undefined
   oauthStateId?: string | undefined
+  // Last time the oauth session was updated
+  lastUpdatedAt?: Date | undefined
 
   // DO NOT USE
   // Here for historic reasons to redirect users logged in with the previous oauth to login again

@@ -156,6 +156,18 @@ export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
 ) {
   return defineEventHandler(async event => {
     const { oauthSession, serverSession } = await getOAuthSession(event)
+    let oauthSessionId = serverSession.data.oauthSessionId
+
+    // User was authenticated at one point, but was not able to restore
+    // the session to the PDS
+    if (!oauthSession && oauthSessionId) {
+      // cleans up our server side session store
+      await serverSession.clear()
+      throw createError({
+        status: 401,
+        message: 'User needs to re authenticate',
+      })
+    }
 
     return await handler(event, oauthSession, serverSession)
   })
