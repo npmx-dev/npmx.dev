@@ -202,7 +202,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                   }}
                 </span>
                 <span v-if="skill.fileCounts?.references" class="text-fg-subtle">
-                  <span class="i-carbon:document size-3 align-[-2px] me-0.5" />{{
+                  <span class="i-lucide:file-text size-3 align-[-2px] me-0.5" />{{
                     $t(
                       'package.skills.file_counts.refs',
                       { count: skill.fileCounts.references },

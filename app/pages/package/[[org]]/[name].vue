@@ -760,7 +760,7 @@ const showSkeleton = shallowRef(false)
               v-if="docsLink"
               :to="docsLink"
               aria-keyshortcuts="d"
-              classicon="i-carbon:document"
+              classicon="i-lucide:file-text"
             >
               {{ $t('package.links.docs') }}
             </LinkBase>

@@ -486,7 +486,7 @@ defineOgImageComponent('Default', {
 
         <!-- File too large warning -->
         <div v-else-if="isViewingFile && isFileTooLarge" class="py-20 text-center">
-          <div class="i-carbon:document w-12 h-12 mx-auto text-fg-subtle mb-4" />
+          <div class="i-lucide:file-text w-12 h-12 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
             {{

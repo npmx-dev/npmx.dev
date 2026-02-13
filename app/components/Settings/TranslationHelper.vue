@@ -132,7 +132,7 @@ ${template}`
           rel="noopener noreferrer"
           class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-fg-muted hover:text-fg rounded transition-colors focus-visible:outline-accent/70"
         >
-          <span class="i-carbon:document w-3.5 h-3.5" aria-hidden="true" />
+          <span class="i-lucide:file-text w-3.5 h-3.5" aria-hidden="true" />
           {{ $t('i18n.view_guide') }}
         </a>
       </div>

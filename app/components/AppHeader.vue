@@ -89,7 +89,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-carbon:document',
+        iconClass: 'i-lucide:file-text',
       },
       {
         name: 'Source',
