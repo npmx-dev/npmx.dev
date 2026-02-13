@@ -824,7 +824,7 @@ const showSkeleton = shallowRef(false)
               >
                 <span
                   v-if="isLoadingLikeData"
-                  class="i-i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin my-0.5"
+                  class="i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin my-0.5"
                   aria-hidden="true"
                 />
                 <span v-else>
@@ -963,7 +963,7 @@ const showSkeleton = shallowRef(false)
                       class="inline-flex items-center gap-1 text-fg-subtle"
                     >
                       <span
-                        class="i-i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
+                        class="i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
                         aria-hidden="true"
                       />
                     </span>
@@ -1031,7 +1031,7 @@ const showSkeleton = shallowRef(false)
                   class="inline-flex items-center gap-1 text-fg-subtle"
                 >
                   <span
-                    class="i-i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
+                    class="i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
                     aria-hidden="true"
                   />
                 </span>
@@ -1054,7 +1054,7 @@ const showSkeleton = shallowRef(false)
                 class="inline-flex items-center gap-1 text-fg-subtle"
               >
                 <span
-                  class="i-i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
+                  class="i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
                   aria-hidden="true"
                 />
               </span>
@@ -1321,7 +1321,7 @@ const showSkeleton = shallowRef(false)
             class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
           >
             <span
-              class="i-i-svg-spinners:ring-resize w-4 h-4 motion-safe:animate-spin"
+              class="i-svg-spinners:ring-resize w-4 h-4 motion-safe:animate-spin"
               aria-hidden="true"
             />
             <span>{{ $t('package.provenance_section.title') }}…</span>

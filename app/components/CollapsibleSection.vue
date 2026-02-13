@@ -94,7 +94,7 @@ useHead({
         >
           <span
             v-if="isLoading"
-            class="i-i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
+            class="i-svg-spinners:ring-resize w-3 h-3 motion-safe:animate-spin"
             aria-hidden="true"
           />
           <span

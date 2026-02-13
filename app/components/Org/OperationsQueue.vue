@@ -162,7 +162,7 @@ function getStatusIcon(status: string): string {
     case 'approved':
       return 'i-lucide:check'
     case 'running':
-      return 'i-i-svg-spinners:ring-resize'
+      return 'i-svg-spinners:ring-resize'
     case 'completed':
       return 'i-lucide:check-filled'
     case 'failed':
