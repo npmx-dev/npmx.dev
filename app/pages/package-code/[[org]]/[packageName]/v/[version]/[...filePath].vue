@@ -541,7 +541,7 @@ defineOgImageComponent('Default', {
 
         <!-- Error loading file -->
         <div v-else-if="filePath && fileStatus === 'error'" class="py-20 text-center" role="alert">
-          <div class="i-carbon:warning-alt w-8 h-8 mx-auto text-fg-subtle mb-4" />
+          <div class="i-lucide:circle-alert-alt w-8 h-8 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.failed_to_load') }}</p>
           <p class="text-fg-subtle text-sm mb-4">{{ $t('code.unavailable_hint') }}</p>
           <LinkBase

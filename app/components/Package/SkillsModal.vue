@@ -171,7 +171,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
             :text="getWarningTooltip(skill)"
             to="#skills-modal"
           >
-            <span class="i-carbon:warning w-3.5 h-3.5 text-amber-500" />
+            <span class="i-lucide:circle-alert w-3.5 h-3.5 text-amber-500" />
           </TooltipApp>
         </button>
 
@@ -221,7 +221,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
                 </span>
                 <template v-for="warning in skill.warnings" :key="warning.message">
                   <span class="text-amber-500">
-                    <span class="i-carbon:warning size-3 align-[-2px] me-0.5" />{{
+                    <span class="i-lucide:circle-alert size-3 align-[-2px] me-0.5" />{{
                       warning.message
                     }}
                   </span>

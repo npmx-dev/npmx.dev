@@ -266,12 +266,12 @@ const previewPackageJson = computed(() => {
             >
               <span
                 v-if="pkg.similarity === 'exact-match'"
-                class="i-carbon:warning-filled text-red-500 w-4 h-4 mt-0.5 shrink-0"
+                class="i-lucide:circle-alert text-red-500 w-4 h-4 mt-0.5 shrink-0"
                 aria-hidden="true"
               />
               <span
                 v-else-if="pkg.similarity === 'very-similar'"
-                class="i-carbon:warning text-yellow-500 w-4 h-4 mt-0.5 shrink-0"
+                class="i-lucide:circle-alert text-yellow-500 w-4 h-4 mt-0.5 shrink-0"
                 aria-hidden="true"
               />
               <span v-else class="w-4 h-4 shrink-0" />

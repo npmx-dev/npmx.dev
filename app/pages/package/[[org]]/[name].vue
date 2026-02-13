@@ -878,7 +878,7 @@ const showSkeleton = shallowRef(false)
               </LinkBase>
             </li>
             <li v-if="displayVersion?.bugs?.url">
-              <LinkBase :to="displayVersion.bugs.url" classicon="i-carbon:warning">
+              <LinkBase :to="displayVersion.bugs.url" classicon="i-lucide:circle-alert">
                 {{ $t('package.links.issues') }}
               </LinkBase>
             </li>
@@ -1149,7 +1149,7 @@ const showSkeleton = shallowRef(false)
             class="mb-4 rounded-lg border border-amber-600/40 bg-amber-500/10 px-4 py-3 text-amber-700 dark:text-amber-400"
           >
             <h3 class="m-0 flex items-center gap-2 font-mono text-sm font-medium">
-              <span class="i-carbon:warning-alt w-4 h-4 shrink-0" aria-hidden="true" />
+              <span class="i-lucide:circle-alert-alt w-4 h-4 shrink-0" aria-hidden="true" />
               {{ $t('package.security_downgrade.title') }}
             </h3>
             <p class="mt-2 mb-0 text-sm">
@@ -1336,7 +1336,7 @@ const showSkeleton = shallowRef(false)
             v-else-if="provenanceStatus === 'error'"
             class="mt-8 flex items-center gap-2 text-fg-subtle text-sm"
           >
-            <span class="i-carbon:warning w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:circle-alert w-4 h-4" aria-hidden="true" />
             <span>{{ $t('package.provenance_section.error_loading') }}</span>
           </div>
         </section>

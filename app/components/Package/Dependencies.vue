@@ -102,7 +102,7 @@ const numberFormatter = useNumberFormatter()
               aria-hidden="true"
               :text="getOutdatedTooltip(outdatedDeps[dep], $t)"
             >
-              <span class="i-carbon:warning-alt w-3 h-3" />
+              <span class="i-lucide:circle-alert-alt w-3 h-3" />
             </TooltipApp>
             <LinkBase
               v-if="getVulnerableDepInfo(dep)"
@@ -119,7 +119,7 @@ const numberFormatter = useNumberFormatter()
               :to="packageRoute(dep, getDeprecatedDepInfo(dep)!.version)"
               class="shrink-0 text-purple-700 dark:text-purple-500"
               :title="getDeprecatedDepInfo(dep)!.message"
-              classicon="i-carbon:warning-hex"
+              classicon="i-lucide:circle-alert-hex"
             >
               <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </LinkBase>

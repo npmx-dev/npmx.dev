@@ -54,7 +54,7 @@ function getDepthStyle(depth: DependencyDepth) {
         @click="isExpanded = !isExpanded"
       >
         <span class="flex items-center gap-2 min-w-0">
-          <span class="i-carbon:warning-hex w-4 h-4 shrink-0" aria-hidden="true" />
+          <span class="i-lucide:circle-alert-hex w-4 h-4 shrink-0" aria-hidden="true" />
           <span class="font-mono text-sm font-medium truncate">
             {{ $t('package.deprecated.tree_found', analysisData!.deprecatedPackages.length) }}
           </span>

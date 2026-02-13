@@ -474,7 +474,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       })
                     : row.primaryVersion.version
                 "
-                :classicon="row.primaryVersion.deprecated ? 'i-carbon:warning-hex' : undefined"
+                :classicon="row.primaryVersion.deprecated ? 'i-lucide:circle-alert-hex' : undefined"
               >
                 <span dir="ltr" class="block truncate">
                   {{ row.primaryVersion.version }}
@@ -536,7 +536,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                     ? $t('package.versions.deprecated_title', { version: v.version })
                     : v.version
                 "
-                :classicon="v.deprecated ? 'i-carbon:warning-hex' : undefined"
+                :classicon="v.deprecated ? 'i-lucide:circle-alert-hex' : undefined"
               >
                 <span dir="ltr" class="block truncate">
                   {{ v.version }}
@@ -646,7 +646,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       })
                     : row.primaryVersion.version
                 "
-                :classicon="row.primaryVersion.deprecated ? 'i-carbon:warning-hex' : undefined"
+                :classicon="row.primaryVersion.deprecated ? 'i-lucide:circle-alert-hex' : undefined"
               >
                 <span dir="ltr" class="block truncate">
                   {{ row.primaryVersion.version }}
@@ -726,7 +726,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                           : group.versions[0]?.version
                       "
                       :classicon="
-                        group.versions[0]?.deprecated ? 'i-carbon:warning-hex' : undefined
+                        group.versions[0]?.deprecated ? 'i-lucide:circle-alert-hex' : undefined
                       "
                     >
                       <span dir="ltr" class="block truncate">
@@ -791,7 +791,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                           : group.versions[0]?.version
                       "
                       :classicon="
-                        group.versions[0]?.deprecated ? 'i-carbon:warning-hex' : undefined
+                        group.versions[0]?.deprecated ? 'i-lucide:circle-alert-hex' : undefined
                       "
                     >
                       <span dir="ltr" class="block truncate">
@@ -855,7 +855,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                           ? $t('package.versions.deprecated_title', { version: v.version })
                           : v.version
                       "
-                      :classicon="v.deprecated ? 'i-carbon:warning-hex' : undefined"
+                      :classicon="v.deprecated ? 'i-lucide:circle-alert-hex' : undefined"
                     >
                       <span dir="ltr" class="block truncate">
                         {{ v.version }}

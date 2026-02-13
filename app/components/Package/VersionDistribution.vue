@@ -613,7 +613,7 @@ const endDate = computed(() => {
       <!-- Error state -->
       <div v-if="error" class="flex items-center justify-center h-full" role="alert">
         <div class="text-sm text-fg-subtle font-mono text-center flex flex-col items-center gap-2">
-          <span class="i-carbon:warning-hex w-8 h-8 text-red-400" />
+          <span class="i-lucide:circle-alert-hex w-8 h-8 text-red-400" />
           <p>{{ error.message }}</p>
           <p class="text-xs">Package: {{ packageName }}</p>
         </div>
