@@ -422,7 +422,8 @@ ${html}
       plainText = tokens[0].text
     }
 
-    const intermediateTitleAttr = `${` data-title-intermediate="${plainText || title}"`}`
+    const intermediateTitleAttr =
+      plainText || title ? ` data-title-intermediate="${plainText || title}"` : ''
 
     return `<a href="${href}"${titleAttr}${intermediateTitleAttr}>${text}</a>`
   }
