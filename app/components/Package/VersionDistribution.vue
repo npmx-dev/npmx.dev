@@ -519,28 +519,14 @@ const endDate = computed(() => {
             </template>
 
             <!-- Export options -->
-            <template #optionCsv>
-              <span
-                class="i-carbon:csv w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+             <template #optionCsv>
+              <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
             </template>
-
             <template #optionImg>
-              <span
-                class="i-carbon:png w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+              <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
             </template>
-
             <template #optionSvg>
-              <span
-                class="i-carbon:svg w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+              <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
             </template>
 
             <!-- Annotator action icons -->
