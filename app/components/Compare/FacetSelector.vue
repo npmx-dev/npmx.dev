@@ -61,36 +61,21 @@ function isCategoryNoneSelected(category: string): boolean {
       <!-- Facet buttons -->
       <div class="flex items-center gap-1.5 flex-wrap" role="group">
         <!-- TODO: These should be checkboxes -->
-        <ButtonBase
+        <CheckboxBase
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
           size="small"
           :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
           :disabled="facet.comingSoon"
-          :aria-pressed="isFacetSelected(facet.id)"
-          :aria-label="facet.label"
-          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
-          :class="
-            facet.comingSoon
-              ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
-              : isFacetSelected(facet.id)
-                ? 'text-fg-muted bg-bg-muted'
-                : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border'
-          "
-          @click="!facet.comingSoon && toggleFacet(facet.id)"
-          :classicon="
-            facet.comingSoon
-              ? undefined
-              : isFacetSelected(facet.id)
-                ? 'i-lucide:check'
-                : 'i-lucide:plus'
-          "
+          :model-value="isFacetSelected(facet.id)"
+          :value="facet.id"
+          @update:model-value="!facet.comingSoon && toggleFacet(facet.id)"
         >
           {{ facet.label }}
           <span v-if="facet.comingSoon" class="text-4xs"
             >({{ $t('compare.facets.coming_soon') }})</span
           >
-        </ButtonBase>
+        </CheckboxBase>
       </div>
     </div>
   </div>
