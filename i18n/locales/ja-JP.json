@@ -59,9 +59,9 @@
     "exact_match": "完全一致",
     "suggestion": {
       "user": "ユーザー",
-      "org": "Organization",
+      "org": "organization",
       "view_user_packages": "このユーザーのパッケージを表示",
-      "view_org_packages": "このOrganizationのパッケージを表示"
+      "view_org_packages": "このorganizationのパッケージを表示"
     }
   },
   "nav": {
@@ -90,9 +90,9 @@
       "label": "データソース",
       "description": "npmxが検索データを取得する先を選択します。個別のパッケージページは常にnpmレジストリから直接取得します。",
       "npm": "npmレジストリ",
-      "npm_description": "公式npmレジストリから検索、Organization、ユーザー一覧を直接取得します。正確ですが、やや遅い場合があります。",
+      "npm_description": "公式npmレジストリから検索、organization、ユーザー一覧を直接取得します。正確ですが、やや遅い場合があります。",
       "algolia": "Algolia",
-      "algolia_description": "Algoliaを使用して検索、Organization、ユーザーページをより高速に取得します。"
+      "algolia_description": "Algoliaを使用して検索、organization、ユーザーページをより高速に取得します。"
     },
     "relative_dates": "日付を相対表記",
     "include_types": "インストール時に {'@'}types を含める",
@@ -125,6 +125,7 @@
     "end_of_results": "結果の最後です",
     "try_again": "もう一度お試しください",
     "close": "閉じる",
+    "or": "または",
     "retry": "再試行",
     "copy": "コピー",
     "copied": "コピー完了！",
@@ -136,7 +137,7 @@
     "vanity_downloads_hint": "バニティ番号: パッケージが表示されていません | バニティ番号: 表示されているパッケージの数値 | バニティ番号: 表示されている {count} 個のパッケージの合計",
     "sort": {
       "name": "名前",
-      "role": "役割",
+      "role": "ロール",
       "members": "メンバー"
     },
     "scroll_to_top": "トップへ戻る"
@@ -220,6 +221,8 @@
       "title": "はじめに",
       "pm_label": "パッケージマネージャー",
       "copy_command": "インストールコマンドをコピー",
+      "copy_dev_command": "devインストールコマンドをコピー",
+      "dev_dependency_hint": "通常はdev dependencyとしてインストールされます",
       "view_types": "{package} を表示"
     },
     "create": {
@@ -296,7 +299,8 @@
       "recent_versions_only_tooltip": "過去1年以内に公開されたバージョンのみ表示します。",
       "show_low_usage": "利用率の低いバージョンを表示",
       "show_low_usage_tooltip": "総ダウンロード数の1%未満のバージョングループも含めます。",
-      "date_range_tooltip": "直近1週間のバージョン分布のみ"
+      "date_range_tooltip": "直近1週間のバージョン分布のみ",
+      "y_axis_label": "ダウンロード"
     },
     "dependencies": {
       "title": "依存関係（{count}）",
@@ -323,12 +327,12 @@
       "list_label": "パッケージのメンテナ",
       "you": "（あなた）",
       "via": "{teams} 経由",
-      "remove_owner": "{name} をオーナーから削除",
-      "username_to_add": "オーナーに追加するユーザー名",
+      "remove_owner": "{name} をownerから削除",
+      "username_to_add": "ownerに追加するユーザー名",
       "username_placeholder": "ユーザー名...",
       "add_button": "追加",
-      "cancel_add": "オーナーの追加をキャンセル",
-      "add_owner": "+ オーナーを追加",
+      "cancel_add": "ownerの追加をキャンセル",
+      "add_owner": "+ ownerを追加",
       "show_more": "（他 {count} 個を表示）",
       "show_less": "（表示を減らす）"
     },
@@ -408,7 +412,7 @@
       "title": "チームアクセス",
       "refresh": "チームアクセスを更新",
       "list_label": "チームアクセスリスト",
-      "owner": "オーナー",
+      "owner": "owner",
       "rw": "読み書き可（rw）",
       "ro": "読み取り専用（ro）",
       "revoke_access": "{name} のアクセス権を削除",
@@ -458,7 +462,7 @@
       "contributor_link": "コントリビューションガイド",
       "connected": "接続済み",
       "connected_as_user": "~{user} として接続済み",
-      "connected_hint": "Web UIからパッケージとOrganizationを管理できるようになりました。",
+      "connected_hint": "Web UIからパッケージとorganizationを管理できるようになりました。",
       "disconnect": "切断",
       "run_hint": "管理機能を有効にするには、ローカル環境でコネクタを実行します。",
       "copy_command": "コマンドをコピー",
@@ -471,7 +475,8 @@
       "warning": "警告",
       "warning_text": "これによりnpmxがnpm CLIにアクセスできるようになります。信頼できるサイトにのみ接続してください。",
       "connect": "接続",
-      "connecting": "接続中..."
+      "connecting": "接続中...",
+      "auto_open_url": "認証ページを自動で開く"
     }
   },
   "operations": {
@@ -480,14 +485,16 @@
       "clear_all": "すべてクリア",
       "refresh": "操作を更新",
       "empty": "キューにある操作はありません",
-      "empty_hint": "パッケージやOrganizationのページから操作を追加してください",
+      "empty_hint": "パッケージやorganizationのページから操作を追加してください",
       "active_label": "実行中の操作",
       "otp_required": "OTPが必要です",
       "otp_prompt": "続行するにはOTPを入力してください",
       "otp_placeholder": "OTPコードを入力...",
       "otp_label": "ワンタイムパスワード",
       "retry_otp": "OTPで再試行",
+      "retry_web_auth": "ウェブ認証で再試行",
       "retrying": "再試行中...",
+      "open_web_auth": "ウェブ認証リンクを開く",
       "approve_operation": "操作を承認",
       "remove_operation": "操作を削除",
       "approve_all": "すべて承認",
@@ -507,7 +514,7 @@
       "sort_by": "並べ替え",
       "loading": "チームを読み込み中...",
       "no_teams": "チームは見つかりませんでした",
-      "list_label": "Organizationのチーム",
+      "list_label": "organizationのチーム",
       "delete_team": "チーム {name} を削除",
       "member_count": "{count} 人のメンバー",
       "members_of": "{team} のメンバー",
@@ -530,25 +537,25 @@
       "refresh": "メンバーを更新",
       "filter_label": "メンバーを絞り込む",
       "filter_placeholder": "メンバーを絞り込む...",
-      "filter_by_role": "役割で絞り込む",
+      "filter_by_role": "ロールで絞り込む",
       "filter_by_team": "チームで絞り込む",
       "all_teams": "すべてのチーム",
       "sort_by": "並べ替え",
       "loading": "メンバーを読み込み中...",
       "no_members": "メンバーは見つかりませんでした",
-      "list_label": "Organizationのメンバー",
-      "change_role_for": "{name} の役割を変更",
-      "remove_from_org": "{name} をOrganizationから削除",
+      "list_label": "organizationのメンバー",
+      "change_role_for": "{name} のロールを変更",
+      "remove_from_org": "{name} をorganizationから削除",
       "view_team": "{team} チームを表示",
       "no_match": "フィルターに一致するメンバーはいません",
       "username_label": "ユーザー名",
       "username_placeholder": "ユーザー名...",
-      "role_label": "役割",
+      "role_label": "ロール",
       "role": {
         "all": "すべて",
-        "developer": "デベロッパー",
-        "admin": "管理者",
-        "owner": "オーナー"
+        "developer": "developer",
+        "admin": "admin",
+        "owner": "owner"
       },
       "team_label": "チーム",
       "no_team": "チームなし",
@@ -562,16 +569,16 @@
       "members_tab": "メンバー",
       "teams_tab": "チーム",
       "no_packages": "公開パッケージは見つかりませんでした: ",
-      "no_packages_hint": "このOrganizationは存在しないか、公開パッケージがない可能性があります。",
-      "failed_to_load": "Organizationのパッケージの読み込みに失敗しました",
+      "no_packages_hint": "このorganizationは存在しないか、公開パッケージがない可能性があります。",
+      "failed_to_load": "organizationのパッケージの読み込みに失敗しました",
       "no_match": "\"{query}\" に一致するパッケージはありません",
-      "not_found": "Organizationが見つかりません",
-      "not_found_message": "Organization \"{'@'}{name}\" はnpmに存在しません"
+      "not_found": "organizationが見つかりません",
+      "not_found_message": "organization \"{'@'}{name}\" はnpmに存在しません"
     }
   },
   "user": {
     "combobox": {
-      "add_to_org_hint": "（Organizationにも追加されます）",
+      "add_to_org_hint": "（organizationにも追加されます）",
       "press_enter_to_add": "Enterキーを押して {'@'}{username} を追加",
       "default_placeholder": "ユーザー名...",
       "suggestions_label": "ユーザーの提案"
@@ -585,17 +592,17 @@
       "filter_placeholder": "{count} 個のパッケージを絞り込む..."
     },
     "orgs_page": {
-      "title": "Organization",
+      "title": "organization",
       "back_to_profile": "プロフィールに戻る",
-      "connect_required": "Organizationを表示するには、ローカルCLIに接続してください。",
+      "connect_required": "organizationを表示するには、ローカルCLIに接続してください。",
       "connect_hint_prefix": "開始するには",
       "connect_hint_suffix": "を実行してください。",
-      "own_orgs_only": "自分のOrganizationのみ表示できます。",
-      "view_your_orgs": "自分のOrganizationを表示",
-      "loading": "Organizationを読み込み中...",
-      "empty": "Organizationは見つかりませんでした。",
-      "empty_hint": "Organizationは、自身のスコープ付きパッケージから検出されます。",
-      "count": "{count} 個のOrganization",
+      "own_orgs_only": "自分のorganizationのみ表示できます。",
+      "view_your_orgs": "自分のorganizationを表示",
+      "loading": "organizationを読み込み中...",
+      "empty": "organizationは見つかりませんでした。",
+      "empty_hint": "organizationは、自身のスコープ付きパッケージから検出されます。",
+      "count": "{count} 個のorganization",
       "packages_count": "{count} 個のパッケージ"
     }
   },
@@ -612,7 +619,7 @@
       "similar_warning": "似た名前のパッケージが存在します。npmによって拒否される可能性があります:",
       "related": "関連パッケージ:",
       "scope_warning_title": "スコープ付きパッケージの使用を検討してください",
-      "scope_warning_text": "スコープなしのパッケージ名は共有リソースです。パッケージを公開し、維持する意思がある場合にのみ取得してください。個人やOrganizationのプロジェクトには、{'@'}{username}/{name} のようなスコープ付きの名前を使用してください。",
+      "scope_warning_text": "スコープなしのパッケージ名は共有リソースです。パッケージを公開し、維持する意思がある場合にのみ取得してください。個人やorganizationのプロジェクトには、{'@'}{username}/{name} のようなスコープ付きの名前を使用してください。",
       "connect_required": "パッケージ名を取得するには、ローカルコネクタに接続してください。",
       "connect_button": "コネクタに接続",
       "publish_hint": "これにより、最小限のプレースホルダーパッケージが公開されます。",
@@ -785,7 +792,7 @@
       "better_ux_dx": "より優れたUX/DX",
       "admin_ui": "管理UI",
       "description": "npmxは、npmパッケージレジストリとツール群のための、{betterUxDx}を持つブラウザです。ダークモード、キーボードナビゲーション、コード閲覧、{jsr}などの代替レジストリへの接続機能を備えた、高速でモダンなインターフェイスを提供します。",
-      "admin_description": "また、ブラウザからパッケージ、チーム、Organizationを管理するための、より優れた{adminUi}の提供を目指しています。これは、ローカルのnpm CLIを活用して動作します。"
+      "admin_description": "また、ブラウザからパッケージ、チーム、organizationを管理するための、より優れた{adminUi}の提供を目指しています。これは、ローカルのnpm CLIを活用して動作します。"
     },
     "what_we_are_not": {
       "title": "npmxではないもの",
@@ -802,6 +809,14 @@
         "package": "人たちが",
         "managers": "存在します"
       }
+    },
+    "team": {
+      "title": "チーム",
+      "governance": "ガバナンス",
+      "role_steward": "スチュワード",
+      "role_maintainer": "メンテナ",
+      "sponsor": "スポンサー",
+      "sponsor_aria": "GitHubで {name} さんをスポンサーする"
     },
     "contributors": {
       "title": "コントリビューター",
@@ -834,7 +849,7 @@
     "account": "アカウント",
     "npm_cli": "npm CLI",
     "atmosphere": "Atmosphere",
-    "npm_cli_desc": "パッケージとOrganizationの管理",
+    "npm_cli_desc": "パッケージとorganizationの管理",
     "atmosphere_desc": "ソーシャル機能とID",
     "connect_npm_cli": "npm CLIに接続",
     "connect_atmosphere": "Atmosphereに接続",
@@ -867,12 +882,12 @@
       "empty": "パッケージは見つかりませんでした",
       "view_all": "すべて表示"
     },
-    "orgs": "Organization",
+    "orgs": "organization",
     "orgs_dropdown": {
-      "title": "あなたのOrganization",
+      "title": "あなたのorganization",
       "loading": "読み込み中...",
-      "error": "Organizationの読み込みに失敗しました",
-      "empty": "Organizationは見つかりませんでした",
+      "error": "organizationの読み込みに失敗しました",
+      "empty": "organizationは見つかりませんでした",
       "view_all": "すべて表示"
     }
   },
@@ -1078,31 +1093,31 @@
   },
   "a11y": {
     "title": "アクセシビリティ",
-    "footer_title": "a11y",
-    "welcome": "{app} をできるだけ多くの人が使えるようにすることを目指しています。",
+    "footer_title": "アクセシビリティ",
+    "welcome": "私たちは {app} を、できるだけ多くの人に使ってもらえるものにしたいと思っています。",
     "approach": {
       "title": "私たちのアプローチ",
-      "p1": "私たちはWeb Content Accessibility Guidelines (WCAG) 2.2に準拠するよう努め、機能開発時の指針として活用しています。WCAGのいかなるレベルへの完全な準拠を主張するものではありません。アクセシビリティは継続的な取り組みであり、常に改善の余地があります。",
-      "p2": "このサイトは{about}です。アクセシビリティの改善は、通常の開発の一環として段階的におこなっています。",
+      "p1": "私たちはWeb Content Accessibility Guidelines (WCAG) 2.2に準拠するよう努め、機能開発時の指針として活用しています。WCAGのいかなるレベルへの完全な準拠を主張するものではありません。アクセシビリティは継続的な取り組みであり、常に改善の余地があるためです。",
+      "p2": "このサイトは {about} です。アクセシビリティの改善は、通常の開発の一環として段階的に行っています。",
       "about_link": "オープンソースのコミュニティ主導プロジェクト"
     },
     "measures": {
       "title": "私たちの取り組み",
-      "p1": "サイト全体で以下のことに取り組んでいます：",
+      "p1": "サイト全体で、主に以下のことに取り組んでいます。",
       "li1": "適切な箇所でセマンティックHTMLとARIA属性を使用する。",
       "li2": "ブラウザで調整可能な相対的なテキストサイズを使用する。",
-      "li3": "インターフェース全体でキーボード操作をサポートする。",
+      "li3": "インターフェイス全体でキーボード操作をサポートする。",
       "li4": "prefers-reduced-motionおよびprefers-color-schemeメディアクエリを尊重する。",
       "li5": "十分なカラーコントラストを考慮してデザインする。",
       "li6": "一部のインタラクティブ機能はJavaScriptが必要ですが、重要なコンテンツはJavaScriptなしでも利用できるようにする。"
     },
     "limitations": {
       "title": "既知の制限事項",
-      "p1": "サイトの一部、特にパッケージのREADMEなどのサードパーティコンテンツは、アクセシビリティ基準を満たしていない場合があります。これらの領域は時間をかけて改善に取り組んでいます。"
+      "p1": "サイトの一部、特にパッケージのREADMEなどのサードパーティコンテンツは、アクセシビリティ基準を満たしていない場合があります。これらの領域についても、時間をかけて改善に取り組んでいます。"
     },
     "contact": {
       "title": "フィードバック",
-      "p1": "{app} でアクセシビリティに関する問題を見つけた場合は、{link}でIssueを作成してお知らせください。報告は真剣に受け止め、できる限り対応します。",
+      "p1": "{app} でアクセシビリティ上のバリアを見つけた場合は、{link} でissueを作成して連絡してください。報告は真剣に受け止め、問題を解決するためにできる限り対応します。",
       "link": "GitHubリポジトリ"
     }
   }

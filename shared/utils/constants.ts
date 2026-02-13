@@ -21,6 +21,8 @@ export const ERROR_PACKAGE_REQUIREMENTS_FAILED =
 export const ERROR_FILE_LIST_FETCH_FAILED = 'Failed to fetch file list.'
 export const ERROR_CALC_INSTALL_SIZE_FAILED = 'Failed to calculate install size.'
 export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
+/** The npm registry truncates the packument readme field at 65,536 characters (2^16) */
+export const NPM_README_TRUNCATION_THRESHOLD = 64_000
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
 export const ERROR_PROVENANCE_FETCH_FAILED = 'Failed to fetch provenance.'
