@@ -313,8 +313,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='note']::after) {
   background-color: #3b82f6;
-  -webkit-mask: icon('i-lucide-info') no-repeat;
-  mask: icon('i-lucide-info') no-repeat;
+  -webkit-mask: icon('i-lucide:info') no-repeat;
+  mask: icon('i-lucide:info') no-repeat;
 }
 
 /* Tip - green */
@@ -328,8 +328,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='tip']::after) {
   background-color: #22c55e;
-  -webkit-mask: icon('i-lucide-lightbulb') no-repeat;
-  mask: icon('i-lucide-lightbulb') no-repeat;
+  -webkit-mask: icon('i-lucide:lightbulb') no-repeat;
+  mask: icon('i-lucide:lightbulb') no-repeat;
 }
 
 /* Important - purple */
@@ -343,8 +343,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='important']::after) {
   background-color: var(--syntax-fn);
-  -webkit-mask: icon('i-lucide-pin') no-repeat;
-  mask: icon('i-lucide-pin') no-repeat;
+  -webkit-mask: icon('i-lucide:pin') no-repeat;
+  mask: icon('i-lucide:pin') no-repeat;
 }
 
 /* Warning - yellow/orange */
@@ -358,8 +358,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='warning']::after) {
   background-color: #eab308;
-  -webkit-mask: icon('i-lucide-triangle-alert') no-repeat;
-  mask: icon('i-lucide-triangle-alert') no-repeat;
+  -webkit-mask: icon('i-lucide:triangle-alert') no-repeat;
+  mask: icon('i-lucide:triangle-alert') no-repeat;
 }
 
 /* Caution - red */
@@ -373,8 +373,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='caution']::after) {
   background-color: #ef4444;
-  -webkit-mask: icon('i-lucide-circle-alert') no-repeat;
-  mask: icon('i-lucide-circle-alert') no-repeat;
+  -webkit-mask: icon('i-lucide:circle-alert') no-repeat;
+  mask: icon('i-lucide:circle-alert') no-repeat;
 }
 
 /* Table wrapper for horizontal scroll on mobile */

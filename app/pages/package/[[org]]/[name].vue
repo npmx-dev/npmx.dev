@@ -735,7 +735,7 @@ const showSkeleton = shallowRef(false)
                   size="small"
                   to="#provenance"
                   :aria-label="$t('package.provenance_section.view_more_details')"
-                  classicon="i-lucide-shield-check"
+                  classicon="i-lucide:shield-check"
                 />
               </TooltipApp>
             </template>
@@ -818,8 +818,8 @@ const showSkeleton = shallowRef(false)
                 :aria-pressed="likesData?.userHasLiked"
                 :classicon="
                   likesData?.userHasLiked
-                    ? 'i-lucide-heart-minus text-red-500'
-                    : 'i-lucide-heart-plus'
+                    ? 'i-lucide:heart-minus text-red-500'
+                    : 'i-lucide:heart-plus'
                 "
               >
                 <span
