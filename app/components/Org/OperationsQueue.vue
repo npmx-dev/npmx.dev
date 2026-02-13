@@ -158,7 +158,7 @@ function getStatusColor(status: string): string {
 function getStatusIcon(status: string): string {
   switch (status) {
     case 'pending':
-      return 'i-carbon:time'
+      return 'i-lucide:clock'
     case 'approved':
       return 'i-lucide:check'
     case 'running':
