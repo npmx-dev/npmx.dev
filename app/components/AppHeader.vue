@@ -297,7 +297,7 @@ onKeyStroke(
         :aria-label="$t('nav.open_menu')"
         :aria-expanded="showMobileMenu"
         @click="showMobileMenu = !showMobileMenu"
-        classicon="i-carbon:menu"
+        classicon="i-lucide:menu"
       />
     </nav>
 
