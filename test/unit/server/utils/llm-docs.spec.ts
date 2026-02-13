@@ -337,9 +337,8 @@ describe('generateRootLlmsTxt', () => {
     const output = generateRootLlmsTxt('https://npmx.dev')
 
     expect(output).toContain('https://npmx.dev/package/<name>.md')
-    expect(output).toContain('https://npmx.dev/package/<name>/v/<version>.md')
     expect(output).toContain('https://npmx.dev/package/@<org>/<name>.md')
-    expect(output).toContain('https://npmx.dev/package/@<org>/<name>/v/<version>.md')
+    expect(output).not.toContain('<name>/v/<version>.md')
   })
 
   it('includes .md example links', () => {
