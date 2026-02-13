@@ -220,6 +220,8 @@
       "title": "Zacznij",
       "pm_label": "Menedżer pakietów",
       "copy_command": "Kopiuj komendę instalacji",
+      "copy_dev_command": "Kopiuj komendę instalacji dla dev",
+      "dev_dependency_hint": "Zazwyczaj instalowane jako zależność deweloperska",
       "view_types": "Zobacz {package}"
     },
     "create": {

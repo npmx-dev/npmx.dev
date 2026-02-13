@@ -142,12 +142,12 @@ function openAuthModal() {
           <!-- Connected accounts section -->
           <div v-if="hasAnyConnection" class="py-1">
             <!-- npm CLI connection -->
-            <button
+            <ButtonBase
               v-if="isNpmConnected && npmUser"
-              type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full text-start gap-x-3 border-none"
               @click="openConnectorModal"
+              out
             >
               <img
                 v-if="npmAvatar"
@@ -182,14 +182,13 @@ function openAuthModal() {
                   })
                 }}
               </span>
-            </button>
+            </ButtonBase>
 
             <!-- Atmosphere connection -->
-            <button
+            <ButtonBase
               v-if="atprotoUser"
-              type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full text-start gap-x-3 border-none"
               @click="openAuthModal"
             >
               <img
@@ -212,7 +211,7 @@ function openAuthModal() {
                 >
                 <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere') }}</span>
               </span>
-            </button>
+            </ButtonBase>
           </div>
 
           <!-- Divider (only if we have connections AND options to connect) -->
@@ -223,11 +222,10 @@ function openAuthModal() {
 
           <!-- Connect options -->
           <div v-if="!isNpmConnected || !atprotoUser" class="py-1">
-            <button
+            <ButtonBase
               v-if="!isNpmConnected"
-              type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 group flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full text-start gap-x-3 border-none"
               @click="openConnectorModal"
             >
               <span
@@ -250,13 +248,12 @@ function openAuthModal() {
                 </span>
                 <span class="text-xs text-fg-subtle">{{ $t('account_menu.npm_cli_desc') }}</span>
               </span>
-            </button>
+            </ButtonBase>
 
-            <button
+            <ButtonBase
               v-if="!atprotoUser"
-              type="button"
               role="menuitem"
-              class="w-full px-3 py-2.5 group flex items-center gap-3 hover:bg-bg-muted transition-colors text-start rounded-md"
+              class="w-full text-start gap-x-3 border-none"
               @click="openAuthModal"
             >
               <span
@@ -270,7 +267,7 @@ function openAuthModal() {
                 </span>
                 <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere_desc') }}</span>
               </span>
-            </button>
+            </ButtonBase>
           </div>
         </div>
       </div>

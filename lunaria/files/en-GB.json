@@ -220,6 +220,8 @@
       "title": "Get started",
       "pm_label": "Package manager",
       "copy_command": "Copy install command",
+      "copy_dev_command": "Copy dev install command",
+      "dev_dependency_hint": "Usually installed as a dev dependency",
       "view_types": "View {package}"
     },
     "create": {
@@ -807,8 +809,16 @@
         "managers": "package managers"
       }
     },
+    "team": {
+      "title": "Team",
+      "governance": "Governance",
+      "role_steward": "steward",
+      "role_maintainer": "maintainer",
+      "sponsor": "sponsor",
+      "sponsor_aria": "Sponsor {name} on GitHub"
+    },
     "contributors": {
-      "title": "{count} Contributor | {count} Contributors",
+      "title": "... and {count} more contributor | ... and {count} more contributors",
       "description": "npmx is fully open source, built by an amazing community of contributors. Join us and let's build the npm browsing experience we always wanted, together.",
       "loading": "Loading contributors...",
       "error": "Failed to load contributors",

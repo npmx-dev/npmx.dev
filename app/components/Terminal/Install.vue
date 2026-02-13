@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { JsrPackageInfo } from '#shared/types/jsr'
+import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 import type { PackageManagerId } from '~/utils/install-command'
 
 const props = defineProps<{
@@ -7,6 +8,7 @@ const props = defineProps<{
   requestedVersion?: string | null
   installVersionOverride?: string | null
   jsrInfo?: JsrPackageInfo | null
+  devDependencySuggestion?: DevDependencySuggestion | null
   typesPackageName?: string | null
   executableInfo?: { hasExecutable: boolean; primaryCommand?: string } | null
   createPackageInfo?: { packageName: string } | null
@@ -27,6 +29,20 @@ function getInstallPartsForPM(pmId: PackageManagerId) {
     packageManager: pmId,
     version: props.installVersionOverride ?? props.requestedVersion,
     jsrInfo: props.jsrInfo,
+  })
+}
+
+const devDependencySuggestion = computed(
+  () => props.devDependencySuggestion ?? { recommended: false as const },
+)
+
+function getDevInstallPartsForPM(pmId: PackageManagerId) {
+  return getInstallCommandParts({
+    packageName: props.packageName,
+    packageManager: pmId,
+    version: props.requestedVersion,
+    jsrInfo: props.jsrInfo,
+    dev: true,
   })
 }
 
@@ -68,7 +84,7 @@ function getTypesInstallPartsForPM(pmId: PackageManagerId) {
   const pm = packageManagers.find(p => p.id === pmId)
   if (!pm) return []
 
-  const devFlag = pmId === 'bun' ? '-d' : '-D'
+  const devFlag = getDevDependencyFlag(pmId)
   const pkgSpec = pmId === 'deno' ? `npm:${props.typesPackageName}` : props.typesPackageName
 
   return [pm.label, pm.action, devFlag, pkgSpec]
@@ -95,6 +111,18 @@ const copyRunCommand = (command?: string) => copyRun(getFullRunCommand(command))
 
 const { copied: createCopied, copy: copyCreate } = useClipboard({ copiedDuring: 2000 })
 const copyCreateCommand = () => copyCreate(getFullCreateCommand())
+
+const { copied: devInstallCopied, copy: copyDevInstall } = useClipboard({ copiedDuring: 2000 })
+const copyDevInstallCommand = () =>
+  copyDevInstall(
+    getInstallCommand({
+      packageName: props.packageName,
+      packageManager: selectedPM.value,
+      version: props.requestedVersion,
+      jsrInfo: props.jsrInfo,
+      dev: true,
+    }),
+  )
 </script>
 
 <template>
@@ -132,6 +160,42 @@ const copyCreateCommand = () => copyCreate(getFullCreateCommand())
             <span aria-live="polite">{{ copied ? $t('common.copied') : $t('common.copy') }}</span>
           </button>
         </div>
+
+        <!-- Suggested dev dependency install command -->
+        <template v-if="devDependencySuggestion.recommended">
+          <div class="flex items-center gap-2 pt-1 select-none">
+            <span class="text-fg-subtle font-mono text-sm"
+              ># {{ $t('package.get_started.dev_dependency_hint') }}</span
+            >
+          </div>
+          <div
+            v-for="pm in packageManagers"
+            :key="`install-dev-${pm.id}`"
+            :data-pm-cmd="pm.id"
+            class="flex items-center gap-2 group/devinstallcmd min-w-0"
+          >
+            <span class="text-fg-subtle font-mono text-sm select-none shrink-0">$</span>
+            <code class="font-mono text-sm min-w-0"
+              ><span
+                v-for="(part, i) in getDevInstallPartsForPM(pm.id)"
+                :key="i"
+                :class="i === 0 ? 'text-fg' : 'text-fg-muted'"
+                >{{ i > 0 ? ' ' : '' }}{{ part }}</span
+              ></code
+            >
+            <ButtonBase
+              type="button"
+              size="small"
+              class="text-fg-muted bg-bg-subtle/80 border-border opacity-0 group-hover/devinstallcmd:opacity-100 active:scale-95 focus-visible:opacity-100 select-none"
+              :aria-label="$t('package.get_started.copy_dev_command')"
+              @click.stop="copyDevInstallCommand"
+            >
+              <span aria-live="polite">{{
+                devInstallCopied ? $t('common.copied') : $t('common.copy')
+              }}</span>
+            </ButtonBase>
+          </div>
+        </template>
 
         <!-- @types package install - render all PM variants when types package exists -->
         <template v-if="typesPackageName && showTypesInInstall">

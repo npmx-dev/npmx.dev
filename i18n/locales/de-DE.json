@@ -125,6 +125,7 @@
     "end_of_results": "Keine weiteren Ergebnisse",
     "try_again": "Erneut versuchen",
     "close": "Schließen",
+    "or": "oder",
     "retry": "Wiederholen",
     "copy": "Kopieren",
     "copied": "Kopiert!",
@@ -287,7 +288,17 @@
       "more_tagged": "{count} weitere getaggt",
       "all_covered": "Alle Versionen sind durch obige Tags abgedeckt",
       "deprecated_title": "{version} (veraltet)",
-      "view_all": "{count} Version anzeigen | Alle {count} Versionen anzeigen"
+      "view_all": "{count} Version anzeigen | Alle {count} Versionen anzeigen",
+      "distribution_title": "SemVer Gruppe",
+      "distribution_modal_title": "Versionen",
+      "grouping_major": "Major",
+      "grouping_minor": "Minor",
+      "recent_versions_only": "Nur kürzliche Versionen",
+      "recent_versions_only_tooltip": "Nur Versionen anzeigen, die im letzten Jahr veröffentlicht wurden.",
+      "show_low_usage": "Wenig genutzte Versionen anzeigen",
+      "show_low_usage_tooltip": "Versionsgruppen anzeigen, die weniger als 1% aller Downloads ausmachen.",
+      "date_range_tooltip": "Nur die letzte Woche der Versionsverteilung",
+      "y_axis_label": "Downloads"
     },
     "dependencies": {
       "title": "Abhängigkeiten ({count})",
@@ -348,6 +359,7 @@
     },
     "downloads": {
       "title": "Wöchentliche Downloads",
+      "modal_title": "Wöchentliche Downloads",
       "analyze": "Downloads analysieren",
       "community_distribution": "Community-Adoptionsverteilung ansehen"
     },
@@ -461,7 +473,8 @@
       "warning": "WARNUNG",
       "warning_text": "Dies erlaubt npmx Zugriff auf deine npm CLI. Verbinde dich nur mit Seiten, denen du vertraust.",
       "connect": "Verbinden",
-      "connecting": "Verbinde..."
+      "connecting": "Verbinde...",
+      "auto_open_url": "Anmeldeseite automatisch öffnen"
     }
   },
   "operations": {
@@ -477,7 +490,9 @@
       "otp_placeholder": "OTP-Code eingeben...",
       "otp_label": "Einmalpasswort",
       "retry_otp": "Mit OTP wiederholen",
+      "retry_web_auth": "Mit WebAuth wiederholen",
       "retrying": "Wird wiederholt...",
+      "open_web_auth": "WebAuth Link öffnen",
       "approve_operation": "Aktion genehmigen",
       "remove_operation": "Aktion entfernen",
       "approve_all": "Alle genehmigen",

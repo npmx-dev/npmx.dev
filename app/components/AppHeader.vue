@@ -107,7 +107,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-simple-icons:bluesky',
+        iconClass: 'i-carbon:logo-bluesky',
       },
       {
         name: 'Chat',
@@ -124,6 +124,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
 
 const showFullSearch = shallowRef(false)
 const showMobileMenu = shallowRef(false)
+const { env } = useAppConfig().buildInfo
 
 // On mobile, clicking logo+search button expands search
 const route = useRoute()
@@ -214,8 +215,14 @@ onKeyStroke(
           dir="ltr"
           class="inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded focus-visible:(outline-2 outline-accent)"
         >
-          <AppLogo class="w-8 h-8 rounded-lg" />
-          <span>npmx</span>
+          <AppLogo class="w-7 h-7 rounded-lg" />
+          <span class="pb-0.5">npmx</span>
+          <span
+            aria-hidden="true"
+            class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.5 -inset-ie-1"
+          >
+            {{ env === 'release' ? 'alpha' : env }}
+          </span>
         </NuxtLink>
       </div>
       <!-- Spacer when logo is hidden on desktop -->

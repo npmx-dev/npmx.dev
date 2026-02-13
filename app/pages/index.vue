@@ -8,6 +8,8 @@ async function search() {
   flushUpdateUrlQuery()
 }
 
+const { env } = useAppConfig().buildInfo
+
 useSeoMeta({
   title: () => $t('seo.home.title'),
   ogTitle: () => $t('seo.home.title'),
@@ -32,12 +34,18 @@ defineOgImageComponent('Default', {
       >
         <h1
           dir="ltr"
-          class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+          class="relative flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
         >
           <AppLogo
             class="w-12 h-12 -ms-3 sm:w-20 sm:h-20 sm:-ms-5 md:w-24 md:h-24 md:-ms-6 rounded-2xl sm:rounded-3xl"
           />
           <span class="pb-4">npmx</span>
+          <span
+            aria-hidden="true"
+            class="scale-15 transform-origin-br font-mono tracking-widest text-accent absolute bottom-3 -inset-ie-1.5"
+          >
+            {{ env === 'release' ? 'alpha' : env }}
+          </span>
         </h1>
 
         <p
