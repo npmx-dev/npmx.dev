@@ -48,6 +48,6 @@
   },
   "translation_status": {
     "welcome": "Si estás interesado en ayudarnos a traducir {npmx} a uno de los idiomas listados a continuación, ¡has llegado al lugar correcto! Esta página se actualiza automáticamente y muestra todo el contenido que necesita tu ayuda ahora mismo.",
-    "p1": "Antes de comenzar, por favor lee nuestra {guide} para conocer nuestro proceso de traducción y cómo puedes involucrarte."
+    "p2": "Antes de comenzar, por favor lee nuestra {guide} para conocer nuestro proceso de traducción y cómo puedes involucrarte."
   }
 }
