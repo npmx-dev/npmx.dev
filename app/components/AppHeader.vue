@@ -31,7 +31,7 @@ const desktopLinks = computed<NavigationConfig>(() => [
     keyshortcut: ',',
     type: 'link',
     external: false,
-    iconClass: 'i-carbon:settings',
+    iconClass: 'i-lucide:settings',
   },
 ])
 

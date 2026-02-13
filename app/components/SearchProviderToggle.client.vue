@@ -30,7 +30,7 @@ useEventListener('keydown', event => {
       aria-haspopup="true"
       size="small"
       class="border-none w-8 h-8 !px-0 justify-center"
-      classicon="i-carbon:settings"
+      classicon="i-lucide:settings"
       @click="isOpen = !isOpen"
     />
 
