@@ -72,7 +72,7 @@ function parsePackageString(pkg: string): { name: string; version: string } {
       :aria-expanded="isOpen"
       @click.stop="togglePopup"
     >
-      <span class="i-carbon:tree-view w-3 h-3" aria-hidden="true" />
+      <span class="i-lucide:network w-3 h-3" aria-hidden="true" />
       <span>{{ $t('package.vulnerabilities.path') }}</span>
     </button>
 

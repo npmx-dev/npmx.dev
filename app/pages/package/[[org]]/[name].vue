@@ -983,7 +983,7 @@ const showSkeleton = shallowRef(false)
                   size="small"
                   :to="`https://npmgraph.js.org/?q=${pkg.name}`"
                   :title="$t('package.stats.view_dependency_graph')"
-                  classicon="i-carbon:network-3"
+                  classicon="i-lucide:network -rotate-90"
                 >
                   <span class="sr-only">{{ $t('package.stats.view_dependency_graph') }}</span>
                 </LinkBase>
@@ -993,7 +993,7 @@ const showSkeleton = shallowRef(false)
                   size="small"
                   :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                   :title="$t('package.stats.inspect_dependency_tree')"
-                  classicon="i-carbon:tree-view"
+                  classicon="i-lucide:table"
                 >
                   <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
                 </LinkBase>
