@@ -62,6 +62,19 @@ describe('Playground Link Extraction', () => {
       expect(result.playgroundLinks).toHaveLength(1)
       expect(result.playgroundLinks[0]!.provider).toBe('codesandbox')
     })
+
+    it('extracts label from image link', async () => {
+      const markdown = `[![Edit CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/example-abc123)`
+      const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+      expect(result.playgroundLinks).toHaveLength(1)
+      expect(result.playgroundLinks[0]).toMatchObject({
+        provider: 'codesandbox',
+        providerName: 'CodeSandbox',
+        label: 'Edit CodeSandbox',
+        url: 'https://codesandbox.io/s/example-abc123',
+      })
+    })
   })
 
   describe('Other Providers', () => {
