@@ -17,6 +17,7 @@ import {
   parseSortOption,
   UPDATED_WITHIN_OPTIONS,
 } from '#shared/types/preferences'
+import { regExpEscape } from '@li/regexp-escape-polyfill'
 
 /**
  * Parsed search operators from text input
@@ -413,7 +414,7 @@ export function useStructuredFilters(options: UseStructuredFiltersOptions) {
   function removeKeyword(keyword: string) {
     filters.value.keywords = filters.value.keywords.filter(k => k !== keyword)
     const newQ = searchQuery.value
-      .replace(new RegExp(`keyword:${RegExp.escape(keyword)}($| )`, 'g'), '')
+      .replace(new RegExp(`keyword:${regExpEscape(keyword)}($| )`, 'g'), '')
       .trim()
     router.replace({ query: { ...route.query, q: newQ || undefined } })
     if (searchQueryModel) searchQueryModel.value = newQ

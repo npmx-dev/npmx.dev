@@ -60,6 +60,7 @@
     "@iconify-json/svg-spinners": "1.2.4",
     "@iconify-json/vscode-icons": "1.2.40",
     "@intlify/shared": "11.2.8",
+    "@li/regexp-escape-polyfill": "jsr:0.3.4",
     "@lunariajs/core": "https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3",
     "@nuxt/a11y": "1.0.0-alpha.1",
     "@nuxt/fonts": "0.13.0",
