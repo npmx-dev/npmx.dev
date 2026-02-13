@@ -58,35 +58,34 @@ export const resolvePackageReadmeSource = defineCachedFunction(
     })
 
     const packageData = await fetchNpmPackage(packageName)
+    const resolvedVersion = version ?? packageData['dist-tags']?.latest
 
-    let readmeContent: string | undefined
-    let readmeFilename: string | undefined
+    // Prefer jsDelivr (actual file from npm tarball) because the npm registry
+    // truncates the packument readme field at 65,536 characters.
+    let readmeContent = await fetchReadmeFromJsdelivr(
+      packageName,
+      standardReadmeFilenames,
+      resolvedVersion,
+    )
 
-    if (version) {
-      const versionData = packageData.versions[version]
-      if (versionData) {
-        readmeContent = versionData.readme
-        readmeFilename = versionData.readmeFilename
+    // Fall back to packument readme if jsDelivr didn't have a standard README.
+    // This covers packages with non-standard readme filenames (e.g. README.zh-TW.md)
+    // or packages that don't include a README in the tarball.
+    if (!readmeContent) {
+      let packumentReadme: string | undefined
+
+      if (version) {
+        packumentReadme = packageData.versions?.[version]?.readme
+      } else {
+        packumentReadme = packageData.readme
       }
-    } else {
-      readmeContent = packageData.readme
-      readmeFilename = packageData.readmeFilename
+
+      if (packumentReadme && packumentReadme !== NPM_MISSING_README_SENTINEL) {
+        readmeContent = packumentReadme
+      }
     }
 
-    const hasValidNpmReadme = readmeContent && readmeContent !== NPM_MISSING_README_SENTINEL
-
-    if (!hasValidNpmReadme || !isStandardReadme(readmeFilename)) {
-      const jsdelivrReadme = await fetchReadmeFromJsdelivr(
-        packageName,
-        standardReadmeFilenames,
-        version,
-      )
-      if (jsdelivrReadme) {
-        readmeContent = jsdelivrReadme
-      }
-    }
-
-    if (!readmeContent || readmeContent === NPM_MISSING_README_SENTINEL) {
+    if (!readmeContent) {
       return {
         packageName,
         version,
