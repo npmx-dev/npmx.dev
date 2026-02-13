@@ -54,7 +54,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         to: { name: 'about' },
         type: 'link',
         external: false,
-        iconClass: 'i-carbon:information',
+        iconClass: 'i-lucide:info',
       },
       {
         name: 'Privacy Policy',

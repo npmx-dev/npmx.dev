@@ -1009,7 +1009,7 @@ const showSkeleton = shallowRef(false)
                   tabindex="0"
                   class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
                 >
-                  <span class="i-carbon:information w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:info w-3 h-3" aria-hidden="true" />
                 </span>
               </TooltipApp>
             </dt>

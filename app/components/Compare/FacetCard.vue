@@ -77,7 +77,7 @@ function getShortName(header: string): string {
       <span class="text-xs text-fg-muted uppercase tracking-wider font-medium">{{ label }}</span>
       <TooltipApp v-if="description" :text="description" position="top">
         <span
-          class="i-carbon:information w-3 h-3 text-fg-subtle"
+          class="i-lucide:info w-3 h-3 text-fg-subtle"
           :title="description"
           aria-hidden="true"
         />
