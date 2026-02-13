@@ -221,6 +221,8 @@
       "title": "开始使用",
       "pm_label": "包管理器",
       "copy_command": "复制安装命令",
+      "copy_dev_command": "复制开发依赖安装命令",
+      "dev_dependency_hint": "通常作为开发依赖项安装",
       "view_types": "查看 {package}"
     },
     "create": {
@@ -297,7 +299,14 @@
       "recent_versions_only_tooltip": "仅显示在过去一年内发布的版本。",
       "show_low_usage": "显示低使用率版本",
       "show_low_usage_tooltip": "包括下载量低于 1% 的版本组。",
-      "date_range_tooltip": "仅显示最近一周的版本分布情况"
+      "date_range_tooltip": "仅显示最近一周的版本分布情况",
+      "y_axis_label": "下载量",
+      "filter_placeholder": "按语义化版本过滤（例如 ^3.0.0）",
+      "filter_invalid": "无效的语义化版本范围",
+      "filter_help": "语义化版本范围过滤帮助",
+      "filter_tooltip": "使用 {link} 过滤版本。例如，^3.0.0 显示所有 3.x 版本。",
+      "filter_tooltip_link": "语义化版本范围",
+      "no_matches": "没有匹配此范围的版本"
     },
     "dependencies": {
       "title": "依赖（{count} 个）",
@@ -806,6 +815,14 @@
         "package": "包",
         "managers": "管理器"
       }
+    },
+    "team": {
+      "title": "团队",
+      "governance": "治理",
+      "role_steward": "管理者",
+      "role_maintainer": "维护者",
+      "sponsor": "赞助者",
+      "sponsor_aria": "在 GitHub 上赞助 {name}"
     },
     "contributors": {
       "title": "{count} 位贡献者",

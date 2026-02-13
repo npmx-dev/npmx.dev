@@ -221,6 +221,8 @@
       "title": "Empezar",
       "pm_label": "Gestor de paquetes",
       "copy_command": "Copiar comando de instalación",
+      "copy_dev_command": "Copiar comando de instalación como dependencia de desarrollo",
+      "dev_dependency_hint": "Instalar como dependencia de desarrollo",
       "view_types": "Ver {package}"
     },
     "create": {
@@ -298,7 +300,13 @@
       "show_low_usage": "Mostrar versiones de bajo uso",
       "show_low_usage_tooltip": "Incluir grupos de versiones con menos del 1% de las descargas totales.",
       "date_range_tooltip": "Solo la última semana de distribución de versiones",
-      "y_axis_label": "Descargas"
+      "y_axis_label": "Descargas",
+      "filter_placeholder": "Filtrar versiones (ej: ^1.0.0, >2.0)...",
+      "filter_invalid": "Rango semver inválido",
+      "filter_help": "Usa sintaxis semver estándar",
+      "filter_tooltip": "Filtra versiones usando rangos semver. Ejemplos:",
+      "filter_tooltip_link": "Calculadora Semver",
+      "no_matches": "Ninguna versión coincide con el filtro"
     },
     "dependencies": {
       "title": "Dependencias ({count})",
@@ -807,6 +815,14 @@
         "package": "realmente",
         "managers": "geniales"
       }
+    },
+    "team": {
+      "title": "Equipo",
+      "governance": "Gobernanza",
+      "role_steward": "Administrador",
+      "role_maintainer": "Mantenedor",
+      "sponsor": "Patrocinar",
+      "sponsor_aria": "Patrocinar a {name} en GitHub"
     },
     "contributors": {
       "title": "{count} Colaborador | {count} Colaboradores",

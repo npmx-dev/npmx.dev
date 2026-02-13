@@ -415,9 +415,15 @@ ${html}
   renderer.link = function ({ href, title, tokens }: Tokens.Link) {
     const text = this.parser.parseInline(tokens)
     const titleAttr = title ? ` title="${title}"` : ''
-    const plainText = text.replace(/<[^>]*>/g, '').trim()
+    let plainText = text.replace(/<[^>]*>/g, '').trim()
 
-    const intermediateTitleAttr = `${` data-title-intermediate="${plainText || title}"`}`
+    // If plain text is empty, check if we have an image with alt text
+    if (!plainText && tokens.length === 1 && tokens[0]?.type === 'image') {
+      plainText = tokens[0].text
+    }
+
+    const intermediateTitleAttr =
+      plainText || title ? ` data-title-intermediate="${plainText || title}"` : ''
 
     return `<a href="${href}"${titleAttr}${intermediateTitleAttr}>${text}</a>`
   }
