@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { VueUiXyDatasetItem } from 'vue-data-ui'
+import type { VueUiXyConfig, VueUiXyDatasetItem } from 'vue-data-ui'
 import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
@@ -1283,12 +1283,14 @@ const chartConfig = computed(() => {
           fullscreen: false,
           table: false,
           tooltip: false,
+          altCopy: false, // TODO: set to true to enable the alt copy feature
         },
         buttonTitles: {
           csv: $t('package.trends.download_file', { fileType: 'CSV' }),
           img: $t('package.trends.download_file', { fileType: 'PNG' }),
           svg: $t('package.trends.download_file', { fileType: 'SVG' }),
           annotator: $t('package.trends.toggle_annotator'),
+          altCopy: undefined, // TODO: set to proper translation key
         },
         callbacks: {
           img: ({ imageUri }: { imageUri: string }) => {
@@ -1316,6 +1318,10 @@ const chartConfig = computed(() => {
             loadFile(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
+          // altCopy: ({ dataset: dst, config: cfg }: { dataset: Array<VueUiXyDatasetItem>; config: VueUiXyConfig}) => {
+          //   // TODO: implement a reusable copy-alt-text-to-clipboard feature based on the dataset & configuration
+          //   console.log({ dst, cfg})
+          // }
         },
       },
       grid: {
@@ -1422,6 +1428,9 @@ const chartConfig = computed(() => {
           selectedColor: accent.value,
           selectedColorOpacity: 0.06,
           frameColor: colors.value.border,
+          handleWidth: isMobile.value ? 40 : 20, // does not affect the size of the touch area
+          handleBorderColor: colors.value.fgSubtle,
+          handleType: 'grab', // 'empty' | 'chevron' | 'arrow' | 'grab'
         },
         preview: {
           fill: transparentizeOklch(accent.value, isDarkMode.value ? 0.95 : 0.92),
@@ -1722,6 +1731,13 @@ watch(selectedMetric, value => {
                 aria-hidden="true"
               />
             </template>
+            <template #optionAltCopy>
+              <span
+                class="i-carbon:accessibility-alt w-6 h-6 text-fg-subtle"
+                style="pointer-events: none"
+                aria-hidden="true"
+              />
+            </template>
           </VueUiXy>
         </div>
 
@@ -1768,7 +1784,7 @@ watch(selectedMetric, value => {
 @media screen and (min-width: 767px) {
   #trends-chart .vue-data-ui-refresh-button {
     top: -0.6rem !important;
-    left: calc(100% + 2rem) !important;
+    left: calc(100% + 4rem) !important;
   }
 }
 
