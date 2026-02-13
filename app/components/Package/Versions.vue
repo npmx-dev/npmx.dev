@@ -411,7 +411,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
         variant="secondary"
         class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 -m-1 p-1 rounded"
         :title="$t('package.downloads.community_distribution')"
-        classicon="i-carbon:load-balancer-network"
+        classicon="i-lucide:file-stack"
         @click="openDistributionModal"
       >
         <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
