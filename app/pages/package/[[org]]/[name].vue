@@ -93,8 +93,6 @@ const navExtraOffsetStyle = computed(() => ({
 }))
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
-const selectedPM = useSelectedPackageManager()
-const activePmId = computed(() => selectedPM.value ?? 'npm')
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
