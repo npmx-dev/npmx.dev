@@ -197,7 +197,7 @@ watch(
         <div class="flex items-center gap-2 min-w-0">
           <span
             v-if="collab.isTeam"
-            class="i-carbon:group w-3.5 h-3.5 text-fg-subtle shrink-0"
+            class="i-lucide:users w-3.5 h-3.5 text-fg-subtle shrink-0"
             aria-hidden="true"
           />
           <span

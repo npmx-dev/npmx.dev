@@ -259,7 +259,7 @@ watch(lastExecutionTime, () => {
     <!-- Header -->
     <div class="flex items-center justify-start p-4 border-b border-border">
       <h2 id="teams-heading" class="font-mono text-sm font-medium flex items-center gap-2">
-        <span class="i-carbon:group w-4 h-4 text-fg-muted" aria-hidden="true" />
+        <span class="i-lucide:users w-4 h-4 text-fg-muted" aria-hidden="true" />
         {{ $t('org.teams.title') }}
         <span v-if="teams.length > 0" class="text-fg-muted">({{ teams.length }})</span>
       </h2>
