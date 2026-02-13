@@ -569,13 +569,13 @@ const endDate = computed(() => {
             <template #optionAnnotator="{ isAnnotator }">
               <span
                 v-if="isAnnotator"
-                class="i-carbon:edit-off w-6 h-6 text-fg-subtle"
+                class="i-lucide:pen-off w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />
               <span
                 v-else
-                class="i-carbon:edit w-6 h-6 text-fg-subtle"
+                class="i-lucide:pen w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />
