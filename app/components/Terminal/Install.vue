@@ -219,7 +219,7 @@ const copyDevInstallCommand = () =>
               class="text-fg-subtle hover:text-fg-muted text-xs transition-colors focus-visible:outline-accent/70 rounded select-none"
               :title="$t('package.get_started.view_types', { package: typesPackageName })"
             >
-              <span class="i-carbon:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />
+              <span class="i-lucide:arrow-right rtl-flip w-3 h-3 align-middle" aria-hidden="true" />
               <span class="sr-only">View {{ typesPackageName }}</span>
             </NuxtLink>
           </div>
@@ -271,7 +271,7 @@ const copyDevInstallCommand = () =>
                 :to="packageRoute(createPackageInfo.packageName)"
                 class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-muted hover:text-fg text-xs transition-colors focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
               >
-                <span class="i-carbon:information w-3 h-3" aria-hidden="true" />
+                <span class="i-lucide:info w-3 h-3" aria-hidden="true" />
                 <span class="sr-only">{{
                   $t('package.create.view', { packageName: createPackageInfo.packageName })
                 }}</span>

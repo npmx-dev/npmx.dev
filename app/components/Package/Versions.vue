@@ -477,7 +477,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
         variant="secondary"
         class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 -m-1 p-1 rounded"
         :title="$t('package.downloads.community_distribution')"
-        classicon="i-carbon:load-balancer-network"
+        classicon="i-lucide:file-stack"
         @click="openDistributionModal"
       >
         <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
@@ -502,7 +502,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           <TooltipApp interactive position="top">
             <span
               tabindex="0"
-              class="i-carbon:information w-3.5 h-3.5 text-fg-subtle cursor-help shrink-0 rounded-sm"
+              class="i-lucide:info w-3.5 h-3.5 text-fg-subtle cursor-help shrink-0 rounded-sm"
               role="img"
               :aria-label="$t('package.versions.filter_help')"
             />
@@ -561,7 +561,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           >
             <span
               v-if="loadingTags.has(row.tag)"
-              class="i-carbon:rotate-180 w-3 h-3 motion-safe:animate-spin"
+              class="i-svg-spinners:ring-resize w-3 h-3"
               data-testid="loading-spinner"
               aria-hidden="true"
             />
@@ -569,7 +569,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
               v-else
               class="w-3 h-3 transition-transform duration-200 rtl-flip"
               :class="
-                expandedTags.has(row.tag) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right'
+                expandedTags.has(row.tag) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'
               "
               aria-hidden="true"
             />
@@ -595,7 +595,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       })
                     : row.primaryVersion.version
                 "
-                :classicon="row.primaryVersion.deprecated ? 'i-carbon-warning-hex' : undefined"
+                :classicon="row.primaryVersion.deprecated ? 'i-lucide:octagon-alert' : undefined"
               >
                 <span dir="ltr" class="block truncate">
                   {{ row.primaryVersion.version }}
@@ -659,7 +659,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       })
                     : v.version
                 "
-                :classicon="v.deprecated ? 'i-carbon-warning-hex' : undefined"
+                :classicon="v.deprecated ? 'i-lucide:octagon-alert' : undefined"
               >
                 <span dir="ltr" class="block truncate">
                   {{ v.version }}
@@ -718,14 +718,14 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           >
             <span
               v-if="otherVersionsLoading"
-              class="i-carbon:rotate-180 w-3 h-3 motion-safe:animate-spin"
+              class="i-svg-spinners:ring-resize w-3 h-3"
               data-testid="loading-spinner"
               aria-hidden="true"
             />
             <span
               v-else
               class="w-3 h-3 transition-transform duration-200 rtl-flip"
-              :class="otherVersionsExpanded ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right'"
+              :class="otherVersionsExpanded ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
               aria-hidden="true"
             />
           </span>
@@ -769,7 +769,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                       })
                     : row.primaryVersion.version
                 "
-                :classicon="row.primaryVersion.deprecated ? 'i-carbon-warning-hex' : undefined"
+                :classicon="row.primaryVersion.deprecated ? 'i-lucide:octagon-alert' : undefined"
               >
                 <span dir="ltr" class="block truncate">
                   {{ row.primaryVersion.version }}
@@ -829,8 +829,8 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                         class="w-3 h-3 transition-transform duration-200 rtl-flip"
                         :class="
                           expandedMajorGroups.has(group.groupKey)
-                            ? 'i-carbon:chevron-down'
-                            : 'i-carbon:chevron-right'
+                            ? 'i-lucide:chevron-down'
+                            : 'i-lucide:chevron-right'
                         "
                         aria-hidden="true"
                       />
@@ -853,7 +853,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                           : group.versions[0]?.version
                       "
                       :classicon="
-                        group.versions[0]?.deprecated ? 'i-carbon-warning-hex' : undefined
+                        group.versions[0]?.deprecated ? 'i-lucide:octagon-alert' : undefined
                       "
                     >
                       <span dir="ltr" class="block truncate">
@@ -918,7 +918,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                           : group.versions[0]?.version
                       "
                       :classicon="
-                        group.versions[0]?.deprecated ? 'i-carbon-warning-hex' : undefined
+                        group.versions[0]?.deprecated ? 'i-lucide:octagon-alert' : undefined
                       "
                     >
                       <span dir="ltr" class="block truncate">
@@ -984,7 +984,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                             })
                           : v.version
                       "
-                      :classicon="v.deprecated ? 'i-carbon-warning-hex' : undefined"
+                      :classicon="v.deprecated ? 'i-lucide:octagon-alert' : undefined"
                     >
                       <span dir="ltr" class="block truncate">
                         {{ v.version }}

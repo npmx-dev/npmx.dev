@@ -3,7 +3,7 @@ const socialLinks = computed(() => [
   {
     id: 'github',
     href: 'https://repo.npmx.dev',
-    icon: 'i-carbon:logo-github',
+    icon: 'i-simple-icons:github',
     titleKey: $t('about.get_involved.contribute.title'),
     descriptionKey: $t('about.get_involved.contribute.description'),
     ctaKey: $t('about.get_involved.contribute.cta'),
@@ -11,7 +11,7 @@ const socialLinks = computed(() => [
   {
     id: 'discord',
     href: 'https://chat.npmx.dev',
-    icon: 'i-carbon:chat',
+    icon: 'i-lucide:message-circle',
     titleKey: $t('about.get_involved.community.title'),
     descriptionKey: $t('about.get_involved.community.description'),
     ctaKey: $t('about.get_involved.community.cta'),
@@ -19,7 +19,7 @@ const socialLinks = computed(() => [
   {
     id: 'bluesky',
     href: 'https://social.npmx.dev',
-    icon: 'i-carbon:logo-bluesky',
+    icon: 'i-simple-icons:bluesky',
     titleKey: $t('about.get_involved.follow.title'),
     descriptionKey: $t('about.get_involved.follow.description'),
     ctaKey: $t('about.get_involved.follow.cta'),
@@ -55,7 +55,7 @@ const socialLinks = computed(() => [
           class="text-sm text-fg-muted group-hover:text-fg inline-flex items-center gap-1 mt-auto focus-visible:outline-none"
         >
           {{ link.ctaKey }}
-          <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
+          <span class="i-lucide:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
           <span class="absolute z-0 inset-0" aria-hidden="true" />
         </a>
       </div>

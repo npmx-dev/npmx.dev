@@ -197,7 +197,7 @@ function handlePageSizeChange(event: Event) {
           :aria-label="$t('filters.pagination.previous')"
           @click="goPrev"
         >
-          <span class="i-carbon-chevron-left block rtl-flip w-4 h-4" aria-hidden="true" />
+          <span class="i-lucide:chevron-left block rtl-flip w-4 h-4" aria-hidden="true" />
         </button>
 
         <!-- Page numbers -->
@@ -227,7 +227,7 @@ function handlePageSizeChange(event: Event) {
           :aria-label="$t('filters.pagination.next')"
           @click="goNext"
         >
-          <span class="i-carbon-chevron-right block rtl-flip w-4 h-4" aria-hidden="true" />
+          <span class="i-lucide:chevron-right block rtl-flip w-4 h-4" aria-hidden="true" />
         </button>
       </nav>
     </div>

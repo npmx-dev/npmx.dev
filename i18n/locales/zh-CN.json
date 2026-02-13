@@ -151,6 +151,7 @@
     "view_permalink": "查看此版本的链接",
     "navigation": "包导航",
     "copy_name": "复制包名",
+    "copy_version": "复制版本号",
     "deprecation": {
       "package": "此包已废弃。",
       "version": "此版本已废弃。",
@@ -316,7 +317,8 @@
       "view_vulnerabilities": "查看漏洞",
       "outdated_major": "落后 {count} 个主要版本（最新：{latest}）",
       "outdated_minor": "落后 {count} 个次要版本（最新：{latest}）",
-      "outdated_patch": "有可用的补丁更新（最新：{latest}）"
+      "outdated_patch": "有可用的补丁更新（最新：{latest}）",
+      "has_replacement": "该依赖有推荐的替代包。"
     },
     "peer_dependencies": {
       "title": "对等依赖（{count} 个）",

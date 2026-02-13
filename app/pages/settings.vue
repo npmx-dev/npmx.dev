@@ -55,7 +55,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             @click="router.back()"
             v-if="canGoBack"
           >
-            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
           </button>
         </div>
@@ -199,7 +199,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg-muted transition-colors mt-2"
               >
                 {{ $t('search.algolia_disclaimer') }}
-                <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+                <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -254,7 +254,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
               >
-                <span class="i-carbon:logo-github w-4 h-4" aria-hidden="true" />
+                <span class="i-simple-icons:github w-4 h-4" aria-hidden="true" />
                 {{ $t('settings.help_translate') }}
               </a>
             </template>

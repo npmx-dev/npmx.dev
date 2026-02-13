@@ -10,7 +10,7 @@
           "value": "chat.npmx.dev"
         }
       ],
-      "destination": "https://discord.gg/NHwgTgAFVV"
+      "destination": "https://npmx.dev/recharging"
     },
     {
       "source": "/(.*)",

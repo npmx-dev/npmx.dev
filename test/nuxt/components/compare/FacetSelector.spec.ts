@@ -152,7 +152,7 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      expect(component.find('.i-carbon\\:checkmark').exists()).toBe(true)
+      expect(component.find('.i-lucide\\:check').exists()).toBe(true)
     })
 
     it('shows add icon for unselected facets', async () => {
@@ -161,7 +161,7 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      expect(component.find('.i-carbon\\:add').exists()).toBe(true)
+      expect(component.find('.i-lucide\\:plus').exists()).toBe(true)
     })
 
     it('applies aria-pressed for selected state', async () => {
@@ -211,8 +211,8 @@ describe('FacetSelector', () => {
       const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
 
       // Should not have checkmark or add icon
-      expect(comingSoonButton?.find('.i-carbon\\:checkmark').exists()).toBe(false)
-      expect(comingSoonButton?.find('.i-carbon\\:add').exists()).toBe(false)
+      expect(comingSoonButton?.find('.i-lucide\\:check').exists()).toBe(false)
+      expect(comingSoonButton?.find('.i-lucide\\:plus').exists()).toBe(false)
     })
 
     it('does not call toggleFacet when comingSoon facet is clicked', async () => {

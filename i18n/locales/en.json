@@ -152,6 +152,7 @@
     "view_permalink": "View permalink for this version",
     "navigation": "Package",
     "copy_name": "Copy package name",
+    "copy_version": "Copy package version",
     "deprecation": {
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
@@ -317,7 +318,8 @@
       "view_vulnerabilities": "View vulnerabilities",
       "outdated_major": "{count} major version behind (latest: {latest}) | {count} major versions behind (latest: {latest})",
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
-      "outdated_patch": "Patch update available (latest: {latest})"
+      "outdated_patch": "Patch update available (latest: {latest})",
+      "has_replacement": "This dependency has suggested replacements"
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",

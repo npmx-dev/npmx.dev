@@ -132,7 +132,7 @@ watch(handleInput, newHandleInput => {
         type="button"
         class="w-full"
         @click="handleBlueskySignIn"
-        classicon="i-carbon:logo-bluesky"
+        classicon="i-simple-icons:bluesky"
       >
         {{ $t('auth.modal.connect_bluesky') }}
       </ButtonBase>

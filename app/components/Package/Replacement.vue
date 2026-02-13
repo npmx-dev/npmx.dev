@@ -21,7 +21,7 @@ const docPath = computed(() => {
     class="border border-amber-600/40 bg-amber-500/10 rounded-lg px-3 py-2 text-base text-amber-800 dark:text-amber-400"
   >
     <h2 class="font-medium mb-1 flex items-center gap-2">
-      <span class="i-carbon-idea w-4 h-4" aria-hidden="true" />
+      <span class="i-lucide:lightbulb w-4 h-4" aria-hidden="true" />
       {{ $t('package.replacement.title') }}
     </h2>
     <p class="text-sm m-0">
@@ -50,7 +50,7 @@ const docPath = computed(() => {
             class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
           >
             {{ $t('package.replacement.community') }}
-            <span class="i-carbon-launch w-3 h-3" aria-hidden="true" />
+            <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
           </a>
         </template>
         <template #replacement>
@@ -70,7 +70,7 @@ const docPath = computed(() => {
             class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
           >
             {{ $t('package.replacement.community') }}
-            <span class="i-carbon-launch w-3 h-3" aria-hidden="true" />
+            <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
           </a>
         </template>
       </i18n-t>
@@ -85,7 +85,7 @@ const docPath = computed(() => {
         class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
       >
         {{ $t('package.replacement.mdn') }}
-        <span class="i-carbon-launch w-3 h-3" aria-hidden="true" />
+        <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
       </a>
       <a
         v-if="docPath"
@@ -95,7 +95,7 @@ const docPath = computed(() => {
         class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
       >
         {{ $t('package.replacement.learn_more') }}
-        <span class="i-carbon-launch w-3 h-3" aria-hidden="true" />
+        <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
       </a>
     </p>
   </div>

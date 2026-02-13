@@ -33,14 +33,14 @@ describe('FacetRow', () => {
           description: 'Number of downloads per week',
         },
       })
-      expect(component.find('.i-carbon\\:information').exists()).toBe(true)
+      expect(component.find('.i-lucide\\:info').exists()).toBe(true)
     })
 
     it('does not render description icon when not provided', async () => {
       const component = await mountSuspended(FacetRow, {
         props: baseProps,
       })
-      expect(component.find('.i-carbon\\:information').exists()).toBe(false)
+      expect(component.find('.i-lucide\\:info').exists()).toBe(false)
     })
   })
 
@@ -80,7 +80,7 @@ describe('FacetRow', () => {
         },
       })
       // All cells should show loading spinner
-      expect(component.findAll('.i-carbon\\:circle-dash').length).toBe(2)
+      expect(component.findAll('.i-svg-spinners\\:ring-resize').length).toBe(2)
     })
 
     it('renders loading state for specific column loading', async () => {
@@ -92,7 +92,7 @@ describe('FacetRow', () => {
         },
       })
       // Only second cell should show loading spinner
-      const spinners = component.findAll('.i-carbon\\:circle-dash')
+      const spinners = component.findAll('.i-svg-spinners\\:ring-resize')
       expect(spinners.length).toBe(1)
     })
   })

@@ -158,7 +158,7 @@ const previewPackageJson = computed(() => {
       <div
         class="flex items-center gap-3 p-4 bg-green-500/10 border border-green-500/20 rounded-lg"
       >
-        <span class="i-carbon-checkmark-filled text-green-500 w-6 h-6" aria-hidden="true" />
+        <span class="i-lucide:check text-green-500 w-6 h-6" aria-hidden="true" />
         <div>
           <p class="font-mono text-sm text-fg">{{ $t('claim.modal.success') }}</p>
           <p class="text-xs text-fg-muted">
@@ -226,7 +226,7 @@ const previewPackageJson = computed(() => {
           v-if="checkResult.available"
           class="flex items-center gap-3 p-4 bg-green-500/10 border border-green-500/20 rounded-lg"
         >
-          <span class="i-carbon-checkmark-filled text-green-500 w-5 h-5" aria-hidden="true" />
+          <span class="i-lucide:check text-green-500 w-5 h-5" aria-hidden="true" />
           <p class="font-mono text-sm text-fg">{{ $t('claim.modal.available') }}</p>
         </div>
 
@@ -234,7 +234,7 @@ const previewPackageJson = computed(() => {
           v-else
           class="flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-lg"
         >
-          <span class="i-carbon-close-filled text-red-500 w-5 h-5" aria-hidden="true" />
+          <span class="i-lucide:x text-red-500 w-5 h-5" aria-hidden="true" />
           <p class="font-mono text-sm text-fg">{{ $t('claim.modal.taken') }}</p>
         </div>
       </div>
@@ -266,12 +266,12 @@ const previewPackageJson = computed(() => {
             >
               <span
                 v-if="pkg.similarity === 'exact-match'"
-                class="i-carbon-warning-filled text-red-500 w-4 h-4 mt-0.5 shrink-0"
+                class="i-lucide:circle-alert text-red-500 w-4 h-4 mt-0.5 shrink-0"
                 aria-hidden="true"
               />
               <span
                 v-else-if="pkg.similarity === 'very-similar'"
-                class="i-carbon-warning text-yellow-500 w-4 h-4 mt-0.5 shrink-0"
+                class="i-lucide:circle-alert text-yellow-500 w-4 h-4 mt-0.5 shrink-0"
                 aria-hidden="true"
               />
               <span v-else class="w-4 h-4 shrink-0" />

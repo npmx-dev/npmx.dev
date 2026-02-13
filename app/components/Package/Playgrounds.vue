@@ -16,7 +16,7 @@ const providerIcons: Record<string, string> = {
   'vue-playground': 'i-simple-icons:vuedotjs',
   'nuxt-new': 'i-simple-icons:nuxtdotjs',
   'vite-new': 'i-simple-icons:vite',
-  'jsfiddle': 'i-carbon:code',
+  'jsfiddle': 'i-lucide:code',
 }
 
 // Map provider id to color class
@@ -33,7 +33,7 @@ const providerColors: Record<string, string> = {
 }
 
 function getIcon(provider: string): string {
-  return providerIcons[provider] || 'i-carbon:play'
+  return providerIcons[provider] || 'i-lucide:play'
 }
 
 function getColor(provider: string): string {
@@ -145,13 +145,13 @@ function focusMenuItem(index: number) {
         @keydown="handleKeydown"
       >
         <span class="flex items-center gap-2">
-          <span class="i-carbon:play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
+          <span class="i-lucide:play w-4 h-4 shrink-0 text-fg-muted" aria-hidden="true" />
           <span class="text-fg-muted"
             >{{ $t('package.playgrounds.choose') }} ({{ links.length }})</span
           >
         </span>
         <span
-          class="i-carbon:chevron-down w-3 h-3 text-fg-subtle transition-transform duration-200 motion-reduce:transition-none"
+          class="i-lucide:chevron-down w-3 h-3 text-fg-subtle transition-transform duration-200 motion-reduce:transition-none"
           :class="{ 'rotate-180': isOpen }"
           aria-hidden="true"
         />

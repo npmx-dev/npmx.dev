@@ -1,0 +1,1115 @@
+{
+  "$schema": "../schema.json",
+  "seo": {
+    "home": {
+      "title": "npmx - Браузър за npm регистъра",
+      "description": "бърз, модерен браузър за npm регистъра. Търсете, разглеждайте и изследвайте пакети с модерен интерфейс."
+    }
+  },
+  "built_at": "изградено {0}",
+  "alt_logo": "npmx лого",
+  "tagline": "бърз, модерен браузър за npm регистъра",
+  "non_affiliation_disclaimer": "не е свързан с npm, Inc.",
+  "trademark_disclaimer": "npm е регистрирана търговска марка на npm, Inc. Този сайт не е свързан с npm, Inc.",
+  "footer": {
+    "about": "за нас",
+    "docs": "документация",
+    "source": "код",
+    "social": "социални мрежи",
+    "chat": "чат",
+    "keyboard_shortcuts": "клавишни комбинации"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "Глобални",
+      "search": "Търсене",
+      "package": "Пакет"
+    },
+    "focus_search": "Фокус върху търсенето",
+    "show_kbd_hints": "Показване на клавишни подсказки",
+    "settings": "Отваряне на настройки",
+    "compare": "Отваряне на сравнение",
+    "compare_from_package": "Отваряне на сравнение (попълнено с текущия пакет)",
+    "navigate_results": "Навигация в резултатите",
+    "go_to_result": "Отваряне на резултат",
+    "open_code_view": "Отваряне на изглед на кода",
+    "open_docs": "Отваряне на документация"
+  },
+  "search": {
+    "label": "Търсене на npm пакети",
+    "placeholder": "търсене на пакети...",
+    "button": "търсене",
+    "searching": "Търсене...",
+    "found_packages": "Няма намерени пакети | Намерен е 1 пакет | Намерени са {count} пакета",
+    "found_packages_sorted": "Няма намерени резултати | Сортиране на топ {count} резултат | Сортиране на топ {count} резултата",
+    "updating": "(обновяване...)",
+    "no_results": "Няма намерени пакети за \"{query}\"",
+    "rate_limited": "Достигнат npm лимит, опитайте отново след малко",
+    "title": "търсене",
+    "title_search": "търсене: {search}",
+    "title_packages": "търсене на пакети",
+    "meta_description": "Резултати от търсенето за '{search}'",
+    "meta_description_packages": "Търсене на npm пакети",
+    "not_taken": "{name} не е заето",
+    "claim_prompt": "Резервирайте това име на пакет в npm",
+    "claim_button": "Резервиране на \"{name}\"",
+    "want_to_claim": "Искате ли да резервирате това име на пакет?",
+    "start_typing": "Започнете да пишете за търсене на пакети",
+    "algolia_disclaimer": "Захранено от Algolia",
+    "exact_match": "точно",
+    "suggestion": {
+      "user": "потребител",
+      "org": "организация",
+      "view_user_packages": "Показване на пакети от този потребител",
+      "view_org_packages": "Показване на пакети от тази организация"
+    }
+  },
+  "nav": {
+    "main_navigation": "Главна",
+    "popular_packages": "Популярни пакети",
+    "settings": "настройки",
+    "compare": "сравняване",
+    "back": "назад",
+    "menu": "Меню",
+    "mobile_menu": "Навигационно меню",
+    "open_menu": "Отваряне на меню",
+    "links": "Връзки",
+    "tap_to_search": "Докоснете за търсене"
+  },
+  "settings": {
+    "title": "настройки",
+    "tagline": "персонализирайте вашето npmx изживяване",
+    "meta_description": "Персонализирайте вашето npmx.dev изживяване с тема, език и предпочитания за дисплей.",
+    "sections": {
+      "appearance": "Външен вид",
+      "display": "Дисплей",
+      "search": "Източник на данни",
+      "language": "Език"
+    },
+    "data_source": {
+      "label": "Източник на данни",
+      "description": "Изберете откъде npmx получава данни за търсене. Отделните страници на пакети винаги използват npm регистъра директно.",
+      "npm": "npm Registry",
+      "npm_description": "Извлича търсене, списъци на организации и потребители директно от официалния npm регистър. Авторитетно, но може да е по-бавно.",
+      "algolia": "Algolia",
+      "algolia_description": "Използва Algolia за по-бързо търсене, страници на организации и потребители."
+    },
+    "relative_dates": "Относителни дати",
+    "include_types": "Включване на {'@'}types в инсталацията",
+    "include_types_description": "Добавяне на {'@'}types пакет към командите за инсталация за нетипизирани пакети",
+    "hide_platform_packages": "Скриване на платформо-специфични пакети при търсене",
+    "hide_platform_packages_description": "Скриване на native binary пакети като {'@'}esbuild/linux-x64 от резултатите",
+    "theme": "Тема",
+    "theme_light": "Светла",
+    "theme_dark": "Тъмна",
+    "theme_system": "Системна",
+    "language": "Език",
+    "help_translate": "Помогнете да преведем npmx",
+    "accent_colors": "Акцентни цветове",
+    "clear_accent": "Изчистване на акцентен цвят",
+    "translation_progress": "Напредък на превода",
+    "background_themes": "Фонов нюанс"
+  },
+  "i18n": {
+    "missing_keys": "{count} липсващ превод | {count} липсващи преводи",
+    "copy_keys": "Копиране на ключове",
+    "show_more_keys": "Показване на още {count}...",
+    "contribute_hint": "Помогнете за подобряване на този превод чрез добавяне на липсващите ключове.",
+    "edit_on_github": "Редактиране в GitHub",
+    "view_guide": "Ръководство за превод"
+  },
+  "common": {
+    "loading": "Зареждане...",
+    "loading_more": "Зареждане на още...",
+    "loading_packages": "Зареждане на пакети...",
+    "end_of_results": "Край на резултатите",
+    "try_again": "Опитайте отново",
+    "close": "Затваряне",
+    "or": "или",
+    "retry": "Повторен опит",
+    "copy": "копиране",
+    "copied": "копирано!",
+    "skip_link": "Преминаване към основното съдържание",
+    "warnings": "Предупреждения:",
+    "go_back_home": "Назад към начална страница",
+    "view_on_npm": "преглед в npm",
+    "per_week": "/ седмица",
+    "vanity_downloads_hint": "Брой за показ: няма показани пакети | Брой за показ: за показания пакет | Брой за показ: Сума от {count} показани пакета",
+    "sort": {
+      "name": "име",
+      "role": "роля",
+      "members": "членове"
+    },
+    "scroll_to_top": "Отиди нагоре"
+  },
+  "package": {
+    "not_found": "Пакетът не е намерен",
+    "not_found_message": "Пакетът не може да бъде намерен.",
+    "no_description": "Няма предоставено описание",
+    "not_latest": "(не е последна)",
+    "verified_provenance": "Потвърден произход",
+    "view_permalink": "Преглед на постоянна връзка за тази версия",
+    "navigation": "Пакет",
+    "copy_name": "Копиране на името на пакета",
+    "deprecation": {
+      "package": "Този пакет е остарял.",
+      "version": "Тази версия е остаряла.",
+      "no_reason": "Няма предоставена причина"
+    },
+    "replacement": {
+      "title": "Може да не се нуждаете от тази зависимост.",
+      "native": "Това може да бъде заменено с {replacement}, налично от Node {nodeVersion}.",
+      "simple": "{community} е отбелязала този пакет като излишен, със съвета: {replacement}.",
+      "documented": "{community} е отбелязала този пакет като имащ по-производителни алтернативи.",
+      "none": "Този пакет е отбелязан като вече ненужен и функционалността му вероятно е налична нативно във всички двигатели.",
+      "learn_more": "Научете повече",
+      "learn_more_above": "Научете повече по-горе.",
+      "mdn": "MDN",
+      "community": "общност",
+      "consider_no_dep": "+ Обмислете без зависимости?"
+    },
+    "stats": {
+      "license": "Лиценз",
+      "deps": "Зависимости",
+      "install_size": "Размер на инсталацията",
+      "vulns": "Уязвимости",
+      "published": "Публикуван",
+      "published_tooltip": "Дата на публикуване на {package}{'@'}{version}",
+      "view_dependency_graph": "Преглед на графа на зависимостите",
+      "inspect_dependency_tree": "Инспектиране на дървото на зависимостите",
+      "size_tooltip": {
+        "unpacked": "{size} разархивиран размер (този пакет)",
+        "total": "{size} общ разархивиран размер (включително {count} зависимост за linux-x64) | {size} общ разархивиран размер (включително всички {count} зависимости за linux-x64)"
+      }
+    },
+    "skills": {
+      "title": "Agent умения",
+      "skills_available": "{count} налично умение | {count} налични умения",
+      "compatible_with": "Съвместимо с {tool}",
+      "install": "Инсталиране",
+      "installation_method": "Метод на инсталиране",
+      "learn_more": "Научете повече",
+      "available_skills": "Налични умения",
+      "click_to_expand": "Кликнете за разгъване",
+      "no_description": "Няма описание",
+      "file_counts": {
+        "scripts": "{count} скрипт | {count} скриптове",
+        "refs": "{count} препратка | {count} препратки",
+        "assets": "{count} ресурс | {count} ресурса"
+      },
+      "view_source": "Преглед на кода"
+    },
+    "links": {
+      "repo": "хранилище",
+      "homepage": "начална страница",
+      "issues": "проблеми",
+      "jsr": "jsr",
+      "code": "код",
+      "docs": "документация",
+      "fund": "финансиране",
+      "compare": "сравнение"
+    },
+    "likes": {
+      "like": "Харесване на пакета",
+      "unlike": "Премахване на харесване"
+    },
+    "docs": {
+      "not_available": "Документацията не е налична",
+      "not_available_detail": "Не успяхме да генерираме документация за тази версия."
+    },
+    "get_started": {
+      "title": "Първи стъпки",
+      "pm_label": "Мениджър на пакети",
+      "copy_command": "Копиране на команда за инсталация",
+      "view_types": "Преглед на {package}"
+    },
+    "create": {
+      "title": "Създаване на нов проект",
+      "copy_command": "Копиране на команда за създаване",
+      "view": "{packageName} има същия поддържащ разработчик. Кликнете за повече детайли."
+    },
+    "run": {
+      "title": "Изпълнение",
+      "locally": "Изпълнение локално"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "Няма наличен README.",
+      "view_on_github": "Преглед в GitHub",
+      "toc_title": "Съдържание",
+      "callout": {
+        "note": "Бележка",
+        "tip": "Съвет",
+        "important": "Важно",
+        "warning": "Предупреждение",
+        "caution": "Внимание"
+      },
+      "copy_as_markdown": "Копиране на README като Markdown"
+    },
+    "provenance_section": {
+      "title": "Произход",
+      "built_and_signed_on": "Изградено и подписано в {provider}",
+      "view_build_summary": "Преглед на резюме на билда",
+      "source_commit": "Изходен комит",
+      "build_file": "Файл за компилация",
+      "public_ledger": "Публичен регистър",
+      "transparency_log_entry": "Запис в лог за прозрачност",
+      "view_more_details": "Преглед на повече детайли",
+      "error_loading": "Неуспешно зареждане на детайлите за произхода"
+    },
+    "security_downgrade": {
+      "title": "Понижение на доверието",
+      "description_to_none_provenance": "Тази версия е публикувана без {provenance}.",
+      "description_to_none_trustedPublisher": "Тази версия е публикувана без {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "Тази версия използва {provenance}, но не и {trustedPublishing}.",
+      "fallback_install_provenance": "Командите за инсталация са фиксирани към {version}, последната версия с произход.",
+      "fallback_install_trustedPublisher": "Командите за инсталация са фиксирани към {version}, последната версия с доверено публикуване.",
+      "provenance_link_text": "произход",
+      "trusted_publishing_link_text": "доверено публикуване"
+    },
+    "keywords_title": "Ключови думи",
+    "compatibility": "Съвместимост",
+    "card": {
+      "publisher": "Издател",
+      "published": "Публикуван",
+      "weekly_downloads": "Седмични изтегляния",
+      "keywords": "Ключови думи",
+      "license": "Лиценз"
+    },
+    "versions": {
+      "title": "Версии",
+      "collapse": "Свиване на {tag}",
+      "expand": "Разгъване на {tag}",
+      "collapse_other": "Свиване на други версии",
+      "expand_other": "Разгъване на други версии",
+      "collapse_major": "Свиване на major {major}",
+      "expand_major": "Разгъване на major {major}",
+      "other_versions": "Други версии",
+      "more_tagged": "още {count} маркирани",
+      "all_covered": "Всички версии са покрити от горните тагове",
+      "deprecated_title": "{version} (остаряла)",
+      "view_all": "Преглед на {count} версия | Преглед на всички {count} версии",
+      "distribution_title": "Semver група",
+      "distribution_modal_title": "Версии",
+      "grouping_major": "Major",
+      "grouping_minor": "Minor",
+      "recent_versions_only": "Само последни версии",
+      "recent_versions_only_tooltip": "Показване само на версии, публикувани през последната година.",
+      "show_low_usage": "Показване на версии с малко използване",
+      "show_low_usage_tooltip": "Включване на групи версии с по-малко от 1% от общите изтегляния.",
+      "date_range_tooltip": "Само последната седмица на разпределение на версиите",
+      "y_axis_label": "Изтегляния"
+    },
+    "dependencies": {
+      "title": "Зависимост ({count}) | Зависимости ({count})",
+      "list_label": "Зависимости на пакета",
+      "show_all": "показване на {count} зависимост | показване на всички {count} зависимости",
+      "optional": "опционална",
+      "view_vulnerabilities": "Преглед на уязвимости",
+      "outdated_major": "{count} major версия назад (последна: {latest}) | {count} major версии назад (последна: {latest})",
+      "outdated_minor": "{count} minor версия назад (последна: {latest}) | {count} minor версии назад (последна: {latest})",
+      "outdated_patch": "Налична patch актуализация (последна: {latest})"
+    },
+    "peer_dependencies": {
+      "title": "Peer зависимост ({count}) | Peer зависимости ({count})",
+      "list_label": "Peer зависимости на пакета",
+      "show_all": "показване на {count} peer зависимост | показване на всички {count} peer зависимости"
+    },
+    "optional_dependencies": {
+      "title": "Опционална зависимост ({count}) | Опционални зависимости ({count})",
+      "list_label": "Опционални зависимости на пакета",
+      "show_all": "показване на {count} опционална зависимост | показване на всички {count} опционални зависимости"
+    },
+    "maintainers": {
+      "title": "Поддържащи",
+      "list_label": "Поддържащи на пакета",
+      "you": "(вие)",
+      "via": "чрез {teams}",
+      "remove_owner": "Премахване на {name} като собственик",
+      "username_to_add": "Потребителско име за добавяне като собственик",
+      "username_placeholder": "потребителско име...",
+      "add_button": "добавяне",
+      "cancel_add": "Отказ от добавяне на собственик",
+      "add_owner": "+ Добавяне на собственик",
+      "show_more": "(показване на още {count})",
+      "show_less": "(показване на по-малко)"
+    },
+    "trends": {
+      "granularity": "Гранулация",
+      "granularity_daily": "Дневна",
+      "granularity_weekly": "Седмична",
+      "granularity_monthly": "Месечна",
+      "granularity_yearly": "Годишна",
+      "start_date": "Начало",
+      "end_date": "Край",
+      "loading": "Зареждане...",
+      "date_range": "{start} до {end}",
+      "date_range_multiline": "{start}\nдо {end}",
+      "download_file": "Изтегляне на {fileType}",
+      "toggle_annotator": "Превключване на анотатор",
+      "legend_estimation": "Оценка",
+      "no_data": "Няма налични данни",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Аспект",
+      "title": "Тенденции",
+      "items": {
+        "downloads": "Изтегляния",
+        "likes": "Харесвания"
+      }
+    },
+    "downloads": {
+      "title": "Седмични изтегляния",
+      "modal_title": "Седмични изтегляния",
+      "analyze": "Анализ на изтеглянията",
+      "community_distribution": "Преглед на разпределението на приемането от общността"
+    },
+    "install_scripts": {
+      "title": "Скриптове за инсталация",
+      "script_label": "(скрипт)",
+      "npx_packages": "{count} npx пакет | {count} npx пакета",
+      "currently": "в момента {version}"
+    },
+    "playgrounds": {
+      "title": "Изпробвайте",
+      "choose": "изберете площадка"
+    },
+    "metrics": {
+      "esm": "ES модули поддържани",
+      "cjs": "CommonJS поддържан",
+      "no_esm": "Няма поддръжка на ES модули",
+      "types_label": "Типове",
+      "types_included": "Типове включени",
+      "types_available": "Типове налични чрез {package}",
+      "no_types": "Няма TypeScript типове"
+    },
+    "license": {
+      "view_spdx": "Преглед на текста на лиценза в SPDX",
+      "none": "Няма"
+    },
+    "vulnerabilities": {
+      "tree_found": "{vulns} уязвимост в {packages}/{total} пакета | {vulns} уязвимости в {packages}/{total} пакета",
+      "show_all_packages": "показване на {count} засегнат пакет | показване на всички {count} засегнати пакета",
+      "path": "път",
+      "more": "+{count} още",
+      "packages_failed": "{count} пакет не можа да бъде проверен | {count} пакета не можаха да бъдат проверени",
+      "scan_failed": "Неуспешно сканиране за уязвимости",
+      "severity": {
+        "critical": "критична",
+        "high": "висока",
+        "moderate": "умерена",
+        "low": "ниска"
+      },
+      "fixed_in_title": "Поправена във версия {version}"
+    },
+    "deprecated": {
+      "label": "Остаряла",
+      "tree_found": "{count} остаряла зависимост | {count} остарели зависимости",
+      "show_all": "показване на {count} остарял пакет | показване на всички {count} остарели пакета"
+    },
+    "access": {
+      "title": "Достъп за екип",
+      "refresh": "Опресняване на достъпа на екипа",
+      "list_label": "Списък с достъп на екипа",
+      "owner": "собственик",
+      "rw": "rw",
+      "ro": "ro",
+      "revoke_access": "Отнемане на достъп на {name}",
+      "no_access": "Няма конфигуриран достъп на екип",
+      "select_team_label": "Избор на екип",
+      "loading_teams": "Зареждане на екипи...",
+      "select_team": "Избор на екип",
+      "permission_label": "Ниво на разрешение",
+      "permission": {
+        "read_only": "само четене",
+        "read_write": "четене-писане"
+      },
+      "grant_button": "предоставяне",
+      "cancel_grant": "Отказ от предоставяне на достъп",
+      "grant_access": "+ Предоставяне на достъп на екипа"
+    },
+    "list": {
+      "filter_label": "Филтриране на пакети",
+      "filter_placeholder": "Филтриране на пакети...",
+      "sort_label": "Сортиране на пакети",
+      "showing_count": "Показване на {filtered} от {total} пакета"
+    },
+    "skeleton": {
+      "loading": "Зареждане на детайлите на пакета",
+      "maintainers": "Поддържащи",
+      "keywords": "Ключови думи",
+      "versions": "Версии",
+      "dependencies": "Зависимости"
+    },
+    "sort": {
+      "downloads": "Най-изтеглян",
+      "published": "Скорошно публикувано",
+      "name_asc": "Име (А-Я)",
+      "name_desc": "Име (Я-А)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "Локален конектор",
+      "contributor_badge": "Само за сътрудници",
+      "contributor_notice": "Конекторът все още не е публикуван в npm. Вижте {link} за как да го стартирате локално.",
+      "contributor_link": "ръководство за сътрудничество",
+      "connected": "Свързан",
+      "connected_as_user": "Свързан като ~{user}",
+      "connected_hint": "Сега можете да управлявате пакети и организации от уеб интерфейса.",
+      "disconnect": "Прекратяване на връзката",
+      "run_hint": "Стартирайте конектора на вашата машина за активиране на админ функциите.",
+      "copy_command": "Копиране на команда",
+      "copied": "Копирано",
+      "paste_token": "След това поставете токена по-долу за свързване:",
+      "token_label": "Токен",
+      "token_placeholder": "поставете токен тук...",
+      "advanced": "Разширени опции",
+      "port_label": "Порт",
+      "warning": "ПРЕДУПРЕЖДЕНИЕ",
+      "warning_text": "Това позволява на npmx да достъпва вашия npm CLI. Свързвайте се само със сайтове, на които имате доверие.",
+      "connect": "Свързване",
+      "connecting": "Свързване...",
+      "auto_open_url": "Автоматично отваряне на страница за автентикация"
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "Опашка на операциите",
+      "clear_all": "изчистване на всички",
+      "refresh": "Опресняване на операциите",
+      "empty": "Няма операции в опашката",
+      "empty_hint": "Добавете операции от страници на пакети или организации",
+      "active_label": "Активни операции",
+      "otp_required": "Изисква се OTP",
+      "otp_prompt": "Въведете OTP за продължаване",
+      "otp_placeholder": "Въведете OTP код...",
+      "otp_label": "Еднократна парола",
+      "retry_otp": "Повторен опит с OTP",
+      "retry_web_auth": "Повторен опит с уеб автентикация",
+      "retrying": "Повторен опит...",
+      "open_web_auth": "Отваряне на връзка за уеб автентикация",
+      "approve_operation": "Одобряване на операция",
+      "remove_operation": "Премахване на операция",
+      "approve_all": "Одобряване на всички",
+      "execute": "Изпълнение",
+      "executing": "Изпълнява се...",
+      "log": "Лог",
+      "log_label": "Лог на завършени операции",
+      "remove_from_log": "Премахване от лога"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "Екипи",
+      "refresh": "Опресняване на екипите",
+      "filter_label": "Филтриране на екипи",
+      "filter_placeholder": "Филтриране на екипи...",
+      "sort_by": "Сортиране по",
+      "loading": "Зареждане на екипи...",
+      "no_teams": "Няма намерени екипи",
+      "list_label": "Екипи на организацията",
+      "delete_team": "Изтриване на екип {name}",
+      "member_count": "{count} член | {count} членове",
+      "members_of": "Членове на {team}",
+      "no_members": "Няма членове",
+      "remove_user": "Премахване на {user} от екипа",
+      "username_to_add": "Потребителско име за добавяне към {team}",
+      "username_placeholder": "потребителско име...",
+      "add_button": "добавяне",
+      "cancel_add_user": "Отказ от добавяне на потребител",
+      "add_member": "+ Добавяне на член",
+      "team_name_label": "Име на екипа",
+      "team_name_placeholder": "име-на-екипа...",
+      "create_button": "създаване",
+      "no_match": "Няма екипи, съответстващи на \"{query}\"",
+      "cancel_create": "Отказ от създаване на екип",
+      "create_team": "+ Създаване на екип"
+    },
+    "members": {
+      "title": "Членове",
+      "refresh": "Опресняване на членовете",
+      "filter_label": "Филтриране на членове",
+      "filter_placeholder": "Филтриране на членове...",
+      "filter_by_role": "Филтриране по роля",
+      "filter_by_team": "Филтриране по екип",
+      "all_teams": "всички екипи",
+      "sort_by": "Сортиране по",
+      "loading": "Зареждане на членове...",
+      "no_members": "Няма намерени членове",
+      "list_label": "Членове на организацията",
+      "change_role_for": "Промяна на ролята за {name}",
+      "remove_from_org": "Премахване на {name} от организацията",
+      "view_team": "Преглед на екип {team}",
+      "no_match": "Няма членове, съответстващи на вашите филтри",
+      "username_label": "Потребителско име",
+      "username_placeholder": "потребителско име...",
+      "role_label": "Роля",
+      "role": {
+        "all": "всички",
+        "developer": "разработчик",
+        "admin": "администратор",
+        "owner": "собственик"
+      },
+      "team_label": "Екип",
+      "no_team": "без екип",
+      "add_button": "добавяне",
+      "cancel_add": "Отказ от добавяне на член",
+      "add_member": "+ Добавяне на член"
+    },
+    "public_packages": "{count} публичен пакет | {count} публични пакета",
+    "page": {
+      "packages_title": "Пакети",
+      "members_tab": "Членове",
+      "teams_tab": "Екипи",
+      "no_packages": "Няма намерени публични пакети за",
+      "no_packages_hint": "Тази организация може да не съществува или няма публични пакети.",
+      "failed_to_load": "Неуспешно зареждане на пакети на организацията",
+      "no_match": "Няма пакети, съответстващи на \"{query}\"",
+      "not_found": "Организацията не е намерена",
+      "not_found_message": "Организацията \"{'@'}{name}\" не съществува в npm"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(ще бъде добавен и към организацията)",
+      "press_enter_to_add": "Натиснете Enter за добавяне на {'@'}{username}",
+      "default_placeholder": "потребителско име...",
+      "suggestions_label": "Предложения за потребители"
+    },
+    "page": {
+      "packages_title": "Пакети",
+      "no_packages": "Няма намерени публични пакети за",
+      "no_packages_hint": "Този потребител може да не съществува или няма публични пакети.",
+      "failed_to_load": "Неуспешно зареждане на пакети на потребителя",
+      "no_match": "Няма пакети, съответстващи на \"{query}\"",
+      "filter_placeholder": "Филтриране на {count} пакет... | Филтриране на {count} пакета..."
+    },
+    "orgs_page": {
+      "title": "Организации",
+      "back_to_profile": "Назад към профила",
+      "connect_required": "Свържете локалния CLI за преглед на вашите организации.",
+      "connect_hint_prefix": "Стартирайте",
+      "connect_hint_suffix": "за да започнете.",
+      "own_orgs_only": "Можете да преглеждате само вашите организации.",
+      "view_your_orgs": "Преглед на вашите организации",
+      "loading": "Зареждане на организации...",
+      "empty": "Няма намерени организации.",
+      "empty_hint": "Организациите се откриват от вашите scoped пакети.",
+      "count": "{count} организация | {count} организации",
+      "packages_count": "{count} пакет | {count} пакета"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "Резервиране на име на пакет",
+      "success": "Пакетът е резервиран!",
+      "success_detail": "{name}{'@'}0.0.0 е публикуван в npm.",
+      "success_hint": "Сега можете да публикувате нови версии към този пакет, използвайки npm publish.",
+      "view_package": "Преглед на пакета",
+      "invalid_name": "Невалидно име на пакет:",
+      "available": "Това име е налично!",
+      "taken": "Това име вече е заето.",
+      "similar_warning": "Съществуват подобни пакети - npm може да отхвърли това име:",
+      "related": "Свързани пакети:",
+      "scope_warning_title": "Обмислете използването на scoped пакет вместо това",
+      "scope_warning_text": "Unscoped имена на пакети са споделен ресурс. Резервирайте име само ако възнамерявате да публикувате и поддържате пакет. За лични или организационни проекти използвайте scoped име като {'@'}{username}/{name}.",
+      "connect_required": "Свържете се към локалния конектор за резервиране на това име на пакет.",
+      "connect_button": "Свързване към конектор",
+      "publish_hint": "Това ще публикува минимален placeholder пакет.",
+      "preview_json": "Преглед на package.json",
+      "claim_button": "Резервиране на име на пакет",
+      "publishing": "Публикуване...",
+      "checking": "Проверка на наличността...",
+      "failed_to_check": "Неуспешна проверка на наличността на името",
+      "failed_to_claim": "Неуспешно резервиране на пакета"
+    }
+  },
+  "code": {
+    "files_label": "Файлове",
+    "no_files": "Няма файлове в тази директория",
+    "root": "root",
+    "lines": "{count} ред | {count} реда",
+    "toggle_tree": "Превключване на дървото с файлове",
+    "close_tree": "Затваряне на дървото с файлове",
+    "copy_link": "Копиране на връзка",
+    "raw": "Raw",
+    "view_raw": "Преглед на raw файл",
+    "file_too_large": "Файлът е твърде голям за преглед",
+    "file_size_warning": "{size} надвишава лимита от 500KB за синтактично оцветяване",
+    "failed_to_load": "Неуспешно зареждане на файл",
+    "unavailable_hint": "Файлът може да е твърде голям или недостъпен",
+    "version_required": "Версия е необходима за разглеждане на кода",
+    "go_to_package": "Отиване към пакета",
+    "loading_tree": "Зареждане на дървото с файлове...",
+    "failed_to_load_tree": "Неуспешно зареждане на файлове за тази версия на пакета",
+    "back_to_package": "Назад към пакета",
+    "table": {
+      "name": "Име",
+      "size": "Размер"
+    },
+    "markdown_view_mode": {
+      "preview": "преглед",
+      "code": "код"
+    },
+    "file_path": "Път към файл"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "потвърден",
+      "verified_title": "Потвърден произход",
+      "verified_via": "Потвърдено: публикувано чрез {provider}"
+    },
+    "jsr": {
+      "title": "налично също в JSR"
+    }
+  },
+  "filters": {
+    "title": "Филтри",
+    "search": "Търсене",
+    "search_scope": "Обхват на търсенето",
+    "search_placeholder_name": "Филтриране по име на пакет...",
+    "search_placeholder_description": "Филтриране по описание...",
+    "search_placeholder_keywords": "Филтриране по ключови думи...",
+    "search_placeholder_all": "Търсене навсякъде или използвайте name: desc: kw:",
+    "scope_name": "Име",
+    "scope_name_description": "Търсене само по имена на пакети",
+    "scope_description": "Описание",
+    "scope_description_description": "Търсене само по описания",
+    "scope_keywords": "Ключови думи",
+    "scope_keywords_description": "Търсене само по ключови думи",
+    "scope_all": "Всички",
+    "scope_all_description": "Търсене във всички полета, поддържа оператори name: desc: kw:",
+    "weekly_downloads": "Седмични изтегляния",
+    "updated_within": "Актуализиран в рамките на",
+    "security": "Сигурност",
+    "keywords": "Ключови думи",
+    "more_keywords": "+{count} още",
+    "clear_all": "Изчистване на всички",
+    "remove_filter": "Премахване на филтър {label}",
+    "chips": {
+      "search": "Търсене",
+      "downloads": "Изтегляния",
+      "keyword": "Ключова дума",
+      "security": "Сигурност",
+      "updated": "Актуализиран"
+    },
+    "download_range": {
+      "any": "Всякакви",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "По всяко време",
+      "week": "Последната седмица",
+      "month": "Последния месец",
+      "quarter": "Последните 3 месеца",
+      "year": "Последната година"
+    },
+    "security_options": {
+      "all": "Всички пакети",
+      "secure": "Без предупреждения",
+      "insecure": "С предупреждения"
+    },
+    "sort": {
+      "label": "Сортиране на пакети",
+      "toggle_direction": "Превключване на посоката на сортиране",
+      "ascending": "Възходящо",
+      "descending": "Низходящо",
+      "relevance": "Релевантност",
+      "downloads_week": "Изтегляния/седмица",
+      "downloads_day": "Изтегляния/ден",
+      "downloads_month": "Изтегляния/месец",
+      "downloads_year": "Изтегляния/година",
+      "published": "Последно публикуван",
+      "name": "Име",
+      "quality": "Качество",
+      "popularity": "Популярност",
+      "maintenance": "Поддръжка",
+      "score": "Резултат"
+    },
+    "columns": {
+      "title": "Колони",
+      "show": "Показване на колони",
+      "reset": "Възстановяване на настройките по подразбиране",
+      "coming_soon": "Скоро",
+      "name": "Име",
+      "version": "Версия",
+      "description": "Описание",
+      "downloads": "Изтегляния/седмица",
+      "published": "Последно публикуван",
+      "maintainers": "Поддържащи",
+      "keywords": "Ключови думи",
+      "quality_score": "Резултат за качество",
+      "popularity_score": "Резултат за популярност",
+      "maintenance_score": "Резултат за поддръжка",
+      "combined_score": "Комбиниран резултат",
+      "security": "Сигурност"
+    },
+    "view_mode": {
+      "label": "Режим на изглед",
+      "cards": "Изглед с карти",
+      "table": "Изглед с таблица"
+    },
+    "pagination": {
+      "mode_label": "Режим на странициране",
+      "infinite": "Безкрайно",
+      "paginated": "Със страници",
+      "items_per_page": "Елементи на страница",
+      "per_page": "{count} / страница",
+      "all_yolo": "Всички (YOLO)",
+      "showing": "{start}-{end} от {total}",
+      "previous": "Предишна страница",
+      "next": "Следваща страница",
+      "nav_label": "Странициране"
+    },
+    "count": {
+      "showing_filtered": "{filtered} от {count} пакет | {filtered} от {count} пакета",
+      "showing_all": "{count} пакет | {count} пакета",
+      "showing_paginated": "{pageSize} от {count} пакет | {pageSize} от {count} пакета"
+    },
+    "table": {
+      "security_warning": "Предупреждение за сигурност",
+      "secure": "Сигурен",
+      "no_packages": "Няма намерени пакети"
+    }
+  },
+  "about": {
+    "title": "За нас",
+    "heading": "за нас",
+    "meta_description": "npmx е бърз, модерен браузър за npm регистъра. По-добър UX/DX за изследване на npm пакети.",
+    "what_we_are": {
+      "title": "Какво сме",
+      "better_ux_dx": "по-добър UX/DX",
+      "admin_ui": "админ интерфейс",
+      "description": "npmx е {betterUxDx} за npm регистъра на пакети и инструменти. Предоставяме бърз, модерен интерфейс за изследване на пакети, с функции като тъмен режим, клавиатурна навигация, разглеждане на код и връзки към алтернативни регистри като {jsr}.",
+      "admin_description": "Също така целим да предоставим по-добър {adminUi} за управление на вашите пакети, екипи и организации - всичко от браузъра, захранено от вашия локален npm CLI."
+    },
+    "what_we_are_not": {
+      "title": "Какво не сме",
+      "not_package_manager": "Не сме мениджър на пакети.",
+      "not_registry": "Не сме регистър.",
+      "registry_description": "Ние не хостваме пакети. Ние сме просто по-добър начин за разглеждането им.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "Има",
+        "people": "вече",
+        "building": "хора,",
+        "really": "които",
+        "cool": "създават",
+        "package": "наистина готини",
+        "managers": "мениджъри на пакети"
+      }
+    },
+    "team": {},
+    "contributors": {
+      "title": "{count} сътрудник | {count} сътрудници",
+      "description": "npmx е изцяло с отворен код, изграден от невероятна общност от сътрудници. Присъединете се към нас и нека изградим npm браузър изживяването, което винаги сме искали, заедно.",
+      "loading": "Зареждане на сътрудници...",
+      "error": "Неуспешно зареждане на сътрудници",
+      "view_profile": "Преглед на GitHub профила на {name}"
+    },
+    "get_involved": {
+      "title": "Включете се",
+      "contribute": {
+        "title": "Сътрудничество",
+        "description": "Помогнете ни да създадем по-добро npm изживяване.",
+        "cta": "Преглед в GitHub"
+      },
+      "community": {
+        "title": "Присъединете се към общността",
+        "description": "Чат, задаване на въпроси и споделяне на идеи.",
+        "cta": "Присъединяване към Discord"
+      },
+      "follow": {
+        "title": "Следете актуалното",
+        "description": "Научете най-новото за npmx.",
+        "cta": "Последвайте в Bluesky"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "свързване",
+    "account": "Акаунт",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Управление на пакети и организации",
+    "atmosphere_desc": "Социални функции и идентичност",
+    "connect_npm_cli": "Свързване към npm CLI",
+    "connect_atmosphere": "Свързване към Atmosphere",
+    "connecting": "Свързване...",
+    "ops": "{count} операция | {count} операции"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Свързан като {'@'}{handle}",
+      "disconnect": "Прекратяване на връзката",
+      "connect_prompt": "Свържете се с вашия Atmosphere акаунт",
+      "handle_label": "Handle",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Свързване",
+      "create_account": "Създаване на нов акаунт",
+      "connect_bluesky": "Свързване с Bluesky",
+      "what_is_atmosphere": "Какво е Atmosphere акаунт?",
+      "atmosphere_explanation": "{npmx} използва {atproto} за захранване на много от своите социални функции, позволявайки на потребителите да притежават данните си и да използват един акаунт за всички съвместими приложения. След като създадете акаунт, можете да използвате други приложения като {bluesky} и {tangled} със същия акаунт.",
+      "default_input_error": "Моля, въведете валиден handle, DID или пълен PDS URL"
+    }
+  },
+  "header": {
+    "home": "npmx начална страница",
+    "packages": "пакети",
+    "packages_dropdown": {
+      "title": "Вашите пакети",
+      "loading": "Зареждане...",
+      "error": "Неуспешно зареждане на пакети",
+      "empty": "Няма намерени пакети",
+      "view_all": "Преглед на всички"
+    },
+    "orgs": "организации",
+    "orgs_dropdown": {
+      "title": "Вашите организации",
+      "loading": "Зареждане...",
+      "error": "Неуспешно зареждане на организации",
+      "empty": "Няма намерени организации",
+      "view_all": "Преглед на всички"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "сравняване на пакети",
+      "tagline": "сравнете npm пакети един до друг, за да изберете правилния.",
+      "meta_title": "Сравняване на {packages} - npmx",
+      "meta_title_empty": "Сравняване на пакети - npmx",
+      "meta_description": "Сравнение един до друг на {packages}",
+      "meta_description_empty": "Сравнете npm пакети един до друг",
+      "section_packages": "Пакети",
+      "section_facets": "Аспекти",
+      "section_comparison": "Сравнение",
+      "loading": "Зареждане на данни за пакета...",
+      "error": "Неуспешно зареждане на данни за пакета. Моля, опитайте отново.",
+      "empty_title": "Изберете пакети за сравнение",
+      "empty_description": "Търсете и добавете поне 2 пакета по-горе, за да видите сравнение на техните метрики един до друг."
+    },
+    "selector": {
+      "search_label": "Търсене на пакети",
+      "search_first": "Търсене на пакет...",
+      "search_add": "Добавяне на още пакет...",
+      "searching": "Търсене...",
+      "remove_package": "Премахване на {package}",
+      "packages_selected": "{count}/{max} избрани пакета.",
+      "add_hint": "Добавете поне 2 пакета за сравнение."
+    },
+    "no_dependency": {
+      "label": "(Без зависимост)",
+      "typeahead_title": "Какво би направил James?",
+      "typeahead_description": "Сравнете срещу неизползването на зависимост! одобрено от e18e.",
+      "tooltip_title": "Може да не се нуждаете от зависимост",
+      "tooltip_description": "Сравнете срещу неизползването на зависимост! {link} поддържа списък с пакети, които могат да бъдат заменени с native API или по-прости алтернативи.",
+      "e18e_community": "e18e общност",
+      "add_column": "Добавяне на колона без зависимости към сравнението"
+    },
+    "facets": {
+      "group_label": "Аспекти на сравнението",
+      "all": "всички",
+      "none": "нито един",
+      "coming_soon": "Скоро",
+      "select_all": "Избор на всички аспекти",
+      "deselect_all": "Отмяна на избора на всички аспекти",
+      "select_category": "Избор на всички {category} аспекти",
+      "deselect_category": "Отмяна на избора на всички {category} аспекти",
+      "binary_only_tooltip": "Този пакет излага binaries и няма exports",
+      "categories": {
+        "performance": "Производителност",
+        "health": "Здраве",
+        "compatibility": "Съвместимост",
+        "security": "Сигурност и съответствие"
+      },
+      "items": {
+        "packageSize": {
+          "label": "Размер на пакета",
+          "description": "Размер на самия пакет (разархивиран)"
+        },
+        "installSize": {
+          "label": "Размер на инсталацията",
+          "description": "Общ размер на инсталацията, включително всички зависимости"
+        },
+        "dependencies": {
+          "label": "Директни зависимости",
+          "description": "Брой директни зависимости"
+        },
+        "totalDependencies": {
+          "label": "Общо зависимости",
+          "description": "Общ брой зависимости, включително транзитивните"
+        },
+        "downloads": {
+          "label": "Изтегляния/седмица",
+          "description": "Брой седмични изтегляния"
+        },
+        "totalLikes": {
+          "label": "Харесвания",
+          "description": "Брой харесвания"
+        },
+        "lastUpdated": {
+          "label": "Публикуван",
+          "description": "Кога е публикувана тази версия"
+        },
+        "deprecated": {
+          "label": "Остарял?",
+          "description": "Дали пакетът е остарял"
+        },
+        "engines": {
+          "label": "Двигатели",
+          "description": "Изисквания за версия на Node.js"
+        },
+        "types": {
+          "label": "Типове",
+          "description": "TypeScript дефиниции на типове"
+        },
+        "moduleFormat": {
+          "label": "Формат на модул",
+          "description": "ESM/CJS поддръжка"
+        },
+        "license": {
+          "label": "Лиценз",
+          "description": "Лиценз на пакета"
+        },
+        "vulnerabilities": {
+          "label": "Уязвимости",
+          "description": "Известни уязвимости в сигурността"
+        }
+      },
+      "values": {
+        "any": "Всякакъв",
+        "none": "Няма",
+        "unknown": "Неизвестен",
+        "deprecated": "Остарял",
+        "not_deprecated": "Не",
+        "types_included": "Включени",
+        "types_none": "Няма",
+        "vulnerabilities_summary": "{count} ({critical}К/{high}В)",
+        "up_to_you": "Зависи от вас!"
+      },
+      "trends": {
+        "title": "Сравнение на тенденции"
+      }
+    }
+  },
+  "privacy_policy": {
+    "title": "политика за поверителност",
+    "last_updated": "Последна актуализация: {date}",
+    "welcome": "Добре дошли в {app}. Ние сме ангажирани да защитаваме вашата поверителност. Тази политика обяснява какви данни събираме, как ги използваме и вашите права относно вашата информация.",
+    "cookies": {
+      "what_are": {
+        "title": "Какво са бисквитките?",
+        "p1": "Бисквитките са малки текстови файлове, съхранявани на вашето устройство, когато посещавате уебсайт. Тяхната цел е да подобрят вашето изживяване при сърфиране, като запомнят определени предпочитания и настройки."
+      },
+      "types": {
+        "title": "Какви бисквитки използваме?",
+        "p1": "Използваме само {bold} за цели, строго необходими за функционалността на сайта. Не използваме бисквитки от трети страни или рекламни бисквитки.",
+        "bold": "основни технически бисквитки",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Тази бисквитка се използва от нашия доставчик на хостинг (Vercel) за защита от изкривяване. Тя гарантира, че извличате ресурси от правилната версия на внедряването, ако нова актуализация бъде пусната, докато сърфирате. Не ви проследява.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Това е нашата сигурна бисквитка за сесия. Тя съхранява OAuth токена за достъп, когато свържете вашия Atmosphere акаунт. Тя е от съществено значение за поддържането на вашата удостоверена сесия."
+      },
+      "local_storage": {
+        "title": "Локално хранилище",
+        "p1": "В допълнение към бисквитките за сесия, използваме {bold} на вашия браузър, за да запазим вашите предпочитания за дисплей. Това ни позволява да запомним темата (светла/тъмна) и някои други {settings}, които сте избрали, така че да не е необходимо да ги конфигурирате отново при всяко посещение.",
+        "bold": "Local Storage",
+        "p2": "Тази информация е чисто функционална, съхранява се само на вашето устройство и {bold2}. Използваме я изключително за подобряване на вашето изживяване в нашия уебсайт.",
+        "bold2": "не съдържа лични данни и не се използва за проследяването ви",
+        "settings": "настройки"
+      },
+      "management": {
+        "title": "Управление на бисквитки",
+        "p1": "Можете да конфигурирате вашия браузър да приема, отхвърля или изтрива бисквитки според вашите предпочитания. Въпреки това, моля, имайте предвид, че {bold}.",
+        "bold": "отхвърлянето на основните бисквитки може да попречи на пълния достъп до приложението",
+        "p2": "По-долу са връзки с инструкции за управление на бисквитки в най-използваните браузъри:",
+        "chrome": "Google Chrome (отваря се в нов прозорец)",
+        "firefox": "Mozilla Firefox (отваря се в нов прозорец)",
+        "edge": "Microsoft Edge (отваря се в нов прозорец)"
+      }
+    },
+    "analytics": {
+      "title": "Анализи",
+      "p1": "Използваме {bold}, за да разберем как посетителите използват нашия уебсайт. Това ни помага да подобрим потребителското изживяване и да идентифицираме проблеми.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics е проектиран с поверителност:",
+      "li1": "Не използва бисквитки",
+      "li2": "Не събира лични идентификатори",
+      "li3": "Не проследява потребители през уебсайтове",
+      "li4": "Всички данни са агрегирани и анонимизирани",
+      "p3": "Единствената събрана информация включва: URL адреси на страници, референт, държава/регион, тип устройство, браузър и операционна система. Тези данни не могат да се използват за идентифициране на отделни потребители."
+    },
+    "authenticated": {
+      "title": "Удостоверени потребители",
+      "p1": "Когато свържете вашия {bold} акаунт към npmx, съхраняваме вашия OAuth токен за достъп в сигурна, HTTP-only бисквитка за сесия. Този токен се използва единствено за удостоверяване на заявки от ваше име.",
+      "bold": "Atmosphere",
+      "p2": "Не съхраняваме вашите идентификационни данни и не достъпваме никакви данни извън необходимото за предоставяне на функциите, които използвате. Можете да прекратите връзката на вашия акаунт по всяко време от страницата {settings}.",
+      "settings": "настройки"
+    },
+    "data_retention": {
+      "title": "Съхранение на данни",
+      "p1": "Бисквитките за сесия се изтриват автоматично, когато затворите браузъра си или след период на неактивност. Предпочитанията в локалното хранилище остават на вашето устройство, докато не изчистите данните на браузъра си. Данните за анализи се съхраняват в агрегирана форма и не могат да бъдат свързани с отделни потребители."
+    },
+    "your_rights": {
+      "title": "Вашите права",
+      "p1": "Имате право да:",
+      "li1": "Получавате достъп до информация за това какви данни събираме",
+      "li2": "Изчиствате вашето локално хранилище и бисквитки по всяко време",
+      "li3": "Прекратявате вашата удостоверена сесия",
+      "li4": "Искате информация за нашите практики за данни",
+      "p2": "Тъй като не събираме лични данни, обикновено няма лична информация за изтриване или експортиране."
+    },
+    "contact": {
+      "title": "Свържете се с нас",
+      "p1": "За всякакви въпроси или опасения относно тази политика за поверителност, можете да се свържете с нас, като отворите проблем в нашето {link}.",
+      "link": "GitHub хранилище"
+    },
+    "changes": {
+      "title": "Промени в тази политика",
+      "p1": "Можем да актуализираме тази политика за поверителност от време на време. Всички промени ще бъдат публикувани на тази страница с актуализирана дата на ревизия."
+    }
+  },
+  "a11y": {
+    "title": "достъпност",
+    "footer_title": "a11y",
+    "welcome": "Искаме {app} да може да се използва от възможно най-много хора.",
+    "approach": {
+      "title": "Нашият подход",
+      "p1": "Опитваме се да следваме Насоките за достъпност на уеб съдържанието (WCAG) 2.2 и ги използваме като референция при изграждането на функции. Не твърдим пълно съответствие с никое ниво на WCAG - достъпността е непрекъснат процес и винаги има повече работа за вършене.",
+      "p2": "Този сайт е {about}. Подобренията в достъпността се правят постепенно като част от нашето редовно развитие.",
+      "about_link": "проект с отворен код, воден от общността"
+    },
+    "measures": {
+      "title": "Какво правим",
+      "p1": "Някои от нещата, които се стремим да правим в целия сайт:",
+      "li1": "Използваме семантичен HTML и ARIA атрибути, където е подходящо.",
+      "li2": "Използваме относителни размери на текста, за да можете да ги регулирате във вашия браузър.",
+      "li3": "Поддържаме клавиатурна навигация в целия интерфейс.",
+      "li4": "Уважаваме медийните заявки prefers-reduced-motion и prefers-color-scheme.",
+      "li5": "Проектираме с достатъчен цветови контраст.",
+      "li6": "Гарантираме, че основното съдържание е достъпно без JavaScript, въпреки че някои интерактивни функции го изискват."
+    },
+    "limitations": {
+      "title": "Известни ограничения",
+      "p1": "Някои части от сайта - особено съдържание от трети страни като README на пакети - може да не отговарят на стандартите за достъпност. Работим за подобряване на тези области с времето."
+    },
+    "contact": {
+      "title": "Обратна връзка",
+      "p1": "Ако срещнете бариера за достъпност в {app}, моля, уведомете ни, като отворите проблем в нашето {link}. Приемаме сериозно тези доклади и ще направим всичко възможно да ги разгледаме.",
+      "link": "GitHub хранилище"
+    }
+  }
+}

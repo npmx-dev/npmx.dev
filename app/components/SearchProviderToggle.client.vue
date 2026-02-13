@@ -30,7 +30,7 @@ useEventListener('keydown', event => {
       aria-haspopup="true"
       size="small"
       class="border-none w-8 h-8 !px-0 justify-center"
-      classicon="i-carbon:settings"
+      classicon="i-lucide:settings"
       @click="isOpen = !isOpen"
     />
 
@@ -64,7 +64,7 @@ useEventListener('keydown', event => {
             "
           >
             <span
-              class="i-carbon:catalog w-4 h-4 mt-0.5 shrink-0"
+              class="i-simple-icons:npm w-4 h-4 mt-0.5 shrink-0"
               :class="searchProviderValue !== 'algolia' ? 'text-accent' : 'text-fg-muted'"
               aria-hidden="true"
             />
@@ -96,7 +96,7 @@ useEventListener('keydown', event => {
             "
           >
             <span
-              class="i-carbon:search w-4 h-4 mt-0.5 shrink-0"
+              class="i-simple-icons:algolia w-4 h-4 mt-0.5 shrink-0"
               :class="searchProviderValue === 'algolia' ? 'text-accent' : 'text-fg-muted'"
               aria-hidden="true"
             />
@@ -125,7 +125,7 @@ useEventListener('keydown', event => {
               class="text-xs text-fg-subtle hover:text-fg-muted transition-colors inline-flex items-center gap-1 px-2"
             >
               {{ $t('search.algolia_disclaimer') }}
-              <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+              <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
             </a>
           </div>
         </div>

@@ -59,7 +59,7 @@ watch(
           :aria-pressed="isNodeActive(node)"
           :style="{ paddingLeft: `${depth * 12 + 12}px` }"
           @click="toggleDir(node.path)"
-          :classicon="isExpanded(node.path) ? 'i-carbon:chevron-down' : 'i-carbon:chevron-right'"
+          :classicon="isExpanded(node.path) ? 'i-lucide:chevron-down' : 'i-lucide:chevron-right'"
         >
           <svg
             class="size-[1em] me-1 shrink-0"

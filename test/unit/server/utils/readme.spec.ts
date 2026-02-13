@@ -388,7 +388,8 @@ describe('HTML output', () => {
     const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`
     const result = await renderReadmeHtml(markdown, 'test-pkg')
 
-    expect(result.html).toBe(`<h3 id="user-content-title" data-level="1">Title</h3>
+    expect(result.html)
+      .toBe(`<h3 id="user-content-title" data-level="1"><a href="#user-content-title">Title</a></h3>
 <p>Some <strong>bold</strong> text and a <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">link</a>.</p>
 `)
   })

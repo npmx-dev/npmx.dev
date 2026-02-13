@@ -31,7 +31,7 @@ const docUrl = computed(() => {
   >
     <span
       class="w-4 h-4 flex-shrink-0 mt-0.5"
-      :class="variant === 'nodep' ? 'i-carbon:idea' : 'i-carbon:information'"
+      :class="variant === 'nodep' ? 'i-lucide:lightbulb' : 'i-lucide:info'"
     />
     <div class="min-w-0 flex-1">
       <p class="font-medium">{{ packageName }}: {{ $t('package.replacement.title') }}</p>

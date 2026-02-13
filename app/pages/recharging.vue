@@ -47,15 +47,15 @@ function pokeLog() {
 // Icons that tile across the banner, repeating to fill.
 // Classes must be written out statically so UnoCSS can detect them at build time.
 const icons = [
-  'i-carbon:snowflake',
-  'i-carbon:mountain',
-  'i-carbon:tree',
-  'i-carbon:cafe',
-  'i-carbon:book',
-  'i-carbon:music',
-  'i-carbon:snowflake',
-  'i-carbon:star',
-  'i-carbon:moon',
+  'i-lucide:snowflake',
+  'i-lucide:mountain',
+  'i-lucide:tree-pine',
+  'i-lucide:coffee',
+  'i-lucide:book',
+  'i-lucide:music',
+  'i-lucide:snowflake',
+  'i-lucide:star',
+  'i-lucide:moon',
 ] as const
 
 // --- .ics calendar reminder ---
@@ -122,7 +122,7 @@ function downloadIcs() {
             @click="router.back()"
             v-if="canGoBack"
           >
-            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
           </button>
         </div>
@@ -205,11 +205,11 @@ function downloadIcs() {
                 @click="pokeLog"
               >
                 <span
-                  class="absolute inset-0 i-carbon:fire w-5 h-5 sm:w-6 sm:h-6 text-orange-400 transition-opacity duration-400"
+                  class="absolute inset-0 i-lucide:flame-kindling w-5 h-5 sm:w-6 sm:h-6 text-orange-400 transition-opacity duration-400"
                   :class="fireVisible ? 'opacity-100' : 'opacity-0'"
                 />
                 <span
-                  class="absolute inset-0 i-carbon:campsite w-5 h-5 sm:w-6 sm:h-6 transition-colors duration-400"
+                  class="absolute inset-0 i-lucide:tent w-5 h-5 sm:w-6 sm:h-6 transition-colors duration-400"
                   :class="fireVisible ? 'text-amber-700' : ''"
                 />
               </button>
@@ -240,7 +240,7 @@ function downloadIcs() {
           </p>
 
           <!-- Add to calendar button -->
-          <ButtonBase classicon="i-carbon:calendar" @click="downloadIcs">
+          <ButtonBase classicon="i-lucide:calendar" @click="downloadIcs">
             {{ $t('vacations.return.add_to_calendar') }}
           </ButtonBase>
         </div>

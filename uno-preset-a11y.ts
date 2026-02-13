@@ -1,6 +1,6 @@
 import type { Preset } from 'unocss'
 
-export type CollectorChecker = (warning: string, rule: string) => void
+type CollectorChecker = (warning: string, rule: string) => void
 
 // Track warnings to avoid duplicates
 const warnedClasses = new Set<string>()

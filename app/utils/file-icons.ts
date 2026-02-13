@@ -1,6 +1,6 @@
 /**
  * Get icon class for a file based on its name/extension.
- * Uses vscode-icons and carbon icons.
+ * Uses vscode-icons and lucide icons.
  *
  * Based on this file, a sprite file (<ORIGIN_URL>/file-tree-sprite.svg) is generated on postinstall
  * @see /scripts/generate-file-tree-sprite.ts
@@ -314,8 +314,8 @@ export const COMPOUND_EXTENSIONS: Record<string, string> = {
 export const DEFAULT_ICON = 'vscode-icons-default-file'
 
 export const ADDITIONAL_ICONS = {
-  'folder': 'carbon-folder',
-  'folder-open': 'carbon-folder-open',
+  'folder': 'lucide-folder',
+  'folder-open': 'lucide-folder-open',
 }
 
 /**

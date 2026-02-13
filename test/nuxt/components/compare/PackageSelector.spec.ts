@@ -54,7 +54,7 @@ describe('PackageSelector', () => {
 
       const removeButtons = component
         .findAll('button')
-        .filter(b => b.find('.i-carbon\\:close').exists())
+        .filter(b => b.find('.i-lucide\\:x').exists())
       expect(removeButtons.length).toBe(2)
     })
 
@@ -65,9 +65,7 @@ describe('PackageSelector', () => {
         },
       })
 
-      const removeButton = component
-        .findAll('button')
-        .find(b => b.find('.i-carbon\\:close').exists())
+      const removeButton = component.findAll('button').find(b => b.find('.i-lucide\\:x').exists())
       await removeButton!.trigger('click')
 
       const emitted = component.emitted('update:modelValue')

@@ -32,7 +32,7 @@ watch(isOpen, open => (isLocked.value = open))
     class="md:hidden fixed bottom-4 inset-ie-4 z-45"
     :aria-label="$t('code.toggle_tree')"
     @click="isOpen = !isOpen"
-    :classicon="isOpen ? 'i-carbon:close' : 'i-carbon:folder'"
+    :classicon="isOpen ? 'i-lucide:x' : 'i-lucide:folder'"
   />
 
   <!-- Backdrop -->
@@ -68,7 +68,7 @@ watch(isOpen, open => (isLocked.value = open))
         <ButtonBase
           :aria-label="$t('code.close_tree')"
           @click="isOpen = false"
-          classicon="i-carbon-close"
+          classicon="i-lucide:x"
         />
       </div>
       <CodeFileTree

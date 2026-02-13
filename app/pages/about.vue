@@ -61,7 +61,7 @@ const roleLabels = computed(
             @click="router.back()"
             v-if="canGoBack"
           >
-            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
           </button>
         </div>
@@ -207,7 +207,7 @@ const roleLabels = computed(
                     :to="person.sponsors_url"
                     no-underline
                     no-external-icon
-                    classicon="i-carbon:favorite"
+                    classicon="i-lucide:heart"
                     class="relative z-10 text-xs text-fg-muted hover:text-pink-400 mt-0.5"
                     :aria-label="$t('about.team.sponsor_aria', { name: person.login })"
                   >
@@ -215,7 +215,7 @@ const roleLabels = computed(
                   </LinkBase>
                 </div>
                 <span
-                  class="i-carbon:launch rtl-flip w-3.5 h-3.5 text-fg-muted opacity-50 shrink-0 self-start mt-0.5"
+                  class="i-lucide:external-link rtl-flip w-3.5 h-3.5 text-fg-muted opacity-50 shrink-0 self-start mt-0.5"
                   aria-hidden="true"
                 />
               </li>

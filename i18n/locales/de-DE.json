@@ -151,6 +151,7 @@
     "view_permalink": "Permalink für diese Version anzeigen",
     "navigation": "Paket",
     "copy_name": "Paketnamen kopieren",
+    "copy_version": "Paketversion kopieren",
     "deprecation": {
       "package": "Dieses Paket ist veraltet.",
       "version": "Diese Version ist veraltet.",
@@ -221,6 +222,8 @@
       "title": "Erste Schritte",
       "pm_label": "Paketmanager",
       "copy_command": "Installationsbefehl kopieren",
+      "copy_dev_command": "Installationsbefehl (dev) kopieren",
+      "dev_dependency_hint": "Wird normalerweise als Dev-Abhängigkeit installiert",
       "view_types": "{package} anzeigen"
     },
     "create": {
@@ -298,25 +301,32 @@
       "show_low_usage": "Wenig genutzte Versionen anzeigen",
       "show_low_usage_tooltip": "Versionsgruppen anzeigen, die weniger als 1% aller Downloads ausmachen.",
       "date_range_tooltip": "Nur die letzte Woche der Versionsverteilung",
-      "y_axis_label": "Downloads"
+      "y_axis_label": "Downloads",
+      "filter_placeholder": "Nach SemVer filtern (z.B. ^3.0.0)",
+      "filter_invalid": "Ungültiger SemVer-Bereich",
+      "filter_help": "Hilfe zum SemVer-Filter",
+      "filter_tooltip": "Filtere Versionen mit einem {link}. Zum Beispiel zeigt ^3.0.0 alle 3.x-Versionen.",
+      "filter_tooltip_link": "SemVer-Bereich",
+      "no_matches": "Keine Versionen entsprechen diesem Bereich"
     },
     "dependencies": {
-      "title": "Abhängigkeiten ({count})",
+      "title": "Abhängigkeit ({count}) | Abhängigkeiten ({count})",
       "list_label": "Paketabhängigkeiten",
       "show_all": "{count} Abhängigkeit anzeigen | alle {count} Abhängigkeiten anzeigen",
       "optional": "optional",
       "view_vulnerabilities": "Sicherheitslücken anzeigen",
       "outdated_major": "{count} Hauptversion zurück (neueste: {latest}) | {count} Hauptversionen zurück (neueste: {latest})",
       "outdated_minor": "{count} Nebenversion zurück (neueste: {latest}) | {count} Nebenversionen zurück (neueste: {latest})",
-      "outdated_patch": "Patch-Update verfügbar (aktuellste: {latest})"
+      "outdated_patch": "Patch-Update verfügbar (aktuellste: {latest})",
+      "has_replacement": "Für diese Abhängigkeit gibt es empfohlene Alternativen"
     },
     "peer_dependencies": {
-      "title": "Peer-Abhängigkeiten ({count})",
+      "title": "Peer-Abhängigkeit ({count}) | Peer-Abhängigkeiten ({count})",
       "list_label": "Peer-Abhängigkeiten des Pakets",
       "show_all": "{count} Peer-Abhängigkeit anzeigen | alle {count} Peer-Abhängigkeiten anzeigen"
     },
     "optional_dependencies": {
-      "title": "Optionale Abhängigkeiten ({count})",
+      "title": "Optionale Abhängigkeit ({count}) | Optionale Abhängigkeiten ({count})",
       "list_label": "Optionale Abhängigkeiten des Pakets",
       "show_all": "{count} optionale Abhängigkeit anzeigen | alle {count} optionalen Abhängigkeiten anzeigen"
     },
@@ -808,8 +818,16 @@
         "managers": "Paketmanager bauen"
       }
     },
+    "team": {
+      "title": "Team",
+      "governance": "Verwaltung",
+      "role_steward": "Verwalter",
+      "role_maintainer": "Maintainer",
+      "sponsor": "Sponsor",
+      "sponsor_aria": "Sponsore {name} auf GitHub"
+    },
     "contributors": {
-      "title": "{count} Mitwirkender | {count} Mitwirkende",
+      "title": "... und {count} weiterer Mitwirkender | ... und {count} weitere Mitwirkende",
       "description": "npmx ist komplett Open Source und wird von einer großartigen Community von Mitwirkenden entwickelt. Mach mit und lass uns gemeinsam das npm-Browsing-Erlebnis gestalten, das wir uns schon immer gewünscht haben.",
       "loading": "Mitwirkende werden geladen...",
       "error": "Mitwirkende konnten nicht geladen werden",
@@ -1079,6 +1097,36 @@
     "changes": {
       "title": "Änderungen an dieser Richtlinie",
       "p1": "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Alle Änderungen werden auf dieser Seite mit einem aktualisierten Revisionsdatum veröffentlicht."
+    }
+  },
+  "a11y": {
+    "title": "Barrierefreiheit",
+    "footer_title": "a11y",
+    "welcome": "Wir möchten, dass {app} für so viele Menschen wie möglich nutzbar ist.",
+    "approach": {
+      "title": "Unser Ansatz",
+      "p1": "Wir versuchen, den Richtlinien für barrierefreie Webinhalte (WCAG) 2.2 zu folgen und nutzen diese als Referenz beim Erstellen neuer Funktionen. Wir beanspruchen keine vollständige Konformität mit einer bestimmten WCAG-Stufe — Barrierefreiheit ist ein kontinuierlicher Prozess und es gibt immer etwas zu tun.",
+      "p2": "Diese Seite ist ein {about_link}. Verbesserungen der Barrierefreiheit werden schrittweise im Rahmen unserer regulären Entwicklung vorgenommen.",
+      "about_link": "Open-Source-Projekt, das von der Community getragen wird"
+    },
+    "measures": {
+      "title": "Was wir tun",
+      "p1": "Einige der Dinge, die wir auf der gesamten Seite anstreben:",
+      "li1": "Verwendung von semantischem HTML und ARIA-Attributen, wo angemessen.",
+      "li2": "Verwendung relativer Textgrößen, damit du sie im Browser anpassen kannst.",
+      "li3": "Unterstützung der Tastaturnavigation in der gesamten Benutzeroberfläche.",
+      "li4": "Berücksichtigung der Media-Queries prefers-reduced-motion und prefers-color-scheme.",
+      "li5": "Design mit ausreichendem Farbkontrast im Blick.",
+      "li6": "Sicherstellung, dass wesentliche Inhalte ohne JavaScript verfügbar sind, auch wenn einige interaktive Funktionen es erfordern."
+    },
+    "limitations": {
+      "title": "Bekannte Einschränkungen",
+      "p1": "Einige Teile der Website — insbesondere Inhalte von Drittanbietern wie Paket-READMEs — entsprechen möglicherweise nicht den Standards für Barrierefreiheit. Wir arbeiten daran, diese Bereiche mit der Zeit zu verbessern."
+    },
+    "contact": {
+      "title": "Feedback",
+      "p1": "Wenn du bei {app} auf eine Barriere stoßt, sag uns bitte Bescheid, indem du ein Ticket in unserem {link} eröffnest. Wir nehmen diese Meldungen ernst und werden unser Bestes tun, um sie zu beheben.",
+      "link": "GitHub-Repository"
     }
   }
 }

@@ -23,7 +23,7 @@ const desktopLinks = computed<NavigationConfig>(() => [
     keyshortcut: 'c',
     type: 'link',
     external: false,
-    iconClass: 'i-carbon:compare',
+    iconClass: 'i-lucide:git-compare',
   },
   {
     name: 'Settings',
@@ -32,7 +32,7 @@ const desktopLinks = computed<NavigationConfig>(() => [
     keyshortcut: ',',
     type: 'link',
     external: false,
-    iconClass: 'i-carbon:settings',
+    iconClass: 'i-lucide:settings',
   },
 ])
 
@@ -55,7 +55,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         to: { name: 'about' },
         type: 'link',
         external: false,
-        iconClass: 'i-carbon:information',
+        iconClass: 'i-lucide:info',
       },
       {
         name: 'Privacy Policy',
@@ -63,7 +63,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         to: { name: 'privacy' },
         type: 'link',
         external: false,
-        iconClass: 'i-carbon:security',
+        iconClass: 'i-lucide:shield-check',
       },
       {
         name: 'Accessibility',
@@ -71,7 +71,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         to: { name: 'accessibility' },
         type: 'link',
         external: false,
-        iconClass: 'i-carbon:accessibility-alt',
+        iconClass: 'i-custom:a11y',
       },
       {
         name: 'Translation Status',
@@ -98,7 +98,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-carbon:document',
+        iconClass: 'i-lucide:file-text',
       },
       {
         name: 'Source',
@@ -107,7 +107,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-carbon:logo-github',
+        iconClass: 'i-simple-icons:github',
       },
       {
         name: 'Social',
@@ -116,7 +116,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-carbon:logo-bluesky',
+        iconClass: 'i-simple-icons:bluesky',
       },
       {
         name: 'Chat',
@@ -125,7 +125,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-carbon:chat',
+        iconClass: 'i-lucide:message-circle',
       },
     ],
   },
@@ -296,7 +296,7 @@ onKeyStroke(
         :aria-expanded="showMobileMenu"
         @click="expandMobileSearch"
         v-if="!isSearchExpanded && !isOnHomePage"
-        classicon="i-carbon:search"
+        classicon="i-lucide:search"
       />
 
       <!-- Mobile: Menu button (always visible, click to open menu) -->
@@ -306,7 +306,7 @@ onKeyStroke(
         :aria-label="$t('nav.open_menu')"
         :aria-expanded="showMobileMenu"
         @click="showMobileMenu = !showMobileMenu"
-        classicon="i-carbon:menu"
+        classicon="i-lucide:menu"
       />
     </nav>
 

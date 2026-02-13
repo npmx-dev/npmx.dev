@@ -221,16 +221,6 @@ const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
   return true
 }
 
-const replaceHtmlLink = (html: string) => {
-  return html.replace(/href="([^"]+)"/g, (match, href) => {
-    if (isNpmJsUrlThatCanBeRedirected(new URL(href, 'https://www.npmjs.com'))) {
-      const newHref = href.replace(/^https?:\/\/(www\.)?npmjs\.com/, '')
-      return `href="${newHref}"`
-    }
-    return match
-  })
-}
-
 /**
  * Resolve a relative URL to an absolute URL.
  * If repository info is available, resolve to provider's raw file URLs.
@@ -387,7 +377,8 @@ export async function renderReadmeHtml(
       toc.push({ text: plainText, id, depth })
     }
 
-    return `<h${semanticLevel} id="${id}" data-level="${depth}">${text}</h${semanticLevel}>\n`
+    /** The link href uses the unique slug WITHOUT the 'user-content-' prefix, because that will later be added for all links. */
+    return `<h${semanticLevel} id="${id}" data-level="${depth}"><a href="#${uniqueSlug}">${plainText}</a></h${semanticLevel}>\n`
   }
 
   // Syntax highlighting for code blocks (uses shared highlighter)
@@ -395,8 +386,8 @@ export async function renderReadmeHtml(
     const html = highlightCodeSync(shiki, text, lang || 'text')
     // Add copy button
     return `<div class="readme-code-block" >
-<button type="button" class="readme-copy-button" aria-label="Copy code" check-icon="i-carbon:checkmark" copy-icon="i-carbon:copy" data-copy>
-<span class="i-carbon:copy" aria-hidden="true"></span>
+<button type="button" class="readme-copy-button" aria-label="Copy code" check-icon="i-lucide:check" copy-icon="i-lucide:copy" data-copy>
+<span class="i-lucide:copy" aria-hidden="true"></span>
 <span class="sr-only">Copy code</span>
 </button>
 ${html}
@@ -443,14 +434,7 @@ ${html}
     return `<blockquote>${body}</blockquote>\n`
   }
 
-  marked.setOptions({
-    renderer,
-    walkTokens: token => {
-      if (token.type === 'html') {
-        token.text = replaceHtmlLink(token.text)
-      }
-    },
-  })
+  marked.setOptions({ renderer })
 
   const rawHtml = marked.parse(content) as string
 
