@@ -69,34 +69,54 @@ What npmx offers:
 
 ### Comparison with npmjs.com
 
-| Feature                        | npmjs.com | npmx.dev |
-| ------------------------------ | :-------: | :------: |
-| Package search                 |    ✅     |    ✅    |
-| Package details & README       |    ✅     |    ✅    |
-| Version history                |    ✅     |    ✅    |
-| Dependencies list              |    ✅     |    ✅    |
-| User profiles                  |    ✅     |    ✅    |
-| Organization pages             |    ✅     |    ✅    |
-| Provenance indicators          |    ✅     |    ✅    |
-| Code browser                   |    ✅     |    ✅    |
-| Dark mode                      |    ❌     |    ✅    |
-| Outdated dependency warnings   |    ❌     |    ✅    |
-| Module format badges (ESM/CJS) |    ❌     |    ✅    |
-| TypeScript types indicator     |    ✅     |    ✅    |
-| Install size calculation       |    ❌     |    ✅    |
-| JSR cross-reference            |    ❌     |    ✅    |
-| Vulnerability warnings         |    ✅     |    ✅    |
-| Deprecation notices            |    ✅     |    ✅    |
-| Download charts                |    ✅     |    ✅    |
-| Playground links               |    ❌     |    ✅    |
-| Keyboard navigation            |    ❌     |    ✅    |
-| Multi-provider repo support    |    ❌     |    ✅    |
-| Version range resolution       |    ❌     |    ✅    |
-| Dependents list                |    ✅     |    🚧    |
-| Package admin (access/owners)  |    ✅     |    🚧    |
-| Org/team management            |    ✅     |    🚧    |
-| 2FA/account settings           |    ✅     |    ❌    |
-| Claim new package names        |    ✅     |    ✅    |
+| Feature                                          |     npmjs.com      |              npmx.dev               |
+| ------------------------------------------------ | :----------------: | :---------------------------------: |
+| **Package browsing**                             |                    |                                     |
+| Package search                                   |         ✅         |  ✅ (dual-provider: npm + Algolia)  |
+| Package details & README                         |         ✅         |    ✅ (with TOC, markdown copy)     |
+| Version history                                  | ✅ (dedicated tab) |  ✅ (sidebar, grouped by dist-tag)  |
+| Dependencies list                                |         ✅         |    ✅ (with outdated indicators)    |
+| Dependents list                                  |         ✅         |                 🚧                  |
+| Code browser                                     |         ✅         | ✅ (line permalinks, range select)  |
+| User profiles                                    |         ✅         |                 ✅                  |
+| Organization pages                               |         ✅         |                 ✅                  |
+| Provenance details                               |         ✅         |    ✅ (full attestation section)    |
+| Download charts                                  |         ✅         | ✅ (interactive, multi-granularity) |
+| Vulnerability warnings                           |         ✅         |      ✅ (transitive dep tree)       |
+| Deprecation notices                              |         ✅         |                 ✅                  |
+| TypeScript types indicator                       |         ✅         |      ✅ (with @types/\* links)      |
+| Funding info display                             |         ✅         |                 🚧                  |
+| **Admin features**                               |                    |                                     |
+| Package access management                        |         ✅         |         ✅ (via connector)          |
+| Maintainer management                            |         ✅         |         ✅ (via connector)          |
+| Org/team management                              |         ✅         |         ✅ (via connector)          |
+| Claim new package names                          |         ✅         |         ✅ (via connector)          |
+| Bulk operations (plan/apply)                     |         ❌         |                 ✅                  |
+| Deprecate/undeprecate                            |         ✅         |                 🚧                  |
+| Trusted publishing (OIDC)                        |         ✅         |                 🚧                  |
+| 2FA/account settings                             |         ✅         |          ❌ (use npm CLI)           |
+| **Only on npmx.dev**                             |                    |                                     |
+| Dark mode + accent colors                        |         ❌         |                 ✅                  |
+| 29-locale internationalization                   |         ❌         |                 ✅                  |
+| Multi-PM install (npm/pnpm/yarn/bun/deno/vlt)    |         ❌         |                 ✅                  |
+| Auto-generated API docs from types               |         ❌         |                 ✅                  |
+| Package comparison (up to 4)                     |         ❌         |                 ✅                  |
+| Module format badges (ESM/CJS/Dual)              |         ❌         |                 ✅                  |
+| Total install size calculation                   |         ❌         |                 ✅                  |
+| Outdated dependency warnings                     |         ❌         |                 ✅                  |
+| Deprecated dependency tree                       |         ❌         |                 ✅                  |
+| Module replacement suggestions                   |         ❌         |                 ✅                  |
+| Install scripts security warning                 |         ❌         |                 ✅                  |
+| Security downgrade detection                     |         ❌         |                 ✅                  |
+| 10 git providers (GitHub, GitLab, Codeberg, ...) |         ❌         |                 ✅                  |
+| JSR cross-reference                              |         ❌         |                 ✅                  |
+| Playground links from README                     |         ❌         |                 ✅                  |
+| Version download distribution chart              |         ❌         |                 ✅                  |
+| Custom badge API (20+ types)                     |         ❌         |                 ✅                  |
+| Bluesky/ATProto social features                  |         ❌         |                 ✅                  |
+| Keyboard shortcuts (/, ., d, c, ?)               |         ❌         |                 ✅                  |
+| Short URLs (/vue, /vue@3.4.0)                    |         ❌         |                 ✅                  |
+| OpenSearch browser integration                   |         ❌         |                 ✅                  |
 
 🚧 = coming soon
 
