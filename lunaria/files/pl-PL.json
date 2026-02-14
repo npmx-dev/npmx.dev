@@ -290,7 +290,22 @@
       "all_covered": "Wszystkie wersje są objęte powyższymi tagami",
       "deprecated_title": "{version} (przestarzała)",
       "view_all": "Zobacz wszystkie {count} wersje | Zobacz {count} wersję | Zobacz {count} wersje | Zobacz {count} wersji | Zobacz {count} wersji",
-      "y_axis_label": "Pobrania"
+      "y_axis_label": "Pobrania",
+      "distribution_title": "Grupa semver",
+      "distribution_modal_title": "Wersje",
+      "grouping_major": "Major",
+      "grouping_minor": "Minor",
+      "recent_versions_only": "Tylko ostatnie wersje",
+      "recent_versions_only_tooltip": "Pokaż tylko wersje opublikowane w ciągu ostatniego roku.",
+      "show_low_usage": "Pokaż wersje o niskim użyciu",
+      "show_low_usage_tooltip": "Uwzględnij grupy wersji z mniej niż 1% wszystkich pobrań.",
+      "date_range_tooltip": "Tylko ostatni tydzień rozkładu wersji",
+      "filter_placeholder": "Filtruj po semver (np. ^3.0.0)",
+      "filter_invalid": "Nieprawidłowy zakres semver",
+      "filter_help": "Pomoc dotycząca zakresów semver",
+      "filter_tooltip": "Filtruj wersje za pomocą {link}. Na przykład ^3.0.0 pokazuje wszystkie wersje 3.x.",
+      "filter_tooltip_link": "zakresu semver",
+      "no_matches": "Żadna wersja nie pasuje do tego zakresu"
     },
     "dependencies": {
       "title": "Zależności ({count})",
@@ -300,7 +315,8 @@
       "view_vulnerabilities": "Zobacz luki",
       "outdated_major": "{count} wersji głównych w tyle (najnowsza: {latest}) | {count} wersja główna w tyle (najnowsza: {latest}) | {count} wersje główne w tyle (najnowsza: {latest}) | {count} wersji głównych w tyle (najnowsza: {latest}) | {count} wersji głównych w tyle (najnowsza: {latest})",
       "outdated_minor": "{count} wersji minor w tyle (najnowsza: {latest}) | {count} wersja minor w tyle (najnowsza: {latest}) | {count} wersje minor w tyle (najnowsza: {latest}) | {count} wersji minor w tyle (najnowsza: {latest}) | {count} wersji minor w tyle (najnowsza: {latest})",
-      "outdated_patch": "Dostępna poprawka (najnowsza: {latest})"
+      "outdated_patch": "Dostępna poprawka (najnowsza: {latest})",
+      "has_replacement": "Ta zależność ma sugerowane zamienniki"
     },
     "peer_dependencies": {
       "title": "Zależności peer ({count})",
@@ -346,13 +362,16 @@
       "title": "Trendy",
       "items": {
         "downloads": "Pobrania",
-        "likes": "Polubienia"
-      }
+        "likes": "Polubienia",
+        "contributors": "Współtwórcy"
+      },
+      "contributors_skip": "Niepokazani we Współtwórcach (brak repozytorium GitHub):"
     },
     "downloads": {
       "title": "Pobrania tygodniowe",
       "analyze": "Analizuj pobrania",
-      "community_distribution": "Zobacz, jak społeczność korzysta z pakietu"
+      "community_distribution": "Zobacz, jak społeczność korzysta z pakietu",
+      "modal_title": "Pobrania tygodniowe"
     },
     "install_scripts": {
       "title": "Skrypty instalacji",
@@ -441,7 +460,8 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    }
+    },
+    "copy_version": "Kopiuj wersję pakietu"
   },
   "connector": {
     "modal": {
@@ -823,6 +843,14 @@
         "description": "Sprawdź, co nowego w npmx.",
         "cta": "Obserwuj na Bluesky"
       }
+    },
+    "team": {
+      "title": "Zespół",
+      "governance": "Zarządzanie",
+      "role_steward": "steward",
+      "role_maintainer": "maintainer",
+      "sponsor": "sponsor",
+      "sponsor_aria": "Zasponsoruj {name} na GitHubie"
     }
   },
   "account_menu": {
@@ -990,6 +1018,116 @@
       "trends": {
         "title": "Porównaj Trendy"
       }
+    }
+  },
+  "privacy_policy": {
+    "title": "polityka prywatności",
+    "last_updated": "Ostatnia aktualizacja: {date}",
+    "welcome": "Witamy w {app}. Zobowiązujemy się chronić Twoją prywatność. Ta polityka wyjaśnia, jakie dane zbieramy, jak ich używamy i jakie masz prawa dotyczące swoich informacji.",
+    "cookies": {
+      "what_are": {
+        "title": "Czym są pliki cookie?",
+        "p1": "Pliki cookie to małe pliki tekstowe przechowywane na Twoim urządzeniu podczas odwiedzania strony internetowej. Ich celem jest poprawa komfortu przeglądania poprzez zapamiętywanie określonych preferencji i ustawień."
+      },
+      "types": {
+        "title": "Jakich plików cookie używamy?",
+        "p1": "Używamy wyłącznie {bold} w celach ściśle niezbędnych do działania serwisu. Nie używamy plików cookie podmiotów trzecich ani reklamowych.",
+        "bold": "niezbędnych technicznych plików cookie",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Ten plik cookie jest używany przez naszego dostawcę hostingu (Vercel) do ochrony przed rozjazdem wersji (skew protection). Zapewnia pobieranie zasobów z właściwej wersji wdrożenia, jeśli podczas przeglądania zostanie opublikowana aktualizacja. Nie służy do śledzenia użytkownika.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "To nasz bezpieczny plik cookie sesji. Przechowuje token dostępu OAuth, gdy łączysz konto Atmosphere. Jest niezbędny do utrzymania uwierzytelnionej sesji."
+      },
+      "local_storage": {
+        "title": "Pamięć lokalna",
+        "p1": "Oprócz plików cookie sesji używamy {bold} w Twojej przeglądarce, aby zapisać preferencje wyświetlania. Dzięki temu możemy zapamiętać motyw (jasny/ciemny) i inne wybrane przez Ciebie {settings}, aby nie trzeba było konfigurować ich przy każdej wizycie.",
+        "bold": "Local Storage",
+        "p2": "Te informacje mają wyłącznie charakter funkcjonalny, są przechowywane tylko na Twoim urządzeniu i {bold2}. Używamy ich wyłącznie, aby poprawić komfort korzystania z naszej strony.",
+        "bold2": "nie zawierają danych osobowych ani nie służą do śledzenia",
+        "settings": "ustawienia"
+      },
+      "management": {
+        "title": "Zarządzanie plikami cookie",
+        "p1": "Możesz skonfigurować przeglądarkę tak, aby akceptowała, odrzucała lub usuwała pliki cookie zgodnie z Twoimi preferencjami. Pamiętaj jednak, że {bold}.",
+        "bold": "odrzucenie niezbędnych plików cookie może uniemożliwić pełny dostęp do aplikacji",
+        "p2": "Poniżej znajdują się linki z instrukcjami zarządzania plikami cookie w najczęściej używanych przeglądarkach:",
+        "chrome": "Google Chrome (otwiera się w nowym oknie)",
+        "firefox": "Mozilla Firefox (otwiera się w nowym oknie)",
+        "edge": "Microsoft Edge (otwiera się w nowym oknie)"
+      }
+    },
+    "analytics": {
+      "title": "Analityka",
+      "p1": "Korzystamy z {bold}, aby zrozumieć, jak odwiedzający korzystają z naszej strony. Pomaga nam to ulepszać doświadczenie użytkownika i identyfikować problemy.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics zostało zaprojektowane z myślą o prywatności:",
+      "li1": "Nie używa plików cookie",
+      "li2": "Nie zbiera identyfikatorów osobowych",
+      "li3": "Nie śledzi użytkowników między stronami",
+      "li4": "Wszystkie dane są agregowane i anonimizowane",
+      "p3": "Zbierane informacje obejmują wyłącznie: adresy URL stron, stronę odsyłającą, kraj/region, typ urządzenia, przeglądarkę i system operacyjny. Tych danych nie można użyć do identyfikacji pojedynczych użytkowników."
+    },
+    "authenticated": {
+      "title": "Użytkownicy uwierzytelnieni",
+      "p1": "Gdy łączysz konto {bold} z npmx, przechowujemy token dostępu OAuth w bezpiecznym pliku cookie sesji HTTP-only. Ten token służy wyłącznie do uwierzytelniania żądań w Twoim imieniu.",
+      "bold": "Atmosphere",
+      "p2": "Nie przechowujemy Twoich danych logowania i nie uzyskujemy dostępu do danych wykraczających poza to, co jest niezbędne do działania używanych funkcji. W każdej chwili możesz odłączyć konto na stronie {settings}.",
+      "settings": "ustawień"
+    },
+    "data_retention": {
+      "title": "Przechowywanie danych",
+      "p1": "Pliki cookie sesji są automatycznie usuwane po zamknięciu przeglądarki lub po okresie braku aktywności. Preferencje zapisane w pamięci lokalnej pozostają na Twoim urządzeniu, dopóki nie wyczyścisz danych przeglądarki. Dane analityczne są przechowywane w formie zagregowanej i nie można ich powiązać z pojedynczymi użytkownikami."
+    },
+    "your_rights": {
+      "title": "Twoje prawa",
+      "p1": "Masz prawo do:",
+      "li1": "Uzyskania informacji o tym, jakie dane zbieramy",
+      "li2": "Wyczyszczenia pamięci lokalnej i plików cookie w dowolnym momencie",
+      "li3": "Odłączenia uwierzytelnionej sesji",
+      "li4": "Żądania informacji o naszych praktykach dotyczących danych",
+      "p2": "Ponieważ nie zbieramy danych osobowych, zazwyczaj nie ma informacji osobistych do usunięcia ani wyeksportowania."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "p1": "W przypadku pytań lub wątpliwości dotyczących tej polityki prywatności możesz skontaktować się z nami, otwierając zgłoszenie w naszym {link}.",
+      "link": "repozytorium GitHub"
+    },
+    "changes": {
+      "title": "Zmiany w tej polityce",
+      "p1": "Od czasu do czasu możemy aktualizować tę politykę prywatności. Wszelkie zmiany będą publikowane na tej stronie wraz z datą aktualizacji."
+    }
+  },
+  "a11y": {
+    "title": "dostępność",
+    "footer_title": "a11y",
+    "welcome": "Chcemy, aby {app} było użyteczne dla jak największej liczby osób.",
+    "approach": {
+      "title": "Nasze podejście",
+      "p1": "Staramy się stosować Wytyczne dla dostępności treści internetowych (WCAG) 2.2 i traktujemy je jako punkt odniesienia przy tworzeniu funkcji. Nie deklarujemy pełnej zgodności z żadnym poziomem WCAG, dostępność to proces ciągły i zawsze jest jeszcze coś do poprawy.",
+      "p2": "Ta strona to {about}. Ulepszenia dostępności wprowadzamy stopniowo w ramach regularnego rozwoju.",
+      "about_link": "projekt open source rozwijany przez społeczność"
+    },
+    "measures": {
+      "title": "Co robimy",
+      "p1": "Niektóre działania, które staramy się realizować w całym serwisie:",
+      "li1": "Używamy semantycznego HTML i atrybutów ARIA tam, gdzie to odpowiednie.",
+      "li2": "Używamy względnych rozmiarów tekstu, aby można było je dostosować w przeglądarce.",
+      "li3": "Wspieramy nawigację klawiaturą w całym interfejsie.",
+      "li4": "Szanujemy zapytania mediów prefers-reduced-motion i prefers-color-scheme.",
+      "li5": "Projektujemy z myślą o wystarczającym kontraście kolorów.",
+      "li6": "Dbamy o to, aby kluczowe treści były dostępne bez JavaScript, choć niektóre funkcje interaktywne go wymagają."
+    },
+    "limitations": {
+      "title": "Znane ograniczenia",
+      "p1": "Niektóre części serwisu, szczególnie treści zewnętrzne, takie jak README pakietów, mogą nie spełniać standardów dostępności. Z czasem pracujemy nad poprawą tych obszarów."
+    },
+    "contact": {
+      "title": "Informacja zwrotna",
+      "p1": "Jeśli napotkasz barierę dostępności w {app}, daj nam znać, otwierając zgłoszenie w naszym {link}. Traktujemy takie zgłoszenia poważnie i zrobimy wszystko, co w naszej mocy, aby rozwiązać problem.",
+      "link": "repozytorium GitHub"
     }
   }
 }
