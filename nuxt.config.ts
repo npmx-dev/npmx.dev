@@ -232,6 +232,12 @@ export default defineNuxtConfig({
         preload: true,
         global: true,
       },
+      {
+        name: 'IBM Plex Sans Arabic',
+        weights: ['400', '500', '600'],
+        global: true,
+        subsets: ['arabic'],
+      },
     ],
   },
 

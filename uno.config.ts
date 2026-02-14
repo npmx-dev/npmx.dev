@@ -41,8 +41,8 @@ export default defineConfig({
   theme: {
     spacing: { DEFAULT: '4px' },
     font: {
-      mono: "'Geist Mono', monospace",
-      sans: "'Geist', system-ui, -apple-system, sans-serif",
+      mono: "'Geist Mono', 'IBM Plex Sans Arabic', monospace",
+      sans: "'Geist', 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif",
     },
     text: {
       '2xs': { fontSize: '0.6875rem' }, // 11px

@@ -7,8 +7,8 @@ export const BaseStyles = html`
       --ln-font-fallback:
         -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji,
         Segoe UI Emoji;
-      --ln-font-body: 'Geist', var(--ln-font-fallback);
-      --ln-font-mono: 'Geist Mono', monospace;
+      --ln-font-body: 'Geist', 'IBM Plex Sans Arabic', var(--ln-font-fallback);
+      --ln-font-mono: 'Geist Mono', 'IBM Plex Sans Arabic', monospace;
   
       /* Light theme colors */
       --ln-color-white: #f9fafb;
