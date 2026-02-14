@@ -242,8 +242,7 @@
       "items": {}
     },
     "downloads": {
-      "title": "Həftəlik Endirmələr",
-      "analyze": "Endirmələri təhlil et"
+      "title": "Həftəlik Endirmələr"
     },
     "install_scripts": {
       "title": "Quraşdırma Skriptləri",
@@ -666,6 +665,7 @@
         "managers": "var"
       }
     },
+    "team": {},
     "contributors": {
       "title": "Əməkdaşlar",
       "description": "npmx tam açıq mənbəlidir, möhtəşəm əməkdaşlar icması tərəfindən hazırlanır. Bizə qoşulun və həmişə istədiyimiz npm baxış təcrübəsini birlikdə quraq.",
@@ -753,5 +753,11 @@
     "your_rights": {},
     "contact": {},
     "changes": {}
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }

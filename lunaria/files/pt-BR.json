@@ -272,8 +272,7 @@
       "items": {}
     },
     "downloads": {
-      "title": "Downloads Semanais",
-      "analyze": "Analisar downloads"
+      "title": "Downloads Semanais"
     },
     "install_scripts": {
       "title": "Scripts de Instalação",
@@ -703,6 +702,7 @@
         "managers": "gerenciadores de pacotes"
       }
     },
+    "team": {},
     "contributors": {
       "title": "Contribuidores",
       "description": "npmx é totalmente de código aberto, construído por uma comunidade incrível de contribuidores. Junte-se a nós e vamos construir juntos a experiência de navegação npm que sempre quisemos.",
@@ -848,5 +848,11 @@
     "your_rights": {},
     "contact": {},
     "changes": {}
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }
