@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import { mount } from '@vue/test-utils'
 import { usePreferencesProvider } from '../../../app/composables/usePreferencesProvider'
 
