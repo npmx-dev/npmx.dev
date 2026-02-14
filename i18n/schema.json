@@ -2008,6 +2008,63 @@
       },
       "additionalProperties": false
     },
+    "stories": {
+      "type": "object",
+      "properties": {
+        "stories_label": {
+          "type": "string"
+        },
+        "story_path": {
+          "type": "string"
+        },
+        "root": {
+          "type": "string"
+        },
+        "version_required": {
+          "type": "string"
+        },
+        "go_to_package": {
+          "type": "string"
+        },
+        "loading_stories": {
+          "type": "string"
+        },
+        "no_storybook_found": {
+          "type": "string"
+        },
+        "check_package_json": {
+          "type": "string"
+        },
+        "back_to_package": {
+          "type": "string"
+        },
+        "failed_to_load_stories": {
+          "type": "string"
+        },
+        "storybook_unavailable": {
+          "type": "string"
+        },
+        "open_storybook": {
+          "type": "string"
+        },
+        "story": {
+          "type": "string"
+        },
+        "open_in_storybook": {
+          "type": "string"
+        },
+        "select_story": {
+          "type": "string"
+        },
+        "toggle_tree": {
+          "type": "string"
+        },
+        "close_tree": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "badges": {
       "type": "object",
       "properties": {
