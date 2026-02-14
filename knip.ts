@@ -53,6 +53,9 @@ const config: KnipConfig = {
 
         /** Used in test/e2e/helpers/ which is excluded from knip project scope */
         'h3-next',
+
+        /** Used in Storybook config but not explicitly installed, it's a transitive dependency of @nuxtjs/storybook */
+        '@storybook-vue/nuxt',
       ],
       ignoreUnresolved: ['#components', '#oauth/config'],
     },

@@ -6,7 +6,13 @@ const model = defineModel<string>({ default: '' })
 const props = withDefaults(
   defineProps<{
     disabled?: boolean
+    /** @default 'medium' */
     size?: 'small' | 'medium' | 'large'
+    /**
+     * Prevents the browser from automatically modifying user input
+     * (e.g. autocorrect, autocomplete, autocapitalize, and spellcheck).
+     * @default true
+     */
     noCorrect?: boolean
   }>(),
   {

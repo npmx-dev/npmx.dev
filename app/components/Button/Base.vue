@@ -2,12 +2,17 @@
 const props = withDefaults(
   defineProps<{
     disabled?: boolean
+    /** @default "button" */
     type?: 'button' | 'submit'
+    /** @default "secondary" */
     variant?: 'primary' | 'secondary'
+    /** @default "medium" */
     size?: 'small' | 'medium'
+    /** Keyboard shortcut hint */
     ariaKeyshortcuts?: string
+    /** Forces the button to occupy the entire width of its container. */
     block?: boolean
-
+    /** Icon class (e.g., i-carbon-add) applied to the left of the text. */
     classicon?: string
   }>(),
   {
