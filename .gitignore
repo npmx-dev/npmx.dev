@@ -29,6 +29,7 @@ test-results
 
 # Test coverage
 coverage/
+*.junit.xml
 
 # Playwright
 playwright-report/

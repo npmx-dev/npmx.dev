@@ -153,9 +153,23 @@
     "copy_name": "Copy package name",
     "copy_version": "Copy package version",
     "deprecation": {
+      "action": "Deprecate",
       "package": "This package has been deprecated.",
       "version": "This version has been deprecated.",
-      "no_reason": "No reason provided"
+      "no_reason": "No reason provided",
+      "modal": {
+        "deprecating": "Deprecating",
+        "title": "Deprecate",
+        "reason": "Reason",
+        "reason_placeholder": "e.g. Use package-x instead. This package is no longer maintained.",
+        "success": "Package deprecated",
+        "success_detail": "The package has been deprecated.",
+        "version": "Version",
+        "version_placeholder": "Leave empty to deprecate the whole package",
+        "already_deprecated": "Already deprecated",
+        "already_deprecated_version": "This version is already deprecated.",
+        "already_deprecated_detail": "This package or version is already deprecated. Deprecation status cannot be changed."
+      }
     },
     "replacement": {
       "title": "You might not need this dependency.",
