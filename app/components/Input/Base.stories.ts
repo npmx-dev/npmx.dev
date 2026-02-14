@@ -10,13 +10,14 @@ const meta = {
       control: 'select',
       options: ['small', 'medium', 'large'],
     },
+    noCorrect: {
+      control: 'boolean',
+    },
     onFocus: {
       action: 'focus',
-      description: 'Fired when the input gains focus',
     },
     onBlur: {
       action: 'blur',
-      description: 'Fired when the input loses focus',
     },
   },
 } satisfies Meta<typeof Component>
