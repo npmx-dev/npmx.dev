@@ -1117,9 +1117,6 @@
             "title": {
               "type": "string"
             },
-            "modal_title": {
-              "type": "string"
-            },
             "analyze": {
               "type": "string"
             },

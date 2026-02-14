@@ -361,7 +361,6 @@
     },
     "downloads": {
       "title": "週間ダウンロード数",
-      "modal_title": "週間ダウンロード数",
       "analyze": "ダウンロード数を分析",
       "community_distribution": "コミュニティの採用分布を表示"
     },

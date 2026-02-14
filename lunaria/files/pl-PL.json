@@ -370,8 +370,7 @@
     "downloads": {
       "title": "Pobrania tygodniowe",
       "analyze": "Analizuj pobrania",
-      "community_distribution": "Zobacz, jak społeczność korzysta z pakietu",
-      "modal_title": "Pobrania tygodniowe"
+      "community_distribution": "Zobacz, jak społeczność korzysta z pakietu"
     },
     "install_scripts": {
       "title": "Skrypty instalacji",
