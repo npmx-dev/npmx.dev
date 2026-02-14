@@ -17,6 +17,14 @@ const route = useRoute()
 const chartModal = useModal('chart-modal')
 const hasChartModalTransitioned = shallowRef(false)
 
+const { t } = useI18n()
+const modalTitle = computed(() => {
+  const facet = route.query.facet as string | undefined
+  if (facet === 'likes') return t('package.trends.items.likes')
+  if (facet === 'contributors') return t('package.trends.items.contributors')
+  return t('package.downloads.modal_title')
+})
+
 const isChartModalOpen = shallowRef<boolean>(false)
 
 function handleModalClose() {
@@ -305,7 +313,7 @@ const config = computed(() => {
 
   <PackageChartModal
     v-if="isChartModalOpen && hasWeeklyDownloads"
-    :title="$t('package.downloads.modal_title')"
+    :title="modalTitle"
     @close="handleModalClose"
     @transitioned="handleModalTransitioned"
   >
@@ -356,6 +364,7 @@ const config = computed(() => {
   padding: 0 !important;
   letter-spacing: 0.04rem;
 }
+
 .vue-ui-sparkline text {
   font-family:
     Geist Mono,
