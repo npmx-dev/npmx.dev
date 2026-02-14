@@ -10,5 +10,3 @@ declare module '#app' {
     scrollMargin?: number
   }
 }
-
-
