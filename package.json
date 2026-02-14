@@ -34,6 +34,8 @@
     "generate:sprite": "node scripts/generate-file-tree-sprite.ts",
     "generate:fixtures": "node scripts/generate-fixtures.ts",
     "generate:lexicons": "lex build --lexicons lexicons --out shared/types/lexicons --clear",
+    "setup:local": "bash scripts/setup-local-domain.sh",
+    "setup:local:uninstall": "bash -c 'if localias rm npmx.test; then sudo localias stop || echo \"Failed to stop Localias daemon\"; else echo \"No local domain configured\"; fi'",
     "test": "vite test",
     "test:a11y": "pnpm build:test && LIGHTHOUSE_COLOR_MODE=dark pnpm test:a11y:prebuilt && LIGHTHOUSE_COLOR_MODE=light pnpm test:a11y:prebuilt",
     "test:a11y:prebuilt": "./scripts/lighthouse.sh",

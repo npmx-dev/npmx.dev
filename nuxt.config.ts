@@ -325,6 +325,10 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    server: {
+      // Allow .test domains for local development (e.g., npmx.test via localias)
+      allowedHosts: ['.test'],
+    },
     optimizeDeps: {
       include: [
         '@vueuse/core',
