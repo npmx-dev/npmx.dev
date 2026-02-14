@@ -36,11 +36,14 @@ const COLORS = {
 }
 
 const CHAR_WIDTH = 7
+const SHIELDS_CHAR_WIDTH = 6
 
 const BADGE_PADDING_X = 8
 const MIN_BADGE_TEXT_WIDTH = 40
+const SHIELDS_LABEL_PADDING_X = 5
 
 const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-system, sans-serif'
+const SHIELDS_FONT_SHORTHAND = 'normal normal 400 11px Verdana, Geneva, DejaVu Sans, sans-serif'
 
 let cachedCanvasContext: SKRSContext2D | null | undefined
 
@@ -58,24 +61,115 @@ function getCanvasContext(): SKRSContext2D | null {
   return cachedCanvasContext
 }
 
-function fallbackMeasureTextWidth(text: string): number {
-  return Math.max(MIN_BADGE_TEXT_WIDTH, Math.round(text.length * CHAR_WIDTH) + BADGE_PADDING_X * 2)
-}
-
-function measureTextWidth(text: string): number {
+function measureTextWidth(text: string, font: string): number | null {
   const context = getCanvasContext()
 
   if (context) {
-    context.font = BADGE_FONT_SHORTHAND
+    context.font = font
 
     const measuredWidth = context.measureText(text).width
 
     if (!Number.isNaN(measuredWidth)) {
-      return Math.max(MIN_BADGE_TEXT_WIDTH, Math.ceil(measuredWidth) + BADGE_PADDING_X * 2)
+      return Math.ceil(measuredWidth)
     }
   }
 
-  return fallbackMeasureTextWidth(text)
+  return null
+}
+
+function measureDefaultTextWidth(text: string): number {
+  const measuredWidth = measureTextWidth(text, BADGE_FONT_SHORTHAND)
+
+  if (measuredWidth !== null) {
+    return Math.max(MIN_BADGE_TEXT_WIDTH, measuredWidth + BADGE_PADDING_X * 2)
+  }
+
+  return Math.max(MIN_BADGE_TEXT_WIDTH, Math.round(text.length * CHAR_WIDTH) + BADGE_PADDING_X * 2)
+}
+
+function measureShieldsTextLength(text: string): number {
+  const measuredWidth = measureTextWidth(text, SHIELDS_FONT_SHORTHAND)
+
+  if (measuredWidth !== null) {
+    return Math.max(1, measuredWidth)
+  }
+
+  return Math.max(1, Math.round(text.length * SHIELDS_CHAR_WIDTH))
+}
+
+function renderDefaultBadgeSvg(params: {
+  finalColor: string
+  finalLabel: string
+  finalLabelColor: string
+  finalValue: string
+}): string {
+  const { finalColor, finalLabel, finalLabelColor, finalValue } = params
+  const leftWidth = finalLabel.trim().length === 0 ? 0 : measureDefaultTextWidth(finalLabel)
+  const rightWidth = measureDefaultTextWidth(finalValue)
+  const totalWidth = leftWidth + rightWidth
+  const height = 20
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${finalLabel}: ${finalValue}">
+      <clipPath id="r">
+        <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
+      </clipPath>
+      <g clip-path="url(#r)">
+        <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
+        <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
+      </g>
+      <g text-anchor="middle" font-family="Geist, system-ui, -apple-system, sans-serif" font-size="11">
+        <text x="${leftWidth / 2}" y="14" fill="#ffffff">${finalLabel}</text>
+        <text x="${leftWidth + rightWidth / 2}" y="14" fill="#ffffff">${finalValue}</text>
+      </g>
+    </svg>
+  `.trim()
+}
+
+function renderShieldsBadgeSvg(params: {
+  finalColor: string
+  finalLabel: string
+  finalLabelColor: string
+  finalValue: string
+}): string {
+  const { finalColor, finalLabel, finalLabelColor, finalValue } = params
+  const hasLabel = finalLabel.trim().length > 0
+
+  const leftTextLength = hasLabel ? measureShieldsTextLength(finalLabel) : 0
+  const rightTextLength = measureShieldsTextLength(finalValue)
+  const leftWidth = hasLabel ? leftTextLength + SHIELDS_LABEL_PADDING_X * 2 : 0
+  const rightWidth = rightTextLength + SHIELDS_LABEL_PADDING_X * 2
+  const totalWidth = leftWidth + rightWidth
+  const height = 20
+  const title = `${finalLabel}: ${finalValue}`
+
+  const leftCenter = Math.round((leftWidth / 2) * 10)
+  const rightCenter = Math.round((leftWidth + rightWidth / 2) * 10)
+  const leftTextLengthAttr = leftTextLength * 10
+  const rightTextLengthAttr = rightTextLength * 10
+
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${title}">
+      <linearGradient id="s" x2="0" y2="100%">
+        <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+        <stop offset="1" stop-opacity=".1"/>
+      </linearGradient>
+      <clipPath id="r">
+        <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
+      </clipPath>
+      <g clip-path="url(#r)">
+        <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
+        <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
+        <rect width="${totalWidth}" height="${height}" fill="url(#s)"/>
+      </g>
+      <g fill="#fff" text-anchor="middle" font-family="Verdana, Geneva, DejaVu Sans, sans-serif" text-rendering="geometricPrecision" font-size="110">
+        <text aria-hidden="true" x="${leftCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${leftTextLengthAttr}">${finalLabel}</text>
+        <text x="${leftCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${leftTextLengthAttr}">${finalLabel}</text>
+        <text aria-hidden="true" x="${rightCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${rightTextLengthAttr}">${finalValue}</text>
+        <text x="${rightCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${rightTextLengthAttr}">${finalValue}</text>
+      </g>
+    </svg>
+  `.trim()
 }
 
 function formatBytes(bytes: number): string {
@@ -288,6 +382,7 @@ const badgeStrategies = {
 }
 
 const BadgeTypeSchema = v.picklist(Object.keys(badgeStrategies) as [string, ...string[]])
+const BadgeStyleSchema = v.picklist(['default', 'shieldsio'])
 
 export default defineCachedEventHandler(
   async event => {
@@ -313,6 +408,8 @@ export default defineCachedEventHandler(
       const labelColor = queryParams.success ? queryParams.output.labelColor : undefined
       const showName = queryParams.success && queryParams.output.name === 'true'
       const userLabel = queryParams.success ? queryParams.output.label : undefined
+      const badgeStyleResult = v.safeParse(BadgeStyleSchema, query.style)
+      const badgeStyle = badgeStyleResult.success ? badgeStyleResult.output : 'default'
 
       const badgeTypeResult = v.safeParse(BadgeTypeSchema, typeParam)
       const strategyKey = badgeTypeResult.success ? badgeTypeResult.output : 'version'
@@ -329,29 +426,12 @@ export default defineCachedEventHandler(
       const rawColor = userColor ?? strategyResult.color
       const finalColor = rawColor?.startsWith('#') ? rawColor : `#${rawColor}`
 
-      const rawLabelColor = labelColor ?? '#0a0a0a'
-      const finalLabelColor = rawLabelColor?.startsWith('#') ? rawLabelColor : `#${rawLabelColor}`
+      const defaultLabelColor = badgeStyle === 'shieldsio' ? '#555' : '#0a0a0a'
+      const rawLabelColor = labelColor ?? defaultLabelColor
+      const finalLabelColor = rawLabelColor.startsWith('#') ? rawLabelColor : `#${rawLabelColor}`
 
-      const leftWidth = finalLabel.trim().length === 0 ? 0 : measureTextWidth(finalLabel)
-      const rightWidth = measureTextWidth(finalValue)
-      const totalWidth = leftWidth + rightWidth
-      const height = 20
-
-      const svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${finalLabel}: ${finalValue}">
-          <clipPath id="r">
-            <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
-          </clipPath>
-          <g clip-path="url(#r)">
-            <rect width="${leftWidth}" height="${height}" fill="${finalLabelColor}"/>
-            <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
-          </g>
-          <g text-anchor="middle" font-family="'Geist', system-ui, -apple-system, sans-serif" font-size="11">
-            <text x="${leftWidth / 2}" y="14" fill="#ffffff">${finalLabel}</text>
-            <text x="${leftWidth + rightWidth / 2}" y="14" fill="#ffffff">${finalValue}</text>
-          </g>
-        </svg>
-      `.trim()
+      const renderFn = badgeStyle === 'shieldsio' ? renderShieldsBadgeSvg : renderDefaultBadgeSvg
+      const svg = renderFn({ finalColor, finalLabel, finalLabelColor, finalValue })
 
       setHeader(event, 'Content-Type', 'image/svg+xml')
       setHeader(

@@ -126,6 +126,20 @@ test.describe('badge API', () => {
     expect(body).toContain(customLabel)
   })
 
+  test('style=default keeps current badge renderer', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=default')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('font-family="Geist, system-ui, -apple-system, sans-serif"')
+  })
+
+  test('style=shieldsio renders shields.io-like badge', async ({ page, baseURL }) => {
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?style=shieldsio')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('font-family="Verdana, Geneva, DejaVu Sans, sans-serif"')
+  })
+
   test('invalid badge type defaults to version strategy', async ({ page, baseURL }) => {
     const url = toLocalUrl(baseURL, '/api/registry/badge/invalid-type/nuxt')
     const { body } = await fetchBadge(page, url)
