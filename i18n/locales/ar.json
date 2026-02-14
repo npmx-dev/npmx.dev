@@ -16,10 +16,24 @@
     "docs": "التوثيق",
     "source": "المصدر",
     "social": "اجتماعي",
-    "chat": "الدردشة"
+    "chat": "المحادثة",
+    "keyboard_shortcuts": "اختصارات لوحة المفاتيح"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "عام",
+      "search": "بحث",
+      "package": "حزمة"
+    },
+    "focus_search": "التركيز على البحث",
+    "show_kbd_hints": "إبراز تلميحات لوحة المفاتيح",
+    "settings": "فتح الإعدادات",
+    "compare": "فتح المقارنة",
+    "compare_from_package": "فتح المقارنة (معبأة بالحزمة الحالية)",
+    "navigate_results": "التنقل في النتائج",
+    "go_to_result": "الانتقال إلى النتيجة",
+    "open_code_view": "فتح عرض الكود",
+    "open_docs": "فتح التوثيق"
   },
   "search": {
     "label": "ابحث عن حزم npm",
@@ -27,8 +41,10 @@
     "button": "بحث",
     "searching": "جارٍ البحث…",
     "found_packages": "تم العثور على {count} حزمة | تم العثور على حزمة واحدة | تم العثور على حزمتين | تم العثور على {count} حزم | تم العثور على {count} حزمة | تم العثور على {count} حزمة",
+    "found_packages_sorted": "لم يتم العثور على نتائج | ترتيب أفضل {count} نتيجة | ترتيب أفضل {count} نتائج",
     "updating": "(جارٍ التحديث…)",
     "no_results": "لم يتم العثور على حزم لـ \"{query}\"",
+    "rate_limited": "تم تجاوز حد طلبات npm، حاول مرة أخرى بعد قليل",
     "title": "بحث",
     "title_search": "بحث: {search}",
     "title_packages": "البحث عن الحزم",
@@ -39,6 +55,7 @@
     "claim_button": "احجز \"{name}\"",
     "want_to_claim": "هل تريد حجز اسم هذه الحزمة؟",
     "start_typing": "ابدأ الكتابة للبحث عن الحزم",
+    "algolia_disclaimer": "مدعوم من Algolia",
     "exact_match": "مطابقة تامة",
     "suggestion": {
       "user": "مستخدم",
@@ -66,9 +83,17 @@
     "sections": {
       "appearance": "المظهر",
       "display": "العرض",
+      "search": "مصدر البيانات",
       "language": "اللغة"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "مصدر البيانات",
+      "description": "اختر من أين يحصل npmx على بيانات البحث. صفحات الحزم الفردية تستخدم دائمًا سجل npm مباشرة.",
+      "npm": "سجل npm",
+      "npm_description": "يجلب نتائج البحث وقوائم المؤسسات والمستخدمين مباشرة من سجل npm الرسمي. موثوق لكن قد يكون أبطأ.",
+      "algolia": "Algolia",
+      "algolia_description": "يستخدم Algolia للبحث الأسرع وصفحات المؤسسات والمستخدمين."
+    },
     "relative_dates": "تواريخ نسبية",
     "include_types": "تضمين {'@'}types في التثبيت",
     "include_types_description": "إضافة حزمة {'@'}types إلى أوامر التثبيت للحزم غير المرفقة بأنواع TypeScript.",
@@ -100,6 +125,7 @@
     "end_of_results": "نهاية النتائج",
     "try_again": "حاول مرة أخرى",
     "close": "إغلاق",
+    "or": "أو",
     "retry": "إعادة المحاولة",
     "copy": "نسخ",
     "copied": "تم النسخ!",
@@ -125,6 +151,7 @@
     "view_permalink": "عرض الرابط الدائم لهذا الإصدار",
     "navigation": "تصفح الحزمة",
     "copy_name": "نسخ اسم الحزمة",
+    "copy_version": "نسخ إصدار الحزمة",
     "deprecation": {
       "package": "تم إهمال هذه الحزمة.",
       "version": "تم إهمال هذا الإصدار.",
@@ -195,6 +222,8 @@
       "title": "البدء",
       "pm_label": "مدير الحزم",
       "copy_command": "نسخ أمر التثبيت",
+      "copy_dev_command": "نسخ أمر تثبيت التطوير",
+      "dev_dependency_hint": "عادةً يُثبّت كتبعية تطوير",
       "view_types": "عرض {package}"
     },
     "create": {
@@ -217,7 +246,8 @@
         "important": "مهم",
         "warning": "تحذير",
         "caution": "تنبيه"
-      }
+      },
+      "copy_as_markdown": "نسخ README كـ Markdown"
     },
     "provenance_section": {
       "title": "إثبات المصدر",
@@ -230,7 +260,16 @@
       "view_more_details": "عرض المزيد من التفاصيل",
       "error_loading": "فشل تحميل تفاصيل إثبات المصدر"
     },
-    "security_downgrade": {},
+    "security_downgrade": {
+      "title": "تخفيض مستوى الثقة",
+      "description_to_none_provenance": "نُشر هذا الإصدار بدون {provenance}.",
+      "description_to_none_trustedPublisher": "نُشر هذا الإصدار بدون {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "يستخدم هذا الإصدار {provenance} لكن ليس {trustedPublishing}.",
+      "fallback_install_provenance": "أوامر التثبيت مثبتة على {version}، آخر إصدار مع إثبات المصدر.",
+      "fallback_install_trustedPublisher": "أوامر التثبيت مثبتة على {version}، آخر إصدار مع النشر الموثوق.",
+      "provenance_link_text": "إثبات المصدر",
+      "trusted_publishing_link_text": "النشر الموثوق"
+    },
     "keywords_title": "الكلمات المفتاحية",
     "compatibility": "التوافق",
     "card": {
@@ -252,7 +291,23 @@
       "more_tagged": "{count} إصدار موسوم آخر | إصدار موسوم آخر | إصدارين موسومين أخريين | {count} إصدارات موسومة أخرى | {count} إصدار موسوم آخر | {count} إصدار موسوم آخر",
       "all_covered": "جميع الإصدارات مشمولة بالوسوم أعلاه",
       "deprecated_title": "{version} (مهمل)",
-      "view_all": "عرض {count} إصدار | عرض إصدار واحدة | عرض إصدارين | عرض {count} إصدارات | عرض {count} إصدار | عرض {count} إصدار"
+      "view_all": "عرض {count} إصدار | عرض إصدار واحدة | عرض إصدارين | عرض {count} إصدارات | عرض {count} إصدار | عرض {count} إصدار",
+      "distribution_title": "مجموعة Semver",
+      "distribution_modal_title": "الإصدارات",
+      "grouping_major": "رئيسي",
+      "grouping_minor": "ثانوي",
+      "recent_versions_only": "الإصدارات الحديثة فقط",
+      "recent_versions_only_tooltip": "إظهار الإصدارات المنشورة خلال السنة الماضية فقط.",
+      "show_low_usage": "إظهار إصدارات الاستخدام المنخفض",
+      "show_low_usage_tooltip": "تضمين مجموعات الإصدارات التي تقل عن 1% من إجمالي التنزيلات.",
+      "date_range_tooltip": "أسبوع توزيعات الإصدارات الأخير فقط",
+      "y_axis_label": "التنزيلات",
+      "filter_placeholder": "فلترة حسب semver (مثل ^3.0.0)",
+      "filter_invalid": "نطاق semver غير صالح",
+      "filter_help": "مساعدة فلتر نطاق semver",
+      "filter_tooltip": "فلترة الإصدارات باستخدام {link}. مثلاً ^3.0.0 يعرض كل إصدارات 3.x.",
+      "filter_tooltip_link": "نطاق semver",
+      "no_matches": "لا توجد إصدارات تطابق هذا النطاق"
     },
     "dependencies": {
       "title": "التبعيات ({count})",
@@ -262,7 +317,8 @@
       "view_vulnerabilities": "عرض الثغرات",
       "outdated_major": "أقدم بـ{count} إصدار رئيسي (الأحدث: {latest}) | أقدم بإصدار رئيسي واحد (الأحدث: {latest}) | أقدم بإصدارين رئيسيين (الأحدث: {latest}) | أقدم بـ{count} إصدارات رئيسية (الأحدث: {latest}) | أقدم بـ{count} إصدار رئيسي (الأحدث: {latest}) | أقدم بـ{count} إصدار رئيسي (الأحدث: {latest})",
       "outdated_minor": "أقدم بـ{count} إصدار ثانوي (الأحدث: {latest}) | أقدم بإصدار ثانوي واحد (الأحدث: {latest}) | أقدم بإصدارين ثانويين (الأحدث: {latest}) | أقدم بـ{count} إصدارات ثانوية (الأحدث: {latest}) | أقدم بـ{count} إصدار ثانوي (الأحدث: {latest}) | أقدم بـ{count} إصدار ثانوي (الأحدث: {latest})",
-      "outdated_patch": "تحديث تصحيحي متاح (الأحدث: {latest})"
+      "outdated_patch": "تحديث تصحيحي متاح (الأحدث: {latest})",
+      "has_replacement": "هذه التبعية لها بدائل مقترحة"
     },
     "peer_dependencies": {
       "title": "تبعيات النظير ({count})",
@@ -301,10 +357,21 @@
       "date_range_multiline": "من {start}\nإلى {end}",
       "download_file": "تنزيل {fileType}",
       "toggle_annotator": "إظهار/إخفاء الشروح التوضيحية",
-      "items": {}
+      "legend_estimation": "تقدير",
+      "no_data": "لا توجد بيانات متاحة",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "المحور",
+      "title": "التوجهات",
+      "contributors_skip": "غير معروض في المساهمين (لا يوجد مستودع GitHub):",
+      "items": {
+        "downloads": "التنزيلات",
+        "likes": "الإعجابات",
+        "contributors": "المساهمون"
+      }
     },
     "downloads": {
       "title": "التنزيلات الأسبوعية",
+      "modal_title": "التنزيلات الأسبوعية",
       "analyze": "تحليل التنزيلات",
       "community_distribution": "عرض توزيع تبنّي المجتمع"
     },
@@ -343,7 +410,8 @@
         "high": "عالية",
         "moderate": "متوسطة",
         "low": "منخفضة"
-      }
+      },
+      "fixed_in_title": "تم إصلاحها في الإصدار {version}"
     },
     "deprecated": {
       "label": "مهمل",
@@ -390,7 +458,11 @@
       "name_asc": "الاسم (A-Z)",
       "name_desc": "الاسم (Z-A)"
     },
-    "size": {}
+    "size": {
+      "b": "{size} بايت",
+      "kb": "{size} كيلوبايت",
+      "mb": "{size} ميجابايت"
+    }
   },
   "connector": {
     "modal": {
@@ -413,7 +485,8 @@
       "warning": "تحذير!",
       "warning_text": "يسمح هذا لـ npmx بالوصول إلى npm CLI لديك. لا تتصل إلا بالمواقع التي تثق بها.",
       "connect": "اتصال",
-      "connecting": "جارٍ الاتصال…"
+      "connecting": "جارٍ الاتصال…",
+      "auto_open_url": "فتح صفحة الدخول تلقائياً"
     }
   },
   "operations": {
@@ -429,7 +502,9 @@
       "otp_placeholder": "أدخل رمز OTP…",
       "otp_label": "كلمة المرور وحيدة الاستخدام (OTP)",
       "retry_otp": "إعادة المحاولة باستخدام OTP",
+      "retry_web_auth": "إعادة المحاولة مع مصادقة الويب",
       "retrying": "جارٍ إعادة المحاولة…",
+      "open_web_auth": "فتح رابط مصادقة الويب",
       "approve_operation": "الموافقة على العملية",
       "remove_operation": "إزالة العملية",
       "approve_all": "الموافقة على الكل",
@@ -745,6 +820,14 @@
         "managers": "مديري"
       }
     },
+    "team": {
+      "title": "الفريق",
+      "governance": "الحوكمة",
+      "role_steward": "راعي",
+      "role_maintainer": "مشرف",
+      "sponsor": "راعي",
+      "sponsor_aria": "رعاية {name} على GitHub"
+    },
     "contributors": {
       "title": "المساهمون",
       "description": "npmx هو مشروع مفتوح المصدر بالكامل، تم بناؤه بواسطة مجتمع مذهل من المساهمين.",
@@ -795,7 +878,8 @@
       "create_account": "إنشاء حساب جديد",
       "connect_bluesky": "الاتصال عبر Bluesky",
       "what_is_atmosphere": "ما هو حساب Atmosphere؟",
-      "atmosphere_explanation": "{npmx} يستخدم {atproto} لتشغيل العديد من ميزاته الاجتماعية، مما يسمح للمستخدمين بامتلاك بياناتهم واستخدام حساب واحد لكل التطبيقات المتوافقة. بعد إنشاء حساب، يمكنك استخدام تطبيقات أخرى مثل {bluesky} و {tangled} بالحساب نفسه."
+      "atmosphere_explanation": "{npmx} يستخدم {atproto} لتشغيل العديد من ميزاته الاجتماعية، مما يسمح للمستخدمين بامتلاك بياناتهم واستخدام حساب واحد لكل التطبيقات المتوافقة. بعد إنشاء حساب، يمكنك استخدام تطبيقات أخرى مثل {bluesky} و {tangled} بالحساب نفسه.",
+      "default_input_error": "الرجاء إدخال معرّف صالح أو DID أو رابط PDS كامل"
     }
   },
   "header": {
@@ -888,7 +972,10 @@
           "label": "التنزيلات/أسبوع",
           "description": "عدد التنزيلات الأسبوعية"
         },
-        "totalLikes": {},
+        "totalLikes": {
+          "label": "الإعجابات",
+          "description": "عدد الإعجابات"
+        },
         "lastUpdated": {
           "label": "تاريخ النشر",
           "description": "متى نُشر هذا الإصدار"
@@ -929,7 +1016,9 @@
         "vulnerabilities_summary": "{count} ({critical} حرجة/{high} عالية)",
         "up_to_you": "الأمر متروك لك!"
       },
-      "trends": {}
+      "trends": {
+        "title": "مقارنة التوجهات"
+      }
     }
   },
   "privacy_policy": {
@@ -1010,6 +1099,36 @@
     "changes": {
       "title": "تغييرات على هذه السياسة",
       "p1": "قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سيتم نشر أي تغييرات على هذه الصفحة مع تاريخ مراجعة مُحدَّث."
+    }
+  },
+  "a11y": {
+    "title": "إمكانية الوصول",
+    "footer_title": "إمكانية الوصول",
+    "welcome": "نريد أن يكون {app} قابلاً للاستخدام من قبل أكبر عدد ممكن من الأشخاص.",
+    "approach": {
+      "title": "نهجنا",
+      "p1": "نسعى لاتباع إرشادات إمكانية الوصول لمحتوى الويب (WCAG) 2.2 واستخدامها كمرجع عند بناء الميزات. لا ندعي الامتثال الكامل لأي مستوى من WCAG — إمكانية الوصول عملية مستمرة وهناك دائماً المزيد من العمل.",
+      "p2": "هذا الموقع {about}. يتم إجراء تحسينات إمكانية الوصول تدريجياً كجزء من التطوير المنتظم.",
+      "about_link": "مشروع مفتوح المصدر يقوده المجتمع"
+    },
+    "measures": {
+      "title": "ما نقوم به",
+      "p1": "بعض الأمور التي نهدف لتحقيقها عبر الموقع:",
+      "li1": "استخدام HTML الدلالي وسمات ARIA حيثما كان ذلك مناسباً.",
+      "li2": "استخدام أحجام نصوص نسبية لتتمكن من ضبطها في متصفحك.",
+      "li3": "دعم التنقل بلوحة المفاتيح في جميع أنحاء الواجهة.",
+      "li4": "الاحترام لاستعلامات prefers-reduced-motion و prefers-color-scheme.",
+      "li5": "التصميم مع مراعاة تباين ألوان كافٍ.",
+      "li6": "ضمان توفر المحتوى الأساسي بدون JavaScript، رغم أن بعض الميزات التفاعلية تتطلبه."
+    },
+    "limitations": {
+      "title": "قيود معروفة",
+      "p1": "قد لا تلبي بعض أجزاء الموقع — خاصة المحتوى من جهات خارجية مثل ملفات README للحزم — معايير إمكانية الوصول. نعمل على تحسين هذه المناطق بمرور الوقت."
+    },
+    "contact": {
+      "title": "ملاحظات",
+      "p1": "إذا واجهت عائقاً في إمكانية الوصول على {app}، يرجى إبلاغنا بفتح بلاغ في {link}. نأخذ هذه البلاغات على محمل الجد وسنبذل قصارى جهدنا لمعالجتها.",
+      "link": "مستودع GitHub"
     }
   }
 }

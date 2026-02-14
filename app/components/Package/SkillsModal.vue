@@ -170,6 +170,7 @@ function getWarningTooltip(skill: SkillListItem): string | undefined {
             aria-hidden="true"
             :text="getWarningTooltip(skill)"
             to="#skills-modal"
+            defer
           >
             <span class="i-lucide:circle-alert w-3.5 h-3.5 text-amber-500" />
           </TooltipApp>

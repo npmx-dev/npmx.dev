@@ -1,4 +1,5 @@
 import * as v from 'valibot'
+import { createCanvas, type SKRSContext2D } from '@napi-rs/canvas'
 import { hash } from 'ohash'
 import { createError, getRouterParam, getQuery, setHeader } from 'h3'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
@@ -34,15 +35,47 @@ const COLORS = {
   white: '#ffffff',
 }
 
-const DEFAULT_CHAR_WIDTH = 7
-const CHARS_WIDTH = {
-  engines: 5.5,
+const CHAR_WIDTH = 7
+
+const BADGE_PADDING_X = 8
+const MIN_BADGE_TEXT_WIDTH = 40
+
+const BADGE_FONT_SHORTHAND = 'normal normal 400 11px Geist, system-ui, -apple-system, sans-serif'
+
+let cachedCanvasContext: SKRSContext2D | null | undefined
+
+function getCanvasContext(): SKRSContext2D | null {
+  if (cachedCanvasContext !== undefined) {
+    return cachedCanvasContext
+  }
+
+  try {
+    cachedCanvasContext = createCanvas(1, 1).getContext('2d')
+  } catch {
+    cachedCanvasContext = null
+  }
+
+  return cachedCanvasContext
 }
 
-function measureTextWidth(text: string, charWidth?: number): number {
-  charWidth ??= DEFAULT_CHAR_WIDTH
-  const paddingX = 8
-  return Math.max(40, Math.round(text.length * charWidth) + paddingX * 2)
+function fallbackMeasureTextWidth(text: string): number {
+  return Math.max(MIN_BADGE_TEXT_WIDTH, Math.round(text.length * CHAR_WIDTH) + BADGE_PADDING_X * 2)
+}
+
+function measureTextWidth(text: string): number {
+  const context = getCanvasContext()
+
+  if (context) {
+    context.font = BADGE_FONT_SHORTHAND
+
+    const measuredWidth = context.measureText(text).width
+
+    if (!Number.isNaN(measuredWidth)) {
+      return Math.max(MIN_BADGE_TEXT_WIDTH, Math.ceil(measuredWidth) + BADGE_PADDING_X * 2)
+    }
+  }
+
+  return fallbackMeasureTextWidth(text)
 }
 
 function formatBytes(bytes: number): string {
@@ -300,10 +333,7 @@ export default defineCachedEventHandler(
       const finalLabelColor = rawLabelColor?.startsWith('#') ? rawLabelColor : `#${rawLabelColor}`
 
       const leftWidth = finalLabel.trim().length === 0 ? 0 : measureTextWidth(finalLabel)
-      const rightWidth = measureTextWidth(
-        finalValue,
-        CHARS_WIDTH[strategyKey as keyof typeof CHARS_WIDTH],
-      )
+      const rightWidth = measureTextWidth(finalValue)
       const totalWidth = leftWidth + rightWidth
       const height = 20
 

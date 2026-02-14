@@ -361,9 +361,11 @@
       "y_axis_label": "{granularity} {facet}",
       "facet": "维度",
       "title": "趋势",
+      "contributors_skip": "未展示的贡献者（没有 Github 仓库）：",
       "items": {
         "downloads": "下载量",
-        "likes": "喜欢"
+        "likes": "喜欢",
+        "contributors": "贡献者"
       }
     },
     "downloads": {
