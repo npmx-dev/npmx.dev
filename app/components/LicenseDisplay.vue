@@ -18,7 +18,7 @@ const hasAnyValidLicense = computed(() => tokens.value.some(t => t.type === 'lic
         :href="token.url"
         target="_blank"
         rel="noopener noreferrer"
-        class="link-subtle"
+        class="focus-visible:(outline-2 outline-accent) rounded-sm"
         :title="$t('package.license.view_spdx')"
       >
         {{ token.value }}

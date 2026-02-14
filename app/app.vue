@@ -142,11 +142,12 @@ if (import.meta.client) {
 .skip-link {
   position: fixed;
   top: -100%;
+  left: 0.25rem;
   z-index: 100;
 }
 
 .skip-link:focus {
-  top: 0;
+  top: 0.25rem;
 }
 </style>
 

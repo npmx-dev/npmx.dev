@@ -108,7 +108,7 @@ const numberFormatter = useNumberFormatter()
         )
       "
     >
-      <ul class="px-1 space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
+      <ul class="space-y-1 list-none m-0 px-1" :aria-label="$t('package.dependencies.list_label')">
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"
@@ -184,7 +184,7 @@ const numberFormatter = useNumberFormatter()
       <button
         v-if="sortedDependencies.length > 10 && !depsExpanded"
         type="button"
-        class="my-2 ms-1 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
+        class="my-2 ms-1 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:(outline-2 outline-offset-2 outline-accent)"
         @click="depsExpanded = true"
       >
         {{

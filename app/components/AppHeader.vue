@@ -192,8 +192,7 @@ onKeyStroke(
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 border-b border-border">
-    <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />
+  <header class="sticky top-0 z-50 border-b border-border bg-bg/80 backdrop-blur-md">
     <nav
       :aria-label="$t('nav.main_navigation')"
       class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
@@ -201,9 +200,10 @@ onKeyStroke(
       <!-- Mobile: Logo (navigates home) -->
       <NuxtLink
         v-if="!isSearchExpanded && !isOnHomePage"
+        type="button"
+        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 rounded focus-visible(outline-2 outline-accent)"
         to="/"
         :aria-label="$t('header.home')"
-        class="sm:hidden flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring"
       >
         <AppLogo class="w-8 h-8 rounded-lg" />
       </NuxtLink>
@@ -214,7 +214,7 @@ onKeyStroke(
           :to="{ name: 'index' }"
           :aria-label="$t('header.home')"
           dir="ltr"
-          class="relative inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded"
+          class="inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded focus-visible:(outline-2 outline-accent)"
         >
           <AppLogo class="w-7 h-7 rounded-lg" />
           <span class="pb-0.5">npmx</span>
@@ -264,12 +264,12 @@ onKeyStroke(
       </div>
 
       <!-- End: Desktop nav items + Mobile menu button -->
-      <div class="hidden sm:flex flex-shrink-0">
-        <!-- Desktop: Explore link -->
+      <div class="hidden sm:flex flex-shrink-0 space-x-0.5 md:space-x-2">
+        <!-- Desktop links -->
         <LinkBase
           v-for="link in desktopLinks"
           :key="link.name"
-          class="border-none"
+          class="border-0"
           variant="button-secondary"
           :to="link.to"
           :aria-keyshortcuts="link.keyshortcut"

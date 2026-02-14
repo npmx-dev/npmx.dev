@@ -70,27 +70,28 @@ const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
       'text-bg bg-fg': variant === 'button-primary',
       'bg-transparent text-fg': variant === 'button-secondary',
     }"
-    ><slot
-  /></span>
+  >
+    <slot />
+  </span>
   <NuxtLink
     v-bind="props"
     v-else
-    class="group/link gap-x-1 items-center"
+    class="group/link cursor-pointer gap-x-1.5 items-center rounded-sm outline-transparent active:scale-[0.98] focus-visible:(outline-2 outline-accent) transition-colors duration-200"
     :class="{
       'flex': block,
       'inline-flex': !block,
       'underline-offset-[0.2rem] underline decoration-1 decoration-fg/30':
         !isLinkAnchor && isLink && !noUnderline,
-      'justify-start font-mono text-fg hover:(decoration-accent text-accent) focus-visible:(decoration-accent text-accent) transition-colors duration-200':
+      'justify-start font-mono text-fg hover:(decoration-accent text-fg/80) focus-visible:(text-accent outline-offset-2)':
         isLink,
-      'justify-center font-mono border border-border rounded-md transition-all duration-200':
+      'justify-center font-mono border border-solid border-border rounded-md  outline-offset-2':
         isButton,
       'text-sm px-4 py-2': isButtonMedium,
       'text-xs px-2 py-0.5': isButtonSmall,
-      'bg-transparent text-fg hover:(bg-fg/10 text-accent) focus-visible:(bg-fg/10 text-accent) aria-[current=true]:(bg-fg/10 text-accent border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
-        variant === 'button-secondary',
-      'text-bg bg-fg hover:(bg-fg/50 text-accent) focus-visible:(bg-fg/50) aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
+      'text-bg bg-fg border-fg hover:(bg-fg/80) aria-[current=true]:(bg-fg/80)':
         variant === 'button-primary',
+      'text-fg bg-bg hover:(bg-fg/10 border-fg/10) aria-[current=true]:(bg-fg/10 border-fg/10)':
+        variant === 'button-secondary',
     }"
     :to="to"
     :aria-keyshortcuts="ariaKeyshortcuts"
@@ -106,7 +107,7 @@ const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
     />
     <span
       v-else-if="isLinkAnchor && isLink"
-      class="i-lucide:link size-[1em] opacity-0 group-hover/link:opacity-100 transition-opacity duration-200"
+      class="i-carbon:link size-[1em] opacity-0 group-hover/link:opacity-100 group-focus-visible/link:opacity-100 transition-opacity duration-200"
       aria-hidden="true"
     />
     <kbd

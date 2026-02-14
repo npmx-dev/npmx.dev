@@ -135,19 +135,26 @@ function handleClick(event: MouseEvent) {
 }
 
 .readme :deep(a) {
-  @apply underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg transition-colors duration-200;
+  @apply underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg text-sm rounded-md transition-colors duration-200 outline-transparent active:scale-[0.98];
 }
 .readme :deep(a:hover) {
-  @apply decoration-accent text-accent;
+  @apply decoration-accent;
 }
 .readme :deep(a:focus-visible) {
-  @apply decoration-accent text-accent;
+  @apply text-accent outline-2 outline-accent outline-offset-2;
 }
 
 .readme :deep(a[target='_blank']:not(:has(img))::after) {
   /* I don't know what kind of sorcery this is, but it ensures this icon can't wrap to a new line on its own. */
   content: '__';
   @apply inline i-lucide:external-link rtl-flip ms-1 opacity-50;
+}
+
+.readme :deep(a[target='_blank']:has(img)) {
+  /* Hide icon for links containing images */
+  &::after {
+    display: none;
+  }
 }
 
 .readme :deep(a[href^='#']::after) {

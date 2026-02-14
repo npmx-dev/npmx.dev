@@ -549,7 +549,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           <button
             v-if="getTagVersions(row.tag).length > 1 || !hasLoadedAll"
             type="button"
-            class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors rounded-sm"
+            class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors rounded-sm focus-visible:(outline-2 outline-offset-2 outline-accent)"
             :aria-expanded="expandedTags.has(row.tag)"
             :aria-label="
               expandedTags.has(row.tag)
@@ -703,7 +703,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
       <div class="p-1">
         <button
           type="button"
-          class="flex items-center gap-2 text-start rounded-sm w-full"
+          class="flex items-center gap-2 text-start rounded-sm focus-visible:(outline-2 outline-offset-2 outline-accent)"
           :class="otherVersionsContainsCurrent() ? 'bg-bg-subtle' : ''"
           :aria-expanded="otherVersionsExpanded"
           :aria-label="

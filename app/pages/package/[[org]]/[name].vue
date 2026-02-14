@@ -647,7 +647,7 @@ const showSkeleton = shallowRef(false)
 <template>
   <DevOnly>
     <ButtonBase
-      class="fixed bottom-4 inset-is-4 z-50 shadow-lg rounded-full! px-3! py-2!"
+      class="fixed! bottom-4 inset-is-4 z-50 shadow-lg rounded-full! px-3! py-2!"
       classicon="i-simple-icons:skeleton"
       variant="primary"
       title="Toggle skeleton loader (development only)"
@@ -688,11 +688,8 @@ const showSkeleton = shallowRef(false)
             <button
               type="button"
               @click="copyPkgName()"
-              class="absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
-              :class="[
-                $style.copyButton,
-                copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border',
-              ]"
+              class="absolute z-20 inset-is-0 top-full inline-flex items-center bg-bg gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:(opacity-100 translate-y-0 pointer-events-auto) focus-visible:(outline-2 outline-accent pointer-events-auto translate-y-0)"
+              :class="copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted border-border'"
               :aria-label="copiedPkgName ? $t('common.copied') : $t('package.copy_name')"
             >
               <span
@@ -775,7 +772,7 @@ const showSkeleton = shallowRef(false)
             v-if="resolvedVersion"
             as="nav"
             :aria-label="$t('package.navigation')"
-            class="hidden sm:flex max-sm:flex max-sm:fixed max-sm:z-40 max-sm:inset-is-1/2 max-sm:-translate-x-1/2 max-sm:rtl:translate-x-1/2 max-sm:bg-[--bg]/90 max-sm:backdrop-blur-md max-sm:border max-sm:border-border max-sm:rounded-md max-sm:shadow-md"
+            class="ms-auto flex max-sm:(fixed bottom-4 inset-is-1/2 -translate-x-1/2 z-40 backdrop-blur-md)"
             :style="navExtraOffsetStyle"
             :class="$style.packageNav"
           >

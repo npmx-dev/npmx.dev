@@ -5,10 +5,9 @@ const props = withDefaults(
     type?: 'button' | 'submit'
     variant?: 'primary' | 'secondary'
     size?: 'small' | 'medium'
+    classicon?: string
     ariaKeyshortcuts?: string
     block?: boolean
-
-    classicon?: string
   }>(),
   {
     type: 'button',
@@ -28,16 +27,15 @@ defineExpose({
 <template>
   <button
     ref="el"
-    class="group gap-x-1 items-center justify-center font-mono border border-border rounded-md transition-all duration-200 disabled:(opacity-40 cursor-not-allowed border-transparent)"
+    class="group gap-x-1.5 relative items-center justify-center rounded-md active:scale-[0.98] font-mono border border-solid border-border transition-colors duration-200 outline-transparent focus-visible:(outline-2 outline-accent outline-offset-2) disabled:(opacity-40 cursor-not-allowed border-transparent)"
     :class="{
       'inline-flex': !block,
       'flex': block,
       'text-sm px-4 py-2': size === 'medium',
       'text-xs px-2 py-0.5': size === 'small',
-      'bg-transparent text-fg hover:enabled:(bg-fg/10) focus-visible:enabled:(bg-fg/10) aria-pressed:(bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
-        variant === 'secondary',
-      'text-bg bg-fg hover:enabled:(bg-fg/50) focus-visible:enabled:(bg-fg/50) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
-        variant === 'primary',
+      'text-bg bg-fg border-fg hover:(bg-fg/80)': variant === 'primary',
+      'text-fg bg-bg hover:(bg-fg/10 border-fg/10)': variant === 'secondary',
+      'opacity-40 cursor-not-allowed border-transparent': disabled,
     }"
     :type="props.type"
     :disabled="

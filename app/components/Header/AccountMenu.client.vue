@@ -56,13 +56,13 @@ function openAuthModal() {
 </script>
 
 <template>
-  <div ref="accountMenuRef" class="relative flex min-w-28 justify-end">
+  <div ref="accountMenuRef">
     <ButtonBase
       type="button"
+      class="border-0 min-w-28"
       :aria-expanded="isOpen"
       aria-haspopup="true"
       @click="isOpen = !isOpen"
-      class="border-none"
     >
       <!-- Stacked avatars when connected -->
       <span
@@ -106,7 +106,7 @@ function openAuthModal() {
       </span>
 
       <!-- "connect" text when not connected -->
-      <span v-if="!hasAnyConnection" class="font-mono text-sm">
+      <span v-if="!hasAnyConnection" class="text-sm">
         {{ $t('account_menu.connect') }}
       </span>
 
@@ -137,7 +137,7 @@ function openAuthModal() {
     >
       <div v-if="isOpen" class="absolute inset-ie-0 top-full pt-2 w-72 z-50" role="menu">
         <div
-          class="bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/50 overflow-hidden px-1"
+          class="bg-bg-subtle/80 backdrop-blur-sm border border-border-subtle rounded-lg shadow-lg shadow-bg-elevated/10 overflow-hidden px-1"
         >
           <!-- Connected accounts section -->
           <div v-if="hasAnyConnection" class="py-1">
@@ -228,7 +228,9 @@ function openAuthModal() {
               class="w-full text-start gap-x-3 border-none"
               @click="openConnectorModal"
             >
-              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
+              <span
+                class="w-8 h-8 rounded-full bg-bg-muted group-hover:bg-bg-subtle flex items-center justify-center"
+              >
                 <span
                   v-if="isNpmConnecting"
                   class="i-svg-spinners:ring-resize w-4 h-4 text-yellow-500 animate-spin"
@@ -254,8 +256,10 @@ function openAuthModal() {
               class="w-full text-start gap-x-3 border-none"
               @click="openAuthModal"
             >
-              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
-                <span class="i-lucide:at-sign w-4 h-4 text-fg-muted" aria-hidden="true" />
+              <span
+                class="w-8 h-8 rounded-full bg-bg-muted group-hover:bg-bg-subtle flex items-center justify-center"
+              >
+                <span class="i-carbon-cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
               </span>
               <span class="flex-1 min-w-0">
                 <span class="font-mono text-sm text-fg block">

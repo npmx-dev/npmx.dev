@@ -153,7 +153,7 @@ const copyDevInstallCommand = () =>
           >
           <button
             type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70 select-none"
+            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/installcmd:opacity-100 hover:(text-fg border-border-hover) active:scale-98 focus-visible:(opacity-100 outline-2 outline-accent) select-none"
             :aria-label="$t('package.get_started.copy_command')"
             @click.stop="copyInstallCommand"
           >

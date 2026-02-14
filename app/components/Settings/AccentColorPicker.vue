@@ -24,7 +24,7 @@ onPrehydrate(el => {
 
 <template>
   <fieldset
-    class="flex items-center gap-4 has-[input:focus-visible]:(outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
+    class="flex items-center gap-4 has-[input:focus-visible]:(outline-2 outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
   >
     <legend class="sr-only">{{ $t('settings.accent_colors') }}</legend>
     <label
