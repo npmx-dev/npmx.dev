@@ -123,8 +123,12 @@ async function fetchInstallSize(packageName: string, version: string): Promise<n
 
 const badgeStrategies = {
   'version': async (pkgData: globalThis.Packument, requestedVersion?: string) => {
-    const value = requestedVersion ?? getLatestVersion(pkgData) ?? 'unknown'
-    return { label: 'version', value, color: COLORS.blue }
+    const version = requestedVersion ?? getLatestVersion(pkgData) ?? 'unknown'
+    return {
+      label: 'version',
+      value: version === 'unknown' ? version : `v${version}`,
+      color: COLORS.blue,
+    }
   },
 
   'license': async (pkgData: globalThis.Packument) => {
