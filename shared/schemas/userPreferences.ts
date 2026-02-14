@@ -7,6 +7,8 @@ const BackgroundThemeIdSchema = picklist(Object.keys(BACKGROUND_THEMES) as [stri
 
 const ColorModePreferenceSchema = picklist(['light', 'dark', 'system'])
 
+const SearchProviderSchema = picklist(['npm', 'algolia'])
+
 export const UserPreferencesSchema = object({
   /** Display dates as relative (e.g., "3 days ago") instead of absolute */
   relativeDates: optional(boolean()),
@@ -22,6 +24,8 @@ export const UserPreferencesSchema = object({
   selectedLocale: optional(nullable(string())),
   /** Color mode preference: 'light', 'dark', or 'system' */
   colorModePreference: optional(nullable(ColorModePreferenceSchema)),
+  /** Search provider for package search: 'npm' or 'algolia' */
+  searchProvider: optional(SearchProviderSchema),
   /** Timestamp of last update (ISO 8601) - managed by server */
   updatedAt: optional(string()),
 })
@@ -31,6 +35,7 @@ export type UserPreferences = InferOutput<typeof UserPreferencesSchema>
 export type AccentColorId = keyof typeof ACCENT_COLORS.light
 export type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
 export type ColorModePreference = 'light' | 'dark' | 'system'
+export type SearchProvider = 'npm' | 'algolia'
 
 /**
  * Default user preferences.
@@ -44,6 +49,7 @@ export const DEFAULT_USER_PREFERENCES: Required<Omit<UserPreferences, 'updatedAt
   hidePlatformPackages: true,
   selectedLocale: null,
   colorModePreference: null,
+  searchProvider: 'algolia',
 }
 
 export const USER_PREFERENCES_STORAGE_BASE = 'npmx-kv-user-preferences'

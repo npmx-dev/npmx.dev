@@ -203,7 +203,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                     { label: $t('settings.data_source.npm'), value: 'npm' },
                     { label: $t('settings.data_source.algolia'), value: 'algolia' },
                   ]"
-                  v-model="settings.searchProvider"
+                  v-model="preferences.searchProvider"
                   block
                   size="sm"
                   class="max-w-48"
@@ -223,7 +223,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               <!-- Provider description -->
               <p class="text-xs text-fg-subtle mt-2">
                 {{
-                  settings.searchProvider === 'algolia'
+                  preferences.searchProvider === 'algolia'
                     ? $t('settings.data_source.algolia_description')
                     : $t('settings.data_source.npm_description')
                 }}
@@ -231,7 +231,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
 
               <!-- Algolia attribution -->
               <a
-                v-if="settings.searchProvider === 'algolia'"
+                v-if="preferences.searchProvider === 'algolia'"
                 href="https://www.algolia.com/developers"
                 target="_blank"
                 rel="noopener noreferrer"
