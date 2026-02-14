@@ -164,30 +164,17 @@ useSeoMeta({
 
       <!-- Facet selector -->
       <section class="mb-8" aria-labelledby="facets-heading">
-        <div class="flex items-center gap-2 mb-3">
-          <h2 id="facets-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ $t('compare.packages.section_facets') }}
-          </h2>
-          <ButtonBase
-            size="small"
-            :aria-pressed="isAllSelected"
-            :disabled="isAllSelected"
-            :aria-label="$t('compare.facets.select_all')"
-            @click="selectAll"
-          >
-            {{ $t('compare.facets.all') }}
-          </ButtonBase>
-          <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
-          <ButtonBase
-            size="small"
-            :aria-pressed="isNoneSelected"
-            :disabled="isNoneSelected"
-            :aria-label="$t('compare.facets.deselect_all')"
-            @click="deselectAll"
-          >
-            {{ $t('compare.facets.none') }}
-          </ButtonBase>
-        </div>
+        <CheckboxBase
+          :aria-label="$t('compare.facets.select_all')"
+          :model-value="isAllSelected"
+          value="'all'"
+          @update:model-value="isAllSelected ? deselectAll() : selectAll()"
+          :indeterminate="!isAllSelected && !isNoneSelected"
+          class="uppercase tracking-widest mb-2"
+        >
+          {{ $t('compare.packages.section_facets') }}
+        </CheckboxBase>
+
         <CompareFacetSelector />
       </section>
 

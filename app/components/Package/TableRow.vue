@@ -130,17 +130,19 @@ const allMaintainersText = computed(() => {
         class="relative z-10 flex flex-wrap gap-1 justify-end"
         :aria-label="$t('package.card.keywords')"
       >
-        <ButtonBase
+        <CheckboxBase
           v-for="keyword in pkg.keywords.slice(0, 3)"
           :key="keyword"
+          variant="tag"
+          hide-checkbox
           size="small"
-          :aria-pressed="props.filters?.keywords.includes(keyword)"
+          :model-value="props.filters?.keywords.includes(keyword)"
           :title="`Filter by ${keyword}`"
-          @click.stop="emit('clickKeyword', keyword)"
-          :class="{ 'group-hover:bg-bg-elevated': !props.filters?.keywords.includes(keyword) }"
+          @update:modelValue="emit('clickKeyword', keyword)"
+          :value="keyword"
         >
           {{ keyword }}
-        </ButtonBase>
+        </CheckboxBase>
         <span
           v-if="pkg.keywords.length > 3"
           class="text-fg-subtle text-xs"

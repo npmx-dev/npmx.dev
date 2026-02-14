@@ -25,72 +25,41 @@ function isCategoryNoneSelected(category: string): boolean {
 </script>
 
 <template>
-  <div class="space-y-3" role="group" :aria-label="$t('compare.facets.group_label')">
+  <div class="space-y-6" role="group" :aria-label="$t('compare.facets.group_label')">
     <div v-for="category in categoryOrder" :key="category">
-      <!-- Category header with all/none buttons -->
-      <div class="flex items-center gap-2 mb-2">
-        <span class="text-3xs text-fg-subtle uppercase tracking-wider">
-          {{ getCategoryLabel(category) }}
-        </span>
-        <!-- TODO: These should be radios, since they are mutually exclusive, and currently this behavior is faked with buttons -->
-        <ButtonBase
-          :aria-label="
-            $t('compare.facets.select_category', { category: getCategoryLabel(category) })
-          "
-          :aria-pressed="isCategoryAllSelected(category)"
-          :disabled="isCategoryAllSelected(category)"
-          @click="selectCategory(category)"
-          size="small"
-        >
-          {{ $t('compare.facets.all') }}
-        </ButtonBase>
-        <span class="text-2xs text-fg-muted/40">/</span>
-        <ButtonBase
-          :aria-label="
-            $t('compare.facets.deselect_category', { category: getCategoryLabel(category) })
-          "
-          :aria-pressed="isCategoryNoneSelected(category)"
-          :disabled="isCategoryNoneSelected(category)"
-          @click="deselectCategory(category)"
-          size="small"
-        >
-          {{ $t('compare.facets.none') }}
-        </ButtonBase>
-      </div>
+      <CheckboxBase
+        :aria-label="$t('compare.facets.select_category', { category: getCategoryLabel(category) })"
+        :model-value="isCategoryAllSelected(category)"
+        :value="category"
+        @update:model-value="
+          isCategoryAllSelected(category) ? deselectCategory(category) : selectCategory(category)
+        "
+        :indeterminate="!isCategoryAllSelected(category) && !isCategoryNoneSelected(category)"
+        class="uppercase tracking-widest mb-2"
+      >
+        {{ getCategoryLabel(category) }}
+      </CheckboxBase>
 
       <!-- Facet buttons -->
       <div class="flex items-center gap-1.5 flex-wrap" role="group">
         <!-- TODO: These should be checkboxes -->
-        <ButtonBase
+        <CheckboxBase
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
           size="small"
+          variant="tag"
+          hide-checkbox
           :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
           :disabled="facet.comingSoon"
-          :aria-pressed="isFacetSelected(facet.id)"
-          :aria-label="facet.label"
-          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
-          :class="
-            facet.comingSoon
-              ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
-              : isFacetSelected(facet.id)
-                ? 'text-fg-muted bg-bg-muted'
-                : 'text-fg-subtle bg-bg-subtle border-border-subtle hover:text-fg-muted hover:border-border'
-          "
-          @click="!facet.comingSoon && toggleFacet(facet.id)"
-          :classicon="
-            facet.comingSoon
-              ? undefined
-              : isFacetSelected(facet.id)
-                ? 'i-lucide:check'
-                : 'i-lucide:plus'
-          "
+          :model-value="isFacetSelected(facet.id)"
+          :value="facet.id"
+          @update:model-value="!facet.comingSoon && toggleFacet(facet.id)"
         >
           {{ facet.label }}
           <span v-if="facet.comingSoon" class="text-4xs"
             >({{ $t('compare.facets.coming_soon') }})</span
           >
-        </ButtonBase>
+        </CheckboxBase>
       </div>
     </div>
   </div>

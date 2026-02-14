@@ -101,20 +101,18 @@ function handleReset() {
             <label
               v-for="column in toggleableColumns"
               :key="column.id"
-              class="flex gap-2 items-center px-3 py-2 transition-colors duration-200"
-              :class="column.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-bg-muted'"
+              class="flex gap-2 items-center px-3 py-2"
             >
-              <input
-                type="checkbox"
-                :checked="column.visible"
+              <CheckboxBase
+                :model-value="column.visible"
                 :disabled="column.disabled"
+                :value="column.id"
                 :aria-describedby="column.disabled ? `${column.id}-disabled-reason` : undefined"
-                class="w-4 h-4 accent-fg bg-bg-muted border-border rounded disabled:opacity-50"
-                @change="!column.disabled && emit('toggle', column.id)"
-              />
-              <span class="text-sm text-fg-muted font-mono flex-1">
+                class="w-full"
+                @update:modelValue="emit('toggle', column.id)"
+              >
                 {{ getColumnLabel(column.id) }}
-              </span>
+              </CheckboxBase>
               <TooltipApp
                 v-if="column.disabled"
                 :id="`${column.id}-disabled-reason`"
@@ -129,8 +127,8 @@ function handleReset() {
             </label>
           </div>
 
-          <div class="border-t border-border py-1">
-            <ButtonBase @click="handleReset">
+          <div class="border-t border-border p-1">
+            <ButtonBase @click="handleReset" class="w-full">
               {{ $t('filters.columns.reset') }}
             </ButtonBase>
           </div>
