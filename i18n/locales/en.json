@@ -669,6 +669,25 @@
     },
     "file_path": "File path"
   },
+  "stories": {
+    "stories_label": "Stories",
+    "story_path": "Story path",
+    "root": "Stories",
+    "version_required": "Version is required to browse stories",
+    "go_to_package": "Go to package",
+    "loading_stories": "Loading Storybook stories...",
+    "no_storybook_found": "No Storybook found",
+    "check_package_json": "Check if this package has Storybook configuration in package.json",
+    "back_to_package": "Back to package",
+    "failed_to_load_stories": "Failed to load Storybook stories",
+    "storybook_unavailable": "The Storybook instance may be unavailable or misconfigured",
+    "open_storybook": "Open Storybook",
+    "story": "Story",
+    "open_in_storybook": "Open in Storybook",
+    "select_story": "Select a story from the tree to view it here",
+    "toggle_tree": "Toggle story tree",
+    "close_tree": "Close story tree"
+  },
   "badges": {
     "provenance": {
       "verified": "verified",

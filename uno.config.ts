@@ -100,6 +100,7 @@ export default defineConfig({
         nuxt: '#00DC82',
         vite: '#646CFF',
         jsfiddle: '#0084FF',
+        storybook: '#FF4785',
       },
     },
     animation: {
