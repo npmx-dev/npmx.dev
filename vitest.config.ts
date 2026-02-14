@@ -40,6 +40,11 @@ export default defineConfig({
                   pwaAssets: { disabled: true },
                 },
                 ogImage: { enabled: false },
+                unocss: {
+                  // app.vue (which imports 'uno.css') is stubbed out by
+                  // @nuxt/test-utils, leaving utility classes missing.
+                  autoImport: true,
+                },
               },
             },
           },

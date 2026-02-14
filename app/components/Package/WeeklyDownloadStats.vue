@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { VueUiSparkline } from 'vue-data-ui/vue-ui-sparkline'
 import { useCssVariables } from '~/composables/useColors'
 import type { WeeklyDataPoint } from '~/types/chart'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
 import type { RepoRef } from '#shared/utils/git-providers'
+
+import('vue-data-ui/style.css')
+
+const VueUiSparkline = defineAsyncComponent(() =>
+  import('vue-data-ui/vue-ui-sparkline').then(m => m.VueUiSparkline),
+)
 
 const props = defineProps<{
   packageName: string

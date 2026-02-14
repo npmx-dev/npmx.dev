@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import type {
   VueUiXyDatasetItem,
   VueUiXyDatasetBarItem,
@@ -18,6 +17,10 @@ import TooltipApp from '~/components/Tooltip/App.vue'
 type TooltipParams = MinimalCustomFormatParams<VueUiXyDatapointItem[]> & {
   bars: VueUiXyDatasetBarItem[]
 }
+
+import('vue-data-ui/style.css')
+
+const VueUiXy = defineAsyncComponent(() => import('vue-data-ui/vue-ui-xy').then(m => m.VueUiXy))
 
 const props = defineProps<{
   packageName: string
