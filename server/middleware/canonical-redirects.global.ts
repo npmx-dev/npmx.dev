@@ -47,26 +47,42 @@ export default defineEventHandler(async event => {
     return
   }
 
+  // /llms.txt at root is handled by the llm-docs middleware
+  if (path === '/llms.txt') {
+    return
+  }
+
   // /@org/pkg or /pkg → /package/org/pkg or /package/pkg
-  let pkgMatch = path.match(/^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)$/)
+  // Also handles trailing /llms.txt or /llms_full.txt suffixes
+  let pkgMatch = path.match(
+    /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+?)(?<suffix>\.md|\/(?:llms\.txt|llms_full\.txt))?$/,
+  )
   if (pkgMatch?.groups) {
     const args = [pkgMatch.groups.org, pkgMatch.groups.name].filter(Boolean).join('/')
+    const suffix = pkgMatch.groups.suffix ?? ''
     setHeader(event, 'cache-control', cacheControl)
-    return sendRedirect(event, `/package/${args}` + (query ? '?' + query : ''), 301)
+    return sendRedirect(event, `/package/${args}${suffix}` + (query ? '?' + query : ''), 301)
   }
 
   // /@org/pkg/v/version or /@org/pkg@version → /package/org/pkg/v/version
   // /pkg/v/version or /pkg@version → /package/pkg/v/version
+  // Also handles trailing /llms.txt or /llms_full.txt suffixes
   const pkgVersionMatch =
-    path.match(/^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)\/v\/(?<version>[^/]+)$/) ||
-    path.match(/^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)@(?<version>[^/]+)$/)
+    path.match(
+      /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)\/v\/(?<version>[^/]+)(?<suffix>\/(?:llms\.txt|llms_full\.txt))?$/,
+    ) ||
+    path.match(
+      /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)@(?<version>[^/]+)(?<suffix>\/(?:llms\.txt|llms_full\.txt))?$/,
+    )
 
   if (pkgVersionMatch?.groups) {
     const args = [pkgVersionMatch.groups.org, pkgVersionMatch.groups.name].filter(Boolean).join('/')
+    const versionSuffix = pkgVersionMatch.groups.suffix ?? ''
     setHeader(event, 'cache-control', cacheControl)
     return sendRedirect(
       event,
-      `/package/${args}/v/${pkgVersionMatch.groups.version}` + (query ? '?' + query : ''),
+      `/package/${args}/v/${pkgVersionMatch.groups.version}${versionSuffix}` +
+        (query ? '?' + query : ''),
       301,
     )
   }
