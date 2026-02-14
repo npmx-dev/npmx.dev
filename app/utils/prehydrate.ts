@@ -51,7 +51,7 @@ export function initPreferencesOnPrehydrate() {
     document.documentElement.dataset.pm = pm
 
     // Read sidebar preferences from separate localStorage key
-    const sidebar = JSON.parse(localStorage.getItem('npmx-sidebar-preferences') || '{}')
-    document.documentElement.dataset.collapsed = sidebar.collapsed?.join(' ') ?? ''
+    const sidebar = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+    document.documentElement.dataset.collapsed = sidebar.sidebar?.collapsed?.join(' ') ?? ''
   })
 }
