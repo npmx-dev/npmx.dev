@@ -183,7 +183,7 @@ import {
   SettingsBgThemePicker,
   SettingsToggle,
   TagStatic,
-  TagRadioButton,
+  RadioBase,
   TerminalExecute,
   TerminalInstall,
   TooltipAnnounce,
@@ -430,9 +430,9 @@ describe('component accessibility audits', () => {
     })
   })
 
-  describe('TagRadioButton', () => {
+  describe('RadioBase', () => {
     it('should have no accessibility violations', async () => {
-      const component = await mountSuspended(TagRadioButton, {
+      const component = await mountSuspended(RadioBase, {
         props: { value: 'option1', modelValue: 'option2' },
         slots: { default: 'Tag content' },
       })
@@ -441,7 +441,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when checked', async () => {
-      const component = await mountSuspended(TagRadioButton, {
+      const component = await mountSuspended(RadioBase, {
         props: { value: 'option1', modelValue: 'option1' },
         slots: { default: 'Tag content' },
       })
@@ -450,7 +450,7 @@ describe('component accessibility audits', () => {
     })
 
     it('should have no accessibility violations when disabled', async () => {
-      const component = await mountSuspended(TagRadioButton, {
+      const component = await mountSuspended(RadioBase, {
         props: { value: 'option1', modelValue: 'option2', disabled: true },
         slots: { default: 'Tag content' },
       })

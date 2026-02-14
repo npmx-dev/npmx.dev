@@ -285,20 +285,6 @@ const xAxisLabels = computed(() => {
   return chartDataset.value.map(item => item.name)
 })
 
-// Handle keyboard navigation for semver group toggle
-function handleGroupingKeydown(event: KeyboardEvent) {
-  if (pending.value) return
-  if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault()
-    // Toggle between major and minor
-    groupingMode.value = groupingMode.value === 'major' ? 'minor' : 'major'
-  } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-    event.preventDefault()
-    // Arrow keys also toggle
-    groupingMode.value = groupingMode.value === 'major' ? 'minor' : 'major'
-  }
-}
-
 // Calculate last week date range (matches npm's "last-week" API)
 const startDate = computed(() => {
   const today = new Date()
@@ -326,48 +312,29 @@ const endDate = computed(() => {
     :aria-busy="pending ? 'true' : 'false'"
   >
     <div class="w-full mb-4 flex flex-col gap-3">
-      <div class="flex flex-col sm:flex-row gap-3 sm:gap-2 sm:items-end">
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-start">
         <div class="flex flex-col gap-1 w-fit sm:shrink-0">
           <label class="text-3xs font-mono text-fg-subtle tracking-wide uppercase">
             {{ $t('package.versions.distribution_title') }}
           </label>
-          <div
-            class="flex items-center bg-bg-subtle border border-border rounded-md"
-            role="group"
-            :aria-label="$t('package.versions.distribution_title')"
-            tabindex="0"
-            @keydown="handleGroupingKeydown"
-          >
-            <button
-              type="button"
-              :class="[
-                'px-4 py-1.75 font-mono text-sm transition-colors rounded-s-md',
-                groupingMode === 'major'
-                  ? 'bg-accent text-bg font-medium'
-                  : 'text-fg-subtle hover:text-fg hover:bg-bg-subtle/50',
-              ]"
-              :aria-pressed="groupingMode === 'major'"
+          <div class="flex flex-col">
+            <RadioBase
+              :model-value="groupingMode"
+              :value="'major'"
               :disabled="pending"
-              tabindex="-1"
-              @click="groupingMode = 'major'"
+              @update:modelValue="groupingMode = 'major'"
             >
               {{ $t('package.versions.grouping_major') }}
-            </button>
-            <button
-              type="button"
-              :class="[
-                'px-4 py-1.75 font-mono text-sm transition-colors rounded-e-md border-is border-border',
-                groupingMode === 'minor'
-                  ? 'bg-accent text-bg font-medium'
-                  : 'text-fg-subtle hover:text-fg hover:bg-bg-subtle/50',
-              ]"
-              :aria-pressed="groupingMode === 'minor'"
+            </RadioBase>
+            <RadioBase
+              :model-value="groupingMode"
+              :value="'minor'"
               :disabled="pending"
-              tabindex="-1"
               @click="groupingMode = 'minor'"
+              @update:model-value="groupingMode = 'minor'"
             >
               {{ $t('package.versions.grouping_minor') }}
-            </button>
+            </RadioBase>
           </div>
         </div>
 

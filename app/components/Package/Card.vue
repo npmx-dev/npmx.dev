@@ -167,16 +167,19 @@ const numberFormatter = useNumberFormatter()
       class="relative z-10 flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-border list-none m-0 p-0 pointer-events-none items-center"
     >
       <li v-for="keyword in result.package.keywords.slice(0, 5)" :key="keyword">
-        <ButtonBase
+        <CheckboxBase
           class="pointer-events-auto"
+          :key="keyword"
+          variant="tag"
+          hide-checkbox
           size="small"
-          :aria-pressed="props.filters?.keywords.includes(keyword)"
+          :model-value="props.filters?.keywords.includes(keyword)"
           :title="`Filter by ${keyword}`"
-          :data-result-index="index"
-          @click.stop="emit('clickKeyword', keyword)"
+          @update:modelValue="emit('clickKeyword', keyword)"
+          :value="keyword"
         >
           {{ keyword }}
-        </ButtonBase>
+        </CheckboxBase>
       </li>
       <li>
         <span

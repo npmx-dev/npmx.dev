@@ -19,25 +19,19 @@ const emit = defineEmits<{
         <span class="max-w-32 truncate">{{
           Array.isArray(chip.value) ? chip.value.join(', ') : chip.value
         }}</span>
-        <button
-          type="button"
-          class="flex items-center p-1 -m-1 hover:text-fg rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+        <ButtonBase
           :aria-label="$t('filters.remove_filter', { label: chip.label })"
+          size="small"
           @click="emit('remove', chip)"
         >
           <span class="i-lucide:x w-3 h-3" aria-hidden="true" />
-        </button>
+        </ButtonBase>
       </TagStatic>
     </TransitionGroup>
 
-    <button
-      v-if="chips.length > 1"
-      type="button"
-      class="text-sm p-0.5 text-fg-muted hover:text-fg underline transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2"
-      @click="emit('clearAll')"
-    >
+    <ButtonBase v-if="chips.length > 1" type="button" size="small" @click="emit('clearAll')">
       {{ $t('filters.clear_all') }}
-    </button>
+    </ButtonBase>
   </div>
 </template>
 
