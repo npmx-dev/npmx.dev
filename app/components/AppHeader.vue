@@ -73,6 +73,14 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         external: false,
         iconClass: 'i-custom:a11y',
       },
+      {
+        name: 'Translation Status',
+        label: $t('translation_status.title'),
+        to: { name: 'translation-status' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:languages',
+      },
     ],
   },
   {

@@ -55,6 +55,7 @@ const jsonStatus: I18nStatus = {
   sourceLocale: {
     lang: sourceLocale.lang,
     label: sourceLocale.label,
+    totalKeys,
   },
   locales: locales.map(locale => {
     const localization = fileStatus.localizations.find(l => l.lang === locale.lang)

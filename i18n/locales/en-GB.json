@@ -45,5 +45,8 @@
       "error": "Failed to load organisations",
       "empty": "No organisations found"
     }
+  },
+  "translation_status": {
+    "guide": "localisation (i18n) guide"
   }
 }
