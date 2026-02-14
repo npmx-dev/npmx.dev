@@ -1882,6 +1882,9 @@
             "taken": {
               "type": "string"
             },
+            "missing_permission": {
+              "type": "string"
+            },
             "similar_warning": {
               "type": "string"
             },

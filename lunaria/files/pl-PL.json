@@ -625,6 +625,7 @@
       "invalid_name": "Nieprawidłowa nazwa pakietu:",
       "available": "Ta nazwa jest dostępna!",
       "taken": "Ta nazwa jest już zajęta.",
+      "missing_permission": "Nie masz uprawnień aby dodać pakiet do scope’u {'@'}{scope}.",
       "similar_warning": "Istnieją podobne pakiety — npm może odrzucić tę nazwę:",
       "related": "Powiązane pakiety:",
       "scope_warning_title": "Rozważ użycie pakietu ze scope",
