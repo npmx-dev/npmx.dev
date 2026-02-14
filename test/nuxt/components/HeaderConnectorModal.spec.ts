@@ -101,7 +101,7 @@ function resetMockState() {
     error: null,
     lastExecutionTime: null,
   }
-  mockSettings.value.connector = {
+  mockUserLocalSettings.value.connector = {
     autoOpenURL: false,
   }
 }
@@ -112,19 +112,12 @@ function simulateConnect() {
   mockState.value.avatar = 'https://example.com/avatar.png'
 }
 
-const mockSettings = ref({
-  relativeDates: false,
-  includeTypesInInstall: true,
-  accentColorId: null,
-  hidePlatformPackages: true,
-  selectedLocale: null,
-  preferredBackgroundTheme: null,
-  searchProvider: 'npm',
-  connector: {
-    autoOpenURL: false,
-  },
+const mockUserLocalSettings = ref({
   sidebar: {
     collapsed: [],
+  },
+  connector: {
+    autoOpenURL: false,
   },
 })
 
@@ -132,8 +125,8 @@ mockNuxtImport('useConnector', () => {
   return createMockUseConnector
 })
 
-mockNuxtImport('useSettings', () => {
-  return () => ({ settings: mockSettings })
+mockNuxtImport('useUserLocalSettings', () => {
+  return () => ({ userLocalSettings: mockUserLocalSettings })
 })
 
 mockNuxtImport('useSelectedPackageManager', () => {

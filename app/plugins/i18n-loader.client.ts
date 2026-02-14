@@ -1,20 +1,18 @@
 export default defineNuxtPlugin({
+  name: 'i18n-loader',
+  dependsOn: ['preferences-sync'],
   enforce: 'post',
   env: { islands: false },
   setup() {
     const { $i18n } = useNuxtApp()
     const { locale, locales, setLocale } = $i18n
-    const { settings } = useSettings()
-    const settingsLocale = settings.value.selectedLocale
+    const { preferences } = useUserPreferences()
+    const settingsLocale = preferences.value.selectedLocale
 
-    if (
-      settingsLocale &&
-      //   Check if the value is a supported locale
-      locales.value.map(l => l.code).includes(settingsLocale) &&
-      //   Check if the value is not a current locale
-      settingsLocale !== locale.value
-    ) {
-      setLocale(settingsLocale)
+    const matchedLocale = locales.value.map(l => l.code).find(code => code === settingsLocale)
+
+    if (matchedLocale && matchedLocale !== locale.value) {
+      setLocale(matchedLocale)
     }
   },
 })

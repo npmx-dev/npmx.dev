@@ -1,0 +1,55 @@
+import { object, string, boolean, nullable, optional, picklist, type InferOutput } from 'valibot'
+import { ACCENT_COLORS, BACKGROUND_THEMES } from '#shared/utils/constants'
+
+const AccentColorIdSchema = picklist(Object.keys(ACCENT_COLORS.light) as [string, ...string[]])
+
+const BackgroundThemeIdSchema = picklist(Object.keys(BACKGROUND_THEMES) as [string, ...string[]])
+
+const ColorModePreferenceSchema = picklist(['light', 'dark', 'system'])
+
+const SearchProviderSchema = picklist(['npm', 'algolia'])
+
+export const UserPreferencesSchema = object({
+  /** Display dates as relative (e.g., "3 days ago") instead of absolute */
+  relativeDates: optional(boolean()),
+  /** Include @types/* package in install command for packages without built-in types */
+  includeTypesInInstall: optional(boolean()),
+  /** Accent color theme ID (e.g., "rose", "amber", "emerald") */
+  accentColorId: optional(nullable(AccentColorIdSchema)),
+  /** Preferred background shade */
+  preferredBackgroundTheme: optional(nullable(BackgroundThemeIdSchema)),
+  /** Hide platform-specific packages (e.g., @scope/pkg-linux-x64) from search results */
+  hidePlatformPackages: optional(boolean()),
+  /** User-selected locale code (e.g., "en", "de", "ja") */
+  selectedLocale: optional(nullable(string())),
+  /** Color mode preference: 'light', 'dark', or 'system' */
+  colorModePreference: optional(nullable(ColorModePreferenceSchema)),
+  /** Search provider for package search: 'npm' or 'algolia' */
+  searchProvider: optional(SearchProviderSchema),
+  /** Timestamp of last update (ISO 8601) - managed by server */
+  updatedAt: optional(string()),
+})
+
+export type UserPreferences = InferOutput<typeof UserPreferencesSchema>
+
+export type AccentColorId = keyof typeof ACCENT_COLORS.light
+export type BackgroundThemeId = keyof typeof BACKGROUND_THEMES
+export type ColorModePreference = 'light' | 'dark' | 'system'
+export type SearchProvider = 'npm' | 'algolia'
+
+/**
+ * Default user preferences.
+ * Used when creating new user preferences or merging with partial updates.
+ */
+export const DEFAULT_USER_PREFERENCES: Required<Omit<UserPreferences, 'updatedAt'>> = {
+  relativeDates: false,
+  includeTypesInInstall: true,
+  accentColorId: null,
+  preferredBackgroundTheme: null,
+  hidePlatformPackages: true,
+  selectedLocale: null,
+  colorModePreference: null,
+  searchProvider: 'algolia',
+}
+
+export const USER_PREFERENCES_STORAGE_BASE = 'npmx-kv-user-preferences'
