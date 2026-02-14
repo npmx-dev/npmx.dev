@@ -162,6 +162,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'de-DE.json',
     name: 'Deutsch',
   },
+    {
+    code: 'ta-IN',
+    file: 'ta-IN.json',
+    name: 'தமிழ்',
+  },
   {
     code: 'hi-IN',
     file: 'hi-IN.json',
