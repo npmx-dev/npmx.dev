@@ -20,6 +20,7 @@ const canGoBack = useCanGoBack()
 const { error, fetchStatus, localesMap, status } = useI18nStatus()
 const { locale, locales, availableLocales } = useI18n()
 const { copy, copied } = useClipboard()
+const nuxt = useNuxtApp()
 
 const localeMap = locales.value.reduce(
   (acc, l) => {
@@ -32,7 +33,12 @@ const localeMap = locales.value.reduce(
 type LocaleKey = (typeof availableLocales)[number]
 
 const generatedAt = computed(() => {
-  return status.value?.generatedAt
+  const gat = status.value?.generatedAt
+  if (import.meta.client) {
+    return (nuxt.isHydrated ? new Date().toISOString() : gat) ?? new Date().toISOString()
+  }
+
+  return gat ?? new Date().toISOString()
 })
 
 interface FileStatus extends Omit<I18nLocaleStatus, 'lang'> {
@@ -104,12 +110,7 @@ ${template}`
           class="text-fg-muted text-lg"
         >
           <template #date>
-            <NuxtTime
-              :locale
-              :datetime="generatedAt ?? new Date().toISOString()"
-              date-style="long"
-              time-style="medium"
-            />
+            <NuxtTime :locale :datetime="generatedAt" date-style="long" time-style="medium" />
           </template>
         </i18n-t>
       </header>
