@@ -332,14 +332,13 @@ const canPublishToScope = computed(() => {
   return orgMembership.value[scope] === true
 })
 
-// Show claim prompt when valid name, available, connected, and has permission
+// Show claim prompt when valid name, available, either not connected or connected and has permission
 const showClaimPrompt = computed(() => {
   return (
-    isConnected.value &&
     isValidPackageName.value &&
     packageAvailability.value?.available === true &&
     packageAvailability.value.name === query.value.trim() &&
-    canPublishToScope.value &&
+    (!isConnected.value || (isConnected.value && canPublishToScope.value)) &&
     status.value !== 'pending'
   )
 })
@@ -569,7 +568,7 @@ defineOgImageComponent('Default', {
           <!-- Claim prompt - shown at top when valid name but no exact match -->
           <div
             v-if="showClaimPrompt && visibleResults.total > 0"
-            class="mb-6 p-4 bg-bg-subtle border border-border rounded-lg flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4"
+            class="mb-6 p-4 bg-bg-subtle border border-border rounded-lg sm:flex hidden flex-row sm:items-center gap-3 sm:gap-4"
           >
             <div class="flex-1 min-w-0">
               <p class="font-mono text-sm text-fg">
@@ -687,7 +686,7 @@ defineOgImageComponent('Default', {
             </div>
 
             <!-- Offer to claim the package name if it's valid -->
-            <div v-if="showClaimPrompt" class="max-w-md mx-auto text-center">
+            <div v-if="showClaimPrompt" class="max-w-md mx-auto text-center hidden sm:block">
               <div class="p-4 bg-bg-subtle border border-border rounded-lg">
                 <p class="text-sm text-fg-muted mb-3">{{ $t('search.want_to_claim') }}</p>
                 <button
@@ -741,6 +740,11 @@ defineOgImageComponent('Default', {
     </div>
 
     <!-- Claim package modal -->
-    <PackageClaimPackageModal ref="claimPackageModalRef" :package-name="query" />
+    <PackageClaimPackageModal
+      ref="claimPackageModalRef"
+      :package-name="query"
+      :package-scope="packageScope"
+      :can-publish-to-scope="canPublishToScope"
+    />
   </main>
 </template>

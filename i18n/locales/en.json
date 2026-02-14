@@ -624,6 +624,7 @@
       "invalid_name": "Invalid package name:",
       "available": "This name is available!",
       "taken": "This name is already taken.",
+      "missing_permission": "You do not have permission to add a package to scope {'@'}{scope}.",
       "similar_warning": "Similar packages exist - npm may reject this name:",
       "related": "Related packages:",
       "scope_warning_title": "Consider using a scoped package instead",
