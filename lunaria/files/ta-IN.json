@@ -1,0 +1,1071 @@
+{
+  "seo": {
+    "home": {
+      "title": "npmx - npm Registry-க்கான தொகுப்பு உலாவி",
+      "description": "npm registry-க்கான வேகமான, நவீன உலாவி. நவீன இடைமுகத்துடன் தொகுப்புகளைத் தேடுங்கள், உலாவுங்கள், ஆராயுங்கள்."
+    }
+  },
+  "built_at": "{0} உருவாக்கப்பட்டது",
+  "alt_logo": "npmx சின்னம்",
+  "tagline": "npm registry-க்கான வேகமான, நவீன உலாவி",
+  "non_affiliation_disclaimer": "npm, Inc. உடன் தொடர்பில்லை.",
+  "trademark_disclaimer": "npm என்பது npm, Inc.-இன் பதிவுசெய்யப்பட்ட வணிகமுத்திரை. இந்த தளம் npm, Inc. உடன் தொடர்பில்லை.",
+  "footer": {
+    "about": "பற்றி",
+    "docs": "ஆவணங்கள்",
+    "source": "மூலம்",
+    "social": "சமூகம்",
+    "chat": "அரட்டை",
+    "keyboard_shortcuts": "விசைப்பலகை குறுக்குவழிகள்"
+  },
+  "shortcuts": {
+    "section": {
+      "global": "உலகளாவிய",
+      "search": "தேடல்",
+      "package": "தொகுப்பு"
+    },
+    "focus_search": "தேடலில் கவனம்",
+    "show_kbd_hints": "விசைப்பலகை குறிப்புகளை முன்னிலைப்படுத்து",
+    "settings": "அமைப்புகளைத் திற",
+    "compare": "ஒப்பீட்டைத் திற",
+    "compare_from_package": "ஒப்பீட்டைத் திற (தற்போதைய தொகுப்புடன் முன்னிரப்பப்பட்டது)",
+    "navigate_results": "முடிவுகளை வழிநடத்து",
+    "go_to_result": "முடிவுக்குச் செல்",
+    "open_code_view": "குறியீடு காட்சியைத் திற",
+    "open_docs": "ஆவணங்களைத் திற"
+  },
+  "search": {
+    "label": "npm தொகுப்புகளைத் தேடு",
+    "placeholder": "தொகுப்புகளைத் தேடு...",
+    "button": "தேடு",
+    "searching": "தேடுகிறது...",
+    "found_packages": "தொகுப்புகள் எதுவும் கிடைக்கவில்லை | 1 தொகுப்பு கிடைத்தது | {count} தொகுப்புகள் கிடைத்தன",
+    "found_packages_sorted": "முதல் {count} முடிவை வரிசைப்படுத்துகிறது | முதல் {count} முடிவுகளை வரிசைப்படுத்துகிறது",
+    "updating": "(புதுப்பிக்கிறது...)",
+    "no_results": "\"{query}\" க்கான தொகுப்புகள் எதுவும் கிடைக்கவில்லை",
+    "rate_limited": "npm வீத வரம்பை எட்டியது, சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்",
+    "title": "தேடல்",
+    "title_search": "தேடல்: {search}",
+    "title_packages": "தொகுப்புகளைத் தேடு",
+    "meta_description": "'{search}' க்கான தேடல் முடிவுகள்",
+    "meta_description_packages": "npm தொகுப்புகளைத் தேடு",
+    "not_taken": "{name} எடுக்கப்படவில்லை",
+    "claim_prompt": "இந்த தொகுப்புப் பெயரை npm-ல் உரிமைகோரு",
+    "claim_button": "\"{name}\" ஐ உரிமைகோரு",
+    "want_to_claim": "இந்த தொகுப்புப் பெயரை உரிமைகோர விரும்புகிறீர்களா?",
+    "start_typing": "தொகுப்புகளைத் தேட தட்டச்சு செய்யத் தொடங்குங்கள்",
+    "algolia_disclaimer": "Algolia மூலம் இயக்கப்படுகிறது",
+    "exact_match": "சரியானது",
+    "suggestion": {
+      "user": "பயனர்",
+      "org": "நிறுவனம்",
+      "view_user_packages": "இந்தப் பயனரின் தொகுப்புகளைக் காண்க",
+      "view_org_packages": "இந்த நிறுவனத்தின் தொகுப்புகளைக் காண்க"
+    }
+  },
+  "nav": {
+    "main_navigation": "முதன்மை",
+    "popular_packages": "பிரபலமான தொகுப்புகள்",
+    "settings": "அமைப்புகள்",
+    "compare": "ஒப்பிடு",
+    "back": "பின்செல்",
+    "menu": "பட்டி",
+    "mobile_menu": "வழிசெலுத்தல் பட்டி",
+    "open_menu": "பட்டியைத் திற",
+    "links": "இணைப்புகள்",
+    "tap_to_search": "தேட தட்டவும்"
+  },
+  "settings": {
+    "title": "அமைப்புகள்",
+    "tagline": "உங்கள் npmx அனுபவத்தைத் தனிப்பயனாக்கு",
+    "meta_description": "தீம், மொழி மற்றும் காட்சி விருப்பங்களுடன் உங்கள் npmx.dev அனுபவத்தைத் தனிப்பயனாக்குங்கள்.",
+    "sections": {
+      "appearance": "தோற்றம்",
+      "display": "காட்சி",
+      "search": "தரவு மூலம்",
+      "language": "மொழி"
+    },
+    "data_source": {
+      "label": "தரவு மூலம்",
+      "description": "npmx தேடல் தரவை எங்கிருந்து பெறுகிறது என்பதைத் தேர்வு செய்யுங்கள். தனிப்பட்ட தொகுப்புப் பக்கங்கள் எப்போதும் npm registry-ஐ நேரடியாகப் பயன்படுத்துகின்றன.",
+      "npm": "npm Registry",
+      "npm_description": "அதிகாரப்பூர்வ npm registry-யிலிருந்து நேரடியாக தேடல், நிறுவனம் மற்றும் பயனர் பட்டியல்களைப் பெறுகிறது. நம்பகமானது, ஆனால் மெதுவாக இருக்கலாம்.",
+      "algolia": "Algolia",
+      "algolia_description": "வேகமான தேடல், நிறுவனம் மற்றும் பயனர் பக்கங்களுக்கு Algolia-ஐப் பயன்படுத்துகிறது."
+    },
+    "relative_dates": "ஒப்பீட்டு தேதிகள்",
+    "include_types": "நிறுவலில் {'@'}types ஐ சேர்",
+    "include_types_description": "வகைகள் இல்லாத தொகுப்புகளுக்கு நிறுவல் கட்டளைகளில் {'@'}types தொகுப்பைச் சேர்",
+    "hide_platform_packages": "தேடலில் தளம்-குறிப்பிட்ட தொகுப்புகளை மறை",
+    "hide_platform_packages_description": "முடிவுகளிலிருந்து {'@'}esbuild/linux-x64 போன்ற நேட்டிவ் பைனரி தொகுப்புகளை மறை",
+    "theme": "தீம்",
+    "theme_light": "வெளிர்",
+    "theme_dark": "இருண்ட",
+    "theme_system": "கணினி",
+    "language": "மொழி",
+    "help_translate": "npmx-ஐ மொழிபெயர்க்க உதவுங்கள்",
+    "accent_colors": "வலியுறுத்தல் வண்ணங்கள்",
+    "clear_accent": "வலியுறுத்தல் வண்ணத்தை அழி",
+    "translation_progress": "மொழிபெயர்ப்பு முன்னேற்றம்",
+    "background_themes": "பின்புல நிழல்"
+  },
+  "i18n": {
+    "missing_keys": "{count} விடுபட்ட மொழிபெயர்ப்பு | {count} விடுபட்ட மொழிபெயர்ப்புகள்",
+    "copy_keys": "சாவிகளை நகலெடு",
+    "show_more_keys": "மேலும் {count} காண்பி...",
+    "contribute_hint": "விடுபட்ட சாவிகளைச் சேர்த்து இந்த மொழிபெயர்ப்பை மேம்படுத்த உதவுங்கள்.",
+    "edit_on_github": "GitHub-ல் திருத்து",
+    "view_guide": "மொழிபெயர்ப்பு வழிகாட்டி"
+  },
+  "common": {
+    "loading": "ஏற்றுகிறது...",
+    "loading_more": "மேலும் ஏற்றுகிறது...",
+    "loading_packages": "தொகுப்புகளை ஏற்றுகிறது...",
+    "end_of_results": "முடிவுகளின் முடிவு",
+    "try_again": "மீண்டும் முயற்சி",
+    "close": "மூடு",
+    "retry": "மீண்டும் முயற்சி",
+    "copy": "நகலெடு",
+    "copied": "நகலெடுக்கப்பட்டது!",
+    "skip_link": "முதன்மை உள்ளடக்கத்திற்குத் தாவு",
+    "warnings": "எச்சரிக்கைகள்:",
+    "go_back_home": "முகப்புக்குத் திரும்பு",
+    "view_on_npm": "npm-ல் காண்க",
+    "per_week": "/ வாரம்",
+    "vanity_downloads_hint": "அலங்கார எண்: தொகுப்புகள் எதுவும் காட்டப்படவில்லை | அலங்கார எண்: காட்டப்பட்ட தொகுப்புக்கு | அலங்கார எண்: {count} காட்டப்பட்ட தொகுப்புகளின் கூட்டுத்தொகை",
+    "sort": {
+      "name": "பெயர்",
+      "role": "பங்கு",
+      "members": "உறுப்பினர்கள்"
+    },
+    "scroll_to_top": "மேலே செல்"
+  },
+  "package": {
+    "not_found": "தொகுப்பு கிடைக்கவில்லை",
+    "not_found_message": "தொகுப்பைக் கண்டுபிடிக்க இயலவில்லை.",
+    "no_description": "விளக்கம் வழங்கப்படவில்லை",
+    "not_latest": "(சமீபத்தியது அல்ல)",
+    "verified_provenance": "சரிபார்க்கப்பட்ட மூலநிலை",
+    "view_permalink": "இந்தப் பதிப்பின் நிரந்தர இணைப்பைக் காண்க",
+    "navigation": "தொகுப்பு",
+    "copy_name": "தொகுப்புப் பெயரை நகலெடு",
+    "deprecation": {
+      "package": "இந்த தொகுப்பு நிறுத்தப்பட்டது.",
+      "version": "இந்தப் பதிப்பு நிறுத்தப்பட்டது.",
+      "no_reason": "காரணம் வழங்கப்படவில்லை"
+    },
+    "replacement": {
+      "title": "இந்த சார்பு உங்களுக்குத் தேவைப்படாமல் இருக்கலாம்.",
+      "native": "இதை {replacement} மூலம் மாற்றலாம், Node {nodeVersion} முதல் கிடைக்கிறது.",
+      "simple": "{community} இந்த தொகுப்பை அதிகப்படியானது என்று கொடியிட்டுள்ளது, அறிவுரை: {replacement}.",
+      "documented": "{community} இந்த தொகுப்புக்கு மேலும் செயல்திறன் மிக்க மாற்றுகள் உள்ளன என்று கொடியிட்டுள்ளது.",
+      "none": "இந்த தொகுப்பு இனி தேவையில்லை என்று கொடியிடப்பட்டுள்ளது, அதன் செயல்பாடு அனைத்து இயந்திரங்களிலும் நேரடியாகக் கிடைக்கிறது.",
+      "learn_more": "மேலும் அறிக",
+      "learn_more_above": "மேலே மேலும் அறிக.",
+      "mdn": "MDN",
+      "community": "சமூகம்",
+      "consider_no_dep": "+ சார்பு வேண்டாமா?"
+    },
+    "stats": {
+      "license": "உரிமம்",
+      "deps": "சார்புகள்",
+      "install_size": "நிறுவல் அளவு",
+      "vulns": "பாதிப்புகள்",
+      "published": "வெளியிடப்பட்டது",
+      "published_tooltip": "{package}{'@'}{version} வெளியிடப்பட்ட தேதி",
+      "view_dependency_graph": "சார்பு வரைபடத்தைக் காண்க",
+      "inspect_dependency_tree": "சார்பு மரத்தை ஆராய்க",
+      "size_tooltip": {
+        "unpacked": "{size} விரிக்கப்பட்ட அளவு (இந்த தொகுப்பு)",
+        "total": "{size} மொத்த விரிக்கப்பட்ட அளவு (linux-x64-க்கான {count} சார்பு உட்பட) | {size} மொத்த விரிக்கப்பட்ட அளவு (linux-x64-க்கான அனைத்து {count} சார்புகள் உட்பட)"
+      }
+    },
+    "skills": {
+      "title": "Agent திறன்கள்",
+      "skills_available": "{count} திறன் கிடைக்கிறது | {count} திறன்கள் கிடைக்கின்றன",
+      "compatible_with": "{tool} உடன் இணக்கமானது",
+      "install": "நிறுவு",
+      "installation_method": "நிறுவல் முறை",
+      "learn_more": "மேலும் அறிக",
+      "available_skills": "கிடைக்கும் திறன்கள்",
+      "click_to_expand": "விரிவாக்க கிளிக் செய்யவும்",
+      "no_description": "விளக்கம் இல்லை",
+      "file_counts": {
+        "scripts": "{count} ஸ்கிரிப்ட் | {count} ஸ்கிரிப்ட்கள்",
+        "refs": "{count} குறிப்பு | {count} குறிப்புகள்",
+        "assets": "{count} சொத்து | {count} சொத்துகள்"
+      },
+      "view_source": "மூலத்தைக் காண்க"
+    },
+    "links": {
+      "repo": "களஞ்சியம்",
+      "homepage": "முகப்புப்பக்கம்",
+      "issues": "சிக்கல்கள்",
+      "jsr": "jsr",
+      "code": "குறியீடு",
+      "docs": "ஆவணங்கள்",
+      "fund": "நிதி",
+      "compare": "ஒப்பிடு"
+    },
+    "likes": {
+      "like": "இந்த தொகுப்பை விரும்பு",
+      "unlike": "இந்த தொகுப்பை விரும்பாமை"
+    },
+    "docs": {
+      "not_available": "ஆவணங்கள் கிடைக்கவில்லை",
+      "not_available_detail": "இந்தப் பதிப்புக்கான ஆவணங்களை உருவாக்க இயலவில்லை."
+    },
+    "get_started": {
+      "title": "தொடங்குங்கள்",
+      "pm_label": "தொகுப்பு மேலாளர்",
+      "copy_command": "நிறுவல் கட்டளையை நகலெடு",
+      "view_types": "{package} ஐக் காண்க"
+    },
+    "create": {
+      "title": "புதிய திட்டத்தை உருவாக்கு",
+      "copy_command": "உருவாக்கும் கட்டளையை நகலெடு",
+      "view": "{packageName} ஒரே பராமரிப்பாளரைக் கொண்டுள்ளது. மேலும் விவரங்களுக்கு கிளிக் செய்யவும்."
+    },
+    "run": {
+      "title": "இயக்கு",
+      "locally": "உள்ளூரில் இயக்கு"
+    },
+    "readme": {
+      "title": "Readme",
+      "no_readme": "README கிடைக்கவில்லை.",
+      "view_on_github": "GitHub-ல் காண்க",
+      "toc_title": "உள்ளடக்கம்",
+      "callout": {
+        "note": "குறிப்பு",
+        "tip": "உதவிக்குறிப்பு",
+        "important": "முக்கியம்",
+        "warning": "எச்சரிக்கை",
+        "caution": "கவனம்"
+      },
+      "copy_as_markdown": "README-ஐ Markdown ஆக நகலெடு"
+    },
+    "provenance_section": {
+      "title": "மூலநிலை",
+      "built_and_signed_on": "{provider}-ல் உருவாக்கப்பட்டு கையொப்பமிடப்பட்டது",
+      "view_build_summary": "உருவாக்க சுருக்கத்தைக் காண்க",
+      "source_commit": "மூல கமிட்",
+      "build_file": "உருவாக்க கோப்பு",
+      "public_ledger": "பொது பேரேடு",
+      "transparency_log_entry": "வெளிப்படைத்தன்மை பதிவு",
+      "view_more_details": "மேலும் விவரங்களைக் காண்க",
+      "error_loading": "மூலநிலை விவரங்களை ஏற்ற இயலவில்லை"
+    },
+    "security_downgrade": {
+      "title": "நம்பகத்தன்மை தரமிறக்கம்",
+      "description_to_none_provenance": "இந்தப் பதிப்பு {provenance} இல்லாமல் வெளியிடப்பட்டது.",
+      "description_to_none_trustedPublisher": "இந்தப் பதிப்பு {trustedPublishing} இல்லாமல் வெளியிடப்பட்டது.",
+      "description_to_provenance_trustedPublisher": "இந்தப் பதிப்பு {provenance} ஐப் பயன்படுத்துகிறது ஆனால் {trustedPublishing} இல்லை.",
+      "fallback_install_provenance": "நிறுவல் கட்டளைகள் {version}-க்கு நிலைநிறுத்தப்பட்டுள்ளன, மூலநிலை கொண்ட கடைசி பதிப்பு.",
+      "fallback_install_trustedPublisher": "நிறுவல் கட்டளைகள் {version}-க்கு நிலைநிறுத்தப்பட்டுள்ளன, நம்பகமான வெளியீட்டுடன் கூடிய கடைசி பதிப்பு.",
+      "provenance_link_text": "மூலநிலை",
+      "trusted_publishing_link_text": "நம்பகமான வெளியீடு"
+    },
+    "keywords_title": "முக்கிய வார்த்தைகள்",
+    "compatibility": "இணக்கத்தன்மை",
+    "card": {
+      "publisher": "வெளியீட்டாளர்",
+      "published": "வெளியிடப்பட்டது",
+      "weekly_downloads": "வாராந்திர பதிவிறக்கங்கள்",
+      "keywords": "முக்கிய வார்த்தைகள்",
+      "license": "உரிமம்"
+    },
+    "versions": {
+      "title": "பதிப்புகள்",
+      "collapse": "{tag} ஐ சுருக்கு",
+      "expand": "{tag} ஐ விரிவாக்கு",
+      "collapse_other": "மற்ற பதிப்புகளை சுருக்கு",
+      "expand_other": "மற்ற பதிப்புகளை விரிவாக்கு",
+      "collapse_major": "முதன்மை {major} ஐ சுருக்கு",
+      "expand_major": "முதன்மை {major} ஐ விரிவாக்கு",
+      "other_versions": "மற்ற பதிப்புகள்",
+      "more_tagged": "{count} மேலும் குறியிடப்பட்டவை",
+      "all_covered": "அனைத்து பதிப்புகளும் மேலே உள்ள குறிச்சொற்களால் உள்ளடக்கப்பட்டுள்ளன",
+      "deprecated_title": "{version} (நிறுத்தப்பட்டது)",
+      "view_all": "{count} பதிப்பைக் காண்க | அனைத்து {count} பதிப்புகளையும் காண்க"
+    },
+    "dependencies": {
+      "title": "சார்பு ({count}) | சார்புகள் ({count})",
+      "list_label": "தொகுப்பு சார்புகள்",
+      "show_all": "{count} சார்பைக் காண்பி | அனைத்து {count} சார்புகளையும் காண்பி",
+      "optional": "விருப்பமான",
+      "view_vulnerabilities": "பாதிப்புகளைக் காண்க",
+      "outdated_major": "{count} முதன்மை பதிப்பு பின்தங்கியுள்ளது (சமீபத்தியது: {latest}) | {count} முதன்மை பதிப்புகள் பின்தங்கியுள்ளன (சமீபத்தியது: {latest})",
+      "outdated_minor": "{count} சிறு பதிப்பு பின்தங்கியுள்ளது (சமீபத்தியது: {latest}) | {count} சிறு பதிப்புகள் பின்தங்கியுள்ளன (சமீபத்தியது: {latest})",
+      "outdated_patch": "திருத்தப்பட்ட புதுப்பிப்பு கிடைக்கிறது (சமீபத்தியது: {latest})"
+    },
+    "peer_dependencies": {
+      "title": "சக சார்பு ({count}) | சக சார்புகள் ({count})",
+      "list_label": "தொகுப்பு சக சார்புகள்",
+      "show_all": "{count} சக சார்பைக் காண்பி | அனைத்து {count} சக சார்புகளையும் காண்பி"
+    },
+    "optional_dependencies": {
+      "title": "விருப்ப சார்பு ({count}) | விருப்ப சார்புகள் ({count})",
+      "list_label": "தொகுப்பு விருப்ப சார்புகள்",
+      "show_all": "{count} விருப்ப சார்பைக் காண்பி | அனைத்து {count} விருப்ப சார்புகளையும் காண்பி"
+    },
+    "maintainers": {
+      "title": "பராமரிப்பாளர்கள்",
+      "list_label": "தொகுப்பு பராமரிப்பாளர்கள்",
+      "you": "(நீங்கள்)",
+      "via": "{teams} வழியாக",
+      "remove_owner": "{name} ஐ உரிமையாளராக நீக்கு",
+      "username_to_add": "உரிமையாளராகச் சேர்க்க பயனர்பெயர்",
+      "username_placeholder": "பயனர்பெயர்...",
+      "add_button": "சேர்",
+      "cancel_add": "உரிமையாளர் சேர்ப்பை ரத்துசெய்",
+      "add_owner": "+ உரிமையாளரைச் சேர்",
+      "show_more": "(மேலும் {count} காண்பி)",
+      "show_less": "(குறைவாகக் காண்பி)"
+    },
+    "trends": {
+      "granularity": "நுண்ணிலை",
+      "granularity_daily": "தினசரி",
+      "granularity_weekly": "வாராந்திர",
+      "granularity_monthly": "மாதாந்திர",
+      "granularity_yearly": "ஆண்டு",
+      "start_date": "தொடக்கம்",
+      "end_date": "முடிவு",
+      "loading": "ஏற்றுகிறது...",
+      "date_range": "{start} முதல் {end} வரை",
+      "date_range_multiline": "{start}\nமுதல் {end} வரை",
+      "download_file": "{fileType} பதிவிறக்கு",
+      "toggle_annotator": "குறிப்பாக்கியை நிலைமாற்று",
+      "legend_estimation": "மதிப்பீடு",
+      "no_data": "தரவு எதுவும் கிடைக்கவில்லை",
+      "y_axis_label": "{granularity} {facet}",
+      "items": {
+        "downloads": "பதிவிறக்கங்கள்"
+      }
+    },
+    "downloads": {
+      "title": "வாராந்திர பதிவிறக்கங்கள்",
+      "community_distribution": "சமூக ஏற்றுக்கொள்ளல் விநியோகத்தைக் காண்க"
+    },
+    "install_scripts": {
+      "title": "நிறுவல் ஸ்கிரிப்ட்கள்",
+      "script_label": "(ஸ்கிரிப்ட்)",
+      "npx_packages": "{count} npx தொகுப்பு | {count} npx தொகுப்புகள்",
+      "currently": "தற்போது {version}"
+    },
+    "playgrounds": {
+      "title": "முயற்சித்துப் பாருங்கள்",
+      "choose": "விளையாட்டுத் தளத்தைத் தேர்வு செய்யுங்கள்"
+    },
+    "metrics": {
+      "esm": "ES Modules ஆதரவு உள்ளது",
+      "cjs": "CommonJS ஆதரவு உள்ளது",
+      "no_esm": "ES Modules ஆதரவு இல்லை",
+      "types_label": "வகைகள்",
+      "types_included": "வகைகள் சேர்க்கப்பட்டுள்ளன",
+      "types_available": "{package} வழியாக வகைகள் கிடைக்கின்றன",
+      "no_types": "TypeScript வகைகள் இல்லை"
+    },
+    "license": {
+      "view_spdx": "SPDX-ல் உரிம உரையைக் காண்க",
+      "none": "இல்லை"
+    },
+    "vulnerabilities": {
+      "tree_found": "{packages}/{total} தொகுப்புகளில் {vulns} பாதிப்பு | {packages}/{total} தொகுப்புகளில் {vulns} பாதிப்புகள்",
+      "show_all_packages": "{count} பாதிக்கப்பட்ட தொகுப்பைக் காண்பி | அனைத்து {count} பாதிக்கப்பட்ட தொகுப்புகளையும் காண்பி",
+      "path": "பாதை",
+      "more": "+{count} மேலும்",
+      "packages_failed": "{count} தொகுப்பை சரிபார்க்க இயலவில்லை | {count} தொகுப்புகளை சரிபார்க்க இயலவில்லை",
+      "scan_failed": "பாதிப்புகளுக்கான ஸ்கேன் செய்ய இயலவில்லை",
+      "severity": {
+        "critical": "மிகமுக்கிய",
+        "high": "உயர்",
+        "moderate": "மிதமான",
+        "low": "குறைந்த"
+      },
+      "fixed_in_title": "பதிப்பு {version}-ல் சரிசெய்யப்பட்டது"
+    },
+    "deprecated": {
+      "label": "நிறுத்தப்பட்டது",
+      "tree_found": "{count} நிறுத்தப்பட்ட சார்பு | {count} நிறுத்தப்பட்ட சார்புகள்",
+      "show_all": "{count} நிறுத்தப்பட்ட தொகுப்பைக் காண்பி | அனைத்து {count} நிறுத்தப்பட்ட தொகுப்புகளையும் காண்பி"
+    },
+    "access": {
+      "title": "குழு அணுகல்",
+      "refresh": "குழு அணுகலைப் புதுப்பி",
+      "list_label": "குழு அணுகல் பட்டியல்",
+      "owner": "உரிமையாளர்",
+      "rw": "படிக்க/எழுத",
+      "ro": "படிக்க மட்டும்",
+      "revoke_access": "{name} அணுகலை திரும்பப்பெறு",
+      "no_access": "குழு அணுகல் எதுவும் கட்டமைக்கப்படவில்லை",
+      "select_team_label": "குழுவைத் தேர்வு செய்",
+      "loading_teams": "குழுக்களை ஏற்றுகிறது...",
+      "select_team": "குழுவைத் தேர்வு செய்",
+      "permission_label": "அனுமதி நிலை",
+      "permission": {
+        "read_only": "படிக்க மட்டும்",
+        "read_write": "படிக்க-எழுத"
+      },
+      "grant_button": "வழங்கு",
+      "cancel_grant": "அணுகல் வழங்குவதை ரத்துசெய்",
+      "grant_access": "+ குழு அணுகலை வழங்கு"
+    },
+    "list": {
+      "filter_label": "தொகுப்புகளை வடிகட்டு",
+      "filter_placeholder": "தொகுப்புகளை வடிகட்டு...",
+      "sort_label": "தொகுப்புகளை வரிசைப்படுத்து",
+      "showing_count": "{total} இல் {filtered} தொகுப்புகள் காட்டப்படுகின்றன"
+    },
+    "skeleton": {
+      "loading": "தொகுப்பு விவரங்களை ஏற்றுகிறது",
+      "maintainers": "பராமரிப்பாளர்கள்",
+      "keywords": "முக்கிய வார்த்தைகள்",
+      "versions": "பதிப்புகள்",
+      "dependencies": "சார்புகள்"
+    },
+    "sort": {
+      "downloads": "அதிகம் பதிவிறக்கப்பட்டவை",
+      "published": "சமீபத்தில் வெளியிடப்பட்டவை",
+      "name_asc": "பெயர் (அ-ஔ)",
+      "name_desc": "பெயர் (ஔ-அ)"
+    },
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    }
+  },
+  "connector": {
+    "modal": {
+      "title": "உள்ளூர் இணைப்பான்",
+      "contributor_badge": "பங்களிப்பாளர்கள் மட்டும்",
+      "contributor_notice": "இணைப்பான் இன்னும் npm-ல் வெளியிடப்படவில்லை. உள்ளூரில் இயக்குவதற்கு {link} ஐப் பார்க்கவும்.",
+      "contributor_link": "பங்களிப்பு வழிகாட்டி",
+      "connected": "இணைக்கப்பட்டது",
+      "connected_as_user": "~{user} ஆக இணைக்கப்பட்டது",
+      "connected_hint": "இப்போது நீங்கள் இணைய இடைமுகத்திலிருந்து தொகுப்புகளையும் நிறுவனங்களையும் நிர்வகிக்கலாம்.",
+      "disconnect": "துண்டி",
+      "run_hint": "நிர்வாக அம்சங்களை இயக்க உங்கள் கணினியில் இணைப்பானை இயக்கவும்.",
+      "copy_command": "கட்டளையை நகலெடு",
+      "copied": "நகலெடுக்கப்பட்டது",
+      "paste_token": "பின்னர் இணைக்க கீழே டோக்கனை ஒட்டவும்:",
+      "token_label": "டோக்கன்",
+      "token_placeholder": "டோக்கனை இங்கே ஒட்டவும்...",
+      "advanced": "மேம்பட்ட விருப்பங்கள்",
+      "port_label": "போர்ட்",
+      "warning": "எச்சரிக்கை",
+      "warning_text": "இது npmx உங்கள் npm CLI-ஐ அணுக அனுமதிக்கிறது. நீங்கள் நம்பும் தளங்களுடன் மட்டுமே இணைக்கவும்.",
+      "connect": "இணை",
+      "connecting": "இணைக்கிறது..."
+    }
+  },
+  "operations": {
+    "queue": {
+      "title": "செயல்பாட்டு வரிசை",
+      "clear_all": "அனைத்தையும் அழி",
+      "refresh": "செயல்பாடுகளைப் புதுப்பி",
+      "empty": "வரிசையில் செயல்பாடுகள் எதுவும் இல்லை",
+      "empty_hint": "தொகுப்பு அல்லது நிறுவனப் பக்கங்களிலிருந்து செயல்பாடுகளைச் சேர்க்கவும்",
+      "active_label": "செயலில் உள்ள செயல்பாடுகள்",
+      "otp_required": "OTP தேவை",
+      "otp_prompt": "தொடர OTP-ஐ உள்ளிடவும்",
+      "otp_placeholder": "OTP குறியீட்டை உள்ளிடவும்...",
+      "otp_label": "ஒருமுறை கடவுச்சொல்",
+      "retry_otp": "OTP-யுடன் மீண்டும் முயற்சி",
+      "retrying": "மீண்டும் முயற்சிக்கிறது...",
+      "approve_operation": "செயல்பாட்டை அங்கீகரி",
+      "remove_operation": "செயல்பாட்டை நீக்கு",
+      "approve_all": "அனைத்தையும் அங்கீகரி",
+      "execute": "இயக்கு",
+      "executing": "இயக்குகிறது...",
+      "log": "பதிவு",
+      "log_label": "நிறைவுற்ற செயல்பாடுகள் பதிவு",
+      "remove_from_log": "பதிவிலிருந்து நீக்கு"
+    }
+  },
+  "org": {
+    "teams": {
+      "title": "குழுக்கள்",
+      "refresh": "குழுக்களைப் புதுப்பி",
+      "filter_label": "குழுக்களை வடிகட்டு",
+      "filter_placeholder": "குழுக்களை வடிகட்டு...",
+      "sort_by": "வரிசைப்படுத்து",
+      "loading": "குழுக்களை ஏற்றுகிறது...",
+      "no_teams": "குழுக்கள் எதுவும் கிடைக்கவில்லை",
+      "list_label": "நிறுவனக் குழுக்கள்",
+      "delete_team": "{name} குழுவை நீக்கு",
+      "member_count": "{count} உறுப்பினர் | {count} உறுப்பினர்கள்",
+      "members_of": "{team} இன் உறுப்பினர்கள்",
+      "no_members": "உறுப்பினர்கள் இல்லை",
+      "remove_user": "{user} ஐ குழுவிலிருந்து நீக்கு",
+      "username_to_add": "{team}-ல் சேர்க்க பயனர்பெயர்",
+      "username_placeholder": "பயனர்பெயர்...",
+      "add_button": "சேர்",
+      "cancel_add_user": "பயனர் சேர்ப்பை ரத்துசெய்",
+      "add_member": "+ உறுப்பினரைச் சேர்",
+      "team_name_label": "குழுவின் பெயர்",
+      "team_name_placeholder": "குழு-பெயர்...",
+      "create_button": "உருவாக்கு",
+      "no_match": "\"{query}\" உடன் பொருந்தும் குழுக்கள் எதுவும் இல்லை",
+      "cancel_create": "குழு உருவாக்கத்தை ரத்துசெய்",
+      "create_team": "+ குழுவை உருவாக்கு"
+    },
+    "members": {
+      "title": "உறுப்பினர்கள்",
+      "refresh": "உறுப்பினர்களைப் புதுப்பி",
+      "filter_label": "உறுப்பினர்களை வடிகட்டு",
+      "filter_placeholder": "உறுப்பினர்களை வடிகட்டு...",
+      "filter_by_role": "பங்கு வாரியாக வடிகட்டு",
+      "filter_by_team": "குழு வாரியாக வடிகட்டு",
+      "all_teams": "அனைத்து குழுக்கள்",
+      "sort_by": "வரிசைப்படுத்து",
+      "loading": "உறுப்பினர்களை ஏற்றுகிறது...",
+      "no_members": "உறுப்பினர்கள் எதுவும் கிடைக்கவில்லை",
+      "list_label": "நிறுவன உறுப்பினர்கள்",
+      "change_role_for": "{name}-க்கான பங்கை மாற்று",
+      "remove_from_org": "{name} ஐ நிறுவனத்திலிருந்து நீக்கு",
+      "view_team": "{team} குழுவைக் காண்க",
+      "no_match": "உங்கள் வடிப்பான்களுடன் பொருந்தும் உறுப்பினர்கள் இல்லை",
+      "username_label": "பயனர்பெயர்",
+      "username_placeholder": "பயனர்பெயர்...",
+      "role_label": "பங்கு",
+      "role": {
+        "all": "அனைத்தும்",
+        "developer": "உருவாக்குநர்",
+        "admin": "நிர்வாகி",
+        "owner": "உரிமையாளர்"
+      },
+      "team_label": "குழு",
+      "no_team": "குழு இல்லை",
+      "add_button": "சேர்",
+      "cancel_add": "உறுப்பினர் சேர்ப்பை ரத்துசெய்",
+      "add_member": "+ உறுப்பினரைச் சேர்"
+    },
+    "public_packages": "{count} பொது தொகுப்பு | {count} பொது தொகுப்புகள்",
+    "page": {
+      "packages_title": "தொகுப்புகள்",
+      "members_tab": "உறுப்பினர்கள்",
+      "teams_tab": "குழுக்கள்",
+      "no_packages": "பொது தொகுப்புகள் எதுவும் கிடைக்கவில்லை",
+      "no_packages_hint": "இந்த நிறுவனம் இல்லாமல் இருக்கலாம் அல்லது பொது தொகுப்புகள் எதுவும் இல்லை.",
+      "failed_to_load": "நிறுவனத் தொகுப்புகளை ஏற்ற இயலவில்லை",
+      "no_match": "\"{query}\" உடன் பொருந்தும் தொகுப்புகள் எதுவும் இல்லை",
+      "not_found": "நிறுவனம் கிடைக்கவில்லை",
+      "not_found_message": "\"{'@'}{name}\" நிறுவனம் npm-ல் இல்லை"
+    }
+  },
+  "user": {
+    "combobox": {
+      "add_to_org_hint": "(நிறுவனத்திலும் சேர்க்கப்படும்)",
+      "press_enter_to_add": "{'@'}{username} ஐ சேர்க்க Enter அழுத்தவும்",
+      "default_placeholder": "பயனர்பெயர்...",
+      "suggestions_label": "பயனர் பரிந்துரைகள்"
+    },
+    "page": {
+      "packages_title": "தொகுப்புகள்",
+      "no_packages": "பொது தொகுப்புகள் எதுவும் கிடைக்கவில்லை",
+      "no_packages_hint": "இந்தப் பயனர் இல்லாமல் இருக்கலாம் அல்லது பொது தொகுப்புகள் எதுவும் இல்லை.",
+      "failed_to_load": "பயனர் தொகுப்புகளை ஏற்ற இயலவில்லை",
+      "no_match": "\"{query}\" உடன் பொருந்தும் தொகுப்புகள் எதுவும் இல்லை",
+      "filter_placeholder": "{count} தொகுப்பை வடிகட்டு... | {count} தொகுப்புகளை வடிகட்டு..."
+    },
+    "orgs_page": {
+      "title": "நிறுவனங்கள்",
+      "back_to_profile": "சுயவிவரத்திற்குத் திரும்பு",
+      "connect_required": "உங்கள் நிறுவனங்களைக் காண உள்ளூர் CLI-ஐ இணைக்கவும்.",
+      "connect_hint_prefix": "இயக்கவும்",
+      "connect_hint_suffix": "தொடங்க.",
+      "own_orgs_only": "உங்கள் சொந்த நிறுவனங்களை மட்டுமே காணலாம்.",
+      "view_your_orgs": "உங்கள் நிறுவனங்களைக் காண்க",
+      "loading": "நிறுவனங்களை ஏற்றுகிறது...",
+      "empty": "நிறுவனங்கள் எதுவும் கிடைக்கவில்லை.",
+      "empty_hint": "உங்கள் ஸ்கோப் செய்யப்பட்ட தொகுப்புகளிலிருந்து நிறுவனங்கள் கண்டறியப்படுகின்றன.",
+      "count": "{count} நிறுவனம் | {count} நிறுவனங்கள்",
+      "packages_count": "{count} தொகுப்பு | {count} தொகுப்புகள்"
+    }
+  },
+  "claim": {
+    "modal": {
+      "title": "தொகுப்புப் பெயரை உரிமைகோரு",
+      "success": "தொகுப்பு உரிமைகோரப்பட்டது!",
+      "success_detail": "{name}{'@'}0.0.0 npm-ல் வெளியிடப்பட்டது.",
+      "success_hint": "npm publish ஐப் பயன்படுத்தி இப்போது இந்த தொகுப்பில் புதிய பதிப்புகளை வெளியிடலாம்.",
+      "view_package": "தொகுப்பைக் காண்க",
+      "invalid_name": "தவறான தொகுப்புப் பெயர்:",
+      "available": "இந்தப் பெயர் கிடைக்கிறது!",
+      "taken": "இந்தப் பெயர் ஏற்கனவே எடுக்கப்பட்டுள்ளது.",
+      "similar_warning": "ஒத்த தொகுப்புகள் உள்ளன - npm இந்தப் பெயரை நிராகரிக்கலாம்:",
+      "related": "தொடர்புடைய தொகுப்புகள்:",
+      "scope_warning_title": "ஸ்கோப் செய்யப்பட்ட தொகுப்பைப் பயன்படுத்துவதைக் கருத்தில் கொள்ளுங்கள்",
+      "scope_warning_text": "ஸ்கோப் செய்யப்படாத தொகுப்புப் பெயர்கள் பகிரப்பட்ட ஆதாரம். ஒரு தொகுப்பை வெளியிட்டு பராமரிக்க நீங்கள் உத்தேசித்தால் மட்டுமே பெயரை உரிமைகோருங்கள். தனிப்பட்ட அல்லது நிறுவன திட்டங்களுக்கு {'@'}{username}/{name} போன்ற ஸ்கோப் செய்யப்பட்ட பெயரைப் பயன்படுத்தவும்.",
+      "connect_required": "இந்த தொகுப்புப் பெயரை உரிமைகோர உள்ளூர் இணைப்பானுடன் இணைக்கவும்.",
+      "connect_button": "இணைப்பானுடன் இணை",
+      "publish_hint": "இது ஒரு குறைந்தபட்ச இடம்பிடிப்பு தொகுப்பை வெளியிடும்.",
+      "preview_json": "package.json முன்னோட்டம்",
+      "claim_button": "தொகுப்புப் பெயரை உரிமைகோரு",
+      "publishing": "வெளியிடுகிறது...",
+      "checking": "கிடைக்குமா என்பதைச் சரிபார்க்கிறது...",
+      "failed_to_check": "பெயர் கிடைக்குமா என்பதைச் சரிபார்க்க இயலவில்லை",
+      "failed_to_claim": "தொகுப்பை உரிமைகோர இயலவில்லை"
+    }
+  },
+  "code": {
+    "files_label": "கோப்புகள்",
+    "no_files": "இந்த கோப்பகத்தில் கோப்புகள் இல்லை",
+    "root": "மூலம்",
+    "lines": "{count} வரி | {count} வரிகள்",
+    "toggle_tree": "கோப்பு மரத்தை நிலைமாற்று",
+    "close_tree": "கோப்பு மரத்தை மூடு",
+    "copy_link": "இணைப்பை நகலெடு",
+    "raw": "மூலம்",
+    "view_raw": "மூல கோப்பைக் காண்க",
+    "file_too_large": "முன்னோட்டமிட கோப்பு மிகப்பெரியது",
+    "file_size_warning": "{size} தொடரியல் சிறப்பித்தலுக்கான 500KB வரம்பை மீறுகிறது",
+    "failed_to_load": "கோப்பை ஏற்ற இயலவில்லை",
+    "unavailable_hint": "கோப்பு மிகப்பெரியதாக இருக்கலாம் அல்லது கிடைக்காமல் இருக்கலாம்",
+    "version_required": "குறியீட்டை உலாவ பதிப்பு தேவை",
+    "go_to_package": "தொகுப்புக்குச் செல்",
+    "loading_tree": "கோப்பு மரத்தை ஏற்றுகிறது...",
+    "failed_to_load_tree": "இந்த தொகுப்புப் பதிப்புக்கான கோப்புகளை ஏற்ற இயலவில்லை",
+    "back_to_package": "தொகுப்புக்குத் திரும்பு",
+    "table": {
+      "name": "பெயர்",
+      "size": "அளவு"
+    },
+    "markdown_view_mode": {
+      "preview": "முன்னோட்டம்",
+      "code": "குறியீடு"
+    },
+    "file_path": "கோப்பு பாதை"
+  },
+  "badges": {
+    "provenance": {
+      "verified": "சரிபார்க்கப்பட்டது",
+      "verified_title": "சரிபார்க்கப்பட்ட மூலநிலை",
+      "verified_via": "சரிபார்க்கப்பட்டது: {provider} வழியாக வெளியிடப்பட்டது"
+    },
+    "jsr": {
+      "title": "JSR-லும் கிடைக்கிறது"
+    }
+  },
+  "filters": {
+    "title": "வடிப்பான்கள்",
+    "search": "தேடல்",
+    "search_scope": "தேடல் எல்லை",
+    "search_placeholder_name": "தொகுப்புப் பெயர் மூலம் வடிகட்டு...",
+    "search_placeholder_description": "விளக்கம் மூலம் வடிகட்டு...",
+    "search_placeholder_keywords": "முக்கிய வார்த்தைகள் மூலம் வடிகட்டு...",
+    "search_placeholder_all": "அனைத்தையும் தேடு அல்லது name: desc: kw: பயன்படுத்து",
+    "scope_name": "பெயர்",
+    "scope_name_description": "தொகுப்புப் பெயர்களை மட்டும் தேடு",
+    "scope_description": "விளக்கம்",
+    "scope_description_description": "விளக்கங்களை மட்டும் தேடு",
+    "scope_keywords": "முக்கிய வார்த்தைகள்",
+    "scope_keywords_description": "முக்கிய வார்த்தைகளை மட்டும் தேடு",
+    "scope_all": "அனைத்தும்",
+    "scope_all_description": "அனைத்து புலங்களையும் தேடு, name: desc: kw: செயற்குறிகளை ஆதரிக்கிறது",
+    "weekly_downloads": "வாராந்திர பதிவிறக்கங்கள்",
+    "updated_within": "புதுப்பிக்கப்பட்ட காலம்",
+    "security": "பாதுகாப்பு",
+    "keywords": "முக்கிய வார்த்தைகள்",
+    "more_keywords": "+{count} மேலும்",
+    "clear_all": "அனைத்தையும் அழி",
+    "remove_filter": "{label} வடிப்பானை நீக்கு",
+    "chips": {
+      "search": "தேடல்",
+      "downloads": "பதிவிறக்கங்கள்",
+      "keyword": "முக்கிய வார்த்தை",
+      "security": "பாதுகாப்பு",
+      "updated": "புதுப்பிக்கப்பட்டது"
+    },
+    "download_range": {
+      "any": "எதுவும்",
+      "lt100": "< 100",
+      "100_1k": "100 - 1K",
+      "1k_10k": "1K - 10K",
+      "10k_100k": "10K - 100K",
+      "gt100k": "> 100K"
+    },
+    "updated": {
+      "any": "எந்த நேரமும்",
+      "week": "கடந்த வாரம்",
+      "month": "கடந்த மாதம்",
+      "quarter": "கடந்த 3 மாதங்கள்",
+      "year": "கடந்த ஆண்டு"
+    },
+    "security_options": {
+      "all": "அனைத்து தொகுப்புகள்",
+      "secure": "எச்சரிக்கைகள் இல்லாமல்",
+      "insecure": "எச்சரிக்கைகளுடன்"
+    },
+    "sort": {
+      "label": "தொகுப்புகளை வரிசைப்படுத்து",
+      "toggle_direction": "வரிசை திசையை மாற்று",
+      "ascending": "ஏறுவரிசை",
+      "descending": "இறங்குவரிசை",
+      "relevance": "பொருத்தம்",
+      "downloads_week": "பதிவிறக்கங்கள்/வாரம்",
+      "downloads_day": "பதிவிறக்கங்கள்/நாள்",
+      "downloads_month": "பதிவிறக்கங்கள்/மாதம்",
+      "downloads_year": "பதிவிறக்கங்கள்/ஆண்டு",
+      "published": "கடைசியாக வெளியிடப்பட்டது",
+      "name": "பெயர்",
+      "quality": "தரம்",
+      "popularity": "பிரபலம்",
+      "maintenance": "பராமரிப்பு",
+      "score": "மதிப்பெண்"
+    },
+    "columns": {
+      "title": "நெடுவரிசைகள்",
+      "show": "நெடுவரிசைகளைக் காண்பி",
+      "reset": "இயல்புநிலைக்கு மீட்டமை",
+      "coming_soon": "விரைவில் வரும்",
+      "name": "பெயர்",
+      "version": "பதிப்பு",
+      "description": "விளக்கம்",
+      "downloads": "பதிவிறக்கங்கள்/வாரம்",
+      "published": "கடைசியாக வெளியிடப்பட்டது",
+      "maintainers": "பராமரிப்பாளர்கள்",
+      "keywords": "முக்கிய வார்த்தைகள்",
+      "quality_score": "தர மதிப்பெண்",
+      "popularity_score": "பிரபல மதிப்பெண்",
+      "maintenance_score": "பராமரிப்பு மதிப்பெண்",
+      "combined_score": "ஒருங்கிணைந்த மதிப்பெண்",
+      "security": "பாதுகாப்பு"
+    },
+    "view_mode": {
+      "label": "காட்சி முறை",
+      "cards": "அட்டை காட்சி",
+      "table": "அட்டவணை காட்சி"
+    },
+    "pagination": {
+      "mode_label": "பக்க வரிசை முறை",
+      "infinite": "எல்லையற்ற",
+      "paginated": "பக்கமிடப்பட்ட",
+      "items_per_page": "ஒரு பக்கத்திற்கான உருப்படிகள்",
+      "per_page": "{count} / பக்கம்",
+      "all_yolo": "அனைத்தும் (YOLO)",
+      "showing": "{start}-{end} / {total}",
+      "previous": "முந்தைய பக்கம்",
+      "next": "அடுத்த பக்கம்",
+      "nav_label": "பக்க வழிசெலுத்தல்"
+    },
+    "count": {
+      "showing_filtered": "{count} இல் {filtered} தொகுப்பு | {count} இல் {filtered} தொகுப்புகள்",
+      "showing_all": "{count} தொகுப்பு | {count} தொகுப்புகள்",
+      "showing_paginated": "{count} இல் {pageSize} தொகுப்பு | {count} இல் {pageSize} தொகுப்புகள்"
+    },
+    "table": {
+      "security_warning": "பாதுகாப்பு எச்சரிக்கை",
+      "secure": "பாதுகாப்பானது",
+      "no_packages": "தொகுப்புகள் எதுவும் கிடைக்கவில்லை"
+    }
+  },
+  "about": {
+    "title": "பற்றி",
+    "heading": "பற்றி",
+    "meta_description": "npmx என்பது npm registry-க்கான வேகமான, நவீன உலாவி. npm தொகுப்புகளை ஆராய்வதற்கான சிறந்த UX/DX.",
+    "what_we_are": {
+      "title": "நாங்கள் என்ன",
+      "better_ux_dx": "சிறந்த UX/DX",
+      "admin_ui": "நிர்வாக UI",
+      "description": "npmx என்பது npm தொகுப்பு registry மற்றும் கருவிகளுக்கான {betterUxDx} ஆகும். இருண்ட பயன்முறை, விசைப்பலகை வழிசெலுத்தல், குறியீடு உலாவல் மற்றும் {jsr} போன்ற மாற்று registry-களுடனான இணைப்புகள் போன்ற அம்சங்களுடன் தொகுப்புகளை ஆராய்வதற்கான வேகமான, நவீன இடைமுகத்தை நாங்கள் வழங்குகிறோம்.",
+      "admin_description": "உங்கள் தொகுப்புகள், குழுக்கள் மற்றும் நிறுவனங்களை நிர்வகிப்பதற்கான சிறந்த {adminUi}-ஐ வழங்குவதையும் நாங்கள் நோக்கமாகக் கொண்டுள்ளோம் — அனைத்தும் உலாவியிலிருந்து, உங்கள் உள்ளூர் npm CLI மூலம் இயக்கப்படுகிறது."
+    },
+    "what_we_are_not": {
+      "title": "நாங்கள் என்ன இல்லை",
+      "not_package_manager": "தொகுப்பு மேலாளர் இல்லை.",
+      "not_registry": "Registry இல்லை.",
+      "registry_description": "நாங்கள் தொகுப்புகளை வழங்குவதில்லை. அவற்றை உலாவுவதற்கான சிறந்த வழியை மட்டுமே நாங்கள் வழங்குகிறோம்.",
+      "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
+      "words": {
+        "already": "ஏற்கனவே",
+        "people": "மக்கள்",
+        "building": "உருவாக்குகிறார்கள்",
+        "really": "மிகவும்",
+        "cool": "அருமையான",
+        "package": "தொகுப்பு",
+        "managers": "மேலாளர்கள்"
+      }
+    },
+    "team": {},
+    "contributors": {
+      "title": "{count} பங்களிப்பாளர் | {count} பங்களிப்பாளர்கள்",
+      "description": "npmx முழுமையாக திறந்த மூலமாகும், அற்புதமான பங்களிப்பாளர்கள் சமூகத்தால் உருவாக்கப்பட்டது. எங்களுடன் சேர்ந்து நாம் எப்போதும் விரும்பிய npm உலாவல் அனுபவத்தை ஒன்றாகக் கட்டமைப்போம்.",
+      "loading": "பங்களிப்பாளர்களை ஏற்றுகிறது...",
+      "error": "பங்களிப்பாளர்களை ஏற்ற இயலவில்லை",
+      "view_profile": "{name}-இன் GitHub சுயவிவரத்தைக் காண்க"
+    },
+    "get_involved": {
+      "title": "பங்கேற்கவும்",
+      "contribute": {
+        "title": "பங்களிக்கவும்",
+        "description": "சிறந்த npm அனுபவத்தை உருவாக்க எங்களுக்கு உதவுங்கள்.",
+        "cta": "GitHub-ல் காண்க"
+      },
+      "community": {
+        "title": "சமூகத்தில் சேரவும்",
+        "description": "அரட்டையடிக்கவும், கேள்விகள் கேட்கவும், யோசனைகளைப் பகிரவும்.",
+        "cta": "Discord-ல் சேரவும்"
+      },
+      "follow": {
+        "title": "புதுப்பிப்புகளைப் பெறுங்கள்",
+        "description": "npmx பற்றிய சமீபத்திய தகவல்களைக் கண்டறியுங்கள்.",
+        "cta": "Bluesky-ல் பின்தொடரவும்"
+      }
+    }
+  },
+  "account_menu": {
+    "connect": "இணை",
+    "account": "கணக்கு",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "தொகுப்புகள் & நிறுவனங்களை நிர்வகி",
+    "atmosphere_desc": "சமூக அம்சங்கள் & அடையாளம்",
+    "connect_npm_cli": "npm CLI-யுடன் இணை",
+    "connect_atmosphere": "Atmosphere-உடன் இணை",
+    "connecting": "இணைக்கிறது...",
+    "ops": "{count} செயல்பாடு | {count} செயல்பாடுகள்"
+  },
+  "auth": {
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "{'@'}{handle} ஆக இணைக்கப்பட்டது",
+      "disconnect": "துண்டி",
+      "connect_prompt": "உங்கள் Atmosphere கணக்குடன் இணைக்கவும்",
+      "handle_label": "கைப்பிடி",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "இணை",
+      "create_account": "புதிய கணக்கை உருவாக்கு",
+      "connect_bluesky": "Bluesky மூலம் இணை",
+      "what_is_atmosphere": "Atmosphere கணக்கு என்றால் என்ன?",
+      "atmosphere_explanation": "{npmx} தனது சமூக அம்சங்களுக்கு {atproto}-ஐப் பயன்படுத்துகிறது, பயனர்கள் தங்கள் தரவை சொந்தமாக வைத்திருக்கவும், அனைத்து இணக்கமான பயன்பாடுகளுக்கும் ஒரே கணக்கைப் பயன்படுத்தவும் அனுமதிக்கிறது. ஒரு கணக்கை உருவாக்கியவுடன், {bluesky} மற்றும் {tangled} போன்ற மற்ற பயன்பாடுகளையும் அதே கணக்குடன் பயன்படுத்தலாம்.",
+      "default_input_error": "சரியான கைப்பிடி, DID அல்லது முழு PDS URL-ஐ உள்ளிடவும்"
+    }
+  },
+  "header": {
+    "home": "npmx முகப்பு",
+    "packages": "தொகுப்புகள்",
+    "packages_dropdown": {
+      "title": "உங்கள் தொகுப்புகள்",
+      "loading": "ஏற்றுகிறது...",
+      "error": "தொகுப்புகளை ஏற்ற இயலவில்லை",
+      "empty": "தொகுப்புகள் எதுவும் கிடைக்கவில்லை",
+      "view_all": "அனைத்தையும் காண்க"
+    },
+    "orgs": "நிறுவனங்கள்",
+    "orgs_dropdown": {
+      "title": "உங்கள் நிறுவனங்கள்",
+      "loading": "ஏற்றுகிறது...",
+      "error": "நிறுவனங்களை ஏற்ற இயலவில்லை",
+      "empty": "நிறுவனங்கள் எதுவும் கிடைக்கவில்லை",
+      "view_all": "அனைத்தையும் காண்க"
+    }
+  },
+  "compare": {
+    "packages": {
+      "title": "தொகுப்புகளை ஒப்பிடு",
+      "tagline": "சரியான தொகுப்பைத் தேர்வு செய்ய npm தொகுப்புகளை அருகருகே ஒப்பிடுங்கள்.",
+      "meta_title": "{packages} ஒப்பிடு - npmx",
+      "meta_title_empty": "தொகுப்புகளை ஒப்பிடு - npmx",
+      "meta_description": "{packages} அருகருகே ஒப்பீடு",
+      "meta_description_empty": "npm தொகுப்புகளை அருகருகே ஒப்பிடுங்கள்",
+      "section_packages": "தொகுப்புகள்",
+      "section_facets": "அம்சங்கள்",
+      "section_comparison": "ஒப்பீடு",
+      "loading": "தொகுப்புத் தரவை ஏற்றுகிறது...",
+      "error": "தொகுப்புத் தரவை ஏற்ற இயலவில்லை. மீண்டும் முயற்சிக்கவும்.",
+      "empty_title": "ஒப்பிட தொகுப்புகளைத் தேர்வு செய்யுங்கள்",
+      "empty_description": "அவற்றின் அளவீடுகளின் அருகருகே ஒப்பீட்டைக் காண மேலே குறைந்தது 2 தொகுப்புகளைத் தேடி சேர்க்கவும்."
+    },
+    "selector": {
+      "search_label": "தொகுப்புகளைத் தேடு",
+      "search_first": "ஒரு தொகுப்பைத் தேடு...",
+      "search_add": "மற்றொரு தொகுப்பைச் சேர்...",
+      "searching": "தேடுகிறது...",
+      "remove_package": "{package} ஐ நீக்கு",
+      "packages_selected": "{count}/{max} தொகுப்புகள் தேர்ந்தெடுக்கப்பட்டன.",
+      "add_hint": "ஒப்பிட குறைந்தது 2 தொகுப்புகளைச் சேர்க்கவும்."
+    },
+    "no_dependency": {
+      "label": "(சார்பு இல்லை)",
+      "typeahead_title": "What Would James Do?",
+      "typeahead_description": "சார்பைப் பயன்படுத்தாமல் ஒப்பிடுங்கள்! e18e அங்கீகரிக்கப்பட்டது.",
+      "tooltip_title": "உங்களுக்கு சார்பு தேவைப்படாமல் இருக்கலாம்",
+      "tooltip_description": "சார்பைப் பயன்படுத்தாமல் ஒப்பிடுங்கள்! {link} நேட்டிவ் API-கள் அல்லது எளிமையான மாற்றுகளால் மாற்றக்கூடிய தொகுப்புகளின் பட்டியலை பராமரிக்கிறது.",
+      "e18e_community": "e18e சமூகம்",
+      "add_column": "ஒப்பீட்டில் சார்பு இல்லாத நெடுவரிசையைச் சேர்"
+    },
+    "facets": {
+      "group_label": "ஒப்பீட்டு அம்சங்கள்",
+      "all": "அனைத்தும்",
+      "none": "எதுவும் இல்லை",
+      "coming_soon": "விரைவில் வரும்",
+      "select_all": "அனைத்து அம்சங்களையும் தேர்வு செய்",
+      "deselect_all": "அனைத்து அம்சங்களின் தேர்வை நீக்கு",
+      "select_category": "அனைத்து {category} அம்சங்களையும் தேர்வு செய்",
+      "deselect_category": "அனைத்து {category} அம்சங்களின் தேர்வை நீக்கு",
+      "binary_only_tooltip": "இந்த தொகுப்பு பைனரிகளை மட்டுமே வெளிப்படுத்துகிறது, ஏற்றுமதிகள் இல்லை",
+      "categories": {
+        "performance": "செயல்திறன்",
+        "health": "நலம்",
+        "compatibility": "இணக்கத்தன்மை",
+        "security": "பாதுகாப்பு & இணக்கம்"
+      },
+      "items": {
+        "packageSize": {
+          "label": "தொகுப்பு அளவு",
+          "description": "தொகுப்பின் அளவு (விரிக்கப்பட்ட)"
+        },
+        "installSize": {
+          "label": "நிறுவல் அளவு",
+          "description": "அனைத்து சார்புகள் உட்பட மொத்த நிறுவல் அளவு"
+        },
+        "dependencies": {
+          "label": "நேரடி சார்புகள்",
+          "description": "நேரடி சார்புகளின் எண்ணிக்கை"
+        },
+        "totalDependencies": {
+          "label": "மொத்த சார்புகள்",
+          "description": "இடைநிலை சார்புகள் உட்பட மொத்த சார்புகளின் எண்ணிக்கை"
+        },
+        "downloads": {
+          "label": "பதிவிறக்கங்கள்/வாரம்",
+          "description": "வாராந்திர பதிவிறக்க எண்ணிக்கை"
+        },
+        "totalLikes": {
+          "label": "விருப்பங்கள்",
+          "description": "விருப்பங்களின் எண்ணிக்கை"
+        },
+        "lastUpdated": {
+          "label": "வெளியிடப்பட்டது",
+          "description": "இந்தப் பதிப்பு எப்போது வெளியிடப்பட்டது"
+        },
+        "deprecated": {
+          "label": "நிறுத்தப்பட்டதா?",
+          "description": "தொகுப்பு நிறுத்தப்பட்டதா என்பது"
+        },
+        "engines": {
+          "label": "இயந்திரங்கள்",
+          "description": "Node.js பதிப்புத் தேவைகள்"
+        },
+        "types": {
+          "label": "வகைகள்",
+          "description": "TypeScript வகை வரையறைகள்"
+        },
+        "moduleFormat": {
+          "label": "தொகுதி வடிவம்",
+          "description": "ESM/CJS ஆதரவு"
+        },
+        "license": {
+          "label": "உரிமம்",
+          "description": "தொகுப்பு உரிமம்"
+        },
+        "vulnerabilities": {
+          "label": "பாதிப்புகள்",
+          "description": "அறியப்பட்ட பாதுகாப்பு பாதிப்புகள்"
+        }
+      },
+      "values": {
+        "any": "எதுவும்",
+        "none": "இல்லை",
+        "unknown": "அறியப்படாதது",
+        "deprecated": "நிறுத்தப்பட்டது",
+        "not_deprecated": "இல்லை",
+        "types_included": "சேர்க்கப்பட்டுள்ளது",
+        "types_none": "இல்லை",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "உங்கள் விருப்பம்!"
+      },
+      "trends": {
+        "title": "வாராந்திர பதிவிறக்கங்கள்"
+      }
+    }
+  },
+  "privacy_policy": {
+    "title": "தனியுரிமைக் கொள்கை",
+    "last_updated": "கடைசியாகப் புதுப்பிக்கப்பட்டது: {date}",
+    "welcome": "{app}-க்கு வரவேற்கிறோம். உங்கள் தனியுரிமையைப் பாதுகாப்பதில் நாங்கள் உறுதியாக உள்ளோம். நாங்கள் என்ன தரவை சேகரிக்கிறோம், அதை எப்படிப் பயன்படுத்துகிறோம், உங்கள் தகவல் தொடர்பான உங்கள் உரிமைகள் என்ன என்பதை இந்தக் கொள்கை விளக்குகிறது.",
+    "cookies": {
+      "what_are": {
+        "title": "குக்கீகள் என்றால் என்ன?",
+        "p1": "நீங்கள் ஒரு வலைத்தளத்தைப் பார்வையிடும்போது உங்கள் சாதனத்தில் சேமிக்கப்படும் சிறிய உரை கோப்புகள் தான் குக்கீகள். சில விருப்பங்கள் மற்றும் அமைப்புகளை நினைவில் வைத்து உங்கள் உலாவல் அனுபவத்தை மேம்படுத்துவதே அவற்றின் நோக்கம்."
+      },
+      "types": {
+        "title": "நாங்கள் என்ன குக்கீகளைப் பயன்படுத்துகிறோம்?",
+        "p1": "தளத்தின் செயல்பாட்டிற்கு கண்டிப்பாகத் தேவையான நோக்கங்களுக்கு மட்டுமே {bold} ஐப் பயன்படுத்துகிறோம். மூன்றாம் தரப்பு அல்லது விளம்பர குக்கீகளை நாங்கள் பயன்படுத்துவதில்லை.",
+        "bold": "அத்தியாவசிய தொழில்நுட்ப குக்கீகள்",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "இந்த குக்கீ எங்கள் ஹோஸ்டிங் வழங்குநரால் (Vercel) சாய்வு பாதுகாப்புக்காகப் பயன்படுத்தப்படுகிறது. நீங்கள் உலாவும்போது புதிய புதுப்பிப்பு வெளியிடப்பட்டால், சரியான வரிசைப்படுத்தல் பதிப்பிலிருந்து சொத்துக்களைப் பெறுவதை இது உறுதிசெய்கிறது. இது உங்களைக் கண்காணிக்காது.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "இது எங்கள் பாதுகாப்பான அமர்வு குக்கீ. உங்கள் Atmosphere கணக்கை இணைக்கும்போது OAuth அணுகல் டோக்கனை இது சேமிக்கிறது. உங்கள் அங்கீகரிக்கப்பட்ட அமர்வை பராமரிக்க இது அவசியமானது."
+      },
+      "local_storage": {
+        "title": "உள்ளூர் சேமிப்பு",
+        "p1": "அமர்வு குக்கீகளுக்கு கூடுதலாக, உங்கள் காட்சி விருப்பங்களைச் சேமிக்க உங்கள் உலாவியின் {bold} ஐப் பயன்படுத்துகிறோம். ஒவ்வொரு முறையும் மீண்டும் கட்டமைக்க வேண்டியதில்லை என்பதால், நீங்கள் தேர்ந்தெடுத்த தீம் (வெளிர்/இருண்ட) மற்றும் சில {settings} ஐ நினைவில் வைக்க இது எங்களுக்கு உதவுகிறது.",
+        "bold": "உள்ளூர் சேமிப்பு",
+        "p2": "இந்தத் தகவல் முற்றிலும் செயல்பாட்டு நோக்கமானது, உங்கள் சாதனத்தில் மட்டுமே சேமிக்கப்படுகிறது, மேலும் {bold2}. எங்கள் வலைத்தளத்தில் உங்கள் அனுபவத்தை மேம்படுத்துவதற்கு மட்டுமே இதைப் பயன்படுத்துகிறோம்.",
+        "bold2": "தனிப்பட்ட தரவு எதுவும் இல்லை, உங்களைக் கண்காணிக்கவும் பயன்படுத்தப்படாது",
+        "settings": "அமைப்புகள்"
+      },
+      "management": {
+        "title": "குக்கீகளை நிர்வகித்தல்",
+        "p1": "உங்கள் விருப்பங்களுக்கு ஏற்ப குக்கீகளை ஏற்க, நிராகரிக்க அல்லது நீக்க உங்கள் உலாவியை கட்டமைக்கலாம். இருப்பினும், {bold} என்பதை நினைவில் கொள்ளுங்கள்.",
+        "bold": "அத்தியாவசிய குக்கீகளை நிராகரிப்பது பயன்பாட்டிற்கான முழு அணுகலைத் தடுக்கலாம்",
+        "p2": "அதிகம் பயன்படுத்தப்படும் உலாவிகளில் குக்கீ நிர்வாகத்திற்கான வழிமுறைகளுடன் கூடிய இணைப்புகள் கீழே உள்ளன:",
+        "chrome": "Google Chrome (புதிய சாளரத்தில் திறக்கும்)",
+        "firefox": "Mozilla Firefox (புதிய சாளரத்தில் திறக்கும்)",
+        "edge": "Microsoft Edge (புதிய சாளரத்தில் திறக்கும்)"
+      }
+    },
+    "analytics": {
+      "title": "பகுப்பாய்வு",
+      "p1": "பார்வையாளர்கள் எங்கள் வலைத்தளத்தை எவ்வாறு பயன்படுத்துகிறார்கள் என்பதைப் புரிந்துகொள்ள {bold} ஐப் பயன்படுத்துகிறோம். பயனர் அனுபவத்தை மேம்படுத்தவும் சிக்கல்களைக் கண்டறியவும் இது எங்களுக்கு உதவுகிறது.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics தனியுரிமையை கருத்தில் கொண்டு வடிவமைக்கப்பட்டுள்ளது:",
+      "li1": "இது குக்கீகளைப் பயன்படுத்தாது",
+      "li2": "இது தனிப்பட்ட அடையாளங்காட்டிகளை சேகரிக்காது",
+      "li3": "இது வலைத்தளங்கள் முழுவதும் பயனர்களைக் கண்காணிக்காது",
+      "li4": "அனைத்து தரவும் ஒருங்கிணைக்கப்பட்டு அநாமதேயமாக்கப்படுகிறது",
+      "p3": "சேகரிக்கப்படும் ஒரே தகவல்: பக்க URL-கள், பரிந்துரையாளர், நாடு/பிராந்தியம், சாதன வகை, உலாவி மற்றும் இயக்க முறைமை. இந்தத் தரவை தனிப்பட்ட பயனர்களை அடையாளம் காண பயன்படுத்த இயலாது."
+    },
+    "authenticated": {
+      "title": "அங்கீகரிக்கப்பட்ட பயனர்கள்",
+      "p1": "உங்கள் {bold} கணக்கை npmx-உடன் இணைக்கும்போது, உங்கள் OAuth அணுகல் டோக்கனை பாதுகாப்பான, HTTP-மட்டும் அமர்வு குக்கீயில் சேமிக்கிறோம். இந்த டோக்கன் உங்கள் சார்பாக கோரிக்கைகளை அங்கீகரிக்க மட்டுமே பயன்படுத்தப்படுகிறது.",
+      "bold": "Atmosphere",
+      "p2": "உங்கள் சான்றுகளை நாங்கள் சேமிப்பதில்லை, நீங்கள் பயன்படுத்தும் அம்சங்களை வழங்குவதற்குத் தேவையான தரவுக்கு அப்பால் நாங்கள் எந்தத் தரவையும் அணுகுவதில்லை. {settings} பக்கத்திலிருந்து எந்த நேரத்திலும் உங்கள் கணக்கைத் துண்டிக்கலாம்.",
+      "settings": "அமைப்புகள்"
+    },
+    "data_retention": {
+      "title": "தரவு தக்கவைப்பு",
+      "p1": "உங்கள் உலாவியை மூடும்போது அல்லது செயலற்ற காலத்திற்குப் பிறகு அமர்வு குக்கீகள் தானாகவே நீக்கப்படும். உங்கள் உலாவி தரவை அழிக்கும் வரை உள்ளூர் சேமிப்பு விருப்பங்கள் உங்கள் சாதனத்தில் இருக்கும். பகுப்பாய்வுத் தரவு ஒருங்கிணைந்த வடிவத்தில் தக்கவைக்கப்படுகிறது மற்றும் தனிப்பட்ட பயனர்களுடன் இணைக்க இயலாது."
+    },
+    "your_rights": {
+      "title": "உங்கள் உரிமைகள்",
+      "p1": "உங்களுக்கு பின்வரும் உரிமைகள் உள்ளன:",
+      "li1": "நாங்கள் என்ன தரவை சேகரிக்கிறோம் என்பது பற்றிய தகவல்களை அணுகுதல்",
+      "li2": "எந்த நேரத்திலும் உங்கள் உள்ளூர் சேமிப்பு மற்றும் குக்கீகளை அழித்தல்",
+      "li3": "உங்கள் அங்கீகரிக்கப்பட்ட அமர்வைத் துண்டித்தல்",
+      "li4": "எங்கள் தரவு நடைமுறைகள் பற்றிய தகவல்களைக் கோருதல்",
+      "p2": "நாங்கள் தனிப்பட்ட தரவை சேகரிக்காததால், பொதுவாக நீக்க அல்லது ஏற்றுமதி செய்ய தனிப்பட்ட தகவல் எதுவும் இல்லை."
+    },
+    "contact": {
+      "title": "எங்களைத் தொடர்பு கொள்ளுங்கள்",
+      "p1": "இந்த தனியுரிமைக் கொள்கை தொடர்பான எந்தக் கேள்விகள் அல்லது கவலைகளுக்கும், எங்கள் {link}-ல் ஒரு சிக்கலைத் திறப்பதன் மூலம் எங்களைத் தொடர்பு கொள்ளலாம்.",
+      "link": "GitHub களஞ்சியம்"
+    },
+    "changes": {
+      "title": "இந்தக் கொள்கையில் மாற்றங்கள்",
+      "p1": "இந்த தனியுரிமைக் கொள்கையை அவ்வப்போது புதுப்பிக்கலாம். எந்த மாற்றங்களும் புதுப்பிக்கப்பட்ட திருத்தத் தேதியுடன் இந்தப் பக்கத்தில் வெளியிடப்படும்."
+    }
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
+  }
+}
