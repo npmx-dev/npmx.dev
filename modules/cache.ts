@@ -4,6 +4,8 @@ import { provider } from 'std-env'
 
 // Storage key for fetch cache - must match shared/utils/fetch-cache-config.ts
 const FETCH_CACHE_STORAGE_BASE = 'fetch-cache'
+// Storage key for OAuth cache - must match server/utils/atproto/storage.ts
+const OAUTH_CACHE_STORAGE_BASE = 'atproto:oauth'
 
 export default defineNuxtModule({
   meta: {
@@ -35,6 +37,11 @@ export default defineNuxtModule({
         // Fetch cache storage (for SWR fetch caching)
         nitroConfig.storage[FETCH_CACHE_STORAGE_BASE] = {
           ...nitroConfig.storage[FETCH_CACHE_STORAGE_BASE],
+          driver: 'vercel-runtime-cache',
+        }
+
+        nitroConfig.storage[OAUTH_CACHE_STORAGE_BASE] = {
+          ...nitroConfig.storage[OAUTH_CACHE_STORAGE_BASE],
           driver: 'vercel-runtime-cache',
         }
       }

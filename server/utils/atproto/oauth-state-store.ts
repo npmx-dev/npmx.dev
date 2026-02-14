@@ -2,29 +2,47 @@ import type { NodeSavedState, NodeSavedStateStore } from '@atproto/oauth-client-
 import type { UserServerSession } from '#shared/types/userSession'
 import type { SessionManager } from 'h3'
 
+// It is recommended that oauth state is only saved for 30 minutes
+const STATE_EXPIRATION = CACHE_MAX_AGE_ONE_MINUTE * 30
+
 export class OAuthStateStore implements NodeSavedStateStore {
-  private readonly session: SessionManager<UserServerSession>
+  private readonly serverSession: SessionManager<UserServerSession>
+  private readonly cache: CacheAdapter
 
   constructor(session: SessionManager<UserServerSession>) {
-    this.session = session
+    this.serverSession = session
+    this.cache = getCacheAdapter(OAUTH_CACHE_STORAGE_BASE)
   }
 
-  async get(): Promise<NodeSavedState | undefined> {
-    const sessionData = this.session.data
-    if (!sessionData) return undefined
-    return sessionData.oauthState
+  private createStorageKey(did: string, sessionId: string) {
+    return `state:${did}:${sessionId}`
   }
 
-  async set(_key: string, val: NodeSavedState) {
-    // We are ignoring the key since the mapping is already done in the session
-    await this.session.update({
-      oauthState: val,
+  async get(key: string): Promise<NodeSavedState | undefined> {
+    const serverSessionData = this.serverSession.data
+    if (!serverSessionData) return undefined
+    if (!serverSessionData.oauthStateId) return undefined
+    const state = await this.cache.get<NodeSavedState>(
+      this.createStorageKey(key, serverSessionData.oauthStateId),
+    )
+    return state ?? undefined
+  }
+
+  async set(key: string, val: NodeSavedState) {
+    let stateId = crypto.randomUUID()
+    await this.serverSession.update({
+      oauthStateId: stateId,
     })
+    await this.cache.set<NodeSavedState>(this.createStorageKey(key, stateId), val, STATE_EXPIRATION)
   }
 
-  async del() {
-    await this.session.update({
-      oauthState: undefined,
+  async del(key: string) {
+    const serverSessionData = this.serverSession.data
+    if (!serverSessionData) return undefined
+    if (!serverSessionData.oauthStateId) return undefined
+    await this.cache.delete(this.createStorageKey(key, serverSessionData.oauthStateId))
+    await this.serverSession.update({
+      oauthStateId: undefined,
     })
   }
 }
