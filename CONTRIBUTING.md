@@ -96,6 +96,34 @@ This focus helps guide our project decisions as a community and what we choose t
    pnpm npmx-connector
    ```
 
+### Optional: Custom Local Domain
+
+Configure dev server to run at `http://npmx.test:3000` instead of `http://127.0.0.1:3000`.
+
+**Setup:**
+
+```bash
+# 1. Install Localias
+brew install peterldowns/tap/localias
+
+# Linux/WSL2
+go install github.com/peterldowns/localias/cmd/localias@latest
+
+# 2. Run setup (requires sudo)
+pnpm setup:local
+
+# 3. Start dev server
+pnpm dev
+```
+
+Visit `https://npmx.test` (localias proxies to `127.0.0.1:3000`).
+
+**Uninstall:**
+
+```bash
+pnpm setup:local:uninstall
+```
+
 ## Development workflow
 
 ### Available commands

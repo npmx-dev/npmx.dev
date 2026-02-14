@@ -1,6 +1,10 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
+  ignoreBinaries: [
+    /** Global CLI tool installed via brew/go, not npm */
+    'localias',
+  ],
   workspaces: {
     '.': {
       entry: [

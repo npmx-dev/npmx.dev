@@ -1,0 +1,7 @@
+# Localias configuration
+# See: https://github.com/peterldowns/localias
+# Usage: localias set npmx.test 3000
+# Visit: https://npmx.test
+
+- from: npmx.test
+  to: http://127.0.0.1:3000
