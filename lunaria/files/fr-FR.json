@@ -221,7 +221,7 @@
       "title": "Commencer",
       "pm_label": "Gestionnaire de paquets",
       "copy_command": "Copier la commande d'installation",
-      "copy_dev_command": "Copy la commande d'installation (dev)",
+      "copy_dev_command": "Copier la commande d'installation (dev)",
       "dev_dependency_hint": "Généralement installée en tant que dépendance de développement",
       "view_types": "Voir {package}"
     },
@@ -1117,12 +1117,12 @@
       "li2": "Utiliser des tailles de police relatives pour que vous puissiez les ajuster dans votre navigateur.",
       "li3": "Supporter la navigation au clavier dans toute l'interface.",
       "li4": "Respecter les requêtes média prefers-reduced-motion et prefers-color-scheme.",
-      "li5": "Designer en gardant un constraste couleur suffisant à l'esprit.",
+      "li5": "Designer en gardant un contraste couleur suffisant à l'esprit.",
       "li6": "S'assurer que l'essentiel du contenu est disponible sans JavaScript, même si quelques fonctionnalités interactives peuvent le nécessiter."
     },
     "limitations": {
       "title": "Limitations connues",
-      "p1": "Quelques parties du site — particulièrement le content externe comme les READMEs des paquets — peuvent ne pas atteindre les standards d'accessibilité. Nous travaillons à améliorer ces aspects avec le temps."
+      "p1": "Quelques parties du site — particulièrement le contenu externe comme les READMEs des paquets — peuvent ne pas atteindre les standards d'accessibilité. Nous travaillons à améliorer ces aspects avec le temps."
     },
     "contact": {
       "title": "Retours",
