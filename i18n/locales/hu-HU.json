@@ -241,8 +241,7 @@
       "items": {}
     },
     "downloads": {
-      "title": "Heti letöltések",
-      "analyze": "Letöltések elemzése"
+      "title": "Heti letöltések"
     },
     "install_scripts": {
       "title": "Telepítő scriptek",
@@ -665,6 +664,7 @@
         "managers": "kezelőket"
       }
     },
+    "team": {},
     "contributors": {
       "title": "Közreműködők",
       "description": "Az npmx teljes mértékben nyílt forráskódú. Egy csodálatos közösség építi. Csatlakozz hozzánk, és építsük fel együtt azt az npm böngészési élményt, amire mindig is vágytunk.",
@@ -752,5 +752,11 @@
     "your_rights": {},
     "contact": {},
     "changes": {}
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }

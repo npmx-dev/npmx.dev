@@ -1117,9 +1117,6 @@
             "title": {
               "type": "string"
             },
-            "analyze": {
-              "type": "string"
-            },
             "community_distribution": {
               "type": "string"
             }

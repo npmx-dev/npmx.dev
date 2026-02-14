@@ -150,6 +150,7 @@
     "view_permalink": "Zobacz stały link do tej wersji",
     "navigation": "Pakiet",
     "copy_name": "Kopiuj nazwę pakietu",
+    "copy_version": "Kopiuj wersję pakietu",
     "deprecation": {
       "package": "Ten pakiet został oznaczony jako przestarzały.",
       "version": "Ta wersja została oznaczona jako przestarzała.",
@@ -290,7 +291,6 @@
       "all_covered": "Wszystkie wersje są objęte powyższymi tagami",
       "deprecated_title": "{version} (przestarzała)",
       "view_all": "Zobacz wszystkie {count} wersje | Zobacz {count} wersję | Zobacz {count} wersje | Zobacz {count} wersji | Zobacz {count} wersji",
-      "y_axis_label": "Pobrania",
       "distribution_title": "Grupa semver",
       "distribution_modal_title": "Wersje",
       "grouping_major": "Major",
@@ -300,6 +300,7 @@
       "show_low_usage": "Pokaż wersje o niskim użyciu",
       "show_low_usage_tooltip": "Uwzględnij grupy wersji z mniej niż 1% wszystkich pobrań.",
       "date_range_tooltip": "Tylko ostatni tydzień rozkładu wersji",
+      "y_axis_label": "Pobrania",
       "filter_placeholder": "Filtruj po semver (np. ^3.0.0)",
       "filter_invalid": "Nieprawidłowy zakres semver",
       "filter_help": "Pomoc dotycząca zakresów semver",
@@ -360,16 +361,15 @@
       "y_axis_label": "{granularity} {facet}",
       "facet": "Wymiar",
       "title": "Trendy",
+      "contributors_skip": "Niepokazani we Współtwórcach (brak repozytorium GitHub):",
       "items": {
         "downloads": "Pobrania",
         "likes": "Polubienia",
         "contributors": "Współtwórcy"
-      },
-      "contributors_skip": "Niepokazani we Współtwórcach (brak repozytorium GitHub):"
+      }
     },
     "downloads": {
       "title": "Pobrania tygodniowe",
-      "analyze": "Analizuj pobrania",
       "community_distribution": "Zobacz, jak społeczność korzysta z pakietu"
     },
     "install_scripts": {
@@ -459,8 +459,7 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "copy_version": "Kopiuj wersję pakietu"
+    }
   },
   "connector": {
     "modal": {
@@ -818,6 +817,14 @@
         "managers": "menedżery pakietów"
       }
     },
+    "team": {
+      "title": "Zespół",
+      "governance": "Zarządzanie",
+      "role_steward": "steward",
+      "role_maintainer": "maintainer",
+      "sponsor": "sponsor",
+      "sponsor_aria": "Zasponsoruj {name} na GitHubie"
+    },
     "contributors": {
       "title": "Współtwórcy",
       "description": "npmx jest w pełni open source, tworzony przez niesamowitą społeczność współtwórców. Dołącz do nas — zbudujmy razem przeglądanie npm takie, jakiego zawsze chcieliśmy.",
@@ -842,14 +849,6 @@
         "description": "Sprawdź, co nowego w npmx.",
         "cta": "Obserwuj na Bluesky"
       }
-    },
-    "team": {
-      "title": "Zespół",
-      "governance": "Zarządzanie",
-      "role_steward": "steward",
-      "role_maintainer": "maintainer",
-      "sponsor": "sponsor",
-      "sponsor_aria": "Zasponsoruj {name} na GitHubie"
     }
   },
   "account_menu": {

@@ -344,7 +344,6 @@
     },
     "downloads": {
       "title": "每週下載量",
-      "analyze": "分析下載量",
       "community_distribution": "檢視社群採用分布"
     },
     "install_scripts": {
@@ -789,6 +788,7 @@
         "managers": "管理器"
       }
     },
+    "team": {},
     "contributors": {
       "title": "{count} 位貢獻者",
       "description": "npmx 完全開源，由令人驚豔的社群貢獻者共同打造。",
@@ -1061,5 +1061,11 @@
       "title": "政策變更",
       "p1": "我們可能會不定期更新本隱私權政策。任何變更都將發布於本頁面，並標明更新日期。"
     }
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }

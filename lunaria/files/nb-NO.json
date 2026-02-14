@@ -325,7 +325,6 @@
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
-      "analyze": "Analyser nedlastinger",
       "community_distribution": "Vis distribusjon av bruk i fellesskapet"
     },
     "install_scripts": {
@@ -769,6 +768,7 @@
         "managers": "pakkebehandlere"
       }
     },
+    "team": {},
     "contributors": {
       "title": "{count} Bidragsyter | {count} Bidragsytere",
       "description": "npmx er fullstendig åpen kildekode, bygget av et fantastisk fellesskap av bidragsytere. Bli med oss og la oss bygge npm-opplevelsen vi alltid har ønsket oss, sammen.",
@@ -975,5 +975,11 @@
     "your_rights": {},
     "contact": {},
     "changes": {}
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }

@@ -277,8 +277,7 @@
       "items": {}
     },
     "downloads": {
-      "title": "Týdenní stažení",
-      "analyze": "Analyzovat stažení"
+      "title": "Týdenní stažení"
     },
     "install_scripts": {
       "title": "Instalační skripty",
@@ -717,6 +716,7 @@
         "managers": "správce balíčků"
       }
     },
+    "team": {},
     "contributors": {
       "title": "Přispěvatelé | {count} přispěvatelé | {count} přispěvatelů",
       "description": "npmx je plně open source, postavený úžasnou komunitou přispěvatelů. Přidejte se k nám a společně vytvořme npm prohlížeč, jaký jsme vždy chtěli.",
@@ -908,5 +908,11 @@
     "your_rights": {},
     "contact": {},
     "changes": {}
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }

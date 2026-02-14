@@ -1034,7 +1034,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
   <!-- Version Distribution Modal -->
   <PackageChartModal
     v-if="isDistributionModalOpen"
-    :title="$t('package.versions.distribution_modal_title')"
+    :modal-title="$t('package.versions.distribution_modal_title')"
     @close="closeDistributionModal"
     @transitioned="handleDistributionModalTransitioned"
   >

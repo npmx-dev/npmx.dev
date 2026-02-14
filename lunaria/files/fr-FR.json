@@ -370,7 +370,6 @@
     },
     "downloads": {
       "title": "Téléchargements hebdo.",
-      "analyze": "Analyser les téléchargements",
       "community_distribution": "Voir la distribution des versions téléchargées par la communauté"
     },
     "install_scripts": {
