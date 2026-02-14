@@ -78,6 +78,7 @@ export const EXTENSION_ICONS: Record<string, string> = {
   'cs': 'vscode-icons-file-type-csharp',
   'php': 'vscode-icons-file-type-php',
   'lua': 'vscode-icons-file-type-lua',
+  'luau': 'vscode-icons-file-type-luau',
   'r': 'vscode-icons-file-type-r',
   'sql': 'vscode-icons-file-type-sql',
   'pl': 'vscode-icons-file-type-perl',
