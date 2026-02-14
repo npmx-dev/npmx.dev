@@ -13,6 +13,7 @@ definePageMeta({
     '/package/code/:packageName/v/:version/:filePath(.*)?',
     // '/code/@:org?/:packageName/v/:version/:filePath(.*)?',
   ],
+  scrollMargin: 160,
 })
 
 const route = useRoute('code')

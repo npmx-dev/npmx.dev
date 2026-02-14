@@ -7,6 +7,7 @@ definePageMeta({
   name: 'docs',
   path: '/package-docs/:path+',
   alias: ['/package/docs/:path+', '/docs/:path+'],
+  scrollMargin: 180,
 })
 
 const route = useRoute('docs')
