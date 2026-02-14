@@ -57,7 +57,7 @@ const STORAGE_KEY = 'npmx-connector'
 const DEFAULT_PORT = 31415
 
 export const useConnector = createSharedComposable(function useConnector() {
-  const { settings } = useSettings()
+  const { userLocalSettings } = useUserLocalSettings()
 
   // Persisted connection config
   const config = useState<{ token: string; port: number } | null>('connector-config', () => null)
@@ -308,7 +308,7 @@ export const useConnector = createSharedComposable(function useConnector() {
       body: {
         otp,
         interactive: !otp,
-        openUrls: settings.value.connector.autoOpenURL,
+        openUrls: userLocalSettings.value.connector.autoOpenURL,
       },
     })
     if (response?.success) {

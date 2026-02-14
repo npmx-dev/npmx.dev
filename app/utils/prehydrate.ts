@@ -61,10 +61,5 @@ export function initPreferencesOnPrehydrate() {
     // Read sidebar preferences from separate localStorage key
     const sidebar = JSON.parse(localStorage.getItem('npmx-sidebar-preferences') || '{}')
     document.documentElement.dataset.collapsed = sidebar.collapsed?.join(' ') ?? ''
-
-    // Keyboard shortcuts (default: true)
-    if (preferences.keyboardShortcuts === false) {
-      document.documentElement.dataset.kbdShortcuts = 'false'
-    }
   })
 }
