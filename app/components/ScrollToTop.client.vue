@@ -6,7 +6,10 @@ const excludedRoutes = new Set(['index', 'code'])
 
 const isActive = computed(() => !excludedRoutes.has(route.name as string))
 
+const SCROLL_TO_TOP_DURATION = 500
+
 const isMounted = useMounted()
+const isTouchDeviceClient = shallowRef(false)
 const isVisible = shallowRef(false)
 const scrollThreshold = 300
 const { isSupported: supportsScrollStateQueries } = useCssSupports(
@@ -14,21 +17,21 @@ const { isSupported: supportsScrollStateQueries } = useCssSupports(
   'scroll-state',
   { ssrValue: false },
 )
+const shouldShowButton = computed(() => isActive.value && isTouchDeviceClient.value)
 
 function onScroll() {
-  if (!supportsScrollStateQueries.value) {
+  if (supportsScrollStateQueries.value) {
     return
   }
   isVisible.value = window.scrollY > scrollThreshold
 }
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
+const { scrollToTop } = useScrollToTop({ duration: SCROLL_TO_TOP_DURATION })
 
 useEventListener('scroll', onScroll, { passive: true })
 
 onMounted(() => {
+  isTouchDeviceClient.value = isTouchDevice()
   onScroll()
 })
 </script>
@@ -36,11 +39,11 @@ onMounted(() => {
 <template>
   <!-- When CSS scroll-state is supported, use CSS-only visibility -->
   <button
-    v-if="isActive && supportsScrollStateQueries"
+    v-if="shouldShowButton && supportsScrollStateQueries"
     type="button"
-    class="scroll-to-top-css fixed bottom-4 inset-ie-4 z-50 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg md:hidden flex items-center justify-center text-fg-muted hover:text-fg transition-colors active:scale-95"
+    class="scroll-to-top-css fixed bottom-4 inset-ie-4 z-50 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors active:scale-95"
     :aria-label="$t('common.scroll_to_top')"
-    @click="scrollToTop"
+    @click="scrollToTop()"
   >
     <span class="i-lucide:arrow-up w-5 h-5" aria-hidden="true" />
   </button>
@@ -56,11 +59,11 @@ onMounted(() => {
     leave-to-class="opacity-0 translate-y-2"
   >
     <button
-      v-if="isActive && isMounted && isVisible"
+      v-if="shouldShowButton && isMounted && isVisible"
       type="button"
-      class="fixed bottom-4 inset-ie-4 z-50 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg md:hidden flex items-center justify-center text-fg-muted hover:text-fg transition-colors active:scale-95"
+      class="fixed bottom-4 inset-ie-4 z-50 w-12 h-12 bg-bg-elevated border border-border rounded-full shadow-lg flex items-center justify-center text-fg-muted hover:text-fg transition-colors active:scale-95"
       :aria-label="$t('common.scroll_to_top')"
-      @click="scrollToTop"
+      @click="scrollToTop()"
     >
       <span class="i-lucide:arrow-up w-5 h-5" aria-hidden="true" />
     </button>
