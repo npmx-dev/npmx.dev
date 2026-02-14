@@ -20,6 +20,8 @@
     "i18n:report": "node scripts/find-invalid-translations.ts",
     "i18n:report:fix": "node scripts/remove-unused-translations.ts",
     "i18n:schema": "node scripts/generate-i18n-schema.ts",
+    "run:lunaria": "pnpm dlx serve ./dist/lunaria",
+    "start:lunaria": "pnpm build:lunaria && pnpm run:lunaria",
     "knip": "knip",
     "knip:fix": "knip --fix",
     "lint": "oxlint && oxfmt --check",

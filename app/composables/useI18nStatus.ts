@@ -18,12 +18,18 @@ export function useI18nStatus() {
     getCachedData: (key, nuxtApp) => nuxtApp.payload.data[key] ?? nuxtApp.static.data[key],
   })
 
+  const localesMap = computed<Map<string, I18nLocaleStatus> | undefined>(() => {
+    return status.value?.locales.reduce((acc, locale) => {
+      acc.set(locale.lang, locale)
+      return acc
+    }, new Map())
+  })
+
   /**
    * Get the translation status for a specific locale
    */
   function getLocaleStatus(langCode: string): I18nLocaleStatus | null {
-    if (!status.value) return null
-    return status.value.locales.find(l => l.lang === langCode) ?? null
+    return localesMap.value?.get(langCode) ?? null
   }
 
   /**
@@ -73,5 +79,7 @@ export function useI18nStatus() {
     isSourceLocale,
     /** GitHub edit URL for current locale */
     githubEditUrl,
+    /** locale info map by lang */
+    localesMap,
   }
 }

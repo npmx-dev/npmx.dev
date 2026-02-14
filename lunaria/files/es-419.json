@@ -107,7 +107,8 @@
     "accent_colors": "Colores de acento",
     "clear_accent": "Limpiar color de acento",
     "translation_progress": "Progreso de traducción",
-    "background_themes": "Tema de fondo"
+    "background_themes": "Tema de fondo",
+    "translation_status": "Comprobar el estado de la traducción global"
   },
   "i18n": {
     "missing_keys": "{count} traducción faltante | {count} traducciones faltantes",
@@ -1122,6 +1123,32 @@
       "title": "Comentarios",
       "p1": "Si encuentras una barrera de accesibilidad en {app}, por favor háznoslo saber abriendo una incidencia en nuestro {link}. Nos tomamos estos informes muy en serio y haremos todo lo posible para abordarlos.",
       "link": "repositorio de GitHub"
+    }
+  },
+  "translation_status": {
+    "title": "estado de las traducciones",
+    "generated_at": "Fecha de generación: {date}",
+    "welcome": "Si estás interesado en ayudarnos a traducir {npmx} a uno de los idiomas listados a continuación, ¡has llegado al lugar correcto! Esta página se actualiza automáticamente y muestra todo el contenido que necesita tu ayuda ahora mismo.",
+    "p1": "Usamos como idioma por defecto el {lang} con un total de {count}. Si quieres ayudar a incluir traducciones, localiza el idioma en {bylang} y expande el detalle, pero si sólo quieres corregir mensajes existientes erróneos, localiza el idioma en {byfile}.",
+    "p1_lang": "Inglés Americano (en-US)",
+    "p1_count": "0 mensajes | 1 mensaje | {count} mensajes",
+    "p2": "Antes de comenzar, por favor lee nuestra {guide} para conocer nuestro proceso de traducción y cómo puedes involucrarte.",
+    "guide": "guía de internacionalización (i18n)",
+    "by_locale": "Progreso de la traducción por idioma",
+    "by_file": "Progreso de la traducción por archivo",
+    "locale_summary": "{name} ({id})",
+    "complete_text": "¡La traducción está completa, un trabajo increíble!",
+    "done_text": "traducidas",
+    "missing_text": "sin traducir",
+    "missing_keys": "No hay mensajes sin traducir | Mensaje sin traducir | Mensajes sin traducir",
+    "progress_label": "Progreso de traducción para {locale}",
+    "table": {
+      "file": "Archivo",
+      "status": "Estado",
+      "error": "Error cargando la lista de archivos.",
+      "loading": "{spinner} Cargando archivos de traducción...",
+      "empty": "No se encontraron archivos",
+      "file_link": "Editar {file} ({lang}) en GitHub"
     }
   }
 }

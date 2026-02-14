@@ -8,6 +8,7 @@ export interface I18nStatus {
   sourceLocale: {
     lang: string
     label: string
+    totalKeys: number
   }
   /** Status for each target locale */
   locales: I18nLocaleStatus[]

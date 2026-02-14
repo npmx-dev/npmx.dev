@@ -258,6 +258,11 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 {{ $t('settings.help_translate') }}
               </a>
             </template>
+            <div>
+              <LinkBase :to="{ name: 'translation-status' }">
+                {{ $t('settings.translation_status') }}
+              </LinkBase>
+            </div>
           </div>
         </section>
       </div>

@@ -107,7 +107,8 @@
     "accent_colors": "Accent colors",
     "clear_accent": "Clear accent colour",
     "translation_progress": "Translation progress",
-    "background_themes": "Background shade"
+    "background_themes": "Background shade",
+    "translation_status": "Check global translation status"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",
@@ -1126,6 +1127,32 @@
       "title": "Feedback",
       "p1": "If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
       "link": "GitHub repository"
+    }
+  },
+  "translation_status": {
+    "title": "translation status",
+    "generated_at": "Generation date: {date}",
+    "welcome": "If you're interested in helping us to translate {npmx} into one of the languages listed below, you've come to the right place! This auto-updating page always lists all the content that could use your help right now.",
+    "p1": "We use {lang} as the default language, with a total of {count}. If you'd like to help add translations, locate the language in {bylang} and expand the details. If you only want to fix existing incorrect messages, find the language in {byfile}.",
+    "p1_lang": "American English (en-US)",
+    "p1_count": "0 messages | 1 message |{count} messages",
+    "p2": "Before starting, please read our {guide} to learn about our translation process and how you can get involved.",
+    "guide": "localisation (i18n) guide",
+    "by_locale": "Translation progress by locale",
+    "by_file": "Translation progress by file",
+    "locale_summary": "{name} ({id})",
+    "complete_text": "This translation is complete, amazing job!",
+    "done_text": "done",
+    "missing_text": "missing",
+    "missing_keys": "There is no missing translations | Missing translation | Missing translations",
+    "progress_label": "Progress status for {locale}",
+    "table": {
+      "file": "File",
+      "status": "Status",
+      "error": "Error while loading file list.",
+      "loading": "{spinner} Loading translation files...",
+      "empty": "No files found",
+      "file_link": "Edit {file} ({lang}) on GitHub"
     }
   }
 }
