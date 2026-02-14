@@ -82,8 +82,10 @@ export function detectModuleFormat(pkg: ExtendedPackageJson): ModuleFormat {
 
   // Legacy detection without exports field
   if (hasModule && hasMain) {
-    // Has both module (ESM) and main (CJS) fields
-    return 'dual'
+    // Check for dual packages (has module field and main points to cjs)
+    const mainIsCJS = pkg.main?.endsWith('.cjs') || (pkg.main?.endsWith('.js') && !isTypeModule)
+
+    return mainIsCJS ? 'dual' : 'esm'
   }
 
   if (hasModule || isTypeModule) {

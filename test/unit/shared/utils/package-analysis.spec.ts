@@ -26,6 +26,16 @@ describe('detectModuleFormat', () => {
     expect(detectModuleFormat({ module: 'index.mjs', main: 'index.js' })).toBe('dual')
   })
 
+  it('detects dual from type + module + main fields', () => {
+    expect(detectModuleFormat({ type: 'module', module: 'index.js', main: 'index.cjs' })).toBe(
+      'dual',
+    )
+  })
+
+  it('detects esm from type + module + main fields', () => {
+    expect(detectModuleFormat({ type: 'module', module: 'index.js', main: 'index.js' })).toBe('esm')
+  })
+
   it('detects ESM from module field without main', () => {
     expect(detectModuleFormat({ module: 'index.mjs' })).toBe('esm')
   })
