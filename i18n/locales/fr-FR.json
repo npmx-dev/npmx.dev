@@ -222,7 +222,7 @@
       "title": "Commencer",
       "pm_label": "Gestionnaire de paquets",
       "copy_command": "Copier la commande d'installation",
-      "copy_dev_command": "Copy la commande d'installation (dev)",
+      "copy_dev_command": "Copier la commande d'installation (dev)",
       "dev_dependency_hint": "Généralement installée en tant que dépendance de développement",
       "view_types": "Voir {package}"
     },
