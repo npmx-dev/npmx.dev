@@ -312,7 +312,7 @@ const config = computed(() => {
 
   <PackageChartModal
     v-if="isChartModalOpen && hasWeeklyDownloads"
-    :modal-title="$t('package.trends.title')"
+    :modal-title="modalTitle"
     @close="handleModalClose"
     @transitioned="handleModalTransitioned"
   >
