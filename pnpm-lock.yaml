@@ -50,6 +50,9 @@ importers:
       '@intlify/shared':
         specifier: 11.2.8
         version: 11.2.8
+      '@li/regexp-escape-polyfill':
+        specifier: jsr:0.3.4
+        version: '@jsr/li__regexp-escape-polyfill@0.3.4'
       '@lunariajs/core':
         specifier: https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3
         version: https://pkg.pr.new/lunariajs/lunaria/@lunariajs/core@f07e1a3
@@ -1837,6 +1840,9 @@ packages:
 
   '@jsr/deno__graph@0.86.9':
     resolution: {integrity: sha512-+qrrma5/bL+hcG20mfaEeC8SLopqoyd1RjcKFMRu++3SAXyrTKuvuIjBJCn/NyN7X+kV+QrJG67BCHX38Rzw+g==, tarball: https://npm.jsr.io/~/11/@jsr/deno__graph/0.86.9.tgz}
+
+  '@jsr/li__regexp-escape-polyfill@0.3.4':
+    resolution: {integrity: sha512-UGHzM9zAlRt0DUQIgsXAuXBd9jdzJ3t1v+fHsIcIj2fbUKplO9A8v2FE/w9KZo8hs79n5IamuBvqCTndGADM2Q==, tarball: https://npm.jsr.io/~/11/@jsr/li__regexp-escape-polyfill/0.3.4.tgz}
 
   '@jsr/std__bytes@1.0.6':
     resolution: {integrity: sha512-St6yKggjFGhxS52IFLJWvkchRFbAKg2Xh8UxA4S1EGz7GJ2Ui+ssDDldj/w2c8vCxvl6qgR0HaYbKeFJNqujmA==, tarball: https://npm.jsr.io/~/11/@jsr/std__bytes/1.0.6.tgz}
@@ -11467,6 +11473,8 @@ snapshots:
   '@jsr/deno__graph@0.100.1': {}
 
   '@jsr/deno__graph@0.86.9': {}
+
+  '@jsr/li__regexp-escape-polyfill@0.3.4': {}
 
   '@jsr/std__bytes@1.0.6': {}
 

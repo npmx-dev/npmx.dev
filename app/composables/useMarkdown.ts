@@ -1,3 +1,4 @@
+import { regExpEscape } from '@li/regexp-escape-polyfill'
 import { decodeHtmlEntities } from '~/utils/formatters'
 
 interface UseMarkdownOptions {
@@ -45,10 +46,8 @@ function stripAndEscapeHtml(text: string, packageName?: string): string {
     stripped = stripped.trim()
     // Collapse multiple whitespace into single space
     stripped = stripped.replace(/\s+/g, ' ')
-    // Escape special regex characters in package name
-    const escapedName = packageName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     // Match package name at the start, optionally followed by: space, dash, colon, hyphen, or just space
-    const namePattern = new RegExp(`^${escapedName}\\s*[-:—]?\\s*`, 'i')
+    const namePattern = new RegExp(`^${regExpEscape(packageName)}\\s*[-:—]?\\s*`, 'i')
     stripped = stripped.replace(namePattern, '').trim()
   }
 
