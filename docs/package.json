@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@nuxtjs/mdc": "0.20.1",
-    "better-sqlite3": "12.5.0",
-    "docus": "5.4.4",
+    "better-sqlite3": "12.6.2",
+    "docus": "5.5.1",
     "nuxt": "4.3.1"
   }
 }
