@@ -176,6 +176,9 @@ importers:
       ufo:
         specifier: 1.6.3
         version: 1.6.3
+      ultrahtml:
+        specifier: 1.6.0
+        version: 1.6.0
       unocss:
         specifier: 66.6.0
         version: 66.6.0(@unocss/webpack@66.6.0(webpack@5.104.1(esbuild@0.27.3)))(postcss@8.5.6)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))
