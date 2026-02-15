@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/color-mode',
+    '@nuxtjs/critters',
   ],
 
   $test: {
