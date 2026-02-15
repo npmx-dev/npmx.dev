@@ -144,6 +144,12 @@ npmx.dev also supports shorter, cleaner URLs:
 - [nuxt-og-image](https://github.com/nuxt-modules/og-image)
 - [npm Registry API](https://github.com/npm/registry/blob/main/docs/REGISTRY-API.md)
 
+## Deploy your own npmx instance
+
+The npmx community operates a public instance at [npmx.dev](https://npmx.dev), but is designed to be open and self-hostable by anyone [on any platform that supports Nuxt](https://nuxt.com/deploy).
+
+To deploy your own instance, follow the instructions in [DEPLOY.md](./DEPLOY.md).
+
 ## Contributing
 
 We welcome contributions &ndash; please do feel free to explore the project and improve things. See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get up and running!
