@@ -126,7 +126,7 @@ mockNuxtImport('useConnector', () => {
 })
 
 mockNuxtImport('useUserLocalSettings', () => {
-  return () => ({ userLocalSettings: mockUserLocalSettings })
+  return () => ({ localSettings: mockUserLocalSettings })
 })
 
 mockNuxtImport('useSelectedPackageManager', () => {

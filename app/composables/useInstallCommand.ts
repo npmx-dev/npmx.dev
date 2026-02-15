@@ -12,7 +12,7 @@ export function useInstallCommand(
   installVersionOverride?: MaybeRefOrGetter<string | null>,
 ) {
   const selectedPM = useSelectedPackageManager()
-  const { preferences } = useUserPreferences()
+  const { preferences } = useUserPreferencesState()
 
   // Check if we should show @types in install command
   const showTypesInInstall = computed(() => {

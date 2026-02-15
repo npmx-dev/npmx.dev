@@ -17,7 +17,7 @@ const DEFAULT_USER_LOCAL_SETTINGS: UserLocalSettings = {
   },
 }
 
-let userLocalSettingsRef: Ref<UserLocalSettings> | null = null
+let localSettingsRef: Ref<UserLocalSettings> | null = null
 
 /**
  * Composable for managing local user settings.
@@ -26,8 +26,8 @@ let userLocalSettingsRef: Ref<UserLocalSettings> | null = null
  * This is for settings that are purely local and don't need to be synced
  */
 export function useUserLocalSettings() {
-  if (!userLocalSettingsRef) {
-    userLocalSettingsRef = useLocalStorage<UserLocalSettings>(
+  if (!localSettingsRef) {
+    localSettingsRef = useLocalStorage<UserLocalSettings>(
       STORAGE_KEY,
       DEFAULT_USER_LOCAL_SETTINGS,
       {
@@ -37,6 +37,6 @@ export function useUserLocalSettings() {
   }
 
   return {
-    userLocalSettings: userLocalSettingsRef,
+    localSettings: localSettingsRef,
   }
 }

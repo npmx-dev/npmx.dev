@@ -13,9 +13,14 @@
 
 import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
-import type { UserPreferences } from '#shared/schemas/userPreferences'
+import { DEFAULT_USER_PREFERENCES, type UserPreferences } from '#shared/schemas/userPreferences'
 
 const STORAGE_KEY = 'npmx-user-preferences'
+
+function arePreferencesEqual(a: UserPreferences, b: UserPreferences): boolean {
+  const keys = Object.keys(DEFAULT_USER_PREFERENCES) as (keyof typeof DEFAULT_USER_PREFERENCES)[]
+  return keys.every(key => a[key] === b[key])
+}
 
 export type HydratedUserPreferences = Required<Omit<UserPreferences, 'updatedAt'>> &
   Pick<UserPreferences, 'updatedAt'>
@@ -23,10 +28,9 @@ export type HydratedUserPreferences = Required<Omit<UserPreferences, 'updatedAt'
 let dataRef: RemovableRef<HydratedUserPreferences> | null = null
 let syncInitialized = false
 
-/**
- * User preferences provider with server sync support.
- */
-export function useUserPreferencesProvider(defaultValue: HydratedUserPreferences) {
+export function useUserPreferencesProvider(
+  defaultValue: HydratedUserPreferences = DEFAULT_USER_PREFERENCES,
+) {
   if (!dataRef) {
     dataRef = useLocalStorage<HydratedUserPreferences>(STORAGE_KEY, defaultValue, {
       mergeDefaults: true,
@@ -63,7 +67,10 @@ export function useUserPreferencesProvider(defaultValue: HydratedUserPreferences
     if (isAuthenticated.value) {
       const serverPrefs = await loadFromServer()
       if (serverPrefs) {
-        preferences.value = { ...preferences.value, ...serverPrefs }
+        const merged = { ...preferences.value, ...serverPrefs }
+        if (!arePreferencesEqual(preferences.value, merged)) {
+          preferences.value = merged
+        }
       }
     }
 
@@ -81,7 +88,10 @@ export function useUserPreferencesProvider(defaultValue: HydratedUserPreferences
       if (newIsAuth) {
         const serverPrefs = await loadFromServer()
         if (serverPrefs) {
-          preferences.value = { ...defaultValue, ...preferences.value, ...serverPrefs }
+          const merged = { ...defaultValue, ...preferences.value, ...serverPrefs }
+          if (!arePreferencesEqual(preferences.value, merged)) {
+            preferences.value = merged
+          }
         }
       }
     })

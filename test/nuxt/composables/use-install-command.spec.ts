@@ -218,7 +218,7 @@ describe('useInstallCommand', () => {
 
     it('should only include main command when @types disabled via settings', () => {
       // Get preferences and disable includeTypesInInstall directly
-      const { preferences } = useUserPreferences()
+      const { preferences } = useUserPreferencesState()
       preferences.value.includeTypesInInstall = false
 
       const { fullInstallCommand, showTypesInInstall } = useInstallCommand(

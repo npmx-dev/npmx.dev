@@ -1,7 +1,7 @@
 export default defineNuxtPlugin({
   name: 'preferences-sync',
   setup() {
-    const { initSync } = useUserPreferences()
+    const { initSync } = useInitUserPreferencesSync()
     const { applyStoredColorMode } = useColorModePreference()
 
     // Apply stored color mode preference early (before components mount)

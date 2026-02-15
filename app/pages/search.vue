@@ -63,7 +63,7 @@ onMounted(() => {
 const rawVisibleResults = computed(() => results.value)
 
 // Settings for platform package filtering
-const { preferences } = useUserPreferences()
+const { preferences } = useUserPreferencesState()
 
 /**
  * Reorder results to put exact package name match at the top,

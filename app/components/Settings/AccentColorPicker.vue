@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useAccentColor } from '~/composables/useUserPreferences'
-
 const { accentColors, selectedAccentColor, setAccentColor } = useAccentColor()
 
 onPrehydrate(el => {

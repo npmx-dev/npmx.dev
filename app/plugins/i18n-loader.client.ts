@@ -6,7 +6,7 @@ export default defineNuxtPlugin({
   setup() {
     const { $i18n } = useNuxtApp()
     const { locale, locales, setLocale } = $i18n
-    const { preferences } = useUserPreferences()
+    const { preferences } = useUserPreferencesState()
     const settingsLocale = preferences.value.selectedLocale
 
     const matchedLocale = locales.value.map(l => l.code).find(code => code === settingsLocale)

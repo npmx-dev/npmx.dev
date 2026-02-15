@@ -330,6 +330,18 @@
         },
         "background_themes": {
           "type": "string"
+        },
+        "syncing": {
+          "type": "string"
+        },
+        "synced": {
+          "type": "string"
+        },
+        "sync_error": {
+          "type": "string"
+        },
+        "sync_enabled": {
+          "type": "string"
         }
       },
       "additionalProperties": false

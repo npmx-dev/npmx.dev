@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const router = useRouter()
 const canGoBack = useCanGoBack()
-const { preferences, isAuthenticated, isSyncing, isSynced, hasError } = useUserPreferences()
+const { preferences } = useUserPreferencesState()
+const { isAuthenticated, isSyncing, isSynced, hasError } = useUserPreferencesSyncStatus()
 const { colorModePreference, setColorMode } = useColorModePreference()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
@@ -64,27 +65,38 @@ const setLocale: typeof setNuxti18nLocale = locale => {
         </p>
         <!-- Sync status indicator for authenticated users -->
         <ClientOnly>
-          <div v-if="isAuthenticated" class="mt-4 flex items-center gap-2 text-sm">
-            <template v-if="isSyncing">
-              <span
-                class="i-carbon:cloud-upload w-4 h-4 text-fg-muted animate-pulse"
-                aria-hidden="true"
-              />
-              <span class="text-fg-muted">{{ $t('settings.syncing') }}</span>
-            </template>
-            <template v-else-if="isSynced">
-              <span class="i-carbon:checkmark-filled w-4 h-4 text-green-500" aria-hidden="true" />
-              <span class="text-fg-muted">{{ $t('settings.synced') }}</span>
-            </template>
-            <template v-else-if="hasError">
-              <span class="i-carbon:warning-filled w-4 h-4 text-amber-500" aria-hidden="true" />
-              <span class="text-fg-muted">{{ $t('settings.sync_error') }}</span>
-            </template>
-            <template v-else>
-              <span class="i-carbon:cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
-              <span class="text-fg-muted">{{ $t('settings.sync_enabled') }}</span>
-            </template>
-          </div>
+          <Transition name="fade" mode="out-in">
+            <div
+              v-if="isAuthenticated"
+              class="mt-4 flex items-center gap-2 text-sm"
+              :key="isSyncing ? 'syncing' : isSynced ? 'synced' : hasError ? 'error' : 'idle'"
+            >
+              <template v-if="isSyncing">
+                <span
+                  class="i-lucide:cloud-upload w-4 h-4 text-fg-muted animate-pulse"
+                  aria-hidden="true"
+                />
+                <span class="text-fg-muted">{{ $t('settings.syncing') }}</span>
+              </template>
+              <template v-else-if="isSynced">
+                <span
+                  class="i-lucide:circle-check w-4 h-4 text-green-6 dark:text-green-4"
+                  aria-hidden="true"
+                />
+                <span class="text-green-7 dark:text-green-3 font-medium">{{
+                  $t('settings.synced')
+                }}</span>
+              </template>
+              <template v-else-if="hasError">
+                <span class="i-lucide:triangle-alert w-4 h-4 text-amber-500" aria-hidden="true" />
+                <span class="text-fg-muted">{{ $t('settings.sync_error') }}</span>
+              </template>
+              <template v-else>
+                <span class="i-lucide:cloud w-4 h-4 text-fg-muted" aria-hidden="true" />
+                <span class="text-fg-muted">{{ $t('settings.sync_enabled') }}</span>
+              </template>
+            </div>
+          </Transition>
         </ClientOnly>
       </header>
 
@@ -303,3 +315,15 @@ const setLocale: typeof setNuxti18nLocale = locale => {
     </article>
   </main>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.15s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

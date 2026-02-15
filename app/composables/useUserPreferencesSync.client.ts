@@ -2,6 +2,7 @@ import type { UserPreferences } from '#shared/schemas/userPreferences'
 import { DEFAULT_USER_PREFERENCES } from '#shared/schemas/userPreferences'
 
 const SYNC_DEBOUNCE_MS = 2000
+const SYNCED_DISPLAY_MS = 3000
 
 type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error'
 
@@ -15,6 +16,7 @@ let syncStateInstance: PreferencesSyncState | null = null
 let pendingSavePromise: Promise<boolean> | null = null
 let hasPendingChanges = false
 let debounceTimeoutId: ReturnType<typeof setTimeout> | null = null
+let syncedResetTimeoutId: ReturnType<typeof setTimeout> | null = null
 
 function getSyncState(): PreferencesSyncState {
   if (!syncStateInstance) {
@@ -38,6 +40,23 @@ async function fetchServerPreferences(): Promise<UserPreferences | null> {
   }
 }
 
+/** Show 'synced' status briefly, then reset to 'idle'. */
+function showSyncedStatus(): void {
+  const state = getSyncState()
+  if (syncedResetTimeoutId) {
+    clearTimeout(syncedResetTimeoutId)
+  }
+  state.status.value = 'synced'
+  state.lastSyncedAt.value = new Date()
+  syncedResetTimeoutId = setTimeout(() => {
+    syncedResetTimeoutId = null
+
+    if (state.status.value === 'synced') {
+      state.status.value = 'idle'
+    }
+  }, SYNCED_DISPLAY_MS)
+}
+
 async function saveToServer(preferences: UserPreferences): Promise<boolean> {
   const state = getSyncState()
   state.status.value = 'syncing'
@@ -48,8 +67,7 @@ async function saveToServer(preferences: UserPreferences): Promise<boolean> {
       method: 'PUT',
       body: preferences,
     })
-    state.status.value = 'synced'
-    state.lastSyncedAt.value = new Date()
+    showSyncedStatus()
     hasPendingChanges = false
     return true
   } catch (err) {
@@ -96,8 +114,7 @@ export function useUserPreferencesSync() {
     const serverPreferences = await fetchServerPreferences()
 
     if (serverPreferences) {
-      state.status.value = 'synced'
-      state.lastSyncedAt.value = new Date()
+      showSyncedStatus()
       return serverPreferences
     }
 
@@ -120,7 +137,7 @@ export function useUserPreferencesSync() {
   function setupRouteGuard(getPreferences: () => UserPreferences): void {
     router.beforeEach(async (_to, _from, next) => {
       if (hasPendingChanges && isAuthenticated.value) {
-        await flushPendingSync(getPreferences())
+        void flushPendingSync(getPreferences())
       }
       next()
     })
@@ -141,13 +158,11 @@ export function useUserPreferencesSync() {
   }
 
   return {
-    isAuthenticated,
     status: state.status,
     lastSyncedAt: state.lastSyncedAt,
     error: state.error,
     loadFromServer,
     scheduleSync,
-    flushPendingSync,
     setupRouteGuard,
     setupBeforeUnload,
   }
