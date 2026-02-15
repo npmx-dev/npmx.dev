@@ -77,7 +77,7 @@ function handleReset() {
       @click.stop="isOpen = !isOpen"
       classicon="i-lucide:columns-3-cog"
     >
-      {{ $t('filters.columns.title') }}
+      <span class="sr-only sm:not-sr-only">{{ $t('filters.columns.title') }}</span>
     </ButtonBase>
 
     <Transition name="dropdown">
