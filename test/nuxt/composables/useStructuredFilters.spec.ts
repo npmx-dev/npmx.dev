@@ -185,3 +185,65 @@ describe('hasSearchOperators', () => {
     expect(hasSearchOperators({ name: [], keywords: [] })).toBe(false)
   })
 })
+
+describe('keyword deduplication', () => {
+  it('deduplicates same keyword from kw: and keyword: operators', () => {
+    const result = parseSearchOperators('kw:react keyword:react')
+    expect(result.keywords).toEqual(['react'])
+  })
+
+  it('deduplicates case-insensitively', () => {
+    const result = parseSearchOperators('kw:React keyword:REACT kw:react')
+    expect(result.keywords).toEqual(['React'])
+  })
+
+  it('preserves different keywords', () => {
+    const result = parseSearchOperators('kw:react keyword:vue')
+    expect(result.keywords).toEqual(['react', 'vue'])
+  })
+
+  it('deduplicates within comma-separated values', () => {
+    const result = parseSearchOperators('kw:react,vue keyword:react,angular')
+    expect(result.keywords).toEqual(['react', 'vue', 'angular'])
+  })
+})
+
+describe('keyword clearing scenarios', () => {
+  it('returns keywords when kw: operator is present', () => {
+    const result = parseSearchOperators('test kw:react')
+    expect(result.keywords).toEqual(['react'])
+    expect(result.text).toBe('test')
+  })
+
+  it('returns undefined keywords when kw: operator is removed', () => {
+    const result = parseSearchOperators('test')
+    expect(result.keywords).toBeUndefined()
+    expect(result.text).toBe('test')
+  })
+
+  it('handles transition from keyword to no keyword', () => {
+    // Simulate the state transition when user removes keyword from search
+    const withKeyword = parseSearchOperators('test kw:react')
+    expect(withKeyword.keywords).toEqual(['react'])
+
+    const withoutKeyword = parseSearchOperators('test')
+    expect(withoutKeyword.keywords).toBeUndefined()
+
+    // This is what useStructuredFilters does in the watcher:
+    // filters.value.keywords = [...(parsed.keywords ?? [])]
+    const updatedKeywords = [...(withoutKeyword.keywords ?? [])]
+    expect(updatedKeywords).toEqual([])
+  })
+
+  it('returns empty keywords array after nullish coalescing', () => {
+    // Verify the exact logic used in useStructuredFilters watcher
+    const testCases = ['', 'test', 'some search query', 'name:package', 'desc:something']
+
+    for (const query of testCases) {
+      const parsed = parseSearchOperators(query)
+      // This is the exact line from useStructuredFilters.ts:
+      const keywords = [...(parsed.keywords ?? [])]
+      expect(keywords).toEqual([])
+    }
+  })
+})
