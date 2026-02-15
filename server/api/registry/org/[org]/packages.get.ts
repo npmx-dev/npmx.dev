@@ -16,7 +16,7 @@ function validateOrgName(name: string): void {
 
 export default defineCachedEventHandler(
   async event => {
-    const org = getRouterParam(event, 'org')
+    const org = getRouterParam(event, 'org')?.toLowerCase()
 
     if (!org) {
       throw createError({
@@ -54,7 +54,7 @@ export default defineCachedEventHandler(
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
     getKey: event => {
-      const org = getRouterParam(event, 'org') ?? ''
+      const org = getRouterParam(event, 'org')?.toLowerCase() ?? ''
       return `org-packages:v1:${org}`
     },
   },

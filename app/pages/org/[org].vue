@@ -10,7 +10,7 @@ definePageMeta({
 const route = useRoute('org')
 const router = useRouter()
 
-const orgName = computed(() => route.params.org)
+const orgName = computed(() => route.params.org.toLowerCase())
 
 const { isConnected } = useConnector()
 

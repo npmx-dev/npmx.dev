@@ -5,7 +5,7 @@ import { normalizeSearchParam } from '#shared/utils/url'
 const route = useRoute('~username')
 const router = useRouter()
 
-const username = computed(() => route.params.username)
+const username = computed(() => route.params.username.toLowerCase())
 
 // Debounced URL update for page and filter/sort
 const updateUrl = debounce((updates: { page?: number; filter?: string; sort?: string }) => {

@@ -16,8 +16,8 @@ defineProps<{
     <NuxtLink
       :to="
         type === 'user'
-          ? { name: '~username', params: { username: name } }
-          : { name: 'org', params: { org: name } }
+          ? { name: '~username', params: { username: name.toLowerCase() } }
+          : { name: 'org', params: { org: name.toLowerCase() } }
       "
       :data-suggestion-index="index"
       class="flex items-center gap-4 focus-visible:outline-none after:content-[''] after:absolute after:inset-0"

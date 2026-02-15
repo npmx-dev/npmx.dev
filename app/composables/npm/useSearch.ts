@@ -122,10 +122,10 @@ export function useSearch(
 
       const newSuggestions: SearchSuggestion[] = []
       if (isOrg) {
-        newSuggestions.push({ type: 'org', name, exists: true })
+        newSuggestions.push({ type: 'org', name: lowerName, exists: true })
       }
       if (isUser && !isOrg) {
-        newSuggestions.push({ type: 'user', name, exists: true })
+        newSuggestions.push({ type: 'user', name: lowerName, exists: true })
       }
       suggestions.value = newSuggestions
     } else {
@@ -378,7 +378,7 @@ export function useSearch(
 
       if (wantOrg && existenceCache.value[`org:${lowerName}`] === undefined) {
         promises.push(
-          checkOrgNpm(name)
+          checkOrgNpm(lowerName)
             .then(exists => {
               existenceCache.value = { ...existenceCache.value, [`org:${lowerName}`]: exists }
             })
@@ -390,7 +390,7 @@ export function useSearch(
 
       if (wantUser && existenceCache.value[`user:${lowerName}`] === undefined) {
         promises.push(
-          checkUserNpm(name)
+          checkUserNpm(lowerName)
             .then(exists => {
               existenceCache.value = { ...existenceCache.value, [`user:${lowerName}`]: exists }
             })
@@ -411,10 +411,10 @@ export function useSearch(
       const isUser = wantUser && existenceCache.value[`user:${lowerName}`]
 
       if (isOrg) {
-        result.push({ type: 'org', name, exists: true })
+        result.push({ type: 'org', name: lowerName, exists: true })
       }
       if (isUser && !isOrg) {
-        result.push({ type: 'user', name, exists: true })
+        result.push({ type: 'user', name: lowerName, exists: true })
       }
     } finally {
       if (requestId === suggestionRequestId.value) {
