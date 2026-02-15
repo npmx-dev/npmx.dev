@@ -295,6 +295,13 @@ const latestVersion = computed(() => {
   return pkg.value.versions[latestTag] ?? null
 })
 
+/** True when the currently displayed version (or resolved version) is deprecated; used to hide deprecate button. */
+const isCurrentVersionDeprecated = computed(() => {
+  if (displayVersion.value?.deprecated) return true
+  const ver = resolvedVersion.value
+  return !!(ver && pkg.value?.versions?.[ver]?.deprecated)
+})
+
 const deprecationNotice = computed(() => {
   if (!displayVersion.value?.deprecated) return null
 
@@ -315,6 +322,17 @@ const deprecationNotice = computed(() => {
 const deprecationNoticeMessage = useMarkdown(() => ({
   text: deprecationNotice.value?.message ?? '',
 }))
+
+const { isConnected, npmUser } = useConnector()
+const deprecateModal = useTemplateRef<{ open: () => void }>('deprecateModal')
+
+const isPackageOwner = computed(() => {
+  const maintainers = pkg.value?.maintainers
+  const user = npmUser.value
+  if (!maintainers?.length || !user) return false
+  const userLower = user.toLowerCase()
+  return maintainers.some((m: { name?: string }) => (m.name ?? '').toLowerCase() === userLower)
+})
 
 const publishSecurityDowngrade = computed(() => {
   const currentVersion = displayVersion.value?.version
@@ -1418,6 +1436,21 @@ const showSkeleton = shallowRef(false)
 
           <!-- Maintainers (with admin actions when connected) -->
           <PackageMaintainers :package-name="pkg.name" :maintainers="pkg.maintainers" />
+
+          <!-- Deprecation (when connected as package owner; hidden when current version is already deprecated) -->
+          <div
+            v-if="isConnected && resolvedVersion && isPackageOwner && !isCurrentVersionDeprecated"
+            class="space-y-1"
+          >
+            <button
+              type="button"
+              class="flex items-center justify-center w-full px-3 py-1.5 bg-bg-subtle rounded text-sm font-mono text-red-400 hover:text-red-500 transition-colors inline-flex items-center gap-1.5 w-full"
+              @click="deprecateModal?.open()"
+            >
+              <span class="i-carbon-warning-alt w-4 h-4 shrink-0" aria-hidden="true" />
+              {{ $t('package.deprecation.action') }}
+            </button>
+          </div>
         </div>
       </PackageSidebar>
     </article>
@@ -1438,6 +1471,15 @@ const showSkeleton = shallowRef(false)
         $t('common.go_back_home')
       }}</LinkBase>
     </div>
+    <ClientOnly>
+      <PackageDeprecatePackageModal
+        v-if="pkg"
+        ref="deprecateModal"
+        :package-name="pkg.name"
+        :version="resolvedVersion ?? ''"
+        :is-already-deprecated="isCurrentVersionDeprecated"
+      />
+    </ClientOnly>
   </main>
 </template>
 

@@ -463,6 +463,9 @@
         "deprecation": {
           "type": "object",
           "properties": {
+            "action": {
+              "type": "string"
+            },
             "package": {
               "type": "string"
             },
@@ -471,6 +474,45 @@
             },
             "no_reason": {
               "type": "string"
+            },
+            "modal": {
+              "type": "object",
+              "properties": {
+                "deprecating": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "reason_placeholder": {
+                  "type": "string"
+                },
+                "success": {
+                  "type": "string"
+                },
+                "success_detail": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "version_placeholder": {
+                  "type": "string"
+                },
+                "already_deprecated": {
+                  "type": "string"
+                },
+                "already_deprecated_version": {
+                  "type": "string"
+                },
+                "already_deprecated_detail": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false

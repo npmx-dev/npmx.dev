@@ -152,9 +152,23 @@
     "copy_name": "复制包名",
     "copy_version": "复制版本号",
     "deprecation": {
+      "action": "废弃",
       "package": "此包已废弃。",
       "version": "此版本已废弃。",
-      "no_reason": "未提供原因"
+      "no_reason": "未提供原因",
+      "modal": {
+        "deprecating": "废弃中",
+        "title": "废弃",
+        "reason": "原因",
+        "reason_placeholder": "例如：使用 package-x 替代。这个包不再维护。",
+        "success": "包已废弃",
+        "success_detail": "这个包已废弃。",
+        "version": "版本",
+        "version_placeholder": "留空则废弃整个包",
+        "already_deprecated": "已废弃",
+        "already_deprecated_version": "该版本已废弃。",
+        "already_deprecated_detail": "该包或版本已处于废弃状态，无法再修改废弃状态。"
+      }
     },
     "replacement": {
       "title": "你可能不需要这个依赖。",
