@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { VueUiXyDatasetItem } from 'vue-data-ui'
-import { VueUiXy } from 'vue-data-ui/vue-ui-xy'
 import { useDebounceFn, useElementSize } from '@vueuse/core'
 import { useCssVariables } from '~/composables/useColors'
 import { OKLCH_NEUTRAL_FALLBACK, transparentizeOklch } from '~/utils/colors'
@@ -18,6 +17,10 @@ import type {
   YearlyDataPoint,
 } from '~/types/chart'
 import { DATE_INPUT_MAX } from '~/utils/input'
+
+import('vue-data-ui/style.css')
+
+const VueUiXy = defineAsyncComponent(() => import('vue-data-ui/vue-ui-xy').then(m => m.VueUiXy))
 
 const props = withDefaults(
   defineProps<{

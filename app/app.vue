@@ -3,6 +3,9 @@ import type { Directions } from '@nuxtjs/i18n'
 import { useEventListener, onKeyDown, onKeyUp } from '@vueuse/core'
 import { isEditableElement } from '~/utils/input'
 
+import 'uno.css'
+import('uno:icons.css') // make icon css a separate, async chunk
+
 const route = useRoute()
 const router = useRouter()
 const { locale, locales } = useI18n()

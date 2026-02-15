@@ -51,6 +51,10 @@ const config: KnipConfig = {
         '@e18e/eslint-plugin',
         'eslint-plugin-regexp',
 
+        /** Virtual Modules */
+        'uno.css',
+        'uno',
+
         /** Used in test/e2e/helpers/ which is excluded from knip project scope */
         'h3-next',
       ],
