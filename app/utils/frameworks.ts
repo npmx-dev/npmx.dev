@@ -61,6 +61,11 @@ export const SHOWCASED_FRAMEWORKS = [
     package: 'solid-js',
     color: 'oklch(0.4237 0.0857 255.45)',
   },
+  {
+    name: 'tanstack start',
+    package: '@tanstack/start',
+    color: 'oklch(60.9% .126 221.723)',
+  },
 ]
 
 export type FrameworkPackageName = (typeof SHOWCASED_FRAMEWORKS)[number]['package']
