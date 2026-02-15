@@ -70,11 +70,15 @@ const copyExecuteCommand = () => copyExecute(getFullExecuteCommand())
           >
           <button
             type="button"
-            class="px-2 py-0.5 font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border rounded transition-colors duration-200 opacity-0 group-hover/executecmd:opacity-100 hover:(text-fg border-border-hover) active:scale-95 focus-visible:opacity-100 focus-visible:outline-accent/70"
+            class="p-1 ms-1 flex items-center font-mono text-xs text-fg-muted bg-bg-subtle/80 border border-border border-solid rounded transition-colors duration-200 hover:(text-fg border-border-hover) active:scale-95 focus-visible:outline-accent/70"
             :aria-label="$t('package.get_started.copy_command')"
             @click.stop="copyExecuteCommand"
           >
-            {{ executeCopied ? $t('common.copied') : $t('common.copy') }}
+            <span
+              :class="executeCopied ? 'i-carbon:checkmark' : 'i-carbon:copy'"
+              class="size-4 inline-block"
+              aria-hidden="true"
+            />
           </button>
         </div>
       </div>

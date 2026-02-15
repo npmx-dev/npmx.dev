@@ -62,7 +62,7 @@ test.describe('Create Command', () => {
   })
 
   test.describe('Copy Functionality', () => {
-    test('hovering create command shows copy button', async ({ page, goto }) => {
+    test('copy button is always visible', async ({ page, goto }) => {
       await goto('/package/vite', { waitUntil: 'hydration' })
 
       await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
@@ -75,14 +75,8 @@ test.describe('Create Command', () => {
       const createCommandContainer = page.locator('.group\\/createcmd').first()
       await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
 
-      // Copy button should initially be hidden (opacity-0)
+      // Copy button should always be visible
       const copyButton = createCommandContainer.locator('button')
-      await expect(copyButton).toHaveCSS('opacity', '0')
-
-      // Hover over the container
-      await createCommandContainer.hover()
-
-      // Copy button should become visible
       await expect(copyButton).toHaveCSS('opacity', '1')
     })
 
@@ -104,9 +98,6 @@ test.describe('Create Command', () => {
       const createCommandContainer = page.locator('.group\\/createcmd').first()
       await expect(createCommandContainer).toBeVisible({ timeout: 20000 })
 
-      await createCommandContainer.hover()
-
-      // Click the copy button
       const copyButton = createCommandContainer.locator('button')
       await copyButton.click()
 
@@ -123,21 +114,15 @@ test.describe('Create Command', () => {
   })
 
   test.describe('Install Command Copy', () => {
-    test('hovering install command shows copy button', async ({ page, goto }) => {
+    test('copy button is always visible', async ({ page, goto }) => {
       await goto('/package/is-odd', { waitUntil: 'hydration' })
 
       // Find the install command container
       const installCommandContainer = page.locator('.group\\/installcmd').first()
       await expect(installCommandContainer).toBeVisible()
 
-      // Copy button should initially be hidden
+      // Copy button should always be visible
       const copyButton = installCommandContainer.locator('button')
-      await expect(copyButton).toHaveCSS('opacity', '0')
-
-      // Hover over the container
-      await installCommandContainer.hover()
-
-      // Copy button should become visible
       await expect(copyButton).toHaveCSS('opacity', '1')
     })
 
@@ -151,11 +136,7 @@ test.describe('Create Command', () => {
 
       await goto('/package/is-odd', { waitUntil: 'hydration' })
 
-      // Find and hover over the install command container
       const installCommandContainer = page.locator('.group\\/installcmd').first()
-      await installCommandContainer.hover()
-
-      // Click the copy button
       const copyButton = installCommandContainer.locator('button')
       await copyButton.click()
 
@@ -165,6 +146,58 @@ test.describe('Create Command', () => {
       // Verify clipboard content contains the install command
       const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
       expect(clipboardContent).toMatch(/install is-odd|add is-odd/i)
+
+      await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
+      await expect(copyButton).not.toContainText(/copied/i)
+    })
+  })
+
+  test.describe('Run Command Copy', () => {
+    test('copy button is always visible', async ({ page, goto }) => {
+      await goto('/package/vite', { waitUntil: 'hydration' })
+
+      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
+
+      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
+        timeout: 15000,
+      })
+
+      // Find the run command container
+      const runCommandContainer = page.locator('.group\\/runcmd').first()
+      await expect(runCommandContainer).toBeVisible({ timeout: 20000 })
+
+      // Copy button should always be visible
+      const copyButton = runCommandContainer.locator('button')
+      await expect(copyButton).toHaveCSS('opacity', '1')
+    })
+
+    test('clicking copy button copies run command and shows confirmation', async ({
+      page,
+      goto,
+      context,
+    }) => {
+      // Grant clipboard permissions
+      await context.grantPermissions(['clipboard-read', 'clipboard-write'])
+
+      await goto('/package/vite', { waitUntil: 'hydration' })
+      await expect(page.locator('h1')).toContainText('vite', { timeout: 15000 })
+
+      await expect(page.locator('main header').locator('text=/v\\d+\\.\\d+/')).toBeVisible({
+        timeout: 15000,
+      })
+
+      const runCommandContainer = page.locator('.group\\/runcmd').first()
+      await expect(runCommandContainer).toBeVisible({ timeout: 20000 })
+
+      const copyButton = runCommandContainer.locator('button')
+      await copyButton.click()
+
+      // Button text should change to "copied!"
+      await expect(copyButton).toContainText(/copied/i)
+
+      // Verify clipboard content contains the run command
+      const clipboardContent = await page.evaluate(() => navigator.clipboard.readText())
+      expect(clipboardContent).toMatch(/npx vite/i)
 
       await expect(copyButton).toContainText(/copy/i, { timeout: 5000 })
       await expect(copyButton).not.toContainText(/copied/i)
