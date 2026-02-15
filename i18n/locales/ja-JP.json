@@ -151,6 +151,7 @@
     "view_permalink": "このバージョンのパーマリンクを表示",
     "navigation": "パッケージナビゲーション",
     "copy_name": "パッケージ名をコピー",
+    "copy_version": "パッケージのバージョンをコピー",
     "deprecation": {
       "package": "このパッケージは非推奨になりました。",
       "version": "このバージョンは非推奨になりました。",
@@ -300,7 +301,13 @@
       "show_low_usage": "利用率の低いバージョンを表示",
       "show_low_usage_tooltip": "総ダウンロード数の1%未満のバージョングループも含めます。",
       "date_range_tooltip": "直近1週間のバージョン分布のみ",
-      "y_axis_label": "ダウンロード"
+      "y_axis_label": "ダウンロード",
+      "filter_placeholder": "semverで絞り込み (例: ^3.0.0)",
+      "filter_invalid": "無効なsemver範囲です",
+      "filter_help": "semver範囲フィルタのヘルプ",
+      "filter_tooltip": "{link} を使ってバージョンを絞り込みます。例えば、^3.0.0は3.xのすべてのバージョンを表示します。",
+      "filter_tooltip_link": "semver範囲",
+      "no_matches": "この範囲に一致するバージョンはありません"
     },
     "dependencies": {
       "title": "依存関係（{count}）",
@@ -310,7 +317,8 @@
       "view_vulnerabilities": "脆弱性情報を表示",
       "outdated_major": "最新から {count} 個のメジャーバージョン遅れています (最新: {latest})",
       "outdated_minor": "最新から {count} 個のマイナーバージョン遅れています (最新: {latest})",
-      "outdated_patch": "パッチアップデートがあります (最新: {latest})"
+      "outdated_patch": "パッチアップデートがあります (最新: {latest})",
+      "has_replacement": "この依存関係には代替の候補があります"
     },
     "peer_dependencies": {
       "title": "ピア依存関係（{count}）",
@@ -354,9 +362,11 @@
       "y_axis_label": "{granularity} {facet}",
       "facet": "指標",
       "title": "トレンド",
+      "contributors_skip": "コントリビューターには表示されません (GitHubリポジトリなし):",
       "items": {
         "downloads": "ダウンロード数",
-        "likes": "いいね数"
+        "likes": "いいね数",
+        "contributors": "コントリビューター"
       }
     },
     "downloads": {
