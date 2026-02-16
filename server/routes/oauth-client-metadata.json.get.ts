@@ -1,7 +1,5 @@
-export default defineEventHandler(async event => {
-  const config = useRuntimeConfig(event)
-  const keyset = await loadJWKs(config)
-  // @ts-expect-error Taken from statusphere-example-app. Throws a ts error
-  const pk = keyset?.findPrivateKey({ use: 'sig' })
+export default defineEventHandler(async _ => {
+  const keyset = await loadJWKs()
+  const pk = keyset?.findPrivateKey({ usage: 'sign' })
   return getOauthClientMetadata(pk?.alg)
 })

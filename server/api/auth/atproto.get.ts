@@ -26,7 +26,6 @@ export default defineEventHandler(async event => {
 
   const query = getQuery(event)
   const session = await useServerSession(event)
-  const atclient = await getNodeOAuthClient(session, config)
 
   if (query.handle) {
     // Initiate auth flow
@@ -54,7 +53,7 @@ export default defineEventHandler(async event => {
     }
 
     try {
-      const redirectUrl = await atclient.authorize(query.handle, {
+      const redirectUrl = await event.context.oauthClient.authorize(query.handle, {
         scope,
         prompt: query.create ? 'create' : undefined,
         // TODO: I do not beleive this is working as expected on
@@ -78,7 +77,7 @@ export default defineEventHandler(async event => {
     // Handle callback
     try {
       const params = new URLSearchParams(query as Record<string, string>)
-      const result = await atclient.callback(params)
+      const result = await event.context.oauthClient.callback(params)
       try {
         const state = decodeOAuthState(event, result.state)
         const profile = await getMiniProfile(result.session)

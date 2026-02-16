@@ -10,7 +10,6 @@ import { NodeOAuthClient, AtprotoDohHandleResolver } from '@atproto/oauth-client
 import { getOAuthLock } from '#server/utils/atproto/lock'
 import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { LIKES_SCOPE } from '#shared/utils/constants'
-import type { RuntimeConfig } from 'nuxt/schema'
 import type { UserServerSession } from '#shared/types/userSession'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
@@ -69,16 +68,12 @@ type EventHandlerWithOAuthSession<T extends EventHandlerRequest, D> = (
   serverSession: SessionManager,
 ) => Promise<D>
 
-export async function getNodeOAuthClient(
-  serverSession: SessionManager,
-  config: RuntimeConfig,
-): Promise<NodeOAuthClient> {
-  const { stateStore, sessionStore } = useOAuthStorage(serverSession)
+export async function getNodeOAuthClient(): Promise<NodeOAuthClient> {
+  const { stateStore, sessionStore } = useOAuthStorage()
 
   // These are optional and not expected or can be used easily in local development, only in production
-  const keyset = await loadJWKs(config)
-  // @ts-expect-error Taken from statusphere-example-app. Throws a ts error
-  const pk = keyset?.findPrivateKey({ use: 'sig' })
+  const keyset = await loadJWKs()
+  const pk = keyset?.findPrivateKey({ usage: 'sign' })
   const clientMetadata = getOauthClientMetadata(pk?.alg)
 
   return new NodeOAuthClient({
@@ -91,10 +86,11 @@ export async function getNodeOAuthClient(
   })
 }
 
-export async function loadJWKs(config: RuntimeConfig): Promise<Keyset | undefined> {
+export async function loadJWKs(): Promise<Keyset | undefined> {
   // If we ever need to add multiple JWKs to rotate keys we will need to add a new one
   // under a new variable and update here
-  const jwkOne = config.oauthJwkOne
+  // @ts-expect-error Not sure how to strongly type these or if there's a better way to get this env
+  const jwkOne = import.meta.env.NUXT_OAUTH_JWK_ONE
   if (!jwkOne) return undefined
 
   // For multiple keys if we need to rotate
@@ -109,18 +105,15 @@ async function getOAuthSession(event: H3Event): Promise<{
   serverSession: SessionManager<UserServerSession>
 }> {
   const serverSession = await useServerSession(event)
-  const config = useRuntimeConfig(event)
 
   try {
-    const client = await getNodeOAuthClient(serverSession, config)
-
     const currentSession = serverSession.data
     // TODO (jg): why can a session be `{}`?
     if (!currentSession || !currentSession.public?.did) {
       return { oauthSession: undefined, serverSession }
     }
 
-    const oauthSession = await client.restore(currentSession.public.did)
+    const oauthSession = await event.context.oauthClient.restore(currentSession.public.did)
     return { oauthSession, serverSession }
   } catch (error) {
     // Log error safely without using util.inspect on potentially problematic objects
@@ -156,11 +149,10 @@ export function eventHandlerWithOAuthSession<T extends EventHandlerRequest, D>(
 ) {
   return defineEventHandler(async event => {
     const { oauthSession, serverSession } = await getOAuthSession(event)
-    let oauthSessionId = serverSession.data.oauthSessionId
-
+    const publicData = serverSession.data.public
     // User was authenticated at one point, but was not able to restore
     // the session to the PDS
-    if (!oauthSession && oauthSessionId) {
+    if (!oauthSession && publicData) {
       // cleans up our server side session store
       await serverSession.clear()
       throw createError({
