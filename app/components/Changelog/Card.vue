@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import type { ReleaseData } from '~~/shared/types/changelog'
+import { useDateFormat } from '#imports'
 
 const { release } = defineProps<{
   release: ReleaseData
 }>()
+const formattedDate = useDateFormat(() => release.publishedAt, 'YYYY-MM-DD', {})
+
+const cardId = computed(() => (release.publishedAt ? `date-${formattedDate.value}` : undefined))
+
+const navId = computed(() => `releaae-${encodeURIComponent(release.title)}`)
 </script>
 <template>
   <section class="border border-border rounded-lg p-4 sm:p-6">
-    <div class="flex justify-between">
-      <h2 class="text-1xl sm:text-2xl font-medium min-w-0 break-words py-2">
+    <div class="flex justify-between" :id="cardId">
+      <h2 class="text-1xl sm:text-2xl font-medium min-w-0 break-words py-2" :id="navId">
         {{ release.title }}
       </h2>
       <ReadmeTocDropdown
