@@ -2,7 +2,7 @@
 const { isConnected, isConnecting, npmUser, error, hasOperations, connect, disconnect } =
   useConnector()
 
-const { settings } = useSettings()
+const { localSettings } = useUserLocalSettings()
 
 const tokenInput = shallowRef('')
 const portInput = shallowRef('31415')
@@ -67,7 +67,7 @@ function handleDisconnect() {
       <div class="flex flex-col gap-2">
         <SettingsToggle
           :label="$t('connector.modal.auto_open_url')"
-          v-model="settings.connector.autoOpenURL"
+          v-model="localSettings.connector.autoOpenURL"
         />
       </div>
 
@@ -201,7 +201,7 @@ function handleDisconnect() {
             <div class="flex flex-col gap-2">
               <SettingsToggle
                 :label="$t('connector.modal.auto_open_url')"
-                v-model="settings.connector.autoOpenURL"
+                v-model="localSettings.connector.autoOpenURL"
               />
             </div>
           </div>

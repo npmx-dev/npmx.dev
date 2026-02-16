@@ -125,6 +125,7 @@ export default defineNuxtConfig({
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
+    '/api/user/**': { isr: false, cache: false },
     '/api/opensearch/suggestions': {
       isr: {
         expiration: 60 * 60 * 24 /* one day */,
@@ -209,6 +210,10 @@ export default defineNuxtConfig({
       'atproto': {
         driver: 'fsLite',
         base: './.cache/atproto',
+      },
+      'user-preferences': {
+        driver: 'fsLite',
+        base: './.cache/user-preferences',
       },
     },
     typescript: {

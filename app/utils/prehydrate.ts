@@ -15,18 +15,16 @@ export function initPreferencesOnPrehydrate() {
     // Valid package manager IDs
     const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt'])
 
-    // Read settings from localStorage
-    const settings = JSON.parse(
-      localStorage.getItem('npmx-settings') || '{}',
-    ) as Partial<AppSettings>
+    // Read user preferences from localStorage
+    const preferences = JSON.parse(localStorage.getItem('npmx-user-preferences') || '{}')
 
-    const accentColorId = settings.accentColorId
+    const accentColorId = preferences.accentColorId
     if (accentColorId && accentColorIds.has(accentColorId)) {
       document.documentElement.style.setProperty('--accent-color', `var(--swatch-${accentColorId})`)
     }
 
     // Apply background accent
-    const preferredBackgroundTheme = settings.preferredBackgroundTheme
+    const preferredBackgroundTheme = preferences.preferredBackgroundTheme
     if (preferredBackgroundTheme) {
       document.documentElement.dataset.bgTheme = preferredBackgroundTheme
     }
@@ -52,6 +50,7 @@ export function initPreferencesOnPrehydrate() {
     // Set data attribute for CSS-based visibility
     document.documentElement.dataset.pm = pm
 
-    document.documentElement.dataset.collapsed = settings.sidebar?.collapsed?.join(' ') ?? ''
+    const sidebar = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+    document.documentElement.dataset.collapsed = sidebar.sidebar?.collapsed?.join(' ') ?? ''
   })
 }
