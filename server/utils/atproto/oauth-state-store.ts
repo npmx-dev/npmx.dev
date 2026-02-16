@@ -1,30 +1,30 @@
 import type { NodeSavedState, NodeSavedStateStore } from '@atproto/oauth-client-node'
-import type { UserServerSession } from '#shared/types/userSession'
-import type { SessionManager } from 'h3'
+import { OAUTH_CACHE_STORAGE_BASE } from './storage'
+
+// It is recommended that oauth state is only saved for 30 minutes
+const STATE_EXPIRATION = CACHE_MAX_AGE_ONE_MINUTE * 30
 
 export class OAuthStateStore implements NodeSavedStateStore {
-  private readonly session: SessionManager<UserServerSession>
+  private readonly cache: CacheAdapter
 
-  constructor(session: SessionManager<UserServerSession>) {
-    this.session = session
+  constructor() {
+    this.cache = getCacheAdapter(OAUTH_CACHE_STORAGE_BASE)
   }
 
-  async get(): Promise<NodeSavedState | undefined> {
-    const sessionData = this.session.data
-    if (!sessionData) return undefined
-    return sessionData.oauthState
+  private createStorageKey(key: string) {
+    return `state:${key}`
   }
 
-  async set(_key: string, val: NodeSavedState) {
-    // We are ignoring the key since the mapping is already done in the session
-    await this.session.update({
-      oauthState: val,
-    })
+  async get(key: string): Promise<NodeSavedState | undefined> {
+    const state = await this.cache.get<NodeSavedState>(this.createStorageKey(key))
+    return state ?? undefined
   }
 
-  async del() {
-    await this.session.update({
-      oauthState: undefined,
-    })
+  async set(key: string, val: NodeSavedState) {
+    await this.cache.set<NodeSavedState>(this.createStorageKey(key), val, STATE_EXPIRATION)
+  }
+
+  async del(key: string) {
+    await this.cache.delete(this.createStorageKey(key))
   }
 }

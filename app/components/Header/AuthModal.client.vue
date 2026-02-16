@@ -50,6 +50,14 @@ watch(handleInput, newHandleInput => {
     handleInput.value = normalized
   }
 })
+
+watch(user, async newUser => {
+  if (newUser?.relogin) {
+    await authRedirect(newUser.did, {
+      redirectTo: route.fullPath,
+    })
+  }
+})
 </script>
 
 <template>

@@ -14,8 +14,9 @@ export const useServerSession = async (event: H3Event) => {
     throw new Error('Session password is not configured')
   }
 
-  const serverSession = useSession<UserServerSession>(event, {
+  const serverSession = await useSession<UserServerSession>(event, {
     password: config.sessionPassword,
+    maxAge: CACHE_MAX_AGE_ONE_DAY * 179,
   })
 
   return serverSession

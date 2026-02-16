@@ -1,19 +1,16 @@
 import type { OAuthSession } from '@atproto/oauth-client-node'
-import { NodeOAuthClient, OAuthCallbackError } from '@atproto/oauth-client-node'
+import { OAuthCallbackError } from '@atproto/oauth-client-node'
 import { createError, getQuery, sendRedirect, setCookie, getCookie, deleteCookie } from 'h3'
 import type { H3Event } from 'h3'
-import { getOAuthLock } from '#server/utils/atproto/lock'
-import { useOAuthStorage } from '#server/utils/atproto/storage'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
-import { handleResolver } from '#server/utils/atproto/oauth'
 import { handleApiError } from '#server/utils/error-handler'
 import type { DidString } from '@atproto/lex'
 import { Client } from '@atproto/lex'
 import * as com from '#shared/types/lexicons/com'
 import * as app from '#shared/types/lexicons/app'
 import { isAtIdentifierString } from '@atproto/lex'
-import { scope, getOauthClientMetadata } from '#server/utils/atproto/oauth'
+import { scope } from '#server/utils/atproto/oauth'
 import { UNSET_NUXT_SESSION_PASSWORD } from '#shared/utils/constants'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
@@ -28,17 +25,7 @@ export default defineEventHandler(async event => {
   }
 
   const query = getQuery(event)
-  const clientMetadata = getOauthClientMetadata()
   const session = await useServerSession(event)
-  const { stateStore, sessionStore } = useOAuthStorage(session)
-
-  const atclient = new NodeOAuthClient({
-    stateStore,
-    sessionStore,
-    clientMetadata,
-    requestLock: getOAuthLock(),
-    handleResolver,
-  })
 
   if (query.handle) {
     // Initiate auth flow
@@ -66,10 +53,13 @@ export default defineEventHandler(async event => {
     }
 
     try {
-      const redirectUrl = await atclient.authorize(query.handle, {
+      const redirectUrl = await event.context.oauthClient.authorize(query.handle, {
         scope,
         prompt: query.create ? 'create' : undefined,
-        ui_locales: query.locale?.toString(),
+        // TODO: I do not beleive this is working as expected on
+        // a unsupported locale on the PDS. Gives Invalid at body.ui_locales
+        // Commenting out for now
+        // ui_locales: query.locale?.toString(),
         state: encodeOAuthState(event, { redirectPath }),
       })
 
@@ -87,7 +77,7 @@ export default defineEventHandler(async event => {
     // Handle callback
     try {
       const params = new URLSearchParams(query as Record<string, string>)
-      const result = await atclient.callback(params)
+      const result = await event.context.oauthClient.callback(params)
       try {
         const state = decodeOAuthState(event, result.state)
         const profile = await getMiniProfile(result.session)
