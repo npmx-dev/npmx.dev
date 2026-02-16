@@ -124,6 +124,7 @@ import {
   CodeFileTree,
   CodeMobileTreeDrawer,
   CodeViewer,
+  CopyToClipboardButton,
   CollapsibleSection,
   ColumnPicker,
   CompareComparisonGrid,
@@ -1890,6 +1891,26 @@ describe('component accessibility audits', () => {
   describe('CallToAction', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CallToAction)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('CopyToClipboardButton', () => {
+    it('should have no accessibility violations in default state', async () => {
+      const component = await mountSuspended(CopyToClipboardButton, {
+        props: { copied: false },
+        slots: { default: '<code>npm install vue</code>' },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+
+    it('should have no accessibility violations in copied state', async () => {
+      const component = await mountSuspended(CopyToClipboardButton, {
+        props: { copied: true },
+        slots: { default: '<code>npm install vue</code>' },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

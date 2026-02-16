@@ -909,7 +909,7 @@
       "section_packages": "Pakiety",
       "section_facets": "Aspekty",
       "section_comparison": "Porównanie",
-      "copy_as_markdown": "Kopiuj tabele",
+      "copy_as_markdown": "Kopiuj tabelę",
       "loading": "Ładowanie danych pakietów...",
       "error": "Nie udało się wczytać danych pakietów. Spróbuj ponownie.",
       "empty_title": "Wybierz pakiety do porównania",

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
+import { escapeHtml } from '#shared/utils/html'
+import { NPMX_SITE } from '#shared/utils/constants'
 
 definePageMeta({
   name: 'compare',
