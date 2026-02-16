@@ -16,6 +16,7 @@ Before creating the pull request, please make sure you do the following:
 - Ensure that PR title follows conventional commits (https://www.conventionalcommits.org)
 - Update the corresponding documentation if needed.
 - Include relevant tests that fail without this PR but pass with it.
+- Add any additional context, tradeoffs, follow ups, or things reviewers should be aware of.
 
 Thank you for contributing to Npmx!
 ----------------------------------------------------------------------->
