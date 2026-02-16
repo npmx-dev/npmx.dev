@@ -195,8 +195,8 @@ importers:
         specifier: 1.2.0
         version: 1.2.0(@vite-pwa/assets-generator@1.0.2)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2))(workbox-build@7.4.0)(workbox-window@7.4.0)
       vite-plus:
-        specifier: 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
-        version: 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab(@types/node@24.10.9)(esbuild@0.27.3)(happy-dom@20.4.0)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)
+        specifier: 0.0.1
+        version: 0.0.1
       vue:
         specifier: 3.5.28
         version: 3.5.28(typescript@5.9.3)
@@ -4386,32 +4386,6 @@ packages:
       yaml:
         optional: true
 
-  '@voidzero-dev/vite-plus-darwin-arm64@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    resolution: {integrity: sha512-OqPN0I4pETcwonF+1SOBISMxC1he0BevBpU2d1L5YlR5eeyo0hTlenL+Q7n+hujALEyBYjglsuFSnnOogh/tnA==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@voidzero-dev/vite-plus-darwin-x64@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    resolution: {integrity: sha512-2Fd/tF5CsiKgpzsdOwob53AH4hjRJM1CEoXEswjhO4tKVQewNU1SiA3+h+WIgcA9hpqgRQI4k2vzpLLIOPnEaQ==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [darwin]
-
-  '@voidzero-dev/vite-plus-linux-arm64-gnu@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    resolution: {integrity: sha512-SgLvtENn0kniDLNKW1tZd5h/CmcH1tXpDeDSbE9KkODj3wwQ966Yz1idDqno7Dm33u24RIMqoPMzCxK5RmjU7g==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [arm64]
-    os: [linux]
-    libc: [glibc]
-
-  '@voidzero-dev/vite-plus-linux-x64-gnu@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    resolution: {integrity: sha512-xtvVNo+2BVyFDHslWZfh9wbuZarMB3QDm0XUucPhmIuodGCFcJkh81GwBNYLrSeUT/Em1jZGaM32OQNtN2UR1w==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [linux]
-    libc: [glibc]
-
   '@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
     resolution: {integrity: sha512-L9bn108Yv5GfhEBl+3J2ZOXhFM5h5/UF55Ya7/Zl6/J5FZyAn5KQYnoUNy8HllrAy53OlZ/9T2WqYxe9cRTkTQ==}
     engines: {node: ^20.0.0 || ^22.0.0 || >=24.0.0}
@@ -4435,12 +4409,6 @@ packages:
         optional: true
       jsdom:
         optional: true
-
-  '@voidzero-dev/vite-plus-win32-x64-msvc@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    resolution: {integrity: sha512-g85Cr1AULqe11EF8QjtrIAVobQ++J0y1xT1VA4kz/+dQbR4ircnQIxRt8hgmC/Gf9EhW+LijNInQaXRx0nKEOg==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [win32]
 
   '@volar/language-core@2.4.27':
     resolution: {integrity: sha512-DjmjBWZ4tJKxfNC1F6HyYERNHPYS7L7OPFyCrestykNdUZMFYzI9WTyvwPcaNaHlrEUwESHYsfEw3isInncZxQ==}
@@ -9428,10 +9396,8 @@ packages:
       vite: ^6.0.0 || ^7.0.0
       vue: ^3.5.0
 
-  vite-plus@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab:
-    resolution: {integrity: sha512-Ns6rk7rh5R9fA/1llyiNrxcM1bIJ4bwpBLxlV0LhMSgqt2mWMaKRspV7FoSW2lYcZH0lZPZCu9ee6usMXXvfwQ==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    hasBin: true
+  vite-plus@0.0.1:
+    resolution: {integrity: sha512-qF9GagSR4+LScugxHIRrvkNW125Smg6n3WKVyLGN1MtC0gZm6gD+EyDxO8plDrZRGnpNp68XZHr2+ssYRWUsgQ==}
 
   vite@7.3.1:
     resolution: {integrity: sha512-w+N7Hifpc3gRjZ63vYBXA56dvvRlNWRczTdmCBBa+CotUzAPf5b7YMdMR/8CQoeYE5LX3W4wj6RYTgonm1b9DA==}
@@ -14428,18 +14394,6 @@ snapshots:
       typescript: 5.9.3
       yaml: 2.8.2
 
-  '@voidzero-dev/vite-plus-darwin-arm64@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    optional: true
-
-  '@voidzero-dev/vite-plus-darwin-x64@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    optional: true
-
-  '@voidzero-dev/vite-plus-linux-arm64-gnu@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    optional: true
-
-  '@voidzero-dev/vite-plus-linux-x64-gnu@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    optional: true
-
   '@voidzero-dev/vite-plus-test@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab(@types/node@24.10.9)(esbuild@0.27.3)(happy-dom@20.4.0)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)':
     dependencies:
       '@standard-schema/spec': 1.1.0
@@ -14477,9 +14431,6 @@ snapshots:
       - unplugin-unused
       - utf-8-validate
       - yaml
-
-  '@voidzero-dev/vite-plus-win32-x64-msvc@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab':
-    optional: true
 
   '@volar/language-core@2.4.27':
     dependencies:
@@ -18937,6 +18888,7 @@ snapshots:
       '@oxlint-tsgolint/linux-x64': 0.11.3
       '@oxlint-tsgolint/win32-arm64': 0.11.3
       '@oxlint-tsgolint/win32-x64': 0.11.3
+    optional: true
 
   oxlint@1.42.0(oxlint-tsgolint@0.11.3):
     optionalDependencies:
@@ -21056,46 +21008,7 @@ snapshots:
       vite: 7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
       vue: 3.5.28(typescript@5.9.3)
 
-  vite-plus@0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab(@types/node@24.10.9)(esbuild@0.27.3)(happy-dom@20.4.0)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2):
-    dependencies:
-      '@oxc-project/types': 0.111.0
-      '@voidzero-dev/vite-plus-core': 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab(@types/node@24.10.9)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)
-      '@voidzero-dev/vite-plus-test': 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab(@types/node@24.10.9)(esbuild@0.27.3)(happy-dom@20.4.0)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.2)
-      cac: 6.7.14
-      oxfmt: 0.27.0
-      oxlint: 1.42.0(oxlint-tsgolint@0.11.3)
-      oxlint-tsgolint: 0.11.3
-    optionalDependencies:
-      '@voidzero-dev/vite-plus-darwin-arm64': 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
-      '@voidzero-dev/vite-plus-darwin-x64': 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
-      '@voidzero-dev/vite-plus-linux-arm64-gnu': 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
-      '@voidzero-dev/vite-plus-linux-x64-gnu': 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
-      '@voidzero-dev/vite-plus-win32-x64-msvc': 0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab
-    transitivePeerDependencies:
-      - '@arethetypeswrong/core'
-      - '@edge-runtime/vm'
-      - '@opentelemetry/api'
-      - '@types/node'
-      - '@vitejs/devtools'
-      - '@vitest/ui'
-      - bufferutil
-      - esbuild
-      - happy-dom
-      - jiti
-      - jsdom
-      - less
-      - publint
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - terser
-      - tsx
-      - typescript
-      - unplugin-lightningcss
-      - unplugin-unused
-      - utf-8-validate
-      - yaml
+  vite-plus@0.0.1: {}
 
   vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2):
     dependencies:

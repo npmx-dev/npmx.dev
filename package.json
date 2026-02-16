@@ -107,7 +107,7 @@
     "validate-npm-package-name": "7.0.2",
     "virtua": "0.48.5",
     "vite-plugin-pwa": "1.2.0",
-    "vite-plus": "0.0.0-833c515fa25cef20905a7f9affb156dfa6f151ab",
+    "vite-plus": "0.0.1",
     "vue": "3.5.28",
     "vue-data-ui": "3.15.0"
   },
