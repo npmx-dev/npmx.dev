@@ -23,6 +23,14 @@ export interface ParsedVersion {
   prerelease: string
 }
 
+export interface VersionLink {
+  href: string
+  title: string
+}
+
+const LAST_VERSION_IN_RANGE_REGEXP =
+  /([~^<>=]*\s*\d+\.\d+\.\d+(?:-[0-9A-Z-]+(?:\.[0-9A-Z-]+)*)?(?:\+[0-9A-Z-]+(?:\.[0-9A-Z-]+)*)?)\s*$/i
+
 /**
  * Parse a semver version string into its components
  * @param version - The version string (e.g., "1.2.3" or "1.0.0-beta.1")
@@ -206,4 +214,34 @@ export function filterVersions(versions: string[], range: string): Set<string> {
     }
   }
   return matched
+}
+
+/**
+ * Convert a semver complex version (Comparator Set, Range, Union) to
+ * a version object with href and title. It's needed to get a single version
+ * for valid URL if there is a range version, union version or combination of both
+ * e.g. (href), "^1.0.0" -> "^1.0.0",
+ *              ">=1.0.0 <= 2.0.0" -> "2.0.0"
+ *              "1.0.0 || 2.0.0" -> "2.0.0"
+ *
+ * @param version - A semver version, might be a range, union, etc
+ * @returns Version object with href and title, where href is a valid single version for URL usage
+ */
+export function buildVersionLink(version: string): VersionLink {
+  let href = version
+  // Check for union version, which means only logical OR ("||") present and no range ("-")
+  if (version.includes('||') && !version.includes(' - ')) {
+    const versions: string[] = version.split('||').map(item => item.trim())
+
+    href = versions.at(-1) || version
+    // Check for range version and complex conditions: could be ">=" + "<=", "||", "&&", "-"
+  } else if (/>=|<=|[<>]|\s-\s|&&/.test(version)) {
+    // Remove whitespaces to convert to valid href: "< 1.0.0" -> "<1.0.0"
+    href = version.match(LAST_VERSION_IN_RANGE_REGEXP)?.[1]?.replace(/\s+/g, '') || version
+  }
+
+  return {
+    href,
+    title: version,
+  }
 }

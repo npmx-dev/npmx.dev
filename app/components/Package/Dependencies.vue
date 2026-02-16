@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SEVERITY_TEXT_COLORS, getHighestSeverity } from '#shared/utils/severity'
 import { getOutdatedTooltip, getVersionClass } from '~/utils/npm/outdated-dependencies'
+import { buildVersionLink } from '~/utils/versions'
 
 const { t } = useI18n()
 
@@ -45,7 +46,12 @@ const optionalDepsExpanded = shallowRef(false)
 // Sort dependencies alphabetically
 const sortedDependencies = computed(() => {
   if (!props.dependencies) return []
-  return Object.entries(props.dependencies).sort(([a], [b]) => a.localeCompare(b))
+  return Object.entries(props.dependencies)
+    .map(([name, version]) => ({
+      name,
+      version: buildVersionLink(version),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name))
 })
 
 // Sort peer dependencies alphabetically, with required first then optional
@@ -55,7 +61,7 @@ const sortedPeerDependencies = computed(() => {
   return Object.entries(props.peerDependencies)
     .map(([name, version]) => ({
       name,
-      version,
+      version: buildVersionLink(version),
       optional: props.peerDependenciesMeta?.[name]?.optional ?? false,
     }))
     .sort((a, b) => {
@@ -68,7 +74,12 @@ const sortedPeerDependencies = computed(() => {
 // Sort optional dependencies alphabetically
 const sortedOptionalDependencies = computed(() => {
   if (!props.optionalDependencies) return []
-  return Object.entries(props.optionalDependencies).sort(([a], [b]) => a.localeCompare(b))
+  return Object.entries(props.optionalDependencies)
+    .map(([name, version]) => ({
+      name,
+      version: buildVersionLink(version),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name))
 })
 
 // Get version tooltip
@@ -110,7 +121,10 @@ const numberFormatter = useNumberFormatter()
     >
       <ul class="px-1 space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
-          v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
+          v-for="{ name: dep, version } in sortedDependencies.slice(
+            0,
+            depsExpanded ? undefined : 10,
+          )"
           :key="dep"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
@@ -165,12 +179,12 @@ const numberFormatter = useNumberFormatter()
               <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
             </LinkBase>
             <LinkBase
-              :to="packageRoute(dep, version)"
+              :to="packageRoute(dep, version.href)"
               class="block truncate"
               :class="getDepVersionClass(dep)"
-              :title="getDepVersionTooltip(dep, version)"
+              :title="getDepVersionTooltip(dep, version.title)"
             >
-              {{ version }}
+              {{ version.title }}
             </LinkBase>
             <span v-if="outdatedDeps[dep]" class="sr-only">
               ({{ getOutdatedTooltip(outdatedDeps[dep], $t) }})
@@ -227,12 +241,12 @@ const numberFormatter = useNumberFormatter()
             </TagStatic>
           </div>
           <LinkBase
-            :to="packageRoute(peer.name, peer.version)"
+            :to="packageRoute(peer.name, peer.version.href)"
             class="block truncate max-w-[40%]"
-            :title="peer.version"
+            :title="peer.version.title"
             dir="ltr"
           >
-            {{ peer.version }}
+            {{ peer.version.title }}
           </LinkBase>
         </li>
       </ul>
@@ -273,23 +287,23 @@ const numberFormatter = useNumberFormatter()
         :aria-label="$t('package.optional_dependencies.list_label')"
       >
         <li
-          v-for="[dep, version] in sortedOptionalDependencies.slice(
+          v-for="{ name, version } in sortedOptionalDependencies.slice(
             0,
             optionalDepsExpanded ? undefined : 10,
           )"
-          :key="dep"
+          :key="name"
           class="flex items-center justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block truncate" dir="ltr">
-            {{ dep }}
+          <LinkBase :to="packageRoute(name)" class="block truncate" dir="ltr">
+            {{ name }}
           </LinkBase>
           <LinkBase
-            :to="packageRoute(dep, version)"
+            :to="packageRoute(name, version.href)"
             class="block truncate"
-            :title="version"
+            :title="version.title"
             dir="ltr"
           >
-            {{ version }}
+            {{ version.title }}
           </LinkBase>
         </li>
       </ul>
