@@ -246,30 +246,25 @@ useSeoMeta({
 
       <!-- Comparison grid -->
       <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
-        <div class="relative group mb-4 inline-block">
+        <CopyToClipboardButton
+          v-if="packagesData && packagesData.some(p => p !== null)"
+          :copied="copied"
+          :copy-text="$t('compare.packages.copy_as_markdown')"
+          class="mb-4 inline-block hidden md:inline-flex"
+          @click="copyComparisonGridAsMd"
+        >
           <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
             {{ $t('compare.packages.section_comparison') }}
           </h2>
+        </CopyToClipboardButton>
 
-          <button
-            v-if="packagesData && packagesData.some(p => p !== null)"
-            type="button"
-            class="absolute z-20 inset-is-0 top-full hidden md:inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
-            :class="[
-              $style.copyButton,
-              copied ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border',
-            ]"
-            :aria-label="copied ? $t('common.copied') : $t('compare.packages.copy_as_markdown')"
-            @click="copyComparisonGridAsMd"
-          >
-            <span
-              :class="copied ? 'i-lucide:check' : 'i-lucide:copy'"
-              class="w-3.5 h-3.5"
-              aria-hidden="true"
-            />
-            {{ copied ? $t('common.copied') : $t('compare.packages.copy_as_markdown') }}
-          </button>
-        </div>
+        <h2
+          v-else
+          id="comparison-heading"
+          class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
+        >
+          {{ $t('compare.packages.section_comparison') }}
+        </h2>
 
         <div
           v-if="
@@ -351,38 +346,3 @@ useSeoMeta({
     </div>
   </main>
 </template>
-
-<style module>
-.copyButton {
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  width: 1px;
-  transition:
-    opacity 0.25s 0.1s,
-    translate 0.15s 0.1s,
-    clip 0.01s 0.34s allow-discrete,
-    clip-path 0.01s 0.34s allow-discrete,
-    height 0.01s 0.34s allow-discrete,
-    width 0.01s 0.34s allow-discrete;
-}
-
-:global(.group):hover .copyButton,
-.copyButton:focus-visible {
-  clip: auto;
-  clip-path: none;
-  height: auto;
-  overflow: visible;
-  width: auto;
-  transition:
-    opacity 0.15s,
-    translate 0.15s;
-}
-
-@media (hover: none) {
-  .copyButton {
-    display: none;
-  }
-}
-</style>
