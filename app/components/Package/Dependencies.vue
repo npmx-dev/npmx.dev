@@ -161,7 +161,7 @@ const numberFormatter = useNumberFormatter()
             </TooltipApp>
             <LinkBase
               v-if="getVulnerableDepInfo(dep)"
-              :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version!.title)"
+              :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
               class="shrink-0"
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
               :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
@@ -171,7 +171,7 @@ const numberFormatter = useNumberFormatter()
             </LinkBase>
             <LinkBase
               v-if="getDeprecatedDepInfo(dep)"
-              :to="packageRoute(dep, getDeprecatedDepInfo(dep)!.version!.title)"
+              :to="packageRoute(dep, getDeprecatedDepInfo(dep)!.version)"
               class="shrink-0 text-purple-700 dark:text-purple-500"
               :title="getDeprecatedDepInfo(dep)!.message"
               classicon="i-lucide:octagon-alert"
