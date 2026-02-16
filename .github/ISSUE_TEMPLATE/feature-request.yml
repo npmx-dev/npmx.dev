@@ -1,14 +1,14 @@
-name: "🚀 Feature request"
+name: '🚀 Feature request'
 description: Suggest a feature that will improve Npmx
-labels: ["pending triage"]
+labels: ['pending triage']
 body:
   - type: markdown
     attributes:
       value: |
         Thank you for taking the time to fill out this feature request!
 
-       Please carefully read the contribution docs before suggesting a new feature
-       👉 https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md
+          Please carefully read the contribution docs before suggesting a new feature
+          👉 https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md
   - type: textarea
     id: feature-description
     attributes:
