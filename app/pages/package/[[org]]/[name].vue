@@ -669,7 +669,12 @@ const showSkeleton = shallowRef(false)
       >
         <!-- Package name and version -->
         <div class="flex items-baseline gap-x-2 gap-y-1 sm:gap-x-3 flex-wrap min-w-0">
-          <div class="group relative flex flex-col items-start min-w-0">
+          <CopyToClipboardButton
+            :copied="copiedPkgName"
+            :copy-text="$t('package.copy_name')"
+            class="flex flex-col items-start min-w-0"
+            @click="copyPkgName()"
+          >
             <h1
               class="font-mono text-2xl sm:text-3xl font-medium min-w-0 break-words"
               :title="pkg.name"
@@ -683,30 +688,14 @@ const showSkeleton = shallowRef(false)
                 {{ orgName ? pkg.name.replace(`@${orgName}/`, '') : pkg.name }}
               </span>
             </h1>
+          </CopyToClipboardButton>
 
-            <!-- Floating copy name button -->
-            <button
-              type="button"
-              @click="copyPkgName()"
-              class="absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
-              :class="[
-                $style.copyButton,
-                copiedPkgName ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border',
-              ]"
-              :aria-label="copiedPkgName ? $t('common.copied') : $t('package.copy_name')"
-            >
-              <span
-                :class="copiedPkgName ? 'i-lucide:check' : 'i-lucide:copy'"
-                class="w-3.5 h-3.5"
-                aria-hidden="true"
-              />
-              {{ copiedPkgName ? $t('common.copied') : $t('package.copy_name') }}
-            </button>
-          </div>
-
-          <span
+          <CopyToClipboardButton
             v-if="resolvedVersion"
-            class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0 relative group"
+            :copied="copiedVersion"
+            :copy-text="$t('package.copy_version')"
+            class="inline-flex items-baseline gap-1.5 font-mono text-base sm:text-lg text-fg-muted shrink-0"
+            @click="copyVersion()"
           >
             <!-- Version resolution indicator (e.g., "latest → 4.2.0") -->
             <template v-if="requestedVersion && resolvedVersion !== requestedVersion">
@@ -749,26 +738,7 @@ const showSkeleton = shallowRef(false)
               class="text-fg-subtle text-sm shrink-0"
               >{{ $t('package.not_latest') }}</span
             >
-
-            <!-- Floating copy version button -->
-            <button
-              type="button"
-              @click="copyVersion()"
-              class="absolute z-20 inset-is-0 top-full inline-flex items-center gap-1 px-2 py-1 rounded border text-xs font-mono whitespace-nowrap transition-all duration-150 opacity-0 -translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto focus-visible:opacity-100 focus-visible:translate-y-0 focus-visible:pointer-events-auto"
-              :class="[
-                $style.copyButton,
-                copiedVersion ? 'text-accent bg-accent/10' : 'text-fg-muted bg-bg border-border',
-              ]"
-              :aria-label="copiedVersion ? $t('common.copied') : $t('package.copy_version')"
-            >
-              <span
-                :class="copiedVersion ? 'i-lucide:check' : 'i-lucide:copy'"
-                class="w-3.5 h-3.5"
-                aria-hidden="true"
-              />
-              {{ copiedVersion ? $t('common.copied') : $t('package.copy_version') }}
-            </button>
-          </span>
+          </CopyToClipboardButton>
 
           <!-- Docs + Code + Compare — inline on desktop, floating bottom bar on mobile -->
           <ButtonGroup
@@ -1539,39 +1509,6 @@ const showSkeleton = shallowRef(false)
 
 .areaSidebar {
   grid-area: sidebar;
-}
-
-.copyButton {
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  width: 1px;
-  transition:
-    opacity 0.25s 0.1s,
-    translate 0.15s 0.1s,
-    clip 0.01s 0.34s allow-discrete,
-    clip-path 0.01s 0.34s allow-discrete,
-    height 0.01s 0.34s allow-discrete,
-    width 0.01s 0.34s allow-discrete;
-}
-
-:global(.group):hover .copyButton,
-.copyButton:focus-visible {
-  clip: auto;
-  clip-path: none;
-  height: auto;
-  overflow: visible;
-  width: auto;
-  transition:
-    opacity 0.15s,
-    translate 0.15s;
-}
-
-@media (hover: none) {
-  .copyButton {
-    display: none;
-  }
 }
 
 /* Mobile floating nav: safe-area positioning + kbd hiding */

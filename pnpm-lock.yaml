@@ -131,9 +131,21 @@ importers:
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
+      hast-util-from-parse5:
+        specifier: 8.0.3
+        version: 8.0.3
+      hast-util-to-mdast:
+        specifier: 10.1.2
+        version: 10.1.2
       marked:
         specifier: 17.0.1
         version: 17.0.1
+      mdast-util-gfm-table:
+        specifier: 2.0.0
+        version: 2.0.0
+      mdast-util-to-markdown:
+        specifier: 2.1.2
+        version: 2.1.2
       module-replacements:
         specifier: 2.11.0
         version: 2.11.0
@@ -149,6 +161,9 @@ importers:
       ohash:
         specifier: 2.0.11
         version: 2.0.11
+      parse5:
+        specifier: 8.0.0
+        version: 8.0.0
       perfect-debounce:
         specifier: 2.1.0
         version: 2.1.0

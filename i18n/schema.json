@@ -2734,6 +2734,9 @@
             "section_comparison": {
               "type": "string"
             },
+            "copy_as_markdown": {
+              "type": "string"
+            },
             "loading": {
               "type": "string"
             },

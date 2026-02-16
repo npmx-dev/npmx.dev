@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
+import { escapeHtml } from '#shared/utils/html'
+import { NPMX_SITE } from '#shared/utils/constants'
 
 definePageMeta({
   name: 'compare',
@@ -8,6 +10,8 @@ definePageMeta({
 
 const router = useRouter()
 const canGoBack = useCanGoBack()
+const { copied, copy } = useClipboard({ copiedDuring: 2000 })
+const gridRef = useTemplateRef<HTMLDivElement>('gridRef')
 
 // Sync packages with URL query param (stable ref - doesn't change on other query changes)
 const packagesParam = useRouteQuery<string>('packages', '', { mode: 'replace' })
@@ -78,6 +82,57 @@ const canCompare = computed(() => packages.value.length >= 2)
 const gridHeaders = computed(() =>
   gridColumns.value.map(col => (col.version ? `${col.name}@${col.version}` : col.name)),
 )
+
+function copyComparisonGridAsMd() {
+  const grid = gridRef.value?.querySelector('.comparison-grid')
+  if (!grid) return
+  const md = gridToMarkdown(grid as HTMLElement)
+  copy(md)
+}
+
+/*
+ * Convert the comparison grid DOM to a Markdown table.
+ * We build a proper HTML <table> from the grid structure and delegate to `htmlToMarkdown` for the actual conversion.
+ */
+function gridToMarkdown(gridEl: HTMLElement): string {
+  const children = Array.from(gridEl.children)
+  const headerRow = children[0]
+  const dataRows = children.slice(1)
+
+  if (!headerRow || dataRows.length === 0) return ''
+
+  const headerCells = Array.from(headerRow.children).slice(1)
+  if (headerCells.length === 0) return ''
+
+  const ths = headerCells.map(cell => {
+    const link = cell.querySelector('a')
+    if (link) {
+      const href = link.getAttribute('href') || ''
+      const absoluteHref = /^https?:\/\/|^\/\//.test(href) ? href : `${NPMX_SITE}${href}`
+      return `<th><a href="${escapeHtml(absoluteHref)}">${escapeHtml(link.textContent?.trim() || '')}</a></th>`
+    }
+    return `<th>${escapeHtml(cell.textContent?.trim() || '')}</th>`
+  })
+
+  const trs = dataRows.map(row => {
+    const rowChildren = Array.from(row.children)
+    const label = rowChildren[0]?.textContent?.trim() || ''
+    const valueCells = rowChildren.slice(1)
+    const tds = [label, ...valueCells.map(cell => cell.textContent?.trim() || '-')]
+      .map(v => `<td>${escapeHtml(v)}</td>`)
+      .join('')
+    return `<tr>${tds}</tr>`
+  })
+
+  const tableHtml = [
+    '<table>',
+    `<thead><tr><th>Metric</th>${ths.join('')}</tr></thead>`,
+    `<tbody>${trs.join('')}</tbody>`,
+    '</table>',
+  ].join('')
+
+  return htmlToMarkdown(tableHtml, { tablePipeAlign: false })
+}
 
 useSeoMeta({
   title: () =>
@@ -193,7 +248,23 @@ useSeoMeta({
 
       <!-- Comparison grid -->
       <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
-        <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+        <CopyToClipboardButton
+          v-if="packagesData && packagesData.some(p => p !== null)"
+          :copied="copied"
+          :copy-text="$t('compare.packages.copy_as_markdown')"
+          class="mb-4 inline-block hidden md:inline-flex"
+          @click="copyComparisonGridAsMd"
+        >
+          <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
+            {{ $t('compare.packages.section_comparison') }}
+          </h2>
+        </CopyToClipboardButton>
+
+        <h2
+          v-else
+          id="comparison-heading"
+          class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
+        >
           {{ $t('compare.packages.section_comparison') }}
         </h2>
 
@@ -209,7 +280,7 @@ useSeoMeta({
 
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
           <!-- Desktop: Grid layout -->
-          <div class="hidden md:block overflow-x-auto">
+          <div ref="gridRef" class="hidden md:block overflow-x-auto">
             <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
               <CompareFacetRow
                 v-for="facet in selectedFacets"
@@ -241,7 +312,7 @@ useSeoMeta({
           </div>
 
           <h2
-            id="comparison-heading"
+            id="trends-comparison-heading"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
           >
             {{ $t('compare.facets.trends.title') }}

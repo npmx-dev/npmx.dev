@@ -910,6 +910,7 @@
       "section_packages": "Packages",
       "section_facets": "Facets",
       "section_comparison": "Comparison",
+      "copy_as_markdown": "Copy table",
       "loading": "Loading package data...",
       "error": "Failed to load package data. Please try again.",
       "empty_title": "Select packages to compare",
