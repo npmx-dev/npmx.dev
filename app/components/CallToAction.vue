@@ -25,6 +25,18 @@ const socialLinks = computed(() => [
     ctaKey: $t('about.get_involved.follow.cta'),
   },
 ])
+
+function handleCardClick(event: MouseEvent) {
+  if ((event.target as HTMLElement).closest('a')) return
+  if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return
+
+  const selection = window.getSelection()
+  if (selection && selection.type === 'Range') return
+
+  const card = event.currentTarget as HTMLElement
+  const link = card.querySelector('a')
+  link?.click()
+}
 </script>
 
 <template>
@@ -37,15 +49,16 @@ const socialLinks = computed(() => [
       <div
         v-for="link in socialLinks"
         :key="link.id"
-        class="group relative grid gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200 sm:grid-rows-subgrid sm:row-span-3 focus-within:ring-2 focus-within:ring-accent/50"
+        @click="handleCardClick"
+        class="cursor-pointer group relative grid gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200 sm:grid-rows-subgrid sm:row-span-3 focus-within:ring-2 focus-within:ring-accent/50"
       >
-        <h3 class="z-1 flex gap-2">
+        <h3 class="flex gap-2">
           <span :class="link.icon" class="shrink-0 mt-1 w-5 h-5 text-fg" aria-hidden="true" />
           <span class="font-medium text-fg">
             {{ link.titleKey }}
           </span>
         </h3>
-        <p class="z-1 text-sm text-fg-muted leading-relaxed">
+        <p class="text-sm text-fg-muted leading-relaxed">
           {{ link.descriptionKey }}
         </p>
         <a
@@ -56,7 +69,6 @@ const socialLinks = computed(() => [
         >
           {{ link.ctaKey }}
           <span class="i-lucide:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
-          <span class="absolute z-0 inset-0" aria-hidden="true" />
         </a>
       </div>
     </div>
