@@ -22,23 +22,83 @@ function isCategoryNoneSelected(category: string): boolean {
   const selectableFacets = facets.filter(f => !f.comingSoon)
   return selectableFacets.length > 0 && selectableFacets.every(f => !isFacetSelected(f.id))
 }
+
+function getCategoryActiveControl(category: string): 'all' | 'none' {
+  if (isCategoryAllSelected(category)) return 'all'
+  if (isCategoryNoneSelected(category)) return 'none'
+  return 'all'
+}
+
+function handleCategoryControlKeydown(category: string, event: KeyboardEvent): void {
+  const { key } = event
+
+  if (key === 'Enter') {
+    event.preventDefault()
+    return
+  }
+
+  if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key)) return
+
+  event.preventDefault()
+
+  const target = event.currentTarget as HTMLElement | null
+  if (!target) return
+
+  const group = target.closest('[data-facet-category-radiogroup]') as HTMLElement | null
+  if (!group) return
+
+  const radios = Array.from(
+    group.querySelectorAll<HTMLElement>('[role="radio"]'),
+  )
+  if (!radios.length) return
+
+  const currentIndex = radios.indexOf(target)
+  if (currentIndex === -1) return
+
+  let nextIndex = currentIndex
+
+  if (key === 'ArrowLeft' || key === 'ArrowUp') {
+    nextIndex = (currentIndex - 1 + radios.length) % radios.length
+  } else if (key === 'ArrowRight' || key === 'ArrowDown') {
+    nextIndex = (currentIndex + 1) % radios.length
+  }
+
+  const nextRadio = radios[nextIndex]
+  const radioType = nextRadio.dataset.radioType
+
+  if (radioType === 'all') {
+    selectCategory(category)
+  } else if (radioType === 'none') {
+    deselectCategory(category)
+  }
+
+  nextRadio.focus()
+}
 </script>
 
 <template>
   <div class="space-y-3" role="group" :aria-label="$t('compare.facets.group_label')">
     <div v-for="category in categoryOrder" :key="category">
       <!-- Category header with all/none buttons -->
-      <div class="flex items-center gap-2 mb-2">
-        <span class="text-3xs text-fg-subtle uppercase tracking-wider">
+      <div
+        class="flex items-center gap-2 mb-2"
+        role="radiogroup"
+        :aria-labelledby="`facet-category-label-${category}`"
+        data-facet-category-radiogroup
+      >
+        <span
+          :id="`facet-category-label-${category}`"
+          class="text-3xs text-fg-subtle uppercase tracking-wider"
+        >
           {{ getCategoryLabel(category) }}
         </span>
-        <!-- TODO: These should be radios, since they are mutually exclusive, and currently this behavior is faked with buttons -->
         <ButtonBase
-          :aria-label="
-            $t('compare.facets.select_category', { category: getCategoryLabel(category) })
-          "
-          :aria-pressed="isCategoryAllSelected(category)"
-          :disabled="isCategoryAllSelected(category)"
+          role="radio"
+          :aria-checked="isCategoryAllSelected(category)"
+          :aria-disabled="isCategoryAllSelected(category)"
+          :tabindex="getCategoryActiveControl(category) === 'all' ? 0 : -1"
+          data-radio-type="all"
+          @keydown="event => handleCategoryControlKeydown(category, event)"
           @click="selectCategory(category)"
           size="small"
         >
@@ -46,11 +106,12 @@ function isCategoryNoneSelected(category: string): boolean {
         </ButtonBase>
         <span class="text-2xs text-fg-muted/40">/</span>
         <ButtonBase
-          :aria-label="
-            $t('compare.facets.deselect_category', { category: getCategoryLabel(category) })
-          "
-          :aria-pressed="isCategoryNoneSelected(category)"
-          :disabled="isCategoryNoneSelected(category)"
+          role="radio"
+          :aria-checked="isCategoryNoneSelected(category)"
+          :aria-disabled="isCategoryNoneSelected(category)"
+          :tabindex="getCategoryActiveControl(category) === 'none' ? 0 : -1"
+          data-radio-type="none"
+          @keydown="event => handleCategoryControlKeydown(category, event)"
           @click="deselectCategory(category)"
           size="small"
         >
@@ -59,17 +120,21 @@ function isCategoryNoneSelected(category: string): boolean {
       </div>
 
       <!-- Facet buttons -->
-      <div class="flex items-center gap-1.5 flex-wrap" role="group">
-        <!-- TODO: These should be checkboxes -->
+      <div
+        class="flex items-center gap-1.5 flex-wrap"
+        role="group"
+        :aria-labelledby="`facet-category-label-${category}`"
+        data-facet-category-facets
+      >
         <ButtonBase
           v-for="facet in facetsByCategory[category]"
           :key="facet.id"
           size="small"
           :title="facet.comingSoon ? $t('compare.facets.coming_soon') : facet.description"
-          :disabled="facet.comingSoon"
-          :aria-pressed="isFacetSelected(facet.id)"
-          :aria-label="facet.label"
-          class="gap-1 px-1.5 rounded transition-colors focus-visible:outline-accent/70"
+          :aria-disabled="facet.comingSoon"
+          role="checkbox"
+          :aria-checked="isFacetSelected(facet.id)"
+          class="gap-1 px-1.5 rounded transition-colors"
           :class="
             facet.comingSoon
               ? 'text-fg-subtle/50 bg-bg-subtle border-border-subtle cursor-not-allowed'
