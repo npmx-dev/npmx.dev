@@ -164,14 +164,14 @@ describe('FacetSelector', () => {
       expect(component.find('.i-lucide\\:plus').exists()).toBe(true)
     })
 
-    it('applies aria-pressed for selected state', async () => {
+    it('applies aria-checked for selected checkbox state', async () => {
       mockSelectedFacets.value = ['downloads']
       mockIsFacetSelected.mockImplementation((f: string) => f === 'downloads')
 
       const component = await mountSuspended(FacetSelector)
 
-      const buttons = component.findAll('button[aria-pressed]')
-      const selectedButton = buttons.find(b => b.attributes('aria-pressed') === 'true')
+      const buttons = component.findAll('button[role="checkbox"][aria-checked="true"]')
+      const selectedButton = buttons[0]
       expect(selectedButton).toBeDefined()
     })
 
