@@ -47,9 +47,7 @@ function handleCategoryControlKeydown(category: string, event: KeyboardEvent): v
   const group = target.closest('[data-facet-category-radiogroup]') as HTMLElement | null
   if (!group) return
 
-  const radios = Array.from(
-    group.querySelectorAll<HTMLElement>('[role="radio"]'),
-  )
+  const radios = Array.from(group.querySelectorAll<HTMLElement>('[role="radio"]'))
   if (!radios.length) return
 
   const currentIndex = radios.indexOf(target)
