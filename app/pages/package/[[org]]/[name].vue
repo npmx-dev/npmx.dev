@@ -1003,21 +1003,19 @@ const showSkeleton = shallowRef(false)
                   variant="button-secondary"
                   size="small"
                   :to="`https://npmgraph.js.org/?q=${pkg.name}`"
+                  :aria-label="$t('package.stats.view_dependency_graph')"
                   :title="$t('package.stats.view_dependency_graph')"
                   classicon="i-lucide:network -rotate-90"
-                >
-                  <span class="sr-only">{{ $t('package.stats.view_dependency_graph') }}</span>
-                </LinkBase>
+                />
 
                 <LinkBase
                   variant="button-secondary"
                   size="small"
                   :to="`https://node-modules.dev/grid/depth#install=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
+                  :aria-label="$t('package.stats.inspect_dependency_tree')"
                   :title="$t('package.stats.inspect_dependency_tree')"
                   classicon="i-lucide:table"
-                >
-                  <span class="sr-only">{{ $t('package.stats.inspect_dependency_tree') }}</span>
-                </LinkBase>
+                />
               </ButtonGroup>
             </dd>
           </div>
