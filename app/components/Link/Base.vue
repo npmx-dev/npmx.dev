@@ -65,8 +65,12 @@ const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
       'inline-flex': !block,
       'opacity-50 gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
         isButton,
-      'text-sm px-4 py-2': isButtonMedium,
-      'text-xs px-2 py-0.5': isButtonSmall,
+      'text-sm py-2': isButtonMedium,
+      'px-4': isButtonMedium && !classicon,
+      'ps-3 pe-4': isButtonMedium && !!classicon,
+      'text-xs py-0.5': isButtonSmall,
+      'px-2': isButtonSmall && !classicon,
+      'ps-1.5 pe-2': isButtonSmall && !!classicon,
       'text-bg bg-fg': variant === 'button-primary',
       'bg-transparent text-fg': variant === 'button-secondary',
     }"
@@ -85,8 +89,12 @@ const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
         isLink,
       'justify-center font-mono border border-border rounded-md transition-all duration-200':
         isButton,
-      'text-sm px-4 py-2': isButtonMedium,
-      'text-xs px-2 py-0.5': isButtonSmall,
+      'text-sm py-2': isButtonMedium,
+      'px-4': isButtonMedium && !classicon,
+      'ps-3 pe-4': isButtonMedium && !!classicon,
+      'text-xs py-0.5': isButtonSmall,
+      'px-2': isButtonSmall && !classicon,
+      'ps-1.5 pe-2': isButtonSmall && !!classicon,
       'bg-transparent text-fg hover:(bg-fg/10 text-accent) focus-visible:(bg-fg/10 text-accent) aria-[current=true]:(bg-fg/10 text-accent border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
         variant === 'button-secondary',
       'text-bg bg-fg hover:(bg-fg/50 text-accent) focus-visible:(bg-fg/50) aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
