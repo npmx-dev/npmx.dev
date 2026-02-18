@@ -55,6 +55,8 @@ const isLink = computed(() => props.variant === 'link')
 const isButton = computed(() => !isLink.value)
 const isButtonSmall = computed(() => props.size === 'small' && !isLink.value)
 const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
+const slots = useSlots()
+const iconOnly = computed(() => !!props.classicon && !slots.default)
 </script>
 
 <template>
@@ -65,12 +67,14 @@ const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
       'inline-flex': !block,
       'opacity-50 gap-x-1 items-center justify-center font-mono border border-transparent rounded-md':
         isButton,
-      'text-sm py-2': isButtonMedium,
-      'px-4': isButtonMedium && !classicon,
-      'ps-3 pe-4': isButtonMedium && !!classicon,
-      'text-xs py-0.5': isButtonSmall,
-      'px-2': isButtonSmall && !classicon,
-      'ps-1.5 pe-2': isButtonSmall && !!classicon,
+      'text-sm py-2': isButtonMedium && !iconOnly,
+      'text-sm p-2': isButtonMedium && !!iconOnly,
+      'px-4': isButtonMedium && !classicon && !iconOnly,
+      'ps-3 pe-4': isButtonMedium && !!classicon && !iconOnly,
+      'text-xs py-0.5': isButtonSmall && !iconOnly,
+      'text-xs p-0.5': isButtonSmall && !!iconOnly,
+      'px-2': isButtonSmall && !classicon && !iconOnly,
+      'ps-1.5 pe-2': isButtonSmall && !!classicon && !iconOnly,
       'text-bg bg-fg': variant === 'button-primary',
       'bg-transparent text-fg': variant === 'button-secondary',
     }"
@@ -89,12 +93,14 @@ const isButtonMedium = computed(() => props.size === 'medium' && !isLink.value)
         isLink,
       'justify-center font-mono border border-border rounded-md transition-all duration-200':
         isButton,
-      'text-sm py-2': isButtonMedium,
-      'px-4': isButtonMedium && !classicon,
-      'ps-3 pe-4': isButtonMedium && !!classicon,
-      'text-xs py-0.5': isButtonSmall,
-      'px-2': isButtonSmall && !classicon,
-      'ps-1.5 pe-2': isButtonSmall && !!classicon,
+      'text-sm py-2': isButtonMedium && !iconOnly,
+      'text-sm p-2': isButtonMedium && iconOnly,
+      'px-4': isButtonMedium && !classicon && !iconOnly,
+      'ps-3 pe-4': isButtonMedium && !!classicon && !iconOnly,
+      'text-xs py-0.5': isButtonSmall && !iconOnly,
+      'text-xs p-0.5': isButtonSmall && iconOnly,
+      'px-2': isButtonSmall && !classicon && !iconOnly,
+      'ps-1.5 pe-2': isButtonSmall && !!classicon && !iconOnly,
       'bg-transparent text-fg hover:(bg-fg/10 text-accent) focus-visible:(bg-fg/10 text-accent) aria-[current=true]:(bg-fg/10 text-accent border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
         variant === 'button-secondary',
       'text-bg bg-fg hover:(bg-fg/50 text-accent) focus-visible:(bg-fg/50) aria-current:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
