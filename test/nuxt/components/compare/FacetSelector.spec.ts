@@ -179,7 +179,9 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       // Find a facet button (not all/none)
-      const facetButton = component.findAll('button').find(b => b.text().includes('Downloads'))
+      const facetButton = component
+        .findAll('button[role="checkbox"]')
+        .find(b => b.text().includes('Downloads'))
       await facetButton?.trigger('click')
 
       expect(mockToggleFacet).toHaveBeenCalled()

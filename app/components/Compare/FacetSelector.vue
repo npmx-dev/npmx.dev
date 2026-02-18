@@ -32,11 +32,6 @@ function getCategoryActiveControl(category: string): 'all' | 'none' {
 function handleCategoryControlKeydown(category: string, event: KeyboardEvent): void {
   const { key } = event
 
-  if (key === 'Enter') {
-    event.preventDefault()
-    return
-  }
-
   if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key)) return
 
   event.preventDefault()
@@ -94,7 +89,6 @@ function handleCategoryControlKeydown(category: string, event: KeyboardEvent): v
         <ButtonBase
           role="radio"
           :aria-checked="isCategoryAllSelected(category)"
-          :aria-disabled="isCategoryAllSelected(category)"
           :tabindex="getCategoryActiveControl(category) === 'all' ? 0 : -1"
           data-radio-type="all"
           @keydown="handleCategoryControlKeydown(category, $event)"
@@ -103,11 +97,10 @@ function handleCategoryControlKeydown(category: string, event: KeyboardEvent): v
         >
           {{ $t('compare.facets.all') }}
         </ButtonBase>
-        <span class="text-2xs text-fg-muted/40">/</span>
+        <span class="text-2xs text-fg-muted/40" aria-hidden="true">/</span>
         <ButtonBase
           role="radio"
           :aria-checked="isCategoryNoneSelected(category)"
-          :aria-disabled="isCategoryNoneSelected(category)"
           :tabindex="getCategoryActiveControl(category) === 'none' ? 0 : -1"
           data-radio-type="none"
           @keydown="handleCategoryControlKeydown(category, $event)"
