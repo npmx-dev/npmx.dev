@@ -939,8 +939,6 @@
       "coming_soon": "即将推出",
       "select_all": "选择所有维度",
       "deselect_all": "取消选择所有维度",
-      "select_category": "选择所有{category}维度",
-      "deselect_category": "取消选择所有{category}维度",
       "binary_only_tooltip": "此包仅暴露二进制文件且无导出",
       "categories": {
         "performance": "性能",

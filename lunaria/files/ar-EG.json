@@ -939,8 +939,6 @@
       "coming_soon": "قريبًا",
       "select_all": "تحديد كل المحاور",
       "deselect_all": "إلغاء تحديد كل المحاور",
-      "select_category": "تحديد جميع محاور {category}",
-      "deselect_category": "إلغاء تحديد جميع محاور {category}",
       "binary_only_tooltip": "هذه الحزمة تعرض ملفات تنفيذية فقط دون تصديرات",
       "categories": {
         "performance": "الأداء",

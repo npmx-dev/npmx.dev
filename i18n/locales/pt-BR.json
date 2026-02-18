@@ -809,8 +809,6 @@
       "coming_soon": "Em breve",
       "select_all": "Selecionar todos os aspectos",
       "deselect_all": "Desselecionar todos os aspectos",
-      "select_category": "Selecionar todos os aspectos {category}",
-      "deselect_category": "Desselecionar todos os aspectos {category}",
       "categories": {
         "performance": "Performance",
         "health": "Saúde",

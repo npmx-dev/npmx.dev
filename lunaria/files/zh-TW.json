@@ -903,8 +903,6 @@
       "coming_soon": "即將推出",
       "select_all": "選擇所有維度",
       "deselect_all": "取消選擇所有維度",
-      "select_category": "選擇所有{category}維度",
-      "deselect_category": "取消選擇所有{category}維度",
       "binary_only_tooltip": "此套件僅提供二進位檔且沒有匯出",
       "categories": {
         "performance": "效能",

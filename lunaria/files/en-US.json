@@ -939,8 +939,6 @@
       "coming_soon": "Coming soon",
       "select_all": "Select all facets",
       "deselect_all": "Deselect all facets",
-      "select_category": "Select all {category} facets",
-      "deselect_category": "Deselect all {category} facets",
       "binary_only_tooltip": "This package exposes binaries and no exports",
       "categories": {
         "performance": "Performance",

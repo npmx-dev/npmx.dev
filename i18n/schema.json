@@ -2824,12 +2824,6 @@
             "deselect_all": {
               "type": "string"
             },
-            "select_category": {
-              "type": "string"
-            },
-            "deselect_category": {
-              "type": "string"
-            },
             "binary_only_tooltip": {
               "type": "string"
             },

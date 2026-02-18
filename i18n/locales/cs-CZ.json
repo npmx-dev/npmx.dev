@@ -822,8 +822,6 @@
       "coming_soon": "Brzy k dispozici",
       "select_all": "Vybrat všechny vlastnosti",
       "deselect_all": "Zrušit výběr všech vlastností",
-      "select_category": "Vybrat všechny vlastnosti kategorie {category}",
-      "deselect_category": "Zrušit výběr všech vlastností kategorie {category}",
       "binary_only_tooltip": "Tento balíček obsahuje pouze binární soubory a žádné exporty",
       "categories": {
         "performance": "Výkon",

@@ -808,8 +808,6 @@
       "coming_soon": "త్వరలో వస్తుంది",
       "select_all": "అన్ని ఫేసెట్‌లను ఎంచుకోండి",
       "deselect_all": "అన్ని ఫేసెట్‌లను అన్‌సెలెక్ట్ చేయండి",
-      "select_category": "అన్ని {category} ఫేసెట్‌లను ఎంచుకోండి",
-      "deselect_category": "అన్ని {category} ఫేసెట్‌లను అన్‌సెలెక్ట్ చేయండి",
       "categories": {
         "performance": "పనితీరు",
         "health": "ఆరోగ్యం",

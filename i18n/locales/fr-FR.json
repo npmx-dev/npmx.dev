@@ -940,8 +940,6 @@
       "coming_soon": "Bientôt disponible",
       "select_all": "Sélectionner toutes les facettes",
       "deselect_all": "Désélectionner toutes les facettes",
-      "select_category": "Sélectionner toutes les facettes {category}",
-      "deselect_category": "Désélectionner toutes les facettes {category}",
       "binary_only_tooltip": "Ce paquet expose des binaires et aucun export",
       "categories": {
         "performance": "Performance",

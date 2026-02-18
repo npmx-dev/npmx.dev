@@ -929,8 +929,6 @@
       "coming_soon": "近日公開",
       "select_all": "すべての項目を選択",
       "deselect_all": "すべての項目の選択を解除",
-      "select_category": "{category} のすべての項目を選択",
-      "deselect_category": "{category} のすべての項目の選択を解除",
       "binary_only_tooltip": "このパッケージはバイナリのみを提供し、エクスポートを含みません",
       "categories": {
         "performance": "パフォーマンス",

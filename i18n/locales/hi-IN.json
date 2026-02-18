@@ -808,8 +808,6 @@
       "coming_soon": "जल्द आ रहा है",
       "select_all": "सभी फेसेट्स चुनें",
       "deselect_all": "सभी फेसेट्स अचयनित करें",
-      "select_category": "सभी {category} फेसेट्स चुनें",
-      "deselect_category": "सभी {category} फेसेट्स अचयनित करें",
       "categories": {
         "performance": "प्रदर्शन",
         "health": "स्वास्थ्य",

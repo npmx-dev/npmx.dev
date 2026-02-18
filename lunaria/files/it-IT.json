@@ -869,8 +869,6 @@
       "coming_soon": "Prossimamente",
       "select_all": "Seleziona tutte le sfaccettature",
       "deselect_all": "Deseleziona tutte le sfaccettature",
-      "select_category": "Seleziona tutte le sfaccettature {category}",
-      "deselect_category": "Deseleziona tutte le sfaccettature {category}",
       "binary_only_tooltip": "Questo pacchetto espone binari e nessuna esportazione",
       "categories": {
         "performance": "Prestazioni",

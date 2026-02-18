@@ -940,8 +940,6 @@
       "coming_soon": "Wkrótce",
       "select_all": "Wybierz wszystkie aspekty",
       "deselect_all": "Odznacz wszystkie aspekty",
-      "select_category": "Wybierz wszystkie aspekty: {category}",
-      "deselect_category": "Odznacz wszystkie aspekty: {category}",
       "binary_only_tooltip": "Ten pakiet udostępnia tylko pliki binarne i nie ma eksportów",
       "categories": {
         "performance": "Wydajność",

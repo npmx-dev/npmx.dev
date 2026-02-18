@@ -792,8 +792,6 @@
       "coming_soon": "छिट्टै आउँदैछ",
       "select_all": "सबै पक्षहरू चयन गर्नुहोस्",
       "deselect_all": "सबै पक्षहरू हटाउनुहोस्",
-      "select_category": "सबै {category} पक्षहरू चयन गर्नुहोस्",
-      "deselect_category": "सबै {category} पक्षहरू हटाउनुहोस्",
       "categories": {
         "performance": "परफर्मेन्स",
         "health": "हेल्थ",

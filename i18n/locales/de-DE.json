@@ -938,8 +938,6 @@
       "coming_soon": "Demnächst verfügbar",
       "select_all": "Alle Facetten auswählen",
       "deselect_all": "Alle Facetten abwählen",
-      "select_category": "Alle {category}-Facetten auswählen",
-      "deselect_category": "Alle {category}-Facetten abwählen",
       "binary_only_tooltip": "Dieses Paket stellt Binärdateien bereit und hat keine Exports",
       "categories": {
         "performance": "Performance",

@@ -920,8 +920,6 @@
       "coming_soon": "Скоро",
       "select_all": "Избор на всички аспекти",
       "deselect_all": "Отмяна на избора на всички аспекти",
-      "select_category": "Избор на всички {category} аспекти",
-      "deselect_category": "Отмяна на избора на всички {category} аспекти",
       "binary_only_tooltip": "Този пакет излага binaries и няма exports",
       "categories": {
         "performance": "Производителност",

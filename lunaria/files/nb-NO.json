@@ -883,8 +883,6 @@
       "coming_soon": "Kommer snart",
       "select_all": "Velg alle fasetter",
       "deselect_all": "Fravelg alle fasetter",
-      "select_category": "Velg alle {category}-fasetter",
-      "deselect_category": "Fravelg alle {category}-fasetter",
       "binary_only_tooltip": "Denne pakken eksponerer binærfiler og ingen eksporter",
       "categories": {
         "performance": "Ytelse",

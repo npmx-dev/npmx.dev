@@ -793,8 +793,6 @@
       "coming_soon": "Segera hadir",
       "select_all": "Pilih semua aspek",
       "deselect_all": "Batalkan semua aspek",
-      "select_category": "Pilih semua aspek {category}",
-      "deselect_category": "Batalkan semua aspek {category}",
       "categories": {
         "performance": "Performa",
         "health": "Kesehatan",
