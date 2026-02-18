@@ -191,10 +191,10 @@ describe('FacetSelector', () => {
       const component = await mountSuspended(FacetSelector)
 
       // totalDependencies is marked as comingSoon
-      const buttons = component.findAll('button')
+      const buttons = component.findAll('button[role="checkbox"]')
       const comingSoonButton = buttons.find(b => b.text().includes(comingSoonFacetLabel))
 
-      expect(comingSoonButton?.attributes('disabled')).toBeDefined()
+      expect(comingSoonButton?.attributes('aria-disabled')).toBe('true')
     })
 
     it('shows coming soon text for comingSoon facets', async () => {
@@ -231,8 +231,8 @@ describe('FacetSelector', () => {
     it('calls selectCategory when all button is clicked', async () => {
       const component = await mountSuspended(FacetSelector)
 
-      // Find the first 'all' button (for performance category)
-      const allButton = component.findAll('button').find(b => b.text() === 'all')
+      // Find the first 'all' radio (for performance category)
+      const allButton = component.findAll('button[role="radio"]').find(b => b.text() === 'all')
       await allButton!.trigger('click')
 
       expect(mockSelectCategory).toHaveBeenCalledWith('performance')
@@ -245,8 +245,8 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      // Find the first 'none' button (for performance category)
-      const noneButton = component.findAll('button').find(b => b.text() === 'none')
+      // Find the first 'none' radio (for performance category)
+      const noneButton = component.findAll('button[role="radio"]').find(b => b.text() === 'none')
       await noneButton!.trigger('click')
 
       expect(mockDeselectCategory).toHaveBeenCalledWith('performance')
@@ -262,9 +262,9 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      const allButton = component.findAll('button').find(b => b.text() === 'all')
-      // First all button (performance) should be disabled
-      expect(allButton!.attributes('disabled')).toBeDefined()
+      const allButton = component.findAll('button[role="radio"]').find(b => b.text() === 'all')
+      // First all button (performance) should be aria-disabled
+      expect(allButton!.attributes('aria-disabled')).toBe('true')
     })
 
     it('disables none button when no facets in category are selected', async () => {
@@ -274,9 +274,9 @@ describe('FacetSelector', () => {
 
       const component = await mountSuspended(FacetSelector)
 
-      const noneButton = component.findAll('button').find(b => b.text() === 'none')
-      // First none button (performance) should be disabled
-      expect(noneButton!.attributes('disabled')).toBeDefined()
+      const noneButton = component.findAll('button[role="radio"]').find(b => b.text() === 'none')
+      // First none button (performance) should be aria-disabled
+      expect(noneButton!.attributes('aria-disabled')).toBe('true')
     })
   })
 

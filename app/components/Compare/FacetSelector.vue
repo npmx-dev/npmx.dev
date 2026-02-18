@@ -64,6 +64,7 @@ function handleCategoryControlKeydown(category: string, event: KeyboardEvent): v
   }
 
   const nextRadio = radios[nextIndex]
+  if (!nextRadio) return
   const radioType = nextRadio.dataset.radioType
 
   if (radioType === 'all') {
@@ -98,7 +99,7 @@ function handleCategoryControlKeydown(category: string, event: KeyboardEvent): v
           :aria-disabled="isCategoryAllSelected(category)"
           :tabindex="getCategoryActiveControl(category) === 'all' ? 0 : -1"
           data-radio-type="all"
-          @keydown="event => handleCategoryControlKeydown(category, event)"
+          @keydown="handleCategoryControlKeydown(category, $event)"
           @click="selectCategory(category)"
           size="sm"
         >
@@ -111,7 +112,7 @@ function handleCategoryControlKeydown(category: string, event: KeyboardEvent): v
           :aria-disabled="isCategoryNoneSelected(category)"
           :tabindex="getCategoryActiveControl(category) === 'none' ? 0 : -1"
           data-radio-type="none"
-          @keydown="event => handleCategoryControlKeydown(category, event)"
+          @keydown="handleCategoryControlKeydown(category, $event)"
           @click="deselectCategory(category)"
           size="sm"
         >
