@@ -1,5 +1,4 @@
 {
-  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - npm रजिस्ट्रीका लागि प्याकेज ब्राउजर",
@@ -54,10 +53,6 @@
     "links": "लिङ्कहरू",
     "tap_to_search": "खोज्न ट्याप गर्नुहोस्"
   },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
   "settings": {
     "title": "सेटिङ्स",
     "tagline": "आफ्नो npmx अनुभव अनुकूल बनाउनुहोस्",
@@ -79,12 +74,9 @@
     "theme_system": "सिस्टम",
     "language": "भाषा",
     "help_translate": "npmx अनुवाद गर्न सहयोग गर्नुहोस्",
-    "accent_colors": {
-      "label": "एक्सेन्ट रङहरू"
-    },
+    "accent_colors": "एक्सेन्ट रङहरू",
     "clear_accent": "एक्सेन्ट रङ हटाउनुहोस्",
-    "translation_progress": "अनुवाद प्रगति",
-    "background_themes": {}
+    "translation_progress": "अनुवाद प्रगति"
   },
   "i18n": {
     "missing_keys": "{count} अनुवाद छुटेको छ | {count} अनुवादहरू छुटेका छन्",
@@ -94,7 +86,6 @@
     "edit_on_github": "GitHub मा सम्पादन गर्नुहोस्",
     "view_guide": "अनुवाद मार्गदर्शन"
   },
-  "error": {},
   "common": {
     "loading": "लोड हुँदैछ...",
     "loading_more": "अझै लोड हुँदैछ...",
@@ -108,6 +99,7 @@
     "skip_link": "मुख्य सामग्रीमा जानुहोस्",
     "warnings": "चेतावनीहरू:",
     "go_back_home": "होममा फर्कनुहोस्",
+    "view_on_npm": "npm मा हेर्नुहोस्",
     "per_week": "/ हप्ता",
     "vanity_downloads_hint": "भ्यानिटी नम्बर: कुनै प्याकेज देखाइएको छैन | भ्यानिटी नम्बर: देखाइएको प्याकेजका लागि | भ्यानिटी नम्बर: देखाइएको {count} प्याकेजहरूको योग",
     "sort": {
@@ -115,20 +107,15 @@
       "role": "भूमिका",
       "members": "सदस्यहरू"
     },
-    "scroll_to_top": "माथि स्क्रोल गर्नुहोस्",
-    "view_on": {
-      "npm": "npm मा हेर्नुहोस्",
-      "github": "GitHub मा हेर्नुहोस्"
-    }
-  },
-  "profile": {
-    "invite": {}
+    "scroll_to_top": "माथि स्क्रोल गर्नुहोस्"
   },
   "package": {
     "not_found": "प्याकेज फेला परेन",
     "not_found_message": "प्याकेज फेला पार्न सकिएन।",
     "no_description": "विवरण उपलब्ध छैन",
+    "not_latest": "(नवीनतम होइन)",
     "verified_provenance": "प्रमाणित प्रुभेनेन्स",
+    "view_permalink": "यस संस्करणको पर्मालिङ्क हेर्नुहोस्",
     "navigation": "प्याकेज",
     "copy_name": "प्याकेज नाम कपी गर्नुहोस्",
     "deprecation": {
@@ -136,7 +123,6 @@
       "version": "यो संस्करण अप्रचलित (deprecated) गरिएको छ।",
       "no_reason": "कारण दिइएको छैन"
     },
-    "size_increase": {},
     "replacement": {
       "title": "तपाईंलाई यो डिपेन्डेन्सी आवश्यक नपर्न सक्छ।",
       "native": "Node {nodeVersion} देखि उपलब्ध {replacement} ले यसलाई प्रतिस्थापन गर्न सक्छ।",
@@ -194,6 +180,7 @@
     "readme": {
       "title": "README",
       "no_readme": "README उपलब्ध छैन।",
+      "view_on_github": "GitHub मा हेर्नुहोस्",
       "callout": {}
     },
     "provenance_section": {},
@@ -218,8 +205,7 @@
       "more_tagged": "{count} थप ट्याग गरिएको",
       "all_covered": "माथिका ट्यागले सबै संस्करणहरू कभर गर्छन्",
       "deprecated_title": "{version} (deprecated)",
-      "view_all": "{count} संस्करण हेर्नुहोस् | सबै {count} संस्करणहरू हेर्नुहोस्",
-      "copy_alt": {}
+      "view_all": "{count} संस्करण हेर्नुहोस् | सबै {count} संस्करणहरू हेर्नुहोस्"
     },
     "dependencies": {
       "title": "डिपेन्डेन्सीहरू ({count})",
@@ -268,8 +254,7 @@
       "date_range_multiline": "{start}\nदेखि {end}",
       "download_file": "{fileType} डाउनलोड गर्नुहोस्",
       "toggle_annotator": "एनोटेटर टगल गर्नुहोस्",
-      "items": {},
-      "copy_alt": {}
+      "items": {}
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड"
@@ -354,12 +339,14 @@
       "name_asc": "नाम (A-Z)",
       "name_desc": "नाम (Z-A)"
     },
-    "size": {},
-    "download": {}
+    "size": {}
   },
   "connector": {
     "modal": {
       "title": "लोकल कनेक्टर",
+      "contributor_badge": "कन्ट्रिब्युटर मात्र",
+      "contributor_notice": "कनेक्टर अझै npm मा प्रकाशित गरिएको छैन। लोकल रूपमा चलाउने तरिका हेर्न {link} हेर्नुहोस्।",
+      "contributor_link": "कन्ट्रिब्युटिङ गाइड",
       "connected": "जोडियो",
       "connected_as_user": "~{user} रूपमा जोडियो",
       "connected_hint": "अब तपाईं वेब UI बाट प्याकेज र संगठनहरू व्यवस्थापन गर्न सक्नुहुन्छ।",
@@ -621,7 +608,11 @@
       "downloads_day": "डाउनलोड/दिन",
       "downloads_month": "डाउनलोड/महिना",
       "downloads_year": "डाउनलोड/वर्ष",
-      "name": "नाम"
+      "name": "नाम",
+      "quality": "क्वालिटी",
+      "popularity": "लोकप्रियता",
+      "maintenance": "मेन्टेनेन्स",
+      "score": "स्कोर"
     },
     "columns": {
       "title": "स्तम्भहरू",
@@ -634,6 +625,10 @@
       "downloads": "डाउनलोड/हप्ता",
       "maintainers": "मेन्टेनरहरू",
       "keywords": "किवर्ड्स",
+      "quality_score": "क्वालिटी स्कोर",
+      "popularity_score": "लोकप्रियता स्कोर",
+      "maintenance_score": "मेन्टेनेन्स स्कोर",
+      "combined_score": "समग्र स्कोर",
       "security": "सिक्युरिटी"
     },
     "view_mode": {
@@ -647,7 +642,8 @@
       "paginated": "पृष्ठमा विभाजित",
       "items_per_page": "प्रति पृष्ठ वस्तुहरू",
       "per_page": "{count} / पृष्ठ",
-      "showing": "{total} मध्ये {range}",
+      "all_yolo": "सबै (YOLO)",
+      "showing": "{total} मध्ये {start}-{end}",
       "previous": "अघिल्लो पृष्ठ",
       "next": "अर्को पृष्ठ",
       "nav_label": "पेजिनेशन"
@@ -690,8 +686,6 @@
         "managers": "म्यानेजरहरू बनाइरहेका छन्"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "कन्ट्रिब्युटरहरू",
@@ -712,7 +706,6 @@
         "description": "च्याट गर्नुहोस्, प्रश्न सोध्नुहोस्, र विचार साझा गर्नुहोस्।",
         "cta": "Discord मा जोडिनुहोस्"
       },
-      "builders": {},
       "follow": {
         "title": "अपडेट रहनुहोस्",
         "description": "npmx का ताजा अपडेटहरू जान्नुहोस्।",
@@ -822,15 +815,7 @@
       },
       "values": {},
       "trends": {}
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    }
   },
   "privacy_policy": {
     "cookies": {
@@ -851,9 +836,5 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }

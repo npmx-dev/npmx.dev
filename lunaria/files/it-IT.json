@@ -1,14 +1,13 @@
 {
-  "$schema": "../schema.json",
   "seo": {
     "home": {
-      "title": "npmx - Il browser dei pacchetti per il registro npm",
-      "description": "un browser veloce e moderno per il registro npm. Cerca, naviga ed esplora i pacchetti con un'interfaccia moderna."
+      "title": "npmx - Il browser dei pacchetti npm",
+      "description": "Un browser migliore per il registro npm. Cerca, naviga ed esplora i pacchetti con un'interfaccia moderna."
     }
   },
   "built_at": "compilato {0}",
   "alt_logo": "logo npmx",
-  "tagline": "un browser veloce e moderno per il registro npm",
+  "tagline": "un browser migliore per il registro npm",
   "non_affiliation_disclaimer": "non affiliato con npm, Inc.",
   "trademark_disclaimer": "npm è un marchio registrato da npm, Inc. Questo sito non è affiliato con npm, Inc.",
   "footer": {
@@ -16,24 +15,10 @@
     "docs": "docs",
     "source": "codice",
     "social": "social",
-    "chat": "chat",
-    "keyboard_shortcuts": "shortcuts tastiera"
+    "chat": "chat"
   },
   "shortcuts": {
-    "section": {
-      "global": "Globali",
-      "search": "Cerca",
-      "package": "Pacchetto"
-    },
-    "focus_search": "Focus cerca",
-    "show_kbd_hints": "Evidenzia suggerimenti da tastiera",
-    "settings": "Apri impostazioni",
-    "compare": "Apri confronto",
-    "compare_from_package": "Apri confronto (con il pacchetto attuale)",
-    "navigate_results": "Naviga risultati",
-    "go_to_result": "Vai al risultato",
-    "open_code_view": "Apri vista codice",
-    "open_docs": "Apri documentazione"
+    "section": {}
   },
   "search": {
     "label": "Cerca i pacchetti npm",
@@ -41,7 +26,6 @@
     "button": "cerca",
     "searching": "Cercando...",
     "found_packages": "Trovati {count} pacchetti",
-    "found_packages_sorted": "Nessun risultato trovato | Ordinando i primi {count} risultati | Ordinando i primi {count} risultati",
     "updating": "(aggiornando...)",
     "no_results": "Nessun pacchetto trovato per \"{query}\"",
     "rate_limited": "Limite di richiesta ad npm raggiunto, riprova tra poco",
@@ -55,7 +39,6 @@
     "claim_button": "Ottieni \"{name}\"",
     "want_to_claim": "Vuoi ottenere il nome di questo pacchetto?",
     "start_typing": "Inizia a scrivere per cercare i pacchetti",
-    "algolia_disclaimer": "Fornito da Algolia",
     "exact_match": "ricerca esatta",
     "suggestion": {
       "user": "utente",
@@ -76,10 +59,6 @@
     "links": "Link",
     "tap_to_search": "Tocca per cercare"
   },
-  "blog": {
-    "author": {},
-    "atproto": {}
-  },
   "settings": {
     "title": "impostazioni",
     "tagline": "personalizza la tua esperienza npmx",
@@ -87,17 +66,9 @@
     "sections": {
       "appearance": "Aspetto",
       "display": "Visualizzazione",
-      "search": "Fonte dati",
       "language": "Lingua"
     },
-    "data_source": {
-      "label": "Fonte dati",
-      "description": "Scegli da dove npmx ottiene i dati di ricerca. Le pagine dei singoli pacchetti usano sempre direttamente il registro npm.",
-      "npm": "npm registry",
-      "npm_description": "Usa il registro npm per la ricerca. Più lento, ma sempre aggiornato.",
-      "algolia": "Algolia",
-      "algolia_description": "Usa Algolia per una ricerca più veloce, pagine organizzazione e utente."
-    },
+    "data_source": {},
     "relative_dates": "Date relative",
     "include_types": "Includi {'@'}types durante l'installazione",
     "include_types_description": "Aggiungi il pacchetto {'@'}types al comando install per i pacchetti senza tipo",
@@ -109,14 +80,10 @@
     "theme_system": "Sistema",
     "language": "Lingua",
     "help_translate": "Aiuta a tradurre npmx",
-    "accent_colors": {
-      "label": "Colori di accento"
-    },
+    "accent_colors": "Colori di accento",
     "clear_accent": "Cancella colore di accento",
     "translation_progress": "Progresso della traduzione",
-    "background_themes": {
-      "label": "Sfumatura di sfondo"
-    }
+    "background_themes": "Sfumatura di sfondo"
   },
   "i18n": {
     "missing_keys": "{count} chiave mancante | {count} chiavi mancanti",
@@ -126,7 +93,6 @@
     "edit_on_github": "Modifica su GitHub",
     "view_guide": "Guida alla traduzione"
   },
-  "error": {},
   "common": {
     "loading": "Caricando...",
     "loading_more": "Caricando altri...",
@@ -134,13 +100,13 @@
     "end_of_results": "Fine dei risultati",
     "try_again": "Prova di nuovo",
     "close": "Chiudi",
-    "or": "oppure",
     "retry": "Riprova",
     "copy": "copia",
     "copied": "copiato!",
     "skip_link": "Salta al contenuto principale",
     "warnings": "Avvisi:",
     "go_back_home": "Torna alla home",
+    "view_on_npm": "vedi su npm",
     "per_week": "/ settimana",
     "vanity_downloads_hint": "Numero di vanità: nessun pacchetto visualizzato | Numero di vanità: per il pacchetto visualizzato | Numero di vanità: somma di {count} pacchetti visualizzati",
     "sort": {
@@ -148,33 +114,21 @@
       "role": "ruolo",
       "members": "membri"
     },
-    "scroll_to_top": "Torna su",
-    "view_on": {
-      "npm": "vedi su npm",
-      "github": "Vedi su GitHub"
-    }
-  },
-  "profile": {
-    "invite": {}
+    "scroll_to_top": "Torna su"
   },
   "package": {
     "not_found": "Pacchetto Non Trovato",
     "not_found_message": "Impossibile trovare il pacchetto.",
     "no_description": "Nessuna descrizione fornita",
+    "not_latest": "(non recente)",
     "verified_provenance": "Provenienza verificata",
+    "view_permalink": "Vedi il link permanente per questa versione",
     "navigation": "Pacchetto",
     "copy_name": "Copia nome pacchetto",
     "deprecation": {
       "package": "Questo pacchetto è stato deprecato.",
       "version": "Questa versione è stata deprecata.",
       "no_reason": "Nessuna ragione fornita"
-    },
-    "size_increase": {
-      "title_size": "Aumento significativo delle dimensioni dalla v{version}",
-      "title_deps": "Aumento significativo del numero di dipendenze dalla v{version}",
-      "title_both": "Aumento significativo delle dimensioni e dipendenze dalla v{version}",
-      "size": "Dimensione di installazione aumentato del {percent} ({size} larger)",
-      "deps": "{count} dipendenze in più"
     },
     "replacement": {
       "title": "Questa dipendenza potrebbe non essere necessaria.",
@@ -241,8 +195,6 @@
       "title": "Inizia",
       "pm_label": "Gestore di pacchetti",
       "copy_command": "Copia comando di installazione",
-      "copy_dev_command": "Copia comando di installazione dev",
-      "dev_dependency_hint": "Di solito installato come dev dependency",
       "view_types": "Vedi {package}"
     },
     "create": {
@@ -257,6 +209,7 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Nessuno README disponibile.",
+      "view_on_github": "Vedi su GitHub",
       "toc_title": "Contorno",
       "callout": {
         "note": "Nota",
@@ -278,16 +231,7 @@
       "view_more_details": "Visualizza più dettagli",
       "error_loading": "Impossibile caricare i dettagli della provenienza"
     },
-    "security_downgrade": {
-      "title": "Trust downgrade",
-      "description_to_none_provenance": "Question versione è stata publicata senza {provenance}.",
-      "description_to_none_trustedPublisher": "Question versione è stata publicata senza {trustedPublishing}.",
-      "description_to_provenance_trustedPublisher": "Questa versione usa {provenance} ma senza {trustedPublishing}.",
-      "fallback_install_provenance": "Comandi di installazione fissi a {version}, l'ultima versione con provenienza.",
-      "fallback_install_trustedPublisher": "Comandi di installazione fissi a {version}, l'ultima versione con pubblicazione attendibile.",
-      "provenance_link_text": "provenienza",
-      "trusted_publishing_link_text": "pubblicazione attendibile"
-    },
+    "security_downgrade": {},
     "keywords_title": "Keywords",
     "compatibility": "Compatibilità",
     "card": {
@@ -309,8 +253,7 @@
       "more_tagged": "{count} altri taggati",
       "all_covered": "Tutte le versioni sono coperte dai tag sopra",
       "deprecated_title": "{version} (deprecato)",
-      "view_all": "Visualizza {count} versione | Visualizza tutte le {count} versioni",
-      "copy_alt": {}
+      "view_all": "Visualizza {count} versione | Visualizza tutte le {count} versioni"
     },
     "dependencies": {
       "title": "Dipendenza ({count}) | Dipendenze ({count})",
@@ -364,8 +307,7 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "Download"
-      },
-      "copy_alt": {}
+      }
     },
     "downloads": {
       "title": "Download settimanali",
@@ -457,12 +399,14 @@
       "b": "{size} B",
       "kb": "{size} kB",
       "mb": "{size} MB"
-    },
-    "download": {}
+    }
   },
   "connector": {
     "modal": {
       "title": "Connettore locale",
+      "contributor_badge": "Solo collaboratori",
+      "contributor_notice": "Il connettore non è ancora pubblicato su npm. Vedi {link} per come eseguire localmente.",
+      "contributor_link": "guida ai contributi",
       "connected": "Connesso",
       "connected_as_user": "Connesso come ~{user}",
       "connected_hint": "Puoi ora gestire i pacchetti e le organizzazioni dall'interfaccia web.",
@@ -731,7 +675,11 @@
       "downloads_month": "Download/mese",
       "downloads_year": "Download/anno",
       "published": "Ultimo pubblicato",
-      "name": "Nome"
+      "name": "Nome",
+      "quality": "Qualità",
+      "popularity": "Popolarità",
+      "maintenance": "Manutenzione",
+      "score": "Punteggio"
     },
     "columns": {
       "title": "Colonne",
@@ -745,6 +693,10 @@
       "published": "Ultimo pubblicato",
       "maintainers": "Manutentori",
       "keywords": "Keywords",
+      "quality_score": "Punteggio di qualità",
+      "popularity_score": "Punteggio di popolarità",
+      "maintenance_score": "Punteggio di manutenzione",
+      "combined_score": "Punteggio combinato",
       "security": "Sicurezza"
     },
     "view_mode": {
@@ -758,7 +710,8 @@
       "paginated": "Paginato",
       "items_per_page": "Elementi per pagina",
       "per_page": "{count} / pagina",
-      "showing": "{range} su {total}",
+      "all_yolo": "Tutti (YOLO)",
+      "showing": "{start}-{end} su {total}",
       "previous": "Pagina precedente",
       "next": "Pagina successiva",
       "nav_label": "Paginazione"
@@ -801,8 +754,6 @@
         "managers": "gestori di pacchetti"
       }
     },
-    "sponsors": {},
-    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "{count} Collaboratore | {count} Collaboratori",
@@ -823,7 +774,6 @@
         "description": "Chatta, fai domande e condividi idee.",
         "cta": "Unisciti a Discord"
       },
-      "builders": {},
       "follow": {
         "title": "Rimani aggiornato",
         "description": "Scopri le ultime novità su npmx.",
@@ -992,15 +942,7 @@
         "up_to_you": "A tua scelta!"
       },
       "trends": {}
-    },
-    "version_invalid_url_format": {},
-    "file_filter_option": {},
-    "filter": {}
-  },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
+    }
   },
   "privacy_policy": {
     "title": "Informativa sulla privacy",
@@ -1087,9 +1029,5 @@
     "measures": {},
     "limitations": {},
     "contact": {}
-  },
-  "translation_status": {
-    "table": {}
-  },
-  "action_bar": {}
+  }
 }
