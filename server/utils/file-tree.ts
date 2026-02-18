@@ -39,11 +39,14 @@ export function convertToFileTree(
     const path = parentPath ? `${parentPath}/${node.name}` : node.name
 
     if (node.type === 'directory') {
+      const children = node.files ? convertToFileTree(node.files, path) : []
+
       result.push({
         name: node.name,
         path,
         type: 'directory',
-        children: node.files ? convertToFileTree(node.files, path) : [],
+        size: children.reduce((total, child) => total + (child.size ?? 0), 0),
+        children,
       })
     } else {
       result.push({

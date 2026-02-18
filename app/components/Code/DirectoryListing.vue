@@ -120,10 +120,7 @@ const bytesFormatter = useBytesFormatter()
               </svg>
               <span class="w-full flex justify-self-stretch items-center gap-2">
                 <span class="flex-1">{{ node.name }}</span>
-                <span
-                  v-if="node.type === 'file' && node.size"
-                  class="text-end text-xs text-fg-subtle"
-                >
+                <span v-if="typeof node.size === 'number'" class="text-end text-xs text-fg-subtle">
                   {{ bytesFormatter.format(node.size) }}
                 </span>
               </span>

@@ -46,7 +46,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `files:v1:${pkg.replace(/\/+$/, '').trim()}`
+      return `files:v2:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )
