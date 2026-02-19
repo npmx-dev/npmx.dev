@@ -105,7 +105,11 @@ function handleKeydown(e: KeyboardEvent) {
     case 'ArrowDown':
       e.preventDefault()
       if (count === 0) return
-      highlightedIndex.value = Math.min(highlightedIndex.value + 1, count - 1)
+      if (highlightedIndex.value < count - 1) {
+        highlightedIndex.value++
+      } else {
+        highlightedIndex.value = 0
+      }
       break
 
     case 'ArrowUp':
@@ -113,6 +117,8 @@ function handleKeydown(e: KeyboardEvent) {
       if (count === 0) return
       if (highlightedIndex.value > 0) {
         highlightedIndex.value--
+      } else {
+        highlightedIndex.value = count - 1
       }
       break
 
