@@ -92,7 +92,7 @@ defineOgImageComponent('Default', {
                 <ButtonBase
                   type="submit"
                   variant="primary"
-                  class="absolute inset-ie-2 border-transparent"
+                  class="absolute inset-ie-2 border-transparent max-sm:p-2"
                   classicon="i-lucide:search"
                 >
                   <span class="sr-only sm:not-sr-only">

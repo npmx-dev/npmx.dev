@@ -150,20 +150,18 @@ const numberFormatter = useNumberFormatter()
               :to="packageRoute(dep, getVulnerableDepInfo(dep)!.version)"
               class="shrink-0"
               :class="SEVERITY_TEXT_COLORS[getHighestSeverity(getVulnerableDepInfo(dep)!.counts)]"
+              :aria-label="$t('package.dependencies.view_vulnerabilities')"
               :title="`${getVulnerableDepInfo(dep)!.counts.total} vulnerabilities`"
               classicon="i-lucide:shield-check"
-            >
-              <span class="sr-only">{{ $t('package.dependencies.view_vulnerabilities') }}</span>
-            </LinkBase>
+            />
             <LinkBase
               v-if="getDeprecatedDepInfo(dep)"
               :to="packageRoute(dep, getDeprecatedDepInfo(dep)!.version)"
               class="shrink-0 text-purple-700 dark:text-purple-500"
+              :aria-label="$t('package.deprecated.label')"
               :title="getDeprecatedDepInfo(dep)!.message"
               classicon="i-lucide:octagon-alert"
-            >
-              <span class="sr-only">{{ $t('package.deprecated.label') }}</span>
-            </LinkBase>
+            />
             <LinkBase
               :to="packageRoute(dep, version)"
               class="block truncate"

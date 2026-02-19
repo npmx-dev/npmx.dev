@@ -476,12 +476,11 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
       <ButtonBase
         variant="secondary"
         class="text-fg-subtle hover:text-fg transition-colors min-w-6 min-h-6 -m-1 p-1 rounded"
+        :aria-label="$t('package.downloads.community_distribution')"
         :title="$t('package.downloads.community_distribution')"
         classicon="i-lucide:file-stack"
         @click="openDistributionModal"
-      >
-        <span class="sr-only">{{ $t('package.downloads.community_distribution') }}</span>
-      </ButtonBase>
+      />
     </template>
     <div class="space-y-0.5 min-w-0">
       <!-- Semver range filter -->
