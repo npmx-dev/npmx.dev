@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TocItem } from '#shared/types/readme'
 import { onClickOutside, useEventListener } from '@vueuse/core'
+import { decodeHtmlEntities } from '~/utils/formatters'
 
 const props = defineProps<{
   toc: TocItem[]
@@ -201,7 +202,7 @@ function handleKeydown(event: KeyboardEvent) {
             @click="select()"
             @mouseenter="highlightedIndex = getIndex(node.id)"
           >
-            <span class="truncate">{{ node.text }}</span>
+            <span class="truncate">{{ decodeHtmlEntities(node.text) }}</span>
           </NuxtLink>
 
           <template v-for="child in node.children" :key="child.id">
@@ -219,7 +220,7 @@ function handleKeydown(event: KeyboardEvent) {
               @click="select()"
               @mouseenter="highlightedIndex = getIndex(child.id)"
             >
-              <span class="truncate">{{ child.text }}</span>
+              <span class="truncate">{{ decodeHtmlEntities(child.text) }}</span>
             </NuxtLink>
 
             <NuxtLink
@@ -240,7 +241,7 @@ function handleKeydown(event: KeyboardEvent) {
               @click="select()"
               @mouseenter="highlightedIndex = getIndex(grandchild.id)"
             >
-              <span class="truncate">{{ grandchild.text }}</span>
+              <span class="truncate">{{ decodeHtmlEntities(grandchild.text) }}</span>
             </NuxtLink>
           </template>
         </template>
