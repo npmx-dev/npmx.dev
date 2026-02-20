@@ -63,7 +63,7 @@ watch(
 
 // getting info
 
-const { data: changelog } = usePackageChangelog(packageName, version)
+const { data: changelog, pending } = usePackageChangelog(packageName, version)
 </script>
 <template>
   <main class="flex-1 flex flex-col">
@@ -92,7 +92,11 @@ const { data: changelog } = usePackageChangelog(packageName, version)
 
     <section class="container w-full" v-if="changelog">
       <LazyChangelogReleases v-if="changelog.type == 'release'" :info="changelog" />
-      <p v-else>changelog.md support is comming or the package doesn't have changelogs</p>
+      <LazyChangelogMarkdown
+        v-else-if="changelog.type == 'md'"
+        :info="changelog"
+      ></LazyChangelogMarkdown>
+      <p v-else-if="!pending">Sorry, this package doesn't track any changelogs</p>
     </section>
   </main>
 </template>

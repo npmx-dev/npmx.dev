@@ -38,7 +38,8 @@ export const ERROR_NEED_REAUTH = 'User needs to reauthenticate'
 export const ERROR_CHANGELOG_NOT_FOUND =
   'No releases or changelogs have been found for this package'
 export const ERROR_CHANGELOG_RELEASES_FAILED = 'Failed to get releases'
-export const THROW_INCOMPLETE_PARAM = "Couldn't do request due to incomplete parameters"
+export const ERROR_CHANGELOG_FILE_FAILED = 'Failed to get changelog markdown'
+export const ERROR_THROW_INCOMPLETE_PARAM = "Couldn't do request due to incomplete parameters"
 
 // microcosm services
 export const CONSTELLATION_HOST = 'constellation.microcosm.blue'

@@ -54,7 +54,7 @@ export async function changelogRenderer() {
   </div>`
   }
 
-  return (markdown: string | null, releaseId: string | number) => {
+  return (markdown: string | null, releaseId?: string | number) => {
     // Collect table of contents items during parsing
     const toc: TocItem[] = []
 
@@ -68,7 +68,7 @@ export async function changelogRenderer() {
     // Track used heading slugs to handle duplicates (GitHub-style: foo, foo-1, foo-2)
     const usedSlugs = new Map<string, number>()
 
-    let lastSemanticLevel = 2 // Start after h2 (the "Readme" section heading)
+    let lastSemanticLevel = releaseId ? 2 : 1 // Start after h2 (the "Readme" section heading)
     renderer.heading = function ({ tokens, depth }: Tokens.Heading) {
       // Calculate the target semantic level based on document structure
       // Start at h3 (since page h1 + section h2 already exist)
@@ -89,7 +89,9 @@ export async function changelogRenderer() {
 
       // Prefix with 'user-content-' to avoid collisions with page IDs
       // (e.g., #install, #dependencies, #versions are used by the package page)
-      const id = `user-content-${releaseId}-${uniqueSlug}`
+      const id = releaseId
+        ? `user-content-${releaseId}-${uniqueSlug}`
+        : `user-content-${uniqueSlug}`
 
       // Collect TOC item with plain text (HTML stripped)
       const plainText = text

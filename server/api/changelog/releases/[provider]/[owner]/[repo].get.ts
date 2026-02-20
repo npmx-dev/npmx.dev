@@ -1,6 +1,9 @@
 import type { ProviderId } from '~~/shared/utils/git-providers'
 import type { ReleaseData } from '~~/shared/types/changelog'
-import { ERROR_CHANGELOG_RELEASES_FAILED, THROW_INCOMPLETE_PARAM } from '~~/shared/utils/constants'
+import {
+  ERROR_CHANGELOG_RELEASES_FAILED,
+  ERROR_THROW_INCOMPLETE_PARAM,
+} from '~~/shared/utils/constants'
 import { GithubReleaseCollectionSchama } from '~~/shared/schemas/changelog/release'
 import { parse } from 'valibot'
 import { changelogRenderer } from '~~/server/utils/changelog/markdown'
@@ -13,7 +16,7 @@ export default defineCachedEventHandler(async event => {
   if (!repo || !provider || !owner) {
     throw createError({
       status: 404,
-      statusMessage: THROW_INCOMPLETE_PARAM,
+      statusMessage: ERROR_THROW_INCOMPLETE_PARAM,
     })
   }
 
@@ -23,12 +26,14 @@ export default defineCachedEventHandler(async event => {
         return await getReleasesFromGithub(owner, repo)
 
       default:
-        return false
+        throw createError({
+          status: 404,
+          statusMessage: ERROR_CHANGELOG_NOT_FOUND,
+        })
     }
   } catch (error) {
     handleApiError(error, {
       statusCode: 502,
-      // message: 'temp',
       message: ERROR_CHANGELOG_RELEASES_FAILED,
     })
   }

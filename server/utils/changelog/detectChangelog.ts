@@ -107,6 +107,7 @@ async function checkChangelogFile(ref: RepoRef): Promise<ChangelogMarkdownInfo |
         type: 'md',
         provider: ref.provider,
         path: fileName,
+        repo: `${ref.owner}/${ref.repo}`,
       } satisfies ChangelogMarkdownInfo
     }
   }
