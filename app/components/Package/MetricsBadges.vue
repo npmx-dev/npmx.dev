@@ -63,7 +63,7 @@ const typesHref = computed(() => {
           variant="button-secondary"
           size="small"
           :to="typesHref"
-          classicon="i-carbon:checkmark"
+          classicon="i-lucide:check"
         >
           {{ $t('package.metrics.types_label') }}
         </LinkBase>
@@ -72,11 +72,7 @@ const typesHref = computed(() => {
           :variant="hasTypes && !isLoading ? 'default' : 'ghost'"
           :tabindex="0"
           :classicon="
-            isLoading
-              ? 'i-carbon:circle-dash motion-safe:animate-spin'
-              : hasTypes
-                ? 'i-carbon:checkmark'
-                : 'i-carbon:close'
+            isLoading ? 'i-svg-spinners:ring-resize ' : hasTypes ? 'i-lucide:check' : 'i-lucide:x'
           "
         >
           {{ $t('package.metrics.types_label') }}
@@ -94,11 +90,7 @@ const typesHref = computed(() => {
           tabindex="0"
           :variant="hasEsm && !isLoading ? 'default' : 'ghost'"
           :classicon="
-            isLoading
-              ? 'i-carbon:circle-dash motion-safe:animate-spin'
-              : hasEsm
-                ? 'i-carbon:checkmark'
-                : 'i-carbon:close'
+            isLoading ? 'i-svg-spinners:ring-resize ' : hasEsm ? 'i-lucide:check' : 'i-lucide:x'
           "
         >
           ESM
@@ -112,9 +104,7 @@ const typesHref = computed(() => {
         <TagStatic
           tabindex="0"
           :variant="isLoading ? 'ghost' : 'default'"
-          :classicon="
-            isLoading ? 'i-carbon:circle-dash motion-safe:animate-spin' : 'i-carbon:checkmark'
-          "
+          :classicon="isLoading ? 'i-svg-spinners:ring-resize ' : 'i-lucide:check'"
         >
           CJS
         </TagStatic>

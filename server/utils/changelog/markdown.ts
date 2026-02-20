@@ -1,12 +1,5 @@
 import { marked, type Tokens } from 'marked'
-import {
-  ALLOWED_ATTR,
-  ALLOWED_TAGS,
-  calculateSemanticDepth,
-  prefixId,
-  replaceHtmlLink,
-  slugify,
-} from '../readme'
+import { ALLOWED_ATTR, ALLOWED_TAGS, calculateSemanticDepth, prefixId, slugify } from '../readme'
 import sanitizeHtml from 'sanitize-html'
 
 export async function changelogRenderer() {
@@ -109,11 +102,6 @@ export async function changelogRenderer() {
     return {
       html: marked.parse(markdown, {
         renderer,
-        walkTokens: token => {
-          if (token.type === 'html') {
-            token.text = replaceHtmlLink(token.text)
-          }
-        },
       }) as string,
       toc,
     }

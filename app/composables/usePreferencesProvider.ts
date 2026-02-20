@@ -1,4 +1,4 @@
-import { defu } from 'defu'
+import { createDefu } from 'defu'
 
 /**
  * Abstraction for preferences storage
@@ -12,6 +12,13 @@ interface StorageProvider<T> {
   set: (value: T) => void
   remove: () => void
 }
+
+const defu = createDefu((object, key, value) => {
+  if (Array.isArray(object[key]) && Array.isArray(value)) {
+    object[key] = value
+    return true
+  }
+})
 
 /**
  * Creates a localStorage-based storage provider

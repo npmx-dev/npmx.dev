@@ -1,4 +1,4 @@
-import type { IconifyJSON } from '@iconify-json/carbon'
+import type { IconifyJSON } from '@iconify-json/lucide'
 import { promises as fs } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -15,7 +15,7 @@ const outputDevPath = path.join(rootDir, 'public', 'file-tree-sprite.svg')
 const outputStagePath = path.join(rootDir, 'public-dev', 'file-tree-sprite.svg')
 const outputProdPath = path.join(rootDir, 'public-prod', 'file-tree-sprite.svg')
 
-const COLLECTION_NAMES = ['carbon', 'lucide', 'simple-icons', 'svg-spinners', 'vscode-icons']
+const COLLECTION_NAMES = ['lucide', 'simple-icons', 'svg-spinners', 'vscode-icons']
 
 const COLLECTION_REGEXP = new RegExp(`^(${COLLECTION_NAMES.join('|')})-(.+)$`)
 

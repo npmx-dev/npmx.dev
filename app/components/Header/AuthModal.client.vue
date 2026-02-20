@@ -64,12 +64,9 @@ watch(handleInput, newHandleInput => {
           </p>
         </div>
       </div>
-      <button
-        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
-        @click="logout"
-      >
+      <ButtonBase class="w-full" @click="logout">
         {{ $t('auth.modal.disconnect') }}
-      </button>
+      </ButtonBase>
     </div>
 
     <!-- Disconnected state -->
@@ -111,19 +108,13 @@ watch(handleInput, newHandleInput => {
                 <span class="font-bold">npmx.dev</span>
               </template>
               <template #atproto>
-                <a :href="atprotoLink" target="_blank" class="text-blue-400 hover:underline">
-                  AT Protocol
-                </a>
+                <LinkBase :to="atprotoLink"> AT Protocol </LinkBase>
               </template>
               <template #bluesky>
-                <a href="https://bsky.app" target="_blank" class="text-blue-400 hover:underline">
-                  Bluesky
-                </a>
+                <LinkBase to="https://bsky.app"> Bluesky </LinkBase>
               </template>
               <template #tangled>
-                <a href="https://tangled.org" target="_blank" class="text-blue-400 hover:underline">
-                  Tangled
-                </a>
+                <LinkBase to="https://tangled.org"> Tangled </LinkBase>
               </template>
             </i18n-t>
           </div>
@@ -133,18 +124,17 @@ watch(handleInput, newHandleInput => {
       <ButtonBase type="submit" variant="primary" :disabled="!handleInput.trim()" class="w-full">
         {{ $t('auth.modal.connect') }}
       </ButtonBase>
-      <ButtonBase type="button" variant="primary" class="w-full" @click="handleCreateAccount">
+      <ButtonBase type="button" class="w-full" @click="handleCreateAccount">
         {{ $t('auth.modal.create_account') }}
       </ButtonBase>
       <hr class="color-border" />
-      <ButtonBase type="button" variant="primary" class="w-full" @click="handleBlueskySignIn" block>
+      <ButtonBase
+        type="button"
+        class="w-full"
+        @click="handleBlueskySignIn"
+        classicon="i-simple-icons:bluesky"
+      >
         {{ $t('auth.modal.connect_bluesky') }}
-        <svg fill="none" viewBox="0 0 64 57" width="20" style="width: 20px">
-          <path
-            fill="#0F73FF"
-            d="M13.873 3.805C21.21 9.332 29.103 20.537 32 26.55v15.882c0-.338-.13.044-.41.867-1.512 4.456-7.418 21.847-20.923 7.944-7.111-7.32-3.819-14.64 9.125-16.85-7.405 1.264-15.73-.825-18.014-9.015C1.12 23.022 0 8.51 0 6.55 0-3.268 8.579-.182 13.873 3.805ZM50.127 3.805C42.79 9.332 34.897 20.537 32 26.55v15.882c0-.338.13.044.41.867 1.512 4.456 7.418 21.847 20.923 7.944 7.111-7.32 3.819-14.64-9.125-16.85 7.405 1.264 15.73-.825 18.014-9.015C62.88 23.022 64 8.51 64 6.55c0-9.818-8.578-6.732-13.873-2.745Z"
-          ></path>
-        </svg>
       </ButtonBase>
     </form>
   </Modal>

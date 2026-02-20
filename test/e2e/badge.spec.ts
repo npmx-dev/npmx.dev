@@ -61,7 +61,7 @@ test.describe('badge API', () => {
 
         expect(response.status()).toBe(200)
         if (type === 'version') {
-          expect(body).toContain('3.12.0')
+          expect(body).toContain('v3.12.0')
         }
       })
 

@@ -26,6 +26,16 @@ describe('detectModuleFormat', () => {
     expect(detectModuleFormat({ module: 'index.mjs', main: 'index.js' })).toBe('dual')
   })
 
+  it('detects dual from type + module + main fields', () => {
+    expect(detectModuleFormat({ type: 'module', module: 'index.js', main: 'index.cjs' })).toBe(
+      'dual',
+    )
+  })
+
+  it('detects esm from type + module + main fields', () => {
+    expect(detectModuleFormat({ type: 'module', module: 'index.js', main: 'index.js' })).toBe('esm')
+  })
+
   it('detects ESM from module field without main', () => {
     expect(detectModuleFormat({ module: 'index.mjs' })).toBe('esm')
   })
@@ -90,6 +100,27 @@ describe('detectModuleFormat', () => {
   it('returns cjs for empty package (npm default)', () => {
     // npm treats packages without type field as CommonJS
     expect(detectModuleFormat({})).toBe('cjs')
+  })
+
+  it('detect dual from JSON exports', () => {
+    expect(
+      detectModuleFormat({
+        main: 'test.json',
+        exports: {
+          '.': './test.json',
+        },
+      }),
+    ).toBe('dual')
+  })
+
+  it('detect esm from JSON exports', () => {
+    expect(
+      detectModuleFormat({
+        exports: {
+          '.': './test.json',
+        },
+      }),
+    ).toBe('esm')
   })
 })
 

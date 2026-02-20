@@ -1,8 +1,15 @@
 import { createLunaria } from '@lunariajs/core'
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { Page } from './components.ts'
 import { lunariaJSONFiles, prepareJsonFiles } from './prepare-json-files.ts'
 import type { I18nStatus } from '../shared/types/i18n-status.ts'
+
+// skip lunaria during git merges as git history may be in an inconsistent state.
+if (existsSync('.git/MERGE_HEAD')) {
+  // eslint-disable-next-line no-console
+  console.log('Skipping lunaria: git merge in progress')
+  process.exit(0)
+}
 
 await prepareJsonFiles()
 

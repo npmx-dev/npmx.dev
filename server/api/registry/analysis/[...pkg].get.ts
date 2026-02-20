@@ -13,6 +13,10 @@ import {
   hasBuiltInTypes,
 } from '#shared/utils/package-analysis'
 import {
+  getDevDependencySuggestion,
+  type DevDependencySuggestion,
+} from '#shared/utils/dev-dependency'
+import {
   NPM_REGISTRY,
   CACHE_MAX_AGE_ONE_DAY,
   ERROR_PACKAGE_ANALYSIS_FAILED,
@@ -20,6 +24,10 @@ import {
 import { parseRepoUrl } from '#shared/utils/git-providers'
 import { encodePackageName } from '#shared/utils/npm'
 import { getLatestVersion, getLatestVersionBatch } from 'fast-npm-meta'
+
+interface AnalysisPackageJson extends ExtendedPackageJson {
+  readme?: string
+}
 
 export default defineCachedEventHandler(
   async event => {
@@ -38,7 +46,7 @@ export default defineCachedEventHandler(
       // Fetch package data
       const encodedName = encodePackageName(packageName)
       const versionSuffix = version ? `/${version}` : '/latest'
-      const pkg = await $fetch<ExtendedPackageJson>(
+      const pkg = await $fetch<AnalysisPackageJson>(
         `${NPM_REGISTRY}/${encodedName}${versionSuffix}`,
       )
 
@@ -54,9 +62,12 @@ export default defineCachedEventHandler(
       const createPackage = await findAssociatedCreatePackage(packageName, pkg)
 
       const analysis = analyzePackage(pkg, { typesPackage, createPackage })
+      const devDependencySuggestion = getDevDependencySuggestion(packageName, pkg.readme)
+
       return {
         package: packageName,
         version: pkg.version ?? version ?? 'latest',
+        devDependencySuggestion,
         ...analysis,
       } satisfies PackageAnalysisResponse
     } catch (error: unknown) {
@@ -71,7 +82,7 @@ export default defineCachedEventHandler(
     swr: true,
     getKey: event => {
       const pkg = getRouterParam(event, 'pkg') ?? ''
-      return `analysis:v1:${pkg.replace(/\/+$/, '').trim()}`
+      return `analysis:v2:${pkg.replace(/\/+$/, '').trim()}`
     },
   },
 )
@@ -208,4 +219,5 @@ function hasSameRepositoryOwner(
 export interface PackageAnalysisResponse extends PackageAnalysis {
   package: string
   version: string
+  devDependencySuggestion: DevDependencySuggestion
 }

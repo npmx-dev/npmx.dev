@@ -83,7 +83,7 @@ const { data: post, status } = useAsyncData(
         <div class="text-sm text-fg-subtle truncate">@{{ post.author.handle }}</div>
       </div>
       <span
-        class="i-carbon:logo-bluesky w-5 h-5 text-fg-subtle ms-auto shrink-0"
+        class="i-simple-icons:bluesky w-5 h-5 text-fg-subtle ms-auto shrink-0"
         aria-hidden="true"
       />
     </div>
@@ -112,15 +112,15 @@ const { data: post, status } = useAsyncData(
     <div class="flex items-center gap-4 text-sm text-fg-subtle">
       <DateTime :datetime="post.record.createdAt" date-style="medium" />
       <span v-if="post.likeCount" class="flex items-center gap-1">
-        <span class="i-carbon:favorite w-3.5 h-3.5" aria-hidden="true" />
+        <span class="i-lucide:heart w-3.5 h-3.5" aria-hidden="true" />
         {{ post.likeCount }}
       </span>
       <span v-if="post.repostCount" class="flex items-center gap-1">
-        <span class="i-carbon:repeat w-3.5 h-3.5" aria-hidden="true" />
+        <span class="i-lucide:repeat w-3.5 h-3.5" aria-hidden="true" />
         {{ post.repostCount }}
       </span>
       <span v-if="post.replyCount" class="flex items-center gap-1">
-        <span class="i-carbon:chat w-3.5 h-3.5" aria-hidden="true" />
+        <span class="i-lucide:message-circle w-3.5 h-3.5" aria-hidden="true" />
         {{ post.replyCount }}
       </span>
     </div>

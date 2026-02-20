@@ -17,6 +17,8 @@ const props = withDefaults(
     tooltipAttr?: HTMLAttributes
     /** Teleport target for the tooltip content (defaults to 'body') */
     to?: string | HTMLElement
+    /** Whether to defer teleport rendering until after the component is mounted */
+    defer?: boolean
     /** Offset distance in pixels (default: 4) */
     offset?: number
     /** Strategy for the tooltip - prefer fixed for sticky containers (defaults to 'absolute') */
@@ -46,7 +48,7 @@ const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
   <div ref="triggerRef" class="inline-flex">
     <slot />
 
-    <Teleport :to="props.to">
+    <Teleport :to="props.to" :defer>
       <Transition
         enter-active-class="transition-opacity duration-150 motion-reduce:transition-none"
         leave-active-class="transition-opacity duration-100 motion-reduce:transition-none"

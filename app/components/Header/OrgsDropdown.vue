@@ -63,7 +63,7 @@ function handleKeydown(event: KeyboardEvent) {
     >
       {{ $t('header.orgs') }}
       <span
-        class="i-carbon-chevron-down w-3 h-3 transition-transform duration-200"
+        class="i-lucide:chevron-down w-3 h-3 transition-transform duration-200"
         :class="{ 'rotate-180': isOpen }"
         aria-hidden="true"
       />
@@ -112,7 +112,7 @@ function handleKeydown(event: KeyboardEvent) {
               class="link-subtle font-mono text-xs inline-flex items-center gap-1"
             >
               {{ $t('header.orgs_dropdown.view_all') }}
-              <span class="i-carbon:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
+              <span class="i-lucide:arrow-right rtl-flip w-3 h-3" aria-hidden="true" />
             </NuxtLink>
           </div>
         </div>

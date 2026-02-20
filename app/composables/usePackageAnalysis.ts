@@ -1,10 +1,12 @@
 import type { ModuleFormat, TypesStatus, CreatePackageInfo } from '#shared/utils/package-analysis'
+import type { DevDependencySuggestion } from '#shared/utils/dev-dependency'
 
 export interface PackageAnalysisResponse {
   package: string
   version: string
   moduleFormat: ModuleFormat
   types: TypesStatus
+  devDependencySuggestion: DevDependencySuggestion
   engines?: {
     node?: string
     npm?: string

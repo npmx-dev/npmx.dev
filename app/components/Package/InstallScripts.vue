@@ -61,7 +61,7 @@ const isExpanded = shallowRef(false)
   <CollapsibleSection
     :title="$t('package.install_scripts.title')"
     id="installScripts"
-    icon="i-carbon:warning-alt w-3 h-3 text-yellow-500"
+    icon="i-lucide:circle-alert w-3 h-3 text-yellow-500"
   >
     <!-- Script list: name as label, content below -->
     <dl class="space-y-2 m-0">
@@ -99,7 +99,7 @@ const isExpanded = shallowRef(false)
         @click="isExpanded = !isExpanded"
       >
         <span
-          class="i-carbon:chevron-right rtl-flip w-3 h-3 transition-transform duration-200"
+          class="i-lucide:chevron-right rtl-flip w-3 h-3 transition-transform duration-200"
           :class="{ 'rotate-90': isExpanded }"
           aria-hidden="true"
         />
@@ -139,7 +139,7 @@ const isExpanded = shallowRef(false)
               aria-hidden="true"
               :text="getOutdatedTooltip(outdatedNpxDeps[dep], $t)"
             >
-              <span class="i-carbon:warning-alt w-3 h-3" />
+              <span class="i-lucide:circle-alert w-3 h-3" />
             </TooltipApp>
             <span
               class="font-mono text-xs text-end truncate"

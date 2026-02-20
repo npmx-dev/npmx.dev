@@ -132,12 +132,14 @@ const chartConfig = computed(() => {
           fullscreen: false,
           table: false,
           tooltip: false,
+          altCopy: false, // TODO: set to true to enable the alt copy feature
         },
         buttonTitles: {
           csv: $t('package.trends.download_file', { fileType: 'CSV' }),
           img: $t('package.trends.download_file', { fileType: 'PNG' }),
           svg: $t('package.trends.download_file', { fileType: 'SVG' }),
           annotator: $t('package.trends.toggle_annotator'),
+          altCopy: undefined, // TODO: set to proper translation key
         },
         callbacks: {
           img: ({ imageUri }: { imageUri: string }) => {
@@ -165,6 +167,10 @@ const chartConfig = computed(() => {
             loadFile(url, buildExportFilename('svg'))
             URL.revokeObjectURL(url)
           },
+          // altCopy: ({ dataset: dst, config: cfg }: { dataset: Array<VueUiXyDatasetItem>; config: VueUiXyConfig}) => {
+          //   // TODO: implement a reusable copy-alt-text-to-clipboard feature based on the dataset & configuration
+          //   console.log({ dst, cfg})
+          // }
         },
       },
       grid: {
@@ -243,6 +249,9 @@ const chartConfig = computed(() => {
           selectedColor: accent.value,
           selectedColorOpacity: 0.06,
           frameColor: colors.value.border,
+          handleWidth: isMobile.value ? 40 : 20, // does not affect the size of the touch area
+          handleBorderColor: colors.value.fgSubtle,
+          handleType: 'grab', // 'empty' | 'chevron' | 'arrow' | 'grab'
         },
         preview: {
           fill: transparentizeOklch(accent.value, isDarkMode.value ? 0.95 : 0.92),
@@ -379,7 +388,7 @@ const endDate = computed(() => {
               </label>
               <div class="relative flex items-center">
                 <span
-                  class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
+                  class="absolute inset-is-2 i-lucide:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
                   aria-hidden="true"
                 />
                 <InputBase
@@ -410,7 +419,7 @@ const endDate = computed(() => {
               </label>
               <div class="relative flex items-center">
                 <span
-                  class="absolute inset-is-2 i-carbon:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
+                  class="absolute inset-is-2 i-lucide:calendar w-4 h-4 text-fg-subtle shrink-0 pointer-events-none"
                   aria-hidden="true"
                 />
                 <InputBase
@@ -514,51 +523,37 @@ const endDate = computed(() => {
 
             <!-- Contextual menu icon -->
             <template #menuIcon="{ isOpen }">
-              <span v-if="isOpen" class="i-carbon:close w-6 h-6" aria-hidden="true" />
-              <span v-else class="i-carbon:overflow-menu-vertical w-6 h-6" aria-hidden="true" />
+              <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
+              <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />
             </template>
 
             <!-- Export options -->
             <template #optionCsv>
-              <span
-                class="i-carbon:csv w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+              <span class="text-fg-subtle font-mono pointer-events-none">CSV</span>
             </template>
-
             <template #optionImg>
-              <span
-                class="i-carbon:png w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+              <span class="text-fg-subtle font-mono pointer-events-none">PNG</span>
             </template>
-
             <template #optionSvg>
-              <span
-                class="i-carbon:svg w-6 h-6 text-fg-subtle"
-                style="pointer-events: none"
-                aria-hidden="true"
-              />
+              <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
             </template>
 
             <!-- Annotator action icons -->
             <template #annotator-action-close>
               <span
-                class="i-carbon:close w-6 h-6 text-fg-subtle"
+                class="i-lucide:x w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />
             </template>
 
             <template #annotator-action-color="{ color }">
-              <span class="i-carbon:color-palette w-6 h-6" :style="{ color }" aria-hidden="true" />
+              <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
             </template>
 
             <template #annotator-action-undo>
               <span
-                class="i-carbon:undo w-6 h-6 text-fg-subtle"
+                class="i-lucide:undo-2 w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />
@@ -566,7 +561,7 @@ const endDate = computed(() => {
 
             <template #annotator-action-redo>
               <span
-                class="i-carbon:redo w-6 h-6 text-fg-subtle"
+                class="i-lucide:redo-2 w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />
@@ -574,7 +569,7 @@ const endDate = computed(() => {
 
             <template #annotator-action-delete>
               <span
-                class="i-carbon:trash-can w-6 h-6 text-fg-subtle"
+                class="i-lucide:trash w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />
@@ -583,13 +578,13 @@ const endDate = computed(() => {
             <template #optionAnnotator="{ isAnnotator }">
               <span
                 v-if="isAnnotator"
-                class="i-carbon:edit-off w-6 h-6 text-fg-subtle"
+                class="i-lucide:pen-off w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />
               <span
                 v-else
-                class="i-carbon:edit w-6 h-6 text-fg-subtle"
+                class="i-lucide:pen w-6 h-6 text-fg-subtle"
                 style="pointer-events: none"
                 aria-hidden="true"
               />
@@ -605,7 +600,7 @@ const endDate = computed(() => {
       <!-- No-data state -->
       <div v-if="!hasData && !pending && !error" class="flex items-center justify-center h-full">
         <div class="text-sm text-fg-subtle font-mono text-center flex flex-col items-center gap-2">
-          <span class="i-carbon:data-vis-4 w-8 h-8" />
+          <span class="i-lucide:database w-8 h-8" />
           <p>{{ $t('package.trends.no_data') }}</p>
         </div>
       </div>
@@ -613,7 +608,7 @@ const endDate = computed(() => {
       <!-- Error state -->
       <div v-if="error" class="flex items-center justify-center h-full" role="alert">
         <div class="text-sm text-fg-subtle font-mono text-center flex flex-col items-center gap-2">
-          <span class="i-carbon:warning-hex w-8 h-8 text-red-400" />
+          <span class="i-lucide:octagon-alert w-8 h-8 text-red-400" />
           <p>{{ error.message }}</p>
           <p class="text-xs">Package: {{ packageName }}</p>
         </div>
@@ -663,7 +658,7 @@ const endDate = computed(() => {
 @media screen and (min-width: 767px) {
   #version-distribution .vue-data-ui-refresh-button {
     top: -0.6rem !important;
-    left: calc(100% + 2rem) !important;
+    left: calc(100% + 4rem) !important;
   }
 }
 </style>

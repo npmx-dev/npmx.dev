@@ -80,13 +80,9 @@ function handleDisconnect() {
         {{ $t('connector.modal.connected_hint') }}
       </div>
 
-      <button
-        type="button"
-        class="w-full px-4 py-2 font-mono text-sm text-fg-muted bg-bg-subtle border border-border rounded-md transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
-        @click="handleDisconnect"
-      >
+      <ButtonBase type="button" class="w-full" @click="handleDisconnect">
         {{ $t('connector.modal.disconnect') }}
-      </button>
+      </ButtonBase>
     </div>
 
     <!-- Disconnected state -->
@@ -100,14 +96,11 @@ function handleDisconnect() {
           <p class="text-sm text-fg-muted">
             <i18n-t keypath="connector.modal.contributor_notice" scope="global">
               <template #link>
-                <a
-                  href="https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md#local-connector-cli"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-blue-400 hover:underline"
+                <LinkBase
+                  to="https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md#local-connector-cli"
                 >
                   {{ $t('connector.modal.contributor_link') }}
-                </a>
+                </LinkBase>
               </template>
             </i18n-t>
           </p>
@@ -124,15 +117,12 @@ function handleDisconnect() {
       >
         <span class="text-fg-subtle">$</span>
         <span class="text-fg-subtle ms-2">pnpm npmx-connector</span>
-        <button
-          type="button"
+        <ButtonBase
           :aria-label="copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')"
-          class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
           @click="copy('pnpm npmx-connector')"
-        >
-          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
-          <span v-else class="i-carbon:checkmark block w-5 h-5 text-green-500" aria-hidden="true" />
-        </button>
+          class="ms-auto"
+          :classicon="copied ? 'i-lucide:check text-green-500' : 'i-lucide:copy'"
+        />
       </div>
 
       <!-- TODO: Uncomment when npmx-connector is published to npm
@@ -152,10 +142,10 @@ function handleDisconnect() {
                           class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
                           @click="copyCommand"
                         >
-                          <span v-if="!copied" class="i-carbon:copy block w-5 h-5" aria-hidden="true" />
+                          <span v-if="!copied" class="i-lucide:copy block w-5 h-5" aria-hidden="true" />
                           <span
                             v-else
-                            class="i-carbon:checkmark block w-5 h-5 text-green-500"
+                            class="i-lucide:check block w-5 h-5 text-green-500"
                             aria-hidden="true"
                           />
                         </button>

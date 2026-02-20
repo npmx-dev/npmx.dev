@@ -214,6 +214,29 @@ describe('resolvePackageReadmeSource', () => {
     })
   })
 
+  it('fetches from jsdelivr when packument readme exceeds truncation threshold', async () => {
+    const truncatedReadme = 'x'.repeat(64_000)
+    const fullReadme = 'x'.repeat(80_000)
+    fetchNpmPackageMock.mockResolvedValue({
+      'readme': truncatedReadme,
+      'readmeFilename': 'README.md',
+      'repository': undefined,
+      'versions': {},
+      'dist-tags': { latest: '1.0.0' },
+    })
+    parseRepositoryInfoMock.mockReturnValue(undefined)
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      text: async () => fullReadme,
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    const result = await resolvePackageReadmeSource('pkg')
+
+    expect(result).toMatchObject({ markdown: fullReadme })
+    expect(fetchMock).toHaveBeenCalled()
+  })
+
   it('uses package repository for repoInfo when markdown is present', async () => {
     fetchNpmPackageMock.mockResolvedValue({
       readme: '# Hi',

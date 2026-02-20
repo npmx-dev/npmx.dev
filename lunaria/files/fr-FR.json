@@ -124,6 +124,7 @@
     "end_of_results": "Fin des résultats",
     "try_again": "Réessayer encore",
     "close": "Fermer",
+    "or": "ou",
     "retry": "Réessayer",
     "copy": "copier",
     "copied": "copié !",
@@ -149,6 +150,7 @@
     "view_permalink": "Voir le lien permanent pour cette version",
     "navigation": "Navigation du paquet",
     "copy_name": "Copier le nom du paquet",
+    "copy_version": "Copier la version du paquet",
     "deprecation": {
       "package": "Ce paquet a été déprécié.",
       "version": "Cette version a été dépréciée.",
@@ -219,6 +221,8 @@
       "title": "Commencer",
       "pm_label": "Gestionnaire de paquets",
       "copy_command": "Copier la commande d'installation",
+      "copy_dev_command": "Copier la commande d'installation (dev)",
+      "dev_dependency_hint": "Généralement installée en tant que dépendance de développement",
       "view_types": "Voir {package}"
     },
     "create": {
@@ -255,7 +259,16 @@
       "view_more_details": "Voir plus de détails",
       "error_loading": "Échec du chargement des détails de provenance"
     },
-    "security_downgrade": {},
+    "security_downgrade": {
+      "title": "Faire confiance au rétrogradage",
+      "description_to_none_provenance": "Cette version a été publiée sans {provenance}.",
+      "description_to_none_trustedPublisher": "Cette version a été publiée sans {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "Cette version utilise la {provenance} mais pas la {trustedPublishing}.",
+      "fallback_install_provenance": "Les commandes d'installation sont verrouillées sur {version}, qui est la dernière version avec preuve de provenance.",
+      "fallback_install_trustedPublisher": "Les commandes d'installation sont verrouillées sur {version}, qui est la dernière version avec vérification.",
+      "provenance_link_text": "preuve de provenance",
+      "trusted_publishing_link_text": "vérification"
+    },
     "keywords_title": "Mots-clés",
     "compatibility": "Compatibilité",
     "card": {
@@ -277,7 +290,23 @@
       "more_tagged": "{count} de plus avec tag",
       "all_covered": "Toutes les versions sont couvertes par les tags ci-dessus",
       "deprecated_title": "{version} (dépréciée)",
-      "view_all": "Voir la version | Voir les {count} versions"
+      "view_all": "Voir la version | Voir les {count} versions",
+      "distribution_title": "Groupe Semver",
+      "distribution_modal_title": "Versions",
+      "grouping_major": "Majeure",
+      "grouping_minor": "Mineure",
+      "recent_versions_only": "Versions récentes uniquement",
+      "recent_versions_only_tooltip": "Ne montrer que les versions publiées durant l'année écoulée.",
+      "show_low_usage": "Montrer les versions à faible utilisation",
+      "show_low_usage_tooltip": "Inclure les groupes de versions avec moins d'1% des téléchargements totaux.",
+      "date_range_tooltip": "Versions de la dernière semaine uniquement",
+      "y_axis_label": "Téléchargements",
+      "filter_placeholder": "Filtrer par plage semver (ex. ^3.0.0)",
+      "filter_invalid": "Plage semver invalide",
+      "filter_help": "Infos sur le filtre de plage semver",
+      "filter_tooltip": "Filtrer les versions avec une {link}. Par exemple, ^3.0.0 affiche toutes les versions 3.x.",
+      "filter_tooltip_link": "plage semver",
+      "no_matches": "Aucune version ne correspond à cette plage"
     },
     "dependencies": {
       "title": "Dépendances ({count})",
@@ -287,7 +316,8 @@
       "view_vulnerabilities": "Voir les vulnérabilités",
       "outdated_major": "{count} version majeure en retard (dernière : {latest}) | {count} versions majeures en retard (dernière : {latest})",
       "outdated_minor": "{count} version mineure en retard (dernière : {latest}) | {count} versions mineures en retard (dernière : {latest})",
-      "outdated_patch": "Mise à jour patch disponible (dernière : {latest})"
+      "outdated_patch": "Mise à jour patch disponible (dernière : {latest})",
+      "has_replacement": "Cette dépendance a des remplacements suggérés"
     },
     "peer_dependencies": {
       "title": "Dépendances peer ({count})",
@@ -313,9 +343,33 @@
       "show_more": "(afficher {count} de plus)",
       "show_less": "(afficher moins)"
     },
+    "trends": {
+      "granularity": "Granularité",
+      "granularity_daily": "Par Jour",
+      "granularity_weekly": "Par Semaine",
+      "granularity_monthly": "Par Mois",
+      "granularity_yearly": "Par an",
+      "start_date": "Début",
+      "end_date": "Fin",
+      "loading": "Chargement...",
+      "date_range": "{start} au {end}",
+      "date_range_multiline": "{start}\nau {end}",
+      "download_file": "Télécharger {fileType}",
+      "toggle_annotator": "Afficher/Masquer l'annotateur",
+      "legend_estimation": "Estimation",
+      "no_data": "Données non disponibles",
+      "y_axis_label": "{facet} {granularity}",
+      "facet": "Mesure",
+      "title": "Tendances",
+      "contributors_skip": "Pas affiché(s) dans les Contributeurs (pas de dépôt GitHub) :",
+      "items": {
+        "downloads": "Téléchargements",
+        "likes": "J'aime",
+        "contributors": "Contributeurs"
+      }
+    },
     "downloads": {
-      "title": "Téléchargements hebdomadaires",
-      "analyze": "Analyser les téléchargements",
+      "title": "Téléchargements hebdo.",
       "community_distribution": "Voir la distribution des versions téléchargées par la communauté"
     },
     "install_scripts": {
@@ -353,7 +407,8 @@
         "high": "élevée",
         "moderate": "modérée",
         "low": "faible"
-      }
+      },
+      "fixed_in_title": "Corrigé en {version}"
     },
     "deprecated": {
       "label": "Obsolète",
@@ -400,29 +455,6 @@
       "name_asc": "Nom (A-Z)",
       "name_desc": "Nom (Z-A)"
     },
-    "trends": {
-      "granularity": "Granularité",
-      "granularity_daily": "Quotidien",
-      "granularity_weekly": "Hebdomadaire",
-      "granularity_monthly": "Mensuel",
-      "granularity_yearly": "Annuel",
-      "start_date": "Début",
-      "end_date": "Fin",
-      "loading": "Chargement...",
-      "date_range": "{start} au {end}",
-      "date_range_multiline": "{start}\nau {end}",
-      "download_file": "Télécharger {fileType}",
-      "toggle_annotator": "Afficher/Masquer l'annotateur",
-      "legend_estimation": "Estimation",
-      "no_data": "Données non disponibles",
-      "y_axis_label": "{facet} {granularity}",
-      "facet": "Facette",
-      "title": "Tendances",
-      "items": {
-        "downloads": "Téléchargements",
-        "likes": "J'aime"
-      }
-    },
     "size": {
       "b": "{size} o",
       "kb": "{size} ko",
@@ -450,7 +482,8 @@
       "warning": "ATTENTION",
       "warning_text": "Cela permet à npmx d'accéder à votre CLI npm. Ne vous connectez qu'aux sites de confiance.",
       "connect": "Connecter",
-      "connecting": "Connexion..."
+      "connecting": "Connexion...",
+      "auto_open_url": "Ouvrir automatiquement la page de connexion"
     }
   },
   "operations": {
@@ -466,7 +499,9 @@
       "otp_placeholder": "Entrez le code OTP...",
       "otp_label": "Mot de passe à usage unique",
       "retry_otp": "Réessayer avec l'OTP",
+      "retry_web_auth": "Réessayer avec la connexion web",
       "retrying": "Nouvelle tentative...",
+      "open_web_auth": "Ouvrir le lien de connexion web",
       "approve_operation": "Approuver l'opération",
       "remove_operation": "Supprimer l'opération",
       "approve_all": "Tout approuver",
@@ -782,6 +817,14 @@
         "managers": "gestionnaires de paquets"
       }
     },
+    "team": {
+      "title": "Équipe",
+      "governance": "Gouvernance",
+      "role_steward": "pilote",
+      "role_maintainer": "mainteneur",
+      "sponsor": "sponsor",
+      "sponsor_aria": "Sponsoriser {name} sur GitHub"
+    },
     "contributors": {
       "title": "Contributeurs",
       "description": "npmx est entièrement open source, construit par une incroyable communauté de contributeurs. Rejoignez-nous et construisons l'expérience de navigation pour npm dont nous avons toujours rêvés, ensemble.",
@@ -1053,6 +1096,36 @@
     "changes": {
       "title": "Modifications de cette politique",
       "p1": "Nous pouvons mettre à jour cette politique de confidentialité de temps en temps. Toute modification sera publiée sur cette page avec une date de révision mise à jour."
+    }
+  },
+  "a11y": {
+    "title": "accessibilité",
+    "footer_title": "accessibilité",
+    "welcome": "Nous voulons que {app} soit utilisable par autant de personnes que possible.",
+    "approach": {
+      "title": "Notre approche",
+      "p1": "Nous essayons de suivre les Web Content Accessibility Guidelines (WCAG) 2.2 et de les utiliser comme référence lorsque nous ajoutons des fonctionnalités. Nous ne prétendons pas être entièrement conforme à un quelconque niveau des WCAG — l'accessibilité est un processus continu et il y a toujours du travail à apporter.",
+      "p2": "Ce site est un {about}. Les améliorations d'accessibilité sont faites de façon incrémentale durant les phases habituelles de développement.",
+      "about_link": "projet open-source, construit par la communauté"
+    },
+    "measures": {
+      "title": "Ce que nous faisons",
+      "p1": "Certaines des choses que nous visons à faire sur le site :",
+      "li1": "Utiliser l'HTML sémantique et les attributs ARIA là où c'est pertinent.",
+      "li2": "Utiliser des tailles de police relatives pour que vous puissiez les ajuster dans votre navigateur.",
+      "li3": "Supporter la navigation au clavier dans toute l'interface.",
+      "li4": "Respecter les requêtes média prefers-reduced-motion et prefers-color-scheme.",
+      "li5": "Designer en gardant un contraste couleur suffisant à l'esprit.",
+      "li6": "S'assurer que l'essentiel du contenu est disponible sans JavaScript, même si quelques fonctionnalités interactives peuvent le nécessiter."
+    },
+    "limitations": {
+      "title": "Limitations connues",
+      "p1": "Quelques parties du site — particulièrement le contenu externe comme les READMEs des paquets — peuvent ne pas atteindre les standards d'accessibilité. Nous travaillons à améliorer ces aspects avec le temps."
+    },
+    "contact": {
+      "title": "Retours",
+      "p1": "Si vous rencontrez un problème d'accessibilité sur {app}, veuillez nous le faire savoir en ouvrant une issue sur notre {link}. Nous prenons ces rapports au sérieux et ferons de notre mieux pour les régler.",
+      "link": "dépôt GitHub"
     }
   }
 }

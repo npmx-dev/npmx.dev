@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { NPMX_DOCS_SITE } from '#shared/utils/constants'
+
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
 
@@ -13,7 +15,9 @@ const showModal = () => modalRef.value?.showModal?.()
         class="flex flex-col sm:flex-row sm:flex-wrap items-center sm:items-baseline justify-between gap-2 sm:gap-4"
       >
         <div>
-          <p class="font-mono text-balance m-0 hidden sm:block">{{ $t('tagline') }}</p>
+          <p class="font-mono text-balance m-0 hidden sm:block">
+            {{ $t('tagline') }}
+          </p>
         </div>
         <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
         <div class="hidden sm:flex items-center gap-6 min-h-11 text-xs">
@@ -92,7 +96,7 @@ const showModal = () => modalRef.value?.showModal?.()
               </li>
             </ul>
           </Modal>
-          <LinkBase to="https://docs.npmx.dev">
+          <LinkBase :to="NPMX_DOCS_SITE">
             {{ $t('footer.docs') }}
           </LinkBase>
           <LinkBase to="https://repo.npmx.dev">

@@ -33,7 +33,7 @@ const { locale } = useI18n()
             @click="router.back()"
             v-if="canGoBack"
           >
-            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
           </button>
         </div>
@@ -183,7 +183,7 @@ const { locale } = useI18n()
                 class="inline-flex items-center gap-1 text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
               >
                 {{ $t('privacy_policy.cookies.management.chrome') }}
-                <span class="i-carbon:launch rtl-flip w-4 h-4" aria-hidden="true" />
+                <span class="i-lucide:external-link rtl-flip w-4 h-4" aria-hidden="true" />
               </a>
             </li>
             <li class="flex items-start gap-3">
@@ -195,7 +195,7 @@ const { locale } = useI18n()
                 class="inline-flex items-center gap-1 text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
               >
                 {{ $t('privacy_policy.cookies.management.firefox') }}
-                <span class="i-carbon:launch rtl-flip w-4 h-4" aria-hidden="true" />
+                <span class="i-lucide:external-link rtl-flip w-4 h-4" aria-hidden="true" />
               </a>
             </li>
             <li class="flex items-start gap-3">
@@ -207,7 +207,7 @@ const { locale } = useI18n()
                 class="inline-flex items-center gap-1 text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
               >
                 {{ $t('privacy_policy.cookies.management.edge') }}
-                <span class="i-carbon:launch rtl-flip w-4 h-4" aria-hidden="true" />
+                <span class="i-lucide:external-link rtl-flip w-4 h-4" aria-hidden="true" />
               </a>
             </li>
           </ul>
@@ -333,7 +333,7 @@ const { locale } = useI18n()
                   class="inline-flex items-center gap-1 text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
                 >
                   {{ $t('privacy_policy.contact.link') }}
-                  <span class="i-carbon:launch rtl-flip w-4 h-4" aria-hidden="true" />
+                  <span class="i-lucide:external-link rtl-flip w-4 h-4" aria-hidden="true" />
                 </a>
               </template>
             </i18n-t>

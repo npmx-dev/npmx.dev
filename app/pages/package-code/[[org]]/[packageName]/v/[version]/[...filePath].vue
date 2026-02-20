@@ -256,12 +256,12 @@ const markdownViewModes = [
   {
     key: 'preview',
     label: $t('code.markdown_view_mode.preview'),
-    icon: 'i-carbon-view',
+    icon: 'i-lucide:eye',
   },
   {
     key: 'code',
     label: $t('code.markdown_view_mode.code'),
-    icon: 'i-carbon-code',
+    icon: 'i-lucide:code',
   },
 ] as const
 
@@ -463,7 +463,7 @@ defineOgImageComponent('Default', {
                 class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1"
               >
                 {{ $t('code.raw') }}
-                <span class="i-carbon:launch w-3 h-3" />
+                <span class="i-lucide:external-link w-3 h-3" />
               </a>
             </div>
           </div>
@@ -486,7 +486,7 @@ defineOgImageComponent('Default', {
 
         <!-- File too large warning -->
         <div v-else-if="isViewingFile && isFileTooLarge" class="py-20 text-center">
-          <div class="i-carbon:document w-12 h-12 mx-auto text-fg-subtle mb-4" />
+          <div class="i-lucide:file-text w-12 h-12 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.file_too_large') }}</p>
           <p class="text-fg-subtle text-sm mb-4">
             {{
@@ -541,7 +541,7 @@ defineOgImageComponent('Default', {
 
         <!-- Error loading file -->
         <div v-else-if="filePath && fileStatus === 'error'" class="py-20 text-center" role="alert">
-          <div class="i-carbon:warning-alt w-8 h-8 mx-auto text-fg-subtle mb-4" />
+          <div class="i-lucide:circle-alert w-8 h-8 mx-auto text-fg-subtle mb-4" />
           <p class="text-fg-muted mb-2">{{ $t('code.failed_to_load') }}</p>
           <p class="text-fg-subtle text-sm mb-4">{{ $t('code.unavailable_hint') }}</p>
           <LinkBase

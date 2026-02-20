@@ -26,6 +26,7 @@ export function useGlobalSearch() {
     urlQuery => {
       const value = normalizeSearchParam(urlQuery)
       if (!value) searchQuery.value = ''
+      if (!searchQuery.value) searchQuery.value = value
     },
   )
   const updateUrlQueryImpl = (value: string, provider: 'npm' | 'algolia') => {

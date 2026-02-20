@@ -194,8 +194,8 @@ function getSortKeyLabelKey(key: SortKey): string {
               class="w-4 h-4 block transition-transform duration-200"
               :class="
                 currentSort.direction === 'asc'
-                  ? 'i-carbon-sort-ascending'
-                  : 'i-carbon-sort-descending'
+                  ? 'i-lucide:arrow-down-narrow-wide'
+                  : 'i-lucide:arrow-down-wide-narrow'
               "
               aria-hidden="true"
             />

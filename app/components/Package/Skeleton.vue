@@ -208,7 +208,7 @@
                 class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
               >
                 <span class="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:chevron-down w-3 h-3" aria-hidden="true" />
                 </span>
                 {{ $t('package.downloads.title') }}
               </h2>
@@ -245,7 +245,7 @@
                 class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
               >
                 <span class="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:chevron-down w-3 h-3" aria-hidden="true" />
                 </span>
                 {{ $t('package.compatibility') }}
               </h2>
@@ -265,7 +265,7 @@
                 class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
               >
                 <span class="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:chevron-down w-3 h-3" aria-hidden="true" />
                 </span>
                 {{ $t('package.skeleton.versions') }}
               </h2>
@@ -274,7 +274,7 @@
               <!-- Version rows with expand chevron + version + tag + date -->
               <div v-for="i in 4" :key="i" class="flex items-center gap-2 px-1">
                 <span class="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span class="i-carbon:chevron-right w-3 h-3 text-fg-subtle" aria-hidden="true" />
+                  <span class="i-lucide:chevron-right w-3 h-3 text-fg-subtle" aria-hidden="true" />
                 </span>
                 <div class="flex-1 py-1.5 min-w-0 flex gap-2 justify-between items-center">
                   <div>
@@ -290,7 +290,7 @@
               <!-- Other versions row -->
               <div class="flex items-center gap-2 p-1">
                 <span class="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span class="i-carbon:chevron-right w-3 h-3 text-fg-subtle" aria-hidden="true" />
+                  <span class="i-lucide:chevron-right w-3 h-3 text-fg-subtle" aria-hidden="true" />
                 </span>
                 <SkeletonInline class="h-3 w-28" />
               </div>
@@ -304,7 +304,7 @@
                 class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
               >
                 <span class="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:chevron-down w-3 h-3" aria-hidden="true" />
                 </span>
                 {{ $t('package.skeleton.dependencies') }}
               </h2>
@@ -336,7 +336,7 @@
                 class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
               >
                 <span class="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:chevron-down w-3 h-3" aria-hidden="true" />
                 </span>
                 {{ $t('package.skeleton.keywords') }}
               </h2>
@@ -358,7 +358,7 @@
                 class="text-xs font-mono text-fg-subtle uppercase tracking-wider flex items-center gap-2"
               >
                 <span class="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span class="i-carbon:chevron-down w-3 h-3" aria-hidden="true" />
+                  <span class="i-lucide:chevron-down w-3 h-3" aria-hidden="true" />
                 </span>
                 {{ $t('package.skeleton.maintainers') }}
               </h2>

@@ -158,17 +158,17 @@ function getStatusColor(status: string): string {
 function getStatusIcon(status: string): string {
   switch (status) {
     case 'pending':
-      return 'i-carbon:time'
+      return 'i-lucide:clock'
     case 'approved':
-      return 'i-carbon:checkmark'
+      return 'i-lucide:check'
     case 'running':
-      return 'i-carbon:rotate-180'
+      return 'i-svg-spinners:ring-resize'
     case 'completed':
-      return 'i-carbon:checkmark-filled'
+      return 'i-lucide:check'
     case 'failed':
-      return 'i-carbon:close-filled'
+      return 'i-lucide:x'
     default:
-      return 'i-carbon:help'
+      return 'i-lucide:circle-question-mark'
   }
 }
 
@@ -211,7 +211,7 @@ watch(isExecuting, executing => {
           :aria-label="$t('operations.queue.refresh')"
           @click="refreshState"
         >
-          <span class="i-carbon:renew w-4 h-4" aria-hidden="true" />
+          <span class="i-lucide:refresh-ccw w-4 h-4" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -283,7 +283,7 @@ watch(isExecuting, executing => {
             :aria-label="$t('operations.queue.approve_operation')"
             @click="approveOperation(op.id)"
           >
-            <span class="i-carbon:checkmark w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:check w-4 h-4" aria-hidden="true" />
           </button>
           <button
             v-if="op.status !== 'running'"
@@ -292,7 +292,7 @@ watch(isExecuting, executing => {
             :aria-label="$t('operations.queue.remove_operation')"
             @click="removeOperation(op.id)"
           >
-            <span class="i-carbon-close w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:x w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </li>
@@ -305,7 +305,7 @@ watch(isExecuting, executing => {
       role="alert"
     >
       <div class="flex items-center gap-2 mb-2">
-        <span class="i-carbon:locked w-4 h-4 text-amber-400 shrink-0" aria-hidden="true" />
+        <span class="i-lucide:lock w-4 h-4 text-amber-400 shrink-0" aria-hidden="true" />
         <span class="font-mono text-sm text-amber-400">
           {{ $t('operations.queue.otp_prompt') }}
         </span>
@@ -384,7 +384,7 @@ watch(isExecuting, executing => {
         class="flex-1 px-4 py-2 font-mono text-sm text-accent bg-accent/10 border border-accent/30 rounded-md transition-colors duration-200 hover:bg-accent/20"
         @click="handleOpenAuthUrl"
       >
-        <span class="i-carbon:launch w-4 h-4 inline-block me-1" aria-hidden="true" />
+        <span class="i-lucide:external-link w-4 h-4 inline-block me-1" aria-hidden="true" />
         {{ $t('operations.queue.open_web_auth') }}
       </button>
     </div>
@@ -395,7 +395,7 @@ watch(isExecuting, executing => {
         class="flex items-center gap-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 select-none"
       >
         <span
-          class="i-carbon:chevron-right rtl-flip w-3 h-3 transition-transform duration-200 [[open]>&]:rotate-90"
+          class="i-lucide:chevron-right rtl-flip w-3 h-3 transition-transform duration-200 [[open]>&]:rotate-90"
           aria-hidden="true"
         />
         {{ $t('operations.queue.log') }} ({{ completedOperations.length }})
@@ -410,8 +410,8 @@ watch(isExecuting, executing => {
           <span
             :class="
               op.status === 'completed'
-                ? 'i-carbon:checkmark-filled text-green-500'
-                : 'i-carbon:close-filled text-red-500'
+                ? 'i-lucide:check text-green-500'
+                : 'i-lucide:x text-red-500'
             "
             class="w-3.5 h-3.5 shrink-0 mt-0.5"
             aria-hidden="true"
@@ -431,7 +431,7 @@ watch(isExecuting, executing => {
             :aria-label="$t('operations.queue.remove_from_log')"
             @click="removeOperation(op.id)"
           >
-            <span class="i-carbon:close w-3 h-3" aria-hidden="true" />
+            <span class="i-lucide:x w-3 h-3" aria-hidden="true" />
           </button>
         </li>
       </ul>

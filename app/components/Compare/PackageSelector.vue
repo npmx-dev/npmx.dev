@@ -199,7 +199,7 @@ function handleFocus() {
         <!-- No dependency display -->
         <template v-if="pkg === NO_DEPENDENCY_ID">
           <span class="text-sm text-accent italic flex items-center gap-1.5">
-            <span class="i-carbon:clean w-3.5 h-3.5" aria-hidden="true" />
+            <span class="i-lucide:leaf w-3.5 h-3.5" aria-hidden="true" />
             {{ $t('compare.no_dependency.label') }}
           </span>
         </template>
@@ -214,7 +214,7 @@ function handleFocus() {
             })
           "
           @click="removePackage(pkg)"
-          classicon="i-carbon:close"
+          classicon="i-lucide:x"
         />
       </TagStatic>
     </div>
@@ -273,7 +273,7 @@ function handleFocus() {
             @click="addPackage(NO_DEPENDENCY_ID)"
           >
             <span class="text-sm text-accent italic flex items-center gap-2">
-              <span class="i-carbon:clean w-4 h-4" aria-hidden="true" />
+              <span class="i-lucide:leaf w-4 h-4" aria-hidden="true" />
               {{ $t('compare.no_dependency.typeahead_title') }}
             </span>
             <span class="text-xs text-fg-muted truncate mt-0.5">

@@ -27,6 +27,7 @@ const FIXTURE_PATHS = {
   esmHeaders: 'esm-sh:headers',
   esmTypes: 'esm-sh:types',
   githubContributors: 'github:contributors.json',
+  githubContributorsStats: 'github:contributors-stats.json',
 } as const
 
 type FixtureType = keyof typeof FIXTURE_PATHS
@@ -401,6 +402,18 @@ async function handleGitHubApi(
   const { host, pathname } = urlObj
 
   if (host !== 'api.github.com') return null
+
+  // Contributors stats endpoint: /repos/{owner}/{repo}/stats/contributors
+  const contributorsStatsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/stats\/contributors$/)
+  if (contributorsStatsMatch) {
+    const contributorsStats = await storage.getItem<unknown[]>(
+      FIXTURE_PATHS.githubContributorsStats,
+    )
+    if (contributorsStats) {
+      return { data: contributorsStats }
+    }
+    return { data: [] }
+  }
 
   // Contributors endpoint: /repos/{owner}/{repo}/contributors
   const contributorsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/contributors$/)

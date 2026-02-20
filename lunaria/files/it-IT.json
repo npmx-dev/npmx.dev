@@ -311,7 +311,6 @@
     },
     "downloads": {
       "title": "Download settimanali",
-      "analyze": "Analizza download",
       "community_distribution": "Visualizza distribuzione adozione della comunità"
     },
     "install_scripts": {
@@ -755,6 +754,7 @@
         "managers": "gestori di pacchetti"
       }
     },
+    "team": {},
     "contributors": {
       "title": "{count} Collaboratore | {count} Collaboratori",
       "description": "npmx è completamente open source, costruito da una straordinaria comunità di collaboratori. Unisciti a noi e costruiamo insieme l'esperienza di navigazione npm che abbiamo sempre voluto.",
@@ -1025,5 +1025,11 @@
       "title": "Modifiche a questa informativa sulla privacy",
       "p1": "Potremmo aggiornare questa informativa sulla privacy di tanto in tanto. Eventuali modifiche saranno pubblicate su questa pagina con una data di revisione aggiornata."
     }
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }

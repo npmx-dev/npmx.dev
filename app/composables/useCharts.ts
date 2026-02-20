@@ -8,6 +8,10 @@ import type {
   WeeklyDataPoint,
   YearlyDataPoint,
 } from '~/types/chart'
+import type { RepoRef } from '#shared/utils/git-providers'
+import { parseRepoUrl } from '#shared/utils/git-providers'
+import type { PackageMetaResponse } from '#shared/types'
+import { encodePackageName } from '#shared/utils/npm'
 import { fetchNpmDownloadsRange } from '~/utils/npm/api'
 
 export type PackumentLikeForTime = {
@@ -182,11 +186,151 @@ export function buildYearlyEvolutionFromDaily(daily: DailyRawPoint[]): YearlyDat
 
 const npmDailyRangeCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
 const likesEvolutionCache = import.meta.client ? new Map<string, Promise<DailyRawPoint[]>>() : null
+const contributorsEvolutionCache = import.meta.client
+  ? new Map<string, Promise<GitHubContributorStats[]>>()
+  : null
+const repoMetaCache = import.meta.client ? new Map<string, Promise<RepoRef | null>>() : null
 
 /** Clears client-side promise caches. Exported for use in tests. */
 export function clearClientCaches() {
   npmDailyRangeCache?.clear()
   likesEvolutionCache?.clear()
+  contributorsEvolutionCache?.clear()
+  repoMetaCache?.clear()
+}
+
+type GitHubContributorWeek = {
+  w: number
+  a: number
+  d: number
+  c: number
+}
+
+type GitHubContributorStats = {
+  total: number
+  weeks: GitHubContributorWeek[]
+}
+
+function pad2(value: number): string {
+  return value.toString().padStart(2, '0')
+}
+
+function toIsoMonthKey(date: Date): string {
+  return `${date.getUTCFullYear()}-${pad2(date.getUTCMonth() + 1)}`
+}
+
+function isOverlappingRange(start: Date, end: Date, rangeStart: Date, rangeEnd: Date): boolean {
+  return end.getTime() >= rangeStart.getTime() && start.getTime() <= rangeEnd.getTime()
+}
+
+function buildWeeklyEvolutionFromContributorCounts(
+  weeklyCounts: Map<number, number>,
+  rangeStart: Date,
+  rangeEnd: Date,
+): WeeklyDataPoint[] {
+  return Array.from(weeklyCounts.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([weekStartSeconds, value]) => {
+      const weekStartDate = new Date(weekStartSeconds * 1000)
+      const weekEndDate = addDays(weekStartDate, 6)
+
+      if (!isOverlappingRange(weekStartDate, weekEndDate, rangeStart, rangeEnd)) return null
+
+      const clampedWeekEndDate = weekEndDate.getTime() > rangeEnd.getTime() ? rangeEnd : weekEndDate
+
+      const weekStartIso = toIsoDateString(weekStartDate)
+      const weekEndIso = toIsoDateString(clampedWeekEndDate)
+
+      return {
+        value,
+        weekKey: `${weekStartIso}_${weekEndIso}`,
+        weekStart: weekStartIso,
+        weekEnd: weekEndIso,
+        timestampStart: weekStartDate.getTime(),
+        timestampEnd: clampedWeekEndDate.getTime(),
+      }
+    })
+    .filter((item): item is WeeklyDataPoint => Boolean(item))
+}
+
+function buildMonthlyEvolutionFromContributorCounts(
+  monthlyCounts: Map<string, number>,
+  rangeStart: Date,
+  rangeEnd: Date,
+): MonthlyDataPoint[] {
+  return Array.from(monthlyCounts.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([month, value]) => {
+      const [year, monthNumber] = month.split('-').map(Number)
+      if (!year || !monthNumber) return null
+
+      const monthStartDate = new Date(Date.UTC(year, monthNumber - 1, 1))
+      const monthEndDate = new Date(Date.UTC(year, monthNumber, 0))
+
+      if (!isOverlappingRange(monthStartDate, monthEndDate, rangeStart, rangeEnd)) return null
+
+      return {
+        month,
+        value,
+        timestamp: monthStartDate.getTime(),
+      }
+    })
+    .filter((item): item is MonthlyDataPoint => Boolean(item))
+}
+
+function buildYearlyEvolutionFromContributorCounts(
+  yearlyCounts: Map<string, number>,
+  rangeStart: Date,
+  rangeEnd: Date,
+): YearlyDataPoint[] {
+  return Array.from(yearlyCounts.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([year, value]) => {
+      const yearNumber = Number(year)
+      if (!yearNumber) return null
+
+      const yearStartDate = new Date(Date.UTC(yearNumber, 0, 1))
+      const yearEndDate = new Date(Date.UTC(yearNumber, 11, 31))
+
+      if (!isOverlappingRange(yearStartDate, yearEndDate, rangeStart, rangeEnd)) return null
+
+      return {
+        year,
+        value,
+        timestamp: yearStartDate.getTime(),
+      }
+    })
+    .filter((item): item is YearlyDataPoint => Boolean(item))
+}
+
+function buildContributorCounts(stats: GitHubContributorStats[]) {
+  const weeklyCounts = new Map<number, number>()
+  const monthlyCounts = new Map<string, number>()
+  const yearlyCounts = new Map<string, number>()
+
+  for (const contributor of stats ?? []) {
+    const monthSet = new Set<string>()
+    const yearSet = new Set<string>()
+
+    for (const week of contributor?.weeks ?? []) {
+      if (!week || week.c <= 0) continue
+
+      weeklyCounts.set(week.w, (weeklyCounts.get(week.w) ?? 0) + 1)
+
+      const weekStartDate = new Date(week.w * 1000)
+      monthSet.add(toIsoMonthKey(weekStartDate))
+      yearSet.add(String(weekStartDate.getUTCFullYear()))
+    }
+
+    for (const key of monthSet) {
+      monthlyCounts.set(key, (monthlyCounts.get(key) ?? 0) + 1)
+    }
+    for (const key of yearSet) {
+      yearlyCounts.set(key, (yearlyCounts.get(key) ?? 0) + 1)
+    }
+  }
+
+  return { weeklyCounts, monthlyCounts, yearlyCounts }
 }
 
 async function fetchDailyRangeCached(packageName: string, startIso: string, endIso: string) {
@@ -377,9 +521,105 @@ export function useCharts() {
     return buildYearlyEvolutionFromDaily(filteredDaily)
   }
 
+  async function fetchRepoContributorsEvolution(
+    repoRef: MaybeRefOrGetter<RepoRef | null | undefined>,
+    evolutionOptions: MaybeRefOrGetter<EvolutionOptions>,
+  ): Promise<DailyDataPoint[] | WeeklyDataPoint[] | MonthlyDataPoint[] | YearlyDataPoint[]> {
+    const resolvedRepoRef = toValue(repoRef)
+    if (!resolvedRepoRef || resolvedRepoRef.provider !== 'github') return []
+
+    const resolvedOptions = toValue(evolutionOptions)
+
+    const cache = contributorsEvolutionCache
+    const cacheKey = `${resolvedRepoRef.owner}/${resolvedRepoRef.repo}`
+
+    let statsPromise: Promise<GitHubContributorStats[]>
+
+    if (cache?.has(cacheKey)) {
+      statsPromise = cache.get(cacheKey)!
+    } else {
+      statsPromise = $fetch<GitHubContributorStats[]>(
+        `/api/github/contributors-evolution/${resolvedRepoRef.owner}/${resolvedRepoRef.repo}`,
+      )
+        .then(data => (Array.isArray(data) ? data : []))
+        .catch(error => {
+          cache?.delete(cacheKey)
+          throw error
+        })
+
+      cache?.set(cacheKey, statsPromise)
+    }
+
+    const stats = await statsPromise
+    const { start, end } = resolveDateRange(resolvedOptions, null)
+
+    const { weeklyCounts, monthlyCounts, yearlyCounts } = buildContributorCounts(stats)
+
+    if (resolvedOptions.granularity === 'week') {
+      return buildWeeklyEvolutionFromContributorCounts(weeklyCounts, start, end)
+    }
+    if (resolvedOptions.granularity === 'month') {
+      return buildMonthlyEvolutionFromContributorCounts(monthlyCounts, start, end)
+    }
+    if (resolvedOptions.granularity === 'year') {
+      return buildYearlyEvolutionFromContributorCounts(yearlyCounts, start, end)
+    }
+
+    return []
+  }
+
+  async function fetchRepoRefsForPackages(
+    packageNames: MaybeRefOrGetter<string[]>,
+  ): Promise<Record<string, RepoRef | null>> {
+    const names = (toValue(packageNames) ?? []).map(n => String(n).trim()).filter(Boolean)
+    if (!import.meta.client || !names.length) return {}
+
+    const settled = await Promise.allSettled(
+      names.map(async name => {
+        const cacheKey = name
+        const cache = repoMetaCache
+        if (cache?.has(cacheKey)) {
+          const ref = await cache.get(cacheKey)!
+          return { name, ref }
+        }
+
+        const promise = $fetch<PackageMetaResponse>(
+          `/api/registry/package-meta/${encodePackageName(name)}`,
+        )
+          .then(meta => {
+            const repoUrl = meta?.links?.repository
+            return repoUrl ? parseRepoUrl(repoUrl) : null
+          })
+          .catch(error => {
+            cache?.delete(cacheKey)
+            throw error
+          })
+
+        cache?.set(cacheKey, promise)
+        const ref = await promise
+        return { name, ref }
+      }),
+    )
+
+    const next: Record<string, RepoRef | null> = {}
+    for (const [index, entry] of settled.entries()) {
+      const name = names[index]
+      if (!name) continue
+      if (entry.status === 'fulfilled') {
+        next[name] = entry.value.ref ?? null
+      } else {
+        next[name] = null
+      }
+    }
+
+    return next
+  }
+
   return {
     fetchPackageDownloadEvolution,
     fetchPackageLikesEvolution,
+    fetchRepoContributorsEvolution,
+    fetchRepoRefsForPackages,
     getNpmPackageCreationDate,
   }
 }

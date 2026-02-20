@@ -69,7 +69,7 @@ const props = withDefaults(defineProps<SelectFieldProps>(), {
       </SelectBase>
       <span
         aria-hidden="true"
-        class="block i-carbon:chevron-down absolute top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none group-hover/select:text-fg group-focus-within/select:text-fg"
+        class="block i-lucide:chevron-down absolute top-1/2 -translate-y-1/2 text-fg-subtle pointer-events-none group-hover/select:text-fg group-focus-within/select:text-fg"
         :class="[SELECT_FIELD_ICON_SIZES[size]]"
       />
     </div>

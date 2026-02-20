@@ -1,6 +1,10 @@
 import * as v from 'valibot'
 import { PackageRouteParamsSchema } from '#shared/schemas/package'
-import { CACHE_MAX_AGE_ONE_HOUR, NPM_MISSING_README_SENTINEL } from '#shared/utils/constants'
+import {
+  CACHE_MAX_AGE_ONE_HOUR,
+  NPM_MISSING_README_SENTINEL,
+  NPM_README_TRUNCATION_THRESHOLD,
+} from '#shared/utils/constants'
 
 /** Standard README filenames to try when fetching from jsdelivr (case-sensitive CDN) */
 const standardReadmeFilenames = [
@@ -75,11 +79,16 @@ export const resolvePackageReadmeSource = defineCachedFunction(
 
     const hasValidNpmReadme = readmeContent && readmeContent !== NPM_MISSING_README_SENTINEL
 
-    if (!hasValidNpmReadme || !isStandardReadme(readmeFilename)) {
+    if (
+      !hasValidNpmReadme ||
+      !isStandardReadme(readmeFilename) ||
+      readmeContent!.length >= NPM_README_TRUNCATION_THRESHOLD
+    ) {
+      const resolvedVersion = version ?? packageData['dist-tags']?.latest
       const jsdelivrReadme = await fetchReadmeFromJsdelivr(
         packageName,
         standardReadmeFilenames,
-        version,
+        resolvedVersion,
       )
       if (jsdelivrReadme) {
         readmeContent = jsdelivrReadme

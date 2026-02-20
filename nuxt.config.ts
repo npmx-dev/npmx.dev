@@ -34,6 +34,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     sessionPassword: '',
+    github: {
+      orgToken: '',
+    },
     // Upstash Redis for distributed OAuth token refresh locking in production
     upstash: {
       redisRestUrl: process.env.UPSTASH_KV_REST_API_URL || process.env.KV_REST_API_URL || '',
@@ -155,6 +158,12 @@ export default defineNuxtConfig({
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
     '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
     '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
+    // lunaria status.json
+    '/lunaria/status.json': {
+      headers: {
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
+    },
   },
 
   experimental: {
@@ -238,6 +247,15 @@ export default defineNuxtConfig({
     defaults: {
       component: 'Default',
     },
+    fonts: [
+      { name: 'Geist', weight: 400, path: '/fonts/Geist-Regular.ttf' },
+      { name: 'Geist', weight: 500, path: '/fonts/Geist-Medium.ttf' },
+      { name: 'Geist', weight: 600, path: '/fonts/Geist-SemiBold.ttf' },
+      { name: 'Geist', weight: 700, path: '/fonts/Geist-Bold.ttf' },
+      { name: 'Geist Mono', weight: 400, path: '/fonts/GeistMono-Regular.ttf' },
+      { name: 'Geist Mono', weight: 500, path: '/fonts/GeistMono-Medium.ttf' },
+      { name: 'Geist Mono', weight: 700, path: '/fonts/GeistMono-Bold.ttf' },
+    ],
   },
 
   pwa: {

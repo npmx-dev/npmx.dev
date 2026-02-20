@@ -30,8 +30,8 @@ function handleClick(event: MouseEvent) {
     const icon = copyTarget.querySelector('span')
     if (!icon) return
 
-    const originalIcon = 'i-carbon:copy'
-    const successIcon = 'i-carbon:checkmark'
+    const originalIcon = 'i-lucide:copy'
+    const successIcon = 'i-lucide:check'
 
     icon.classList.remove(originalIcon)
     icon.classList.add(successIcon)
@@ -147,7 +147,17 @@ function handleClick(event: MouseEvent) {
 .readme :deep(a[target='_blank']:not(:has(img))::after) {
   /* I don't know what kind of sorcery this is, but it ensures this icon can't wrap to a new line on its own. */
   content: '__';
-  @apply inline i-carbon:launch rtl-flip ms-1 opacity-50;
+  @apply inline i-lucide:external-link rtl-flip ms-1 opacity-50;
+}
+
+.readme :deep(a[href^='#']::after) {
+  /* I don't know what kind of sorcery this is, but it ensures this icon can't wrap to a new line on its own. */
+  content: '__';
+  @apply inline i-lucide:link rtl-flip ms-1 opacity-0;
+}
+
+.readme :deep(a[href^='#']:hover::after) {
+  @apply opacity-100;
 }
 
 .readme :deep(code) {
@@ -313,8 +323,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='note']::after) {
   background-color: #3b82f6;
-  -webkit-mask: icon('i-lucide-info') no-repeat;
-  mask: icon('i-lucide-info') no-repeat;
+  -webkit-mask: icon('i-lucide:info') no-repeat;
+  mask: icon('i-lucide:info') no-repeat;
 }
 
 /* Tip - green */
@@ -328,8 +338,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='tip']::after) {
   background-color: #22c55e;
-  -webkit-mask: icon('i-lucide-lightbulb') no-repeat;
-  mask: icon('i-lucide-lightbulb') no-repeat;
+  -webkit-mask: icon('i-lucide:lightbulb') no-repeat;
+  mask: icon('i-lucide:lightbulb') no-repeat;
 }
 
 /* Important - purple */
@@ -343,8 +353,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='important']::after) {
   background-color: var(--syntax-fn);
-  -webkit-mask: icon('i-lucide-pin') no-repeat;
-  mask: icon('i-lucide-pin') no-repeat;
+  -webkit-mask: icon('i-lucide:pin') no-repeat;
+  mask: icon('i-lucide:pin') no-repeat;
 }
 
 /* Warning - yellow/orange */
@@ -358,8 +368,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='warning']::after) {
   background-color: #eab308;
-  -webkit-mask: icon('i-lucide-triangle-alert') no-repeat;
-  mask: icon('i-lucide-triangle-alert') no-repeat;
+  -webkit-mask: icon('i-lucide:triangle-alert') no-repeat;
+  mask: icon('i-lucide:triangle-alert') no-repeat;
 }
 
 /* Caution - red */
@@ -373,8 +383,8 @@ function handleClick(event: MouseEvent) {
 }
 .readme :deep(blockquote[data-callout='caution']::after) {
   background-color: #ef4444;
-  -webkit-mask: icon('i-lucide-circle-alert') no-repeat;
-  mask: icon('i-lucide-circle-alert') no-repeat;
+  -webkit-mask: icon('i-lucide:circle-alert') no-repeat;
+  mask: icon('i-lucide:circle-alert') no-repeat;
 }
 
 /* Table wrapper for horizontal scroll on mobile */

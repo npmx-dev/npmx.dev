@@ -121,7 +121,7 @@ useSeoMeta({
             @click="router.back()"
             v-if="canGoBack"
           >
-            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
           </button>
         </div>
@@ -198,7 +198,10 @@ useSeoMeta({
         </h2>
 
         <div
-          v-if="status === 'pending' && (!packagesData || packagesData.every(p => p === null))"
+          v-if="
+            (status === 'pending' || status === 'idle') &&
+            (!packagesData || packagesData.every(p => p === null))
+          "
           class="flex items-center justify-center py-12"
         >
           <LoadingSpinner :text="$t('compare.packages.loading')" />
@@ -247,8 +250,11 @@ useSeoMeta({
           <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
         </div>
 
-        <div v-else class="text-center py-12" role="alert">
+        <div v-else-if="status === 'error'" class="text-center py-12" role="alert">
           <p class="text-fg-muted">{{ $t('compare.packages.error') }}</p>
+        </div>
+        <div v-else class="flex items-center justify-center py-12">
+          <LoadingSpinner :text="$t('compare.packages.loading')" />
         </div>
       </section>
 
@@ -257,7 +263,10 @@ useSeoMeta({
         v-else
         class="text-center px-1.5 py-16 border border-dashed border-border-hover rounded-lg"
       >
-        <div class="i-carbon:compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
+        <div
+          class="i-lucide:git-compare w-12 h-12 text-fg-subtle mx-auto mb-4"
+          aria-hidden="true"
+        />
         <h2 class="font-mono text-lg text-fg-muted mb-2">
           {{ $t('compare.packages.empty_title') }}
         </h2>

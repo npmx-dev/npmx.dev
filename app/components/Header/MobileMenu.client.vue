@@ -99,7 +99,7 @@ onUnmounted(deactivate)
                 :aria-label="$t('common.close')"
                 @click="closeMenu"
               >
-                <span class="i-carbon:close w-5 h-5" aria-hidden="true" />
+                <span class="i-lucide:x w-5 h-5" aria-hidden="true" />
               </button>
             </div>
 
@@ -130,7 +130,7 @@ onUnmounted(deactivate)
                   v-else
                   class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center"
                 >
-                  <span class="i-carbon-terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
+                  <span class="i-lucide:terminal w-3 h-3 text-fg-muted" aria-hidden="true" />
                 </span>
                 <span class="flex-1">~{{ npmUser }}</span>
                 <span class="w-2 h-2 rounded-full bg-green-500" aria-hidden="true" />
@@ -155,7 +155,7 @@ onUnmounted(deactivate)
                   v-else
                   class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center"
                 >
-                  <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
+                  <span class="i-lucide:at-sign w-3 h-3 text-fg-muted" aria-hidden="true" />
                 </span>
                 <span class="flex-1 truncate">@{{ atprotoUser.handle }}</span>
               </button>
@@ -168,7 +168,7 @@ onUnmounted(deactivate)
                 @click="handleShowAuth"
               >
                 <span class="w-5 h-5 rounded-full bg-bg-muted flex items-center justify-center">
-                  <span class="i-carbon-cloud w-3 h-3 text-fg-muted" aria-hidden="true" />
+                  <span class="i-lucide:at-sign w-3 h-3 text-fg-muted" aria-hidden="true" />
                 </span>
                 <span class="flex-1">{{ $t('account_menu.connect_atmosphere') }}</span>
               </button>
@@ -211,7 +211,7 @@ onUnmounted(deactivate)
                       {{ link.label }}
                       <span
                         v-if="link.external"
-                        class="i-carbon:launch rtl-flip w-3 h-3 ms-auto text-fg-subtle"
+                        class="i-lucide:external-link rtl-flip w-3 h-3 ms-auto text-fg-subtle"
                         aria-hidden="true"
                       />
                     </NuxtLink>

@@ -111,7 +111,7 @@ function handleKeydown(event: KeyboardEvent) {
       >
     </template>
     <span
-      class="i-carbon:chevron-down w-3 h-3"
+      class="i-lucide:chevron-down w-3 h-3"
       :class="[
         { 'rotate-180': isOpen },
         prefersReducedMotion ? '' : 'transition-transform duration-200',
@@ -162,7 +162,7 @@ function handleKeydown(event: KeyboardEvent) {
           <span>{{ pm.label }}</span>
           <span
             v-if="selectedPM === pm.id"
-            class="i-carbon:checkmark w-3 h-3 text-accent ms-auto"
+            class="i-lucide:check w-3 h-3 text-accent ms-auto"
             aria-hidden="true"
           />
         </li>

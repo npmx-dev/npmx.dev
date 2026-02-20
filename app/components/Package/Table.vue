@@ -139,11 +139,15 @@ function getColumnLabel(id: ColumnId): string {
               <template v-if="isSortable('name')">
                 <span
                   v-if="isColumnSorted('name')"
-                  class="i-carbon-caret-down w-3 h-3"
+                  class="i-lucide:chevron-down w-3 h-3"
                   :class="getSortDirection('name') === 'asc' ? 'rotate-180' : ''"
                   aria-hidden="true"
                 />
-                <span v-else class="i-carbon-caret-sort w-3 h-3 opacity-30" aria-hidden="true" />
+                <span
+                  v-else
+                  class="i-lucide:chevrons-up-down w-3 h-3 opacity-30"
+                  aria-hidden="true"
+                />
               </template>
             </span>
           </th>
@@ -189,11 +193,15 @@ function getColumnLabel(id: ColumnId): string {
               <template v-if="isSortable('downloads')">
                 <span
                   v-if="isColumnSorted('downloads')"
-                  class="i-carbon-caret-down w-3 h-3"
+                  class="i-lucide:caret-down w-3 h-3"
                   :class="getSortDirection('downloads') === 'asc' ? 'rotate-180' : ''"
                   aria-hidden="true"
                 />
-                <span v-else class="i-carbon-caret-sort w-3 h-3 opacity-30" aria-hidden="true" />
+                <span
+                  v-else
+                  class="i-lucide:chevrons-up-down w-3 h-3 opacity-30"
+                  aria-hidden="true"
+                />
               </template>
             </span>
           </th>
@@ -223,11 +231,15 @@ function getColumnLabel(id: ColumnId): string {
               <template v-if="isSortable('updated')">
                 <span
                   v-if="isColumnSorted('updated')"
-                  class="i-carbon-caret-down w-3 h-3"
+                  class="i-lucide:caret-down w-3 h-3"
                   :class="getSortDirection('updated') === 'asc' ? 'rotate-180' : ''"
                   aria-hidden="true"
                 />
-                <span v-else class="i-carbon-caret-sort w-3 h-3 opacity-30" aria-hidden="true" />
+                <span
+                  v-else
+                  class="i-lucide:chevrons-up-down w-3 h-3 opacity-30"
+                  aria-hidden="true"
+                />
               </template>
             </span>
           </th>

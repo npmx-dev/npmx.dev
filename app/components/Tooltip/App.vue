@@ -8,6 +8,8 @@ const props = defineProps<{
   interactive?: boolean
   /** Teleport target for the tooltip content (defaults to 'body') */
   to?: string | HTMLElement
+  /** Whether to defer teleport rendering until after the component is mounted */
+  defer?: boolean
   /** Offset distance in pixels (default: 4) */
   offset?: number
 }>()
@@ -52,6 +54,7 @@ const tooltipAttrs = computed(() => {
     :position
     :interactive
     :to
+    :defer
     :offset
     :tooltip-attr="tooltipAttrs"
     @mouseenter="show"
