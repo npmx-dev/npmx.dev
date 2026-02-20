@@ -10,7 +10,9 @@ import {
 import sanitizeHtml from 'sanitize-html'
 
 export async function changelogRenderer() {
-  const renderer = new marked.Renderer()
+  const renderer = new marked.Renderer({
+    gfm: true,
+  })
 
   const shiki = await getShikiHighlighter()
 
