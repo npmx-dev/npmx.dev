@@ -326,13 +326,13 @@ const endDate = computed(() => {
     :aria-busy="pending ? 'true' : 'false'"
   >
     <div class="w-full mb-4 flex flex-col gap-3">
-      <div class="flex flex-col sm:flex-row gap-3 sm:gap-2 sm:items-end">
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-2 sm:items-start">
         <div class="flex flex-col gap-1 w-fit sm:shrink-0">
           <label class="text-3xs font-mono text-fg-subtle tracking-wide uppercase">
             {{ $t('package.versions.distribution_title') }}
           </label>
           <div
-            class="flex items-center bg-bg-subtle border border-border rounded-md"
+            class="flex items-center bg-bg-subtle border border-border rounded-lg"
             role="group"
             :aria-label="$t('package.versions.distribution_title')"
             tabindex="0"
@@ -341,7 +341,7 @@ const endDate = computed(() => {
             <button
               type="button"
               :class="[
-                'px-4 py-1.75 font-mono text-sm transition-colors rounded-s-md',
+                'px-4 py-2.3 font-mono text-sm transition-colors rounded-s-lg',
                 groupingMode === 'major'
                   ? 'bg-accent text-bg font-medium'
                   : 'text-fg-subtle hover:text-fg hover:bg-bg-subtle/50',
@@ -356,7 +356,7 @@ const endDate = computed(() => {
             <button
               type="button"
               :class="[
-                'px-4 py-1.75 font-mono text-sm transition-colors rounded-e-md border-is border-border',
+                'px-4 py-2.3 font-mono text-sm transition-colors rounded-e-lg border-is border-border',
                 groupingMode === 'minor'
                   ? 'bg-accent text-bg font-medium'
                   : 'text-fg-subtle hover:text-fg hover:bg-bg-subtle/50',
