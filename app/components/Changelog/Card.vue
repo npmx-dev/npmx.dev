@@ -10,12 +10,23 @@ const formattedDate = useDateFormat(() => release.publishedAt, 'YYYY-MM-DD', {})
 const cardId = computed(() => (release.publishedAt ? `date-${formattedDate.value}` : undefined))
 
 const navId = computed(() => `releaae-${encodeURIComponent(release.title)}`)
+
+function navigateToTitle() {
+  navigateTo(`#${navId.value}`)
+}
 </script>
 <template>
   <section class="border border-border rounded-lg p-4 sm:p-6">
     <div class="flex justify-between" :id="cardId">
       <h2 class="text-1xl sm:text-2xl font-medium min-w-0 break-words py-2" :id="navId">
-        {{ release.title }}
+        <a
+          class="hover:decoration-accent hover:text-accent focus-visible:decoration-accent focus-visible:text-accent transition-colors duration-200"
+          :class="$style.linkTitle"
+          :href="`#${navId}`"
+          @click.prevent="navigateToTitle()"
+        >
+          {{ release.title }}
+        </a>
       </h2>
       <ReadmeTocDropdown
         v-if="release?.toc && release.toc.length > 1"
@@ -28,4 +39,13 @@ const navId = computed(() => `releaae-${encodeURIComponent(release.title)}`)
   </section>
 </template>
 
-<!--     class="group bg-bg-subtle border border-border rounded-lg p-4 sm:p-6 transition-[border-color,background-color] duration-200 hover:(border-border-hover bg-bg-muted) cursor-pointer relative focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-bg focus-within:ring-offset-2 focus-within:ring-fg/50 focus-within:bg-bg-muted focus-within:border-border-hover" -->
+<style module>
+.linkTitle::after {
+  content: '__';
+  @apply inline i-lucide:link rtl-flip ms-1 opacity-0;
+}
+
+.linkTitle:hover:after {
+  @apply opacity-100;
+}
+</style>
