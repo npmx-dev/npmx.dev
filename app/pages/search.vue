@@ -31,7 +31,7 @@ const updateUrlPage = debounce((page: number) => {
 }, 500)
 
 const { model: searchQuery, provider: searchProvider } = useGlobalSearch()
-const query = computed(() => searchQuery.value)
+const query = computed(() => searchQuery.value.trim().replace(/!$/, ''))
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
@@ -424,28 +424,34 @@ async function navigateToPackage(packageName: string) {
 // Track the input value when user pressed Enter (for navigating when results arrive)
 const pendingEnterQuery = shallowRef<string | null>(null)
 
-// Watch for results to navigate when Enter was pressed before results arrived
-watch(displayResults, results => {
-  if (!pendingEnterQuery.value) return
+// Watch for results to navigate when Enter was pressed before results arrived,
+// or for "I'm feeling lucky" redirection when the query ends with "!" and there is the exact match.
+watch(
+  displayResults,
+  results => {
+    const rawQuery = normalizeSearchParam(route.query.q)
+    const isFeelingLucky = rawQuery.endsWith('!')
 
-  // Check if input is still focused (user hasn't started navigating or clicked elsewhere)
-  if (document.activeElement?.tagName !== 'INPUT') {
-    pendingEnterQuery.value = null
-    return
-  }
+    if (!pendingEnterQuery.value && !isFeelingLucky) return
 
-  // Navigate if first result matches the query that was entered
-  const firstResult = results[0]
-  // eslint-disable-next-line no-console
-  console.log('[search] watcher fired', {
-    pending: pendingEnterQuery.value,
-    firstResult: firstResult?.package.name,
-  })
-  if (firstResult?.package.name === pendingEnterQuery.value) {
-    pendingEnterQuery.value = null
-    navigateToPackage(firstResult.package.name)
-  }
-})
+    // For manual Enter, check if input is still focused (user hasn't started navigating or clicked elsewhere)
+    if (pendingEnterQuery.value && document.activeElement?.tagName !== 'INPUT') {
+      pendingEnterQuery.value = null
+      return
+    }
+
+    const target = pendingEnterQuery.value || rawQuery.replace(/!$/, '')
+    if (!target) return
+
+    // Navigate if first result matches the target query
+    const firstResult = results[0]
+    if (firstResult?.package.name === target) {
+      pendingEnterQuery.value = null
+      navigateToPackage(firstResult.package.name)
+    }
+  },
+  { immediate: true },
+)
 
 function handleResultsKeydown(e: KeyboardEvent) {
   // If the active element is an input, navigate to exact match or wait for results
@@ -454,15 +460,17 @@ function handleResultsKeydown(e: KeyboardEvent) {
     const inputValue = (document.activeElement as HTMLInputElement).value.trim()
     if (!inputValue) return
 
+    const cleanedInputValue = inputValue.replace(/!$/, '')
+
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]
-    if (firstResult?.package.name === inputValue) {
+    if (firstResult?.package.name === cleanedInputValue) {
       pendingEnterQuery.value = null
       return navigateToPackage(firstResult.package.name)
     }
 
-    // No match yet - store input value, watcher will handle navigation when results arrive
-    pendingEnterQuery.value = inputValue
+    // No match yet - store cleaned input value, watcher will handle navigation when results arrive
+    pendingEnterQuery.value = cleanedInputValue
     return
   }
 
