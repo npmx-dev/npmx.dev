@@ -630,6 +630,9 @@
             },
             "compare": {
               "type": "string"
+            },
+            "changelog": {
+              "type": "string"
             }
           },
           "additionalProperties": false

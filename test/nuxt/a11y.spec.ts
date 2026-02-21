@@ -120,6 +120,7 @@ import {
   ButtonBase,
   LinkBase,
   CallToAction,
+  ChangelogCard,
   CodeDirectoryListing,
   CodeFileTree,
   CodeMobileTreeDrawer,
@@ -1890,6 +1891,23 @@ describe('component accessibility audits', () => {
   describe('CallToAction', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(CallToAction)
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('Changelog', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(ChangelogCard, {
+        props: {
+          release: {
+            html: '<p>test a11y</p>',
+            id: 'a11y',
+            title: '1.0.0',
+            publishedAt: '2026-02-11 10:00:00.000Z',
+          },
+        },
+      })
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })

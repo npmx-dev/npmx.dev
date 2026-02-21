@@ -110,7 +110,7 @@ function matchPlaygroundProvider(url: string): PlaygroundProvider | null {
 
 // allow h1-h6, but replace h1-h2 later since we shift README headings down by 2 levels
 // (page h1 = package name, h2 = "Readme" section, so README h1 → h3)
-const ALLOWED_TAGS = [
+export const ALLOWED_TAGS = [
   'h1',
   'h2',
   'h3',
@@ -151,7 +151,7 @@ const ALLOWED_TAGS = [
   'button',
 ]
 
-const ALLOWED_ATTR: Record<string, string[]> = {
+export const ALLOWED_ATTR: Record<string, string[]> = {
   '*': ['id'], // Allow id on all tags
   'a': ['href', 'title', 'target', 'rel'],
   'img': ['src', 'alt', 'title', 'width', 'height', 'align'],
@@ -183,8 +183,9 @@ const ALLOWED_ATTR: Record<string, string[]> = {
  * - Remove special characters (keep alphanumeric, hyphens, underscores)
  * - Collapse multiple hyphens
  */
-function slugify(text: string): string {
+export function slugify(text: string): string {
   return text
+    .replace(/&nbsp;?/g, '') // remove non breaking spaces
     .replace(/<[^>]*>/g, '') // Strip HTML tags
     .toLowerCase()
     .trim()
@@ -309,7 +310,7 @@ function resolveImageUrl(url: string, packageName: string, repoInfo?: Repository
 }
 
 // Helper to prefix id attributes with 'user-content-'
-function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
+export function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
   if (attribs.id && !attribs.id.startsWith('user-content-')) {
     attribs.id = `user-content-${attribs.id}`
   }
@@ -319,7 +320,7 @@ function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
 // README h1 always becomes h3
 // For deeper levels, ensure sequential order
 // Don't allow jumping more than 1 level deeper than previous
-function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
+export function calculateSemanticDepth(depth: number, lastSemanticLevel: number) {
   if (depth === 1) return 3
   const maxAllowed = Math.min(lastSemanticLevel + 1, 6)
   return Math.min(depth + 2, maxAllowed)

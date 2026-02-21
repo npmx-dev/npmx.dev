@@ -150,7 +150,7 @@ function handleClick(event: MouseEvent) {
   @apply inline i-lucide:external-link rtl-flip ms-1 opacity-50;
 }
 
-.readme :deep(a[href^='#']::after) {
+.readme :deep(a[href^='#']:not(.content-none)::after) {
   /* I don't know what kind of sorcery this is, but it ensures this icon can't wrap to a new line on its own. */
   content: '__';
   @apply inline i-lucide:link rtl-flip ms-1 opacity-0;
