@@ -193,7 +193,7 @@ function getColumnLabel(id: ColumnId): string {
               <template v-if="isSortable('downloads')">
                 <span
                   v-if="isColumnSorted('downloads')"
-                  class="i-lucide:caret-down w-3 h-3"
+                  class="i-lucide:chevron-down w-3 h-3"
                   :class="getSortDirection('downloads') === 'asc' ? 'rotate-180' : ''"
                   aria-hidden="true"
                 />
@@ -231,7 +231,7 @@ function getColumnLabel(id: ColumnId): string {
               <template v-if="isSortable('updated')">
                 <span
                   v-if="isColumnSorted('updated')"
-                  class="i-lucide:caret-down w-3 h-3"
+                  class="i-lucide:chevron-down w-3 h-3"
                   :class="getSortDirection('updated') === 'asc' ? 'rotate-180' : ''"
                   aria-hidden="true"
                 />
