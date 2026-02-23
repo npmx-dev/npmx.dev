@@ -57,6 +57,7 @@ describe('dependency-analysis', () => {
             optional: false,
             depth: 'root' as const,
             path: ['test-pkg@1.0.0'],
+            tarballUrl: 'https://example.com/test-pkg-1.0.0.tgz',
           },
         ],
       ])
@@ -90,6 +91,7 @@ describe('dependency-analysis', () => {
             optional: false,
             depth: 'root' as const,
             path: ['test-pkg@1.0.0'],
+            tarballUrl: 'https://example.com/test-pkg-1.0.0.tgz',
           },
         ],
         [
@@ -328,6 +330,7 @@ describe('dependency-analysis', () => {
             optional: false,
             depth: 'root' as const,
             path: ['pkg@1.0.0'],
+            tarballUrl: 'https://example.com/pkg-1.0.0.tgz',
           },
         ],
       ])
@@ -369,6 +372,7 @@ describe('dependency-analysis', () => {
             optional: false,
             depth: 'root' as const,
             path: ['pkg@1.0.0'],
+            tarballUrl: 'https://example.com/pkg-1.0.0.tgz',
           },
         ],
       ])
@@ -411,6 +415,7 @@ describe('dependency-analysis', () => {
             optional: false,
             depth: 'root' as const,
             path: ['pkg@1.0.0'],
+            tarballUrl: 'https://example.com/pkg-1.0.0.tgz',
           },
         ],
       ])
@@ -452,6 +457,7 @@ describe('dependency-analysis', () => {
             optional: false,
             depth: 'root' as const,
             path: ['pkg@1.0.0'],
+            tarballUrl: 'https://example.com/pkg-1.0.0.tgz',
           },
         ],
       ])
@@ -879,6 +885,7 @@ describe('dependency-analysis', () => {
             optional: false,
             depth: 'root' as const,
             path: ['pkg@1.0.0'],
+            tarballUrl: 'https://example.com/pkg-1.0.0.tgz',
           },
         ],
       ])
