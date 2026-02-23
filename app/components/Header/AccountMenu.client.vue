@@ -12,14 +12,26 @@ const {
 } = useConnector()
 
 const { user: atprotoUser } = useAtproto()
+const { isConnected: isGitHubConnected, user: githubUser } = useGitHub()
 
 const isOpen = shallowRef(false)
 
 /** Check if connected to at least one service */
-const hasAnyConnection = computed(() => isNpmConnected.value || !!atprotoUser.value)
+const hasAnyConnection = computed(
+  () => isNpmConnected.value || !!atprotoUser.value || isGitHubConnected.value,
+)
 
-/** Check if connected to both services */
-const hasBothConnections = computed(() => isNpmConnected.value && !!atprotoUser.value)
+/** Count of connected services for avatar stacking */
+const connectedCount = computed(() => {
+  let count = 0
+  if (isNpmConnected.value) count++
+  if (atprotoUser.value) count++
+  if (isGitHubConnected.value) count++
+  return count
+})
+
+/** Check if connected to more than one service */
+const hasMultipleConnections = computed(() => connectedCount.value > 1)
 
 /** Only show count of active (pending/approved/running) operations */
 const operationCount = computed(() => activeOperations.value.length)
@@ -45,12 +57,21 @@ function openConnectorModal() {
   }
 }
 
-const authModal = useModal('auth-modal')
+const atprotoModal = useModal('atproto-modal')
 
-function openAuthModal() {
-  if (authModal) {
+function openAtprotoModal() {
+  if (atprotoModal) {
     isOpen.value = false
-    authModal.open()
+    atprotoModal.open()
+  }
+}
+
+const githubModal = useModal('github-modal')
+
+function openGitHubModal() {
+  if (githubModal) {
+    isOpen.value = false
+    githubModal.open()
   }
 }
 </script>
@@ -68,7 +89,7 @@ function openAuthModal() {
       <span
         v-if="hasAnyConnection"
         class="flex items-center"
-        :class="hasBothConnections ? '-space-x-2' : ''"
+        :class="hasMultipleConnections ? '-space-x-2' : ''"
       >
         <!-- npm avatar (first/back) -->
         <img
@@ -94,14 +115,23 @@ function openAuthModal() {
           width="24"
           height="24"
           class="w-6 h-6 rounded-full ring-2 ring-bg object-cover"
-          :class="hasBothConnections ? 'relative z-10' : ''"
+          :class="hasMultipleConnections ? 'relative z-10' : ''"
         />
         <span
           v-else-if="atprotoUser"
           class="w-6 h-6 rounded-full bg-bg-muted ring-2 ring-bg flex items-center justify-center"
-          :class="hasBothConnections ? 'relative z-10' : ''"
+          :class="hasMultipleConnections ? 'relative z-10' : ''"
         >
           <span class="i-lucide:at-sign w-3 h-3 text-fg-muted" aria-hidden="true" />
+        </span>
+
+        <!-- GitHub avatar (overlapping) -->
+        <span
+          v-if="isGitHubConnected"
+          class="w-6 h-6 rounded-full bg-bg-muted ring-2 ring-bg flex items-center justify-center"
+          :class="hasMultipleConnections ? 'relative z-20' : ''"
+        >
+          <span class="i-simple-icons:github w-3 h-3 text-fg-muted" aria-hidden="true" />
         </span>
       </span>
 
@@ -189,7 +219,7 @@ function openAuthModal() {
               v-if="atprotoUser"
               role="menuitem"
               class="w-full text-start gap-x-3 border-none"
-              @click="openAuthModal"
+              @click="openAtprotoModal"
             >
               <img
                 v-if="atprotoUser.avatar"
@@ -212,16 +242,34 @@ function openAuthModal() {
                 <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere') }}</span>
               </span>
             </ButtonBase>
+
+            <!-- GitHub connection -->
+            <ButtonBase
+              v-if="isGitHubConnected && githubUser"
+              role="menuitem"
+              class="w-full text-start gap-x-3 border-none"
+              @click="openGitHubModal"
+            >
+              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
+                <span class="i-simple-icons:github w-4 h-4 text-fg-muted" aria-hidden="true" />
+              </span>
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg truncate block">{{
+                  githubUser.username
+                }}</span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.github') }}</span>
+              </span>
+            </ButtonBase>
           </div>
 
           <!-- Divider (only if we have connections AND options to connect) -->
           <div
-            v-if="hasAnyConnection && (!isNpmConnected || !atprotoUser)"
+            v-if="hasAnyConnection && (!isNpmConnected || !atprotoUser || !isGitHubConnected)"
             class="border-t border-border"
           />
 
           <!-- Connect options -->
-          <div v-if="!isNpmConnected || !atprotoUser" class="py-1">
+          <div v-if="!isNpmConnected || !atprotoUser || !isGitHubConnected" class="py-1">
             <ButtonBase
               v-if="!isNpmConnected"
               role="menuitem"
@@ -252,7 +300,7 @@ function openAuthModal() {
               v-if="!atprotoUser"
               role="menuitem"
               class="w-full text-start gap-x-3 border-none"
-              @click="openAuthModal"
+              @click="openAtprotoModal"
             >
               <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
                 <span class="i-lucide:at-sign w-4 h-4 text-fg-muted" aria-hidden="true" />
@@ -264,11 +312,29 @@ function openAuthModal() {
                 <span class="text-xs text-fg-subtle">{{ $t('account_menu.atmosphere_desc') }}</span>
               </span>
             </ButtonBase>
+
+            <ButtonBase
+              v-if="!isGitHubConnected"
+              role="menuitem"
+              class="w-full text-start gap-x-3 border-none"
+              @click="openGitHubModal"
+            >
+              <span class="w-8 h-8 rounded-full bg-bg-muted flex items-center justify-center">
+                <span class="i-simple-icons:github w-4 h-4 text-fg-muted" aria-hidden="true" />
+              </span>
+              <span class="flex-1 min-w-0">
+                <span class="font-mono text-sm text-fg block">
+                  {{ $t('account_menu.connect_github') }}
+                </span>
+                <span class="text-xs text-fg-subtle">{{ $t('account_menu.github_desc') }}</span>
+              </span>
+            </ButtonBase>
           </div>
         </div>
       </div>
     </Transition>
   </div>
   <HeaderConnectorModal />
-  <HeaderAuthModal />
+  <HeaderAtprotoModal />
+  <HeaderGitHubModal />
 </template>

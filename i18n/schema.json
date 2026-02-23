@@ -868,6 +868,24 @@
           },
           "additionalProperties": false
         },
+        "github_star": {
+          "type": "object",
+          "properties": {
+            "star": {
+              "type": "string"
+            },
+            "unstar": {
+              "type": "string"
+            },
+            "connect_github": {
+              "type": "string"
+            },
+            "starred": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "docs": {
           "type": "object",
           "properties": {
@@ -2953,6 +2971,15 @@
         "connect_atmosphere": {
           "type": "string"
         },
+        "github": {
+          "type": "string"
+        },
+        "github_desc": {
+          "type": "string"
+        },
+        "connect_github": {
+          "type": "string"
+        },
         "connecting": {
           "type": "string"
         },
@@ -3005,6 +3032,27 @@
               "type": "string"
             },
             "profile": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "github": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "connect": {
+              "type": "string"
+            },
+            "disconnect": {
+              "type": "string"
+            },
+            "connected_as": {
+              "type": "string"
+            },
+            "connect_prompt": {
               "type": "string"
             }
           },

@@ -38,6 +38,8 @@ export default defineNuxtConfig({
     imageProxySecret: '',
     github: {
       orgToken: '',
+      clientId: process.env.GITHUB_CLIENT_ID || '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
     },
     oauthJwkOne: process.env.OAUTH_JWK_ONE || undefined,
     // Upstash Redis for distributed OAuth token refresh locking in production
@@ -153,6 +155,7 @@ export default defineNuxtConfig({
       },
       cache: { maxAge: 3600 },
     },
+    '/api/github/**': { isr: false, cache: false },
     '/api/opensearch/suggestions': {
       isr: {
         expiration: 60 * 60 * 24 /* one day */,

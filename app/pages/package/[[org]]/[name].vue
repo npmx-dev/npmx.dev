@@ -484,6 +484,9 @@ const repositoryUrl = computed(() => {
 
 const { meta: repoMeta, repoRef, stars, starsLink, forks, forksLink } = useRepoMeta(repositoryUrl)
 
+const { isConnected: isGitHubConnected } = useGitHub()
+const { isStarred, isStarActionPending, isGitHubRepo, toggleStar } = useGitHubStar(repoRef)
+
 const PROVIDER_ICONS: Record<string, IconClass> = {
   github: 'i-simple-icons:github',
   gitlab: 'i-simple-icons:gitlab',
@@ -603,7 +606,7 @@ const canonicalUrl = computed(() => {
 // TODO: Maybe set this where it's not loaded here every load?
 const { user } = useAtproto()
 
-const authModal = useModal('auth-modal')
+const atprotoModal = useModal('atproto-modal')
 
 const { data: likesData, status: likeStatus } = useFetch(
   () => `/api/social/likes/${packageName.value}`,
@@ -620,7 +623,7 @@ const isLikeActionPending = shallowRef(false)
 
 const likeAction = async () => {
   if (user.value?.handle == null) {
-    authModal.open()
+    atprotoModal.open()
     return
   }
 
@@ -984,7 +987,31 @@ const showSkeleton = shallowRef(false)
               </LinkBase>
             </li>
             <li v-if="repositoryUrl && repoMeta && starsLink">
-              <LinkBase :to="starsLink" classicon="i-lucide:star">
+              <TooltipApp
+                v-if="isGitHubRepo && isGitHubConnected"
+                :text="
+                  isStarred ? $t('package.github_star.unstar') : $t('package.github_star.star')
+                "
+                position="bottom"
+                strategy="fixed"
+              >
+                <ButtonBase
+                  size="small"
+                  :title="
+                    isStarred ? $t('package.github_star.unstar') : $t('package.github_star.star')
+                  "
+                  :aria-label="
+                    isStarred ? $t('package.github_star.unstar') : $t('package.github_star.star')
+                  "
+                  :aria-pressed="isStarred"
+                  :disabled="isStarActionPending"
+                  :classicon="isStarred ? 'i-lucide:star text-yellow-400' : 'i-lucide:star'"
+                  @click="toggleStar"
+                >
+                  {{ compactNumberFormatter.format(stars) }}
+                </ButtonBase>
+              </TooltipApp>
+              <LinkBase v-else :to="starsLink" classicon="i-lucide:star">
                 {{ compactNumberFormatter.format(stars) }}
               </LinkBase>
             </li>

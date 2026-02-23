@@ -20,4 +20,10 @@ export interface UserServerSession {
   // DO NOT USE
   // Here for historic reasons to redirect users logged in with the previous oauth to login again
   oauthSession?: NodeSavedSession | undefined
+  github?:
+    | {
+        accessToken: string
+        username: string
+      }
+    | undefined
 }

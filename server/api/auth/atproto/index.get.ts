@@ -2,6 +2,7 @@ import type { OAuthSession } from '@atproto/oauth-client-node'
 import { OAuthCallbackError } from '@atproto/oauth-client-node'
 import { createError, getQuery, sendRedirect, setCookie, getCookie, deleteCookie } from 'h3'
 import type { H3Event } from 'h3'
+import { generateRandomHexString } from '#server/utils/auth'
 import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import { handleApiError } from '#server/utils/error-handler'
@@ -165,12 +166,6 @@ function encodeOAuthState(event: H3Event, data: OAuthStateData): string {
   })
 
   return JSON.stringify({ data, id })
-}
-
-function generateRandomHexString(byteLength: number = 16): string {
-  return Array.from(crypto.getRandomValues(new Uint8Array(byteLength)), byte =>
-    byte.toString(16).padStart(2, '0'),
-  ).join('')
 }
 
 /**

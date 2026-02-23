@@ -2,6 +2,11 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession, serverSe
   // Even tho the signOut also clears part of the server cache should be done in order
   // to let the oAuth package do any other clean up it may need
   await oAuthSession?.signOut()
-  await serverSession.clear()
+  await serverSession.update({
+    public: undefined,
+    oauthSession: undefined,
+    oauthState: undefined,
+  })
+
   return 'Session cleared'
 })
