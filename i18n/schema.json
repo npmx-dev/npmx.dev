@@ -3043,12 +3043,6 @@
             "title": {
               "type": "string"
             },
-            "connect": {
-              "type": "string"
-            },
-            "disconnect": {
-              "type": "string"
-            },
             "connected_as": {
               "type": "string"
             },

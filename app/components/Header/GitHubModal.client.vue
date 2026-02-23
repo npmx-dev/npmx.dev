@@ -20,7 +20,7 @@ function handleConnect() {
         </div>
       </div>
       <ButtonBase class="w-full" @click="logout">
-        {{ $t('auth.github.disconnect') }}
+        {{ $t('auth.modal.disconnect') }}
       </ButtonBase>
     </div>
 
@@ -33,7 +33,7 @@ function handleConnect() {
         classicon="i-simple-icons:github"
         @click="handleConnect"
       >
-        {{ $t('auth.github.connect') }}
+        {{ $t('auth.modal.connect') }}
       </ButtonBase>
     </div>
   </Modal>

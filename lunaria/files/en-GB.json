@@ -945,8 +945,6 @@
     },
     "github": {
       "title": "GitHub",
-      "connect": "Connect",
-      "disconnect": "Disconnect",
       "connected_as": "Connected as {username}",
       "connect_prompt": "Connect your GitHub account to star repositories directly from npmx."
     }
