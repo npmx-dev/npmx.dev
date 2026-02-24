@@ -179,6 +179,7 @@ import {
   PackageListControls,
   PackageListToolbar,
   PackageMaintainers,
+  PackageDownloadButton,
   PackageManagerSelect,
   PackageMetricsBadges,
   PackagePlaygrounds,
@@ -2937,6 +2938,23 @@ describe('component accessibility audits', () => {
     })
   })
 
+  describe('PackageDownloadButton', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageDownloadButton, {
+        props: {
+          packageName: 'vue',
+          version: {
+            version: '3.5.0',
+            dist: { tarball: 'https://registry.npmjs.org/vue/-/vue-3.5.0.tgz' },
+          } as any,
+          installSize: null,
+        },
+      })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
   // Diff components
   describe('DiffFileTree', () => {
     const mockFiles = [
@@ -3314,12 +3332,6 @@ describe('component accessibility audits', () => {
           hunks: [],
           type: 'modify',
           fileName: 'empty.ts',
-        },
-      })
-      const results = await runAxe(component)
-      expect(results.violations).toEqual([])
-    })
-  })
 
   describe('DiffSidebarPanel', () => {
     const mockCompare = {

@@ -46,11 +46,11 @@ defineExpose({
       'text-xs px-2 py-2': size === 'small' && variant === 'subtle',
       'border-border': variant !== 'subtle',
       'border-border-subtle': variant === 'subtle',
-      'bg-transparent text-fg hover:enabled:(bg-fg/10) focus-visible:enabled:(bg-fg/10) aria-pressed:(bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
+      'bg-transparent text-fg hover:enabled:(bg-fg/10) aria-pressed:(bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
         variant === 'secondary',
-      'text-bg bg-fg hover:enabled:(bg-fg/50) focus-visible:enabled:(bg-fg/50) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
+      'text-bg bg-fg hover:enabled:(bg-fg/50) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
         variant === 'primary',
-      'bg-bg-subtle text-fg-muted hover:enabled:(text-fg border-border-hover) focus-visible:enabled:(text-fg border-border-hover) active:enabled:scale-95':
+      'bg-bg-subtle text-fg-muted hover:enabled:(text-fg border-border-hover) active:enabled:scale-95':
         variant === 'subtle',
     }"
     :type="props.type"

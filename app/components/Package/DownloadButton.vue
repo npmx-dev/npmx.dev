@@ -102,16 +102,31 @@ function handleAction(id: string | undefined) {
   close()
 }
 
-function downloadPackage() {
+async function downloadPackage() {
   const tarballUrl = props.version.dist.tarball
   if (!tarballUrl) return
 
-  const link = document.createElement('a')
-  link.href = tarballUrl
-  link.download = `${props.packageName}-${props.version.version}.tgz`
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+  try {
+    const response = await fetch(tarballUrl)
+    const blob = await response.blob()
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${props.packageName.replace(/\//g, '__')}-${props.version.version}.tgz`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  } catch (error) {
+    console.error('Failed to download package:', error)
+    // Fallback to direct link for non-CORS or other issues, though download attribute may be ignored
+    const link = document.createElement('a')
+    link.href = tarballUrl
+    link.download = `${props.packageName.replace(/\//g, '__')}-${props.version.version}.tgz`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 }
 
 function downloadDependenciesScript() {
@@ -125,18 +140,21 @@ function downloadDependenciesScript() {
   ]
 
   // Add root package
-  const rootTarball = (props.version.dist as any).tarball
+  const rootTarball = props.version.dist.tarball
   if (rootTarball) {
     lines.push(`# ${props.packageName}@${props.version.version}`)
     lines.push(
-      `curl -L ${rootTarball} -o ${props.packageName.replace(/\//g, '__')}-${props.version.version}.tgz`,
+      `curl -L "${rootTarball}" -o "${props.packageName.replace(/\//g, '__')}-${props.version.version}.tgz"`,
     )
   }
 
   // Add dependencies
-  props.installSize.dependencies.forEach((dep: any) => {
+  props.installSize.dependencies.forEach(dep => {
+    if (!dep.tarballUrl) return
     lines.push(`# ${dep.name}@${dep.version}`)
-    lines.push(`curl -L ${dep.tarballUrl} -o ${dep.name.replace(/\//g, '__')}-${dep.version}.tgz`)
+    lines.push(
+      `curl -L "${dep.tarballUrl}" -o "${dep.name.replace(/\//g, '__')}-${dep.version}.tgz"`,
+    )
   })
 
   const blob = new Blob([lines.join('\n')], { type: 'text/x-shellscript' })
