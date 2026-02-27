@@ -971,7 +971,6 @@ const showSkeleton = shallowRef(false)
                 <ButtonBase
                   @click="toggleStar"
                   size="small"
-                  :title="isStarred ? $t('package.github.unstar') : $t('package.github.star')"
                   :aria-label="isStarred ? $t('package.github.unstar') : $t('package.github.star')"
                   :aria-pressed="isStarred"
                   :disabled="isStarActionPending"
