@@ -1,5 +1,4 @@
 {
-  "$schema": "../schema.json",
   "seo": {
     "home": {
       "title": "npmx - npm ರಿಜಿಸ್ಟ್ರಿಗೆ ಪ್ಯಾಕೇಜ್ ಬ್ರೌಸರ್",
@@ -364,6 +363,9 @@
   "connector": {
     "modal": {
       "title": "ಸ್ಥಳೀಯ ಸಂಪರ್ಕಕ",
+      "contributor_badge": "ಸಹಯೋಗಿಗಳಿಗೆ ಮಾತ್ರ",
+      "contributor_notice": "ಸಂಪರ್ಕಕ ಇನ್ನೂ npm ನಲ್ಲಿ ಪ್ರಕಟವಾಗಿಲ್ಲ. ಸ್ಥಳೀಯವಾಗಿ ಚಾಲನೆ ಮಾಡಲು {link} ನೋಡಿ.",
+      "contributor_link": "ಸಹಯೋಗ ಮಾರ್ಗದರ್ಶಿ",
       "connected": "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
       "connected_as_user": "~{user} ಎಂದು ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
       "connected_hint": "ಈಗ ನೀವು ವೆಬ್ UI ಯಿಂದ ಪ್ಯಾಕೇಜ್‌ಗಳು ಮತ್ತು ಸಂಸ್ಥೆಗಳನ್ನು ನಿರ್ವಹಿಸಬಹುದು.",
