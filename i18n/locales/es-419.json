@@ -10,7 +10,9 @@
   },
   "auth": {
     "modal": {
-      "default_input_error": "Por favor, ingresa un handle, DID o URL de PDS válido"
+      "atmosphere": {
+        "default_input_error": "Por favor, ingresa un handle, DID o URL de PDS válido"
+      }
     }
   },
   "connector": {

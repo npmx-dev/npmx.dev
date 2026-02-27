@@ -928,13 +928,12 @@
         "connect_bluesky": "Conectar con Bluesky",
         "what_is_atmosphere": "¿Qué es una cuenta de la Atmosphere?",
         "explanation": "{npmx} utiliza {atproto} para proporcionar muchas de sus funciones sociales, lo que permite a los usuarios ser propietarios de sus datos y utilizar una cuenta para todas las aplicaciones compatibles. Una vez que crea una cuenta, puede usar otras aplicaciones como {bluesky} y {tangled} con la misma cuenta.",
-        "default_input_error": "Por favor, introduce un handle, DID o URL de PDS válido"
+        "default_input_error": "Por favor, ingresa un handle, DID o URL de PDS válido"
       },
       "github": {
         "title": "GitHub",
         "connected_as": "Conectado como {username}"
-      },
-      "default_input_error": "Por favor, ingresa un handle, DID o URL de PDS válido"
+      }
     }
   },
   "header": {
