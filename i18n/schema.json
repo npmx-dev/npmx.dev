@@ -2989,59 +2989,65 @@
         "modal": {
           "type": "object",
           "properties": {
-            "title": {
-              "type": "string"
-            },
-            "connected_as": {
-              "type": "string"
-            },
-            "disconnect": {
-              "type": "string"
-            },
-            "connect_prompt": {
-              "type": "string"
-            },
-            "handle_label": {
-              "type": "string"
-            },
-            "handle_placeholder": {
+            "profile": {
               "type": "string"
             },
             "connect": {
               "type": "string"
             },
-            "create_account": {
+            "disconnect": {
               "type": "string"
             },
-            "connect_bluesky": {
-              "type": "string"
+            "atmosphere": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "connected_as": {
+                  "type": "string"
+                },
+                "connect_prompt": {
+                  "type": "string"
+                },
+                "handle_label": {
+                  "type": "string"
+                },
+                "handle_placeholder": {
+                  "type": "string"
+                },
+                "create_account": {
+                  "type": "string"
+                },
+                "connect_bluesky": {
+                  "type": "string"
+                },
+                "what_is_atmosphere": {
+                  "type": "string"
+                },
+                "explanation": {
+                  "type": "string"
+                },
+                "default_input_error": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             },
-            "what_is_atmosphere": {
-              "type": "string"
-            },
-            "atmosphere_explanation": {
-              "type": "string"
-            },
-            "default_input_error": {
-              "type": "string"
-            },
-            "profile": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        },
-        "github": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "connected_as": {
-              "type": "string"
-            },
-            "connect_prompt": {
-              "type": "string"
+            "github": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "connected_as": {
+                  "type": "string"
+                },
+                "connect_prompt": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false

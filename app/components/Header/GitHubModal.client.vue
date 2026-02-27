@@ -8,14 +8,14 @@ function handleConnect() {
 </script>
 
 <template>
-  <Modal :modalTitle="$t('auth.github.title')" class="max-w-lg" id="github-modal">
+  <Modal :modalTitle="$t('auth.modal.github.title')" class="max-w-lg" id="github-modal">
     <!-- Connected state -->
     <div v-if="isConnected && user" class="space-y-4">
       <div class="flex items-center gap-3 p-4 bg-bg-subtle border border-border rounded-lg">
         <span class="w-3 h-3 rounded-full bg-green-500" aria-hidden="true" />
         <div>
           <p class="font-mono text-xs text-fg-muted">
-            {{ $t('auth.github.connected_as', { username: user.username }) }}
+            {{ $t('auth.modal.github.connected_as', { username: user.username }) }}
           </p>
         </div>
       </div>
@@ -26,7 +26,7 @@ function handleConnect() {
 
     <!-- Disconnected state -->
     <div v-else class="space-y-4">
-      <p class="text-sm text-fg-muted">{{ $t('auth.github.connect_prompt') }}</p>
+      <p class="text-sm text-fg-muted">{{ $t('auth.modal.github.connect_prompt') }}</p>
       <ButtonBase
         variant="primary"
         class="w-full"
