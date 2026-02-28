@@ -13,17 +13,14 @@
 
 import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
-import { DEFAULT_USER_PREFERENCES, type UserPreferences } from '#shared/schemas/userPreferences'
+import { DEFAULT_USER_PREFERENCES } from '#shared/schemas/userPreferences'
+import {
+  arePreferencesEqual,
+  mergePreferences,
+  type HydratedUserPreferences,
+} from '~/utils/preferences-merge'
 
 const STORAGE_KEY = 'npmx-user-preferences'
-
-function arePreferencesEqual(a: UserPreferences, b: UserPreferences): boolean {
-  const keys = Object.keys(DEFAULT_USER_PREFERENCES) as (keyof typeof DEFAULT_USER_PREFERENCES)[]
-  return keys.every(key => a[key] === b[key])
-}
-
-export type HydratedUserPreferences = Required<Omit<UserPreferences, 'updatedAt'>> &
-  Pick<UserPreferences, 'updatedAt'>
 
 let dataRef: RemovableRef<HydratedUserPreferences> | null = null
 let syncInitialized = false
@@ -65,12 +62,12 @@ export function useUserPreferencesProvider(
     setupBeforeUnload(() => preferences.value)
 
     if (isAuthenticated.value) {
-      const serverPrefs = await loadFromServer()
-      if (serverPrefs) {
-        const merged = { ...preferences.value, ...serverPrefs }
-        if (!arePreferencesEqual(preferences.value, merged)) {
-          preferences.value = merged
-        }
+      const serverResult = await loadFromServer()
+      const { merged, shouldPushToServer } = mergePreferences(preferences.value, serverResult)
+      if (shouldPushToServer) {
+        scheduleSync(preferences.value)
+      } else if (!arePreferencesEqual(preferences.value, merged)) {
+        preferences.value = merged
       }
     }
 
@@ -86,12 +83,12 @@ export function useUserPreferencesProvider(
 
     watch(isAuthenticated, async newIsAuth => {
       if (newIsAuth) {
-        const serverPrefs = await loadFromServer()
-        if (serverPrefs) {
-          const merged = { ...defaultValue, ...preferences.value, ...serverPrefs }
-          if (!arePreferencesEqual(preferences.value, merged)) {
-            preferences.value = merged
-          }
+        const serverResult = await loadFromServer()
+        const { merged, shouldPushToServer } = mergePreferences(preferences.value, serverResult)
+        if (shouldPushToServer) {
+          scheduleSync(preferences.value)
+        } else if (!arePreferencesEqual(preferences.value, merged)) {
+          preferences.value = merged
         }
       }
     })

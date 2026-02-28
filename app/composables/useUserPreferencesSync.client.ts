@@ -6,6 +6,13 @@ const SYNCED_DISPLAY_MS = 3000
 
 type SyncStatus = 'idle' | 'syncing' | 'synced' | 'error'
 
+export interface ServerPreferencesResult {
+  /** The preferences from the server, or defaults if unavailable */
+  preferences: UserPreferences
+  /** True when the server has no stored preferences for this user (first login) */
+  isNewUser: boolean
+}
+
 interface PreferencesSyncState {
   status: Ref<SyncStatus>
   lastSyncedAt: Ref<Date | null>
@@ -29,14 +36,25 @@ function getSyncState(): PreferencesSyncState {
   return syncStateInstance
 }
 
-async function fetchServerPreferences(): Promise<UserPreferences | null> {
+type FetchResult =
+  | { status: 'found'; data: UserPreferences }
+  | { status: 'new-user' }
+  | { status: 'error' }
+
+async function fetchServerPreferences(): Promise<FetchResult> {
   try {
-    const response = await $fetch<UserPreferences>('/api/user/preferences', {
+    const response = await $fetch<UserPreferences | null>('/api/user/preferences', {
       method: 'GET',
     })
-    return response
+
+    // Server returns null when no stored preferences exist (first-time user)
+    if (response === null) {
+      return { status: 'new-user' }
+    }
+
+    return { status: 'found', data: response }
   } catch {
-    return null
+    return { status: 'error' }
   }
 }
 
@@ -105,21 +123,27 @@ export function useUserPreferencesSync() {
     }, SYNC_DEBOUNCE_MS)
   }
 
-  async function loadFromServer(): Promise<UserPreferences> {
+  async function loadFromServer(): Promise<ServerPreferencesResult> {
     if (!isAuthenticated.value) {
-      return { ...DEFAULT_USER_PREFERENCES }
+      return { preferences: { ...DEFAULT_USER_PREFERENCES }, isNewUser: false }
     }
 
     state.status.value = 'syncing'
-    const serverPreferences = await fetchServerPreferences()
+    const result = await fetchServerPreferences()
 
-    if (serverPreferences) {
+    if (result.status === 'found') {
       showSyncedStatus()
-      return serverPreferences
+      return { preferences: result.data, isNewUser: false }
     }
 
+    if (result.status === 'new-user') {
+      showSyncedStatus()
+      return { preferences: { ...DEFAULT_USER_PREFERENCES }, isNewUser: true }
+    }
+
+    // Network error — fall back to defaults, don't flag as new user
     state.status.value = 'idle'
-    return { ...DEFAULT_USER_PREFERENCES }
+    return { preferences: { ...DEFAULT_USER_PREFERENCES }, isNewUser: false }
   }
 
   async function flushPendingSync(preferences: UserPreferences): Promise<void> {

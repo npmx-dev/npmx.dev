@@ -1,6 +1,5 @@
 import { safeParse } from 'valibot'
 import { PublicUserSessionSchema } from '#shared/schemas/publicUserSession'
-import { DEFAULT_USER_PREFERENCES } from '#shared/schemas/userPreferences'
 import { useUserPreferencesStore } from '#server/utils/preferences/user-preferences-store'
 
 export default eventHandlerWithOAuthSession(async (event, oAuthSession, serverSession) => {
@@ -11,5 +10,8 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession, serverSe
 
   const preferences = await useUserPreferencesStore().get(session.output.did)
 
-  return preferences ?? { ...DEFAULT_USER_PREFERENCES, updatedAt: new Date().toISOString() }
+  // Return null when no stored preferences exist (first-time user).
+  // This lets the client distinguish "no server prefs" from "user has default prefs"
+  // so that anonymous localStorage customizations can be preserved on first login.
+  return preferences
 })
