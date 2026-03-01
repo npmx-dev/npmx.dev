@@ -297,7 +297,7 @@ const config = computed<VueUiSparklineConfig>(() => {
           v-if="hasWeeklyDownloads"
           type="button"
           @click="openChartModal"
-          class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-visible:outline-accent/70 rounded"
+          class="text-fg-subtle hover:text-fg transition-colors duration-200 inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 focus-ring-accent rounded"
           :title="$t('package.trends.title')"
           classicon="i-lucide:chart-line"
         >

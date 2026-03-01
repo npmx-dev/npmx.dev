@@ -93,7 +93,7 @@ const isExpanded = shallowRef(false)
     <div v-if="hasNpxDeps" class="mt-3">
       <button
         type="button"
-        class="flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+        class="flex items-center gap-1.5 text-xs text-fg-muted hover:text-fg transition-colors duration-200 focus-ring-accent rounded"
         :aria-expanded="isExpanded"
         aria-controls="npx-packages-details"
         @click="isExpanded = !isExpanded"

@@ -229,8 +229,11 @@ body {
   /* weird Firefox behavior makes it necessary to add `!important` 
   or otherwise the selector would need to be more specific,
   which it explicitly should not be. */
-  outline: 2px solid var(--accent) !important;
-  outline-offset: 2px !important;
+  @apply focus-visible:(ring-2! ring-accent/90!);
+}
+
+.focus-ring-accent {
+  @apply outline-none focus-visible:(ring-2! ring-accent/90!);
 }
 
 /* Reset dd margin (browser default is margin-left: 40px) */

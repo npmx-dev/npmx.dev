@@ -117,7 +117,7 @@ function getColumnLabel(id: ColumnId): string {
           <!-- Name (always visible) -->
           <th
             scope="col"
-            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none"
+            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none outline-none focus-visible:(inset-ring-2 inset-ring-accent/90)"
             :class="{
               'hover:text-fg transition-colors duration-200': isSortable('name'),
             }"
@@ -171,7 +171,7 @@ function getColumnLabel(id: ColumnId): string {
           <th
             v-if="isColumnVisible('downloads')"
             scope="col"
-            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none"
+            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end outline-none focus-visible:(inset-ring-2 inset-ring-accent/90)"
             :class="{
               'hover:text-fg transition-colors duration-200': isSortable('downloads'),
             }"
@@ -209,7 +209,7 @@ function getColumnLabel(id: ColumnId): string {
           <th
             v-if="isColumnVisible('updated')"
             scope="col"
-            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none"
+            class="py-3 px-3 text-xs text-start text-fg-muted font-mono font-medium uppercase tracking-wider whitespace-nowrap select-none text-end outline-none focus-visible:(inset-ring-2 inset-ring-accent/90)"
             :class="{
               'hover:text-fg transition-colors duration-200': isSortable('updated'),
             }"

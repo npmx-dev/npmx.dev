@@ -131,7 +131,7 @@ function handlePageSizeChange(event: Event) {
       >
         <button
           type="button"
-          class="px-2.5 py-1 text-xs font-mono rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="px-2.5 py-1 text-xs font-mono rounded-sm transition-colors duration-200 focus-ring-accent"
           :class="mode === 'infinite' ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="mode === 'infinite'"
           @click="mode = 'infinite'"
@@ -140,7 +140,7 @@ function handlePageSizeChange(event: Event) {
         </button>
         <button
           type="button"
-          class="px-2.5 py-1 text-xs font-mono rounded-sm transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="px-2.5 py-1 text-xs font-mono rounded-sm transition-colors duration-200 focus-ring-accent"
           :class="mode === 'paginated' ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="mode === 'paginated'"
           @click="mode = 'paginated'"
@@ -192,7 +192,7 @@ function handlePageSizeChange(event: Event) {
         <!-- Previous button -->
         <button
           type="button"
-          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 focus-ring-accent"
           :disabled="!canGoPrev"
           :aria-label="$t('filters.pagination.previous')"
           @click="goPrev"
@@ -206,10 +206,10 @@ function handlePageSizeChange(event: Event) {
           <button
             v-else
             type="button"
-            class="min-w-[32px] h-8 px-2 font-mono text-sm rounded transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+            class="min-w-[32px] h-8 px-2 font-mono text-sm rounded transition-colors duration-200 focus-ring-accent"
             :class="
               page === currentPage
-                ? 'bg-fg text-bg'
+                ? 'bg-fg text-bg focus-visible:(bg-fg/50)'
                 : 'text-fg-muted hover:text-fg hover:bg-bg-muted'
             "
             :aria-current="page === currentPage ? 'page' : undefined"
@@ -222,7 +222,7 @@ function handlePageSizeChange(event: Event) {
         <!-- Next button -->
         <button
           type="button"
-          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="p-1.5 rounded hover:bg-bg-muted text-fg-muted hover:text-fg disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 focus-ring-accent"
           :disabled="!canGoNext"
           :aria-label="$t('filters.pagination.next')"
           @click="goNext"

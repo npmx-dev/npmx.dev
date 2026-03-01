@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<SelectBaseProps>(), {
 <template>
   <select
     v-model="model"
-    class="bg-bg border border-border font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle outline-2 outline-transparent outline-offset-2 focus:border-accent focus-visible:outline-accent/70 disabled:(opacity-50 cursor-not-allowed)"
+    class="bg-bg border border-border font-mono text-fg placeholder:text-fg-subtle transition-[border-color,outline-color] duration-300 hover:border-fg-subtle focus:border-accent/90 focus-ring-accent disabled:(opacity-50 cursor-not-allowed)"
     :class="[SELECT_SIZES[size]]"
     :disabled="
       /** Catching Vue render-bug of invalid `disabled=false` attribute in the final HTML */

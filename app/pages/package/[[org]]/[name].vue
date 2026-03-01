@@ -1149,7 +1149,7 @@ const showSkeleton = shallowRef(false)
               <TooltipApp v-if="sizeTooltip" :text="sizeTooltip">
                 <span
                   tabindex="0"
-                  class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+                  class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-ring-accent rounded"
                 >
                   <span class="i-lucide:info w-3 h-3" aria-hidden="true" />
                 </span>
@@ -1295,7 +1295,7 @@ const showSkeleton = shallowRef(false)
                     href="https://docs.npmjs.com/generating-provenance-statements"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:(decoration-fg) focus-ring-accent transition-colors"
                     >{{ $t('package.security_downgrade.provenance_link_text')
                     }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                   /></a>
@@ -1315,7 +1315,7 @@ const showSkeleton = shallowRef(false)
                     href="https://docs.npmjs.com/trusted-publishers"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:(decoration-fg) focus-ring-accent transition-colors"
                     >{{ $t('package.security_downgrade.trusted_publishing_link_text')
                     }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                   /></a>
@@ -1335,7 +1335,7 @@ const showSkeleton = shallowRef(false)
                     href="https://docs.npmjs.com/generating-provenance-statements"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:(decoration-fg) focus-ring-accent transition-colors"
                     >{{ $t('package.security_downgrade.provenance_link_text')
                     }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                   /></a>
@@ -1345,7 +1345,7 @@ const showSkeleton = shallowRef(false)
                     href="https://docs.npmjs.com/trusted-publishers"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:decoration-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 transition-colors"
+                    class="inline-flex items-center gap-1 rounded-sm underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg focus-visible:(decoration-fg) focus-ring-accent transition-colors"
                     >{{ $t('package.security_downgrade.trusted_publishing_link_text')
                     }}<span class="i-lucide:external-link w-3 h-3" aria-hidden="true"
                   /></a>
@@ -1436,7 +1436,7 @@ const showSkeleton = shallowRef(false)
             :href="repositoryUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="link text-fg underline underline-offset-4 decoration-fg-subtle hover:(decoration-fg text-fg) transition-colors duration-200"
+            class="link text-fg underline underline-offset-4 decoration-fg-subtle hover:(decoration-fg text-fg) transition-colors duration-200 focus-visible:(decoration-fg) focus-ring-accent"
             >{{ $t('package.readme.view_on_github') }}</a
           >
         </p>

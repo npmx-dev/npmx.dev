@@ -139,7 +139,7 @@ function handleDisconnect() {
                           :aria-label="
                             copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
                           "
-                          class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+                          class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/90 rounded"
                           @click="copyCommand"
                         >
                           <span v-if="!copied" class="i-lucide:copy block w-5 h-5" aria-hidden="true" />

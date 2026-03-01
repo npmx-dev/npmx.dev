@@ -1764,7 +1764,7 @@ watch(selectedMetric, value => {
           v-if="showResetButton"
           type="button"
           aria-label="Reset date range"
-          class="self-end flex items-center justify-center px-2.5 py-2.25 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+          class="self-end flex items-center justify-center px-2.5 py-2.25 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-ring-accent sm:mb-0"
           @click="resetDateRange"
         >
           <span class="block i-lucide:undo-2 w-5 h-5" aria-hidden="true" />
@@ -2015,7 +2015,7 @@ watch(selectedMetric, value => {
               <button
                 type="button"
                 aria-label="reset minimap"
-                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-visible:outline-accent/70 sm:mb-0"
+                class="absolute inset-is-1/2 -translate-x-1/2 -bottom-18 sm:inset-is-unset sm:translate-x-0 sm:bottom-auto sm:-inset-ie-20 sm:-top-3 flex items-center justify-center px-2.5 py-1.75 border border-transparent rounded-md text-fg-subtle hover:text-fg transition-colors hover:border-border focus-ring-accent sm:mb-0"
                 style="pointer-events: all !important"
                 @click="resetMinimap"
               >

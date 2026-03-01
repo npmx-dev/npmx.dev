@@ -188,7 +188,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
     <!-- Collapsed header -->
     <button
       type="button"
-      class="w-full flex items-center gap-3 px-4 py-3 text-start hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset"
+      class="w-full flex items-center gap-3 px-4 py-3 text-start hover:bg-bg-muted transition-colors duration-200 focus-ring-accent"
       :aria-expanded="isExpanded"
       @click="isExpanded = !isExpanded"
     >
@@ -225,7 +225,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
                 v-for="scope in SEARCH_SCOPE_VALUES"
                 :key="scope"
                 type="button"
-                class="px-2 py-0.5 text-xs font-mono rounded-sm border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+                class="px-2 py-0.5 text-xs font-mono rounded-sm border transition-colors duration-200 focus-ring-accent"
                 :class="
                   filters.searchScope === scope
                     ? 'bg-bg-subtle text-fg border-fg-subtle'
@@ -337,7 +337,7 @@ const hasActiveFilters = computed(() => !!filterSummary.value)
             <button
               v-if="hasMoreKeywords"
               type="button"
-              class="text-xs text-fg-subtle self-center font-mono hover:text-fg transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+              class="text-xs text-fg-subtle self-center font-mono hover:text-fg transition-colors duration-200 focus-ring-accent"
               @click="showAllKeywords = true"
             >
               {{ $t('filters.more_keywords', { count: (availableKeywords?.length ?? 0) - 20 }) }}

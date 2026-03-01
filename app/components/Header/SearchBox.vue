@@ -57,7 +57,9 @@ defineExpose({ focus })
             @blur="isSearchFocused = false"
             size="small"
           />
-          <button type="submit" class="sr-only">{{ $t('search.button') }}</button>
+          <button type="submit" class="sr-only focus-ring-accent">
+            {{ $t('search.button') }}
+          </button>
         </div>
       </div>
     </form>

@@ -184,7 +184,7 @@ const numberFormatter = useNumberFormatter()
       <button
         v-if="sortedDependencies.length > 10 && !depsExpanded"
         type="button"
-        class="my-2 ms-1 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
+        class="my-2 ms-1 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-ring-accent"
         @click="depsExpanded = true"
       >
         {{
@@ -239,7 +239,7 @@ const numberFormatter = useNumberFormatter()
       <button
         v-if="sortedPeerDependencies.length > 10 && !peerDepsExpanded"
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-ring-accent"
         @click="peerDepsExpanded = true"
       >
         {{
@@ -296,7 +296,7 @@ const numberFormatter = useNumberFormatter()
       <button
         v-if="sortedOptionalDependencies.length > 10 && !optionalDepsExpanded"
         type="button"
-        class="mt-2 truncate"
+        class="mt-2 truncate focus-ring-accent"
         @click="optionalDepsExpanded = true"
       >
         {{

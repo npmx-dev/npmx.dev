@@ -59,7 +59,7 @@ const roleLabels = computed(
           </h1>
           <button
             type="button"
-            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-ring-accent shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >
@@ -201,7 +201,7 @@ const roleLabels = computed(
                 <img
                   :src="`${person.avatar_url}&s=80`"
                   :alt="`${person.login}'s avatar`"
-                  class="w-12 h-12 rounded-md ring-1 ring-border shrink-0"
+                  class="w-12 h-12 rounded-md ring-2 ring-border shrink-0"
                   loading="lazy"
                 />
                 <div class="min-w-0 flex-1">

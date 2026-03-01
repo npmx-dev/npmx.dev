@@ -44,7 +44,7 @@ const allMaintainersText = computed(() => {
 
 <template>
   <tr
-    class="group relative scale-100 [clip-path:inset(0)] border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none focus:bg-bg-muted"
+    class="group relative scale-100 [clip-path:inset(0)] border-b border-border hover:bg-bg-muted transition-colors duration-200 outline-none focus-visible:(inset-ring-2 inset-ring-accent/90) focus:bg-bg-muted"
     tabindex="0"
     :data-result-index="index"
   >

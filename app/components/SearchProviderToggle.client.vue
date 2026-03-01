@@ -122,7 +122,7 @@ useEventListener('keydown', event => {
               href="https://www.algolia.com/developers"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-xs text-fg-subtle hover:text-fg-muted transition-colors inline-flex items-center gap-1 px-2"
+              class="text-xs text-fg-subtle hover:text-fg-muted transition-colors inline-flex items-center gap-1 px-2 focus-ring-accent"
             >
               {{ $t('search.algolia_disclaimer') }}
               <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />

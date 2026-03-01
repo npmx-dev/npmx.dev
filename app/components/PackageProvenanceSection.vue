@@ -33,7 +33,7 @@ defineProps<{
           :href="details.buildSummaryUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="link text-sm text-fg-muted inline-flex"
+          class="link text-sm text-fg-muted inline-flex focus-ring-accent"
         >
           {{ $t('package.provenance_section.view_build_summary') }}
         </a>
@@ -49,7 +49,7 @@ defineProps<{
               :href="details.sourceCommitUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="link font-mono text-sm block min-w-0 truncate"
+              class="link font-mono text-sm block min-w-0 truncate focus-ring-accent"
               :title="details.sourceCommitSha ?? details.sourceCommitUrl"
             >
               {{
@@ -70,7 +70,7 @@ defineProps<{
               :href="details.buildFileUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="link font-mono text-sm block min-w-0 break-words"
+              class="link font-mono text-sm block min-w-0 break-words focus-ring-accent"
               :title="details.buildFilePath ?? details.buildFileUrl"
             >
               {{ details.buildFilePath ?? details.buildFileUrl }}
@@ -87,7 +87,7 @@ defineProps<{
               :href="details.publicLedgerUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="link text-sm inline-flex"
+              class="link text-sm inline-flex focus-ring-accent"
             >
               {{ $t('package.provenance_section.transparency_log_entry') }}
             </a>

@@ -76,7 +76,7 @@ const icons = [
           </h1>
           <button
             type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-ring-accent shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >
@@ -158,7 +158,7 @@ const icons = [
               <!-- Campsite icon — click it 3x to light the fire -->
               <button
                 type="button"
-                class="relative shrink-0 cursor-pointer rounded transition-transform duration-200 hover:scale-110 focus-visible:outline-accent/70 w-5 h-5 sm:w-6 sm:h-6"
+                class="relative shrink-0 cursor-pointer rounded transition-transform duration-200 hover:scale-110 focus-ring-accent w-5 h-5 sm:w-6 sm:h-6"
                 :aria-label="$t('vacations.poke_log')"
                 @click="pokeLog"
               >

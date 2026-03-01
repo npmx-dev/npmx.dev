@@ -32,7 +32,7 @@ const title = computed(() =>
     :href="`https://www.npmjs.com/package/${packageName}/v/${version}#provenance`"
     target="_blank"
     rel="noopener noreferrer"
-    class="inline-flex items-center justify-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6"
+    class="inline-flex items-center justify-center gap-1 text-xs font-mono text-fg-muted hover:text-fg transition-colors duration-200 min-w-6 min-h-6 focus-ring-accent"
     :title="title"
   >
     <span class="i-lucide:shield-check shrink-0" :class="compact ? 'w-3.5 h-3.5' : 'w-4 h-4'" />

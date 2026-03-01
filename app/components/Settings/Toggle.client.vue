@@ -41,7 +41,7 @@ const id = useId()
         type="checkbox"
         :id
         v-model="checked"
-        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle checked:bg-fg checked:border-fg focus-visible:(outline-2 outline-fg outline-offset-2) before:content-[''] before:absolute before:h-5 before:w-5 before:top-1px before:rounded-full before:bg-bg"
+        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle checked:bg-fg checked:border-fg focus-visible:(checked:bg-fg/50!) focus-ring-accent before:content-[''] before:absolute before:h-5 before:w-5 before:top-1px before:rounded-full before:bg-bg"
         style="grid-area: toggle"
       />
       <TooltipApp
@@ -87,7 +87,7 @@ const id = useId()
         type="checkbox"
         :id
         v-model="checked"
-        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle checked:bg-fg checked:border-fg focus-visible:(outline-2 outline-fg outline-offset-2) before:content-[''] before:absolute before:h-5 before:w-5 before:top-1px before:rounded-full before:bg-bg"
+        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle checked:bg-fg checked:border-fg focus-visible:(checked:bg-fg/50!) focus-ring-accent before:content-[''] before:absolute before:h-5 before:w-5 before:top-1px before:rounded-full before:bg-bg"
         style="grid-area: toggle; justify-self: end"
       />
     </template>

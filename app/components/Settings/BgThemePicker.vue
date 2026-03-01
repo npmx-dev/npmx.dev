@@ -25,13 +25,13 @@ onPrehydrate(el => {
 
 <template>
   <fieldset
-    class="flex items-center gap-4 has-[input:focus-visible]:(outline-solid outline-accent/70 outline-offset-4) rounded-xl w-fit"
+    class="flex items-center gap-4 outline-none has-[input:focus-visible]:(ring-2 ring-accent/90) rounded-xl w-fit"
   >
     <legend class="sr-only">{{ $t('settings.background_themes') }}</legend>
     <label
       v-for="theme in backgroundThemes"
       :key="theme.id"
-      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) has-[:focus-visible]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle)"
+      class="size-6 rounded-full transition-transform duration-150 motion-safe:hover:scale-110 has-[:checked]:(ring-2 ring-fg ring-offset-2 ring-offset-bg-subtle) outline-none has-[:focus-visible]:(ring-2 ring-accent/90)"
       :style="{ backgroundColor: theme.value }"
     >
       <input

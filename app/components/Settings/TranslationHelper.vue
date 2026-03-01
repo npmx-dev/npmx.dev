@@ -80,7 +80,7 @@ ${template}`
         </h4>
         <button
           type="button"
-          class="text-xs text-accent hover:underline rounded focus-visible:outline-accent/70"
+          class="text-xs text-accent hover:underline rounded focus-ring-accent"
           @click="copyMissingKeysTemplate"
         >
           {{ copied ? $t('common.copied') : $t('i18n.copy_keys') }}
@@ -96,7 +96,7 @@ ${template}`
       <button
         v-if="hasMoreKeys"
         type="button"
-        class="text-xs text-fg-muted hover:text-fg rounded focus-visible:outline-accent/70"
+        class="text-xs text-fg-muted hover:text-fg rounded focus-ring-accent"
         @click="showAll = true"
       >
         {{
@@ -120,7 +120,7 @@ ${template}`
           :href="status.githubEditUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs bg-bg hover:bg-bg-subtle border border-border rounded-md transition-colors focus-visible:outline-accent/70"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs bg-bg hover:bg-bg-subtle border border-border rounded-md transition-colors focus-ring-accent"
         >
           <span class="i-lucide:pen w-3.5 h-3.5" aria-hidden="true" />
           {{ $t('i18n.edit_on_github') }}
@@ -130,7 +130,7 @@ ${template}`
           :href="contributionGuideUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-fg-muted hover:text-fg rounded transition-colors focus-visible:outline-accent/70"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-fg-muted hover:text-fg rounded transition-colors focus-ring-accent"
         >
           <span class="i-lucide:file-text w-3.5 h-3.5" aria-hidden="true" />
           {{ $t('i18n.view_guide') }}

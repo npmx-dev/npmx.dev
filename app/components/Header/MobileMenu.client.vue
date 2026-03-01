@@ -95,7 +95,7 @@ onUnmounted(deactivate)
               <span class="font-mono text-sm text-fg-muted">{{ $t('nav.menu') }}</span>
               <button
                 type="button"
-                class="p-2 -m-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
+                class="p-2 -m-2 text-fg-subtle hover:text-fg transition-colors duration-200 focus-ring-accent rounded"
                 :aria-label="$t('common.close')"
                 @click="closeMenu"
               >

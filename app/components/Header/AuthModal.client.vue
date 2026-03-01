@@ -121,7 +121,7 @@ watch(user, async newUser => {
 
         <details class="text-sm">
           <summary
-            class="text-fg-subtle hover:text-fg-muted transition-colors duration-200 focus-visible:(outline-2 outline-accent/70)"
+            class="text-fg-subtle hover:text-fg-muted transition-colors duration-200 focus-ring-accent"
           >
             {{ $t('auth.modal.what_is_atmosphere') }}
           </summary>

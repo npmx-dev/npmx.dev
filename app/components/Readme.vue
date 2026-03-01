@@ -135,13 +135,13 @@ function handleClick(event: MouseEvent) {
 }
 
 .readme :deep(a) {
-  @apply underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg transition-colors duration-200;
+  @apply inline-block underline-offset-[0.2rem] underline decoration-1 decoration-fg/30 font-mono text-fg transition-colors duration-200;
 }
 .readme :deep(a:hover) {
   @apply decoration-accent text-accent;
 }
 .readme :deep(a:focus-visible) {
-  @apply decoration-accent text-accent;
+  @apply outline-none decoration-accent text-accent ring-2 ring-accent/90;
 }
 
 .readme :deep(a[target='_blank']:not(:has(img))::after) {
@@ -212,6 +212,7 @@ function handleClick(event: MouseEvent) {
 .readme :deep(.readme-code-block:hover .readme-copy-button),
 .readme :deep(.readme-copy-button:focus-visible) {
   opacity: 1;
+  @apply outline-none ring-2 ring-accent/90;
 }
 
 .readme :deep(.readme-copy-button:hover) {

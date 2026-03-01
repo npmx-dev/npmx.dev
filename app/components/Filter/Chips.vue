@@ -21,7 +21,7 @@ const emit = defineEmits<{
         }}</span>
         <button
           type="button"
-          class="flex items-center p-1 -m-1 hover:text-fg rounded-full transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-1"
+          class="flex items-center p-1 -m-1 hover:text-fg rounded-full transition-colors duration-200 focus-ring-accent"
           :aria-label="$t('filters.remove_filter', { label: chip.label })"
           @click="emit('remove', chip)"
         >
@@ -33,7 +33,7 @@ const emit = defineEmits<{
     <button
       v-if="chips.length > 1"
       type="button"
-      class="text-sm p-0.5 text-fg-muted hover:text-fg underline transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-offset-2"
+      class="text-sm p-0.5 text-fg-muted hover:text-fg underline transition-colors duration-200 focus-ring-accent"
       @click="emit('clearAll')"
     >
       {{ $t('filters.clear_all') }}

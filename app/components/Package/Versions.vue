@@ -531,7 +531,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           <TooltipApp interactive position="top">
             <span
               tabindex="0"
-              class="block cursor-help shrink-0 -m-2 p-2 -me-1 focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
+              class="block cursor-help shrink-0 -m-2 p-2 -me-1 focus-ring-accent rounded"
             >
               <span
                 class="block i-lucide:info w-3.5 h-3.5 text-fg-subtle"
@@ -582,7 +582,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
           <button
             v-if="getTagVersions(row.tag).length > 1 || !hasLoadedAll"
             type="button"
-            class="size-5 -me-1 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors rounded-sm relative z-10"
+            class="size-5 -me-1 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors rounded-sm relative z-10 focus-ring-accent"
             :aria-expanded="expandedTags.has(row.tag)"
             :aria-label="
               expandedTags.has(row.tag)
@@ -746,7 +746,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
       <div class="p-1">
         <button
           type="button"
-          class="flex items-center gap-2 text-start rounded-sm w-full"
+          class="flex items-center gap-2 text-start rounded-sm w-full focus-ring-accent"
           :class="otherVersionsContainsCurrent() ? 'bg-bg-subtle' : ''"
           :aria-expanded="otherVersionsExpanded"
           :aria-label="
@@ -858,7 +858,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
                   <div class="flex items-center gap-2 min-w-0">
                     <button
                       type="button"
-                      class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0 rounded-sm relative z-10"
+                      class="w-4 h-4 flex items-center justify-center text-fg-subtle hover:text-fg transition-colors shrink-0 rounded-sm relative z-10 focus-ring-accent"
                       :aria-expanded="expandedMajorGroups.has(group.groupKey)"
                       :aria-label="
                         expandedMajorGroups.has(group.groupKey)

@@ -50,7 +50,7 @@ function handleCardClick(event: MouseEvent) {
         v-for="link in socialLinks"
         :key="link.id"
         @click="handleCardClick"
-        class="cursor-pointer group relative grid gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200 sm:grid-rows-subgrid sm:row-span-3 focus-within:ring-2 focus-within:ring-accent/50"
+        class="cursor-pointer group relative grid gap-3 p-4 rounded-lg bg-bg-subtle hover:bg-bg-elevated border border-border hover:border-border-hover transition-all duration-200 sm:grid-rows-subgrid sm:row-span-3 focus-within:ring-2 focus-within:ring-accent/90 focus:border-accent/90"
       >
         <h3 class="flex gap-2">
           <span :class="link.icon" class="shrink-0 mt-1 w-5 h-5 text-fg" aria-hidden="true" />

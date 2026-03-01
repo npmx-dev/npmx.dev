@@ -129,7 +129,7 @@ const canGoBack = useCanGoBack()
                   href="https://github.com/npmx-dev/npmx.dev/issues"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1 text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg"
+                  class="inline-flex items-center gap-1 text-fg-muted hover:text-fg underline decoration-fg-subtle/50 hover:decoration-fg focus-ring-accent"
                 >
                   {{ $t('a11y.contact.link') }}
                   <span class="i-lucide:external-link rtl-flip w-4 h-4" aria-hidden="true" />

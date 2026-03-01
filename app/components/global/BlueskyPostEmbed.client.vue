@@ -107,7 +107,7 @@ const postUrl = computed(() => {
     :href="postUrl ?? '#'"
     target="_blank"
     rel="noopener noreferrer"
-    class="not-prose block rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200"
+    class="not-prose block rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200 focus-ring-accent"
   >
     <!-- Author row -->
     <div class="flex items-center gap-3 mb-3">

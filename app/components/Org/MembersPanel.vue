@@ -310,7 +310,7 @@ watch(lastExecutionTime, () => {
       </h2>
       <button
         type="button"
-        class="p-1.5 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
+        class="p-1.5 text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-ring-accent"
         :aria-label="$t('org.members.refresh')"
         :disabled="isLoading"
         @click="refreshData"
@@ -351,7 +351,7 @@ watch(lastExecutionTime, () => {
           v-for="role in ['all', 'owner', 'admin', 'developer'] as const"
           :key="role"
           type="button"
-          class="px-2 py-1 font-mono text-xs rounded transition-colors duration-200 focus-visible:outline-accent/70"
+          class="px-2 py-1 font-mono text-xs rounded transition-colors duration-200 focus-ring-accent"
           :class="filterRole === role ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="filterRole === role"
           @click="filterRole = role"
@@ -383,7 +383,7 @@ watch(lastExecutionTime, () => {
       >
         <button
           type="button"
-          class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-visible:outline-accent/70"
+          class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-ring-accent"
           :class="sortBy === 'name' ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="sortBy === 'name'"
           @click="toggleSort('name')"
@@ -393,7 +393,7 @@ watch(lastExecutionTime, () => {
         </button>
         <button
           type="button"
-          class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-visible:outline-accent/70"
+          class="px-2 py-1 font-mono rounded transition-colors duration-200 focus-ring-accent"
           :class="sortBy === 'role' ? 'bg-bg-muted text-fg' : 'text-fg-muted hover:text-fg'"
           :aria-pressed="sortBy === 'role'"
           @click="toggleSort('role')"
@@ -420,7 +420,7 @@ watch(lastExecutionTime, () => {
       </p>
       <button
         type="button"
-        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
+        class="mt-2 font-mono text-xs text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-ring-accent"
         @click="loadMembers"
       >
         {{ $t('common.try_again') }}
@@ -482,7 +482,7 @@ watch(lastExecutionTime, () => {
             <!-- Remove button -->
             <button
               type="button"
-              class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-visible:outline-accent/70"
+              class="p-1 text-fg-subtle hover:text-red-400 transition-colors duration-200 rounded focus-ring-accent"
               :aria-label="$t('org.members.remove_from_org', { name: member.name })"
               @click="handleRemoveMember(member.name)"
             >
@@ -496,7 +496,7 @@ watch(lastExecutionTime, () => {
             v-for="team in member.teams"
             :key="team"
             type="button"
-            class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted border border-border rounded hover:text-fg hover:border-border-hover transition-colors duration-200 focus-visible:outline-accent/70"
+            class="inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-xs text-fg-muted border border-border rounded hover:text-fg hover:border-border-hover transition-colors duration-200 focus-ring-accent"
             :aria-label="$t('org.members.view_team', { team })"
             @click="handleTeamClick(team)"
           >
@@ -562,13 +562,13 @@ watch(lastExecutionTime, () => {
             <button
               type="submit"
               :disabled="!newUsername.trim() || isAddingMember"
-              class="px-3 py-2 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-accent/70"
+              class="px-3 py-2 font-mono text-xs text-bg bg-fg rounded transition-all duration-200 hover:bg-fg/90 disabled:opacity-50 disabled:cursor-not-allowed focus-ring-accent"
             >
               {{ isAddingMember ? '…' : $t('org.members.add_button') }}
             </button>
             <button
               type="button"
-              class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70"
+              class="p-1.5 text-fg-subtle hover:text-fg transition-colors duration-200 rounded focus-ring-accent"
               :aria-label="$t('org.members.cancel_add')"
               @click="showAddMember = false"
             >
@@ -580,7 +580,7 @@ watch(lastExecutionTime, () => {
       <button
         v-else
         type="button"
-        class="w-full px-3 py-2 font-mono text-sm text-fg-muted bg-bg border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-visible:outline-accent/70"
+        class="w-full px-3 py-2 font-mono text-sm text-fg-muted bg-bg border border-border rounded transition-colors duration-200 hover:text-fg hover:border-border-hover focus-ring-accent"
         @click="showAddMember = true"
       >
         {{ $t('org.members.add_member') }}

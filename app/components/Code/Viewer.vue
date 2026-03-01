@@ -100,7 +100,7 @@ watch(
         :key="lineNum"
         :href="`#L${lineNum}`"
         tabindex="-1"
-        class="line-number block px-3 py-0 font-mono text-sm leading-6 cursor-pointer transition-colors no-underline"
+        class="line-number block px-3 py-0 font-mono text-sm leading-6 cursor-pointer transition-colors no-underline focus-ring-accent"
         :class="[
           isLineSelected(lineNum)
             ? 'bg-yellow-500/20 text-fg'

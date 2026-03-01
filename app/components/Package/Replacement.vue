@@ -47,7 +47,7 @@ const docPath = computed(() => {
             href="https://e18e.dev/docs/replacements/"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
+            class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors focus-visible:(decoration-fg) focus-ring-accent"
           >
             {{ $t('package.replacement.community') }}
             <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
@@ -67,7 +67,7 @@ const docPath = computed(() => {
             href="https://e18e.dev/docs/replacements/"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
+            class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors focus-visible:(decoration-fg) focus-ring-accent"
           >
             {{ $t('package.replacement.community') }}
             <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
@@ -82,7 +82,7 @@ const docPath = computed(() => {
         :href="mdnUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
+        class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors focus-visible:(decoration-fg) focus-ring-accent"
       >
         {{ $t('package.replacement.mdn') }}
         <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
@@ -92,7 +92,7 @@ const docPath = computed(() => {
         :href="docPath"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors"
+        class="inline-flex items-center gap-1 ms-1 underline underline-offset-4 decoration-amber-600/60 dark:decoration-amber-400/50 hover:decoration-fg transition-colors focus-visible:(decoration-fg) focus-ring-accent"
       >
         {{ $t('package.replacement.learn_more') }}
         <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />

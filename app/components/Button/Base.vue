@@ -43,9 +43,9 @@ defineExpose({
       'flex': block,
       'text-sm px-4 py-2': size === 'medium',
       'text-xs px-2 py-0.5': size === 'small',
-      'bg-transparent text-fg hover:enabled:(bg-fg/10) focus-visible:enabled:(bg-fg/10) aria-pressed:(bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
+      'bg-transparent text-fg hover:enabled:(bg-fg/10) outline-none focus-visible:enabled:(bg-fg/10 ring-2 ring-accent/90) aria-pressed:(bg-fg/10 border-fg/20 hover:enabled:(bg-fg/20 text-fg/50))':
         variant === 'secondary',
-      'text-bg bg-fg hover:enabled:(bg-fg/50) focus-visible:enabled:(bg-fg/50) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
+      'text-bg bg-fg hover:enabled:(bg-fg/50) outline-none focus-visible:enabled:(bg-fg/50 ring-2 ring-accent/90) aria-pressed:(bg-fg text-bg border-fg hover:enabled:(text-bg/50))':
         variant === 'primary',
     }"
     :type="props.type"

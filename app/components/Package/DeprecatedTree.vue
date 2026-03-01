@@ -48,7 +48,7 @@ function getDepthStyle(depth: DependencyDepth) {
       <!-- Header -->
       <button
         type="button"
-        class="w-full flex items-center justify-between gap-3 px-4 py-3 text-start transition-colors duration-200 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/70"
+        class="w-full flex items-center justify-between gap-3 px-4 py-3 text-start transition-colors duration-200 hover:bg-white/5 outline-none focus-visible:(inset-ring-2 inset-ring-accent/90)"
         :aria-expanded="isExpanded"
         aria-controls="deprecated-tree-details"
         @click="isExpanded = !isExpanded"
@@ -85,7 +85,7 @@ function getDepthStyle(depth: DependencyDepth) {
 
               <NuxtLink
                 :to="packageRoute(pkg.name, pkg.version)"
-                class="font-mono text-sm font-medium hover:underline truncate py-4"
+                class="font-mono text-sm font-medium hover:underline truncate py-4 focus-ring-accent"
                 :class="getDepthStyle(pkg.depth).text"
               >
                 {{ pkg.name }}@{{ pkg.version }}
@@ -100,7 +100,7 @@ function getDepthStyle(depth: DependencyDepth) {
         <button
           v-if="analysisData!.deprecatedPackages.length > 5 && !showAll"
           type="button"
-          class="w-full px-4 py-2 text-xs font-mono text-fg-muted hover:text-fg border-t border-border transition-colors duration-200"
+          class="w-full px-4 py-2 text-xs font-mono text-fg-muted hover:text-fg border-t border-border transition-colors duration-200 focus-ring-accent"
           @click="showAll = true"
         >
           {{
