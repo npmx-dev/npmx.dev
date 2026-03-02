@@ -895,6 +895,7 @@ const showSkeleton = shallowRef(false)
               :aria-label="$t('common.scroll_to_top')"
               @click="scrollToTop"
               classicon="i-lucide:arrow-up"
+              class="sm:p-2.75"
             />
           </ButtonGroup>
 
