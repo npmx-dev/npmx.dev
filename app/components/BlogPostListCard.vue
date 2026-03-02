@@ -16,6 +16,8 @@ defineProps<{
   path: string
   /** For keyboard nav scaffold */
   index: number
+  /** Whether this post is an unpublished draft */
+  draft?: boolean
 }>()
 </script>
 
@@ -30,7 +32,15 @@ defineProps<{
     >
       <!-- Text Content -->
       <div class="flex-1 min-w-0 text-start gap-2">
-        <span class="text-xs text-fg-muted font-mono">{{ published }}</span>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-fg-muted font-mono">{{ published }}</span>
+          <span
+            v-if="draft"
+            class="text-xs px-1.5 py-0.5 rounded badge-orange font-sans font-medium"
+          >
+            {{ $t('blog.draft_badge') }}
+          </span>
+        </div>
         <h2
           class="font-mono text-xl font-medium text-fg group-hover:text-primary transition-colors hover:underline"
         >

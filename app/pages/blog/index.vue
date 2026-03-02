@@ -41,6 +41,7 @@ useSeoMeta({
             :topics="Array.isArray(post.tags) ? post.tags : placeHolder"
             :published="post.date"
             :index="idx"
+            :draft="post.draft"
           />
           <hr v-if="idx < posts.length - 1" class="border-border-subtle" />
         </template>

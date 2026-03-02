@@ -8,11 +8,10 @@ import { read } from 'gray-matter'
 import { safeParse } from 'valibot'
 import { BlogPostSchema, type BlogPostFrontmatter } from '../shared/schemas/blog'
 import { globSync } from 'tinyglobby'
-import { isProduction } from '../config/env'
 
 /**
  * Scans the blog directory for .md files and extracts validated frontmatter.
- * Returns only non-draft posts sorted by date descending.
+ * Returns all posts (including drafts) sorted by date descending.
  */
 function loadBlogPosts(blogDir: string): BlogPostFrontmatter[] {
   const files: string[] = globSync(join(blogDir, '*.md'))
@@ -34,8 +33,6 @@ function loadBlogPosts(blogDir: string): BlogPostFrontmatter[] {
 
     const result = safeParse(BlogPostSchema, frontmatter)
     if (!result.success) continue
-
-    if (result.output.draft) continue
 
     posts.push(result.output)
   }
@@ -95,25 +92,15 @@ export default defineNuxtModule({
 
     nuxt.options.alias['#blog/posts'] = join(nuxt.options.buildDir, 'blog/posts')
 
-    // In production, remove page routes for draft posts
-    if (!nuxt.options.dev && isProduction) {
-      const publishedPosts = loadBlogPosts(blogDir)
-      const publishedSlugs = new Set(publishedPosts.map(p => p.slug))
-
-      nuxt.hook('pages:extend', pages => {
-        // Walk the pages tree and remove draft blog post pages
-        for (let i = pages.length - 1; i >= 0; i--) {
-          const page = pages[i]!
-          // Blog post pages are at /blog/<slug> — the file is blog/<slug>.md
-          if (page.file?.endsWith('.md') && page.file?.includes('/blog/')) {
-            // Extract the slug from the filename
-            const filename = page.file.split('/').pop()?.replace('.md', '')
-            if (filename && filename !== 'index' && !publishedSlugs.has(filename)) {
-              pages.splice(i, 1)
-            }
-          }
+    // Add X-Robots-Tag header for draft posts to prevent indexing
+    const posts = loadBlogPosts(blogDir)
+    for (const post of posts) {
+      if (post.draft) {
+        nuxt.options.routeRules ||= {}
+        nuxt.options.routeRules[`/blog/${post.slug}`] = {
+          headers: { 'X-Robots-Tag': 'noindex, nofollow' },
         }
-      })
+      }
     }
   },
 })

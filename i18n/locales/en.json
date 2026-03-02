@@ -85,6 +85,8 @@
     "author": {
       "view_profile": "View {name}'s profile on Bluesky"
     },
+    "draft_badge": "Draft",
+    "draft_banner": "This is an unpublished draft. It may be incomplete or contain inaccuracies.",
     "atproto": {
       "view_on_bluesky": "View on Bluesky",
       "reply_on_bluesky": "Reply on Bluesky",

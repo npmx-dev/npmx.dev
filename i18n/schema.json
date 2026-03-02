@@ -259,6 +259,12 @@
           },
           "additionalProperties": false
         },
+        "draft_badge": {
+          "type": "string"
+        },
+        "draft_banner": {
+          "type": "string"
+        },
         "atproto": {
           "type": "object",
           "properties": {
