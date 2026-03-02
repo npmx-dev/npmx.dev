@@ -1333,12 +1333,6 @@
               },
               "additionalProperties": false
             },
-            "play_animation": {
-              "type": "string"
-            },
-            "pause_animation": {
-              "type": "string"
-            },
             "data_correction": {
               "type": "string"
             },

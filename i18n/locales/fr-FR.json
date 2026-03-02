@@ -413,8 +413,6 @@
         "likes": "J'aime",
         "contributors": "Contributeurs"
       },
-      "play_animation": "Lancer l'animation",
-      "pause_animation": "Mettre l'animation en pause",
       "data_correction": "Correction des données",
       "average_window": "Plage de moyenne",
       "smoothing": "Lissage",

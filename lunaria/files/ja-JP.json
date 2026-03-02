@@ -409,8 +409,6 @@
         "likes": "いいね数",
         "contributors": "コントリビューター"
       },
-      "play_animation": "アニメーション再生",
-      "pause_animation": "アニメーション停止",
       "data_correction": "データ補正",
       "average_window": "平均ウィンドウ",
       "smoothing": "スムージング",
