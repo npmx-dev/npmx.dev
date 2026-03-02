@@ -21,7 +21,7 @@ Today we're releasing the alpha of [npmx.dev](https://npmx.dev), a fast, modern 
 
 npmx is about speed and simplicity: making it quicker and easier to find, evaluate, and manage npm packages. It gives you useful data &ndash; like install size, module format, and outdated dependencies &ndash; right where you need it, so you can make better decisions about the packages you use.
 
-We're also building social features into npmx, because open source is better when it's easier to connect with the people behind the packages.
+We're also building social features into npmx because open source is better when it's easier to connect with the people behind the packages.
 
 ## The need for npmx
 
