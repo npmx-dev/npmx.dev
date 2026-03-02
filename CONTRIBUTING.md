@@ -466,6 +466,7 @@ The following scripts help manage translation files. `en.json` is the reference 
 | `pnpm i18n:check:fix [locale]` | Same as check, but adds missing keys to other locales with English placeholders.                                                                                                        |
 | `pnpm i18n:report`             | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
 | `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
+| `pnpm i18n:schema`             | Generates a JSON Schema from `en.json` at `i18n/schema.json`. Locale files reference this schema for IDE validation and autocompletion.                                                 |
 
 ### Adding a new locale
 
@@ -491,17 +492,8 @@ To add a new locale:
    },
    ```
 
-4. Copy your translation file to `lunaria/files/` for translation tracking:
-
-   ```bash
-   cp i18n/locales/uk-UA.json lunaria/files/uk-UA.json
-   ```
-
-   > ⚠**Important:**
-   > This file must be committed. Lunaria uses git history to track translation progress, so the build will fail if this file is missing.
-
-5. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
-6. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
+4. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
+5. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
 
 Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization#custom-pluralization) and [Plural Rules](https://cldr.unicode.org/index/cldr-spec/plural-rules#TOC-Determining-Plural-Categories) for more info.
 
@@ -1032,7 +1024,7 @@ Format: `type(scope): description`
 
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 
-**Scopes (optional):** `docs`, `i18n`, `deps`
+**Scopes (optional):** `a11y`, `blog`, `deps`, `docs`, `cli`, `i18n`, `ui`
 
 **Examples:**
 

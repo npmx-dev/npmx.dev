@@ -128,9 +128,10 @@ useSeoMeta({
   twitterDescription: () => `npm packages maintained by ${username.value}`,
 })
 
-defineOgImage('Page.takumi', {
+defineOgImageComponent('Default', {
   title: () => `~${username.value}`,
   description: () => (results.value ? `${results.value.total} packages` : 'npm user profile'),
+  primaryColor: '#60a5fa',
 })
 </script>
 

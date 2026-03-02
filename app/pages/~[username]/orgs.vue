@@ -108,7 +108,7 @@ useSeoMeta({
   twitterDescription: () => `npm organizations for ${username.value}`,
 })
 
-defineOgImage('Page.takumi', {
+defineOgImageComponent('Default', {
   title: () => `@${username.value}`,
   description: () => {
     if (isLoading.value) return 'npm organizations'
@@ -117,6 +117,7 @@ defineOgImage('Page.takumi', {
     const count = orgs.value.length
     return `${count} ${count === 1 ? 'organization' : 'organizations'}`
   },
+  primaryColor: '#60a5fa',
 })
 </script>
 

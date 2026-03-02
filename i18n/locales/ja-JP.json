@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npmはnpm, Inc.の登録商標です。当サイトはnpm, Inc.とは関係ありません。",
   "footer": {
     "about": "npmxについて",
+    "blog": "ブログ",
     "docs": "ドキュメント",
     "source": "ソースコード",
     "social": "ソーシャル",
@@ -77,6 +78,31 @@
     "links": "リンク",
     "tap_to_search": "タップして検索"
   },
+  "blog": {
+    "title": "ブログ",
+    "heading": "ブログ",
+    "meta_description": "npmxコミュニティからの知見やアップデート",
+    "author": {
+      "view_profile": "Blueskyで {name} のプロフィールを表示"
+    },
+    "draft_badge": "下書き",
+    "draft_banner": "これは未公開の下書きです。内容が不完全であったり、不正確な情報が含まれている可能性があります。",
+    "atproto": {
+      "view_on_bluesky": "Blueskyで表示",
+      "reply_on_bluesky": "Blueskyでリプライ",
+      "likes_on_bluesky": "Blueskyでいいねする",
+      "like_or_reply_on_bluesky": "Blueskyでこの投稿にいいねまたはコメントを追加",
+      "no_comments_yet": "コメントはまだありません。",
+      "could_not_load_comments": "コメントを読み込めませんでした。",
+      "comments": "コメント",
+      "loading_comments": "コメントを読み込み中...",
+      "updating": "更新中...",
+      "reply_count": "{count} 件の返信",
+      "like_count": "{count} 件のいいね",
+      "repost_count": "{count} 件のリポスト",
+      "more_replies": "さらに {count} 件のリプライを表示..."
+    }
+  },
   "settings": {
     "title": "設定",
     "tagline": "npmxの体験をカスタマイズ",
@@ -121,6 +147,13 @@
     "contribute_hint": "不足しているキーを追加して翻訳の改善にご協力ください。",
     "edit_on_github": "GitHubで編集",
     "view_guide": "翻訳ガイド"
+  },
+  "error": {
+    "401": "認証エラー",
+    "404": "ページが見つかりません",
+    "500": "内部サーバーエラー",
+    "503": "サービスが利用できません",
+    "default": "問題が発生しました"
   },
   "common": {
     "loading": "読み込み中...",
@@ -399,6 +432,8 @@
       "download_file": "{fileType} をダウンロード",
       "toggle_annotator": "アノテーターを切り替え",
       "toggle_stack_mode": "スタックモードを切り替え",
+      "open_options": "オプションを開く",
+      "close_options": "オプションを閉じる",
       "legend_estimation": "推定値",
       "no_data": "データがありません",
       "y_axis_label": "{granularity} {facet}",
@@ -410,8 +445,6 @@
         "likes": "いいね数",
         "contributors": "コントリビューター"
       },
-      "play_animation": "アニメーション再生",
-      "pause_animation": "アニメーション停止",
       "data_correction": "データ補正",
       "average_window": "平均ウィンドウ",
       "smoothing": "スムージング",
@@ -1104,6 +1137,7 @@
     "file_too_large": "ファイルサイズが大きすぎるため比較できません",
     "file_size_warning": "{size} は比較制限の250KBを超えています",
     "compare_versions": "diff",
+    "compare_versions_title": "最新バージョンと比較",
     "summary": "要約",
     "deps_count": "依存関係 {count} 件",
     "dependencies": "依存関係",
@@ -1130,6 +1164,34 @@
     "select_file_prompt": "サイドバーからファイルを選択してdiffを表示",
     "close_files_panel": "ファイルパネルを閉じる",
     "filter_files_label": "変更タイプでファイルをフィルタリング"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "npmxコミュニティ向けのnpmx公式ATプロトコル パーソナルデータサーバー（PDS）",
+    "join": {
+      "title": "コミュニティに参加",
+      "description": "Atmosphereで最初の書き込みを行う場合も、既存のアカウントを移行する場合も、ここがあなたの居場所です。あなたのハンドル名、投稿、フォロワーを失うことなく現在のアカウントから移行できます。",
+      "migrate": "PDS MOOverで移行する"
+    },
+    "server": {
+      "title": "サーバーの詳細",
+      "location_label": "所在地:",
+      "location_value": "ドイツ、ニュルンベルク",
+      "infrastructure_label": "インフラストラクチャ:",
+      "infrastructure_value": "Hetznerでホスト",
+      "privacy_label": "プライバシー:",
+      "privacy_value": "厳格なEUデータ保護法を適用",
+      "learn_more": "npmxによるAtmosphereの活用方法について学ぶ"
+    },
+    "community": {
+      "title": "参加メンバー",
+      "description": "すでにnpmx.socialを拠点としている {count} アカウントの一部:",
+      "loading": "PDSコミュニティを読み込み中...",
+      "error": "PDSコミュニティの読み込みに失敗しました。",
+      "empty": "表示できるコミュニティメンバーはいません。",
+      "view_profile": "{handle} のプロフィールを表示",
+      "new_accounts": "...さらに、Atmosphereに新しく参加した {count} 名"
+    }
   },
   "privacy_policy": {
     "title": "プライバシーポリシー",

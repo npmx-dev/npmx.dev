@@ -118,10 +118,6 @@ if (import.meta.client) {
     useEventListener(document, 'click', handleModalLightDismiss)
   }
 }
-
-// title and description will be inferred
-// this will be overridden by upstream pages that use different templates
-defineOgImage('Page.takumi')
 </script>
 
 <template>
@@ -132,6 +128,10 @@ defineOgImage('Page.takumi')
     }}</LinkBase>
 
     <AppHeader :show-logo="!isHomepage" />
+
+    <NuxtRouteAnnouncer v-slot="{ message }">
+      {{ route.name === 'search' ? `${$t('search.title_packages')} - npmx` : message }}
+    </NuxtRouteAnnouncer>
 
     <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
       <NuxtPage />

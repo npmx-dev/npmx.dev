@@ -148,43 +148,6 @@ export function buildRollingWeeklyEvolutionFromDaily(
     })
 }
 
-/** Catmull-Rom monotone cubic spline — same algorithm as vue-data-ui's smoothPath for OG Images */
-export function smoothPath(pts: { x: number; y: number }[]): string {
-  if (pts.length < 2) return '0,0'
-  const n = pts.length - 1
-  const r = (v: number) => Math.round(v * 100) / 100
-  const out = [`${r(pts[0]!.x)},${r(pts[0]!.y)}`]
-  const dx: number[] = []
-  const dy: number[] = []
-  const m: number[] = []
-  const t: number[] = []
-
-  for (let i = 0; i < n; i++) {
-    dx[i] = pts[i + 1]!.x - pts[i]!.x
-    dy[i] = pts[i + 1]!.y - pts[i]!.y
-    m[i] = dx[i] === 0 ? 0 : dy[i]! / dx[i]!
-  }
-
-  t[0] = m[0]!
-  t[n] = m[n - 1]!
-  for (let i = 1; i < n; i++) {
-    t[i] = m[i - 1]! * m[i]! <= 0 ? 0 : (2 * m[i - 1]! * m[i]!) / (m[i - 1]! + m[i]!)
-  }
-
-  for (let i = 0; i < n; i++) {
-    const x0 = pts[i]!.x,
-      y0 = pts[i]!.y
-    const x1 = pts[i + 1]!.x,
-      y1 = pts[i + 1]!.y
-    const seg = x1 - x0
-    out.push(
-      `C ${r(x0 + seg / 3)},${r(y0 + (t[i]! * seg) / 3)} ${r(x1 - seg / 3)},${r(y1 - (t[i + 1]! * seg) / 3)} ${r(x1)},${r(y1)}`,
-    )
-  }
-
-  return out.join(' ')
-}
-
 export function buildMonthlyEvolutionFromDaily(daily: DailyRawPoint[]): MonthlyDataPoint[] {
   const sorted = daily.slice().sort((a, b) => a.day.localeCompare(b.day))
   const valuesByMonth = new Map<string, number>()

@@ -30,9 +30,10 @@ useSeoMeta({
   twitterDescription: () => $t('settings.meta_description'),
 })
 
-defineOgImage('Page.takumi', {
+defineOgImageComponent('Default', {
   title: () => $t('settings.title'),
   description: () => $t('settings.tagline'),
+  primaryColor: '#60a5fa',
 })
 
 const setLocale: typeof setNuxti18nLocale = locale => {
@@ -52,7 +53,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </h1>
           <button
             type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0 p-1.5 -mx-1.5"
+            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >
@@ -251,12 +252,12 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Simple help link for source locale -->
             <template v-else>
               <a
-                href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
+                href="https://i18n.npmx.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
               >
-                <span class="i-simple-icons:github w-4 h-4" aria-hidden="true" />
+                <span class="i-lucide:languages w-4 h-4" aria-hidden="true" />
                 {{ $t('settings.help_translate') }}
               </a>
             </template>

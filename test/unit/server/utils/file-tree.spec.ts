@@ -48,7 +48,7 @@ describe('convertToFileTree', () => {
       {
         type: 'directory',
         name: 'assets',
-        files: [{ type: 'file', name: 'logo.svg', size: 42 }],
+        files: [{ type: 'file', name: 'logo-icon.svg', size: 42 }],
       },
     ]
 

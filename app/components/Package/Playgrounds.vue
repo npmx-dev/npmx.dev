@@ -118,11 +118,11 @@ function focusMenuItem(index: number) {
 </script>
 
 <template>
-  <section v-if="links.length > 0" class="px-1">
-    <h2 id="playgrounds-heading" class="text-xs font-mono text-fg uppercase tracking-wider mb-3">
-      {{ $t('package.playgrounds.title') }}
-    </h2>
-
+  <CollapsibleSection
+    v-if="links.length > 0"
+    id="playgrounds"
+    :title="$t('package.playgrounds.title')"
+  >
     <div ref="dropdownRef" class="relative">
       <!-- Single link: direct button -->
       <TooltipApp v-if="hasSingleLink && firstLink" :text="firstLink.providerName" class="w-full">
@@ -198,5 +198,5 @@ function focusMenuItem(index: number) {
         </div>
       </Transition>
     </div>
-  </section>
+  </CollapsibleSection>
 </template>

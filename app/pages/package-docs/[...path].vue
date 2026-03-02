@@ -109,15 +109,11 @@ useSeoMeta({
   twitterDescription: () => pkg.value?.license ?? '',
 })
 
-defineOgImage(
-  'Package.takumi',
-  {
-    name: () => packageName.value,
-    version: () => resolvedVersion.value,
-    variant: 'function-tree',
-  },
-  [{ key: 'og' }, { key: 'whatsapp', width: 800, height: 800 }],
-)
+defineOgImageComponent('Default', {
+  title: () => `${pkg.value?.name ?? 'Package'} - Docs`,
+  description: () => pkg.value?.license ?? '',
+  primaryColor: '#60a5fa',
+})
 
 const showLoading = computed(
   () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),

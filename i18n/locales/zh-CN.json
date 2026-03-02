@@ -419,8 +419,6 @@
         "likes": "喜欢",
         "contributors": "贡献者"
       },
-      "play_animation": "播放动画",
-      "pause_animation": "暂停动画",
       "data_correction": "数据校正",
       "average_window": "平均窗口",
       "smoothing": "平滑处理",
@@ -751,7 +749,7 @@
   "badges": {
     "provenance": {
       "verified": "已验证",
-      "verified_title": "已验证的来源",
+      "verified_title": "已验证来源",
       "verified_via": "已验证：通过 {provider} 发布"
     },
     "jsr": {

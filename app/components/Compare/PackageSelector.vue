@@ -75,6 +75,8 @@ const resultIndexOffset = computed(() => (showNoDependencyOption.value ? 1 : 0))
 
 const numberFormatter = useNumberFormatter()
 
+const keyboardShortcuts = useKeyboardShortcuts()
+
 function addPackage(name: string) {
   if (packages.value.length >= maxPackages.value) return
   if (packages.value.includes(name)) return
@@ -98,6 +100,10 @@ function removePackage(name: string) {
 }
 
 function handleKeydown(e: KeyboardEvent) {
+  if (!keyboardShortcuts.value) {
+    return
+  }
+
   const items = navigableItems.value
   const count = items.length
 
@@ -260,7 +266,7 @@ onClickOutside(containerRef, () => {
         <div
           v-if="isInputFocused && (navigableItems.length > 0 || isSearching)"
           ref="listRef"
-          class="absolute top-full inset-x-0 mt-1 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+          class="absolute top-full inset-x-0 mt-1 px-0.5 bg-bg-elevated border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
         >
           <!-- No dependency option (easter egg with James) -->
           <ButtonBase
@@ -291,7 +297,7 @@ onClickOutside(containerRef, () => {
             v-for="(result, index) in filteredResults"
             :key="result.name"
             data-navigable
-            class="block w-full text-start"
+            class="block w-full text-start my-0.5"
             :class="highlightedIndex === index + resultIndexOffset ? '!bg-accent/15' : ''"
             @mouseenter="highlightedIndex = index + resultIndexOffset"
             @click="addPackage(result.name)"

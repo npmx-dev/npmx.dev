@@ -23,6 +23,12 @@ import { togglePackageLike } from '~/utils/atproto/likes'
 import { useInstallSizeDiff } from '~/composables/useInstallSizeDiff'
 import type { RouteLocationRaw } from 'vue-router'
 
+defineOgImageComponent('Package', {
+  name: () => packageName.value,
+  version: () => requestedVersion.value ?? '',
+  primaryColor: '#60a5fa',
+})
+
 const router = useRouter()
 
 const header = useTemplateRef('header')
@@ -90,16 +96,6 @@ const navExtraOffsetStyle = computed(() => ({
 }))
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
-
-defineOgImage(
-  'Package.takumi',
-  {
-    name: () => packageName.value,
-    version: () => requestedVersion.value,
-    variant: 'download-chart',
-  },
-  [{ key: 'og' }, { key: 'whatsapp', width: 800, height: 800 }],
-)
 
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
@@ -899,6 +895,7 @@ const showSkeleton = shallowRef(false)
               :aria-label="$t('common.scroll_to_top')"
               @click="scrollToTop"
               classicon="i-lucide:arrow-up"
+              class="sm:p-2.75"
             />
           </ButtonGroup>
 
@@ -1127,7 +1124,7 @@ const showSkeleton = shallowRef(false)
                 <LinkBase
                   variant="button-secondary"
                   size="small"
-                  :to="`https://npmgraph.js.org/?q=${pkg.name}`"
+                  :to="`https://npmgraph.js.org/?q=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                   :title="$t('package.stats.view_dependency_graph')"
                   classicon="i-lucide:network -rotate-90"
                 >

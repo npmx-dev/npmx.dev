@@ -1100,6 +1100,17 @@ const datetimeFormatterOptions = computed(() => {
   }[selectedGranularity.value]
 })
 
+// Cached date formatter for tooltip
+const tooltipDateFormatter = computed(() => {
+  const granularity = displayedGranularity.value
+  return new Intl.DateTimeFormat(locale.value, {
+    year: 'numeric',
+    month: granularity === 'yearly' ? undefined : 'short',
+    day: granularity === 'daily' || granularity === 'weekly' ? 'numeric' : undefined,
+    timeZone: 'UTC',
+  })
+})
+
 const sanitise = (value: string) =>
   value
     .replace(/^@/, '')
@@ -1598,10 +1609,22 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
-        customFormat: ({ datapoint: items }) => {
+        customFormat: ({ datapoint: items, absoluteIndex }) => {
           if (!items || pending.value) return ''
 
           const hasMultipleItems = items.length > 1
+
+          // Format date for multiple series datasets
+          let formattedDate = ''
+          if (hasMultipleItems && absoluteIndex !== undefined) {
+            const index = Number(absoluteIndex)
+            if (Number.isInteger(index) && index >= 0 && index < chartData.value.dates.length) {
+              const timestamp = chartData.value.dates[index]
+              if (typeof timestamp === 'number') {
+                formattedDate = tooltipDateFormatter.value.format(new Date(timestamp))
+              }
+            }
+          }
 
           const rows = items
             .map((d: Record<string, any>) => {
@@ -1635,6 +1658,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             .join('')
 
           return `<div class="font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
+            ${formattedDate ? `<div class="text-2xs text-[var(--fg-subtle)] mb-2">${formattedDate}</div>` : ''}
             <div class="${hasMultipleItems ? 'flex flex-col gap-2' : ''}">
               ${rows}
             </div>
@@ -2036,6 +2060,18 @@ watch(selectedMetric, value => {
             <template #optionSvg>
               <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
             </template>
+            <template #optionStack="{ isStack }">
+              <span
+                v-if="isStack"
+                class="i-lucide:layers-2 text-fg-subtle w-6 h-6 pointer-events-none"
+                aria-hidden="true"
+              />
+              <span
+                v-else
+                class="i-lucide:chart-line text-fg-subtle w-6 h-6 pointer-events-none"
+                aria-hidden="true"
+              />
+            </template>
 
             <template #annotator-action-close>
               <span
@@ -2046,6 +2082,28 @@ watch(selectedMetric, value => {
             </template>
             <template #annotator-action-color="{ color }">
               <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
+            </template>
+            <template #annotator-action-draw="{ mode }">
+              <span
+                v-if="mode === 'arrow'"
+                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'text'"
+                class="i-lucide:type text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'line'"
+                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'draw'"
+                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
             </template>
             <template #annotator-action-undo>
               <span
