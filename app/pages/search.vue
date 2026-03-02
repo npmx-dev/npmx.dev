@@ -35,6 +35,29 @@ const updateUrlPage = debounce((page: number) => {
 const { model: searchQuery, provider: searchProvider } = useGlobalSearch()
 const query = computed(() => searchQuery.value)
 
+// Parses the raw search query to extract package info, such as scope, name, version.
+// Uses this info to provide a strippedQuery (the query, but without version info) that is used for searching.
+const parsedQuery = computed(() => {
+  const q = query.value.trim()
+  // Regex matches a (un)scoped package and optionally extracts versioning info using the following syntax: @scope/specifier@version
+  // It makes use of 4 capture groups to extract this info.
+  const match = q.match(
+    /^(?:@(?<scope>[^/]+)\/)?(?<specifier>[^/@ ]+)(?:@(?<version>[^ ]*))?(?<trailing>.*)/,
+  )
+  if (!match) return { scope: null, name: q, version: null, strippedQuery: q }
+
+  const { scope, specifier, version, trailing } = match.groups ?? {}
+  // Reconstruct the query without the version info, essentially stripping the version data:
+  // anything directly after the @ for the version specifier is stripped.
+  const name = scope ? `@${scope}/${specifier}` : (specifier ?? '')
+  const strippedQuery = `${name} ${trailing ?? ''}`.trim()
+
+  return { scope: scope ?? null, name: name, version: version || null, strippedQuery }
+})
+
+const packageScope = computed(() => parsedQuery.value.scope)
+const strippedQuery = computed(() => parsedQuery.value.strippedQuery)
+
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
 onMounted(() => {
@@ -191,7 +214,7 @@ const {
   suggestions: validatedSuggestions,
   packageAvailability,
 } = useSearch(
-  query,
+  strippedQuery,
   searchProvider,
   () => ({
     size: requestedSize.value,
@@ -289,14 +312,6 @@ const isValidPackageName = computed(() => isValidNewPackageName(query.value.trim
 
 // Get connector state
 const { isConnected, npmUser, listOrgUsers } = useConnector()
-
-// Check if this is a scoped package and extract scope
-const packageScope = computed(() => {
-  const q = query.value.trim()
-  if (!q.startsWith('@')) return null
-  const match = q.match(/^@([^/]+)\//)
-  return match ? match[1] : null
-})
 
 // Track org membership for scoped packages
 const orgMembership = ref<Record<string, boolean>>({})
@@ -787,7 +802,7 @@ onBeforeUnmount(() => {
 
           <div v-else-if="status === 'success' || status === 'error'" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
-              {{ $t('search.no_results', { query }) }}
+              {{ $t('search.no_results', { query: strippedQuery }) }}
             </p>
 
             <div v-if="validatedSuggestions.length > 0" class="max-w-md mx-auto mb-6 space-y-3">
