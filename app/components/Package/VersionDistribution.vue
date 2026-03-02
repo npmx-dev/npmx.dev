@@ -201,6 +201,8 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           svg: $t('package.trends.download_file', { fileType: 'SVG' }),
           annotator: $t('package.trends.toggle_annotator'),
           altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependant on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
+          open: $t('package.trends.open_options'),
+          close: $t('package.trends.close_options'),
         },
         callbacks: {
           img: args => {
@@ -547,6 +549,29 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 
             <template #annotator-action-color="{ color }">
               <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
+            </template>
+
+            <template #annotator-action-draw="{ mode }">
+              <span
+                v-if="mode === 'arrow'"
+                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'text'"
+                class="i-lucide:type text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'line'"
+                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'draw'"
+                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
             </template>
 
             <template #annotator-action-undo>

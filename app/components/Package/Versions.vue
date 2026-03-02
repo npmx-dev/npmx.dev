@@ -427,9 +427,10 @@ function getTagVersions(tag: string): VersionDisplay[] {
   return tagVersions.value.get(tag) ?? []
 }
 
-// Get filtered versions for a tag (applies semver filter when active)
-function getFilteredTagVersions(tag: string): VersionDisplay[] {
-  const versions = getTagVersions(tag)
+// Get the expanded child versions for a tag row (excludes the primary version shown in the row header,
+// and applies semver filter when active)
+function getExpandedTagVersions(tag: string, primaryVersion: string): VersionDisplay[] {
+  const versions = getTagVersions(tag).filter(v => v.version !== primaryVersion)
   if (!isFilterActive.value) return versions
   return versions.filter(v => filteredVersionSet.value.has(v.version))
 }
@@ -670,11 +671,14 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
 
         <!-- Expanded versions -->
         <div
-          v-if="expandedTags.has(row.tag) && getFilteredTagVersions(row.tag).length > 1"
+          v-if="
+            expandedTags.has(row.tag) &&
+            getExpandedTagVersions(row.tag, row.primaryVersion.version).length
+          "
           class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
         >
           <div
-            v-for="v in getFilteredTagVersions(row.tag).slice(1)"
+            v-for="v in getExpandedTagVersions(row.tag, row.primaryVersion.version)"
             :key="v.version"
             class="py-1 relative group/version-row hover:bg-bg-elevated/20 focus-within:bg-bg-elevated/20 transition-colors duration-200"
             :class="v.version === effectiveCurrentVersion ? 'bg-bg-elevated/20 rounded' : ''"

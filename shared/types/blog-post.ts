@@ -17,3 +17,16 @@ export interface Comment {
   repostCount: number
   replies: Comment[]
 }
+
+/*
+  WARN: FederatedArticleInput specifics
+  interface - All strings must be captured in single quotes in order to be parsed correctly in the MD file
+  authorHandle - Must not contain `@` symbol prefix
+  description - Any additional single quotes must be properly escaped with a `\`
+*/
+export interface FederatedArticleInput {
+  url: string
+  title: string
+  authorHandle: string
+  description: string
+}

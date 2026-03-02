@@ -43,10 +43,13 @@ export function useI18nStatus() {
   })
 
   /**
-   * Whether the current locale is the source locale (English)
+   * Whether the current locale is the source locale (English) or a variant of it.
+   * The source locale is 'en' (base), but app-facing locale codes are 'en-US', 'en-GB', etc.
+   * We check if the current locale starts with the source locale code to handle variants.
    */
   const isSourceLocale = computed(() => {
-    return locale.value === (status.value?.sourceLocale.lang ?? 'en-US')
+    const sourceLang = status.value?.sourceLocale.lang ?? 'en'
+    return locale.value === sourceLang || locale.value.startsWith(`${sourceLang}-`)
   })
 
   /**

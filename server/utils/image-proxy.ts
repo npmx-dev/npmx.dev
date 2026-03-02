@@ -41,12 +41,15 @@ const TRUSTED_IMAGE_DOMAINS = [
   'repository-images.githubusercontent.com',
   'github.githubassets.com',
   'objects.githubusercontent.com',
+  'avatars2.githubusercontent.com',
+  'cloud.githubusercontent.com',
 
   // GitLab
   'gitlab.com',
 
   // CDNs commonly used in READMEs
   'cdn.jsdelivr.net',
+  'data.jsdelivr.com',
   'unpkg.com',
 
   // Well-known badge/shield services
@@ -63,6 +66,16 @@ const TRUSTED_IMAGE_DOMAINS = [
   'api.codeclimate.com',
   'bundlephobia.com',
   'packagephobia.com',
+  'deepwiki.com',
+  'saucelabs.github.io',
+  'opencollective.com',
+  'circleci.com',
+  'www.codetriage.com',
+  'badges.gitter.im',
+  'nodei.co',
+  'travis-ci.org',
+  'secure.travis-ci.org',
+  'img.badgesize.io',
 ]
 
 /**

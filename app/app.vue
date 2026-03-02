@@ -129,6 +129,10 @@ if (import.meta.client) {
 
     <AppHeader :show-logo="!isHomepage" />
 
+    <NuxtRouteAnnouncer v-slot="{ message }">
+      {{ route.name === 'search' ? `${$t('search.title_packages')} - npmx` : message }}
+    </NuxtRouteAnnouncer>
+
     <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
       <NuxtPage />
     </div>

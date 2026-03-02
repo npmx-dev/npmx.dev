@@ -10,14 +10,18 @@ export const CACHE_MAX_AGE_ONE_YEAR = 60 * 60 * 24 * 365
 // API Strings
 export const NPMX_SITE = 'https://npmx.dev'
 export const NPMX_DOCS_SITE = 'https://docs.npmx.dev'
+export const NPMX_DID = 'did:plc:u5zp7npt5kpueado77kuihyz'
 export const BLUESKY_API = 'https://public.api.bsky.app'
 export const BLUESKY_COMMENTS_REQUEST = '/api/atproto/bluesky-comments'
 export const NPM_REGISTRY = 'https://registry.npmjs.org'
 export const NPM_API = 'https://api.npmjs.org'
+// Error Messages
 export const ERROR_PACKAGE_ANALYSIS_FAILED = 'Failed to analyze package.'
 export const ERROR_PACKAGE_VERSION_AND_FILE_FAILED = 'Version and file path are required.'
 export const ERROR_PACKAGE_REQUIREMENTS_FAILED =
   'Package name, version, and file path are required.'
+export const ERROR_BLUESKY_URL_FAILED =
+  'Invalid Bluesky URL format. Expected: https://bsky.app/profile/HANDLE/post/POST_ID'
 export const ERROR_FILE_LIST_FETCH_FAILED = 'Failed to fetch file list.'
 export const ERROR_CALC_INSTALL_SIZE_FAILED = 'Failed to calculate install size.'
 export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
@@ -25,6 +29,7 @@ export const NPM_MISSING_README_SENTINEL = 'ERROR: No README data found!'
 export const NPM_README_TRUNCATION_THRESHOLD = 64_000
 export const ERROR_JSR_FETCH_FAILED = 'Failed to fetch package from JSR registry.'
 export const ERROR_NPM_FETCH_FAILED = 'Failed to fetch package from npm registry.'
+export const ERROR_PDS_FETCH_FAILED = 'Failed to fetch PDS repos.'
 export const ERROR_PROVENANCE_FETCH_FAILED = 'Failed to fetch provenance.'
 export const UNSET_NUXT_SESSION_PASSWORD = 'NUXT_SESSION_PASSWORD not set'
 export const ERROR_SUGGESTIONS_FETCH_FAILED = 'Failed to fetch suggestions.'
@@ -77,6 +82,10 @@ export const BACKGROUND_THEMES = {
   black: 'oklch(0.4 0 0)',
 } as const
 
-// Regex
+// INFO: Regex for capture groups
+export const BLUESKY_URL_EXTRACT_REGEX = /profile\/([^/]+)\/post\/([^/]+)/
 export const BSKY_POST_AT_URI_REGEX =
-  /^at:\/\/(did:plc:[a-z0-9]+)\/app\.bsky\.feed\.post\/([a-z0-9]+)$/
+  /^at:\/\/(did:[a-z]+:[\w.:%-]+)\/app\.bsky\.feed\.post\/([a-z0-9]+)$/
+export const BLOG_META_TAG_REGEX =
+  /<meta[^>]*(?:property|name)=["']([^"']+)["'][^>]*content=["']([^"']+)["'][^>]*>/gi
+export const META_TAG_TITLE_REGEX = /<title>([^<]*)<\/title>/i

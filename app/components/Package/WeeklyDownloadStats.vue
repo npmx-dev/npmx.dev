@@ -97,12 +97,6 @@ const { colors } = useCssVariables(
   },
 )
 
-function toggleSparklineAnimation() {
-  settings.value.sidebar.animateSparkline = !settings.value.sidebar.animateSparkline
-}
-
-const hasSparklineAnimation = computed(() => settings.value.sidebar.animateSparkline)
-
 const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const accentColorValueById = computed<Record<string, string>>(() => {
@@ -254,8 +248,8 @@ const config = computed<VueUiSparklineConfig>(() => {
       line: {
         color: colors.value.borderHover,
         pulse: {
-          show: hasSparklineAnimation.value, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
-          loop: true, // runs only once if false
+          show: true, // the pulse will not show if prefers-reduced-motion (enforced by vue-data-ui)
+          loop: false,
           radius: 1.5,
           color: pulseColor.value!,
           easing: 'ease-in-out',
@@ -306,7 +300,7 @@ const config = computed<VueUiSparklineConfig>(() => {
         <span v-else-if="isLoadingWeeklyDownloads" class="min-w-6 min-h-6 -m-1 p-1" />
       </template>
 
-      <div class="w-full overflow-hidden h-[76px] motion-safe:h-[calc(92px+0.75rem)]">
+      <div class="w-full overflow-hidden h-[76px]">
         <template v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads">
           <ClientOnly>
             <VueUiSparkline class="w-full max-w-xs" :dataset :config>
@@ -333,23 +327,9 @@ const config = computed<VueUiSparklineConfig>(() => {
                     <SkeletonInline class="h-px w-full" />
                   </div>
                 </div>
-                <!-- Animation toggle placeholder -->
-                <div class="w-full hidden motion-safe:flex flex-1 items-end justify-end">
-                  <SkeletonInline class="h-[20px] w-30" />
-                </div>
               </div>
             </template>
           </ClientOnly>
-
-          <div v-if="hasWeeklyDownloads" class="hidden motion-safe:flex justify-end p-1">
-            <ButtonBase size="small" @click="toggleSparklineAnimation">
-              {{
-                hasSparklineAnimation
-                  ? $t('package.trends.pause_animation')
-                  : $t('package.trends.play_animation')
-              }}
-            </ButtonBase>
-          </div>
         </template>
         <p v-else class="py-2 text-sm font-mono text-fg-subtle">
           {{ $t('package.trends.no_data') }}

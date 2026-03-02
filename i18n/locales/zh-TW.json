@@ -410,8 +410,6 @@
         "likes": "喜歡總數",
         "contributors": "貢獻者"
       },
-      "play_animation": "播放動畫",
-      "pause_animation": "停止播放",
       "data_correction": "資料修正",
       "average_window": "平均視窗",
       "smoothing": "平滑化",
@@ -742,7 +740,7 @@
   "badges": {
     "provenance": {
       "verified": "已驗證",
-      "verified_title": "已驗證的來源",
+      "verified_title": "已驗證來源",
       "verified_via": "已驗證：透過 {provider} 發布"
     },
     "jsr": {

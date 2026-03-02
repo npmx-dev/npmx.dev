@@ -27,7 +27,7 @@ const canGoBack = useCanGoBack()
           </h1>
           <button
             type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded shrink-0"
+            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >
@@ -37,7 +37,7 @@ const canGoBack = useCanGoBack()
         </div>
       </header>
 
-      <section class="prose prose-invert max-w-none space-y-8">
+      <section class="max-w-none space-y-8">
         <p class="text-fg-muted leading-relaxed">
           <i18n-t keypath="a11y.welcome" tag="span" scope="global">
             <template #app>

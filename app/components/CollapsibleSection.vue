@@ -71,6 +71,7 @@ useHead({
       innerHTML: `
 :root[data-collapsed~='${props.id}'] section[data-anchor-id='${props.id}'] .collapsible-content {
   grid-template-rows: 0fr;
+  overflow: hidden;
 }`,
     },
   ],
@@ -121,7 +122,7 @@ useHead({
 
     <div
       :id="contentId"
-      class="grid ms-6 grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out collapsible-content overflow-hidden"
+      class="grid ms-6 grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out collapsible-content"
       :inert="!isOpen"
     >
       <div class="min-h-0 min-w-0">

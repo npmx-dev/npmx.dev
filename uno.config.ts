@@ -1,6 +1,7 @@
 import {
   defineConfig,
   presetIcons,
+  presetTypography,
   presetWind4,
   transformerDirectives,
   transformerVariantGroup,
@@ -34,6 +35,7 @@ export default defineConfig({
         custom: customIcons,
       },
     }),
+    presetTypography(),
     // keep this preset last
     ...(process.env.CI ? [] : [presetRtl(), presetA11y()]),
   ].filter(Boolean),

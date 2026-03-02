@@ -37,7 +37,7 @@ export const SPONSORS = [
       dark: LogoVlt,
       light: LogoVltLight,
     },
-    normalisingIndent: '0.25rem',
+    normalisingIndent: '0.875rem',
     url: 'https://vlt.sh/',
   },
 ]

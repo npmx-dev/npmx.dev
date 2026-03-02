@@ -29,4 +29,5 @@ export type NPMXProfile = {
   description?: string
   // If the atproto record exists for the profile
   recordExists: boolean
+  handle?: string
 }
