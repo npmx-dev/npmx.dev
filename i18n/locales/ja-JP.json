@@ -13,7 +13,7 @@
   "trademark_disclaimer": "npmはnpm, Inc.の登録商標です。当サイトはnpm, Inc.とは関係ありません。",
   "footer": {
     "about": "npmxについて",
-    "blog": "EN TEXT TO REPLACE: blog",
+    "blog": "ブログ",
     "docs": "ドキュメント",
     "source": "ソースコード",
     "social": "ソーシャル",
@@ -79,28 +79,28 @@
     "tap_to_search": "タップして検索"
   },
   "blog": {
-    "title": "EN TEXT TO REPLACE: Blog",
-    "heading": "EN TEXT TO REPLACE: blog",
-    "meta_description": "EN TEXT TO REPLACE: Insights and updates from the npmx community",
+    "title": "ブログ",
+    "heading": "ブログ",
+    "meta_description": "npmxコミュニティからの知見やアップデート",
     "author": {
-      "view_profile": "EN TEXT TO REPLACE: View {name}'s profile on Bluesky"
+      "view_profile": "Blueskyで {name} のプロフィールを表示"
     },
-    "draft_badge": "EN TEXT TO REPLACE: Draft",
-    "draft_banner": "EN TEXT TO REPLACE: This is an unpublished draft. It may be incomplete or contain inaccuracies.",
+    "draft_badge": "下書き",
+    "draft_banner": "これは未公開の下書きです。内容が不完全であったり、不正確な情報が含まれている可能性があります。",
     "atproto": {
-      "view_on_bluesky": "EN TEXT TO REPLACE: View on Bluesky",
-      "reply_on_bluesky": "EN TEXT TO REPLACE: Reply on Bluesky",
-      "likes_on_bluesky": "EN TEXT TO REPLACE: Likes on Bluesky",
-      "like_or_reply_on_bluesky": "EN TEXT TO REPLACE: Like this post or add your comment on Bluesky",
-      "no_comments_yet": "EN TEXT TO REPLACE: No comments yet.",
-      "could_not_load_comments": "EN TEXT TO REPLACE: Could not load comments.",
-      "comments": "EN TEXT TO REPLACE: Comments",
-      "loading_comments": "EN TEXT TO REPLACE: Loading comments...",
-      "updating": "EN TEXT TO REPLACE: Updating...",
-      "reply_count": "EN TEXT TO REPLACE: {count} reply | {count} replies",
-      "like_count": "EN TEXT TO REPLACE: {count} like | {count} likes",
-      "repost_count": "EN TEXT TO REPLACE: {count} repost | {count} reposts",
-      "more_replies": "EN TEXT TO REPLACE: {count} more reply... | {count} more replies..."
+      "view_on_bluesky": "Blueskyで表示",
+      "reply_on_bluesky": "Blueskyでリプライ",
+      "likes_on_bluesky": "Blueskyでいいねする",
+      "like_or_reply_on_bluesky": "Blueskyでこの投稿にいいねまたはコメントを追加",
+      "no_comments_yet": "コメントはまだありません。",
+      "could_not_load_comments": "コメントを読み込めませんでした。",
+      "comments": "コメント",
+      "loading_comments": "コメントを読み込み中...",
+      "updating": "更新中...",
+      "reply_count": "{count} 件の返信",
+      "like_count": "{count} 件のいいね",
+      "repost_count": "{count} 件のリポスト",
+      "more_replies": "さらに {count} 件のリプライを表示..."
     }
   },
   "settings": {
@@ -149,11 +149,11 @@
     "view_guide": "翻訳ガイド"
   },
   "error": {
-    "401": "EN TEXT TO REPLACE: Unauthorized",
-    "404": "EN TEXT TO REPLACE: Page not found",
-    "500": "EN TEXT TO REPLACE: Internal server error",
-    "503": "EN TEXT TO REPLACE: Service unavailable",
-    "default": "EN TEXT TO REPLACE: Something went wrong"
+    "401": "認証エラー",
+    "404": "ページが見つかりません",
+    "500": "内部サーバーエラー",
+    "503": "サービスが利用できません",
+    "default": "問題が発生しました"
   },
   "common": {
     "loading": "読み込み中...",
@@ -432,8 +432,8 @@
       "download_file": "{fileType} をダウンロード",
       "toggle_annotator": "アノテーターを切り替え",
       "toggle_stack_mode": "スタックモードを切り替え",
-      "open_options": "EN TEXT TO REPLACE: Open options",
-      "close_options": "EN TEXT TO REPLACE: Close options",
+      "open_options": "オプションを開く",
+      "close_options": "オプションを閉じる",
       "legend_estimation": "推定値",
       "no_data": "データがありません",
       "y_axis_label": "{granularity} {facet}",
@@ -1137,7 +1137,7 @@
     "file_too_large": "ファイルサイズが大きすぎるため比較できません",
     "file_size_warning": "{size} は比較制限の250KBを超えています",
     "compare_versions": "diff",
-    "compare_versions_title": "EN TEXT TO REPLACE: Compare with latest version",
+    "compare_versions_title": "最新バージョンと比較",
     "summary": "要約",
     "deps_count": "依存関係 {count} 件",
     "dependencies": "依存関係",
@@ -1166,31 +1166,31 @@
     "filter_files_label": "変更タイプでファイルをフィルタリング"
   },
   "pds": {
-    "title": "EN TEXT TO REPLACE: npmx.social",
-    "meta_description": "EN TEXT TO REPLACE: The official AT Protocol Personal Data Server (PDS) for the npmx community.",
+    "title": "npmx.social",
+    "meta_description": "npmxコミュニティ向けのnpmx公式ATプロトコル パーソナルデータサーバー（PDS）",
     "join": {
-      "title": "EN TEXT TO REPLACE: Join the Community",
-      "description": "EN TEXT TO REPLACE: Whether you are creating your first account on the atmosphere or migrating an existing one, you belong here. You can migrate your current account without losing your handle, your posts, or your followers.",
-      "migrate": "EN TEXT TO REPLACE: Migrate with PDS MOOver"
+      "title": "コミュニティに参加",
+      "description": "Atmosphereで最初の書き込みを行う場合も、既存のアカウントを移行する場合も、ここがあなたの居場所です。あなたのハンドル名、投稿、フォロワーを失うことなく現在のアカウントから移行できます。",
+      "migrate": "PDS MOOverで移行する"
     },
     "server": {
-      "title": "EN TEXT TO REPLACE: Server Details",
-      "location_label": "EN TEXT TO REPLACE: Location:",
-      "location_value": "EN TEXT TO REPLACE: Nuremberg, Germany",
-      "infrastructure_label": "EN TEXT TO REPLACE: Infrastructure:",
-      "infrastructure_value": "EN TEXT TO REPLACE: Hosted on Hetzner",
-      "privacy_label": "EN TEXT TO REPLACE: Privacy:",
-      "privacy_value": "EN TEXT TO REPLACE: Subject to strict EU Data Protection laws",
-      "learn_more": "EN TEXT TO REPLACE: Learn how npmx uses the Atmosphere"
+      "title": "サーバーの詳細",
+      "location_label": "所在地:",
+      "location_value": "ドイツ、ニュルンベルク",
+      "infrastructure_label": "インフラストラクチャ:",
+      "infrastructure_value": "Hetznerでホスト",
+      "privacy_label": "プライバシー:",
+      "privacy_value": "厳格なEUデータ保護法を適用",
+      "learn_more": "npmxによるAtmosphereの活用方法について学ぶ"
     },
     "community": {
-      "title": "EN TEXT TO REPLACE: Who is here",
-      "description": "EN TEXT TO REPLACE: Some of the {count} accounts that are already calling npmx.social home:",
-      "loading": "EN TEXT TO REPLACE: Loading PDS community...",
-      "error": "EN TEXT TO REPLACE: Failed to load PDS community.",
-      "empty": "EN TEXT TO REPLACE: No community members to display.",
-      "view_profile": "EN TEXT TO REPLACE: View {handle}'s profile",
-      "new_accounts": "EN TEXT TO REPLACE: ...plus {count} more that are new to the atmosphere"
+      "title": "参加メンバー",
+      "description": "すでにnpmx.socialを拠点としている {count} アカウントの一部:",
+      "loading": "PDSコミュニティを読み込み中...",
+      "error": "PDSコミュニティの読み込みに失敗しました。",
+      "empty": "表示できるコミュニティメンバーはいません。",
+      "view_profile": "{handle} のプロフィールを表示",
+      "new_accounts": "...さらに、Atmosphereに新しく参加した {count} 名"
     }
   },
   "privacy_policy": {
