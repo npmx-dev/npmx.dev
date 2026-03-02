@@ -75,6 +75,8 @@ const resultIndexOffset = computed(() => (showNoDependencyOption.value ? 1 : 0))
 
 const numberFormatter = useNumberFormatter()
 
+const keyboardShortcuts = useKeyboardShortcuts()
+
 function addPackage(name: string) {
   if (packages.value.length >= maxPackages.value) return
   if (packages.value.includes(name)) return
@@ -98,6 +100,10 @@ function removePackage(name: string) {
 }
 
 function handleKeydown(e: KeyboardEvent) {
+  if (!keyboardShortcuts.value) {
+    return
+  }
+
   const items = navigableItems.value
   const count = items.length
 

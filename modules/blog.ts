@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import Markdown from 'unplugin-vue-markdown/vite'
 import { addTemplate, addVitePlugin, defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
-import shiki from '@shikijs/markdown-it'
+import shiki from '@shikijs/markdown-exit'
 import MarkdownItAnchor from 'markdown-it-anchor'
 import { defu } from 'defu'
 import { read } from 'gray-matter'
@@ -12,7 +12,7 @@ import { isProduction } from '../config/env'
 
 /**
  * Scans the blog directory for .md files and extracts validated frontmatter.
- * Returns only non-draft posts sorted by date descending.
+ * Returns all posts (including drafts) sorted by date descending.
  */
 function loadBlogPosts(blogDir: string): BlogPostFrontmatter[] {
   const files: string[] = globSync(join(blogDir, '*.md'))
@@ -34,8 +34,6 @@ function loadBlogPosts(blogDir: string): BlogPostFrontmatter[] {
 
     const result = safeParse(BlogPostSchema, frontmatter)
     if (!result.success) continue
-
-    if (result.output.draft) continue
 
     posts.push(result.output)
   }
@@ -64,7 +62,7 @@ export default defineNuxtModule({
         include: [/\.(md|markdown)($|\?)/],
         wrapperComponent: 'BlogPostWrapper',
         wrapperClasses: 'text-fg-muted leading-relaxed',
-        async markdownItSetup(md) {
+        async markdownSetup(md) {
           md.use(
             await shiki({
               themes: {
@@ -73,18 +71,18 @@ export default defineNuxtModule({
               },
             }),
           )
-          md.use(MarkdownItAnchor)
+          md.use(MarkdownItAnchor as any)
         },
       }),
     )
 
-    // Expose frontmatter for published posts to avoid bundling the full content
-    // of all posts in `/blog` page.
+    // Expose frontmatter for the `/blog` listing page.
+    const showDrafts = nuxt.options.dev || !isProduction
     addTemplate({
       filename: 'blog/posts.ts',
       write: true,
       getContents: () => {
-        const posts = loadBlogPosts(blogDir)
+        const posts = loadBlogPosts(blogDir).filter(p => showDrafts || !p.draft)
         return [
           `import type { BlogPostFrontmatter } from '#shared/schemas/blog'`,
           ``,
@@ -95,25 +93,15 @@ export default defineNuxtModule({
 
     nuxt.options.alias['#blog/posts'] = join(nuxt.options.buildDir, 'blog/posts')
 
-    // In production, remove page routes for draft posts
-    if (!nuxt.options.dev && isProduction) {
-      const publishedPosts = loadBlogPosts(blogDir)
-      const publishedSlugs = new Set(publishedPosts.map(p => p.slug))
-
-      nuxt.hook('pages:extend', pages => {
-        // Walk the pages tree and remove draft blog post pages
-        for (let i = pages.length - 1; i >= 0; i--) {
-          const page = pages[i]!
-          // Blog post pages are at /blog/<slug> — the file is blog/<slug>.md
-          if (page.file?.endsWith('.md') && page.file?.includes('/blog/')) {
-            // Extract the slug from the filename
-            const filename = page.file.split('/').pop()?.replace('.md', '')
-            if (filename && filename !== 'index' && !publishedSlugs.has(filename)) {
-              pages.splice(i, 1)
-            }
-          }
+    // Add X-Robots-Tag header for draft posts to prevent indexing
+    const posts = loadBlogPosts(blogDir)
+    for (const post of posts) {
+      if (post.draft) {
+        nuxt.options.routeRules ||= {}
+        nuxt.options.routeRules[`/blog/${post.slug}`] = {
+          headers: { 'X-Robots-Tag': 'noindex, nofollow' },
         }
-      })
+      }
     }
   },
 })

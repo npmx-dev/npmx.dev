@@ -259,6 +259,12 @@
           },
           "additionalProperties": false
         },
+        "draft_badge": {
+          "type": "string"
+        },
+        "draft_banner": {
+          "type": "string"
+        },
         "atproto": {
           "type": "object",
           "properties": {
@@ -3489,6 +3495,90 @@
         },
         "filter_files_label": {
           "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "pds": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "join": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "migrate": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "server": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "location_label": {
+              "type": "string"
+            },
+            "location_value": {
+              "type": "string"
+            },
+            "infrastructure_label": {
+              "type": "string"
+            },
+            "infrastructure_value": {
+              "type": "string"
+            },
+            "privacy_label": {
+              "type": "string"
+            },
+            "privacy_value": {
+              "type": "string"
+            },
+            "learn_more": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "community": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "loading": {
+              "type": "string"
+            },
+            "error": {
+              "type": "string"
+            },
+            "empty": {
+              "type": "string"
+            },
+            "view_profile": {
+              "type": "string"
+            },
+            "new_accounts": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false

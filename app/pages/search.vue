@@ -463,7 +463,12 @@ function focusSearchInput() {
   searchInput?.focus()
 }
 
+const keyboardShortcuts = useKeyboardShortcuts()
+
 function handleResultsKeydown(e: KeyboardEvent) {
+  if (!keyboardShortcuts.value) {
+    return
+  }
   // If the active element is an input, navigate to exact match or wait for results
   if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
     // Get value directly from input (not from route query, which may be debounced)

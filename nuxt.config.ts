@@ -55,7 +55,7 @@ export default defineNuxtConfig({
     },
   },
 
-  devtools: { enabled: true },
+  devtools: { enabled: !true },
 
   devServer: {
     // Used with atproto oauth
@@ -161,6 +161,7 @@ export default defineNuxtConfig({
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
     '/recharging': { prerender: true },
+    '/pds': { isr: 86400 }, // revalidate daily
     // proxy for insights
     '/blog/**': { prerender: true },
     '/_v/script.js': {

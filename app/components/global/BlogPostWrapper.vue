@@ -11,6 +11,7 @@ useSeoMeta({
   ogTitle: props.frontmatter.title,
   ogDescription: props.frontmatter.description || props.frontmatter.excerpt,
   ogType: 'article',
+  ...(props.frontmatter.draft ? { robots: 'noindex, nofollow' } : {}),
 })
 
 defineOgImageComponent('BlogPost', {
@@ -28,6 +29,17 @@ const blueskyPostUri = computed(() => blueskyLink.value?.postUri ?? null)
 
 <template>
   <main class="container w-full py-8">
+    <div
+      v-if="frontmatter.draft"
+      class="max-w-prose mx-auto mb-8 px-4 py-3 rounded-md border border-badge-orange/30 bg-badge-orange/5"
+    >
+      <div class="flex items-center gap-2 text-badge-orange">
+        <span class="i-lucide:file-edit w-4 h-4 shrink-0" aria-hidden="true" />
+        <span class="text-sm font-medium">
+          {{ $t('blog.draft_banner') }}
+        </span>
+      </div>
+    </div>
     <div v-if="frontmatter.authors" class="mb-12 max-w-prose mx-auto">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <AuthorList :authors="frontmatter.authors" variant="expanded" />
