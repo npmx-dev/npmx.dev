@@ -1,3 +1,6 @@
+import type { UserPreferences } from '#shared/schemas/userPreferences'
+import type { UserLocalSettings } from '~/composables/useUserLocalSettings'
+
 /**
  * Initialize user preferences before hydration to prevent flash/layout shift.
  * This sets CSS custom properties and data attributes that CSS can use
@@ -23,18 +26,19 @@ export function initPreferencesOnPrehydrate() {
     // Valid package manager IDs
     const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt'])
 
-    // Read settings from localStorage
-    const settings = JSON.parse(
-      localStorage.getItem('npmx-settings') || '{}',
-    ) as Partial<AppSettings>
+    // Read user preferences from localStorage
+    let preferences: UserPreferences = {}
+    try {
+      preferences = JSON.parse(localStorage.getItem('npmx-user-preferences') || '{}')
+    } catch {}
 
-    const accentColorId = settings.accentColorId
+    const accentColorId = preferences.accentColorId
     if (accentColorId && accentColorIds.has(accentColorId)) {
       document.documentElement.style.setProperty('--accent-color', `var(--swatch-${accentColorId})`)
     }
 
     // Apply background accent
-    const preferredBackgroundTheme = settings.preferredBackgroundTheme
+    const preferredBackgroundTheme = preferences.preferredBackgroundTheme
     if (preferredBackgroundTheme) {
       document.documentElement.dataset.bgTheme = preferredBackgroundTheme
     }
@@ -60,11 +64,10 @@ export function initPreferencesOnPrehydrate() {
     // Set data attribute for CSS-based visibility
     document.documentElement.dataset.pm = pm
 
-    document.documentElement.dataset.collapsed = settings.sidebar?.collapsed?.join(' ') ?? ''
-
-    // Keyboard shortcuts (default: true)
-    if (settings.keyboardShortcuts === false) {
-      document.documentElement.dataset.kbdShortcuts = 'false'
-    }
+    let localSettings: Partial<UserLocalSettings> = {}
+    try {
+      localSettings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+    } catch {}
+    document.documentElement.dataset.collapsed = localSettings.sidebar?.collapsed?.join(' ') ?? ''
   })
 }

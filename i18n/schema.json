@@ -414,6 +414,18 @@
         },
         "keyboard_shortcuts_enabled_description": {
           "type": "string"
+        },
+        "syncing": {
+          "type": "string"
+        },
+        "synced": {
+          "type": "string"
+        },
+        "sync_error": {
+          "type": "string"
+        },
+        "sync_enabled": {
+          "type": "string"
         }
       },
       "additionalProperties": false

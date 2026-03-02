@@ -65,7 +65,7 @@ onMounted(() => {
 const rawVisibleResults = computed(() => results.value)
 
 // Settings for platform package filtering
-const { settings } = useSettings()
+const { preferences } = useUserPreferencesState()
 
 /**
  * Reorder results to put exact package name match at the top,
@@ -78,7 +78,7 @@ const visibleResults = computed(() => {
   let objects = raw.objects
 
   // Filter out platform-specific packages if setting is enabled
-  if (settings.value.hidePlatformPackages) {
+  if (preferences.value.hidePlatformPackages) {
     objects = objects.filter(r => !isPlatformSpecificPackage(r.package.name))
   }
 

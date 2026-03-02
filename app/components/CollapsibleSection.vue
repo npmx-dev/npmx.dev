@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   headingLevel: 'h2',
 })
 
-const appSettings = useSettings()
+const { localSettings } = useUserLocalSettings()
 
 const buttonId = `${props.id}-collapsible-button`
 const contentId = `${props.id}-collapsible-content`
@@ -48,17 +48,16 @@ onMounted(() => {
 function toggle() {
   isOpen.value = !isOpen.value
 
-  const removed = appSettings.settings.value.sidebar.collapsed.filter(c => c !== props.id)
+  const removed = localSettings.value.sidebar.collapsed.filter(c => c !== props.id)
 
   if (isOpen.value) {
-    appSettings.settings.value.sidebar.collapsed = removed
+    localSettings.value.sidebar.collapsed = removed
   } else {
     removed.push(props.id)
-    appSettings.settings.value.sidebar.collapsed = removed
+    localSettings.value.sidebar.collapsed = removed
   }
 
-  document.documentElement.dataset.collapsed =
-    appSettings.settings.value.sidebar.collapsed.join(' ')
+  document.documentElement.dataset.collapsed = localSettings.value.sidebar.collapsed.join(' ')
 }
 
 const ariaLabel = computed(() => {

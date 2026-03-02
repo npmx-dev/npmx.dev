@@ -12,11 +12,11 @@ export function useInstallCommand(
   installVersionOverride?: MaybeRefOrGetter<string | null>,
 ) {
   const selectedPM = useSelectedPackageManager()
-  const { settings } = useSettings()
+  const { preferences } = useUserPreferencesState()
 
   // Check if we should show @types in install command
   const showTypesInInstall = computed(() => {
-    return settings.value.includeTypesInInstall && !!toValue(typesPackageName)
+    return preferences.value.includeTypesInInstall && !!toValue(typesPackageName)
   })
 
   const installCommandParts = computed(() => {

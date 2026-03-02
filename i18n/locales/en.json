@@ -136,7 +136,11 @@
     "translation_progress": "Translation progress",
     "background_themes": "Background shade",
     "keyboard_shortcuts_enabled": "Enable keyboard shortcuts",
-    "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts"
+    "keyboard_shortcuts_enabled_description": "Keyboard shortcuts can be disabled if they conflict with other browser or system shortcuts",
+    "syncing": "Syncing...",
+    "synced": "Settings synced",
+    "sync_error": "Sync failed",
+    "sync_enabled": "Cloud sync enabled"
   },
   "i18n": {
     "missing_keys": "{count} missing translation | {count} missing translations",

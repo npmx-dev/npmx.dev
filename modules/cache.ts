@@ -51,6 +51,9 @@ export default defineNuxtModule({
       const env = process.env.VERCEL_ENV
       nitroConfig.storage.atproto =
         env === 'production' ? upstash : { driver: 'vercel-runtime-cache' }
+
+      nitroConfig.storage['user-preferences'] =
+        env === 'production' ? upstash : { driver: 'vercel-runtime-cache' }
     })
   },
 })

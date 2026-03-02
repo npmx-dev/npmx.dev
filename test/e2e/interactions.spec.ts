@@ -271,7 +271,7 @@ test.describe('Keyboard Shortcuts', () => {
 test.describe('Keyboard Shortcuts disabled', () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
-      localStorage.setItem('npmx-settings', JSON.stringify({ keyboardShortcuts: false }))
+      localStorage.setItem('npmx-user-preferences', JSON.stringify({ keyboardShortcuts: false }))
     })
   })
 

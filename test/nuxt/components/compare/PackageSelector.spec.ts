@@ -1,22 +1,66 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
+import { ref, shallowRef } from 'vue'
+import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
+import type { NpmSearchResponse } from '#shared/types'
 import PackageSelector from '~/components/Compare/PackageSelector.vue'
 
-const mockFetch = vi.fn()
-vi.stubGlobal('$fetch', mockFetch)
+const mockSearchData = shallowRef<NpmSearchResponse | null>(null)
+
+type MinimalSearchObject = {
+  package: Pick<NpmSearchResponse['objects'][number]['package'], 'name' | 'description'>
+}
+
+function createSearchResponse(objects: readonly MinimalSearchObject[]): NpmSearchResponse {
+  return {
+    isStale: false,
+    objects: objects.map(({ package: pkg }) => ({
+      package: {
+        name: pkg.name,
+        description: pkg.description,
+        version: '0.0.0',
+        date: '',
+        links: {},
+        publisher: { username: '' },
+        maintainers: [],
+      },
+      score: { final: 0, detail: { quality: 0, popularity: 0, maintenance: 0 } },
+      searchScore: 0,
+    })),
+    total: objects.length,
+    time: new Date().toISOString(),
+  }
+}
+
+mockNuxtImport('useSearchProvider', () => {
+  return () => ({
+    searchProvider: ref('npm'),
+    isAlgolia: ref(false),
+    toggle: vi.fn(),
+  })
+})
+
+mockNuxtImport('useSearch', () => {
+  return () => ({
+    data: mockSearchData,
+    status: ref('idle'),
+    isLoadingMore: ref(false),
+    hasMore: ref(false),
+    fetchMore: vi.fn(),
+    isRateLimited: ref(false),
+    suggestions: ref([]),
+    suggestionsLoading: ref(false),
+    packageAvailability: ref(null),
+  })
+})
 
 describe('PackageSelector', () => {
   beforeEach(() => {
-    mockFetch.mockReset()
-    mockFetch.mockResolvedValue({
-      objects: [
-        { package: { name: 'lodash', description: 'Lodash modular utilities' } },
-        { package: { name: 'underscore', description: 'JavaScript utility library' } },
-      ],
-      total: 2,
-      time: new Date().toISOString(),
-    })
+    const objects = [
+      { package: { name: 'lodash', description: 'Lodash modular utilities' } },
+      { package: { name: 'underscore', description: 'JavaScript utility library' } },
+    ]
+
+    mockSearchData.value = createSearchResponse(objects)
   })
 
   describe('selected packages display', () => {

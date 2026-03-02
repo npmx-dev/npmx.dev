@@ -53,7 +53,7 @@ const props = withDefaults(
 
 const { locale } = useI18n()
 const { accentColors, selectedAccentColor } = useAccentColor()
-const { settings } = useSettings()
+const { localSettings } = useUserLocalSettings()
 const { copy, copied } = useClipboard()
 
 const colorMode = useColorMode()
@@ -963,7 +963,7 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
 
   if (isDownloadsMetric.value && data.length) {
     const pkg = effectivePackageNames.value[0] ?? props.packageName ?? ''
-    if (settings.value.chartFilter.anomaliesFixed) {
+    if (localSettings.value.chartFilter.anomaliesFixed) {
       data = applyBlocklistCorrection({
         data,
         packageName: pkg,
@@ -973,7 +973,7 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
 
     return applyDataCorrection(
       data as Array<{ value: number }>,
-      settings.value.chartFilter,
+      localSettings.value.chartFilter,
     ) as EvolutionData
   }
 
@@ -1016,12 +1016,12 @@ const chartData = computed<{
   for (const pkg of names) {
     let data = state.evolutionsByPackage[pkg] ?? []
     if (isDownloadsMetric.value && data.length) {
-      if (settings.value.chartFilter.anomaliesFixed) {
+      if (localSettings.value.chartFilter.anomaliesFixed) {
         data = applyBlocklistCorrection({ data, packageName: pkg, granularity })
       }
       data = applyDataCorrection(
         data as Array<{ value: number }>,
-        settings.value.chartFilter,
+        localSettings.value.chartFilter,
       ) as EvolutionData
     }
     const points = extractSeriesPoints(granularity, data)
@@ -1789,10 +1789,10 @@ watch(selectedMetric, value => {
           <label class="flex flex-col gap-1 flex-1">
             <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
               {{ $t('package.trends.average_window') }}
-              <span class="text-fg-muted">({{ settings.chartFilter.averageWindow }})</span>
+              <span class="text-fg-muted">({{ localSettings.chartFilter.averageWindow }})</span>
             </span>
             <input
-              v-model.number="settings.chartFilter.averageWindow"
+              v-model.number="localSettings.chartFilter.averageWindow"
               type="range"
               min="0"
               max="20"
@@ -1803,10 +1803,10 @@ watch(selectedMetric, value => {
           <label class="flex flex-col gap-1 flex-1">
             <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
               {{ $t('package.trends.smoothing') }}
-              <span class="text-fg-muted">({{ settings.chartFilter.smoothingTau }})</span>
+              <span class="text-fg-muted">({{ localSettings.chartFilter.smoothingTau }})</span>
             </span>
             <input
-              v-model.number="settings.chartFilter.smoothingTau"
+              v-model.number="localSettings.chartFilter.smoothingTau"
               type="range"
               min="0"
               max="20"
@@ -1871,7 +1871,7 @@ watch(selectedMetric, value => {
               :class="{ 'opacity-50 pointer-events-none': !hasAnomalies }"
             >
               <input
-                v-model="settings.chartFilter.anomaliesFixed"
+                v-model="localSettings.chartFilter.anomaliesFixed"
                 type="checkbox"
                 :disabled="!hasAnomalies"
                 class="accent-[var(--accent-color,var(--fg-subtle))]"

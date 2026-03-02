@@ -4,12 +4,8 @@ import DateTime from '~/components/DateTime.vue'
 
 // Mock the useRelativeDates composable
 const mockRelativeDates = shallowRef(false)
-vi.mock('~/composables/useSettings', () => ({
+vi.mock('~/composables/userPreferences/useRelativeDates', () => ({
   useRelativeDates: () => mockRelativeDates,
-  useSettings: () => ({
-    settings: ref({ relativeDates: mockRelativeDates.value }),
-  }),
-  useAccentColor: () => ({}),
 }))
 
 describe('DateTime', () => {
