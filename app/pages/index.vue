@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
+import type { NpmxPicksResponse } from '#shared/types/picks'
+
+const { data: picksData } = useFetch<NpmxPicksResponse>('/api/picks')
+const { selectedAccentColor } = useAccentColor()
 
 const { model: searchQuery, flushUpdateUrlQuery } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
@@ -108,17 +111,21 @@ defineOgImageComponent('Default', {
       </header>
 
       <nav
-        :aria-label="$t('nav.popular_packages')"
-        class="pt-4 pb-36 sm:pb-40 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both max-w-xl mx-auto"
+        v-if="picksData?.picks?.length"
+        :aria-label="$t('nav.npmx_picks')"
+        class="pt-4 pb-36 sm:pb-40 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
         style="animation-delay: 0.3s"
       >
         <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
-          <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
-            <LinkBase :to="packageRoute(framework.package)" class="gap-2 text-sm">
+          <li v-for="pick in picksData?.picks" :key="pick.letter">
+            <LinkBase :to="packageRoute(pick.name)" class="text-sm">
               <span
-                class="home-tag-dot w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
-              />
-              {{ framework.name }}
+                >{{ pick.name.slice(0, pick.letterIndex)
+                }}<span class="font-semibold" :class="{ 'text-accent': selectedAccentColor }">{{
+                  pick.name[pick.letterIndex]
+                }}</span
+                >{{ pick.name.slice(pick.letterIndex + 1) }}</span
+              >
             </LinkBase>
           </li>
         </ul>
@@ -132,13 +139,3 @@ defineOgImageComponent('Default', {
     </section>
   </main>
 </template>
-
-<style scoped>
-/* Windows High Contrast Mode support */
-@media (forced-colors: active) {
-  .home-tag-dot {
-    forced-color-adjust: none;
-    background-color: CanvasText;
-  }
-}
-</style>

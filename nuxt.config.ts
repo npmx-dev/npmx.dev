@@ -153,7 +153,7 @@ export default defineNuxtConfig({
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     '/package-docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
     // static pages
-    '/': { prerender: true },
+    '/': { isr: 3600 },
     '/200.html': { prerender: true },
     '/about': { prerender: true },
     '/accessibility': { prerender: true },

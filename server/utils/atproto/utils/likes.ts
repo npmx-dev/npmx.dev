@@ -107,7 +107,7 @@ export class PackageLikesUtils {
   }
 
   /**
-   * Gets the likes for a npm package on npmx. Tries a local cahce first, if not found uses constellation
+   * Gets the likes for a npm package on npmx. Tries a local cache first, if not found uses constellation
    * @param packageName
    * @param usersDid
    * @returns

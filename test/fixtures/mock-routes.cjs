@@ -521,6 +521,25 @@ function matchGitHubApi(urlString) {
 }
 
 /**
+ * @param {string} _urlString
+ * @returns {MockResponse | null}
+ */
+function matchAlgoliaApi(_urlString) {
+  return json({
+    hits: [
+      { name: 'nuxt', downloadsLast30Days: 500000 },
+      { name: 'pnpm', downloadsLast30Days: 800000 },
+      { name: 'express', downloadsLast30Days: 1000000 },
+      { name: 'minimatch', downloadsLast30Days: 600000 },
+      { name: 'next', downloadsLast30Days: 700000 },
+      { name: 'axios', downloadsLast30Days: 900000 },
+      { name: 'remix', downloadsLast30Days: 400000 },
+      { name: 'webpack', downloadsLast30Days: 750000 },
+    ],
+  })
+}
+
+/**
  * Route definitions mapping URL patterns to their matchers.
  * Each entry has a pattern (for Playwright's page.route) and a match function
  * that returns a MockResponse or null.
@@ -549,6 +568,7 @@ const routes = [
     pattern: 'https://constellation.microcosm.blue/**',
     match: matchConstellationApi,
   },
+  { name: 'Algolia API', pattern: 'https://*-dsn.algolia.net/**', match: matchAlgoliaApi },
 ]
 
 /**
@@ -579,10 +599,10 @@ function matchRoute(url) {
  * @returns {boolean}
  */
 function urlMatchesPattern(url, pattern) {
-  // Convert "https://example.com/**" to a prefix check
-  if (pattern.endsWith('/**')) {
-    const prefix = pattern.slice(0, -2)
-    return url.startsWith(prefix)
+  // Support wildcard patterns (e.g. https://*-dsn.algolia.net/**)
+  if (pattern.includes('*')) {
+    const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')
+    return new RegExp(`^${escaped}$`).test(url)
   }
   return url === pattern
 }
