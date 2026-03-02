@@ -24,8 +24,8 @@ overrides:
   sharp: 0.34.5
   vite: npm:@voidzero-dev/vite-plus-core@0.0.0-g52709db6.20260226-1136
   vitest: npm:@voidzero-dev/vite-plus-test@0.0.0-g52709db6.20260226-1136
+  '@unocss/core': 66.6.3
   storybook: ^10.2.7
-  workbox-build>rollup: 2.79.2
 
 packageExtensions:
   '@nuxt/scripts':
