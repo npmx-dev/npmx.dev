@@ -75,13 +75,13 @@ export default defineNuxtModule({
       }),
     )
 
-    // Expose frontmatter for published posts to avoid bundling the full content
-    // of all posts in `/blog` page.
+    // Expose frontmatter for published (non-draft) posts to avoid bundling the
+    // full content of all posts in the `/blog` listing page.
     addTemplate({
       filename: 'blog/posts.ts',
       write: true,
       getContents: () => {
-        const posts = loadBlogPosts(blogDir)
+        const posts = loadBlogPosts(blogDir).filter(p => !p.draft)
         return [
           `import type { BlogPostFrontmatter } from '#shared/schemas/blog'`,
           ``,
