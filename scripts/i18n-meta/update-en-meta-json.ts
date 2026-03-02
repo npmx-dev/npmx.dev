@@ -21,9 +21,11 @@ export function updateEnMetaJson() {
   const oldEnMetaJson = getOldEnMetaJson(enMetaJsonPath)
 
   const currentCommitHash = getCurrentCommitHash()
-  const enMetaJson = currentCommitHash
-    ? makeEnMetaJson(oldEnMetaJson, newEnJson, currentCommitHash)
-    : ({} as EnMetaJson)
+  if (!currentCommitHash) {
+    console.error('❌ Commit hash missing. Skipping update to protect existing metadata.')
+    process.exit(1)
+  }
+  const enMetaJson = makeEnMetaJson(oldEnMetaJson, newEnJson, currentCommitHash)
 
   const hasChanges = checkTranslationChanges(oldEnMetaJson, enMetaJson)
   if (!hasChanges) {

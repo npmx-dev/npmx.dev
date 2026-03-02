@@ -26,17 +26,14 @@ export function checkTranslationChanges(oldMeta: EnMetaJson, newMeta: EnMetaJson
   return JSON.stringify(oldObj) !== JSON.stringify(newObj)
 }
 
-export function createUpdatedEnMetaJson(
-  commitHash: string | null,
-  content: EnMetaJson,
-): EnMetaJson {
+export function createUpdatedEnMetaJson(commitHash: string, content: EnMetaJson): EnMetaJson {
   return {
     $meta: {
       last_updated_commit: commitHash,
       updated_at: new Date().toISOString(),
     },
     ...omitMeta(content),
-  } as EnMetaJson
+  }
 }
 
 function git(command: string) {
