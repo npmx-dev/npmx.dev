@@ -1,5 +1,6 @@
 import process from 'node:process'
 import type { CachedFetchResult } from '#shared/utils/fetch-cache-config'
+import { parsePackageSpecifier } from '#shared/utils/parse-package-param'
 import { createFetch } from 'ofetch'
 
 /**
@@ -62,42 +63,6 @@ function getFixturePath(type: FixtureType, name: string): string {
   }
 
   return `${dir}:${filename.replace(/\//g, ':')}`
-}
-
-/**
- * Parse a scoped package name with optional version.
- * Handles formats like: @scope/name, @scope/name@version, name, name@version
- */
-function parseScopedPackageWithVersion(input: string): { name: string; version?: string } {
-  if (input.startsWith('@')) {
-    // Scoped package: @scope/name or @scope/name@version
-    const slashIndex = input.indexOf('/')
-    if (slashIndex === -1) {
-      // Invalid format like just "@scope"
-      return { name: input }
-    }
-    const afterSlash = input.slice(slashIndex + 1)
-    const atIndex = afterSlash.indexOf('@')
-    if (atIndex === -1) {
-      // @scope/name (no version)
-      return { name: input }
-    }
-    // @scope/name@version
-    return {
-      name: input.slice(0, slashIndex + 1 + atIndex),
-      version: afterSlash.slice(atIndex + 1),
-    }
-  }
-
-  // Unscoped package: name or name@version
-  const atIndex = input.indexOf('@')
-  if (atIndex === -1) {
-    return { name: input }
-  }
-  return {
-    name: input.slice(0, atIndex),
-    version: input.slice(atIndex + 1),
-  }
 }
 
 function getMockForUrl(url: string): MockResult | null {
@@ -174,7 +139,7 @@ function getMockForUrl(url: string): MockResult | null {
     const packageMatch = decodeURIComponent(pathname).match(/^\/v1\/packages\/npm\/(.+)$/)
     if (packageMatch?.[1]) {
       const pkgWithVersion = packageMatch[1]
-      const parsed = parseScopedPackageWithVersion(pkgWithVersion)
+      const parsed = parsePackageSpecifier(pkgWithVersion)
       return {
         data: {
           type: 'npm',

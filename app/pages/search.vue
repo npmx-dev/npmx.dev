@@ -5,6 +5,7 @@ import { onKeyDown } from '@vueuse/core'
 import { debounce } from 'perfect-debounce'
 import { isValidNewPackageName } from '~/utils/package-name'
 import { isPlatformSpecificPackage } from '~/utils/platform-packages'
+import { parsePackageSpecifier } from '#shared/utils/parse-package-param'
 import { normalizeSearchParam } from '#shared/utils/url'
 
 const route = useRoute()
@@ -469,6 +470,12 @@ function handleResultsKeydown(e: KeyboardEvent) {
     // Get value directly from input (not from route query, which may be debounced)
     const inputValue = (document.activeElement as HTMLInputElement).value.trim()
     if (!inputValue) return
+
+    // Handle "pkg@version" format (e.g. "esbuild@0.25.12", "@angular/core@^18")
+    const { name, version } = parsePackageSpecifier(inputValue)
+    if (version) {
+      return navigateTo(packageRoute(name, version))
+    }
 
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]

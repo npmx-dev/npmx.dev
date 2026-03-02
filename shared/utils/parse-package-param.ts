@@ -35,6 +35,31 @@ export interface ParsedPackageParams {
  * // { packageName: '@nuxt/kit', version: '1.0.0', rest: ['src', 'index.ts'] }
  * ```
  */
+/**
+ * Parse a "pkg@version" specifier string into name and optional version.
+ * Handles scoped packages correctly (the scope `@` is not treated as a version separator).
+ *
+ * @example
+ * ```ts
+ * parsePackageSpecifier('esbuild@0.25.12')
+ * // { name: 'esbuild', version: '0.25.12' }
+ *
+ * parsePackageSpecifier('@angular/core@^18')
+ * // { name: '@angular/core', version: '^18' }
+ *
+ * parsePackageSpecifier('react')
+ * // { name: 'react' }
+ * ```
+ */
+export function parsePackageSpecifier(input: string): { name: string; version?: string } {
+  const atIndex = input.startsWith('@') ? input.indexOf('@', 1) : input.indexOf('@')
+  if (atIndex > 0) {
+    const version = input.slice(atIndex + 1)
+    if (version) return { name: input.slice(0, atIndex), version }
+  }
+  return { name: input }
+}
+
 export function parsePackageParam(pkgParam: string): ParsedPackageParams {
   const segments = pkgParam.split('/')
   const vIndex = segments.indexOf('v')

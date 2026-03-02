@@ -113,8 +113,8 @@ const effectiveCurrentVersion = computed(
   () => props.selectedVersion ?? props.distTags.latest ?? undefined,
 )
 
-// Semver range filter
-const semverFilter = ref('')
+// Semver range filter (initialized from ?semver= query param if present)
+const semverFilter = ref((typeof route.query.semver === 'string' ? route.query.semver : '') || '')
 // Collect all known versions: initial props + dynamically loaded ones
 const allKnownVersions = computed(() => {
   const versions = new Set(Object.keys(props.versions))
