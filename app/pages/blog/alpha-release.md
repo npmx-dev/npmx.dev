@@ -41,17 +41,15 @@ Clearly, there was an appetite for something better &ndash; and people were will
 Things moved fast. Within 24 hours, 49 pull requests had been opened. Two weeks later, the
 [community had contributed 1000 issues and PRs](https://github.com/npmx-dev/npmx.dev/issues/1000) &ndash; that's roughly
 _one every 20 minutes_, around the clock. With
-[over 105 contributors](https://github.com/npmx-dev/npmx.dev/graphs/contributors) and 1500 stars in just 16 days, npmx has become one of the most active early open-source projects we've seen.
+[over 105 contributors](https://github.com/npmx-dev/npmx.dev/graphs/contributors) and 1500 stars in just 16 days, npmx became one of the most active early open-source projects we've seen.
 
 [![Star History Chart](https://api.star-history.com/svg?repos=npmx-dev/npmx.dev&type=date&legend=top-left)](https://www.star-history.com/#npmx-dev/npmx.dev&type=date&legend=top-left)
 
-We don't think this happened by accident. From the start, npmx has prioritized accessibility, internationalization, and working in the open. That attracted people who care about those things &ndash; and who are good at collaborating because of it. The result is a genuinely diverse, global community that's a joy to be part of.
+We don't think this happened by accident. From the start, npmx prioritized accessibility, internationalization, and working in the open. This attracted people who care about those things &ndash; and who are good at collaborating because of it. The result is a genuinely diverse, global community that's a joy to be part of.
 
-## What's included in the npmx alpha release
+## What you can do with npmx today
 
-Here's what you can do with npmx today:
-
-Search and view details about packages, users and organizations available on npm, dive deeper into the code, plus get detailed information on:
+Search and view details about packages, users and organizations available on npm, and dive deeper into the code. Plus get detailed information on:
 
 - download statistics
 - outdated dependency warnings
@@ -63,7 +61,7 @@ Search and view details about packages, users and organizations available on npm
 - package likes and social features
 - performance recommendations powered by [e18e](https://e18e.dev/)
 
-You can also launch [StackBlitz](https://stackblitz.com/), [CodeSandbox](https://codesandbox.io/), and other demo environments directly from package READMEs. Plus, npmx is available in 19 languages, has light and dark mode, and is designed to be keyboard-friendly throughout.
+You can also launch [StackBlitz](https://stackblitz.com/), [CodeSandbox](https://codesandbox.io/), and other demo environments directly from package READMEs. Additionally, npmx is available in 19 languages, has light and dark mode, and is designed to be keyboard-friendly throughout.
 
 ## The future of npmx
 
@@ -71,12 +69,12 @@ We want to build a better package browsing and management experience for everyon
 
 ## Join us at npmx
 
-We'd love for you to get involved. Even if you've never contributed to open source before &ndash; you're welcome. If you're not sure where to start, Salma Alam-Naylor has written
+We'd love for you to get involved. Even if you've never contributed to open source before &ndash; you are welcome. If you're not sure where to start, Salma Alam-Naylor has written
 [a ten step guide to making your first open-source contribution on GitHub](https://whitep4nth3r.com/blog/how-to-make-your-first-open-source-contribution/).
 
 Below this post, you'll also find articles from npmx contributors sharing their own perspectives and experiences.
 
-This alpha is intentionally early. We want real-world feedback from _you_ to guide what we work on next. Try [npmx](https://npmx.dev) today, tell us what you think at [chat.npmx.dev](https://chat.npmx.dev), [open an issue on GitHub](https://github.com/npmx-dev/npmx.dev/issues), or submit a pull request. And [follow npmx.dev on Bluesky](https://bsky.app/profile/npmx.dev) to keep up with what we're building.
+This npmx alpha is intentionally early. We want real-world feedback from _you_ to guide what we work on next. Try [npmx](https://npmx.dev) today, tell us what you think at [chat.npmx.dev](https://chat.npmx.dev), [open an issue on GitHub](https://github.com/npmx-dev/npmx.dev/issues), or submit a pull request. And [follow npmx.dev on Bluesky](https://bsky.app/profile/npmx.dev) to keep up with what we're building.
 
 Thank you to everyone who has contributed so far &ndash; code, docs, testing, community, and more. You're the ones building this.
 
