@@ -239,7 +239,13 @@ const sparklineSrc = computed(() => {
 
     <div class="p-15 flex flex-col gap-12">
       <div class="flex gap-4">
-        <img src="/logo.svg" width="60" height="60" alt="npmx logo" />
+        <img
+          src="/logo-icon.svg"
+          width="60"
+          height="60"
+          alt="npmx logo"
+          class="w-[60px] h-[60px]"
+        />
         <h1 class="text-5xl tracking-tighter font-mono">{{ siteName }}</h1>
       </div>
 
