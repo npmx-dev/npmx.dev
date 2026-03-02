@@ -1100,6 +1100,17 @@ const datetimeFormatterOptions = computed(() => {
   }[selectedGranularity.value]
 })
 
+// Cached date formatter for tooltip
+const tooltipDateFormatter = computed(() => {
+  const granularity = displayedGranularity.value
+  return new Intl.DateTimeFormat(locale.value, {
+    year: 'numeric',
+    month: granularity === 'yearly' ? undefined : 'short',
+    day: granularity === 'daily' || granularity === 'weekly' ? 'numeric' : undefined,
+    timeZone: 'UTC',
+  })
+})
+
 const sanitise = (value: string) =>
   value
     .replace(/^@/, '')
@@ -1598,10 +1609,22 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
-        customFormat: ({ datapoint: items }) => {
+        customFormat: ({ datapoint: items, absoluteIndex }) => {
           if (!items || pending.value) return ''
 
           const hasMultipleItems = items.length > 1
+
+          // Format date for compare page (multi-package mode, not in modal)
+          let formattedDate = ''
+          if (!props.inModal && hasMultipleItems && absoluteIndex !== undefined) {
+            const index = Number(absoluteIndex)
+            if (Number.isInteger(index) && index >= 0 && index < chartData.value.dates.length) {
+              const timestamp = chartData.value.dates[index]
+              if (timestamp) {
+                formattedDate = tooltipDateFormatter.value.format(new Date(timestamp))
+              }
+            }
+          }
 
           const rows = items
             .map((d: Record<string, any>) => {
@@ -1635,6 +1658,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             .join('')
 
           return `<div class="font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
+            ${formattedDate ? `<div class="text-2xs text-[var(--fg-subtle)] mb-2">${formattedDate}</div>` : ''}
             <div class="${hasMultipleItems ? 'flex flex-col gap-2' : ''}">
               ${rows}
             </div>
