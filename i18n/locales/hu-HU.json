@@ -3,10 +3,12 @@
   "seo": {
     "home": {
       "title": "npmx - Csomagböngésző az npm regiszterhez",
-      "description": "Egy jobb böngésző az npm regiszterhez. Keress, böngéssz és fedezz fel csomagokat egy modern felületen."
+      "description": "egy gyors, modern böngésző az npm regiszterhez. Keress, böngéssz és fedezz fel csomagokat egy modern felületen."
     }
   },
-  "tagline": "egy jobb böngésző az npm regiszterhez",
+  "built_at": "elkészítve {0}",
+  "alt_logo": "npmx logó",
+  "tagline": "egy gyors, modern böngésző az npm regiszterhez",
   "non_affiliation_disclaimer": "nem áll kapcsolatban az npm, Inc.-el.",
   "trademark_disclaimer": "az npm az npm, Inc. bejegyzett védjegye. Ez az oldal nem áll kapcsolatban az npm, Inc.-el.",
   "footer": {
@@ -14,37 +16,66 @@
     "docs": "dokumentáció",
     "source": "forráskód",
     "social": "közösség",
-    "chat": "chat"
+    "chat": "chat",
+    "keyboard_shortcuts": "billentyűzet parancsikonok"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "Globális",
+      "search": "Keresés",
+      "package": "Csomag"
+    },
+    "focus_search": "Keresésre fókusz",
+    "show_kbd_hints": "Billentyűzet megjelenítésének kiemelése",
+    "settings": "Beállítások megnyitása",
+    "compare": "Összehasonlítás megnyitása",
+    "compare_from_package": "Összehasonlítás megnyitása (előkitöltve az aktuális csomaggal)",
+    "navigate_results": "Eredmények közötti navigáció",
+    "go_to_result": "Eredményre ugrás",
+    "open_code_view": "Kódnézet megnyitása",
+    "open_docs": "Dokumentáció megnyitása",
+    "disable_shortcuts": "A billentyűzet parancsikonokat a {settings} menüben letilthatod."
   },
   "search": {
-    "label": "Npm csomagok keresése",
+    "label": "npm csomagok keresése",
     "placeholder": "csomagok keresése...",
     "button": "keresés",
     "searching": "Keresés...",
-    "found_packages": "Nincs találat | 1 csomag található | {count} csomag található",
+    "found_packages": "Nincs csomag találva | 1 csomag található | {count} csomag található",
+    "found_packages_sorted": "Nincs találat | Felső {count} eredmény rendezése | Felső {count} eredmény rendezése",
     "updating": "(frissítés...)",
     "no_results": "Nincs találat a következőre: \"{query}\"",
+    "rate_limited": "npm sebességkorlát elérve, próbálkozz később",
+    "title": "keresés",
+    "title_search": "keresés: {search}",
+    "title_packages": "csomagok keresése",
+    "meta_description": "Keresési eredmények: '{search}'",
+    "meta_description_packages": "npm csomagok keresése",
     "not_taken": "{name} még szabad",
     "claim_prompt": "Foglald le ezt a csomagnevet az npm-en",
     "claim_button": "\"{name}\" lefoglalása",
     "want_to_claim": "Szeretnéd lefoglalni ezt a csomagnevet?",
     "start_typing": "Kezdj el gépelni a kereséshez",
-    "exact_match": "pontos egyezés",
+    "algolia_disclaimer": "Az Algolia által működtetve",
+    "exact_match": "pontos",
     "suggestion": {
       "user": "felhasználó",
       "org": "szervezet",
-      "view_user_packages": "Felhasználó csomagjainak megtekintése",
-      "view_org_packages": "Szervezet csomagjainak megtekintése"
+      "view_user_packages": "E felhasználó csomagjainak megtekintése",
+      "view_org_packages": "E szervezet csomagjainak megtekintése"
     }
   },
   "nav": {
     "main_navigation": "Főmenü",
     "popular_packages": "Népszerű csomagok",
     "settings": "beállítások",
-    "back": "vissza"
+    "compare": "összehasonlítás",
+    "back": "vissza",
+    "menu": "Menü",
+    "mobile_menu": "Navigációs menü",
+    "open_menu": "Menü megnyitása",
+    "links": "Linkek",
+    "tap_to_search": "Koppints a kereséshez"
   },
   "settings": {
     "title": "beállítások",
@@ -53,14 +84,23 @@
     "sections": {
       "appearance": "Megjelenés",
       "display": "Kijelző",
-      "language": "Nyelv"
+      "search": "Adatforrás",
+      "language": "Nyelv",
+      "keyboard_shortcuts": "Billentyűzet parancsikonok"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "Adatforrás",
+      "description": "Válaszd ki, hogy az npmx honnan szerez keresési adatokat. Az egyes csomag oldalai mindig közvetlenül az npm regiszterből használnak adatokat.",
+      "npm": "npm Regiszter",
+      "npm_description": "Közvetlenül a hivatalos npm regiszterből szerez keresési, szervezeti és felhasználólista adatokat. Mérvadó, de lehet, hogy lassabb.",
+      "algolia": "Algolia",
+      "algolia_description": "Az Algolia-t használ a gyorsabb kereséshez, szervezeti és felhasználó oldalakhoz."
+    },
     "relative_dates": "Relatív dátumok",
     "include_types": "{'@'}types hozzáadása telepítéskor",
     "include_types_description": "Adja hozzá a {'@'}types csomagot a telepítési parancshoz típus nélküli csomagoknál",
     "hide_platform_packages": "Platform-specifikus csomagok elrejtése a keresőben",
-    "hide_platform_packages_description": "Natív csomagok (pl. {'@'}esbuild/linux-x64) elrejtése a találatok közül",
+    "hide_platform_packages_description": "Natív bináris csomagok (pl. {'@'}esbuild/linux-x64) elrejtése az eredmények közül",
     "theme": "Téma",
     "theme_light": "Világos",
     "theme_dark": "Sötét",
@@ -69,10 +109,13 @@
     "help_translate": "Segíts lefordítani az npmx-et",
     "accent_colors": "Akcentus színek",
     "clear_accent": "Akcentus szín törlése",
-    "translation_progress": "Fordítás állapota"
+    "translation_progress": "Fordítás állapota",
+    "background_themes": "Háttér árnyalata",
+    "keyboard_shortcuts_enabled": "Billentyűzet parancsikonok engedélyezése",
+    "keyboard_shortcuts_enabled_description": "A billentyűzet parancsikonok letilthatók, ha ütköznek más böngésző vagy rendszer parancsikonokkal"
   },
   "i18n": {
-    "missing_keys": "{count} hiányzó fordítás",
+    "missing_keys": "{count} hiányzó fordítás | {count} hiányzó fordítás",
     "copy_keys": "Kulcsok másolása",
     "show_more_keys": "További {count} megjelenítése...",
     "contribute_hint": "Segíts javítani a fordítást a hiányzó kulcsok hozzáadásával.",
@@ -83,60 +126,111 @@
     "loading": "Betöltés...",
     "loading_more": "Továbbiak betöltése...",
     "loading_packages": "Csomagok betöltése...",
-    "end_of_results": "Nincs több találat",
+    "end_of_results": "Eredmények vége",
     "try_again": "Próbáld újra",
     "close": "Bezárás",
+    "or": "vagy",
     "retry": "Újra",
     "copy": "másolás",
     "copied": "másolva!",
-    "skip_link": "Ugrás a tartalomra",
+    "skip_link": "Ugrás a fő tartalomra",
     "warnings": "Figyelmeztetések:",
     "go_back_home": "Vissza a főoldalra",
     "view_on_npm": "megtekintés npm-en",
     "per_week": "/ hét",
+    "vanity_downloads_hint": "Vanity szám: nincsenek csomagok megjelenítve | Vanity szám: a megjelenített csomagra | Vanity szám: {count} megjelenített csomag összege",
     "sort": {
       "name": "név",
       "role": "szerepkör",
       "members": "tagok"
     },
-    "scroll_to_top": "Vissza a tetejére"
+    "scroll_to_top": "Görgetés a tetejére",
+    "cancel": "Mégse",
+    "save": "Mentés",
+    "edit": "Szerkesztés",
+    "error": "Hiba"
+  },
+  "profile": {
+    "display_name": "Megjelenítési név",
+    "description": "Leírás",
+    "no_description": "Nincs leírás",
+    "website": "Weboldal",
+    "website_placeholder": "https://example.com",
+    "likes": "Kedvelések",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "npmx profil: {handle}",
+    "not_found": "Profil nem található",
+    "not_found_message": "A(z) {handle} felhasználó profilja nem található.",
+    "invite": {
+      "message": "Úgy tűnik, hogy még nem használja az npmx-et. Szeretnéd megtudatni vele?",
+      "share_button": "Megosztás a Bluesky-on",
+      "compose_text": "Halló {'@'}{handle}! Már próbáltad az npmx.dev-et? Egy gyors, modern és nyílt forráskódú böngésző az npm regiszterhez.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Csomag Nem Található",
-    "not_found_message": "A keresett csomag nem található.",
+    "not_found_message": "A csomag nem található.",
     "no_description": "Nincs leírás",
     "not_latest": "(nem a legfrissebb)",
     "verified_provenance": "Hitelesített eredet",
     "view_permalink": "Verzió permalinkjének megtekintése",
     "navigation": "Csomag",
+    "copy_name": "Csomagnév másolása",
+    "copy_version": "Csomag verziójának másolása",
     "deprecation": {
       "package": "Ez a csomag elavult (deprecated).",
       "version": "Ez a verzió elavult (deprecated).",
       "no_reason": "Nincs indoklás megadva"
     },
+    "size_increase": {
+      "title_size": "Jelentős méretbeli növekedés a v{version} óta",
+      "title_deps": "Jelentős függőség számának növekedése a v{version} óta",
+      "title_both": "Jelentős méret és függőség számának növekedése a v{version} óta",
+      "size": "A telepítési méret {percent}-kal nőtt ({size} nagyobb)",
+      "deps": "{count} további függőség"
+    },
     "replacement": {
       "title": "Lehet, hogy nincs szükséged erre a függőségre.",
       "native": "Ez helyettesíthető a következővel: {replacement}, amely elérhető a Node {nodeVersion} verzió óta.",
-      "simple": "A közösség szerint ez a csomag felesleges, az alábbi javaslattal: {replacement}.",
-      "documented": "A közösség szerint ennek a csomagnak vannak jobb teljesítményű alternatívái.",
+      "simple": "A {community} szerint ez a csomag felesleges, az alábbi javaslattal: {replacement}.",
+      "documented": "A {community} szerint ennek a csomagnak vannak jobb teljesítményű alternatívái.",
       "none": "Ez a csomag feleslegesnek lett jelölve, a funkció valószínűleg natívan elérhető.",
       "learn_more": "Tudj meg többet",
-      "mdn": "MDN"
+      "learn_more_above": "Tudj meg többet fentebb.",
+      "mdn": "MDN",
+      "community": "közösség",
+      "consider_no_dep": "+ Fontold meg a függőség nélkülözést?"
     },
     "stats": {
       "license": "Licenc",
       "deps": "Függ.",
       "install_size": "Telepítési méret",
       "vulns": "Sebez.",
+      "published": "Közzétéve",
+      "published_tooltip": "{package}{'@'}{version} közzétételének dátuma",
       "view_dependency_graph": "Függőségi gráf megtekintése",
       "inspect_dependency_tree": "Függőségi fa vizsgálata",
       "size_tooltip": {
         "unpacked": "{size} kicsomagolt méret (ez a csomag)",
-        "total": "{size} teljes kicsomagolt méret ({count} függőséggel együtt linux-x64-en)"
+        "total": "{size} teljes kicsomagolt méret ({count} függőséggel együtt linux-x64-en) | {size} teljes kicsomagolt méret (az összes {count} függőséggel együtt linux-x64-en)"
       }
     },
     "skills": {
-      "file_counts": {}
+      "title": "Agent Skills",
+      "skills_available": "{count} skill elérhető | {count} skill elérhető",
+      "compatible_with": "Kompatibilis a(z) {tool} eszközzel",
+      "install": "Telepítés",
+      "installation_method": "Telepítési módszer",
+      "learn_more": "Tudj meg többet",
+      "available_skills": "Elérhető Skills",
+      "click_to_expand": "Kattints a kibontáshoz",
+      "no_description": "Nincs leírás",
+      "file_counts": {
+        "scripts": "{count} script | {count} script",
+        "refs": "{count} ref | {count} ref",
+        "assets": "{count} eszköz | {count} eszköz"
+      },
+      "view_source": "Forrás megtekintése"
     },
     "links": {
       "repo": "repo",
@@ -145,9 +239,13 @@
       "jsr": "jsr",
       "code": "kód",
       "docs": "dokumentáció",
-      "fund": "támogatás"
+      "fund": "támogatás",
+      "compare": "összehasonlítás"
     },
-    "likes": {},
+    "likes": {
+      "like": "Szeretem ezt a csomagot",
+      "unlike": "Nem szeretem ezt a csomagot"
+    },
     "docs": {
       "not_available": "Dokumentáció nem elérhető",
       "not_available_detail": "Nem sikerült legenerálni a dokumentációt ehhez a verzióhoz."
@@ -156,11 +254,14 @@
       "title": "Kezdő lépések",
       "pm_label": "Csomagkezelő",
       "copy_command": "Telepítési parancs másolása",
-      "view_types": "{package} típusok megtekintése"
+      "copy_dev_command": "Dev telepítési parancs másolása",
+      "dev_dependency_hint": "Általában dev függőségként telepítik",
+      "view_types": "{package} megtekintése"
     },
     "create": {
       "title": "Új projekt létrehozása",
-      "copy_command": "Létrehozási parancs másolása"
+      "copy_command": "Létrehozási parancs másolása",
+      "view": "{packageName} ugyanaz a karbantartóval rendelkezik. Kattints további részletekért."
     },
     "run": {
       "title": "Futtatás",
@@ -170,14 +271,42 @@
       "title": "Readme",
       "no_readme": "Nincs elérhető README.",
       "view_on_github": "Megtekintés GitHubon",
-      "callout": {}
+      "toc_title": "Témakörök",
+      "callout": {
+        "note": "Megjegyzés",
+        "tip": "Tipp",
+        "important": "Fontos",
+        "warning": "Figyelmeztetés",
+        "caution": "Óvatosság"
+      },
+      "copy_as_markdown": "README másolása Markdownként"
     },
-    "provenance_section": {},
-    "security_downgrade": {},
+    "provenance_section": {
+      "title": "Eredet",
+      "built_and_signed_on": "Elkészítve és aláírva a(z) {provider} szolgáltatóban",
+      "view_build_summary": "Összefoglalás megtekintése",
+      "source_commit": "Forrás Commit",
+      "build_file": "Fordítási fájl",
+      "public_ledger": "Nyilvános nagykönyv",
+      "transparency_log_entry": "Átláthatósági napló bejegyzése",
+      "view_more_details": "További részletek megtekintése",
+      "error_loading": "Nem sikerült az eredet részleteit betölteni"
+    },
+    "security_downgrade": {
+      "title": "Bizalom csökkentés",
+      "description_to_none_provenance": "Ez a verzió {provenance} nélkül volt közzétéve.",
+      "description_to_none_trustedPublisher": "Ez a verzió {trustedPublishing} nélkül volt közzétéve.",
+      "description_to_provenance_trustedPublisher": "Ez a verzió {provenance} használ, de nem {trustedPublishing}.",
+      "fallback_install_provenance": "A telepítési parancsok a {version} verzióra vannak rögzítve, az utolsó verzió eredéttel.",
+      "fallback_install_trustedPublisher": "A telepítési parancsok a {version} verzióra vannak rögzítve, az utolsó verzió megbízható közzétételsel.",
+      "provenance_link_text": "eredet",
+      "trusted_publishing_link_text": "megbízható közzététel"
+    },
     "keywords_title": "Kulcsszavak",
     "compatibility": "Kompatibilitás",
     "card": {
       "publisher": "Kiadó",
+      "published": "Közzétéve",
       "weekly_downloads": "Heti letöltések",
       "keywords": "Kulcsszavak",
       "license": "Licenc"
@@ -193,24 +322,54 @@
       "other_versions": "Egyéb verziók",
       "more_tagged": "{count} további címkézett",
       "all_covered": "Minden verziót lefednek a fenti címkék",
-      "deprecated_title": "{version} (elavult)"
+      "deprecated_title": "{version} (elavult)",
+      "view_all": "{count} verzió megtekintése | Az összes {count} verzió megtekintése",
+      "distribution_title": "Semver csoport",
+      "distribution_modal_title": "Verziók",
+      "distribution_range_date_same_year": "{from} -tól {to} -ig, {endYear}",
+      "distribution_range_date_multiple_years": "{from} -tól, {startYear} -ben {to} -ig, {endYear}",
+      "grouping_major": "Fő",
+      "grouping_minor": "Nem fő",
+      "grouping_versions_title": "Verziók",
+      "grouping_versions_all": "Összes",
+      "grouping_versions_only_recent": "Csak a közelmúltbeli",
+      "grouping_usage_title": "Használat",
+      "grouping_usage_all": "Összes",
+      "grouping_usage_low": "Alacsony",
+      "recent_versions_only_tooltip": "Csak az elmúlt év során közzétett verziókat mutasd meg.",
+      "show_low_usage_tooltip": "Tartalmazzon olyan verziós csoportokat az összes letöltés 1%-ánál kevesebb.",
+      "y_axis_label": "Letöltések",
+      "filter_placeholder": "Szűrés semver szerint (pl. ^3.0.0)",
+      "filter_invalid": "Érvénytelen semver tartomány",
+      "filter_help": "Semver tartomány szűrési súgó",
+      "filter_tooltip": "Verziók szűrése {link} segítségével. Például a ^3.0.0 az összes 3.x verziókat mutatja.",
+      "filter_tooltip_link": "semver tartomány",
+      "no_matches": "Nincs verzió, amely megfelel ennek a tartománynak",
+      "copy_alt": {
+        "per_version_analysis": "A(z) {version} verzió {downloads} alkalommal lett letöltve",
+        "general_description": "Sávdiagram, amely a(z) {package_name} csomag {semver_grouping_mode} verzióinak verzió szerinti letöltéseit mutatja, {date_range_label} a(z) {first_version} verziótól a(z) {last_version} verzióig. A legtöbbször letöltött verzió a(z) {max_downloaded_version}, {max_version_downloads} letöltéssel. {per_version_analysis}. {watermark}."
+      }
     },
     "dependencies": {
-      "title": "Függőségek ({count})",
+      "title": "Függőség ({count}) | Függőségek ({count})",
       "list_label": "Csomag függőségei",
-      "show_all": "összes ({count}) függőség mutatása",
+      "show_all": "{count} függ mutatása | az összes {count} függ mutatása",
       "optional": "opcionális",
-      "view_vulnerabilities": "Sebezhetőségek megtekintése"
+      "view_vulnerabilities": "Sebezhetőségek megtekintése",
+      "outdated_major": "{count} major verzió lemaradva (legutóbbi: {latest}) | {count} major verzió lemaradva (legutóbbi: {latest})",
+      "outdated_minor": "{count} minor verzió lemaradva (legutóbbi: {latest}) | {count} minor verzió lemaradva (legutóbbi: {latest})",
+      "outdated_patch": "Patch frissítés elérhető (legutóbbi: {latest})",
+      "has_replacement": "Ennek a függőségnek vannak javasolt helyettesítései"
     },
     "peer_dependencies": {
-      "title": "Peer függőségek ({count})",
+      "title": "Peer függőség ({count}) | Peer függőségek ({count})",
       "list_label": "Csomag peer függőségei",
-      "show_all": "összes ({count}) peer függőség mutatása"
+      "show_all": "{count} peer függ mutatása | az összes {count} peer függ mutatása"
     },
     "optional_dependencies": {
-      "title": "Opcionális függőségek ({count})",
+      "title": "Opcionális függőség ({count}) | Opcionális függőségek ({count})",
       "list_label": "Csomag opcionális függőségei",
-      "show_all": "összes ({count}) opc. függőség mutatása"
+      "show_all": "{count} opt. függ mutatása | az összes {count} opt. függ mutatása"
     },
     "maintainers": {
       "title": "Karbantartók",
@@ -236,17 +395,58 @@
       "end_date": "Vége",
       "loading": "Betöltés...",
       "date_range": "{start} - {end}",
+      "date_range_multiline": "{start}\n- {end}",
       "download_file": "{fileType} letöltése",
       "toggle_annotator": "Magyarázó kapcsolása",
-      "items": {}
+      "toggle_stack_mode": "Verem mód kapcsolása",
+      "legend_estimation": "Becslés",
+      "no_data": "Nincs elérhető adat",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Aspektus",
+      "title": "Trendek",
+      "contributors_skip": "Nincs megjelenítve a közreműködőknél (nincs GitHub repo):",
+      "items": {
+        "downloads": "Letöltések",
+        "likes": "Kedvelések",
+        "contributors": "Közreműködők"
+      },
+      "play_animation": "Animáció lejátszása",
+      "pause_animation": "Animáció szüneteltetése",
+      "data_correction": "Adatkorrekció",
+      "average_window": "Átlagos ablak",
+      "smoothing": "Simítás",
+      "known_anomalies": "Ismert anomáliák",
+      "known_anomalies_description": "Interpolálja a botok vagy CI-problémák által okozott ismert letöltési csúcsokat.",
+      "known_anomalies_ranges": "Anomália tartományok",
+      "known_anomalies_range": "Innen: {start} eddig: {end}",
+      "known_anomalies_range_named": "{packageName}: innen: {start} eddig: {end}",
+      "known_anomalies_none": "Nincs ismert anomália erre a csomagra. | Nincs ismert anomália ezekre a csomagokra.",
+      "known_anomalies_contribute": "Anomália adatok közreműködése",
+      "apply_correction": "Korrekció alkalmazása",
+      "copy_alt": {
+        "trend_none": "többnyire lapos",
+        "trend_strong": "erős",
+        "trend_weak": "gyenge",
+        "trend_undefined": "meghatározatlan (nincs elegendő adat)",
+        "button_label": "Alt szöveg másolása",
+        "watermark": "Az alján egy vízjel olvasható: \"./npmx egy gyors, modern böngésző az npm regiszterhez\"",
+        "analysis": "{package_name} {start_value} -ből indul és {end_value} -ben ér véget, {trend} trendet mutat {downloads_slope} letöltés/időköz meredekséggel",
+        "estimation": "A végső érték a jelenlegi időszak részleges adatain alapuló becslés.",
+        "estimations": "A végső értékek a jelenlegi időszak részleges adatain alapuló becslések.",
+        "compare": "Csomag letöltési összehasonlítás vonaldiagram: {packages}.",
+        "single_package": "A(z) {package} csomag letöltési vonaldiagramja.",
+        "general_description": "Az Y tengely a letöltések számát ábrázolja. Az X tengely a dátumtartományt ábrázolja, {start_date} -től {end_date} -ig, {granularity} időszakkal.{estimation_notice} {packages_analysis}. {watermark}."
+      }
     },
     "downloads": {
-      "title": "Heti letöltések"
+      "title": "Heti letöltések",
+      "community_distribution": "Közösségi bevezetés eloszlásának megtekintése",
+      "subtitle": "Minden verzióban"
     },
     "install_scripts": {
       "title": "Telepítő scriptek",
       "script_label": "(script)",
-      "npx_packages": "{count} npx csomag",
+      "npx_packages": "{count} npx csomag | {count} npx csomag",
       "currently": "jelenleg {version}"
     },
     "playgrounds": {
@@ -257,58 +457,61 @@
       "esm": "ES Modulok támogatva",
       "cjs": "CommonJS támogatva",
       "no_esm": "Nincs ES Modul támogatás",
+      "types_label": "Típusok",
       "types_included": "Típusok mellékelve",
       "types_available": "Típusok elérhetők: {package}",
       "no_types": "Nincsenek TypeScript típusok"
     },
     "license": {
-      "view_spdx": "Licenc szöveg megtekintése (SPDX)"
+      "view_spdx": "Licenc szöveg megtekintése az SPDX-en",
+      "none": "Nincs"
     },
     "vulnerabilities": {
-      "tree_found": "{vulns} sebezhetőség {packages}/{total} csomagban",
-      "show_all_packages": "az összes ({count}) érintett csomag mutatása",
+      "tree_found": "{vulns} sebezhetőség {packages}/{total} csomagban | {vulns} sebezhetőség {packages}/{total} csomagban",
+      "show_all_packages": "{count} érintett csomag mutatása | az összes {count} érintett csomag mutatása",
       "path": "útvonal",
       "more": "+{count} további",
-      "packages_failed": "{count} csomagot nem sikerült ellenőrizni",
-      "scan_failed": "A sebezhetőségi vizsgálat sikertelen",
+      "packages_failed": "{count} csomagot nem sikerült ellenőrizni | {count} csomagot nem sikerült ellenőrizni",
+      "scan_failed": "Nem sikerült a sebezhetőségi vizsgálat",
       "severity": {
         "critical": "kritikus",
         "high": "magas",
         "moderate": "közepes",
         "low": "alacsony"
-      }
+      },
+      "fixed_in_title": "Rögzítve a(z) {version} verzióban"
     },
     "deprecated": {
       "label": "Elavult",
-      "tree_found": "{count} elavult függőség",
-      "show_all": "az összes ({count}) elavult csomag mutatása"
+      "tree_found": "{count} elavult függőség | {count} elavult függőség",
+      "show_all": "{count} elavult csomag mutatása | az összes {count} elavult csomag mutatása"
     },
     "access": {
-      "title": "Csapathihozzáférés",
-      "refresh": "Frissítés",
-      "list_label": "Hozzáférési lista",
+      "title": "Csapat hozzáférés",
+      "refresh": "Csapat hozzáférés frissítése",
+      "list_label": "Csapat hozzáférési lista",
       "owner": "tulajdonos",
-      "rw": "írás/olv.",
-      "ro": "csak olv.",
+      "rw": "rw",
+      "ro": "ro",
       "revoke_access": "{name} hozzáférésének visszavonása",
-      "no_access": "Nincs beállítva csapathihozzáférés",
+      "no_access": "Nincs beállítva csapat hozzáférés",
       "select_team_label": "Csapat kiválasztása",
       "loading_teams": "Csapatok betöltése...",
-      "select_team": "Válassz csapatot",
+      "select_team": "Csapat kiválasztása",
       "permission_label": "Jogosultsági szint",
       "permission": {
         "read_only": "csak olvasás",
-        "read_write": "írás és olvasás"
+        "read_write": "írás-olvasás"
       },
       "grant_button": "engedélyezés",
-      "cancel_grant": "Mégse",
-      "grant_access": "+ Hozzáférés megadása"
+      "cancel_grant": "Hozzáférés megadásának mégse",
+      "grant_access": "+ Csapat hozzáférés megadása"
     },
     "list": {
       "filter_label": "Csomagok szűrése",
       "filter_placeholder": "Csomagok szűrése...",
-      "sort_label": "Rendezés",
-      "showing_count": "{filtered} megjelenítése (összesen {total})"
+      "sort_label": "Csomagok rendezése",
+      "showing_count": "{filtered} / {total} csomag megjelenítése"
     },
     "skeleton": {
       "loading": "Részletek betöltése",
@@ -319,15 +522,24 @@
     },
     "sort": {
       "downloads": "Legtöbbször letöltött",
+      "published": "Közelmúltban közzétéve",
       "name_asc": "Név (A-Z)",
       "name_desc": "Név (Z-A)"
     },
-    "size": {}
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    }
   },
   "connector": {
     "modal": {
       "title": "Helyi Connector",
+      "contributor_badge": "Csak közreműködőknek",
+      "contributor_notice": "A connector még nincs közzétéve az npm-en. Lásd a(z) {link} -et a helyi futtatásról.",
+      "contributor_link": "közreműködési útmutató",
       "connected": "Csatlakoztatva",
+      "connected_as_user": "Csatlakoztatva mint ~{user}",
       "connected_hint": "Most már kezelheted a csomagokat és szervezeteket a webes felületről.",
       "disconnect": "Szétkapcsolás",
       "run_hint": "Futtasd a connectort a gépeden az admin funkciók engedélyezéséhez.",
@@ -341,7 +553,8 @@
       "warning": "FIGYELEM",
       "warning_text": "Ez lehetővé teszi, hogy az npmx hozzáférjen az npm CLI-dhez. Csak olyan oldalakhoz csatlakozz, amelyekben megbízol.",
       "connect": "Csatlakozás",
-      "connecting": "Kapcsolódás..."
+      "connecting": "Csatlakoztatás...",
+      "auto_open_url": "Hitelesítési oldal automatikus megnyitása"
     }
   },
   "operations": {
@@ -354,10 +567,12 @@
       "active_label": "Aktív műveletek",
       "otp_required": "OTP szükséges",
       "otp_prompt": "Add meg az OTP-t a folytatáshoz",
-      "otp_placeholder": "OTP kód...",
-      "otp_label": "Egyszeri jelszó (OTP)",
+      "otp_placeholder": "OTP kód megadása...",
+      "otp_label": "Egyszeri jelszó",
       "retry_otp": "Újrapróbálás OTP-vel",
+      "retry_web_auth": "Újrapróbálás webes hitelesítéssel",
       "retrying": "Újrapróbálás...",
+      "open_web_auth": "Webes hitelesítési link megnyitása",
       "approve_operation": "Művelet jóváhagyása",
       "remove_operation": "Művelet törlése",
       "approve_all": "Összes jóváhagyása",
@@ -378,21 +593,21 @@
       "loading": "Csapatok betöltése...",
       "no_teams": "Nincsenek csapatok",
       "list_label": "Szervezeti csapatok",
-      "delete_team": "{name} csapat törlése",
-      "member_count": "{count} tag",
+      "delete_team": "Csapat törlése: {name}",
+      "member_count": "{count} tag | {count} tag",
       "members_of": "{team} tagjai",
       "no_members": "Nincsenek tagok",
       "remove_user": "{user} eltávolítása a csapatból",
-      "username_to_add": "Hozzáadandó felhasználó: {team}",
+      "username_to_add": "Felhasználónév hozzáadása a(z) {team} csapathoz",
       "username_placeholder": "felhasználónév...",
       "add_button": "hozzáad",
-      "cancel_add_user": "Mégse",
+      "cancel_add_user": "Felhasználó hozzáadásának mégse",
       "add_member": "+ Tag hozzáadása",
       "team_name_label": "Csapatnév",
-      "team_name_placeholder": "csapat-neve...",
+      "team_name_placeholder": "team-name...",
       "create_button": "létrehozás",
-      "no_match": "Nincs találat a csapatra: \"{query}\"",
-      "cancel_create": "Mégse",
+      "no_match": "Nincs csapat, amely megfelel: \"{query}\"",
+      "cancel_create": "Csapat létrehozásának mégse",
       "create_team": "+ Csapat létrehozása"
     },
     "members": {
@@ -407,10 +622,10 @@
       "loading": "Tagok betöltése...",
       "no_members": "Nincsenek tagok",
       "list_label": "Szervezet tagjai",
-      "change_role_for": "{name} szerepkörének módosítása",
+      "change_role_for": "Szerepkör módosítása: {name}",
       "remove_from_org": "{name} eltávolítása a szervezetből",
       "view_team": "{team} csapat megtekintése",
-      "no_match": "Nincs a szűrésnek megfelelő tag",
+      "no_match": "Nincs tag, amely megfelel a szűrőknek",
       "username_label": "Felhasználónév",
       "username_placeholder": "felhasználónév...",
       "role_label": "Szerepkör",
@@ -423,36 +638,36 @@
       "team_label": "Csapat",
       "no_team": "nincs csapat",
       "add_button": "hozzáad",
-      "cancel_add": "Mégse",
+      "cancel_add": "Tag hozzáadásának mégse",
       "add_member": "+ Tag hozzáadása"
     },
-    "public_packages": "{count} nyilvános csomag",
+    "public_packages": "{count} nyilvános csomag | {count} nyilvános csomag",
     "page": {
       "packages_title": "Csomagok",
       "members_tab": "Tagok",
       "teams_tab": "Csapatok",
-      "no_packages": "Nincsenek nyilvános csomagok itt:",
-      "no_packages_hint": "Ez a szervezet nem létezik, vagy nincsenek nyilvános csomagjai.",
+      "no_packages": "Nincs nyilvános csomag a(z)",
+      "no_packages_hint": "Ez a szervezet valószínűleg nem létezik, vagy nincsenek nyilvános csomagjai.",
       "failed_to_load": "Nem sikerült betölteni a szervezet csomagjait",
-      "no_match": "Nincs találat a következőre: \"{query}\"",
+      "no_match": "Nincs csomag, amely megfelel: \"{query}\"",
       "not_found": "Szervezet nem található",
       "not_found_message": "A(z) \"{'@'}{name}\" szervezet nem létezik az npm-en"
     }
   },
   "user": {
     "combobox": {
-      "add_to_org_hint": "(hozzáadja a szervezethez is)",
-      "press_enter_to_add": "Nyomj Entert {'@'}{username} hozzáadásához",
+      "add_to_org_hint": "(szervezethez is hozzáadja)",
+      "press_enter_to_add": "Enter megnyomásával add hozzá: {'@'}{username}",
       "default_placeholder": "felhasználónév...",
       "suggestions_label": "Felhasználói javaslatok"
     },
     "page": {
       "packages_title": "Csomagok",
-      "no_packages": "Nincsenek nyilvános csomagok itt:",
-      "no_packages_hint": "Ez a felhasználó nem létezik, vagy nincsenek nyilvános csomagjai.",
+      "no_packages": "Nincs nyilvános csomag a(z)",
+      "no_packages_hint": "Ez a felhasználó valószínűleg nem létezik, vagy nincsenek nyilvános csomagjai.",
       "failed_to_load": "Nem sikerült betölteni a felhasználó csomagjait",
-      "no_match": "Nincs találat a következőre: \"{query}\"",
-      "filter_placeholder": "{count} csomag szűrése..."
+      "no_match": "Nincs csomag, amely megfelel: \"{query}\"",
+      "filter_placeholder": "{count} csomag szűrése... | {count} csomag szűrése..."
     },
     "orgs_page": {
       "title": "Szervezetek",
@@ -460,13 +675,13 @@
       "connect_required": "Csatlakoztasd a helyi CLI-t a szervezeteid megtekintéséhez.",
       "connect_hint_prefix": "Futtasd a",
       "connect_hint_suffix": "parancsot a kezdéshez.",
-      "own_orgs_only": "Csak a saját szervezeteidet láthatod.",
-      "view_your_orgs": "Szervezeteim megtekintése",
+      "own_orgs_only": "Csak a saját szervezeteidet tudod megtekinteni.",
+      "view_your_orgs": "Szervezeteid megtekintése",
       "loading": "Szervezetek betöltése...",
       "empty": "Nincsenek szervezetek.",
       "empty_hint": "A szervezeteket a scope-olt csomagok alapján észleljük.",
-      "count": "{count} szervezet",
-      "packages_count": "{count} csomag"
+      "count": "Szervezet | {count} szervezet",
+      "packages_count": "{count} csomag | {count} csomag"
     }
   },
   "claim": {
@@ -479,11 +694,12 @@
       "invalid_name": "Érvénytelen csomagnév:",
       "available": "Ez a név elérhető!",
       "taken": "Ez a név már foglalt.",
+      "missing_permission": "Nincs jogosultságod csomag hozzáadásához a(z) {'@'}{scope} scope-hoz.",
       "similar_warning": "Hasonló csomagok léteznek - az npm elutasíthatja ezt a nevet:",
       "related": "Kapcsolódó csomagok:",
-      "scope_warning_title": "Fontold meg scope-olt csomagnév használatát",
+      "scope_warning_title": "Fontold meg a scope-olt csomagnév használatát",
       "scope_warning_text": "A nem scope-olt nevek megosztott erőforrások. Csak akkor foglalj le nevet, ha ténylegesen publikálni és karbantartani szeretnél egy csomagot. Személyes vagy szervezeti projektekhez használj scope-ot, pl: {'@'}{username}/{name}.",
-      "connect_required": "Csatlakozz a connectorfhoz a név lefoglalásához.",
+      "connect_required": "Csatlakozz a helyi connectorhoz a csomagnév lefoglalásához.",
       "connect_button": "Csatlakozás a Connectorhoz",
       "publish_hint": "Ez közzétesz egy minimális helyőrző csomagot.",
       "preview_json": "package.json előnézet",
@@ -498,7 +714,7 @@
     "files_label": "Fájlok",
     "no_files": "Nincsenek fájlok ebben a könyvtárban",
     "root": "gyökér",
-    "lines": "{count} sor",
+    "lines": "{count} sor | {count} sor",
     "toggle_tree": "Fájlfa kapcsolása",
     "close_tree": "Fájlfa bezárása",
     "copy_link": "Link másolása",
@@ -520,16 +736,18 @@
     "markdown_view_mode": {
       "preview": "előnézet",
       "code": "kód"
-    }
+    },
+    "file_path": "Fájl elérési útja",
+    "scroll_to_top": "Görgetés a tetejére"
   },
   "badges": {
     "provenance": {
       "verified": "ellenőrzött",
       "verified_title": "Ellenőrzött eredet",
-      "verified_via": "Ellenőrizve: közzétéve a következőn keresztül: {provider}"
+      "verified_via": "Ellenőrizve: {provider} által közzétéve"
     },
     "jsr": {
-      "title": "elérhető JSR-en is"
+      "title": "a JSR-en is elérhető"
     }
   },
   "filters": {
@@ -541,13 +759,13 @@
     "search_placeholder_keywords": "Szűrés kulcsszavak szerint...",
     "search_placeholder_all": "Keresés mindenhol vagy használj name: desc: kw: operátorokat",
     "scope_name": "Név",
-    "scope_name_description": "Keresés csak a nevekben",
+    "scope_name_description": "Csak a csomagnéveket keresik",
     "scope_description": "Leírás",
-    "scope_description_description": "Keresés csak a leírásokban",
+    "scope_description_description": "Csak a leírásokat keresik",
     "scope_keywords": "Kulcsszavak",
-    "scope_keywords_description": "Keresés csak a kulcsszavakban",
+    "scope_keywords_description": "Csak a kulcsszavakat keresik",
     "scope_all": "Minden",
-    "scope_all_description": "Keresés minden mezőben (name: desc: kw: támogatott)",
+    "scope_all_description": "Az összes mező keresése, a name: desc: kw: operátorok támogatottak",
     "weekly_downloads": "Heti letöltések",
     "updated_within": "Frissítve",
     "security": "Biztonság",
@@ -555,7 +773,13 @@
     "more_keywords": "+{count} további",
     "clear_all": "Összes törlése",
     "remove_filter": "{label} szűrő eltávolítása",
-    "chips": {},
+    "chips": {
+      "search": "Keresés",
+      "downloads": "Letöltések",
+      "keyword": "Kulcsszó",
+      "security": "Biztonság",
+      "updated": "Frissítve"
+    },
     "download_range": {
       "any": "Bármennyi",
       "lt100": "< 100",
@@ -586,6 +810,7 @@
       "downloads_day": "Letöltés/nap",
       "downloads_month": "Letöltés/hó",
       "downloads_year": "Letöltés/év",
+      "published": "Utoljára közzétéve",
       "name": "Név",
       "quality": "Minőség",
       "popularity": "Népszerűség",
@@ -601,6 +826,7 @@
       "version": "Verzió",
       "description": "Leírás",
       "downloads": "Letöltés/hét",
+      "published": "Utoljára közzétéve",
       "maintainers": "Karbantartók",
       "keywords": "Kulcsszavak",
       "quality_score": "Minőség pontszám",
@@ -627,9 +853,9 @@
       "nav_label": "Lapozás"
     },
     "count": {
-      "showing_filtered": "{filtered} / {count} csomag",
-      "showing_all": "{count} csomag",
-      "showing_paginated": "{pageSize} / {count} csomag"
+      "showing_filtered": "{filtered} / {count} csomag | {filtered} / {count} csomag",
+      "showing_all": "{count} csomag | {count} csomag",
+      "showing_paginated": "{pageSize} / {count} csomag | {pageSize} / {count} csomag"
     },
     "table": {
       "security_warning": "Biztonsági figyelmeztetés",
@@ -644,7 +870,7 @@
     "what_we_are": {
       "title": "Mik vagyunk",
       "better_ux_dx": "jobb UX/DX",
-      "admin_ui": "admin felületet",
+      "admin_ui": "admin felület",
       "description": "Az npmx egy {betterUxDx} az npm csomagregiszterhez és eszközökhöz. Gyors, modern felületet biztosítunk a csomagok felfedezéséhez, olyan funkciókkal, mint a sötét mód, billentyűzetes navigáció, kódböngészés és kapcsolat alternatív tárakhoz, mint a {jsr}.",
       "admin_description": "Célunk továbbá egy jobb {adminUi} nyújtása a csomagjaid, csapataid és szervezeteid kezeléséhez — mindezt a böngészőből, a helyi npm CLI-t felhasználva."
     },
@@ -655,19 +881,32 @@
       "registry_description": "Nem hosztolunk csomagokat. Csak egy jobb módot kínálunk a böngészésükre.",
       "package_managers_exist": "{already} {people} {building} {really} {cool} {package} {managers}.",
       "words": {
-        "already": "Vannak",
-        "people": "emberek, akik",
-        "building": "már építenek",
+        "already": "Vannak már",
+        "people": "emberek,",
+        "building": "akik építenek",
         "really": "igazán",
         "cool": "menő",
         "package": "csomag",
         "managers": "kezelőket"
       }
     },
-    "team": {},
+    "sponsors": {
+      "title": "Szponzorok"
+    },
+    "oss_partners": {
+      "title": "OSS partnerek"
+    },
+    "team": {
+      "title": "Csapat",
+      "governance": "Irányítás",
+      "role_steward": "gondnok",
+      "role_maintainer": "karbantartó",
+      "sponsor": "szponzor",
+      "sponsor_aria": "{name} szponzorálása a GitHub-on"
+    },
     "contributors": {
-      "title": "Közreműködők",
-      "description": "Az npmx teljes mértékben nyílt forráskódú. Egy csodálatos közösség építi. Csatlakozz hozzánk, és építsük fel együtt azt az npm böngészési élményt, amire mindig is vágytunk.",
+      "title": "... és {count} további közreműködő | ... és {count} további közreműködő",
+      "description": "Az npmx teljes mértékben nyílt forráskódú, egy csodálatos közreműködői közösség által. Csatlakozz hozzánk, és építsük fel együtt azt az npm böngészési élményt, amire mindig is vágytunk.",
       "loading": "Közreműködők betöltése...",
       "error": "Nem sikerült betölteni a közreműködőket",
       "view_profile": "{name} GitHub profiljának megtekintése"
@@ -682,18 +921,43 @@
       "community": {
         "title": "Csatlakozz a közösséghez",
         "description": "Chat, kérdések és ötletelés.",
-        "cta": "Csatlakozás Discordhoz"
+        "cta": "Csatlakozás a Discord-hoz"
       },
       "follow": {
         "title": "Maradj naprakész",
         "description": "Értesülj a legújabb npmx hírekről.",
-        "cta": "Követés Bluesky-on"
+        "cta": "Követés a Bluesky-on"
       }
     }
   },
-  "account_menu": {},
+  "account_menu": {
+    "connect": "csatlakozás",
+    "account": "Fiók",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Csomagok és szervezetek kezelése",
+    "atmosphere_desc": "Szociális funkciók és identitás",
+    "connect_npm_cli": "Csatlakozás az npm CLI-hez",
+    "connect_atmosphere": "Csatlakozás az Atmosphere-hez",
+    "connecting": "Csatlakoztatás...",
+    "ops": "{count} op | {count} ops"
+  },
   "auth": {
-    "modal": {}
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "Csatlakoztatva mint {'@'}{handle}",
+      "disconnect": "Szétkapcsolás",
+      "connect_prompt": "Csatlakozz az Atmosphere fiókkal",
+      "handle_label": "Kezelő",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Csatlakozás",
+      "create_account": "Új fiók létrehozása",
+      "connect_bluesky": "Csatlakozás Bluesky-vel",
+      "what_is_atmosphere": "Mi az Atmosphere fiók?",
+      "atmosphere_explanation": "{npmx} az {atproto} -t használja sok szociális funkciójának meghajtásához, lehetővé téve a felhasználók számára az adatok tulajdonlását és egy fiók használatát az összes kompatibilis alkalmazásban. Miután létrehozol egy fiókot, más appokkal is használhatod ugyanazzal a fiókkal, mint a {bluesky} és a {tangled}.",
+      "default_input_error": "Kérjük, adj meg egy érvényes kezelőt, DID-t vagy egy teljes PDS URL-t",
+      "profile": "Profil"
+    }
   },
   "header": {
     "home": "npmx kezdőlap",
@@ -705,7 +969,7 @@
       "empty": "Nincsenek csomagok",
       "view_all": "Összes megtekintése"
     },
-    "orgs": "szerv.",
+    "orgs": "szervezetek",
     "orgs_dropdown": {
       "title": "Szervezeteid",
       "loading": "Betöltés...",
@@ -715,48 +979,266 @@
     }
   },
   "compare": {
-    "packages": {},
-    "selector": {},
-    "no_dependency": {},
+    "packages": {
+      "title": "csomagok összehasonlítása",
+      "tagline": "npm csomagok egymás melletti összehasonlítása, hogy segítsen kiválasztani a megfelelőt.",
+      "meta_title": "{packages} összehasonlítása - npmx",
+      "meta_title_empty": "Csomagok összehasonlítása - npmx",
+      "meta_description": "{packages} egymás melletti összehasonlítása",
+      "meta_description_empty": "npm csomagok egymás melletti összehasonlítása",
+      "section_packages": "Csomagok",
+      "section_facets": "Aspektusok",
+      "section_comparison": "Összehasonlítás",
+      "copy_as_markdown": "Táblázat másolása",
+      "loading": "Csomag adatainak betöltése...",
+      "error": "Nem sikerült betölteni a csomag adatait. Próbáld újra.",
+      "empty_title": "Válassz csomagokat az összehasonlításhoz",
+      "empty_description": "Keress és adj hozzá legalább 2 csomagot fentebb, hogy lásd az oldalirányú összehasonlítást a metrikák között."
+    },
+    "selector": {
+      "search_label": "Csomagok keresése",
+      "search_first": "Csomag keresése...",
+      "search_add": "Egy másik csomag hozzáadása...",
+      "searching": "Keresés...",
+      "remove_package": "{package} eltávolítása",
+      "packages_selected": "{count}/{max} csomag kiválasztva.",
+      "add_hint": "Adj hozzá legalább 2 csomagot az összehasonlításhoz."
+    },
+    "no_dependency": {
+      "label": "(Nincs függőség)",
+      "typeahead_title": "Mit tenne James?",
+      "typeahead_description": "Összehasonlítás függőség nélküli használattal! e18e jóváhagyott.",
+      "tooltip_title": "Valószínűleg nincs szükséged függőségre",
+      "tooltip_description": "Összehasonlítás függőség nélküli használattal! Az {link} a natív API-k vagy egyszerűbb alternatívákkal lecserélhető csomagok listáját tartalmazza.",
+      "e18e_community": "e18e közösség",
+      "add_column": "Nincs függőség oszlop hozzáadása az összehasonlításhoz"
+    },
     "facets": {
-      "categories": {},
-      "items": {
-        "packageSize": {},
-        "installSize": {},
-        "dependencies": {},
-        "totalDependencies": {},
-        "downloads": {},
-        "totalLikes": {},
-        "lastUpdated": {},
-        "deprecated": {},
-        "engines": {},
-        "types": {},
-        "moduleFormat": {},
-        "license": {},
-        "vulnerabilities": {}
+      "group_label": "Összehasonlítási aspektusok",
+      "all": "összes",
+      "none": "nincs",
+      "coming_soon": "Hamarosan",
+      "select_all": "Az összes aspektus kiválasztása",
+      "deselect_all": "Az összes aspektus kijelölésének törlése",
+      "select_category": "Az összes {category} aspektus kiválasztása",
+      "deselect_category": "Az összes {category} aspektus kijelölésének törlése",
+      "binary_only_tooltip": "Ez a csomag binárisokat mutat ki és nincsenek exportok",
+      "categories": {
+        "performance": "Teljesítmény",
+        "health": "Egészség",
+        "compatibility": "Kompatibilitás",
+        "security": "Biztonság és megfelelőség"
       },
-      "values": {},
-      "trends": {}
-    }
+      "items": {
+        "packageSize": {
+          "label": "Csomag mérete",
+          "description": "A csomag mérete (kicsomagolt)"
+        },
+        "installSize": {
+          "label": "Telepítési méret",
+          "description": "Teljes telepítési méret az összes függőséggel"
+        },
+        "dependencies": {
+          "label": "Közvetlen függőségek",
+          "description": "Közvetlen függőségek száma"
+        },
+        "totalDependencies": {
+          "label": "Összes függőség",
+          "description": "Összes függőség száma, beleértve az átmeneti függőségeket"
+        },
+        "downloads": {
+          "label": "Letöltés/hét",
+          "description": "Heti letöltési szám"
+        },
+        "totalLikes": {
+          "label": "Kedvelések",
+          "description": "Kedvelések száma"
+        },
+        "lastUpdated": {
+          "label": "Közzétéve",
+          "description": "Amikor ez a verzió közzé lett téve"
+        },
+        "deprecated": {
+          "label": "Elavult?",
+          "description": "Hogy a csomag elavult-e"
+        },
+        "engines": {
+          "label": "Motorok",
+          "description": "Node.js verzió követelmények"
+        },
+        "types": {
+          "label": "Típusok",
+          "description": "TypeScript típusú definíciók"
+        },
+        "moduleFormat": {
+          "label": "Modul formátum",
+          "description": "ESM/CJS támogatás"
+        },
+        "license": {
+          "label": "Licenc",
+          "description": "Csomag licenc"
+        },
+        "vulnerabilities": {
+          "label": "Sebezhetőségek",
+          "description": "Ismert biztonsági sebezhetőségek"
+        }
+      },
+      "values": {
+        "any": "Bármely",
+        "none": "Nincs",
+        "unknown": "Ismeretlen",
+        "deprecated": "Elavult",
+        "not_deprecated": "Nem",
+        "types_included": "Mellékelve",
+        "types_none": "Nincs",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}M)",
+        "up_to_you": "Rád van bízva!"
+      },
+      "trends": {
+        "title": "Trendek összehasonlítása"
+      }
+    },
+    "file_changes": "Fájl módosítások",
+    "files_count": "{count} fájl",
+    "lines_hidden": "{count} sor elrejtve",
+    "file_too_large": "A fájl túl nagy az összehasonlításhoz",
+    "file_size_warning": "{size} meghaladja a 250KB-os limitet az összehasonlításhoz",
+    "compare_versions": "diff",
+    "summary": "Összegzés",
+    "deps_count": "{count} függ",
+    "dependencies": "Függőségek",
+    "dev_dependencies": "Dev függőségek",
+    "peer_dependencies": "Peer függőségek",
+    "optional_dependencies": "Opcionális függőségek",
+    "no_dependency_changes": "Nincs függőség módosítás",
+    "file_filter_option": {
+      "all": "Összes ({count})",
+      "added": "Hozzáadott ({count})",
+      "removed": "Eltávolított ({count})",
+      "modified": "Módosított ({count})"
+    },
+    "search_files_placeholder": "Fájlok keresése...",
+    "no_files_all": "Nincsenek fájlok",
+    "no_files_search": "Nincs fájl, amely megfelel: \"{query}\"",
+    "no_files_filtered": "Nincs {filter} fájl",
+    "filter": {
+      "added": "hozzáadott",
+      "removed": "eltávolított",
+      "modified": "módosított"
+    },
+    "files_button": "Fájlok",
+    "select_file_prompt": "Válassz egy fájlt az oldalsávból a diff megtekintéséhez",
+    "close_files_panel": "Fájlok panel bezárása",
+    "filter_files_label": "Fájlok szűrése módosítás típusa szerint"
   },
   "privacy_policy": {
+    "title": "adatvédelmi nyilatkozat",
+    "last_updated": "Utolsó frissítés: {date}",
+    "welcome": "Üdvözünk a(z) {app}-ban. Elkötelezettünk az adatvédelmed védelme iránt. Ez a szabályzat magyarázza, milyen adatokat gyűjtünk, hogyan használjuk azokat, és az adataidra vonatkozó jogaidat.",
     "cookies": {
-      "what_are": {},
-      "types": {},
-      "local_storage": {},
-      "management": {}
+      "what_are": {
+        "title": "Mik azok a cookie-k?",
+        "p1": "A cookie-k kis szövegfájlok, amelyeket a böngésződ tárol, amikor meglátogatod a weboldalt. Céljuk a böngészési élmény javítása azzal, hogy emlékeznek bizonyos beállításokra és preferenciákra."
+      },
+      "types": {
+        "title": "Milyen cookie-kat használunk?",
+        "p1": "Csak {bold} -t használunk a webhely működésének feltétlenül szükséges céljaira. Nem használunk harmadik fél vagy hirdetési cookie-kat.",
+        "bold": "alapvető technikai cookie-kat",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Ezt a cookie-t a tárhelyszolgáltatónk (Vercel) használja szinkronizációs okoból. Biztosítja, hogy az eszközöket a megfelelő telepítési verzióból szerezd meg, ha egy új frissítés jelenik meg a böngészés közben. Ez nem követ nyomon.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Ez az egyedi munkamenet cookie-nk. Az Atmosphere fiók csatlakoztatásakor tárolja az OAuth hozzáférési tokent. Elengedhetetlen az hitelesített munkamenet fenntartásához."
+      },
+      "local_storage": {
+        "title": "Helyi tárolás",
+        "p1": "A munkamenet cookie-k mellett a böngésző {bold} -ét használjuk a megjelenítési beállítások mentéséhez. Ez lehetővé teszi, hogy megjegyezzük a kiválasztott témát (világos/sötét) és néhány más {settings} -t, így nem kell újrakonfigurálnod azokat minden látogatásnál.",
+        "bold": "Local Storage",
+        "p2": "Ez az információ tisztán funkcionális, csak az eszközödön tárolódik, és {bold2}. Kizárólag a weboldalon nyújtott tapasztalat javítására használjuk.",
+        "bold2": "nem tartalmaz személyes adatokat, és nem követi nyomon",
+        "settings": "beállítások"
+      },
+      "management": {
+        "title": "Cookie-k kezelése",
+        "p1": "Beállíthatod a böngésződet, hogy elfogadjon, elutasítson vagy töröljön cookie-kat a preferenciáidnak megfelelően. Azonban vedd figyelembe, hogy {bold}.",
+        "bold": "az alapvető cookie-k elutasítása megakadályozhatja az alkalmazáshoz való teljes hozzáférést",
+        "p2": "Az alábbiakban az útmutatások linkjei találhatók a cookie-k kezelésére a legtöbbet használt böngészőkben:",
+        "chrome": "Google Chrome (új ablakban nyílik meg)",
+        "firefox": "Mozilla Firefox (új ablakban nyílik meg)",
+        "edge": "Microsoft Edge (új ablakban nyílik meg)"
+      }
     },
-    "analytics": {},
-    "authenticated": {},
-    "data_retention": {},
-    "your_rights": {},
-    "contact": {},
-    "changes": {}
+    "analytics": {
+      "title": "Analitika",
+      "p1": "{bold} -t használunk, hogy megértsük, hogyan használják a látogatók a weboldalunkat. Ez segít javítani a felhasználói élményt és azonosítani a problémákat.",
+      "bold": "Vercel Web Analytics",
+      "p2": "A Vercel Analytics az adatvédelemmel szem előtt lett kialakítva:",
+      "li1": "Nem használ cookie-kat",
+      "li2": "Nem gyűjt személyes azonosítókat",
+      "li3": "Nem követ nyomon felhasználókat az összes weboldal között",
+      "li4": "Minden adat összesítve és anonimizálva van",
+      "p3": "Az egyetlen gyűjtött információ a következőket tartalmazza: oldal URL-ek, referrer, ország/régió, eszköz típusa, böngésző és operációs rendszer. Az adatokat nem lehet egyedi felhasználók azonosítására használni."
+    },
+    "authenticated": {
+      "title": "Hitelesített felhasználók",
+      "p1": "Amikor az {bold} fiókot csatlakoztatod az npmx-hez, az OAuth hozzáférési tokent egy biztonságos, HTTP-only munkamenet cookie-ban tároljuk. Ezt a tokent kizárólag a kérések hitelesítésére használjuk az Ön nevében.",
+      "bold": "Atmosphere",
+      "p2": "Nem tároljuk a hitelesítési adataidat, és nem férünk hozzá az használt funkciók biztosításához szükségesnél több adathoz. Fiókod bármikor szétkapcsolhatod a(z) {settings} oldalról.",
+      "settings": "beállítások"
+    },
+    "data_retention": {
+      "title": "Adatmegőrzés",
+      "p1": "A munkamenet cookie-k automatikusan törlődnek, amikor bezárod a böngésződet vagy inaktivitás után. A helyi tárolás beállításai az eszközödön maradnak, amíg nem törlöd a böngésződ adatait. Az analitikai adatokat összesített formában tartják meg, és nem lehet azokat egyedi felhasználókhoz kapcsolni."
+    },
+    "your_rights": {
+      "title": "Az Ön jogai",
+      "p1": "Jogod van:",
+      "li1": "Információt megtudni arról, milyen adatokat gyűjtünk",
+      "li2": "Bármikor törölheted a helyi tárolást és cookie-kat",
+      "li3": "Szétkapcsolhatod a hitelesített munkamenedet",
+      "li4": "Információt kérni az adatgyűjtési gyakorlatunkról",
+      "p2": "Mivel nem gyűjtünk személyes adatokat, általában nincs személyes információ a törlésre vagy az exportálásra."
+    },
+    "contact": {
+      "title": "Lépj kapcsolatba velünk",
+      "p1": "Ha bármilyen kérdésed vagy aggodalma van ezzel az adatvédelmi nyilatkozattal kapcsolatban, felvehetsz velünk a kapcsolatot egy kérdés megnyitásával a(z) {link} -ben.",
+      "link": "GitHub tárhelyen"
+    },
+    "changes": {
+      "title": "Módosítások ebben az irányelvben",
+      "p1": "Az adatvédelmi nyilatkozatot időről időre frissíthetjük. Bármilyen módosítás ezen az oldalon lesz közzétéve frissített revízió dátummal."
+    }
   },
   "a11y": {
-    "approach": {},
-    "measures": {},
-    "limitations": {},
-    "contact": {}
+    "title": "akadálymentesség",
+    "footer_title": "a11y",
+    "welcome": "Szeretnénk, ha a(z) {app} minél több ember számára használható volna.",
+    "approach": {
+      "title": "Az Ön megközelítésünk",
+      "p1": "Igyekszünk követni a Web Content Accessibility Guidelines (WCAG) 2.2-et, és referenciaként használjuk, amikor funkciókat építünk. Nem állítunk teljes megfelelőséget egyetlen WCAG szinttel sem — az akadálymentesség folyamatos folyamat, és mindig több tennivaló van.",
+      "p2": "Ez az oldal egy {about}. Az akadálymentesség javítása fokozatosan történik a rendszeres fejlesztés részeként.",
+      "about_link": "nyílt forráskódú, közösség által irányított projekt"
+    },
+    "measures": {
+      "title": "Mit teszünk",
+      "p1": "Néhány dolog, amit az oldal egészén keresztül megcélzunk:",
+      "li1": "Szematikus HTML és ARIA attribútumok használata, ahol szükséges.",
+      "li2": "Relatív szövegméreteket használjon, hogy beállíthasd azokat a böngészőben.",
+      "li3": "Billentyűzet navigáció támogatása az interfész egészén keresztül.",
+      "li4": "A prefers-reduced-motion és prefers-color-scheme média lekérdezések tiszteletben tartása.",
+      "li5": "Megfelelő szín kontraszttal kell számolni.",
+      "li6": "Biztosítsd, hogy az alapvető tartalom JavaScript nélkül is elérhető legyen, bár néhány interaktív funkció megköveteli."
+    },
+    "limitations": {
+      "title": "Ismert korlátozások",
+      "p1": "Az oldal egyes részei — különösen a harmadik felek által biztosított tartalmak, mint például a csomag README-k — nem felelnek meg az akadálymentesség szabványainak. Az idő múlásával igyekszünk ezeket a területeket javítani."
+    },
+    "contact": {
+      "title": "Visszajelzés",
+      "p1": "Ha akadálymentességi problémákat tapasztalsz a(z) {app} -on, kérjük, közölj velünk egy kérdés megnyitásával a(z) {link} -ben. Komolyan vesszük ezeket a jelentéseket, és mindent megteszünk a megoldásukért.",
+      "link": "GitHub tárhelyen"
+    }
   }
 }

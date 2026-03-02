@@ -121,6 +121,13 @@
     "edit_on_github": "在 GitHub 上编辑",
     "view_guide": "翻译指南"
   },
+  "error": {
+    "401": "未授权",
+    "404": "很抱歉，页面未找到",
+    "500": "服务器内部错误",
+    "503": "服务不可用",
+    "default": "抱歉，出现了一些问题"
+  },
   "common": {
     "loading": "加载中…",
     "loading_more": "加载更多中…",
@@ -143,7 +150,28 @@
       "role": "角色",
       "members": "成员"
     },
-    "scroll_to_top": "回到顶部"
+    "scroll_to_top": "回到顶部",
+    "cancel": "取消",
+    "save": "保存",
+    "edit": "编辑",
+    "error": "加载出错"
+  },
+  "profile": {
+    "display_name": "显示名称",
+    "description": "简介",
+    "no_description": "暂无简介",
+    "website": "网站",
+    "website_placeholder": "https://example.com",
+    "likes": "喜欢",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} 的 npmx 个人资料",
+    "not_found": "未找到个人资料",
+    "not_found_message": "找不到 {handle} 的个人资料。",
+    "invite": {
+      "message": "看起来他们还没有使用 npmx，去邀请一下？",
+      "share_button": "分享到 Bluesky",
+      "compose_text": "嗨 {'@'}{handle}！您用过 npmx.dev 吗？它是一个快速、现代且开源的 npm registry 浏览器。\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "未找到包",
@@ -377,6 +405,8 @@
       "download_file": "下载 {fileType}",
       "toggle_annotator": "切换标注工具",
       "toggle_stack_mode": "切换堆叠模式",
+      "open_options": "展开选项",
+      "close_options": "收起选项",
       "legend_estimation": "估算值",
       "no_data": "无可用数据",
       "y_axis_label": "{granularity} {facet}",
@@ -878,7 +908,7 @@
       "governance": "治理",
       "role_steward": "管理者",
       "role_maintainer": "维护者",
-      "sponsor": "赞助者",
+      "sponsor": "赞助",
       "sponsor_aria": "在 GitHub 上赞助 {name}"
     },
     "contributors": {
@@ -932,7 +962,8 @@
       "connect_bluesky": "使用 Bluesky 账户登录",
       "what_is_atmosphere": "什么是 Atmosphere 账户？",
       "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账户登录所有兼容的应用。一旦创建账户，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。",
-      "default_input_error": "请输入有效的 handle、DID 或完整的 PDS URL"
+      "default_input_error": "请输入有效的 handle、DID 或完整的 PDS URL",
+      "profile": "个人资料"
     }
   },
   "header": {

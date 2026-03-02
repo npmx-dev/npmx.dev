@@ -252,12 +252,12 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Simple help link for source locale -->
             <template v-else>
               <a
-                href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
+                href="https://i18n.npmx.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
               >
-                <span class="i-simple-icons:github w-4 h-4" aria-hidden="true" />
+                <span class="i-lucide:languages w-4 h-4" aria-hidden="true" />
                 {{ $t('settings.help_translate') }}
               </a>
             </template>

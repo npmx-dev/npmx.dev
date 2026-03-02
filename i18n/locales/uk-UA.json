@@ -144,7 +144,28 @@
       "role": "роль",
       "members": "учасники"
     },
-    "scroll_to_top": "Прокрутити наверх"
+    "scroll_to_top": "Прокрутити наверх",
+    "cancel": "Скасувати",
+    "save": "Зберегти",
+    "edit": "Редагувати",
+    "error": "Помилка"
+  },
+  "profile": {
+    "display_name": "Відображуване ім'я",
+    "description": "Опис",
+    "no_description": "Без опису",
+    "website": "Вебсайт",
+    "website_placeholder": "https://example.com",
+    "likes": "Вподобання",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "Профіль npmx: {handle}",
+    "not_found": "Профіль не знайдено",
+    "not_found_message": "Профіль для {handle} не вдалося знайти.",
+    "invite": {
+      "message": "Схоже, вони ще не користуються npmx. Хочете розповісти їм про нього?",
+      "share_button": "Поділитися в Bluesky",
+      "compose_text": "Привіт, {'@'}{handle}! Ти вже перевірив npmx.dev? Це швидкий сучасний браузер для реєстру npm з відкритим кодом.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Пакет не знайдено",
@@ -214,11 +235,11 @@
     "links": {
       "repo": "репозиторій",
       "homepage": "головна сторінка",
-      "issues": "проблеми",
+      "issues": "задачі",
       "jsr": "jsr",
       "code": "код",
       "docs": "документація",
-      "fund": "фінансування",
+      "fund": "спонсорувати",
       "compare": "порівняння"
     },
     "likes": {
@@ -419,7 +440,8 @@
     },
     "downloads": {
       "title": "Завантажень на тиждень",
-      "community_distribution": "Переглянути розподіл впровадження у спільноті"
+      "community_distribution": "Переглянути розподіл впровадження у спільноті",
+      "subtitle": "Для всіх версій"
     },
     "install_scripts": {
       "title": "Скрипти встановлення",
@@ -933,7 +955,8 @@
       "connect_bluesky": "Підключитися через Bluesky",
       "what_is_atmosphere": "Що таке обліковий запис Atmosphere?",
       "atmosphere_explanation": "{npmx} використовує {atproto} для забезпечення багатьох соціальних функцій, дозволяючи користувачам володіти своїми даними та використовувати один обліковий запис для всіх сумісних додатків. Після створення облікового запису ви можете використовувати інші додатки, такі як {bluesky} та {tangled}, з одним обліковим записом.",
-      "default_input_error": "Будь ласка, введіть дійсний ідентифікатор, DID або повну URL-адресу PDS"
+      "default_input_error": "Будь ласка, введіть дійсний ідентифікатор, DID або повну URL-адресу PDS",
+      "profile": "Профіль"
     }
   },
   "header": {
@@ -1040,7 +1063,7 @@
           "description": "Чи пакет застарів"
         },
         "engines": {
-          "label": "Рушії",
+          "label": "Середовища виконання",
           "description": "Вимоги до версії Node.js"
         },
         "types": {
@@ -1061,7 +1084,7 @@
         }
       },
       "values": {
-        "any": "Будь-яка",
+        "any": "Будь-яке",
         "none": "Відсутні",
         "unknown": "Невідомо",
         "deprecated": "Припинено",
@@ -1078,6 +1101,8 @@
     "file_changes": "Зміни файлів",
     "files_count": "{count} файлів",
     "lines_hidden": "{count} рядків приховано",
+    "file_too_large": "Файл завеликий для порівняння",
+    "file_size_warning": "{size} перевищує ліміт 250 КБ для порівняння",
     "compare_versions": "різниця",
     "summary": "Підсумок",
     "deps_count": "{count} залежн.",

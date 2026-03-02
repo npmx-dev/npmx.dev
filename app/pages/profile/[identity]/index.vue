@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { updateProfile as updateProfileUtil } from '~/utils/atproto/profile'
 
-const route = useRoute('profile-handle')
-const handle = computed(() => route.params.handle)
+const route = useRoute('profile-identity')
+const identity = computed(() => route.params.identity)
 
 const { data: profile, error: profileError } = await useFetch<NPMXProfile>(
-  () => `/api/social/profile/${handle.value}`,
+  () => `/api/social/profile/${identity.value}`,
   {
     default: () => ({
-      displayName: handle.value,
+      displayName: identity.value,
       description: '',
       website: '',
       recordExists: false,
@@ -19,7 +19,7 @@ if (!profile.value || profileError.value?.statusCode === 404) {
   throw createError({
     statusCode: 404,
     statusMessage: $t('profile.not_found'),
-    message: $t('profile.not_found_message', { handle: handle.value }),
+    message: $t('profile.not_found_message', { handle: identity.value }),
   })
 }
 
@@ -53,11 +53,12 @@ async function updateProfile() {
     displayName: displayNameInput.value,
     description: descriptionInput.value || undefined,
     website: websiteInput.value || undefined,
+    handle: profile.value.handle,
     recordExists: true,
   }
 
   try {
-    const result = await updateProfileUtil(handle.value, {
+    const result = await updateProfileUtil(identity.value, {
       displayName: displayNameInput.value,
       description: descriptionInput.value || undefined,
       website: websiteInput.value || undefined,
@@ -76,25 +77,25 @@ async function updateProfile() {
   }
 }
 
-const { data: likes, status } = useProfileLikes(handle)
+const { data: likes, status } = useProfileLikes(identity)
 
 const showInviteSection = computed(() => {
   return (
     profile.value.recordExists === false &&
     status.value === 'success' &&
     !likes.value?.records?.length &&
-    user.value?.handle !== handle.value
+    user.value?.handle !== profile.value.handle
   )
 })
 
 const inviteUrl = computed(() => {
-  const text = $t('profile.invite.compose_text', { handle: handle.value })
+  const text = $t('profile.invite.compose_text', { handle: profile.value.handle })
   return `https://bsky.app/intent/compose?text=${encodeURIComponent(text)}`
 })
 
 useSeoMeta({
-  title: () => $t('profile.seo_title', { handle: handle.value }),
-  description: () => $t('profile.seo_description', { handle: handle.value }),
+  title: () => $t('profile.seo_title', { handle: identity.value }),
+  description: () => $t('profile.seo_description', { handle: identity.value }),
 })
 
 /**
@@ -143,7 +144,7 @@ defineOgImageComponent('Default', {
           />
         </label>
         <div class="flex gap-4 items-center font-mono text-sm">
-          <h2>@{{ handle }}</h2>
+          <h2>@{{ profile?.handle }}</h2>
           <ButtonBase @click="isEditing = false">
             {{ $t('common.cancel') }}
           </ButtonBase>
@@ -164,13 +165,13 @@ defineOgImageComponent('Default', {
         </h1>
         <p v-if="profile.description">{{ profile.description }}</p>
         <div class="flex gap-4 items-center font-mono text-sm">
-          <h2>@{{ handle }}</h2>
+          <h2>@{{ profile.handle ?? identity }}</h2>
           <LinkBase v-if="profile.website" :to="profile.website" classicon="i-lucide:link">
             {{ profile.website }}
           </LinkBase>
           <ButtonBase
             @click="isEditing = true"
-            :class="user?.handle === handle ? '' : 'invisible'"
+            :class="user?.handle === profile?.handle ? '' : 'invisible'"
             class="hidden sm:inline-flex"
           >
             {{ $t('common.edit') }}

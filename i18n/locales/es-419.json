@@ -5,6 +5,9 @@
   "shortcuts": {
     "settings": "Abrir configuración"
   },
+  "settings": {
+    "keyboard_shortcuts_enabled": "Habilitar atajos de teclado"
+  },
   "auth": {
     "modal": {
       "default_input_error": "Por favor, ingresa un handle, DID o URL de PDS válido"
@@ -25,6 +28,13 @@
     "modal": {
       "checking": "Verificando disponibilidad...",
       "failed_to_check": "Error al verificar disponibilidad del nombre"
+    }
+  },
+  "profile": {
+    "not_found_message": "No se pudo encontrar el perfil de {handle}.",
+    "invite": {
+      "message": "Parece que aún no usa npmx. ¿Quieres contarle?",
+      "compose_text": "¡Hola {'@'}{handle}! ¿Has probado ya npmx.dev? Es un navegador para el registro de npm rápido, moderno y de código abierto.\nhttps://npmx.dev"
     }
   },
   "package": {

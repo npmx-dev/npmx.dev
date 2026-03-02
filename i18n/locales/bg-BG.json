@@ -33,7 +33,8 @@
     "navigate_results": "Навигация в резултатите",
     "go_to_result": "Отваряне на резултат",
     "open_code_view": "Отваряне на изглед на кода",
-    "open_docs": "Отваряне на документация"
+    "open_docs": "Отваряне на документация",
+    "disable_shortcuts": "Можете да деактивирате клавишните комбинации в {settings}."
   },
   "search": {
     "label": "Търсене на npm пакети",
@@ -84,7 +85,8 @@
       "appearance": "Външен вид",
       "display": "Дисплей",
       "search": "Източник на данни",
-      "language": "Език"
+      "language": "Език",
+      "keyboard_shortcuts": "Клавишни комбинации"
     },
     "data_source": {
       "label": "Източник на данни",
@@ -108,7 +110,9 @@
     "accent_colors": "Акцентни цветове",
     "clear_accent": "Изчистване на акцентен цвят",
     "translation_progress": "Напредък на превода",
-    "background_themes": "Фонов нюанс"
+    "background_themes": "Фонов нюанс",
+    "keyboard_shortcuts_enabled": "Активиране на клавишни комбинации",
+    "keyboard_shortcuts_enabled_description": "Клавишните комбинации могат да бъдат деактивирани, ако влизат в конфликт с други браузърни или системни преки пътища"
   },
   "i18n": {
     "missing_keys": "{count} липсващ превод | {count} липсващи преводи",
@@ -140,7 +144,28 @@
       "role": "роля",
       "members": "членове"
     },
-    "scroll_to_top": "Отиди нагоре"
+    "scroll_to_top": "Отиди нагоре",
+    "cancel": "Отказ",
+    "save": "Запазване",
+    "edit": "Редактиране",
+    "error": "Грешка"
+  },
+  "profile": {
+    "display_name": "Показвано име",
+    "description": "Описание",
+    "no_description": "Няма описание",
+    "website": "Уебсайт",
+    "website_placeholder": "https://example.com",
+    "likes": "Харесвания",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "npmx профил на {handle}",
+    "not_found": "Профилът не е намерен",
+    "not_found_message": "Профилът за {handle} не може да бъде намерен.",
+    "invite": {
+      "message": "Изглежда, че все още не използват npmx. Искате ли да им кажете за него?",
+      "share_button": "Споделете в Bluesky",
+      "compose_text": "Здравей {'@'}{handle}! Проверил ли си npmx.dev? Това е браузър за npm регистъра - бърз, модерен и с отворен код.\\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Пакетът не е намерен",
@@ -151,10 +176,18 @@
     "view_permalink": "Преглед на постоянна връзка за тази версия",
     "navigation": "Пакет",
     "copy_name": "Копиране на името на пакета",
+    "copy_version": "Копиране на версията на пакета",
     "deprecation": {
       "package": "Този пакет е остарял.",
       "version": "Тази версия е остаряла.",
       "no_reason": "Няма предоставена причина"
+    },
+    "size_increase": {
+      "title_size": "Значително увеличение на размера от v{version}",
+      "title_deps": "Значително увеличение на броя зависимости от v{version}",
+      "title_both": "Значително увеличение на размера и зависимостите от v{version}",
+      "size": "Размерът при инсталация се е увеличил с {percent} ({size} по-голям)",
+      "deps": "{count} повече зависимости"
     },
     "replacement": {
       "title": "Може да не се нуждаете от тази зависимост.",
@@ -221,6 +254,8 @@
       "title": "Първи стъпки",
       "pm_label": "Мениджър на пакети",
       "copy_command": "Копиране на команда за инсталация",
+      "copy_dev_command": "Копиране на команда за dev инсталация",
+      "dev_dependency_hint": "Обикновено се инсталира като dev зависимост",
       "view_types": "Преглед на {package}"
     },
     "create": {
@@ -291,11 +326,29 @@
       "view_all": "Преглед на {count} версия | Преглед на всички {count} версии",
       "distribution_title": "Semver група",
       "distribution_modal_title": "Версии",
+      "distribution_range_date_same_year": "от {from} до {to}, {endYear}",
+      "distribution_range_date_multiple_years": "от {from}, {startYear} до {to}, {endYear}",
       "grouping_major": "Major",
       "grouping_minor": "Minor",
+      "grouping_versions_title": "Версии",
+      "grouping_versions_all": "Всички",
+      "grouping_versions_only_recent": "Само скорошни",
+      "grouping_usage_title": "Използване",
+      "grouping_usage_all": "Всички",
+      "grouping_usage_low": "Ниско",
       "recent_versions_only_tooltip": "Показване само на версии, публикувани през последната година.",
       "show_low_usage_tooltip": "Включване на групи версии с по-малко от 1% от общите изтегляния.",
-      "y_axis_label": "Изтегляния"
+      "y_axis_label": "Изтегляния",
+      "filter_placeholder": "Филтриране по semver (напр. ^3.0.0)",
+      "filter_invalid": "Невалиден semver диапазон",
+      "filter_help": "Помощ за semver диапазон филтър",
+      "filter_tooltip": "Филтриране на версии с {link}. Например, ^3.0.0 показва всички 3.x версии.",
+      "filter_tooltip_link": "semver диапазон",
+      "no_matches": "Няма версии, съответстващи на този диапазон",
+      "copy_alt": {
+        "per_version_analysis": "Версия {version} е изтеглена {downloads} пъти",
+        "general_description": "Стълбовидна диаграма, показваща изтеглянията по версии за {versions_count} {semver_grouping_mode} версии на пакета {package_name}, {date_range_label} от версия {first_version} до версия {last_version}. Най-изтегляната версия е {max_downloaded_version} с {max_version_downloads} изтегляния. {per_version_analysis}. {watermark}."
+      }
     },
     "dependencies": {
       "title": "Зависимост ({count}) | Зависимости ({count})",
@@ -305,7 +358,8 @@
       "view_vulnerabilities": "Преглед на уязвимости",
       "outdated_major": "{count} major версия назад (последна: {latest}) | {count} major версии назад (последна: {latest})",
       "outdated_minor": "{count} minor версия назад (последна: {latest}) | {count} minor версии назад (последна: {latest})",
-      "outdated_patch": "Налична patch актуализация (последна: {latest})"
+      "outdated_patch": "Налична patch актуализация (последна: {latest})",
+      "has_replacement": "Тази зависимост има предложени замени"
     },
     "peer_dependencies": {
       "title": "Peer зависимост ({count}) | Peer зависимости ({count})",
@@ -344,19 +398,50 @@
       "date_range_multiline": "{start}\nдо {end}",
       "download_file": "Изтегляне на {fileType}",
       "toggle_annotator": "Превключване на анотатор",
+      "toggle_stack_mode": "Превключване на режим на стак",
       "legend_estimation": "Оценка",
       "no_data": "Няма налични данни",
       "y_axis_label": "{granularity} {facet}",
       "facet": "Аспект",
       "title": "Тенденции",
+      "contributors_skip": "Не е показано в Сътрудници (няма GitHub хранилище):",
       "items": {
         "downloads": "Изтегляния",
-        "likes": "Харесвания"
+        "likes": "Харесвания",
+        "contributors": "Сътрудници"
+      },
+      "play_animation": "Пускане на анимация",
+      "pause_animation": "Пауза на анимация",
+      "data_correction": "Корекция на данни",
+      "average_window": "Прозорец за средна стойност",
+      "smoothing": "Изглаждане",
+      "known_anomalies": "Известни аномалии",
+      "known_anomalies_description": "Интерполира известни скокове в изтеглянията, причинени от ботове или CI проблеми.",
+      "known_anomalies_ranges": "Диапазони на аномалии",
+      "known_anomalies_range": "От {start} до {end}",
+      "known_anomalies_range_named": "{packageName}: от {start} до {end}",
+      "known_anomalies_none": "Няма известни аномалии за този пакет. | Няма известни аномалии за тези пакети.",
+      "known_anomalies_contribute": "Допринесете данни за аномалии",
+      "apply_correction": "Прилагане на корекция",
+      "copy_alt": {
+        "trend_none": "предимно стабилна",
+        "trend_strong": "силна",
+        "trend_weak": "слаба",
+        "trend_undefined": "неопределена (недостатъчно данни)",
+        "button_label": "Копиране на алтернативен текст",
+        "watermark": "В долната част, воден знак чете \"./npmx бърз, модерен браузър за npm регистъра\"",
+        "analysis": "{package_name} започва от {start_value} и завършва на {end_value}, показвайки {trend} тенденция с наклон от {downloads_slope} изтегляния на времеви интервал",
+        "estimation": "Крайната стойност е оценка, базирана на частични данни за текущия период.",
+        "estimations": "Крайните стойности са оценки, базирани на частични данни за текущия период.",
+        "compare": "Линейна диаграма за сравнение на изтегляния на пакети за: {packages}.",
+        "single_package": "Линейна диаграма на изтегляния за пакета {package}.",
+        "general_description": "Оста Y представлява броя на изтеглянията. Оста X представлява диапазона от дати, от {start_date} до {end_date}, с {granularity} времеви период.{estimation_notice} {packages_analysis}. {watermark}."
       }
     },
     "downloads": {
       "title": "Седмични изтегляния",
-      "community_distribution": "Преглед на разпределението на приемането от общността"
+      "community_distribution": "Преглед на разпределението на приемането от общността",
+      "subtitle": "За всички версии"
     },
     "install_scripts": {
       "title": "Скриптове за инсталация",
@@ -609,6 +694,7 @@
       "invalid_name": "Невалидно име на пакет:",
       "available": "Това име е налично!",
       "taken": "Това име вече е заето.",
+      "missing_permission": "Нямате разрешение да добавяте пакет към обхвата {'@'}{scope}.",
       "similar_warning": "Съществуват подобни пакети - npm може да отхвърли това име:",
       "related": "Свързани пакети:",
       "scope_warning_title": "Обмислете използването на scoped пакет вместо това",
@@ -651,7 +737,8 @@
       "preview": "преглед",
       "code": "код"
     },
-    "file_path": "Път към файл"
+    "file_path": "Път към файл",
+    "scroll_to_top": "Към началото"
   },
   "badges": {
     "provenance": {
@@ -803,9 +890,22 @@
         "managers": "мениджъри на пакети"
       }
     },
-    "team": {},
+    "sponsors": {
+      "title": "Спонсори"
+    },
+    "oss_partners": {
+      "title": "OSS партньори"
+    },
+    "team": {
+      "title": "Отбор",
+      "governance": "Управление",
+      "role_steward": "управител",
+      "role_maintainer": "поддържащ",
+      "sponsor": "спонсор",
+      "sponsor_aria": "Спонсорирайте {name} в GitHub"
+    },
     "contributors": {
-      "title": "{count} сътрудник | {count} сътрудници",
+      "title": "... и {count} сътрудник повече | ... и {count} сътрудници повече",
       "description": "npmx е изцяло с отворен код, изграден от невероятна общност от сътрудници. Присъединете се към нас и нека изградим npm браузър изживяването, което винаги сме искали, заедно.",
       "loading": "Зареждане на сътрудници...",
       "error": "Неуспешно зареждане на сътрудници",
@@ -855,7 +955,8 @@
       "connect_bluesky": "Свързване с Bluesky",
       "what_is_atmosphere": "Какво е Atmosphere акаунт?",
       "atmosphere_explanation": "{npmx} използва {atproto} за захранване на много от своите социални функции, позволявайки на потребителите да притежават данните си и да използват един акаунт за всички съвместими приложения. След като създадете акаунт, можете да използвате други приложения като {bluesky} и {tangled} със същия акаунт.",
-      "default_input_error": "Моля, въведете валиден handle, DID или пълен PDS URL"
+      "default_input_error": "Моля, въведете валиден handle, DID или пълен PDS URL",
+      "profile": "Профил"
     }
   },
   "header": {
@@ -888,6 +989,7 @@
       "section_packages": "Пакети",
       "section_facets": "Аспекти",
       "section_comparison": "Сравнение",
+      "copy_as_markdown": "Копиране на таблица",
       "loading": "Зареждане на данни за пакета...",
       "error": "Неуспешно зареждане на данни за пакета. Моля, опитайте отново.",
       "empty_title": "Изберете пакети за сравнение",
@@ -995,7 +1097,39 @@
       "trends": {
         "title": "Сравнение на тенденции"
       }
-    }
+    },
+    "file_changes": "Промени в файловете",
+    "files_count": "{count} файла",
+    "lines_hidden": "{count} реда скрити",
+    "file_too_large": "Файлът е твърде голям за сравнение",
+    "file_size_warning": "{size} надвишава лимита от 250KB за сравнение",
+    "compare_versions": "diff",
+    "summary": "Резюме",
+    "deps_count": "{count} зависимости",
+    "dependencies": "Зависимости",
+    "dev_dependencies": "Dev зависимости",
+    "peer_dependencies": "Peer зависимости",
+    "optional_dependencies": "Опционални зависимости",
+    "no_dependency_changes": "Няма промени в зависимостите",
+    "file_filter_option": {
+      "all": "Всички ({count})",
+      "added": "Добавени ({count})",
+      "removed": "Премахнати ({count})",
+      "modified": "Променени ({count})"
+    },
+    "search_files_placeholder": "Търсене на файлове...",
+    "no_files_all": "Няма файлове",
+    "no_files_search": "Няма файлове, съответстващи на \"{query}\"",
+    "no_files_filtered": "Няма {filter} файлове",
+    "filter": {
+      "added": "добавени",
+      "removed": "премахнати",
+      "modified": "променени"
+    },
+    "files_button": "Файлове",
+    "select_file_prompt": "Изберете файл от страничната лента за преглед на разликите",
+    "close_files_panel": "Затваряне на панела с файлове",
+    "filter_files_label": "Филтриране на файлове по тип на промяна"
   },
   "privacy_policy": {
     "title": "политика за поверителност",

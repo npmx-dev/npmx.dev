@@ -8,6 +8,16 @@ const config = {
     backgrounds: false,
   },
   async viteFinal(config) {
+    config.plugins ??= []
+
+    config.plugins.push({
+      name: 'ignore-internals',
+      transform(_, id) {
+        if (id.includes('/app/pages/blog/') && id.endsWith('.md')) {
+          return 'export default {}'
+        }
+      },
+    })
     // Replace the built-in vue-docgen plugin with a fault-tolerant version.
     // vue-docgen-api can crash on components that import types from other
     // .vue files (it tries to parse the SFC with @babel/parser as plain TS).

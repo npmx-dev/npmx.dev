@@ -179,10 +179,11 @@ shared/                 # Shared between app and server
 └── types/              # TypeScript type definitions
 
 cli/                    # Local connector CLI (separate workspace)
+
 test/                   # Vitest tests
 ├── unit/               # Unit tests (*.spec.ts)
-└── nuxt/               # Nuxt component tests
-tests/                  # Playwright E2E tests
+├── nuxt/               # Nuxt component tests
+└── e2e/                # Playwright E2E tests
 ```
 
 > [!TIP]
@@ -465,6 +466,7 @@ The following scripts help manage translation files. `en.json` is the reference 
 | `pnpm i18n:check:fix [locale]` | Same as check, but adds missing keys to other locales with English placeholders.                                                                                                        |
 | `pnpm i18n:report`             | Audits translation keys against code usage in `.vue` and `.ts` files. Reports missing keys (used in code but not in locale), unused keys (in locale but not in code), and dynamic keys. |
 | `pnpm i18n:report:fix`         | Removes unused keys from `en.json` and all other locale files.                                                                                                                          |
+| `pnpm i18n:schema`             | Generates a JSON Schema from `en.json` at `i18n/schema.json`. Locale files reference this schema for IDE validation and autocompletion.                                                 |
 
 ### Adding a new locale
 
@@ -1031,7 +1033,7 @@ Format: `type(scope): description`
 
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
 
-**Scopes (optional):** `docs`, `i18n`, `deps`
+**Scopes (optional):** `a11y`, `blog`, `deps`, `docs`, `cli`, `i18n`, `ui`
 
 **Examples:**
 

@@ -156,9 +156,8 @@ export default defineEventHandler(async event => {
 
     const contentType = response.headers.get('content-type') || 'application/octet-stream'
 
-    // Only allow raster/vector image content types, but block SVG to prevent
-    // embedded JavaScript execution (SVGs can contain <script> tags, event handlers, etc.)
-    if (!contentType.startsWith('image/') || contentType.includes('svg')) {
+    // Allow raster/vector image content types (we don't inject external content into DOM, so SVG is allowed too)
+    if (!contentType.startsWith('image/')) {
       await response.body?.cancel()
       throw createError({
         statusCode: 400,

@@ -37,7 +37,7 @@ const canGoBack = useCanGoBack()
         </div>
       </header>
 
-      <section class="prose prose-invert max-w-none space-y-8">
+      <section class="max-w-none space-y-8">
         <p class="text-fg-muted leading-relaxed">
           <i18n-t keypath="a11y.welcome" tag="span" scope="global">
             <template #app>

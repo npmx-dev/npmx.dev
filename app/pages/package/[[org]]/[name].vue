@@ -884,15 +884,16 @@ const showSkeleton = shallowRef(false)
               variant="button-secondary"
               :to="diffRoute(pkg.name, displayVersion.version, latestVersion.version)"
               classicon="i-lucide:diff"
+              :title="$t('compare.compare_versions_title')"
             >
-              {{ $t('compare.compare_versions') }}
+              <span class="max-sm:sr-only">{{ $t('compare.compare_versions') }}</span>
             </LinkBase>
             <ButtonBase
               v-if="showScrollToTop"
               variant="secondary"
               :title="$t('common.scroll_to_top')"
               :aria-label="$t('common.scroll_to_top')"
-              @click="() => scrollToTop()"
+              @click="scrollToTop"
               classicon="i-lucide:arrow-up"
             />
           </ButtonGroup>
@@ -1122,7 +1123,7 @@ const showSkeleton = shallowRef(false)
                 <LinkBase
                   variant="button-secondary"
                   size="small"
-                  :to="`https://npmgraph.js.org/?q=${pkg.name}`"
+                  :to="`https://npmgraph.js.org/?q=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                   :title="$t('package.stats.view_dependency_graph')"
                   classicon="i-lucide:network -rotate-90"
                 >

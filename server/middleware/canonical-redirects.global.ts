@@ -18,6 +18,7 @@ const pages = [
   '/opensearch.xml',
   '/about',
   '/accessibility',
+  '/blog',
   '/compare',
   '/org',
   '/package',

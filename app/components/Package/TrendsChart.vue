@@ -1495,6 +1495,8 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           annotator: $t('package.trends.toggle_annotator'),
           stack: $t('package.trends.toggle_stack_mode'),
           altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependant on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
+          open: $t('package.trends.open_options'),
+          close: $t('package.trends.close_options'),
         },
         callbacks: {
           img: args => {

@@ -72,7 +72,7 @@ const roleLabels = computed(
         </p>
       </header>
 
-      <section class="prose prose-invert max-w-none space-y-12">
+      <section class="max-w-none space-y-12">
         <div>
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.what_we_are.title') }}

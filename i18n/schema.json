@@ -43,6 +43,9 @@
         "about": {
           "type": "string"
         },
+        "blog": {
+          "type": "string"
+        },
         "docs": {
           "type": "string"
         },
@@ -235,6 +238,75 @@
       },
       "additionalProperties": false
     },
+    "blog": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "author": {
+          "type": "object",
+          "properties": {
+            "view_profile": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "atproto": {
+          "type": "object",
+          "properties": {
+            "view_on_bluesky": {
+              "type": "string"
+            },
+            "reply_on_bluesky": {
+              "type": "string"
+            },
+            "likes_on_bluesky": {
+              "type": "string"
+            },
+            "like_or_reply_on_bluesky": {
+              "type": "string"
+            },
+            "no_comments_yet": {
+              "type": "string"
+            },
+            "could_not_load_comments": {
+              "type": "string"
+            },
+            "comments": {
+              "type": "string"
+            },
+            "loading_comments": {
+              "type": "string"
+            },
+            "updating": {
+              "type": "string"
+            },
+            "reply_count": {
+              "type": "string"
+            },
+            "like_count": {
+              "type": "string"
+            },
+            "repost_count": {
+              "type": "string"
+            },
+            "more_replies": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "settings": {
       "type": "object",
       "properties": {
@@ -365,6 +437,27 @@
           "type": "string"
         },
         "view_guide": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "401": {
+          "type": "string"
+        },
+        "404": {
+          "type": "string"
+        },
+        "500": {
+          "type": "string"
+        },
+        "503": {
+          "type": "string"
+        },
+        "default": {
           "type": "string"
         }
       },
@@ -1199,6 +1292,12 @@
               "type": "string"
             },
             "toggle_stack_mode": {
+              "type": "string"
+            },
+            "open_options": {
+              "type": "string"
+            },
+            "close_options": {
               "type": "string"
             },
             "legend_estimation": {
@@ -3314,6 +3413,9 @@
           "type": "string"
         },
         "compare_versions": {
+          "type": "string"
+        },
+        "compare_versions_title": {
           "type": "string"
         },
         "summary": {

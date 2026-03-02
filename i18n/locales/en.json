@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
     "about": "about",
+    "blog": "blog",
     "docs": "docs",
     "source": "source",
     "social": "social",
@@ -77,6 +78,29 @@
     "links": "Links",
     "tap_to_search": "Tap to search"
   },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Insights and updates from the npmx community",
+    "author": {
+      "view_profile": "View {name}'s profile on Bluesky"
+    },
+    "atproto": {
+      "view_on_bluesky": "View on Bluesky",
+      "reply_on_bluesky": "Reply on Bluesky",
+      "likes_on_bluesky": "Likes on Bluesky",
+      "like_or_reply_on_bluesky": "Like this post or add your comment on Bluesky",
+      "no_comments_yet": "No comments yet.",
+      "could_not_load_comments": "Could not load comments.",
+      "comments": "Comments",
+      "loading_comments": "Loading comments...",
+      "updating": "Updating...",
+      "reply_count": "{count} reply | {count} replies",
+      "like_count": "{count} like | {count} likes",
+      "repost_count": "{count} repost | {count} reposts",
+      "more_replies": "{count} more reply... | {count} more replies..."
+    }
+  },
   "settings": {
     "title": "settings",
     "tagline": "customize your npmx experience",
@@ -121,6 +145,13 @@
     "contribute_hint": "Help improve this translation by adding the missing keys.",
     "edit_on_github": "Edit on GitHub",
     "view_guide": "Translation guide"
+  },
+  "error": {
+    "401": "Unauthorized",
+    "404": "Page not found",
+    "500": "Internal server error",
+    "503": "Service unavailable",
+    "default": "Something went wrong"
   },
   "common": {
     "loading": "Loading...",
@@ -399,6 +430,8 @@
       "download_file": "Download {fileType}",
       "toggle_annotator": "Toggle annotator",
       "toggle_stack_mode": "Toggle stack mode",
+      "open_options": "Open options",
+      "close_options": "Close options",
       "legend_estimation": "Estimation",
       "no_data": "No data available",
       "y_axis_label": "{granularity} {facet}",
@@ -1099,13 +1132,14 @@
       }
     },
     "file_changes": "File Changes",
-    "files_count": "{count} files",
-    "lines_hidden": "{count} lines hidden",
+    "files_count": "{count} file | {count} files",
+    "lines_hidden": "{count} line hidden | {count} lines hidden",
     "file_too_large": "File too large to compare",
     "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
+    "compare_versions_title": "Compare with latest version",
     "summary": "Summary",
-    "deps_count": "{count} deps",
+    "deps_count": "{count} dep | {count} deps",
     "dependencies": "Dependencies",
     "dev_dependencies": "Dev Dependencies",
     "peer_dependencies": "Peer Dependencies",

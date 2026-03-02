@@ -25,6 +25,9 @@ const closeModal = () => modalRef.value?.close?.()
           <LinkBase :to="{ name: 'about' }">
             {{ $t('footer.about') }}
           </LinkBase>
+          <LinkBase :to="{ name: 'blog' }">
+            {{ $t('footer.blog') }}
+          </LinkBase>
           <LinkBase :to="{ name: 'privacy' }">
             {{ $t('privacy_policy.title') }}
           </LinkBase>

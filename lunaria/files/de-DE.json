@@ -32,7 +32,8 @@
     "navigate_results": "Ergebnisse navigieren",
     "go_to_result": "Ergebnis aufrufen",
     "open_code_view": "Code-Ansicht öffnen",
-    "open_docs": "Dokumentation öffnen"
+    "open_docs": "Dokumentation öffnen",
+    "disable_shortcuts": "Tastenkombinationen können in den {settings} deaktiviert werden."
   },
   "search": {
     "label": "npm-Pakete durchsuchen",
@@ -83,7 +84,8 @@
       "appearance": "Erscheinungsbild",
       "display": "Anzeige",
       "search": "Datenquelle",
-      "language": "Sprache"
+      "language": "Sprache",
+      "keyboard_shortcuts": "Tastenkombinationen"
     },
     "data_source": {
       "label": "Datenquelle",
@@ -107,7 +109,9 @@
     "accent_colors": "Akzentfarben",
     "clear_accent": "Akzentfarbe zurücksetzen",
     "translation_progress": "Übersetzungsfortschritt",
-    "background_themes": "Hintergrundschattierung"
+    "background_themes": "Hintergrundschattierung",
+    "keyboard_shortcuts_enabled": "Tastenkombinationen aktivieren",
+    "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen"
   },
   "i18n": {
     "missing_keys": "{count} fehlende Übersetzung | {count} fehlende Übersetzungen",
@@ -155,6 +159,13 @@
       "package": "Dieses Paket ist veraltet.",
       "version": "Diese Version ist veraltet.",
       "no_reason": "Kein Grund angegeben"
+    },
+    "size_increase": {
+      "title_size": "Deutlicher Größenanstieg seit v{version}",
+      "title_deps": "Deutlich mehr Abhängigkeiten seit v{version}",
+      "title_both": "Größe und Abhängigkeiten deutlich gestiegen seit v{version}",
+      "size": "Installationsgröße um {percent} gestiegen ({size} größer)",
+      "deps": "{count} zusätzliche Abhängigkeiten"
     },
     "replacement": {
       "title": "Du brauchst diese Abhängigkeit vielleicht nicht.",
@@ -365,9 +376,10 @@
       "date_range_multiline": "{start}\nbis {end}",
       "download_file": "{fileType} herunterladen",
       "toggle_annotator": "Annotation umschalten",
+      "toggle_stack_mode": "Gestapelte Ansicht ein-/ausschalten",
       "legend_estimation": "Schätzung",
       "no_data": "Keine Daten vorhanden",
-      "y_axis_label": "{granularity} {facet}",
+      "y_axis_label": "{facet} {granularity}",
       "facet": "Facette",
       "title": "Trends",
       "contributors_skip": "Nicht angezeigt bei Mitwirkende (hat kein GitHub-Repository): | Nicht angezeigt bei Mitwirkende (haben kein GitHub-Repository):",
@@ -378,6 +390,17 @@
       },
       "play_animation": "Animation abspielen",
       "pause_animation": "Animation pausieren",
+      "data_correction": "Datenkorrektur",
+      "average_window": "Durchschnittsfenster",
+      "smoothing": "Glättung",
+      "known_anomalies": "Bekannte Anomalien",
+      "known_anomalies_description": "Gleicht bekannte Download-Ausreißer aus, die durch Bots oder CI-Probleme entstanden sind.",
+      "known_anomalies_ranges": "Anomalie-Zeiträume",
+      "known_anomalies_range": "Von {start} bis {end}",
+      "known_anomalies_range_named": "{packageName}: vom {start} bis zum {end}",
+      "known_anomalies_none": "Keine bekannten Anomalien für dieses Paket. | Keine bekannten Anomalien für diese Pakete.",
+      "known_anomalies_contribute": "Anomalie-Daten einreichen",
+      "apply_correction": "Korrektur anwenden",
       "copy_alt": {
         "trend_none": "weitgehend gleichbleibenden",
         "trend_strong": "starken",
@@ -691,7 +714,8 @@
       "preview": "Vorschau",
       "code": "Code"
     },
-    "file_path": "Dateipfad"
+    "file_path": "Dateipfad",
+    "scroll_to_top": "Nach oben scrollen"
   },
   "badges": {
     "provenance": {
@@ -1049,7 +1073,38 @@
       "trends": {
         "title": "Trends vergleichen"
       }
-    }
+    },
+    "file_changes": "Dateiänderungen",
+    "files_count": "{count} Datei | {count} Dateien",
+    "lines_hidden": "{count} Zeile ausgeblendet | {count} Zeilen ausgeblendet",
+    "compare_versions": "Diff",
+    "compare_versions_title": "Mit neuester Version vergleichen",
+    "summary": "Zusammenfassung",
+    "deps_count": "{count} Abh.",
+    "dependencies": "Abhängigkeiten",
+    "dev_dependencies": "Dev-Abhängigkeiten",
+    "peer_dependencies": "Peer-Abhängigkeiten",
+    "optional_dependencies": "Optionale Abhängigkeiten",
+    "no_dependency_changes": "Keine Änderungen an Abhängigkeiten",
+    "file_filter_option": {
+      "all": "Gesamt ({count})",
+      "added": "Hinzugefügt ({count})",
+      "removed": "Entfernt ({count})",
+      "modified": "Geändert ({count})"
+    },
+    "search_files_placeholder": "Dateien suchen...",
+    "no_files_all": "Keine Dateien",
+    "no_files_search": "Keine Dateien für \"{query}\" gefunden",
+    "no_files_filtered": "Keine {filter} Dateien",
+    "filter": {
+      "added": "hinzugefügten",
+      "removed": "entfernten",
+      "modified": "geänderten"
+    },
+    "files_button": "Dateien",
+    "select_file_prompt": "Wähle eine Datei in der Seitenleiste, um die Änderungen anzuzeigen",
+    "close_files_panel": "Dateibereich schließen",
+    "filter_files_label": "Dateien nach Art der Änderung filtern"
   },
   "privacy_policy": {
     "title": "Datenschutzerklärung",

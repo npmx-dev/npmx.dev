@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { BLUESKY_API, BSKY_POST_AT_URI_REGEX } from '#shared/utils/constants'
+import {
+  BLUESKY_API,
+  BLUESKY_URL_EXTRACT_REGEX,
+  BSKY_POST_AT_URI_REGEX,
+} from '#shared/utils/constants'
 
 const props = defineProps<{
   /** AT URI of the post, e.g. at://did:plc:.../app.bsky.feed.post/... */
-  uri: string
+  uri?: string
+  /** Bluesky URL of the post, e.g. https://bsky.app/profile/handle/post/rkey */
+  url?: string
 }>()
 
 interface PostAuthor {
@@ -30,24 +36,62 @@ interface BlueskyPost {
   repostCount?: number
 }
 
-const postUrl = computed(() => {
-  const match = props.uri.match(BSKY_POST_AT_URI_REGEX)
+/**
+ * Resolve a bsky.app URL to an AT URI by resolving the handle to a DID.
+ * If an AT URI is provided directly, returns it as-is.
+ */
+async function resolveAtUri(): Promise<string | null> {
+  if (props.uri) return props.uri
+
+  if (!props.url) return null
+  const match = props.url.match(BLUESKY_URL_EXTRACT_REGEX)
   if (!match) return null
-  const [, did, rkey] = match
-  return `https://bsky.app/profile/${did}/post/${rkey}`
-})
+  const [, handle, rkey] = match
+
+  if (!handle || !rkey) return null
+
+  // If the handle is already a DID, build the AT URI directly
+  if (handle.startsWith('did:')) {
+    return `at://${handle}/app.bsky.feed.post/${rkey}`
+  }
+
+  // Resolve handle to DID
+  const res = await $fetch<{ did: string }>(
+    `${BLUESKY_API}/xrpc/com.atproto.identity.resolveHandle`,
+    { query: { handle } },
+  )
+  return `at://${res.did}/app.bsky.feed.post/${rkey}`
+}
+
+const cacheKey = computed(() => `bsky-post-${props.uri || props.url}`)
 
 const { data: post, status } = useAsyncData(
-  `bsky-post-${props.uri}`,
+  cacheKey.value,
   async (): Promise<BlueskyPost | null> => {
+    const atUri = await resolveAtUri()
+    if (!atUri) return null
+
     const response = await $fetch<{ posts: BlueskyPost[] }>(
       `${BLUESKY_API}/xrpc/app.bsky.feed.getPosts`,
-      { query: { uris: props.uri } },
+      { query: { uris: atUri } },
     )
     return response.posts[0] ?? null
   },
   { lazy: true, server: false },
 )
+
+const postUrl = computed(() => {
+  // Prefer the explicit URL prop if provided
+  if (props.url) return props.url
+
+  // Otherwise derive from the fetched post's AT URI
+  const uri = post.value?.uri ?? props.uri
+  if (!uri) return null
+  const match = uri.match(BSKY_POST_AT_URI_REGEX)
+  if (!match) return null
+  const [, did, rkey] = match
+  return `https://bsky.app/profile/${did}/post/${rkey}`
+})
 </script>
 
 <template>
@@ -63,7 +107,7 @@ const { data: post, status } = useAsyncData(
     :href="postUrl ?? '#'"
     target="_blank"
     rel="noopener noreferrer"
-    class="block rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200"
+    class="not-prose block rounded-lg border border-border bg-bg-subtle p-4 sm:p-5 no-underline hover:border-border-hover transition-colors duration-200"
   >
     <!-- Author row -->
     <div class="flex items-center gap-3 mb-3">

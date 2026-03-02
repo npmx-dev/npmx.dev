@@ -32,7 +32,8 @@
     "navigate_results": "Navegar resultados",
     "go_to_result": "Ir al resultado",
     "open_code_view": "Abrir vista de código",
-    "open_docs": "Abrir documentación"
+    "open_docs": "Abrir documentación",
+    "disable_shortcuts": "Puedes desactivar los atajos de teclado en {settings}."
   },
   "search": {
     "label": "Buscar paquetes npm",
@@ -83,7 +84,8 @@
       "appearance": "Apariencia",
       "display": "Visualización",
       "search": "Fuente de datos",
-      "language": "Idioma"
+      "language": "Idioma",
+      "keyboard_shortcuts": "Atajos de teclado"
     },
     "data_source": {
       "label": "Fuente de datos",
@@ -107,7 +109,9 @@
     "accent_colors": "Colores de acento",
     "clear_accent": "Limpiar color de acento",
     "translation_progress": "Progreso de traducción",
-    "background_themes": "Tema de fondo"
+    "background_themes": "Tema de fondo",
+    "keyboard_shortcuts_enabled": "Activar atajos de teclado",
+    "keyboard_shortcuts_enabled_description": "Los atajos de teclado pueden desactivarse si entran en conflicto con otros atajos del navegador o del sistema"
   },
   "i18n": {
     "missing_keys": "{count} traducción faltante | {count} traducciones faltantes",
@@ -139,7 +143,28 @@
       "role": "rol",
       "members": "miembros"
     },
-    "scroll_to_top": "Volver arriba"
+    "scroll_to_top": "Volver arriba",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "error": "Error"
+  },
+  "profile": {
+    "display_name": "Nombre visible",
+    "description": "Descripción",
+    "no_description": "Sin descripción",
+    "website": "Sitio web",
+    "website_placeholder": "https://ejemplo.com",
+    "likes": "Me gusta",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "Perfil de npmx de {handle}",
+    "not_found": "Perfil no encontrado",
+    "not_found_message": "No se ha podido encontrar el perfil de {handle}.",
+    "invite": {
+      "message": "Parece que aún no usa npmx. ¿Quieres contárselo?",
+      "share_button": "Compartir en Bluesky",
+      "compose_text": "¡Hola {'@'}{handle}! ¿Has probado ya npmx.dev? Es un navegador para el registro de npm rápido, moderno y de código abierto.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Paquete no encontrado",
@@ -414,7 +439,8 @@
     },
     "downloads": {
       "title": "Descargas Semanales",
-      "community_distribution": "Ver distribución de adopción comunitaria"
+      "community_distribution": "Ver distribución de adopción comunitaria",
+      "subtitle": "En todas las versiones"
     },
     "install_scripts": {
       "title": "Scripts de Instalación",
@@ -710,7 +736,8 @@
       "preview": "vista previa",
       "code": "código"
     },
-    "file_path": "Ruta del archivo"
+    "file_path": "Ruta del archivo",
+    "scroll_to_top": "Volver arriba"
   },
   "badges": {
     "provenance": {
@@ -927,7 +954,8 @@
       "connect_bluesky": "Conectar con Bluesky",
       "what_is_atmosphere": "¿Qué es una cuenta de la Atmosphere?",
       "atmosphere_explanation": "{npmx} utiliza {atproto} para proporcionar muchas de sus funciones sociales, lo que permite a los usuarios ser propietarios de sus datos y utilizar una cuenta para todas las aplicaciones compatibles. Una vez que crea una cuenta, puede usar otras aplicaciones como {bluesky} y {tangled} con la misma cuenta.",
-      "default_input_error": "Por favor, introduce un handle, DID o URL de PDS válido"
+      "default_input_error": "Por favor, introduce un handle, DID o URL de PDS válido",
+      "profile": "Perfil"
     }
   },
   "header": {
@@ -1072,6 +1100,8 @@
     "file_changes": "Cambios en archivos",
     "files_count": "{count} archivos",
     "lines_hidden": "{count} líneas ocultas",
+    "file_too_large": "Archivo demasiado grande para comparar",
+    "file_size_warning": "{size} excede el límite de 250KB para la comparación",
     "compare_versions": "diferencia",
     "summary": "Resumen",
     "deps_count": "{count} dependencias",
