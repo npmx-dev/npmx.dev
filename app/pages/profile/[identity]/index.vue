@@ -161,7 +161,7 @@ defineOgImageComponent('Default', {
             {{ profile.displayName }}
           </h1>
           <LinkBase
-            v-if="user?.handle === handle"
+            v-if="user?.handle === profile?.handle"
             to="/account/settings"
             variant="button-secondary"
             classicon="i-lucide:settings"
