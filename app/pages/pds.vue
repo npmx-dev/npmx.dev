@@ -35,6 +35,12 @@ const { data: pdsUsers, status: pdsStatus } = useLazyFetch<AtprotoProfile[]>(
 const usersWithAvatars = computed(() => {
   return pdsUsers.value.filter(user => user.avatar && !brokenImages.value.has(user.handle))
 })
+
+const usersWithoutAvatars = computed(() => {
+  return pdsUsers.value.filter(user => !user.avatar || brokenImages.value.has(user.handle))
+})
+
+const totalAccounts = computed(() => pdsUsers.value.length)
 </script>
 
 <template>
@@ -121,9 +127,16 @@ const usersWithAvatars = computed(() => {
           <h2 id="community-heading" class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('pds.community.title') }}
           </h2>
-          <p class="text-fg-muted leading-relaxed mb-6">
+          <p class="text-fg-muted leading-relaxed mb-2">
             {{ $t('pds.community.description') }}
           </p>
+          <p
+            v-if="pdsStatus === 'success' && totalAccounts > 0"
+            class="text-fg font-medium mb-6"
+          >
+            {{ $t('pds.community.account_count', { count: totalAccounts }) }}
+          </p>
+          <div v-else class="mb-6" />
 
           <div v-if="pdsStatus === 'pending'" class="text-fg-subtle text-sm" role="status">
             {{ $t('pds.community.loading') }}
@@ -131,40 +144,52 @@ const usersWithAvatars = computed(() => {
           <div v-else-if="pdsStatus === 'error'" class="text-fg-subtle text-sm" role="alert">
             {{ $t('pds.community.error') }}
           </div>
-          <div v-else-if="!usersWithAvatars.length" class="text-fg-subtle text-sm">
+          <div v-else-if="!pdsUsers.length" class="text-fg-subtle text-sm">
             {{ $t('pds.community.empty') }}
           </div>
-          <ul
-            v-else
-            class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-2 list-none p-0"
-          >
-            <li v-for="user in usersWithAvatars" :key="user.handle" class="block group relative">
-              <a
-                :href="`https://bsky.app/profile/${user.handle}`"
-                target="_blank"
-                rel="noopener noreferrer"
-                :aria-label="$t('pds.community.view_profile', { handle: user.handle })"
-                class="block rounded-lg"
+          <div v-else>
+            <ul
+              class="grid grid-cols-[repeat(auto-fill,48px)] justify-center gap-2 list-none p-0"
+            >
+              <li
+                v-for="user in usersWithAvatars"
+                :key="user.handle"
+                class="block group relative"
               >
-                <img
-                  :src="user.avatar"
-                  :alt="`${user.handle}'s avatar`"
-                  @error="handleImageError(user.handle)"
-                  width="48"
-                  height="48"
-                  class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out group-hover:scale-125 will-change-transform"
-                  loading="lazy"
-                />
-                <span
-                  class="pointer-events-none absolute -top-9 inset-is-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 text-xs px-2 py-1 shadow-lg opacity-0 scale-95 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100"
-                  dir="ltr"
-                  role="tooltip"
+                <a
+                  :href="`https://bsky.app/profile/${user.handle}`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  :aria-label="$t('pds.community.view_profile', { handle: user.handle })"
+                  class="block rounded-lg"
                 >
-                  @{{ user.handle }}
-                </span>
-              </a>
-            </li>
-          </ul>
+                  <img
+                    :src="user.avatar"
+                    :alt="`${user.handle}'s avatar`"
+                    @error="handleImageError(user.handle)"
+                    width="48"
+                    height="48"
+                    class="w-12 h-12 rounded-lg ring-2 ring-transparent group-hover:ring-accent transition-all duration-200 ease-out group-hover:scale-125 will-change-transform"
+                    loading="lazy"
+                  />
+                  <span
+                    class="pointer-events-none absolute -top-9 inset-is-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 text-xs px-2 py-1 shadow-lg opacity-0 scale-95 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100"
+                    dir="ltr"
+                    role="tooltip"
+                  >
+                    @{{ user.handle }}
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <div
+              v-if="usersWithoutAvatars.length"
+              class="flex items-center justify-center gap-2 mt-4 text-fg-muted text-sm"
+            >
+              <AppMark class="w-5 h-auto" />
+              <span>{{ $t('pds.community.new_accounts', { count: usersWithoutAvatars.length }) }}</span>
+            </div>
+          </div>
         </div>
       </section>
     </article>
