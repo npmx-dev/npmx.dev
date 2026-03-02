@@ -551,6 +551,29 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
             </template>
 
+            <template #annotator-action-draw="{ mode }">
+              <span
+                v-if="mode === 'arrow'"
+                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'text'"
+                class="i-lucide:type text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'line'"
+                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'draw'"
+                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+            </template>
+
             <template #annotator-action-undo>
               <span
                 class="i-lucide:undo-2 w-6 h-6 text-fg-subtle"
