@@ -177,6 +177,12 @@ headline="Read more from the community"
     description: 'Reflections on learning, community, and change.'
   },
   {
+    url: 'https://voidzero.dev/posts/npmx-alpha',
+    title: 'VoidZero and npmx: Building Better Tools Together',
+    authorHandle: 'voidzero.dev',
+    description: 'How VoidZero and npmx.dev share a vision for making JavaScript developers more productive, and how real-world feedback from open-source builders helps improve our tooling.',
+  },
+  {
     url: 'https://paulie.codes/blog/3mfs2stugzp2v',
     title: 'Overcoming Imposter Syndrome: My First Open Source Contribution',
     authorHandle: 'paulie.codes',
