@@ -219,6 +219,9 @@ function formatXyDataset(
     color: accent.value,
     temperatureColors,
     useArea: true,
+    dashIndices: dataset
+      .map((item, index) => (item.hasAnomaly ? index : -1))
+      .filter(index => index !== -1),
   }
 
   if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
@@ -275,19 +278,26 @@ function formatXyDataset(
 function extractSeriesPoints(
   selectedGranularity: ChartTimeGranularity,
   dataset: EvolutionData,
-): Array<{ timestamp: number; value: number }> {
+): Array<{ timestamp: number; value: number; hasAnomaly: boolean }> {
   if (selectedGranularity === 'weekly' && isWeeklyDataset(dataset)) {
-    return dataset.map(d => ({ timestamp: d.timestampEnd, value: d.value }))
+    return dataset.map(d => ({
+      timestamp: d.timestampEnd,
+      value: d.value,
+      hasAnomaly: !!d.hasAnomaly,
+    }))
   }
   if (
     (selectedGranularity === 'daily' && isDailyDataset(dataset)) ||
     (selectedGranularity === 'monthly' && isMonthlyDataset(dataset)) ||
     (selectedGranularity === 'yearly' && isYearlyDataset(dataset))
   ) {
-    return (dataset as Array<{ timestamp: number; value: number }>).map(d => ({
-      timestamp: d.timestamp,
-      value: d.value,
-    }))
+    return (dataset as Array<{ timestamp: number; value: number; hasAnomaly?: boolean }>).map(
+      d => ({
+        timestamp: d.timestamp,
+        value: d.value,
+        hasAnomaly: !!d.hasAnomaly,
+      }),
+    )
   }
   return []
 }
@@ -380,6 +390,11 @@ const isEstimationGranularity = computed(
 const supportsEstimation = computed(
   () => isEstimationGranularity.value && selectedMetric.value !== 'contributors',
 )
+
+const hasDownloadAnomalies = computed(() =>
+  normalisedDataset.value?.some(datapoint => !!datapoint.dashIndices.length),
+)
+
 const shouldRenderEstimationOverlay = computed(() => !pending.value && supportsEstimation.value)
 
 const startDate = usePermalink<string>('start', '', {
@@ -955,11 +970,13 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
         granularity: displayedGranularity.value,
       })
     }
+
     return applyDataCorrection(
       data as Array<{ value: number }>,
       settings.value.chartFilter,
     ) as EvolutionData
   }
+
   return data
 })
 
@@ -991,7 +1008,10 @@ const chartData = computed<{
   const granularity = displayedGranularity.value
 
   const timestampSet = new Set<number>()
-  const pointsByPackage = new Map<string, Array<{ timestamp: number; value: number }>>()
+  const pointsByPackage = new Map<
+    string,
+    Array<{ timestamp: number; value: number; hasAnomaly?: boolean }>
+  >()
 
   for (const pkg of names) {
     let data = state.evolutionsByPackage[pkg] ?? []
@@ -1005,6 +1025,7 @@ const chartData = computed<{
       ) as EvolutionData
     }
     const points = extractSeriesPoints(granularity, data)
+
     pointsByPackage.set(pkg, points)
     for (const p of points) timestampSet.add(p.timestamp)
   }
@@ -1014,15 +1035,23 @@ const chartData = computed<{
 
   const dataset: VueUiXyDatasetItem[] = names.map(pkg => {
     const points = pointsByPackage.get(pkg) ?? []
-    const map = new Map<number, number>()
-    for (const p of points) map.set(p.timestamp, p.value)
+    const valueByTimestamp = new Map<number, number>()
+    const anomalyTimestamps = new Set<number>()
+    for (const p of points) {
+      valueByTimestamp.set(p.timestamp, p.value)
+      if (p.hasAnomaly) anomalyTimestamps.add(p.timestamp)
+    }
 
-    const series = dates.map(t => map.get(t) ?? 0)
+    const series = dates.map(t => valueByTimestamp.get(t) ?? 0)
+    const dashIndices = dates
+      .map((t, index) => (anomalyTimestamps.has(t) ? index : -1))
+      .filter(index => index !== -1)
 
     const item: VueUiXyDatasetItem = {
       name: pkg,
       type: 'line',
       series,
+      dashIndices,
     } as VueUiXyDatasetItem
 
     if (isListedFramework(pkg)) {
@@ -1045,6 +1074,7 @@ const normalisedDataset = computed(() => {
     return {
       ...d,
       series: [...d.series.slice(0, -1), projectedLastValue],
+      dashIndices: d.dashIndices ?? [],
     }
   })
 })
@@ -1068,6 +1098,17 @@ const datetimeFormatterOptions = computed(() => {
     monthly: { year: 'MMM yyyy', month: 'MMM yyyy', day: 'MMM yyyy' },
     yearly: { year: 'yyyy', month: 'yyyy', day: 'yyyy' },
   }[selectedGranularity.value]
+})
+
+// Cached date formatter for tooltip
+const tooltipDateFormatter = computed(() => {
+  const granularity = displayedGranularity.value
+  return new Intl.DateTimeFormat(locale.value, {
+    year: 'numeric',
+    month: granularity === 'yearly' ? undefined : 'short',
+    day: granularity === 'daily' || granularity === 'weekly' ? 'numeric' : undefined,
+    timeZone: 'UTC',
+  })
 })
 
 const sanitise = (value: string) =>
@@ -1408,7 +1449,10 @@ function drawSvgPrintLegend(svg: Record<string, any>) {
   })
 
   // Inject the estimation legend item when necessary
-  if (supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value) {
+  if (
+    (supportsEstimation.value && !isEndDateOnPeriodEnd.value && !isZoomed.value) ||
+    hasDownloadAnomalies.value
+  ) {
     seriesNames.push(`
         <line
           x1="${svg.drawingArea.left + 12}"
@@ -1462,6 +1506,8 @@ const chartConfig = computed<VueUiXyConfig>(() => {
           annotator: $t('package.trends.toggle_annotator'),
           stack: $t('package.trends.toggle_stack_mode'),
           altCopy: $t('package.trends.copy_alt.button_label'), // Do not make this text dependant on the `copied` variable, since this would re-render the component, which is undesirable if the minimap was used to select a time frame.
+          open: $t('package.trends.open_options'),
+          close: $t('package.trends.close_options'),
         },
         callbacks: {
           img: args => {
@@ -1563,10 +1609,22 @@ const chartConfig = computed<VueUiXyConfig>(() => {
         borderColor: 'transparent',
         backdropFilter: false,
         backgroundColor: 'transparent',
-        customFormat: ({ datapoint: items }) => {
+        customFormat: ({ datapoint: items, absoluteIndex }) => {
           if (!items || pending.value) return ''
 
           const hasMultipleItems = items.length > 1
+
+          // Format date for multiple series datasets
+          let formattedDate = ''
+          if (hasMultipleItems && absoluteIndex !== undefined) {
+            const index = Number(absoluteIndex)
+            if (Number.isInteger(index) && index >= 0 && index < chartData.value.dates.length) {
+              const timestamp = chartData.value.dates[index]
+              if (typeof timestamp === 'number') {
+                formattedDate = tooltipDateFormatter.value.format(new Date(timestamp))
+              }
+            }
+          }
 
           const rows = items
             .map((d: Record<string, any>) => {
@@ -1600,6 +1658,7 @@ const chartConfig = computed<VueUiXyConfig>(() => {
             .join('')
 
           return `<div class="font-mono text-xs p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
+            ${formattedDate ? `<div class="text-2xs text-[var(--fg-subtle)] mb-2">${formattedDate}</div>` : ''}
             <div class="${hasMultipleItems ? 'flex flex-col gap-2' : ''}">
               ${rows}
             </div>
@@ -1955,7 +2014,10 @@ watch(selectedMetric, value => {
                 </template>
 
                 <!-- Estimation extra legend item -->
-                <div class="flex gap-1 place-items-center" v-if="supportsEstimation">
+                <div
+                  class="flex gap-1 place-items-center"
+                  v-if="supportsEstimation || hasDownloadAnomalies"
+                >
                   <svg viewBox="0 0 20 2" width="20">
                     <line
                       x1="0"
@@ -1998,6 +2060,18 @@ watch(selectedMetric, value => {
             <template #optionSvg>
               <span class="text-fg-subtle font-mono pointer-events-none">SVG</span>
             </template>
+            <template #optionStack="{ isStack }">
+              <span
+                v-if="isStack"
+                class="i-lucide:layers-2 text-fg-subtle w-6 h-6 pointer-events-none"
+                aria-hidden="true"
+              />
+              <span
+                v-else
+                class="i-lucide:chart-line text-fg-subtle w-6 h-6 pointer-events-none"
+                aria-hidden="true"
+              />
+            </template>
 
             <template #annotator-action-close>
               <span
@@ -2008,6 +2082,28 @@ watch(selectedMetric, value => {
             </template>
             <template #annotator-action-color="{ color }">
               <span class="i-lucide:palette w-6 h-6" :style="{ color }" aria-hidden="true" />
+            </template>
+            <template #annotator-action-draw="{ mode }">
+              <span
+                v-if="mode === 'arrow'"
+                class="i-lucide:move-up-right text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'text'"
+                class="i-lucide:type text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'line'"
+                class="i-lucide:pen-line text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
+              <span
+                v-if="mode === 'draw'"
+                class="i-lucide:line-squiggle text-fg-subtle w-6 h-6"
+                aria-hidden="true"
+              />
             </template>
             <template #annotator-action-undo>
               <span

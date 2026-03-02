@@ -7,10 +7,20 @@
       "has": [
         {
           "type": "host",
-          "value": "chat.npmx.dev"
+          "value": "build.npmx.dev"
         }
       ],
       "destination": "https://discord.gg/x9KE5U2q8w"
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "chat.npmx.dev"
+        }
+      ],
+      "destination": "https://discord.gg/CjZM5qRbCu"
     },
     {
       "source": "/(.*)",

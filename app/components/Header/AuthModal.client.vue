@@ -3,6 +3,8 @@ import { useAtproto } from '~/composables/atproto/useAtproto'
 import { authRedirect } from '~/utils/atproto/helpers'
 import { isAtIdentifierString } from '@atproto/lex'
 
+const authModal = useModal('auth-modal')
+
 const handleInput = shallowRef('')
 const errorMessage = shallowRef('')
 const route = useRoute()
@@ -72,9 +74,22 @@ watch(user, async newUser => {
           </p>
         </div>
       </div>
-      <ButtonBase class="w-full" @click="logout">
-        {{ $t('auth.modal.disconnect') }}
-      </ButtonBase>
+
+      <div class="flex flex-col space-y-4">
+        <LinkBase
+          variant="button-secondary"
+          :to="{ name: 'profile-identity', params: { identity: user.handle } }"
+          prefetch-on="interaction"
+          class="w-full"
+          @click="authModal.close()"
+        >
+          {{ $t('auth.modal.profile') }}
+        </LinkBase>
+
+        <ButtonBase class="w-full" @click="logout">
+          {{ $t('auth.modal.disconnect') }}
+        </ButtonBase>
+      </div>
     </div>
 
     <!-- Disconnected state -->

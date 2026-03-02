@@ -6,14 +6,17 @@ import { SLINGSHOT_HOST } from '#shared/utils/constants'
 import { useServerSession } from '#server/utils/server-session'
 import { handleApiError } from '#server/utils/error-handler'
 import type { DidString } from '@atproto/lex'
-import { Client } from '@atproto/lex'
-import * as com from '#shared/types/lexicons/com'
+import { Client, isAtUriString } from '@atproto/lex'
 import * as app from '#shared/types/lexicons/app'
+import * as blue from '#shared/types/lexicons/blue'
 import { isAtIdentifierString } from '@atproto/lex'
 import { scope } from '#server/utils/atproto/oauth'
 import { UNSET_NUXT_SESSION_PASSWORD } from '#shared/utils/constants'
 // @ts-expect-error virtual file from oauth module
 import { clientUri } from '#oauth/config'
+
+const OAUTH_REQUEST_COOKIE_PREFIX = 'atproto_oauth_req'
+const slingshotClient = new Client({ service: `https://${SLINGSHOT_HOST}` })
 
 export default defineEventHandler(async event => {
   const config = useRuntimeConfig(event)
@@ -81,8 +84,12 @@ export default defineEventHandler(async event => {
       try {
         const state = decodeOAuthState(event, result.state)
         const profile = await getMiniProfile(result.session)
+        const npmxProfile = await getNpmxProfile(profile.handle, result.session)
 
-        await session.update({ public: profile })
+        await session.update({
+          public: profile,
+          profile: npmxProfile,
+        })
         return sendRedirect(event, state.redirectPath)
       } catch (error) {
         // If we are unable to cleanly handle the callback, meaning that the
@@ -117,8 +124,6 @@ export default defineEventHandler(async event => {
 type OAuthStateData = {
   redirectPath: string
 }
-
-const OAUTH_REQUEST_COOKIE_PREFIX = 'atproto_oauth_req'
 
 /**
  * This function encodes the OAuth state by generating a random SID, storing it
@@ -220,8 +225,7 @@ function decodeOAuthState(event: H3Event, state: string | null): OAuthStateData 
  * @returns An object containing the user's DID, handle, PDS, and avatar URL (if available)
  */
 async function getMiniProfile(authSession: OAuthSession) {
-  const client = new Client({ service: `https://${SLINGSHOT_HOST}` })
-  const response = await client.xrpcSafe(com['bad-example'].identity.resolveMiniDoc, {
+  const response = await slingshotClient.xrpcSafe(blue.microcosm.identity.resolveMiniDoc, {
     headers: { 'User-Agent': 'npmx' },
     params: { identifier: authSession.did },
   })
@@ -278,4 +282,37 @@ async function getAvatar(did: DidString, pds: string) {
     // Avatar fetch failed, continue without it
   }
   return avatar
+}
+
+async function getNpmxProfile(handle: string, authSession: OAuthSession) {
+  const client = new Client(authSession)
+
+  // get existing npmx profile OR create a new one
+  const profileUri = `at://${client.did}/dev.npmx.actor.profile/self`
+  if (!isAtUriString(profileUri)) {
+    throw new Error(`Invalid at-uri: ${profileUri}`)
+  }
+
+  const profileResult = await slingshotClient.xrpcSafe(blue.microcosm.repo.getRecordByUri, {
+    headers: { 'User-Agent': 'npmx' },
+    params: { at_uri: profileUri },
+  })
+
+  if (profileResult.success) {
+    return profileResult.body.value
+  } else {
+    const profile = {
+      displayName: handle,
+    }
+
+    await client.createRecord(
+      {
+        $type: 'dev.npmx.actor.profile',
+        ...profile,
+      },
+      'self',
+    )
+
+    return profile
+  }
 }

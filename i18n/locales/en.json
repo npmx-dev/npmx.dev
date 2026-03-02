@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm is a registered trademark of npm, Inc. This site is not affiliated with npm, Inc.",
   "footer": {
     "about": "about",
+    "blog": "blog",
     "docs": "docs",
     "source": "source",
     "social": "social",
@@ -77,6 +78,31 @@
     "links": "Links",
     "tap_to_search": "Tap to search"
   },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Insights and updates from the npmx community",
+    "author": {
+      "view_profile": "View {name}'s profile on Bluesky"
+    },
+    "draft_badge": "Draft",
+    "draft_banner": "This is an unpublished draft. It may be incomplete or contain inaccuracies.",
+    "atproto": {
+      "view_on_bluesky": "View on Bluesky",
+      "reply_on_bluesky": "Reply on Bluesky",
+      "likes_on_bluesky": "Likes on Bluesky",
+      "like_or_reply_on_bluesky": "Like this post or add your comment on Bluesky",
+      "no_comments_yet": "No comments yet.",
+      "could_not_load_comments": "Could not load comments.",
+      "comments": "Comments",
+      "loading_comments": "Loading comments...",
+      "updating": "Updating...",
+      "reply_count": "{count} reply | {count} replies",
+      "like_count": "{count} like | {count} likes",
+      "repost_count": "{count} repost | {count} reposts",
+      "more_replies": "{count} more reply... | {count} more replies..."
+    }
+  },
   "settings": {
     "title": "settings",
     "tagline": "customize your npmx experience",
@@ -122,6 +148,13 @@
     "edit_on_github": "Edit on GitHub",
     "view_guide": "Translation guide"
   },
+  "error": {
+    "401": "Unauthorized",
+    "404": "Page not found",
+    "500": "Internal server error",
+    "503": "Service unavailable",
+    "default": "Something went wrong"
+  },
   "common": {
     "loading": "Loading...",
     "loading_more": "Loading more...",
@@ -144,7 +177,28 @@
       "role": "role",
       "members": "members"
     },
-    "scroll_to_top": "Scroll to top"
+    "scroll_to_top": "Scroll to top",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "error": "Error"
+  },
+  "profile": {
+    "display_name": "Display Name",
+    "description": "Description",
+    "no_description": "No description",
+    "website": "Website",
+    "website_placeholder": "https://example.com",
+    "likes": "Likes",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "npmx profile by {handle}",
+    "not_found": "Profile Not Found",
+    "not_found_message": "The profile for {handle} could not be found.",
+    "invite": {
+      "message": "It doesn't look like they're using npmx yet. Want to tell them about it?",
+      "share_button": "Share on Bluesky",
+      "compose_text": "Hey {'@'}{handle}! Have you checked out npmx.dev yet? It's a browser for the npm registry that's fast, modern, and open-source.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Package Not Found",
@@ -378,6 +432,8 @@
       "download_file": "Download {fileType}",
       "toggle_annotator": "Toggle annotator",
       "toggle_stack_mode": "Toggle stack mode",
+      "open_options": "Open options",
+      "close_options": "Close options",
       "legend_estimation": "Estimation",
       "no_data": "No data available",
       "y_axis_label": "{granularity} {facet}",
@@ -389,8 +445,6 @@
         "likes": "Likes",
         "contributors": "Contributors"
       },
-      "play_animation": "Play animation",
-      "pause_animation": "Pause animation",
       "data_correction": "Data correction",
       "average_window": "Average window",
       "smoothing": "Smoothing",
@@ -419,7 +473,8 @@
     },
     "downloads": {
       "title": "Weekly Downloads",
-      "community_distribution": "View community adoption distribution"
+      "community_distribution": "View community adoption distribution",
+      "subtitle": "Across all versions"
     },
     "install_scripts": {
       "title": "Install Scripts",
@@ -933,7 +988,8 @@
       "connect_bluesky": "Connect with Bluesky",
       "what_is_atmosphere": "What is an Atmosphere account?",
       "atmosphere_explanation": "{npmx} uses the {atproto} to power many of its social features, allowing users to own their data and use one account for all compatible applications. Once you create an account, you can use other apps like {bluesky} and {tangled} with the same account.",
-      "default_input_error": "Please enter a valid handle, DID, or a full PDS URL"
+      "default_input_error": "Please enter a valid handle, DID, or a full PDS URL",
+      "profile": "Profile"
     }
   },
   "header": {
@@ -1076,11 +1132,14 @@
       }
     },
     "file_changes": "File Changes",
-    "files_count": "{count} files",
-    "lines_hidden": "{count} lines hidden",
+    "files_count": "{count} file | {count} files",
+    "lines_hidden": "{count} line hidden | {count} lines hidden",
+    "file_too_large": "File too large to compare",
+    "file_size_warning": "{size} exceeds the 250KB limit for comparison",
     "compare_versions": "diff",
+    "compare_versions_title": "Compare with latest version",
     "summary": "Summary",
-    "deps_count": "{count} deps",
+    "deps_count": "{count} dep | {count} deps",
     "dependencies": "Dependencies",
     "dev_dependencies": "Dev Dependencies",
     "peer_dependencies": "Peer Dependencies",
@@ -1105,6 +1164,34 @@
     "select_file_prompt": "Select a file from the sidebar to view its diff",
     "close_files_panel": "Close files panel",
     "filter_files_label": "Filter files by change type"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "The official AT Protocol Personal Data Server (PDS) for the npmx community.",
+    "join": {
+      "title": "Join the Community",
+      "description": "Whether you are creating your first account on the atmosphere or migrating an existing one, you belong here. You can migrate your current account without losing your handle, your posts, or your followers.",
+      "migrate": "Migrate with PDS MOOver"
+    },
+    "server": {
+      "title": "Server Details",
+      "location_label": "Location:",
+      "location_value": "Nuremberg, Germany",
+      "infrastructure_label": "Infrastructure:",
+      "infrastructure_value": "Hosted on Hetzner",
+      "privacy_label": "Privacy:",
+      "privacy_value": "Subject to strict EU Data Protection laws",
+      "learn_more": "Learn how npmx uses the Atmosphere"
+    },
+    "community": {
+      "title": "Who is here",
+      "description": "Some of the {count} accounts that are already calling npmx.social home:",
+      "loading": "Loading PDS community...",
+      "error": "Failed to load PDS community.",
+      "empty": "No community members to display.",
+      "view_profile": "View {handle}'s profile",
+      "new_accounts": "...plus {count} more that are new to the atmosphere"
+    }
   },
   "privacy_policy": {
     "title": "privacy policy",

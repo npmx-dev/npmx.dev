@@ -3,12 +3,12 @@
   "seo": {
     "home": {
       "title": "npmx - Przeglądarka pakietów dla rejestru npm",
-      "description": "Lepsza przeglądarka rejestru npm. Wyszukuj, przeglądaj i odkrywaj pakiety w nowoczesnym interfejsie."
+      "description": "Szybka i nowoczesna przeglądarka rejestru npm. Wyszukuj, przeglądaj i odkrywaj pakiety w nowoczesnym interfejsie."
     }
   },
   "built_at": "zbudowano {0}",
   "alt_logo": "npmx logo",
-  "tagline": "lepsza przeglądarka rejestru npm",
+  "tagline": "szybka i nowoczesna przeglądarka rejestru npm",
   "non_affiliation_disclaimer": "niepowiązane z npm, Inc.",
   "trademark_disclaimer": "npm jest zarejestrowanym znakiem towarowym npm, Inc. Ta strona nie jest powiązana z npm, Inc.",
   "footer": {
@@ -33,7 +33,8 @@
     "navigate_results": "Nawiguj wyniki",
     "go_to_result": "Przejdź do wybranego wyniku",
     "open_code_view": "Otwórz przeglądanie kodu",
-    "open_docs": "Otwórz dokumentację"
+    "open_docs": "Otwórz dokumentację",
+    "disable_shortcuts": "Możesz wyłączyć skróty klawiaturowe w {settings}."
   },
   "search": {
     "label": "Szukaj pakietów npm",
@@ -84,7 +85,8 @@
       "appearance": "Wygląd",
       "display": "Widok",
       "search": "Źródło danych",
-      "language": "Język"
+      "language": "Język",
+      "keyboard_shortcuts": "Skróty klawiaturowe"
     },
     "data_source": {
       "label": "Źródło danych",
@@ -108,7 +110,9 @@
     "accent_colors": "Kolory akcentu",
     "clear_accent": "Wyczyść kolor akcentu",
     "translation_progress": "Postęp tłumaczenia",
-    "background_themes": "Odcień tła"
+    "background_themes": "Odcień tła",
+    "keyboard_shortcuts_enabled": "Włącz skróty klawiaturowe",
+    "keyboard_shortcuts_enabled_description": "Skróty klawiaturowe mogą zostać wyłączone jeśli kolidują z innymi skrótami przeglądarki lub systemu"
   },
   "i18n": {
     "missing_keys": "{count} brakujących tłumaczeń | {count} brakujące tłumaczenie | {count} brakujące tłumaczenia | {count} brakujących tłumaczeń | {count} brakujących tłumaczeń",
@@ -156,6 +160,13 @@
       "package": "Ten pakiet został oznaczony jako przestarzały.",
       "version": "Ta wersja została oznaczona jako przestarzała.",
       "no_reason": "Brak podanego powodu"
+    },
+    "size_increase": {
+      "title_size": "Rozmiar znacząco wzrósł od v{version}",
+      "title_deps": "Liczba zależności znacząco wzrosła od v{version}",
+      "title_both": "Rozmiar oraz liczba zależności znacząco wzrosła od v{version}",
+      "size": "Rozmiar instalacji wzrósł o {percent} ({size} więcej)",
+      "deps": "{count} więcej zależności"
     },
     "replacement": {
       "title": "Możliwe, że nie potrzebujesz tej zależności.",
@@ -294,8 +305,16 @@
       "view_all": "Zobacz wszystkie {count} wersje | Zobacz {count} wersję | Zobacz {count} wersje | Zobacz {count} wersji | Zobacz {count} wersji",
       "distribution_title": "Grupa semver",
       "distribution_modal_title": "Wersje",
+      "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
+      "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
       "grouping_major": "Major",
       "grouping_minor": "Minor",
+      "grouping_versions_title": "Wersje",
+      "grouping_versions_all": "Wszystkie",
+      "grouping_versions_only_recent": "Tylko ostatnie",
+      "grouping_usage_title": "Adopcja",
+      "grouping_usage_all": "Wszystkie",
+      "grouping_usage_low": "Niskie",
       "recent_versions_only_tooltip": "Pokaż tylko wersje opublikowane w ciągu ostatniego roku.",
       "show_low_usage_tooltip": "Uwzględnij grupy wersji z mniej niż 1% wszystkich pobrań.",
       "y_axis_label": "Pobrania",
@@ -304,7 +323,11 @@
       "filter_help": "Pomoc dotycząca zakresów semver",
       "filter_tooltip": "Filtruj wersje za pomocą {link}. Na przykład ^3.0.0 pokazuje wszystkie wersje 3.x.",
       "filter_tooltip_link": "zakresu semver",
-      "no_matches": "Żadna wersja nie pasuje do tego zakresu"
+      "no_matches": "Żadna wersja nie pasuje do tego zakresu",
+      "copy_alt": {
+        "per_version_analysis": "Wersję {version} pobrano {downloads} razy",
+        "general_description": "Wykres słupkowy pokazujący liczbę pobrań dla każdej z {version_count} {semver_grouping_mode} wersji pakietu {package_name}, {date_range_label} od wersji {first_version} do wersji {last_version}. Najczęściej pobieraną wersją jest {max_downloaded_version}, pobrana została {max_version_downloads} razy. {per_version_analysis}. {watermark}."
+      }
     },
     "dependencies": {
       "title": "Zależności ({count})",
@@ -354,6 +377,7 @@
       "date_range_multiline": "{start}\ndo {end}",
       "download_file": "Pobierz {fileType}",
       "toggle_annotator": "Przełącz adnotacje",
+      "toggle_stack_mode": "Widok rozdzielony",
       "legend_estimation": "Szacunek",
       "no_data": "Brak dostępnych danych",
       "y_axis_label": "{granularity} {facet}",
@@ -364,6 +388,31 @@
         "downloads": "Pobrania",
         "likes": "Polubienia",
         "contributors": "Współtwórcy"
+      },
+      "data_correction": "Poprawki danych",
+      "average_window": "Przedział średniej",
+      "smoothing": "Wygładzanie",
+      "known_anomalies": "Znane anomalie",
+      "known_anomalies_description": "Interpoluje dane, pomijając znane skoki ilości pobrań spowodowane botami lub problemami z CI",
+      "known_anomalies_ranges": "Zakresy anomalii",
+      "known_anomalies_range": "Od {start} do {end}",
+      "known_anomalies_range_named": "{packageName}: od {start} do {end}",
+      "known_anomalies_none": "Brak znanych anomalii dla tego pakietu. | Brak znanych anomalii dla tych pakietów.",
+      "known_anomalies_contribute": "Dodaj dane o anomaliach",
+      "apply_correction": "Zastosuj poprawki",
+      "copy_alt": {
+        "trend_none": "przeważnie płaski",
+        "trend_strong": "silny",
+        "trend_weak": "słaby",
+        "trend_undefined": "niezdefiniowany (zbyt mało danych)",
+        "button_label": "Skopiuj tekst alternatywny",
+        "watermark": "Na dole widnieje znak wodny \"./npmx szybka i nowoczesna przeglądarka rejestru npm\"",
+        "analysis": "{package_name} zaczyna z {start_value} i kończy z {end_value}, pokazuje {trend} trend o nachyleniu {downloads_slope} pobrań na jednostkę czasu",
+        "estimation": "Końcowa wartość jest szacowana na podstawie danych częściowych dla bieżącego okresu.",
+        "estimations": "Końcowe wartości są szacowane na podstawie danych częściowych dla bieżącego okresu.",
+        "compare": "Wykres liniowy porównujący ilość pobrań dla: {packages}.",
+        "single_package": "Wykres liniowy ilości pobrań dla pakietu {package}.",
+        "general_description": "Oś Y przedstawia ilość pobrań. Oś X przedstawia zakres dat, od {start_date} do {end_date}, z jednostką czasu {granularity}. {estimation_notice} {package_analysis}. {watermark}"
       }
     },
     "downloads": {
@@ -664,7 +713,8 @@
       "preview": "podgląd",
       "code": "kod"
     },
-    "file_path": "Ścieżka pliku"
+    "file_path": "Ścieżka pliku",
+    "scroll_to_top": "Wróć do góry"
   },
   "badges": {
     "provenance": {
@@ -815,6 +865,12 @@
         "package": "fajne",
         "managers": "menedżery pakietów"
       }
+    },
+    "sponsors": {
+      "title": "Sponsorzy"
+    },
+    "oss_partners": {
+      "title": "Partnerzy OSS"
     },
     "team": {
       "title": "Zespół",
@@ -1016,7 +1072,37 @@
       "trends": {
         "title": "Porównaj Trendy"
       }
-    }
+    },
+    "file_changes": "Zmiany w plikach",
+    "files_count": "{count} plików",
+    "lines_hidden": "ukryto {count} linii",
+    "compare_versions": "porównaj",
+    "summary": "Podsumowanie",
+    "deps_count": "{count} zależności",
+    "dependencies": "Zależności",
+    "dev_dependencies": "Zależności deweloperskie",
+    "peer_dependencies": "Zależności równorzędne",
+    "optional_dependencies": "Zależności opcjonalne",
+    "no_dependency_changes": "Brak zmian zależności",
+    "file_filter_option": {
+      "all": "Wszystkie ({count})",
+      "added": "Dodane ({count})",
+      "removed": "Usunięte ({count})",
+      "modified": "Zmienione ({count})"
+    },
+    "search_files_placeholder": "Szukaj plików...",
+    "no_files_all": "Brak plików",
+    "no_files_search": "Brak plików pasujących do \"{query}\"",
+    "no_files_filtered": "Brak {filter} plików",
+    "filter": {
+      "added": "dodanych",
+      "removed": "usuniętych",
+      "modified": "zmienionych"
+    },
+    "files_button": "Pliki",
+    "select_file_prompt": "Wybierz plik z panelu obok, aby zobaczyć zmiany",
+    "close_files_panel": "Zamknij panel plików",
+    "filter_files_label": "Filtruj pliki według rodzaju zmian"
   },
   "privacy_policy": {
     "title": "polityka prywatności",

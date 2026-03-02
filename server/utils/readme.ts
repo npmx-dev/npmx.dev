@@ -212,6 +212,46 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
 }
 
+/**
+ * Lazy ATX heading extension for marked: allows headings without a space after `#`.
+ *
+ * Reimplements the behavior of markdown-it-lazy-headers
+ * (https://npmx.dev/package/markdown-it-lazy-headers), which is used by npm's own markdown renderer
+ * marky-markdown (https://npmx.dev/package/marky-markdown).
+ *
+ * CommonMark requires a space after # for ATX headings, but many READMEs in the npm registry omit
+ * this space. This extension allows marked to parse these headings the same way npm does.
+ */
+marked.use({
+  tokenizer: {
+    heading(src: string) {
+      // Only match headings where `#` is immediately followed by non-whitespace, non-`#` content.
+      // Normal headings (with space) return false to fall through to marked's default tokenizer.
+      const match = /^ {0,3}(#{1,6})([^\s#][^\n]*)(?:\n+|$)/.exec(src)
+      if (!match) return false
+
+      let text = match[2]!.trim()
+
+      // Strip trailing # characters only if preceded by a space (CommonMark behavior).
+      // e.g., "#heading ##" → "heading", but "#heading#" stays as "heading#"
+      if (text.endsWith('#')) {
+        const stripped = text.replace(/#+$/, '')
+        if (!stripped || stripped.endsWith(' ')) {
+          text = stripped.trim()
+        }
+      }
+
+      return {
+        type: 'heading' as const,
+        raw: match[0]!,
+        depth: match[1]!.length as number,
+        text,
+        tokens: this.lexer.inline(text),
+      }
+    },
+  },
+})
+
 /** These path on npmjs.com don't belong to packages or search, so we shouldn't try to replace them with npmx.dev urls */
 const reservedPathsNpmJs = [
   'products',

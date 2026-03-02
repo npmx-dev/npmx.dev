@@ -465,6 +465,92 @@ describe('ReadmeResponse shape (HTML route contract)', () => {
   })
 })
 
+// Tests for the lazy ATX heading extension, matching the behavior of
+// markdown-it-lazy-headers (https://npmx.dev/package/markdown-it-lazy-headers).
+describe('Lazy ATX headings (no space after #)', () => {
+  it('parses #foo through ######foo as headings', async () => {
+    const markdown = '#foo\n\n##foo\n\n###foo\n\n####foo\n\n#####foo\n\n######foo'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(6)
+    expect(result.toc[0]).toMatchObject({ text: 'foo', depth: 1 })
+    expect(result.toc[1]).toMatchObject({ text: 'foo', depth: 2 })
+    expect(result.toc[2]).toMatchObject({ text: 'foo', depth: 3 })
+    expect(result.toc[3]).toMatchObject({ text: 'foo', depth: 4 })
+    expect(result.toc[4]).toMatchObject({ text: 'foo', depth: 5 })
+    expect(result.toc[5]).toMatchObject({ text: 'foo', depth: 6 })
+  })
+
+  it('rejects 7+ # characters as not a heading', async () => {
+    const markdown = '#######foo'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(0)
+    expect(result.html).toContain('#######foo')
+  })
+
+  it('does not affect headings that already have spaces', async () => {
+    const markdown = '# Title\n\n## Subtitle'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(2)
+    expect(result.toc[0]).toMatchObject({ text: 'Title', depth: 1 })
+    expect(result.toc[1]).toMatchObject({ text: 'Subtitle', depth: 2 })
+  })
+
+  it('strips optional trailing # sequence preceded by space', async () => {
+    const markdown = '##foo ##'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(1)
+    expect(result.toc[0]).toMatchObject({ text: 'foo', depth: 2 })
+  })
+
+  it('keeps trailing # not preceded by space as part of content', async () => {
+    const markdown = '#foo#'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(1)
+    expect(result.toc[0]).toMatchObject({ text: 'foo#', depth: 1 })
+  })
+
+  it('does not modify lines inside fenced code blocks', async () => {
+    const markdown = '```\n#not-a-heading\n```'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(0)
+    expect(result.html).toContain('#not-a-heading')
+  })
+
+  it('handles mixed headings with and without spaces', async () => {
+    const markdown = '#Title\n\nSome text\n\n## Subtitle\n\n###Another'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(3)
+    expect(result.toc[0]).toMatchObject({ text: 'Title', depth: 1 })
+    expect(result.toc[1]).toMatchObject({ text: 'Subtitle', depth: 2 })
+    expect(result.toc[2]).toMatchObject({ text: 'Another', depth: 3 })
+  })
+
+  it('allows 1-3 spaces indentation', async () => {
+    const markdown = ' ###foo\n\n  ##foo\n\n   #foo'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(3)
+    expect(result.toc[0]).toMatchObject({ text: 'foo', depth: 3 })
+    expect(result.toc[1]).toMatchObject({ text: 'foo', depth: 2 })
+    expect(result.toc[2]).toMatchObject({ text: 'foo', depth: 1 })
+  })
+
+  it('works after paragraphs separated by blank lines', async () => {
+    const markdown = 'Foo bar\n\n#baz\n\nBar foo'
+    const result = await renderReadmeHtml(markdown, 'test-pkg')
+
+    expect(result.toc).toHaveLength(1)
+    expect(result.toc[0]).toMatchObject({ text: 'baz', depth: 1 })
+  })
+})
+
 describe('HTML output', () => {
   it('returns sanitized html', async () => {
     const markdown = `# Title\n\nSome **bold** text and a [link](https://example.com).`

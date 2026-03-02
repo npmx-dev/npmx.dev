@@ -884,16 +884,18 @@ const showSkeleton = shallowRef(false)
               variant="button-secondary"
               :to="diffRoute(pkg.name, displayVersion.version, latestVersion.version)"
               classicon="i-lucide:diff"
+              :title="$t('compare.compare_versions_title')"
             >
-              {{ $t('compare.compare_versions') }}
+              <span class="max-sm:sr-only">{{ $t('compare.compare_versions') }}</span>
             </LinkBase>
             <ButtonBase
               v-if="showScrollToTop"
               variant="secondary"
               :title="$t('common.scroll_to_top')"
               :aria-label="$t('common.scroll_to_top')"
-              @click="() => scrollToTop()"
+              @click="scrollToTop"
               classicon="i-lucide:arrow-up"
+              class="sm:p-2.75"
             />
           </ButtonGroup>
 
@@ -1122,7 +1124,7 @@ const showSkeleton = shallowRef(false)
                 <LinkBase
                   variant="button-secondary"
                   size="small"
-                  :to="`https://npmgraph.js.org/?q=${pkg.name}`"
+                  :to="`https://npmgraph.js.org/?q=${pkg.name}${resolvedVersion ? `@${resolvedVersion}` : ''}`"
                   :title="$t('package.stats.view_dependency_graph')"
                   classicon="i-lucide:network -rotate-90"
                 >
@@ -1145,7 +1147,7 @@ const showSkeleton = shallowRef(false)
           <div class="space-y-1 sm:col-span-3">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
-              <TooltipApp :text="sizeTooltip">
+              <TooltipApp v-if="sizeTooltip" :text="sizeTooltip">
                 <span
                   tabindex="0"
                   class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"

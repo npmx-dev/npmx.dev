@@ -13,6 +13,7 @@ describe('BuildEnvironment', () => {
       shortCommit: 'abc',
       branch: 'main',
       privacyPolicyDate: new Date().toISOString(),
+      prNumber: null,
     }
     const component = await mountSuspended(BuildEnvironment, {
       props: {
@@ -39,6 +40,7 @@ describe('BuildEnvironment', () => {
       shortCommit: 'abc',
       branch: 'release',
       privacyPolicyDate: new Date().toISOString(),
+      prNumber: null,
     }
 
     const component = await mountSuspended(BuildEnvironment, {

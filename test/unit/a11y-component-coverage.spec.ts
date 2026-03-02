@@ -23,6 +23,7 @@ import { fileURLToPath } from 'node:url'
  */
 const SKIPPED_COMPONENTS: Record<string, string> = {
   // OgImage components are server-side rendered images, not interactive UI
+  'OgImage/BlogPost.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Default.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Package.vue': 'OG Image component - server-rendered image, not interactive UI',
 

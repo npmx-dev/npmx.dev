@@ -65,7 +65,9 @@ watch(open, value => {
             <span class="text-yellow-500">~{{ props.compare.stats.filesModified }}</span>
           </span>
           <span class="text-fg-subtle">•</span>
-          <span>{{ $t('compare.files_count', { count: props.allChanges.length }) }}</span>
+          <span>{{
+            $t('compare.files_count', { count: props.allChanges.length }, props.allChanges.length)
+          }}</span>
         </div>
         <button
           type="button"

@@ -55,7 +55,7 @@ export default defineNuxtConfig({
     },
   },
 
-  devtools: { enabled: true },
+  devtools: { enabled: !true },
 
   devServer: {
     // Used with atproto oauth
@@ -107,6 +107,13 @@ export default defineNuxtConfig({
         allowQuery: ['color', 'labelColor', 'label', 'name', 'style'],
       },
     },
+    '/api/registry/image-proxy': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: ['url', 'sig'],
+      },
+    },
     '/api/registry/downloads/**': {
       isr: {
         expiration: 60 * 60 /* one hour */,
@@ -154,8 +161,12 @@ export default defineNuxtConfig({
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
     '/recharging': { prerender: true },
+    '/pds': { isr: 86400 }, // revalidate daily
     // proxy for insights
-    '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
+    '/blog/**': { prerender: true },
+    '/_v/script.js': {
+      proxy: 'https://npmx.dev/_vercel/insights/script.js',
+    },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
     '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
     '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
@@ -352,6 +363,8 @@ export default defineNuxtConfig({
         'fast-npm-meta',
         '@floating-ui/vue',
         'algoliasearch/lite',
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
       ],
     },
   },

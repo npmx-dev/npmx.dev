@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook-vue/nuxt'
+import { withThemeByDataAttribute } from '@storybook/addon-themes'
 import { currentLocales } from '../config/i18n'
 import { fn } from 'storybook/test'
 import { ACCENT_COLORS } from '../shared/utils/constants'
@@ -58,30 +59,21 @@ const preview: Preview = {
         ],
       },
     },
-    theme: {
-      name: 'Theme',
-      description: 'Color mode',
-      defaultValue: 'dark',
-      toolbar: {
-        icon: 'moon',
-        dynamicTitle: true,
-        items: [
-          { value: 'light', icon: 'sun', title: 'Light' },
-          { value: 'dark', icon: 'moon', title: 'Dark' },
-        ],
-      },
-    },
   },
   decorators: [
+    withThemeByDataAttribute({
+      themes: {
+        Light: 'light',
+        Dark: 'dark',
+      },
+      defaultTheme: 'Dark',
+      attributeName: 'data-theme',
+    }),
     (story, context) => {
-      const { locale, theme, accentColor } = context.globals as {
+      const { locale, accentColor } = context.globals as {
         locale: string
-        theme: string
         accentColor?: string
       }
-
-      // Set theme from globals
-      document.documentElement.setAttribute('data-theme', theme)
 
       // Set accent color from globals
       if (accentColor) {

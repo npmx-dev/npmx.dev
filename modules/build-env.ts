@@ -23,12 +23,11 @@ export default defineNuxtModule({
         branch: 'xxx',
         time: time.getTime(),
         privacyPolicyDate: time.toISOString(),
+        prNumber: null,
       } satisfies BuildInfo
     } else {
-      const [{ env: useEnv, commit, shortCommit, branch }, privacyPolicyDate] = await Promise.all([
-        getEnv(nuxt.options.dev),
-        getFileLastUpdated('app/pages/privacy.vue'),
-      ])
+      const [{ env: useEnv, commit, shortCommit, branch, prNumber }, privacyPolicyDate] =
+        await Promise.all([getEnv(nuxt.options.dev), getFileLastUpdated('app/pages/privacy.vue')])
       env = useEnv
       nuxt.options.appConfig.env = useEnv
       nuxt.options.appConfig.buildInfo = {
@@ -39,6 +38,7 @@ export default defineNuxtModule({
         branch,
         env,
         privacyPolicyDate,
+        prNumber,
       } satisfies BuildInfo
     }
 

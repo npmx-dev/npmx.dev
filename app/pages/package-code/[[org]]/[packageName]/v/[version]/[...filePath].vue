@@ -249,6 +249,11 @@ function copyPermalinkUrl() {
   copyPermalink(url.toString())
 }
 
+const { copied: fileContentCopied, copy: copyFileContent } = useClipboard({
+  source: () => fileContent.value?.content || '',
+  copiedDuring: 2000,
+})
+
 // Scroll to top of file content
 const contentContainer = useTemplateRef('contentContainer')
 function scrollToTop() {
@@ -473,6 +478,18 @@ defineOgImageComponent('Default', {
                 @click="copyPermalinkUrl"
               >
                 {{ permalinkCopied ? $t('common.copied') : $t('code.copy_link') }}
+              </button>
+              <button
+                v-if="!!fileContent?.content"
+                type="button"
+                class="px-2 py-1 font-mono text-xs text-fg-muted bg-bg-subtle border border-border rounded hover:text-fg hover:border-border-hover transition-colors inline-flex items-center gap-1 capitalize"
+                @click="copyFileContent()"
+              >
+                <span
+                  class="w-3 h-3"
+                  :class="fileContentCopied ? 'i-lucide:check' : 'i-lucide:file'"
+                />
+                {{ fileContentCopied ? $t('common.copied') : $t('common.copy') }}
               </button>
               <a
                 :href="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"

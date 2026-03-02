@@ -94,12 +94,7 @@ watch(
           block
           :style="{ paddingLeft: `${depth * 12 + 32}px` }"
         >
-          <svg
-            class="size-[1em] me-1 shrink-0"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            aria-hidden="true"
-          >
+          <svg class="size-[1em] me-1 shrink-0" viewBox="0 0 16 16" aria-hidden="true">
             <use :href="`/file-tree-sprite.svg#${getFileIcon(node.name)}`" />
           </svg>
           <span class="truncate">{{ node.name }}</span>

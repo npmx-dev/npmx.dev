@@ -463,7 +463,12 @@ function focusSearchInput() {
   searchInput?.focus()
 }
 
+const keyboardShortcuts = useKeyboardShortcuts()
+
 function handleResultsKeydown(e: KeyboardEvent) {
+  if (!keyboardShortcuts.value) {
+    return
+  }
   // If the active element is an input, navigate to exact match or wait for results
   if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
     // Get value directly from input (not from route query, which may be debounced)
@@ -555,6 +560,98 @@ defineOgImageComponent('Default', {
       : $t('search.meta_description_packages'),
   primaryColor: '#60a5fa',
 })
+
+// -----------------------------------
+// Live region debouncing logic
+// -----------------------------------
+const isMobile = useIsMobile()
+
+// Evaluate the text that should be announced to screen readers
+const rawLiveRegionMessage = computed(() => {
+  if (isRateLimited.value) {
+    return $t('search.rate_limited')
+  }
+
+  // If status is pending, no update phrase needed yet
+  if (status.value === 'pending') {
+    return ''
+  }
+
+  if (visibleResults.value && displayResults.value.length > 0) {
+    if (viewMode.value === 'table' || paginationMode.value === 'paginated') {
+      const pSize =
+        preferredPageSize.value === 'all'
+          ? $n(effectiveTotal.value)
+          : Math.min(preferredPageSize.value, effectiveTotal.value)
+      return $t(
+        'filters.count.showing_paginated',
+        {
+          pageSize: pSize.toString(),
+          count: $n(effectiveTotal.value),
+        },
+        effectiveTotal.value,
+      )
+    }
+
+    if (isRelevanceSort.value) {
+      return $t(
+        'search.found_packages',
+        { count: $n(visibleResults.value.total) },
+        visibleResults.value.total,
+      )
+    }
+
+    return $t(
+      'search.found_packages_sorted',
+      { count: $n(effectiveTotal.value) },
+      effectiveTotal.value,
+    )
+  }
+
+  if (status.value === 'success' || status.value === 'error') {
+    if (displayResults.value.length === 0 && query.value) {
+      return $t('search.no_results', { query: query.value })
+    }
+  }
+
+  return ''
+})
+
+const debouncedLiveRegionMessage = ref('')
+
+const updateLiveRegionMobile = debounce((val: string) => {
+  debouncedLiveRegionMessage.value = val
+}, 700)
+
+const updateLiveRegionDesktop = debounce((val: string) => {
+  debouncedLiveRegionMessage.value = val
+}, 250)
+
+watch(
+  rawLiveRegionMessage,
+  newVal => {
+    if (!newVal) {
+      updateLiveRegionMobile.cancel()
+      updateLiveRegionDesktop.cancel()
+      debouncedLiveRegionMessage.value = ''
+      return
+    }
+
+    if (isMobile.value) {
+      updateLiveRegionDesktop.cancel()
+      updateLiveRegionMobile(newVal)
+    } else {
+      updateLiveRegionMobile.cancel()
+      updateLiveRegionDesktop(newVal)
+    }
+  },
+  { immediate: true },
+)
+
+onBeforeUnmount(() => {
+  updateLiveRegionMobile.cancel()
+  updateLiveRegionDesktop.cancel()
+})
 </script>
 
 <template>
@@ -615,7 +712,7 @@ defineOgImageComponent('Default', {
             </button>
           </div>
 
-          <div v-if="isRateLimited" role="status" class="py-12">
+          <div v-if="isRateLimited" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.rate_limited') }}
             </p>
@@ -648,7 +745,6 @@ defineOgImageComponent('Default', {
             />
             <p
               v-if="viewMode === 'cards' && paginationMode === 'infinite'"
-              role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
               <template v-if="isRelevanceSort">
@@ -665,13 +761,12 @@ defineOgImageComponent('Default', {
                   $t('search.found_packages_sorted', { count: $n(effectiveTotal) }, effectiveTotal)
                 }}
               </template>
-              <span v-if="status === 'pending'" class="text-fg-subtle">{{
-                $t('search.updating')
-              }}</span>
+              <span aria-hidden="true" v-if="status === 'pending'" class="text-fg-subtle">
+                {{ $t('search.updating') }}
+              </span>
             </p>
             <p
               v-if="viewMode === 'table' || paginationMode === 'paginated'"
-              role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
               {{
@@ -690,7 +785,7 @@ defineOgImageComponent('Default', {
             </p>
           </div>
 
-          <div v-else-if="status === 'success' || status === 'error'" role="status" class="py-12">
+          <div v-else-if="status === 'success' || status === 'error'" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.no_results', { query }) }}
             </p>
@@ -767,6 +862,10 @@ defineOgImageComponent('Default', {
       :package-scope="packageScope"
       :can-publish-to-scope="canPublishToScope"
     />
+
+    <div role="status" class="sr-only">
+      {{ debouncedLiveRegionMessage }}
+    </div>
   </main>
 </template>
 

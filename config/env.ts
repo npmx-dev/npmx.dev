@@ -17,6 +17,17 @@ export { version } from '../package.json'
 export const isPR = process.env.PULL_REQUEST === 'true' || !!process.env.VERCEL_GIT_PULL_REQUEST_ID
 
 /**
+ * Environment variable `REVIEW_ID` provided by Netlify.
+ * @see {@link https://docs.netlify.com/configure-builds/environment-variables/#git-metadata}
+ *
+ * Environment variable `VERCEL_GIT_PULL_REQUEST_ID` provided by Vercel.
+ * @see {@link https://vercel.com/docs/environment-variables/system-environment-variables#VERCEL_GIT_PULL_REQUEST_ID}
+ *
+ * Pull request number (if in a PR environment)
+ */
+export const prNumber = process.env.REVIEW_ID || process.env.VERCEL_GIT_PULL_REQUEST_ID || null
+
+/**
  * Environment variable `BRANCH` provided by Netlify.
  * @see {@link https://docs.netlify.com/build/configure-builds/environment-variables/#git-metadata}
  *
@@ -147,5 +158,6 @@ export async function getEnv(isDevelopment: boolean) {
     env,
     previewUrl,
     productionUrl,
+    prNumber,
   } as const
 }

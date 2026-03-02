@@ -2,12 +2,23 @@ import type { StorybookConfig } from '@storybook-vue/nuxt'
 
 const config = {
   stories: ['../app/**/*.stories.@(js|ts)'],
-  addons: ['@storybook/addon-a11y', '@storybook/addon-docs'],
+  addons: ['@storybook/addon-a11y', '@storybook/addon-docs', '@storybook/addon-themes'],
   framework: '@storybook-vue/nuxt',
+  staticDirs: ['./.public'],
   features: {
     backgrounds: false,
   },
   async viteFinal(config) {
+    config.plugins ??= []
+
+    config.plugins.push({
+      name: 'ignore-internals',
+      transform(_, id) {
+        if (id.includes('/app/pages/blog/') && id.endsWith('.md')) {
+          return 'export default {}'
+        }
+      },
+    })
     // Replace the built-in vue-docgen plugin with a fault-tolerant version.
     // vue-docgen-api can crash on components that import types from other
     // .vue files (it tries to parse the SFC with @babel/parser as plain TS).

@@ -45,6 +45,6 @@ links:
 :::u-page-feature{icon="i-lucide:shield-check" to="/guide/features" title="Check security" description="Vulnerability warnings from OSV database and provenance indicators for verified builds."}
 :::
 
-:::u-page-feature{icon="i-lucide:moon" to="/guide/features" title="Enjoy dark mode" description="Dark mode by default for a better viewing experience."}
+:::u-page-feature{icon="i-lucide:moon" to="/guide/features" title="Enjoy dark mode" description="Full dark mode support that respects your system preferences."}
 :::
 ::
