@@ -153,7 +153,7 @@
     "simple-git-hooks": "2.13.1",
     "storybook": "catalog:storybook",
     "typescript": "5.9.3",
-    "unplugin-vue-markdown": "29.2.0",
+    "unplugin-vue-markdown": "30.0.0",
     "vitest": "npm:@voidzero-dev/vite-plus-test@0.0.0-g52709db6.20260226-1136",
     "vitest-environment-nuxt": "1.0.1",
     "vue-i18n-extract": "2.0.7",
