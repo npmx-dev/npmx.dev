@@ -145,7 +145,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </div>
         </section>
 
-        <!-- DATA SOURCE Section -->
+        <!-- SEARCH FEATURES Section -->
         <section>
           <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.search') }}
@@ -204,6 +204,15 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
               </a>
             </div>
+
+            <div class="border-t border-border my-4" />
+
+            <!-- Instant Search toggle -->
+            <SettingsToggle
+              :label="$t('settings.instant_search')"
+              :description="$t('settings.instant_search_description')"
+              v-model="settings.instantSearch"
+            />
           </div>
         </section>
 

@@ -32,7 +32,11 @@ const updateUrlPage = debounce((page: number) => {
   window.history.replaceState(window.history.state, '', url)
 }, 500)
 
-const { model: searchQuery, provider: searchProvider } = useGlobalSearch()
+const {
+  model: searchQuery,
+  committedModel: committedQuery,
+  provider: searchProvider,
+} = useGlobalSearch()
 const query = computed(() => searchQuery.value)
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
@@ -181,6 +185,7 @@ watch(searchProvider, provider => {
 })
 
 // Use incremental search with client-side caching + org/user suggestions
+// committedQuery only updates on Enter when instant search is off, otherwise tracks query as user types
 const {
   data: results,
   status,
@@ -191,7 +196,7 @@ const {
   suggestions: validatedSuggestions,
   packageAvailability,
 } = useSearch(
-  query,
+  committedQuery,
   searchProvider,
   () => ({
     size: requestedSize.value,
@@ -475,6 +480,9 @@ function handleResultsKeydown(e: KeyboardEvent) {
     const inputValue = (document.activeElement as HTMLInputElement).value.trim()
     if (!inputValue) return
 
+    // When instantSearch is off, commit the query so search starts
+    committedQuery.value = inputValue
+
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]
     if (firstResult?.package.name === inputValue) {
@@ -664,7 +672,7 @@ onBeforeUnmount(() => {
         <SearchProviderToggle />
       </div>
 
-      <section v-if="query" class="results-layout">
+      <section v-if="committedQuery" class="results-layout">
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
         <div

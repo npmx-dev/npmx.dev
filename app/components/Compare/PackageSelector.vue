@@ -12,6 +12,7 @@ const maxPackages = computed(() => props.max ?? 4)
 
 // Input state
 const inputValue = shallowRef('')
+const committedInput = shallowRef('')
 const isInputFocused = shallowRef(false)
 
 // Keyboard navigation state
@@ -21,7 +22,20 @@ const PAGE_JUMP = 5
 
 // Use the shared search composable (supports both npm and Algolia providers)
 const { searchProvider } = useSearchProvider()
-const { data: searchData, status } = useSearch(inputValue, searchProvider, { size: 15 })
+const { settings } = useSettings()
+
+// When instantSearch is off, only search after Enter is pressed
+watch(inputValue, val => {
+  if (settings.value.instantSearch) {
+    committedInput.value = val
+  }
+
+  if (!val) {
+    committedInput.value = ''
+  }
+})
+
+const { data: searchData, status } = useSearch(committedInput, searchProvider, { size: 15 })
 
 const isSearching = computed(() => status.value === 'pending')
 
@@ -50,7 +64,9 @@ const showNoDependencyOption = computed(() => {
 
 // Filter out already selected packages
 const filteredResults = computed(() => {
-  if (!searchData.value?.objects) return []
+  // Intentionally clear results if input is empty
+  if (!committedInput.value || !searchData.value?.objects) return []
+
   return searchData.value.objects
     .map(o => ({
       name: o.package.name,
@@ -149,6 +165,12 @@ function handleKeydown(e: KeyboardEvent) {
       if (!inputValueTrim) return
 
       e.preventDefault()
+
+      // When instant search is off, first Enter commits the query to trigger search
+      if (!settings.value.instantSearch && committedInput.value !== inputValueTrim) {
+        committedInput.value = inputValueTrim
+        return
+      }
 
       // If an item is highlighted, select it
       if (highlightedIndex.value >= 0 && highlightedIndex.value < count) {

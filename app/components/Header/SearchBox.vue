@@ -16,10 +16,10 @@ const showSearchBar = computed(() => {
   return route.name !== 'index'
 })
 
-const { model: searchQuery, flushUpdateUrlQuery } = useGlobalSearch('header')
+const { model: searchQuery, startSearch } = useGlobalSearch('header')
 
 function handleSubmit() {
-  flushUpdateUrlQuery()
+  startSearch()
 }
 
 // Expose focus method for parent components

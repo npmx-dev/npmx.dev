@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
-const { model: searchQuery, flushUpdateUrlQuery } = useGlobalSearch()
+const { model: searchQuery, startSearch } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
 
 async function search() {
-  flushUpdateUrlQuery()
+  startSearch()
 }
 
 const { env } = useAppConfig().buildInfo
