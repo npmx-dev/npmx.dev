@@ -1,0 +1,48 @@
+name: i18n-meta
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'i18n/locales/en.json'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: 🌐 Update en.meta.json
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # 1e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: true
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: 🌐 Update i18n metadata
+        run: pnpm i18n:meta:update-en-meta
+
+      - name: ⬆︎ Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add i18n/locales/en.meta.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'chore(i18n): update `en.meta.json` [skip ci]'
+            git push
+          else
+            echo "No changes in en.meta.json, skipping commit."
+          fi

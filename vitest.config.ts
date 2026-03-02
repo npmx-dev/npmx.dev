@@ -13,6 +13,7 @@ export default defineConfig({
           alias: {
             '#shared': `${rootDir}/shared`,
             '#server': `${rootDir}/server`,
+            '#scripts': `${rootDir}/scripts`,
           },
         },
         test: {

@@ -262,6 +262,9 @@ importers:
       '@storybook/addon-themes':
         specifier: catalog:storybook
         version: 10.2.13(storybook@10.2.13(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
+      '@types/dot-object':
+        specifier: 2.1.6
+        version: 2.1.6
       '@types/node':
         specifier: 24.10.13
         version: 24.10.13
@@ -289,6 +292,9 @@ importers:
       devalue:
         specifier: 5.6.3
         version: 5.6.3
+      dot-object:
+        specifier: 2.1.5
+        version: 2.1.5
       eslint-plugin-regexp:
         specifier: 3.0.0
         version: 3.0.0(eslint@9.39.2(jiti@2.6.1))
@@ -4687,6 +4693,9 @@ packages:
 
   '@types/deep-eql@4.0.2':
     resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
+
+  '@types/dot-object@2.1.6':
+    resolution: {integrity: sha512-G1e4SNPOuO72ZXv7wz/W2x29CzQtpxko3G9hBiHqGg/AvFIKoArCs2nbc/WPXnnUkO+1dmvX9WQCyj5gIlAzZg==}
 
   '@types/eslint-scope@3.7.7':
     resolution: {integrity: sha512-MzMFlSLBqNF2gcHWO0G1vP/YQyfvrxZ0bF+u7mzUdZ1/xK4A4sru+nraZz5i3iEIk1l1uyicaDVTB4QbbEkAYg==}
@@ -15515,6 +15524,8 @@ snapshots:
       '@types/ms': 2.1.0
 
   '@types/deep-eql@4.0.2': {}
+
+  '@types/dot-object@2.1.6': {}
 
   '@types/eslint-scope@3.7.7':
     dependencies:
