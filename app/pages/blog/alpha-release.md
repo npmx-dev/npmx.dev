@@ -172,6 +172,12 @@ headline="Read more from the community"
     title: 'OSS made me a better developer',
     authorHandle: 'philippeserhal.com',
     description: 'How getting involved in npmx made me a better developer.'
+  },
+  {
+    url: 'https://news.atmosphereconf.org/',
+    title: 'npmx goes social with atproto',
+    authorHandle: 'atprotocol.dev',
+    description: 'Announcing npmx speakers, and congratulations on launch day!'
   }
 ]"
 />
