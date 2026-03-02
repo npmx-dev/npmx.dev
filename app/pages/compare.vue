@@ -162,142 +162,125 @@ useSeoMeta({
 
 <template>
   <main class="container flex-1 py-12 sm:py-16 w-full">
-    <div class="max-w-2xl mx-auto">
-      <header class="mb-12">
-        <div class="flex items-baseline justify-between gap-4 mb-4">
-          <h1 class="font-mono text-3xl sm:text-4xl font-medium">
-            {{ $t('compare.packages.title') }}
-          </h1>
-          <button
-            type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
-            @click="router.back()"
-            v-if="canGoBack"
-          >
-            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
-            <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
-          </button>
-        </div>
-        <p class="text-fg-muted text-lg">
-          {{ $t('compare.packages.tagline') }}
-        </p>
-      </header>
+    <header class="mb-12">
+      <div class="flex items-baseline justify-between gap-4 mb-4">
+        <h1 class="font-mono text-3xl sm:text-4xl font-medium">
+          {{ $t('compare.packages.title') }}
+        </h1>
+        <button
+          type="button"
+          class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+          @click="router.back()"
+          v-if="canGoBack"
+        >
+          <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+          <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
+        </button>
+      </div>
+      <p class="text-fg-muted text-lg">
+        {{ $t('compare.packages.tagline') }}
+      </p>
+    </header>
 
-      <!-- Package selector -->
-      <section class="mb-8" aria-labelledby="packages-heading">
-        <h2 id="packages-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
-          {{ $t('compare.packages.section_packages') }}
+    <!-- Package selector -->
+    <section class="mb-8" aria-labelledby="packages-heading">
+      <h2 id="packages-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-3">
+        {{ $t('compare.packages.section_packages') }}
+      </h2>
+      <ComparePackageSelector v-model="packages" :max="4" />
+
+      <!-- "No dep" replacement suggestions (native, simple) -->
+      <div v-if="noDepSuggestions.length > 0" class="mt-3 space-y-2">
+        <CompareReplacementSuggestion
+          v-for="suggestion in noDepSuggestions"
+          :key="suggestion.forPackage"
+          :package-name="suggestion.forPackage"
+          :replacement="suggestion.replacement"
+          variant="nodep"
+          :show-action="canAddNoDep"
+          @add-no-dep="addNoDep"
+        />
+      </div>
+
+      <!-- Informational replacement suggestions (documented) -->
+      <div v-if="infoSuggestions.length > 0" class="mt-3 space-y-2">
+        <CompareReplacementSuggestion
+          v-for="suggestion in infoSuggestions"
+          :key="suggestion.forPackage"
+          :package-name="suggestion.forPackage"
+          :replacement="suggestion.replacement"
+          variant="info"
+        />
+      </div>
+    </section>
+
+    <!-- Facet selector -->
+    <section class="mb-8" aria-labelledby="facets-heading">
+      <div class="flex items-center gap-2 mb-3">
+        <h2 id="facets-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
+          {{ $t('compare.packages.section_facets') }}
         </h2>
-        <ComparePackageSelector v-model="packages" :max="4" />
-
-        <!-- "No dep" replacement suggestions (native, simple) -->
-        <div v-if="noDepSuggestions.length > 0" class="mt-3 space-y-2">
-          <CompareReplacementSuggestion
-            v-for="suggestion in noDepSuggestions"
-            :key="suggestion.forPackage"
-            :package-name="suggestion.forPackage"
-            :replacement="suggestion.replacement"
-            variant="nodep"
-            :show-action="canAddNoDep"
-            @add-no-dep="addNoDep"
-          />
-        </div>
-
-        <!-- Informational replacement suggestions (documented) -->
-        <div v-if="infoSuggestions.length > 0" class="mt-3 space-y-2">
-          <CompareReplacementSuggestion
-            v-for="suggestion in infoSuggestions"
-            :key="suggestion.forPackage"
-            :package-name="suggestion.forPackage"
-            :replacement="suggestion.replacement"
-            variant="info"
-          />
-        </div>
-      </section>
-
-      <!-- Facet selector -->
-      <section class="mb-8" aria-labelledby="facets-heading">
-        <div class="flex items-center gap-2 mb-3">
-          <h2 id="facets-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ $t('compare.packages.section_facets') }}
-          </h2>
-          <ButtonBase
-            size="small"
-            :aria-pressed="isAllSelected"
-            :disabled="isAllSelected"
-            :aria-label="$t('compare.facets.select_all')"
-            @click="selectAll"
-          >
-            {{ $t('compare.facets.all') }}
-          </ButtonBase>
-          <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
-          <ButtonBase
-            size="small"
-            :aria-pressed="isNoneSelected"
-            :disabled="isNoneSelected"
-            :aria-label="$t('compare.facets.deselect_all')"
-            @click="deselectAll"
-          >
-            {{ $t('compare.facets.none') }}
-          </ButtonBase>
-        </div>
-        <CompareFacetSelector />
-      </section>
-
-      <!-- Comparison grid -->
-      <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
-        <CopyToClipboardButton
-          v-if="packagesData && packagesData.some(p => p !== null)"
-          :copied="copied"
-          :copy-text="$t('compare.packages.copy_as_markdown')"
-          class="mb-4"
-          :button-attrs="{ class: 'hidden md:inline-flex' }"
-          @click="exportComparisonDataAsMarkdown"
+        <ButtonBase
+          size="small"
+          :aria-pressed="isAllSelected"
+          :disabled="isAllSelected"
+          :aria-label="$t('compare.facets.select_all')"
+          @click="selectAll"
         >
-          <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
-            {{ $t('compare.packages.section_comparison') }}
-          </h2>
-        </CopyToClipboardButton>
-
-        <h2
-          v-else
-          id="comparison-heading"
-          class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
+          {{ $t('compare.facets.all') }}
+        </ButtonBase>
+        <span class="text-3xs text-fg-muted/40" aria-hidden="true">/</span>
+        <ButtonBase
+          size="small"
+          :aria-pressed="isNoneSelected"
+          :disabled="isNoneSelected"
+          :aria-label="$t('compare.facets.deselect_all')"
+          @click="deselectAll"
         >
+          {{ $t('compare.facets.none') }}
+        </ButtonBase>
+      </div>
+      <CompareFacetSelector />
+    </section>
+
+    <!-- Comparison grid -->
+    <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
+      <CopyToClipboardButton
+        v-if="packagesData && packagesData.some(p => p !== null)"
+        :copied="copied"
+        :copy-text="$t('compare.packages.copy_as_markdown')"
+        class="mb-4"
+        :button-attrs="{ class: 'hidden md:inline-flex' }"
+        @click="exportComparisonDataAsMarkdown"
+      >
+        <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
           {{ $t('compare.packages.section_comparison') }}
         </h2>
+      </CopyToClipboardButton>
 
-        <div
-          v-if="
-            (status === 'pending' || status === 'idle') &&
-            (!packagesData || packagesData.every(p => p === null))
-          "
-          class="flex items-center justify-center py-12"
-        >
-          <LoadingSpinner :text="$t('compare.packages.loading')" />
-        </div>
+      <h2
+        v-else
+        id="comparison-heading"
+        class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
+      >
+        {{ $t('compare.packages.section_comparison') }}
+      </h2>
 
-        <div v-else-if="packagesData && packagesData.some(p => p !== null)">
-          <!-- Desktop: Grid layout -->
-          <div class="hidden md:block overflow-x-auto">
-            <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
-              <CompareFacetRow
-                v-for="facet in selectedFacets"
-                :key="facet.id"
-                :label="facet.label"
-                :description="facet.description"
-                :values="getFacetValues(facet.id)"
-                :facet-loading="isFacetLoading(facet.id)"
-                :column-loading="columnLoading"
-                :bar="facet.id !== 'lastUpdated'"
-                :headers="gridHeaders"
-              />
-            </CompareComparisonGrid>
-          </div>
+      <div
+        v-if="
+          (status === 'pending' || status === 'idle') &&
+          (!packagesData || packagesData.every(p => p === null))
+        "
+        class="flex items-center justify-center py-12"
+      >
+        <LoadingSpinner :text="$t('compare.packages.loading')" />
+      </div>
 
-          <!-- Mobile: Card-based layout -->
-          <div class="md:hidden space-y-3">
-            <CompareFacetCard
+      <div v-else-if="packagesData && packagesData.some(p => p !== null)">
+        <!-- Desktop: Grid layout -->
+        <div class="hidden md:block overflow-x-auto">
+          <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
+            <CompareFacetRow
               v-for="facet in selectedFacets"
               :key="facet.id"
               :label="facet.label"
@@ -308,42 +291,54 @@ useSeoMeta({
               :bar="facet.id !== 'lastUpdated'"
               :headers="gridHeaders"
             />
-          </div>
-
-          <h2
-            id="trends-comparison-heading"
-            class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
-          >
-            {{ $t('compare.facets.trends.title') }}
-          </h2>
-
-          <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
+          </CompareComparisonGrid>
         </div>
 
-        <div v-else-if="status === 'error'" class="text-center py-12" role="alert">
-          <p class="text-fg-muted">{{ $t('compare.packages.error') }}</p>
+        <!-- Mobile: Card-based layout -->
+        <div class="md:hidden space-y-3">
+          <CompareFacetCard
+            v-for="facet in selectedFacets"
+            :key="facet.id"
+            :label="facet.label"
+            :description="facet.description"
+            :values="getFacetValues(facet.id)"
+            :facet-loading="isFacetLoading(facet.id)"
+            :column-loading="columnLoading"
+            :bar="facet.id !== 'lastUpdated'"
+            :headers="gridHeaders"
+          />
         </div>
-        <div v-else class="flex items-center justify-center py-12">
-          <LoadingSpinner :text="$t('compare.packages.loading')" />
-        </div>
-      </section>
 
-      <!-- Empty state -->
-      <section
-        v-else
-        class="text-center px-1.5 py-16 border border-dashed border-border-hover rounded-lg"
-      >
-        <div
-          class="i-lucide:git-compare w-12 h-12 text-fg-subtle mx-auto mb-4"
-          aria-hidden="true"
-        />
-        <h2 class="font-mono text-lg text-fg-muted mb-2">
-          {{ $t('compare.packages.empty_title') }}
+        <h2
+          id="trends-comparison-heading"
+          class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
+        >
+          {{ $t('compare.facets.trends.title') }}
         </h2>
-        <p class="text-sm text-fg-subtle max-w-md mx-auto">
-          {{ $t('compare.packages.empty_description') }}
-        </p>
-      </section>
-    </div>
+
+        <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
+      </div>
+
+      <div v-else-if="status === 'error'" class="text-center py-12" role="alert">
+        <p class="text-fg-muted">{{ $t('compare.packages.error') }}</p>
+      </div>
+      <div v-else class="flex items-center justify-center py-12">
+        <LoadingSpinner :text="$t('compare.packages.loading')" />
+      </div>
+    </section>
+
+    <!-- Empty state -->
+    <section
+      v-else
+      class="text-center px-1.5 py-16 border border-dashed border-border-hover rounded-lg"
+    >
+      <div class="i-lucide:git-compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
+      <h2 class="font-mono text-lg text-fg-muted mb-2">
+        {{ $t('compare.packages.empty_title') }}
+      </h2>
+      <p class="text-sm text-fg-subtle max-w-md mx-auto">
+        {{ $t('compare.packages.empty_description') }}
+      </p>
+    </section>
   </main>
 </template>

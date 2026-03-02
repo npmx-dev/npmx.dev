@@ -39,11 +39,10 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
 
         <!-- Package columns -->
         <div v-for="col in columns" :key="col.name" class="comparison-cell comparison-cell-header">
-          <span class="inline-flex items-center gap-1.5 truncate">
+          <span class="inline-flex items-center justify-center gap-1.5 w-full">
             <LinkBase
               :to="packageRoute(col.name, col.version)"
-              class="text-sm truncate"
-              block
+              class="text-sm inline-block truncate"
               :title="col.version ? `${col.name}@${col.version}` : col.name"
             >
               {{ col.name }}<template v-if="col.version">@{{ col.version }}</template>
@@ -105,15 +104,15 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
 }
 
 .comparison-grid.columns-2 {
-  grid-template-columns: minmax(120px, 180px) repeat(2, 1fr);
+  grid-template-columns: minmax(120px, 180px) repeat(2, minmax(0, 1fr));
 }
 
 .comparison-grid.columns-3 {
-  grid-template-columns: minmax(120px, 160px) repeat(3, 1fr);
+  grid-template-columns: minmax(120px, 160px) repeat(3, minmax(0, 1fr));
 }
 
 .comparison-grid.columns-4 {
-  grid-template-columns: minmax(100px, 140px) repeat(4, 1fr);
+  grid-template-columns: minmax(100px, 140px) repeat(4, minmax(0, 1fr));
 }
 
 .comparison-header {
