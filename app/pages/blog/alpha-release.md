@@ -141,10 +141,22 @@ headline="Read more from the community"
     description: 'How to contribute to npmx.dev, and thoughts on Johnny\'s experience with the project.'
   },
   {
+    url: 'https://opensourcepledge.com/blog/npmx-a-lesson-in-open-source-collaboration-feedback-loops/',
+    title: 'npmx: A Lesson in Open Source\'s Collaboration Feedback Loops',
+    authorHandle: 'opensourcepledge.com',
+    description: 'npmx\'s success is reminding us why Open Source is such a special social phenomenon.'
+  },
+  {
     url: 'https://blog.trueberryless.org/blog/npmx/',
     title: 'Rising community at tomorrow\'s horizon',
     authorHandle: 'trueberryless.org',
     description: 'Telling the story of a newly founded community.'
+  },
+  {
+    url: 'https://conf.zurichjs.com/blog/open-source-needs-community',
+    title: 'Open source needs community. Community needs open source.',
+    authorHandle: 'zurichjs.com',
+    description: 'Why ZurichJS cares about getting people into open source.',
   },
   {
     url: 'https://www.sybers.fr/blog/3mfhn5xoawz24',
