@@ -90,6 +90,12 @@ headline="Read more from the community"
     description: 'Getting involved in open source doesn\'t have to be scary! Understand how to find a great project and make your first contribution in this guide from Salma.'
   },
   {
+    url: 'https://roe.dev/blog/a-virtuous-cycle',
+    title: 'A Virtuous Circle',
+    authorHandle: 'danielroe.dev',
+    description: 'There\'s a reason why building npmx has been such a blast so far, and it\'s one of the most powerful patterns in open source software development. It\'s also why \'the 10x developer\' is an incredibly dangerous myth.'
+  },
+  {
     url: 'https://graphieros.github.io/graphieros-blog/blog/2026/npmx.html',
     title: 'vue-data-ui is on npmx npmx is on vue-data-ui',
     authorHandle: 'graphieros.com',
