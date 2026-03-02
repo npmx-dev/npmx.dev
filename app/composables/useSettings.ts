@@ -27,6 +27,8 @@ export interface AppSettings {
   hidePlatformPackages: boolean
   /** User-selected locale */
   selectedLocale: LocaleObject['code'] | null
+  /** Use the browser's locale for number and date formatting instead of the app's locale */
+  useSystemLocaleForFormatting: boolean
   /** Search provider for package search */
   searchProvider: SearchProvider
   /** Enable/disable keyboard shortcuts */
@@ -53,6 +55,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   accentColorId: null,
   hidePlatformPackages: true,
   selectedLocale: null,
+  useSystemLocaleForFormatting: false,
   preferredBackgroundTheme: null,
   searchProvider: import.meta.test ? 'npm' : 'algolia',
   keyboardShortcuts: true,

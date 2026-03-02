@@ -20,6 +20,7 @@ const { settings } = useSettings()
 
 const chartModal = useModal('chart-modal')
 const hasChartModalTransitioned = shallowRef(false)
+const numberFormatter = useNumberFormatter()
 
 const modalTitle = computed(() => {
   const facet = route.query.facet as string | undefined
@@ -203,8 +204,8 @@ const dataset = computed<VueUiSparklineDatasetItem[]>(() =>
   correctedDownloads.value.map(d => ({
     value: d?.value ?? 0,
     period: $t('package.trends.date_range', {
-      start: d.weekStart ?? '-',
-      end: d.weekEnd ?? '-',
+      start: d.weekStart ? $d(d.weekStart, 'shortDate') : '-',
+      end: d.weekEnd ? $d(d.weekEnd, 'shortDate') : '-',
     }),
   })),
 )
@@ -250,6 +251,9 @@ const config = computed<VueUiSparklineConfig>(() => {
         fontSize: 28,
         bold: false,
         color: colors.value.fg,
+        formatter: ({ value }) => {
+          return numberFormatter.value.format(value)
+        },
       },
       line: {
         color: colors.value.borderHover,

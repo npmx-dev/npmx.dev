@@ -7,6 +7,8 @@ const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
 const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
+const rtl = new Map<string, boolean>(locales.value.map(l => [l.code, l.dir === 'rtl']))
+
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
   e =>
@@ -141,6 +143,16 @@ const setLocale: typeof setNuxti18nLocale = locale => {
               :label="$t('settings.hide_platform_packages')"
               :description="$t('settings.hide_platform_packages_description')"
               v-model="settings.hidePlatformPackages"
+            />
+
+            <!-- Divider -->
+            <div class="border-t border-border my-4" />
+
+            <!-- System locale toggle -->
+            <SettingsToggle
+              :label="$t('settings.use_system_locale')"
+              :description="$t('settings.use_system_locale_description')"
+              v-model="settings.useSystemLocaleForFormatting"
             />
           </div>
         </section>

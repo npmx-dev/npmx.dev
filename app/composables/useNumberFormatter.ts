@@ -1,7 +1,15 @@
 export function useNumberFormatter(options?: Intl.NumberFormatOptions) {
-  const { locale } = useI18n()
+  const { userLocale } = useUserLocale()
 
-  return computed(() => new Intl.NumberFormat(locale.value, options))
+  return computed(
+    () =>
+      new Intl.NumberFormat(
+        userLocale.value,
+        options ?? {
+          maximumFractionDigits: 0,
+        },
+      ),
+  )
 }
 
 export const useCompactNumberFormatter = () =>
@@ -12,26 +20,45 @@ export const useCompactNumberFormatter = () =>
   })
 
 export const useBytesFormatter = () => {
-  const { t } = useI18n()
-  const decimalNumberFormatter = useNumberFormatter({
-    maximumFractionDigits: 1,
+  const { userLocale } = useUserLocale()
+
+  const units = ['byte', 'kilobyte', 'megabyte', 'gigabyte', 'terabyte', 'petabyte']
+
+  // Create formatters reactively based on the user's preferred locale.
+  // This ensures that when the locale (or the setting) changes, all formatters are recreated.
+  const formatters = computed(() => {
+    const locale = userLocale.value
+    const map = new Map<string, Intl.NumberFormat>()
+
+    units.forEach(unit => {
+      map.set(
+        unit,
+        new Intl.NumberFormat(locale, {
+          style: 'unit',
+          unit,
+          unitDisplay: 'short',
+          maximumFractionDigits: 2,
+        }),
+      )
+    })
+
+    return map
   })
-  const KB = 1000
-  const MB = 1000 * 1000
 
   return {
     format: (bytes: number) => {
-      if (bytes < KB)
-        return t('package.size.b', {
-          size: decimalNumberFormatter.value.format(bytes),
-        })
-      if (bytes < MB)
-        return t('package.size.kb', {
-          size: decimalNumberFormatter.value.format(bytes / KB),
-        })
-      return t('package.size.mb', {
-        size: decimalNumberFormatter.value.format(bytes / MB),
-      })
+      let value = bytes
+      let unitIndex = 0
+
+      // Use 1_000 as base (SI units) instead of 1_024.
+      while (value >= 1_000 && unitIndex < units.length - 1) {
+        value /= 1_000
+        unitIndex++
+      }
+
+      const unit = units[unitIndex]!
+      // Accessing formatters.value here establishes the reactive dependency
+      return formatters.value.get(unit)!.format(value)
     },
   }
 }

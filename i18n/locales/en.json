@@ -130,6 +130,8 @@
     "theme_dark": "Dark",
     "theme_system": "System",
     "language": "Language",
+    "use_system_locale": "Use system locale for formatting",
+    "use_system_locale_description": "Use your browser's locale for number and date formatting instead of the app's language",
     "help_translate": "Help translate npmx",
     "accent_colors": "Accent colors",
     "clear_accent": "Clear accent color",
