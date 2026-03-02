@@ -492,17 +492,8 @@ To add a new locale:
    },
    ```
 
-4. Copy your translation file to `lunaria/files/` for translation tracking:
-
-   ```bash
-   cp i18n/locales/uk-UA.json lunaria/files/uk-UA.json
-   ```
-
-   > ⚠**Important:**
-   > This file must be committed. Lunaria uses git history to track translation progress, so the build will fail if this file is missing.
-
-5. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
-6. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
+4. If the language is `right-to-left`, add `dir: 'rtl'` (see `ar-EG` in config for example)
+5. If the language requires special pluralization rules, add a `pluralRule` callback (see `ar-EG` or `ru-RU` in config for examples)
 
 Check [Pluralization rule callback](https://vue-i18n.intlify.dev/guide/essentials/pluralization#custom-pluralization) and [Plural Rules](https://cldr.unicode.org/index/cldr-spec/plural-rules#TOC-Determining-Plural-Categories) for more info.
 

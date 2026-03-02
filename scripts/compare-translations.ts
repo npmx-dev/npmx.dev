@@ -2,10 +2,10 @@
 import type { LocaleObject } from '@nuxtjs/i18n'
 import * as process from 'node:process'
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { basename, join } from 'node:path'
+import { basename, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { deepCopy } from '@intlify/shared'
 import { countryLocaleVariants, currentLocales } from '../config/i18n.ts'
-import { mergeLocaleObject } from '../lunaria/prepare-json-files.ts'
 import { COLORS } from './utils.ts'
 
 const LOCALES_DIRECTORY = fileURLToPath(new URL('../i18n/locales', import.meta.url))
@@ -128,12 +128,34 @@ const loadJson = async ({ filePath, mergeLocale, locale }: LocaleInfo): Promise<
     )
     process.exit(1)
   }
-  const merged = await mergeLocaleObject(localeObject)
-  if (!merged) {
-    console.error(`${COLORS.red}Error: Failed to merge locale "${locale}"${COLORS.reset}`)
-    process.exit(1)
+
+  // Merge multi-file locale: load base file, then overlay variant file on top
+  const localesFolder = resolve('i18n/locales')
+  const files = localeObject.files ?? []
+  if (localeObject.file || files.length === 1) {
+    const fileName =
+      (localeObject.file ? getFileName(localeObject.file) : undefined) ??
+      (files[0] ? getFileName(files[0]) : undefined)
+    if (!fileName) return {}
+    return JSON.parse(readFileSync(join(localesFolder, fileName), 'utf-8')) as NestedObject
   }
-  return merged
+
+  const firstFile = files[0]
+  if (!firstFile) return {}
+  const source = JSON.parse(
+    readFileSync(join(localesFolder, getFileName(firstFile)), 'utf-8'),
+  ) as NestedObject
+  for (let i = 1; i < files.length; i++) {
+    const file = files[i]
+    if (!file) continue
+    const overlay = JSON.parse(readFileSync(join(localesFolder, getFileName(file)), 'utf-8'))
+    deepCopy(overlay, source)
+  }
+  return source
+}
+
+function getFileName(file: string | { path: string }): string {
+  return typeof file === 'string' ? file : file.path
 }
 
 type SyncStats = {

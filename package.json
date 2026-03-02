@@ -148,7 +148,7 @@
     "knip": "5.85.0",
     "lint-staged": "16.2.7",
     "oxfmt": "0.35.0",
-    "oxlint": "1.50.0",
+    "oxlint": "1.51.0",
     "schema-dts": "1.1.5",
     "simple-git-hooks": "2.13.1",
     "storybook": "catalog:storybook",
@@ -168,8 +168,6 @@
   "lint-staged": {
     "i18n/locales/*": [
       "node ./lunaria/lunaria.ts",
-      "pnpm exec oxfmt lunaria/files/",
-      "git add lunaria/files/",
       "node scripts/generate-i18n-schema.ts",
       "pnpm exec oxfmt i18n/schema.json",
       "git add i18n/schema.json"

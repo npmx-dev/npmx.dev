@@ -250,7 +250,7 @@ export const TableBody = (
 				<tr>
 					<td>${Link(links.source(file.source.path), collapsePath(file.source.path))}</td>
 						${locales.map(({ lang }) => {
-              return TableContentStatus(file.localizations, lang, lunaria)
+              return TableContentStatus(file.localizations, lang, lunaria, file.type)
             })}
 					</td>
 				</tr>`,
@@ -263,10 +263,24 @@ export const TableContentStatus = (
   localizations: StatusEntry['localizations'],
   lang: string,
   lunaria: LunariaInstance,
+  fileType?: string,
 ): string => {
   const localization = localizations.find(localization => localization.lang === lang)!
   const isMissingKeys = 'missingKeys' in localization && localization.missingKeys.length > 0
-  const status = isMissingKeys ? 'outdated' : localization.status
+  // For dictionary files, status is determined solely by key completion:
+  // if there are missing keys it's "outdated", if all keys are present it's "up-to-date",
+  // regardless of git history. This prevents variants with merge coverage (e.g. en-US, en-GB)
+  // from showing as outdated when their keys are fully covered by the base locale.
+  const status =
+    fileType === 'dictionary'
+      ? isMissingKeys
+        ? 'outdated'
+        : localization.status === 'missing'
+          ? 'missing'
+          : 'up-to-date'
+      : isMissingKeys
+        ? 'outdated'
+        : localization.status
   const links = lunaria.gitHostingLinks()
   const link =
     status === 'missing' ? links.create(localization.path) : links.source(localization.path)

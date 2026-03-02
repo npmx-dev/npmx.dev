@@ -356,8 +356,6 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
   },
 ]
 
-const lunariaJSONFiles: Record<string, string> = {}
-
 function buildLocales() {
   const useLocales = Object.values(locales).reduce((acc, data) => {
     const locales = countryLocaleVariants[data.code]
@@ -369,12 +367,10 @@ function buildLocales() {
           name: l.name,
           files: [data.file as string, `${l.code}.json`],
         }
-        lunariaJSONFiles[l.code] = l.country ? (data.file as string) : `${l.code}.json`
         delete entry.file
         acc.push(entry)
       })
     } else {
-      lunariaJSONFiles[data.code] = data.file as string
       acc.push(data as LocaleObjectData)
     }
     return acc
@@ -384,8 +380,6 @@ function buildLocales() {
 }
 
 export const currentLocales = buildLocales()
-
-export { lunariaJSONFiles }
 
 export const datetimeFormats = Object.values(currentLocales).reduce((acc, data) => {
   const dateTimeFormats = data.dateTimeFormats
