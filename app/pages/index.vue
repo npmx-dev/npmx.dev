@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
+import type { RecentItem } from '~/composables/useRecentlyViewed'
+import type { RouteLocationRaw } from 'vue-router'
 
 const { model: searchQuery, flushUpdateUrlQuery } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
@@ -24,6 +25,19 @@ defineOgImageComponent('Default', {
   title: 'npmx',
   description: 'a fast, modern browser for the **npm registry**',
 })
+
+const { items: recentItems } = useRecentlyViewed()
+
+function recentItemRoute(item: RecentItem): RouteLocationRaw {
+  switch (item.type) {
+    case 'package':
+      return packageRoute(item.name)
+    case 'org':
+      return { name: 'org', params: { org: item.name } }
+    case 'user':
+      return { name: '~username', params: { username: item.name } }
+  }
+}
 </script>
 
 <template>
@@ -104,22 +118,31 @@ defineOgImageComponent('Default', {
         <BuildEnvironment class="mt-4" />
       </header>
 
-      <nav
-        :aria-label="$t('nav.popular_packages')"
-        class="pt-4 pb-36 sm:pb-40 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both max-w-xl mx-auto"
-        style="animation-delay: 0.3s"
-      >
-        <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">
-          <li v-for="framework in SHOWCASED_FRAMEWORKS" :key="framework.name">
-            <LinkBase :to="packageRoute(framework.package)" class="gap-2 text-sm">
-              <span
-                class="home-tag-dot w-1 h-1 rounded-full bg-accent group-hover:bg-fg transition-colors duration-200"
-              />
-              {{ framework.name }}
-            </LinkBase>
-          </li>
-        </ul>
-      </nav>
+      <div class="pt-4 pb-36 sm:pb-40 max-w-xl mx-auto">
+        <ClientOnly>
+          <nav
+            v-if="recentItems.length > 0"
+            aria-labelledby="recently-viewed-label"
+            class="text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
+            style="animation-delay: 0.3s"
+          >
+            <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-3">
+              <span id="recently-viewed-label" class="text-xs text-fg-subtle tracking-wider">
+                {{ $t('nav.recently_viewed') }}:
+              </span>
+              <ul
+                class="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 list-none m-0 p-0"
+              >
+                <li v-for="item in recentItems" :key="`${item.type}-${item.name}`">
+                  <LinkBase :to="recentItemRoute(item)" class="text-sm">
+                    {{ item.label }}
+                  </LinkBase>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </ClientOnly>
+      </div>
     </section>
 
     <section class="border-t border-border py-24 bg-bg-subtle/10">
@@ -129,13 +152,3 @@ defineOgImageComponent('Default', {
     </section>
   </main>
 </template>
-
-<style scoped>
-/* Windows High Contrast Mode support */
-@media (forced-colors: active) {
-  .home-tag-dot {
-    forced-color-adjust: none;
-    background-color: CanvasText;
-  }
-}
-</style>

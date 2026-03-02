@@ -721,6 +721,19 @@ onKeyStroke(
 )
 
 const showSkeleton = shallowRef(false)
+
+if (import.meta.client) {
+  const { trackRecentView } = useRecentlyViewed()
+  watch(
+    () => [status.value, packageName.value] as const,
+    ([s, name]) => {
+      if (s === 'success') {
+        trackRecentView({ type: 'package', name, label: name })
+      }
+    },
+    { immediate: true },
+  )
+}
 </script>
 
 <template>

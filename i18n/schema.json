@@ -208,7 +208,7 @@
         "main_navigation": {
           "type": "string"
         },
-        "popular_packages": {
+        "recently_viewed": {
           "type": "string"
         },
         "settings": {
