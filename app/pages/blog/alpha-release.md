@@ -211,7 +211,7 @@ headline="Read more from the community"
   },
   {
     url: 'https://youtu.be/NoC5U6F6p4Y',
-    title: 'An open source and modern npmjs.com?! (Video)',
+    title: 'The npmjs.com that developers deserve - What is npmx? (video)',
     authorHandle: 'thealexlichter.com',
     description: 'An introductory video that shows Alex's favorite features of npmx and the open-source idea behind it.'
   }
