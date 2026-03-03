@@ -14,16 +14,16 @@ const closeModal = () => modalRef.value?.close?.()
   <footer class="border-t border-border mt-auto">
     <div class="container sm:py-8 flex flex-col sm:gap-4 text-fg-subtle text-sm">
       <div class="flex justify-between">
-        <p class="text-xs text-fg-muted text-center sm:text-start m-0">
-          <span class="sm:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
-          <span class="hidden sm:inline">{{ $t('trademark_disclaimer') }}</span>
+        <p class="font-mono text-balance hidden sm:block">
+          {{ $t('tagline') }}
         </p>
         <p class="hidden lg:flex text-fg-muted uppercase h-5 items-center">{{ $t('nav.links') }}</p>
       </div>
       <div class="flex justify-between flex-col lg:flex-row gap-3">
         <div class="flex flex-col gap-3">
-          <p class="font-mono text-balance hidden sm:block">
-            {{ $t('tagline') }}
+          <p class="text-xs text-fg-muted text-center sm:text-start m-0">
+            <span class="sm:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
+            <span class="hidden sm:inline">{{ $t('trademark_disclaimer') }}</span>
           </p>
           <BuildEnvironment v-if="!isHome" footer />
         </div>
