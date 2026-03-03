@@ -107,34 +107,7 @@ defineOgImageComponent('Default', {
               </div>
             </div>
 
-            <p
-              v-if="settings.instantSearch"
-              id="instant-search-advisory"
-              class="text-fg-muted text-sm text-pretty"
-            >
-              <span
-                class="i-lucide:zap align-middle text-fg relative top-[-0.1em] me-1"
-                style="font-size: 0.8em"
-                aria-hidden="true"
-              ></span>
-              <i18n-t keypath="search.instant_search_advisory">
-                <template #label>
-                  <strong>{{ $t('search.instant_search') }}</strong>
-                </template>
-                <template #settings>
-                  <LinkBase to="/settings">{{ $t('settings.title') }}</LinkBase>
-                </template>
-                <template #shortcut>
-                  <kbd class="text-xs"
-                    ><kbd class="text-fg bg-bg-muted border border-border px-1 py-[2px] rounded-sm"
-                      >Ctrl</kbd
-                    >+<kbd class="text-fg bg-bg-muted border border-border px-1 py-[2px] rounded-sm"
-                      >/</kbd
-                    ></kbd
-                  >
-                </template>
-              </i18n-t>
-            </p>
+            <InstantSearch />
           </form>
         </search>
 
