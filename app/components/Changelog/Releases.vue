@@ -27,7 +27,7 @@ const matchingDateReleases = computed(() => {
 })
 
 watch(
-  [() => route.hash, () => requestedDate, releases, () => requestedVersion],
+  [() => route.hash, () => requestedDate?.toLowerCase(), releases, () => requestedVersion],
   ([hash, date, r, rv]) => {
     if (hash && r) {
       // ensures the user is scrolled to the hash
@@ -39,7 +39,7 @@ watch(
     }
     if (rv) {
       for (const match of matchingDateReleases.value ?? []) {
-        if (match.title.includes(rv)) {
+        if (match.title.toLowerCase().includes(rv)) {
           navigateTo(`#release-${encodeURI(match.title)}`)
           return
         }

@@ -133,6 +133,7 @@ const versionDate = computed(() => {
         v-else-if="changelog?.type == 'md'"
         :info="changelog"
         :tpTarget="tptoc"
+        :requested-version="version || latestVersion"
       />
       <p class="mt-5" v-else>{{ $t('changelog.no_logs') }}</p>
     </section>
