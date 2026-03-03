@@ -102,6 +102,12 @@ headline="Read more from the community"
     description: 'The story of the many people and communities that converged to build npmx together.'
   },
   {
+    url: 'https://www.freecodecamp.org/news/learning-to-enjoy-code-reviews-with-npmx/',
+    title: 'OSS Pull Request Therapy: Learning to Enjoy Code Reviews with npmx',
+    authorHandle: 'abbeyperini.dev',
+    description: 'For years, I thought Open Source Software (OSS) just wasn\'t for me. Curious about the hype I saw on Bluesky, I recently joined the npmx Discord server on a whim. My journey from lurker to contributor taught me a lot about OSS and gave me new confidence going into code reviews.'
+  },
+  {
     url: 'https://graphieros.github.io/graphieros-blog/blog/2026/npmx.html',
     title: 'vue-data-ui is on npmx npmx is on vue-data-ui',
     authorHandle: 'graphieros.npmx.social',
