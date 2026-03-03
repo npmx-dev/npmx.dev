@@ -698,7 +698,7 @@ onBeforeUnmount(() => {
         :view-mode="viewMode"
       />
 
-      <section v-if="committedQuery" class="results-layout">
+      <section v-else-if="committedQuery" class="results-layout">
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
         <div
