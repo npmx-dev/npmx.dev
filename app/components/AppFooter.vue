@@ -13,7 +13,7 @@ const closeModal = () => modalRef.value?.close?.()
 <template>
   <footer class="border-t border-border mt-auto">
     <div
-      class="container sm:py-8 flex flex-col lg:flex-row justify-between gap-2 sm:gap-4 text-fg-subtle text-sm"
+      class="container sm:py-8 flex flex-col lg:flex-row justify-between sm:gap-4 text-fg-subtle text-sm"
     >
       <div class="flex flex-col gap-3 motion-safe:animate-fade-in motion-safe:animate-fill-both">
         <p class="font-mono text-balance hidden sm:block">
