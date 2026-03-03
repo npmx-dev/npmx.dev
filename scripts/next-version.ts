@@ -65,15 +65,15 @@ export async function getNextVersion(): Promise<VersionInfo> {
 
   for (const line of commits) {
     if (/BREAKING CHANGE|!:/.test(line)) hasBreaking = true
-    if (/^feat[:(]/.test(line)) hasFeat = true
-    if (/^fix[:(]/.test(line)) hasFix = true
+    if (/^feat(?:\([^)]*\))?!?:/.test(line)) hasFeat = true
+    if (/^fix(?:\([^)]*\))?!?:/.test(line)) hasFix = true
   }
 
   const [major = 0, minor = 0, patch = 0] = current.split('.').map(Number)
 
   let next: string
-  if (hasBreaking && major > 0) {
-    next = `${major + 1}.0.0`
+  if (hasBreaking) {
+    next = major > 0 ? `${major + 1}.0.0` : `${major}.${minor + 1}.0`
   } else if (hasFeat) {
     next = `${major}.${minor + 1}.0`
   } else if (hasFix || commits.length > 0) {
