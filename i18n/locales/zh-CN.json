@@ -1163,11 +1163,6 @@
     "close_files_panel": "关闭文件面板",
     "filter_files_label": "按更改类型筛选文件"
   },
-  "pds": {
-    "join": {},
-    "server": {},
-    "community": {}
-  },
   "privacy_policy": {
     "title": "隐私政策",
     "last_updated": "上次更新：{date}",
