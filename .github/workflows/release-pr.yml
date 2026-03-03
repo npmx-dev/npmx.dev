@@ -1,0 +1,152 @@
+name: release-pr
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  release-pr:
+    name: 🚀 Create or update release PR
+    runs-on: ubuntu-slim
+    if: github.repository == 'npmx-dev/npmx.dev'
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Check for unreleased commits
+        id: check
+        run: |
+          git fetch origin release
+          COMMITS=$(git log origin/release..origin/main --oneline)
+          if [ -z "$COMMITS" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "No new commits to release"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "Found unreleased commits:"
+            echo "$COMMITS"
+          fi
+
+      - name: 📝 Generate changelog body
+        if: steps.check.outputs.skip == 'false'
+        id: changelog
+        run: |
+          # Get the latest tag, or use initial commit if no tags exist
+          LATEST_TAG=$(git describe --tags --abbrev=0 origin/release 2>/dev/null || echo "")
+
+          if [ -z "$LATEST_TAG" ]; then
+            FROM_REF=$(git rev-list --max-parents=0 HEAD)
+            CURRENT_VERSION="0.0.0"
+          else
+            FROM_REF="$LATEST_TAG"
+            CURRENT_VERSION="${LATEST_TAG#v}"
+          fi
+
+          # Categorize commits
+          FEATURES=""
+          FIXES=""
+          CHORES=""
+          OTHER=""
+
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            SHA=$(echo "$line" | cut -d' ' -f1)
+            MSG=$(echo "$line" | cut -d' ' -f2-)
+            ENTRY="- $MSG (\`$SHA\`)"
+
+            if echo "$MSG" | grep -qE '^feat(\(|:)'; then
+              FEATURES="${FEATURES}${ENTRY}\n"
+            elif echo "$MSG" | grep -qE '^fix(\(|:)'; then
+              FIXES="${FIXES}${ENTRY}\n"
+            elif echo "$MSG" | grep -qE '^(chore|ci|build|perf|refactor|style|test|docs)(\(|:)'; then
+              CHORES="${CHORES}${ENTRY}\n"
+            else
+              OTHER="${OTHER}${ENTRY}\n"
+            fi
+          done <<< "$(git log "$FROM_REF"..origin/main --oneline --no-merges)"
+
+          # Determine next version
+          HAS_BREAKING=$(git log "$FROM_REF"..origin/main --format='%B' | grep -c 'BREAKING CHANGE\|!:' || true)
+          HAS_FEAT=$(git log "$FROM_REF"..origin/main --oneline --no-merges | grep -cE '^[a-f0-9]+ feat(\(|:)' || true)
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+          if [ "$HAS_BREAKING" -gt 0 ] && [ "$MAJOR" -gt 0 ]; then
+            NEXT_VERSION="$((MAJOR + 1)).0.0"
+          elif [ "$HAS_FEAT" -gt 0 ]; then
+            NEXT_VERSION="${MAJOR}.$((MINOR + 1)).0"
+          else
+            NEXT_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
+          fi
+
+          echo "next_version=v${NEXT_VERSION}" >> "$GITHUB_OUTPUT"
+
+          # Build the PR body
+          BODY="This PR will deploy the following changes to production (\`npmx.dev\`).\n\n"
+          BODY="${BODY}**Next version: \`v${NEXT_VERSION}\`** (current: \`v${CURRENT_VERSION}\`)\n\n"
+
+          if [ -n "$FEATURES" ]; then
+            BODY="${BODY}### Features\n\n${FEATURES}\n"
+          fi
+          if [ -n "$FIXES" ]; then
+            BODY="${BODY}### Fixes\n\n${FIXES}\n"
+          fi
+          if [ -n "$CHORES" ]; then
+            BODY="${BODY}### Other Changes\n\n${CHORES}\n"
+          fi
+          if [ -n "$OTHER" ]; then
+            BODY="${BODY}### Uncategorized\n\n${OTHER}\n"
+          fi
+
+          BODY="${BODY}---\n\n"
+          BODY="${BODY}> Merging this PR will:\n"
+          BODY="${BODY}> - Deploy to \`npmx.dev\` via Vercel\n"
+          BODY="${BODY}> - Create a \`v${NEXT_VERSION}\` tag and GitHub Release\n"
+          BODY="${BODY}> - Publish \`npmx-connector@${NEXT_VERSION}\` to npm"
+
+          # Write body to file, truncating if needed (GitHub limits PR body to 65536 chars)
+          echo -e "$BODY" > /tmp/pr-body.md
+          if [ "$(wc -c < /tmp/pr-body.md)" -gt 60000 ]; then
+            COMMIT_COUNT=$(git log "$FROM_REF"..origin/main --oneline --no-merges | wc -l)
+            COMPARE_URL="https://github.com/npmx-dev/npmx.dev/compare/${FROM_REF}...main"
+            TRUNCATED="This PR will deploy the following changes to production (\`npmx.dev\`).\n\n"
+            TRUNCATED="${TRUNCATED}**Next version: \`v${NEXT_VERSION}\`** (current: \`v${CURRENT_VERSION}\`)\n\n"
+            TRUNCATED="${TRUNCATED}> **${COMMIT_COUNT} commits** are included in this release. The full changelog is too large to display here.\n>\n"
+            TRUNCATED="${TRUNCATED}> [View full diff on GitHub](${COMPARE_URL})\n\n"
+            TRUNCATED="${TRUNCATED}---\n\n"
+            TRUNCATED="${TRUNCATED}> Merging this PR will:\n"
+            TRUNCATED="${TRUNCATED}> - Deploy to \`npmx.dev\` via Vercel\n"
+            TRUNCATED="${TRUNCATED}> - Create a \`v${NEXT_VERSION}\` tag and GitHub Release\n"
+            TRUNCATED="${TRUNCATED}> - Publish \`npmx-connector@${NEXT_VERSION}\` to npm"
+            echo -e "$TRUNCATED" > /tmp/pr-body.md
+          fi
+
+      - name: 🚀 Create or update release PR
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEXT_VERSION: ${{ steps.changelog.outputs.next_version }}
+        run: |
+          EXISTING_PR=$(gh pr list --base release --head main --state open --json number --jq '.[0].number')
+
+          if [ -n "$EXISTING_PR" ]; then
+            gh pr edit "$EXISTING_PR" \
+              --title "chore: release ${NEXT_VERSION}" \
+              --body-file /tmp/pr-body.md
+            echo "Updated existing PR #${EXISTING_PR}"
+          else
+            gh pr create \
+              --base release \
+              --head main \
+              --title "chore: release ${NEXT_VERSION}" \
+              --body-file /tmp/pr-body.md \
+              --label "release"
+            echo "Created new release PR"
+          fi

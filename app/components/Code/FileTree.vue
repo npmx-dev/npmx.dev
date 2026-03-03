@@ -65,7 +65,6 @@ watch(
             class="size-[1em] me-1 shrink-0"
             :class="isExpanded(node.path) ? 'text-yellow-500' : 'text-yellow-600'"
             viewBox="0 0 16 16"
-            fill="currentColor"
             aria-hidden="true"
           >
             <use

@@ -85,7 +85,6 @@ const bytesFormatter = useBytesFormatter()
               <svg
                 class="size-[1em] me-1 shrink-0 text-yellow-600"
                 viewBox="0 0 16 16"
-                fill="currentColor"
                 aria-hidden="true"
               >
                 <use :href="`/file-tree-sprite.svg#${ADDITIONAL_ICONS['folder']}`" />
@@ -110,7 +109,6 @@ const bytesFormatter = useBytesFormatter()
               <svg
                 class="size-[1em] me-1 shrink-0"
                 viewBox="0 0 16 16"
-                fill="currentColor"
                 :class="node.type === 'directory' ? 'text-yellow-600' : undefined"
                 aria-hidden="true"
               >

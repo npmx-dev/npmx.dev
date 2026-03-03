@@ -1895,7 +1895,10 @@ watch(selectedMetric, value => {
               :class="{ 'opacity-50 pointer-events-none': !hasAnomalies }"
             >
               <input
-                v-model="settings.chartFilter.anomaliesFixed"
+                :checked="settings.chartFilter.anomaliesFixed && hasAnomalies"
+                @change="
+                  settings.chartFilter.anomaliesFixed = ($event.target as HTMLInputElement).checked
+                "
                 type="checkbox"
                 :disabled="!hasAnomalies"
                 class="accent-[var(--accent-color,var(--fg-subtle))]"

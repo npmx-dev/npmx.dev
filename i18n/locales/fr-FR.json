@@ -17,6 +17,7 @@
     "source": "source",
     "social": "réseaux sociaux",
     "chat": "espace de discussion",
+    "blog": "blog",
     "keyboard_shortcuts": "raccourcis clavier"
   },
   "shortcuts": {
@@ -78,7 +79,29 @@
     "tap_to_search": "Toucher pour rechercher"
   },
   "blog": {
-    "title": "Blog"
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Actualités et mises à jour de la communauté npmx",
+    "author": {
+      "view_profile": "Voir le profil de {name} sur Bluesky"
+    },
+    "draft_badge": "Brouillon",
+    "draft_banner": "Ceci est un brouillon non publié. Il peut être incomplet ou contenir des inexactitudes.",
+    "atproto": {
+      "view_on_bluesky": "Voir sur Bluesky",
+      "reply_on_bluesky": "Répondre sur Bluesky",
+      "likes_on_bluesky": "J'aime sur Bluesky",
+      "like_or_reply_on_bluesky": "Aimez cet article ou ajoutez votre commentaire sur Bluesky",
+      "no_comments_yet": "Aucun commentaire pour le moment.",
+      "could_not_load_comments": "Impossible de charger les commentaires.",
+      "comments": "Commentaires",
+      "loading_comments": "Chargement des commentaires...",
+      "updating": "Mise à jour...",
+      "reply_count": "{count} réponse | {count} réponses",
+      "like_count": "{count} j'aime | {count} j'aime",
+      "repost_count": "{count} repartage | {count} repartages",
+      "more_replies": "{count} réponse de plus... | {count} réponses de plus..."
+    }
   },
   "settings": {
     "title": "paramètres",
@@ -114,6 +137,8 @@
     "clear_accent": "Supprimer la couleur d'accentuation",
     "translation_progress": "Progression de la traduction",
     "background_themes": "Teinte de fond",
+    "instant_search": "Recherche instantanée",
+    "instant_search_description": "Navigue vers la page de recherche et met à jour les résultats au fur et à mesure de la saisie.",
     "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
     "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système"
   },
@@ -124,6 +149,13 @@
     "contribute_hint": "Aidez à améliorer cette traduction en ajoutant les entrées manquantes.",
     "edit_on_github": "Modifier sur GitHub",
     "view_guide": "Guide de traduction"
+  },
+  "error": {
+    "401": "Non autorisé",
+    "404": "Page introuvable",
+    "500": "Erreur interne du serveur",
+    "503": "Service indisponible",
+    "default": "Une erreur est survenue"
   },
   "common": {
     "loading": "Chargement...",
@@ -402,6 +434,8 @@
       "download_file": "Télécharger {fileType}",
       "toggle_annotator": "Afficher/Masquer l'annotateur",
       "toggle_stack_mode": "Basculer le mode empilé",
+      "open_options": "Ouvrir les options",
+      "close_options": "Fermer les options",
       "legend_estimation": "Estimation",
       "no_data": "Données non disponibles",
       "y_axis_label": "{facet} {granularity}",
@@ -1105,6 +1139,7 @@
     "file_too_large": "Fichier trop volumineux pour être comparé",
     "file_size_warning": "{size} dépasse la limite de 250 Ko pour la comparaison",
     "compare_versions": "diff",
+    "compare_versions_title": "Comparer avec la dernière version",
     "summary": "Résumé",
     "deps_count": "{count} dépendances",
     "dependencies": "Dépendances",
@@ -1131,6 +1166,34 @@
     "select_file_prompt": "Sélectionnez un fichier dans la barre latérale pour voir son diff",
     "close_files_panel": "Fermer le panneau de fichiers",
     "filter_files_label": "Filtrer les fichiers par type de modification"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Le serveur de données personnelles (PDS) officiel du protocole AT pour la communauté npmx.",
+    "join": {
+      "title": "Rejoindre la communauté",
+      "description": "Que vous créiez votre premier compte sur l'Atmosphère ou que vous migriez un compte existant, vous êtes ici chez vous. Vous pouvez migrer votre compte actuel sans perdre votre identifiant, vos publications ni vos abonnés.",
+      "migrate": "Migrer avec PDS MOOver"
+    },
+    "server": {
+      "title": "Détails du serveur",
+      "location_label": "Emplacement :",
+      "location_value": "Nuremberg, Allemagne",
+      "infrastructure_label": "Infrastructure :",
+      "infrastructure_value": "Hébergé chez Hetzner",
+      "privacy_label": "Confidentialité :",
+      "privacy_value": "Soumis aux lois strictes de protection des données de l'UE",
+      "learn_more": "Découvrir comment npmx utilise l'Atmosphère"
+    },
+    "community": {
+      "title": "Qui est ici",
+      "description": "Quelques-uns des {count} comptes qui ont déjà fait de npmx.social leur chez-soi :",
+      "loading": "Chargement de la communauté PDS...",
+      "error": "Échec du chargement de la communauté PDS.",
+      "empty": "Aucun membre de la communauté à afficher.",
+      "view_profile": "Voir le profil de {handle}",
+      "new_accounts": "...plus {count} autres qui sont nouveaux sur l'Atmosphère"
+    }
   },
   "privacy_policy": {
     "title": "politique de confidentialité",

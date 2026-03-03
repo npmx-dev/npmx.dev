@@ -110,7 +110,7 @@
     "sections": {
       "appearance": "Appearance",
       "display": "Display",
-      "search": "Data source",
+      "search": "Search features",
       "language": "Language",
       "keyboard_shortcuts": "Keyboard shortcuts"
     },
@@ -122,6 +122,8 @@
       "algolia": "Algolia",
       "algolia_description": "Uses Algolia for faster search, org and user pages."
     },
+    "instant_search": "Instant search",
+    "instant_search_description": "Navigates to the search page and updates the results as you type.",
     "relative_dates": "Relative dates",
     "include_types": "Include {'@'}types in install",
     "include_types_description": "Add {'@'}types package to install commands for untyped packages",

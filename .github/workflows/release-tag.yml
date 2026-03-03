@@ -1,0 +1,158 @@
+name: release-tag
+
+on:
+  push:
+    branches:
+      - release
+
+permissions: {}
+
+jobs:
+  tag:
+    name: 🏷️ Tag release and create GitHub Release
+    runs-on: ubuntu-slim
+    if: github.repository == 'npmx-dev/npmx.dev'
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.next }}
+      skipped: ${{ steps.check.outputs.skip }}
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: 🔢 Determine next version
+        id: version
+        run: |
+          # Get the latest tag on this branch
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          if [ -z "$LATEST_TAG" ]; then
+            CURRENT_VERSION="0.0.0"
+            FROM_REF=$(git rev-list --max-parents=0 HEAD)
+          else
+            CURRENT_VERSION="${LATEST_TAG#v}"
+            FROM_REF="$LATEST_TAG"
+          fi
+
+          # Analyze conventional commits since last tag
+          HAS_BREAKING=$(git log "${FROM_REF}..HEAD" --format='%B' | grep -c 'BREAKING CHANGE\|!:' || true)
+          HAS_FEAT=$(git log "${FROM_REF}..HEAD" --oneline --no-merges | grep -cE '^[a-f0-9]+ feat(\(|:)' || true)
+          HAS_FIX=$(git log "${FROM_REF}..HEAD" --oneline --no-merges | grep -cE '^[a-f0-9]+ fix(\(|:)' || true)
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+
+          if [ "$HAS_BREAKING" -gt 0 ] && [ "$MAJOR" -gt 0 ]; then
+            NEXT_VERSION="$((MAJOR + 1)).0.0"
+          elif [ "$HAS_FEAT" -gt 0 ]; then
+            NEXT_VERSION="${MAJOR}.$((MINOR + 1)).0"
+          elif [ "$HAS_FIX" -gt 0 ]; then
+            NEXT_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
+          else
+            # Only chore/docs/ci commits — still bump patch
+            NEXT_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
+          fi
+
+          echo "current=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "next=v${NEXT_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "from=$FROM_REF" >> "$GITHUB_OUTPUT"
+          echo "Bumping from v${CURRENT_VERSION} to v${NEXT_VERSION}"
+
+      - name: 🔍 Check if tag already exists
+        id: check
+        env:
+          VERSION: ${{ steps.version.outputs.next }}
+        run: |
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Tag $VERSION already exists, skipping"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 🏷️ Create and push tag
+        if: steps.check.outputs.skip == 'false'
+        env:
+          VERSION: ${{ steps.version.outputs.next }}
+        run: |
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push origin "$VERSION"
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        if: steps.check.outputs.skip == 'false'
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        if: steps.check.outputs.skip == 'false'
+        name: 🟧 Install pnpm
+
+      - name: 📦 Install dependencies
+        if: steps.check.outputs.skip == 'false'
+        run: pnpm install --filter . --ignore-scripts
+
+      - name: 📝 Generate release notes
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FROM_REF: ${{ steps.version.outputs.from }}
+        run: node scripts/release-notes.ts "$FROM_REF" > /tmp/release-notes.md
+
+      - name: 🚀 Create GitHub Release
+        if: steps.check.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.next }}
+        run: |
+          gh release create "$VERSION" \
+            --notes-file /tmp/release-notes.md \
+            --title "$VERSION"
+
+  publish-connector:
+    name: 📦 Publish npmx-connector to npm
+    runs-on: ubuntu-slim
+    needs: tag
+    if: needs.tag.outputs.skipped == 'false'
+    permissions:
+      contents: read
+      id-token: write
+    environment: npm-publish
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: release
+
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+          registry-url: https://registry.npmjs.org
+
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
+        name: 🟧 Install pnpm
+        with:
+          cache: false
+
+      - name: 📦 Install dependencies
+        run: pnpm install --filter npmx-connector...
+
+      - name: 🔢 Set connector version
+        env:
+          VERSION: ${{ needs.tag.outputs.version }}
+        run: |
+          # Strip the 'v' prefix for package.json
+          PKG_VERSION="${VERSION#v}"
+          cd cli
+          npm version "$PKG_VERSION" --no-git-tag-version
+          echo "Publishing npmx-connector@${PKG_VERSION}"
+
+      - name: 🏗️ Build connector
+        run: pnpm --filter npmx-connector build
+
+      - name: 📤 Publish to npm with provenance
+        # Uses OIDC trusted publishing — no NPM_TOKEN needed.
+        # Configure on npmjs.com: repo npmx-dev/npmx.dev, workflow release-tag.yml, environment npm-publish
+        run: npm publish --provenance --access public
+        working-directory: cli

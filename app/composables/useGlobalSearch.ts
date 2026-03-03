@@ -5,19 +5,33 @@ import { debounce } from 'perfect-debounce'
 const pagesWithLocalFilter = new Set(['~username', 'org'])
 
 export function useGlobalSearch(place: 'header' | 'content' = 'content') {
+  const { settings } = useSettings()
   const { searchProvider } = useSearchProvider()
   const searchProviderValue = computed(() => {
     const p = normalizeSearchParam(route.query.p)
     if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
     return 'algolia'
   })
+
   const router = useRouter()
   const route = useRoute()
+  // Internally used searchQuery state
   const searchQuery = useState<string>('search-query', () => {
     if (pagesWithLocalFilter.has(route.name as string)) {
       return ''
     }
     return normalizeSearchParam(route.query.q)
+  })
+
+  // Committed search query: last value submitted by user
+  // Syncs instantly when instantSearch is on, but only on Enter press when off
+  const committedSearchQuery = useState<string>('committed-search-query', () => searchQuery.value)
+
+  // This is basically doing instant search as user types
+  watch(searchQuery, val => {
+    if (settings.value.instantSearch) {
+      committedSearchQuery.value = val
+    }
   })
 
   // clean search input when navigating away from search page
@@ -29,6 +43,8 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
       if (!searchQuery.value) searchQuery.value = value
     },
   )
+
+  // Updates URL when search query changes (immediately for instantSearch or after Enter hit otherwise)
   const updateUrlQueryImpl = (value: string, provider: 'npm' | 'algolia') => {
     const isSameQuery = route.query.q === value && route.query.p === provider
     // Don't navigate away from pages that use ?q for local filtering
@@ -54,16 +70,28 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
       },
     })
   }
+
   const updateUrlQuery = debounce(updateUrlQueryImpl, 250)
 
   function flushUpdateUrlQuery() {
-    updateUrlQuery.flush()
+    // Commit the current query when explicitly submitted (Enter pressed)
+    committedSearchQuery.value = searchQuery.value
+    // When instant search is off the debounce queue is empty, so call directly
+    if (!settings.value.instantSearch) {
+      updateUrlQueryImpl(searchQuery.value, searchProvider.value)
+    } else {
+      updateUrlQuery.flush()
+    }
   }
 
   const searchQueryValue = computed({
     get: () => searchQuery.value,
     set: async (value: string) => {
       searchQuery.value = value
+
+      // When instant search is off, skip debounced URL updates
+      // Only explicitly called flushUpdateUrlQuery commits and navigates
+      if (!settings.value.instantSearch) return
 
       // Leading debounce implementation as it doesn't work properly out of the box (https://github.com/unjs/perfect-debounce/issues/43)
       if (!updateUrlQuery.isPending()) {
@@ -72,5 +100,11 @@ export function useGlobalSearch(place: 'header' | 'content' = 'content') {
       updateUrlQuery(value, searchProvider.value)
     },
   })
-  return { model: searchQueryValue, provider: searchProviderValue, flushUpdateUrlQuery }
+
+  return {
+    model: searchQueryValue,
+    committedModel: committedSearchQuery,
+    provider: searchProviderValue,
+    startSearch: flushUpdateUrlQuery,
+  }
 }

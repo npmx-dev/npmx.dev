@@ -4,6 +4,8 @@ import LogoVoidZero from './void-zero.svg'
 import LogoVoidZeroLight from './void-zero-light.svg'
 import LogoVlt from './vlt.svg'
 import LogoVltLight from './vlt-light.svg'
+import LogoNetlify from './netlify.svg'
+import LogoNetlifyLight from './netlify-light.svg'
 
 // The list is used on the about page. To add, simply upload the logos nearby and add an entry here. Prefer SVGs.
 // For logo src, specify a string or object with the light and dark theme variants.
@@ -39,5 +41,14 @@ export const SPONSORS = [
     },
     normalisingIndent: '0.875rem',
     url: 'https://vlt.sh/',
+  },
+  {
+    name: 'Netlify',
+    logo: {
+      dark: LogoNetlify,
+      light: LogoNetlifyLight,
+    },
+    normalisingIndent: '0.125rem',
+    url: 'https://netlify.com/',
   },
 ]
