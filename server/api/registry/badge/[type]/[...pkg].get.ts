@@ -87,6 +87,14 @@ function measureDefaultTextWidth(text: string): number {
   return Math.max(MIN_BADGE_TEXT_WIDTH, Math.round(text.length * CHAR_WIDTH) + BADGE_PADDING_X * 2)
 }
 
+function escapeXML(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
 function measureShieldsTextLength(text: string): number {
   const measuredWidth = measureTextWidth(text, SHIELDS_FONT_SHORTHAND)
 
@@ -108,9 +116,11 @@ function renderDefaultBadgeSvg(params: {
   const rightWidth = measureDefaultTextWidth(finalValue)
   const totalWidth = leftWidth + rightWidth
   const height = 20
+  const escapedLabel = escapeXML(finalLabel)
+  const escapedValue = escapeXML(finalValue)
 
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${finalLabel}: ${finalValue}">
+    <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img" aria-label="${escapedLabel}: ${escapedValue}">
       <clipPath id="r">
         <rect width="${totalWidth}" height="${height}" rx="3" fill="#fff"/>
       </clipPath>
@@ -119,8 +129,8 @@ function renderDefaultBadgeSvg(params: {
         <rect x="${leftWidth}" width="${rightWidth}" height="${height}" fill="${finalColor}"/>
       </g>
       <g text-anchor="middle" font-family="Geist, system-ui, -apple-system, sans-serif" font-size="11">
-        <text x="${leftWidth / 2}" y="14" fill="#ffffff">${finalLabel}</text>
-        <text x="${leftWidth + rightWidth / 2}" y="14" fill="#ffffff">${finalValue}</text>
+        <text x="${leftWidth / 2}" y="14" fill="#ffffff">${escapedLabel}</text>
+        <text x="${leftWidth + rightWidth / 2}" y="14" fill="#ffffff">${escapedValue}</text>
       </g>
     </svg>
   `.trim()
@@ -141,7 +151,9 @@ function renderShieldsBadgeSvg(params: {
   const rightWidth = rightTextLength + SHIELDS_LABEL_PADDING_X * 2
   const totalWidth = leftWidth + rightWidth
   const height = 20
-  const title = `${finalLabel}: ${finalValue}`
+  const escapedLabel = escapeXML(finalLabel)
+  const escapedValue = escapeXML(finalValue)
+  const title = `${escapedLabel}: ${escapedValue}`
 
   const leftCenter = Math.round((leftWidth / 2) * 10)
   const rightCenter = Math.round((leftWidth + rightWidth / 2) * 10)
@@ -163,10 +175,10 @@ function renderShieldsBadgeSvg(params: {
         <rect width="${totalWidth}" height="${height}" fill="url(#s)"/>
       </g>
       <g fill="#fff" text-anchor="middle" font-family="Verdana, Geneva, DejaVu Sans, sans-serif" text-rendering="geometricPrecision" font-size="110">
-        <text aria-hidden="true" x="${leftCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${leftTextLengthAttr}">${finalLabel}</text>
-        <text x="${leftCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${leftTextLengthAttr}">${finalLabel}</text>
-        <text aria-hidden="true" x="${rightCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${rightTextLengthAttr}">${finalValue}</text>
-        <text x="${rightCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${rightTextLengthAttr}">${finalValue}</text>
+        <text aria-hidden="true" x="${leftCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${leftTextLengthAttr}">${escapedLabel}</text>
+        <text x="${leftCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${leftTextLengthAttr}">${escapedLabel}</text>
+        <text aria-hidden="true" x="${rightCenter}" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="${rightTextLengthAttr}">${escapedValue}</text>
+        <text x="${rightCenter}" y="140" transform="scale(.1)" fill="#fff" textLength="${rightTextLengthAttr}">${escapedValue}</text>
       </g>
     </svg>
   `.trim()
