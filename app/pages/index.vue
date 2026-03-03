@@ -89,7 +89,7 @@ defineOgImageComponent('Default', {
                   no-correct
                   size="large"
                   class="w-full ps-8 pe-24"
-                  aria-describedby="instant-search-advisory"
+                  :aria-describedby="settings.instantSearch ? 'instant-search-advisory' : undefined"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
                 />
