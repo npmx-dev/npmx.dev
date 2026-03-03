@@ -214,6 +214,12 @@ headline="Read more from the community"
     title: 'The npmjs.com that developers deserve - What is npmx? (video)',
     authorHandle: 'thealexlichter.com',
     description: 'An introductory video showcasing Alex\'s favorite features of npmx and the open-source idea behind it.'
+  },
+  {
+    url: 'https://piccalil.li/blog/finding-an-accessibility-first-culture-in-npmx/',
+    title: 'Finding an accessibility-first culture in npmx',
+    authorHandle: 'abbeyperini.dev',
+    description: 'Abbey Perini talks about how accessibility is a deep part of the  npmx culture.'
   }
 ]"
 />
