@@ -122,8 +122,8 @@
       "algolia": "Algolia",
       "algolia_description": "Algoliaを使用して検索、organization、ユーザーページをより高速に取得します。"
     },
-    "instant_search": "Instant search",
-    "instant_search_description": "Navigates to the search page and updates the results as you type.",
+    "instant_search": "インスタント検索",
+    "instant_search_description": "タイピング中に検索ページに移動し、検索結果を更新します。",
     "relative_dates": "日付を相対表記",
     "include_types": "インストール時に{'@'}typesを含める",
     "include_types_description": "型定義のないパッケージのインストールコマンドに{'@'}typesパッケージを追加します",
