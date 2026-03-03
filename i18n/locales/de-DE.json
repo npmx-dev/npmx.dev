@@ -1295,7 +1295,7 @@
     "join": {
       "title": "Dem PDS beitreten",
       "description": "Erstelle ein Konto auf dem npmx PDS und werde Teil des dezentralen AT-Protokoll-Netzwerks.",
-      "migrate": "Bestehende Konto migrieren"
+      "migrate": "Bestehendes Konto migrieren"
     },
     "server": {
       "title": "Serverinformationen",
