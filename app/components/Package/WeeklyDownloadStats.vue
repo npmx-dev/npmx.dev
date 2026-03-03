@@ -236,9 +236,9 @@ function pushEasterEggKey(key: CheatKey) {
   resetTimeout = setTimeout(resetEasterEgg, easterEggResetDelay)
 
   const nextIndex = easterEgg.value.length
-
+  const expectedKey = cheatCode[nextIndex]
   // Reset if the position is wrong
-  if (cheatCode[nextIndex] !== key) {
+  if (!expectedKey || expectedKey !== key) {
     resetEasterEgg()
     return
   }
