@@ -12,7 +12,7 @@ excerpt: "Today we're releasing the alpha of npmx.dev – a fast, modern browser
 date: '2026-03-03'
 slug: 'alpha-release'
 description: "Today we're releasing the alpha of npmx.dev – a fast, modern browser for the npm registry, built in the open by a growing community."
-draft: true
+draft: false
 ---
 
 # Announcing npmx: a fast, modern browser for the npm registry
