@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-  <div v-if="typeof src === 'string'">
+  <div v-if="typeof src === 'string'" class="h-full">
     <img :src="src" loading="lazy" height="36" class="w-auto block h-full" :alt="alt" />
   </div>
   <div v-else-if="src.light === 'auto'" class="h-full">

@@ -108,7 +108,7 @@ const numberFormatter = useNumberFormatter()
         )
       "
     >
-      <ul class="px-1 space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
+      <ul class="space-y-1 list-none m-0" :aria-label="$t('package.dependencies.list_label')">
         <li
           v-for="[dep, version] in sortedDependencies.slice(0, depsExpanded ? undefined : 10)"
           :key="dep"

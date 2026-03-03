@@ -157,6 +157,7 @@ const roleLabels = computed(
           </ul>
         </div>
 
+        <!-- Sponsors -->
         <div class="sponsors-logos">
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.sponsors.title') }}
@@ -167,6 +168,7 @@ const roleLabels = computed(
           />
         </div>
 
+        <!-- OSS partners -->
         <div>
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.oss_partners.title') }}

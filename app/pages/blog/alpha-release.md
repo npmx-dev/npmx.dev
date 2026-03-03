@@ -96,6 +96,12 @@ headline="Read more from the community"
     description: 'There\'s a reason why building npmx has been such a blast so far, and it\'s one of the most powerful patterns in open source software development. It\'s also why \'the 10x developer\' is an incredibly dangerous myth.'
   },
   {
+    url: 'https://patak.cat/npmx/converging-communities',
+    title: 'npmx: converging communities',
+    authorHandle: 'patak.cat',
+    description: 'The story of the many people and communities that converged to build npmx together.'
+  },
+  {
     url: 'https://graphieros.github.io/graphieros-blog/blog/2026/npmx.html',
     title: 'vue-data-ui is on npmx npmx is on vue-data-ui',
     authorHandle: 'graphieros.com',
@@ -172,6 +178,12 @@ headline="Read more from the community"
     title: 'OSS made me a better developer',
     authorHandle: 'philippeserhal.com',
     description: 'How getting involved in npmx made me a better developer.'
+  },
+  {
+    url: 'https://www.radosvet.dev/posts/career/from-newsletter-to-open-source',
+    title: 'From a Newsletter Link to My First Open Source Contribution',
+    authorHandle: 'radosvet.dev',
+    description: 'How discovering npmx through a newsletter led to a first meaningful open source contribution and a new perspective on community-driven development.'
   }
 ]"
 />

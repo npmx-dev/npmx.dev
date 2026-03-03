@@ -240,7 +240,7 @@ const config = computed<VueUiSparklineConfig>(() => {
         opacity: 10,
       },
       dataLabel: {
-        offsetX: -10,
+        offsetX: -12,
         fontSize: 28,
         bold: false,
         color: colors.value.fg,
@@ -273,6 +273,12 @@ const config = computed<VueUiSparklineConfig>(() => {
       verticalIndicator: {
         strokeDasharray: 0,
         color: isDarkMode.value ? 'oklch(0.985 0 0)' : colors.value.fgSubtle,
+      },
+      padding: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
       },
     },
   }
