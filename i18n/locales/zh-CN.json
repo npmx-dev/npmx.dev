@@ -88,7 +88,7 @@
     "atproto": {
       "view_on_bluesky": "在 Bluesky 上查看",
       "reply_on_bluesky": "在 Bluesky 上回复",
-      "likes_on_bluesky": "在 Bluesky 上点赞",
+      "likes_on_bluesky": "Bluesky 上的点赞",
       "like_or_reply_on_bluesky": "在 Bluesky 上点赞此帖子或发表评论",
       "no_comments_yet": "暂无评论。",
       "could_not_load_comments": "无法加载评论。",
