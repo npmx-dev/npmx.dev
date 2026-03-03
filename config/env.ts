@@ -44,13 +44,15 @@ export const gitBranch = process.env.BRANCH || process.env.VERCEL_GIT_COMMIT_REF
  * Whether this is the canary environment (main.npmx.dev).
  *
  * Detected as any non-PR Vercel deploy from the `main` branch
- * (which may receive `VERCEL_ENV === 'production'` or `'preview'`
- * depending on the project's production branch configuration).
+ * (which may receive `VERCEL_ENV === 'production'`, `'preview'`, or a
+ * custom `'canary'` environment depending on the project configuration).
  *
  * @see {@link https://vercel.com/docs/environment-variables/system-environment-variables#VERCEL_ENV}
  */
 export const isCanary =
-  (process.env.VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'preview') &&
+  (process.env.VERCEL_ENV === 'production' ||
+    process.env.VERCEL_ENV === 'preview' ||
+    process.env.VERCEL_ENV === 'canary') &&
   gitBranch === 'main' &&
   !isPR
 

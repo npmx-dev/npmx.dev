@@ -55,7 +55,7 @@ export default defineNuxtConfig({
     },
   },
 
-  devtools: { enabled: !true },
+  devtools: { enabled: true },
 
   devServer: {
     // Used with atproto oauth
@@ -136,6 +136,14 @@ export default defineNuxtConfig({
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
+    '/api/atproto/bluesky-comments': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: ['uri'],
+      },
+      cache: { maxAge: 3600 },
+    },
     '/api/atproto/bluesky-author-profiles': {
       isr: {
         expiration: 60 * 60 /* one hour */,
