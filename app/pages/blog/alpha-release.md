@@ -172,6 +172,12 @@ headline="Read more from the community"
     title: 'OSS made me a better developer',
     authorHandle: 'philippeserhal.com',
     description: 'How getting involved in npmx made me a better developer.'
+  },
+  {
+    url: 'https://www.radosvet.dev/posts/career/from-newsletter-to-open-source',
+    title: 'From a Newsletter Link to My First Open Source Contribution',
+    authorHandle: 'radosvet.dev',
+    description: 'How discovering npmx through a newsletter led to a first meaningful open source contribution and a new perspective on community-driven development.'
   }
 ]"
 />
