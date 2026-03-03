@@ -133,6 +133,7 @@ export default defineNuxtConfig({
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
     '/.well-known/jwks.json': { prerender: true },
+    '/.well-known/site.standard.publication': { prerender: true },
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
