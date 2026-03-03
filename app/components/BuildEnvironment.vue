@@ -13,12 +13,8 @@ const buildTime = computed(() => new Date(buildInfo.value.time))
 
 <template>
   <div
-    class="font-mono text-xs text-fg-muted flex items-center gap-2"
-    :class="
-      footer
-        ? 'hidden sm:flex sm:justify-start'
-        : 'mb-8 justify-center motion-safe:animate-fade-in motion-safe:animate-fill-both'
-    "
+    class="font-mono text-xs text-fg-muted flex items-center gap-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+    :class="footer ? 'hidden sm:flex sm:justify-start' : 'mb-8 justify-center'"
     style="animation-delay: 0.05s"
   >
     <i18n-t keypath="built_at" scope="global">

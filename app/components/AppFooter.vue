@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
 
+const route = useRoute()
+const isHome = computed(() => route.name === 'index')
+
 const discord = useDiscordLink()
 const modalRef = useTemplateRef('modalRef')
 const showModal = () => modalRef.value?.showModal?.()
@@ -20,7 +23,7 @@ const closeModal = () => modalRef.value?.close?.()
           <span class="sm:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
           <span class="hidden sm:inline">{{ $t('trademark_disclaimer') }}</span>
         </p>
-        <BuildEnvironment footer />
+        <BuildEnvironment v-if="!isHome" footer />
       </div>
       <!-- Desktop: Show all links. Mobile: Links are in MobileMenu -->
       <div class="hidden sm:flex flex-col lg:items-end gap-3 min-h-11 text-xs">
