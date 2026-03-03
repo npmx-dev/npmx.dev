@@ -12,6 +12,7 @@
   "trademark_disclaimer": "npm 是 npm, Inc. 的注册商标。本网站不与 npm, Inc. 有任何隶属关系。",
   "footer": {
     "about": "关于",
+    "blog": "博客",
     "docs": "文档",
     "source": "源码",
     "social": "社交媒体",
@@ -75,6 +76,29 @@
     "open_menu": "打开菜单",
     "links": "链接",
     "tap_to_search": "点击搜索"
+  },
+  "blog": {
+    "title": "博客",
+    "heading": "博客",
+    "meta_description": "来自 npmx 社区的见解与更新",
+    "author": {
+      "view_profile": "在 Bluesky 上查看 {name} 的资料"
+    },
+    "atproto": {
+      "view_on_bluesky": "在 Bluesky 上查看",
+      "reply_on_bluesky": "在 Bluesky 上回复",
+      "likes_on_bluesky": "在 Bluesky 上点赞",
+      "like_or_reply_on_bluesky": "在 Bluesky 上点赞此帖子或发表评论",
+      "no_comments_yet": "暂无评论。",
+      "could_not_load_comments": "无法加载评论。",
+      "comments": "评论",
+      "loading_comments": "正在加载评论...",
+      "updating": "更新中...",
+      "reply_count": "{count} 条回复 | {count} 条回复",
+      "like_count": "{count} 个赞 | {count} 个赞",
+      "repost_count": "{count} 次转发 | {count} 次转发",
+      "more_replies": "还有 {count} 条回复... | 还有 {count} 条回复..."
+    }
   },
   "settings": {
     "title": "设置",
@@ -448,7 +472,8 @@
     },
     "downloads": {
       "title": "每周下载量",
-      "community_distribution": "查看社区采用分布"
+      "community_distribution": "查看社区采用分布",
+      "subtitle": "涵盖所有版本"
     },
     "install_scripts": {
       "title": "安装脚本",
@@ -1108,7 +1133,10 @@
     "file_changes": "文件更改",
     "files_count": "{count} 个文件",
     "lines_hidden": "已隐藏 {count} 行",
+    "file_too_large": "文件过大，无法对比",
+    "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
+    "compare_versions_title": "与最新版本比较",
     "summary": "摘要",
     "deps_count": "{count} 个依赖",
     "dependencies": "直接依赖项",

@@ -13,6 +13,7 @@
   "trademark_disclaimer": "npm 是 npm, Inc. 的注册商标。本网站不与 npm, Inc. 有任何隶属关系。",
   "footer": {
     "about": "关于",
+    "blog": "博客",
     "docs": "文档",
     "source": "源码",
     "social": "社交媒体",
@@ -76,6 +77,29 @@
     "open_menu": "打开菜单",
     "links": "链接",
     "tap_to_search": "点击搜索"
+  },
+  "blog": {
+    "title": "博客",
+    "heading": "博客",
+    "meta_description": "来自 npmx 社区的见解与更新",
+    "author": {
+      "view_profile": "在 Bluesky 上查看 {name} 的资料"
+    },
+    "atproto": {
+      "view_on_bluesky": "在 Bluesky 上查看",
+      "reply_on_bluesky": "在 Bluesky 上回复",
+      "likes_on_bluesky": "在 Bluesky 上点赞",
+      "like_or_reply_on_bluesky": "在 Bluesky 上点赞此帖子或发表评论",
+      "no_comments_yet": "暂无评论。",
+      "could_not_load_comments": "无法加载评论。",
+      "comments": "评论",
+      "loading_comments": "正在加载评论...",
+      "updating": "更新中...",
+      "reply_count": "{count} 条回复 | {count} 条回复",
+      "like_count": "{count} 个赞 | {count} 个赞",
+      "repost_count": "{count} 次转发 | {count} 次转发",
+      "more_replies": "还有 {count} 条回复... | 还有 {count} 条回复..."
+    }
   },
   "settings": {
     "title": "设置",
@@ -449,7 +473,8 @@
     },
     "downloads": {
       "title": "每周下载量",
-      "community_distribution": "查看社区采用分布"
+      "community_distribution": "查看社区采用分布",
+      "subtitle": "涵盖所有版本"
     },
     "install_scripts": {
       "title": "安装脚本",
@@ -1109,7 +1134,10 @@
     "file_changes": "文件更改",
     "files_count": "{count} 个文件",
     "lines_hidden": "已隐藏 {count} 行",
+    "file_too_large": "文件过大，无法对比",
+    "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
+    "compare_versions_title": "与最新版本比较",
     "summary": "摘要",
     "deps_count": "{count} 个依赖",
     "dependencies": "直接依赖项",
@@ -1245,6 +1273,40 @@
       "title": "反馈",
       "p1": "如果你在 {app} 上遇到无障碍访问问题，请在我们的 {link} 上提交 Issue 反馈给我们。我们会认真对待这些反馈，并尽力解决。",
       "link": "GitHub 仓库"
+    }
+  },
+  "vacations": {
+    "title": "休假中",
+    "meta_description": "npmx 团队在充电。Discord 一周后重新开放。",
+    "heading": "充电中",
+    "subtitle": "我们全力以赴地打磨 npmx，节奏之快，甚至让人无暇安睡。我们不想让这成为常态！所以我们一起休息了一周。",
+    "illustration_alt": "一排温馨的图标",
+    "poke_log": "拨动篝火",
+    "what": {
+      "title": "发生了什么",
+      "p1": "Discord 于 {dates} 期间关闭。",
+      "dates": "2 月 14 日 – 21 日",
+      "p2": "所有邀请链接都被移除，频道也被锁定 – 除了 {garden}，它仍向想继续聊天的人开放。",
+      "garden": "#garden"
+    },
+    "meantime": {
+      "title": "与此同时",
+      "p1": "{site} 和 {repo} 仍然开放 – 有人继续投入、提交了一些 issue、开了几个 PR，但大多数人都在温暖的壁炉旁休息。",
+      "repo_link": "仓库"
+    },
+    "return": {
+      "title": "我们回来了！",
+      "p1": "我们满电回归，准备冲刺到 3 月 3 日。{social} 关注动态。",
+      "social_link": "在 Bluesky 上关注我们"
+    },
+    "stats": {
+      "contributors": "贡献者",
+      "commits": "提交",
+      "pr": "合并的 PR",
+      "subtitle": {
+        "some": "部分",
+        "all": "全部"
+      }
     }
   }
 }
