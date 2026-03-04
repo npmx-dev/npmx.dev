@@ -76,6 +76,7 @@ const likeAction = async () => {
       <div class="flex items-center gap-4 justify-between shrink-0">
         <ClientOnly>
           <TooltipApp
+            v-if="likesStatus !== 'pending'"
             :text="likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')"
             position="bottom"
           >
@@ -92,20 +93,14 @@ const likeAction = async () => {
             >
               <span
                 :class="
-                  likesStatus === 'pending'
-                    ? 'i-lucide-heart'
-                    : likesData?.userHasLiked
-                      ? 'i-lucide-heart-minus text-red-500'
-                      : 'i-lucide-heart-plus'
+                  likesData?.userHasLiked
+                    ? 'i-lucide-heart-minus text-red-500'
+                    : 'i-lucide-heart-plus'
                 "
                 class="w-4 h-4"
                 aria-hidden="true"
               />
-              <span
-                v-if="likesStatus === 'pending'"
-                class="inline-block w-4 h-4 bg-bg-subtle rounded animate-pulse"
-              />
-              <span v-else>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
+              <span>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
             </button>
           </TooltipApp>
         </ClientOnly>

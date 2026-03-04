@@ -45,22 +45,10 @@ describe('PackageLikeCard', () => {
     expect(wrapper.find('span.truncate').text()).toBe('@scope/pkg')
   })
 
-  it('shows a loading skeleton instead of zero while like data is pending', async () => {
+  it('hides the like button entirely while like data is pending', async () => {
     wrapper = await mountLikeCard('https://npmx.dev/package/vue')
 
     const button = wrapper.find('button')
-    expect(button.text()).not.toContain('0')
-
-    const skeleton = button.find('.animate-pulse')
-    expect(skeleton.exists()).toBe(true)
-  })
-
-  it('shows a neutral heart icon while like data is pending', async () => {
-    wrapper = await mountLikeCard('https://npmx.dev/package/vue')
-
-    const icon = wrapper.find('button span[aria-hidden]')
-    expect(icon.classes()).toContain('i-lucide-heart')
-    expect(icon.classes()).not.toContain('i-lucide-heart-plus')
-    expect(icon.classes()).not.toContain('i-lucide-heart-minus')
+    expect(button.exists()).toBe(false)
   })
 })
