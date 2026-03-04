@@ -16,12 +16,18 @@ import {
 import { globSync } from 'tinyglobby'
 import { isProduction } from '../config/env'
 import { BLUESKY_API } from '../shared/utils/constants'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { existsSync } from 'node:fs'
+import crypto from 'node:crypto'
 
 /**
  * Fetches Bluesky avatars for a set of authors at build time.
  * Returns a map of handle → avatar URL.
  */
-async function fetchBlueskyAvatars(handles: string[]): Promise<Map<string, string>> {
+async function fetchBlueskyAvatars(
+  imagesDir: string,
+  handles: string[],
+): Promise<Map<string, string>> {
   const avatarMap = new Map<string, string>()
   if (handles.length === 0) return avatarMap
 
@@ -44,7 +50,15 @@ async function fetchBlueskyAvatars(handles: string[]): Promise<Map<string, strin
 
     for (const profile of data.profiles) {
       if (profile.avatar) {
-        avatarMap.set(profile.handle, profile.avatar)
+        const hash = crypto.createHash('sha256').update(profile.avatar).digest('hex')
+        const dest = join(imagesDir, `${hash}.jpg`)
+
+        if (!existsSync(dest)) {
+          const res = await fetch(profile.avatar)
+          await writeFile(join(imagesDir, `${hash}.jpg`), res.body!)
+        }
+
+        avatarMap.set(profile.handle, `/blog/avatar/${hash}.jpg`)
       }
     }
   } catch (error) {
@@ -70,7 +84,7 @@ function resolveAuthors(authors: Author[], avatarMap: Map<string, string>): Reso
  * Returns all posts (including drafts) sorted by date descending.
  * Resolves Bluesky avatars at build time.
  */
-async function loadBlogPosts(blogDir: string): Promise<BlogPostFrontmatter[]> {
+async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPostFrontmatter[]> {
   const files: string[] = globSync(join(blogDir, '*.md'))
 
   // First pass: extract raw frontmatter and collect all Bluesky handles
@@ -104,7 +118,7 @@ async function loadBlogPosts(blogDir: string): Promise<BlogPostFrontmatter[]> {
   }
 
   // Batch-fetch all Bluesky avatars in a single request
-  const avatarMap = await fetchBlueskyAvatars([...allHandles])
+  const avatarMap = await fetchBlueskyAvatars(imagesDir, [...allHandles])
 
   // Second pass: validate with raw schema, then enrich authors with avatars
   const posts: BlogPostFrontmatter[] = []
@@ -132,11 +146,16 @@ export default defineNuxtModule({
     const nuxt = useNuxt()
     const resolver = createResolver(import.meta.url)
     const blogDir = resolver.resolve('../app/pages/blog')
+    const blogImagesDir = resolver.resolve('../public/blog/avatar')
 
     nuxt.options.extensions.push('.md')
     nuxt.options.vite.vue = defu(nuxt.options.vite.vue, {
       include: [/\.vue($|\?)/, /\.(md|markdown)($|\?)/],
     })
+
+    if (!existsSync(blogImagesDir)) {
+      await mkdir(blogImagesDir, { recursive: true })
+    }
 
     addVitePlugin(() =>
       Markdown({
@@ -158,7 +177,7 @@ export default defineNuxtModule({
     )
 
     // Load posts once with resolved Bluesky avatars (shared across template + route rules)
-    const allPosts = await loadBlogPosts(blogDir)
+    const allPosts = await loadBlogPosts(blogDir, blogImagesDir)
 
     // Expose frontmatter for the `/blog` listing page.
     const showDrafts = nuxt.options.dev || !isProduction
