@@ -115,7 +115,7 @@ watch(
     <!-- Code content -->
     <div class="code-content flex-1 overflow-x-auto min-w-0">
       <!-- eslint-disable vue/no-v-html -- HTML is generated server-side by Shiki -->
-      <div ref="codeRef" class="code-lines w-fit" v-html="html" />
+      <div ref="codeRef" class="code-lines min-w-full w-fit" v-html="html" />
       <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>
