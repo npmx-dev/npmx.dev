@@ -9,6 +9,8 @@ import type { RepoRef } from '#shared/utils/git-providers'
 import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
 import { onKeyDown } from '@vueuse/core'
 
+import('vue-data-ui/style.css')
+
 const props = defineProps<{
   packageName: string
   createdIso: string | null
@@ -498,8 +500,6 @@ const config = computed<VueUiSparklineConfig>(() => {
 </style>
 
 <style>
-@import 'vue-data-ui/style.css';
-
 /** Overrides */
 .vue-ui-sparkline-title span {
   padding: 0 !important;
