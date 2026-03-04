@@ -145,17 +145,21 @@ const itemScrollIntoView = (index: number) => {
   if (!item) return
   const el = document.getElementById(`${listboxId}-${item.id}`)
   if (el) {
-    el.scrollIntoView({ block: 'center'})
+    el.scrollIntoView({ block: 'center' })
   }
-} 
+}
 
-watch(isOpen, (open) => {
-  if (open && highlightedIndex.value >= 0) {
-    itemScrollIntoView(highlightedIndex.value)
-  }
-}, {
-  flush: 'post',
-})
+watch(
+  isOpen,
+  open => {
+    if (open && highlightedIndex.value >= 0) {
+      itemScrollIntoView(highlightedIndex.value)
+    }
+  },
+  {
+    flush: 'post',
+  },
+)
 </script>
 
 <template>
