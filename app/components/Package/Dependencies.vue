@@ -222,9 +222,9 @@ const numberFormatter = useNumberFormatter()
             <LinkBase :to="packageRoute(peer.name)" class="block max-w-[70%]" dir="ltr">
               {{ peer.name }}
             </LinkBase>
-            <!-- <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
+            <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
               {{ $t('package.dependencies.optional') }}
-            </TagStatic> -->
+            </TagStatic>
           </div>
           <LinkBase
             :to="packageRoute(peer.name, peer.version)"
