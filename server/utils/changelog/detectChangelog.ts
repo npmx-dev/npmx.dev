@@ -8,6 +8,7 @@ import type { ExtendedPackageJson } from '~~/shared/utils/package-analysis'
 import { ERROR_CHANGELOG_NOT_FOUND } from '~~/shared/utils/constants'
 import * as v from 'valibot'
 import { GithubReleaseSchama } from '~~/shared/schemas/changelog/release'
+import { resolveURL } from 'ufo'
 
 /**
  * Detect whether changelogs/releases are available for this package
@@ -28,7 +29,9 @@ export async function detectChangelog(
     return false
   }
 
-  const changelog = (await checkReleases(repoRef)) || (await checkChangelogFile(repoRef))
+  const changelog =
+    (await checkReleases(repoRef, pkg.repository.directory)) ||
+    (await checkChangelogFile(repoRef, pkg.repository.directory))
 
   if (changelog) {
     return changelog
@@ -44,41 +47,25 @@ export async function detectChangelog(
  * check whether releases are being used with this repo
  * @returns true if in use
  */
-async function checkReleases(ref: RepoRef): Promise<ChangelogInfo | false> {
+async function checkReleases(ref: RepoRef, directory?: string): Promise<ChangelogInfo | false> {
   switch (ref.provider) {
     case 'github': {
-      return checkLatestGithubRelease(ref)
+      return checkLatestGithubRelease(ref, directory)
     }
   }
 
-  // const checkUrls = getLatestReleaseUrl(ref)
-
-  // for (const checkUrl of checkUrls ?? []) {
-  //   const exists = await fetch(checkUrl, {
-  //     headers: {
-  //       // GitHub API requires User-Agent
-  //       'User-Agent': 'npmx.dev',
-  //     },
-  //     method: 'HEAD', // we just need to know if it exists or not
-  //   })
-  //     .then(r => r.ok)
-  //     .catch(() => false)
-  //   if (exists) {
-  //     return {
-  //       provider: ref.provider,
-  //       type: 'release',
-  //       repo: `${ref.owner}/${ref.repo}`,
-  //     }
-  //   }
-  // }
   return false
 }
 
 /// releases
 
 const MD_REGEX = /(?<=\[.*?(changelog|releases|changes|history|news)\.md.*?\]\()(.*?)(?=\))/i
+const ROOT_ONLY_REGEX = /^\/[^/]+$/
 
-function checkLatestGithubRelease(ref: RepoRef): Promise<ChangelogInfo | false> {
+function checkLatestGithubRelease(
+  ref: RepoRef,
+  directory?: string,
+): Promise<ChangelogInfo | false> {
   return $fetch(`https://ungh.cc/repos/${ref.owner}/${ref.repo}/releases/latest`)
     .then(r => {
       const { release } = v.parse(v.object({ release: GithubReleaseSchama }), r)
@@ -96,6 +83,10 @@ function checkLatestGithubRelease(ref: RepoRef): Promise<ChangelogInfo | false> 
       }
 
       const path = matchedChangelog.replace(/^.*\/blob\/[^/]+\//i, '')
+
+      if (directory && !(path.startsWith(directory) || ROOT_ONLY_REGEX.test(path))) {
+        return false as const
+      }
       return {
         provider: ref.provider,
         type: 'md',
@@ -105,7 +96,7 @@ function checkLatestGithubRelease(ref: RepoRef): Promise<ChangelogInfo | false> 
       } satisfies ChangelogMarkdownInfo
     })
     .catch(() => {
-      return false
+      return false as const
     })
 }
 
@@ -120,14 +111,27 @@ const CHANGELOG_FILENAMES = ['changelog', 'releases', 'changes', 'history', 'new
   })
   .flat(3)
 
-async function checkChangelogFile(ref: RepoRef): Promise<ChangelogMarkdownInfo | false> {
+async function checkChangelogFile(
+  ref: RepoRef,
+  directory?: string,
+): Promise<ChangelogMarkdownInfo | false> {
   const baseUrl = getBaseFileUrl(ref)
   if (!baseUrl) {
     return false
   }
 
+  if (directory) {
+    const inDir = await checkFiles(ref, baseUrl, directory)
+    if (inDir) {
+      return inDir
+    }
+  }
+  return checkFiles(ref, baseUrl)
+}
+
+async function checkFiles(ref: RepoRef, baseUrl: RepoFileUrl, dir?: string) {
   for (const fileName of CHANGELOG_FILENAMES) {
-    const exists = await fetch(`${baseUrl.raw}/${fileName}`, {
+    const exists = await fetch(resolveURL(baseUrl.raw, dir ?? '', fileName), {
       headers: {
         // GitHub API requires User-Agent
         'User-Agent': 'npmx.dev',
@@ -140,9 +144,9 @@ async function checkChangelogFile(ref: RepoRef): Promise<ChangelogMarkdownInfo |
       return {
         type: 'md',
         provider: ref.provider,
-        path: fileName,
+        path: resolveURL(dir ?? '', fileName),
         repo: `${ref.owner}/${ref.repo}`,
-        link: `${baseUrl.blob}/${fileName}`,
+        link: resolveURL(baseUrl.blob, dir ?? '', fileName),
       } satisfies ChangelogMarkdownInfo
     }
   }
