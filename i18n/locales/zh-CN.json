@@ -18,6 +18,7 @@
     "source": "源码",
     "social": "社交媒体",
     "chat": "聊天",
+    "builders_chat": "构建者",
     "keyboard_shortcuts": "键盘快捷键"
   },
   "shortcuts": {
@@ -64,7 +65,13 @@
       "org": "组织",
       "view_user_packages": "查看该用户的包",
       "view_org_packages": "查看该组织的包"
-    }
+    },
+    "instant_search": "即时搜索",
+    "instant_search_on": "已开启",
+    "instant_search_off": "已关闭",
+    "instant_search_turn_on": "开启",
+    "instant_search_turn_off": "关闭",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "主页",
@@ -85,6 +92,8 @@
     "author": {
       "view_profile": "在 Bluesky 上查看 {name} 的资料"
     },
+    "draft_badge": "草稿",
+    "draft_banner": "这是一篇未发布的草稿。内容可能不完整或包含不准确的信息。",
     "atproto": {
       "view_on_bluesky": "在 Bluesky 上查看",
       "reply_on_bluesky": "在 Bluesky 上回复",
@@ -120,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "使用 Algolia 来实现更快的搜索，适用于组织页和用户页。"
     },
+    "instant_search": "即时搜索",
+    "instant_search_description": "导航到搜索页面并在输入时更新结果。",
     "relative_dates": "相对时间",
     "include_types": "在安装时包含 {'@'}types",
     "include_types_description": "为未提供类型定义的包自动添加 {'@'}types 包到安装命令",
@@ -954,6 +965,11 @@
         "description": "聊天、提出问题并分享想法。",
         "cta": "加入 Discord"
       },
+      "builders": {
+        "title": "参与构建 npmx",
+        "description": "加入构建者团队，共同塑造 npmx 的未来。",
+        "cta": "加入构建者 Discord"
+      },
       "follow": {
         "title": "保持更新",
         "description": "了解 npmx 的最新动态。",
@@ -1162,6 +1178,34 @@
     "select_file_prompt": "从侧边栏选择一个文件以查看其差异",
     "close_files_panel": "关闭文件面板",
     "filter_files_label": "按更改类型筛选文件"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "npmx 社区的官方 AT Protocol 个人数据服务器 (PDS)。",
+    "join": {
+      "title": "加入社区",
+      "description": "无论你是第一次在 Atmosphere 上创建账户，还是迁移现有账户，这里都是你的归属。你可以迁移当前账户，而不会丢失你的账户、帖子或关注者。",
+      "migrate": "使用 PDS MOOver 迁移"
+    },
+    "server": {
+      "title": "服务器详情",
+      "location_label": "位置：",
+      "location_value": "德国，纽伦堡",
+      "infrastructure_label": "基础设施：",
+      "infrastructure_value": "托管于 Hetzner",
+      "privacy_label": "隐私：",
+      "privacy_value": "受欧盟严格的数据保护法律约束",
+      "learn_more": "了解 npmx 如何使用 Atmosphere"
+    },
+    "community": {
+      "title": "谁在这里",
+      "description": "在 {count} 个已将 npmx.social 视为家的账户中，这里有一些：",
+      "loading": "正在加载 PDS 社区...",
+      "error": "加载 PDS 社区失败。",
+      "empty": "没有社区成员可显示。",
+      "view_profile": "查看 {handle} 的资料",
+      "new_accounts": "...以及 {count} 个新加入 Atmosphere 的账户"
+    }
   },
   "privacy_policy": {
     "title": "隐私政策",
