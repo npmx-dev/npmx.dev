@@ -219,7 +219,7 @@ const numberFormatter = useNumberFormatter()
           class="flex items-center justify-between py-1 text-sm gap-1 min-w-0"
         >
           <div class="flex items-center gap-2 min-w-0 flex-1">
-            <LinkBase :to="packageRoute(peer.name)" class="block max-w-[70%]" dir="ltr">
+            <LinkBase :to="packageRoute(peer.name)" class="block max-w-[70%] break-words" dir="ltr">
               {{ peer.name }}
             </LinkBase>
             <TagStatic v-if="peer.optional" :title="$t('package.dependencies.optional')">
@@ -280,7 +280,7 @@ const numberFormatter = useNumberFormatter()
           :key="dep"
           class="flex items-baseline justify-between py-1 text-sm gap-2"
         >
-          <LinkBase :to="packageRoute(dep)" class="block max-w-[80%]" dir="ltr">
+          <LinkBase :to="packageRoute(dep)" class="block max-w-[80%] break-words" dir="ltr">
             {{ dep }}
           </LinkBase>
           <LinkBase
