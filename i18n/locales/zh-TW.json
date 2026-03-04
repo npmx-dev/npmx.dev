@@ -532,9 +532,6 @@
   "connector": {
     "modal": {
       "title": "本機連線器",
-      "contributor_badge": "僅限貢獻者",
-      "contributor_notice": "連線器尚未發布到 npm。請參閱 {link} 了解如何在本機執行。",
-      "contributor_link": "貢獻指南",
       "connected": "已連線",
       "connected_as_user": "已連線為 ~{user}",
       "connected_hint": "現在你可以透過 Web UI 管理套件與組織。",

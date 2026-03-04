@@ -533,9 +533,6 @@
   "connector": {
     "modal": {
       "title": "Yerel Bağlayıcı",
-      "contributor_badge": "Yalnızca katkıda bulunanlar için",
-      "contributor_notice": "Bağlayıcı henüz npm'e yayınlanmadı. Yerel olarak çalıştırmak için {link} bakın.",
-      "contributor_link": "katkı rehberi",
       "connected": "Bağlandı",
       "connected_as_user": "~{user} olarak bağlandı",
       "connected_hint": "Artık web arayüzünden paketleri ve organizasyonları yönetebilirsiniz.",

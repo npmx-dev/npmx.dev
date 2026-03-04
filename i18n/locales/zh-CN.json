@@ -577,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "本地连接器",
-      "contributor_badge": "贡献者专用",
-      "contributor_notice": "连接器尚未发布到 npm。请参阅 {link} 了解如何本地运行。",
-      "contributor_link": "贡献指南",
       "connected": "已连接",
       "connected_as_user": "已连接为 ~{user}",
       "connected_hint": "现在你可以通过 Web UI 管理包和组织。",

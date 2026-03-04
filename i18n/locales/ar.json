@@ -462,9 +462,6 @@
   "connector": {
     "modal": {
       "title": "الموصل المحلي",
-      "contributor_badge": "للمساهمين فقط",
-      "contributor_notice": "لم يُنشر الموصل بعد على npm. راجع {link} لمعرفة كيفية التشغيل محليًا.",
-      "contributor_link": "دليل المساهمة",
       "connected": "متصل",
       "connected_as_user": "متصل كـ ~{user}",
       "connected_hint": "يمكنك الآن إدارة الحزم والمؤسسات من واجهة الويب.",

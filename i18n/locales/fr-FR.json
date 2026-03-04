@@ -577,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "Connecteur local",
-      "contributor_badge": "Contributeurs uniquement",
-      "contributor_notice": "Le connecteur n'est pas encore publié sur npm. Consultez le {link} pour savoir comment l'exécuter localement.",
-      "contributor_link": "guide de contribution",
       "connected": "Connecté·e",
       "connected_as_user": "Connecté·e en tant que ~{user}",
       "connected_hint": "Vous pouvez maintenant gérer les paquets et les organisations depuis l'interface web.",
