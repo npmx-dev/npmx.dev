@@ -3,7 +3,7 @@ import type { Backlink } from '#shared/utils/constellation'
 import type * as blue from '#shared/types/lexicons/blue'
 import * as dev from '#shared/types/lexicons/dev'
 import { Client } from '@atproto/lex'
-import { TID } from '@atproto/common'
+import * as TID from '@atcute/tid'
 
 //Cache keys and helpers
 const CACHE_PREFIX = 'atproto-likes:'
@@ -26,8 +26,8 @@ export function aggregateBacklinksByDay(
   const countsByDay = new Map<string, number>()
   for (const backlink of backlinks) {
     try {
-      const tid = TID.fromStr(backlink.rkey)
-      const timestampMs = tid.timestamp() / 1000
+      const { timestamp } = TID.parse(backlink.rkey)
+      const timestampMs = timestamp / 1000
       const date = new Date(timestampMs)
       const day = date.toISOString().slice(0, 10)
       countsByDay.set(day, (countsByDay.get(day) ?? 0) + 1)

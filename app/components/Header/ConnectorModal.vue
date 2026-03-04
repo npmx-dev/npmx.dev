@@ -27,22 +27,22 @@ function handleDisconnect() {
   disconnect()
 }
 
-// function copyCommand() {
-//   let command = executeNpmxConnectorCommand.value
-//   if (portInput.value !== '31415') {
-//     command += ` --port ${portInput.value}`
-//   }
-//   copy(command)
-// }
+function copyCommand() {
+  let command = executeNpmxConnectorCommand.value
+  if (portInput.value !== '31415') {
+    command += ` --port ${portInput.value}`
+  }
+  copy(command)
+}
 
-// const selectedPM = useSelectedPackageManager()
+const selectedPM = useSelectedPackageManager()
 
-// const executeNpmxConnectorCommand = computed(() => {
-//   return getExecuteCommand({
-//     packageName: 'npmx-connector',
-//     packageManager: selectedPM.value,
-//   })
-// })
+const executeNpmxConnectorCommand = computed(() => {
+  return getExecuteCommand({
+    packageName: 'npmx-connector',
+    packageManager: selectedPM.value,
+  })
+})
 </script>
 
 <template>
@@ -87,26 +87,6 @@ function handleDisconnect() {
 
     <!-- Disconnected state -->
     <form v-else class="space-y-4" @submit.prevent="handleConnect">
-      <!-- Contributor-only notice -->
-      <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-        <div>
-          <span class="inline-block text-xs font-bold uppercase tracking-wider text-fg rounded">
-            {{ $t('connector.modal.contributor_badge') }}
-          </span>
-          <p class="text-sm text-fg-muted">
-            <i18n-t keypath="connector.modal.contributor_notice" scope="global">
-              <template #link>
-                <LinkBase
-                  to="https://github.com/npmx-dev/npmx.dev/blob/main/CONTRIBUTING.md#local-connector-cli"
-                >
-                  {{ $t('connector.modal.contributor_link') }}
-                </LinkBase>
-              </template>
-            </i18n-t>
-          </p>
-        </div>
-      </div>
-
       <p class="text-sm text-fg-muted">
         {{ $t('connector.modal.run_hint') }}
       </p>
@@ -116,42 +96,19 @@ function handleDisconnect() {
         dir="ltr"
       >
         <span class="text-fg-subtle">$</span>
-        <span class="text-fg-subtle ms-2">npx npmx-connector</span>
-        <ButtonBase
-          :aria-label="copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')"
-          @click="copy('npx npmx-connector')"
-          class="ms-auto"
-          :classicon="copied ? 'i-lucide:check text-green-500' : 'i-lucide:copy'"
-        />
+        <span class="text-fg-subtle ms-2">{{ executeNpmxConnectorCommand }}</span>
+        <div class="ms-auto flex items-center gap-2">
+          <!-- Disable teleport in a modal dialog -->
+          <PackageManagerSelect :teleport="false" />
+
+          <ButtonBase
+            :aria-label="copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')"
+            @click="copyCommand"
+            class="ms-auto"
+            :classicon="copied ? 'i-lucide:check text-green-500' : 'i-lucide:copy'"
+          />
+        </div>
       </div>
-
-      <!-- TODO: Uncomment when npmx-connector is published to npm
-                    <div
-                      class="flex items-center p-3 bg-bg-muted border border-border rounded-lg font-mono text-sm"
-                    >
-                      <span class="text-fg-subtle">$</span>
-                      <span class="text-fg-subtle ms-2">{{ executeNpmxConnectorCommand }}</span>
-                      <div class="ms-auto flex items-center gap-2">
-                        <PackageManagerSelect />
-
-                        <button
-                          type="button"
-                          :aria-label="
-                            copied ? $t('connector.modal.copied') : $t('connector.modal.copy_command')
-                          "
-                          class="ms-auto text-fg-subtle p-1.5 -m-1.5 hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
-                          @click="copyCommand"
-                        >
-                          <span v-if="!copied" class="i-lucide:copy block w-5 h-5" aria-hidden="true" />
-                          <span
-                            v-else
-                            class="i-lucide:check block w-5 h-5 text-green-500"
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </div>
-                    </div>
-                    -->
 
       <p class="text-sm text-fg-muted">{{ $t('connector.modal.paste_token') }}</p>
 

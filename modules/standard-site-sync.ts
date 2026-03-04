@@ -2,10 +2,9 @@ import process from 'node:process'
 import { createHash } from 'node:crypto'
 import { defineNuxtModule, useNuxt, createResolver } from 'nuxt/kit'
 import { safeParse } from 'valibot'
-import { BlogPostSchema, type BlogPostFrontmatter } from '../shared/schemas/blog'
-import { NPMX_SITE } from '../shared/utils/constants'
+import { BlogPostSchema, type BlogPostFrontmatter } from '#shared/schemas/blog'
+import { NPMX_DEV_DID, NPMX_SITE } from '#shared/utils/constants'
 import { read } from 'gray-matter'
-import { TID } from '@atproto/common'
 import { PasswordSession } from '@atproto/lex-password-session'
 import {
   Client,
@@ -15,11 +14,9 @@ import {
 } from '@atproto/lex'
 import * as com from '../shared/types/lexicons/com'
 import * as site from '../shared/types/lexicons/site'
+import { generateBlogTID, npmxPublicationRkey } from '#shared/utils/atproto'
 
 const syncedDocuments = new Map<string, string>()
-const CLOCK_ID_THREE = 3
-const MS_TO_MICROSECONDS = 1000
-const ONE_DAY_MILLISECONDS = 86400000
 
 type BlogPostDocument = Pick<
   BlogPostFrontmatter,
@@ -89,6 +86,8 @@ export default defineNuxtModule({
                 rkey: possiblePublication.tid,
               },
             )
+            // Wait for the firehose and indexers to catch up if we create a publication
+            await new Promise(sleepResolve => setTimeout(sleepResolve, 2_000))
           }
           if (documentsToSync.length > 0) {
             await syncsiteStandardDocuments(authenticatedClient, documentsToSync)
@@ -153,23 +152,6 @@ async function syncsiteStandardDocuments(client: Client, documentsToSync: Docume
   console.log('[standard-site-sync] synced all new publications')
 }
 
-// Parse date from frontmatter, add file-path entropy for same-date collision resolution
-function generateTID(dateString: string, filePath: string): string {
-  let timestamp = new Date(dateString).getTime()
-
-  // If date has no time component (exact midnight), add file-based entropy
-  // This ensures unique TIDs when multiple posts share the same date
-  if (timestamp % ONE_DAY_MILLISECONDS === 0) {
-    // Hash the file path to generate deterministic microseconds offset
-    const pathHash = createHash('md5').update(filePath).digest('hex')
-    const offset = parseInt(pathHash.slice(0, 8), 16) % 1000000 // 0-999999 microseconds
-    timestamp += offset
-  }
-
-  // Clock id(3) needs to be the same everytime to get the same TID from a timestamp
-  return TID.fromTime(timestamp * MS_TO_MICROSECONDS, CLOCK_ID_THREE).str
-}
-
 // Schema expects 'path' & frontmatter provides 'slug'
 function normalizeBlogFrontmatter(frontmatter: Record<string, unknown>): Record<string, unknown> {
   return {
@@ -187,12 +169,13 @@ function createContentHash(data: unknown): string {
 
 function buildATProtoDocument(siteUrl: string, data: BlogPostDocument) {
   return site.standard.document.$build({
-    site: siteUrl as `${string}:${string}`,
+    site: `at://${NPMX_DEV_DID}/site.standard.publication/${npmxPublicationRkey()}`,
     path: data.path,
     title: data.title,
     description: data.description ?? data.excerpt,
     tags: data.tags,
-    publishedAt: new Date(data.date).toISOString(),
+    // Publish on the record with the current date
+    publishedAt: new Date().toISOString(),
   })
 }
 
@@ -242,7 +225,7 @@ const syncFile = async (
     return
   }
 
-  const tid = generateTID(data.date, filePath)
+  const tid = generateBlogTID(data.date, data.slug)
 
   let checkForBlogResult = await pdsPublicClient.xrpcSafe(com.atproto.repo.getRecord, {
     params: {
@@ -275,11 +258,7 @@ const syncFile = async (
  * @returns
  */
 const checkPublication = async (identifier: AtIdentifierString, pdsPublicClient: Client) => {
-  // Using our release date as the tid for the publication
-  const publicationTid = TID.fromTime(
-    new Date('2026-03-03').getTime() * MS_TO_MICROSECONDS,
-    CLOCK_ID_THREE,
-  ).str
+  const publicationTid = npmxPublicationRkey()
 
   //Check to see if we have a publication yet
   const publicationCheck = await pdsPublicClient.xrpcSafe(com.atproto.repo.getRecord, {
@@ -302,8 +281,11 @@ const checkPublication = async (identifier: AtIdentifierString, pdsPublicClient:
         tid: publicationTid,
         record: site.standard.publication.$build({
           name: 'npmx.dev',
-          url: 'https://npmx.dev/blog',
+          url: 'https://npmx.dev',
           description: 'a fast, modern browser for the npm registry',
+          preferences: {
+            showInDiscover: true,
+          },
         }),
       }
     }

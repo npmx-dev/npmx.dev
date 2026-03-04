@@ -30,6 +30,7 @@ import LogoLunaria from './lunaria.svg'
 import LogoJsr from './jsr.svg'
 import LogoIconify from './iconify.svg'
 import LogoFloatingUi from './floating-ui-vue.svg'
+import LogoBlento from './blento.svg'
 
 // The list is used on the about page. To add, simply upload the logos nearby and add an entry here. Prefer SVGs.
 // For logo src, specify a string or object with the light and dark theme variants.
@@ -194,5 +195,10 @@ export const OSS_PARTNERS = [
     name: 'Floating UI',
     logo: LogoFloatingUi,
     url: 'https://floating-ui.com/',
+  },
+  {
+    name: 'blento',
+    logo: LogoBlento,
+    url: 'https://blento.app/npmx.dev',
   },
 ]

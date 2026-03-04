@@ -361,9 +361,6 @@
   "connector": {
     "modal": {
       "title": "Conector Local",
-      "contributor_badge": "Apenas contribuidores",
-      "contributor_notice": "O conector ainda não foi publicado no npm. Veja o {link} para saber como executar localmente.",
-      "contributor_link": "guia de contribuição",
       "connected": "Conectado",
       "connected_as_user": "Conectado como ~{user}",
       "connected_hint": "Agora você pode gerenciar pacotes e organizações a partir da interface web.",

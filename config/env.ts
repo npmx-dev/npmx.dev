@@ -4,6 +4,7 @@ import Git from 'simple-git'
 import * as process from 'node:process'
 
 import { version as packageVersion } from '../package.json'
+import { getNextVersion } from '../scripts/next-version'
 
 export { packageVersion as version }
 
@@ -44,13 +45,15 @@ export const gitBranch = process.env.BRANCH || process.env.VERCEL_GIT_COMMIT_REF
  * Whether this is the canary environment (main.npmx.dev).
  *
  * Detected as any non-PR Vercel deploy from the `main` branch
- * (which may receive `VERCEL_ENV === 'production'` or `'preview'`
- * depending on the project's production branch configuration).
+ * (which may receive `VERCEL_ENV === 'production'`, `'preview'`, or a
+ * custom `'canary'` environment depending on the project configuration).
  *
  * @see {@link https://vercel.com/docs/environment-variables/system-environment-variables#VERCEL_ENV}
  */
 export const isCanary =
-  (process.env.VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'preview') &&
+  (process.env.VERCEL_ENV === 'production' ||
+    process.env.VERCEL_ENV === 'preview' ||
+    process.env.VERCEL_ENV === 'canary') &&
   gitBranch === 'main' &&
   !isPR
 
@@ -157,15 +160,17 @@ export async function getFileLastUpdated(path: string) {
 }
 
 /**
- * Resolves the current version from git tags, falling back to `package.json`.
+ * Resolves the **next** version by analysing conventional commits since the
+ * last reachable `v*` tag.  Delegates to {@link getNextVersion} which is also
+ * used by the `release-tag` and `release-pr` GitHub Actions workflows so the
+ * version shown in the UI matches the tag that will be created *after* deploy.
  *
- * Uses `git describe --tags --abbrev=0 --match 'v*'` to find the most recent
- * reachable release tag (e.g. `v0.1.0` -> `0.1.0`).
+ * Falls back to `package.json` when git is unavailable (e.g. shallow clone).
  */
 export async function getVersion() {
   try {
-    const tag = (await git.raw(['describe', '--tags', '--abbrev=0', '--match', 'v*'])).trim()
-    return tag.replace(/^v/, '')
+    const { next } = await getNextVersion()
+    return next
   } catch {
     return packageVersion
   }

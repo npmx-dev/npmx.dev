@@ -11,6 +11,8 @@ import {
 import TooltipApp from '~/components/Tooltip/App.vue'
 import { copyAltTextForVersionsBarChart } from '~/utils/charts'
 
+import('vue-data-ui/style.css')
+
 const props = defineProps<{
   packageName: string
   inModal?: boolean

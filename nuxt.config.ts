@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     storageKey: 'npmx-color-mode',
   },
 
-  css: ['~/assets/main.css', 'vue-data-ui/style.css'],
+  css: ['~/assets/main.css'],
 
   runtimeConfig: {
     sessionPassword: '',
@@ -55,7 +55,7 @@ export default defineNuxtConfig({
     },
   },
 
-  devtools: { enabled: !true },
+  devtools: { enabled: true },
 
   devServer: {
     // Used with atproto oauth
@@ -133,9 +133,18 @@ export default defineNuxtConfig({
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
     '/.well-known/jwks.json': { prerender: true },
+    '/.well-known/site.standard.publication': { prerender: true },
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
+    '/api/atproto/bluesky-comments': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: ['uri'],
+      },
+      cache: { maxAge: 3600 },
+    },
     '/api/atproto/bluesky-author-profiles': {
       isr: {
         expiration: 60 * 60 /* one hour */,

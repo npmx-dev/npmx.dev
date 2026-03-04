@@ -23,42 +23,18 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: lts/*
+
       - name: 🔢 Determine next version
         id: version
         run: |
-          # Get the latest tag on this branch
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-
-          if [ -z "$LATEST_TAG" ]; then
-            CURRENT_VERSION="0.0.0"
-            FROM_REF=$(git rev-list --max-parents=0 HEAD)
-          else
-            CURRENT_VERSION="${LATEST_TAG#v}"
-            FROM_REF="$LATEST_TAG"
-          fi
-
-          # Analyze conventional commits since last tag
-          HAS_BREAKING=$(git log "${FROM_REF}..HEAD" --format='%B' | grep -c 'BREAKING CHANGE\|!:' || true)
-          HAS_FEAT=$(git log "${FROM_REF}..HEAD" --oneline --no-merges | grep -cE '^[a-f0-9]+ feat(\(|:)' || true)
-          HAS_FIX=$(git log "${FROM_REF}..HEAD" --oneline --no-merges | grep -cE '^[a-f0-9]+ fix(\(|:)' || true)
-
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
-
-          if [ "$HAS_BREAKING" -gt 0 ] && [ "$MAJOR" -gt 0 ]; then
-            NEXT_VERSION="$((MAJOR + 1)).0.0"
-          elif [ "$HAS_FEAT" -gt 0 ]; then
-            NEXT_VERSION="${MAJOR}.$((MINOR + 1)).0"
-          elif [ "$HAS_FIX" -gt 0 ]; then
-            NEXT_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
-          else
-            # Only chore/docs/ci commits — still bump patch
-            NEXT_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
-          fi
-
-          echo "current=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
-          echo "next=v${NEXT_VERSION}" >> "$GITHUB_OUTPUT"
-          echo "from=$FROM_REF" >> "$GITHUB_OUTPUT"
-          echo "Bumping from v${CURRENT_VERSION} to v${NEXT_VERSION}"
+          VERSION_JSON=$(node scripts/next-version.ts)
+          echo "current=$(echo "$VERSION_JSON" | jq -r .current)" >> "$GITHUB_OUTPUT"
+          echo "next=v$(echo "$VERSION_JSON" | jq -r .next)" >> "$GITHUB_OUTPUT"
+          echo "from=$(echo "$VERSION_JSON" | jq -r .from)" >> "$GITHUB_OUTPUT"
+          echo "Bumping from v$(echo "$VERSION_JSON" | jq -r .current) to v$(echo "$VERSION_JSON" | jq -r .next)"
 
       - name: 🔍 Check if tag already exists
         id: check
@@ -81,11 +57,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a "$VERSION" -m "Release $VERSION"
           git push origin "$VERSION"
-
-      - uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
-        if: steps.check.outputs.skip == 'false'
-        with:
-          node-version: lts/*
 
       - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # 4e1c8eafbd745f64b1ef30a7d7ed7965034c486c
         if: steps.check.outputs.skip == 'false'

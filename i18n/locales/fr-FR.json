@@ -18,6 +18,7 @@
     "social": "réseaux sociaux",
     "chat": "espace de discussion",
     "blog": "blog",
+    "builders_chat": "builders",
     "keyboard_shortcuts": "raccourcis clavier"
   },
   "shortcuts": {
@@ -64,7 +65,13 @@
       "org": "organisation",
       "view_user_packages": "Voir les paquets de cet utilisateur",
       "view_org_packages": "Voir les paquets de cette organisation"
-    }
+    },
+    "instant_search": "Recherche instantanée",
+    "instant_search_on": "activée",
+    "instant_search_off": "désactivée",
+    "instant_search_turn_on": "activer",
+    "instant_search_turn_off": "désactiver",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Barre de navigation",
@@ -570,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "Connecteur local",
-      "contributor_badge": "Contributeurs uniquement",
-      "contributor_notice": "Le connecteur n'est pas encore publié sur npm. Consultez le {link} pour savoir comment l'exécuter localement.",
-      "contributor_link": "guide de contribution",
       "connected": "Connecté·e",
       "connected_as_user": "Connecté·e en tant que ~{user}",
       "connected_hint": "Vous pouvez maintenant gérer les paquets et les organisations depuis l'interface web.",
@@ -957,6 +961,11 @@
         "title": "Rejoindre la communauté",
         "description": "Discutez, posez des questions et partagez des idées.",
         "cta": "Joindre le Discord"
+      },
+      "builders": {
+        "title": "Aidez à construire npmx",
+        "description": "Rejoignez les builders qui façonnent l'avenir de npmx.",
+        "cta": "Rejoindre le Discord Builders"
       },
       "follow": {
         "title": "Rester à jour",

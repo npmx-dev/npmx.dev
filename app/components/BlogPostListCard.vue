@@ -33,7 +33,9 @@ defineProps<{
       <!-- Text Content -->
       <div class="flex-1 min-w-0 text-start gap-2">
         <div class="flex items-center gap-2">
-          <span class="text-xs text-fg-muted font-mono">{{ published }}</span>
+          <span class="text-xs text-fg-muted font-mono">
+            <DateTime :datetime="published" year="numeric" month="short" day="numeric" />
+          </span>
           <span
             v-if="draft"
             class="text-xs px-1.5 py-0.5 rounded badge-orange font-sans font-medium"

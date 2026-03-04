@@ -495,9 +495,6 @@
   "connector": {
     "modal": {
       "title": "Lokal Konnektor",
-      "contributor_badge": "Yalnız əməkdaşlar üçün",
-      "contributor_notice": "Konnektor hələ npm-ə dərc edilməyib. Lokal işə salmaq üçün {link} baxın.",
-      "contributor_link": "töhfə bələdçisi",
       "connected": "Qoşulub",
       "connected_as_user": "~{user} kimi qoşulub",
       "connected_hint": "İndi veb interfeysdən paketləri və təşkilatları idarə edə bilərsiniz.",

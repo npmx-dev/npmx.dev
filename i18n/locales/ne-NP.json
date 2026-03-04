@@ -345,9 +345,6 @@
   "connector": {
     "modal": {
       "title": "लोकल कनेक्टर",
-      "contributor_badge": "कन्ट्रिब्युटर मात्र",
-      "contributor_notice": "कनेक्टर अझै npm मा प्रकाशित गरिएको छैन। लोकल रूपमा चलाउने तरिका हेर्न {link} हेर्नुहोस्।",
-      "contributor_link": "कन्ट्रिब्युटिङ गाइड",
       "connected": "जोडियो",
       "connected_as_user": "~{user} रूपमा जोडियो",
       "connected_hint": "अब तपाईं वेब UI बाट प्याकेज र संगठनहरू व्यवस्थापन गर्न सक्नुहुन्छ।",

@@ -17,7 +17,9 @@
     "source": "Quellcode",
     "social": "Social",
     "chat": "Chat",
-    "keyboard_shortcuts": "Tastenkombination"
+    "keyboard_shortcuts": "Tastenkombination",
+    "blog": "Blog",
+    "builders_chat": "Builders-Chat"
   },
   "shortcuts": {
     "section": {
@@ -58,6 +60,12 @@
     "start_typing": "Tippe, um Pakete zu suchen",
     "algolia_disclaimer": "Bereitgestellt von Algolia",
     "exact_match": "exakt",
+    "instant_search": "Sofortsuche",
+    "instant_search_on": "Sofortsuche aktiviert",
+    "instant_search_off": "Sofortsuche deaktiviert",
+    "instant_search_turn_on": "Sofortsuche aktivieren",
+    "instant_search_turn_off": "Sofortsuche deaktivieren",
+    "instant_search_advisory": "Die Sofortsuche sendet bei jedem Tastendruck eine Anfrage.",
     "suggestion": {
       "user": "Benutzer",
       "org": "Organisation",
@@ -112,7 +120,9 @@
     "translation_progress": "Übersetzungsfortschritt",
     "background_themes": "Hintergrundschattierung",
     "keyboard_shortcuts_enabled": "Tastenkombinationen aktivieren",
-    "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen"
+    "keyboard_shortcuts_enabled_description": "Tastenkombinationen können deaktiviert werden, wenn sie mit anderen Browser- oder Systemkürzeln in Konflikt stehen",
+    "instant_search": "Sofortsuche",
+    "instant_search_description": "Suchergebnisse werden automatisch bei der Eingabe aktualisiert, ohne die Eingabetaste zu drücken."
   },
   "i18n": {
     "missing_keys": "{count} fehlende Übersetzung | {count} fehlende Übersetzungen",
@@ -144,7 +154,60 @@
       "role": "Rolle",
       "members": "Mitglieder"
     },
-    "scroll_to_top": "Nach oben scrollen"
+    "scroll_to_top": "Nach oben scrollen",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "error": "Fehler"
+  },
+  "error": {
+    "401": "Nicht autorisiert",
+    "404": "Seite nicht gefunden",
+    "500": "Interner Serverfehler",
+    "503": "Dienst nicht verfügbar",
+    "default": "Ein unerwarteter Fehler ist aufgetreten"
+  },
+  "profile": {
+    "display_name": "Anzeigename",
+    "description": "Beschreibung",
+    "no_description": "Keine Beschreibung vorhanden",
+    "website": "Website",
+    "website_placeholder": "https://beispiel.de",
+    "likes": "Likes",
+    "seo_title": "{name} – Profil auf npmx",
+    "seo_description": "Profil von {name} auf npmx – Pakete, Likes und mehr.",
+    "not_found": "Profil nicht gefunden",
+    "not_found_message": "Dieses Profil konnte nicht gefunden werden.",
+    "invite": {
+      "message": "Schau dir mein Profil auf npmx an!",
+      "share_button": "Profil teilen",
+      "compose_text": "Schau dir {name} auf npmx an: {url}"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "Blog",
+    "meta_description": "Neuigkeiten, Updates und Artikel rund um npmx.",
+    "author": {
+      "view_profile": "Profil von {name} anzeigen"
+    },
+    "draft_badge": "Entwurf",
+    "draft_banner": "Dies ist ein Entwurf und noch nicht öffentlich sichtbar.",
+    "atproto": {
+      "view_on_bluesky": "Auf Bluesky ansehen",
+      "reply_on_bluesky": "Auf Bluesky antworten",
+      "likes_on_bluesky": "{count} Like auf Bluesky | {count} Likes auf Bluesky",
+      "like_or_reply_on_bluesky": "Auf Bluesky liken oder antworten",
+      "no_comments_yet": "Noch keine Kommentare. Sei der Erste!",
+      "could_not_load_comments": "Kommentare konnten nicht geladen werden.",
+      "comments": "Kommentare",
+      "loading_comments": "Kommentare werden geladen...",
+      "updating": "(wird aktualisiert...)",
+      "reply_count": "{count} Antwort | {count} Antworten",
+      "like_count": "{count} Like | {count} Likes",
+      "repost_count": "{count} Repost | {count} Reposts",
+      "more_replies": "{count} weitere Antwort anzeigen | {count} weitere Antworten anzeigen"
+    }
   },
   "package": {
     "not_found": "Paket nicht gefunden",
@@ -383,6 +446,8 @@
       "y_axis_label": "{facet} {granularity}",
       "facet": "Facette",
       "title": "Trends",
+      "open_options": "Diagrammoptionen öffnen",
+      "close_options": "Diagrammoptionen schließen",
       "contributors_skip": "Nicht angezeigt bei Mitwirkende (hat kein GitHub-Repository): | Nicht angezeigt bei Mitwirkende (haben kein GitHub-Repository):",
       "items": {
         "downloads": "Downloads",
@@ -417,6 +482,7 @@
     },
     "downloads": {
       "title": "Wöchentliche Downloads",
+      "subtitle": "Downloads über die Zeit",
       "community_distribution": "Community-Adoptionsverteilung ansehen"
     },
     "install_scripts": {
@@ -511,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "Lokaler Connector",
-      "contributor_badge": "Nur für Mitwirkende",
-      "contributor_notice": "Der Connector ist noch nicht auf npm veröffentlicht. Siehe den {link} für Informationen zum lokalen Ausführen.",
-      "contributor_link": "Leitfaden für Mitwirkende",
       "connected": "Verbunden",
       "connected_as_user": "Verbunden als ~{user}",
       "connected_hint": "Du kannst jetzt Pakete und Organisationen über die Web-Oberfläche verwalten.",
@@ -903,6 +966,11 @@
         "title": "Bleib auf dem Laufenden",
         "description": "Erfahre das Neueste über npmx.",
         "cta": "Auf Bluesky folgen"
+      },
+      "builders": {
+        "title": "Builders-Community",
+        "description": "Vernetze dich mit anderen Entwicklern, die auf npmx aufbauen.",
+        "cta": "Builders-Chat beitreten"
       }
     }
   },
@@ -931,7 +999,8 @@
       "connect_bluesky": "Mit Bluesky verbinden",
       "what_is_atmosphere": "Was ist ein Atmosphere-Konto?",
       "atmosphere_explanation": "{npmx} nutzt das {atproto}, um viele seiner sozialen Funktionen zu betreiben. So können Nutzer ihre Daten selbst verwalten und ein einziges Konto für alle kompatiblen Anwendungen nutzen. Sobald du ein Konto erstellt hast, kannst du andere Apps wie {bluesky} und {tangled} mit demselben Konto nutzen.",
-      "default_input_error": "Bitte geben Sie einen gültigen Handle, eine DID oder eine vollständige PDS-URL ein"
+      "default_input_error": "Bitte gib einen gültigen Handle, eine DID oder eine vollständige PDS-URL ein",
+      "profile": "Profil anzeigen"
     }
   },
   "header": {
@@ -1103,7 +1172,9 @@
     "files_button": "Dateien",
     "select_file_prompt": "Wähle eine Datei in der Seitenleiste, um die Änderungen anzuzeigen",
     "close_files_panel": "Dateibereich schließen",
-    "filter_files_label": "Dateien nach Art der Änderung filtern"
+    "filter_files_label": "Dateien nach Art der Änderung filtern",
+    "file_too_large": "Datei zu groß für Diff-Ansicht",
+    "file_size_warning": "{size} überschreitet das Limit für die Diff-Anzeige"
   },
   "privacy_policy": {
     "title": "Datenschutzerklärung",
@@ -1213,6 +1284,34 @@
       "title": "Feedback",
       "p1": "Wenn du bei {app} auf eine Barriere stößt, sag uns bitte Bescheid, indem du ein Ticket in unserem {link} eröffnest. Wir nehmen diese Meldungen ernst und werden unser Bestes tun, um sie zu beheben.",
       "link": "GitHub-Repository"
+    }
+  },
+  "pds": {
+    "title": "npmx PDS",
+    "meta_description": "Tritt dem persönlichen Datenspeicher (PDS) von npmx bei – deiner Heimat im AT-Protokoll-Netzwerk.",
+    "join": {
+      "title": "Dem PDS beitreten",
+      "description": "Erstelle ein Konto auf dem npmx PDS und werde Teil des dezentralen AT-Protokoll-Netzwerks.",
+      "migrate": "Bestehendes Konto migrieren"
+    },
+    "server": {
+      "title": "Serverinformationen",
+      "location_label": "Standort",
+      "location_value": "EU",
+      "infrastructure_label": "Infrastruktur",
+      "infrastructure_value": "Vercel",
+      "privacy_label": "Datenschutz",
+      "privacy_value": "Datenschutzerklärung ansehen",
+      "learn_more": "Mehr über PDS erfahren"
+    },
+    "community": {
+      "title": "Community",
+      "description": "Nutzende, die diesen PDS verwenden.",
+      "loading": "Community wird geladen...",
+      "error": "Community konnte nicht geladen werden",
+      "empty": "Noch keine Mitglieder gefunden.",
+      "view_profile": "Profil von {name} anzeigen",
+      "new_accounts": "Neue Konten"
     }
   }
 }

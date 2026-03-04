@@ -511,9 +511,6 @@
   "connector": {
     "modal": {
       "title": "Lokální konektor",
-      "contributor_badge": "Pouze přispěvatelé",
-      "contributor_notice": "Konektor ještě není publikován na npm. Viz {link} pro informace, jak jej spustit lokálně.",
-      "contributor_link": "příručka pro přispěvatele",
       "connected": "Připojeno",
       "connected_as_user": "Připojeno jako ~{user}",
       "connected_hint": "Nyní můžete spravovat balíčky a organizace z webového rozhraní.",

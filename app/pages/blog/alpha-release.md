@@ -102,6 +102,12 @@ headline="Read more from the community"
     description: 'The story of the many people and communities that converged to build npmx together.'
   },
   {
+    url: 'https://www.freecodecamp.org/news/learning-to-enjoy-code-reviews-with-npmx/',
+    title: 'OSS Pull Request Therapy: Learning to Enjoy Code Reviews with npmx',
+    authorHandle: 'abbeyperini.dev',
+    description: 'For years, I thought Open Source Software (OSS) just wasn\'t for me. Curious about the hype I saw on Bluesky, I recently joined the npmx Discord server on a whim. My journey from lurker to contributor taught me a lot about OSS and gave me new confidence going into code reviews.'
+  },
+  {
     url: 'https://graphieros.github.io/graphieros-blog/blog/2026/npmx.html',
     title: 'vue-data-ui is on npmx npmx is on vue-data-ui',
     authorHandle: 'graphieros.npmx.social',
@@ -118,6 +124,12 @@ headline="Read more from the community"
     title: 'Sponsoring npmx',
     authorHandle: 'netlify.com',
     description: 'It’s more important than ever that companies come together across competitive boundaries to sponsor and support the open ecosystem that lifts all boats.',
+  },
+  {
+    url: 'https://atproto.com/blog/npmx-alpha-launch',
+    title: 'Supporting the npmx Alpha Launch',
+    authorHandle: 'atproto.com',
+    description: 'AT Protocol explores how the npmx alpha launch showcases open-source communities building quickly on top of atproto.'
   },
   {
     url: 'https://johnnyreilly.com/npmx-with-a-little-help-from-my-friends',
@@ -226,6 +238,12 @@ headline="Read more from the community"
     title: 'Finding an accessibility-first culture in npmx',
     authorHandle: 'abbeyperini.dev',
     description: 'Abbey Perini talks about how accessibility is a deep part of the npmx culture.'
+  },
+  {
+    url: 'https://jonathanyeong.com/writing/npmx-and-the-open-source-mindset/',
+    title: 'npmx and the open source mindset',
+    authorHandle: 'jonathanyeong.com',
+    description: 'How npmx taught me to embrace the open source mindset.'
   }
 ]"
 />

@@ -570,9 +570,6 @@
   "connector": {
     "modal": {
       "title": "ローカルコネクタ",
-      "contributor_badge": "コントリビューター専用",
-      "contributor_notice": "コネクタはまだ npm に公開されていません。ローカルでの実行方法については {link} を参照してください。",
-      "contributor_link": "コントリビューションガイド",
       "connected": "接続済み",
       "connected_as_user": "~{user} として接続済み",
       "connected_hint": "Web UIからパッケージとorganizationを管理できるようになりました。",

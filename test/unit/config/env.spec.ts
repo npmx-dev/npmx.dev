@@ -43,6 +43,14 @@ describe('isCanary', () => {
     expect(isCanary).toBe(true)
   })
 
+  it('returns true when VERCEL_ENV is custom "canary" and branch is "main"', async () => {
+    vi.stubEnv('VERCEL_ENV', 'canary')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { isCanary } = await import('../../../config/env')
+
+    expect(isCanary).toBe(true)
+  })
+
   it('returns false when VERCEL_ENV is "preview", branch is "main", but is a PR', async () => {
     vi.stubEnv('VERCEL_ENV', 'preview')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
@@ -90,6 +98,15 @@ describe('getEnv', () => {
 
   it('returns "canary" for Vercel preview deploys from main branch (non-PR)', async () => {
     vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(false)
+
+    expect(result.env).toBe('canary')
+  })
+
+  it('returns "canary" for custom Vercel "canary" environment on main branch', async () => {
+    vi.stubEnv('VERCEL_ENV', 'canary')
     vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
     const { getEnv } = await import('../../../config/env')
     const result = await getEnv(false)
@@ -310,18 +327,11 @@ describe('getProductionUrl', () => {
 })
 
 describe('getVersion', () => {
-  it('returns package.json version when no git tags are reachable', async () => {
-    const { getVersion, version } = await import('../../../config/env')
-    const result = await getVersion()
-
-    // In test environments without reachable tags, falls back to package.json
-    expect(result).toBe(version)
-  })
-
-  it('strips the leading "v" prefix from the tag', async () => {
+  it('returns a valid semver string without a leading "v"', async () => {
     const { getVersion } = await import('../../../config/env')
     const result = await getVersion()
 
     expect(result).not.toMatch(/^v/)
+    expect(result).toMatch(/^\d+\.\d+\.\d+$/)
   })
 })

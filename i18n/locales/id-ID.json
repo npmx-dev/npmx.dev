@@ -511,9 +511,6 @@
   "connector": {
     "modal": {
       "title": "Konektor Lokal",
-      "contributor_badge": "Hanya untuk kontributor",
-      "contributor_notice": "Konektor belum diterbitkan ke npm. Lihat {link} untuk cara menjalankannya secara lokal.",
-      "contributor_link": "panduan kontribusi",
       "connected": "Terhubung",
       "connected_as_user": "Terhubung sebagai ~{user}",
       "connected_hint": "Anda sekarang dapat mengelola paket dan organisasi dari UI web.",

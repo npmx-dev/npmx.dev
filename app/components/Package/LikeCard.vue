@@ -17,7 +17,7 @@ const { user } = useAtproto()
 
 const authModal = useModal('auth-modal')
 
-const { data: likesData } = useFetch(() => `/api/social/likes/${name.value}`, {
+const { data: likesData, status: likesStatus } = useFetch(() => `/api/social/likes/${name.value}`, {
   default: () => ({ totalLikes: 0, userHasLiked: false }),
   server: false,
 })
@@ -76,6 +76,7 @@ const likeAction = async () => {
       <div class="flex items-center gap-4 justify-between shrink-0">
         <ClientOnly>
           <TooltipApp
+            v-if="likesStatus !== 'pending'"
             :text="likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')"
             position="bottom"
           >

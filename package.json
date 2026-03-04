@@ -54,8 +54,8 @@
   },
   "dependencies": {
     "@atcute/bluesky-richtext-segmenter": "3.0.0",
+    "@atcute/tid": "1.1.2",
     "@atproto/api": "^0.19.0",
-    "@atproto/common": "0.5.13",
     "@atproto/lex": "0.0.19",
     "@atproto/lex-password-session": "0.0.7",
     "@atproto/oauth-client-node": "^0.3.15",
