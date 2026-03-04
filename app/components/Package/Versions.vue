@@ -212,8 +212,10 @@ const visibleTagRows = computed(() => {
     ? allTagRows.value
     : allTagRows.value.filter(row => !row.primaryVersion.deprecated)
   const rows = isFilterActive.value
-    ? rowsMaybeFilteredForDeprecation.filter(row =>
-        filteredVersionSet.value.has(row.primaryVersion.version),
+    ? rowsMaybeFilteredForDeprecation.filter(
+        row =>
+          filteredVersionSet.value.has(row.primaryVersion.version) ||
+          getTagVersions(row.tag).some(v => filteredVersionSet.value.has(v.version)),
       )
     : rowsMaybeFilteredForDeprecation
   const first = rows.slice(0, MAX_VISIBLE_TAGS)
@@ -231,7 +233,11 @@ const visibleTagRows = computed(() => {
 const hiddenTagRows = computed(() => {
   const hiddenRows = allTagRows.value.filter(row => !visibleTagRows.value.includes(row))
   const rows = isFilterActive.value
-    ? hiddenRows.filter(row => filteredVersionSet.value.has(row.primaryVersion.version))
+    ? hiddenRows.filter(
+        row =>
+          filteredVersionSet.value.has(row.primaryVersion.version) ||
+          getTagVersions(row.tag).some(v => filteredVersionSet.value.has(v.version)),
+      )
     : hiddenRows
   return rows
 })
@@ -688,7 +694,7 @@ function majorGroupContainsCurrent(group: (typeof otherMajorGroups.value)[0]): b
         <!-- Expanded versions -->
         <div
           v-if="
-            expandedTags.has(row.tag) &&
+            (expandedTags.has(row.tag) || isFilterActive) &&
             getExpandedTagVersions(row.tag, row.primaryVersion.version).length
           "
           class="ms-4 ps-2 border-is border-border space-y-0.5 pe-2"
