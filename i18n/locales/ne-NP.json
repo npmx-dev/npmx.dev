@@ -640,7 +640,6 @@
       "paginated": "पृष्ठमा विभाजित",
       "items_per_page": "प्रति पृष्ठ वस्तुहरू",
       "per_page": "{count} / पृष्ठ",
-      "all_yolo": "सबै (YOLO)",
       "showing": "{total} मध्ये {start}-{end}",
       "previous": "अघिल्लो पृष्ठ",
       "next": "अर्को पृष्ठ",

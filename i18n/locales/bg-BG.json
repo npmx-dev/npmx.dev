@@ -841,7 +841,6 @@
       "paginated": "Със страници",
       "items_per_page": "Елементи на страница",
       "per_page": "{count} / страница",
-      "all_yolo": "Всички (YOLO)",
       "showing": "{start}-{end} от {total}",
       "previous": "Предишна страница",
       "next": "Следваща страница",

@@ -841,7 +841,6 @@
       "paginated": "По сторінках",
       "items_per_page": "Елементів на сторінці",
       "per_page": "{count} / сторінка",
-      "all_yolo": "Усі (YOLO)",
       "showing": "{start}-{end} з {total}",
       "previous": "Попередня сторінка",
       "next": "Наступна сторінка",

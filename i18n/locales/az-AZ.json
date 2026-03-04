@@ -802,7 +802,6 @@
       "paginated": "Səhifələnmiş",
       "items_per_page": "Səhifə başına element",
       "per_page": "{count} / səhifə",
-      "all_yolo": "Hamısı (YOLO)",
       "showing": "{start}-{end} / {total}",
       "previous": "Əvvəlki səhifə",
       "next": "Növbəti səhifə",

@@ -819,7 +819,6 @@
       "paginated": "Stronicowane",
       "items_per_page": "Elementów na stronę",
       "per_page": "{count} / stronę",
-      "all_yolo": "Wszystkie (YOLO)",
       "showing": "{start}-{end} z {total}",
       "previous": "Poprzednia strona",
       "next": "Następna strona",
