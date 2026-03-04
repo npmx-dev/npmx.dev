@@ -23,22 +23,17 @@ const effectiveMode = computed<PaginationMode>(() =>
 )
 
 // When 'all' is selected, there's only 1 page with everything
-const isShowingAll = computed(() => pageSize.value === 'all')
-const totalPages = computed(() =>
-  isShowingAll.value ? 1 : Math.ceil(props.totalItems / (pageSize.value as number)),
-)
+const totalPages = computed(() => Math.ceil(props.totalItems / (pageSize.value as number)))
 
 // Whether to show the mode toggle (hidden in table view since table always uses pagination)
 const showModeToggle = computed(() => props.viewMode !== 'table')
 
 const startItem = computed(() => {
   if (props.totalItems === 0) return 0
-  if (isShowingAll.value) return 1
   return (currentPage.value - 1) * (pageSize.value as number) + 1
 })
 
 const endItem = computed(() => {
-  if (isShowingAll.value) return props.totalItems
   return Math.min(currentPage.value * (pageSize.value as number), props.totalItems)
 })
 
@@ -159,10 +154,7 @@ function handlePageSizeChange(event: Event) {
           @change="handlePageSizeChange"
           :items="
             PAGE_SIZE_OPTIONS.map(size => ({
-              label:
-                size === 'all'
-                  ? $t('filters.pagination.all_yolo')
-                  : $t('filters.pagination.per_page', { count: size }),
+              label: $t('filters.pagination.per_page', { count: size }),
               value: String(size),
             }))
           "
