@@ -115,6 +115,22 @@ const effectiveCurrentVersion = computed(
 
 // Semver range filter
 const semverFilter = ref('')
+
+// Load all versions when a valid semver filter is entered
+watch(semverFilter, async newFilter => {
+  const trimmed = newFilter.trim()
+  if (trimmed === '' || hasLoadedAll.value) return
+  if (!validRange(trimmed)) return
+
+  try {
+    const allVersions = await loadAllVersions()
+    processLoadedVersions(allVersions)
+    // Auto-expand "Other versions" so filtered results are visible
+    otherVersionsExpanded.value = true
+  } catch {
+    // Silently fail — user can still use the filter with already-known versions
+  }
+})
 // Collect all known versions: initial props + dynamically loaded ones
 const allKnownVersions = computed(() => {
   const versions = new Set(Object.keys(props.versions))
