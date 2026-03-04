@@ -17,7 +17,7 @@ const { user } = useAtproto()
 
 const authModal = useModal('auth-modal')
 
-const { data: likesData } = useFetch(() => `/api/social/likes/${name.value}`, {
+const { data: likesData, status: likesStatus } = useFetch(() => `/api/social/likes/${name.value}`, {
   default: () => ({ totalLikes: 0, userHasLiked: false }),
   server: false,
 })
@@ -92,14 +92,20 @@ const likeAction = async () => {
             >
               <span
                 :class="
-                  likesData?.userHasLiked
-                    ? 'i-lucide-heart-minus text-red-500'
-                    : 'i-lucide-heart-plus'
+                  likesStatus === 'pending'
+                    ? 'i-lucide-heart'
+                    : likesData?.userHasLiked
+                      ? 'i-lucide-heart-minus text-red-500'
+                      : 'i-lucide-heart-plus'
                 "
                 class="w-4 h-4"
                 aria-hidden="true"
               />
-              <span>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
+              <span
+                v-if="likesStatus === 'pending'"
+                class="inline-block w-4 h-4 bg-bg-subtle rounded animate-pulse"
+              />
+              <span v-else>{{ compactNumberFormatter.format(likesData?.totalLikes ?? 0) }}</span>
             </button>
           </TooltipApp>
         </ClientOnly>
