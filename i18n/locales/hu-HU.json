@@ -77,6 +77,10 @@
     "links": "Linkek",
     "tap_to_search": "Koppints a kereséshez"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "beállítások",
     "tagline": "szabd személyre az npmx élményed",
@@ -122,6 +126,7 @@
     "edit_on_github": "Szerkesztés GitHub-on",
     "view_guide": "Fordítási útmutató"
   },
+  "error": {},
   "common": {
     "loading": "Betöltés...",
     "loading_more": "Továbbiak betöltése...",
@@ -246,6 +251,7 @@
       "like": "Szeretem ezt a csomagot",
       "unlike": "Nem szeretem ezt a csomagot"
     },
+    "github": {},
     "docs": {
       "not_available": "Dokumentáció nem elérhető",
       "not_available_detail": "Nem sikerült legenerálni a dokumentációt ehhez a verzióhoz."
@@ -918,6 +924,7 @@
         "description": "Chat, kérdések és ötletelés.",
         "cta": "Csatlakozás a Discord-hoz"
       },
+      "builders": {},
       "follow": {
         "title": "Maradj naprakész",
         "description": "Értesülj a legújabb npmx hírekről.",
@@ -939,19 +946,11 @@
   },
   "auth": {
     "modal": {
-      "title": "Atmosphere",
-      "connected_as": "Csatlakoztatva mint {'@'}{handle}",
-      "disconnect": "Szétkapcsolás",
-      "connect_prompt": "Csatlakozz az Atmosphere fiókkal",
-      "handle_label": "Kezelő",
-      "handle_placeholder": "alice.npmx.social",
+      "profile": "Profil",
       "connect": "Csatlakozás",
-      "create_account": "Új fiók létrehozása",
-      "connect_bluesky": "Csatlakozás Bluesky-vel",
-      "what_is_atmosphere": "Mi az Atmosphere fiók?",
-      "atmosphere_explanation": "{npmx} az {atproto} -t használja sok szociális funkciójának meghajtásához, lehetővé téve a felhasználók számára az adatok tulajdonlását és egy fiók használatát az összes kompatibilis alkalmazásban. Miután létrehozol egy fiókot, más appokkal is használhatod ugyanazzal a fiókkal, mint a {bluesky} és a {tangled}.",
-      "default_input_error": "Kérjük, adj meg egy érvényes kezelőt, DID-t vagy egy teljes PDS URL-t",
-      "profile": "Profil"
+      "disconnect": "Szétkapcsolás",
+      "atmosphere": {},
+      "github": {}
     }
   },
   "header": {
@@ -1125,6 +1124,11 @@
     "select_file_prompt": "Válassz egy fájlt az oldalsávból a diff megtekintéséhez",
     "close_files_panel": "Fájlok panel bezárása",
     "filter_files_label": "Fájlok szűrése módosítás típusa szerint"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "adatvédelmi nyilatkozat",

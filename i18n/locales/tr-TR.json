@@ -77,6 +77,10 @@
     "links": "Bağlantılar",
     "tap_to_search": "Aramak için dokunun"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "ayarlar",
     "tagline": "npmx deneyiminizi kişiselleştirin",
@@ -122,6 +126,7 @@
     "edit_on_github": "GitHub'da düzenle",
     "view_guide": "Çeviri rehberi"
   },
+  "error": {},
   "common": {
     "loading": "Yükleniyor...",
     "loading_more": "Daha fazla yükleniyor...",
@@ -246,6 +251,7 @@
       "like": "Bu paketi beğen",
       "unlike": "Beğeniyi geri al"
     },
+    "github": {},
     "docs": {
       "not_available": "Belgeler mevcut değil",
       "not_available_detail": "Bu sürüm için belgeler oluşturulamadı."
@@ -918,6 +924,7 @@
         "description": "Discord'da topluluğa katılın",
         "cta": "Discord'a katıl"
       },
+      "builders": {},
       "follow": {
         "title": "Takip edin",
         "description": "Güncellemeler için bizi takip edin",
@@ -939,19 +946,11 @@
   },
   "auth": {
     "modal": {
-      "title": "Kimlik Doğrulama",
-      "connected_as": "{handle} olarak bağlandı",
-      "disconnect": "Bağlantıyı kes",
-      "connect_prompt": "Atmosphere'e bağlanın",
-      "handle_label": "Kullanıcı adı",
-      "handle_placeholder": "kullaniciadi.bsky.social",
+      "profile": "Profil",
       "connect": "Bağlan",
-      "create_account": "Hesap oluştur",
-      "connect_bluesky": "Bluesky ile bağlan",
-      "what_is_atmosphere": "Atmosphere nedir?",
-      "atmosphere_explanation": "Atmosphere, npmx için sosyal katmandır. Paketleri beğenin ve profilinizi özelleştirin.",
-      "default_input_error": "Geçerli bir Bluesky kullanıcı adı girin",
-      "profile": "Profil"
+      "disconnect": "Bağlantıyı kes",
+      "atmosphere": {},
+      "github": {}
     }
   },
   "header": {
@@ -1125,6 +1124,11 @@
     "select_file_prompt": "Görüntülemek için bir dosya seçin",
     "close_files_panel": "Dosya panelini kapat",
     "filter_files_label": "Dosyaları filtrele"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "Gizlilik Politikası",
