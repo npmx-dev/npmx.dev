@@ -157,7 +157,7 @@ watch(
 
 /* Highlighted lines in code content - extend full width with negative margin */
 .code-content :deep(.line.highlighted) {
-  background: rgb(234 179 8 / 0.2); /* yellow-500/20 */
+  @apply bg-yellow-500/20;
   margin: 0 -1rem;
   padding: 0 1rem;
 }
