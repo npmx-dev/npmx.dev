@@ -22,4 +22,9 @@ export const DOWNLOAD_ANOMALIES: DownloadAnomaly[] = [
     start: { date: '2023-11-18', weeklyDownloads: 59_611 },
     end: { date: '2023-11-21', weeklyDownloads: 150_680 },
   },
+  /**
+  * NOTE: 
+  *  - please add new entries above this comment.
+  *  - Add a comment before any new entry to explain the change
+  **/
 ]
