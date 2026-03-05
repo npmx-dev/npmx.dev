@@ -40,6 +40,7 @@ test-results/
 # generated files
 shared/types/lexicons
 file-tree-sprite.svg
+public/blog/avatar
 
 **/__screenshots__/**
 

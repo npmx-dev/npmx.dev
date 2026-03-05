@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm є зареєстрованою торговою маркою npm, Inc. Цей сайт не пов'язаний з npm, Inc.",
   "footer": {
     "about": "про проект",
+    "blog": "Блог",
     "docs": "документація",
     "source": "код",
     "social": "соціальні мережі",
     "chat": "чат",
+    "builders_chat": "розробники",
     "keyboard_shortcuts": "гарячі клавіші"
   },
   "shortcuts": {
@@ -63,7 +65,13 @@
       "org": "організація",
       "view_user_packages": "Переглянути пакети цього користувача",
       "view_org_packages": "Переглянути пакети цієї організації"
-    }
+    },
+    "instant_search": "Миттєвий пошук",
+    "instant_search_on": "увімкнено",
+    "instant_search_off": "вимкнено",
+    "instant_search_turn_on": "увімкнути",
+    "instant_search_turn_off": "вимкнути",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Головна",
@@ -76,6 +84,31 @@
     "open_menu": "Відкрити меню",
     "links": "Посилання",
     "tap_to_search": "Натисніть для пошуку"
+  },
+  "blog": {
+    "title": "Блог",
+    "heading": "блог",
+    "meta_description": "Думки та оновлення від спільноти npmx",
+    "author": {
+      "view_profile": "Переглянути профіль {name} у Bluesky"
+    },
+    "draft_badge": "Чернетка",
+    "draft_banner": "Це неопублікована чернетка. Вона може бути неповною або містити неточності.",
+    "atproto": {
+      "view_on_bluesky": "Переглянути у Bluesky",
+      "reply_on_bluesky": "Відповісти у Bluesky",
+      "likes_on_bluesky": "Вподобайки у Bluesky",
+      "like_or_reply_on_bluesky": "Вподобайте цей пост або залиште коментар у Bluesky",
+      "no_comments_yet": "Коментарів поки немає.",
+      "could_not_load_comments": "Не вдалося завантажити коментарі.",
+      "comments": "Коментарі",
+      "loading_comments": "Завантаження коментарів...",
+      "updating": "Оновлення...",
+      "reply_count": "{count} відповідь | {count} відповіді | {count} відповідей",
+      "like_count": "{count} вподобайка | {count} вподобайки | {count} вподобайок",
+      "repost_count": "{count} репост | {count} репости | {count} репостів",
+      "more_replies": "ще {count} відповідь... | ще {count} відповіді... | ще {count} відповідей..."
+    }
   },
   "settings": {
     "title": "параметри",
@@ -96,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Використовує Algolia для швидшого пошуку, сторінок організацій та користувачів."
     },
+    "instant_search": "Миттєвий пошук",
+    "instant_search_description": "Переходить на сторінку пошуку та оновлює результати під час введення.",
     "relative_dates": "Відносні дати",
     "include_types": "Включити {'@'}types у встановлення",
     "include_types_description": "Додавайте пакет {'@'}types до команд встановлення для пакетів без типів",
@@ -121,6 +156,13 @@
     "contribute_hint": "Допоможіть поліпшити цей переклад, додавши відсутні ключі.",
     "edit_on_github": "Редагувати на GitHub",
     "view_guide": "Керівництво з перекладу"
+  },
+  "error": {
+    "401": "Не авторизовано",
+    "404": "Сторінку не знайдено",
+    "500": "Внутрішня помилка сервера",
+    "503": "Сервіс недоступний",
+    "default": "Щось пішло не так"
   },
   "common": {
     "loading": "Завантаження...",
@@ -399,6 +441,8 @@
       "download_file": "Завантажити {fileType}",
       "toggle_annotator": "Перемкнути анотатор",
       "toggle_stack_mode": "Перемкнути режим стека",
+      "open_options": "Відкрити параметри",
+      "close_options": "Закрити параметри",
       "legend_estimation": "Оцінка",
       "no_data": "Дані недоступні",
       "y_axis_label": "{granularity} {facet}",
@@ -917,6 +961,11 @@
         "description": "Спілкуйтеся в чаті, ставте питання та діліться ідеями.",
         "cta": "Приєднатися до спільноти Discord"
       },
+      "builders": {
+        "title": "Допоможіть розвивати npmx",
+        "description": "Приєднайтесь до розробників, що формують майбутнє npmx.",
+        "cta": "Приєднатися до Discord для розробників"
+      },
       "follow": {
         "title": "Залишайтеся в курсі",
         "description": "Дізнайтеся останні новини про npmx.",
@@ -1098,6 +1147,7 @@
     "file_too_large": "Файл завеликий для порівняння",
     "file_size_warning": "{size} перевищує ліміт 250 КБ для порівняння",
     "compare_versions": "різниця",
+    "compare_versions_title": "Порівняти з останньою версією",
     "summary": "Підсумок",
     "deps_count": "{count} залежн.",
     "dependencies": "Залежності",
@@ -1124,6 +1174,34 @@
     "select_file_prompt": "Виберіть файл з бічної панелі для перегляду різниці",
     "close_files_panel": "Закрити панель файлів",
     "filter_files_label": "Фільтрувати файли за типом зміни"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Офіційний сервер особистих даних AT Protocol (PDS) для спільноти npmx.",
+    "join": {
+      "title": "Приєднатися до спільноти",
+      "description": "Незалежно від того, чи ви створюєте свій перший акаунт в атмосфері, чи мігруєте наявний — ви тут на своєму місці. Ви можете перенести поточний акаунт, не втрачаючи нікнейм, пости або підписників.",
+      "migrate": "Мігрувати за допомогою PDS MOOver"
+    },
+    "server": {
+      "title": "Деталі сервера",
+      "location_label": "Розташування:",
+      "location_value": "Нюрнберг, Німеччина",
+      "infrastructure_label": "Інфраструктура:",
+      "infrastructure_value": "Розміщено на Hetzner",
+      "privacy_label": "Конфіденційність:",
+      "privacy_value": "Підпадає під суворе законодавство ЄС про захист даних",
+      "learn_more": "Дізнайтесь, як npmx використовує Атмосферу"
+    },
+    "community": {
+      "title": "Хто тут є",
+      "description": "Деякі з {count} акаунтів, що вже вважають npmx.social своїм домом:",
+      "loading": "Завантаження спільноти PDS...",
+      "error": "Не вдалося завантажити спільноту PDS.",
+      "empty": "Немає учасників спільноти для відображення.",
+      "view_profile": "Переглянути профіль {handle}",
+      "new_accounts": "...та ще {count} нових в атмосфері"
+    }
   },
   "privacy_policy": {
     "title": "політика конфіденційності",

@@ -21,6 +21,7 @@ const providerIcons: Record<string, string> = {
   'svelte-playground': 'i-simple-icons:svelte',
   'tailwind-playground': 'i-simple-icons:tailwindcss',
   'storybook': 'i-simple-icons:storybook',
+  'marko-playground': 'i-simple-icons:marko',
 }
 
 // Map provider id to color class
@@ -39,6 +40,7 @@ const providerColors: Record<string, string> = {
   'svelte-playground': 'text-provider-svelte',
   'tailwind-playground': 'text-provider-tailwind',
   'storybook': 'text-provider-storybook',
+  'marko-playground': 'text-provider-marko',
 }
 
 function getIcon(provider: string): string {

@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm, npm, Inc.'in tescilli ticari markasıdır. Bu site npm, Inc. ile bağlantılı değildir.",
   "footer": {
     "about": "hakkında",
+    "blog": "blog",
     "docs": "belgeler",
     "source": "kaynak",
     "social": "sosyal",
     "chat": "sohbet",
+    "builders_chat": "yapımcılar",
     "keyboard_shortcuts": "klavye kısayolları"
   },
   "shortcuts": {
@@ -63,6 +65,37 @@
       "org": "organizasyon",
       "view_user_packages": "Bu kullanıcının paketlerine bak",
       "view_org_packages": "Bu organizasyonun paketlerine bak"
+    },
+    "instant_search": "Anında arama",
+    "instant_search_on": "açık",
+    "instant_search_off": "kapalı",
+    "instant_search_turn_on": "aç",
+    "instant_search_turn_off": "kapat",
+    "instant_search_advisory": "{label} {state} — {action}"
+  },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "npmx topluluğundan içgörüler ve güncellemeler",
+    "author": {
+      "view_profile": "{name}'in Bluesky profilini görüntüle"
+    },
+    "draft_badge": "Taslak",
+    "draft_banner": "Bu yayınlanmamış bir taslaktır. Eksik veya hatalı bilgiler içerebilir.",
+    "atproto": {
+      "view_on_bluesky": "Bluesky'da görüntüle",
+      "reply_on_bluesky": "Bluesky'da yanıtla",
+      "likes_on_bluesky": "Bluesky'daki beğeniler",
+      "like_or_reply_on_bluesky": "Bu gönderiyi beğenin veya Bluesky'da yorum ekleyin",
+      "no_comments_yet": "Henüz yorum yok.",
+      "could_not_load_comments": "Yorumlar yüklenemedi.",
+      "comments": "Yorumlar",
+      "loading_comments": "Yorumlar yükleniyor...",
+      "updating": "Güncelleniyor...",
+      "reply_count": "{count} yanıt",
+      "like_count": "{count} beğeni",
+      "repost_count": "{count} yeniden paylaşım",
+      "more_replies": "{count} yanıt daha..."
     }
   },
   "nav": {
@@ -96,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Daha hızlı arama, organizasyon ve kullanıcı sayfaları için Algolia kullanır."
     },
+    "instant_search": "Anında arama",
+    "instant_search_description": "Arama sayfasına gider ve siz yazarken sonuçları günceller.",
     "relative_dates": "Göreceli tarihler",
     "include_types": "Kuruluma {'@'}types dahil et",
     "include_types_description": "Tipsiz paketler için kurulum komutlarına {'@'}types paketi ekle",
@@ -121,6 +156,13 @@
     "contribute_hint": "Eksik anahtarları ekleyerek bu çeviriyi geliştirmeye yardım edin.",
     "edit_on_github": "GitHub'da düzenle",
     "view_guide": "Çeviri rehberi"
+  },
+  "error": {
+    "401": "Yetkisiz",
+    "404": "Sayfa bulunamadı",
+    "500": "Sunucu hatası",
+    "503": "Hizmet kullanılamıyor",
+    "default": "Bir şeyler ters gitti"
   },
   "common": {
     "loading": "Yükleniyor...",
@@ -399,6 +441,8 @@
       "download_file": "{fileType} indir",
       "toggle_annotator": "Annotator geçişi",
       "toggle_stack_mode": "Yığın modunu değiştir",
+      "open_options": "Seçenekleri aç",
+      "close_options": "Seçenekleri kapat",
       "legend_estimation": "Tahmin",
       "no_data": "Veri mevcut değil",
       "y_axis_label": "{granularity} {facet}",
@@ -921,6 +965,11 @@
         "title": "Takip edin",
         "description": "Güncellemeler için bizi takip edin",
         "cta": "Bluesky'da takip et"
+      },
+      "builders": {
+        "title": "Yapımcılar",
+        "description": "Yapımcı topluluğumuza katılın ve npmx'in geleceğini şekillendirin",
+        "cta": "Yapımcı sohbetine katıl"
       }
     }
   },
@@ -973,6 +1022,7 @@
     }
   },
   "compare": {
+    "compare_versions_title": "Sürümleri karşılaştır",
     "packages": {
       "title": "Paketleri Karşılaştır",
       "tagline": "npm paketlerini yan yana karşılaştırın",
@@ -1097,7 +1147,6 @@
     "lines_hidden": "{count} satır gizlendi",
     "file_too_large": "Dosya çok büyük",
     "file_size_warning": "Dosya boyutu {size}",
-    "compare_versions": "Sürümleri karşılaştır",
     "summary": "Özet",
     "deps_count": "{count} bağımlılık",
     "dependencies": "Bağımlılıklar",
@@ -1124,6 +1173,34 @@
     "select_file_prompt": "Görüntülemek için bir dosya seçin",
     "close_files_panel": "Dosya panelini kapat",
     "filter_files_label": "Dosyaları filtrele"
+  },
+  "pds": {
+    "title": "PDS",
+    "meta_description": "npmx PDS - Kişisel Veri Sunucusu",
+    "join": {
+      "title": "Katıl",
+      "description": "npmx PDS'ye katılın",
+      "migrate": "Geçiş yap"
+    },
+    "server": {
+      "title": "Sunucu",
+      "location_label": "Konum",
+      "location_value": "Nürnberg, Almanya",
+      "infrastructure_label": "Altyapı",
+      "infrastructure_value": "Hetzner üzerinde barındırılıyor",
+      "privacy_label": "Gizlilik",
+      "privacy_value": "Katı AB Veri Koruma yasalarına tabidir",
+      "learn_more": "Daha fazla bilgi"
+    },
+    "community": {
+      "title": "Topluluk",
+      "description": "{count} hesap ile topluluğumuza katılın",
+      "loading": "Yükleniyor...",
+      "error": "Hata",
+      "empty": "Boş",
+      "view_profile": "{handle} profilini görüntüle",
+      "new_accounts": "{count} yeni hesap"
+    }
   },
   "privacy_policy": {
     "title": "Gizlilik Politikası",

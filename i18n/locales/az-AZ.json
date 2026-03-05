@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm, npm, Inc.-in qeydiyyatlı ticarət markasıdır. Bu sayt npm, Inc. ilə əlaqəli deyil.",
   "footer": {
     "about": "haqqında",
+    "blog": "bloq",
     "docs": "sənədlər",
     "source": "mənbə",
     "social": "sosial",
     "chat": "söhbət",
+    "builders_chat": "qurucular",
     "keyboard_shortcuts": "klaviatura qısayolları"
   },
   "shortcuts": {
@@ -62,7 +64,13 @@
       "org": "təşkilat",
       "view_user_packages": "Bu istifadəçinin paketlərinə bax",
       "view_org_packages": "Bu təşkilatın paketlərinə bax"
-    }
+    },
+    "instant_search": "Ani axtarış",
+    "instant_search_on": "açıq",
+    "instant_search_off": "bağlı",
+    "instant_search_turn_on": "aç",
+    "instant_search_turn_off": "bağla",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Əsas",
@@ -76,6 +84,31 @@
     "links": "Keçidlər",
     "tap_to_search": "Axtarmaq üçün toxunun"
   },
+  "blog": {
+    "title": "Bloq",
+    "heading": "bloq",
+    "meta_description": "npmx icmasından fikirlər və yeniliklər",
+    "author": {
+      "view_profile": "{name} Bluesky profilinə bax"
+    },
+    "draft_badge": "Qaralama",
+    "draft_banner": "Bu dərc edilməmiş qaralamadır. Natamam və ya qeyri-dəqiq məlumat ehtiva edə bilər.",
+    "atproto": {
+      "view_on_bluesky": "Bluesky-da bax",
+      "reply_on_bluesky": "Bluesky-da cavabla",
+      "likes_on_bluesky": "Bluesky-da bəyənmələr",
+      "like_or_reply_on_bluesky": "Bu yazını bəyənin və ya Bluesky-da şərh əlavə edin",
+      "no_comments_yet": "Hələ şərh yoxdur.",
+      "could_not_load_comments": "Şərhlər yüklənə bilmədi.",
+      "comments": "Şərhlər",
+      "loading_comments": "Şərhlər yüklənir...",
+      "updating": "Yenilənir...",
+      "reply_count": "{count} cavab",
+      "like_count": "{count} bəyənmə",
+      "repost_count": "{count} yenidən paylaşım",
+      "more_replies": "{count} cavab daha..."
+    }
+  },
   "settings": {
     "title": "tənzimləmələr",
     "tagline": "npmx təcrübənizi fərdiləşdirin",
@@ -84,7 +117,8 @@
       "appearance": "Görünüş",
       "display": "Ekran",
       "search": "Məlumat mənbəyi",
-      "language": "Dil"
+      "language": "Dil",
+      "keyboard_shortcuts": "Klaviatura qısayolları"
     },
     "data_source": {
       "label": "Məlumat mənbəyi",
@@ -94,6 +128,8 @@
       "algolia": "Algolia",
       "algolia_description": "Daha sürətli axtarış, təşkilat və istifadəçi səhifələri üçün Algolia istifadə edir."
     },
+    "instant_search": "Ani axtarış",
+    "instant_search_description": "Axtarış səhifəsinə keçir və siz yazdıqca nəticələri yeniləyir.",
     "relative_dates": "Nisbi tarixlər",
     "include_types": "Quraşdırmaya {'@'}types daxil et",
     "include_types_description": "Tipsiz paketlər üçün quraşdırma əmrlərinə {'@'}types paketi əlavə et",
@@ -108,7 +144,9 @@
     "accent_colors": "Vurğu rəngləri",
     "clear_accent": "Vurğu rəngini təmizlə",
     "translation_progress": "Tərcümə irəliləyişi",
-    "background_themes": "Fon tonu"
+    "background_themes": "Fon tonu",
+    "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
+    "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
   },
   "i18n": {
     "missing_keys": "{count} çatışmayan tərcümə | {count} çatışmayan tərcümə",
@@ -117,6 +155,13 @@
     "contribute_hint": "Çatışmayan açarları əlavə edərək bu tərcüməni yaxşılaşdırmağa kömək edin.",
     "edit_on_github": "GitHub-da redaktə et",
     "view_guide": "Tərcümə bələdçisi"
+  },
+  "error": {
+    "401": "İcazəsiz",
+    "404": "Səhifə tapılmadı",
+    "500": "Daxili server xətası",
+    "503": "Xidmət əlçatan deyil",
+    "default": "Nəsə səhv oldu"
   },
   "common": {
     "loading": "Yüklənir...",
@@ -373,6 +418,9 @@
       "date_range_multiline": "{start}\n- {end}",
       "download_file": "{fileType} endir",
       "toggle_annotator": "Annotator keçid",
+      "toggle_stack_mode": "Yığın rejimini dəyişdir",
+      "open_options": "Seçimləri aç",
+      "close_options": "Seçimləri bağla",
       "legend_estimation": "Təxmin",
       "no_data": "Məlumat mövcud deyil",
       "y_axis_label": "{granularity} {facet}",
@@ -882,6 +930,11 @@
         "title": "Yeniliklərdən xəbərdar olun",
         "description": "npmx haqqında son yenilikləri öyrənin.",
         "cta": "Bluesky-da izlə"
+      },
+      "builders": {
+        "title": "Qurucular",
+        "description": "Qurucular icmasamıza qoşulun və npmx-in gələcəyini formalaşdırın",
+        "cta": "Qurucular söhbətinə qoşul"
       }
     }
   },
@@ -933,6 +986,7 @@
     }
   },
   "compare": {
+    "compare_versions_title": "Versiyaları müqayisə et",
     "packages": {
       "title": "paketləri müqayisə et",
       "tagline": "düzgün seçim etməyinizə kömək etmək üçün npm paketlərini yan-yana müqayisə edin.",
@@ -1082,6 +1136,34 @@
     "select_file_prompt": "Fərqini görmək üçün yan paneldən fayl seçin",
     "close_files_panel": "Fayllar panelini bağla",
     "filter_files_label": "Faylları dəyişiklik növünə görə süz"
+  },
+  "pds": {
+    "title": "PDS",
+    "meta_description": "npmx PDS - Şəxsi Məlumat Serveri",
+    "join": {
+      "title": "Qoşul",
+      "description": "npmx PDS-ə qoşulun",
+      "migrate": "Köçür"
+    },
+    "server": {
+      "title": "Server",
+      "location_label": "Yer",
+      "location_value": "Nürnberq, Almaniya",
+      "infrastructure_label": "İnfrastruktur",
+      "infrastructure_value": "Hetzner üzərində yerləşdirilir",
+      "privacy_label": "Gizlilik",
+      "privacy_value": "Sərt AB Məlumat Mühafizəsi qanunlarına tabedir",
+      "learn_more": "Ətraflı öyrən"
+    },
+    "community": {
+      "title": "İcma",
+      "description": "{count} hesab ilə icmasamıza qoşulun",
+      "loading": "Yüklənir...",
+      "error": "Xəta",
+      "empty": "Boş",
+      "view_profile": "{handle} profilinə bax",
+      "new_accounts": "{count} yeni hesab"
+    }
   },
   "privacy_policy": {
     "title": "gizlilik siyasəti",
