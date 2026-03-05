@@ -71,6 +71,7 @@ useHead({
       innerHTML: `
 :root[data-collapsed~='${props.id}'] section[data-anchor-id='${props.id}'] .collapsible-content {
   grid-template-rows: 0fr;
+  overflow: hidden;
 }`,
     },
   ],
@@ -79,7 +80,7 @@ useHead({
 
 <template>
   <section :id="id" :data-anchor-id="id" class="scroll-mt-20 xl:scroll-mt-0">
-    <div class="flex items-center justify-between mb-3 px-1">
+    <div class="flex items-center justify-between mb-3 ps-1">
       <component
         :is="headingLevel"
         class="group text-xs text-fg-subtle uppercase tracking-wider flex gap-2"
@@ -121,7 +122,7 @@ useHead({
 
     <div
       :id="contentId"
-      class="grid ms-6 grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out collapsible-content overflow-hidden"
+      class="grid ms-6 ps-1 grid-rows-[1fr] transition-[grid-template-rows] duration-200 ease-in-out collapsible-content"
       :inert="!isOpen"
     >
       <div class="min-h-0 min-w-0">

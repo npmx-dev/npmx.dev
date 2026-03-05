@@ -302,9 +302,7 @@ async function getNpmxProfile(handle: string, authSession: OAuthSession) {
     return profileResult.body.value
   } else {
     const profile = {
-      website: '',
       displayName: handle,
-      description: '',
     }
 
     await client.createRecord(

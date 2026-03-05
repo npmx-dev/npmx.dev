@@ -53,7 +53,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </h1>
           <button
             type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0 p-1.5 -mx-1.5"
+            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >
@@ -145,7 +145,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </div>
         </section>
 
-        <!-- DATA SOURCE Section -->
+        <!-- SEARCH FEATURES Section -->
         <section>
           <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.search') }}
@@ -204,6 +204,15 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
               </a>
             </div>
+
+            <div class="border-t border-border my-4" />
+
+            <!-- Instant Search toggle -->
+            <SettingsToggle
+              :label="$t('settings.instant_search')"
+              :description="$t('settings.instant_search_description')"
+              v-model="settings.instantSearch"
+            />
           </div>
         </section>
 
@@ -252,12 +261,12 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Simple help link for source locale -->
             <template v-else>
               <a
-                href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
+                href="https://i18n.npmx.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
               >
-                <span class="i-simple-icons:github w-4 h-4" aria-hidden="true" />
+                <span class="i-lucide:languages w-4 h-4" aria-hidden="true" />
                 {{ $t('settings.help_translate') }}
               </a>
             </template>

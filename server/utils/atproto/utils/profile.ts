@@ -82,9 +82,15 @@ export class ProfileUtils {
       })
 
       if (response.success) {
-        const validationResult = dev.npmx.actor.profile.$validate(response.body.value)
-        profile = { recordExists: true, ...validationResult }
-        await this.cache.set(profileKey, profile, CACHE_MAX_AGE)
+        try {
+          const validationResult = dev.npmx.actor.profile.$validate(response.body.value)
+          profile = { recordExists: true, handle: miniDoc.handle, ...validationResult }
+          await this.cache.set(profileKey, profile, CACHE_MAX_AGE)
+        } catch (error) {
+          //Most new profiles will error because of a bug of setting the website to a non uri string
+          console.error('[profile-get]', error)
+          profile = { recordExists: true, handle: miniDoc.handle, displayName: miniDoc.handle }
+        }
       } else {
         if (response.error === 'RecordNotFound') {
           return {
@@ -92,6 +98,7 @@ export class ProfileUtils {
             displayName: miniDoc.handle,
             description: '',
             website: '',
+            handle: miniDoc.handle,
           }
         }
         throw new Error(`Failed to fetch profile: ${response.error}`)
@@ -104,6 +111,7 @@ export class ProfileUtils {
   async updateProfileCache(handle: string, profile: NPMXProfile): Promise<NPMXProfile | undefined> {
     const miniDoc = await this.slingshotMiniDoc(handle)
     const profileKey = CACHE_PROFILE_KEY(miniDoc.did)
+    profile.handle = miniDoc.handle
     await this.cache.set(profileKey, profile, CACHE_MAX_AGE)
     return profile
   }

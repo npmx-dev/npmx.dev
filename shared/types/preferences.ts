@@ -279,7 +279,7 @@ export const DEFAULT_FILTERS: StructuredFilters = {
 // Pagination modes
 export type PaginationMode = 'infinite' | 'paginated'
 
-export const PAGE_SIZE_OPTIONS = [10, 25, 50, 100, 'all'] as const
+export const PAGE_SIZE_OPTIONS = [10, 25, 50, 100, 250] as const
 export type PageSize = (typeof PAGE_SIZE_OPTIONS)[number]
 
 // Complete preferences state

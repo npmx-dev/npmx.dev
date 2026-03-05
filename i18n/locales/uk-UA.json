@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm є зареєстрованою торговою маркою npm, Inc. Цей сайт не пов'язаний з npm, Inc.",
   "footer": {
     "about": "про проект",
+    "blog": "Блог",
     "docs": "документація",
     "source": "код",
     "social": "соціальні мережі",
     "chat": "чат",
+    "builders_chat": "розробники",
     "keyboard_shortcuts": "гарячі клавіші"
   },
   "shortcuts": {
@@ -63,7 +65,13 @@
       "org": "організація",
       "view_user_packages": "Переглянути пакети цього користувача",
       "view_org_packages": "Переглянути пакети цієї організації"
-    }
+    },
+    "instant_search": "Миттєвий пошук",
+    "instant_search_on": "увімкнено",
+    "instant_search_off": "вимкнено",
+    "instant_search_turn_on": "увімкнути",
+    "instant_search_turn_off": "вимкнути",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Головна",
@@ -76,6 +84,31 @@
     "open_menu": "Відкрити меню",
     "links": "Посилання",
     "tap_to_search": "Натисніть для пошуку"
+  },
+  "blog": {
+    "title": "Блог",
+    "heading": "блог",
+    "meta_description": "Думки та оновлення від спільноти npmx",
+    "author": {
+      "view_profile": "Переглянути профіль {name} у Bluesky"
+    },
+    "draft_badge": "Чернетка",
+    "draft_banner": "Це неопублікована чернетка. Вона може бути неповною або містити неточності.",
+    "atproto": {
+      "view_on_bluesky": "Переглянути у Bluesky",
+      "reply_on_bluesky": "Відповісти у Bluesky",
+      "likes_on_bluesky": "Вподобайки у Bluesky",
+      "like_or_reply_on_bluesky": "Вподобайте цей пост або залиште коментар у Bluesky",
+      "no_comments_yet": "Коментарів поки немає.",
+      "could_not_load_comments": "Не вдалося завантажити коментарі.",
+      "comments": "Коментарі",
+      "loading_comments": "Завантаження коментарів...",
+      "updating": "Оновлення...",
+      "reply_count": "{count} відповідь | {count} відповіді | {count} відповідей",
+      "like_count": "{count} вподобайка | {count} вподобайки | {count} вподобайок",
+      "repost_count": "{count} репост | {count} репости | {count} репостів",
+      "more_replies": "ще {count} відповідь... | ще {count} відповіді... | ще {count} відповідей..."
+    }
   },
   "settings": {
     "title": "параметри",
@@ -96,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Використовує Algolia для швидшого пошуку, сторінок організацій та користувачів."
     },
+    "instant_search": "Миттєвий пошук",
+    "instant_search_description": "Переходить на сторінку пошуку та оновлює результати під час введення.",
     "relative_dates": "Відносні дати",
     "include_types": "Включити {'@'}types у встановлення",
     "include_types_description": "Додавайте пакет {'@'}types до команд встановлення для пакетів без типів",
@@ -122,6 +157,13 @@
     "edit_on_github": "Редагувати на GitHub",
     "view_guide": "Керівництво з перекладу"
   },
+  "error": {
+    "401": "Не авторизовано",
+    "404": "Сторінку не знайдено",
+    "500": "Внутрішня помилка сервера",
+    "503": "Сервіс недоступний",
+    "default": "Щось пішло не так"
+  },
   "common": {
     "loading": "Завантаження...",
     "loading_more": "Завантаження ще...",
@@ -144,7 +186,28 @@
       "role": "роль",
       "members": "учасники"
     },
-    "scroll_to_top": "Прокрутити наверх"
+    "scroll_to_top": "Прокрутити наверх",
+    "cancel": "Скасувати",
+    "save": "Зберегти",
+    "edit": "Редагувати",
+    "error": "Помилка"
+  },
+  "profile": {
+    "display_name": "Відображуване ім'я",
+    "description": "Опис",
+    "no_description": "Без опису",
+    "website": "Вебсайт",
+    "website_placeholder": "https://example.com",
+    "likes": "Вподобання",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "Профіль npmx: {handle}",
+    "not_found": "Профіль не знайдено",
+    "not_found_message": "Профіль для {handle} не вдалося знайти.",
+    "invite": {
+      "message": "Схоже, вони ще не користуються npmx. Хочете розповісти їм про нього?",
+      "share_button": "Поділитися в Bluesky",
+      "compose_text": "Привіт, {'@'}{handle}! Ти вже перевірив npmx.dev? Це швидкий сучасний браузер для реєстру npm з відкритим кодом.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Пакет не знайдено",
@@ -214,11 +277,11 @@
     "links": {
       "repo": "репозиторій",
       "homepage": "головна сторінка",
-      "issues": "проблеми",
+      "issues": "задачі",
       "jsr": "jsr",
       "code": "код",
       "docs": "документація",
-      "fund": "фінансування",
+      "fund": "спонсорувати",
       "compare": "порівняння"
     },
     "likes": {
@@ -378,6 +441,8 @@
       "download_file": "Завантажити {fileType}",
       "toggle_annotator": "Перемкнути анотатор",
       "toggle_stack_mode": "Перемкнути режим стека",
+      "open_options": "Відкрити параметри",
+      "close_options": "Закрити параметри",
       "legend_estimation": "Оцінка",
       "no_data": "Дані недоступні",
       "y_axis_label": "{granularity} {facet}",
@@ -389,8 +454,6 @@
         "likes": "Вподобання",
         "contributors": "Супроводжувачі"
       },
-      "play_animation": "Запустити анімацію",
-      "pause_animation": "Зупинити анімацію",
       "data_correction": "Корекція даних",
       "average_window": "Вікно усереднення",
       "smoothing": "Згладжування",
@@ -419,7 +482,8 @@
     },
     "downloads": {
       "title": "Завантажень на тиждень",
-      "community_distribution": "Переглянути розподіл впровадження у спільноті"
+      "community_distribution": "Переглянути розподіл впровадження у спільноті",
+      "subtitle": "Для всіх версій"
     },
     "install_scripts": {
       "title": "Скрипти встановлення",
@@ -513,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "Локальний сполучник",
-      "contributor_badge": "Лише для контриб'юторів",
-      "contributor_notice": "Сполучник ще не опублікований на npm. Дивіться {link} для запуску локально.",
-      "contributor_link": "керівництво для контриб'юторів",
       "connected": "Підключено",
       "connected_as_user": "Підключено як ~{user}",
       "connected_hint": "Тепер ви можете керувати пакетами та організаціями з веб-інтерфейсу.",
@@ -824,7 +885,6 @@
       "paginated": "По сторінках",
       "items_per_page": "Елементів на сторінці",
       "per_page": "{count} / сторінка",
-      "all_yolo": "Усі (YOLO)",
       "showing": "{start}-{end} з {total}",
       "previous": "Попередня сторінка",
       "next": "Наступна сторінка",
@@ -901,6 +961,11 @@
         "description": "Спілкуйтеся в чаті, ставте питання та діліться ідеями.",
         "cta": "Приєднатися до спільноти Discord"
       },
+      "builders": {
+        "title": "Допоможіть розвивати npmx",
+        "description": "Приєднайтесь до розробників, що формують майбутнє npmx.",
+        "cta": "Приєднатися до Discord для розробників"
+      },
       "follow": {
         "title": "Залишайтеся в курсі",
         "description": "Дізнайтеся останні новини про npmx.",
@@ -933,7 +998,8 @@
       "connect_bluesky": "Підключитися через Bluesky",
       "what_is_atmosphere": "Що таке обліковий запис Atmosphere?",
       "atmosphere_explanation": "{npmx} використовує {atproto} для забезпечення багатьох соціальних функцій, дозволяючи користувачам володіти своїми даними та використовувати один обліковий запис для всіх сумісних додатків. Після створення облікового запису ви можете використовувати інші додатки, такі як {bluesky} та {tangled}, з одним обліковим записом.",
-      "default_input_error": "Будь ласка, введіть дійсний ідентифікатор, DID або повну URL-адресу PDS"
+      "default_input_error": "Будь ласка, введіть дійсний ідентифікатор, DID або повну URL-адресу PDS",
+      "profile": "Профіль"
     }
   },
   "header": {
@@ -1040,7 +1106,7 @@
           "description": "Чи пакет застарів"
         },
         "engines": {
-          "label": "Рушії",
+          "label": "Середовища виконання",
           "description": "Вимоги до версії Node.js"
         },
         "types": {
@@ -1061,7 +1127,7 @@
         }
       },
       "values": {
-        "any": "Будь-яка",
+        "any": "Будь-яке",
         "none": "Відсутні",
         "unknown": "Невідомо",
         "deprecated": "Припинено",
@@ -1078,7 +1144,10 @@
     "file_changes": "Зміни файлів",
     "files_count": "{count} файлів",
     "lines_hidden": "{count} рядків приховано",
+    "file_too_large": "Файл завеликий для порівняння",
+    "file_size_warning": "{size} перевищує ліміт 250 КБ для порівняння",
     "compare_versions": "різниця",
+    "compare_versions_title": "Порівняти з останньою версією",
     "summary": "Підсумок",
     "deps_count": "{count} залежн.",
     "dependencies": "Залежності",
@@ -1105,6 +1174,34 @@
     "select_file_prompt": "Виберіть файл з бічної панелі для перегляду різниці",
     "close_files_panel": "Закрити панель файлів",
     "filter_files_label": "Фільтрувати файли за типом зміни"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Офіційний сервер особистих даних AT Protocol (PDS) для спільноти npmx.",
+    "join": {
+      "title": "Приєднатися до спільноти",
+      "description": "Незалежно від того, чи ви створюєте свій перший акаунт в атмосфері, чи мігруєте наявний — ви тут на своєму місці. Ви можете перенести поточний акаунт, не втрачаючи нікнейм, пости або підписників.",
+      "migrate": "Мігрувати за допомогою PDS MOOver"
+    },
+    "server": {
+      "title": "Деталі сервера",
+      "location_label": "Розташування:",
+      "location_value": "Нюрнберг, Німеччина",
+      "infrastructure_label": "Інфраструктура:",
+      "infrastructure_value": "Розміщено на Hetzner",
+      "privacy_label": "Конфіденційність:",
+      "privacy_value": "Підпадає під суворе законодавство ЄС про захист даних",
+      "learn_more": "Дізнайтесь, як npmx використовує Атмосферу"
+    },
+    "community": {
+      "title": "Хто тут є",
+      "description": "Деякі з {count} акаунтів, що вже вважають npmx.social своїм домом:",
+      "loading": "Завантаження спільноти PDS...",
+      "error": "Не вдалося завантажити спільноту PDS.",
+      "empty": "Немає учасників спільноти для відображення.",
+      "view_profile": "Переглянути профіль {handle}",
+      "new_accounts": "...та ще {count} нових в атмосфері"
+    }
   },
   "privacy_policy": {
     "title": "політика конфіденційності",

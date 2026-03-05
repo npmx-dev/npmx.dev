@@ -75,18 +75,15 @@ const paginationMode = computed(() =>
 )
 const currentPage = computed(() => props.currentPage ?? 1)
 const pageSize = computed(() => props.pageSize ?? 25)
-// Numeric page size for virtual scroll and arithmetic (when 'all' is selected, use 25 as default)
-const numericPageSize = computed(() => (pageSize.value === 'all' ? 25 : pageSize.value))
+// Numeric page size for virtual scroll and arithmetic (use 25 as default)
+const numericPageSize = computed(() => pageSize.value)
 
 // Compute paginated results for paginated mode
 const displayedResults = computed(() => {
   if (paginationMode.value === 'infinite') {
     return props.results
   }
-  // 'all' page size means show everything (YOLO)
-  if (pageSize.value === 'all') {
-    return props.results
-  }
+
   const start = (currentPage.value - 1) * numericPageSize.value
   const end = start + numericPageSize.value
   return props.results.slice(start, end)

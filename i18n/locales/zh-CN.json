@@ -13,10 +13,12 @@
   "trademark_disclaimer": "npm 是 npm, Inc. 的注册商标。本网站不与 npm, Inc. 有任何隶属关系。",
   "footer": {
     "about": "关于",
+    "blog": "博客",
     "docs": "文档",
     "source": "源码",
     "social": "社交媒体",
     "chat": "聊天",
+    "builders_chat": "构建者",
     "keyboard_shortcuts": "键盘快捷键"
   },
   "shortcuts": {
@@ -63,7 +65,13 @@
       "org": "组织",
       "view_user_packages": "查看该用户的包",
       "view_org_packages": "查看该组织的包"
-    }
+    },
+    "instant_search": "即时搜索",
+    "instant_search_on": "已开启",
+    "instant_search_off": "已关闭",
+    "instant_search_turn_on": "开启",
+    "instant_search_turn_off": "关闭",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "主页",
@@ -76,6 +84,31 @@
     "open_menu": "打开菜单",
     "links": "链接",
     "tap_to_search": "点击搜索"
+  },
+  "blog": {
+    "title": "博客",
+    "heading": "博客",
+    "meta_description": "来自 npmx 社区的见解与更新",
+    "author": {
+      "view_profile": "在 Bluesky 上查看 {name} 的资料"
+    },
+    "draft_badge": "草稿",
+    "draft_banner": "这是一篇未发布的草稿。内容可能不完整或包含不准确的信息。",
+    "atproto": {
+      "view_on_bluesky": "在 Bluesky 上查看",
+      "reply_on_bluesky": "在 Bluesky 上回复",
+      "likes_on_bluesky": "Bluesky 上的点赞",
+      "like_or_reply_on_bluesky": "在 Bluesky 上点赞此帖子或发表评论",
+      "no_comments_yet": "暂无评论。",
+      "could_not_load_comments": "无法加载评论。",
+      "comments": "评论",
+      "loading_comments": "正在加载评论...",
+      "updating": "更新中...",
+      "reply_count": "{count} 条回复 | {count} 条回复",
+      "like_count": "{count} 个赞 | {count} 个赞",
+      "repost_count": "{count} 次转发 | {count} 次转发",
+      "more_replies": "还有 {count} 条回复... | 还有 {count} 条回复..."
+    }
   },
   "settings": {
     "title": "设置",
@@ -96,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "使用 Algolia 来实现更快的搜索，适用于组织页和用户页。"
     },
+    "instant_search": "即时搜索",
+    "instant_search_description": "导航到搜索页面并在输入时更新结果。",
     "relative_dates": "相对时间",
     "include_types": "在安装时包含 {'@'}types",
     "include_types_description": "为未提供类型定义的包自动添加 {'@'}types 包到安装命令",
@@ -122,6 +157,13 @@
     "edit_on_github": "在 GitHub 上编辑",
     "view_guide": "翻译指南"
   },
+  "error": {
+    "401": "未授权",
+    "404": "很抱歉，页面未找到",
+    "500": "服务器内部错误",
+    "503": "服务不可用",
+    "default": "抱歉，出现了一些问题"
+  },
   "common": {
     "loading": "加载中…",
     "loading_more": "加载更多中…",
@@ -144,7 +186,28 @@
       "role": "角色",
       "members": "成员"
     },
-    "scroll_to_top": "回到顶部"
+    "scroll_to_top": "回到顶部",
+    "cancel": "取消",
+    "save": "保存",
+    "edit": "编辑",
+    "error": "加载出错"
+  },
+  "profile": {
+    "display_name": "显示名称",
+    "description": "简介",
+    "no_description": "暂无简介",
+    "website": "网站",
+    "website_placeholder": "https://example.com",
+    "likes": "喜欢",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} 的 npmx 个人资料",
+    "not_found": "未找到个人资料",
+    "not_found_message": "找不到 {handle} 的个人资料。",
+    "invite": {
+      "message": "看起来他们还没有使用 npmx，去邀请一下？",
+      "share_button": "分享到 Bluesky",
+      "compose_text": "嗨 {'@'}{handle}！您用过 npmx.dev 吗？它是一个快速、现代且开源的 npm registry 浏览器。\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "未找到包",
@@ -378,6 +441,8 @@
       "download_file": "下载 {fileType}",
       "toggle_annotator": "切换标注工具",
       "toggle_stack_mode": "切换堆叠模式",
+      "open_options": "展开选项",
+      "close_options": "收起选项",
       "legend_estimation": "估算值",
       "no_data": "无可用数据",
       "y_axis_label": "{granularity} {facet}",
@@ -389,8 +454,6 @@
         "likes": "喜欢",
         "contributors": "贡献者"
       },
-      "play_animation": "播放动画",
-      "pause_animation": "暂停动画",
       "data_correction": "数据校正",
       "average_window": "平均窗口",
       "smoothing": "平滑处理",
@@ -419,7 +482,8 @@
     },
     "downloads": {
       "title": "每周下载量",
-      "community_distribution": "查看社区采用分布"
+      "community_distribution": "查看社区采用分布",
+      "subtitle": "涵盖所有版本"
     },
     "install_scripts": {
       "title": "安装脚本",
@@ -513,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "本地连接器",
-      "contributor_badge": "贡献者专用",
-      "contributor_notice": "连接器尚未发布到 npm。请参阅 {link} 了解如何本地运行。",
-      "contributor_link": "贡献指南",
       "connected": "已连接",
       "connected_as_user": "已连接为 ~{user}",
       "connected_hint": "现在你可以通过 Web UI 管理包和组织。",
@@ -721,7 +782,7 @@
   "badges": {
     "provenance": {
       "verified": "已验证",
-      "verified_title": "已验证的来源",
+      "verified_title": "已验证来源",
       "verified_via": "已验证：通过 {provider} 发布"
     },
     "jsr": {
@@ -824,7 +885,6 @@
       "paginated": "分页",
       "items_per_page": "每页显示",
       "per_page": "{count} / 页",
-      "all_yolo": "全部（YOLO）",
       "showing": "第 {start} - {end} 条，共 {total} 条",
       "previous": "上一页",
       "next": "下一页",
@@ -879,7 +939,7 @@
       "governance": "治理",
       "role_steward": "管理者",
       "role_maintainer": "维护者",
-      "sponsor": "赞助者",
+      "sponsor": "赞助",
       "sponsor_aria": "在 GitHub 上赞助 {name}"
     },
     "contributors": {
@@ -900,6 +960,11 @@
         "title": "加入社区",
         "description": "聊天、提出问题并分享想法。",
         "cta": "加入 Discord"
+      },
+      "builders": {
+        "title": "参与构建 npmx",
+        "description": "加入构建者团队，共同塑造 npmx 的未来。",
+        "cta": "加入构建者 Discord"
       },
       "follow": {
         "title": "保持更新",
@@ -933,7 +998,8 @@
       "connect_bluesky": "使用 Bluesky 账户登录",
       "what_is_atmosphere": "什么是 Atmosphere 账户？",
       "atmosphere_explanation": "{npmx} 使用 {atproto} 为其多项社交功能提供支持，让用户真正拥有自己的数据并使用一个账户登录所有兼容的应用。一旦创建账户，你便可以使用其他应用，例如 {bluesky} 和 {tangled}。",
-      "default_input_error": "请输入有效的 handle、DID 或完整的 PDS URL"
+      "default_input_error": "请输入有效的 handle、DID 或完整的 PDS URL",
+      "profile": "个人资料"
     }
   },
   "header": {
@@ -1078,7 +1144,10 @@
     "file_changes": "文件更改",
     "files_count": "{count} 个文件",
     "lines_hidden": "已隐藏 {count} 行",
+    "file_too_large": "文件过大，无法对比",
+    "file_size_warning": "{size} 超出了 250KB 的对比限制",
     "compare_versions": "差异",
+    "compare_versions_title": "与最新版本比较",
     "summary": "摘要",
     "deps_count": "{count} 个依赖",
     "dependencies": "直接依赖项",
@@ -1105,6 +1174,34 @@
     "select_file_prompt": "从侧边栏选择一个文件以查看其差异",
     "close_files_panel": "关闭文件面板",
     "filter_files_label": "按更改类型筛选文件"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "npmx 社区的官方 AT Protocol 个人数据服务器 (PDS)。",
+    "join": {
+      "title": "加入社区",
+      "description": "无论你是第一次在 Atmosphere 上创建账户，还是迁移现有账户，这里都是你的归属。你可以迁移当前账户，而不会丢失你的账户、帖子或关注者。",
+      "migrate": "使用 PDS MOOver 迁移"
+    },
+    "server": {
+      "title": "服务器详情",
+      "location_label": "位置：",
+      "location_value": "德国，纽伦堡",
+      "infrastructure_label": "基础设施：",
+      "infrastructure_value": "托管于 Hetzner",
+      "privacy_label": "隐私：",
+      "privacy_value": "受欧盟严格的数据保护法律约束",
+      "learn_more": "了解 npmx 如何使用 Atmosphere"
+    },
+    "community": {
+      "title": "谁在这里",
+      "description": "在 {count} 个已将 npmx.social 视为家的账户中，这里有一些：",
+      "loading": "正在加载 PDS 社区...",
+      "error": "加载 PDS 社区失败。",
+      "empty": "没有社区成员可显示。",
+      "view_profile": "查看 {handle} 的资料",
+      "new_accounts": "...以及 {count} 个新加入 Atmosphere 的账户"
+    }
   },
   "privacy_policy": {
     "title": "隐私政策",

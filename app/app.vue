@@ -48,10 +48,17 @@ if (import.meta.server) {
 }
 
 const keyboardShortcuts = useKeyboardShortcuts()
+const { settings } = useSettings()
 
 onKeyDown(
   '/',
   e => {
+    if (e.ctrlKey) {
+      e.preventDefault()
+      settings.value.instantSearch = !settings.value.instantSearch
+      return
+    }
+
     if (!keyboardShortcuts.value || isEditableElement(e.target)) return
     e.preventDefault()
 
@@ -128,6 +135,10 @@ if (import.meta.client) {
     }}</LinkBase>
 
     <AppHeader :show-logo="!isHomepage" />
+
+    <NuxtRouteAnnouncer v-slot="{ message }">
+      {{ route.name === 'search' ? `${$t('search.title_packages')} - npmx` : message }}
+    </NuxtRouteAnnouncer>
 
     <div id="main-content" class="flex-1 flex flex-col" tabindex="-1">
       <NuxtPage />

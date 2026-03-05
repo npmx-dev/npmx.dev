@@ -23,7 +23,7 @@ const buildTime = computed(() => new Date(buildInfo.value.time))
     <span>&middot;</span>
     <LinkBase
       v-if="buildInfo.env === 'release'"
-      :to="`https://github.com/npmx-dev/npmx.dev/tag/v${buildInfo.version}`"
+      :to="`https://github.com/npmx-dev/npmx.dev/releases/tag/v${buildInfo.version}`"
     >
       v{{ buildInfo.version }}
     </LinkBase>

@@ -389,8 +389,6 @@
         "likes": "Suka",
         "contributors": "Kontributor"
       },
-      "play_animation": "Putar animasi",
-      "pause_animation": "Jeda animasi",
       "data_correction": "Koreksi data",
       "average_window": "Rata-rata jendela",
       "smoothing": "Penghalusan",
@@ -513,9 +511,6 @@
   "connector": {
     "modal": {
       "title": "Konektor Lokal",
-      "contributor_badge": "Hanya untuk kontributor",
-      "contributor_notice": "Konektor belum diterbitkan ke npm. Lihat {link} untuk cara menjalankannya secara lokal.",
-      "contributor_link": "panduan kontribusi",
       "connected": "Terhubung",
       "connected_as_user": "Terhubung sebagai ~{user}",
       "connected_hint": "Anda sekarang dapat mengelola paket dan organisasi dari UI web.",
@@ -824,7 +819,6 @@
       "paginated": "Terpaginasi",
       "items_per_page": "Item per halaman",
       "per_page": "{count} / halaman",
-      "all_yolo": "Semua (YOLO)",
       "showing": "{start}-{end} dari {total}",
       "previous": "Halaman sebelumnya",
       "next": "Halaman berikutnya",

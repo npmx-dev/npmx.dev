@@ -9,7 +9,8 @@ export function packageRoute(packageName: string, version?: string | null): Rout
       params: {
         org,
         name,
-        version,
+        // remove spaces to be correctly resolved by router
+        version: version.replace(/\s+/g, ''),
       },
     }
   }

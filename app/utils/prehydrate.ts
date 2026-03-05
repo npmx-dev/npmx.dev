@@ -10,7 +10,15 @@ export function initPreferencesOnPrehydrate() {
   // All constants must be hardcoded inside the callback.
   onPrehydrate(() => {
     // Valid accent color IDs (must match --swatch-* variables defined in main.css)
-    const accentColorIds = new Set(['coral', 'amber', 'emerald', 'sky', 'violet', 'magenta'])
+    const accentColorIds = new Set([
+      'sky',
+      'coral',
+      'amber',
+      'emerald',
+      'violet',
+      'magenta',
+      'neutral',
+    ])
 
     // Valid package manager IDs
     const validPMs = new Set(['npm', 'pnpm', 'yarn', 'bun', 'deno', 'vlt'])

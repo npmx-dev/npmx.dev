@@ -410,8 +410,6 @@
         "likes": "喜歡總數",
         "contributors": "貢獻者"
       },
-      "play_animation": "播放動畫",
-      "pause_animation": "停止播放",
       "data_correction": "資料修正",
       "average_window": "平均視窗",
       "smoothing": "平滑化",
@@ -534,9 +532,6 @@
   "connector": {
     "modal": {
       "title": "本機連線器",
-      "contributor_badge": "僅限貢獻者",
-      "contributor_notice": "連線器尚未發布到 npm。請參閱 {link} 了解如何在本機執行。",
-      "contributor_link": "貢獻指南",
       "connected": "已連線",
       "connected_as_user": "已連線為 ~{user}",
       "connected_hint": "現在你可以透過 Web UI 管理套件與組織。",
@@ -742,7 +737,7 @@
   "badges": {
     "provenance": {
       "verified": "已驗證",
-      "verified_title": "已驗證的來源",
+      "verified_title": "已驗證來源",
       "verified_via": "已驗證：透過 {provider} 發布"
     },
     "jsr": {
@@ -845,7 +840,6 @@
       "paginated": "分頁",
       "items_per_page": "每頁項目數",
       "per_page": "{count} / 頁",
-      "all_yolo": "全部（YOLO）",
       "showing": "顯示第 {start}-{end} 項，共 {total} 項",
       "previous": "上一頁",
       "next": "下一頁",
