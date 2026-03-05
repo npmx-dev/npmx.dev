@@ -121,8 +121,7 @@ export const BaseStyles = html`
     }
 
     a {
-      color: var(--ln-color-link);
-      text-decoration: none;
+      color: var(--fg);
     }
 
     h2 a {
@@ -131,6 +130,7 @@ export const BaseStyles = html`
 
     a:hover {
       text-decoration: underline;
+      color: var(--ln-color-gray-5);
     }
 
     ul {
@@ -331,16 +331,6 @@ export const CustomStyles = html`
 
     p {
       color: var(--fg-muted);
-    }
-
-    p a {
-      color: var(--fg);
-      text-decoration: underline;
-    }
-
-    .status-by-file a,
-    .progress-details a {
-      color: var(--fg);
     }
 
     .create-button {
