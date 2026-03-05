@@ -73,6 +73,18 @@
     "instant_search_turn_off": "kapat",
     "instant_search_advisory": "{label} {state} — {action}"
   },
+  "nav": {
+    "main_navigation": "Ana",
+    "popular_packages": "Popüler paketler",
+    "settings": "ayarlar",
+    "compare": "karşılaştır",
+    "back": "geri",
+    "menu": "Menü",
+    "mobile_menu": "Navigasyon menüsü",
+    "open_menu": "Menüyü aç",
+    "links": "Bağlantılar",
+    "tap_to_search": "Aramak için dokunun"
+  },
   "blog": {
     "title": "Blog",
     "heading": "blog",
@@ -97,18 +109,6 @@
       "repost_count": "{count} yeniden paylaşım",
       "more_replies": "{count} yanıt daha..."
     }
-  },
-  "nav": {
-    "main_navigation": "Ana",
-    "popular_packages": "Popüler paketler",
-    "settings": "ayarlar",
-    "compare": "karşılaştır",
-    "back": "geri",
-    "menu": "Menü",
-    "mobile_menu": "Navigasyon menüsü",
-    "open_menu": "Menüyü aç",
-    "links": "Bağlantılar",
-    "tap_to_search": "Aramak için dokunun"
   },
   "settings": {
     "title": "ayarlar",
@@ -936,7 +936,6 @@
     },
     "team": {
       "title": "Ekip",
-      "governance": "Yönetişim",
       "role_steward": "Yönetici",
       "role_maintainer": "Geliştirici",
       "sponsor": "Sponsor",
@@ -946,8 +945,7 @@
       "title": "Katkıda Bulunanlar",
       "description": "npmx'i harika yapan tüm katkıda bulunanlara teşekkürler",
       "loading": "Katkıda bulunanlar yükleniyor...",
-      "error": "Katkıda bulunanlar yüklenemedi",
-      "view_profile": "Profili görüntüle"
+      "error": "Katkıda bulunanlar yüklenemedi"
     },
     "get_involved": {
       "title": "Katılın",
@@ -961,15 +959,15 @@
         "description": "Discord'da topluluğa katılın",
         "cta": "Discord'a katıl"
       },
-      "follow": {
-        "title": "Takip edin",
-        "description": "Güncellemeler için bizi takip edin",
-        "cta": "Bluesky'da takip et"
-      },
       "builders": {
         "title": "Yapımcılar",
         "description": "Yapımcı topluluğumuza katılın ve npmx'in geleceğini şekillendirin",
         "cta": "Yapımcı sohbetine katıl"
+      },
+      "follow": {
+        "title": "Takip edin",
+        "description": "Güncellemeler için bizi takip edin",
+        "cta": "Bluesky'da takip et"
       }
     }
   },
@@ -1022,7 +1020,6 @@
     }
   },
   "compare": {
-    "compare_versions_title": "Sürümleri karşılaştır",
     "packages": {
       "title": "Paketleri Karşılaştır",
       "tagline": "npm paketlerini yan yana karşılaştırın",
@@ -1147,6 +1144,7 @@
     "lines_hidden": "{count} satır gizlendi",
     "file_too_large": "Dosya çok büyük",
     "file_size_warning": "Dosya boyutu {size}",
+    "compare_versions_title": "Sürümleri karşılaştır",
     "summary": "Özet",
     "deps_count": "{count} bağımlılık",
     "dependencies": "Bağımlılıklar",
