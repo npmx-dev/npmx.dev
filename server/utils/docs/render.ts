@@ -254,6 +254,33 @@ async function renderJsDocTags(tags: JsDocTag[], symbolLookup: SymbolLookup): Pr
 // Member Rendering
 // =============================================================================
 
+type DefinitionListItem = {
+  signature: string
+  description?: string
+}
+
+function renderMemberList(title: string, items: DefinitionListItem[]): string {
+  const lines: string[] = []
+
+  if (items.length === 0) {
+    return ''
+  }
+
+  lines.push(`<div class="docs-members">`)
+  lines.push(`<h4>${title}</h4>`)
+  lines.push(`<dl>`)
+  for (const item of items) {
+    lines.push(`<dt><code>${escapeHtml(item.signature)}</code></dt>`)
+    if (item.description) {
+      lines.push(`<dd>${escapeHtml(item.description.split('\n')[0] ?? '')}</dd>`)
+    }
+  }
+  lines.push(`</dl>`)
+  lines.push(`</div>`)
+
+  return lines.join('\n')
+}
+
 /**
  * Render class members (constructor, properties, methods).
  */
@@ -272,65 +299,53 @@ function renderClassMembers(def: NonNullable<DenoDocNode['classDef']>): string {
   }
 
   if (properties && properties.length > 0) {
-    lines.push(`<div class="docs-members">`)
-    lines.push(`<h4>Properties</h4>`)
-    lines.push(`<dl>`)
-    for (const prop of properties) {
+    const propertyItems: DefinitionListItem[] = properties.map(prop => {
       const modifiers: string[] = []
       if (prop.isStatic) modifiers.push('static')
       if (prop.readonly) modifiers.push('readonly')
       const modStr = modifiers.length > 0 ? `${modifiers.join(' ')} ` : ''
       const type = formatType(prop.tsType)
       const opt = prop.optional ? '?' : ''
-      lines.push(
-        `<dt><code>${escapeHtml(modStr)}${escapeHtml(prop.name)}${opt}: ${escapeHtml(type)}</code></dt>`,
-      )
-      if (prop.jsDoc?.doc) {
-        lines.push(`<dd>${escapeHtml(prop.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
+
+      return {
+        signature: `${modStr}${prop.name}${opt}: ${type}`,
+        description: prop.jsDoc?.doc,
       }
-    }
-    lines.push(`</dl>`)
-    lines.push(`</div>`)
+    })
+
+    lines.push(renderMemberList('Properties', propertyItems))
   }
 
   const getters = methods?.filter(m => m.kind === 'getter') || []
   const regularMethods = methods?.filter(m => m.kind !== 'getter') || []
 
   if (getters.length > 0) {
-    lines.push(`<div class="docs-members">`)
-    lines.push(`<h4>Getters</h4>`)
-    lines.push(`<dl>`)
-    for (const getter of getters) {
+    const getterItems: DefinitionListItem[] = getters.map(getter => {
       const ret = formatType(getter.functionDef?.returnType) || 'unknown'
       const staticStr = getter.isStatic ? 'static ' : ''
-      lines.push(
-        `<dt><code>${escapeHtml(staticStr)}get ${escapeHtml(getter.name)}: ${escapeHtml(ret)}</code></dt>`,
-      )
-      if (getter.jsDoc?.doc) {
-        lines.push(`<dd>${escapeHtml(getter.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
+
+      return {
+        signature: `${staticStr}get ${getter.name}: ${ret}`,
+        description: getter.jsDoc?.doc,
       }
-    }
-    lines.push(`</dl>`)
-    lines.push(`</div>`)
+    })
+
+    lines.push(renderMemberList('Getters', getterItems))
   }
 
   if (regularMethods.length > 0) {
-    lines.push(`<div class="docs-members">`)
-    lines.push(`<h4>Methods</h4>`)
-    lines.push(`<dl>`)
-    for (const method of regularMethods) {
+    const methodItems: DefinitionListItem[] = regularMethods.map(method => {
       const params = method.functionDef?.params?.map(p => formatParam(p)).join(', ') || ''
       const ret = formatType(method.functionDef?.returnType) || 'void'
       const staticStr = method.isStatic ? 'static ' : ''
-      lines.push(
-        `<dt><code>${escapeHtml(staticStr)}${escapeHtml(method.name)}(${escapeHtml(params)}): ${escapeHtml(ret)}</code></dt>`,
-      )
-      if (method.jsDoc?.doc) {
-        lines.push(`<dd>${escapeHtml(method.jsDoc.doc.split('\n')[0] ?? '')}</dd>`)
+
+      return {
+        signature: `${staticStr}${method.name}(${params}): ${ret}`,
+        description: method.jsDoc?.doc,
       }
-    }
-    lines.push(`</dl>`)
-    lines.push(`</div>`)
+    })
+
+    lines.push(renderMemberList('Methods', methodItems))
   }
 
   return lines.join('\n')
