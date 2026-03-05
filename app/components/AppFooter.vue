@@ -131,10 +131,10 @@ const closeModal = () => modalRef.value?.close?.()
           </div>
         </div>
       </div>
-      <p class="text-xs text-fg-muted text-center sm:text-start m-0">
+      <small class="text-xs text-fg-muted text-center sm:text-start m-0">
         <span class="sm:hidden">{{ $t('non_affiliation_disclaimer') }}</span>
         <span class="hidden sm:inline">{{ $t('trademark_disclaimer') }}</span>
-      </p>
+      </small>
     </div>
   </footer>
 </template>
