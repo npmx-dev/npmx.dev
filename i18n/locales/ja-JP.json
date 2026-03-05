@@ -18,7 +18,7 @@
     "source": "ソースコード",
     "social": "ソーシャル",
     "chat": "チャット",
-    "builders_chat": "builders",
+    "builders_chat": "ビルダー",
     "keyboard_shortcuts": "キーボードショートカット"
   },
   "shortcuts": {
@@ -66,11 +66,11 @@
       "view_user_packages": "このユーザーのパッケージを表示",
       "view_org_packages": "このorganizationのパッケージを表示"
     },
-    "instant_search": "Instant search",
-    "instant_search_on": "on",
-    "instant_search_off": "off",
-    "instant_search_turn_on": "turn on",
-    "instant_search_turn_off": "turn off",
+    "instant_search": "インスタント検索",
+    "instant_search_on": "オン",
+    "instant_search_off": "オフ",
+    "instant_search_turn_on": "オンにする",
+    "instant_search_turn_off": "オフにする",
     "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
@@ -957,7 +957,7 @@
       "title": "参加するには",
       "contribute": {
         "title": "貢献する",
-        "description": "より良いnpm体験の開発に協力してください。",
+        "description": "より良いnpm体験の開発に協力しましょう。",
         "cta": "GitHubで表示"
       },
       "community": {
@@ -966,9 +966,9 @@
         "cta": "Discordに参加"
       },
       "builders": {
-        "title": "Help build npmx",
-        "description": "Join the builders shaping the future of npmx.",
-        "cta": "Join Builders Discord"
+        "title": "npmxの開発に参加",
+        "description": "npmxの未来を形作るビルダーたちに参加しましょう。",
+        "cta": "Builders Discordに参加"
       },
       "follow": {
         "title": "最新情報を入手",
