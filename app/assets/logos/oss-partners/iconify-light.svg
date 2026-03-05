@@ -32,10 +32,10 @@
 			<circle cx="24" cy="23" r="5" fill="#000" />
 		</mask>
 	</defs>
-	<path d="M0 0h48v48H0z" fill="#4C4C4C" mask="url(#SVGxeIcod1p)" />
-	<path d="M0 0h48v48H0z" fill="#727272" mask="url(#SVGkEkOmeaS)" />
-	<path d="M0 0h48v48H0z" fill="#4C4C4C" mask="url(#SVGLZA82R6k)" />
-	<g fill="#39ADDF">
+	<path d="M0 0h48v48H0z" fill="#BFBFBF" mask="url(#SVGxeIcod1p)" />
+	<path d="M0 0h48v48H0z" fill="#898989" mask="url(#SVGkEkOmeaS)" />
+	<path d="M0 0h48v48H0z" fill="#BFBFBF" mask="url(#SVGLZA82R6k)" />
+	<g fill="#0066C4">
 		<path d="M0 0h48v48H0z" mask="url(#SVGqsGDJc7b)" />
 		<circle cx="24" cy="23" r="3" />
 	</g>
