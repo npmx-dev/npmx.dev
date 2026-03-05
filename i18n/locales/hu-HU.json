@@ -841,7 +841,6 @@
       "paginated": "Lapozható",
       "items_per_page": "Elem per oldal",
       "per_page": "{count} / oldal",
-      "all_yolo": "Összes (YOLO)",
       "showing": "{start}-{end} / {total}",
       "previous": "Előző oldal",
       "next": "Következő oldal",

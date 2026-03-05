@@ -742,7 +742,6 @@
       "paginated": "பக்கமிடப்பட்ட",
       "items_per_page": "ஒரு பக்கத்திற்கான உருப்படிகள்",
       "per_page": "{count} / பக்கம்",
-      "all_yolo": "அனைத்தும் (YOLO)",
       "showing": "{start}-{end} / {total}",
       "previous": "முந்தைய பக்கம்",
       "next": "அடுத்த பக்கம்",

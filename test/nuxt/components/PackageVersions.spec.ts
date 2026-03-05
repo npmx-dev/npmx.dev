@@ -1127,6 +1127,101 @@ describe('PackageVersions', () => {
       })
     })
 
+    it('loads all versions when a valid semver filter is entered', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '3.5.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
+        { version: '3.4.0', time: '2024-03-01T00:00:00.000Z', hasProvenance: false },
+        { version: '3.3.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
+        { version: '2.0.0', time: '2024-01-15T00:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+      ])
+
+      // Only provide latest in props (simulating initial SSR payload)
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '3.5.0': createVersion('3.5.0'),
+          },
+          distTags: { latest: '3.5.0' },
+          time: { '3.5.0': '2024-04-01T00:00:00.000Z' },
+        },
+      })
+
+      // Filter for a version in the SAME major group as latest (claimed by the tag)
+      const input = component.find('input[type="text"]')
+      await input.setValue('~3.4.0')
+
+      // Should trigger loading all versions
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalledWith('test-package')
+      })
+
+      // After loading, 3.4.0 should appear as an auto-expanded child of the latest tag
+      await vi.waitFor(() => {
+        const versionLinks = component
+          .findAll('a')
+          .filter(
+            a => !a.attributes('href')?.startsWith('#') && a.attributes('target') !== '_blank',
+          )
+        const versions = versionLinks.map(l => l.text())
+        expect(versions).toContain('3.4.0')
+      })
+    })
+
+    it('does not load all versions for invalid semver filter', async () => {
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '3.0.0': createVersion('3.0.0'),
+          },
+          distTags: { latest: '3.0.0' },
+          time: { '3.0.0': '2024-04-01T00:00:00.000Z' },
+        },
+      })
+
+      const input = component.find('input[type="text"]')
+      await input.setValue('not-a-range!!!')
+
+      // Should NOT trigger loading
+      expect(mockFetchAllPackageVersions).not.toHaveBeenCalled()
+    })
+
+    it('only fetches versions once across multiple filter changes', async () => {
+      mockFetchAllPackageVersions.mockResolvedValue([
+        { version: '3.0.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },
+        { version: '2.0.0', time: '2024-02-01T00:00:00.000Z', hasProvenance: false },
+        { version: '1.0.0', time: '2024-01-01T00:00:00.000Z', hasProvenance: false },
+      ])
+
+      const component = await mountSuspended(PackageVersions, {
+        props: {
+          packageName: 'test-package',
+          versions: {
+            '3.0.0': createVersion('3.0.0'),
+          },
+          distTags: { latest: '3.0.0' },
+          time: { '3.0.0': '2024-04-01T00:00:00.000Z' },
+        },
+      })
+
+      const input = component.find('input[type="text"]')
+
+      // First valid filter triggers fetch
+      await input.setValue('^1.0.0')
+      await vi.waitFor(() => {
+        expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
+      })
+
+      // Subsequent filter changes should NOT fetch again
+      await input.setValue('^2.0.0')
+      await input.setValue('~3.0.0')
+      await input.setValue('>=1.0.0')
+
+      expect(mockFetchAllPackageVersions).toHaveBeenCalledTimes(1)
+    })
+
     it('filters other major version groups', async () => {
       mockFetchAllPackageVersions.mockResolvedValue([
         { version: '3.0.0', time: '2024-04-01T00:00:00.000Z', hasProvenance: false },

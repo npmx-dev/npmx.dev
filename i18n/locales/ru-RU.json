@@ -814,7 +814,6 @@
       "paginated": "Страничный",
       "items_per_page": "Элементов на странице",
       "per_page": "{count} / стр.",
-      "all_yolo": "Все (YOLO)",
       "showing": "{start}-{end} из {total}",
       "previous": "Предыдущая страница",
       "next": "Следующая страница",

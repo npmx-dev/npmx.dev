@@ -2659,9 +2659,6 @@
             "per_page": {
               "type": "string"
             },
-            "all_yolo": {
-              "type": "string"
-            },
             "showing": {
               "type": "string"
             },

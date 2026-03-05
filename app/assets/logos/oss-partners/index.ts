@@ -29,6 +29,7 @@ import LogoFastCheck from './fast-check.svg'
 import LogoLunaria from './lunaria.svg'
 import LogoJsr from './jsr.svg'
 import LogoIconify from './iconify.svg'
+import LogoIconifyLight from './iconify-light.svg'
 import LogoFloatingUi from './floating-ui-vue.svg'
 import LogoBlento from './blento.svg'
 
@@ -188,7 +189,10 @@ export const OSS_PARTNERS = [
   },
   {
     name: 'Iconify',
-    logo: LogoIconify,
+    logo: {
+      dark: LogoIconify,
+      light: LogoIconifyLight,
+    },
     url: 'https://iconify.design/',
   },
   {

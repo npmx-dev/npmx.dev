@@ -656,7 +656,6 @@
       "paginated": "Paginada",
       "items_per_page": "Itens por página",
       "per_page": "{count} / página",
-      "all_yolo": "Todos (YOLO)",
       "showing": "{start}-{end} de {total}",
       "previous": "Página anterior",
       "next": "Próxima página",

@@ -654,7 +654,6 @@
       "paginated": "পাতায়িত",
       "items_per_page": "প্রতি পাতায় আইটেম",
       "per_page": "{count} / পাতায়",
-      "all_yolo": "সব (YOLO)",
       "showing": "{total} এর মধ্যে {start}-{end}",
       "previous": "আগের পাতা",
       "next": "পরের পাতা",

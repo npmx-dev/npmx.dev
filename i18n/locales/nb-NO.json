@@ -722,7 +722,6 @@
       "paginated": "Sideinndelt",
       "items_per_page": "Elementer per side",
       "per_page": "{count} / side",
-      "all_yolo": "Alt (YOLO)",
       "showing": "{start}-{end} av {total}",
       "previous": "Forrige side",
       "next": "Neste side",

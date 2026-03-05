@@ -768,7 +768,6 @@
       "paginated": "مقسم إلى صفحات",
       "items_per_page": "عدد العناصر في الصفحة",
       "per_page": "{count} / صفحة",
-      "all_yolo": "الكل (إنما هي حياة واحدة)",
       "showing": "{start}-{end} من {total}",
       "previous": "الصفحة السابقة",
       "next": "الصفحة التالية",

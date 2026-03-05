@@ -655,7 +655,6 @@
       "paginated": "పేజినేటెడ్",
       "items_per_page": "పేజీకి అంశాలు",
       "per_page": "{count} / పేజీ",
-      "all_yolo": "అన్నీ (YOLO)",
       "showing": "{total} లో {start}-{end}",
       "previous": "మునుపటి పేజీ",
       "next": "తర్వాతి పేజీ",

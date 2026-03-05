@@ -840,7 +840,6 @@
       "paginated": "分頁",
       "items_per_page": "每頁項目數",
       "per_page": "{count} / 頁",
-      "all_yolo": "全部（YOLO）",
       "showing": "顯示第 {start}-{end} 項，共 {total} 項",
       "previous": "上一頁",
       "next": "下一頁",

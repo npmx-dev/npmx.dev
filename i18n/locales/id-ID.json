@@ -819,7 +819,6 @@
       "paginated": "Terpaginasi",
       "items_per_page": "Item per halaman",
       "per_page": "{count} / halaman",
-      "all_yolo": "Semua (YOLO)",
       "showing": "{start}-{end} dari {total}",
       "previous": "Halaman sebelumnya",
       "next": "Halaman berikutnya",
