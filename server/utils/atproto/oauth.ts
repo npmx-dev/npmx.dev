@@ -15,7 +15,7 @@ import type { UserServerSession } from '#shared/types/userSession'
 import { clientUri } from '#oauth/config'
 
 // TODO: If you add writing a new record you will need to add a scope for it
-export const scope = `atproto ${LIKES_SCOPE} ${PROFILE_SCOPE} identity:handle`
+export const scope = `atproto ${LIKES_SCOPE} ${PROFILE_SCOPE} identity:handle account:email?action=manage`
 
 /**
  * Resolves a did to a handle via DoH or via the http website calls
