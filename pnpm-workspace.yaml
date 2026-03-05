@@ -46,3 +46,4 @@ catalogs:
     '@storybook/addon-docs': '^10.2.7'
     '@storybook/addon-themes': '^10.2.7'
     'storybook': '^10.2.7'
+    'storybook-i18n': '^10.0.3'

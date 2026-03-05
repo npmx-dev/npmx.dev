@@ -1,8 +1,10 @@
 import type { Preview } from '@storybook-vue/nuxt'
 import { withThemeByDataAttribute } from '@storybook/addon-themes'
+import { addons } from 'storybook/preview-api'
 import { currentLocales } from '../config/i18n'
 import { fn } from 'storybook/test'
 import { ACCENT_COLORS } from '../shared/utils/constants'
+import npmxDark from './theme'
 
 // related: https://github.com/npmx-dev/npmx.dev/blob/1431d24be555bca5e1ae6264434d49ca15173c43/test/nuxt/setup.ts#L12-L26
 // Stub Nuxt specific globals
@@ -25,25 +27,22 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    docs: {
+      theme: npmxDark,
+    },
+  },
+  initialGlobals: {
+    locale: 'en-US',
+    locales: currentLocales.reduce(
+      (acc, locale) => {
+        acc[locale.code] = locale.name
+        return acc
+      },
+      {} as Record<string, string>,
+    ),
   },
   // Provides toolbars to switch things like theming and language
   globalTypes: {
-    locale: {
-      name: 'Locale',
-      description: 'UI language',
-      defaultValue: 'en-US',
-      toolbar: {
-        icon: 'globe',
-        dynamicTitle: true,
-        items: [
-          // English is at the top so it's easier to reset to it
-          { value: 'en-US', title: 'English (US)' },
-          ...currentLocales
-            .filter(locale => locale.code !== 'en-US')
-            .map(locale => ({ value: locale.code, title: locale.name })),
-        ],
-      },
-    },
     accentColor: {
       name: 'Accent Color',
       description: 'Accent color',
@@ -70,9 +69,9 @@ const preview: Preview = {
       attributeName: 'data-theme',
     }),
     (story, context) => {
-      const { locale, accentColor } = context.globals as {
-        locale: string
+      const { accentColor, locale } = context.globals as {
         accentColor?: string
+        locale?: string
       }
 
       // Set accent color from globals
@@ -82,16 +81,24 @@ const preview: Preview = {
         document.documentElement.style.removeProperty('--accent-color')
       }
 
+      // Store reference to i18n instance for locale changes
+      let i18nInstance: any = null
+
+      // Subscribe to locale changes from storybook-i18n addon
+      addons.getChannel().on('LOCALE_CHANGED', (newLocale: string) => {
+        if (i18nInstance) {
+          i18nInstance.setLocale(newLocale)
+        }
+      })
+
       return {
         template: '<story />',
-        // Set locale from globals
         created() {
-          if (this.$i18n) {
-            this.$i18n.setLocale(locale)
-          }
-        },
-        updated() {
-          if (this.$i18n) {
+          // Store i18n instance for LOCALE_CHANGED events
+          i18nInstance = this.$i18n
+
+          // Set initial locale when component is created
+          if (locale && this.$i18n) {
             this.$i18n.setLocale(locale)
           }
         },

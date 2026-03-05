@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import type { IconClass } from '~/types'
 
+/**
+ * A base button component that supports multiple variants, sizes, and states as well as icons and keyboard shortcuts.
+ */
+defineOptions({
+  name: 'ButtonBase',
+})
+
 const props = withDefaults(
   defineProps<{
     disabled?: boolean
