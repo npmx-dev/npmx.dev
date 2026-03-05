@@ -310,7 +310,7 @@ describe('generateRootLlmsTxt', () => {
     expect(output).toContain('https://npmx.dev/package/<name>/v/<version>/llms.txt')
     expect(output).toContain('https://npmx.dev/package/@<org>/<name>/llms.txt')
     expect(output).toContain('https://npmx.dev/package/@<org>/<name>/v/<version>/llms.txt')
-    expect(output).toContain('https://npmx.dev/package/<name>/llms_full.txt')
+    expect(output).toContain('https://npmx.dev/package/<name>/llms-full.txt')
     expect(output).toContain('https://npmx.dev/package/@<org>/llms.txt')
   })
 

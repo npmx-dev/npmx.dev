@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Smoke test all llm-docs routes (llms.txt, llms_full.txt, .md)
+# Smoke test all llm-docs routes (llms.txt, llms-full.txt, .md)
 # Usage: ./scripts/smoke-test-llm-docs.sh http://localhost:3333
 
 set -euo pipefail
@@ -33,24 +33,24 @@ check "Root llms.txt" "$BASE/llms.txt"
 echo ""
 echo "=== Unscoped package (latest) ==="
 check "llms.txt"      "$BASE/package/nuxt/llms.txt"
-check "llms_full.txt" "$BASE/package/nuxt/llms_full.txt"
+check "llms-full.txt" "$BASE/package/nuxt/llms-full.txt"
 check ".md"           "$BASE/package/nuxt.md"
 
 echo ""
 echo "=== Unscoped package (versioned) ==="
 check "llms.txt"      "$BASE/package/nuxt/v/3.16.2/llms.txt"
-check "llms_full.txt" "$BASE/package/nuxt/v/3.16.2/llms_full.txt"
+check "llms-full.txt" "$BASE/package/nuxt/v/3.16.2/llms-full.txt"
 
 echo ""
 echo "=== Scoped package (latest) ==="
 check "llms.txt"      "$BASE/package/@nuxt/kit/llms.txt"
-check "llms_full.txt" "$BASE/package/@nuxt/kit/llms_full.txt"
+check "llms-full.txt" "$BASE/package/@nuxt/kit/llms-full.txt"
 check ".md"           "$BASE/package/@nuxt/kit.md"
 
 echo ""
 echo "=== Scoped package (versioned) ==="
 check "llms.txt"      "$BASE/package/@nuxt/kit/v/4.3.1/llms.txt"
-check "llms_full.txt" "$BASE/package/@nuxt/kit/v/4.3.1/llms_full.txt"
+check "llms-full.txt" "$BASE/package/@nuxt/kit/v/4.3.1/llms-full.txt"
 
 echo ""
 echo "=== Org-level ==="

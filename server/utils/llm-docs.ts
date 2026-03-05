@@ -210,7 +210,7 @@ function parseRepoUrl(
  *
  * When `includeAgentFiles` is false (default, for llms.txt), skips the file tree
  * fetch and agent file discovery entirely — only returns README + metadata.
- * When true (for llms_full.txt), includes agent instruction files.
+ * When true (for llms-full.txt), includes agent instruction files.
  */
 export async function handleLlmsTxt(
   packageName: string,
@@ -358,21 +358,21 @@ export function generateRootLlmsTxt(baseUrl: string): string {
     `- \`${baseUrl}/package/@<org>/<name>/v/<version>/llms.txt\` — scoped package (specific version)`,
   )
   lines.push('')
-  lines.push('### Full Package Documentation (llms_full.txt)')
+  lines.push('### Full Package Documentation (llms-full.txt)')
   lines.push('')
   lines.push(
     'README, package metadata, and agent instruction files (CLAUDE.md, .cursorrules, etc.).',
   )
   lines.push('')
-  lines.push(`- \`${baseUrl}/package/<name>/llms_full.txt\` — unscoped package (latest version)`)
+  lines.push(`- \`${baseUrl}/package/<name>/llms-full.txt\` — unscoped package (latest version)`)
   lines.push(
-    `- \`${baseUrl}/package/<name>/v/<version>/llms_full.txt\` — unscoped package (specific version)`,
+    `- \`${baseUrl}/package/<name>/v/<version>/llms-full.txt\` — unscoped package (specific version)`,
   )
   lines.push(
-    `- \`${baseUrl}/package/@<org>/<name>/llms_full.txt\` — scoped package (latest version)`,
+    `- \`${baseUrl}/package/@<org>/<name>/llms-full.txt\` — scoped package (latest version)`,
   )
   lines.push(
-    `- \`${baseUrl}/package/@<org>/<name>/v/<version>/llms_full.txt\` — scoped package (specific version)`,
+    `- \`${baseUrl}/package/@<org>/<name>/v/<version>/llms-full.txt\` — scoped package (specific version)`,
   )
   lines.push('')
   lines.push('### Organization Packages (llms.txt)')
@@ -391,7 +391,7 @@ export function generateRootLlmsTxt(baseUrl: string): string {
   lines.push('## Examples')
   lines.push('')
   lines.push(`- [nuxt llms.txt](${baseUrl}/package/nuxt/llms.txt)`)
-  lines.push(`- [nuxt llms_full.txt](${baseUrl}/package/nuxt/llms_full.txt)`)
+  lines.push(`- [nuxt llms-full.txt](${baseUrl}/package/nuxt/llms-full.txt)`)
   lines.push(`- [@nuxt/kit llms.txt](${baseUrl}/package/@nuxt/kit/llms.txt)`)
   lines.push(`- [@nuxt org packages](${baseUrl}/package/@nuxt/llms.txt)`)
   lines.push(`- [nuxt README](${baseUrl}/package/nuxt.md)`)

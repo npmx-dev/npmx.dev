@@ -11,7 +11,7 @@ import {
 const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
 
 /**
- * Middleware to handle ALL llms.txt / llms_full.txt / .md routes.
+ * Middleware to handle ALL llms.txt / llms-full.txt / .md routes.
  *
  * All llms.txt handling lives here rather than in file-based routes because
  * Vercel's ISR route rules with glob patterns (e.g. `/package/ ** /llms.txt`)
@@ -24,13 +24,13 @@ const CACHE_HEADER = 's-maxage=3600, stale-while-revalidate=86400'
  * - /package/@:org/:name.md (scoped, latest, raw README)
  * - /package/@:org/llms.txt (org package listing)
  * - /package/:name/llms.txt (unscoped, latest)
- * - /package/:name/llms_full.txt (unscoped, latest, full)
+ * - /package/:name/llms-full.txt (unscoped, latest, full)
  * - /package/@:org/:name/llms.txt (scoped, latest)
- * - /package/@:org/:name/llms_full.txt (scoped, latest, full)
+ * - /package/@:org/:name/llms-full.txt (scoped, latest, full)
  * - /package/:name/v/:version/llms.txt (unscoped, versioned)
- * - /package/:name/v/:version/llms_full.txt (unscoped, versioned, full)
+ * - /package/:name/v/:version/llms-full.txt (unscoped, versioned, full)
  * - /package/@:org/:name/v/:version/llms.txt (scoped, versioned)
- * - /package/@:org/:name/v/:version/llms_full.txt (scoped, versioned, full)
+ * - /package/@:org/:name/v/:version/llms-full.txt (scoped, versioned, full)
  */
 export default defineEventHandler(async event => {
   const path = event.path.split('?')[0] ?? '/'
@@ -58,10 +58,10 @@ export default defineEventHandler(async event => {
     }
   }
 
-  if (!path.endsWith('/llms.txt') && !path.endsWith('/llms_full.txt')) return
+  if (!path.endsWith('/llms.txt') && !path.endsWith('/llms-full.txt')) return
 
-  const full = path.endsWith('/llms_full.txt')
-  const suffix = full ? '/llms_full.txt' : '/llms.txt'
+  const full = path.endsWith('/llms-full.txt')
+  const suffix = full ? '/llms-full.txt' : '/llms.txt'
 
   // Root /llms.txt
   if (path === '/llms.txt') {
@@ -129,7 +129,7 @@ export default defineEventHandler(async event => {
   } catch (error: unknown) {
     handleApiError(error, {
       statusCode: 502,
-      message: `Failed to generate ${full ? 'llms_full.txt' : 'llms.txt'}.`,
+      message: `Failed to generate ${full ? 'llms-full.txt' : 'llms.txt'}.`,
     })
   }
 })

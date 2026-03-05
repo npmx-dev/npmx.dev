@@ -56,9 +56,9 @@ export default defineEventHandler(async event => {
   }
 
   // /@org/pkg or /pkg → /package/org/pkg or /package/pkg
-  // Also handles trailing /llms.txt or /llms_full.txt suffixes
+  // Also handles trailing /llms.txt or /llms-full.txt suffixes
   let pkgMatch = path.match(
-    /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+?)(?<suffix>\.md|\/(?:llms\.txt|llms_full\.txt))?$/,
+    /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+?)(?<suffix>\.md|\/(?:llms\.txt|llms-full\.txt))?$/,
   )
   if (pkgMatch?.groups) {
     const args = [pkgMatch.groups.org, pkgMatch.groups.name].filter(Boolean).join('/')
@@ -69,13 +69,13 @@ export default defineEventHandler(async event => {
 
   // /@org/pkg/v/version or /@org/pkg@version → /package/org/pkg/v/version
   // /pkg/v/version or /pkg@version → /package/pkg/v/version
-  // Also handles trailing /llms.txt or /llms_full.txt suffixes
+  // Also handles trailing /llms.txt or /llms-full.txt suffixes
   const pkgVersionMatch =
     path.match(
-      /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)\/v\/(?<version>[^/]+)(?<suffix>\/(?:llms\.txt|llms_full\.txt))?$/,
+      /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)\/v\/(?<version>[^/]+)(?<suffix>\/(?:llms\.txt|llms-full\.txt))?$/,
     ) ||
     path.match(
-      /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)@(?<version>[^/]+)(?<suffix>\/(?:llms\.txt|llms_full\.txt))?$/,
+      /^\/(?:(?<org>@[^/]+)\/)?(?<name>[^/@]+)@(?<version>[^/]+)(?<suffix>\/(?:llms\.txt|llms-full\.txt))?$/,
     )
 
   if (pkgVersionMatch?.groups) {
