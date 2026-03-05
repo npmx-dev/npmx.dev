@@ -211,7 +211,9 @@ useSeoMeta({
               <span class="text-yellow-500">~{{ compare.stats.filesModified }}</span>
             </span>
             <span class="text-fg-subtle">•</span>
-            <span>{{ $t('compare.files_count', { count: allChanges.length }) }}</span>
+            <span>{{
+              $t('compare.files_count', { count: allChanges.length }, allChanges.length)
+            }}</span>
           </div>
           <button
             type="button"

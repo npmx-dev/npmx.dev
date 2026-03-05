@@ -32,7 +32,11 @@ const updateUrlPage = debounce((page: number) => {
   window.history.replaceState(window.history.state, '', url)
 }, 500)
 
-const { model: searchQuery, provider: searchProvider } = useGlobalSearch()
+const {
+  model: searchQuery,
+  committedModel: committedQuery,
+  provider: searchProvider,
+} = useGlobalSearch()
 const query = computed(() => searchQuery.value)
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
@@ -160,8 +164,7 @@ const EAGER_LOAD_SIZE = { algolia: 500, npm: 500 } as const
 
 // Calculate how many results we need based on current page and preferred page size
 const requestedSize = computed(() => {
-  const numericPrefSize = preferredPageSize.value === 'all' ? 250 : preferredPageSize.value
-  const base = Math.max(pageSize, currentPage.value * numericPrefSize)
+  const base = Math.max(pageSize, currentPage.value * preferredPageSize.value)
   // When sorting by something other than relevance, fetch a large batch
   // so client-side sorting operates on a meaningful pool of matching results
   if (!isRelevanceSort.value) {
@@ -181,6 +184,7 @@ watch(searchProvider, provider => {
 })
 
 // Use incremental search with client-side caching + org/user suggestions
+// committedQuery only updates on Enter when instant search is off, otherwise tracks query as user types
 const {
   data: results,
   status,
@@ -191,7 +195,7 @@ const {
   suggestions: validatedSuggestions,
   packageAvailability,
 } = useSearch(
-  query,
+  committedQuery,
   searchProvider,
   () => ({
     size: requestedSize.value,
@@ -463,12 +467,20 @@ function focusSearchInput() {
   searchInput?.focus()
 }
 
+const keyboardShortcuts = useKeyboardShortcuts()
+
 function handleResultsKeydown(e: KeyboardEvent) {
+  if (!keyboardShortcuts.value) {
+    return
+  }
   // If the active element is an input, navigate to exact match or wait for results
   if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
     // Get value directly from input (not from route query, which may be debounced)
     const inputValue = (document.activeElement as HTMLInputElement).value.trim()
     if (!inputValue) return
+
+    // When instantSearch is off, commit the query so search starts
+    committedQuery.value = inputValue
 
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]
@@ -555,6 +567,96 @@ defineOgImageComponent('Default', {
       : $t('search.meta_description_packages'),
   primaryColor: '#60a5fa',
 })
+
+// -----------------------------------
+// Live region debouncing logic
+// -----------------------------------
+const isMobile = useIsMobile()
+
+// Evaluate the text that should be announced to screen readers
+const rawLiveRegionMessage = computed(() => {
+  if (isRateLimited.value) {
+    return $t('search.rate_limited')
+  }
+
+  // If status is pending, no update phrase needed yet
+  if (status.value === 'pending') {
+    return ''
+  }
+
+  if (visibleResults.value && displayResults.value.length > 0) {
+    if (viewMode.value === 'table' || paginationMode.value === 'paginated') {
+      const pSize = Math.min(preferredPageSize.value, effectiveTotal.value)
+
+      return $t(
+        'filters.count.showing_paginated',
+        {
+          pageSize: pSize.toString(),
+          count: $n(effectiveTotal.value),
+        },
+        effectiveTotal.value,
+      )
+    }
+
+    if (isRelevanceSort.value) {
+      return $t(
+        'search.found_packages',
+        { count: $n(visibleResults.value.total) },
+        visibleResults.value.total,
+      )
+    }
+
+    return $t(
+      'search.found_packages_sorted',
+      { count: $n(effectiveTotal.value) },
+      effectiveTotal.value,
+    )
+  }
+
+  if (status.value === 'success' || status.value === 'error') {
+    if (displayResults.value.length === 0 && query.value) {
+      return $t('search.no_results', { query: query.value })
+    }
+  }
+
+  return ''
+})
+
+const debouncedLiveRegionMessage = ref('')
+
+const updateLiveRegionMobile = debounce((val: string) => {
+  debouncedLiveRegionMessage.value = val
+}, 700)
+
+const updateLiveRegionDesktop = debounce((val: string) => {
+  debouncedLiveRegionMessage.value = val
+}, 250)
+
+watch(
+  rawLiveRegionMessage,
+  newVal => {
+    if (!newVal) {
+      updateLiveRegionMobile.cancel()
+      updateLiveRegionDesktop.cancel()
+      debouncedLiveRegionMessage.value = ''
+      return
+    }
+
+    if (isMobile.value) {
+      updateLiveRegionDesktop.cancel()
+      updateLiveRegionMobile(newVal)
+    } else {
+      updateLiveRegionMobile.cancel()
+      updateLiveRegionDesktop(newVal)
+    }
+  },
+  { immediate: true },
+)
+
+onBeforeUnmount(() => {
+  updateLiveRegionMobile.cancel()
+  updateLiveRegionDesktop.cancel()
+})
 </script>
 
 <template>
@@ -567,7 +669,7 @@ defineOgImageComponent('Default', {
         <SearchProviderToggle />
       </div>
 
-      <section v-if="query" class="results-layout">
+      <section v-if="committedQuery" class="results-layout">
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
         <div
@@ -615,7 +717,7 @@ defineOgImageComponent('Default', {
             </button>
           </div>
 
-          <div v-if="isRateLimited" role="status" class="py-12">
+          <div v-if="isRateLimited" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.rate_limited') }}
             </p>
@@ -648,7 +750,6 @@ defineOgImageComponent('Default', {
             />
             <p
               v-if="viewMode === 'cards' && paginationMode === 'infinite'"
-              role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
               <template v-if="isRelevanceSort">
@@ -665,23 +766,19 @@ defineOgImageComponent('Default', {
                   $t('search.found_packages_sorted', { count: $n(effectiveTotal) }, effectiveTotal)
                 }}
               </template>
-              <span v-if="status === 'pending'" class="text-fg-subtle">{{
-                $t('search.updating')
-              }}</span>
+              <span aria-hidden="true" v-if="status === 'pending'" class="text-fg-subtle">
+                {{ $t('search.updating') }}
+              </span>
             </p>
             <p
               v-if="viewMode === 'table' || paginationMode === 'paginated'"
-              role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
               {{
                 $t(
                   'filters.count.showing_paginated',
                   {
-                    pageSize:
-                      preferredPageSize === 'all'
-                        ? $n(effectiveTotal)
-                        : Math.min(preferredPageSize, effectiveTotal),
+                    pageSize: Math.min(preferredPageSize, effectiveTotal),
                     count: $n(effectiveTotal),
                   },
                   effectiveTotal,
@@ -690,7 +787,7 @@ defineOgImageComponent('Default', {
             </p>
           </div>
 
-          <div v-else-if="status === 'success' || status === 'error'" role="status" class="py-12">
+          <div v-else-if="status === 'success' || status === 'error'" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.no_results', { query }) }}
             </p>
@@ -767,6 +864,10 @@ defineOgImageComponent('Default', {
       :package-scope="packageScope"
       :can-publish-to-scope="canPublishToScope"
     />
+
+    <div role="status" class="sr-only">
+      {{ debouncedLiveRegionMessage }}
+    </div>
   </main>
 </template>
 

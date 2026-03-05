@@ -17,6 +17,8 @@
     "source": "source",
     "social": "réseaux sociaux",
     "chat": "espace de discussion",
+    "blog": "blog",
+    "builders_chat": "builders",
     "keyboard_shortcuts": "raccourcis clavier"
   },
   "shortcuts": {
@@ -33,7 +35,8 @@
     "navigate_results": "Parcourir les résultats",
     "go_to_result": "Aller au résultat",
     "open_code_view": "Ouvrir la vue code",
-    "open_docs": "Ouvrir la doc"
+    "open_docs": "Ouvrir la doc",
+    "disable_shortcuts": "Vous pouvez désactiver les raccourcis clavier dans {settings}."
   },
   "search": {
     "label": "Rechercher des paquets npm",
@@ -62,7 +65,13 @@
       "org": "organisation",
       "view_user_packages": "Voir les paquets de cet utilisateur",
       "view_org_packages": "Voir les paquets de cette organisation"
-    }
+    },
+    "instant_search": "Recherche instantanée",
+    "instant_search_on": "activée",
+    "instant_search_off": "désactivée",
+    "instant_search_turn_on": "activer",
+    "instant_search_turn_off": "désactiver",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Barre de navigation",
@@ -76,6 +85,31 @@
     "links": "Liens",
     "tap_to_search": "Toucher pour rechercher"
   },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Actualités et mises à jour de la communauté npmx",
+    "author": {
+      "view_profile": "Voir le profil de {name} sur Bluesky"
+    },
+    "draft_badge": "Brouillon",
+    "draft_banner": "Ceci est un brouillon non publié. Il peut être incomplet ou contenir des inexactitudes.",
+    "atproto": {
+      "view_on_bluesky": "Voir sur Bluesky",
+      "reply_on_bluesky": "Répondre sur Bluesky",
+      "likes_on_bluesky": "J'aime sur Bluesky",
+      "like_or_reply_on_bluesky": "Aimez cet article ou ajoutez votre commentaire sur Bluesky",
+      "no_comments_yet": "Aucun commentaire pour le moment.",
+      "could_not_load_comments": "Impossible de charger les commentaires.",
+      "comments": "Commentaires",
+      "loading_comments": "Chargement des commentaires...",
+      "updating": "Mise à jour...",
+      "reply_count": "{count} réponse | {count} réponses",
+      "like_count": "{count} j'aime | {count} j'aime",
+      "repost_count": "{count} repartage | {count} repartages",
+      "more_replies": "{count} réponse de plus... | {count} réponses de plus..."
+    }
+  },
   "settings": {
     "title": "paramètres",
     "tagline": "personnalisez votre expérience npmx",
@@ -84,7 +118,8 @@
       "appearance": "Apparence",
       "display": "Affichage",
       "search": "Source de données",
-      "language": "Langue"
+      "language": "Langue",
+      "keyboard_shortcuts": "Raccourcis clavier"
     },
     "data_source": {
       "label": "Source de données",
@@ -108,7 +143,11 @@
     "accent_colors": "Couleurs d'accentuation",
     "clear_accent": "Supprimer la couleur d'accentuation",
     "translation_progress": "Progression de la traduction",
-    "background_themes": "Teinte de fond"
+    "background_themes": "Teinte de fond",
+    "instant_search": "Recherche instantanée",
+    "instant_search_description": "Navigue vers la page de recherche et met à jour les résultats au fur et à mesure de la saisie.",
+    "keyboard_shortcuts_enabled": "Activer les raccourcis clavier",
+    "keyboard_shortcuts_enabled_description": "Les raccourcis clavier peuvent être désactivés s'ils entrent en conflit avec d'autres raccourcis du navigateur ou du système"
   },
   "i18n": {
     "missing_keys": "{count} traduction manquante | {count} traductions manquantes",
@@ -117,6 +156,13 @@
     "contribute_hint": "Aidez à améliorer cette traduction en ajoutant les entrées manquantes.",
     "edit_on_github": "Modifier sur GitHub",
     "view_guide": "Guide de traduction"
+  },
+  "error": {
+    "401": "Non autorisé",
+    "404": "Page introuvable",
+    "500": "Erreur interne du serveur",
+    "503": "Service indisponible",
+    "default": "Une erreur est survenue"
   },
   "common": {
     "loading": "Chargement...",
@@ -140,7 +186,28 @@
       "role": "rôle",
       "members": "membres"
     },
-    "scroll_to_top": "Retour en haut"
+    "scroll_to_top": "Retour en haut",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "error": "Erreur"
+  },
+  "profile": {
+    "display_name": "Nom d'affichage",
+    "description": "Description",
+    "no_description": "Aucune description",
+    "website": "Site web",
+    "website_placeholder": "https://exemple.com",
+    "likes": "Mentions j'aime",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "Profil npmx par {handle}",
+    "not_found": "Profil introuvable",
+    "not_found_message": "Le profil de {handle} est introuvable.",
+    "invite": {
+      "message": "Il semblerait qu'ils n'utilisent pas encore npmx. Vous voulez leur en parler ?",
+      "share_button": "Partager sur Bluesky",
+      "compose_text": "Salut {'@'}{handle} ! As-tu déjà testé npmx.dev ? C'est un navigateur pour le registre npm : rapide, moderne et open source.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Paquet introuvable",
@@ -374,6 +441,8 @@
       "download_file": "Télécharger {fileType}",
       "toggle_annotator": "Afficher/Masquer l'annotateur",
       "toggle_stack_mode": "Basculer le mode empilé",
+      "open_options": "Ouvrir les options",
+      "close_options": "Fermer les options",
       "legend_estimation": "Estimation",
       "no_data": "Données non disponibles",
       "y_axis_label": "{facet} {granularity}",
@@ -385,8 +454,6 @@
         "likes": "J'aime",
         "contributors": "Contributeurs"
       },
-      "play_animation": "Lancer l'animation",
-      "pause_animation": "Mettre l'animation en pause",
       "data_correction": "Correction des données",
       "average_window": "Plage de moyenne",
       "smoothing": "Lissage",
@@ -415,7 +482,8 @@
     },
     "downloads": {
       "title": "Téléchargements hebdo.",
-      "community_distribution": "Voir la distribution des versions téléchargées par la communauté"
+      "community_distribution": "Voir la distribution des versions téléchargées par la communauté",
+      "subtitle": "Toutes versions confondues"
     },
     "install_scripts": {
       "title": "Scripts d'installation",
@@ -509,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "Connecteur local",
-      "contributor_badge": "Contributeurs uniquement",
-      "contributor_notice": "Le connecteur n'est pas encore publié sur npm. Consultez le {link} pour savoir comment l'exécuter localement.",
-      "contributor_link": "guide de contribution",
       "connected": "Connecté·e",
       "connected_as_user": "Connecté·e en tant que ~{user}",
       "connected_hint": "Vous pouvez maintenant gérer les paquets et les organisations depuis l'interface web.",
@@ -711,7 +776,8 @@
       "preview": "aperçu",
       "code": "code"
     },
-    "file_path": "Chemin du fichier"
+    "file_path": "Chemin du fichier",
+    "scroll_to_top": "Remonter en haut"
   },
   "badges": {
     "provenance": {
@@ -819,7 +885,6 @@
       "paginated": "Paginé",
       "items_per_page": "Éléments par page",
       "per_page": "{count} / page",
-      "all_yolo": "Tout (YOLO)",
       "showing": "{start}-{end} sur {total}",
       "previous": "Page précédente",
       "next": "Page suivante",
@@ -896,6 +961,11 @@
         "description": "Discutez, posez des questions et partagez des idées.",
         "cta": "Joindre le Discord"
       },
+      "builders": {
+        "title": "Aidez à construire npmx",
+        "description": "Rejoignez les builders qui façonnent l'avenir de npmx.",
+        "cta": "Rejoindre le Discord Builders"
+      },
       "follow": {
         "title": "Rester à jour",
         "description": "Découvrez les dernières nouveautés de npmx.",
@@ -928,7 +998,8 @@
       "connect_bluesky": "Connexion avec Bluesky",
       "what_is_atmosphere": "Qu'est-ce qu'un compte Atmosphere ?",
       "atmosphere_explanation": "{npmx} utilise {atproto} pour alimenter plusieurs de ses fonctionnalités sociales, permettant aux utilisateurs de posséder leurs données et d'utiliser un seul compte pour toutes les applications compatibles. Une fois votre compte créé, vous pouvez utiliser d'autres applications comme {bluesky} ou {tangled} avec le même compte.",
-      "default_input_error": "Veuillez entrer un identifiant, DID ou URL PDS valide"
+      "default_input_error": "Veuillez entrer un identifiant, DID ou URL PDS valide",
+      "profile": "Profil"
     }
   },
   "header": {
@@ -1073,7 +1144,10 @@
     "file_changes": "Modifications de fichiers",
     "files_count": "{count} fichiers",
     "lines_hidden": "{count} lignes masquées",
+    "file_too_large": "Fichier trop volumineux pour être comparé",
+    "file_size_warning": "{size} dépasse la limite de 250 Ko pour la comparaison",
     "compare_versions": "diff",
+    "compare_versions_title": "Comparer avec la dernière version",
     "summary": "Résumé",
     "deps_count": "{count} dépendances",
     "dependencies": "Dépendances",
@@ -1100,6 +1174,34 @@
     "select_file_prompt": "Sélectionnez un fichier dans la barre latérale pour voir son diff",
     "close_files_panel": "Fermer le panneau de fichiers",
     "filter_files_label": "Filtrer les fichiers par type de modification"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Le serveur de données personnelles (PDS) officiel du protocole AT pour la communauté npmx.",
+    "join": {
+      "title": "Rejoindre la communauté",
+      "description": "Que vous créiez votre premier compte sur l'Atmosphère ou que vous migriez un compte existant, vous êtes ici chez vous. Vous pouvez migrer votre compte actuel sans perdre votre identifiant, vos publications ni vos abonnés.",
+      "migrate": "Migrer avec PDS MOOver"
+    },
+    "server": {
+      "title": "Détails du serveur",
+      "location_label": "Emplacement :",
+      "location_value": "Nuremberg, Allemagne",
+      "infrastructure_label": "Infrastructure :",
+      "infrastructure_value": "Hébergé chez Hetzner",
+      "privacy_label": "Confidentialité :",
+      "privacy_value": "Soumis aux lois strictes de protection des données de l'UE",
+      "learn_more": "Découvrir comment npmx utilise l'Atmosphère"
+    },
+    "community": {
+      "title": "Qui est ici",
+      "description": "Quelques-uns des {count} comptes qui ont déjà fait de npmx.social leur chez-soi :",
+      "loading": "Chargement de la communauté PDS...",
+      "error": "Échec du chargement de la communauté PDS.",
+      "empty": "Aucun membre de la communauté à afficher.",
+      "view_profile": "Voir le profil de {handle}",
+      "new_accounts": "...plus {count} autres qui sont nouveaux sur l'Atmosphère"
+    }
   },
   "privacy_policy": {
     "title": "politique de confidentialité",

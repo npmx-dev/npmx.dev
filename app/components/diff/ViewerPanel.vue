@@ -2,6 +2,8 @@
 import type { FileDiffResponse, FileChange } from '#shared/types'
 import { onClickOutside } from '@vueuse/core'
 
+const bytesFormatter = useBytesFormatter()
+
 const props = defineProps<{
   packageName: string
   fromVersion: string
@@ -20,9 +22,21 @@ onClickOutside(optionsDropdownRef, () => {
   showOptions.value = false
 })
 
-const apiUrl = computed(
-  () =>
-    `/api/registry/compare-file/${props.packageName}/v/${props.fromVersion}...${props.toVersion}/${props.file.path}`,
+// Maximum file size we'll try to load (250KB) - must match server
+const MAX_FILE_SIZE = 250 * 1024
+const isFilesTooLarge = computed(() => {
+  const newSize = props.file?.newSize
+  const oldSize = props.file?.oldSize
+  return (
+    (newSize !== undefined && newSize > MAX_FILE_SIZE) ||
+    (oldSize !== undefined && oldSize > MAX_FILE_SIZE)
+  )
+})
+
+const apiUrl = computed(() =>
+  isFilesTooLarge.value
+    ? null
+    : `/api/registry/compare-file/${props.packageName}/v/${props.fromVersion}...${props.toVersion}/${props.file.path}`,
 )
 
 const apiQuery = computed(() => ({
@@ -36,7 +50,7 @@ const {
   data: diff,
   status,
   error: loadError,
-} = useFetch<FileDiffResponse>(apiUrl, {
+} = useFetch<FileDiffResponse>(() => apiUrl.value!, {
   query: apiQuery,
   timeout: 15000,
 })
@@ -68,13 +82,6 @@ const charEditMarks = computed(() => [] as number[]) // no dots for char edits s
 const changeRatioPercent = computed(() => calcPercent(maxChangeRatio.value, 0, 1))
 const diffDistancePercent = computed(() => calcPercent(maxDiffDistance.value, 1, 60))
 const charEditPercent = computed(() => calcPercent(inlineMaxCharEdits.value, 0, 10))
-
-function formatBytes(bytes: number | undefined): string {
-  if (bytes === undefined) return ''
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}
 
 // Build code browser URL
 function getCodeUrl(version: string): string {
@@ -117,13 +124,14 @@ function getCodeUrl(version: string): string {
         <!-- File sizes -->
         <span v-if="file.oldSize || file.newSize" class="text-xs text-fg-subtle shrink-0">
           <template v-if="file.type === 'modified'">
-            {{ formatBytes(file.oldSize) }} → {{ formatBytes(file.newSize) }}
+            {{ bytesFormatter.format(file.oldSize ?? 0) }} →
+            {{ bytesFormatter.format(file.newSize ?? 0) }}
           </template>
           <template v-else-if="file.type === 'added'">
-            {{ formatBytes(file.newSize) }}
+            {{ bytesFormatter.format(file.newSize ?? 0) }}
           </template>
           <template v-else>
-            {{ formatBytes(file.oldSize) }}
+            {{ bytesFormatter.format(file.oldSize ?? 0) }}
           </template>
         </span>
       </div>
@@ -295,8 +303,20 @@ function getCodeUrl(version: string): string {
 
     <!-- Content -->
     <div class="flex-1 overflow-auto relative">
+      <!-- File too large warning -->
+      <div v-if="isFilesTooLarge" class="py-20 text-center">
+        <div class="i-lucide:file-text w-12 h-12 mx-auto text-fg-subtle mb-4" />
+        <p class="text-fg-muted mb-2">{{ $t('compare.file_too_large') }}</p>
+        <p class="text-fg-subtle text-sm mb-4">
+          {{
+            $t('compare.file_size_warning', {
+              size: bytesFormatter.format(Math.max(file.newSize ?? 0, file.oldSize ?? 0)),
+            })
+          }}
+        </p>
+      </div>
       <!-- Loading state -->
-      <div v-if="status === 'pending'" class="py-12 text-center">
+      <div v-else-if="status === 'pending'" class="py-12 text-center">
         <div class="i-svg-spinners-ring-resize w-6 h-6 mx-auto text-fg-muted" />
         <p class="mt-2 text-sm text-fg-muted">Loading diff...</p>
       </div>

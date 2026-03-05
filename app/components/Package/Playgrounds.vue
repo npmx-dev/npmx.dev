@@ -21,6 +21,7 @@ const providerIcons: Record<string, string> = {
   'svelte-playground': 'i-simple-icons:svelte',
   'tailwind-playground': 'i-simple-icons:tailwindcss',
   'storybook': 'i-simple-icons:storybook',
+  'marko-playground': 'i-simple-icons:marko',
 }
 
 // Map provider id to color class
@@ -39,6 +40,7 @@ const providerColors: Record<string, string> = {
   'svelte-playground': 'text-provider-svelte',
   'tailwind-playground': 'text-provider-tailwind',
   'storybook': 'text-provider-storybook',
+  'marko-playground': 'text-provider-marko',
 }
 
 function getIcon(provider: string): string {
@@ -118,11 +120,11 @@ function focusMenuItem(index: number) {
 </script>
 
 <template>
-  <section v-if="links.length > 0" class="px-1">
-    <h2 id="playgrounds-heading" class="text-xs font-mono text-fg uppercase tracking-wider mb-3">
-      {{ $t('package.playgrounds.title') }}
-    </h2>
-
+  <CollapsibleSection
+    v-if="links.length > 0"
+    id="playgrounds"
+    :title="$t('package.playgrounds.title')"
+  >
     <div ref="dropdownRef" class="relative">
       <!-- Single link: direct button -->
       <TooltipApp v-if="hasSingleLink && firstLink" :text="firstLink.providerName" class="w-full">
@@ -198,5 +200,5 @@ function focusMenuItem(index: number) {
         </div>
       </Transition>
     </div>
-  </section>
+  </CollapsibleSection>
 </template>

@@ -360,9 +360,6 @@
   "connector": {
     "modal": {
       "title": "లోకల్ కనెక్టర్",
-      "contributor_badge": "కంట్రిబ్యూటర్‌లకు మాత్రమే",
-      "contributor_notice": "కనెక్టర్ ఇంకా npm లో ప్రచురించబడలేదు. స్థానికంగా అమలు చేయడానికి {link} చూడండి.",
-      "contributor_link": "కంట్రిబ్యూషన్ గైడ్",
       "connected": "కనెక్ట్ చేయబడింది",
       "connected_as_user": "~{user} గా కనెక్ట్ చేయబడింది",
       "connected_hint": "ఇప్పుడు మీరు వెబ్ UI నుండి ప్యాకేజ్‌లు మరియు సంస్థలను నిర్వహించవచ్చు.",
@@ -658,7 +655,6 @@
       "paginated": "పేజినేటెడ్",
       "items_per_page": "పేజీకి అంశాలు",
       "per_page": "{count} / పేజీ",
-      "all_yolo": "అన్నీ (YOLO)",
       "showing": "{total} లో {start}-{end}",
       "previous": "మునుపటి పేజీ",
       "next": "తర్వాతి పేజీ",

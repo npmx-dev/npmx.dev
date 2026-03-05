@@ -72,7 +72,7 @@ const roleLabels = computed(
         </p>
       </header>
 
-      <section class="prose prose-invert max-w-none space-y-12">
+      <section class="max-w-none space-y-12">
         <div>
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.what_we_are.title') }}
@@ -157,16 +157,18 @@ const roleLabels = computed(
           </ul>
         </div>
 
+        <!-- Sponsors -->
         <div class="sponsors-logos">
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.sponsors.title') }}
           </h2>
           <AboutLogoList
             :list="SPONSORS"
-            class="flex-col gap-6 items-start md:flex-row md:items-center md:gap-4"
+            class="grid grid-cols-2 md:flex md:flex-row md:items-center"
           />
         </div>
 
+        <!-- OSS partners -->
         <div>
           <h2 class="text-lg text-fg uppercase tracking-wider mb-4">
             {{ $t('about.oss_partners.title') }}

@@ -17,7 +17,7 @@ const { user } = useAtproto()
 
 const authModal = useModal('auth-modal')
 
-const { data: likesData } = useFetch(() => `/api/social/likes/${name.value}`, {
+const { data: likesData, status: likesStatus } = useFetch(() => `/api/social/likes/${name.value}`, {
   default: () => ({ totalLikes: 0, userHasLiked: false }),
   server: false,
 })
@@ -71,11 +71,12 @@ const likeAction = async () => {
 
 <template>
   <NuxtLink :to="packageRoute(name)">
-    <BaseCard class="font-mono flex justify-between">
-      {{ name }}
-      <div class="flex items-center gap-4 justify-between">
+    <BaseCard class="font-mono flex justify-between min-w-0">
+      <span class="truncate min-w-0" :title="name">{{ name }}</span>
+      <div class="flex items-center gap-4 justify-between shrink-0">
         <ClientOnly>
           <TooltipApp
+            v-if="likesStatus !== 'pending'"
             :text="likesData?.userHasLiked ? $t('package.likes.unlike') : $t('package.likes.like')"
             position="bottom"
           >

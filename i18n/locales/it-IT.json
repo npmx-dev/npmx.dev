@@ -449,9 +449,6 @@
   "connector": {
     "modal": {
       "title": "Connettore locale",
-      "contributor_badge": "Solo collaboratori",
-      "contributor_notice": "Il connettore non è ancora pubblicato su npm. Vedi {link} per come eseguire localmente.",
-      "contributor_link": "guida ai contributi",
       "connected": "Connesso",
       "connected_as_user": "Connesso come ~{user}",
       "connected_hint": "Puoi ora gestire i pacchetti e le organizzazioni dall'interfaccia web.",
@@ -755,7 +752,6 @@
       "paginated": "Paginato",
       "items_per_page": "Elementi per pagina",
       "per_page": "{count} / pagina",
-      "all_yolo": "Tutti (YOLO)",
       "showing": "{start}-{end} su {total}",
       "previous": "Pagina precedente",
       "next": "Pagina successiva",

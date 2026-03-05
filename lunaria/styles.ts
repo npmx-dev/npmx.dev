@@ -29,7 +29,7 @@ export const BaseStyles = html`
       --ln-color-link: var(--ln-color-blue);
       --ln-color-done: var(--ln-color-purple);
       --ln-color-outdated: var(--ln-color-orange);
-      --ln-color-missing: var(--ln-color-black);
+      --ln-color-missing: #ef4444;
       --ln-color-table-border: var(--ln-color-gray-3);
       --ln-color-table-background: var(--ln-color-gray-1);
     }
@@ -121,8 +121,7 @@ export const BaseStyles = html`
     }
 
     a {
-      color: var(--ln-color-link);
-      text-decoration: none;
+      color: var(--fg);
     }
 
     h2 a {
@@ -131,6 +130,7 @@ export const BaseStyles = html`
 
     a:hover {
       text-decoration: underline;
+      color: var(--ln-color-gray-5);
     }
 
     ul {
@@ -175,12 +175,17 @@ export const BaseStyles = html`
       font-size: 0.75rem;
     }
 
-    .status-by-file {
+    .status-by-file-wrapper {
+      overflow-x: auto;
       margin-bottom: 1rem;
-      border-collapse: collapse;
       border: 1px solid var(--ln-color-table-border);
+      border-radius: 0.375rem;
+      scrollbar-color: var(--ln-color-gray-6) var(--ln-color-gray-2);
+    }
+
+    .status-by-file {
+      border-collapse: collapse;
       font-size: 0.8125rem;
-      column-gap: 64px;
     }
 
     .status-by-file tr:first-of-type td {
@@ -296,15 +301,19 @@ export const CustomStyles = html`
       --ln-color-link: #539bf5;
       --ln-color-table-background: var(--bg-subtle);
       --ln-color-table-border: var(--border);
-      --ln-color-background: var(--theme-bg-gradient);
-      --ln-color-black: var(--theme-text);
-      --ln-color-missing: var(--ln-color-black);
+      --ln-color-background: var(--bg);
+      --ln-color-black: var(--fg);
+      --ln-color-missing: #f87171;
       --ln-color-outdated: #fb923c;
       --ln-color-done: #c084fc;
     }
 
     html {
       background-color: var(--bg);
+    }
+
+    body {
+      color: var(--fg);
     }
 
     h1,
@@ -322,16 +331,6 @@ export const CustomStyles = html`
 
     p {
       color: var(--fg-muted);
-    }
-
-    p a {
-      color: var(--fg);
-      text-decoration: underline;
-    }
-
-    .status-by-file a,
-    .progress-details a {
-      color: var(--fg);
     }
 
     .create-button {

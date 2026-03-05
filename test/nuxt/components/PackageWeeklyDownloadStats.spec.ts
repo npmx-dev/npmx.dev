@@ -40,6 +40,7 @@ describe('PackageWeeklyDownloadStats', () => {
     })
 
     expect(component.text()).toContain('Weekly Downloads')
+    expect(component.text()).toContain('Across all versions')
     expect(component.text()).toContain('No data available')
   })
 
@@ -60,6 +61,7 @@ describe('PackageWeeklyDownloadStats', () => {
     })
 
     expect(component.text()).toContain('Weekly Downloads')
+    expect(component.text()).toContain('Across all versions')
     expect(component.text()).not.toContain('No data available')
   })
 })

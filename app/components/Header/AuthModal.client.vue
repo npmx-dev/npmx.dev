@@ -78,7 +78,7 @@ watch(user, async newUser => {
       <div class="flex flex-col space-y-4">
         <LinkBase
           variant="button-secondary"
-          :to="{ name: 'profile-handle', params: { handle: user.handle } }"
+          :to="{ name: 'profile-identity', params: { identity: user.handle } }"
           prefetch-on="interaction"
           class="w-full"
           @click="authModal.close()"

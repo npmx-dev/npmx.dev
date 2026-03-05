@@ -3,20 +3,22 @@
   "seo": {
     "home": {
       "title": "npmx - Prohlížeč balíčků pro registr npm",
-      "description": "Lepší prohlížeč pro registr npm. Vyhledávejte, prohlížejte a objevujte balíčky v moderním rozhraní."
+      "description": "rychlý a moderní prohlížeč pro registr npm. Vyhledávejte, prohlížejte a objevujte balíčky v moderním rozhraní."
     }
   },
   "built_at": "sestaveno {0}",
   "alt_logo": "npmx logo",
-  "tagline": "lepší prohlížeč pro registr npm",
+  "tagline": "rychlý a moderní prohlížeč pro registr npm",
   "non_affiliation_disclaimer": "není spojen s npm, Inc.",
   "trademark_disclaimer": "npm je registrovaná ochranná známka společnosti npm, Inc. Tato stránka není spojena s npm, Inc.",
   "footer": {
     "about": "o projektu",
+    "blog": "blog",
     "docs": "dokumentace",
     "source": "zdrojový kód",
     "social": "sociální sítě",
     "chat": "chat",
+    "builders_chat": "stavitelé",
     "keyboard_shortcuts": "klávesové zkratky"
   },
   "shortcuts": {
@@ -33,7 +35,8 @@
     "navigate_results": "Procházet výsledky",
     "go_to_result": "Přejít na výsledek",
     "open_code_view": "Otevřít zobrazení kódu",
-    "open_docs": "Otevřít dokumentaci"
+    "open_docs": "Otevřít dokumentaci",
+    "disable_shortcuts": "Klávesové zkratky můžete zakázat v {settings}."
   },
   "search": {
     "label": "Hledat npm balíčky",
@@ -62,7 +65,13 @@
       "org": "organizace",
       "view_user_packages": "Zobrazit balíčky tohoto uživatele",
       "view_org_packages": "Zobrazit balíčky této organizace"
-    }
+    },
+    "instant_search": "Okamžité hledání",
+    "instant_search_on": "zapnuto",
+    "instant_search_off": "vypnuto",
+    "instant_search_turn_on": "zapnout",
+    "instant_search_turn_off": "vypnout",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Hlavní",
@@ -76,6 +85,31 @@
     "links": "Odkazy",
     "tap_to_search": "Klepněte pro hledání"
   },
+  "blog": {
+    "title": "Blog",
+    "heading": "blog",
+    "meta_description": "Postřehy a novinky od npmx komunity",
+    "author": {
+      "view_profile": "Zobrazit profil uživatele {name} na Bluesky"
+    },
+    "draft_badge": "Návrh",
+    "draft_banner": "Toto je nepublikovaný návrh. Může být neúplný nebo obsahovat nepřesnosti.",
+    "atproto": {
+      "view_on_bluesky": "Zobrazit na Bluesky",
+      "reply_on_bluesky": "Odpovědět na Bluesky",
+      "likes_on_bluesky": "Lajky na Bluesky",
+      "like_or_reply_on_bluesky": "Olajkujte tento příspěvek nebo přidejte svůj komentář na Bluesky",
+      "no_comments_yet": "Ještě žádné komentáře.",
+      "could_not_load_comments": "Komentáře se nepodařilo načíst.",
+      "comments": "Komentáře",
+      "loading_comments": "Načítání komentářů ...",
+      "updating": "Aktualizace ...",
+      "reply_count": "{count} odpověď | {count} odpovědi | {count} odpovědí",
+      "like_count": "{count} lajk | {count} lajky | {count} lajků",
+      "repost_count": "{count} repost | {count} reposty | {count} repostů",
+      "more_replies": "{count} další odpověď ... | {count} další odpovědi ... | {count} dalších odpovědí ..."
+    }
+  },
   "settings": {
     "title": "nastavení",
     "tagline": "přizpůsobte si své npmx",
@@ -84,7 +118,8 @@
       "appearance": "Vzhled",
       "display": "Zobrazení",
       "search": "Zdroj dat",
-      "language": "Jazyk"
+      "language": "Jazyk",
+      "keyboard_shortcuts": "Klávesové zkratky"
     },
     "data_source": {
       "label": "Zdroj dat",
@@ -94,6 +129,8 @@
       "algolia": "Algolia",
       "algolia_description": "Používá Algolia pro rychlejší vyhledávání, stránky organizací a uživatelů."
     },
+    "instant_search": "Okamžité hledání",
+    "instant_search_description": "Naviguje na stránku hledání a aktualizuje výsledky při psaní.",
     "relative_dates": "Relativní data",
     "include_types": "Zahrnout {'@'}types při instalaci",
     "include_types_description": "Přidat balíček {'@'}types do instalačních příkazů pro balíčky bez integrovaných typů",
@@ -108,7 +145,9 @@
     "accent_colors": "Barvy akcentu",
     "clear_accent": "Vymazat barvu akcentu",
     "translation_progress": "Pokrok překladu",
-    "background_themes": "Odstín pozadí"
+    "background_themes": "Odstín pozadí",
+    "keyboard_shortcuts_enabled": "Povolit klávesové zkratky",
+    "keyboard_shortcuts_enabled_description": "Klávesové zkratky lze zakázat, pokud se střetávají s jinými zkratkami prohlížeče nebo systému"
   },
   "i18n": {
     "missing_keys": "{count} chybějící překlad | {count} chybějící překlady | {count} chybějících překladů",
@@ -117,6 +156,13 @@
     "contribute_hint": "Pomozte zlepšit tento překlad přidáním chybějících klíčů.",
     "edit_on_github": "Upravit na GitHubu",
     "view_guide": "Překladatelská příručka"
+  },
+  "error": {
+    "401": "Neoprávněný přístup",
+    "404": "Stránka nenalezena",
+    "500": "Interní chyba serveru",
+    "503": "Služba není dostupná",
+    "default": "Něco se pokazilo"
   },
   "common": {
     "loading": "Načítání...",
@@ -140,7 +186,28 @@
       "role": "role",
       "members": "členové"
     },
-    "scroll_to_top": "Posunout nahoru"
+    "scroll_to_top": "Posunout nahoru",
+    "cancel": "Zrušit",
+    "save": "Uložit",
+    "edit": "Upravit",
+    "error": "Chyba"
+  },
+  "profile": {
+    "display_name": "Zobrazované jméno",
+    "description": "Popis",
+    "no_description": "Bez popisu",
+    "website": "Webová stránka",
+    "website_placeholder": "https://example.com",
+    "likes": "Lajky",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "npmx profil uživatele {handle}",
+    "not_found": "Profil nenalezen",
+    "not_found_message": "Profil uživatele {handle} nebyl nalezen.",
+    "invite": {
+      "message": "Zdá se, že ještě nepoužívají npmx. Chcete jim o tom říct?",
+      "share_button": "Sdílet na Bluesky",
+      "compose_text": "Ahoj {'@'}{handle}! Viděl jsi už npmx.dev? Je to prohlížeč pro npm registr, který je rychlý, moderní a open-source.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Balíček nenalezen",
@@ -156,6 +223,13 @@
       "package": "Tento balíček byl označen jako zastaralý.",
       "version": "Tato verze byla označena jako zastaralá.",
       "no_reason": "Bez uvedeného důvodu."
+    },
+    "size_increase": {
+      "title_size": "Významné zvýšení velikosti od verze v{version}",
+      "title_deps": "Významné zvýšení počtu závislostí od verze v{version}",
+      "title_both": "Významné zvýšení velikosti a počtu závislostí od verze v{version}",
+      "size": "Velikost instalace se zvýšila o {percent} (větší o {size})",
+      "deps": "{count} další závislostí"
     },
     "replacement": {
       "title": "Možná tuto závislost nepotřebujete.",
@@ -267,7 +341,7 @@
       "description_to_provenance_trustedPublisher": "Tato verze používá {provenance}, ale ne {trustedPublishing}.",
       "fallback_install_provenance": "Instalační příkazy jsou připnuty na {version}, poslední verzi s původem.",
       "fallback_install_trustedPublisher": "Instalační příkazy jsou připnuty na {version}, poslední verzi s důvěryhodným publikováním.",
-      "provenance_link_text": "původ",
+      "provenance_link_text": "původu",
       "trusted_publishing_link_text": "důvěryhodné publikování"
     },
     "keywords_title": "Klíčová slova",
@@ -294,8 +368,16 @@
       "view_all": "Zobrazit {count} verzi | Zobrazit {count} verze | Zobrazit {count} verzí",
       "distribution_title": "Skupina Semver",
       "distribution_modal_title": "Verze",
+      "distribution_range_date_same_year": "od {from} do {to}, {endYear}",
+      "distribution_range_date_multiple_years": "od {from}, {startYear} do {to}, {endYear}",
       "grouping_major": "Hlavní",
       "grouping_minor": "Vedlejší",
+      "grouping_versions_title": "Verze",
+      "grouping_versions_all": "Všechny",
+      "grouping_versions_only_recent": "Pouze nedávné",
+      "grouping_usage_title": "Použití",
+      "grouping_usage_all": "Všechno",
+      "grouping_usage_low": "Nízké",
       "recent_versions_only_tooltip": "Zobrazit pouze verze zveřejněné v posledním roce.",
       "show_low_usage_tooltip": "Zahrnout skupiny verzí s méně než 1 % celkových stažení.",
       "y_axis_label": "Stažení",
@@ -304,7 +386,11 @@
       "filter_help": "Pomoc s filtrováním rozsahu semver",
       "filter_tooltip": "Filtrovat verze pomocí {link}. Například ^3.0.0 zobrazí všechny verze 3.x.",
       "filter_tooltip_link": "semver rozsahu",
-      "no_matches": "Žádné verze neodpovídají tomuto rozsahu"
+      "no_matches": "Žádné verze neodpovídají tomuto rozsahu",
+      "copy_alt": {
+        "per_version_analysis": "Verze {version} byla stažena {downloads} krát",
+        "general_description": "Sloupcový graf zobrazující stažení podle verzí pro {versions_count} {semver_grouping_mode} verze balíčku {package_name}, {date_range_label} od verze {first_version} do verze {last_version}. Nejvíce stažená verze je {max_downloaded_version} s {max_version_downloads} staženími. {per_version_analysis}. {watermark}."
+      }
     },
     "dependencies": {
       "title": "Závislosti ({count})",
@@ -318,9 +404,9 @@
       "has_replacement": "Tato závislost má navrhované náhrady"
     },
     "peer_dependencies": {
-      "title": "Požadované závislosti ({count})",
-      "list_label": "Požadované závislosti balíčku",
-      "show_all": "zobrazit všechny požadované závislosti ({count})"
+      "title": "Vzájemné závislosti ({count})",
+      "list_label": "Vzájemné závislosti balíčku",
+      "show_all": "zobrazit všechny vzájemné závislosti ({count})"
     },
     "optional_dependencies": {
       "title": "Volitelné závislosti ({count})",
@@ -354,6 +440,9 @@
       "date_range_multiline": "od {start}\ndo {end}",
       "download_file": "Stáhnout {fileType}",
       "toggle_annotator": "Přepnout popisovač",
+      "toggle_stack_mode": "Přepnout zobrazení nad sebou",
+      "open_options": "Otevřít možnosti",
+      "close_options": "Zavřít možnosti",
       "legend_estimation": "Odhad",
       "no_data": "Žádná dostupná data",
       "y_axis_label": "{facet} - {granularity}",
@@ -364,11 +453,37 @@
         "downloads": "Stažení",
         "likes": "Lajky",
         "contributors": "Přispěvatelé"
+      },
+      "data_correction": "Oprava dat",
+      "average_window": "Okno průměru",
+      "smoothing": "Vyhlazování",
+      "known_anomalies": "Známé anomálie",
+      "known_anomalies_description": "Interpoluje přes známé špičky stažení způsobené boty nebo problémy s CI.",
+      "known_anomalies_ranges": "Rozsahy anomálií",
+      "known_anomalies_range": "Od {start} do {end}",
+      "known_anomalies_range_named": "{packageName}: od {start} do {end}",
+      "known_anomalies_none": "Žádné známé anomálie pro tento balíček. | Žádné známé anomálie pro tyto balíčky.",
+      "known_anomalies_contribute": "Přispět daty o anomáliích",
+      "apply_correction": "Aplikovat korekci",
+      "copy_alt": {
+        "trend_none": "převážně stabilní",
+        "trend_strong": "silný",
+        "trend_weak": "slabý",
+        "trend_undefined": "neznámý (nedostatečná data)",
+        "button_label": "Kopírovat alt text",
+        "watermark": "V dolní části je vodoznak s textem \"./npmx rychlý a moderní prohlížeč pro registr npm\"",
+        "analysis": "{package_name} začíná na {start_value} a končí na {end_value}, ukazující {trend} trend s sklonem {downloads_slope} stažení za časový interval",
+        "estimation": "Konečná hodnota je odhad založený na částečných datech pro aktuální období.",
+        "estimations": "Konečné hodnoty jsou odhady založené na částečných datech pro aktuální období.",
+        "compare": "Porovnání grafu stahování balíčků pro: {packages}.",
+        "single_package": "Graf stahování pro balíček {package}.",
+        "general_description": "Osa Y představuje počet stažení. Osa X představuje časový rozsah od {start_date} do {end_date} s časovým obdobím {granularity}.{estimation_notice} {packages_analysis}. {watermark}."
       }
     },
     "downloads": {
       "title": "Týdenní stažení",
-      "community_distribution": "Zobrazit rozložení adopce v komunitě"
+      "community_distribution": "Zobrazit rozložení adopce v komunitě",
+      "subtitle": "Napříč všemi verzemi"
     },
     "install_scripts": {
       "title": "Instalační skripty",
@@ -462,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "Lokální konektor",
-      "contributor_badge": "Pouze přispěvatelé",
-      "contributor_notice": "Konektor ještě není publikován na npm. Viz {link} pro informace, jak jej spustit lokálně.",
-      "contributor_link": "příručka pro přispěvatele",
       "connected": "Připojeno",
       "connected_as_user": "Připojeno jako ~{user}",
       "connected_hint": "Nyní můžete spravovat balíčky a organizace z webového rozhraní.",
@@ -621,6 +733,7 @@
       "invalid_name": "Neplatný název balíčku:",
       "available": "Tento název je k dispozici!",
       "taken": "Tento název je již obsazen.",
+      "missing_permission": "Nemáte oprávnění přidat balíček do rozsahu {'@'}{scope}.",
       "similar_warning": "Podobné balíčky existují - npm může tento název odmítnout:",
       "related": "Související balíčky:",
       "scope_warning_title": "Zvažte použití balíčku s rozsahem",
@@ -663,7 +776,8 @@
       "preview": "náhled",
       "code": "kód"
     },
-    "file_path": "Cesta k souboru"
+    "file_path": "Cesta k souboru",
+    "scroll_to_top": "Posunout nahoru"
   },
   "badges": {
     "provenance": {
@@ -771,7 +885,6 @@
       "paginated": "Stránkované",
       "items_per_page": "Položek na stránku",
       "per_page": "{count} / stránku",
-      "all_yolo": "Vše (YOLO)",
       "showing": "{start}-{end} z {total}",
       "previous": "Předchozí stránka",
       "next": "Další stránka",
@@ -815,6 +928,12 @@
         "managers": "správce balíčků"
       }
     },
+    "sponsors": {
+      "title": "Sponzoři"
+    },
+    "oss_partners": {
+      "title": "OSS partneři"
+    },
     "team": {
       "title": "Tým",
       "governance": "Správa",
@@ -841,6 +960,11 @@
         "title": "Připojte se ke komunitě",
         "description": "Chatujte, pokládejte otázky a sdílejte nápady.",
         "cta": "Připojit se na Discordu"
+      },
+      "builders": {
+        "title": "Pomozte zlepšovat npmx",
+        "description": "Připojte se ke stavitelům, kteří budují budoucnost npmx.",
+        "cta": "Připojit se k Builders Discordu"
       },
       "follow": {
         "title": "Zůstaňte v obraze",
@@ -874,7 +998,8 @@
       "connect_bluesky": "Připojit k Bluesky",
       "what_is_atmosphere": "Co je účet Atmosphere?",
       "atmosphere_explanation": "{npmx} používá {atproto} k pohánění mnoha svých sociálních funkcí, což uživatelům umožňuje vlastnit svá data a používat jeden účet pro všechny kompatibilní aplikace. Jakmile si vytvoříte účet, můžete používat i jiné aplikace jako {bluesky} a {tangled} se stejným účtem.",
-      "default_input_error": "Zadejte platný handle, DID nebo úplnou URL PDS"
+      "default_input_error": "Zadejte platný handle, DID nebo úplnou URL PDS",
+      "profile": "Profil"
     }
   },
   "header": {
@@ -907,6 +1032,7 @@
       "section_packages": "Balíčky",
       "section_facets": "Vlastnosti",
       "section_comparison": "Srovnání",
+      "copy_as_markdown": "Kopírovat tabulku",
       "loading": "Načítání dat balíčků...",
       "error": "Nepodařilo se načíst data balíčků. Zkuste to prosím znovu.",
       "empty_title": "Vyberte balíčky k porovnání",
@@ -1012,12 +1138,73 @@
         "up_to_you": "To je na vás!"
       },
       "trends": {
-        "title": "Porovnat trendy"
+        "title": "Srovnání trendů"
       }
+    },
+    "file_changes": "Změny souborů",
+    "files_count": "{count} souborů",
+    "lines_hidden": "{count} skrytých řádků",
+    "file_too_large": "Soubor je k porovnání příliš velký",
+    "file_size_warning": "{size} překračuje limit 250KB pro porovnání",
+    "compare_versions": "porovnat",
+    "compare_versions_title": "Porovnat s nejnovější verzí",
+    "summary": "Souhrn",
+    "deps_count": "{count} závislostí",
+    "dependencies": "Závislosti",
+    "dev_dependencies": "Vývojové závislosti",
+    "peer_dependencies": "Vzájemné závislosti",
+    "optional_dependencies": "Volitelné závislosti",
+    "no_dependency_changes": "Žádné změny závislostí",
+    "file_filter_option": {
+      "all": "Vše ({count})",
+      "added": "Přidáno ({count})",
+      "removed": "Odebráno ({count})",
+      "modified": "Upraveno ({count})"
+    },
+    "search_files_placeholder": "Hledat soubory...",
+    "no_files_all": "Žádné soubory",
+    "no_files_search": "Žádné soubory odpovídající \"{query}\"",
+    "no_files_filtered": "Žádné {filter} soubory",
+    "filter": {
+      "added": "přidané",
+      "removed": "odebrané",
+      "modified": "upravené"
+    },
+    "files_button": "Soubory",
+    "select_file_prompt": "Vyberte soubor z postranního panelu pro zobrazení jeho rozdílů",
+    "close_files_panel": "Zavřít panel souborů",
+    "filter_files_label": "Filtrovat soubory podle typu změny"
+  },
+  "pds": {
+    "title": "npmx.social",
+    "meta_description": "Oficiální AT Protocol Personal Data Server (PDS) pro npmx komunitu.",
+    "join": {
+      "title": "Připojte se ke komunitě",
+      "description": "Ať už vytváříte svůj první účet na atmosféře nebo migrujete stávající, patříte sem. Můžete migrovat svůj aktuální účet, aniž byste ztratili svůj handle, příspěvky nebo sledující.",
+      "migrate": "Migrovat s PDS MOOver"
+    },
+    "server": {
+      "title": "Detaily serveru",
+      "location_label": "Umístění:",
+      "location_value": "Norimberk, Německo",
+      "infrastructure_label": "Infrastruktura:",
+      "infrastructure_value": "Hostováno u Hetzner",
+      "privacy_label": "Soukromí:",
+      "privacy_value": "Podléhá přísným zákonům EU o ochraně osobních údajů",
+      "learn_more": "Zjistěte, jak npmx využívá Atmosphere"
+    },
+    "community": {
+      "title": "Kdo je tu",
+      "description": "Některé z {count} účtů, které již nazývají npmx.social svým domovem:",
+      "loading": "Načítání komunity z PDS ...",
+      "error": "Nepodařilo se načíst komunitu z PDS.",
+      "empty": "Žádní členové komunity k zobrazení.",
+      "view_profile": "Zobrazit profil uživatele {handle}",
+      "new_accounts": "... plus {count} dalších, kteří jsou na atmosféře nováčky"
     }
   },
   "privacy_policy": {
-    "title": "Zásady ochrany osobních údajů",
+    "title": "zásady ochrany osobních údajů",
     "last_updated": "Poslední aktualizace: {date}",
     "welcome": "Vítejte na {app}. Zavazujeme se chránit vaše soukromí. Tyto zásady vysvětlují, jaké údaje shromažďujeme, jak je používáme a jaká máte práva ohledně vašich informací.",
     "cookies": {
@@ -1097,7 +1284,7 @@
     }
   },
   "a11y": {
-    "title": "Přístupnost",
+    "title": "přístupnost",
     "footer_title": "a11y",
     "welcome": "Chceme, aby {app} bylo použitelné pro co největší počet lidí.",
     "approach": {

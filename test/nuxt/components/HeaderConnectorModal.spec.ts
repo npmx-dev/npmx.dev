@@ -371,7 +371,6 @@ describe('HeaderConnectorModal', () => {
 
     it('shows the CLI command to run', async () => {
       const dialog = await mountAndOpen()
-      // The command is now "pnpm npmx-connector"
       expect(dialog?.textContent).toContain('npmx-connector')
     })
 

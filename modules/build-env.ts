@@ -1,7 +1,7 @@
 import type { BuildInfo, EnvType } from '../shared/types'
 import { createResolver, defineNuxtModule } from 'nuxt/kit'
 import { isCI } from 'std-env'
-import { getEnv, getFileLastUpdated, version } from '../config/env'
+import { getEnv, getFileLastUpdated } from '../config/env'
 
 const { resolve } = createResolver(import.meta.url)
 
@@ -23,12 +23,11 @@ export default defineNuxtModule({
         branch: 'xxx',
         time: time.getTime(),
         privacyPolicyDate: time.toISOString(),
+        prNumber: null,
       } satisfies BuildInfo
     } else {
-      const [{ env: useEnv, commit, shortCommit, branch }, privacyPolicyDate] = await Promise.all([
-        getEnv(nuxt.options.dev),
-        getFileLastUpdated('app/pages/privacy.vue'),
-      ])
+      const [{ env: useEnv, version, commit, shortCommit, branch, prNumber }, privacyPolicyDate] =
+        await Promise.all([getEnv(nuxt.options.dev), getFileLastUpdated('app/pages/privacy.vue')])
       env = useEnv
       nuxt.options.appConfig.env = useEnv
       nuxt.options.appConfig.buildInfo = {
@@ -39,6 +38,7 @@ export default defineNuxtModule({
         branch,
         env,
         privacyPolicyDate,
+        prNumber,
       } satisfies BuildInfo
     }
 

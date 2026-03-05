@@ -113,8 +113,8 @@ export function applyBlocklistCorrection(opts: {
     for (let i = 0; i < count; i++) {
       const t = (i + 1) / (count + 1)
       result[affectedIndices[i]!]!.value = Math.round(startVal + t * (endVal - startVal))
+      result[affectedIndices[i]!]!.hasAnomaly = true
     }
   }
-
   return result as EvolutionData
 }

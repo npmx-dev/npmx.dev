@@ -5,6 +5,7 @@ import { isEditableElement } from '~/utils/input'
 import { NPMX_DOCS_SITE } from '#shared/utils/constants'
 
 const keyboardShortcuts = useKeyboardShortcuts()
+const discord = useDiscordLink()
 
 withDefaults(
   defineProps<{
@@ -58,6 +59,14 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         type: 'link',
         external: false,
         iconClass: 'i-lucide:info',
+      },
+      {
+        name: 'Blog',
+        label: $t('footer.blog'),
+        to: { name: 'blog' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:notebook-pen',
       },
       {
         name: 'Privacy Policy',
@@ -114,8 +123,8 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
       },
       {
         name: 'Chat',
-        label: $t('footer.chat'),
-        href: 'https://chat.npmx.dev',
+        label: discord.value.label,
+        href: discord.value.url,
         target: '_blank',
         type: 'link',
         external: true,
@@ -127,7 +136,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
 
 const showFullSearch = shallowRef(false)
 const showMobileMenu = shallowRef(false)
-const { env } = useAppConfig().buildInfo
+const { env, prNumber } = useAppConfig().buildInfo
 
 // On mobile, clicking logo+search button expands search
 const route = useRoute()
@@ -205,9 +214,9 @@ onKeyStroke(
         v-if="!isSearchExpanded && !isOnHomePage"
         to="/"
         :aria-label="$t('header.home')"
-        class="sm:hidden flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring"
+        class="sm:hidden flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
       >
-        <AppLogo class="w-8 h-8 rounded-lg" />
+        <AppMark class="w-6 h-auto" />
       </NuxtLink>
 
       <!-- Desktop: Logo (navigates home) -->
@@ -216,15 +225,23 @@ onKeyStroke(
           :to="{ name: 'index' }"
           :aria-label="$t('header.home')"
           dir="ltr"
-          class="relative inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded"
+          class="relative inline-flex items-center gap-1 py-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 me-4"
         >
-          <AppLogo class="w-7 h-7 rounded-lg" />
-          <span class="pb-0.5">npmx</span>
+          <AppLogo class="h-4.5 w-auto" />
           <span
             aria-hidden="true"
-            class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.5 -inset-ie-1"
+            class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.75 -inset-ie-1"
           >
             {{ env === 'release' ? 'alpha' : env }}
+          </span>
+        </NuxtLink>
+        <NuxtLink
+          v-if="prNumber"
+          :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
+          :aria-label="`Open GitHub pull request ${prNumber}`"
+        >
+          <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium ms-2">
+            PR #{{ prNumber }}
           </span>
         </NuxtLink>
       </div>

@@ -13,7 +13,12 @@ export default eventHandlerWithOAuthSession(async (event, oAuthSession) => {
 
   await throwOnMissingOAuthScope(oAuthSession, PROFILE_SCOPE)
 
-  const body = parse(ProfileEditBodySchema, await readBody(event))
+  const requestBody = await readBody(event)
+  if (requestBody.website && !URL.canParse(requestBody.website)) {
+    throw createError({ statusCode: 400, statusMessage: 'Invalid website' })
+  }
+
+  const body = parse(ProfileEditBodySchema, requestBody)
   const client = new Client(oAuthSession)
 
   const profile = dev.npmx.actor.profile.$build({

@@ -419,9 +419,6 @@
   "connector": {
     "modal": {
       "title": "Lokal Connector",
-      "contributor_badge": "Kun for bidragsytere",
-      "contributor_notice": "Connectoren er ennå ikke publisert til npm. Se {link} for hvordan du kjører den lokalt.",
-      "contributor_link": "bidragsguiden",
       "connected": "Tilkoblet",
       "connected_as_user": "Koblet til som ~{user}",
       "connected_hint": "Du kan nå administrere pakker og organisasjoner fra nettleseren.",
@@ -725,7 +722,6 @@
       "paginated": "Sideinndelt",
       "items_per_page": "Elementer per side",
       "per_page": "{count} / side",
-      "all_yolo": "Alt (YOLO)",
       "showing": "{start}-{end} av {total}",
       "previous": "Forrige side",
       "next": "Neste side",

@@ -6,7 +6,161 @@ const ALL_ENV_VARS = [
   'URL',
   'NUXT_ENV_VERCEL_URL',
   'NUXT_ENV_VERCEL_PROJECT_PRODUCTION_URL',
+  'PULL_REQUEST',
+  'VERCEL_GIT_PULL_REQUEST_ID',
+  'BRANCH',
+  'VERCEL_GIT_COMMIT_REF',
 ]
+
+describe('isCanary', () => {
+  beforeEach(() => {
+    vi.resetModules()
+  })
+
+  beforeEach(() => {
+    for (const envVar of ALL_ENV_VARS) {
+      vi.stubEnv(envVar, undefined)
+    }
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
+
+  it('returns true when VERCEL_ENV is "production" and branch is "main"', async () => {
+    vi.stubEnv('VERCEL_ENV', 'production')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { isCanary } = await import('../../../config/env')
+
+    expect(isCanary).toBe(true)
+  })
+
+  it('returns true when VERCEL_ENV is "preview" and branch is "main" (non-PR)', async () => {
+    vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { isCanary } = await import('../../../config/env')
+
+    expect(isCanary).toBe(true)
+  })
+
+  it('returns true when VERCEL_ENV is custom "canary" and branch is "main"', async () => {
+    vi.stubEnv('VERCEL_ENV', 'canary')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { isCanary } = await import('../../../config/env')
+
+    expect(isCanary).toBe(true)
+  })
+
+  it('returns false when VERCEL_ENV is "preview", branch is "main", but is a PR', async () => {
+    vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    vi.stubEnv('VERCEL_GIT_PULL_REQUEST_ID', '123')
+    const { isCanary } = await import('../../../config/env')
+
+    expect(isCanary).toBe(false)
+  })
+
+  it.each([
+    ['production (non-main branch)', 'production', 'v1.0.0'],
+    ['preview (non-main branch)', 'preview', 'feat/foo'],
+    ['development', 'development', undefined],
+    ['unset', undefined, undefined],
+  ])('returns false when VERCEL_ENV is %s', async (_label, value, branch) => {
+    if (value !== undefined) vi.stubEnv('VERCEL_ENV', value)
+    if (branch !== undefined) vi.stubEnv('VERCEL_GIT_COMMIT_REF', branch)
+    const { isCanary } = await import('../../../config/env')
+
+    expect(isCanary).toBe(false)
+  })
+})
+
+describe('getEnv', () => {
+  beforeEach(() => {
+    vi.resetModules()
+  })
+
+  beforeEach(() => {
+    for (const envVar of ALL_ENV_VARS) {
+      vi.stubEnv(envVar, undefined)
+    }
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
+
+  it('returns "dev" in development mode', async () => {
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(true)
+
+    expect(result.env).toBe('dev')
+  })
+
+  it('returns "canary" for Vercel preview deploys from main branch (non-PR)', async () => {
+    vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(false)
+
+    expect(result.env).toBe('canary')
+  })
+
+  it('returns "canary" for custom Vercel "canary" environment on main branch', async () => {
+    vi.stubEnv('VERCEL_ENV', 'canary')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(false)
+
+    expect(result.env).toBe('canary')
+  })
+
+  it('returns "preview" for Vercel preview PR deploys', async () => {
+    vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('VERCEL_GIT_PULL_REQUEST_ID', '123')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'feat/foo')
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(false)
+
+    expect(result.env).toBe('preview')
+  })
+
+  it('returns "preview" for PR deploys from main branch', async () => {
+    vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('VERCEL_GIT_PULL_REQUEST_ID', '456')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(false)
+
+    expect(result.env).toBe('preview')
+  })
+
+  it('returns "canary" for Vercel production deploys from main branch', async () => {
+    vi.stubEnv('VERCEL_ENV', 'production')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(false)
+
+    expect(result.env).toBe('canary')
+  })
+
+  it('returns "release" for Vercel production deploys from non-main branch', async () => {
+    vi.stubEnv('VERCEL_ENV', 'production')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'v1.0.0')
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(false)
+
+    expect(result.env).toBe('release')
+  })
+
+  it('prioritises "dev" over "canary" in development mode', async () => {
+    vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('VERCEL_GIT_COMMIT_REF', 'main')
+    const { getEnv } = await import('../../../config/env')
+    const result = await getEnv(true)
+
+    expect(result.env).toBe('dev')
+  })
+})
 
 describe('getPreviewUrl', () => {
   beforeEach(() => {
@@ -169,5 +323,15 @@ describe('getProductionUrl', () => {
     const { getProductionUrl } = await import('../../../config/env')
 
     expect(getProductionUrl()).toBe(expectedUrl)
+  })
+})
+
+describe('getVersion', () => {
+  it('returns a valid semver string without a leading "v"', async () => {
+    const { getVersion } = await import('../../../config/env')
+    const result = await getVersion()
+
+    expect(result).not.toMatch(/^v/)
+    expect(result).toMatch(/^\d+\.\d+\.\d+$/)
   })
 })

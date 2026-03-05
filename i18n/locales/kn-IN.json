@@ -360,9 +360,6 @@
   "connector": {
     "modal": {
       "title": "ಸ್ಥಳೀಯ ಸಂಪರ್ಕಕ",
-      "contributor_badge": "ಸಹಯೋಗಿಗಳಿಗೆ ಮಾತ್ರ",
-      "contributor_notice": "ಸಂಪರ್ಕಕ ಇನ್ನೂ npm ನಲ್ಲಿ ಪ್ರಕಟವಾಗಿಲ್ಲ. ಸ್ಥಳೀಯವಾಗಿ ಚಾಲನೆ ಮಾಡಲು {link} ನೋಡಿ.",
-      "contributor_link": "ಸಹಯೋಗ ಮಾರ್ಗದರ್ಶಿ",
       "connected": "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
       "connected_as_user": "~{user} ಎಂದು ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
       "connected_hint": "ಈಗ ನೀವು ವೆಬ್ UI ಯಿಂದ ಪ್ಯಾಕೇಜ್‌ಗಳು ಮತ್ತು ಸಂಸ್ಥೆಗಳನ್ನು ನಿರ್ವಹಿಸಬಹುದು.",
@@ -658,7 +655,6 @@
       "paginated": "ಪುಟೀಕರಿಸಿದ",
       "items_per_page": "ಪ್ರತಿ ಪುಟದ ಅಂಶಗಳು",
       "per_page": "{count} / ಪುಟ",
-      "all_yolo": "ಎಲ್ಲ (YOLO)",
       "showing": "{total} ನಲ್ಲಿ {start}-{end}",
       "previous": "ಹಿಂದಿನ ಪುಟ",
       "next": "ಮುಂದಿನ ಪುಟ",
