@@ -97,7 +97,7 @@
     "atproto": {
       "view_on_bluesky": "Zobrazit na Bluesky",
       "reply_on_bluesky": "Odpovědět na Bluesky",
-      "likes_on_bluesky": "Lajky se na Bluesky",
+      "likes_on_bluesky": "Lajky na Bluesky",
       "like_or_reply_on_bluesky": "Olajkujte tento příspěvek nebo přidejte svůj komentář na Bluesky",
       "no_comments_yet": "Ještě žádné komentáře.",
       "could_not_load_comments": "Komentáře se nepodařilo načíst.",
@@ -129,7 +129,7 @@
       "algolia": "Algolia",
       "algolia_description": "Používá Algolia pro rychlejší vyhledávání, stránky organizací a uživatelů."
     },
-    "instant_search": "Instantní hledání",
+    "instant_search": "Okamžité hledání",
     "instant_search_description": "Naviguje na stránku hledání a aktualizuje výsledky při psaní.",
     "relative_dates": "Relativní data",
     "include_types": "Zahrnout {'@'}types při instalaci",
