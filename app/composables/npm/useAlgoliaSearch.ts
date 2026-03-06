@@ -229,29 +229,38 @@ export function useAlgoliaSearch() {
       return { isStale: false, objects: [], total: 0, time: new Date().toISOString() }
     }
 
-    const response = await $fetch<{ results: (AlgoliaHit | null)[] }>(
-      `https://${algolia.appId}-dsn.algolia.net/1/indexes/*/objects`,
-      {
-        method: 'POST',
-        headers: {
-          'x-algolia-api-key': algolia.apiKey,
-          'x-algolia-application-id': algolia.appId,
-        },
-        body: {
-          requests: packageNames.map(name => ({
-            indexName,
-            objectID: name,
-            attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
-          })),
-        },
-      },
-    )
+    // Algolia getObjects has a limit of 1000 objects per request, so batch if needed
+    const BATCH_SIZE = 1000
+    const allHits: AlgoliaHit[] = []
 
-    const hits = response.results.filter((r): r is AlgoliaHit => r !== null && 'name' in r)
+    for (let i = 0; i < packageNames.length; i += BATCH_SIZE) {
+      const batch = packageNames.slice(i, i + BATCH_SIZE)
+      const response = await $fetch<{ results: (AlgoliaHit | null)[] }>(
+        `https://${algolia.appId}-dsn.algolia.net/1/indexes/*/objects`,
+        {
+          method: 'POST',
+          headers: {
+            'x-algolia-api-key': algolia.apiKey,
+            'x-algolia-application-id': algolia.appId,
+          },
+          body: {
+            requests: batch.map(name => ({
+              indexName,
+              objectID: name,
+              attributesToRetrieve: ATTRIBUTES_TO_RETRIEVE,
+            })),
+          },
+        },
+      )
+
+      const hits = response.results.filter((r): r is AlgoliaHit => r !== null && 'name' in r)
+      allHits.push(...hits)
+    }
+
     return {
       isStale: false,
-      objects: hits.map(hitToSearchResult),
-      total: hits.length,
+      objects: allHits.map(hitToSearchResult),
+      total: allHits.length,
       time: new Date().toISOString(),
     }
   }
