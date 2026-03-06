@@ -7,9 +7,9 @@ export function useViewOnGitProvider(
   const { t, te } = useI18n()
   return computed(() => {
     const uProvider = toValue(provider)
-    const key = `common.view_on.${uProvider}`
-    if (uProvider && te(key)) {
-      return t(key)
+    if (uProvider && te(`common.view_on.${uProvider}`)) {
+      // TODO this currently fails i18n:report
+      return t(`common.view_on.${uProvider}`)
     }
     return t('common.view_on.git_repo')
   })
