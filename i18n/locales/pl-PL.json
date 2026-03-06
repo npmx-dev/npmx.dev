@@ -136,7 +136,7 @@
     "skip_link": "Przejdź do głównej treści",
     "warnings": "Ostrzeżenia:",
     "go_back_home": "Wróć na stronę główną",
-    "view_on_npm": "zobacz na npm",
+    "view_on": "zobacz na {site}",
     "per_week": "/ tydz.",
     "vanity_downloads_hint": "Numer ozdobny: brak wyświetlonych pakietów | Numer ozdobny: dla wyświetlanego pakietu | Numer ozdobny: suma {count} wyświetlanych pakietów | Numer ozdobny: suma {count} wyświetlanych pakietów | Numer ozdobny: suma {count} wyświetlanych pakietów",
     "sort": {

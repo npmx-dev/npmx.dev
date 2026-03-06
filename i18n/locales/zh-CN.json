@@ -178,7 +178,7 @@
     "skip_link": "跳转到主界面",
     "warnings": "警告：",
     "go_back_home": "返回首页",
-    "view_on_npm": "在 npm 上查看",
+    "view_on": "在 {site} 上查看",
     "per_week": "/ 周",
     "vanity_downloads_hint": "累计下载量：未显示包 | 累计下载量：显示的包 | 累计下载量：{count} 个显示的包的总和",
     "sort": {

@@ -178,7 +178,7 @@
     "skip_link": "メインコンテンツにスキップ",
     "warnings": "警告:",
     "go_back_home": "ホームへ戻る",
-    "view_on_npm": "npmで表示",
+    "view_on": "{site}で表示",
     "per_week": "/ 週",
     "vanity_downloads_hint": "バニティ番号: パッケージが表示されていません|バニティ番号: 表示されているパッケージの数値|バニティ番号: 表示されている {count} 個のパッケージの合計",
     "sort": {

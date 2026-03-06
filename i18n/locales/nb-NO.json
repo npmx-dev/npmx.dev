@@ -131,7 +131,7 @@
     "skip_link": "Gå til hovedinnhold",
     "warnings": "Advarsler:",
     "go_back_home": "Gå tilbake til start",
-    "view_on_npm": "vis på npm",
+    "view_on": "vis på {site}",
     "per_week": "/ uke",
     "vanity_downloads_hint": "Visningstall: ingen pakker vist | Visningstall: for den viste pakken | Visningstall: Sum av {count} viste pakker",
     "sort": {

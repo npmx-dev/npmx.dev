@@ -178,7 +178,7 @@
     "skip_link": "Passer au contenu principal",
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
-    "view_on_npm": "voir sur npm",
+    "view_on": "voir sur {site}",
     "per_week": "/ semaine",
     "vanity_downloads_hint": "Métrique de vanité : aucun paquet affiché | Métrique de vanité : pour le paquet affiché | Métrique de vanité : somme des {count} paquets affichés",
     "sort": {

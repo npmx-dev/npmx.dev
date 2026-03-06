@@ -146,7 +146,7 @@
     "skip_link": "Zum Hauptinhalt springen",
     "warnings": "Warnungen:",
     "go_back_home": "Zur Startseite",
-    "view_on_npm": "Auf npm ansehen",
+    "view_on": "Auf {site} ansehen",
     "per_week": "/ Woche",
     "vanity_downloads_hint": "Vanity-Zahl: keine Pakete angezeigt | Vanity-Zahl: für das angezeigte Paket | Vanity-Zahl: Summe von {count} angezeigten Paketen",
     "sort": {

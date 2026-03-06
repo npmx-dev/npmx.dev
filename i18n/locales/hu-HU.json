@@ -136,7 +136,7 @@
     "skip_link": "Ugrás a fő tartalomra",
     "warnings": "Figyelmeztetések:",
     "go_back_home": "Vissza a főoldalra",
-    "view_on_npm": "megtekintés npm-en",
+    "view_on": "megtekintés {site}-en",
     "per_week": "/ hét",
     "vanity_downloads_hint": "Vanity szám: nincsenek csomagok megjelenítve | Vanity szám: a megjelenített csomagra | Vanity szám: {count} megjelenített csomag összege",
     "sort": {

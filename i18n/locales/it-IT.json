@@ -132,7 +132,7 @@
     "skip_link": "Salta al contenuto principale",
     "warnings": "Avvisi:",
     "go_back_home": "Torna alla home",
-    "view_on_npm": "vedi su npm",
+    "view_on": "vedi su {site}",
     "per_week": "/ settimana",
     "vanity_downloads_hint": "Numero di vanità: nessun pacchetto visualizzato | Numero di vanità: per il pacchetto visualizzato | Numero di vanità: somma di {count} pacchetti visualizzati",
     "sort": {

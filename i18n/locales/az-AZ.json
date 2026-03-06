@@ -177,7 +177,7 @@
     "skip_link": "Əsas məzmuna keç",
     "warnings": "Xəbərdarlıqlar:",
     "go_back_home": "Ana səhifəyə qayıt",
-    "view_on_npm": "npm-də bax",
+    "view_on": "{site}-də bax",
     "per_week": "/ həftə",
     "vanity_downloads_hint": "Göstərici: paket göstərilmir | Göstərici: göstərilən paket üçün | Göstərici: {count} göstərilən paketin cəmi",
     "sort": {

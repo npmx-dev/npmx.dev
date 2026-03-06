@@ -136,7 +136,7 @@
     "skip_link": "Lanjut ke konten utama",
     "warnings": "Peringatan:",
     "go_back_home": "Kembali ke Beranda",
-    "view_on_npm": "lihat di npm",
+    "view_on": "lihat di {site}",
     "per_week": "/ minggu",
     "vanity_downloads_hint": "Angka statistik: tidak ada paket | Angka statistik: untuk paket yang tampil | Angka statistik: Total dari {count} paket yang tampil",
     "sort": {

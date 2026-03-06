@@ -101,7 +101,7 @@
     "skip_link": "Pular para o conteúdo principal",
     "warnings": "Avisos:",
     "go_back_home": "Voltar para a página inicial",
-    "view_on_npm": "visualizar no npm",
+    "view_on": "visualizar no {site}",
     "per_week": "/ semana",
     "vanity_downloads_hint": "Número de vaidade: nenhum pacote exibido | Número de vaidade: para o pacote exibido | Número de vaidade: Soma de {count} pacotes exibidos",
     "sort": {
