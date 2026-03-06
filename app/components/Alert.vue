@@ -20,10 +20,15 @@ const bodyClasses: Record<Props['variant'], string> = {
   warning: 'text-amber-700 dark:text-amber-400',
   error: 'text-red-700 dark:text-red-400',
 }
+
+const role: Record<Props['variant'], 'status' | 'alert'> = {
+  warning: 'status',
+  error: 'alert',
+}
 </script>
 
 <template>
-  <div role="alert" class="border rounded-md px-3 py-2.5" :class="wrapperClasses[variant]">
+  <div :role="role[variant]" class="border rounded-md px-3 py-2.5" :class="wrapperClasses[variant]">
     <p v-if="title" class="font-semibold mb-1" :class="titleClasses[variant]">{{ title }}</p>
     <div class="text-xs" :class="bodyClasses[variant]">
       <slot />
