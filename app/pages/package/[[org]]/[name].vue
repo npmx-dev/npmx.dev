@@ -669,7 +669,30 @@ const compactNumberFormatter = useCompactNumberFormatter()
 const bytesFormatter = useBytesFormatter()
 
 useHead({
-  link: [{ rel: 'canonical', href: canonicalUrl }],
+  link: computed(() => {
+    const base = `/package/${packageName.value}`
+    const versionSegment = requestedVersion.value ? `/v/${requestedVersion.value}` : ''
+    const links: Array<{ key?: string; rel: string; href: string; title?: string }> = [
+      { rel: 'canonical', href: canonicalUrl.value },
+      {
+        key: 'llms-txt',
+        rel: 'alternate',
+        href: `${base}${versionSegment}/llms.txt`,
+        title: 'LLMs.txt',
+      },
+      {
+        key: 'llms-full-txt',
+        rel: 'alternate',
+        href: `${base}${versionSegment}/llms-full.txt`,
+        title: 'LLMs-full.txt',
+      },
+    ]
+    // .md routes only support latest version (no /v/ variant)
+    if (!requestedVersion.value) {
+      links.push({ key: 'pkg-md', rel: 'alternate', href: `${base}.md`, title: 'Markdown version' })
+    }
+    return links
+  }),
 })
 
 useSeoMeta({

@@ -127,7 +127,15 @@ const activeTab = shallowRef<'members' | 'teams'>('members')
 const canonicalUrl = computed(() => `https://npmx.dev/@${orgName.value}`)
 
 useHead({
-  link: [{ rel: 'canonical', href: canonicalUrl }],
+  link: [
+    { rel: 'canonical', href: canonicalUrl },
+    {
+      key: 'llms-txt',
+      rel: 'alternate',
+      href: () => `/package/@${orgName.value}/llms.txt`,
+      title: 'LLMs.txt',
+    },
+  ],
 })
 
 useSeoMeta({
