@@ -19,9 +19,9 @@
   --fg-subtle: oklch(0.673 0 0);
 
   /* border, separator colors */
-  --border: oklch(0.269 0 0);
+  --border: oklch(0.5 0 0);
   --border-subtle: oklch(0.239 0 0);
-  --border-hover: oklch(0.371 0 0);
+  --border-hover: oklch(0.6 0 0);
 
   /* accent color, set by user from settings */
   --accent: var(--accent-color, oklch(0.787 0.128 230.318));
@@ -91,9 +91,9 @@
   --fg-muted: oklch(0.398 0 0);
   --fg-subtle: oklch(0.48 0 0);
 
-  --border: oklch(0.8514 0 0);
+  --border: oklch(0.666 0 0);
   --border-subtle: oklch(0.922 0 0);
-  --border-hover: oklch(0.715 0 0);
+  --border-hover: oklch(0.6 0 0);
 
   --accent: var(--accent-color, oklch(0.53 0.16 247.27));
   --accent-muted: var(--accent-color, oklch(0.205 0 0));
