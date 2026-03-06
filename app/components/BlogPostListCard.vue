@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Author } from '#shared/schemas/blog'
+import type { ResolvedAuthor } from '#shared/schemas/blog'
 
 defineProps<{
   /** Authors of the blog post */
-  authors: Author[]
+  authors: ResolvedAuthor[]
   /** Blog Title */
   title: string
   /** Tags such as OpenSource, Architecture, Community, etc. */

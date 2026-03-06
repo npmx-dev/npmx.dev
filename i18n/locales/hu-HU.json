@@ -533,9 +533,6 @@
   "connector": {
     "modal": {
       "title": "Helyi Connector",
-      "contributor_badge": "Csak közreműködőknek",
-      "contributor_notice": "A connector még nincs közzétéve az npm-en. Lásd a(z) {link} -et a helyi futtatásról.",
-      "contributor_link": "közreműködési útmutató",
       "connected": "Csatlakoztatva",
       "connected_as_user": "Csatlakoztatva mint ~{user}",
       "connected_hint": "Most már kezelheted a csomagokat és szervezeteket a webes felületről.",
@@ -844,7 +841,6 @@
       "paginated": "Lapozható",
       "items_per_page": "Elem per oldal",
       "per_page": "{count} / oldal",
-      "all_yolo": "Összes (YOLO)",
       "showing": "{start}-{end} / {total}",
       "previous": "Előző oldal",
       "next": "Következő oldal",

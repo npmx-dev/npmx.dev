@@ -2217,8 +2217,13 @@ describe('component accessibility audits', () => {
       const component = await mountSuspended(AuthorList, {
         props: {
           authors: [
-            { name: 'Daniel Roe', blueskyHandle: 'danielroe.dev' },
-            { name: 'Salma Alam-Naylor' },
+            {
+              name: 'Daniel Roe',
+              blueskyHandle: 'danielroe.dev',
+              avatar: null,
+              profileUrl: 'https://bsky.app/profile/danielroe.dev',
+            },
+            { name: 'Salma Alam-Naylor', avatar: null, profileUrl: null },
           ],
         },
       })
@@ -2292,7 +2297,14 @@ describe('component accessibility audits', () => {
     it('should have no accessibility violations', async () => {
       const component = await mountSuspended(BlogPostListCard, {
         props: {
-          authors: [{ name: 'Daniel Roe', blueskyHandle: 'danielroe.dev' }],
+          authors: [
+            {
+              name: 'Daniel Roe',
+              blueskyHandle: 'danielroe.dev',
+              avatar: null,
+              profileUrl: 'https://bsky.app/profile/danielroe.dev',
+            },
+          ],
           title: 'Building Accessible Vue Components',
           topics: ['accessibility', 'vue'],
           excerpt: 'A guide to building accessible components in Vue.js applications.',

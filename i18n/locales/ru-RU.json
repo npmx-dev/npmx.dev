@@ -507,9 +507,6 @@
   "connector": {
     "modal": {
       "title": "Локальный коннектор",
-      "contributor_badge": "Только для контрибьюторов",
-      "contributor_notice": "Коннектор ещё не опубликован в npm. См. {link}, чтобы узнать, как запустить его локально.",
-      "contributor_link": "руководстве для участников",
       "connected": "Подключено",
       "connected_as_user": "Подключен как ~{user}",
       "connected_hint": "Теперь вы можете управлять пакетами и организациями из веб-интерфейса.",
@@ -817,7 +814,6 @@
       "paginated": "Страничный",
       "items_per_page": "Элементов на странице",
       "per_page": "{count} / стр.",
-      "all_yolo": "Все (YOLO)",
       "showing": "{start}-{end} из {total}",
       "previous": "Предыдущая страница",
       "next": "Следующая страница",

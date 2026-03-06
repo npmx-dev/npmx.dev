@@ -9,6 +9,8 @@ import type { RepoRef } from '#shared/utils/git-providers'
 import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
 import { onKeyDown } from '@vueuse/core'
 
+import('vue-data-ui/style.css')
+
 const props = defineProps<{
   packageName: string
   createdIso: string | null
@@ -411,10 +413,7 @@ const config = computed<VueUiSparklineConfig>(() => {
         <span v-else-if="isLoadingWeeklyDownloads" class="min-w-6 min-h-6 -m-1 p-1" />
       </template>
 
-      <div
-        class="w-full overflow-hidden h-[76px] egg-pulse-target"
-        :class="{ 'egg-pulse': eggPulse }"
-      >
+      <div class="w-full h-[76px] egg-pulse-target" :class="{ 'egg-pulse': eggPulse }">
         <template v-if="isLoadingWeeklyDownloads || hasWeeklyDownloads">
           <ClientOnly>
             <VueUiSparkline class="w-full max-w-xs" :dataset :config>

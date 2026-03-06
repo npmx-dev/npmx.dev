@@ -511,9 +511,6 @@
   "connector": {
     "modal": {
       "title": "Lokalny konektor",
-      "contributor_badge": "Tylko dla współtwórców",
-      "contributor_notice": "Konektor nie jest jeszcze opublikowany na npm. Zobacz {link}, aby uruchomić lokalnie.",
-      "contributor_link": "przewodnik współtworzenia",
       "connected": "Połączono",
       "connected_as_user": "Połączono jako ~{user}",
       "connected_hint": "Możesz teraz zarządzać pakietami i organizacjami z poziomu interfejsu WWW.",
@@ -822,7 +819,6 @@
       "paginated": "Stronicowane",
       "items_per_page": "Elementów na stronę",
       "per_page": "{count} / stronę",
-      "all_yolo": "Wszystkie (YOLO)",
       "showing": "{start}-{end} z {total}",
       "previous": "Poprzednia strona",
       "next": "Następna strona",

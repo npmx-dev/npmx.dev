@@ -33,18 +33,27 @@ const router = useRouter()
 
 const header = useTemplateRef('header')
 const isHeaderPinned = shallowRef(false)
+const readmeHeader = useTemplateRef('readmeHeader')
+const isReadmeHeaderPinned = shallowRef(false)
 const navExtraOffset = shallowRef(0)
 const isMobile = useMediaQuery('(max-width: 639.9px)')
 
-function checkHeaderPosition() {
-  const el = header.value
-  if (!el) return
+const headerBounds = useElementBounding(header)
+const readmeStickyTop = computed(() => `${56 + headerBounds.height.value}px`)
+
+function isStickyPinned(el: HTMLElement | null): boolean {
+  if (!el) return false
 
   const style = getComputedStyle(el)
   const top = parseFloat(style.top) || 0
   const rect = el.getBoundingClientRect()
 
-  isHeaderPinned.value = Math.abs(rect.top - top) < 1
+  return Math.abs(rect.top - top) < 1
+}
+
+function checkHeaderPosition() {
+  isHeaderPinned.value = isStickyPinned(header.value)
+  isReadmeHeaderPinned.value = isStickyPinned(readmeHeader.value)
 }
 
 useEventListener('scroll', checkHeaderPosition, { passive: true })
@@ -1147,7 +1156,7 @@ const showSkeleton = shallowRef(false)
           <div class="space-y-1 sm:col-span-3">
             <dt class="text-xs text-fg-subtle uppercase tracking-wider flex items-center gap-1">
               {{ $t('package.stats.install_size') }}
-              <TooltipApp v-if="sizeTooltip" :text="sizeTooltip">
+              <TooltipApp v-if="sizeTooltip" :text="sizeTooltip" interactive>
                 <span
                   tabindex="0"
                   class="inline-flex items-center justify-center min-w-6 min-h-6 -m-1 p-1 text-fg-subtle cursor-help focus-visible:outline-2 focus-visible:outline-accent/70 rounded"
@@ -1394,7 +1403,12 @@ const showSkeleton = shallowRef(false)
 
       <!-- README -->
       <section id="readme" class="min-w-0 scroll-mt-20" :class="$style.areaReadme">
-        <div class="flex flex-wrap items-center justify-between mb-3 px-1">
+        <div
+          ref="readmeHeader"
+          class="flex sticky z-10 flex-wrap items-center justify-between mb-3 py-2 -mx-1 px-2 transition-shadow duration-200"
+          :class="{ 'bg-bg border-border border-b': isReadmeHeaderPinned }"
+          :style="{ top: readmeStickyTop }"
+        >
           <h2 id="readme-heading" class="group text-xs text-fg-subtle uppercase tracking-wider">
             <LinkBase to="#readme">
               {{ $t('package.readme.title') }}

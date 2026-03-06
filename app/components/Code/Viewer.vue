@@ -115,7 +115,7 @@ watch(
     <!-- Code content -->
     <div class="code-content flex-1 overflow-x-auto min-w-0">
       <!-- eslint-disable vue/no-v-html -- HTML is generated server-side by Shiki -->
-      <div ref="codeRef" class="code-lines w-fit" v-html="html" />
+      <div ref="codeRef" class="code-lines min-w-full w-fit" v-html="html" />
       <!-- eslint-enable vue/no-v-html -->
     </div>
   </div>
@@ -157,7 +157,7 @@ watch(
 
 /* Highlighted lines in code content - extend full width with negative margin */
 .code-content :deep(.line.highlighted) {
-  background: rgb(234 179 8 / 0.2); /* yellow-500/20 */
+  @apply bg-yellow-500/20;
   margin: 0 -1rem;
   padding: 0 1rem;
 }

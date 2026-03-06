@@ -164,7 +164,7 @@ const roleLabels = computed(
           </h2>
           <AboutLogoList
             :list="SPONSORS"
-            class="flex-col gap-6 items-start md:flex-row md:items-center md:gap-4"
+            class="grid grid-cols-2 md:flex md:flex-row md:items-center"
           />
         </div>
 

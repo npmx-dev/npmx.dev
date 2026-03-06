@@ -104,6 +104,13 @@ const PLAYGROUND_PROVIDERS: PlaygroundProvider[] = [
     domains: ['play.tailwindcss.com'],
     icon: 'tailwindcss',
   },
+  {
+    id: 'marko-playground',
+    name: 'Marko Playground',
+    domains: ['markojs.com'],
+    paths: ['/playground'],
+    icon: 'marko',
+  },
 ]
 
 /**

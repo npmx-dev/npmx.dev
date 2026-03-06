@@ -1735,15 +1735,6 @@
             "title": {
               "type": "string"
             },
-            "contributor_badge": {
-              "type": "string"
-            },
-            "contributor_notice": {
-              "type": "string"
-            },
-            "contributor_link": {
-              "type": "string"
-            },
             "connected": {
               "type": "string"
             },
@@ -2666,9 +2657,6 @@
               "type": "string"
             },
             "per_page": {
-              "type": "string"
-            },
-            "all_yolo": {
               "type": "string"
             },
             "showing": {

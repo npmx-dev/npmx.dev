@@ -164,8 +164,7 @@ const EAGER_LOAD_SIZE = { algolia: 500, npm: 500 } as const
 
 // Calculate how many results we need based on current page and preferred page size
 const requestedSize = computed(() => {
-  const numericPrefSize = preferredPageSize.value === 'all' ? 250 : preferredPageSize.value
-  const base = Math.max(pageSize, currentPage.value * numericPrefSize)
+  const base = Math.max(pageSize, currentPage.value * preferredPageSize.value)
   // When sorting by something other than relevance, fetch a large batch
   // so client-side sorting operates on a meaningful pool of matching results
   if (!isRelevanceSort.value) {
@@ -587,10 +586,8 @@ const rawLiveRegionMessage = computed(() => {
 
   if (visibleResults.value && displayResults.value.length > 0) {
     if (viewMode.value === 'table' || paginationMode.value === 'paginated') {
-      const pSize =
-        preferredPageSize.value === 'all'
-          ? $n(effectiveTotal.value)
-          : Math.min(preferredPageSize.value, effectiveTotal.value)
+      const pSize = Math.min(preferredPageSize.value, effectiveTotal.value)
+
       return $t(
         'filters.count.showing_paginated',
         {
@@ -781,10 +778,7 @@ onBeforeUnmount(() => {
                 $t(
                   'filters.count.showing_paginated',
                   {
-                    pageSize:
-                      preferredPageSize === 'all'
-                        ? $n(effectiveTotal)
-                        : Math.min(preferredPageSize, effectiveTotal),
+                    pageSize: Math.min(preferredPageSize, effectiveTotal),
                     count: $n(effectiveTotal),
                   },
                   effectiveTotal,

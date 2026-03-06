@@ -18,6 +18,7 @@
     "source": "ソースコード",
     "social": "ソーシャル",
     "chat": "チャット",
+    "builders_chat": "ビルダー",
     "keyboard_shortcuts": "キーボードショートカット"
   },
   "shortcuts": {
@@ -64,7 +65,13 @@
       "org": "organization",
       "view_user_packages": "このユーザーのパッケージを表示",
       "view_org_packages": "このorganizationのパッケージを表示"
-    }
+    },
+    "instant_search": "インスタント検索",
+    "instant_search_on": "オン",
+    "instant_search_off": "オフ",
+    "instant_search_turn_on": "オンにする",
+    "instant_search_turn_off": "オフにする",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "メイン",
@@ -570,9 +577,6 @@
   "connector": {
     "modal": {
       "title": "ローカルコネクタ",
-      "contributor_badge": "コントリビューター専用",
-      "contributor_notice": "コネクタはまだ npm に公開されていません。ローカルでの実行方法については {link} を参照してください。",
-      "contributor_link": "コントリビューションガイド",
       "connected": "接続済み",
       "connected_as_user": "~{user} として接続済み",
       "connected_hint": "Web UIからパッケージとorganizationを管理できるようになりました。",
@@ -881,7 +885,6 @@
       "paginated": "ページ分割",
       "items_per_page": "1ページあたりの項目数",
       "per_page": "{count} / ページ",
-      "all_yolo": "すべて表示 (YOLO)",
       "showing": "{total} 件中 {start}-{end}",
       "previous": "前のページ",
       "next": "次のページ",
@@ -950,13 +953,18 @@
       "title": "参加するには",
       "contribute": {
         "title": "貢献する",
-        "description": "より良いnpm体験の開発に協力してください。",
+        "description": "より良いnpm体験の開発に協力しましょう。",
         "cta": "GitHubで表示"
       },
       "community": {
         "title": "コミュニティに参加",
         "description": "チャット、質問、アイデアの共有。",
         "cta": "Discordに参加"
+      },
+      "builders": {
+        "title": "npmxの開発に参加",
+        "description": "npmxの未来を形作るビルダーたちに参加しましょう。",
+        "cta": "Builders Discordに参加"
       },
       "follow": {
         "title": "最新情報を入手",

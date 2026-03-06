@@ -2,7 +2,7 @@
 // stub page to help with paths
 definePageMeta({
   name: 'package',
-  scrollMargin: 150,
+  scrollMargin: 200,
 })
 </script>
 

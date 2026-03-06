@@ -139,6 +139,27 @@ function handleKeydown(event: KeyboardEvent) {
       break
   }
 }
+
+const itemScrollIntoView = (index: number) => {
+  const item = props.toc[index]
+  if (!item) return
+  const el = document.getElementById(`${listboxId}-${item.id}`)
+  if (el) {
+    el.scrollIntoView({ block: 'center' })
+  }
+}
+
+watch(
+  isOpen,
+  open => {
+    if (open && highlightedIndex.value >= 0) {
+      itemScrollIntoView(highlightedIndex.value)
+    }
+  },
+  {
+    flush: 'post',
+  },
+)
 </script>
 
 <template>

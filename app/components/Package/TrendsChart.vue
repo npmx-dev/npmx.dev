@@ -22,6 +22,8 @@ import { applyDataCorrection } from '~/utils/chart-data-correction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
 import { copyAltTextForTrendLineChart } from '~/utils/charts'
 
+import('vue-data-ui/style.css')
+
 const props = withDefaults(
   defineProps<{
     // For single package downloads history

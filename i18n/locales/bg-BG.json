@@ -533,9 +533,6 @@
   "connector": {
     "modal": {
       "title": "Локален конектор",
-      "contributor_badge": "Само за сътрудници",
-      "contributor_notice": "Конекторът все още не е публикуван в npm. Вижте {link} за как да го стартирате локално.",
-      "contributor_link": "ръководство за сътрудничество",
       "connected": "Свързан",
       "connected_as_user": "Свързан като ~{user}",
       "connected_hint": "Сега можете да управлявате пакети и организации от уеб интерфейса.",
@@ -844,7 +841,6 @@
       "paginated": "Със страници",
       "items_per_page": "Елементи на страница",
       "per_page": "{count} / страница",
-      "all_yolo": "Всички (YOLO)",
       "showing": "{start}-{end} от {total}",
       "previous": "Предишна страница",
       "next": "Следваща страница",
