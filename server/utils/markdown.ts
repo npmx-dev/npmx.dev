@@ -257,12 +257,13 @@ export function generatePackageMarkdown(options: PackageMarkdownOptions): string
     lines.push('')
     for (const maintainer of pkg.maintainers.slice(0, 10)) {
       // npm API returns username but `@npm/types` `Contact` doesn't include it
+      // maintainers is user-supplied so we escape both name and username
       const username = (maintainer as { username?: string }).username
-      const name = maintainer.name || username || 'Unknown'
+      const safeName = escapeMarkdown(maintainer.name || username || 'Unknown')
       if (username) {
-        lines.push(`- [${name}](https://npmx.dev/~${username})`)
+        lines.push(`- [${safeName}](https://npmx.dev/~${encodeURIComponent(username)})`)
       } else {
-        lines.push(`- ${name}`)
+        lines.push(`- ${safeName}`)
       }
     }
     lines.push('')
