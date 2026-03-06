@@ -19,6 +19,14 @@ globalThis['__NUXT_COLOR_MODE__'] ??= {
 // @ts-expect-error - dynamic global name
 globalThis.defineOgImageComponent = fn()
 
+// Subscribe to locale changes from storybook-i18n addon (once, outside decorator)
+let currentI18nInstance: any = null
+addons.getChannel().on('LOCALE_CHANGED', (newLocale: string) => {
+  if (currentI18nInstance) {
+    currentI18nInstance.setLocale(newLocale)
+  }
+})
+
 const preview: Preview = {
   parameters: {
     controls: {
@@ -81,21 +89,11 @@ const preview: Preview = {
         document.documentElement.style.removeProperty('--accent-color')
       }
 
-      // Store reference to i18n instance for locale changes
-      let i18nInstance: any = null
-
-      // Subscribe to locale changes from storybook-i18n addon
-      addons.getChannel().on('LOCALE_CHANGED', (newLocale: string) => {
-        if (i18nInstance) {
-          i18nInstance.setLocale(newLocale)
-        }
-      })
-
       return {
         template: '<story />',
         created() {
           // Store i18n instance for LOCALE_CHANGED events
-          i18nInstance = this.$i18n
+          currentI18nInstance = this.$i18n
 
           // Set initial locale when component is created
           if (locale && this.$i18n) {
