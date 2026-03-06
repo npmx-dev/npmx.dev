@@ -153,6 +153,7 @@
     "schema-dts": "1.1.5",
     "simple-git-hooks": "2.13.1",
     "storybook": "catalog:storybook",
+    "storybook-i18n": "catalog:storybook",
     "typescript": "5.9.3",
     "unplugin-vue-markdown": "30.0.0",
     "vitest": "npm:@voidzero-dev/vite-plus-test@0.0.0-gd42e0ca6.20260225-0619",
