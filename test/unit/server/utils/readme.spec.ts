@@ -561,4 +561,247 @@ describe('HTML output', () => {
 <p>Some <strong>bold</strong> text and a <a href="https://example.com" rel="nofollow noreferrer noopener" target="_blank">link</a>.</p>
 `)
   })
+
+  it('adds id to raw HTML headings', async () => {
+    const result = await renderReadmeHtml('<h1>Title</h1>', 'test-pkg')
+    expect(result.html).toContain('id="user-content-title"')
+    expect(result.toc).toHaveLength(1)
+    expect(result.toc[0]).toMatchObject({ text: 'Title', depth: 1 })
+  })
+
+  it('adds id to HTML heading in multi-element token', async () => {
+    const md = '<h1 align="center">My Package</h1>\n<p align="center">A description</p>'
+    const result = await renderReadmeHtml(md, 'test-pkg')
+    expect(result.toc).toHaveLength(1)
+    expect(result.html).toContain('id="user-content-my-package"')
+    expect(result.toc[0]).toMatchObject({ text: 'My Package', depth: 1 })
+  })
+
+  it('handles duplicate raw HTML heading slugs', async () => {
+    const md = '<h2>API</h2>\n\n<h2>API</h2>'
+    const result = await renderReadmeHtml(md, 'test-pkg')
+    expect(result.html).toContain('id="user-content-api"')
+    expect(result.html).toContain('id="user-content-api-1"')
+  })
+
+  it('preserves supported attributes on raw HTML headings', async () => {
+    const md = '<h1 align="center">My Package</h1>'
+    const result = await renderReadmeHtml(md, 'test-pkg')
+
+    expect(result.html).toContain('id="user-content-my-package"')
+    expect(result.html).toContain('align="center"')
+  })
+
+  it('preserves supported attributes on rewritten raw HTML anchors (renderer.html path)', async () => {
+    const md = [
+      '<div>',
+      '  <a href="https://stackblitz.com/edit/my-demo" title="Open demo">Open in StackBlitz</a>',
+      '</div>',
+    ].join('\n')
+    const result = await renderReadmeHtml(md, 'test-pkg')
+
+    expect(result.html).toContain('href="https://stackblitz.com/edit/my-demo"')
+    expect(result.html).toContain('title="Open demo"')
+    expect(result.html).toContain('rel="nofollow noreferrer noopener"')
+    expect(result.html).toContain('target="_blank"')
+  })
+
+  it('preserves title when it appears before href (renderer.html path)', async () => {
+    const md = [
+      '<div>',
+      '  <a title="Open demo" href="https://stackblitz.com/edit/my-demo">Open in StackBlitz</a>',
+      '</div>',
+    ].join('\n')
+    const result = await renderReadmeHtml(md, 'test-pkg')
+
+    expect(result.html).toContain('title="Open demo"')
+    expect(result.html).toContain('href="https://stackblitz.com/edit/my-demo"')
+    expect(result.html).toContain('rel="nofollow noreferrer noopener"')
+    expect(result.html).toContain('target="_blank"')
+  })
+
+  it('overrides existing rel and target instead of duplicating them (renderer.html path)', async () => {
+    const md = [
+      '<div>',
+      '  <a href="https://stackblitz.com/edit/my-demo" rel="bookmark" target="_self" title="Open demo">Open in StackBlitz</a>',
+      '</div>',
+    ].join('\n')
+    const result = await renderReadmeHtml(md, 'test-pkg')
+
+    expect(result.html).toContain('rel="nofollow noreferrer noopener"')
+    expect(result.html).toContain('target="_blank"')
+    expect(result.html).not.toContain('rel="bookmark"')
+    expect(result.html).not.toContain('target="_self"')
+  })
+})
+
+/**
+ * Tests for issue #1323: single-pass markdown rendering behavior.
+ *
+ * The core concern is that mixing markdown headings and raw HTML headings
+ * must produce TOC entries, heading IDs, and duplicate-slug suffixes in
+ * exact document order — the same as GitHub does.
+ *
+ * If the implementation processes markdown headings in one pass and HTML
+ * headings in a separate (later) pass, the ordering will be wrong.
+ */
+describe('Issue #1323 — single-pass rendering correctness', () => {
+  describe('mixed markdown + HTML headings: TOC order and IDs', () => {
+    it('produces TOC entries in document order when markdown and HTML headings are interleaved', async () => {
+      // This is the core scenario from the issue: HTML headings appear
+      // between markdown headings. A two-pass approach would collect all
+      // markdown headings first, then HTML headings — scrambling the order.
+      const md = [
+        '# First (markdown)',
+        '',
+        '<h2>Second (html)</h2>',
+        '',
+        '## Third (markdown)',
+        '',
+        '<h2>Fourth (html)</h2>',
+        '',
+        '## Fifth (markdown)',
+      ].join('\n')
+
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      // TOC must reflect exact document order
+      expect(result.toc).toHaveLength(5)
+      expect(result.toc[0]!.text).toBe('First (markdown)')
+      expect(result.toc[1]!.text).toBe('Second (html)')
+      expect(result.toc[2]!.text).toBe('Third (markdown)')
+      expect(result.toc[3]!.text).toBe('Fourth (html)')
+      expect(result.toc[4]!.text).toBe('Fifth (markdown)')
+    })
+
+    it('assigns duplicate-slug suffixes in document order across mixed heading types', async () => {
+      // Two markdown "API" headings with an HTML "API" heading in between.
+      // Correct: api, api-1, api-2 in that order.
+      // If HTML headings are processed in a separate pass, the HTML one
+      // could get suffix -2 while the last markdown one gets -1.
+      const md = ['## API', '', '<h2>API</h2>', '', '## API'].join('\n')
+
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      expect(result.toc).toHaveLength(3)
+      expect(result.toc[0]!.id).toBe('user-content-api')
+      expect(result.toc[1]!.id).toBe('user-content-api-1')
+      expect(result.toc[2]!.id).toBe('user-content-api-2')
+
+      // The HTML output must also have these IDs in order
+      const ids = Array.from(result.html.matchAll(/id="(user-content-api(?:-\d+)?)"/g), m => m[1])
+      expect(ids).toEqual(['user-content-api', 'user-content-api-1', 'user-content-api-2'])
+    })
+
+    it('does not collide when heading text already starts with user-content-', async () => {
+      const md = ['# Title', '', '# user-content-title'].join('\n')
+
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      const ids = Array.from(result.html.matchAll(/id="(user-content-[^"]+)"/g), m => m[1])
+      expect(ids).toEqual(['user-content-title', 'user-content-user-content-title'])
+      expect(new Set(ids).size).toBe(ids.length)
+      expect(result.toc.map(t => t.id)).toEqual(ids)
+    })
+
+    it('heading semantic levels are sequential even when mixing heading types', async () => {
+      // h1 (md) → h3, h3 (html) → should be h4 (max = lastSemantic + 1),
+      // not jump to h5 or h6 because it was processed in a later pass.
+      const md = ['# Title', '', '<h3>Subsection</h3>', '', '#### Deep'].join('\n')
+
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      // Extract semantic tags in order from the HTML
+      const tags = Array.from(result.html.matchAll(/<h(\d)/g), m => Number(m[1]))
+      // h1→h3, h3→h4 (sequential after h3), h4→h5 (sequential after h4)
+      expect(tags).toEqual([3, 4, 5])
+    })
+  })
+
+  describe('HTML heading between markdown headings — ID and href consistency', () => {
+    it('heading id and its anchor href point to the same slug', async () => {
+      const md = ['# Introduction', '', '<h2>Getting Started</h2>', '', '## Installation'].join(
+        '\n',
+      )
+
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      // For every heading, the slug used in id="user-content-{slug}" must
+      // match the slug in the child anchor href="#user-content-{slug}"
+      // (resolveUrl prefixes # anchors with user-content-).
+      const headingPairs = [
+        ...result.html.matchAll(/id="user-content-([^"]+)"[^>]*><a href="#user-content-([^"]+)">/g),
+      ]
+      expect(headingPairs.length).toBeGreaterThan(0)
+      for (const match of headingPairs) {
+        // slug portion must be identical
+        expect(match[1]).toBe(match[2])
+      }
+    })
+  })
+
+  describe('playground links collected from HTML <a> tags in single pass', () => {
+    it('collects playground links from raw HTML anchor tags', async () => {
+      // Some READMEs (like eslint's sponsor section) use raw HTML <a> tags
+      // instead of markdown link syntax. These must also be picked up.
+      const md = [
+        '# My Package',
+        '',
+        '<a href="https://stackblitz.com/edit/my-demo">Open in StackBlitz</a>',
+        '',
+        'Some text with a [CodeSandbox link](https://codesandbox.io/s/example)',
+      ].join('\n')
+
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      // Both playground links should be collected regardless of syntax
+      const providers = result.playgroundLinks.map(l => l.provider)
+      expect(providers).toContain('stackblitz')
+      expect(providers).toContain('codesandbox')
+    })
+  })
+
+  describe('complex real-world interleaving (atproxy-like)', () => {
+    it('handles a README with HTML h1 followed by markdown h2 and mixed content', async () => {
+      // Simulates a pattern like atproxy's README where h1 is HTML
+      // and subsequent headings are markdown
+      const md = [
+        '<h1 align="center">atproxy</h1>',
+        '<p align="center">A cool proxy library</p>',
+        '',
+        '## Features',
+        '',
+        '- Fast',
+        '- Simple',
+        '',
+        '## Installation',
+        '',
+        '```bash',
+        'npm install atproxy',
+        '```',
+        '',
+        '<h2>Advanced Usage</h2>',
+        '',
+        '## API',
+        '',
+        '### Methods',
+      ].join('\n')
+
+      const result = await renderReadmeHtml(md, 'test-pkg')
+
+      // TOC order must be: atproxy, Features, Installation, Advanced Usage, API, Methods
+      expect(result.toc.map(t => t.text)).toEqual([
+        'atproxy',
+        'Features',
+        'Installation',
+        'Advanced Usage',
+        'API',
+        'Methods',
+      ])
+
+      // All IDs should be unique
+      const ids = result.toc.map(t => t.id)
+      expect(new Set(ids).size).toBe(ids.length)
+    })
+  })
 })

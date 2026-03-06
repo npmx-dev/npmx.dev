@@ -273,6 +273,30 @@ const reservedPathsNpmJs = [
 
 const npmJsHosts = new Set(['www.npmjs.com', 'npmjs.com', 'www.npmjs.org', 'npmjs.org'])
 
+const USER_CONTENT_PREFIX = 'user-content-'
+
+function withUserContentPrefix(value: string): string {
+  return value.startsWith(USER_CONTENT_PREFIX) ? value : `${USER_CONTENT_PREFIX}${value}`
+}
+
+function toUserContentId(value: string): string {
+  return `${USER_CONTENT_PREFIX}${value}`
+}
+
+function toUserContentHash(value: string): string {
+  return `#${withUserContentPrefix(value)}`
+}
+
+function normalizePreservedAnchorAttrs(attrs: string): string {
+  const cleanedAttrs = attrs
+    .replace(/\s+href\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/\s+rel\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/\s+target\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .trim()
+
+  return cleanedAttrs ? ` ${cleanedAttrs}` : ''
+}
+
 const isNpmJsUrlThatCanBeRedirected = (url: URL) => {
   if (!npmJsHosts.has(url.host)) {
     return false
@@ -298,8 +322,11 @@ function resolveUrl(url: string, packageName: string, repoInfo?: RepositoryInfo)
   if (!url) return url
   if (url.startsWith('#')) {
     // Prefix anchor links to match heading IDs (avoids collision with page IDs)
-    return `#user-content-${url.slice(1)}`
+    // Idempotent: don't double-prefix if already prefixed
+    return toUserContentHash(url.slice(1))
   }
+  // Absolute paths (e.g. /package/foo from a previous npmjs redirect) are already resolved
+  if (url.startsWith('/')) return url
   if (hasProtocol(url, { acceptRelative: true })) {
     try {
       const parsed = new URL(url, 'https://example.com')
@@ -388,8 +415,8 @@ function resolveImageUrl(url: string, packageName: string, repoInfo?: Repository
 
 // Helper to prefix id attributes with 'user-content-'
 function prefixId(tagName: string, attribs: sanitizeHtml.Attributes) {
-  if (attribs.id && !attribs.id.startsWith('user-content-')) {
-    attribs.id = `user-content-${attribs.id}`
+  if (attribs.id) {
+    attribs.id = withUserContentPrefix(attribs.id)
   }
   return { tagName, attribs }
 }
@@ -428,35 +455,53 @@ export async function renderReadmeHtml(
   // So README starts at h3, and we ensure no levels are skipped
   // Visual styling preserved via data-level attribute (original depth)
   let lastSemanticLevel = 2 // Start after h2 (the "Readme" section heading)
-  renderer.heading = function ({ tokens, depth }: Tokens.Heading) {
-    // Calculate the target semantic level based on document structure
-    // Start at h3 (since page h1 + section h2 already exist)
-    // But ensure we never skip levels - can only go down by 1 or stay same/go up
+
+  // Shared heading processing for both markdown and HTML headings
+  function processHeading(depth: number, plainText: string, preservedAttrs = '') {
     const semanticLevel = calculateSemanticDepth(depth, lastSemanticLevel)
     lastSemanticLevel = semanticLevel
-    const text = this.parser.parseInline(tokens)
 
-    // Generate GitHub-style slug for anchor links
-    let slug = slugify(text)
-    if (!slug) slug = 'heading' // Fallback for empty headings
+    let slug = slugify(plainText)
+    if (!slug) slug = 'heading'
 
-    // Handle duplicate slugs (GitHub-style: foo, foo-1, foo-2)
     const count = usedSlugs.get(slug) ?? 0
     usedSlugs.set(slug, count + 1)
     const uniqueSlug = count === 0 ? slug : `${slug}-${count}`
+    const id = toUserContentId(uniqueSlug)
 
-    // Prefix with 'user-content-' to avoid collisions with page IDs
-    // (e.g., #install, #dependencies, #versions are used by the package page)
-    const id = `user-content-${uniqueSlug}`
-
-    // Collect TOC item with plain text (HTML stripped, entities decoded)
-    const plainText = decodeHtmlEntities(stripHtmlTags(text).trim())
     if (plainText) {
       toc.push({ text: plainText, id, depth })
     }
 
-    /** The link href uses the unique slug WITHOUT the 'user-content-' prefix, because that will later be added for all links. */
-    return `<h${semanticLevel} id="${id}" data-level="${depth}"><a href="#${uniqueSlug}">${plainText}</a></h${semanticLevel}>\n`
+    return `<h${semanticLevel} id="${id}" data-level="${depth}"${preservedAttrs}><a href="#${id}">${plainText}</a></h${semanticLevel}>\n`
+  }
+
+  renderer.heading = function ({ tokens, depth }: Tokens.Heading) {
+    const text = this.parser.parseInline(tokens)
+    const plainText = decodeHtmlEntities(stripHtmlTags(text).trim())
+    return processHeading(depth, plainText)
+  }
+
+  // Intercept HTML headings so they get id, TOC entry, and correct semantic level.
+  // Also intercept raw HTML <a> tags so playground links are collected in the same pass.
+  const htmlHeadingRe = /<h([1-6])(\s[^>]*)?>([\s\S]*?)<\/h\1>/gi
+  const htmlAnchorRe = /<a(\s[^>]*?)href=(["'])([^"']*)\2([^>]*)>([\s\S]*?)<\/a>/gi
+  renderer.html = function ({ text }: Tokens.HTML) {
+    let result = text.replace(htmlHeadingRe, (_, level, attrs = '', inner) => {
+      const depth = parseInt(level)
+      const plainText = decodeHtmlEntities(stripHtmlTags(inner).trim())
+      const align = /\balign=(["'])(.*?)\1/i.exec(attrs)?.[2]
+      const preservedAttrs = align ? ` align="${align}"` : ''
+      return processHeading(depth, plainText, preservedAttrs).trimEnd()
+    })
+    // Process raw HTML <a> tags for playground link collection and URL resolution
+    result = result.replace(htmlAnchorRe, (_full, beforeHref, _quote, href, afterHref, inner) => {
+      const label = decodeHtmlEntities(stripHtmlTags(inner).trim())
+      const { resolvedHref, extraAttrs } = processLink(href, label)
+      const preservedAttrs = normalizePreservedAnchorAttrs(`${beforeHref ?? ''}${afterHref ?? ''}`)
+      return `<a${preservedAttrs} href="${resolvedHref}"${extraAttrs}>${inner}</a>`
+    })
+    return result
   }
 
   // Syntax highlighting for code blocks (uses shared highlighter)
@@ -480,7 +525,35 @@ ${html}
     return `<img src="${resolvedHref}"${altAttr}${titleAttr}>`
   }
 
+  // Helper: resolve a link href, collect playground links, and build <a> attributes.
+  // Used by both the markdown renderer.link and the HTML <a> interceptor so that
+  // all link processing happens in a single pass during marked rendering.
+  function processLink(href: string, label: string): { resolvedHref: string; extraAttrs: string } {
+    const resolvedHref = resolveUrl(href, packageName, repoInfo)
+
+    // Collect playground links
+    const provider = matchPlaygroundProvider(resolvedHref)
+    if (provider && !seenUrls.has(resolvedHref)) {
+      seenUrls.add(resolvedHref)
+      collectedLinks.push({
+        url: resolvedHref,
+        provider: provider.id,
+        providerName: provider.name,
+        label: decodeHtmlEntities(label || provider.name),
+      })
+    }
+
+    // Security attributes for external links
+    let extraAttrs = ''
+    if (resolvedHref && hasProtocol(resolvedHref, { acceptRelative: true })) {
+      extraAttrs = ' rel="nofollow noreferrer noopener" target="_blank"'
+    }
+
+    return { resolvedHref, extraAttrs }
+  }
+
   // Resolve link URLs, add security attributes, and collect playground links
+  // — all in a single pass during marked rendering (no deferred processing)
   renderer.link = function ({ href, title, tokens }: Tokens.Link) {
     const text = this.parser.parseInline(tokens)
     const titleAttr = title ? ` title="${title}"` : ''
@@ -491,10 +564,9 @@ ${html}
       plainText = tokens[0].text
     }
 
-    const intermediateTitleAttr =
-      plainText || title ? ` data-title-intermediate="${plainText || title}"` : ''
+    const { resolvedHref, extraAttrs } = processLink(href, plainText || title || '')
 
-    return `<a href="${href}"${titleAttr}${intermediateTitleAttr}>${text}</a>`
+    return `<a href="${resolvedHref}"${titleAttr}${extraAttrs}>${text}</a>`
   }
 
   // GitHub-style callouts: > [!NOTE], > [!TIP], etc.
@@ -522,26 +594,32 @@ ${html}
     allowedSchemes: ['http', 'https', 'mailto'],
     // Transform img src URLs (GitHub blob → raw, relative → GitHub raw)
     transformTags: {
+      // Headings are already processed to correct semantic levels by processHeading()
+      // during the marked rendering pass. The sanitizer just needs to preserve them.
+      // For any stray headings that didn't go through processHeading (shouldn't happen),
+      // we still apply a safe fallback shift.
       h1: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h1', attribs }
         return { tagName: 'h3', attribs: { ...attribs, 'data-level': '1' } }
       },
       h2: (_, attribs) => {
+        if (attribs['data-level']) return { tagName: 'h2', attribs }
         return { tagName: 'h4', attribs: { ...attribs, 'data-level': '2' } }
       },
       h3: (_, attribs) => {
-        if (attribs['data-level']) return { tagName: 'h3', attribs: attribs }
+        if (attribs['data-level']) return { tagName: 'h3', attribs }
         return { tagName: 'h5', attribs: { ...attribs, 'data-level': '3' } }
       },
       h4: (_, attribs) => {
-        if (attribs['data-level']) return { tagName: 'h4', attribs: attribs }
+        if (attribs['data-level']) return { tagName: 'h4', attribs }
         return { tagName: 'h6', attribs: { ...attribs, 'data-level': '4' } }
       },
       h5: (_, attribs) => {
-        if (attribs['data-level']) return { tagName: 'h5', attribs: attribs }
+        if (attribs['data-level']) return { tagName: 'h5', attribs }
         return { tagName: 'h6', attribs: { ...attribs, 'data-level': '5' } }
       },
       h6: (_, attribs) => {
-        if (attribs['data-level']) return { tagName: 'h6', attribs: attribs }
+        if (attribs['data-level']) return { tagName: 'h6', attribs }
         return { tagName: 'h6', attribs: { ...attribs, 'data-level': '6' } }
       },
       img: (tagName, attribs) => {
@@ -569,6 +647,11 @@ ${html}
         }
         return { tagName, attribs }
       },
+      // Markdown links are fully processed in renderer.link (single-pass).
+      // However, inline HTML <a> tags inside paragraphs are NOT seen by
+      // renderer.html (marked parses them as paragraph tokens, not html tokens).
+      // So we still need to collect playground links here for those cases.
+      // The seenUrls set ensures no duplicates across both paths.
       a: (tagName, attribs) => {
         if (!attribs.href) {
           return { tagName, attribs }
@@ -576,24 +659,22 @@ ${html}
 
         const resolvedHref = resolveUrl(attribs.href, packageName, repoInfo)
 
+        // Collect playground links from inline HTML <a> tags that weren't
+        // caught by renderer.link or renderer.html
         const provider = matchPlaygroundProvider(resolvedHref)
         if (provider && !seenUrls.has(resolvedHref)) {
           seenUrls.add(resolvedHref)
-
           collectedLinks.push({
             url: resolvedHref,
             provider: provider.id,
             providerName: provider.name,
-            /**
-             * We need to set some data attribute before hand because `transformTags` doesn't
-             * provide the text of the element. This will automatically be removed, because there
-             * is an allow list for link attributes.
-             * */
-            label: decodeHtmlEntities(attribs['data-title-intermediate'] || provider.name),
+            // sanitize-html transformTags doesn't provide element text content,
+            // so we fall back to the provider name for the label
+            label: provider.name,
           })
         }
 
-        // Add security attributes for external links
+        // Add security attributes for external links (idempotent)
         if (resolvedHref && hasProtocol(resolvedHref, { acceptRelative: true })) {
           attribs.rel = 'nofollow noreferrer noopener'
           attribs.target = '_blank'
