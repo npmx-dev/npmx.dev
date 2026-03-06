@@ -256,7 +256,7 @@ export function generatePackageMarkdown(options: PackageMarkdownOptions): string
     lines.push('## Maintainers')
     lines.push('')
     for (const maintainer of pkg.maintainers.slice(0, 10)) {
-      // npm API returns username but @npm/types Contact doesn't include it
+      // npm API returns username but `@npm/types` `Contact` doesn't include it
       const username = (maintainer as { username?: string }).username
       const name = maintainer.name || username || 'Unknown'
       if (username) {
