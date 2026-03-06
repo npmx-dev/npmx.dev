@@ -3586,6 +3586,22 @@ describe('background theme accessibility', () => {
   }
 
   const components = [
+    {
+      name: 'AlertWarning',
+      mount: () =>
+        mountSuspended(Alert, {
+          props: { variant: 'warning', title: 'Warning title' },
+          slots: { default: '<p>Warning body</p>' },
+        }),
+    },
+    {
+      name: 'AlertError',
+      mount: () =>
+        mountSuspended(Alert, {
+          props: { variant: 'error', title: 'Error title' },
+          slots: { default: '<p>Error body</p>' },
+        }),
+    },
     { name: 'AppHeader', mount: () => mountSuspended(AppHeader) },
     { name: 'AppFooter', mount: () => mountSuspended(AppFooter) },
     { name: 'HeaderSearchBox', mount: () => mountSuspended(HeaderSearchBox) },
