@@ -777,7 +777,10 @@
       "code": "code"
     },
     "file_path": "File path",
-    "scroll_to_top": "Scroll to top"
+    "scroll_to_top": "Scroll to top",
+    "binary_file": "Binary file",
+    "binary_rendering_warning": "File type not supported for preview.",
+    "render_anyway": "Render anyway"
   },
   "badges": {
     "provenance": {

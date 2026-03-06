@@ -538,15 +538,17 @@ defineOgImageComponent('Default', {
           class="py-20 text-center"
         >
           <div class="i-lucide:binary w-12 h-12 mx-auto text-fg-subtle mb-4" />
-          <p class="text-fg-muted mb-2">Binary file</p>
-          <p class="text-fg-subtle text-sm mb-4">Rendering may produce garbled output.</p>
+          <p class="text-fg-muted mb-2">{{ $t('code.binary_file') }}</p>
+          <p class="text-fg-subtle text-sm mb-4">{{ $t('code.binary_rendering_warning') }}</p>
           <div class="flex items-center justify-center gap-3">
-            <ButtonBase @click="showBinaryContent = true"> Render anyway </ButtonBase>
+            <ButtonBase @click="showBinaryContent = true">{{
+              $t('code.render_anyway')
+            }}</ButtonBase>
             <LinkBase
               variant="button-secondary"
               :to="`https://cdn.jsdelivr.net/npm/${packageName}@${version}/${filePath}`"
             >
-              View raw file
+              {{ $t('code.view_raw') }}
             </LinkBase>
           </div>
         </div>
