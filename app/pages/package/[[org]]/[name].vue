@@ -106,6 +106,11 @@ const navExtraOffsetStyle = computed(() => ({
 
 const { packageName, requestedVersion, orgName } = usePackageRoute()
 
+const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
+  packageName,
+  requestedVersion,
+)
+
 if (import.meta.server) {
   assertValidPackageName(packageName.value)
 }
@@ -114,7 +119,7 @@ if (import.meta.server) {
 const { data: readmeData } = useLazyFetch<ReadmeResponse>(
   () => {
     const base = `/api/registry/readme/${packageName.value}`
-    const version = requestedVersion.value
+    const version = resolvedVersion.value
     return version ? `${base}/v/${version}` : base
   },
   {
@@ -150,7 +155,7 @@ const {
 } = useLazyFetch<ReadmeMarkdownResponse>(
   () => {
     const base = `/api/registry/readme/markdown/${packageName.value}`
-    const version = requestedVersion.value
+    const version = resolvedVersion.value
     return version ? `${base}/v/${version}` : base
   },
   {
@@ -200,7 +205,7 @@ const {
 } = useLazyFetch<InstallSizeResult | null>(
   () => {
     const base = `/api/registry/install-size/${packageName.value}`
-    const version = requestedVersion.value
+    const version = resolvedVersion.value
     return version ? `${base}/v/${version}` : base
   },
   {
@@ -213,7 +218,7 @@ onMounted(() => fetchInstallSize())
 const { data: skillsData } = useLazyFetch<SkillsListResponse>(
   () => {
     const base = `/skills/${packageName.value}`
-    const version = requestedVersion.value
+    const version = resolvedVersion.value
     return version ? `${base}/v/${version}` : base
   },
   { default: () => ({ package: '', version: '', skills: [] }) },
@@ -221,11 +226,6 @@ const { data: skillsData } = useLazyFetch<SkillsListResponse>(
 
 const { data: packageAnalysis } = usePackageAnalysis(packageName, requestedVersion)
 const { data: moduleReplacement } = useModuleReplacement(packageName)
-
-const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
-  packageName,
-  requestedVersion,
-)
 
 if (
   import.meta.server &&
@@ -1369,7 +1369,7 @@ const showSkeleton = shallowRef(false)
           </div>
           <TerminalInstall
             :package-name="pkg.name"
-            :requested-version="requestedVersion"
+            :requested-version="resolvedVersion"
             :install-version-override="installVersionOverride"
             :jsr-info="jsrInfo"
             :dev-dependency-suggestion="packageAnalysis?.devDependencySuggestion"
