@@ -41,7 +41,7 @@ const id = useId()
         type="checkbox"
         :id="id"
         v-model="checked"
-        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle transition-colors duration-200 ease-in-out checked:bg-fg checked:border-fg hover:bg-fg-muted checked:hover:bg-fg-muted checked:hover:border-fg-muted focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 before:content-[''] before:absolute before:h-5 before:w-5 before:top-[1px] before:start-[1px] before:rounded-full before:bg-bg before:transition-transform before:duration-200 before:ease-in-out checked:before:translate-x-[20px] rtl:checked:before:-translate-x-[20px] after:content-[''] after:absolute after:h-3.5 after:w-3.5 after:top-[4px] after:start-[4px] after:i-lucide:check after:bg-fg after:opacity-0 checked:after:opacity-100 after:transition-all after:duration-200 after:ease-in-out checked:after:translate-x-[20px] rtl:checked:after:-translate-x-[20px]"
+        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg/50 transition-colors duration-200 ease-in-out checked:bg-fg hover:bg-fg/60 checked:hover:(bg-fg/80 after:opacity-50) focus-visible:(outline-2 outline-accent outline-offset-2) before:(content-[''] absolute h-5 w-5 top-px start-px rounded-full bg-bg transition-transform duration-200 ease-in-out) checked:before:translate-x-[20px] rtl:checked:before:-translate-x-[20px] after:(content-[''] absolute h-3.5 w-3.5 top-[4px] start-[4px] i-lucide:check bg-fg opacity-0 transition-all duration-200 ease-in-out) checked:after:opacity-100 checked:after:translate-x-[20px] rtl:checked:after:-translate-x-[20px]"
         style="grid-area: toggle"
       />
       <TooltipApp
@@ -87,7 +87,7 @@ const id = useId()
         type="checkbox"
         :id="id"
         v-model="checked"
-        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg-subtle transition-colors duration-200 ease-in-out checked:bg-fg checked:border-fg hover:bg-fg-muted checked:hover:bg-fg-muted checked:hover:border-fg-muted focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 before:content-[''] before:absolute before:h-5 before:w-5 before:top-[1px] before:start-[1px] before:rounded-full before:bg-bg before:transition-transform before:duration-200 before:ease-in-out checked:before:translate-x-[20px] rtl:checked:before:-translate-x-[20px] after:content-[''] after:absolute after:h-3.5 after:w-3.5 after:top-[4px] after:start-[4px] after:i-lucide:check after:bg-fg after:opacity-0 checked:after:opacity-100 after:transition-all after:duration-200 after:ease-in-out checked:after:translate-x-[20px] rtl:checked:after:-translate-x-[20px]"
+        class="toggle appearance-none h-6 w-11 rounded-full border border-fg relative shrink-0 bg-fg/50 transition-colors duration-200 ease-in-out checked:bg-fg hover:bg-fg/60 checked:hover:(bg-fg/80 after:opacity-50) focus-visible:(outline-2 outline-accent outline-offset-2) before:(content-[''] absolute h-5 w-5 top-px start-px rounded-full bg-bg transition-transform duration-200 ease-in-out) checked:before:translate-x-[20px] rtl:checked:before:-translate-x-[20px] after:(content-[''] absolute h-3.5 w-3.5 top-[4px] start-[4px] i-lucide:check bg-fg opacity-0 transition-all duration-200 ease-in-out) checked:after:opacity-100 checked:after:translate-x-[20px] rtl:checked:after:-translate-x-[20px]"
         style="grid-area: toggle; justify-self: end"
       />
     </template>
