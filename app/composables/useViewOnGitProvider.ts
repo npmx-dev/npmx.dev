@@ -17,18 +17,20 @@ export function useViewOnGitProvider(
         return t('common.view_on.gitlab')
       case 'bitbucket':
         return t('common.view_on.bitbucket')
-      case 'codeberg':
-        return t('common.view_on.codeberg')
-      case 'forgejo':
-        return t('common.view_on.forgejo')
       case 'gitea':
         return t('common.view_on.gitea')
-      case 'gitee':
-        return t('common.view_on.gitee')
-      case 'radicle':
-        return t('common.view_on.radicle')
+      case 'forgejo':
+        return t('common.view_on.forgejo')
+      case 'codeberg':
+        return t('common.view_on.codeberg')
       case 'sourcehut':
         return t('common.view_on.sourcehut')
+      case 'gitee':
+        return t('common.view_on.gitee')
+      case 'tangled':
+        return t('common.view_on.tangled')
+      case 'radicle':
+        return t('common.view_on.radicle')
       case 'git':
         return t('common.view_on.git_repo')
     }
