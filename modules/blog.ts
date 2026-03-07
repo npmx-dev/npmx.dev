@@ -51,14 +51,18 @@ async function fetchBlueskyAvatars(
     for (const profile of data.profiles) {
       if (profile.avatar) {
         const hash = crypto.createHash('sha256').update(profile.avatar).digest('hex')
-        const dest = join(imagesDir, `${hash}.jpg`)
+        const dest = join(imagesDir, `${hash}.png`)
 
         if (!existsSync(dest)) {
-          const res = await fetch(profile.avatar)
-          await writeFile(join(imagesDir, `${hash}.jpg`), res.body!)
+          const res = await fetch(`${profile.avatar}@png`)
+          if (!res.ok || !res.body) {
+            console.warn(`[blog] Failed to fetch Bluesky avatar: ${profile.avatar}@png`)
+            continue
+          }
+          await writeFile(join(imagesDir, `${hash}.png`), res.body)
         }
 
-        avatarMap.set(profile.handle, `/blog/avatar/${hash}.jpg`)
+        avatarMap.set(profile.handle, `/blog/avatar/${hash}.png`)
       }
     }
   } catch (error) {
@@ -85,7 +89,7 @@ function resolveAuthors(authors: Author[], avatarMap: Map<string, string>): Reso
  * Resolves Bluesky avatars at build time.
  */
 async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPostFrontmatter[]> {
-  const files: string[] = globSync(join(blogDir, '*.md'))
+  const files: string[] = globSync(join(blogDir, '*.md').replace(/\\/g, '/'))
 
   // First pass: extract raw frontmatter and collect all Bluesky handles
   const rawPosts: Array<{ frontmatter: Record<string, unknown> }> = []
