@@ -46,13 +46,7 @@ const getInitials = (name: string) =>
 const visibleAuthors = computed(() => {
   console.log('blog post 5')
   props.authors.map(author => {
-    console.log(
-      'blog post 5.1',
-      author.avatar,
-      author.name,
-      typeof author.avatar,
-      typeof author.name,
-    )
+    console.log('blog post 5', author.avatar, author.name, typeof author.avatar, typeof author.name)
   })
   if (props.authors.length <= 3) return props.authors
   return props.authors.slice(0, MAX_VISIBLE_AUTHORS)
@@ -125,7 +119,7 @@ const formattedAuthorNames = computed(() => {
           >
             <img
               v-if="author.avatar"
-              :src="`/blog/avatar/${author.avatar.replace('/blog/avatar/', '')}`"
+              :src="author.avatar"
               :alt="author.name"
               class="w-full h-full object-cover"
             />

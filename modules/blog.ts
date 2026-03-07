@@ -53,11 +53,15 @@ async function fetchBlueskyAvatars(
         const hash = crypto.createHash('sha256').update(profile.avatar).digest('hex')
         const dest = join(imagesDir, `${hash}.jpg`)
 
+        console.log('fetch bluesky avatars 1', dest)
         if (!existsSync(dest)) {
           const res = await fetch(profile.avatar)
+          console.log('fetch bluesky avatars 2', profile.avatar)
           await writeFile(join(imagesDir, `${hash}.jpg`), res.body!)
+          console.log('fetch bluesky avatars 3', join(imagesDir, `${hash}.jpg`))
         }
 
+        console.log('fetch bluesky avatars 4', `/blog/avatar/${hash}.jpg`)
         avatarMap.set(profile.handle, `/blog/avatar/${hash}.jpg`)
       }
     }
@@ -119,6 +123,7 @@ async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPo
 
   // Batch-fetch all Bluesky avatars in a single request
   const avatarMap = await fetchBlueskyAvatars(imagesDir, [...allHandles])
+  console.log('load blog posts 1', avatarMap)
 
   // Second pass: validate with raw schema, then enrich authors with avatars
   const posts: BlogPostFrontmatter[] = []
