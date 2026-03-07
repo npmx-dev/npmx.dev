@@ -4,6 +4,7 @@ import { AuthorSchema } from '#shared/schemas/blog'
 import { Client } from '@atproto/lex'
 import type { Author, ResolvedAuthor } from '#shared/schemas/blog'
 import * as app from '#shared/types/lexicons/app'
+import * as crypto from 'node:crypto'
 
 export default defineCachedEventHandler(
   async event => {
@@ -75,7 +76,11 @@ export default defineCachedEventHandler(
     maxAge: CACHE_MAX_AGE_ONE_DAY,
     getKey: event => {
       const { authors } = getQuery(event)
-      return `author-profiles:${authors ?? 'npmx.dev'}`
+      if (!authors) {
+        return 'author-profiles:npmx.dev'
+      }
+      const key = crypto.createHash('sha256').update(JSON.stringify(authors)).digest('hex')
+      return `author-profiles:${key}`
     },
   },
 )

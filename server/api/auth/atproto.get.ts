@@ -80,7 +80,14 @@ export default defineEventHandler(async event => {
     // Handle callback
     try {
       const params = new URLSearchParams(query as Record<string, string>)
-      const result = await event.context.oauthClient.callback(params)
+      const result = await event.context.oauthClient?.callback(params)
+      if (!result) {
+        return handleApiError('Failed to initiate authentication', {
+          statusCode: 401,
+          statusMessage: 'Unauthorized',
+          message: `Failed to initiate authentication. Please login and try again.`,
+        })
+      }
       try {
         const state = decodeOAuthState(event, result.state)
         const profile = await getMiniProfile(result.session)
