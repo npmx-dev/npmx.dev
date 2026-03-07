@@ -630,6 +630,7 @@ export function createAltTextForCompareFacetBarChart({
     facet,
     description,
     facet_analysis,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
   })}`
 
   return altText
