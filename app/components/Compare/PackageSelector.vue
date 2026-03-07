@@ -272,7 +272,7 @@ onClickOutside(containerRef, () => {
           <ButtonBase
             v-if="showNoDependencyOption"
             data-navigable
-            class="block w-full text-start"
+            class="block w-full text-start !border-transparent"
             :class="highlightedIndex === 0 ? '!bg-accent/15' : ''"
             :aria-label="$t('compare.no_dependency.add_column')"
             @mouseenter="highlightedIndex = 0"
@@ -297,7 +297,7 @@ onClickOutside(containerRef, () => {
             v-for="(result, index) in filteredResults"
             :key="result.name"
             data-navigable
-            class="block w-full text-start my-0.5"
+            class="block w-full text-start my-0.5 !border-transparent"
             :class="highlightedIndex === index + resultIndexOffset ? '!bg-accent/15' : ''"
             @mouseenter="highlightedIndex = index + resultIndexOffset"
             @click="addPackage(result.name)"
