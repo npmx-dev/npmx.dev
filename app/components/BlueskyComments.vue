@@ -32,6 +32,7 @@ const postUrl = computed(() => data.value?.postUrl)
               :src="like.actor.avatar"
               :alt="like.actor.displayName || like.actor.handle"
               class="w-8 h-8 rounded-full hover:opacity-80 transition-opacity m-0"
+              loading="lazy"
             />
             <div
               v-else
