@@ -118,6 +118,42 @@ test.describe('badge API', () => {
     expect(body).toContain(`fill="#${customColor}"`)
   })
 
+  test('light color produces dark text for contrast', async ({ page, baseURL }) => {
+    // FFDC3B is a bright yellow — should get #000000 text
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=FFDC3B')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toContain('fill="#000000">v')
+  })
+
+  test('dark color keeps white text for contrast', async ({ page, baseURL }) => {
+    // 0a0a0a is near-black — should keep #ffffff text
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=0a0a0a')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toContain('fill="#ffffff">v')
+  })
+
+  test('light labelColor produces dark label text for contrast', async ({ page, baseURL }) => {
+    // ffffff label background — should get #000000 label text
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?labelColor=ffffff')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#000000">version')
+    expect(body).toContain('fill="#ffffff">v')
+  })
+
+  test('3-char hex color is handled correctly for contrast', async ({ page, baseURL }) => {
+    // CCC expands to CCCCCC — a light grey, should get dark text
+    const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=CCC')
+    const { body } = await fetchBadge(page, url)
+
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toContain('fill="#000000">v')
+  })
+
   test('custom label parameter is applied to SVG', async ({ page, baseURL }) => {
     const customLabel = 'my-label'
     const url = toLocalUrl(baseURL, `/api/registry/badge/version/nuxt?label=${customLabel}`)
