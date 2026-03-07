@@ -216,7 +216,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 <template>
   <div class="font-mono facet-bar">
     <ClientOnly v-if="dataset.length">
-      <VueUiHorizontalBar :key="chartKey" :dataset :config>
+      <VueUiHorizontalBar :key="chartKey" :dataset :config class="[direction:ltr]">
         <template #svg="{ svg }">
           <!-- Inject npmx logo & tagline during SVG and PNG print -->
           <g
