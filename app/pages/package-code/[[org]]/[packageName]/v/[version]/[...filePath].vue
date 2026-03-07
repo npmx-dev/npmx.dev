@@ -436,7 +436,7 @@ defineOgImageComponent('Default', {
         ref="contentContainer"
       >
         <!-- File viewer -->
-        <template v-if="isViewingFile && fileContent">
+        <template v-if="isViewingFile && !isBinaryFile && fileContent">
           <div
             class="sticky z-10 top-0 bg-bg border-b border-border px-4 py-2 flex items-center justify-between"
           >
