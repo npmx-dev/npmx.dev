@@ -1437,6 +1437,12 @@
                 },
                 "general_description": {
                   "type": "string"
+                },
+                "facet_bar_general_description": {
+                  "type": "string"
+                },
+                "facet_bar_analysis": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false
@@ -3113,6 +3119,12 @@
               "type": "string"
             },
             "empty_description": {
+              "type": "string"
+            },
+            "table_view": {
+              "type": "string"
+            },
+            "charts_view": {
               "type": "string"
             }
           },

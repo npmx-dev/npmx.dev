@@ -226,6 +226,7 @@ import HeaderAccountMenuServer from '~/components/Header/AccountMenu.server.vue'
 import ToggleServer from '~/components/Settings/Toggle.server.vue'
 import SearchProviderToggleServer from '~/components/SearchProviderToggle.server.vue'
 import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
+import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
 
@@ -784,6 +785,24 @@ describe('component accessibility audits', () => {
 
       const results = await runAxe(wrapper)
       expect(results.violations).toEqual([])
+    })
+
+    describe('FacetBarChart', () => {
+      it('should have no accessibility violations', async () => {
+        const wrapper = await mountSuspended(FacetBarChart, {
+          props: {
+            values: [
+              { raw: 100, display: '100 MB' },
+              { raw: 50, display: '50 MB' },
+            ],
+            packages: ['nuxt', 'vue'],
+            label: 'Package Size',
+            description: 'Size of the package itself (unpacked)',
+          },
+        })
+        const results = await runAxe(wrapper)
+        expect(results.violations).toEqual([])
+      })
     })
 
     it('should have no accessibility violations with empty data', async () => {

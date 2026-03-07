@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
+import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 
 definePageMeta({
   name: 'compare',
@@ -75,6 +76,8 @@ const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoadin
 
 // Check if we have enough packages to compare
 const canCompare = computed(() => packages.value.length >= 2)
+
+const comparisonView = ref<'table' | 'charts'>('table')
 
 // Extract headers from columns for facet rows
 const gridHeaders = computed(() =>
@@ -278,10 +281,73 @@ useSeoMeta({
         </div>
 
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
-          <!-- Desktop: Grid layout -->
-          <div class="hidden md:block overflow-x-auto">
-            <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
-              <CompareFacetRow
+          <!-- View tabs -->
+          <div
+            class="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-bg-subtle p-0.5 mt-4"
+            role="tablist"
+            :aria-label="$t('compare.packages.section_comparison')"
+          >
+            <button
+              id="comparison-tab-table"
+              type="button"
+              role="tab"
+              :aria-selected="comparisonView === 'table' ? 'true' : 'false'"
+              aria-controls="comparison-panel-table"
+              :tabindex="comparisonView === 'table' ? 0 : -1"
+              class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
+              :class="
+                comparisonView === 'table'
+                  ? 'bg-bg border-border shadow-sm text-fg'
+                  : 'border-transparent text-fg-subtle hover:text-fg'
+              "
+              @click="comparisonView = 'table'"
+            >
+              <span class="i-lucide:table size-[1em]" aria-hidden="true" />
+              <span>{{ $t('compare.packages.table_view') }}</span>
+            </button>
+
+            <button
+              id="comparison-tab-charts"
+              type="button"
+              role="tab"
+              :aria-selected="comparisonView === 'charts' ? 'true' : 'false'"
+              aria-controls="comparison-panel-charts"
+              :tabindex="comparisonView === 'charts' ? 0 : -1"
+              class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
+              :class="
+                comparisonView === 'charts'
+                  ? 'bg-bg border-border shadow-sm text-fg'
+                  : 'border-transparent text-fg-subtle hover:text-fg'
+              "
+              @click="comparisonView = 'charts'"
+            >
+              <span class="i-lucide:chart-bar-decreasing size-[1em]" aria-hidden="true" />
+              <span>{{ $t('compare.packages.charts_view') }}</span>
+            </button>
+          </div>
+
+          <!-- Data table -->
+          <div v-show="comparisonView === 'table'" role="tabpanel">
+            <!-- Desktop: Grid layout -->
+            <div class="hidden md:block overflow-x-auto">
+              <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
+                <CompareFacetRow
+                  v-for="facet in selectedFacets"
+                  :key="facet.id"
+                  :label="facet.label"
+                  :description="facet.description"
+                  :values="getFacetValues(facet.id)"
+                  :facet-loading="isFacetLoading(facet.id)"
+                  :column-loading="columnLoading"
+                  :bar="facet.id !== 'lastUpdated'"
+                  :headers="gridHeaders"
+                />
+              </CompareComparisonGrid>
+            </div>
+
+            <!-- Mobile: Card-based layout -->
+            <div class="md:hidden space-y-3">
+              <CompareFacetCard
                 v-for="facet in selectedFacets"
                 :key="facet.id"
                 :label="facet.label"
@@ -292,22 +358,26 @@ useSeoMeta({
                 :bar="facet.id !== 'lastUpdated'"
                 :headers="gridHeaders"
               />
-            </CompareComparisonGrid>
+            </div>
           </div>
 
-          <!-- Mobile: Card-based layout -->
-          <div class="md:hidden space-y-3">
-            <CompareFacetCard
-              v-for="facet in selectedFacets"
-              :key="facet.id"
-              :label="facet.label"
-              :description="facet.description"
-              :values="getFacetValues(facet.id)"
-              :facet-loading="isFacetLoading(facet.id)"
-              :column-loading="columnLoading"
-              :bar="facet.id !== 'lastUpdated'"
-              :headers="gridHeaders"
-            />
+          <!-- bar charts -->
+          <div v-if="comparisonView === 'charts'" role="tabpanel">
+            <div class="sm:grid grid-cols-2 gap-x-4">
+              <div
+                v-for="facet in selectedFacets.filter(facet => facet.chartable)"
+                :key="facet.id"
+                class="my-6"
+              >
+                <FacetBarChart
+                  :values="getFacetValues(facet.id)"
+                  :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                  :label="facet.label"
+                  :description="facet.description"
+                  :facet-loading="isFacetLoading(facet.id)"
+                />
+              </div>
+            </div>
           </div>
 
           <h2
