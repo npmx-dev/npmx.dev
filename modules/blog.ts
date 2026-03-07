@@ -16,15 +16,16 @@ import {
 import { globSync } from 'tinyglobby'
 import { isProduction } from '../config/env'
 import { BLUESKY_API } from '../shared/utils/constants'
-import { mkdir } from 'node:fs/promises'
+import { mkdir, writeFile } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
+import crypto from 'node:crypto'
 
 /**
  * Fetches Bluesky avatars for a set of authors at build time.
  * Returns a map of handle → avatar URL.
  */
 async function fetchBlueskyAvatars(
-  _imagesDir: string,
+  imagesDir: string,
   handles: string[],
 ): Promise<Map<string, string>> {
   const avatarMap = new Map<string, string>()
@@ -48,7 +49,17 @@ async function fetchBlueskyAvatars(
     const data = (await response.json()) as { profiles: Array<{ handle: string; avatar?: string }> }
 
     for (const profile of data.profiles) {
-      if (profile.avatar) avatarMap.set(profile.handle, profile.avatar)
+      if (profile.avatar) {
+        const hash = crypto.createHash('sha256').update(profile.avatar).digest('hex')
+        const dest = join(imagesDir, `${hash}.png`)
+
+        if (!existsSync(dest)) {
+          const res = await fetch(`${profile.avatar}@png`)
+          await writeFile(join(imagesDir, `${hash}.png`), res.body!)
+        }
+
+        avatarMap.set(profile.handle, `/blog/avatar/${hash}.png`)
+      }
     }
   } catch (error) {
     console.warn(`[blog] Failed to fetch Bluesky avatars:`, error)
@@ -74,7 +85,7 @@ function resolveAuthors(authors: Author[], avatarMap: Map<string, string>): Reso
  * Resolves Bluesky avatars at build time.
  */
 async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPostFrontmatter[]> {
-  const files: string[] = globSync(join(blogDir, '*.md'))
+  const files: string[] = globSync(join(blogDir, '*.md').replace(/\\/g, '/'))
 
   // First pass: extract raw frontmatter and collect all Bluesky handles
   const rawPosts: Array<{ frontmatter: Record<string, unknown> }> = []

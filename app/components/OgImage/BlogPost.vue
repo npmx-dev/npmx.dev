@@ -110,6 +110,8 @@ const formattedAuthorNames = computed(() => {
               v-if="author.avatar"
               :src="author.avatar"
               :alt="author.name"
+              width="48"
+              height="48"
               class="w-full h-full object-cover"
             />
             <span v-else style="font-size: 20px; color: #666; font-weight: 500">
