@@ -73,9 +73,9 @@ export default defineCachedEventHandler(
   {
     name: 'author-profiles',
     maxAge: CACHE_MAX_AGE_ONE_DAY,
-    getKey: event => {
-      const { authors } = getQuery(event)
-      return `author-profiles:${authors ?? 'npmx.dev'}`
-    },
+    // getKey: event => {
+    //   const { authors } = getQuery(event)
+    //   return `author-profiles:${authors ?? 'npmx.dev'}`
+    // },
   },
 )
