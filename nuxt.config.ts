@@ -286,6 +286,7 @@ export default defineNuxtConfig({
 
   ogImage: {
     enabled: !isStorybook,
+    debug: true,
     defaults: {
       component: 'Default',
     },
