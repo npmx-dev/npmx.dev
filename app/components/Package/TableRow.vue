@@ -52,6 +52,14 @@ const allMaintainersText = computed(() => {
     tabindex="0"
     :data-result-index="index"
   >
+    <td class="ps-3">
+      <PackageSelectionCheckbox
+        :package-name="result.package.name"
+        :disabled="isMaxSelected && !isSelected"
+        :checked="isSelected"
+        @change="togglePackageSelection"
+      />
+    </td>
     <!-- Name (always visible) -->
     <td class="py-2 px-3">
       <NuxtLink
@@ -199,15 +207,6 @@ const allMaintainersText = computed(() => {
         <span class="sr-only">{{ $t('filters.table.secure') }}</span>
       </span>
       <span v-else class="text-fg-subtle"> - </span>
-    </td>
-
-    <td class="pe-2">
-      <PackageSelectionCheckbox
-        :package-name="result.package.name"
-        :disabled="isMaxSelected && !isSelected"
-        :checked="isSelected"
-        @change="togglePackageSelection"
-      />
     </td>
   </tr>
 </template>
