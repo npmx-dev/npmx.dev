@@ -150,8 +150,8 @@ test.describe('badge API', () => {
     const url = toLocalUrl(baseURL, '/api/registry/badge/version/nuxt?color=CCC')
     const { body } = await fetchBadge(page, url)
 
-    expect(body).toContain('fill="#000000">version')
-    expect(body).toContain('fill="#ffffff">v')
+    expect(body).toContain('fill="#ffffff">version')
+    expect(body).toContain('fill="#000000">v')
   })
 
   test('custom label parameter is applied to SVG', async ({ page, baseURL }) => {
