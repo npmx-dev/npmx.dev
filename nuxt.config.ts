@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     github: {
       orgToken: '',
     },
-    oauthJwkOne: process.env.OAUTH_JWK_ONE || undefined,
+    oauthJwkOne: process.env.OAUTH_JWK_ONE || (process.env.TEST ? '' : undefined),
     // Upstash Redis for distributed OAuth token refresh locking in production
     upstash: {
       redisRestUrl: process.env.UPSTASH_KV_REST_API_URL || process.env.KV_REST_API_URL || '',
