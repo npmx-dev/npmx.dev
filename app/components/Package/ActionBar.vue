@@ -22,10 +22,14 @@ onKeyStroke(
 
 <template>
   <Transition name="action-bar-slide" appear>
-    <div
+    <section
       v-if="selectedPackages.length"
+      aria-labelledby="action-bar-title"
       class="fixed bottom-10 inset-is-0 w-full flex items-center justify-center z-36 pointer-events-none"
     >
+      <h3 id="action-bar-title" class="sr-only">
+        {{ $t('action_bar.title') }}
+      </h3>
       <div
         ref="actionBarRef"
         tabindex="-1"
@@ -59,7 +63,7 @@ onKeyStroke(
           {{ $t('package.links.compare') }}
         </LinkBase>
       </div>
-    </div>
+    </section>
   </Transition>
 </template>
 

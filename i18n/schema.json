@@ -4060,6 +4060,9 @@
     "action_bar": {
       "type": "object",
       "properties": {
+        "title": {
+          "type": "string"
+        },
         "selection": {
           "type": "string"
         },
