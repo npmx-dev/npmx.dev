@@ -76,11 +76,11 @@ const isDarkMode = computed(() => resolvedMode.value === 'dark')
 
 const dataset = computed<VueUiHorizontalBarDatasetItem[]>(() => {
   if (props.facetLoading) return []
-
   return props.packages.map((name, index) => {
+    const rawValue = props.values[index]?.raw
     return {
       name: insertLineBreaks(applyEllipsis(name)),
-      value: (props.values[index]?.raw ?? 0) as number,
+      value: typeof rawValue === 'number' ? rawValue : 0,
       color: isListedFramework(name) ? getFrameworkColor(name) : undefined,
       formattedValue: props.values[index]?.display,
     }
@@ -209,7 +209,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
 
 <template>
   <div class="font-mono facet-bar">
-    <ClientOnly v-if="dataset">
+    <ClientOnly v-if="dataset.length">
       <VueUiHorizontalBar :key="chartKey" :dataset :config>
         <template #menuIcon="{ isOpen }">
           <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
