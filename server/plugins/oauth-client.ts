@@ -4,6 +4,10 @@ import type { NodeOAuthClient } from '@atproto/oauth-client-node'
  * Creates a long living instance of the NodeOAuthClient.
  */
 export default defineNitroPlugin(async nitroApp => {
+  if (import.meta.test) {
+    return
+  }
+
   const oauthClient = await getNodeOAuthClient()
 
   // Attach to event context for access in composables via useRequestEvent()
