@@ -1,5 +1,3 @@
-import type { RemovableRef } from '@vueuse/core'
-import { useLocalStorage } from '@vueuse/core'
 import { ACCENT_COLORS } from '#shared/utils/constants'
 import type { LocaleObject } from '@nuxtjs/i18n'
 import { BACKGROUND_THEMES } from '#shared/utils/constants'
@@ -73,22 +71,86 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 const STORAGE_KEY = 'npmx-settings'
 
-// Shared settings instance (singleton per app)
-let settingsRef: RemovableRef<AppSettings> | null = null
+/**
+ * Read settings from localStorage and merge with defaults.
+ */
+function normaliseSettings(input: AppSettings): AppSettings {
+  return {
+    ...input,
+    searchProvider: input.searchProvider === 'npm' ? 'npm' : 'algolia',
+    sidebar: {
+      ...input.sidebar,
+      collapsed: Array.isArray(input.sidebar?.collapsed)
+        ? input.sidebar.collapsed.filter((v): v is string => typeof v === 'string')
+        : [],
+    },
+  }
+}
+
+function readFromLocalStorage(): AppSettings {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (raw) {
+      const stored = JSON.parse(raw)
+      return normaliseSettings({
+        ...DEFAULT_SETTINGS,
+        ...stored,
+        connector: { ...DEFAULT_SETTINGS.connector, ...stored.connector },
+        sidebar: { ...DEFAULT_SETTINGS.sidebar, ...stored.sidebar },
+        chartFilter: { ...DEFAULT_SETTINGS.chartFilter, ...stored.chartFilter },
+      })
+    }
+  } catch {}
+  return { ...DEFAULT_SETTINGS }
+}
+
+let syncInitialized = false
 
 /**
- * Composable for managing application settings with localStorage persistence.
- * Settings are shared across all components that use this composable.
+ * Composable for managing application settings.
+ *
+ * Uses useState for SSR-safe hydration (server and client agree on initial
+ * values during hydration) and syncs with localStorage on the client.
+ * The onPrehydrate script in prehydrate.ts handles DOM-level patches
+ * (accent color, bg theme, collapsed sections, etc.) to prevent visual
+ * flash before hydration.
  */
 export function useSettings() {
-  if (!settingsRef) {
-    settingsRef = useLocalStorage<AppSettings>(STORAGE_KEY, DEFAULT_SETTINGS, {
-      mergeDefaults: true,
-    })
+  const settings = useState<AppSettings>(STORAGE_KEY, () => ({ ...DEFAULT_SETTINGS }))
+
+  if (import.meta.client && !syncInitialized) {
+    syncInitialized = true
+
+    // Read localStorage eagerly but apply after mount to prevent hydration
+    // mismatch. During hydration, useState provides server-matching defaults.
+    // After mount, we swap in the user's actual preferences from localStorage.
+    // Uses nuxtApp.hook('app:mounted') instead of onMounted so it works even
+    // when useSettings() is first called from a plugin (no component context).
+    const stored = readFromLocalStorage()
+    const nuxtApp = useNuxtApp()
+
+    if (nuxtApp.isHydrating) {
+      nuxtApp.hook('app:mounted', () => {
+        settings.value = stored
+      })
+    } else {
+      settings.value = stored
+    }
+
+    // Persist future changes back to localStorage
+    watch(
+      settings,
+      value => {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(value))
+        } catch {}
+      },
+      { deep: true },
+    )
   }
 
   return {
-    settings: settingsRef,
+    settings,
   }
 }
 
