@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { VueUiHorizontalBar } from 'vue-data-ui/vue-ui-horizontal-bar'
 import type { VueUiHorizontalBarConfig, VueUiHorizontalBarDatasetItem } from 'vue-data-ui'
 import { getFrameworkColor, isListedFramework } from '~/utils/frameworks'
+import { drawSmallNpmxLogoAndTaglineWatermark } from '~/composables/useChartWatermark'
 import {
   loadFile,
   insertLineBreaks,
@@ -49,6 +50,12 @@ const { colors } = useCssVariables(
     watchResize: false,
   },
 )
+
+const watermarkColors = computed(() => ({
+  fg: colors.value.fg ?? OKLCH_NEUTRAL_FALLBACK,
+  bg: colors.value.bg ?? OKLCH_NEUTRAL_FALLBACK,
+  fgSubtle: colors.value.fgSubtle ?? OKLCH_NEUTRAL_FALLBACK,
+}))
 
 onMounted(async () => {
   rootEl.value = document.documentElement
@@ -210,6 +217,20 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
   <div class="font-mono facet-bar">
     <ClientOnly v-if="dataset.length">
       <VueUiHorizontalBar :key="chartKey" :dataset :config>
+        <template #svg="{ svg }">
+          <!-- Inject npmx logo & tagline during SVG and PNG print -->
+          <g
+            v-if="svg.isPrintingSvg || svg.isPrintingImg"
+            v-html="
+              drawSmallNpmxLogoAndTaglineWatermark({
+                svg,
+                colors: watermarkColors,
+                translateFn: $t,
+              })
+            "
+          />
+        </template>
+
         <template #menuIcon="{ isOpen }">
           <span v-if="isOpen" class="i-lucide:x w-6 h-6" aria-hidden="true" />
           <span v-else class="i-lucide:ellipsis-vertical w-6 h-6" aria-hidden="true" />

@@ -1940,7 +1940,14 @@ watch(selectedMetric, value => {
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
                 v-if="svg.isPrintingSvg || svg.isPrintingImg"
-                v-html="drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'bottom')"
+                v-html="
+                  drawNpmxLogoAndTaglineWatermark({
+                    svg,
+                    colors: watermarkColors,
+                    translateFn: $t,
+                    positioning: 'bottom',
+                  })
+                "
               />
 
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->
