@@ -43,7 +43,7 @@ interface AlgoliaHit {
   modified: number
   homepage: string | null
   repository: AlgoliaRepo | null
-  owner: AlgoliaOwner[] | null
+  owner: AlgoliaOwner | null
   owners: AlgoliaOwner[] | null
   downloadsLast30Days: number
   downloadsRatio: number
