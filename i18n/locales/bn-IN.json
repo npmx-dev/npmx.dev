@@ -109,6 +109,9 @@
     },
     "scroll_to_top": "উপরে স্ক্রল করুন"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "প্যাকেজ পাওয়া যায়নি",
     "not_found_message": "প্যাকেজ পাওয়া যায়নি।",
@@ -123,6 +126,7 @@
       "version": "এই ভার্সনটি নিষ্ক্রিয় করা হয়েছে।",
       "no_reason": "কোনো কারণ দেওয়া হয়নি"
     },
+    "size_increase": {},
     "replacement": {
       "title": "আপনার এই ডিপেনডেন্সির প্রয়োজন নাও হতে পারে।",
       "native": "এটিকে {replacement} দিয়ে প্রতিস্থাপন করা যেতে পারে, যা Node {nodeVersion} থেকে উপলব্ধ।",
@@ -219,7 +223,8 @@
       "more_tagged": "{count}টি আরো ট্যাগ করা",
       "all_covered": "সব ভার্সন উপরের ট্যাগ দ্বারা আবৃত",
       "deprecated_title": "{version} (নিষ্ক্রিয়)",
-      "view_all": "{count}টি ভার্সন দেখুন | সব {count}টি ভার্সন দেখুন"
+      "view_all": "{count}টি ভার্সন দেখুন | সব {count}টি ভার্সন দেখুন",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "নির্ভরতা ({count})",
@@ -268,7 +273,8 @@
       "date_range_multiline": "{start}\nথেকে {end}",
       "download_file": "{fileType} ডাউনলোড করুন",
       "toggle_annotator": "অ্যানোটেটর টগল করুন",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "সাপ্তাহিক ডাউনলোড"
@@ -697,13 +703,14 @@
         "managers": "ম্যানেজার"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "অবদানকারী",
       "description": "npmx সম্পূর্ণ ওপেন সোর্স, অসাধারণ অবদানকারীদের কমিউনিটি দ্বারা নির্মিত। আমাদের সাথে যোগ দিন এবং একসাথে আমাদের সবসময় চাওয়া npm ব্রাউজিং অভিজ্ঞতা তৈরি করি।",
       "loading": "অবদানকারী লোড হচ্ছে...",
-      "error": "অবদানকারী লোড করতে ব্যর্থ",
-      "view_profile": "{name}-এর GitHub প্রোফাইল দেখুন"
+      "error": "অবদানকারী লোড করতে ব্যর্থ"
     },
     "get_involved": {
       "title": "যোগ দিন",
@@ -828,7 +835,9 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
   },
   "privacy_policy": {
     "cookies": {

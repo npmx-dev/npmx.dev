@@ -891,7 +891,6 @@
     },
     "team": {
       "title": "團隊",
-      "governance": "治理",
       "role_steward": "管理者",
       "role_maintainer": "維護者",
       "sponsor": "贊助",
@@ -901,8 +900,7 @@
       "title": "{count} 位貢獻者",
       "description": "npmx 完全開源，由令人驚豔的社群貢獻者共同建立。",
       "loading": "正在載入貢獻者…",
-      "error": "無法載入貢獻者",
-      "view_profile": "檢視 {name} 的 GitHub 個人檔案"
+      "error": "無法載入貢獻者"
     },
     "get_involved": {
       "title": "加入我們",

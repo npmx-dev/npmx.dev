@@ -142,6 +142,9 @@
     },
     "scroll_to_top": "Torna su"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "Pacchetto Non Trovato",
     "not_found_message": "Impossibile trovare il pacchetto.",
@@ -229,9 +232,9 @@
       "title": "Inizia",
       "pm_label": "Gestore di pacchetti",
       "copy_command": "Copia comando di installazione",
-      "view_types": "Vedi {package}",
       "copy_dev_command": "Copia comando di installazione dev",
-      "dev_dependency_hint": "Di solito installato come dev dependency"
+      "dev_dependency_hint": "Di solito installato come dev dependency",
+      "view_types": "Vedi {package}"
     },
     "create": {
       "title": "Crea nuovo progetto",
@@ -298,7 +301,8 @@
       "more_tagged": "{count} altri taggati",
       "all_covered": "Tutte le versioni sono coperte dai tag sopra",
       "deprecated_title": "{version} (deprecato)",
-      "view_all": "Visualizza {count} versione | Visualizza tutte le {count} versioni"
+      "view_all": "Visualizza {count} versione | Visualizza tutte le {count} versioni",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "Dipendenza ({count}) | Dipendenze ({count})",
@@ -352,7 +356,8 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "Download"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "Download settimanali",
@@ -795,13 +800,14 @@
         "managers": "gestori di pacchetti"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "{count} Collaboratore | {count} Collaboratori",
       "description": "npmx è completamente open source, costruito da una straordinaria comunità di collaboratori. Unisciti a noi e costruiamo insieme l'esperienza di navigazione npm che abbiamo sempre voluto.",
       "loading": "Caricamento collaboratori...",
-      "error": "Impossibile caricare i collaboratori",
-      "view_profile": "Visualizza il profilo GitHub di {name}"
+      "error": "Impossibile caricare i collaboratori"
     },
     "get_involved": {
       "title": "Partecipa",
@@ -985,7 +991,9 @@
         "up_to_you": "A tua scelta!"
       },
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
   },
   "privacy_policy": {
     "title": "Informativa sulla privacy",

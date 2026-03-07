@@ -142,6 +142,9 @@
     },
     "scroll_to_top": "التمرير إلى الأعلى"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "لم يتم العثور على الحزمة",
     "not_found_message": "تعذّر العثور على الحزمة.",
@@ -157,6 +160,7 @@
       "version": "تم إهمال هذا الإصدار.",
       "no_reason": "لم يتم تقديم سبب"
     },
+    "size_increase": {},
     "replacement": {
       "title": "قد لا تحتاج إلى هذه التبعية.",
       "native": "يمكن استبدالها بـ {replacement}، المتوفرة منذ Node {nodeVersion}.",
@@ -304,7 +308,8 @@
       "filter_help": "مساعدة فلتر نطاق semver",
       "filter_tooltip": "فلترة الإصدارات باستخدام {link}. مثلاً ^3.0.0 يعرض كل إصدارات 3.x.",
       "filter_tooltip_link": "نطاق semver",
-      "no_matches": "لا توجد إصدارات تطابق هذا النطاق"
+      "no_matches": "لا توجد إصدارات تطابق هذا النطاق",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "التبعيات ({count})",
@@ -364,7 +369,8 @@
         "downloads": "التنزيلات",
         "likes": "الإعجابات",
         "contributors": "المساهمون"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "التنزيلات الأسبوعية",
@@ -811,9 +817,10 @@
         "managers": "مديري"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {
       "title": "الفريق",
-      "governance": "الحوكمة",
       "role_steward": "راعي",
       "role_maintainer": "مشرف",
       "sponsor": "راعي",
@@ -823,8 +830,7 @@
       "title": "المساهمون",
       "description": "npmx هو مشروع مفتوح المصدر بالكامل، تم بناؤه بواسطة مجتمع مذهل من المساهمين.",
       "loading": "جارٍ تحميل المساهمين…",
-      "error": "فشل تحميل المساهمين",
-      "view_profile": "عرض بروفايل {name} على GitHub"
+      "error": "فشل تحميل المساهمين"
     },
     "get_involved": {
       "title": "كن جزءًا من npmx",
@@ -1010,7 +1016,9 @@
       "trends": {
         "title": "مقارنة التوجهات"
       }
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
   },
   "privacy_policy": {
     "title": "سياسة الخصوصية",

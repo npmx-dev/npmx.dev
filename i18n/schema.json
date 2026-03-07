@@ -2812,9 +2812,6 @@
             "title": {
               "type": "string"
             },
-            "governance": {
-              "type": "string"
-            },
             "role_steward": {
               "type": "string"
             },
@@ -2845,7 +2842,7 @@
             "error": {
               "type": "string"
             },
-            "view_profile": {
+            "avatar": {
               "type": "string"
             }
           },

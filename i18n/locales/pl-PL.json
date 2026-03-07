@@ -146,6 +146,9 @@
     },
     "scroll_to_top": "Przewiń na górę"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "Nie znaleziono pakietu",
     "not_found_message": "Nie udało się znaleźć pakietu.",
@@ -870,7 +873,6 @@
     },
     "team": {
       "title": "Zespół",
-      "governance": "Zarządzanie",
       "role_steward": "steward",
       "role_maintainer": "maintainer",
       "sponsor": "sponsor",
@@ -880,8 +882,7 @@
       "title": "Współtwórcy",
       "description": "npmx jest w pełni open source, tworzony przez niesamowitą społeczność współtwórców. Dołącz do nas — zbudujmy razem przeglądanie npm takie, jakiego zawsze chcieliśmy.",
       "loading": "Ładowanie współtwórców...",
-      "error": "Nie udało się wczytać współtwórców",
-      "view_profile": "Zobacz profil GitHub użytkownika {name}"
+      "error": "Nie udało się wczytać współtwórców"
     },
     "get_involved": {
       "title": "Zaangażuj się",

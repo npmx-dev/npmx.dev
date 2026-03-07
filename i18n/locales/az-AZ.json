@@ -187,6 +187,9 @@
     },
     "scroll_to_top": "Yuxarı qayıt"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "Paket Tapılmadı",
     "not_found_message": "Paket tapıla bilmədi.",
@@ -901,7 +904,6 @@
     },
     "team": {
       "title": "Komanda",
-      "governance": "İdarəetmə",
       "role_steward": "idarəçi",
       "role_maintainer": "dəstəkçi",
       "sponsor": "sponsor",
@@ -911,8 +913,7 @@
       "title": "Əməkdaşlar",
       "description": "npmx tam açıq mənbəlidir, möhtəşəm əməkdaşlar icması tərəfindən hazırlanır. Bizə qoşulun və həmişə istədiyimiz npm baxış təcrübəsini birlikdə quraq.",
       "loading": "Əməkdaşlar yüklənir...",
-      "error": "Əməkdaşlar yüklənə bilmədi",
-      "view_profile": "{name} GitHub profilinə bax"
+      "error": "Əməkdaşlar yüklənə bilmədi"
     },
     "get_involved": {
       "title": "Qatılın",

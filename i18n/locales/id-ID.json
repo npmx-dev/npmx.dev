@@ -146,6 +146,9 @@
     },
     "scroll_to_top": "Kembali ke atas"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "Paket Tidak Ditemukan",
     "not_found_message": "Paket tidak dapat ditemukan.",
@@ -870,7 +873,6 @@
     },
     "team": {
       "title": "Tim",
-      "governance": "Tata Kelola",
       "role_steward": "pengurus",
       "role_maintainer": "pemelihara",
       "sponsor": "sponsor",
@@ -880,8 +882,7 @@
       "title": "Kontributor",
       "description": "npmx sepenuhnya sumber terbuka (open source), dibangun oleh komunitas kontributor yang luar biasa. Bergabunglah dengan kami dan mari bangun pengalaman menjelajah npm yang selalu kita inginkan, bersama-sama.",
       "loading": "Memuat kontributor...",
-      "error": "Gagal memuat kontributor",
-      "view_profile": "Lihat profil GitHub {name}"
+      "error": "Gagal memuat kontributor"
     },
     "get_involved": {
       "title": "Ikut terlibat",

@@ -110,6 +110,9 @@
     },
     "scroll_to_top": "शीर्ष पर स्क्रॉल करें"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "पैकेज नहीं मिला",
     "not_found_message": "पैकेज नहीं मिल सका।",
@@ -124,6 +127,7 @@
       "version": "यह संस्करण डेप्रीकेट कर दिया गया है।",
       "no_reason": "कोई कारण प्रदान नहीं किया गया"
     },
+    "size_increase": {},
     "replacement": {
       "title": "आपको इस निर्भरता की आवश्यकता नहीं हो सकती।",
       "native": "इसे {replacement} से बदला जा सकता है, जो Node {nodeVersion} से उपलब्ध है।",
@@ -220,7 +224,8 @@
       "more_tagged": "{count} और टैग किए गए",
       "all_covered": "सभी संस्करण ऊपर के टैग्स द्वारा कवर किए गए हैं",
       "deprecated_title": "{version} (डेप्रीकेटेड)",
-      "view_all": "{count} संस्करण देखें | सभी {count} संस्करण देखें"
+      "view_all": "{count} संस्करण देखें | सभी {count} संस्करण देखें",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "निर्भरताएँ ({count})",
@@ -269,7 +274,8 @@
       "date_range_multiline": "{start}\nसे {end}",
       "download_file": "{fileType} डाउनलोड करें",
       "toggle_annotator": "एनोटेटर टॉगल करें",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "साप्ताहिक डाउनलोड्स"
@@ -698,13 +704,14 @@
         "managers": "मैनेजर"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "योगदानकर्ता",
       "description": "npmx पूरी तरह से ओपन सोर्स है, जो योगदानकर्ताओं के एक अद्भुत समुदाय द्वारा बनाया गया है। हमसे जुड़ें और आइए एक साथ वह npm ब्राउज़िंग अनुभव बनाएं जो हमेशा से चाहते थे।",
       "loading": "योगदानकर्ता लोड हो रहे हैं...",
-      "error": "योगदानकर्ता लोड करने में विफल",
-      "view_profile": "{name} की GitHub प्रोफ़ाइल देखें"
+      "error": "योगदानकर्ता लोड करने में विफल"
     },
     "get_involved": {
       "title": "शामिल हों",
@@ -829,7 +836,9 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
   },
   "privacy_policy": {
     "cookies": {

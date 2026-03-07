@@ -209,6 +209,9 @@
       "compose_text": "嗨 {'@'}{handle}！您用过 npmx.dev 吗？它是一个快速、现代且开源的 npm registry 浏览器。\nhttps://npmx.dev"
     }
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "未找到包",
     "not_found_message": "找不到此包。",
@@ -936,7 +939,6 @@
     },
     "team": {
       "title": "团队",
-      "governance": "治理",
       "role_steward": "管理者",
       "role_maintainer": "维护者",
       "sponsor": "赞助",
@@ -946,8 +948,7 @@
       "title": "{count} 位贡献者",
       "description": "npmx 是完全开源的，由令人惊叹的社区贡献者们共同构建。",
       "loading": "正在加载贡献者…",
-      "error": "无法加载贡献者",
-      "view_profile": "查看 {name} 的 GitHub 个人资料"
+      "error": "无法加载贡献者"
     },
     "get_involved": {
       "title": "加入我们",

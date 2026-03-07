@@ -111,6 +111,9 @@
     },
     "scroll_to_top": "Rolar para o topo"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "Pacote não encontrado",
     "not_found_message": "O pacote não pôde ser encontrado.",
@@ -125,6 +128,7 @@
       "version": "Esta versão foi descontinuada.",
       "no_reason": "Nenhum motivo fornecido"
     },
+    "size_increase": {},
     "replacement": {
       "title": "Você pode não precisar desta dependência.",
       "native": "Isso pode ser substituído por {replacement}, disponível desde Node {nodeVersion}.",
@@ -221,7 +225,8 @@
       "more_tagged": "{count} mais marcadas",
       "all_covered": "Todas as versões estão cobertas pelas tags acima",
       "deprecated_title": "{version} (descontinuada)",
-      "view_all": "Ver {count} versão | Ver todas as {count} versões"
+      "view_all": "Ver {count} versão | Ver todas as {count} versões",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "Dependências ({count})",
@@ -270,7 +275,8 @@
       "date_range_multiline": "{start}\npara {end}",
       "download_file": "Baixar {fileType}",
       "toggle_annotator": "Alternar anotador",
-      "items": {}
+      "items": {},
+      "copy_alt": {}
     },
     "downloads": {
       "title": "Downloads Semanais"
@@ -699,13 +705,14 @@
         "managers": "gerenciadores de pacotes"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "Contribuidores",
       "description": "npmx é totalmente de código aberto, construído por uma comunidade incrível de contribuidores. Junte-se a nós e vamos construir juntos a experiência de navegação npm que sempre quisemos.",
       "loading": "Carregando contribuidores...",
-      "error": "Falha ao carregar contribuidores",
-      "view_profile": "Ver perfil do GitHub de {name}"
+      "error": "Falha ao carregar contribuidores"
     },
     "get_involved": {
       "title": "Envolva-se",
@@ -830,7 +837,9 @@
       },
       "values": {},
       "trends": {}
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
   },
   "privacy_policy": {
     "cookies": {

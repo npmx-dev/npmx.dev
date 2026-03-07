@@ -141,6 +141,9 @@
     },
     "scroll_to_top": "Rull til toppen"
   },
+  "profile": {
+    "invite": {}
+  },
   "package": {
     "not_found": "Pakke ikke funnet",
     "not_found_message": "Pakken kunne ikke finnes.",
@@ -155,6 +158,7 @@
       "version": "Denne versjonen er utfaset.",
       "no_reason": "Ingen årsak oppgitt"
     },
+    "size_increase": {},
     "replacement": {
       "title": "Du trenger kanskje ikke denne avhengigheten.",
       "native": "Denne kan erstattes med {replacement}, tilgjengelig siden Node {nodeVersion}.",
@@ -268,7 +272,8 @@
       "more_tagged": "{count} flere tagget",
       "all_covered": "Alle versjoner dekkes av taggene over",
       "deprecated_title": "{version} (utfaset)",
-      "view_all": "Vis {count} versjon | Vis alle {count} versjoner"
+      "view_all": "Vis {count} versjon | Vis alle {count} versjoner",
+      "copy_alt": {}
     },
     "dependencies": {
       "title": "Avhengighet ({count}) | Avhengigheter ({count})",
@@ -322,7 +327,8 @@
       "y_axis_label": "{granularity} {facet}",
       "items": {
         "downloads": "Nedlastinger"
-      }
+      },
+      "copy_alt": {}
     },
     "downloads": {
       "title": "Ukentlige nedlastinger",
@@ -765,13 +771,14 @@
         "managers": "pakkebehandlere"
       }
     },
+    "sponsors": {},
+    "oss_partners": {},
     "team": {},
     "contributors": {
       "title": "{count} Bidragsyter | {count} Bidragsytere",
       "description": "npmx er fullstendig åpen kildekode, bygget av et fantastisk fellesskap av bidragsytere. Bli med oss og la oss bygge npm-opplevelsen vi alltid har ønsket oss, sammen.",
       "loading": "Laster bidragsytere...",
-      "error": "Kunne ikke laste bidragsytere",
-      "view_profile": "Vis {name}s GitHub-profil"
+      "error": "Kunne ikke laste bidragsytere"
     },
     "get_involved": {
       "title": "Bli involvert",
@@ -957,7 +964,9 @@
       "trends": {
         "title": "Ukentlige nedlastinger"
       }
-    }
+    },
+    "file_filter_option": {},
+    "filter": {}
   },
   "privacy_policy": {
     "cookies": {
