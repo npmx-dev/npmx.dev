@@ -85,7 +85,7 @@ function resolveAuthors(authors: Author[], avatarMap: Map<string, string>): Reso
  * Resolves Bluesky avatars at build time.
  */
 async function loadBlogPosts(blogDir: string, imagesDir: string): Promise<BlogPostFrontmatter[]> {
-  const files: string[] = globSync(join(blogDir, '*.md'))
+  const files: string[] = globSync(`${blogDir}/**/*.md`)
 
   // First pass: extract raw frontmatter and collect all Bluesky handles
   const rawPosts: Array<{ frontmatter: Record<string, unknown> }> = []
@@ -185,7 +185,9 @@ export default defineNuxtModule({
       filename: 'blog/posts.ts',
       write: true,
       getContents: () => {
+        console.log(allPosts.map(p => p.path))
         const posts = allPosts.filter(p => showDrafts || !p.draft)
+        console.log(posts.map(p => p.path))
         return [
           `import type { BlogPostFrontmatter } from '#shared/schemas/blog'`,
           ``,
