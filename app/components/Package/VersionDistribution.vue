@@ -9,7 +9,7 @@ import {
   drawNpmxLogoAndTaglineWatermark,
 } from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
-import { copyAltTextForVersionsBarChart } from '~/utils/charts'
+import { copyAltTextForVersionsBarChart, sanitise, loadFile } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -88,20 +88,6 @@ const compactNumberFormatter = useCompactNumberFormatter()
 
 // Show loading indicator immediately to maintain stable layout
 const showLoadingIndicator = computed(() => pending.value)
-
-const loadFile = (link: string, filename: string) => {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
-}
-
-const sanitise = (value: string) =>
-  value
-    .replace(/^@/, '')
-    .replace(/[\\/:"*?<>|]/g, '-')
-    .replace(/\//g, '-')
 
 const { locale } = useI18n()
 function formatDate(date: Date) {
