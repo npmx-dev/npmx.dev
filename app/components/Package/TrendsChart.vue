@@ -23,7 +23,7 @@ import {
   endDateOnlyToUtcMs,
   DEFAULT_PREDICTION_POINTS,
 } from '~/utils/chart-data-prediction'
-import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
+import { applyHampelCorrection } from '~/utils/download-anomalies'
 import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
@@ -978,11 +978,7 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
   if (isDownloadsMetric.value && data.length) {
     const pkg = effectivePackageNames.value[0] ?? props.packageName ?? ''
     if (settings.value.chartFilter.anomaliesFixed) {
-      data = applyBlocklistCorrection({
-        data,
-        packageName: pkg,
-        granularity: displayedGranularity.value,
-      })
+      data = applyHampelCorrection(data)
     }
   }
 
@@ -1026,7 +1022,7 @@ const chartData = computed<{
     let data = state.evolutionsByPackage[pkg] ?? []
     if (isDownloadsMetric.value && data.length) {
       if (settings.value.chartFilter.anomaliesFixed) {
-        data = applyBlocklistCorrection({ data, packageName: pkg, granularity })
+        data = applyHampelCorrection(data)
       }
     }
     const points = extractSeriesPoints(granularity, data)
@@ -1556,20 +1552,6 @@ const chartConfig = computed<VueUiXyConfig>(() => {
 const isDownloadsMetric = computed(() => selectedMetric.value === 'downloads')
 const showCorrectionControls = shallowRef(false)
 
-const packageAnomalies = computed(() => getAnomaliesForPackages(effectivePackageNames.value))
-const hasAnomalies = computed(() => packageAnomalies.value.length > 0)
-
-function formatAnomalyDate(dateStr: string) {
-  const [y, m, d] = dateStr.split('-').map(Number)
-  if (!y || !m || !d) return dateStr
-  return new Intl.DateTimeFormat(locale.value, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  }).format(new Date(Date.UTC(y, m - 1, d)))
-}
-
 // Trigger data loading when the metric is switched
 watch(selectedMetric, value => {
   if (!isMounted.value) return
@@ -1722,64 +1704,28 @@ watch(selectedMetric, value => {
               class="text-2xs font-mono text-fg-subtle tracking-wide uppercase flex items-center justify-between"
             >
               {{ $t('package.trends.known_anomalies') }}
-              <TooltipApp interactive :to="inModal ? '#chart-modal' : undefined">
+              <TooltipApp :to="inModal ? '#chart-modal' : undefined">
                 <button
                   type="button"
                   class="i-lucide:info w-3.5 h-3.5 text-fg-muted cursor-help"
                   :aria-label="$t('package.trends.known_anomalies')"
                 />
                 <template #content>
-                  <div class="flex flex-col gap-3">
-                    <p class="text-xs text-fg-muted">
-                      {{ $t('package.trends.known_anomalies_description') }}
-                    </p>
-                    <div v-if="hasAnomalies">
-                      <p class="text-xs text-fg-subtle font-medium">
-                        {{ $t('package.trends.known_anomalies_ranges') }}
-                      </p>
-                      <ul class="text-xs text-fg-subtle list-disc list-inside">
-                        <li v-for="a in packageAnomalies" :key="`${a.packageName}-${a.start}`">
-                          {{
-                            isMultiPackageMode
-                              ? $t('package.trends.known_anomalies_range_named', {
-                                  packageName: a.packageName,
-                                  start: formatAnomalyDate(a.start),
-                                  end: formatAnomalyDate(a.end),
-                                })
-                              : $t('package.trends.known_anomalies_range', {
-                                  start: formatAnomalyDate(a.start),
-                                  end: formatAnomalyDate(a.end),
-                                })
-                          }}
-                        </li>
-                      </ul>
-                    </div>
-                    <p v-else class="text-xs text-fg-muted">
-                      {{ $t('package.trends.known_anomalies_none', effectivePackageNames.length) }}
-                    </p>
-                    <div class="flex justify-end">
-                      <LinkBase
-                        to="https://github.com/npmx-dev/npmx.dev/edit/main/app/utils/download-anomalies.data.ts"
-                        class="text-xs text-accent"
-                      >
-                        {{ $t('package.trends.known_anomalies_contribute') }}
-                      </LinkBase>
-                    </div>
-                  </div>
+                  <p class="text-xs text-fg-muted">
+                    {{ $t('package.trends.known_anomalies_description') }}
+                  </p>
                 </template>
               </TooltipApp>
             </span>
             <label
               class="flex items-center gap-1.5 text-2xs font-mono text-fg-subtle cursor-pointer h-4"
-              :class="{ 'opacity-50 pointer-events-none': !hasAnomalies }"
             >
               <input
-                :checked="settings.chartFilter.anomaliesFixed && hasAnomalies"
+                :checked="settings.chartFilter.anomaliesFixed"
                 @change="
                   settings.chartFilter.anomaliesFixed = ($event.target as HTMLInputElement).checked
                 "
                 type="checkbox"
-                :disabled="!hasAnomalies"
                 class="accent-[var(--accent-color,var(--fg-subtle))]"
               />
               {{ $t('package.trends.apply_correction') }}

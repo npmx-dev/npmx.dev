@@ -4,7 +4,7 @@ import { useCssVariables } from '~/composables/useColors'
 import type { WeeklyDataPoint } from '~/types/chart'
 import { applyDataCorrection } from '~/utils/chart-data-correction'
 import { OKLCH_NEUTRAL_FALLBACK, lightenOklch } from '~/utils/colors'
-import { applyBlocklistCorrection } from '~/utils/download-anomalies'
+import { applyHampelCorrection } from '~/utils/download-anomalies'
 import type { RepoRef } from '#shared/utils/git-providers'
 import type { VueUiSparklineConfig, VueUiSparklineDatasetItem } from 'vue-data-ui'
 import { onKeyDown } from '@vueuse/core'
@@ -186,11 +186,7 @@ const correctedDownloads = computed<WeeklyDataPoint[]>(() => {
   let data = weeklyDownloads.value as WeeklyDataPoint[]
   if (!data.length) return data
   if (settings.value.chartFilter.anomaliesFixed) {
-    data = applyBlocklistCorrection({
-      data,
-      packageName: props.packageName,
-      granularity: 'weekly',
-    }) as WeeklyDataPoint[]
+    data = applyHampelCorrection(data) as WeeklyDataPoint[]
   }
   data = applyDataCorrection(data, settings.value.chartFilter) as WeeklyDataPoint[]
   return data
