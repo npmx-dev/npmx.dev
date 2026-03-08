@@ -100,7 +100,7 @@ export function drawNpmxLogoAndTaglineWatermark({
   const watermarkX = svg.width / 2 - npmxLogoWidth / 2
 
   return `
-    ${injectWatermarkLogo({ x: watermarkX, y: watermarkY, width: npmxLogoWidth, height: npmxLogoHeight, fill: colors.fg })}
+    ${generateWatermarkLogo({ x: watermarkX, y: watermarkY, width: npmxLogoWidth, height: npmxLogoHeight, fill: colors.fg })}
     <text
       fill="${colors.fgSubtle}"
       x="${svg.width / 2}"
@@ -137,7 +137,7 @@ export function drawSmallNpmxLogoAndTaglineWatermark({
   const taglineY = svg.height - 3
 
   return `
-    ${injectWatermarkLogo({ x: offsetX, y: watermarkY, width: logoWidth, height: npmxLogoHeight, fill: colors.fg })}
+    ${generateWatermarkLogo({ x: offsetX, y: watermarkY, width: logoWidth, height: npmxLogoHeight, fill: colors.fg })}
     <text
       fill="${colors.fgSubtle}"
       x="${logoWidth + offsetX * 2}"
