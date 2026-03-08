@@ -264,10 +264,7 @@ function onBeforeToggleHoverCard(event: ToggleEvent & { source: HTMLElement }) {
                 class="relative h-12 w-12 list-none group"
                 style="contain: layout style"
               >
-                <LinkBase
-                  :to="contributor.html_url"
-                  no-underline
-                  no-new-tab-icon
+                <button
                   :data-cid="contributor.id"
                   class="group relative block h-12 w-12 rounded-lg transition-transform outline-none p-0 bg-transparent"
                   interestfor="contributor-hovercard"
@@ -279,7 +276,7 @@ function onBeforeToggleHoverCard(event: ToggleEvent & { source: HTMLElement }) {
                     height="64"
                     class="w-12 h-12 rounded-lg ring-2 ring-transparent transition-shadow duration-200 hover:ring-accent"
                   />
-                </LinkBase>
+                </button>
               </li>
             </ul>
           </section>
