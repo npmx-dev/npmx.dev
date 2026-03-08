@@ -119,6 +119,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
     theme: isDarkMode.value ? 'dark' : '',
     userOptions: {
       buttons: {
+        tooltip: false,
         pdf: false,
         fullscreen: false,
         sort: false,
