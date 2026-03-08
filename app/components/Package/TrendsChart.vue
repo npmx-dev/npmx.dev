@@ -976,7 +976,6 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
   }
 
   if (isDownloadsMetric.value && data.length) {
-    const pkg = effectivePackageNames.value[0] ?? props.packageName ?? ''
     if (settings.value.chartFilter.anomaliesFixed) {
       data = applyHampelCorrection(data)
     }
