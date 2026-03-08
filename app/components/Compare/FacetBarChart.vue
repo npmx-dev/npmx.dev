@@ -195,7 +195,9 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
             },
             underlayerColor: colors.value.bg,
           },
-          highlighter: { opacity: 5 },
+          highlighter: {
+            opacity: isMobile.value ? 0 : 5,
+          },
         },
         legend: {
           show: false,
@@ -212,6 +214,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           },
         },
         tooltip: {
+          show: !isMobile.value,
           borderColor: 'transparent',
           backdropFilter: false,
           backgroundColor: 'transparent',
