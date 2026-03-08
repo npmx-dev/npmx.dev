@@ -215,6 +215,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
           backdropFilter: false,
           backgroundColor: 'transparent',
           customFormat: ({ datapoint }) => {
+            const name = datapoint?.name?.replace(/\n/g, '<br>')
             return `
             <div class="font-mono p-3 border border-border rounded-md bg-[var(--bg)]/10 backdrop-blur-md">
               <div class="flex items-center gap-2">
@@ -223,7 +224,7 @@ const config = computed<VueUiHorizontalBarConfig>(() => {
                     <rect x="0" y="0" width="2" height="2" rx="0.3" fill="${datapoint?.color}" />
                   </svg>
                 </div>
-                <span>${datapoint?.name}: ${(datapoint as VueUiHorizontalBarDatapoint).formattedValue}</span>
+                <span>${name}: ${(datapoint as VueUiHorizontalBarDatapoint).formattedValue ?? 0}</span>
               </div>
             </div>
             `
