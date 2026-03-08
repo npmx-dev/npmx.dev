@@ -26,7 +26,9 @@ function getDateString(point: Record<string, any>, granularity: ChartTimeGranula
 }
 
 /**
- * For daily/weekly the point date falls strictly between the anomaly bounds.
+ * For daily the point date falls strictly between the anomaly bounds.
+ * For weekly the point date is the week start, and the full 7-day range is
+ * checked so any overlapping week is affected.
  * For monthly/yearly the anomaly bounds are truncated to the same resolution
  * so that any period overlapping the anomaly is caught (inclusive).
  */
@@ -37,8 +39,15 @@ function isDateAffected(
 ): boolean {
   switch (granularity) {
     case 'daily':
-    case 'weekly':
       return date > anomaly.start.date && date < anomaly.end.date
+    case 'weekly': {
+      const startWeek = date
+      const weekStartDate = new Date(`${date}T00:00:00Z`)
+      const weekEndDate = new Date(weekStartDate)
+      weekEndDate.setUTCDate(weekEndDate.getUTCDate() + 6)
+      const endWeek = weekEndDate.toISOString().slice(0, 10)
+      return startWeek <= anomaly.end.date && endWeek >= anomaly.start.date
+    }
     case 'monthly': {
       const startMonth = anomaly.start.date.slice(0, 7) + '-01'
       const endMonth = anomaly.end.date.slice(0, 7) + '-01'

@@ -20,7 +20,7 @@ import type {
 import { DATE_INPUT_MAX } from '~/utils/input'
 import { applyDataCorrection } from '~/utils/chart-data-correction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
-import { copyAltTextForTrendLineChart } from '~/utils/charts'
+import { copyAltTextForTrendLineChart, sanitise, loadFile } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -1085,14 +1085,6 @@ const maxDatapoints = computed(() =>
   Math.max(0, ...(chartData.value.dataset ?? []).map(d => d.series.length)),
 )
 
-const loadFile = (link: string, filename: string) => {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
-}
-
 const datetimeFormatterOptions = computed(() => {
   return {
     daily: { year: 'yyyy-MM-dd', month: 'yyyy-MM-dd', day: 'yyyy-MM-dd' },
@@ -1112,12 +1104,6 @@ const tooltipDateFormatter = computed(() => {
     timeZone: 'UTC',
   })
 })
-
-const sanitise = (value: string) =>
-  value
-    .replace(/^@/, '')
-    .replace(/[\\/:"*?<>|]/g, '-')
-    .replace(/\//g, '-')
 
 function buildExportFilename(extension: string): string {
   const g = selectedGranularity.value
@@ -1954,7 +1940,14 @@ watch(selectedMetric, value => {
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
                 v-if="svg.isPrintingSvg || svg.isPrintingImg"
-                v-html="drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'bottom')"
+                v-html="
+                  drawNpmxLogoAndTaglineWatermark({
+                    svg,
+                    colors: watermarkColors,
+                    translateFn: $t,
+                    positioning: 'bottom',
+                  })
+                "
               />
 
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->

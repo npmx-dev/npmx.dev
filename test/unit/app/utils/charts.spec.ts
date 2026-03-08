@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import {
   sum,
   chunkIntoWeeks,
@@ -12,6 +12,10 @@ import {
   copyAltTextForTrendLineChart,
   createAltTextForVersionsBarChart,
   copyAltTextForVersionsBarChart,
+  loadFile,
+  sanitise,
+  insertLineBreaks,
+  applyEllipsis,
   type TrendLineConfig,
   type TrendLineDataset,
   type VersionsBarConfig,
@@ -1234,5 +1238,218 @@ describe('copyAltTextForVersionsBarChart', () => {
 
     expect(copyMock).toHaveBeenCalledTimes(1)
     expect(copyMock).toHaveBeenCalledWith(expected)
+  })
+})
+
+describe('loadFile', () => {
+  let createElementMock: ReturnType<typeof vi.fn>
+  let clickMock: ReturnType<typeof vi.fn>
+  let removeMock: ReturnType<typeof vi.fn>
+  let originalDocument: typeof globalThis.document | undefined
+
+  beforeEach(() => {
+    clickMock = vi.fn()
+    removeMock = vi.fn()
+
+    createElementMock = vi.fn().mockReturnValue({
+      href: '',
+      download: '',
+      click: clickMock,
+      remove: removeMock,
+    })
+
+    originalDocument = globalThis.document
+
+    Object.defineProperty(globalThis, 'document', {
+      value: {
+        createElement: createElementMock,
+      },
+      configurable: true,
+      writable: true,
+    })
+  })
+
+  afterEach(() => {
+    vi.restoreAllMocks()
+
+    Object.defineProperty(globalThis, 'document', {
+      value: originalDocument,
+      configurable: true,
+      writable: true,
+    })
+  })
+
+  it('creates an anchor element and triggers a download', () => {
+    const link = 'https://npmx.dev/file.png'
+    const filename = 'file.png'
+    loadFile(link, filename)
+    expect(createElementMock).toHaveBeenCalledWith('a')
+    const anchor = createElementMock.mock.results[0]?.value as HTMLAnchorElement
+    expect(anchor.href).toBe(link)
+    expect(anchor.download).toBe(filename)
+    expect(clickMock).toHaveBeenCalledTimes(1)
+    expect(removeMock).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('sanitise', () => {
+  it('returns the same string when no sanitisation is needed', () => {
+    expect(sanitise('nuxt-package')).toBe('nuxt-package')
+  })
+
+  it('removes a leading @ character', () => {
+    expect(sanitise('@nuxt/ui')).toBe('nuxt-ui')
+  })
+
+  it('removes only the first leading @ character', () => {
+    expect(sanitise('@@scope/package')).toBe('@scope-package')
+  })
+
+  it('replaces forward slashes with dashes', () => {
+    expect(sanitise('scope/package/name')).toBe('scope-package-name')
+  })
+
+  it('replaces backslashes with dashes', () => {
+    expect(sanitise('scope\\package\\name')).toBe('scope-package-name')
+  })
+
+  it('replaces colon characters with dashes', () => {
+    expect(sanitise('name:with:colons')).toBe('name-with-colons')
+  })
+
+  it('replaces invalid filename characters with dashes', () => {
+    expect(sanitise('na<me>:"with"*?pipes|')).toBe('na-me---with---pipes-')
+  })
+
+  it('handles scoped package names correctly', () => {
+    expect(sanitise('@scope/package')).toBe('scope-package')
+  })
+
+  it('replaces mixed invalid characters in a single string', () => {
+    expect(sanitise('@scope/package:name*test?value<foo>|bar')).toBe(
+      'scope-package-name-test-value-foo--bar',
+    )
+  })
+
+  it('returns an empty string when given an empty string', () => {
+    expect(sanitise('')).toBe('')
+  })
+})
+
+describe('insertLineBreaks', () => {
+  it('returns an empty string when text is not a string', () => {
+    expect(insertLineBreaks(null as unknown as string)).toBe('')
+    expect(insertLineBreaks(undefined as unknown as string)).toBe('')
+    expect(insertLineBreaks(42 as unknown as string)).toBe('')
+    expect(insertLineBreaks({} as unknown as string)).toBe('')
+  })
+
+  it('returns the original text when maxCharactersPerLine is not a positive integer', () => {
+    expect(insertLineBreaks('hello world', 0)).toBe('hello world')
+    expect(insertLineBreaks('hello world', -1)).toBe('hello world')
+    expect(insertLineBreaks('hello world', 2.5)).toBe('hello world')
+    expect(insertLineBreaks('hello world', Number.NaN)).toBe('hello world')
+  })
+
+  it('returns the same text when it already fits on one line', () => {
+    expect(insertLineBreaks('hello world', 24)).toBe('hello world')
+  })
+
+  it('breaks text into multiple lines on word boundaries', () => {
+    expect(insertLineBreaks('hello world again', 11)).toBe('hello world\nagain')
+  })
+
+  it('preserves a single space between words when collapsing whitespace', () => {
+    expect(insertLineBreaks('hello     world', 24)).toBe('hello world')
+  })
+
+  it('ignores leading and trailing whitespace', () => {
+    expect(insertLineBreaks('   hello world   ', 24)).toBe('hello world')
+  })
+
+  it('handles tabs and newlines as whitespace separators', () => {
+    expect(insertLineBreaks('hello\tworld\nagain', 11)).toBe('hello world\nagain')
+  })
+
+  it('starts a new line when adding a word would exceed the limit', () => {
+    expect(insertLineBreaks('one two three', 7)).toBe('one two\nthree')
+  })
+
+  it('keeps a word on the current line when it exactly matches the limit', () => {
+    expect(insertLineBreaks('abc def', 7)).toBe('abc def')
+  })
+
+  it('splits a long token into chunks when it exceeds the limit', () => {
+    expect(insertLineBreaks('abcdefghijkl', 5)).toBe('abcde\nfghij\nkl')
+  })
+
+  it('pushes the current line before splitting a long token', () => {
+    expect(insertLineBreaks('hello abcdefghij', 5)).toBe('hello\nabcde\nfghij')
+  })
+
+  it('continues building lines after a split long token', () => {
+    expect(insertLineBreaks('abcdefghij klm nop', 5)).toBe('abcde\nfghij\nklm\nnop')
+  })
+
+  it('handles multiple consecutive long tokens', () => {
+    expect(insertLineBreaks('abcdefghijk lmnopqrs', 4)).toBe('abcd\nefgh\nijk\nlmno\npqrs')
+  })
+
+  it('returns an empty string for an empty input string', () => {
+    expect(insertLineBreaks('', 24)).toBe('')
+  })
+
+  it('returns an empty string for a whitespace-only string', () => {
+    expect(insertLineBreaks('     ', 24)).toBe('')
+    expect(insertLineBreaks('\n\t  ', 24)).toBe('')
+  })
+
+  it('uses the default maxCharactersPerLine value when omitted', () => {
+    expect(insertLineBreaks('one two three four five six')).toBe('one two three four five\nsix')
+  })
+})
+
+describe('applyEllipsis', () => {
+  it('returns an empty string when text is not a string', () => {
+    expect(applyEllipsis(null as unknown as string)).toBe('')
+    expect(applyEllipsis(undefined as unknown as string)).toBe('')
+    expect(applyEllipsis(42 as unknown as string)).toBe('')
+    expect(applyEllipsis({} as unknown as string)).toBe('')
+  })
+
+  it('returns the original text when maxLength is not a positive integer', () => {
+    expect(applyEllipsis('touching grass', 0)).toBe('touching grass')
+    expect(applyEllipsis('touching grass', -1)).toBe('touching grass')
+    expect(applyEllipsis('touching grass', 2.5)).toBe('touching grass')
+    expect(applyEllipsis('touching grass', Number.NaN)).toBe('touching grass')
+  })
+
+  it('returns the original text when its length is less than maxLength', () => {
+    expect(applyEllipsis('grass', 10)).toBe('grass')
+  })
+
+  it('returns the original text when its length is equal to maxLength', () => {
+    expect(applyEllipsis('grass', 5)).toBe('grass')
+  })
+
+  it('truncates the text and appends an ellipsis when its length exceeds maxLength', () => {
+    expect(applyEllipsis('grass touching', 5)).toBe('grass...')
+  })
+
+  it('uses the default maxLength when omitted', () => {
+    const text = 'n'.repeat(46)
+    expect(applyEllipsis(text)).toBe(`${'n'.repeat(45)}...`)
+  })
+
+  it('returns an empty string for an empty input string', () => {
+    expect(applyEllipsis('')).toBe('')
+  })
+
+  it('handles maxLength equal to 1', () => {
+    expect(applyEllipsis('grass', 1)).toBe('g...')
+  })
+
+  it('preserves whitespace within the truncated portion', () => {
+    expect(applyEllipsis('you need to touch grass', 13)).toBe('you need to t...')
   })
 })
