@@ -460,11 +460,6 @@
       "smoothing": "Сглаживание",
       "known_anomalies": "Известные аномалии",
       "known_anomalies_description": "Интерполирует данные поверх известных всплесков загрузок, вызванных ботами или проблемами CI.",
-      "known_anomalies_ranges": "Диапазоны аномалий",
-      "known_anomalies_range": "С {start} по {end}",
-      "known_anomalies_range_named": "{packageName}: с {start} по {end}",
-      "known_anomalies_none": "Нет известных аномалий для этого пакета. | Нет известных аномалий для этих пакетов. | Нет известных аномалий для этих пакетов.",
-      "known_anomalies_contribute": "Предложить данные об аномалиях",
       "apply_correction": "Применить корректировку",
       "copy_alt": {
         "trend_none": "в основном без изменений",

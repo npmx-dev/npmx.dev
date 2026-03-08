@@ -460,11 +460,6 @@
       "smoothing": "平滑处理",
       "known_anomalies": "已知异常",
       "known_anomalies_description": "对已知的由机器人或CI问题导致的下载峰值进行插值处理。",
-      "known_anomalies_ranges": "异常区间",
-      "known_anomalies_range": "{start} 至 {end}",
-      "known_anomalies_range_named": "{packageName}：从 {start} 到 {end}",
-      "known_anomalies_none": "此包没有已知异常。 | 这些包没有已知异常。",
-      "known_anomalies_contribute": "贡献异常数据",
       "apply_correction": "应用校正",
       "copy_alt": {
         "trend_none": "平稳",

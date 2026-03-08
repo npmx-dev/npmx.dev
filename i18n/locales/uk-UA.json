@@ -460,11 +460,6 @@
       "smoothing": "Згладжування",
       "known_anomalies": "Відомі аномалії",
       "known_anomalies_description": "Інтерполює відомі стрибки кількості завантажень, спричинені ботами або проблемами CI.",
-      "known_anomalies_ranges": "Діапазони аномалій",
-      "known_anomalies_range": "Від {start} до {end}",
-      "known_anomalies_range_named": "{packageName}: від {start} до {end}",
-      "known_anomalies_none": "Для цього пакету немає відомих аномалій. | Для цих пакетів немає відомих аномалій.",
-      "known_anomalies_contribute": "Додати дані про аномалію",
       "apply_correction": "Застосувати корекцію",
       "copy_alt": {
         "trend_none": "здебільшого рівна",

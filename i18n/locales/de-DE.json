@@ -460,11 +460,6 @@
       "smoothing": "Glättung",
       "known_anomalies": "Bekannte Anomalien",
       "known_anomalies_description": "Gleicht bekannte Download-Ausreißer aus, die durch Bots oder CI-Probleme entstanden sind.",
-      "known_anomalies_ranges": "Anomalie-Zeiträume",
-      "known_anomalies_range": "Von {start} bis {end}",
-      "known_anomalies_range_named": "{packageName}: vom {start} bis zum {end}",
-      "known_anomalies_none": "Keine bekannten Anomalien für dieses Paket. | Keine bekannten Anomalien für diese Pakete.",
-      "known_anomalies_contribute": "Anomalie-Daten einreichen",
       "apply_correction": "Korrektur anwenden",
       "copy_alt": {
         "trend_none": "weitgehend gleichbleibenden",

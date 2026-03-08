@@ -460,11 +460,6 @@
       "smoothing": "Yumuşatma",
       "known_anomalies": "Bilinen anomaliler",
       "known_anomalies_description": "npm kayıt defterinde bilinen veri anomalileri",
-      "known_anomalies_ranges": "Etkilenen tarih aralıkları",
-      "known_anomalies_range": "{start} - {end}",
-      "known_anomalies_range_named": "{name}: {start} - {end}",
-      "known_anomalies_none": "Bu paket için bilinen anomali yok",
-      "known_anomalies_contribute": "Anomali bildirin",
       "apply_correction": "Düzeltme uygula",
       "copy_alt": {
         "trend_none": "esas olarak sabit",

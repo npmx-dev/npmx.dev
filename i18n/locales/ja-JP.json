@@ -460,11 +460,6 @@
       "smoothing": "スムージング",
       "known_anomalies": "既知のアノマリー",
       "known_anomalies_description": "ボットやCIの問題による既知のダウンロードスパイクを補完します。",
-      "known_anomalies_ranges": "アノマリー範囲",
-      "known_anomalies_range": "{start} から {end}",
-      "known_anomalies_range_named": "{packageName}: {start} から {end}",
-      "known_anomalies_none": "このパッケージに既知のアノマリーはありません。|これらのパッケージに既知のアノマリーはありません。",
-      "known_anomalies_contribute": "アノマリーデータの提供",
       "apply_correction": "補正を適用",
       "copy_alt": {
         "trend_none": "ほぼ横ばい",

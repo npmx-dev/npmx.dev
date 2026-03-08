@@ -421,11 +421,6 @@
       "smoothing": "平滑化",
       "known_anomalies": "已知異常",
       "known_anomalies_description": "針對由機器人或 CI 問題造成的已知下載尖峰進行內插修正。",
-      "known_anomalies_ranges": "異常區間",
-      "known_anomalies_range": "從 {start} 到 {end}",
-      "known_anomalies_range_named": "{packageName}：從 {start} 到 {end}",
-      "known_anomalies_none": "此套件沒有已知異常。 | 這些套件沒有已知異常。",
-      "known_anomalies_contribute": "回報異常資料",
       "apply_correction": "套用修正",
       "copy_alt": {
         "trend_none": "平穩",

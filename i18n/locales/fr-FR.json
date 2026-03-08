@@ -460,11 +460,6 @@
       "smoothing": "Lissage",
       "known_anomalies": "Anomalies connues",
       "known_anomalies_description": "Interpole les pics de téléchargements connus causés par des bots ou des problèmes de CI.",
-      "known_anomalies_ranges": "Plages d'anomalies",
-      "known_anomalies_range": "Du {start} au {end}",
-      "known_anomalies_range_named": "{packageName} : du {start} au {end}",
-      "known_anomalies_none": "Aucune anomalie connue pour ce paquet. | Aucune anomalie connue pour ces paquets.",
-      "known_anomalies_contribute": "Contribuer des données d'anomalie",
       "apply_correction": "Appliquer la correction",
       "copy_alt": {
         "trend_none": "globalement stable",
