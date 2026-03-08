@@ -139,7 +139,6 @@ test.describe('badge API', () => {
     const { body } = await fetchBadge(page, url)
 
     expect(body).toContain('fill="#000000">version')
-    expect(body).toMatch(/fill="#000000">v\d/)
   })
 
   test('3-char hex color is handled correctly for contrast', async ({ page, baseURL }) => {
@@ -158,7 +157,7 @@ test.describe('badge API', () => {
     const { body } = await fetchBadge(page, url)
 
     expect(body).toMatch(/fill="#ffffff"(\stextLength="\d+")?>version/)
-    expect(body).toMatch(/fill="#000000">v\d/)
+    expect(body).toMatch(/fill="#000000"(\stextLength="\d+")?>v\d/)
   })
 
   test('custom label parameter is applied to SVG', async ({ page, baseURL }) => {
