@@ -613,8 +613,6 @@ export function createAltTextForCompareFacetBarChart({
   if (!dataset) return ''
   const { facet, description, $t } = config
 
-  console.log(config)
-
   const packages = dataset.map(d => d.name).join(', ')
   const facet_analysis = dataset
     .map(d =>
