@@ -4,6 +4,10 @@ const props = withDefaults(
     label: string
     description?: string
     justify?: 'between' | 'start'
+    tooltip?: string
+    tooltipPosition?: 'top' | 'bottom' | 'left' | 'right'
+    tooltipTo?: string
+    tooltipOffset?: number
     reverseOrder?: boolean
   }>(),
   {
@@ -15,7 +19,7 @@ const props = withDefaults(
 
 <template>
   <div
-    class="grid items-center gap-4 py-1 -my-1 grid-cols-[auto_1fr_auto]"
+    class="grid items-center gap-1.5 py-1 -my-1 grid-cols-[auto_1fr_auto]"
     :class="[justify === 'start' ? 'justify-start' : '']"
     :style="
       props.reverseOrder
@@ -51,84 +55,3 @@ const props = withDefaults(
     {{ description }}
   </p>
 </template>
-
-<style scoped>
-/* Thumb position: logical property for RTL support */
-.toggle::before {
-  inset-inline-start: 1px;
-}
-
-/* Track transition */
-.toggle {
-  transition:
-    background-color 200ms ease-in-out,
-    border-color 100ms ease-in-out;
-}
-
-.toggle::before {
-  transition:
-    background-color 200ms ease-in-out,
-    translate 200ms ease-in-out;
-}
-
-/* Hover states */
-.toggle:hover:not(:checked) {
-  background: var(--fg-muted);
-}
-
-.toggle:checked:hover {
-  background: var(--fg-muted);
-  border-color: var(--fg-muted);
-}
-
-/* RTL-aware checked thumb position */
-:dir(ltr) .toggle:checked::before {
-  translate: 20px;
-}
-
-:dir(rtl) .toggle:checked::before {
-  translate: -20px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .toggle,
-  .toggle::before {
-    transition: none;
-  }
-}
-
-/* Support forced colors */
-@media (forced-colors: active) {
-  label > span {
-    background: Canvas;
-    color: Highlight;
-    forced-color-adjust: none;
-  }
-
-  label:has(.toggle:checked) > span {
-    background: Highlight;
-    color: Canvas;
-  }
-
-  .toggle::before {
-    forced-color-adjust: none;
-    background-color: Highlight;
-  }
-
-  .toggle,
-  .toggle:hover {
-    background: Canvas;
-    border-color: CanvasText;
-  }
-
-  .toggle:checked,
-  .toggle:checked:hover {
-    background: Highlight;
-    border-color: CanvasText;
-  }
-
-  .toggle:checked::before {
-    background: Canvas;
-  }
-}
-</style>
