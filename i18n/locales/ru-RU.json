@@ -18,7 +18,7 @@
     "source": "исходный код",
     "social": "соцсети",
     "chat": "чат",
-    "builders_chat": "создатели",
+    "builders_chat": "мастера сборки",
     "keyboard_shortcuts": "горячие клавиши"
   },
   "shortcuts": {
@@ -845,10 +845,10 @@
       "ascending": "По возрастанию",
       "descending": "По убыванию",
       "relevance": "Релевантность",
-      "downloads_week": "Загрузок в неделю",
-      "downloads_day": "Загрузок в день",
-      "downloads_month": "Загрузок в месяц",
-      "downloads_year": "Загрузок в год",
+      "downloads_week": "Загрузок/нед",
+      "downloads_day": "Загрузок/день",
+      "downloads_month": "Загрузок/мес",
+      "downloads_year": "Загрузок/год",
       "published": "Опубликован",
       "name": "Имя",
       "quality": "Качество",
@@ -864,7 +864,7 @@
       "name": "Имя",
       "version": "Версия",
       "description": "Описание",
-      "downloads": "Загрузок в неделю",
+      "downloads": "Загрузок/нед",
       "published": "Опубликован",
       "maintainers": "Мейнтейнеры",
       "keywords": "Ключевые слова",
@@ -991,14 +991,14 @@
       "connected_as": "Вы вошли как {'@'}{handle}",
       "disconnect": "Выйти",
       "connect_prompt": "Войдите через аккаунт Atmosphere",
-      "handle_label": "Хендл",
+      "handle_label": "Псевдоним",
       "handle_placeholder": "alice.npmx.social",
       "connect": "Подключить",
       "create_account": "Создать новый аккаунт",
       "connect_bluesky": "Войти через Bluesky",
       "what_is_atmosphere": "Что такое аккаунт Atmosphere?",
       "atmosphere_explanation": "{npmx} использует протокол {atproto} для работы многих социальных функций, позволяя пользователям владеть своими данными и использовать единый аккаунт для всех совместимых приложений. Создав аккаунт, вы сможете использовать другие приложения, такие как {bluesky} и {tangled}, с той же учетной записью.",
-      "default_input_error": "Пожалуйста, введите корректный хендл, DID или полный URL-адрес PDS",
+      "default_input_error": "Пожалуйста, введите корректный псевдоним, DID или полный URL-адрес PDS",
       "profile": "Профиль"
     }
   },
@@ -1090,7 +1090,7 @@
           "description": "Общее количество зависимостей, включая транзитивные"
         },
         "downloads": {
-          "label": "Загрузок в неделю",
+          "label": "Загрузок/нед",
           "description": "Количество загрузок в неделю"
         },
         "totalLikes": {
@@ -1177,10 +1177,10 @@
   },
   "pds": {
     "title": "npmx.social",
-    "meta_description": "Официальный сервер персональных данных (PDS) протокола AT для сообщества npmx.",
+    "meta_description": "Официальный сервер персональных данных (PDS) AT-протокола для сообщества npmx.",
     "join": {
       "title": "Присоединяйтесь к сообществу",
-      "description": "Создаёте ли вы свой первый аккаунт в Atmosphere или переносите существующий — вам здесь место. Можно перенести текущий аккаунт без потери хендла, постов и подписчиков.",
+      "description": "Создаёте ли вы свой первый аккаунт в Atmosphere или переносите существующий — это место для вас. Можно перенести текущий аккаунт без потери псевдонима, постов и подписчиков.",
       "migrate": "Перенести через PDS MOOver"
     },
     "server": {
@@ -1200,7 +1200,7 @@
       "error": "Не удалось загрузить сообщество PDS.",
       "empty": "Участников сообщества пока нет.",
       "view_profile": "Посмотреть профиль {handle}",
-      "new_accounts": "…плюс ещё {count} новичков в Atmosphere"
+      "new_accounts": "…плюс ещё {count} новых участников в atmosphere"
     }
   },
   "privacy_policy": {
