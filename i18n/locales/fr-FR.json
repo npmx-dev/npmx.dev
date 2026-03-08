@@ -1295,7 +1295,7 @@
     },
     "measures": {
       "title": "Ce que nous faisons",
-      "p1": "Voici quelques-unes des choses que nous nous efforçons de faire sur ce site :",
+      "p1": "Voici certaines des actions que nous nous efforçons de faire sur ce site :",
       "li1": "Utiliser du HTML sémantique et des attributs ARIA lorsque c'est pertinent.",
       "li2": "Utiliser des tailles de texte relatives afin que vous puissiez les ajuster dans votre navigateur.",
       "li3": "Prendre en charge la navigation au clavier dans toute l'interface.",
@@ -1308,7 +1308,7 @@
       "p1": "Certaines parties du site, en particulier le contenu externe comme les README des paquets, peuvent ne pas respecter les standards d'accessibilité. Nous travaillons à améliorer ces aspects au fil du temps."
     },
     "contact": {
-      "title": "Faire un retour",
+      "title": "Nous faire un retour",
       "p1": "Si vous rencontrez un problème d'accessibilité sur {app}, veuillez nous le faire savoir en ouvrant une issue sur notre {link}. Nous prenons ces rapports au sérieux et ferons de notre mieux pour les régler.",
       "link": "dépôt GitHub"
     }
