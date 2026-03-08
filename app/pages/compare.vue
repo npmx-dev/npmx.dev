@@ -282,10 +282,10 @@ useSeoMeta({
 
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
           <!-- View tabs -->
-          <ButtonGroup
+          <div
+            class="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-bg-subtle p-0.5 mt-4"
             role="tablist"
             :aria-label="$t('compare.packages.section_comparison')"
-            class="inline-flex mt-4 rounded-md border border-border-subtle bg-bg-subtle p-0.5"
           >
             <button
               id="comparison-tab-table"
@@ -294,7 +294,7 @@ useSeoMeta({
               :aria-selected="comparisonView === 'table' ? 'true' : 'false'"
               aria-controls="comparison-panel-table"
               :tabindex="comparisonView === 'table' ? -1 : 0"
-              class="flex items-center justify-center gap-x-2 px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
+              class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
               :class="
                 comparisonView === 'table'
                   ? 'bg-bg border-border shadow-sm text-fg'
@@ -313,7 +313,7 @@ useSeoMeta({
               :aria-selected="comparisonView === 'charts' ? 'true' : 'false'"
               aria-controls="comparison-panel-charts"
               :tabindex="comparisonView === 'charts' ? -1 : 0"
-              class="flex items-center justify-center gap-x-2 px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
+              class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
               :class="
                 comparisonView === 'charts'
                   ? 'bg-bg border-border shadow-sm text-fg'
@@ -324,7 +324,7 @@ useSeoMeta({
               <span class="i-lucide:chart-bar-decreasing size-[1em]" aria-hidden="true" />
               <span>{{ $t('compare.packages.charts_view') }}</span>
             </button>
-          </ButtonGroup>
+          </div>
 
           <!-- Data table -->
           <div v-show="comparisonView === 'table'" role="tabpanel">
