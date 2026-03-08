@@ -2719,6 +2719,15 @@
         "meta_description": {
           "type": "string"
         },
+        "skip_sponsors": {
+          "type": "string"
+        },
+        "skip_oss_partners": {
+          "type": "string"
+        },
+        "skip_contributors": {
+          "type": "string"
+        },
         "what_we_are": {
           "type": "object",
           "properties": {

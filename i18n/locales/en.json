@@ -905,6 +905,9 @@
     "title": "About",
     "heading": "about",
     "meta_description": "npmx is a fast, modern browser for the npm registry. A better UX/DX for exploring npm packages.",
+    "skip_sponsors": "Skip sponsors list",
+    "skip_oss_partners": "Skip open source partners list",
+    "skip_contributors": "Skip contributors list",
     "what_we_are": {
       "title": "What we are",
       "better_ux_dx": "better UX/DX",
