@@ -469,6 +469,7 @@
       "data_correction": "Data correction",
       "average_window": "Average window",
       "smoothing": "Smoothing",
+      "prediction": "Prediction",
       "known_anomalies": "Known anomalies",
       "known_anomalies_description": "Interpolates over known download spikes caused by bots or CI issues.",
       "known_anomalies_ranges": "Anomaly ranges",

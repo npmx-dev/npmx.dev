@@ -1411,6 +1411,9 @@
             "smoothing": {
               "type": "string"
             },
+            "prediction": {
+              "type": "string"
+            },
             "known_anomalies": {
               "type": "string"
             },
