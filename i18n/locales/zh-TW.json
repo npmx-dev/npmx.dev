@@ -77,6 +77,10 @@
     "links": "連結",
     "tap_to_search": "點擊以搜尋"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "設定",
     "tagline": "自訂你的 npmx 體驗",
@@ -122,6 +126,7 @@
     "edit_on_github": "在 GitHub 上編輯",
     "view_guide": "翻譯指南"
   },
+  "error": {},
   "common": {
     "loading": "載入中…",
     "loading_more": "載入更多中…",
@@ -337,7 +342,6 @@
       "grouping_versions_only_recent": "僅顯示近期版本",
       "grouping_usage_title": "使用量",
       "grouping_usage_all": "全部",
-      "grouping_usage_low": "低使用量",
       "recent_versions_only_tooltip": "僅顯示過去一年內發布的版本。",
       "show_low_usage_tooltip": "包含總下載量低於 1% 的版本群組。",
       "y_axis_label": "下載量",
@@ -918,6 +922,7 @@
         "description": "聊天、提問並分享想法。",
         "cta": "加入 Discord"
       },
+      "builders": {},
       "follow": {
         "title": "保持更新",
         "description": "掌握 npmx 的最新動態。",
@@ -1123,6 +1128,11 @@
     "select_file_prompt": "請先從側邊欄選擇檔案以檢視差異",
     "close_files_panel": "關閉檔案面板",
     "filter_files_label": "依變更類型篩選檔案"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "隱私權政策",
