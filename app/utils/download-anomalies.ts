@@ -46,7 +46,7 @@ function isDateAffected(
       const weekEndDate = new Date(weekStartDate)
       weekEndDate.setUTCDate(weekEndDate.getUTCDate() + 6)
       const endWeek = weekEndDate.toISOString().slice(0, 10)
-      return startWeek <= anomaly.end.date && endWeek >= anomaly.start.date
+      return startWeek < anomaly.end.date && endWeek > anomaly.start.date
     }
     case 'monthly': {
       const startMonth = anomaly.start.date.slice(0, 7) + '-01'
