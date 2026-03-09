@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { slugify } from '~~/shared/utils/html'
+
 const { info, requestedDate, requestedVersion } = defineProps<{
   info: ChangelogReleaseInfo
   requestedDate?: string
@@ -40,7 +42,7 @@ watch(
     if (rv) {
       for (const match of matchingDateReleases.value ?? []) {
         if (match.title.toLowerCase().includes(rv)) {
-          navigateTo(`#release-${encodeURI(match.title)}`)
+          navigateTo(`#release-${slugify(match.title)}`)
           return
         }
       }

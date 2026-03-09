@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ReleaseData } from '~~/shared/types/changelog'
+import { slugify } from '~~/shared/utils/html'
 
 const { release } = defineProps<{
   release: ReleaseData
@@ -13,7 +14,7 @@ const formattedDate = computed(() => {
 
 const cardId = computed(() => (release.publishedAt ? `date-${formattedDate.value}` : undefined))
 
-const navId = computed(() => `release-${encodeURI(release.title)}`)
+const navId = computed(() => `release-${slugify(release.title)}`)
 
 function navigateToTitle() {
   navigateTo(`#${navId.value}`)

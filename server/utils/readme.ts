@@ -3,7 +3,7 @@ import sanitizeHtml from 'sanitize-html'
 import { hasProtocol } from 'ufo'
 import type { ReadmeResponse, TocItem } from '#shared/types/readme'
 import { convertBlobOrFileToRawUrl, type RepositoryInfo } from '#shared/utils/git-providers'
-import { decodeHtmlEntities, stripHtmlTags } from '#shared/utils/html'
+import { decodeHtmlEntities, stripHtmlTags, slugify } from '#shared/utils/html'
 import { convertToEmoji } from '#shared/utils/emoji'
 import { toProxiedImageUrl } from '#server/utils/image-proxy'
 import { highlightCodeSync } from './shiki'
@@ -198,25 +198,6 @@ export const ALLOWED_ATTR: Record<string, string[]> = {
   'span': ['class', 'style'],
   'div': ['class', 'style', 'align'],
   'p': ['align'],
-}
-
-/**
- * Generate a GitHub-style slug from heading text.
- * - Convert to lowercase
- * - Remove HTML tags
- * - Replace spaces with hyphens
- * - Remove special characters (keep alphanumeric, hyphens, underscores)
- * - Collapse multiple hyphens
- */
-export function slugify(text: string): string {
-  return stripHtmlTags(text)
-    .replace(/&nbsp;?/g, '') // remove non breaking spaces
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-') // Spaces to hyphens
-    .replace(/[^\w\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff-]/g, '') // Keep alphanumeric, CJK, hyphens
-    .replace(/-+/g, '-') // Collapse multiple hyphens
-    .replace(/^-|-$/g, '') // Trim leading/trailing hyphens
 }
 
 /**
