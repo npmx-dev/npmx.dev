@@ -413,7 +413,9 @@
       "outdated_major": "{count} major version behind (latest: {latest}) | {count} major versions behind (latest: {latest})",
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
-      "has_replacement": "This dependency has suggested replacements"
+      "has_replacement": "This dependency has suggested replacements",
+      "zero_direct_banner_title": "0 direct dependencies",
+      "zero_direct_banner_desc": "This package has no direct dependencies."
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",

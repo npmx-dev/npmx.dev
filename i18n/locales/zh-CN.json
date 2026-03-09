@@ -403,7 +403,9 @@
       "outdated_major": "落后 {count} 个主要版本（最新：{latest}）",
       "outdated_minor": "落后 {count} 个次要版本（最新：{latest}）",
       "outdated_patch": "有可用的补丁更新（最新：{latest}）",
-      "has_replacement": "该依赖有推荐的替代包。"
+      "has_replacement": "该依赖有推荐的替代包。",
+      "zero_direct_banner_title": "0 个直接依赖",
+      "zero_direct_banner_desc": "该包没有任何直接依赖。"
     },
     "peer_dependencies": {
       "title": "对等依赖（{count} 个）",

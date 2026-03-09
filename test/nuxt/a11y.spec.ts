@@ -229,6 +229,7 @@ import PackageTrendsChart from '~/components/Package/TrendsChart.vue'
 import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 import PackageLikeCard from '~/components/Package/LikeCard.vue'
 import SizeIncrease from '~/components/Package/SizeIncrease.vue'
+import PackageZeroDirectDependencies from '~/components/Package/ZeroDirectDependencies.vue'
 
 describe('component accessibility audits', () => {
   describe('DateTime', () => {
@@ -3525,6 +3526,14 @@ describe('component accessibility audits', () => {
           },
         },
       })
+      const results = await runAxe(component)
+      expect(results.violations).toEqual([])
+    })
+  })
+
+  describe('PackageZeroDirectDependencies', () => {
+    it('should have no accessibility violations', async () => {
+      const component = await mountSuspended(PackageZeroDirectDependencies)
       const results = await runAxe(component)
       expect(results.violations).toEqual([])
     })
