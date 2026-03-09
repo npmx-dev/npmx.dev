@@ -1,5 +1,7 @@
 import type {
   AltCopyArgs,
+  VueUiHorizontalBarConfig,
+  VueUiHorizontalBarDatapoint,
   VueUiXyConfig,
   VueUiXyDatasetBarItem,
   VueUiXyDatasetLineItem,
@@ -446,6 +448,13 @@ export type VersionsBarConfig = Omit<
   'formattedDates' | 'hasEstimation' | 'formattedDatasetValues' | 'granularity'
 > & { datapointLabels: string[]; dateRangeLabel: string; semverGroupingMode: string }
 
+export type FacetBarChartConfig = VueUiHorizontalBarConfig & {
+  facet: string // translated
+  description: string // translated
+  copy: (text: string) => Promise<void>
+  $t: TrendTranslateFunction
+}
+
 // Used for TrendsChart.vue
 export function createAltTextForTrendLineChart({
   dataset,
@@ -594,4 +603,126 @@ export async function copyAltTextForVersionsBarChart({
 }: AltCopyArgs<VersionsBarDataset, VersionsBarConfig>) {
   const altText = createAltTextForVersionsBarChart({ dataset, config })
   await config.copy(altText)
+}
+
+// Used for FacetBarChart.vue
+export function createAltTextForCompareFacetBarChart({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiHorizontalBarDatapoint[], FacetBarChartConfig>) {
+  if (!dataset) return ''
+  const { facet, description, $t } = config
+
+  const packages = dataset.map(d => d.name).join(', ')
+  const facet_analysis = dataset
+    .map(d =>
+      $t('package.trends.copy_alt.facet_bar_analysis', {
+        package_name: d.name,
+        value: d.formattedValue,
+      }),
+    )
+    .join(' ')
+
+  const altText = `${config.$t('package.trends.copy_alt.facet_bar_general_description', {
+    packages,
+    facet,
+    description,
+    facet_analysis,
+    watermark: config.$t('package.trends.copy_alt.watermark'),
+  })}`
+
+  return altText
+}
+
+export async function copyAltTextForCompareFacetBarChart({
+  dataset,
+  config,
+}: AltCopyArgs<VueUiHorizontalBarDatapoint[], FacetBarChartConfig>) {
+  const altText = createAltTextForCompareFacetBarChart({ dataset, config })
+  await config.copy(altText)
+}
+
+// Used in chart context menu callbacks
+export function loadFile(link: string, filename: string) {
+  const a = document.createElement('a')
+  a.href = link
+  a.download = filename
+  a.click()
+  a.remove()
+}
+
+export function sanitise(value: string) {
+  return value
+    .replace(/^@/, '')
+    .replace(/[\\/:"*?<>|]/g, '-')
+    .replace(/\//g, '-')
+}
+
+// Create multi-line labels for long names
+export function insertLineBreaks(text: string, maxCharactersPerLine = 24) {
+  if (typeof text !== 'string') {
+    return ''
+  }
+
+  if (!Number.isInteger(maxCharactersPerLine) || maxCharactersPerLine <= 0) {
+    return text
+  }
+
+  const tokens = text.match(/\S+|\s+/g) || []
+  const lines: string[] = []
+  let currentLine = ''
+
+  const pushLine = () => {
+    const trimmedLine = currentLine.trim()
+
+    if (trimmedLine.length) {
+      lines.push(trimmedLine)
+    }
+
+    currentLine = ''
+  }
+
+  for (const token of tokens) {
+    if (/^\s+$/.test(token)) {
+      if (currentLine.length && !currentLine.endsWith(' ')) {
+        currentLine += ' '
+      }
+      continue
+    }
+
+    if (token.length > maxCharactersPerLine) {
+      pushLine()
+
+      for (let index = 0; index < token.length; index += maxCharactersPerLine) {
+        lines.push(token.slice(index, index + maxCharactersPerLine))
+      }
+      continue
+    }
+
+    const candidate = currentLine.length ? `${currentLine}${token}` : token
+
+    if (candidate.length <= maxCharactersPerLine) {
+      currentLine = candidate
+    } else {
+      pushLine()
+      currentLine = token
+    }
+  }
+
+  pushLine()
+
+  return lines.join('\n')
+}
+
+export function applyEllipsis(text: string, maxLength = 45) {
+  if (typeof text !== 'string') {
+    return ''
+  }
+  if (!Number.isInteger(maxLength) || maxLength <= 0) {
+    return text
+  }
+  if (text.length <= maxLength) {
+    return text
+  }
+  return text.slice(0, maxLength) + '...'
 }

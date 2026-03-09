@@ -9,7 +9,7 @@ import {
   drawNpmxLogoAndTaglineWatermark,
 } from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
-import { copyAltTextForVersionsBarChart } from '~/utils/charts'
+import { copyAltTextForVersionsBarChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -89,20 +89,6 @@ const compactNumberFormatter = useCompactNumberFormatter()
 // Show loading indicator immediately to maintain stable layout
 const showLoadingIndicator = computed(() => pending.value)
 
-const loadFile = (link: string, filename: string) => {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
-}
-
-const sanitise = (value: string) =>
-  value
-    .replace(/^@/, '')
-    .replace(/[\\/:"*?<>|]/g, '-')
-    .replace(/\//g, '-')
-
 const { locale } = useI18n()
 function formatDate(date: Date) {
   return date.toLocaleString(locale.value, {
@@ -145,7 +131,7 @@ const dateRangeLabel = computed(() => {
 function buildExportFilename(extension: string): string {
   const range = dateRangeLabel.value.replaceAll(' ', '_').replaceAll(',', '')
 
-  const label = props.packageName
+  const label = applyEllipsis(props.packageName, 32)
   return `${sanitise(label ?? '')}_${range}.${extension}`
 }
 
@@ -155,7 +141,7 @@ const xyDataset = computed<VueUiXyDatasetItem[]>(() => {
 
   return [
     {
-      name: props.packageName,
+      name: applyEllipsis(props.packageName, 32),
       series: chartDataset.value.map(item => item.downloads),
       type: 'bar' as const,
       color: accent.value,
@@ -469,7 +455,14 @@ const chartConfig = computed<VueUiXyConfig>(() => {
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
                 v-if="svg.isPrintingSvg || svg.isPrintingImg"
-                v-html="drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'bottom')"
+                v-html="
+                  drawNpmxLogoAndTaglineWatermark({
+                    svg,
+                    colors: watermarkColors,
+                    translateFn: $t,
+                    positioning: 'bottom',
+                  })
+                "
               />
 
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->

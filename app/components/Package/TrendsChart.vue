@@ -20,7 +20,7 @@ import type {
 import { DATE_INPUT_MAX } from '~/utils/input'
 import { applyDataCorrection } from '~/utils/chart-data-correction'
 import { applyBlocklistCorrection, getAnomaliesForPackages } from '~/utils/download-anomalies'
-import { copyAltTextForTrendLineChart } from '~/utils/charts'
+import { copyAltTextForTrendLineChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -215,7 +215,7 @@ function formatXyDataset(
   const temperatureColors = lightColor ? [lightColor, accent.value] : undefined
 
   const datasetItem: VueUiXyDatasetItem = {
-    name: seriesName,
+    name: applyEllipsis(seriesName, 32),
     type: 'line',
     series: dataset.map(d => d.value),
     color: accent.value,
@@ -1050,7 +1050,7 @@ const chartData = computed<{
       .filter(index => index !== -1)
 
     const item: VueUiXyDatasetItem = {
-      name: pkg,
+      name: applyEllipsis(pkg, 32),
       type: 'line',
       series,
       dashIndices,
@@ -1085,14 +1085,6 @@ const maxDatapoints = computed(() =>
   Math.max(0, ...(chartData.value.dataset ?? []).map(d => d.series.length)),
 )
 
-const loadFile = (link: string, filename: string) => {
-  const a = document.createElement('a')
-  a.href = link
-  a.download = filename
-  a.click()
-  a.remove()
-}
-
 const datetimeFormatterOptions = computed(() => {
   return {
     daily: { year: 'yyyy-MM-dd', month: 'yyyy-MM-dd', day: 'yyyy-MM-dd' },
@@ -1113,22 +1105,16 @@ const tooltipDateFormatter = computed(() => {
   })
 })
 
-const sanitise = (value: string) =>
-  value
-    .replace(/^@/, '')
-    .replace(/[\\/:"*?<>|]/g, '-')
-    .replace(/\//g, '-')
-
 function buildExportFilename(extension: string): string {
   const g = selectedGranularity.value
   const range = `${startDate.value}_${endDate.value}`
 
   if (!isMultiPackageMode.value) {
     const name = effectivePackageNames.value[0] ?? props.packageName ?? 'package'
-    return `${sanitise(name)}-${g}_${range}.${extension}`
+    return `${sanitise(applyEllipsis(name, 32))}-${g}_${range}.${extension}`
   }
 
-  const names = effectivePackageNames.value
+  const names = effectivePackageNames.value.map(name => applyEllipsis(name, 32))
   const label = names.length === 1 ? names[0] : names.join('_')
   return `${sanitise(label ?? '')}-${g}_${range}.${extension}`
 }
@@ -1954,7 +1940,14 @@ watch(selectedMetric, value => {
               <!-- Inject npmx logo & tagline during SVG and PNG print -->
               <g
                 v-if="svg.isPrintingSvg || svg.isPrintingImg"
-                v-html="drawNpmxLogoAndTaglineWatermark(svg, watermarkColors, $t, 'bottom')"
+                v-html="
+                  drawNpmxLogoAndTaglineWatermark({
+                    svg,
+                    colors: watermarkColors,
+                    translateFn: $t,
+                    positioning: 'bottom',
+                  })
+                "
               />
 
               <!-- Overlay covering the chart area to hide line resizing when switching granularities recalculates VueUiXy scaleMax when estimation lines are necessary -->

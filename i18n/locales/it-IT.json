@@ -132,7 +132,6 @@
     "skip_link": "Salta al contenuto principale",
     "warnings": "Avvisi:",
     "go_back_home": "Torna alla home",
-    "view_on_npm": "vedi su npm",
     "per_week": "/ settimana",
     "vanity_downloads_hint": "Numero di vanità: nessun pacchetto visualizzato | Numero di vanità: per il pacchetto visualizzato | Numero di vanità: somma di {count} pacchetti visualizzati",
     "sort": {
@@ -140,7 +139,11 @@
       "role": "ruolo",
       "members": "membri"
     },
-    "scroll_to_top": "Torna su"
+    "scroll_to_top": "Torna su",
+    "view_on": {
+      "npm": "vedi su npm",
+      "github": "Vedi su GitHub"
+    }
   },
   "package": {
     "not_found": "Pacchetto Non Trovato",
@@ -245,7 +248,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Nessuno README disponibile.",
-      "view_on_github": "Vedi su GitHub",
       "toc_title": "Contorno",
       "callout": {
         "note": "Nota",
