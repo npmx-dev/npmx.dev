@@ -3,12 +3,14 @@ import Component from './Base.vue'
 
 const meta = {
   component: Component,
+  tags: ['autodocs'],
 } satisfies Meta<typeof Component>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
+  tags: ['!dev'],
   args: {
     default: 'Primary Button',
   },

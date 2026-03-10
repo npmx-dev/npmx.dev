@@ -3,6 +3,7 @@ import LinkBase from './Base.vue'
 
 const meta = {
   component: LinkBase,
+  tags: ['autodocs'],
   args: {
     to: '/',
     default: 'Click me',
