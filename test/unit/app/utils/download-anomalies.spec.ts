@@ -1,50 +1,52 @@
 import { describe, expect, it } from 'vitest'
 import { applyBlocklistCorrection } from '../../../../app/utils/download-anomalies'
-import type { WeeklyDataPoint } from '../../../../app/types/chart'
+import type {
+  MonthlyDataPoint,
+  WeeklyDataPoint,
+  YearlyDataPoint,
+} from '../../../../app/types/chart'
+
+/** Helper to build a WeeklyDataPoint from a start date and value. */
+function week(weekStart: string, value: number): WeeklyDataPoint {
+  const start = new Date(`${weekStart}T00:00:00Z`)
+  const end = new Date(start)
+  end.setUTCDate(end.getUTCDate() + 6)
+  const weekEnd = end.toISOString().slice(0, 10)
+  return {
+    value,
+    weekKey: `${weekStart}_${weekEnd}`,
+    weekStart,
+    weekEnd,
+    timestampStart: start.getTime(),
+    timestampEnd: end.getTime(),
+  }
+}
+
+function month(monthStr: string, value: number): MonthlyDataPoint {
+  return {
+    value,
+    month: monthStr,
+    timestamp: new Date(`${monthStr}-01T00:00:00Z`).getTime(),
+  }
+}
+
+function year(yearStr: string, value: number): YearlyDataPoint {
+  return {
+    value,
+    year: yearStr,
+    timestamp: new Date(`${yearStr}-01-01T00:00:00Z`).getTime(),
+  }
+}
 
 describe('applyBlocklistCorrection', () => {
-  it('treats overlapping weekly buckets as affected anomalies', () => {
-    const data: WeeklyDataPoint[] = [
-      {
-        value: 100,
-        weekKey: '2022-11-07_2022-11-13',
-        weekStart: '2022-11-07',
-        weekEnd: '2022-11-13',
-        timestampStart: 0,
-        timestampEnd: 0,
-      },
-      {
-        value: 999,
-        weekKey: '2022-11-14_2022-11-20',
-        weekStart: '2022-11-14',
-        weekEnd: '2022-11-20',
-        timestampStart: 0,
-        timestampEnd: 0,
-      },
-      {
-        value: 999,
-        weekKey: '2022-11-21_2022-11-27',
-        weekStart: '2022-11-21',
-        weekEnd: '2022-11-27',
-        timestampStart: 0,
-        timestampEnd: 0,
-      },
-      {
-        value: 999,
-        weekKey: '2022-11-28_2022-12-04',
-        weekStart: '2022-11-28',
-        weekEnd: '2022-12-04',
-        timestampStart: 0,
-        timestampEnd: 0,
-      },
-      {
-        value: 200,
-        weekKey: '2022-12-05_2022-12-11',
-        weekStart: '2022-12-05',
-        weekEnd: '2022-12-11',
-        timestampStart: 0,
-        timestampEnd: 0,
-      },
+  // Anomaly Nov 2022: start=2022-11-15, end=2022-11-30
+  it('corrects weeks overlapping the anomaly', () => {
+    const data = [
+      week('2022-11-07', 100),
+      week('2022-11-14', 999),
+      week('2022-11-21', 999),
+      week('2022-11-28', 999),
+      week('2022-12-05', 200),
     ]
 
     expect(
@@ -60,5 +62,122 @@ describe('applyBlocklistCorrection', () => {
       { ...data[3], value: 175, hasAnomaly: true },
       data[4],
     ])
+  })
+
+  // Anomaly Jun 2023: start=2023-06-19, end=2023-06-22
+  it('does not over-correct a week starting on the anomaly end boundary', () => {
+    const data = [
+      week('2023-06-01', 500_000),
+      week('2023-06-08', 500_000),
+      week('2023-06-15', 10_000_000), // contains spike
+      week('2023-06-22', 500_000), // starts on anomaly end boundary — normal!
+      week('2023-06-29', 500_000),
+    ]
+
+    const result = applyBlocklistCorrection({
+      data,
+      packageName: 'svelte',
+      granularity: 'weekly',
+    }) as WeeklyDataPoint[]
+
+    // The spike week must be corrected
+    expect(result[2]!.hasAnomaly).toBe(true)
+    expect(result[2]!.value).toBeLessThan(1_000_000)
+
+    // The boundary week must NOT be modified
+    expect(result[3]!.value).toBe(500_000)
+    expect(result[3]!.hasAnomaly).toBeUndefined()
+  })
+
+  it('does not over-correct a week ending on the anomaly start boundary', () => {
+    const data = [
+      week('2023-06-13', 500_000), // ends on anomaly start boundary — normal!
+      week('2023-06-20', 10_000_000), // contains spike
+      week('2023-06-27', 500_000),
+    ]
+
+    const result = applyBlocklistCorrection({
+      data,
+      packageName: 'svelte',
+      granularity: 'weekly',
+    }) as WeeklyDataPoint[]
+
+    // The boundary week must NOT be modified
+    expect(result[0]!.value).toBe(500_000)
+    expect(result[0]!.hasAnomaly).toBeUndefined()
+
+    // The spike week must be corrected
+    expect(result[1]!.hasAnomaly).toBe(true)
+    expect(result[1]!.value).toBeLessThan(1_000_000)
+  })
+
+  // Vite anomaly: start=2025-08-04, end=2025-09-08 (spans Aug-Sep)
+  it('does not over-correct a month that only touches the anomaly end boundary', () => {
+    const data = [
+      month('2025-07', 30_000_000),
+      month('2025-08', 100_000_000), // contains spike
+      month('2025-09', 100_000_000), // contains spike (Sep 1-7)
+      month('2025-10', 30_000_000), // after anomaly end — normal!
+    ]
+
+    const result = applyBlocklistCorrection({
+      data,
+      packageName: 'vite',
+      granularity: 'monthly',
+    }) as MonthlyDataPoint[]
+
+    expect(result[1]!.hasAnomaly).toBe(true)
+    expect(result[2]!.hasAnomaly).toBe(true)
+
+    // October must NOT be modified
+    expect(result[3]!.value).toBe(30_000_000)
+    expect(result[3]!.hasAnomaly).toBeUndefined()
+  })
+
+  it('does not over-correct a month that only touches the anomaly start boundary', () => {
+    const data = [
+      month('2025-07', 30_000_000), // before anomaly start — normal!
+      month('2025-08', 100_000_000), // contains spike
+      month('2025-09', 100_000_000), // contains spike
+      month('2025-10', 30_000_000),
+    ]
+
+    const result = applyBlocklistCorrection({
+      data,
+      packageName: 'vite',
+      granularity: 'monthly',
+    }) as MonthlyDataPoint[]
+
+    // July must NOT be modified
+    expect(result[0]!.value).toBe(30_000_000)
+    expect(result[0]!.hasAnomaly).toBeUndefined()
+
+    expect(result[1]!.hasAnomaly).toBe(true)
+    expect(result[2]!.hasAnomaly).toBe(true)
+  })
+
+  it('does not over-correct a year that only touches the anomaly boundary', () => {
+    const data = [
+      year('2024', 500_000_000),
+      year('2025', 2_000_000_000), // contains spike
+      year('2026', 500_000_000),
+    ]
+
+    const result = applyBlocklistCorrection({
+      data,
+      packageName: 'vite',
+      granularity: 'yearly',
+    }) as YearlyDataPoint[]
+
+    // 2024 must NOT be modified
+    expect(result[0]!.value).toBe(500_000_000)
+    expect(result[0]!.hasAnomaly).toBeUndefined()
+
+    // 2025 must be corrected
+    expect(result[1]!.hasAnomaly).toBe(true)
+
+    // 2026 must NOT be modified
+    expect(result[2]!.value).toBe(500_000_000)
+    expect(result[2]!.hasAnomaly).toBeUndefined()
   })
 })

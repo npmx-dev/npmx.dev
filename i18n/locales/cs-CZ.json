@@ -192,7 +192,17 @@
     "error": "Chyba",
     "view_on": {
       "npm": "Zobrazit na npm",
-      "github": "Zobrazit na GitHubu"
+      "github": "Zobrazit na GitHubu",
+      "gitlab": "Zobrazit na GitLabu",
+      "bitbucket": "Zobrazit na Bitbucketu",
+      "codeberg": "Zobrazit na Codebergu",
+      "git_repo": "Zobrazit v Git repozitáži",
+      "forgejo": "Zobrazit na Forgejo",
+      "gitea": "Zobrazit na Gitea",
+      "gitee": "Zobrazit na Gitee",
+      "radicle": "Zobrazit na Radicle",
+      "sourcehut": "Zobrazit na SourceHutu",
+      "tangled": "Zobrazit na Tangled"
     }
   },
   "profile": {
@@ -478,7 +488,9 @@
         "estimations": "Konečné hodnoty jsou odhady založené na částečných datech pro aktuální období.",
         "compare": "Porovnání grafu stahování balíčků pro: {packages}.",
         "single_package": "Graf stahování pro balíček {package}.",
-        "general_description": "Osa Y představuje počet stažení. Osa X představuje časový rozsah od {start_date} do {end_date} s časovým obdobím {granularity}.{estimation_notice} {packages_analysis}. {watermark}."
+        "general_description": "Osa Y představuje počet stažení. Osa X představuje časový rozsah od {start_date} do {end_date} s časovým obdobím {granularity}.{estimation_notice} {packages_analysis}. {watermark}.",
+        "facet_bar_general_description": "Horizontální sloupcový graf pro: {packages}, porovnávající {facet} ({description}). {facet_analysis} {watermark}.",
+        "facet_bar_analysis": "{package_name} má hodnotu {value}."
       }
     },
     "downloads": {
@@ -1037,7 +1049,9 @@
       "loading": "Načítání dat balíčků...",
       "error": "Nepodařilo se načíst data balíčků. Zkuste to prosím znovu.",
       "empty_title": "Vyberte balíčky k porovnání",
-      "empty_description": "Vyhledejte a přidejte alespoň 2 balíčky výše, abyste viděli porovnání jejich metrik vedle sebe."
+      "empty_description": "Vyhledejte a přidejte alespoň 2 balíčky výše, abyste viděli porovnání jejich metrik vedle sebe.",
+      "table_view": "Tabulka",
+      "charts_view": "Grafy"
     },
     "selector": {
       "search_label": "Vyhledat balíčky",

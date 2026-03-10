@@ -44,11 +44,12 @@ defineExpose({ focus })
 
       <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
         <div class="search-box relative flex items-center">
-          <span
-            class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
+          <kbd
+            class="absolute inset-is-3 text-fg-subtle font-mono text-sm pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1 rounded"
+            aria-hidden="true"
           >
             /
-          </span>
+          </kbd>
 
           <InputBase
             id="header-search"
@@ -62,6 +63,7 @@ defineExpose({ focus })
             @focus="isSearchFocused = true"
             @blur="isSearchFocused = false"
             size="small"
+            ariaKeyshortcuts="/"
           />
           <button
             v-if="hasSearchQuery"
