@@ -178,7 +178,6 @@
     "skip_link": "Skip to main content",
     "warnings": "Warnings:",
     "go_back_home": "Go back home",
-    "view_on_npm": "view on npm",
     "per_week": "/ week",
     "vanity_downloads_hint": "Vanity number: no packages displayed | Vanity number: for the displayed package | Vanity number: Sum of {count} displayed packages",
     "sort": {
@@ -190,7 +189,21 @@
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
-    "error": "Error"
+    "error": "Error",
+    "view_on": {
+      "npm": "view on npm",
+      "github": "View on GitHub",
+      "gitlab": "View on GitLab",
+      "bitbucket": "View on Bitbucket",
+      "codeberg": "View on Codeberg",
+      "git_repo": "View on Git repository",
+      "forgejo": "View on Forgejo",
+      "gitea": "View on Gitea",
+      "gitee": "View on Gitee",
+      "radicle": "View on Radicle",
+      "sourcehut": "View on SourceHut",
+      "tangled": "View on Tangled"
+    }
   },
   "profile": {
     "display_name": "Display Name",
@@ -312,7 +325,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "No README available.",
-      "view_on_github": "View on GitHub",
       "toc_title": "Outline",
       "callout": {
         "note": "Note",

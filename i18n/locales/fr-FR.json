@@ -178,7 +178,6 @@
     "skip_link": "Passer au contenu principal",
     "warnings": "Avertissements :",
     "go_back_home": "Retour à l'accueil",
-    "view_on_npm": "voir sur npm",
     "per_week": "/ semaine",
     "vanity_downloads_hint": "Métrique de vanité : aucun paquet affiché | Métrique de vanité : pour le paquet affiché | Métrique de vanité : somme des {count} paquets affichés",
     "sort": {
@@ -190,7 +189,11 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "edit": "Modifier",
-    "error": "Erreur"
+    "error": "Erreur",
+    "view_on": {
+      "npm": "voir sur npm",
+      "github": "Voir sur GitHub"
+    }
   },
   "profile": {
     "display_name": "Nom d'affichage",
@@ -312,7 +315,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Aucun README disponible.",
-      "view_on_github": "Voir sur GitHub",
       "toc_title": "Sommaire",
       "callout": {
         "note": "Note",

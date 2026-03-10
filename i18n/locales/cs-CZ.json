@@ -178,7 +178,6 @@
     "skip_link": "Přejít na hlavní obsah",
     "warnings": "Varování:",
     "go_back_home": "Zpět na začátek",
-    "view_on_npm": "Zobrazit na npm",
     "per_week": "/ týden",
     "vanity_downloads_hint": "Pro zobrazený balíček | Součet pro {count} zobrazené balíčky | Součet pro {count} zobrazených balíčků",
     "sort": {
@@ -190,7 +189,11 @@
     "cancel": "Zrušit",
     "save": "Uložit",
     "edit": "Upravit",
-    "error": "Chyba"
+    "error": "Chyba",
+    "view_on": {
+      "npm": "Zobrazit na npm",
+      "github": "Zobrazit na GitHubu"
+    }
   },
   "profile": {
     "display_name": "Zobrazované jméno",
@@ -312,7 +315,6 @@
     "readme": {
       "title": "ČTI MĚ",
       "no_readme": "Žádné ČTI MĚ NENÍ k dispozici.",
-      "view_on_github": "Zobrazit na GitHubu",
       "toc_title": "Obsah",
       "callout": {
         "note": "Poznámka",

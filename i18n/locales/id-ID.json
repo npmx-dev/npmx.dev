@@ -136,7 +136,6 @@
     "skip_link": "Lanjut ke konten utama",
     "warnings": "Peringatan:",
     "go_back_home": "Kembali ke Beranda",
-    "view_on_npm": "lihat di npm",
     "per_week": "/ minggu",
     "vanity_downloads_hint": "Angka statistik: tidak ada paket | Angka statistik: untuk paket yang tampil | Angka statistik: Total dari {count} paket yang tampil",
     "sort": {
@@ -144,7 +143,11 @@
       "role": "peran",
       "members": "anggota"
     },
-    "scroll_to_top": "Kembali ke atas"
+    "scroll_to_top": "Kembali ke atas",
+    "view_on": {
+      "npm": "lihat di npm",
+      "github": "Lihat di GitHub"
+    }
   },
   "package": {
     "not_found": "Paket Tidak Ditemukan",
@@ -249,7 +252,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README tidak tersedia.",
-      "view_on_github": "Lihat di GitHub",
       "toc_title": "Garis Besar",
       "callout": {
         "note": "Catatan",

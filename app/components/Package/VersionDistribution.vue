@@ -9,7 +9,7 @@ import {
   drawNpmxLogoAndTaglineWatermark,
 } from '~/composables/useChartWatermark'
 import TooltipApp from '~/components/Tooltip/App.vue'
-import { copyAltTextForVersionsBarChart, sanitise, loadFile } from '~/utils/charts'
+import { copyAltTextForVersionsBarChart, sanitise, loadFile, applyEllipsis } from '~/utils/charts'
 
 import('vue-data-ui/style.css')
 
@@ -131,7 +131,7 @@ const dateRangeLabel = computed(() => {
 function buildExportFilename(extension: string): string {
   const range = dateRangeLabel.value.replaceAll(' ', '_').replaceAll(',', '')
 
-  const label = props.packageName
+  const label = applyEllipsis(props.packageName, 32)
   return `${sanitise(label ?? '')}_${range}.${extension}`
 }
 
@@ -141,7 +141,7 @@ const xyDataset = computed<VueUiXyDatasetItem[]>(() => {
 
   return [
     {
-      name: props.packageName,
+      name: applyEllipsis(props.packageName, 32),
       series: chartDataset.value.map(item => item.downloads),
       type: 'bar' as const,
       color: accent.value,

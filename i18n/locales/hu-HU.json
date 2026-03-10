@@ -136,7 +136,6 @@
     "skip_link": "Ugrás a fő tartalomra",
     "warnings": "Figyelmeztetések:",
     "go_back_home": "Vissza a főoldalra",
-    "view_on_npm": "megtekintés npm-en",
     "per_week": "/ hét",
     "vanity_downloads_hint": "Vanity szám: nincsenek csomagok megjelenítve | Vanity szám: a megjelenített csomagra | Vanity szám: {count} megjelenített csomag összege",
     "sort": {
@@ -148,7 +147,11 @@
     "cancel": "Mégse",
     "save": "Mentés",
     "edit": "Szerkesztés",
-    "error": "Hiba"
+    "error": "Hiba",
+    "view_on": {
+      "npm": "megtekintés npm-en",
+      "github": "Megtekintés GitHubon"
+    }
   },
   "profile": {
     "display_name": "Megjelenítési név",
@@ -270,7 +273,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Nincs elérhető README.",
-      "view_on_github": "Megtekintés GitHubon",
       "toc_title": "Témakörök",
       "callout": {
         "note": "Megjegyzés",

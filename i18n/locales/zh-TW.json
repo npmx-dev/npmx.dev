@@ -136,7 +136,6 @@
     "skip_link": "跳至主要內容",
     "warnings": "警告：",
     "go_back_home": "回到首頁",
-    "view_on_npm": "在 npm 上檢視",
     "per_week": "/ 週",
     "vanity_downloads_hint": "顯示下載量：未顯示套件 | 顯示下載量：顯示的套件 | 顯示下載量：顯示的 {count} 個套件總和",
     "sort": {
@@ -148,7 +147,11 @@
     "cancel": "取消",
     "save": "儲存",
     "edit": "編輯",
-    "error": "錯誤"
+    "error": "錯誤",
+    "view_on": {
+      "npm": "在 npm 上檢視",
+      "github": "在 GitHub 上檢視"
+    }
   },
   "profile": {
     "display_name": "顯示名稱",
@@ -270,7 +273,6 @@
     "readme": {
       "title": "README",
       "no_readme": "沒有可用的 README。",
-      "view_on_github": "在 GitHub 上檢視",
       "toc_title": "大綱",
       "callout": {
         "note": "注意",
