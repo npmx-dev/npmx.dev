@@ -55,7 +55,7 @@ onMounted(() => {
   checkHeaderPosition()
 })
 
-const { packageName, requestedVersion, orgName } = usePackageRoute()
+const { packageName, requestedVersion } = usePackageRoute()
 
 const { data: resolvedVersion, status: resolvedStatus } = await useResolvedVersion(
   packageName,
