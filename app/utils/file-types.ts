@@ -65,6 +65,7 @@ const BINARY_EXTENSIONS = new Set([
 ])
 
 export function isBinaryFilePath(filePath: string): boolean {
-  const ext = filePath.split('.').pop()?.toLowerCase() ?? ''
+  const dotIndex = filePath.lastIndexOf('.')
+  const ext = dotIndex > -1 ? filePath.slice(dotIndex + 1).toLowerCase() : ''
   return BINARY_EXTENSIONS.has(ext)
 }
