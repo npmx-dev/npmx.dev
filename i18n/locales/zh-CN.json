@@ -1021,7 +1021,8 @@
       "error": "加载组织失败",
       "empty": "未找到组织",
       "view_all": "查看全部"
-    }
+    },
+    "pr": "在 GitHub 上打开 PR #{prNumber}"
   },
   "compare": {
     "packages": {

@@ -219,9 +219,9 @@ onKeyStroke(
         <AppMark class="w-6 h-auto" />
       </NuxtLink>
       <NuxtLink
-        v-if="!isSearchExpanded && !isOnHomePage && prNumber"
+        v-if="!isSearchExpanded && prNumber"
         :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
-        :aria-label="`Open GitHub pull request ${prNumber}`"
+        :aria-label="$t('header.pr', { prNumber })"
         class="sm:hidden"
       >
         <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium ms-2">
@@ -248,7 +248,7 @@ onKeyStroke(
         <NuxtLink
           v-if="prNumber"
           :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
-          :aria-label="`Open GitHub pull request ${prNumber}`"
+          :aria-label="$t('header.pr', { prNumber })"
         >
           <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium ms-2">
             PR #{{ prNumber }}

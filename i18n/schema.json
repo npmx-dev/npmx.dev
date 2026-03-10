@@ -3105,6 +3105,9 @@
             }
           },
           "additionalProperties": false
+        },
+        "pr": {
+          "type": "string"
         }
       },
       "additionalProperties": false

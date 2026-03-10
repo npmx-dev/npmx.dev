@@ -1033,7 +1033,8 @@
       "error": "Failed to load organizations",
       "empty": "No organizations found",
       "view_all": "View all"
-    }
+    },
+    "pr": "Open GitHub pull request #{prNumber}"
   },
   "compare": {
     "packages": {
