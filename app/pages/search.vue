@@ -253,9 +253,10 @@ const effectiveTotal = computed(() => {
 })
 
 const resultsLimitAppliedText = computed<string>(() => {
-  console.log(effectiveTotal.value, visibleResults.value?.totalUnlimited)
-  if (isRelevanceSort.value && effectiveTotal.value < visibleResults.value?.totalUnlimited) {
-    const total = { total: $n(visibleResults.value?.totalUnlimited) }
+  const totalUnlimited = visibleResults.value?.totalUnlimited ?? 0
+
+  if (isRelevanceSort.value && effectiveTotal.value < totalUnlimited) {
+    const total = { total: $n(totalUnlimited) }
 
     return searchProvider.value === 'npm'
       ? $t('search.more_results_available_npm', total)
