@@ -1300,32 +1300,32 @@
     }
   },
   "a11y": {
-    "title": "accessibility",
+    "title": "toegankelijkheid",
     "footer_title": "toegankelijkheid",
-    "welcome": "We want {app} to be usable by as many people as possible.",
+    "welcome": "We willen dat {app} door zoveel mogelijk mensen gebruikt kan worden.",
     "approach": {
-      "title": "Our approach",
+      "title": "Onze aanpak",
       "p1": "We try to follow the Web Content Accessibility Guidelines (WCAG) 2.2 and use them as a reference when building features. We don't claim full conformance with any level of WCAG — accessibility is a continual process and there is always more work to do.",
-      "p2": "This site is an {about}. Accessibility improvements are made incrementally as part of our regular development.",
-      "about_link": "open-source, community-driven project"
+      "p2": "Deze site is een {about}. Toegankelijkheidsverbeteringen worden stapsgewijs doorgevoerd als onderdeel van onze reguliere ontwikkeling.",
+      "about_link": "open source, community gedreven project"
     },
     "measures": {
-      "title": "What we do",
-      "p1": "Some of the things we aim to do across the site:",
-      "li1": "Use semantic HTML and ARIA attributes where appropriate.",
-      "li2": "Use relative text sizes so you can adjust them in your browser.",
-      "li3": "Support keyboard navigation throughout the interface.",
+      "title": "Wat we doen",
+      "p1": "Enkele dingen die we op de hele website willen doen:",
+      "li1": "Gebruik waar nodig semantische HTML- en ARIA-attributen.",
+      "li2": "Gebruik relatieve tekstgroottes, zodat u deze in uw browser kunt aanpassen.",
+      "li3": "Ondersteuning voor toetsenbordnavigatie in de hele interface.",
       "li4": "Respect the prefers-reduced-motion and prefers-color-scheme media queries.",
-      "li5": "Design with sufficient color contrast in mind.",
-      "li6": "Ensure essential content is available without JavaScript, though some interactive features require it."
+      "li5": "Ontwerp met voldoende kleurcontrast in gedachten.",
+      "li6": "Zorg ervoor dat essentiële inhoud beschikbaar is zonder JavaScript, hoewel sommige interactieve functies dit wel vereisen."
     },
     "limitations": {
-      "title": "Known limitations",
+      "title": "Bekende beperkingen",
       "p1": "Some parts of the site — particularly third-party content like package READMEs — may not meet accessibility standards. We are working to improve these areas over time."
     },
     "contact": {
       "title": "Feedback",
-      "p1": "If you encounter an accessibility barrier on {app}, please let us know by opening an issue on our {link}. We take these reports seriously and will do our best to address them.",
+      "p1": "Als u een toegankelijkheidsbarrière tegenkomt op {app}, laat het ons dan weten door een issue aan te maken op onze {link}. We nemen deze meldingen serieus en zullen ons best doen om ze op te lossen.",
       "link": "GitHub repository"
     }
   }
