@@ -37,10 +37,15 @@ function getDeprecatedDepInfo(depName: string) {
   return vulnTree.value.deprecatedPackages.find(p => p.name === depName && p.depth === 'direct')
 }
 
+// Cache URL dependency lookups with computed map
+const urlDepMap = computed(() => {
+  if (!vulnTree.value) return new Map()
+  return new Map(vulnTree.value.urlDependencies.map(dep => [dep.name, dep]))
+})
+
 // Check if a dependency uses git: or https: URL
 function getUrlDepInfo(depName: string) {
-  if (!vulnTree.value) return null
-  return vulnTree.value.urlDependencies.find(p => p.name === depName)
+  return urlDepMap.value.get(depName) ?? null
 }
 
 // Expanded state for each section

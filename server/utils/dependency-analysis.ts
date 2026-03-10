@@ -260,7 +260,13 @@ function getSeverityLevel(vuln: OsvVulnerability): OsvSeverityLevel {
  * Check if a dependency URL is a git: or https: URL that should be flagged.
  */
 function isUrlDependency(url: string): boolean {
-  return url.startsWith('git:') || url.startsWith('https:') || url.startsWith('git+https:')
+  return (
+    url.startsWith('git:') ||
+    url.startsWith('git+') ||
+    url.startsWith('http:') ||
+    url.startsWith('https:') ||
+    url.startsWith('file:')
+  )
 }
 
 /**
@@ -336,8 +342,12 @@ export const analyzeDependencyTree = defineCachedFunction(
         return depthOrder[a.depth] - depthOrder[b.depth]
       })
 
-    // Scan for git: and https: URL dependencies in the root package
-    const urlDependencies = await scanUrlDependencies(name, version, 'root', [])
+    // Scan for git: and https: URL dependencies in all packages
+    const urlDependencies: UrlDependencyInfo[] = []
+    for (const pkg of packages) {
+      const pkgUrlDeps = await scanUrlDependencies(pkg.name, pkg.version, pkg.depth, pkg.path)
+      urlDependencies.push(...pkgUrlDeps)
+    }
 
     // Step 1: Use batch API to find which packages have vulnerabilities
     // This is much faster than individual queries - one request for all packages
