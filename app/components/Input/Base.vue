@@ -14,6 +14,8 @@ const props = withDefaults(
      * @default true
      */
     noCorrect?: boolean
+    /** Keyboard shortcut hint */
+    ariaKeyshortcuts?: string
   }>(),
   {
     size: 'medium',
@@ -27,6 +29,8 @@ const emit = defineEmits<{
 }>()
 
 const el = useTemplateRef('el')
+
+const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
 defineExpose({
   focus: () => el.value?.focus(),
@@ -51,5 +55,6 @@ defineExpose({
       /** Catching Vue render-bug of invalid `disabled=false` attribute in the final HTML */
       disabled ? true : undefined
     "
+    :aria-keyshortcuts="keyboardShortcutsEnabled ? ariaKeyshortcuts : undefined"
   />
 </template>

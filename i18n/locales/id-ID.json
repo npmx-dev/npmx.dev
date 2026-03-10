@@ -77,6 +77,10 @@
     "links": "Tautan",
     "tap_to_search": "Ketuk untuk mencari"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "pengaturan",
     "tagline": "sesuaikan pengalaman npmx Anda",
@@ -122,6 +126,7 @@
     "edit_on_github": "Edit di GitHub",
     "view_guide": "Panduan terjemahan"
   },
+  "error": {},
   "common": {
     "loading": "Memuat...",
     "loading_more": "Memuat lebih banyak...",
@@ -136,7 +141,6 @@
     "skip_link": "Lanjut ke konten utama",
     "warnings": "Peringatan:",
     "go_back_home": "Kembali ke Beranda",
-    "view_on_npm": "lihat di npm",
     "per_week": "/ minggu",
     "vanity_downloads_hint": "Angka statistik: tidak ada paket | Angka statistik: untuk paket yang tampil | Angka statistik: Total dari {count} paket yang tampil",
     "sort": {
@@ -144,7 +148,14 @@
       "role": "peran",
       "members": "anggota"
     },
-    "scroll_to_top": "Kembali ke atas"
+    "scroll_to_top": "Kembali ke atas",
+    "view_on": {
+      "npm": "lihat di npm",
+      "github": "Lihat di GitHub"
+    }
+  },
+  "profile": {
+    "invite": {}
   },
   "package": {
     "not_found": "Paket Tidak Ditemukan",
@@ -249,7 +260,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README tidak tersedia.",
-      "view_on_github": "Lihat di GitHub",
       "toc_title": "Garis Besar",
       "callout": {
         "note": "Catatan",
@@ -314,7 +324,6 @@
       "grouping_versions_only_recent": "Hanya baru-baru ini",
       "grouping_usage_title": "Penggunaan",
       "grouping_usage_all": "Semua",
-      "grouping_usage_low": "Rendah",
       "recent_versions_only_tooltip": "Tampilkan hanya versi yang diterbitkan dalam satu tahun terakhir.",
       "show_low_usage_tooltip": "Sertakan grup versi dengan kurang dari 1% total unduhan.",
       "y_axis_label": "Unduhan",
@@ -895,6 +904,7 @@
         "description": "Obrolkan, ajukan pertanyaan, dan bagikan ide.",
         "cta": "Gabung Discord"
       },
+      "builders": {},
       "follow": {
         "title": "Tetap terbarui",
         "description": "Temukan kabar terbaru tentang npmx.",
@@ -1099,6 +1109,11 @@
     "select_file_prompt": "Pilih berkas dari bilah sisi untuk melihat perbedaan",
     "close_files_panel": "Tutup panel berkas",
     "filter_files_label": "Filter berkas menurut jenis tindakan"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "kebijakan privasi",

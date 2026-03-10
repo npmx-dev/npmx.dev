@@ -77,6 +77,10 @@
     "links": "Linki",
     "tap_to_search": "Dotknij, aby wyszukać"
   },
+  "blog": {
+    "author": {},
+    "atproto": {}
+  },
   "settings": {
     "title": "ustawienia",
     "tagline": "dostosuj npmx do siebie",
@@ -122,6 +126,7 @@
     "edit_on_github": "Edytuj na GitHub",
     "view_guide": "Przewodnik tłumaczeń"
   },
+  "error": {},
   "common": {
     "loading": "Ładowanie...",
     "loading_more": "Ładowanie kolejnych...",
@@ -136,7 +141,6 @@
     "skip_link": "Przejdź do głównej treści",
     "warnings": "Ostrzeżenia:",
     "go_back_home": "Wróć na stronę główną",
-    "view_on_npm": "zobacz na npm",
     "per_week": "/ tydz.",
     "vanity_downloads_hint": "Numer ozdobny: brak wyświetlonych pakietów | Numer ozdobny: dla wyświetlanego pakietu | Numer ozdobny: suma {count} wyświetlanych pakietów | Numer ozdobny: suma {count} wyświetlanych pakietów | Numer ozdobny: suma {count} wyświetlanych pakietów",
     "sort": {
@@ -144,7 +148,14 @@
       "role": "rola",
       "members": "członkowie"
     },
-    "scroll_to_top": "Przewiń na górę"
+    "scroll_to_top": "Przewiń na górę",
+    "view_on": {
+      "npm": "zobacz na npm",
+      "github": "Zobacz na GitHub"
+    }
+  },
+  "profile": {
+    "invite": {}
   },
   "package": {
     "not_found": "Nie znaleziono pakietu",
@@ -249,7 +260,6 @@
     "readme": {
       "title": "README",
       "no_readme": "Brak README.",
-      "view_on_github": "Zobacz na GitHub",
       "toc_title": "Spis treści",
       "callout": {
         "note": "Notatka",
@@ -314,7 +324,6 @@
       "grouping_versions_only_recent": "Tylko ostatnie",
       "grouping_usage_title": "Adopcja",
       "grouping_usage_all": "Wszystkie",
-      "grouping_usage_low": "Niskie",
       "recent_versions_only_tooltip": "Pokaż tylko wersje opublikowane w ciągu ostatniego roku.",
       "show_low_usage_tooltip": "Uwzględnij grupy wersji z mniej niż 1% wszystkich pobrań.",
       "y_axis_label": "Pobrania",
@@ -895,6 +904,7 @@
         "description": "Pogadaj, zadaj pytania i dziel się pomysłami.",
         "cta": "Dołącz do Discorda"
       },
+      "builders": {},
       "follow": {
         "title": "Bądź na bieżąco",
         "description": "Sprawdź, co nowego w npmx.",
@@ -1099,6 +1109,11 @@
     "select_file_prompt": "Wybierz plik z panelu obok, aby zobaczyć zmiany",
     "close_files_panel": "Zamknij panel plików",
     "filter_files_label": "Filtruj pliki według rodzaju zmian"
+  },
+  "pds": {
+    "join": {},
+    "server": {},
+    "community": {}
   },
   "privacy_policy": {
     "title": "polityka prywatności",
