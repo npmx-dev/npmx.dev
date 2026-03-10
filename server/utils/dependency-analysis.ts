@@ -285,11 +285,17 @@ async function scanUrlDependencies(
     if (!versionData) return []
 
     const urlDeps: UrlDependencyInfo[] = []
-    const allDeps = {
-      ...versionData.dependencies,
-      ...versionData.optionalDependencies,
-      ...versionData.devDependencies,
-    }
+    // Include devDependencies only for the root package
+    const allDeps = depth === 'root'
+      ? {
+          ...versionData.dependencies,
+          ...versionData.optionalDependencies,
+          ...versionData.devDependencies,
+        }
+      : {
+          ...versionData.dependencies,
+          ...versionData.optionalDependencies,
+        }
 
     for (const [depName, depUrl] of Object.entries(allDeps || {})) {
       if (isUrlDependency(depUrl)) {
@@ -343,11 +349,12 @@ export const analyzeDependencyTree = defineCachedFunction(
       })
 
     // Scan for git: and https: URL dependencies in all packages
-    const urlDependencies: UrlDependencyInfo[] = []
-    for (const pkg of packages) {
-      const pkgUrlDeps = await scanUrlDependencies(pkg.name, pkg.version, pkg.depth, pkg.path)
-      urlDependencies.push(...pkgUrlDeps)
-    }
+    const urlDepResults = await mapWithConcurrency(
+      packages,
+      pkg => scanUrlDependencies(pkg.name, pkg.version, pkg.depth, pkg.path),
+      OSV_DETAIL_CONCURRENCY,
+    )
+    const urlDependencies = urlDepResults.flat()
 
     // Step 1: Use batch API to find which packages have vulnerabilities
     // This is much faster than individual queries - one request for all packages
