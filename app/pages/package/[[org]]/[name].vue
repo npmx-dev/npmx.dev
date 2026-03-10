@@ -1394,7 +1394,7 @@ const showSkeleton = shallowRef(false)
         <!-- Size / dependency increase notice -->
         <PackageSizeIncrease v-if="sizeDiff" :diff="sizeDiff" />
         <!-- Positive signal: no direct runtime dependencies -->
-        <PackageZeroDirectDependencies v-if="hasZeroDirectDependencies" />
+        <PackageZeroDependencies v-if="hasZeroDirectDependencies" />
         <!-- Vulnerability scan -->
         <ClientOnly>
           <PackageVulnerabilityTree

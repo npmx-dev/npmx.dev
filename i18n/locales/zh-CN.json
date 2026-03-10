@@ -404,8 +404,10 @@
       "outdated_minor": "落后 {count} 个次要版本（最新：{latest}）",
       "outdated_patch": "有可用的补丁更新（最新：{latest}）",
       "has_replacement": "该依赖有推荐的替代包。",
-      "zero_direct_banner_title": "0 个直接依赖",
-      "zero_direct_banner_desc": "这个包有利于你维护更小体积的 node_modules ，并降低未来安全问题的风险。"
+      "zero_dependencies": {
+        "title": "0 个直接依赖",
+        "description": "这个包有利于你维护更小体积的 node_modules ，并降低未来安全问题的风险。"
+      }
     },
     "peer_dependencies": {
       "title": "对等依赖（{count} 个）",

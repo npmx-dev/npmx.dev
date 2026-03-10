@@ -414,8 +414,10 @@
       "outdated_minor": "{count} minor version behind (latest: {latest}) | {count} minor versions behind (latest: {latest})",
       "outdated_patch": "Patch update available (latest: {latest})",
       "has_replacement": "This dependency has suggested replacements",
-      "zero_direct_banner_title": "0 direct dependencies",
-      "zero_direct_banner_desc": "This package can help keep node_modules smaller and reduce the risk of upcoming security issues."
+      "zero_dependencies": {
+        "title": "0 dependencies",
+        "description": "This package can help keep node_modules smaller and reduce the risk of upcoming security issues."
+      }
     },
     "peer_dependencies": {
       "title": "Peer Dependency ({count}) | Peer Dependencies ({count})",
