@@ -297,19 +297,24 @@ async function scanUrlDependencies(
           ...versionData.optionalDependencies,
         }
 
+    // URL dependencies are children of the current package, so their depth is one level deeper
+    const dependencyDepth: DependencyDepth = depth === 'root' ? 'direct' : 'transitive'
+
     for (const [depName, depUrl] of Object.entries(allDeps || {})) {
       if (isUrlDependency(depUrl)) {
         urlDeps.push({
           name: depName,
           url: depUrl,
-          depth,
+          depth: dependencyDepth,
           path: [...path, `${depName}@${depUrl}`],
         })
       }
     }
 
     return urlDeps
-  } catch {
+  } catch (error) {
+    // oxlint-disable-next-line no-console -- log URL dependency scan failures for debugging
+    console.warn(`[dep-analysis] URL dependency scan failed for ${name}@${version}:`, error)
     return []
   }
 }
