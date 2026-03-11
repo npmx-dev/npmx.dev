@@ -655,7 +655,7 @@ const showSkeleton = shallowRef(false)
       <article id="package-article" :class="$style.packagePage">
         <!-- Package details -->
         <section :class="$style.areaDetails">
-          <div class="mb-4">
+          <div class="mb-4 pt-4">
             <!-- Description container with min-height to prevent CLS -->
             <div class="max-w-2xl">
               <p v-if="pkgDescription" class="text-fg-muted text-base m-0">
@@ -1155,7 +1155,7 @@ const showSkeleton = shallowRef(false)
         </section>
 
         <PackageSidebar :class="$style.areaSidebar">
-          <div class="flex flex-col gap-4 sm:gap-6 xl:(pt-2)">
+          <div class="flex flex-col gap-4 sm:gap-6 xl:pt-4">
             <!-- Team access controls (for scoped packages when connected) -->
             <ClientOnly>
               <PackageAccessControls :package-name="pkg.name" />
@@ -1258,7 +1258,6 @@ const showSkeleton = shallowRef(false)
   /* Mobile: single column, sidebar above readme */
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    'header'
     'details'
     'install'
     'vulns'
@@ -1266,12 +1265,11 @@ const showSkeleton = shallowRef(false)
     'readme';
 }
 
-/* Tablet/medium: header/install/vulns full width, readme+sidebar side by side */
+/* Tablet/medium: install/vulns full width, readme+sidebar side by side */
 @media (min-width: 1024px) {
   .packagePage {
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
-      'header  header'
       'details details'
       'install install'
       'vulns   vulns'
@@ -1285,7 +1283,6 @@ const showSkeleton = shallowRef(false)
   .packagePage {
     grid-template-columns: 1fr 20rem;
     grid-template-areas:
-      'header  sidebar'
       'details sidebar'
       'install sidebar'
       'vulns   sidebar'
@@ -1297,10 +1294,6 @@ const showSkeleton = shallowRef(false)
 .packagePage > * {
   max-width: 100%;
   min-width: 0;
-}
-
-.areaHeader {
-  grid-area: header;
 }
 
 .areaDetails {
