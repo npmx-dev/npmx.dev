@@ -31,12 +31,12 @@ export function applyHampelCorrection(
 ): EvolutionData {
   // halfWindow controls how many neighbors on each side to consider.
   // A window of 3 means we look at 7 points total (3 left + current + 3 right).
-  const halfWindow = opts?.halfWindow ?? DEFAULT_HALF_WINDOW
+  const halfWindow = opts?.halfWindow || DEFAULT_HALF_WINDOW
 
   // threshold controls sensitivity. A value of 3 means a point must deviate
   // more than 3 scaled MADs from the local median to be flagged.
   // Higher = less sensitive, lower = more aggressive filtering.
-  const threshold = opts?.threshold ?? DEFAULT_THRESHOLD
+  const threshold = opts?.threshold || DEFAULT_THRESHOLD
 
   // Not enough data to form a full window — return as-is.
   if (data.length < halfWindow * 2 + 1) return data

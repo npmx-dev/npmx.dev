@@ -45,6 +45,8 @@ export interface AppSettings {
     averageWindow: number
     smoothingTau: number
     anomaliesFixed: boolean
+    hampelWindow: number
+    hampelThreshold: number
     predictionPoints: number
   }
 }
@@ -69,6 +71,8 @@ const DEFAULT_SETTINGS: AppSettings = {
     averageWindow: 0,
     smoothingTau: 1,
     anomaliesFixed: true,
+    hampelWindow: 3,
+    hampelThreshold: 3,
     predictionPoints: 4,
   },
 }

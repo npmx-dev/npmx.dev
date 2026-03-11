@@ -186,7 +186,10 @@ const correctedDownloads = computed<WeeklyDataPoint[]>(() => {
   let data = weeklyDownloads.value as WeeklyDataPoint[]
   if (!data.length) return data
   if (settings.value.chartFilter.anomaliesFixed) {
-    data = applyHampelCorrection(data) as WeeklyDataPoint[]
+    data = applyHampelCorrection(data, {
+      halfWindow: settings.value.chartFilter.hampelWindow,
+      threshold: settings.value.chartFilter.hampelThreshold,
+    }) as WeeklyDataPoint[]
   }
   data = applyDataCorrection(data, settings.value.chartFilter) as WeeklyDataPoint[]
   return data

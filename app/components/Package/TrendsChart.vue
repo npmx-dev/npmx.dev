@@ -977,7 +977,10 @@ const effectiveDataSingle = computed<EvolutionData>(() => {
 
   if (isDownloadsMetric.value && data.length) {
     if (settings.value.chartFilter.anomaliesFixed) {
-      data = applyHampelCorrection(data)
+      data = applyHampelCorrection(data, {
+        halfWindow: settings.value.chartFilter.hampelWindow,
+        threshold: settings.value.chartFilter.hampelThreshold,
+      })
     }
   }
 
@@ -1021,7 +1024,10 @@ const chartData = computed<{
     let data = state.evolutionsByPackage[pkg] ?? []
     if (isDownloadsMetric.value && data.length) {
       if (settings.value.chartFilter.anomaliesFixed) {
-        data = applyHampelCorrection(data)
+        data = applyHampelCorrection(data, {
+          halfWindow: settings.value.chartFilter.hampelWindow,
+          threshold: settings.value.chartFilter.hampelThreshold,
+        })
       }
     }
     const points = extractSeriesPoints(granularity, data)
@@ -1695,6 +1701,36 @@ watch(selectedMetric, value => {
               min="0"
               max="30"
               step="1"
+              class="accent-[var(--accent-color,var(--fg-subtle))]"
+            />
+          </label>
+        </div>
+        <div v-if="showCorrectionControls" class="grid grid-cols-2 sm:flex items-end gap-3">
+          <label class="flex flex-col gap-1 flex-1">
+            <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
+              {{ $t('package.trends.hampel_window') }}
+              <span class="text-fg-muted">({{ settings.chartFilter.hampelWindow }})</span>
+            </span>
+            <input
+              v-model.number="settings.chartFilter.hampelWindow"
+              type="range"
+              min="1"
+              max="10"
+              step="1"
+              class="accent-[var(--accent-color,var(--fg-subtle))]"
+            />
+          </label>
+          <label class="flex flex-col gap-1 flex-1">
+            <span class="text-2xs font-mono text-fg-subtle tracking-wide uppercase">
+              {{ $t('package.trends.hampel_threshold') }}
+              <span class="text-fg-muted">({{ settings.chartFilter.hampelThreshold }})</span>
+            </span>
+            <input
+              v-model.number="settings.chartFilter.hampelThreshold"
+              type="range"
+              min="1"
+              max="10"
+              step="0.5"
               class="accent-[var(--accent-color,var(--fg-subtle))]"
             />
           </label>

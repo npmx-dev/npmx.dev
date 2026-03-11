@@ -470,6 +470,8 @@
       "average_window": "Average window",
       "smoothing": "Smoothing",
       "prediction": "Prediction",
+      "hampel_window": "Hampel window",
+      "hampel_threshold": "Hampel threshold",
       "known_anomalies": "Known anomalies",
       "known_anomalies_description": "Interpolates over known download spikes caused by bots or CI issues.",
       "apply_correction": "Apply correction",

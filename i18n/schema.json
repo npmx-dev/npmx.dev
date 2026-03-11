@@ -1414,6 +1414,12 @@
             "prediction": {
               "type": "string"
             },
+            "hampel_window": {
+              "type": "string"
+            },
+            "hampel_threshold": {
+              "type": "string"
+            },
             "known_anomalies": {
               "type": "string"
             },
