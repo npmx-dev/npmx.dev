@@ -460,11 +460,6 @@
       "smoothing": "Hamarlama",
       "known_anomalies": "Bilinən anomaliyalar",
       "known_anomalies_description": "Botlar və ya CI problemlərindən yaranan bilinən endirmə sıçrayışlarını interpolyasiya edir.",
-      "known_anomalies_ranges": "Anomaliya aralıqları",
-      "known_anomalies_range": "{start}-dən {end}-ə",
-      "known_anomalies_range_named": "{packageName}: {start}-dən {end}-ə",
-      "known_anomalies_none": "Bu paket üçün bilinən anomaliya yoxdur. | Bu paketlər üçün bilinən anomaliya yoxdur.",
-      "known_anomalies_contribute": "Anomaliya məlumatı əlavə et",
       "apply_correction": "Düzəliş tətbiq et",
       "copy_alt": {
         "trend_none": "əsasən sabit",
@@ -1142,11 +1137,11 @@
         "title": "Trendləri Müqayisə Et"
       }
     },
-    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
-    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "file_changes": "Fayl Dəyişiklikləri",
     "files_count": "{count} fayl",
     "lines_hidden": "{count} sətir gizlədilib",
+    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
+    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
     "compare_versions": "fərq",
     "compare_versions_title": "Versiyaları müqayisə et",
     "summary": "Xülasə",
