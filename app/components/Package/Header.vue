@@ -221,6 +221,7 @@ const likeAction = async () => {
     ref="header"
     class="bg-bg sticky top-14 z-1 border-b border-border flex flex-col md:flex-row-reverse items-baseline justify-between gap-x-2 gap-y-1 flex-wrap min-w-0 pt-2"
     :class="[$style.packageHeader]"
+    data-testid="package-subheader"
   >
     <div
       class="flex items-center max-md:justify-between max-md:w-full max-md:flex-row-reverse gap-2"
