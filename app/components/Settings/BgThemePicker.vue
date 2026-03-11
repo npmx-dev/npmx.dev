@@ -3,12 +3,21 @@ const { backgroundThemes, selectedBackgroundTheme, setBackgroundTheme } = useBac
 
 onPrehydrate(el => {
   const settings = JSON.parse(localStorage.getItem('npmx-settings') || '{}')
+  const defaultId = 'neutral'
   const id = settings.preferredBackgroundTheme
   if (id) {
     const input = el.querySelector<HTMLInputElement>(`input[value="${id}"]`)
     if (input) {
       input.checked = true
       input.setAttribute('checked', '')
+    }
+    // Remove checked from the server-default (clear button, value="")
+    if (id !== defaultId) {
+      const clearInput = el.querySelector<HTMLInputElement>(`input[value="${defaultId}"]`)
+      if (clearInput) {
+        clearInput.checked = false
+        clearInput.removeAttribute('checked')
+      }
     }
   }
 })
@@ -30,7 +39,10 @@ onPrehydrate(el => {
         name="background-theme"
         class="sr-only"
         :value="theme.id"
-        :checked="selectedBackgroundTheme === theme.id"
+        :checked="
+          selectedBackgroundTheme === theme.id ||
+          (!selectedBackgroundTheme && theme.id === 'neutral')
+        "
         :aria-label="theme.name"
         @change="setBackgroundTheme(theme.id)"
       />

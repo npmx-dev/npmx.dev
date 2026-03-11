@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite-plus'
 import { defineVitestProject } from '@nuxt/test-utils/config'
-import { playwright } from '@vitest/browser-playwright'
+import { playwright } from 'vite-plus/test/browser-playwright'
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
 
@@ -12,6 +12,7 @@ export default defineConfig({
         resolve: {
           alias: {
             '#shared': `${rootDir}/shared`,
+            '#server': `${rootDir}/server`,
           },
         },
         test: {

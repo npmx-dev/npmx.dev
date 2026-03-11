@@ -101,7 +101,6 @@
     "skip_link": "Pular para o conteúdo principal",
     "warnings": "Avisos:",
     "go_back_home": "Voltar para a página inicial",
-    "view_on_npm": "visualizar no npm",
     "per_week": "/ semana",
     "vanity_downloads_hint": "Número de vaidade: nenhum pacote exibido | Número de vaidade: para o pacote exibido | Número de vaidade: Soma de {count} pacotes exibidos",
     "sort": {
@@ -109,7 +108,11 @@
       "role": "função",
       "members": "membros"
     },
-    "scroll_to_top": "Rolar para o topo"
+    "scroll_to_top": "Rolar para o topo",
+    "view_on": {
+      "npm": "visualizar no npm",
+      "github": "Ver no GitHub"
+    }
   },
   "package": {
     "not_found": "Pacote não encontrado",
@@ -196,7 +199,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README não disponível.",
-      "view_on_github": "Ver no GitHub",
       "callout": {}
     },
     "provenance_section": {},
@@ -273,9 +275,7 @@
       "items": {}
     },
     "downloads": {
-      "title": "Downloads Semanais",
-      "analyze": "Analisar downloads",
-      "modal_title": "Downloads"
+      "title": "Downloads Semanais"
     },
     "install_scripts": {
       "title": "Scripts de Instalação",
@@ -363,9 +363,6 @@
   "connector": {
     "modal": {
       "title": "Conector Local",
-      "contributor_badge": "Apenas contribuidores",
-      "contributor_notice": "O conector ainda não foi publicado no npm. Veja o {link} para saber como executar localmente.",
-      "contributor_link": "guia de contribuição",
       "connected": "Conectado",
       "connected_as_user": "Conectado como ~{user}",
       "connected_hint": "Agora você pode gerenciar pacotes e organizações a partir da interface web.",
@@ -661,7 +658,6 @@
       "paginated": "Paginada",
       "items_per_page": "Itens por página",
       "per_page": "{count} / página",
-      "all_yolo": "Todos (YOLO)",
       "showing": "{start}-{end} de {total}",
       "previous": "Página anterior",
       "next": "Próxima página",
@@ -705,6 +701,7 @@
         "managers": "gerenciadores de pacotes"
       }
     },
+    "team": {},
     "contributors": {
       "title": "Contribuidores",
       "description": "npmx é totalmente de código aberto, construído por uma comunidade incrível de contribuidores. Junte-se a nós e vamos construir juntos a experiência de navegação npm que sempre quisemos.",
@@ -850,5 +847,11 @@
     "your_rights": {},
     "contact": {},
     "changes": {}
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }

@@ -120,6 +120,14 @@ export function transformPackument(
     license = license.type
   }
 
+  // Extract storybook field from the requested version (custom package.json field)
+  const requestedPkgVersion = requestedVersion ? pkg.versions[requestedVersion] : null
+  const rawStorybook = requestedPkgVersion?.storybook
+  const storybook =
+    rawStorybook && typeof rawStorybook === 'object' && 'url' in rawStorybook
+      ? ({ url: rawStorybook.url } as { url: string })
+      : undefined
+
   return {
     '_id': pkg._id,
     '_rev': pkg._rev,
@@ -134,6 +142,7 @@ export function transformPackument(
     'keywords': pkg.keywords,
     'repository': pkg.repository,
     'bugs': pkg.bugs,
+    ...(storybook && { storybook }),
     'requestedVersion': versionData,
     'versions': filteredVersions,
     'securityVersions': securityVersions,

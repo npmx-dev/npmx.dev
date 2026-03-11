@@ -1,37 +1,14 @@
 <script setup lang="ts">
-import { debounce } from 'perfect-debounce'
 import { SHOWCASED_FRAMEWORKS } from '~/utils/frameworks'
 
-const { isAlgolia } = useSearchProvider()
-
-const searchQuery = shallowRef('')
+const { model: searchQuery, startSearch } = useGlobalSearch()
 const isSearchFocused = shallowRef(false)
 
 async function search() {
-  const query = searchQuery.value.trim()
-  if (!query) return
-  await navigateTo({
-    path: '/search',
-    query: query ? { q: query } : undefined,
-  })
-  const newQuery = searchQuery.value.trim()
-  if (newQuery !== query) {
-    await search()
-  }
+  startSearch()
 }
 
-const handleInputNpm = debounce(search, 250, { leading: true, trailing: true })
-const handleInputAlgolia = debounce(search, 80, { leading: true, trailing: true })
-
-function handleInput() {
-  if (isTouchDevice()) {
-    search()
-  } else if (isAlgolia.value) {
-    handleInputAlgolia()
-  } else {
-    handleInputNpm()
-  }
-}
+const { env } = useAppConfig().buildInfo
 
 useSeoMeta({
   title: () => $t('seo.home.title'),
@@ -57,12 +34,15 @@ defineOgImageComponent('Default', {
       >
         <h1
           dir="ltr"
-          class="flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-2 motion-safe:animate-fade-in motion-safe:animate-fill-both"
+          class="relative flex items-center justify-center gap-2 header-logo font-mono text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight mb-6 motion-safe:animate-fade-in motion-safe:animate-fill-both"
         >
-          <AppLogo
-            class="w-12 h-12 -ms-3 sm:w-20 sm:h-20 sm:-ms-5 md:w-24 md:h-24 md:-ms-6 rounded-2xl sm:rounded-3xl"
-          />
-          <span class="pb-4">npmx</span>
+          <AppLogo class="w-42 h-auto sm:w-58 md:w-70" />
+          <span
+            aria-hidden="true"
+            class="text-sm sm:text-base md:text-lg transform-origin-br font-mono tracking-widest text-accent absolute -bottom-4 -inset-ie-1.5"
+          >
+            {{ env === 'release' ? 'alpha' : env }}
+          </span>
         </h1>
 
         <p
@@ -71,27 +51,32 @@ defineOgImageComponent('Default', {
         >
           {{ $t('tagline') }}
         </p>
-
         <search
-          class="w-full max-w-xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
+          class="w-full max-w-2xl motion-safe:animate-slide-up motion-safe:animate-fill-both"
           style="animation-delay: 0.2s"
         >
-          <form method="GET" action="/search" class="relative" @submit.prevent.trim="search">
+          <form
+            method="GET"
+            action="/search"
+            class="relative grid justify-items-center gap-4"
+            @submit.prevent.trim="search"
+          >
             <label for="home-search" class="sr-only">
               {{ $t('search.label') }}
             </label>
 
-            <div class="relative group" :class="{ 'is-focused': isSearchFocused }">
+            <div class="relative group w-full max-w-xl" :class="{ 'is-focused': isSearchFocused }">
               <div
                 class="absolute z-1 -inset-px pointer-events-none rounded-lg bg-gradient-to-r from-fg/0 to-accent/5 opacity-0 transition-opacity duration-500 blur-sm group-[.is-focused]:opacity-100"
               />
 
               <div class="search-box relative flex items-center">
-                <span
-                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1"
+                <kbd
+                  class="absolute inset-is-4 text-fg-subtle font-mono text-lg pointer-events-none transition-colors duration-200 motion-reduce:transition-none [.group:hover:not(:focus-within)_&]:text-fg/80 group-focus-within:text-accent z-1 rounded"
+                  aria-hidden="true"
                 >
                   /
-                </span>
+                </kbd>
 
                 <InputBase
                   id="home-search"
@@ -103,16 +88,17 @@ defineOgImageComponent('Default', {
                   no-correct
                   size="large"
                   class="w-full ps-8 pe-24"
+                  aria-describedby="instant-search-advisory"
                   @focus="isSearchFocused = true"
                   @blur="isSearchFocused = false"
-                  @input="handleInput"
+                  ariaKeyshortcuts="/"
                 />
 
                 <ButtonBase
                   type="submit"
                   variant="primary"
-                  class="absolute inset-ie-2"
-                  classicon="i-carbon:search"
+                  class="absolute inset-ie-2 border-transparent"
+                  classicon="i-lucide:search"
                 >
                   <span class="sr-only sm:not-sr-only">
                     {{ $t('search.button') }}
@@ -120,6 +106,8 @@ defineOgImageComponent('Default', {
                 </ButtonBase>
               </div>
             </div>
+
+            <InstantSearch />
           </form>
         </search>
 
@@ -128,7 +116,7 @@ defineOgImageComponent('Default', {
 
       <nav
         :aria-label="$t('nav.popular_packages')"
-        class="pt-4 pb-36 sm:pb-40 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both"
+        class="pt-4 pb-36 sm:pb-40 text-center motion-safe:animate-fade-in motion-safe:animate-fill-both max-w-xl mx-auto"
         style="animation-delay: 0.3s"
       >
         <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 list-none m-0 p-0">

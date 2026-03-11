@@ -1,6 +1,8 @@
 import process from 'node:process'
 import { currentLocales } from './config/i18n'
-import { isCI, provider } from 'std-env'
+import { isCI, isTest, provider } from 'std-env'
+
+const isStorybook = process.env.STORYBOOK === 'true' || process.env.VITEST_STORYBOOK === 'true'
 
 export default defineNuxtConfig({
   modules: [
@@ -8,13 +10,12 @@ export default defineNuxtConfig({
     '@nuxtjs/html-validator',
     '@nuxt/scripts',
     '@nuxt/a11y',
-    '@nuxt/fonts',
     'nuxt-og-image',
     '@nuxt/test-utils',
     '@vite-pwa/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
-    '@nuxtjs/color-mode',
+    ...(isStorybook ? [] : ['@nuxt/fonts', '@nuxtjs/color-mode']),
   ],
 
   $test: {
@@ -30,10 +31,15 @@ export default defineNuxtConfig({
     storageKey: 'npmx-color-mode',
   },
 
-  css: ['~/assets/main.css', 'vue-data-ui/style.css'],
+  css: ['~/assets/main.css'],
 
   runtimeConfig: {
     sessionPassword: '',
+    imageProxySecret: '',
+    github: {
+      orgToken: '',
+    },
+    oauthJwkOne: process.env.OAUTH_JWK_ONE || undefined,
     // Upstash Redis for distributed OAuth token refresh locking in production
     upstash: {
       redisRestUrl: process.env.UPSTASH_KV_REST_API_URL || process.env.KV_REST_API_URL || '',
@@ -98,7 +104,21 @@ export default defineNuxtConfig({
       isr: {
         expiration: 60 * 60 /* one hour */,
         passQuery: true,
-        allowQuery: ['color', 'labelColor', 'label', 'name'],
+        allowQuery: ['color', 'labelColor', 'label', 'name', 'style'],
+      },
+    },
+    '/api/registry/image-proxy': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: ['url', 'sig'],
+      },
+    },
+    '/api/registry/downloads/**': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: ['mode', 'filterOldVersions', 'filterThreshold'],
       },
     },
     '/api/registry/docs/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -112,9 +132,27 @@ export default defineNuxtConfig({
     '/_avatar/**': { isr: 3600, proxy: 'https://www.gravatar.com/avatar/**' },
     '/opensearch.xml': { isr: true },
     '/oauth-client-metadata.json': { prerender: true },
+    '/.well-known/jwks.json': { prerender: true },
+    '/.well-known/site.standard.publication': { prerender: true },
     // never cache
     '/api/auth/**': { isr: false, cache: false },
     '/api/social/**': { isr: false, cache: false },
+    '/api/atproto/bluesky-comments': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: ['uri'],
+      },
+      cache: { maxAge: 3600 },
+    },
+    '/api/atproto/bluesky-author-profiles': {
+      isr: {
+        expiration: 60 * 60 /* one hour */,
+        passQuery: true,
+        allowQuery: ['authors'],
+      },
+      cache: { maxAge: 3600 },
+    },
     '/api/opensearch/suggestions': {
       isr: {
         expiration: 60 * 60 * 24 /* one day */,
@@ -123,13 +161,10 @@ export default defineNuxtConfig({
       },
     },
     // pages
-    '/package/:name': getISRConfig(60, { fallback: 'html' }),
+    '/package/**': getISRConfig(60, { fallback: 'html' }),
     '/package/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:name/v/:version': getISRConfig(60, { fallback: 'html' }),
     '/package/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:org/:name': getISRConfig(60, { fallback: 'html' }),
     '/package/:org/:name/_payload.json': getISRConfig(60, { fallback: 'json' }),
-    '/package/:org/:name/v/:version': getISRConfig(60, { fallback: 'html' }),
     '/package/:org/:name/v/:version/_payload.json': getISRConfig(60, { fallback: 'json' }),
     // infinite cache (versioned - doesn't change)
     '/package-code/**': { isr: true, cache: { maxAge: 365 * 24 * 60 * 60 } },
@@ -138,20 +173,32 @@ export default defineNuxtConfig({
     '/': { prerender: true },
     '/200.html': { prerender: true },
     '/about': { prerender: true },
+    '/accessibility': { prerender: true },
     '/privacy': { prerender: true },
     '/search': { isr: false, cache: false }, // never cache
     '/settings': { prerender: true },
+    '/recharging': { prerender: true },
+    '/pds': { isr: 86400 }, // revalidate daily
     // proxy for insights
-    '/_v/script.js': { proxy: 'https://npmx.dev/_vercel/insights/script.js' },
+    '/blog/**': { prerender: true },
+    '/_v/script.js': {
+      proxy: 'https://npmx.dev/_vercel/insights/script.js',
+    },
     '/_v/view': { proxy: 'https://npmx.dev/_vercel/insights/view' },
     '/_v/event': { proxy: 'https://npmx.dev/_vercel/insights/event' },
     '/_v/session': { proxy: 'https://npmx.dev/_vercel/insights/session' },
+    // lunaria status.json
+    '/lunaria/status.json': {
+      headers: {
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
+    },
   },
 
   experimental: {
     entryImportMap: false,
     typescriptPlugin: true,
-    viteEnvironmentApi: true,
+    viteEnvironmentApi: !isStorybook,
     typedPages: true,
   },
 
@@ -188,6 +235,10 @@ export default defineNuxtConfig({
         driver: 'fsLite',
         base: './.cache/fetch',
       },
+      'payload-cache': {
+        driver: 'fsLite',
+        base: './.cache/payload',
+      },
       'atproto': {
         driver: 'fsLite',
         base: './.cache/atproto',
@@ -198,9 +249,15 @@ export default defineNuxtConfig({
         include: ['../test/unit/server/**/*.ts'],
       },
     },
+    replace: {
+      'import.meta.test': isTest,
+    },
   },
 
   fonts: {
+    providers: {
+      fontshare: false,
+    },
     families: [
       {
         name: 'Geist',
@@ -219,19 +276,33 @@ export default defineNuxtConfig({
 
   htmlValidator: {
     enabled: !isCI || (provider !== 'vercel' && !!process.env.VALIDATE_HTML),
+    options: {
+      rules: { 'meta-refresh': 'off' },
+    },
     failOnError: true,
   },
 
   ogImage: {
+    enabled: !isStorybook,
     defaults: {
       component: 'Default',
     },
+    fonts: [
+      { name: 'Geist', weight: 400, path: '/fonts/Geist-Regular.ttf' },
+      { name: 'Geist', weight: 500, path: '/fonts/Geist-Medium.ttf' },
+      { name: 'Geist', weight: 600, path: '/fonts/Geist-SemiBold.ttf' },
+      { name: 'Geist', weight: 700, path: '/fonts/Geist-Bold.ttf' },
+      { name: 'Geist Mono', weight: 400, path: '/fonts/GeistMono-Regular.ttf' },
+      { name: 'Geist Mono', weight: 500, path: '/fonts/GeistMono-Medium.ttf' },
+      { name: 'Geist Mono', weight: 700, path: '/fonts/GeistMono-Bold.ttf' },
+    ],
   },
 
   pwa: {
     // Disable service worker
     disable: true,
     pwaAssets: {
+      disabled: isStorybook,
       config: false,
     },
     manifest: {
@@ -272,6 +343,9 @@ export default defineNuxtConfig({
       compilerOptions: {
         noUnusedLocals: true,
         allowImportingTsExtensions: true,
+        paths: {
+          '#cli/*': ['../cli/src/*'],
+        },
       },
       include: ['../test/unit/app/**/*.ts'],
     },
@@ -281,8 +355,13 @@ export default defineNuxtConfig({
     nodeTsConfig: {
       compilerOptions: {
         allowImportingTsExtensions: true,
+        paths: {
+          '#cli/*': ['../cli/src/*'],
+          '#server/*': ['../server/*'],
+          '#shared/*': ['../shared/*'],
+        },
       },
-      include: ['../*.ts'],
+      include: ['../*.ts', '../test/e2e/**/*.ts'],
     },
   },
 
@@ -301,6 +380,8 @@ export default defineNuxtConfig({
         'fast-npm-meta',
         '@floating-ui/vue',
         'algoliasearch/lite',
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
       ],
     },
   },

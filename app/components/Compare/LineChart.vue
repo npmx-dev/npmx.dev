@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DownloadAnalytics from '../Package/DownloadAnalytics.vue'
+import TrendsChart from '../Package/TrendsChart.vue'
 
 const { packages } = defineProps<{
   packages: string[]
@@ -8,6 +8,6 @@ const { packages } = defineProps<{
 
 <template>
   <div class="font-mono">
-    <DownloadAnalytics :package-names="packages" :in-modal="false" />
+    <TrendsChart :package-names="packages" :in-modal="false" show-facet-selector />
   </div>
 </template>

@@ -5,10 +5,12 @@ const { settings } = useSettings()
 const { locale, locales, setLocale: setNuxti18nLocale } = useI18n()
 const colorMode = useColorMode()
 const { currentLocaleStatus, isSourceLocale } = useI18nStatus()
+const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
 // Escape to go back (but not when focused on form elements or modal is open)
 onKeyStroke(
   e =>
+    keyboardShortcutsEnabled.value &&
     isKeyWithoutModifiers(e, 'Escape') &&
     !isEditableElement(e.target) &&
     !document.documentElement.matches('html:has(:modal)'),
@@ -51,11 +53,11 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </h1>
           <button
             type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0 p-1.5 -mx-1.5"
+            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >
-            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="sr-only sm:not-sr-only">{{ $t('nav.back') }}</span>
           </button>
         </div>
@@ -143,7 +145,7 @@ const setLocale: typeof setNuxti18nLocale = locale => {
           </div>
         </section>
 
-        <!-- DATA SOURCE Section -->
+        <!-- SEARCH FEATURES Section -->
         <section>
           <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.search') }}
@@ -199,12 +201,22 @@ const setLocale: typeof setNuxti18nLocale = locale => {
                 class="inline-flex items-center gap-1 text-xs text-fg-subtle hover:text-fg-muted transition-colors mt-2"
               >
                 {{ $t('search.algolia_disclaimer') }}
-                <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+                <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
               </a>
             </div>
+
+            <div class="border-t border-border my-4" />
+
+            <!-- Instant Search toggle -->
+            <SettingsToggle
+              :label="$t('settings.instant_search')"
+              :description="$t('settings.instant_search_description')"
+              v-model="settings.instantSearch"
+            />
           </div>
         </section>
 
+        <!-- LANGUAGE Section -->
         <section>
           <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
             {{ $t('settings.sections.language') }}
@@ -249,15 +261,29 @@ const setLocale: typeof setNuxti18nLocale = locale => {
             <!-- Simple help link for source locale -->
             <template v-else>
               <a
-                href="https://github.com/npmx-dev/npmx.dev/tree/main/i18n/locales"
+                href="https://i18n.npmx.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 text-sm text-fg-muted hover:text-fg transition-colors duration-200 focus-visible:outline-accent/70 rounded"
               >
-                <span class="i-carbon:logo-github w-4 h-4" aria-hidden="true" />
+                <span class="i-lucide:languages w-4 h-4" aria-hidden="true" />
                 {{ $t('settings.help_translate') }}
               </a>
             </template>
+          </div>
+        </section>
+
+        <!-- KEYBOARD SHORTCUTS Section -->
+        <section>
+          <h2 class="text-xs text-fg-muted uppercase tracking-wider mb-4">
+            {{ $t('settings.sections.keyboard_shortcuts') }}
+          </h2>
+          <div class="bg-bg-subtle border border-border rounded-lg p-4 sm:p-6">
+            <SettingsToggle
+              :label="$t('settings.keyboard_shortcuts_enabled')"
+              :description="$t('settings.keyboard_shortcuts_enabled_description')"
+              v-model="settings.keyboardShortcuts"
+            />
           </div>
         </section>
       </div>

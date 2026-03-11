@@ -2,13 +2,13 @@
   "$schema": "../schema.json",
   "seo": {
     "home": {
-      "title": "npmx - Il browser dei pacchetti npm",
-      "description": "Un browser migliore per il registro npm. Cerca, naviga ed esplora i pacchetti con un'interfaccia moderna."
+      "title": "npmx - Il browser dei pacchetti per il registro npm",
+      "description": "un browser veloce e moderno per il registro npm. Cerca, naviga ed esplora i pacchetti con un'interfaccia moderna."
     }
   },
   "built_at": "compilato {0}",
   "alt_logo": "logo npmx",
-  "tagline": "un browser migliore per il registro npm",
+  "tagline": "un browser veloce e moderno per il registro npm",
   "non_affiliation_disclaimer": "non affiliato con npm, Inc.",
   "trademark_disclaimer": "npm è un marchio registrato da npm, Inc. Questo sito non è affiliato con npm, Inc.",
   "footer": {
@@ -16,10 +16,24 @@
     "docs": "docs",
     "source": "codice",
     "social": "social",
-    "chat": "chat"
+    "chat": "chat",
+    "keyboard_shortcuts": "shortcuts tastiera"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "Globali",
+      "search": "Cerca",
+      "package": "Pacchetto"
+    },
+    "focus_search": "Focus cerca",
+    "show_kbd_hints": "Evidenzia suggerimenti da tastiera",
+    "settings": "Apri impostazioni",
+    "compare": "Apri confronto",
+    "compare_from_package": "Apri confronto (con il pacchetto attuale)",
+    "navigate_results": "Naviga risultati",
+    "go_to_result": "Vai al risultato",
+    "open_code_view": "Apri vista codice",
+    "open_docs": "Apri documentazione"
   },
   "search": {
     "label": "Cerca i pacchetti npm",
@@ -27,6 +41,7 @@
     "button": "cerca",
     "searching": "Cercando...",
     "found_packages": "Trovati {count} pacchetti",
+    "found_packages_sorted": "Nessun risultato trovato | Ordinando i primi {count} risultati | Ordinando i primi {count} risultati",
     "updating": "(aggiornando...)",
     "no_results": "Nessun pacchetto trovato per \"{query}\"",
     "rate_limited": "Limite di richiesta ad npm raggiunto, riprova tra poco",
@@ -40,6 +55,7 @@
     "claim_button": "Ottieni \"{name}\"",
     "want_to_claim": "Vuoi ottenere il nome di questo pacchetto?",
     "start_typing": "Inizia a scrivere per cercare i pacchetti",
+    "algolia_disclaimer": "Fornito da Algolia",
     "exact_match": "ricerca esatta",
     "suggestion": {
       "user": "utente",
@@ -67,9 +83,17 @@
     "sections": {
       "appearance": "Aspetto",
       "display": "Visualizzazione",
+      "search": "Fonte dati",
       "language": "Lingua"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "Fonte dati",
+      "description": "Scegli da dove npmx ottiene i dati di ricerca. Le pagine dei singoli pacchetti usano sempre direttamente il registro npm.",
+      "npm": "npm registry",
+      "npm_description": "Usa il registro npm per la ricerca. Più lento, ma sempre aggiornato.",
+      "algolia": "Algolia",
+      "algolia_description": "Usa Algolia per una ricerca più veloce, pagine organizzazione e utente."
+    },
     "relative_dates": "Date relative",
     "include_types": "Includi {'@'}types durante l'installazione",
     "include_types_description": "Aggiungi il pacchetto {'@'}types al comando install per i pacchetti senza tipo",
@@ -101,13 +125,13 @@
     "end_of_results": "Fine dei risultati",
     "try_again": "Prova di nuovo",
     "close": "Chiudi",
+    "or": "oppure",
     "retry": "Riprova",
     "copy": "copia",
     "copied": "copiato!",
     "skip_link": "Salta al contenuto principale",
     "warnings": "Avvisi:",
     "go_back_home": "Torna alla home",
-    "view_on_npm": "vedi su npm",
     "per_week": "/ settimana",
     "vanity_downloads_hint": "Numero di vanità: nessun pacchetto visualizzato | Numero di vanità: per il pacchetto visualizzato | Numero di vanità: somma di {count} pacchetti visualizzati",
     "sort": {
@@ -115,7 +139,11 @@
       "role": "ruolo",
       "members": "membri"
     },
-    "scroll_to_top": "Torna su"
+    "scroll_to_top": "Torna su",
+    "view_on": {
+      "npm": "vedi su npm",
+      "github": "Vedi su GitHub"
+    }
   },
   "package": {
     "not_found": "Pacchetto Non Trovato",
@@ -126,10 +154,18 @@
     "view_permalink": "Vedi il link permanente per questa versione",
     "navigation": "Pacchetto",
     "copy_name": "Copia nome pacchetto",
+    "copy_version": "Copia versione pacchetto",
     "deprecation": {
       "package": "Questo pacchetto è stato deprecato.",
       "version": "Questa versione è stata deprecata.",
       "no_reason": "Nessuna ragione fornita"
+    },
+    "size_increase": {
+      "title_size": "Aumento significativo delle dimensioni dalla v{version}",
+      "title_deps": "Aumento significativo del numero di dipendenze dalla v{version}",
+      "title_both": "Aumento significativo delle dimensioni e dipendenze dalla v{version}",
+      "size": "Dimensione di installazione aumentato del {percent} ({size} larger)",
+      "deps": "{count} dipendenze in più"
     },
     "replacement": {
       "title": "Questa dipendenza potrebbe non essere necessaria.",
@@ -196,7 +232,9 @@
       "title": "Inizia",
       "pm_label": "Gestore di pacchetti",
       "copy_command": "Copia comando di installazione",
-      "view_types": "Vedi {package}"
+      "view_types": "Vedi {package}",
+      "copy_dev_command": "Copia comando di installazione dev",
+      "dev_dependency_hint": "Di solito installato come dev dependency"
     },
     "create": {
       "title": "Crea nuovo progetto",
@@ -210,7 +248,6 @@
     "readme": {
       "title": "Readme",
       "no_readme": "Nessuno README disponibile.",
-      "view_on_github": "Vedi su GitHub",
       "toc_title": "Contorno",
       "callout": {
         "note": "Nota",
@@ -232,7 +269,16 @@
       "view_more_details": "Visualizza più dettagli",
       "error_loading": "Impossibile caricare i dettagli della provenienza"
     },
-    "security_downgrade": {},
+    "security_downgrade": {
+      "title": "Trust downgrade",
+      "description_to_none_provenance": "Question versione è stata publicata senza {provenance}.",
+      "description_to_none_trustedPublisher": "Question versione è stata publicata senza {trustedPublishing}.",
+      "description_to_provenance_trustedPublisher": "Questa versione usa {provenance} ma senza {trustedPublishing}.",
+      "fallback_install_provenance": "Comandi di installazione fissi a {version}, l'ultima versione con provenienza.",
+      "fallback_install_trustedPublisher": "Comandi di installazione fissi a {version}, l'ultima versione con pubblicazione attendibile.",
+      "provenance_link_text": "provenienza",
+      "trusted_publishing_link_text": "pubblicazione attendibile"
+    },
     "keywords_title": "Keywords",
     "compatibility": "Compatibilità",
     "card": {
@@ -312,9 +358,7 @@
     },
     "downloads": {
       "title": "Download settimanali",
-      "analyze": "Analizza download",
-      "community_distribution": "Visualizza distribuzione adozione della comunità",
-      "modal_title": "Download"
+      "community_distribution": "Visualizza distribuzione adozione della comunità"
     },
     "install_scripts": {
       "title": "Script di installazione",
@@ -407,9 +451,6 @@
   "connector": {
     "modal": {
       "title": "Connettore locale",
-      "contributor_badge": "Solo collaboratori",
-      "contributor_notice": "Il connettore non è ancora pubblicato su npm. Vedi {link} per come eseguire localmente.",
-      "contributor_link": "guida ai contributi",
       "connected": "Connesso",
       "connected_as_user": "Connesso come ~{user}",
       "connected_hint": "Puoi ora gestire i pacchetti e le organizzazioni dall'interfaccia web.",
@@ -713,7 +754,6 @@
       "paginated": "Paginato",
       "items_per_page": "Elementi per pagina",
       "per_page": "{count} / pagina",
-      "all_yolo": "Tutti (YOLO)",
       "showing": "{start}-{end} su {total}",
       "previous": "Pagina precedente",
       "next": "Pagina successiva",
@@ -757,6 +797,7 @@
         "managers": "gestori di pacchetti"
       }
     },
+    "team": {},
     "contributors": {
       "title": "{count} Collaboratore | {count} Collaboratori",
       "description": "npmx è completamente open source, costruito da una straordinaria comunità di collaboratori. Unisciti a noi e costruiamo insieme l'esperienza di navigazione npm che abbiamo sempre voluto.",
@@ -1027,5 +1068,11 @@
       "title": "Modifiche a questa informativa sulla privacy",
       "p1": "Potremmo aggiornare questa informativa sulla privacy di tanto in tanto. Eventuali modifiche saranno pubblicate su questa pagina con una data di revisione aggiornata."
     }
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }

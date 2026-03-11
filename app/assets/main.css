@@ -24,16 +24,17 @@
   --border-hover: oklch(0.371 0 0);
 
   /* accent color, set by user from settings */
-  --accent: var(--accent-color, oklch(1 0 0));
+  --accent: var(--accent-color, oklch(0.787 0.128 230.318));
   --accent-muted: var(--accent-color, oklch(0.922 0 0));
 
   /* accent colors */
+  --swatch-sky: oklch(0.787 0.128 230.318);
   --swatch-coral: oklch(0.704 0.177 14.75);
   --swatch-amber: oklch(0.828 0.165 84.429);
   --swatch-emerald: oklch(0.792 0.153 166.95);
-  --swatch-sky: oklch(0.787 0.128 230.318);
   --swatch-violet: oklch(0.78 0.148 286.067);
   --swatch-magenta: oklch(0.78 0.15 330);
+  --swatch-neutral: oklch(1 0 0);
 
   /* syntax highlighting colors */
   --syntax-fn: oklch(0.727 0.137 299.149);
@@ -94,16 +95,17 @@
   --border-subtle: oklch(0.922 0 0);
   --border-hover: oklch(0.715 0 0);
 
-  --accent: var(--accent-color, oklch(0.145 0 0));
+  --accent: var(--accent-color, oklch(0.53 0.16 247.27));
   --accent-muted: var(--accent-color, oklch(0.205 0 0));
 
   /* accent colors */
-  --swatch-coral: oklch(0.7 0.19 14.75);
-  --swatch-amber: oklch(0.8 0.25 84.429);
-  --swatch-emerald: oklch(0.7 0.17 166.95);
-  --swatch-sky: oklch(0.7 0.15 230.318);
-  --swatch-violet: oklch(0.7 0.17 286.067);
-  --swatch-magenta: oklch(0.75 0.18 330);
+  --swatch-sky: oklch(0.53 0.16 247.27);
+  --swatch-coral: oklch(0.56 0.17 10.75);
+  --swatch-amber: oklch(0.58 0.18 46.34);
+  --swatch-emerald: oklch(0.51 0.13 162.4);
+  --swatch-violet: oklch(0.56 0.13 282.067);
+  --swatch-magenta: oklch(0.56 0.14 325);
+  --swatch-neutral: oklch(0.145 0 0);
 
   --syntax-fn: oklch(0.502 0.188 294.988);
   --syntax-str: oklch(0.425 0.152 252);
@@ -273,13 +275,16 @@ dd {
 }
 
 /* Shiki theme colors */
-html.light .shiki,
-html.light .shiki span {
+html.light .shiki {
   color: var(--shiki-light) !important;
   background-color: var(--shiki-light-bg) !important;
-  font-style: var(--shiki-light-font-style) !important;
-  font-weight: var(--shiki-light-font-weight) !important;
-  text-decoration: var(--shiki-light-text-decoration) !important;
+
+  & span {
+    color: var(--shiki-light) !important;
+    font-style: var(--shiki-light-font-style) !important;
+    font-weight: var(--shiki-light-font-weight) !important;
+    text-decoration: var(--shiki-light-text-decoration) !important;
+  }
 }
 
 /* Inline code in package descriptions */
@@ -331,6 +336,11 @@ input[type='search']::-webkit-search-results-decoration {
 ::view-transition-new(search-box) {
   animation-duration: 0.3s;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hide keyboard shortcut hints before hydration when user disabled them */
+:root[data-kbd-shortcuts='false'] [data-kbd-hint] {
+  display: none;
 }
 
 /* Locking the scroll whenever any of the modals are open */

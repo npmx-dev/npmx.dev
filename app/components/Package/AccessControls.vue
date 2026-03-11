@@ -163,7 +163,7 @@ watch(
         @click="loadCollaborators"
       >
         <span
-          class="i-carbon-renew w-3.5 h-3.5"
+          class="i-lucide:refresh-ccw w-3.5 h-3.5"
           :class="{ 'motion-safe:animate-spin': isLoadingCollaborators }"
           aria-hidden="true"
         />
@@ -173,7 +173,7 @@ watch(
     <!-- Loading state -->
     <div v-if="isLoadingCollaborators && collaboratorList.length === 0" class="py-4 text-center">
       <span
-        class="i-carbon-rotate-180 w-4 h-4 text-fg-muted animate-spin mx-auto"
+        class="i-svg-spinners:ring-resize w-4 h-4 text-fg-muted animate-spin mx-auto"
         aria-hidden="true"
       />
     </div>
@@ -197,12 +197,12 @@ watch(
         <div class="flex items-center gap-2 min-w-0">
           <span
             v-if="collab.isTeam"
-            class="i-carbon-group w-3.5 h-3.5 text-fg-subtle shrink-0"
+            class="i-lucide:users w-3.5 h-3.5 text-fg-subtle shrink-0"
             aria-hidden="true"
           />
           <span
             v-else
-            class="i-carbon-user w-3.5 h-3.5 text-fg-subtle shrink-0"
+            class="i-lucide:user w-3.5 h-3.5 text-fg-subtle shrink-0"
             aria-hidden="true"
           />
           <span class="font-mono text-sm text-fg-muted truncate">
@@ -229,7 +229,7 @@ watch(
           :aria-label="$t('package.access.revoke_access', { name: collab.displayName })"
           @click="handleRevokeAccess(collab.name)"
         >
-          <span class="i-carbon-close w-3.5 h-3.5" aria-hidden="true" />
+          <span class="i-lucide:x w-3.5 h-3.5" aria-hidden="true" />
         </button>
         <span v-else class="text-xs text-fg-subtle"> {{ $t('package.access.owner') }} </span>
       </li>
@@ -289,7 +289,7 @@ watch(
             :aria-label="$t('package.access.cancel_grant')"
             @click="showGrantAccess = false"
           >
-            <span class="i-carbon-close w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:x w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </form>

@@ -48,24 +48,26 @@ describe('usePackageComparison', () => {
 
   describe('lastUpdated facet', () => {
     it('uses version-specific publish date, not time.modified', async () => {
+      const registryData = {
+        'name': 'test-package',
+        'dist-tags': { latest: '2.0.0' },
+        'time': {
+          // This is the WRONG value - updated by metadata changes
+          'modified': '2024-12-01T00:00:00.000Z',
+          // This is the CORRECT value - actual publish date
+          '2.0.0': '2024-06-15T00:00:00.000Z',
+        },
+        'license': 'MIT',
+        'versions': {
+          '2.0.0': { dist: { unpackedSize: 15000 } },
+        },
+      }
       vi.stubGlobal(
         '$fetch',
-        vi.fn().mockImplementation((url: string) => {
-          if (url.startsWith('https://registry.npmjs.org/')) {
-            return Promise.resolve({
-              'name': 'test-package',
-              'dist-tags': { latest: '2.0.0' },
-              'time': {
-                // This is the WRONG value - updated by metadata changes
-                'modified': '2024-12-01T00:00:00.000Z',
-                // This is the CORRECT value - actual publish date
-                '2.0.0': '2024-06-15T00:00:00.000Z',
-              },
-              'license': 'MIT',
-              'versions': {
-                '2.0.0': { dist: { unpackedSize: 15000 } },
-              },
-            })
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
+            return Promise.resolve(registryData)
           }
           return Promise.resolve(null)
         }),
@@ -93,8 +95,9 @@ describe('usePackageComparison', () => {
     it('stores version-specific time in metadata', async () => {
       vi.stubGlobal(
         '$fetch',
-        vi.fn().mockImplementation((url: string) => {
-          if (url.startsWith('https://registry.npmjs.org/')) {
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
             return Promise.resolve({
               'name': 'test-package',
               'dist-tags': { latest: '1.0.0' },
@@ -128,8 +131,9 @@ describe('usePackageComparison', () => {
     it('marks packages not published in 2+ years as stale', async () => {
       vi.stubGlobal(
         '$fetch',
-        vi.fn().mockImplementation((url: string) => {
-          if (url.startsWith('https://registry.npmjs.org/')) {
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
             return Promise.resolve({
               'name': 'old-package',
               'dist-tags': { latest: '1.0.0' },
@@ -159,8 +163,9 @@ describe('usePackageComparison', () => {
     it('marks recently published packages as neutral', async () => {
       vi.stubGlobal(
         '$fetch',
-        vi.fn().mockImplementation((url: string) => {
-          if (url.startsWith('https://registry.npmjs.org/')) {
+        vi.fn().mockImplementation((url: string, options?: { baseURL?: string }) => {
+          const fullUrl = options?.baseURL ? `${options.baseURL}${url}` : url
+          if (fullUrl.startsWith('https://registry.npmjs.org/')) {
             return Promise.resolve({
               'name': 'fresh-package',
               'dist-tags': { latest: '1.0.0' },

@@ -27,6 +27,7 @@ const FIXTURE_PATHS = {
   esmHeaders: 'esm-sh:headers',
   esmTypes: 'esm-sh:types',
   githubContributors: 'github:contributors.json',
+  githubContributorsStats: 'github:contributors-stats.json',
 } as const
 
 type FixtureType = keyof typeof FIXTURE_PATHS
@@ -191,6 +192,44 @@ function getMockForUrl(url: string): MockResult | null {
 
   // Gravatar API - return 404 (avatars not needed in tests)
   if (host === 'www.gravatar.com') {
+    return { data: null }
+  }
+
+  // npm attestations API - return empty attestations (provenance not needed in tests)
+  if (host === 'registry.npmjs.org' && pathname.startsWith('/-/npm/v1/attestations/')) {
+    return { data: { attestations: [] } }
+  }
+
+  // Constellation API - return empty results for link queries
+  if (host === 'constellation.microcosm.blue') {
+    if (pathname === '/links/distinct-dids') {
+      return { data: { total: 0, linking_dids: [], cursor: undefined } }
+    }
+    if (pathname === '/links/all') {
+      return { data: { links: {} } }
+    }
+    if (pathname === '/xrpc/blue.microcosm.links.getBacklinks') {
+      return { data: { total: 0, records: [], cursor: undefined } }
+    }
+    return { data: null }
+  }
+
+  // UNGH (GitHub proxy) - return mock repo metadata
+  if (host === 'ungh.cc') {
+    const repoMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)$/)
+    if (repoMatch?.[1] && repoMatch?.[2]) {
+      return {
+        data: {
+          repo: {
+            description: `${repoMatch[1]}/${repoMatch[2]} - mock repo description`,
+            stars: 1000,
+            forks: 100,
+            watchers: 50,
+            defaultBranch: 'main',
+          },
+        },
+      }
+    }
     return { data: null }
   }
 
@@ -402,6 +441,18 @@ async function handleGitHubApi(
 
   if (host !== 'api.github.com') return null
 
+  // Contributors stats endpoint: /repos/{owner}/{repo}/stats/contributors
+  const contributorsStatsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/stats\/contributors$/)
+  if (contributorsStatsMatch) {
+    const contributorsStats = await storage.getItem<unknown[]>(
+      FIXTURE_PATHS.githubContributorsStats,
+    )
+    if (contributorsStats) {
+      return { data: contributorsStats }
+    }
+    return { data: [] }
+  }
+
   // Contributors endpoint: /repos/{owner}/{repo}/contributors
   const contributorsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/contributors$/)
   if (contributorsMatch) {
@@ -411,6 +462,19 @@ async function handleGitHubApi(
     }
     // Return empty array if no fixture exists
     return { data: [] }
+  }
+
+  // Commits endpoint: /repos/{owner}/{repo}/commits
+  const commitsMatch = pathname.match(/^\/repos\/([^/]+)\/([^/]+)\/commits$/)
+  if (commitsMatch) {
+    // Return a single-item array; fetchPageCount will use body.length when no Link header
+    return { data: [{ sha: 'mock-commit' }] }
+  }
+
+  // Search endpoint: /search/issues, /search/commits, etc.
+  const searchMatch = pathname.match(/^\/search\/(.+)$/)
+  if (searchMatch) {
+    return { data: { total_count: 0, incomplete_results: false, items: [] } }
   }
 
   // Other GitHub API endpoints can be added here as needed
@@ -802,7 +866,10 @@ export default defineNitroPlugin(nitroApp => {
           headers: { 'content-type': 'application/json' },
         })
       }
-      return new Response('Not Found', { status: 404 })
+      return new Response(JSON.stringify({ error: 'Not Found' }), {
+        status: 404,
+        headers: { 'content-type': 'application/json' },
+      })
     } catch (err: any) {
       // Convert createError exceptions to proper HTTP responses
       const statusCode = err?.statusCode || err?.status || 404

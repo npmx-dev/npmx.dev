@@ -7,7 +7,6 @@ import type { Ref } from 'vue'
  *
  * @param toc - Reactive array of TOC items
  * @returns Object containing activeId
- * @public
  */
 export function useActiveTocItem(toc: Ref<TocItem[]>) {
   const activeId = shallowRef<string | null>(null)

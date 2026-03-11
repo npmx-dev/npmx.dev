@@ -2,6 +2,10 @@
 import { LinkBase } from '#components'
 import type { NavigationConfig, NavigationConfigWithGroups } from '~/types'
 import { isEditableElement } from '~/utils/input'
+import { NPMX_DOCS_SITE } from '#shared/utils/constants'
+
+const keyboardShortcuts = useKeyboardShortcuts()
+const discord = useDiscordLink()
 
 withDefaults(
   defineProps<{
@@ -22,7 +26,7 @@ const desktopLinks = computed<NavigationConfig>(() => [
     keyshortcut: 'c',
     type: 'link',
     external: false,
-    iconClass: 'i-carbon:compare',
+    iconClass: 'i-lucide:git-compare',
   },
   {
     name: 'Settings',
@@ -31,7 +35,7 @@ const desktopLinks = computed<NavigationConfig>(() => [
     keyshortcut: ',',
     type: 'link',
     external: false,
-    iconClass: 'i-carbon:settings',
+    iconClass: 'i-lucide:settings',
   },
 ])
 
@@ -54,7 +58,15 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         to: { name: 'about' },
         type: 'link',
         external: false,
-        iconClass: 'i-carbon:information',
+        iconClass: 'i-lucide:info',
+      },
+      {
+        name: 'Blog',
+        label: $t('footer.blog'),
+        to: { name: 'blog' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-lucide:notebook-pen',
       },
       {
         name: 'Privacy Policy',
@@ -62,7 +74,15 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         to: { name: 'privacy' },
         type: 'link',
         external: false,
-        iconClass: 'i-carbon:security',
+        iconClass: 'i-lucide:shield-check',
+      },
+      {
+        name: 'Accessibility',
+        label: $t('a11y.title'),
+        to: { name: 'accessibility' },
+        type: 'link',
+        external: false,
+        iconClass: 'i-custom:a11y',
       },
     ],
   },
@@ -77,11 +97,11 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
       {
         name: 'Docs',
         label: $t('footer.docs'),
-        href: 'https://docs.npmx.dev',
+        href: NPMX_DOCS_SITE,
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-carbon:document',
+        iconClass: 'i-lucide:file-text',
       },
       {
         name: 'Source',
@@ -90,7 +110,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-carbon:logo-github',
+        iconClass: 'i-simple-icons:github',
       },
       {
         name: 'Social',
@@ -103,12 +123,12 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
       },
       {
         name: 'Chat',
-        label: $t('footer.chat'),
-        href: 'https://chat.npmx.dev',
+        label: discord.value.label,
+        href: discord.value.url,
         target: '_blank',
         type: 'link',
         external: true,
-        iconClass: 'i-carbon:chat',
+        iconClass: 'i-lucide:message-circle',
       },
     ],
   },
@@ -116,6 +136,7 @@ const mobileLinks = computed<NavigationConfigWithGroups>(() => [
 
 const showFullSearch = shallowRef(false)
 const showMobileMenu = shallowRef(false)
+const { env, prNumber } = useAppConfig().buildInfo
 
 // On mobile, clicking logo+search button expands search
 const route = useRoute()
@@ -165,14 +186,14 @@ function handleSearchFocus() {
 
 onKeyStroke(
   e => {
-    if (isEditableElement(e.target)) {
+    if (!keyboardShortcuts.value || isEditableElement(e.target)) {
       return
     }
 
     for (const link of desktopLinks.value) {
       if (link.to && link.keyshortcut && isKeyWithoutModifiers(e, link.keyshortcut)) {
         e.preventDefault()
-        navigateTo(link.to.name)
+        navigateTo(link.to)
         break
       }
     }
@@ -186,20 +207,17 @@ onKeyStroke(
     <div class="absolute inset-0 bg-bg/80 backdrop-blur-md" />
     <nav
       :aria-label="$t('nav.main_navigation')"
-      class="relative container min-h-14 flex items-center gap-2 z-1"
-      :class="isOnHomePage ? 'justify-end' : 'justify-between'"
+      class="relative container min-h-14 flex items-center gap-2 z-1 justify-end"
     >
-      <!-- Mobile: Logo + search button (expands search, doesn't navigate) -->
-      <button
+      <!-- Mobile: Logo (navigates home) -->
+      <NuxtLink
         v-if="!isSearchExpanded && !isOnHomePage"
-        type="button"
-        class="sm:hidden flex-shrink-0 inline-flex items-center gap-2 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 rounded"
-        :aria-label="$t('nav.tap_to_search')"
-        @click="expandMobileSearch"
+        to="/"
+        :aria-label="$t('header.home')"
+        class="sm:hidden flex-shrink-0 font-mono text-lg font-medium text-fg hover:text-fg transition-colors duration-200 focus-ring me-4"
       >
-        <AppLogo class="w-8 h-8 rounded-lg" />
-        <span class="i-carbon:search w-4 h-4 text-fg-subtle" aria-hidden="true" />
-      </button>
+        <AppMark class="w-6 h-auto" />
+      </NuxtLink>
 
       <!-- Desktop: Logo (navigates home) -->
       <div v-if="showLogo" class="hidden sm:flex flex-shrink-0 items-center">
@@ -207,10 +225,24 @@ onKeyStroke(
           :to="{ name: 'index' }"
           :aria-label="$t('header.home')"
           dir="ltr"
-          class="inline-flex items-center gap-1 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 rounded"
+          class="relative inline-flex items-center gap-1 py-2 header-logo font-mono text-lg font-medium text-fg hover:text-fg/90 transition-colors duration-200 me-4"
         >
-          <AppLogo class="w-8 h-8 rounded-lg" />
-          <span>npmx</span>
+          <AppLogo class="h-4.5 w-auto" />
+          <span
+            aria-hidden="true"
+            class="scale-35 transform-origin-br font-mono tracking-wide text-accent absolute bottom-0.75 -inset-ie-1"
+          >
+            {{ env === 'release' ? 'alpha' : env }}
+          </span>
+        </NuxtLink>
+        <NuxtLink
+          v-if="prNumber"
+          :to="`https://github.com/npmx-dev/npmx.dev/pull/${prNumber}`"
+          :aria-label="`Open GitHub pull request ${prNumber}`"
+        >
+          <span class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium ms-2">
+            PR #{{ prNumber }}
+          </span>
         </NuxtLink>
       </div>
       <!-- Spacer when logo is hidden on desktop -->
@@ -267,6 +299,17 @@ onKeyStroke(
         <HeaderAccountMenu />
       </div>
 
+      <!-- Mobile: Search button (expands search) -->
+      <ButtonBase
+        type="button"
+        class="sm:hidden ms-auto"
+        :aria-label="$t('nav.tap_to_search')"
+        :aria-expanded="showMobileMenu"
+        @click="expandMobileSearch"
+        v-if="!isSearchExpanded && !isOnHomePage"
+        classicon="i-lucide:search"
+      />
+
       <!-- Mobile: Menu button (always visible, click to open menu) -->
       <ButtonBase
         type="button"
@@ -274,7 +317,7 @@ onKeyStroke(
         :aria-label="$t('nav.open_menu')"
         :aria-expanded="showMobileMenu"
         @click="showMobileMenu = !showMobileMenu"
-        classicon="i-carbon:menu"
+        classicon="i-lucide:menu"
       />
     </nav>
 

@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { NO_DEPENDENCY_ID } from '~/composables/usePackageComparison'
 import { useRouteQuery } from '@vueuse/router'
+import FacetBarChart from '~/components/Compare/FacetBarChart.vue'
 
 definePageMeta({
   name: 'compare',
 })
 
+const { locale } = useI18n()
 const router = useRouter()
 const canGoBack = useCanGoBack()
+const { copied, copy } = useClipboard({ copiedDuring: 2000 })
 
 // Sync packages with URL query param (stable ref - doesn't change on other query changes)
 const packagesParam = useRouteQuery<string>('packages', '', { mode: 'replace' })
@@ -74,10 +77,63 @@ const columnLoading = computed(() => packages.value.map((_, i) => isColumnLoadin
 // Check if we have enough packages to compare
 const canCompare = computed(() => packages.value.length >= 2)
 
+const comparisonView = ref<'table' | 'charts'>('table')
+
 // Extract headers from columns for facet rows
 const gridHeaders = computed(() =>
   gridColumns.value.map(col => (col.version ? `${col.name}@${col.version}` : col.name)),
 )
+
+/*
+ * Convert the comparison grid data to a Markdown table.
+ */
+function exportComparisonDataAsMarkdown() {
+  const mdData: Array<Array<string>> = []
+  const headers = [
+    '',
+    ...gridHeaders.value,
+    ...(showNoDependency.value ? [$t('compare.no_dependency.label')] : []),
+  ]
+  mdData.push(headers)
+  const maxLengths = headers.map(item => item.length)
+
+  selectedFacets.value.forEach((facet, index) => {
+    const label = facet.label
+    const data = getFacetValues(facet.id)
+    mdData.push([
+      label,
+      ...data.map(item =>
+        item?.type === 'date'
+          ? new Date(item.display).toLocaleDateString(locale.value, {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })
+          : item?.display || '',
+      ),
+    ])
+    mdData?.[index + 1]?.forEach((item, itemIndex) => {
+      if (item.length > (maxLengths?.[itemIndex] || 0)) {
+        maxLengths[itemIndex] = item.length
+      }
+    })
+  })
+
+  const markdown = mdData.reduce((result, row, index) => {
+    // replacing pipe `|` with `ǀ` (U+01C0 Latin Letter Dental Click) to avoid breaking tables
+    result += `| ${row
+      .map((el, ind) => el.padEnd(maxLengths[ind] || 0, ' ').replace(/\|/g, 'ǀ'))
+      .join(' | ')} |`
+    if (index === 0) {
+      result += `\n|`
+      maxLengths.forEach(len => (result += ` ${'-'.padEnd(len, '-')} |`))
+    }
+    result += `\n`
+    return result
+  }, '')
+
+  copy(markdown)
+}
 
 useSeoMeta({
   title: () =>
@@ -117,11 +173,11 @@ useSeoMeta({
           </h1>
           <button
             type="button"
-            class="cursor-pointer inline-flex items-center gap-2 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
+            class="cursor-pointer inline-flex items-center gap-2 p-1.5 -mx-1.5 font-mono text-sm text-fg-muted hover:text-fg transition-colors duration-200 rounded focus-visible:outline-accent/70 shrink-0"
             @click="router.back()"
             v-if="canGoBack"
           >
-            <span class="i-carbon:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
+            <span class="i-lucide:arrow-left rtl-flip w-4 h-4" aria-hidden="true" />
             <span class="hidden sm:inline">{{ $t('nav.back') }}</span>
           </button>
         </div>
@@ -193,22 +249,106 @@ useSeoMeta({
 
       <!-- Comparison grid -->
       <section v-if="canCompare" class="mt-10" aria-labelledby="comparison-heading">
-        <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider mb-4">
+        <CopyToClipboardButton
+          v-if="packagesData && packagesData.some(p => p !== null)"
+          :copied="copied"
+          :copy-text="$t('compare.packages.copy_as_markdown')"
+          class="mb-4"
+          :button-attrs="{ class: 'hidden md:inline-flex' }"
+          @click="exportComparisonDataAsMarkdown"
+        >
+          <h2 id="comparison-heading" class="text-xs text-fg-subtle uppercase tracking-wider">
+            {{ $t('compare.packages.section_comparison') }}
+          </h2>
+        </CopyToClipboardButton>
+
+        <h2
+          v-else
+          id="comparison-heading"
+          class="text-xs text-fg-subtle uppercase tracking-wider mb-4"
+        >
           {{ $t('compare.packages.section_comparison') }}
         </h2>
 
         <div
-          v-if="status === 'pending' && (!packagesData || packagesData.every(p => p === null))"
+          v-if="
+            (status === 'pending' || status === 'idle') &&
+            (!packagesData || packagesData.every(p => p === null))
+          "
           class="flex items-center justify-center py-12"
         >
           <LoadingSpinner :text="$t('compare.packages.loading')" />
         </div>
 
         <div v-else-if="packagesData && packagesData.some(p => p !== null)">
-          <!-- Desktop: Grid layout -->
-          <div class="hidden md:block overflow-x-auto">
-            <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
-              <CompareFacetRow
+          <!-- View tabs -->
+          <div
+            v-if="selectedFacets.some(facet => facet.chartable)"
+            class="inline-flex items-center gap-1 rounded-md border border-border-subtle bg-bg-subtle p-0.5 mt-4"
+            role="tablist"
+            :aria-label="$t('compare.packages.section_comparison')"
+          >
+            <button
+              id="comparison-tab-table"
+              type="button"
+              role="tab"
+              :aria-selected="comparisonView === 'table' ? 'true' : 'false'"
+              aria-controls="comparison-panel-table"
+              :tabindex="comparisonView === 'table' ? -1 : 0"
+              class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
+              :class="
+                comparisonView === 'table'
+                  ? 'bg-bg border-border shadow-sm text-fg'
+                  : 'border-transparent text-fg-subtle hover:text-fg'
+              "
+              @click="comparisonView = 'table'"
+            >
+              <span class="i-lucide:table size-[1em]" aria-hidden="true" />
+              <span>{{ $t('compare.packages.table_view') }}</span>
+            </button>
+
+            <button
+              id="comparison-tab-charts"
+              type="button"
+              role="tab"
+              :aria-selected="comparisonView === 'charts' ? 'true' : 'false'"
+              aria-controls="comparison-panel-charts"
+              :tabindex="comparisonView === 'charts' ? -1 : 0"
+              class="flex items-center justify-center gap-x-2 rounded px-3 py-2 font-mono text-sm border border-solid transition-colors duration-150 focus-visible:outline-accent/70"
+              :class="
+                comparisonView === 'charts'
+                  ? 'bg-bg border-border shadow-sm text-fg'
+                  : 'border-transparent text-fg-subtle hover:text-fg'
+              "
+              @click="comparisonView = 'charts'"
+            >
+              <span class="i-lucide:chart-bar-decreasing size-[1em]" aria-hidden="true" />
+              <span>{{ $t('compare.packages.charts_view') }}</span>
+            </button>
+          </div>
+
+          <!-- Data table -->
+          <div v-show="comparisonView === 'table'" role="tabpanel">
+            <!-- Desktop: Grid layout -->
+            <div class="hidden md:block overflow-x-auto">
+              <CompareComparisonGrid :columns="gridColumns" :show-no-dependency="showNoDependency">
+                <CompareFacetRow
+                  v-for="facet in selectedFacets"
+                  :key="facet.id"
+                  :label="facet.label"
+                  :description="facet.description"
+                  :values="getFacetValues(facet.id)"
+                  :facet-loading="isFacetLoading(facet.id)"
+                  :column-loading="columnLoading"
+                  :bar="facet.id !== 'lastUpdated'"
+                  :headers="gridHeaders"
+                />
+              </CompareComparisonGrid>
+            </div>
+
+            <!-- Mobile: Card-based layout -->
+            <div class="md:hidden space-y-3">
+              <CompareFacetCard
                 v-for="facet in selectedFacets"
                 :key="facet.id"
                 :label="facet.label"
@@ -219,26 +359,30 @@ useSeoMeta({
                 :bar="facet.id !== 'lastUpdated'"
                 :headers="gridHeaders"
               />
-            </CompareComparisonGrid>
+            </div>
           </div>
 
-          <!-- Mobile: Card-based layout -->
-          <div class="md:hidden space-y-3">
-            <CompareFacetCard
-              v-for="facet in selectedFacets"
-              :key="facet.id"
-              :label="facet.label"
-              :description="facet.description"
-              :values="getFacetValues(facet.id)"
-              :facet-loading="isFacetLoading(facet.id)"
-              :column-loading="columnLoading"
-              :bar="facet.id !== 'lastUpdated'"
-              :headers="gridHeaders"
-            />
+          <!-- bar charts -->
+          <div v-if="comparisonView === 'charts'" role="tabpanel">
+            <div class="sm:grid grid-cols-2 gap-x-4">
+              <div
+                v-for="facet in selectedFacets.filter(facet => facet.chartable)"
+                :key="facet.id"
+                class="my-6"
+              >
+                <FacetBarChart
+                  :values="getFacetValues(facet.id)"
+                  :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)"
+                  :label="facet.label"
+                  :description="facet.description"
+                  :facet-loading="isFacetLoading(facet.id)"
+                />
+              </div>
+            </div>
           </div>
 
           <h2
-            id="comparison-heading"
+            id="trends-comparison-heading"
             class="text-xs text-fg-subtle uppercase tracking-wider mb-4 mt-10"
           >
             {{ $t('compare.facets.trends.title') }}
@@ -247,8 +391,11 @@ useSeoMeta({
           <CompareLineChart :packages="packages.filter(p => p !== NO_DEPENDENCY_ID)" />
         </div>
 
-        <div v-else class="text-center py-12" role="alert">
+        <div v-else-if="status === 'error'" class="text-center py-12" role="alert">
           <p class="text-fg-muted">{{ $t('compare.packages.error') }}</p>
+        </div>
+        <div v-else class="flex items-center justify-center py-12">
+          <LoadingSpinner :text="$t('compare.packages.loading')" />
         </div>
       </section>
 
@@ -257,7 +404,10 @@ useSeoMeta({
         v-else
         class="text-center px-1.5 py-16 border border-dashed border-border-hover rounded-lg"
       >
-        <div class="i-carbon:compare w-12 h-12 text-fg-subtle mx-auto mb-4" aria-hidden="true" />
+        <div
+          class="i-lucide:git-compare w-12 h-12 text-fg-subtle mx-auto mb-4"
+          aria-hidden="true"
+        />
         <h2 class="font-mono text-lg text-fg-muted mb-2">
           {{ $t('compare.packages.empty_title') }}
         </h2>

@@ -1,13 +1,5 @@
-# todo remove
 User-agent: *
-Allow: /$
-Allow: /about$
-Allow: /privacy$
-Allow: /__og-image__/*
-Disallow: /
-
-# User-agent: *
-# Allow: /
+Allow: /
 
 # Search pages: infinite query-param combinations
 Disallow: /search

@@ -1,8 +1,8 @@
 import { CACHE_MAX_AGE_ONE_HOUR, NPM_REGISTRY } from '#shared/utils/constants'
 import { FetchError } from 'ofetch'
 
-// Validation pattern for npm org names (alphanumeric with hyphens)
-const NPM_ORG_NAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i
+// Validation pattern for npm org names - url-sage symbold and not start with a dot (incl. ~test24214. or -ex~-)
+const NPM_ORG_NAME_RE = /^[\w~-][\w.~-]*$/
 
 function validateOrgName(name: string): void {
   if (!name || name.length > 50 || !NPM_ORG_NAME_RE.test(name)) {
@@ -16,7 +16,7 @@ function validateOrgName(name: string): void {
 
 export default defineCachedEventHandler(
   async event => {
-    const org = getRouterParam(event, 'org')
+    const org = getRouterParam(event, 'org')?.toLowerCase()
 
     if (!org) {
       throw createError({
@@ -54,7 +54,7 @@ export default defineCachedEventHandler(
     maxAge: CACHE_MAX_AGE_ONE_HOUR,
     swr: true,
     getKey: event => {
-      const org = getRouterParam(event, 'org') ?? ''
+      const org = getRouterParam(event, 'org')?.toLowerCase() ?? ''
       return `org-packages:v1:${org}`
     },
   },

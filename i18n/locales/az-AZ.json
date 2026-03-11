@@ -3,21 +3,40 @@
   "seo": {
     "home": {
       "title": "npmx - npm Reyestri üçün Paket Brauzeri",
-      "description": "npm reyestri üçün daha yaxşı brauzer. Müasir interfeys ilə paketləri axtarın, kəşf edin."
+      "description": "npm reyestri üçün sürətli, müasir brauzer. Müasir interfeys ilə paketləri axtarın, kəşf edin."
     }
   },
-  "tagline": "npm reyestri üçün daha yaxşı brauzer",
+  "built_at": "{0} qurulub",
+  "alt_logo": "npmx loqo",
+  "tagline": "npm reyestri üçün sürətli, müasir brauzer",
   "non_affiliation_disclaimer": "npm, Inc. ilə əlaqəli deyil.",
   "trademark_disclaimer": "npm, npm, Inc.-in qeydiyyatlı ticarət markasıdır. Bu sayt npm, Inc. ilə əlaqəli deyil.",
   "footer": {
     "about": "haqqında",
+    "blog": "bloq",
     "docs": "sənədlər",
     "source": "mənbə",
     "social": "sosial",
-    "chat": "söhbət"
+    "chat": "söhbət",
+    "builders_chat": "qurucular",
+    "keyboard_shortcuts": "klaviatura qısayolları"
   },
   "shortcuts": {
-    "section": {}
+    "section": {
+      "global": "Ümumi",
+      "search": "Axtarış",
+      "package": "Paket"
+    },
+    "focus_search": "Axtarışa fokusla",
+    "show_kbd_hints": "Klaviatura ipucularını vurğula",
+    "settings": "Tənzimləmələri aç",
+    "compare": "Müqayisəni aç",
+    "compare_from_package": "Müqayisəni aç (cari paketlə doldurulmuş)",
+    "navigate_results": "Nəticələr arasında gəz",
+    "go_to_result": "Nəticəyə keç",
+    "open_code_view": "Kod görünüşünü aç",
+    "open_docs": "Sənədləri aç",
+    "disable_shortcuts": "Klaviatura qısayollarını {settings} bölməsindən söndürə bilərsiniz."
   },
   "search": {
     "label": "npm paketlərini axtar",
@@ -25,26 +44,71 @@
     "button": "axtar",
     "searching": "Axtarılır...",
     "found_packages": "Paket tapılmadı | 1 paket tapıldı | {count} paket tapıldı",
+    "found_packages_sorted": "Nəticə tapılmadı | İlk {count} nəticə sıralanır | İlk {count} nəticə sıralanır",
     "updating": "(yenilənir...)",
     "no_results": "\"{query}\" üçün paket tapılmadı",
+    "rate_limited": "npm limit aşıldı, bir az sonra yenidən cəhd edin",
+    "title": "axtarış",
+    "title_search": "axtarış: {search}",
+    "title_packages": "paket axtar",
+    "meta_description": "'{search}' üçün axtarış nəticələri",
+    "meta_description_packages": "npm paketlərini axtar",
     "not_taken": "{name} tutulmayıb",
     "claim_prompt": "Bu paket adını npm-də tutun",
     "claim_button": "\"{name}\" adını tut",
     "want_to_claim": "Bu paket adını tutmaq istəyirsiniz?",
     "start_typing": "Paketləri axtarmaq üçün yazmağa başlayın",
+    "algolia_disclaimer": "Algolia tərəfindən dəstəklənir",
     "exact_match": "dəqiq",
     "suggestion": {
       "user": "istifadəçi",
       "org": "təşkilat",
       "view_user_packages": "Bu istifadəçinin paketlərinə bax",
       "view_org_packages": "Bu təşkilatın paketlərinə bax"
-    }
+    },
+    "instant_search": "Ani axtarış",
+    "instant_search_on": "açıq",
+    "instant_search_off": "bağlı",
+    "instant_search_turn_on": "aç",
+    "instant_search_turn_off": "bağla",
+    "instant_search_advisory": "{label} {state} — {action}"
   },
   "nav": {
     "main_navigation": "Əsas",
     "popular_packages": "Populyar paketlər",
     "settings": "tənzimləmələr",
-    "back": "geri"
+    "compare": "müqayisə",
+    "back": "geri",
+    "menu": "Menyu",
+    "mobile_menu": "Naviqasiya menyusu",
+    "open_menu": "Menyunu aç",
+    "links": "Keçidlər",
+    "tap_to_search": "Axtarmaq üçün toxunun"
+  },
+  "blog": {
+    "title": "Bloq",
+    "heading": "bloq",
+    "meta_description": "npmx icmasından fikirlər və yeniliklər",
+    "author": {
+      "view_profile": "{name} Bluesky profilinə bax"
+    },
+    "draft_badge": "Qaralama",
+    "draft_banner": "Bu dərc edilməmiş qaralamadır. Natamam və ya qeyri-dəqiq məlumat ehtiva edə bilər.",
+    "atproto": {
+      "view_on_bluesky": "Bluesky-da bax",
+      "reply_on_bluesky": "Bluesky-da cavabla",
+      "likes_on_bluesky": "Bluesky-da bəyənmələr",
+      "like_or_reply_on_bluesky": "Bu yazını bəyənin və ya Bluesky-da şərh əlavə edin",
+      "no_comments_yet": "Hələ şərh yoxdur.",
+      "could_not_load_comments": "Şərhlər yüklənə bilmədi.",
+      "comments": "Şərhlər",
+      "loading_comments": "Şərhlər yüklənir...",
+      "updating": "Yenilənir...",
+      "reply_count": "{count} cavab",
+      "like_count": "{count} bəyənmə",
+      "repost_count": "{count} yenidən paylaşım",
+      "more_replies": "{count} cavab daha..."
+    }
   },
   "settings": {
     "title": "tənzimləmələr",
@@ -53,9 +117,20 @@
     "sections": {
       "appearance": "Görünüş",
       "display": "Ekran",
-      "language": "Dil"
+      "search": "Məlumat mənbəyi",
+      "language": "Dil",
+      "keyboard_shortcuts": "Klaviatura qısayolları"
     },
-    "data_source": {},
+    "data_source": {
+      "label": "Məlumat mənbəyi",
+      "description": "npmx-in axtarış məlumatlarını haradan aldığını seçin. Fərdi paket səhifələri həmişə birbaşa npm reyestrindən istifadə edir.",
+      "npm": "npm Reyestri",
+      "npm_description": "Axtarış, təşkilat və istifadəçi siyahılarını birbaşa rəsmi npm reyestrindən alır. Etibarlıdır, lakin daha yavaş ola bilər.",
+      "algolia": "Algolia",
+      "algolia_description": "Daha sürətli axtarış, təşkilat və istifadəçi səhifələri üçün Algolia istifadə edir."
+    },
+    "instant_search": "Ani axtarış",
+    "instant_search_description": "Axtarış səhifəsinə keçir və siz yazdıqca nəticələri yeniləyir.",
     "relative_dates": "Nisbi tarixlər",
     "include_types": "Quraşdırmaya {'@'}types daxil et",
     "include_types_description": "Tipsiz paketlər üçün quraşdırma əmrlərinə {'@'}types paketi əlavə et",
@@ -69,7 +144,10 @@
     "help_translate": "npmx-i tərcümə etməyə kömək edin",
     "accent_colors": "Vurğu rəngləri",
     "clear_accent": "Vurğu rəngini təmizlə",
-    "translation_progress": "Tərcümə irəliləyişi"
+    "translation_progress": "Tərcümə irəliləyişi",
+    "background_themes": "Fon tonu",
+    "keyboard_shortcuts_enabled": "Klaviatura qısayollarını aktivləşdir",
+    "keyboard_shortcuts_enabled_description": "Klaviatura qısayolları digər brauzer və ya sistem qısayolları ilə toqquşarsa deaktiv edilə bilər"
   },
   "i18n": {
     "missing_keys": "{count} çatışmayan tərcümə | {count} çatışmayan tərcümə",
@@ -79,6 +157,13 @@
     "edit_on_github": "GitHub-da redaktə et",
     "view_guide": "Tərcümə bələdçisi"
   },
+  "error": {
+    "401": "İcazəsiz",
+    "404": "Səhifə tapılmadı",
+    "500": "Daxili server xətası",
+    "503": "Xidmət əlçatan deyil",
+    "default": "Nəsə səhv oldu"
+  },
   "common": {
     "loading": "Yüklənir...",
     "loading_more": "Daha çox yüklənir...",
@@ -86,20 +171,46 @@
     "end_of_results": "Nəticələrin sonu",
     "try_again": "Yenidən cəhd et",
     "close": "Bağla",
+    "or": "və ya",
     "retry": "Yenidən cəhd et",
     "copy": "kopyala",
     "copied": "kopyalandı!",
     "skip_link": "Əsas məzmuna keç",
     "warnings": "Xəbərdarlıqlar:",
     "go_back_home": "Ana səhifəyə qayıt",
-    "view_on_npm": "npm-də bax",
     "per_week": "/ həftə",
+    "vanity_downloads_hint": "Göstərici: paket göstərilmir | Göstərici: göstərilən paket üçün | Göstərici: {count} göstərilən paketin cəmi",
     "sort": {
       "name": "ad",
       "role": "rol",
       "members": "üzvlər"
     },
-    "scroll_to_top": "Yuxarı qayıt"
+    "scroll_to_top": "Yuxarı qayıt",
+    "cancel": "Ləğv et",
+    "save": "Saxla",
+    "edit": "Redaktə et",
+    "error": "Xəta",
+    "view_on": {
+      "npm": "npm-də bax",
+      "github": "GitHub-da bax"
+    }
+  },
+  "profile": {
+    "display_name": "Görünən Ad",
+    "description": "Təsvir",
+    "no_description": "Təsvir yoxdur",
+    "website": "Veb-sayt",
+    "website_placeholder": "https://example.com",
+    "likes": "Bəyənmələr",
+    "seo_title": "{handle} - npmx",
+    "seo_description": "{handle} tərəfindən npmx profili",
+    "not_found": "Profil Tapılmadı",
+    "not_found_message": "{handle} üçün profil tapıla bilmədi.",
+    "invite": {
+      "message": "Deyəsən onlar hələ npmx istifadə etmirlər. Onlara bu barədə demək istəyirsiniz?",
+      "share_button": "Bluesky-da paylaş",
+      "compose_text": "Salam {'@'}{handle}! npmx.dev-i yoxlamısan? Bu, npm reyestri üçün sürətli, müasir və açıq mənbəli brauzerdir.\nhttps://npmx.dev"
+    }
   },
   "package": {
     "not_found": "Paket Tapılmadı",
@@ -109,25 +220,39 @@
     "verified_provenance": "Təsdiqlənmiş mənşə",
     "view_permalink": "Bu versiya üçün daimi keçidə bax",
     "navigation": "Paket",
+    "copy_name": "Paket adını kopyala",
+    "copy_version": "Paket versiyasını kopyala",
     "deprecation": {
       "package": "Bu paket köhnəlmişdir.",
       "version": "Bu versiya köhnəlmişdir.",
       "no_reason": "Səbəb göstərilməyib"
     },
+    "size_increase": {
+      "title_size": "v{version}-dən bəri əhəmiyyətli həcm artımı",
+      "title_deps": "v{version}-dən bəri əhəmiyyətli asılılıq sayı artımı",
+      "title_both": "v{version}-dən bəri əhəmiyyətli həcm və asılılıq artımı",
+      "size": "Quraşdırma həcmi {percent} artıb ({size} daha böyük)",
+      "deps": "{count} daha çox asılılıq"
+    },
     "replacement": {
       "title": "Bu asılılığa ehtiyacınız olmaya bilər.",
       "native": "Bu, Node {nodeVersion}-dən bəri mövcud olan {replacement} ilə əvəz edilə bilər.",
-      "simple": "İcma bu paketi artıq lazımsız olaraq qeyd edib, tövsiyəsi: {replacement}.",
-      "documented": "İcma bu paketin daha performanslı alternativlərinin olduğunu qeyd edib.",
+      "simple": "{community} bu paketi artıq lazımsız olaraq qeyd edib, tövsiyəsi: {replacement}.",
+      "documented": "{community} bu paketin daha performanslı alternativlərinin olduğunu qeyd edib.",
       "none": "Bu paket artıq lazımsız olaraq qeyd edilib və funksionallığı bütün mühərriklərdə yerli olaraq mövcuddur.",
       "learn_more": "Ətraflı öyrən",
-      "mdn": "MDN"
+      "learn_more_above": "Yuxarıda ətraflı öyrənin.",
+      "mdn": "MDN",
+      "community": "icma",
+      "consider_no_dep": "+ Asılılıqsız düşünün?"
     },
     "stats": {
       "license": "Lisenziya",
       "deps": "Asılılıqlar",
       "install_size": "Quraşdırma Həcmi",
       "vulns": "Zəifliklər",
+      "published": "Dərc edilib",
+      "published_tooltip": "{package}{'@'}{version} dərc edilmə tarixi",
       "view_dependency_graph": "Asılılıq qrafikini göstər",
       "inspect_dependency_tree": "Asılılıq ağacını yoxla",
       "size_tooltip": {
@@ -136,7 +261,21 @@
       }
     },
     "skills": {
-      "file_counts": {}
+      "title": "Agent Bacarıqları",
+      "skills_available": "{count} bacarıq mövcuddur | {count} bacarıq mövcuddur",
+      "compatible_with": "{tool} ilə uyğundur",
+      "install": "Quraşdır",
+      "installation_method": "Quraşdırma üsulu",
+      "learn_more": "Ətraflı öyrən",
+      "available_skills": "Mövcud Bacarıqlar",
+      "click_to_expand": "Genişləndirmək üçün klikləyin",
+      "no_description": "Təsvir yoxdur",
+      "file_counts": {
+        "scripts": "{count} skript | {count} skript",
+        "refs": "{count} istinad | {count} istinad",
+        "assets": "{count} resurs | {count} resurs"
+      },
+      "view_source": "Mənbəyə bax"
     },
     "links": {
       "repo": "repo",
@@ -145,9 +284,13 @@
       "jsr": "jsr",
       "code": "kod",
       "docs": "sənədlər",
-      "fund": "maliyyələşdirmə"
+      "fund": "maliyyələşdirmə",
+      "compare": "müqayisə"
     },
-    "likes": {},
+    "likes": {
+      "like": "Bu paketi bəyən",
+      "unlike": "Bəyənməni geri al"
+    },
     "docs": {
       "not_available": "Sənədlər mövcud deyil",
       "not_available_detail": "Bu versiya üçün sənədlər yaradıla bilmədi."
@@ -156,11 +299,14 @@
       "title": "Başla",
       "pm_label": "Paket meneceri",
       "copy_command": "Quraşdırma əmrini kopyala",
+      "copy_dev_command": "Dev quraşdırma əmrini kopyala",
+      "dev_dependency_hint": "Adətən dev asılılıq olaraq quraşdırılır",
       "view_types": "{package} paketinə bax"
     },
     "create": {
       "title": "Yeni layihə yarat",
-      "copy_command": "Yaratma əmrini kopyala"
+      "copy_command": "Yaratma əmrini kopyala",
+      "view": "{packageName} eyni dəstəkçiyə malikdir. Ətraflı məlumat üçün klikləyin."
     },
     "run": {
       "title": "İşə sal",
@@ -169,15 +315,42 @@
     "readme": {
       "title": "Readme",
       "no_readme": "README mövcud deyil.",
-      "view_on_github": "GitHub-da bax",
-      "callout": {}
+      "toc_title": "Məzmun",
+      "callout": {
+        "note": "Qeyd",
+        "tip": "İpucu",
+        "important": "Vacib",
+        "warning": "Xəbərdarlıq",
+        "caution": "Diqqət"
+      },
+      "copy_as_markdown": "README-ni Markdown olaraq kopyala"
     },
-    "provenance_section": {},
-    "security_downgrade": {},
+    "provenance_section": {
+      "title": "Mənşə",
+      "built_and_signed_on": "{provider} üzərində qurulub və imzalanıb",
+      "view_build_summary": "Qurma xülasəsinə bax",
+      "source_commit": "Mənbə Commit",
+      "build_file": "Qurma Faylı",
+      "public_ledger": "Açıq Dəftər",
+      "transparency_log_entry": "Şəffaflıq jurnalı qeydi",
+      "view_more_details": "Daha çox detala bax",
+      "error_loading": "Mənşə detalları yüklənə bilmədi"
+    },
+    "security_downgrade": {
+      "title": "Etibar azalması",
+      "description_to_none_provenance": "Bu versiya {provenance} olmadan dərc edilib.",
+      "description_to_none_trustedPublisher": "Bu versiya {trustedPublishing} olmadan dərc edilib.",
+      "description_to_provenance_trustedPublisher": "Bu versiya {provenance} istifadə edir, lakin {trustedPublishing} yox.",
+      "fallback_install_provenance": "Quraşdırma əmrləri {version} versiyasına sabitlənib — mənşəsi olan son versiya.",
+      "fallback_install_trustedPublisher": "Quraşdırma əmrləri {version} versiyasına sabitlənib — etibarlı nəşrçi olan son versiya.",
+      "provenance_link_text": "mənşə",
+      "trusted_publishing_link_text": "etibarlı nəşr"
+    },
     "keywords_title": "Açar sözlər",
     "compatibility": "Uyğunluq",
     "card": {
       "publisher": "Naşir",
+      "published": "Dərc edilib",
       "weekly_downloads": "Həftəlik endirmələr",
       "keywords": "Açar sözlər",
       "license": "Lisenziya"
@@ -193,24 +366,53 @@
       "other_versions": "Digər versiyalar",
       "more_tagged": "Daha {count} etiketlənmiş",
       "all_covered": "Bütün versiyalar yuxarıdakı etiketlər tərəfindən əhatə olunub",
-      "deprecated_title": "{version} (köhnəlmiş)"
+      "deprecated_title": "{version} (köhnəlmiş)",
+      "view_all": "{count} versiyanı göstər | Bütün {count} versiyanı göstər",
+      "distribution_title": "Semver Qrupu",
+      "distribution_modal_title": "Versiyalar",
+      "distribution_range_date_same_year": "{from}-dən {to}-yə, {endYear}",
+      "distribution_range_date_multiple_years": "{from}, {startYear}-dən {to}, {endYear}-ə",
+      "grouping_major": "Major",
+      "grouping_minor": "Minor",
+      "grouping_versions_title": "Versiyalar",
+      "grouping_versions_all": "Hamısı",
+      "grouping_versions_only_recent": "Yalnız son",
+      "grouping_usage_title": "İstifadə",
+      "grouping_usage_all": "Hamısı",
+      "recent_versions_only_tooltip": "Yalnız son bir il ərzində dərc edilmiş versiyaları göstər.",
+      "show_low_usage_tooltip": "Ümumi endirmələrin 1%-dən azını təşkil edən versiya qruplarını daxil et.",
+      "y_axis_label": "Endirmələr",
+      "filter_placeholder": "Semver ilə süz (məs. ^3.0.0)",
+      "filter_invalid": "Yanlış semver aralığı",
+      "filter_help": "Semver aralığı filtri köməyi",
+      "filter_tooltip": "Versiyaları {link} istifadə edərək süzün. Məsələn, ^3.0.0 bütün 3.x versiyalarını göstərir.",
+      "filter_tooltip_link": "semver aralığı",
+      "no_matches": "Bu aralığa uyğun versiya yoxdur",
+      "copy_alt": {
+        "per_version_analysis": "{version} versiyası {downloads} dəfə endirilmişdir",
+        "general_description": "{package_name} paketinin {versions_count} {semver_grouping_mode} versiyası üçün versiya başına endirmələri göstərən çubuq diaqramı, {date_range_label} {first_version} versiyasından {last_version} versiyasına qədər. Ən çox endirilən versiya {max_version_downloads} endirmə ilə {max_downloaded_version}-dir. {per_version_analysis}. {watermark}."
+      }
     },
     "dependencies": {
-      "title": "Asılılıqlar ({count})",
+      "title": "Asılılıq ({count}) | Asılılıqlar ({count})",
       "list_label": "Paket asılılıqları",
-      "show_all": "bütün {count} asılılığı göstər",
+      "show_all": "{count} asılılığı göstər | bütün {count} asılılığı göstər",
       "optional": "əlavə",
-      "view_vulnerabilities": "Zəiflikləri göstər"
+      "view_vulnerabilities": "Zəiflikləri göstər",
+      "outdated_major": "{count} major versiya geridə (son: {latest}) | {count} major versiya geridə (son: {latest})",
+      "outdated_minor": "{count} minor versiya geridə (son: {latest}) | {count} minor versiya geridə (son: {latest})",
+      "outdated_patch": "Patch yeniləməsi mövcuddur (son: {latest})",
+      "has_replacement": "Bu asılılığın tövsiyə olunan əvəzləyiciləri var"
     },
     "peer_dependencies": {
-      "title": "Peer Asılılıqlar ({count})",
+      "title": "Peer Asılılıq ({count}) | Peer Asılılıqlar ({count})",
       "list_label": "Paket peer asılılıqları",
-      "show_all": "bütün {count} peer asılılığı göstər"
+      "show_all": "{count} peer asılılığı göstər | bütün {count} peer asılılığı göstər"
     },
     "optional_dependencies": {
-      "title": "Əlavə Asılılıqlar ({count})",
+      "title": "Əlavə Asılılıq ({count}) | Əlavə Asılılıqlar ({count})",
       "list_label": "Paket əlavə asılılıqları",
-      "show_all": "bütün {count} əlavə asılılığı göstər"
+      "show_all": "{count} əlavə asılılığı göstər | bütün {count} əlavə asılılığı göstər"
     },
     "maintainers": {
       "title": "Dəstəkçilər",
@@ -239,12 +441,50 @@
       "date_range_multiline": "{start}\n- {end}",
       "download_file": "{fileType} endir",
       "toggle_annotator": "Annotator keçid",
-      "items": {}
+      "toggle_stack_mode": "Yığın rejimini dəyişdir",
+      "open_options": "Seçimləri aç",
+      "close_options": "Seçimləri bağla",
+      "legend_estimation": "Təxmin",
+      "no_data": "Məlumat mövcud deyil",
+      "y_axis_label": "{granularity} {facet}",
+      "facet": "Aspekt",
+      "title": "Trendlər",
+      "contributors_skip": "Əməkdaşlarda göstərilmir (GitHub repo yoxdur):",
+      "items": {
+        "downloads": "Endirmələr",
+        "likes": "Bəyənmələr",
+        "contributors": "Əməkdaşlar"
+      },
+      "data_correction": "Məlumat düzəlişi",
+      "average_window": "Orta pəncərə",
+      "smoothing": "Hamarlama",
+      "known_anomalies": "Bilinən anomaliyalar",
+      "known_anomalies_description": "Botlar və ya CI problemlərindən yaranan bilinən endirmə sıçrayışlarını interpolyasiya edir.",
+      "known_anomalies_ranges": "Anomaliya aralıqları",
+      "known_anomalies_range": "{start}-dən {end}-ə",
+      "known_anomalies_range_named": "{packageName}: {start}-dən {end}-ə",
+      "known_anomalies_none": "Bu paket üçün bilinən anomaliya yoxdur. | Bu paketlər üçün bilinən anomaliya yoxdur.",
+      "known_anomalies_contribute": "Anomaliya məlumatı əlavə et",
+      "apply_correction": "Düzəliş tətbiq et",
+      "copy_alt": {
+        "trend_none": "əsasən sabit",
+        "trend_strong": "güclü",
+        "trend_weak": "zəif",
+        "trend_undefined": "müəyyən edilməyib (kifayət qədər məlumat yoxdur)",
+        "button_label": "Alt mətni kopyala",
+        "watermark": "Aşağıda su nişanı yazılıb \"./npmx npm reyestri üçün sürətli, müasir brauzer\"",
+        "analysis": "{package_name} {start_value}-dən başlayır və {end_value}-də bitir, zaman intervalı başına {downloads_slope} endirmə meyli ilə {trend} trend göstərir",
+        "estimation": "Son dəyər cari dövr üçün qismən məlumatlara əsaslanan təxmindir.",
+        "estimations": "Son dəyərlər cari dövr üçün qismən məlumatlara əsaslanan təxminlərdir.",
+        "compare": "Paket endirmə müqayisəsi xətt diaqramı: {packages}.",
+        "single_package": "{package} paketi üçün endirmə xətt diaqramı.",
+        "general_description": "Y oxu endirmələrin sayını təmsil edir. X oxu tarix aralığını təmsil edir, {start_date}-dən {end_date}-ə, {granularity} zaman dövrü ilə.{estimation_notice} {packages_analysis}. {watermark}."
+      }
     },
     "downloads": {
       "title": "Həftəlik Endirmələr",
-      "analyze": "Endirmələri təhlil et",
-      "modal_title": "Endirmələr"
+      "community_distribution": "İcma adaptasiya paylanmasına bax",
+      "subtitle": "Bütün versiyalar üzrə"
     },
     "install_scripts": {
       "title": "Quraşdırma Skriptləri",
@@ -260,16 +500,18 @@
       "esm": "ES Modulları dəstəklənir",
       "cjs": "CommonJS dəstəklənir",
       "no_esm": "ES Modulları dəstəklənmir",
+      "types_label": "Tiplər",
       "types_included": "Tiplər daxildir",
       "types_available": "Tiplər {package} vasitəsilə mövcuddur",
       "no_types": "TypeScript tipləri yoxdur"
     },
     "license": {
-      "view_spdx": "SPDX-də lisenziya mətnini göstər"
+      "view_spdx": "SPDX-də lisenziya mətnini göstər",
+      "none": "Yoxdur"
     },
     "vulnerabilities": {
       "tree_found": "{packages}/{total} paketdə {vulns} zəiflik | {packages}/{total} paketdə {vulns} zəiflik",
-      "show_all_packages": "bütün {count} təsirlənmiş paketi göstər",
+      "show_all_packages": "{count} təsirlənmiş paketi göstər | bütün {count} təsirlənmiş paketi göstər",
       "path": "yol",
       "more": "+{count} daha çox",
       "packages_failed": "{count} paket yoxlana bilmədi | {count} paket yoxlana bilmədi",
@@ -279,12 +521,13 @@
         "high": "yüksək",
         "moderate": "orta",
         "low": "aşağı"
-      }
+      },
+      "fixed_in_title": "{version} versiyasında düzəldilib"
     },
     "deprecated": {
       "label": "Köhnəlmiş",
       "tree_found": "{count} köhnəlmiş asılılıq | {count} köhnəlmiş asılılıq",
-      "show_all": "bütün {count} köhnəlmiş paketi göstər"
+      "show_all": "{count} köhnəlmiş paketi göstər | bütün {count} köhnəlmiş paketi göstər"
     },
     "access": {
       "title": "Komanda Girişi",
@@ -322,15 +565,21 @@
     },
     "sort": {
       "downloads": "Ən çox endirilən",
+      "published": "Son dərc edilən",
       "name_asc": "Ad (A-Z)",
       "name_desc": "Ad (Z-A)"
     },
-    "size": {}
+    "size": {
+      "b": "{size} B",
+      "kb": "{size} kB",
+      "mb": "{size} MB"
+    }
   },
   "connector": {
     "modal": {
       "title": "Lokal Konnektor",
       "connected": "Qoşulub",
+      "connected_as_user": "~{user} kimi qoşulub",
       "connected_hint": "İndi veb interfeysdən paketləri və təşkilatları idarə edə bilərsiniz.",
       "disconnect": "Ayrıl",
       "run_hint": "Admin funksiyalarını aktivləşdirmək üçün konnektoru kompüterinizdə işə salın.",
@@ -344,7 +593,8 @@
       "warning": "XƏBƏRDARLIQ",
       "warning_text": "Bu, npmx-ə npm CLI-nızı istifadə etməyə icazə verir. Yalnız etibar etdiyiniz saytlara qoşulun.",
       "connect": "Qoşul",
-      "connecting": "Qoşulur..."
+      "connecting": "Qoşulur...",
+      "auto_open_url": "Auth səhifəsini avtomatik aç"
     }
   },
   "operations": {
@@ -360,7 +610,9 @@
       "otp_placeholder": "OTP kodunu daxil edin...",
       "otp_label": "Birdəfəlik şifrə",
       "retry_otp": "OTP ilə yenidən cəhd et",
+      "retry_web_auth": "Veb auth ilə yenidən cəhd et",
       "retrying": "Yenidən cəhd edilir...",
+      "open_web_auth": "Veb auth keçidini aç",
       "approve_operation": "Əməliyyatı təsdiqlə",
       "remove_operation": "Əməliyyatı sil",
       "approve_all": "Hamısını Təsdiqlə",
@@ -482,6 +734,7 @@
       "invalid_name": "Yanlış paket adı:",
       "available": "Bu ad mövcuddur!",
       "taken": "Bu ad artıq tutulub.",
+      "missing_permission": "{'@'}{scope} scope-una paket əlavə etmək icazəniz yoxdur.",
       "similar_warning": "Oxşar paketlər mövcuddur - npm bu adı rədd edə bilər:",
       "related": "Əlaqəli paketlər:",
       "scope_warning_title": "Bunun əvəzinə scope-lu paket istifadə etməyi düşünün",
@@ -523,7 +776,9 @@
     "markdown_view_mode": {
       "preview": "önbaxış",
       "code": "kod"
-    }
+    },
+    "file_path": "Fayl yolu",
+    "scroll_to_top": "Yuxarı qayıt"
   },
   "badges": {
     "provenance": {
@@ -558,7 +813,13 @@
     "more_keywords": "+{count} daha çox",
     "clear_all": "Hamısını təmizlə",
     "remove_filter": "{label} filtrini sil",
-    "chips": {},
+    "chips": {
+      "search": "Axtarış",
+      "downloads": "Endirmələr",
+      "keyword": "Açar söz",
+      "security": "Təhlükəsizlik",
+      "updated": "Yenilənib"
+    },
     "download_range": {
       "any": "İstənilən",
       "lt100": "< 100",
@@ -589,6 +850,7 @@
       "downloads_day": "Endirmələr/gün",
       "downloads_month": "Endirmələr/ay",
       "downloads_year": "Endirmələr/il",
+      "published": "Son Dərc",
       "name": "Ad",
       "quality": "Keyfiyyət",
       "popularity": "Populyarlıq",
@@ -604,6 +866,7 @@
       "version": "Versiya",
       "description": "Təsvir",
       "downloads": "Endirmələr/həftə",
+      "published": "Son Dərc",
       "maintainers": "Dəstəkçilər",
       "keywords": "Açar sözlər",
       "quality_score": "Keyfiyyət xalı",
@@ -623,7 +886,6 @@
       "paginated": "Səhifələnmiş",
       "items_per_page": "Səhifə başına element",
       "per_page": "{count} / səhifə",
-      "all_yolo": "Hamısı (YOLO)",
       "showing": "{start}-{end} / {total}",
       "previous": "Əvvəlki səhifə",
       "next": "Növbəti səhifə",
@@ -667,6 +929,20 @@
         "managers": "var"
       }
     },
+    "sponsors": {
+      "title": "Sponsorlar"
+    },
+    "oss_partners": {
+      "title": "OSS Tərəfdaşlar"
+    },
+    "team": {
+      "title": "Komanda",
+      "governance": "İdarəetmə",
+      "role_steward": "idarəçi",
+      "role_maintainer": "dəstəkçi",
+      "sponsor": "sponsor",
+      "sponsor_aria": "GitHub-da {name} sponsorluq et"
+    },
     "contributors": {
       "title": "Əməkdaşlar",
       "description": "npmx tam açıq mənbəlidir, möhtəşəm əməkdaşlar icması tərəfindən hazırlanır. Bizə qoşulun və həmişə istədiyimiz npm baxış təcrübəsini birlikdə quraq.",
@@ -686,6 +962,11 @@
         "description": "Söhbət edin, suallar verin və fikirlər paylaşın.",
         "cta": "Discord-a qoşul"
       },
+      "builders": {
+        "title": "Qurucular",
+        "description": "Qurucular icmasamıza qoşulun və npmx-in gələcəyini formalaşdırın",
+        "cta": "Qurucular söhbətinə qoşul"
+      },
       "follow": {
         "title": "Yeniliklərdən xəbərdar olun",
         "description": "npmx haqqında son yenilikləri öyrənin.",
@@ -693,9 +974,34 @@
       }
     }
   },
-  "account_menu": {},
+  "account_menu": {
+    "connect": "qoşul",
+    "account": "Hesab",
+    "npm_cli": "npm CLI",
+    "atmosphere": "Atmosphere",
+    "npm_cli_desc": "Paketləri və təşkilatları idarə et",
+    "atmosphere_desc": "Sosial funksiyalar və identifikasiya",
+    "connect_npm_cli": "npm CLI-yə qoşul",
+    "connect_atmosphere": "Atmosphere-ə qoşul",
+    "connecting": "Qoşulur...",
+    "ops": "{count} əməliyyat | {count} əməliyyat"
+  },
   "auth": {
-    "modal": {}
+    "modal": {
+      "title": "Atmosphere",
+      "connected_as": "{'@'}{handle} kimi qoşulub",
+      "disconnect": "Ayrıl",
+      "connect_prompt": "Atmosphere hesabınızla qoşulun",
+      "handle_label": "İstifadəçi adı",
+      "handle_placeholder": "alice.npmx.social",
+      "connect": "Qoşul",
+      "create_account": "Yeni hesab yarat",
+      "connect_bluesky": "Bluesky ilə qoşul",
+      "what_is_atmosphere": "Atmosphere hesabı nədir?",
+      "atmosphere_explanation": "{npmx} sosial funksiyalarını gücləndirmək üçün {atproto} istifadə edir, istifadəçilərə öz məlumatlarına sahib olmağa və bütün uyğun tətbiqlər üçün bir hesab istifadə etməyə imkan verir. Hesab yaratdıqdan sonra eyni hesabla {bluesky} və {tangled} kimi digər tətbiqlərdən istifadə edə bilərsiniz.",
+      "default_input_error": "Xahiş edirik düzgün istifadəçi adı, DID və ya tam PDS URL daxil edin",
+      "profile": "Profil"
+    }
   },
   "header": {
     "home": "npmx ana səhifə",
@@ -717,42 +1023,295 @@
     }
   },
   "compare": {
-    "packages": {},
-    "selector": {},
-    "no_dependency": {},
+    "packages": {
+      "title": "paketləri müqayisə et",
+      "tagline": "düzgün seçim etməyinizə kömək etmək üçün npm paketlərini yan-yana müqayisə edin.",
+      "meta_title": "{packages} Müqayisəsi - npmx",
+      "meta_title_empty": "Paketləri Müqayisə Et - npmx",
+      "meta_description": "{packages} yan-yana müqayisəsi",
+      "meta_description_empty": "npm paketlərini yan-yana müqayisə edin",
+      "section_packages": "Paketlər",
+      "section_facets": "Aspektlər",
+      "section_comparison": "Müqayisə",
+      "copy_as_markdown": "Cədvəli kopyala",
+      "loading": "Paket məlumatları yüklənir...",
+      "error": "Paket məlumatları yüklənə bilmədi. Yenidən cəhd edin.",
+      "empty_title": "Müqayisə üçün paketlər seçin",
+      "empty_description": "Metriklərinin yan-yana müqayisəsini görmək üçün yuxarıda ən azı 2 paket axtarıb əlavə edin."
+    },
+    "selector": {
+      "search_label": "Paketləri axtar",
+      "search_first": "Paket axtarın...",
+      "search_add": "Başqa paket əlavə edin...",
+      "searching": "Axtarılır...",
+      "remove_package": "{package} sil",
+      "packages_selected": "{count}/{max} paket seçilib.",
+      "add_hint": "Müqayisə üçün ən azı 2 paket əlavə edin."
+    },
+    "no_dependency": {
+      "label": "(Asılılıq yoxdur)",
+      "typeahead_title": "James Nə Edərdi?",
+      "typeahead_description": "Asılılıq istifadə etməməklə müqayisə edin! e18e təsdiqli.",
+      "tooltip_title": "Asılılığa ehtiyacınız olmaya bilər",
+      "tooltip_description": "Asılılıq istifadə etməməklə müqayisə edin! {link} yerli API-lər və ya daha sadə alternativlərlə əvəz edilə bilən paketlərin siyahısını saxlayır.",
+      "e18e_community": "e18e icması",
+      "add_column": "Müqayisəyə asılılıqsız sütun əlavə et"
+    },
     "facets": {
-      "categories": {},
-      "items": {
-        "packageSize": {},
-        "installSize": {},
-        "dependencies": {},
-        "totalDependencies": {},
-        "downloads": {},
-        "totalLikes": {},
-        "lastUpdated": {},
-        "deprecated": {},
-        "engines": {},
-        "types": {},
-        "moduleFormat": {},
-        "license": {},
-        "vulnerabilities": {}
+      "group_label": "Müqayisə aspektləri",
+      "all": "hamısı",
+      "none": "heç biri",
+      "coming_soon": "Tezliklə",
+      "select_all": "Bütün aspektləri seç",
+      "deselect_all": "Bütün aspektləri ləğv et",
+      "select_category": "Bütün {category} aspektlərini seç",
+      "deselect_category": "Bütün {category} aspektlərini ləğv et",
+      "binary_only_tooltip": "Bu paket yalnız binar fayllar təqdim edir, ixrac yoxdur",
+      "categories": {
+        "performance": "Performans",
+        "health": "Sağlamlıq",
+        "compatibility": "Uyğunluq",
+        "security": "Təhlükəsizlik və Uyğunluq"
       },
-      "values": {},
-      "trends": {}
+      "items": {
+        "packageSize": {
+          "label": "Paket Həcmi",
+          "description": "Paketin öz həcmi (açılmış)"
+        },
+        "installSize": {
+          "label": "Quraşdırma Həcmi",
+          "description": "Bütün asılılıqlar daxil ümumi quraşdırma həcmi"
+        },
+        "dependencies": {
+          "label": "Birbaşa Asılılıqlar",
+          "description": "Birbaşa asılılıqların sayı"
+        },
+        "totalDependencies": {
+          "label": "Ümumi Asılılıqlar",
+          "description": "Tranzitiv asılılıqlar daxil ümumi say"
+        },
+        "downloads": {
+          "label": "Endirmə/həftə",
+          "description": "Həftəlik endirmə sayı"
+        },
+        "totalLikes": {
+          "label": "Bəyənmələr",
+          "description": "Bəyənmə sayı"
+        },
+        "lastUpdated": {
+          "label": "Dərc edilib",
+          "description": "Bu versiyanın dərc tarixi"
+        },
+        "deprecated": {
+          "label": "Köhnəlmiş?",
+          "description": "Paketin köhnəlmiş olub-olmadığı"
+        },
+        "engines": {
+          "label": "Mühərriklər",
+          "description": "Node.js versiya tələbləri"
+        },
+        "types": {
+          "label": "Tiplər",
+          "description": "TypeScript tip tərifləri"
+        },
+        "moduleFormat": {
+          "label": "Modul Formatı",
+          "description": "ESM/CJS dəstəyi"
+        },
+        "license": {
+          "label": "Lisenziya",
+          "description": "Paket lisenziyası"
+        },
+        "vulnerabilities": {
+          "label": "Zəifliklər",
+          "description": "Məlum təhlükəsizlik zəiflikləri"
+        }
+      },
+      "values": {
+        "any": "İstənilən",
+        "none": "Yoxdur",
+        "unknown": "Naməlum",
+        "deprecated": "Köhnəlmiş",
+        "not_deprecated": "Xeyr",
+        "types_included": "Daxildir",
+        "types_none": "Yoxdur",
+        "vulnerabilities_summary": "{count} ({critical}C/{high}H)",
+        "up_to_you": "Sizə bağlıdır!"
+      },
+      "trends": {
+        "title": "Trendləri Müqayisə Et"
+      }
+    },
+    "file_too_large": "Fayl müqayisə üçün çox böyükdür",
+    "file_size_warning": "{size} müqayisə üçün 250KB limitini keçir",
+    "file_changes": "Fayl Dəyişiklikləri",
+    "files_count": "{count} fayl",
+    "lines_hidden": "{count} sətir gizlədilib",
+    "compare_versions": "fərq",
+    "compare_versions_title": "Versiyaları müqayisə et",
+    "summary": "Xülasə",
+    "deps_count": "{count} asılılıq",
+    "dependencies": "Asılılıqlar",
+    "dev_dependencies": "Dev Asılılıqlar",
+    "peer_dependencies": "Peer Asılılıqlar",
+    "optional_dependencies": "Əlavə Asılılıqlar",
+    "no_dependency_changes": "Asılılıq dəyişikliyi yoxdur",
+    "file_filter_option": {
+      "all": "Hamısı ({count})",
+      "added": "Əlavə edilmiş ({count})",
+      "removed": "Silinmiş ({count})",
+      "modified": "Dəyişdirilmiş ({count})"
+    },
+    "search_files_placeholder": "Faylları axtar...",
+    "no_files_all": "Fayl yoxdur",
+    "no_files_search": "\"{query}\" ilə uyğun fayl yoxdur",
+    "no_files_filtered": "{filter} fayl yoxdur",
+    "filter": {
+      "added": "əlavə edilmiş",
+      "removed": "silinmiş",
+      "modified": "dəyişdirilmiş"
+    },
+    "files_button": "Fayllar",
+    "select_file_prompt": "Fərqini görmək üçün yan paneldən fayl seçin",
+    "close_files_panel": "Fayllar panelini bağla",
+    "filter_files_label": "Faylları dəyişiklik növünə görə süz"
+  },
+  "pds": {
+    "title": "PDS",
+    "meta_description": "npmx PDS - Şəxsi Məlumat Serveri",
+    "join": {
+      "title": "Qoşul",
+      "description": "npmx PDS-ə qoşulun",
+      "migrate": "Köçür"
+    },
+    "server": {
+      "title": "Server",
+      "location_label": "Yer",
+      "location_value": "Nürnberq, Almaniya",
+      "infrastructure_label": "İnfrastruktur",
+      "infrastructure_value": "Hetzner üzərində yerləşdirilir",
+      "privacy_label": "Gizlilik",
+      "privacy_value": "Sərt AB Məlumat Mühafizəsi qanunlarına tabedir",
+      "learn_more": "Ətraflı öyrən"
+    },
+    "community": {
+      "title": "İcma",
+      "description": "{count} hesab ilə icmasamıza qoşulun",
+      "loading": "Yüklənir...",
+      "error": "Xəta",
+      "empty": "Boş",
+      "view_profile": "{handle} profilinə bax",
+      "new_accounts": "{count} yeni hesab"
     }
   },
   "privacy_policy": {
+    "title": "gizlilik siyasəti",
+    "last_updated": "Son yenilənmə: {date}",
+    "welcome": "{app} saytına xoş gəlmisiniz. Biz gizliliyinizi qorumağa sadiqik. Bu siyasət hansı məlumatları topladığımızı, necə istifadə etdiyimizi və məlumatlarınızla bağlı hüquqlarınızı izah edir.",
     "cookies": {
-      "what_are": {},
-      "types": {},
-      "local_storage": {},
-      "management": {}
+      "what_are": {
+        "title": "Kukilər nədir?",
+        "p1": "Kukilər veb sayta daxil olduğunuzda cihazınızda saxlanılan kiçik mətn fayllarıdır. Onların məqsədi müəyyən seçimləri və tənzimləmələri yadda saxlayaraq baxış təcrübənizi yaxşılaşdırmaqdır."
+      },
+      "types": {
+        "title": "Hansı kukilərdən istifadə edirik?",
+        "p1": "Biz yalnız saytın funksionallığı üçün zəruri olan məqsədlərdə {bold} istifadə edirik. Üçüncü tərəf və ya reklam kukilərindən istifadə etmirik.",
+        "bold": "əsas texniki kukilər",
+        "li1": "{li11}{separator} {li12}",
+        "li2": "{li21}{separator} {li22}",
+        "separator": ":",
+        "cookie_vdpl": "__vdpl",
+        "cookie_vdpl_desc": "Bu kuki hostinq provayderimiz (Vercel) tərəfindən sapma qorunması üçün istifadə olunur. Siz baxarkən yeni yeniləmə buraxılarsa, düzgün deployment versiyasından resursları aldığınızı təmin edir. Sizi izləmir.",
+        "cookie_h3": "h3",
+        "cookie_h3_desc": "Bu bizim təhlükəsiz sessiya kukimizdir. Atmosphere hesabınızı qoşduğunuzda OAuth giriş tokenini saxlayır. Autentifikasiya olunmuş sessiyanızın saxlanması üçün vacibdir."
+      },
+      "local_storage": {
+        "title": "Lokal yaddaş",
+        "p1": "Sessiya kukilərinə əlavə olaraq, ekran seçimlərinizi saxlamaq üçün brauzerinizin {bold} istifadə edirik. Bu, seçdiyiniz temanı (açıq/tünd) və bəzi digər {settings} yadda saxlamağımıza imkan verir ki, hər ziyarətdə yenidən tənzimləməyəsiniz.",
+        "bold": "Lokal Yaddaş",
+        "p2": "Bu məlumat tamamilə funksional xarakterlidir, yalnız cihazınızda saxlanılır və {bold2}. Biz onu yalnız veb saytımızdakı təcrübənizi yaxşılaşdırmaq üçün istifadə edirik.",
+        "bold2": "şəxsi məlumat ehtiva etmir və sizi izləmək üçün istifadə olunmur",
+        "settings": "tənzimləmələr"
+      },
+      "management": {
+        "title": "Kukilərin idarə edilməsi",
+        "p1": "Brauzerinizi seçimlərinizə uyğun olaraq kukiləri qəbul etmək, rədd etmək və ya silmək üçün tənzimləyə bilərsiniz. Lakin nəzərə alın ki, {bold}.",
+        "bold": "əsas kukiləri rədd etmək tətbiqə tam girişin qarşısını ala bilər",
+        "p2": "Aşağıda ən çox istifadə olunan brauzerlərdə kuki idarəetməsi üçün təlimat keçidləri verilmişdir:",
+        "chrome": "Google Chrome (yeni pəncərədə açılır)",
+        "firefox": "Mozilla Firefox (yeni pəncərədə açılır)",
+        "edge": "Microsoft Edge (yeni pəncərədə açılır)"
+      }
     },
-    "analytics": {},
-    "authenticated": {},
-    "data_retention": {},
-    "your_rights": {},
-    "contact": {},
-    "changes": {}
+    "analytics": {
+      "title": "Analitika",
+      "p1": "Ziyarətçilərin veb saytımızdan necə istifadə etdiyini anlamaq üçün {bold} istifadə edirik. Bu, istifadəçi təcrübəsini yaxşılaşdırmağımıza və problemləri müəyyən etməyimizə kömək edir.",
+      "bold": "Vercel Web Analytics",
+      "p2": "Vercel Analytics gizliliyi nəzərə alaraq hazırlanıb:",
+      "li1": "Kukilərdən istifadə etmir",
+      "li2": "Şəxsi identifikatorlar toplamır",
+      "li3": "İstifadəçiləri veb saytlar arasında izləmir",
+      "li4": "Bütün məlumatlar yığılmış və anonim şəkildədir",
+      "p3": "Toplanan yeganə məlumat bunlardır: səhifə URL-ləri, istinad mənbəyi, ölkə/region, cihaz növü, brauzer və əməliyyat sistemi. Bu məlumatlar fərdi istifadəçiləri müəyyən etmək üçün istifadə edilə bilməz."
+    },
+    "authenticated": {
+      "title": "Autentifikasiya olunmuş istifadəçilər",
+      "p1": "{bold} hesabınızı npmx-ə qoşduğunuzda, OAuth giriş tokeninizi təhlükəsiz, yalnız HTTP sessiya kukisində saxlayırıq. Bu token yalnız sizin adınıza sorğuların autentifikasiyası üçün istifadə olunur.",
+      "bold": "Atmosphere",
+      "p2": "Biz etimadnamələrinizi saxlamırıq və istifadə etdiyiniz funksiyaları təmin etmək üçün lazım olandan artıq heç bir məlumata müraciət etmirik. Hesabınızı istənilən vaxt {settings} səhifəsindən ayıra bilərsiniz.",
+      "settings": "tənzimləmələr"
+    },
+    "data_retention": {
+      "title": "Məlumatların saxlanması",
+      "p1": "Sessiya kukiləri brauzerinizi bağladığınızda və ya bir müddət fəaliyyətsizlikdən sonra avtomatik silinir. Lokal yaddaş seçimləri brauzer məlumatlarınızı təmizləyənə qədər cihazınızda qalır. Analitik məlumatlar yığılmış formada saxlanılır və fərdi istifadəçilərlə əlaqələndirilə bilməz."
+    },
+    "your_rights": {
+      "title": "Sizin hüquqlarınız",
+      "p1": "Sizin aşağıdakı hüquqlarınız var:",
+      "li1": "Hansı məlumatları topladığımız barədə məlumat əldə edin",
+      "li2": "İstənilən vaxt lokal yaddaşınızı və kukilərinizi təmizləyin",
+      "li3": "Autentifikasiya olunmuş sessiyanızı ayırın",
+      "li4": "Məlumat təcrübələrimiz barədə məlumat tələb edin",
+      "p2": "Şəxsi məlumat toplamadığımız üçün adətən silinəcək və ya ixrac ediləcək şəxsi məlumat yoxdur."
+    },
+    "contact": {
+      "title": "Bizimlə əlaqə",
+      "p1": "Bu gizlilik siyasəti ilə bağlı hər hansı sual və ya narahatlıq üçün {link} issue açaraq bizimlə əlaqə saxlaya bilərsiniz.",
+      "link": "GitHub repozitoriyası"
+    },
+    "changes": {
+      "title": "Bu siyasətdə dəyişikliklər",
+      "p1": "Bu gizlilik siyasətini vaxtaşırı yeniləyə bilərik. Hər hansı dəyişiklik yenilənmiş tarixlə bu səhifədə dərc ediləcəkdir."
+    }
+  },
+  "a11y": {
+    "title": "əlçatanlıq",
+    "footer_title": "a11y",
+    "welcome": "Biz {app} saytının mümkün qədər çox insan tərəfindən istifadə edilə bilməsini istəyirik.",
+    "approach": {
+      "title": "Yanaşmamız",
+      "p1": "Biz Veb Məzmun Əlçatanlıq Qaydalarına (WCAG) 2.2 riayət etməyə çalışırıq və funksiyalar yaradarkən onları istinad kimi istifadə edirik. Heç bir WCAG səviyyəsinə tam uyğunluq iddia etmirik — əlçatanlıq davamlı bir prosesdir və həmişə görüləcək iş var.",
+      "p2": "Bu sayt {about}. Əlçatanlıq yaxşılaşdırmaları müntəzəm inkişafımızın bir hissəsi olaraq tədricən edilir.",
+      "about_link": "açıq mənbəli, icma tərəfindən idarə olunan layihədir"
+    },
+    "measures": {
+      "title": "Nə edirik",
+      "p1": "Sayt üzrə etməyi hədəflədiyimiz bəzi şeylər:",
+      "li1": "Lazım olduqda semantik HTML və ARIA atributlarından istifadə etmək.",
+      "li2": "Brauzerdə tənzimləyə biləcəyiniz nisbi mətn ölçüləri istifadə etmək.",
+      "li3": "İnterfeys boyunca klaviatura naviqasiyasını dəstəkləmək.",
+      "li4": "prefers-reduced-motion və prefers-color-scheme media sorğularına riayət etmək.",
+      "li5": "Kifayət qədər rəng kontrastı ilə dizayn etmək.",
+      "li6": "Əsas məzmunun JavaScript olmadan mövcud olmasını təmin etmək, baxmayaraq ki, bəzi interaktiv funksiyalar onu tələb edir."
+    },
+    "limitations": {
+      "title": "Məlum məhdudiyyətlər",
+      "p1": "Saytın bəzi hissələri — xüsusilə paket README-ləri kimi üçüncü tərəf məzmunu — əlçatanlıq standartlarına cavab verməyə bilər. Bu sahələri zamanla yaxşılaşdırmağa çalışırıq."
+    },
+    "contact": {
+      "title": "Əlaqə",
+      "p1": "{app} saytında əlçatanlıq maneəsi ilə qarşılaşsanız, xahiş edirik {link} issue açaraq bizə bildirin. Bu hesabatları ciddi qəbul edirik və onları həll etmək üçün əlimizdən gələni edəcəyik.",
+      "link": "GitHub repozitoriyası"
+    }
   }
 }

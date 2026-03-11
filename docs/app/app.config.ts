@@ -11,4 +11,7 @@ export default defineAppConfig({
   llms: {
     domain: 'https://docs.npmx.dev',
   },
+  github: {
+    rootDir: 'docs',
+  },
 })

@@ -64,6 +64,22 @@ const formattedStars = computed(() =>
     : '',
 )
 
+const MAX_LOGO_SYMBOLS = 40
+
+const titleTruncated = computed(() => {
+  return name.value.length > MAX_LOGO_SYMBOLS
+    ? `${name.value.slice(0, MAX_LOGO_SYMBOLS - 1)}…`
+    : name.value
+})
+
+// Dynamic font sizing based on name length
+// OG images are 1200px wide, with 64px padding on each side = 1072px content width
+// The original size (8xl) can fit 19 characters (2 logo characters + 17 name characters)
+const titleScale = computed(() => {
+  const len = titleTruncated.value.length + 2
+  return Math.min(Math.floor((19 / len) * 100) / 100, 1)
+})
+
 try {
   await refreshPkg()
   await Promise.all([refreshRepoMeta(), refreshDownloads(), refreshLikes()])
@@ -78,12 +94,13 @@ try {
 <template>
   <div
     class="h-full w-full flex flex-col justify-center px-20 bg-[#050505] text-[#fafafa] relative overflow-hidden"
+    style="font-family: 'Geist Mono', sans-serif"
   >
     <div class="relative z-10 flex flex-col gap-6">
       <!-- Package name -->
       <div class="flex items-start gap-4">
         <div
-          class="flex items-center justify-center w-16 h-16 p-4 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
+          class="flex items-center justify-center w-16 h-16 p-3.5 rounded-xl shadow-lg bg-gradient-to-tr from-[#3b82f6]"
           :style="{ backgroundColor: primaryColor }"
         >
           <svg
@@ -106,18 +123,20 @@ try {
         </div>
 
         <h1
-          class="text-8xl font-bold tracking-tighter"
-          style="font-family: 'Geist Sans', sans-serif"
+          class="font-bold text-8xl origin-cl tracking-tighter text-nowrap whitespace-nowrap flex flex-nowrap"
+          :style="{ transform: `scale(${titleScale})` }"
         >
-          <span :style="{ color: primaryColor }" class="opacity-80">./</span>{{ pkg?.name }}
+          <span
+            :style="{ color: primaryColor }"
+            class="opacity-80 tracking-[-0.1em]"
+            style="margin-left: -0.5rem; margin-right: 1rem"
+            >./</span
+          >{{ titleTruncated }}
         </h1>
       </div>
 
       <!-- Version -->
-      <div
-        class="flex items-center gap-5 text-4xl font-light text-[#a3a3a3]"
-        style="font-family: 'Geist Sans', sans-serif"
-      >
+      <div class="flex items-center gap-5 text-3xl font-light text-[#a3a3a3]">
         <span
           class="px-3 py-1 me-2 rounded-lg border font-bold opacity-90"
           :style="{
@@ -127,11 +146,11 @@ try {
             boxShadow: `0 0 20px ${primaryColor}25`,
           }"
         >
-          {{ resolvedVersion }}
+          {{ resolvedVersion ?? version }}
         </span>
 
         <!-- Downloads (if any) -->
-        <span v-if="downloads" class="flex items-center gap-2">
+        <span v-if="downloads" class="flex items-center gap-2 tracking-tight">
           <svg
             width="30"
             height="30"
@@ -175,7 +194,11 @@ try {
         </span>
 
         <!-- Stars (if any) -->
-        <span v-if="formattedStars" class="flex items-center gap-2" data-testid="stars">
+        <span
+          v-if="formattedStars"
+          class="flex items-center gap-2 tracking-tight"
+          data-testid="stars"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 32 32"
@@ -194,7 +217,11 @@ try {
         </span>
 
         <!-- Likes (if any) -->
-        <span v-if="likes.totalLikes > 0" class="flex items-center gap-2" data-testid="likes">
+        <span
+          v-if="likes.totalLikes > 0"
+          class="flex items-center gap-2 tracking-tight"
+          data-testid="likes"
+        >
           <svg
             width="32"
             height="32"

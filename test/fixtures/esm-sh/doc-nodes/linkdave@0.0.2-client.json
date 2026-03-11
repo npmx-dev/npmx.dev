@@ -1,0 +1,158 @@
+{
+  "name": "LinkDaveClient",
+  "kind": "interface",
+  "interfaceDef": {
+    "extends": [],
+    "constructors": [],
+    "methods": [],
+    "properties": [
+      {
+        "name": "on",
+        "computed": false,
+        "optional": false,
+        "tsType": {
+          "repr": "",
+          "kind": "fnOrConstructor",
+          "fnOrConstructor": {
+            "constructor": false,
+            "tsType": { "repr": "this", "kind": "this", "this": true },
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "event",
+                "optional": false,
+                "tsType": {
+                  "repr": "K",
+                  "kind": "typeRef",
+                  "typeRef": { "typeName": "K" }
+                }
+              },
+              {
+                "kind": "identifier",
+                "name": "listener",
+                "optional": false,
+                "tsType": {
+                  "repr": "",
+                  "kind": "fnOrConstructor",
+                  "fnOrConstructor": {
+                    "constructor": false,
+                    "tsType": { "repr": "void", "kind": "keyword", "keyword": "void" },
+                    "params": [
+                      {
+                        "kind": "identifier",
+                        "name": "data",
+                        "optional": false,
+                        "tsType": {
+                          "repr": "",
+                          "kind": "indexedAccess",
+                          "indexedAccess": {
+                            "readonly": false,
+                            "objType": {
+                              "repr": "ManagerEvents",
+                              "kind": "typeRef",
+                              "typeRef": { "typeName": "ManagerEvents" }
+                            },
+                            "indexType": {
+                              "repr": "K",
+                              "kind": "typeRef",
+                              "typeRef": { "typeName": "K" }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "typeParams": []
+                  }
+                }
+              }
+            ],
+            "typeParams": [
+              {
+                "name": "K",
+                "constraint": {
+                  "repr": "",
+                  "kind": "typeOperator",
+                  "typeOperator": {
+                    "operator": "keyof",
+                    "tsType": {
+                      "repr": "ManagerEvents",
+                      "kind": "typeRef",
+                      "typeRef": { "typeName": "ManagerEvents" }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "emit",
+        "computed": false,
+        "optional": false,
+        "tsType": {
+          "repr": "",
+          "kind": "fnOrConstructor",
+          "fnOrConstructor": {
+            "constructor": false,
+            "tsType": { "repr": "boolean", "kind": "keyword", "keyword": "boolean" },
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "event",
+                "optional": false,
+                "tsType": {
+                  "repr": "K",
+                  "kind": "typeRef",
+                  "typeRef": { "typeName": "K" }
+                }
+              },
+              {
+                "kind": "identifier",
+                "name": "data",
+                "optional": false,
+                "tsType": {
+                  "repr": "",
+                  "kind": "indexedAccess",
+                  "indexedAccess": {
+                    "readonly": false,
+                    "objType": {
+                      "repr": "ManagerEvents",
+                      "kind": "typeRef",
+                      "typeRef": { "typeName": "ManagerEvents" }
+                    },
+                    "indexType": {
+                      "repr": "K",
+                      "kind": "typeRef",
+                      "typeRef": { "typeName": "K" }
+                    }
+                  }
+                }
+              }
+            ],
+            "typeParams": [
+              {
+                "name": "K",
+                "constraint": {
+                  "repr": "",
+                  "kind": "typeOperator",
+                  "typeOperator": {
+                    "operator": "keyof",
+                    "tsType": {
+                      "repr": "ManagerEvents",
+                      "kind": "typeRef",
+                      "typeRef": { "typeName": "ManagerEvents" }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "callSignatures": [],
+    "indexSignatures": [],
+    "typeParams": []
+  }
+}

@@ -44,7 +44,7 @@ const allMaintainersText = computed(() => {
 
 <template>
   <tr
-    class="group relative border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none focus:bg-bg-muted"
+    class="group relative scale-100 [clip-path:inset(0)] border-b border-border hover:bg-bg-muted transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-fg focus-visible:ring-inset focus-visible:outline-none focus:bg-bg-muted"
     tabindex="0"
     :data-result-index="index"
   >
@@ -69,7 +69,7 @@ const allMaintainersText = computed(() => {
       v-if="isColumnVisible('description')"
       class="py-2 px-3 text-sm text-fg-muted max-w-xs truncate"
     >
-      {{ pkg.description || '-' }}
+      {{ stripHtmlTags(decodeHtmlEntities(pkg.description || '')) || '-' }}
     </td>
 
     <!-- Downloads -->
@@ -187,11 +187,11 @@ const allMaintainersText = computed(() => {
     <!-- Security -->
     <td v-if="isColumnVisible('security')" class="py-2 px-3">
       <span v-if="result.flags?.insecure" class="text-syntax-kw">
-        <span class="i-carbon-warning w-4 h-4" aria-hidden="true" />
+        <span class="i-lucide:circle-alert w-4 h-4" aria-hidden="true" />
         <span class="sr-only">{{ $t('filters.table.security_warning') }}</span>
       </span>
       <span v-else-if="result.flags !== undefined" class="text-provider-nuxt">
-        <span class="i-carbon-checkmark w-4 h-4" aria-hidden="true" />
+        <span class="i-lucide:check w-4 h-4" aria-hidden="true" />
         <span class="sr-only">{{ $t('filters.table.secure') }}</span>
       </span>
       <span v-else class="text-fg-subtle"> - </span>

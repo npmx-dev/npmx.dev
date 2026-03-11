@@ -23,6 +23,7 @@ import { fileURLToPath } from 'node:url'
  */
 const SKIPPED_COMPONENTS: Record<string, string> = {
   // OgImage components are server-side rendered images, not interactive UI
+  'OgImage/BlogPost.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Default.vue': 'OG Image component - server-rendered image, not interactive UI',
   'OgImage/Package.vue': 'OG Image component - server-rendered image, not interactive UI',
 
@@ -40,6 +41,8 @@ const SKIPPED_COMPONENTS: Record<string, string> = {
   'Settings/TranslationHelper.vue': 'i18n helper component - requires specific locale status data',
   'Package/WeeklyDownloadStats.vue':
     'Uses vue-data-ui VueUiSparkline - has DOM measurement issues in test environment',
+  'Package/VersionDistribution.vue':
+    'Uses vue-data-ui VueUiXy - has DOM measurement issues in test environment',
   'UserCombobox.vue': 'Unused component - intended for future admin features',
   'SkeletonBlock.vue': 'Already covered indirectly via other component tests',
   'SkeletonInline.vue': 'Already covered indirectly via other component tests',

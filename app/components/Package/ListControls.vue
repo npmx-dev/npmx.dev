@@ -59,7 +59,7 @@ const showFilteredCount = computed(() => {
         class="absolute h-full w-10 flex items-center justify-center text-fg-subtle pointer-events-none"
         aria-hidden="true"
       >
-        <div class="i-carbon:search w-4 h-4" />
+        <div class="i-lucide:search w-4 h-4" />
       </div>
       <InputBase
         id="package-filter"

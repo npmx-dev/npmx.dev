@@ -70,6 +70,7 @@ export interface PackageComparisonData {
  */
 export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
   const { t } = useI18n()
+  const { $npmRegistry } = useNuxtApp()
   const numberFormatter = useNumberFormatter()
   const compactNumberFormatter = useCompactNumberFormatter()
   const bytesFormatter = useBytesFormatter()
@@ -124,9 +125,7 @@ export function usePackageComparison(packageNames: MaybeRefOrGetter<string[]>) {
         namesToFetch.map(async (name): Promise<PackageComparisonData | null> => {
           try {
             // Fetch basic package info first (required)
-            const pkgData = await $fetch<Packument>(
-              `https://registry.npmjs.org/${encodePackageName(name)}`,
-            )
+            const { data: pkgData } = await $npmRegistry<Packument>(`/${encodePackageName(name)}`)
 
             const latestVersion = pkgData['dist-tags']?.latest
             if (!latestVersion) return null

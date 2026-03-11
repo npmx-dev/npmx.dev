@@ -1,6 +1,5 @@
 import type { Packument, PackumentVersion, DependencyDepth } from '#shared/types'
 import { mapWithConcurrency } from '#shared/utils/async'
-import { encodePackageName } from '#shared/utils/npm'
 import { maxSatisfying } from 'semver'
 
 /** Concurrency limit for fetching packuments during dependency resolution */
@@ -17,27 +16,20 @@ export const TARGET_PLATFORM = {
 }
 
 /**
- * Fetch packument with caching (returns null on error for tree traversal)
+ * Fetch packument with caching (returns null on error for tree traversal).
+ * Delegates to fetchNpmPackage() to share a single cache for all packument fetches.
  */
-export const fetchPackument = defineCachedFunction(
-  async (name: string): Promise<Packument | null> => {
-    try {
-      return await $fetch<Packument>(`https://registry.npmjs.org/${encodePackageName(name)}`)
-    } catch (error) {
-      if (import.meta.dev) {
-        // oxlint-disable-next-line no-console -- log npm registry failures for debugging
-        console.warn(`[dep-resolver] Failed to fetch packument for ${name}:`, error)
-      }
-      return null
+async function fetchPackument(name: string): Promise<Packument | null> {
+  try {
+    return await fetchNpmPackage(name)
+  } catch (error) {
+    if (import.meta.dev) {
+      // oxlint-disable-next-line no-console -- log npm registry failures for debugging
+      console.warn(`[dep-resolver] Failed to fetch packument for ${name}:`, error)
     }
-  },
-  {
-    maxAge: 60 * 60,
-    swr: true,
-    name: 'packument',
-    getKey: (name: string) => name,
-  },
-)
+    return null
+  }
+}
 
 /**
  * Check if a package version matches the target platform.

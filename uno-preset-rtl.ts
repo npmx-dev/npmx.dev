@@ -1,7 +1,7 @@
 import type { CSSEntries, DynamicMatcher, Preset, RuleContext } from 'unocss'
 import { cornerMap, directionSize, h } from '@unocss/preset-wind4/utils'
 
-export type CollectorChecker = (warning: string, rule: string) => void
+type CollectorChecker = (warning: string, rule: string) => void
 
 // Track warnings to avoid duplicates
 const warnedClasses = new Set<string>()

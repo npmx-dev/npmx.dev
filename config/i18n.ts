@@ -121,6 +121,12 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'bn-IN.json',
     name: 'বাংলা',
   },
+  {
+    code: 'bg-BG',
+    file: 'bg-BG.json',
+    name: 'Български',
+    pluralRule: createPluralRule('bg-BG', { zero: 1, one: 0, two: 1, few: 1, many: 1, other: 1 }),
+  },
   /*{
     code: 'ckb',
     file: 'ckb.json',
@@ -157,9 +163,19 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     name: 'Deutsch',
   },
   {
+    code: 'ta-IN',
+    file: 'ta-IN.json',
+    name: 'தமிழ்',
+  },
+  {
     code: 'hi-IN',
     file: 'hi-IN.json',
     name: 'हिंदी',
+  },
+  {
+    code: 'kn-IN',
+    file: 'kn-IN.json',
+    name: 'ಕನ್ನಡ',
   },
   {
     code: 'te-IN',
@@ -243,7 +259,13 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
     file: 'cs-CZ.json',
     name: 'Čeština',
     pluralRule: createPluralRule('cs-CZ', { zero: 2, one: 0, two: 1, few: 1, many: 2, other: 2 }),
-  } /*
+  },
+  {
+    code: 'tr-TR',
+    file: 'tr-TR.json',
+    name: 'Türkçe',
+  },
+  /*
     {
       code: 'pl-PL',
       file: 'pl-PL.json',
@@ -260,11 +282,6 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       code: 'pt',
       file: 'pt.json',
       name: 'Português',
-    },
-    {
-      code: 'tr-TR',
-      file: 'tr-TR.json',
-      name: 'Türkçe',
     },
     {
       code: 'id-ID',
@@ -285,7 +302,7 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       code: 'ko-KR',
       file: 'ko-KR.json',
       name: '한국어',
-    },*/,
+    },*/
   {
     code: 'id-ID',
     file: 'id-ID.json',
@@ -333,13 +350,11 @@ const locales: (LocaleObjectData | (Omit<LocaleObjectData, 'code'> & { code: str
       name: 'Cymraeg',
     },*/
   {
-    code: 'no-NO',
-    file: 'no-NO.json',
-    name: 'Norsk',
+    code: 'nb-NO',
+    file: 'nb-NO.json',
+    name: 'Norsk (Bokmål)',
   },
 ]
-
-const lunariaJSONFiles: Record<string, string> = {}
 
 function buildLocales() {
   const useLocales = Object.values(locales).reduce((acc, data) => {
@@ -352,12 +367,10 @@ function buildLocales() {
           name: l.name,
           files: [data.file as string, `${l.code}.json`],
         }
-        lunariaJSONFiles[l.code] = l.country ? (data.file as string) : `${l.code}.json`
         delete entry.file
         acc.push(entry)
       })
     } else {
-      lunariaJSONFiles[data.code] = data.file as string
       acc.push(data as LocaleObjectData)
     }
     return acc
@@ -367,8 +380,6 @@ function buildLocales() {
 }
 
 export const currentLocales = buildLocales()
-
-export { lunariaJSONFiles }
 
 export const datetimeFormats = Object.values(currentLocales).reduce((acc, data) => {
   const dateTimeFormats = data.dateTimeFormats

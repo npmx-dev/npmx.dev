@@ -1,0 +1,63 @@
+{
+  "name": "ClientMessage",
+  "kind": "typeAlias",
+  "typeAliasDef": {
+    "tsType": {
+      "repr": "",
+      "kind": "union",
+      "union": [
+        {
+          "repr": "",
+          "kind": "typeLiteral",
+          "typeLiteral": {
+            "properties": [
+              {
+                "name": "op",
+                "optional": false,
+                "tsType": {
+                  "repr": "voiceUpdate",
+                  "kind": "literal",
+                  "literal": { "kind": "string", "string": "voiceUpdate" }
+                }
+              },
+              {
+                "name": "guildId",
+                "optional": false,
+                "tsType": { "repr": "string", "kind": "keyword", "keyword": "string" }
+              }
+            ],
+            "methods": [],
+            "callSignatures": [],
+            "indexSignatures": []
+          }
+        },
+        {
+          "repr": "",
+          "kind": "typeLiteral",
+          "typeLiteral": {
+            "properties": [
+              {
+                "name": "op",
+                "optional": false,
+                "tsType": {
+                  "repr": "play",
+                  "kind": "literal",
+                  "literal": { "kind": "string", "string": "play" }
+                }
+              },
+              {
+                "name": "guildId",
+                "optional": false,
+                "tsType": { "repr": "string", "kind": "keyword", "keyword": "string" }
+              }
+            ],
+            "methods": [],
+            "callSignatures": [],
+            "indexSignatures": []
+          }
+        }
+      ]
+    },
+    "typeParams": []
+  }
+}

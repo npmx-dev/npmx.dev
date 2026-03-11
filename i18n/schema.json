@@ -43,6 +43,9 @@
         "about": {
           "type": "string"
         },
+        "blog": {
+          "type": "string"
+        },
         "docs": {
           "type": "string"
         },
@@ -53,6 +56,9 @@
           "type": "string"
         },
         "chat": {
+          "type": "string"
+        },
+        "builders_chat": {
           "type": "string"
         },
         "keyboard_shortcuts": {
@@ -104,6 +110,9 @@
           "type": "string"
         },
         "open_docs": {
+          "type": "string"
+        },
+        "disable_shortcuts": {
           "type": "string"
         }
       },
@@ -192,6 +201,24 @@
             }
           },
           "additionalProperties": false
+        },
+        "instant_search": {
+          "type": "string"
+        },
+        "instant_search_on": {
+          "type": "string"
+        },
+        "instant_search_off": {
+          "type": "string"
+        },
+        "instant_search_turn_on": {
+          "type": "string"
+        },
+        "instant_search_turn_off": {
+          "type": "string"
+        },
+        "instant_search_advisory": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -232,6 +259,81 @@
       },
       "additionalProperties": false
     },
+    "blog": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "author": {
+          "type": "object",
+          "properties": {
+            "view_profile": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "draft_badge": {
+          "type": "string"
+        },
+        "draft_banner": {
+          "type": "string"
+        },
+        "atproto": {
+          "type": "object",
+          "properties": {
+            "view_on_bluesky": {
+              "type": "string"
+            },
+            "reply_on_bluesky": {
+              "type": "string"
+            },
+            "likes_on_bluesky": {
+              "type": "string"
+            },
+            "like_or_reply_on_bluesky": {
+              "type": "string"
+            },
+            "no_comments_yet": {
+              "type": "string"
+            },
+            "could_not_load_comments": {
+              "type": "string"
+            },
+            "comments": {
+              "type": "string"
+            },
+            "loading_comments": {
+              "type": "string"
+            },
+            "updating": {
+              "type": "string"
+            },
+            "reply_count": {
+              "type": "string"
+            },
+            "like_count": {
+              "type": "string"
+            },
+            "repost_count": {
+              "type": "string"
+            },
+            "more_replies": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "settings": {
       "type": "object",
       "properties": {
@@ -257,6 +359,9 @@
               "type": "string"
             },
             "language": {
+              "type": "string"
+            },
+            "keyboard_shortcuts": {
               "type": "string"
             }
           },
@@ -285,6 +390,12 @@
             }
           },
           "additionalProperties": false
+        },
+        "instant_search": {
+          "type": "string"
+        },
+        "instant_search_description": {
+          "type": "string"
         },
         "relative_dates": {
           "type": "string"
@@ -330,6 +441,12 @@
         },
         "background_themes": {
           "type": "string"
+        },
+        "keyboard_shortcuts_enabled": {
+          "type": "string"
+        },
+        "keyboard_shortcuts_enabled_description": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -358,6 +475,27 @@
       },
       "additionalProperties": false
     },
+    "error": {
+      "type": "object",
+      "properties": {
+        "401": {
+          "type": "string"
+        },
+        "404": {
+          "type": "string"
+        },
+        "500": {
+          "type": "string"
+        },
+        "503": {
+          "type": "string"
+        },
+        "default": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
     "common": {
       "type": "object",
       "properties": {
@@ -379,6 +517,9 @@
         "close": {
           "type": "string"
         },
+        "or": {
+          "type": "string"
+        },
         "retry": {
           "type": "string"
         },
@@ -395,9 +536,6 @@
           "type": "string"
         },
         "go_back_home": {
-          "type": "string"
-        },
-        "view_on_npm": {
           "type": "string"
         },
         "per_week": {
@@ -423,6 +561,111 @@
         },
         "scroll_to_top": {
           "type": "string"
+        },
+        "cancel": {
+          "type": "string"
+        },
+        "save": {
+          "type": "string"
+        },
+        "edit": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "view_on": {
+          "type": "object",
+          "properties": {
+            "npm": {
+              "type": "string"
+            },
+            "github": {
+              "type": "string"
+            },
+            "gitlab": {
+              "type": "string"
+            },
+            "bitbucket": {
+              "type": "string"
+            },
+            "codeberg": {
+              "type": "string"
+            },
+            "git_repo": {
+              "type": "string"
+            },
+            "forgejo": {
+              "type": "string"
+            },
+            "gitea": {
+              "type": "string"
+            },
+            "gitee": {
+              "type": "string"
+            },
+            "radicle": {
+              "type": "string"
+            },
+            "sourcehut": {
+              "type": "string"
+            },
+            "tangled": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "display_name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "no_description": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "website_placeholder": {
+          "type": "string"
+        },
+        "likes": {
+          "type": "string"
+        },
+        "seo_title": {
+          "type": "string"
+        },
+        "seo_description": {
+          "type": "string"
+        },
+        "not_found": {
+          "type": "string"
+        },
+        "not_found_message": {
+          "type": "string"
+        },
+        "invite": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            },
+            "share_button": {
+              "type": "string"
+            },
+            "compose_text": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -454,6 +697,9 @@
         "copy_name": {
           "type": "string"
         },
+        "copy_version": {
+          "type": "string"
+        },
         "deprecation": {
           "type": "object",
           "properties": {
@@ -464,6 +710,27 @@
               "type": "string"
             },
             "no_reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "size_increase": {
+          "type": "object",
+          "properties": {
+            "title_size": {
+              "type": "string"
+            },
+            "title_deps": {
+              "type": "string"
+            },
+            "title_both": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            },
+            "deps": {
               "type": "string"
             }
           },
@@ -664,6 +931,12 @@
             "copy_command": {
               "type": "string"
             },
+            "copy_dev_command": {
+              "type": "string"
+            },
+            "dev_dependency_hint": {
+              "type": "string"
+            },
             "view_types": {
               "type": "string"
             }
@@ -704,9 +977,6 @@
               "type": "string"
             },
             "no_readme": {
-              "type": "string"
-            },
-            "view_on_github": {
               "type": "string"
             },
             "toc_title": {
@@ -867,6 +1137,81 @@
             },
             "view_all": {
               "type": "string"
+            },
+            "distribution_title": {
+              "type": "string"
+            },
+            "distribution_modal_title": {
+              "type": "string"
+            },
+            "distribution_range_date_same_year": {
+              "type": "string"
+            },
+            "distribution_range_date_multiple_years": {
+              "type": "string"
+            },
+            "grouping_major": {
+              "type": "string"
+            },
+            "grouping_minor": {
+              "type": "string"
+            },
+            "grouping_versions_title": {
+              "type": "string"
+            },
+            "grouping_versions_all": {
+              "type": "string"
+            },
+            "grouping_versions_only_recent": {
+              "type": "string"
+            },
+            "grouping_usage_title": {
+              "type": "string"
+            },
+            "grouping_usage_all": {
+              "type": "string"
+            },
+            "grouping_usage_most_used": {
+              "type": "string"
+            },
+            "recent_versions_only_tooltip": {
+              "type": "string"
+            },
+            "show_low_usage_tooltip": {
+              "type": "string"
+            },
+            "y_axis_label": {
+              "type": "string"
+            },
+            "filter_placeholder": {
+              "type": "string"
+            },
+            "filter_invalid": {
+              "type": "string"
+            },
+            "filter_help": {
+              "type": "string"
+            },
+            "filter_tooltip": {
+              "type": "string"
+            },
+            "filter_tooltip_link": {
+              "type": "string"
+            },
+            "no_matches": {
+              "type": "string"
+            },
+            "copy_alt": {
+              "type": "object",
+              "properties": {
+                "per_version_analysis": {
+                  "type": "string"
+                },
+                "general_description": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false
@@ -896,6 +1241,9 @@
               "type": "string"
             },
             "outdated_patch": {
+              "type": "string"
+            },
+            "has_replacement": {
               "type": "string"
             }
           },
@@ -1012,6 +1360,15 @@
             "toggle_annotator": {
               "type": "string"
             },
+            "toggle_stack_mode": {
+              "type": "string"
+            },
+            "open_options": {
+              "type": "string"
+            },
+            "close_options": {
+              "type": "string"
+            },
             "legend_estimation": {
               "type": "string"
             },
@@ -1021,10 +1378,109 @@
             "y_axis_label": {
               "type": "string"
             },
+            "facet": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "contributors_skip": {
+              "type": "string"
+            },
             "items": {
               "type": "object",
               "properties": {
                 "downloads": {
+                  "type": "string"
+                },
+                "likes": {
+                  "type": "string"
+                },
+                "contributors": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "data_correction": {
+              "type": "string"
+            },
+            "average_window": {
+              "type": "string"
+            },
+            "smoothing": {
+              "type": "string"
+            },
+            "prediction": {
+              "type": "string"
+            },
+            "known_anomalies": {
+              "type": "string"
+            },
+            "known_anomalies_description": {
+              "type": "string"
+            },
+            "known_anomalies_ranges": {
+              "type": "string"
+            },
+            "known_anomalies_range": {
+              "type": "string"
+            },
+            "known_anomalies_range_named": {
+              "type": "string"
+            },
+            "known_anomalies_none": {
+              "type": "string"
+            },
+            "known_anomalies_contribute": {
+              "type": "string"
+            },
+            "apply_correction": {
+              "type": "string"
+            },
+            "copy_alt": {
+              "type": "object",
+              "properties": {
+                "trend_none": {
+                  "type": "string"
+                },
+                "trend_strong": {
+                  "type": "string"
+                },
+                "trend_weak": {
+                  "type": "string"
+                },
+                "trend_undefined": {
+                  "type": "string"
+                },
+                "button_label": {
+                  "type": "string"
+                },
+                "watermark": {
+                  "type": "string"
+                },
+                "analysis": {
+                  "type": "string"
+                },
+                "estimation": {
+                  "type": "string"
+                },
+                "estimations": {
+                  "type": "string"
+                },
+                "compare": {
+                  "type": "string"
+                },
+                "single_package": {
+                  "type": "string"
+                },
+                "general_description": {
+                  "type": "string"
+                },
+                "facet_bar_general_description": {
+                  "type": "string"
+                },
+                "facet_bar_analysis": {
                   "type": "string"
                 }
               },
@@ -1039,13 +1495,10 @@
             "title": {
               "type": "string"
             },
-            "analyze": {
-              "type": "string"
-            },
             "community_distribution": {
               "type": "string"
             },
-            "modal_title": {
+            "subtitle": {
               "type": "string"
             }
           },
@@ -1327,15 +1780,6 @@
             "title": {
               "type": "string"
             },
-            "contributor_badge": {
-              "type": "string"
-            },
-            "contributor_notice": {
-              "type": "string"
-            },
-            "contributor_link": {
-              "type": "string"
-            },
             "connected": {
               "type": "string"
             },
@@ -1383,6 +1827,9 @@
             },
             "connecting": {
               "type": "string"
+            },
+            "auto_open_url": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1429,7 +1876,13 @@
             "retry_otp": {
               "type": "string"
             },
+            "retry_web_auth": {
+              "type": "string"
+            },
             "retrying": {
+              "type": "string"
+            },
+            "open_web_auth": {
               "type": "string"
             },
             "approve_operation": {
@@ -1795,6 +2248,9 @@
             "taken": {
               "type": "string"
             },
+            "missing_permission": {
+              "type": "string"
+            },
             "similar_warning": {
               "type": "string"
             },
@@ -1922,6 +2378,15 @@
           "additionalProperties": false
         },
         "file_path": {
+          "type": "string"
+        },
+        "scroll_to_top": {
+          "type": "string"
+        },
+        "binary_file": {
+          "type": "string"
+        },
+        "binary_rendering_warning": {
           "type": "string"
         }
       },
@@ -2245,9 +2710,6 @@
             "per_page": {
               "type": "string"
             },
-            "all_yolo": {
-              "type": "string"
-            },
             "showing": {
               "type": "string"
             },
@@ -2377,6 +2839,48 @@
           },
           "additionalProperties": false
         },
+        "sponsors": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "oss_partners": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "team": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "governance": {
+              "type": "string"
+            },
+            "role_steward": {
+              "type": "string"
+            },
+            "role_maintainer": {
+              "type": "string"
+            },
+            "sponsor": {
+              "type": "string"
+            },
+            "sponsor_aria": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
         "contributors": {
           "type": "object",
           "properties": {
@@ -2420,6 +2924,21 @@
               "additionalProperties": false
             },
             "community": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "cta": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "builders": {
               "type": "object",
               "properties": {
                 "title": {
@@ -2532,6 +3051,9 @@
             },
             "default_input_error": {
               "type": "string"
+            },
+            "profile": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -2629,6 +3151,9 @@
             "section_comparison": {
               "type": "string"
             },
+            "copy_as_markdown": {
+              "type": "string"
+            },
             "loading": {
               "type": "string"
             },
@@ -2639,6 +3164,12 @@
               "type": "string"
             },
             "empty_description": {
+              "type": "string"
+            },
+            "table_view": {
+              "type": "string"
+            },
+            "charts_view": {
               "type": "string"
             }
           },
@@ -2952,6 +3483,189 @@
             }
           },
           "additionalProperties": false
+        },
+        "file_changes": {
+          "type": "string"
+        },
+        "files_count": {
+          "type": "string"
+        },
+        "lines_hidden": {
+          "type": "string"
+        },
+        "file_too_large": {
+          "type": "string"
+        },
+        "file_size_warning": {
+          "type": "string"
+        },
+        "compare_versions": {
+          "type": "string"
+        },
+        "compare_versions_title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "deps_count": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "string"
+        },
+        "dev_dependencies": {
+          "type": "string"
+        },
+        "peer_dependencies": {
+          "type": "string"
+        },
+        "optional_dependencies": {
+          "type": "string"
+        },
+        "no_dependency_changes": {
+          "type": "string"
+        },
+        "file_filter_option": {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "string"
+            },
+            "added": {
+              "type": "string"
+            },
+            "removed": {
+              "type": "string"
+            },
+            "modified": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "search_files_placeholder": {
+          "type": "string"
+        },
+        "no_files_all": {
+          "type": "string"
+        },
+        "no_files_search": {
+          "type": "string"
+        },
+        "no_files_filtered": {
+          "type": "string"
+        },
+        "filter": {
+          "type": "object",
+          "properties": {
+            "added": {
+              "type": "string"
+            },
+            "removed": {
+              "type": "string"
+            },
+            "modified": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "files_button": {
+          "type": "string"
+        },
+        "select_file_prompt": {
+          "type": "string"
+        },
+        "close_files_panel": {
+          "type": "string"
+        },
+        "filter_files_label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "pds": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "join": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "migrate": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "server": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "location_label": {
+              "type": "string"
+            },
+            "location_value": {
+              "type": "string"
+            },
+            "infrastructure_label": {
+              "type": "string"
+            },
+            "infrastructure_value": {
+              "type": "string"
+            },
+            "privacy_label": {
+              "type": "string"
+            },
+            "privacy_value": {
+              "type": "string"
+            },
+            "learn_more": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "community": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "loading": {
+              "type": "string"
+            },
+            "error": {
+              "type": "string"
+            },
+            "empty": {
+              "type": "string"
+            },
+            "view_profile": {
+              "type": "string"
+            },
+            "new_accounts": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -3189,6 +3903,198 @@
             },
             "p1": {
               "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "a11y": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "footer_title": {
+          "type": "string"
+        },
+        "welcome": {
+          "type": "string"
+        },
+        "approach": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            },
+            "about_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "measures": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "li1": {
+              "type": "string"
+            },
+            "li2": {
+              "type": "string"
+            },
+            "li3": {
+              "type": "string"
+            },
+            "li4": {
+              "type": "string"
+            },
+            "li5": {
+              "type": "string"
+            },
+            "li6": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "limitations": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "contact": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "vacations": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "meta_description": {
+          "type": "string"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "illustration_alt": {
+          "type": "string"
+        },
+        "poke_log": {
+          "type": "string"
+        },
+        "what": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "dates": {
+              "type": "string"
+            },
+            "p2": {
+              "type": "string"
+            },
+            "garden": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "meantime": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "repo_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "return": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "p1": {
+              "type": "string"
+            },
+            "social_link": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "contributors": {
+              "type": "string"
+            },
+            "commits": {
+              "type": "string"
+            },
+            "pr": {
+              "type": "string"
+            },
+            "subtitle": {
+              "type": "object",
+              "properties": {
+                "some": {
+                  "type": "string"
+                },
+                "all": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
             }
           },
           "additionalProperties": false

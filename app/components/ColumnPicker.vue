@@ -75,7 +75,7 @@ function handleReset() {
       aria-haspopup="true"
       :aria-controls="menuId"
       @click.stop="isOpen = !isOpen"
-      classicon="i-carbon-column"
+      classicon="i-lucide:columns-3-cog"
     >
       {{ $t('filters.columns.title') }}
     </ButtonBase>
@@ -85,7 +85,7 @@ function handleReset() {
         v-if="isOpen"
         ref="menuRef"
         :id="menuId"
-        class="absolute top-full inset-ie-0 sm:inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
+        class="absolute top-full inset-is-auto sm:inset-ie-0 mt-2 w-60 bg-bg-subtle border border-border rounded-lg shadow-lg z-20"
         role="group"
         :aria-label="$t('filters.columns.show')"
       >
@@ -129,7 +129,7 @@ function handleReset() {
             </label>
           </div>
 
-          <div class="border-t border-border py-1">
+          <div class="border-t border-border p-2 pb-1">
             <ButtonBase @click="handleReset">
               {{ $t('filters.columns.reset') }}
             </ButtonBase>

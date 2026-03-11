@@ -50,7 +50,7 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
             </LinkBase>
             <TooltipApp v-if="col.replacement" :text="getReplacementTooltip(col)" position="bottom">
               <span
-                class="i-carbon:idea w-3.5 h-3.5 text-amber-500 shrink-0 cursor-help"
+                class="i-lucide:lightbulb w-3.5 h-3.5 text-amber-500 shrink-0 cursor-help"
                 role="img"
                 :aria-label="$t('package.replacement.title')"
               />
@@ -69,7 +69,7 @@ function getReplacementTooltip(col: ComparisonGridColumn): string {
             {{ $t('compare.no_dependency.label') }}
             <TooltipApp interactive position="bottom">
               <span
-                class="i-carbon:idea w-3.5 h-3.5 text-amber-500 shrink-0 cursor-help"
+                class="i-lucide:lightbulb w-3.5 h-3.5 text-amber-500 shrink-0 cursor-help"
                 role="img"
                 :aria-label="$t('compare.no_dependency.tooltip_title')"
               />

@@ -1,5 +1,12 @@
 <script setup lang="ts">
-const { searchProvider, isAlgolia } = useSearchProvider()
+const route = useRoute()
+const router = useRouter()
+const { searchProvider } = useSearchProvider()
+const searchProviderValue = computed(() => {
+  const p = normalizeSearchParam(route.query.p)
+  if (p === 'npm' || searchProvider.value === 'npm') return 'npm'
+  return 'algolia'
+})
 
 const isOpen = shallowRef(false)
 const toggleRef = useTemplateRef('toggleRef')
@@ -23,7 +30,7 @@ useEventListener('keydown', event => {
       aria-haspopup="true"
       size="small"
       class="border-none w-8 h-8 !px-0 justify-center"
-      classicon="i-carbon:settings"
+      classicon="i-lucide:settings"
       @click="isOpen = !isOpen"
     />
 
@@ -47,21 +54,25 @@ useEventListener('keydown', event => {
             type="button"
             role="menuitem"
             class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted"
-            :class="[!isAlgolia ? 'bg-bg-muted' : '']"
+            :class="[searchProviderValue !== 'algolia' ? 'bg-bg-muted' : '']"
             @click="
               () => {
                 searchProvider = 'npm'
+                router.push({ query: { ...route.query, p: 'npm' } })
                 isOpen = false
               }
             "
           >
             <span
-              class="i-carbon:catalog w-4 h-4 mt-0.5 shrink-0"
-              :class="!isAlgolia ? 'text-accent' : 'text-fg-muted'"
+              class="i-simple-icons:npm w-4 h-4 mt-0.5 shrink-0"
+              :class="searchProviderValue !== 'algolia' ? 'text-accent' : 'text-fg-muted'"
               aria-hidden="true"
             />
             <div class="min-w-0 flex-1">
-              <div class="text-sm font-medium" :class="!isAlgolia ? 'text-fg' : 'text-fg-muted'">
+              <div
+                class="text-sm font-medium"
+                :class="searchProviderValue !== 'algolia' ? 'text-fg' : 'text-fg-muted'"
+              >
                 {{ $t('settings.data_source.npm') }}
               </div>
               <p class="text-xs text-fg-subtle mt-0.5">
@@ -75,21 +86,25 @@ useEventListener('keydown', event => {
             type="button"
             role="menuitem"
             class="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-start transition-colors hover:bg-bg-muted mt-1"
-            :class="[isAlgolia ? 'bg-bg-muted' : '']"
+            :class="[searchProviderValue === 'algolia' ? 'bg-bg-muted' : '']"
             @click="
               () => {
                 searchProvider = 'algolia'
+                router.push({ query: { ...route.query, p: undefined } })
                 isOpen = false
               }
             "
           >
             <span
-              class="i-carbon:search w-4 h-4 mt-0.5 shrink-0"
-              :class="isAlgolia ? 'text-accent' : 'text-fg-muted'"
+              class="i-simple-icons:algolia w-4 h-4 mt-0.5 shrink-0"
+              :class="searchProviderValue === 'algolia' ? 'text-accent' : 'text-fg-muted'"
               aria-hidden="true"
             />
             <div class="min-w-0 flex-1">
-              <div class="text-sm font-medium" :class="isAlgolia ? 'text-fg' : 'text-fg-muted'">
+              <div
+                class="text-sm font-medium"
+                :class="searchProviderValue === 'algolia' ? 'text-fg' : 'text-fg-muted'"
+              >
                 {{ $t('settings.data_source.algolia') }}
               </div>
               <p class="text-xs text-fg-subtle mt-0.5">
@@ -99,7 +114,10 @@ useEventListener('keydown', event => {
           </button>
 
           <!-- Algolia attribution -->
-          <div v-if="isAlgolia" class="border-t border-border mx-1 mt-1 pt-2 pb-1">
+          <div
+            v-if="searchProviderValue === 'algolia'"
+            class="border-t border-border mx-1 mt-1 pt-2 pb-1"
+          >
             <a
               href="https://www.algolia.com/developers"
               target="_blank"
@@ -107,7 +125,7 @@ useEventListener('keydown', event => {
               class="text-xs text-fg-subtle hover:text-fg-muted transition-colors inline-flex items-center gap-1 px-2"
             >
               {{ $t('search.algolia_disclaimer') }}
-              <span class="i-carbon:launch w-3 h-3" aria-hidden="true" />
+              <span class="i-lucide:external-link w-3 h-3" aria-hidden="true" />
             </a>
           </div>
         </div>

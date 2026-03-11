@@ -8,10 +8,6 @@ import { isPlatformSpecificPackage } from '~/utils/platform-packages'
 import { normalizeSearchParam } from '#shared/utils/url'
 
 const route = useRoute()
-const router = useRouter()
-
-// Search provider
-const { isAlgolia } = useSearchProvider()
 
 // Preferences (persisted to localStorage)
 const {
@@ -24,17 +20,24 @@ const {
 } = usePackageListPreferences()
 
 // Debounced URL update for page (less aggressive to avoid too many URL changes)
+//Use History API directly to update URL without triggering Router's scroll-to-top
 const updateUrlPage = debounce((page: number) => {
-  router.replace({
-    query: {
-      ...route.query,
-      page: page > 1 ? page : undefined,
-    },
-  })
+  const url = new URL(window.location.href)
+  if (page > 1) {
+    url.searchParams.set('page', page.toString())
+  } else {
+    url.searchParams.delete('page')
+  }
+  // This updates the address bar "silently"
+  window.history.replaceState(window.history.state, '', url)
 }, 500)
 
-// The actual search query (from URL, used for API calls)
-const query = computed(() => normalizeSearchParam(route.query.q))
+const {
+  model: searchQuery,
+  committedModel: committedQuery,
+  provider: searchProvider,
+} = useGlobalSearch()
+const query = computed(() => searchQuery.value)
 
 // Track if page just loaded (for hiding "Searching..." during view transition)
 const hasInteracted = shallowRef(false)
@@ -126,7 +129,7 @@ const ALL_SORT_KEYS: SortKey[] = [
 
 // Disable sort keys the current provider can't meaningfully sort by
 const disabledSortKeys = computed<SortKey[]>(() => {
-  const supported = PROVIDER_SORT_KEYS[isAlgolia.value ? 'algolia' : 'npm']
+  const supported = PROVIDER_SORT_KEYS[searchProvider.value]
   return ALL_SORT_KEYS.filter(k => !supported.has(k))
 })
 
@@ -146,10 +149,8 @@ const {
   clearAllFilters,
 } = useStructuredFilters({
   packages: resultsArray,
-  initialFilters: {
-    ...parseSearchOperators(normalizeSearchParam(route.query.q)),
-  },
   initialSort: 'relevance-desc', // Default to search relevance
+  searchQueryModel: searchQuery,
 })
 
 const isRelevanceSort = computed(
@@ -163,27 +164,27 @@ const EAGER_LOAD_SIZE = { algolia: 500, npm: 500 } as const
 
 // Calculate how many results we need based on current page and preferred page size
 const requestedSize = computed(() => {
-  const numericPrefSize = preferredPageSize.value === 'all' ? 250 : preferredPageSize.value
-  const base = Math.max(pageSize, currentPage.value * numericPrefSize)
+  const base = Math.max(pageSize, currentPage.value * preferredPageSize.value)
   // When sorting by something other than relevance, fetch a large batch
   // so client-side sorting operates on a meaningful pool of matching results
   if (!isRelevanceSort.value) {
-    const cap = isAlgolia.value ? EAGER_LOAD_SIZE.algolia : EAGER_LOAD_SIZE.npm
+    const cap = EAGER_LOAD_SIZE[searchProvider.value]
     return Math.max(base, cap)
   }
   return base
 })
 
 // Reset to relevance sort when switching to a provider that doesn't support the current sort key
-watch(isAlgolia, algolia => {
+watch(searchProvider, provider => {
   const { key } = parseSortOption(sortOption.value)
-  const supported = PROVIDER_SORT_KEYS[algolia ? 'algolia' : 'npm']
+  const supported = PROVIDER_SORT_KEYS[provider]
   if (!supported.has(key)) {
     sortOption.value = 'relevance-desc'
   }
 })
 
 // Use incremental search with client-side caching + org/user suggestions
+// committedQuery only updates on Enter when instant search is off, otherwise tracks query as user types
 const {
   data: results,
   status,
@@ -194,7 +195,8 @@ const {
   suggestions: validatedSuggestions,
   packageAvailability,
 } = useSearch(
-  query,
+  committedQuery,
+  searchProvider,
   () => ({
     size: requestedSize.value,
   }),
@@ -270,6 +272,9 @@ async function loadMore() {
   currentPage.value++
   await fetchMore(requestedSize.value)
 }
+onBeforeUnmount(() => {
+  updateUrlPage.cancel()
+})
 
 // Update URL when page changes from scrolling
 function handlePageChange(page: number) {
@@ -277,7 +282,8 @@ function handlePageChange(page: number) {
 }
 
 // Reset page when query changes
-watch(query, () => {
+watch(query, (newQuery, oldQuery) => {
+  if (newQuery.trim() === (oldQuery || '').trim()) return
   currentPage.value = 1
   hasInteracted.value = true
 })
@@ -333,14 +339,13 @@ const canPublishToScope = computed(() => {
   return orgMembership.value[scope] === true
 })
 
-// Show claim prompt when valid name, available, connected, and has permission
+// Show claim prompt when valid name, available, either not connected or connected and has permission
 const showClaimPrompt = computed(() => {
   return (
-    isConnected.value &&
     isValidPackageName.value &&
     packageAvailability.value?.available === true &&
     packageAvailability.value.name === query.value.trim() &&
-    canPublishToScope.value &&
+    (!isConnected.value || (isConnected.value && canPublishToScope.value)) &&
     status.value !== 'pending'
   )
 })
@@ -392,20 +397,24 @@ const totalSelectableCount = computed(() => suggestionCount.value + resultCount.
  * Get all focusable result elements in DOM order (suggestions first, then packages)
  */
 function getFocusableElements(): HTMLElement[] {
-  const suggestions = Array.from(
-    document.querySelectorAll<HTMLElement>('[data-suggestion-index]'),
-  ).sort((a, b) => {
-    const aIdx = Number.parseInt(a.dataset.suggestionIndex ?? '0', 10)
-    const bIdx = Number.parseInt(b.dataset.suggestionIndex ?? '0', 10)
-    return aIdx - bIdx
-  })
-  const packages = Array.from(document.querySelectorAll<HTMLElement>('[data-result-index]')).sort(
-    (a, b) => {
+  const isVisible = (el: HTMLElement) => el.getClientRects().length > 0
+
+  const suggestions = Array.from(document.querySelectorAll<HTMLElement>('[data-suggestion-index]'))
+    .filter(isVisible)
+    .sort((a, b) => {
+      const aIdx = Number.parseInt(a.dataset.suggestionIndex ?? '0', 10)
+      const bIdx = Number.parseInt(b.dataset.suggestionIndex ?? '0', 10)
+      return aIdx - bIdx
+    })
+
+  const packages = Array.from(document.querySelectorAll<HTMLElement>('[data-result-index]'))
+    .filter(isVisible)
+    .sort((a, b) => {
       const aIdx = Number.parseInt(a.dataset.resultIndex ?? '0', 10)
       const bIdx = Number.parseInt(b.dataset.resultIndex ?? '0', 10)
       return aIdx - bIdx
-    },
-  )
+    })
+
   return [...suggestions, ...packages]
 }
 
@@ -448,12 +457,30 @@ watch(displayResults, results => {
   }
 })
 
+/**
+ * Focus the header search input
+ */
+function focusSearchInput() {
+  const searchInput = document.querySelector<HTMLInputElement>(
+    'input[type="search"], input[name="q"]',
+  )
+  searchInput?.focus()
+}
+
+const keyboardShortcuts = useKeyboardShortcuts()
+
 function handleResultsKeydown(e: KeyboardEvent) {
+  if (!keyboardShortcuts.value) {
+    return
+  }
   // If the active element is an input, navigate to exact match or wait for results
   if (e.key === 'Enter' && document.activeElement?.tagName === 'INPUT') {
     // Get value directly from input (not from route query, which may be debounced)
     const inputValue = (document.activeElement as HTMLInputElement).value.trim()
     if (!inputValue) return
+
+    // When instantSearch is off, commit the query so search starts
+    committedQuery.value = inputValue
 
     // Check if first result matches the input value exactly
     const firstResult = displayResults.value[0]
@@ -484,7 +511,12 @@ function handleResultsKeydown(e: KeyboardEvent) {
 
   if (e.key === 'ArrowUp') {
     e.preventDefault()
-    const nextIndex = currentIndex < 0 ? 0 : Math.max(currentIndex - 1, 0)
+    // At first result or no result focused: return focus to search input
+    if (currentIndex <= 0) {
+      focusSearchInput()
+      return
+    }
+    const nextIndex = currentIndex - 1
     const el = elements[nextIndex]
     if (el) focusElement(el)
     return
@@ -535,10 +567,100 @@ defineOgImageComponent('Default', {
       : $t('search.meta_description_packages'),
   primaryColor: '#60a5fa',
 })
+
+// -----------------------------------
+// Live region debouncing logic
+// -----------------------------------
+const isMobile = useIsMobile()
+
+// Evaluate the text that should be announced to screen readers
+const rawLiveRegionMessage = computed(() => {
+  if (isRateLimited.value) {
+    return $t('search.rate_limited')
+  }
+
+  // If status is pending, no update phrase needed yet
+  if (status.value === 'pending') {
+    return ''
+  }
+
+  if (visibleResults.value && displayResults.value.length > 0) {
+    if (viewMode.value === 'table' || paginationMode.value === 'paginated') {
+      const pSize = Math.min(preferredPageSize.value, effectiveTotal.value)
+
+      return $t(
+        'filters.count.showing_paginated',
+        {
+          pageSize: pSize.toString(),
+          count: $n(effectiveTotal.value),
+        },
+        effectiveTotal.value,
+      )
+    }
+
+    if (isRelevanceSort.value) {
+      return $t(
+        'search.found_packages',
+        { count: $n(visibleResults.value.total) },
+        visibleResults.value.total,
+      )
+    }
+
+    return $t(
+      'search.found_packages_sorted',
+      { count: $n(effectiveTotal.value) },
+      effectiveTotal.value,
+    )
+  }
+
+  if (status.value === 'success' || status.value === 'error') {
+    if (displayResults.value.length === 0 && query.value) {
+      return $t('search.no_results', { query: query.value })
+    }
+  }
+
+  return ''
+})
+
+const debouncedLiveRegionMessage = ref('')
+
+const updateLiveRegionMobile = debounce((val: string) => {
+  debouncedLiveRegionMessage.value = val
+}, 700)
+
+const updateLiveRegionDesktop = debounce((val: string) => {
+  debouncedLiveRegionMessage.value = val
+}, 250)
+
+watch(
+  rawLiveRegionMessage,
+  newVal => {
+    if (!newVal) {
+      updateLiveRegionMobile.cancel()
+      updateLiveRegionDesktop.cancel()
+      debouncedLiveRegionMessage.value = ''
+      return
+    }
+
+    if (isMobile.value) {
+      updateLiveRegionDesktop.cancel()
+      updateLiveRegionMobile(newVal)
+    } else {
+      updateLiveRegionMobile.cancel()
+      updateLiveRegionDesktop(newVal)
+    }
+  },
+  { immediate: true },
+)
+
+onBeforeUnmount(() => {
+  updateLiveRegionMobile.cancel()
+  updateLiveRegionDesktop.cancel()
+})
 </script>
 
 <template>
-  <main class="flex-1 py-8" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
+  <main class="flex-1 py-8 search-page" :class="{ 'overflow-x-hidden': viewMode !== 'table' }">
     <div class="container-sm">
       <div class="flex items-center justify-between gap-4 mb-4">
         <h1 class="font-mono text-2xl sm:text-3xl font-medium">
@@ -547,13 +669,22 @@ defineOgImageComponent('Default', {
         <SearchProviderToggle />
       </div>
 
-      <section v-if="query">
-        <!-- Initial loading (only after user interaction, not during view transition) -->
+      <section v-if="committedQuery" class="results-layout">
         <LoadingSpinner v-if="showSearching" :text="$t('search.searching')" />
 
-        <div v-else-if="visibleResults">
-          <!-- User/Org search suggestions -->
-          <div v-if="validatedSuggestions.length > 0" class="mb-6 space-y-3">
+        <div
+          v-show="
+            results ||
+            displayResults.length > 0 ||
+            isRateLimited ||
+            status === 'error' ||
+            status === 'success'
+          "
+        >
+          <div
+            v-if="validatedSuggestions.length > 0 && displayResults.length > 0"
+            class="mb-6 space-y-3"
+          >
             <SearchSuggestionCard
               v-for="(suggestion, idx) in validatedSuggestions"
               :key="`${suggestion.type}-${suggestion.name}`"
@@ -567,10 +698,9 @@ defineOgImageComponent('Default', {
             />
           </div>
 
-          <!-- Claim prompt - shown at top when valid name but no exact match -->
           <div
-            v-if="showClaimPrompt && visibleResults.total > 0"
-            class="mb-6 p-4 bg-bg-subtle border border-border rounded-lg flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4"
+            v-if="showClaimPrompt && visibleResults && displayResults.length > 0"
+            class="mb-6 p-4 bg-bg-subtle border border-border rounded-lg sm:flex hidden flex-row sm:items-center gap-3 sm:gap-4"
           >
             <div class="flex-1 min-w-0">
               <p class="font-mono text-sm text-fg">
@@ -587,15 +717,13 @@ defineOgImageComponent('Default', {
             </button>
           </div>
 
-          <!-- Rate limited by npm - check FIRST before showing any results -->
-          <div v-if="isRateLimited" role="status" class="py-12">
+          <div v-if="isRateLimited" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.rate_limited') }}
             </p>
           </div>
 
-          <!-- Enhanced toolbar -->
-          <div v-else-if="visibleResults.total > 0" class="mb-6">
+          <div v-else-if="visibleResults && displayResults.length > 0" class="mb-6">
             <PackageListToolbar
               :filters="filters"
               v-model:sort-option="sortOption"
@@ -620,10 +748,8 @@ defineOgImageComponent('Default', {
               @update:updated-within="setUpdatedWithin"
               @toggle-keyword="toggleKeyword"
             />
-            <!-- Show count status (infinite scroll mode only) -->
             <p
               v-if="viewMode === 'cards' && paginationMode === 'infinite'"
-              role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
               <template v-if="isRelevanceSort">
@@ -640,24 +766,19 @@ defineOgImageComponent('Default', {
                   $t('search.found_packages_sorted', { count: $n(effectiveTotal) }, effectiveTotal)
                 }}
               </template>
-              <span v-if="status === 'pending'" class="text-fg-subtle">{{
-                $t('search.updating')
-              }}</span>
+              <span aria-hidden="true" v-if="status === 'pending'" class="text-fg-subtle">
+                {{ $t('search.updating') }}
+              </span>
             </p>
-            <!-- Show "x of y" (paginated/table mode only) -->
             <p
               v-if="viewMode === 'table' || paginationMode === 'paginated'"
-              role="status"
               class="text-fg-muted text-sm mt-4 font-mono"
             >
               {{
                 $t(
                   'filters.count.showing_paginated',
                   {
-                    pageSize:
-                      preferredPageSize === 'all'
-                        ? $n(effectiveTotal)
-                        : Math.min(preferredPageSize, effectiveTotal),
+                    pageSize: Math.min(preferredPageSize, effectiveTotal),
                     count: $n(effectiveTotal),
                   },
                   effectiveTotal,
@@ -666,13 +787,11 @@ defineOgImageComponent('Default', {
             </p>
           </div>
 
-          <!-- No results found -->
-          <div v-else-if="status === 'success' || status === 'error'" role="status" class="py-12">
+          <div v-else-if="status === 'success' || status === 'error'" class="py-12">
             <p class="text-fg-muted font-mono mb-6 text-center">
               {{ $t('search.no_results', { query }) }}
             </p>
 
-            <!-- User/Org suggestions when no packages found -->
             <div v-if="validatedSuggestions.length > 0" class="max-w-md mx-auto mb-6 space-y-3">
               <SearchSuggestionCard
                 v-for="(suggestion, idx) in validatedSuggestions"
@@ -687,8 +806,7 @@ defineOgImageComponent('Default', {
               />
             </div>
 
-            <!-- Offer to claim the package name if it's valid -->
-            <div v-if="showClaimPrompt" class="max-w-md mx-auto text-center">
+            <div v-if="showClaimPrompt" class="max-w-md mx-auto text-center hidden sm:block">
               <div class="p-4 bg-bg-subtle border border-border rounded-lg">
                 <p class="text-sm text-fg-muted mb-3">{{ $t('search.want_to_claim') }}</p>
                 <button
@@ -703,7 +821,7 @@ defineOgImageComponent('Default', {
           </div>
 
           <PackageList
-            v-if="displayResults.length > 0 && !isRateLimited"
+            v-show="displayResults.length > 0 && !isRateLimited"
             :results="displayResults"
             :search-query="query"
             :filters="filters"
@@ -724,7 +842,6 @@ defineOgImageComponent('Default', {
             @click-keyword="toggleKeyword"
           />
 
-          <!-- Pagination controls -->
           <PaginationControls
             v-if="displayResults.length > 0 && !isRateLimited"
             v-model:mode="paginationMode"
@@ -741,7 +858,22 @@ defineOgImageComponent('Default', {
       </section>
     </div>
 
-    <!-- Claim package modal -->
-    <PackageClaimPackageModal ref="claimPackageModalRef" :package-name="query" />
+    <PackageClaimPackageModal
+      ref="claimPackageModalRef"
+      :package-name="query"
+      :package-scope="packageScope"
+      :can-publish-to-scope="canPublishToScope"
+    />
+
+    <div role="status" class="sr-only">
+      {{ debouncedLiveRegionMessage }}
+    </div>
   </main>
 </template>
+
+<style scoped>
+.results-layout {
+  min-height: 50vh;
+  overflow-anchor: none;
+}
+</style>

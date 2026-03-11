@@ -7,6 +7,7 @@ definePageMeta({
   name: 'docs',
   path: '/package-docs/:path+',
   alias: ['/package/docs/:path+', '/docs/:path+'],
+  scrollMargin: 180,
 })
 
 const route = useRoute('docs')
@@ -81,6 +82,7 @@ const { data: docsData, status: docsStatus } = useLazyFetch<DocsResponse>(
   {
     watch: [docsUrl],
     immediate: shouldFetch.value,
+    server: false,
     default: () => ({
       package: packageName.value,
       version: resolvedVersion.value ?? '',
@@ -113,7 +115,9 @@ defineOgImageComponent('Default', {
   primaryColor: '#60a5fa',
 })
 
-const showLoading = computed(() => docsStatus.value === 'pending')
+const showLoading = computed(
+  () => docsStatus.value === 'pending' || (docsStatus.value === 'idle' && docsUrl.value !== null),
+)
 const showEmptyState = computed(() => docsData.value?.status !== 'ok')
 </script>
 

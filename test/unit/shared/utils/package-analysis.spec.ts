@@ -26,6 +26,16 @@ describe('detectModuleFormat', () => {
     expect(detectModuleFormat({ module: 'index.mjs', main: 'index.js' })).toBe('dual')
   })
 
+  it('detects dual from type + module + main fields', () => {
+    expect(detectModuleFormat({ type: 'module', module: 'index.js', main: 'index.cjs' })).toBe(
+      'dual',
+    )
+  })
+
+  it('detects esm from type + module + main fields', () => {
+    expect(detectModuleFormat({ type: 'module', module: 'index.js', main: 'index.js' })).toBe('esm')
+  })
+
   it('detects ESM from module field without main', () => {
     expect(detectModuleFormat({ module: 'index.mjs' })).toBe('esm')
   })
@@ -91,6 +101,27 @@ describe('detectModuleFormat', () => {
     // npm treats packages without type field as CommonJS
     expect(detectModuleFormat({})).toBe('cjs')
   })
+
+  it('detect dual from JSON exports', () => {
+    expect(
+      detectModuleFormat({
+        main: 'test.json',
+        exports: {
+          '.': './test.json',
+        },
+      }),
+    ).toBe('dual')
+  })
+
+  it('detect esm from JSON exports', () => {
+    expect(
+      detectModuleFormat({
+        exports: {
+          '.': './test.json',
+        },
+      }),
+    ).toBe('esm')
+  })
 })
 
 describe('detectTypesStatus', () => {
@@ -134,6 +165,107 @@ describe('detectTypesStatus', () => {
 
   it('returns none when no types detected', () => {
     expect(detectTypesStatus({})).toEqual({ kind: 'none' })
+  })
+
+  it('detects included types when matching declaration file exists for entry point', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', exports: { '.': './dist/index.mjs' } },
+        undefined,
+        new Set(['dist/index.mjs', 'dist/index.d.mts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('does not detect types from unrelated .d.ts files in the package', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', exports: { '.': './dist/index.mjs' } },
+        undefined,
+        new Set(['dist/index.mjs', 'env.d.ts', 'shims-vue.d.ts']),
+      ),
+    ).toEqual({ kind: 'none' })
+  })
+})
+
+describe('detectTypesStatus implicit types from entry points', () => {
+  it('finds .d.mts matching .mjs export entry point', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', exports: { '.': './dist/index.mjs' } },
+        undefined,
+        new Set(['dist/index.d.mts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('finds .d.cts matching .cjs export entry point', () => {
+    expect(
+      detectTypesStatus(
+        { exports: { '.': { require: './dist/index.cjs' } } },
+        undefined,
+        new Set(['dist/index.d.cts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('finds .d.ts matching .js export entry point', () => {
+    expect(
+      detectTypesStatus(
+        { exports: { '.': './dist/index.js' } },
+        undefined,
+        new Set(['dist/index.d.ts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('finds .d.mts matching .mjs main entry point', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', main: 'dist/index.mjs' },
+        undefined,
+        new Set(['dist/index.d.mts']),
+      ),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('finds .d.ts matching .js module entry point', () => {
+    expect(
+      detectTypesStatus({ module: './dist/index.js' }, undefined, new Set(['dist/index.d.ts'])),
+    ).toEqual({ kind: 'included' })
+  })
+
+  it('returns none when no declaration file matches any entry point', () => {
+    expect(
+      detectTypesStatus(
+        { type: 'module', exports: { '.': './dist/index.mjs' } },
+        undefined,
+        new Set(['dist/other.d.mts', 'types/env.d.ts']),
+      ),
+    ).toEqual({ kind: 'none' })
+  })
+})
+
+describe('analyzePackage with files (implicit types)', () => {
+  it('detects included types when matching declaration file exists for entry point', () => {
+    const pkg = { type: 'module' as const, exports: { '.': './dist/index.mjs' } }
+    const files = new Set(['dist/index.mjs', 'dist/index.d.mts'])
+    const result = analyzePackage(pkg, { files })
+    expect(result.types).toEqual({ kind: 'included' })
+  })
+
+  it('returns none when no declaration file matches entry point', () => {
+    const pkg = { type: 'module' as const, exports: { '.': './dist/index.mjs' } }
+    const files = new Set(['dist/index.mjs'])
+    const result = analyzePackage(pkg, { files })
+    expect(result.types).toEqual({ kind: 'none' })
+  })
+
+  it('returns none when only unrelated .d.ts files exist', () => {
+    const pkg = { type: 'module' as const, exports: { '.': './dist/index.mjs' } }
+    const files = new Set(['dist/index.mjs', 'env.d.ts'])
+    const result = analyzePackage(pkg, { files })
+    expect(result.types).toEqual({ kind: 'none' })
   })
 })
 

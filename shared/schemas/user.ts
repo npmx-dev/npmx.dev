@@ -21,7 +21,5 @@ export const GravatarQuerySchema = v.object({
   username: NpmUsernameSchema,
 })
 
-/** @public */
 export type NpmUsername = v.InferOutput<typeof NpmUsernameSchema>
-/** @public */
 export type GravatarQuery = v.InferOutput<typeof GravatarQuerySchema>

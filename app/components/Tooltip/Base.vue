@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue'
-import type { Placement } from '@floating-ui/vue'
+import type { Placement, Strategy } from '@floating-ui/vue'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 
 const props = withDefaults(
@@ -17,9 +17,17 @@ const props = withDefaults(
     tooltipAttr?: HTMLAttributes
     /** Teleport target for the tooltip content (defaults to 'body') */
     to?: string | HTMLElement
+    /** Whether to defer teleport rendering until after the component is mounted */
+    defer?: boolean
+    /** Offset distance in pixels (default: 4) */
+    offset?: number
+    /** Strategy for the tooltip - prefer fixed for sticky containers (defaults to 'absolute') */
+    strategy?: Strategy
   }>(),
   {
     to: 'body',
+    offset: 4,
+    strategy: 'absolute',
   },
 )
 
@@ -31,7 +39,8 @@ const placement = computed<Placement>(() => props.position || 'bottom')
 const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
   placement,
   whileElementsMounted: autoUpdate,
-  middleware: [offset(4), flip(), shift({ padding: 8 })],
+  strategy: props.strategy,
+  middleware: [offset(props.offset), flip(), shift({ padding: 8 })],
 })
 </script>
 
@@ -39,7 +48,7 @@ const { floatingStyles } = useFloating(triggerRef, tooltipRef, {
   <div ref="triggerRef" class="inline-flex">
     <slot />
 
-    <Teleport :to="props.to">
+    <Teleport :to="props.to" :defer>
       <Transition
         enter-active-class="transition-opacity duration-150 motion-reduce:transition-none"
         leave-active-class="transition-opacity duration-100 motion-reduce:transition-none"

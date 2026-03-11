@@ -304,7 +304,7 @@ watch(lastExecutionTime, () => {
     <!-- Header -->
     <div class="flex items-center justify-between p-4 border-b border-border">
       <h2 id="members-heading" class="font-mono text-sm font-medium flex items-center gap-2">
-        <span class="i-carbon:user-multiple w-4 h-4 text-fg-muted" aria-hidden="true" />
+        <span class="i-lucide:users w-4 h-4 text-fg-muted" aria-hidden="true" />
         {{ $t('org.members.title') }}
         <span v-if="memberList.length > 0" class="text-fg-muted">({{ memberList.length }})</span>
       </h2>
@@ -316,7 +316,7 @@ watch(lastExecutionTime, () => {
         @click="refreshData"
       >
         <span
-          class="i-carbon:renew w-4 h-4"
+          class="i-lucide:refresh-ccw w-4 h-4"
           :class="{ 'motion-safe:animate-spin': isLoading || isLoadingTeams }"
           aria-hidden="true"
         />
@@ -327,7 +327,7 @@ watch(lastExecutionTime, () => {
     <div class="flex flex-wrap items-center gap-2 p-3 border-b border-border bg-bg">
       <div class="flex-1 min-w-[150px] relative">
         <span
-          class="absolute inset-is-2 top-1/2 -translate-y-1/2 i-carbon:search w-3.5 h-3.5 text-fg-subtle"
+          class="absolute inset-is-2 top-1/2 -translate-y-1/2 i-lucide:search w-3.5 h-3.5 text-fg-subtle"
           aria-hidden="true"
         />
         <label for="members-search" class="sr-only">{{ $t('org.members.filter_label') }}</label>
@@ -407,7 +407,7 @@ watch(lastExecutionTime, () => {
     <!-- Loading state -->
     <div v-if="isLoading && memberList.length === 0" class="p-8 text-center">
       <span
-        class="i-carbon:rotate-180 w-5 h-5 text-fg-muted animate-spin mx-auto"
+        class="i-svg-spinners:ring-resize w-5 h-5 text-fg-muted animate-spin mx-auto"
         aria-hidden="true"
       />
       <p class="font-mono text-sm text-fg-muted mt-2">{{ $t('org.members.loading') }}</p>
@@ -486,7 +486,7 @@ watch(lastExecutionTime, () => {
               :aria-label="$t('org.members.remove_from_org', { name: member.name })"
               @click="handleRemoveMember(member.name)"
             >
-              <span class="i-carbon:close w-4 h-4" aria-hidden="true" />
+              <span class="i-lucide:x w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -572,7 +572,7 @@ watch(lastExecutionTime, () => {
               :aria-label="$t('org.members.cancel_add')"
               @click="showAddMember = false"
             >
-              <span class="i-carbon:close w-4 h-4" aria-hidden="true" />
+              <span class="i-lucide:x w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </form>

@@ -31,7 +31,7 @@ export default defineNuxtModule({
           const outputPath = resolve(nitro.options.output.serverDir, '..', path, htmlFallback)
           mkdirSync(resolve(nitro.options.output.serverDir, '..', path), { recursive: true })
           writeFileSync(outputPath, spaTemplate)
-          writeFileSync(outputPath.replace(htmlFallback, jsonFallback), '{}')
+          writeFileSync(outputPath.replace(htmlFallback, jsonFallback), '[{}]')
         }
       })
     })

@@ -6,8 +6,16 @@ const model = defineModel<string>({ default: '' })
 const props = withDefaults(
   defineProps<{
     disabled?: boolean
+    /** @default 'medium' */
     size?: 'small' | 'medium' | 'large'
+    /**
+     * Prevents the browser from automatically modifying user input
+     * (e.g. autocorrect, autocomplete, autocapitalize, and spellcheck).
+     * @default true
+     */
     noCorrect?: boolean
+    /** Keyboard shortcut hint */
+    ariaKeyshortcuts?: string
   }>(),
   {
     size: 'medium',
@@ -21,6 +29,8 @@ const emit = defineEmits<{
 }>()
 
 const el = useTemplateRef('el')
+
+const keyboardShortcutsEnabled = useKeyboardShortcuts()
 
 defineExpose({
   focus: () => el.value?.focus(),
@@ -45,5 +55,6 @@ defineExpose({
       /** Catching Vue render-bug of invalid `disabled=false` attribute in the final HTML */
       disabled ? true : undefined
     "
+    :aria-keyshortcuts="keyboardShortcutsEnabled ? ariaKeyshortcuts : undefined"
   />
 </template>

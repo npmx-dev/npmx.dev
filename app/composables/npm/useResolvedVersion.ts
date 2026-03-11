@@ -4,15 +4,17 @@ export function useResolvedVersion(
   packageName: MaybeRefOrGetter<string>,
   requestedVersion: MaybeRefOrGetter<string | null>,
 ) {
-  return useFetch(
-    () => {
+  return useAsyncData(
+    () => `resolved-version:${toValue(packageName)}:${toValue(requestedVersion) ?? 'latest'}`,
+    async () => {
       const version = toValue(requestedVersion)
-      return version
-        ? `https://npm.antfu.dev/${toValue(packageName)}@${version}`
-        : `https://npm.antfu.dev/${toValue(packageName)}`
+      const name = toValue(packageName)
+      const url = version
+        ? `https://npm.antfu.dev/${name}@${version}`
+        : `https://npm.antfu.dev/${name}`
+      const data = await $fetch<ResolvedPackageVersion>(url)
+      return data.version
     },
-    {
-      transform: (data: ResolvedPackageVersion) => data.version,
-    },
+    { default: () => undefined },
   )
 }

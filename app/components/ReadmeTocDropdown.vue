@@ -139,6 +139,27 @@ function handleKeydown(event: KeyboardEvent) {
       break
   }
 }
+
+const itemScrollIntoView = (index: number) => {
+  const item = props.toc[index]
+  if (!item) return
+  const el = document.getElementById(`${listboxId}-${item.id}`)
+  if (el) {
+    el.scrollIntoView({ block: 'center' })
+  }
+}
+
+watch(
+  isOpen,
+  open => {
+    if (open && highlightedIndex.value >= 0) {
+      itemScrollIntoView(highlightedIndex.value)
+    }
+  },
+  {
+    flush: 'post',
+  },
+)
 </script>
 
 <template>
@@ -151,12 +172,12 @@ function handleKeydown(event: KeyboardEvent) {
     :aria-controls="listboxId"
     @click="toggle"
     @keydown="handleKeydown"
-    classicon="i-carbon:list"
+    classicon="i-lucide:list"
     class="px-2.5"
     block
   >
     <span
-      class="i-carbon:chevron-down w-3 h-3"
+      class="i-lucide:chevron-down w-3 h-3"
       :class="[
         { 'rotate-180': isOpen },
         prefersReducedMotion ? '' : 'transition-transform duration-200',

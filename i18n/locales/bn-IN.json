@@ -74,7 +74,7 @@
     "theme_system": "সিস্টেম",
     "language": "ভাষা",
     "help_translate": "npmx অনুবাদে সাহায্য করুন",
-    "accent_colors": "এক্সেন্ট রংগ",
+    "accent_colors": "এক্সেন্ট রং",
     "clear_accent": "এক্সেন্ট রং সাফ করুন",
     "translation_progress": "অনুবাদের অগ্রগতি"
   },
@@ -99,7 +99,6 @@
     "skip_link": "মুখ্য কন্টেন্টে যান",
     "warnings": "সতর্কতা:",
     "go_back_home": "হোমে ফিরে যান",
-    "view_on_npm": "npm এ দেখুন",
     "per_week": "/ সপ্তাহ",
     "vanity_downloads_hint": "ভ্যানিটি নম্বর: কোন প্যাকেজ প্রদর্শিত হয়নি | ভ্যানিটি নম্বর: প্রদর্শিত প্যাকেজের জন্য | ভ্যানিটি নম্বর: {count} প্রদর্শিত প্যাকেজের মোট",
     "sort": {
@@ -107,7 +106,11 @@
       "role": "ভূমিকা",
       "members": "সদস্য"
     },
-    "scroll_to_top": "উপরে স্ক্রল করুন"
+    "scroll_to_top": "উপরে স্ক্রল করুন",
+    "view_on": {
+      "npm": "npm এ দেখুন",
+      "github": "GitHub এ দেখুন"
+    }
   },
   "package": {
     "not_found": "প্যাকেজ পাওয়া যায়নি",
@@ -194,7 +197,6 @@
     "readme": {
       "title": "রিডমি",
       "no_readme": "README উপলব্ধ নেই।",
-      "view_on_github": "GitHub এ দেখুন",
       "callout": {}
     },
     "provenance_section": {},
@@ -271,9 +273,7 @@
       "items": {}
     },
     "downloads": {
-      "title": "সাপ্তাহিক ডাউনলোড",
-      "analyze": "ডাউনলোড বিশ্লেষণ করুন",
-      "modal_title": "ডাউনলোড"
+      "title": "সাপ্তাহিক ডাউনলোড"
     },
     "install_scripts": {
       "title": "ইনস্টল স্ক্রিপ্ট",
@@ -361,9 +361,6 @@
   "connector": {
     "modal": {
       "title": "স্থানীয় কনেক্টর",
-      "contributor_badge": "কন্ট্রিবিউটারদের জন্য মাত্র",
-      "contributor_notice": "কনেক্টর এখনো npm এ প্রকাশিত হয়নি। স্থানীয়ভাবে চালানোর জন্য {link} দেখুন।",
-      "contributor_link": "অবদানের নির্দেশনা",
       "connected": "সংযুক্ত হয়েছে",
       "connected_as_user": "~{user} হিসাবে সংযুক্ত",
       "connected_hint": "এখন আপনি ওয়েব UI থেকে প্যাকেজ এবং সংস্থাগুলি পরিচালনা করতে পারবেন।",
@@ -659,7 +656,6 @@
       "paginated": "পাতায়িত",
       "items_per_page": "প্রতি পাতায় আইটেম",
       "per_page": "{count} / পাতায়",
-      "all_yolo": "সব (YOLO)",
       "showing": "{total} এর মধ্যে {start}-{end}",
       "previous": "আগের পাতা",
       "next": "পরের পাতা",
@@ -703,6 +699,7 @@
         "managers": "ম্যানেজার"
       }
     },
+    "team": {},
     "contributors": {
       "title": "অবদানকারী",
       "description": "npmx সম্পূর্ণ ওপেন সোর্স, অসাধারণ অবদানকারীদের কমিউনিটি দ্বারা নির্মিত। আমাদের সাথে যোগ দিন এবং একসাথে আমাদের সবসময় চাওয়া npm ব্রাউজিং অভিজ্ঞতা তৈরি করি।",
@@ -848,5 +845,11 @@
     "your_rights": {},
     "contact": {},
     "changes": {}
+  },
+  "a11y": {
+    "approach": {},
+    "measures": {},
+    "limitations": {},
+    "contact": {}
   }
 }
