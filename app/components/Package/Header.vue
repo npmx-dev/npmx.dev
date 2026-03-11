@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PackumentVersion, ProvenanceDetails, SlimVersion } from '#shared/types'
+import type { PackumentVersion, ProvenanceDetails, SlimVersion, SlimPackument } from '#shared/types'
 import type { RouteLocationRaw } from 'vue-router'
 import { SCROLL_TO_TOP_THRESHOLD } from '~/composables/useScrollToTop'
 import { useModal } from '~/composables/useModal'
@@ -7,7 +7,7 @@ import { useAtproto } from '~/composables/atproto/useAtproto'
 import { togglePackageLike } from '~/utils/atproto/likes'
 
 const props = defineProps<{
-  pkg: { name: string } | null
+  pkg: SlimPackument | null
   resolvedVersion?: string | null
   displayVersion: PackumentVersion | null
   latestVersion: SlimVersion | null
@@ -15,7 +15,8 @@ const props = defineProps<{
   provenanceStatus: string
   docsLink: RouteLocationRaw | null
   codeLink: RouteLocationRaw | null
-  page: 'docs' | 'code' | 'diff'
+  page: 'readme' | 'docs' | 'code' | 'diff'
+  versionUrlPattern: string
 }>()
 
 const { requestedVersion, orgName } = usePackageRoute()
@@ -71,11 +72,6 @@ const compactNumberFormatter = useCompactNumberFormatter()
 
 const { copied: copiedPkgName, copy: copyPkgName } = useClipboard({
   source: packageName,
-  copiedDuring: 2000,
-})
-
-const { copied: copiedVersion, copy: copyVersion } = useClipboard({
-  source: () => props.resolvedVersion ?? '',
   copiedDuring: 2000,
 })
 
@@ -238,7 +234,7 @@ const likeAction = async () => {
         class="py-1.5 px-2.5 sm:me-2"
         :tabindex="showScrollToTop ? 0 : -1"
       />
-      <div class="break-all font-mono text-fg-muted">
+      <div class="flex-inline items-center flex-nowrap gap-1 font-mono text-fg-muted">
         <template v-if="hasProvenance(displayVersion)">
           <TooltipApp
             :text="
@@ -271,28 +267,15 @@ const likeAction = async () => {
             <span class="i-lucide:cable rtl-flip min-w-3 w-3 h-3 mx-1" aria-hidden="true" />
           </TooltipApp>
         </template>
-        <CopyToClipboardButton
-          v-if="resolvedVersion"
-          :copied="copiedVersion"
-          :copy-text="$t('package.copy_version')"
-          @click="copyVersion()"
-          class="inline"
-        >
-          <LinkBase
-            v-if="requestedVersion && resolvedVersion !== requestedVersion"
-            :to="packageRoute(packageName, resolvedVersion)"
-            :title="$t('package.view_permalink')"
-            dir="ltr"
-            class="inline!"
-            >{{ resolvedVersion }}</LinkBase
-          >
-          <span dir="ltr" v-else>v{{ resolvedVersion }}</span>
-        </CopyToClipboardButton>
-        <span
-          v-if="requestedVersion && latestVersion && resolvedVersion !== latestVersion.version"
-          class="text-fg-subtle text-sm text-nowrap ms-1"
-          >{{ $t('package.not_latest') }}</span
-        >
+        <!-- Version selector -->
+        <VersionSelector
+          v-if="resolvedVersion && pkg?.versions && pkg?.['dist-tags']"
+          :package-name="packageName"
+          :current-version="resolvedVersion"
+          :versions="pkg.versions"
+          :dist-tags="pkg['dist-tags']"
+          :url-pattern="versionUrlPattern"
+        />
       </div>
     </div>
     <!-- Docs + Code — inline on desktop, floating bottom bar on mobile -->
@@ -303,6 +286,15 @@ const likeAction = async () => {
       :style="navExtraOffsetStyle"
       :class="$style.packageNav"
     >
+      <LinkBase
+        v-if="docsLink"
+        :to="docsLink"
+        aria-keyshortcuts="r"
+        class="decoration-none border-b-2 p-1 hover:border-accent/50 lowercase"
+        :class="page === 'readme' ? 'border-accent text-accent!' : 'border-transparent'"
+      >
+        {{ $t('package.readme.title') }}
+      </LinkBase>
       <LinkBase
         v-if="docsLink"
         :to="docsLink"
@@ -325,6 +317,7 @@ const likeAction = async () => {
         v-if="displayVersion && latestVersion && displayVersion.version !== latestVersion.version"
         :to="diffRoute(packageName, displayVersion.version, latestVersion.version)"
         :title="$t('compare.compare_versions_title')"
+        aria-keyshortcuts="f"
         class="decoration-none border-b-2 p-1 hover:border-accent/50"
         :class="page === 'diff' ? 'border-accent text-accent!' : 'border-transparent'"
       >

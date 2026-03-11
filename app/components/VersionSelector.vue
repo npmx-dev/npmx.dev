@@ -472,19 +472,19 @@ watch(
       type="button"
       aria-haspopup="listbox"
       :aria-expanded="isOpen"
-      class="flex items-center gap-1.5 text-fg-subtle font-mono text-sm hover:text-fg transition-[color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded"
+      class="break-all text-start text-fg-subtle font-mono text-sm hover:text-fg transition-[color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg rounded"
       @click="isOpen = !isOpen"
       @keydown="handleButtonKeydown"
     >
       <span dir="ltr">{{ currentVersion }}</span>
       <span
         v-if="currentVersion === latestVersion"
-        class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium"
+        class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium mx-1.5"
       >
         latest
       </span>
       <span
-        class="i-lucide:chevron-down w-3.5 h-3.5 transition-[transform] duration-200 motion-reduce:transition-none"
+        class="i-lucide:chevron-down w-3.5 h-3.5 transition-[transform] duration-200 motion-reduce:transition-none vertical-middle"
         :class="{ 'rotate-180': isOpen }"
         aria-hidden="true"
       />

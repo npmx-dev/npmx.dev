@@ -600,6 +600,11 @@ onKeyStroke(
   },
 )
 
+// URL pattern for version selector - includes file path if present
+const versionUrlPattern = computed(
+  () => `/package/${pkg.value?.name || packageName.value}/v/{version}`,
+)
+
 const showSkeleton = shallowRef(false)
 </script>
 
@@ -650,7 +655,8 @@ const showSkeleton = shallowRef(false)
         :docs-link="docsLink"
         :code-link="codeLink"
         :class="$style.areaHeader"
-        page="docs"
+        :version-url-pattern="versionUrlPattern"
+        page="readme"
       />
       <article id="package-article" :class="$style.packagePage">
         <!-- Package details -->
