@@ -476,10 +476,10 @@ watch(
       @click="isOpen = !isOpen"
       @keydown="handleButtonKeydown"
     >
-      <span dir="ltr">{{ currentVersion }}</span>
+      <span dir="ltr" class="me-1.5">{{ currentVersion }}</span>
       <span
         v-if="currentVersion === latestVersion"
-        class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium mx-1.5"
+        class="text-xs px-1.5 py-0.5 rounded badge-green font-sans font-medium me-1.5"
       >
         latest
       </span>
