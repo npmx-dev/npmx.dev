@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PackageVersionInfo } from '#shared/types'
 import { compare } from 'semver'
 import { buildVersionToTagsMap, buildTaggedVersionRows } from '~/utils/versions'
 
@@ -14,23 +15,24 @@ const packageName = computed(() => {
   return org ? `${org}/${name}` : (name as string)
 })
 
+const orgName = computed(() => {
+  const name = packageName.value
+  if (!name.startsWith('@')) return null
+  const match = name.match(/^@([^/]+)\//)
+  return match ? match[1] : null
+})
+
 // ─── Mock data ────────────────────────────────────────────────────────────────
-// TODO: Replace with real data from usePackage() / fetchAllPackageVersions()
+// TODO: Replace distTags with pkg['dist-tags'] from usePackage()
+// TODO: Replace versionHistory with data from useAllPackageVersions()
 
-interface VersionEntry {
-  version: string
-  time: string
-  deprecated?: string
-  hasProvenance: boolean
-}
-
-const mockDistTags: Record<string, string> = {
+const distTags: Record<string, string> = {
   'latest': '7.26.3',
   'next': '8.0.0-alpha.16',
   'babel-7': '7.26.3',
 }
 
-const mockVersions: VersionEntry[] = [
+const versionHistory: PackageVersionInfo[] = [
   { version: '8.0.0-alpha.16', time: '2024-12-15T10:00:00Z', hasProvenance: true },
   { version: '8.0.0-alpha.15', time: '2024-11-20T10:00:00Z', hasProvenance: true },
   { version: '8.0.0-alpha.14', time: '2024-10-30T10:00:00Z', hasProvenance: true },
@@ -82,18 +84,18 @@ const mockVersions: VersionEntry[] = [
 
 // ─── Derived data ─────────────────────────────────────────────────────────────
 
-const versionToTagsMap = computed(() => buildVersionToTagsMap(mockDistTags))
+const versionToTagsMap = computed(() => buildVersionToTagsMap(distTags))
 
 const sortedVersions = computed(() =>
-  [...mockVersions]
+  [...versionHistory]
     .sort((a, b) => compare(b.version, a.version))
     .map(v => ({ ...v, tags: versionToTagsMap.value.get(v.version) })),
 )
 
-const tagRows = computed(() => buildTaggedVersionRows(mockDistTags))
+const tagRows = computed(() => buildTaggedVersionRows(distTags))
 
 function getVersionTime(version: string): string | undefined {
-  return mockVersions.find(v => v.version === version)?.time
+  return versionHistory.find(v => v.version === version)?.time
 }
 
 // ─── Jump to version ──────────────────────────────────────────────────────────
@@ -104,7 +106,7 @@ const jumpError = ref('')
 function navigateToVersion() {
   const v = jumpVersion.value.trim()
   if (!v) return
-  if (!mockVersions.some(mv => mv.version === v)) {
+  if (!versionHistory.some(entry => entry.version === v)) {
     jumpError.value = `Version "${v}" not found`
     return
   }
@@ -114,21 +116,28 @@ function navigateToVersion() {
 </script>
 
 <template>
-  <main class="container flex-1 w-full py-8">
-    <div class="max-w-3xl mx-auto">
-      <!-- Back link -->
-      <div class="mb-6">
-        <LinkBase :to="packageRoute(packageName)" classicon="i-lucide:arrow-left" class="text-sm">
-          <span class="font-mono" dir="ltr">{{ packageName }}</span>
-        </LinkBase>
+  <main class="flex-1 flex flex-col">
+    <!-- Header (same pattern as code/docs pages) -->
+    <header class="border-b border-border bg-bg sticky top-14 z-20">
+      <div class="container py-4">
+        <div class="flex items-center gap-2 min-w-0">
+          <NuxtLink
+            :to="packageRoute(packageName)"
+            class="font-mono text-lg font-medium hover:text-fg-muted transition-colors min-w-0 truncate"
+            :title="packageName"
+            dir="ltr"
+          >
+            <span v-if="orgName" class="text-fg-muted">@{{ orgName }}/</span
+            >{{ orgName ? packageName.replace(`@${orgName}/`, '') : packageName }}
+          </NuxtLink>
+          <span class="text-fg-subtle shrink-0">/</span>
+          <span class="font-mono text-sm text-fg-muted shrink-0">Version History</span>
+        </div>
       </div>
+    </header>
 
-      <!-- Page heading -->
-      <h1 class="font-mono text-2xl sm:text-3xl font-medium mb-8" dir="ltr">
-        {{ packageName }}
-        <span class="text-fg-muted font-normal text-lg sm:text-2xl ms-2">· Version History</span>
-      </h1>
-
+    <!-- Content -->
+    <div class="container max-w-3xl py-8">
       <!-- ── Current Tags ─────────────────────────────────────────────────── -->
       <section class="mb-10">
         <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 ps-1">Current Tags</h2>
