@@ -226,12 +226,9 @@
     "not_found": "Balíček nenalezen",
     "not_found_message": "Balíček nebyl nalezen.",
     "no_description": "Není k dispozici žádný popis",
-    "not_latest": "(není nejnovější)",
     "verified_provenance": "Ověřený původ",
-    "view_permalink": "Zobrazit trvalý odkaz na tuto verzi",
     "navigation": "Navigace balíčku",
     "copy_name": "Zkopírovat název balíčku",
-    "copy_version": "Zkopírovat verzi balíčku",
     "deprecation": {
       "package": "Tento balíček byl označen jako zastaralý.",
       "version": "Tato verze byla označena jako zastaralá.",

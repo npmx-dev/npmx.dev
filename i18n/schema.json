@@ -682,22 +682,13 @@
         "no_description": {
           "type": "string"
         },
-        "not_latest": {
-          "type": "string"
-        },
         "verified_provenance": {
-          "type": "string"
-        },
-        "view_permalink": {
           "type": "string"
         },
         "navigation": {
           "type": "string"
         },
         "copy_name": {
-          "type": "string"
-        },
-        "copy_version": {
           "type": "string"
         },
         "deprecation": {

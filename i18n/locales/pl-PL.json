@@ -161,12 +161,9 @@
     "not_found": "Nie znaleziono pakietu",
     "not_found_message": "Nie udało się znaleźć pakietu.",
     "no_description": "Brak opisu",
-    "not_latest": "(nie najnowsza)",
     "verified_provenance": "Zweryfikowane pochodzenie",
-    "view_permalink": "Zobacz stały link do tej wersji",
     "navigation": "Pakiet",
     "copy_name": "Kopiuj nazwę pakietu",
-    "copy_version": "Kopiuj wersję pakietu",
     "deprecation": {
       "package": "Ten pakiet został oznaczony jako przestarzały.",
       "version": "Ta wersja została oznaczona jako przestarzała.",

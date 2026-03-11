@@ -179,12 +179,9 @@
     "not_found": "Csomag Nem Található",
     "not_found_message": "A csomag nem található.",
     "no_description": "Nincs leírás",
-    "not_latest": "(nem a legfrissebb)",
     "verified_provenance": "Hitelesített eredet",
-    "view_permalink": "Verzió permalinkjének megtekintése",
     "navigation": "Csomag",
     "copy_name": "Csomagnév másolása",
-    "copy_version": "Csomag verziójának másolása",
     "deprecation": {
       "package": "Ez a csomag elavult (deprecated).",
       "version": "Ez a verzió elavult (deprecated).",

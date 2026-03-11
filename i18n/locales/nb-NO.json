@@ -148,9 +148,7 @@
     "not_found": "Pakke ikke funnet",
     "not_found_message": "Pakken kunne ikke finnes.",
     "no_description": "Ingen beskrivelse gitt",
-    "not_latest": "(ikke nyeste)",
     "verified_provenance": "Verifisert opprinnelse",
-    "view_permalink": "Vis permalenke for denne versjonen",
     "navigation": "Pakke",
     "copy_name": "Kopier pakkenavn",
     "deprecation": {

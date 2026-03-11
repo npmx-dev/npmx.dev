@@ -179,12 +179,9 @@
     "not_found": "Paquete no encontrado",
     "not_found_message": "No se pudo encontrar el paquete.",
     "no_description": "Sin descripción proporcionada",
-    "not_latest": "(no es la última versión)",
     "verified_provenance": "Procedencia verificada",
-    "view_permalink": "Ver enlace permanente para esta versión",
     "navigation": "Navegación del paquete",
     "copy_name": "Copiar nombre del paquete",
-    "copy_version": "Copiar versión del paquete",
     "deprecation": {
       "package": "Este paquete está obsoleto.",
       "version": "Esta versión está obsoleta.",

@@ -216,12 +216,9 @@
     "not_found": "Paket Bulunamadı",
     "not_found_message": "Paket bulunamadı.",
     "no_description": "Açıklama verilmemiş",
-    "not_latest": "(en son değil)",
     "verified_provenance": "Doğrulanmış köken",
-    "view_permalink": "Bu sürüm için kalıcı bağlantıya bak",
     "navigation": "Paket",
     "copy_name": "Paket adını kopyala",
-    "copy_version": "Paket sürümünü kopyala",
     "deprecation": {
       "package": "Bu paket kullanımdan kaldırılmıştır.",
       "version": "Bu sürüm kullanımdan kaldırılmıştır.",

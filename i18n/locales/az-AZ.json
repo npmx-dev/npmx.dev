@@ -216,12 +216,9 @@
     "not_found": "Paket Tapılmadı",
     "not_found_message": "Paket tapıla bilmədi.",
     "no_description": "Təsvir verilməyib",
-    "not_latest": "(son deyil)",
     "verified_provenance": "Təsdiqlənmiş mənşə",
-    "view_permalink": "Bu versiya üçün daimi keçidə bax",
     "navigation": "Paket",
     "copy_name": "Paket adını kopyala",
-    "copy_version": "Paket versiyasını kopyala",
     "deprecation": {
       "package": "Bu paket köhnəlmişdir.",
       "version": "Bu versiya köhnəlmişdir.",

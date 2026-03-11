@@ -216,12 +216,9 @@
     "not_found": "パッケージが見つかりません",
     "not_found_message": "パッケージが見つかりませんでした。",
     "no_description": "説明はありません",
-    "not_latest": "（最新ではありません）",
     "verified_provenance": "検証済みprovenance",
-    "view_permalink": "このバージョンのパーマリンクを表示",
     "navigation": "パッケージナビゲーション",
     "copy_name": "パッケージ名をコピー",
-    "copy_version": "パッケージのバージョンをコピー",
     "deprecation": {
       "package": "このパッケージは非推奨になりました。",
       "version": "このバージョンは非推奨になりました。",

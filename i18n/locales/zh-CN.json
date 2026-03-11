@@ -216,12 +216,9 @@
     "not_found": "未找到包",
     "not_found_message": "找不到此包。",
     "no_description": "未提供描述",
-    "not_latest": "（非最新）",
     "verified_provenance": "已验证来源",
-    "view_permalink": "查看此版本的链接",
     "navigation": "包导航",
     "copy_name": "复制包名",
-    "copy_version": "复制版本号",
     "deprecation": {
       "package": "此包已废弃。",
       "version": "此版本已废弃。",

@@ -161,12 +161,9 @@
     "not_found": "Paket Tidak Ditemukan",
     "not_found_message": "Paket tidak dapat ditemukan.",
     "no_description": "Tidak ada deskripsi",
-    "not_latest": "(bukan versi terbaru)",
     "verified_provenance": "Provenans terverifikasi",
-    "view_permalink": "Lihat permalink untuk versi ini",
     "navigation": "Paket",
     "copy_name": "Salin nama paket",
-    "copy_version": "Salin versi paket",
     "deprecation": {
       "package": "Paket ini telah usang (deprecated).",
       "version": "Versi ini telah usang (deprecated).",
