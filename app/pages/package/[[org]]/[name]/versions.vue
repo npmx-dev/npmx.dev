@@ -383,15 +383,17 @@ watch(jumpVersion, () => {
     </header>
 
     <!-- Content -->
-    <div class="container py-8 space-y-8">
+    <div class="max-w-6xl mx-auto py-8 space-y-8">
       <!-- ── Current Tags ───────────────────────────────────────────────────── -->
       <section class="space-y-3">
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider ps-1">Current Tags</h2>
+        <h2 class="text-xs text-fg-subtle uppercase tracking-wider px-4 sm:px-6 ps-1">
+          Current Tags
+        </h2>
 
         <!-- Latest — featured card -->
         <div
           v-if="tagRows[0]"
-          class="rounded-lg border border-accent/40 bg-accent/5 px-5 py-4 relative flex items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
+          class="border-y sm:rounded-lg sm:border border-accent/40 bg-accent/5 px-5 py-4 relative flex items-center justify-between gap-4 hover:bg-accent/8 transition-colors"
         >
           <!-- Left: tags + version -->
           <div>
@@ -432,7 +434,10 @@ watch(jumpVersion, () => {
         </div>
 
         <!-- Other tags — compact list (hidden when only latest exists) -->
-        <div v-if="tagRows.length > 1" class="rounded-lg border border-border overflow-hidden">
+        <div
+          v-if="tagRows.length > 1"
+          class="border-y sm:rounded-lg sm:border border-border sm:overflow-hidden"
+        >
           <div
             v-for="row in tagRows.slice(1)"
             :key="row.id"
@@ -482,7 +487,7 @@ watch(jumpVersion, () => {
 
       <!-- ── Version History ───────────────────────────────────────────────── -->
       <section>
-        <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 ps-1">
+        <h2 class="text-xs text-fg-subtle uppercase tracking-wider mb-3 px-4 sm:px-6 ps-1">
           Version History
           <span class="ms-1 normal-case font-normal tracking-normal">
             ({{ sortedVersions.length }})
@@ -492,7 +497,9 @@ watch(jumpVersion, () => {
         <!-- List + changelog side panel -->
         <div class="flex items-start">
           <!-- Version list -->
-          <div class="flex-1 min-w-0 rounded-lg border border-border overflow-hidden">
+          <div
+            class="flex-1 min-w-0 border-y sm:border border-border sm:rounded-lg sm:overflow-hidden"
+          >
             <div
               v-for="v in sortedVersions"
               :key="v.version"
@@ -575,12 +582,28 @@ watch(jumpVersion, () => {
                   </button>
                 </div>
               </div>
+
+              <!-- Mobile inline changelog (below the row, sm and up uses side panel) -->
+              <div
+                v-if="v.hasChangelog"
+                class="grid sm:hidden transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none"
+                :class="
+                  selectedChangelogVersion === v.version ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                "
+              >
+                <div class="overflow-hidden">
+                  <div
+                    class="changelog-body border-t border-border px-4 py-3 text-sm"
+                    v-html="selectedChangelogVersion === v.version ? selectedChangelogHtml : ''"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Changelog side panel -->
+          <!-- Changelog side panel (desktop only) -->
           <div
-            class="overflow-hidden shrink-0 transition-[width] duration-200 ease-out motion-reduce:transition-none"
+            class="hidden sm:block overflow-hidden shrink-0 transition-[width] duration-200 ease-out motion-reduce:transition-none"
             :class="selectedChangelogVersion ? 'w-[28rem] ms-6' : 'w-0'"
           >
             <!-- Fixed-width inner keeps content from squishing during animation -->
