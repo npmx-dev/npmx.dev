@@ -67,6 +67,44 @@ describe('applyHampelCorrection', () => {
     expect(result[1]!.value).toBe(1000) // not enough data to detect
   })
 
+  it('does not flatten a "great start" (sudden real growth at the end)', () => {
+    // A package going from zero to real adoption — this is NOT a spike.
+    const data: WeeklyDataPoint[] = [
+      makeWeeklyPoint('2022-11-07', 0),
+      makeWeeklyPoint('2022-11-14', 0),
+      makeWeeklyPoint('2022-11-21', 0),
+      makeWeeklyPoint('2022-11-28', 0),
+      makeWeeklyPoint('2022-12-05', 0),
+      makeWeeklyPoint('2022-12-12', 0),
+      makeWeeklyPoint('2022-12-19', 20000),
+    ]
+
+    const result = applyHampelCorrection(data) as WeeklyDataPoint[]
+
+    // The 20000 should NOT be erased — it's real growth, not an anomaly.
+    expect(result[6]!.value).toBe(20000)
+    expect(result[6]!.hasAnomaly).toBeUndefined()
+  })
+
+  it('does not flatten low-volume real activity', () => {
+    // Sparse package with occasional real downloads
+    const data: WeeklyDataPoint[] = [
+      makeWeeklyPoint('2022-11-07', 0),
+      makeWeeklyPoint('2022-11-14', 0),
+      makeWeeklyPoint('2022-11-21', 0),
+      makeWeeklyPoint('2022-11-28', 1),
+      makeWeeklyPoint('2022-12-05', 0),
+      makeWeeklyPoint('2022-12-12', 0),
+      makeWeeklyPoint('2022-12-19', 0),
+    ]
+
+    const result = applyHampelCorrection(data) as WeeklyDataPoint[]
+
+    // A single download is not an anomaly
+    expect(result[3]!.value).toBe(1)
+    expect(result[3]!.hasAnomaly).toBeUndefined()
+  })
+
   it('does not mutate the original data', () => {
     const data: WeeklyDataPoint[] = [
       makeWeeklyPoint('2022-11-07', 100),

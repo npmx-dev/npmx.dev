@@ -45,10 +45,12 @@ export function applyHampelCorrection(
   // Clone to avoid mutating the original data.
   const result = (data as Array<Record<string, any>>).map(d => ({ ...d }))
 
-  for (let i = 0; i < values.length; i++) {
-    // Build a sliding window around the current point, clamped to array bounds.
-    const start = Math.max(0, i - halfWindow)
-    const end = Math.min(values.length - 1, i + halfWindow)
+  // Only evaluate points that have a full symmetric window.
+  // Boundary points lack enough context on one side, making them
+  // prone to false positives (e.g., a "great start" at the end of a series).
+  for (let i = halfWindow; i < values.length - halfWindow; i++) {
+    const start = i - halfWindow
+    const end = i + halfWindow
     const window = values.slice(start, end + 1)
 
     // The median is robust to outliers — unlike the mean, a single spike
@@ -63,9 +65,13 @@ export function applyHampelCorrection(
     const deviation = Math.abs(values[i]! - windowMedian)
 
     // MAD of 0 means most values in the window are identical.
-    // If this point differs from the median at all, it's an outlier.
+    // We can't use the standard MAD-based score here, so fall back to a
+    // relative check: only flag if the deviation is large relative to the
+    // median. When the median is 0, there's no baseline to measure against
+    // so we skip — this avoids erasing real low-volume activity like
+    // [0,0,0,1,0,0,0].
     if (windowMad === 0) {
-      if (deviation > 0) {
+      if (windowMedian > 0 && deviation > windowMedian * threshold) {
         result[i]!.value = Math.round(windowMedian)
         result[i]!.hasAnomaly = true
       }
